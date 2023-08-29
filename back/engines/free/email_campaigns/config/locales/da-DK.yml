@@ -144,7 +144,6 @@ da:
     cosponsor_of_your_initiative:
       cta_reply_to: 'Se dit forslag'
       event_description_initiative: 'Tillykke! %{cosponsorName} har accepteret din invitation til at være medstiller på dit forslag.'
-      event_description_cosponsoring: 'At være medstiller på et forslag betyder, at <strong>dit navn vil blive vist</strong> sammen med navnene på de andre medstillere af forslaget.'
       main_header: '%{cosponsorName} har accepteret din invitation til at være medstiller på dit forslag'
       subject: '%{cosponsorName} har accepteret din invitation til at være medstiller på dit dit forslag'
       preheader_initiative: '%{cosponsorName} har accepteret din invitation til at være medstiller på dit forslag'
