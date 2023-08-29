@@ -60,11 +60,11 @@ export interface FormValues {
   topic_ids?: string[];
   position?: string;
   cosponsor_ids?: string[];
-  local_initiative_files?: UploadFile[];
+  local_initiative_files: UploadFile[];
   // The uploaded image is stored in an array, even though we can only store 1
-  images?: UploadFile[] | null;
-  header_bg?: UploadFile[] | null;
-  anonymous?: boolean;
+  images: UploadFile[] | null;
+  header_bg: UploadFile[] | null;
+  anonymous: boolean;
 }
 
 export type Props = {
