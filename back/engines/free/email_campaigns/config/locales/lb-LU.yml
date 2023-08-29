@@ -144,7 +144,6 @@ lb:
     cosponsor_of_your_initiative:
       cta_reply_to: 'Kuckt Är Propositioun'
       event_description_initiative: 'Gratulatioun! %{cosponsorName} huet Är Invitatioun ugeholl fir Är Propositioun ze co-sponsoren.'
-      event_description_cosponsoring: 'Co-Sponsoring eng Propositioun heescht, datt <strong>Ären Numm gëtt ugewisen</strong> mat den Nimm vun anere Co-Sponsoren vun der Propositioun.'
       main_header: '%{cosponsorName} huet Är Invitatioun ugeholl fir Är Propositioun ze co-sponsoren'
       subject: '%{cosponsorName} huet Är Invitatioun ugeholl fir Är Propositioun ze co-sponsoren'
       preheader_initiative: '%{cosponsorName} huet Är Invitatioun ugeholl fir Är Propositioun ze co-sponsoren'
