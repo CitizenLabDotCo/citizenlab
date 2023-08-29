@@ -1,18 +1,17 @@
 import React from 'react';
 import { screen, render, userEvent } from 'utils/testUtils/rtl';
-import InitiativeForm, { InitiativeFormProps as Props } from '.';
-import { FormValues } from '.';
+import InitiativeForm, { Props, FormValues } from '.';
 
 const defaultProps: Props = {
   onSubmit: jest.fn(),
-  defaultValues: {
-    title_multiloc: {
-      en: 'Initiative title',
-    },
-    body_multiloc: {
-      en: 'Initiative body',
-    },
-  },
+  // defaultValues: {
+  //   title_multiloc: {
+  //     en: 'Initiative title',
+  //   },
+  //   body_multiloc: {
+  //     en: 'Initiative body',
+  //   },
+  // },
 };
 
 // Needed for language selector of org name multiloc input

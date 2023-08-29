@@ -308,19 +308,13 @@ const AdminProjectEventEdit = () => {
           );
         } else if (projectId) {
           // event doesn't exist, create with project id
-          addEvent({
-            projectId,
-            event: {
-              ...attributeDiff,
-              location_point_geojson: locationPointUpdated || null,
-            },
-          });
-        } else if (projectId) {
-          // event doesn't exist, create with project id
           addEvent(
             {
               projectId,
-              event: attributeDiff,
+              event: {
+                ...attributeDiff,
+                location_point_geojson: locationPointUpdated || null,
+              },
             },
             {
               onSuccess: async (data) => {
