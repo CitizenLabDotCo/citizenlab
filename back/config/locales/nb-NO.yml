@@ -185,6 +185,8 @@
       <p>Inivitiativtakerne er invitert til  å presentere sitt forslag under neste kommunemøte Vi vil gi en offisiell oppdatering.</p>
     default_eligibility_criteria: >
       <ul> <li>det skal være innenfor kommunens ansvarsområder</li> <li>Det tjener den offentlige interesse snarere enn din individuelle interesse</li> <li>Det diskriminerer ikke andre innbyggere basert på  kjønn rase, alder eller bakgrunn <li>det skader ikke andre</li></ul>
+    default_posting_tips: >
+      <ul><li>Skriv mer om forslaget ditt. Du kan skrive en kladd og deretter kopiere det inn.</li><li>Velg en beskrivende tittel som forklarer hva forslaget ditt går ut på. </li><li>Husk å visualisere forslaget ditt med et passende bilde så det skiller seg ut.</li><li>Legg til relevante filer, som video, inspirerende eksempler, tekniske tegninger eller planer.</li><li>Del ideen din på sosiale medier og i andre kanaler for å samle støtte fra andre.</li></ul>
   reset_password_mailer:
     send_reset_password:
       cta_reset_password: 'Tilbakestill passordet ditt'

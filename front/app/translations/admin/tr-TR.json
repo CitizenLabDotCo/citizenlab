@@ -749,6 +749,8 @@
   "app.containers.Admin.initiatives.overviewTab": "Genel Bakış",
   "app.containers.Admin.initiatives.permissions": "İzinler",
   "app.containers.Admin.initiatives.permissionsText": "İzinler",
+  "app.containers.Admin.initiatives.postingTips": "Gönderme ipuçları",
+  "app.containers.Admin.initiatives.postingTipsInfo": "Teklif göndermek için bazı özel ipuçları verin",
   "app.containers.Admin.initiatives.proposalEligibilityCriteria": "Uygunluk kriterleri",
   "app.containers.Admin.initiatives.proposalEligibilityCriteriaInfo": "Bir önerinin uygun olup olmadığına karar vermek için kullanacağınız kriterlerin net bir tanımını yapın.",
   "app.containers.Admin.initiatives.proposalSuccessMessage": "Başarı mesajı",
