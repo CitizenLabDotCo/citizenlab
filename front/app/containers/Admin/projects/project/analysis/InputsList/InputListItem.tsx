@@ -104,7 +104,7 @@ const InputListItem = memo(({ input, onSelect, selected }: Props) => {
             </Box>
           )}
           {(!title_multiloc || isEmpty(title_multiloc)) && (
-            <Box flex="1">
+            <Box flex="1" w="100%">
               {analysis.data.relationships.custom_fields.data
                 .slice(0, 3)
                 .map((customField) => (

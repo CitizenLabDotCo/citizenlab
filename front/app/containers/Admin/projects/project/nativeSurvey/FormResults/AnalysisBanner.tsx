@@ -139,10 +139,7 @@ const CreateAnalysisModal = ({ onClose }: { onClose: () => void }) => {
   return (
     <Box px="48px">
       <Title>{formatMessage(messages.analysisSelectQuestions)}</Title>
-      <Text>
-        Which questions do you want to analyze simultaneously? You can always
-        create a new analysis with different questions later.
-      </Text>
+      <Text>{formatMessage(messages.analysisSelectQuestionsDescription)}</Text>
       {formCustomFields?.map((field) => {
         if (field.input_type === 'page') {
           return (

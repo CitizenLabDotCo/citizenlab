@@ -18,6 +18,11 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.survey.analysisSelectQuestions',
     defaultMessage: 'Select questions for analysis',
   },
+  analysisSelectQuestionsDescription: {
+    id: 'app.containers.Admin.projects.project.survey.analysisSelectQuestionsDescription',
+    defaultMessage:
+      'Which questions do you want to analyze simultaneously? You can always create a new analysis with different questions later.',
+  },
   createAnalysis: {
     id: 'app.containers.Admin.projects.project.survey.createAnalysis',
     defaultMessage: 'Create analysis',
