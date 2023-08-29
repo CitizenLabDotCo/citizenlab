@@ -28,7 +28,7 @@ namespace :data_migrate do
     end
   end
 
-  # It was added when I realized that we need to have this copy in the BE code anyway for defaults.
+  # We need to have this copy in the BE code for defaults.
   task populate_initiative_posting_tips_from_be_locales: :environment do |_t, _args|
     Tenant.switch_each do |_tenant|
       app_config = AppConfiguration.instance
