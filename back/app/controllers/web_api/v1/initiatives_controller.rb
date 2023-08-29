@@ -10,13 +10,16 @@ class WebApi::V1::InitiativesController < ApplicationController
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   def index
+    includes = %i[author assignee topics areas]
     initiatives = InitiativesFinder.new(
       params,
       current_user: current_user,
       scope: policy_scope(Initiative),
-      includes: %i[author assignee topics areas]
+      includes: includes
     ).find_records
-    initiatives = paginate SortByParamsService.new.sort_initiatives(Initiative.where(id: initiatives), params, current_user)
+    # We use Initiative.where to avoid duplicates caused by `left_outer_joins(:cosponsors_initiatives)`.
+    # #distinct fails with `ERROR:  for SELECT DISTINCT, ORDER BY expressions must appear in select list ... md5(`
+    initiatives = paginate SortByParamsService.new.sort_initiatives(Initiative.where(id: initiatives).includes(includes), params, current_user)
 
     render json: linked_json(initiatives, WebApi::V1::InitiativeSerializer, serialization_options_for(initiatives))
   end
