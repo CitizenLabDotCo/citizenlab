@@ -1,13 +1,14 @@
 import { Box, Icon } from '@citizenlab/cl2-component-library';
-import { TagType } from 'api/analysis_tags/types';
+
 import React from 'react';
 
 import tracks from 'containers/Admin/projects/project/analysis/tracks';
 import { trackEventByName } from 'utils/analytics';
+import { AutoTaggingMethod } from 'api/analysis_background_tasks/types';
 
 type TagProps = {
   name: string;
-  tagType: TagType;
+  tagType: AutoTaggingMethod;
   tagginsConfig?: {
     isSelectedAsTagging: boolean;
     onAddTagging: () => void;
@@ -16,7 +17,7 @@ type TagProps = {
 };
 
 export const TagTypeColorMap: Record<
-  TagType,
+  AutoTaggingMethod,
   {
     background: string;
     text: string;
@@ -45,6 +46,14 @@ export const TagTypeColorMap: Record<
   sentiment: {
     background: '#43515D',
     text: '#FFFFFF',
+  },
+  few_shot_classification: {
+    background: '#BEE7EB',
+    text: '#0A5159',
+  },
+  label_classification: {
+    background: '#BEE7EB',
+    text: '#0A5159',
   },
 };
 
