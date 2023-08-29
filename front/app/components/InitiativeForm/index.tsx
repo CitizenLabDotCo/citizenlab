@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useState } from 'react';
+import React, { Suspense, lazy, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
@@ -46,6 +46,10 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useTopics from 'api/topics/useTopics';
 import useLocale from 'hooks/useLocale';
 import { Box } from '@citizenlab/cl2-component-library';
+import { IInitiativeData } from 'api/initiatives/types';
+import { IInitiativeImageData } from 'api/initiative_images/types';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
+import { IInitiativeFileData } from 'api/initiative_files/types';
 
 const StyledFormSection = styled(FormSection)`
   ${media.phone`
@@ -67,14 +71,20 @@ export interface FormValues {
   anonymous?: boolean;
 }
 
-export type InitiativeFormProps = {
+export type Props = {
   onSubmit: (formValues: FormValues) => void | Promise<void>;
-  defaultValues?: FormValues;
+  initiative?: IInitiativeData;
+  initiativeImage?: IInitiativeImageData;
+  initiativeFiles?: IInitiativeFileData[];
 };
 
-const mapsLoaded = window.googleMaps;
-
-const InitiativeForm = ({ onSubmit, defaultValues }: InitiativeFormProps) => {
+const InitiativeForm = ({
+  onSubmit,
+  initiative,
+  initiativeImage,
+  initiativeFiles,
+}: Props) => {
+  const mapsLoaded = window.googleMaps;
   const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
     useState(false);
   const initiativeReviewRequired = useInitiativeReviewRequired();
@@ -108,11 +118,72 @@ const InitiativeForm = ({ onSubmit, defaultValues }: InitiativeFormProps) => {
     anonymous: boolean().optional(),
   });
 
-  const methods = useForm({
+  const methods = useForm<FormValues>({
     mode: 'onBlur',
-    defaultValues,
+    defaultValues: initiative
+      ? {
+          title_multiloc: initiative.attributes.title_multiloc,
+          body_multiloc: initiative.attributes.body_multiloc,
+          position: initiative.attributes.location_description,
+          topic_ids: initiative.relationships.topics.data.map(
+            (topic) => topic.id
+          ),
+          cosponsor_ids: initiative.attributes.cosponsorships
+            ? initiative.attributes.cosponsorships.map(
+                (cosponsor) => cosponsor.user_id
+              )
+            : [],
+          anonymous: initiative.attributes.anonymous,
+        }
+      : undefined,
     resolver: yupResolver(schema),
   });
+
+  useEffect(() => {
+    const imageUrl = initiativeImage?.attributes.versions.large;
+
+    if (imageUrl) {
+      const id = initiativeImage.id;
+      convertUrlToUploadFile(imageUrl, id, null).then((image) => {
+        if (image) {
+          methods.setValue('images', [image]);
+        }
+      });
+    }
+  }, [methods, initiativeImage]);
+
+  useEffect(() => {
+    const bannerUrl = initiative?.attributes.header_bg.large;
+
+    if (bannerUrl) {
+      convertUrlToUploadFile(bannerUrl, null, null).then((image) => {
+        if (image) {
+          methods.setValue('header_bg', [image]);
+        }
+      });
+    }
+  }, [methods, initiative]);
+
+  useEffect(() => {
+    (async () => {
+      if (initiativeFiles) {
+        const convertedFiles = initiativeFiles.map(
+          async (f) =>
+            await convertUrlToUploadFile(
+              f.attributes.file.url,
+              f.id,
+              f.attributes.name
+            )
+        );
+
+        const files = (await Promise.all(
+          convertedFiles.filter((f) => f !== null)
+        )) as UploadFile[];
+
+        methods.setValue('local_initiative_files', files);
+      }
+    })();
+  }, [methods, initiativeFiles]);
 
   if (isNilOrError(locale) || !topics) return null;
 

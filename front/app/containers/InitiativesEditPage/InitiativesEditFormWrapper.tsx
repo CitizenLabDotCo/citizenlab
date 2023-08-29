@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import clHistory from 'utils/cl-router/history';
 
 // services
-import { Locale, UploadFile } from 'typings';
+import { Locale } from 'typings';
 
 // geoJson
 import { parsePosition } from 'utils/locationTools';
@@ -18,13 +18,13 @@ import InitiativeForm2, {
   FormValues as FormValues2,
 } from 'components/InitiativeForm';
 import { handleAddFiles, handleRemoveFiles } from 'api/initiative_files/util';
-import { convertUrlToUploadFile } from 'utils/fileUtils';
+import { IInitiativeFiles } from 'api/initiative_files/types';
 
 interface Props {
   locale: Locale;
   initiative: IInitiativeData;
-  initiativeImage: IInitiativeImageData | null;
-  initiativeFiles: UploadFile[] | null;
+  initiativeImage?: IInitiativeImageData;
+  initiativeFiles?: IInitiativeFiles;
   onPublished: () => void;
 }
 
@@ -33,30 +33,11 @@ const InitiativesEditFormWrapper = ({
   initiativeImage,
   initiativeFiles,
 }: Props) => {
-  const [image, setImage] = useState<UploadFile | null>(null);
-  const [banner, setBanner] = useState<UploadFile | null>(null);
-
   const { mutateAsync: addInitiativeImage } = useAddInitiativeImage();
   const { mutateAsync: deleteInitiativeImage } = useDeleteInitiativeImage();
   const { mutateAsync: addInitiativeFile } = useAddInitiativeFile();
   const { mutateAsync: deleteInitiativeFile } = useDeleteInitiativeFile();
   const { mutate: updateInitiative } = useUpdateInitiative();
-
-  useEffect(() => {
-    if (initiativeImage && initiativeImage.attributes.versions.large) {
-      const url = initiativeImage.attributes.versions.large;
-      const id = initiativeImage.id;
-      convertUrlToUploadFile(url, id, null).then((image) => {
-        setImage(image);
-      });
-    }
-    if (initiative && initiative.attributes.header_bg.large) {
-      const url = initiative.attributes.header_bg.large;
-      convertUrlToUploadFile(url, null, null).then((banner) => {
-        setBanner(banner);
-      });
-    }
-  }, [initiative, initiativeImage]);
 
   // const continuePublish = async () => {
   //   const changedValues = getChangedValues();
@@ -248,13 +229,13 @@ const InitiativesEditFormWrapper = ({
             handleAddFiles(
               initiativeId,
               local_initiative_files,
-              initiativeFiles,
+              initiativeFiles?.data,
               addInitiativeFile
             );
             handleRemoveFiles(
               initiativeId,
               local_initiative_files,
-              initiativeFiles,
+              initiativeFiles?.data,
               deleteInitiativeFile
             );
           }
@@ -286,18 +267,6 @@ const InitiativesEditFormWrapper = ({
               image: { image: images[0].base64 },
             });
           }
-          // handleAddInitiativeImages(
-          //   initiativeId,
-          //   images,
-          //   initiativeImage,
-          //   addInitiativeImage
-          // );
-          // handleRemoveInitiativeImages(
-          //   initiativeId,
-          //   images,
-          //   initiativeImage,
-          //   deleteInitiativeImage
-          // );
 
           clHistory.push({
             pathname: `/initiatives/${initiative.data.attributes.slug}`,
@@ -310,23 +279,9 @@ const InitiativesEditFormWrapper = ({
   return (
     <InitiativeForm2
       onSubmit={handleOnSubmit}
-      defaultValues={{
-        title_multiloc: initiative.attributes.title_multiloc,
-        body_multiloc: initiative.attributes.body_multiloc,
-        position: initiative.attributes.location_description,
-        topic_ids: initiative.relationships.topics.data.map(
-          (topic) => topic.id
-        ),
-        cosponsor_ids: initiative.attributes.cosponsorships
-          ? initiative.attributes.cosponsorships.map(
-              (cosponsor) => cosponsor.user_id
-            )
-          : [],
-        local_initiative_files: initiativeFiles || [],
-        images: image ? [image] : [],
-        header_bg: banner ? [banner] : [],
-        anonymous: initiative.attributes.anonymous,
-      }}
+      initiative={initiative}
+      initiativeImage={initiativeImage}
+      initiativeFiles={initiativeFiles?.data}
     />
   );
 };

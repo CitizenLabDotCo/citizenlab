@@ -15,11 +15,10 @@ import messages from '../messages';
 import { colors } from 'utils/styleUtils';
 
 // typings
-import { Locale, UploadFile } from 'typings';
+import { Locale } from 'typings';
 
 // hooks
 import useInitiativeFiles from 'api/initiative_files/useInitiativeFiles';
-import { convertUrlToUploadFile } from 'utils/fileUtils';
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useInitiativeImages from 'api/initiative_images/useInitiativeImages';
 import useLocale from 'hooks/useLocale';
@@ -37,31 +36,8 @@ const AdminInitiativeEdit = ({ goBack, initiativeId }: Props) => {
   const tenantLocales = useAppConfigurationLocales();
   const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
   const { data: initiativeFiles } = useInitiativeFiles(initiativeId);
-  const [files, setFiles] = useState<UploadFile[]>([]);
   const { data: initiative } = useInitiativeById(initiativeId);
   const { data: initiativeImages } = useInitiativeImages(initiativeId);
-
-  useEffect(() => {
-    async function getFiles() {
-      let files: UploadFile[] = [];
-
-      if (initiativeFiles) {
-        files = (await Promise.all(
-          initiativeFiles.data.map(async (file) => {
-            const uploadFile = convertUrlToUploadFile(
-              file.attributes.file.url,
-              file.id,
-              file.attributes.name
-            );
-            return uploadFile;
-          })
-        )) as UploadFile[];
-      }
-      setFiles(files);
-    }
-
-    getFiles();
-  }, [initiativeFiles]);
 
   const onLocaleChange = (locale: Locale) => {
     setSelectedLocale(locale);
@@ -117,11 +93,9 @@ const AdminInitiativeEdit = ({ goBack, initiativeId }: Props) => {
         <InitiativesEditFormWrapper
           locale={selectedLocale}
           initiative={initiative.data}
-          initiativeImage={
-            initiativeImages.data.length === 0 ? null : initiativeImages.data[0]
-          }
+          initiativeImage={initiativeImages.data[0]}
           onPublished={goBack}
-          initiativeFiles={files}
+          initiativeFiles={initiativeFiles}
         />
       </Box>
     </Box>

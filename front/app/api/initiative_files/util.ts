@@ -1,13 +1,21 @@
 import { UseMutateAsyncFunction } from '@tanstack/react-query';
 import { CLErrors, UploadFile } from 'typings';
-import { getFilesToAdd, getFilesToRemove } from 'utils/fileUtils';
-import { isNilOrError, isString } from 'utils/helperUtils';
-import { AddInitiativeFileObject, IInitiativeFile } from './types';
+import {
+  convertUrlToUploadFile,
+  getFilesToAdd,
+  getFilesToRemove,
+} from 'utils/fileUtils';
+import { isString } from 'utils/helperUtils';
+import {
+  AddInitiativeFileObject,
+  IInitiativeFile,
+  IInitiativeFileData,
+} from './types';
 
-function getFilesToRemovePromises(
+async function getFilesToRemovePromises(
   initiativeId: string,
   localFiles: UploadFile[],
-  remoteFiles: UploadFile[] | null,
+  remoteFiles: IInitiativeFileData[] | undefined,
   removeFile: UseMutateAsyncFunction<
     unknown,
     unknown,
@@ -18,11 +26,15 @@ function getFilesToRemovePromises(
     unknown
   >
 ) {
-  // localPageFiles = local state of files
-  // This means those previously uploaded + files that have been added/removed
-  // remotePageFiles = last saved state of files (remote)
-  if (!isNilOrError(localFiles) && !isNilOrError(remoteFiles)) {
-    const filesToRemove = getFilesToRemove(localFiles, remoteFiles);
+  if (remoteFiles) {
+    const convertedRemoteFiles = (
+      await Promise.all(
+        remoteFiles.map((f) =>
+          convertUrlToUploadFile(f.attributes.file.url, f.id, f.attributes.name)
+        )
+      )
+    ).filter((f) => f !== null) as UploadFile[];
+    const filesToRemove = getFilesToRemove(localFiles, convertedRemoteFiles);
     const filesToRemovePromises = filesToRemove
       .filter((fileToRemove) => isString(fileToRemove.id))
       .map((fileToRemove) => {
@@ -38,46 +50,52 @@ function getFilesToRemovePromises(
   return null;
 }
 
-function getFilesToAddPromises(
+async function getFilesToAddPromises(
   initiativeId: string,
   localFiles: UploadFile[],
-  remoteFiles: UploadFile[] | null,
+  remoteFiles: IInitiativeFileData[] | undefined,
   addFile: UseMutateAsyncFunction<
     IInitiativeFile,
     CLErrors,
     AddInitiativeFileObject
   >
 ) {
-  // localPageFiles = local state of files
-  // This means those previously uploaded + files that have been added/removed
-  // remotePageFiles = last saved state of files (remote)
+  const convertedRemoteFiles = (
+    remoteFiles
+      ? await Promise.all(
+          remoteFiles.map((f) =>
+            convertUrlToUploadFile(
+              f.attributes.file.url,
+              f.id,
+              f.attributes.name
+            )
+          )
+        )
+      : []
+  ).filter((f) => f !== null) as UploadFile[];
 
-  if (!isNilOrError(localFiles)) {
-    const filesToAdd = getFilesToAdd(localFiles, remoteFiles);
-    const filesToAddPromises = filesToAdd.map((fileToAdd) =>
-      addFile({
-        initiativeId: initiativeId,
-        file: { file: fileToAdd.base64, name: fileToAdd.name },
-      })
-    );
+  const filesToAdd = getFilesToAdd(localFiles, convertedRemoteFiles);
+  const filesToAddPromises = filesToAdd.map((fileToAdd) =>
+    addFile({
+      initiativeId: initiativeId,
+      file: { file: fileToAdd.base64, name: fileToAdd.name },
+    })
+  );
 
-    return filesToAddPromises;
-  }
-
-  return null;
+  return filesToAddPromises;
 }
 
 export async function handleAddFiles(
   initiativeId: string,
   localFiles: UploadFile[],
-  remoteFiles: UploadFile[] | null,
+  remoteFiles: IInitiativeFileData[] | undefined,
   addFile: UseMutateAsyncFunction<
     IInitiativeFile,
     CLErrors,
     AddInitiativeFileObject
   >
 ) {
-  const filesToAddPromises = getFilesToAddPromises(
+  const filesToAddPromises = await getFilesToAddPromises(
     initiativeId,
     localFiles,
     remoteFiles,
@@ -92,7 +110,7 @@ export async function handleAddFiles(
 export async function handleRemoveFiles(
   initiativeId: string,
   localFiles: UploadFile[],
-  remoteFiles: UploadFile[] | null,
+  remoteFiles: IInitiativeFileData[] | undefined,
   removeFile: UseMutateAsyncFunction<
     unknown,
     unknown,
@@ -103,7 +121,7 @@ export async function handleRemoveFiles(
     unknown
   >
 ) {
-  const filesToRemovePromises = getFilesToRemovePromises(
+  const filesToRemovePromises = await getFilesToRemovePromises(
     initiativeId,
     localFiles,
     remoteFiles,
