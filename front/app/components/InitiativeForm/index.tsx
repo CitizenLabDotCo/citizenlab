@@ -384,6 +384,16 @@ const InitiativeForm = ({
             />
           )}
         </SectionField>
+        <Warning>
+          <div>
+            <FormattedMessage {...messages.makeSureReadyToBePublic} />{' '}
+            {initiativeReviewRequired ? (
+              <FormattedMessage {...messages.notEditableOnceReviewed} />
+            ) : (
+              <FormattedMessage {...messages.notEditableOnceVoted} />
+            )}
+          </div>
+        </Warning>
       </StyledFormSection>
 
       <StyledFormSection>
@@ -545,19 +555,6 @@ const InitiativeForm = ({
             </Box>
           </StyledFormSection>
         )}
-
-      <StyledFormSection>
-        <Warning>
-          <div>
-            <FormattedMessage {...messages.makeSureReadyToBePublic} />{' '}
-            {initiativeReviewRequired ? (
-              <FormattedMessage {...messages.notEditableOnceReviewed} />
-            ) : (
-              <FormattedMessage {...messages.notEditableOnceVoted} />
-            )}
-          </div>
-        </Warning>
-      </StyledFormSection>
 
       <FormSubmitFooter
         message={
