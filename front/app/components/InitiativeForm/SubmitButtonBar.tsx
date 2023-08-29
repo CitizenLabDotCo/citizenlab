@@ -4,7 +4,7 @@ import styled, { useTheme } from 'styled-components';
 import { FormattedMessage } from 'utils/cl-intl';
 import Button from 'components/UI/Button';
 import { media } from 'utils/styleUtils';
-import messages from '../messages';
+import messages from './messages';
 import useInitiativeReviewRequired from 'hooks/useInitiativeReviewRequired';
 
 const StyledButton = styled(Button)`
