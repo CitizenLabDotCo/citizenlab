@@ -186,7 +186,7 @@ sr-Latn:
     default_eligibility_criteria: >
       <ul> <li>Mora biti u skladu sa važećim oblastima i kompetencijala lokalne uprave</li> <li>Mora staviti interes javnosti ispred ličnog interesa</li> <li>Ne sme podsticati diskriminaciju po bilo kom osnovu, ili imati negativan uticaj na druge</li></ul>
     default_posting_tips: >
-      <ul><li>Take the time to elaborate on your proposal. If necessary, type a draft first and then copy-paste it here. As soon as you post it, others will be able to read it and the time will start running.</li><li>Choose a meaningful title that explains clearly what your proposal entails.</li><li>Visualize your proposal with a fitting image to help it stand out!</li><li>Add relevant attachments, such as videos, inspiring examples, technical details or plans.</li><li>Share your idea on social media and other channels to gather support from others.</li></ul>
+      Pokušajte da se posvetite obrazloženju vašeg predloga. Ukoliko je potrebno, prethodno pripremite tekst pa ga kopirajte ovde.</li><li>Odaberite naziv koji jasno opisuje na šta se vaša ideja odnosi.</li><li>Vizualizujte svoj predlog odgovarajućom slikom koja će mu pomoći da se istakne!</li><li>Dodajte priloge poput video zapisa, ilustrativnih primera, tehničkih detalja ili planova.</li><li>Podelite vašu ideju na društvenim mrežama kako biste prikupili podršku od drugih.</li></ul>
   reset_password_mailer:
     send_reset_password:
       cta_reset_password: 'Resetujte vašu lozinku'
