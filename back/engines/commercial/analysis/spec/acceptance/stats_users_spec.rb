@@ -25,12 +25,6 @@ end
 
 resource 'Analysis - Stats - Users' do
   header 'Content-Type', 'application/json'
-
-  let_it_be(:timezone) { AppConfiguration.instance.settings('core', 'timezone') }
-  let_it_be(:now) { Time.now.in_time_zone(timezone) }
-  let_it_be(:start_at) { (now - 1.year).in_time_zone(timezone).beginning_of_year }
-  let_it_be(:end_at) { (now - 1.year).in_time_zone(timezone).end_of_year }
-
   let_it_be(:analysis) { create(:analysis) }
   let_it_be(:project) { analysis.project }
 
@@ -59,6 +53,7 @@ resource 'Analysis - Stats - Users' do
       create(:idea, project: project, author: authors[2], likes_count: 3)
       create(:idea, project: project, author: authors[3], likes_count: 5)
       create(:idea, project: project, author: authors[4], likes_count: 5)
+      create(:idea, author: authors[4], likes_count: 5)
     end
 
     let(:reactions_from) { 4 }
@@ -79,37 +74,40 @@ resource 'Analysis - Stats - Users' do
     end
   end
 
-  # get 'web_api/v1/analyses/:analysis_id/stats/authors_by_age' do
-  #   filter_parameters(self)
+  get 'web_api/v1/analyses/:analysis_id/stats/authors_by_age' do
+    filter_parameters(self)
 
-  #   before do
-  #     AppConfiguration.instance.update(created_at: start_at)
+    before do
+      birthyears = [1962, 1976, 1980, 1990, 1991, 2005, 2006]
+      authors = birthyears.map { |year| create(:user, birthyear: year) }
+      author_without_birthyear = create(:user, birthyear: nil)
+      create(:idea, project: project, author: authors[0])
+      create(:idea, project: project, author: authors[1])
+      create(:idea, project: project, author: authors[2])
+      create(:idea, project: project, author: authors[3])
+      create(:idea, project: project, author: authors[4])
+      create(:idea, project: project, author: authors[4], title_multiloc: { en: 'Not p l a n t' })
+      create(:idea, project: project, author: authors[5])
+      create(:idea, project: project, author: authors[6])
+      create(:idea, project: project, author: author_without_birthyear)
+      create(:idea, author: authors[3])
+    end
 
-  #     travel_to start_at + 16.days do
-  #       birthyears = [1962, 1976, 1980, 1990, 1991, 2005, 2006]
-  #       users = birthyears.map { |year| create(:user, birthyear: year) }
-  #       user_without_birthyear = create(:user, birthyear: nil)
+    let(:search) { 'Plant' } # part of the title of the default idea factory
 
-  #       @group = create_group(users + [user_without_birthyear])
-  #     end
-  #   end
+    example 'Authors by age' do
+      travel_to(Time.zone.local(2020, 1, 1)) { do_request }
 
-  #   example 'Users counts by age' do
-  #     travel_to(Time.zone.local(2020, 1, 1)) { do_request }
-
-  #     expect(response_status).to eq 200
-  #     expect(json_response_body.dig(:data, :attributes)).to match(
-  #       total_user_count: 8,
-  #       unknown_age_count: 1,
-  #       series: {
-  #         user_counts: [0, 2, 2, 1, 1, 1, 0, 0, 0, 0],
-  #         expected_user_counts: nil,
-  #         reference_population: nil,
-  #         bins: UserCustomFields::AgeCounter::DEFAULT_BINS
-  #       }
-  #     )
-  #   end
-  # end
+      expect(response_status).to eq 200
+      expect(json_response_body.dig(:data, :attributes)).to match(
+        unknown_age_count: 1,
+        series: {
+          user_counts: [0, 2, 2, 1, 1, 1, 0, 0, 0, 0],
+          bins: UserCustomFields::AgeCounter::DEFAULT_BINS
+        }
+      )
+    end
+  end
 
   # describe 'by_custom_field endpoints' do
   #   get 'web_api/v1/analyses/:analysis_id/stats/authors_by_custom_field/:custom_field_id' do

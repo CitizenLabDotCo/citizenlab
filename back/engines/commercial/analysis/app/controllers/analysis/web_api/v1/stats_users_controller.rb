@@ -8,17 +8,26 @@ module Analysis
         skip_after_action :verify_policy_scoped # The analysis is authorized instead.
         before_action :set_analysis
 
-        def users_by_age
-          age_stats = AgeStats.calculate(find_users)
+        def authors_by_age
+          age_stats = UserCustomFields::AgeStats.calculate(find_users)
 
           render json: raw_json({
-            total_user_count: age_stats.user_count,
             unknown_age_count: age_stats.unknown_age_count,
             series: {
               user_counts: age_stats.binned_counts,
-              reference_population: age_stats.population_counts,
               bins: age_stats.bins
             }
+          })
+        end
+
+        def authors_by_domicile
+          domicile_field = CustomField.with_resource_type('User').find_by!(code: 'domicile')
+
+          users_count_by_option_id = UserCustomFields::FieldValueCounter.counts_by_field_option(
+            find_users, domicile_field, by: :option_id
+          )
+          render json: raw_json({
+            series: { users: users_count_by_option_id }
           })
         end
 
@@ -37,17 +46,6 @@ module Analysis
           render json: raw_json(json_response)
         rescue NotSupportedFieldTypeError
           head :not_implemented
-        end
-
-        def authors_by_domicile
-          domicile_field = CustomField.with_resource_type('User').find_by!(code: 'domicile')
-
-          users_count_by_option_id = UserCustomFields::FieldValueCounter.counts_by_field_option(
-            find_users, domicile_field, by: :option_id
-          )
-          render json: raw_json({
-            series: { users: users_count_by_option_id }
-          })
         end
 
         private
