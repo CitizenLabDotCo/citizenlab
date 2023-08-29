@@ -8,7 +8,6 @@ import { Text, Box, IconTooltip } from '@citizenlab/cl2-component-library';
 // i18n
 import { useIntl } from 'utils/cl-intl';
 import profileVisibilityMessages from 'components/ProfileVisibility/messages';
-import useInitiativeBySlug from 'api/initiatives/useInitiativeBySlug';
 import { useParams } from 'react-router-dom';
 import Checkbox from 'components/HookForm/Checkbox';
 
@@ -19,16 +18,13 @@ interface Props {
 const ProfileVisibilityFormSection = ({ triggerModal }: Props) => {
   const { formatMessage } = useIntl();
   const { data: appConfiguration } = useAppConfiguration();
-  const { slug } = useParams() as { slug: string };
-  const { data: initiative } = useInitiativeBySlug(slug);
+  const { slug } = useParams();
   const initiativeCosponsorsRequired = useInitiativeCosponsorsRequired();
 
   if (!appConfiguration) return null;
 
-  // If we're creating a new initiative this will be 'false'
-  // because there is no slug and hence no initiative.
-  // If we're editing an initiative, it depends on the value set in the form.
-  const publishedAnonymously = initiative?.data.attributes.anonymous || false;
+  // If we're creating a new initiative, slug is undefined and this will be 'false'
+  const isEditingInitiative = typeof slug === 'string';
   const allowAnonymousParticipation =
     appConfiguration.data.attributes.settings.initiatives
       ?.allow_anonymous_participation;
@@ -40,8 +36,8 @@ const ProfileVisibilityFormSection = ({ triggerModal }: Props) => {
   return (
     <>
       {allowAnonymousParticipation &&
-        // Don't show if the proposal is already published
-        !publishedAnonymously &&
+        // Don't show in edit form
+        !isEditingInitiative &&
         // it doesn't make sense for proposals that need cosponsorship to be anonymous
         !initiativeCosponsorsRequired && (
           <FormSection>
