@@ -144,7 +144,6 @@ fr-BE:
     cosponsor_of_your_initiative:
       cta_reply_to: 'Voir votre proposition'
       event_description_initiative: 'Félicitations ! %{cosponsorName} a accepté de soutenir votre proposition.'
-      event_description_cosponsoring: 'Soutenir une proposition implique que <strong>votre nom sera affiché</strong> avec les noms des autres soutiens de la proposition.'
       main_header: '%{cosponsorName} a accepté de soutenir votre proposition'
       subject: '%{cosponsorName} a accepté de soutenir votre proposition'
       preheader_initiative: '%{cosponsorName} a accepté de soutenir votre proposition'
