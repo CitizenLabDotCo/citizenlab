@@ -144,7 +144,6 @@ es:
     cosponsor_of_your_initiative:
       cta_reply_to: 'Ver tu propuesta'
       event_description_initiative: 'Enhorabuena! %{cosponsorName} ha aceptado tu invitación para copatrocinar tu propuesta.'
-      event_description_cosponsoring: 'Copatrocinar una propuesta significa que <strong>tu nombre aparecerá</strong> con los nombres de otros copatrocinadores de la propuesta.'
       main_header: '%{cosponsorName} ha aceptado tu invitación para copatrocinar tu propuesta'
       subject: '%{cosponsorName} ha aceptado tu invitación para copatrocinar tu propuesta'
       preheader_initiative: '%{cosponsorName} ha aceptado tu invitación para copatrocinar tu propuesta'
