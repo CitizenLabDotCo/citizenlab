@@ -23,14 +23,14 @@ const EventsPage = () => {
     <>
       <Box
         width="100vw"
-        height={isTabletOrSmaller ? '180px' : '280px'}
+        height={isTabletOrSmaller ? '128px' : '280px'}
         bgColor={theme.colors.tenantPrimary}
       >
         <Title
           px={'16px'}
           maxWidth="1100px"
           color="white"
-          style={{ fontSize: isTabletOrSmaller ? '72px' : '110px' }}
+          style={{ fontSize: isTabletOrSmaller ? '40px' : '110px' }}
           zIndex="10000"
           mx="auto"
           pt={isTabletOrSmaller ? '62px' : '96px'}
