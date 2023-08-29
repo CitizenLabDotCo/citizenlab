@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Tippy from '@tippyjs/react';
 
 // routing
 import { useParams } from 'react-router-dom';
@@ -46,6 +47,7 @@ interface Props {
   ideaId: string | null;
   apiErrors?: CLErrors;
   formData: FormData;
+  formDataValid: boolean;
   loadingApproveIdea: boolean;
   onSelectIdea: (ideaId: string | null) => void;
   setFormData: (formData: FormData) => void;
@@ -58,6 +60,7 @@ const ReviewSection = ({
   ideaId,
   apiErrors,
   formData,
+  formDataValid,
   loadingApproveIdea,
   onSelectIdea,
   setFormData,
@@ -133,7 +136,7 @@ const ReviewSection = ({
   const authorName = author ? getFullName(author.data) : undefined;
   const authorEmail = author?.data.attributes.email;
 
-  const blockApproval = phase ? !canContainIdeas(phase.data) : false;
+  const phaseNotAllowed = phase ? !canContainIdeas(phase.data) : false;
 
   const goToNextPage = () => setCurrentPageIndex((index) => index + 1);
   const goToPreviousPage = () => setCurrentPageIndex((index) => index - 1);
@@ -147,6 +150,12 @@ const ReviewSection = ({
           onSelectIdea(nextIdeaId);
         }
       : undefined;
+
+  const disabledReason = phaseNotAllowed ? (
+    <FormattedMessage {...messages.phaseNotAllowed} />
+  ) : formDataValid ? null : (
+    <FormattedMessage {...messages.formDataNotValid} />
+  );
 
   return (
     <Box
@@ -238,15 +247,24 @@ const ReviewSection = ({
             justifyContent="flex-end"
           >
             {handleApproveIdea && (
-              <Button
-                icon="check"
-                w="100%"
-                processing={loadingApproveIdea}
-                disabled={blockApproval}
-                onClick={handleApproveIdea}
+              <Tippy
+                disabled={!disabledReason}
+                interactive={true}
+                placement="bottom"
+                content={disabledReason || <></>}
               >
-                Approve
-              </Button>
+                <div>
+                  <Button
+                    icon="check"
+                    w="100%"
+                    processing={loadingApproveIdea}
+                    disabled={phaseNotAllowed || !formDataValid}
+                    onClick={handleApproveIdea}
+                  >
+                    Approve
+                  </Button>
+                </div>
+              </Tippy>
             )}
           </Box>
         </Box>

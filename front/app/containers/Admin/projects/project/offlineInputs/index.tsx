@@ -61,7 +61,7 @@ const OfflineInputImporter = () => {
 
   if (!importPrintedFormsEnabled) return null;
 
-  const formData =
+  const formData: FormData =
     ideaId && formStatePerIdea[ideaId]
       ? formStatePerIdea[ideaId]
       : idea && schema
@@ -82,25 +82,31 @@ const OfflineInputImporter = () => {
   const openImportModal = () => setImportModalOpen(true);
   const closeImportModal = () => setImportModalOpen(false);
 
-  const onApproveIdea = async () => {
-    if (!ideaId || !formData || !schema || !uiSchema) return;
+  if (!schema || !uiSchema) return null;
 
-    if (isValidData(schema, uiSchema, formData, customAjv, false)) {
-      try {
-        await updateIdea({
-          id: ideaId,
-          requestBody: {
-            publication_status: 'published',
-            title_multiloc: formData.title_multiloc,
-            body_multiloc: formData.body_multiloc,
-            ...(phaseId ? { phase_ids: [phaseId] } : {}),
-          },
-        });
-      } catch (e) {
-        setApiErrors(e.errors);
-      }
-    } else {
-      throw new Error('Data was invalid');
+  const formDataValid = isValidData(
+    schema,
+    uiSchema,
+    formData,
+    customAjv,
+    false
+  );
+
+  const onApproveIdea = async () => {
+    if (!ideaId || !formData || !formDataValid) return;
+
+    try {
+      await updateIdea({
+        id: ideaId,
+        requestBody: {
+          publication_status: 'published',
+          title_multiloc: formData.title_multiloc,
+          body_multiloc: formData.body_multiloc,
+          ...(phaseId ? { phase_ids: [phaseId] } : {}),
+        },
+      });
+    } catch (e) {
+      setApiErrors(e.errors);
     }
   };
 
@@ -144,6 +150,7 @@ const OfflineInputImporter = () => {
               ideaId={ideaId}
               apiErrors={apiErrors}
               formData={formData}
+              formDataValid={formDataValid}
               loadingApproveIdea={loadingApproveIdea}
               onSelectIdea={handleSelectIdea}
               setFormData={setFormData}
