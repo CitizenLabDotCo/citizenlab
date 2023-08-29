@@ -119,6 +119,23 @@ const TagActions = ({ tag }: { tag: ITagData }) => {
             <DropdownListItem
               onClick={(e) => {
                 e.stopPropagation();
+                createAnalysisBulkTaggings();
+              }}
+            >
+              <Text textAlign="left" m="0px">
+                <Box display="flex" gap="8px">
+                  {bulkTaggingIsLoading ? (
+                    <StyledSpinner size="20px" />
+                  ) : (
+                    <Icon name="plus-circle" />
+                  )}
+                  Add selected inputs to tag
+                </Box>
+              </Text>
+            </DropdownListItem>
+            <DropdownListItem
+              onClick={(e) => {
+                e.stopPropagation();
                 openTagRenameModal(tag.id);
               }}
             >
@@ -141,23 +158,6 @@ const TagActions = ({ tag }: { tag: ITagData }) => {
                     <Icon name="delete" />
                   )}
                   Delete tag
-                </Box>
-              </Text>
-            </DropdownListItem>
-            <DropdownListItem
-              onClick={(e) => {
-                e.stopPropagation();
-                createAnalysisBulkTaggings();
-              }}
-            >
-              <Text textAlign="left" m="0px">
-                <Box display="flex" gap="8px">
-                  {bulkTaggingIsLoading ? (
-                    <StyledSpinner size="20px" />
-                  ) : (
-                    <Icon name="plus-circle" />
-                  )}
-                  Add selected inputs to tag
                 </Box>
               </Text>
             </DropdownListItem>
