@@ -24,6 +24,7 @@ import Fragment from 'components/Fragment';
 
 import tracks from 'containers/Admin/projects/project/analysis/tracks';
 import { trackEventByName } from 'utils/analytics';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 const ConsentModal = ({
   onClose,
@@ -87,9 +88,13 @@ const ConsentModal = ({
 };
 
 const CreateAnalysisModal = ({ onClose }: { onClose: () => void }) => {
+  const [search] = useSearchParams();
   const { formatMessage } = useIntl();
   const localize = useLocalize();
-  const [selectdQuestions, setSelectedQuestions] = useState<string[]>([]);
+  const customFieldId = search.get('customFieldId');
+  const [selectdQuestions, setSelectedQuestions] = useState<string[]>(
+    customFieldId ? [customFieldId] : []
+  );
   const { projectId } = useParams() as { projectId: string };
   const { mutate: createAnalysis, isLoading } = useAddAnalysis();
 
@@ -184,7 +189,7 @@ const CreateAnalysisModal = ({ onClose }: { onClose: () => void }) => {
   );
 };
 
-const AnalysisLaunchButton = () => {
+const AnalysisLaunchButton = ({ customFieldId }: { customFieldId: string }) => {
   const [consentModalIsOpened, setConsentModalIsOpened] = useState(false);
   const [isCreateAnalysisModalOpened, setIsCreateAnalysisModalOpened] =
     useState(false);
@@ -201,6 +206,7 @@ const AnalysisLaunchButton = () => {
 
   const openConsentModal = () => {
     setConsentModalIsOpened(true);
+    updateSearchParams({ customFieldId });
   };
 
   const onAcceptConsent = () => {
@@ -209,9 +215,9 @@ const AnalysisLaunchButton = () => {
   };
 
   return (
-    <Box>
-      <Button buttonStyle="admin-dark" onClick={openConsentModal}>
-        {formatMessage(messages.analysisButton)}
+    <Box my="16px">
+      <Button buttonStyle="admin-dark" onClick={openConsentModal} icon="flash">
+        {formatMessage(messages.launchAnalysis)}
       </Button>
       <Modal
         opened={isCreateAnalysisModalOpened}

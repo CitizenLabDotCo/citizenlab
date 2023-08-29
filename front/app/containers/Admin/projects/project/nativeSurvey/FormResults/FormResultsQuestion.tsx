@@ -28,6 +28,7 @@ type FormResultsQuestionProps = {
   answers?: Answer[];
   totalResponses: number;
   required: boolean;
+  customFieldId: string;
 };
 
 const FormResultsQuestion = ({
@@ -37,6 +38,7 @@ const FormResultsQuestion = ({
   answers,
   totalResponses,
   required,
+  customFieldId,
 }: FormResultsQuestionProps) => {
   const isAnalysisEnabled = useFeatureFlag({ name: 'analysis' });
   const { formatMessage } = useIntl();
@@ -87,8 +89,8 @@ const FormResultsQuestion = ({
         })
       ) : (
         <>
-          <AnalysisLaunchButton />
-          <AnalysesList />
+          <AnalysisLaunchButton customFieldId={customFieldId} />
+          <AnalysesList customFieldId={customFieldId} />
         </>
       )}
     </Box>

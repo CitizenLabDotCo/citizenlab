@@ -130,7 +130,14 @@ const FormResults = ({ intl: { formatMessage } }: WrappedComponentProps) => {
       <Box maxWidth="524px">
         {results.map(
           (
-            { question, inputType, answers, totalResponses, required },
+            {
+              question,
+              inputType,
+              answers,
+              totalResponses,
+              required,
+              customFieldId,
+            },
             index
           ) => {
             return (
@@ -142,6 +149,7 @@ const FormResults = ({ intl: { formatMessage } }: WrappedComponentProps) => {
                 answers={answers}
                 totalResponses={totalResponses}
                 required={required}
+                customFieldId={customFieldId}
               />
             );
           }
