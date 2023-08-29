@@ -749,6 +749,8 @@
   "app.containers.Admin.initiatives.overviewTab": "Oversigt",
   "app.containers.Admin.initiatives.permissions": "Tilladelser",
   "app.containers.Admin.initiatives.permissionsText": "Tilladelser",
+  "app.containers.Admin.initiatives.postingTips": "Tips til udstationering",
+  "app.containers.Admin.initiatives.postingTipsInfo": "Giv nogle konkrete tips til at indsende et forslag",
   "app.containers.Admin.initiatives.proposalEligibilityCriteria": "Kriterier for at opnå støtte til projektet",
   "app.containers.Admin.initiatives.proposalEligibilityCriteriaInfo": "Kom med en klar beskrivelse af de kriterier, I anvender for at beslutte, om et forslag er støtteberettiget eller ej.",
   "app.containers.Admin.initiatives.proposalSuccessMessage": "Meddelelse hvis godtaget",
