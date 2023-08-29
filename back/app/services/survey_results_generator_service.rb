@@ -56,6 +56,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
       question: field.title_multiloc,
       required: field.required,
       totalResponses: answer_count,
+      customFieldId: field.id
     }
   end
 
@@ -70,6 +71,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
       question: field.title_multiloc,
       required: field.required,
       totalResponses: answer_count,
+      customFieldId: field.id
     }
   end
 
@@ -113,7 +115,8 @@ class SurveyResultsGeneratorService < FieldVisitorService
       question: field.title_multiloc,
       required: field.required,
       totalResponses: answer_count,
-      answers: answers
+      answers: answers,
+      customFieldId: field.id
     }
   end
 end

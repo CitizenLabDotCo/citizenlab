@@ -17,6 +17,7 @@ import { get, snakeCase } from 'lodash-es';
 // typings
 import { Locale, Multiloc } from 'typings';
 import { Answer } from 'services/formCustomFields';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 type FormResultsQuestionProps = {
   locale: Locale;
@@ -35,6 +36,7 @@ const FormResultsQuestion = ({
   totalResponses,
   required,
 }: FormResultsQuestionProps) => {
+  const isAnalysisEnabled = useFeatureFlag({ name: 'analysis' });
   const { formatMessage } = useIntl();
 
   // TODO: Replace hardcoded '2' here. Urgent to relese to fix bug though right now.
@@ -45,6 +47,13 @@ const FormResultsQuestion = ({
   const inputTypeLabel = `${formatMessage(
     inputTypeText
   )} - ${requiredOrOptionalText.toLowerCase()}`;
+
+  if (
+    !isAnalysisEnabled &&
+    (inputType === 'text' || inputType === 'multiline_text')
+  ) {
+    return null;
+  }
 
   return (
     <Box data-cy={`e2e-${snakeCase(question[locale])}`} mb="56px">

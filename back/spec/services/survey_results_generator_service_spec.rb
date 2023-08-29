@@ -158,12 +158,14 @@ RSpec.describe SurveyResultsGeneratorService do
             question: { 'en' => 'What is your favourite colour?' },
             required: false,
             totalResponses: 4,
+            customFieldId: text_field.id
           },
           {
             inputType: 'multiline_text',
             question: { 'en' => 'What is your favourite recipe?' },
             required: false,
             totalResponses: 0,
+            customFieldId: multiline_text_field.id
           },
           {
             inputType: 'multiselect',
@@ -179,7 +181,8 @@ RSpec.describe SurveyResultsGeneratorService do
               { answer: { 'en' => 'Dog', 'fr-FR' => 'Chien', 'nl-NL' => 'Hond' }, responses: 3 },
               { answer: { 'en' => 'Cow', 'fr-FR' => 'Vache', 'nl-NL' => 'Koe' }, responses: 2 },
               { answer: { 'en' => 'Pig', 'fr-FR' => 'Porc', 'nl-NL' => 'Varken' }, responses: 1 }
-            ]
+            ],
+            customFieldId: multiselect_field.id
           },
           {
             inputType: 'linear_scale',
@@ -209,8 +212,9 @@ RSpec.describe SurveyResultsGeneratorService do
                   'nl-NL' => '1 - Helemaal niet mee eens'
                 },
                 responses: 2
-              }
-            ]
+              },
+            ],
+            customFieldId: linear_scale_field.id
           },
           {
             inputType: 'select',
@@ -224,7 +228,8 @@ RSpec.describe SurveyResultsGeneratorService do
             answers: [
               { answer: { 'en' => 'Los Angeles', 'fr-FR' => 'Los Angeles', 'nl-NL' => 'Los Angeles' }, responses: 3 },
               { answer: { 'en' => 'New York', 'fr-FR' => 'New York', 'nl-NL' => 'New York' }, responses: 1 }
-            ]
+            ],
+            customFieldId: select_field.id
           }
         ],
         totalSubmissions: 20
