@@ -2,8 +2,8 @@ import React, { useMemo } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { IdeaCardsWithoutFiltersSidebar } from 'components/IdeaCards';
-import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
-import { useIntl } from 'utils/cl-intl';
+import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { FormattedMessage } from 'utils/cl-intl';
 import useUserIdeasCount from 'api/user_ideas_count/useUserIdeasCount';
 import messages from '../messages';
 import useUserBySlug from 'api/users/useUserBySlug';
@@ -24,7 +24,6 @@ interface QueryParameters {
 const Submissions = () => {
   const { userSlug } = useParams() as { userSlug: string };
   const { data: user } = useUserBySlug(userSlug);
-  const { formatMessage } = useIntl();
   const [searchParams] = useSearchParams();
   const sortParam = searchParams.get('sort') as Sort | null;
   const { data: ideasCount } = useUserIdeasCount({ userId: user?.data.id });
@@ -43,17 +42,15 @@ const Submissions = () => {
 
   return (
     <Box display="flex" w="100%" flexDirection="column">
-      {ideasCount && isSmallerThanPhone && (
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          mb="16px"
-        >
-          {formatMessage(messages.postsWithCount, {
-            ideasCount: ideasCount.data.attributes.count,
-          })}
-        </Box>
+      {isSmallerThanPhone && (
+        <Title mt="0px" variant="h3" as="h1">
+          <FormattedMessage
+            {...messages.postsWithCount}
+            values={{
+              ideasCount: ideasCount?.data.attributes.count || 0,
+            }}
+          />
+        </Title>
       )}
       <Box display="flex" w="100%" justifyContent="center">
         <IdeaCardsWithoutFiltersSidebar
