@@ -56,7 +56,7 @@ class Area < ApplicationRecord
     safe_dir = direction == :desc ? 'DESC' : 'ASC'
     left_outer_joins(:areas_projects)
       .group(:id)
-      .order("COUNT(areas_projects.project_id) #{safe_dir}")
+      .order("COUNT(areas_projects.project_id) #{safe_dir}, ordering")
   }
 
   def recreate_custom_field_option

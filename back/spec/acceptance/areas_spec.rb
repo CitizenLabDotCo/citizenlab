@@ -33,7 +33,7 @@ resource 'Areas' do
 
       assert_status 200
       expect(response_data.size).to eq 5
-      expect(response_data.pluck(:id).take(2)).to eq [@areas[2].id, @areas[0].id]
+      expect(response_data.pluck(:id)).to eq [@areas[2].id, @areas[0].id, @areas[1].id, @areas[3].id, @areas[4].id]
     end
   end
 

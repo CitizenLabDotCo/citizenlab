@@ -61,14 +61,17 @@ resource 'Topics' do
 
     example 'List all topics sorted by project count' do
       projects = create_list(:project, 5)
-      @topics[0].update!(projects: [projects[0], projects[2]])
-      @topics[2].update!(projects: [projects[2], projects[4], projects[3]])
+      @topics[0].projects_topics.create!(project: projects[0])
+      @topics[0].projects_topics.create!(project: projects[2])
+      @topics[2].projects_topics.create!(project: projects[2])
+      @topics[2].projects_topics.create!(project: projects[4])
+      @topics[2].projects_topics.create!(project: projects[3])
 
       do_request sort: 'projects_count'
 
       assert_status 200
       expect(response_data.size).to eq 5
-      expect(response_data.pluck(:id).take(2)).to eq [@topics[2].id, @topics[0].id]
+      expect(response_data.pluck(:id)).to eq [@topics[2].id, @topics[0].id, @topics[4].id, @topics[3].id, @topics[1].id]
     end
 
     context 'when citizen' do
