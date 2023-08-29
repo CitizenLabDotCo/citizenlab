@@ -17,6 +17,26 @@ describe InitiativesFinder do
     end
   end
 
+  describe '#find_records' do
+    let(:normal_user) { create(:user) }
+
+    let(:options) do
+      {
+        scope: InitiativePolicy::Scope.new(normal_user, Initiative).resolve
+      }
+    end
+
+    before do
+      users = User.all
+      Initiative.first.cosponsors << users[0]
+      Initiative.first.cosponsors << users[1]
+    end
+
+    it 'does not return duplicate records' do
+      expect(record_ids).to match_array Initiative.all.pluck(:id).uniq
+    end
+  end
+
   describe '#topics_condition' do
     let(:topic_ids) { Topic.limit(3).pluck(:id) }
 
