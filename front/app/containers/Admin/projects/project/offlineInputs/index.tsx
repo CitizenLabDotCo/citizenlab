@@ -42,7 +42,6 @@ const OfflineInputImporter = () => {
 
   const [ideaId, setIdeaId] = useState<string | null>(null);
   const [selectedPhaseId, setSelectedPhaseId] = useState<string | null>(null);
-  const [showAllErrors, setShowAllErrors] = useState(false);
   const [apiErrors, setApiErrors] = useState<CLErrors | undefined>();
   const [importModalOpen, setImportModalOpen] = useState(false);
   const [formStatePerIdea, setFormStatePerIdea] = useState<
@@ -52,7 +51,7 @@ const OfflineInputImporter = () => {
   const { data: idea } = useIdeaById(ideaId ?? undefined, false);
   const { mutateAsync: updateIdea, isLoading: loadingApproveIdea } =
     useUpdateIdea();
-  const { mutate: deleteIdea, isLoading: loadingDeleteIdea } = useDeleteIdea();
+  const { mutate: deleteIdea } = useDeleteIdea();
   const { data: phases } = usePhases(projectId);
   const currentPhase = getCurrentPhase(phases?.data);
 
@@ -62,7 +61,7 @@ const OfflineInputImporter = () => {
 
   if (!importPrintedFormsEnabled) return null;
 
-  const formData =
+  const formData: FormData =
     ideaId && formStatePerIdea[ideaId]
       ? formStatePerIdea[ideaId]
       : idea && schema
@@ -83,41 +82,46 @@ const OfflineInputImporter = () => {
   const openImportModal = () => setImportModalOpen(true);
   const closeImportModal = () => setImportModalOpen(false);
 
-  const onSubmit = async () => {
-    if (!ideaId || !formData || !schema || !uiSchema) return;
-    setShowAllErrors(true);
+  if (!schema || !uiSchema) return null;
 
-    if (isValidData(schema, uiSchema, formData, customAjv, false)) {
-      try {
-        await updateIdea({
-          id: ideaId,
-          requestBody: {
-            publication_status: 'published',
-            title_multiloc: formData.title_multiloc,
-            body_multiloc: formData.body_multiloc,
-            ...(phaseId ? { phase_ids: [phaseId] } : {}),
-          },
-        });
+  const formDataValid = isValidData(
+    schema,
+    uiSchema,
+    formData,
+    customAjv,
+    false
+  );
 
-        setIdeaId(null);
-      } catch (e) {
-        setApiErrors(e.errors);
-      }
+  const onApproveIdea = async () => {
+    if (!ideaId || !formData || !formDataValid) return;
+
+    try {
+      await updateIdea({
+        id: ideaId,
+        requestBody: {
+          publication_status: 'published',
+          title_multiloc: formData.title_multiloc,
+          body_multiloc: formData.body_multiloc,
+          ...(phaseId ? { phase_ids: [phaseId] } : {}),
+        },
+      });
+    } catch (e) {
+      setApiErrors(e.errors);
     }
   };
 
-  const onDelete = () => {
-    if (!ideaId) return;
-    deleteIdea(ideaId, {
+  const onDeleteIdea = (idToBeDeleted: string) => {
+    deleteIdea(idToBeDeleted, {
       onSuccess: () => {
-        setIdeaId(null);
+        if (ideaId === idToBeDeleted) {
+          setIdeaId(null);
+        }
       },
     });
   };
 
   const handleSelectIdea = (ideaId: string) => {
     setIdeaId(ideaId);
-    setShowAllErrors(false);
   };
 
   return (
@@ -134,11 +138,7 @@ const OfflineInputImporter = () => {
         <FocusOn>
           <TopBar
             phaseId={phaseId}
-            loadingApproveIdea={loadingApproveIdea}
-            loadingDeleteIdea={loadingDeleteIdea}
             onChangePhase={setSelectedPhaseId}
-            onApproveIdea={ideaId ? onSubmit : undefined}
-            onDeleteIdea={ideaId ? onDelete : undefined}
             onClickPDFImport={openImportModal}
           />
           <Box
@@ -146,12 +146,16 @@ const OfflineInputImporter = () => {
             h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px)`}
           >
             <ReviewSection
+              phaseId={phaseId}
               ideaId={ideaId}
               apiErrors={apiErrors}
-              showAllErrors={showAllErrors}
               formData={formData}
+              formDataValid={formDataValid}
+              loadingApproveIdea={loadingApproveIdea}
               onSelectIdea={handleSelectIdea}
               setFormData={setFormData}
+              onApproveIdea={ideaId ? onApproveIdea : undefined}
+              onDeleteIdea={onDeleteIdea}
             />
           </Box>
         </FocusOn>

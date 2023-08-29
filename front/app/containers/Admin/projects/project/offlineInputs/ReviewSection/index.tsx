@@ -1,5 +1,5 @@
-import React from 'react';
-import moment from 'moment';
+import React, { useState } from 'react';
+import Tippy from '@tippyjs/react';
 
 // routing
 import { useParams } from 'react-router-dom';
@@ -9,59 +9,68 @@ import useImportedIdeas from 'api/import_ideas/useImportedIdeas';
 import useImportedIdeaMetadata from 'api/import_ideas/useImportedIdeaMetadata';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useUserById from 'api/users/useUserById';
+import usePhase from 'api/phases/usePhase';
 
 // i18n
-import useLocalize from 'hooks/useLocalize';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import sharedMessages from '../TopBar/messages';
 
 // components
-import { Box, Spinner, Title, Text } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Spinner,
+  Title,
+  Text,
+  Button,
+} from '@citizenlab/cl2-component-library';
+import IdeaList from './IdeaList';
 import AuthorBox from './AuthorBox';
 import IdeaForm from './IdeaForm';
-import PDFViewer from 'components/PDFViewer';
+import PDFPageControl from './PDFPageControl';
+import PDFViewer from './PDFViewer';
 
 // styling
-import styled from 'styled-components';
 import { colors, stylingConsts } from 'utils/styleUtils';
 
 // utils
 import { getFullName } from 'utils/textUtils';
+import { canContainIdeas } from 'api/phases/utils';
+import { getNextIdeaId } from './utils';
 
 // typings
 import { FormData } from 'components/Form/typings';
 import { CLErrors } from 'typings';
 
-// TODO move to component library
-const TEAL50 = '#EDF8FA';
-
-const StyledBox = styled(Box)`
-  &:hover {
-    background-color: ${TEAL50};
-  }
-`;
-
 interface Props {
+  phaseId?: string;
   ideaId: string | null;
-  showAllErrors: boolean;
   apiErrors?: CLErrors;
   formData: FormData;
-  onSelectIdea: (ideaId: string) => void;
+  formDataValid: boolean;
+  loadingApproveIdea: boolean;
+  onSelectIdea: (ideaId: string | null) => void;
   setFormData: (formData: FormData) => void;
+  onApproveIdea?: () => Promise<void>;
+  onDeleteIdea: (ideaId: string) => void;
 }
 
 const ReviewSection = ({
+  phaseId,
   ideaId,
-  showAllErrors,
   apiErrors,
   formData,
+  formDataValid,
+  loadingApproveIdea,
   onSelectIdea,
   setFormData,
+  onApproveIdea,
+  onDeleteIdea,
 }: Props) => {
   const { projectId } = useParams() as {
     projectId: string;
   };
+  const [currentPageIndex, setCurrentPageIndex] = useState(0);
 
   const { data: ideas, isLoading } = useImportedIdeas({ projectId });
   const { data: idea } = useIdeaById(ideaId ?? undefined);
@@ -69,12 +78,11 @@ const ReviewSection = ({
     idea?.data.relationships.author?.data?.id,
     false
   );
+  const { data: phase } = usePhase(phaseId);
 
   const { data: ideaMetadata } = useImportedIdeaMetadata({
     id: isLoading ? undefined : idea?.data.relationships.idea_import?.data?.id,
   });
-
-  const localize = useLocalize();
 
   if (isLoading) {
     return (
@@ -128,6 +136,27 @@ const ReviewSection = ({
   const authorName = author ? getFullName(author.data) : undefined;
   const authorEmail = author?.data.attributes.email;
 
+  const phaseNotAllowed = phase ? !canContainIdeas(phase.data) : false;
+
+  const goToNextPage = () => setCurrentPageIndex((index) => index + 1);
+  const goToPreviousPage = () => setCurrentPageIndex((index) => index - 1);
+
+  const handleApproveIdea =
+    onApproveIdea && ideaId
+      ? async () => {
+          await onApproveIdea();
+
+          const nextIdeaId = getNextIdeaId(ideaId, ideas);
+          onSelectIdea(nextIdeaId);
+        }
+      : undefined;
+
+  const disabledReason = phaseNotAllowed ? (
+    <FormattedMessage {...messages.phaseNotAllowed} />
+  ) : formDataValid ? null : (
+    <FormattedMessage {...messages.formDataNotValid} />
+  );
+
   return (
     <Box
       mt="40px"
@@ -138,12 +167,31 @@ const ReviewSection = ({
       display="flex"
       flexDirection="column"
     >
-      <Title variant="h2" color="primary" px="40px" mb="40px">
-        <FormattedMessage {...messages.importedIdeas} />
-      </Title>
+      <Box px="40px" display="flex" justifyContent="space-between">
+        <Title variant="h2" color="primary" mt="8px" mb="20px">
+          <FormattedMessage {...messages.importedIdeas} />
+        </Title>
+
+        <Box
+          w="40%"
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+          alignItems="center"
+        >
+          {pages && (
+            <PDFPageControl
+              currentPageNumber={currentPageIndex + 1}
+              numberOfPages={pages?.length}
+              goToNextPage={goToNextPage}
+              goToPreviousPage={goToPreviousPage}
+            />
+          )}
+        </Box>
+      </Box>
 
       <Box
-        h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px - 140px)`}
+        h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px - 100px)`}
         display="flex"
         px="40px"
         justifyContent="space-between"
@@ -154,56 +202,76 @@ const ReviewSection = ({
           pr="8px"
           overflowY="scroll"
         >
-          {ideas.data.map((idea) => (
-            <StyledBox
-              key={idea.id}
-              py="8px"
-              borderBottom={`1px ${colors.grey400} solid`}
-              style={{ cursor: 'pointer' }}
-              bgColor={idea.id === ideaId ? TEAL50 : undefined}
-              onClick={() => {
-                onSelectIdea(idea.id);
-              }}
-            >
-              <Text
-                m="0"
-                color="black"
-                fontSize="m"
-                fontWeight={idea.id === ideaId ? 'bold' : 'normal'}
-              >
-                {localize(idea.attributes.title_multiloc)}
-              </Text>
-              <Text m="0" mt="3px" fontSize="s" color="grey600">
-                {moment(idea.attributes.created_at).format('YYYY-MM-DD')}
-              </Text>
-            </StyledBox>
-          ))}
+          <IdeaList
+            ideaId={ideaId}
+            ideas={ideas}
+            onSelectIdea={onSelectIdea}
+            onDeleteIdea={onDeleteIdea}
+          />
         </Box>
         <Box
           w="35%"
           borderRight={`1px ${colors.grey400} solid`}
-          overflowY="scroll"
           display="flex"
           flexDirection="column"
           alignItems="center"
-          px="12px"
+          h="100%"
         >
-          {(authorEmail || authorName) && (
-            <AuthorBox authorName={authorName} authorEmail={authorEmail} />
-          )}
-          {idea && (
-            <IdeaForm
-              projectId={projectId}
-              showAllErrors={showAllErrors}
-              apiErrors={apiErrors}
-              formData={formData}
-              setFormData={setFormData}
-            />
-          )}
+          <Box
+            px="12px"
+            borderBottom={`1px ${colors.grey400} solid`}
+            overflowY="scroll"
+            w="100%"
+            h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px - 160px)`}
+          >
+            {(authorEmail || authorName) && (
+              <AuthorBox authorName={authorName} authorEmail={authorEmail} />
+            )}
+            {idea && (
+              <IdeaForm
+                projectId={projectId}
+                showAllErrors={true}
+                apiErrors={apiErrors}
+                formData={formData}
+                setFormData={setFormData}
+              />
+            )}
+          </Box>
+          <Box
+            h="60px"
+            px="24px"
+            pb="4px"
+            w="100%"
+            display="flex"
+            flexDirection="column"
+            justifyContent="flex-end"
+          >
+            {handleApproveIdea && (
+              <Tippy
+                disabled={!disabledReason}
+                interactive={true}
+                placement="bottom"
+                content={disabledReason || <></>}
+              >
+                <div>
+                  <Button
+                    icon="check"
+                    w="100%"
+                    processing={loadingApproveIdea}
+                    disabled={phaseNotAllowed || !formDataValid}
+                    onClick={handleApproveIdea}
+                  >
+                    <FormattedMessage {...messages.approve} />
+                  </Button>
+                </div>
+              </Tippy>
+            )}
+          </Box>
         </Box>
         <Box w="40%">
           {ideaMetadata && pages && (
             <PDFViewer
+              currentPageIndex={currentPageIndex}
               file={ideaMetadata.data.attributes.file.url}
               pages={pages}
             />
