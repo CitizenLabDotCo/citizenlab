@@ -144,7 +144,6 @@ ach:
     cosponsor_of_your_initiative:
       cta_reply_to: 'crwdns933681:0crwdne933681:0'
       event_description_initiative: 'crwdns933683:0%{cosponsorName}crwdne933683:0'
-      event_description_cosponsoring: 'crwdns933685:0crwdne933685:0'
       main_header: 'crwdns933687:0%{cosponsorName}crwdne933687:0'
       subject: 'crwdns933689:0%{cosponsorName}crwdne933689:0'
       preheader_initiative: 'crwdns933691:0%{cosponsorName}crwdne933691:0'
