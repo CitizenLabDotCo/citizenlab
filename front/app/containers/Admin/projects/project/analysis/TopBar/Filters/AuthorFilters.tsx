@@ -14,6 +14,8 @@ import { useSearchParams } from 'react-router-dom';
 import { useIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 import { handleArraySearchParam } from '../../util';
+import { trackEventByName } from 'utils/analytics';
+import tracks from '../../tracks';
 
 const AuthorFilters = () => {
   const localize = useLocalize();
@@ -99,14 +101,19 @@ const AuthorFilters = () => {
                 ? 'admin-dark'
                 : 'secondary'
             }
-            onClick={() =>
+            onClick={() => {
               updateSearchParams({
                 [genderUrlQueryParamKey]: toggleOptionInArray(
                   selectedGenderOptions,
                   option.attributes.key
                 ),
-              })
-            }
+              });
+              trackEventByName(tracks.authorFilterUsed.name, {
+                extra: {
+                  type: 'gender',
+                },
+              });
+            }}
             p="4px 8px"
           >
             {localize(option.attributes.title_multiloc)}
@@ -137,14 +144,19 @@ const AuthorFilters = () => {
                 ? 'admin-dark'
                 : 'secondary'
             }
-            onClick={() =>
+            onClick={() => {
               updateSearchParams({
                 [domicileUrlQueryParamKey]: toggleOptionInArray(
                   selectedDomicileOptions,
                   option.attributes.key
                 ),
-              })
-            }
+              });
+              trackEventByName(tracks.authorFilterUsed.name, {
+                extra: {
+                  type: 'domicile',
+                },
+              });
+            }}
             p="4px 8px"
           >
             {localize(option.attributes.title_multiloc)}
@@ -160,11 +172,16 @@ const AuthorFilters = () => {
                 id="birthyear_from"
                 label={formatMessage(messages.from)}
                 options={yearOptions}
-                onChange={(option) =>
+                onChange={(option) => {
                   updateSearchParams({
                     [birthyearUrlQueryParamFromKey]: option.value,
-                  })
-                }
+                  });
+                  trackEventByName(tracks.authorFilterUsed.name, {
+                    extra: {
+                      type: 'birthyear',
+                    },
+                  });
+                }}
                 value={searchParams.get(birthyearUrlQueryParamFromKey)}
               />
             </Box>
@@ -173,11 +190,16 @@ const AuthorFilters = () => {
                 id="birthyear_to"
                 label={formatMessage(messages.to)}
                 options={yearOptions}
-                onChange={(option) =>
+                onChange={(option) => {
                   updateSearchParams({
                     [birthyearUrlQueryParamToKey]: option.value,
-                  })
-                }
+                  });
+                  trackEventByName(tracks.authorFilterUsed.name, {
+                    extra: {
+                      type: 'birthyear',
+                    },
+                  });
+                }}
                 value={searchParams.get(birthyearUrlQueryParamToKey)}
               />
             </Box>

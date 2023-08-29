@@ -202,7 +202,11 @@ const InitiativeRow = ({
           {attrs.likes_count}
         </Cell>
         <Cell>{attrs.comments_count}</Cell>
-        {cosponsorsRequired && <Cell>{attrs.cosponsorships.length}</Cell>}
+        {cosponsorsRequired && (
+          <Cell>
+            {attrs.cosponsorships.filter((c) => c.status === 'accepted').length}
+          </Cell>
+        )}
       </StyledRow>
       <SubRow
         {...{

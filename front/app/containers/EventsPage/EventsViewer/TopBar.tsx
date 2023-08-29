@@ -7,11 +7,11 @@ import messages from '../messages';
 
 // components
 import ProjectFilterDropdown from 'components/ProjectFilterDropdown';
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // styling
 import styled, { useTheme } from 'styled-components';
-import { fontSizes, isRtl } from 'utils/styleUtils';
+import { isRtl } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;
@@ -24,50 +24,42 @@ const Container = styled.div`
   `}
 `;
 
-const Title = styled.h1`
-  color: ${({ theme }) => theme.colors.tenantText};
-  font-size: ${fontSizes.xxl}px;
-  line-height: normal;
-  font-weight: 600;
-  text-align: left;
-  margin: 0;
-  padding: 0;
-  padding-top: 0px;
-`;
-
 const ProjectFilterDropdownPositioner = styled.div`
   margin-top: auto;
   display: flex;
   align-items: center;
 `;
 
-const FilterIcon = styled(Icon)`
-  fill: ${({ theme }) => theme.colors.tenantText};
-  margin-right: 3px;
-`;
-
 interface Props {
   title: string;
   showProjectFilter: boolean;
   setProjectIds: (projectIds: string[]) => void;
+  eventsTime?: 'past' | 'currentAndFuture';
 }
 
 const TopBar = memo<Props & WrappedComponentProps>(
-  ({ title, showProjectFilter, setProjectIds, intl }) => {
+  ({ title, showProjectFilter, setProjectIds, intl, eventsTime }) => {
     const theme = useTheme();
+    const isMobileOrSmaller = useBreakpoint('phone');
 
     return (
       <Container>
-        <Title>{title}</Title>
-
+        <Title color={'tenantText'} m="0px" my="auto" variant="h3" as="h1">
+          {title}
+        </Title>
         <ProjectFilterDropdownPositioner>
           {showProjectFilter && (
             <>
-              <FilterIcon name="filter-2" />
               <ProjectFilterDropdown
                 title={intl.formatMessage(messages.filterDropdownTitle)}
                 onChange={setProjectIds}
                 textColor={theme.colors.tenantText}
+                filterSelectorStyle="button"
+                listTop="44px"
+                mobileLeft={
+                  isMobileOrSmaller && !theme.isRtl ? '-70px' : 'auto'
+                }
+                eventsTime={eventsTime}
               />
             </>
           )}

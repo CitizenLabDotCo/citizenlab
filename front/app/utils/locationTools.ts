@@ -46,7 +46,6 @@ const reverseGeocode = (lat: number, lng: number) => {
           if (status === google.maps.GeocoderStatus.OK && formattedAddress) {
             response = formattedAddress;
           }
-
           resolve(response);
         }
       );

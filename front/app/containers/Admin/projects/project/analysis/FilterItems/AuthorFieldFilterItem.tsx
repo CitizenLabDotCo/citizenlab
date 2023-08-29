@@ -14,7 +14,7 @@ import ElipsisFilterValue from './EllipsisFilterValue';
 type Props = {
   customFieldId: string;
   filterKey: string;
-  filterValue: string | string[] | undefined | number;
+  filterValue: string | string[] | null[] | undefined | number;
   isEditable: boolean;
   predicate: '<' | '>' | '=';
 };
