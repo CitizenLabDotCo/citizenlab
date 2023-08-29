@@ -144,7 +144,6 @@ lv:
     cosponsor_of_your_initiative:
       cta_reply_to: 'Pārskatīt savu priekšlikumu'
       event_description_initiative: 'Apsveicam! %{cosponsorName} ir pieņēmis jūsu uzaicinājumu līdzfinansēt jūsu priekšlikumu.'
-      event_description_cosponsoring: 'Priekšlikuma līdzfinansēšana nozīmē, ka <strong>jūsu vārds un uzvārds būs redzams</strong> kopā ar citu priekšlikuma līdzfinansētāju vārdiem un uzvārdiem.'
       main_header: '%{cosponsorName} ir pieņēmusi jūsu uzaicinājumu līdzfinansēt jūsu priekšlikumu.'
       subject: '%{cosponsorName} ir pieņēmusi jūsu uzaicinājumu līdzfinansēt jūsu priekšlikumu.'
       preheader_initiative: '%{cosponsorName} ir pieņēmusi jūsu uzaicinājumu līdzfinansēt jūsu priekšlikumu.'
