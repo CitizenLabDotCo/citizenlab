@@ -37,6 +37,7 @@ const CLCategoryLayout = memo(
   // here we can cast types because the tester made sure we only get categorization layouts
   ({ schema, uischema, path, renderers, cells, enabled }: LayoutProps) => {
     const theme = useTheme();
+
     return (
       <Box
         width="100%"
@@ -63,18 +64,20 @@ const CLCategoryLayout = memo(
                 </QuillEditedContent>
               </Box>
             )}
-            {e.elements.map((e, index) => (
-              <Box w="100%" mb="40px" key={index}>
-                <JsonFormsDispatch
-                  renderers={renderers}
-                  cells={cells}
-                  uischema={e}
-                  schema={schema}
-                  path={path}
-                  enabled={enabled}
-                />
-              </Box>
-            ))}
+            {e.elements.map((e, index) => {
+              return (
+                <Box w="100%" mb="40px" key={index}>
+                  <JsonFormsDispatch
+                    renderers={renderers}
+                    cells={cells}
+                    uischema={e}
+                    schema={schema}
+                    path={path}
+                    enabled={enabled}
+                  />
+                </Box>
+              );
+            })}
           </StyledFormSection>
         ))}
       </Box>

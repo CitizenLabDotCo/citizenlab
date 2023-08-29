@@ -22,4 +22,21 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.email',
     defaultMessage: 'Email:',
   },
+  page: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.page',
+    defaultMessage: 'Page',
+  },
+  phaseNotAllowed: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.phaseNotAllowed',
+    defaultMessage:
+      'The selected phase cannot contain ideas. Please select another one.',
+  },
+  formDataNotValid: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.formDataNotValid',
+    defaultMessage: 'Invalid form data. Check the form above for errors.',
+  },
+  approve: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.approve',
+    defaultMessage: 'Approve',
+  },
 });
