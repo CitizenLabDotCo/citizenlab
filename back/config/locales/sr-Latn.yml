@@ -185,6 +185,8 @@ sr-Latn:
       <p>Inicijatori su pozvani da predstave svoj predlog na sledećem sastanku nadležnih organa. Uskoro ćemo objaviti zvanično obaveštenje.</p>
     default_eligibility_criteria: >
       <ul> <li>Mora biti u skladu sa važećim oblastima i kompetencijala lokalne uprave</li> <li>Mora staviti interes javnosti ispred ličnog interesa</li> <li>Ne sme podsticati diskriminaciju po bilo kom osnovu, ili imati negativan uticaj na druge</li></ul>
+    default_posting_tips: >
+      Pokušajte da se posvetite obrazloženju vašeg predloga. Ukoliko je potrebno, prethodno pripremite tekst pa ga kopirajte ovde.</li><li>Odaberite naziv koji jasno opisuje na šta se vaša ideja odnosi.</li><li>Vizualizujte svoj predlog odgovarajućom slikom koja će mu pomoći da se istakne!</li><li>Dodajte priloge poput video zapisa, ilustrativnih primera, tehničkih detalja ili planova.</li><li>Podelite vašu ideju na društvenim mrežama kako biste prikupili podršku od drugih.</li></ul>
   reset_password_mailer:
     send_reset_password:
       cta_reset_password: 'Resetujte vašu lozinku'
