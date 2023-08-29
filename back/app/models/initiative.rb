@@ -102,8 +102,6 @@ class Initiative < ApplicationRecord
 
   scope :with_status_code, proc { |code| joins(:initiative_status).where(initiative_status: { code: code }) }
 
-  scope :order_popular, ->(direction = :desc) { order(Arel.sql("(likes_count - dislikes_count) #{direction}, initiatives.id")) }
-
   scope :order_status, lambda { |direction = :asc|
     joins('LEFT OUTER JOIN initiative_initiative_statuses ON initiatives.id = initiative_initiative_statuses.initiative_id')
       .joins('LEFT OUTER JOIN initiative_statuses ON initiative_statuses.id = initiative_initiative_statuses.initiative_status_id')

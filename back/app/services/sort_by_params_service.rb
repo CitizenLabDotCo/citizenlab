@@ -53,7 +53,6 @@ class SortByParamsService
     when '-status' then scope.order_status(:asc)
     when 'likes_count' then scope.order(likes_count: :desc)
     when '-likes_count' then scope.order(likes_count: :asc)
-    when 'popular' then scope.order_popular(:desc)
     else
       raise "Unsupported sorting parameter #{params[:sort]}"
     end
