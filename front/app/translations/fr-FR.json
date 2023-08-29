@@ -1065,7 +1065,7 @@
   "app.containers.InitiativesShow.VoteControl.readAnswer": "Lire la réponse",
   "app.containers.InitiativesShow.VoteControl.reviewPendingStatusExplanationBold": "Cette proposition a été soumise pour examen.",
   "app.containers.InitiativesShow.VoteControl.reviewPendingStatusExplanationSentenceThree": "La proposition ne peut pas être partagée tant qu'elle n'a pas été examinée par un administrateur.",
-  "app.containers.InitiativesShow.VoteControl.reviewPendingStatusExplanationSentenceTwo": "Vous recevrez un courriel une fois qu'il aura été examiné.",
+  "app.containers.InitiativesShow.VoteControl.reviewPendingStatusExplanationSentenceTwo": "Vous recevrez un e-mail une fois que votre proposition aura été examinée.",
   "app.containers.InitiativesShow.VoteControl.thresholdReachedStatusExplanation": "{thresholdReachedStatusExplanationBold}. {orgName} a été notifié et donnera une réponse. Les votes restent ouverts.",
   "app.containers.InitiativesShow.VoteControl.thresholdReachedStatusExplanationBold": "Le seuil a été atteint",
   "app.containers.InitiativesShow.VoteControl.unvoteLink": "Annuler mon vote",
