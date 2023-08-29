@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
 module EmailCampaigns
-  class CommentOnYourIdeaMailer < ApplicationMailer
+  class CommentOnInitiativeYouFollowMailer < ApplicationMailer
     protected
 
     def subject
-      format_message('subject', values: { organizationName: organization_name })
+      format_message('subject', values: { organizationName: organization_name, authorName: event.comment_author_name })
     end
 
     def header_title
-      format_message('main_header', values: { authorName: event.comment_author_name })
+      format_message('main_header', values: { commentAuthor: event.comment_author_name })
     end
 
     def header_message
@@ -18,7 +18,7 @@ module EmailCampaigns
         values: {
           authorNameFull: event.comment_author_name,
           authorName: event.initiating_user_first_name,
-          ideaTitle: localize_for_recipient(event.post_title_multiloc)
+          initiativeTitle: localize_for_recipient(event.post_title_multiloc)
         }
       )
     end

@@ -27,7 +27,7 @@
 #  fk_rails_...  (author_id => users.id)
 #
 module EmailCampaigns
-  class Campaigns::CommentOnYourIdea < Campaign
+  class Campaigns::CommentOnIdeaYouFollow < Campaign
     include Consentable
     include ActivityTriggerable
     include RecipientConfigurable
@@ -39,7 +39,7 @@ module EmailCampaigns
     recipient_filter :filter_notification_recipient
 
     def activity_triggers
-      { 'Notifications::CommentOnYourIdea' => { 'created' => true } }
+      { 'Notifications::CommentOnIdeaYouFollow' => { 'created' => true } }
     end
 
     def filter_notification_recipient(users_scope, activity:, time: nil)
@@ -47,7 +47,7 @@ module EmailCampaigns
     end
 
     def mailer_class
-      CommentOnYourIdeaMailer
+      CommentOnIdeaYouFollowMailer
     end
 
     def self.recipient_role_multiloc_key
@@ -55,7 +55,7 @@ module EmailCampaigns
     end
 
     def self.recipient_segment_multiloc_key
-      'email_campaigns.admin_labels.recipient_segment.user_who_published_the_input'
+      'email_campaigns.admin_labels.recipient_segment.users_who_follow_the_input'
     end
 
     def self.content_type_multiloc_key
@@ -78,7 +78,8 @@ module EmailCampaigns
           comment_url: Frontend::UrlService.new.model_to_url(notification.comment, locale: recipient.locale),
           post_published_at: notification.post.published_at.iso8601,
           post_title_multiloc: notification.post.title_multiloc,
-          post_author_name: name_service.display_name!(notification.post.author)
+          post_author_name: name_service.display_name!(notification.post.author),
+          unfollow_url: Frontend::UrlService.new.unfollow_url(Follower.new(followable: notification.post, user: recipient))
         }
       }]
     end

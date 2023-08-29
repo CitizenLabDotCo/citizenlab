@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module EmailCampaigns
-  class CommentOnYourIdeaMailerPreview < ActionMailer::Preview
+  class CommentOnInitiativeYouFollowMailerPreview < ActionMailer::Preview
     include EmailCampaigns::MailerPreviewRecipient
 
     def campaign_mail
@@ -23,7 +23,7 @@ module EmailCampaigns
         }
       }
 
-      campaign = EmailCampaigns::Campaigns::CommentOnYourIdea.first
+      campaign = EmailCampaigns::Campaigns::CommentOnInitiativeYouFollow.first
 
       campaign.mailer_class.with(campaign: campaign, command: command).campaign_mail
     end
