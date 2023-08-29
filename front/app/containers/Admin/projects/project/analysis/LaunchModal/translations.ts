@@ -20,11 +20,14 @@ export default defineMessages({
   },
   limitation2Title: {
     id: 'app.containers.AdminPage.projects.project.analysis.LaunchModal.limitation2Title',
-    defaultMessage: '2. The AI is not a human',
+    defaultMessage: 'Exaggeration:',
   },
   limitation2Text: {
     id: 'app.containers.AdminPage.projects.project.analysis.LaunchModal.limitation2Text',
-    defaultMessage:
-      'The AI is not a human and will not be able to understand the context of the inputs. It will not be able to understand sarcasm or irony.',
+    defaultMessage: 'the AI might give excessive importance to one idea',
+  },
+  agreeButton: {
+    id: 'app.containers.AdminPage.projects.project.analysis.LaunchModal.agreeButton',
+    defaultMessage: 'I understand',
   },
 });
