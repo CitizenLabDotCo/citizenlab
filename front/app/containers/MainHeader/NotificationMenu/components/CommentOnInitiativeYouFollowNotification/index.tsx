@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import { isNilOrError, stopPropagation } from 'utils/helperUtils';
 
 // data
-import { ICommentOnYourInitiativeNotificationData } from 'api/notifications/types';
+import { ICommentOnInitiativeYouFollowNotificationData } from 'api/notifications/types';
 
 // i18n
 import messages from '../../messages';
@@ -14,10 +14,10 @@ import Link from 'utils/cl-router/Link';
 import { DeletedUser } from '../Notification';
 
 interface Props {
-  notification: ICommentOnYourInitiativeNotificationData;
+  notification: ICommentOnInitiativeYouFollowNotificationData;
 }
 
-const CommentOnYourInitiativeNotification = memo<Props>((props) => {
+const CommentOnInitiativeYouFollowNotification = memo<Props>((props) => {
   const { notification } = props;
 
   const deletedUser =
@@ -32,7 +32,7 @@ const CommentOnYourInitiativeNotification = memo<Props>((props) => {
       isRead={!!notification.attributes.read_at}
     >
       <FormattedMessage
-        {...messages.userCommentedOnYourInitiative}
+        {...messages.userCommentedOnInitiativeYouFollow}
         values={{
           name: deletedUser ? (
             <DeletedUser>
@@ -52,4 +52,4 @@ const CommentOnYourInitiativeNotification = memo<Props>((props) => {
   );
 });
 
-export default CommentOnYourInitiativeNotification;
+export default CommentOnInitiativeYouFollowNotification;

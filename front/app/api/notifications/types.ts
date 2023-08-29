@@ -79,10 +79,10 @@ export interface ICommentOnYourCommentNotificationData
   };
 }
 
-export interface ICommentOnYourIdeaNotificationData
+export interface ICommentOnIdeaYouFollowNotificationData
   extends IBaseNotificationData {
   attributes: {
-    type: 'comment_on_your_idea';
+    type: 'comment_on_idea_you_follow';
     read_at: string | null;
     created_at: string;
     initiating_user_first_name: string | null;
@@ -93,10 +93,10 @@ export interface ICommentOnYourIdeaNotificationData
   };
 }
 
-export interface ICommentOnYourInitiativeNotificationData
+export interface ICommentOnInitiativeYouFollowNotificationData
   extends IBaseNotificationData {
   attributes: {
-    type: 'comment_on_your_initiative';
+    type: 'comment_on_initiative_you_follow';
     read_at: string | null;
     created_at: string;
     initiating_user_first_name: string | null;
@@ -427,8 +427,8 @@ export interface INotificationDataMap {
   ICommentDeletedByAdminNotificationData: ICommentDeletedByAdminNotificationData;
   ICommentMarkedAsSpamNotificationData: ICommentMarkedAsSpamNotificationData;
   ICommentOnYourCommentNotificationData: ICommentOnYourCommentNotificationData;
-  ICommentOnYourIdeaNotificationData: ICommentOnYourIdeaNotificationData;
-  ICommentOnYourInitiativeNotificationData: ICommentOnYourInitiativeNotificationData;
+  ICommentOnIdeaYouFollowNotificationData: ICommentOnIdeaYouFollowNotificationData;
+  ICommentOnInitiativeYouFollowNotificationData: ICommentOnInitiativeYouFollowNotificationData;
   ICosponsorOfYourInitiativeNotificationData: ICosponsorOfYourInitiativeNotificationData;
   IIdeaAssignedToYouNotificationData: IIdeaAssignedToYouNotificationData;
   IIdeaMarkedAsSpamNotificationData: IIdeaMarkedAsSpamNotificationData;

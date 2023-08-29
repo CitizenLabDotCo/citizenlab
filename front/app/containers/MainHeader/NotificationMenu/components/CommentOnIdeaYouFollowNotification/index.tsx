@@ -3,7 +3,7 @@ import { isNilOrError, stopPropagation } from 'utils/helperUtils';
 import { DeletedUser } from '../Notification';
 
 // data
-import { ICommentOnYourIdeaNotificationData } from 'api/notifications/types';
+import { ICommentOnIdeaYouFollowNotificationData } from 'api/notifications/types';
 
 // i18n
 import messages from '../../messages';
@@ -23,10 +23,10 @@ import usePhases from 'api/phases/usePhases';
 import { getInputTerm } from 'services/participationContexts';
 
 interface Props {
-  notification: ICommentOnYourIdeaNotificationData;
+  notification: ICommentOnIdeaYouFollowNotificationData;
 }
 
-const CommentOnYourIdeaNotification = memo<Props>((props) => {
+const CommentOnIdeaYouFollowNotification = memo<Props>((props) => {
   const { notification } = props;
   const { data: idea } = useIdeaBySlug(notification.attributes.post_slug);
   const projectId = !isNilOrError(idea)
@@ -54,12 +54,12 @@ const CommentOnYourIdeaNotification = memo<Props>((props) => {
       >
         <FormattedMessage
           {...getInputTermMessage(inputTerm, {
-            idea: messages.userCommentedOnYourIdea,
-            option: messages.userCommentedOnYourOption,
-            project: messages.userCommentedOnYourProject,
-            question: messages.userCommentedOnYourQuestion,
-            issue: messages.userCommentedOnYourIssue,
-            contribution: messages.userCommentedOnYourContribution,
+            idea: messages.userCommentedOnIdeaYouFollow,
+            option: messages.userCommentedOnOptionYouFollow,
+            project: messages.userCommentedOnProjectYouFollow,
+            question: messages.userCommentedOnQuestionYouFollow,
+            issue: messages.userCommentedOnIssueYouFollow,
+            contribution: messages.userCommentedOnContributionYouFollow,
           })}
           values={{
             name: deletedUser ? (
@@ -83,4 +83,4 @@ const CommentOnYourIdeaNotification = memo<Props>((props) => {
   return null;
 });
 
-export default CommentOnYourIdeaNotification;
+export default CommentOnIdeaYouFollowNotification;
