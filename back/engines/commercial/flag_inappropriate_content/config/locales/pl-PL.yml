@@ -1,15 +1,8 @@
 pl:
   email_campaigns:
     campaign_type_description:
-      "inappropriate_content_flagged": Nieodpowiednie treści są oznaczane
-    admin_campaign_type_description:
-      "inappropriate_content_flagged": Nieodpowiednie treści zostały oznaczone - administratorzy
-    inappropriate_content_flagged:
-      subject: 'Post na Twojej platformie został oznaczony do przeglądu'
-      header_title: 'Post na Twojej platformie został oznaczony do przeglądu'
-      comment_author: '%{authorName} skomentował(a):'
-      idea_author: '%{authorName} dodał(a) nowy post:'
-      initiative_author: '%{authorName} dodał(a) nowa propozycję:'
-      this_post_was_flagged: >
-        <p>Ten post został automatycznie wykryty jako potencjalnie zawierający nieodpowiednie treści. Wysyłamy Ci to powiadomienie, abyś mógł przejrzeć ten post zgodnie z własnymi wytycznymi dotyczącymi moderacji.</p><p>Jeśli post nie zawiera nieodpowiednich treści, możesz usunąć ostrzeżenie poprzez swoją platformę w zakładce "Aktywność" w panelu administracyjnym.</p>
-      cta_review_post: 'Przejrzyj post'
+      ""inappropriate_content_flagged"":
+        Inappropriate content flagged admin_campaign_type_description:
+          ""inappropriate_content_flagged"":
+            Inappropriate content flagged - admins inappropriate_content_flagged:
+              subject: 'A post on your platform has been flagged for review'' header_title: ''A post on your platform has been flagged for review'' comment_author: ''%{authorName} skomentował:'' idea_author: ''%{authorName} przesłał post:'' initiative_author: ''%{authorName} przesłał propozycję:'' this_post_was_flagged: > <p>Ten post został automatycznie wykryty jako potencjalnie zawierający nieodpowiednie treści. Wysyłamy Ci to powiadomienie, abyś mógł przejrzeć post zgodnie z własnymi wytycznymi dotyczącymi moderacji.</p><p>Jeśli post nie zawiera nieodpowiednich treści, możesz usunąć ostrzeżenie za pośrednictwem swojej platformy w zakładce Aktywność w panelu administracyjnym.</p> cta_review_post: ''Przejrzyj post'
