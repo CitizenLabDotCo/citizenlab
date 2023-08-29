@@ -16,7 +16,7 @@ class WebApi::V1::InitiativesController < ApplicationController
       scope: policy_scope(Initiative),
       includes: %i[author assignee topics areas]
     ).find_records
-    initiatives = paginate SortByParamsService.new.sort_initiatives(initiatives, params, current_user)
+    initiatives = paginate SortByParamsService.new.sort_initiatives(Initiative.where(id: initiatives), params, current_user)
 
     render json: linked_json(initiatives, WebApi::V1::InitiativeSerializer, serialization_options_for(initiatives))
   end
