@@ -10,6 +10,7 @@ interface Props {
 const Areas = ({ showHomePageAreas = false }: Props) => {
   const { data: areas, isLoading } = useAreas({
     forHomepageFilter: showHomePageAreas,
+    sort: 'projects_count',
   });
 
   if (isLoading) {

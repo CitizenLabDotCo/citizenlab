@@ -10,11 +10,13 @@ const fetchAreas = (filters: IAreasQueryParams) => {
     pageSize,
     forHomepageFilter: for_homepage_filter,
     includeStaticPages,
+    ...queryParameters
   } = filters;
   return fetcher<IAreas>({
     path: '/areas',
     action: 'get',
     queryParams: {
+      ...queryParameters,
       'page[number]': pageNumber || 1,
       'page[size]': pageSize || 5000,
       for_homepage_filter,

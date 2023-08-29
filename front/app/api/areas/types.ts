@@ -8,6 +8,7 @@ export interface IAreasQueryParams {
   pageNumber?: number;
   pageSize?: number;
   forHomepageFilter?: boolean;
+  sort?: 'projects_count' | '-projects_count';
   includeStaticPages?: boolean;
 }
 
