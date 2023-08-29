@@ -6,7 +6,7 @@ import { FormattedDate } from 'react-intl';
 import { isNil } from 'lodash-es';
 import { IUserCustomField } from 'api/user_custom_fields/types';
 import { useIntl } from 'utils/cl-intl';
-import translations from './translations';
+import translations from '../translations';
 
 type Props = {
   customField: IUserCustomField;
