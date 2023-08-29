@@ -118,16 +118,18 @@ export function stopPropagation(event) {
   event.stopPropagation();
 }
 
-export function stripHtmlTags(str: string | null | undefined) {
-  if (str === null || str === undefined || str === '') {
-    return '';
-  } else {
-    return str.replace(
-      /<\/?(p|div|span|ul|ol|li|br|em|img|strong|a)[^>]{0,}\/?>/g,
-      ''
-    );
-  }
-}
+// Still useful when checking lengt of content that gets wrapped with HTML
+// ===
+// export function stripHtmlTags(str: string | null | undefined) {
+//   if (str === null || str === undefined || str === '') {
+//     return '';
+//   } else {
+//     return str.replace(
+//       /<\/?(p|div|span|ul|ol|li|br|em|img|strong|a)[^>]{0,}\/?>/g,
+//       ''
+//     );
+//   }
+// }
 
 // e.g. 'en-GB' -> 'enGb'
 export function convertToGraphqlLocale(locale: Locale) {
