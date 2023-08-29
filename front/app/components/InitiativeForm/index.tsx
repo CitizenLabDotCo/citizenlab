@@ -41,8 +41,6 @@ import ImagesDropzone from 'components/HookForm/ImagesDropzone';
 import LocationInput from 'components/HookForm/LocationInput';
 
 // Hooks
-import useInitiativeReviewRequired from 'hooks/useInitiativeReviewRequired';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useTopics from 'api/topics/useTopics';
 import useLocale from 'hooks/useLocale';
 import { Box } from '@citizenlab/cl2-component-library';
@@ -87,10 +85,6 @@ const InitiativeForm = ({
   const mapsLoaded = window.googleMaps;
   const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
     useState(false);
-  const initiativeReviewRequired = useInitiativeReviewRequired();
-  const { data: appConfiguration } = useAppConfiguration();
-  const requiredNumberOfCosponsors =
-    appConfiguration?.data.attributes.settings.initiatives?.cosponsors_number;
   const { formatMessage } = useIntl();
   const locale = useLocale();
   const { data: topics } = useTopics({ excludeCode: 'custom' });
@@ -103,15 +97,7 @@ const InitiativeForm = ({
     ),
     position: string().optional().nullable(),
     topic_ids: array().optional(),
-    ...(initiativeReviewRequired &&
-      typeof requiredNumberOfCosponsors === 'number' && {
-        cosponsor_ids: array().min(
-          requiredNumberOfCosponsors,
-          formatMessage(messages.minRequiredCosponsors, {
-            requiredNumberOfCosponsors,
-          })
-        ),
-      }),
+    cosponsor_ids: array().optional(),
     local_initiative_files: mixed().optional(),
     images: mixed().optional().nullable(),
     header_bg: mixed().optional().nullable(),
