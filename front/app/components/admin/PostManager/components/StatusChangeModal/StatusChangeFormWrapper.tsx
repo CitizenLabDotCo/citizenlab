@@ -98,11 +98,22 @@ const StatusChangeFormWrapper = ({
     });
   };
 
+  const isFeedbackEmpty = () => {
+    return (
+      isEmptyMultiloc(newOfficialFeedback.body_multiloc) &&
+      isEmptyMultiloc(newOfficialFeedback.author_multiloc)
+    );
+  };
+
   const validate = () => {
     let validated = true;
 
     if (!isNilOrError(tenantLocales) && mode === 'new') {
       validated = false;
+
+      if (!feedbackRequired && isFeedbackEmpty()) {
+        return true;
+      }
 
       tenantLocales.forEach((locale) => {
         if (
@@ -130,17 +141,14 @@ const StatusChangeFormWrapper = ({
 
   const submit = () => {
     const { body_multiloc, author_multiloc } = newOfficialFeedback;
-    const canSkipFeedback = !feedbackRequired;
-    const isFeedbackSkipped =
-      isEmptyMultiloc(body_multiloc) && isEmptyMultiloc(author_multiloc);
 
-    if (canSkipFeedback || validate()) {
+    if (!feedbackRequired || validate()) {
       if (mode === 'new') {
         updateInitiativeStatus(
           {
             initiativeId,
             initiative_status_id: newStatusId,
-            ...(isFeedbackSkipped
+            ...(isFeedbackEmpty()
               ? null
               : {
                   official_feedback_attributes: {
@@ -202,7 +210,6 @@ const StatusChangeFormWrapper = ({
         onChangeAuthor={onChangeAuthor}
         onChangeBody={onChangeBody}
         onChangeMode={onChangeMode}
-        feedbackRequired={feedbackRequired}
         latestOfficialFeedback={officialFeedbacksList[0]}
         submit={submit}
       />

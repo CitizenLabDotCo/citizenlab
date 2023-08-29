@@ -69,7 +69,6 @@ interface InputProps {
   onChangeAuthor: (value: Multiloc) => void;
   submit: () => void;
   valid: boolean;
-  feedbackRequired?: boolean;
 }
 
 interface DataProps {
@@ -223,7 +222,7 @@ class StatusChangeForm extends PureComponent<
           : this.renderFeedbackForm()}
         <ChangeStatusButton
           processing={loading}
-          disabled={this.props.feedbackRequired && !valid}
+          disabled={!valid}
           onClick={submit}
           bgColor={colors.teal}
         >

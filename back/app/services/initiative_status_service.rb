@@ -15,7 +15,7 @@ class InitiativeStatusService
         feedback_required: true
       },
       'proposed' => {
-        feedback_required: true
+        feedback_required: false
       }
     },
     'proposed' => {
