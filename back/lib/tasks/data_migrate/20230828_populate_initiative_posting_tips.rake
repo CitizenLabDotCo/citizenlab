@@ -28,6 +28,19 @@ namespace :data_migrate do
     end
   end
 
+  # It was added when I realized that we need to have this copy in the BE code anyway for defaults.
+  task populate_initiative_posting_tips_from_be_locales: :environment do |_t, _args|
+    Tenant.switch_each do |_tenant|
+      app_config = AppConfiguration.instance
+      app_config.settings['initiatives']['posting_tips'] =
+        MultilocService.new.i18n_to_multiloc(
+          'initiatives.default_posting_tips',
+          locales: app_config.settings('core', 'locales')
+        )
+      app_config.save!
+    end
+  end
+
   task list_initiative_posting_tips_for_all_locales: :environment do |_t, _args|
     CL2_SUPPORTED_LOCALES.each do |locale|
       locale_file = JSON.parse(HTTParty.get(URI.parse(format(locale_file_url, locale: locale))))
