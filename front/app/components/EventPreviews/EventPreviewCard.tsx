@@ -99,6 +99,7 @@ const EventPreviewCard = ({ event }: EventPreviewCardProps) => {
         maxWidth="260px"
         style={{ fontWeight: 600 }}
         my="auto"
+        color="tenantText"
       >
         {localize(event.attributes.title_multiloc)}
       </StyledEventTitle>

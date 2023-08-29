@@ -99,7 +99,13 @@ const EventPreviews = ({ projectId }: EventPreviewsProps) => {
   if (events && events?.data?.length > 0) {
     return (
       <>
-        <Title mt="36px" mb="8px" variant="h5" style={{ fontWeight: 600 }}>
+        <Title
+          color="tenantText"
+          mt="36px"
+          mb="8px"
+          variant="h5"
+          style={{ fontWeight: 600 }}
+        >
           {projectType === 'continuous'
             ? formatMessage(messages.eventPreviewContinuousTitle)
             : formatMessage(messages.eventPreviewTimelineTitle)}
