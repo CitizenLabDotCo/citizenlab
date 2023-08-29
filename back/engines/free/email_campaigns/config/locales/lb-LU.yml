@@ -124,7 +124,7 @@ lb:
       cta_reply_to: 'Co-Sponsor dës Propositioun'
       event_description_initiative: '%{authorName} huet eng nei Propositioun erstallt a géif gären datt Dir se matsponséiert.'
       event_description_cosponsoring: 'Co-Sponsoring eng Propositioun heescht, datt <strong>Ären Numm gëtt ugewisen</strong> mat den Nimm vun anere Co-Sponsoren vun der Propositioun.'
-      event_description_before_action: 'To see the proposal and accept the invitation, you must be logged in to your account.'
+      event_description_before_action: 'Fir d''Propositioun ze gesinn an d''Invitatioun unzehuelen, musst Dir op Äre Kont ageloggt sinn.'
       event_description_action: 'Klickt hei ënnen fir d''Propositioun ze liesen.'
       main_header: 'Dir sidd invitéiert fir eng Propositioun ze sponseren'
       subject: 'Dir sidd invitéiert fir eng Propositioun ze sponseren'
