@@ -124,7 +124,7 @@
       cta_reply_to: 'Medsponsor for dette forslaget'
       event_description_initiative: '%{authorName} har opprettet et nytt forslag og vil gjerne at du er medsponsor for det.'
       event_description_cosponsoring: 'Å være medsponsor av et forslag betyr at <strong>navnet ditt vil vises</strong> med navnene til andre medsponsorer av forslaget.'
-      event_description_before_action: 'To see the proposal and accept the invitation, you must be logged in to your account.'
+      event_description_before_action: 'For å se forslaget og godta invitasjonen må du være logget inn på kontoen din.'
       event_description_action: 'Klikk nedenfor for å lese forslaget.'
       main_header: 'Du har blitt invitert til å være med å sponse et forslag'
       subject: 'Du har blitt invitert til å være med å sponse et forslag'
