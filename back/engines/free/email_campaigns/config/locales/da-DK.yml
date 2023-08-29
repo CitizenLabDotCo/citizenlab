@@ -45,7 +45,7 @@ da:
       "project_phase_upcoming": Kommende ny projektfase
       "project_published": Projekt offentliggjort
       "status_change_on_idea_you_follow": Statusændring af en idé, som du følger
-      "status_change_on_initiative_you_follow": Statusændring af et forslag, som du følger
+      "status_change_on_initiative_you_follow": Statusændring på et forslag, som du følger
       "threshold_reached_for_admin": Forslag har nået stemmegrænsen
       "welcome": Efter registrering
       "admin_digest": Ugentlig oversigt for administratorer
@@ -375,7 +375,7 @@ da:
       subject: 'En idé, du følger, har fået en officiel opdatering på platformen %{organizationName}'
       preheader: 'Der er en opdatering på en idé, du følger'
     official_feedback_on_initiative_you_follow:
-      header_message: '%{officialName} har en opdatering om forslag ''%{initiativeTitle}''. Klik på knappen nedenfor for at gå ind i samtalen med %{organizationName}.'
+      header_message: '%{officialName} har en opdatering til forslaget ''%{initiativeTitle}''. Klik på knappen nedenfor for at gå ind i samtalen med %{organizationName}.'
       header_title: 'Der er en opdatering på et forslag, du følger'
       subject: 'Et forslag, du følger, har modtaget en officiel opdatering på platformen %{organizationName}'
       preheader: 'Der er en opdatering på et forslag, du følger'
@@ -445,9 +445,9 @@ da:
     status_change_on_initiative_you_follow:
       status_change: 'Den nye status for dette forslag er ''%{initiativeStatus}'''
       header_message: 'Status for forslag ''%{initiativeTitle}'' er blevet opdateret på den digitale borgerinddragelsesplatform for %{organizationName}.'
-      header_title: 'Et forslag, du følger, har fået en ny status'
-      subject: 'Status for et forslag, du følger, er ændret'
-      preheader: 'Et forslag, du følger, har fået en ny status'
+      header_title: 'Et forslag du følger har fået en ny status'
+      subject: 'Status for et forslag du følger er ændret'
+      preheader: 'Et forslag du følger har fået en ny status'
     user_digest:
       subject: "Ugentlig opdatering af deltagelsesplatformen for %{organizationName}"
       commented: "%{authorFirstName} kommenterede:"
