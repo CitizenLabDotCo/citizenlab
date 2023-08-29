@@ -5,7 +5,11 @@ import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 import useAddAnalysisQuestionPreCheck from 'api/analysis_question_pre_check/useAddAnalysisQuestionPreCheck';
 import { IQuestionPreCheck } from 'api/analysis_question_pre_check/types';
 
+import { useIntl } from 'utils/cl-intl';
+import translations from './translations';
+
 const QuestionButton = ({ onClick }: { onClick: () => void }) => {
+  const { formatMessage } = useIntl();
   const { mutate: addQuestionPreCheck, isLoading: isLoadingPreCheck } =
     useAddAnalysisQuestionPreCheck();
   const { analysisId } = useParams() as { analysisId: string };
@@ -39,13 +43,15 @@ const QuestionButton = ({ onClick }: { onClick: () => void }) => {
         disabled={!questionPossible}
         whiteSpace="wrap"
       >
-        Ask a question
+        {formatMessage(translations.askQuestion)}
         <br />
         <Text fontSize="s" m="0" color="grey600">
           {questionPossible && questionAccuracy && (
-            <>{questionAccuracy * 100}% accuracy</>
+            <>
+              {questionAccuracy * 100}% {formatMessage(translations.accuracy)}
+            </>
           )}
-          {!questionPossible && `Too many inputs`}
+          {!questionPossible && formatMessage(translations.tooManyInputs)}
         </Text>
       </Button>
     </Box>

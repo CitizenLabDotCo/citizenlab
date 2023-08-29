@@ -9,7 +9,11 @@ import { ISummaryPreCheck } from 'api/analysis_summary_pre_check/types';
 import tracks from 'containers/Admin/projects/project/analysis/tracks';
 import { trackEventByName } from 'utils/analytics';
 
+import { useIntl } from 'utils/cl-intl';
+import translations from './translations';
+
 const SummarizeButton = () => {
+  const { formatMessage } = useIntl();
   const { mutate: addSummary, isLoading: isLoadingSummary } =
     useAddAnalysisSummary();
   const { mutate: addSummaryPreCheck, isLoading: isLoadingPreCheck } =
@@ -61,13 +65,15 @@ const SummarizeButton = () => {
         processing={isLoadingPreCheck || isLoadingSummary}
         whiteSpace="wrap"
       >
-        Auto-summarize
+        {formatMessage(translations.summarize)}
         <br />
         <Text fontSize="s" m="0" color="grey600">
           {summaryPossible && summaryAccuracy && (
-            <>{summaryAccuracy * 100}% accuracy</>
+            <>
+              {summaryAccuracy * 100}% {formatMessage(translations.accuracy)}
+            </>
           )}
-          {!summaryPossible && `Too many inputs`}
+          {!summaryPossible && formatMessage(translations.tooManyInputs)}
         </Text>
       </Button>
     </Box>
