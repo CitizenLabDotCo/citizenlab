@@ -6,6 +6,9 @@ import useAddAnalysisSummary from 'api/analysis_summaries/useAddAnalysisSummary'
 import useAddAnalysisSummaryPreCheck from 'api/analysis_summary_pre_check/useAddAnalysisSummaryPreCheck';
 import { ISummaryPreCheck } from 'api/analysis_summary_pre_check/types';
 
+import tracks from 'containers/Admin/projects/project/analysis/tracks';
+import { trackEventByName } from 'utils/analytics';
+
 const SummarizeButton = () => {
   const { mutate: addSummary, isLoading: isLoadingSummary } =
     useAddAnalysisSummary();
@@ -15,10 +18,19 @@ const SummarizeButton = () => {
   const filters = useAnalysisFilterParams();
 
   const handleSummaryCreate = () => {
-    addSummary({
-      analysisId,
-      filters,
-    });
+    addSummary(
+      {
+        analysisId,
+        filters,
+      },
+      {
+        onSuccess: () => {
+          trackEventByName(tracks.summaryCreated.name, {
+            extra: { analysisId },
+          });
+        },
+      }
+    );
   };
 
   const [preCheck, setPreCheck] = useState<ISummaryPreCheck | null>(null);

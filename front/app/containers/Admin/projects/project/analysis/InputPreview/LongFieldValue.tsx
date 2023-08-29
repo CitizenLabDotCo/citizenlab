@@ -17,6 +17,8 @@ import { FormattedDate } from 'react-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 import { xor } from 'lodash-es';
+import { trackEventByName } from 'utils/analytics';
+import tracks from '../tracks';
 
 type Props = {
   customFieldId: string;
@@ -55,6 +57,7 @@ const FilterToggleButton = ({ customFieldId, value }) => {
         ? newFilterValue
         : undefined,
     });
+    trackEventByName(tracks.inputCustomFieldFilterUsed.name, { customFieldId });
   };
 
   return (

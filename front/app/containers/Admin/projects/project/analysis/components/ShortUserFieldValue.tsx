@@ -8,7 +8,7 @@ import { IUserCustomField } from 'api/user_custom_fields/types';
 
 type Props = {
   customField: IUserCustomField;
-  rawValue?: string | string[] | number;
+  rawValue?: string | string[] | null[] | number;
 };
 
 const SelectOptionText = ({

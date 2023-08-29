@@ -22,6 +22,9 @@ import clHistory from 'utils/cl-router/history';
 import Divider from 'components/admin/Divider';
 import Fragment from 'components/Fragment';
 
+import tracks from 'containers/Admin/projects/project/analysis/tracks';
+import { trackEventByName } from 'utils/analytics';
+
 const ConsentModal = ({
   onClose,
   onAccept,
@@ -106,6 +109,9 @@ const CreateAnalysisModal = ({ onClose }: { onClose: () => void }) => {
       },
       {
         onSuccess: (analysis) => {
+          trackEventByName(tracks.analysisForSurveyCreated.name, {
+            extra: { projectId },
+          });
           clHistory.push(
             `/admin/projects/${projectId}/analysis/${
               analysis.data.id

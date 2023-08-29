@@ -15,6 +15,7 @@ import {
   stylingConsts,
   Text,
   Button,
+  IconTooltip,
 } from '@citizenlab/cl2-component-library';
 
 import { useIntl } from 'utils/cl-intl';
@@ -24,6 +25,10 @@ import { useSelectedInputContext } from '../SelectedInputContext';
 import useAnalysisQuestion from 'api/analysis_questions/useAnalysisQuestion';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import FilterItems from '../FilterItems';
+import Rate from './Rate';
+
+import tracks from 'containers/Admin/projects/project/analysis/tracks';
+import { trackEventByName } from 'utils/analytics';
 
 const StyledAnswerText = styled.div`
   white-space: pre-wrap;
@@ -42,7 +47,7 @@ type Props = {
 const Question = ({ insight }: Props) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { setSelectedInputId } = useSelectedInputContext();
-  const { formatMessage } = useIntl();
+  const { formatMessage, formatDate } = useIntl();
   const { analysisId } = useParams() as { analysisId: string };
   const { mutate: deleteQuestion } = useDeleteAnalysisInsight();
 
@@ -61,10 +66,19 @@ const Question = ({ insight }: Props) => {
 
   const handleQuestionDelete = (id: string) => {
     if (window.confirm(formatMessage(messages.deleteQuestionConfirmation))) {
-      deleteQuestion({
-        analysisId,
-        id,
-      });
+      deleteQuestion(
+        {
+          analysisId,
+          id,
+        },
+        {
+          onSuccess: () => {
+            trackEventByName(tracks.questionDeleted.name, {
+              extra: { analysisId },
+            });
+          },
+        }
+      );
     }
   };
 
@@ -73,12 +87,28 @@ const Question = ({ insight }: Props) => {
     return str.replace(/\[?[0-9a-f-]{0,35}$/, '');
   };
 
+  const handleClickInput = (inputId: string) => {
+    setSelectedInputId(inputId);
+    const element = document.getElementById(`input-${inputId}`);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   const replaceIdRefsWithLinks = (question) => {
     return reactStringReplace(
       question,
       /\[?([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})\]?/g,
       (match, i) => (
-        <StyledButton onClick={() => setSelectedInputId(match)} key={i}>
+        <StyledButton
+          onClick={() => {
+            handleClickInput(match);
+            trackEventByName(tracks.inputPreviewedFromQuestion.name, {
+              extra: { analysisId },
+            });
+          }}
+          key={i}
+        >
           <Icon name="idea" />
         </StyledButton>
       )
@@ -99,7 +129,14 @@ const Question = ({ insight }: Props) => {
         : {}),
       reset_filters: 'true',
     });
-    updateSearchParams(question.data.attributes.filters);
+    const filters = question.data.attributes.filters;
+    updateSearchParams(filters);
+    if (filters.tag_ids?.length === 1) {
+      const element = document.getElementById(`tag-${filters.tag_ids[0]}`);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
   };
 
   const answer = question.data.attributes.answer;
@@ -108,11 +145,11 @@ const Question = ({ insight }: Props) => {
     <Box
       key={question.data.id}
       bgColor={colors.successLight}
-      p="16px"
+      p="24px"
       mb="8px"
       borderRadius={stylingConsts.borderRadius}
     >
-      <Box p="16px">
+      <Box>
         <Box
           display="flex"
           alignItems="center"
@@ -122,7 +159,7 @@ const Question = ({ insight }: Props) => {
         >
           {hasFilters && (
             <>
-              <Box>Question for</Box>
+              <Text m="0px">Question for</Text>
               <FilterItems
                 filters={question.data.attributes.filters}
                 isEditable={false}
@@ -130,12 +167,13 @@ const Question = ({ insight }: Props) => {
             </>
           )}
 
-          {!hasFilters && (
-            <>
-              <Box>Question for all input</Box>
-            </>
-          )}
+          {!hasFilters && <Text m="0px">Question for all input</Text>}
         </Box>
+
+        <Text color="textSecondary" fontSize="s">
+          {formatDate(question.data.attributes.created_at)}
+        </Text>
+
         <Text fontWeight="bold">{question.data.attributes.question}</Text>
         <Box>
           <StyledAnswerText>
@@ -145,6 +183,11 @@ const Question = ({ insight }: Props) => {
           </StyledAnswerText>
           {processing && <Spinner />}
         </Box>
+        {question.data.attributes.accuracy && (
+          <Box color={colors.teal700} my="16px">
+            Accuracy {question.data.attributes.accuracy * 100}%
+          </Box>
+        )}
       </Box>
       <Box
         display="flex"
@@ -155,18 +198,23 @@ const Question = ({ insight }: Props) => {
         <Button buttonStyle="white" onClick={handleRestoreFilters} p="4px 12px">
           Restore filters
         </Button>
-        {question.data.attributes.accuracy && (
-          <Box color={colors.teal700}>
-            Accuracy {question.data.attributes.accuracy * 100}%
-          </Box>
-        )}
-        <IconButton
-          iconName="delete"
-          onClick={() => handleQuestionDelete(insight.id)}
-          iconColor={colors.teal400}
-          iconColorOnHover={colors.teal700}
-          a11y_buttonActionMessage={formatMessage(messages.deleteSummary)}
-        />
+
+        <Box display="flex">
+          <IconTooltip
+            icon="flag"
+            content={<Rate insightId={insight.id} />}
+            theme="light"
+            iconSize="24px"
+            iconColor={colors.teal400}
+          />
+          <IconButton
+            iconName="delete"
+            onClick={() => handleQuestionDelete(insight.id)}
+            iconColor={colors.teal400}
+            iconColorOnHover={colors.teal700}
+            a11y_buttonActionMessage={formatMessage(messages.deleteSummary)}
+          />
+        </Box>
       </Box>
     </Box>
   );
