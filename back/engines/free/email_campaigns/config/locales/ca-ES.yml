@@ -77,7 +77,6 @@ ca:
     cosponsor_of_your_initiative:
       cta_reply_to: 'Consulta la teva proposta'
       event_description_initiative: 'Felicitats! %{cosponsorName} ha acceptat la teva invitació per copatrocinar la teva proposta.'
-      event_description_cosponsoring: 'Copatrocinar una proposta significa que <strong>el vostre nom es mostrarà</strong> amb els noms d''altres copatrocinadors de la proposta.'
       main_header: '%{cosponsorName} ha acceptat la teva invitació per copatrocinar la teva proposta'
       subject: '%{cosponsorName} ha acceptat la teva invitació per copatrocinar la teva proposta'
       preheader_initiative: '%{cosponsorName} ha acceptat la teva invitació per copatrocinar la teva proposta'
