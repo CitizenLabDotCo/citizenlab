@@ -45,9 +45,8 @@ module Analysis
           users_count_by_option_id = UserCustomFields::FieldValueCounter.counts_by_field_option(
             find_users, domicile_field, by: :option_id
           )
-          areas = Area.all.select(:id, :title_multiloc)
           render json: raw_json({
-            series: { users: users_count_by_option_id },
+            series: { users: users_count_by_option_id }
           })
         end
 
