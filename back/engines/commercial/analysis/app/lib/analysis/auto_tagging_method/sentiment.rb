@@ -16,9 +16,9 @@ module Analysis
     def run
       positive_tag, negative_tag = sentiment_tags
 
-      total_inputs = analysis.inputs.size
+      total_inputs = filtered_inputs.size
 
-      analysis.inputs.includes(:author).each_with_index do |input, i|
+      filtered_inputs.includes(:author).each_with_index do |input, i|
         update_progress(i / total_inputs.to_f) if i % 5 == 0
 
         locale = deduct_locale(input)
@@ -41,7 +41,7 @@ module Analysis
         when :negative
           negative_tag
         end
-        Tagging.find_or_create_by!(input_id: input.id, tag: tag) if tag
+        find_or_create_tagging!(input_id: input.id, tag_id: tag.id) if tag
       end
     rescue StandardError => e
       raise AutoTaggingFailedError, e

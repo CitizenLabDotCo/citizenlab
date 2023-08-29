@@ -15,13 +15,13 @@ import { UserTab } from './';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-// api
+// hooks
 import useUserIdeasCount from 'api/user_ideas_count/useUserIdeasCount';
 import useUserCommentsCount from 'api/user_comments_count/useUserCommentsCount';
-
-// hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useAuthUser from 'api/me/useAuthUser';
+import useEventsByUserId from 'api/events/useEventsByUserId';
+import { ScreenReaderOnly } from 'utils/a11y';
 
 const UserNavbarWrapper = styled.div`
   width: 100%;
@@ -116,10 +116,14 @@ const UserNavbar = memo<Props>(({ currentTab, selectTab, userId }) => {
   const { data: commentsCount } = useUserCommentsCount({
     userId,
   });
+  const { data: events } = useEventsByUserId(userId);
+  const { data: authUser } = useAuthUser();
+
+  const eventsCount = events?.data.length;
+  const showEventTab = authUser?.data?.id === userId;
   const isFollowingEnabled = useFeatureFlag({
     name: 'follow',
   });
-  const { data: authUser } = useAuthUser();
   const showFollowingTab = isFollowingEnabled && authUser?.data?.id === userId;
 
   return (
@@ -133,11 +137,19 @@ const UserNavbar = memo<Props>(({ currentTab, selectTab, userId }) => {
       >
         <Border aria-hidden />
         <TabIcon name="idea" ariaHidden />
-        {ideasCount && !isSmallerThanPhone && (
+        {!isSmallerThanPhone && (
           <FormattedMessage
             {...messages.postsWithCount}
-            values={{ ideasCount: ideasCount.data.attributes.count }}
+            values={{ ideasCount: ideasCount?.data.attributes.count || '0' }}
           />
+        )}
+        {isSmallerThanPhone && (
+          <ScreenReaderOnly>
+            <FormattedMessage
+              {...messages.postsWithCount}
+              values={{ ideasCount: ideasCount?.data.attributes.count || '0' }}
+            />
+          </ScreenReaderOnly>
         )}
       </UserNavbarButton>
       <UserNavbarButton
@@ -151,11 +163,23 @@ const UserNavbar = memo<Props>(({ currentTab, selectTab, userId }) => {
       >
         <Border aria-hidden />
         <TabIcon name="comments" ariaHidden />
-        {commentsCount && !isSmallerThanPhone && (
+        {!isSmallerThanPhone && (
           <FormattedMessage
             {...messages.commentsWithCount}
-            values={{ commentsCount: commentsCount.data.attributes.count }}
+            values={{
+              commentsCount: commentsCount?.data.attributes.count || '0',
+            }}
           />
+        )}
+        {isSmallerThanPhone && (
+          <ScreenReaderOnly>
+            <FormattedMessage
+              {...messages.commentsWithCount}
+              values={{
+                commentsCount: commentsCount?.data.attributes.count || '0',
+              }}
+            />
+          </ScreenReaderOnly>
         )}
       </UserNavbarButton>
       {showFollowingTab && (
@@ -176,6 +200,44 @@ const UserNavbar = memo<Props>(({ currentTab, selectTab, userId }) => {
                 followingCount: authUser?.data.attributes.followings_count,
               }}
             />
+          )}
+          {isSmallerThanPhone && (
+            <ScreenReaderOnly>
+              <FormattedMessage
+                {...messages.followingWithCount}
+                values={{
+                  followingCount: authUser?.data.attributes.followings_count,
+                }}
+              />
+            </ScreenReaderOnly>
+          )}
+        </UserNavbarButton>
+      )}
+      {showEventTab && (
+        <UserNavbarButton
+          onMouseDown={removeFocusAfterMouseClick}
+          onClick={selectTab('events')}
+          className={`e2e-events-nav ${
+            currentTab === 'events' ? 'active' : ''
+          }`}
+          role="tab"
+          aria-selected={currentTab === 'events'}
+        >
+          <Border aria-hidden />
+          <TabIcon name="calendar" ariaHidden />
+          {!isSmallerThanPhone && (
+            <FormattedMessage
+              {...messages.eventsWithCount}
+              values={{ eventsCount: eventsCount || '0' }}
+            />
+          )}
+          {isSmallerThanPhone && (
+            <ScreenReaderOnly>
+              <FormattedMessage
+                {...messages.eventsWithCount}
+                values={{ eventsCount: eventsCount || '0' }}
+              />
+            </ScreenReaderOnly>
           )}
         </UserNavbarButton>
       )}

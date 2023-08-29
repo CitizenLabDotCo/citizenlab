@@ -5,12 +5,11 @@ import { groupBy } from 'lodash-es';
 // components
 import PostCommentGroup from './PostCommentGroup';
 import Button from 'components/UI/Button';
-import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // style
 import styled, { useTheme } from 'styled-components';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import { darken, rgba } from 'polished';
@@ -18,8 +17,6 @@ import { media, colors, fontSizes } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import useComments from 'api/comments/useComments';
 import useAuthUser from 'api/me/useAuthUser';
-
-// hooks
 import useUserCommentsCount from 'api/user_comments_count/useUserCommentsCount';
 
 const Container = styled.div`
@@ -59,17 +56,18 @@ interface Props {
 
 export const UserComments = ({ userId }: Props) => {
   const theme = useTheme();
+  const isMobileOrSmaller = useBreakpoint('phone');
   const { data: authUser } = useAuthUser();
   const isSmallerThanPhone = useBreakpoint('phone');
-  const { data: commentsCount } = useUserCommentsCount({
-    userId,
-  });
   const {
     data: comments,
     hasNextPage,
     isFetchingNextPage,
     fetchNextPage,
   } = useComments({ authorId: userId });
+  const { data: commentsCount } = useUserCommentsCount({
+    userId,
+  });
   const commentsList = comments?.pages.flatMap((page) => page.data);
 
   if (commentsList === undefined) {
@@ -127,6 +125,16 @@ export const UserComments = ({ userId }: Props) => {
           </Box>
         )}
         <>
+          {isMobileOrSmaller && (
+            <Title mt="0px" variant="h3" as="h1">
+              <FormattedMessage
+                {...messages.commentsWithCount}
+                values={{
+                  commentsCount: commentsCount?.data.attributes.count || '0',
+                }}
+              />
+            </Title>
+          )}
           {Object.keys(commentGroups).map((postId) => {
             const commentGroup = commentGroups[postId];
             const postType = commentGroup[0].relationships.post.data.type as

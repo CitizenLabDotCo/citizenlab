@@ -8,14 +8,15 @@ import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 // components
 import { IdeaCardsWithoutFiltersSidebar } from 'components/IdeaCards';
-import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 import ContentContainer from 'components/ContentContainer';
 import UsersShowPageMeta from './UsersShowPageMeta';
 import Button from 'components/UI/Button';
 import Following from './Following';
+import { Sort } from 'components/IdeaCards/shared/Filters/SortFilterDropdown';
 
 // i18n
-import { useIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // hooks
@@ -38,7 +39,7 @@ import { ideaDefaultSortMethodFallback } from 'services/participationContexts';
 
 // typings
 import { IUserData } from 'api/users/types';
-import { Sort } from 'components/IdeaCards/shared/Filters/SortFilterDropdown';
+import UserEvents from './UserEvents';
 
 const NotFoundContainer = styled.main`
   min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px - 4rem);
@@ -80,7 +81,13 @@ const StyledContentContainer = styled(ContentContainer)`
   `}
 `;
 
-export type UserTab = 'ideas' | 'comments' | 'following';
+const UserIdeas = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+`;
+
+export type UserTab = 'ideas' | 'comments' | 'following' | 'events';
 
 interface InnerProps {
   className?: string;
@@ -100,16 +107,15 @@ interface QueryParameters {
 
 export const UsersShowPage = memo<InnerProps>(({ className, user }) => {
   const [currentTab, setCurrentTab] = useState<UserTab>('ideas');
+  const { data: ideasCount } = useUserIdeasCount({ userId: user.id });
   const [savedScrollIndex, setSavedScrollIndex] = useState<number>(0);
   const isFollowingEnabled = useFeatureFlag({
     name: 'follow',
   });
-  const isSmallerThanPhone = useBreakpoint('phone');
-  const { data: ideasCount } = useUserIdeasCount({ userId: user.id });
+  const isMobileOrSmaller = useBreakpoint('phone');
   const [searchParams] = useSearchParams();
   const sortParam = searchParams.get('sort') as Sort | null;
   const searchParam = searchParams.get('search');
-  const { formatMessage } = useIntl();
 
   const ideaQueryParameters = useMemo<QueryParameters>(
     () => ({
@@ -143,37 +149,36 @@ export const UsersShowPage = memo<InnerProps>(({ className, user }) => {
 
         <StyledContentContainer maxWidth={maxPageWidth}>
           {currentTab === 'ideas' && (
-            <Box display="flex" w="100%" flexDirection="column">
-              {ideasCount && isSmallerThanPhone && (
-                <Box
-                  display="flex"
-                  justifyContent="center"
-                  alignItems="center"
-                  mb="16px"
-                >
-                  {formatMessage(messages.postsWithCount, {
-                    ideasCount: ideasCount.data.attributes.count,
-                  })}
-                </Box>
+            <>
+              {isMobileOrSmaller && (
+                <Title mt="0px" variant="h3" as="h1">
+                  <FormattedMessage
+                    {...messages.postsWithCount}
+                    values={{
+                      ideasCount: ideasCount?.data.attributes.count || '0',
+                    }}
+                  />
+                </Title>
               )}
-              <Box display="flex" w="100%" justifyContent="center">
+              <UserIdeas>
                 <IdeaCardsWithoutFiltersSidebar
                   defaultSortingMethod={ideaQueryParameters.sort}
                   ideaQueryParameters={ideaQueryParameters}
                   onUpdateQuery={updateSearchParams}
                   invisibleTitleMessage={messages.invisibleTitlePostsList}
-                  showSearchbar
-                  showDropdownFilters
+                  showSearchbar={true}
+                  showDropdownFilters={true}
                   goBackMode="goToProject"
                 />
-              </Box>
-            </Box>
+              </UserIdeas>
+            </>
           )}
 
           {currentTab === 'comments' && <UserComments userId={user.id} />}
           {currentTab === 'following' && isFollowingEnabled && (
             <Following userId={user.id} />
           )}
+          {currentTab === 'events' && <UserEvents userId={user.id} />}
         </StyledContentContainer>
       </Container>
     </>

@@ -11,16 +11,20 @@ const StyledEventsViewer = styled(EventsViewer)`
   margin-bottom: 135px;
 `;
 
+type Props = {
+  attendeeId?: string;
+};
 const CurrentAndUpcomingEvents = ({
   intl: { formatMessage },
-}: WrappedComponentProps) => (
+  attendeeId,
+}: Props & WrappedComponentProps) => (
   <StyledEventsViewer
     showProjectFilter={true}
     title={formatMessage(messages.upcomingAndOngoingEvents)}
     fallbackMessage={messages.noUpcomingOrOngoingEvents}
     eventsTime="currentAndFuture"
-    onClickTitleGoToProjectAndScrollToEvent={true}
     projectPublicationStatuses={['published']}
+    attendeeId={attendeeId}
   />
 );
 

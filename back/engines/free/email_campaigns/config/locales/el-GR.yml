@@ -144,7 +144,6 @@ el:
     cosponsor_of_your_initiative:
       cta_reply_to: 'Δείτε την πρότασή σας'
       event_description_initiative: 'Συγχαρητήρια! Το %{cosponsorName} αποδέχτηκε την πρόσκλησή σας να συνδιοργανώσει την πρότασή σας.'
-      event_description_cosponsoring: 'Η συνυποστήριξη μιας πρότασης σημαίνει ότι το όνομά σας θα εμφανίζεται στη διεύθυνση <strong></strong> μαζί με τα ονόματα των άλλων συνυποστηρικτών της πρότασης.'
       main_header: '%{cosponsorName} αποδέχθηκε την πρόσκλησή σας να συνυποστηρίξει την πρότασή σας'
       subject: '%{cosponsorName} αποδέχθηκε την πρόσκλησή σας να συνυποστηρίξει την πρότασή σας'
       preheader_initiative: '%{cosponsorName} αποδέχθηκε την πρόσκλησή σας να συνυποστηρίξει την πρότασή σας'
