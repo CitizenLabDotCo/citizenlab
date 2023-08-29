@@ -91,8 +91,10 @@ const InitiativesEditFormWrapper = ({
           // File/blob in form state
           const imageInForm = images?.[0];
           const imageInFormNeedsSaving = imageInForm
-            ? imageInForm.id === undefined
-            : false;
+            ? // If there's an image in the form but with no id, it means it's unsaved
+              imageInForm.id === undefined
+            : // If there's no image in the form, no saving is needed
+              false;
           // We have an existing image (id verifies this) and we have either no image in the form (undefined) or
           // the image in the form has no id (undefined) which means it has not been saved
           const oldImageNeedsDeletion =
