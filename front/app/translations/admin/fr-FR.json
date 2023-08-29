@@ -1506,7 +1506,7 @@
   "app.containers.AdminPage.ProjectEvents.saveErrorMessage": "Vos modifications n'ont pas pu être enregistrées, veuillez réessayer.",
   "app.containers.AdminPage.ProjectEvents.saveSuccessLabel": "Enregistré !",
   "app.containers.AdminPage.ProjectEvents.saveSuccessMessage": "Vos modifications ont été enregistrées.",
-  "app.containers.AdminPage.ProjectEvents.searchForLocation": "Recherche d'un lieu",
+  "app.containers.AdminPage.ProjectEvents.searchForLocation": "Rechercher un lieu",
   "app.containers.AdminPage.ProjectEvents.subtitleEvents": "Ajoutez ici des événements « hors ligne » ou des réunions qui sont liées à votre projet.",
   "app.containers.AdminPage.ProjectEvents.titleColumnHeader": "Titre et dates",
   "app.containers.AdminPage.ProjectEvents.titleEvents": "Evénements du projet",
