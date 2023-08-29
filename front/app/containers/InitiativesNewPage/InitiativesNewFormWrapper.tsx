@@ -4,7 +4,7 @@ import { ILocationInfo } from 'typings';
 // components
 import InitiativeForm2, {
   FormValues as FormValues2,
-} from 'components/InitiativeForm/InitiativeForm2';
+} from 'components/InitiativeForm';
 
 // style
 import clHistory from 'utils/cl-router/history';

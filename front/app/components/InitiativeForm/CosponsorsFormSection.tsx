@@ -10,7 +10,7 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useInitiativeCosponsorsRequired from 'hooks/useInitiativeCosponsorsRequired';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Warning from 'components/UI/Warning';
-import messages from '../messages';
+import messages from './messages';
 
 const CosponsorsFormSection = () => {
   const { data: appConfiguration } = useAppConfiguration();

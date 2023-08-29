@@ -1,43 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import clHistory from 'utils/cl-router/history';
 
-// components
-import InitiativeForm, {
-  FormValues,
-  SimpleFormValues,
-} from 'components/InitiativeForm';
-
 // services
-import { Locale, Multiloc, UploadFile } from 'typings';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-import { isEqual, pick, get, omitBy } from 'lodash-es';
-import { convertUrlToUploadFile } from 'utils/fileUtils';
+import { Locale, UploadFile } from 'typings';
 
 // geoJson
 import { parsePosition } from 'utils/locationTools';
 
-// tracks
-import tracks from './tracks';
-import { trackEventByName } from 'utils/analytics';
-
 import { IInitiativeImageData } from 'api/initiative_images/types';
 import useAddInitiativeImage from 'api/initiative_images/useAddInitiativeImage';
 import useDeleteInitiativeImage from 'api/initiative_images/useDeleteInitiativeImage';
-import useAuthUser from 'api/me/useAuthUser';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAddInitiativeFile from 'api/initiative_files/useAddInitiativeFile';
 import useDeleteInitiativeFile from 'api/initiative_files/useDeleteInitiativeFile';
 import useUpdateInitiative from 'api/initiatives/useUpdateInitiative';
-import { IInitiativeAdd, IInitiativeData } from 'api/initiatives/types';
-import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
-import useTopics from 'api/topics/useTopics';
-import { MentionItem } from 'react-mentions';
+import { IInitiativeData } from 'api/initiatives/types';
 import InitiativeForm2, {
   FormValues as FormValues2,
-} from 'components/InitiativeForm/InitiativeForm2';
+} from 'components/InitiativeForm';
 import { handleAddFiles, handleRemoveFiles } from 'api/initiative_files/util';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
 
 interface Props {
   locale: Locale;
@@ -47,64 +28,19 @@ interface Props {
   onPublished: () => void;
 }
 
-function doNothing() {
-  return;
-}
-
 const InitiativesEditFormWrapper = ({
   initiative,
   initiativeImage,
-  onPublished,
-  locale,
   initiativeFiles,
 }: Props) => {
-  const { data: appConfiguration } = useAppConfiguration();
-  const { data: authUser } = useAuthUser();
-  const { data: topics } = useTopics({ excludeCode: 'custom' });
+  const [image, setImage] = useState<UploadFile | null>(null);
+  const [banner, setBanner] = useState<UploadFile | null>(null);
 
-  const { mutate: addInitiativeImage } = useAddInitiativeImage();
-  const { mutate: deleteInitiativeImage } = useDeleteInitiativeImage();
+  const { mutateAsync: addInitiativeImage } = useAddInitiativeImage();
+  const { mutateAsync: deleteInitiativeImage } = useDeleteInitiativeImage();
   const { mutateAsync: addInitiativeFile } = useAddInitiativeFile();
   const { mutateAsync: deleteInitiativeFile } = useDeleteInitiativeFile();
   const { mutate: updateInitiative } = useUpdateInitiative();
-
-  const initialValues = {
-    title_multiloc: initiative.attributes.title_multiloc,
-    body_multiloc: initiative.attributes.body_multiloc,
-    position: initiative.attributes.location_description,
-    topic_ids: initiative.relationships.topics.data.map((topic) => topic.id),
-    cosponsor_ids: initiative.attributes.cosponsorships
-      ? initiative.attributes.cosponsorships.map(
-          (cosponsor) => cosponsor.user_id
-        )
-      : [],
-  };
-
-  const [formValues, setFormValues] = useState<SimpleFormValues>(initialValues);
-  const [postAnonymously, setPostAnonymously] = useState(
-    initiative.attributes.anonymous
-  );
-  const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
-    useState(false);
-  const [oldImageId, setOldImageId] = useState<string | null>(null);
-  const [image, setImage] = useState<UploadFile | null>(null);
-  const [publishing, setPublishing] = useState<boolean>(false);
-  const [hasBannerChanged, setHasBannerChanged] = useState<boolean>(false);
-  const [banner, setBanner] = useState<UploadFile | null>(null);
-  const [files, setFiles] = useState<UploadFile[]>(initiativeFiles || []);
-  const [publishError, setPublishError] = useState<boolean>(false);
-  const [apiErrors, setApiErrors] = useState<any>(null);
-  const [filesToRemove, setFilesToRemove] = useState<UploadFile[]>([]);
-  const [titleProfanityError, setTitleProfanityError] =
-    useState<boolean>(false);
-  const [descriptionProfanityError, setDescriptionProfanityError] =
-    useState<boolean>(false);
-
-  useEffect(() => {
-    if (initiativeFiles) {
-      setFiles(initiativeFiles);
-    }
-  }, [initiativeFiles]);
 
   useEffect(() => {
     if (initiativeImage && initiativeImage.attributes.versions.large) {
@@ -122,289 +58,159 @@ const InitiativesEditFormWrapper = ({
     }
   }, [initiative, initiativeImage]);
 
-  if (!topics || (image === undefined && initiativeImage)) return null;
+  // const continuePublish = async () => {
+  //   const changedValues = getChangedValues();
 
-  const allowAnonymousParticipation =
-    appConfiguration?.data.attributes.settings.initiatives
-      ?.allow_anonymous_participation;
+  //   // if we're already saving, do nothing.
+  //   if (publishing) return;
 
-  const getChangedValues = () => {
-    const changedKeys = Object.keys(initialValues).filter((key) => {
-      return !isEqual(initialValues[key], formValues[key]);
-    });
+  //   // setting flags for user feedback and avoiding double sends.
+  //   setPublishing(true);
 
-    return pick(formValues, changedKeys);
-  };
+  //   try {
+  //     const formAPIValues = await getValuesToSend(
+  //       changedValues,
+  //       hasBannerChanged,
+  //       banner
+  //     );
 
-  const getValuesToSend = async (
-    changedValues: Partial<FormValues>,
-    hasBannerChanged: boolean,
-    banner: UploadFile | undefined | null
-  ) => {
-    // build API readable object
-    const {
-      title_multiloc,
-      body_multiloc,
-      topic_ids,
-      position,
-      cosponsor_ids,
-    } = changedValues;
-    const positionInfo = await parsePosition(position);
+  //     updateInitiative({
+  //       initiativeId: initiative.id,
+  //       requestBody: {
+  //         ...formAPIValues,
+  //         anonymous: postAnonymously,
+  //         publication_status: 'published',
+  //       },
+  //     });
 
-    // removes undefined values, not null values that are used to remove previously used values
-    const formAPIValues = omitBy(
-      {
-        title_multiloc,
-        body_multiloc,
-        topic_ids,
-        ...positionInfo,
-        cosponsor_ids,
-      },
-      (entry) => entry === undefined
-    );
+  //     // feed back what was saved to the api into the initialValues object
+  //     // so that we can determine with certainty what has changed since last
+  //     // successful save.
 
-    if (hasBannerChanged) {
-      formAPIValues.header_bg = banner ? banner.base64 : null;
-    }
-    return formAPIValues as Partial<IInitiativeAdd>;
-  };
+  //     setHasBannerChanged(false);
 
-  const handlePublish = async () => {
-    if (allowAnonymousParticipation && postAnonymously) {
-      setShowAnonymousConfirmationModal(true);
-    } else {
-      continuePublish();
-    }
-  };
+  //     // save any changes to initiative image.
+  //     if (image && image.base64 && !image.id) {
+  //       addInitiativeImage({
+  //         initiativeId: initiative.id,
+  //         image: { image: image.base64 },
+  //       });
+  //     }
+  //     if (oldImageId) {
+  //       deleteInitiativeImage(
+  //         { initiativeId: initiative.id, imageId: oldImageId },
+  //         {
+  //           onSuccess: () => {
+  //             setOldImageId(null);
+  //           },
+  //         }
+  //       );
+  //     }
 
-  const continuePublish = async () => {
-    const changedValues = getChangedValues();
+  //     // saves changes to files
+  //     filesToRemove.map((file) => {
+  //       deleteInitiativeFile(
+  //         { initiativeId: initiative.id, fileId: file.id as string },
+  //         {
+  //           onError: (errorResponse) => {
+  //             const apiErrors = get(errorResponse, 'errors');
 
-    // if we're already saving, do nothing.
-    if (publishing) return;
+  //             setApiErrors((oldApiErrors) => ({
+  //               ...oldApiErrors,
+  //               ...apiErrors,
+  //             }));
 
-    // setting flags for user feedback and avoiding double sends.
-    setPublishing(true);
+  //             setTimeout(() => {
+  //               setApiErrors((oldApiErrors) => ({
+  //                 ...oldApiErrors,
+  //                 file: undefined,
+  //               }));
+  //             }, 5000);
+  //           },
+  //         }
+  //       );
+  //     });
+  //     files.map((file) => {
+  //       if (!file.id) {
+  //         addInitiativeFile(
+  //           {
+  //             initiativeId: initiative.id,
+  //             file: { file: file.base64, name: file.name },
+  //           },
+  //           {
+  //             onSuccess: (res) => {
+  //               file.id = res.data.id;
+  //             },
+  //             onError: (errorResponse) => {
+  //               const apiErrors = get(errorResponse, 'errors');
 
-    try {
-      const formAPIValues = await getValuesToSend(
-        changedValues,
-        hasBannerChanged,
-        banner
-      );
+  //               setApiErrors((oldApiErrors) => ({
+  //                 ...oldApiErrors,
+  //                 ...apiErrors,
+  //               }));
+  //               setTimeout(() => {
+  //                 setApiErrors((oldApiErrors) => ({
+  //                   ...oldApiErrors,
+  //                   file: undefined,
+  //                 }));
+  //               }, 5000);
+  //             },
+  //           }
+  //         );
+  //       }
+  //     });
 
-      updateInitiative({
-        initiativeId: initiative.id,
-        requestBody: {
-          ...formAPIValues,
-          anonymous: postAnonymously,
-          publication_status: 'published',
-        },
-      });
+  //     onPublished();
+  // } catch (errorResponse) {
+  //   const apiErrors = get(errorResponse, 'errors');
 
-      // feed back what was saved to the api into the initialValues object
-      // so that we can determine with certainty what has changed since last
-      // successful save.
+  //   setApiErrors((oldApiErrors) => ({ ...oldApiErrors, ...apiErrors }));
+  //   setPublishError(true);
+  //   const profanityApiError = apiErrors.base.find(
+  //     (apiError) => apiError.error === 'includes_banned_words'
+  //   );
 
-      setHasBannerChanged(false);
+  //   if (profanityApiError) {
+  //     const titleProfanityError = profanityApiError.blocked_words.some(
+  //       (blockedWord) => blockedWord.attribute === 'title_multiloc'
+  //     );
+  //     const descriptionProfanityError = profanityApiError.blocked_words.some(
+  //       (blockedWord) => blockedWord.attribute === 'body_multiloc'
+  //     );
 
-      // save any changes to initiative image.
-      if (image && image.base64 && !image.id) {
-        addInitiativeImage({
-          initiativeId: initiative.id,
-          image: { image: image.base64 },
-        });
-      }
-      if (oldImageId) {
-        deleteInitiativeImage(
-          { initiativeId: initiative.id, imageId: oldImageId },
-          {
-            onSuccess: () => {
-              setOldImageId(null);
-            },
-          }
-        );
-      }
+  //     if (titleProfanityError) {
+  //       trackEventByName(tracks.titleProfanityError.name, {
+  //         locale,
+  //         profaneMessage: changedValues.title_multiloc?.[locale],
+  //         proposalId: initiative.id,
+  //         location: 'InitiativesEditFormWrapper (citizen side)',
+  //         userId: !isNilOrError(authUser) ? authUser.data.id : null,
+  //         host: !isNilOrError(appConfiguration)
+  //           ? appConfiguration.data.attributes.host
+  //           : null,
+  //       });
 
-      // saves changes to files
-      filesToRemove.map((file) => {
-        deleteInitiativeFile(
-          { initiativeId: initiative.id, fileId: file.id as string },
-          {
-            onError: (errorResponse) => {
-              const apiErrors = get(errorResponse, 'errors');
+  //       setTitleProfanityError(titleProfanityError);
+  //     }
 
-              setApiErrors((oldApiErrors) => ({
-                ...oldApiErrors,
-                ...apiErrors,
-              }));
+  //     if (descriptionProfanityError) {
+  //       trackEventByName(tracks.descriptionProfanityError.name, {
+  //         locale,
+  //         profaneMessage: changedValues.body_multiloc?.[locale],
+  //         proposalId: initiative.id,
+  //         location: 'InitiativesEditFormWrapper (citizen side)',
+  //         userId: !isNilOrError(authUser) ? authUser.data.id : null,
+  //         host: !isNilOrError(appConfiguration)
+  //           ? appConfiguration.data.attributes.host
+  //           : null,
+  //       });
 
-              setTimeout(() => {
-                setApiErrors((oldApiErrors) => ({
-                  ...oldApiErrors,
-                  file: undefined,
-                }));
-              }, 5000);
-            },
-          }
-        );
-      });
-      files.map((file) => {
-        if (!file.id) {
-          addInitiativeFile(
-            {
-              initiativeId: initiative.id,
-              file: { file: file.base64, name: file.name },
-            },
-            {
-              onSuccess: (res) => {
-                file.id = res.data.id;
-              },
-              onError: (errorResponse) => {
-                const apiErrors = get(errorResponse, 'errors');
-
-                setApiErrors((oldApiErrors) => ({
-                  ...oldApiErrors,
-                  ...apiErrors,
-                }));
-                setTimeout(() => {
-                  setApiErrors((oldApiErrors) => ({
-                    ...oldApiErrors,
-                    file: undefined,
-                  }));
-                }, 5000);
-              },
-            }
-          );
-        }
-      });
-
-      onPublished();
-    } catch (errorResponse) {
-      const apiErrors = get(errorResponse, 'errors');
-
-      setApiErrors((oldApiErrors) => ({ ...oldApiErrors, ...apiErrors }));
-      setPublishError(true);
-      const profanityApiError = apiErrors.base.find(
-        (apiError) => apiError.error === 'includes_banned_words'
-      );
-
-      if (profanityApiError) {
-        const titleProfanityError = profanityApiError.blocked_words.some(
-          (blockedWord) => blockedWord.attribute === 'title_multiloc'
-        );
-        const descriptionProfanityError = profanityApiError.blocked_words.some(
-          (blockedWord) => blockedWord.attribute === 'body_multiloc'
-        );
-
-        if (titleProfanityError) {
-          trackEventByName(tracks.titleProfanityError.name, {
-            locale,
-            profaneMessage: changedValues.title_multiloc?.[locale],
-            proposalId: initiative.id,
-            location: 'InitiativesEditFormWrapper (citizen side)',
-            userId: !isNilOrError(authUser) ? authUser.data.id : null,
-            host: !isNilOrError(appConfiguration)
-              ? appConfiguration.data.attributes.host
-              : null,
-          });
-
-          setTitleProfanityError(titleProfanityError);
-        }
-
-        if (descriptionProfanityError) {
-          trackEventByName(tracks.descriptionProfanityError.name, {
-            locale,
-            profaneMessage: changedValues.body_multiloc?.[locale],
-            proposalId: initiative.id,
-            location: 'InitiativesEditFormWrapper (citizen side)',
-            userId: !isNilOrError(authUser) ? authUser.data.id : null,
-            host: !isNilOrError(appConfiguration)
-              ? appConfiguration.data.attributes.host
-              : null,
-          });
-
-          setDescriptionProfanityError(descriptionProfanityError);
-        }
-      }
-    }
-    setPublishing(false);
-  };
-
-  const onChangeTitle = (title_multiloc: Multiloc) => {
-    setFormValues((formValues) => ({
-      ...formValues,
-      title_multiloc,
-    }));
-    setTitleProfanityError(false);
-  };
-
-  const onChangeBody = (body_multiloc: Multiloc) => {
-    setFormValues((formValues) => ({
-      ...formValues,
-      body_multiloc,
-    }));
-    setDescriptionProfanityError(false);
-  };
-
-  const onChangeTopics = (topic_ids: string[]) => {
-    setFormValues((formValues) => ({
-      ...formValues,
-      topic_ids,
-    }));
-  };
-
-  const onChangePosition = (position: string) => {
-    setFormValues((formValues) => ({
-      ...formValues,
-      position,
-    }));
-  };
-
-  const onChangeCosponsors = (cosponsors: MentionItem[]) => {
-    const cosponsor_ids = cosponsors.map((cosponsor) => cosponsor.id);
-
-    setFormValues((formValues) => ({
-      ...formValues,
-      cosponsor_ids,
-    }));
-  };
-
-  const onChangeBanner = (newValue: UploadFile | null) => {
-    setBanner(newValue);
-    setHasBannerChanged(true);
-  };
-
-  const onChangeImage = (newValue: UploadFile | null) => {
-    if (newValue) {
-      setImage(newValue);
-    } else {
-      const currentImageId = image?.id;
-      if (currentImageId) {
-        setImage(newValue);
-        setOldImageId(currentImageId);
-      } else {
-        setImage(newValue);
-      }
-    }
-  };
-
-  const onAddFile = (file: UploadFile) => {
-    setFiles((files) => [...files, file]);
-  };
-
-  const onRemoveFile = (fileToRemove: UploadFile) => {
-    setFiles((files) =>
-      [...files].filter((file) => file.base64 !== fileToRemove.base64)
-    );
-    if (fileToRemove.id) {
-      setFilesToRemove((filesToRemove) => [...filesToRemove, fileToRemove]);
-    }
-  };
-
-  const onHandleCloseModal = () => {
-    setShowAnonymousConfirmationModal(false);
-  };
+  //       setDescriptionProfanityError(descriptionProfanityError);
+  //     }
+  //   }
+  // }
+  //   setPublishing(false);
+  // };
 
   const handleOnSubmit = async ({
     position,
@@ -453,12 +259,45 @@ const InitiativesEditFormWrapper = ({
             );
           }
 
-          if (images?.[0]) {
+          // Id of current (saved) image
+          const initiativeImageId = initiativeImage?.id;
+          // File/blob in form state
+          const imageInForm = images?.[0];
+          const imageInFormNeedsSaving = imageInForm
+            ? imageInForm.id === undefined
+            : false;
+          // We have an existing image (id verifies this) and we have either no image in the form (undefined) or
+          // the image in the form has no id (undefined) which means it has not been saved
+          const oldImageNeedsDeletion =
+            typeof initiativeImageId === 'string' &&
+            imageInForm?.id === undefined;
+
+          // Needs to come before adding new image
+          if (oldImageNeedsDeletion) {
+            await deleteInitiativeImage({
+              initiativeId,
+              imageId: initiativeImageId,
+            });
+          }
+
+          if (images && imageInFormNeedsSaving) {
             await addInitiativeImage({
               initiativeId,
               image: { image: images[0].base64 },
             });
           }
+          // handleAddInitiativeImages(
+          //   initiativeId,
+          //   images,
+          //   initiativeImage,
+          //   addInitiativeImage
+          // );
+          // handleRemoveInitiativeImages(
+          //   initiativeId,
+          //   images,
+          //   initiativeImage,
+          //   deleteInitiativeImage
+          // );
 
           clHistory.push({
             pathname: `/initiatives/${initiative.data.attributes.slug}`,
@@ -468,60 +307,27 @@ const InitiativesEditFormWrapper = ({
     );
   };
 
-  const initiativeTopics = topics.data.filter((topic) => !isNilOrError(topic));
-
   return (
-    <>
-      <InitiativeForm
-        onPublish={handlePublish}
-        onSave={doNothing}
-        locale={locale}
-        {...formValues}
-        image={image}
-        banner={banner}
-        files={files}
-        publishing={publishing}
-        publishError={publishError}
-        apiErrors={apiErrors}
-        onChangeTitle={onChangeTitle}
-        onChangeBody={onChangeBody}
-        onChangeTopics={onChangeTopics}
-        onChangePosition={onChangePosition}
-        onChangeCosponsors={onChangeCosponsors}
-        onChangeBanner={onChangeBanner}
-        onChangeImage={onChangeImage}
-        onAddFile={onAddFile}
-        onRemoveFile={onRemoveFile}
-        topics={initiativeTopics}
-        titleProfanityError={titleProfanityError}
-        descriptionProfanityError={descriptionProfanityError}
-        postAnonymously={postAnonymously}
-        setPostAnonymously={setPostAnonymously}
-        publishedAnonymously={initiative.attributes?.anonymous}
-        cosponsorships={initiative.attributes.cosponsorships}
-      />
-      {showAnonymousConfirmationModal && (
-        <AnonymousParticipationConfirmationModal
-          onCloseModal={onHandleCloseModal}
-        />
-      )}
-      <InitiativeForm2
-        onSubmit={handleOnSubmit}
-        defaultValues={{
-          title_multiloc: initiative.attributes.title_multiloc,
-          body_multiloc: initiative.attributes.body_multiloc,
-          position: initiative.attributes.location_description,
-          topic_ids: initiative.relationships.topics.data.map(
-            (topic) => topic.id
-          ),
-          cosponsor_ids: initiative.attributes.cosponsorships
-            ? initiative.attributes.cosponsorships.map(
-                (cosponsor) => cosponsor.user_id
-              )
-            : [],
-        }}
-      />
-    </>
+    <InitiativeForm2
+      onSubmit={handleOnSubmit}
+      defaultValues={{
+        title_multiloc: initiative.attributes.title_multiloc,
+        body_multiloc: initiative.attributes.body_multiloc,
+        position: initiative.attributes.location_description,
+        topic_ids: initiative.relationships.topics.data.map(
+          (topic) => topic.id
+        ),
+        cosponsor_ids: initiative.attributes.cosponsorships
+          ? initiative.attributes.cosponsorships.map(
+              (cosponsor) => cosponsor.user_id
+            )
+          : [],
+        local_initiative_files: initiativeFiles || [],
+        images: image ? [image] : [],
+        header_bg: banner ? [banner] : [],
+        anonymous: initiative.attributes.anonymous,
+      }}
+    />
   );
 };
 

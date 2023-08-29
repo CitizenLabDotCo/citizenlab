@@ -1,6 +1,6 @@
 import React from 'react';
 import { screen, render, userEvent } from 'utils/testUtils/rtl';
-import InitiativeForm, { InitiativeFormProps as Props } from './';
+import InitiativeForm, { InitiativeFormProps as Props } from '.';
 import { FormValues } from '.';
 
 const defaultProps: Props = {
