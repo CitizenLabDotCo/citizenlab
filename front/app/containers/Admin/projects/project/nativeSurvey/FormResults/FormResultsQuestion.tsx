@@ -22,7 +22,7 @@ type FormResultsQuestionProps = {
   locale: Locale;
   question: Multiloc;
   inputType: string;
-  answers: Answer[];
+  answers?: Answer[];
   totalResponses: number;
   required: boolean;
 };
@@ -56,22 +56,24 @@ const FormResultsQuestion = ({
           {inputTypeLabel}
         </Text>
       )}
-      {answers.map(({ answer, responses }, index) => {
-        const percentage = Math.round((responses / totalResponses) * 1000) / 10;
+      {answers &&
+        answers.map(({ answer, responses }, index) => {
+          const percentage =
+            Math.round((responses / totalResponses) * 1000) / 10;
 
-        return (
-          <CompletionBar
-            key={index}
-            bgColor={colors.primary}
-            completed={percentage}
-            leftLabel={answer}
-            rightLabel={formatMessage(messages.choiceCount2, {
-              choiceCount: responses,
-              percentage,
-            })}
-          />
-        );
-      })}
+          return (
+            <CompletionBar
+              key={index}
+              bgColor={colors.primary}
+              completed={percentage}
+              leftLabel={answer}
+              rightLabel={formatMessage(messages.choiceCount2, {
+                choiceCount: responses,
+                percentage,
+              })}
+            />
+          );
+        })}
     </Box>
   );
 };

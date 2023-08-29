@@ -45,6 +45,34 @@ class SurveyResultsGeneratorService < FieldVisitorService
     collect_answers(field, distribution, option_titles)
   end
 
+  def visit_multiline_text(field)
+    answers = inputs
+      .select("custom_field_values->'#{field.key}' as value")
+      .where("custom_field_values->'#{field.key}' IS NOT NULL")
+      .map { |input| input.value }
+    answer_count = answers.size
+    {
+      inputType: field.input_type,
+      question: field.title_multiloc,
+      required: field.required,
+      totalResponses: answer_count,
+    }
+  end
+
+  def visit_text(field)
+    answers = inputs
+      .select("custom_field_values->'#{field.key}' as value")
+      .where("custom_field_values->'#{field.key}' IS NOT NULL")
+      .map { |input| input.value }
+    answer_count = answers.size
+    {
+      inputType: field.input_type,
+      question: field.title_multiloc,
+      required: field.required,
+      totalResponses: answer_count,
+    }
+  end
+
   def visit_linear_scale(field)
     values = inputs
       .select("custom_field_values->'#{field.key}' as value")

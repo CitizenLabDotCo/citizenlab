@@ -16,12 +16,22 @@ RSpec.describe SurveyResultsGeneratorService do
 
   # Create a page to describe that it is not included in the survey results.
   let!(:page_field) { create(:custom_field_page, resource: form) }
-  let(:text_field) do
+  let!(:text_field) do
     create(
       :custom_field,
       resource: form,
       title_multiloc: {
         'en' => 'What is your favourite colour?'
+      },
+      description_multiloc: {}
+    )
+  end
+  let!(:multiline_text_field) do
+    create(
+      :custom_field_multiline_text,
+      resource: form,
+      title_multiloc: {
+        'en' => 'What is your favourite recipe?'
       },
       description_multiloc: {}
     )
@@ -144,6 +154,18 @@ RSpec.describe SurveyResultsGeneratorService do
       data: {
         results: [
           {
+            inputType: 'text',
+            question: { 'en' => 'What is your favourite colour?' },
+            required: false,
+            totalResponses: 4,
+          },
+          {
+            inputType: 'multiline_text',
+            question: { 'en' => 'What is your favourite recipe?' },
+            required: false,
+            totalResponses: 0,
+          },
+          {
             inputType: 'multiselect',
             question: {
               'en' => 'What are your favourite pets?',
@@ -212,12 +234,12 @@ RSpec.describe SurveyResultsGeneratorService do
 
   let(:expected_result_without_minimum_and_maximum_labels) do
     expected_result.tap do |result|
-      result[:data][:results][1][:answers][0][:answer] = {
+      result[:data][:results][3][:answers][0][:answer] = {
         'en' => '5 - Strongly agree',
         'fr-FR' => '5',
         'nl-NL' => '5'
       }
-      result[:data][:results][1][:answers][4][:answer] = {
+      result[:data][:results][3][:answers][4][:answer] = {
         'en' => '1',
         'fr-FR' => "1 - Pas du tout d'accord",
         'nl-NL' => '1'
