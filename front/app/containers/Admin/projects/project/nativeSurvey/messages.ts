@@ -140,4 +140,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.multiline_text2',
     defaultMessage: 'Long answer',
   },
+  text2: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.text2',
+    defaultMessage: 'Short answer',
+  },
 });

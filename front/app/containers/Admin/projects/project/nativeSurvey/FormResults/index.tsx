@@ -57,8 +57,6 @@ const FormResults = ({ intl: { formatMessage } }: WrappedComponentProps) => {
 
   const { totalSubmissions, results } = formResults;
 
-  console.log(results);
-
   const handleDownloadResults = async () => {
     try {
       setIsDownloading(true);
