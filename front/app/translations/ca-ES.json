@@ -1507,7 +1507,6 @@
   "app.containers.UsersShowPage.editProfile": "Editar el meu perfil",
   "app.containers.UsersShowPage.emptyInfoText": "No esteu seguint cap element del filtre especificat anteriorment.",
   "app.containers.UsersShowPage.eventsWithCount": "Esdeveniments ({eventsCount})",
-
   "app.containers.UsersShowPage.goBackToPreviousPage": "Tornar a la pàgina anterior",
   "app.containers.UsersShowPage.ideas": "Idees",
   "app.containers.UsersShowPage.initiatives": "Iniciatives",

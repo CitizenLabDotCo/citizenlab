@@ -1507,7 +1507,6 @@
   "app.containers.UsersShowPage.editProfile": "تعديل ملفي الشخصي",
   "app.containers.UsersShowPage.emptyInfoText": "أنت لا تتابع أي عناصر من الفلتر المحدد أعلاه.",
   "app.containers.UsersShowPage.eventsWithCount": "أحداث ({eventsCount})",
-  "app.containers.UsersShowPage.following": "التالي",
   "app.containers.UsersShowPage.goBackToPreviousPage": "عد للصفحة السابقة",
   "app.containers.UsersShowPage.ideas": "الأفكار",
   "app.containers.UsersShowPage.initiatives": "المبادرات",
