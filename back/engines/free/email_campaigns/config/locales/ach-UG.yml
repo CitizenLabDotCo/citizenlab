@@ -77,7 +77,6 @@ ach:
     cosponsor_of_your_initiative:
       cta_reply_to: 'crwdns942613:0crwdne942613:0'
       event_description_initiative: 'crwdns942615:0%{cosponsorName}crwdne942615:0'
-      event_description_cosponsoring: 'crwdns942617:0crwdne942617:0'
       main_header: 'crwdns942619:0%{cosponsorName}crwdne942619:0'
       subject: 'crwdns942621:0%{cosponsorName}crwdne942621:0'
       preheader_initiative: 'crwdns942623:0%{cosponsorName}crwdne942623:0'
