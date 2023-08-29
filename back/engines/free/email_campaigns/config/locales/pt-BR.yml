@@ -124,7 +124,7 @@ pt:
       cta_reply_to: 'Co-patrocinar esta proposta'
       event_description_initiative: '%{authorName} criou uma nova proposta e gostaria de contar com o seu co-patrocínio.'
       event_description_cosponsoring: 'Co-patrocinar uma proposta significa que <strong>o seu nome será apresentado</strong> juntamente com os nomes dos outros co-patrocinadores da proposta.'
-      event_description_before_action: 'To see the proposal and accept the invitation, you must be logged in to your account.'
+      event_description_before_action: 'Para ver a proposta e aceitar o convite, é necessário iniciar sessão na sua conta.'
       event_description_action: 'Clique abaixo para ler a proposta.'
       main_header: 'Foi convidado a co-patrocinar uma proposta'
       subject: 'Foi convidado a co-patrocinar uma proposta'
