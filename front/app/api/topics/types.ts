@@ -57,7 +57,7 @@ export interface ITopics {
 export interface ITopicsQueryParams {
   code?: Code;
   excludeCode?: Code;
-  sort?: 'new' | 'custom';
+  sort?: 'new' | 'custom' | 'projects_count' | '-projects_count';
   forHomepageFilter?: boolean;
   includeStaticPages?: boolean;
 }

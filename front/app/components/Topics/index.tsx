@@ -10,6 +10,7 @@ interface Props {
 const Topics = ({ showHomePageTopics = false }: Props) => {
   const { data: topics, isLoading } = useTopics({
     forHomepageFilter: showHomePageTopics,
+    sort: 'projects_count',
   });
 
   if (isLoading) {
