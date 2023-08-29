@@ -88,10 +88,12 @@ module BulkImportIdeas
       core_field_codes = %w[title_multiloc body_multiloc location_description]
       text_field_types = %w[text multiline_text number]
       select_field_types = %w[select multiselect]
+
       core_fields = []
       text_fields = []
       select_fields = []
       select_options = []
+
       @form_fields.each do |field|
         if core_field_codes.include? field[:code]
           core_fields << { name: field[:title_multiloc][@locale], code: field[:code], type: field[:input_type] }
