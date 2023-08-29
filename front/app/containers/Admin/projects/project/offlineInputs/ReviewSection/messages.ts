@@ -35,4 +35,8 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.formDataNotValid',
     defaultMessage: 'Invalid form data. Check the form above for errors.',
   },
+  approve: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.approve',
+    defaultMessage: 'Approve',
+  },
 });

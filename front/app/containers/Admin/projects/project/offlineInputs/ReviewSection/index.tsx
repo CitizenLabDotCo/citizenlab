@@ -261,7 +261,7 @@ const ReviewSection = ({
                     disabled={phaseNotAllowed || !formDataValid}
                     onClick={handleApproveIdea}
                   >
-                    Approve
+                    <FormattedMessage {...messages.approve} />
                   </Button>
                 </div>
               </Tippy>
