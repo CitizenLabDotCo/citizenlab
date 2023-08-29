@@ -42,13 +42,12 @@ module Analysis
         def authors_by_domicile
           domicile_field = CustomField.with_resource_type('User').find_by!(code: 'domicile')
 
-          users_count_by_area_id = UserCustomFields::FieldValueCounter.counts_by_field_option(
-            find_users, domicile_field, by: :area_id
+          users_count_by_option_id = UserCustomFields::FieldValueCounter.counts_by_field_option(
+            find_users, domicile_field, by: :option_id
           )
           areas = Area.all.select(:id, :title_multiloc)
           render json: raw_json({
-            series: { users: users_count_by_area_id },
-            areas: areas.to_h { |a| [a.id, a.attributes.except('id')] }
+            series: { users: users_count_by_option_id },
           })
         end
 

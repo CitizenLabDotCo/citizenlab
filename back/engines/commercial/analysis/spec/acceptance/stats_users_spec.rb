@@ -48,12 +48,17 @@ resource 'Analysis - Stats - Users' do
 
     before do
       @area1, @area2, @area3 = create_list(:area, 3)
-      authors = [@area1, @area1, @area2, nil].map { |area| create(:user, domicile: area&.id) }
+      # We need to call this to have the somewhere_else option
+      Area.recreate_custom_field_options
+      @somewhere_else_option = cf_domicile.options.left_joins(:area).find_by(areas: { id: nil })
+
+      authors = [@area1.id, @area1.id, @area2.id, nil, 'outside'].map { |domicile| create(:user, domicile: domicile) }
       create(:idea, project: project, author: authors[0], likes_count: 5)
       create(:idea, project: project, author: authors[0], likes_count: 5)
       create(:idea, project: project, author: authors[1], likes_count: 5)
       create(:idea, project: project, author: authors[2], likes_count: 3)
       create(:idea, project: project, author: authors[3], likes_count: 5)
+      create(:idea, project: project, author: authors[4], likes_count: 5)
     end
 
     let(:reactions_from) { 4 }
@@ -61,13 +66,12 @@ resource 'Analysis - Stats - Users' do
     example_request 'Authors by domicile' do
       expect(response_status).to eq 200
       expect(json_response_body.dig(:data, :attributes)).to match({
-        areas: Area.all.to_h { |area| [area.id, area.attributes.slice('title_multiloc')] },
         series: {
           users: {
-            @area1.id => 2,
-            @area2.id => 0,
-            @area3.id => 0,
-            outside: 0,
+            @area1.custom_field_option.id => 2,
+            @area2.custom_field_option.id => 0,
+            @area3.custom_field_option.id => 0,
+            @somewhere_else_option.id => 1, # outside
             _blank: 1
           }
         }
