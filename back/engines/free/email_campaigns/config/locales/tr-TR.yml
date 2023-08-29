@@ -144,7 +144,6 @@ tr:
     cosponsor_of_your_initiative:
       cta_reply_to: 'Teklifinizi görüntüleyin'
       event_description_initiative: 'Tebrikler! %{cosponsorName} teklifinize eş sponsorluk yapma davetinizi kabul etti.'
-      event_description_cosponsoring: 'Bir teklife eş-sponsorluk yapmak, adınızın <strong>teklifin diğer eş-sponsorlarının adlarıyla birlikte</strong> görüntüleneceği anlamına gelir.'
       main_header: '%{cosponsorName} teklifinize eş sponsorluk yapma davetinizi kabul etti'
       subject: '%{cosponsorName} teklifinize eş sponsorluk yapma davetinizi kabul etti'
       preheader_initiative: '%{cosponsorName} teklifinize eş sponsorluk yapma davetinizi kabul etti'
