@@ -1,6 +1,7 @@
 import React, { Suspense, lazy, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
 
 // typings
 import { Multiloc, UploadFile } from 'typings';
@@ -23,7 +24,6 @@ import {
 import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
-import { isNilOrError } from 'utils/helperUtils';
 
 // Components
 import SubmitButtonBar from './SubmitButtonBar';
@@ -39,14 +39,12 @@ const AnonymousParticipationConfirmationModal = lazy(
 import FileUploader from 'components/HookForm/FileUploader';
 import ImagesDropzone from 'components/HookForm/ImagesDropzone';
 import LocationInput from 'components/HookForm/LocationInput';
+import { Box } from '@citizenlab/cl2-component-library';
 
 // Hooks
 import useTopics from 'api/topics/useTopics';
-import useLocale from 'hooks/useLocale';
-import { Box } from '@citizenlab/cl2-component-library';
 import { IInitiativeData } from 'api/initiatives/types';
 import { IInitiativeImageData } from 'api/initiative_images/types';
-import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { IInitiativeFileData } from 'api/initiative_files/types';
 
 const StyledFormSection = styled(FormSection)`
@@ -86,7 +84,6 @@ const InitiativeForm = ({
   const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
     useState(false);
   const { formatMessage } = useIntl();
-  const locale = useLocale();
   const { data: topics } = useTopics({ excludeCode: 'custom' });
   const schema = object({
     title_multiloc: validateAtLeastOneLocale(
@@ -171,7 +168,7 @@ const InitiativeForm = ({
     })();
   }, [methods, initiativeFiles]);
 
-  if (isNilOrError(locale) || !topics) return null;
+  if (!topics) return null;
 
   const onFormSubmit = async (formValues: FormValues) => {
     try {
