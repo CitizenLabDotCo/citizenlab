@@ -71,6 +71,8 @@ const StyledContentContainer = styled(ContentContainer)`
   `}
 `;
 
+export type UserTab = 'ideas' | 'comments' | 'following';
+
 interface InnerProps {
   className?: string;
   user: IUserData;

@@ -2,39 +2,40 @@ import React, { memo } from 'react';
 import moment from 'moment';
 
 // components
-import DateBlocks from './DateBlocks';
 import EventInformation from './EventInformation';
 
-// services
+// types
 import { IEventData } from 'api/events/types';
 
 // style
 import styled from 'styled-components';
-import { defaultCardStyle } from 'utils/styleUtils';
+import { defaultCardHoverStyle, defaultCardStyle } from 'utils/styleUtils';
 
-// other
+// utils
 import { getIsoDate } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
+import clHistory from 'utils/cl-router/history';
 
 const Container = styled.div<{ clickable?: boolean }>`
   ${defaultCardStyle};
-  width: 100%;
-  padding: 30px;
+  padding: 16px;
   display: flex;
   box-shadow: none;
   border: solid 1px #ccc;
+  border-radius: 6px;
+
+  &:hover {
+    ${defaultCardHoverStyle};
+    transform: translate(0px, -1px);
+    cursor: pointer;
+  }
 `;
 
 interface Props {
   event: IEventData;
   className?: string;
   id?: string;
-  showProjectTitle?: boolean;
-  showLocation?: boolean;
-  showDescription?: boolean;
-  showAttachments?: boolean;
   titleFontSize?: number;
-  onClickTitleGoToProjectAndScrollToEvent?: boolean;
 }
 
 const EventCard = memo<Props>((props) => {
@@ -47,14 +48,17 @@ const EventCard = memo<Props>((props) => {
     const endAtIsoDate = getIsoDate(event.attributes.end_at);
     const isMultiDayEvent = startAtIsoDate !== endAtIsoDate;
 
-    return (
-      <Container className={className || ''} id={id}>
-        <DateBlocks
-          startAtMoment={startAtMoment}
-          endAtMoment={endAtMoment}
-          isMultiDayEvent={isMultiDayEvent}
-        />
+    const navigateToEventPage = () => {
+      clHistory.push(`/events/${event.id}`);
+    };
 
+    return (
+      <Container
+        className={className || ''}
+        id={id}
+        role="button"
+        onClick={navigateToEventPage}
+      >
         <EventInformation
           event={event}
           startAtMoment={startAtMoment}

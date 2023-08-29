@@ -9,6 +9,8 @@ import messages from './messages';
 import useFormCustomFields from 'hooks/useFormCustomFields';
 import { isNilOrError } from 'utils/helperUtils';
 import useLocalize from 'hooks/useLocalize';
+import tracks from 'containers/Admin/projects/project/analysis/tracks';
+import { trackEventByName } from 'utils/analytics';
 
 const AnalysesList = () => {
   const { formatMessage } = useIntl();
@@ -31,7 +33,13 @@ const AnalysesList = () => {
 
   const handleDeleteAnalysis = (analysisId: string) => {
     if (window.confirm(formatMessage(messages.deleteAnalysisConfirmation))) {
-      deleteAnalysis(analysisId);
+      deleteAnalysis(analysisId, {
+        onSuccess: () => {
+          trackEventByName(tracks.analysisForSurveyDeleted.name, {
+            extra: { projectId },
+          });
+        },
+      });
     }
   };
   return (

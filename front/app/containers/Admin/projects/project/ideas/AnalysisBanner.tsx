@@ -20,6 +20,9 @@ import useAddAnalysis from 'api/analyses/useAddAnalysis';
 import Modal from 'components/UI/Modal';
 import { Divider } from 'semantic-ui-react';
 
+import tracks from 'containers/Admin/projects/project/analysis/tracks';
+import { trackEventByName } from 'utils/analytics';
+
 const ConsentModal = ({ onClose }: { onClose: () => void }) => {
   const [checked, setChecked] = useState(false);
   const { mutate: createAnalysis, isLoading } = useAddAnalysis();
@@ -35,6 +38,9 @@ const ConsentModal = ({ onClose }: { onClose: () => void }) => {
           clHistory.push(
             `/admin/projects/${projectId}/analysis/${analysis.data.id}?showLaunchModal=true`
           );
+          trackEventByName(tracks.analysisForIdeationCreated.name, {
+            extra: { projectId },
+          });
         },
       }
     );

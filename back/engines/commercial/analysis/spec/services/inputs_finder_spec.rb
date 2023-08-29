@@ -197,6 +197,16 @@ describe Analysis::InputsFinder do
       @params = { "author_custom_#{cf.id}": [nil] }
       expect(output).to contain_exactly(idea2, idea3)
     end
+
+    it 'works correctly with the domicile field, when passed custom_field_options for areas' do
+      area = create(:area)
+      cf = create(:custom_field_domicile)
+      author = create(:user, custom_field_values: { cf.key => area.id })
+      idea1 = create(:idea, project: analysis.source_project, author: author)
+      _idea2 = create(:idea, project: analysis.source_project)
+      @params = { "author_custom_#{cf.id}": [cf.options[0].key] }
+      expect(output).to contain_exactly(idea1)
+    end
   end
 
   describe 'author_custom_<uuid>_from and author_custom_<uuid>_to' do
