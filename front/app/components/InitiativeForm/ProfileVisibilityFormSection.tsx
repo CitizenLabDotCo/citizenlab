@@ -18,13 +18,13 @@ interface Props {
 const ProfileVisibilityFormSection = ({ triggerModal }: Props) => {
   const { formatMessage } = useIntl();
   const { data: appConfiguration } = useAppConfiguration();
-  const { slug } = useParams();
+  const { initiativeId } = useParams();
   const initiativeCosponsorsRequired = useInitiativeCosponsorsRequired();
 
   if (!appConfiguration) return null;
 
-  // If we're creating a new initiative, slug is undefined and this will be 'false'
-  const isEditingInitiative = typeof slug === 'string';
+  // If we're creating a new initiative, id is undefined and this will be 'false'
+  const isEditingInitiative = typeof initiativeId === 'string';
   const allowAnonymousParticipation =
     appConfiguration.data.attributes.settings.initiatives
       ?.allow_anonymous_participation;
