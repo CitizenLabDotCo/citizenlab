@@ -8,14 +8,14 @@ fr-BE:
       "comment_on_your_comment": Une réponse à mon commentaire
       "comment_on_your_idea": Un commentaire sur mon idée
       "comment_on_your_initiative": Un commentaire sur mon proposition
-      "cosponsor_of_your_initiative": Un utilisateur accepte mon invitation à co-parrainer ma proposition
+      "cosponsor_of_your_initiative": Un utilisateur accepte de soutenir ma proposition
       "first_idea_published": Publication de ma première idée
       "idea_marked_as_spam": Rapport sur le spam d'idées
       "idea_published": Publication de mon idée
       "initiative_assigned_to_you": Attribution en ma faveur d'une proposition
       "initiative_marked_as_spam": Rapport sur le spam de proposition
       "initiative_published": Publication de mon proposition
-      "invitation_to_cosponsor_initiative": Invitation à coparrainer une proposition
+      "invitation_to_cosponsor_initiative": Invitation à soutenir une proposition
       "initiative_resubmitted_for_review": Proposition soumise à nouveau pour examen
       "invite_received": Invitation
       "invite_reminder": Rappel d'invitation
@@ -143,11 +143,10 @@ fr-BE:
       preheader: '%{authorName} a commenté votre initiative pour %{organizationName}'
     cosponsor_of_your_initiative:
       cta_reply_to: 'Voir votre proposition'
-      event_description_initiative: 'Félicitations ! %{cosponsorName} a accepté votre invitation à co-parrainer votre proposition.'
-      event_description_cosponsoring: 'Le co-parrainage d''une proposition signifie que <strong>votre nom sera affiché</strong> avec les noms des autres co-parrains de la proposition.'
-      main_header: '%{cosponsorName} a accepté votre invitation à coparrainer votre proposition'
-      subject: '%{cosponsorName} a accepté votre invitation à coparrainer votre proposition'
-      preheader_initiative: '%{cosponsorName} a accepté votre invitation à coparrainer votre proposition'
+      event_description_initiative: 'Félicitations ! %{cosponsorName} a accepté de soutenir votre proposition.'
+      main_header: '%{cosponsorName} a accepté de soutenir votre proposition'
+      subject: '%{cosponsorName} a accepté de soutenir votre proposition'
+      preheader_initiative: '%{cosponsorName} a accepté de soutenir votre proposition'
     assignee_digest:
       subject: 'Idées en attente de mise à jour: %{numberIdeas}'
       preheader: 'Rapport de gestion de %{organizationName}'
@@ -189,19 +188,19 @@ fr-BE:
       subject: 'Vous avez une attribution sur la plate-forme de %{organizationName}'
       preheader_initiative: 'L''initiative de %{authorName} vous a été attribuée'
     invitation_to_cosponsor_initiative:
-      cta_reply_to: 'Co-sponsoriser cette proposition'
-      event_description_initiative: '%{authorName} a élaboré une nouvelle proposition et aimerait que vous la coparrainiez.'
-      event_description_cosponsoring: 'Le co-parrainage d''une proposition signifie que <strong>votre nom sera affiché</strong> avec les noms des autres co-parrains de la proposition.'
+      cta_reply_to: 'Soutenir cette proposition'
+      event_description_initiative: '%{authorName} a créé une nouvelle proposition et aimerait que vous la souteniez.'
+      event_description_cosponsoring: 'Soutenir une proposition implique que <strong>votre nom sera affiché</strong> avec les noms des autres soutiens de la proposition.'
       event_description_action: 'Cliquez ci-dessous pour lire la proposition.'
-      main_header: 'Vous avez été invité à co-parrainer une proposition'
-      subject: 'Vous avez été invité à co-parrainer une proposition'
-      preheader_initiative: 'Vous avez été invité à coparrainer la proposition de %{authorName}'
+      main_header: 'Vous avez été invité à soutenir une proposition'
+      subject: 'Vous avez été invité à soutenir une proposition'
+      preheader_initiative: 'Vous avez été invité à soutenir la proposition de %{authorName}'
     initiative_resubmitted_for_review:
       by_author: 'par %{authorName}'
       cta_reply_to: 'Faites votre retour à %{authorName}'
       event_description_initiative: 'Une proposition a été soumise à nouveau pour examen. Donnez votre avis en rédigeant une mise à jour officielle ou en modifiant son statut.'
       main_header: '%{firstName}vous avez une proposition à examiner'
-      subject: 'Vous avez une proposition à examiner sur la plateforme de %{organizationName}'
+      subject: 'Vous avez une proposition à vérifier sur la plateforme de %{organizationName}'
       preheader_initiative: 'La proposition de %{authorName} a été soumise à nouveau pour examen.'
     invite_reminder:
       cta_accept_invitation: 'Accepter votre invitation'
@@ -658,7 +657,7 @@ fr-BE:
         managers: 'Gestionnaires'
         admins_assigned_to_a_proposal: 'Administrateurs assignés à une proposition'
         admins_and_managers_assigned_to_the_input: 'Les administrateurs et les gestionnaires assignés à la contribution'
-        user_who_is_invited_to_cosponsor_a_proposal: 'Utilisateur invité à co-parrainer une proposition'
+        user_who_is_invited_to_cosponsor_a_proposal: 'L''utilisateur invité à soutenir la proposition'
         user_who_is_receiving_admin_rights: 'L''utilisateur qui reçoit les droits d''administrateur'
         user_who_is_receiving_folder_moderator_rights: 'L''utilisateur qui reçoit les droits de gestionnaire de dossier'
         user_who_is_receiving_project_moderator_rights: 'L''utilisateur qui reçoit les droits de gestionnaire de projet'
@@ -702,8 +701,8 @@ fr-BE:
         internal_comment_is_posted_on_initiative_user_has_commented_internally_on: 'Un commentaire interne est publié sur la proposition que l''utilisateur a commentée en interne'
         internal_comment_is_posted_on_unassigned_initiative: 'Un commentaire interne est publié sur une proposition non attribuée'
         internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Un commentaire interne est publié sur une entrée non attribuée dans un projet non géré'
-        user_accepts_invitation_to_cosponsor_a_proposal: 'L''utilisateur accepte l''invitation à co-parrainer une proposition'
-        user_is_invited_to_cosponsor_a_proposal: 'L''utilisateur est invité à co-parrainer une proposition'
+        user_accepts_invitation_to_cosponsor_a_proposal: 'Un utilisateur accepte de soutenir une proposition'
+        user_is_invited_to_cosponsor_a_proposal: 'Un utilisateur est invité à soutenir une proposition'
         user_is_mentioned_in_internal_comment: 'L''utilisateur est mentionné dans un commentaire interne'
         new_input_is_published: 'Une nouvelle contribution a été postée'
         new_proposal_is_posted: 'Publication d''une nouvelle proposition'

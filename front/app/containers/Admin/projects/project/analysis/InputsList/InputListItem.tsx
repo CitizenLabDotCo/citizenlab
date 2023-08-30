@@ -15,6 +15,8 @@ import { getFullName } from 'utils/textUtils';
 import { useParams } from 'react-router-dom';
 import useAnalysis from 'api/analyses/useAnalysis';
 import InputShortFieldValue from './FieldValue';
+import { trackEventByName } from 'utils/analytics';
+import tracks from '../tracks';
 
 interface Props {
   input: IInputsData;
@@ -35,7 +37,13 @@ const InputListItem = memo(({ input, onSelect, selected }: Props) => {
   return (
     <>
       <Box
-        onClick={() => onSelect(input.id)}
+        id={`input-${input.id}`}
+        onClick={() => {
+          onSelect(input.id);
+          trackEventByName(tracks.inputPreviewedFromList.name, {
+            extra: { inputId: input.id },
+          });
+        }}
         bg={selected ? colors.background : colors.white}
         p="12px"
         display="flex"

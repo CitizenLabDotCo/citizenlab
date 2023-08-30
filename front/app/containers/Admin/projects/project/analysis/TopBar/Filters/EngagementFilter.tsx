@@ -8,6 +8,8 @@ import { useSearchParams } from 'react-router-dom';
 
 import { useIntl } from 'utils/cl-intl';
 import messages from '../../messages';
+import { trackEventByName } from 'utils/analytics';
+import tracks from '../../tracks';
 
 type EngagementFilterProps = {
   label: string;
@@ -60,6 +62,11 @@ const EngagementFilter = ({
           onChange={(value) => {
             removeSearchParams([from, to]);
             value && updateSearchParams({ [selectValue]: value });
+            trackEventByName(tracks.engagementFilterUsed.name, {
+              extra: {
+                type: selectValue,
+              },
+            });
           }}
         />
       </Box>

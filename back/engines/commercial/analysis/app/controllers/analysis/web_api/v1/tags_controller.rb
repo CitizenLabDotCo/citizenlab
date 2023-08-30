@@ -10,6 +10,7 @@ module Analysis
 
         def index
           @tags = @analysis.tags
+            .order(created_at: :desc)
 
           inputs_count_by_tag = TagCounter.new(@analysis, tags: @tags).counts_by_tag
           filtered_inputs_count_by_tag = TagCounter.new(@analysis, tags: @tags, filters: filters).counts_by_tag

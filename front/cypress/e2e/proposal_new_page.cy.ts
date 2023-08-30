@@ -18,14 +18,14 @@ describe('Initiative new page', () => {
   });
 
   it('shows an error when no title is provided', () => {
-    cy.get('.e2e-initiative-publish-button').find('.e2e-submit-form').click();
+    cy.get('#e2e-initiative-publish-button').click();
     cy.get('#e2e-initiative-form-title-section .e2e-error-message').contains(
       'Please provide a title'
     );
   });
 
   it('shows an error when no description is provided', () => {
-    cy.get('.e2e-initiative-publish-button').find('.e2e-submit-form').click();
+    cy.get('#e2e-initiative-publish-button').click();
     cy.get(
       '#e2e-initiative-form-description-section .e2e-error-message'
     ).contains('Please provide a description');
@@ -43,15 +43,15 @@ describe('Initiative new page', () => {
       .type(randomString(9))
       .blur()
       .wait(200);
-    cy.get('.e2e-initiative-publish-button').find('.e2e-submit-form').click();
+    cy.get('#e2e-initiative-publish-button').click();
     cy.get(
       '#e2e-initiative-form-description-section .e2e-error-message'
     ).contains('at least 30 characters long');
   });
 
   it('has a working initiative form', () => {
-    const initiativeTitle = randomString(40);
-    const initiativeContent = randomString(501);
+    const initiativeTitle = randomString(10);
+    const initiativeContent = randomString(30);
 
     cy.get('#e2e-initiative-title-input').as('titleInput');
     cy.get('#e2e-initiative-form-description-section .ql-editor').as(
@@ -100,7 +100,7 @@ describe('Initiative new page', () => {
     cy.get('#e2e-iniatiative-img-dropzone input').should('have.length', 0);
 
     // save the form
-    cy.get('.e2e-initiative-publish-button .e2e-submit-form').click({
+    cy.get('#e2e-initiative-publish-button').click({
       force: true,
     });
 
