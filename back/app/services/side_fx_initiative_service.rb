@@ -16,6 +16,8 @@ class SideFxInitiativeService
     return unless initiative.published?
 
     after_publish initiative, user
+
+    log_activities_if_cosponsors_added(initiative, user, _old_cosponsor_ids = [])
   end
 
   def before_update(initiative, user)
@@ -29,11 +31,11 @@ class SideFxInitiativeService
     transition_to_review_pending_if_required(initiative, user)
     remove_user_from_past_activities_with_item(initiative, user) if initiative.anonymous_previously_changed?(to: true)
 
-    if initiative.publication_status_previous_change == %w[draft published]
-      after_publish initiative, user
-    elsif initiative.published?
-      LogActivityJob.perform_later(initiative, 'changed', user_for_activity_on_anonymizable_item(initiative, user), initiative.updated_at.to_i)
-    end
+    # if initiative.publication_status_previous_change == %w[draft published]
+    #   after_publish initiative, user
+    # elsif initiative.published?
+    LogActivityJob.perform_later(initiative, 'changed', user_for_activity_on_anonymizable_item(initiative, user), initiative.updated_at.to_i)
+    # end
 
     if initiative.assignee_id_previously_changed?
       initiating_user = @automatic_assignment ? nil : user
