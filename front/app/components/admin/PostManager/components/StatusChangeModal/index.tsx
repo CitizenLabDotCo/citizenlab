@@ -18,6 +18,7 @@ export interface Props {}
 interface State {
   initiativeId: string | null;
   newStatusId: string | null;
+  feedbackRequired?: boolean;
 }
 
 class StatusChangeModal extends PureComponent<Props, State> {
@@ -28,6 +29,7 @@ class StatusChangeModal extends PureComponent<Props, State> {
     this.state = {
       initiativeId: null,
       newStatusId: null,
+      feedbackRequired: false,
     };
     this.subscriptions = [];
   }
@@ -36,9 +38,11 @@ class StatusChangeModal extends PureComponent<Props, State> {
     this.subscriptions = [
       eventEmitter
         .observeEvent<StatusChangeModalOpen>(events.statusChangeModalOpen)
-        .subscribe(({ eventValue: { initiativeId, newStatusId } }) => {
-          this.setState({ initiativeId, newStatusId });
-        }),
+        .subscribe(
+          ({ eventValue: { initiativeId, newStatusId, feedbackRequired } }) => {
+            this.setState({ initiativeId, newStatusId, feedbackRequired });
+          }
+        ),
     ];
   }
 
@@ -51,7 +55,7 @@ class StatusChangeModal extends PureComponent<Props, State> {
   };
 
   render() {
-    const { initiativeId, newStatusId } = this.state;
+    const { initiativeId, newStatusId, feedbackRequired } = this.state;
 
     return (
       <Modal
@@ -64,6 +68,7 @@ class StatusChangeModal extends PureComponent<Props, State> {
           <StatusChangeFormWrapper
             initiativeId={initiativeId}
             newStatusId={newStatusId}
+            feedbackRequired={feedbackRequired}
             closeModal={this.close}
           />
         )}

@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { useState } from 'react';
 import {
   isArray,
   find,
@@ -12,12 +12,13 @@ import {
 // components
 import Title from './title';
 import ValuesList from './valuesList';
+import { Box, Button, Icon, colors } from '@citizenlab/cl2-component-library';
 
 // style
 import styled from 'styled-components';
 import { media, isRtl } from 'utils/styleUtils';
 
-const Container = styled.div`
+const Container = styled(Box)`
   display: inline-block;
   position: relative;
 
@@ -88,36 +89,35 @@ interface Props extends DefaultProps {
   multipleSelectionAllowed: boolean;
   selected: string[];
   className?: string;
+  filterSelectorStyle?: 'button' | 'text';
 }
 
-interface State {
-  opened: boolean;
-}
+const FilterSelector = ({
+  width,
+  onChange,
+  multipleSelectionAllowed,
+  selected,
+  mobileWidth,
+  maxHeight,
+  mobileMaxHeight,
+  top,
+  left,
+  mobileLeft,
+  right,
+  mobileRight,
+  name,
+  title,
+  values,
+  id,
+  className,
+  textColor,
+  last,
+  filterSelectorStyle = 'text',
+}: Props) => {
+  const baseID = `filter-${Math.floor(Math.random() * 10000000)}`;
+  const [opened, setOpened] = useState(false);
 
-export default class FilterSelector extends PureComponent<Props, State> {
-  baseID: string;
-
-  static defaultProps: DefaultProps = {
-    width: undefined,
-    mobileWidth: undefined,
-    maxHeight: undefined,
-    mobileMaxHeight: undefined,
-    top: undefined,
-    left: undefined,
-    mobileLeft: undefined,
-    right: undefined,
-    mobileRight: undefined,
-  };
-
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      opened: false,
-    };
-    this.baseID = `filter-${Math.floor(Math.random() * 10000000)}`;
-  }
-
-  getTitle = (
+  const getTitle = (
     selection: string[],
     values: IFilterSelectorValue[],
     multipleSelectionAllowed: boolean,
@@ -149,18 +149,18 @@ export default class FilterSelector extends PureComponent<Props, State> {
     return newTitle;
   };
 
-  toggleExpanded = () => {
-    this.setState((state) => ({ opened: !state.opened }));
+  const toggleExpanded = () => {
+    setOpened((current) => !current);
   };
 
-  closeExpanded = () => {
-    this.setState({ opened: false });
+  const closeExpanded = () => {
+    setOpened(false);
   };
 
-  selectionChange = (value: string) => {
-    let newSelection = cloneDeep(this.props.selected);
+  const selectionChange = (value: string) => {
+    let newSelection = cloneDeep(selected);
 
-    if (!this.props.multipleSelectionAllowed) {
+    if (!multipleSelectionAllowed) {
       newSelection = [value];
     } else if (includes(newSelection, value)) {
       newSelection = without(newSelection, value);
@@ -168,83 +168,72 @@ export default class FilterSelector extends PureComponent<Props, State> {
       newSelection.push(value);
     }
 
-    if (this.props.onChange) {
-      this.props.onChange(newSelection);
+    if (onChange) {
+      onChange(newSelection);
     }
 
-    if (!this.props.multipleSelectionAllowed) {
-      this.closeExpanded();
+    if (!multipleSelectionAllowed) {
+      closeExpanded();
     }
   };
 
-  handleClickOutside = () => {
-    this.closeExpanded();
+  const handleClickOutside = () => {
+    closeExpanded();
   };
 
-  render() {
-    const { className, textColor } = this.props;
-    const { opened } = this.state;
-    const {
-      id,
-      values,
-      multipleSelectionAllowed,
-      selected,
-      title,
-      width,
-      mobileWidth,
-      maxHeight,
-      mobileMaxHeight,
-      top,
-      left,
-      mobileLeft,
-      right,
-      mobileRight,
-      last,
-      name,
-    } = this.props;
-    const currentTitle = this.getTitle(
-      selected,
-      values,
-      multipleSelectionAllowed,
-      title
-    );
+  const currentTitle = getTitle(
+    selected,
+    values,
+    multipleSelectionAllowed,
+    title
+  );
 
-    return (
-      <Container
-        id={id}
-        className={`e2e-filter-selector-${this.props.name} ${className} ${
-          last ? 'last' : ''
-        }`}
-      >
+  return (
+    <Container
+      id={id}
+      className={`e2e-filter-selector-${name} ${className} ${
+        last ? 'last' : ''
+      }`}
+    >
+      {filterSelectorStyle === 'button' ? (
+        <Button height="38px" borderRadius="24px" onClick={toggleExpanded}>
+          <Box display="flex" gap="8px">
+            {currentTitle}
+            <Icon fill={colors.white} name={'chevron-down'} />
+          </Box>
+        </Button>
+      ) : (
         <Title
-          key={this.baseID}
+          key={baseID}
           title={currentTitle}
           opened={opened}
-          onClick={this.toggleExpanded}
-          baseID={this.baseID}
+          onClick={toggleExpanded}
+          baseID={baseID}
           textColor={textColor}
         />
-        <ValuesList
-          title={currentTitle}
-          opened={opened}
-          values={values}
-          selected={selected}
-          onChange={this.selectionChange}
-          onClickOutside={this.handleClickOutside}
-          multipleSelectionAllowed={multipleSelectionAllowed}
-          baseID={this.baseID}
-          width={width}
-          mobileWidth={mobileWidth}
-          maxHeight={maxHeight}
-          mobileMaxHeight={mobileMaxHeight}
-          top={top}
-          left={left}
-          mobileLeft={mobileLeft}
-          right={right}
-          mobileRight={mobileRight}
-          name={name}
-        />
-      </Container>
-    );
-  }
-}
+      )}
+      <ValuesList
+        title={currentTitle}
+        opened={opened}
+        values={values}
+        selected={selected}
+        onChange={selectionChange}
+        onClickOutside={handleClickOutside}
+        multipleSelectionAllowed={multipleSelectionAllowed}
+        baseID={baseID}
+        width={width}
+        mobileWidth={mobileWidth}
+        maxHeight={maxHeight}
+        mobileMaxHeight={mobileMaxHeight}
+        top={top}
+        left={left}
+        mobileLeft={mobileLeft}
+        right={right}
+        mobileRight={mobileRight}
+        name={name}
+      />
+    </Container>
+  );
+};
+
+export default FilterSelector;

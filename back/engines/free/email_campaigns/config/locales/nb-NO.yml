@@ -144,7 +144,6 @@
     cosponsor_of_your_initiative:
       cta_reply_to: 'Se forslaget ditt'
       event_description_initiative: 'Gratulerer! %{cosponsorName} har godtatt invitasjonen din til å være medsponsor for forslaget ditt.'
-      event_description_cosponsoring: 'Å være medsponsor av et forslag betyr at <strong>navnet ditt vil vises</strong> med navnene til andre medsponsorer av forslaget.'
       main_header: '%{cosponsorName} har godtatt invitasjonen din til å være medsponsor for forslaget ditt'
       subject: '%{cosponsorName} har godtatt invitasjonen din til å være medsponsor for forslaget ditt'
       preheader_initiative: '%{cosponsorName} har godtatt invitasjonen din til å være medsponsor for forslaget ditt'
