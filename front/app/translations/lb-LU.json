@@ -836,6 +836,7 @@
   "app.containers.EventsShow.attending": "matmaachen",
   "app.containers.EventsShow.emailSharingBody": "Bei dësem Event deelhuelen: {eventTitle} um {eventLocation}",
   "app.containers.EventsShow.eventFrom": "Event vun \"{eventTitle}\"",
+  "app.containers.EventsShow.goBack": "Géi zréck",
   "app.containers.EventsShow.goToProject": "Gitt op de Projet",
   "app.containers.EventsShow.icsError": "Feeler beim Download vun der ICS Datei",
   "app.containers.EventsShow.socialMediaSharingMessage": "Bei dësem Event deelhuelen: {eventTitle}",
