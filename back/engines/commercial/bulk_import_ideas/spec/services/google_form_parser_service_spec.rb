@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe BulkImportIdeas::GoogleFormParserService do
-  # it 'gets idea rows from the PDF file' do
+  it 'gets idea rows from the PDF file' do
   #   # Comment this stub out to use the actual Google service - used for now as VCR not working
   #   # expect_any_instance_of(described_class).to receive(:parse_pdf).and_return(
   #   #   [
@@ -19,12 +19,12 @@ describe BulkImportIdeas::GoogleFormParserService do
   #   # )
   #   #file_content = nil
     
-  #   file_content = File.binread '/cl2_back/engines/commercial/bulk_import_ideas/spec/fixtures/slightly_better.pdf'
+    file_content = File.binread '/cl2_back/engines/commercial/bulk_import_ideas/spec/fixtures/multiple.pdf'
     
-  #   service = described_class.new file_content
-  #   docs = service.parse_pdf
+    service = described_class.new file_content
+    docs = service.parse_pdf
 
   #   expect(docs).not_to be_nil
   #   expect(docs[0].find { |doc| doc[:name] == 'Title:' }[:value]).to eq 'Free donuts for all'
-  # end
+  end
 end

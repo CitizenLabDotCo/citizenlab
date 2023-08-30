@@ -1,6 +1,7 @@
 module BulkImportIdeas
   class IdeaPlaintextParserService
     QUESTION_TYPES = %w[select multiselect text text_multiloc multiline_text html_multiloc]
+    EMPTY_SELECT_CIRCLES = ["O", "○"]
 
     def initialize(project_id, locale, phase_id)
       @project = Project.find(project_id)
@@ -74,22 +75,29 @@ module BulkImportIdeas
           form[current_field_display_title] = current_text.nil? ? line : "#{current_text} #{line}"
         end
 
-        if ['select', 'multiselect'].include? field_type then
-          # So far it seems like the selected answer(s) are detected
-          # as just the text, whereas for the answer(s) left blank a
-          # 0 or circle symbol is prepended. E.g.
-          # "A lot"  << the answer selected on the form
-          # "○ Not at all" + 
+        if field_type == 'select' then
+          # So far it seems like for the answer left blank an
+          # O or circle symbol is prepended. For the selected
+          # answer, either nothing or a random character is used. E.g.
+
+          # "○ A lot"
+          # "① Not at all" << the answer selected on the form
+
+          # or:
+          # "O A lot" + 
+          # "Not at all" << the answer selected on the form
 
           # So for now we will detect
-          # for which option titles we can find an exact match and
-          # label those as the selected answers
+          # which option titles match these kind of O
+          # or circle symbols, and assume the others are the
+          # select answer
+
           option_titles = current_custom_field
             .options
             .pluck(:title_multiloc)
             .map { |multiloc| multiloc[@locale] }
 
-          if option_titles.include? line then
+          unless is_empty_select_circle?(line, option_titles) then
             if form[current_field_display_title].nil? then
               form[current_field_display_title] = []
             end
@@ -123,6 +131,17 @@ module BulkImportIdeas
 
     def is_disclaimer?(line)
       line == "*#{@choose_as_many_copy}" || line == "*#{@this_answer_copy}"
+    end
+
+    # Checks if string has format '○ option label' or 'O option label'
+    def is_empty_select_circle?(line, option_titles)
+      first_character = line[0,1]
+      second_character = line[1,1]
+      rest = line[2,line.length - 2]
+
+      return false unless EMPTY_SELECT_CIRCLES.include? first_character
+      return false unless second_character == ' '
+      return option_titles.include? rest
     end
   end
 end

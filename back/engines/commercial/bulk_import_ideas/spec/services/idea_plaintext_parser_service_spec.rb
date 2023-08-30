@@ -55,8 +55,6 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
   end
 
   it 'parses text correctly (single document)' do
-    service = described_class.new project.id, 'en'
-
     text = "Title\n" +
       "My very good idea\n" +
       "Description\n" +
@@ -80,14 +78,66 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
       "O A lot\n" + 
       "Not at all\n"
 
+    service = described_class.new project.id, 'en', nil
     docs = service.parse_text text
 
-    binding.pry
+    # TODO properly assert this
 
     expect(docs).not_to be_nil
   end
 
-  # it 'parses text correctly (multiple documents)' do
-    # # TODO
-  # end
+  it 'parses text correctly (multiple documents)' do
+    text = "Title\n
+      Another great idea, wow\n
+      Description\n
+      Can you\n
+      believe how great this\n
+      idea is? Absolutely mind-blowing.\n
+      next-level stuff\n
+      Location (optional)\n
+      Pachecolaan 34, Brussels\n
+      Your favourite name for a swimming pool (optional)\n
+      *This answer will only be shared with moderators, and not to the public.\n
+      How much do you like pizza (optional)\n
+      *This answer will only be shared with moderators, and not to the public.\n
+      ○ A lot\n
+      ① Not at all\n
+      How much do you like burgers (optional)\n
+      *This answer will only be shared with moderators, and not to the public.\n
+      ☑ A lot\n
+      ○ Not at all\n
+      Title\n
+      This one is a bil mediarre\n
+      inedio,\n
+      Description\n
+      Honestly, I've seen better ideas.\n
+      This one is a bit\n
+      dissappointing.\n
+      Location (optional)\n
+      Your favourite name for a swimming pool (optional)\n
+      *This answer will only be shared with moderators, and not to the public.\n
+      Pooly Mc Poolface\n
+      How much do you like pizza (optional)\n
+      *This answer will only be shared with moderators, and not to the public.\n
+      A lot\n
+      ○ Not at all\n
+      How much do you like burgers (optional)\n
+      *This answer will only be shared with moderators, and not to the public.\n
+      ⑨ A lot\n
+      ○ Not at all\n
+    "
+      .lines
+      .select { |line| line != "\n" }
+      .map { |line| line.strip }
+      .join("\n")
+
+    service = described_class.new project.id, 'en', nil
+    docs = service.parse_text text
+
+    binding.pry
+  
+    # TODO properly assert this
+  
+    expect(docs).not_to be_nil
+  end
 end
