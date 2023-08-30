@@ -31,10 +31,9 @@ module Analysis
           })
         end
 
-        def users_by_custom_field
+        def authors_by_custom_field
           json_response = { series: {
-            users: user_counts,
-            reference_population: reference_population
+            users: user_counts
           } }
 
           if custom_field.options.present?
@@ -66,17 +65,6 @@ module Analysis
         def find_users
           inputs = InputsFinder.new(@analysis, filters(params)).execute
           User.where(id: inputs.select(:author_id))
-        end
-
-        def reference_population
-          @reference_population ||= calculate_reference_population
-        end
-
-        def calculate_reference_population
-          return if custom_field.key == 'birthyear'
-          return if (ref_distribution = custom_field.current_ref_distribution).blank?
-
-          ref_distribution.distribution_by_option_key
         end
 
         class NotSupportedFieldTypeError < StandardError; end

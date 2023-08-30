@@ -31,7 +31,6 @@ resource 'Analysis - Stats - Users' do
   let_it_be(:cf_birthyear) { create(:custom_field_birthyear) }
   let_it_be(:cf_gender) { create(:custom_field_gender, :with_options) }
   let_it_be(:cf_domicile) { create(:custom_field_domicile) }
-  let_it_be(:cf_education) { create(:custom_field_education, :with_options, enabled: true) }
 
   let(:analysis_id) { analysis.id }
 
@@ -106,144 +105,103 @@ resource 'Analysis - Stats - Users' do
     end
   end
 
-  # describe 'by_custom_field endpoints' do
-  #   get 'web_api/v1/analyses/:analysis_id/stats/authors_by_custom_field/:custom_field_id' do
-  #     filter_parameters(self)
+  describe 'by_custom_field endpoints' do
+    get 'web_api/v1/analyses/:analysis_id/stats/authors_by_custom_field/:custom_field_id' do
+      filter_parameters(self)
 
-  #     describe 'with select field' do
-  #       before do
-  #         @custom_field = create(:custom_field_select)
-  #         @option1, @option2, @option3 = create_list(:custom_field_option, 3, custom_field: @custom_field)
+      describe 'with select field' do
+        before do
+          @custom_field = create(:custom_field_select)
+          @option1, @option2, = create_list(:custom_field_option, 2, custom_field: @custom_field)
+          user1 = create(:user, custom_field_values: { @custom_field.key => @option1.key })
+          user2 = create(:user, custom_field_values: { @custom_field.key => @option2.key })
+          user3 = create(:user)
+          create(:idea, project: project, author: user1)
+          create(:idea, project: project, author: user2)
+          create(:idea, project: project, author: user3)
+        end
 
-  #         # We create an option on a different custom_field, but with the same
-  #         # key. This covers a regressions that mixed up custom field options
-  #         # between fields
-  #         @custom_field2 = create(:custom_field_select)
-  #         create(:custom_field_option, key: @option1.key, title_multiloc: { en: 'different' }, custom_field: @custom_field2)
+        let(:custom_field_id) { @custom_field.id }
 
-  #         travel_to(start_at - 1.day) do
-  #           create(:user, custom_field_values: { @custom_field.key => @option1.key }, manual_groups: [@group])
-  #         end
+        example_request 'Authors by custom field (select)' do
+          expect(response_status).to eq 200
+          expect(json_response_body.dig(:data, :attributes)).to match({
+            options: {
+              @option1.key => { title_multiloc: @option1.title_multiloc, ordering: 0 },
+              @option2.key => { title_multiloc: @option2.title_multiloc, ordering: 1 }
+            },
+            series: {
+              users: {
+                @option1.key => 1,
+                @option2.key => 1,
+                _blank: 1
+              }
+            }
+          }.deep_symbolize_keys)
+        end
+      end
 
-  #         travel_to(start_at + 4.days) do
-  #           create(:user, custom_field_values: { @custom_field.key => @option1.key }, manual_groups: [@group])
-  #           create(:user, custom_field_values: { @custom_field.key => @option2.key }, manual_groups: [@group])
-  #           create(:user, manual_groups: [@group])
-  #           create(:user, custom_field_values: { @custom_field.key => @option3.key })
-  #         end
+      describe 'with multiselect field' do
+        before do
+          @custom_field = create(:custom_field_multiselect)
+          @option1, @option2 = create_list(:custom_field_option, 2, custom_field: @custom_field)
+          user1 = create(:user, custom_field_values: { @custom_field.key => [@option1.key] })
+          user2 = create(:user, custom_field_values: { @custom_field.key => [@option1.key, @option2.key] })
+          user3 = create(:user)
+          create(:idea, project: project, author: user1)
+          create(:idea, project: project, author: user2)
+          create(:idea, project: project, author: user3)
+        end
 
-  #         travel_to(end_at + 1.day) do
-  #           create(:user, custom_field_values: { @custom_field.key => @option1.key }, manual_groups: [@group])
-  #         end
-  #       end
+        let(:custom_field_id) { @custom_field.id }
 
-  #       let(:custom_field_id) { @custom_field.id }
+        example_request 'Authors by custom field (multiselect)' do
+          expect(response_status).to eq 200
+          expect(json_response_body.dig(:data, :attributes)).to match({
+            options: {
+              @option1.key => { title_multiloc: @option1.title_multiloc, ordering: 0 },
+              @option2.key => { title_multiloc: @option2.title_multiloc, ordering: 1 }
+            },
+            series: {
+              users: {
+                @option1.key => 2,
+                @option2.key => 1,
+                _blank: 1
+              }
+            }
+          }.deep_symbolize_keys)
+        end
+      end
 
-  #       example_request 'Authors by custom field (select)' do
-  #         expect(response_status).to eq 200
-  #         expect(json_response_body.dig(:data, :attributes)).to match({
-  #           options: {
-  #             @option1.key => { title_multiloc: @option1.title_multiloc, ordering: 0 },
-  #             @option2.key => { title_multiloc: @option2.title_multiloc, ordering: 1 },
-  #             @option3.key => { title_multiloc: @option3.title_multiloc, ordering: 2 }
-  #           },
-  #           series: {
-  #             users: {
-  #               @option1.key => 1,
-  #               @option2.key => 1,
-  #               @option3.key => 0,
-  #               _blank: 1
-  #             },
-  #             expected_users: nil,
-  #             reference_population: nil
-  #           }
-  #         }.deep_symbolize_keys)
-  #       end
-  #     end
+      describe 'with checkbox field' do
+        before do
+          @custom_field = create(:custom_field_checkbox)
+          user1 = create(:user)
+          user2 = create(:user, custom_field_values: { @custom_field.key => false })
+          user3 = create(:user, custom_field_values: { @custom_field.key => true })
+          create(:idea, project: project, author: user1)
+          create(:idea, project: project, author: user1)
+          create(:idea, project: project, author: user2)
+          create(:idea, project: project, author: user3)
+        end
 
-  #     describe 'with multiselect field' do
-  #       before do
-  #         @group = create(:group)
-  #         @custom_field = create(:custom_field_multiselect)
-  #         @option1, @option2, @option3 = create_list(:custom_field_option, 3, custom_field: @custom_field)
-  #         travel_to(start_at - 1.day) do
-  #           create(:user, custom_field_values: { @custom_field.key => [@option1.key] }, manual_groups: [@group])
-  #         end
+        let(:custom_field_id) { @custom_field.id }
 
-  #         travel_to(start_at + 6.days) do
-  #           create(:user, custom_field_values: { @custom_field.key => [@option1.key] }, manual_groups: [@group])
-  #           create(:user, custom_field_values: { @custom_field.key => [@option1.key, @option2.key] }, manual_groups: [@group])
-  #           create(:user, manual_groups: [@group])
-  #           create(:user, custom_field_values: { @custom_field.key => [@option3.key] })
-  #         end
-
-  #         travel_to(end_at + 1.day) do
-  #           create(:user, custom_field_values: { @custom_field.key => [@option1.key] }, manual_groups: [@group])
-  #         end
-  #       end
-
-  #       let(:custom_field_id) { @custom_field.id }
-
-  #       example_request 'Authors by custom field (multiselect)' do
-  #         expect(response_status).to eq 200
-  #         expect(json_response_body.dig(:data, :attributes)).to match({
-  #           options: {
-  #             @option1.key => { title_multiloc: @option1.title_multiloc, ordering: 0 },
-  #             @option2.key => { title_multiloc: @option2.title_multiloc, ordering: 1 },
-  #             @option3.key => { title_multiloc: @option3.title_multiloc, ordering: 2 }
-  #           },
-  #           series: {
-  #             users: {
-  #               @option1.key => 2,
-  #               @option2.key => 1,
-  #               @option3.key => 0,
-  #               _blank: 1
-  #             },
-  #             expected_users: nil,
-  #             reference_population: nil
-  #           }
-  #         }.deep_symbolize_keys)
-  #       end
-  #     end
-
-  #     describe 'with checkbox field' do
-  #       before do
-  #         @group = create(:group)
-  #         @custom_field = create(:custom_field_checkbox)
-  #         travel_to(start_at - 1.day) do
-  #           create(:user, custom_field_values: { @custom_field.key => false }, manual_groups: [@group])
-  #         end
-
-  #         travel_to(start_at + 24.days) do
-  #           create(:user, custom_field_values: { @custom_field.key => true }, manual_groups: [@group])
-  #           create(:user, custom_field_values: { @custom_field.key => false }, manual_groups: [@group])
-  #           create(:user, manual_groups: [@group])
-  #         end
-
-  #         travel_to(end_at + 1.day) do
-  #           create(:user, custom_field_values: { @custom_field.key => true }, manual_groups: [@group])
-  #         end
-  #       end
-
-  #       let(:group) { @group.id }
-  #       let(:custom_field_id) { @custom_field.id }
-
-  #       example_request 'Authors by custom field (checkbox)' do
-  #         expect(response_status).to eq 200
-  #         expect(json_response_body.dig(:data, :attributes)).to match({
-  #           series: {
-  #             users: {
-  #
-  #               true: 1,
-  #               false: 1,
-  #                 #               _blank: 1
-  #             },
-  #             expected_users: nil,
-  #             reference_population: nil
-  #           }
-  #         })
-  #       end
-  #     end
-  #   end
-  # end
+        example_request 'Authors by custom field (checkbox)' do
+          expect(response_status).to eq 200
+          expect(json_response_body.dig(:data, :attributes)).to match({
+            series: {
+              users: {
+                # rubocop:disable Lint/BooleanSymbol
+                true: 1,
+                false: 1,
+                _blank: 1
+                # rubocop:enable Lint/BooleanSymbol
+              }
+            }
+          })
+        end
+      end
+    end
+  end
 end
