@@ -15,6 +15,10 @@ pl:
     rejected: odrzucony
     rejected_description: Ten pomysł został odrzucony
   initiative_statuses:
+    review_pending: przegląd w toku
+    review_pending_description: przegląd w toku
+    changes_requested: wymagane zmiany
+    changes_requested_description: wymagane zmiany
     proposed: zaproponowana
     proposed_description: zaproponowana
     expired: nieaktualna
@@ -181,6 +185,8 @@ pl:
       <p>Inicjatorzy są proszeni o przedstawienie swojej propozycji na następnym posiedzeniu rady. Przedstawimy oficjalną aktualizację.</p>
     default_eligibility_criteria: >
       <ul> <li>To musi wchodzić w zakres obszarów i kompetencji polityki lokalnej</li> <li>Służy interesowi publicznemu, a nie indywidualnemu</li> <li>Nie dyskryminuje ze względu na płeć, rasa, wiek lub pochodzenie</li> <li>Nie szkodzi innym</li> </ul>
+    default_posting_tips: >
+      <ul><li>Proszę poświęć trochę czasu na dopracowanie swojej propozycji. Jeśli to konieczne, napisz najpierw projekt, a następnie wklej go tutaj.</li><li>Wybierz tytuł, który jasno i klarownie pokaże, co pociąga za sobą Twoja propozycja.</li><li>Zilustruj swoją propozycję odpowiednim obrazem, tak aby bardziej się wyróżniała.</li><li>Dodaj odpowiednie załączniki, takie jak filmy wideo, inspirujące przykłady, szczegóły techniczne lub plany.</li><li>Podziel się swoim pomysłem w mediach społecznościowych i innych kanałach, aby zebrać wsparcie od innych.</li></ul>
   reset_password_mailer:
     send_reset_password:
       cta_reset_password: 'Zresetuj swoje hasło'
