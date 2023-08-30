@@ -73,12 +73,28 @@ module BulkImportIdeas
           form[current_field_display_title] = current_text.nil? ? line : "#{current_text} #{line}"
         end
 
-        if field_type == 'select' then
-          # TODO
-        end
+        if ['select', 'multiselect'].include? field_type then
+          # So far it seems like the selected answer(s) are detected
+          # as just the text, whereas for the answer(s) left blank a
+          # 0 or circle symbol is prepended. E.g.
+          # "A lot"  << the answer selected on the form
+          # "○ Not at all" + 
 
-        if field_type == 'multiselect' then
-          # TODO
+          # So for now we will detect
+          # for which option titles we can find an exact match and
+          # label those as the selected answers
+          option_titles = current_custom_field
+            .options
+            .pluck(:title_multiloc)
+            .map { |multiloc| multiloc[@locale] }
+
+          if option_titles.include? line then
+            if form[current_field_display_title].nil? then
+              form[current_field_display_title] = []
+            end
+
+            form[current_field_display_title] << line
+          end
         end
       end
 
