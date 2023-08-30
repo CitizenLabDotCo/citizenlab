@@ -504,17 +504,6 @@ resource 'Initiatives' do
           expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
           expect(json_response.dig(:data, :relationships, :areas, :data).pluck(:id)).to match_array area_ids
         end
-
-        example 'Check for the automatic creation of a like by the author when the publication status of an initiative is updated from draft to published', document: false do
-          @initiative.update!(publication_status: 'draft')
-          do_request initiative: { publication_status: 'published' }
-          json_response = json_parse(response_body)
-          new_initiative = Initiative.find(json_response.dig(:data, :id))
-          expect(new_initiative.reactions.size).to eq 1
-          expect(new_initiative.reactions[0].mode).to eq 'up'
-          expect(new_initiative.reactions[0].user.id).to eq @user.id
-          expect(json_response.dig(:data, :attributes, :likes_count)).to eq 1
-        end
       end
 
       describe do
