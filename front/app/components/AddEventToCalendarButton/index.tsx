@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 // components
 import { Box, Text, Button, Error } from '@citizenlab/cl2-component-library';
@@ -14,7 +14,7 @@ import saveAs from 'file-saver';
 
 export const AddEventToCalendarButton = ({ eventId }: { eventId: string }) => {
   const { formatMessage } = useIntl();
-  let isError = false;
+  const [isError, setIsError] = useState(false);
 
   const handleICSDownload = async () => {
     try {
@@ -24,7 +24,7 @@ export const AddEventToCalendarButton = ({ eventId }: { eventId: string }) => {
       );
       saveAs(blob, `${eventId}.ics`);
     } catch {
-      isError = true;
+      setIsError(true);
     }
   };
 
