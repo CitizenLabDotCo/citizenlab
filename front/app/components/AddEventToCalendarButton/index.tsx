@@ -43,7 +43,6 @@ export const AddEventToCalendarButton = ({ eventId }: { eventId: string }) => {
             justifyContent: 'left',
             textAlign: 'left',
           }}
-          id="e2e-location-with-coordinates-button"
         >
           <Text mt="4px" color="tenantPrimary" m="0px" p="0px" fontSize="s">
             {formatMessage(messages.addToCalendar)}
