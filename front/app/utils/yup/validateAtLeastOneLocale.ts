@@ -1,7 +1,16 @@
 import { Multiloc } from 'typings';
-import { object, lazy, string } from 'yup';
+import { object, lazy, string, StringSchema } from 'yup';
 
-const validateAtLeastOneLocale = (message: string) => {
+interface Props {
+  validateEachLocale: (schema: StringSchema) => StringSchema;
+}
+
+const validateAtLeastOneLocale = (
+  message: string,
+  { validateEachLocale }: Props = {
+    validateEachLocale: (schema) => schema,
+  }
+) => {
   return lazy((multiloc: Multiloc) => {
     const locales = Object.keys(multiloc);
 
@@ -14,7 +23,10 @@ const validateAtLeastOneLocale = (message: string) => {
       );
     }
     return object(
-      locales.reduce((acc, locale) => ((acc[locale] = string()), acc), {})
+      locales.reduce(
+        (acc, locale) => ((acc[locale] = validateEachLocale(string())), acc),
+        {}
+      )
     );
   });
 };

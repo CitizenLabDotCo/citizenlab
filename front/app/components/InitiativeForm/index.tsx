@@ -48,6 +48,7 @@ import { IInitiativeImageData } from 'api/initiative_images/types';
 import { IInitiativeFileData } from 'api/initiative_files/types';
 import Warning from 'components/UI/Warning';
 import useInitiativeReviewRequired from 'hooks/useInitiativeReviewRequired';
+import { stripHtmlTags } from 'utils/helperUtils';
 
 const StyledFormSection = styled(FormSection)`
   ${media.phone`
@@ -90,10 +91,28 @@ const InitiativeForm = ({
   const { data: topics } = useTopics({ excludeCode: 'custom' });
   const schema = object({
     title_multiloc: validateAtLeastOneLocale(
-      formatMessage(messages.titleEmptyError)
+      formatMessage(messages.titleEmptyError),
+      {
+        validateEachLocale: (schema) =>
+          // https://github.com/jquense/yup/issues/1267
+          schema.matches(/.{10,}/, {
+            excludeEmptyString: true,
+            message: formatMessage(messages.titleMinLengthError),
+          }),
+      }
     ),
     body_multiloc: validateAtLeastOneLocale(
-      formatMessage(messages.descriptionEmptyError)
+      formatMessage(messages.descriptionEmptyError),
+      {
+        validateEachLocale: (schema) =>
+          // https://github.com/jquense/yup/issues/1267
+          schema
+            .transform((currentValue) => stripHtmlTags(currentValue))
+            .matches(/.{30,}/, {
+              excludeEmptyString: true,
+              message: formatMessage(messages.descriptionBodyLengthError),
+            }),
+      }
     ),
     position: string().optional().nullable(),
     topic_ids: array().optional(),
