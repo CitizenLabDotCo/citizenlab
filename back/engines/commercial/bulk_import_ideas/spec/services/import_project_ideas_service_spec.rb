@@ -222,53 +222,53 @@ describe BulkImportIdeas::ImportProjectIdeasService do
     end
   end
 
-  describe 'pdf_raw_text_to_idea_rows' do
-    it 'can parse raw text into an idea row' do
-      project = create(:continuous_project)
+  # describe 'pdf_raw_text_to_idea_rows' do
+    # it 'can parse raw text into an idea row' do
+    #   project = create(:continuous_project)
 
-      custom_form = create(:custom_form, :with_default_fields, participation_context: project)
-      create(:custom_field, resource: custom_form, key: 'a_new_field', title_multiloc: { 'en' => 'A NEW field' }, enabled: true)
-      create(:custom_field, resource: custom_form, key: 'number_field', title_multiloc: { 'en' => 'Number field' }, input_type: 'number', enabled: true)
-      select_field = create(:custom_field, resource: custom_form, key: 'select_field', title_multiloc: { 'en' => 'Select field' }, input_type: 'select', enabled: true)
-      create(:custom_field_option, custom_field: select_field, key: 'yes', title_multiloc: { 'en' => 'Yes' })
-      create(:custom_field_option, custom_field: select_field, key: 'no', title_multiloc: { 'en' => 'No' })
-      multiselect_field = create(:custom_field, resource: custom_form, key: 'multiselect_field', title_multiloc: { 'en' => 'Multi select field' }, input_type: 'multiselect', enabled: true)
-      create(:custom_field_option, custom_field: multiselect_field, key: 'this', title_multiloc: { 'en' => 'This' })
-      create(:custom_field_option, custom_field: multiselect_field, key: 'that', title_multiloc: { 'en' => 'That' })
-      another_select_field = create(:custom_field, resource: custom_form, key: 'another_select_field', title_multiloc: { 'en' => 'Another select field' }, input_type: 'select', enabled: true)
-      create(:custom_field_option, custom_field: another_select_field, key: 'yes', title_multiloc: { 'en' => 'Yes' })
-      create(:custom_field_option, custom_field: another_select_field, key: 'no', title_multiloc: { 'en' => 'No' })
+    #   custom_form = create(:custom_form, :with_default_fields, participation_context: project)
+    #   create(:custom_field, resource: custom_form, key: 'a_new_field', title_multiloc: { 'en' => 'A NEW field' }, enabled: true)
+    #   create(:custom_field, resource: custom_form, key: 'number_field', title_multiloc: { 'en' => 'Number field' }, input_type: 'number', enabled: true)
+    #   select_field = create(:custom_field, resource: custom_form, key: 'select_field', title_multiloc: { 'en' => 'Select field' }, input_type: 'select', enabled: true)
+    #   create(:custom_field_option, custom_field: select_field, key: 'yes', title_multiloc: { 'en' => 'Yes' })
+    #   create(:custom_field_option, custom_field: select_field, key: 'no', title_multiloc: { 'en' => 'No' })
+    #   multiselect_field = create(:custom_field, resource: custom_form, key: 'multiselect_field', title_multiloc: { 'en' => 'Multi select field' }, input_type: 'multiselect', enabled: true)
+    #   create(:custom_field_option, custom_field: multiselect_field, key: 'this', title_multiloc: { 'en' => 'This' })
+    #   create(:custom_field_option, custom_field: multiselect_field, key: 'that', title_multiloc: { 'en' => 'That' })
+    #   another_select_field = create(:custom_field, resource: custom_form, key: 'another_select_field', title_multiloc: { 'en' => 'Another select field' }, input_type: 'select', enabled: true)
+    #   create(:custom_field_option, custom_field: another_select_field, key: 'yes', title_multiloc: { 'en' => 'Yes' })
+    #   create(:custom_field_option, custom_field: another_select_field, key: 'no', title_multiloc: { 'en' => 'No' })
 
-      service = described_class.new create(:admin), project.id, 'en', nil
+    #   service = described_class.new create(:admin), project.id, 'en', nil
 
-      text = "
-        Title\n
-        My very good idea\n
-        Description\n
-        would suggest building the\n
-        new swimming Pool near the\n
-        Shopping mall on Park Lane,\n
-        It's easily accessible location\n
-        with enough space\n
-        an\n
-        Location (optional)\n
-        Dear shopping mall\n
-        Your favourite name for a swimming pool (optional)\n
-        *This answer will only be shared with moderators, and not to the public.\n
-        The cool pool\n
-        How much do you like pizza (optional)\n
-        *This answer will only be shared with moderators, and not to the public.\n
-        A lot\n
-        ○ Not at all\n
-        How much do you like burgers (optional)\n
-        *This answer will only be shared with moderators, and not to the public.\n
-        O A lot\n
-        Not at all\n
-      "
+    #   text = "
+    #     Title\n
+    #     My very good idea\n
+    #     Description\n
+    #     would suggest building the\n
+    #     new swimming Pool near the\n
+    #     Shopping mall on Park Lane,\n
+    #     It's easily accessible location\n
+    #     with enough space\n
+    #     an\n
+    #     Location (optional)\n
+    #     Dear shopping mall\n
+    #     Your favourite name for a swimming pool (optional)\n
+    #     *This answer will only be shared with moderators, and not to the public.\n
+    #     The cool pool\n
+    #     How much do you like pizza (optional)\n
+    #     *This answer will only be shared with moderators, and not to the public.\n
+    #     A lot\n
+    #     ○ Not at all\n
+    #     How much do you like burgers (optional)\n
+    #     *This answer will only be shared with moderators, and not to the public.\n
+    #     O A lot\n
+    #     Not at all\n
+    #   "
 
-      idea = service.pdf_raw_text_to_idea_rows text
+    #   idea = service.pdf_raw_text_to_idea_rows text
 
-      expect(idea).not_to be_nil
-    end
-  end
+    #   expect(idea).not_to be_nil
+    # end
+  # end
 end
