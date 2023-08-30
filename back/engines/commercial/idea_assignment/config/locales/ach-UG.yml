@@ -1,13 +1,8 @@
 ach:
   email_campaigns:
     campaign_type_description:
-      "idea_assigned_to_you": crwdns208040:0crwdne208040:0
-    admin_campaign_type_description:
-      "idea_assigned_to_you": crwdns208042:0crwdne208042:0
-    idea_assigned_to_you:
-      by_author: 'crwdns208044:0%{authorName}crwdne208044:0'
-      cta_reply_to: 'crwdns208046:0%{authorName}crwdne208046:0'
-      event_description_idea: 'crwdns208048:0crwdne208048:0'
-      main_header: 'crwdns208050:0%{firstName}crwdne208050:0'
-      subject: 'crwdns208052:0%{organizationName}crwdne208052:0'
-      preheader_idea: 'crwdns208054:0%{authorName}crwdne208054:0'
+      ""idea_assigned_to_you"":
+        Assignment of an idea to me admin_campaign_type_description:
+          ""idea_assigned_to_you"":
+            Assignment of an idea - admins and project managers idea_assigned_to_you:
+              by_author: 'crwdns973349:0%{authorName}crwdnd973349:0%{authorName}crwdnd973349:0%{firstName}crwdnd973349:0%{organizationName}crwdnd973349:0%{authorName}crwdne973349:0'
