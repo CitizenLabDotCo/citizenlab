@@ -182,11 +182,13 @@ module BulkImportIdeas
       # Currently PDF version will import regardless as there is no 'Permission' field on the printed form
       permission = find_field(doc, 'Permission')
       unless permission && permission[:value].blank?
-        name = find_field(doc, 'Full name')
+        locale_name_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.full_name') }
+        name = find_field(doc, locale_name_label)
         idea_row[:user_name] = name[:value] if name
 
         # Ignore any emails that don't validate
-        email = find_field(doc, 'Email address')
+        locale_email_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.email_address') }
+        email = find_field(doc, locale_email_label)
         idea_row[:user_email] = email[:value] if email && email[:value].match(User::EMAIL_REGEX)
       end
 

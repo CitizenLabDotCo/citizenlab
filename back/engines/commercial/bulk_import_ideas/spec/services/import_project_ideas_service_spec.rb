@@ -148,12 +148,19 @@ describe BulkImportIdeas::ImportProjectIdeasService do
     end
 
     it 'can convert a document in french' do
-      service = described_class.new create(:admin), project.id, 'fr-BE', nil
-      docs = [[{ name: 'Titre', value: 'Bonjour' }, { name: 'Description complète', value: "Je suis un chien. J'aime les chats." }]]
+      service = described_class.new create(:admin), project.id, 'fr-FR', nil
+      docs = [[
+                { name: 'Nom et prénom', value: 'Jean Rambo' },
+                { name: 'Adresse e-mail', value: 'jean@france.com' },
+                { name: 'Titre', value: 'Bonjour' },
+                { name: 'Description', value: "Je suis un chien. J'aime les chats." }
+              ]]
       rows = service.pdf_to_idea_rows docs
 
-      expect(rows[0][:title_multiloc]).to eq({ 'fr-BE': 'Bonjour' })
-      expect(rows[0][:body_multiloc]).to eq({ 'fr-BE': "Je suis un chien. J'aime les chats." })
+      expect(rows[0][:title_multiloc]).to eq({ 'fr-FR': 'Bonjour' })
+      expect(rows[0][:body_multiloc]).to eq({ 'fr-FR': "Je suis un chien. J'aime les chats." })
+      expect(rows[0][:user_email]).to eq 'jean@france.com'
+      expect(rows[0][:user_name]).to eq 'Jean Rambo'
     end
   end
 
