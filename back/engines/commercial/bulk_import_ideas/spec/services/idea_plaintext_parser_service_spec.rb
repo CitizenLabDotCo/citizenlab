@@ -28,12 +28,12 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
       enabled: true,
       required: false
     )
-    create(:custom_field_option, resource: pizza_select_field,
-      key: 'a lot',
+    create(:custom_field_option, custom_field: pizza_select_field,
+      key: 'a-lot',
       title_multiloc: { 'en' => 'A lot' }
     )
-    create(:custom_field_option, resource: pizza_select_field,
-      key: 'not at all',
+    create(:custom_field_option, custom_field: pizza_select_field,
+      key: 'not-at-all',
       title_multiloc: { 'en' => 'Not at all' }
     )
 
@@ -44,18 +44,18 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
       enabled: true,
       required: false
     )
-    create(:custom_field_option, resource: burger_select_field,
-      key: 'a lot',
+    create(:custom_field_option, custom_field: burger_select_field,
+      key: 'a-lot',
       title_multiloc: { 'en' => 'A lot' }
     )
-    create(:custom_field_option, resource: burger_select_field,
-      key: 'not at all',
+    create(:custom_field_option, custom_field: burger_select_field,
+      key: 'not-at-all',
       title_multiloc: { 'en' => 'Not at all' }
     )
   end
 
   it 'parses text correctly (single document)' do
-    service = described.class.new project.id, 'en'
+    service = described_class.new project.id, 'en'
 
     text = "Title\n" +
       "My very good idea\n" +
@@ -81,6 +81,8 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
       "Not at all\n"
 
     docs = service.parse_text text
+
+    puts docs
 
     expect(docs).not_to be_nil
   end

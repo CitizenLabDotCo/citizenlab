@@ -1,8 +1,15 @@
 module BulkImportIdeas
   class IdeaPlaintextParserService
+    QUESTION_TYPES = %w[select multiselect text text_multiloc multiline_text html_multiloc]
+
     def initialize(project_id, locale)
       @project = Project.find(project_id)
-      @custom_fields = IdeaCustomFieldsService.new(Factory.instance.participation_method_for(@project).custom_form).enabled_fields
+      @custom_fields = IdeaCustomFieldsService.new(
+          Factory.instance.participation_method_for(@project).custom_form
+        )
+        .enabled_fields
+        .select { |field| QUESTION_TYPES.include? field.input_type }
+
       @locale = locale || @locale
 
       @optional_copy = I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.optional') }
@@ -12,9 +19,8 @@ module BulkImportIdeas
 
       @custom_fields.each_with_index do |field, i|
         title = field.title_multiloc[@locale]
-        display_title = field.required
-          ? title
-          : "#{title} (#{@optional_copy})"
+
+        display_title = field.required? ? title : "#{title} (#{@optional_copy})"
 
         if i == 0 then
           @first_field_display_title = display_title
@@ -25,7 +31,7 @@ module BulkImportIdeas
     end
 
     def parse_text(text)
-      lines = text.split('/n')
+      lines = text.lines.map { |line| line.rstrip }
 
       # documents is an array of forms.
       # A form is a hash with the field title
@@ -47,6 +53,10 @@ module BulkImportIdeas
           next
         end
       end
+
+      documents << form
+
+      return documents
     end
 
     private
