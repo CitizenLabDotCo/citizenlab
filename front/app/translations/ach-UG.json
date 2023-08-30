@@ -836,6 +836,7 @@
   "app.containers.EventsShow.attending": "crwdns984625:0crwdne984625:0",
   "app.containers.EventsShow.emailSharingBody": "crwdns984627:0{eventTitle}crwdnd984627:0{eventLocation}crwdne984627:0",
   "app.containers.EventsShow.eventFrom": "crwdns984629:0{eventTitle}crwdne984629:0",
+  "app.containers.EventsShow.goBack": "crwdns992735:0crwdne992735:0",
   "app.containers.EventsShow.goToProject": "crwdns984631:0crwdne984631:0",
   "app.containers.EventsShow.icsError": "crwdns984633:0crwdne984633:0",
   "app.containers.EventsShow.socialMediaSharingMessage": "crwdns984635:0{eventTitle}crwdne984635:0",
