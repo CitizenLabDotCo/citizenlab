@@ -6,17 +6,17 @@ export default defineMessages({
     defaultMessage: 'AI-powered analysis',
   },
   analysisSubtitle: {
-    id: 'app.containers.Admin.projects.project.survey.analysisSubtitle',
+    id: 'app.containers.Admin.projects.project.survey.analysisSubtitleText',
     defaultMessage:
-      'Unlock automated summaries and ask questions about your project input.',
+      'Unlock automated summaries and ask questions about your project input. Go to your text questions below to launch the analysis.',
   },
-  analysisButton: {
-    id: 'app.containers.Admin.projects.project.survey.analysisButton',
-    defaultMessage: 'Create analysis',
+  launchAnalysis: {
+    id: 'app.containers.Admin.projects.project.survey.launchAnalysis',
+    defaultMessage: 'Launch AI-powered analysis',
   },
   analysisSelectQuestions: {
-    id: 'app.containers.Admin.projects.project.survey.analysisSelectQuestions',
-    defaultMessage: 'Select questions for analysis',
+    id: 'app.containers.Admin.projects.project.survey.analysisSelectQuestionsForAnalysis',
+    defaultMessage: 'Select related questions for analysis',
   },
   createAnalysis: {
     id: 'app.containers.Admin.projects.project.survey.createAnalysis',
