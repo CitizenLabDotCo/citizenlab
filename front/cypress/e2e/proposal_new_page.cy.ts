@@ -16,37 +16,37 @@ describe('Initiative new page', () => {
     cy.acceptCookies();
   });
 
-  // it('shows an error when no title is provided', () => {
-  //   cy.get('#e2e-initiative-publish-button').click();
-  //   cy.get('#e2e-initiative-form-title-section .e2e-error-message').contains(
-  //     'Please provide a title'
-  //   );
-  // });
+  it('shows an error when no title is provided', () => {
+    cy.get('#e2e-initiative-publish-button').click();
+    cy.get('#e2e-initiative-form-title-section .e2e-error-message').contains(
+      'Please provide a title'
+    );
+  });
 
-  // it('shows an error when no description is provided', () => {
-  //   cy.get('#e2e-initiative-publish-button').click();
-  //   cy.get(
-  //     '#e2e-initiative-form-description-section .e2e-error-message'
-  //   ).contains('Please provide a description');
-  // });
+  it('shows an error when no description is provided', () => {
+    cy.get('#e2e-initiative-publish-button').click();
+    cy.get(
+      '#e2e-initiative-form-description-section .e2e-error-message'
+    ).contains('Please provide a description');
+  });
 
-  // it('shows an error when the title is less than 10 characters long', () => {
-  //   cy.get('#e2e-initiative-title-input').type(randomString(9)).blur();
-  //   cy.get('#e2e-proposal-title-error').contains(
-  //     'The provided title is too short. Please add a title that is between 10 and 72 characters long.'
-  //   );
-  // });
+  it('shows an error when the title is less than 10 characters long', () => {
+    cy.get('#e2e-initiative-title-input').type(randomString(9)).blur();
+    cy.get('#e2e-proposal-title-error').contains(
+      'The provided title is too short. Please add a title that is between 10 and 72 characters long.'
+    );
+  });
 
-  // it('shows an error when the description is less than 30 characters long', () => {
-  //   cy.get('#e2e-initiative-form-description-section .ql-editor')
-  //     .type(randomString(9))
-  //     .blur()
-  //     .wait(200);
-  //   cy.get('#e2e-initiative-publish-button').click();
-  //   cy.get(
-  //     '#e2e-initiative-form-description-section .e2e-error-message'
-  //   ).contains('at least 30 characters long');
-  // });
+  it('shows an error when the description is less than 30 characters long', () => {
+    cy.get('#e2e-initiative-form-description-section .ql-editor')
+      .type(randomString(9))
+      .blur()
+      .wait(200);
+    cy.get('#e2e-initiative-publish-button').click();
+    cy.get(
+      '#e2e-initiative-form-description-section .e2e-error-message'
+    ).contains('at least 30 characters long');
+  });
 
   it('has a working initiative form', () => {
     const initiativeTitle = randomString(10);
