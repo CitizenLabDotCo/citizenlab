@@ -16,21 +16,21 @@ import { useTheme } from 'styled-components';
 
 const EventsPage = () => {
   const { formatMessage } = useIntl();
-  const isTabletOrSmaller = useBreakpoint('tablet');
+  const isTabletOrSmaller = useBreakpoint('phone');
   const theme = useTheme();
 
   return (
     <>
       <Box
         width="100vw"
-        height={isTabletOrSmaller ? '128px' : '280px'}
+        height={isTabletOrSmaller ? '128px' : '244px'}
         bgColor={theme.colors.tenantPrimary}
       >
         <Title
           px={'16px'}
           maxWidth="1100px"
           color="white"
-          style={{ fontSize: isTabletOrSmaller ? '40px' : '110px' }}
+          style={{ fontSize: isTabletOrSmaller ? '40px' : '90px' }}
           zIndex="10000"
           mx="auto"
           pt={isTabletOrSmaller ? '62px' : '96px'}
