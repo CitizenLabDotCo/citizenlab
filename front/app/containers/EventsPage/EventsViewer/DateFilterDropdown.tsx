@@ -14,7 +14,6 @@ import { useSearchParams } from 'react-router-dom';
 type InputProps = {
   onChange: (dateFilterValue: string[]) => void;
   textColor?: string;
-  filterSelectorStyle?: 'button' | 'text';
   listTop?: string;
   mobileLeft?: string;
 };
@@ -24,7 +23,6 @@ type Props = InputProps;
 const DateFilterDropdown = ({
   onChange,
   textColor,
-  filterSelectorStyle,
   listTop,
   mobileLeft,
 }: Props) => {
@@ -62,7 +60,7 @@ const DateFilterDropdown = ({
         right="-10px"
         mobileLeft={mobileLeft ? mobileLeft : '-5px'}
         textColor={textColor}
-        filterSelectorStyle={filterSelectorStyle}
+        filterSelectorStyle="button"
         top={listTop}
       />
     </Box>

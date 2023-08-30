@@ -60,7 +60,6 @@ const TopBar = memo<Props>(
               <DateFilterDropdown
                 onChange={setDateFilter}
                 textColor={theme.colors.tenantText}
-                filterSelectorStyle="button"
                 listTop="44px"
                 mobileLeft={showProjectFilter ? '0px' : mobileLeft}
               />
