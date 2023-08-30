@@ -15,6 +15,10 @@ ach:
     rejected: crwdns981475:0crwdne981475:0
     rejected_description: crwdns981477:0crwdne981477:0
   initiative_statuses:
+    review_pending: crwdns992975:0crwdne992975:0
+    review_pending_description: crwdns992977:0crwdne992977:0
+    changes_requested: crwdns992979:0crwdne992979:0
+    changes_requested_description: crwdns992981:0crwdne992981:0
     proposed: crwdns981479:0crwdne981479:0
     proposed_description: crwdns981481:0crwdne981481:0
     expired: crwdns981483:0crwdne981483:0
@@ -181,6 +185,8 @@ ach:
       crwdns981697:0crwdne981697:0
     default_eligibility_criteria: >
       crwdns981699:0crwdne981699:0
+    default_posting_tips: >
+      crwdns992983:0crwdne992983:0
   reset_password_mailer:
     send_reset_password:
       cta_reset_password: 'crwdns981701:0crwdne981701:0'
