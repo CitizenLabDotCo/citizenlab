@@ -1,80 +1,13 @@
 tr:
   email_campaigns:
     campaign_type_description:
-      "manual": Resmi mesajlar
-      "admin_rights_received": Yönetici hakları alındı
-      "comment_deleted_by_admin": Yorumumun silinmesi
-      "comment_marked_as_spam": Yorumun spam olarak bildirilmesi
-      "comment_on_your_comment": Yorumuma bir yanıt
-      "comment_on_your_idea": Fikrim hakkında bir yorum
-      "comment_on_your_initiative": Önerim hakkında bir yorum
-      "cosponsor_of_your_initiative": Bir kullanıcı teklifime ortak sponsor olma davetimi kabul ediyor
-      "first_idea_published": İlk fikrimin yayımlanması
-      "idea_marked_as_spam": Fikrin spam olarak bildirilmesi
-      "idea_published": Fikrimin yayımlanması
-      "initiative_assigned_to_you": Bana öneri atanması
-      "initiative_marked_as_spam": Önerinin spam olarak bildirilmesi
-      "initiative_published": Önerimin yayımlanması
-      "invitation_to_cosponsor_initiative": Bir teklifin ortak sponsorluğuna davet
-      "initiative_resubmitted_for_review": Teklif incelenmek üzere yeniden sunuldu
-      "invite_received": Davetiye
-      "invite_reminder": Davetiye anımsatıcısı
-      "internal_comment_on_idea_assigned_to_you": Bana atanan girdiye ilişkin dahili yorum
-      "internal_comment_on_idea_you_commented_internally_on": Girdiye ilişkin dahili yorum Dahili olarak yorum yaptım
-      "internal_comment_on_idea_you_moderate": Yönettiğim proje veya klasördeki girdiye ilişkin dahili yorum
-      "internal_comment_on_initiative_assigned_to_you": Bana atanan teklif hakkında iç yorum
-      "internal_comment_on_initiative_you_commented_internally_on": Teklif hakkında dahili yorum Yaptım
-      "internal_comment_on_unassigned_initiative": Atanmamış teklif hakkında iç yorum
-      "internal_comment_on_unassigned_unmoderated_idea": Yönetilmeyen projede atanmamış girdi hakkında dahili yorum
-      "internal_comment_on_your_internal_comment": İç yorumum üzerine iç yorum
-      "mention_in_official_feedback": Bir bildirimde bahis
-      "mention_in_internal_comment": Dahili bir yorumda bahsedin
-      "new_comment_for_admin": Yönettiğim bir projede yeni yorum
-      "new_comment_on_commented_idea": Yorum yaptığım bir fikir hakkında yeni yorum
-      "new_comment_on_commented_initiative": Yorum yaptığım bir öneri hakkında yeni yorum
-      "new_comment_on_reacted_idea": Tepki gösterdiğim bir fikir hakkında yeni yorum
-      "new_comment_on_reacted_initiative": Oy verdiğim bir teklif hakkında yeni yorum
-      "new_idea_for_admin": Yönettiğim bir projede yeni fikir
-      "new_initiative_for_admin": Yeni öneri
-      "official_feedback_on_commented_idea": Yorum yaptığım bir fikir hakkında bilgilendirme
-      "official_feedback_on_commented_initiative": Yorum yaptığım bir öneri hakkında bilgilendirme
-      "official_feedback_on_reacted_idea": Tepki gösterdiğim bir fikir hakkında güncelleme
-      "official_feedback_on_reacted_initiative": Oyladığım bir teklifle ilgili güncelleme
-      "official_feedback_on_your_idea": Fikrim hakkında bilgilendirme
-      "official_feedback_on_your_initiative": Önerim hakkında bilgilendirme
-      "password_reset": Parola sıfırla
-      "project_moderation_rights_received": Proje moderasyon hakları alındı
-      "project_folder_moderation_rights_received": Klasör yöneticisi hakları alındı
-      "project_phase_started": Yeni proje aşaması
-      "project_phase_upcoming": Yaklaşan yeni proje aşaması
-      "status_change_of_commented_idea": Yorum yaptığım bir fikrin durum değişikliği
-      "status_change_of_commented_initiative": Yorum yaptığım bir önerinin durum değişikliği
-      "status_change_of_reacted_idea": Tepki gösterdiğim bir fikrin durum değişikliği
-      "status_change_of_reacted_initiative": Tepki verdiğim bir teklifin durum değişikliği
-      "status_change_of_your_idea": Fikrimin durum değişikliği
-      "status_change_of_your_initiative": Önerimin durum değişikliği
-      "threshold_reached_for_admin": Öneri oylama eşiğine ulaştı
-      "welcome": Kayıttan sonra
-      "admin_digest": Yöneticiler için haftalık genel bakış
-      "moderator_digest": Proje yöneticileri için haftalık genel bakış
-      "assignee_digest": Atanmış fikirlere haftalık genel bakış
-      "user_digest": Haftalık genel bakış
-      "voting_basket_submitted": Oylamanın onaylanması
-      "voting_basket_not_submitted": Gönderilmeyen oylar
-      "voting_last_chance": Oy vermek için son şans
-      "voting_results": Oylama sonuçları
-      "your_proposed_initiatives_digest": Önerilerinize haftalık genel bakış
-    schedules:
-      weekly:
-        "0": "Haftalık, Pazar günleri %{hourOfDay}adresinde"
-        "1": "Haftalık Pazartesi günleri %{hourOfDay}"
-        "2": "Haftalık Salı günleri %{hourOfDay}"
-        "3": "Haftalık Çarşamba günleri %{hourOfDay}"
-        "4": "Haftalık Perşembe günleri %{hourOfDay}"
-        "5": "Haftalık Cuma günleri %{hourOfDay}"
-        "6": "Haftalık Cumartesi günleri %{hourOfDay}"
+      "1": "Haftalık, Pazartesi günleri %{hourOfDay}adresinde"
+      "2": "Haftalık, Salı günleri %{hourOfDay}adresinde"
+      "3": "Haftalık, Çarşamba günleri %{hourOfDay}adresinde"
+      "4": "Haftalık, Perşembe günleri %{hourOfDay}adresinde"
+      "5": "Haftalık, Cuma günleri %{hourOfDay}adresinde"
+      "6": "Haftalık, Cumartesi günleri %{hourOfDay}adresinde"
     footer:
-      "link_privacy_policy": "Gi̇zli̇li̇k Poli̇ti̇kası"
       "link_terms_conditions": "Hüküm ve Koşullar"
       "link_unsubscribe": "Abonelikten ayrıl"
       "powered_by": "Destekleyen"
