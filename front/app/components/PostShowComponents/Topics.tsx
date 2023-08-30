@@ -45,7 +45,9 @@ const Topics = memo(({ postTopicIds, className, postType }: Props) => {
   return (
     <Container id={`e2e-${postType}-topics`} className={className}>
       {postTopicIds.map((topicId: string) => {
-        return <TopicComponent topicId={topicId} postType={postType} />;
+        return (
+          <TopicComponent key={topicId} topicId={topicId} postType={postType} />
+        );
       })}
     </Container>
   );
@@ -64,7 +66,7 @@ const TopicComponent = ({
   if (!topic) return null;
 
   return (
-    <Topic key={topic.data.id} className={`e2e-${postType}-topic`}>
+    <Topic className={`e2e-${postType}-topic`}>
       {localize(topic.data.attributes.title_multiloc)}
     </Topic>
   );

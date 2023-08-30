@@ -39,7 +39,7 @@ async function getFilesToRemovePromises(
       .filter((fileToRemove) => isString(fileToRemove.id))
       .map((fileToRemove) => {
         return removeFile({
-          initiativeId: initiativeId,
+          initiativeId,
           fileId: fileToRemove.id as string,
         });
       });
@@ -77,7 +77,7 @@ async function getFilesToAddPromises(
   const filesToAdd = getFilesToAdd(localFiles, convertedRemoteFiles);
   const filesToAddPromises = filesToAdd.map((fileToAdd) =>
     addFile({
-      initiativeId: initiativeId,
+      initiativeId,
       file: { file: fileToAdd.base64, name: fileToAdd.name },
     })
   );

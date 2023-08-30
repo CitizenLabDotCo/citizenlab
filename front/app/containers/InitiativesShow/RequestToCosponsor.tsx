@@ -35,8 +35,9 @@ const RequestToCosponsor = ({ initiativeId }: Props) => {
   const { data: appConfiguration } = useAppConfiguration();
   const { formatMessage } = useIntl();
 
-  if (!cosponsorsRequired || !initiative || !authUser || !appConfiguration)
+  if (!cosponsorsRequired || !initiative || !authUser || !appConfiguration) {
     return null;
+  }
 
   const handleOnClickCosponsor = () => {
     acceptInitiativeConsponsorshipInvite(initiativeId);
