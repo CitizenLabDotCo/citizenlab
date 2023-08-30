@@ -76,7 +76,7 @@ export interface FormValues {
 }
 
 export type Props = {
-  onSubmit: (formValues: FormValues) => void | Promise<void>;
+  onSubmit: (formValues: FormValues) => Promise<void>;
   initiative?: IInitiativeData;
   initiativeImage?: IInitiativeImageData;
   initiativeFiles?: IInitiativeFileData[];
@@ -201,13 +201,12 @@ const InitiativeForm = ({
 
               <SectionField id="e2e-initiative-form-title-section">
                 <FormLabel
-                  htmlFor="e2e-initiative-title-input"
+                  htmlFor="title_multiloc"
                   labelMessage={messages.titleLabel}
                   subtextMessage={messages.titleLabelSubtext2}
                 >
                   <InputMultilocWithLocaleSwitcher
                     name="title_multiloc"
-                    id="e2e-initiative-title-input"
                     autocomplete="off"
                     maxCharCount={72}
                   />
