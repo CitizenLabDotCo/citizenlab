@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Box, IconButton, colors } from '@citizenlab/cl2-component-library';
+import {
+  Accordion,
+  Box,
+  Icon,
+  IconButton,
+  Title,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import AuthorsByDomicile from './AuthorsByDomicile';
 import AuthorsByAge from './AuthorsByAge';
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
@@ -51,39 +58,51 @@ const Demographics = () => {
   };
 
   return (
-    <Box
-      display="flex"
-      alignItems="center"
-      justifyContent="space-between"
-      height="100%"
+    <Accordion
+      title={
+        <Box display="flex" alignItems="center" px="24px" py="12px">
+          <Icon height="16px" width="16px" name="users" mr="8px" />
+          <Title variant="h5" fontWeight="normal" m="0">
+            Demographics
+          </Title>
+        </Box>
+      }
     >
-      <Box>
-        <IconButton
-          iconName="chevron-left"
-          onClick={() => handleCycle(-1)}
-          a11y_buttonActionMessage={'Previous graph'}
-          iconColor={colors.grey600}
-          iconColorOnHover={colors.grey700}
-        />
+      <Box
+        display="flex"
+        alignItems="center"
+        justifyContent="space-between"
+        height="100%"
+        width="100%"
+      >
+        <Box>
+          <IconButton
+            iconName="chevron-left"
+            onClick={() => handleCycle(-1)}
+            a11y_buttonActionMessage={'Previous graph'}
+            iconColor={colors.grey600}
+            iconColorOnHover={colors.grey700}
+          />
+        </Box>
+        <Box flex="1">
+          {selectedField?.attributes.code === 'birthyear' && (
+            <AuthorsByAge customFieldId={selectedField.id} />
+          )}
+          {selectedField?.attributes.code === 'domicile' && (
+            <AuthorsByDomicile customFieldId={selectedField.id} />
+          )}
+        </Box>
+        <Box>
+          <IconButton
+            iconName="chevron-right"
+            onClick={() => handleCycle(1)}
+            a11y_buttonActionMessage={'Next graph'}
+            iconColor={colors.grey600}
+            iconColorOnHover={colors.grey700}
+          />
+        </Box>
       </Box>
-      <Box flex="1">
-        {selectedField?.attributes.code === 'birthyear' && (
-          <AuthorsByAge customFieldId={selectedField.id} />
-        )}
-        {selectedField?.attributes.code === 'domicile' && (
-          <AuthorsByDomicile customFieldId={selectedField.id} />
-        )}
-      </Box>
-      <Box>
-        <IconButton
-          iconName="chevron-right"
-          onClick={() => handleCycle(1)}
-          a11y_buttonActionMessage={'Next graph'}
-          iconColor={colors.grey600}
-          iconColorOnHover={colors.grey700}
-        />
-      </Box>
-    </Box>
+    </Accordion>
   );
 };
 

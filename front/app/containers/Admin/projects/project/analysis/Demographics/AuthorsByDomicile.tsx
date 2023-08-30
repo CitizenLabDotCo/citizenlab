@@ -139,7 +139,7 @@ const AuthorsByDomicile = ({ customFieldId }: Props) => {
 
   return (
     <Box display="flex" flexDirection="column" alignItems="center">
-      <Title mt="8px" mb="0px" variant="h6" fontWeight="normal" color="grey700">
+      <Title my="0" variant="h6" fontWeight="normal">
         Authors by domicile
       </Title>
       <ResponsiveContainer width="100%" height={100}>

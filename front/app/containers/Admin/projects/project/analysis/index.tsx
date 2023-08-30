@@ -52,7 +52,7 @@ const Analysis = () => {
               flexDirection="column"
               minWidth="0"
             >
-              <Box mt="12px" bg={colors.white} h="120px">
+              <Box mt="12px" bg={colors.white}>
                 <Demographics />
               </Box>
               <Box flex="1" overflow="auto" p="12px" mt="8px" bg={colors.white}>
