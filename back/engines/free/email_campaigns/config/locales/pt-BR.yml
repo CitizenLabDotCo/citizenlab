@@ -77,7 +77,6 @@ pt:
     cosponsor_of_your_initiative:
       cta_reply_to: 'Ver a sua proposta'
       event_description_initiative: 'Parabéns! %{cosponsorName} aceitou o seu convite para co-patrocinar a sua proposta.'
-      event_description_cosponsoring: 'Co-patrocinar uma proposta significa que <strong>o seu nome será apresentado</strong> juntamente com os nomes dos outros co-patrocinadores da proposta.'
       main_header: '%{cosponsorName} aceitou o seu convite para co-patrocinar a sua proposta'
       subject: '%{cosponsorName} aceitou o seu convite para co-patrocinar a sua proposta'
       preheader_initiative: '%{cosponsorName} aceitou o seu convite para co-patrocinar a sua proposta'
