@@ -748,6 +748,8 @@
   "app.containers.Admin.initiatives.overviewTab": "Преглед",
   "app.containers.Admin.initiatives.permissions": "Дозволе",
   "app.containers.Admin.initiatives.permissionsText": "Дозволе",
+  "app.containers.Admin.initiatives.postingTips": "Објављивање савета",
+  "app.containers.Admin.initiatives.postingTipsInfo": "Дајте неке конкретне савете за постављање предлога",
   "app.containers.Admin.initiatives.proposalEligibilityCriteria": "Критеријуми",
   "app.containers.Admin.initiatives.proposalEligibilityCriteriaInfo": "Дајте јасан опис критеријума које ћете користити да одлучите да ли предлог испуњава услове или не.",
   "app.containers.Admin.initiatives.proposalSuccessMessage": "Порука о успеху",

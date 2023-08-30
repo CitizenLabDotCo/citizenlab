@@ -748,6 +748,8 @@
   "app.containers.Admin.initiatives.overviewTab": "Descripción general",
   "app.containers.Admin.initiatives.permissions": "Permisos",
   "app.containers.Admin.initiatives.permissionsText": "Permisos",
+  "app.containers.Admin.initiatives.postingTips": "Consejos de publicación",
+  "app.containers.Admin.initiatives.postingTipsInfo": "Da algunos consejos específicos para publicar una propuesta",
   "app.containers.Admin.initiatives.proposalEligibilityCriteria": "Criterios de elegibilidad",
   "app.containers.Admin.initiatives.proposalEligibilityCriteriaInfo": "Describa claramente los criterios que utilizará para decidir si una propuesta es elegible o no.",
   "app.containers.Admin.initiatives.proposalSuccessMessage": "Mensaje de éxito",

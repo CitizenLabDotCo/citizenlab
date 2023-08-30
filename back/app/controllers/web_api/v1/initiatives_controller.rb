@@ -17,7 +17,6 @@ class WebApi::V1::InitiativesController < ApplicationController
       includes: %i[author assignee topics areas]
     ).find_records
     initiatives = paginate SortByParamsService.new.sort_initiatives(initiatives, params, current_user)
-
     render json: linked_json(initiatives, WebApi::V1::InitiativeSerializer, serialization_options_for(initiatives))
   end
 
@@ -76,7 +75,7 @@ class WebApi::V1::InitiativesController < ApplicationController
           counts[attribute][id] = record.count if id
         end
       end
-    counts['total'] = initiatives.count
+    counts['total'] = initiatives.distinct.count
     render json: raw_json(counts)
   end
 

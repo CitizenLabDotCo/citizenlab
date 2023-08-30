@@ -748,6 +748,8 @@
   "app.containers.Admin.initiatives.overviewTab": "Pregled",
   "app.containers.Admin.initiatives.permissions": "Dozvole",
   "app.containers.Admin.initiatives.permissionsText": "Dozvole",
+  "app.containers.Admin.initiatives.postingTips": "Savjeti za objavljivanje",
+  "app.containers.Admin.initiatives.postingTipsInfo": "Dajte neke konkretne savjete za objavljivanje ponude",
   "app.containers.Admin.initiatives.proposalEligibilityCriteria": "Kriteriji prihvatljivosti",
   "app.containers.Admin.initiatives.proposalEligibilityCriteriaInfo": "Pružite jasan opis kriterija na osnovu kojih ćete odlučivati zadovoljava li prijedlog osnovne uvjete prihvatljivosti.",
   "app.containers.Admin.initiatives.proposalSuccessMessage": "Poruka o uspjehu",

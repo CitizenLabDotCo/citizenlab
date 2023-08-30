@@ -748,6 +748,8 @@
   "app.containers.Admin.initiatives.overviewTab": "Oversikt",
   "app.containers.Admin.initiatives.permissions": "Tillatelser",
   "app.containers.Admin.initiatives.permissionsText": "Tillatelser",
+  "app.containers.Admin.initiatives.postingTips": "Tips for å legge ut",
+  "app.containers.Admin.initiatives.postingTipsInfo": "Gi noen spesifikke tips for å legge ut et forslag",
   "app.containers.Admin.initiatives.proposalEligibilityCriteria": "Kvalifikasjonskriterier",
   "app.containers.Admin.initiatives.proposalEligibilityCriteriaInfo": "Gi en tydelig beskrivelse av kriteriene du bruker for å avgjøre om et forslag er kvalifisert eller ikke.",
   "app.containers.Admin.initiatives.proposalSuccessMessage": "Suksessmelding",

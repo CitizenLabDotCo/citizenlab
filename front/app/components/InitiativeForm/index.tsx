@@ -22,7 +22,7 @@ import {
 
 // intl
 import messages from './messages';
-import { useIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 // Components
@@ -46,6 +46,8 @@ import useTopics from 'api/topics/useTopics';
 import { IInitiativeData } from 'api/initiatives/types';
 import { IInitiativeImageData } from 'api/initiative_images/types';
 import { IInitiativeFileData } from 'api/initiative_files/types';
+import Warning from 'components/UI/Warning';
+import useInitiativeReviewRequired from 'hooks/useInitiativeReviewRequired';
 
 const StyledFormSection = styled(FormSection)`
   ${media.phone`
@@ -84,6 +86,7 @@ const InitiativeForm = ({
   const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
     useState(false);
   const { formatMessage } = useIntl();
+  const initiativeReviewRequired = useInitiativeReviewRequired();
   const { data: topics } = useTopics({ excludeCode: 'custom' });
   const schema = object({
     title_multiloc: validateAtLeastOneLocale(
@@ -250,6 +253,16 @@ const InitiativeForm = ({
                   />
                 )} */}
               </SectionField>
+              <Warning>
+                <>
+                  <FormattedMessage {...messages.makeSureReadyToBePublic} />{' '}
+                  {initiativeReviewRequired ? (
+                    <FormattedMessage {...messages.notEditableOnceReviewed} />
+                  ) : (
+                    <FormattedMessage {...messages.notEditableOnceVoted} />
+                  )}
+                </>
+              </Warning>
             </StyledFormSection>
             <StyledFormSection>
               <FormSectionTitle message={messages.formDetailsSectionTitle} />

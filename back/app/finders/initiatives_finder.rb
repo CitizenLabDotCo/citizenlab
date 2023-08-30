@@ -1,6 +1,13 @@
 # frozen_string_literal: true
 
 class InitiativesFinder < ApplicationFinder
+  def find_records
+    initiatives = super
+    # We use Initiative.where to avoid duplicates caused by `left_outer_joins(:cosponsors_initiatives)`.
+    # #distinct fails with `ERROR:  for SELECT DISTINCT, ORDER BY expressions must appear in select list ... md5(`
+    Initiative.where(id: initiatives).includes(@includes)
+  end
+
   private
 
   def topics_condition(topics)
