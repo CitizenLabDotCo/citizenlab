@@ -5,26 +5,21 @@ module EmailCampaigns
     include EmailCampaigns::MailerPreviewRecipient
 
     def campaign_mail
-      command = {
-        recipient: recipient_user,
-        event_payload: {
-          initiating_user_first_name: 'Fred',
-          initiating_user_last_name: 'Kroket',
-          comment_author_name: 'Fred Kroket',
-          comment_body_multiloc: {
-            'nl-BE': "Zoiets?\n<a href=\"https://imgur.com/a/9Kw42xT\" target=\"_blank\">https://imgur.com/a/9Kw42xT</a>"
-          },
-          comment_url: 'http://localhost:3000/nl-BE/ideas/wijgmaal-verkeersvrij-dorpsplein',
-          post_published_at: '2019-05-22T18:21:44Z',
-          post_title_multiloc: {
-            'nl-BE': 'Wijgmaal verkeersvrij dorpsplein'
-          },
-          post_author_name: 'Sander Van Garsse'
-        }
-      }
+      comment = Comment.where(post_type: 'Idea').first || Comment.create(post: Idea.first, author: User.first, body_multiloc: { 'en' => 'I agree' })
+      notification = Notifications::CommentOnIdeaYouFollow.create!(
+        recipient_id: recipient_user.id,
+        initiating_user: comment.author,
+        post: comment.post,
+        comment: comment,
+        project_id: comment.post.project_id
+      )
+      activity = Activity.new(item: notification, action: 'created')
 
       campaign = EmailCampaigns::Campaigns::CommentOnIdeaYouFollow.first
-
+      command = campaign.generate_commands(
+        activity: activity,
+        recipient: recipient_user
+      ).first.merge({ recipient: recipient_user })
       campaign.mailer_class.with(campaign: campaign, command: command).campaign_mail
     end
   end
