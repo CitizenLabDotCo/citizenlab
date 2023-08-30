@@ -32,7 +32,7 @@ describe('Initiative new page', () => {
 
   it('shows an error when the title is less than 10 characters long', () => {
     cy.get('#e2e-initiative-title-input').type(randomString(9)).blur();
-    cy.get('#e2e-proposal-title-error').contains(
+    cy.get('.e2e-error-message').contains(
       'The provided title is too short. Please add a title that is between 10 and 72 characters long.'
     );
   });
