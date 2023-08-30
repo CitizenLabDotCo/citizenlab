@@ -77,7 +77,6 @@ ar-MA:
     cosponsor_of_your_initiative:
       cta_reply_to: 'عرض الاقتراح الخاص بك'
       event_description_initiative: 'تهانينا! لقد قبل %{cosponsorName} دعوتك للمشاركة في رعاية اقتراحك.'
-      event_description_cosponsoring: 'المشاركة</strong> <strong>أسماء رعاة الاقتراح الآخرين.'
       main_header: 'لقد قبل %{cosponsorName} دعوتك للمشاركة في رعاية اقتراحك'
       subject: 'لقد قبل %{cosponsorName} دعوتك للمشاركة في رعاية اقتراحك'
       preheader_initiative: 'لقد قبل %{cosponsorName} دعوتك للمشاركة في رعاية اقتراحك'
