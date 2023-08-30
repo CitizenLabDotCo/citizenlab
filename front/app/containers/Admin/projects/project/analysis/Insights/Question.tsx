@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import reactStringReplace from 'react-string-replace';
 
@@ -29,6 +29,7 @@ import Rate from './Rate';
 
 import tracks from 'containers/Admin/projects/project/analysis/tracks';
 import { trackEventByName } from 'utils/analytics';
+import { deleteTrailingIncompleteIDs, refRegex, removeRefs } from './util';
 
 const StyledAnswerText = styled.div`
   white-space: pre-wrap;
@@ -45,6 +46,7 @@ type Props = {
 };
 
 const Question = ({ insight }: Props) => {
+  const [isCopied, setIsCopied] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const { setSelectedInputId } = useSelectedInputContext();
   const { formatMessage, formatDate } = useIntl();
@@ -82,11 +84,6 @@ const Question = ({ insight }: Props) => {
     }
   };
 
-  const deleteTrailingIncompleteIDs = (str: string | null) => {
-    if (!str) return str;
-    return str.replace(/\[?[0-9a-f-]{0,35}$/, '');
-  };
-
   const handleClickInput = (inputId: string) => {
     setSelectedInputId(inputId);
     const element = document.getElementById(`input-${inputId}`);
@@ -96,23 +93,19 @@ const Question = ({ insight }: Props) => {
   };
 
   const replaceIdRefsWithLinks = (question) => {
-    return reactStringReplace(
-      question,
-      /\[?([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})\]?/g,
-      (match, i) => (
-        <StyledButton
-          onClick={() => {
-            handleClickInput(match);
-            trackEventByName(tracks.inputPreviewedFromQuestion.name, {
-              extra: { analysisId },
-            });
-          }}
-          key={i}
-        >
-          <Icon name="idea" />
-        </StyledButton>
-      )
-    );
+    return reactStringReplace(question, refRegex, (match, i) => (
+      <StyledButton
+        onClick={() => {
+          handleClickInput(match);
+          trackEventByName(tracks.inputPreviewedFromQuestion.name, {
+            extra: { analysisId },
+          });
+        }}
+        key={i}
+      >
+        <Icon name="idea" />
+      </StyledButton>
+    ));
   };
 
   if (!question) return null;
@@ -146,9 +139,26 @@ const Question = ({ insight }: Props) => {
       key={question.data.id}
       bgColor={colors.successLight}
       p="24px"
+      pt="48px"
       mb="8px"
       borderRadius={stylingConsts.borderRadius}
+      position="relative"
     >
+      <Box position="absolute" top="16px" right="8px">
+        <IconButton
+          iconName={isCopied ? 'check' : 'copy'}
+          iconColor={colors.teal400}
+          iconColorOnHover={colors.teal700}
+          a11y_buttonActionMessage={'Copy summary to clipboard'}
+          onClick={() => {
+            answer &&
+              navigator.clipboard.writeText(
+                `${question.data.attributes.question}\n\n${removeRefs(answer)}`
+              );
+            setIsCopied(true);
+          }}
+        />
+      </Box>
       <Box>
         <Box
           display="flex"
@@ -194,6 +204,7 @@ const Question = ({ insight }: Props) => {
         gap="4px"
         alignItems="center"
         justifyContent="space-between"
+        mt="16px"
       >
         <Button buttonStyle="white" onClick={handleRestoreFilters} p="4px 12px">
           Restore filters
@@ -206,6 +217,7 @@ const Question = ({ insight }: Props) => {
             theme="light"
             iconSize="24px"
             iconColor={colors.teal400}
+            placement="left-end"
           />
           <IconButton
             iconName="delete"

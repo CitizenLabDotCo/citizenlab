@@ -136,4 +136,12 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.linear_scale2',
     defaultMessage: 'Linear scale',
   },
+  multiline_text2: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.multiline_text2',
+    defaultMessage: 'Long answer',
+  },
+  text2: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.text2',
+    defaultMessage: 'Short answer',
+  },
 });

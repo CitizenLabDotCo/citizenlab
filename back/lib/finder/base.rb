@@ -14,6 +14,7 @@ module Finder
       @current_user      = current_user
       @base_scope        = scope || _base_scope
       @records           = @base_scope.includes(includes)
+      @includes          = includes
     end
 
     def find_records

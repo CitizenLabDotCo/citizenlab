@@ -185,6 +185,8 @@ da:
       <p>Tagerne er inviteret til at præsentere deres forslag på næste rådsmøde. Vi bringer en officiel opdatering.</p>
     default_eligibility_criteria: >
       <ul> <li>Det skal falde inden for kommunens politikområder og kompetencer</li> <li>Det tjener den offentlige interesse snarere end din individuelle interesse</li> <li>Det diskriminerer ikke andre borgere i forhold til køn, race, alder eller baggrund</li> <li>Det skader ikke andre</li></ul>
+    default_posting_tips: >
+      <ul><li>Giv dig tid til at uddybe dit forslag. Skriv om nødvendigt et udkast først og kopiér det derefter hertil.</li><li>Vælg en meningsfuld titel, der tydeligt forklarer, hvad dit forslag indebærer.</li><li>Sørg for at visualisere dit forslag med et passende billede, så det skiller sig mere ud.</li><li>Tilføj relevante vedhæftede filer, såsom videoer, inspirerende eksempler, tekniske detaljer eller planer.</li><li>Del din idé på de sociale medier og andre kanaler for at samle støtte fra andre.</li></ul>
   reset_password_mailer:
     send_reset_password:
       cta_reset_password: 'Nulstil din adgangskode'
