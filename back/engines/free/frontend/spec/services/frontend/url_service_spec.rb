@@ -33,5 +33,12 @@ describe Frontend::UrlService do
 
       expect(service.model_to_url(current_phase.reload, locale: 'en')).to eq "#{base_uri}/en/projects/my-project/2"
     end
+
+    it 'returns the correct url for an event' do
+      event = create(:event)
+
+      url = service.model_to_url(event, locale: 'fa-KE')
+      expect(url).to eq "#{base_uri}/fa-KE/events/#{event.id}"
+    end
   end
 end
