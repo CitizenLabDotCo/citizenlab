@@ -13,6 +13,8 @@ module BulkImportIdeas
 
       document = process_upload
 
+      # binding.pry
+
       # Gets an array of all fields on all pages
       fields = []
       document.pages.each do |page|
@@ -59,6 +61,8 @@ module BulkImportIdeas
     end
 
     def format_name(name)
+      # TODO: Replace in different languages
+      name = name.gsub('(optional)', '')
       name.squish
     end
 

@@ -18,7 +18,7 @@ describe BulkImportIdeas::GoogleFormParserService do
       ]
     )
     file_content = nil
-    # file_content = File.binread '/cl2_back/engines/commercial/bulk_import_ideas/spec/fixtures/French.pdf'
+    # file_content = File.binread '/cl2_back/engines/commercial/bulk_import_ideas/spec/fixtures/luuc_2.pdf'
     service = described_class.new file_content
     docs = service.parse_pdf
 
