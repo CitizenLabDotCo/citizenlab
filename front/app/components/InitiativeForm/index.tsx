@@ -228,6 +228,7 @@ const InitiativeForm = ({
                 >
                   <InputMultilocWithLocaleSwitcher
                     name="title_multiloc"
+                    id="e2e-initiative-title-input"
                     autocomplete="off"
                     maxCharCount={72}
                   />
