@@ -1,6 +1,7 @@
 import React from 'react';
 import ContentContainer from 'components/ContentContainer';
 import ProjectAndFolderCards from 'components/ProjectAndFolderCards';
+import FeatureFlag from 'components/FeatureFlag';
 import Outlet from 'components/Outlet';
 import InitiativesCTABox from './InitiativesCTABox';
 
@@ -9,8 +10,6 @@ import styled from 'styled-components';
 import { media, colors } from 'utils/styleUtils';
 
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const StyledContentContainer = styled(ContentContainer)`
   background: ${colors.background};
@@ -38,11 +37,6 @@ const StyledInitiativesCTABox = styled(InitiativesCTABox)`
 const MainContent = () => {
   const postingPermission = useInitiativesPermissions('posting_initiative');
   const postingProposalsEnabled = !!postingPermission?.enabled;
-  const proposalsFeatureEnabled = useFeatureFlag({ name: 'initiatives' });
-  const { data: appConfiguration } = useAppConfiguration();
-
-  if (!appConfiguration) return null;
-  const tenantName = appConfiguration.data.attributes.name;
 
   return (
     <StyledContentContainer mode="page">
@@ -58,9 +52,9 @@ const MainContent = () => {
 
       <Outlet id="app.containers.HomePage.EventsWidget" />
 
-      {proposalsFeatureEnabled &&
-        postingProposalsEnabled &&
-        tenantName !== 'KøbenhavnsKommune' && <StyledInitiativesCTABox />}
+      <FeatureFlag name="initiatives">
+        {postingProposalsEnabled && <StyledInitiativesCTABox />}
+      </FeatureFlag>
     </StyledContentContainer>
   );
 };

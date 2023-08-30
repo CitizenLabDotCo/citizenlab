@@ -12,6 +12,9 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import styled from 'styled-components';
 import { darken } from 'polished';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useLocalize from 'hooks/useLocalize';
+
 interface Props {
   className?: string;
 }
@@ -33,6 +36,15 @@ const TipsTitle = styled.h2`
 `;
 
 const TipsBox = memo(({ className }: Props) => {
+  const { data: appConfiguration } = useAppConfiguration();
+  const localize = useLocalize();
+
+  const postingTips = localize(
+    appConfiguration?.data.attributes.settings.initiatives?.posting_tips
+  );
+
+  if (postingTips.length === 0) return null;
+
   return (
     <Container className={`${className} e2e-tips`}>
       <TipsTitle>

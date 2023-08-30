@@ -8,7 +8,7 @@ const addEvent = async (requestBody: IAddEventProperties) => {
   return fetcher<IEvent>({
     path: `/projects/${requestBody.projectId}/events`,
     action: 'post',
-    body: requestBody.event,
+    body: { event: requestBody.event },
   });
 };
 

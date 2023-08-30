@@ -144,7 +144,6 @@ sv:
     cosponsor_of_your_initiative:
       cta_reply_to: 'Visa ditt förslag'
       event_description_initiative: 'Grattis! %{cosponsorName} har accepterat din inbjudan att vara med och sponsra ditt förslag.'
-      event_description_cosponsoring: 'Medsponsring av ett förslag innebär att <strong>ditt namn kommer att visas</strong> tillsammans med namnen på andra medsponsorer av förslaget.'
       main_header: '%{cosponsorName} har accepterat din inbjudan att medfinansiera ditt förslag'
       subject: '%{cosponsorName} har accepterat din inbjudan att medfinansiera ditt förslag'
       preheader_initiative: '%{cosponsorName} har accepterat din inbjudan att medfinansiera ditt förslag'
