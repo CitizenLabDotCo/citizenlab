@@ -169,7 +169,7 @@ const CreateAnalysisModal = ({ onClose }: { onClose: () => void }) => {
             if (field.input_type === 'page') {
               return (
                 <Box key={field.id} id={field.id}>
-                  <Divider my="8px" />
+                  <Divider />
                   <Title variant="h5" m="0px">
                     {localize(field.title_multiloc)}
                   </Title>
