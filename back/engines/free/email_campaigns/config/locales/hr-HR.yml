@@ -77,7 +77,6 @@ hr:
     cosponsor_of_your_initiative:
       cta_reply_to: 'Pogledajte svoj prijedlog'
       event_description_initiative: 'Čestitamo! %{cosponsorName} je prihvatio vaš poziv da susponzorira vaš prijedlog.'
-      event_description_cosponsoring: 'Susponzoriranje prijedloga znači da će <strong>vaše ime biti prikazano</strong> s imenima ostalih susponzora prijedloga.'
       main_header: '%{cosponsorName} je prihvatio vaš poziv da susponzorira vaš prijedlog'
       subject: '%{cosponsorName} je prihvatio vaš poziv da susponzorira vaš prijedlog'
       preheader_initiative: '%{cosponsorName} je prihvatio vaš poziv da susponzorira vaš prijedlog'
