@@ -836,6 +836,7 @@
   "app.containers.EventsShow.attending": "deltager",
   "app.containers.EventsShow.emailSharingBody": "Deltag i dette arrangement: {eventTitle} på {eventLocation}",
   "app.containers.EventsShow.eventFrom": "Begivenhed fra \"{eventTitle}\"",
+  "app.containers.EventsShow.goBack": "Gå tilbage",
   "app.containers.EventsShow.goToProject": "Gå til projektet",
   "app.containers.EventsShow.icsError": "Fejl ved download af ICS-filen",
   "app.containers.EventsShow.socialMediaSharingMessage": "Deltag i dette arrangement: {eventTitle}",
