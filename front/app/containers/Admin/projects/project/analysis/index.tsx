@@ -50,8 +50,9 @@ const Analysis = () => {
               h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px)`}
               display="flex"
               flexDirection="column"
+              minWidth="0"
             >
-              <Box p="12px" mt="12px" bg={colors.white} h="120px">
+              <Box mt="12px" bg={colors.white} h="120px">
                 <Demographics />
               </Box>
               <Box flex="1" overflow="auto" p="12px" mt="8px" bg={colors.white}>

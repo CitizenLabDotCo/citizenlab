@@ -104,7 +104,7 @@ const InputListItem = memo(({ input, onSelect, selected }: Props) => {
             </Box>
           )}
           {(!title_multiloc || isEmpty(title_multiloc)) && (
-            <Box flex="1">
+            <Box flex="1" width="100%">
               {analysis.data.relationships.custom_fields.data
                 .slice(0, 3)
                 .map((customField) => (
@@ -116,7 +116,6 @@ const InputListItem = memo(({ input, onSelect, selected }: Props) => {
                     textOverflow="ellipsis"
                     overflow="hidden"
                     whiteSpace="nowrap"
-                    minWidth="0"
                   >
                     <InputShortFieldValue
                       customFieldId={customField.id}

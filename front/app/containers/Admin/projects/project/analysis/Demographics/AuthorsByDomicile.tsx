@@ -139,35 +139,27 @@ const AuthorsByDomicile = ({ customFieldId }: Props) => {
 
   return (
     <Box display="flex" flexDirection="column" alignItems="center">
-      <ResponsiveContainer width="100%" height={105}>
+      <Title mt="8px" mb="0px" variant="h6" fontWeight="normal" color="grey700">
+        Authors by domicile
+      </Title>
+      <ResponsiveContainer width="100%" height={100}>
         <BarChart data={chartData} margin={{ top: 20, left: 8, right: 8 }}>
-          <XAxis dataKey="shortName" interval={0} />
-          <Bar
-            stackId="a"
-            dataKey="filtered"
-            fill={colors.teal300}
-            name="Currently filtered"
-            onClick={handleClick}
-          >
-            {chartData.map((_entry, index) => (
+          <XAxis dataKey="shortName" interval={0} tickLine={false} />
+          <Bar stackId="a" dataKey="filtered" onClick={handleClick}>
+            {chartData.map((entry, index) => (
               <Cell
                 cursor="pointer"
-                fill={colors.teal200}
+                fill={entry.shortName === '?' ? colors.teal100 : colors.teal200}
                 key={`cell-${index}`}
               />
             ))}
           </Bar>
-          <Bar
-            stackId="a"
-            dataKey="notFiltered"
-            name="Not currently filtered"
-            onClick={handleClick}
-          >
+          <Bar stackId="a" dataKey="notFiltered" onClick={handleClick}>
             <LabelList dataKey="total" position="top" fill={colors.grey600} />
-            {chartData.map((_entry, index) => (
+            {chartData.map((entry, index) => (
               <Cell
                 cursor="pointer"
-                fill={colors.grey300}
+                fill={entry.shortName === '?' ? colors.grey200 : colors.grey300}
                 key={`cell-${index}`}
               />
             ))}
