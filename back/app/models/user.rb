@@ -77,6 +77,22 @@ class User < ApplicationRecord
       @_roles_json_schema ||= JSON.parse(Rails.root.join('config/schemas/user_roles.json_schema').read)
     end
 
+    def onboarding_json_schema
+      {
+        'type' => 'object',
+        'propertyNames' => {
+          'type' => 'string',
+          'enum' => ['topics']
+        },
+        'properties' => {
+          'topics' => {
+            'type' => 'string',
+            'enum' => ['satisfied']
+          }
+        }
+      }
+    end
+
     # Returns the user record from the database which matches the specified
     # email address (case-insensitive) or `nil`.
     # @param email [String] The email of the user
@@ -206,6 +222,7 @@ class User < ApplicationRecord
   validate :validate_password_not_common
 
   validates :roles, json: { schema: -> { User.roles_json_schema } }
+  validates :onboarding, json: { schema: -> { User.onboarding_json_schema } }
 
   validate :validate_not_duplicate_email
   validate :validate_not_duplicate_new_email
