@@ -112,12 +112,10 @@ const InitiativeForm = ({
       {
         validateEachLocale: (schema) =>
           // https://github.com/jquense/yup/issues/1267
-          schema
-            .transform((currentValue) => stripHtmlTags(currentValue))
-            .matches(/.{30,}/, {
-              excludeEmptyString: true,
-              message: formatMessage(messages.descriptionBodyLengthError),
-            }),
+          schema.matches(/.{30,}/, {
+            excludeEmptyString: true,
+            message: formatMessage(messages.descriptionBodyLengthError),
+          }),
       }
     ),
     position: string().optional().nullable(),
@@ -228,7 +226,6 @@ const InitiativeForm = ({
                 >
                   <InputMultilocWithLocaleSwitcher
                     name="title_multiloc"
-                    id="e2e-initiative-title-input"
                     autocomplete="off"
                     maxCharCount={72}
                   />
