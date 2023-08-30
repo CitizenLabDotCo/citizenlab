@@ -80,18 +80,33 @@ const AuthorsByDomicile = ({ customFieldId }: Props) => {
       ([optionId, count]) => {
         const option = options?.data.find((o) => o.id === optionId);
 
-        const name = localize(option?.attributes.title_multiloc) || optionId;
-        const shortName = name.slice(0, 2);
-        const filtered =
-          filteredAuthorsByDomicile?.data.attributes.series.users[optionId];
+        let name;
+        let shortName;
+        let filtered;
+        let optionKey;
+
+        if (optionId === '_blank') {
+          name = 'Unknown';
+          shortName = '?';
+          filtered =
+            filteredAuthorsByDomicile?.data.attributes.series.users[optionId];
+          optionKey = null;
+        } else {
+          name = localize(option?.attributes.title_multiloc) || optionId;
+          shortName = name.slice(0, 2);
+          filtered =
+            filteredAuthorsByDomicile?.data.attributes.series.users[optionId];
+          optionKey = option?.attributes.key;
+        }
+
         return {
-          optionKey: option?.attributes.key,
           name,
           shortName,
           total: count,
           filtered:
             filteredAuthorsByDomicile?.data.attributes.series.users[optionId],
           notFiltered: count - (filtered || 0),
+          optionKey,
         };
       }
     );
@@ -110,7 +125,7 @@ const AuthorsByDomicile = ({ customFieldId }: Props) => {
   return (
     <Box display="flex" flexDirection="column" alignItems="center">
       <ResponsiveContainer width="100%" height={105}>
-        <BarChart data={chartData} margin={{ top: 20 }}>
+        <BarChart data={chartData} margin={{ top: 20, left: 8, right: 8 }}>
           <XAxis dataKey="shortName" interval={0} />
           <Bar
             stackId="a"

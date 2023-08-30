@@ -6,7 +6,7 @@ import {
   AuthorsByDomicileKeys,
   AuthorsByDomicileQueryParams,
 } from './types';
-import authorsByDomicileKeys from './keys';
+import { authorsByDomicileKeys } from './keys';
 
 const fetchUsersByDomicile = (
   analysisId: string,

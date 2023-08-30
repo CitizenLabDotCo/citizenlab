@@ -131,9 +131,9 @@ module Analysis
         cf = CustomField.find(custom_field_id)
 
         scope = if predicate == 'from'
-          scope.joins(:author).where("(users.custom_field_values->'#{cf.key}')::numeric >= ?", value)
+          scope.joins(:author).where("coalesce(users.custom_field_values->>'#{cf.key}', (-99999)::text)::numeric >= ?", value)
         elsif predicate == 'to'
-          scope.joins(:author).where("(users.custom_field_values->'#{cf.key}')::numeric <= ?", value)
+          scope.joins(:author).where("coalesce(users.custom_field_values->>'#{cf.key}', (99999)::text)::numeric <= ?", value)
         else
           raise ArgumentError, "invalid predicate #{predicate}"
         end

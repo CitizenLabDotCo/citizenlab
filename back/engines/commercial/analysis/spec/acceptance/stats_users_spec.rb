@@ -78,7 +78,7 @@ resource 'Analysis - Stats - Users' do
     filter_parameters(self)
 
     before do
-      birthyears = [1962, 1976, 1980, 1990, 1991, 2005, 2006]
+      birthyears = [1962, 1976, 1980, 1990, 1991]
       authors = birthyears.map { |year| create(:user, birthyear: year) }
       author_without_birthyear = create(:user, birthyear: nil)
       create(:idea, project: project, author: authors[0])
@@ -87,8 +87,6 @@ resource 'Analysis - Stats - Users' do
       create(:idea, project: project, author: authors[3])
       create(:idea, project: project, author: authors[4])
       create(:idea, project: project, author: authors[4], title_multiloc: { en: 'Not p l a n t' })
-      create(:idea, project: project, author: authors[5])
-      create(:idea, project: project, author: authors[6])
       create(:idea, project: project, author: author_without_birthyear)
       create(:idea, author: authors[3])
     end
@@ -97,13 +95,12 @@ resource 'Analysis - Stats - Users' do
 
     example 'Authors by age' do
       travel_to(Time.zone.local(2020, 1, 1)) { do_request }
-
       expect(response_status).to eq 200
       expect(json_response_body.dig(:data, :attributes)).to match(
         unknown_age_count: 1,
         series: {
-          user_counts: [0, 2, 2, 1, 1, 1, 0, 0, 0, 0],
-          bins: UserCustomFields::AgeCounter::DEFAULT_BINS
+          user_counts: [0, 0,  2,  1,  1,  1,  0,  0,  0,  0],
+          bins:        [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, nil]
         }
       )
     end

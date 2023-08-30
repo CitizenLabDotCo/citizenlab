@@ -12,4 +12,16 @@ namespace :random_fill do
       end
     end
   end
+
+  desc 'Update the birthyear values of all current users to random values'
+  task birthyear: :environment do
+    Tenant.find_by(host: 'localhost').switch do
+      User.all.each do |user|
+        new_birthyear = (1920...2020).to_a.sample
+        new_birthyear = nil if rand(6) == 0
+        user.birthyear = new_birthyear
+        user.save
+      end
+    end
+  end
 end
