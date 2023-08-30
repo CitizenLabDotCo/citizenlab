@@ -100,10 +100,9 @@ const InitiativeForm = ({
       formatMessage(messages.titleEmptyError),
       {
         validateEachLocale: (schema) =>
-          // https://github.com/jquense/yup/issues/1267
-          schema.matches(/.{10,}/, {
-            excludeEmptyString: true,
+          schema.test({
             message: formatMessage(messages.titleMinLengthError),
+            test: (value) => !value || value.length >= 10,
           }),
       }
     ),
@@ -111,10 +110,9 @@ const InitiativeForm = ({
       formatMessage(messages.descriptionEmptyError),
       {
         validateEachLocale: (schema) =>
-          // https://github.com/jquense/yup/issues/1267
-          schema.matches(/.{30,}/, {
-            excludeEmptyString: true,
+          schema.test({
             message: formatMessage(messages.descriptionBodyLengthError),
+            test: (value) => !value || stripHtmlTags(value).length >= 30,
           }),
       }
     ),
