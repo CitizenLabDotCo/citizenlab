@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import {
   Icon,
@@ -20,7 +20,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import useLocalize from 'hooks/useLocalize';
 import clHistory from 'utils/cl-router/history';
 import Divider from 'components/admin/Divider';
-import Fragment from 'components/Fragment';
 
 import tracks from 'containers/Admin/projects/project/analysis/tracks';
 import { trackEventByName } from 'utils/analytics';
@@ -48,7 +47,6 @@ const ConsentModal = ({
         <Title>{formatMessage(messages.consentModalTitle)}</Title>
       </Box>
 
-      <Divider />
       <Text>{formatMessage(messages.consentModalText1)}</Text>
       <Text>{formatMessage(messages.consentModalText2)}</Text>
       <Text>{formatMessage(messages.consentModalText3)}</Text>
@@ -74,8 +72,8 @@ const ConsentModal = ({
         onChange={(e) => setChecked(e.target.checked)}
         label={formatMessage(messages.consentModalCheckbox)}
       />
-      <Divider />
-      <Box display="flex" justifyContent="flex-end" gap="16px" mt="16px">
+
+      <Box display="flex" justifyContent="flex-end" gap="16px" mt="48px">
         <Button buttonStyle="secondary" onClick={onClose}>
           {formatMessage(messages.consentModalCancel)}
         </Button>
@@ -104,6 +102,17 @@ const CreateAnalysisModal = ({ onClose }: { onClose: () => void }) => {
     projectId,
     phaseId,
   });
+
+  useEffect(() => {
+    if (customFieldId && formCustomFields) {
+      const element = document.getElementById(customFieldId);
+      element?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+        inline: 'nearest',
+      });
+    }
+  }, [customFieldId, formCustomFields]);
 
   const handleCreateAnalysis = () => {
     createAnalysis(
@@ -141,38 +150,50 @@ const CreateAnalysisModal = ({ onClose }: { onClose: () => void }) => {
 
   if (isNilOrError(formCustomFields)) return null;
 
+  const initialQuestion = formCustomFields.find(
+    (field) => field.id === customFieldId
+  );
+
   return (
-    <Box px="48px">
-      <Title>{formatMessage(messages.analysisSelectQuestions)}</Title>
-      <Text>
-        Which questions do you want to analyze simultaneously? You can always
-        create a new analysis with different questions later.
-      </Text>
-      {formCustomFields?.map((field) => {
-        if (field.input_type === 'page') {
-          return (
-            <Fragment key={field.id} name={''}>
-              <Divider />
-              <Title variant="h5">{localize(field.title_multiloc)}</Title>
-            </Fragment>
-          );
-        } else if (field.input_type === 'section') {
-          return null;
-        } else if (field.input_type === 'file_upload') {
-          return null;
-        } else {
-          return (
-            <Box key={field.id} py="16px">
-              <Checkbox
-                label={localize(field.title_multiloc)}
-                checked={selectdQuestions.includes(field.id)}
-                onChange={handleOnChangeCheck(field.id)}
-              />
-            </Box>
-          );
-        }
-      })}
-      <Box display="flex" justifyContent="flex-end" mt="48px" gap="24px">
+    <Box px="24px">
+      <Box>
+        <Title>{formatMessage(messages.analysisSelectQuestions)}</Title>
+        <Text>
+          Do you want to include any other related questions in your analysis of{' '}
+          <b>&quot;{localize(initialQuestion?.title_multiloc)}&quot;</b>?
+        </Text>
+      </Box>
+      <Box>
+        <Box maxHeight="300px" overflow="auto">
+          {formCustomFields?.map((field) => {
+            if (field.input_type === 'page') {
+              return (
+                <Box key={field.id} id={field.id}>
+                  <Divider my="8px" />
+                  <Title variant="h5" m="0px">
+                    {localize(field.title_multiloc)}
+                  </Title>
+                </Box>
+              );
+            } else if (field.input_type === 'section') {
+              return null;
+            } else if (field.input_type === 'file_upload') {
+              return null;
+            } else {
+              return (
+                <Box key={field.id} py="4px" id={field.id}>
+                  <Checkbox
+                    label={localize(field.title_multiloc)}
+                    checked={selectdQuestions.includes(field.id)}
+                    onChange={handleOnChangeCheck(field.id)}
+                  />
+                </Box>
+              );
+            }
+          })}
+        </Box>
+      </Box>
+      <Box display="flex" justifyContent="flex-end" mt="24px" gap="24px">
         <Button buttonStyle="secondary" onClick={onClose}>
           {formatMessage(messages.cancel)}
         </Button>
