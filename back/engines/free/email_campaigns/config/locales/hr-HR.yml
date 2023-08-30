@@ -124,6 +124,7 @@ hr:
       cta_reply_to: 'Susponzorirajte ovaj prijedlog'
       event_description_initiative: '%{authorName} je stvorio novi prijedlog i želio bi da ga supokrovite.'
       event_description_cosponsoring: 'Susponzoriranje prijedloga znači da će <strong>vaše ime biti prikazano</strong> s imenima ostalih susponzora prijedloga.'
+      event_description_before_action: 'Da biste vidjeli ponudu i prihvatili poziv, morate biti prijavljeni na svoj račun.'
       event_description_action: 'Kliknite ispod kako biste pročitali prijedlog.'
       main_header: 'Pozvani ste da budete supokrovitelj prijedloga'
       subject: 'Pozvani ste da budete supokrovitelj prijedloga'
