@@ -136,6 +136,7 @@ const EventInformation = ({
                 color="coolGrey700"
                 fontSize="s"
                 role="button"
+                pt="2px"
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
