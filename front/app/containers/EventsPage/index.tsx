@@ -11,29 +11,22 @@ import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
-// utils
-import { useTheme } from 'styled-components';
-
 const EventsPage = () => {
   const { formatMessage } = useIntl();
-  const isTabletOrSmaller = useBreakpoint('phone');
-  const theme = useTheme();
+  const isTabletOrSmaller = useBreakpoint('tablet');
 
   return (
     <>
-      <Box
-        width="100vw"
-        height={isTabletOrSmaller ? '128px' : '244px'}
-        bgColor={theme.colors.tenantPrimary}
-      >
+      <Box width="100vw">
         <Title
           px={'16px'}
           maxWidth="1100px"
-          color="white"
-          style={{ fontSize: isTabletOrSmaller ? '40px' : '90px' }}
+          color="tenantPrimary"
+          style={{ fontSize: isTabletOrSmaller ? '40px' : '80px' }}
           zIndex="10000"
           mx="auto"
-          pt={isTabletOrSmaller ? '62px' : '96px'}
+          pt={isTabletOrSmaller ? '40px' : '0px'}
+          mb="0px"
         >
           {formatMessage(messages.events)}
         </Title>
