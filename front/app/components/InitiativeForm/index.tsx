@@ -115,7 +115,9 @@ const InitiativeForm = ({
       }
     ),
     position: string().optional().nullable(),
-    topic_ids: array().optional(),
+    topic_ids: array()
+      .required(formatMessage(messages.topicEmptyError))
+      .min(1, formatMessage(messages.topicEmptyError)),
     cosponsor_ids: array().optional(),
     local_initiative_files: mixed().optional(),
     images: mixed().optional().nullable(),
