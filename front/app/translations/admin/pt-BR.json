@@ -1500,6 +1500,8 @@
   "app.containers.AdminPage.ProjectEvents.locationLabel": "Localização",
   "app.containers.AdminPage.ProjectEvents.mapSelectionLabel2": "Defina onde o marcador de local do seu evento é mostrado clicando no mapa:",
   "app.containers.AdminPage.ProjectEvents.newEventTitle": "Criar um novo evento",
+  "app.containers.AdminPage.ProjectEvents.onlineEventLinkLabel": "Ligação para o evento em linha",
+  "app.containers.AdminPage.ProjectEvents.onlineEventLinkTooltip": "Se o seu evento estiver em linha, adicione aqui uma hiperligação para o mesmo.",
   "app.containers.AdminPage.ProjectEvents.refineLocationCoordinates": "Refinar a localização do mapa",
   "app.containers.AdminPage.ProjectEvents.refineOnMap": "Refinar a localização no mapa",
   "app.containers.AdminPage.ProjectEvents.saveButtonLabel": "Salvar",
