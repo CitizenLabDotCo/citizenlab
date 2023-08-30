@@ -30,6 +30,8 @@ import Rate from './Rate';
 import tracks from 'containers/Admin/projects/project/analysis/tracks';
 import { trackEventByName } from 'utils/analytics';
 
+import { deleteTrailingIncompleteIDs, refRegex, removeRefs } from './util';
+
 const StyledSummaryText = styled.div`
   white-space: pre-wrap;
   word-break: break-word;
@@ -83,20 +85,6 @@ const Summary = ({ insight }: Props) => {
     }
   };
 
-  const deleteTrailingIncompleteIDs = (str: string | null) => {
-    if (!str) return str;
-    return str.replace(/\[?[0-9a-f-]{0,35}$/, '');
-  };
-
-  const refRegex =
-    /\[?([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})\]?/g;
-
-  const refRegexWithInitialEmptySpace =
-    /\s\[?([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})\]?/g;
-
-  const removeRefs = (summary: string) => {
-    return summary.replace(refRegexWithInitialEmptySpace, '');
-  };
   const handleClickInput = (inputId: string) => {
     setSelectedInputId(inputId);
     const element = document.getElementById(`input-${inputId}`);
