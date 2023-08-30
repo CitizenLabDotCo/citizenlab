@@ -232,7 +232,6 @@
   "app.components.InitiativeForm.titleEmptyError": "Παρακαλούμε δώστε έναν τίτλο",
   "app.components.InitiativeForm.titleLabel": "Τίτλος",
   "app.components.InitiativeForm.titleLabelSubtext2": "Επιλέξτε έναν περιγραφικό, αλλά συνοπτικό τίτλο (ελάχ. 10 χαρακτήρες, μέγ. 72 χαρακτήρες)",
-  "app.components.InitiativeForm.titleMaxLengthError": "Ο παρεχόμενος τίτλος είναι πολύ μεγάλος. Παρακαλούμε προσθέστε έναν τίτλο με μήκος μεταξύ 10 και 72 χαρακτήρων.",
   "app.components.InitiativeForm.titleMinLengthError": "Ο παρεχόμενος τίτλος είναι πολύ σύντομος. Παρακαλούμε προσθέστε έναν τίτλο που να έχει μήκος μεταξύ 10 και 72 χαρακτήρων.",
   "app.components.InitiativeForm.topicEmptyError": "Παρακαλούμε προσθέστε μια ετικέτα",
   "app.components.InitiativeForm.topicsLabel": "Προσθέστε μια ετικέτα στην πρότασή σας",

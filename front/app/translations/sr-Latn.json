@@ -232,7 +232,6 @@
   "app.components.InitiativeForm.titleEmptyError": "Molimo vas unesite naziv",
   "app.components.InitiativeForm.titleLabel": "Naziv",
   "app.components.InitiativeForm.titleLabelSubtext2": "Unesite opisan i koncizan naziv (min. 10 karaktera, max. 72 karaktera)",
-  "app.components.InitiativeForm.titleMaxLengthError": "Uneti naziv je predugačak. Molimo vas da naziv sadrži između 10 i 72 karaktera. ",
   "app.components.InitiativeForm.titleMinLengthError": "Uneti naziv je isuviše kratak. Molimo vas da naziv sadrži između 10 i 72 karaktera. ",
   "app.components.InitiativeForm.topicEmptyError": "Molimo vas unesite temu",
   "app.components.InitiativeForm.topicsLabel": "Odaberite temu na koju se odnosi vaš predlog",
