@@ -836,6 +836,7 @@
   "app.containers.EventsShow.attending": "حضور",
   "app.containers.EventsShow.emailSharingBody": "احضر هذا الحدث: {eventTitle} الساعة {eventLocation}",
   "app.containers.EventsShow.eventFrom": "حدث من \"{eventTitle}\"",
+  "app.containers.EventsShow.goBack": "عُد",
   "app.containers.EventsShow.goToProject": "اذهب إلى المشروع",
   "app.containers.EventsShow.icsError": "حدث خطأ أثناء تنزيل ملف ICS",
   "app.containers.EventsShow.socialMediaSharingMessage": "حضور هذا الحدث: {eventTitle}",
