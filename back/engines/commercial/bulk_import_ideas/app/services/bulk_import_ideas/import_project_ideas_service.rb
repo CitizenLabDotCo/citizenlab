@@ -59,6 +59,13 @@ module BulkImportIdeas
       end
     end
 
+    # pdf_raw_text is the raw text output from the google parser
+    def pdf_raw_text_to_idea_rows(pdf_raw_text)
+      pp pdf_raw_text
+      binding.pry
+      pdf_raw_text
+    end
+
     def xlsx_to_idea_rows(xlsx)
       xlsx.map do |xlsx_row|
         idea_row = {}
