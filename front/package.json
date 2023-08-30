@@ -179,6 +179,7 @@
     "@types/react-infinite-scroller": "^1.2.3",
     "@types/react-jsonschema-form": "^1.7.8",
     "@types/react-loadable": "^5.5.6",
+    "@types/react-mentions": "^4.1.8",
     "@types/react-places-autocomplete": "7.x",
     "@types/react-select": "^5.0.1",
     "@types/react-transition-group": "4.4.5",

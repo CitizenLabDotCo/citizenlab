@@ -38,9 +38,8 @@ module IdNemlogIn
     # 5. We fetch the token from RelayState param using fetch_token
     #
     def fetch_token(request)
-      request.params['RelayState']
+      super || request.params['RelayState']
     end
-    protected_methods :fetch_token
 
     def replace_token_param!(env)
       request = Rack::Request.new(env)
@@ -68,10 +67,6 @@ module IdNemlogIn
           municipality_code: fetch_municipality_code(cpr_number)
         }
       }
-    end
-
-    def profile_to_uid(auth)
-      auth.extra.raw_info['https://data.gov.dk/model/core/eid/cprUuid']
     end
 
     def omniauth_setup(configuration, env)
@@ -113,7 +108,7 @@ module IdNemlogIn
     end
 
     def updateable_user_attrs
-      %i[first_name last_name custom_field_values]
+      %i[custom_field_values]
     end
 
     def locked_custom_fields
@@ -124,19 +119,12 @@ module IdNemlogIn
       %i[]
     end
 
-    # environment - see ENVIRONMENTS keys for available values
-    # issuer      - entityID from SP metadata file (usually domain name with protocol)
-    # private_key - private key. Public key is specified in SP metadata file
-    def config_parameters
-      %i[environment issuer private_key]
-    end
-
     def logout_url; end
 
     private
 
-    def fetch_municipality_code(_cpr_number)
-      # '0101'
+    def fetch_municipality_code(cpr_number)
+      IdNemlogIn::KkiLocationApi.new.municipality_code(cpr_number)
     end
 
     def redirect_uri(configuration)

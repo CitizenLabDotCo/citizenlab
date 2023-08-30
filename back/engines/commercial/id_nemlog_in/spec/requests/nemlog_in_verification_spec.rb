@@ -63,15 +63,16 @@ describe IdNemlogIn::NemlogInOmniauth do
 
     expect(user.reload).to have_attributes({
       verified: true,
-      first_name: 'Terje',
-      last_name: 'Hermansen'
+      first_name: 'Rudolphi',
+      last_name: 'Raindeari'
     })
     expect(user.custom_field_values).to have_key('municipality_code')
+    uid = 'https://data.gov.dk/model/core/eid/professional/uuid/82dc2343-7f37-465d-a523-7f3e24feca46'
     expect(user.verifications.first).to have_attributes({
       method_name: 'nemlog_in',
       user_id: user.id,
       active: true,
-      hashed_uid: 'e68a306767b2eb2ceb03d311c916b1193a84bc02c83a4596d1fac01a105f0f37'
+      hashed_uid: Verification::VerificationService.new.send(:hashed_uid, uid, 'nemlog_in')
     })
   end
 
@@ -94,10 +95,11 @@ describe IdNemlogIn::NemlogInOmniauth do
   end
 
   it 'fails when the cprUuid has already been used' do
+    uid = 'https://data.gov.dk/model/core/eid/professional/uuid/82dc2343-7f37-465d-a523-7f3e24feca46'
     create(
       :verification,
       method_name: 'nemlog_in',
-      hashed_uid: Verification::VerificationService.new.send(:hashed_uid, '81cf0ed2-e28d-45bd-a860-f093b2ddf1c9', 'nemlog_in')
+      hashed_uid: Verification::VerificationService.new.send(:hashed_uid, uid, 'nemlog_in')
     )
 
     get "/auth/nemlog_in?token=#{token}&pathname=/some-page"

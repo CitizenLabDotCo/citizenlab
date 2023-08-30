@@ -211,7 +211,7 @@ module EmailCampaigns
     end
 
     def new_initiatives(time: Time.zone.today)
-      @new_initiatives ||= Initiative.published.where('published_at > ?', (time - 1.week))
+      @new_initiatives ||= Initiative.published.proposed_after(1.week.ago)
         .order(published_at: :desc)
         .includes(:initiative_images)
         .map { |initiative| serialize_initiative(initiative) }
@@ -222,7 +222,7 @@ module EmailCampaigns
         .published
         .joins(initiative_status_changes: :initiative_status)
         .includes(:initiative_images)
-        .where(initiative_statuses: { code: 'threshold_reached' })
+        .with_status_code('threshold_reached')
         .where('initiative_status_changes.created_at > ?', time - 1.week)
         .feedback_needed
         .map { |initiative| serialize_initiative(initiative) }

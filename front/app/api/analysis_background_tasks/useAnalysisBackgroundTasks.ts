@@ -5,7 +5,7 @@ import backgroundTasksKeys from './keys';
 import { IBackgroundTasks, BackgroundTasksKeys } from './types';
 import tagsKeys from 'api/analysis_tags/keys';
 import taggingKeys from 'api/analysis_taggings/keys';
-import summariesKeys from 'api/analysis_summaries/keys';
+import insightsKeys from 'api/analysis_insights/keys';
 
 const fetchBackgroundTasks = (analysisId: string) => {
   return fetcher<IBackgroundTasks>({
@@ -27,8 +27,7 @@ const useAnalysisBackgroundTasks = (analysisId: string) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: tagsKeys.lists() });
       queryClient.invalidateQueries({ queryKey: taggingKeys.lists() });
-      queryClient.invalidateQueries({ queryKey: summariesKeys.lists() });
-      queryClient.invalidateQueries({ queryKey: backgroundTasksKeys.items() });
+      queryClient.invalidateQueries({ queryKey: insightsKeys.lists() });
     },
     // Refetch every 2 seconds when tasks are active
     refetchInterval: (data) => {

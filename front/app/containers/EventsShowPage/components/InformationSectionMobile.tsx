@@ -4,6 +4,7 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import EventAttendanceButton from 'components/EventAttendanceButton';
 import ParticipantsCount from './MetadataInformation/ParticipantsCount';
+import EventSharingButtons from './EventSharingButtons';
 
 // styling
 import { colors } from 'utils/styleUtils';
@@ -64,6 +65,9 @@ const InformationSectionMobile = ({ event }: Props) => {
             </Box>
           </Box>
         </Box>
+      </Box>
+      <Box mb="16px">
+        <EventSharingButtons event={event} />
       </Box>
     </Box>
   );

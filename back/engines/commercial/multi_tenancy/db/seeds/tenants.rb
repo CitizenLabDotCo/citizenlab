@@ -281,16 +281,25 @@ module MultiTenancy
             initiatives: {
               enabled: true,
               allowed: true,
+              require_review: false,
               reacting_threshold: 20,
               days_limit: 5,
               threshold_reached_message: MultilocService.new.i18n_to_multiloc(
                 'initiatives.default_threshold_reached_message',
-                locales: CL2_SUPPORTED_LOCALES
+                locales: runner.seed_locales
               ),
               eligibility_criteria: MultilocService.new.i18n_to_multiloc(
                 'initiatives.default_eligibility_criteria',
-                locales: CL2_SUPPORTED_LOCALES
+                locales: runner.seed_locales
+              ),
+              posting_tips: MultilocService.new.i18n_to_multiloc(
+                'initiatives.default_posting_tips',
+                locales: runner.seed_locales
               )
+            },
+            initiative_review: {
+              enabled: true,
+              allowed: true
             },
             polls: {
               enabled: true,

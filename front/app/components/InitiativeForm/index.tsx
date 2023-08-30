@@ -15,12 +15,20 @@ import {
 } from 'components/UI/FormComponents';
 import { SectionField } from 'components/admin/Section';
 import TopicsPicker from 'components/UI/TopicsPicker';
-import { Box, Input, LocationInput } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Input,
+  LocationInput,
+  Text,
+} from '@citizenlab/cl2-component-library';
 import QuillEditor from 'components/UI/QuillEditor';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import FileUploader from 'components/UI/FileUploader';
 import Error from 'components/UI/Error';
 import ProfileVisiblity from 'components/ProfileVisibility';
+
+// hooks
+import useInitiativeReviewRequired from 'hooks/useInitiativeReviewRequired';
 
 // intl
 import messages from './messages';
@@ -29,8 +37,15 @@ import { MessageDescriptor, FormattedMessage, useIntl } from 'utils/cl-intl';
 // typings
 import { Multiloc, Locale, UploadFile } from 'typings';
 import { ITopicData } from 'api/topics/types';
-import { FormSubmitFooter } from './SubmitFooter';
+import FormSubmitFooter from './FormSubmitFooter';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import MentionsTextArea from 'components/UI/MentionsTextArea';
+import { IInitiativeCosponsorship } from 'api/initiatives/types';
+
+// hooks
+import useInitiativeCosponsorsRequired from 'hooks/useInitiativeCosponsorsRequired';
+import Warning from 'components/UI/Warning';
+import { MentionItem } from 'react-mentions';
 
 const Form = styled.form`
   display: flex;
@@ -51,6 +66,7 @@ export interface SimpleFormValues {
   body_multiloc: Multiloc | undefined | null;
   topic_ids: string[];
   position: string | undefined | null;
+  cosponsor_ids: string[];
 }
 
 export interface FormValues extends SimpleFormValues {
@@ -71,6 +87,7 @@ interface Props extends FormValues, FormProps {
   onChangeBody: (newValue: Multiloc) => void;
   onChangeTopics: (newValue: string[]) => void;
   onChangePosition: (newValue: string) => void;
+  onChangeCosponsors: (cosponsors: MentionItem[]) => void;
   onChangeBanner: (newValue: UploadFile | null) => void;
   onChangeImage: (newValue: UploadFile | null) => void;
   onAddFile: (newValue: UploadFile) => void;
@@ -84,6 +101,7 @@ interface Props extends FormValues, FormProps {
   postAnonymously: boolean;
   setPostAnonymously: (newValue: boolean) => void;
   publishedAnonymously?: boolean;
+  cosponsorships?: IInitiativeCosponsorship[];
 }
 
 const InitiativeForm = ({
@@ -92,6 +110,7 @@ const InitiativeForm = ({
   title_multiloc,
   body_multiloc,
   topic_ids,
+  cosponsorships,
   image,
   onSave,
   onPublish,
@@ -102,6 +121,7 @@ const InitiativeForm = ({
   onChangeBody,
   position,
   onChangePosition,
+  onChangeCosponsors,
   banner,
   files,
   onAddFile,
@@ -115,21 +135,32 @@ const InitiativeForm = ({
   setPostAnonymously,
   postAnonymously,
 }: Props) => {
-  const appConfiguration = useAppConfiguration();
+  const { data: appConfiguration } = useAppConfiguration();
+  const initiativeCosponsorsRequired = useInitiativeCosponsorsRequired();
+  const initiativeReviewRequired = useInitiativeReviewRequired();
+  const { formatMessage } = useIntl();
   const [touched, setTouched] = useState<{
     [key in keyof FormValues]?: boolean | undefined;
   }>({});
   const [errors, setErrors] = useState<{
     [key in keyof FormValues]?: { message: MessageDescriptor } | undefined;
   }>({});
-
-  const { formatMessage } = useIntl();
-  const titleMinLength = 10;
-  const titleMaxLength = 72;
-  const bodyMinLength = process.env.NODE_ENV === 'development' ? 10 : 30;
+  const initialCosponsorsText = cosponsorships
+    ? cosponsorships.reduce(
+        (acc, cosponsorship) =>
+          `${acc}@[${cosponsorship.name}](${cosponsorship.user_id}) `,
+        ''
+      )
+    : null;
+  const [cosponsorsText, setCosponsorsText] = useState<string | null>(
+    initialCosponsorsText
+  );
 
   useEffect(() => {
     const requiredFields = ['title_multiloc', 'body_multiloc', 'topic_ids'];
+    const titleMinLength = 10;
+    const titleMaxLength = 72;
+    const bodyMinLength = process.env.NODE_ENV === 'development' ? 10 : 30;
 
     const validations = {
       title_multiloc: () => {
@@ -170,7 +201,9 @@ const InitiativeForm = ({
       errorList[fieldName] = validations[fieldName]();
     });
     setErrors(errorList);
-  }, [bodyMinLength, body_multiloc, image, locale, title_multiloc, topic_ids]);
+  }, [body_multiloc, image, locale, title_multiloc, topic_ids]);
+
+  if (!appConfiguration) return null;
 
   const updateTouched = (fieldName: string) => {
     const touchedArray = touched;
@@ -252,211 +285,267 @@ const InitiativeForm = ({
   };
 
   const allowAnonymousParticipation =
-    appConfiguration.data?.data.attributes.settings.initiatives
+    appConfiguration.data.attributes.settings.initiatives
       ?.allow_anonymous_participation;
   const mapsLoaded = window.googleMaps;
+  const cosponsorsNumber =
+    appConfiguration.data.attributes.settings.initiatives?.cosponsors_number;
+  const availableTopics = topics.filter((topic) => !isNilOrError(topic));
 
-  if (!isNilOrError(topics)) {
-    const availableTopics = topics.filter((topic) => !isNilOrError(topic));
+  return (
+    <Form id="initiative-form">
+      <StyledFormSection>
+        <FormSectionTitle message={messages.formGeneralSectionTitle} />
 
-    return (
-      <Form id="initiative-form">
-        <StyledFormSection>
-          <FormSectionTitle message={messages.formGeneralSectionTitle} />
-
-          <SectionField id="e2e-initiative-form-title-section">
-            <FormLabel
-              htmlFor="e2e-initiative-title-input"
-              labelMessage={messages.titleLabel}
-              subtextMessage={messages.titleLabelSubtext2}
-            >
-              <Input
-                type="text"
-                id="e2e-initiative-title-input"
-                value={title_multiloc?.[locale] || ''}
-                locale={locale}
-                onChange={handleTitleOnChange}
-                onBlur={onBlur('title_multiloc')}
-                autocomplete="off"
-                maxCharCount={72}
-              />
-              {touched.title_multiloc && errors.title_multiloc ? (
-                <Error
-                  id="e2e-proposal-title-error"
-                  text={formatMessage(errors.title_multiloc.message)}
-                />
-              ) : (
-                apiErrors &&
-                apiErrors.title_multiloc && (
-                  <Error apiErrors={apiErrors.title_multiloc} />
-                )
-              )}
-            </FormLabel>
-            {titleProfanityError && (
-              <Error
-                text={
-                  <FormattedMessage
-                    {...messages.profanityError}
-                    values={{
-                      guidelinesLink: (
-                        <Link to="/pages/faq" target="_blank">
-                          {formatMessage(messages.guidelinesLinkText)}
-                        </Link>
-                      ),
-                    }}
-                  />
-                }
-              />
-            )}
-          </SectionField>
-
-          <SectionField id="e2e-initiative-form-description-section">
-            <FormLabel
-              id="description-label-id"
-              htmlFor="body"
-              labelMessage={messages.descriptionLabel}
-              subtextMessage={messages.descriptionLabelSubtext}
-            />
-            <QuillEditor
-              id="body"
-              value={body_multiloc?.[locale] || ''}
+        <SectionField id="e2e-initiative-form-title-section">
+          <FormLabel
+            htmlFor="e2e-initiative-title-input"
+            labelMessage={messages.titleLabel}
+            subtextMessage={messages.titleLabelSubtext2}
+          >
+            <Input
+              type="text"
+              id="e2e-initiative-title-input"
+              value={title_multiloc?.[locale] || ''}
               locale={locale}
-              noVideos={true}
-              noAlign={true}
-              onChange={handleBodyOnChange}
-              onBlur={onBlur('body_multiloc')}
+              onChange={handleTitleOnChange}
+              onBlur={onBlur('title_multiloc')}
+              autocomplete="off"
+              maxCharCount={72}
             />
-            {touched.body_multiloc && errors.body_multiloc ? (
-              <Error text={formatMessage(errors.body_multiloc.message)} />
+            {touched.title_multiloc && errors.title_multiloc ? (
+              <Error
+                id="e2e-proposal-title-error"
+                text={formatMessage(errors.title_multiloc.message)}
+              />
             ) : (
               apiErrors &&
-              apiErrors.body_multiloc && (
-                <Error apiErrors={apiErrors.body_multiloc} />
+              apiErrors.title_multiloc && (
+                <Error apiErrors={apiErrors.title_multiloc} />
               )
             )}
-            {descriptionProfanityError && (
-              <Error
-                text={
-                  <FormattedMessage
-                    {...messages.profanityError}
-                    values={{
-                      guidelinesLink: (
-                        <Link to="/pages/faq" target="_blank">
-                          {formatMessage(messages.guidelinesLinkText)}
-                        </Link>
-                      ),
-                    }}
-                  />
-                }
-              />
-            )}
-          </SectionField>
-        </StyledFormSection>
-
-        <StyledFormSection>
-          <FormSectionTitle message={messages.formDetailsSectionTitle} />
-
-          <SectionField aria-live="polite">
-            <FormLabel
-              labelMessage={messages.topicsLabel}
-              subtextMessage={messages.topicsLabelDescription}
-              htmlFor="field-topic-multiple-picker"
-            />
-            <TopicsPicker
-              id="field-topic-multiple-picker"
-              selectedTopicIds={topic_ids}
-              onChange={changeAndSaveTopics}
-              availableTopics={availableTopics}
-            />
-            {touched.topic_ids && errors.topic_ids ? (
-              <Error text={formatMessage(errors.topic_ids.message)} />
-            ) : (
-              apiErrors &&
-              apiErrors.topic_ids && <Error apiErrors={apiErrors.topic_ids} />
-            )}
-          </SectionField>
-          {mapsLoaded && (
-            <SectionField>
-              <FormLabel
-                labelMessage={messages.locationLabel}
-                subtextMessage={messages.locationLabelSubtext}
-                htmlFor="initiative-location-picker"
-                optional
-              >
-                <LocationInput
-                  id="initiative-location-picker"
-                  className="e2e-initiative-location-input"
-                  value={position || ''}
-                  onChange={onChangePosition}
-                  onBlur={onBlur('position')}
-                  placeholder={formatMessage(messages.locationPlaceholder)}
+          </FormLabel>
+          {titleProfanityError && (
+            <Error
+              text={
+                <FormattedMessage
+                  {...messages.profanityError}
+                  values={{
+                    guidelinesLink: (
+                      <Link to="/pages/faq" target="_blank">
+                        {formatMessage(messages.guidelinesLinkText)}
+                      </Link>
+                    ),
+                  }}
                 />
-              </FormLabel>
-            </SectionField>
+              }
+            />
           )}
-        </StyledFormSection>
-        <StyledFormSection>
-          <FormSectionTitle message={messages.formAttachmentsSectionTitle} />
-          <SectionField id="e2e-iniatiative-banner-dropzone">
-            <FormLabel
-              labelMessage={messages.bannerUploadLabel}
-              subtextMessage={messages.bannerUploadLabelSubtext}
-              htmlFor="initiative-banner-dropzone"
-              optional
+        </SectionField>
+
+        <SectionField id="e2e-initiative-form-description-section">
+          <FormLabel
+            id="description-label-id"
+            htmlFor="body"
+            labelMessage={messages.descriptionLabel}
+            subtextMessage={messages.descriptionLabelSubtext}
+          />
+          <QuillEditor
+            id="body"
+            value={body_multiloc?.[locale] || ''}
+            locale={locale}
+            noVideos={true}
+            noAlign={true}
+            onChange={handleBodyOnChange}
+            onBlur={onBlur('body_multiloc')}
+          />
+          {touched.body_multiloc && errors.body_multiloc ? (
+            <Error text={formatMessage(errors.body_multiloc.message)} />
+          ) : (
+            apiErrors &&
+            apiErrors.body_multiloc && (
+              <Error apiErrors={apiErrors.body_multiloc} />
+            )
+          )}
+          {descriptionProfanityError && (
+            <Error
+              text={
+                <FormattedMessage
+                  {...messages.profanityError}
+                  values={{
+                    guidelinesLink: (
+                      <Link to="/pages/faq" target="_blank">
+                        {formatMessage(messages.guidelinesLinkText)}
+                      </Link>
+                    ),
+                  }}
+                />
+              }
             />
-            <ImagesDropzone
-              id="initiative-banner-dropzone"
-              images={banner ? [banner] : null}
-              imagePreviewRatio={360 / 1440}
-              acceptedFileTypes={{
-                'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
-              }}
-              onAdd={addBanner}
-              onRemove={removeBanner}
-            />
-            {apiErrors && apiErrors.header_bg && (
-              <Error apiErrors={apiErrors.header_bg} />
+          )}
+        </SectionField>
+        <Warning>
+          <div>
+            <FormattedMessage {...messages.makeSureReadyToBePublic} />{' '}
+            {initiativeReviewRequired ? (
+              <FormattedMessage {...messages.notEditableOnceReviewed} />
+            ) : (
+              <FormattedMessage {...messages.notEditableOnceVoted} />
             )}
-          </SectionField>
-          <SectionField id="e2e-iniatiative-img-dropzone">
-            <FormLabel
-              labelMessage={messages.imageUploadLabel}
-              subtextMessage={messages.imageUploadLabelSubtext}
-              htmlFor="initiative-image-dropzone"
-              optional
-            />
-            <ImagesDropzone
-              id="initiative-image-dropzone"
-              images={image ? [image] : null}
-              imagePreviewRatio={135 / 298}
-              acceptedFileTypes={{
-                'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
-              }}
-              onAdd={addImage}
-              onRemove={removeImage}
-            />
-            {touched.image && errors.image && (
-              <Error text={formatMessage(errors.image.message)} />
-            )}
-          </SectionField>
+          </div>
+        </Warning>
+      </StyledFormSection>
+
+      <StyledFormSection>
+        <FormSectionTitle message={messages.formDetailsSectionTitle} />
+
+        <SectionField aria-live="polite">
+          <FormLabel
+            labelMessage={messages.topicsLabel}
+            subtextMessage={messages.topicsLabelDescription}
+            htmlFor="field-topic-multiple-picker"
+          />
+          <TopicsPicker
+            id="field-topic-multiple-picker"
+            selectedTopicIds={topic_ids}
+            onChange={changeAndSaveTopics}
+            availableTopics={availableTopics}
+          />
+          {touched.topic_ids && errors.topic_ids ? (
+            <Error text={formatMessage(errors.topic_ids.message)} />
+          ) : (
+            apiErrors &&
+            apiErrors.topic_ids && <Error apiErrors={apiErrors.topic_ids} />
+          )}
+        </SectionField>
+        {mapsLoaded && (
           <SectionField>
             <FormLabel
-              labelMessage={messages.fileUploadLabel}
-              subtextMessage={messages.fileUploadLabelSubtext}
-              htmlFor="e2e-initiative-file-upload"
+              labelMessage={messages.locationLabel}
+              subtextMessage={messages.locationLabelSubtext}
+              htmlFor="initiative-location-picker"
               optional
             >
-              <FileUploader
-                id="e2e-initiative-file-upload"
-                onFileAdd={onAddFile}
-                onFileRemove={onRemoveFile}
-                files={files}
-                apiErrors={apiErrors}
+              <LocationInput
+                id="initiative-location-picker"
+                className="e2e-initiative-location-input"
+                value={position || ''}
+                onChange={onChangePosition}
+                onBlur={onBlur('position')}
+                placeholder={formatMessage(messages.locationPlaceholder)}
+              />
+            </FormLabel>
+          </SectionField>
+        )}
+      </StyledFormSection>
+      {initiativeCosponsorsRequired && typeof cosponsorsNumber === 'number' && (
+        <StyledFormSection>
+          <FormSectionTitle message={messages.cosponsorSectionTitle} />
+          <SectionField>
+            <Text>
+              <FormattedMessage
+                {...messages.cosponsorSubtextBeforeInput}
+                values={{
+                  noOfCosponsorsText: (
+                    <b>
+                      {formatMessage(messages.noOfCosponsorsText, {
+                        cosponsorsNumber,
+                      })}
+                    </b>
+                  ),
+                }}
+              />
+            </Text>
+            <FormLabel
+              labelMessage={messages.cosponsorsLabel}
+              htmlFor="cosponsors-input"
+            >
+              <Box mb="12px">
+                <Warning>
+                  {formatMessage(messages.cosponsorSubtextBeforeInputNote)}
+                </Warning>
+              </Box>
+              <MentionsTextArea
+                id="cosponsors-input"
+                name="cosponsors"
+                rows={1}
+                value={cosponsorsText}
+                onChange={setCosponsorsText}
+                onChangeMentions={onChangeCosponsors}
+                trigger=""
+                onBlur={onBlur('cosponsors')}
+                userReferenceType="id"
+                padding="8px 8px 12px"
+                placeholder={formatMessage(messages.cosponsorsPlaceholder)}
               />
             </FormLabel>
           </SectionField>
         </StyledFormSection>
-        {allowAnonymousParticipation && !publishedAnonymously && (
+      )}
+      <StyledFormSection>
+        <FormSectionTitle message={messages.formAttachmentsSectionTitle} />
+        <SectionField id="e2e-iniatiative-banner-dropzone">
+          <FormLabel
+            labelMessage={messages.bannerUploadLabel}
+            subtextMessage={messages.bannerUploadLabelSubtext}
+            htmlFor="initiative-banner-dropzone"
+            optional
+          />
+          <ImagesDropzone
+            id="initiative-banner-dropzone"
+            images={banner ? [banner] : null}
+            imagePreviewRatio={360 / 1440}
+            acceptedFileTypes={{
+              'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
+            }}
+            onAdd={addBanner}
+            onRemove={removeBanner}
+          />
+          {apiErrors && apiErrors.header_bg && (
+            <Error apiErrors={apiErrors.header_bg} />
+          )}
+        </SectionField>
+        <SectionField id="e2e-iniatiative-img-dropzone">
+          <FormLabel
+            labelMessage={messages.imageUploadLabel}
+            subtextMessage={messages.imageUploadLabelSubtext}
+            htmlFor="initiative-image-dropzone"
+            optional
+          />
+          <ImagesDropzone
+            id="initiative-image-dropzone"
+            images={image ? [image] : null}
+            imagePreviewRatio={135 / 298}
+            acceptedFileTypes={{
+              'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
+            }}
+            onAdd={addImage}
+            onRemove={removeImage}
+          />
+          {touched.image && errors.image && (
+            <Error text={formatMessage(errors.image.message)} />
+          )}
+        </SectionField>
+        <SectionField>
+          <FormLabel
+            labelMessage={messages.fileUploadLabel}
+            subtextMessage={messages.fileUploadLabelSubtext}
+            htmlFor="e2e-initiative-file-upload"
+            optional
+          >
+            <FileUploader
+              id="e2e-initiative-file-upload"
+              onFileAdd={onAddFile}
+              onFileRemove={onRemoveFile}
+              files={files}
+              apiErrors={apiErrors}
+            />
+          </FormLabel>
+        </SectionField>
+      </StyledFormSection>
+      {allowAnonymousParticipation &&
+        !publishedAnonymously &&
+        !initiativeCosponsorsRequired && (
           <StyledFormSection>
             <Box mt="-20px">
               <ProfileVisiblity
@@ -467,19 +556,19 @@ const InitiativeForm = ({
           </StyledFormSection>
         )}
 
-        <FormSubmitFooter
-          className="e2e-initiative-publish-button"
-          message={messages.publishButton}
-          error={publishError}
-          errorMessage={messages.submitApiError}
-          processing={publishing}
-          onSubmit={handleOnPublish}
-        />
-      </Form>
-    );
-  }
-
-  return null;
+      <FormSubmitFooter
+        message={
+          initiativeReviewRequired
+            ? messages.submitButton
+            : messages.publishButton
+        }
+        error={publishError}
+        errorMessage={messages.submitApiError}
+        processing={publishing}
+        onSubmit={handleOnPublish}
+      />
+    </Form>
+  );
 };
 
 export default InitiativeForm;

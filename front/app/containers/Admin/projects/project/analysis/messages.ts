@@ -109,4 +109,12 @@ export default defineMessages({
     id: 'app.containers.AdminPage.projects.project.analysis.Insights.deleteSummaryConfirmation',
     defaultMessage: 'Are you sure you want to delete these summaries?',
   },
+  deleteQuestion: {
+    id: 'app.containers.AdminPage.projects.project.analysis.Insights.deleteQuestion',
+    defaultMessage: 'Delete question',
+  },
+  deleteQuestionConfirmation: {
+    id: 'app.containers.AdminPage.projects.project.analysis.Insights.deleteQuestionConfirmation',
+    defaultMessage: 'Are you sure you want to delete this question?',
+  },
 });

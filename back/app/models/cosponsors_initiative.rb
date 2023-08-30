@@ -1,0 +1,45 @@
+# frozen_string_literal: true
+
+# == Schema Information
+#
+# Table name: cosponsors_initiatives
+#
+#  id            :uuid             not null, primary key
+#  status        :string           default("pending"), not null
+#  user_id       :uuid             not null
+#  initiative_id :uuid             not null
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#
+# Indexes
+#
+#  index_cosponsors_initiatives_on_initiative_id  (initiative_id)
+#  index_cosponsors_initiatives_on_user_id        (user_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (initiative_id => initiatives.id)
+#  fk_rails_...  (user_id => users.id)
+#
+class CosponsorsInitiative < ApplicationRecord
+  STATUSES = %w[pending accepted].freeze
+
+  belongs_to :user
+  belongs_to :initiative
+
+  before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
+  has_many :notifications, dependent: :nullify
+
+  validates :user, :initiative, presence: true
+  validates :status, inclusion: { in: STATUSES }
+
+  private
+
+  def remove_notifications
+    notifications.each do |notification|
+      unless notification.update cosponsors_initiative: nil
+        notification.destroy!
+      end
+    end
+  end
+end

@@ -15,6 +15,10 @@ lb:
     rejected: Ofgeleent
     rejected_description: Dës Iddi gouf ofgeleent
   initiative_statuses:
+    review_pending: Iwwerpréiwung waarden
+    review_pending_description: Iwwerpréiwung waarden
+    changes_requested: Ännerungen ugefrote
+    changes_requested_description: Ännerungen ugefrote
     proposed: proposéiert
     proposed_description: proposéiert
     expired: ofgelaf
@@ -181,6 +185,8 @@ lb:
       <p>D'Initiateuren sinn invitéiert, hir Propositioun bei der nächster Conseilssëtzung virzestellen. Mir stellen en offizellen Update zu Verfügung.</p>
     default_eligibility_criteria: >
       <ul> <li>Si muss a politesche Beräicher a Kompetenzen vun der Lokalpolitik falen</li> <li>Si déngt éischter dem ëffentlechen Interêt, wéi Ärem perséinlechen Interêt</li> <li> Si diskriminéiert net opgrond vu Geschlecht, Rass, Alter, oder Hierkonft.</li> <li>Si schiedegt keen</li> </ul>
+    default_posting_tips: >
+      <ul><li>Huelt Iech Zäit fir Är Virschléi auszeschaffen. Falls néideg, verfaasst en Entworf an engem separaten Dokument a kopéiert en dann an d'Plattform.</li><li>Wielt en aussokräftegen Titel, dee kloer erkläert, em wat et an Ärem Virschlag geet.</li><li>Setzt e passend Bild bei Äre Virschlag dobäi fir en ervirzehiewen. </li><li>Füügt relevant Annexe bäi, wéi Videoen, inspiréierend Beispiller, technesch Detailer oder Pläng.</li><li>Deelt Äre Virschlag op den soziale Medien an op aner Kanäl, fir Ënnerstëtzung vun anere Leit ze kréien.</li></ul>
   reset_password_mailer:
     send_reset_password:
       cta_reset_password: 'Äert Passwuert zerécksetzen'

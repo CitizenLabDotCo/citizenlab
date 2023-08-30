@@ -3,7 +3,6 @@ import React from 'react';
 // components
 import {
   Box,
-  colors,
   defaultCardHoverStyle,
   defaultCardStyle,
   Text,
@@ -44,6 +43,22 @@ const StyledEventTitle = styled(Text)`
   -webkit-box-orient: vertical;
 `;
 
+export const EventDate = styled(Box)`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: stretch;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-right: 12px;
+  padding-left: 12px;
+  margin-left: 8px;
+  border-radius: 3px;
+  background: #f5f6f7;
+  border: solid 1px #ccc;
+  color: ${(props) => props.theme.colors.tenantText};
+`;
+
 type EventPreviewCardProps = {
   event: IEventData;
 };
@@ -74,23 +89,13 @@ const EventPreviewCard = ({ event }: EventPreviewCardProps) => {
       py="4px"
       flexShrink={0}
     >
-      <Box
-        height="100%"
-        flexDirection={'row'}
-        style={{ textAlign: 'center' }}
-        p="12px"
-        ml={!theme.isRtl ? '12px' : '8px'}
-        mr={theme.isRtl ? '12px' : '8px'}
-        borderRadius="3px"
-        bgColor={colors.grey100}
-        border={`1px solid ${colors.divider}`}
-      >
-        <Box mt="-3px">
+      <Box display="flex" flexDirection="column" alignItems="stretch">
+        <EventDate mr={theme.isRtl ? '8px' : '0px'}>
           <DayAndMonth
             day={moment(event.attributes.start_at).format('DD')}
             month={moment(event.attributes.start_at).format('MMM')}
           />
-        </Box>
+        </EventDate>
       </Box>
       <StyledEventTitle
         m="0px"
@@ -99,6 +104,7 @@ const EventPreviewCard = ({ event }: EventPreviewCardProps) => {
         maxWidth="260px"
         style={{ fontWeight: 600 }}
         my="auto"
+        color="tenantText"
       >
         {localize(event.attributes.title_multiloc)}
       </StyledEventTitle>

@@ -24,7 +24,8 @@ module Analysis
     private
 
     def delete_summary_tag_references(tag)
-      Summary.delete_tag_references!(tag.id)
+      Insight.delete_tag_references!(tag.id)
+      AutoTaggingTask.delete_tag_references!(tag.id)
     end
   end
 end

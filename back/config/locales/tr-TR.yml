@@ -15,6 +15,10 @@ tr:
     rejected: reddedildi
     rejected_description: Bu fikir reddedildi
   initiative_statuses:
+    review_pending: inceleme beklemede
+    review_pending_description: inceleme beklemede
+    changes_requested: talep edi̇len deği̇şi̇kli̇kler
+    changes_requested_description: talep edi̇len deği̇şi̇kli̇kler
     proposed: önerilen
     proposed_description: önerilen
     expired: süresi dolan
@@ -181,6 +185,8 @@ tr:
       <p>Öneri sahipleri, önerilerini sunmak için kurul toplantısına davet edilebilir. Bu süreçle ilgili bilgilendirme sağlanır.</p>
     default_eligibility_criteria: >
       <ul> <li>Yerel yönetimin etki alanı ve yetkileri dahilinde olmalıdır</li> <li>Bireysel çıkarlardan ziyade kamu yararına hizmet etmelidir</li> <li>Her tür ayrımcılıktan uzak olmalıdır</li> <li>Başkalarına zarar vermemelidir</li> </ul>
+    default_posting_tips: >
+      <ul><li>Önerinizi daha detaylı açıklamak için acele etmeyin. Gerekirse, önce bir taslak yazın ve kopyalayıp buraya yapıştırın.</li><li>Önerinizin ne olduğunu net bir şekilde açıklayan anlamlı bir başlık seçin.</li><li>Öne çıkmasını sağlamak için önerinize uygun bir görsel ekleyin.</li><li>Videolar, ilham verici örnekler, teknik bilgiler veya planlar gibi ilgili ekleri ekleyin.</li><li>Başkalarından destek toplamak için fikrinizi sosyal medyada ve diğer kanallarda paylaşın.</li></ul>
   reset_password_mailer:
     send_reset_password:
       cta_reset_password: 'Parolanızı sıfırlayın'

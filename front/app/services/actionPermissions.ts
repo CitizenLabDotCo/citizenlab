@@ -5,7 +5,8 @@ import { IRelationship } from 'typings';
 export type IGlobalPermissionAction =
   | 'reacting_initiative'
   | 'commenting_initiative'
-  | 'posting_initiative';
+  | 'posting_initiative'
+  | 'following';
 
 export interface IGlobalPermissionData {
   id: string;

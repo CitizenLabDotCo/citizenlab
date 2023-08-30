@@ -6,6 +6,8 @@ class SideFxReactionService
   def after_create(reaction, current_user)
     if reaction.reactable_type == 'Initiative'
       AutomatedTransitionJob.perform_now
+
+      lock_initiative_editing_if_required(reaction)
     end
 
     action = "#{reactable_type(reaction)}_#{reaction.mode == 'up' ? 'liked' : 'disliked'}" # TODO: Action name
@@ -19,6 +21,12 @@ class SideFxReactionService
   end
 
   private
+
+  def lock_initiative_editing_if_required(reaction)
+    return if reaction.reactable.editing_locked || reaction.user_id == reaction.reactable.author_id
+
+    reaction.reactable.update!(editing_locked: true)
+  end
 
   def reactable_type(reaction)
     reaction.reactable_type.underscore

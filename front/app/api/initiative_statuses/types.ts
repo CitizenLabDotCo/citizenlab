@@ -6,12 +6,13 @@ import initiativeStatusesKeys from './keys';
 export type InitiativeStatusesKeys = Keys<typeof initiativeStatusesKeys>;
 
 export type InitiativeStatusCode =
+  | 'review_pending'
+  | 'changes_requested'
   | 'proposed'
   | 'expired'
   | 'threshold_reached'
   | 'answered'
-  | 'ineligible'
-  | 'custom';
+  | 'ineligible';
 
 export interface IInitiativeStatusData {
   id: string;

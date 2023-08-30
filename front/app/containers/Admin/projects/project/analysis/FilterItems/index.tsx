@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   Box,
   stylingConsts,
@@ -5,134 +6,159 @@ import {
   IconButton,
 } from '@citizenlab/cl2-component-library';
 import { IInputsFilterParams } from 'api/analysis_inputs/types';
-import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
-import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
-import useLocalize from 'hooks/useLocalize';
-import { isArray } from 'lodash-es';
-import React from 'react';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import InputFieldFilterItem from './InputFieldFilterItem';
+import AuthorFieldFilterItem from './AuthorFieldFilterItem';
+import EllipsisFilterValue from './EllipsisFilterValue';
+import { useParams } from 'react-router-dom';
+import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
+import Tag from '../Tags/Tag';
+
+const clauseToPredicate = (clause?: string): '>' | '<' | '=' => {
+  if (clause === 'from') {
+    return '>';
+  } else if (clause === 'to') {
+    return '<';
+  } else {
+    return '=';
+  }
+};
 
 type FilterItemsProps = {
   filters: IInputsFilterParams;
-  isEditable?: boolean;
+  isEditable: boolean;
+};
+
+const translationKeys: Record<
+  string,
+  { translationKey: string; predicate: '>' | '<' | '=' }
+> = {
+  search: {
+    translationKey: 'Search',
+    predicate: '=',
+  },
+  published_at_from: {
+    translationKey: 'Start',
+    predicate: '>',
+  },
+  published_at_to: {
+    translationKey: 'End',
+    predicate: '<',
+  },
+  reactions_from: {
+    translationKey: 'Reactions',
+    predicate: '>',
+  },
+  reactions_to: {
+    translationKey: 'Reactions',
+    predicate: '<',
+  },
+  votes_from: {
+    translationKey: 'Votes',
+    predicate: '>',
+  },
+  votes_to: {
+    translationKey: 'Votes',
+    predicate: '<',
+  },
+  comments_from: {
+    translationKey: 'Comments',
+    predicate: '>',
+  },
+  comments_to: {
+    translationKey: 'Comments',
+    predicate: '<',
+  },
 };
 
 const FilterItems = ({ filters, isEditable }: FilterItemsProps) => {
-  const localize = useLocalize();
-  const { data: customFields } = useUserCustomFields();
-
-  const genderField = customFields?.data.find(
-    (field) => field.attributes.code === 'gender'
-  );
-
-  const domicileField = customFields?.data.find(
-    (field) => field.attributes.code === 'domicile'
-  );
-
-  const birthyearField = customFields?.data.find(
-    (field) => field.attributes.code === 'birthyear'
-  );
-
-  const { data: genderOptions } = useUserCustomFieldsOptions(genderField?.id);
-  const { data: domicileOptions } = useUserCustomFieldsOptions(
-    domicileField?.id
-  );
-
-  const genderUrlQueryParamKey = `author_custom_${genderField?.id}`;
-  const domicileUrlQueryParamKey = `author_custom_${domicileField?.id}`;
-  const birthyearUrlQueryParamFromKey = `author_custom_${birthyearField?.id}_from`;
-  const birthyearUrlQueryParamToKey = `author_custom_${birthyearField?.id}_to`;
-
-  const translationKeys: Record<string, string> = {
-    search: 'Search: ',
-    published_at_from: 'Start: ',
-    published_at_to: 'End: ',
-    reactions_from: 'Reactions > ',
-    reactions_to: 'Reactions < ',
-    votes_from: 'Votes > ',
-    votes_to: 'Votes < ',
-    comments_from: 'Comments > ',
-    comments_to: 'Comments < ',
-    [genderUrlQueryParamKey]: 'Gender: ',
-    [domicileUrlQueryParamKey]: 'Domicile: ',
-    [birthyearUrlQueryParamFromKey]: 'Birthyear > ',
-    [birthyearUrlQueryParamToKey]: 'Birthyear < ',
-  };
-
-  const filterEntries = Object.entries(filters)
-    .filter(([key]) => key !== 'tag_ids')
-    .filter(([key]) => !(isEditable && key === 'search'));
-
-  const filterItemDisplayValue = (
-    key: string,
-    value: string | string[] | undefined | number
-  ) => {
-    switch (key) {
-      case genderUrlQueryParamKey:
-        return (
-          isArray(value) &&
-          value.map((value: string) => (
-            <Box key={value} ml="4px">
-              {localize(
-                genderOptions?.data.find((option) => {
-                  return option.attributes.key === value;
-                })?.attributes.title_multiloc
-              )}
-            </Box>
-          ))
-        );
-      case domicileUrlQueryParamKey:
-        return (
-          isArray(value) &&
-          value.map((value: string) => (
-            <Box key={value} ml="4px">
-              {localize(
-                domicileOptions?.data.find(
-                  (option) => option.attributes.key === value
-                )?.attributes.title_multiloc
-              )}
-            </Box>
-          ))
-        );
-
-      default:
-        return value;
-    }
-  };
+  const { analysisId } = useParams() as { analysisId: string };
+  const { data: tags } = useAnalysisTags({ analysisId });
 
   return (
     <Box display="flex" flexWrap="wrap" gap="4px">
-      {filterEntries.map(([key, value]) => (
-        <Box
-          key={key}
-          py="4px"
-          px="8px"
-          borderRadius={stylingConsts.borderRadius}
-          borderColor={colors.success}
-          borderWidth="1px"
-          borderStyle="solid"
-          bgColor={colors.white}
-          color={colors.success}
-          display="flex"
-        >
-          {translationKeys[key]}
-          {filterItemDisplayValue(key, value)}
-
-          {isEditable && (
-            <IconButton
-              iconName="close"
-              iconColor={colors.success}
-              iconColorOnHover={colors.success}
-              iconWidth="16px"
-              iconHeight="16px"
-              onClick={() => {
-                removeSearchParams([key]);
-              }}
-              a11y_buttonActionMessage="Remove filter"
+      {Object.entries(filters).map(([key, value]) => {
+        const [_fullKey, subject, customFieldId, _postfix, clause] =
+          key.match(/^(author|input)_custom_([a-f0-9-]+)(_(from|to))?$/) || [];
+        const predicate = clauseToPredicate(clause);
+        if (subject === 'input') {
+          return (
+            <InputFieldFilterItem
+              key={key}
+              customFieldId={customFieldId}
+              filterKey={key}
+              filterValue={value}
+              predicate={predicate}
+              isEditable={isEditable}
             />
-          )}
-        </Box>
-      ))}
+          );
+        } else if (subject === 'author') {
+          return (
+            <AuthorFieldFilterItem
+              key={key}
+              customFieldId={customFieldId}
+              filterKey={key}
+              filterValue={value}
+              predicate={predicate}
+              isEditable={isEditable}
+            />
+          );
+        } else if (
+          key === 'tag_ids' &&
+          (value as string[] | null[]).length === 1 &&
+          (value as string[] | null[])[0] === null
+        ) {
+          return (
+            <Tag key={null} name="Inputs without tags" tagType={'custom'} />
+          );
+        } else if (key === 'tag_ids') {
+          return (
+            <>
+              {tags?.data
+                .filter((tag) => (value as string[])?.includes(tag.id))
+                .map((tag) => (
+                  <Tag
+                    key={tag.id}
+                    name={tag.attributes.name}
+                    tagType={tag.attributes.tag_type}
+                  />
+                ))}
+            </>
+          );
+        } else {
+          return (
+            <Box
+              key={key}
+              py="4px"
+              px="8px"
+              borderRadius={stylingConsts.borderRadius}
+              borderColor={colors.success}
+              borderWidth="1px"
+              borderStyle="solid"
+              bgColor={colors.white}
+              color={colors.success}
+              display="flex"
+            >
+              <Box>{translationKeys[key].translationKey}</Box>
+              <Box mx="3px">{translationKeys[key].predicate}</Box>
+              <EllipsisFilterValue>{value}</EllipsisFilterValue>
+              {isEditable && (
+                <IconButton
+                  iconName="close"
+                  iconColor={colors.success}
+                  iconColorOnHover={colors.success}
+                  iconWidth="16px"
+                  iconHeight="16px"
+                  onClick={() => {
+                    removeSearchParams([key]);
+                  }}
+                  a11y_buttonActionMessage="Remove filter"
+                />
+              )}
+            </Box>
+          );
+        }
+      })}
     </Box>
   );
 };

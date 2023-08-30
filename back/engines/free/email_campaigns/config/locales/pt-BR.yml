@@ -8,12 +8,15 @@ pt:
       "comment_on_your_comment": Uma resposta ao meu comentário
       "comment_on_your_idea": Um comentário sobre a minha ideia
       "comment_on_your_initiative": Um comentário sobre a minha proposta
+      "cosponsor_of_your_initiative": Um utilizador aceita o meu convite para co-patrocinar a minha proposta
       "first_idea_published": Publicação da minha primeira ideia
       "idea_marked_as_spam": Relatório de ideias spam
       "idea_published": Publicação da minha ideia
       "initiative_assigned_to_you": Atribuição de uma ideia para mim
       "initiative_marked_as_spam": Relatório de propostas spam
       "initiative_published": Publicação da minha proposta
+      "invitation_to_cosponsor_initiative": Convite para co-patrocinar uma proposta
+      "initiative_resubmitted_for_review": Proposta reapresentada para revisão
       "invite_received": Convite
       "invite_reminder": Lembrete do convite
       "internal_comment_on_idea_assigned_to_you": Comentário interno sobre os dados que me foram atribuídos
@@ -138,6 +141,12 @@ pt:
       main_header: '%{commentAuthor} comentou a sua proposta'
       subject: 'Você recebeu um comentário sobre %{organizationName}''s plataforma'
       preheader: '%{authorName} deixou um comentário sobre a sua proposta para %{organizationName}'
+    cosponsor_of_your_initiative:
+      cta_reply_to: 'Ver a sua proposta'
+      event_description_initiative: 'Parabéns! %{cosponsorName} aceitou o seu convite para co-patrocinar a sua proposta.'
+      main_header: '%{cosponsorName} aceitou o seu convite para co-patrocinar a sua proposta'
+      subject: '%{cosponsorName} aceitou o seu convite para co-patrocinar a sua proposta'
+      preheader_initiative: '%{cosponsorName} aceitou o seu convite para co-patrocinar a sua proposta'
     assignee_digest:
       subject: 'idéias que requerem a sua opinião: %{numberIdeas}'
       preheader: 'Resumo do proprietario %{organizationName}'
@@ -178,6 +187,22 @@ pt:
       main_header: '%{firstName}, você tem uma nova tarefa'
       subject: 'Você tem uma atribuição na plataforma de %{organizationName}'
       preheader_initiative: 'A proposta de %{authorName} foi atribuída a você'
+    invitation_to_cosponsor_initiative:
+      cta_reply_to: 'Co-patrocinar esta proposta'
+      event_description_initiative: '%{authorName} criou uma nova proposta e gostaria de contar com o seu co-patrocínio.'
+      event_description_cosponsoring: 'Co-patrocinar uma proposta significa que <strong>o seu nome será apresentado</strong> juntamente com os nomes dos outros co-patrocinadores da proposta.'
+      event_description_before_action: 'Para ver a proposta e aceitar o convite, é necessário iniciar sessão na sua conta.'
+      event_description_action: 'Clique abaixo para ler a proposta.'
+      main_header: 'Foi convidado a co-patrocinar uma proposta'
+      subject: 'Foi convidado a co-patrocinar uma proposta'
+      preheader_initiative: 'Foi convidado a co-patrocinar a proposta de %{authorName}'
+    initiative_resubmitted_for_review:
+      by_author: 'por %{authorName}'
+      cta_reply_to: 'Dar feedback a %{authorName}'
+      event_description_initiative: 'Uma proposta foi novamente apresentada para revisão. Dê a sua opinião escrevendo uma atualização oficial ou alterando o seu estado.'
+      main_header: '%{firstName}Tem uma proposta para analisar'
+      subject: 'Tem uma proposta para analisar na plataforma de %{organizationName}'
+      preheader_initiative: 'A proposta de %{authorName} foi novamente apresentada para revisão'
     invite_reminder:
       cta_accept_invitation: 'Aceite o seu convite'
       invitation_header: 'O seu convite está pendente'
@@ -633,6 +658,7 @@ pt:
         managers: 'Gestores'
         admins_assigned_to_a_proposal: 'Administradores atribuídos a uma proposta'
         admins_and_managers_assigned_to_the_input: 'Administradores e gestores atribuídos à entrada'
+        user_who_is_invited_to_cosponsor_a_proposal: 'Utilizador que é convidado a co-patrocinar uma proposta'
         user_who_is_receiving_admin_rights: 'Usuário que está recebendo direitos de administrador'
         user_who_is_receiving_folder_moderator_rights: 'Usuário que está recebendo direitos de moderador de pasta'
         user_who_is_receiving_project_moderator_rights: 'Usuário que está recebendo direitos de moderador de projeto'
@@ -667,6 +693,7 @@ pt:
         input_is_flagged_as_spam: 'A entrada é sinalizada como spam'
         input_is_updated: 'A entrada é atualizada'
         input_status_changes: 'Alterações do status da entrada'
+        initiative_resubmitted_for_review: 'Proposta reapresentada para revisão'
         internal_comment_is_posted_on_idea_assigned_to_user: 'O comentário interno é lançado na entrada atribuída ao utilizador'''
         internal_comment_is_posted_on_initiative_assigned_to_user: 'O comentário interno é publicado na proposta atribuída ao utilizador'
         internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: 'O comentário interno é publicado na entrada do projeto ou pasta que o utilizador gere'
@@ -675,6 +702,8 @@ pt:
         internal_comment_is_posted_on_initiative_user_has_commented_internally_on: 'O comentário interno é publicado na proposta que o utilizador comentou internamente'
         internal_comment_is_posted_on_unassigned_initiative: 'Comentário interno é publicado sobre proposta não atribuída'
         internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Comentário interno é lançado em entrada não atribuída em projeto não gerido'
+        user_accepts_invitation_to_cosponsor_a_proposal: 'O utilizador aceita o convite para co-patrocinar uma proposta'
+        user_is_invited_to_cosponsor_a_proposal: 'O usuário é convidado a co-patrocinar uma proposta'
         user_is_mentioned_in_internal_comment: 'O usuário é mencionado num comentário interno'
         new_input_is_published: 'Nova entrada é publicada'
         new_proposal_is_posted: 'Nova proposta foi postada'

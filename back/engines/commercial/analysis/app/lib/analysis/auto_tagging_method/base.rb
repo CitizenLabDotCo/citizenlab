@@ -18,6 +18,10 @@ module Analysis
         AutoTaggingMethod::Language.new(*params)
       when 'nlp_topic'
         AutoTaggingMethod::NLPTopic.new(*params)
+      when 'label_classification'
+        AutoTaggingMethod::LabelClassification.new(*params)
+      when 'few_shot_classification'
+        AutoTaggingMethod::FewShotClassification.new(*params)
       else
         raise ArgumentError, "Unsupported auto_tagging_method #{auto_tagging_method}"
       end
@@ -41,6 +45,15 @@ module Analysis
     end
 
     protected
+
+    def filtered_inputs
+      @filtered_inputs ||= InputsFinder.new(analysis, task.filters.symbolize_keys).execute
+    end
+
+    def find_or_create_tagging!(input_id:, tag_id:)
+      Tagging.find_by(input_id: input_id, tag_id: tag_id) ||
+        Tagging.create!(input_id: input_id, tag_id: tag_id, background_task: task)
+    end
 
     def update_progress(progress)
       task.update!(progress: progress)

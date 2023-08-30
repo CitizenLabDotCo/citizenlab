@@ -7,9 +7,6 @@ import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
 // router
 import clHistory from 'utils/cl-router/history';
 
-// i18n
-import useLocalize from 'hooks/useLocalize';
-
 // styling
 import styled from 'styled-components';
 import { isRtl } from 'utils/styleUtils';
@@ -17,6 +14,10 @@ import { isRtl } from 'utils/styleUtils';
 // typings
 import { IProjectData } from 'api/projects/types';
 import { useLocation } from 'react-router-dom';
+
+// intl
+import { useIntl } from 'utils/cl-intl';
+import messages from '../messages';
 
 const Bar = styled.div`
   display: flex;
@@ -32,14 +33,14 @@ interface Props {
 }
 
 const TopBar = ({ project }: Props) => {
-  const localize = useLocalize();
   const location = useLocation();
+  const { formatMessage } = useIntl();
 
   return (
     <Bar>
       <Box mb="40px">
         <GoBackButtonSolid
-          text={localize(project.attributes.title_multiloc)}
+          text={formatMessage(messages.goBack)}
           onClick={() => {
             const hasGoBackLink = location.key !== 'default';
             hasGoBackLink

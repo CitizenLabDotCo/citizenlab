@@ -98,7 +98,7 @@ const EventInformation = ({
               mr={theme.isRtl ? '0px' : '8px'}
               ml={theme.isRtl ? '8px' : '0px'}
             />
-            <Text m="0px" color={'coolGrey700'} fontSize="s">
+            <Text m="0px" pt="2px" color={'coolGrey700'} fontSize="s">
               {eventDateTime}
             </Text>
           </Box>{' '}
@@ -116,7 +116,7 @@ const EventInformation = ({
                 mr={theme.isRtl ? '0px' : '8px'}
                 ml={theme.isRtl ? '8px' : '0px'}
               />
-              <Text m="0px" color={'coolGrey700'} fontSize="s">
+              <Text m="0px" pt="2px" color={'coolGrey700'} fontSize="s">
                 {address1?.slice(0, address1.indexOf(','))}
               </Text>
             </Box>
@@ -135,7 +135,7 @@ const EventInformation = ({
                 mr={theme.isRtl ? '0px' : '8px'}
                 ml={theme.isRtl ? '8px' : '0px'}
               />
-              <Text m="0px" color={'coolGrey700'} fontSize="s">
+              <Text m="0px" pt="2px" color={'coolGrey700'} fontSize="s">
                 {event.attributes.attendees_count}{' '}
                 {formatMessage(messages.attending)}
               </Text>

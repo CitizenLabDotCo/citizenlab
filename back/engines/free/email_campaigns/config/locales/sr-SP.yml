@@ -8,12 +8,15 @@ sr-Cyrl:
       "comment_on_your_comment": Одговор на мој коментар
       "comment_on_your_idea": Коментар на моју идеју
       "comment_on_your_initiative": Коментар на мој предлог
+      "cosponsor_of_your_initiative": Корисник прихвата мој позив да буде ко-спонзор мог предлога
       "first_idea_published": Објављивање моје прве идеје
       "idea_marked_as_spam": Извештај о нежељеној пошти идеја
       "idea_published": Објављивање моје идеје
       "initiative_assigned_to_you": Додељивање предлога мени
       "initiative_marked_as_spam": Извештај о нежељеној пошти предлога
       "initiative_published": Објављивање мог предлога
+      "invitation_to_cosponsor_initiative": Позив за ко-спонзорисање предлога
+      "initiative_resubmitted_for_review": Предлог је поново достављен на разматрање
       "invite_received": Позив
       "invite_reminder": Подсетник за позив
       "internal_comment_on_idea_assigned_to_you": Интерни коментар на унос који ми је додељен
@@ -138,6 +141,12 @@ sr-Cyrl:
       main_header: '%{commentAuthor} је коментарисало вашу иницијативу'
       subject: 'Примили сте коментар на платформи %{organizationName}'
       preheader: '%{authorName} је оставио коментар на вашу иницијативу за %{organizationName}'
+    cosponsor_of_your_initiative:
+      cta_reply_to: 'Погледајте свој предлог'
+      event_description_initiative: 'Честитам! %{cosponsorName} је прихватио ваш позив да буде ко-спонзор вашег предлога.'
+      main_header: '%{cosponsorName} је прихватио ваш позив да буде ко-спонзор вашег предлога'
+      subject: '%{cosponsorName} је прихватио ваш позив да буде ко-спонзор вашег предлога'
+      preheader_initiative: '%{cosponsorName} је прихватио ваш позив да буде ко-спонзор вашег предлога'
     assignee_digest:
       subject: 'Идеје које захтевају ваше повратне информације: %{numberIdeas}'
       preheader: 'Сажетак примаоца од %{organizationName}'
@@ -178,6 +187,22 @@ sr-Cyrl:
       main_header: '%{firstName}, имате нови задатак'
       subject: 'Имате задатак на платформи %{organizationName}'
       preheader_initiative: 'Предлог %{authorName} је додељен вама'
+    invitation_to_cosponsor_initiative:
+      cta_reply_to: 'Ко-спонзоришите овај предлог'
+      event_description_initiative: '%{authorName} је направио нови предлог и желео би да га суспонзоришете.'
+      event_description_cosponsoring: 'Ко-спонзорисање предлога значи да ће <strong>ваше име бити приказано</strong> са именима других ко-спонзора предлога.'
+      event_description_before_action: 'Да бисте видели предлог и прихватили позив, морате бити пријављени на свој налог.'
+      event_description_action: 'Кликните испод да прочитате предлог.'
+      main_header: 'Позвани сте да будете ко-спонзор предлога'
+      subject: 'Позвани сте да будете ко-спонзор предлога'
+      preheader_initiative: 'Позвани сте да будете ко-спонзор предлога %{authorName}'
+    initiative_resubmitted_for_review:
+      by_author: 'од %{authorName}'
+      cta_reply_to: 'Дајте повратну информацију %{authorName}'
+      event_description_initiative: 'Предлог је поново достављен на разматрање. Дајте повратне информације писањем званичног ажурирања или променом његовог статуса.'
+      main_header: '%{firstName}, имате предлог за разматрање'
+      subject: 'Имате предлог за преглед на платформи %{organizationName}'
+      preheader_initiative: 'Предлог %{authorName} је поново достављен на разматрање'
     invite_reminder:
       cta_accept_invitation: 'Прихватите позив'
       invitation_header: 'Ваш позив је на чекању'
@@ -633,6 +658,7 @@ sr-Cyrl:
         managers: 'Менаџери'
         admins_assigned_to_a_proposal: 'Администратори додељени предлогу'
         admins_and_managers_assigned_to_the_input: 'Администратори и менаџери додељени улазу'
+        user_who_is_invited_to_cosponsor_a_proposal: 'Корисник који је позван да буде ко-спонзор предлога'
         user_who_is_receiving_admin_rights: 'Корисник који добија администраторска права'
         user_who_is_receiving_folder_moderator_rights: 'Корисник који добија права модератора фолдера'
         user_who_is_receiving_project_moderator_rights: 'Корисник који добија права модератора пројекта'
@@ -667,6 +693,7 @@ sr-Cyrl:
         input_is_flagged_as_spam: 'Унос је означен као нежељена пошта'
         input_is_updated: 'Унос је ажуриран'
         input_status_changes: 'Статус уноса се мења'
+        initiative_resubmitted_for_review: 'Предлог је поново достављен на разматрање'
         internal_comment_is_posted_on_idea_assigned_to_user: 'Интерни коментар се поставља на унос који је додељен кориснику'
         internal_comment_is_posted_on_initiative_assigned_to_user: 'Интерни коментар се поставља на предлог који је додељен кориснику'
         internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: 'Интерни коментар се поставља на унос у пројекту или фолдеру којим корисник управља'
@@ -675,6 +702,8 @@ sr-Cyrl:
         internal_comment_is_posted_on_initiative_user_has_commented_internally_on: 'Интерни коментар се поставља на предлог који је корисник интерно коментарисао'
         internal_comment_is_posted_on_unassigned_initiative: 'Интерни коментар се поставља на недодељени предлог'
         internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Интерни коментар се поставља на недодељени унос у неуправљаном пројекту'
+        user_accepts_invitation_to_cosponsor_a_proposal: 'Корисник прихвата позив за ко-спонзорисање предлога'
+        user_is_invited_to_cosponsor_a_proposal: 'Корисник је позван да буде ко-спонзор предлога'
         user_is_mentioned_in_internal_comment: 'Корисник је поменут у интерном коментару'
         new_input_is_published: 'Нови унос је објављен'
         new_proposal_is_posted: 'Нови предлог је објављен'

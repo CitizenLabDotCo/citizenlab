@@ -3,6 +3,8 @@ import React, { useCallback } from 'react';
 // components
 import { Button } from '@citizenlab/cl2-component-library';
 import { ScreenReaderOnly } from 'utils/a11y';
+
+// intl
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
@@ -12,7 +14,7 @@ interface Props {
   onClick: (event: React.MouseEvent) => void;
 }
 
-const GoBackButtonSolid = ({ iconSize = '26px', onClick }: Props) => {
+const GoBackButtonSolid = ({ text, iconSize = '26px', onClick }: Props) => {
   const { formatMessage } = useIntl();
   const handleClick = useCallback(
     (event: React.MouseEvent) => {
@@ -32,6 +34,7 @@ const GoBackButtonSolid = ({ iconSize = '26px', onClick }: Props) => {
       textDecorationHover="underline"
       whiteSpace="normal"
       onClick={handleClick}
+      text={text}
     >
       <ScreenReaderOnly>
         {formatMessage(messages.goBackToPreviousPage)}

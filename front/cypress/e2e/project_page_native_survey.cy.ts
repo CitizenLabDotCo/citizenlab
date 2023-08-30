@@ -48,6 +48,9 @@ describe('New continuous project with native survey', () => {
   it('shows the survey buttons', () => {
     cy.contains('Take the survey').should('exist');
     cy.contains('1 survey').should('exist');
+
+    // Shows the event CTA when there is an upcoming event
+    cy.get('#e2e-project-see-events-button').should('exist');
   });
 
   after(() => {
@@ -97,9 +100,6 @@ describe('Timeline project with native survey phase', () => {
   it('shows the survey buttons', () => {
     cy.contains('Take the survey').should('exist');
     cy.contains('1 survey').should('exist');
-
-    // Shows the event CTA when there is an upcoming event
-    cy.get('#e2e-project-see-events-button').should('exist');
   });
 
   after(() => {

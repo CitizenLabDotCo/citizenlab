@@ -77,7 +77,7 @@ resource 'Ideas' do
 
       describe do
         before do
-          @ideas = %w[published published draft published spam published published].map do |ps|
+          @ideas = %w[published published draft published published published].map do |ps|
             create(:idea, publication_status: ps)
           end
           create(:idea, project: create(:continuous_native_survey_project))
@@ -385,7 +385,7 @@ resource 'Ideas' do
           @user = create(:admin)
           header_token_for @user
 
-          @ideas = %w[published published draft published spam published published].map do |ps|
+          @ideas = %w[published published draft published published published].map do |ps|
             create(:idea, publication_status: ps)
           end
         end

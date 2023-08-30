@@ -14,4 +14,8 @@ export default defineMessages({
     defaultMessage:
       '{count, plural, one {# participant} other {# participants}}',
   },
+  goBack: {
+    id: 'app.containers.EventsShow.goBack',
+    defaultMessage: 'Go back',
+  },
 });
