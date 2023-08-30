@@ -112,7 +112,7 @@ const AuthorsByAge = ({ customFieldId }: Props) => {
   const filterIn = filters[filterKeyIn];
 
   const handleClick = ({ fromAge }) => {
-    // Handle unknown case
+    // Handle filter for domcile unknown
     if (fromAge === null) {
       if (filterIn?.includes(null)) {
         // if unknown filter active
@@ -160,7 +160,7 @@ const AuthorsByAge = ({ customFieldId }: Props) => {
           <Bar
             stackId="a"
             dataKey="filtered"
-            fill={colors.teal300}
+            fill={colors.teal200}
             name="Currently filtered"
             onClick={handleClick}
           >
@@ -175,10 +175,17 @@ const AuthorsByAge = ({ customFieldId }: Props) => {
           <Bar
             stackId="a"
             dataKey="notFiltered"
-            fill={colors.grey200}
             name="Not currently filtered"
+            onClick={handleClick}
           >
-            <LabelList dataKey="total" position="top" />
+            <LabelList dataKey="total" position="top" fill={colors.grey600} />
+            {chartData.map((_entry, index) => (
+              <Cell
+                cursor="pointer"
+                fill={colors.grey300}
+                key={`cell-${index}`}
+              />
+            ))}
           </Bar>
           <Tooltip content={<CustomTooltip />} />
         </BarChart>

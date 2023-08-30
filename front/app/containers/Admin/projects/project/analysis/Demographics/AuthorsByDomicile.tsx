@@ -111,16 +111,31 @@ const AuthorsByDomicile = ({ customFieldId }: Props) => {
       }
     );
 
-  const handleClick = (data) => {
-    const toggledOptions = xor(filters[filterKey] || [], [data.optionKey]);
-    if (toggledOptions.length === 0) {
+  const handleClick = (data, _index, event) => {
+    let newFilterValue;
+    if (event.shiftKey) {
+      newFilterValue = xor(filters[filterKey] || [], [data.optionKey]);
+    } else {
+      newFilterValue = [data.optionKey];
+    }
+
+    if (newFilterValue.length === 0) {
       updateSearchParams({ [filterKey]: undefined });
     } else {
-      updateSearchParams({ [filterKey]: toggledOptions });
+      updateSearchParams({ [filterKey]: newFilterValue });
     }
   };
 
   if (!chartData) return null;
+
+  // See https://citizenlabco.slack.com/archives/C05EZTFP46N/p1693389147200259
+  if (chartData.length > 27) {
+    return (
+      <Text m="0" color="grey600" fontSize="s" textAlign="center">
+        The domicile chart is too large to display
+      </Text>
+    );
+  }
 
   return (
     <Box display="flex" flexDirection="column" alignItems="center">
@@ -145,10 +160,17 @@ const AuthorsByDomicile = ({ customFieldId }: Props) => {
           <Bar
             stackId="a"
             dataKey="notFiltered"
-            fill={colors.grey200}
             name="Not currently filtered"
+            onClick={handleClick}
           >
-            <LabelList dataKey="total" position="top" />
+            <LabelList dataKey="total" position="top" fill={colors.grey600} />
+            {chartData.map((_entry, index) => (
+              <Cell
+                cursor="pointer"
+                fill={colors.grey300}
+                key={`cell-${index}`}
+              />
+            ))}
           </Bar>
           <Tooltip content={<CustomTooltip />} />
         </BarChart>
