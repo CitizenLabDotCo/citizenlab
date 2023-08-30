@@ -232,7 +232,6 @@
   "app.components.InitiativeForm.titleEmptyError": "Veuillez donner un titre",
   "app.components.InitiativeForm.titleLabel": "Titre",
   "app.components.InitiativeForm.titleLabelSubtext2": "Choisissez un titre descriptif et concis (min. 10 caractères, max. 72 caractères)",
-  "app.components.InitiativeForm.titleMaxLengthError": "Ce titre est trop long. Merci d'ajouter un titre comprenant entre 10 et 72 caractères.",
   "app.components.InitiativeForm.titleMinLengthError": "Ce titre est trop court. Merci d'ajouter un titre comprenant entre 10 et 72 caractères.",
   "app.components.InitiativeForm.topicEmptyError": "Veuillez sélectionner une thématique",
   "app.components.InitiativeForm.topicsLabel": "Sélectionner une étiquette pour votre proposition",

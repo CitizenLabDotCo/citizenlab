@@ -232,7 +232,6 @@
   "app.components.InitiativeForm.titleEmptyError": "Gitt wgl. en Titel un",
   "app.components.InitiativeForm.titleLabel": "Titel",
   "app.components.InitiativeForm.titleLabelSubtext2": "Wielt e beschreiwenden a präzisen Titel (min. 10 Zeechen, max. 72 Zeechen)",
-  "app.components.InitiativeForm.titleMaxLengthError": "Den Titel ass ze laang. Gitt w.e.g. en Titel an deen tëscht 10 an 72 Zeeche huet.",
   "app.components.InitiativeForm.titleMinLengthError": "Dësen Titel ass ze kuerz. Gitt w.e.g. en Titel an deen tëscht 10 an 72 Zeeche huet.",
   "app.components.InitiativeForm.topicEmptyError": "Gitt wgl. en Thema un",
   "app.components.InitiativeForm.topicsLabel": "Wielt d'Thema vun Ärem Virschlag",
