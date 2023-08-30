@@ -29,6 +29,7 @@ export interface IQueryParameters {
   bounding_box?: number[] | undefined | null;
   assignee?: string | undefined | null;
   feedback_needed?: boolean | undefined | null;
+  cosponsor_ids?: string[];
 }
 
 export type InitiativePublicationStatus =
@@ -36,6 +37,12 @@ export type InitiativePublicationStatus =
   | 'published'
   | 'archived'
   | 'spam';
+
+export interface IInitiativeCosponsorship {
+  name: string;
+  status: 'pending' | 'accepted';
+  user_id: string;
+}
 
 export interface IInitiativeData {
   id: string;
@@ -58,6 +65,11 @@ export interface IInitiativeData {
     header_bg: ImageSizes;
     expires_at: string;
     anonymous: boolean;
+    // BE returns an empty [] if not set yet.
+    cosponsorships: IInitiativeCosponsorship[];
+    editing_locked: boolean;
+    public: boolean;
+    followers_count: number;
   };
   relationships: {
     topics: {
@@ -76,6 +88,15 @@ export interface IInitiativeData {
       data: IRelationship | null;
     };
     user_reaction?: {
+      data: IRelationship | null;
+    };
+    cosponsors?: {
+      data: {
+        type: 'user';
+        id: string;
+      }[];
+    };
+    user_follower: {
       data: IRelationship | null;
     };
   };
@@ -103,6 +124,7 @@ export interface IInitiativeAdd {
   phase_ids?: string[] | null;
   location_point_geojson?: GeoJSON.Point | null;
   location_description?: string | null;
+  cosponsor_ids?: string[];
 }
 
 export interface IUpdateInitiativeObject {

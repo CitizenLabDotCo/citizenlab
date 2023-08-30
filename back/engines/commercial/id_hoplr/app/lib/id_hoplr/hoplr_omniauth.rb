@@ -54,9 +54,5 @@ module IdHoplr
     def updateable_user_attrs
       %i[first_name last_name]
     end
-
-    def email_always_present?
-      false
-    end
   end
 end

@@ -28,7 +28,7 @@ module Verification
           {
             type: 'object',
             title: method.name,
-            required: ['name', *method.config_parameters],
+            required: ['name'],
             properties: {
               name: { type: 'string', enum: [method.name], default: method.name, readOnly: true },
               **method.config_parameters.to_h do |cp|

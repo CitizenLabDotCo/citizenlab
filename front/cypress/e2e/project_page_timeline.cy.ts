@@ -117,8 +117,8 @@ describe('New timeline project', () => {
         title: 'Some event',
         location: 'Some location',
         description: 'This is some event',
-        startDate: new Date(),
-        endDate: new Date(),
+        startDate: moment().subtract(1, 'day').toDate(),
+        endDate: moment().add(1, 'day').toDate(),
       });
     });
   });

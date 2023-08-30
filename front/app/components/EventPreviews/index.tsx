@@ -25,6 +25,9 @@ import messages from './messages';
 // router
 import { useParams } from 'react-router-dom';
 
+// util
+import moment from 'moment';
+
 type EventPreviewsProps = {
   projectId?: string;
 };
@@ -48,11 +51,23 @@ const EventPreviews = ({ projectId }: EventPreviewsProps) => {
   const params = useParams<{ slug: string }>();
   const { data: project } = useProjectBySlug(params.slug);
   const projectIdToUse = projectId || project?.data.id;
+  const projectType = project?.data.attributes.process_type;
   const { data: phases } = usePhases(projectIdToUse);
   const { data: events } = useEvents({
     projectIds: projectIdToUse ? [projectIdToUse] : undefined,
     currentAndFutureOnly: true,
     sort: '-start_at',
+    ongoing_during:
+      projectType === 'timeline'
+        ? [
+            moment(
+              getCurrentPhase(phases?.data)?.attributes.start_at
+            ).toString() || null,
+            moment(getCurrentPhase(phases?.data)?.attributes.end_at)
+              .add(1, 'day')
+              .toString() || null,
+          ]
+        : undefined,
   });
 
   // scrolling
@@ -67,9 +82,6 @@ const EventPreviews = ({ projectId }: EventPreviewsProps) => {
       ref?.current && ref.current.scrollWidth > ref.current.clientWidth
     );
   }, [showArrows]);
-
-  const projectType = project?.data.attributes.process_type;
-  const currentPhase = getCurrentPhase(phases?.data);
 
   const lateralScroll = (scrollOffset: number) => {
     if (!ref?.current) return;
@@ -87,8 +99,14 @@ const EventPreviews = ({ projectId }: EventPreviewsProps) => {
   if (events && events?.data?.length > 0) {
     return (
       <>
-        <Title mt="36px" mb="8px" variant="h5" style={{ fontWeight: 600 }}>
-          {projectType === 'continuous' // TODO: Only show title if there are events to show. Need to wait for BE updates to events endpoint.
+        <Title
+          color="tenantText"
+          mt="36px"
+          mb="8px"
+          variant="h5"
+          style={{ fontWeight: 600 }}
+        >
+          {projectType === 'continuous'
             ? formatMessage(messages.eventPreviewContinuousTitle)
             : formatMessage(messages.eventPreviewTimelineTitle)}
           :
@@ -130,12 +148,7 @@ const EventPreviews = ({ projectId }: EventPreviewsProps) => {
             ref={ref}
           >
             {events.data.map((event) => (
-              <EventPreviewCard
-                key={event.id}
-                event={event}
-                currentPhase={currentPhase}
-                projectType={projectType}
-              />
+              <EventPreviewCard key={event.id} event={event} />
             ))}
           </EventPreviewContainer>
 

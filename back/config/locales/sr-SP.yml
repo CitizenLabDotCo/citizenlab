@@ -15,6 +15,10 @@ sr-Cyrl:
     rejected: одбијен
     rejected_description: Ова идеја је одбијена
   initiative_statuses:
+    review_pending: преглед на чекању
+    review_pending_description: преглед на чекању
+    changes_requested: тражене промене
+    changes_requested_description: тражене промене
     proposed: предложено
     proposed_description: предложено
     expired: истекао

@@ -31,16 +31,16 @@ describe('Event preview cards on timeline project', () => {
           projectId = project.body.data.id;
           projectSlug = project.body.data.attributes.slug;
 
-          cy.apiCreatePhase(
+          cy.apiCreatePhase({
             projectId,
-            'phaseTitle',
-            moment().subtract(5, 'days').format('DD/MM/YYYY'),
-            moment().add(5, 'days').format('DD/MM/YYYY'),
-            'ideation',
-            true,
-            true,
-            true
-          );
+            title: 'phaseTitle',
+            startAt: moment().subtract(5, 'days').format('DD/MM/YYYY'),
+            endAt: moment().add(5, 'days').format('DD/MM/YYYY'),
+            participationMethod: 'ideation',
+            canReact: true,
+            canComment: true,
+            canPost: true,
+          });
         });
       });
   });

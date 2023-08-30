@@ -4,7 +4,7 @@ import moment from 'moment';
 // components
 import EventInformation from './EventInformation';
 
-// services
+// types
 import { IEventData } from 'api/events/types';
 
 // style

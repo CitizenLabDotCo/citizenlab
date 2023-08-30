@@ -1,13 +1,21 @@
 import React, { useMemo } from 'react';
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
-import { Box, Label, Select } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Label,
+  Select,
+  Button,
+  Text,
+} from '@citizenlab/cl2-component-library';
 import useLocalize from 'hooks/useLocalize';
-import MultipleSelect from 'components/UI/MultipleSelect';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { useSearchParams } from 'react-router-dom';
 import { useIntl } from 'utils/cl-intl';
 import messages from '../../messages';
+import { handleArraySearchParam } from '../../util';
+import { trackEventByName } from 'utils/analytics';
+import tracks from '../../tracks';
 
 const AuthorFilters = () => {
   const localize = useLocalize();
@@ -44,47 +52,117 @@ const AuthorFilters = () => {
         (_, i) => new Date().getFullYear() - i
       ).map((option) => ({
         label: option.toString(),
-        value: new Date(option, 0, 1).toISOString(),
+        value: option.toString(),
       })),
     []
   );
 
+  const selectedGenderOptions = handleArraySearchParam(
+    searchParams,
+    genderUrlQueryParamKey
+  );
+
+  const selectedDomicileOptions = handleArraySearchParam(
+    searchParams,
+    domicileUrlQueryParamKey
+  );
+
+  const toggleOptionInArray = (array: string[] | undefined, option: string) => {
+    if (array?.includes(option)) {
+      const arrayWithoutOption = array.filter((el: string) => el !== option);
+      return arrayWithoutOption.length > 0 ? arrayWithoutOption : undefined;
+    }
+    return array ? [...array, option] : [option];
+  };
+
   return (
     <Box display="flex" flexDirection="column" gap="12px">
-      {genderOptions && (
-        <Select
-          id="gender"
-          label={formatMessage(messages.gender)}
-          options={genderOptions.data.map((option) => ({
-            label: localize(option.attributes.title_multiloc),
-            value: option.attributes.key,
-          }))}
-          onChange={(option) =>
-            updateSearchParams({ [genderUrlQueryParamKey]: [option.value] })
-          }
-          value={
-            JSON.parse(searchParams.get(genderUrlQueryParamKey) || '[]')[0]
-          }
-        />
-      )}
-      {domicileOptions && (
-        <MultipleSelect
-          inputId="domicile"
-          label={formatMessage(messages.domicile)}
-          options={domicileOptions.data.map((option) => ({
-            label: localize(option.attributes.title_multiloc),
-            value: option.attributes.key,
-          }))}
-          onChange={(selectedOptions) => {
+      <Text color="textSecondary" m="0px">
+        {formatMessage(messages.gender)}
+      </Text>
+      <Box display="flex" gap="12px">
+        <Button
+          buttonStyle={!selectedGenderOptions ? 'admin-dark' : 'secondary'}
+          onClick={() =>
             updateSearchParams({
-              [domicileUrlQueryParamKey]: selectedOptions.map(
-                (option) => option.value
-              ),
-            });
-          }}
-          value={JSON.parse(searchParams.get(domicileUrlQueryParamKey) || '[]')}
-        />
-      )}
+              [genderUrlQueryParamKey]: undefined,
+            })
+          }
+          p="4px 12px"
+        >
+          All
+        </Button>
+
+        {genderOptions?.data.map((option) => (
+          <Button
+            key={option.id}
+            buttonStyle={
+              selectedGenderOptions?.includes(option.attributes.key)
+                ? 'admin-dark'
+                : 'secondary'
+            }
+            onClick={() => {
+              updateSearchParams({
+                [genderUrlQueryParamKey]: toggleOptionInArray(
+                  selectedGenderOptions,
+                  option.attributes.key
+                ),
+              });
+              trackEventByName(tracks.authorFilterUsed.name, {
+                extra: {
+                  type: 'gender',
+                },
+              });
+            }}
+            p="4px 8px"
+          >
+            {localize(option.attributes.title_multiloc)}
+          </Button>
+        ))}
+      </Box>
+      <Text color="textSecondary" m="0px">
+        {formatMessage(messages.domicile)}
+      </Text>
+      <Box display="flex" gap="12px">
+        <Button
+          buttonStyle={!selectedDomicileOptions ? 'admin-dark' : 'secondary'}
+          onClick={() =>
+            updateSearchParams({
+              [domicileUrlQueryParamKey]: undefined,
+            })
+          }
+          p="4px 12px"
+        >
+          All
+        </Button>
+
+        {domicileOptions?.data.map((option) => (
+          <Button
+            key={option.id}
+            buttonStyle={
+              selectedDomicileOptions?.includes(option.attributes.key)
+                ? 'admin-dark'
+                : 'secondary'
+            }
+            onClick={() => {
+              updateSearchParams({
+                [domicileUrlQueryParamKey]: toggleOptionInArray(
+                  selectedDomicileOptions,
+                  option.attributes.key
+                ),
+              });
+              trackEventByName(tracks.authorFilterUsed.name, {
+                extra: {
+                  type: 'domicile',
+                },
+              });
+            }}
+            p="4px 8px"
+          >
+            {localize(option.attributes.title_multiloc)}
+          </Button>
+        ))}
+      </Box>
       {birthyearField && (
         <Box>
           <Label>{formatMessage(messages.birthyear)}</Label>
@@ -94,11 +172,16 @@ const AuthorFilters = () => {
                 id="birthyear_from"
                 label={formatMessage(messages.from)}
                 options={yearOptions}
-                onChange={(option) =>
+                onChange={(option) => {
                   updateSearchParams({
                     [birthyearUrlQueryParamFromKey]: option.value,
-                  })
-                }
+                  });
+                  trackEventByName(tracks.authorFilterUsed.name, {
+                    extra: {
+                      type: 'birthyear',
+                    },
+                  });
+                }}
                 value={searchParams.get(birthyearUrlQueryParamFromKey)}
               />
             </Box>
@@ -107,11 +190,16 @@ const AuthorFilters = () => {
                 id="birthyear_to"
                 label={formatMessage(messages.to)}
                 options={yearOptions}
-                onChange={(option) =>
+                onChange={(option) => {
                   updateSearchParams({
                     [birthyearUrlQueryParamToKey]: option.value,
-                  })
-                }
+                  });
+                  trackEventByName(tracks.authorFilterUsed.name, {
+                    extra: {
+                      type: 'birthyear',
+                    },
+                  });
+                }}
                 value={searchParams.get(birthyearUrlQueryParamToKey)}
               />
             </Box>

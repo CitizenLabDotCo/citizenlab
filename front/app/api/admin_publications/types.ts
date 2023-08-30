@@ -49,6 +49,7 @@ export interface IAdminPublicationData {
     publication_description_preview_multiloc: Multiloc;
     publication_slug: string;
     publication_visible_to?: 'public' | 'groups' | 'admins' | null;
+    followers_count: number;
   };
   relationships: {
     children: {
@@ -63,6 +64,9 @@ export interface IAdminPublicationData {
         id: string;
         type: AdminPublicationType;
       };
+    };
+    user_follower: {
+      data: IRelationship | null;
     };
   };
 }

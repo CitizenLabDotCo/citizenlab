@@ -18,4 +18,8 @@ export default defineMessages({
     id: 'app.containers.EventsShow.linkToOnlineEvent',
     defaultMessage: 'Link to online event',
   },
+  goBack: {
+    id: 'app.containers.EventsShow.goBack',
+    defaultMessage: 'Go back',
+  },
 });

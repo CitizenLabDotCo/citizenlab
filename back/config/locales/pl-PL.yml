@@ -15,6 +15,10 @@ pl:
     rejected: odrzucony
     rejected_description: Ten pomysł został odrzucony
   initiative_statuses:
+    review_pending: przegląd w toku
+    review_pending_description: przegląd w toku
+    changes_requested: wymagane zmiany
+    changes_requested_description: wymagane zmiany
     proposed: zaproponowana
     proposed_description: zaproponowana
     expired: nieaktualna

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_15_119289) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_25_121819) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -83,29 +83,50 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_15_119289) do
     t.string "auto_tagging_method"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.jsonb "tags_ids"
+    t.jsonb "filters", default: {}, null: false
     t.index ["analysis_id"], name: "index_analysis_background_tasks_on_analysis_id"
   end
 
-  create_table "analysis_summaries", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "analysis_insights", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "analysis_id", null: false
+    t.string "insightable_type", null: false
+    t.uuid "insightable_id", null: false
+    t.jsonb "filters", default: {}, null: false
+    t.jsonb "inputs_ids"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["analysis_id"], name: "index_analysis_insights_on_analysis_id"
+    t.index ["insightable_type", "insightable_id"], name: "index_analysis_insights_on_insightable"
+  end
+
+  create_table "analysis_questions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "background_task_id", null: false
+    t.text "question"
+    t.text "answer"
+    t.text "prompt"
+    t.string "q_and_a_method", null: false
+    t.float "accuracy"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["background_task_id"], name: "index_analysis_questions_on_background_task_id"
+  end
+
+  create_table "analysis_summaries", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "background_task_id", null: false
     t.text "summary"
     t.text "prompt"
     t.string "summarization_method", null: false
-    t.jsonb "filters", default: {}, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.float "accuracy"
-    t.jsonb "inputs_ids"
-    t.index ["analysis_id"], name: "index_analysis_summaries_on_analysis_id"
     t.index ["background_task_id"], name: "index_analysis_summaries_on_background_task_id"
   end
 
   create_table "analysis_taggings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "tag_id", null: false
     t.uuid "input_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.uuid "background_task_id"
     t.index ["input_id"], name: "index_analysis_taggings_on_input_id"
     t.index ["tag_id", "input_id"], name: "index_analysis_taggings_on_tag_id_and_input_id", unique: true
     t.index ["tag_id"], name: "index_analysis_taggings_on_tag_id"
@@ -304,6 +325,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_15_119289) do
     t.index ["content_buildable_type", "content_buildable_id", "code"], name: "index_content_builder_layouts_content_buidable_type_id_code", unique: true
   end
 
+  create_table "cosponsors_initiatives", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "status", default: "pending", null: false
+    t.uuid "user_id", null: false
+    t.uuid "initiative_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["initiative_id"], name: "index_cosponsors_initiatives_on_initiative_id"
+    t.index ["user_id"], name: "index_cosponsors_initiatives_on_user_id"
+  end
+
   create_table "custom_field_options", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "custom_field_id"
     t.string "key"
@@ -490,6 +521,17 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_15_119289) do
     t.index ["flaggable_id", "flaggable_type"], name: "inappropriate_content_flags_flaggable"
   end
 
+  create_table "followers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "followable_type", null: false
+    t.uuid "followable_id", null: false
+    t.uuid "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["followable_id", "followable_type", "user_id"], name: "index_followers_followable_type_id_user_id", unique: true
+    t.index ["followable_type", "followable_id"], name: "index_followers_on_followable"
+    t.index ["user_id"], name: "index_followers_on_user_id"
+  end
+
   create_table "groups", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.jsonb "title_multiloc", default: {}
     t.string "slug"
@@ -609,6 +651,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_15_119289) do
     t.boolean "anonymous", default: false, null: false
     t.integer "internal_comments_count", default: 0, null: false
     t.integer "votes_count", default: 0, null: false
+    t.integer "followers_count", default: 0, null: false
     t.index "((to_tsvector('simple'::regconfig, COALESCE((title_multiloc)::text, ''::text)) || to_tsvector('simple'::regconfig, COALESCE((body_multiloc)::text, ''::text))))", name: "index_ideas_search", using: :gin
     t.index ["author_hash"], name: "index_ideas_on_author_hash"
     t.index ["author_id"], name: "index_ideas_on_author_id"
@@ -726,6 +769,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_15_119289) do
     t.string "author_hash"
     t.boolean "anonymous", default: false, null: false
     t.integer "internal_comments_count", default: 0, null: false
+    t.integer "followers_count", default: 0, null: false
+    t.boolean "editing_locked", default: false, null: false
     t.index "((to_tsvector('simple'::regconfig, COALESCE((title_multiloc)::text, ''::text)) || to_tsvector('simple'::regconfig, COALESCE((body_multiloc)::text, ''::text))))", name: "index_initiatives_search", using: :gin
     t.index ["author_id"], name: "index_initiatives_on_author_id"
     t.index ["location_point"], name: "index_initiatives_on_location_point", using: :gist
@@ -984,7 +1029,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_15_119289) do
     t.uuid "inappropriate_content_flag_id"
     t.uuid "internal_comment_id"
     t.uuid "basket_id"
+    t.uuid "cosponsors_initiative_id"
     t.index ["basket_id"], name: "index_notifications_on_basket_id"
+    t.index ["cosponsors_initiative_id"], name: "index_notifications_on_cosponsors_initiative_id"
     t.index ["created_at"], name: "index_notifications_on_created_at"
     t.index ["inappropriate_content_flag_id"], name: "index_notifications_on_inappropriate_content_flag_id"
     t.index ["initiating_user_id"], name: "index_notifications_on_initiating_user_id"
@@ -1174,6 +1221,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_15_119289) do
     t.string "slug"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "followers_count", default: 0, null: false
     t.index ["slug"], name: "index_project_folders_folders_on_slug"
   end
 
@@ -1237,6 +1285,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_15_119289) do
     t.jsonb "voting_term_plural_multiloc", default: {}
     t.integer "baskets_count", default: 0, null: false
     t.integer "votes_count", default: 0, null: false
+    t.integer "followers_count", default: 0, null: false
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
 
@@ -1481,6 +1530,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_15_119289) do
     t.string "block_reason"
     t.datetime "block_end_at", precision: nil
     t.string "new_email"
+    t.integer "followings_count", default: 0, null: false
     t.index "lower((email)::text)", name: "users_unique_lower_email_idx", unique: true
     t.index ["email"], name: "index_users_on_email"
     t.index ["registration_completed_at"], name: "index_users_on_registration_completed_at"
@@ -1527,7 +1577,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_15_119289) do
   add_foreign_key "analysis_analyses_custom_fields", "analysis_analyses", column: "analysis_id"
   add_foreign_key "analysis_analyses_custom_fields", "custom_fields"
   add_foreign_key "analysis_background_tasks", "analysis_analyses", column: "analysis_id"
-  add_foreign_key "analysis_summaries", "analysis_analyses", column: "analysis_id"
+  add_foreign_key "analysis_insights", "analysis_analyses", column: "analysis_id"
+  add_foreign_key "analysis_questions", "analysis_background_tasks", column: "background_task_id"
   add_foreign_key "analysis_summaries", "analysis_background_tasks", column: "background_task_id"
   add_foreign_key "analysis_taggings", "analysis_tags", column: "tag_id"
   add_foreign_key "analysis_taggings", "ideas", column: "input_id"
@@ -1551,6 +1602,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_15_119289) do
   add_foreign_key "baskets_ideas", "baskets"
   add_foreign_key "baskets_ideas", "ideas"
   add_foreign_key "comments", "users", column: "author_id"
+  add_foreign_key "cosponsors_initiatives", "initiatives"
+  add_foreign_key "cosponsors_initiatives", "users"
   add_foreign_key "custom_field_options", "custom_fields"
   add_foreign_key "email_campaigns_campaign_email_commands", "users", column: "recipient_id"
   add_foreign_key "email_campaigns_campaigns", "users", column: "author_id"
@@ -1561,6 +1614,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_15_119289) do
   add_foreign_key "events", "projects"
   add_foreign_key "events_attendances", "events"
   add_foreign_key "events_attendances", "users", column: "attendee_id"
+  add_foreign_key "followers", "users"
   add_foreign_key "groups_permissions", "groups"
   add_foreign_key "groups_permissions", "permissions"
   add_foreign_key "groups_projects", "groups"
@@ -1602,6 +1656,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_15_119289) do
   add_foreign_key "nav_bar_items", "static_pages"
   add_foreign_key "notifications", "baskets"
   add_foreign_key "notifications", "comments"
+  add_foreign_key "notifications", "cosponsors_initiatives"
   add_foreign_key "notifications", "flag_inappropriate_content_inappropriate_content_flags", column: "inappropriate_content_flag_id"
   add_foreign_key "notifications", "internal_comments"
   add_foreign_key "notifications", "invites"

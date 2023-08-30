@@ -3,9 +3,6 @@ import React, { memo } from 'react';
 // hooks
 import useTopics from 'api/topics/useTopics';
 
-// i18n
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
-
 // styling
 import styled from 'styled-components';
 import { fontSizes, isRtl } from 'utils/styleUtils';
@@ -13,6 +10,7 @@ import { transparentize } from 'polished';
 
 // typings
 import { ITopicData } from 'api/topics/types';
+import useLocalize from 'hooks/useLocalize';
 
 const Container = styled.div`
   display: flex;
@@ -46,30 +44,31 @@ interface Props {
   postType: 'idea' | 'initiative';
 }
 
-const Topics = memo<Props & InjectedLocalized>(
-  ({ topicIds, className, postType, localize }) => {
-    const { data: topics } = useTopics();
-    const filteredTopics =
-      topics?.data.filter((topic) => topicIds.includes(topic.id)) || [];
+const Topics = memo(({ topicIds, className, postType }: Props) => {
+  const localize = useLocalize();
+  const { data: topics } = useTopics();
 
-    if (topics && filteredTopics.length > 0) {
-      return (
-        <Container id={`e2e-${postType}-topics`} className={className}>
-          {filteredTopics.map((topic: ITopicData) => {
-            return (
-              <Topic key={topic.id} className={`e2e-${postType}-topic`}>
-                {localize(topic.attributes.title_multiloc)}
-              </Topic>
-            );
-          })}
-        </Container>
-      );
-    }
+  if (!topics) return null;
 
-    return null;
+  const filteredTopics = topics.data.filter((topic) =>
+    topicIds.includes(topic.id)
+  );
+
+  if (filteredTopics.length > 0) {
+    return (
+      <Container id={`e2e-${postType}-topics`} className={className}>
+        {filteredTopics.map((topic: ITopicData) => {
+          return (
+            <Topic key={topic.id} className={`e2e-${postType}-topic`}>
+              {localize(topic.attributes.title_multiloc)}
+            </Topic>
+          );
+        })}
+      </Container>
+    );
   }
-);
 
-const TopicsWithHoCs = injectLocalize<Props>(Topics);
+  return null;
+});
 
-export default TopicsWithHoCs;
+export default Topics;

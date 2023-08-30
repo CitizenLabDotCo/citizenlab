@@ -8,12 +8,15 @@ de:
       "comment_on_your_comment": Antwort auf einen Kommentar
       "comment_on_your_idea": Kommentar zu einem Beitrag
       "comment_on_your_initiative": Kommentar zu einem Vorschlag
+      "cosponsor_of_your_initiative": Nutzer*in nimmt meine Einladung an, meinen Vorschlag zu unterstützen
       "first_idea_published": Veröffentlichung des ersten Beitrags
       "idea_marked_as_spam": Beitrag wird als Spam gekennzeichnet
       "idea_published": Veröffentlichung des Beitrags
       "initiative_assigned_to_you": Zuweisung eines Vorschlags an mich
       "initiative_marked_as_spam": Vorschlag wird als Spam markiert
       "initiative_published": Veröffentlichung eines Vorschlags
+      "invitation_to_cosponsor_initiative": Einladung zur Unterstützung eines Vorschlags
+      "initiative_resubmitted_for_review": Vorschlag erneut zur Prüfung eingereicht
       "invite_received": Einladung
       "invite_reminder": Einladungserinnerung
       "internal_comment_on_idea_assigned_to_you": Interner Kommentar zu einem mir zugewiesenen Beitrag
@@ -138,6 +141,12 @@ de:
       main_header: '%{commentAuthor} hat Ihre Idee kommentiert'
       subject: 'Sie haben einen Kommentar auf der Plattform von %{organizationName} erhalten'
       preheader: '%{authorName} hat einen Kommentar zu Ihrer Initiative für %{organizationName} hinterlassen'
+    cosponsor_of_your_initiative:
+      cta_reply_to: 'Eigenen Vorschlag ansehen'
+      event_description_initiative: 'Herzlichen Glückwunsch! %{cosponsorName} hat Ihre Einladung zur Unterstützung Ihres Vorschlags angenommen.'
+      main_header: '%{cosponsorName} hat Ihre Einladung angenommen, Ihren Vorschlag mit zu unterstützen'
+      subject: '%{cosponsorName} hat Ihre Einladung angenommen, Ihren Vorschlag mit zu unterstützen'
+      preheader_initiative: '%{cosponsorName} hat Ihre Einladung angenommen, Ihren Vorschlag mit zu unterstützen'
     assignee_digest:
       subject: 'Ideen, die Ihr Feedback erfordern: %{numberIdeas}'
       preheader: 'Übersicht der Beauftragten von %{organizationName}'
@@ -178,6 +187,21 @@ de:
       main_header: '%{firstName}, Sie haben eine neue Aufgabe'
       subject: 'Sie haben einen Auftrag auf der Plattform von %{organizationName}'
       preheader_initiative: 'Der Vorschlag von %{authorName} wurde Ihnen zugewiesen'
+    invitation_to_cosponsor_initiative:
+      cta_reply_to: 'Unterstützen Sie diesen Vorschlag'
+      event_description_initiative: '%{authorName} hat einen neuen Vorschlag erstellt und möchte, dass Sie ihn unterstützen.'
+      event_description_cosponsoring: 'Unterstützer*in eines Vorschlags zu sein bedeutet <strong>, dass Ihr Name zusammen mit den Namen der anderen Unterstützer*innen des Vorschlags angezeigt wird</strong>.'
+      event_description_action: 'Klicken Sie auf den Button unten, um den Vorschlag zu lesen.'
+      main_header: 'Sie wurden eingeladen, einen Vorschlag zu unterstützen'
+      subject: 'Sie wurden eingeladen, einen Vorschlag zu unterstützen'
+      preheader_initiative: 'Sie wurden eingeladen, den Vorschlag von %{authorName} zu unterstützen'
+    initiative_resubmitted_for_review:
+      by_author: 'von %{authorName}'
+      cta_reply_to: '%{authorName} Feedback geben'
+      event_description_initiative: 'Ein Vorschlag wurde erneut zur Prüfung eingereicht. Geben Sie Feedback, indem Sie ein offizielles Update schreiben oder den Status des Vorschlags ändern.'
+      main_header: '%{firstName}, Sie haben einen Vorschlag zu prüfen'
+      subject: 'Sie haben einen Vorschlag zur Überprüfung auf der Plattform von %{organizationName}'
+      preheader_initiative: 'Der Vorschlag von %{authorName} wurde erneut zur Prüfung vorgelegt.'
     invite_reminder:
       cta_accept_invitation: 'Einladung annehmen'
       invitation_header: 'Ihre Einladung steht noch aus'
@@ -633,6 +657,7 @@ de:
         managers: 'Manager*innen'
         admins_assigned_to_a_proposal: 'Einem Vorschlag zugewiesene Admins'
         admins_and_managers_assigned_to_the_input: 'Admins & Manager*innen, die dem Beitrag zugewiesen sind'
+        user_who_is_invited_to_cosponsor_a_proposal: 'Nutzer*in wird zur Unterstützung eines Vorschlags eingeladen'
         user_who_is_receiving_admin_rights: 'Nutzer*in erhält Admin-Rechte'
         user_who_is_receiving_folder_moderator_rights: 'Nutzer*in erhält Ordner-Moderationsrechte'
         user_who_is_receiving_project_moderator_rights: 'Nutzer*in erhält Projektmanagementrechte'
@@ -667,6 +692,7 @@ de:
         input_is_flagged_as_spam: 'Beitrag wird als Spam gekennzeichnet'
         input_is_updated: 'Beitrag erhält ein offizielles Update'
         input_status_changes: 'Status eines Beitrags wird geändert'
+        initiative_resubmitted_for_review: 'Vorschlag erneut zur Prüfung eingereicht'
         internal_comment_is_posted_on_idea_assigned_to_user: 'Interner Kommentar wird zu einem Beitrag veröffentlicht, der Nutzer*in zugewiesen ist'
         internal_comment_is_posted_on_initiative_assigned_to_user: 'Interner Kommentar wird zum Vorschlag veröffentlicht, der dem Nutzer / der Nutzerin zugewiesen ist'
         internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: 'Interne Kommentare werden zu Beiträgen in von Nutzer*innen verwalteten Projekten oder Ordnern gepostet'
@@ -675,6 +701,8 @@ de:
         internal_comment_is_posted_on_initiative_user_has_commented_internally_on: 'Interner Kommentar wird auf Vorschlag veröffentlicht, den der Nutzer / die Nutzerin intern kommentiert hat'
         internal_comment_is_posted_on_unassigned_initiative: 'Interner Kommentar wird zu nicht zugeordnetem Vorschlag veröffentlicht'
         internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Interner Kommentar wird zu nicht zugewiesenem Beitrag in nicht verwaltetem Projekt veröffentlicht'
+        user_accepts_invitation_to_cosponsor_a_proposal: 'Nutzer*in nimmt Einladung zur Unterstützung eines Vorschlags an'
+        user_is_invited_to_cosponsor_a_proposal: 'Nutzer*in ist eingeladen, einen Vorschlag zu unterstützen'
         user_is_mentioned_in_internal_comment: 'Nutzer*in wird in internem Kommentar erwähnt'
         new_input_is_published: 'Neuer Beitrag wird veröffentlicht'
         new_proposal_is_posted: 'Neuer Vorschlag wird veröffentlicht'

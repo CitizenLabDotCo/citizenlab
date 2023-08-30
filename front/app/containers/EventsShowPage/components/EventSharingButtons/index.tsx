@@ -13,15 +13,15 @@ import useAuthUser from 'api/me/useAuthUser';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { FlexContent } from 'components/Sharing/utils';
 
 // types
 import { IEventData } from 'api/events/types';
+import { BoxFlexProps } from '@citizenlab/cl2-component-library';
 
 interface Props {
   event: IEventData;
   hideTitle?: boolean;
-  justifyContent?: FlexContent;
+  justifyContent?: BoxFlexProps['justifyContent'];
 }
 
 const EventSharingButtons = ({ event, hideTitle, justifyContent }: Props) => {

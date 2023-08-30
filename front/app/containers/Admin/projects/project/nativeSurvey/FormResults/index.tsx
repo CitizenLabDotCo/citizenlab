@@ -99,27 +99,6 @@ const FormResults = ({ intl: { formatMessage } }: WrappedComponentProps) => {
         </Box>
       </Box>
 
-      <Box maxWidth="524px">
-        {results.map(
-          (
-            { question, inputType, answers, totalResponses, required },
-            index
-          ) => {
-            return (
-              <FormResultsQuestion
-                key={index}
-                locale={locale}
-                question={question}
-                inputType={inputType}
-                answers={answers}
-                totalResponses={totalResponses}
-                required={required}
-              />
-            );
-          }
-        )}
-      </Box>
-
       {analysisEnabled ? (
         <>
           <AnalysisBanner />
@@ -151,6 +130,27 @@ const FormResults = ({ intl: { formatMessage } }: WrappedComponentProps) => {
           </Box>
         </Box>
       )}
+
+      <Box maxWidth="524px">
+        {results.map(
+          (
+            { question, inputType, answers, totalResponses, required },
+            index
+          ) => {
+            return (
+              <FormResultsQuestion
+                key={index}
+                locale={locale}
+                question={question}
+                inputType={inputType}
+                answers={answers}
+                totalResponses={totalResponses}
+                required={required}
+              />
+            );
+          }
+        )}
+      </Box>
     </Box>
   );
 };

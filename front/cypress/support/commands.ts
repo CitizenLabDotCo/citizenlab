@@ -1282,7 +1282,7 @@ export function apiCreateEvent({
             en: description,
             'nl-BE': description,
           },
-          location_description: location,
+          address_1: location,
           location_point_geojson: includeLocation
             ? {
                 type: 'Point',

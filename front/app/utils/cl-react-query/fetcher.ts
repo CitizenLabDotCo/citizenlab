@@ -125,6 +125,11 @@ async function fetcher({
       return; // TODO temporary workaround
     }
 
+    if (response.status === 504) {
+      reportError('Gateway timeout');
+      throw new Error('Gateway timeout');
+    }
+
     if (path === '/users/me') {
       return null;
     }

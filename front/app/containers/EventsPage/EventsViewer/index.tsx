@@ -6,6 +6,7 @@ import EventsMessage from './EventsMessage';
 import EventsSpinner from './EventsSpinner';
 import EventCard from 'components/EventCard';
 import Pagination from 'components/Pagination';
+import { Box, media } from '@citizenlab/cl2-component-library';
 
 // i18n
 import messages from '../messages';
@@ -17,11 +18,16 @@ import useEvents from 'api/events/useEvents';
 // styling
 import styled from 'styled-components';
 
-// other
+// utils
 import { isNilOrError } from 'utils/helperUtils';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
+
+// types
 import { PublicationStatus } from 'api/projects/types';
-import { Box, media } from '@citizenlab/cl2-component-library';
+
+// router
+import { useSearchParams } from 'react-router-dom';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 interface IStyledEventCard {
   last: boolean;
@@ -67,9 +73,17 @@ const EventsViewer = ({
   projectPublicationStatuses,
   attendeeId,
 }: Props) => {
+  const [searchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(1);
+  const projectIdsParam =
+    eventsTime === 'past'
+      ? searchParams.get('past_events_project_ids')
+      : searchParams.get('ongoing_events_project_ids');
+  const projectIdsFromUrl: string[] = projectIdsParam
+    ? JSON.parse(projectIdsParam)
+    : null;
   const [projectIdList, setProjectIdList] = useState<string[] | undefined>(
-    projectId ? [projectId] : []
+    projectIdsFromUrl || (projectId ? [projectId] : [])
   );
 
   useEffect(() => {
@@ -77,6 +91,20 @@ const EventsViewer = ({
       setProjectIdList([projectId]);
     }
   }, [projectId]);
+
+  useEffect(() => {
+    if (!location.pathname.includes('/projects')) {
+      if (eventsTime === 'past') {
+        projectIdList?.length
+          ? updateSearchParams({ past_events_project_ids: projectIdList })
+          : updateSearchParams({ past_events_project_ids: null });
+      } else if (eventsTime === 'currentAndFuture') {
+        projectIdList?.length
+          ? updateSearchParams({ ongoing_events_project_ids: projectIdList })
+          : updateSearchParams({ ongoing_events_project_ids: null });
+      }
+    }
+  }, [eventsTime, projectIdList]);
 
   const {
     data: events,
@@ -112,6 +140,7 @@ const EventsViewer = ({
         showProjectFilter={showProjectFilter}
         title={title}
         setProjectIds={setProjectIdList}
+        eventsTime={eventsTime}
       />
 
       {isError && <EventsMessage message={messages.errorWhenFetchingEvents} />}

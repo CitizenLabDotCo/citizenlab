@@ -63,10 +63,43 @@ describe WebApi::V1::InitiativeSerializer do
     end
   end
 
+  context 'when cosponsors of initiative exist' do
+    let(:initiative) { create(:initiative) }
+    let(:current_user) { create(:user) }
+    let(:cosponsor) { create(:user) }
+    let(:name_service) { UserDisplayNameService.new(AppConfiguration.instance, current_user) }
+    let(:cosponsor_display_name) { name_service.display_name!(cosponsor) }
+    let!(:_cosponsorship) { create(:cosponsors_initiative, initiative: initiative, user: cosponsor) }
+
+    it 'should include cosponsorships' do
+      expect(cosponsorships(initiative, current_user).first[:user_id]).to eq cosponsor.id
+      expect(cosponsorships(initiative, current_user).first[:name]).to eq cosponsor_display_name
+    end
+
+    it 'should include cosponsors' do
+      expect(cosponsors(initiative, current_user).size).to eq 1
+      expect(cosponsors(initiative, current_user).first[:id]).to eq cosponsor.id
+    end
+  end
+
   def internal_comments_count_for_current_user(initiative, current_user)
     described_class
       .new(initiative, params: { current_user: current_user })
       .serializable_hash
       .dig(:data, :attributes, :internal_comments_count)
+  end
+
+  def cosponsors(initiative, current_user)
+    described_class
+      .new(initiative, params: { current_user: current_user })
+      .serializable_hash
+      .dig(:data, :relationships, :cosponsors, :data)
+  end
+
+  def cosponsorships(initiative, current_user)
+    described_class
+      .new(initiative, params: { current_user: current_user })
+      .serializable_hash
+      .dig(:data, :attributes, :cosponsorships)
   end
 end

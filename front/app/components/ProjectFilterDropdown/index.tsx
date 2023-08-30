@@ -10,6 +10,7 @@ import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 // i18n
 import injectLocalize from 'utils/localize';
 import useLocalize from 'hooks/useLocalize';
+import { useSearchParams } from 'react-router-dom';
 
 type DataProps = {
   projects: GetProjectsChildProps;
@@ -23,6 +24,7 @@ type InputProps = {
   filterSelectorStyle?: 'button' | 'text';
   listTop?: string;
   mobileLeft?: string;
+  eventsTime?: 'past' | 'currentAndFuture';
 };
 
 type Props = InputProps & DataProps;
@@ -36,8 +38,21 @@ const ProjectFilterDropdown = ({
   filterSelectorStyle,
   listTop,
   mobileLeft,
+  eventsTime,
 }: Props) => {
-  const [selectedValues, setSelectedValues] = useState<string[]>([]);
+  const [searchParams] = useSearchParams();
+  const projectIdsParam =
+    eventsTime === 'past'
+      ? searchParams.get('past_events_project_ids')
+      : searchParams.get('ongoing_events_project_ids');
+
+  const projectIdsFromUrl: string[] = projectIdsParam
+    ? JSON.parse(projectIdsParam)
+    : null;
+
+  const [selectedValues, setSelectedValues] = useState<string[]>(
+    projectIdsFromUrl || []
+  );
   const localize = useLocalize();
 
   const handleOnChange = (selectedValues) => {

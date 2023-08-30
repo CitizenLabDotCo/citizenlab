@@ -8,12 +8,15 @@ hr:
       "comment_on_your_comment": Odgovor na moj komentar
       "comment_on_your_idea": Komentar na moju ideju
       "comment_on_your_initiative": Komentar na moj prijedlog
+      "cosponsor_of_your_initiative": Korisnik prihvaća moj poziv da susponzorira moj prijedlog
       "first_idea_published": Objava moje prve ideje
       "idea_marked_as_spam": Izvješće o neželjenoj ideji
       "idea_published": Objava moje ideje
       "initiative_assigned_to_you": Dodijeljen mi je prijedlog
       "initiative_marked_as_spam": Izvješće o neželjenom prijedlogu
       "initiative_published": Objava mog prijedloga
+      "invitation_to_cosponsor_initiative": Poziv za susponzoriranje prijedloga
+      "initiative_resubmitted_for_review": Prijedlog ponovno poslan na pregled
       "invite_received": Pozivnica
       "invite_reminder": Podsjetnik o pozivnici
       "internal_comment_on_idea_assigned_to_you": Interni komentar na unos koji mi je dodijeljen
@@ -138,6 +141,12 @@ hr:
       main_header: '%{commentAuthor} je komentirao/la vašu inicijativu'
       subject: 'Dobili ste komentar na platformi %{organizationName}'
       preheader: '%{authorName} je ostavio komentar na vašu inicijativu za %{organizationName}'
+    cosponsor_of_your_initiative:
+      cta_reply_to: 'Pogledajte svoj prijedlog'
+      event_description_initiative: 'Čestitamo! %{cosponsorName} je prihvatio vaš poziv da susponzorira vaš prijedlog.'
+      main_header: '%{cosponsorName} je prihvatio vaš poziv da susponzorira vaš prijedlog'
+      subject: '%{cosponsorName} je prihvatio vaš poziv da susponzorira vaš prijedlog'
+      preheader_initiative: '%{cosponsorName} je prihvatio vaš poziv da susponzorira vaš prijedlog'
     assignee_digest:
       subject: 'Objave za koje su potrebne vaše povratne informacije: %{numberIdeas}'
       preheader: 'Sažetak primatelja %{organizationName}'
@@ -178,6 +187,21 @@ hr:
       main_header: '%{firstName}, imate novi zadatak'
       subject: 'Imate zadatak na %{organizationName} platformi '
       preheader_initiative: 'Dodijeljen vam je prijedlog od %{authorName}'
+    invitation_to_cosponsor_initiative:
+      cta_reply_to: 'Susponzorirajte ovaj prijedlog'
+      event_description_initiative: '%{authorName} je stvorio novi prijedlog i želio bi da ga supokrovite.'
+      event_description_cosponsoring: 'Susponzoriranje prijedloga znači da će <strong>vaše ime biti prikazano</strong> s imenima ostalih susponzora prijedloga.'
+      event_description_action: 'Kliknite ispod kako biste pročitali prijedlog.'
+      main_header: 'Pozvani ste da budete supokrovitelj prijedloga'
+      subject: 'Pozvani ste da budete supokrovitelj prijedloga'
+      preheader_initiative: 'Pozvani ste da budete supokrovitelj prijedloga %{authorName}'
+    initiative_resubmitted_for_review:
+      by_author: 'od %{authorName}'
+      cta_reply_to: 'Pošalji povratnu informaciju %{authorName}'
+      event_description_initiative: 'Prijedlog je ponovno poslan na pregled. Dajte povratne informacije pisanjem službenog ažuriranja ili promjenom statusa.'
+      main_header: '%{firstName}, imate prijedlog za pregled'
+      subject: 'Imate prijedlog za pregled na platformi %{organizationName}'
+      preheader_initiative: 'Prijedlog od %{authorName} ponovno je poslan na pregled'
     invite_reminder:
       cta_accept_invitation: 'Prihvatite pozivnicu'
       invitation_header: 'Pozivnica je na čekanju'
@@ -633,6 +657,7 @@ hr:
         managers: 'Menadžeri'
         admins_assigned_to_a_proposal: 'Administratori dodijeljeni prijedlogu'
         admins_and_managers_assigned_to_the_input: 'Administratori i upravitelji dodijeljeni unosu'
+        user_who_is_invited_to_cosponsor_a_proposal: 'Korisnik koji je pozvan da susponzorira prijedlog'
         user_who_is_receiving_admin_rights: 'Korisnik koji dobiva administratorska prava'
         user_who_is_receiving_folder_moderator_rights: 'Korisnik koji dobiva prava moderatora mape'
         user_who_is_receiving_project_moderator_rights: 'Korisnik koji dobiva prava moderatora projekta'
@@ -667,6 +692,7 @@ hr:
         input_is_flagged_as_spam: 'Unos je označen kao spam'
         input_is_updated: 'Unos je ažuriran'
         input_status_changes: 'Promjene statusa ulaza'
+        initiative_resubmitted_for_review: 'Prijedlog ponovno poslan na pregled'
         internal_comment_is_posted_on_idea_assigned_to_user: 'Interni komentar objavljen je na unosu dodijeljenom korisniku'
         internal_comment_is_posted_on_initiative_assigned_to_user: 'Interni komentar objavljen je na prijedlog dodijeljen korisniku'
         internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: 'Interni komentar objavljen je na unosu u projektu ili mapi kojom upravlja korisnik'
@@ -675,6 +701,8 @@ hr:
         internal_comment_is_posted_on_initiative_user_has_commented_internally_on: 'Interni komentar objavljen je na prijedlogu koji je korisnik interno komentirao'
         internal_comment_is_posted_on_unassigned_initiative: 'Interni komentar objavljen je na nedodijeljenom prijedlogu'
         internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Interni komentar objavljen je na nedodijeljenom unosu u neupravljanom projektu'
+        user_accepts_invitation_to_cosponsor_a_proposal: 'Korisnik prihvaća poziv za susponzoriranje prijedloga'
+        user_is_invited_to_cosponsor_a_proposal: 'Korisnik je pozvan da susponzorira prijedlog'
         user_is_mentioned_in_internal_comment: 'Korisnik je spomenut u internom komentaru'
         new_input_is_published: 'Objavljen je novi unos'
         new_proposal_is_posted: 'Novi prijedlog je objavljen'

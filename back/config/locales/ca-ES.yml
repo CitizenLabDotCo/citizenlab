@@ -15,6 +15,10 @@ ca:
     rejected: rebutjada
     rejected_description: Aquesta idea ha estat rebutjada
   initiative_statuses:
+    review_pending: revisió pendent
+    review_pending_description: revisió pendent
+    changes_requested: canvis sol·licitats
+    changes_requested_description: canvis sol·licitats
     proposed: proposat
     proposed_description: proposat
     expired: caducat

@@ -10,11 +10,11 @@ const eventsAttendancesKeys = {
     { ...baseKey, operation: 'list', parameters },
   ],
   items: () => [{ ...baseKey, operation: 'item' }],
-  item: ({ eventAttendanceId }: { eventAttendanceId?: string }) => [
+  item: ({ id }: { id?: string }) => [
     {
       ...baseKey,
       operation: 'item',
-      parameters: { eventAttendanceId },
+      parameters: { id },
     },
   ],
 } satisfies QueryKeys;

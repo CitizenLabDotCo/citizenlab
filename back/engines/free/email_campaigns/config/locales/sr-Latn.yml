@@ -8,12 +8,15 @@ sr-Latn:
       "comment_on_your_comment": Odgovor na moj komentar
       "comment_on_your_idea": Komentar na moju ideju
       "comment_on_your_initiative": Komentar na moj predlog
+      "cosponsor_of_your_initiative": A user accepts my invitation to co-sponsor my proposal
       "first_idea_published": Objava moje prve ideje
       "idea_marked_as_spam": Izveštaj o spam ideji
       "idea_published": Objava moje ideje
       "initiative_assigned_to_you": Dodeljen mi je predlog
       "initiative_marked_as_spam": Izveštaj o spam predlogu
       "initiative_published": Objava mog predloga
+      "invitation_to_cosponsor_initiative": Invitation to co-sponsor a proposal
+      "initiative_resubmitted_for_review": Proposal resubmitted for review
       "invite_received": Pozivnica
       "invite_reminder": Podsetnik o pozivnici
       "internal_comment_on_idea_assigned_to_you": Интерни коментар на унос који ми је додељен
@@ -138,6 +141,12 @@ sr-Latn:
       main_header: '%{commentAuthor} je komentarisao/la vašu inicijativu'
       subject: 'Dobili ste komentar na platformi %{organizationName}'
       preheader: '%{authorName} je ostavio komentar na vašu inicijativu za %{organizationName}'
+    cosponsor_of_your_initiative:
+      cta_reply_to: 'View your proposal'
+      event_description_initiative: 'Congratulations! %{cosponsorName} has accepted your invitation to co-sponsor your proposal.'
+      main_header: '%{cosponsorName} has accepted your invitation to co-sponsor your proposal'
+      subject: '%{cosponsorName} has accepted your invitation to co-sponsor your proposal'
+      preheader_initiative: '%{cosponsorName} has accepted your invitation to co-sponsor your proposal'
     assignee_digest:
       subject: 'Objave za koje su potrebne vaše povratne informacije: %{numberIdeas}'
       preheader: '%{organizationName} sažetak'
@@ -178,6 +187,21 @@ sr-Latn:
       main_header: '%{firstName}, imate novi zadatak'
       subject: 'Imate zadatak na %{organizationName} platformi '
       preheader_initiative: 'Dodeljen vam je predlog od %{authorName}'
+    invitation_to_cosponsor_initiative:
+      cta_reply_to: 'Co-sponsor this proposal'
+      event_description_initiative: '%{authorName} has created a new proposal and would like you to co-sponsor it.'
+      event_description_cosponsoring: 'Co-sponsoring a proposal means that <strong>your name will be displayed</strong> with the names of other co-sponsors of the proposal.'
+      event_description_action: 'Click below to read the proposal.'
+      main_header: 'You have been invited to co-sponsor a proposal'
+      subject: 'You have been invited to co-sponsor a proposal'
+      preheader_initiative: 'You have been invited to co-sponsor the proposal of %{authorName}'
+    initiative_resubmitted_for_review:
+      by_author: 'by %{authorName}'
+      cta_reply_to: 'Give feedback to %{authorName}'
+      event_description_initiative: 'A proposal has been resubmitted for review. Give feedback by writing an official update or by changing its status.'
+      main_header: '%{firstName}, you have a proposal to review'
+      subject: 'You have a proposal to review on the platform of %{organizationName}'
+      preheader_initiative: 'The proposal of %{authorName} has been resubmitted for review'
     invite_reminder:
       cta_accept_invitation: 'Prihvatite pozivnicu'
       invitation_header: 'Pozivnica je na čekanju'
@@ -633,6 +657,7 @@ sr-Latn:
         managers: 'Менаџери'
         admins_assigned_to_a_proposal: 'Администратори додељени предлогу'
         admins_and_managers_assigned_to_the_input: 'Администратори и менаџери додељени улазу'
+        user_who_is_invited_to_cosponsor_a_proposal: 'User who is invited to co-sponsor a proposal'
         user_who_is_receiving_admin_rights: 'Корисник који добија администраторска права'
         user_who_is_receiving_folder_moderator_rights: 'Корисник који добија права модератора фолдера'
         user_who_is_receiving_project_moderator_rights: 'Корисник који добија права модератора пројекта'
@@ -667,6 +692,7 @@ sr-Latn:
         input_is_flagged_as_spam: 'Унос је означен као нежељена пошта'
         input_is_updated: 'Унос је ажуриран'
         input_status_changes: 'Статус уноса се мења'
+        initiative_resubmitted_for_review: 'Proposal resubmitted for review'
         internal_comment_is_posted_on_idea_assigned_to_user: 'Интерни коментар се поставља на унос који је додељен кориснику'
         internal_comment_is_posted_on_initiative_assigned_to_user: 'Интерни коментар се поставља на предлог који је додељен кориснику'
         internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: 'Интерни коментар се поставља на унос у пројекту или фолдеру којим корисник управља'
@@ -675,6 +701,8 @@ sr-Latn:
         internal_comment_is_posted_on_initiative_user_has_commented_internally_on: 'Интерни коментар се поставља на предлог који је корисник интерно коментарисао'
         internal_comment_is_posted_on_unassigned_initiative: 'Интерни коментар је постављен на недодељени предлог'
         internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Интерни коментар се поставља на недодељени унос у неуправљаном пројекту'
+        user_accepts_invitation_to_cosponsor_a_proposal: 'User accepts invitation to co-sponsor a proposal'
+        user_is_invited_to_cosponsor_a_proposal: 'User is invited to co-sponsor a proposal'
         user_is_mentioned_in_internal_comment: 'Корисник је поменут у интерном коментару'
         new_input_is_published: 'Нови унос је објављен'
         new_proposal_is_posted: 'Нови предлог је објављен'

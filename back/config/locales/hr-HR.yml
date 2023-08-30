@@ -15,6 +15,10 @@ hr:
     rejected: odbijeno
     rejected_description: Ova je ideja odbijena
   initiative_statuses:
+    review_pending: pregled na čekanju
+    review_pending_description: pregled na čekanju
+    changes_requested: tražene izmjene
+    changes_requested_description: tražene izmjene
     proposed: predloženo
     proposed_description: predloženo
     expired: isteklo

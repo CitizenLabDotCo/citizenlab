@@ -16,7 +16,7 @@ const server = setupServer(
   })
 );
 
-describe('useEventsByUserId', () => {
+describe('useEventAttendances', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 

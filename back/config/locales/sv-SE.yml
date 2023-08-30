@@ -15,6 +15,10 @@ sv:
     rejected: avvisad
     rejected_description: Den här idén har avvisats
   initiative_statuses:
+    review_pending: pågående granskning
+    review_pending_description: pågående granskning
+    changes_requested: begärda ändringar
+    changes_requested_description: begärda ändringar
     proposed: föreslagen
     proposed_description: föreslagen
     expired: utgången

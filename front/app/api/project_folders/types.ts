@@ -46,6 +46,7 @@ export interface IProjectFolderData {
     slug: string;
     header_bg?: ImageSizes;
     publication_status: PublicationStatus;
+    followers_count: number;
   };
   relationships: {
     projects: {
@@ -56,6 +57,9 @@ export interface IProjectFolderData {
     };
     avatars: {
       data: IRelationship[] | null;
+    };
+    user_follower: {
+      data: IRelationship | null;
     };
   };
 }

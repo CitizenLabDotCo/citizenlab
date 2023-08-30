@@ -8,6 +8,7 @@ import OnlineLink from './MetadataInformation/OnlineLink';
 import FullEventTime from './MetadataInformation/EventTimeTextual';
 import Location from './MetadataInformation/Location';
 import EventDateStylized from './MetadataInformation/EventDateStylized';
+import EventSharingButtons from './EventSharingButtons';
 
 // styling
 import { colors } from 'utils/styleUtils';
@@ -67,6 +68,9 @@ const InformationSectionMobile = ({ event }: Props) => {
             </Box>
           </Box>
         </Box>
+      </Box>
+      <Box mb="16px">
+        <EventSharingButtons event={event} />
       </Box>
     </Box>
   );

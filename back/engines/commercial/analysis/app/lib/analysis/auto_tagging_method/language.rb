@@ -11,9 +11,9 @@ module Analysis
 
     # Use `execute` on the parent class to actually use the method
     def run
-      total_inputs = analysis.inputs.size
+      total_inputs = filtered_inputs.size
 
-      analysis.inputs.includes(:author).each_with_index do |input, i|
+      filtered_inputs.includes(:author).each_with_index do |input, i|
         update_progress(i / total_inputs.to_f) if i % 5 == 0
 
         nlp = nlp_cloud_client_for(
@@ -31,7 +31,7 @@ module Analysis
         result['languages'].map(&:first).each do |(language, score)|
           if score > DETECTION_THRESHOLD
             tag = find_or_create_tag(language)
-            Tagging.find_or_create_by!(input_id: input.id, tag_id: tag.id)
+            find_or_create_tagging!(input_id: input.id, tag_id: tag.id)
           end
         end
       end

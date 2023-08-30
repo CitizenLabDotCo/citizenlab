@@ -133,7 +133,7 @@ const AdminProjectEventEdit = ({ params }: Props) => {
       const delayDebounceFn = setTimeout(async () => {
         const point = await geocode(address1);
         setLocationPoint(point);
-        point ? setSuccessfulGeocode(true) : setSuccessfulGeocode(false);
+        setSuccessfulGeocode(!!point);
       }, 500);
 
       return () => clearTimeout(delayDebounceFn);
@@ -327,7 +327,10 @@ const AdminProjectEventEdit = ({ params }: Props) => {
             addEvent(
               {
                 projectId,
-                event: attributeDiff,
+                event: {
+                  ...attributeDiff,
+                  location_point_geojson: locationPointUpdated || null,
+                },
               },
               {
                 onSuccess: async (data) => {

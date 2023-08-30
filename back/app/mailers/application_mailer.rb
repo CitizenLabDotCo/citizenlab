@@ -68,7 +68,7 @@ class ApplicationMailer < ActionMailer::Base
     when OpenStruct then multiloc_or_struct.to_h.stringify_keys
     end
 
-    multiloc_service.t(multiloc, recipient).html_safe if multiloc
+    multiloc_service.t(multiloc, recipient.locale).html_safe if multiloc
   end
 
   def count_from(value)

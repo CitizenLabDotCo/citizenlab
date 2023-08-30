@@ -61,7 +61,7 @@ const Tasks = () => {
         </Button>
       ) : (
         <IconButton
-          iconName="book"
+          iconName="list"
           a11y_buttonActionMessage="background jobs"
           iconColor={colors.grey800}
           iconColorOnHover={colors.black}
@@ -108,11 +108,11 @@ const Tasks = () => {
                         as="span"
                         bg={
                           TagTypeColorMap[task.attributes.auto_tagging_method]
-                            .background
+                            ?.background
                         }
                         color={
                           TagTypeColorMap[task.attributes.auto_tagging_method]
-                            .text
+                            ?.text
                         }
                         borderRadius="3px"
                         py="4px"

@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 
 // components
 import CollapsibleBox from 'components/UI/CollapsibleBox';
@@ -11,11 +11,11 @@ import { colors } from 'utils/styleUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-export interface Props {
+interface Props {
   className?: string;
 }
 
-const CollapsibleTipsAndInfo = memo<Props>(({ className }) => {
+const CollapsibleTipsAndInfo = ({ className }: Props) => {
   return (
     <CollapsibleBox
       className={className}
@@ -26,6 +26,6 @@ const CollapsibleTipsAndInfo = memo<Props>(({ className }) => {
       <TipsContent />
     </CollapsibleBox>
   );
-});
+};
 
 export default CollapsibleTipsAndInfo;

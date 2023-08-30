@@ -5,7 +5,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { IEventAttendances, EventAttendanceKeys } from './types';
 import eventsAttendancesKeys from './keys';
 
-const fetchEventAttendances = ({ eventId }: { eventId: string }) => {
+const fetchEventAttendances = (eventId: string) => {
   return fetcher<IEventAttendances>({
     path: `/events/${eventId}/attendances`,
     action: 'get',
@@ -20,7 +20,7 @@ const useEventAttendances = (eventId: string) => {
     EventAttendanceKeys
   >({
     queryKey: eventsAttendancesKeys.list({ eventId }),
-    queryFn: () => fetchEventAttendances({ eventId }),
+    queryFn: () => fetchEventAttendances(eventId),
     enabled: !isNilOrError(eventId),
   });
 };

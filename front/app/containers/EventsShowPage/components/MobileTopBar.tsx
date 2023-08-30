@@ -2,6 +2,7 @@ import React from 'react';
 
 // hooks
 import useProjectById from 'api/projects/useProjectById';
+import { useLocation } from 'react-router-dom';
 
 // i18n
 import useLocalize from 'hooks/useLocalize';
@@ -49,7 +50,7 @@ interface Props {
 const MobileTopBar = ({ projectId }: Props) => {
   const { data: project } = useProjectById(projectId);
   const isSmallerThanTablet = useBreakpoint('tablet');
-
+  const location = useLocation();
   const localize = useLocalize();
 
   return (
@@ -61,7 +62,12 @@ const MobileTopBar = ({ projectId }: Props) => {
               project ? localize(project.data.attributes.title_multiloc) : ''
             }
             iconSize={isSmallerThanTablet ? '42px' : undefined}
-            onClick={() => clHistory.back()}
+            onClick={() => {
+              const hasGoBackLink = location.key !== 'default';
+              hasGoBackLink
+                ? clHistory.goBack()
+                : clHistory.push(`/projects/${project?.data.attributes.slug}`);
+            }}
           />
         </Box>
       </TopBarInner>

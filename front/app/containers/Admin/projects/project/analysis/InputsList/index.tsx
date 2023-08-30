@@ -1,12 +1,11 @@
 import React, { Fragment, useCallback, useEffect, useMemo } from 'react';
-import { Box, colors } from '@citizenlab/cl2-component-library';
+import { Box, Text, colors } from '@citizenlab/cl2-component-library';
 import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
 import { useParams } from 'react-router-dom';
 import InputListItem from './InputListItem';
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 import Observer from '@researchgate/react-intersection-observer';
 import useKeyPress from 'hooks/useKeyPress';
-import SummarizeButton from './SummarizeButton';
 import { useSelectedInputContext } from '../SelectedInputContext';
 
 const InputsList = () => {
@@ -24,8 +23,6 @@ const InputsList = () => {
     () => data && data.pages.map((page) => page.data).flat(),
     [data]
   );
-
-  const totalCount = data?.pages[0].meta.filtered_count;
 
   const handleIntersection = useCallback(
     (event: IntersectionObserverEntry, unobserve: () => void) => {
@@ -75,29 +72,44 @@ const InputsList = () => {
     }
   }, [downArrow, inputs, setSelectedInputId]);
 
+  const handleOnSelectInput = useCallback(
+    (inputId: string) => {
+      setSelectedInputId(inputId);
+    },
+    [setSelectedInputId]
+  );
+
+  const emptyList = data?.pages[0].meta.filtered_count === 0;
+
   return (
     <Box bg={colors.white} w="100%">
-      <SummarizeButton inputsCount={totalCount} />
-
-      {data?.pages.map((page, i) => (
-        <Fragment key={i}>
-          {hasNextPage &&
-            !isFetchingNextPage &&
-            data?.pages.length === i + 1 && (
-              <Observer onChange={handleIntersection} rootMargin="100px">
-                <Box w="100%" />
-              </Observer>
-            )}
-          {page.data.map((input) => (
-            <InputListItem
-              key={input.id}
-              input={input}
-              onSelect={() => setSelectedInputId(input.id)}
-              selected={input.id === selectedInputId}
-            />
-          ))}
-        </Fragment>
-      ))}
+      {emptyList && (
+        <Box display="flex" justifyContent="center">
+          <Text px="24px" color="grey600">
+            No inputs correspond to your current filters
+          </Text>
+        </Box>
+      )}
+      {!emptyList &&
+        data?.pages.map((page, i) => (
+          <Fragment key={i}>
+            {hasNextPage &&
+              !isFetchingNextPage &&
+              data?.pages.length === i + 1 && (
+                <Observer onChange={handleIntersection} rootMargin="100px">
+                  <Box w="100%" />
+                </Observer>
+              )}
+            {page.data.map((input) => (
+              <InputListItem
+                key={input.id}
+                input={input}
+                onSelect={handleOnSelectInput}
+                selected={input.id === selectedInputId}
+              />
+            ))}
+          </Fragment>
+        ))}
     </Box>
   );
 };

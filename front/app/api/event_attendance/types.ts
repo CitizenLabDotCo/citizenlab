@@ -36,5 +36,5 @@ export interface IEventAttendances {
 }
 
 export interface IDeleteEventAttendanceProperties {
-  attendanceId?: string;
+  attendanceId: string;
 }

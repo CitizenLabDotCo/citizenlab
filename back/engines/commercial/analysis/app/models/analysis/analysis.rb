@@ -30,7 +30,7 @@ module Analysis
     has_many :tags, class_name: 'Analysis::Tag', dependent: :destroy
     has_many :taggings, class_name: 'Analysis::Tagging', through: :tags
     has_many :background_tasks, class_name: 'Analysis::BackgroundTask', dependent: :destroy
-    has_many :summaries, class_name: 'Analysis::Summary', dependent: :destroy
+    has_many :insights, class_name: 'Analysis::Insight', dependent: :destroy
 
     validate :project_xor_phase_present
     validate :project_or_phase_form_context, on: :create

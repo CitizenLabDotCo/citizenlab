@@ -10,7 +10,7 @@ module EmailCampaigns
       multiloc_service = MultilocService.new
       @app_configuration = AppConfiguration.instance
 
-      body_html_with_liquid = multiloc_service.t(command[:body_multiloc], recipient)
+      body_html_with_liquid = multiloc_service.t(command[:body_multiloc], recipient.locale)
       template = Liquid::Template.parse(body_html_with_liquid)
       template.render(liquid_params(recipient))
     end
@@ -26,7 +26,7 @@ module EmailCampaigns
     end
 
     def subject
-      multiloc_service.t(command[:subject_multiloc], recipient)
+      multiloc_service.t(command[:subject_multiloc], recipient.locale)
     end
 
     def from_email
@@ -40,7 +40,7 @@ module EmailCampaigns
       when 'author'
         "#{author.first_name} #{author.last_name}"
       when 'organization'
-        MultilocService.new.t(AppConfiguration.instance.settings('core', 'organization_name'), recipient)
+        MultilocService.new.t(AppConfiguration.instance.settings('core', 'organization_name'), recipient.locale)
       end
     end
 

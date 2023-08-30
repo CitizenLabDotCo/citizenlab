@@ -15,6 +15,10 @@ nl-BE:
     rejected: afgewezen
     rejected_description: Dit idee is afgewezen
   initiative_statuses:
+    review_pending: beoordeling in behandeling
+    review_pending_description: beoordeling in behandeling
+    changes_requested: wijzigingen gevraagd
+    changes_requested_description: wijzigingen gevraagd
     proposed: voorgesteld
     proposed_description: voorgesteld
     expired: verstreken

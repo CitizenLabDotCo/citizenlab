@@ -16,7 +16,7 @@ import { TFilterMenu } from '../../..';
 import { IPhaseData } from 'api/phases/types';
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { IInitiativeStatusData } from 'api/initiative_statuses/types';
-import { GetInitiativeAllowedTransitionsChildProps } from 'resources/GetInitiativeAllowedTransitions';
+import { IInitiativeAllowedTransitions } from 'api/initiative_allowed_transitions/types';
 
 interface Props {
   active: boolean;
@@ -31,12 +31,12 @@ interface Props {
   onUpdatePhases: (id: string[]) => void;
   onUpdateTopics: (id: string[]) => void;
   onUpdateStatus: (id: string) => void;
-  allowedTransitions: GetInitiativeAllowedTransitionsChildProps;
+  allowedTransitions: IInitiativeAllowedTransitions | null;
   /* set allowedTransitions to null to allow all */
   postType: 'idea' | 'initiative';
 }
 
-export default ({
+const SubRow = ({
   active,
   className,
   activeFilterMenu,
@@ -94,3 +94,5 @@ export default ({
     </Tr>
   );
 };
+
+export default SubRow;

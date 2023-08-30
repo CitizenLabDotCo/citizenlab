@@ -15,6 +15,10 @@
     rejected: avslått
     rejected_description: Denne ideen ble avslått
   initiative_statuses:
+    review_pending: vurdering venter
+    review_pending_description: vurdering venter
+    changes_requested: endringer forespurt
+    changes_requested_description: endringer forespurt
     proposed: foreslått
     proposed_description: foreslått
     expired: utløpt

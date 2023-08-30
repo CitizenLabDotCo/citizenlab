@@ -90,7 +90,7 @@ describe('Event show page', () => {
     cy.get('#e2e-participants-count').should('exist');
   });
 
-  it('showns map modal when location coordinates exist', () => {
+  it('shows map modal when location coordinates exist', () => {
     // Click location button
     cy.setAdminLoginCookie();
     cy.visit(`/events/${eventIdWithCoordinates}`);
