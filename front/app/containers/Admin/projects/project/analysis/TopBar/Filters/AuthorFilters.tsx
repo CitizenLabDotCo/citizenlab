@@ -80,7 +80,7 @@ const AuthorFilters = () => {
       <Text color="textSecondary" m="0px">
         {formatMessage(messages.gender)}
       </Text>
-      <Box display="flex" gap="12px">
+      <Box display="flex" gap="12px" flexWrap="wrap">
         <Button
           buttonStyle={!selectedGenderOptions ? 'admin-dark' : 'secondary'}
           onClick={() =>
@@ -123,7 +123,7 @@ const AuthorFilters = () => {
       <Text color="textSecondary" m="0px">
         {formatMessage(messages.domicile)}
       </Text>
-      <Box display="flex" gap="12px">
+      <Box display="flex" gap="12px" flexWrap="wrap">
         <Button
           buttonStyle={!selectedDomicileOptions ? 'admin-dark' : 'secondary'}
           onClick={() =>
