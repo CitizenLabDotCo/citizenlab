@@ -65,8 +65,8 @@ describe('InitiativeForm', () => {
     const submitButton = screen.getByRole('button', { name: submitButtonName });
     await user.click(submitButton);
 
-    // Title and body multiloc need 1 locale, other fields optional for now + 1
-    expect(screen.getAllByTestId('error-message')).toHaveLength(3);
+    // Title and body multiloc need 1 locale, topic has to be present, other fields optional for now + 1 common
+    expect(screen.getAllByTestId('error-message')).toHaveLength(4);
     expect(screen.getByTestId('feedbackErrorMessage')).toBeInTheDocument();
     expect(props.onSubmit).not.toHaveBeenCalled();
   });
