@@ -806,7 +806,7 @@ RSpec.describe User do
     end
 
     it 'is valid when topics are satisfied' do
-      u = build(:user, onboarding: { topics: 'satisfied' })
+      u = build(:user, onboarding: { topics_and_areas: 'satisfied' })
       expect(u).to be_valid
     end
 
@@ -816,7 +816,7 @@ RSpec.describe User do
     end
 
     it 'is invalid when the value is not valid' do
-      u = build(:user, onboarding: { topics: 'bananas' })
+      u = build(:user, onboarding: { topics_and_areas: 'bananas' })
       expect(u).to be_invalid
     end
   end

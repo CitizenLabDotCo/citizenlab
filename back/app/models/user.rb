@@ -82,10 +82,10 @@ class User < ApplicationRecord
         'type' => 'object',
         'propertyNames' => {
           'type' => 'string',
-          'enum' => ['topics']
+          'enum' => ['topics_and_areas']
         },
         'properties' => {
-          'topics' => {
+          'topics_and_areas' => {
             'type' => 'string',
             'enum' => ['satisfied']
           }
