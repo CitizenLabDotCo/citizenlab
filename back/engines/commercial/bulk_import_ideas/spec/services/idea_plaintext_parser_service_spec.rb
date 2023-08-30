@@ -82,7 +82,7 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
 
     docs = service.parse_text text
 
-    puts docs
+    binding.pry
 
     expect(docs).not_to be_nil
   end
