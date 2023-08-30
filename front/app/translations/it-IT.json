@@ -836,6 +836,7 @@
   "app.containers.EventsShow.attending": "frequentare",
   "app.containers.EventsShow.emailSharingBody": "Partecipa a questo evento: {eventTitle} a {eventLocation}",
   "app.containers.EventsShow.eventFrom": "Evento da \"{eventTitle}\"",
+  "app.containers.EventsShow.goBack": "Torna indietro",
   "app.containers.EventsShow.goToProject": "Vai al progetto",
   "app.containers.EventsShow.icsError": "Errore nel download del file ICS",
   "app.containers.EventsShow.socialMediaSharingMessage": "Partecipa a questo evento: {eventTitle}",
