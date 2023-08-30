@@ -3,7 +3,6 @@ import React from 'react';
 // components
 import {
   Box,
-  colors,
   defaultCardHoverStyle,
   defaultCardStyle,
   Text,
