@@ -124,6 +124,7 @@ ach:
       cta_reply_to: 'crwdns991755:0crwdne991755:0'
       event_description_initiative: 'crwdns991757:0%{authorName}crwdne991757:0'
       event_description_cosponsoring: 'crwdns991759:0crwdne991759:0'
+      event_description_before_action: 'crwdns992765:0crwdne992765:0'
       event_description_action: 'crwdns991761:0crwdne991761:0'
       main_header: 'crwdns991763:0crwdne991763:0'
       subject: 'crwdns991765:0crwdne991765:0'
