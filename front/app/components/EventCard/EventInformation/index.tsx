@@ -117,7 +117,9 @@ const EventInformation = ({
                 ml={theme.isRtl ? '8px' : '0px'}
               />
               <Text m="0px" pt="2px" color={'coolGrey700'} fontSize="s">
-                {address1?.slice(0, address1.indexOf(','))}
+                {address1?.includes(',')
+                  ? address1?.slice(0, address1.indexOf(','))
+                  : address1}
               </Text>
             </Box>
           )}
