@@ -2,10 +2,11 @@ module BulkImportIdeas
   class IdeaPlaintextParserService
     QUESTION_TYPES = %w[select multiselect text text_multiloc multiline_text html_multiloc]
 
-    def initialize(project_id, locale)
+    def initialize(project_id, locale, phase_id)
       @project = Project.find(project_id)
+      @phase = phase_id ? @project.phases.find(phase_id) : TimelineService.new.current_phase(@project)
       @custom_fields = IdeaCustomFieldsService.new(
-          Factory.instance.participation_method_for(@project).custom_form
+          Factory.instance.participation_method_for(@phase || @project).custom_form
         )
         .enabled_fields
         .select { |field| QUESTION_TYPES.include? field.input_type }
