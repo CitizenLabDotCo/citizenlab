@@ -291,7 +291,9 @@ const InitiativeForm = ({
               )}
             </StyledFormSection>
             <Suspense fallback={null}>
-              <CosponsorsFormSection />
+              <CosponsorsFormSection
+                cosponsorships={initiative?.attributes.cosponsorships}
+              />
             </Suspense>
             <StyledFormSection>
               <FormSectionTitle

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { SectionField } from 'components/admin/Section';
 import {
   FormSection,
@@ -11,13 +11,33 @@ import useInitiativeCosponsorsRequired from 'hooks/useInitiativeCosponsorsRequir
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Warning from 'components/UI/Warning';
 import messages from './messages';
+import MentionsTextArea from 'components/HookForm/MentionsTextArea';
+import { IInitiativeCosponsorship } from 'api/initiatives/types';
 
-const CosponsorsFormSection = () => {
+interface Props {
+  cosponsorships?: IInitiativeCosponsorship[];
+}
+
+const CosponsorsFormSection = ({ cosponsorships }: Props) => {
+  const initialCosponsorsText = cosponsorships
+    ? cosponsorships.reduce(
+        (acc, cosponsorship) =>
+          `${acc}@[${cosponsorship.name}](${cosponsorship.user_id}) `,
+        ''
+      )
+    : null;
+  const [cosponsorsText, setCosponsorsText] = useState<string | null>(
+    initialCosponsorsText
+  );
   const { data: appConfiguration } = useAppConfiguration();
   const initiativeCosponsorsRequired = useInitiativeCosponsorsRequired();
   const { formatMessage } = useIntl();
 
   if (!appConfiguration) return null;
+
+  const handleOnChangeInputField = (text: string) => {
+    setCosponsorsText(text);
+  };
 
   const cosponsorsNumber =
     appConfiguration.data.attributes.settings.initiatives?.cosponsors_number;
@@ -44,26 +64,23 @@ const CosponsorsFormSection = () => {
             </Text>
             <FormLabel
               labelMessage={messages.cosponsorsLabel}
-              htmlFor="cosponsors-input"
+              htmlFor="cosponsor_ids"
             >
               <Box mb="12px">
                 <Warning>
                   {formatMessage(messages.cosponsorSubtextBeforeInputNote)}
                 </Warning>
               </Box>
-              {/* <MentionsTextArea
-                id="cosponsors-input"
-                name="cosponsors"
+              <MentionsTextArea
+                name="cosponsor_ids"
                 rows={1}
-                value={cosponsorsText}
-                onChange={setCosponsorsText}
-                onChangeMentions={onChangeCosponsors}
                 trigger=""
-                onBlur={onBlur('cosponsors')}
                 userReferenceType="id"
                 padding="8px 8px 12px"
                 placeholder={formatMessage(messages.cosponsorsPlaceholder)}
-              /> */}
+                onChangeInputField={handleOnChangeInputField}
+                displayValue={cosponsorsText}
+              />
             </FormLabel>
           </SectionField>
         </FormSection>
