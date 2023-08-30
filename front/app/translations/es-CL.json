@@ -836,6 +836,7 @@
   "app.containers.EventsShow.attending": "asistente",
   "app.containers.EventsShow.emailSharingBody": "Asiste a este acto: {eventTitle} en {eventLocation}",
   "app.containers.EventsShow.eventFrom": "Evento de \"{eventTitle}\"",
+  "app.containers.EventsShow.goBack": "Regresar",
   "app.containers.EventsShow.goToProject": "Ir al proyecto",
   "app.containers.EventsShow.icsError": "Error al descargar el archivo ICS",
   "app.containers.EventsShow.socialMediaSharingMessage": "Asiste a este acto: {eventTitle}",
