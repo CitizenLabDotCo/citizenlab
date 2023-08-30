@@ -11,7 +11,7 @@ import { get } from 'lodash-es';
 
 interface Props
   extends Omit<LocationInputProps, 'onChange' | 'onBlur' | 'value' | 'id'> {
-  name: string;
+  name: TFieldName;
 }
 
 const LocationInput = ({ name, ...rest }: Props) => {
@@ -45,7 +45,7 @@ const LocationInput = ({ name, ...rest }: Props) => {
       )}
       {apiError && (
         <Error
-          fieldName={name as TFieldName}
+          fieldName={name}
           apiErrors={apiError}
           marginTop="8px"
           marginBottom="8px"

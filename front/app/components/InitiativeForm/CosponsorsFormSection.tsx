@@ -18,6 +18,12 @@ interface Props {
   cosponsorships?: IInitiativeCosponsorship[];
 }
 
+declare module 'components/UI/Error' {
+  interface TFieldNameMap {
+    cosponsor_ids: 'cosponsor_ids';
+  }
+}
+
 const CosponsorsFormSection = ({ cosponsorships }: Props) => {
   const initialCosponsorsText = cosponsorships
     ? cosponsorships.reduce(

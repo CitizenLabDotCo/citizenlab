@@ -56,6 +56,12 @@ const StyledFormSection = styled(FormSection)`
   `}
 `;
 
+declare module 'components/UI/Error' {
+  interface TFieldNameMap {
+    position: 'position';
+  }
+}
+
 export interface FormValues {
   title_multiloc: Multiloc;
   body_multiloc: Multiloc;

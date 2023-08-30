@@ -9,7 +9,7 @@ import { MentionItem } from 'react-mentions';
 
 interface Props
   extends Omit<MentionsTextAreaComponentProps, 'onChange' | 'value'> {
-  name: string;
+  name: TFieldName;
   onChangeInputField?: (text: string) => void;
   displayValue: string | null;
 }
@@ -64,7 +64,7 @@ const MentionsTextArea = ({
       )}
       {apiError && (
         <Error
-          fieldName={name as TFieldName}
+          fieldName={name}
           apiErrors={apiError}
           marginTop="8px"
           marginBottom="8px"
