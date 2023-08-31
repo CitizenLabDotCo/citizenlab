@@ -55,9 +55,10 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
       )
     end
 
-    # Based on fixtures/slightly_better.pdf
+    # Based on fixtures/slightly_better.pdf, with added page numbers
     it 'parses text correctly (single document)' do
-      text = "Title\n" +
+      text = "Page 1
+        Title\n" +
         "My very good idea\n" +
         "Description\n" +
         "would suggest building the\n" +
@@ -74,7 +75,8 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
         "How much do you like pizza (optional)\n" +
         "*This answer will only be shared with moderators, and not to the public.\n" +
         "A lot\n" + 
-        "○ Not at all\n" + 
+        "○ Not at all\n" +
+        "Page 2\n" +
         "How much do you like burgers (optional)\n" + 
         "*This answer will only be shared with moderators, and not to the public.\n" +
         "O A lot\n" + 
@@ -94,9 +96,10 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
       expect(docs).to eq result
     end
 
-    # Based on fixtures/multiple.pdf
+    # Based on fixtures/multiple.pdf, with added page numbers
     it 'parses text correctly (multiple documents)' do
-      text = "Title\n
+      text = "Page 1\n
+        Title\n
         Another great idea, wow\n
         Description\n
         Can you\n
@@ -111,10 +114,12 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
         *This answer will only be shared with moderators, and not to the public.\n
         ○ A lot\n
         ① Not at all\n
+        Page 2\n
         How much do you like burgers (optional)\n
         *This answer will only be shared with moderators, and not to the public.\n
         ☑ A lot\n
         ○ Not at all\n
+        Page 1\n
         Title\n
         This one is a bil mediarre\n
         inedio,\n
@@ -130,6 +135,7 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
         *This answer will only be shared with moderators, and not to the public.\n
         A lot\n
         ○ Not at all\n
+        Page 2\n
         How much do you like burgers (optional)\n
         *This answer will only be shared with moderators, and not to the public.\n
         ⑨ A lot\n
@@ -162,5 +168,76 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
   
       expect(docs).to eq result
     end
+
+    # it 'correctly deals with missing page 1' do
+      # TODO
+    # end
+  end
+
+  # describe 'form with descriptions' do
+  #   let(:project) { create(:continuous_project) }
+  #   let(:service) { described_class.new create(:admin), project.id, 'en', nil }
+  #   let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
+
+  #   before do
+  #     # Topics for project
+  #     project.allowed_input_topics << create(:topic_economy)
+  #     project.allowed_input_topics << create(:topic_waste)
+
+  #     # Custom fields
+  #     create(:custom_field, resource: custom_form, 
+  #       key: 'pool_question', 
+  #       title_multiloc: { 'en' => 'Your favourite name for a swimming poolxxxxx' }, 
+  #       input_type: 'text', 
+  #       enabled: true,
+  #       required: false
+  #     )
+  #   end
+
+  #   # Based on fixtures/with_page_numbers.pdf
+  #   it 'parses text correctly (single document)' do
+  #     text = "Page 1\n
+  #       Title\n
+  #       Page numbers test\n
+  #       Description\n
+  #       A slightly longer description under a default field, with a bunch of words used to explain things to\n
+  #       people. Please don't put anything weird in this field, thanks!\n
+  #       Page numbers test description\n
+  #       with words and things\n
+  #       Location (optional)\n
+  #       Somewhere\n
+  #       Your favourite name for a swimming pool (optional)\n
+  #       *This answer will only be shared with moderators, and not to the public.\n
+  #       Page 2\n
+  #       How much do you like pizza (optional)\n
+  #       A short description\n
+  #       *This answer will only be shared with moderators, and not to the public.\n
+  #       A lot\n
+  #       ○ Not at all\n
+  #       How much do you like burgers (optional)\n
+  #       *This answer will only be shared with moderators, and not to the public.\n
+  #       ○ A lot\n
+  #       ☑ Not at all\n
+  #       Which flavors do you want?\n
+  #       *Choose as many as you like\n
+  #       *This answer will only be shared with moderators, and not to the public.\n
+  #       ☐ Vanilla\n
+  #       ☑ Strawberry\n
+  #       Chocolate\n
+  #       Pistachio\n
+  #     "
+  #       .lines
+  #       .select { |line| line != "\n" }
+  #       .map { |line| line.strip }
+  #       .join("\n")
+
+  #     service = described_class.new project.id, 'en', nil
+  #     docs = service.parse_text text
+
+  #     # TODO assert
+  #   end
+    # it 'parses text correctly (multiple documents)' do
+      # TODO
+    # end
   end
 end

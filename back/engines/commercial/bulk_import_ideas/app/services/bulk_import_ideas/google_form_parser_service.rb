@@ -20,7 +20,7 @@ module BulkImportIdeas
 
       document = process_upload
 
-      # binding.pry
+      binding.pry
 
       # Gets an array of all fields on all pages
       fields = []
