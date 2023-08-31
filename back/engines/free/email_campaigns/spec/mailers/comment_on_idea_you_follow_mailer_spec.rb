@@ -7,7 +7,8 @@ RSpec.describe EmailCampaigns::CommentOnIdeaYouFollowMailer do
     let(:recipient) { create(:user, locale: 'en') }
     let(:campaign) { EmailCampaigns::Campaigns::CommentOnIdeaYouFollow.create! }
     let(:idea) { create(:idea) }
-    let(:comment) { create(:comment, post: idea) }
+    let(:initiator) { create(:user, first_name: 'Marion') }
+    let(:comment) { create(:comment, post: idea, body_multiloc: { 'en' => 'I agree' }, author: initiator) }
     let(:notification) { create(:comment_on_idea_you_follow, recipient: recipient, post: idea, comment: comment) }
     let(:command) do
       activity = create(:activity, item: notification, action: 'created')
@@ -38,11 +39,15 @@ RSpec.describe EmailCampaigns::CommentOnIdeaYouFollowMailer do
     end
 
     it 'includes the comment author name' do
-      expect(mail.body.encoded).to include('Fred')
+      expect(mail.body.encoded).to include('Marion')
     end
 
     it 'includes the comment body' do
-      expect(mail.body.encoded).to include('Zoiets')
+      expect(mail.body.encoded).to include('I agree')
+    end
+
+    it 'includes the unfollow url' do
+      expect(mail.body.encoded).to match(Frontend::UrlService.new.unfollow_url(Follower.new(followable: idea, user: recipient)))
     end
   end
 end
