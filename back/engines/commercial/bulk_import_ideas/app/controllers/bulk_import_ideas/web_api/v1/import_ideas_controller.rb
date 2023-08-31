@@ -75,7 +75,8 @@ module BulkImportIdeas
     def parse_pdf
       pdf_file = decode_base64 bulk_create_params[:pdf]
       google_forms_service = GoogleFormParserService.new pdf_file
-      google_forms_service.parse_pdf
+      # google_forms_service.parse_pdf
+      google_forms_service.raw_text
     end
 
     def decode_base64(base64_file)

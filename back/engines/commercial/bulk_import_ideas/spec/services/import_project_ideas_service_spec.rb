@@ -67,7 +67,7 @@ describe BulkImportIdeas::ImportProjectIdeasService do
           { name: 'No', value: nil, type: 'filled_checkbox', page: 1, x: 0.45, y: 1.66 },
           { name: 'This', value: nil, type: 'filled_checkbox', page: 1, x: 0.11, y: 1.86 },
           { name: 'That', value: nil, type: 'filled_checkbox', page: 1, x: 0.45, y: 1.86 },
-          { name: 'A text field', value: 'Not much to say', type: '', page: 2, x: 0.09, y: 2.12 },
+          { name: 'A text field (optional)', value: 'Not much to say', type: '', page: 2, x: 0.09, y: 2.12 },
           { name: 'Ignored field', value: 'Ignored value', type: 'filled_checkbox', page: 2, x: 0.45, y: 2.23 },
           { name: 'Yes', value: nil, type: 'unfilled_checkbox', page: 2, x: 0.11, y: 2.66 },
           { name: 'No', value: nil, type: 'filled_checkbox', page: 2, x: 0.45, y: 2.66 },
@@ -83,7 +83,7 @@ describe BulkImportIdeas::ImportProjectIdeasService do
           { name: 'No', value: nil, type: 'filled_checkbox', page: 3, x: 0.45, y: 3.66 },
           { name: 'This', value: nil, type: 'unfilled_checkbox', page: 3, x: 0.11, y: 3.86 },
           { name: 'That', value: nil, type: 'filled_checkbox', page: 3, x: 0.45, y: 3.86 },
-          { name: 'A text field', value: 'Something else', type: '', page: 4, x: 0.09, y: 4.12 },
+          { name: 'A text field (optional)', value: 'Something else', type: '', page: 4, x: 0.09, y: 4.12 },
           { name: 'Ignored option', value: nil, type: 'filled_checkbox', page: 4, x: 0.45, y: 4.23 },
           { name: 'Number field', value: '28', type: '', page: 4, x: 0.11, y: 4.86 }
         ]
@@ -149,12 +149,19 @@ describe BulkImportIdeas::ImportProjectIdeasService do
     end
 
     it 'can convert a document in french' do
-      service = described_class.new create(:admin), project.id, 'fr-BE', nil
-      docs = [[{ name: 'Titre', value: 'Bonjour' }, { name: 'Description complète', value: "Je suis un chien. J'aime les chats." }]]
+      service = described_class.new create(:admin), project.id, 'fr-FR', nil
+      docs = [[
+        { name: 'Nom et prénom', value: 'Jean Rambo' },
+        { name: 'Adresse e-mail', value: 'jean@france.com' },
+        { name: 'Titre', value: 'Bonjour' },
+        { name: 'Description', value: "Je suis un chien. J'aime les chats." }
+      ]]
       rows = service.pdf_to_idea_rows docs
 
-      expect(rows[0][:title_multiloc]).to eq({ 'fr-BE': 'Bonjour' })
-      expect(rows[0][:body_multiloc]).to eq({ 'fr-BE': "Je suis un chien. J'aime les chats." })
+      expect(rows[0][:title_multiloc]).to eq({ 'fr-FR': 'Bonjour' })
+      expect(rows[0][:body_multiloc]).to eq({ 'fr-FR': "Je suis un chien. J'aime les chats." })
+      expect(rows[0][:user_email]).to eq 'jean@france.com'
+      expect(rows[0][:user_name]).to eq 'Jean Rambo'
     end
   end
 
@@ -221,54 +228,4 @@ describe BulkImportIdeas::ImportProjectIdeasService do
       expect(rows[0][:custom_field_values][:multiselect_field]).to match_array %w[this that]
     end
   end
-
-  # describe 'pdf_raw_text_to_idea_rows' do
-    # it 'can parse raw text into an idea row' do
-    #   project = create(:continuous_project)
-
-    #   custom_form = create(:custom_form, :with_default_fields, participation_context: project)
-    #   create(:custom_field, resource: custom_form, key: 'a_new_field', title_multiloc: { 'en' => 'A NEW field' }, enabled: true)
-    #   create(:custom_field, resource: custom_form, key: 'number_field', title_multiloc: { 'en' => 'Number field' }, input_type: 'number', enabled: true)
-    #   select_field = create(:custom_field, resource: custom_form, key: 'select_field', title_multiloc: { 'en' => 'Select field' }, input_type: 'select', enabled: true)
-    #   create(:custom_field_option, custom_field: select_field, key: 'yes', title_multiloc: { 'en' => 'Yes' })
-    #   create(:custom_field_option, custom_field: select_field, key: 'no', title_multiloc: { 'en' => 'No' })
-    #   multiselect_field = create(:custom_field, resource: custom_form, key: 'multiselect_field', title_multiloc: { 'en' => 'Multi select field' }, input_type: 'multiselect', enabled: true)
-    #   create(:custom_field_option, custom_field: multiselect_field, key: 'this', title_multiloc: { 'en' => 'This' })
-    #   create(:custom_field_option, custom_field: multiselect_field, key: 'that', title_multiloc: { 'en' => 'That' })
-    #   another_select_field = create(:custom_field, resource: custom_form, key: 'another_select_field', title_multiloc: { 'en' => 'Another select field' }, input_type: 'select', enabled: true)
-    #   create(:custom_field_option, custom_field: another_select_field, key: 'yes', title_multiloc: { 'en' => 'Yes' })
-    #   create(:custom_field_option, custom_field: another_select_field, key: 'no', title_multiloc: { 'en' => 'No' })
-
-    #   service = described_class.new create(:admin), project.id, 'en', nil
-
-    #   text = "
-    #     Title\n
-    #     My very good idea\n
-    #     Description\n
-    #     would suggest building the\n
-    #     new swimming Pool near the\n
-    #     Shopping mall on Park Lane,\n
-    #     It's easily accessible location\n
-    #     with enough space\n
-    #     an\n
-    #     Location (optional)\n
-    #     Dear shopping mall\n
-    #     Your favourite name for a swimming pool (optional)\n
-    #     *This answer will only be shared with moderators, and not to the public.\n
-    #     The cool pool\n
-    #     How much do you like pizza (optional)\n
-    #     *This answer will only be shared with moderators, and not to the public.\n
-    #     A lot\n
-    #     ○ Not at all\n
-    #     How much do you like burgers (optional)\n
-    #     *This answer will only be shared with moderators, and not to the public.\n
-    #     O A lot\n
-    #     Not at all\n
-    #   "
-
-    #   idea = service.pdf_raw_text_to_idea_rows text
-
-    #   expect(idea).not_to be_nil
-    # end
-  # end
 end

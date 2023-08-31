@@ -9,6 +9,10 @@ en:
       title: Default question
       option1: First option
       option2: Second option
+    pdf_export:
+      full_name: Full name
+      email_address: Email address
+      optional: optional
   custom_fields:
     ideas:
       title:
