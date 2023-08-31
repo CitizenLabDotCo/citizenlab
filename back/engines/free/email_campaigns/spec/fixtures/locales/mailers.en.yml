@@ -6,8 +6,8 @@ en:
       "comment_deleted_by_admin": Deletion of my comment
       "comment_marked_as_spam": Comment spam report
       "comment_on_your_comment": A reply on my comment
-      "comment_on_your_idea": A comment on my idea
-      "comment_on_your_initiative": A comment on my proposal
+      "comment_on_idea_you_follow": A comment on an idea that you follow
+      "comment_on_initiative_you_follow": A comment on a proposal that you follow
       "cosponsor_of_your_initiative": A user accepts my invitation to co-sponor my proposal
       "first_idea_published": Publication of my first idea
       "idea_marked_as_spam": Idea spam report
@@ -29,10 +29,6 @@ en:
       "mention_in_internal_comment": Mention in an internal comment
       "mention_in_official_feedback": Mention in an update
       "new_comment_for_admin": New comment in a project I moderate
-      "new_comment_on_commented_idea": New comment on an idea I commented on
-      "new_comment_on_commented_initiative": New comment on a proposal I commented on
-      "new_comment_on_voted_idea": New comment on an idea I voted for
-      "new_comment_on_voted_initiative": New comment on a proposal I voted for
       "new_idea_for_admin": New idea in a project I moderate
       "new_initiative_for_admin": New proposal
       "official_feedback_on_idea_you_follow": Update on an idea that you follow
@@ -56,66 +52,6 @@ en:
       "voting_last_chance": Last chance to vote
       "voting_results": Voting results
       "your_proposed_initiatives_digest": Weekly overview of your proposals
-    admin_campaign_type_description:
-      "manual": Official message - all users
-      "admin_rights_received": Admin rights received - admins
-      "comment_deleted_by_admin": Deletion of your comment - all users
-      "comment_marked_as_spam": Comment spam report - admins and project managers
-      "comment_on_your_comment": Reply on your comment - all users
-      "comment_on_your_idea": Comment on your idea - all users
-      "comment_on_your_initiative": Comment on your proposal - all users
-      "cosponsor_of_your_initiative": A user accepts your invitation to co-sponor your proposal - all users
-      "first_idea_published": Publication of your first idea - all users
-      "idea_marked_as_spam": Idea spam report - admins and project managers
-      "idea_published": Publication of your idea - all users
-      "initiative_assigned_to_you": Assignment of a proposal - admins
-      "initiative_marked_as_spam": Proposal spam report - admins
-      "initiative_published": Publication of your proposal - all users
-      "internal_comment_on_idea_assigned_to_you": Internal comment on input assigned to you - admins and project managers
-      "internal_comment_on_idea_you_commented_internally_on": Internal comment on input you commented internally on - admins and project managers
-      "internal_comment_on_idea_you_moderate": Internal comment on input in project or folder you manage - project and folder managers
-      "internal_comment_on_initiative_assigned_to_you": Internal comment on proposal assigned to you - admins
-      "internal_comment_on_initiative_you_commented_internally_on": Internal comment on input you commented internally on - admins
-      "internal_comment_on_unassigned_initiative": Internal comment on unassigned proposal - admins
-      "internal_comment_on_unassigned_unmoderated_idea": Internal comment on unassigned input in unmanaged project - admins
-      "internal_comment_on_your_internal_comment": Internal comment on your internal comment - admins and project managers
-      "invite_received": Invitation - all users
-      "invite_reminder": Invitation reminder - all users
-      "invitation_to_cosponsor_initiative": Invitation to co-sponsor a proposal - all users
-      "mention_in_comment": Mention in a comment - all users
-      "mention_in_internal_comment": Mention in an internal comment - admins and project managers
-      "mention_in_official_feedback": Mention in an update - all users
-      "new_comment_for_admin": New comment - admins and project managers
-      "new_comment_on_commented_idea": New comment on an idea you commented on - all users
-      "new_comment_on_commented_initiative": New comment on a proposal you commented on - all users
-      "new_comment_on_voted_idea": New comment on an idea you voted for - all users
-      "new_comment_on_voted_initiative": New comment on a proposal you voted for - all users
-      "new_idea_for_admin": New idea - admins and project managers
-      "new_initiative_for_admin": New proposal - admins
-      "official_feedback_on_commented_idea": Update on an idea you commented on - all users
-      "official_feedback_on_commented_initiative": Update on a proposal you commented on - all users
-      "official_feedback_on_voted_idea": Update on an idea you voted on - all users
-      "official_feedback_on_voted_initiative": Update on a proposal you voted on - all users
-      "official_feedback_on_your_idea": Update on your idea - all users
-      "official_feedback_on_your_initiative": Update on your proposal - all users
-      "password_reset": Password reset - all users
-      "project_moderation_rights_received": Project moderation rights received - project managers
-      "project_folder_moderation_rights_received": Project folder moderation rights received
-      "project_phase_started": New project phase - all users
-      "project_phase_upcoming": Upcoming new project phase - admins and project managers
-      "status_change_of_commented_idea": Status change of an idea you commented on - all users
-      "status_change_of_commented_initiative": Status change of a proposal you commented on - all users
-      "status_change_of_voted_idea": Status change of an idea you voted on - all users
-      "status_change_of_voted_initiative": Status change of a proposal you voted on - all users
-      "status_change_of_your_idea": Status change of your idea - all users
-      "status_change_of_your_initiative": Status change of your proposal - all users
-      "threshold_reached_for_admin": Proposal reached the voting threshold - admins
-      "welcome": New user - admins
-      "admin_digest": Weekly overview - admins
-      "moderator_digest": Weekly overview - project managers
-      "assignee_digest": Weekly overview of assigned ideas - admins and project managers
-      "user_digest": Weekly overview - all users
-      "your_proposed_initiatives_digest": Weekly overview of your own proposals - all users
     general:
       by_author: 'by %{authorName}'
       author_wrote: '%{authorName} wrote:'

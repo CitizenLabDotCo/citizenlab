@@ -6,8 +6,8 @@ en:
       "comment_deleted_by_admin": Deletion of my comment
       "comment_marked_as_spam": Comment spam report
       "comment_on_your_comment": A reply on my comment
-      "comment_on_idea_you_follow": A comment on my idea
-      "comment_on_initiative_you_follow": A comment on my proposal
+      "comment_on_idea_you_follow": A comment on an idea that you follow
+      "comment_on_initiative_you_follow": A comment on a proposal that you follow
       "cosponsor_of_your_initiative": A user accepts my invitation to co-sponsor my proposal
       "first_idea_published": Publication of my first idea
       "idea_marked_as_spam": Idea spam report
