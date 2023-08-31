@@ -24,6 +24,7 @@ interface Props {
 
 const InformationSectionMobile = ({ event }: Props) => {
   const isPastEvent = moment().isAfter(moment(event.attributes.end_at));
+  const tempShowEventAttendance = false; // TODO: Replace once event attendance smart group added
 
   return (
     <Box width={`100%`}>
@@ -44,14 +45,18 @@ const InformationSectionMobile = ({ event }: Props) => {
             >
               <EventDateStylized event={event} />
               <>
-                {!isPastEvent && (
-                  <Box mt="12px">
-                    <EventAttendanceButton event={event} />
-                  </Box>
-                )}
-                {event.attributes.attendees_count > 0 && (
-                  <ParticipantsCount count={event.attributes.attendees_count} />
-                )}
+                {tempShowEventAttendance &&
+                  !isPastEvent && ( // TODO: Replace once event attendance smart group added
+                    <Box mt="12px">
+                      <EventAttendanceButton event={event} />
+                    </Box>
+                  )}
+                {tempShowEventAttendance &&
+                  event.attributes.attendees_count > 0 && ( // TODO: Replace once event attendance smart group added
+                    <ParticipantsCount
+                      count={event.attributes.attendees_count}
+                    />
+                  )}
                 <Box borderBottom={`solid 1px ${colors.divider}`} />
               </>
 
