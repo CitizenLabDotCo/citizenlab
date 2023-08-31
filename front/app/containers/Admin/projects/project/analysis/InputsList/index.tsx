@@ -16,7 +16,7 @@ const InputsList = () => {
   const { analysisId } = useParams() as { analysisId: string };
   const filters = useAnalysisFilterParams();
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isFetching } =
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isSuccess } =
     useInfiniteAnalysisInputs({
       analysisId,
       queryParams: filters,
@@ -30,18 +30,13 @@ const InputsList = () => {
   const inputsLength = inputs?.length || 0;
   const parentRef = React.useRef<HTMLDivElement | null>(null);
 
-  const {
-    getVirtualItems,
-    getTotalSize,
-    measureElement,
-    scrollToIndex,
-    measure,
-  } = useVirtualizer({
-    count: hasNextPage ? inputsLength + 1 : inputsLength,
-    getScrollElement: () => parentRef.current,
-    estimateSize: () => 250,
-    overscan: 5,
-  });
+  const { getVirtualItems, getTotalSize, measureElement, scrollToIndex } =
+    useVirtualizer({
+      count: hasNextPage ? inputsLength + 1 : inputsLength,
+      getScrollElement: () => parentRef.current,
+      estimateSize: () => 250,
+      overscan: 5,
+    });
 
   const virtualItems = getVirtualItems();
 
@@ -68,10 +63,8 @@ const InputsList = () => {
   ]);
 
   useEffect(() => {
-    if (!isFetching && inputsLength > 0) {
-      scrollToIndex(0);
-    }
-  }, [filters, scrollToIndex, measure, isFetching, inputsLength]);
+    isSuccess && scrollToIndex(0);
+  }, [filters, scrollToIndex, isSuccess]);
 
   // Keyboard navigations
 
@@ -131,7 +124,7 @@ const InputsList = () => {
     <Box
       ref={parentRef}
       overflow="auto"
-      h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px)`}
+      h={`calc(100vh - ${stylingConsts.mobileMenuHeight + 200}px)`}
       p="12px"
     >
       <div
