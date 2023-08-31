@@ -20,6 +20,7 @@ Analysis::Engine.routes.draw do
         resources :questions, only: %i[create show] do
           post :pre_check, on: :collection
         end
+        resources :users, only: [:show]
       end
     end
   end
