@@ -13,10 +13,16 @@ class WebApi::V1::MentionsController < ApplicationController
     post = find_post(params[:post_type], params[:post_id])
 
     @users = []
-    @users = MentionService.new.users_from_post(query, post, limit) if post && params[:roles].nil?
+    @users = MentionService.new.users_from_post(query, post, limit, current_user) if post && params[:roles].nil?
 
     nb_missing_users = limit - @users.size
-    @users += find_users_by_query(query, post).limit(nb_missing_users) if nb_missing_users.positive?
+    if nb_missing_users.positive?
+      @users += if current_user
+        find_users_by_query(query, post).where.not(id: current_user.id).limit(nb_missing_users)
+      else
+        find_users_by_query(query, post).limit(nb_missing_users)
+      end
+    end
 
     render json: WebApi::V1::UserSerializer.new(
       @users,
