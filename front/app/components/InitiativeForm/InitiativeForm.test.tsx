@@ -14,7 +14,7 @@ jest.mock('api/topics/useTopics');
 const submitButtonName = 'Publish your initiative';
 
 describe('InitiativeForm', () => {
-  it.skip('Changes fields and submits form correctly', async () => {
+  it('Changes fields and submits form correctly', async () => {
     const { container } = render(<InitiativeForm {...defaultProps} />);
     const user = userEvent.setup();
 

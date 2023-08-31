@@ -24,7 +24,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 // Components
-const SubmitButtonBar = lazy(() => import('./SubmitButtonBar'));
+import SubmitButtonBar from './SubmitButtonBar';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
 const ProfileVisibilityFormSection = lazy(
@@ -321,9 +321,7 @@ const InitiativeForm = ({
               />
             </Suspense>
           </Box>
-          <Suspense fallback={null}>
-            <SubmitButtonBar processing={methods.formState.isSubmitting} />
-          </Suspense>
+          <SubmitButtonBar processing={methods.formState.isSubmitting} />
         </form>
       </FormProvider>
       <Suspense fallback={null}>
