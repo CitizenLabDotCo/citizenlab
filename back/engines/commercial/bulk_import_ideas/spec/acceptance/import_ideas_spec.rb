@@ -129,26 +129,14 @@ resource 'BulkImportIdeasImportIdeas' do
           before do
             # Stubbed to avoid call to google webservice
             expect_any_instance_of(BulkImportIdeas::GoogleFormParserService).to receive(:raw_text).and_return(
-            "Full name\nBob Test\nEmail address\nbob@test.com\n" +
-            "Title\n" +
-              "This is really a great title\n" +
-              "Description\n" +
-              "And this is the body\n" +
-              "Location (optional)\n" +
-              "Dear shopping mall\n" +
-              "Your favourite name for a swimming pool (optional)\n" +
-              "*This answer will only be shared with moderators, and not to the public.\n" +
-              "The cool pool\n" +
-              "How much do you like pizza (optional)\n" +
-              "*This answer will only be shared with moderators, and not to the public.\n" +
-              "A lot\n" +
-              "○ Not at all\n" +
-              "How much do you like burgers (optional)\n" +
-              "*This answer will only be shared with moderators, and not to the public.\n" +
-              "O A lot\n" +
-              "Not at all\n"
-
-                 )
+              "Page 1\nFull name\nBob Test\nEmail address\nbob@test.com\n" \
+              "Title\n" \
+              "This is really a great title\n" \
+              "Description\n" \
+              "And this is the body\n" \
+              "Location (optional)\n" \
+              "Somewhere\n" \
+            )
           end
 
           context 'continuous projects' do

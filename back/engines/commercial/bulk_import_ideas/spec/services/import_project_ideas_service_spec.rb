@@ -59,30 +59,36 @@ describe BulkImportIdeas::ImportProjectIdeasService do
     let(:pdf_ideas) do
       [
         {
-          'Full name' => 'John Rambo',
-          'Email address' => 'john_rambo@gravy.com',
-          'Title' => 'Free donuts for all',
-          'Description' => 'Give them all donuts',
-          'Location' => 'Somewhere',
-          'Select field' => 'Yes;No',
-          'Multi select field' => 'This;That',
-          'A text field (optional)' => 'Not much to say',
-          'Another select field' => 'No',
-          'Ignored field' => 'Ignored value',
-          'Number field' => '22'
+          pages: [1, 2],
+          fields: {
+            'Full name' => 'John Rambo',
+            'Email address' => 'john_rambo@gravy.com',
+            'Title' => 'Free donuts for all',
+            'Description' => 'Give them all donuts',
+            'Location' => 'Somewhere',
+            'Select field' => 'Yes;No',
+            'Multi select field' => 'This;That',
+            'A text field (optional)' => 'Not much to say',
+            'Another select field' => 'No',
+            'Ignored field' => 'Ignored value',
+            'Number field' => '22'
+          }
         },
         {
-          'Full name' => 'Ned Flanders',
-          'Email address' => 'ned@simpsons.com',
-          'Title' => 'New Wrestling Arena needed',
-          'Description' => 'I am convinced that if we do not get this we will be sad.',
-          'Location' => 'Behind the sofa',
-          'Select field' => 'No',
-          'Multi select field' => 'That',
-          'A text field (optional)' => 'Something else',
-          'Another select field' => '',
-          'Ignored field' => 'Ignored value',
-          'Number field' => '28'
+          pages: [3, 4],
+          fields: {
+            'Full name' => 'Ned Flanders',
+            'Email address' => 'ned@simpsons.com',
+            'Title' => 'New Wrestling Arena needed',
+            'Description' => 'I am convinced that if we do not get this we will be sad.',
+            'Location' => 'Behind the sofa',
+            'Select field' => 'No',
+            'Multi select field' => 'That',
+            'A text field (optional)' => 'Something else',
+            'Another select field' => '',
+            'Ignored field' => 'Ignored value',
+            'Number field' => '28'
+          }
         }
       ]
     end
@@ -145,7 +151,10 @@ describe BulkImportIdeas::ImportProjectIdeasService do
     end
 
     it 'does not return an email if it does not validate' do
-      ideas = [{ 'Full name' => 'John Rambo', 'Email address' => 'john_rambo.com' }]
+      ideas = [{
+        pages: [1, 2],
+        fields: { 'Full name' => 'John Rambo', 'Email address' => 'john_rambo.com' }
+      }]
       rows = service.ideas_to_idea_rows ideas
       expect(rows[0].keys).not_to include :user_email
     end
@@ -153,10 +162,13 @@ describe BulkImportIdeas::ImportProjectIdeasService do
     it 'can convert a document in french' do
       service = described_class.new create(:admin), project.id, 'fr-FR', nil
       ideas = [{
-        'Nom et prénom' => 'Jean Rambo',
-        'Adresse e-mail' => 'jean@france.com',
-        'Titre' => 'Bonjour',
-        'Description' => "Je suis un chien. J'aime les chats."
+        pages: [1, 2],
+        fields: {
+          'Nom et prénom' => 'Jean Rambo',
+          'Adresse e-mail' => 'jean@france.com',
+          'Titre' => 'Bonjour',
+          'Description' => "Je suis un chien. J'aime les chats."
+        }
       }]
       rows = service.ideas_to_idea_rows ideas
 
@@ -170,22 +182,25 @@ describe BulkImportIdeas::ImportProjectIdeasService do
       let(:xlsx_ideas_array) do
         [
           {
-            'Full name' => 'Bill Test',
-            'Email address' => 'bill@citizenlab.co',
-            'Permission' => 'X',
-            'Date Published (dd-mm-yyyy)' => '15-08-2023',
-            'Title' => 'A title',
-            'Description' => 'A description',
-            'Tags' => 'Economy; Waste',
-            'Location' => 'Somewhere',
-            'A text field' => 'Loads to say here',
-            'Number field' => 5,
-            'Select field' => 'Yes',
-            'Multi select field' => 'This; That',
-            'Another select field' => 'No',
-            'Image URL' => 'https://images.com/image.png',
-            'Latitude' => 50.5035,
-            'Longitude' => 6.0944
+            pages: [1],
+            fields: {
+              'Full name' => 'Bill Test',
+              'Email address' => 'bill@citizenlab.co',
+              'Permission' => 'X',
+              'Date Published (dd-mm-yyyy)' => '15-08-2023',
+              'Title' => 'A title',
+              'Description' => 'A description',
+              'Tags' => 'Economy; Waste',
+              'Location' => 'Somewhere',
+              'A text field' => 'Loads to say here',
+              'Number field' => 5,
+              'Select field' => 'Yes',
+              'Multi select field' => 'This; That',
+              'Another select field' => 'No',
+              'Image URL' => 'https://images.com/image.png',
+              'Latitude' => 50.5035,
+              'Longitude' => 6.0944
+            }
           }
         ]
       end
@@ -201,7 +216,8 @@ describe BulkImportIdeas::ImportProjectIdeasService do
           latitude: 50.5035,
           longitude: 6.0944,
           location_description: 'Somewhere',
-          image_url: 'https://images.com/image.png'
+          image_url: 'https://images.com/image.png',
+          pages: [1]
         })
       end
 
@@ -213,8 +229,9 @@ describe BulkImportIdeas::ImportProjectIdeasService do
       end
 
       it 'does not include user details when "Permission" is blank' do
-        xlsx_ideas_array[0]['Permission'] = ''
+        xlsx_ideas_array[0][:fields]['Permission'] = ''
         rows = service.ideas_to_idea_rows xlsx_ideas_array
+
         expect(rows[0]).not_to include({
           user_name: 'Bill Test',
           user_email: 'bill@citizenlab.co'
