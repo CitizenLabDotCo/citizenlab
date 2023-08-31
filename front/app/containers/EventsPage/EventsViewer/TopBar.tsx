@@ -64,12 +64,18 @@ const TopBar = memo<Props>(
             ml="auto"
           >
             {showDateFilter && (
-              <DateFilterDropdown
-                onChange={setDateFilter}
-                textColor={theme.colors.tenantText}
-                listTop="44px"
-                mobileLeft={showProjectFilter ? '-10px' : mobileLeft}
-              />
+              <Box
+                width={isMobileOrSmaller ? '100%' : 'auto'}
+                flexShrink={0}
+                style={{ textAlign: 'right' }}
+              >
+                <DateFilterDropdown
+                  onChange={setDateFilter}
+                  textColor={theme.colors.tenantText}
+                  listTop="44px"
+                  mobileLeft={isMobileOrSmaller ? '-60px' : mobileLeft}
+                />
+              </Box>
             )}
             {showProjectFilter && (
               <>
