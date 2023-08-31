@@ -30,108 +30,79 @@ module BulkImportIdeas
         display_title = field.required? ? title : "#{title} (#{@optional_copy})"
         @fields_by_display_title[display_title] = field
       end
-    end
-
-    def parse_text(text)
-      lines = text.lines.map { |line| line.rstrip }
 
       # documents is an array of forms.
       # A form is a hash with the field title
       # as key, and the detected answer as value.
       # If no answer is found it is set to nil
-      documents = []
-      form = nil
+      @documents = []
+      @form = nil
 
-      current_field_display_title = nil
-      current_custom_field = nil
+      @current_field_display_title = nil
+      @current_custom_field = nil
+    end
+
+    def parse_text(text)
+      lines = text.lines.map { |line| line.rstrip }
 
       lines.each do |line|
         if is_new_page? line then
-          if is_new_document?(line, form) then
+          if is_new_document? line then
             unless form.nil? then
-              documents << form
+              @documents << @form
             end
 
-            form = {
+            @form = {
               :pages => [],
               :fields => {}
             }
+
+            @current_field_display_title = nil
+            @current_custom_field = nil
           end
 
-          form[:pages] << get_page_number(line)
+          @form[:pages] << get_page_number(line)
           next
         end
 
-        if form.nil? then
+        if @form.nil? then
           raise Exception.new "Unable to detect page number of first page"
         end
 
         if is_field_title? line then
-          form[:fields][line] = nil
+          @form[:fields][line] = nil
 
-          current_field_display_title = line
-          current_custom_field = lookup_field(line)
+          @current_field_display_title = line
+          @current_custom_field = lookup_field(line)
           next
         end
 
-        next if current_custom_field.nil?
+        next if @current_custom_field.nil?
         next if is_disclaimer? line
-        next if is_description?(line, current_custom_field)
+        next if is_description? line
 
-        field_type = current_custom_field.input_type
+        field_type = @current_custom_field.input_type
 
         if ['text', 'text_multiloc'].include? field_type then
-          current_text = form[:fields][current_field_display_title]
-          form[:fields][current_field_display_title] = current_text.nil? ? line : "#{current_text} #{line}"
+          current_text = @form[:fields][@current_field_display_title]
+          @form[:fields][current_field_display_title] = current_text.nil? ? line : "#{current_text} #{line}"
           next
         end
   
         if ['multiline_text', 'html_multiloc'].include? field_type then
-          current_text = form[:fields][current_field_display_title]
-          form[:fields][current_field_display_title] = current_text.nil? ? line : "#{current_text} #{line}"
+          current_text = @form[:fields][@current_field_display_title]
+          @form[:fields][@current_field_display_title] = current_text.nil? ? line : "#{current_text} #{line}"
           next
         end
 
         if field_type == 'select' then
-          # So far it seems like for the answer left blank an
-          # O or circle symbol is prepended. For the selected
-          # answer, either nothing or a random character is used. E.g.
-
-          # "○ A lot"
-          # "① Not at all" << the answer selected on the form
-
-          # or:
-          # "O A lot" + 
-          # "Not at all" << the answer selected on the form
-
-          # So for now we will detect
-          # which option titles match these kind of O
-          # or circle symbols, and assume the others are the
-          # select answer
-
-          option_titles = current_custom_field
-            .options
-            .pluck(:title_multiloc)
-            .map { |multiloc| multiloc[@locale] }
-
-          if current_field_display_title == "How much do you like burgers (optional)" then
-            binding.pry
-          end
-
-          unless is_empty_select_circle?(line, option_titles) then
-            form[:fields][current_field_display_title] = match_selected_option(
-              line,
-              option_titles
-            )
-          end
-
-          next
+          handle_select_field(line)
         end
       end
 
-      documents << form
+      @documents << @form
 
-      return documents
+      return @documents
     end
 
     private
@@ -140,11 +111,11 @@ module BulkImportIdeas
       @page_regex.match? line
     end
 
-    def is_new_document?(line, form)
+    def is_new_document?(line)
       return true if line == "#{@page_copy} 1"
 
       page_number = get_page_number line
-      pages = form[:pages]
+      pages = @form[:pages]
       last_page = pages[pages.length - 1]
 
       # If you were just on page 2, and now you're on
@@ -169,13 +140,47 @@ module BulkImportIdeas
       line == "*#{@choose_as_many_copy}" || line == "*#{@this_answer_copy}"
     end
 
-    def is_description?(line, custom_field)
-      field_description = custom_field.description_multiloc[@locale]
+    def is_description?(line)
+      field_description = @current_custom_field.description_multiloc[@locale]
       return false if field_description.nil?
 
       field_description = field_description.gsub(FORBIDDEN_HTML_TAGS_REGEX, '')
       return false if field_description == ''
       return field_description.include? line
+    end
+
+    def handle_select_field(line)
+      # So far it seems like for the answer left blank an
+      # O or circle symbol is prepended. For the selected
+      # answer, either nothing or a random character is used. E.g.
+
+      # "○ A lot"
+      # "① Not at all" << the answer selected on the form
+
+      # or:
+      # "O A lot" + 
+      # "Not at all" << the answer selected on the form
+
+      # So for now we will detect
+      # which option titles match these kind of O
+      # or circle symbols, and assume the others are the
+      # select answer
+
+      option_titles = @current_custom_field
+        .options
+        .pluck(:title_multiloc)
+        .map { |multiloc| multiloc[@locale] }
+
+      unless is_empty_select_circle?(line, option_titles) then
+        value = match_selected_option(line, option_titles)
+
+        unless value.nil? then
+          @form[:fields][@current_field_display_title] = value
+              
+          @current_field_display_title = nil
+          @current_custom_field = nil
+        end
+      end
     end
 
     # Checks if string has format '○ option label' or 'O option label'
