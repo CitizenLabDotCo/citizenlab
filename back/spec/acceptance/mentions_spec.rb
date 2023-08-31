@@ -175,19 +175,4 @@ resource 'Mentions' do
       end
     end
   end
-
-  # context 'when logged in' do
-  #   before do
-  #     header 'Content-Type', 'application/json'
-  #     @user = create(:user)
-  #     header_token_for @user
-  #   end
-
-  #   example 'does not return current user' do
-  #     do_request mention: @user.first_name[0..3]
-  #     assert_status 200
-  #     json_response = json_parse(response_body)
-  #     expect(json_response[:data].pluck(:id)).not_to include @user.id
-  #   end
-  # end
 end
