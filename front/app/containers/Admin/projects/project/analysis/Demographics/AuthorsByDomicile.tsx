@@ -74,6 +74,10 @@ const AuthorsByDomicile = ({ customFieldId }: Props) => {
 
   const filterKey = `author_custom_${customFieldId}`;
 
+  const chartBarCount = Object.keys(
+    totalAuthorsByDomicile?.data.attributes.series.users || {}
+  ).length;
+
   const chartData =
     totalAuthorsByDomicile &&
     Object.entries(totalAuthorsByDomicile?.data.attributes.series.users).map(
@@ -93,7 +97,10 @@ const AuthorsByDomicile = ({ customFieldId }: Props) => {
           optionKey = null;
         } else {
           name = localize(option?.attributes.title_multiloc) || optionId;
-          shortName = name.slice(0, 2);
+          shortName = name.slice(
+            0,
+            chartBarCount && chartBarCount > 20 ? 1 : 2
+          );
           filtered =
             filteredAuthorsByDomicile?.data.attributes.series.users[optionId];
           optionKey = option?.attributes.key;
