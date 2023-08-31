@@ -85,13 +85,15 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
       service = described_class.new project.id, 'en', nil
       docs = service.parse_text text
 
-      result = [{"Title"=>"My very good idea",
-      "Description"=>
-      "would suggest building the new swimming Pool near the Shopping mall on Park Lane, It's easily accessible location with enough space an",
-      "Location (optional)"=>"Dear shopping mall",
-      "Your favourite name for a swimming pool (optional)"=>"The cool pool",
-      "How much do you like pizza (optional)"=>["A lot"],
-      "How much do you like burgers (optional)"=>["Not at all"]}]
+      result = [{
+        :pages=>[1, 2],
+        :fields=>
+         {"Description"=>
+           "would suggest building the new swimming Pool near the Shopping mall on Park Lane, It's easily accessible location with enough space an",
+          "Location (optional)"=>"Dear shopping mall",
+          "Your favourite name for a swimming pool (optional)"=>"The cool pool",
+          "How much do you like pizza (optional)"=>"A lot",
+          "How much do you like burgers (optional)"=>"Not at all"}}]
 
       expect(docs).to eq result
     end
@@ -149,29 +151,29 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
       service = described_class.new project.id, 'en', nil
       docs = service.parse_text text
 
-      result = [{"Title"=>"Another great idea, wow",
-      "Description"=>
-      "Can you believe how great this idea is? Absolutely mind-blowing. next-level stuff",
-      "Location (optional)"=>"Pachecolaan 34, Brussels",
-      "Your favourite name for a swimming pool (optional)"=>nil,
-      "How much do you like pizza (optional)"=>["Not at all"],
-      "How much do you like burgers (optional)"=>["A lot"]},
-    {"Title"=>"This one is a bil mediarre inedio,",
-      "Description"=>
-      "Honestly, I've seen better ideas. This one is a bit dissappointing.",
-      "Location (optional)"=>nil,
-      "Your favourite name for a swimming pool (optional)"=>"Pooly Mc Poolface",
-      "How much do you like pizza (optional)"=>["A lot"],
-      "How much do you like burgers (optional)"=>["A lot"]}]
-  
-      # TODO properly assert this
+      result = [{
+        :pages=>[1, 2],
+        :fields=>
+         {"Title"=>"Another great idea, wow",
+          "Description"=>
+           "Can you believe how great this idea is? Absolutely mind-blowing. next-level stuff",
+          "Location (optional)"=>"Pachecolaan 34, Brussels",
+          "Your favourite name for a swimming pool (optional)"=>nil,
+          "How much do you like pizza (optional)"=>"Not at all",
+          "How much do you like burgers (optional)"=>"A lot"}},
+       {
+        :pages=>[1, 2],
+        :fields=>
+         {"Title"=>"This one is a bil mediarre inedio,",
+          "Description"=>
+           "Honestly, I've seen better ideas. This one is a bit dissappointing.",
+          "Location (optional)"=>nil,
+          "Your favourite name for a swimming pool (optional)"=>"Pooly Mc Poolface",
+          "How much do you like pizza (optional)"=>"A lot",
+          "How much do you like burgers (optional)"=>"A lot"}}]
   
       expect(docs).to eq result
     end
-
-    # it 'correctly deals with missing page 1' do
-      # TODO
-    # end
   end
 
   # describe 'form with descriptions' do
@@ -239,5 +241,5 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
     # it 'parses text correctly (multiple documents)' do
       # TODO
     # end
-  end
+  # end
 end

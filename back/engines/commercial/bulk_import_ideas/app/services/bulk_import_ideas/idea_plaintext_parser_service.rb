@@ -14,24 +14,19 @@ module BulkImportIdeas
 
       @locale = locale || @locale
 
-      binding.pry
-
       @optional_copy = I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.optional') }
       @choose_as_many_copy = I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.choose_as_many') }
       @this_answer_copy = I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.this_answer') }
+      
+      @page_copy = I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.page') }
+      @page_regex = Regexp.new '^' + @page_copy + ' \\d+$'
 
-      @first_field_display_title = nil
       @fields_by_display_title = {}
 
-      @custom_fields.each_with_index do |field, i|
+      @custom_fields.each do |field|
         title = field.title_multiloc[@locale]
 
         display_title = field.required? ? title : "#{title} (#{@optional_copy})"
-
-        if i == 0 then
-          @first_field_display_title = display_title
-        end
-
         @fields_by_display_title[display_title] = field
       end
     end
@@ -52,13 +47,28 @@ module BulkImportIdeas
       lines.each do |line|
         next if is_disclaimer? line
 
-        if is_new_document? line then
-          documents << form unless form.nil?
-          form = {}
+        if is_new_page? line then
+          if is_new_document?(line, form) then
+            unless form.nil? then
+              documents << form
+            end
+
+            form = {
+              :pages => [],
+              :fields => {}
+            }
+          end
+
+          form[:pages] << get_page_number(line)
+          next
+        end
+
+        if form.nil? then
+          raise Exception.new "Unable to detect page number of first page"
         end
 
         if is_field_title? line then
-          form[line] = nil
+          form[:fields][line] = nil
 
           current_field_display_title = line
           current_custom_field = lookup_field(line)
@@ -68,13 +78,15 @@ module BulkImportIdeas
         field_type = current_custom_field&.input_type
 
         if ['text', 'text_multiloc'].include? field_type then
-          current_text = form[current_field_display_title]
-          form[current_field_display_title] = current_text.nil? ? line : "#{current_text} #{line}"
+          current_text = form[:fields][current_field_display_title]
+          form[:fields][current_field_display_title] = current_text.nil? ? line : "#{current_text} #{line}"
+          next
         end
   
         if ['multiline_text', 'html_multiloc'].include? field_type then
-          current_text = form[current_field_display_title]
-          form[current_field_display_title] = current_text.nil? ? line : "#{current_text} #{line}"
+          current_text = form[:fields][current_field_display_title]
+          form[:fields][current_field_display_title] = current_text.nil? ? line : "#{current_text} #{line}"
+          next
         end
 
         if field_type == 'select' then
@@ -100,15 +112,13 @@ module BulkImportIdeas
             .map { |multiloc| multiloc[@locale] }
 
           unless is_empty_select_circle?(line, option_titles) then
-            if form[current_field_display_title].nil? then
-              form[current_field_display_title] = []
-            end
-
-            form[current_field_display_title] << match_selected_option(
+            form[:fields][current_field_display_title] = match_selected_option(
               line,
               option_titles
             )
           end
+
+          next
         end
       end
 
@@ -119,11 +129,25 @@ module BulkImportIdeas
 
     private
 
-    def is_new_document?(line)
-      # Currently returns true if the line equals the first question.
-      # In the future some other way of determining the start
-      # of the document might be used, like the project/phase title or something
-      line == @first_field_display_title
+    def is_new_document?(line, form)
+      return true if line == "#{@page_copy} 1"
+
+      page_number = get_page_number line
+      pages = form[:pages]
+      last_page = pages[pages.length - 1]
+
+      # If you were just on page 2, and now you're on
+      # page 1, we will assume you went to the next document
+      # but it's missing the first page
+      page_number <= last_page
+    end
+
+    def is_new_page?(line)
+      @page_regex.match? line
+    end
+
+    def get_page_number(line)
+      line[@page_copy.length + 1, 1].to_i
     end
 
     def is_field_title?(line)
