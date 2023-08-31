@@ -63,6 +63,10 @@ FactoryBot.define do
         verification: {
           enabled: false,
           allowed: false
+        },
+        follow: {
+          enabled: true,
+          allowed: true
         }
       })
     end
