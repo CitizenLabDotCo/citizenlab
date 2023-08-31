@@ -207,11 +207,11 @@ resource 'BulkImportIdeasImportIdeas' do
     end
 
     context 'idea import metadata' do
-      get 'web_api/v1/ideas/:id/idea_import' do
+      get 'web_api/v1/idea_imports/:id' do
         let(:id) do
           idea = create(:idea)
           idea.update! idea_import: create(:idea_import, idea: idea)
-          idea.id
+          idea.idea_import.id
         end
 
         example_request 'Get the import meta data for an idea' do

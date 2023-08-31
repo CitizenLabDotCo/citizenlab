@@ -4,6 +4,16 @@ module BulkImportIdeas
   class WebApi::V1::ImportIdeasController < ApplicationController
     before_action :authorize_bulk_import_ideas
 
+    # Show the metadata of a single imported idea
+    def show
+      idea_import = IdeaImport.where(id: params[:id]).first
+
+      render json: WebApi::V1::IdeaImportSerializer.new(
+        idea_import,
+        params: jsonapi_serializer_params
+      ).serializable_hash
+    end
+
     # NOTE: PDF version will only work for a project endpoint
     def bulk_create
       file = bulk_create_params[:pdf] || bulk_create_params[:xlsx]
@@ -11,13 +21,7 @@ module BulkImportIdeas
       draft = params[:id] # If project id is present then import as draft
 
       import_ideas_service.upload_file file, file_type
-
-      idea_rows = if file_type == 'pdf'
-        import_ideas_service.pdf_to_idea_rows(parse_pdf)
-      else
-        import_ideas_service.xlsx_to_idea_rows(parse_xlsx)
-      end
-
+      idea_rows = import_ideas_service.parse_idea_rows file, file_type
       ideas = import_ideas_service.import_ideas idea_rows, import_as_draft: draft
       sidefx.after_success current_user
 
@@ -64,25 +68,6 @@ module BulkImportIdeas
       else
         ImportGlobalIdeasService.new(current_user)
       end
-    end
-
-    def parse_xlsx
-      # TODO: Is StringIO needed here?
-      xlsx_file = StringIO.new decode_base64(bulk_create_params[:xlsx])
-      XlsxService.new.xlsx_to_hash_array xlsx_file
-    end
-
-    def parse_pdf
-      pdf_file = decode_base64 bulk_create_params[:pdf]
-      google_forms_service = GoogleFormParserService.new pdf_file
-      # google_forms_service.parse_pdf
-      google_forms_service.raw_text
-    end
-
-    def decode_base64(base64_file)
-      start = base64_file.index ';base64,'
-      base64_file = base64_file[(start + 8)..] if start
-      Base64.decode64(base64_file)
     end
 
     def authorize_bulk_import_ideas
