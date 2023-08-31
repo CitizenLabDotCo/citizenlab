@@ -5,6 +5,7 @@ require 'rails_helper'
 describe BulkImportIdeas::ImportProjectIdeasService do
   let(:project) { create(:continuous_project) }
   let(:service) { described_class.new create(:admin), project.id, 'en', nil }
+  let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
 
   before do
     # Topics for project
@@ -12,7 +13,7 @@ describe BulkImportIdeas::ImportProjectIdeasService do
     project.allowed_input_topics << create(:topic_waste)
 
     # Custom fields
-    custom_form = create(:custom_form, :with_default_fields, participation_context: project)
+    # custom_form = create(:custom_form, :with_default_fields, participation_context: project)
     create(:custom_field, resource: custom_form, key: 'a_text_field', title_multiloc: { 'en' => 'A text field' }, enabled: true)
     create(:custom_field, resource: custom_form, key: 'number_field', title_multiloc: { 'en' => 'Number field' }, input_type: 'number', enabled: true)
     select_field = create(:custom_field, resource: custom_form, key: 'select_field', title_multiloc: { 'en' => 'Select field' }, input_type: 'select', enabled: true)
@@ -66,7 +67,7 @@ describe BulkImportIdeas::ImportProjectIdeasService do
           { name: 'No', value: nil, type: 'filled_checkbox', page: 1, x: 0.45, y: 1.66 },
           { name: 'This', value: nil, type: 'filled_checkbox', page: 1, x: 0.11, y: 1.86 },
           { name: 'That', value: nil, type: 'filled_checkbox', page: 1, x: 0.45, y: 1.86 },
-          { name: 'A text field', value: 'Not much to say', type: '', page: 2, x: 0.09, y: 2.12 },
+          { name: 'A text field (optional)', value: 'Not much to say', type: '', page: 2, x: 0.09, y: 2.12 },
           { name: 'Ignored field', value: 'Ignored value', type: 'filled_checkbox', page: 2, x: 0.45, y: 2.23 },
           { name: 'Yes', value: nil, type: 'unfilled_checkbox', page: 2, x: 0.11, y: 2.66 },
           { name: 'No', value: nil, type: 'filled_checkbox', page: 2, x: 0.45, y: 2.66 },
@@ -82,7 +83,7 @@ describe BulkImportIdeas::ImportProjectIdeasService do
           { name: 'No', value: nil, type: 'filled_checkbox', page: 3, x: 0.45, y: 3.66 },
           { name: 'This', value: nil, type: 'unfilled_checkbox', page: 3, x: 0.11, y: 3.86 },
           { name: 'That', value: nil, type: 'filled_checkbox', page: 3, x: 0.45, y: 3.86 },
-          { name: 'A text field', value: 'Something else', type: '', page: 4, x: 0.09, y: 4.12 },
+          { name: 'A text field (optional)', value: 'Something else', type: '', page: 4, x: 0.09, y: 4.12 },
           { name: 'Ignored option', value: nil, type: 'filled_checkbox', page: 4, x: 0.45, y: 4.23 },
           { name: 'Number field', value: '28', type: '', page: 4, x: 0.11, y: 4.86 }
         ]
@@ -148,12 +149,19 @@ describe BulkImportIdeas::ImportProjectIdeasService do
     end
 
     it 'can convert a document in french' do
-      service = described_class.new create(:admin), project.id, 'fr-BE', nil
-      docs = [[{ name: 'Titre', value: 'Bonjour' }, { name: 'Description complète', value: "Je suis un chien. J'aime les chats." }]]
+      service = described_class.new create(:admin), project.id, 'fr-FR', nil
+      docs = [[
+        { name: 'Nom et prénom', value: 'Jean Rambo' },
+        { name: 'Adresse e-mail', value: 'jean@france.com' },
+        { name: 'Titre', value: 'Bonjour' },
+        { name: 'Description', value: "Je suis un chien. J'aime les chats." }
+      ]]
       rows = service.pdf_to_idea_rows docs
 
-      expect(rows[0][:title_multiloc]).to eq({ 'fr-BE': 'Bonjour' })
-      expect(rows[0][:body_multiloc]).to eq({ 'fr-BE': "Je suis un chien. J'aime les chats." })
+      expect(rows[0][:title_multiloc]).to eq({ 'fr-FR': 'Bonjour' })
+      expect(rows[0][:body_multiloc]).to eq({ 'fr-FR': "Je suis un chien. J'aime les chats." })
+      expect(rows[0][:user_email]).to eq 'jean@france.com'
+      expect(rows[0][:user_name]).to eq 'Jean Rambo'
     end
   end
 
