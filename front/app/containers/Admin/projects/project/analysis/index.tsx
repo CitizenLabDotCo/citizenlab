@@ -45,14 +45,7 @@ const Analysis = () => {
               <Tags />
             </Box>
 
-            <Box
-              flex="1"
-              overflow="auto"
-              h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px)`}
-              p="12px"
-              mt="12px"
-              bg={colors.white}
-            >
+            <Box flex="1" bg={colors.white} mt="12px">
               <InputsList />
             </Box>
             <Box
