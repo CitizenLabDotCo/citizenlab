@@ -36,10 +36,11 @@ const CosponsorsFormSection = lazy(() => import('./CosponsorsFormSection'));
 const AnonymousParticipationConfirmationModal = lazy(
   () => import('components/AnonymousParticipationConfirmationModal')
 );
-import FileUploader from 'components/HookForm/FileUploader';
-import ImagesDropzone from 'components/HookForm/ImagesDropzone';
 import LocationInput from 'components/HookForm/LocationInput';
 import { Box } from '@citizenlab/cl2-component-library';
+const ImageAndAttachmentsSection = lazy(
+  () => import('./ImagesAndAttachmentsSection')
+);
 
 // Hooks
 import useTopics from 'api/topics/useTopics';
@@ -50,7 +51,7 @@ import Warning from 'components/UI/Warning';
 import useInitiativeReviewRequired from 'hooks/useInitiativeReviewRequired';
 import { stripHtmlTags } from 'utils/helperUtils';
 
-const StyledFormSection = styled(FormSection)`
+export const StyledFormSection = styled(FormSection)`
   ${media.phone`
     padding-left: 18px;
     padding-right: 18px;
@@ -317,51 +318,9 @@ const InitiativeForm = ({
                 cosponsorships={initiative?.attributes.cosponsorships}
               />
             </Suspense>
-            <StyledFormSection>
-              <FormSectionTitle
-                message={messages.formAttachmentsSectionTitle}
-              />
-              <SectionField id="e2e-iniatiative-banner-dropzone">
-                <FormLabel
-                  labelMessage={messages.bannerUploadLabel}
-                  subtextMessage={messages.bannerUploadLabelSubtext}
-                  htmlFor="header_bg"
-                  optional
-                />
-                <ImagesDropzone
-                  name="header_bg"
-                  imagePreviewRatio={360 / 1440}
-                  acceptedFileTypes={{
-                    'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
-                  }}
-                />
-              </SectionField>
-              <SectionField id="e2e-iniatiative-img-dropzone">
-                <FormLabel
-                  labelMessage={messages.imageUploadLabel}
-                  subtextMessage={messages.imageUploadLabelSubtext}
-                  htmlFor="images"
-                  optional
-                />
-                <ImagesDropzone
-                  name="images"
-                  imagePreviewRatio={135 / 298}
-                  acceptedFileTypes={{
-                    'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
-                  }}
-                />
-              </SectionField>
-              <SectionField>
-                <FormLabel
-                  labelMessage={messages.fileUploadLabel}
-                  subtextMessage={messages.fileUploadLabelSubtext}
-                  htmlFor="local_initiative_files"
-                  optional
-                >
-                  <FileUploader name="local_initiative_files" />
-                </FormLabel>
-              </SectionField>
-            </StyledFormSection>
+            <Suspense fallback={null}>
+              <ImageAndAttachmentsSection />
+            </Suspense>
             <Suspense fallback={null}>
               <ProfileVisibilityFormSection
                 triggerModal={() => {
@@ -372,7 +331,9 @@ const InitiativeForm = ({
               />
             </Suspense>
           </Box>
-          <SubmitButtonBar processing={methods.formState.isSubmitting} />
+          <Suspense fallback={null}>
+            <SubmitButtonBar processing={methods.formState.isSubmitting} />
+          </Suspense>
         </form>
       </FormProvider>
       <Suspense fallback={null}>
