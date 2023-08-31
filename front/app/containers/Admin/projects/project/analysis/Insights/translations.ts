@@ -36,7 +36,11 @@ export default defineMessages({
   },
   accuracy: {
     id: 'app.containers.AdminPage.projects.project.analysis.Insights.accuracy',
-    defaultMessage: 'Accuracy',
+    defaultMessage: 'Accuracy: {accuracy}{percentage}',
+  },
+  percentage: {
+    id: 'app.containers.AdminPage.projects.project.analysis.Insights.percentage',
+    defaultMessage: '%',
   },
   deleteSummary: {
     id: 'app.containers.AdminPage.projects.project.analysis.Insights.deleteSummary',

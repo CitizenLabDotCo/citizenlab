@@ -18,7 +18,7 @@ import {
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
 
-import { useIntl } from 'utils/cl-intl';
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import styled from 'styled-components';
 import { useSelectedInputContext } from '../SelectedInputContext';
 import useAnalysisQuestion from 'api/analysis_questions/useAnalysisQuestion';
@@ -201,8 +201,13 @@ const Question = ({ insight }: Props) => {
         </Box>
         {question.data.attributes.accuracy && (
           <Box color={colors.teal700} my="16px">
-            {formatMessage(translations.accuracy)}{' '}
-            {question.data.attributes.accuracy * 100}%
+            <FormattedMessage
+              {...translations.accuracy}
+              values={{
+                accuracy: question.data.attributes.accuracy * 100,
+                percentage: formatMessage(translations.percentage),
+              }}
+            />
           </Box>
         )}
       </Box>

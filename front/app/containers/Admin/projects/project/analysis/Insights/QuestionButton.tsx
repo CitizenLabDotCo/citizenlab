@@ -5,7 +5,7 @@ import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 import useAddAnalysisQuestionPreCheck from 'api/analysis_question_pre_check/useAddAnalysisQuestionPreCheck';
 import { IQuestionPreCheck } from 'api/analysis_question_pre_check/types';
 
-import { useIntl } from 'utils/cl-intl';
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import translations from './translations';
 
 const QuestionButton = ({ onClick }: { onClick: () => void }) => {
@@ -45,11 +45,15 @@ const QuestionButton = ({ onClick }: { onClick: () => void }) => {
       >
         {formatMessage(translations.askQuestion)}
         <br />
-        <Text fontSize="s" m="0" color="grey600">
+        <Text fontSize="s" m="0" color="grey600" whiteSpace="nowrap">
           {questionPossible && questionAccuracy && (
-            <>
-              {questionAccuracy * 100}% {formatMessage(translations.accuracy)}
-            </>
+            <FormattedMessage
+              {...translations.accuracy}
+              values={{
+                accuracy: questionAccuracy * 100,
+                percentage: formatMessage(translations.percentage),
+              }}
+            />
           )}
           {!questionPossible && formatMessage(translations.tooManyInputs)}
         </Text>

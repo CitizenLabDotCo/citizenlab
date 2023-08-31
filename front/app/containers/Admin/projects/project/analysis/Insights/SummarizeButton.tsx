@@ -9,7 +9,7 @@ import { ISummaryPreCheck } from 'api/analysis_summary_pre_check/types';
 import tracks from 'containers/Admin/projects/project/analysis/tracks';
 import { trackEventByName } from 'utils/analytics';
 
-import { useIntl } from 'utils/cl-intl';
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import translations from './translations';
 
 const SummarizeButton = () => {
@@ -67,11 +67,15 @@ const SummarizeButton = () => {
       >
         {formatMessage(translations.summarize)}
         <br />
-        <Text fontSize="s" m="0" color="grey600">
+        <Text fontSize="s" m="0" color="grey600" whiteSpace="nowrap">
           {summaryPossible && summaryAccuracy && (
-            <>
-              {summaryAccuracy * 100}% {formatMessage(translations.accuracy)}
-            </>
+            <FormattedMessage
+              {...translations.accuracy}
+              values={{
+                accuracy: summaryAccuracy * 100,
+                percentage: formatMessage(translations.percentage),
+              }}
+            />
           )}
           {!summaryPossible && formatMessage(translations.tooManyInputs)}
         </Text>

@@ -17,7 +17,7 @@ import {
   Text,
 } from '@citizenlab/cl2-component-library';
 
-import { useIntl } from 'utils/cl-intl';
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import translations from './translations';
 import styled from 'styled-components';
 import { useSelectedInputContext } from '../SelectedInputContext';
@@ -201,8 +201,13 @@ const Summary = ({ insight }: Props) => {
         </Box>
         {summary.data.attributes.accuracy && (
           <Box color={colors.teal700} my="16px">
-            {formatMessage(translations.accuracy)}{' '}
-            {summary.data.attributes.accuracy * 100}%
+            <FormattedMessage
+              {...translations.accuracy}
+              values={{
+                accuracy: summary.data.attributes.accuracy * 100,
+                percentage: formatMessage(translations.percentage),
+              }}
+            />
           </Box>
         )}
       </Box>
