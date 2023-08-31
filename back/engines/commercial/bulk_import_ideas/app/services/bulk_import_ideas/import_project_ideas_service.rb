@@ -62,10 +62,10 @@ module BulkImportIdeas
       ideas_array.map do |idea|
         idea_row = {}
 
-        # Fields not in idea/survey form
+        # Fields not in the idea/survey form
         idea_row[:project_id]   = @project.id
         idea_row[:phase_id]     = @phase.id if @phase
-        # idea_row[:pages] = doc.pluck(:page).uniq
+        idea_row[:pages]        = [1] # TODO: hardcoded, until we have the pages value - doc.pluck(:page).uniq
         idea_row[:published_at] = idea['Date Published (dd-mm-yyyy)']
         idea_row[:image_url]    = idea['Image URL']
         idea_row[:latitude]     = idea['Latitude']
@@ -128,25 +128,7 @@ module BulkImportIdeas
         end
       end
 
-      # Select fields - For PDF import
-      # As we don't have a title for each select question we use the options in order they appear on the form
-      # and remove so that fields with the same values don't get picked up
-      # select_options.each do |option|
-      #   option_field = find_field(doc, option[:name])
-      #   if option_field && option_field[:type].include?('checkbox')
-      #     field_key = option[:field_key].to_sym
-      #     checked = option_field[:type] == 'filled_checkbox'
-      #     if option[:field_type] == 'multiselect' && checked
-      #       custom_fields[field_key] = custom_fields[field_key] || []
-      #       custom_fields[field_key] << option[:key]
-      #     elsif checked && !custom_fields[field_key]
-      #       # Only use the first selected option for a single select
-      #       custom_fields[field_key] = option[:key]
-      #     end
-      #     doc.delete_if { |f| f == option_field }
-      #   end
-      # # end
-
+      # Select fields
       select_fields.each do |field|
         select_field = find_field(doc, field[:name])
         if select_field
