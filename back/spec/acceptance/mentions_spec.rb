@@ -7,7 +7,6 @@ resource 'Mentions' do
   explanation 'Part of a text that explicitly references a user.'
 
   before do
-    # resident_header_token
     @current_user = create(:user)
     header_token_for(@current_user)
     header 'Content-Type', 'application/json'
