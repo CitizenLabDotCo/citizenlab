@@ -148,17 +148,13 @@ resource 'Areas' do
         parameter :ordering, 'The position, starting from 0, where the area should be at. Publications after will move down.', required: true
       end
 
-      before do
-        create_list(:area, 4)
-      end
-
-      let(:id) { Area.last.id }
+      let(:id) { create_list(:area, 4).last.id }
       let(:ordering) { 1 }
 
       example 'Reorder an Area' do
         area = Area.find_by(ordering: ordering)
         do_request
-        expect(response_status).to eq 200
+        assert_status 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :attributes, :ordering)).to match ordering
         expect(Area.find_by(ordering: ordering).id).to eq id
