@@ -8,6 +8,7 @@ import InputsList from './InputsList';
 import InputPreview from './InputPreview';
 import Insights from './Insights';
 import SelectedInputContext from './SelectedInputContext';
+import Demographics from './Demographics';
 
 const Analysis = () => {
   const modalPortalElement = document.getElementById('modal-portal');
@@ -46,6 +47,10 @@ const Analysis = () => {
             </Box>
 
             <Box flex="1" bg={colors.white} mt="12px">
+              <Box>
+                <Demographics />
+              </Box>
+
               <InputsList />
             </Box>
             <Box

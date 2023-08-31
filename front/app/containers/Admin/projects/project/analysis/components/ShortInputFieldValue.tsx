@@ -5,6 +5,8 @@ import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCu
 import { FormattedDate } from 'react-intl';
 import { isNil } from 'lodash-es';
 import { IIdeaCustomField } from 'api/idea_custom_fields/types';
+import { useIntl } from 'utils/cl-intl';
+import translations from '../translations';
 
 type Props = {
   customField: IIdeaCustomField;
@@ -36,12 +38,13 @@ const SelectOptionText = ({
  * custom fields
  */
 const ShortInputFieldValue = ({ customField, rawValue }: Props) => {
+  const { formatMessage } = useIntl();
   // We only render non-built-in custom fields, assuming the parent has
   // dedicated logic to render the built-in fields
   if (customField.data.attributes.code) return null;
 
   if (isNil(rawValue)) {
-    return <>No answer</>;
+    return <>{formatMessage(translations.noAnswer)}</>;
   }
 
   switch (customField.data.attributes.input_type) {
