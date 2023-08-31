@@ -224,6 +224,7 @@ en-CA:
       optional: 'optional'
       choose_as_many: 'Choose as many as you like'
       this_answer: 'This answer will only be shared with moderators, and not to the public.'
+      page: 'Page'
   project_copy:
     title_suffix: 'Copy'
   confirmations_mailer:
