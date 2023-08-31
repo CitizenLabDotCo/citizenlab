@@ -41,6 +41,12 @@ class Topic < ApplicationRecord
   before_validation :strip_title
 
   scope :order_new, ->(direction = :desc) { order(created_at: direction, id: direction) }
+  scope :order_projects_count, lambda { |direction = :desc|
+    safe_dir = direction == :desc ? 'DESC' : 'ASC'
+    left_outer_joins(:projects_topics)
+      .group(:id)
+      .order("COUNT(projects_topics.project_id) #{safe_dir}, ordering")
+  }
   scope :defaults, -> { where(code: DEFAULT_CODES) }
 
   def custom?

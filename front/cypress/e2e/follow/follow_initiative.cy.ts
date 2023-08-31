@@ -85,11 +85,9 @@ describe('Follow Initiative', () => {
     cy.get('[data-cy="e2e-unfollow-button"]').should('exist');
     cy.get('[data-cy="e2e-follow-button"]').should('not.exist');
 
-    cy.visit(`/profile/${userSlug}`);
-    cy.get('[data-cy="e2e-following-tab"]').click();
-    cy.get('#e2e-user-following-filter-selector').click();
+    cy.visit(`/profile/${userSlug}/following`);
+    cy.get('#tab-Initiative').click();
 
-    cy.get('.e2e-sort-items').find('.e2e-sort-item-Initiative').click();
     cy.get('.e2e-card-title').contains(initiativeTitle2);
 
     cy.get('[data-cy="e2e-unfollow-button"]').should('exist');

@@ -14,6 +14,7 @@ const useUserIdeaCount = ({ userId }: IParameters) => {
   return useQuery<IIdeaCount, CLErrors, IIdeaCount, UserIdeaCountKeys>({
     queryKey: userIdeasCountKeys.item({ userId }),
     queryFn: () => fetchUserIdeaCount({ userId }),
+    enabled: !!userId,
   });
 };
 

@@ -97,11 +97,9 @@ describe('Follow idea', () => {
     cy.get('[data-cy="e2e-unfollow-button"]').should('exist');
     cy.get('[data-cy="e2e-follow-button"]').should('not.exist');
 
-    cy.visit(`/profile/${userSlug}`);
-    cy.get('[data-cy="e2e-following-tab"]').click();
-    cy.get('#e2e-user-following-filter-selector').click();
+    cy.visit(`/profile/${userSlug}/following`);
+    cy.get('#tab-Idea').click();
 
-    cy.get('.e2e-sort-items').find('.e2e-sort-item-Idea').click();
     cy.get('.e2e-card-title').contains(ideaTitle2);
 
     cy.get('[data-cy="e2e-unfollow-button"]').should('exist');

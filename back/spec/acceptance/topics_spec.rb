@@ -59,6 +59,21 @@ resource 'Topics' do
       expect(response_data.dig(6, :id)).to eq t2.id
     end
 
+    example 'List all topics sorted by project count' do
+      projects = create_list(:project, 5)
+      @topics[0].projects_topics.create!(project: projects[0])
+      @topics[0].projects_topics.create!(project: projects[2])
+      @topics[2].projects_topics.create!(project: projects[2])
+      @topics[2].projects_topics.create!(project: projects[4])
+      @topics[2].projects_topics.create!(project: projects[3])
+
+      do_request sort: 'projects_count'
+
+      assert_status 200
+      expect(response_data.size).to eq 5
+      expect(response_data.pluck(:id)).to eq [@topics[2].id, @topics[0].id, @topics[4].id, @topics[3].id, @topics[1].id]
+    end
+
     context 'when citizen' do
       it_behaves_like 'publication filtering model', 'topic'
     end

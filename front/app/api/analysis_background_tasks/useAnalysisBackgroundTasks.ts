@@ -28,7 +28,6 @@ const useAnalysisBackgroundTasks = (analysisId: string) => {
       queryClient.invalidateQueries({ queryKey: tagsKeys.lists() });
       queryClient.invalidateQueries({ queryKey: taggingKeys.lists() });
       queryClient.invalidateQueries({ queryKey: insightsKeys.lists() });
-      queryClient.invalidateQueries({ queryKey: backgroundTasksKeys.items() });
     },
     // Refetch every 2 seconds when tasks are active
     refetchInterval: (data) => {

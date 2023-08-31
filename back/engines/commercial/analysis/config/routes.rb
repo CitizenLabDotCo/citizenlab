@@ -11,7 +11,9 @@ Analysis::Engine.routes.draw do
         end
         resources :auto_taggings, only: [:create]
         resources :background_tasks, only: %i[index show]
-        resources :insights, only: %i[index destroy]
+        resources :insights, only: %i[index destroy] do
+          post :rate, on: :member
+        end
         resources :summaries, only: %i[create show] do
           post :pre_check, on: :collection
         end

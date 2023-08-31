@@ -929,7 +929,6 @@
   "app.containers.SignIn.useFranceConnectToLoginCreateOrVerifyYourAccount": "Use FranceConnect to log in, sign up or verify your account.",
   "app.containers.SignIn.whatIsFranceConnect": "What is France Connect?",
   "app.containers.SignUp.backToSignUpOptions": "Go back to sign up options",
-  "app.containers.SignUp.completeSignUp": "Complete sign up",
   "app.containers.SignUp.emailConsent": "By signing up, you agree to receive emails from this platform. You can select which emails you wish to receive in the 'My Settings' page.",
   "app.containers.SignUp.emptyFirstNameError": "Enter your first name",
   "app.containers.SignUp.emptyLastNameError": "Enter your last name",

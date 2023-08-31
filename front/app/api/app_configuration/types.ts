@@ -51,6 +51,7 @@ export type IAppConfigurationSettingsCore = {
   maximum_moderators_number: TSeatNumber;
   additional_admins_number: TSeatNumber;
   additional_moderators_number: TSeatNumber;
+  onboarding?: boolean;
 };
 
 export type TSeatNumber = number | null | undefined;

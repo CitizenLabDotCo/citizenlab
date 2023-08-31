@@ -21,6 +21,7 @@ import { IconTooltip } from '@citizenlab/cl2-component-library';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import CustomFieldSettings from './CustomFieldSettings';
 import ToggleUserConfirmation from './ToggleUserConfirmation';
+import ToggleShowFollowPreferences from './ToggleShowFollowPreferences';
 import CustomFieldsSignupText from './CustomFieldsSignupText';
 
 // i18n
@@ -114,12 +115,29 @@ const SettingsRegistrationTab = () => {
   const userConfirmationToggleIsEnabled =
     !!latestAppConfigSettings?.user_confirmation?.enabled;
 
+  const isOnboardingEnabled = !!latestAppConfigSettings?.core.onboarding;
+
   const handleUserConfirmationToggleChange = (value: boolean) => {
     const newAttributesDiff = {
       ...attributesDiff,
       settings: {
         ...(attributesDiff.settings || {}),
         user_confirmation: { enabled: value },
+      },
+    };
+
+    setAttributesDiff(newAttributesDiff);
+  };
+
+  const handleOnboardingChange = (value: boolean) => {
+    const newAttributesDiff = {
+      ...attributesDiff,
+      settings: {
+        ...(attributesDiff.settings || {}),
+        core: {
+          ...attributesDiff.settings?.core,
+          onboarding: value,
+        },
       },
     };
 
@@ -170,6 +188,10 @@ const SettingsRegistrationTab = () => {
               customFieldsSignupHelperTextMultiloc={
                 latestAppConfigSettings.core.custom_fields_signup_helper_text
               }
+            />
+            <ToggleShowFollowPreferences
+              onChange={handleOnboardingChange}
+              isEnabled={isOnboardingEnabled}
             />
             <SubmitWrapper
               loading={isFormSubmitting}

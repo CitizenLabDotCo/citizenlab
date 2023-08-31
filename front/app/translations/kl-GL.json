@@ -1379,7 +1379,6 @@
   "app.containers.SignIn.useFranceConnectToLoginCreateOrVerifyYourAccount": "Iserniaruit, atuisumik pilersitsiniaruit imaluunniit atuisuuffiit uppernarsarniarukku FranceConnect atoruk.",
   "app.containers.SignIn.whatIsFranceConnect": "France Connect sunaana?",
   "app.containers.SignUp.backToSignUpOptions": "Go back to sign up options",
-  "app.containers.SignUp.completeSignUp": "Complete sign up",
   "app.containers.SignUp.emailConsent": "Nalunaarsuinikkut, nittartakkamiit uannga e-mailinik nassitsittarnissat akuerissavat. Atuisutut nalunaarsuinikkut e-mailit sorliit tigusassallugit kissaatiginerlugit toqqaasinnaavutit.",
   "app.containers.SignUp.emptyFirstNameError": "Atit allaguk",
   "app.containers.SignUp.emptyLastNameError": "Kinguliat allaguk",

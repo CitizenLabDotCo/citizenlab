@@ -6,12 +6,10 @@ import { useParams } from 'react-router-dom';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
-import useAddAnalysisTag from 'api/analysis_tags/useAddAnalysisTag';
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 
 import {
   Box,
-  Input,
   Button,
   colors,
   stylingConsts,
@@ -21,18 +19,17 @@ import {
   Checkbox,
   Spinner,
 } from '@citizenlab/cl2-component-library';
-import Error from 'components/UI/Error';
 import Modal from 'components/UI/Modal';
 import Tag from './Tag';
-import AutotaggingModal from './AutotaggingModal';
+import AutotaggingModal from './AutoTaggingModal';
 import TagCount from './TagCount';
-
-import { useIntl } from 'utils/cl-intl';
-import messages from '../messages';
+import AddTag from './AddTag';
 
 import { useQueryClient } from '@tanstack/react-query';
 import inputsKeys from 'api/analysis_inputs/keys';
 import TagActions from './TagActions';
+import { trackEventByName } from 'utils/analytics';
+import tracks from '../tracks';
 
 const BlickingIcon = styled(Icon)`
   animation-name: blink-animation;
@@ -68,13 +65,10 @@ const TagContainer = styled(ListItem)`
 `;
 
 const Tags = () => {
-  const [name, setName] = useState('');
   const [autotaggingModalIsOpened, setAutotaggingModalIsOpened] =
     useState(false);
 
   const filters = useAnalysisFilterParams();
-
-  const { formatMessage } = useIntl();
 
   const { analysisId } = useParams() as { analysisId: string };
 
@@ -83,7 +77,6 @@ const Tags = () => {
     analysisId,
     filters: omit(filters, 'tag_ids'),
   });
-  const { mutate: addTag, isLoading, error } = useAddAnalysisTag();
 
   if (isLoadingTags) {
     return (
@@ -98,29 +91,17 @@ const Tags = () => {
   const inputsWithoutTags = tags?.meta.inputs_without_tags;
   const filteredInputsWithoutTags = tags?.meta.filtered_inputs_without_tags;
 
-  const onChangeName = (name: string) => {
-    setName(name);
-  };
-
-  const handleTagSubmit = () => {
-    addTag(
-      {
-        analysisId,
-        name,
-      },
-      {
-        onSuccess: () => {
-          setName('');
-        },
-      }
-    );
-  };
-
-  const selectedTags = filters.tag_ids;
+  // We need `as any[] | undefined` due to known TS limitation in various places
+  // below of code using `selectedTags`
+  // https://github.com/microsoft/TypeScript/issues/44373
+  const selectedTags = filters.tag_ids as any[] | undefined;
 
   const toggleTagContainerClick = (id: string) => {
     updateSearchParams({ tag_ids: [id] });
     queryClient.invalidateQueries(inputsKeys.lists());
+    trackEventByName(tracks.tagFilterUsed.name, {
+      extra: { tagId: id },
+    });
   };
 
   const toggleТаgCheckboxClick = (id: string) => {
@@ -133,6 +114,9 @@ const Tags = () => {
       });
     }
     queryClient.invalidateQueries(inputsKeys.lists());
+    trackEventByName(tracks.tagFilterUsed.name, {
+      extra: { tagId: id },
+    });
   };
 
   return (
@@ -156,28 +140,7 @@ const Tags = () => {
             />
           )}
         </Button>
-
-        <Box display="flex" alignItems="center" mb="8px" as="form">
-          <Input
-            type="text"
-            value={name}
-            onChange={onChangeName}
-            placeholder={formatMessage(messages.addTag)}
-            size="small"
-          />
-          <Button
-            ml="4px"
-            p="6px"
-            onClick={handleTagSubmit}
-            disabled={!name || isLoading}
-            icon="plus"
-          />
-        </Box>
-        <div>
-          {error && (
-            <Error apiErrors={error.errors['name']} fieldName="tag_name" />
-          )}
-        </div>
+        <AddTag />
       </Box>
       <Box>
         <TagContainer
@@ -204,13 +167,14 @@ const Tags = () => {
             filteredCount={filteredInputsWithoutTags}
           />
         </TagContainer>
-        {!isLoading && tags?.data.length === 0 && (
+        {!isLoadingTags && tags?.data.length === 0 && (
           <Text p="6px" color="grey400">
             You do not have any tags yet.
           </Text>
         )}
         {tags?.data.map((tag) => (
           <TagContainer
+            id={`tag-${tag.id}`}
             key={tag.id}
             tabIndex={0}
             onClick={() => {

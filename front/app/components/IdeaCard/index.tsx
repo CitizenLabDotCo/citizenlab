@@ -125,7 +125,6 @@ const IdeaCard = memo<IdeaCardProps>(
     const handleClick = (e: React.MouseEvent) => {
       e.preventDefault();
       updateSearchParams({ scroll_to_card: idea.data.id });
-
       clHistory.push(`/ideas/${slug}${params}`);
     };
 
@@ -152,6 +151,7 @@ const IdeaCard = memo<IdeaCardProps>(
             />
           )
         }
+        innerHeight={showFollowButton ? '192px' : undefined}
         body={hideBody ? undefined : <Body idea={idea} />}
         interactions={
           hideInteractions ? null : (
@@ -176,7 +176,6 @@ const IdeaCard = memo<IdeaCardProps>(
                   followableId={idea.data.id}
                   followersCount={idea.data.attributes.followers_count}
                   followerId={idea.data.relationships.user_follower?.data?.id}
-                  py="4px"
                   w="auto"
                 />
               </Box>

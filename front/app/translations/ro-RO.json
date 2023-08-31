@@ -1121,7 +1121,6 @@
   "app.containers.SignIn.useFranceConnectToLoginCreateOrVerifyYourAccount": "Folosiți FranceConnect pentru a vă conecta, a vă înscrie sau a vă verifica contul.",
   "app.containers.SignIn.whatIsFranceConnect": "Ce este France Connect?",
   "app.containers.SignUp.backToSignUpOptions": "Reveniți la opțiunile de conectare",
-  "app.containers.SignUp.completeSignUp": "Completați înscrierea",
   "app.containers.SignUp.emailConsent": "Prin înregistrare, sunteți de acord să primiți e-mailuri de la această platformă. Puteți selecta ce e-mailuri doriți să primiți din setările dvs. de utilizator.",
   "app.containers.SignUp.emptyFirstNameError": "Introduceți prenumele dvs.",
   "app.containers.SignUp.emptyLastNameError": "Introduceți numele dvs. de familie",

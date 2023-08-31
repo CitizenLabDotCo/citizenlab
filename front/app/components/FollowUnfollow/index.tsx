@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   Button,
-  BoxPaddingProps,
   ButtonStyles,
   BoxWidthProps,
 } from '@citizenlab/cl2-component-library';
@@ -20,7 +19,7 @@ import tracks from './tracks';
 import { trackEventByName } from 'utils/analytics';
 import { useLocation } from 'react-router-dom';
 
-interface Props extends BoxPaddingProps, BoxWidthProps {
+interface Props extends BoxWidthProps {
   followableType: FollowableType;
   followableId: string; // id of the project, folder, idea, proposal or anything to be followed
   followersCount?: number;
@@ -35,7 +34,7 @@ const FollowUnfollow = ({
   followersCount,
   followerId,
   followableSlug,
-  buttonStyle = 'primary-outlined',
+  buttonStyle = 'primary',
   ...otherButtonProps
 }: Props) => {
   const isFollowingEnabled = useFeatureFlag({
@@ -132,6 +131,9 @@ const FollowUnfollow = ({
       buttonStyle={buttonStyle}
       icon="notification"
       onClick={handleButtonClick}
+      iconSize="16px"
+      py="6px"
+      px="12px"
       processing={isLoading}
       {...otherButtonProps}
       data-cy={isFollowing ? 'e2e-unfollow-button' : 'e2e-follow-button'}

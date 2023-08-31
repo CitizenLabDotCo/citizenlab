@@ -1,77 +1,9 @@
-import React, { useRef, KeyboardEvent } from 'react';
-
-// components
-import { ScreenReaderOnly } from 'utils/a11y';
-
-// styling
-import styled from 'styled-components';
-import { fontSizes, isRtl, colors, media } from 'utils/styleUtils';
-import { rgba } from 'polished';
-
-// i18n
+import React from 'react';
+import FilterTabs, { TabData } from 'components/UI/FilterTabs';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
-
-// typings
-
 import { PublicationTab } from '../..';
-import { MessageDescriptor } from 'react-intl';
 import { IStatusCountsAll } from 'api/admin_publications_status_counts/types';
-
-const TabsContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-
-  ${media.phone`
-    width: 100%;
-    justify-content: space-between;
-  `}
-
-  ${isRtl`
-    flex-direction: row-reverse;
-  `}
-`;
-
-const Tab = styled.button<{ active: boolean }>`
-  box-sizing: content-box;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  font-size: ${fontSizes.l}px;
-  padding: 21px 15px;
-
-  border-bottom: ${({ active, theme }) =>
-    active
-      ? `3px solid ${theme.colors.tenantPrimary}`
-      : '3px solid transparent'};
-
-  color: ${({ active, theme }) =>
-    active ? theme.colors.tenantPrimary : colors.textSecondary};
-
-  ${({ active, theme }) =>
-    active
-      ? ''
-      : `
-      &:hover {
-        border-bottom: 3px solid ${rgba(theme.colors.tenantPrimary, 0.3)};
-      }
-      cursor: pointer;
-    `}
-
-  ${media.phone`
-    font-size: ${fontSizes.base}px;
-    padding: 14px 9px 14px;
-  `}
-`;
-
-const StatusCount = styled.span`
-  margin-left: 5px;
-
-  ${media.phone`
-    margin-left: 3px;
-  `}
-`;
 
 interface Props {
   currentTab: PublicationTab;
@@ -84,92 +16,52 @@ export const getTabId = (tab: PublicationTab) => `project-cards-tab-${tab}`;
 export const getTabPanelId = (tab: PublicationTab) =>
   `project-cards-tab-panel-${tab}`;
 
-const MESSAGES_MAP: Record<PublicationTab, MessageDescriptor> = {
-  published: messages.published,
-  archived: messages.archived,
-  draft: messages.draft,
-  all: messages.all,
-};
-
-const Tabs = ({
+const PublicationFilterTabs = ({
   currentTab,
   statusCounts,
   availableTabs,
   onChangeTab,
 }: Props) => {
-  const tabsRef = useRef({});
-
-  const handleClickTab = (tab: PublicationTab) => () => {
-    if (currentTab === tab) return;
-    onChangeTab(tab);
+  const tabData: TabData<true> = {
+    published: {
+      label: messages.published,
+      count: statusCounts.published || 0,
+    },
+    archived: {
+      label: messages.archived,
+      count: statusCounts.archived || 0,
+    },
+    draft: {
+      label: messages.draft,
+      count: statusCounts.draft || 0,
+    },
+    all: {
+      label: messages.all,
+      count: statusCounts.all || 0,
+    },
   };
 
-  const handleKeyDownTab = ({ key }: KeyboardEvent<HTMLButtonElement>) => {
-    if (key !== 'ArrowLeft' && key !== 'ArrowRight') return;
-
-    const selectedTab = getSelectedTab(currentTab, availableTabs, key);
-    onChangeTab(selectedTab);
-    tabsRef.current[selectedTab].focus();
-  };
+  const getScreenReaderTextForTab = (_tab: string, count: number) => (
+    <FormattedMessage
+      {...messages.a11y_projectFilterTabInfo}
+      values={{
+        count,
+      }}
+    />
+  );
 
   return (
-    <TabsContainer role="tablist">
-      {/*
-        These tabs need the role, aria-selected etc to work well with
-        screen readers.
-        See https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/tab_role
-      */}
-      {availableTabs.map((tab) => (
-        <Tab
-          id={getTabId(tab)}
-          data-testid="tab"
-          role="tab"
-          aria-selected={currentTab === tab}
-          tabIndex={currentTab === tab ? 0 : -1}
-          aria-controls={getTabPanelId(tab)}
-          active={currentTab === tab}
-          key={tab}
-          onClick={handleClickTab(tab)}
-          onKeyDown={handleKeyDownTab}
-          ref={(el) => el && (tabsRef.current[tab] = el)}
-        >
-          <div aria-hidden>
-            <FormattedMessage {...MESSAGES_MAP[tab]} />
-            <StatusCount>({statusCounts[tab] || 0})</StatusCount>
-          </div>
-
-          <ScreenReaderOnly>
-            <FormattedMessage
-              {...messages.a11y_projectFilterTabInfo}
-              values={{
-                tab: <FormattedMessage {...MESSAGES_MAP[tab]} />,
-                count: statusCounts[tab] || 0,
-              }}
-            />
-          </ScreenReaderOnly>
-        </Tab>
-      ))}
-    </TabsContainer>
+    <FilterTabs
+      currentTab={currentTab}
+      availableTabs={availableTabs}
+      onChangeTab={onChangeTab}
+      tabData={tabData}
+      getTabId={getTabId}
+      getTabPanelId={getTabPanelId}
+      getScreenReaderTextForTab={getScreenReaderTextForTab}
+      showCount
+    />
   );
 };
 
-export default Tabs;
-
-function getSelectedTab(
-  currentTab: PublicationTab,
-  availableTabs: PublicationTab[],
-  key: 'ArrowLeft' | 'ArrowRight'
-) {
-  const currentTabIndex = availableTabs.indexOf(currentTab);
-
-  const selectedTabIndex =
-    key === 'ArrowLeft'
-      ? currentTabIndex === 0
-        ? availableTabs.length - 1
-        : currentTabIndex - 1
-      : currentTabIndex === availableTabs.length - 1
-      ? 0
-      : currentTabIndex + 1;
-
-  return availableTabs[selectedTabIndex];
-}
+export default PublicationFilterTabs;

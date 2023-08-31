@@ -578,7 +578,7 @@ const ProjectFolderCard = memo<Props>(
             </ContentFooter>
           </Box>
           {showFollowButton && (
-            <Box display="flex" justifyContent="flex-end">
+            <Box display="flex" justifyContent="flex-end" mt="24px">
               <FollowUnfollow
                 followableType="projects"
                 followableId={projectFolder.data.id}
@@ -586,7 +586,7 @@ const ProjectFolderCard = memo<Props>(
                 followerId={
                   projectFolder.data.relationships.user_follower?.data?.id
                 }
-                py="2px"
+                w="100%"
               />
             </Box>
           )}

@@ -8,14 +8,14 @@ nl-BE:
       "comment_on_your_comment": Een antwoord op mijn reactie
       "comment_on_your_idea": Een reactie op mijn idee
       "comment_on_your_initiative": Een reactie op mijn voorstel
-      "cosponsor_of_your_initiative": Een gebruiker accepteert mijn uitnodiging om mee te werken aan mijn voorstel
+      "cosponsor_of_your_initiative": Een gebruiker accepteert mijn uitnodiging om mijn voorstel te steunen
       "first_idea_published": Posten van mijn eerste idee
       "idea_marked_as_spam": Idee spammelding
       "idea_published": Posten van mijn idee
       "initiative_assigned_to_you": Toewijzing van een voorstel aan mij
       "initiative_marked_as_spam": Voorstel spammelding
       "initiative_published": Posten van mijn voorstel
-      "invitation_to_cosponsor_initiative": Uitnodiging om een voorstel te sponsoren
+      "invitation_to_cosponsor_initiative": Uitnodiging om een voorstel te steunen
       "initiative_resubmitted_for_review": Voorstel opnieuw ingediend voor beoordeling
       "invite_received": Uitnodiging
       "invite_reminder": Herinnering uitnodiging
@@ -143,11 +143,10 @@ nl-BE:
       preheader: '%{authorName} reageerde op jouw voorstel voor %{organizationName}'
     cosponsor_of_your_initiative:
       cta_reply_to: 'Bekijk je voorstel'
-      event_description_initiative: 'Gefeliciteerd! %{cosponsorName} heeft je uitnodiging geaccepteerd om je voorstel te sponsoren.'
-      event_description_cosponsoring: 'Medesponsor zijn van een voorstel betekent dat <strong>jouw naam wordt weergegeven</strong> met de namen van andere medesponsors van het voorstel.'
-      main_header: '%{cosponsorName} heeft je uitnodiging geaccepteerd om je voorstel te ondersteunen'
-      subject: '%{cosponsorName} heeft je uitnodiging geaccepteerd om je voorstel te ondersteunen'
-      preheader_initiative: '%{cosponsorName} heeft je uitnodiging geaccepteerd om je voorstel te ondersteunen'
+      event_description_initiative: 'Gefeliciteerd! %{cosponsorName} heeft je uitnodiging om je voorstel te steunen geaccepteerd.'
+      main_header: '%{cosponsorName} heeft je uitnodiging om je voorstel te steunen geaccepteerd'
+      subject: '%{cosponsorName} heeft je uitnodiging om je voorstel te steunen geaccepteerd'
+      preheader_initiative: '%{cosponsorName} heeft je uitnodiging om je voorstel te steunen geaccepteerd'
     assignee_digest:
       subject: 'Aantal ideeën die je feedback nodig hebben: %{numberIdeas}'
       preheader: 'Overzicht van %{organizationName}'
@@ -189,13 +188,13 @@ nl-BE:
       subject: 'Je hebt een toewijzing op het platform van %{organizationName}'
       preheader_initiative: 'Je kreeg het voorstel van %{authorName} toegewezen'
     invitation_to_cosponsor_initiative:
-      cta_reply_to: 'Medesponsor van dit voorstel'
-      event_description_initiative: '%{authorName} heeft een nieuw voorstel gemaakt en wil graag dat jij het mede steunt.'
-      event_description_cosponsoring: 'Medesponsor zijn van een voorstel betekent dat <strong>jouw naam wordt weergegeven</strong> met de namen van andere medesponsors van het voorstel.'
+      cta_reply_to: 'Steun dit voorstel'
+      event_description_initiative: '%{authorName} heeft een nieuw voorstel gemaakt en wil graag dat jij het steunt.'
+      event_description_cosponsoring: 'Ondersteuner zijn van een voorstel betekent dat <strong>jouw naam wordt weergegeven</strong> met de namen van andere ondersteuners van het voorstel.'
       event_description_action: 'Klik hieronder om het voorstel te lezen.'
-      main_header: 'Je bent uitgenodigd om een voorstel te sponsoren'
-      subject: 'Je bent uitgenodigd om een voorstel te sponsoren'
-      preheader_initiative: 'Je bent uitgenodigd om het voorstel van %{authorName}te ondersteunen.'
+      main_header: 'Je bent uitgenodigd om een voorstel te steunen'
+      subject: 'Je bent uitgenodigd om een voorstel te steunen'
+      preheader_initiative: 'Je bent uitgenodigd om het voorstel van %{authorName} te steunen'
     initiative_resubmitted_for_review:
       by_author: 'door %{authorName}'
       cta_reply_to: 'Geef %{authorName} feedback'
@@ -658,7 +657,7 @@ nl-BE:
         managers: 'Beheerders'
         admins_assigned_to_a_proposal: 'Aan een voorstel toegewezen platformbeheerders'
         admins_and_managers_assigned_to_the_input: 'Aan de bijdrage toegewezen beheerders'
-        user_who_is_invited_to_cosponsor_a_proposal: 'Gebruiker die is uitgenodigd om een voorstel te sponsoren'
+        user_who_is_invited_to_cosponsor_a_proposal: 'Gebruiker die is uitgenodigd om een voorstel te steunen'
         user_who_is_receiving_admin_rights: 'Gebruiker die platformbeheerdersrechten krijgt'
         user_who_is_receiving_folder_moderator_rights: 'Gebruiker die mapbeheerdersrechten krijgt'
         user_who_is_receiving_project_moderator_rights: 'Gebruiker die projectbeheerdersrechten krijgt'
@@ -702,8 +701,8 @@ nl-BE:
         internal_comment_is_posted_on_initiative_user_has_commented_internally_on: 'Interne reactie is geplaatst op voorstel waar gebruiker interne reactie op heeft gegeven'
         internal_comment_is_posted_on_unassigned_initiative: 'Interne reactie is geplaatst op niet-toegewezen voorstel'
         internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Interne reactie is geplaatst op niet-toegewezen bijdrage in onbeheerd project'
-        user_accepts_invitation_to_cosponsor_a_proposal: 'Gebruiker accepteert uitnodiging om een voorstel te sponsoren'
-        user_is_invited_to_cosponsor_a_proposal: 'Gebruiker wordt uitgenodigd om een voorstel te sponsoren'
+        user_accepts_invitation_to_cosponsor_a_proposal: 'Gebruiker accepteert uitnodiging om een voorstel te steunen'
+        user_is_invited_to_cosponsor_a_proposal: 'Gebruiker is uitgenodigd om een voorstel te steunen'
         user_is_mentioned_in_internal_comment: 'Gebruiker wordt genoemd in interne reactie'
         new_input_is_published: 'Nieuwe bijdrage is gepubliceerd'
         new_proposal_is_posted: 'Nieuw voorstel is geplaatst'

@@ -2,13 +2,13 @@ import PageLoading from 'components/UI/PageLoading';
 import createAdminRoutes from 'containers/Admin/routes';
 import moduleConfiguration from 'modules';
 import React, { lazy } from 'react';
+import userProfileRoutes from 'containers/UsersShowPage/routes';
 
 const HomePage = lazy(() => import('containers/HomePage'));
 const SiteMap = lazy(() => import('containers/SiteMap'));
 const UsersEditPage = lazy(() => import('containers/UsersEditPage'));
 const PasswordChange = lazy(() => import('containers/PasswordChange'));
 const EmailChange = lazy(() => import('containers/EmailChange'));
-const UsersShowPage = lazy(() => import('containers/UsersShowPage'));
 const IdeasEditPage = lazy(() => import('containers/IdeasEditPage'));
 const IdeasIndexPage = lazy(() => import('containers/IdeasIndexPage'));
 const IdeasShowPage = lazy(() => import('containers/IdeasShowPage'));
@@ -136,14 +136,7 @@ export default function createRoutes() {
             </PageLoading>
           ),
         },
-        {
-          path: 'profile/:userSlug',
-          element: (
-            <PageLoading>
-              <UsersShowPage />
-            </PageLoading>
-          ),
-        },
+        userProfileRoutes(),
         {
           path: 'ideas/edit/:ideaId',
           element: (

@@ -26,7 +26,7 @@ import {
 } from '../../typings';
 import { Step } from './typings';
 import { Locale } from 'typings';
-import { askCustomFields, requiredCustomFields } from './utils';
+import { askCustomFields, requiredCustomFields, showOnboarding } from './utils';
 
 export const lightFlow = (
   getAuthenticationData: () => AuthenticationData,
@@ -174,6 +174,11 @@ export const lightFlow = (
           return;
         }
 
+        if (showOnboarding(requirements.onboarding)) {
+          setCurrentStep('sign-up:onboarding');
+          return;
+        }
+
         if (requirements.special.group_membership === 'require') {
           setCurrentStep('closed');
           return;
@@ -202,6 +207,11 @@ export const lightFlow = (
 
         if (requiredCustomFields(requirements.custom_fields)) {
           setCurrentStep('missing-data:custom-fields');
+          return;
+        }
+
+        if (showOnboarding(requirements.onboarding)) {
+          setCurrentStep('missing-data:onboarding');
           return;
         }
 

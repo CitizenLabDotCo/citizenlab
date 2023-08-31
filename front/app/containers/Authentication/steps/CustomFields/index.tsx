@@ -104,7 +104,7 @@ const CustomFields = ({
           id="e2e-signup-custom-fields-submit-btn"
           processing={loading}
           disabled={loading}
-          text={formatMessage(messages.completeSignUp)}
+          text={formatMessage(messages.continue)}
           onClick={handleOnSubmitButtonClick}
         />
 

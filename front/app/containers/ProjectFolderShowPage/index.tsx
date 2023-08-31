@@ -162,7 +162,7 @@ const ProjectFolderShowPage = memo<{
                         icon="edit"
                         linkTo={`/admin/projects/folders/${projectFolder.id}/settings`}
                         buttonStyle="secondary"
-                        padding="5px 8px"
+                        padding="6px 12px"
                       >
                         <FormattedMessage {...messages.editFolder} />
                       </EditButton>
@@ -177,7 +177,6 @@ const ProjectFolderShowPage = memo<{
                         projectFolder.relationships.user_follower?.data?.id
                       }
                       followableSlug={projectFolder.attributes.slug}
-                      padding="4px 8px"
                       w="auto"
                     />
                   </Box>

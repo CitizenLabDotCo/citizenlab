@@ -19,6 +19,7 @@ import {
   requiredCustomFields,
   requiredBuiltInFields,
   askCustomFields,
+  showOnboarding,
 } from './utils';
 
 // typings
@@ -88,6 +89,11 @@ export const sharedSteps = (
             return;
           }
 
+          if (showOnboarding(requirements.onboarding)) {
+            setCurrentStep('sign-up:onboarding');
+            return;
+          }
+
           setCurrentStep('success');
         }
 
@@ -99,6 +105,11 @@ export const sharedSteps = (
 
           if (requiredCustomFields(requirements.custom_fields)) {
             setCurrentStep('missing-data:custom-fields');
+            return;
+          }
+
+          if (showOnboarding(requirements.onboarding)) {
+            setCurrentStep('missing-data:onboarding');
             return;
           }
         }
@@ -148,6 +159,11 @@ export const sharedSteps = (
 
           if (requiredCustomFields(requirements.custom_fields)) {
             setCurrentStep('missing-data:custom-fields');
+            return;
+          }
+
+          if (showOnboarding(requirements.onboarding)) {
+            setCurrentStep('missing-data:onboarding');
             return;
           }
 

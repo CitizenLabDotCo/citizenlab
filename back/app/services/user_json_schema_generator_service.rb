@@ -14,7 +14,7 @@ class UserJsonSchemaGeneratorService < JsonSchemaGeneratorService
     return super unless field.code == 'domicile'
 
     super.tap do |schema|
-      areas = Area.order(created_at: :desc).map do |area|
+      areas = Area.order(:ordering).map do |area|
         {
           const: area.id,
           title: multiloc_service.t(area.title_multiloc)
