@@ -117,7 +117,6 @@ const InputListItem = memo(({ input, onSelect, selected }: Props) => {
                     textOverflow="ellipsis"
                     overflow="hidden"
                     whiteSpace="nowrap"
-                    minWidth="0"
                   >
                     <InputShortFieldValue
                       customFieldId={customField.id}
