@@ -1,5 +1,10 @@
-import React, { useCallback, useEffect, useMemo } from 'react';
-import { Box, Text, stylingConsts } from '@citizenlab/cl2-component-library';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import {
+  Box,
+  Text,
+  colors,
+  stylingConsts,
+} from '@citizenlab/cl2-component-library';
 import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
 import { useParams } from 'react-router-dom';
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
@@ -9,8 +14,10 @@ import { useVirtualizer } from '@tanstack/react-virtual';
 import InputListItem from './InputListItem';
 import translations from './translations';
 import { useIntl } from 'utils/cl-intl';
+import Demographics from '../Demographics';
 
 const InputsList = () => {
+  const [isDemographicsOpen, setIsDemographicsOpen] = useState(false);
   const { formatMessage } = useIntl();
   const { selectedInputId, setSelectedInputId } = useSelectedInputContext();
   const { analysisId } = useParams() as { analysisId: string };
@@ -114,58 +121,73 @@ const InputsList = () => {
   const emptyList = data?.pages[0].meta.filtered_count === 0;
   if (!inputs) return null;
 
-  return emptyList ? (
-    <Box display="flex" justifyContent="center">
-      <Text px="24px" color="grey600">
-        {formatMessage(translations.noInputs)}
-      </Text>
-    </Box>
-  ) : (
-    <Box
-      ref={parentRef}
-      overflow="auto"
-      h={`calc(100vh - ${stylingConsts.mobileMenuHeight + 200}px)`}
-      p="12px"
-    >
-      <div
-        style={{
-          height: `${getTotalSize()}px`,
-          width: '100%',
-          position: 'relative',
-        }}
-      >
-        {getVirtualItems().map((virtualRow) => {
-          const isLoaderRow = virtualRow.index > inputs.length - 1;
-          const post = inputs[virtualRow.index];
+  const democraphicsOffset = isDemographicsOpen ? 210 : 60;
 
-          return (
-            <div
-              key={virtualRow.index}
-              style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                width: '100%',
-                transform: `translateY(${virtualRow.start}px)`,
-              }}
-              data-index={virtualRow.index}
-              ref={measureElement}
-            >
-              {isLoaderRow ? (
-                <div />
-              ) : (
-                <InputListItem
+  return (
+    <>
+      <Box bg={colors.white} mb="8px">
+        <Demographics
+          isDemographicsOpen={isDemographicsOpen}
+          setIsDemographicsOpen={setIsDemographicsOpen}
+        />
+      </Box>
+      {emptyList ? (
+        <Box display="flex" justifyContent="center">
+          <Text px="24px" color="grey600">
+            {formatMessage(translations.noInputs)}
+          </Text>
+        </Box>
+      ) : (
+        <Box
+          bg={colors.white}
+          ref={parentRef}
+          overflow="auto"
+          h={`calc(100vh - ${
+            stylingConsts.mobileMenuHeight + democraphicsOffset
+          }px)`}
+          p="12px"
+        >
+          <div
+            style={{
+              height: `${getTotalSize()}px`,
+              width: '100%',
+              position: 'relative',
+            }}
+          >
+            {getVirtualItems().map((virtualRow) => {
+              const isLoaderRow = virtualRow.index > inputs.length - 1;
+              const post = inputs[virtualRow.index];
+
+              return (
+                <div
                   key={virtualRow.index}
-                  input={post}
-                  onSelect={handleOnSelectInput}
-                  selected={post.id === selectedInputId}
-                />
-              )}
-            </div>
-          );
-        })}
-      </div>
-    </Box>
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    transform: `translateY(${virtualRow.start}px)`,
+                  }}
+                  data-index={virtualRow.index}
+                  ref={measureElement}
+                >
+                  {isLoaderRow ? (
+                    <div />
+                  ) : (
+                    <InputListItem
+                      key={virtualRow.index}
+                      input={post}
+                      onSelect={handleOnSelectInput}
+                      selected={post.id === selectedInputId}
+                    />
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </Box>
+      )}
+    </>
   );
 };
 
