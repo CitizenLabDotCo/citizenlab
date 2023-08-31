@@ -224,6 +224,7 @@ ca:
       optional: 'opcional'
       choose_as_many: 'Trieu-ne tantes com vulgueu'
       this_answer: 'Aquesta resposta només es compartirà amb els moderadors, i no amb el públic.'
+      page: 'Pàgina'
   project_copy:
     title_suffix: 'Còpia'
   confirmations_mailer:
