@@ -224,6 +224,7 @@ hr:
       optional: 'neobavezan'
       choose_as_many: 'Odaberite koliko god želite'
       this_answer: 'Ovaj odgovor će biti podijeljen samo moderatorima, a ne javnosti.'
+      page: 'Stranica'
   project_copy:
     title_suffix: 'Kopija'
   confirmations_mailer:
