@@ -55,13 +55,20 @@ const TopBar = memo<Props>(
           {title}
         </Title>
         <ProjectFilterDropdownPositioner>
-          <Box display="flex" flexWrap="wrap" gap="8px" mt="8px" ml="auto">
+          <Box
+            display="flex"
+            flexWrap="wrap"
+            flexDirection={isMobileOrSmaller ? 'row-reverse' : 'row'}
+            gap="8px"
+            mt="8px"
+            ml="auto"
+          >
             {showDateFilter && (
               <DateFilterDropdown
                 onChange={setDateFilter}
                 textColor={theme.colors.tenantText}
                 listTop="44px"
-                mobileLeft={showProjectFilter ? '0px' : mobileLeft}
+                mobileLeft={showProjectFilter ? '-10px' : mobileLeft}
               />
             )}
             {showProjectFilter && (
