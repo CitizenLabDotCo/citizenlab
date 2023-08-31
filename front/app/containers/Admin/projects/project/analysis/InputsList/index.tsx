@@ -13,7 +13,7 @@ const InputsList = () => {
   const { analysisId } = useParams() as { analysisId: string };
   const filters = useAnalysisFilterParams();
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isFetching } =
     useInfiniteAnalysisInputs({
       analysisId,
       queryParams: filters,
@@ -27,13 +27,18 @@ const InputsList = () => {
   const inputsLength = inputs?.length || 0;
   const parentRef = React.useRef<HTMLDivElement | null>(null);
 
-  const { getVirtualItems, getTotalSize, measureElement, scrollToIndex } =
-    useVirtualizer({
-      count: hasNextPage ? inputsLength + 1 : inputsLength,
-      getScrollElement: () => parentRef.current,
-      estimateSize: () => 250,
-      overscan: 5,
-    });
+  const {
+    getVirtualItems,
+    getTotalSize,
+    measureElement,
+    scrollToIndex,
+    measure,
+  } = useVirtualizer({
+    count: hasNextPage ? inputsLength + 1 : inputsLength,
+    getScrollElement: () => parentRef.current,
+    estimateSize: () => 250,
+    overscan: 5,
+  });
 
   const virtualItems = getVirtualItems();
 
@@ -60,10 +65,10 @@ const InputsList = () => {
   ]);
 
   useEffect(() => {
-    if (parentRef.current) {
+    if (!isFetching) {
       scrollToIndex(0);
     }
-  }, [filters, scrollToIndex]);
+  }, [filters, scrollToIndex, measure, isFetching]);
 
   // Keyboard navigations
 
