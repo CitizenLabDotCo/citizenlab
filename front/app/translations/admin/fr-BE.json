@@ -808,6 +808,7 @@
   "app.containers.Admin.projects.project.ideas.consentModalText4LinkText": "ici",
   "app.containers.Admin.projects.project.ideas.consentModalTitle": "Avant de poursuivre",
   "app.containers.Admin.projects.project.survey.analysisSelectQuestionsForAnalysis": "Sélectionnez les questions connexes à analyser",
+  "app.containers.Admin.projects.project.survey.analysisSelectQuestionsSubtitle": "Souhaitez-vous inclure d'autres questions connexes dans votre analyse de {question}?",
   "app.containers.Admin.projects.project.survey.analysisSubtitleText": "Déverrouillez les résumés automatisés et posez des questions sur votre projet. Accédez à vos questions ci-dessous pour lancer l'analyse.",
   "app.containers.Admin.projects.project.survey.analysisTitle": "Analyse assistée par IA",
   "app.containers.Admin.projects.project.survey.cancel": "Annuler",
