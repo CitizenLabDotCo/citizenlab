@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import { isEmpty } from 'lodash-es';
 
 import { IInputsData } from 'api/analysis_inputs/types';
-import useUserById from 'api/users/useUserById';
+import useAnalysisUserById from 'api/analysis_users/useAnalysisUserById';
 
 import Taggings from '../Taggings';
 import { Box, Icon, colors, Text } from '@citizenlab/cl2-component-library';
@@ -27,7 +27,9 @@ interface Props {
 const InputListItem = memo(({ input, onSelect, selected }: Props) => {
   const { analysisId } = useParams() as { analysisId: string };
   const { data: analysis } = useAnalysis(analysisId);
-  const { data: author } = useUserById(input.relationships.author.data?.id);
+  const { data: author } = useAnalysisUserById(
+    input.relationships.author.data?.id || null
+  );
   const { formatDate } = useIntl();
 
   if (!analysis || !input) return null;

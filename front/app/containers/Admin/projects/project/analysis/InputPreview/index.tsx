@@ -21,7 +21,7 @@ const InputListItem = () => {
     selectedInputId ?? undefined
   );
   const { data: analysis } = useAnalysis(analysisId);
-  const { data: author } = useUserById(
+  const { data: author, isRefetching: isRefetchingAuthor } = useUserById(
     input?.data.relationships.author.data?.id
   );
 
@@ -38,7 +38,7 @@ const InputListItem = () => {
           phaseId={analysis.data.relationships.phase?.data?.id}
         />
       ))}
-      {author && (
+      {author && !isRefetchingAuthor && (
         <Box mt="20px" display="flex" alignItems="center">
           <Avatar size={40} userId={author.data.id} />
           <Text m="0px">{getFullName(author?.data)}</Text>
