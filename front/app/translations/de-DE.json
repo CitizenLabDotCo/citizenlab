@@ -117,7 +117,7 @@
   "app.components.ErrorToast.votesExceededError": "Sie haben nicht mehr genug Stimmen",
   "app.components.EventAttendanceButton.attend": "Teilnehmen",
   "app.components.EventAttendanceButton.attending": "Ich nehme teil",
-  "app.components.EventAttendanceButton.forwardToFriend": "Weiterleiten an einen Freund",
+  "app.components.EventAttendanceButton.forwardToFriend": "Weiterleiten an Freund*innen",
   "app.components.EventAttendanceButton.seeYouThere": "Wir sehen uns dort!",
   "app.components.EventAttendanceButton.seeYouThereName": "Wir sehen uns dort, {userFirstName}!",
   "app.components.EventCard.a11y_lessContentVisible": "Es wurden weniger Veranstaltungsinformationen sichtbar.",
