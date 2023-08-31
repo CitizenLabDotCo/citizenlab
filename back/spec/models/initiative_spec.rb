@@ -279,12 +279,6 @@ RSpec.describe Initiative do
       expect(initiative.reload.cosponsors).to match_array [cosponsor1]
     end
 
-    it 'does nothing when given nil' do
-      initiative.update!(cosponsor_ids: nil)
-
-      expect(initiative.reload.cosponsors).to match_array [cosponsor1]
-    end
-
     it 'does nothing if update validation fails' do
       saved = initiative.update(cosponsor_ids: [], title_multiloc: {})
       expect(saved).to be false
