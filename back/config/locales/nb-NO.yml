@@ -224,6 +224,7 @@
       optional: 'valgfri'
       choose_as_many: 'Velg så mange du vil'
       this_answer: 'Dette svaret vil kun bli delt med moderatorer, og ikke til offentligheten.'
+      page: 'Side'
   project_copy:
     title_suffix: 'Kopi'
   confirmations_mailer:
