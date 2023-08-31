@@ -224,6 +224,7 @@ lb:
       optional: 'fakultativ'
       choose_as_many: 'Wielt esou vill wéi Dir wëllt'
       this_answer: 'Dës Äntwert gëtt nëmme mat Moderatoren gedeelt, an net un de Public.'
+      page: 'Säit'
   project_copy:
     title_suffix: 'Kopie'
   confirmations_mailer:
