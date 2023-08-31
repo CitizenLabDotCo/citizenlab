@@ -15,6 +15,12 @@ module IdClaveUnica
       if (ln = auth.dig('extra', 'raw_info', 'name', 'apellidos'))
         info[:last_name] = ln.join(' ')
       end
+
+      rut = auth['uid']
+      if IdIdCardLookup::IdCard.find_by_card_id(rut)
+        info[:custom_field_values] = { rut_verified: true }
+      end
+
       info
     end
 
@@ -53,7 +59,7 @@ module IdClaveUnica
     end
 
     def updateable_user_attrs
-      %i[first_name last_name]
+      %i[first_name last_name custom_field_values]
     end
 
     def logout_url(_user)
