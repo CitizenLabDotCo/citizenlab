@@ -26,7 +26,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 // Components
-import SubmitButtonBar from './SubmitButtonBar';
+const SubmitButtonBar = lazy(() => import('./SubmitButtonBar'));
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
 const ProfileVisibilityFormSection = lazy(
