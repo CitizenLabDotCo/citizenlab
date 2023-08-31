@@ -13,7 +13,7 @@ module BulkImportIdeas
 
       document = process_upload
 
-      binding.pry
+      # binding.pry
 
       # Gets an array of all fields on all pages
       fields = []
@@ -48,12 +48,6 @@ module BulkImportIdeas
       end
       docs << doc
       docs
-    end
-
-    def parse_text(text)
-      lines = text.split('/n')
-
-      
     end
 
     private
