@@ -63,7 +63,7 @@ const InputsList = () => {
     if (parentRef.current) {
       scrollToIndex(0);
     }
-  }, [filters.tag_ids, scrollToIndex]);
+  }, [filters, scrollToIndex]);
 
   // Keyboard navigations
 
