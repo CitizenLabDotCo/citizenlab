@@ -48,7 +48,7 @@ module BulkImportIdeas
       lines.each do |line|
         if is_new_page? line then
           if is_new_document? line then
-            unless form.nil? then
+            unless @form.nil? then
               @documents << @form
             end
 
