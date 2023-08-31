@@ -13,6 +13,14 @@ export type AutoTaggingMethod =
   | 'label_classification'
   | 'few_shot_classification';
 
+export type TagType =
+  | 'custom'
+  | 'language'
+  | 'platform_topic'
+  | 'nlp_topic'
+  | 'sentiment'
+  | 'controversial';
+
 type SharedAttributes = {
   type: string;
   progress: number | null;
