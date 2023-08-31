@@ -53,28 +53,31 @@ module BulkImportIdeas
       ideas = if file_type == 'pdf'
         parse_pdf_ideas(file)
       else
-        parse_xlsx_ideas(file)
+        parse_xlsx_ideas(file).map { |idea| { pages: [1], fields: idea } }
       end
       ideas_to_idea_rows(ideas)
     end
 
     def ideas_to_idea_rows(ideas_array)
       ideas_array.map do |idea|
+        page_range = idea[:pages]
+        fields = idea[:fields]
+
         idea_row = {}
 
         # Fields not in the idea/survey form
         idea_row[:project_id]   = @project.id
         idea_row[:phase_id]     = @phase.id if @phase
-        idea_row[:pages]        = [1] # TODO: hardcoded, until we have the pages value - doc.pluck(:page).uniq
-        idea_row[:published_at] = idea['Date Published (dd-mm-yyyy)']
-        idea_row[:image_url]    = idea['Image URL']
-        idea_row[:latitude]     = idea['Latitude']
-        idea_row[:longitude]    = idea['Longitude']
-        idea_row[:topic_titles] = (idea['Tags'] || '').split(';').map(&:strip).select(&:present?)
+        idea_row[:pages]        = page_range
+        idea_row[:published_at] = fields['Date Published (dd-mm-yyyy)']
+        idea_row[:image_url]    = fields['Image URL']
+        idea_row[:latitude]     = fields['Latitude']
+        idea_row[:longitude]    = fields['Longitude']
+        idea_row[:topic_titles] = (fields['Tags'] || '').split(';').map(&:strip).select(&:present?)
 
-        idea = clean_field_names(idea)
-        idea_row = process_user_details(idea, idea_row)
-        idea_row = process_custom_form_fields(idea, idea_row)
+        fields = clean_field_names(fields)
+        idea_row = process_user_details(fields, idea_row)
+        idea_row = process_custom_form_fields(fields, idea_row)
         idea_row
       end
     end
