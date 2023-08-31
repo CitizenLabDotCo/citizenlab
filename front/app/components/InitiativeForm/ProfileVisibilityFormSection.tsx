@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { FormSection } from 'components/UI/FormComponents';
+import { FormLabel, FormSection } from 'components/UI/FormComponents';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useInitiativeCosponsorsRequired from 'hooks/useInitiativeCosponsorsRequired';
-import { Text, Box, IconTooltip } from '@citizenlab/cl2-component-library';
+import { Text, IconTooltip } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -41,35 +41,39 @@ const ProfileVisibilityFormSection = ({ triggerModal }: Props) => {
         // it doesn't make sense for proposals that need cosponsorship to be anonymous
         !initiativeCosponsorsRequired && (
           <FormSection>
-            <Box mt="-20px">
-              <Text fontWeight="bold">
-                {formatMessage(profileVisibilityMessages.profileVisiblity)}
-                <IconTooltip
-                  content={
-                    <Text color="white" fontSize="s" m="0">
-                      {formatMessage(
-                        profileVisibilityMessages.inputsAssociatedWithProfile
-                      )}
-                    </Text>
-                  }
-                  iconSize="16px"
-                  placement="top-start"
-                  display="inline"
-                  ml="4px"
-                  transform="translate(0,-1)"
-                />
-              </Text>
-              <Checkbox
-                name="anonymous"
-                id="e2e-post-anonymously-checkbox"
-                label={
-                  <Text>
-                    {formatMessage(profileVisibilityMessages.postAnonymously)}
+            <FormLabel
+              htmlFor="anonymous"
+              labelValue={
+                <>{formatMessage(profileVisibilityMessages.profileVisiblity)}</>
+              }
+              display="flex"
+              alignItems="center"
+            >
+              <IconTooltip
+                content={
+                  <Text color="white" fontSize="s" m="0">
+                    {formatMessage(
+                      profileVisibilityMessages.inputsAssociatedWithProfile
+                    )}
                   </Text>
                 }
-                handleSideEffects={onHandleSideEffects}
+                iconSize="16px"
+                placement="top-start"
+                display="inline"
+                ml="4px"
+                transform="translate(0,-1)"
               />
-            </Box>
+            </FormLabel>
+            <Checkbox
+              name="anonymous"
+              id="e2e-post-anonymously-checkbox"
+              label={
+                <Text>
+                  {formatMessage(profileVisibilityMessages.postAnonymously)}
+                </Text>
+              }
+              handleSideEffects={onHandleSideEffects}
+            />
           </FormSection>
         )}
     </>
