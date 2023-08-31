@@ -157,12 +157,7 @@ const AuthorsByAge = ({ customFieldId }: Props) => {
   if (!chartData) return null;
 
   return (
-    <Box
-      id="thisisthebox"
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
-    >
+    <Box display="flex" flexDirection="column" alignItems="center">
       <Title my="0" variant="h6" fontWeight="normal">
         Authors by age
       </Title>
