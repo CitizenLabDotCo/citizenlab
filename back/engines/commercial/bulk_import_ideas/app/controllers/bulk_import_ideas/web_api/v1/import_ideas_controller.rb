@@ -4,6 +4,16 @@ module BulkImportIdeas
   class WebApi::V1::ImportIdeasController < ApplicationController
     before_action :authorize_bulk_import_ideas
 
+    # Show the metadata of a single imported idea
+    def show
+      idea_import = IdeaImport.where(id: params[:id]).first
+
+      render json: WebApi::V1::IdeaImportSerializer.new(
+        idea_import,
+        params: jsonapi_serializer_params
+      ).serializable_hash
+    end
+
     # NOTE: PDF version will only work for a project endpoint
     def bulk_create
       file = bulk_create_params[:pdf] || bulk_create_params[:xlsx]

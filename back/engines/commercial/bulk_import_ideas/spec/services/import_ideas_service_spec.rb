@@ -162,7 +162,7 @@ describe BulkImportIdeas::ImportIdeasService do
       service.import_ideas idea_rows
 
       expect(project.reload.ideas_count).to eq 2
-      expect(project.reload.ideas.pluck(:custom_field_values)).to match(
+      expect(project.reload.ideas.pluck(:custom_field_values)).to match_array(
         [{ 'text_field' => 'custom text field content' }, { 'text_field' => 'custom text field content 2' }]
       )
     end

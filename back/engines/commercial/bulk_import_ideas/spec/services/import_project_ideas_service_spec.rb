@@ -59,24 +59,28 @@ describe BulkImportIdeas::ImportProjectIdeasService do
     let(:pdf_ideas) do
       [
         {
-           'Full name' => 'Bill Test',
-           'Email address' => 'bill@citizenlab.co',
-           'Title' => 'Free donuts for all',
-            'Description' => 'Give them all donuts',
-           'Select field' => 'Yes;No',
-           'Multi select field' => 'This;That',
-           'A text field (optional)' => 'Not much to say',
-           'Ignored field' => 'Ignored value',
-           'Number field' => '22'
+          'Full name' => 'John Rambo',
+          'Email address' => 'john_rambo@gravy.com',
+          'Title' => 'Free donuts for all',
+          'Description' => 'Give them all donuts',
+          'Location' => 'Somewhere',
+          'Select field' => 'Yes;No',
+          'Multi select field' => 'This;That',
+          'A text field (optional)' => 'Not much to say',
+          'Another select field' => 'No',
+          'Ignored field' => 'Ignored value',
+          'Number field' => '22'
         },
         {
           'Full name' => 'Ned Flanders',
           'Email address' => 'ned@simpsons.com',
           'Title' => 'New Wrestling Arena needed',
           'Description' => 'I am convinced that if we do not get this we will be sad.',
+          'Location' => 'Behind the sofa',
           'Select field' => 'No',
           'Multi select field' => 'That',
           'A text field (optional)' => 'Something else',
+          'Another select field' => '',
           'Ignored field' => 'Ignored value',
           'Number field' => '28'
         }
@@ -114,6 +118,11 @@ describe BulkImportIdeas::ImportProjectIdeasService do
     it 'correctly imports different select fields with the same option values' do
       expect(rows.count).to eq 2
       expect(rows[0][:custom_field_values][:another_select_field]).to eq 'no'
+    end
+
+    it 'can deal with empty select fields' do
+      expect(rows.count).to eq 2
+      expect(rows[1][:custom_field_values].keys).not_to include(:another_select_field)
     end
 
     it 'converts multi-select custom fields' do

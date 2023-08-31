@@ -128,20 +128,42 @@ module BulkImportIdeas
         end
       end
 
+      # Select fields - For PDF import
+      # As we don't have a title for each select question we use the options in order they appear on the form
+      # and remove so that fields with the same values don't get picked up
+      # select_options.each do |option|
+      #   option_field = find_field(doc, option[:name])
+      #   if option_field && option_field[:type].include?('checkbox')
+      #     field_key = option[:field_key].to_sym
+      #     checked = option_field[:type] == 'filled_checkbox'
+      #     if option[:field_type] == 'multiselect' && checked
+      #       custom_fields[field_key] = custom_fields[field_key] || []
+      #       custom_fields[field_key] << option[:key]
+      #     elsif checked && !custom_fields[field_key]
+      #       # Only use the first selected option for a single select
+      #       custom_fields[field_key] = option[:key]
+      #     end
+      #     doc.delete_if { |f| f == option_field }
+      #   end
+      # # end
+
       select_fields.each do |field|
         select_field = find_field(doc, field[:name])
         if select_field
-          if field[:type] == 'select'
-            value = select_field[:value].strip
-            option = select_options.find { |f| f[:field_key] == field[:key] && f[:name] == value }
-            custom_fields[field[:key].to_sym] = option[:key] if option
-          else
-            options = []
-            select_field[:value].split(';').each do |select_value|
-              option = select_options.find { |f| f[:field_key] == field[:key] && f[:name] == select_value.strip }
-              options << option[:key] if option
+          values = select_field[:value].split(';')
+          if values.count > 0
+            if field[:type] == 'select'
+              value = values[0].strip # Only use the first value for single fields
+              option = select_options.find { |f| f[:field_key] == field[:key] && f[:name] == value }
+              custom_fields[field[:key].to_sym] = option[:key] if option
+            else
+              options = []
+              values.each do |select_value|
+                option = select_options.find { |f| f[:field_key] == field[:key] && f[:name] == select_value.strip }
+                options << option[:key] if option
+              end
+              custom_fields[field[:key].to_sym] = options
             end
-            custom_fields[field[:key].to_sym] = options
           end
           doc.delete_if { |f| f == select_field }
         end
