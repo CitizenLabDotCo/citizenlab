@@ -49,10 +49,27 @@ module BulkImportIdeas
     end
 
     # parsed_docs is the output from google form parser
-    def pdf_to_idea_rows(parsed_docs)
-      parsed_docs.map do |doc|
+    # OLD VERSION
+    # def pdf_to_idea_rows(parsed_docs)
+    #   parsed_docs.map do |doc|
+    #     idea_row = {}
+    #     idea_row[:pages] = doc.pluck(:page).uniq
+    #     idea_row[:project_id] = @project.id
+    #     idea_row[:phase_id] = @phase.id if @phase
+    #
+    #     doc = clean_field_names(doc)
+    #     idea_row = process_user_details(doc, idea_row)
+    #     idea_row = process_custom_form_fields(doc, idea_row)
+    #     idea_row
+    #   end
+    # end
+
+    # pdf_raw_text is the raw text output from the google parser
+    def pdf_to_idea_rows(raw_text)
+      docs = IdeaPlaintextParserService.new(@project.id, @locale, @phase&.id).parse_text(raw_text)
+      docs.map do |doc|
         idea_row = {}
-        idea_row[:pages] = doc.pluck(:page).uniq
+        # idea_row[:pages] = doc.pluck(:page).uniq
         idea_row[:project_id] = @project.id
         idea_row[:phase_id] = @phase.id if @phase
 
@@ -61,12 +78,6 @@ module BulkImportIdeas
         idea_row = process_custom_form_fields(doc, idea_row)
         idea_row
       end
-    end
-
-    # pdf_raw_text is the raw text output from the google parser
-    def pdf_raw_text_to_idea_rows(pdf_raw_text)
-      pp pdf_raw_text
-      pdf_raw_text
     end
 
     def xlsx_to_idea_rows(xlsx)
@@ -82,11 +93,9 @@ module BulkImportIdeas
         idea_row[:longitude]            = xlsx_row['Longitude']
         idea_row[:topic_titles] = (xlsx_row['Tags'] || '').split(';').map(&:strip).select(&:present?)
 
-        # Convert to same format as PDF to convert custom form fields & user details
-        doc = xlsx_row.map { |k, v| { name: k, value: v } }
+        doc = clean_field_names(xlsx_row)
         idea_row = process_user_details(doc, idea_row)
         idea_row = process_custom_form_fields(doc, idea_row)
-
         idea_row
       end
     end
@@ -143,21 +152,21 @@ module BulkImportIdeas
       # Select fields - For PDF import
       # As we don't have a title for each select question we use the options in order they appear on the form
       # and remove so that fields with the same values don't get picked up
-      select_options.each do |option|
-        option_field = find_field(doc, option[:name])
-        if option_field && option_field[:type].include?('checkbox')
-          field_key = option[:field_key].to_sym
-          checked = option_field[:type] == 'filled_checkbox'
-          if option[:field_type] == 'multiselect' && checked
-            custom_fields[field_key] = custom_fields[field_key] || []
-            custom_fields[field_key] << option[:key]
-          elsif checked && !custom_fields[field_key]
-            # Only use the first selected option for a single select
-            custom_fields[field_key] = option[:key]
-          end
-          doc.delete_if { |f| f == option_field }
-        end
-      end
+      # select_options.each do |option|
+      #   option_field = find_field(doc, option[:name])
+      #   if option_field && option_field[:type].include?('checkbox')
+      #     field_key = option[:field_key].to_sym
+      #     checked = option_field[:type] == 'filled_checkbox'
+      #     if option[:field_type] == 'multiselect' && checked
+      #       custom_fields[field_key] = custom_fields[field_key] || []
+      #       custom_fields[field_key] << option[:key]
+      #     elsif checked && !custom_fields[field_key]
+      #       # Only use the first selected option for a single select
+      #       custom_fields[field_key] = option[:key]
+      #     end
+      #     doc.delete_if { |f| f == option_field }
+      #   end
+      # end
 
       # Select fields for xlsx import - we have the name of field so this done differently
       select_fields.each do |field|
@@ -189,6 +198,7 @@ module BulkImportIdeas
 
     def clean_field_names(doc)
       locale_optional_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.optional') }
+      doc = doc.map { |k, v| { name: k, value: v } } # Temp: Need to just use in this format
       doc.map { |f| { name: f[:name].gsub("(#{locale_optional_label})", '').squish, value: f[:value], type: f[:type], page: f[:page], x: f[:x], y: f[:y] } }
     end
 

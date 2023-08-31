@@ -8,8 +8,15 @@ module BulkImportIdeas
       @pdf_file_content = pdf_file_content
     end
 
+    def raw_text
+      return dummy_raw_text unless ENV.fetch('GOOGLE_DOCUMENT_AI_PROJECT', false) # Temp for development
+
+      document = process_upload
+      document.text
+    end
+
     def parse_pdf
-      return dummy_data unless ENV.fetch('GOOGLE_DOCUMENT_AI_PROJECT', false) # Temp for development
+      return dummy_parsed_data unless ENV.fetch('GOOGLE_DOCUMENT_AI_PROJECT', false) # Temp for development
 
       document = process_upload
 
@@ -91,7 +98,7 @@ module BulkImportIdeas
     end
 
     # NOTE: For DEVELOPMENT ONLY when Google API not configured
-    def dummy_data
+    def dummy_parsed_data
       Array.new(rand(1..8)) do
         [
           # User details
@@ -111,10 +118,8 @@ module BulkImportIdeas
       end
     end
 
-    # If a text segment spans several lines, it may be stored in different text segments.
-    # Doesn't seem to be the case with our forms, so not used for now
-    # def layout_to_text(layout, text)
-    #   layout.text_anchor.text_segments.each { |segment| text[segment.start_index.to_i..segment.end_index.to_i] }.join
-    # end
+    def dummy_raw_text
+      "Title\nMy very good idea\nDescription\nwould suggest building the\nnew swimming Pool near the\nShopping mall on Park Lane,\nIt's easily accessible location\nwith enough space\nan\nLocation (optional)\nDear shopping mall\nYour favourite name for a swimming pool (optional)\n*This answer will only be shared with moderators, and not to the public.\nThe cool pool\nHow much do you like pizza (optional)\n*This answer will only be shared with moderators, and not to the public.\nA lot\n○ Not at all\nHow much do you like burgers (optional)\n*This answer will only be shared with moderators, and not to the public.\nO A lot\nNot at all\n"
+    end
   end
 end

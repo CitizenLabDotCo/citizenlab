@@ -63,7 +63,7 @@ module BulkImportIdeas
           next
         end
 
-        field_type = current_custom_field.input_type
+        field_type = current_custom_field&.input_type
 
         if ['text', 'text_multiloc'].include? field_type then
           current_text = form[current_field_display_title]
