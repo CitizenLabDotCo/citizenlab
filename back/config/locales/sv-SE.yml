@@ -224,6 +224,7 @@ sv:
       optional: 'valfri'
       choose_as_many: 'Välj så många du vill'
       this_answer: 'Detta svar kommer endast att delas med moderatorer och inte med allmänheten.'
+      page: 'Sida'
   project_copy:
     title_suffix: 'Kopia'
   confirmations_mailer:
