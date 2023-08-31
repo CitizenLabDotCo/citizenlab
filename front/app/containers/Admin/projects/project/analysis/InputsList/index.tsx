@@ -31,7 +31,7 @@ const InputsList = () => {
     useVirtualizer({
       count: hasNextPage ? inputsLength + 1 : inputsLength,
       getScrollElement: () => parentRef.current,
-      estimateSize: () => 200,
+      estimateSize: () => 250,
       overscan: 5,
     });
 
