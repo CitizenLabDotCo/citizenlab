@@ -224,6 +224,7 @@ es-CL:
       optional: 'opcional'
       choose_as_many: 'Elige tantos como quieras'
       this_answer: 'Esta respuesta sólo se compartirá con los moderadores, y no con el público.'
+      page: 'Página'
   project_copy:
     title_suffix: 'Copia'
   confirmations_mailer:
