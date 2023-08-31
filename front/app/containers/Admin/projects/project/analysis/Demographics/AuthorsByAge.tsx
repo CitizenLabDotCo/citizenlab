@@ -21,6 +21,8 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import useAuthorsByAge from 'api/analysis_stats/useAuthorsByAge';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import translations from './translations';
 
 // Custom tooltip is rendered when the user hovers over a bar
 const CustomTooltip = ({ payload }: { payload?: any }) => {
@@ -61,6 +63,7 @@ const ageToBirthyear = (age: number): number => {
 };
 
 const AuthorsByAge = ({ customFieldId }: Props) => {
+  const { formatMessage } = useIntl();
   const { analysisId } = useParams() as { analysisId: string };
   const filters = useAnalysisFilterParams();
   const { data: totalAuthorsByAge, isLoading: isLoadingTotal } =
@@ -85,7 +88,7 @@ const AuthorsByAge = ({ customFieldId }: Props) => {
       let filtered;
 
       if (fromAge === null) {
-        name = 'Unknown';
+        name = formatMessage(translations.unknown);
         shortName = '?';
         total = totalAuthorsByAge?.data.attributes.unknown_age_count;
         filtered = filteredAuthorsByAge?.data.attributes.unknown_age_count;
@@ -159,7 +162,7 @@ const AuthorsByAge = ({ customFieldId }: Props) => {
   return (
     <Box display="flex" flexDirection="column" alignItems="center">
       <Title my="0" variant="h6" fontWeight="normal">
-        Authors by age
+        <FormattedMessage {...translations.authorsByAge} />
       </Title>
       <ResponsiveContainer width="100%" height={100}>
         <BarChart data={chartData} margin={{ top: 20, left: 8, right: 8 }}>

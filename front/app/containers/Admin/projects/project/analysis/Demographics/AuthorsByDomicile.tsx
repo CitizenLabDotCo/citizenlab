@@ -24,6 +24,8 @@ import useLocalize from 'hooks/useLocalize';
 import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
 import { xor } from 'lodash-es';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import translations from './translations';
 
 // Custom tooltip is rendered when the user hovers over a bar
 const CustomTooltip = ({ payload }: { payload?: any }) => {
@@ -59,6 +61,7 @@ type Props = {
 };
 
 const AuthorsByDomicile = ({ customFieldId }: Props) => {
+  const { formatMessage } = useIntl();
   const localize = useLocalize();
   const { analysisId } = useParams() as { analysisId: string };
   const filters = useAnalysisFilterParams();
@@ -90,7 +93,7 @@ const AuthorsByDomicile = ({ customFieldId }: Props) => {
         let optionKey;
 
         if (optionId === '_blank') {
-          name = 'Unknown';
+          name = formatMessage(translations.unknown);
           shortName = '?';
           filtered =
             filteredAuthorsByDomicile?.data.attributes.series.users[optionId];
@@ -142,7 +145,7 @@ const AuthorsByDomicile = ({ customFieldId }: Props) => {
   if (chartData.length > 27) {
     return (
       <Text m="0" color="grey600" fontSize="s" textAlign="center">
-        The domicile chart is too large to display
+        <FormattedMessage {...translations.domicileChartTooLarge} />
       </Text>
     );
   }
@@ -150,7 +153,7 @@ const AuthorsByDomicile = ({ customFieldId }: Props) => {
   return (
     <Box display="flex" flexDirection="column" alignItems="center">
       <Title my="0" variant="h6" fontWeight="normal">
-        Authors by domicile
+        <FormattedMessage {...translations.authorsByDomicile} />
       </Title>
       <ResponsiveContainer width="100%" height={100}>
         <BarChart data={chartData} margin={{ top: 20, left: 8, right: 8 }}>

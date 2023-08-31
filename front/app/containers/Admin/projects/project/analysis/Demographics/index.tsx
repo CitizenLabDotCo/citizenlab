@@ -12,6 +12,8 @@ import AuthorsByAge from './AuthorsByAge';
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 import { IUserCustomFieldData } from 'api/user_custom_fields/types';
 import { isEmpty } from 'lodash-es';
+import translations from './translations';
+import { FormattedMessage } from 'react-intl';
 
 const SUPPORTED_CODES: IUserCustomFieldData['attributes']['code'][] = [
   'birthyear',
@@ -63,7 +65,7 @@ const Demographics = () => {
         <Box display="flex" alignItems="center" px="24px" py="12px">
           <Icon height="16px" width="16px" name="users" mr="8px" />
           <Title variant="h5" fontWeight="normal" m="0">
-            Demographics
+            <FormattedMessage {...translations.demographicsTitle} />
           </Title>
         </Box>
       }
