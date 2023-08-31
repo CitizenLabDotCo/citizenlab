@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, lazy, Suspense } from 'react';
 
 // api
 import { isRegularUser } from 'services/permissions/roles';
@@ -23,7 +23,7 @@ import PageContainer from 'components/UI/PageContainer';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
 import { Heading } from './Heading';
 import { Box } from '@citizenlab/cl2-component-library';
-import ProfileVisiblity from 'components/ProfileVisibility';
+const ProfileVisiblity = lazy(() => import('./ProfileVisibility'));
 import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
 import Warning from 'components/UI/Warning';
 
@@ -257,21 +257,12 @@ const IdeasNewPageWithJSONForm = () => {
             formSubmitText={isSurvey ? messages.submitSurvey : undefined}
             footer={
               !isSurvey && allowAnonymousPosting ? (
-                <Box
-                  p="40px"
-                  mb="20px"
-                  boxShadow="0px 2px 4px -1px rgba(0,0,0,0.06)"
-                  borderRadius="3px"
-                  width="100%"
-                  background="white"
-                >
-                  <Box mt="-20px">
-                    <ProfileVisiblity
-                      postAnonymously={postAnonymously}
-                      onChange={handleOnChangeAnonymousPosting}
-                    />
-                  </Box>
-                </Box>
+                <Suspense fallback={null}>
+                  <ProfileVisiblity
+                    postAnonymously={postAnonymously}
+                    onChange={handleOnChangeAnonymousPosting}
+                  />
+                </Suspense>
               ) : undefined
             }
           />
