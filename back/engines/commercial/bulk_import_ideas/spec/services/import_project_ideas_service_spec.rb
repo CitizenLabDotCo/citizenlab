@@ -66,7 +66,7 @@ describe BulkImportIdeas::ImportProjectIdeasService do
           { name: 'No', value: nil, type: 'filled_checkbox', page: 1, x: 0.45, y: 1.66 },
           { name: 'This', value: nil, type: 'filled_checkbox', page: 1, x: 0.11, y: 1.86 },
           { name: 'That', value: nil, type: 'filled_checkbox', page: 1, x: 0.45, y: 1.86 },
-          { name: 'A text field', value: 'Not much to say', type: '', page: 2, x: 0.09, y: 2.12 },
+          { name: 'A text field (optional)', value: 'Not much to say', type: '', page: 2, x: 0.09, y: 2.12 },
           { name: 'Ignored field', value: 'Ignored value', type: 'filled_checkbox', page: 2, x: 0.45, y: 2.23 },
           { name: 'Yes', value: nil, type: 'unfilled_checkbox', page: 2, x: 0.11, y: 2.66 },
           { name: 'No', value: nil, type: 'filled_checkbox', page: 2, x: 0.45, y: 2.66 },
@@ -82,7 +82,7 @@ describe BulkImportIdeas::ImportProjectIdeasService do
           { name: 'No', value: nil, type: 'filled_checkbox', page: 3, x: 0.45, y: 3.66 },
           { name: 'This', value: nil, type: 'unfilled_checkbox', page: 3, x: 0.11, y: 3.86 },
           { name: 'That', value: nil, type: 'filled_checkbox', page: 3, x: 0.45, y: 3.86 },
-          { name: 'A text field', value: 'Something else', type: '', page: 4, x: 0.09, y: 4.12 },
+          { name: 'A text field (optional)', value: 'Something else', type: '', page: 4, x: 0.09, y: 4.12 },
           { name: 'Ignored option', value: nil, type: 'filled_checkbox', page: 4, x: 0.45, y: 4.23 },
           { name: 'Number field', value: '28', type: '', page: 4, x: 0.11, y: 4.86 }
         ]
@@ -150,11 +150,11 @@ describe BulkImportIdeas::ImportProjectIdeasService do
     it 'can convert a document in french' do
       service = described_class.new create(:admin), project.id, 'fr-FR', nil
       docs = [[
-                { name: 'Nom et prénom', value: 'Jean Rambo' },
-                { name: 'Adresse e-mail', value: 'jean@france.com' },
-                { name: 'Titre', value: 'Bonjour' },
-                { name: 'Description', value: "Je suis un chien. J'aime les chats." }
-              ]]
+        { name: 'Nom et prénom', value: 'Jean Rambo' },
+        { name: 'Adresse e-mail', value: 'jean@france.com' },
+        { name: 'Titre', value: 'Bonjour' },
+        { name: 'Description', value: "Je suis un chien. J'aime les chats." }
+      ]]
       rows = service.pdf_to_idea_rows docs
 
       expect(rows[0][:title_multiloc]).to eq({ 'fr-FR': 'Bonjour' })

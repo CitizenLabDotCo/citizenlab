@@ -61,8 +61,6 @@ module BulkImportIdeas
     end
 
     def format_name(name)
-      # TODO: Replace in different languages
-      name = name.gsub('(optional)', '')
       name.squish
     end
 

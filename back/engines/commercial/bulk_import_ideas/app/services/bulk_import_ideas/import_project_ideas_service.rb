@@ -11,9 +11,12 @@ module BulkImportIdeas
     end
 
     def generate_example_xlsx
+      # TODO: Multilingual versions of the rest of the fields
+      locale_name_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.full_name') }
+      locale_email_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.email_address') }
       columns = {
-        'Full name' => 'Bill Test',
-        'Email address' => 'bill@citizenlab.co',
+        locale_name_label => 'Bill Test',
+        locale_email_label => 'bill@citizenlab.co',
         'Permission' => 'X',
         'Date Published (dd-mm-yyyy)' => '18-07-2022'
       }
@@ -53,6 +56,7 @@ module BulkImportIdeas
         idea_row[:project_id] = @project.id
         idea_row[:phase_id] = @phase.id if @phase
 
+        doc = clean_field_names(doc)
         idea_row = process_user_details(doc, idea_row)
         idea_row = process_custom_form_fields(doc, idea_row)
         idea_row
@@ -175,6 +179,11 @@ module BulkImportIdeas
 
     def find_field(doc, name)
       doc.find { |f| f[:name] == name }
+    end
+
+    def clean_field_names(doc)
+      locale_optional_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.optional') }
+      doc.map { |f| { name: f[:name].gsub("(#{locale_optional_label})", '').squish, value: f[:value], type: f[:type], page: f[:page], x: f[:x], y: f[:y] } }
     end
 
     def process_user_details(doc, idea_row)
