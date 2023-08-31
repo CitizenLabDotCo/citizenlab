@@ -11,7 +11,7 @@ const addInitiative = async (requestBody: IInitiativeAdd) => {
   return fetcher<IInitiative>({
     path: `/initiatives`,
     action: 'post',
-    body: requestBody,
+    body: { initiative: requestBody },
   });
 };
 

@@ -54,7 +54,7 @@ class Initiative < ApplicationRecord
   has_many :areas_initiatives, dependent: :destroy
   has_many :areas, through: :areas_initiatives
   has_many :cosponsors_initiatives, dependent: :destroy
-  has_many :cosponsors, through: :cosponsors_initiatives, source: :user
+  has_many :cosponsors, through: :cosponsors_initiatives, source: :user, before_remove: ->(initiative, cosponsor) { CosponsorsInitiative.find_by(initiative: initiative, user: cosponsor).remove_notifications }
   has_many :initiative_status_changes, dependent: :destroy
   has_one :initiative_initiative_status
   has_one :initiative_status, through: :initiative_initiative_status
@@ -130,16 +130,9 @@ class Initiative < ApplicationRecord
     app_config.feature_activated?('initiative_review') && require_review
   end
 
-  # def cosponsor_ids=(ids)
-  #   return unless ids
-
-  #   ids = ids.uniq
-  #   current_ids = cosponsors.pluck(:id).uniq
-  #   return if current_ids.sort == ids.sort
-
-  #   cosponsors_initiatives.where.not(user_id: ids).destroy_all
-  #   (ids - current_ids).each { |id| cosponsors_initiatives.create(user_id: id) }
-  # end
+  def cosponsor_ids=(ids)
+    super(ids.uniq)
+  end
 
   def reactions_needed(configuration = AppConfiguration.instance)
     [configuration.settings('initiatives', 'reacting_threshold') - likes_count, 0].max
