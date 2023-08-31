@@ -133,7 +133,8 @@ interface IInitiativeUpdate {
   publication_status?: InitiativePublicationStatus;
   body_multiloc?: Multiloc;
   anonymous?: boolean;
-  header_bg?: string;
+  // null is required to be able to remove the header_bg
+  header_bg?: string | null;
   author_id?: string | null;
   assignee_id?: string | null;
   topic_ids?: string[] | null;

@@ -63,7 +63,9 @@ const InitiativesEditFormWrapper = ({
           ...(cosponsor_ids && cosponsor_ids.length > 0 && { cosponsor_ids }),
           ...(location_description && { location_description }),
           ...(location_point_geojson && { location_point_geojson }),
-          ...(header_bg?.[0] && { header_bg: header_bg[0].base64 }),
+          ...(header_bg?.[0]
+            ? { header_bg: header_bg[0].base64 }
+            : { header_bg: null }),
           ...(typeof anonymous === 'boolean' && { anonymous }),
         },
       },
