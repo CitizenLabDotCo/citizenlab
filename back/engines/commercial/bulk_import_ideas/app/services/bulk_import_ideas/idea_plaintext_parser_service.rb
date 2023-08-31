@@ -3,6 +3,7 @@ module BulkImportIdeas
     QUESTION_TYPES = %w[select multiselect text text_multiloc multiline_text html_multiloc]
     FORBIDDEN_HTML_TAGS_REGEX = /<\/?(div|p|span|ul|ol|li|em|img|a){1}[^>]*\/?>/
     EMPTY_SELECT_CIRCLES = ["O", "○"]
+    EMPTY_MULTISELECT_SQUARES = ["☐"]
 
     def initialize(project_id, locale, phase_id)
       @project = Project.find(project_id)
@@ -56,11 +57,10 @@ module BulkImportIdeas
               :pages => [],
               :fields => {}
             }
-
-            @current_field_display_title = nil
-            @current_custom_field = nil
           end
 
+          @current_field_display_title = nil
+          @current_custom_field = nil
           @form[:pages] << get_page_number(line)
           next
         end
@@ -85,7 +85,7 @@ module BulkImportIdeas
 
         if ['text', 'text_multiloc'].include? field_type then
           current_text = @form[:fields][@current_field_display_title]
-          @form[:fields][current_field_display_title] = current_text.nil? ? line : "#{current_text} #{line}"
+          @form[:fields][@current_field_display_title] = current_text.nil? ? line : "#{current_text} #{line}"
           next
         end
   
@@ -97,6 +97,10 @@ module BulkImportIdeas
 
         if field_type == 'select' then
           handle_select_field(line)
+        end
+
+        if field_type == 'multiselect' then
+          handle_multiselect_field(line)
         end
       end
 
@@ -165,14 +169,8 @@ module BulkImportIdeas
       # which option titles match these kind of O
       # or circle symbols, and assume the others are the
       # select answer
-
-      option_titles = @current_custom_field
-        .options
-        .pluck(:title_multiloc)
-        .map { |multiloc| multiloc[@locale] }
-
-      unless is_empty_select_circle?(line, option_titles) then
-        value = match_selected_option(line, option_titles)
+      unless is_empty_select_option? line then
+        value = match_selected_option(line)
 
         unless value.nil? then
           @form[:fields][@current_field_display_title] = value
@@ -183,23 +181,63 @@ module BulkImportIdeas
       end
     end
 
-    # Checks if string has format '○ option label' or 'O option label'
-    def is_empty_select_circle?(line, option_titles)
-      first_character = line[0,1]
-      second_character = line[1,1]
-      rest = line[2,line.length - 2]
+    def handle_multiselect_field(line)
+      # The multiselect field works similar to the
+      # select field, except that an empty option is indicated
+      # by a little square ('☐').
 
-      return false unless EMPTY_SELECT_CIRCLES.include? first_character
-      return false unless second_character == ' '
-      return option_titles.include? rest
+      unless is_empty_multiselect_option? line then
+        value = match_selected_option(line)
+
+        unless value.nil? then
+          current_field_value = @form[:fields][@current_field_display_title]
+
+          if current_field_value.nil? then
+            @form[:fields][@current_field_display_title] = []
+          end
+
+          @form[:fields][@current_field_display_title] << value
+        end
+      end
     end
 
-    def match_selected_option(line, option_titles)
+    def option_titles
+      return nil if @current_custom_field.nil?
+
+      supported_fields = ['select', 'multiselect']
+      return nil unless supported_fields.include? @current_custom_field.input_type
+
+      return @current_custom_field
+        .options
+        .pluck(:title_multiloc)
+        .map { |multiloc| multiloc[@locale] }
+    end
+
+    # Checks if string has format '○ option label' or 'O option label'
+    def is_empty_select_option?(line)
+      is_empty_option?(line, EMPTY_SELECT_CIRCLES)
+    end
+
+    def match_selected_option(line)
       line_without_first_chars = line[2,line.length - 2]
 
       option_titles.find do |option| 
         option == line || option == line_without_first_chars
       end
+    end
+
+    def is_empty_multiselect_option?(line)
+      is_empty_option?(line, EMPTY_MULTISELECT_SQUARES)
+    end
+
+    def is_empty_option?(line, empty_characters)
+      first_character = line[0,1]
+      second_character = line[1,1]
+      rest = line[2,line.length - 2]
+
+      return false unless empty_characters.include? first_character
+      return false unless second_character == ' '
+      return option_titles.include? rest
     end
   end
 end

@@ -229,7 +229,29 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
         title_multiloc: { 'en' => 'Not at all' }
       )
 
-      # TODO
+      ice_cream_field = create(:custom_field, resource: custom_form,
+        key: 'icecream',
+        title_multiloc: { 'en' => 'Which flavors do you want?' },
+        input_type: 'multiselect',
+        enabled: true,
+        required: true
+      )
+      create(:custom_field_option, custom_field: ice_cream_field,
+        key: 'vanilla',
+        title_multiloc: { 'en' => 'Vanilla' }
+      )
+      create(:custom_field_option, custom_field: ice_cream_field,
+        key: 'strawberry',
+        title_multiloc: { 'en' => 'Strawberry' }
+      )
+      create(:custom_field_option, custom_field: ice_cream_field,
+        key: 'chocolate',
+        title_multiloc: { 'en' => 'Chocolate' }
+      )
+      create(:custom_field_option, custom_field: ice_cream_field,
+        key: 'pistachio',
+        title_multiloc: { 'en' => 'Pistachio' }
+      )
     end
 
     # Based on fixtures/with_page_numbers.pdf, but with description moved
@@ -272,13 +294,22 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
       service = described_class.new project.id, 'en', nil
       docs = service.parse_text text
 
-      binding.pry
+      result = [{
+        :pages=>[1, 2],
+        :fields=>
+         {"Title"=>"Page numbers test",
+          "Description"=>"Page numbers test description with words and things",
+          "Location (optional)"=>"Somewhere",
+          "Your favourite name for a swimming pool (optional)"=>nil,
+          "How much do you like pizza (optional)"=>"A lot",
+          "How much do you like burgers (optional)"=>"Not at all",
+          "Which flavors do you want?"=>["Strawberry", "Chocolate", "Pistachio"]}}]
 
-      # TODO assert
+      expect(docs).to eq result
     end
 
-    it 'parses text correctly (multiple documents)' do
-      # TODO
-    end
+    # it 'parses text correctly (multiple documents)' do
+      # # TODO
+    # end
   end
 end
