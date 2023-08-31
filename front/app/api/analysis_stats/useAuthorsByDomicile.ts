@@ -20,11 +20,9 @@ const fetchUsersByDomicile = (
 
 const useAuthorsByDomicile = ({
   analysisId,
-  enabled,
   queryParams,
 }: {
   analysisId: string;
-  enabled?: boolean;
   queryParams: AuthorsByDomicileQueryParams;
 }) => {
   return useQuery<
@@ -35,7 +33,6 @@ const useAuthorsByDomicile = ({
   >({
     queryKey: authorsByDomicileKeys.item({ analysisId, params: queryParams }),
     queryFn: () => fetchUsersByDomicile(analysisId, queryParams),
-    enabled: typeof enabled == undefined ? true : enabled,
   });
 };
 

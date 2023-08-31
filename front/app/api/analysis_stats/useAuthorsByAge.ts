@@ -20,17 +20,14 @@ const fetchUsersByAge = (
 
 const useAuthorsByAge = ({
   analysisId,
-  enabled,
   queryParams,
 }: {
   analysisId: string;
-  enabled?: boolean;
   queryParams: AuthorsByAgeQueryParams;
 }) => {
   return useQuery<IAuthorsByAge, CLErrors, IAuthorsByAge, AuthorsByAgeKeys>({
     queryKey: authorsByAgeKeys.item({ analysisId, params: queryParams }),
     queryFn: () => fetchUsersByAge(analysisId, queryParams),
-    enabled: typeof enabled == undefined ? true : enabled,
   });
 };
 

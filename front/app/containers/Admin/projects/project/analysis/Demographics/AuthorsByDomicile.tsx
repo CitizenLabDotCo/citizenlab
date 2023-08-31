@@ -128,6 +128,9 @@ const AuthorsByDomicile = ({ customFieldId }: Props) => {
 
   if (!chartData) return null;
 
+  // From the data analysis on current (2023) usage patterns, we want to make
+  // sure the graph displays in an optimal way for up to 16 areas and is usable
+  // for up to 26 (+ 1 unknown) areas.
   // See https://citizenlabco.slack.com/archives/C05EZTFP46N/p1693389147200259
   if (chartData.length > 27) {
     return (

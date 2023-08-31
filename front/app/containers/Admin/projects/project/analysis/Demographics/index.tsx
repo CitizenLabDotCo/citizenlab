@@ -72,12 +72,12 @@ const Demographics = () => {
         display="flex"
         alignItems="center"
         justifyContent="space-between"
-        height="100%"
         width="100%"
+        minHeight="118px"
       >
         <Box>
           <IconButton
-            iconName="chevron-left"
+            iconName="arrow-left"
             onClick={() => handleCycle(-1)}
             a11y_buttonActionMessage={'Previous graph'}
             iconColor={colors.grey600}
@@ -94,7 +94,7 @@ const Demographics = () => {
         </Box>
         <Box>
           <IconButton
-            iconName="chevron-right"
+            iconName="arrow-right"
             onClick={() => handleCycle(1)}
             a11y_buttonActionMessage={'Next graph'}
             iconColor={colors.grey600}
