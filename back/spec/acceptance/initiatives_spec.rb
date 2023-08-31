@@ -347,6 +347,7 @@ resource 'Initiatives' do
       parameter :area_ids, 'Array of ids of the associated areas'
       parameter :assignee_id, 'The user id of the admin that takes ownership. Set automatically if not provided. Only allowed for admins.'
       parameter :anonymous, 'Post this initiative anonymously - true/false'
+      parameter :cosponsor_ids, 'Array of user ids of the desired cosponsors'
     end
     ValidationErrorHelper.new.error_fields(self, Initiative)
 
@@ -458,6 +459,23 @@ resource 'Initiatives' do
           json_response = json_parse response_body
           expect(json_response).to include_response_error(:base, 'anonymous_participation_not_allowed')
         end
+      end
+    end
+
+    describe 'cosponsor_ids' do
+      let(:cosponsor) { create(:user) }
+      let(:cosponsor_ids) { [cosponsor.id] }
+
+      example 'Update the cosponsors of an initiative' do
+        expect { do_request }
+          .to have_enqueued_job(LogActivityJob)
+          .with(instance_of(CosponsorsInitiative), 'created', @user, instance_of(Integer))
+          .exactly(1).times
+
+        assert_status 201
+        json_response = json_parse(response_body)
+
+        expect(json_response.dig(:data, :relationships, :cosponsors, :data).pluck(:id)).to match_array cosponsor_ids
       end
     end
   end
