@@ -153,7 +153,9 @@ const ProjectHeader = memo<Props & WrappedComponentProps>(
               hasHeaderImage={!!projectHeaderImageLargeUrl}
             />
             {!projectDescriptionBuilderEnabled && (
-              <ProjectInfo projectId={projectId} />
+              <>
+                <ProjectInfo projectId={projectId} />
+              </>
             )}
             <Outlet id="app.ProjectsShowPage.shared.header.ProjectInfo.projectDescriptionBuilder" />
           </ContentContainer>

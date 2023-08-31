@@ -144,7 +144,6 @@ it:
     cosponsor_of_your_initiative:
       cta_reply_to: 'Visualizza la tua proposta'
       event_description_initiative: 'Congratulazioni! %{cosponsorName} ha accettato l''invito a co-sponsorizzare la tua proposta.'
-      event_description_cosponsoring: 'Co-sponsorizzare una proposta significa che <strong>il tuo nome sarà visualizzato</strong> insieme ai nomi degli altri co-sponsor della proposta.'
       main_header: '%{cosponsorName} ha accettato il tuo invito a co-sponsorizzare la tua proposta'
       subject: '%{cosponsorName} ha accettato il tuo invito a co-sponsorizzare la tua proposta'
       preheader_initiative: '%{cosponsorName} ha accettato il tuo invito a co-sponsorizzare la tua proposta'
@@ -192,6 +191,7 @@ it:
       cta_reply_to: 'Co-sponsorizza questa proposta'
       event_description_initiative: '%{authorName} ha creato una nuova proposta e vorrebbe che tu la co-sponsorizzassi.'
       event_description_cosponsoring: 'Co-sponsorizzare una proposta significa che <strong>il tuo nome sarà visualizzato</strong> insieme ai nomi degli altri co-sponsor della proposta.'
+      event_description_before_action: 'Per vedere la proposta e accettare l''invito, devi aver effettuato l''accesso al tuo account.'
       event_description_action: 'Clicca qui sotto per leggere la proposta.'
       main_header: 'Sei stato invitato a co-sponsorizzare una proposta'
       subject: 'Sei stato invitato a co-sponsorizzare una proposta'

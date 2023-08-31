@@ -3,32 +3,51 @@ import React from 'react';
 // components
 import EventsPageMeta from './EventsPageMeta';
 import SectionContainer from 'components/SectionContainer';
-import ContentContainer from 'components/ContentContainer';
 import CurrentAndUpcomingEvents from './CurrentAndUpcomingEvents';
 import PastEvents from './PastEvents';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 
-// styling
-import styled from 'styled-components';
+// intl
+import { useIntl } from 'utils/cl-intl';
+import messages from './messages';
 
-const StyledContentContainer = styled(ContentContainer)`
-  max-width: calc(${(props) => props.theme.maxPageWidth}px - 100px);
-  margin-left: auto;
-  margin-right: auto;
-`;
+const EventsPage = () => {
+  const { formatMessage } = useIntl();
+  const isTabletOrSmaller = useBreakpoint('tablet');
 
-const EventsPage = () => (
-  <>
-    <EventsPageMeta />
-    <Box as="main">
-      <SectionContainer>
-        <StyledContentContainer id="e2e-events-container">
-          <CurrentAndUpcomingEvents />
-          <PastEvents />
-        </StyledContentContainer>
-      </SectionContainer>
-    </Box>
-  </>
-);
+  return (
+    <>
+      <Box width="100vw">
+        <Title
+          px={'16px'}
+          maxWidth="1100px"
+          color="tenantPrimary"
+          style={{ fontSize: isTabletOrSmaller ? '40px' : '80px' }}
+          zIndex="10000"
+          mx="auto"
+          pt={isTabletOrSmaller ? '40px' : '0px'}
+          mb="0px"
+        >
+          {formatMessage(messages.events)}
+        </Title>
+      </Box>
+      <EventsPageMeta />
+      <Box as="main">
+        <SectionContainer>
+          <Box
+            id="e2e-events-container"
+            mx="auto"
+            px="24px"
+            width="100%"
+            maxWidth="1100px"
+          >
+            <CurrentAndUpcomingEvents />
+            <PastEvents />
+          </Box>
+        </SectionContainer>
+      </Box>
+    </>
+  );
+};
 
 export default EventsPage;

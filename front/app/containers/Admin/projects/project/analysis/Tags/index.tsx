@@ -30,6 +30,8 @@ import inputsKeys from 'api/analysis_inputs/keys';
 import TagActions from './TagActions';
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../tracks';
+import translations from './translations';
+import { useIntl } from 'utils/cl-intl';
 
 const BlickingIcon = styled(Icon)`
   animation-name: blink-animation;
@@ -65,6 +67,7 @@ const TagContainer = styled(ListItem)`
 `;
 
 const Tags = () => {
+  const { formatMessage } = useIntl();
   const [autotaggingModalIsOpened, setAutotaggingModalIsOpened] =
     useState(false);
 
@@ -129,7 +132,7 @@ const Tags = () => {
           size="s"
           buttonStyle="secondary-outlined"
         >
-          Auto-tag
+          {formatMessage(translations.autoTag)}
           {!tags?.data.length && (
             <BlickingIcon
               name={'dot'}
@@ -148,7 +151,7 @@ const Tags = () => {
           onClick={() => removeSearchParams(['tag_ids'])}
           className={!selectedTags ? 'selected' : ''}
         >
-          All inputs
+          {formatMessage(translations.allInputs)}
           <TagCount
             count={inputsTotal}
             totalCount={inputsTotal}
@@ -160,7 +163,7 @@ const Tags = () => {
           onClick={() => updateSearchParams({ tag_ids: [null] })}
           className={selectedTags && selectedTags[0] === null ? 'selected' : ''}
         >
-          Inputs without tags
+          {formatMessage(translations.inputsWithoutTags)}
           <TagCount
             count={inputsWithoutTags}
             totalCount={inputsTotal}
@@ -169,7 +172,7 @@ const Tags = () => {
         </TagContainer>
         {!isLoadingTags && tags?.data.length === 0 && (
           <Text p="6px" color="grey400">
-            You do not have any tags yet.
+            {formatMessage(translations.noTags)}
           </Text>
         )}
         {tags?.data.map((tag) => (

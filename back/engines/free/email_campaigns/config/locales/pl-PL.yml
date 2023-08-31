@@ -144,7 +144,6 @@ pl:
     cosponsor_of_your_initiative:
       cta_reply_to: 'Wyświetl swoją propozycję'
       event_description_initiative: 'Gratulacje! %{cosponsorName} przyjął Twoje zaproszenie do współsponsorowania Twojego wniosku.'
-      event_description_cosponsoring: 'Współsponsorowanie wniosku oznacza, że na stronie <strong>Twoje imię i nazwisko będzie wyświetlane</strong> wraz z imionami i nazwiskami innych współsponsorów wniosku.'
       main_header: '%{cosponsorName} przyjęła Twoje zaproszenie do współsponsorowania Twojego wniosku'
       subject: '%{cosponsorName} przyjęła Twoje zaproszenie do współsponsorowania Twojego wniosku'
       preheader_initiative: '%{cosponsorName} przyjęła Twoje zaproszenie do współsponsorowania Twojego wniosku'
@@ -192,6 +191,7 @@ pl:
       cta_reply_to: 'Współsponsoruj tę propozycję'
       event_description_initiative: '%{authorName} stworzył nową propozycję i chciałby, abyś ją współsponsorował.'
       event_description_cosponsoring: 'Współsponsorowanie wniosku oznacza, że na stronie <strong>Twoje imię i nazwisko będzie wyświetlane</strong> wraz z imionami i nazwiskami innych współsponsorów wniosku.'
+      event_description_before_action: 'Aby zobaczyć propozycję i zaakceptować zaproszenie, musisz być zalogowany na swoje konto.'
       event_description_action: 'Kliknij poniżej, aby przeczytać propozycję.'
       main_header: 'Zostałeś zaproszony do współsponsorowania wniosku'
       subject: 'Zostałeś zaproszony do współsponsorowania wniosku'

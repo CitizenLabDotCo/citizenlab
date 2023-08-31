@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import reactStringReplace from 'react-string-replace';
 
@@ -17,8 +17,8 @@ import {
   Text,
 } from '@citizenlab/cl2-component-library';
 
-import { useIntl } from 'utils/cl-intl';
-import messages from '../messages';
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
+import translations from './translations';
 import styled from 'styled-components';
 import { useSelectedInputContext } from '../SelectedInputContext';
 import useAnalysisSummary from 'api/analysis_summaries/useAnalysisSummary';
@@ -29,6 +29,8 @@ import Rate from './Rate';
 
 import tracks from 'containers/Admin/projects/project/analysis/tracks';
 import { trackEventByName } from 'utils/analytics';
+
+import { deleteTrailingIncompleteIDs, refRegex, removeRefs } from './util';
 
 const StyledSummaryText = styled.div`
   white-space: pre-wrap;
@@ -45,6 +47,7 @@ type Props = {
 };
 
 const Summary = ({ insight }: Props) => {
+  const [isCopied, setIsCopied] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const { setSelectedInputId } = useSelectedInputContext();
   const { formatMessage, formatDate } = useIntl();
@@ -65,7 +68,7 @@ const Summary = ({ insight }: Props) => {
     backgroundTask?.data.attributes.state === 'queued';
 
   const handleSummaryDelete = (id: string) => {
-    if (window.confirm(formatMessage(messages.deleteSummaryConfirmation))) {
+    if (window.confirm(formatMessage(translations.deleteSummaryConfirmation))) {
       deleteSummary(
         {
           analysisId,
@@ -82,11 +85,6 @@ const Summary = ({ insight }: Props) => {
     }
   };
 
-  const deleteTrailingIncompleteIDs = (str: string | null) => {
-    if (!str) return str;
-    return str.replace(/\[?[0-9a-f-]{0,35}$/, '');
-  };
-
   const handleClickInput = (inputId: string) => {
     setSelectedInputId(inputId);
     const element = document.getElementById(`input-${inputId}`);
@@ -96,23 +94,19 @@ const Summary = ({ insight }: Props) => {
   };
 
   const replaceIdRefsWithLinks = (summary) => {
-    return reactStringReplace(
-      summary,
-      /\[?([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})\]?/g,
-      (match, i) => (
-        <StyledButton
-          onClick={() => {
-            handleClickInput(match);
-            trackEventByName(tracks.inputPreviewedFromSummary.name, {
-              extra: { analysisId },
-            });
-          }}
-          key={i}
-        >
-          <Icon name="idea" />
-        </StyledButton>
-      )
-    );
+    return reactStringReplace(summary, refRegex, (match, i) => (
+      <StyledButton
+        onClick={() => {
+          handleClickInput(match);
+          trackEventByName(tracks.inputPreviewedFromSummary.name, {
+            extra: { analysisId },
+          });
+        }}
+        key={i}
+      >
+        <Icon name="idea" />
+      </StyledButton>
+    ));
   };
 
   if (!summary) return null;
@@ -147,9 +141,24 @@ const Summary = ({ insight }: Props) => {
       key={summary.data.id}
       bgColor={colors.teal100}
       p="24px"
+      pt="48px"
       mb="8px"
       borderRadius={stylingConsts.borderRadius}
+      position="relative"
     >
+      <Box position="absolute" top="16px" right="8px">
+        <IconButton
+          iconName={isCopied ? 'check' : 'copy'}
+          iconColor={colors.teal400}
+          iconColorOnHover={colors.teal700}
+          a11y_buttonActionMessage={'Copy summary to clipboard'}
+          onClick={() => {
+            summaryText &&
+              navigator.clipboard.writeText(removeRefs(summaryText));
+            setIsCopied(true);
+          }}
+        />
+      </Box>
       <Box>
         <Box
           display="flex"
@@ -160,7 +169,7 @@ const Summary = ({ insight }: Props) => {
         >
           {hasFilters && (
             <>
-              <Text m="0px">Summary for</Text>
+              <Text m="0px">{formatMessage(translations.summaryFor)}</Text>
               <FilterItems
                 filters={summary.data.attributes.filters}
                 isEditable={false}
@@ -170,7 +179,9 @@ const Summary = ({ insight }: Props) => {
 
           {!hasFilters && (
             <>
-              <Text m="0px">Summary for all inputs</Text>
+              <Text m="0px">
+                {formatMessage(translations.summaryForAllInputs)}
+              </Text>
             </>
           )}
         </Box>
@@ -190,7 +201,13 @@ const Summary = ({ insight }: Props) => {
         </Box>
         {summary.data.attributes.accuracy && (
           <Box color={colors.teal700} my="16px">
-            Accuracy {summary.data.attributes.accuracy * 100}%
+            <FormattedMessage
+              {...translations.accuracy}
+              values={{
+                accuracy: summary.data.attributes.accuracy * 100,
+                percentage: formatMessage(translations.percentage),
+              }}
+            />
           </Box>
         )}
       </Box>
@@ -200,9 +217,10 @@ const Summary = ({ insight }: Props) => {
         gap="4px"
         alignItems="center"
         justifyContent="space-between"
+        mt="16px"
       >
         <Button buttonStyle="white" onClick={handleRestoreFilters} p="4px 12px">
-          Restore filters
+          {formatMessage(translations.restoreFilters)}
         </Button>
         <Box display="flex">
           <IconTooltip
@@ -211,13 +229,14 @@ const Summary = ({ insight }: Props) => {
             theme="light"
             iconSize="24px"
             iconColor={colors.teal400}
+            placement="left-end"
           />
           <IconButton
             iconName="delete"
             onClick={() => handleSummaryDelete(insight.id)}
             iconColor={colors.teal400}
             iconColorOnHover={colors.teal700}
-            a11y_buttonActionMessage={formatMessage(messages.deleteSummary)}
+            a11y_buttonActionMessage={formatMessage(translations.deleteSummary)}
           />
         </Box>
       </Box>

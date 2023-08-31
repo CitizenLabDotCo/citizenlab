@@ -144,7 +144,6 @@ sr-Cyrl:
     cosponsor_of_your_initiative:
       cta_reply_to: 'Погледајте свој предлог'
       event_description_initiative: 'Честитам! %{cosponsorName} је прихватио ваш позив да буде ко-спонзор вашег предлога.'
-      event_description_cosponsoring: 'Ко-спонзорисање предлога значи да ће <strong>ваше име бити приказано</strong> са именима других ко-спонзора предлога.'
       main_header: '%{cosponsorName} је прихватио ваш позив да буде ко-спонзор вашег предлога'
       subject: '%{cosponsorName} је прихватио ваш позив да буде ко-спонзор вашег предлога'
       preheader_initiative: '%{cosponsorName} је прихватио ваш позив да буде ко-спонзор вашег предлога'
@@ -192,6 +191,7 @@ sr-Cyrl:
       cta_reply_to: 'Ко-спонзоришите овај предлог'
       event_description_initiative: '%{authorName} је направио нови предлог и желео би да га суспонзоришете.'
       event_description_cosponsoring: 'Ко-спонзорисање предлога значи да ће <strong>ваше име бити приказано</strong> са именима других ко-спонзора предлога.'
+      event_description_before_action: 'Да бисте видели предлог и прихватили позив, морате бити пријављени на свој налог.'
       event_description_action: 'Кликните испод да прочитате предлог.'
       main_header: 'Позвани сте да будете ко-спонзор предлога'
       subject: 'Позвани сте да будете ко-спонзор предлога'

@@ -185,6 +185,8 @@ ach:
       crwdns207946:0crwdne207946:0
     default_eligibility_criteria: >
       crwdns207948:0crwdne207948:0
+    default_posting_tips: >
+      crwdns963563:0crwdne963563:0
   reset_password_mailer:
     send_reset_password:
       cta_reset_password: 'crwdns207950:0crwdne207950:0'

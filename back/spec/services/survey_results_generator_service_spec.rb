@@ -16,12 +16,22 @@ RSpec.describe SurveyResultsGeneratorService do
 
   # Create a page to describe that it is not included in the survey results.
   let!(:page_field) { create(:custom_field_page, resource: form) }
-  let(:text_field) do
+  let!(:text_field) do
     create(
       :custom_field,
       resource: form,
       title_multiloc: {
         'en' => 'What is your favourite colour?'
+      },
+      description_multiloc: {}
+    )
+  end
+  let!(:multiline_text_field) do
+    create(
+      :custom_field_multiline_text,
+      resource: form,
+      title_multiloc: {
+        'en' => 'What is your favourite recipe?'
       },
       description_multiloc: {}
     )
@@ -144,6 +154,20 @@ RSpec.describe SurveyResultsGeneratorService do
       data: {
         results: [
           {
+            inputType: 'text',
+            question: { 'en' => 'What is your favourite colour?' },
+            required: false,
+            totalResponses: 4,
+            customFieldId: text_field.id
+          },
+          {
+            inputType: 'multiline_text',
+            question: { 'en' => 'What is your favourite recipe?' },
+            required: false,
+            totalResponses: 0,
+            customFieldId: multiline_text_field.id
+          },
+          {
             inputType: 'multiselect',
             question: {
               'en' => 'What are your favourite pets?',
@@ -157,7 +181,8 @@ RSpec.describe SurveyResultsGeneratorService do
               { answer: { 'en' => 'Dog', 'fr-FR' => 'Chien', 'nl-NL' => 'Hond' }, responses: 3 },
               { answer: { 'en' => 'Cow', 'fr-FR' => 'Vache', 'nl-NL' => 'Koe' }, responses: 2 },
               { answer: { 'en' => 'Pig', 'fr-FR' => 'Porc', 'nl-NL' => 'Varken' }, responses: 1 }
-            ]
+            ],
+            customFieldId: multiselect_field.id
           },
           {
             inputType: 'linear_scale',
@@ -188,7 +213,8 @@ RSpec.describe SurveyResultsGeneratorService do
                 },
                 responses: 2
               }
-            ]
+            ],
+            customFieldId: linear_scale_field.id
           },
           {
             inputType: 'select',
@@ -202,7 +228,8 @@ RSpec.describe SurveyResultsGeneratorService do
             answers: [
               { answer: { 'en' => 'Los Angeles', 'fr-FR' => 'Los Angeles', 'nl-NL' => 'Los Angeles' }, responses: 3 },
               { answer: { 'en' => 'New York', 'fr-FR' => 'New York', 'nl-NL' => 'New York' }, responses: 1 }
-            ]
+            ],
+            customFieldId: select_field.id
           }
         ],
         totalSubmissions: 20
@@ -212,12 +239,12 @@ RSpec.describe SurveyResultsGeneratorService do
 
   let(:expected_result_without_minimum_and_maximum_labels) do
     expected_result.tap do |result|
-      result[:data][:results][1][:answers][0][:answer] = {
+      result[:data][:results][3][:answers][0][:answer] = {
         'en' => '5 - Strongly agree',
         'fr-FR' => '5',
         'nl-NL' => '5'
       }
-      result[:data][:results][1][:answers][4][:answer] = {
+      result[:data][:results][3][:answers][4][:answer] = {
         'en' => '1',
         'fr-FR' => "1 - Pas du tout d'accord",
         'nl-NL' => '1'
