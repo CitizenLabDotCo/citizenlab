@@ -48,7 +48,7 @@ const DateFilterDropdown = ({
     { text: formatMessage(messages.allTime), value: 'all' },
   ];
   return (
-    <Box mr="8px" id="e2e-event-date-filter">
+    <Box id="e2e-event-date-filter">
       <FilterSelector
         id="e2e-date-filter-selector"
         title={formatMessage(messages.date)}

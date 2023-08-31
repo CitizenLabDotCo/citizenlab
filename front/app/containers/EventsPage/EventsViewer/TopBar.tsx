@@ -55,7 +55,7 @@ const TopBar = memo<Props>(
           {title}
         </Title>
         <ProjectFilterDropdownPositioner>
-          <Box display="flex" mt="8px" ml="auto">
+          <Box display="flex" flexWrap="wrap" gap="8px" mt="8px" ml="auto">
             {showDateFilter && (
               <DateFilterDropdown
                 onChange={setDateFilter}
