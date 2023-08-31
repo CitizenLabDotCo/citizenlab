@@ -17,6 +17,7 @@ import useAnalysis from 'api/analyses/useAnalysis';
 import InputShortFieldValue from './FieldValue';
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../tracks';
+import translations from './translations';
 
 interface Props {
   input: IInputsData;
@@ -28,7 +29,7 @@ const InputListItem = memo(({ input, onSelect, selected }: Props) => {
   const { analysisId } = useParams() as { analysisId: string };
   const { data: analysis } = useAnalysis(analysisId);
   const { data: author } = useUserById(input.relationships.author.data?.id);
-  const { formatDate } = useIntl();
+  const { formatDate, formatMessage } = useIntl();
 
   if (!analysis || !input) return null;
 
@@ -66,7 +67,7 @@ const InputListItem = memo(({ input, onSelect, selected }: Props) => {
             ))}
           {!title_multiloc ||
             (isEmpty(title_multiloc) && !author && (
-              <Text m="0px">Anonymous input</Text>
+              <Text m="0px">{formatMessage(translations.anonymous)}</Text>
             ))}
           {title_multiloc && (
             <Text m="0px">
@@ -104,7 +105,7 @@ const InputListItem = memo(({ input, onSelect, selected }: Props) => {
             </Box>
           )}
           {(!title_multiloc || isEmpty(title_multiloc)) && (
-            <Box flex="1">
+            <Box flex="1" w="100%">
               {analysis.data.relationships.custom_fields.data
                 .slice(0, 3)
                 .map((customField) => (

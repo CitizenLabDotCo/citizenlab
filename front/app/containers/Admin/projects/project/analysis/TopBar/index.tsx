@@ -16,7 +16,7 @@ import SearchInput from 'components/UI/SearchInput';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import Filters from './Filters';
 import { useIntl } from 'utils/cl-intl';
-import messages from '../messages';
+import translations from './translations';
 import useAnalysis from 'api/analyses/useAnalysis';
 import Tasks from '../Tasks';
 import LaunchModal from '../LaunchModal';
@@ -111,7 +111,7 @@ const TopBar = () => {
           size="s"
           onClick={toggleFilters}
         >
-          {formatMessage(messages.filters)}
+          {formatMessage(translations.filters)}
         </Button>
         <FilterItems filters={omit(filters, 'tag_ids', 'search')} isEditable />
         <Box marginLeft="auto">
