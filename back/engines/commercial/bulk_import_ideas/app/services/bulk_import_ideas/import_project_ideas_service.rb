@@ -48,54 +48,33 @@ module BulkImportIdeas
       XlsxService.new.hash_array_to_xlsx [columns]
     end
 
-    # parsed_docs is the output from google form parser
-    # OLD VERSION
-    # def pdf_to_idea_rows(parsed_docs)
-    #   parsed_docs.map do |doc|
-    #     idea_row = {}
-    #     idea_row[:pages] = doc.pluck(:page).uniq
-    #     idea_row[:project_id] = @project.id
-    #     idea_row[:phase_id] = @phase.id if @phase
-    #
-    #     doc = clean_field_names(doc)
-    #     idea_row = process_user_details(doc, idea_row)
-    #     idea_row = process_custom_form_fields(doc, idea_row)
-    #     idea_row
-    #   end
-    # end
-
     # pdf_raw_text is the raw text output from the google parser
-    def pdf_to_idea_rows(raw_text)
-      docs = IdeaPlaintextParserService.new(@project.id, @locale, @phase&.id).parse_text(raw_text)
-      docs.map do |doc|
-        idea_row = {}
-        # idea_row[:pages] = doc.pluck(:page).uniq
-        idea_row[:project_id] = @project.id
-        idea_row[:phase_id] = @phase.id if @phase
-
-        doc = clean_field_names(doc)
-        idea_row = process_user_details(doc, idea_row)
-        idea_row = process_custom_form_fields(doc, idea_row)
-        idea_row
+    def parse_idea_rows(file, file_type)
+      ideas = if file_type == 'pdf'
+        parse_pdf_ideas(file)
+      else
+        parse_xlsx_ideas(file)
       end
+      ideas_to_idea_rows(ideas)
     end
 
-    def xlsx_to_idea_rows(xlsx)
-      xlsx.map do |xlsx_row|
+    def ideas_to_idea_rows(ideas_array)
+      ideas_array.map do |idea|
         idea_row = {}
 
-        # Fields not in custom form
-        idea_row[:project_id]           = @project.id
-        idea_row[:phase_id]             = @phase.id if @phase
-        idea_row[:published_at]         = xlsx_row['Date Published (dd-mm-yyyy)']
-        idea_row[:image_url]            = xlsx_row['Image URL']
-        idea_row[:latitude]             = xlsx_row['Latitude']
-        idea_row[:longitude]            = xlsx_row['Longitude']
-        idea_row[:topic_titles] = (xlsx_row['Tags'] || '').split(';').map(&:strip).select(&:present?)
+        # Fields not in idea/survey form
+        idea_row[:project_id]   = @project.id
+        idea_row[:phase_id]     = @phase.id if @phase
+        # idea_row[:pages] = doc.pluck(:page).uniq
+        idea_row[:published_at] = idea['Date Published (dd-mm-yyyy)']
+        idea_row[:image_url]    = idea['Image URL']
+        idea_row[:latitude]     = idea['Latitude']
+        idea_row[:longitude]    = idea['Longitude']
+        idea_row[:topic_titles] = (idea['Tags'] || '').split(';').map(&:strip).select(&:present?)
 
-        doc = clean_field_names(xlsx_row)
-        idea_row = process_user_details(doc, idea_row)
-        idea_row = process_custom_form_fields(doc, idea_row)
+        idea = clean_field_names(idea)
+        idea_row = process_user_details(idea, idea_row)
+        idea_row = process_custom_form_fields(idea, idea_row)
         idea_row
       end
     end
@@ -149,26 +128,6 @@ module BulkImportIdeas
         end
       end
 
-      # Select fields - For PDF import
-      # As we don't have a title for each select question we use the options in order they appear on the form
-      # and remove so that fields with the same values don't get picked up
-      # select_options.each do |option|
-      #   option_field = find_field(doc, option[:name])
-      #   if option_field && option_field[:type].include?('checkbox')
-      #     field_key = option[:field_key].to_sym
-      #     checked = option_field[:type] == 'filled_checkbox'
-      #     if option[:field_type] == 'multiselect' && checked
-      #       custom_fields[field_key] = custom_fields[field_key] || []
-      #       custom_fields[field_key] << option[:key]
-      #     elsif checked && !custom_fields[field_key]
-      #       # Only use the first selected option for a single select
-      #       custom_fields[field_key] = option[:key]
-      #     end
-      #     doc.delete_if { |f| f == option_field }
-      #   end
-      # end
-
-      # Select fields for xlsx import - we have the name of field so this done differently
       select_fields.each do |field|
         select_field = find_field(doc, field[:name])
         if select_field
@@ -196,10 +155,10 @@ module BulkImportIdeas
       doc.find { |f| f[:name] == name }
     end
 
-    def clean_field_names(doc)
+    def clean_field_names(idea)
       locale_optional_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.optional') }
-      doc = doc.map { |k, v| { name: k, value: v } } # Temp: Need to just use in this format
-      doc.map { |f| { name: f[:name].gsub("(#{locale_optional_label})", '').squish, value: f[:value], type: f[:type], page: f[:page], x: f[:x], y: f[:y] } }
+      idea = idea.map { |k, v| { name: k, value: v } } # Temp: Need to just use in this format
+      idea.map { |f| { name: f[:name].gsub("(#{locale_optional_label})", '').squish, value: f[:value], type: f[:type], page: f[:page], x: f[:x], y: f[:y] } }
     end
 
     def process_user_details(doc, idea_row)
