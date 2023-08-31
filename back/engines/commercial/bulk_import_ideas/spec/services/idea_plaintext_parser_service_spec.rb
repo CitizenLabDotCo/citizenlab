@@ -176,70 +176,107 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
     end
   end
 
-  # describe 'form with descriptions' do
-  #   let(:project) { create(:continuous_project) }
-  #   let(:service) { described_class.new create(:admin), project.id, 'en', nil }
-  #   let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
+  describe 'form with descriptions' do
+    let(:project) { create(:continuous_project) }
+    let(:service) { described_class.new create(:admin), project.id, 'en', nil }
+    let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
 
-  #   before do
-  #     # Topics for project
-  #     project.allowed_input_topics << create(:topic_economy)
-  #     project.allowed_input_topics << create(:topic_waste)
+    before do
+      # Topics for project
+      project.allowed_input_topics << create(:topic_economy)
+      project.allowed_input_topics << create(:topic_waste)
 
-  #     # Custom fields
-  #     create(:custom_field, resource: custom_form, 
-  #       key: 'pool_question', 
-  #       title_multiloc: { 'en' => 'Your favourite name for a swimming poolxxxxx' }, 
-  #       input_type: 'text', 
-  #       enabled: true,
-  #       required: false
-  #     )
-  #   end
+      # Custom fields
+      create(:custom_field, resource: custom_form, 
+        key: 'pool_question', 
+        title_multiloc: { 'en' => 'Your favourite name for a swimming pool' },
+        description_multiloc: { 'en' => "<p>A slightly longer description under a field, with a bunch of words used to explain things to people. Please don't put anything weird in this field, thanks!</p>" },
+        input_type: 'text', 
+        enabled: true,
+        required: false
+      )
 
-  #   # Based on fixtures/with_page_numbers.pdf
-  #   it 'parses text correctly (single document)' do
-  #     text = "Page 1\n
-  #       Title\n
-  #       Page numbers test\n
-  #       Description\n
-  #       A slightly longer description under a default field, with a bunch of words used to explain things to\n
-  #       people. Please don't put anything weird in this field, thanks!\n
-  #       Page numbers test description\n
-  #       with words and things\n
-  #       Location (optional)\n
-  #       Somewhere\n
-  #       Your favourite name for a swimming pool (optional)\n
-  #       *This answer will only be shared with moderators, and not to the public.\n
-  #       Page 2\n
-  #       How much do you like pizza (optional)\n
-  #       A short description\n
-  #       *This answer will only be shared with moderators, and not to the public.\n
-  #       A lot\n
-  #       ○ Not at all\n
-  #       How much do you like burgers (optional)\n
-  #       *This answer will only be shared with moderators, and not to the public.\n
-  #       ○ A lot\n
-  #       ☑ Not at all\n
-  #       Which flavors do you want?\n
-  #       *Choose as many as you like\n
-  #       *This answer will only be shared with moderators, and not to the public.\n
-  #       ☐ Vanilla\n
-  #       ☑ Strawberry\n
-  #       Chocolate\n
-  #       Pistachio\n
-  #     "
-  #       .lines
-  #       .select { |line| line != "\n" }
-  #       .map { |line| line.strip }
-  #       .join("\n")
+      pizza_select_field = create(:custom_field, resource: custom_form,
+        key: 'pizza',
+        title_multiloc: { 'en' => 'How much do you like pizza' },
+        description_multiloc: { 'en' => '<p>A short description</p>' },
+        input_type: 'select',
+        enabled: true,
+        required: false
+      )
+      create(:custom_field_option, custom_field: pizza_select_field,
+        key: 'a-lot',
+        title_multiloc: { 'en' => 'A lot' }
+      )
+      create(:custom_field_option, custom_field: pizza_select_field,
+        key: 'not-at-all',
+        title_multiloc: { 'en' => 'Not at all' }
+      )
 
-  #     service = described_class.new project.id, 'en', nil
-  #     docs = service.parse_text text
+      burger_select_field = create(:custom_field, resource: custom_form,
+        key: 'burgers',
+        title_multiloc: { 'en' => 'How much do you like burgers' },
+        input_type: 'select',
+        enabled: true,
+        required: false
+      )
+      create(:custom_field_option, custom_field: burger_select_field,
+        key: 'a-lot',
+        title_multiloc: { 'en' => 'A lot' }
+      )
+      create(:custom_field_option, custom_field: burger_select_field,
+        key: 'not-at-all',
+        title_multiloc: { 'en' => 'Not at all' }
+      )
+    end
 
-  #     # TODO assert
-  #   end
-    # it 'parses text correctly (multiple documents)' do
+    # Based on fixtures/with_page_numbers.pdf, but with description moved
+    it 'parses text correctly (single document)' do
+      text = "Page 1\n
+        Title\n
+        Page numbers test\n
+        Description\n
+        Page numbers test description\n
+        with words and things\n
+        Location (optional)\n
+        Somewhere\n
+        Your favourite name for a swimming pool (optional)\n
+        A slightly longer description under a field, with a bunch of words used to explain things to\n
+        people. Please don't put anything weird in this field, thanks!\n
+        *This answer will only be shared with moderators, and not to the public.\n
+        Page 2\n
+        How much do you like pizza (optional)\n
+        A short description\n
+        *This answer will only be shared with moderators, and not to the public.\n
+        A lot\n
+        ○ Not at all\n
+        How much do you like burgers (optional)\n
+        *This answer will only be shared with moderators, and not to the public.\n
+        ○ A lot\n
+        ☑ Not at all\n
+        Which flavors do you want?\n
+        *Choose as many as you like\n
+        *This answer will only be shared with moderators, and not to the public.\n
+        ☐ Vanilla\n
+        ☑ Strawberry\n
+        Chocolate\n
+        Pistachio\n
+      "
+        .lines
+        .select { |line| line != "\n" }
+        .map { |line| line.strip }
+        .join("\n")
+
+      service = described_class.new project.id, 'en', nil
+      docs = service.parse_text text
+
+      binding.pry
+
+      # TODO assert
+    end
+
+    it 'parses text correctly (multiple documents)' do
       # TODO
-    # end
-  # end
+    end
+  end
 end

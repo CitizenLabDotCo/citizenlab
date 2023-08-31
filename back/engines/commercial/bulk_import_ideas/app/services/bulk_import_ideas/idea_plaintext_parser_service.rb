@@ -1,6 +1,7 @@
 module BulkImportIdeas
   class IdeaPlaintextParserService
     QUESTION_TYPES = %w[select multiselect text text_multiloc multiline_text html_multiloc]
+    FORBIDDEN_HTML_TAGS_REGEX = /<\/?(div|p|span|ul|ol|li|em|img|a){1}[^>]*\/?>/
     EMPTY_SELECT_CIRCLES = ["O", "○"]
 
     def initialize(project_id, locale, phase_id)
@@ -45,8 +46,6 @@ module BulkImportIdeas
       current_custom_field = nil
 
       lines.each do |line|
-        next if is_disclaimer? line
-
         if is_new_page? line then
           if is_new_document?(line, form) then
             unless form.nil? then
@@ -75,7 +74,11 @@ module BulkImportIdeas
           next
         end
 
-        field_type = current_custom_field&.input_type
+        next if current_custom_field.nil?
+        next if is_disclaimer? line
+        next if is_description?(line, current_custom_field)
+
+        field_type = current_custom_field.input_type
 
         if ['text', 'text_multiloc'].include? field_type then
           current_text = form[:fields][current_field_display_title]
@@ -111,6 +114,10 @@ module BulkImportIdeas
             .pluck(:title_multiloc)
             .map { |multiloc| multiloc[@locale] }
 
+          if current_field_display_title == "How much do you like burgers (optional)" then
+            binding.pry
+          end
+
           unless is_empty_select_circle?(line, option_titles) then
             form[:fields][current_field_display_title] = match_selected_option(
               line,
@@ -129,6 +136,10 @@ module BulkImportIdeas
 
     private
 
+    def is_new_page?(line)
+      @page_regex.match? line
+    end
+
     def is_new_document?(line, form)
       return true if line == "#{@page_copy} 1"
 
@@ -140,10 +151,6 @@ module BulkImportIdeas
       # page 1, we will assume you went to the next document
       # but it's missing the first page
       page_number <= last_page
-    end
-
-    def is_new_page?(line)
-      @page_regex.match? line
     end
 
     def get_page_number(line)
@@ -160,6 +167,15 @@ module BulkImportIdeas
 
     def is_disclaimer?(line)
       line == "*#{@choose_as_many_copy}" || line == "*#{@this_answer_copy}"
+    end
+
+    def is_description?(line, custom_field)
+      field_description = custom_field.description_multiloc[@locale]
+      return false if field_description.nil?
+
+      field_description = field_description.gsub(FORBIDDEN_HTML_TAGS_REGEX, '')
+      return false if field_description == ''
+      return field_description.include? line
     end
 
     # Checks if string has format '○ option label' or 'O option label'
