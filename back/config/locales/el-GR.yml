@@ -224,6 +224,7 @@ el:
       optional: 'προαιρετικό'
       choose_as_many: 'Επιλέξτε όσα θέλετε'
       this_answer: 'Αυτή η απάντηση θα κοινοποιηθεί μόνο στους συντονιστές και όχι στο κοινό.'
+      page: 'Σελίδα'
   project_copy:
     title_suffix: 'Aντίγραφο'
   confirmations_mailer:
