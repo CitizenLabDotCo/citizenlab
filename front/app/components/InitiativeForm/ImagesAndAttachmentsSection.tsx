@@ -1,14 +1,17 @@
 import React from 'react';
 import FileUploader from 'components/HookForm/FileUploader';
 import ImagesDropzone from 'components/HookForm/ImagesDropzone';
-import { FormSectionTitle, FormLabel } from 'components/UI/FormComponents';
+import {
+  FormSection,
+  FormSectionTitle,
+  FormLabel,
+} from 'components/UI/FormComponents';
 import messages from './messages';
 import { SectionField } from 'components/admin/Section';
-import { StyledFormSection } from '.';
 
 const ImageAndAttachmentsSection = () => {
   return (
-    <StyledFormSection>
+    <FormSection>
       <FormSectionTitle message={messages.formAttachmentsSectionTitle} />
       <SectionField id="e2e-iniatiative-banner-dropzone">
         <FormLabel
@@ -50,7 +53,7 @@ const ImageAndAttachmentsSection = () => {
           <FileUploader name="local_initiative_files" />
         </FormLabel>
       </SectionField>
-    </StyledFormSection>
+    </FormSection>
   );
 };
 

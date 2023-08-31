@@ -1,6 +1,4 @@
 import React, { Suspense, lazy, useEffect, useState } from 'react';
-import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 
 // typings
@@ -50,13 +48,6 @@ import { IInitiativeFileData } from 'api/initiative_files/types';
 import Warning from 'components/UI/Warning';
 import useInitiativeReviewRequired from 'hooks/useInitiativeReviewRequired';
 import { stripHtmlTags } from 'utils/helperUtils';
-
-export const StyledFormSection = styled(FormSection)`
-  ${media.phone`
-    padding-left: 18px;
-    padding-right: 18px;
-  `}
-`;
 
 declare module 'components/UI/Error' {
   interface TFieldNameMap {
@@ -214,9 +205,8 @@ const InitiativeForm = ({
         >
           <Box pb="92px">
             <Feedback />
-            <StyledFormSection>
+            <FormSection>
               <FormSectionTitle message={messages.formGeneralSectionTitle} />
-
               <SectionField id="e2e-initiative-form-title-section">
                 <FormLabel
                   htmlFor="title_multiloc"
@@ -286,8 +276,8 @@ const InitiativeForm = ({
                   )}
                 </>
               </Warning>
-            </StyledFormSection>
-            <StyledFormSection>
+            </FormSection>
+            <FormSection>
               <FormSectionTitle message={messages.formDetailsSectionTitle} />
               <SectionField aria-live="polite">
                 <FormLabel
@@ -312,7 +302,7 @@ const InitiativeForm = ({
                   </FormLabel>
                 </SectionField>
               )}
-            </StyledFormSection>
+            </FormSection>
             <Suspense fallback={null}>
               <CosponsorsFormSection
                 cosponsorships={initiative?.attributes.cosponsorships}
