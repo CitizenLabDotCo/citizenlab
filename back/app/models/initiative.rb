@@ -54,7 +54,7 @@ class Initiative < ApplicationRecord
   has_many :areas_initiatives, dependent: :destroy
   has_many :areas, through: :areas_initiatives
   has_many :cosponsors_initiatives, dependent: :destroy
-  has_many :cosponsors, through: :cosponsors_initiatives, source: :user, dependent: :destroy
+  has_many :cosponsors, through: :cosponsors_initiatives, source: :user, dependent: :destroy # dependent: :destroy destroys the associated cosponsors_inititiatve records, not the users
   has_many :initiative_status_changes, dependent: :destroy
   has_one :initiative_initiative_status
   has_one :initiative_status, through: :initiative_initiative_status
