@@ -81,9 +81,15 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
     service = described_class.new project.id, 'en', nil
     docs = service.parse_text text
 
-    # TODO properly assert this
+    result = [{"Title"=>"My very good idea",
+    "Description"=>
+     "would suggest building the new swimming Pool near the Shopping mall on Park Lane, It's easily accessible location with enough space an",
+    "Location (optional)"=>"Dear shopping mall",
+    "Your favourite name for a swimming pool (optional)"=>"The cool pool",
+    "How much do you like pizza (optional)"=>["A lot"],
+    "How much do you like burgers (optional)"=>["Not at all"]}]
 
-    expect(docs).not_to be_nil
+    expect(docs).to eq result
   end
 
   it 'parses text correctly (multiple documents)' do
@@ -134,10 +140,23 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
     service = described_class.new project.id, 'en', nil
     docs = service.parse_text text
 
-    binding.pry
+    result = [{"Title"=>"Another great idea, wow",
+    "Description"=>
+     "Can you believe how great this idea is? Absolutely mind-blowing. next-level stuff",
+    "Location (optional)"=>"Pachecolaan 34, Brussels",
+    "Your favourite name for a swimming pool (optional)"=>nil,
+    "How much do you like pizza (optional)"=>["Not at all"],
+    "How much do you like burgers (optional)"=>["A lot"]},
+   {"Title"=>"This one is a bil mediarre inedio,",
+    "Description"=>
+     "Honestly, I've seen better ideas. This one is a bit dissappointing.",
+    "Location (optional)"=>nil,
+    "Your favourite name for a swimming pool (optional)"=>"Pooly Mc Poolface",
+    "How much do you like pizza (optional)"=>["A lot"],
+    "How much do you like burgers (optional)"=>["A lot"]}]
   
     # TODO properly assert this
   
-    expect(docs).not_to be_nil
+    expect(docs).to eq result
   end
 end

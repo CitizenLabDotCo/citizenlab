@@ -102,7 +102,10 @@ module BulkImportIdeas
               form[current_field_display_title] = []
             end
 
-            form[current_field_display_title] << line
+            form[current_field_display_title] << match_selected_option(
+              line,
+              option_titles
+            )
           end
         end
       end
@@ -142,6 +145,14 @@ module BulkImportIdeas
       return false unless EMPTY_SELECT_CIRCLES.include? first_character
       return false unless second_character == ' '
       return option_titles.include? rest
+    end
+
+    def match_selected_option(line, option_titles)
+      line_without_first_chars = line[2,line.length - 2]
+
+      option_titles.find do |option| 
+        option == line || option == line_without_first_chars
+      end
     end
   end
 end
