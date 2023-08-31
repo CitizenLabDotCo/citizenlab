@@ -444,6 +444,7 @@ export function showInputManager(
   project: IProjectData,
   phases?: Error | IPhaseData[] | null | undefined
 ): boolean {
+  console.log({ project });
   if (project.attributes.process_type === 'continuous') {
     return getMethodConfig(project.attributes.participation_method)
       .showInputManager;
