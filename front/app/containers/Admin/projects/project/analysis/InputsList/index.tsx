@@ -65,10 +65,10 @@ const InputsList = () => {
   ]);
 
   useEffect(() => {
-    if (!isFetching) {
+    if (!isFetching && inputsLength > 0) {
       scrollToIndex(0);
     }
-  }, [filters, scrollToIndex, measure, isFetching]);
+  }, [filters, scrollToIndex, measure, isFetching, inputsLength]);
 
   // Keyboard navigations
 
