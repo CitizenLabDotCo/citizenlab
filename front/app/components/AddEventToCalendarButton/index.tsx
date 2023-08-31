@@ -17,6 +17,7 @@ export const AddEventToCalendarButton = ({ eventId }: { eventId: string }) => {
   const [isError, setIsError] = useState(false);
 
   const handleICSDownload = async () => {
+    setIsError(false);
     try {
       const blob = await requestBlob(
         `${API_PATH}/events/${eventId}.ics`,
