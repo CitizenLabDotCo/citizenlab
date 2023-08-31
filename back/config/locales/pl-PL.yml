@@ -224,6 +224,7 @@ pl:
       optional: 'opcjonalny'
       choose_as_many: 'Wybierz dowolną liczbę'
       this_answer: 'Ta odpowiedź zostanie udostępniona tylko moderatorom, a nie publicznie.'
+      page: 'Strona'
   project_copy:
     title_suffix: 'Kopia'
   confirmations_mailer:
