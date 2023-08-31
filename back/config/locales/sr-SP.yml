@@ -224,6 +224,7 @@ sr-Cyrl:
       optional: 'опционо'
       choose_as_many: 'Изаберите колико желите'
       this_answer: 'Овај одговор ће бити подељен само модераторима, а не јавности.'
+      page: 'Страна'
   project_copy:
     title_suffix: 'Копирај'
   confirmations_mailer:
