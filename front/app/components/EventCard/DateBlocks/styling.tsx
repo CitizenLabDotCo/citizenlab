@@ -51,18 +51,18 @@ export const EventMonth = styled.div`
 
 export const EventDay = styled.div`
   color: ${(props) => props.theme.colors.tenantText};
-  font-size: ${fontSizes.m}px;
+  font-size: ${fontSizes.s}px;
   line-height: normal;
   font-weight: 400;
 
   ${media.phone`
-    font-size: ${fontSizes.base}px;
+    font-size: ${fontSizes.s}px;
   `}
 `;
 
 export const EventYear = styled.div`
   color: #fff;
-  font-size: ${fontSizes.base}px;
+  font-size: ${fontSizes.s}px;
   line-height: normal;
   font-weight: 400;
   display: flex;

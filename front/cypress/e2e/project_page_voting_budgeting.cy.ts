@@ -1,3 +1,4 @@
+import moment = require('moment');
 import { randomEmail, randomString } from '../support/commands';
 
 describe('Continuous Budgeting project', () => {
@@ -27,6 +28,17 @@ describe('Continuous Budgeting project', () => {
     }).then((project) => {
       projectId = project.body.data.id;
       projectSlug = project.body.data.attributes.slug;
+
+      cy.apiCreateEvent({
+        projectId,
+        title: 'Event title',
+        location: 'Event location',
+        includeLocation: true,
+        description: 'Event description',
+        startDate: moment().subtract(1, 'day').toDate(),
+        endDate: moment().add(1, 'day').toDate(),
+      });
+
       return cy
         .apiCreateIdea(
           projectId,
@@ -69,6 +81,10 @@ describe('Continuous Budgeting project', () => {
 
   it('hides the idea sorting options', () => {
     cy.get('.e2e-filter-selector-button').should('not.exist');
+  });
+
+  it('shows the event CTA when applicable', () => {
+    cy.get('#e2e-project-see-events-button').should('exist');
   });
 
   it('can allocate the budget to ideas and show how much budget is left', () => {

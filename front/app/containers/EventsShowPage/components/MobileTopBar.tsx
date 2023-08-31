@@ -1,10 +1,12 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 
 // hooks
 import useProjectById from 'api/projects/useProjectById';
+import { useLocation } from 'react-router-dom';
 
 // i18n
-import useLocalize from 'hooks/useLocalize';
+import { useIntl } from 'utils/cl-intl';
+import messages from '../messages';
 
 // components
 import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
@@ -46,30 +48,25 @@ interface Props {
   projectId?: string;
 }
 
-const EventTopBarMobile = ({ projectId }: Props) => {
+const MobileTopBar = ({ projectId }: Props) => {
   const { data: project } = useProjectById(projectId);
   const isSmallerThanTablet = useBreakpoint('tablet');
-
-  const localize = useLocalize();
-
-  const handleGoBack = useCallback(() => {
-    if (project) {
-      clHistory.push(`/projects/${project.data.attributes.slug}`);
-    } else {
-      clHistory.push('/');
-    }
-  }, [project]);
+  const { formatMessage } = useIntl();
+  const location = useLocation();
 
   return (
     <Container>
       <TopBarInner>
         <Box height="48px" alignItems="center" display="flex">
           <GoBackButtonSolid
-            text={
-              project ? localize(project.data.attributes.title_multiloc) : ''
-            }
+            text={formatMessage(messages.goBack)}
             iconSize={isSmallerThanTablet ? '42px' : undefined}
-            onClick={handleGoBack}
+            onClick={() => {
+              const hasGoBackLink = location.key !== 'default';
+              hasGoBackLink
+                ? clHistory.goBack()
+                : clHistory.push(`/projects/${project?.data.attributes.slug}`);
+            }}
           />
         </Box>
       </TopBarInner>
@@ -77,4 +74,4 @@ const EventTopBarMobile = ({ projectId }: Props) => {
   );
 };
 
-export default EventTopBarMobile;
+export default MobileTopBar;

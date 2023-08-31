@@ -77,7 +77,7 @@ const StyledCloseIconButton = styled(CloseIconButton)<{
   fullScreen?: boolean;
 }>`
   position: absolute;
-  top: 19px;
+  top: 12px;
   z-index: 2000;
   border-radius: 50%;
   border: solid 1px transparent;
