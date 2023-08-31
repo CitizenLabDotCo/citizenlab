@@ -12,8 +12,7 @@ import { IEventData } from 'api/events/types';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { capitalizeDates, getEventDateWithWeekdays } from 'utils/dateUtils';
-import { useIntl } from 'utils/cl-intl';
+import { getEventDateString } from 'utils/dateUtils';
 
 export interface Props {
   event: IEventData;
@@ -21,8 +20,7 @@ export interface Props {
 
 const FullEventTime = ({ event }: Props) => {
   const currentLocale = useLocale();
-  const { formatMessage } = useIntl();
-  const eventDateTime = getEventDateWithWeekdays(event, formatMessage);
+  const eventDateString = getEventDateString(event);
 
   if (location && !isNilOrError(currentLocale)) {
     return (
@@ -30,9 +28,7 @@ const FullEventTime = ({ event }: Props) => {
         <StyledIcon name="calendar" ariaHidden />
         <Content>
           <Text my="4px" color="coolGrey600" fontSize="s">
-            {capitalizeDates(currentLocale)
-              ? eventDateTime
-              : eventDateTime.toLowerCase()}
+            {eventDateString}
           </Text>
         </Content>
       </Container>

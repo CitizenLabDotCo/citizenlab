@@ -26,6 +26,7 @@ import { colors } from 'utils/styleUtils';
 // utils
 import clHistory from 'utils/cl-router/history';
 import EventAttendanceButton from 'components/EventAttendanceButton';
+import { getEventDateString } from 'utils/dateUtils';
 
 const EventInformationContainer = styled.div`
   flex: 1;
@@ -37,13 +38,11 @@ interface Props {
   event: IEventData;
   startAtMoment: moment.Moment;
   endAtMoment: moment.Moment;
-  isMultiDayEvent: boolean;
   titleFontSize?: number;
 }
 
 const EventInformation = ({
   event,
-  isMultiDayEvent,
   startAtMoment,
   endAtMoment,
   titleFontSize,
@@ -55,11 +54,7 @@ const EventInformation = ({
   const address1 = event?.attributes?.address_1;
   const tempShowEventAttendance = false; // TODO: Replace once event attendance smart group added
 
-  const eventDateTime = isMultiDayEvent
-    ? `${startAtMoment.format('LLL')} - ${endAtMoment.format('LLL')}`
-    : `${startAtMoment.format('LL')} • ${startAtMoment.format(
-        'LT'
-      )} - ${endAtMoment.format('LT')}`;
+  const eventDateTime = getEventDateString(event);
 
   return (
     <EventInformationContainer data-testid="EventInformation">
