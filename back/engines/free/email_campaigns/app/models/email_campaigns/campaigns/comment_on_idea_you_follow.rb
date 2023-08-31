@@ -31,7 +31,6 @@ module EmailCampaigns
     include Consentable
     include ActivityTriggerable
     include RecipientConfigurable
-    include Disableable
     include LifecycleStageRestrictable
     include Trackable
     allow_lifecycle_stages only: %w[trial active]
