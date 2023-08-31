@@ -31,12 +31,4 @@ class CosponsorsInitiative < ApplicationRecord
 
   validates :user, :initiative, presence: true
   validates :status, inclusion: { in: STATUSES }
-
-  def remove_notifications
-    notifications.each do |notification|
-      unless notification.update cosponsors_initiative: nil
-        notification.destroy!
-      end
-    end
-  end
 end
