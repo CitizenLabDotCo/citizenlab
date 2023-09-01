@@ -5,7 +5,6 @@ require 'rails_helper'
 describe BulkImportIdeas::IdeaPlaintextParserService do
   describe 'form without descriptions' do
     let(:project) { create(:continuous_project) }
-    let(:service) { described_class.new create(:admin), project.id, 'en', nil }
     let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
 
     before do
@@ -171,7 +170,6 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
 
   describe 'form with descriptions' do
     let(:project) { create(:continuous_project) }
-    let(:service) { described_class.new create(:admin), project.id, 'en', nil }
     let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
 
     before do
@@ -182,57 +180,75 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
       # Custom fields
       create(:custom_field, resource: custom_form,
         key: 'pool_question',
-        title_multiloc: { 'en' => 'Your favourite name for a swimming pool' },
-        description_multiloc: { 'en' => "<p>A slightly longer description under a field, with a bunch of words used to explain things to people. Please don't put anything weird in this field, thanks!</p>" },
+        title_multiloc: { 
+          'en' => 'Your favourite name for a swimming pool',
+          'fr-FR' => 'Votre nom préféré pour une piscine'
+        },
+        description_multiloc: {
+          'en' => "<p>A slightly longer description under a field, with a bunch of words used to explain things to people. Please don't put anything weird in this field, thanks!</p>",
+          'fr-FR' => "<p>Une description un peu plus longue</p>"
+        },
         input_type: 'text',
         enabled: true,
         required: false)
 
       pizza_select_field = create(:custom_field, resource: custom_form,
         key: 'pizza',
-        title_multiloc: { 'en' => 'How much do you like pizza' },
-        description_multiloc: { 'en' => '<p>A short description</p>' },
+        title_multiloc: { 
+          'en' => 'How much do you like pizza',
+          'fr-FR' => 'A quel point aimez-vous la pizza'
+        },
+        description_multiloc: { 
+          'en' => '<p>A short description</p>',
+          'fr-FR' => '<p>Une brève description</p>'
+        },
         input_type: 'select',
         enabled: true,
         required: false)
       create(:custom_field_option, custom_field: pizza_select_field,
         key: 'a-lot',
-        title_multiloc: { 'en' => 'A lot' })
+        title_multiloc: { 'en' => 'A lot', 'fr-FR': 'Beaucoup' })
       create(:custom_field_option, custom_field: pizza_select_field,
         key: 'not-at-all',
-        title_multiloc: { 'en' => 'Not at all' })
+        title_multiloc: { 'en' => 'Not at all', 'fr-FR': 'Pas du tout' })
 
       burger_select_field = create(:custom_field, resource: custom_form,
         key: 'burgers',
-        title_multiloc: { 'en' => 'How much do you like burgers' },
+        title_multiloc: { 
+          'en' => 'How much do you like burgers',
+          'fr-FR' => 'A quel point aimez-vous les hamburgers'
+        },
         input_type: 'select',
         enabled: true,
         required: false)
       create(:custom_field_option, custom_field: burger_select_field,
         key: 'a-lot',
-        title_multiloc: { 'en' => 'A lot' })
+        title_multiloc: { 'en' => 'A lot', 'fr-FR': 'Beaucoup' })
       create(:custom_field_option, custom_field: burger_select_field,
         key: 'not-at-all',
-        title_multiloc: { 'en' => 'Not at all' })
+        title_multiloc: { 'en' => 'Not at all', 'fr-FR': 'Pas du tout' })
 
       ice_cream_field = create(:custom_field, resource: custom_form,
         key: 'icecream',
-        title_multiloc: { 'en' => 'Which flavors do you want?' },
+        title_multiloc: { 
+          'en' => 'Which flavors do you want?',
+          'fr-FR' => 'Quelles sont les saveurs souhaitées?'
+        },
         input_type: 'multiselect',
         enabled: true,
         required: true)
       create(:custom_field_option, custom_field: ice_cream_field,
         key: 'vanilla',
-        title_multiloc: { 'en' => 'Vanilla' })
+        title_multiloc: { 'en' => 'Vanilla', 'fr-FR': 'Vanille' })
       create(:custom_field_option, custom_field: ice_cream_field,
         key: 'strawberry',
-        title_multiloc: { 'en' => 'Strawberry' })
+        title_multiloc: { 'en' => 'Strawberry', 'fr-FR': 'Fraise' })
       create(:custom_field_option, custom_field: ice_cream_field,
         key: 'chocolate',
-        title_multiloc: { 'en' => 'Chocolate' })
+        title_multiloc: { 'en' => 'Chocolate', 'fr-FR': 'Chocolat' })
       create(:custom_field_option, custom_field: ice_cream_field,
         key: 'pistachio',
-        title_multiloc: { 'en' => 'Pistachio' })
+        title_multiloc: { 'en' => 'Pistachio', 'fr-FR': 'Pistache' })
     end
 
     # Based on fixtures/with_page_numbers.pdf, but with description moved
@@ -289,8 +305,58 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
       expect(docs).to eq result
     end
 
-    # it 'parses text correctly (multiple documents)' do
-    # # TODO
-    # end
+    it 'works in French' do
+      text = "Page 1\n
+        Titre\n
+        Test pour les page numbers\n
+        Description\n
+        Description du test pour les page numbers\n
+        avec mots\n
+        Adresse (optionnel)\n
+        Champs-Élysées\n
+        Votre nom préféré pour une piscine (optionnel)\n
+        Une description un peu plus longue\n
+        *Cette réponse ne sera communiquée qu'aux modérateurs, et non au public.\n
+        Page 2\n
+        A quel point aimez-vous la pizza (optionnel)\n
+        Une brève description\n
+        *Cette réponse ne sera communiquée qu'aux modérateurs, et non au public.\n
+        Beaucoup\n
+        ○ Pas du tout\n
+        A quel point aimez-vous les hamburgers (optionnel)\n
+        *Cette réponse ne sera communiquée qu'aux modérateurs, et non au public.\n
+        ○ Beaucoup\n
+        ☑ Pas du tout\n
+        Quelles sont les saveurs souhaitées?\n
+        *Choisissez-en autant que vous le souhaitez\n
+        *Cette réponse ne sera communiquée qu'aux modérateurs, et non au public.\n
+        ☐ Vanille\n
+        ☑ Fraise\n
+        Chocolat\n
+        Pistache\n
+      "
+        .lines
+        .reject { |line| line == "\n" }
+        .map(&:strip)
+        .join("\n")
+
+      service = described_class.new project.id, 'fr-FR', nil
+      docs = service.parse_text text
+
+      result = [{
+        :pages=>[1, 2],
+        :fields=> {
+          "Titre"=>"Test pour les page numbers",
+          "Description"=>"Description du test pour les page numbers avec mots",
+          "Adresse (optionnel)"=>"Champs-Élysées",
+          "Votre nom préféré pour une piscine (optionnel)"=>nil,
+          "A quel point aimez-vous la pizza (optionnel)"=>"Beaucoup",
+          "A quel point aimez-vous les hamburgers (optionnel)"=>"Pas du tout",
+          "Quelles sont les saveurs souhaitées?"=> %w[Fraise Chocolat Pistache]
+          }
+        }]
+
+      expect(docs).to eq result
+    end
   end
 end
