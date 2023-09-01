@@ -3,12 +3,15 @@
 require 'csv'
 
 namespace :id_clave_unica do
-  # Run it locally first (not to install poppler-utils on production)
+  # Run these commands locally (not to install poppler-utils on production)
   #
   # docker cp ../clave-unica/Padron-13-LA\ REINA-1-2\ \(1\).pdf "$(docker ps | awk '/citizenlab-web/ {print $1}')":/cl2_back/ruts.pdf
   # docker cp ../clave-unica/Padron-13-LA\ REINA-2-2\ \(1\).pdf "$(docker ps | awk '/citizenlab-web/ {print $1}')":/cl2_back/ruts2.pdf
+  #
   # docker exec -it "$(docker ps | awk '/citizenlab-web/ {print $1}')" bin/rails 'id_clave_unica:parse_rut_pdf_to_csv[ruts.csv,ruts.pdf,ruts2.pdf]'
+  #
   # docker cp "$(docker ps | awk '/citizenlab-web/ {print $1}')":/cl2_back/ruts.csv ./ruts.csv
+  #
   task :parse_rut_pdf_to_csv, %i[output_csv_file_path] => [:environment] do |_t, args|
     `apt-get install -qq -y --no-install-recommends poppler-utils`
     # https://stackoverflow.com/questions/46770938/regex-for-chilean-rut-run-with-pcre
