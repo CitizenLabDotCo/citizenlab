@@ -6,6 +6,10 @@ import { EventDay, EventMonth } from './styling';
 // hooks
 import useLocale from 'hooks/useLocale';
 
+// utils
+import { showDotAfterDay } from 'utils/dateUtils';
+import { isNilOrError } from 'utils/helperUtils';
+
 interface Props {
   day?: string;
   month?: string | null;
@@ -13,6 +17,7 @@ interface Props {
 
 export default ({ day, month }: Props) => {
   const locale = useLocale();
+  const addDotToDay = !isNilOrError(locale) && showDotAfterDay(locale);
 
   if (locale === 'en') {
     return (
@@ -25,7 +30,10 @@ export default ({ day, month }: Props) => {
 
   return (
     <>
-      <EventDay>{day}</EventDay>
+      <EventDay>
+        {day}
+        {addDotToDay ? '.' : ''}
+      </EventDay>
       {month && <EventMonth>{month}</EventMonth>}
     </>
   );

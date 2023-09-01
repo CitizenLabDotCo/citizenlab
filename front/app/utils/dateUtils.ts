@@ -159,13 +159,21 @@ export function toFullMonth(date: string, resolution: IResolution) {
     .format(resolution === 'month' ? 'MMMM YYYY' : 'MMMM DD, YYYY');
 }
 
+// Function used to determine whether a dot should be shown after the day in short date formats
+// Currently only used for German. Other locales can be added if needed.
+export function showDotAfterDay(locale: Locale) {
+  return locale === 'de-DE';
+}
+
 // Function used to get the event dates in a localized string format
 export function getEventDateString(event: IEventData) {
-  const isEventMultipleDays =
-    moment(event.attributes.start_at).dayOfYear() !==
-    moment(event.attributes.end_at).dayOfYear();
   const startMoment = moment(event?.attributes.start_at);
   const endMoment = moment(event?.attributes.end_at);
+
+  const isEventMultipleDays =
+    startMoment.dayOfYear() !== endMoment.dayOfYear() &&
+    startMoment.year() === endMoment.year();
+
   if (isEventMultipleDays) {
     return `${startMoment.format('LLL')} - ${endMoment.format('LLL')}`;
   } else {
