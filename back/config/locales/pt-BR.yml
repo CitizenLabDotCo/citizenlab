@@ -221,9 +221,9 @@ pt:
     pdf_export:
       full_name: 'Nome completo'
       email_address: 'Endereço de email'
-      optional: 'facultativo'
-      choose_as_many: 'Escolha tantos quantos quiser'
-      this_answer: 'Esta resposta só será partilhada com os moderadores e não com o público.'
+      optional: 'opcional'
+      choose_as_many: 'Escolha quantos quiser'
+      this_answer: 'Esta resposta será compartilhada apenas com moderadores e não com o público.'
       page: 'Página'
   project_copy:
     title_suffix: 'Cópia'
