@@ -187,7 +187,6 @@
   "app.components.InitiativeForm.titleEmptyError": "Vă rugăm să furnizați un titlu",
   "app.components.InitiativeForm.titleLabel": "Titlu",
   "app.components.InitiativeForm.titleLabelSubtext2": "Alegeți un titlu descriptiv, dar concis (minimum 10 caractere, maxim 72 de caractere)",
-  "app.components.InitiativeForm.titleMaxLengthError": "Titlul furnizat este prea scurt. Vă rugăm să adăugați un titlu care are între 10 și 72 de caractere.",
   "app.components.InitiativeForm.titleMinLengthError": "Titlul furnizat este prea scurt. Vă rugăm să adăugați un titlu care are între 10 și 72 de caractere.",
   "app.components.InitiativeForm.topicEmptyError": "Vă rugăm să furnizați un subiect",
   "app.components.InitiativeForm.topicsLabel": "Selectați subiectul propunerii dvs.",

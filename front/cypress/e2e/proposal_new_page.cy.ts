@@ -13,7 +13,6 @@ describe('Initiative new page', () => {
   beforeEach(() => {
     cy.setLoginCookie(email, password);
     cy.visit('/initiatives/new');
-    cy.get('#initiative-form');
     cy.acceptCookies();
   });
 
@@ -32,8 +31,10 @@ describe('Initiative new page', () => {
   });
 
   it('shows an error when the title is less than 10 characters long', () => {
-    cy.get('#e2e-initiative-title-input').type(randomString(9)).blur();
-    cy.get('#e2e-proposal-title-error').contains(
+    cy.get('#e2e-initiative-form-title-section input')
+      .type(randomString(9))
+      .blur();
+    cy.get('.e2e-error-message').contains(
       'The provided title is too short. Please add a title that is between 10 and 72 characters long.'
     );
   });
@@ -53,7 +54,7 @@ describe('Initiative new page', () => {
     const initiativeTitle = randomString(10);
     const initiativeContent = randomString(30);
 
-    cy.get('#e2e-initiative-title-input').as('titleInput');
+    cy.get('#e2e-initiative-form-title-section input').as('titleInput');
     cy.get('#e2e-initiative-form-description-section .ql-editor').as(
       'descriptionInput'
     );
@@ -91,7 +92,7 @@ describe('Initiative new page', () => {
 
     // verify that image and file upload components are present
     cy.get('#e2e-iniatiative-banner-dropzone');
-    cy.get('#e2e-initiative-file-upload');
+    cy.get('#local_initiative_files');
 
     // add an image
     cy.get('#e2e-iniatiative-img-dropzone input').attachFile('testimage.png');
@@ -100,15 +101,11 @@ describe('Initiative new page', () => {
     cy.get('#e2e-iniatiative-img-dropzone input').should('have.length', 0);
 
     // save the form
-    cy.get('#e2e-initiative-publish-button').click({
-      force: true,
-    });
+    cy.get('#e2e-initiative-publish-button').click();
 
     // verify redirect to the newly created initiative page
-    cy.get('#e2e-initiative-show', { timeout: 200000 });
-
     cy.location('pathname').should('eq', `/en/initiatives/${initiativeTitle}`);
-
+    cy.get('.e2e-modal-close-button').click();
     // verify the content of the newly created initiative page
     cy.get('#e2e-initiative-show')
       .find('#e2e-initiative-title')

@@ -154,7 +154,6 @@ export const AddFieldScreen = ({
                       </Text>
                     </>
                   }
-                  type="text"
                 />
               </SectionField>
               <SectionField>
@@ -167,7 +166,6 @@ export const AddFieldScreen = ({
                       </Text>
                     </>
                   }
-                  type="text"
                 />
               </SectionField>
               {(inputType === 'select' || inputType === 'multiselect') && (

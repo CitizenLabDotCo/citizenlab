@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import FileUploaderComponent, {
-  FileUploaderProps,
+  Props as FileUploaderProps,
 } from 'components/UI/FileUploader';
 
 import Error from 'components/UI/Error';
@@ -11,7 +11,7 @@ import { get } from 'lodash-es';
 interface Props
   extends Omit<
     FileUploaderProps,
-    'onFileAdd' | 'onFileRemove' | 'files' | 'id'
+    'onFileAdd' | 'onFileRemove' | 'files' | 'id' | 'apiErrors'
   > {
   name: string;
   remoteFiles?: UploadFile[] | null;

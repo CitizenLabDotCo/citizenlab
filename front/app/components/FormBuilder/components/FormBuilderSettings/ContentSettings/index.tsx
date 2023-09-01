@@ -68,7 +68,6 @@ export const ContentSettings = ({
                   id="e2e-title-multiloc"
                   name={`customFields.${field.index}.title_multiloc`}
                   label={<FormattedMessage {...messages.questionTitle} />}
-                  type="text"
                 />
               </SectionField>
             )}
