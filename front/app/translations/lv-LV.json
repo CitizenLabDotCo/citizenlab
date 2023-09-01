@@ -232,7 +232,6 @@
   "app.components.InitiativeForm.titleEmptyError": "Lūdzu, norādiet nosaukumu",
   "app.components.InitiativeForm.titleLabel": "Nosaukums",
   "app.components.InitiativeForm.titleLabelSubtext2": "Izvēlieties aprakstošu, bet kodolīgu nosaukumu (min. 10 rakstu zīmes, maks. 72 rakstu zīmes).",
-  "app.components.InitiativeForm.titleMaxLengthError": "Piedāvātais nosaukums ir pārāk garš. Lūdzu, pievienojiet nosaukumu, kas ir no 10 līdz 72 rakstu zīmēm garš.",
   "app.components.InitiativeForm.titleMinLengthError": "Piedāvātais nosaukums ir pārāk īss. Lūdzu, pievienojiet nosaukumu, kas ir no 10 līdz 72 rakstu zīmēm garš.",
   "app.components.InitiativeForm.topicEmptyError": "Lūdzu, pievienojiet tagu",
   "app.components.InitiativeForm.topicsLabel": "Pievienot savam priekšlikumam tagu",
