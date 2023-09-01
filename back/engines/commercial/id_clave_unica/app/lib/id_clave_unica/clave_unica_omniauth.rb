@@ -16,8 +16,7 @@ module IdClaveUnica
         info[:last_name] = ln.join(' ')
       end
 
-      rut = auth['uid']
-      if IdIdCardLookup::IdCard.find_by_card_id(rut)
+      if IdIdCardLookup::IdCard.find_by_card_id(formatted_rut(auth))
         info[:custom_field_values] = { rut_verified: true }
       end
 
@@ -62,6 +61,10 @@ module IdClaveUnica
       %i[first_name last_name custom_field_values]
     end
 
+    def locked_custom_fields
+      %i[rut_verified]
+    end
+
     def logout_url(_user)
       url_params = {
         redirect: Frontend::UrlService.new.home_url
@@ -76,6 +79,17 @@ module IdClaveUnica
 
     def verification_prioritized?
       true
+    end
+
+    private
+
+    def formatted_rut(auth)
+      info = auth.dig('extra', 'raw_info')
+      dv = info.dig('RolUnico', 'DV')
+
+      return if info['sub'].blank? || dv.blank?
+
+      (info['sub'] + dv).gsub(/(\d{1,3})(\d{3})(\d{3})([\dkK])/, '\1.\2.\3-\4')
     end
   end
 end
