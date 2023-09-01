@@ -28,6 +28,14 @@ const PDFViewer = ({ currentPageIndex, file, pages }: Props) => {
 
   const currentPage = pages[currentPageIndex];
 
+  if (!file.includes('.pdf')) {
+    return (
+      <Box w="100%" h="100%" m="10px">
+        Idea was imported from Excel. No Preview available.
+      </Box>
+    );
+  }
+
   return (
     <>
       <Box w="100%" h="100%" overflowY="scroll">
