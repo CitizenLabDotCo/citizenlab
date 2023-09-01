@@ -16,7 +16,8 @@ module IdClaveUnica
         info[:last_name] = ln.join(' ')
       end
 
-      if IdIdCardLookup::IdCard.find_by_card_id(formatted_rut(auth))
+      rut = auth['uid']
+      if IdIdCardLookup::IdCard.find_by_card_id(rut)
         info[:custom_field_values] = { rut_verified: true }
       end
 
@@ -79,17 +80,6 @@ module IdClaveUnica
 
     def verification_prioritized?
       true
-    end
-
-    private
-
-    def formatted_rut(auth)
-      info = auth.dig('extra', 'raw_info')
-      dv = info.dig('RolUnico', 'DV')
-
-      return if info['sub'].blank? || dv.blank?
-
-      (info['sub'] + dv).gsub(/(\d{1,3})(\d{3})(\d{3})([\dkK])/, '\1.\2.\3-\4')
     end
   end
 end
