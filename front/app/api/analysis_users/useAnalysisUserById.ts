@@ -1,17 +1,32 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
-import usersKeys from './keys';
+import analysisUsersKeys from './keys';
 import { IAnalysisUser, AnalysisUsersKeys } from './types';
+import fetcher from 'utils/cl-react-query/fetcher';
 
-const useAnalysisUserById = (userId: string | null) => {
+const fetchAnalysisUserById = ({
+  id,
+  analysisId,
+}: {
+  id?: string | null;
+  analysisId: string;
+}) =>
+  fetcher<IAnalysisUser>({
+    path: `/analyses/${analysisId}/users/${id}`,
+    action: 'get',
+  });
+
+const useAnalysisUserById = ({
+  id,
+  analysisId,
+}: {
+  id: string | null;
+  analysisId: string;
+}) => {
   return useQuery<IAnalysisUser, CLErrors, IAnalysisUser, AnalysisUsersKeys>({
-    queryKey: usersKeys.item({ id: userId }),
-    queryFn: () => {
-      throw new Error(
-        'useAnalysisUserById query should never execute, there is no endpoint for this type of user. Only included resources'
-      );
-    },
-    enabled: !!userId,
+    queryKey: analysisUsersKeys.item({ id }),
+    queryFn: () => fetchAnalysisUserById({ id, analysisId }),
+    enabled: !!id,
   });
 };
 

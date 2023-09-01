@@ -9,7 +9,7 @@ import Divider from 'components/admin/Divider';
 import Taggings from '../Taggings';
 import LongFieldValue from './LongFieldValue';
 import Avatar from 'components/Avatar';
-import useUserById from 'api/users/useUserById';
+import useAnalysisUserById from 'api/analysis_users/useAnalysisUserById';
 import { getFullName } from 'utils/textUtils';
 import { useSelectedInputContext } from '../SelectedInputContext';
 
@@ -21,9 +21,11 @@ const InputListItem = () => {
     selectedInputId ?? undefined
   );
   const { data: analysis } = useAnalysis(analysisId);
-  const { data: author, isRefetching: isRefetchingAuthor } = useUserById(
-    input?.data.relationships.author.data?.id
-  );
+  const { data: author, isRefetching: isRefetchingAuthor } =
+    useAnalysisUserById({
+      id: input?.data.relationships.author.data?.id ?? null,
+      analysisId,
+    });
 
   if (!analysis || !input || !selectedInputId) return null;
 
