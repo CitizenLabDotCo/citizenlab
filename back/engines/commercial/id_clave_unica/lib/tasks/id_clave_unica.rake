@@ -5,12 +5,12 @@ require 'csv'
 namespace :id_clave_unica do
   # Run these commands locally (not to install poppler-utils on production)
   #
-  # docker cp ../clave-unica/Padron-13-LA\ REINA-1-2\ \(1\).pdf "$(docker ps | awk '/citizenlab-web/ {print $1}')":/cl2_back/ruts.pdf
-  # docker cp ../clave-unica/Padron-13-LA\ REINA-2-2\ \(1\).pdf "$(docker ps | awk '/citizenlab-web/ {print $1}')":/cl2_back/ruts2.pdf
+  # cp ../clave-unica/Padron-13-LA\ REINA-1-2\ \(1\).pdf back/ruts.pdf
+  # cp ../clave-unica/Padron-13-LA\ REINA-2-2\ \(1\).pdf back/ruts2.pdf
   #
-  # docker exec -it "$(docker ps | awk '/citizenlab-web/ {print $1}')" bin/rails 'id_clave_unica:parse_rut_pdf_to_csv[ruts.csv,ruts.pdf,ruts2.pdf]'
+  # docker-compose run --rm web bin/rails 'id_clave_unica:parse_rut_pdf_to_csv[ruts.csv,ruts.pdf,ruts2.pdf]'
   #
-  # docker cp "$(docker ps | awk '/citizenlab-web/ {print $1}')":/cl2_back/ruts.csv ./ruts.csv
+  # code back/ruts.csv
   #
   task :parse_rut_pdf_to_csv, %i[output_csv_file_path] => [:environment] do |_t, args|
     `apt-get install -qq -y --no-install-recommends poppler-utils`
@@ -29,9 +29,12 @@ namespace :id_clave_unica do
     File.write(args[:output_csv_file_path], ruts.join("\n"))
   end
 
-  task :update_rut_verified_flag, %i[input_csv_file_path] => [:environment] do |_t, args|
+  task :update_rut_verified_flag, %i[input_csv_file_path tenant_host] => [:environment] do |_t, args|
+    Tenant.find_by(host: args[:tenant_host]).switch!
+
     File.read(args[:input_csv_file_path]).split("\n").each do |rut|
-      hashed_uid = Verification::VerificationService.new.send(:hashed_uid, rut, 'clave_unica')
+      plain_rut = rut.split('-').first.delete('.')
+      hashed_uid = Verification::VerificationService.new.send(:hashed_uid, plain_rut, 'clave_unica')
       verification = Verification::Verification.find_by(method_name: 'clave_unica', hashed_uid: hashed_uid)
       if verification.nil?
         print '.'
