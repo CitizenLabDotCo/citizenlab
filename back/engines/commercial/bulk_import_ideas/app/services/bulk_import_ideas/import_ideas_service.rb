@@ -26,7 +26,7 @@ module BulkImportIdeas
     end
 
     def import_ideas(idea_rows, import_as_draft: false)
-      raise Error.new 'bulk_import_ideas_maximum_ideas_exceeded', value: max_ideas if idea_rows.size > DEFAULT_MAX_IDEAS
+      raise Error.new 'bulk_import_ideas_maximum_ideas_exceeded', value: DEFAULT_MAX_IDEAS if idea_rows.size > DEFAULT_MAX_IDEAS
 
       ideas = []
       ActiveRecord::Base.transaction do
@@ -42,6 +42,8 @@ module BulkImportIdeas
     end
 
     def upload_file(file_content, file_type)
+      # Although file type is passed in, check that it is correct and default to xlsx otherwise
+      file_type = 'xlsx' if file_type == 'pdf' && !file_content.index('application/pdf')
       @file = IdeaImportFile.create!(
         import_type: file_type,
         project: @project,
@@ -50,6 +52,7 @@ module BulkImportIdeas
           content: file_content # base64
         }
       )
+      file_type
     end
 
     def parse_idea_rows(_file, _file_type)

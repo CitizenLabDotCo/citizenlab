@@ -6,76 +6,43 @@ module BulkImportIdeas
   class GoogleFormParserService
     def initialize(pdf_file_content)
       @pdf_file_content = pdf_file_content
+      @document = process_upload
     end
 
     def raw_text
       return dummy_raw_text unless ENV.fetch('GOOGLE_DOCUMENT_AI_PROJECT', false) # Temp for development
 
-      document = process_upload
-      document.text
-    end
+      text = @document.text
 
-    def parse_pdf
-      return dummy_parsed_data unless ENV.fetch('GOOGLE_DOCUMENT_AI_PROJECT', false) # Temp for development
-
-      document = process_upload
-
-      binding.pry
-
-      # Gets an array of all fields on all pages
-      fields = []
-      document.pages.each do |page|
-        page.form_fields.each do |field|
-          field_name = format_name field.field_name&.text_anchor&.content&.strip
-          field_value = field.field_value.text_anchor&.content&.strip
-          f = {
-            name: field_name,
-            value: format_value(field_name, field_value),
-            type: field.value_type,
-            page: page.page_number,
-            x: field.field_name.bounding_poly.normalized_vertices[0].x.round(2),
-            y: page.page_number + field.field_name.bounding_poly.normalized_vertices[0].y.round(2)
-          }
-          fields << f
+      # Try and sort the text better by location on the page
+      new_text = []
+      @document.pages.each do |page|
+        page.paragraphs.each do |paragraph|
+          x = paragraph.layout.bounding_poly.normalized_vertices[0].y.round(2)
+          y = paragraph.layout.bounding_poly.normalized_vertices[0].y.round(2)
+          new_text << { x: x, y: page.page_number + y, text_segments: paragraph.layout.text_anchor.text_segments }
         end
       end
 
-      # Now reorder 'fields' by y then x field placement in the doc
-      fields = fields.sort { |a, b| [a[:y], a[:x]] <=> [b[:y], b[:x]] }
+      new_text = new_text.sort { |a, b| [a[:y], a[:x]] <=> [b[:y], b[:x]] }
 
-      # Then split into separate docs based on the first field
-      docs = []
-      doc = []
-      fields.each do |field|
-        if field[:name] == fields.first[:name] && field != fields.first
-          docs << doc
-          doc = []
+      new_text_string = ''
+      new_text.each do |text_block|
+        text_block[:text_segments].each do |segment|
+          new_text_string += text[segment.start_index...segment.end_index]
         end
-        doc << field
       end
-      docs << doc
-      docs
+      new_text_string
     end
 
     private
 
-    # Utility to correct common issues - ie remove new lines as they don't seem that accurate
-    def format_value(name, value)
-      if name == 'Email address'
-        value = value.squish.delete(' ').downcase
-      end
-      value&.squish
-    end
-
-    def format_name(name)
-      name.squish
-    end
-
     def process_upload
-      client = Google::Cloud::DocumentAI.document_processor_service
+      return unless @pdf_file_content
 
-      # Build the resource name from the project.
+      # Set up the DocumentAI processor.
       # TODO: Invalid location: 'eu' must match the server deployment 'us' even when the processor is set to eu?
+      client = Google::Cloud::DocumentAI.document_processor_service
       name = client.processor_path(
         project: ENV.fetch('GOOGLE_DOCUMENT_AI_PROJECT'),
         location: ENV.fetch('GOOGLE_DOCUMENT_AI_LOCATION'),
@@ -98,28 +65,8 @@ module BulkImportIdeas
     end
 
     # NOTE: For DEVELOPMENT ONLY when Google API not configured
-    def dummy_parsed_data
-      Array.new(rand(1..8)) do
-        [
-          # User details
-          { name: 'Full name', value: Faker::FunnyName.name, type: '', page: 1, x: 0.09, y: 1.16 },
-          { name: 'Email address', value: Faker::Internet.email, type: '', page: 1, x: 0.09, y: 1.24 },
-          # Core fields
-          { name: 'Title', value: Faker::Quote.yoda, type: '', page: 1, x: 0.09, y: 1.34 },
-          { name: 'Description', value: Faker::Hipster.paragraph, type: '', page: 1, x: 0.09, y: 1.41 },
-          # Select fields
-          { name: 'Yes', value: nil, type: %w[filled_checkbox unfilled_checkbox].sample, page: 1, x: 0.11, y: 1.66 },
-          { name: 'No', value: nil, type: %w[filled_checkbox unfilled_checkbox].sample, page: 1, x: 0.45, y: 1.66 },
-          { name: 'This', value: nil, type: %w[filled_checkbox unfilled_checkbox].sample, page: 1, x: 0.11, y: 1.86 },
-          { name: 'That', value: nil, type: %w[filled_checkbox unfilled_checkbox].sample, page: 1, x: 0.45, y: 1.86 },
-          # Custom text field
-          { name: 'Another field', value: Faker::Quote.robin, type: '', page: 2, x: 0.09, y: 2.12 }
-        ]
-      end
-    end
-
     def dummy_raw_text
-      "Title\nMy very good idea\nDescription\nwould suggest building the\nnew swimming Pool near the\nShopping mall on Park Lane,\nIt's easily accessible location\nwith enough space\nan\nLocation (optional)\nDear shopping mall\nYour favourite name for a swimming pool (optional)\n*This answer will only be shared with moderators, and not to the public.\nThe cool pool\nHow much do you like pizza (optional)\n*This answer will only be shared with moderators, and not to the public.\nA lot\n○ Not at all\nHow much do you like burgers (optional)\n*This answer will only be shared with moderators, and not to the public.\nO A lot\nNot at all\n"
+      "Page1\nTitle\nMy very good idea\nDescription\nwould suggest building the\nnew swimming Pool near the\nShopping mall on Park Lane,\nIt's easily accessible location\nwith enough space\nan\nLocation (optional)\nDear shopping mall\nYour favourite name for a swimming pool (optional)\n*This answer will only be shared with moderators, and not to the public.\nThe cool pool\nHow much do you like pizza (optional)\n*This answer will only be shared with moderators, and not to the public.\nA lot\n○ Not at all\nHow much do you like burgers (optional)\n*This answer will only be shared with moderators, and not to the public.\nO A lot\nNot at all\n"
     end
   end
 end
