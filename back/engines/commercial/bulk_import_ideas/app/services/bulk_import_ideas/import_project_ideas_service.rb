@@ -135,7 +135,7 @@ module BulkImportIdeas
       select_fields.each do |field|
         select_field = find_field(doc, field[:name])
         if select_field
-          values = select_field[:value].split(';')
+          values = select_field[:value].is_a?(Array) ? select_field[:value] : select_field[:value].split(';')
           if values.count > 0
             if field[:type] == 'select'
               value = values[0].strip # Only use the first value for single fields
