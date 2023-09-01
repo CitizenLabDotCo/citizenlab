@@ -23,6 +23,9 @@ import { isNilOrError } from 'utils/helperUtils';
 // typings
 import { IPhaseData } from 'api/phases/types';
 import { ParticipationMethod } from 'services/participationContexts';
+import { requestBlob } from '../../../../../utils/request';
+import { API_PATH } from '../../../../App/constants';
+import { saveAs } from 'file-saver';
 
 export const IdeaForm = () => {
   const [exportModalOpen, setExportModalOpen] = useState(false);
@@ -52,6 +55,14 @@ export const IdeaForm = () => {
     await saveIdeaFormAsPDF({ projectId, locale, name, email });
   };
 
+  const downloadExampleFile = async () => {
+    const blob = await requestBlob(
+      `${API_PATH}/projects/${projectId}/import_ideas/example_xlsx`,
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    );
+    saveAs(blob, 'example.xlsx');
+  };
+
   return (
     <>
       <Box gap="0px" flexWrap="wrap" width="100%" display="flex">
@@ -72,7 +83,7 @@ export const IdeaForm = () => {
           >
             <FormattedMessage {...messages.editInputForm} />
           </Button>
-          <Box ml="8px">
+          <Box m="8px">
             <Button
               onClick={handleDownloadPDF}
               width="auto"
@@ -82,6 +93,13 @@ export const IdeaForm = () => {
               <FormattedMessage {...messages.downloadInputForm} />
             </Button>
           </Box>
+          <Button
+            buttonStyle="secondary"
+            icon="download"
+            onClick={downloadExampleFile}
+          >
+            <FormattedMessage {...messages.downloadExcelTemplate} />
+          </Button>
         </Box>
       </Box>
       <PDFExportModal
