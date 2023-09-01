@@ -1,19 +1,19 @@
 pt:
   email_campaigns:
     campaign_type_description:
-      "1": "Semanalmente, às segundas-feiras, em %{hourOfDay}"
-      "2": "Semanalmente, às terças-feiras, em %{hourOfDay}"
-      "3": "Semanalmente, às quartas-feiras, em %{hourOfDay}"
-      "4": "Semanalmente, às quintas-feiras em %{hourOfDay}"
-      "5": "Semanalmente, às sextas-feiras, em %{hourOfDay}"
-      "6": "Semanalmente, aos sábados, em %{hourOfDay}"
+      "1": "Semanalmente, às segundas-feiras às %{hourOfDay}"
+      "2": "Semanalmente, às terças-feiras às %{hourOfDay}"
+      "3": "Semanalmente, às quartas-feiras às %{hourOfDay}"
+      "4": "Semanalmente, às quintas-feiras às %{hourOfDay}"
+      "5": "Semanalmente, às sextas-feiras às %{hourOfDay}"
+      "6": "Semanalmente, aos sábados às %{hourOfDay}"
     footer:
       "link_terms_conditions": "Termos e condições"
       "link_unsubscribe": "Cancelar a inscrição"
       "powered_by": "Criado por"
       "statement": "Este e-mail foi enviado pelo CitizenLab em nome de %{organizationName}, porque você é um usuário registrado de %{organizationLink}. Você pode %{unsubscribeLink} se você não quiser receber estes e-mails no futuro."
       "unsubscribe_text": "Cancelar a inscrição"
-    follow: "unfollow_here\": \"Recebeu esta notificação devido a um item que está a seguir. <a href=\"%{unfollow_url}\">Pode deixar de o seguir aqui.</a>"
+    follow: "unfollow_here\": \"Recebeu esta notificação devido a um item que está está seguindo. <a href=\"%{unfollow_url}\">Pode deixar de o seguir aqui.</a>"
     comment_deleted_by_admin:
       reason: 'A razão pela qual o seu comentário foi excluido:'
       cta_view: 'Veja essa idéia'
@@ -303,14 +303,14 @@ pt:
       preheader: '''%{post}'' tem um novo comentário interno'
     official_feedback_on_idea_you_follow:
       header_message: '%{officialName} fez uma atualização da ideia ''%{ideaTitle}''. Clique no botão abaixo para entrar na conversa com %{officialName}.'
-      header_title: 'Há uma atualização de uma ideia que segue'
-      subject: 'Uma ideia que segue recebeu uma atualização oficial na plataforma de %{organizationName}'
-      preheader: 'Há uma atualização de uma ideia que segue'
+      header_title: 'Há uma atualização sobre uma ideia que você segue'
+      subject: 'Uma ideia que você segue recebeu uma atualização oficial na plataforma %{organizationName}'
+      preheader: 'Há uma atualização sobre uma ideia que você segue'
     official_feedback_on_initiative_you_follow:
-      header_message: '%{officialName} fez uma atualização da proposta ''%{initiativeTitle}''. Clique no botão abaixo para aceder à conversa com %{organizationName}.'
-      header_title: 'Há uma atualização de uma proposta que segue'
-      subject: 'Uma proposta que segue recebeu uma atualização oficial na plataforma %{organizationName}'
-      preheader: 'Há uma atualização de uma proposta que segue'
+      header_message: '%{officialName} deu uma atualização sobre a proposta ''%{initiativeTitle}''. Clique no botão abaixo para entrar na conversa com %{organizationName}.'
+      header_title: 'Há uma atualização sobre uma proposta que você segue'
+      subject: 'Uma proposta que você segue recebeu uma atualização oficial na plataforma %{organizationName}'
+      preheader: 'Há uma atualização sobre uma proposta que você segue'
     mention_in_official_feedback:
       cta_reply_to: 'Responder a %{organizationName}'
       event_description: '%{organizationName} mencionaram-no na sua opinião sobre a idéia ''%{post}''. Clique no link embaixo para entrar na conversa com '' %{organizationName}'
@@ -364,22 +364,22 @@ pt:
       subject: 'Prepare tudo para a nova fase de %{projectName}'
       preheader: 'Uma nova fase começará em breve para %{projectName}'
     project_published:
-      subject: 'Foi publicado um novo projeto na plataforma %{organizationName}'
-      header_title: 'Foi publicado um novo projeto'
+      subject: 'Um novo projeto foi publicado na plataforma do %{organizationName}'
+      header_title: 'Um novo projeto foi publicado'
       header_message: 'A plataforma de participação %{organizationName} acaba de publicar o seguinte projeto:'
-      preheader: 'Foi publicado um novo projeto'
+      preheader: 'Um novo projeto foi publicado'
     status_change_on_idea_you_follow:
-      status_change: 'O novo estatuto desta ideia é ''%{ideaStatus}'''
-      header_message: '%{organizationName} actualizou o estado da ideia ''%{ideaTitle}'' na sua plataforma de participação digital.'
-      header_title: 'Uma ideia que segue tem um novo estatuto'
-      subject: 'O estado de uma ideia que segue foi alterado'
-      preheader: 'Uma ideia que segue tem um novo estatuto'
+      status_change: 'O novo status desta ideia é ''%{ideaStatus}'''
+      header_message: '%{organizationName} atualizou o status da ideia ‘%{ideaTitle}’ em sua plataforma digital de participação.'
+      header_title: 'Uma ideia que você segue tem um novo status'
+      subject: 'O status de uma ideia que você segue foi alterado'
+      preheader: 'Uma ideia que você segue tem um novo status'
     status_change_on_initiative_you_follow:
-      status_change: 'O novo estatuto desta proposta é ''%{initiativeStatus}'''
-      header_message: 'O estado da proposta ''%{initiativeTitle}'' foi atualizado na plataforma de participação digital de %{organizationName}.'
-      header_title: 'Uma proposta que segue tem um novo estatuto'
-      subject: 'O estado de uma proposta que segue foi alterado'
-      preheader: 'Uma proposta que segue tem um novo estatuto'
+      status_change: 'O novo status desta proposta é ''%{initiativeStatus}'''
+      header_message: 'O status da proposta ''%{initiativeTitle}'' foi atualizado na plataforma digital de participação de %{organizationName}.'
+      header_title: 'Uma proposta que você segue tem um novo status'
+      subject: 'O status de uma proposta que você segue mudou'
+      preheader: 'Uma proposta que você segue tem um novo status'
     user_digest:
       subject: "Sua atividade na plataforma de participação de %{organizationName}"
       commented: "%{authorFirstName} comentado:"
@@ -525,9 +525,9 @@ pt:
         users_who_engaged_with_the_input: 'Usuários engajados com a entrada'
         users_who_engaged_with_the_project: 'Usuários engajados com o projeto'
         users_who_engaged_with_the_proposal: 'Usuários engajados com a proposta'
-        users_who_follow_the_proposal: 'Utilizador que segue a proposta'
-        users_who_follow_the_input: 'Utilizador que segue a entrada'
-        users_who_follow_the_project: 'Utilizadores que seguem o projeto'
+        users_who_follow_the_proposal: 'Usuário que segue a proposta'
+        users_who_follow_the_input: 'Usuário que segue a entrada'
+        users_who_follow_the_project: 'Usuários que seguem o projeto'
         user_who_voted: 'Usuário que votou'
         user_with_unsubmitted_votes: 'Usuário que não enviou seus votos'
         users_who_engaged_but_not_voted: 'Usuários que se engajaram com o projeto, mas não votaram'
