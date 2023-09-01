@@ -14,12 +14,14 @@ module BulkImportIdeas
 
       text = @document.text
 
-      # Try and sort the text by location on the page
-      # TODO: Loop through all the pages, not just the first one
-      new_text = @document.pages[0].paragraphs.map do |paragraph|
-        x = paragraph.layout.bounding_poly.normalized_vertices[0].y.round(2)
-        y = paragraph.layout.bounding_poly.normalized_vertices[0].y.round(2)
-        { x: x, y: y, text_segments: paragraph.layout.text_anchor.text_segments }
+      # Try and sort the text better by location on the page
+      new_text = []
+      @document.pages.each do |page|
+        page.paragraphs.each do |paragraph|
+          x = paragraph.layout.bounding_poly.normalized_vertices[0].y.round(2)
+          y = paragraph.layout.bounding_poly.normalized_vertices[0].y.round(2)
+          new_text << { x: x, y: page.page_number + y, text_segments: paragraph.layout.text_anchor.text_segments }
+        end
       end
 
       new_text = new_text.sort { |a, b| [a[:y], a[:x]] <=> [b[:y], b[:x]] }
