@@ -232,7 +232,6 @@
   "app.components.InitiativeForm.titleEmptyError": "Proporcioneu un títol",
   "app.components.InitiativeForm.titleLabel": "Títol",
   "app.components.InitiativeForm.titleLabelSubtext2": "Trieu un títol descriptiu però concís (mínim. 10 caràcters, màxim 72 caràcters)",
-  "app.components.InitiativeForm.titleMaxLengthError": "El títol proporcionat és massa llarg. Si us plau, afegiu un títol que tingui entre 10 i 72 caràcters.",
   "app.components.InitiativeForm.titleMinLengthError": "El títol proporcionat és massa curt. Si us plau, afegiu un títol que tingui entre 10 i 72 caràcters.",
   "app.components.InitiativeForm.topicEmptyError": "Si us plau, afegiu una etiqueta",
   "app.components.InitiativeForm.topicsLabel": "Afegiu una etiqueta a la vostra proposta",
