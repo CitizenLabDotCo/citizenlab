@@ -32,7 +32,7 @@ namespace :id_clave_unica do
   task :update_rut_verified_flag, %i[input_csv_file_path] => [:environment] do |_t, args|
     File.read(args[:input_csv_file_path]).split("\n").each do |rut|
       hashed_uid = Verification::VerificationService.new.send(:hashed_uid, rut, 'clave_unica')
-      verification = Verification::Verification.where(method_name: 'clave_unica', hashed_uid: hashed_uid)
+      verification = Verification::Verification.find_by(method_name: 'clave_unica', hashed_uid: hashed_uid)
       if verification.nil?
         print '.'
       else
