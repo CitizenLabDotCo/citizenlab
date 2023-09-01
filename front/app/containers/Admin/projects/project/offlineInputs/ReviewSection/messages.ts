@@ -10,9 +10,9 @@ export default defineMessages({
     defaultMessage: 'Idea importer',
   },
   noIdeasYet: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet2',
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet3',
     defaultMessage:
-      'Nothing to review yet. Click "{importPdf}" to import a PDF file containing scanned input forms.',
+      'Nothing to review yet. Click "{importFile}" to import a PDF file containing scanned input forms or an Excel file containing inputs.',
   },
   author: {
     id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.author',

@@ -120,7 +120,7 @@ const ReviewSection = ({
             <FormattedMessage
               {...messages.noIdeasYet}
               values={{
-                importPdf: <FormattedMessage {...sharedMessages.importPdf} />,
+                importFile: <FormattedMessage {...sharedMessages.importFile} />,
               }}
             />
           </Text>

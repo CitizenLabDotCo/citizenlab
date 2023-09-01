@@ -1,9 +1,9 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  importPdf: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.importPdf',
-    defaultMessage: 'Import PDF',
+  importFile: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.importFile',
+    defaultMessage: 'Import',
   },
   noPhasesInProject: {
     id: 'app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject',
