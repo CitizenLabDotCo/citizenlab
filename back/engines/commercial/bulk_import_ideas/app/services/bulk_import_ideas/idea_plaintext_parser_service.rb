@@ -43,6 +43,7 @@ module BulkImportIdeas
 
       @current_field_display_title = nil
       @current_custom_field = nil
+      @current_description = nil
     end
 
     def parse_text(text)
@@ -66,6 +67,8 @@ module BulkImportIdeas
 
           @current_field_display_title = nil
           @current_custom_field = nil
+          @current_description = nil
+
           @form[:pages] << get_page_number(line)
           next
         end
@@ -79,12 +82,19 @@ module BulkImportIdeas
 
           @current_field_display_title = line
           @current_custom_field = lookup_field(line)
+
+          description = @current_custom_field.description_multiloc[@locale]
+          next if description.nil?
+
+          description = description.gsub(FORBIDDEN_HTML_TAGS_REGEX, '').strip
+          next if description == ''
+          @current_description = description
           next
         end
 
         next if @current_custom_field.nil?
+        next if part_of_description? line
         next if disclaimer? line
-        next if description? line
 
         field_type = @current_custom_field.input_type
 
@@ -149,14 +159,15 @@ module BulkImportIdeas
       %W[*#{@choose_as_many_copy} *#{@this_answer_copy}].include?(line)
     end
 
-    def description?(line)
-      field_description = @current_custom_field.description_multiloc[@locale]
-      return false if field_description.nil?
+    def part_of_description?(line)
+      
+      # return false if field_description.nil?
 
-      field_description = field_description.gsub(FORBIDDEN_HTML_TAGS_REGEX, '')
-      return false if field_description == ''
+      # field_description = field_description.gsub(FORBIDDEN_HTML_TAGS_REGEX, '')
+      # return false if field_description == ''
 
-      field_description.include? line
+      # field_description.include? line
+      # TODO
     end
 
     def handle_select_field(line)

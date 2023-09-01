@@ -359,4 +359,53 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
       expect(docs).to eq result
     end
   end
+
+  describe 'edge cases' do
+    it 'handles values matching substrings of description' do
+      project = create(:continuous_project)
+      custom_form = create(:custom_form, :with_default_fields, participation_context: project)
+      project.allowed_input_topics << create(:topic_economy)
+      project.allowed_input_topics << create(:topic_waste)
+
+      create(:custom_field, resource: custom_form,
+        key: 'pool_question',
+        title_multiloc: { 'en' => 'Your favourite name for a swimming pool' },
+        description_multiloc: { 'en' => 'Answer this question with "Pizza nutella"' },
+        input_type: 'text',
+        enabled: true,
+        required: false
+      )
+
+      text = "Page 1\n
+        Title\n
+        Test\n
+        Description\n
+        Test description\n
+        with words and things\n
+        Location (optional)\n
+        Somewhere\n
+        Your favourite name for a swimming pool (optional)\n
+        Answer this question with \"Pizza nutella\"\n
+        *This answer will only be shared with moderators, and not to the public.\n
+        Pizza nutella
+      "
+        .lines
+        .reject { |line| line == "\n" }
+        .map(&:strip)
+        .join("\n")
+
+      service = described_class.new project.id, 'en', nil
+      docs = service.parse_text text
+
+      result = [{
+        pages: [1],
+        fields: { 'Title' => 'Test',
+                  'Description' => 'Test description with words and things',
+                  'Location (optional)' => 'Somewhere',
+                  'Your favourite name for a swimming pool (optional)' => 'Pizza nutella' }
+      }]
+
+      expect(docs).to eq result
+    end
+  end
 end
