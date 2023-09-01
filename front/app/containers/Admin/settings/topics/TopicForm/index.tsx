@@ -69,7 +69,6 @@ const TopicForm = ({
               name="title_multiloc"
               label={formatMessage(messages.fieldTopicTitle)}
               labelTooltipText={formatMessage(messages.fieldTopicTitleTooltip)}
-              type="text"
             />
           </SectionField>
           <Box display="flex">

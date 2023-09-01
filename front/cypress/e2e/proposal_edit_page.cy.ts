@@ -36,7 +36,6 @@ describe('Initiative form page', () => {
   });
 
   it('has a working initiative edit form', () => {
-    cy.get('#initiative-form');
     cy.get('#e2e-initiative-title-input').as('titleInput');
     cy.get('#e2e-initiative-form-description-section .ql-editor').as(
       'descriptionInput'
