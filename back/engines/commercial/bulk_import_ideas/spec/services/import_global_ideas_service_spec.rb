@@ -7,7 +7,7 @@ describe BulkImportIdeas::ImportGlobalIdeasService do
 
   describe 'xlsx_to_idea_rows' do
     it 'converts uploaded XLSX to more parseable format for the idea import method' do
-      xlsx_array = [
+      xlsx_ideas_array = [
         {
           'Title_nl-NL' => 'Mijn idee titel',
           'Title_fr-FR' => 'Mon idée titre',
@@ -32,7 +32,7 @@ describe BulkImportIdeas::ImportGlobalIdeasService do
         }
       ]
 
-      idea_rows = service.xlsx_to_idea_rows xlsx_array
+      idea_rows = service.ideas_to_idea_rows xlsx_ideas_array
 
       expect(idea_rows).to eq [
         {
@@ -67,7 +67,7 @@ describe BulkImportIdeas::ImportGlobalIdeasService do
     end
 
     it 'throws an error if imported locales do not match any on the tenant' do
-      xlsx_array = [
+      xlsx_ideas_array = [
         {
           'Title_nl-BE' => 'Mijn idee titel',
           'Body_nl-BE' => 'Mijn idee inhoud',
@@ -83,7 +83,7 @@ describe BulkImportIdeas::ImportGlobalIdeasService do
         }
       ]
 
-      expect { service.xlsx_to_idea_rows xlsx_array }.to raise_error(
+      expect { service.ideas_to_idea_rows xlsx_ideas_array }.to raise_error(
         an_instance_of(BulkImportIdeas::Error).and(having_attributes(key: 'bulk_import_ideas_locale_not_valid', params: { value: 'nl-BE' }))
       )
     end

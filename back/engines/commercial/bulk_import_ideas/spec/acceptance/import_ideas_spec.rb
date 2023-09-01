@@ -126,33 +126,11 @@ resource 'BulkImportIdeasImportIdeas' do
           let(:pdf) { create_project_bulk_import_ideas_pdf }
           let(:locale) { 'en' }
 
-          before do
-            # Stubbed to avoid call to google webservice
-            expect_any_instance_of(BulkImportIdeas::GoogleFormParserService).to receive(:raw_text).and_return(
-            "Full name\nBob Test\nEmail address\nbob@test.com\n" +
-            "Title\n" +
-              "This is really a great title\n" +
-              "Description\n" +
-              "And this is the body\n" +
-              "Location (optional)\n" +
-              "Dear shopping mall\n" +
-              "Your favourite name for a swimming pool (optional)\n" +
-              "*This answer will only be shared with moderators, and not to the public.\n" +
-              "The cool pool\n" +
-              "How much do you like pizza (optional)\n" +
-              "*This answer will only be shared with moderators, and not to the public.\n" +
-              "A lot\n" +
-              "○ Not at all\n" +
-              "How much do you like burgers (optional)\n" +
-              "*This answer will only be shared with moderators, and not to the public.\n" +
-              "O A lot\n" +
-              "Not at all\n"
-
-                 )
-          end
-
+          # NOTE: GoogleFormParserService is stubbed to avoid calls to google APIs
           context 'continuous projects' do
-            example_request 'Bulk import ideas from scanned .pdf' do
+            example 'Bulk import ideas from scanned .pdf' do
+              expect_any_instance_of(BulkImportIdeas::GoogleFormParserService).to receive(:raw_text).and_return(create_project_bulk_import_raw_text)
+              do_request
               assert_status 201
               expect(response_data.count).to eq 1
               expect(response_data.first[:attributes][:title_multiloc][:en]).to eq 'This is really a great title'
@@ -176,7 +154,9 @@ resource 'BulkImportIdeasImportIdeas' do
             let(:id) { project.id }
 
             context 'current phase' do
-              example_request 'Bulk import ideas from scanned .pdf to current phase' do
+              example 'Bulk import ideas from scanned .pdf to current phase' do
+                expect_any_instance_of(BulkImportIdeas::GoogleFormParserService).to receive(:raw_text).and_return(create_project_bulk_import_raw_text)
+                do_request
                 assert_status 201
                 expect(response_data.count).to eq 1
                 expect(Idea.all.count).to eq 1
@@ -190,7 +170,9 @@ resource 'BulkImportIdeasImportIdeas' do
             context 'specified phase' do
               let(:phase_id) { project.phases.first.id }
 
-              example_request 'Bulk import ideas from scanned .pdf to a specified phase' do
+              example 'Bulk import ideas from scanned .pdf to a specified phase' do
+                expect_any_instance_of(BulkImportIdeas::GoogleFormParserService).to receive(:raw_text).and_return(create_project_bulk_import_raw_text)
+                do_request
                 assert_status 201
                 expect(response_data.count).to eq 1
                 expect(Idea.all.count).to eq 1
@@ -207,11 +189,11 @@ resource 'BulkImportIdeasImportIdeas' do
     end
 
     context 'idea import metadata' do
-      get 'web_api/v1/ideas/:id/idea_import' do
+      get 'web_api/v1/idea_imports/:id' do
         let(:id) do
           idea = create(:idea)
           idea.update! idea_import: create(:idea_import, idea: idea)
-          idea.id
+          idea.idea_import.id
         end
 
         example_request 'Get the import meta data for an idea' do
@@ -253,5 +235,17 @@ resource 'BulkImportIdeasImportIdeas' do
   def create_project_bulk_import_ideas_pdf
     base_64_content = Base64.encode64 File.read('/cl2_back/engines/commercial/bulk_import_ideas/spec/fixtures/testscan.pdf')
     "data:application/pdf;base64,#{base_64_content}"
+  end
+
+  def create_project_bulk_import_raw_text
+    "Page 1\n" \
+      "Full name\nBob Test\n" \
+      "Email address\nbob@test.com\n" \
+      "Title\n" \
+      "This is really a great title\n" \
+      "Description\n" \
+      "And this is the body\n" \
+      "Location (optional)\n" \
+      "Somewhere\n" \
   end
 end

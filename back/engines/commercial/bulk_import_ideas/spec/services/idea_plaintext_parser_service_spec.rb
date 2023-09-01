@@ -3,160 +3,409 @@
 require 'rails_helper'
 
 describe BulkImportIdeas::IdeaPlaintextParserService do
-  let(:project) { create(:continuous_project) }
-  let(:service) { described_class.new create(:admin), project.id, 'en', nil }
-  let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
+  describe 'form without descriptions' do
+    let(:project) { create(:continuous_project) }
+    let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
 
-  before do
-    # Topics for project
-    project.allowed_input_topics << create(:topic_economy)
-    project.allowed_input_topics << create(:topic_waste)
+    before do
+      # Topics for project
+      project.allowed_input_topics << create(:topic_economy)
+      project.allowed_input_topics << create(:topic_waste)
 
-    # Custom fields
-    create(:custom_field, resource: custom_form, 
-      key: 'pool_question', 
-      title_multiloc: { 'en' => 'Your favourite name for a swimming pool' }, 
-      input_type: 'text', 
-      enabled: true,
-      required: false
-    )
+      # Custom fields
+      create(:custom_field, resource: custom_form,
+        key: 'pool_question',
+        title_multiloc: { 'en' => 'Your favourite name for a swimming pool' },
+        input_type: 'text',
+        enabled: true,
+        required: false)
 
-    pizza_select_field = create(:custom_field, resource: custom_form,
-      key: 'pizza',
-      title_multiloc: { 'en' => 'How much do you like pizza' },
-      input_type: 'select',
-      enabled: true,
-      required: false
-    )
-    create(:custom_field_option, custom_field: pizza_select_field,
-      key: 'a-lot',
-      title_multiloc: { 'en' => 'A lot' }
-    )
-    create(:custom_field_option, custom_field: pizza_select_field,
-      key: 'not-at-all',
-      title_multiloc: { 'en' => 'Not at all' }
-    )
+      pizza_select_field = create(:custom_field, resource: custom_form,
+        key: 'pizza',
+        title_multiloc: { 'en' => 'How much do you like pizza' },
+        input_type: 'select',
+        enabled: true,
+        required: false)
+      create(:custom_field_option, custom_field: pizza_select_field,
+        key: 'a-lot',
+        title_multiloc: { 'en' => 'A lot' })
+      create(:custom_field_option, custom_field: pizza_select_field,
+        key: 'not-at-all',
+        title_multiloc: { 'en' => 'Not at all' })
 
-    burger_select_field = create(:custom_field, resource: custom_form,
-      key: 'burgers',
-      title_multiloc: { 'en' => 'How much do you like burgers' },
-      input_type: 'select',
-      enabled: true,
-      required: false
-    )
-    create(:custom_field_option, custom_field: burger_select_field,
-      key: 'a-lot',
-      title_multiloc: { 'en' => 'A lot' }
-    )
-    create(:custom_field_option, custom_field: burger_select_field,
-      key: 'not-at-all',
-      title_multiloc: { 'en' => 'Not at all' }
-    )
+      burger_select_field = create(:custom_field, resource: custom_form,
+        key: 'burgers',
+        title_multiloc: { 'en' => 'How much do you like burgers' },
+        input_type: 'select',
+        enabled: true,
+        required: false)
+      create(:custom_field_option, custom_field: burger_select_field,
+        key: 'a-lot',
+        title_multiloc: { 'en' => 'A lot' })
+      create(:custom_field_option, custom_field: burger_select_field,
+        key: 'not-at-all',
+        title_multiloc: { 'en' => 'Not at all' })
+    end
+
+    # Based on fixtures/slightly_better.pdf, with added page numbers
+    it 'parses text correctly (single document)' do
+      text = "Page 1
+        Title\n" \
+             "My very good idea\n" \
+             "Description\n" \
+             "would suggest building the\n" \
+             "new swimming Pool near the\n" \
+             "Shopping mall on Park Lane,\n" \
+             "It's easily accessible location\n" \
+             "with enough space\n" \
+             "an\n" \
+             "Location (optional)\n" \
+             "Dear shopping mall\n" \
+             "Your favourite name for a swimming pool (optional)\n" \
+             "*This answer will only be shared with moderators, and not to the public.\n" \
+             "The cool pool\n" \
+             "How much do you like pizza (optional)\n" \
+             "*This answer will only be shared with moderators, and not to the public.\n" \
+             "A lot\n" \
+             "○ Not at all\n" \
+             "Page 2\n" \
+             "How much do you like burgers (optional)\n" \
+             "*This answer will only be shared with moderators, and not to the public.\n" \
+             "O A lot\n" \
+             "Not at all\n"
+
+      service = described_class.new project.id, 'en', nil
+      docs = service.parse_text text
+
+      result = [{
+        pages: [1, 2],
+        fields: { 'Description' =>
+           "would suggest building the new swimming Pool near the Shopping mall on Park Lane, It's easily accessible location with enough space an",
+                  'Location (optional)' => 'Dear shopping mall',
+                  'Your favourite name for a swimming pool (optional)' => 'The cool pool',
+                  'How much do you like pizza (optional)' => 'A lot',
+                  'How much do you like burgers (optional)' => 'Not at all' }
+      }]
+
+      expect(docs).to eq result
+    end
+
+    # Based on fixtures/multiple.pdf, with added page numbers
+    it 'parses text correctly (multiple documents)' do
+      text = "Page 1\n
+        Title\n
+        Another great idea, wow\n
+        Description\n
+        Can you\n
+        believe how great this\n
+        idea is? Absolutely mind-blowing.\n
+        next-level stuff\n
+        Location (optional)\n
+        Pachecolaan 34, Brussels\n
+        Your favourite name for a swimming pool (optional)\n
+        *This answer will only be shared with moderators, and not to the public.\n
+        How much do you like pizza (optional)\n
+        *This answer will only be shared with moderators, and not to the public.\n
+        ○ A lot\n
+        ① Not at all\n
+        Page 2\n
+        How much do you like burgers (optional)\n
+        *This answer will only be shared with moderators, and not to the public.\n
+        ☑ A lot\n
+        ○ Not at all\n
+        Page 1\n
+        Title\n
+        This one is a bil mediarre\n
+        inedio,\n
+        Description\n
+        Honestly, I've seen better ideas.\n
+        This one is a bit\n
+        dissappointing.\n
+        Location (optional)\n
+        Your favourite name for a swimming pool (optional)\n
+        *This answer will only be shared with moderators, and not to the public.\n
+        Pooly Mc Poolface\n
+        How much do you like pizza (optional)\n
+        *This answer will only be shared with moderators, and not to the public.\n
+        A lot\n
+        ○ Not at all\n
+        Page 2\n
+        How much do you like burgers (optional)\n
+        *This answer will only be shared with moderators, and not to the public.\n
+        ⑨ A lot\n
+        ○ Not at all\n
+      "
+        .lines
+        .reject { |line| line == "\n" }
+        .map(&:strip)
+        .join("\n")
+
+      service = described_class.new project.id, 'en', nil
+      docs = service.parse_text text
+
+      result = [{
+        pages: [1, 2],
+        fields: { 'Title' => 'Another great idea, wow',
+                  'Description' =>
+           'Can you believe how great this idea is? Absolutely mind-blowing. next-level stuff',
+                  'Location (optional)' => 'Pachecolaan 34, Brussels',
+                  'Your favourite name for a swimming pool (optional)' => nil,
+                  'How much do you like pizza (optional)' => 'Not at all',
+                  'How much do you like burgers (optional)' => 'A lot' }
+      },
+        {
+          pages: [1, 2],
+          fields: { 'Title' => 'This one is a bil mediarre inedio,',
+                    'Description' =>
+            "Honestly, I've seen better ideas. This one is a bit dissappointing.",
+                    'Location (optional)' => nil,
+                    'Your favourite name for a swimming pool (optional)' => 'Pooly Mc Poolface',
+                    'How much do you like pizza (optional)' => 'A lot',
+                    'How much do you like burgers (optional)' => 'A lot' }
+        }]
+
+      expect(docs).to eq result
+    end
   end
 
-  it 'parses text correctly (single document)' do
-    text = "Title\n" +
-      "My very good idea\n" +
-      "Description\n" +
-      "would suggest building the\n" +
-      "new swimming Pool near the\n" +
-      "Shopping mall on Park Lane,\n" +
-      "It's easily accessible location\n" + 
-      "with enough space\n" + 
-      "an\n" +
-      "Location (optional)\n" + 
-      "Dear shopping mall\n" + 
-      "Your favourite name for a swimming pool (optional)\n" +
-      "*This answer will only be shared with moderators, and not to the public.\n" +
-      "The cool pool\n" +
-      "How much do you like pizza (optional)\n" +
-      "*This answer will only be shared with moderators, and not to the public.\n" +
-      "A lot\n" + 
-      "○ Not at all\n" + 
-      "How much do you like burgers (optional)\n" + 
-      "*This answer will only be shared with moderators, and not to the public.\n" +
-      "O A lot\n" + 
-      "Not at all\n"
+  describe 'form with descriptions' do
+    let(:project) { create(:continuous_project) }
+    let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
 
-    service = described_class.new project.id, 'en', nil
-    docs = service.parse_text text
+    before do
+      # Topics for project
+      project.allowed_input_topics << create(:topic_economy)
+      project.allowed_input_topics << create(:topic_waste)
 
-    result = [{"Title"=>"My very good idea",
-    "Description"=>
-     "would suggest building the new swimming Pool near the Shopping mall on Park Lane, It's easily accessible location with enough space an",
-    "Location (optional)"=>"Dear shopping mall",
-    "Your favourite name for a swimming pool (optional)"=>"The cool pool",
-    "How much do you like pizza (optional)"=>["A lot"],
-    "How much do you like burgers (optional)"=>["Not at all"]}]
+      # Custom fields
+      create(:custom_field, resource: custom_form,
+        key: 'pool_question',
+        title_multiloc: { 
+          'en' => 'Your favourite name for a swimming pool',
+          'fr-FR' => 'Votre nom préféré pour une piscine'
+        },
+        description_multiloc: {
+          'en' => "<p>A slightly longer description under a field, with a bunch of words used to explain things to people. Please don't put anything weird in this field, thanks!</p>",
+          'fr-FR' => "<p>Une description un peu plus longue</p>"
+        },
+        input_type: 'text',
+        enabled: true,
+        required: false)
 
-    expect(docs).to eq result
+      pizza_select_field = create(:custom_field, resource: custom_form,
+        key: 'pizza',
+        title_multiloc: { 
+          'en' => 'How much do you like pizza',
+          'fr-FR' => 'A quel point aimez-vous la pizza'
+        },
+        description_multiloc: { 
+          'en' => '<p>A short description</p>',
+          'fr-FR' => '<p>Une brève description</p>'
+        },
+        input_type: 'select',
+        enabled: true,
+        required: false)
+      create(:custom_field_option, custom_field: pizza_select_field,
+        key: 'a-lot',
+        title_multiloc: { 'en' => 'A lot', 'fr-FR': 'Beaucoup' })
+      create(:custom_field_option, custom_field: pizza_select_field,
+        key: 'not-at-all',
+        title_multiloc: { 'en' => 'Not at all', 'fr-FR': 'Pas du tout' })
+
+      burger_select_field = create(:custom_field, resource: custom_form,
+        key: 'burgers',
+        title_multiloc: { 
+          'en' => 'How much do you like burgers',
+          'fr-FR' => 'A quel point aimez-vous les hamburgers'
+        },
+        input_type: 'select',
+        enabled: true,
+        required: false)
+      create(:custom_field_option, custom_field: burger_select_field,
+        key: 'a-lot',
+        title_multiloc: { 'en' => 'A lot', 'fr-FR': 'Beaucoup' })
+      create(:custom_field_option, custom_field: burger_select_field,
+        key: 'not-at-all',
+        title_multiloc: { 'en' => 'Not at all', 'fr-FR': 'Pas du tout' })
+
+      ice_cream_field = create(:custom_field, resource: custom_form,
+        key: 'icecream',
+        title_multiloc: { 
+          'en' => 'Which flavors do you want?',
+          'fr-FR' => 'Quelles sont les saveurs souhaitées?'
+        },
+        input_type: 'multiselect',
+        enabled: true,
+        required: true)
+      create(:custom_field_option, custom_field: ice_cream_field,
+        key: 'vanilla',
+        title_multiloc: { 'en' => 'Vanilla', 'fr-FR': 'Vanille' })
+      create(:custom_field_option, custom_field: ice_cream_field,
+        key: 'strawberry',
+        title_multiloc: { 'en' => 'Strawberry', 'fr-FR': 'Fraise' })
+      create(:custom_field_option, custom_field: ice_cream_field,
+        key: 'chocolate',
+        title_multiloc: { 'en' => 'Chocolate', 'fr-FR': 'Chocolat' })
+      create(:custom_field_option, custom_field: ice_cream_field,
+        key: 'pistachio',
+        title_multiloc: { 'en' => 'Pistachio', 'fr-FR': 'Pistache' })
+    end
+
+    # Based on fixtures/with_page_numbers.pdf, but with description moved
+    it 'parses text correctly (single document)' do
+      text = "Page 1\n
+        Title\n
+        Page numbers test\n
+        Description\n
+        Page numbers test description\n
+        with words and things\n
+        Location (optional)\n
+        Somewhere\n
+        Your favourite name for a swimming pool (optional)\n
+        A slightly longer description under a field, with a bunch of words used to explain things to\n
+        people. Please don't put anything weird in this field, thanks!\n
+        *This answer will only be shared with moderators, and not to the public.\n
+        Page 2\n
+        How much do you like pizza (optional)\n
+        A short description\n
+        *This answer will only be shared with moderators, and not to the public.\n
+        A lot\n
+        ○ Not at all\n
+        How much do you like burgers (optional)\n
+        *This answer will only be shared with moderators, and not to the public.\n
+        ○ A lot\n
+        ☑ Not at all\n
+        Which flavors do you want?\n
+        *Choose as many as you like\n
+        *This answer will only be shared with moderators, and not to the public.\n
+        ☐ Vanilla\n
+        ☑ Strawberry\n
+        Chocolate\n
+        Pistachio\n
+      "
+        .lines
+        .reject { |line| line == "\n" }
+        .map(&:strip)
+        .join("\n")
+
+      service = described_class.new project.id, 'en', nil
+      docs = service.parse_text text
+
+      result = [{
+        pages: [1, 2],
+        fields: { 'Title' => 'Page numbers test',
+                  'Description' => 'Page numbers test description with words and things',
+                  'Location (optional)' => 'Somewhere',
+                  'Your favourite name for a swimming pool (optional)' => nil,
+                  'How much do you like pizza (optional)' => 'A lot',
+                  'How much do you like burgers (optional)' => 'Not at all',
+                  'Which flavors do you want?' => %w[Strawberry Chocolate Pistachio] }
+      }]
+
+      expect(docs).to eq result
+    end
+
+    it 'works in French' do
+      text = "Page 1\n
+        Titre\n
+        Test pour les page numbers\n
+        Description\n
+        Description du test pour les page numbers\n
+        avec mots\n
+        Adresse (optionnel)\n
+        Champs-Élysées\n
+        Votre nom préféré pour une piscine (optionnel)\n
+        Une description un peu plus longue\n
+        *Cette réponse ne sera communiquée qu'aux modérateurs, et non au public.\n
+        Page 2\n
+        A quel point aimez-vous la pizza (optionnel)\n
+        Une brève description\n
+        *Cette réponse ne sera communiquée qu'aux modérateurs, et non au public.\n
+        Beaucoup\n
+        ○ Pas du tout\n
+        A quel point aimez-vous les hamburgers (optionnel)\n
+        *Cette réponse ne sera communiquée qu'aux modérateurs, et non au public.\n
+        ○ Beaucoup\n
+        ☑ Pas du tout\n
+        Quelles sont les saveurs souhaitées?\n
+        *Choisissez-en autant que vous le souhaitez\n
+        *Cette réponse ne sera communiquée qu'aux modérateurs, et non au public.\n
+        ☐ Vanille\n
+        ☑ Fraise\n
+        Chocolat\n
+        Pistache\n
+      "
+        .lines
+        .reject { |line| line == "\n" }
+        .map(&:strip)
+        .join("\n")
+
+      service = described_class.new project.id, 'fr-FR', nil
+      docs = service.parse_text text
+
+      result = [{
+        :pages=>[1, 2],
+        :fields=> {
+          "Titre"=>"Test pour les page numbers",
+          "Description"=>"Description du test pour les page numbers avec mots",
+          "Adresse (optionnel)"=>"Champs-Élysées",
+          "Votre nom préféré pour une piscine (optionnel)"=>nil,
+          "A quel point aimez-vous la pizza (optionnel)"=>"Beaucoup",
+          "A quel point aimez-vous les hamburgers (optionnel)"=>"Pas du tout",
+          "Quelles sont les saveurs souhaitées?"=> %w[Fraise Chocolat Pistache]
+          }
+        }]
+
+      expect(docs).to eq result
+    end
   end
 
-  it 'parses text correctly (multiple documents)' do
-    text = "Title\n
-      Another great idea, wow\n
-      Description\n
-      Can you\n
-      believe how great this\n
-      idea is? Absolutely mind-blowing.\n
-      next-level stuff\n
-      Location (optional)\n
-      Pachecolaan 34, Brussels\n
-      Your favourite name for a swimming pool (optional)\n
-      *This answer will only be shared with moderators, and not to the public.\n
-      How much do you like pizza (optional)\n
-      *This answer will only be shared with moderators, and not to the public.\n
-      ○ A lot\n
-      ① Not at all\n
-      How much do you like burgers (optional)\n
-      *This answer will only be shared with moderators, and not to the public.\n
-      ☑ A lot\n
-      ○ Not at all\n
-      Title\n
-      This one is a bil mediarre\n
-      inedio,\n
-      Description\n
-      Honestly, I've seen better ideas.\n
-      This one is a bit\n
-      dissappointing.\n
-      Location (optional)\n
-      Your favourite name for a swimming pool (optional)\n
-      *This answer will only be shared with moderators, and not to the public.\n
-      Pooly Mc Poolface\n
-      How much do you like pizza (optional)\n
-      *This answer will only be shared with moderators, and not to the public.\n
-      A lot\n
-      ○ Not at all\n
-      How much do you like burgers (optional)\n
-      *This answer will only be shared with moderators, and not to the public.\n
-      ⑨ A lot\n
-      ○ Not at all\n
-    "
-      .lines
-      .select { |line| line != "\n" }
-      .map { |line| line.strip }
-      .join("\n")
+  describe 'edge cases' do
+    it 'handles values matching substrings of description' do
+      project = create(:continuous_project)
+      custom_form = create(:custom_form, :with_default_fields, participation_context: project)
+      project.allowed_input_topics << create(:topic_economy)
+      project.allowed_input_topics << create(:topic_waste)
 
-    service = described_class.new project.id, 'en', nil
-    docs = service.parse_text text
+      create(:custom_field, resource: custom_form,
+        key: 'pool_question',
+        title_multiloc: { 'en' => 'Your favourite name for a swimming pool' },
+        description_multiloc: { 'en' => 'Answer this question with "Pizza nutella"' },
+        input_type: 'text',
+        enabled: true,
+        required: false
+      )
 
-    result = [{"Title"=>"Another great idea, wow",
-    "Description"=>
-     "Can you believe how great this idea is? Absolutely mind-blowing. next-level stuff",
-    "Location (optional)"=>"Pachecolaan 34, Brussels",
-    "Your favourite name for a swimming pool (optional)"=>nil,
-    "How much do you like pizza (optional)"=>["Not at all"],
-    "How much do you like burgers (optional)"=>["A lot"]},
-   {"Title"=>"This one is a bil mediarre inedio,",
-    "Description"=>
-     "Honestly, I've seen better ideas. This one is a bit dissappointing.",
-    "Location (optional)"=>nil,
-    "Your favourite name for a swimming pool (optional)"=>"Pooly Mc Poolface",
-    "How much do you like pizza (optional)"=>["A lot"],
-    "How much do you like burgers (optional)"=>["A lot"]}]
-  
-    # TODO properly assert this
-  
-    expect(docs).to eq result
+      text = "Page 1\n
+        Title\n
+        Test\n
+        Description\n
+        Test description\n
+        with words and things\n
+        Location (optional)\n
+        Somewhere\n
+        Your favourite name for a swimming pool (optional)\n
+        Answer this question with \"Pizza nutella\"\n
+        *This answer will only be shared with moderators, and not to the public.\n
+        Pizza nutella
+      "
+        .lines
+        .reject { |line| line == "\n" }
+        .map(&:strip)
+        .join("\n")
+
+      service = described_class.new project.id, 'en', nil
+      docs = service.parse_text text
+
+      result = [{
+        pages: [1],
+        fields: { 'Title' => 'Test',
+                  'Description' => 'Test description with words and things',
+                  'Location (optional)' => 'Somewhere',
+                  'Your favourite name for a swimming pool (optional)' => 'Pizza nutella' }
+      }]
+
+      expect(docs).to eq result
+    end
   end
 end

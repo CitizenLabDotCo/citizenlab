@@ -23,8 +23,13 @@ module BulkImportIdeas
       ]
     end
 
-    def xlsx_to_idea_rows(xlsx)
-      xlsx.map do |xlsx_row|
+    def parse_idea_rows(file, _file_type)
+      xlsx_ideas = parse_xlsx_ideas file
+      ideas_to_idea_rows xlsx_ideas
+    end
+
+    def ideas_to_idea_rows(ideas_array)
+      ideas_array.map do |xlsx_row|
         idea_row = {}
 
         title_multiloc = {}
