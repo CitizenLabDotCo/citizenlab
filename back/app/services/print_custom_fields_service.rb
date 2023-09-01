@@ -18,7 +18,7 @@ class PrintCustomFieldsService
   end
 
   def create_pdf
-    pdf = Prawn::Document.new(page_size: 'A4')
+    pdf = Prawn::Document.new(page_size: 'A4', top_margin: 2.cm)
 
     if params[:name] == 'true' then
       render_text_field_with_name(
@@ -50,6 +50,18 @@ class PrintCustomFieldsService
       next unless QUESTION_TYPES.include? field_type
       render_field(pdf, custom_field)
     end
+
+    # Add page numbers
+    page_copy = I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.page') }
+    page_number_format = "#{page_copy} <page>"
+    page_number_options = {
+      at: [pdf.bounds.right - 150, 275.mm],
+      width: 150,
+      align: :right,
+      
+    }
+
+    pdf.number_pages page_number_format, page_number_options
 
     return pdf
   end

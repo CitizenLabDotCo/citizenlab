@@ -26,7 +26,7 @@ module BulkImportIdeas
     end
 
     def import_ideas(idea_rows, import_as_draft: false)
-      raise Error.new 'bulk_import_ideas_maximum_ideas_exceeded', value: max_ideas if idea_rows.size > DEFAULT_MAX_IDEAS
+      raise Error.new 'bulk_import_ideas_maximum_ideas_exceeded', value: DEFAULT_MAX_IDEAS if idea_rows.size > DEFAULT_MAX_IDEAS
 
       ideas = []
       ActiveRecord::Base.transaction do
@@ -42,6 +42,8 @@ module BulkImportIdeas
     end
 
     def upload_file(file_content, file_type)
+      # Although file type is passed in, check that it is correct and default to xlsx otherwise
+      file_type = 'xlsx' if file_type == 'pdf' && !file_content.index('application/pdf')
       @file = IdeaImportFile.create!(
         import_type: file_type,
         project: @project,
@@ -50,13 +52,10 @@ module BulkImportIdeas
           content: file_content # base64
         }
       )
+      file_type
     end
 
-    def xlsx_to_idea_rows(_xlsx)
-      []
-    end
-
-    def pdf_to_idea_rows(_xlsx)
+    def parse_idea_rows(_file, _file_type)
       []
     end
 
@@ -272,6 +271,24 @@ module BulkImportIdeas
         file: @file
       )
       idea_import.save!
+    end
+
+    def parse_xlsx_ideas(file)
+      # TODO: Is StringIO needed here?
+      xlsx_file = StringIO.new decode_base64(file)
+      XlsxService.new.xlsx_to_hash_array xlsx_file
+    end
+
+    def parse_pdf_ideas(file)
+      pdf_file = decode_base64 file
+      google_forms_service = GoogleFormParserService.new pdf_file
+      IdeaPlaintextParserService.new(@project.id, @locale, @phase&.id).parse_text(google_forms_service.raw_text)
+    end
+
+    def decode_base64(base64_file)
+      start = base64_file.index ';base64,'
+      base64_file = base64_file[(start + 8)..] if start
+      Base64.decode64(base64_file)
     end
   end
 end

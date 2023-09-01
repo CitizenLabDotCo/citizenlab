@@ -5,6 +5,7 @@ require 'rails_helper'
 describe BulkImportIdeas::ImportProjectIdeasService do
   let(:project) { create(:continuous_project) }
   let(:service) { described_class.new create(:admin), project.id, 'en', nil }
+  let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
 
   before do
     # Topics for project
@@ -12,7 +13,7 @@ describe BulkImportIdeas::ImportProjectIdeasService do
     project.allowed_input_topics << create(:topic_waste)
 
     # Custom fields
-    custom_form = create(:custom_form, :with_default_fields, participation_context: project)
+    # custom_form = create(:custom_form, :with_default_fields, participation_context: project)
     create(:custom_field, resource: custom_form, key: 'a_text_field', title_multiloc: { 'en' => 'A text field' }, enabled: true)
     create(:custom_field, resource: custom_form, key: 'number_field', title_multiloc: { 'en' => 'Number field' }, input_type: 'number', enabled: true)
     select_field = create(:custom_field, resource: custom_form, key: 'select_field', title_multiloc: { 'en' => 'Select field' }, input_type: 'select', enabled: true)
@@ -54,41 +55,44 @@ describe BulkImportIdeas::ImportProjectIdeasService do
     end
   end
 
-  describe 'pdf_to_idea_rows' do
-    let(:docs) do
+  describe 'ideas_to_idea_rows' do
+    let(:pdf_ideas) do
       [
-        [
-          { name: 'Full name', value: 'John Rambo', type: '', page: 1, x: 0.09, y: 1.16 },
-          { name: 'Email address', value: 'john_rambo@gravy.com', type: '', page: 1, x: 0.09, y: 1.24 },
-          { name: 'Title', value: 'Free donuts for all', type: '', page: 1, x: 0.09, y: 1.34 },
-          { name: 'Description', value: 'Give them all donuts', type: '', page: 1, x: 0.09, y: 1.41 },
-          { name: 'Yes', value: nil, type: 'filled_checkbox', page: 1, x: 0.11, y: 1.66 },
-          { name: 'No', value: nil, type: 'filled_checkbox', page: 1, x: 0.45, y: 1.66 },
-          { name: 'This', value: nil, type: 'filled_checkbox', page: 1, x: 0.11, y: 1.86 },
-          { name: 'That', value: nil, type: 'filled_checkbox', page: 1, x: 0.45, y: 1.86 },
-          { name: 'A text field', value: 'Not much to say', type: '', page: 2, x: 0.09, y: 2.12 },
-          { name: 'Ignored field', value: 'Ignored value', type: 'filled_checkbox', page: 2, x: 0.45, y: 2.23 },
-          { name: 'Yes', value: nil, type: 'unfilled_checkbox', page: 2, x: 0.11, y: 2.66 },
-          { name: 'No', value: nil, type: 'filled_checkbox', page: 2, x: 0.45, y: 2.66 },
-          { name: 'Number field', value: '22', type: '', page: 2, x: 0.11, y: 2.86 }
-        ],
-        [
-          { name: 'Full name', value: 'Ned Flanders', type: '', page: 3, x: 0.09, y: 3.16 },
-          { name: 'Email address', value: 'ned@simpsons.com', type: '', page: 3, x: 0.09, y: 3.24 },
-          { name: 'Title', value: 'New Wrestling Arena needed', type: '', page: 3, x: 0.09, y: 3.34 },
-          { name: 'Description', value: 'I am convinced that if we do not get this we will be sad.', type: '', page: 3, x: 0.09, y: 3.41 },
-          { name: 'Location', value: 'Behind the sofa', type: '', page: 3, x: 0.11, y: 3.52 },
-          { name: 'Yes', value: nil, type: 'unfilled_checkbox', page: 3, x: 0.11, y: 3.66 },
-          { name: 'No', value: nil, type: 'filled_checkbox', page: 3, x: 0.45, y: 3.66 },
-          { name: 'This', value: nil, type: 'unfilled_checkbox', page: 3, x: 0.11, y: 3.86 },
-          { name: 'That', value: nil, type: 'filled_checkbox', page: 3, x: 0.45, y: 3.86 },
-          { name: 'A text field', value: 'Something else', type: '', page: 4, x: 0.09, y: 4.12 },
-          { name: 'Ignored option', value: nil, type: 'filled_checkbox', page: 4, x: 0.45, y: 4.23 },
-          { name: 'Number field', value: '28', type: '', page: 4, x: 0.11, y: 4.86 }
-        ]
+        {
+          pages: [1, 2],
+          fields: {
+            'Full name' => 'John Rambo',
+            'Email address' => 'john_rambo@gravy.com',
+            'Title' => 'Free donuts for all',
+            'Description' => 'Give them all donuts',
+            'Location' => 'Somewhere',
+            'Select field' => 'Yes;No',
+            'Multi select field' => 'This;That',
+            'A text field (optional)' => 'Not much to say',
+            'Another select field' => 'No',
+            'Ignored field' => 'Ignored value',
+            'Number field' => '22'
+          }
+        },
+        {
+          pages: [3, 4],
+          fields: {
+            'Full name' => 'Ned Flanders',
+            'Email address' => 'ned@simpsons.com',
+            'Title' => 'New Wrestling Arena needed',
+            'Description' => 'I am convinced that if we do not get this we will be sad.',
+            'Location' => 'Behind the sofa',
+            'Select field' => 'No',
+            'Multi select field' => 'That',
+            'A text field (optional)' => 'Something else',
+            'Another select field' => '',
+            'Ignored field' => 'Ignored value',
+            'Number field' => '28'
+          }
+        }
       ]
     end
-    let(:rows) { service.pdf_to_idea_rows docs }
+    let(:rows) { service.ideas_to_idea_rows pdf_ideas }
 
     it 'converts the output from GoogleFormParser into idea rows' do
       expect(rows.count).to eq 2
@@ -122,6 +126,11 @@ describe BulkImportIdeas::ImportProjectIdeasService do
       expect(rows[0][:custom_field_values][:another_select_field]).to eq 'no'
     end
 
+    it 'can deal with empty select fields' do
+      expect(rows.count).to eq 2
+      expect(rows[1][:custom_field_values].keys).not_to include(:another_select_field)
+    end
+
     it 'converts multi-select custom fields' do
       expect(rows.count).to eq 2
       expect(rows[0][:custom_field_values][:multiselect_field]).to match_array %w[this that]
@@ -142,82 +151,108 @@ describe BulkImportIdeas::ImportProjectIdeasService do
     end
 
     it 'does not return an email if it does not validate' do
-      docs = [[{ name: 'Full name', value: 'John Rambo' }, { name: 'Email address', value: 'john_rambo.com' }]]
-      rows = service.pdf_to_idea_rows docs
+      ideas = [{
+        pages: [1, 2],
+        fields: { 'Full name' => 'John Rambo', 'Email address' => 'john_rambo.com' }
+      }]
+      rows = service.ideas_to_idea_rows ideas
       expect(rows[0].keys).not_to include :user_email
     end
 
     it 'can convert a document in french' do
-      service = described_class.new create(:admin), project.id, 'fr-BE', nil
-      docs = [[{ name: 'Titre', value: 'Bonjour' }, { name: 'Description complète', value: "Je suis un chien. J'aime les chats." }]]
-      rows = service.pdf_to_idea_rows docs
-
-      expect(rows[0][:title_multiloc]).to eq({ 'fr-BE': 'Bonjour' })
-      expect(rows[0][:body_multiloc]).to eq({ 'fr-BE': "Je suis un chien. J'aime les chats." })
-    end
-  end
-
-  describe 'xlsx_to_idea_rows' do
-    let(:xlsx_array) do
-      [
-        {
-          'Full name' => 'Bill Test',
-          'Email address' => 'bill@citizenlab.co',
-          'Permission' => 'X',
-          'Date Published (dd-mm-yyyy)' => '15-08-2023',
-          'Title' => 'A title',
-          'Description' => 'A description',
-          'Tags' => 'Economy; Waste',
-          'Location' => 'Somewhere',
-          'A text field' => 'Loads to say here',
-          'Number field' => 5,
-          'Select field' => 'Yes',
-          'Multi select field' => 'This; That',
-          'Another select field' => 'No',
-          'Image URL' => 'https://images.com/image.png',
-          'Latitude' => 50.5035,
-          'Longitude' => 6.0944
+      service = described_class.new create(:admin), project.id, 'fr-FR', nil
+      ideas = [{
+        pages: [1, 2],
+        fields: {
+          'Nom et prénom' => 'Jean Rambo',
+          'Adresse e-mail' => 'jean@france.com',
+          'Titre' => 'Bonjour',
+          'Description' => "Je suis un chien. J'aime les chats."
         }
-      ]
-    end
-    let(:rows) { service.xlsx_to_idea_rows xlsx_array }
+      }]
+      rows = service.ideas_to_idea_rows ideas
 
-    it 'converts parsed XLSX core fields into idea rows' do
-      expect(rows[0]).to include({
-        title_multiloc: { en: 'A title' },
-        body_multiloc: { en: 'A description' },
-        project_id: project.id,
-        topic_titles: %w[Economy Waste],
-        published_at: '15-08-2023',
-        latitude: 50.5035,
-        longitude: 6.0944,
-        location_description: 'Somewhere',
-        image_url: 'https://images.com/image.png'
-      })
+      expect(rows[0][:title_multiloc]).to eq({ 'fr-FR': 'Bonjour' })
+      expect(rows[0][:body_multiloc]).to eq({ 'fr-FR': "Je suis un chien. J'aime les chats." })
+      expect(rows[0][:user_email]).to eq 'jean@france.com'
+      expect(rows[0][:user_name]).to eq 'Jean Rambo'
     end
 
-    it 'includes user details when "Permission" is not blank' do
-      expect(rows[0]).to include({
-        user_name: 'Bill Test',
-        user_email: 'bill@citizenlab.co'
-      })
-    end
+    it 'can accept select fields as arrays as well as delimited strings' do
+      pdf_ideas[0][:fields]['Multi select field'] = 'This;That'
+      pdf_ideas[1][:fields]['Multi select field'] = %w[This That]
 
-    it 'does not include user details when "Permission" is blank' do
-      xlsx_array[0]['Permission'] = ''
-      rows = service.xlsx_to_idea_rows xlsx_array
-      expect(rows[0]).not_to include({
-        user_name: 'Bill Test',
-        user_email: 'bill@citizenlab.co'
-      })
-    end
-
-    it 'converts parsed XLSX custom fields into idea rows' do
-      expect(rows[0][:custom_field_values][:a_text_field]).to eq 'Loads to say here'
-      expect(rows[0][:custom_field_values][:number_field]).to eq 5
-      expect(rows[0][:custom_field_values][:select_field]).to eq 'yes'
-      expect(rows[0][:custom_field_values][:another_select_field]).to eq 'no'
       expect(rows[0][:custom_field_values][:multiselect_field]).to match_array %w[this that]
+      expect(rows[1][:custom_field_values][:multiselect_field]).to match_array %w[this that]
+    end
+
+    context 'xlsx specific fields' do
+      let(:xlsx_ideas_array) do
+        [
+          {
+            pages: [1],
+            fields: {
+              'Full name' => 'Bill Test',
+              'Email address' => 'bill@citizenlab.co',
+              'Permission' => 'X',
+              'Date Published (dd-mm-yyyy)' => '15-08-2023',
+              'Title' => 'A title',
+              'Description' => 'A description',
+              'Tags' => 'Economy; Waste',
+              'Location' => 'Somewhere',
+              'A text field' => 'Loads to say here',
+              'Number field' => 5,
+              'Select field' => 'Yes',
+              'Multi select field' => 'This; That',
+              'Another select field' => 'No',
+              'Image URL' => 'https://images.com/image.png',
+              'Latitude' => 50.5035,
+              'Longitude' => 6.0944
+            }
+          }
+        ]
+      end
+      let(:rows) { service.ideas_to_idea_rows xlsx_ideas_array }
+
+      it 'converts parsed XLSX core fields into idea rows' do
+        expect(rows[0]).to include({
+          title_multiloc: { en: 'A title' },
+          body_multiloc: { en: 'A description' },
+          project_id: project.id,
+          topic_titles: %w[Economy Waste],
+          published_at: '15-08-2023',
+          latitude: 50.5035,
+          longitude: 6.0944,
+          location_description: 'Somewhere',
+          image_url: 'https://images.com/image.png',
+          pages: [1]
+        })
+      end
+
+      it 'includes user details when "Permission" is not blank' do
+        expect(rows[0]).to include({
+          user_name: 'Bill Test',
+          user_email: 'bill@citizenlab.co'
+        })
+      end
+
+      it 'does not include user details when "Permission" is blank' do
+        xlsx_ideas_array[0][:fields]['Permission'] = ''
+        rows = service.ideas_to_idea_rows xlsx_ideas_array
+
+        expect(rows[0]).not_to include({
+          user_name: 'Bill Test',
+          user_email: 'bill@citizenlab.co'
+        })
+      end
+
+      it 'converts parsed XLSX custom fields into idea rows' do
+        expect(rows[0][:custom_field_values][:a_text_field]).to eq 'Loads to say here'
+        expect(rows[0][:custom_field_values][:number_field]).to eq 5
+        expect(rows[0][:custom_field_values][:select_field]).to eq 'yes'
+        expect(rows[0][:custom_field_values][:another_select_field]).to eq 'no'
+        expect(rows[0][:custom_field_values][:multiselect_field]).to match_array %w[this that]
+      end
     end
   end
 end

@@ -2,6 +2,10 @@
 
 module BulkImportIdeas
   class ImportIdeasPolicy < ApplicationPolicy
+    def show?
+      active_admin?
+    end
+
     def bulk_create?
       active_admin?
     end

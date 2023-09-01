@@ -9,6 +9,13 @@ en:
       title: Default question
       option1: First option
       option2: Second option
+    pdf_export:
+      full_name: Full name
+      email_address: Email address
+      optional: optional
+      choose_as_many: Choose as many as you like
+      this_answer: This answer will only be shared with moderators, and not to the public.
+      page: Page
   custom_fields:
     ideas:
       title:
