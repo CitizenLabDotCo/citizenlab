@@ -134,7 +134,7 @@ module BulkImportIdeas
       # Select fields
       select_fields.each do |field|
         select_field = find_field(doc, field[:name])
-        if select_field
+        if select_field && select_field[:value]
           values = select_field[:value].is_a?(Array) ? select_field[:value] : select_field[:value].split(';')
           if values.count > 0
             if field[:type] == 'select'
