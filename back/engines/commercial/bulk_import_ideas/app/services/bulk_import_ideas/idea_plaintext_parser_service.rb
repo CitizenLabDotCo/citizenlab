@@ -1,16 +1,18 @@
+# frozen_string_literal: true
+
 module BulkImportIdeas
   class IdeaPlaintextParserService
     QUESTION_TYPES = %w[select multiselect text text_multiloc multiline_text html_multiloc]
-    FORBIDDEN_HTML_TAGS_REGEX = /<\/?(div|p|span|ul|ol|li|em|img|a){1}[^>]*\/?>/
-    EMPTY_SELECT_CIRCLES = ["O", "○"]
-    EMPTY_MULTISELECT_SQUARES = ["☐"]
+    FORBIDDEN_HTML_TAGS_REGEX = %r{</?(div|p|span|ul|ol|li|em|img|a){1}[^>]*/?>}
+    EMPTY_SELECT_CIRCLES = ['O', '○']
+    EMPTY_MULTISELECT_SQUARES = ['☐']
 
     def initialize(project_id, locale, phase_id)
       @project = Project.find(project_id)
       @phase = phase_id ? @project.phases.find(phase_id) : TimelineService.new.current_phase(@project)
       @custom_fields = IdeaCustomFieldsService.new(
-          Factory.instance.participation_method_for(@phase || @project).custom_form
-        )
+        Factory.instance.participation_method_for(@phase || @project).custom_form
+      )
         .enabled_fields
         .select { |field| QUESTION_TYPES.include? field.input_type }
 
@@ -19,9 +21,9 @@ module BulkImportIdeas
       @optional_copy = I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.optional') }
       @choose_as_many_copy = I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.choose_as_many') }
       @this_answer_copy = I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.this_answer') }
-      
+
       @page_copy = I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.page') }
-      @page_regex = Regexp.new '^' + @page_copy + ' \\d+$'
+      @page_regex = Regexp.new "^#{@page_copy} \\d+$"
 
       @fields_by_display_title = {}
 
@@ -44,18 +46,21 @@ module BulkImportIdeas
     end
 
     def parse_text(text)
-      lines = text.lines.map { |line| line.rstrip }
+      text_field_types = %w[text text_multiloc]
+      multiline_field_types = %w[multiline_text html_multiloc]
+
+      lines = text.lines.map(&:rstrip)
 
       lines.each do |line|
-        if is_new_page? line then
-          if is_new_document? line then
-            unless @form.nil? then
+        if new_page? line
+          if new_document? line
+            unless @form.nil?
               @documents << @form
             end
 
             @form = {
-              :pages => [],
-              :fields => {}
+              pages: [],
+              fields: {}
             }
           end
 
@@ -65,11 +70,11 @@ module BulkImportIdeas
           next
         end
 
-        if @form.nil? then
-          raise Exception.new "Unable to detect page number of first page"
+        if @form.nil?
+          raise StandardError, 'Unable to detect page number of first page'
         end
 
-        if is_field_title? line then
+        if field_title? line
           @form[:fields][line] = nil
 
           @current_field_display_title = line
@@ -78,44 +83,44 @@ module BulkImportIdeas
         end
 
         next if @current_custom_field.nil?
-        next if is_disclaimer? line
-        next if is_description? line
+        next if disclaimer? line
+        next if description? line
 
         field_type = @current_custom_field.input_type
 
-        if ['text', 'text_multiloc'].include? field_type then
-          current_text = @form[:fields][@current_field_display_title]
-          @form[:fields][@current_field_display_title] = current_text.nil? ? line : "#{current_text} #{line}"
-          next
-        end
-  
-        if ['multiline_text', 'html_multiloc'].include? field_type then
+        if text_field_types.include? field_type
           current_text = @form[:fields][@current_field_display_title]
           @form[:fields][@current_field_display_title] = current_text.nil? ? line : "#{current_text} #{line}"
           next
         end
 
-        if field_type == 'select' then
+        if multiline_field_types.include? field_type
+          current_text = @form[:fields][@current_field_display_title]
+          @form[:fields][@current_field_display_title] = current_text.nil? ? line : "#{current_text} #{line}"
+          next
+        end
+
+        if field_type == 'select'
           handle_select_field(line)
         end
 
-        if field_type == 'multiselect' then
+        if field_type == 'multiselect'
           handle_multiselect_field(line)
         end
       end
 
       @documents << @form
 
-      return @documents
+      @documents
     end
 
     private
 
-    def is_new_page?(line)
+    def new_page?(line)
       @page_regex.match? line
     end
 
-    def is_new_document?(line)
+    def new_document?(line)
       return true if line == "#{@page_copy} 1"
 
       page_number = get_page_number line
@@ -132,7 +137,7 @@ module BulkImportIdeas
       line[@page_copy.length + 1, 1].to_i
     end
 
-    def is_field_title?(line)
+    def field_title?(line)
       @fields_by_display_title.key? line
     end
 
@@ -140,17 +145,18 @@ module BulkImportIdeas
       @fields_by_display_title[line]
     end
 
-    def is_disclaimer?(line)
-      line == "*#{@choose_as_many_copy}" || line == "*#{@this_answer_copy}"
+    def disclaimer?(line)
+      %W[*#{@choose_as_many_copy} *#{@this_answer_copy}].include?(line)
     end
 
-    def is_description?(line)
+    def description?(line)
       field_description = @current_custom_field.description_multiloc[@locale]
       return false if field_description.nil?
 
       field_description = field_description.gsub(FORBIDDEN_HTML_TAGS_REGEX, '')
       return false if field_description == ''
-      return field_description.include? line
+
+      field_description.include? line
     end
 
     def handle_select_field(line)
@@ -162,19 +168,19 @@ module BulkImportIdeas
       # "① Not at all" << the answer selected on the form
 
       # or:
-      # "O A lot" + 
+      # "O A lot" +
       # "Not at all" << the answer selected on the form
 
       # So for now we will detect
       # which option titles match these kind of O
       # or circle symbols, and assume the others are the
       # select answer
-      unless is_empty_select_option? line then
+      unless empty_select_option? line
         value = match_selected_option(line)
 
-        unless value.nil? then
+        unless value.nil?
           @form[:fields][@current_field_display_title] = value
-              
+
           @current_field_display_title = nil
           @current_custom_field = nil
         end
@@ -186,13 +192,13 @@ module BulkImportIdeas
       # select field, except that an empty option is indicated
       # by a little square ('☐').
 
-      unless is_empty_multiselect_option? line then
+      unless empty_multiselect_option? line
         value = match_selected_option(line)
 
-        unless value.nil? then
+        unless value.nil?
           current_field_value = @form[:fields][@current_field_display_title]
 
-          if current_field_value.nil? then
+          if current_field_value.nil?
             @form[:fields][@current_field_display_title] = []
           end
 
@@ -204,40 +210,41 @@ module BulkImportIdeas
     def option_titles
       return nil if @current_custom_field.nil?
 
-      supported_fields = ['select', 'multiselect']
+      supported_fields = %w[select multiselect]
       return nil unless supported_fields.include? @current_custom_field.input_type
 
-      return @current_custom_field
+      @current_custom_field
         .options
         .pluck(:title_multiloc)
-        .map { |multiloc| multiloc[@locale] }
+        .pluck(@locale)
     end
 
     # Checks if string has format '○ option label' or 'O option label'
-    def is_empty_select_option?(line)
-      is_empty_option?(line, EMPTY_SELECT_CIRCLES)
+    def empty_select_option?(line)
+      empty_option?(line, EMPTY_SELECT_CIRCLES)
     end
 
     def match_selected_option(line)
-      line_without_first_chars = line[2,line.length - 2]
+      line_without_first_chars = line[2, line.length - 2]
 
-      option_titles.find do |option| 
+      option_titles.find do |option|
         option == line || option == line_without_first_chars
       end
     end
 
-    def is_empty_multiselect_option?(line)
-      is_empty_option?(line, EMPTY_MULTISELECT_SQUARES)
+    def empty_multiselect_option?(line)
+      empty_option?(line, EMPTY_MULTISELECT_SQUARES)
     end
 
-    def is_empty_option?(line, empty_characters)
-      first_character = line[0,1]
-      second_character = line[1,1]
-      rest = line[2,line.length - 2]
+    def empty_option?(line, empty_characters)
+      first_character = line[0, 1]
+      second_character = line[1, 1]
+      rest = line[2, line.length - 2]
 
       return false unless empty_characters.include? first_character
       return false unless second_character == ' '
-      return option_titles.include? rest
+
+      option_titles.include? rest
     end
   end
 end

@@ -14,86 +14,79 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
       project.allowed_input_topics << create(:topic_waste)
 
       # Custom fields
-      create(:custom_field, resource: custom_form, 
-        key: 'pool_question', 
-        title_multiloc: { 'en' => 'Your favourite name for a swimming pool' }, 
-        input_type: 'text', 
+      create(:custom_field, resource: custom_form,
+        key: 'pool_question',
+        title_multiloc: { 'en' => 'Your favourite name for a swimming pool' },
+        input_type: 'text',
         enabled: true,
-        required: false
-      )
+        required: false)
 
       pizza_select_field = create(:custom_field, resource: custom_form,
         key: 'pizza',
         title_multiloc: { 'en' => 'How much do you like pizza' },
         input_type: 'select',
         enabled: true,
-        required: false
-      )
+        required: false)
       create(:custom_field_option, custom_field: pizza_select_field,
         key: 'a-lot',
-        title_multiloc: { 'en' => 'A lot' }
-      )
+        title_multiloc: { 'en' => 'A lot' })
       create(:custom_field_option, custom_field: pizza_select_field,
         key: 'not-at-all',
-        title_multiloc: { 'en' => 'Not at all' }
-      )
+        title_multiloc: { 'en' => 'Not at all' })
 
       burger_select_field = create(:custom_field, resource: custom_form,
         key: 'burgers',
         title_multiloc: { 'en' => 'How much do you like burgers' },
         input_type: 'select',
         enabled: true,
-        required: false
-      )
+        required: false)
       create(:custom_field_option, custom_field: burger_select_field,
         key: 'a-lot',
-        title_multiloc: { 'en' => 'A lot' }
-      )
+        title_multiloc: { 'en' => 'A lot' })
       create(:custom_field_option, custom_field: burger_select_field,
         key: 'not-at-all',
-        title_multiloc: { 'en' => 'Not at all' }
-      )
+        title_multiloc: { 'en' => 'Not at all' })
     end
 
     # Based on fixtures/slightly_better.pdf, with added page numbers
     it 'parses text correctly (single document)' do
       text = "Page 1
-        Title\n" +
-        "My very good idea\n" +
-        "Description\n" +
-        "would suggest building the\n" +
-        "new swimming Pool near the\n" +
-        "Shopping mall on Park Lane,\n" +
-        "It's easily accessible location\n" + 
-        "with enough space\n" + 
-        "an\n" +
-        "Location (optional)\n" + 
-        "Dear shopping mall\n" + 
-        "Your favourite name for a swimming pool (optional)\n" +
-        "*This answer will only be shared with moderators, and not to the public.\n" +
-        "The cool pool\n" +
-        "How much do you like pizza (optional)\n" +
-        "*This answer will only be shared with moderators, and not to the public.\n" +
-        "A lot\n" + 
-        "○ Not at all\n" +
-        "Page 2\n" +
-        "How much do you like burgers (optional)\n" + 
-        "*This answer will only be shared with moderators, and not to the public.\n" +
-        "O A lot\n" + 
-        "Not at all\n"
+        Title\n" \
+             "My very good idea\n" \
+             "Description\n" \
+             "would suggest building the\n" \
+             "new swimming Pool near the\n" \
+             "Shopping mall on Park Lane,\n" \
+             "It's easily accessible location\n" \
+             "with enough space\n" \
+             "an\n" \
+             "Location (optional)\n" \
+             "Dear shopping mall\n" \
+             "Your favourite name for a swimming pool (optional)\n" \
+             "*This answer will only be shared with moderators, and not to the public.\n" \
+             "The cool pool\n" \
+             "How much do you like pizza (optional)\n" \
+             "*This answer will only be shared with moderators, and not to the public.\n" \
+             "A lot\n" \
+             "○ Not at all\n" \
+             "Page 2\n" \
+             "How much do you like burgers (optional)\n" \
+             "*This answer will only be shared with moderators, and not to the public.\n" \
+             "O A lot\n" \
+             "Not at all\n"
 
       service = described_class.new project.id, 'en', nil
       docs = service.parse_text text
 
       result = [{
-        :pages=>[1, 2],
-        :fields=>
-         {"Description"=>
+        pages: [1, 2],
+        fields: { 'Description' =>
            "would suggest building the new swimming Pool near the Shopping mall on Park Lane, It's easily accessible location with enough space an",
-          "Location (optional)"=>"Dear shopping mall",
-          "Your favourite name for a swimming pool (optional)"=>"The cool pool",
-          "How much do you like pizza (optional)"=>"A lot",
-          "How much do you like burgers (optional)"=>"Not at all"}}]
+                  'Location (optional)' => 'Dear shopping mall',
+                  'Your favourite name for a swimming pool (optional)' => 'The cool pool',
+                  'How much do you like pizza (optional)' => 'A lot',
+                  'How much do you like burgers (optional)' => 'Not at all' }
+      }]
 
       expect(docs).to eq result
     end
@@ -144,34 +137,34 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
         ○ Not at all\n
       "
         .lines
-        .select { |line| line != "\n" }
-        .map { |line| line.strip }
+        .reject { |line| line == "\n" }
+        .map(&:strip)
         .join("\n")
 
       service = described_class.new project.id, 'en', nil
       docs = service.parse_text text
 
       result = [{
-        :pages=>[1, 2],
-        :fields=>
-         {"Title"=>"Another great idea, wow",
-          "Description"=>
-           "Can you believe how great this idea is? Absolutely mind-blowing. next-level stuff",
-          "Location (optional)"=>"Pachecolaan 34, Brussels",
-          "Your favourite name for a swimming pool (optional)"=>nil,
-          "How much do you like pizza (optional)"=>"Not at all",
-          "How much do you like burgers (optional)"=>"A lot"}},
-       {
-        :pages=>[1, 2],
-        :fields=>
-         {"Title"=>"This one is a bil mediarre inedio,",
-          "Description"=>
-           "Honestly, I've seen better ideas. This one is a bit dissappointing.",
-          "Location (optional)"=>nil,
-          "Your favourite name for a swimming pool (optional)"=>"Pooly Mc Poolface",
-          "How much do you like pizza (optional)"=>"A lot",
-          "How much do you like burgers (optional)"=>"A lot"}}]
-  
+        pages: [1, 2],
+        fields: { 'Title' => 'Another great idea, wow',
+                  'Description' =>
+           'Can you believe how great this idea is? Absolutely mind-blowing. next-level stuff',
+                  'Location (optional)' => 'Pachecolaan 34, Brussels',
+                  'Your favourite name for a swimming pool (optional)' => nil,
+                  'How much do you like pizza (optional)' => 'Not at all',
+                  'How much do you like burgers (optional)' => 'A lot' }
+      },
+        {
+          pages: [1, 2],
+          fields: { 'Title' => 'This one is a bil mediarre inedio,',
+                    'Description' =>
+            "Honestly, I've seen better ideas. This one is a bit dissappointing.",
+                    'Location (optional)' => nil,
+                    'Your favourite name for a swimming pool (optional)' => 'Pooly Mc Poolface',
+                    'How much do you like pizza (optional)' => 'A lot',
+                    'How much do you like burgers (optional)' => 'A lot' }
+        }]
+
       expect(docs).to eq result
     end
   end
@@ -187,14 +180,13 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
       project.allowed_input_topics << create(:topic_waste)
 
       # Custom fields
-      create(:custom_field, resource: custom_form, 
-        key: 'pool_question', 
+      create(:custom_field, resource: custom_form,
+        key: 'pool_question',
         title_multiloc: { 'en' => 'Your favourite name for a swimming pool' },
         description_multiloc: { 'en' => "<p>A slightly longer description under a field, with a bunch of words used to explain things to people. Please don't put anything weird in this field, thanks!</p>" },
-        input_type: 'text', 
+        input_type: 'text',
         enabled: true,
-        required: false
-      )
+        required: false)
 
       pizza_select_field = create(:custom_field, resource: custom_form,
         key: 'pizza',
@@ -202,56 +194,45 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
         description_multiloc: { 'en' => '<p>A short description</p>' },
         input_type: 'select',
         enabled: true,
-        required: false
-      )
+        required: false)
       create(:custom_field_option, custom_field: pizza_select_field,
         key: 'a-lot',
-        title_multiloc: { 'en' => 'A lot' }
-      )
+        title_multiloc: { 'en' => 'A lot' })
       create(:custom_field_option, custom_field: pizza_select_field,
         key: 'not-at-all',
-        title_multiloc: { 'en' => 'Not at all' }
-      )
+        title_multiloc: { 'en' => 'Not at all' })
 
       burger_select_field = create(:custom_field, resource: custom_form,
         key: 'burgers',
         title_multiloc: { 'en' => 'How much do you like burgers' },
         input_type: 'select',
         enabled: true,
-        required: false
-      )
+        required: false)
       create(:custom_field_option, custom_field: burger_select_field,
         key: 'a-lot',
-        title_multiloc: { 'en' => 'A lot' }
-      )
+        title_multiloc: { 'en' => 'A lot' })
       create(:custom_field_option, custom_field: burger_select_field,
         key: 'not-at-all',
-        title_multiloc: { 'en' => 'Not at all' }
-      )
+        title_multiloc: { 'en' => 'Not at all' })
 
       ice_cream_field = create(:custom_field, resource: custom_form,
         key: 'icecream',
         title_multiloc: { 'en' => 'Which flavors do you want?' },
         input_type: 'multiselect',
         enabled: true,
-        required: true
-      )
+        required: true)
       create(:custom_field_option, custom_field: ice_cream_field,
         key: 'vanilla',
-        title_multiloc: { 'en' => 'Vanilla' }
-      )
+        title_multiloc: { 'en' => 'Vanilla' })
       create(:custom_field_option, custom_field: ice_cream_field,
         key: 'strawberry',
-        title_multiloc: { 'en' => 'Strawberry' }
-      )
+        title_multiloc: { 'en' => 'Strawberry' })
       create(:custom_field_option, custom_field: ice_cream_field,
         key: 'chocolate',
-        title_multiloc: { 'en' => 'Chocolate' }
-      )
+        title_multiloc: { 'en' => 'Chocolate' })
       create(:custom_field_option, custom_field: ice_cream_field,
         key: 'pistachio',
-        title_multiloc: { 'en' => 'Pistachio' }
-      )
+        title_multiloc: { 'en' => 'Pistachio' })
     end
 
     # Based on fixtures/with_page_numbers.pdf, but with description moved
@@ -287,29 +268,29 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
         Pistachio\n
       "
         .lines
-        .select { |line| line != "\n" }
-        .map { |line| line.strip }
+        .reject { |line| line == "\n" }
+        .map(&:strip)
         .join("\n")
 
       service = described_class.new project.id, 'en', nil
       docs = service.parse_text text
 
       result = [{
-        :pages=>[1, 2],
-        :fields=>
-         {"Title"=>"Page numbers test",
-          "Description"=>"Page numbers test description with words and things",
-          "Location (optional)"=>"Somewhere",
-          "Your favourite name for a swimming pool (optional)"=>nil,
-          "How much do you like pizza (optional)"=>"A lot",
-          "How much do you like burgers (optional)"=>"Not at all",
-          "Which flavors do you want?"=>["Strawberry", "Chocolate", "Pistachio"]}}]
+        pages: [1, 2],
+        fields: { 'Title' => 'Page numbers test',
+                  'Description' => 'Page numbers test description with words and things',
+                  'Location (optional)' => 'Somewhere',
+                  'Your favourite name for a swimming pool (optional)' => nil,
+                  'How much do you like pizza (optional)' => 'A lot',
+                  'How much do you like burgers (optional)' => 'Not at all',
+                  'Which flavors do you want?' => %w[Strawberry Chocolate Pistachio] }
+      }]
 
       expect(docs).to eq result
     end
 
     # it 'parses text correctly (multiple documents)' do
-      # # TODO
+    # # TODO
     # end
   end
 end
