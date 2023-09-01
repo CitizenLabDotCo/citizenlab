@@ -172,10 +172,9 @@ module BulkImportIdeas
     end
 
     def process_user_details(doc, idea_row)
-      # Do not add any personal details if 'Permission' field is present but it is blank
-      # Currently PDF version will import regardless as there is no 'Permission' field on the printed form
-      permission = find_field(doc, 'Permission')
-      unless permission && permission[:value].blank?
+      # Do not add any personal details if 'Permission' field is not present or blank
+      permission = find_field(doc, 'Permission') # TODO: Mulitlingual
+      if permission && permission[:value].present?
         locale_name_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.full_name') }
         name = find_field(doc, locale_name_label)
         idea_row[:user_name] = name[:value] if name

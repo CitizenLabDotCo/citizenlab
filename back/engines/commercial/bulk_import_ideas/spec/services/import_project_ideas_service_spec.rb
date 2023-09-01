@@ -63,6 +63,7 @@ describe BulkImportIdeas::ImportProjectIdeasService do
           fields: {
             'Full name' => 'John Rambo',
             'Email address' => 'john_rambo@gravy.com',
+            'Permission' => 'X',
             'Title' => 'Free donuts for all',
             'Description' => 'Give them all donuts',
             'Location' => 'Somewhere',
@@ -79,6 +80,7 @@ describe BulkImportIdeas::ImportProjectIdeasService do
           fields: {
             'Full name' => 'Ned Flanders',
             'Email address' => 'ned@simpsons.com',
+            'Permission' => '',
             'Title' => 'New Wrestling Arena needed',
             'Description' => 'I am convinced that if we do not get this we will be sad.',
             'Location' => 'Behind the sofa',
@@ -102,9 +104,14 @@ describe BulkImportIdeas::ImportProjectIdeasService do
       expect(rows[1][:location_description]).to eq 'Behind the sofa'
     end
 
-    it 'includes user details when "Permissions" field is not present' do
+    it 'includes user details when "Permissions" field is completed' do
       expect(rows[0][:user_email]).to eq 'john_rambo@gravy.com'
       expect(rows[0][:user_name]).to eq 'John Rambo'
+    end
+
+    it 'does not include user details when "Permissions" field is blank' do
+      expect(rows[1][:user_email]).to be_nil
+      expect(rows[1][:user_name]).to be_nil
     end
 
     it 'converts text & number custom fields' do
@@ -166,6 +173,7 @@ describe BulkImportIdeas::ImportProjectIdeasService do
         fields: {
           'Nom et prénom' => 'Jean Rambo',
           'Adresse e-mail' => 'jean@france.com',
+          'Permission' => 'X',
           'Titre' => 'Bonjour',
           'Description' => "Je suis un chien. J'aime les chats."
         }

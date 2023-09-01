@@ -54,7 +54,7 @@ module BulkImportIdeas
         idea_row[:body_multiloc]        = body_multiloc
         idea_row[:topic_titles]         = (xlsx_row['Topics'] || '').split(';').map(&:strip).select(&:present?)
         idea_row[:project_title]        = xlsx_row['Project']
-        idea_row[:user_email]           = xlsx_row['Email']
+        idea_row[:user_email]           = xlsx_row['Email'] if xlsx_row['Permission']&.present?
         idea_row[:image_url]            = xlsx_row['Image URL']
         idea_row[:phase_rank]           = xlsx_row['Phase']
         idea_row[:published_at]         = xlsx_row['Date (dd-mm-yyyy)']
