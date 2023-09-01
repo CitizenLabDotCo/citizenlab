@@ -178,6 +178,14 @@ describe BulkImportIdeas::ImportProjectIdeasService do
       expect(rows[0][:user_name]).to eq 'Jean Rambo'
     end
 
+    it 'can accept select fields as arrays as well as delimited strings' do
+      pdf_ideas[0][:fields]['Multi select field'] = 'This;That'
+      pdf_ideas[1][:fields]['Multi select field'] = %w[This That]
+
+      expect(rows[0][:custom_field_values][:multiselect_field]).to match_array %w[this that]
+      expect(rows[1][:custom_field_values][:multiselect_field]).to match_array %w[this that]
+    end
+
     context 'xlsx specific fields' do
       let(:xlsx_ideas_array) do
         [

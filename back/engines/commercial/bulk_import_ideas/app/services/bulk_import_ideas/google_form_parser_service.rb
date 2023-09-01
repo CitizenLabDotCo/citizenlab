@@ -32,7 +32,6 @@ module BulkImportIdeas
           new_text_string += text[segment.start_index...segment.end_index]
         end
       end
-
       new_text_string
     end
 
