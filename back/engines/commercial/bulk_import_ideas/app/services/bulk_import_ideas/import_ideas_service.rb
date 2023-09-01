@@ -42,6 +42,8 @@ module BulkImportIdeas
     end
 
     def upload_file(file_content, file_type)
+      # Although file type is passed in, check that it is correct and default to xlsx otherwise
+      file_type = 'xlsx' if file_type == 'pdf' && !file_content.index('application/pdf')
       @file = IdeaImportFile.create!(
         import_type: file_type,
         project: @project,
@@ -50,6 +52,7 @@ module BulkImportIdeas
           content: file_content # base64
         }
       )
+      file_type
     end
 
     def parse_idea_rows(_file, _file_type)
