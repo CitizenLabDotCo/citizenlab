@@ -838,7 +838,7 @@
   "app.containers.EventsShow.eventFrom": "Evento de \"{eventTitle}\"",
   "app.containers.EventsShow.goBack": "Voltar atrás",
   "app.containers.EventsShow.goToProject": "Ir para o projeto",
-  "app.containers.EventsShow.icsError": "Erro ao descarregar o ficheiro ICS",
+  "app.containers.EventsShow.icsError": "Erro ao baixar o arquivo ICS",
   "app.containers.EventsShow.socialMediaSharingMessage": "Participe deste evento: {eventTitle}",
   "app.containers.EventsShow.xParticipants": "{count, plural, one {# Participante} other {# participantes}}",
   "app.containers.IdeaButton.addAContribution": "Adicionar uma contribuição",
