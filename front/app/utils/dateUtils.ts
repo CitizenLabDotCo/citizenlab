@@ -171,8 +171,8 @@ export function getEventDateString(event: IEventData) {
   const endMoment = moment(event?.attributes.end_at);
 
   const isEventMultipleDays =
-    startMoment.dayOfYear() !== endMoment.dayOfYear() &&
-    startMoment.year() === endMoment.year();
+    startMoment.dayOfYear() !== endMoment.dayOfYear() ||
+    startMoment.year() !== endMoment.year();
 
   if (isEventMultipleDays) {
     return `${startMoment.format('LLL')} - ${endMoment.format('LLL')}`;
