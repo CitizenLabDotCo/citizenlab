@@ -160,14 +160,19 @@ module BulkImportIdeas
     end
 
     def part_of_description?(line)
-      
-      # return false if field_description.nil?
+      return false if @current_description.nil?
 
-      # field_description = field_description.gsub(FORBIDDEN_HTML_TAGS_REGEX, '')
-      # return false if field_description == ''
+      stripped_line = line.strip
+      line_len = stripped_line.length
 
-      # field_description.include? line
-      # TODO
+      # If the line matches the first part of the description...
+      if line == @current_description[0, line_len]
+        # We mark this first part of the description as 'detected' by removing it from the string
+        @current_description = @current_description[line_len, @current_description.length].strip
+        return true
+      end
+
+      false
     end
 
     def handle_select_field(line)
