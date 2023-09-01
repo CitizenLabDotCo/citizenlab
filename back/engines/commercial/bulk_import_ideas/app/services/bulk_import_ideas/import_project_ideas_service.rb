@@ -59,9 +59,11 @@ module BulkImportIdeas
     end
 
     def ideas_to_idea_rows(ideas_array)
-      ideas_array.map do |idea|
+      idea_rows = ideas_array.map do |idea|
         page_range = idea[:pages]
         fields = idea[:fields]
+
+        next if idea_blank? fields
 
         idea_row = {}
 
@@ -80,6 +82,7 @@ module BulkImportIdeas
         idea_row = process_custom_form_fields(fields, idea_row)
         idea_row
       end
+      idea_rows.compact
     end
 
     # Match all fields in the custom field by the text of their label in the specified locale

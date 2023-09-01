@@ -29,7 +29,9 @@ module BulkImportIdeas
     end
 
     def ideas_to_idea_rows(ideas_array)
-      ideas_array.map do |xlsx_row|
+      idea_rows = ideas_array.map do |xlsx_row|
+        next if idea_blank? xlsx_row
+
         idea_row = {}
 
         title_multiloc = {}
@@ -62,6 +64,7 @@ module BulkImportIdeas
         idea_row[:id]                   = xlsx_row['ID']
         idea_row
       end
+      idea_rows.compact
     end
   end
 end

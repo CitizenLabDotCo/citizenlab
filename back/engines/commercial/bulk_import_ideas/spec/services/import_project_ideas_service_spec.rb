@@ -245,6 +245,32 @@ describe BulkImportIdeas::ImportProjectIdeasService do
         expect(rows[0][:custom_field_values][:another_select_field]).to eq 'no'
         expect(rows[0][:custom_field_values][:multiselect_field]).to match_array %w[this that]
       end
+
+      it 'ignores completely blank rows' do
+        xlsx_ideas_array = [
+          {
+            pages: [1],
+            fields: {
+              'Full name' => '',
+              'Email address' => '',
+              'Permission' => '',
+              'Date Published (dd-mm-yyyy)' => '',
+              'Title' => '',
+              'Description' => '',
+              'Tags' => '',
+              'Location' => '',
+              'A text field' => '',
+              'Number field' => '',
+              'Select field' => '',
+              'Multi select field' => '',
+              'Another select field' => '',
+              'Image URL' => ''
+            }
+          }
+        ]
+        idea_rows = service.ideas_to_idea_rows xlsx_ideas_array
+        expect(idea_rows.count).to eq 0
+      end
     end
   end
 end

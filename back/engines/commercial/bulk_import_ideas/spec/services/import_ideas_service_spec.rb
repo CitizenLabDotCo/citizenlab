@@ -331,7 +331,7 @@ describe BulkImportIdeas::ImportIdeasService do
       expect(idea.topic_ids).to match_array [topic1.id, topic2.id]
     end
 
-    it 'can import completely blank ideas when importing as draft' do
+    it 'ignores validation and can import blank ideas when importing as draft to a project' do
       project = create(:project)
       idea_rows = [
         {

@@ -261,6 +261,13 @@ module BulkImportIdeas
       end
     end
 
+    def idea_blank?(idea)
+      idea.each do |_field, value|
+        return false if value.present?
+      end
+      true
+    end
+
     def create_idea_import(idea, user_created, page_range)
       # Add import metadata
       idea_import = IdeaImport.new(

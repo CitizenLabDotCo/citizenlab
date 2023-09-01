@@ -66,6 +66,26 @@ describe BulkImportIdeas::ImportGlobalIdeasService do
       ]
     end
 
+    it 'ignores completely blank rows' do
+      xlsx_ideas_array = [
+        {
+          'Title_nl-NL' => '',
+          'Title_fr-FR' => '',
+          'Body_nl-NL' => '',
+          'Body_fr-FR' => '',
+          'Email' => '',
+          'Project' => '',
+          'Phase' => '',
+          'Date (dd-mm-yyyy)' => '',
+          'Topics' => '',
+          'Location Description' => '',
+          'Image URL' => ''
+        }
+      ]
+      idea_rows = service.ideas_to_idea_rows xlsx_ideas_array
+      expect(idea_rows.count).to eq 0
+    end
+
     it 'throws an error if imported locales do not match any on the tenant' do
       xlsx_ideas_array = [
         {
