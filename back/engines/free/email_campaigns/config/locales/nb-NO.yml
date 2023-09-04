@@ -374,10 +374,10 @@
       no_unread_notifications: "Du har ingen uleste varsler. Besøk plattformen for å bidra med innspillene dine og fremkall nye varsler!"
       unread_notifications: "Du har uleste varsler. Besøk plattformen for å se hva som skjer!"
     threshold_reached_for_admin:
-      cta_process_initiative: 'Ta dette forslaget til neste steg'
-      event_description: 'Et forslag på din plattform har nådd terskelen for antall stemmer. Klikk på knappen nedenfor og gå videre til neste steg!'
-      main_header: 'Et forslag har nådd terskelen for antall stemmer!'
-      subject: 'Et forslag på din plattform har nådd terskelen for antall stemmer. '
+      cta_process_initiative: 'Ta dette forslaget til de neste trinnene'
+      event_description: 'Et forslag nådde stemmegrensen på plattformen din. Klikk på knappen nedenfor for å ta det til neste trinn!'
+      main_header: 'An proposal reached the voting threshold!'
+      subject: 'Et forslag nådde stemmegrensen på plattformen din'
       preheader: 'Husk å gå videre til neste steg.'
     first_idea_published:
       action_add_image: '%{addImageLink} for å øke synligheten'
