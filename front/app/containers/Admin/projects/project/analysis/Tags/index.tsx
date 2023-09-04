@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { omit } from 'lodash-es';
 
@@ -70,6 +70,7 @@ const Tags = () => {
   const { formatMessage } = useIntl();
   const [autotaggingModalIsOpened, setAutotaggingModalIsOpened] =
     useState(false);
+  const [createdTagId, setCreatedTagId] = useState<string | null>(null);
 
   const filters = useAnalysisFilterParams();
 
@@ -80,6 +81,19 @@ const Tags = () => {
     analysisId,
     filters: omit(filters, 'tag_ids'),
   });
+
+  useEffect(() => {
+    if (
+      createdTagId &&
+      tags?.data.map((tag) => tag.id).includes(createdTagId)
+    ) {
+      const tagElement = document.getElementById(`tag-${createdTagId}`);
+      if (tagElement) {
+        tagElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      setCreatedTagId(null);
+    }
+  }, [createdTagId, tags]);
 
   if (isLoadingTags) {
     return (
@@ -143,7 +157,7 @@ const Tags = () => {
             />
           )}
         </Button>
-        <AddTag />
+        <AddTag onCreateTag={(tagId) => setCreatedTagId(tagId)} />
       </Box>
       <Box>
         <TagContainer

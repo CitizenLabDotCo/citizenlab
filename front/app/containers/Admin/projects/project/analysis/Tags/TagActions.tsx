@@ -113,7 +113,7 @@ const TagActions = ({ tag }: { tag: ITagData }) => {
         onClickOutside={closeDropdown}
         className="dropdown"
         right="0px"
-        top="40px"
+        top="-150px"
         content={
           <>
             <DropdownListItem
