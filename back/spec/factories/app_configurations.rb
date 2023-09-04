@@ -42,6 +42,9 @@ FactoryBot.define do
               locales: %i[en nl-BE fr-FR]),
           'eligibility_criteria' =>
             MultilocService.new.i18n_to_multiloc('initiatives.default_eligibility_criteria',
+              locales: %i[en nl-BE fr-FR]),
+          'posting_tips' =>
+            MultilocService.new.i18n_to_multiloc('initiatives.default_posting_tips',
               locales: %i[en nl-BE fr-FR])
         }
       }
@@ -84,6 +87,9 @@ FactoryBot.define do
               locales: %i[en nl-BE fr-FR]),
           'eligibility_criteria' =>
             MultilocService.new.i18n_to_multiloc('initiatives.default_eligibility_criteria',
+              locales: %i[en nl-BE fr-FR]),
+          'posting_tips' =>
+            MultilocService.new.i18n_to_multiloc('initiatives.default_posting_tips',
               locales: %i[en nl-BE fr-FR])
         }
       }

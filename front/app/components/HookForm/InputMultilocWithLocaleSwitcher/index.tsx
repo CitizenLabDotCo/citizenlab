@@ -13,7 +13,7 @@ import { get } from 'lodash-es';
 interface Props
   extends Omit<
     InputMultilocWithLocaleSwitcherProps,
-    'locales' | 'valueMultiloc'
+    'locales' | 'valueMultiloc' | 'type'
   > {
   name: string;
 }

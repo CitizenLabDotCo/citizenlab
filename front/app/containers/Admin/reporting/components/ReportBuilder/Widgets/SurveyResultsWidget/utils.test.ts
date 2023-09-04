@@ -8,6 +8,7 @@ const results: Result[] = [
     totalResponses: 5,
     answers: [],
     required: true,
+    customFieldId: '1',
   },
   {
     inputType: '',
@@ -15,6 +16,7 @@ const results: Result[] = [
     totalResponses: 5,
     answers: [],
     required: true,
+    customFieldId: '2',
   },
   {
     inputType: '',
@@ -22,6 +24,7 @@ const results: Result[] = [
     totalResponses: 5,
     answers: [],
     required: true,
+    customFieldId: '3',
   },
   {
     inputType: '',
@@ -29,6 +32,7 @@ const results: Result[] = [
     totalResponses: 5,
     answers: [],
     required: true,
+    customFieldId: '4',
   },
   {
     inputType: '',
@@ -36,6 +40,7 @@ const results: Result[] = [
     totalResponses: 5,
     answers: [],
     required: true,
+    customFieldId: '5',
   },
 ];
 

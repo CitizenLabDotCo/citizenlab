@@ -833,7 +833,8 @@ resource 'Projects' do
                   answers: [
                     { answer: { en: 'Cat' }, responses: 2 },
                     { answer: { en: 'Dog' }, responses: 1 }
-                  ]
+                  ],
+                  customFieldId: multiselect_field.id
                 }
               ],
               totalSubmissions: 2

@@ -20,6 +20,15 @@ Analysis::Engine.routes.draw do
         resources :questions, only: %i[create show] do
           post :pre_check, on: :collection
         end
+        nested do
+          scope 'stats', as: :stats do
+            with_options controller: 'stats_users' do
+              get 'authors_by_domicile'
+              get 'authors_by_age'
+              get 'authors_by_custom_field/:custom_field_id', action: :authors_by_custom_field
+            end
+          end
+        end
       end
     end
   end

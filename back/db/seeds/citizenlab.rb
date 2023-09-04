@@ -9,12 +9,13 @@ end
 # Adds a list of common passwords.
 CommonPassword.initialize!
 
+locales = [ENV.fetch('CL_SETTINGS_CORE_LOCALES_0', 'en')]
 # Configure your app here.
 AppConfiguration.create!(
   name: 'local',
   host: ENV.fetch('CL_SETTINGS_HOST'),
   settings: SettingsService.new.minimal_required_settings(
-    locales: [ENV.fetch('CL_SETTINGS_CORE_LOCALES_0', 'en')],
+    locales: locales,
     lifecycle_stage: 'active'
   ).deep_merge({
     core: {
@@ -62,11 +63,15 @@ AppConfiguration.create!(
       days_limit: 90,
       threshold_reached_message: MultilocService.new.i18n_to_multiloc(
         'initiatives.default_threshold_reached_message',
-        locales: CL2_SUPPORTED_LOCALES
+        locales: locales
       ),
       eligibility_criteria: MultilocService.new.i18n_to_multiloc(
         'initiatives.default_eligibility_criteria',
-        locales: CL2_SUPPORTED_LOCALES
+        locales: locales
+      ),
+      posting_tips: MultilocService.new.i18n_to_multiloc(
+        'initiatives.default_posting_tips',
+        locales: locales
       )
     },
     initiative_review: {

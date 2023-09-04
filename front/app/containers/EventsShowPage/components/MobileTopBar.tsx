@@ -5,7 +5,8 @@ import useProjectById from 'api/projects/useProjectById';
 import { useLocation } from 'react-router-dom';
 
 // i18n
-import useLocalize from 'hooks/useLocalize';
+import { useIntl } from 'utils/cl-intl';
+import messages from '../messages';
 
 // components
 import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
@@ -50,17 +51,15 @@ interface Props {
 const MobileTopBar = ({ projectId }: Props) => {
   const { data: project } = useProjectById(projectId);
   const isSmallerThanTablet = useBreakpoint('tablet');
+  const { formatMessage } = useIntl();
   const location = useLocation();
-  const localize = useLocalize();
 
   return (
     <Container>
       <TopBarInner>
         <Box height="48px" alignItems="center" display="flex">
           <GoBackButtonSolid
-            text={
-              project ? localize(project.data.attributes.title_multiloc) : ''
-            }
+            text={formatMessage(messages.goBack)}
             iconSize={isSmallerThanTablet ? '42px' : undefined}
             onClick={() => {
               const hasGoBackLink = location.key !== 'default';

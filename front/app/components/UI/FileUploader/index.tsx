@@ -20,7 +20,7 @@ const Container = styled.div`
   width: 100%;
 `;
 
-export interface FileUploaderProps {
+export interface Props {
   id: string;
   className?: string;
   onFileAdd: (fileToAdd: UploadFile) => void;
@@ -36,7 +36,7 @@ const FileUploader = ({
   apiErrors,
   id,
   className,
-}: FileUploaderProps) => {
+}: Props) => {
   const handleFileOnAdd = (fileToAdd: UploadFile) => {
     if (!files?.find((file) => file.base64 === fileToAdd.base64)) {
       onFileAdd(fileToAdd);
