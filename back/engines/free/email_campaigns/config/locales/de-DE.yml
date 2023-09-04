@@ -188,6 +188,7 @@ de:
       cta_reply_to: 'Unterstützen Sie diesen Vorschlag'
       event_description_initiative: '%{authorName} hat einen neuen Vorschlag erstellt und möchte, dass Sie ihn unterstützen.'
       event_description_cosponsoring: 'Unterstützer*in eines Vorschlags zu sein bedeutet <strong>, dass Ihr Name zusammen mit den Namen der anderen Unterstützer*innen des Vorschlags angezeigt wird</strong>.'
+      event_description_before_action: 'Um den Vorschlag zu sehen und die Einladung anzunehmen, müssen Sie in Ihrem Konto eingeloggt sein.'
       event_description_action: 'Klicken Sie auf den Button unten, um den Vorschlag zu lesen.'
       main_header: 'Sie wurden eingeladen, einen Vorschlag zu unterstützen'
       subject: 'Sie wurden eingeladen, einen Vorschlag zu unterstützen'
