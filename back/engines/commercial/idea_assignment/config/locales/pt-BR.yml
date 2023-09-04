@@ -5,4 +5,4 @@ pt:
         Assignment of an idea to me admin_campaign_type_description:
           ""idea_assigned_to_you"":
             Assignment of an idea - admins and project managers idea_assigned_to_you:
-              by_author: 'por %{authorName}'' cta_reply_to: ''Dar feedback a %{authorName}'' event_description_idea: ''Foi-lhe atribuída uma ideia. Dê a sua opinião escrevendo uma atualização oficial ou alterando o seu estado.'' main_header: ''%{firstName}, you have a new assignment'' subject: ''Tem uma tarefa na plataforma de %{organizationName}'' preheader_idea: ''A ideia de %{authorName} foi-lhe atribuída'
+              by_author: 'por %{authorName}'' cta_reply_to: ''Dê feedback para %{authorName}'' event_description_idea: ''Uma ideia foi atribuída a você. Dê feedback escrevendo uma atualização oficial ou alterando seu status.'' main_header: ''%{firstName}, você tem uma nova tarefa'' subject: ''Você tem uma tarefa na plataforma de %{organizationName}'' preheader_idea: ''A ideia de %{authorName} foi atribuída a você'
