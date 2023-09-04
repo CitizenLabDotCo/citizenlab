@@ -1,11 +1,15 @@
 en-GB:
   email_campaigns:
     campaign_type_description:
+      "1": "Weekly, on Mondays at %{hourOfDay}"
+      "2": "Weekly, on Tuesdays at %{hourOfDay}"
       "3": "Weekly, on Wednesdays at %{hourOfDay}"
       "4": "Weekly, on Thursdays at %{hourOfDay}"
       "5": "Weekly, on Fridays at %{hourOfDay}"
       "6": "Weekly, on Saturdays at %{hourOfDay}"
     footer:
+      "link_terms_conditions": "Terms & Conditions"
+      "link_unsubscribe": "Unsubscribe"
       "powered_by": "Powered by"
       "statement": "This e-mail was sent to you by CitizenLab on behalf of %{organizationName}, because you are a registered user of %{organizationLink}. You can %{unsubscribeLink} if you do not want to receive these e-mails in the future."
       "unsubscribe_text": "unsubscribe"
@@ -117,6 +121,7 @@ en-GB:
       cta_reply_to: 'Co-sponsor this proposal'
       event_description_initiative: '%{authorName} has created a new proposal and would like you to co-sponsor it.'
       event_description_cosponsoring: 'Co-sponsoring a proposal means that <strong>your name will be displayed</strong> with the names of other co-sponsors of the proposal.'
+      event_description_before_action: 'To see the proposal and accept the invitation, you must be logged in to your account.'
       event_description_action: 'Click below to read the proposal.'
       main_header: 'You have been invited to co-sponsor a proposal'
       subject: 'You have been invited to co-sponsor a proposal'
@@ -521,7 +526,7 @@ en-GB:
         users_who_engaged_with_the_input: 'Users who engaged with the input'
         users_who_engaged_with_the_project: 'Users who engaged with the project'
         users_who_engaged_with_the_proposal: 'Users who engaged with the proposal'
-        users_who_follow_the_proposal: 'Users who follow the proposal'
+        users_who_follow_the_proposal: 'User who follow the proposal'
         users_who_follow_the_input: 'User who follow the input'
         users_who_follow_the_project: 'Users who follow the project'
         user_who_voted: 'User who voted'
