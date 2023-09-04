@@ -38,6 +38,7 @@ module BulkImportIdeas
     private
 
     def process_upload
+      return nil unless ENV.fetch('GOOGLE_DOCUMENT_AI_PROJECT', false) # Temp for development
       return unless @pdf_file_content
 
       # Set up the DocumentAI processor.
@@ -66,7 +67,7 @@ module BulkImportIdeas
 
     # NOTE: For DEVELOPMENT ONLY when Google API not configured
     def dummy_raw_text
-      "Page1\nTitle\nMy very good idea\nDescription\nwould suggest building the\nnew swimming Pool near the\nShopping mall on Park Lane,\nIt's easily accessible location\nwith enough space\nan\nLocation (optional)\nDear shopping mall\nYour favourite name for a swimming pool (optional)\n*This answer will only be shared with moderators, and not to the public.\nThe cool pool\nHow much do you like pizza (optional)\n*This answer will only be shared with moderators, and not to the public.\nA lot\n○ Not at all\nHow much do you like burgers (optional)\n*This answer will only be shared with moderators, and not to the public.\nO A lot\nNot at all\n"
+      "Page 1\nTitle\nMy very good idea\nDescription\nwould suggest building the\nnew swimming Pool near the\nShopping mall on Park Lane,\nIt's easily accessible location\nwith enough space\nan\nLocation (optional)\nDear shopping mall\nYour favourite name for a swimming pool (optional)\n*This answer will only be shared with moderators, and not to the public.\nThe cool pool\nHow much do you like pizza (optional)\n*This answer will only be shared with moderators, and not to the public.\nA lot\n○ Not at all\nHow much do you like burgers (optional)\n*This answer will only be shared with moderators, and not to the public.\nO A lot\nNot at all\n"
     end
   end
 end

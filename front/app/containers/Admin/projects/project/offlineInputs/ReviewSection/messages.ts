@@ -39,4 +39,8 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.approve',
     defaultMessage: 'Approve',
   },
+  phase: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase',
+    defaultMessage: 'Phase:',
+  },
 });
