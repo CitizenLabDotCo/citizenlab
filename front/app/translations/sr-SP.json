@@ -232,7 +232,6 @@
   "app.components.InitiativeForm.titleEmptyError": "Наведите наслов",
   "app.components.InitiativeForm.titleLabel": "Наслов",
   "app.components.InitiativeForm.titleLabelSubtext2": "Одаберите описни, али сажет наслов (мин. 10 знакова, макс. 72 знака)",
-  "app.components.InitiativeForm.titleMaxLengthError": "Наведени наслов је предугачак. Додајте наслов који има између 10 и 72 знака.",
   "app.components.InitiativeForm.titleMinLengthError": "Наведени наслов је прекратак. Додајте наслов који има између 10 и 72 знака.",
   "app.components.InitiativeForm.topicEmptyError": "Молимо додајте ознаку",
   "app.components.InitiativeForm.topicsLabel": "Додајте ознаку свом предлогу",
