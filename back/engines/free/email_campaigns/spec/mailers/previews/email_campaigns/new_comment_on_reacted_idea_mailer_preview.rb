@@ -9,6 +9,7 @@ module EmailCampaigns
       comment = Comment.find_by(post_type: 'Idea')
       name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient_user)
 
+      # TODO: generate commands with campaign#generate_commands method
       command = {
         recipient: recipient_user,
         event_payload: {

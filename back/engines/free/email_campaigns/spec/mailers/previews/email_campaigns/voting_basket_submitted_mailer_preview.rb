@@ -7,6 +7,7 @@ module EmailCampaigns
     def campaign_mail
       project = Project.first
       ideas = project.ideas.first(3)
+      # TODO: generate commands with campaign#generate_commands method
       command = {
         recipient: recipient_user,
         event_payload: {
