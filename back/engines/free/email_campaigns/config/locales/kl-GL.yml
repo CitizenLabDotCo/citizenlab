@@ -68,12 +68,6 @@ kl:
       today: Ullumikkut
       wrong_content: 'Oqaaseqaat pisariaqanngilaq.'
       yesterday: Ippassaq
-    comment_on_your_initiative:
-      cta_reply_to: 'Akissut %{commentAuthor}'
-      event_description: '%{authorNameFull} innuttaasunut siunnersuutinnut"%{initiativeTitle}" qisuariarpoq. %{authorName} ingerlateqqinniarukku ataaniittoq tuugassaq tooruk.'
-      main_header: '%{commentAuthor} innuttaasunut siunnersuutit oqaaseqarfigaa'
-      subject: '%{organizationName}p platformiani oqaaseqaammik tigusaqarputit'
-      preheader: '%{authorName} innuttaasunut siunnersuutinnut %{organizationName} oqaaseqaateqarpoq'
     cosponsor_of_your_initiative:
       cta_reply_to: 'View your proposal'
       event_description_initiative: 'Congratulations! %{cosponsorName} has accepted your invitation to co-sponsor your proposal.'
@@ -159,12 +153,6 @@ kl:
       preheader: 'Qujanaq innuttaasunut siunnersuutit siammarterakku, %{initiativeTitle}, uunga %{organizationName}. Innuttaasunut siunnersuutinnut taperserneqarnissamik tulliuttoq tassaavoq avatangiisinnut tamanut siaruarlugu.'
       send_email: e-maili
       subject: 'Innuttaasunut siunnersuutit platformimi %{organizationName}mi saqqummersinneqarpoq'
-    new_comment_on_commented_idea:
-      cta_reply_to: 'Akissut %{commentAuthor}'
-      event_description: '%{commentAuthorFull} %{organizationName}p peqataasunut platformimi isumassarsiamut "%{ideaTitle}"mut allapportaaq. Ataaniittoq tooruk %{commentAuthor}mik oqaloqatigiinnermik aallartitsiniaruit.'
-      main_header: '%{commentAuthor} isumassarsiamut tassunga oqaaseqaammik allappoq'
-      subject: 'Isumassarsiamut oqaaseqarfigisannut oqaaseqaammik allamik takkuttoqarpoq'
-      preheader: '%{commentAuthor} aamma isumassarsiamut %{organizationName}mut oqaaseqaateqarpoq'
     mention_in_comment:
       cta_reply_to: 'Akissut %{commentAuthor}'
       event_description: '%{commentAuthorFull}p isumassarsiami ''%{post}''imi taavaatit. Ataaniittoq linki tooruk %{commentAuthor}imik oqaloqatiginninnermik aallartitsiniaruit'
@@ -191,13 +179,6 @@ kl:
       yesterday_by_author: 'Ippassaq %{author}-mit'
       today_by_author: 'Ullumi %{author}-mit'
       x_days_ago_by_author: 'Ullut %{x} matuma siorna %{author}-mit'
-    new_comment_on_commented_initiative:
-      commented: '%{commentAuthor} allappoq:'
-      cta_reply_to: 'Akissut %{commentAuthor}'
-      event_description: '%{commentAuthorFull} innuttaasunut siunnersuummut "%{initiativeTitle}"mut aamma allappoq %{organizationName}mi peqataasunut platformimi. %{commentAuthor}mik oqaloqatigiinnermik aallartitsiniaruit ataaniittoq tuugassaq tooruk.'
-      main_header: '%{commentAuthor} innuttaasunut siunnersuummut tassunga oqaaseqaammik allappoq'
-      subject: 'Innuttaasunut siunnersuummut oqaaseqaateqarfigisannut alla oqaaseqaasiorpoq'
-      preheader: '%{commentAuthor} aamma %{organizationName}mi innuttaasunut siunnersuummut oqaaseqaasiorpoq'
     new_comment_for_admin:
       commented: '%{authorFirstName} oqaaseqaateqarpoq:'
       cta_reply_to: '%{commentAuthor}p oqaaseqaataa takujuk'
@@ -208,29 +189,18 @@ kl:
       preheader: '%{authorName} oqaaseqaateqarpoq'
       today: Ullumikkut
       yesterday: Ippassaq
-    comment_on_your_idea:
-      cta_reply_to: 'Akissut %{commentAuthor}'
-      event_description: '%{authorNameFull} isumassarsiannut "%{ideaTitle}" qisuariarpoq. %{authorName}mik oqaloqateqarneq ingerlateqqinniarlugu ataaniittoq tuugassaq tooruk.'
-      main_header: '%{authorName}p isumassarsiat oqaaseqarfigaa'
-      subject: '%{organizationName}p platformiani oqaaseqaammik tigusaqarputit'
-      preheader: '%{authorName} isumassarsianni %{organizationName}mi oqaaseqaateqarpoq'
-    new_comment_on_reacted_initiative:
-      commented: '%{commentAuthor} wrote:'
-      cta_reply_to: 'View this proposal'
-      event_description: '%{commentAuthor} has commented on the proposal ''%{initiativeTitle}'' on which you''ve voted. Join the discussion on the platform of %{organizationName}!'
-      main_header: '%{firstName}, there''s a new comment on the proposal you''ve voted on'
-      subject: 'There''s a new comment on the proposal you''ve voted on'
-      preheader: '%{commentAuthor} left a comment on the proposal you''ve voted on on the platform of %{organizationName}'
-    new_comment_on_reacted_idea:
-      commented: '%{commentAuthor} wrote:'
+    comment_on_idea_you_follow:
       cta_reply_to: 'Reply to %{commentAuthor}'
-      days_ago: '%{numberOfDays} days ago'
-      event_description: '%{commentAuthor} has commented on the idea ''%{ideaTitle}'' on which you''ve reacted. Join the discussion on the platform of %{organizationName}!'
-      main_header: '%{firstName}, there''s a new comment on the idea you''ve reacted to'
-      subject: 'There''s a new comment on the idea you''ve reacted to'
-      preheader: '%{commentAuthor} left a comment on the idea you''ve reacted to on the platform of %{organizationName}'
-      today: Today
-      yesterday: Yesterday
+      event_description: '%{authorNameFull} placed a reaction on the idea ''%{ideaTitle}''. Click the button below to continue the conversation with %{authorName}.'
+      main_header: '%{authorName} commented on an idea you follow'
+      subject: 'There''s a new comment on an idea you follow'
+      preheader: '%{authorName} left a comment on an idea for %{organizationName}'
+    comment_on_initiative_you_follow:
+      cta_reply_to: 'Reply to %{commentAuthor}'
+      event_description: '%{authorNameFull} placed a reaction on the initiative ''%{initiativeTitle}''. Click the button below to continue the conversation with %{authorName}.'
+      main_header: '%{commentAuthor} commented on an initiative you follow'
+      subject: 'There''s a new comment on the proposal you follow'
+      preheader: '%{authorName} left a comment on an initiative for %{organizationName}'
     new_initiative_for_admin:
       cta_reply_to: '%{authorName} utertitsiffigiuk'
       event_description: '%{authorName} platforminni innuttaasunut siunnersuummik nutaamik tamanut saqqummiivoq. Massakkut takujuk, utertiffigiuk imaluunniit isumassarsiaq allamik taarseruk!'
@@ -523,9 +493,7 @@ kl:
         user_who_published_the_input: 'User who published the input'
         user_who_registers: 'User who registers'
         user_who_was_invited: 'User who was invited'
-        users_who_engaged_with_the_input: 'Users who engaged with the input'
         users_who_engaged_with_the_project: 'Users who engaged with the project'
-        users_who_engaged_with_the_proposal: 'Users who engaged with the proposal'
         users_who_follow_the_proposal: 'User who follow the proposal'
         users_who_follow_the_input: 'User who follow the input'
         users_who_follow_the_project: 'Users who follow the project'
