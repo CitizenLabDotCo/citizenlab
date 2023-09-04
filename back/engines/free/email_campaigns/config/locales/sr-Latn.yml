@@ -68,12 +68,6 @@ sr-Latn:
       today: Danas
       wrong_content: 'Komentar nije relevantan.'
       yesterday: Juče
-    comment_on_your_initiative:
-      cta_reply_to: 'Odgovorite %{commentAuthor}'
-      event_description: '%{authorNameFull} je reagovao/la na vašu inicijativu ''%{initiativeTitle}''. Kliknite na donje dugme da biste nastavili razgovor sa %{authorName}.'
-      main_header: '%{commentAuthor} je komentarisao/la vašu inicijativu'
-      subject: 'Dobili ste komentar na platformi %{organizationName}'
-      preheader: '%{authorName} je ostavio komentar na vašu inicijativu za %{organizationName}'
     cosponsor_of_your_initiative:
       cta_reply_to: 'View your proposal'
       event_description_initiative: 'Congratulations! %{cosponsorName} has accepted your invitation to co-sponsor your proposal.'
@@ -159,12 +153,6 @@ sr-Latn:
       preheader: 'Hvala vam što delite svoj predlog %{initiativeTitle} za %{organizationName}. Prikupite podršku tako što ćete ga podeliti sa drugima.'
       send_email: e-mail
       subject: 'Vaš predlog je objavljen na platformi %{organizationName}'
-    new_comment_on_commented_idea:
-      cta_reply_to: 'Odgovorite %{commentAuthor}'
-      event_description: '%{commentAuthorFull} takođe komentariše ideju ''%{ideaTitle}'' na %{organizationName} participativnoj platformi. Kliknite na dugme ispod kako biste započeli konverzaciju sa %{commentAuthor}.'
-      main_header: '%{commentAuthor} je napisao komentar na istu ideju'
-      subject: 'Dodat je još jedan komentar na ideji koji ste komentarisali'
-      preheader: '%{commentAuthor} je takođe ostavio komentar na ideju upućenu ka %{organizationName}'
     mention_in_comment:
       cta_reply_to: 'Odgovorite %{commentAuthor}'
       event_description: 'Pomenuti ste od strane %{commentAuthorFull} u komentaru ideje „%{post}“. Kliknite na link ispod kako biste započeli razgovor sa %{commentAuthor}'
@@ -191,13 +179,6 @@ sr-Latn:
       yesterday_by_author: 'Juče od autora %{author}'
       today_by_author: 'Danas od autora %{author}'
       x_days_ago_by_author: 'pre %{x} dana od %{author}'
-    new_comment_on_commented_initiative:
-      commented: '%{commentAuthor} je napisao/la:'
-      cta_reply_to: 'Odgovorite %{commentAuthor}'
-      event_description: '%{commentAuthorFull} takođe komentariše predlog ''%{initiativeTitle}'' na %{organizationName} participativnoj platformi. Kliknite na dugme ispod kako biste započeli konverzaciju sa %{commentAuthor}.'
-      main_header: '%{commentAuthor} je napisao komentar na isti predlog'
-      subject: 'Dodat je još jedan komentar na predlogu koji ste komentarisali'
-      preheader: '%{commentAuthor} je takođe ostavio komentar na predlog upućen %{organizationName}'
     new_comment_for_admin:
       commented: '%{authorFirstName} je komentarisao/la:'
       cta_reply_to: 'Proverite komentar od %{commentAuthor}'
@@ -208,29 +189,18 @@ sr-Latn:
       preheader: '%{authorName} je postavio/la komentar'
       today: Danas
       yesterday: Juče
-    comment_on_your_idea:
-      cta_reply_to: 'Odgovorite %{commentAuthor}'
-      event_description: '%{authorNameFull} je reagovao/la na vašu ideju ''%{ideaTitle}''. Kliknite na donje dugme da biste nastavili razgovor sa %{authorName}.'
-      main_header: '%{authorName} je komentarisao/la vašu ideju'
-      subject: 'Dobili ste komentar na platformi %{organizationName}'
-      preheader: '%{authorName} je ostavio komentar na vašu ideju za %{organizationName}'
-    new_comment_on_reacted_initiative:
-      commented: '%{commentAuthor} је написао:'
-      cta_reply_to: 'Погледајте овај предлог'
-      event_description: '%{commentAuthor} је коментарисао предлог ''%{initiativeTitle}'' за који сте гласали. Придружите се дискусији на платформи %{organizationName}!'
-      main_header: '%{firstName}, постоји нови коментар на предлог за који сте гласали'
-      subject: 'Постоји нови коментар на предлог за који сте гласали'
-      preheader: '%{commentAuthor} је оставио коментар на предлог за који сте гласали на платформи %{organizationName}'
-    new_comment_on_reacted_idea:
-      commented: '%{commentAuthor} wrote:'
-      cta_reply_to: 'Одговори на %{commentAuthor}'
-      days_ago: 'пре %{numberOfDays} дана'
-      event_description: '%{commentAuthor} је коментарисао идеју ''%{ideaTitle}'' на коју сте реаговали. Придружите се дискусији на платформи %{organizationName}!'
-      main_header: '%{firstName}, постоји нови коментар на идеју на коју сте реаговали'
-      subject: 'Постоји нови коментар на идеју на коју сте реаговали'
-      preheader: '%{commentAuthor} је оставио коментар на идеју на коју сте реаговали на платформи %{organizationName}'
-      today: Данас
-      yesterday: Јучер
+    comment_on_idea_you_follow:
+      cta_reply_to: 'Reply to %{commentAuthor}'
+      event_description: '%{authorNameFull} placed a reaction on the idea ''%{ideaTitle}''. Click the button below to continue the conversation with %{authorName}.'
+      main_header: '%{authorName} commented on an idea you follow'
+      subject: 'There''s a new comment on an idea you follow'
+      preheader: '%{authorName} left a comment on an idea for %{organizationName}'
+    comment_on_initiative_you_follow:
+      cta_reply_to: 'Reply to %{commentAuthor}'
+      event_description: '%{authorNameFull} placed a reaction on the initiative ''%{initiativeTitle}''. Click the button below to continue the conversation with %{authorName}.'
+      main_header: '%{commentAuthor} commented on an initiative you follow'
+      subject: 'There''s a new comment on the proposal you follow'
+      preheader: '%{authorName} left a comment on an initiative for %{organizationName}'
     new_initiative_for_admin:
       cta_reply_to: 'Pošaljite utiske za %{authorName}'
       event_description: '%{authorName} je objavio/la novi predlog na vašoj platformi. Pogledajte ga, postavite povratne informacije ili promenite njegov status!'
@@ -523,9 +493,7 @@ sr-Latn:
         user_who_published_the_input: 'Корисник који је објавио унос'
         user_who_registers: 'Корисник који се региструје'
         user_who_was_invited: 'Корисник који је позван'
-        users_who_engaged_with_the_input: 'Корисници који су се бавили уносом'
         users_who_engaged_with_the_project: 'Корисници који су били ангажовани на пројекту'
-        users_who_engaged_with_the_proposal: 'Корисници који су се бавили предлогом'
         users_who_follow_the_proposal: 'User who follow the proposal'
         users_who_follow_the_input: 'User who follow the input'
         users_who_follow_the_project: 'Users who follow the project'
