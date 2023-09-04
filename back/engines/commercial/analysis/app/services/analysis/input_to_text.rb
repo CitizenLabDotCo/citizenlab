@@ -73,7 +73,7 @@ module Analysis
       # We memoize as certain of these operations can be relatively slow,
       # especially in case of HTML fields, since they need to be converted to
       # plain text
-      return @memoized_field_values[input.id][custom_field.id] if @memoized_field_values[input.id][custom_field.id]
+      return @memoized_field_values[input.id][custom_field.id] if input.id && @memoized_field_values[input.id][custom_field.id]
 
       # We currently piggyback on the XlsxExport::ValueVisitor, which transforms
       # idea fields (built-in and custom) to string values suitable to display
