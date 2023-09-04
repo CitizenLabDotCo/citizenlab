@@ -374,10 +374,10 @@ fr-BE:
       no_unread_notifications: "Il est temps de recréer de l'activité ! Visitez la plateforme pour découvrir ce qu'il s'y passe."
       unread_notifications: "Vous avez de nouvelles notifications ! Visitez la plate-forme pour découvrir ce qu'il s'y passe."
     threshold_reached_for_admin:
-      cta_process_initiative: 'Passez cette initiative à l''étape suivante'
-      event_description: 'Une initiative a atteint le seuil de vote sur votre plateforme. Cliquez sur le bouton ci-dessous pour passer aux étapes suivantes !'
-      main_header: 'Une initiative a atteint le nombre de voix requis!'
-      subject: 'Une initiative a atteint le nombre de voix requis sur votre plateforme'
+      cta_process_initiative: 'Faites passer cette proposition à l''étape suivante'
+      event_description: 'Une proposition a atteint le seuil de vote sur votre plateforme. Cliquez sur le bouton ci-dessous pour passer aux étapes suivantes !'
+      main_header: 'An proposal reached the voting threshold!'
+      subject: 'Une proposition a atteint le seuil de vote sur votre plateforme'
       preheader: 'Assurez-vous de passer aux étapes suivantes'
     first_idea_published:
       action_add_image: '%{addImageLink} pour donner plus de visibilité à votre idée'
