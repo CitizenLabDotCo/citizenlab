@@ -1,15 +1,11 @@
 es:
   email_campaigns:
     campaign_type_description:
-      "1": "Semanalmente los lunes a las %{hourOfDay}"
-      "2": "Semanalmente los martes a las %{hourOfDay}"
       "3": "Semanalmente los miércoles a las %{hourOfDay}"
       "4": "Semanalmente los jueves a las %{hourOfDay}"
       "5": "Semanalmente los viernes a las %{hourOfDay}"
       "6": "Semanalmente los sábados a las %{hourOfDay}"
     footer:
-      "link_terms_conditions": "Términos & Condiciones"
-      "link_unsubscribe": "Cancelar la suscripción"
       "powered_by": "Impulsado por"
       "statement": "Este email le fue enviado por CitizenLab en nombre de %{organizationName}, porque eres usuario registrado de %{organizationLink}. Puedes %{unsubscribeLink} si no deseas recibir estos emails en el futuro."
       "unsubscribe_text": "cancelar la suscripción"
@@ -526,7 +522,7 @@ es:
         users_who_engaged_with_the_project: 'Usuarios que participaron en el proyecto'
         users_who_engaged_with_the_proposal: 'Usuarios que se comprometieron con la propuesta'
         users_who_follow_the_proposal: 'Usuario que sigue la propuesta'
-        users_who_follow_the_input: 'Usuario que sigue la entrada'
+        users_who_follow_the_input: 'Usuarios que siguen el aporte'
         users_who_follow_the_project: 'Usuarios que siguen el proyecto'
         user_who_voted: 'Usuario que ha votado'
         user_with_unsubmitted_votes: 'Usuario que no ha enviado sus votos'
@@ -560,7 +556,7 @@ es:
         internal_comment_is_posted_on_unassigned_initiative: 'Se publica un comentario interno sobre una propuesta no asignada'
         internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Se publica un comentario interno sobre una entrada no asignada en un proyecto no gestionado'
         user_accepts_invitation_to_cosponsor_a_proposal: 'El usuario acepta la invitación a copatrocinar una propuesta'
-        user_is_invited_to_cosponsor_a_proposal: 'Se invita al usuario a copatrocinar una propuesta'
+        user_is_invited_to_cosponsor_a_proposal: 'Se invita al usuario a co-patrocinar una propuesta'
         user_is_mentioned_in_internal_comment: 'El usuario es mencionado en el comentario interno'
         new_input_is_published: 'Un nuevo aporte ha sido publicado'
         new_proposal_is_posted: 'Una nueva propuesta ha sido publicada'
