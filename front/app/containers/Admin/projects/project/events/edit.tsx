@@ -1,4 +1,4 @@
-import React, { useState, useEffect, FormEvent } from 'react';
+import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import { isEmpty, get, isError } from 'lodash-es';
 
@@ -35,18 +35,24 @@ import { IEvent, IEventProperties } from 'api/events/types';
 import useAddEvent from 'api/events/useAddEvent';
 import useUpdateEvent from 'api/events/useUpdateEvent';
 import useEvent from 'api/events/useEvent';
+import useLocale from 'hooks/useLocale';
 import useEventFiles from 'api/event_files/useEventFiles';
 import useAddEventFile from 'api/event_files/useAddEventFile';
 import useDeleteEventFile from 'api/event_files/useDeleteEventFile';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 // typings
 import { Multiloc, CLError, UploadFile } from 'typings';
 
 // utils
+import { withRouter } from 'utils/cl-router/withRouter';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
-import { useParams } from 'react-router-dom';
 import { geocode } from 'utils/locationTools';
+
+interface Props {
+  params: Record<string, string>;
+}
 
 type SubmitState = 'disabled' | 'enabled' | 'error' | 'success';
 type ErrorType =
@@ -62,18 +68,16 @@ type ApiErrorType =
       [fieldName: string]: CLError[];
     };
 
-const AdminProjectEventEdit = () => {
-  const { eventId, projectId } = useParams() as {
-    eventId: string;
-    projectId: string;
-  };
+const AdminProjectEventEdit = ({ params }: Props) => {
   const { formatMessage } = useIntl();
   const { mutate: addEvent } = useAddEvent();
-  const { data: event, isInitialLoading } = useEvent(eventId);
+  const { data: event, isInitialLoading } = useEvent(params.id);
   const { mutate: updateEvent } = useUpdateEvent();
   const { mutate: addEventFile } = useAddEventFile();
   const { mutate: deleteEventFile } = useDeleteEventFile();
-  const { data: remoteEventFiles } = useEventFiles(eventId);
+  const { data: remoteEventFiles } = useEventFiles(params.id);
+  const locale = useLocale();
+  const appConfiguration = useAppConfiguration();
   const [errors, setErrors] = useState<ErrorType>({});
   const [apiErrors, setApiErrors] = useState<ApiErrorType>({});
   const [saving, setSaving] = useState<boolean>(false);
@@ -262,7 +266,7 @@ const AdminProjectEventEdit = () => {
     }
   };
 
-  const handleOnSubmit = async (e: FormEvent) => {
+  const handleOnSubmit = async (e) => {
     const locationPointChanged =
       locationPoint !== event?.data.attributes.location_point_geojson;
 
@@ -270,287 +274,294 @@ const AdminProjectEventEdit = () => {
       address1 || successfulGeocode ? locationPoint : null;
 
     e.preventDefault();
-    try {
-      setSaving(true);
+    if (!isNilOrError(params.projectId)) {
+      const { projectId } = params;
+      try {
+        setSaving(true);
 
-      // If only files have changed
-      if (isEmpty(attributeDiff) && eventFilesToRemove) {
-        if (event) {
-          handleEventFiles(event);
+        // If only files have changed
+        if (isEmpty(attributeDiff) && eventFilesToRemove) {
+          if (event) {
+            handleEventFiles(event);
+          }
         }
-      }
 
-      // non-file input fields have changed
-      if (!isEmpty(attributeDiff) || locationPointChanged) {
-        // event already exists (in the state)
-        if (event) {
-          updateEvent(
-            {
-              eventId: event?.data.id,
-              event: {
-                ...attributeDiff,
-                location_point_geojson: locationPointChanged
-                  ? locationPointUpdated
-                  : event?.data.attributes.location_point_geojson,
+        // non-file input fields have changed
+        if (!isEmpty(attributeDiff) || locationPointChanged) {
+          // event already exists (in the state)
+          if (event) {
+            updateEvent(
+              {
+                eventId: event?.data.id,
+                event: {
+                  ...attributeDiff,
+                  location_point_geojson: locationPointChanged
+                    ? locationPointUpdated
+                    : event?.data.attributes.location_point_geojson,
+                },
               },
-            },
-            {
-              onSuccess: async (data) => {
-                setSubmitState('success');
-                handleEventFiles(data);
+              {
+                onSuccess: async (data) => {
+                  setSubmitState('success');
+                  handleEventFiles(data);
+                },
+                onError: async (errors) => {
+                  setSaving(false);
+                  setErrors(errors.errors);
+                  setSubmitState('error');
+                },
+              }
+            );
+          } else if (projectId) {
+            // event doesn't exist, create with project id
+            addEvent(
+              {
+                projectId,
+                event: {
+                  ...attributeDiff,
+                  location_point_geojson: locationPointUpdated || null,
+                },
               },
-              onError: async (errors) => {
-                setSaving(false);
-                setErrors(errors.errors);
-                setSubmitState('error');
-              },
-            }
-          );
-        } else if (projectId) {
-          // event doesn't exist, create with project id
-          addEvent(
-            {
-              projectId,
-              event: {
-                ...attributeDiff,
-                location_point_geojson: locationPointUpdated || null,
-              },
-            },
-            {
-              onSuccess: async (data) => {
-                setSubmitState('success');
-                handleEventFiles(data);
-                clHistory.push(`/admin/projects/${projectId}/events`);
-              },
-              onError: async (errors) => {
-                setErrors(errors.errors);
-                setSubmitState('error');
-              },
-            }
-          );
+              {
+                onSuccess: async (data) => {
+                  setSubmitState('success');
+                  handleEventFiles(data);
+                  clHistory.push(`/admin/projects/${projectId}/events`);
+                },
+                onError: async (errors) => {
+                  setErrors(errors.errors);
+                  setSubmitState('error');
+                },
+              }
+            );
+          }
         }
-      }
-      setSaving(false);
-    } catch (errors) {
-      if (errors?.errors) {
         setSaving(false);
-        setApiErrors(errors.errors);
-        setSubmitState('error');
-      } else {
-        setSaving(false);
-        setSubmitState('error');
+      } catch (errors) {
+        if (errors?.errors) {
+          setSaving(false);
+          setApiErrors(errors.errors);
+          setSubmitState('error');
+        } else {
+          setSaving(false);
+          setSubmitState('error');
+        }
       }
     }
   };
 
   const descriptionLabel = <FormattedMessage {...messages.descriptionLabel} />;
 
-  const eventAttrs = event
-    ? { ...event?.data.attributes, ...attributeDiff }
-    : { ...attributeDiff };
+  if (locale && appConfiguration) {
+    const eventAttrs = event
+      ? { ...event?.data.attributes, ...attributeDiff }
+      : { ...attributeDiff };
 
-  if (event !== undefined && isInitialLoading) {
-    return <Spinner />;
-  }
+    if (event !== undefined && isInitialLoading) {
+      return <Spinner />;
+    }
 
-  return (
-    <>
-      <SectionTitle>
-        {event && <FormattedMessage {...messages.editEventTitle} />}
-        {!event && <FormattedMessage {...messages.newEventTitle} />}
-      </SectionTitle>
+    return (
+      <>
+        <SectionTitle>
+          {event && <FormattedMessage {...messages.editEventTitle} />}
+          {!event && <FormattedMessage {...messages.newEventTitle} />}
+        </SectionTitle>
 
-      <form className="e2e-project-event-edit" onSubmit={handleOnSubmit}>
-        <Section>
-          <SectionField>
-            <InputMultilocWithLocaleSwitcher
-              id="title"
-              label={<FormattedMessage {...messages.titleLabel} />}
-              type="text"
-              valueMultiloc={eventAttrs.title_multiloc}
-              onChange={handleTitleMultilocOnChange}
-            />
-            <ErrorComponent apiErrors={get(errors, 'title_multiloc')} />
-          </SectionField>
-
-          <SectionField className="fullWidth">
-            <Box width="860px">
-              <QuillMultilocWithLocaleSwitcher
-                id="description"
-                label={descriptionLabel}
-                valueMultiloc={eventAttrs.description_multiloc}
-                onChange={handleDescriptionMultilocOnChange}
-                withCTAButton
-              />
-            </Box>
-
-            <ErrorComponent apiErrors={get(errors, 'description_multiloc')} />
-          </SectionField>
-
-          <Title
-            variant="h4"
-            fontWeight="bold"
-            color="primary"
-            style={{ fontWeight: '600' }}
-          >
-            {formatMessage(messages.eventDates)}
-          </Title>
-          <Box display="flex" gap="32px">
-            <SectionField style={{ width: 'auto' }}>
-              <Label>
-                <FormattedMessage {...messages.dateStartLabel} />
-              </Label>
-              <DateTimePicker
-                value={eventAttrs.start_at}
-                onChange={handleDateTimePickerOnChange('start_at')}
-              />
-              <ErrorComponent apiErrors={get(errors, 'start_at')} />
-            </SectionField>
-
+        <form className="e2e-project-event-edit" onSubmit={handleOnSubmit}>
+          <Section>
             <SectionField>
-              <Label>
-                <FormattedMessage {...messages.datesEndLabel} />
-              </Label>
-              <DateTimePicker
-                value={eventAttrs.end_at}
-                onChange={handleDateTimePickerOnChange('end_at')}
+              <InputMultilocWithLocaleSwitcher
+                id="title"
+                label={<FormattedMessage {...messages.titleLabel} />}
+                type="text"
+                valueMultiloc={eventAttrs.title_multiloc}
+                onChange={handleTitleMultilocOnChange}
               />
-              <ErrorComponent apiErrors={get(errors, 'end_at')} />
+              <ErrorComponent apiErrors={get(errors, 'title_multiloc')} />
             </SectionField>
-          </Box>
 
-          <Title
-            variant="h4"
-            fontWeight="bold"
-            color="primary"
-            style={{ fontWeight: '600' }}
-          >
-            {formatMessage(messages.eventLocation)}
-          </Title>
-
-          <SectionField>
-            <Box maxWidth="400px">
-              <Box mb="8px">
-                <Label>
-                  {formatMessage(messages.addressOneLabel)}
-                  <IconTooltip
-                    content={formatMessage(messages.addressOneTooltip)}
-                  />
-                </Label>
-              </Box>
-
-              <LocationInput
-                id="event-location-picker"
-                className="e2e-event-location-input"
-                value={eventAttrs.address_1 || ''}
-                onChange={(value) => {
-                  handleAddress1OnChange(value);
-                  setAddress1(value);
-                }}
-                placeholder={formatMessage(messages.searchForLocation)}
-              />
-
-              <ErrorComponent apiErrors={get(errors, 'address_1')} />
-              <Box my="20px">
-                <InputMultilocWithLocaleSwitcher
-                  id="event-address-2"
-                  label={formatMessage(messages.addressTwoLabel)}
-                  type="text"
-                  valueMultiloc={eventAttrs.address_2_multiloc}
-                  onChange={handleAddress2OnChange}
-                  labelTooltipText={formatMessage(messages.addressTwoTooltip)}
-                  placeholder={formatMessage(messages.addressTwoPlaceholder)}
+            <SectionField className="fullWidth">
+              <Box width="860px">
+                <QuillMultilocWithLocaleSwitcher
+                  id="description"
+                  label={descriptionLabel}
+                  valueMultiloc={eventAttrs.description_multiloc}
+                  onChange={handleDescriptionMultilocOnChange}
+                  withCTAButton
                 />
               </Box>
-              {locationPoint && (
-                <Box maxWidth="400px" zIndex="0">
-                  <Box>
-                    <Map
-                      position={locationPoint}
-                      projectId={projectId}
-                      mapHeight="160px"
-                      hideLegend={true}
-                      singleClickEnabled={false}
-                    />
-                  </Box>
-                  <Button
-                    mt="8px"
-                    icon="position"
-                    buttonStyle="secondary"
-                    onClick={() => {
-                      setMapModalVisible(true);
-                    }}
-                  >
-                    {formatMessage(messages.refineOnMap)}
-                  </Button>
-                </Box>
-              )}
-            </Box>
-          </SectionField>
-          <Title
-            variant="h4"
-            fontWeight="bold"
-            color="primary"
-            style={{ fontWeight: '600' }}
-            mt="48px"
-          >
-            {formatMessage(messages.additionalInformation)}
-          </Title>
-          <SectionField>
-            <Label>
-              <FormattedMessage {...messages.fileUploadLabel} />
-              <IconTooltip
-                content={
-                  <FormattedMessage {...messages.fileUploadLabelTooltip} />
-                }
-              />
-            </Label>
-            <FileUploader
-              id="project-events-edit-form-file-uploader"
-              onFileAdd={handleEventFileOnAdd}
-              onFileRemove={handleEventFileOnRemove}
-              files={eventFiles}
-              apiErrors={isError(apiErrors) ? undefined : apiErrors}
-            />
-          </SectionField>
-        </Section>
 
-        <SubmitWrapper
-          loading={saving}
-          status={submitState}
-          messages={{
-            buttonSave: messages.saveButtonLabel,
-            buttonSuccess: messages.saveSuccessLabel,
-            messageError: messages.saveErrorMessage,
-            messageSuccess: messages.saveSuccessMessage,
-          }}
-        />
-      </form>
-      <Modal
-        opened={mapModalVisible}
-        close={() => {
-          setMapModalVisible(false);
-        }}
-        header={formatMessage(messages.refineLocationCoordinates)}
-        width={'800px'}
-      >
-        <Box p="16px">
-          {locationPoint && (
-            <Box>
-              <Label>
-                <FormattedMessage {...messages.mapSelectionLabel} />
-              </Label>
-              <Map
-                position={locationPoint}
-                projectId={projectId}
-                mapHeight="400px"
-              />
+              <ErrorComponent apiErrors={get(errors, 'description_multiloc')} />
+            </SectionField>
+
+            <Title
+              variant="h4"
+              fontWeight="bold"
+              color="primary"
+              style={{ fontWeight: '600' }}
+            >
+              {formatMessage(messages.eventDates)}
+            </Title>
+            <Box display="flex" gap="32px">
+              <SectionField style={{ width: 'auto' }}>
+                <Label>
+                  <FormattedMessage {...messages.dateStartLabel} />
+                </Label>
+                <DateTimePicker
+                  value={eventAttrs.start_at}
+                  onChange={handleDateTimePickerOnChange('start_at')}
+                />
+                <ErrorComponent apiErrors={get(errors, 'start_at')} />
+              </SectionField>
+
+              <SectionField>
+                <Label>
+                  <FormattedMessage {...messages.datesEndLabel} />
+                </Label>
+                <DateTimePicker
+                  value={eventAttrs.end_at}
+                  onChange={handleDateTimePickerOnChange('end_at')}
+                />
+                <ErrorComponent apiErrors={get(errors, 'end_at')} />
+              </SectionField>
             </Box>
-          )}
-        </Box>
-      </Modal>
-    </>
-  );
+
+            <Title
+              variant="h4"
+              fontWeight="bold"
+              color="primary"
+              style={{ fontWeight: '600' }}
+            >
+              {formatMessage(messages.eventLocation)}
+            </Title>
+
+            <SectionField>
+              <Box maxWidth="400px">
+                <Box mb="8px">
+                  <Label>
+                    {formatMessage(messages.addressOneLabel)}
+                    <IconTooltip
+                      content={formatMessage(messages.addressOneTooltip)}
+                    />
+                  </Label>
+                </Box>
+
+                <LocationInput
+                  id="event-location-picker"
+                  className="e2e-event-location-input"
+                  value={eventAttrs.address_1 || ''}
+                  onChange={(value) => {
+                    handleAddress1OnChange(value);
+                    setAddress1(value);
+                  }}
+                  placeholder={formatMessage(messages.searchForLocation)}
+                />
+
+                <ErrorComponent apiErrors={get(errors, 'address_1')} />
+                <Box my="20px">
+                  <InputMultilocWithLocaleSwitcher
+                    id="event-address-2"
+                    label={formatMessage(messages.addressTwoLabel)}
+                    type="text"
+                    valueMultiloc={eventAttrs.address_2_multiloc}
+                    onChange={handleAddress2OnChange}
+                    labelTooltipText={formatMessage(messages.addressTwoTooltip)}
+                    placeholder={formatMessage(messages.addressTwoPlaceholder)}
+                  />
+                </Box>
+                {locationPoint && (
+                  <Box maxWidth="400px" zIndex="0">
+                    <Box>
+                      <Map
+                        position={locationPoint}
+                        projectId={params.projectId}
+                        mapHeight="160px"
+                        hideLegend={true}
+                        singleClickEnabled={false}
+                      />
+                    </Box>
+                    <Button
+                      mt="8px"
+                      icon="position"
+                      buttonStyle="secondary"
+                      onClick={() => {
+                        setMapModalVisible(true);
+                      }}
+                    >
+                      {formatMessage(messages.refineOnMap)}
+                    </Button>
+                  </Box>
+                )}
+              </Box>
+            </SectionField>
+            <Title
+              variant="h4"
+              fontWeight="bold"
+              color="primary"
+              style={{ fontWeight: '600' }}
+              mt="48px"
+            >
+              {formatMessage(messages.additionalInformation)}
+            </Title>
+            <SectionField>
+              <Label>
+                <FormattedMessage {...messages.fileUploadLabel} />
+                <IconTooltip
+                  content={
+                    <FormattedMessage {...messages.fileUploadLabelTooltip} />
+                  }
+                />
+              </Label>
+              <FileUploader
+                id="project-events-edit-form-file-uploader"
+                onFileAdd={handleEventFileOnAdd}
+                onFileRemove={handleEventFileOnRemove}
+                files={eventFiles}
+                apiErrors={isError(apiErrors) ? undefined : apiErrors}
+              />
+            </SectionField>
+          </Section>
+
+          <SubmitWrapper
+            loading={saving}
+            status={submitState}
+            messages={{
+              buttonSave: messages.saveButtonLabel,
+              buttonSuccess: messages.saveSuccessLabel,
+              messageError: messages.saveErrorMessage,
+              messageSuccess: messages.saveSuccessMessage,
+            }}
+          />
+        </form>
+        <Modal
+          opened={mapModalVisible}
+          close={() => {
+            setMapModalVisible(false);
+          }}
+          header={formatMessage(messages.refineLocationCoordinates)}
+          width={'800px'}
+        >
+          <Box p="16px">
+            {locationPoint && (
+              <Box>
+                <Label>
+                  <FormattedMessage {...messages.mapSelectionLabel} />
+                </Label>
+                <Map
+                  position={locationPoint}
+                  projectId={params.projectId}
+                  mapHeight="400px"
+                />
+              </Box>
+            )}
+          </Box>
+        </Modal>
+      </>
+    );
+  }
+
+  return null;
 };
 
-export default AdminProjectEventEdit;
+export default withRouter((props) => <AdminProjectEventEdit {...props} />);
