@@ -68,12 +68,6 @@ it:
       today: Oggi
       wrong_content: 'Il commento non è pertinente.'
       yesterday: Ieri
-    comment_on_your_initiative:
-      cta_reply_to: 'Rispondi a %{commentAuthor}'
-      event_description: '%{authorNameFull} ha inserito una reazione alla tua iniziativa ''%{initiativeTitle}''. Clicca il pulsante qui sotto per continuare la conversazione con %{authorName}.'
-      main_header: '%{commentAuthor} ha commentato la tua iniziativa'
-      subject: 'Hai ricevuto un commento sulla piattaforma di %{organizationName}'
-      preheader: '%{authorName} ha lasciato un commento sulla tua iniziativa per %{organizationName}'
     cosponsor_of_your_initiative:
       cta_reply_to: 'Visualizza la tua proposta'
       event_description_initiative: 'Congratulazioni! %{cosponsorName} ha accettato l''invito a co-sponsorizzare la tua proposta.'
@@ -159,12 +153,6 @@ it:
       preheader: 'Grazie per aver condiviso la tua proposta %{initiativeTitle} per %{organizationName}. Il prossimo passo è quello di ottenere supporto per la tua proposta condividendola nella tua rete.'
       send_email: e-mail
       subject: 'La tua proposta è stata pubblicata sulla piattaforma di %{organizationName}'
-    new_comment_on_commented_idea:
-      cta_reply_to: 'Rispondi a %{commentAuthor}'
-      event_description: '%{commentAuthorFull} ha anche scritto un commento sull''idea ''%{ideaTitle}'' sulla piattaforma di partecipazione di %{organizationName}. Clicca il pulsante qui sotto per iniziare la conversazione con %{commentAuthor}.'
-      main_header: '%{commentAuthor} ha scritto un commento sulla stessa idea'
-      subject: 'C''è un altro commento sull''idea che hai commentato'
-      preheader: '%{commentAuthor} ha anche lasciato un commento su un''idea per %{organizationName}'
     mention_in_comment:
       cta_reply_to: 'Rispondi a %{commentAuthor}'
       event_description: '%{commentAuthorFull} ti ha menzionato nel suo commento sull''idea ''%{post}''. Clicca il link qui sotto per entrare nella conversazione con %{commentAuthor}'
@@ -191,13 +179,6 @@ it:
       yesterday_by_author: 'Ieri da %{author}'
       today_by_author: 'Oggi da %{author}'
       x_days_ago_by_author: '%{x} giorni fa da %{author}'
-    new_comment_on_commented_initiative:
-      commented: '%{commentAuthor} ha scritto:'
-      cta_reply_to: 'Rispondi a %{commentAuthor}'
-      event_description: '%{commentAuthorFull} ha anche scritto un commento sulla proposta ''%{initiativeTitle}'' sulla piattaforma di partecipazione di %{organizationName}. Clicca il pulsante qui sotto per iniziare la conversazione con %{commentAuthor}.'
-      main_header: '%{commentAuthor} ha scritto un commento sulla stessa proposta'
-      subject: 'C''è un altro commento sulla proposta che hai commentato'
-      preheader: '%{commentAuthor} ha anche lasciato un commento su una proposta per %{organizationName}'
     new_comment_for_admin:
       commented: '%{authorFirstName} ha commentato:'
       cta_reply_to: 'Visualizza il commento di %{commentAuthor}''s'
@@ -208,29 +189,18 @@ it:
       preheader: '%{authorName} ha lasciato un commento'
       today: Oggi
       yesterday: Ieri
-    comment_on_your_idea:
+    comment_on_idea_you_follow:
       cta_reply_to: 'Rispondi a %{commentAuthor}'
-      event_description: '%{authorNameFull} ha inserito una reazione alla tua idea ''%{ideaTitle}''. Clicca il pulsante qui sotto per continuare la conversazione con %{authorName}.'
-      main_header: '%{authorName} ha commentato la tua idea'
-      subject: 'Hai ricevuto un commento sulla piattaforma di %{organizationName}'
-      preheader: '%{authorName} ha lasciato un commento sulla tua idea per %{organizationName}'
-    new_comment_on_reacted_initiative:
-      commented: '%{commentAuthor} ha scritto:'
-      cta_reply_to: 'Visualizza questa proposta'
-      event_description: '%{commentAuthor} ha commentato la proposta ''%{initiativeTitle}'' sulla quale hai votato. Partecipa alla discussione sulla piattaforma di %{organizationName}!'
-      main_header: '%{firstName}c''è un nuovo commento sulla proposta che hai votato'
-      subject: 'C''è un nuovo commento sulla proposta che hai votato'
-      preheader: '%{commentAuthor} lascia un commento sulla proposta che hai votato sulla piattaforma di %{organizationName}'
-    new_comment_on_reacted_idea:
-      commented: '%{commentAuthor} ha scritto:'
+      event_description: '%{authorNameFull} ha posto una reazione all''idea ''%{ideaTitle}''. Clicca sul pulsante qui sotto per continuare la conversazione con %{authorName}.'
+      main_header: '%{authorName} ha commentato un''idea che segui'
+      subject: 'C''è un nuovo commento su un''idea che segui'
+      preheader: '%{authorName} ha lasciato un commento su un''idea per %{organizationName}'
+    comment_on_initiative_you_follow:
       cta_reply_to: 'Rispondi a %{commentAuthor}'
-      days_ago: '%{numberOfDays} giorni fa'
-      event_description: '%{commentAuthor} ha commentato l''idea ''%{ideaTitle}'' sulla quale hai reagito. Partecipa alla discussione sulla piattaforma di %{organizationName}!'
-      main_header: '%{firstName}c''è un nuovo commento all''idea a cui hai reagito'
-      subject: 'C''è un nuovo commento all''idea a cui hai reagito'
-      preheader: '%{commentAuthor} lascia un commento sull''idea a cui hai reagito sulla piattaforma di %{organizationName}'
-      today: Oggi
-      yesterday: Ieri
+      event_description: '%{authorNameFull} ha posto una reazione sull''iniziativa ''%{initiativeTitle}''. Clicca sul pulsante qui sotto per continuare la conversazione con %{authorName}.'
+      main_header: '%{commentAuthor} ha commentato un''iniziativa che segui'
+      subject: 'C''è un nuovo commento sulla proposta che segui'
+      preheader: '%{authorName} ha lasciato un commento su un''iniziativa per %{organizationName}'
     new_initiative_for_admin:
       cta_reply_to: 'Dai un feedback a %{authorName}'
       event_description: '%{authorName} ha pubblicato una nuova proposta sulla tua piattaforma. Scoprila ora, dai un feedback o cambia il suo stato!'
@@ -523,9 +493,7 @@ it:
         user_who_published_the_input: 'Utente che ha pubblicato l''input'
         user_who_registers: 'Utente che si registra'
         user_who_was_invited: 'Utente invitato'
-        users_who_engaged_with_the_input: 'Utenti che si sono impegnati con l''input'
         users_who_engaged_with_the_project: 'Utenti che hanno partecipato al progetto'
-        users_who_engaged_with_the_proposal: 'Utenti che hanno aderito alla proposta'
         users_who_follow_the_proposal: 'Utenti che seguono la proposta'
         users_who_follow_the_input: 'Utenti che seguono l''input'
         users_who_follow_the_project: 'Utenti che seguono il progetto'
