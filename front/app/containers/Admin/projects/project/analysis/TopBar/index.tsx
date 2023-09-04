@@ -49,15 +49,18 @@ const TopBar = () => {
     analysisId: string;
   };
 
+  const cookieName =
+    authUser &&
+    `analysis_launch_modal_for_user_id_${authUser.data.id}_analysis_id_${analysisId}_shown`;
+
   useEffect(() => {
-    if (authUser) {
-      const cookieName = `analysis_launch_modal_for_user_id_${authUser.data.id}_analysis_id_${analysisId}_shown`;
+    if (cookieName) {
       const cookieValue = get(cookieName);
       if (cookieValue !== 'true') {
         setShowLaunchModal(true);
       }
     }
-  }, [authUser, analysisId]);
+  }, [cookieName, analysisId]);
 
   const resetFilters = urlParams.get('reset_filters') === 'true';
 
@@ -104,7 +107,9 @@ const TopBar = () => {
 
   const closeLaunchModal = () => {
     setShowLaunchModal(false);
-    set(cookieName, 'true');
+    if (cookieName) {
+      set(cookieName, 'true');
+    }
   };
 
   return (
