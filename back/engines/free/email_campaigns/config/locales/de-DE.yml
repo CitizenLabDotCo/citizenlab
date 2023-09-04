@@ -1,15 +1,11 @@
 de:
   email_campaigns:
     campaign_type_description:
-      "1": "Wöchentlich, montags um %{hourOfDay}"
-      "2": "Wöchentlich, dienstags um %{hourOfDay}"
       "3": "Wöchentlich, mittwochs um %{hourOfDay}"
       "4": "Wöchentlich, donnerstags um %{hourOfDay}"
       "5": "Wöchentlich, freitags um %{hourOfDay}"
       "6": "Wöchentlich, samstags um %{hourOfDay}"
     footer:
-      "link_terms_conditions": "Nutzungsbedingungen"
-      "link_unsubscribe": "Abbestellen"
       "powered_by": "Ermöglicht durch"
       "statement": "Diese E-Mail wurde Ihnen von CitizenLab im Namen von %{organizationName} zugesandt, da Sie ein*e registrierte*r Nutzer*in von %{organizationLink} sind. Hier können Sie diese und andere E-Mails %{unsubscribeLink}, wenn Sie in Zukunft keine Benachrichtigungen mehr erhalten möchten."
       "unsubscribe_text": "abbestellen"
