@@ -374,10 +374,10 @@ pt:
       no_unread_notifications: "É hora de gerar alguma nova atividade! Visite a plataforma para descobrir o que está acontecendo."
       unread_notifications: "Você tem novas notificações! Visite a plataforma para descobrir o que está acontecendo."
     threshold_reached_for_admin:
-      cta_process_initiative: 'Leve esta iniciativa para os próximos passos'
-      event_description: 'Uma iniciativa estourou o limite de votação na sua plataforma. Clique no botão embaixo para passar para os próximos passos!'
-      main_header: 'Uma iniciativa estourou o limite de votação!'
-      subject: 'Uma iniciativa estourou o limite de votação na sua plataforma!'
+      cta_process_initiative: 'Levar esta proposta para as próximas etapas'
+      event_description: 'Uma proposta atingiu o limiar de votação na tua plataforma. Clique no botão abaixo para avançar para as próximas etapas!'
+      main_header: 'An proposal reached the voting threshold!'
+      subject: 'Uma proposta atingiu o limiar de votação na sua plataforma'
       preheader: 'Garantir de dar próximos passos'
     first_idea_published:
       action_add_image: '%{addImageLink} aumentar a visibilidade'
