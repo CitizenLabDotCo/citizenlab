@@ -1167,7 +1167,7 @@
   "app.containers.NotificationMenu.internalCommentOnUnassignedInitiative": "{name} comentó internamente en una propuesta no asignada",
   "app.containers.NotificationMenu.internalCommentOnUnassignedUnmoderatedIdea": "{name} comentó internamente en una entrada no asignada en un proyecto no gestionado",
   "app.containers.NotificationMenu.internalCommentOnYourInternalComment": "{name} comentó sobre tu comentario interno",
-  "app.containers.NotificationMenu.invitationToCosponsorInitiative": "{name} te invitó a copatrocinar una propuesta",
+  "app.containers.NotificationMenu.invitationToCosponsorInitiative": "{name} te invitó a co-patrocinar una propuesta",
   "app.containers.NotificationMenu.loadMore": "Carga más...",
   "app.containers.NotificationMenu.loading": "Cargando las notificaciones...",
   "app.containers.NotificationMenu.mentionInComment": "{name} te mencionó en un comentario",
