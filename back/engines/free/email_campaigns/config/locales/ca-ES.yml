@@ -1,15 +1,11 @@
 ca:
   email_campaigns:
     campaign_type_description:
-      "1": "Setmanalment, els dilluns a les %{hourOfDay}"
-      "2": "Setmanalment, els dimarts a les %{hourOfDay}"
       "3": "Setmanalment, els dimecres a les %{hourOfDay}"
       "4": "Setmanalment, els dijous a les %{hourOfDay}"
       "5": "Setmanalment, els divendres a les %{hourOfDay}"
       "6": "Setmanalment, els dissabtes a les %{hourOfDay}"
     footer:
-      "link_terms_conditions": "Termes i Condicions"
-      "link_unsubscribe": "Cancel·la la subscripció"
       "powered_by": "Impulsat per"
       "statement": "CitizenLab us ha enviat aquest correu electrònic en nom de %{organizationName}, perquè sou un usuari registrat de %{organizationLink}. Podeu %{unsubscribeLink} si no voleu rebre aquests correus electrònics en el futur."
       "unsubscribe_text": "donar-se de baixa"
