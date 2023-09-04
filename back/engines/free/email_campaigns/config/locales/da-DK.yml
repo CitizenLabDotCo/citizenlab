@@ -374,10 +374,10 @@ da:
       no_unread_notifications: "Det er tid til at generere nogle nye aktiviteter! Besøg platformen for at finde ud af, hvad der sker."
       unread_notifications: "Du har nye notifikationer! Besøg platformen for at finde ud af, hvad der sker."
     threshold_reached_for_admin:
-      cta_process_initiative: 'Før dette initiativ til de næste trin'
-      event_description: 'Et initiativ har nået stemmetærskelgrænsen på din platform. Klik nedestående knap for at gå til de næste trin!'
-      main_header: 'Et initiativ har nået stemmetærskelgrænsen!'
-      subject: 'Et initiativ har nået stemmetærskelgrænsen på din platform'
+      cta_process_initiative: 'Tag dette forslag til de næste trin'
+      event_description: 'Et forslag har nået stemmetærsklen på din platform. Klik på knappen nedenfor for at tage det videre til næste trin!'
+      main_header: 'An proposal reached the voting threshold!'
+      subject: 'Et forslag har nået stemmetærsklen på din platform'
       preheader: 'Sørg for, at du gennemfører de næste trin'
     first_idea_published:
       action_add_image: '%{addImageLink} for at øge synlighed'
