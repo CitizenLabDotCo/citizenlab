@@ -43,6 +43,7 @@ module BulkImportIdeas
 
       @current_field_display_title = nil
       @current_custom_field = nil
+      @current_description = nil
     end
 
     def parse_text(text)
@@ -66,6 +67,8 @@ module BulkImportIdeas
 
           @current_field_display_title = nil
           @current_custom_field = nil
+          @current_description = nil
+
           @form[:pages] << get_page_number(line)
           next
         end
@@ -79,12 +82,19 @@ module BulkImportIdeas
 
           @current_field_display_title = line
           @current_custom_field = lookup_field(line)
+
+          description = @current_custom_field.description_multiloc[@locale]
+          next if description.nil?
+
+          description = description.gsub(FORBIDDEN_HTML_TAGS_REGEX, '').strip
+          next if description == ''
+          @current_description = description
           next
         end
 
         next if @current_custom_field.nil?
+        next if part_of_description? line
         next if disclaimer? line
-        next if description? line
 
         field_type = @current_custom_field.input_type
 
@@ -134,7 +144,7 @@ module BulkImportIdeas
     end
 
     def get_page_number(line)
-      line[@page_copy.length + 1, 1].to_i
+      line[@page_copy.length + 1, @page_copy.length].to_i
     end
 
     def field_title?(line)
@@ -149,14 +159,20 @@ module BulkImportIdeas
       %W[*#{@choose_as_many_copy} *#{@this_answer_copy}].include?(line)
     end
 
-    def description?(line)
-      field_description = @current_custom_field.description_multiloc[@locale]
-      return false if field_description.nil?
+    def part_of_description?(line)
+      return false if @current_description.nil?
 
-      field_description = field_description.gsub(FORBIDDEN_HTML_TAGS_REGEX, '')
-      return false if field_description == ''
+      stripped_line = line.strip
+      line_len = stripped_line.length
 
-      field_description.include? line
+      # If the line matches the first part of the description...
+      if line == @current_description[0, line_len]
+        # We mark this first part of the description as 'detected' by removing it from the string
+        @current_description = @current_description[line_len, @current_description.length].strip
+        return true
+      end
+
+      false
     end
 
     def handle_select_field(line)

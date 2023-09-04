@@ -275,7 +275,8 @@ module BulkImportIdeas
         page_range: page_range,
         import_user: @import_user,
         user_created: user_created,
-        file: @file
+        file: @file,
+        locale: @locale
       )
       idea_import.save!
     end
