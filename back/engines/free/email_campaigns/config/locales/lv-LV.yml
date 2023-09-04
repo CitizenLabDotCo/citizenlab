@@ -1,11 +1,15 @@
 lv:
   email_campaigns:
     campaign_type_description:
+      "1": "Ik nedēļu, pirmdienās, %{hourOfDay}"
+      "2": "Ik nedēļu, otrdienās, %{hourOfDay}"
       "3": "Ik nedēļu, trešdienās, %{hourOfDay}"
       "4": "Ik nedēļu, ceturtdienās, %{hourOfDay}"
       "5": "Ik nedēļu, piektdienās, %{hourOfDay}"
       "6": "Ik nedēļu, sestdienās, %{hourOfDay}"
     footer:
+      "link_terms_conditions": "Noteikumi un nosacījumi"
+      "link_unsubscribe": "Atteikties"
       "powered_by": "Darbību nodrošina"
       "statement": "Šo e-pastu jums nosūtīja CitizenLab %{organizationName} vārdā, jo jūs esat %{organizationLink} reģistrēts lietotājs. Jūs varat %{unsubscribeLink}, ja nevēlaties turpmāk saņemt šos e-pastus."
       "unsubscribe_text": "atteikties"
@@ -117,6 +121,7 @@ lv:
       cta_reply_to: 'Šā priekšlikuma līdzfinansēšana'
       event_description_initiative: '%{authorName} ir izstrādājusi jaunu priekšlikumu un vēlas, lai jūs to atbalstītu.'
       event_description_cosponsoring: 'Priekšlikuma līdzfinansēšana nozīmē, ka <strong>jūsu vārds un uzvārds būs redzams</strong> kopā ar citu priekšlikuma līdzfinansētāju vārdiem un uzvārdiem.'
+      event_description_before_action: 'Lai redzētu priekšlikumu un pieņemtu uzaicinājumu, jums ir jābūt pieteicies savā kontā.'
       event_description_action: 'Noklikšķiniet tālāk, lai iepazītos ar priekšlikumu.'
       main_header: 'Jūs esat aicināts līdzfinansēt priekšlikumu.'
       subject: 'Jūs esat aicināts līdzfinansēt priekšlikumu.'
