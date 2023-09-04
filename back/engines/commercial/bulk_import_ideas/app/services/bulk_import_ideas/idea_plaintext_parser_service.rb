@@ -3,6 +3,9 @@
 module BulkImportIdeas
   class IdeaPlaintextParserService
     QUESTION_TYPES = %w[select multiselect text text_multiloc multiline_text html_multiloc]
+    TEXT_FIELD_TYPES = %w[text text_multiloc]
+    MULTILINE_FIELD_TYPES = %w[multiline_text html_multiloc]
+
     FORBIDDEN_HTML_TAGS_REGEX = %r{</?(div|p|span|ul|ol|li|em|img|a){1}[^>]*/?>}
     EMPTY_SELECT_CIRCLES = ['O', '○']
     EMPTY_MULTISELECT_SQUARES = ['☐']
@@ -23,7 +26,7 @@ module BulkImportIdeas
       @this_answer_copy = I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.this_answer') }
 
       @page_copy = I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.page') }
-      @page_regex = Regexp.new "^#{@page_copy} \\d+$"
+      @page_number_regex = Regexp.new "^#{@page_copy} \\d+$"
 
       @fields_by_display_title = {}
 
@@ -46,21 +49,28 @@ module BulkImportIdeas
       @current_description = nil
     end
 
-    def parse_text(text)
-      text_field_types = %w[text text_multiloc]
-      multiline_field_types = %w[multiline_text html_multiloc]
+    def parse_text(pages)
+      pages.each_with_index do |page, i|
+        parse_page(page, i + 1)
+      end
 
-      lines = text.lines.map(&:rstrip)
+      @documents << @form
+      @documents
+    end
 
-      lines.each do |line|
-        if new_page? line
+    def parse_page(page, page_number)
+      lines = page.lines.map(&:rstrip)
+
+      lines.each_with_index do |line, index|
+        if index == 0
           if new_document? line
             unless @form.nil?
               @documents << @form
             end
 
             @form = {
-              pages: [],
+              pdf_pages: [],
+              form_pages: [],
               fields: {}
             }
           end
@@ -69,7 +79,10 @@ module BulkImportIdeas
           @current_custom_field = nil
           @current_description = nil
 
-          @form[:pages] << get_page_number(line)
+          @form[:pdf_pages] << page_number
+
+          # TODO test regex first
+          @form[:form_pages] << get_page_number(line)
           next
         end
 
@@ -98,13 +111,13 @@ module BulkImportIdeas
 
         field_type = @current_custom_field.input_type
 
-        if text_field_types.include? field_type
+        if TEXT_FIELD_TYPES.include? field_type
           current_text = @form[:fields][@current_field_display_title]
           @form[:fields][@current_field_display_title] = current_text.nil? ? line : "#{current_text} #{line}"
           next
         end
 
-        if multiline_field_types.include? field_type
+        if MULTILINE_FIELD_TYPES.include? field_type
           current_text = @form[:fields][@current_field_display_title]
           @form[:fields][@current_field_display_title] = current_text.nil? ? line : "#{current_text} #{line}"
           next
@@ -118,24 +131,21 @@ module BulkImportIdeas
           handle_multiselect_field(line)
         end
       end
-
-      @documents << @form
-
-      @documents
     end
 
     private
 
-    def new_page?(line)
-      @page_regex.match? line
+    def page_number?(line)
+      @page_number_regex.match? line
     end
 
     def new_document?(line)
+      return false unless page_number? line
       return true if line == "#{@page_copy} 1"
 
       page_number = get_page_number line
-      pages = @form[:pages]
-      last_page = pages[pages.length - 1]
+      form_pages = @form[:form_pages]
+      last_page = form_pages[form_pages.length - 1]
 
       # If you were just on page 2, and now you're on
       # page 1, we will assume you went to the next document
