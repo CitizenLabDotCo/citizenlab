@@ -1,11 +1,15 @@
 ach:
   email_campaigns:
     campaign_type_description:
+      "1": "crwdns993029:0%{hourOfDay}crwdne993029:0"
+      "2": "crwdns993031:0%{hourOfDay}crwdne993031:0"
       "3": "crwdns942483:0%{hourOfDay}crwdne942483:0"
       "4": "crwdns942485:0%{hourOfDay}crwdne942485:0"
       "5": "crwdns942487:0%{hourOfDay}crwdne942487:0"
       "6": "crwdns942489:0%{hourOfDay}crwdne942489:0"
     footer:
+      "link_terms_conditions": "crwdns993033:0crwdne993033:0"
+      "link_unsubscribe": "crwdns993035:0crwdne993035:0"
       "powered_by": "crwdns942495:0crwdne942495:0"
       "statement": "crwdns942497:0%{organizationName}crwdnd942497:0%{organizationLink}crwdnd942497:0%{unsubscribeLink}crwdne942497:0"
       "unsubscribe_text": "crwdns942499:0crwdne942499:0"
@@ -117,6 +121,7 @@ ach:
       cta_reply_to: 'crwdns942697:0crwdne942697:0'
       event_description_initiative: 'crwdns942699:0%{authorName}crwdne942699:0'
       event_description_cosponsoring: 'crwdns942701:0crwdne942701:0'
+      event_description_before_action: 'crwdns993037:0crwdne993037:0'
       event_description_action: 'crwdns942703:0crwdne942703:0'
       main_header: 'crwdns942705:0crwdne942705:0'
       subject: 'crwdns942707:0crwdne942707:0'
