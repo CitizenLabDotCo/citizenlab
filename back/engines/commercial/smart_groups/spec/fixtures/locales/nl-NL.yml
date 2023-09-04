@@ -32,6 +32,11 @@ nl:
       not_ends_on: "%{property} eindigt niet op %{value}"
     email:
       property: "e-mail"
+    event_attendances:
+      attends_something: "Gebruiker is ingeschreven voor minstens één evenement"
+      attends_nothing: "Gebruiker is niet ingeschreven voor een evenement"
+      attends_some_of: "Gebruiker is ingeschreven voor minstens één van de volgende evenementen: %{value}"
+      attends_none_of: "Gebruiker is niet ingeschreven voor een van de volgende evenementen: %{value}"
     follow:
       something: "Volgt iets"
       nothing: "Volgt niets"
