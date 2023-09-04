@@ -188,6 +188,7 @@ ach:
       cta_reply_to: 'crwdns933693:0crwdne933693:0'
       event_description_initiative: 'crwdns933695:0%{authorName}crwdne933695:0'
       event_description_cosponsoring: 'crwdns933697:0crwdne933697:0'
+      event_description_before_action: 'crwdns993009:0crwdne993009:0'
       event_description_action: 'crwdns933699:0crwdne933699:0'
       main_header: 'crwdns933701:0crwdne933701:0'
       subject: 'crwdns933703:0crwdne933703:0'
