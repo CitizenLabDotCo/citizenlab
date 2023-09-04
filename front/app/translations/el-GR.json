@@ -570,6 +570,7 @@
   "app.components.admin.UserFilterConditions.rulesFormLabelPredicate": "Κατάσταση",
   "app.components.admin.UserFilterConditions.rulesFormLabelValue": "Τιμή",
   "app.components.anonymousParticipationModal.anonymousParticipationWarning": "Δεν θα λαμβάνετε ειδοποιήσεις για τη συνεισφορά σας",
+  "app.components.anonymousParticipationModal.cancel": "Ακύρωση",
   "app.components.anonymousParticipationModal.continue": "Συνεχίστε",
   "app.components.anonymousParticipationModal.participateAnonymously": "Συμμετέχετε ανώνυμα",
   "app.components.anonymousParticipationModal.participateAnonymouslyModalText4": "Αυτό θα κρύψει με ασφάλεια <b>το προφίλ σας</b> από τους διαχειριστές, τους συντονιστές και τους άλλους κατοίκους για τη συγκεκριμένη συνεισφορά, έτσι ώστε κανείς να μην μπορεί να συνδέσει τη συνεισφορά αυτή με εσάς. Οι ανώνυμες συνεισφορές δεν μπορούν να επεξεργαστούν και θεωρούνται οριστικές.",
