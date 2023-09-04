@@ -1,15 +1,11 @@
 pt:
   email_campaigns:
     campaign_type_description:
-      "1": "Semanalmente, às segundas-feiras às %{hourOfDay}"
-      "2": "Semanalmente, às terças-feiras às %{hourOfDay}"
       "3": "Semanalmente, às quartas-feiras às %{hourOfDay}"
       "4": "Semanalmente, às quintas-feiras às %{hourOfDay}"
       "5": "Semanalmente, às sextas-feiras às %{hourOfDay}"
       "6": "Semanalmente, aos sábados às %{hourOfDay}"
     footer:
-      "link_terms_conditions": "Termos e condições"
-      "link_unsubscribe": "Cancelar a inscrição"
       "powered_by": "Criado por"
       "statement": "Este e-mail foi enviado pelo CitizenLab em nome de %{organizationName}, porque você é um usuário registrado de %{organizationLink}. Você pode %{unsubscribeLink} se você não quiser receber estes e-mails no futuro."
       "unsubscribe_text": "Cancelar a inscrição"
