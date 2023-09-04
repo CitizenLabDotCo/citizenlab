@@ -121,7 +121,8 @@ const UserNavbar = memo<Props>(({ user }) => {
   const { data: authUser } = useAuthUser();
 
   const eventsCount = events?.data.length;
-  const showEventTab = authUser?.data?.id === user.id;
+  // const showEventTab = authUser?.data?.id === userId; // TODO: Re-enable once event attendance smart group added
+  const showEventTab = false;
   const isFollowingEnabled = useFeatureFlag({
     name: 'follow',
   });

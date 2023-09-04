@@ -165,7 +165,7 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
           )}
           <Outlet id="app.ProjectsShowPage.shared.header.ProjectInfo.projectDescriptionBuilder" />
           <Box my="16px">
-            <Topics postType="initiative" topicIds={topicIds} showTitle />
+            <Topics postType="initiative" postTopicIds={topicIds} showTitle />
             <Areas areaIds={areaIds} />
           </Box>
         </ContentContainer>

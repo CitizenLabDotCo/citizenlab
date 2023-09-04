@@ -119,6 +119,7 @@ module Verification
       taken = existing_users.present?
 
       if taken
+        # it means sth went wrong and user wasn't fully created (e.g., they didn't enter email)
         if existing_users.all?(&:blank_and_can_be_deleted?)
           existing_users.each { |u| DeleteUserJob.perform_now(u) }
         else

@@ -7,12 +7,13 @@ import { IInitiativeImage, AddInitiativeImageObject } from './types';
 const addInitiativeImage = async ({
   initiativeId,
   ...requestBody
-}: AddInitiativeImageObject) =>
-  fetcher<IInitiativeImage>({
+}: AddInitiativeImageObject) => {
+  return fetcher<IInitiativeImage>({
     path: `/initiatives/${initiativeId}/images`,
     action: 'post',
     body: requestBody,
   });
+};
 
 const useAddInitiativeImage = () => {
   const queryClient = useQueryClient();
