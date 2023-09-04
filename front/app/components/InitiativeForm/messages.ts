@@ -44,11 +44,6 @@ export default defineMessages({
     defaultMessage:
       'The provided title is too short. Please add a title that is between 10 and 72 characters long.',
   },
-  titleMaxLengthError: {
-    id: 'app.components.InitiativeForm.titleMaxLengthError',
-    defaultMessage:
-      'The provided title is too long. Please add a title that is between 10 and 72 characters long.',
-  },
   titleLabel: {
     id: 'app.components.InitiativeForm.titleLabel',
     defaultMessage: 'Title',

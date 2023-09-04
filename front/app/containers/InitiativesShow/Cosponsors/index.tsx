@@ -18,8 +18,9 @@ const Cosponsors = ({ initiativeId }: Props) => {
       (c) => c.status === 'accepted'
     );
 
-  if (!acceptedCosponsorships || acceptedCosponsorships.length === 0)
+  if (!acceptedCosponsorships || acceptedCosponsorships.length === 0) {
     return null;
+  }
 
   return (
     <BorderContainer>

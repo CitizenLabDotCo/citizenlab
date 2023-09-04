@@ -19,6 +19,8 @@ import { AutoTaggingMethod } from 'api/analysis_background_tasks/types';
 import FilterItems from '../../FilterItems';
 import { IInputsFilterParams } from 'api/analysis_inputs/types';
 import { isEmpty } from 'lodash-es';
+import translations from '../translations';
+import { useIntl } from 'utils/cl-intl';
 
 const AutoTagMethodContainer = styled.div<{ disabled: boolean }>`
   background-color: ${colors.grey100};
@@ -88,7 +90,7 @@ const AutoTagOption = ({
         )}
         {tooltip && <IconTooltip content={tooltip} icon="info-outline" />}
       </Box>
-      <Text mt="12px" mb="0     ">
+      <Text mt="12px" mb="0px">
         {children}
       </Text>
     </AutoTagMethodContainer>
@@ -112,17 +114,16 @@ const Step1 = ({
   onChangeAutoTaggingTarget,
   filters,
 }: Props) => {
+  const { formatMessage } = useIntl();
   return (
     <>
       <Title mb="32px">
-        <Icon name="flash" height="32px" width="32px" /> Auto-tag
+        <Icon name="flash" height="32px" width="32px" />{' '}
+        {formatMessage(translations.autoTagTitle)}
       </Title>
-      <Text mb="32px">
-        Auto-tags are automatically derived by the computer. You can change or
-        remove them at all times.
-      </Text>
+      <Text mb="32px">{formatMessage(translations.autoTagDescription)}</Text>
 
-      <Title variant="h4">What inputs do you want to tag?</Title>
+      <Title variant="h4">{formatMessage(translations.autoTagSubtitle)}</Title>
 
       <Box display="flex" gap="16px">
         <AutoTagTargetContainer
@@ -135,7 +136,7 @@ const Step1 = ({
               name="auto_tagging_target"
               value="all"
             />
-            <Label>All inputs</Label>
+            <Label>{formatMessage(translations.allInput)}</Label>
           </Box>
         </AutoTagTargetContainer>
         <AutoTagTargetContainer
@@ -154,10 +155,10 @@ const Step1 = ({
               disabled={isEmpty(filters)}
             />
             <Box>
-              <Label>Use current filters</Label>
+              <Label>{formatMessage(translations.useCurrentFilters)}</Label>
               {isEmpty(filters) && (
                 <Text fontSize="s" m="0">
-                  No active filters
+                  {formatMessage(translations.noActiveFilters)}
                 </Text>
               )}
             </Box>
@@ -166,7 +167,7 @@ const Step1 = ({
         </AutoTagTargetContainer>
       </Box>
 
-      <Title variant="h4">How do you want to tag?</Title>
+      <Title variant="h4">{formatMessage(translations.howToTag)}</Title>
 
       <Box
         display="flex"
@@ -175,93 +176,84 @@ const Step1 = ({
         opacity={isLoading ? 0.5 : undefined}
       >
         <Title variant="h6" m="0">
-          Topic detection
+          {formatMessage(translations.topicDetection)}
         </Title>
 
         <AutoTagOption
           tagType="nlp_topic"
-          title="Fully automated"
+          title={formatMessage(translations.fullyAutomatedTitle)}
           onSelect={() => onSelectMethod('nlp_topic')}
           disabled={isLoading}
           isLoading={isLoading && loadingMethod === 'nlp_topic'}
-          tooltip="Works well when your projects covers a broad range of topics. Good place to start."
+          tooltip={formatMessage(translations.fullyAutomatedTooltip)}
         >
-          <>The computer detects the topics and assigns the inputs</>
+          {formatMessage(translations.fullyAutomatedDescription)}
         </AutoTagOption>
 
         <AutoTagOption
           tagType="custom"
-          title="Classification by label"
+          title={formatMessage(translations.classificationByLabelTitle)}
           onSelect={() => onSelectMethod('label_classification')}
           disabled={isLoading}
           isLoading={isLoading && loadingMethod === 'label_classification'}
-          tooltip="Works well when you know what tags you are looking for, or when your project has a narrow scope in terms of topics."
+          tooltip={formatMessage(translations.classificationByLabelTooltip)}
         >
-          <>You create the topics, the inputs are assigned by the computer</>
+          {formatMessage(translations.classificationByLabelDescription)}
         </AutoTagOption>
 
         <AutoTagOption
           tagType="custom"
-          title="Classification by example"
+          title={formatMessage(translations.classificationByExampleTitle)}
           onSelect={() => onSelectMethod('few_shot_classification')}
           disabled={isLoading}
           isLoading={isLoading && loadingMethod === 'few_shot_classification'}
-          tooltip='Works well when you need to tag some really specific things. Use this in case "Classification by label" does not give you good results'
+          tooltip={formatMessage(translations.classificationByExampleTooltip)}
         >
-          <>
-            You create the topics and manually assign a few inputs as an
-            example, the computer assigns the rest
-          </>
+          {formatMessage(translations.classificationByExampleDescription)}
         </AutoTagOption>
 
         <AutoTagOption
           tagType="platform_topic"
-          title="Platform tags"
+          title={formatMessage(translations.platformTagsTitle)}
           onSelect={() => onSelectMethod('platform_topic')}
           disabled={isLoading}
           isLoading={isLoading && loadingMethod === 'platform_topic'}
         >
-          <>
-            Assign the existing platform tags that the author picked when
-            posting
-          </>
+          {formatMessage(translations.platformTagsDescription)}
         </AutoTagOption>
 
         <Title variant="h6" m="0">
-          Other
+          {formatMessage(translations.other)}
         </Title>
 
         <AutoTagOption
           tagType="sentiment"
-          title="Sentiment"
+          title={formatMessage(translations.sentimentTagTitle)}
           onSelect={() => onSelectMethod('sentiment')}
           disabled={isLoading}
           isLoading={isLoading && loadingMethod === 'sentiment'}
         >
-          <>
-            Assign a positive or negative sentiment to each input, derived from
-            the text
-          </>
+          {formatMessage(translations.sentimentTagDescription)}
         </AutoTagOption>
 
         <AutoTagOption
           tagType="controversial"
-          title="Controversial"
+          title={formatMessage(translations.controversialTagTitle)}
           onSelect={() => onSelectMethod('controversial')}
           disabled={isLoading}
           isLoading={isLoading && loadingMethod === 'controversial'}
         >
-          <>Detect inputs with a significant dislikes/likes ratio</>
+          {formatMessage(translations.controversialTagDescription)}
         </AutoTagOption>
 
         <AutoTagOption
           tagType="language"
-          title="Language"
+          title={formatMessage(translations.languageTagTitle)}
           onSelect={() => onSelectMethod('language')}
           disabled={isLoading}
           isLoading={isLoading && loadingMethod === 'language'}
         >
-          <>Detect the language of each input</>
+          {formatMessage(translations.languageTagDescription)}
         </AutoTagOption>
       </Box>
     </>
