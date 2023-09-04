@@ -232,7 +232,6 @@
   "app.components.InitiativeForm.titleEmptyError": "Si prega di fornire un titolo",
   "app.components.InitiativeForm.titleLabel": "Titolo",
   "app.components.InitiativeForm.titleLabelSubtext2": "Scegli un titolo descrittivo, ma conciso (min. 10 caratteri, max. 72 caratteri)",
-  "app.components.InitiativeForm.titleMaxLengthError": "Il titolo fornito è troppo lungo. Si prega di aggiungere un titolo lungo tra i 10 e i 72 caratteri.",
   "app.components.InitiativeForm.titleMinLengthError": "Il titolo fornito è troppo corto. Si prega di aggiungere un titolo lungo tra i 10 e i 72 caratteri.",
   "app.components.InitiativeForm.topicEmptyError": "Si prega di fornire un argomento",
   "app.components.InitiativeForm.topicsLabel": "Seleziona l'argomento della tua proposta",
