@@ -11,7 +11,7 @@ import { useIntl } from 'utils/cl-intl';
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
-const PageNavigationButton = styled.button`
+const PageNavigationButton = styled.button<{ disabled: boolean }>`
   padding-left: 8px;
   padding-right: 8px;
   margin-left: 4px;
@@ -22,6 +22,17 @@ const PageNavigationButton = styled.button`
   &:hover {
     background-color: ${colors.coolGrey300};
   }
+
+  ${({ disabled }) =>
+    disabled
+      ? `
+    cursor: not-allowed;
+    color: ${colors.coolGrey300};
+    &:hover {
+      background-color: ${colors.white};
+    }
+  `
+      : ''}
 `;
 
 interface Props {
