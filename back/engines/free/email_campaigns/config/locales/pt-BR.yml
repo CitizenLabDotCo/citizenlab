@@ -1,11 +1,15 @@
 pt:
   email_campaigns:
     campaign_type_description:
+      "1": "Semanalmente, às segundas-feiras às %{hourOfDay}"
+      "2": "Semanalmente, às terças-feiras às %{hourOfDay}"
       "3": "Semanalmente, às quartas-feiras às %{hourOfDay}"
       "4": "Semanalmente, às quintas-feiras às %{hourOfDay}"
       "5": "Semanalmente, às sextas-feiras às %{hourOfDay}"
       "6": "Semanalmente, aos sábados às %{hourOfDay}"
     footer:
+      "link_terms_conditions": "Termos e condições"
+      "link_unsubscribe": "Cancelar a inscrição"
       "powered_by": "Criado por"
       "statement": "Este e-mail foi enviado pelo CitizenLab em nome de %{organizationName}, porque você é um usuário registrado de %{organizationLink}. Você pode %{unsubscribeLink} se você não quiser receber estes e-mails no futuro."
       "unsubscribe_text": "Cancelar a inscrição"
@@ -117,6 +121,7 @@ pt:
       cta_reply_to: 'Co-patrocinar esta proposta'
       event_description_initiative: '%{authorName} criou uma nova proposta e gostaria de contar com o seu co-patrocínio.'
       event_description_cosponsoring: 'Co-patrocinar uma proposta significa que <strong>o seu nome será apresentado</strong> juntamente com os nomes dos outros co-patrocinadores da proposta.'
+      event_description_before_action: 'Para ver a proposta e aceitar o convite, é necessário iniciar sessão na sua conta.'
       event_description_action: 'Clique abaixo para ler a proposta.'
       main_header: 'Foi convidado a co-patrocinar uma proposta'
       subject: 'Foi convidado a co-patrocinar uma proposta'
