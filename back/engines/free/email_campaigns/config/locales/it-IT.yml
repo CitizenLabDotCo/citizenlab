@@ -374,10 +374,10 @@ it:
       no_unread_notifications: "Non hai notifiche non lette. Visita la piattaforma per contribuire con il tuo contributo e generare nuove notifiche!"
       unread_notifications: "Hai delle notifiche non lette. Visita la piattaforma per scoprire cosa sta succedendo!"
     threshold_reached_for_admin:
-      cta_process_initiative: 'Portare questa iniziativa alle fasi successive'
-      event_description: 'Un''iniziativa ha raggiunto la soglia di voto sulla tua piattaforma. Clicca il pulsante qui sotto per portarla ai passi successivi!'
-      main_header: 'Un''iniziativa ha raggiunto la soglia di voto!'
-      subject: 'Un''iniziativa ha raggiunto la soglia di voto sulla tua piattaforma'
+      cta_process_initiative: 'Porta questa proposta alle fasi successive'
+      event_description: 'Una proposta ha raggiunto la soglia di voto sulla tua piattaforma. Clicca sul pulsante qui sotto per passare alle fasi successive!'
+      main_header: 'An proposal reached the voting threshold!'
+      subject: 'Una proposta ha raggiunto la soglia di voto sulla tua piattaforma'
       preheader: 'Assicurati di fare i prossimi passi'
     first_idea_published:
       action_add_image: '%{addImageLink} per aumentare la visibilità'
