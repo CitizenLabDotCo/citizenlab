@@ -1,11 +1,15 @@
 ar-MA:
   email_campaigns:
     campaign_type_description:
+      "1": "أسبوعيًا، يوم الاثنين الساعة %{hourOfDay}"
+      "2": "أسبوعيًا، يوم الثلاثاء الساعة %{hourOfDay}"
       "3": "أسبوعيًا، يوم الأربعاء الساعة %{hourOfDay}"
       "4": "أسبوعيًا، يوم الخميس الساعة %{hourOfDay}"
       "5": "أسبوعيًا، يوم الجمعة الساعة %{hourOfDay}"
       "6": "أسبوعيًا، يوم السبت الساعة %{hourOfDay}"
     footer:
+      "link_terms_conditions": "الشروط والأحكام"
+      "link_unsubscribe": "إلغاء الاشتراك"
       "powered_by": "مشغّل بواسطة"
       "statement": "تم إرسال هذه الرسالة الإلكترونية بواسطة CitizenLab بالنيابة عن %{organizationName}، لأنك مستخدم مسجل لدى %{organizationLink}. يمكنك %{unsubscribeLink} إذا لم تعُد ترغب في استلام هذه الرسائل الإلكترونية في المستقبل."
       "unsubscribe_text": "إلغاء الاشتراك"
@@ -117,6 +121,7 @@ ar-MA:
       cta_reply_to: 'شارك في رعاية هذا الاقتراح'
       event_description_initiative: '%{authorName} قام بإنشاء اقتراح جديد ويود منك أن تشارك في رعايته.'
       event_description_cosponsoring: 'تعني المشاركة في رعاية اقتراح أنه <strong>سيتم عرض اسمك</strong> مع أسماء الرعاة الآخرين للاقتراح.'
+      event_description_before_action: 'لرؤية الاقتراح وقبول الدعوة، يجب عليك تسجيل الدخول إلى حسابك.'
       event_description_action: 'انقر أدناه لقراءة الاقتراح.'
       main_header: 'لقد تمت دعوتك للمشاركة في رعاية اقتراح'
       subject: 'لقد تمت دعوتك للمشاركة في رعاية اقتراح'
