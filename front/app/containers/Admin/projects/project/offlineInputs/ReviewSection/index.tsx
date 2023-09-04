@@ -214,6 +214,9 @@ const ReviewSection = ({
             overflowY="scroll"
             w="100%"
             h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px - 160px)`}
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
           >
             {(authorEmail || authorName) && (
               <AuthorBox authorName={authorName} authorEmail={authorEmail} />
