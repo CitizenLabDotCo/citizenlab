@@ -55,7 +55,8 @@ FileUtils.chdir APP_ROOT do
   end
 
   files_to_edit = (all_files - new_files).select do |file|
-    if file.include?('/locales/') && !file.include?('/locales/en.yml')
+    if (file.include?('/locales/') && !file.include?('/locales/en.yml')) ||
+      (file.include?('/translations/') && !file.include?('/translations/en.json'))
       false
     else
       includes_campaign?(File.read(file), example_campaign)
