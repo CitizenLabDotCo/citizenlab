@@ -9,7 +9,6 @@ import useProjectById from 'api/projects/useProjectById';
 // components
 import { Box, Title, Button } from '@citizenlab/cl2-component-library';
 import GoBackButton from 'components/UI/GoBackButton';
-import PhaseSelector from './PhaseSelector';
 
 // i18n
 import useLocalize from 'hooks/useLocalize';
@@ -20,12 +19,10 @@ import messages from './messages';
 import { stylingConsts, colors } from 'utils/styleUtils';
 
 interface Props {
-  phaseId?: string;
-  onChangePhase: (phaseId: string) => void;
   onClickPDFImport: () => void;
 }
 
-const TopBar = ({ phaseId, onChangePhase, onClickPDFImport }: Props) => {
+const TopBar = ({ onClickPDFImport }: Props) => {
   const localize = useLocalize();
   const { projectId } = useParams() as {
     projectId: string;
@@ -54,16 +51,6 @@ const TopBar = ({ phaseId, onChangePhase, onClickPDFImport }: Props) => {
             {localize(projectTitle)}
           </Title>
         </Box>
-
-        {phaseId && (
-          <Box ml="24px">
-            <PhaseSelector
-              projectId={projectId}
-              phaseId={phaseId}
-              onChange={onChangePhase}
-            />
-          </Box>
-        )}
       </Box>
 
       <Box display="flex">

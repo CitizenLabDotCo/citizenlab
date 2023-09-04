@@ -9,7 +9,6 @@ import useImportedIdeas from 'api/import_ideas/useImportedIdeas';
 import useImportedIdeaMetadata from 'api/import_ideas/useImportedIdeaMetadata';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useUserById from 'api/users/useUserById';
-import usePhase from 'api/phases/usePhase';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -35,7 +34,6 @@ import { colors, stylingConsts } from 'utils/styleUtils';
 
 // utils
 import { getFullName } from 'utils/textUtils';
-import { canContainIdeas } from 'api/phases/utils';
 import { getNextIdeaId } from './utils';
 
 // typings
@@ -43,7 +41,6 @@ import { FormData } from 'components/Form/typings';
 import { CLErrors } from 'typings';
 
 interface Props {
-  phaseId?: string;
   ideaId: string | null;
   apiErrors?: CLErrors;
   formData: FormData;
@@ -56,7 +53,6 @@ interface Props {
 }
 
 const ReviewSection = ({
-  phaseId,
   ideaId,
   apiErrors,
   formData,
@@ -78,7 +74,6 @@ const ReviewSection = ({
     idea?.data.relationships.author?.data?.id,
     false
   );
-  const { data: phase } = usePhase(phaseId);
 
   const { data: ideaMetadata } = useImportedIdeaMetadata({
     id: isLoading ? undefined : idea?.data.relationships.idea_import?.data?.id,
@@ -136,8 +131,6 @@ const ReviewSection = ({
   const authorName = author ? getFullName(author.data) : undefined;
   const authorEmail = author?.data.attributes.email;
 
-  const phaseNotAllowed = phase ? !canContainIdeas(phase.data) : false;
-
   const goToNextPage = () => setCurrentPageIndex((index) => index + 1);
   const goToPreviousPage = () => setCurrentPageIndex((index) => index - 1);
 
@@ -151,9 +144,7 @@ const ReviewSection = ({
         }
       : undefined;
 
-  const disabledReason = phaseNotAllowed ? (
-    <FormattedMessage {...messages.phaseNotAllowed} />
-  ) : formDataValid ? null : (
+  const disabledReason = formDataValid ? null : (
     <FormattedMessage {...messages.formDataNotValid} />
   );
 
@@ -258,7 +249,7 @@ const ReviewSection = ({
                     icon="check"
                     w="100%"
                     processing={loadingApproveIdea}
-                    disabled={phaseNotAllowed || !formDataValid}
+                    disabled={!formDataValid}
                     onClick={handleApproveIdea}
                   >
                     <FormattedMessage {...messages.approve} />

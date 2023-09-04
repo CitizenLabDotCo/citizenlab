@@ -41,7 +41,7 @@ const ImportSection = ({ onFinishImport }: Props) => {
         project_id: projectId,
         pdf: file.base64,
         locale,
-        phase_id: 'd2a7e451-9587-4c64-8e2e-cd857692c4bb',
+        // phase_id: 'd2a7e451-9587-4c64-8e2e-cd857692c4bb',
       },
       {
         onSuccess: () => {
