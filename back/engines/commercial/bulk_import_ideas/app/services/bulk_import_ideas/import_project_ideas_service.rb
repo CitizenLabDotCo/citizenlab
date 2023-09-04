@@ -11,14 +11,16 @@ module BulkImportIdeas
     end
 
     def generate_example_xlsx
-      # TODO: Multilingual versions of the rest of the fields
       locale_name_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.full_name') }
       locale_email_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.email_address') }
+      locale_permission_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.permission') }
+      locale_published_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.date_published') }
+
       columns = {
         locale_name_label => 'Bill Test',
         locale_email_label => 'bill@citizenlab.co',
-        'Permission' => 'X',
-        'Date Published (dd-mm-yyyy)' => '18-07-2022'
+        locale_permission_label => 'X',
+        locale_published_label => '18-07-2022'
       }
 
       ignore_columns = %w[idea_files_attributes idea_images_attributes]
@@ -41,9 +43,13 @@ module BulkImportIdeas
         columns[column_name] = value
       end
 
-      columns['Image URL'] = 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_in_meeting_graphic.png'
-      columns['Latitude'] = 50.5035
-      columns['Longitude'] = 6.0944
+      locale_image_url_label = I18n.with_locale(@locale) { I18n.t('xlsx_export.column_headers.image_url') }
+      locale_latitude_label = I18n.with_locale(@locale) { I18n.t('xlsx_export.column_headers.latitude') }
+      locale_longitude_label = I18n.with_locale(@locale) { I18n.t('xlsx_export.column_headers.longitude') }
+
+      columns[locale_image_url_label] = 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_in_meeting_graphic.png'
+      columns[locale_latitude_label] = 50.5035
+      columns[locale_longitude_label] = 6.0944
 
       XlsxService.new.hash_array_to_xlsx [columns]
     end
@@ -68,14 +74,20 @@ module BulkImportIdeas
         idea_row = {}
 
         # Fields not in the idea/survey form
+        locale_published_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.date_published') }
+        locale_image_url_label = I18n.with_locale(@locale) { I18n.t('xlsx_export.column_headers.image_url') }
+        locale_latitude_label = I18n.with_locale(@locale) { I18n.t('xlsx_export.column_headers.latitude') }
+        locale_longitude_label = I18n.with_locale(@locale) { I18n.t('xlsx_export.column_headers.longitude') }
+        locale_tags_label = I18n.with_locale(@locale) { I18n.t('custom_fields.ideas.topic_ids.title') }
+
         idea_row[:project_id]   = @project.id
         idea_row[:phase_id]     = @phase.id if @phase
         idea_row[:pages]        = page_range
-        idea_row[:published_at] = fields['Date Published (dd-mm-yyyy)']
-        idea_row[:image_url]    = fields['Image URL']
-        idea_row[:latitude]     = fields['Latitude']
-        idea_row[:longitude]    = fields['Longitude']
-        idea_row[:topic_titles] = (fields['Tags'] || '').split(';').map(&:strip).select(&:present?)
+        idea_row[:published_at] = fields[locale_published_label]
+        idea_row[:image_url]    = fields[locale_image_url_label]
+        idea_row[:latitude]     = fields[locale_latitude_label]
+        idea_row[:longitude]    = fields[locale_longitude_label]
+        idea_row[:topic_titles] = (fields[locale_tags_label] || '').split(';').map(&:strip).select(&:present?)
 
         fields = clean_field_names(fields)
         idea_row = process_user_details(fields, idea_row)
@@ -173,7 +185,8 @@ module BulkImportIdeas
 
     def process_user_details(doc, idea_row)
       # Do not add any personal details if 'Permission' field is not present or blank
-      permission = find_field(doc, 'Permission') # TODO: Mulitlingual
+      locale_permission_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.permission') }
+      permission = find_field(doc, locale_permission_label)
       if permission && permission[:value].present?
         locale_name_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.full_name') }
         name = find_field(doc, locale_name_label)
