@@ -374,10 +374,10 @@ tr:
       no_unread_notifications: "Okunmamış bildiriminiz yok. Girdilerinizle katkı yapmak ve yeni bildirimler oluşturmak için platformu ziyaret edin."
       unread_notifications: "Okunmamış bildirileriniz var. Neler olup bittiğini öğrenmek için platformu ziyaret edin."
     threshold_reached_for_admin:
-      cta_process_initiative: 'Bu girişimi sonraki adımlara taşıyın'
-      event_description: 'Bir girişim, platformunuzdaki oylama eşiğine ulaştı. Onu sonraki adımlara taşımak için aşağıdaki düğmeye tıklayın.'
-      main_header: 'Bir girişim oylama eşiğine ulaştı.'
-      subject: 'Bir girişim, platformunuzdaki oylama eşiğine ulaştı'
+      cta_process_initiative: 'Bu teklifi bir sonraki adıma taşıyın'
+      event_description: 'Platformunuzda bir teklif oylama eşiğine ulaştı. Sonraki adımlara geçmek için aşağıdaki butona tıklayın!'
+      main_header: 'An proposal reached the voting threshold!'
+      subject: 'Platformunuzda bir teklif oylama eşiğine ulaştı'
       preheader: 'Sonraki adımları mutlaka gerçekleştirin'
     first_idea_published:
       action_add_image: 'Görünürlüğünüzü artırmak için %{addImageLink}'
