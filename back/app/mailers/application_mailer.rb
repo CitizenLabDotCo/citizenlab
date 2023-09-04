@@ -182,7 +182,8 @@ class ApplicationMailer < ActionMailer::Base
     @logo_width ||= case versions
     when versions[:medium].present? then versions[:medium].width
     when versions[:large].present?  then versions[:large].width / 2
-    else versions[:small].width * 2
+    when versions[:small].present?  then versions[:small].width * 2
+    else 160
     end
   end
 
