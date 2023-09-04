@@ -56,8 +56,8 @@ const PhaseSelector = ({ phaseId, onChange }: Props) => {
   };
 
   return (
-    <>
-      <Box w="100%" maxWidth="300px" mb="20px">
+    <Box mb="20px">
+      <Box w="100%" maxWidth="300px">
         <Select
           label={<FormattedMessage {...messages.addToPhase} />}
           value={phaseId}
@@ -66,13 +66,13 @@ const PhaseSelector = ({ phaseId, onChange }: Props) => {
         />
       </Box>
       {!selectedPhaseCanContainIdeas && (
-        <Box display="flex" alignItems="center">
+        <Box display="flex" alignItems="center" mt="12px">
           <Text m="0" color="error">
             <FormattedMessage {...messages.selectAnotherPhase} />
           </Text>
         </Box>
       )}
-    </>
+    </Box>
   );
 };
 

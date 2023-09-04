@@ -110,7 +110,7 @@ const ImportSection = ({ onFinishImport }: Props) => {
       <Box w="100%" display="flex" mt="32px">
         <Button
           width="auto"
-          disabled={!file}
+          disabled={!file || (isTimelineProject && !selectedPhase)}
           processing={isLoading}
           onClick={submitFile}
         >

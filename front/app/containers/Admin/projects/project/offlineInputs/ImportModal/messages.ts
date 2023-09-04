@@ -24,8 +24,8 @@ export default defineMessages({
       'This project does not contain any phases that can contain ideas.',
   },
   selectAnotherPhase: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.TopBar.selectAnotherPhase',
-    defaultMessage: 'Please select another phase.',
+    id: 'app.containers.Admin.projects.project.offlineInputs.TopBar.selectAnotherPhase2',
+    defaultMessage: 'Please select an ideation or voting phase.',
   },
   addToPhase: {
     id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.addToPhase',
