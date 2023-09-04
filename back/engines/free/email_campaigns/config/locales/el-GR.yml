@@ -1,15 +1,11 @@
 el:
   email_campaigns:
     campaign_type_description:
-      "1": "Εβδομαδιαία, κάθε Δευτέρα στη διεύθυνση %{hourOfDay}"
-      "2": "Εβδομαδιαία, κάθε Τρίτη στο %{hourOfDay}"
       "3": "Εβδομαδιαία, κάθε Τετάρτη στο %{hourOfDay}"
       "4": "Εβδομαδιαία, κάθε Πέμπτη στο %{hourOfDay}"
       "5": "Εβδομαδιαία, κάθε Παρασκευή στο %{hourOfDay}"
       "6": "Εβδομαδιαία, τα Σάββατα στο %{hourOfDay}"
     footer:
-      "link_terms_conditions": "Όροι & Προϋποθέσεις"
-      "link_unsubscribe": "Διαγραφή"
       "powered_by": "Υποστηρίζεται από"
       "statement": "Αυτό το μήνυμα ηλεκτρονικού ταχυδρομείου σας εστάλη από το CitizenLab για λογαριασμό του %{organizationName}, επειδή είστε εγγεγραμμένος χρήστης του %{organizationLink}. Μπορείτε να %{unsubscribeLink} αν δεν θέλετε να λαμβάνετε αυτά τα μηνύματα στο μέλλον."
       "unsubscribe_text": "διαγραφή"
