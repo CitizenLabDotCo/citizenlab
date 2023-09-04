@@ -1,12 +1,12 @@
 pt:
   email_campaigns:
     campaign_type_description:
-      "1": "Semanalmente, às segundas-feiras, em %{hourOfDay}"
-      "2": "Semanalmente, às terças-feiras, em %{hourOfDay}"
-      "3": "Semanalmente, às quartas-feiras, em %{hourOfDay}"
-      "4": "Semanalmente, às quintas-feiras em %{hourOfDay}"
-      "5": "Semanalmente, às sextas-feiras, em %{hourOfDay}"
-      "6": "Semanalmente, aos sábados, em %{hourOfDay}"
+      "1": "Semanalmente, às segundas-feiras às %{hourOfDay}"
+      "2": "Semanalmente, às terças-feiras às %{hourOfDay}"
+      "3": "Semanalmente, às quartas-feiras às %{hourOfDay}"
+      "4": "Semanalmente, às quintas-feiras às %{hourOfDay}"
+      "5": "Semanalmente, às sextas-feiras às %{hourOfDay}"
+      "6": "Semanalmente, aos sábados às %{hourOfDay}"
     footer:
       "link_terms_conditions": "Termos e condições"
       "link_unsubscribe": "Cancelar a inscrição"
