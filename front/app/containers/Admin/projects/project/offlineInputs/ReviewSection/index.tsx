@@ -9,9 +9,11 @@ import useImportedIdeas from 'api/import_ideas/useImportedIdeas';
 import useImportedIdeaMetadata from 'api/import_ideas/useImportedIdeaMetadata';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useUserById from 'api/users/useUserById';
+import usePhase from 'api/phases/usePhase';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
+import useLocalize from 'hooks/useLocalize';
 import messages from './messages';
 import sharedMessages from '../TopBar/messages';
 
@@ -24,7 +26,7 @@ import {
   Button,
 } from '@citizenlab/cl2-component-library';
 import IdeaList from './IdeaList';
-import AuthorBox from './AuthorBox';
+import InfoBox from './InfoBox';
 import IdeaForm from './IdeaForm';
 import PDFPageControl from './PDFPageControl';
 import PDFViewer from './PDFViewer';
@@ -63,6 +65,7 @@ const ReviewSection = ({
   onApproveIdea,
   onDeleteIdea,
 }: Props) => {
+  const localize = useLocalize();
   const { projectId } = useParams() as {
     projectId: string;
   };
@@ -74,10 +77,12 @@ const ReviewSection = ({
     idea?.data.relationships.author?.data?.id,
     false
   );
-
   const { data: ideaMetadata } = useImportedIdeaMetadata({
     id: isLoading ? undefined : idea?.data.relationships.idea_import?.data?.id,
   });
+
+  const phaseId = idea?.data.relationships.phases.data[0].id;
+  const { data: phase } = usePhase(phaseId);
 
   if (isLoading) {
     return (
@@ -127,6 +132,10 @@ const ReviewSection = ({
   const pages = ideaMetadata?.data.attributes.page_range.map((page) =>
     Number(page)
   );
+
+  const phaseName = phase
+    ? localize(phase.data.attributes.title_multiloc)
+    : undefined;
 
   const authorName = author ? getFullName(author.data) : undefined;
   const authorEmail = author?.data.attributes.email;
@@ -218,8 +227,12 @@ const ReviewSection = ({
             flexDirection="column"
             alignItems="center"
           >
-            {(authorEmail || authorName) && (
-              <AuthorBox authorName={authorName} authorEmail={authorEmail} />
+            {(phaseName || authorEmail || authorName) && (
+              <InfoBox
+                phaseName={phaseName}
+                authorName={authorName}
+                authorEmail={authorEmail}
+              />
             )}
             {idea && (
               <IdeaForm

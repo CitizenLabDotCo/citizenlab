@@ -11,11 +11,12 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 interface Props {
+  phaseName?: string;
   authorName?: string;
   authorEmail?: string;
 }
 
-const AuthorBox = ({ authorName, authorEmail }: Props) => {
+const InfoBox = ({ phaseName, authorName, authorEmail }: Props) => {
   return (
     <Box
       w="90%"
@@ -24,6 +25,11 @@ const AuthorBox = ({ authorName, authorEmail }: Props) => {
       display="flex"
     >
       <Box pr="12px">
+        {phaseName && (
+          <Text fontWeight="bold">
+            <FormattedMessage {...messages.phase} />
+          </Text>
+        )}
         {authorName && (
           <Text fontWeight="bold">
             <FormattedMessage {...messages.author} />
@@ -36,6 +42,7 @@ const AuthorBox = ({ authorName, authorEmail }: Props) => {
         )}
       </Box>
       <Box>
+        {phaseName && <Text>{phaseName}</Text>}
         {authorName && <Text>{authorName}</Text>}
         {authorEmail && <Text mt="0">{authorEmail}</Text>}
       </Box>
@@ -43,4 +50,4 @@ const AuthorBox = ({ authorName, authorEmail }: Props) => {
   );
 };
 
-export default AuthorBox;
+export default InfoBox;
