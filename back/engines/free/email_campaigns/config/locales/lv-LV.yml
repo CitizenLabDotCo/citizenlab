@@ -374,10 +374,10 @@ lv:
       no_unread_notifications: "Jums nav neviena nelasīta paziņojuma. Apmeklējiet platformu, lai ievadītu datus un veidotu jaunus paziņojumus!"
       unread_notifications: "Jums ir nelasīti paziņojumi. Apmeklējiet platformu, lai uzzinātu, kas notiek!"
     threshold_reached_for_admin:
-      cta_process_initiative: 'Īstenojiet šo iniciatīvu nākamajos posmos'
-      event_description: 'Jūsu platformā kāda iniciatīva ir sasniegusi balsošanas slieksni. Noklikšķiniet uz zemāk redzamās pogas, lai virzītos uz nākamajiem soļiem!'
-      main_header: 'Iniciatīva sasniedza balsošanas slieksni!'
-      subject: 'Iniciatīva ir sasniegusi balsošanas slieksni jūsu platformā'
+      cta_process_initiative: 'Pabeigt šā priekšlikuma izstrādi.'
+      event_description: 'Jūsu platformā priekšlikums ir sasniedzis balsošanas slieksni. Noklikšķiniet uz zemāk redzamās pogas, lai pārietu uz nākamajiem soļiem!'
+      main_header: 'An proposal reached the voting threshold!'
+      subject: 'Jūsu platformā priekšlikums ir sasniedzis balsošanas slieksni'
       preheader: 'Pārliecinieties, ka veicat nākamos soļus'
     first_idea_published:
       action_add_image: '%{addImageLink}, lai palielinātu redzamību'
