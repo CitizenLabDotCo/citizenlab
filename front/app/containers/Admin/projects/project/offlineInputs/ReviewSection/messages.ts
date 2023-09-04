@@ -39,4 +39,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.approve',
     defaultMessage: 'Approve',
   },
+  pdfNotAvailable: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.pdfNotAvailable',
+    defaultMessage:
+      'Cannot display the imported file. Imported file viewing is only available for PDF imports.',
+  },
 });
