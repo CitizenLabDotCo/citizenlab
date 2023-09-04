@@ -197,10 +197,10 @@ sr-Latn:
       preheader: '%{authorName} left a comment on an idea for %{organizationName}'
     comment_on_initiative_you_follow:
       cta_reply_to: 'Reply to %{commentAuthor}'
-      event_description: '%{authorNameFull} placed a reaction on the initiative ''%{initiativeTitle}''. Click the button below to continue the conversation with %{authorName}.'
-      main_header: '%{commentAuthor} commented on an initiative you follow'
+      event_description: '%{authorNameFull} placed a reaction on the proposal ''%{initiativeTitle}''. Click the button below to continue the conversation with %{authorName}.'
+      main_header: '%{commentAuthor} commented on an proposal you follow'
       subject: 'There''s a new comment on the proposal you follow'
-      preheader: '%{authorName} left a comment on an initiative for %{organizationName}'
+      preheader: '%{authorName} left a comment on an proposal for %{organizationName}'
     new_initiative_for_admin:
       cta_reply_to: 'Pošaljite utiske za %{authorName}'
       event_description: '%{authorName} je objavio/la novi predlog na vašoj platformi. Pogledajte ga, postavite povratne informacije ili promenite njegov status!'
@@ -374,10 +374,10 @@ sr-Latn:
       no_unread_notifications: "Nema nepročitanih notifikacija. Posetite platformu kako biste dali svoj doprinos i pokrenuli nove notifikacije!"
       unread_notifications: "Imate nepročitane notifikacije. Posetite platformu da biste saznali novosti!"
     threshold_reached_for_admin:
-      cta_process_initiative: 'Pomozite ovoj inicijativi da pređe u narednu fazu'
-      event_description: 'Inicijativa je dostigla neophodan broj glasova na vašoj platformi. Kliknite na dugme u nastavku kako biste prešli na sledeće korake!'
-      main_header: 'Inicijativa je dostigla neophodan broj glasova!'
-      subject: 'Inicijativa je dostigla neophodan broj glasova na vašoj platformi'
+      cta_process_initiative: 'Take this proposal to the next steps'
+      event_description: 'An proposal reached the voting threshold on your platform. Click the button below to take it to the next steps!'
+      main_header: 'An proposal reached the voting threshold!'
+      subject: 'An proposal reached the voting threshold on your platform'
       preheader: 'Obavezno preduzmite sledeće korake'
     first_idea_published:
       action_add_image: '%{addImageLink} da biste povećali vidljivost'
