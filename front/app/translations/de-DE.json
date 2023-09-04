@@ -232,7 +232,6 @@
   "app.components.InitiativeForm.titleEmptyError": "Bitte gib eine Überschrift ein",
   "app.components.InitiativeForm.titleLabel": "Titel",
   "app.components.InitiativeForm.titleLabelSubtext2": "Wähle einen prägnanten, aber aussagekräftigen Titel (min. 10, max. 72 Zeichen)",
-  "app.components.InitiativeForm.titleMaxLengthError": "Der eingegebene Titel ist zu lang. Bitte geben Sie einen Titel ein, der zwischen 10 und 72 Zeichen lang ist.",
   "app.components.InitiativeForm.titleMinLengthError": "Der eingegebene Titel ist zu kurz. Bitte geben Sie einen Titel ein, der zwischen 10 und 72 Zeichen lang ist.",
   "app.components.InitiativeForm.topicEmptyError": "Bitte fügen Sie ein Schlagwort hinzu",
   "app.components.InitiativeForm.topicsLabel": "Füge deinem Vorschlag ein Thema hinzu",
