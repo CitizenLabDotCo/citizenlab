@@ -11,6 +11,7 @@ module BulkImportIdeas
           'Body_nl-BE' => 'Mijn idee inhoud',
           'Body_fr-BE' => 'Mon idée contenu',
           'Email' => 'moderator@citizenlab.co',
+          'Permission' => 'X',
           'Project' => 'Project 1',
           'Phase' => 1,
           'Image URL' => 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_in_meeting_graphic.png',
