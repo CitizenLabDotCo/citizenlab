@@ -173,7 +173,7 @@ describe BulkImportIdeas::ImportProjectIdeasService do
         fields: {
           'Nom et prénom' => 'Jean Rambo',
           'Adresse e-mail' => 'jean@france.com',
-          'Permission' => 'X',
+          'Autorisation' => 'X',
           'Titre' => 'Bonjour',
           'Description' => "Je suis un chien. J'aime les chats."
         }
