@@ -129,7 +129,7 @@ resource 'BulkImportIdeasImportIdeas' do
           # NOTE: GoogleFormParserService is stubbed to avoid calls to google APIs
           context 'continuous projects' do
             example 'Bulk import ideas from scanned .pdf' do
-              expect_any_instance_of(BulkImportIdeas::GoogleFormParserService).to receive(:raw_text).and_return(create_project_bulk_import_raw_text)
+              expect_any_instance_of(BulkImportIdeas::GoogleFormParserService).to receive(:raw_text_page_array).and_return(create_project_bulk_import_raw_text_array)
               do_request
               assert_status 201
               expect(response_data.count).to eq 1
@@ -155,7 +155,7 @@ resource 'BulkImportIdeasImportIdeas' do
 
             context 'current phase' do
               example 'Bulk import ideas from scanned .pdf to current phase' do
-                expect_any_instance_of(BulkImportIdeas::GoogleFormParserService).to receive(:raw_text).and_return(create_project_bulk_import_raw_text)
+                expect_any_instance_of(BulkImportIdeas::GoogleFormParserService).to receive(:raw_text_page_array).and_return(create_project_bulk_import_raw_text_array)
                 do_request
                 assert_status 201
                 expect(response_data.count).to eq 1
@@ -171,7 +171,7 @@ resource 'BulkImportIdeasImportIdeas' do
               let(:phase_id) { project.phases.first.id }
 
               example 'Bulk import ideas from scanned .pdf to a specified phase' do
-                expect_any_instance_of(BulkImportIdeas::GoogleFormParserService).to receive(:raw_text).and_return(create_project_bulk_import_raw_text)
+                expect_any_instance_of(BulkImportIdeas::GoogleFormParserService).to receive(:raw_text_page_array).and_return(create_project_bulk_import_raw_text_array)
                 do_request
                 assert_status 201
                 expect(response_data.count).to eq 1
@@ -237,8 +237,8 @@ resource 'BulkImportIdeasImportIdeas' do
     "data:application/pdf;base64,#{base_64_content}"
   end
 
-  def create_project_bulk_import_raw_text
-    "Page 1\n" \
+  def create_project_bulk_import_raw_text_array
+    ["Page 1\n" \
       "Full name\nBob Test\n" \
       "Email address\nbob@test.com\n" \
       "Title\n" \
@@ -246,6 +246,6 @@ resource 'BulkImportIdeasImportIdeas' do
       "Description\n" \
       "And this is the body\n" \
       "Location (optional)\n" \
-      "Somewhere\n" \
+      "Somewhere\n"]
   end
 end
