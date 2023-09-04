@@ -19,9 +19,9 @@ class ApplicationMailer < ActionMailer::Base
     :url_service, :multiloc_service, :organization_name,
     :loc, :localize_for_recipient, :recipient_first_name
 
-  helper_method :unsubscribe_url, :terms_conditions_url, :privacy_policy_url, :home_url, :logo_url,
-    :show_unsubscribe_link?, :show_terms_link?, :show_privacy_policy_link?, :format_message,
-    :header_logo_only?, :remove_vendor_branding?
+  helper_method :unsubscribe_url, :terms_conditions_url, :privacy_policy_url, :home_url, :logo_url, :logo_width,
+    :show_unsubscribe_link?, :show_terms_link?, :show_privacy_policy_link?, :format_message, :header_logo_only?,
+    :remove_vendor_branding?
 
   NotImplementedError = Class.new(StandardError)
 
@@ -172,7 +172,17 @@ class ApplicationMailer < ActionMailer::Base
 
   def logo_url
     @logo_url ||= app_configuration.logo.versions.then do |versions|
-      versions[:medium].url || versions[:small].url || versions[:large].url || ''
+      versions[:large].url || versions[:medium].url || versions[:small].url || ''
+    end
+  end
+
+  def logo_width
+    versions = app_configuration.logo.versions
+
+    @logo_width ||= case versions
+    when versions[:medium].present? then versions[:medium].width
+    when versions[:large].present?  then versions[:large].width / 2
+    else versions[:small].width * 2
     end
   end
 
