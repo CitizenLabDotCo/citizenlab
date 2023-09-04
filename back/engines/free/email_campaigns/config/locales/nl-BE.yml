@@ -188,6 +188,7 @@ nl-BE:
       cta_reply_to: 'Steun dit voorstel'
       event_description_initiative: '%{authorName} heeft een nieuw voorstel gemaakt en wil graag dat jij het steunt.'
       event_description_cosponsoring: 'Ondersteuner zijn van een voorstel betekent dat <strong>jouw naam wordt weergegeven</strong> met de namen van andere ondersteuners van het voorstel.'
+      event_description_before_action: 'Om het voorstel te zien en de uitnodiging te accepteren, moet je ingelogd zijn met je account.'
       event_description_action: 'Klik hieronder om het voorstel te lezen.'
       main_header: 'Je bent uitgenodigd om een voorstel te steunen'
       subject: 'Je bent uitgenodigd om een voorstel te steunen'
