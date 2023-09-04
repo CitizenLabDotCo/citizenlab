@@ -374,10 +374,10 @@ hr:
       no_unread_notifications: "Nema nepročitanih obavijesti. Posjetite platformu kako biste dali svoj doprinos i generirali nove obavijesti!"
       unread_notifications: "Imate nepročitane obavijesti. Posjetite platformu kako biste saznali novosti!"
     threshold_reached_for_admin:
-      cta_process_initiative: 'Pomognite ovoj inicijativi da prijeđe u narednu fazu'
-      event_description: 'Inicijativa je dosegla prag glasovanja na vašoj platformi. Kliknite na gumb u nastavku kako biste prešli na sljedeće korake!'
-      main_header: 'Inicijativa je dosegla prag glasovanja!'
-      subject: 'Inicijativa je dosegla prag glasovanja na vašoj platformi'
+      cta_process_initiative: 'Prenesite ovaj prijedlog na sljedeće korake'
+      event_description: 'Prijedlog je dosegao prag glasanja na vašoj platformi. Pritisnite gumb u nastavku da biste prešli na sljedeće korake!'
+      main_header: 'An proposal reached the voting threshold!'
+      subject: 'Prijedlog je dosegao prag glasanja na vašoj platformi'
       preheader: 'Obvezno poduzmite sljedeće korake'
     first_idea_published:
       action_add_image: '%{addImageLink} kako biste povećali vidljivost'
