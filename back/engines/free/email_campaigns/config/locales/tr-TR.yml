@@ -1,15 +1,11 @@
 tr:
   email_campaigns:
     campaign_type_description:
-      "1": "Haftalık, Pazartesi günleri %{hourOfDay}adresinde"
-      "2": "Haftalık, Salı günleri %{hourOfDay}adresinde"
       "3": "Haftalık, Çarşamba günleri %{hourOfDay}adresinde"
       "4": "Haftalık, Perşembe günleri %{hourOfDay}adresinde"
       "5": "Haftalık, Cuma günleri %{hourOfDay}adresinde"
       "6": "Haftalık, Cumartesi günleri %{hourOfDay}adresinde"
     footer:
-      "link_terms_conditions": "Hüküm ve Koşullar"
-      "link_unsubscribe": "Abonelikten ayrıl"
       "powered_by": "Destekleyen"
       "statement": "Bu e-posta %{organizationName} adına CitizenLab tarafından kayıtlı bir %{organizationLink} kullanıcısı olduğunuz için gönderilmiştir. Bu e-postaları almaya devam etmek istemiyorsanız %{unsubscribeLink}."
       "unsubscribe_text": "abonelikten ayrılabilirsiniz"
