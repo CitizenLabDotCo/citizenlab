@@ -115,6 +115,7 @@ PATH
   remote: engines/commercial/id_clave_unica
   specs:
     id_clave_unica (0.1.0)
+      id_id_card_lookup
       omniauth_openid_connect
       rails (~> 7.0)
       verification
