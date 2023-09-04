@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import useAddOfflineIdeas from 'api/import_ideas/useAddOfflineIdeas';
 import useLocale from 'hooks/useLocale';
 import usePhases from 'api/phases/usePhases';
+import useProjectById from 'api/projects/useProjectById';
 
 // router
 import { useParams } from 'react-router-dom';
@@ -37,14 +38,17 @@ const ImportSection = ({ onFinishImport }: Props) => {
   const { projectId } = useParams() as { projectId: string };
 
   const { mutate: addOfflineIdeas, isLoading } = useAddOfflineIdeas();
+  const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
   const platformLocale = useLocale();
 
   const currentPhase = getCurrentPhase(phases?.data);
   const phaseId = selectedPhase ?? currentPhase?.id;
 
-  if (isNilOrError(platformLocale)) return null;
+  if (isNilOrError(platformLocale) || !project) return null;
   const locale = selectedLocale ?? platformLocale;
+
+  const isTimelineProject = project.data.attributes.process_type === 'timeline';
 
   const onAddFile = (file: UploadFile) => {
     addOfflineIdeas(
@@ -52,7 +56,7 @@ const ImportSection = ({ onFinishImport }: Props) => {
         project_id: projectId,
         pdf: file.base64,
         locale,
-        phase_id: phaseId,
+        ...(isTimelineProject ? { phase_id: phaseId } : {}),
       },
       {
         onSuccess: () => {
@@ -82,13 +86,10 @@ const ImportSection = ({ onFinishImport }: Props) => {
         </Text>
       </Box>
 
-      <Box>
-        <LocalePicker locale={locale} onChange={setSelectedLocale} />
-      </Box>
-
-      <Box>
+      <LocalePicker locale={locale} onChange={setSelectedLocale} />
+      {isTimelineProject && (
         <PhaseSelector phaseId={phaseId} onChange={setSelectedPhase} />
-      </Box>
+      )}
 
       <Box>
         {isLoading ? (

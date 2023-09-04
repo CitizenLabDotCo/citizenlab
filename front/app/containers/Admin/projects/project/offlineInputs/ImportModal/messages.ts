@@ -27,4 +27,8 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.offlineInputs.TopBar.selectAnotherPhase',
     defaultMessage: 'Please select another phase.',
   },
+  addToPhase: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.addToPhase',
+    defaultMessage: 'Add to phase',
+  },
 });

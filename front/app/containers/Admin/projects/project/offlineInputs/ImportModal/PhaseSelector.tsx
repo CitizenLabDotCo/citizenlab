@@ -3,6 +3,9 @@ import React from 'react';
 // api
 import usePhases from 'api/phases/usePhases';
 
+// router
+import { useParams } from 'react-router-dom';
+
 // i18n
 import useLocalize from 'hooks/useLocalize';
 import messages from './messages';
@@ -19,12 +22,12 @@ import { IOption } from 'typings';
 
 interface Props {
   phaseId?: string;
-  projectId: string;
   onChange: (phaseId: string) => void;
 }
 
-const PhaseSelector = ({ projectId, phaseId, onChange }: Props) => {
+const PhaseSelector = ({ phaseId, onChange }: Props) => {
   const localize = useLocalize();
+  const { projectId } = useParams() as { projectId: string };
   const { data: phases } = usePhases(projectId);
   const phasesThatCanContainIdeas = phases?.data.filter(canContainIdeas);
 
@@ -44,18 +47,23 @@ const PhaseSelector = ({ projectId, phaseId, onChange }: Props) => {
     label: localize(phase.attributes.title_multiloc),
   }));
 
-  const selectedPhaseCanContainIdeas = phasesThatCanContainIdeas
-    .map((phase) => phase.id)
-    .includes(phaseId);
+  const selectedPhaseCanContainIdeas = phaseId
+    ? phasesThatCanContainIdeas.map((phase) => phase.id).includes(phaseId)
+    : false;
 
   const handleChange = ({ value }: IOption) => {
     onChange(value);
   };
 
   return (
-    <Box w="100%">
-      <Box w="auto" minWidth="200px">
-        <Select value={phaseId} options={options} onChange={handleChange} />
+    <>
+      <Box w="100%" maxWidth="300px" mb="20px">
+        <Select
+          label={<FormattedMessage {...messages.addToPhase} />}
+          value={phaseId}
+          options={options}
+          onChange={handleChange}
+        />
       </Box>
       {!selectedPhaseCanContainIdeas && (
         <Box display="flex" alignItems="center">
@@ -64,7 +72,7 @@ const PhaseSelector = ({ projectId, phaseId, onChange }: Props) => {
           </Text>
         </Box>
       )}
-    </Box>
+    </>
   );
 };
 
