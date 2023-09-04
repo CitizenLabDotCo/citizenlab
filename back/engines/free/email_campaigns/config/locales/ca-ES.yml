@@ -374,10 +374,10 @@ ca:
       no_unread_notifications: "No teniu cap notificació no llegida. Visiteu la plataforma per aportar les vostres aportacions i generar noves notificacions!"
       unread_notifications: "Tens notificacions no llegides. Visita la plataforma per descobrir què està passant!"
     threshold_reached_for_admin:
-      cta_process_initiative: 'Porta aquesta iniciativa als passos següents'
-      event_description: 'Una iniciativa ha arribat al llindar de votació a la vostra plataforma. Feu clic al botó següent per passar als passos següents!'
-      main_header: 'Una iniciativa ha arribat al llindar de votació!'
-      subject: 'Una iniciativa ha arribat al llindar de votació a la vostra plataforma'
+      cta_process_initiative: 'Porta aquesta proposta als passos següents'
+      event_description: 'Una proposta ha arribat al llindar de votació a la vostra plataforma. Feu clic al botó següent per passar als passos següents!'
+      main_header: 'An proposal reached the voting threshold!'
+      subject: 'Una proposta ha arribat al llindar de votació a la vostra plataforma'
       preheader: 'Assegureu-vos de fer els següents passos'
     first_idea_published:
       action_add_image: '%{addImageLink} per augmentar la visibilitat'
