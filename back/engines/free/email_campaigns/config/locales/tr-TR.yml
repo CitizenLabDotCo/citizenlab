@@ -188,6 +188,7 @@ tr:
       cta_reply_to: 'Bu teklife eş sponsorluk yapın'
       event_description_initiative: '%{authorName} yeni bir teklif hazırladı ve sizin de bu teklife destek vermenizi istiyor.'
       event_description_cosponsoring: 'Bir teklife eş-sponsorluk yapmak, adınızın <strong>teklifin diğer eş-sponsorlarının adlarıyla birlikte</strong> görüntüleneceği anlamına gelir.'
+      event_description_before_action: 'Teklifi görmek ve daveti kabul etmek için hesabınıza giriş yapmış olmanız gerekmektedir.'
       event_description_action: 'Teklifi okumak için aşağıya tıklayın.'
       main_header: 'Bir teklife eş sponsorluk yapmaya davet edildiniz'
       subject: 'Bir teklife eş sponsorluk yapmaya davet edildiniz'
