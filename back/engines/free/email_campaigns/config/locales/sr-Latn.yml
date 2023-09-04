@@ -1,15 +1,11 @@
 sr-Latn:
   email_campaigns:
     campaign_type_description:
-      "1": "Weekly, on Mondays at %{hourOfDay}"
-      "2": "Weekly, on Tuesdays at %{hourOfDay}"
       "3": "Weekly, on Wednesdays at %{hourOfDay}"
       "4": "Weekly, on Thursdays at %{hourOfDay}"
       "5": "Weekly, on Fridays at %{hourOfDay}"
       "6": "Weekly, on Saturdays at %{hourOfDay}"
     footer:
-      "link_terms_conditions": "Uslovi korišćenja"
-      "link_unsubscribe": "Odjavi se"
       "powered_by": "Powered by"
       "statement": "Ovaj email vam je poslat od strane internet stranice %{organizationName}, jer ste registrovani korisnik platforme %{organizationLink}. Možete da kliknete na %{unsubscribeLink} ako ubuduće ne želite da primate ove e-poruke."
       "unsubscribe_text": "odjavitе se"
@@ -525,7 +521,7 @@ sr-Latn:
         users_who_engaged_with_the_input: 'Корисници који су се бавили уносом'
         users_who_engaged_with_the_project: 'Корисници који су били ангажовани на пројекту'
         users_who_engaged_with_the_proposal: 'Корисници који су се бавили предлогом'
-        users_who_follow_the_proposal: 'User who follow the proposal'
+        users_who_follow_the_proposal: 'Users who follow the proposal'
         users_who_follow_the_input: 'User who follow the input'
         users_who_follow_the_project: 'Users who follow the project'
         user_who_voted: 'User who voted'
