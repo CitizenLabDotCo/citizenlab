@@ -260,10 +260,10 @@ en:
       preheader: '%{authorName} left a comment on an idea for %{organizationName}'
     comment_on_initiative_you_follow:
       cta_reply_to: 'Reply to %{commentAuthor}'
-      event_description: '%{authorNameFull} placed a reaction on the initiative ''%{initiativeTitle}''. Click the button below to continue the conversation with %{authorName}.'
-      main_header: '%{commentAuthor} commented on an initiative you follow'
+      event_description: '%{authorNameFull} placed a reaction on the proposal ''%{initiativeTitle}''. Click the button below to continue the conversation with %{authorName}.'
+      main_header: '%{commentAuthor} commented on an proposal you follow'
       subject: 'There''s a new comment on the proposal you follow'
-      preheader: '%{authorName} left a comment on an initiative for %{organizationName}'
+      preheader: '%{authorName} left a comment on an proposal for %{organizationName}'
     new_initiative_for_admin:
       cta_reply_to: 'Give feedback to %{authorName}'
       event_description: '%{authorName} has published a new proposal on your platform. Discover it now, give some feedback or change its status!'
@@ -437,10 +437,10 @@ en:
       no_unread_notifications: "You don't have any unread notifications. Visit the platform to contribute your input and generate new notifications!"
       unread_notifications: "You have unread notifications. Visit the platform to discover what's happening!"
     threshold_reached_for_admin:
-      cta_process_initiative: 'Take this initiative to the next steps'
-      event_description: 'An initiative reached the voting threshold on your platform. Click the button below to take it to the next steps!'
-      main_header: 'An initiative reached the voting threshold!'
-      subject: 'An initiative reached the voting threshold on your platform'
+      cta_process_initiative: 'Take this proposal to the next steps'
+      event_description: 'An proposal reached the voting threshold on your platform. Click the button below to take it to the next steps!'
+      main_header: 'An proposal reached the voting threshold!'
+      subject: 'An proposal reached the voting threshold on your platform'
       preheader: 'Make sure to take the next steps'
     first_idea_published:
       action_add_image: '%{addImageLink} to increase visibility'
