@@ -1,15 +1,11 @@
 da:
   email_campaigns:
     campaign_type_description:
-      "1": "Hver uge, om mandagen %{hourOfDay}"
-      "2": "Hver uge, om tirsdagen %{hourOfDay}"
       "3": "Hver uge, om onsdagen %{hourOfDay}"
       "4": "Hver uge, om torsdagen %{hourOfDay}"
       "5": "Hver uge, om fredagen %{hourOfDay}"
       "6": "Hver uge, om lørdagen %{hourOfDay}"
     footer:
-      "link_terms_conditions": "Betingelser og vilkår"
-      "link_unsubscribe": "Afmeld abonnement"
       "powered_by": "Drevet af"
       "statement": "Denne e-mail blev sendt til dig fra CitizenLab på vegne af %{organizationName}, fordi du har registreret en bruger på %{organizationLink}. Du kan %{unsubscribeLink}, hvis du ikke ønsker at modtage disse e-mails i fremtiden."
       "unsubscribe_text": "afmeld abonnement"
