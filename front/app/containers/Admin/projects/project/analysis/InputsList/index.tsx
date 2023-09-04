@@ -15,6 +15,15 @@ import InputListItem from './InputListItem';
 import translations from './translations';
 import { useIntl } from 'utils/cl-intl';
 import Demographics from '../Demographics';
+import styled from 'styled-components';
+
+const Item = styled.div<{ start: number }>`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  transform: translateY(${(props) => props.start}px);
+`;
 
 const InputsList = () => {
   const [isDemographicsOpen, setIsDemographicsOpen] = useState(false);
@@ -147,27 +156,15 @@ const InputsList = () => {
           }px)`}
           p="12px"
         >
-          <div
-            style={{
-              height: `${getTotalSize()}px`,
-              width: '100%',
-              position: 'relative',
-            }}
-          >
+          <Box height={`${getTotalSize()}px`} width="100%" position="relative">
             {getVirtualItems().map((virtualRow) => {
               const isLoaderRow = virtualRow.index > inputs.length - 1;
               const post = inputs[virtualRow.index];
 
               return (
-                <div
+                <Item
                   key={virtualRow.index}
-                  style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    transform: `translateY(${virtualRow.start}px)`,
-                  }}
+                  start={virtualRow.start}
                   data-index={virtualRow.index}
                   ref={measureElement}
                 >
@@ -181,10 +178,10 @@ const InputsList = () => {
                       selected={post.id === selectedInputId}
                     />
                   )}
-                </div>
+                </Item>
               );
             })}
-          </div>
+          </Box>
         </Box>
       )}
     </>
