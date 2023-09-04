@@ -18,8 +18,8 @@ import { canContainIdeas } from 'api/phases/utils';
 import { IOption } from 'typings';
 
 interface Props {
+  phaseId?: string;
   projectId: string;
-  phaseId: string;
   onChange: (phaseId: string) => void;
 }
 

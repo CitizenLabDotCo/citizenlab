@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 // hooks
 import useAddOfflineIdeas from 'api/import_ideas/useAddOfflineIdeas';
 import useLocale from 'hooks/useLocale';
+import usePhases from 'api/phases/usePhases';
 
 // router
 import { useParams } from 'react-router-dom';
@@ -11,15 +12,19 @@ import Link from 'utils/cl-router/Link';
 // components
 import { Box, Text, Spinner } from '@citizenlab/cl2-component-library';
 import LocalePicker from './LocalePicker';
+import PhaseSelector from './PhaseSelector';
 import FileUploader from 'components/UI/FileUploader';
 
 // i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
+// utils
+import { getCurrentPhase } from 'api/phases/utils';
+import { isNilOrError } from 'utils/helperUtils';
+
 // typings
 import { UploadFile, Locale } from 'typings';
-import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
   onFinishImport: () => void;
@@ -27,10 +32,16 @@ interface Props {
 
 const ImportSection = ({ onFinishImport }: Props) => {
   const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
+  const [selectedPhase, setSelectedPhase] = useState<string | null>(null);
+
   const { projectId } = useParams() as { projectId: string };
 
   const { mutate: addOfflineIdeas, isLoading } = useAddOfflineIdeas();
+  const { data: phases } = usePhases(projectId);
   const platformLocale = useLocale();
+
+  const currentPhase = getCurrentPhase(phases?.data);
+  const phaseId = selectedPhase ?? currentPhase?.id;
 
   if (isNilOrError(platformLocale)) return null;
   const locale = selectedLocale ?? platformLocale;
@@ -41,7 +52,7 @@ const ImportSection = ({ onFinishImport }: Props) => {
         project_id: projectId,
         pdf: file.base64,
         locale,
-        // phase_id: 'd2a7e451-9587-4c64-8e2e-cd857692c4bb',
+        phase_id: phaseId,
       },
       {
         onSuccess: () => {
@@ -73,6 +84,10 @@ const ImportSection = ({ onFinishImport }: Props) => {
 
       <Box>
         <LocalePicker locale={locale} onChange={setSelectedLocale} />
+      </Box>
+
+      <Box>
+        <PhaseSelector phaseId={phaseId} onChange={setSelectedPhase} />
       </Box>
 
       <Box>
