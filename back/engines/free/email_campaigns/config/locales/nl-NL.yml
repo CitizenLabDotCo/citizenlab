@@ -1,15 +1,11 @@
 nl:
   email_campaigns:
     campaign_type_description:
-      "1": "Wekelijks, op maandag om %{hourOfDay}"
-      "2": "Wekelijks, op dinsdag om %{hourOfDay}"
       "3": "Wekelijks, op woensdag om %{hourOfDay}"
       "4": "Wekelijks, op donderdag om %{hourOfDay}"
       "5": "Wekelijks, op vrijdag om %{hourOfDay}"
       "6": "Wekelijks, op zaterdag om %{hourOfDay}"
     footer:
-      "link_terms_conditions": "Gebruiksvoorwaarden"
-      "link_unsubscribe": "Uitschrijven"
       "powered_by": "Mogelijk gemaakt door"
       "statement": "Je kreeg deze e-mail van CitizenLab in naam van %{organizationName} omdat je geregistreerd bent als gebruiker op %{organizationLink}. Je kan je %{unsubscribeLink} als je deze e-mails niet meer wil ontvangen in de toekomst."
       "unsubscribe_text": "uitschrijven"
