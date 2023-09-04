@@ -1,15 +1,11 @@
 ar:
   email_campaigns:
     campaign_type_description:
-      "1": "أسبوعيًا، يوم الاثنين الساعة %{hourOfDay}"
-      "2": "أسبوعيًا، يوم الثلاثاء الساعة %{hourOfDay}"
       "3": "أسبوعيًا، يوم الأربعاء الساعة %{hourOfDay}"
       "4": "أسبوعيًا، يوم الخميس الساعة %{hourOfDay}"
       "5": "أسبوعيًا، يوم الجمعة الساعة %{hourOfDay}"
       "6": "أسبوعيًا، يوم السبت الساعة %{hourOfDay}"
     footer:
-      "link_terms_conditions": "الشروط والأحكام"
-      "link_unsubscribe": "إلغاء الاشتراك"
       "powered_by": "مشغّل بواسطة"
       "statement": "تم إرسال هذه الرسالة الإلكترونية بواسطة CitizenLab بالنيابة عن %{organizationName}، لأنك مستخدم مسجل لدى %{organizationLink}. يمكنك %{unsubscribeLink} إذا لم تعُد ترغب في استلام هذه الرسائل الإلكترونية في المستقبل."
       "unsubscribe_text": "إلغاء الاشتراك"
