@@ -156,7 +156,7 @@ module BulkImportIdeas
     end
 
     def get_page_number(line)
-      line[@page_copy.length + 1, @page_copy.length].to_i
+      line[@page_copy.length + 1, line.length].to_i
     end
 
     def field_title?(line)
