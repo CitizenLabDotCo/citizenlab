@@ -374,10 +374,10 @@ es:
       no_unread_notifications: "¡Es hora de generar algo nuevo! Visita la plataforma para descubrir lo que está pasando."
       unread_notifications: "¡Tienes nuevas notificaciones! Visita la plataforma para descubrir lo que está pasando."
     threshold_reached_for_admin:
-      cta_process_initiative: 'Lleve esta propuesta a los siguientes pasos'
-      event_description: 'Una propuesta ha alcanzado el número requerido de votos en su plataforma. Haga clic en el botón de abajo para llevarlo a los siguientes pasos!'
-      main_header: 'Una propuesta alcanzó el número requerido de votos!'
-      subject: 'Una propuesta alcanzó el número requerido de votos'
+      cta_process_initiative: 'Lleva esta propuesta a los siguientes pasos'
+      event_description: 'Una propuesta ha alcanzado el umbral de votos en tu plataforma. Haz clic en el botón de abajo para pasar a la siguiente fase.'
+      main_header: 'An proposal reached the voting threshold!'
+      subject: 'Una propuesta ha alcanzado el umbral de votos en tu plataforma'
       preheader: 'Asegúrese de seguir los siguientes pasos'
     first_idea_published:
       action_add_image: '%{addImageLink} para aumentar visibilidad'
