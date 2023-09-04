@@ -1,7 +1,9 @@
 #!/usr/bin/env ruby
 
+# Despite its name, this script can be used in general to copy-paste any code, not only campaigns.
+#
 # Usage:
-# back/bin/add_campaign initiative_resubmitted_for_review new_cosponsor_added
+# back/bin/add_campaign_and_notification initiative_resubmitted_for_review new_cosponsor_added
 #
 # First argument is the name of a campaign (underscored) that should be used as an example.
 # Second argument is the name of a campaign (underscored) that should be added.
@@ -12,7 +14,8 @@
 # but with the result campaign name.
 #
 # Requirements:
-# Ruby and installed activesupport gem
+# - Ruby and installed activesupport gem
+# - All example files should be committed to git and not deleted
 
 require 'fileutils'
 require 'active_support/all'
@@ -35,6 +38,7 @@ end
 
 def includes_campaign?(content, campaign)
   content.match?(/#{campaign}|#{campaign.camelize}|#{campaign.camelize(:lower)}/)
+
 end
 
 FileUtils.chdir APP_ROOT do
@@ -50,7 +54,15 @@ FileUtils.chdir APP_ROOT do
     File.write(result_file, result_content)
   end
 
-  files_to_edit = (all_files - new_files).select { |file| includes_campaign?(File.read(file), example_campaign) rescue false } - [$0]
+  files_to_edit = (all_files - new_files).select do |file|
+    if file.include?('/locales/') && !file.include?('/locales/en.yml')
+      false
+    else
+      includes_campaign?(File.read(file), example_campaign)
+    end
+  rescue ArgumentError => e
+    raise unless e.message == 'invalid byte sequence in UTF-8'
+  end - [$0]
 
   files_to_edit.each do |file|
     lines = File.read(file).split("\n")
