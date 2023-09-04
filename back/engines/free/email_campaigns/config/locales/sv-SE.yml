@@ -68,12 +68,6 @@ sv:
       today: I dag
       wrong_content: 'Kommentaren är inte relevant.'
       yesterday: I går
-    comment_on_your_initiative:
-      cta_reply_to: 'Svar till %{commentAuthor}'
-      event_description: '%{authorNameFull} lämnade en reaktion för ditt initiativ %{initiativeTitle}. Klicka på knappen nedan för att fortsätta konversationen med %{authorName}.'
-      main_header: '%{commentAuthor} kommenterade ditt initiativ'
-      subject: 'Du har fått en kommentar på %{organizationName}s plattform'
-      preheader: '%{authorName} lämnade en kommentar för ditt initiativ för %{organizationName}'
     cosponsor_of_your_initiative:
       cta_reply_to: 'Visa ditt förslag'
       event_description_initiative: 'Grattis! %{cosponsorName} har accepterat din inbjudan att vara med och sponsra ditt förslag.'
@@ -159,12 +153,6 @@ sv:
       preheader: 'Tack för att du delar ditt förslag %{initiativeTitle} för %{organizationName}. Nästa steg är att få stöd för ditt förslag genom att dela det i ditt nätverk.'
       send_email: e-post
       subject: 'Ditt förslag publicerades på plattformen för %{organizationName}'
-    new_comment_on_commented_idea:
-      cta_reply_to: 'Svar till %{commentAuthor}'
-      event_description: '%{commentAuthorFull} skrev också en kommentar för idén %{ideaTitle} på plattformen för deltagande för %{organizationName}. Klicka på knappen nedan för att starta konversationen med %{commentAuthor}.'
-      main_header: '%{commentAuthor} skrev en kommentar för samma idé'
-      subject: 'Det finns en annan kommentar för idén du kommenterat'
-      preheader: '%{commentAuthor} lämnade också en kommentar för en idé för %{organizationName}'
     mention_in_comment:
       cta_reply_to: 'Svar till %{commentAuthor}'
       event_description: '%{commentAuthorFull} har nämnt dig i sin kommentar för idén %{post}. Klicka på länken nedan för att gå in i konversationen med %{commentAuthor}'
@@ -191,13 +179,6 @@ sv:
       yesterday_by_author: 'Igår av %{author}'
       today_by_author: 'Idag av %{author}'
       x_days_ago_by_author: '%{x} dagar sedan av %{author}'
-    new_comment_on_commented_initiative:
-      commented: '%{commentAuthor} skrev:'
-      cta_reply_to: 'Svar till %{commentAuthor}'
-      event_description: '%{commentAuthorFull} skrev också en kommentar för förslaget %{initiativeTitle} på plattformen för deltagande för %{organizationName}. Klicka på knappen nedan för att starta konversationen med %{commentAuthor}.'
-      main_header: '%{commentAuthor} skrev en kommentar för samma förslag'
-      subject: 'Det finns en annan kommentar för förslaget du kommenterat'
-      preheader: '%{commentAuthor} lämnade också en kommentar för ett förslag för %{organizationName}'
     new_comment_for_admin:
       commented: '%{authorFirstName} kommenterade:'
       cta_reply_to: 'Visa %{commentAuthor}s kommentar'
@@ -208,29 +189,18 @@ sv:
       preheader: '%{authorName} lämnade en kommentar'
       today: I dag
       yesterday: I går
-    comment_on_your_idea:
-      cta_reply_to: 'Svar till %{commentAuthor}'
-      event_description: '%{authorNameFull} lämnade en reaktion för din idé %{ideaTitle}. Klicka på knappen nedan för att fortsätta konversationen med %{authorName}.'
-      main_header: '%{authorName} kommenterade din idé'
-      subject: 'Du har fått en kommentar på %{organizationName}s plattform'
-      preheader: '%{authorName} lämnade en kommentar för din idé för %{organizationName}'
-    new_comment_on_reacted_initiative:
-      commented: '%{commentAuthor} skrev:'
-      cta_reply_to: 'Se detta förslag'
-      event_description: '%{commentAuthor} har kommenterat förslaget ''%{initiativeTitle}'' som du har röstat på. Delta i diskussionen om plattformen för %{organizationName}!'
-      main_header: '%{firstName}, det finns en ny kommentar till det förslag du har röstat på'
-      subject: 'Det finns en ny kommentar till det förslag du har röstat på'
-      preheader: '%{commentAuthor} lämnat en kommentar till det förslag som du har röstat om på plattformen %{organizationName}'
-    new_comment_on_reacted_idea:
-      commented: '%{commentAuthor} skrev:'
+    comment_on_idea_you_follow:
       cta_reply_to: 'Svara på %{commentAuthor}'
-      days_ago: '%{numberOfDays} dagar sedan'
-      event_description: '%{commentAuthor} har kommenterat idén ''%{ideaTitle}'' som du har reagerat på. Delta i diskussionen på plattformen %{organizationName}!'
-      main_header: '%{firstName}, det finns en ny kommentar till den idé du har reagerat på'
-      subject: 'Det finns en ny kommentar till den idé du har reagerat på'
-      preheader: '%{commentAuthor} lämnat en kommentar om den idé du har reagerat på på plattformen för %{organizationName}'
-      today: Idag
-      yesterday: Igår
+      event_description: '%{authorNameFull} placerade en reaktion på idén ''%{ideaTitle}''. Klicka på knappen nedan för att fortsätta konversationen med %{authorName}.'
+      main_header: '%{authorName} kommenterat en idé som du följer'
+      subject: 'Det finns en ny kommentar till en idé du följer'
+      preheader: '%{authorName} lämnade en kommentar till en idé för %{organizationName}'
+    comment_on_initiative_you_follow:
+      cta_reply_to: 'Svara på %{commentAuthor}'
+      event_description: '%{authorNameFull} placerade en reaktion på initiativet ''%{initiativeTitle}''. Klicka på knappen nedan för att fortsätta samtalet med %{authorName}.'
+      main_header: '%{commentAuthor} kommenterat ett initiativ som du följer'
+      subject: 'Det finns en ny kommentar till det förslag du följer'
+      preheader: '%{authorName} lämnade en kommentar om ett initiativ för %{organizationName}'
     new_initiative_for_admin:
       cta_reply_to: 'Ge återkoppling till %{authorName}'
       event_description: '%{authorName} har publicerat ett nytt förslag på din plattform. Upptäck det nu, ge lite återkoppling eller ändra dess status!'
@@ -523,9 +493,7 @@ sv:
         user_who_published_the_input: 'Användare som publicerade inmatningen'
         user_who_registers: 'Användare som registrerar sig'
         user_who_was_invited: 'Användare som bjöds in'
-        users_who_engaged_with_the_input: 'Användare som engagerade sig i inmatningen'
         users_who_engaged_with_the_project: 'Användare som engagerade sig i projektet'
-        users_who_engaged_with_the_proposal: 'Användare som engagerade sig i förslaget'
         users_who_follow_the_proposal: 'Användare som följer förslaget'
         users_who_follow_the_input: 'Användare som följer inmatningen'
         users_who_follow_the_project: 'Användare som följer projektet'
