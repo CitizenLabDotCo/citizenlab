@@ -31,4 +31,8 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.addToPhase',
     defaultMessage: 'Add to phase',
   },
+  upload: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.upload',
+    defaultMessage: 'Upload',
+  },
 });

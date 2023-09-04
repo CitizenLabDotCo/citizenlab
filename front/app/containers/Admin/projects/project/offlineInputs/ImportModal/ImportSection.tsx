@@ -11,7 +11,7 @@ import { useParams } from 'react-router-dom';
 import Link from 'utils/cl-router/Link';
 
 // components
-import { Box, Text, Spinner } from '@citizenlab/cl2-component-library';
+import { Box, Text, Button } from '@citizenlab/cl2-component-library';
 import LocalePicker from './LocalePicker';
 import PhaseSelector from './PhaseSelector';
 import FileUploader from 'components/UI/FileUploader';
@@ -32,6 +32,7 @@ interface Props {
 }
 
 const ImportSection = ({ onFinishImport }: Props) => {
+  const [file, setFile] = useState<UploadFile | null>(null);
   const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
   const [selectedPhase, setSelectedPhase] = useState<string | null>(null);
 
@@ -50,7 +51,13 @@ const ImportSection = ({ onFinishImport }: Props) => {
 
   const isTimelineProject = project.data.attributes.process_type === 'timeline';
 
-  const onAddFile = (file: UploadFile) => {
+  const removeFile = () => {
+    setFile(null);
+  };
+
+  const submitFile = () => {
+    if (!file) return;
+
     addOfflineIdeas(
       {
         project_id: projectId,
@@ -92,17 +99,23 @@ const ImportSection = ({ onFinishImport }: Props) => {
       )}
 
       <Box>
-        {isLoading ? (
-          <Spinner />
-        ) : (
-          <Box>
-            <FileUploader
-              id="written-ideas-importer"
-              onFileAdd={onAddFile}
-              files={null}
-            />
-          </Box>
-        )}
+        <FileUploader
+          id="written-ideas-importer"
+          files={file ? [file] : null}
+          onFileAdd={setFile}
+          onFileRemove={removeFile}
+        />
+      </Box>
+
+      <Box w="100%" display="flex" mt="32px">
+        <Button
+          width="auto"
+          disabled={!file}
+          processing={isLoading}
+          onClick={submitFile}
+        >
+          <FormattedMessage {...messages.upload} />
+        </Button>
       </Box>
     </Box>
   );
