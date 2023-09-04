@@ -1,15 +1,11 @@
 lb:
   email_campaigns:
     campaign_type_description:
-      "1": "Wochemaart, Méindes um %{hourOfDay}"
-      "2": "Wochemaart, Dënschdes um %{hourOfDay}"
       "3": "Wochemaart, Mëttwochs um %{hourOfDay}"
       "4": "Wochemaart, Donneschdes um %{hourOfDay}"
       "5": "Wochemaart, Freides um %{hourOfDay}"
       "6": "Wochemaart, Samschdes um %{hourOfDay}"
     footer:
-      "link_terms_conditions": "Geschäftsbedéngungen"
-      "link_unsubscribe": "Ofmellen"
       "powered_by": "Ënnerstëtzt vun"
       "statement": "Dës E-Mail gouf Iech vu CitizenLab am Numm vun %{organizationName} geschéckt, well Dir e registréierten Notzer vun %{organizationLink} sidd. Dir kënnt Iech %{unsubscribeLink}, wann Dir an Zukunft dës E-Mailen net méi kréie wëllt."
       "unsubscribe_text": "ofmellen"
