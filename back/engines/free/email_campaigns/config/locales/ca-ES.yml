@@ -124,6 +124,7 @@ ca:
       cta_reply_to: 'Copatrocina aquesta proposta'
       event_description_initiative: '%{authorName} ha creat una nova proposta i voldria que la copatrocinis.'
       event_description_cosponsoring: 'Copatrocinar una proposta significa que <strong>el vostre nom es mostrarà</strong> amb els noms d''altres copatrocinadors de la proposta.'
+      event_description_before_action: 'Per veure la proposta i acceptar la invitació, heu d''iniciar sessió al vostre compte.'
       event_description_action: 'Feu clic a continuació per llegir la proposta.'
       main_header: 'Us han convidat a copatrocinar una proposta'
       subject: 'Us han convidat a copatrocinar una proposta'
