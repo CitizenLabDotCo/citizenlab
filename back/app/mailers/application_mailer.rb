@@ -179,11 +179,14 @@ class ApplicationMailer < ActionMailer::Base
   def logo_width
     versions = app_configuration.logo.versions
 
-    @logo_width ||= case versions
-    when versions[:medium].present? then versions[:medium].width
-    when versions[:large].present?  then versions[:large].width / 2
-    when versions[:small].present?  then versions[:small].width * 2
-    else 0 # If logo_url is set to '' because no versions found, the width will be 0. Useful for tests without a logo.
+    @logo_width ||= if versions[:medium].present?
+      versions[:medium].width
+    elsif versions[:large].present?
+      versions[:large].width / 2
+    elsif versions[:small].present?
+      versions[:small].width * 2
+    else
+      0 # If logo_url is set to '' because no versions found, the width will be 0. Useful for tests without a logo.
     end
   end
 
