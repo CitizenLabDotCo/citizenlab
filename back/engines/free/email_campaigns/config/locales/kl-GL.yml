@@ -197,10 +197,10 @@ kl:
       preheader: '%{authorName} left a comment on an idea for %{organizationName}'
     comment_on_initiative_you_follow:
       cta_reply_to: 'Reply to %{commentAuthor}'
-      event_description: '%{authorNameFull} placed a reaction on the initiative ''%{initiativeTitle}''. Click the button below to continue the conversation with %{authorName}.'
-      main_header: '%{commentAuthor} commented on an initiative you follow'
+      event_description: '%{authorNameFull} placed a reaction on the proposal ''%{initiativeTitle}''. Click the button below to continue the conversation with %{authorName}.'
+      main_header: '%{commentAuthor} commented on an proposal you follow'
       subject: 'There''s a new comment on the proposal you follow'
-      preheader: '%{authorName} left a comment on an initiative for %{organizationName}'
+      preheader: '%{authorName} left a comment on an proposal for %{organizationName}'
     new_initiative_for_admin:
       cta_reply_to: '%{authorName} utertitsiffigiuk'
       event_description: '%{authorName} platforminni innuttaasunut siunnersuummik nutaamik tamanut saqqummiivoq. Massakkut takujuk, utertiffigiuk imaluunniit isumassarsiaq allamik taarseruk!'
@@ -374,10 +374,10 @@ kl:
       no_unread_notifications: "You've got no unread notifications. However, we invite you to visit the platform to discover what’s happening."
       unread_notifications: "You've got unread notifications. We invite you to visit the platform to discover what’s happening."
     threshold_reached_for_admin:
-      cta_process_initiative: 'Suliniut una tullianut ingerlateqqiguk'
-      event_description: 'Platforminni suliniut taasinermi killiffissaminut killippoq. Tullianut ingerlaniaruit ataaniittoq tuugassaq tooruk!'
-      main_header: 'Suliniutip taasinermi killiffissani anguaa!'
-      subject: 'Platforminni suliniutip taasinermi killiffissani anguaa'
+      cta_process_initiative: 'Take this proposal to the next steps'
+      event_description: 'An proposal reached the voting threshold on your platform. Click the button below to take it to the next steps!'
+      main_header: 'An proposal reached the voting threshold!'
+      subject: 'An proposal reached the voting threshold on your platform'
       preheader: 'Tulliata naammassinissaa qulakkeeruk'
     first_idea_published:
       action_add_image: '%{addImageLink} takuneqarsinnaanera allisarlugu'
