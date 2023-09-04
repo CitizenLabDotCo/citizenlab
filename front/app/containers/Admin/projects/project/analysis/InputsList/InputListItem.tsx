@@ -10,7 +10,6 @@ import Divider from 'components/admin/Divider';
 
 import T from 'components/T';
 import { useIntl } from 'utils/cl-intl';
-import Avatar from 'components/Avatar';
 import { getFullName } from 'utils/textUtils';
 import { useParams } from 'react-router-dom';
 import useAnalysis from 'api/analyses/useAnalysis';
@@ -62,10 +61,7 @@ const InputListItem = memo(({ input, onSelect, selected }: Props) => {
         >
           {!title_multiloc ||
             (isEmpty(title_multiloc) && author && (
-              <Box display="flex" alignItems="center">
-                <Avatar userId={author.data.id} size={24} />
-                <Text m="0px">{getFullName(author.data)}</Text>
-              </Box>
+              <Text m="0px">{getFullName(author.data)}</Text>
             ))}
           {!title_multiloc ||
             (isEmpty(title_multiloc) && !author && (
