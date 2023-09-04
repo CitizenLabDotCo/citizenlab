@@ -1,6 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { Box, Text } from '@citizenlab/cl2-component-library';
+import Button from 'components/UI/Button';
 
 import useAnalysis from 'api/analyses/useAnalysis';
 import useAnalysisInput from 'api/analysis_inputs/useAnalysisInput';
@@ -12,8 +13,11 @@ import Avatar from 'components/Avatar';
 import useUserById from 'api/users/useUserById';
 import { getFullName } from 'utils/textUtils';
 import { useSelectedInputContext } from '../SelectedInputContext';
+import { useIntl } from 'utils/cl-intl';
+import translations from './translations';
 
 const InputListItem = () => {
+  const { formatMessage } = useIntl();
   const { selectedInputId } = useSelectedInputContext();
   const { analysisId } = useParams() as { analysisId: string };
   const { data: input } = useAnalysisInput(
@@ -29,6 +33,20 @@ const InputListItem = () => {
 
   return (
     <Box>
+      {analysis.data.attributes.participation_method === 'ideation' && (
+        <Box display="flex" justifyContent="flex-end">
+          <Button
+            linkTo={`/admin/projects/${analysis.data.relationships.project?.data?.id}/ideas?selected_idea_id=${selectedInputId}`}
+            openLinkInNewTab
+            buttonStyle="secondary"
+            icon="settings"
+            size="s"
+            padding="4px 8px"
+          >
+            {formatMessage(translations.manageIdea)}
+          </Button>
+        </Box>
+      )}
       {analysis.data.relationships.custom_fields.data.map((customField) => (
         <LongFieldValue
           key={customField.id}
