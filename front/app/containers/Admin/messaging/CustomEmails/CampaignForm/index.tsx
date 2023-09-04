@@ -203,7 +203,6 @@ const CampaignForm = ({
           </StyledSectionTitle>
           <SectionField className="e2e-campaign_subject_multiloc">
             <InputMultilocWithLocaleSwitcher
-              type="text"
               name="subject_multiloc"
               label={<FormattedMessage {...messages.fieldSubject} />}
               labelTooltipText={

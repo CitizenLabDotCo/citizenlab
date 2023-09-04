@@ -1,11 +1,11 @@
 import React from 'react';
-import { ScreenReaderOnly } from 'utils/a11y';
 import ContentContainer from 'components/ContentContainer';
 import styled, { useTheme } from 'styled-components';
-import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import Button from 'components/UI/Button';
-import { colors, media } from 'utils/styleUtils';
+import { media } from 'utils/styleUtils';
 import messages from './messages';
+import useInitiativeReviewRequired from 'hooks/useInitiativeReviewRequired';
 
 const StyledButton = styled(Button)`
   margin-right: 10px;
@@ -48,30 +48,14 @@ const SubmitFooterInner = styled.div`
   `}
 `;
 
-const ErrorContainer = styled.div`
-  color: ${colors.red600};
-`;
-
 interface FormSubmitFooterProps {
-  disabled?: boolean;
-  processing?: boolean;
-  onSubmit: () => void;
+  processing: boolean;
   className?: string;
-  error: boolean;
-  errorMessage: MessageDescriptor;
-  message: MessageDescriptor;
 }
 
-const FormSubmitFooter = ({
-  message,
-  onSubmit,
-  className,
-  error,
-  errorMessage,
-  disabled,
-  processing,
-}: FormSubmitFooterProps) => {
+const SubmitButtonBar = ({ className, processing }: FormSubmitFooterProps) => {
   const theme = useTheme();
+  const initiativeReviewRequired = useInitiativeReviewRequired();
 
   return (
     <SubmitFooterContainer className={className}>
@@ -84,29 +68,18 @@ const FormSubmitFooter = ({
             bgColor={theme.colors.tenantPrimary}
             textColor="#FFF"
             type="submit"
-            onClick={onSubmit}
-            disabled={disabled}
-            ariaDisabled={disabled}
             processing={processing}
           >
-            <FormattedMessage {...message} />
+            <FormattedMessage
+              {...(initiativeReviewRequired
+                ? messages.submitButton
+                : messages.publishButton)}
+            />
           </StyledButton>
-          {error && (
-            <ErrorContainer className="e2e-error-form">
-              <FormattedMessage {...errorMessage} />
-            </ErrorContainer>
-          )}
-          <ScreenReaderOnly aria-live="polite">
-            {disabled ? (
-              <FormattedMessage {...messages.buttonDisabled} />
-            ) : (
-              <FormattedMessage {...messages.buttonEnabled} />
-            )}
-          </ScreenReaderOnly>
         </SubmitFooterInner>
       </StyledContentContainer>
     </SubmitFooterContainer>
   );
 };
 
-export default FormSubmitFooter;
+export default SubmitButtonBar;

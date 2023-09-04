@@ -159,8 +159,14 @@ const CreateAnalysisModal = ({ onClose }: { onClose: () => void }) => {
       <Box>
         <Title>{formatMessage(messages.analysisSelectQuestions)}</Title>
         <Text>
-          Do you want to include any other related questions in your analysis of{' '}
-          <b>&quot;{localize(initialQuestion?.title_multiloc)}&quot;</b>?
+          <FormattedMessage
+            {...messages.analysisSelectQuestionsDescription}
+            values={{
+              question: (
+                <b>&quot;{localize(initialQuestion?.title_multiloc)}&quot;</b>
+              ),
+            }}
+          />
         </Text>
       </Box>
       <Box>

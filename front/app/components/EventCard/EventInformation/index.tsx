@@ -51,8 +51,9 @@ const EventInformation = ({
   const { formatMessage } = useIntl();
   const theme = useTheme();
 
-  const isPastEvent = moment().isAfter(endAtMoment);
+  // const isPastEvent = moment().isAfter(endAtMoment); // TODO: Re-enable once event attendance smart group added
   const address1 = event?.attributes?.address_1;
+  const tempShowEventAttendance = false; // TODO: Replace once event attendance smart group added
 
   const eventDateTime = isMultiDayEvent
     ? `${startAtMoment.format('LLL')} - ${endAtMoment.format('LLL')}`
@@ -80,6 +81,7 @@ const EventInformation = ({
             startAtMoment={startAtMoment}
             endAtMoment={endAtMoment}
             isMultiDayEvent={false}
+            showOnlyStartDate={true}
           />
         </Box>
       </Box>
@@ -90,60 +92,69 @@ const EventInformation = ({
             mb="12px"
             flexDirection={theme.isRtl ? 'row-reverse' : 'row'}
           >
-            <Icon
-              my="auto"
-              fill={colors.coolGrey300}
-              name="clock"
-              ariaHidden
-              mr={theme.isRtl ? '0px' : '8px'}
-              ml={theme.isRtl ? '8px' : '0px'}
-            />
+            <Box flexShrink={0} my="auto">
+              <Icon
+                my="auto"
+                fill={colors.coolGrey300}
+                name="clock"
+                ariaHidden
+                mr={theme.isRtl ? '0px' : '8px'}
+                ml={theme.isRtl ? '8px' : '0px'}
+              />
+            </Box>
             <Text m="0px" pt="2px" color={'coolGrey700'} fontSize="s">
               {eventDateTime}
             </Text>
-          </Box>{' '}
+          </Box>
           {address1 && (
             <Box
               display="flex"
               mb="12px"
               flexDirection={theme.isRtl ? 'row-reverse' : 'row'}
             >
-              <Icon
-                my="auto"
-                fill={colors.coolGrey300}
-                name="position"
-                ariaHidden
-                mr={theme.isRtl ? '0px' : '8px'}
-                ml={theme.isRtl ? '8px' : '0px'}
-              />
+              <Box flexShrink={0} my="auto">
+                <Icon
+                  my="auto"
+                  fill={colors.coolGrey300}
+                  name="position"
+                  ariaHidden
+                  mr={theme.isRtl ? '0px' : '8px'}
+                  ml={theme.isRtl ? '8px' : '0px'}
+                />
+              </Box>
               <Text m="0px" pt="2px" color={'coolGrey700'} fontSize="s">
-                {address1?.slice(0, address1.indexOf(','))}
+                {address1?.includes(',')
+                  ? address1?.slice(0, address1.indexOf(','))
+                  : address1}
               </Text>
             </Box>
           )}
-          {event.attributes.attendees_count > 0 && (
-            <Box
-              display="flex"
-              mb="12px"
-              flexDirection={theme.isRtl ? 'row-reverse' : 'row'}
-            >
-              <Icon
-                my="auto"
-                fill={colors.coolGrey300}
-                name="user"
-                ariaHidden
-                mr={theme.isRtl ? '0px' : '8px'}
-                ml={theme.isRtl ? '8px' : '0px'}
-              />
-              <Text m="0px" pt="2px" color={'coolGrey700'} fontSize="s">
-                {event.attributes.attendees_count}{' '}
-                {formatMessage(messages.attending)}
-              </Text>
-            </Box>
-          )}
+          {tempShowEventAttendance &&
+            event.attributes.attendees_count > 0 && ( // TODO: Replace once event attendance smart group added
+              <Box
+                display="flex"
+                mb="12px"
+                flexDirection={theme.isRtl ? 'row-reverse' : 'row'}
+              >
+                <Box flexShrink={0} my="auto">
+                  <Icon
+                    my="auto"
+                    fill={colors.coolGrey300}
+                    name="user"
+                    ariaHidden
+                    mr={theme.isRtl ? '0px' : '8px'}
+                    ml={theme.isRtl ? '8px' : '0px'}
+                  />
+                </Box>
+                <Text m="0px" pt="2px" color={'coolGrey700'} fontSize="s">
+                  {event.attributes.attendees_count}{' '}
+                  {formatMessage(messages.attending)}
+                </Text>
+              </Box>
+            )}
         </Box>
       </Box>
-      {isPastEvent ? (
+      {!tempShowEventAttendance ? ( // TODO: Replace once event attendance smart group added
         <Button
           ml="auto"
           width={'100%'}
