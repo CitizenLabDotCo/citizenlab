@@ -283,6 +283,12 @@ RSpec.describe Initiative do
       expect(initiative.reload.cosponsors).to match_array [cosponsor1]
     end
 
+    it 'will not add initiative author as cosponsor' do
+      initiative.update!(cosponsor_ids: [initiative.author_id])
+
+      expect(initiative.reload.cosponsors).to be_empty
+    end
+
     it 'does nothing if update validation fails' do
       saved = initiative.update(cosponsor_ids: [], title_multiloc: {})
       expect(saved).to be false

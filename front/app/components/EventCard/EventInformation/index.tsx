@@ -81,6 +81,7 @@ const EventInformation = ({
             startAtMoment={startAtMoment}
             endAtMoment={endAtMoment}
             isMultiDayEvent={false}
+            showOnlyStartDate={true}
           />
         </Box>
       </Box>
