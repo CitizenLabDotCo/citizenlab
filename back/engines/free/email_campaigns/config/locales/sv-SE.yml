@@ -374,10 +374,10 @@ sv:
       no_unread_notifications: "Du har inga olästa aviseringar. Besök plattformen för att bidra med dina indata och generera nya aviseringar!"
       unread_notifications: "Du har olästa aviseringar. Besök plattformen för att upptäcka vad som händer!"
     threshold_reached_for_admin:
-      cta_process_initiative: 'Ta det här initiativet till nästa steg'
-      event_description: 'Ett initiativ nådde rösttröskeln på din plattform. Klicka på knappen nedan för att ta det till nästa steg!'
-      main_header: 'Ett initiativ nådde rösttröskeln!'
-      subject: 'Ett initiativ nådde rösttröskeln på din plattform'
+      cta_process_initiative: 'Ta detta förslag till nästa steg'
+      event_description: 'Ett förslag har nått röstningströskeln på din plattform. Klicka på knappen nedan för att ta det till nästa steg!'
+      main_header: 'An proposal reached the voting threshold!'
+      subject: 'Ett förslag nådde röstningströskeln på din plattform'
       preheader: 'Se till att ta nästa steg'
     first_idea_published:
       action_add_image: '%{addImageLink} för att öka synligheten'
