@@ -1,11 +1,15 @@
 hr:
   email_campaigns:
     campaign_type_description:
+      "1": "Tjedno, ponedjeljkom u %{hourOfDay}"
+      "2": "Tjedno, utorkom u %{hourOfDay}"
       "3": "Tjedno, srijedom u %{hourOfDay}"
       "4": "Tjedno, četvrtkom u %{hourOfDay}"
       "5": "Tjedno, petkom u %{hourOfDay}"
       "6": "Tjedno, subotom u %{hourOfDay}"
     footer:
+      "link_terms_conditions": "Uvjeti korištenja"
+      "link_unsubscribe": "Odjavi se"
       "powered_by": "Omogućava"
       "statement": "Ovaj e-mail Vam je poslao CitizenLab u ime %{organizationName}, jer ste registrirani korisnik na platformi %{organizationLink}. Možete da %{unsubscribeLink} ako ubuduće ne želite primati ove e-poruke."
       "unsubscribe_text": "odjavi se"
@@ -117,6 +121,7 @@ hr:
       cta_reply_to: 'Susponzorirajte ovaj prijedlog'
       event_description_initiative: '%{authorName} je stvorio novi prijedlog i želio bi da ga supokrovite.'
       event_description_cosponsoring: 'Susponzoriranje prijedloga znači da će <strong>vaše ime biti prikazano</strong> s imenima ostalih susponzora prijedloga.'
+      event_description_before_action: 'Da biste vidjeli ponudu i prihvatili poziv, morate biti prijavljeni na svoj račun.'
       event_description_action: 'Kliknite ispod kako biste pročitali prijedlog.'
       main_header: 'Pozvani ste da budete supokrovitelj prijedloga'
       subject: 'Pozvani ste da budete supokrovitelj prijedloga'
