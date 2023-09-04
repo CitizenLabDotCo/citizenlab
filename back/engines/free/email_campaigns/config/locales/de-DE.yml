@@ -374,10 +374,10 @@ de:
       no_unread_notifications: "Sie haben keine ungelesenen Benachrichtigungen. Besuchen Sie die Plattform, um etwas zu posten und neue Benachrichtigungen zu generieren!"
       unread_notifications: "Sie haben ungelesene Benachrichtigungen. Besuchen Sie die Plattform, um zu erfahren, was los ist."
     threshold_reached_for_admin:
-      cta_process_initiative: 'Nächste Schritte für diesen Vorschlag'
-      event_description: 'Eine Initiative hat die Abstimmungsschwelle auf Ihrer Plattform erreicht. Klicken Sie auf den Button unten, um die nächsten Schritte einzuleiten!'
-      main_header: 'Ein Vorschlag hat die Abstimmungsschwelle erreicht!'
-      subject: 'Eine Initiative hat die Abstimmungsschwelle auf Ihrer Plattform erreicht'
+      cta_process_initiative: 'Gehen Sie mit diesem Vorschlag die nächsten Schritte'
+      event_description: 'Ein Vorschlag hat die Abstimmungsschwelle auf Ihrer Plattform erreicht. Klicken Sie auf die Schaltfläche unten, um die nächsten Schritte einzuleiten!'
+      main_header: 'An proposal reached the voting threshold!'
+      subject: 'Ein Vorschlag hat die Abstimmungsschwelle auf Ihrer Plattform erreicht'
       preheader: 'Stelle sicher, dass du die nächsten Schritte ausführst'
     first_idea_published:
       action_add_image: '%{addImageLink} um die Sichtbarkeit zu erhöhen'
