@@ -81,8 +81,10 @@ module BulkImportIdeas
 
           @form[:pdf_pages] << page_number
 
-          # TODO test regex first
-          @form[:form_pages] << get_page_number(line)
+          if page_number? line
+            @form[:form_pages] << get_page_number(line)
+          end
+
           next
         end
 

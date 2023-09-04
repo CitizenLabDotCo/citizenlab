@@ -53,7 +53,7 @@ module BulkImportIdeas
       ideas = if file_type == 'pdf'
         parse_pdf_ideas(file)
       else
-        parse_xlsx_ideas(file).map { |idea| { pages: [1], fields: idea } }
+        parse_xlsx_ideas(file).map { |idea| { pdf_pages: [1], fields: idea } }
       end
       ideas_to_idea_rows(ideas)
     end

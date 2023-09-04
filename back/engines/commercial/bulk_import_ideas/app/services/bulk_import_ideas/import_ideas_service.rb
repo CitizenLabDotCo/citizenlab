@@ -86,7 +86,7 @@ module BulkImportIdeas
       idea.save!
 
       create_idea_image idea_row, idea
-      create_idea_import idea, user_created, idea_row[:pages]
+      create_idea_import idea, user_created, idea_row[:pdf_pages]
 
       idea
     end
