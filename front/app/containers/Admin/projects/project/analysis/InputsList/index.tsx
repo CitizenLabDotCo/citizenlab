@@ -43,7 +43,7 @@ const InputsList = () => {
     [data]
   );
 
-  const inputsLength = inputs?.length || 0;
+  const inputsLength = inputs?.length || 1;
   const parentRef = React.useRef<HTMLDivElement | null>(null);
 
   const { getVirtualItems, getTotalSize, measureElement, scrollToIndex } =
