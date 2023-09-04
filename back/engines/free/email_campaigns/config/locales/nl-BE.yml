@@ -374,10 +374,10 @@ nl-BE:
       no_unread_notifications: "Tijd om deel te nemen!  Bezoek het platform om te ontdekken wat er aan het gebeuren is."
       unread_notifications: "Je hebt nieuwe meldingen! Bezoek het platform om te ontdekken wat er aan het gebeuren is."
     threshold_reached_for_admin:
-      cta_process_initiative: 'Zet de volgende stappen met dit voorstel'
-      event_description: 'Een voorstel heeft voldoende stemmen bereikt. Klik op de onderstaande knop om naar de volgende stappen te gaan!'
-      main_header: 'Een voorstel heeft het benodigd aantal stemmen bereikt!'
-      subject: 'Een voorstel heeft het benodigd aantal stemmen op je platform bereikt'
+      cta_process_initiative: 'Zet dit voorstel in de volgende stappen'
+      event_description: 'Een voorstel heeft de kiesdrempel bereikt op jouw platform. Klik op de knop hieronder om verder te gaan!'
+      main_header: 'Een voorstel heeft de kiesdrempel gehaald!'
+      subject: 'Een voorstel heeft de kiesdrempel bereikt op jouw platform'
       preheader: 'Tijd om de volgende stappen te nemen'
     first_idea_published:
       action_add_image: '%{addImageLink} om de visibiliteit van je idee te vergroten'
