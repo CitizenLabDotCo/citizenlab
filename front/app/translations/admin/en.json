@@ -806,6 +806,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedIdeas": "Imported ideas",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet3": "Nothing to review yet. Click \"{importFile}\" to import a PDF file containing scanned input forms or an Excel file containing inputs.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.page": "Page",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.pdfNotAvailable": "Cannot display the imported file. Imported file viewing is only available for PDF imports.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phaseNotAllowed": "The selected phase cannot contain ideas. Please select another one.",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject": "This project does not contain any phases that can contain ideas.",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAnotherPhase": "Please select another phase.",
