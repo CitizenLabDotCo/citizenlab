@@ -374,10 +374,10 @@ pl:
       no_unread_notifications: "Nie masz żadnych nieprzeczytanych powiadomień. Odwiedź platformę, aby wnieść swój wkład i wygenerować nowe powiadomienia!"
       unread_notifications: "Masz nieprzeczytane powiadomienia. Odwiedź platformę, aby dowiedzieć się, co się dzieje!"
     threshold_reached_for_admin:
-      cta_process_initiative: 'Skieruj tę inicjatywę do dalszych kroków'
-      event_description: 'Pewna inicjatywa na platformie osiągnęła wymagany próg poparcia. Kliknij przycisk poniżej, aby przejść do kolejnych kroków!'
-      main_header: 'Inicjatywa osiągnęła próg poparcia!'
-      subject: 'Inicjatywa na Twojej platformie osiągnęła wymagany próg poparcia'
+      cta_process_initiative: 'Przenieś tę propozycję do kolejnych kroków'
+      event_description: 'Propozycja osiągnęła próg głosowania na Twojej platformie. Kliknij poniższy przycisk, aby przejść do kolejnych kroków!'
+      main_header: 'An proposal reached the voting threshold!'
+      subject: 'Propozycja osiągnęła próg głosowania na Twojej platformie'
       preheader: 'Upewnij się, że wykonasz następne kroki'
     first_idea_published:
       action_add_image: '%{addImageLink} aby zwiększyć widoczność'
