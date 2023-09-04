@@ -68,12 +68,6 @@ pl:
       today: Dzisiaj
       wrong_content: 'Ten komentarz jest bez związku.'
       yesterday: Wczoraj
-    comment_on_your_initiative:
-      cta_reply_to: 'Odpowiedz %{commentAuthor}'
-      event_description: '%{authorNameFull} zareagował na twoją inicjatywę "%{initiativeTitle}". Kliknij przycisk poniżej, aby kontynuować rozmowę z %{authorName}.'
-      main_header: '%{commentAuthor} skomentował Twoją inicjatywę'
-      subject: 'Otrzymałeś komentarz na platformie %{organizationName}'
-      preheader: '%{authorName} skomentował Twoją inicjatywę na platformie %{organizationName}'
     cosponsor_of_your_initiative:
       cta_reply_to: 'Wyświetl swoją propozycję'
       event_description_initiative: 'Gratulacje! %{cosponsorName} przyjął Twoje zaproszenie do współsponsorowania Twojego wniosku.'
@@ -159,12 +153,6 @@ pl:
       preheader: 'Dziękuję za podzielenie się swoją propozycją %{initiativeTitle} dla %{organizationName}. Następnym krokiem jest uzyskanie poparcia dla Twojej propozycji poprzez udostępnienie jej wszystkim, którzy mogą być tym zainteresowani.'
       send_email: e-mail
       subject: 'Twoja propozycja została opublikowana na platformie %{organizationName}'
-    new_comment_on_commented_idea:
-      cta_reply_to: 'Odpowiedz %{commentAuthor}'
-      event_description: '%{commentAuthorFull} napisał również komentarz na temat pomysłu "%{ideaTitle}" na platformie partycypacyjnej %{organizationName}. Kliknij przycisk poniżej, aby rozpocząć rozmowę z %{commentAuthor}.'
-      main_header: '%{commentAuthor} napisał komentarz do tego samego pomysłu'
-      subject: 'Pojawił się nowy komentarz pomysłu, który skomentowałeś'
-      preheader: '%{commentAuthor} także skomentował pomysł na %{organizationName}'
     mention_in_comment:
       cta_reply_to: 'Odpowiedz %{commentAuthor}'
       event_description: '%{commentAuthorFull} wspomniał o tobie w swoim komentarzu do pomysłu "%{post}". Kliknij na poniższy link, aby przejść do rozmowy z %{commentAuthor}'
@@ -191,13 +179,6 @@ pl:
       yesterday_by_author: 'Wczoraj przez %{author}'
       today_by_author: 'Dzisiaj wg %{author}'
       x_days_ago_by_author: '%{x} dni temu wg %{author}'
-    new_comment_on_commented_initiative:
-      commented: '%{commentAuthor} napisał:'
-      cta_reply_to: 'Odpowiedz %{commentAuthor}'
-      event_description: '%{commentAuthorFull} napisał również komentarz do propozycji "%{initiativeTitle}" na platformie partycypacyjnej %{organizationName}. Kliknij przycisk poniżej, aby rozpocząć rozmowę z %{commentAuthor}.'
-      main_header: '%{commentAuthor} napisał komentarz do tej samej propozycji'
-      subject: 'Pojawił się nowy komentarz propozycji, którą skomentowałeś'
-      preheader: '%{commentAuthor} także komentował propozycję %{organizationName}'
     new_comment_for_admin:
       commented: '%{authorFirstName} skomentował:'
       cta_reply_to: 'Sprawdź komentarz %{commentAuthor}'
@@ -208,29 +189,18 @@ pl:
       preheader: '%{authorName} skomentował'
       today: Dzisiaj
       yesterday: Wczoraj
-    comment_on_your_idea:
-      cta_reply_to: 'Odpowiedz %{commentAuthor}'
-      event_description: '%{authorNameFull} umieścił reakcję na twój pomysł "%{ideaTitle}". Kliknij przycisk poniżej, aby kontynuować rozmowę z %{authorName}.'
-      main_header: '%{authorName} skomentował Twój pomysł'
-      subject: 'Otrzymałeś komentarz na platformie %{organizationName}'
-      preheader: '%{authorName} skomentował Twój pomysł na platformie %{organizationName}'
-    new_comment_on_reacted_initiative:
-      commented: '%{commentAuthor} napisał:'
-      cta_reply_to: 'Zobacz tę propozycję'
-      event_description: '%{commentAuthor} skomentował(a) propozycję ''%{initiativeTitle}'', na którą głosowałeś(aś). Dołącz do dyskusji na platformie %{organizationName}!'
-      main_header: '%{firstName}pojawił się nowy komentarz do propozycji, na którą głosowałeś(-aś)'
-      subject: 'Pojawił się nowy komentarz do propozycji, na którą głosowałeś'
-      preheader: '%{commentAuthor} zostawił komentarz do propozycji, na którą głosowałeś na platformie %{organizationName}'
-    new_comment_on_reacted_idea:
-      commented: '%{commentAuthor} napisał:'
+    comment_on_idea_you_follow:
       cta_reply_to: 'Odpowiedz na %{commentAuthor}'
-      days_ago: '%{numberOfDays} dni temu'
-      event_description: '%{commentAuthor} skomentował(a) wpis "%{ideaTitle}", na który zareagowałeś(aś). Dołącz do dyskusji na platformie %{organizationName}!'
-      main_header: '%{firstName}pojawił się nowy komentarz do pomysłu, na który zareagowałeś'
-      subject: 'Pojawił się nowy komentarz do pomysłu, na który zareagowałeś'
-      preheader: '%{commentAuthor} zostaw komentarz do pomysłu, na który zareagowałeś na platformie %{organizationName}'
-      today: Dzisiaj
-      yesterday: Wczoraj
+      event_description: '%{authorNameFull} umieścił reakcję na pomysł "%{ideaTitle}". Kliknij przycisk poniżej, aby kontynuować rozmowę z %{authorName}.'
+      main_header: '%{authorName} skomentowałeś pomysł, który śledzisz'
+      subject: 'Pojawił się nowy komentarz do pomysłu, który śledzisz'
+      preheader: '%{authorName} zostawił komentarz do pomysłu na %{organizationName}'
+    comment_on_initiative_you_follow:
+      cta_reply_to: 'Odpowiedz na %{commentAuthor}'
+      event_description: '%{authorNameFull} umieścił reakcję na inicjatywie ''%{initiativeTitle}''. Kliknij poniższy przycisk, aby kontynuować rozmowę z %{authorName}.'
+      main_header: '%{commentAuthor} skomentowałeś inicjatywę, którą śledzisz'
+      subject: 'Pojawił się nowy komentarz do propozycji, którą śledzisz'
+      preheader: '%{authorName} zostawił komentarz do inicjatywy dla %{organizationName}'
     new_initiative_for_admin:
       cta_reply_to: 'Przekaż informację zwrotną do %{authorName}'
       event_description: '%{authorName} opublikował nową propozycję na Twojej platformie. Przejdź do niej teraz, wypowiedz się lub zmień jej status!'
@@ -523,9 +493,7 @@ pl:
         user_who_published_the_input: 'Użytkownik, który opublikował dane wejściowe'
         user_who_registers: 'Użytkownik, który się rejestruje'
         user_who_was_invited: 'Użytkownik, który został zaproszony'
-        users_who_engaged_with_the_input: 'Użytkownicy, którzy zaangażowali się we wprowadzanie danych'
         users_who_engaged_with_the_project: 'Użytkownicy, którzy zaangażowali się w projekt'
-        users_who_engaged_with_the_proposal: 'Użytkownicy, którzy zaangażowali się w propozycję'
         users_who_follow_the_proposal: 'Użytkownik, który postępuje zgodnie z propozycją'
         users_who_follow_the_input: 'Użytkownik śledzący dane wejściowe'
         users_who_follow_the_project: 'Użytkownicy, którzy śledzą projekt'
