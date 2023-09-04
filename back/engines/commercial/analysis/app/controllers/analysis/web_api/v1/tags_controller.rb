@@ -10,7 +10,6 @@ module Analysis
 
         def index
           @tags = @analysis.tags
-            .order(created_at: :asc)
 
           inputs_count_by_tag = TagCounter.new(@analysis, tags: @tags).counts_by_tag
           filtered_inputs_count_by_tag = TagCounter.new(@analysis, tags: @tags, filters: filters).counts_by_tag
@@ -20,8 +19,8 @@ module Analysis
           inputs_without_tags = TagCounter.new(@analysis, tags: @tags, filters: { tag_ids: [nil] }).total_count
           filtered_inputs_without_tags = TagCounter.new(@analysis, tags: @tags, filters: filters.merge(tag_ids: [nil])).total_count
 
-         # @tags = @tags.sort_by { |tag| -inputs_count_by_tag[tag.id] }
-       
+          @tags = @tags.sort_by { |tag| -inputs_count_by_tag[tag.id] }
+
           render json: WebApi::V1::TagSerializer.new(
             @tags,
             params: {
