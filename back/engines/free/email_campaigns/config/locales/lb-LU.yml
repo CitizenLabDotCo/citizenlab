@@ -374,10 +374,10 @@ lb:
       no_unread_notifications: "Dir hutt keng ongelies Benoriichtegungen. Besicht d’Plattform fir erauszefannen wat sech deet a fir bäizedroen!"
       unread_notifications: "Dir hutt Benoriichtegungen, déi Dir nach net gelies hutt. Besicht d’Plattform fir erauszefanne wat leeft!"
     threshold_reached_for_admin:
-      cta_process_initiative: 'Bréngt dës Initiativ an déi nächst Etapp'
-      event_description: 'E Virschlag huet d''Schwell vu Stëmmen op Ärer Plattform erreecht. Klickt hei ënnendrënner, fir bei di nächst Schrëtt ze kommen!'
-      main_header: 'E Virschlag huet d''Schwell vun den Ofstëmmungen erreecht!'
-      subject: 'E Virschlag op Ärer Plattform huet d''Schwell vun den Ofstëmmungen erreecht'
+      cta_process_initiative: 'Huelt dës Propositioun op déi nächst Schrëtt'
+      event_description: 'Eng Propositioun huet d''Wahlschwell op Ärer Plattform erreecht. Klickt op de Knäppchen hei ënnen fir op déi nächst Schrëtt ze huelen!'
+      main_header: 'An proposal reached the voting threshold!'
+      subject: 'Eng Propositioun huet d''Wahlschwell op Ärer Plattform erreecht'
       preheader: 'Stellt sécher, datt Dir déi nächst Schrëtter maacht'
     first_idea_published:
       action_add_image: '%{addImageLink} fir d’Siichtbarkeet ze verbesseren'
