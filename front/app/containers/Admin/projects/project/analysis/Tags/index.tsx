@@ -130,7 +130,7 @@ const Tags = () => {
           icon="flash"
           mb="12px"
           size="s"
-          buttonStyle="secondary-outlined"
+          buttonStyle="admin-dark"
         >
           {formatMessage(translations.autoTag)}
           {!tags?.data.length && (
@@ -138,7 +138,7 @@ const Tags = () => {
               name={'dot'}
               width="16px"
               height="16px"
-              fill={colors.primary}
+              fill={colors.white}
               ml="8px"
             />
           )}
