@@ -6,8 +6,8 @@ en:
       "comment_deleted_by_admin": Deletion of my comment
       "comment_marked_as_spam": Comment spam report
       "comment_on_your_comment": A reply on my comment
-      "comment_on_your_idea": A comment on my idea
-      "comment_on_your_initiative": A comment on my proposal
+      "comment_on_idea_you_follow": A comment on an idea that you follow
+      "comment_on_initiative_you_follow": A comment on a proposal that you follow
       "cosponsor_of_your_initiative": A user accepts my invitation to co-sponor my proposal
       "first_idea_published": Publication of my first idea
       "idea_marked_as_spam": Idea spam report
@@ -29,10 +29,6 @@ en:
       "mention_in_internal_comment": Mention in an internal comment
       "mention_in_official_feedback": Mention in an update
       "new_comment_for_admin": New comment in a project I moderate
-      "new_comment_on_commented_idea": New comment on an idea I commented on
-      "new_comment_on_commented_initiative": New comment on a proposal I commented on
-      "new_comment_on_voted_idea": New comment on an idea I voted for
-      "new_comment_on_voted_initiative": New comment on a proposal I voted for
       "new_idea_for_admin": New idea in a project I moderate
       "new_initiative_for_admin": New proposal
       "official_feedback_on_idea_you_follow": Update on an idea that you follow
@@ -56,66 +52,6 @@ en:
       "voting_last_chance": Last chance to vote
       "voting_results": Voting results
       "your_proposed_initiatives_digest": Weekly overview of your proposals
-    admin_campaign_type_description:
-      "manual": Official message - all users
-      "admin_rights_received": Admin rights received - admins
-      "comment_deleted_by_admin": Deletion of your comment - all users
-      "comment_marked_as_spam": Comment spam report - admins and project managers
-      "comment_on_your_comment": Reply on your comment - all users
-      "comment_on_your_idea": Comment on your idea - all users
-      "comment_on_your_initiative": Comment on your proposal - all users
-      "cosponsor_of_your_initiative": A user accepts your invitation to co-sponor your proposal - all users
-      "first_idea_published": Publication of your first idea - all users
-      "idea_marked_as_spam": Idea spam report - admins and project managers
-      "idea_published": Publication of your idea - all users
-      "initiative_assigned_to_you": Assignment of a proposal - admins
-      "initiative_marked_as_spam": Proposal spam report - admins
-      "initiative_published": Publication of your proposal - all users
-      "internal_comment_on_idea_assigned_to_you": Internal comment on input assigned to you - admins and project managers
-      "internal_comment_on_idea_you_commented_internally_on": Internal comment on input you commented internally on - admins and project managers
-      "internal_comment_on_idea_you_moderate": Internal comment on input in project or folder you manage - project and folder managers
-      "internal_comment_on_initiative_assigned_to_you": Internal comment on proposal assigned to you - admins
-      "internal_comment_on_initiative_you_commented_internally_on": Internal comment on input you commented internally on - admins
-      "internal_comment_on_unassigned_initiative": Internal comment on unassigned proposal - admins
-      "internal_comment_on_unassigned_unmoderated_idea": Internal comment on unassigned input in unmanaged project - admins
-      "internal_comment_on_your_internal_comment": Internal comment on your internal comment - admins and project managers
-      "invite_received": Invitation - all users
-      "invite_reminder": Invitation reminder - all users
-      "invitation_to_cosponsor_initiative": Invitation to co-sponsor a proposal - all users
-      "mention_in_comment": Mention in a comment - all users
-      "mention_in_internal_comment": Mention in an internal comment - admins and project managers
-      "mention_in_official_feedback": Mention in an update - all users
-      "new_comment_for_admin": New comment - admins and project managers
-      "new_comment_on_commented_idea": New comment on an idea you commented on - all users
-      "new_comment_on_commented_initiative": New comment on a proposal you commented on - all users
-      "new_comment_on_voted_idea": New comment on an idea you voted for - all users
-      "new_comment_on_voted_initiative": New comment on a proposal you voted for - all users
-      "new_idea_for_admin": New idea - admins and project managers
-      "new_initiative_for_admin": New proposal - admins
-      "official_feedback_on_commented_idea": Update on an idea you commented on - all users
-      "official_feedback_on_commented_initiative": Update on a proposal you commented on - all users
-      "official_feedback_on_voted_idea": Update on an idea you voted on - all users
-      "official_feedback_on_voted_initiative": Update on a proposal you voted on - all users
-      "official_feedback_on_your_idea": Update on your idea - all users
-      "official_feedback_on_your_initiative": Update on your proposal - all users
-      "password_reset": Password reset - all users
-      "project_moderation_rights_received": Project moderation rights received - project managers
-      "project_folder_moderation_rights_received": Project folder moderation rights received
-      "project_phase_started": New project phase - all users
-      "project_phase_upcoming": Upcoming new project phase - admins and project managers
-      "status_change_of_commented_idea": Status change of an idea you commented on - all users
-      "status_change_of_commented_initiative": Status change of a proposal you commented on - all users
-      "status_change_of_voted_idea": Status change of an idea you voted on - all users
-      "status_change_of_voted_initiative": Status change of a proposal you voted on - all users
-      "status_change_of_your_idea": Status change of your idea - all users
-      "status_change_of_your_initiative": Status change of your proposal - all users
-      "threshold_reached_for_admin": Proposal reached the voting threshold - admins
-      "welcome": New user - admins
-      "admin_digest": Weekly overview - admins
-      "moderator_digest": Weekly overview - project managers
-      "assignee_digest": Weekly overview of assigned ideas - admins and project managers
-      "user_digest": Weekly overview - all users
-      "your_proposed_initiatives_digest": Weekly overview of your own proposals - all users
     general:
       by_author: 'by %{authorName}'
       author_wrote: '%{authorName} wrote:'
@@ -194,12 +130,6 @@ en:
       today: Today
       wrong_content: 'The comment is not relevant.'
       yesterday: Yesterday
-    comment_on_your_initiative:
-      cta_reply_to: 'Reply to %{commentAuthor}'
-      event_description: '%{authorNameFull} placed a reaction on your initiative ''%{initiativeTitle}''. Click the button below to continue the conversation with %{authorName}.'
-      main_header: '%{commentAuthor} commented on your initiative'
-      subject: 'You''ve received a comment on %{organizationName}''s platform'
-      preheader: '%{authorName} left a comment on your initiative for %{organizationName}'
     cosponsor_of_your_initiative:
       cta_reply_to: 'View your proposal'
       event_description_initiative: 'Congratulations! %{cosponsorName} has accepted your invitation to co-sponsor your proposal.'
@@ -327,29 +257,18 @@ en:
       preheader: '%{authorName} left a comment'
       today: Today
       yesterday: Yesterday
-    comment_on_your_idea:
+    comment_on_idea_you_follow:
       cta_reply_to: 'Reply to %{commentAuthor}'
-      event_description: '%{authorNameFull} placed a reaction on your idea ''%{ideaTitle}''. Click the button below to continu the conversation with %{authorName}.'
-      main_header: '%{authorName} commented on your idea'
-      subject: 'You''ve received a comment on %{organizationName}''s platform'
-      preheader: '%{authorName} left a comment on your idea for %{organizationName}'
-    new_comment_on_reacted_initiative:
-      commented: '%{commentAuthor} wrote:'
-      cta_reply_to: 'View this proposal'
-      event_description: '%{commentAuthor} has commented on the proposal ''%{initiativeTitle}'' on which you''ve voted. Join the discussion on the platform of %{organizationName}!'
-      main_header: '%{firstName}, there''s a new comment on the proposal you''ve voted on'
-      subject: 'There''s a new comment on the proposal you''ve voted on'
-      preheader: '%{commentAuthor} left a comment on the proposal you''ve voted on on the platform of %{organizationName}'
-    new_comment_on_reacted_idea:
-      commented: '%{commentAuthor} wrote:'
+      event_description: '%{authorNameFull} placed a reaction on the idea ''%{ideaTitle}''. Click the button below to continue the conversation with %{authorName}.'
+      main_header: '%{authorName} commented on an idea you follow'
+      subject: 'There''s a new comment on an idea you follow'
+      preheader: '%{authorName} left a comment on an idea for %{organizationName}'
+    comment_on_initiative_you_follow:
       cta_reply_to: 'Reply to %{commentAuthor}'
-      days_ago: '%{numberOfDays} days ago'
-      event_description: '%{commentAuthor} has commented on the idea ''%{ideaTitle}'' on which you''ve reacted. Join the discussion on the platform of %{organizationName}!'
-      main_header: '%{firstName}, there''s a new comment on the idea you''ve reacted to'
-      subject: 'There''s a new comment on the idea you''ve reacted to'
-      preheader: '%{commentAuthor} left a comment on the idea you''ve reacted to on the platform of %{organizationName}'
-      today: Today
-      yesterday: Yesterday
+      event_description: '%{authorNameFull} placed a reaction on the initiative ''%{initiativeTitle}''. Click the button below to continue the conversation with %{authorName}.'
+      main_header: '%{commentAuthor} commented on an initiative you follow'
+      subject: 'There''s a new comment on the proposal you follow'
+      preheader: '%{authorName} left a comment on an initiative for %{organizationName}'
     new_initiative_for_admin:
       cta_reply_to: 'Give feedback to %{authorName}'
       event_description: '%{authorName} has published a new proposal on your platform. Discover it now, give some feedback or change its status!'
@@ -632,13 +551,17 @@ en:
         managers: 'Managers'
         admins_assigned_to_a_proposal: 'Admins assigned to a proposal'
         admins_and_managers_assigned_to_the_input: 'Admins & managers assigned to the input'
+        user_who_is_invited_to_cosponsor_a_proposal: 'User who is invited to co-sponsor a proposal'
         user_who_is_receiving_admin_rights: 'User who is receiving admin rights'
         user_who_is_receiving_folder_moderator_rights: 'User who is receiving folder moderator rights'
         user_who_is_receiving_project_moderator_rights: 'User who is receiving project moderator rights'
         user_who_commented: 'User who commented'
         user_who_is_mentioned: 'User who is mentioned'
+        user_who_published_the_proposal: 'User who published the proposal'
+        user_who_published_the_input: 'User who published the input'
         user_who_registers: 'User who registers'
         user_who_was_invited: 'User who was invited'
+        users_who_engaged_with_the_project: 'Users who engaged with the project'
         users_who_follow_the_proposal: 'User who follow the proposal'
         users_who_follow_the_input: 'User who follow the input'
         users_who_follow_the_project: 'Users who follow the project'

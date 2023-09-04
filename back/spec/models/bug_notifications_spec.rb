@@ -71,33 +71,33 @@ RSpec.describe Notification do
       recipient.destroy!
     end
 
-    it 'deleting parent of comment of comment on your idea notification' do
-      create(:comment_on_your_idea, project: project, post: idea, comment: child, initiating_user: initiator, recipient: recipient)
+    it 'deleting parent of comment of comment idea you follow notification' do
+      create(:comment_on_idea_you_follow, project: project, post: idea, comment: child, initiating_user: initiator, recipient: recipient)
       parent.destroy!
     end
 
-    it 'deleting idea of comment on your idea notification' do
-      create(:comment_on_your_idea, project: project, post: idea, comment: child, initiating_user: initiator, recipient: recipient)
+    it 'deleting idea of comment idea you follow notification' do
+      create(:comment_on_idea_you_follow, project: project, post: idea, comment: child, initiating_user: initiator, recipient: recipient)
       idea.destroy!
     end
 
-    it 'deleting project of comment on your idea notification' do
-      create(:comment_on_your_idea, project: project, post: idea, comment: child, initiating_user: initiator, recipient: recipient)
+    it 'deleting project of comment idea you follow notification' do
+      create(:comment_on_idea_you_follow, project: project, post: idea, comment: child, initiating_user: initiator, recipient: recipient)
       project.destroy!
     end
 
-    it 'deleting spam report of comment on your idea notification' do
-      create(:comment_on_your_idea, project: project, post: idea, comment: child, initiating_user: initiator, recipient: recipient)
+    it 'deleting spam report of comment idea you follow notification' do
+      create(:comment_on_idea_you_follow, project: project, post: idea, comment: child, initiating_user: initiator, recipient: recipient)
       spam_report.destroy!
     end
 
-    it 'deleting initiator of comment on your idea notification' do
-      create(:comment_on_your_idea, project: project, post: idea, comment: child, initiating_user: initiator, recipient: recipient)
+    it 'deleting initiator of comment idea you follow notification' do
+      create(:comment_on_idea_you_follow, project: project, post: idea, comment: child, initiating_user: initiator, recipient: recipient)
       initiator.destroy!
     end
 
-    it 'deleting recipient of comment on your idea notification' do
-      create(:comment_on_your_idea, project: project, post: idea, comment: child, initiating_user: initiator, recipient: recipient)
+    it 'deleting recipient of comment idea you follow notification' do
+      create(:comment_on_idea_you_follow, project: project, post: idea, comment: child, initiating_user: initiator, recipient: recipient)
       recipient.destroy!
     end
 

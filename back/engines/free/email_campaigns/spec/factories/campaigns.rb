@@ -34,11 +34,11 @@ FactoryBot.define do
     enabled { true }
   end
 
-  factory :comment_on_your_idea_campaign, class: EmailCampaigns::Campaigns::CommentOnYourIdea do
+  factory :comment_on_idea_you_follow_campaign, class: EmailCampaigns::Campaigns::CommentOnIdeaYouFollow do
     enabled { true }
   end
 
-  factory :comment_on_your_initiative_campaign, class: EmailCampaigns::Campaigns::CommentOnYourInitiative do
+  factory :comment_on_initiative_you_follow_campaign, class: EmailCampaigns::Campaigns::CommentOnInitiativeYouFollow do
     enabled { true }
   end
 
@@ -123,22 +123,6 @@ FactoryBot.define do
   end
 
   factory :new_comment_for_admin_campaign, class: EmailCampaigns::Campaigns::NewCommentForAdmin do
-    enabled { true }
-  end
-
-  factory :new_comment_on_commented_idea_campaign, class: EmailCampaigns::Campaigns::NewCommentOnCommentedIdea do
-    enabled { true }
-  end
-
-  factory :new_comment_on_commented_initiative_campaign, class: EmailCampaigns::Campaigns::NewCommentOnCommentedInitiative do
-    enabled { true }
-  end
-
-  factory :new_comment_on_reacted_idea_campaign, class: EmailCampaigns::Campaigns::NewCommentOnReactedIdea do
-    enabled { true }
-  end
-
-  factory :new_comment_on_reacted_initiative_campaign, class: EmailCampaigns::Campaigns::NewCommentOnReactedInitiative do
     enabled { true }
   end
 

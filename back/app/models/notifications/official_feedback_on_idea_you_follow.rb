@@ -86,7 +86,7 @@ module Notifications
         end
       else
         []
-      end.compact
+      end
     end
   end
 end

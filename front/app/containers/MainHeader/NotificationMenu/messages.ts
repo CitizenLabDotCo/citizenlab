@@ -26,33 +26,33 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.cosponsorOfYourInitiative',
     defaultMessage: '{name} cosponsored your proposal',
   },
-  userCommentedOnYourIdea: {
-    id: 'app.containers.NotificationMenu.userCommentedOnYourIdea',
-    defaultMessage: '{name} commented on your idea',
+  userCommentedOnIdeaYouFollow: {
+    id: 'app.containers.NotificationMenu.userCommentedOnIdeaYouFollow',
+    defaultMessage: '{name} commented on an idea that you follow',
   },
-  userCommentedOnYourOption: {
-    id: 'app.containers.NotificationMenu.userCommentedOnYourOption',
-    defaultMessage: '{name} commented on your option',
+  userCommentedOnOptionYouFollow: {
+    id: 'app.containers.NotificationMenu.userCommentedOnOptionYouFollow',
+    defaultMessage: '{name} commented on an option that you follow',
   },
-  userCommentedOnYourProject: {
-    id: 'app.containers.NotificationMenu.userCommentedOnYourProject',
-    defaultMessage: '{name} commented on your project',
+  userCommentedOnProjectYouFollow: {
+    id: 'app.containers.NotificationMenu.userCommentedOnProjectYouFollow',
+    defaultMessage: '{name} commented on a project that you follow',
   },
-  userCommentedOnYourQuestion: {
-    id: 'app.containers.NotificationMenu.userCommentedOnYourQuestion',
-    defaultMessage: '{name} commented on your question',
+  userCommentedOnQuestionYouFollow: {
+    id: 'app.containers.NotificationMenu.userCommentedOnQuestionYouFollow',
+    defaultMessage: '{name} commented on a question that you follow',
   },
-  userCommentedOnYourIssue: {
-    id: 'app.containers.NotificationMenu.userCommentedOnYourIssue',
-    defaultMessage: '{name} commented on your issue',
+  userCommentedOnIssueYouFollow: {
+    id: 'app.containers.NotificationMenu.userCommentedOnIssueYouFollow',
+    defaultMessage: '{name} commented on a issue that you follow',
   },
-  userCommentedOnYourContribution: {
-    id: 'app.containers.NotificationMenu.userCommentedOnYourContribution',
-    defaultMessage: '{name} commented on your contribution',
+  userCommentedOnContributionYouFollow: {
+    id: 'app.containers.NotificationMenu.userCommentedOnContributionYouFollow',
+    defaultMessage: '{name} commented on a contribution that you follow',
   },
-  userCommentedOnYourInitiative: {
-    id: 'app.containers.NotificationMenu.userCommentedOnYourInitiative',
-    defaultMessage: '{name} commented on your initiative',
+  userCommentedOnInitiativeYouFollow: {
+    id: 'app.containers.NotificationMenu.userCommentedOnInitiativeYouFollow',
+    defaultMessage: '{name} commented on an initiative that you follow',
   },
   userReactedToYourComment: {
     id: 'app.containers.NotificationMenu.userReactedToYourComment',

@@ -43,6 +43,23 @@ namespace :fix_existing_tenants do
     end
   end
 
+  desc 'Delete comment notifications after merging'
+  task delete_comment_notifications: [:environment] do |_t, _args|
+    Tenant.all.each do |tenant|
+      Apartment::Tenant.switch(tenant.host.tr('.', '_')) do
+        types = [
+          'Notifications::CommentOnYourIdea',
+          'Notifications::CommentOnYourInitiative'
+        ]
+        # We first have to clear the types of the removed notifications,
+        # otherwise Rails will try to load the model subtype, try to
+        # find the corresponding model and fail.
+        Notification.where(type: types).update_all(type: nil)
+        Notification.where(type: nil).destroy_all
+      end
+    end
+  end
+
   desc 'Delete notifications with deleted required relationships'
   task delete_invalid_notifications: [:environment] do |_t, _args|
     Tenant.all.each do |tenant|

@@ -18,15 +18,16 @@ RSpec.describe Notification do
   end
 
   describe 'make_notifications_on' do
-    it 'makes a comment on your comment and comment on your idea notification on created comment activity' do
+    it 'makes a comment on your comment and comment on idea you follow notification on created comment activity' do
       idea = create(:idea)
       parent_comment = create(:comment, post: idea)
-      child_comment = create(:comment, parent: parent_comment)
+      child_comment = create(:comment, parent: parent_comment, post: idea)
+      create(:follower, followable: idea)
       activity = create(:activity, item: child_comment, action: 'created')
 
       notifications = Notifications::CommentOnYourComment.make_notifications_on activity
       expect(notifications).to be_present
-      notifications = Notifications::CommentOnYourIdea.make_notifications_on activity
+      notifications = Notifications::CommentOnIdeaYouFollow.make_notifications_on activity
       expect(notifications).to be_present
     end
 
@@ -109,7 +110,7 @@ RSpec.describe Notification do
 
   it 'deleting a comment also deletes notifications requiring that comment' do
     comment = create(:comment)
-    create(:comment_on_your_idea, comment: comment)
+    create(:comment_on_idea_you_follow, comment: comment)
     count = described_class.count
     comment.destroy!
     expect(described_class.count).to eq(count - 1)
@@ -117,7 +118,7 @@ RSpec.describe Notification do
 
   it 'deleting a post also deletes notifications requiring that post' do
     post = create(:idea)
-    notification = create(:comment_on_your_idea, post: post)
+    notification = create(:comment_on_idea_you_follow, post: post)
     post.destroy!
 
     expect { described_class.find(notification.id) }.to raise_error(ActiveRecord::RecordNotFound)
