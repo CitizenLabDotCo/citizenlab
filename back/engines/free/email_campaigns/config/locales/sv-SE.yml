@@ -188,6 +188,7 @@ sv:
       cta_reply_to: 'Stöd detta förslag'
       event_description_initiative: '%{authorName} har skapat ett nytt förslag och vill att du ska stödja det.'
       event_description_cosponsoring: 'Medsponsring av ett förslag innebär att <strong>ditt namn kommer att visas</strong> tillsammans med namnen på andra medsponsorer av förslaget.'
+      event_description_before_action: 'För att se förslaget och acceptera inbjudan måste du vara inloggad på ditt konto.'
       event_description_action: 'Klicka nedan för att läsa förslaget.'
       main_header: 'Du har blivit inbjuden att vara medförslagsställare'
       subject: 'Du har blivit inbjuden att vara medförslagsställare'
