@@ -1,11 +1,15 @@
 ca:
   email_campaigns:
     campaign_type_description:
+      "1": "Setmanalment, els dilluns a les %{hourOfDay}"
+      "2": "Setmanalment, els dimarts a les %{hourOfDay}"
       "3": "Setmanalment, els dimecres a les %{hourOfDay}"
       "4": "Setmanalment, els dijous a les %{hourOfDay}"
       "5": "Setmanalment, els divendres a les %{hourOfDay}"
       "6": "Setmanalment, els dissabtes a les %{hourOfDay}"
     footer:
+      "link_terms_conditions": "Termes i Condicions"
+      "link_unsubscribe": "Cancel·la la subscripció"
       "powered_by": "Impulsat per"
       "statement": "CitizenLab us ha enviat aquest correu electrònic en nom de %{organizationName}, perquè sou un usuari registrat de %{organizationLink}. Podeu %{unsubscribeLink} si no voleu rebre aquests correus electrònics en el futur."
       "unsubscribe_text": "donar-se de baixa"
@@ -117,6 +121,7 @@ ca:
       cta_reply_to: 'Copatrocina aquesta proposta'
       event_description_initiative: '%{authorName} ha creat una nova proposta i voldria que la copatrocinis.'
       event_description_cosponsoring: 'Copatrocinar una proposta significa que <strong>el vostre nom es mostrarà</strong> amb els noms d''altres copatrocinadors de la proposta.'
+      event_description_before_action: 'Per veure la proposta i acceptar la invitació, heu d''iniciar sessió al vostre compte.'
       event_description_action: 'Feu clic a continuació per llegir la proposta.'
       main_header: 'Us han convidat a copatrocinar una proposta'
       subject: 'Us han convidat a copatrocinar una proposta'
