@@ -570,6 +570,7 @@
   "app.components.admin.UserFilterConditions.rulesFormLabelPredicate": "Condizione",
   "app.components.admin.UserFilterConditions.rulesFormLabelValue": "Valore",
   "app.components.anonymousParticipationModal.anonymousParticipationWarning": "Non riceverai notifiche sui tuoi contributi",
+  "app.components.anonymousParticipationModal.cancel": "Annullamento",
   "app.components.anonymousParticipationModal.continue": "Continua",
   "app.components.anonymousParticipationModal.participateAnonymously": "Partecipa in modo anonimo",
   "app.components.anonymousParticipationModal.participateAnonymouslyModalText4": "In questo modo <b>nasconderà in modo sicuro il tuo profilo</b> agli amministratori, ai moderatori e agli altri residenti per questo specifico contributo, in modo che nessuno possa collegarlo a te. I contributi anonimi non possono essere modificati e sono considerati definitivi.",
