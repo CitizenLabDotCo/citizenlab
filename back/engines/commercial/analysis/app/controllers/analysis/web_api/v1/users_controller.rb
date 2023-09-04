@@ -8,7 +8,7 @@ module Analysis
         before_action :set_user
 
         def show
-          render json: WebApi::V1::AnalysisUserSerializer.new(@user, params: {app_configuration: AppConfiguration.instance, **jsonapi_serializer_params}).serializable_hash
+          render json: WebApi::V1::AnalysisUserSerializer.new(@user, params: { app_configuration: AppConfiguration.instance, **jsonapi_serializer_params }).serializable_hash
         end
 
         private
