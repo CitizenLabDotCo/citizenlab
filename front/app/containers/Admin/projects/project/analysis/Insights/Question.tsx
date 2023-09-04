@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import reactStringReplace from 'react-string-replace';
 
@@ -18,8 +18,7 @@ import {
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
 
-import { useIntl } from 'utils/cl-intl';
-import messages from '../messages';
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import styled from 'styled-components';
 import { useSelectedInputContext } from '../SelectedInputContext';
 import useAnalysisQuestion from 'api/analysis_questions/useAnalysisQuestion';
@@ -29,6 +28,8 @@ import Rate from './Rate';
 
 import tracks from 'containers/Admin/projects/project/analysis/tracks';
 import { trackEventByName } from 'utils/analytics';
+import translations from './translations';
+import { deleteTrailingIncompleteIDs, refRegex, removeRefs } from './util';
 
 const StyledAnswerText = styled.div`
   white-space: pre-wrap;
@@ -45,6 +46,7 @@ type Props = {
 };
 
 const Question = ({ insight }: Props) => {
+  const [isCopied, setIsCopied] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const { setSelectedInputId } = useSelectedInputContext();
   const { formatMessage, formatDate } = useIntl();
@@ -65,7 +67,9 @@ const Question = ({ insight }: Props) => {
     backgroundTask?.data.attributes.state === 'queued';
 
   const handleQuestionDelete = (id: string) => {
-    if (window.confirm(formatMessage(messages.deleteQuestionConfirmation))) {
+    if (
+      window.confirm(formatMessage(translations.deleteQuestionConfirmation))
+    ) {
       deleteQuestion(
         {
           analysisId,
@@ -82,11 +86,6 @@ const Question = ({ insight }: Props) => {
     }
   };
 
-  const deleteTrailingIncompleteIDs = (str: string | null) => {
-    if (!str) return str;
-    return str.replace(/\[?[0-9a-f-]{0,35}$/, '');
-  };
-
   const handleClickInput = (inputId: string) => {
     setSelectedInputId(inputId);
     const element = document.getElementById(`input-${inputId}`);
@@ -96,23 +95,19 @@ const Question = ({ insight }: Props) => {
   };
 
   const replaceIdRefsWithLinks = (question) => {
-    return reactStringReplace(
-      question,
-      /\[?([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})\]?/g,
-      (match, i) => (
-        <StyledButton
-          onClick={() => {
-            handleClickInput(match);
-            trackEventByName(tracks.inputPreviewedFromQuestion.name, {
-              extra: { analysisId },
-            });
-          }}
-          key={i}
-        >
-          <Icon name="idea" />
-        </StyledButton>
-      )
-    );
+    return reactStringReplace(question, refRegex, (match, i) => (
+      <StyledButton
+        onClick={() => {
+          handleClickInput(match);
+          trackEventByName(tracks.inputPreviewedFromQuestion.name, {
+            extra: { analysisId },
+          });
+        }}
+        key={i}
+      >
+        <Icon name="idea" />
+      </StyledButton>
+    ));
   };
 
   if (!question) return null;
@@ -146,9 +141,26 @@ const Question = ({ insight }: Props) => {
       key={question.data.id}
       bgColor={colors.successLight}
       p="24px"
+      pt="48px"
       mb="8px"
       borderRadius={stylingConsts.borderRadius}
+      position="relative"
     >
+      <Box position="absolute" top="16px" right="8px">
+        <IconButton
+          iconName={isCopied ? 'check' : 'copy'}
+          iconColor={colors.teal400}
+          iconColorOnHover={colors.teal700}
+          a11y_buttonActionMessage={'Copy summary to clipboard'}
+          onClick={() => {
+            answer &&
+              navigator.clipboard.writeText(
+                `${question.data.attributes.question}\n\n${removeRefs(answer)}`
+              );
+            setIsCopied(true);
+          }}
+        />
+      </Box>
       <Box>
         <Box
           display="flex"
@@ -159,7 +171,7 @@ const Question = ({ insight }: Props) => {
         >
           {hasFilters && (
             <>
-              <Text m="0px">Question for</Text>
+              <Text m="0px"> {formatMessage(translations.questionFor)}</Text>
               <FilterItems
                 filters={question.data.attributes.filters}
                 isEditable={false}
@@ -167,7 +179,11 @@ const Question = ({ insight }: Props) => {
             </>
           )}
 
-          {!hasFilters && <Text m="0px">Question for all input</Text>}
+          {!hasFilters && (
+            <Text m="0px">
+              {formatMessage(translations.questionForAllInputs)}
+            </Text>
+          )}
         </Box>
 
         <Text color="textSecondary" fontSize="s">
@@ -185,7 +201,13 @@ const Question = ({ insight }: Props) => {
         </Box>
         {question.data.attributes.accuracy && (
           <Box color={colors.teal700} my="16px">
-            Accuracy {question.data.attributes.accuracy * 100}%
+            <FormattedMessage
+              {...translations.accuracy}
+              values={{
+                accuracy: question.data.attributes.accuracy * 100,
+                percentage: formatMessage(translations.percentage),
+              }}
+            />
           </Box>
         )}
       </Box>
@@ -194,9 +216,10 @@ const Question = ({ insight }: Props) => {
         gap="4px"
         alignItems="center"
         justifyContent="space-between"
+        mt="16px"
       >
         <Button buttonStyle="white" onClick={handleRestoreFilters} p="4px 12px">
-          Restore filters
+          {formatMessage(translations.restoreFilters)}
         </Button>
 
         <Box display="flex">
@@ -206,13 +229,14 @@ const Question = ({ insight }: Props) => {
             theme="light"
             iconSize="24px"
             iconColor={colors.teal400}
+            placement="left-end"
           />
           <IconButton
             iconName="delete"
             onClick={() => handleQuestionDelete(insight.id)}
             iconColor={colors.teal400}
             iconColorOnHover={colors.teal700}
-            a11y_buttonActionMessage={formatMessage(messages.deleteSummary)}
+            a11y_buttonActionMessage={formatMessage(translations.deleteSummary)}
           />
         </Box>
       </Box>

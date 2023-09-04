@@ -11,11 +11,15 @@ import {
 import { xor } from 'lodash-es';
 import Tag from '../Tag';
 import { ITagData } from 'api/analysis_tags/types';
+import { useIntl } from 'utils/cl-intl';
+import translations from '../translations';
 
 type Props = {
   onLaunch: (tagsIds: string[]) => void;
 };
+
 const Step2LabelClassification = ({ onLaunch }: Props) => {
+  const { formatMessage } = useIntl();
   const { analysisId } = useParams() as { analysisId: string };
   const { data: tags } = useAnalysisTags({ analysisId });
 
@@ -36,15 +40,9 @@ const Step2LabelClassification = ({ onLaunch }: Props) => {
 
   return (
     <Box>
-      <Title>Classification by example</Title>
-      <Text>
-        Select maximum 10 tags you would like the inputs to be distributed
-        between.
-      </Text>
-      <Text>
-        The classification is based on the inputs currently assigned to the
-        tags. The computer will try to follow your example.
-      </Text>
+      <Title>{formatMessage(translations.fewShotTitle)}</Title>
+      <Text>{formatMessage(translations.fewShotSubtitle)}</Text>
+      <Text>{formatMessage(translations.fewShotSubtitle2)}</Text>
       <Box>
         {customTags?.map((tag) => (
           <Box key={tag.id} display="flex" justifyContent="flex-start" mb="8px">
@@ -75,7 +73,7 @@ const Step2LabelClassification = ({ onLaunch }: Props) => {
           disabled={selectedTagIds.length === 0}
           onClick={() => onLaunch(selectedTagIds)}
         >
-          Launch
+          {formatMessage(translations.launch)}
         </Button>
       </Box>
     </Box>
