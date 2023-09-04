@@ -24,7 +24,13 @@ function mod(n: number, m: number): number {
   return ((n % m) + m) % m;
 }
 
-const Demographics = () => {
+const Demographics = ({
+  isDemographicsOpen,
+  setIsDemographicsOpen,
+}: {
+  isDemographicsOpen: boolean;
+  setIsDemographicsOpen: (isDemographicsOpen: boolean) => void;
+}) => {
   const [supportedFieldIds, setSupportedFieldIds] = useState<string[]>([]);
   const [selectedFieldId, setSelectedFieldId] = useState<string | null>(null);
   const { data: customFields } = useUserCustomFields();
@@ -61,6 +67,8 @@ const Demographics = () => {
 
   return (
     <Accordion
+      onChange={() => setIsDemographicsOpen(!isDemographicsOpen)}
+      isOpenByDefault={isDemographicsOpen}
       title={
         <Box display="flex" alignItems="center" px="24px" py="12px">
           <Icon height="16px" width="16px" name="users" mr="8px" />
