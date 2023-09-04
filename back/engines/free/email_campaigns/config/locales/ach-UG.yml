@@ -1,15 +1,11 @@
 ach:
   email_campaigns:
     campaign_type_description:
-      "1": "crwdns942479:0%{hourOfDay}crwdne942479:0"
-      "2": "crwdns942481:0%{hourOfDay}crwdne942481:0"
       "3": "crwdns942483:0%{hourOfDay}crwdne942483:0"
       "4": "crwdns942485:0%{hourOfDay}crwdne942485:0"
       "5": "crwdns942487:0%{hourOfDay}crwdne942487:0"
       "6": "crwdns942489:0%{hourOfDay}crwdne942489:0"
     footer:
-      "link_terms_conditions": "crwdns942491:0crwdne942491:0"
-      "link_unsubscribe": "crwdns942493:0crwdne942493:0"
       "powered_by": "crwdns942495:0crwdne942495:0"
       "statement": "crwdns942497:0%{organizationName}crwdnd942497:0%{organizationLink}crwdnd942497:0%{unsubscribeLink}crwdne942497:0"
       "unsubscribe_text": "crwdns942499:0crwdne942499:0"
@@ -525,7 +521,7 @@ ach:
         users_who_engaged_with_the_input: 'crwdns943545:0crwdne943545:0'
         users_who_engaged_with_the_project: 'crwdns943547:0crwdne943547:0'
         users_who_engaged_with_the_proposal: 'crwdns943549:0crwdne943549:0'
-        users_who_follow_the_proposal: 'crwdns943843:0crwdne943843:0'
+        users_who_follow_the_proposal: 'crwdns992989:0crwdne992989:0'
         users_who_follow_the_input: 'crwdns943845:0crwdne943845:0'
         users_who_follow_the_project: 'crwdns943847:0crwdne943847:0'
         user_who_voted: 'crwdns943551:0crwdne943551:0'
