@@ -115,7 +115,6 @@ module EmailCampaigns
     def statistics(project)
       ps = ParticipantsService.new
       participants_increase = ps.projects_participants([project], since: (Time.now - days_ago)).size
-      participants_past_increase = ps.projects_participants([project], since: (Time.now - (days_ago * 2))).size - participants_increase
       ideas = Idea.published.where(project_id: project.id).load
       comments = Comment.where(post_id: ideas.map(&:id))
       reactions = Reaction.where(reactable_id: (ideas.map(&:id) + comments.map(&:id)))
@@ -132,19 +131,16 @@ module EmailCampaigns
           )
         },
         users: {
-          new_participants: {
-            increase: participants_increase,
-            past_increase: participants_past_increase
-          }
+          new_participants: participants_increase
         }
       }
     end
 
     def zero_statistics?(statistics)
-      ((statistics.dig(:activities, :new_ideas, :increase) == 0) &&
-         (statistics.dig(:activities, :new_reactions, :increase) == 0) &&
-         (statistics.dig(:activities, :new_comments, :increase) == 0) &&
-         (statistics.dig(:users, :new_participants, :increase) == 0)
+      ((statistics.dig(:activities, :new_ideas) == 0) &&
+         (statistics.dig(:activities, :new_reactions) == 0) &&
+         (statistics.dig(:activities, :new_comments) == 0) &&
+         (statistics.dig(:users, :new_participants) == 0)
       )
     end
 
@@ -157,10 +153,8 @@ module EmailCampaigns
     def stat_increase(ts)
       second_last_agos = ts.select { |t| t > (Time.now - (days_ago * 2)) }
       last_agos = second_last_agos.select { |t| t > (Time.now - days_ago) }
-      {
-        increase: last_agos.size,
-        past_increase: second_last_agos.size
-      }
+
+      last_agos.size
     end
 
     # @param [UserDisplayNameService] name_service

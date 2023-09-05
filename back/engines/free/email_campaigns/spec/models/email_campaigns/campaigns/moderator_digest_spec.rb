@@ -105,23 +105,25 @@ RSpec.describe 'EmailCampaigns::Campaigns::ModeratorDigest', skip: skip_reason d
     let(:project) { create(:project) }
 
     it 'returns true when no significant stats' do
+      pp campaign.send(:statistics, project)
+
       stats = { activities:
-                { new_ideas: { increase: 0, past_increase: 0 },
-                  new_reactions: { increase: 0, past_increase: 0 },
-                  new_comments: { increase: 0, past_increase: 0 } },
+                { new_ideas: 0,
+                  new_reactions: 0,
+                  new_comments: 0 },
                 users:
-                { new_participants: { increase: 0, past_increase: 0 } } }
+                { new_participants: 0 } }
 
       expect(campaign.send(:zero_statistics?, stats)).to be true
     end
 
     it 'returns false when significant stats' do
       stats = { activities:
-                { new_ideas: { increase: 1, past_increase: 0 },
-                  new_reactions: { increase: 0, past_increase: 0 },
-                  new_comments: { increase: 0, past_increase: 0 } },
+                { new_ideas: 1,
+                  new_reactions: 0,
+                  new_comments: 0 },
                 users:
-                { new_participants: { increase: 0, past_increase: 0 } } }
+                { new_participants: 0 } }
 
       expect(campaign.send(:zero_statistics?, stats)).to be false
     end
