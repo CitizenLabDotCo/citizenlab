@@ -191,16 +191,16 @@ nl:
       yesterday: Gisteren
     comment_on_idea_you_follow:
       cta_reply_to: 'Reageer op %{commentAuthor}'
-      event_description: '%{authorNameFull} reageerde op jouw idee ''%{ideaTitle}''. Klik op de onderstaande knop om het gesprek voort te zetten met %{authorName}.'
-      main_header: '%{authorName} gaf commentaar op een idee dat je volgt'
-      subject: 'Er is een nieuw commentaar op een idee dat je volgt'
-      preheader: '%{authorName} Laat een reactie achter op een idee voor %{organizationName}'
+      event_description: '%{authorNameFull} heeft gereageerd op jouw idee ''%{ideaTitle}''. Klik op de onderstaande knop om het gesprek voort te zetten met %{authorName}.'
+      main_header: '%{authorName} heeft gereageerd op een idee dat je volgt'
+      subject: 'Er is een nieuwe reactie op een idee dat je volgt'
+      preheader: '%{authorName} heeft een reactie achtergelaten op een idee voor %{organizationName}'
     comment_on_initiative_you_follow:
       cta_reply_to: 'Reageer op %{commentAuthor}'
-      event_description: '%{authorNameFull} reageerde op jouw voorstel ''%{initiativeTitle}''. Klik op de onderstaande knop om het gesprek voort te zetten met %{authorName}.'
-      main_header: '%{commentAuthor} gereageerd op een initiatief dat je volgt'
-      subject: 'Er is een nieuw commentaar op het voorstel dat je volgt'
-      preheader: '%{authorName} een reactie achtergelaten op een initiatief voor %{organizationName}'
+      event_description: '%{authorNameFull} heeft gereageerd op het voorstel ''%{initiativeTitle}''. Klik op de onderstaande knop om het gesprek voort te zetten met %{authorName}.'
+      main_header: '%{commentAuthor} heeft gereageerd op een voorstel dat je volgt'
+      subject: 'Er is een nieuwe reactie op het voorstel dat je volgt'
+      preheader: '%{authorName} heeft een reactie achtergelaten op een voorstel voor %{organizationName}'
     new_initiative_for_admin:
       cta_reply_to: 'Geef feedback op %{authorName}'
       event_description: '%{authorName} plaatste een nieuw voorstel op je platform. Ontdek het, geef feedback of wijzig de status!'
