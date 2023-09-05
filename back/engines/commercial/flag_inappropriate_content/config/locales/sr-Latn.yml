@@ -1,15 +1,8 @@
 sr-Latn:
   email_campaigns:
     campaign_type_description:
-      "inappropriate_content_flagged": Označen je neprikladan sadržaj
-    admin_campaign_type_description:
-      "inappropriate_content_flagged": Označen je neprikladan sadržaj - administratori
-    inappropriate_content_flagged:
-      subject: 'Objava na vašoj platformi je prijavljena da bi bila pregledana'
-      header_title: 'Objava na vašoj platformi je prijavljena da bi bila pregledana'
-      comment_author: '%{authorName} je komentarisao/la:'
-      idea_author: '%{authorName} je objavio/la novi unos:'
-      initiative_author: '%{authorName} je objavio/la novi predlog:'
-      this_post_was_flagged: >
-        <p> Ovaj post je automatski otkriven kao potencijalno neprimeren sadržaj. Šaljemo vam ovo obaveštenje kako biste mogli da ga pregledate i reagujete u skladu sa svojim smernicama za moderaciju. </p> <p> Ako post ne sadrži neprikladan sadržaj, možete ukloniti upozorenje putem svoje platforme na kartici Aktivnosti koja se nalazi u administratorskom panelu. </p>
-      cta_review_post: 'Pregledajte objavu'
+      ""inappropriate_content_flagged"":
+        Inappropriate content flagged admin_campaign_type_description:
+          ""inappropriate_content_flagged"":
+            Inappropriate content flagged - admins inappropriate_content_flagged:
+              subject: 'A post on your platform has been flagged for review'' header_title: ''A post on your platform has been flagged for review'' comment_author: ''%{authorName} commented:'' idea_author: ''%{authorName} submitted a post:'' initiative_author: ''%{authorName} submitted a proposal:'' this_post_was_flagged: > <p>This post was automatically detected as potentially containing inappropriate content. We’re sending you this notification so that you can review the post in accordance with your own moderation guidelines.</p><p>If the post does not contain inappropriate content, you can remove the warning via your platform in the Activity tab in the admin panel.</p> cta_review_post: ''Review post'
