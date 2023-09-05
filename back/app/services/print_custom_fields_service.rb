@@ -19,7 +19,7 @@ class PrintCustomFieldsService
   end
 
   def create_pdf
-    pdf = Prawn::Document.new(page_size: 'A4', top_margin: 2.cm)
+    pdf = Prawn::Document.new(page_size: 'A4')
 
     render_tenant_logo pdf
     render_form_title pdf
@@ -60,7 +60,7 @@ class PrintCustomFieldsService
     page_copy = I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.page') }
     page_number_format = "#{page_copy} <page>"
     page_number_options = {
-      at: [pdf.bounds.right - 150, 275.mm],
+      at: [pdf.bounds.right - 150, 0],
       width: 150,
       align: :right
 
