@@ -120,27 +120,27 @@ module EmailCampaigns
       reactions = Reaction.where(reactable_id: (ideas.map(&:id) + comments.map(&:id)))
       {
         activities: {
-          new_ideas: stat_increase(
+          new_ideas_count: stat_increase(
             ideas.filter_map(&:published_at)
           ),
-          new_reactions: stat_increase(
+          new_reactions_count: stat_increase(
             reactions.filter_map(&:created_at)
           ),
-          new_comments: stat_increase(
+          new_comments_count: stat_increase(
             comments.filter_map(&:created_at)
           )
         },
         users: {
-          new_participants: participants_increase
+          new_participants_count: participants_increase
         }
       }
     end
 
     def zero_statistics?(statistics)
-      ((statistics.dig(:activities, :new_ideas) == 0) &&
-         (statistics.dig(:activities, :new_reactions) == 0) &&
-         (statistics.dig(:activities, :new_comments) == 0) &&
-         (statistics.dig(:users, :new_participants) == 0)
+      ((statistics.dig(:activities, :new_ideas_count) == 0) &&
+         (statistics.dig(:activities, :new_reactions_count) == 0) &&
+         (statistics.dig(:activities, :new_comments_count) == 0) &&
+         (statistics.dig(:users, :new_participants_count) == 0)
       )
     end
 
