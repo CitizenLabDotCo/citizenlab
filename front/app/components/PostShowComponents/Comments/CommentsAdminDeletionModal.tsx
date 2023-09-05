@@ -16,7 +16,8 @@ import { string, object } from 'yup';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import TextArea from 'components/HookForm/TextArea';
 import Feedback from 'components/HookForm/Feedback';
-import RadioGroup, { Radio } from 'components/HookForm/RadioGroup';
+import RadioGroup from 'components/HookForm/RadioGroup';
+import Radio from 'components/HookForm/RadioGroup/Radio';
 
 // i18n
 import { MessageDescriptor } from 'react-intl';

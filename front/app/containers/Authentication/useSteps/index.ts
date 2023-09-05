@@ -166,6 +166,7 @@ export default function useSteps() {
       if (currentStep !== 'closed') return;
 
       authenticationDataRef.current = event.eventValue;
+
       transition(currentStep, 'TRIGGER_AUTHENTICATION_FLOW')();
     });
 

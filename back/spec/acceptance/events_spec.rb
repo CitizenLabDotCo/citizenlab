@@ -11,8 +11,8 @@ resource 'Events' do
   before_all do
     @project = create(:project)
     @project2 = create(:project)
-    @events = create_list(:event, 2, project: @project)
-    @other_events = create_list(:event, 2, project: @project2)
+    @events = create_list(:event, 2, project: @project, start_at: '2017-05-01', end_at: '2017-05-02')
+    @other_events = create_list(:event, 2, project: @project2, start_at: '2017-05-01', end_at: '2017-05-02')
   end
 
   get 'web_api/v1/events' do
@@ -21,6 +21,13 @@ resource 'Events' do
     parameter :start_at_lt, 'Filter by maximum start at', type: :string
     parameter :start_at_gteq, 'Filter by minimum start at', type: :string
     parameter :project_publication_statuses, 'The publication statuses of the project to filter events by', type: :array
+    parameter :ongoing_during, <<~DESC, required: false, type: :string
+      Filter events by date range. Only returns events that are ongoing during the 
+      specified date range, meaning events that overlap with the given range. The date 
+      range should be provided as a string in the format "[<start_date>,<end_date>]", 
+      where <start_date> and <end_date> are ISO 8601 dates. 'null' can be used for 
+      open-ended ranges.
+    DESC
 
     with_options scope: :page do
       parameter :number, 'Page number'
@@ -61,6 +68,36 @@ resource 'Events' do
         # User attendances are always nil for visitors as they cannot register to
         # events.
         expect(user_attendances).to all(be_nil)
+      end
+    end
+
+    context 'when filtering by ongoing_during' do
+      let!(:event1) do
+        create(:event, start_at: '2020-12-31T23:00:00Z', end_at: '2021-01-01T01:00:00Z')
+      end
+
+      let!(:event2) do
+        create(:event, start_at: '2021-12-31T23:00:00Z', end_at: '2022-01-01T02:00:00Z')
+      end
+
+      example 'List events that overlap with the given range' do
+        do_request(ongoing_during: '[2020-12-31T00:00:00Z,2020-12-31T23:59:59Z]')
+        expect(response_ids).to match_array [event1.id]
+      end
+
+      example 'List events that overlap with the given range (right open-ended)', document: false do
+        do_request(ongoing_during: '[2020-12-31,null]')
+        expect(response_ids).to match_array [event1.id, event2.id]
+      end
+
+      example 'List events that overlap with the given range (left open-ended)', document: false do
+        do_request(ongoing_during: '[null,2021-06-01]')
+        expect(response_data.size).to eq(5)
+      end
+
+      example 'List events that overlap with the given range (both open-ended)', document: false do
+        do_request(ongoing_during: '[null,null]')
+        expect(response_data.size).to eq(Event.count)
       end
     end
 
@@ -154,6 +191,20 @@ resource 'Events' do
         expect(
           response_data.dig(:relationships, :user_attendance, :data, :id)
         ).to eq user_attendance.id
+      end
+    end
+  end
+
+  get 'web_api/v1/events/:id.ics' do
+    let(:event) { @events.first }
+    let(:id) { event.id }
+
+    example_request 'Get one event by id in ics format' do
+      expect(status).to eq 200
+      expect(response_headers['Content-Type']).to include('text/calendar')
+      expect(response_body.scan('BEGIN:VEVENT').count).to eq(1)
+      expect(response_body).to satisfy do |body|
+        event.title_multiloc.values.any? { |title| body.include?(title) }
       end
     end
   end

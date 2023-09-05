@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from 'react';
+import React, { Suspense, lazy, useEffect, useState } from 'react';
 import { isFunction } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import styled from 'styled-components';
@@ -41,6 +41,8 @@ const LazyPostPreview = lazy(
 
 import LazyStatusChangeModal from './components/StatusChangeModal/LazyStatusChangeModal';
 import Outlet from 'components/Outlet';
+import { useSearchParams } from 'react-router-dom';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 const StyledExportMenu = styled(ExportMenu)`
   margin-left: auto;
@@ -122,44 +124,48 @@ interface Props extends InputProps, DataProps {}
 export type TFilterMenu = 'topics' | 'phases' | 'projects' | 'statuses';
 export type PreviewMode = 'view' | 'edit';
 
-interface State {
-  /** A set of ids of ideas/initiatives that are currently selected */
-  selection: Set<string>;
-  activeFilterMenu: TFilterMenu;
-  searchTerm: string | undefined;
-  previewPostId: string | null;
-  previewMode: PreviewMode;
-}
+const PostManager = ({
+  defaultFilterMenu,
+  visibleFilterMenus,
+  posts,
+  type,
+  projects,
+  projectId,
+  phases,
+  postStatuses,
+  topics,
+}: Props) => {
+  const [search] = useSearchParams();
+  const [selection, setSelection] = useState<Set<string>>(new Set());
+  const [activeFilterMenu, setActiveFilterMenu] =
+    useState<TFilterMenu>(defaultFilterMenu);
+  const [searchTerm, setSearchTerm] = useState<string | undefined>(undefined);
+  const [previewPostId, setPreviewPostId] = useState<string | null>(null);
+  const [previewMode, setPreviewMode] = useState<PreviewMode>('view');
 
-export class PostManager extends React.PureComponent<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      selection: new Set(),
-      activeFilterMenu: props.defaultFilterMenu,
-      searchTerm: undefined,
-      previewPostId: null,
-      previewMode: 'view',
-    };
-  }
-
-  componentDidUpdate(prevProps: Props) {
-    const { visibleFilterMenus } = this.props;
-
-    if (
-      prevProps.visibleFilterMenus !== visibleFilterMenus &&
-      !visibleFilterMenus.find(
-        (item) => item === this.state.activeFilterMenu
-      ) &&
-      visibleFilterMenus[0]
-    ) {
-      this.setState({ activeFilterMenu: visibleFilterMenus[0] });
+  useEffect(() => {
+    if (search.get('selected_idea_id')) {
+      setPreviewMode('view');
+      setPreviewPostId(search.get('selected_idea_id'));
     }
-  }
+    removeSearchParams(['selected_idea_id']);
+  }, [search]);
+
+  useEffect(() => {
+    setActiveFilterMenu((activeFilterMenu) => {
+      if (
+        !visibleFilterMenus.find((item) => item === activeFilterMenu) &&
+        visibleFilterMenus[0]
+      ) {
+        return visibleFilterMenus[0];
+      } else {
+        return activeFilterMenu;
+      }
+    });
+  }, [visibleFilterMenus]);
 
   // Filtering handlers
-  getSelectedProject = () => {
-    const { posts, type } = this.props;
+  const getSelectedProject = () => {
     if (type === 'Initiatives') return undefined;
 
     const { queryParameters } = posts as GetIdeasChildProps;
@@ -169,18 +175,16 @@ export class PostManager extends React.PureComponent<Props, State> {
       : undefined;
   };
 
-  handleSearchChange = (event) => {
+  const handleSearchChange = (event) => {
     const searchTerm = event.target.value;
+    setSearchTerm(searchTerm);
 
-    this.setState({ searchTerm });
-
-    if (isFunction(this.props.posts.onChangeSearchTerm)) {
-      this.props.posts.onChangeSearchTerm(searchTerm);
+    if (isFunction(posts.onChangeSearchTerm)) {
+      posts.onChangeSearchTerm(searchTerm);
     }
   };
 
-  onChangeProjects = (projectIds: string[] | undefined) => {
-    const { projects, posts, type } = this.props;
+  const onChangeProjects = (projectIds: string[] | undefined) => {
     if (type !== 'AllIdeas') return;
 
     const { onChangeProjects } = posts as GetIdeasChildProps;
@@ -197,62 +201,62 @@ export class PostManager extends React.PureComponent<Props, State> {
   };
   // End filtering hanlders
 
-  resetSelection = () => {
-    this.setState({ selection: new Set() });
+  const resetSelection = () => {
+    setSelection(new Set());
   };
 
-  handleChangeSelection = (selection: Set<string>) => {
-    this.setState({ selection });
+  const handleChangeSelection = (selection: Set<string>) => {
+    setSelection(selection);
   };
   // End selection management
 
   // Filter menu
-  handleChangeActiveFilterMenu = (activeFilterMenu: TFilterMenu) => {
-    this.setState({ activeFilterMenu });
+  const handleChangeActiveFilterMenu = (activeFilterMenu: TFilterMenu) => {
+    setActiveFilterMenu(activeFilterMenu);
   };
   // End Filter menu
 
   // Modal Preview
-  openPreview = (postId: string) => {
-    this.setState({ previewPostId: postId, previewMode: 'view' });
+  const openPreview = (postId: string) => {
+    setPreviewPostId(postId);
+    setPreviewMode('view');
   };
 
-  openPreviewEdit = () => {
-    const { selection } = this.state;
+  const openPreviewEdit = () => {
     const previewPostId = [...selection][0];
     if (selection.size === 1 && previewPostId) {
-      this.setState({ previewPostId, previewMode: 'edit' });
+      setPreviewMode('edit');
+      setPreviewPostId(previewPostId);
     }
   };
 
-  switchPreviewMode = () => {
-    if (this.state.previewMode === 'edit') {
-      this.setState({ previewMode: 'view' });
+  const switchPreviewMode = () => {
+    if (previewMode === 'edit') {
+      setPreviewMode('view');
     } else {
-      this.setState({ previewMode: 'edit' });
+      setPreviewMode('edit');
     }
   };
 
-  closePreview = () => {
-    this.setState({ previewPostId: null });
+  const closePreview = () => {
+    setPreviewMode('view');
   };
   // End Modal Preview
 
-  getNonSharedParams = () => {
-    const { type } = this.props;
+  const getNonSharedParams = () => {
     if (type === 'Initiatives') {
-      const posts = this.props.posts as GetInitiativesChildProps;
+      const initiativePosts = posts as GetInitiativesChildProps;
       return {
         onChangePhase: undefined,
         selectedPhaseId: undefined,
-        selectedStatus: posts.queryParameters.initiative_status,
+        selectedStatus: initiativePosts.queryParameters.initiative_status,
       };
     } else if (type === 'AllIdeas' || type === 'ProjectIdeas') {
-      const posts = this.props.posts as GetIdeasChildProps;
+      const ideasPosts = posts as GetIdeasChildProps;
       return {
-        onChangePhase: posts.onChangePhase,
-        selectedPhaseId: posts.queryParameters.phase,
-        selectedStatus: posts.queryParameters.idea_status,
+        onChangePhase: ideasPosts.onChangePhase,
+        selectedPhaseId: ideasPosts.queryParameters.phase,
+        selectedStatus: ideasPosts.queryParameters.idea_status,
       };
     }
     return {
@@ -262,176 +266,154 @@ export class PostManager extends React.PureComponent<Props, State> {
     };
   };
 
-  render() {
-    const {
-      previewPostId,
-      previewMode,
-      searchTerm,
-      selection,
-      activeFilterMenu,
-    } = this.state;
-    const {
-      type,
-      projectId,
-      projects,
-      posts,
-      phases,
-      postStatuses,
-      visibleFilterMenus,
-      topics,
-    } = this.props;
-    const {
-      list,
-      onChangeTopics,
-      onChangeStatus,
-      queryParameters,
-      onChangeAssignee,
-      onChangeFeedbackFilter,
-      onResetParams,
-    } = posts;
+  const {
+    list,
+    onChangeTopics,
+    onChangeStatus,
+    queryParameters,
+    onChangeAssignee,
+    onChangeFeedbackFilter,
+    onResetParams,
+  } = posts;
 
-    const selectedTopics = queryParameters.topics;
-    const selectedAssignee = queryParameters.assignee;
-    const feedbackNeeded = queryParameters.feedback_needed || false;
+  const selectedTopics = queryParameters.topics;
+  const selectedAssignee = queryParameters.assignee;
+  const feedbackNeeded = queryParameters.feedback_needed || false;
 
-    const selectedProjectId = this.getSelectedProject();
+  const selectedProjectId = getSelectedProject();
 
-    const { onChangePhase, selectedPhaseId, selectedStatus } =
-      this.getNonSharedParams();
+  const { onChangePhase, selectedPhaseId, selectedStatus } =
+    getNonSharedParams();
 
-    if (!isNilOrError(topics)) {
-      return (
-        <>
-          <TopActionBar>
-            <Outlet
-              id="app.components.admin.PostManager.topActionBar"
-              assignee={selectedAssignee}
-              projectId={type === 'ProjectIdeas' ? projectId : null}
-              handleAssigneeFilterChange={onChangeAssignee}
-              type={type}
-            />
-            <FeedbackToggle
-              type={type}
-              value={feedbackNeeded}
-              onChange={onChangeFeedbackFilter}
-              project={selectedProjectId}
-              phase={selectedPhaseId}
-              topics={selectedTopics}
-              status={selectedStatus}
-              assignee={selectedAssignee}
-              searchTerm={searchTerm}
-            />
-            <StyledExportMenu
+  if (!isNilOrError(topics)) {
+    return (
+      <>
+        <TopActionBar>
+          <Outlet
+            id="app.components.admin.PostManager.topActionBar"
+            assignee={selectedAssignee}
+            projectId={type === 'ProjectIdeas' ? projectId : null}
+            handleAssigneeFilterChange={onChangeAssignee}
+            type={type}
+          />
+          <FeedbackToggle
+            type={type}
+            value={feedbackNeeded}
+            onChange={onChangeFeedbackFilter}
+            project={selectedProjectId}
+            phase={selectedPhaseId}
+            topics={selectedTopics}
+            status={selectedStatus}
+            assignee={selectedAssignee}
+            searchTerm={searchTerm}
+          />
+          <StyledExportMenu
+            type={type}
+            selection={selection}
+            selectedProject={selectedProjectId}
+          />
+        </TopActionBar>
+
+        <ThreeColumns>
+          <LeftColumn>
+            <ActionBar
               type={type}
               selection={selection}
-              selectedProject={selectedProjectId}
+              resetSelection={resetSelection}
+              handleClickEdit={openPreviewEdit}
             />
-          </TopActionBar>
-
-          <ThreeColumns>
-            <LeftColumn>
-              <ActionBar
-                type={type}
-                selection={selection}
-                resetSelection={this.resetSelection}
-                handleClickEdit={this.openPreviewEdit}
+          </LeftColumn>
+          <MiddleColumnTop>
+            {type === 'Initiatives' ? (
+              <InitiativesCount
+                feedbackNeeded={feedbackNeeded}
+                topics={selectedTopics}
+                initiativeStatus={selectedStatus}
+                searchTerm={searchTerm}
+                assignee={selectedAssignee}
               />
-            </LeftColumn>
-            <MiddleColumnTop>
-              {type === 'Initiatives' ? (
-                <InitiativesCount
-                  feedbackNeeded={feedbackNeeded}
-                  topics={selectedTopics}
-                  initiativeStatus={selectedStatus}
-                  searchTerm={searchTerm}
-                  assignee={selectedAssignee}
-                />
-              ) : type === 'AllIdeas' || type === 'ProjectIdeas' ? (
-                <IdeasCount
-                  feedbackNeeded={
-                    feedbackNeeded === true ? feedbackNeeded : undefined
-                  }
-                  project={selectedProjectId}
-                  phase={selectedPhaseId ?? undefined}
-                  topics={selectedTopics ?? undefined}
-                  ideaStatusId={selectedStatus ?? undefined}
-                  search={searchTerm}
-                  assignee={selectedAssignee ?? undefined}
-                />
-              ) : null}
-              <StyledInput icon="search" onChange={this.handleSearchChange} />
-            </MiddleColumnTop>
-          </ThreeColumns>
-          <ThreeColumns>
-            <LeftColumn>
-              <Sticky>
-                <FilterSidebar
-                  type={type}
-                  activeFilterMenu={activeFilterMenu}
-                  visibleFilterMenus={visibleFilterMenus}
-                  onChangeActiveFilterMenu={this.handleChangeActiveFilterMenu}
-                  phases={!isNilOrError(phases) ? phases : undefined}
-                  projects={!isNilOrError(projects) ? projects : undefined}
-                  statuses={!isNilOrError(postStatuses) ? postStatuses : []}
-                  topics={topics}
-                  selectedPhase={selectedPhaseId}
-                  selectedTopics={selectedTopics}
-                  selectedStatus={selectedStatus}
-                  selectedProject={selectedProjectId}
-                  onChangePhaseFilter={onChangePhase}
-                  onChangeTopicsFilter={onChangeTopics}
-                  onChangeStatusFilter={onChangeStatus}
-                  onChangeProjectFilter={this.onChangeProjects}
-                />
-              </Sticky>
-            </LeftColumn>
-            <MiddleColumn>
-              <PostTable
+            ) : type === 'AllIdeas' || type === 'ProjectIdeas' ? (
+              <IdeasCount
+                feedbackNeeded={
+                  feedbackNeeded === true ? feedbackNeeded : undefined
+                }
+                project={selectedProjectId}
+                phase={selectedPhaseId ?? undefined}
+                topics={selectedTopics ?? undefined}
+                ideaStatusId={selectedStatus ?? undefined}
+                search={searchTerm}
+                assignee={selectedAssignee ?? undefined}
+              />
+            ) : null}
+            <StyledInput icon="search" onChange={handleSearchChange} />
+          </MiddleColumnTop>
+        </ThreeColumns>
+        <ThreeColumns>
+          <LeftColumn>
+            <Sticky>
+              <FilterSidebar
                 type={type}
                 activeFilterMenu={activeFilterMenu}
-                sortAttribute={posts.sortAttribute}
-                sortDirection={posts.sortDirection}
-                onChangeSort={posts.onChangeSorting}
-                posts={list || undefined}
+                visibleFilterMenus={visibleFilterMenus}
+                onChangeActiveFilterMenu={handleChangeActiveFilterMenu}
                 phases={!isNilOrError(phases) ? phases : undefined}
+                projects={!isNilOrError(projects) ? projects : undefined}
                 statuses={!isNilOrError(postStatuses) ? postStatuses : []}
-                selection={selection}
-                selectedPhaseId={selectedPhaseId}
-                selectedProjectId={selectedProjectId}
-                onChangeSelection={this.handleChangeSelection}
-                currentPageNumber={posts.currentPage}
-                lastPageNumber={posts.lastPage}
-                onChangePage={posts.onChangePage}
-                handleSeeAll={onResetParams}
-                openPreview={this.openPreview}
+                topics={topics}
+                selectedPhase={selectedPhaseId}
+                selectedTopics={selectedTopics}
+                selectedStatus={selectedStatus}
+                selectedProject={selectedProjectId}
+                onChangePhaseFilter={onChangePhase}
+                onChangeTopicsFilter={onChangeTopics}
+                onChangeStatusFilter={onChangeStatus}
+                onChangeProjectFilter={onChangeProjects}
               />
-            </MiddleColumn>
-            <InfoSidebar
-              postIds={[...selection]}
-              openPreview={this.openPreview}
-            />
-          </ThreeColumns>
-          <Suspense fallback={null}>
-            <LazyPostPreview
+            </Sticky>
+          </LeftColumn>
+          <MiddleColumn>
+            <PostTable
               type={type}
-              postId={previewPostId}
-              mode={previewMode}
-              onClose={this.closePreview}
-              onSwitchPreviewMode={this.switchPreviewMode}
+              activeFilterMenu={activeFilterMenu}
+              sortAttribute={posts.sortAttribute}
+              sortDirection={posts.sortDirection}
+              onChangeSort={posts.onChangeSorting}
+              posts={list || undefined}
+              phases={!isNilOrError(phases) ? phases : undefined}
+              statuses={!isNilOrError(postStatuses) ? postStatuses : []}
+              selection={selection}
+              selectedPhaseId={selectedPhaseId}
+              selectedProjectId={selectedProjectId}
+              onChangeSelection={handleChangeSelection}
+              currentPageNumber={posts.currentPage}
+              lastPageNumber={posts.lastPage}
+              onChangePage={posts.onChangePage}
+              handleSeeAll={onResetParams}
+              openPreview={openPreview}
             />
+          </MiddleColumn>
+          <InfoSidebar postIds={[...selection]} openPreview={openPreview} />
+        </ThreeColumns>
+        <Suspense fallback={null}>
+          <LazyPostPreview
+            type={type}
+            postId={previewPostId}
+            mode={previewMode}
+            onClose={closePreview}
+            onSwitchPreviewMode={switchPreviewMode}
+          />
+        </Suspense>
+        {type === 'Initiatives' && (
+          <Suspense fallback={null}>
+            <LazyStatusChangeModal />
           </Suspense>
-          {type === 'Initiatives' && (
-            <Suspense fallback={null}>
-              <LazyStatusChangeModal />
-            </Suspense>
-          )}
-        </>
-      );
-    }
-
-    return null;
+        )}
+      </>
+    );
   }
-}
+
+  return null;
+};
 
 const Data = adopt<DataProps, InputProps>({
   posts: ({ type, projectId, render }) => {

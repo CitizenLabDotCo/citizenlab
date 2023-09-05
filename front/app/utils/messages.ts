@@ -228,33 +228,4 @@ export default defineMessages({
     id: 'app.utils.notInGroup',
     defaultMessage: 'You do not meet the requirements to participate.',
   },
-  // Date utils
-  sunday: {
-    id: 'app.utils.date.sunday',
-    defaultMessage: 'Sunday',
-  },
-  monday: {
-    id: 'app.utils.date.monday',
-    defaultMessage: 'Monday',
-  },
-  tuesday: {
-    id: 'app.utils.date.tuesday',
-    defaultMessage: 'Tuesday',
-  },
-  wednesday: {
-    id: 'app.utils.date.wednesday',
-    defaultMessage: 'Wednesday',
-  },
-  thursday: {
-    id: 'app.utils.date.thursday',
-    defaultMessage: 'Thursday',
-  },
-  friday: {
-    id: 'app.utils.date.friday',
-    defaultMessage: 'Friday',
-  },
-  saturday: {
-    id: 'app.utils.date.saturday',
-    defaultMessage: 'Saturday',
-  },
 });

@@ -72,8 +72,9 @@ const IdeaCardImage = styled(Image)`
   flex: 1;
 `;
 
-const ContentWrapper = styled.div`
+const ContentWrapper = styled(Box)`
   height: ${cardInnerHeight};
+  height: auto;
   flex: 0 1 100%;
   display: flex;
   flex-direction: column;
@@ -141,6 +142,7 @@ interface Props {
   footer: JSX.Element | null;
   onClick?: (event: MouseEvent<HTMLAnchorElement>) => void;
   className?: string;
+  height?: string;
 }
 
 export const Card = memo<Props>(
@@ -155,6 +157,7 @@ export const Card = memo<Props>(
     footer,
     className,
     onClick,
+    height,
   }) => {
     return (
       <Container
@@ -175,7 +178,7 @@ export const Card = memo<Props>(
           <IdeaCardImageWrapper>{imagePlaceholder}</IdeaCardImageWrapper>
         )}
 
-        <ContentWrapper>
+        <ContentWrapper height={height}>
           <Header className="e2e-card-title">
             {typeof title === 'string' ? (
               <Title title={title}>{title}</Title>

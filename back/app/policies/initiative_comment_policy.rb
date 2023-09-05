@@ -10,7 +10,7 @@ class InitiativeCommentPolicy < ApplicationPolicy
     end
 
     def resolve
-      scope.where(post_type: 'Initiative')
+      scope.where(post: InitiativePolicy::Scope.new(user, Initiative).resolve)
     end
   end
 

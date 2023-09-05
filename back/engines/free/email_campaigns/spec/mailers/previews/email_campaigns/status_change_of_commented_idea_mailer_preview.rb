@@ -9,6 +9,7 @@ module EmailCampaigns
       idea = Idea.first
       status = idea.idea_status
 
+      # TODO: generate commands with campaign#generate_commands method
       command = {
         recipient: recipient_user,
         event_payload: {

@@ -15,11 +15,11 @@ class IdeaPolicy < ApplicationPolicy
         scope.all
       elsif user
         projects = Pundit.policy_scope(user, Project)
-        scope.where(project: projects, publication_status: %w[published closed])
+        scope.where(project: projects, publication_status: 'published')
       else
         scope
           .left_outer_joins(project: [:admin_publication])
-          .where(publication_status: %w[published closed])
+          .where(publication_status: 'published')
           .where(projects: { visible_to: 'public', admin_publications: { publication_status: %w[published archived] } })
       end
     end
@@ -49,7 +49,7 @@ class IdeaPolicy < ApplicationPolicy
     return false if record.participation_method_on_creation.never_show?
 
     project_show = ProjectPolicy.new(user, record.project).show?
-    return true if project_show && %w[draft published closed].include?(record.publication_status)
+    return true if project_show && %w[draft published].include?(record.publication_status)
 
     active? && (owner? || UserRoleService.new.can_moderate_project?(record.project, user))
   end

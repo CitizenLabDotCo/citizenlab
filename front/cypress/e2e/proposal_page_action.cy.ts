@@ -7,7 +7,7 @@ describe('Initiative show page actions', () => {
     let initiativeId: string;
     let initiativeSlug: string;
 
-    beforeEach(() => {
+    it('asks unauthorised users to log in or sign up before they react', () => {
       cy.apiCreateInitiative({ initiativeTitle, initiativeContent })
         .then((initiative) => {
           initiativeId = initiative.body.data.id;
@@ -19,17 +19,13 @@ describe('Initiative show page actions', () => {
           cy.get('#e2e-initiative-show');
           cy.acceptCookies();
         });
-    });
 
-    afterEach(() => {
-      cy.apiRemoveInitiative(initiativeId);
-    });
-
-    it('asks unauthorised users to log in or sign up before they react', () => {
       cy.get('#e2e-initiative-like-button').should('exist');
       cy.wait(2000);
       cy.get('#e2e-initiative-like-button').click();
       cy.get('#e2e-authentication-modal').should('exist');
+
+      cy.apiRemoveInitiative(initiativeId);
     });
   });
 
@@ -46,6 +42,7 @@ describe('Initiative show page actions', () => {
           initiativeSlug = initiative.body.data.attributes.slug;
         })
         .then(() => {
+          cy.clearCookies();
           cy.setAdminLoginCookie();
           cy.visit(`/initiatives/${initiativeSlug}`);
           cy.get('#e2e-initiative-show');
@@ -169,6 +166,7 @@ describe('Initiative show page actions', () => {
       });
 
       beforeEach(() => {
+        cy.clearCookies();
         cy.setLoginCookie(email, password);
         cy.visit(`/initiatives/${initiativeSlug}`);
         cy.get('#e2e-initiative-show').should('exist');

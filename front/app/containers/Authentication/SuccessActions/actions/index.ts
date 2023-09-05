@@ -6,6 +6,7 @@ import {
   redirectToInitiativeForm,
   RedirectToInitiativeFormParams,
 } from './redirectToInitiativeForm';
+import { follow, FollowActionParams } from './follow';
 import { replyToComment, ReplyToCommentParams } from './replyToComment';
 import { scrollTo, ScrollToParams } from './scrollTo';
 import { volunteer, VolunteerParams } from './volunteer';
@@ -28,6 +29,11 @@ interface RedirectToIdeaFormAction {
 interface RedirectToInitiativeFormAction {
   name: 'redirectToInitiativeForm';
   params: RedirectToInitiativeFormParams;
+}
+
+interface FollowAction {
+  name: 'follow';
+  params: FollowActionParams;
 }
 
 interface ReplyToCommentAction {
@@ -74,12 +80,16 @@ export type SuccessAction =
   | VoteAction
   | ReactionOnCommentAction
   | ReactionOnIdeaAction
-  | ReactionOnInitiativeAction;
+  | ReactionOnInitiativeAction
+  | FollowAction;
 
 export const getAction = ({ name, params }: SuccessAction) => {
   if (name === 'redirectToIdeaForm') return redirectToIdeaForm(params);
   if (name === 'redirectToInitiativeForm') {
     return redirectToInitiativeForm(params);
+  }
+  if (name === 'follow') {
+    return follow(params);
   }
   if (name === 'replyToComment') return replyToComment(params);
   if (name === 'scrollTo') return scrollTo(params);

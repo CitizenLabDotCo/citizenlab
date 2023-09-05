@@ -14,7 +14,7 @@ import {
   Text,
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
-import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
+import OldAnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal/OldAnonymousParticipationConfirmationModal';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -448,14 +448,17 @@ const ParentCommentForm = ({
             </label>
           </Form>
         </FormContainer>
-        <AnonymousParticipationConfirmationModal
-          onConfirmAnonymousParticipation={() => {
-            setShowAnonymousConfirmationModal(false);
-            continueSubmission();
-          }}
-          showAnonymousConfirmationModal={showAnonymousConfirmationModal}
-          setShowAnonymousConfirmationModal={setShowAnonymousConfirmationModal}
-        />
+        {showAnonymousConfirmationModal && (
+          <OldAnonymousParticipationConfirmationModal
+            onConfirmAnonymousParticipation={() => {
+              setShowAnonymousConfirmationModal(false);
+              continueSubmission();
+            }}
+            onCloseModal={() => {
+              setShowAnonymousConfirmationModal(false);
+            }}
+          />
+        )}
       </Container>
     );
   }

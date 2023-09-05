@@ -18,6 +18,16 @@ FactoryBot.define do
       }
     end
 
+    factory :initiative_status_review_pending do
+      code { 'review_pending' }
+      title_multiloc { { 'en' => 'review_pending' } }
+    end
+
+    factory :initiative_status_changes_requested do
+      code { 'changes_requested' }
+      title_multiloc { { 'en' => 'changes_requested' } }
+    end
+
     factory :initiative_status_proposed do
       code { 'proposed' }
       title_multiloc { { 'en' => 'proposed' } }

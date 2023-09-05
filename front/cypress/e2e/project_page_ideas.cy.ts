@@ -1,3 +1,4 @@
+import moment = require('moment');
 import { randomString, randomEmail } from '../support/commands';
 
 // describe('Existing continuous ideation project', () => {
@@ -128,6 +129,17 @@ describe('New timeline project with active ideation phase', () => {
       })
       .then((project) => {
         projectId = project.body.data.id;
+
+        cy.apiCreateEvent({
+          projectId,
+          title: 'Event title',
+          location: 'Event location',
+          includeLocation: true,
+          description: 'Event description',
+          startDate: moment().subtract(1, 'day').toDate(),
+          endDate: moment().add(1, 'day').toDate(),
+        });
+
         return cy.apiCreatePhase({
           projectId,
           title: 'phaseTitle',
@@ -170,6 +182,9 @@ describe('New timeline project with active ideation phase', () => {
 
   it('shows the see-the-ideas button', () => {
     cy.get('#e2e-project-see-ideas-button');
+
+    // Does not show an event CTA if "see idea" button is present
+    cy.get('#e2e-project-see-events-button').should('not.exist');
   });
 
   it('shows the post-your-idea button and authentication modal when you click on it', () => {

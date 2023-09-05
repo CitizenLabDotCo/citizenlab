@@ -12,6 +12,7 @@
 #  slug                         :string
 #  created_at                   :datetime         not null
 #  updated_at                   :datetime         not null
+#  followers_count              :integer          default(0), not null
 #
 # Indexes
 #
@@ -28,6 +29,7 @@ module ProjectFolders
     has_many :files, -> { order(:ordering) }, dependent: :destroy, inverse_of: 'project_folder', foreign_key: 'project_folder_id'  # TODO: remove after renaming project_folder association in File model
     has_many :text_images, as: :imageable, dependent: :destroy
     accepts_nested_attributes_for :text_images
+    has_many :followers, as: :followable, dependent: :destroy
 
     mount_base64_uploader :header_bg, HeaderBgUploader
 
@@ -120,3 +122,5 @@ module ProjectFolders
     end
   end
 end
+
+ProjectFolders::Folder.include(SmartGroups::Concerns::ValueReferenceable)

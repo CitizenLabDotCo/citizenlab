@@ -27,6 +27,7 @@ export const mockFolderChildAdminPublicationsList: IAdminPublicationData[] = [
       },
       publication_slug: 'quas-excepturi-ea-et',
       visible_children_count: 1,
+      followers_count: 3,
     },
     relationships: {
       publication: {
@@ -40,6 +41,9 @@ export const mockFolderChildAdminPublicationsList: IAdminPublicationData[] = [
             type: 'admin_publication',
           },
         ],
+      },
+      user_follower: {
+        data: null,
       },
     },
   },
@@ -69,10 +73,14 @@ export const mockFolderChildAdminPublicationsList: IAdminPublicationData[] = [
       },
       publication_slug: 'rem-nulla-consequatur-vero',
       visible_children_count: 1,
+      followers_count: 3,
     },
     relationships: {
       publication: {
         data: { id: 'c7f4f824-53e1-4b8c-866d-b3412f22d956', type: 'folder' },
+      },
+      user_follower: {
+        data: null,
       },
       parent: { data: null },
       children: {

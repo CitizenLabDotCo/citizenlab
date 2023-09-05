@@ -130,7 +130,8 @@ Rails.application.configure do
     puts
     puts 'Available methods:'
     puts '  `switch(tenant_name)`: switch to given tenant.'
-    puts '  `localhost`: switch to localhost.'
+    puts '  `localhost`: switch to localhost (used by default if exists).'
+    ActiveRecord::Base.logger.silence { Tenant.find_by(host: 'localhost')&.switch! }
     puts
   end
   # rubocop:enable Rails/Output

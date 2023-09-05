@@ -18,6 +18,9 @@
       <p style="margin-top: 10px; color: #84939E;">
         <%= localize_for_recipient(post_body_multiloc)&.html_safe %>
       </p>
+      <% if event.post_author_name %>
+        <p style="color:#8D8D8D;"><%= "by #{event.post_author_name}" %></p>
+      <% end %>
     </mj-text>
   </mj-column>
 </mj-section>
