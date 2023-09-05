@@ -15,9 +15,9 @@ interface Props {
   month?: string | null;
 }
 
-export default ({ day, month }: Props) => {
+const DayAndMonth = ({ day, month }: Props) => {
   const locale = useLocale();
-  const addDotToDay = !isNilOrError(locale) && showDotAfterDay(locale);
+  const addDotAfterDay = !isNilOrError(locale) && showDotAfterDay(locale);
 
   if (locale === 'en') {
     return (
@@ -32,9 +32,11 @@ export default ({ day, month }: Props) => {
     <>
       <EventDay>
         {day}
-        {addDotToDay ? '.' : ''}
+        {addDotAfterDay ? '.' : ''}
       </EventDay>
       {month && <EventMonth>{month}</EventMonth>}
     </>
   );
 };
+
+export default DayAndMonth;

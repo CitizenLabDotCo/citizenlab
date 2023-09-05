@@ -36,19 +36,15 @@ const EventInformationContainer = styled.div`
 
 interface Props {
   event: IEventData;
-  startAtMoment: moment.Moment;
-  endAtMoment: moment.Moment;
   titleFontSize?: number;
 }
 
-const EventInformation = ({
-  event,
-  startAtMoment,
-  endAtMoment,
-  titleFontSize,
-}: Props) => {
+const EventInformation = ({ event, titleFontSize }: Props) => {
   const { formatMessage } = useIntl();
   const theme = useTheme();
+
+  const startAtMoment = moment(event.attributes.start_at);
+  const endAtMoment = moment(event.attributes.end_at);
 
   // const isPastEvent = moment().isAfter(endAtMoment); // TODO: Re-enable once event attendance smart group added
   const address1 = event?.attributes?.address_1;

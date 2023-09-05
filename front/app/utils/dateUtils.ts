@@ -160,6 +160,7 @@ export function toFullMonth(date: string, resolution: IResolution) {
 }
 
 // Function used to determine whether a dot should be shown after the day in short date formats
+// as this is can't be determined for a 3-day month by the moment.js library.
 // Currently only used for German. Other locales can be added if needed.
 export function showDotAfterDay(locale: Locale) {
   return locale === 'de-DE';
@@ -167,12 +168,12 @@ export function showDotAfterDay(locale: Locale) {
 
 // Function used to get the event dates in a localized string format
 export function getEventDateString(event: IEventData) {
-  const startMoment = moment(event?.attributes.start_at);
-  const endMoment = moment(event?.attributes.end_at);
+  const startMoment = moment(event.attributes.start_at);
+  const endMoment = moment(event.attributes.end_at);
 
   const isEventMultipleDays =
     startMoment.dayOfYear() !== endMoment.dayOfYear() ||
-    startMoment.year() !== endMoment.year();
+    startMoment.year() !== endMoment.year(); // Added in case the event is exactly 1 year long
 
   if (isEventMultipleDays) {
     return `${startMoment.format('LLL')} - ${endMoment.format('LLL')}`;

@@ -1,5 +1,4 @@
 import React, { memo } from 'react';
-import moment from 'moment';
 
 // components
 import EventInformation from './EventInformation';
@@ -41,9 +40,6 @@ const EventCard = memo<Props>((props) => {
   const { event, className, id, ...otherProps } = props;
 
   if (!isNilOrError(event)) {
-    const startAtMoment = moment(event.attributes.start_at);
-    const endAtMoment = moment(event.attributes.end_at);
-
     const navigateToEventPage = () => {
       clHistory.push(`/events/${event.id}`);
     };
@@ -55,12 +51,7 @@ const EventCard = memo<Props>((props) => {
         role="button"
         onClick={navigateToEventPage}
       >
-        <EventInformation
-          event={event}
-          startAtMoment={startAtMoment}
-          endAtMoment={endAtMoment}
-          {...otherProps}
-        />
+        <EventInformation event={event} {...otherProps} />
       </Container>
     );
   }
