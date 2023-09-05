@@ -6,7 +6,7 @@ import useLocalize from 'hooks/useLocalize';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import { isNilOrError } from 'utils/helperUtils';
 
-interface InputProps {
+export interface InputProps {
   rule: TRule;
   value: string;
   onChange: (value: string[]) => void;

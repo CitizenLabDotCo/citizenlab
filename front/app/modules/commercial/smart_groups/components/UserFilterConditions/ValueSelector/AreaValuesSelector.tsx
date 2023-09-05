@@ -4,7 +4,7 @@ import MultipleSelect from 'components/UI/MultipleSelect';
 import useAreas from 'api/areas/useAreas';
 import useLocalize from 'hooks/useLocalize';
 
-interface Props {
+export interface Props {
   value: string;
   onChange: (areaIds: string[]) => void;
 }

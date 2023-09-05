@@ -52,6 +52,7 @@ const FieldSelector = memo(
         [key in TStaticRuleType]: MessageDescriptor;
       } = {
         email: messages.field_email,
+        event_attendances: messages.field_event_attendances,
         lives_in: messages.field_lives_in,
         registration_completed_at: messages.field_registration_completed_at,
         role: messages.field_role,
