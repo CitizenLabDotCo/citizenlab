@@ -99,4 +99,23 @@ RSpec.describe 'EmailCampaigns::Campaigns::ModeratorDigest', skip: skip_reason d
       expect(campaign.apply_recipient_filters).to match([moderator])
     end
   end
+
+  describe 'zero_statistics?' do
+    let(:campaign) { build(:moderator_digest_campaign) }
+    let(:project) { create(:project) }
+
+    it 'returns true when no significant stats' do
+      stats = { activities:
+                { new_ideas: { increase: 0, past_increase: 0 },
+                  new_reactions: { increase: 0, past_increase: 0 },
+                  new_comments: { increase: 0, past_increase: 0 },
+                  total_ideas: 0 },
+                users:
+                { new_visitors: { increase: 0, past_increase: 0 },
+                  new_participants: { increase: 0, past_increase: 0 },
+                  total_participants: 0 } }
+      pp stats
+      expect(campaign.send(:zero_statistics?, stats)).to be true
+    end
+  end
 end
