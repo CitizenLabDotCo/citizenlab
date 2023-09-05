@@ -36,6 +36,9 @@ import { deleteFormResults } from 'services/formCustomFields';
 import { saveSurveyAsPDF } from '../saveSurveyAsPDF';
 import ownMessages from '../../ideas/messages';
 import useFeatureFlag from '../../../../../../hooks/useFeatureFlag';
+import { requestBlob } from '../../../../../../utils/request';
+import { API_PATH } from '../../../../../App/constants';
+import { saveAs } from 'file-saver';
 
 type FormActionsProps = {
   phaseId?: string;
@@ -94,6 +97,14 @@ const FormActions = ({
   }) => {
     if (isNilOrError(locale)) return;
     await saveSurveyAsPDF({ projectId, locale, name, email });
+  };
+
+  const downloadExampleFile = async () => {
+    const blob = await requestBlob(
+      `${API_PATH}/projects/${projectId}/import_ideas/example_xlsx`,
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    );
+    saveAs(blob, 'example.xlsx');
   };
 
   if (!isNilOrError(submissionCount)) {
@@ -174,7 +185,13 @@ const FormActions = ({
             </Button>
           </Box>
           {uiSchema && SHOW_PRINT_FUNCTIONALITY && (
-            <Box mt="12px" w="100%" display="flex">
+            <Box
+              mt="12px"
+              w="100%"
+              display="flex"
+              justifyContent="space-between"
+              gap="12px"
+            >
               <Button
                 icon="download"
                 buttonStyle="cl-blue"
@@ -183,6 +200,15 @@ const FormActions = ({
                 onClick={handleDownloadPDF}
               >
                 {formatMessage(messages.downloadSurvey)}
+              </Button>
+              <Button
+                icon="download"
+                buttonStyle="cl-blue"
+                width="auto"
+                minWidth="312px"
+                onClick={downloadExampleFile}
+              >
+                Download an Excel template
               </Button>
               {importPrintedFormsEnabled && (
                 <Button
