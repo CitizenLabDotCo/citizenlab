@@ -82,4 +82,19 @@ RSpec.describe EmailCampaigns::Campaigns::AdminDigest do
       expect(campaign.apply_recipient_filters).to match([admin])
     end
   end
+
+  describe 'content_worth_sending?' do
+    let(:campaign) { build(:admin_digest_campaign) }
+    let(:project) { create(:continuous_project, participation_method: 'ideation') }
+
+    it 'returns false when no significant stats' do
+      expect(campaign.send(:content_worth_sending?, {})).to be false
+    end
+
+    it 'returns true when significant stats' do
+      create(:idea, project: project)
+
+      expect(campaign.send(:content_worth_sending?, {})).to be true
+    end
+  end
 end

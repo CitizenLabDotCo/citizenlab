@@ -108,12 +108,12 @@ module EmailCampaigns
 
     def content_worth_sending?(_)
       [
-        statistics.dig(:activities, :new_ideas, :increase),
-        statistics.dig(:activities, :new_initiatives, :increase),
-        statistics.dig(:activities, :new_comments, :increase),
-        statistics.dig(:users, :new_visitors, :increase),
-        statistics.dig(:users, :new_users, :increase),
-        statistics.dig(:users, :active_users, :increase)
+        statistics.dig(:activities, :new_ideas),
+        statistics.dig(:activities, :new_initiatives),
+        statistics.dig(:activities, :new_comments),
+        statistics.dig(:users, :new_visitors),
+        statistics.dig(:users, :new_users),
+        statistics.dig(:users, :active_users)
       ].any?(&:positive?)
     end
 
@@ -145,10 +145,8 @@ module EmailCampaigns
     def stat_increase(stats = [])
       second_last_agos = stats.select { |t| t > (Time.now - (days_ago * 2)) }
       last_agos = second_last_agos.select { |t| t > (Time.now - days_ago) }
-      {
-        increase: last_agos.size,
-        past_increase: second_last_agos.size
-      }
+
+      last_agos.size
     end
 
     def top_project_ideas
