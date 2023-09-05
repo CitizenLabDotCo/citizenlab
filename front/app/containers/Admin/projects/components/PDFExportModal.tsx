@@ -30,6 +30,10 @@ interface Props {
   onExport: (params: { name: boolean; email: boolean }) => Promise<void>;
 }
 
+// For now we are hiding the option to add email and name fields to
+// the printed form, since this flow needs a bit more work
+const ALLOW_EMAIL_AND_NAME = false;
+
 const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
   const importPrintedFormsEnabled = useFeatureFlag({
     name: 'import_printed_forms',
@@ -96,32 +100,36 @@ const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
             </Text>
             {formType === 'idea_form' && importPrintedFormsEnabled && (
               <>
-                <Text>
+                <Text mb="24px">
                   <FormattedMessage {...messages.itIsAlsoPossible} />
                 </Text>
-                <Text mb="24px">
-                  <FormattedMessage {...messages.nameAndEmailExplanation} />
-                </Text>
-                <Box mb="12px">
-                  <Checkbox
-                    name="name"
-                    label={
-                      <Text m="0">
-                        <FormattedMessage {...messages.includeFullName} />
-                      </Text>
-                    }
-                  />
-                </Box>
-                <Box mb="24px">
-                  <Checkbox
-                    name="email"
-                    label={
-                      <Text m="0">
-                        <FormattedMessage {...messages.includeEmail} />
-                      </Text>
-                    }
-                  />
-                </Box>
+                {ALLOW_EMAIL_AND_NAME && (
+                  <>
+                    <Text mb="24px">
+                      <FormattedMessage {...messages.nameAndEmailExplanation} />
+                    </Text>
+                    <Box mb="12px">
+                      <Checkbox
+                        name="name"
+                        label={
+                          <Text m="0">
+                            <FormattedMessage {...messages.includeFullName} />
+                          </Text>
+                        }
+                      />
+                    </Box>
+                    <Box mb="24px">
+                      <Checkbox
+                        name="email"
+                        label={
+                          <Text m="0">
+                            <FormattedMessage {...messages.includeEmail} />
+                          </Text>
+                        }
+                      />
+                    </Box>
+                  </>
+                )}
               </>
             )}
             <Box w="100%" display="flex">

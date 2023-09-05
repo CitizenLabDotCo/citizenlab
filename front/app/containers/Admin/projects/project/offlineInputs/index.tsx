@@ -8,7 +8,6 @@ import useIdeaById from 'api/ideas/useIdeaById';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
 import useInputSchema from 'hooks/useInputSchema';
 import useDeleteIdea from 'api/ideas/useDeleteIdea';
-import usePhases from 'api/phases/usePhases';
 
 // routing
 import { useParams } from 'react-router-dom';
@@ -26,11 +25,11 @@ import { colors, stylingConsts } from 'utils/styleUtils';
 import { isValidData } from 'components/Form/utils';
 import { customAjv } from 'components/Form';
 import { getFormValues } from 'containers/IdeasEditPage/utils';
-import { getCurrentPhase } from 'api/phases/utils';
 
 // typings
 import { FormData } from 'components/Form/typings';
 import { CLErrors } from 'typings';
+import { geocode } from 'utils/locationTools';
 
 const OfflineInputImporter = () => {
   const importPrintedFormsEnabled = useFeatureFlag({
@@ -41,7 +40,6 @@ const OfflineInputImporter = () => {
   };
 
   const [ideaId, setIdeaId] = useState<string | null>(null);
-  const [selectedPhaseId, setSelectedPhaseId] = useState<string | null>(null);
   const [apiErrors, setApiErrors] = useState<CLErrors | undefined>();
   const [importModalOpen, setImportModalOpen] = useState(false);
   const [formStatePerIdea, setFormStatePerIdea] = useState<
@@ -52,8 +50,6 @@ const OfflineInputImporter = () => {
   const { mutateAsync: updateIdea, isLoading: loadingApproveIdea } =
     useUpdateIdea();
   const { mutate: deleteIdea } = useDeleteIdea();
-  const { data: phases } = usePhases(projectId);
-  const currentPhase = getCurrentPhase(phases?.data);
 
   const { schema, uiSchema } = useInputSchema({
     projectId,
@@ -67,8 +63,6 @@ const OfflineInputImporter = () => {
       : idea && schema
       ? getFormValues(idea, schema)
       : null;
-
-  const phaseId = selectedPhaseId ?? currentPhase?.id;
 
   const setFormData = (formData: FormData) => {
     if (!ideaId) return;
@@ -95,14 +89,28 @@ const OfflineInputImporter = () => {
   const onApproveIdea = async () => {
     if (!ideaId || !formData || !formDataValid) return;
 
+    const {
+      location_description,
+      idea_files_attributes: _idea_files_attributes,
+      idea_images_attributes: _idea_images_attributes,
+      topic_ids: _topic_ideas,
+      ...supportedFormData
+    } = formData;
+
+    const location_point_geojson =
+      typeof location_description === 'string' &&
+      location_description.length > 0
+        ? await geocode(location_description)
+        : undefined;
+
     try {
       await updateIdea({
         id: ideaId,
         requestBody: {
           publication_status: 'published',
-          title_multiloc: formData.title_multiloc,
-          body_multiloc: formData.body_multiloc,
-          ...(phaseId ? { phase_ids: [phaseId] } : {}),
+          ...supportedFormData,
+          ...(location_description ? { location_description } : {}),
+          ...(location_point_geojson ? { location_point_geojson } : {}),
         },
       });
     } catch (e) {
@@ -136,17 +144,12 @@ const OfflineInputImporter = () => {
         h="100vh"
       >
         <FocusOn>
-          <TopBar
-            phaseId={phaseId}
-            onChangePhase={setSelectedPhaseId}
-            onClickPDFImport={openImportModal}
-          />
+          <TopBar onClickPDFImport={openImportModal} />
           <Box
             mt={`${stylingConsts.mobileMenuHeight}px`}
             h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px)`}
           >
             <ReviewSection
-              phaseId={phaseId}
               ideaId={ideaId}
               apiErrors={apiErrors}
               formData={formData}

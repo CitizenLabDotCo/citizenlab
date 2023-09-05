@@ -13,6 +13,7 @@ import usePhase from 'api/phases/usePhase';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
+import useLocalize from 'hooks/useLocalize';
 import messages from './messages';
 import sharedMessages from '../TopBar/messages';
 
@@ -25,7 +26,7 @@ import {
   Button,
 } from '@citizenlab/cl2-component-library';
 import IdeaList from './IdeaList';
-import AuthorBox from './AuthorBox';
+import InfoBox from './InfoBox';
 import IdeaForm from './IdeaForm';
 import PDFPageControl from './PDFPageControl';
 import PDFViewer from './PDFViewer';
@@ -35,7 +36,6 @@ import { colors, stylingConsts } from 'utils/styleUtils';
 
 // utils
 import { getFullName } from 'utils/textUtils';
-import { canContainIdeas } from 'api/phases/utils';
 import { getNextIdeaId } from './utils';
 
 // typings
@@ -43,7 +43,6 @@ import { FormData } from 'components/Form/typings';
 import { CLErrors } from 'typings';
 
 interface Props {
-  phaseId?: string;
   ideaId: string | null;
   apiErrors?: CLErrors;
   formData: FormData;
@@ -56,7 +55,6 @@ interface Props {
 }
 
 const ReviewSection = ({
-  phaseId,
   ideaId,
   apiErrors,
   formData,
@@ -67,6 +65,7 @@ const ReviewSection = ({
   onApproveIdea,
   onDeleteIdea,
 }: Props) => {
+  const localize = useLocalize();
   const { projectId } = useParams() as {
     projectId: string;
   };
@@ -78,11 +77,12 @@ const ReviewSection = ({
     idea?.data.relationships.author?.data?.id,
     false
   );
-  const { data: phase } = usePhase(phaseId);
-
   const { data: ideaMetadata } = useImportedIdeaMetadata({
     id: isLoading ? undefined : idea?.data.relationships.idea_import?.data?.id,
   });
+
+  const phaseId = idea?.data.relationships.phases.data[0]?.id;
+  const { data: phase } = usePhase(phaseId);
 
   if (isLoading) {
     return (
@@ -136,10 +136,12 @@ const ReviewSection = ({
       ? ideaMetadata?.data.attributes.page_range.map((page) => Number(page))
       : null;
 
+  const phaseName = phase
+    ? localize(phase.data.attributes.title_multiloc)
+    : undefined;
+
   const authorName = author ? getFullName(author.data) : undefined;
   const authorEmail = author?.data.attributes.email;
-
-  const phaseNotAllowed = phase ? !canContainIdeas(phase.data) : false;
 
   const goToNextPage = () => setCurrentPageIndex((index) => index + 1);
   const goToPreviousPage = () => setCurrentPageIndex((index) => index - 1);
@@ -154,9 +156,7 @@ const ReviewSection = ({
         }
       : undefined;
 
-  const disabledReason = phaseNotAllowed ? (
-    <FormattedMessage {...messages.phaseNotAllowed} />
-  ) : formDataValid ? null : (
+  const disabledReason = formDataValid ? null : (
     <FormattedMessage {...messages.formDataNotValid} />
   );
 
@@ -226,9 +226,16 @@ const ReviewSection = ({
             overflowY="scroll"
             w="100%"
             h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px - 160px)`}
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
           >
-            {(authorEmail || authorName) && (
-              <AuthorBox authorName={authorName} authorEmail={authorEmail} />
+            {(phaseName || authorEmail || authorName) && (
+              <InfoBox
+                phaseName={phaseName}
+                authorName={authorName}
+                authorEmail={authorEmail}
+              />
             )}
             {idea && (
               <IdeaForm
@@ -261,7 +268,7 @@ const ReviewSection = ({
                     icon="check"
                     w="100%"
                     processing={loadingApproveIdea}
-                    disabled={phaseNotAllowed || !formDataValid}
+                    disabled={!formDataValid}
                     onClick={handleApproveIdea}
                   >
                     <FormattedMessage {...messages.approve} />
