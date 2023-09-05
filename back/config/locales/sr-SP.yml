@@ -209,6 +209,7 @@ sr-Cyrl:
       status: 'Статус'
       assignee_fullname: 'Асигнее'
       assignee_email: 'Имејл примаоца'
+      image_url: 'УРЛ слике'
     anonymous: 'Анонимоус'
   form_builder:
     default_select_field:
@@ -222,9 +223,11 @@ sr-Cyrl:
       full_name: 'Пуно име'
       email_address: 'Адреса Е-поште'
       optional: 'опционо'
+      permission: 'Дозвола'
       choose_as_many: 'Изаберите колико желите'
       this_answer: 'Овај одговор ће бити подељен само модераторима, а не јавности.'
       page: 'Страна'
+      date_published: 'Датум објављивања (дд-мм-гггг)'
   project_copy:
     title_suffix: 'Копирај'
   confirmations_mailer:
