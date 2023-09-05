@@ -446,5 +446,33 @@ describe BulkImportIdeas::ImportIdeasService do
         an_instance_of(BulkImportIdeas::Error).and(having_attributes(key: 'bulk_import_ideas_publication_date_invalid_format', params: { value: '01-13-2021', row: nil }))
       )
     end
+
+    context 'surveys' do
+      it 'can import surveys' do
+        create(:user, email: 'userimport@citizenlab.co')
+        create(:project, title_multiloc: { 'en' => 'Project title' })
+        create(:topic)
+        topic1 = create(:topic, title_multiloc: { 'en' => 'Topic 1' })
+        topic2 = create(:topic, title_multiloc: { 'nl-BE' => 'Project twee', 'en' => 'Topic 2' })
+
+        idea_rows = [
+          {
+            title_multiloc: { 'en' => 'My idea title' },
+            body_multiloc: { 'en' => 'My idea description' },
+            project_title: 'Project title',
+            user_email: 'userimport@citizenlab.co',
+            topic_titles: ['Topic 1', 'Topic 2']
+          }
+        ]
+
+        service.import_ideas idea_rows
+
+        expect(Idea.count).to eq 1
+        idea = Idea.first
+        expect(idea.topic_ids).to match_array [topic1.id, topic2.id]
+      end
+    end
   end
+
+
 end

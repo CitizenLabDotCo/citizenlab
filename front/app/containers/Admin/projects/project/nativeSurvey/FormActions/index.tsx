@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { darken } from 'polished';
 
 // components
@@ -33,6 +33,8 @@ import { colors } from 'utils/styleUtils';
 // services
 import { deleteFormResults } from 'services/formCustomFields';
 import { saveSurveyAsPDF } from '../saveSurveyAsPDF';
+import ownMessages from '../../ideas/messages';
+import useFeatureFlag from '../../../../../../hooks/useFeatureFlag';
 
 type FormActionsProps = {
   phaseId?: string;
@@ -65,6 +67,9 @@ const FormActions = ({
   });
   const { uiSchema } = useInputSchema({ projectId, phaseId });
   const locale = useLocale();
+  const importPrintedFormsEnabled = useFeatureFlag({
+    name: 'import_printed_forms',
+  });
 
   const closeModal = () => {
     setShowDeleteModal(false);
@@ -168,7 +173,14 @@ const FormActions = ({
             </Button>
           </Box>
           {uiSchema && (
-            <Box mt="12px" w="100%" display="flex">
+            <Box
+              display="flex"
+              flexDirection="row"
+              width="100%"
+              mb="36px"
+              mt="12px"
+              gap="16px"
+            >
               <Button
                 icon="download"
                 buttonStyle="cl-blue"
@@ -178,8 +190,20 @@ const FormActions = ({
               >
                 {formatMessage(messages.downloadSurvey)}
               </Button>
+              {importPrintedFormsEnabled && (
+                <Button
+                  width="auto"
+                  minWidth="312px"
+                  buttonStyle="cl-blue"
+                  linkTo={`/admin/projects/${projectId}/offline-inputs`}
+                  icon="page"
+                >
+                  <FormattedMessage {...ownMessages.addOfflineInputs} />
+                </Button>
+              )}
             </Box>
           )}
+
           {haveSubmissionsComeIn && (
             <Box
               display="flex"
