@@ -2,8 +2,8 @@ import moment = require('moment');
 import { randomEmail, randomString } from '../support/commands';
 
 describe('Continuous ideation with anonymous participation allowed', () => {
-  const projectTitle = randomString();
-  const projectDescriptionPreview = randomString(30);
+  const projectTitle = randomString(5);
+  const projectDescriptionPreview = randomString(5);
   const email = randomEmail();
   const password = randomString(15);
   let projectId: string;
@@ -36,8 +36,8 @@ describe('Continuous ideation with anonymous participation allowed', () => {
   });
 
   it('admin can submit anonymous idea', () => {
-    const ideaTitle = randomString(20);
-    const ideaContent = randomString(60);
+    const ideaTitle = randomString(11);
+    const ideaContent = randomString(30);
 
     cy.setAdminLoginCookie();
 
@@ -72,8 +72,8 @@ describe('Continuous ideation with anonymous participation allowed', () => {
   });
 
   it('resident can submit anonymous idea', () => {
-    const ideaTitle = randomString(20);
-    const ideaContent = randomString(60);
+    const ideaTitle = randomString(11);
+    const ideaContent = randomString(30);
 
     cy.setLoginCookie(email, password);
 
@@ -114,8 +114,7 @@ describe('Continuous ideation with anonymous participation allowed', () => {
 });
 
 describe('Timeline ideation with anonymous participation allowed', () => {
-  const projectTitle = randomString();
-  const projectDescriptionPreview = randomString(30);
+  const projectTitle = randomString(5);
   const email = randomEmail();
   const password = randomString(15);
   let projectId: string;
@@ -153,8 +152,8 @@ describe('Timeline ideation with anonymous participation allowed', () => {
   });
 
   it('admin can submit anonymous idea', () => {
-    const ideaTitle = randomString(20);
-    const ideaContent = randomString(60);
+    const ideaTitle = randomString(11);
+    const ideaContent = randomString(30);
 
     cy.setAdminLoginCookie();
 
@@ -189,8 +188,8 @@ describe('Timeline ideation with anonymous participation allowed', () => {
   });
 
   it('resident can submit anonymous idea', () => {
-    const ideaTitle = randomString(20);
-    const ideaContent = randomString(60);
+    const ideaTitle = randomString(11);
+    const ideaContent = randomString(30);
 
     cy.setLoginCookie(email, password);
 
