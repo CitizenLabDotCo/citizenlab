@@ -209,6 +209,7 @@ hr:
       status: 'Stanje'
       assignee_fullname: 'Opunomoćenik'
       assignee_email: 'E-pošta opunomoćenika'
+      image_url: 'URL slike'
     anonymous: 'Anonimno'
   form_builder:
     default_select_field:
@@ -222,9 +223,11 @@ hr:
       full_name: 'Puno ime'
       email_address: 'Email adresa'
       optional: 'neobavezan'
+      permission: 'Dopuštenje'
       choose_as_many: 'Odaberite koliko god želite'
       this_answer: 'Ovaj odgovor će biti podijeljen samo moderatorima, a ne javnosti.'
       page: 'Stranica'
+      date_published: 'Datum objave (dd-mm-gggg)'
   project_copy:
     title_suffix: 'Kopija'
   confirmations_mailer:
