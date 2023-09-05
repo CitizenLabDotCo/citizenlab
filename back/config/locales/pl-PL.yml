@@ -209,6 +209,7 @@ pl:
       status: 'Status'
       assignee_fullname: 'Moderator'
       assignee_email: 'E-mail osoby przypisanej'
+      image_url: 'Adres URL obrazu'
     anonymous: 'Anonimowy'
   form_builder:
     default_select_field:
@@ -222,9 +223,11 @@ pl:
       full_name: 'Imię i nazwisko'
       email_address: 'Adres e-mail'
       optional: 'opcjonalny'
+      permission: 'Zezwolenie'
       choose_as_many: 'Wybierz dowolną liczbę'
       this_answer: 'Ta odpowiedź zostanie udostępniona tylko moderatorom, a nie publicznie.'
       page: 'Strona'
+      date_published: 'Data publikacji (dd-mm-rrrr)'
   project_copy:
     title_suffix: 'Kopia'
   confirmations_mailer:
