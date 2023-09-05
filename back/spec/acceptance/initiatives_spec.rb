@@ -424,9 +424,9 @@ resource 'Initiatives' do
       example_request '[error] Create an initiative with blocked words' do
         assert_status 422
         json_response = json_parse(response_body)
-        blocked_error = json_response.dig(:errors, :base)&.select { |err| err[:error] == 'includes_banned_words' }&.first
-        expect(blocked_error).to be_present
-        expect(blocked_error[:blocked_words].pluck(:attribute).uniq).to eq(['location_description'])
+
+        expect(json_response.dig(:errors, :error)).to eq 'includes_banned_words'
+        expect(json_response.dig(:errors, :blocked_words).pluck(:attribute).uniq).to eq(['location_description'])
       end
     end
 
