@@ -209,6 +209,7 @@ sv:
       status: 'Status'
       assignee_fullname: 'Tilldelad person'
       assignee_email: 'Mottagarens e-postadress'
+      image_url: 'URL för bild'
     anonymous: 'Anonymt'
   form_builder:
     default_select_field:
@@ -222,9 +223,11 @@ sv:
       full_name: 'Fullständigt namn'
       email_address: 'E-postadress'
       optional: 'valfri'
+      permission: 'Tillstånd'
       choose_as_many: 'Välj så många du vill'
       this_answer: 'Detta svar kommer endast att delas med moderatorer och inte med allmänheten.'
       page: 'Sida'
+      date_published: 'Datum för publicering (dd-mm-åååå)'
   project_copy:
     title_suffix: 'Kopia'
   confirmations_mailer:
