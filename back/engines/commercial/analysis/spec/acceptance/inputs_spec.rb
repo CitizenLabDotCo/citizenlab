@@ -73,7 +73,7 @@ resource 'Inputs' do
           votes_count: 0
         })
         expect(response_data.dig(0, :relationships, :author, :data)).to match({
-          type: 'user',
+          type: 'analysis_user',
           id: kind_of(String)
         })
         expect(response_data.dig(0, :relationships, :idea, :data)).to match({
