@@ -125,7 +125,6 @@ describe('Timeline ideation with anonymous participation allowed', () => {
     cy.apiSignup('firstName', 'lastName', email, password).then((response) => {
       userId = response.body.data.id;
     });
-    cy.setAdminLoginCookie();
     cy.getAuthUser().then(() => {
       cy.apiCreateProject({
         type: 'timeline',
@@ -156,8 +155,8 @@ describe('Timeline ideation with anonymous participation allowed', () => {
     const ideaContent = randomString(30);
 
     cy.setAdminLoginCookie();
-
     cy.visit(`/projects/${projectSlug}/ideas/new`);
+    cy.acceptCookies();
 
     cy.get('#e2e-idea-new-page');
     cy.get('#idea-form');
@@ -192,8 +191,8 @@ describe('Timeline ideation with anonymous participation allowed', () => {
     const ideaContent = randomString(30);
 
     cy.setLoginCookie(email, password);
-
     cy.visit(`/projects/${projectSlug}/ideas/new`);
+    cy.acceptCookies();
 
     cy.get('#e2e-idea-new-page');
     cy.get('#idea-form');
