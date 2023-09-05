@@ -82,7 +82,7 @@ module BulkImportIdeas
 
         idea_row[:project_id]   = @project.id
         idea_row[:phase_id]     = @phase.id if @phase
-        idea_row[:pdf_pages]        = page_range
+        idea_row[:pdf_pages]    = page_range
         idea_row[:published_at] = fields[locale_published_label]
         idea_row[:image_url]    = fields[locale_image_url_label]
         idea_row[:latitude]     = fields[locale_latitude_label]

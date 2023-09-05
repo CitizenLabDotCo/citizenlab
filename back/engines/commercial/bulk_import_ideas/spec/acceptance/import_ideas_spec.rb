@@ -271,13 +271,13 @@ resource 'BulkImportIdeasImportIdeas' do
 
   def create_project_bulk_import_raw_text_array
     ["Page 1\n" \
-      "Full name\nBob Test\n" \
-      "Email address\nbob@test.com\n" \
-      "Title\n" \
-      "This is really a great title\n" \
-      "Description\n" \
-      "And this is the body\n" \
-      "Location (optional)\n" \
-      "Somewhere\n"]
+     "Full name\nBob Test\n" \
+     "Email address\nbob@test.com\n" \
+     "Title\n" \
+     "This is really a great title\n" \
+     "Description\n" \
+     "And this is the body\n" \
+     "Location (optional)\n" \
+     "Somewhere\n"]
   end
 end
