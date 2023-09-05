@@ -808,7 +808,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedIdeas": "Idées importées",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet2": "Rien à signaler pour l'instant. Cliquez sur \"{importPdf}\" pour importer un fichier PDF contenant des formulaires de saisie numérisés.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.page": "Page",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Phase:",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Phase :",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phaseNotAllowed": "La phase sélectionnée ne peut pas contenir d'idées. Veuillez en sélectionner une autre.",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject": "Ce projet ne contient aucune phase pouvant contenir des idées.",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAnotherPhase2": "Veuillez sélectionner une phase d'idéation ou de vote.",
