@@ -48,6 +48,7 @@ import { IInitiativeFileData } from 'api/initiative_files/types';
 import Warning from 'components/UI/Warning';
 import useInitiativeReviewRequired from 'hooks/useInitiativeReviewRequired';
 import { stripHtmlTags } from 'utils/helperUtils';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 declare module 'components/UI/Error' {
   interface TFieldNameMap {
@@ -84,9 +85,14 @@ const InitiativeForm = ({
   const mapsLoaded = window.googleMaps;
   const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
     useState(false);
+  const { data: appConfiguration } = useAppConfiguration();
+  const cosponsorsRequired =
+    appConfiguration?.data.attributes.settings.initiatives
+      ?.require_cosponsors || false;
   const { formatMessage } = useIntl();
   const initiativeReviewRequired = useInitiativeReviewRequired();
   const { data: topics } = useTopics({ excludeCode: 'custom' });
+  const maxNumberOfCosponsors = 10;
   const schema = object({
     title_multiloc: validateAtLeastOneLocale(
       formatMessage(messages.titleEmptyError),
@@ -112,7 +118,15 @@ const InitiativeForm = ({
     topic_ids: array()
       .required(formatMessage(messages.topicEmptyError))
       .min(1, formatMessage(messages.topicEmptyError)),
-    cosponsor_ids: array().optional(),
+    ...(cosponsorsRequired && {
+      cosponsor_ids: array()
+        .required(formatMessage(messages.cosponsorsEmptyError))
+        .min(1, formatMessage(messages.cosponsorsEmptyError))
+        .max(
+          maxNumberOfCosponsors,
+          formatMessage(messages.cosponsorsMaxError, { maxNumberOfCosponsors })
+        ),
+    }),
     local_initiative_files: mixed().optional(),
     images: mixed().optional().nullable(),
     header_bg: mixed().optional().nullable(),
