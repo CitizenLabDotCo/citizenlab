@@ -191,16 +191,16 @@ da:
       yesterday: I går
     comment_on_idea_you_follow:
       cta_reply_to: 'Svar til %{commentAuthor}'
-      event_description: '%{authorNameFull} angav en reaktion til din idé "%{ideaTitle}". Klik på nedenstående knap, for at fortsætte samtalen med %{authorName}.'
+      event_description: '%{authorNameFull} gav en reaktion på din idé "%{ideaTitle}". Klik på nedenstående knap, for at fortsætte samtalen med %{authorName}.'
       main_header: '%{authorName} kommenterede på en idé, du følger'
       subject: 'Der er en ny kommentar til en idé, du følger'
       preheader: '%{authorName} efterlod en kommentar til en idé til %{organizationName}'
     comment_on_initiative_you_follow:
       cta_reply_to: 'Svar til %{commentAuthor}'
-      event_description: '%{authorNameFull} angav en reaktion på dit forslag "%{initiativeTitle}". Klik på nedenstående knap, for at fortsætte med %{authorName}.'
+      event_description: '%{authorNameFull} gav en reaktion på dit forslag "%{initiativeTitle}". Klik på nedenstående knap, for at fortsætte med %{authorName}.'
       main_header: '%{commentAuthor} kommenterede på et initiativ, du følger'
       subject: 'Der er en ny kommentar til det forslag, du følger'
-      preheader: '%{authorName} efterlod en kommentar til et initiativ til %{organizationName}'
+      preheader: '%{authorName} efterlod en kommentar til et forslag til %{organizationName}'
     new_initiative_for_admin:
       cta_reply_to: 'Giv feedback til %{authorName}'
       event_description: '%{authorName} har offentliggjort et nyt forslag på din platform. Se den nu, giv feedback på den, eller ændr dens status!'
