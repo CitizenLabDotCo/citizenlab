@@ -346,12 +346,12 @@ export type TRule =
       value?: string;
     }
   | {
-      ruleType?: 'event_attendances'; // TODO: check if this is correct
+      ruleType?: 'event_attendances';
       predicate?: 'attends_something' | 'attends_nothing';
       value?: undefined;
     }
   | {
-      ruleType?: 'event_attendances'; // TODO: check if this is correct
+      ruleType?: 'event_attendances';
       predicate?: 'attends_some_of' | 'attends_none_of';
       value?: string[];
     }
