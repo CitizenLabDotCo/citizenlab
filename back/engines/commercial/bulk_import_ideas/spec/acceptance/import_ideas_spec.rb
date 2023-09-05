@@ -249,13 +249,13 @@ resource 'BulkImportIdeasImportIdeas' do
       {
         'Title' => 'My project idea title 1',
         'Body' => 'My idea content',
-        'Email' => 'dave@citizenlab.co',
+        'Email address' => 'dave@citizenlab.co',
         'Permission' => 'X'
       },
       {
         'Title' => 'My project idea title 2',
         'Body' => 'My idea content',
-        'Email' => 'bob@citizenlab.co',
+        'Email address' => 'bob@citizenlab.co',
         'Permission' => ''
       }
     ]

@@ -92,6 +92,7 @@ module BulkImportIdeas
         fields = clean_field_names(fields)
         idea_row = process_user_details(fields, idea_row)
         idea_row = process_custom_form_fields(fields, idea_row)
+
         idea_row
       end
       idea_rows.compact
