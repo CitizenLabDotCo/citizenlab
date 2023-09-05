@@ -1,10 +1,11 @@
-import React from 'react';
-import { ILocationInfo } from 'typings';
+import React, { useState } from 'react';
+import { CLError, ILocationInfo } from 'typings';
 
 // components
 import InitiativeForm, {
   FormValues as FormValues2,
 } from 'components/InitiativeForm';
+import { APIErrorsContext, FormContext } from 'components/Form/contexts';
 
 // style
 import clHistory from 'utils/cl-router/history';
@@ -25,6 +26,7 @@ const InitiativesNewFormWrapper = (_props: Props) => {
   const { mutate: addInitiative } = useAddInitiative();
   const { mutate: addInitiativeImage } = useAddInitiativeImage();
   const { mutate: addInitiativeFile } = useAddInitiativeFile();
+  const [apiErrors, setApiErrors] = useState<CLError[] | undefined>();
 
   const handleOnSubmit = async ({
     position,
@@ -77,11 +79,29 @@ const InitiativesNewFormWrapper = (_props: Props) => {
             search: `?new_initiative_id=${initiative.data.id}`,
           });
         },
+        onError: (error) => {
+          setApiErrors(error.errors);
+        },
       }
     );
   };
 
-  return <InitiativeForm onSubmit={handleOnSubmit} />;
+  return (
+    <APIErrorsContext.Provider value={apiErrors}>
+      <FormContext.Provider
+        value={{
+          getApiErrorMessage: () => undefined,
+          showAllErrors: true,
+          setShowAllErrors: () => undefined,
+          setShowSubmitButton: () => undefined,
+          inputId: undefined,
+          onSubmit: () => undefined,
+        }}
+      >
+        <InitiativeForm onSubmit={handleOnSubmit} />
+      </FormContext.Provider>
+    </APIErrorsContext.Provider>
+  );
 };
 
 export default InitiativesNewFormWrapper;

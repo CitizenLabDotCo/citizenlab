@@ -39,6 +39,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 const ImageAndAttachmentsSection = lazy(
   () => import('./ImagesAndAttachmentsSection')
 );
+import ErrorDisplay from 'components/Form/Components/ErrorDisplay';
 
 // Hooks
 import useTopics from 'api/topics/useTopics';
@@ -219,22 +220,7 @@ const InitiativeForm = ({
                     maxCharCount={72}
                   />
                 </FormLabel>
-                {/* {titleProfanityError && (
-              <Error
-                text={
-                  <FormattedMessage
-                    {...messages.profanityError}
-                    values={{
-                      guidelinesLink: (
-                        <Link to="/pages/faq" target="_blank">
-                          {formatMessage(messages.guidelinesLinkText)}
-                        </Link>
-                      ),
-                    }}
-                  />
-                }
-              />
-            )} */}
+                <ErrorDisplay fieldPath="title_multiloc" />
               </SectionField>
 
               <SectionField id="e2e-initiative-form-description-section">
@@ -249,22 +235,7 @@ const InitiativeForm = ({
                   noVideos
                   noAlign
                 />
-                {/* {descriptionProfanityError && (
-                  <Error
-                    text={
-                      <FormattedMessage
-                        {...messages.profanityError}
-                        values={{
-                          guidelinesLink: (
-                            <Link to="/pages/faq" target="_blank">
-                              {formatMessage(messages.guidelinesLinkText)}
-                            </Link>
-                          ),
-                        }}
-                      />
-                    }
-                  />
-                )} */}
+                <ErrorDisplay fieldPath="body_multiloc" />
               </SectionField>
               <Warning>
                 <>
