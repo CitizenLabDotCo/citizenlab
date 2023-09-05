@@ -81,7 +81,7 @@ const ReviewSection = ({
     id: isLoading ? undefined : idea?.data.relationships.idea_import?.data?.id,
   });
 
-  const phaseId = idea?.data.relationships.phases.data[0].id;
+  const phaseId = idea?.data.relationships.phases.data[0]?.id;
   const { data: phase } = usePhase(phaseId);
 
   if (isLoading) {

@@ -60,7 +60,7 @@ module BulkImportIdeas
 
     def ideas_to_idea_rows(ideas_array)
       ideas_array.map do |idea|
-        page_range = idea[:pages]
+        page_range = idea[:pdf_pages]
         fields = idea[:fields]
 
         idea_row = {}
@@ -68,7 +68,7 @@ module BulkImportIdeas
         # Fields not in the idea/survey form
         idea_row[:project_id]   = @project.id
         idea_row[:phase_id]     = @phase.id if @phase
-        idea_row[:pages]        = page_range
+        idea_row[:pdf_pages]        = page_range
         idea_row[:published_at] = fields['Date Published (dd-mm-yyyy)']
         idea_row[:image_url]    = fields['Image URL']
         idea_row[:latitude]     = fields['Latitude']

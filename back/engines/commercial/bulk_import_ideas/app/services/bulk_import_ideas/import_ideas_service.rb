@@ -283,7 +283,9 @@ module BulkImportIdeas
     def parse_pdf_ideas(file)
       pdf_file = decode_base64 file
       google_forms_service = GoogleFormParserService.new pdf_file
-      IdeaPlaintextParserService.new(@project.id, @locale, @phase&.id).parse_text(google_forms_service.raw_text)
+      IdeaPlaintextParserService.new(
+        @project.id, @locale, @phase&.id
+      ).parse_text(google_forms_service.raw_text_page_array)
     end
 
     def decode_base64(base64_file)

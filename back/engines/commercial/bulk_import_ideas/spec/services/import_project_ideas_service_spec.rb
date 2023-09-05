@@ -146,8 +146,8 @@ describe BulkImportIdeas::ImportProjectIdeasService do
     end
 
     it 'lists the correct pages for the document' do
-      expect(rows[0][:pages]).to eq [1, 2]
-      expect(rows[1][:pages]).to eq [3, 4]
+      expect(rows[0][:pdf_pages]).to eq [1, 2]
+      expect(rows[1][:pdf_pages]).to eq [3, 4]
     end
 
     it 'does not return an email if it does not validate' do
