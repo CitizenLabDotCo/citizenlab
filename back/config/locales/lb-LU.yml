@@ -209,6 +209,7 @@ lb:
       status: 'Status'
       assignee_fullname: 'Mandataire'
       assignee_email: 'E-Mail vum Beoptragten'
+      image_url: 'Bild URL'
     anonymous: 'Anonym'
   form_builder:
     default_select_field:
@@ -222,9 +223,11 @@ lb:
       full_name: 'Ganzen numm'
       email_address: 'E-Mailadress'
       optional: 'fakultativ'
+      permission: 'Erlaabnis'
       choose_as_many: 'Wielt esou vill wéi Dir wëllt'
       this_answer: 'Dës Äntwert gëtt nëmme mat Moderatoren gedeelt, an net un de Public.'
       page: 'Säit'
+      date_published: 'Verëffentlechungsdatum (dd-mm-jjjj)'
   project_copy:
     title_suffix: 'Kopie'
   confirmations_mailer:
