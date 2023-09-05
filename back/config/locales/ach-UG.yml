@@ -209,6 +209,7 @@ ach:
       status: 'crwdns902761:0crwdne902761:0'
       assignee_fullname: 'crwdns902763:0crwdne902763:0'
       assignee_email: 'crwdns902765:0crwdne902765:0'
+      image_url: 'crwdns993115:0crwdne993115:0'
     anonymous: 'crwdns902767:0crwdne902767:0'
   form_builder:
     default_select_field:
@@ -222,9 +223,11 @@ ach:
       full_name: 'crwdns902779:0crwdne902779:0'
       email_address: 'crwdns902781:0crwdne902781:0'
       optional: 'crwdns933729:0crwdne933729:0'
+      permission: 'crwdns993117:0crwdne993117:0'
       choose_as_many: 'crwdns933731:0crwdne933731:0'
       this_answer: 'crwdns933733:0crwdne933733:0'
       page: 'crwdns992985:0crwdne992985:0'
+      date_published: 'crwdns993119:0crwdne993119:0'
   project_copy:
     title_suffix: 'crwdns902783:0crwdne902783:0'
   confirmations_mailer:
