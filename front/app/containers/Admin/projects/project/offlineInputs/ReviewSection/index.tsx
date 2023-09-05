@@ -120,7 +120,7 @@ const ReviewSection = ({
             <FormattedMessage
               {...messages.noIdeasYet}
               values={{
-                importPdf: <FormattedMessage {...sharedMessages.importPdf} />,
+                importFile: <FormattedMessage {...sharedMessages.importFile} />,
               }}
             />
           </Text>
@@ -129,9 +129,12 @@ const ReviewSection = ({
     );
   }
 
-  const pages = ideaMetadata?.data.attributes.page_range.map((page) =>
-    Number(page)
-  );
+  // console.log(ideaMetadata?.data.attributes.import_type === 'pdf');
+
+  const pages =
+    ideaMetadata?.data.attributes.import_type === 'pdf'
+      ? ideaMetadata?.data.attributes.page_range.map((page) => Number(page))
+      : null;
 
   const phaseName = phase
     ? localize(phase.data.attributes.title_multiloc)
@@ -276,12 +279,18 @@ const ReviewSection = ({
           </Box>
         </Box>
         <Box w="40%">
-          {ideaMetadata && pages && (
+          {ideaMetadata && pages ? (
             <PDFViewer
               currentPageIndex={currentPageIndex}
               file={ideaMetadata.data.attributes.file.url}
               pages={pages}
             />
+          ) : (
+            <Box w="100%" h="100%" m="10px">
+              <Text>
+                <FormattedMessage {...messages.pdfNotAvailable} />
+              </Text>
+            </Box>
           )}
         </Box>
       </Box>

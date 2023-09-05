@@ -11,6 +11,8 @@ resource 'BulkImportIdeasImportIdeas' do
     header 'Content-Type', 'application/json'
   end
 
+  let!(:project) { create(:continuous_project, title_multiloc: { en: 'Project 1' }) }
+
   context 'when not authorized' do
     get 'web_api/v1/import_ideas/example_xlsx' do
       example_request 'Get the example xlsx' do
@@ -29,7 +31,6 @@ resource 'BulkImportIdeasImportIdeas' do
       let(:xlsx) { create_bulk_import_ideas_xlsx }
 
       example '[error] Bulk import ideas' do
-        expect_any_instance_of(BulkImportIdeas::ImportIdeasService).not_to receive :import_ideas
         do_request
         assert_status 401
       end
@@ -56,10 +57,18 @@ resource 'BulkImportIdeasImportIdeas' do
 
         let(:xlsx) { create_bulk_import_ideas_xlsx }
 
-        example 'Bulk import ideas' do
-          expect_any_instance_of(BulkImportIdeas::ImportIdeasService).to receive :import_ideas
+        example 'Bulk import ideas globally' do
           do_request
           assert_status 201
+          expect(response_data.count).to eq 2
+          expect(Idea.count).to eq 2
+          expect(Idea.all.pluck(:title_multiloc)).to match_array [{ 'en' => 'My idea title 1' }, { 'en' => 'My idea title 2' }]
+          expect(User.count).to eq 3
+          expect(User.all.pluck(:email)).to include 'dave@citizenlab.co'
+          expect(User.all.pluck(:email)).not_to include 'bob@citizenlab.co'
+          expect(BulkImportIdeas::IdeaImport.count).to eq 2
+          expect(BulkImportIdeas::IdeaImportFile.count).to eq 1
+          expect(project.reload.ideas_count).to eq 2
         end
       end
     end
@@ -67,7 +76,6 @@ resource 'BulkImportIdeasImportIdeas' do
     context 'project import' do
       parameter(:project_id, 'ID of the project to import these ideas to', required: true)
 
-      let(:project) { create(:continuous_project) }
       let(:id) { project.id }
 
       get 'web_api/v1/projects/:id/import_ideas/example_xlsx' do
@@ -101,7 +109,7 @@ resource 'BulkImportIdeasImportIdeas' do
       post 'web_api/v1/projects/:id/import_ideas/bulk_create' do
         parameter(
           :xlsx,
-          'Base64 encoded xlsx file with ideas details. See web_api/v1/import_ideas/example_xlsx for the format',
+          'Base64 encoded xlsx file with ideas details. See web_api/v1/projects/:id/import_ideas/example_xlsx for the format',
           scope: :import_ideas
         )
         parameter(
@@ -113,12 +121,22 @@ resource 'BulkImportIdeasImportIdeas' do
         parameter(:phase_id, 'ID of the phase to import these ideas to', scope: :import_ideas)
 
         context 'xlsx import' do
-          let(:xlsx) { create_bulk_import_ideas_xlsx }
+          let(:xlsx) { create_project_bulk_import_ideas_xlsx }
 
           example 'Bulk import ideas from .xlsx' do
-            expect_any_instance_of(BulkImportIdeas::ImportIdeasService).to receive :import_ideas
             do_request
+
+            # binding.pry
+
             assert_status 201
+            expect(response_data.count).to eq 2
+            expect(Idea.count).to eq 2
+            expect(Idea.all.pluck(:title_multiloc)).to match_array [{ 'en' => 'My project idea title 1' }, { 'en' => 'My project idea title 2' }]
+            expect(User.count).to eq 3
+            expect(User.all.pluck(:email)).to include 'dave@citizenlab.co'
+            expect(User.all.pluck(:email)).not_to include 'bob@citizenlab.co'
+            expect(BulkImportIdeas::IdeaImport.count).to eq 2
+            expect(BulkImportIdeas::IdeaImportFile.count).to eq 1
           end
         end
 
@@ -137,8 +155,8 @@ resource 'BulkImportIdeasImportIdeas' do
               expect(response_data.first[:attributes][:publication_status]).to eq 'draft'
               expect(User.all.count).to eq 2 # 1 new user created
               expect(Idea.all.count).to eq 1
-              expect(BulkImportIdeas::IdeaImport.all.count).to eq 1
-              expect(BulkImportIdeas::IdeaImportFile.all.count).to eq 1
+              expect(BulkImportIdeas::IdeaImport.count).to eq 1
+              expect(BulkImportIdeas::IdeaImportFile.count).to eq 1
               expect(project.reload.ideas_count).to eq 0 # Draft ideas should not be counted
 
               # Relationships
@@ -207,9 +225,17 @@ resource 'BulkImportIdeasImportIdeas' do
   def create_bulk_import_ideas_xlsx
     hash_array = [
       {
-        'Title_en' => 'My idea title',
+        'Title_en' => 'My idea title 1',
         'Body_en' => 'My idea content',
-        'Email' => 'moderator@citizenlab.co',
+        'Email' => 'dave@citizenlab.co',
+        'Permission' => 'X',
+        'Project' => 'Project 1'
+      },
+      {
+        'Title_en' => 'My idea title 2',
+        'Body_en' => 'My idea content',
+        'Email' => 'bob@citizenlab.co',
+        'Permission' => '',
         'Project' => 'Project 1'
       }
     ]
@@ -221,10 +247,16 @@ resource 'BulkImportIdeasImportIdeas' do
   def create_project_bulk_import_ideas_xlsx
     hash_array = [
       {
-        'Title_en' => 'My idea title',
-        'Body_en' => 'My idea content',
-        'Email' => 'moderator@citizenlab.co',
-        'Project' => 'Project 1'
+        'Title' => 'My project idea title 1',
+        'Body' => 'My idea content',
+        'Email address' => 'dave@citizenlab.co',
+        'Permission' => 'X'
+      },
+      {
+        'Title' => 'My project idea title 2',
+        'Body' => 'My idea content',
+        'Email address' => 'bob@citizenlab.co',
+        'Permission' => ''
       }
     ]
     xlsx_stringio = XlsxService.new.hash_array_to_xlsx hash_array

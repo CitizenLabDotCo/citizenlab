@@ -13,9 +13,11 @@ en:
       full_name: Full name
       email_address: Email address
       optional: optional
+      permission: Permission
       choose_as_many: Choose as many as you like
       this_answer: This answer will only be shared with moderators, and not to the public.
       page: Page
+      date_published: Date Published (dd-mm-yyyy)
   custom_fields:
     ideas:
       title:
@@ -91,6 +93,7 @@ en:
       status: 'Status'
       assignee_fullname: 'Assignee'
       assignee_email: 'Assignee email'
+      image_url: 'Image URL'
   voting_method:
     default_voting_term_singular: vote
     default_voting_term_plural: votes

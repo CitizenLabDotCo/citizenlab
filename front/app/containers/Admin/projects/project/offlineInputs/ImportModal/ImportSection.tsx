@@ -78,7 +78,7 @@ const ImportSection = ({ onFinishImport }: Props) => {
       <Box mb="28px">
         <Text>
           <FormattedMessage
-            {...messages.uploadAPdfFile}
+            {...messages.uploadAPdfExcelFile}
             values={{
               b: (chunks) => (
                 <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>

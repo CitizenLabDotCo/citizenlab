@@ -84,4 +84,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectIdeaForm.downloadInputForm',
     defaultMessage: 'Download input form as pdf',
   },
+  downloadExcelTemplate: {
+    id: 'app.containers.AdminPage.ProjectIdeaForm.downloadExcelTemplate',
+    defaultMessage: 'Download an Excel template',
+  },
 });

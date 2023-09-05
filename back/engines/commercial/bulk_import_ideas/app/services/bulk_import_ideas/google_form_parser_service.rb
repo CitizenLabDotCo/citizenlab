@@ -10,7 +10,7 @@ module BulkImportIdeas
     end
 
     def raw_text
-      return dummy_raw_text unless ENV.fetch('GOOGLE_DOCUMENT_AI_PROJECT', false) # Temp for development
+      return dummy_raw_text unless ENV.fetch('GOOGLE_APPLICATION_CREDENTIALS', false) # Temp for development
 
       @document.text
     end
@@ -42,8 +42,7 @@ module BulkImportIdeas
     private
 
     def process_upload
-      return nil unless ENV.fetch('GOOGLE_DOCUMENT_AI_PROJECT', false) # Temp for development
-      return unless @pdf_file_content
+      return unless @pdf_file_content && ENV.fetch('GOOGLE_APPLICATION_CREDENTIALS', false)
 
       # Set up the DocumentAI processor.
       # TODO: Invalid location: 'eu' must match the server deployment 'us' even when the processor is set to eu?
@@ -69,9 +68,13 @@ module BulkImportIdeas
       response.document
     end
 
-    # NOTE: For DEVELOPMENT ONLY when Google API not configured
+    # NOTE: For DEVELOPMENT ONLY to avoid Google API being called - disable GOOGLE_APPLICATION_CREDENTIALS in back-secret.env
     def dummy_raw_text
-      "Page 1\nTitle\nMy very good idea\nDescription\nGoogle Document AI not configured\nLocation (optional)\nSomewhere\n"
+      dummy_text = ''
+      rand(1..8).times do
+        dummy_text += "Page 1\nTitle\n#{Faker::Quote.yoda}\nDescription\n#{Faker::Hipster.paragraph}\nPage 2\nAnother field\n#{Faker::Quote.robin}"
+      end
+      dummy_text
     end
   end
 end

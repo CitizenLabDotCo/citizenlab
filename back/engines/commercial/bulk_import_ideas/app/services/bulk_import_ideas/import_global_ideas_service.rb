@@ -11,6 +11,8 @@ module BulkImportIdeas
           'Body_nl-BE' => 'Mijn idee inhoud',
           'Body_fr-BE' => 'Mon idée contenu',
           'Email' => 'moderator@citizenlab.co',
+          'Full name' => 'Paul Moderator',
+          'Permission' => 'X',
           'Project' => 'Project 1',
           'Phase' => 1,
           'Image URL' => 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_in_meeting_graphic.png',
@@ -29,7 +31,9 @@ module BulkImportIdeas
     end
 
     def ideas_to_idea_rows(ideas_array)
-      ideas_array.map do |xlsx_row|
+      idea_rows = ideas_array.map do |xlsx_row|
+        next if idea_blank? xlsx_row
+
         idea_row = {}
 
         title_multiloc = {}
@@ -52,7 +56,8 @@ module BulkImportIdeas
         idea_row[:body_multiloc]        = body_multiloc
         idea_row[:topic_titles]         = (xlsx_row['Topics'] || '').split(';').map(&:strip).select(&:present?)
         idea_row[:project_title]        = xlsx_row['Project']
-        idea_row[:user_email]           = xlsx_row['Email']
+        idea_row[:user_email]           = xlsx_row['Email'] if xlsx_row['Permission']&.present?
+        idea_row[:user_name]            = xlsx_row['Full name'] if xlsx_row['Permission']&.present?
         idea_row[:image_url]            = xlsx_row['Image URL']
         idea_row[:phase_rank]           = xlsx_row['Phase']
         idea_row[:published_at]         = xlsx_row['Date (dd-mm-yyyy)']
@@ -62,6 +67,7 @@ module BulkImportIdeas
         idea_row[:id]                   = xlsx_row['ID']
         idea_row
       end
+      idea_rows.compact
     end
   end
 end
