@@ -6,6 +6,7 @@ module EmailCampaigns
 
     def campaign_mail
       flaggable = Initiative.first
+      # TODO: generate commands with campaign#generate_commands method
       command = {
         recipient: recipient_user,
         event_payload: {
