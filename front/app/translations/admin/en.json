@@ -771,6 +771,8 @@
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.headerImageTooltip1": "This image is shown at the top of the folder page. For more information on recommended image resolutions, {supportPageLink}.",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.supportPageLinkText": "visit our support center",
+  "app.containers.Admin.projects.all.PDFExportModal.phase": "Phase",
+  "app.containers.Admin.projects.all.PDFExportModal.selectIdeationPhase": "Please select an ideation phase.",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm": "Click 'Export as pdf' below to download a pdf version of the input form. Be aware that at the moment the Images, File Upload, Tags, Linear Scale and Number fields are not supported for the pdf version.",
   "app.containers.Admin.projects.all.clickExportToPDFSurvey": "Click 'Export as pdf' below to download a pdf version of the survey. Be aware that at the moment the Linear Scale, Number and File Upload fields are not supported for the pdf version.",
   "app.containers.Admin.projects.all.components.archived": "Archived",
