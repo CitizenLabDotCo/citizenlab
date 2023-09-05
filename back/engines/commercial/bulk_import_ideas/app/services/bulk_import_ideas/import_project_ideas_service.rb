@@ -65,13 +65,8 @@ module BulkImportIdeas
     end
 
     def ideas_to_idea_rows(ideas_array)
-<<<<<<< HEAD
-      ideas_array.map do |idea|
-        page_range = idea[:pdf_pages]
-=======
       idea_rows = ideas_array.map do |idea|
-        page_range = idea[:pages]
->>>>>>> feature-phygital-forms
+        page_range = idea[:pdf_pages]
         fields = idea[:fields]
 
         next if idea_blank? fields
@@ -87,21 +82,12 @@ module BulkImportIdeas
 
         idea_row[:project_id]   = @project.id
         idea_row[:phase_id]     = @phase.id if @phase
-<<<<<<< HEAD
         idea_row[:pdf_pages]        = page_range
-        idea_row[:published_at] = fields['Date Published (dd-mm-yyyy)']
-        idea_row[:image_url]    = fields['Image URL']
-        idea_row[:latitude]     = fields['Latitude']
-        idea_row[:longitude]    = fields['Longitude']
-        idea_row[:topic_titles] = (fields['Tags'] || '').split(';').map(&:strip).select(&:present?)
-=======
-        idea_row[:pages]        = page_range
         idea_row[:published_at] = fields[locale_published_label]
         idea_row[:image_url]    = fields[locale_image_url_label]
         idea_row[:latitude]     = fields[locale_latitude_label]
         idea_row[:longitude]    = fields[locale_longitude_label]
         idea_row[:topic_titles] = (fields[locale_tags_label] || '').split(';').map(&:strip).select(&:present?)
->>>>>>> feature-phygital-forms
 
         fields = clean_field_names(fields)
         idea_row = process_user_details(fields, idea_row)
