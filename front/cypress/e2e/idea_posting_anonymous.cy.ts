@@ -37,11 +37,11 @@ describe('Continuous ideation with anonymous participation allowed', () => {
 
   it('admin can submit anonymous idea', () => {
     const ideaTitle = randomString(11);
-    const ideaContent = randomString(30);
+    const ideaContent = randomString(40);
 
     cy.setAdminLoginCookie();
-
     cy.visit(`/projects/${projectSlug}/ideas/new`);
+    cy.acceptCookies();
 
     cy.get('#e2e-idea-new-page');
     cy.get('#idea-form');
@@ -52,20 +52,15 @@ describe('Continuous ideation with anonymous participation allowed', () => {
     cy.get('#e2e-idea-description-input .ql-editor').type(ideaContent);
 
     // set to anonymous
-    cy.get('#e2e-post-anonymously-checkbox').should('exist');
     cy.get('#e2e-post-anonymously-checkbox').click();
+    cy.get('#e2e-continue-anonymous-participation-btn').click();
 
     // save the form
     cy.get('.e2e-submit-idea-form').click();
 
-    // confirm anonymous participation
-    cy.get('#e2e-continue-anonymous-participation-btn').should('exist');
-    cy.get('#e2e-continue-anonymous-participation-btn').click();
-
     // verify the content of the newly created idea page
     cy.location('pathname').should('eq', `/en/ideas/${ideaTitle}`);
-    cy.get('#e2e-idea-show');
-    cy.get('#e2e-idea-show').find('#e2e-idea-title').contains(ideaTitle);
+    cy.get('#e2e-idea-title').contains(ideaTitle);
 
     // verify that the author is anonymous
     cy.get('#e2e-anonymous-username').should('exist');
@@ -73,11 +68,11 @@ describe('Continuous ideation with anonymous participation allowed', () => {
 
   it('resident can submit anonymous idea', () => {
     const ideaTitle = randomString(11);
-    const ideaContent = randomString(30);
+    const ideaContent = randomString(40);
 
     cy.setLoginCookie(email, password);
-
     cy.visit(`/projects/${projectSlug}/ideas/new`);
+    cy.acceptCookies();
 
     cy.get('#e2e-idea-new-page');
     cy.get('#idea-form');
@@ -88,20 +83,15 @@ describe('Continuous ideation with anonymous participation allowed', () => {
     cy.get('#e2e-idea-description-input .ql-editor').type(ideaContent);
 
     // set to anonymous
-    cy.get('#e2e-post-anonymously-checkbox').should('exist');
     cy.get('#e2e-post-anonymously-checkbox').click();
+    cy.get('#e2e-continue-anonymous-participation-btn').click();
 
     // save the form
     cy.get('.e2e-submit-idea-form').click();
 
-    // confirm anonymous participation
-    cy.get('#e2e-continue-anonymous-participation-btn').should('exist');
-    cy.get('#e2e-continue-anonymous-participation-btn').click();
-
     // verify the content of the newly created idea page
     cy.location('pathname').should('eq', `/en/ideas/${ideaTitle}`);
-    cy.get('#e2e-idea-show');
-    cy.get('#e2e-idea-show').find('#e2e-idea-title').contains(ideaTitle);
+    cy.get('#e2e-idea-title').contains(ideaTitle);
 
     // verify that the author is anonymous
     cy.get('#e2e-anonymous-username').should('exist');
@@ -152,7 +142,7 @@ describe('Timeline ideation with anonymous participation allowed', () => {
 
   it('admin can submit anonymous idea', () => {
     const ideaTitle = randomString(11);
-    const ideaContent = randomString(30);
+    const ideaContent = randomString(40);
 
     cy.setAdminLoginCookie();
     cy.visit(`/projects/${projectSlug}/ideas/new`);
@@ -167,20 +157,15 @@ describe('Timeline ideation with anonymous participation allowed', () => {
     cy.get('#e2e-idea-description-input .ql-editor').type(ideaContent);
 
     // set to anonymous
-    cy.get('#e2e-post-anonymously-checkbox').should('exist');
     cy.get('#e2e-post-anonymously-checkbox').click();
+    cy.get('#e2e-continue-anonymous-participation-btn').click();
 
     // save the form
     cy.get('.e2e-submit-idea-form').click();
 
-    // confirm anonymous participation
-    cy.get('#e2e-continue-anonymous-participation-btn').should('exist');
-    cy.get('#e2e-continue-anonymous-participation-btn').click();
-
     // verify the content of the newly created idea page
     cy.location('pathname').should('eq', `/en/ideas/${ideaTitle}`);
-    cy.get('#e2e-idea-show');
-    cy.get('#e2e-idea-show').find('#e2e-idea-title').contains(ideaTitle);
+    cy.get('#e2e-idea-title').contains(ideaTitle);
 
     // verify that the author is anonymous
     cy.get('#e2e-anonymous-username').should('exist');
@@ -188,7 +173,7 @@ describe('Timeline ideation with anonymous participation allowed', () => {
 
   it('resident can submit anonymous idea', () => {
     const ideaTitle = randomString(11);
-    const ideaContent = randomString(30);
+    const ideaContent = randomString(40);
 
     cy.setLoginCookie(email, password);
     cy.visit(`/projects/${projectSlug}/ideas/new`);
@@ -203,20 +188,15 @@ describe('Timeline ideation with anonymous participation allowed', () => {
     cy.get('#e2e-idea-description-input .ql-editor').type(ideaContent);
 
     // set to anonymous
-    cy.get('#e2e-post-anonymously-checkbox').should('exist');
     cy.get('#e2e-post-anonymously-checkbox').click();
+    cy.get('#e2e-continue-anonymous-participation-btn').click();
 
     // save the form
     cy.get('.e2e-submit-idea-form').click();
 
-    // confirm anonymous participation
-    cy.get('#e2e-continue-anonymous-participation-btn').should('exist');
-    cy.get('#e2e-continue-anonymous-participation-btn').click();
-
     // verify the content of the newly created idea page
     cy.location('pathname').should('eq', `/en/ideas/${ideaTitle}`);
-    cy.get('#e2e-idea-show');
-    cy.get('#e2e-idea-show').find('#e2e-idea-title').contains(ideaTitle);
+    cy.get('#e2e-idea-title').contains(ideaTitle);
 
     // verify that the author is anonymous
     cy.get('#e2e-anonymous-username').should('exist');
