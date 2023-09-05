@@ -76,6 +76,8 @@ class PrintCustomFieldsService
       size: 20,
       inline_format: true
     )
+
+    pdf.move_down 9.mm
   end
 
   def render_text_field_with_name(pdf, name)
@@ -147,8 +149,9 @@ class PrintCustomFieldsService
 
   def write_description(pdf, custom_field)
     description = custom_field.description_multiloc[locale]
+    is_empty = description.nil? || description == ''
  
-    unless description.nil? then
+    unless is_empty then
       pdf.move_down 3.mm
       paragraphs = parse_html_tags(description)
 
