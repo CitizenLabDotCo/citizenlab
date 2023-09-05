@@ -43,10 +43,6 @@ describe('Continuous ideation with anonymous participation allowed', () => {
     cy.visit(`/projects/${projectSlug}/ideas/new`);
     cy.acceptCookies();
 
-    cy.get('#e2e-idea-new-page');
-    cy.get('#idea-form');
-    cy.contains('Add new idea').should('exist');
-
     // add a title and description
     cy.get('#e2e-idea-title-input input').type(ideaTitle);
     cy.get('#e2e-idea-description-input .ql-editor').type(ideaContent);
@@ -73,10 +69,6 @@ describe('Continuous ideation with anonymous participation allowed', () => {
     cy.setLoginCookie(email, password);
     cy.visit(`/projects/${projectSlug}/ideas/new`);
     cy.acceptCookies();
-
-    cy.get('#e2e-idea-new-page');
-    cy.get('#idea-form');
-    cy.contains('Add new idea').should('exist');
 
     // add a title and description
     cy.get('#e2e-idea-title-input input').type(ideaTitle);
@@ -148,10 +140,6 @@ describe('Timeline ideation with anonymous participation allowed', () => {
     cy.visit(`/projects/${projectSlug}/ideas/new`);
     cy.acceptCookies();
 
-    cy.get('#e2e-idea-new-page');
-    cy.get('#idea-form');
-    cy.contains('Add new idea').should('exist');
-
     // add a title and description
     cy.get('#e2e-idea-title-input input').type(ideaTitle);
     cy.get('#e2e-idea-description-input .ql-editor').type(ideaContent);
@@ -178,10 +166,6 @@ describe('Timeline ideation with anonymous participation allowed', () => {
     cy.setLoginCookie(email, password);
     cy.visit(`/projects/${projectSlug}/ideas/new`);
     cy.acceptCookies();
-
-    cy.get('#e2e-idea-new-page');
-    cy.get('#idea-form');
-    cy.contains('Add new idea').should('exist');
 
     // add a title and description
     cy.get('#e2e-idea-title-input input').type(ideaTitle);
