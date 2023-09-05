@@ -117,7 +117,6 @@ module EmailCampaigns
       participants_increase = ps.projects_participants([project], since: (Time.now - days_ago)).size
       ideas = Idea.published.where(project_id: project.id).load
       comments = Comment.where(post_id: ideas.map(&:id))
-      # reactions = Reaction.where(reactable_id: (ideas.map(&:id) + comments.map(&:id)))
       {
         activities: {
           new_ideas_count: stat_increase(
