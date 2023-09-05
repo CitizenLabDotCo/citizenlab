@@ -223,11 +223,11 @@ de:
       full_name: 'Vollständiger Name'
       email_address: 'E-Mail-Adresse'
       optional: 'optional'
-      permission: 'Erlaubnis'
+      permission: 'Berechtigung'
       choose_as_many: 'Beliebig viele auswählen'
       this_answer: 'Diese Antwort wird nur an Projektmanager*innen weitergegeben und nicht an die Öffentlichkeit.'
       page: 'Seite'
-      date_published: 'Veröffentlichungsdatum (tt-mm-jjjj)'
+      date_published: 'Veröffentlichungsdatum (TT-MM-JJJJ)'
   project_copy:
     title_suffix: 'Kopie'
   confirmations_mailer:
