@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import Error, { findErrorMessage, TFieldName } from 'components/UI/Error';
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { useIntl } from 'utils/cl-intl';
 import { Text, Title, Box } from '@citizenlab/cl2-component-library';
 import { scrollToElement } from 'utils/scroll';
 import SuccessFeedback from './SuccessFeedback';
@@ -12,12 +11,10 @@ import { RHFErrors } from 'typings';
 
 type FeedbackProps = {
   successMessage?: string;
-} & WrappedComponentProps;
+};
 
-const Feedback = ({
-  successMessage,
-  intl: { formatMessage },
-}: FeedbackProps) => {
+const Feedback = ({ successMessage }: FeedbackProps) => {
+  const { formatMessage } = useIntl();
   const [successMessageIsVisible, setSuccessMessageIsVisible] = useState(true);
   const {
     formState: {
@@ -117,7 +114,7 @@ const Feedback = ({
                           <Text
                             key={error.field}
                             onClick={() => scrollToElement({ id: error.field })}
-                            onKeyPress={(e) => {
+                            onKeyDown={(e) => {
                               if (e.key === 'Enter') {
                                 scrollToElement({ id: error.field });
                               }
@@ -144,4 +141,4 @@ const Feedback = ({
   );
 };
 
-export default injectIntl(Feedback);
+export default Feedback;

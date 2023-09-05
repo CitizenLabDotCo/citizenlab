@@ -216,10 +216,12 @@ describe Analysis::InputsFinder do
       author2 = create(:user, custom_field_values: { cf.key => 2000 })
       author3 = create(:user, custom_field_values: { cf.key => 2010 })
       author4 = create(:user)
+      author5 = create(:user, custom_field_values: { cf.key => nil })
       idea1 = create(:idea, project: analysis.source_project, author: author1)
       idea2 = create(:idea, project: analysis.source_project, author: author2)
       _idea3 = create(:idea, project: analysis.source_project, author: author3)
       _idea4 = create(:idea, project: analysis.source_project, author: author4)
+      _idea5 = create(:idea, project: analysis.source_project, author: author5)
       @params = { "author_custom_#{cf.id}_from": 1990, "author_custom_#{cf.id}_to": 2001 }
       expect(output).to contain_exactly(idea1, idea2)
     end

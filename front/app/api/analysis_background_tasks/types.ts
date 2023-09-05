@@ -13,6 +13,14 @@ export type AutoTaggingMethod =
   | 'label_classification'
   | 'few_shot_classification';
 
+export type TagType =
+  | 'custom'
+  | 'language'
+  | 'platform_topic'
+  | 'nlp_topic'
+  | 'sentiment'
+  | 'controversial';
+
 type SharedAttributes = {
   type: string;
   progress: number | null;
@@ -28,7 +36,7 @@ type AutoTaggingAttributes = SharedAttributes & {
 };
 
 type SummarizingAttributes = SharedAttributes & {
-  type: 'summarizing_task';
+  type: 'summarization_task';
 };
 
 export interface IBackgroundTaskData {

@@ -29,7 +29,7 @@ const IdeaTopics = ({ ideaId, compact, className }: Props) => {
       return (
         <Item className={className || ''} compact={compact}>
           <Header>{formatMessage(messages.topics)}</Header>
-          <Topics postType="idea" topicIds={topicIds} />
+          <Topics postType="idea" postTopicIds={topicIds} />
         </Item>
       );
     }

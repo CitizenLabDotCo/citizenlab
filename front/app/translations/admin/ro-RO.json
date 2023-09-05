@@ -433,7 +433,6 @@
   "app.containers.Admin.PagesAndMenu.addButton": "Adăugați la bara de navigare",
   "app.containers.Admin.PagesAndMenu.components.NavbarItemForm.navbarItemTitle": "Nume în bara de navigare",
   "app.containers.Admin.PagesAndMenu.components.deletePageConfirmationHidden": "Sunteți sigur că doriți să ștergeți această pagină? Acest lucru nu poate fi anulat.",
-  "app.containers.Admin.PagesAndMenu.components.emptyTitleError": "Furnizați titlul pentru toate limbile",
   "app.containers.Admin.PagesAndMenu.components.hiddenFromNavigation": "Alte pagini disponibile",
   "app.containers.Admin.PagesAndMenu.components.savePage": "Save page",
   "app.containers.Admin.PagesAndMenu.components.saveSuccess": "Page successfully saved",

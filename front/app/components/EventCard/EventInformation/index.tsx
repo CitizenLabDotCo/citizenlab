@@ -72,6 +72,7 @@ const EventInformation = ({ event, titleFontSize }: Props) => {
             startAtMoment={startAtMoment}
             endAtMoment={endAtMoment}
             isMultiDayEvent={false}
+            showOnlyStartDate={true}
           />
         </Box>
       </Box>
