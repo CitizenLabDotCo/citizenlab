@@ -209,6 +209,7 @@ el:
       status: 'Κατάσταση'
       assignee_fullname: 'Αποδέκτης'
       assignee_email: 'Email παραλήπτη'
+      image_url: 'URL εικόνας'
     anonymous: 'Ανώνυμος'
   form_builder:
     default_select_field:
@@ -222,9 +223,11 @@ el:
       full_name: 'Ονοματεπώνυμο'
       email_address: 'Διεύθυνση ηλεκτρονικού ταχυδρομείου'
       optional: 'προαιρετικό'
+      permission: 'Άδεια'
       choose_as_many: 'Επιλέξτε όσα θέλετε'
       this_answer: 'Αυτή η απάντηση θα κοινοποιηθεί μόνο στους συντονιστές και όχι στο κοινό.'
       page: 'Σελίδα'
+      date_published: 'Ημερομηνία δημοσίευσης (ηη-μμ-ηηη)'
   project_copy:
     title_suffix: 'Aντίγραφο'
   confirmations_mailer:
