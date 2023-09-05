@@ -49,22 +49,13 @@ describe('Initiatives with anonymous participation allowed', () => {
     cy.get('.e2e-topics-picker').find('button').eq(3).click();
 
     // set to anonymous
-    cy.get('#e2e-post-anonymously-checkbox').should('exist');
     cy.get('#e2e-post-anonymously-checkbox').click();
-    cy.wait(1000);
-
-    // save the form
-    cy.get('#e2e-initiative-publish-button').click({
-      force: true,
-    });
-    cy.wait(1000);
-
-    // confirm anonymous participation
-    cy.get('#e2e-continue-anonymous-participation-btn').should('exist');
     cy.get('#e2e-continue-anonymous-participation-btn').click();
 
+    // save the form
+    cy.get('#e2e-initiative-publish-button').click();
+
     // verify redirect to the newly created initiative page
-    cy.get('#e2e-initiative-show', { timeout: 200000 });
     cy.location('pathname').should('eq', `/en/initiatives/${initiativeTitle}`);
 
     // verify that the author is anonymous
@@ -96,19 +87,11 @@ describe('Initiatives with anonymous participation allowed', () => {
     cy.get('.e2e-topics-picker').find('button').eq(3).click();
 
     // set to anonymous
-    cy.get('#e2e-post-anonymously-checkbox').should('exist');
     cy.get('#e2e-post-anonymously-checkbox').click();
-    cy.wait(1000);
+    cy.get('#e2e-continue-anonymous-participation-btn').click();
 
     // save the form
-    cy.get('#e2e-initiative-publish-button').click({
-      force: true,
-    });
-    cy.wait(1000);
-
-    // confirm anonymous participation
-    cy.get('#e2e-continue-anonymous-participation-btn').should('exist');
-    cy.get('#e2e-continue-anonymous-participation-btn').click();
+    cy.get('#e2e-initiative-publish-button').click();
 
     // verify redirect to the newly created initiative page
     cy.get('#e2e-initiative-show', { timeout: 200000 });
