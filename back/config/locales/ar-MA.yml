@@ -209,6 +209,7 @@ ar-MA:
       status: 'الحالة'
       assignee_fullname: 'المعيّن إليه'
       assignee_email: 'البريد الإلكتروني للمعيَّن إليه'
+      image_url: 'رابط الصورة'
     anonymous: 'مجهول'
   form_builder:
     default_select_field:
@@ -222,9 +223,11 @@ ar-MA:
       full_name: 'الاسم الكامل'
       email_address: 'عنوان البريد الإلكتروني'
       optional: 'خياري'
+      permission: 'إذن'
       choose_as_many: 'اختر العدد الذي تريده'
       this_answer: 'سيتم مشاركة هذه الإجابة مع المشرفين فقط، وليس للعامة.'
       page: 'صفحة'
+      date_published: 'تاريخ النشر (يوم-شهر-س س س س)'
   project_copy:
     title_suffix: 'نسخة'
   confirmations_mailer:
