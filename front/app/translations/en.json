@@ -1802,6 +1802,7 @@
   "app.utils.errors.default.api_error_exclusion": "Is reserved",
   "app.utils.errors.default.api_error_greater_than": "Is too small",
   "app.utils.errors.default.api_error_greater_than_or_equal_to": "Is too small",
+  "app.utils.errors.default.api_error_includes_banned_words": "You may have used one or more words that are considered profanity by {guidelinesLink}. Please alter your text to remove any profanities that might be present.",
   "app.utils.errors.default.api_error_inclusion": "Is not included in the list",
   "app.utils.errors.default.api_error_invalid": "Is invalid",
   "app.utils.errors.default.api_error_less_than": "Is too big",
