@@ -209,6 +209,7 @@ lv:
       status: 'Statuss'
       assignee_fullname: 'Izpildītājs'
       assignee_email: 'Izpildītāja e-pasts'
+      image_url: 'Attēla URL'
     anonymous: 'Anonīms'
   form_builder:
     default_select_field:
@@ -222,9 +223,11 @@ lv:
       full_name: 'Pilns nosaukums'
       email_address: 'E-pasta adrese'
       optional: 'izvēles'
+      permission: 'Atļauja'
       choose_as_many: 'Izvēlieties tik daudz, cik vēlaties'
       this_answer: 'Šī atbilde tiks izpausta tikai moderatoriem, bet ne sabiedrībai.'
       page: 'Lapa'
+      date_published: 'Publicēšanas datums (dd-mm-gggg)'
   project_copy:
     title_suffix: 'Kopija'
   confirmations_mailer:
