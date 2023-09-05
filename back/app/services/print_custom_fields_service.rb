@@ -20,6 +20,7 @@ class PrintCustomFieldsService
   def create_pdf
     pdf = Prawn::Document.new(page_size: 'A4', top_margin: 2.cm)
 
+    render_tenant_logo pdf
     render_form_title pdf
 
     if params[:name] == 'true' then
@@ -69,6 +70,11 @@ class PrintCustomFieldsService
   end
 
   private
+
+  def render_tenant_logo(pdf)
+    pdf.image open AppConfiguration.instance.logo.medium.to_s
+    pdf.move_down 10.mm
+  end
 
   def render_form_title(pdf)
     pdf.text(
