@@ -10,13 +10,13 @@ module BulkImportIdeas
     end
 
     def raw_text
-      return dummy_raw_text unless ENV.fetch('GOOGLE_APPLICATION_CREDENTIALS', false) # Temp for development
+      return dummy_raw_text.join("\n") unless ENV.fetch('GOOGLE_APPLICATION_CREDENTIALS', false) # Temp for development
 
       @document.text
     end
 
     def raw_text_page_array
-      return [dummy_raw_text] unless ENV.fetch('GOOGLE_DOCUMENT_AI_PROJECT', false) # Temp for development
+      return dummy_raw_text unless ENV.fetch('GOOGLE_APPLICATION_CREDENTIALS', false) # Temp for development
 
       text = @document.text
 
@@ -70,9 +70,9 @@ module BulkImportIdeas
 
     # NOTE: For DEVELOPMENT ONLY to avoid Google API being called - disable GOOGLE_APPLICATION_CREDENTIALS in back-secret.env
     def dummy_raw_text
-      dummy_text = ''
+      dummy_text = []
       rand(1..8).times do
-        dummy_text += "Page 1\nTitle\n#{Faker::Quote.yoda}\nDescription\n#{Faker::Hipster.paragraph}\nPage 2\nAnother field\n#{Faker::Quote.robin}"
+        dummy_text << "Page 1\nTitle\n#{Faker::Quote.yoda}\nDescription\n#{Faker::Hipster.paragraph}\nPage 2\nAnother field\n#{Faker::Quote.robin}"
       end
       dummy_text
     end

@@ -103,6 +103,7 @@ module BulkImportIdeas
 
           description = description.gsub(FORBIDDEN_HTML_TAGS_REGEX, '').strip
           next if description == ''
+
           @current_description = description
           next
         end
