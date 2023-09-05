@@ -10,6 +10,7 @@ describe('Initiatives with anonymous participation allowed', () => {
       userId = response.body.data.id;
     });
     cy.apiGetAppConfiguration().then((response) => {
+      cy.setAdminLoginCookie();
       cy.visit('/admin/initiatives/settings');
       cy.acceptCookies();
 
