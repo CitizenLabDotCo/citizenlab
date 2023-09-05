@@ -9,13 +9,14 @@ describe('Initiatives with anonymous participation allowed', () => {
     cy.apiSignup('firstName', 'lastName', email, password).then((response) => {
       userId = response.body.data.id;
     });
-    cy.visit('/admin/initiatives/settings');
     cy.apiGetAppConfiguration().then((response) => {
+      cy.visit('/admin/initiatives/settings');
+      cy.acceptCookies();
+
       if (
-        !response.body.data.attributes.settings.initiatives
-          .allow_anonymous_participation
+        response.body.data.attributes.settings.initiatives
+          .allow_anonymous_participation === false
       ) {
-        cy.get('#e2e-anonymous-posting-toggle').should('exist');
         cy.get('#e2e-anonymous-posting-toggle').click();
         cy.get('#e2e-initiative-settings-submit-button').click();
       }
