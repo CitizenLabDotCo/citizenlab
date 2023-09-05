@@ -1,80 +1,13 @@
 ca:
   email_campaigns:
     campaign_type_description:
-      "manual": Missatges oficials
-      "admin_rights_received": S'han rebut els drets d'administrador
-      "comment_deleted_by_admin": Eliminació del meu comentari
-      "comment_marked_as_spam": Comenteu l'informe de correu brossa
-      "comment_on_your_comment": Una resposta al meu comentari
-      "comment_on_your_idea": Un comentari sobre la meva idea
-      "comment_on_your_initiative": Un comentari a la meva proposta
-      "cosponsor_of_your_initiative": Un usuari accepta la meva invitació per copatrocinar la meva proposta
-      "first_idea_published": Publicació de la meva primera idea
-      "idea_marked_as_spam": Informe de correu brossa d'idees
-      "idea_published": Publicació de la meva idea
-      "initiative_assigned_to_you": Encàrrec d'una proposta a mi
-      "initiative_marked_as_spam": Informe de correu brossa de la proposta
-      "initiative_published": Publicació de la meva proposta
-      "invitation_to_cosponsor_initiative": Invitació a copatrocinar una proposta
-      "initiative_resubmitted_for_review": S'ha tornat a enviar la proposta per a la seva revisió
-      "invite_received": Invitació
-      "invite_reminder": Recordatori d'invitació
-      "internal_comment_on_idea_assigned_to_you": Comentari intern sobre l'entrada que se m'ha assignat
-      "internal_comment_on_idea_you_commented_internally_on": Comentari intern sobre l'entrada que he comentat internament
-      "internal_comment_on_idea_you_moderate": Comentari intern sobre l'entrada al projecte o carpeta que gestione
-      "internal_comment_on_initiative_assigned_to_you": Comentari intern sobre la proposta que se m'ha assignat
-      "internal_comment_on_initiative_you_commented_internally_on": Comentari intern sobre la proposta que he comentat internament
-      "internal_comment_on_unassigned_initiative": Comentari intern sobre la proposta no assignada
-      "internal_comment_on_unassigned_unmoderated_idea": Comentari intern sobre l'entrada no assignada en un projecte no gestionat
-      "internal_comment_on_your_internal_comment": Comentari intern sobre el meu comentari intern
-      "mention_in_official_feedback": Esmenta en una actualització
-      "mention_in_internal_comment": Esmenta en un comentari intern
-      "new_comment_for_admin": Nou comentari en un projecte que modero
-      "new_comment_on_commented_idea": Nou comentari sobre una idea que vaig comentar
-      "new_comment_on_commented_initiative": Nou comentari a una proposta que vaig comentar
-      "new_comment_on_reacted_idea": Nou comentari sobre una idea a la qual vaig reaccionar
-      "new_comment_on_reacted_initiative": Nou comentari sobre una proposta que he votat
-      "new_idea_for_admin": Nova idea en un projecte que modero
-      "new_initiative_for_admin": Nova proposta
-      "official_feedback_on_commented_idea": Actualització d'una idea que vaig comentar
-      "official_feedback_on_commented_initiative": Actualització d'una proposta que vaig comentar
-      "official_feedback_on_reacted_idea": Actualització d'una idea a la qual vaig reaccionar
-      "official_feedback_on_reacted_initiative": Actualització d'una proposta que vaig votar
-      "official_feedback_on_your_idea": Actualització de la meva idea
-      "official_feedback_on_your_initiative": Actualització de la meva proposta
-      "password_reset": Restabliu la contrasenya
-      "project_moderation_rights_received": S'han rebut els drets de moderació del projecte
-      "project_folder_moderation_rights_received": S'han rebut els drets del gestor de carpetes
-      "project_phase_started": Nova fase del projecte
-      "project_phase_upcoming": Pròxima nova fase del projecte
-      "status_change_of_commented_idea": Canvi d'estat d'una idea que vaig comentar
-      "status_change_of_commented_initiative": Canvi d'estat d'una proposta que vaig comentar
-      "status_change_of_reacted_idea": Canvi d'estat d'una idea a la qual vaig reaccionar
-      "status_change_of_reacted_initiative": Canvi d'estat d'una proposta per la qual vaig reaccionar
-      "status_change_of_your_idea": Canvi d'estat de la meva idea
-      "status_change_of_your_initiative": Canvi d'estat de la meva proposta
-      "threshold_reached_for_admin": La proposta ha arribat al llindar de votació
-      "welcome": Després de la inscripció
-      "admin_digest": Visió general setmanal per als administradors
-      "moderator_digest": Visió general setmanal per a gestors de projectes
-      "assignee_digest": Visió general setmanal de les idees assignades
-      "user_digest": Resum setmanal
-      "voting_basket_submitted": Confirmació de la votació
-      "voting_basket_not_submitted": Vots no enviats
-      "voting_last_chance": Última oportunitat per votar
-      "voting_results": Resultats de les votacions
-      "your_proposed_initiatives_digest": Resum setmanal de les vostres propostes
-    schedules:
-      weekly:
-        "0": "Setmanalment, els diumenges a les %{hourOfDay}"
-        "1": "Setmanalment, els dilluns a les %{hourOfDay}"
-        "2": "Setmanalment, els dimarts a les %{hourOfDay}"
-        "3": "Setmanalment, els dimecres a les %{hourOfDay}"
-        "4": "Setmanalment, els dijous a les %{hourOfDay}"
-        "5": "Setmanalment, els divendres a les %{hourOfDay}"
-        "6": "Setmanalment, els dissabtes a les %{hourOfDay}"
+      "1": "Setmanalment, els dilluns a les %{hourOfDay}"
+      "2": "Setmanalment, els dimarts a les %{hourOfDay}"
+      "3": "Setmanalment, els dimecres a les %{hourOfDay}"
+      "4": "Setmanalment, els dijous a les %{hourOfDay}"
+      "5": "Setmanalment, els divendres a les %{hourOfDay}"
+      "6": "Setmanalment, els dissabtes a les %{hourOfDay}"
     footer:
-      "link_privacy_policy": "Política de privacitat"
       "link_terms_conditions": "Termes i Condicions"
       "link_unsubscribe": "Cancel·la la subscripció"
       "powered_by": "Impulsat per"
