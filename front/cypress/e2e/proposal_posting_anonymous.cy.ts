@@ -10,16 +10,12 @@ describe('Initiatives with anonymous participation allowed', () => {
       userId = response.body.data.id;
     });
     cy.setAdminLoginCookie();
+
+    // This could be replaced with apiUpdateAppConfiguration if test is flaky
     cy.visit('/admin/initiatives/settings');
-    cy.acceptCookies();
-    cy.apiGetAppConfiguration().then((response) => {
-      if (
-        response.body.data.attributes.settings.initiatives
-          .allow_anonymous_participation === false
-      ) {
-        cy.get('#e2e-anonymous-posting-toggle').click();
-        cy.get('#e2e-initiative-settings-submit-button').click();
-      }
+    cy.apiGetAppConfiguration().then(() => {
+      cy.get('#e2e-anonymous-posting-toggle').click();
+      cy.get('#e2e-initiative-settings-submit-button').click();
     });
   });
 
