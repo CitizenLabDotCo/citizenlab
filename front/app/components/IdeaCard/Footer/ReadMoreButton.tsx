@@ -12,6 +12,8 @@ interface Props {
 const ReadMoreButton = ({ slug }: Props) => {
   const { formatMessage } = useIntl();
 
+  // TODO: Add tracking
+
   return (
     <Button
       linkTo={`/ideas/${slug}?go_back=true`}
