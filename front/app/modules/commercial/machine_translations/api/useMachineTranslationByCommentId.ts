@@ -30,6 +30,7 @@ const useMachineTranslationByCommentId = ({
   >({
     queryKey: machineTranslationKeys.item({
       commentId: queryParameters.commentId,
+      machine_translation: queryParameters.machine_translation,
     }),
     queryFn: () => fetchMachineTranslationByCommentId(queryParameters),
     enabled,
