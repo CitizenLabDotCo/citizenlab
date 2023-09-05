@@ -2,12 +2,8 @@ import moment = require('moment');
 import { randomEmail, randomString } from '../support/commands';
 
 describe('Initiatives with anonymous participation allowed', () => {
-  const projectTitle = randomString();
-  const projectDescriptionPreview = randomString(30);
   const email = randomEmail();
   const password = randomString(15);
-  let projectId: string;
-  let projectSlug: string;
   let userId: string;
 
   before(() => {
