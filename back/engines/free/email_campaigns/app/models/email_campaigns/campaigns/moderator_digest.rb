@@ -146,11 +146,8 @@ module EmailCampaigns
       ((t2 - t1) / 1.day).days
     end
 
-    def stat_increase(ts)
-      second_last_agos = ts.select { |t| t > (Time.now - (days_ago * 2)) }
-      last_agos = second_last_agos.select { |t| t > (Time.now - days_ago) }
-
-      last_agos.size
+    def stat_increase(dates = [])
+      dates.count { |t| t > (Time.now - days_ago) }
     end
 
     # @param [UserDisplayNameService] name_service

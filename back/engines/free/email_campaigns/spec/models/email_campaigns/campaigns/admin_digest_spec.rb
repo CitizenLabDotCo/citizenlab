@@ -10,7 +10,7 @@ RSpec.describe EmailCampaigns::Campaigns::AdminDigest do
   describe '#generate_commands' do
     let(:campaign) { create(:admin_digest_campaign) }
     let!(:admin) { create(:admin) }
-    let!(:old_ideas) { create_list(:idea, 2, published_at: 20.days.ago) }
+    let!(:old_ideas) { create_list(:idea, 2, published_at: 50.days.ago) }
     let!(:new_ideas) { create_list(:idea, 3, published_at: 1.day.ago) }
     let!(:reaction) { create(:reaction, mode: 'up', reactable: new_ideas.first) }
     let!(:draft) { create(:idea, publication_status: 'draft') }
@@ -19,11 +19,11 @@ RSpec.describe EmailCampaigns::Campaigns::AdminDigest do
       command = campaign.generate_commands(recipient: admin).first
 
       expect(
-        command.dig(:event_payload, :statistics, :activities, :new_ideas, :increase)
+        command.dig(:event_payload, :statistics, :activities, :new_ideas_count)
       ).to eq(new_ideas.size)
       expect(
-        command.dig(:event_payload, :statistics, :activities, :new_reactions, :increase)
-      ).to eq(1)
+        command.dig(:event_payload, :statistics, :activities, :new_comments_count)
+      ).to eq(0)
       expect(
         command.dig(:event_payload, :top_project_ideas).flat_map { |tpi| tpi[:top_ideas].pluck(:id) }
       ).to include(new_ideas.first.id)

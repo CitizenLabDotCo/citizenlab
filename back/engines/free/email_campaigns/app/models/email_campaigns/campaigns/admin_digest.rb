@@ -108,30 +108,20 @@ module EmailCampaigns
 
     def content_worth_sending?(_)
       [
-        statistics.dig(:activities, :new_ideas),
-        statistics.dig(:activities, :new_initiatives),
-        statistics.dig(:activities, :new_comments),
-        statistics.dig(:users, :new_visitors),
-        statistics.dig(:users, :new_users),
-        statistics.dig(:users, :active_users)
+        statistics.dig(:activities, :new_ideas_count),
+        statistics.dig(:activities, :new_comments_count),
+        statistics.dig(:users, :new_users_count)
       ].any?(&:positive?)
     end
 
     def statistics
       @statistics ||= {
         activities: {
-          new_ideas: stat_increase(Idea.pluck(:published_at).compact),
-          new_initiatives: stat_increase(Initiative.pluck(:published_at).compact),
-          new_reactions: stat_increase(Reaction.pluck(:created_at)),
-          new_comments: stat_increase(Comment.pluck(:created_at)),
-          total_ideas: Idea.count,
-          total_initiatives: Initiative.count,
-          total_users: User.count
+          new_ideas_count: stat_increase(Idea.pluck(:published_at).compact),
+          new_comments_count: stat_increase(Comment.pluck(:created_at))
         },
         users: {
-          new_visitors: stat_increase,
-          new_users: stat_increase(User.pluck(:registration_completed_at).compact),
-          active_users: stat_increase
+          new_users_count: stat_increase(User.pluck(:registration_completed_at).compact)
         }
       }
     end
@@ -142,11 +132,8 @@ module EmailCampaigns
       ((t2 - t1) / 1.day).days
     end
 
-    def stat_increase(stats = [])
-      second_last_agos = stats.select { |t| t > (Time.now - (days_ago * 2)) }
-      last_agos = second_last_agos.select { |t| t > (Time.now - days_ago) }
-
-      last_agos.size
+    def stat_increase(dates = [])
+      dates.count { |t| t > (Time.now - days_ago) }
     end
 
     def top_project_ideas

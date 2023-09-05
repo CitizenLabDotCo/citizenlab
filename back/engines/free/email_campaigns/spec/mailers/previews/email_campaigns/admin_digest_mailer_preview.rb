@@ -14,18 +14,11 @@ module EmailCampaigns
         event_payload: {
           statistics: {
             activities: {
-              new_ideas: { increase: 1 },
-              new_initiatives: { increase: 1 },
-              new_reactions: { increase: 1 },
-              new_comments: { increase: 1 },
-              total_ideas: 1,
-              total_initiatives: 2,
-              total_users: 3
+              new_ideas_count: { increase: 1 },
+              new_comments_count: { increase: 1 }
             },
             users: {
-              new_visitors: { increase: 1 },
-              new_users: { increase: 1 },
-              active_users: { increase: 1 }
+              new_users_count: { increase: 1 }
             }
           },
           top_project_ideas: [
