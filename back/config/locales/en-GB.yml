@@ -209,6 +209,7 @@ en-GB:
       status: 'Status'
       assignee_fullname: 'Assignee'
       assignee_email: 'Assignee email'
+      image_url: 'Image URL'
     anonymous: 'Anonymous'
   form_builder:
     default_select_field:
@@ -222,9 +223,11 @@ en-GB:
       full_name: 'Full name'
       email_address: 'Email address'
       optional: 'optional'
+      permission: 'Permission'
       choose_as_many: 'Choose as many as you like'
       this_answer: 'This answer will only be shared with moderators, and not to the public.'
       page: 'Page'
+      date_published: 'Date Published (dd-mm-yyyy)'
   project_copy:
     title_suffix: 'Copy'
   confirmations_mailer:
