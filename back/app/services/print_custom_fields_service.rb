@@ -20,6 +20,8 @@ class PrintCustomFieldsService
   def create_pdf
     pdf = Prawn::Document.new(page_size: 'A4', top_margin: 2.cm)
 
+    render_form_title pdf
+
     if params[:name] == 'true' then
       render_text_field_with_name(
         pdf,
@@ -67,6 +69,14 @@ class PrintCustomFieldsService
   end
 
   private
+
+  def render_form_title(pdf)
+    pdf.text(
+      "<b>#{@participation_context.title_multiloc[locale]}</b>",
+      size: 20,
+      inline_format: true
+    )
+  end
 
   def render_text_field_with_name(pdf, name)
     title_multiloc = {}
@@ -130,7 +140,7 @@ class PrintCustomFieldsService
 
     pdf.text(
       "<b>#{custom_field.title_multiloc[locale]}</b>#{custom_field.required? ? "" : " (#{optional})"}",
-      size: 20,
+      size: 16,
       inline_format: true
     )
   end
@@ -160,14 +170,14 @@ class PrintCustomFieldsService
       if show_multiselect_instructions then
         pdf.text(
           "*#{I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.choose_as_many') }}", 
-          size: 12
+          size: 10
         )
       end
 
       if show_visibility_disclaimer then
         pdf.text(
           "*#{I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.this_answer') }}",
-          size: 12
+          size: 10
         )
       end
     end
