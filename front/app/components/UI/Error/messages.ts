@@ -351,4 +351,14 @@ export default defineMessages({
     defaultMessage:
       "Enter a valid link. Make sure the link starts with 'https://'.",
   },
+  title_multiloc_includes_banned_words: {
+    id: 'app.errors.title_multiloc_includes_banned_words',
+    defaultMessage:
+      'You may have used one or more words that are considered profanity by {guidelinesLink}. Please alter your text to remove any profanities that might be present.',
+  },
+  description_multiloc_includes_banned_words: {
+    id: 'app.errors.description_multiloc_includes_banned_words',
+    defaultMessage:
+      'You may have used one or more words that are considered profanity by {guidelinesLink}. Please alter your text to remove any profanities that might be present.',
+  },
 });

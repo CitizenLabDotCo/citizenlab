@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { CLError, ILocationInfo } from 'typings';
+import React, { useCallback, useState } from 'react';
+import { CLError, CLErrors, ILocationInfo } from 'typings';
 
 // components
 import InitiativeForm, {
@@ -18,6 +18,10 @@ import useAddInitiative from 'api/initiatives/useAddInitiative';
 import useAddInitiativeImage from 'api/initiative_images/useAddInitiativeImage';
 import useAddInitiativeFile from 'api/initiative_files/useAddInitiativeFile';
 
+import { ApiErrorGetter } from 'components/Form';
+import messages from './messages';
+import { useForm } from 'react-hook-form';
+
 interface Props {
   locationInfo: ILocationInfo | null;
 }
@@ -27,6 +31,14 @@ const InitiativesNewFormWrapper = (_props: Props) => {
   const { mutate: addInitiativeImage } = useAddInitiativeImage();
   const { mutate: addInitiativeFile } = useAddInitiativeFile();
   const [apiErrors, setApiErrors] = useState<CLError[] | undefined>();
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm({
+    criteriaMode: 'all',
+  });
 
   const handleOnSubmit = async ({
     position,
@@ -42,7 +54,7 @@ const InitiativesNewFormWrapper = (_props: Props) => {
     const { location_description, location_point_geojson } =
       await parsePosition(position);
 
-    addInitiative(
+    await addInitiative(
       {
         publication_status: 'published',
         title_multiloc,
@@ -79,9 +91,11 @@ const InitiativesNewFormWrapper = (_props: Props) => {
             search: `?new_initiative_id=${initiative.data.id}`,
           });
         },
-        onError: (error) => {
-          setApiErrors(error.errors);
-        },
+        // onError: (error) => {
+        //   // setApiErrors(error.errors);
+        //   // setError('apiErrors', { type: 'manual' });
+        //   handleHookFormSubmissionError(error, )
+        // },
       }
     );
   };

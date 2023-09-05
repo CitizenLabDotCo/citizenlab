@@ -191,8 +191,10 @@ const InitiativeForm = ({
 
   const onFormSubmit = async (formValues: FormValues) => {
     try {
+      console.log('onSubmit', { formValues });
       await onSubmit(formValues);
     } catch (error) {
+      console.log('error', { error });
       handleHookFormSubmissionError(error, methods.setError);
     }
   };
