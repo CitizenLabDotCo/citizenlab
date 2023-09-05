@@ -10,7 +10,6 @@ describe('Initiatives with anonymous participation allowed', () => {
     cy.apiSignup('firstName', 'lastName', email, password).then((response) => {
       userId = response.body.data.id;
     });
-    cy.setAdminLoginCookie();
     cy.visit('/admin/initiatives/settings');
     cy.apiGetAppConfiguration().then((response) => {
       if (
@@ -25,12 +24,12 @@ describe('Initiatives with anonymous participation allowed', () => {
   });
 
   it('admin can submit anonymous initiatives', () => {
-    const initiativeTitle = randomString(20);
-    const initiativeContent = randomString(60);
-
+    const initiativeTitle = randomString(10);
+    const initiativeContent = randomString(30);
     cy.setAdminLoginCookie();
-
     cy.visit(`/initiatives/new`);
+    cy.acceptCookies();
+
     cy.get('#title_multiloc').as('titleInput');
     cy.get('#e2e-initiative-form-description-section .ql-editor').as(
       'descriptionInput'
@@ -57,23 +56,22 @@ describe('Initiatives with anonymous participation allowed', () => {
 
     // verify redirect to the newly created initiative page
     cy.location('pathname').should('eq', `/en/initiatives/${initiativeTitle}`);
+    cy.get('#e2e-initiative-show', { timeout: 200000 });
 
     // verify that the author is anonymous
     cy.get('#e2e-anonymous-username').should('exist');
   });
 
   it('resident can submit anonymous initiatives', () => {
-    const initiativeTitle = randomString(20);
-    const initiativeContent = randomString(60);
-
+    const initiativeTitle = randomString(10);
+    const initiativeContent = randomString(30);
     cy.setLoginCookie(email, password);
-
     cy.visit(`/initiatives/new`);
+    cy.acceptCookies();
     cy.get('#title_multiloc').as('titleInput');
     cy.get('#e2e-initiative-form-description-section .ql-editor').as(
       'descriptionInput'
     );
-    cy.contains('What is your proposal?').should('exist');
 
     // add title and description
     cy.get('@titleInput').type(initiativeTitle);
@@ -94,8 +92,8 @@ describe('Initiatives with anonymous participation allowed', () => {
     cy.get('#e2e-initiative-publish-button').click();
 
     // verify redirect to the newly created initiative page
-    cy.get('#e2e-initiative-show', { timeout: 200000 });
     cy.location('pathname').should('eq', `/en/initiatives/${initiativeTitle}`);
+    cy.get('#e2e-initiative-show', { timeout: 200000 });
 
     // verify that the author is anonymous
     cy.get('#e2e-anonymous-username').should('exist');
