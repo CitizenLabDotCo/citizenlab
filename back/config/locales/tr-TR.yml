@@ -209,6 +209,7 @@ tr:
       status: 'Durum'
       assignee_fullname: 'Atanan'
       assignee_email: 'Atanan e-posta'
+      image_url: 'Resim URL''si'
     anonymous: 'Anonim'
   form_builder:
     default_select_field:
@@ -222,9 +223,11 @@ tr:
       full_name: 'Tam adınız'
       email_address: 'E-posta adresi'
       optional: 'isteğe bağlı'
+      permission: 'İzin'
       choose_as_many: 'İstediğiniz kadar seçin'
       this_answer: 'Bu cevap sadece moderatörlerle paylaşılacak, kamuoyu ile paylaşılmayacaktır.'
       page: 'Sayfa'
+      date_published: 'Yayınlanma Tarihi (gg-aa-yyyy)'
   project_copy:
     title_suffix: 'Kopya'
   confirmations_mailer:
