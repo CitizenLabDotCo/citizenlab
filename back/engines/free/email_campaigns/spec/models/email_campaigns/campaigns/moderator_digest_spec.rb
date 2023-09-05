@@ -25,10 +25,10 @@ RSpec.describe 'EmailCampaigns::Campaigns::ModeratorDigest', skip: skip_reason d
       command = campaign.generate_commands(recipient: moderator).first
 
       expect(
-        command.dig(:event_payload, :statistics, :activities, :new_ideas, :increase)
+        command.dig(:event_payload, :statistics, :activities, :new_ideas_count)
       ).to eq(new_ideas.size)
       expect(
-        command.dig(:event_payload, :statistics, :activities, :new_reactions, :increase)
+        command.dig(:event_payload, :statistics, :activities, :new_reactions_count)
       ).to eq(1)
       expect(
         command.dig(:event_payload, :top_ideas).pluck(:id)
