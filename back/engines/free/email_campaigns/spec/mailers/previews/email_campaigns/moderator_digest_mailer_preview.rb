@@ -20,7 +20,6 @@ module EmailCampaigns
           statistics: {
             activities: {
               new_ideas_count: 3,
-              new_reactions_count: 2,
               new_comments_count: 2
             },
             users: {

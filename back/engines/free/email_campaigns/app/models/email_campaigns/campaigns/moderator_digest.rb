@@ -117,14 +117,11 @@ module EmailCampaigns
       participants_increase = ps.projects_participants([project], since: (Time.now - days_ago)).size
       ideas = Idea.published.where(project_id: project.id).load
       comments = Comment.where(post_id: ideas.map(&:id))
-      reactions = Reaction.where(reactable_id: (ideas.map(&:id) + comments.map(&:id)))
+      # reactions = Reaction.where(reactable_id: (ideas.map(&:id) + comments.map(&:id)))
       {
         activities: {
           new_ideas_count: stat_increase(
             ideas.filter_map(&:published_at)
-          ),
-          new_reactions_count: stat_increase(
-            reactions.filter_map(&:created_at)
           ),
           new_comments_count: stat_increase(
             comments.filter_map(&:created_at)
@@ -138,7 +135,6 @@ module EmailCampaigns
 
     def zero_statistics?(statistics)
       ((statistics.dig(:activities, :new_ideas_count) == 0) &&
-         (statistics.dig(:activities, :new_reactions_count) == 0) &&
          (statistics.dig(:activities, :new_comments_count) == 0) &&
          (statistics.dig(:users, :new_participants_count) == 0)
       )
