@@ -129,26 +129,21 @@ module EmailCampaigns
           ),
           new_comments: stat_increase(
             comments.filter_map(&:created_at)
-          ),
-          total_ideas: ideas.size
+          )
         },
         users: {
-          new_visitors: stat_increase(
-            []
-          ),
           new_participants: {
             increase: participants_increase,
             past_increase: participants_past_increase
-          },
-          total_participants: ps.projects_participants([project]).size
+          }
         }
       }
     end
 
     def zero_statistics?(statistics)
       ((statistics.dig(:activities, :new_ideas, :increase) == 0) &&
+         (statistics.dig(:activities, :new_reactions, :increase) == 0) &&
          (statistics.dig(:activities, :new_comments, :increase) == 0) &&
-         (statistics.dig(:users, :new_visitors, :increase) == 0) &&
          (statistics.dig(:users, :new_participants, :increase) == 0)
       )
     end
