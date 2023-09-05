@@ -59,10 +59,11 @@ describe BulkImportIdeas::ImportProjectIdeasService do
     let(:pdf_ideas) do
       [
         {
-          pages: [1, 2],
+          pdf_pages: [1, 2],
           fields: {
             'Full name' => 'John Rambo',
             'Email address' => 'john_rambo@gravy.com',
+            'Permission' => 'X',
             'Title' => 'Free donuts for all',
             'Description' => 'Give them all donuts',
             'Location' => 'Somewhere',
@@ -75,10 +76,11 @@ describe BulkImportIdeas::ImportProjectIdeasService do
           }
         },
         {
-          pages: [3, 4],
+          pdf_pages: [3, 4],
           fields: {
             'Full name' => 'Ned Flanders',
             'Email address' => 'ned@simpsons.com',
+            'Permission' => '',
             'Title' => 'New Wrestling Arena needed',
             'Description' => 'I am convinced that if we do not get this we will be sad.',
             'Location' => 'Behind the sofa',
@@ -102,9 +104,14 @@ describe BulkImportIdeas::ImportProjectIdeasService do
       expect(rows[1][:location_description]).to eq 'Behind the sofa'
     end
 
-    it 'includes user details when "Permissions" field is not present' do
+    it 'includes user details when "Permissions" field is completed' do
       expect(rows[0][:user_email]).to eq 'john_rambo@gravy.com'
       expect(rows[0][:user_name]).to eq 'John Rambo'
+    end
+
+    it 'does not include user details when "Permissions" field is blank' do
+      expect(rows[1][:user_email]).to be_nil
+      expect(rows[1][:user_name]).to be_nil
     end
 
     it 'converts text & number custom fields' do
@@ -146,13 +153,13 @@ describe BulkImportIdeas::ImportProjectIdeasService do
     end
 
     it 'lists the correct pages for the document' do
-      expect(rows[0][:pages]).to eq [1, 2]
-      expect(rows[1][:pages]).to eq [3, 4]
+      expect(rows[0][:pdf_pages]).to eq [1, 2]
+      expect(rows[1][:pdf_pages]).to eq [3, 4]
     end
 
     it 'does not return an email if it does not validate' do
       ideas = [{
-        pages: [1, 2],
+        pdf_pages: [1, 2],
         fields: { 'Full name' => 'John Rambo', 'Email address' => 'john_rambo.com' }
       }]
       rows = service.ideas_to_idea_rows ideas
@@ -162,10 +169,11 @@ describe BulkImportIdeas::ImportProjectIdeasService do
     it 'can convert a document in french' do
       service = described_class.new create(:admin), project.id, 'fr-FR', nil
       ideas = [{
-        pages: [1, 2],
+        pdf_pages: [1, 2],
         fields: {
           'Nom et prénom' => 'Jean Rambo',
           'Adresse e-mail' => 'jean@france.com',
+          'Autorisation' => 'X',
           'Titre' => 'Bonjour',
           'Description' => "Je suis un chien. J'aime les chats."
         }
@@ -190,7 +198,7 @@ describe BulkImportIdeas::ImportProjectIdeasService do
       let(:xlsx_ideas_array) do
         [
           {
-            pages: [1],
+            pdf_pages: [1],
             fields: {
               'Full name' => 'Bill Test',
               'Email address' => 'bill@citizenlab.co',
@@ -225,7 +233,7 @@ describe BulkImportIdeas::ImportProjectIdeasService do
           longitude: 6.0944,
           location_description: 'Somewhere',
           image_url: 'https://images.com/image.png',
-          pages: [1]
+          pdf_pages: [1]
         })
       end
 
@@ -252,6 +260,32 @@ describe BulkImportIdeas::ImportProjectIdeasService do
         expect(rows[0][:custom_field_values][:select_field]).to eq 'yes'
         expect(rows[0][:custom_field_values][:another_select_field]).to eq 'no'
         expect(rows[0][:custom_field_values][:multiselect_field]).to match_array %w[this that]
+      end
+
+      it 'ignores completely blank rows' do
+        xlsx_ideas_array = [
+          {
+            pdf_pages: [1],
+            fields: {
+              'Full name' => '',
+              'Email address' => '',
+              'Permission' => '',
+              'Date Published (dd-mm-yyyy)' => '',
+              'Title' => '',
+              'Description' => '',
+              'Tags' => '',
+              'Location' => '',
+              'A text field' => '',
+              'Number field' => '',
+              'Select field' => '',
+              'Multi select field' => '',
+              'Another select field' => '',
+              'Image URL' => ''
+            }
+          }
+        ]
+        idea_rows = service.ideas_to_idea_rows xlsx_ideas_array
+        expect(idea_rows.count).to eq 0
       end
     end
   end

@@ -215,7 +215,7 @@ Rails.application.routes.draw do
       resource :home_page, only: %i[show update]
 
       resources :experiments, only: %i[index create]
-      
+
       resources :handwritten_ideas, only: %i[create]
 
       scope 'stats' do

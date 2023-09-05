@@ -55,7 +55,7 @@ const TopBar = ({ onClickPDFImport }: Props) => {
 
       <Box display="flex">
         <Button icon="page" onClick={onClickPDFImport} bgColor={colors.primary}>
-          <FormattedMessage {...messages.importPdf} />
+          <FormattedMessage {...messages.importFile} />
         </Button>
       </Box>
     </Box>

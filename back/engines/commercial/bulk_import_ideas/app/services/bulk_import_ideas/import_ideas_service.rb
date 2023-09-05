@@ -86,7 +86,7 @@ module BulkImportIdeas
       idea.save!
 
       create_idea_image idea_row, idea
-      create_idea_import idea, user_created, idea_row[:pages]
+      create_idea_import idea, user_created, idea_row[:pdf_pages]
 
       idea
     end
@@ -261,6 +261,13 @@ module BulkImportIdeas
       end
     end
 
+    def idea_blank?(idea)
+      idea.each do |_field, value|
+        return false if value.present?
+      end
+      true
+    end
+
     def create_idea_import(idea, user_created, page_range)
       # Add import metadata
       idea_import = IdeaImport.new(
@@ -268,7 +275,8 @@ module BulkImportIdeas
         page_range: page_range,
         import_user: @import_user,
         user_created: user_created,
-        file: @file
+        file: @file,
+        locale: @locale
       )
       idea_import.save!
     end
@@ -282,7 +290,9 @@ module BulkImportIdeas
     def parse_pdf_ideas(file)
       pdf_file = decode_base64 file
       google_forms_service = GoogleFormParserService.new pdf_file
-      IdeaPlaintextParserService.new(@project.id, @locale, @phase&.id).parse_text(google_forms_service.raw_text)
+      IdeaPlaintextParserService.new(
+        @project.id, @locale, @phase&.id
+      ).parse_text(google_forms_service.raw_text_page_array)
     end
 
     def decode_base64(base64_file)

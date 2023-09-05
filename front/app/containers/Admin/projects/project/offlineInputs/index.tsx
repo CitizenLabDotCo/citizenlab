@@ -29,6 +29,7 @@ import { getFormValues } from 'containers/IdeasEditPage/utils';
 // typings
 import { FormData } from 'components/Form/typings';
 import { CLErrors } from 'typings';
+import { geocode } from 'utils/locationTools';
 
 const OfflineInputImporter = () => {
   const importPrintedFormsEnabled = useFeatureFlag({
@@ -88,13 +89,28 @@ const OfflineInputImporter = () => {
   const onApproveIdea = async () => {
     if (!ideaId || !formData || !formDataValid) return;
 
+    const {
+      location_description,
+      idea_files_attributes: _idea_files_attributes,
+      idea_images_attributes: _idea_images_attributes,
+      topic_ids: _topic_ideas,
+      ...supportedFormData
+    } = formData;
+
+    const location_point_geojson =
+      typeof location_description === 'string' &&
+      location_description.length > 0
+        ? await geocode(location_description)
+        : undefined;
+
     try {
       await updateIdea({
         id: ideaId,
         requestBody: {
           publication_status: 'published',
-          title_multiloc: formData.title_multiloc,
-          body_multiloc: formData.body_multiloc,
+          ...supportedFormData,
+          ...(location_description ? { location_description } : {}),
+          ...(location_point_geojson ? { location_point_geojson } : {}),
         },
       });
     } catch (e) {

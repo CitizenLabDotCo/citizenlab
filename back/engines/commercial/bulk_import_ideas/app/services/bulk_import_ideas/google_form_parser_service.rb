@@ -10,36 +10,39 @@ module BulkImportIdeas
     end
 
     def raw_text
-      return dummy_raw_text unless ENV.fetch('GOOGLE_DOCUMENT_AI_PROJECT', false) # Temp for development
+      return dummy_raw_text.join("\n") unless ENV.fetch('GOOGLE_APPLICATION_CREDENTIALS', false) # Temp for development
+
+      @document.text
+    end
+
+    def raw_text_page_array
+      return dummy_raw_text unless ENV.fetch('GOOGLE_APPLICATION_CREDENTIALS', false) # Temp for development
 
       text = @document.text
 
       # Try and sort the text better by location on the page
-      new_text = []
-      @document.pages.each do |page|
-        page.paragraphs.each do |paragraph|
+      @document.pages.map do |page|
+        new_text = page.paragraphs.map do |paragraph|
           x = paragraph.layout.bounding_poly.normalized_vertices[0].y.round(2)
           y = paragraph.layout.bounding_poly.normalized_vertices[0].y.round(2)
-          new_text << { x: x, y: page.page_number + y, text_segments: paragraph.layout.text_anchor.text_segments }
+          { x: x, y: page.page_number + y, text_segments: paragraph.layout.text_anchor.text_segments }
         end
-      end
+        new_text = new_text.sort { |a, b| [a[:y], a[:x]] <=> [b[:y], b[:x]] }
 
-      new_text = new_text.sort { |a, b| [a[:y], a[:x]] <=> [b[:y], b[:x]] }
-
-      new_text_string = ''
-      new_text.each do |text_block|
-        text_block[:text_segments].each do |segment|
-          new_text_string += text[segment.start_index...segment.end_index]
+        new_text_string = ''
+        new_text.each do |text_block|
+          text_block[:text_segments].each do |segment|
+            new_text_string += text[segment.start_index...segment.end_index]
+          end
         end
+        new_text_string
       end
-      new_text_string
     end
 
     private
 
     def process_upload
-      return nil unless ENV.fetch('GOOGLE_DOCUMENT_AI_PROJECT', false) # Temp for development
-      return unless @pdf_file_content
+      return unless @pdf_file_content && ENV.fetch('GOOGLE_APPLICATION_CREDENTIALS', false)
 
       # Set up the DocumentAI processor.
       # TODO: Invalid location: 'eu' must match the server deployment 'us' even when the processor is set to eu?
@@ -65,9 +68,13 @@ module BulkImportIdeas
       response.document
     end
 
-    # NOTE: For DEVELOPMENT ONLY when Google API not configured
+    # NOTE: For DEVELOPMENT ONLY to avoid Google API being called - disable GOOGLE_APPLICATION_CREDENTIALS in back-secret.env
     def dummy_raw_text
-      "Page 1\nTitle\nMy very good idea\nDescription\nwould suggest building the\nnew swimming Pool near the\nShopping mall on Park Lane,\nIt's easily accessible location\nwith enough space\nan\nLocation (optional)\nDear shopping mall\nYour favourite name for a swimming pool (optional)\n*This answer will only be shared with moderators, and not to the public.\nThe cool pool\nHow much do you like pizza (optional)\n*This answer will only be shared with moderators, and not to the public.\nA lot\n○ Not at all\nHow much do you like burgers (optional)\n*This answer will only be shared with moderators, and not to the public.\nO A lot\nNot at all\n"
+      dummy_text = []
+      rand(1..8).times do
+        dummy_text << "Page 1\nTitle\n#{Faker::Quote.yoda}\nDescription\n#{Faker::Hipster.paragraph}\nPage 2\nAnother field\n#{Faker::Quote.robin}"
+      end
+      dummy_text
     end
   end
 end
