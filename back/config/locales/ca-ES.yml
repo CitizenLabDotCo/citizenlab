@@ -209,6 +209,7 @@ ca:
       status: 'Estat'
       assignee_fullname: 'Cesionari'
       assignee_email: 'Correu electrònic del cessionari'
+      image_url: 'URL de la imatge'
     anonymous: 'Anònim'
   form_builder:
     default_select_field:
@@ -222,9 +223,11 @@ ca:
       full_name: 'Nom complet'
       email_address: 'Correu electrònic'
       optional: 'opcional'
+      permission: 'Permís'
       choose_as_many: 'Trieu-ne tantes com vulgueu'
       this_answer: 'Aquesta resposta només es compartirà amb els moderadors, i no amb el públic.'
       page: 'Pàgina'
+      date_published: 'Data de publicació (dd-mm-aaaa)'
   project_copy:
     title_suffix: 'Còpia'
   confirmations_mailer:
