@@ -209,6 +209,7 @@ pt:
       status: 'Status'
       assignee_fullname: 'Atribuído'
       assignee_email: 'E-mail do assinante'
+      image_url: 'URL da imagem'
     anonymous: 'Anônimo'
   form_builder:
     default_select_field:
@@ -222,9 +223,11 @@ pt:
       full_name: 'Nome completo'
       email_address: 'Endereço de email'
       optional: 'opcional'
+      permission: 'Autorização'
       choose_as_many: 'Escolha quantos quiser'
       this_answer: 'Esta resposta será compartilhada apenas com moderadores e não com o público.'
       page: 'Página'
+      date_published: 'Data de publicação (dd-mm-aaaa)'
   project_copy:
     title_suffix: 'Cópia'
   confirmations_mailer:
