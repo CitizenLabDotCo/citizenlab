@@ -703,7 +703,7 @@ es:
         internal_comment_is_posted_on_unassigned_initiative: 'Se publica un comentario interno sobre una propuesta no asignada'
         internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Se publica un comentario interno sobre una entrada no asignada en un proyecto no gestionado'
         user_accepts_invitation_to_cosponsor_a_proposal: 'El usuario acepta la invitación a copatrocinar una propuesta'
-        user_is_invited_to_cosponsor_a_proposal: 'Se invita al usuario a copatrocinar una propuesta'
+        user_is_invited_to_cosponsor_a_proposal: 'Se invita al usuario a co-patrocinar una propuesta'
         user_is_mentioned_in_internal_comment: 'El usuario es mencionado en el comentario interno'
         new_input_is_published: 'Un nuevo aporte ha sido publicado'
         new_proposal_is_posted: 'Una nueva propuesta ha sido publicada'

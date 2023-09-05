@@ -570,6 +570,7 @@
   "app.components.admin.UserFilterConditions.rulesFormLabelPredicate": "Condició",
   "app.components.admin.UserFilterConditions.rulesFormLabelValue": "Valor",
   "app.components.anonymousParticipationModal.anonymousParticipationWarning": "No rebràs notificacions sobre la teva contribució",
+  "app.components.anonymousParticipationModal.cancel": "Cancel · lar",
   "app.components.anonymousParticipationModal.continue": "Continua",
   "app.components.anonymousParticipationModal.participateAnonymously": "Participa de manera anònima",
   "app.components.anonymousParticipationModal.participateAnonymouslyModalText4": "Això amagarà el vostre perfil <b>de manera segura als administradors, moderadors i altres residents d'aquesta contribució específica perquè ningú no pugui enllaçar-</b> aquesta contribució. Les contribucions anònimes no es poden editar i es consideren definitives.",
