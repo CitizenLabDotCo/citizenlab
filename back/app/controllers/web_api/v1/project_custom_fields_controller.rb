@@ -14,8 +14,10 @@ class WebApi::V1::ProjectCustomFieldsController < ApplicationController
   end
 
   def to_pdf
+    phase_id = params[:phase_id]
+
     pdf = PrintCustomFieldsService.new(
-      participation_context,
+      phase_id ? Phase.find(phase_id) : participation_context,
       custom_fields,
       params
     ).create_pdf

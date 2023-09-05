@@ -79,11 +79,24 @@ class PrintCustomFieldsService
   end
 
   def render_form_title(pdf)
-    pdf.text(
-      "<b>#{@participation_context.title_multiloc[locale]}</b>",
-      size: 20,
-      inline_format: true
-    )
+    pc_title = @participation_context.title_multiloc[locale]
+
+    if @participation_context.instance_of? Project
+      pdf.text(
+        "<b>#{pc_title}</b>",
+        size: 20,
+        inline_format: true
+      )
+    else
+      project = Project.find(@participation_context.project_id)
+      project_title = project.title_multiloc[locale]
+
+      pdf.text(
+        "<b>#{project_title} - #{pc_title}</b>",
+        size: 20,
+        inline_format: true
+      )
+    end
 
     pdf.move_down 9.mm
   end
