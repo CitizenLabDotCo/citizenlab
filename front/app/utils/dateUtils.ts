@@ -2,9 +2,7 @@ import moment, { unitOfTime } from 'moment';
 import { isString } from 'lodash-es';
 import { Locale } from 'typings';
 import { IResolution } from 'components/admin/ResolutionControl';
-import messages from './messages';
 import { IEventData } from 'api/events/types';
-import { MessageDescriptor } from 'react-intl';
 
 export function getIsoDateForToday(): string {
   // this is based on the user's timezone in moment, so
@@ -128,34 +126,6 @@ export function convertSecondsToDDHHMM(seconds: number) {
   return `${formattedDaysLeft}:${formattedHoursLeft}:${formattedMinutesLeft}`;
 }
 
-export function capitalizeDates(locale: Locale) {
-  const localesWithCapitalizedWeekdays = ['en', 'de'];
-  if (localesWithCapitalizedWeekdays.includes(locale)) {
-    return true;
-  }
-  return false;
-}
-
-export function getDayName(dayInWeek: number) {
-  switch (dayInWeek) {
-    case 0:
-      return messages.sunday;
-    case 1:
-      return messages.monday;
-    case 2:
-      return messages.tuesday;
-    case 3:
-      return messages.wednesday;
-    case 4:
-      return messages.thursday;
-    case 5:
-      return messages.friday;
-    case 6:
-      return messages.saturday;
-  }
-  return null;
-}
-
 export function toThreeLetterMonth(date: string, resolution: IResolution) {
   return moment
     .utc(date, 'YYYY-MM-DD')
@@ -189,31 +159,27 @@ export function toFullMonth(date: string, resolution: IResolution) {
     .format(resolution === 'month' ? 'MMMM YYYY' : 'MMMM DD, YYYY');
 }
 
-// This function is used to display event start/end times with weekday names
-export const getEventDateWithWeekdays = (
-  event: IEventData,
-  formatMessage: (
-    messageDescriptor: MessageDescriptor,
-    values?:
-      | {
-          [key: string]: string | number | boolean | Date;
-        }
-      | undefined
-  ) => string
-) => {
-  const startAtMoment = moment(event.attributes.start_at);
-  const endAtMoment = moment(event.attributes.end_at);
+// Function used to determine whether a dot should be shown after the day in short date formats
+// as this is can't be determined for a 3-day month by the moment.js library.
+// Currently only used for German. Other locales can be added if needed.
+export function showDotAfterDay(locale: Locale) {
+  return locale === 'de-DE';
+}
+
+// Function used to get the event dates in a localized string format
+export function getEventDateString(event: IEventData) {
+  const startMoment = moment(event.attributes.start_at);
+  const endMoment = moment(event.attributes.end_at);
+
   const isEventMultipleDays =
-    startAtMoment.dayOfYear() !== endAtMoment.dayOfYear();
-  const startAtWeekday = getDayName(startAtMoment.weekday());
-  const endAtWeekday = getDayName(endAtMoment.weekday());
-  return isEventMultipleDays
-    ? `${
-        startAtWeekday && formatMessage(startAtWeekday)
-      }, ${startAtMoment.format('LLL')} - ${
-        endAtWeekday && formatMessage(endAtWeekday)
-      }, ${endAtMoment.format('LLL')}`
-    : `${startAtMoment.format('LL')} • ${startAtMoment.format(
-        'LT'
-      )} - ${endAtMoment.format('LT')}`;
-};
+    startMoment.dayOfYear() !== endMoment.dayOfYear() ||
+    startMoment.year() !== endMoment.year(); // Added in case the event is exactly 1 year long
+
+  if (isEventMultipleDays) {
+    return `${startMoment.format('LLL')} - ${endMoment.format('LLL')}`;
+  } else {
+    return `${startMoment.format('LL')} • ${startMoment.format(
+      'LT'
+    )} - ${endMoment.format('LT')}`;
+  }
+}
