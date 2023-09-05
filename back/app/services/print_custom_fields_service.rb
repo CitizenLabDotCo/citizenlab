@@ -23,6 +23,7 @@ class PrintCustomFieldsService
 
     render_tenant_logo pdf
     render_form_title pdf
+    render_instructions pdf
 
     if params[:name] == 'true'
       render_text_field_with_name(
@@ -99,6 +100,28 @@ class PrintCustomFieldsService
     end
 
     pdf.move_down 9.mm
+  end
+
+  def render_instructions(pdf)
+    pdf.text(
+      "<b>#{I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.instructions') }}</b>",
+      size: 16,
+      inline_format: true
+    )
+
+    save_cursor pdf
+    pdf.indent(2.mm) { pdf.text('•') }
+    reset_cursor pdf
+
+    pdf.indent(5.mm) do
+      pdf.text(
+        "#{I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.write_as_clearly') }}",
+        size: 12,
+        inline_format: true
+      )
+    end
+
+    pdf.move_down 10.mm
   end
 
   def render_text_field_with_name(pdf, name)
