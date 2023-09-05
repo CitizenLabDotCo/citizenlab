@@ -66,12 +66,12 @@ const getDatesFromKey = (dateFilter: string[] | undefined) => {
   } else if (dateFilter[0] === 'week') {
     return [
       moment().format('YYYY-MM-DD'),
-      moment().add('7', 'day').format('YYYY-MM-DD'),
+      moment().add('8', 'day').format('YYYY-MM-DD'),
     ];
   } else if (dateFilter[0] === 'month') {
     return [
       moment().format('YYYY-MM-DD'),
-      moment().add('1', 'month').format('YYYY-MM-DD'),
+      moment().add('1', 'month').add('1', 'day').format('YYYY-MM-DD'),
     ];
   }
 
