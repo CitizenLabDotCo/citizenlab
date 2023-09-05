@@ -21,6 +21,7 @@ import { Multiloc } from 'typings';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import { SHOW_PRINT_FUNCTIONALITY } from '../flag';
 
 // hooks
 import useFormSubmissionCount from 'hooks/useFormSubmissionCount';
@@ -172,15 +173,8 @@ const FormActions = ({
               {formatMessage(messages.viewSurveyText2)}
             </Button>
           </Box>
-          {uiSchema && (
-            <Box
-              display="flex"
-              flexDirection="row"
-              width="100%"
-              mb="36px"
-              mt="12px"
-              gap="16px"
-            >
+          {uiSchema && SHOW_PRINT_FUNCTIONALITY && (
+            <Box mt="12px" w="100%" display="flex">
               <Button
                 icon="download"
                 buttonStyle="cl-blue"

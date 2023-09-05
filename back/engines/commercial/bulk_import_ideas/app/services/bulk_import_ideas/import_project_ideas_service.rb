@@ -59,14 +59,14 @@ module BulkImportIdeas
       ideas = if file_type == 'pdf'
         parse_pdf_ideas(file)
       else
-        parse_xlsx_ideas(file).map { |idea| { pages: [1], fields: idea } }
+        parse_xlsx_ideas(file).map { |idea| { pdf_pages: [1], fields: idea } }
       end
       ideas_to_idea_rows(ideas)
     end
 
     def ideas_to_idea_rows(ideas_array)
       idea_rows = ideas_array.map do |idea|
-        page_range = idea[:pages]
+        page_range = idea[:pdf_pages]
         fields = idea[:fields]
 
         next if idea_blank? fields
@@ -82,7 +82,7 @@ module BulkImportIdeas
 
         idea_row[:project_id]   = @project.id
         idea_row[:phase_id]     = @phase.id if @phase
-        idea_row[:pages]        = page_range
+        idea_row[:pdf_pages]    = page_range
         idea_row[:published_at] = fields[locale_published_label]
         idea_row[:image_url]    = fields[locale_image_url_label]
         idea_row[:latitude]     = fields[locale_latitude_label]

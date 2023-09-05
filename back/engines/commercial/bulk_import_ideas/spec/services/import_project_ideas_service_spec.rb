@@ -59,7 +59,7 @@ describe BulkImportIdeas::ImportProjectIdeasService do
     let(:pdf_ideas) do
       [
         {
-          pages: [1, 2],
+          pdf_pages: [1, 2],
           fields: {
             'Full name' => 'John Rambo',
             'Email address' => 'john_rambo@gravy.com',
@@ -76,7 +76,7 @@ describe BulkImportIdeas::ImportProjectIdeasService do
           }
         },
         {
-          pages: [3, 4],
+          pdf_pages: [3, 4],
           fields: {
             'Full name' => 'Ned Flanders',
             'Email address' => 'ned@simpsons.com',
@@ -153,13 +153,13 @@ describe BulkImportIdeas::ImportProjectIdeasService do
     end
 
     it 'lists the correct pages for the document' do
-      expect(rows[0][:pages]).to eq [1, 2]
-      expect(rows[1][:pages]).to eq [3, 4]
+      expect(rows[0][:pdf_pages]).to eq [1, 2]
+      expect(rows[1][:pdf_pages]).to eq [3, 4]
     end
 
     it 'does not return an email if it does not validate' do
       ideas = [{
-        pages: [1, 2],
+        pdf_pages: [1, 2],
         fields: { 'Full name' => 'John Rambo', 'Email address' => 'john_rambo.com' }
       }]
       rows = service.ideas_to_idea_rows ideas
@@ -169,7 +169,7 @@ describe BulkImportIdeas::ImportProjectIdeasService do
     it 'can convert a document in french' do
       service = described_class.new create(:admin), project.id, 'fr-FR', nil
       ideas = [{
-        pages: [1, 2],
+        pdf_pages: [1, 2],
         fields: {
           'Nom et prénom' => 'Jean Rambo',
           'Adresse e-mail' => 'jean@france.com',
@@ -198,7 +198,7 @@ describe BulkImportIdeas::ImportProjectIdeasService do
       let(:xlsx_ideas_array) do
         [
           {
-            pages: [1],
+            pdf_pages: [1],
             fields: {
               'Full name' => 'Bill Test',
               'Email address' => 'bill@citizenlab.co',
@@ -233,7 +233,7 @@ describe BulkImportIdeas::ImportProjectIdeasService do
           longitude: 6.0944,
           location_description: 'Somewhere',
           image_url: 'https://images.com/image.png',
-          pages: [1]
+          pdf_pages: [1]
         })
       end
 
@@ -265,7 +265,7 @@ describe BulkImportIdeas::ImportProjectIdeasService do
       it 'ignores completely blank rows' do
         xlsx_ideas_array = [
           {
-            pages: [1],
+            pdf_pages: [1],
             fields: {
               'Full name' => '',
               'Email address' => '',

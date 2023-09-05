@@ -175,14 +175,14 @@ describe BulkImportIdeas::ImportIdeasService do
           title_multiloc: { 'en' => 'My idea title' },
           body_multiloc: { 'en' => 'My idea description' },
           project_id: project.id,
-          pages: [1, 2],
+          pdf_pages: [1, 2],
           user_email: 'userimport@citizenlab.co'
         },
         {
           title_multiloc: { 'en' => 'My idea title 2' },
           body_multiloc: { 'en' => 'My idea description 2' },
           project_id: project.id,
-          pages: [3, 4],
+          pdf_pages: [3, 4],
           user_email: 'userimport@citizenlab.co'
         }
       ]
