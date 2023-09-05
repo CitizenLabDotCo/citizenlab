@@ -9,11 +9,10 @@ describe('Initiatives with anonymous participation allowed', () => {
     cy.apiSignup('firstName', 'lastName', email, password).then((response) => {
       userId = response.body.data.id;
     });
+    cy.setAdminLoginCookie();
+    cy.visit('/admin/initiatives/settings');
+    cy.acceptCookies();
     cy.apiGetAppConfiguration().then((response) => {
-      cy.setAdminLoginCookie();
-      cy.visit('/admin/initiatives/settings');
-      cy.acceptCookies();
-
       if (
         response.body.data.attributes.settings.initiatives
           .allow_anonymous_participation === false
