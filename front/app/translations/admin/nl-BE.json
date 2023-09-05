@@ -796,7 +796,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.addToPhase": "Toevoegen aan fase",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.formLanguage": "Formulier taal",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.here": "hier",
-  "app.containers.Admin.projects.project.offlineInputs.ImportModal.upload": "uploaden",
+  "app.containers.Admin.projects.project.offlineInputs.ImportModal.upload": "Uploaden",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.uploadAPdfFile": "Upload een <b>PDF-bestand van gescande formulieren</b>. De PDF moet een formulier gebruiken dat is afgedrukt vanuit dit project dat {hereLink} beschikbaar is.",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.writtenIdeaImporter": "Geschreven idee invoerder",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approve": "Goedkeuren",
