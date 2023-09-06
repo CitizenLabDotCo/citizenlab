@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# WARNING! Also deletes associated users with invite_status: 'pending'!
+# WARNING! Also deletes users associated with pending invite (accepted_at: nil)!
 
 namespace :cl2_back do
   desc 'Delete invites that are older than specified number of days'
