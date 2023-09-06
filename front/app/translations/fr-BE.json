@@ -838,7 +838,7 @@
   "app.containers.EventsShow.eventFrom": "Événement de \"{eventTitle}\"",
   "app.containers.EventsShow.goBack": "Retour",
   "app.containers.EventsShow.goToProject": "Accéder au projet",
-  "app.containers.EventsShow.icsError": "Erreur de téléchargement du fichier ICS",
+  "app.containers.EventsShow.icsError": "Erreur lors du téléchargement du fichier calendrier (ICS)",
   "app.containers.EventsShow.socialMediaSharingMessage": "Participez à cet événement : {eventTitle}",
   "app.containers.EventsShow.xParticipants": "{count, plural, no {# participants} one {# participant} other {# participants}}",
   "app.containers.IdeaButton.addAContribution": "Ajoutez une suggestion",
