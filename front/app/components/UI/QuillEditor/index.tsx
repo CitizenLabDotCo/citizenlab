@@ -322,7 +322,7 @@ function isExternal(url: string) {
 const Link = Quill.import('formats/link');
 
 class CustomLink extends Link {
-  static create(url) {
+  static create(url: string) {
     const node = super.create(url);
     node.setAttribute('rel', 'noreferrer noopener nofollow');
 
@@ -343,7 +343,7 @@ Quill.register('formats/link', CustomLink);
 const Inline = Quill.import('blots/inline');
 
 class CustomButton extends Inline {
-  static create(url) {
+  static create(url: string) {
     const node = super.create();
     node.setAttribute('href', url);
     node.setAttribute('rel', 'noorefferer');
@@ -588,7 +588,13 @@ const QuillEditor = memo<Props>(
     }, [editor, formatMessage, value]);
 
     const trackAdvanced =
-      (type, option) => (_event: React.MouseEvent<HTMLElement>) => {
+      ({
+        type,
+        option,
+      }:
+        | { type: 'align'; option: 'left' | 'center' | 'right' }
+        | { type: 'list'; option: 'bullet' | 'ordered' }) =>
+      (_event: React.MouseEvent<HTMLElement>) => {
         trackEventByName(tracks.advancedEditing.name, {
           extra: {
             type,
@@ -603,7 +609,7 @@ const QuillEditor = memo<Props>(
         event.currentTarget.classList.contains('ql-picker-item')
       ) {
         const value = event.currentTarget.getAttribute('data-value');
-        let option;
+        let option: string;
 
         if (value === '1') {
           option = 'title';
@@ -622,13 +628,15 @@ const QuillEditor = memo<Props>(
       }
     };
 
-    const trackBasic = (type) => (_event: React.MouseEvent<HTMLElement>) => {
-      trackEventByName(tracks.basicEditing.name, {
-        extra: {
-          type,
-        },
-      });
-    };
+    const trackBasic =
+      (type: 'bold' | 'italic' | 'custom-link' | 'link') =>
+      (_event: React.MouseEvent<HTMLElement>) => {
+        trackEventByName(tracks.basicEditing.name, {
+          extra: {
+            type,
+          },
+        });
+      };
 
     const trackImage = (_event: React.MouseEvent<HTMLElement>) => {
       trackEventByName(tracks.imageEditing.name);
@@ -792,19 +800,19 @@ const QuillEditor = memo<Props>(
                 <button
                   className="ql-align"
                   value=""
-                  onClick={trackAdvanced('align', 'left')}
+                  onClick={trackAdvanced({ type: 'align', option: 'left' })}
                   aria-label={formatMessage(messages.alignLeft)}
                 />
                 <button
                   className="ql-align"
                   value="center"
-                  onClick={trackAdvanced('align', 'center')}
+                  onClick={trackAdvanced({ type: 'align', option: 'center' })}
                   aria-label={formatMessage(messages.alignCenter)}
                 />
                 <button
                   className="ql-align"
                   value="right"
-                  onClick={trackAdvanced('align', 'right')}
+                  onClick={trackAdvanced({ type: 'align', option: 'right' })}
                   aria-label={formatMessage(messages.alignRight)}
                 />
               </span>
@@ -815,13 +823,13 @@ const QuillEditor = memo<Props>(
                 <button
                   className="ql-list"
                   value="ordered"
-                  onClick={trackAdvanced('list', 'ordered')}
+                  onClick={trackAdvanced({ type: 'list', option: 'ordered' })}
                   aria-label={formatMessage(messages.orderedList)}
                 />
                 <button
                   className="ql-list"
                   value="bullet"
-                  onClick={trackAdvanced('list', 'bullet')}
+                  onClick={trackAdvanced({ type: 'list', option: 'bullet' })}
                   aria-label={formatMessage(messages.unorderedList)}
                 />
               </span>
