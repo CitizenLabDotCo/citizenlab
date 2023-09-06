@@ -39,15 +39,16 @@ import { Box } from '@citizenlab/cl2-component-library';
 const ImageAndAttachmentsSection = lazy(
   () => import('./ImagesAndAttachmentsSection')
 );
+import Warning from 'components/UI/Warning';
 
 // Hooks
 import useTopics from 'api/topics/useTopics';
 import { IInitiativeData } from 'api/initiatives/types';
 import { IInitiativeImageData } from 'api/initiative_images/types';
 import { IInitiativeFileData } from 'api/initiative_files/types';
-import Warning from 'components/UI/Warning';
 import useInitiativeReviewRequired from 'hooks/useInitiativeReviewRequired';
 import { stripHtmlTags } from 'utils/helperUtils';
+import useInitiativeCosponsorsRequired from 'hooks/useInitiativeCosponsorsRequired';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 declare module 'components/UI/Error' {
@@ -83,14 +84,12 @@ const InitiativeForm = ({
   initiativeFiles,
 }: Props) => {
   const mapsLoaded = window.googleMaps;
+  const { formatMessage } = useIntl();
   const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
     useState(false);
-  const { data: appConfiguration } = useAppConfiguration();
-  const cosponsorsRequired =
-    appConfiguration?.data.attributes.settings.initiatives
-      ?.require_cosponsors || false;
-  const { formatMessage } = useIntl();
+  const cosponsorsRequired = useInitiativeCosponsorsRequired();
   const initiativeReviewRequired = useInitiativeReviewRequired();
+  const { data: appConfiguration } = useAppConfiguration();
   const { data: topics } = useTopics({ excludeCode: 'custom' });
   const maxNumberOfCosponsors = 10;
   const schema = object({
@@ -118,15 +117,23 @@ const InitiativeForm = ({
     topic_ids: array()
       .required(formatMessage(messages.topicEmptyError))
       .min(1, formatMessage(messages.topicEmptyError)),
-    ...(cosponsorsRequired && {
-      cosponsor_ids: array()
-        .required(formatMessage(messages.cosponsorsEmptyError))
-        .min(1, formatMessage(messages.cosponsorsEmptyError))
-        .max(
-          maxNumberOfCosponsors,
-          formatMessage(messages.cosponsorsMaxError, { maxNumberOfCosponsors })
-        ),
-    }),
+    ...(cosponsorsRequired &&
+      typeof appConfiguration?.data.attributes.settings.initiatives
+        ?.cosponsors_number === 'number' && {
+        cosponsor_ids: array()
+          .required(formatMessage(messages.cosponsorsEmptyError))
+          .min(
+            appConfiguration.data.attributes.settings.initiatives
+              .cosponsors_number,
+            formatMessage(messages.cosponsorsEmptyError)
+          )
+          .max(
+            maxNumberOfCosponsors,
+            formatMessage(messages.cosponsorsMaxError, {
+              maxNumberOfCosponsors,
+            })
+          ),
+      }),
     local_initiative_files: mixed().optional(),
     images: mixed().optional().nullable(),
     header_bg: mixed().optional().nullable(),
