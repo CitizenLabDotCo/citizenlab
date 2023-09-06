@@ -16,7 +16,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import AnalysisBanner from './AnalysisBanner';
-import AnalysesList from './AnalysesList';
 
 // i18n
 import messages from '../messages';
@@ -99,32 +98,8 @@ const FormResults = ({ intl: { formatMessage } }: WrappedComponentProps) => {
         </Box>
       </Box>
 
-      <Box maxWidth="524px">
-        {results.map(
-          (
-            { question, inputType, answers, totalResponses, required },
-            index
-          ) => {
-            return (
-              <FormResultsQuestion
-                key={index}
-                locale={locale}
-                question={question}
-                inputType={inputType}
-                answers={answers}
-                totalResponses={totalResponses}
-                required={required}
-              />
-            );
-          }
-        )}
-      </Box>
-
       {analysisEnabled ? (
-        <>
-          <AnalysisBanner />
-          <AnalysesList />
-        </>
+        <AnalysisBanner />
       ) : (
         <Box
           bgColor={colors.teal100}
@@ -151,6 +126,35 @@ const FormResults = ({ intl: { formatMessage } }: WrappedComponentProps) => {
           </Box>
         </Box>
       )}
+
+      <Box maxWidth="524px">
+        {results.map(
+          (
+            {
+              question,
+              inputType,
+              answers,
+              totalResponses,
+              required,
+              customFieldId,
+            },
+            index
+          ) => {
+            return (
+              <FormResultsQuestion
+                key={index}
+                locale={locale}
+                question={question}
+                inputType={inputType}
+                answers={answers}
+                totalResponses={totalResponses}
+                required={required}
+                customFieldId={customFieldId}
+              />
+            );
+          }
+        )}
+      </Box>
     </Box>
   );
 };

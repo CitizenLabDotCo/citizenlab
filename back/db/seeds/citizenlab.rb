@@ -9,12 +9,13 @@ end
 # Adds a list of common passwords.
 CommonPassword.initialize!
 
+locales = [ENV.fetch('CL_SETTINGS_CORE_LOCALES_0', 'en')]
 # Configure your app here.
 AppConfiguration.create!(
   name: 'local',
   host: ENV.fetch('CL_SETTINGS_HOST'),
   settings: SettingsService.new.minimal_required_settings(
-    locales: [ENV.fetch('CL_SETTINGS_CORE_LOCALES_0', 'en')],
+    locales: locales,
     lifecycle_stage: 'active'
   ).deep_merge({
     core: {
@@ -62,12 +63,20 @@ AppConfiguration.create!(
       days_limit: 90,
       threshold_reached_message: MultilocService.new.i18n_to_multiloc(
         'initiatives.default_threshold_reached_message',
-        locales: CL2_SUPPORTED_LOCALES
+        locales: locales
       ),
       eligibility_criteria: MultilocService.new.i18n_to_multiloc(
         'initiatives.default_eligibility_criteria',
-        locales: CL2_SUPPORTED_LOCALES
+        locales: locales
+      ),
+      posting_tips: MultilocService.new.i18n_to_multiloc(
+        'initiatives.default_posting_tips',
+        locales: locales
       )
+    },
+    initiative_review: {
+      enabled: false,
+      allowed: true
     },
     surveys: {
       enabled: true,
@@ -248,36 +257,50 @@ end
 # Creates initiative statuses.
 [
   {
-    title_multiloc: 'initiative_statuses.proposed',
+    title_multiloc: 'initiative_statuses.review_pending',
+    ordering: 50,
+    code: 'review_pending',
+    color: '#767676',
+    description_multiloc: 'initiative_statuses.review_pending_description'
+  },
+  {
+    title_multiloc: 'initiative_statuses.changes_requested',
     ordering: 100,
+    code: 'changes_requested',
+    color: '#BDBDBD',
+    description_multiloc: 'initiative_statuses.changes_requested_description'
+  },
+  {
+    title_multiloc: 'initiative_statuses.proposed',
+    ordering: 150,
     code: 'proposed',
-    color: '#687782',
+    color: '#BEE7EB',
     description_multiloc: 'initiative_statuses.proposed_description'
   },
   {
-    title_multiloc: 'initiative_statuses.expired',
-    ordering: 200,
-    code: 'expired',
-    color: '#01A1B1',
-    description_multiloc: 'initiative_statuses.expired'
-  },
-  {
     title_multiloc: 'initiative_statuses.threshold_reached',
-    ordering: 300,
+    ordering: 200,
     code: 'threshold_reached',
-    color: '#04884C',
+    color: '#40B8C5',
     description_multiloc: 'initiative_statuses.threshold_reached_description'
   },
   {
     title_multiloc: 'initiative_statuses.answered',
-    ordering: 500,
+    ordering: 300,
     code: 'answered',
-    color: '#04884C',
+    color: '#147985',
     description_multiloc: 'initiative_statuses.answered_description'
   },
   {
-    title_multiloc: 'initiative_statuses.ineligible',
+    title_multiloc: 'initiative_statuses.expired',
     ordering: 400,
+    code: 'expired',
+    color: '#FF672F',
+    description_multiloc: 'initiative_statuses.expired'
+  },
+  {
+    title_multiloc: 'initiative_statuses.ineligible',
+    ordering: 500,
     code: 'ineligible',
     color: '#E52516',
     description_multiloc: 'initiative_statuses.ineligible_description'

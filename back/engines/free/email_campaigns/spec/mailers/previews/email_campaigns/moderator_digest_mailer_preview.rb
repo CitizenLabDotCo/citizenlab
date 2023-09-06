@@ -12,6 +12,7 @@ module EmailCampaigns
       project_id = project.id
       project_name = project.title_multiloc[recipient_user.locale] || project.title_multiloc[I18n.default_locale]
 
+      # TODO: generate commands with campaign#generate_commands method
       command = {
         recipient: recipient_user,
         event_payload: {

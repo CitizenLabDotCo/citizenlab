@@ -2,7 +2,7 @@ import moment, { unitOfTime } from 'moment';
 import { isString } from 'lodash-es';
 import { Locale } from 'typings';
 import { IResolution } from 'components/admin/ResolutionControl';
-import messages from './messages';
+import { IEventData } from 'api/events/types';
 
 export function getIsoDateForToday(): string {
   // this is based on the user's timezone in moment, so
@@ -126,26 +126,6 @@ export function convertSecondsToDDHHMM(seconds: number) {
   return `${formattedDaysLeft}:${formattedHoursLeft}:${formattedMinutesLeft}`;
 }
 
-export function getDayName(dayInWeek: number) {
-  switch (dayInWeek) {
-    case 0:
-      return messages.sunday;
-    case 1:
-      return messages.monday;
-    case 2:
-      return messages.tuesday;
-    case 3:
-      return messages.wednesday;
-    case 4:
-      return messages.thursday;
-    case 5:
-      return messages.friday;
-    case 6:
-      return messages.saturday;
-  }
-  return null;
-}
-
 export function toThreeLetterMonth(date: string, resolution: IResolution) {
   return moment
     .utc(date, 'YYYY-MM-DD')
@@ -177,4 +157,29 @@ export function toFullMonth(date: string, resolution: IResolution) {
   return moment
     .utc(date, 'YYYY-MM-DD')
     .format(resolution === 'month' ? 'MMMM YYYY' : 'MMMM DD, YYYY');
+}
+
+// Function used to determine whether a dot should be shown after the day in short date formats
+// as this is can't be determined for a 3-day month by the moment.js library.
+// Currently only used for German. Other locales can be added if needed.
+export function showDotAfterDay(locale: Locale) {
+  return locale === 'de-DE';
+}
+
+// Function used to get the event dates in a localized string format
+export function getEventDateString(event: IEventData) {
+  const startMoment = moment(event.attributes.start_at);
+  const endMoment = moment(event.attributes.end_at);
+
+  const isEventMultipleDays =
+    startMoment.dayOfYear() !== endMoment.dayOfYear() ||
+    startMoment.year() !== endMoment.year(); // Added in case the event is exactly 1 year long
+
+  if (isEventMultipleDays) {
+    return `${startMoment.format('LLL')} - ${endMoment.format('LLL')}`;
+  } else {
+    return `${startMoment.format('LL')} • ${startMoment.format(
+      'LT'
+    )} - ${endMoment.format('LT')}`;
+  }
 }

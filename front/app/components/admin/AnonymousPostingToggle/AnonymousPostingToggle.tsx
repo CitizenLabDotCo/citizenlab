@@ -10,6 +10,7 @@ import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import React from 'react';
 import messages from './messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 interface AnonymousPostingToggleProps {
   allow_anonymous_participation: boolean | null | undefined;
@@ -19,12 +20,17 @@ interface AnonymousPostingToggleProps {
   toggleLabel?: JSX.Element;
 }
 
-export const AnonymousPostingToggle = ({
+const AnonymousPostingToggle = ({
   allow_anonymous_participation,
   handleAllowAnonymousParticipationOnChange,
   toggleLabel,
 }: AnonymousPostingToggleProps) => {
   const { formatMessage } = useIntl();
+  const hasAnonymousParticipationEnabled = useFeatureFlag({
+    name: 'anonymous_participation',
+  });
+
+  if (!hasAnonymousParticipationEnabled) return null;
 
   return (
     <SectionField>
@@ -100,3 +106,5 @@ export const AnonymousPostingToggle = ({
     </SectionField>
   );
 };
+
+export default AnonymousPostingToggle;

@@ -139,6 +139,8 @@ const PhaseTitle = ({
       phaseTitle = `${phaseNumber}. ${phaseTitle}`;
     }
 
+    const isOneDayPhase = startDate === endDate;
+
     return (
       <Container
         className={className || ''}
@@ -152,7 +154,7 @@ const PhaseTitle = ({
             {phaseTitle || <FormattedMessage {...messages.noPhaseSelected} />}
           </HeaderTitle>
           <PhaseDate className={phaseStatus}>
-            {startDate} - {endDate}
+            {isOneDayPhase ? startDate : `${startDate} - ${endDate}`}
           </PhaseDate>
         </HeaderTitleWrapper>
       </Container>

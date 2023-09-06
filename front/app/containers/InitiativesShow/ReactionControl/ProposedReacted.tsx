@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 
 import styled, { keyframes } from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
@@ -99,77 +99,72 @@ const ReactionTextRight = styled.div`
   color: ${(props) => props.theme.colors.tenantText};
 `;
 
-interface InputProps {
+interface Props {
   initiative: IInitiativeData;
   initiativeStatus: IInitiativeStatusData;
   initiativeSettings: NonNullable<IAppConfigurationSettings['initiatives']>;
   userReacted: boolean;
   onCancelReaction: () => void;
 }
-interface DataProps {}
 
-interface Props extends InputProps, DataProps {}
-
-class ProposedReacted extends PureComponent<Props & { theme: any }> {
-  handleOnCancelReaction = () => {
-    this.props.onCancelReaction();
+const ProposedReacted = (props: Props) => {
+  const handleOnCancelReaction = () => {
+    props.onCancelReaction();
   };
 
-  render() {
-    const {
-      initiative,
-      initiativeSettings: { reacting_threshold },
-    } = this.props;
-    const reactionCount = initiative.attributes.likes_count;
-    const reactionLimit = reacting_threshold;
-    const daysLeft = getPeriodRemainingUntil(initiative.attributes.expires_at);
+  const {
+    initiative,
+    initiativeSettings: { reacting_threshold },
+  } = props;
+  const reactionCount = initiative.attributes.likes_count;
+  const reactionLimit = reacting_threshold;
+  const daysLeft = getPeriodRemainingUntil(initiative.attributes.expires_at);
 
-    return (
-      <Container>
-        <StyledIcon ariaHidden name="check-circle" />
-        <ReactedTitle>
-          <FormattedMessage {...messages.votedTitle} />
-        </ReactedTitle>
-        <ReactedText>
-          <FormattedMessage
-            {...messages.votedText}
-            values={{
-              x: daysLeft,
-              xDays: (
-                <b>
-                  <FormattedMessage
-                    {...messages.xDays}
-                    values={{ x: daysLeft }}
-                  />
-                </b>
-              ),
-            }}
-          />
-        </ReactedText>
-        <UnreactButton
-          id="e2e-initiative-cancel-like-button"
-          onClick={this.handleOnCancelReaction}
-        >
-          <FormattedMessage {...messages.unvoteLink} />
-        </UnreactButton>
-        <ReactionCounter>
-          <ReactionText aria-hidden={true}>
-            <ReactionTextLeft id="e2e-initiative-reacted-reaction-count">
-              <FormattedMessage
-                {...messages.xVotes}
-                values={{ count: reactionCount }}
-              />
-            </ReactionTextLeft>
-            <ReactionTextRight>{reactionLimit}</ReactionTextRight>
-          </ReactionText>
-          <ProposalProgressbar
-            reactionCount={reactionCount}
-            reactionLimit={reactionLimit}
-          />
-        </ReactionCounter>
-      </Container>
-    );
-  }
-}
+  return (
+    <Container>
+      <StyledIcon ariaHidden name="check-circle" />
+      <ReactedTitle>
+        <FormattedMessage {...messages.votedTitle} />
+      </ReactedTitle>
+      <ReactedText>
+        <FormattedMessage
+          {...messages.votedText}
+          values={{
+            x: daysLeft,
+            xDays: (
+              <b>
+                <FormattedMessage
+                  {...messages.xDays}
+                  values={{ x: daysLeft }}
+                />
+              </b>
+            ),
+          }}
+        />
+      </ReactedText>
+      <UnreactButton
+        id="e2e-initiative-cancel-like-button"
+        onClick={handleOnCancelReaction}
+      >
+        <FormattedMessage {...messages.unvoteLink} />
+      </UnreactButton>
+      <ReactionCounter>
+        <ReactionText aria-hidden={true}>
+          <ReactionTextLeft id="e2e-initiative-reacted-reaction-count">
+            <FormattedMessage
+              {...messages.xVotes}
+              values={{ count: reactionCount }}
+            />
+          </ReactionTextLeft>
+          <ReactionTextRight>{reactionLimit}</ReactionTextRight>
+        </ReactionText>
+        <ProposalProgressbar
+          reactionCount={reactionCount}
+          reactionLimit={reactionLimit}
+        />
+      </ReactionCounter>
+    </Container>
+  );
+};
 
 export default ProposedReacted;

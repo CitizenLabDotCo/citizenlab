@@ -32,6 +32,7 @@
 #  anonymous                :boolean          default(FALSE), not null
 #  internal_comments_count  :integer          default(0), not null
 #  votes_count              :integer          default(0), not null
+#  followers_count          :integer          default(0), not null
 #
 # Indexes
 #
@@ -85,6 +86,7 @@ class Idea < ApplicationRecord
   has_many :baskets_ideas, dependent: :destroy
   has_many :baskets, through: :baskets_ideas
   has_many :text_images, as: :imageable, dependent: :destroy
+  has_many :followers, as: :followable, dependent: :destroy
 
   has_many :idea_images, -> { order(:ordering) }, dependent: :destroy, inverse_of: :idea
   has_many :idea_files, -> { order(:ordering) }, dependent: :destroy, inverse_of: :idea
@@ -269,6 +271,7 @@ class Idea < ApplicationRecord
   end
 end
 
+Idea.include(SmartGroups::Concerns::ValueReferenceable)
 Idea.include(FlagInappropriateContent::Concerns::Flaggable)
 Idea.include(Insights::Concerns::Input)
 Idea.include(Moderation::Concerns::Moderatable)

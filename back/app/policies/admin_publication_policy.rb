@@ -26,7 +26,7 @@ class AdminPublicationPolicy < ApplicationPolicy
     return true if user.admin?
 
     record.publication_type == 'Project' &&
-      record.publication.folder? &&
+      record.publication.in_folder? &&
       UserRoleService.new.can_moderate?(record.publication.folder, user)
   end
 

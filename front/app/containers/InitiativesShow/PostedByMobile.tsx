@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 
 // components
 import UserName from 'components/UI/UserName';
@@ -14,8 +14,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 const Container = styled.div`
   display: flex;
   align-items: center;
-  margin-top: 7px;
-  margin-bottom: 25px;
 `;
 
 const PostedByText = styled.span`
@@ -29,24 +27,24 @@ interface Props {
   className?: string;
 }
 
-const PostedBy = memo<Props>(({ authorId, className }) => {
+const PostedByMobile = ({ authorId, className }: Props) => {
   if (authorId) {
-    const authorName = (
-      <UserName
-        userId={authorId}
-        fontWeight={500}
-        isLinkToProfile
-        hideLastName
-        color="white"
-      />
-    );
-
     return (
       <Container className={`e2e-idea-author ${className || ''}`}>
         <PostedByText>
           <FormattedMessage
             {...messages.postedByShort}
-            values={{ authorName }}
+            values={{
+              authorName: (
+                <UserName
+                  userId={authorId}
+                  fontWeight={500}
+                  isLinkToProfile
+                  color="white"
+                  underline
+                />
+              ),
+            }}
           />
         </PostedByText>
       </Container>
@@ -54,6 +52,6 @@ const PostedBy = memo<Props>(({ authorId, className }) => {
   }
 
   return null;
-});
+};
 
-export default PostedBy;
+export default PostedByMobile;

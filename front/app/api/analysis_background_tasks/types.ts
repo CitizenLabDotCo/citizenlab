@@ -3,6 +3,24 @@ import backgroundTasksKeys from './keys';
 
 export type BackgroundTasksKeys = Keys<typeof backgroundTasksKeys>;
 
+export type AutoTaggingMethod =
+  | 'custom'
+  | 'language'
+  | 'platform_topic'
+  | 'nlp_topic'
+  | 'sentiment'
+  | 'controversial'
+  | 'label_classification'
+  | 'few_shot_classification';
+
+export type TagType =
+  | 'custom'
+  | 'language'
+  | 'platform_topic'
+  | 'nlp_topic'
+  | 'sentiment'
+  | 'controversial';
+
 type SharedAttributes = {
   type: string;
   progress: number | null;
@@ -14,11 +32,11 @@ type SharedAttributes = {
 };
 type AutoTaggingAttributes = SharedAttributes & {
   type: 'auto_tagging_task';
-  auto_tagging_method: 'controversial';
+  auto_tagging_method: AutoTaggingMethod;
 };
 
 type SummarizingAttributes = SharedAttributes & {
-  type: 'summarizing_task';
+  type: 'summarization_task';
 };
 
 export interface IBackgroundTaskData {

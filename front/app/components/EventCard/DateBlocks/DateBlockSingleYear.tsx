@@ -22,7 +22,6 @@ export default memo<Props>((props) => {
     startAtYear,
     isMultiDayEvent,
   } = props;
-
   const isMultiMonthEvent = startAtMonth !== endAtMonth;
 
   return (

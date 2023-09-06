@@ -1,4 +1,4 @@
-import React, { memo, useCallback } from 'react';
+import React, { useCallback } from 'react';
 
 // hooks
 import useAuthUser from 'api/me/useAuthUser';
@@ -7,7 +7,7 @@ import useAuthUser from 'api/me/useAuthUser';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 // styling
-import styled, { withTheme } from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import {
   colors,
   fontSizes,
@@ -123,17 +123,14 @@ const StartInitiativeButton = styled(Button)`
   `}
 `;
 
-interface InputProps {
+interface Props {
   className?: string;
 }
 
-interface Props extends InputProps {
-  theme: any;
-}
-
-const InitiativesCTABox = memo<Props>(({ theme, className }) => {
+const InitiativesCTABox = ({ className }: Props) => {
   const { data: authUser } = useAuthUser();
   const { windowWidth } = useWindowSize();
+  const theme = useTheme();
 
   const smallerThanSmallTablet = windowWidth <= viewportWidths.tablet;
 
@@ -188,6 +185,6 @@ const InitiativesCTABox = memo<Props>(({ theme, className }) => {
       </BoxContainer>
     </Container>
   );
-});
+};
 
-export default withTheme(InitiativesCTABox);
+export default InitiativesCTABox;

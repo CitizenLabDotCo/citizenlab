@@ -51,7 +51,7 @@ class ExportIdeasButton extends React.PureComponent<
     try {
       this.setState({ exporting: true });
       const { exportType } = this.props;
-      var blob;
+      let blob;
       if (exportType === 'project') {
         blob = await requestBlob(
           `${API_PATH}/projects/${exportQueryParameter}/as_xlsx`,

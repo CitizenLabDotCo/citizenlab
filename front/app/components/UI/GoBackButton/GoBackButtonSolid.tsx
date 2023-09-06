@@ -5,6 +5,10 @@ import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import { ScreenReaderOnly } from 'utils/a11y';
 
+// intl
+import { useIntl } from 'utils/cl-intl';
+import messages from './messages';
+
 interface Props {
   text: string;
   iconSize?: string;
@@ -19,6 +23,7 @@ const GoBackButtonSolid = ({
   linkTo,
 }: Props) => {
   const isSmallerThanPhone = useBreakpoint('phone');
+  const { formatMessage } = useIntl();
 
   const handleClick = useCallback(
     (event: React.MouseEvent) => {
@@ -39,6 +44,7 @@ const GoBackButtonSolid = ({
       whiteSpace="normal"
       onClick={handleClick}
       linkTo={linkTo}
+      text={text}
     >
       <Box
         as="span"
@@ -47,7 +53,9 @@ const GoBackButtonSolid = ({
       >
         {text}
       </Box>
-      <ScreenReaderOnly>{text}</ScreenReaderOnly>
+      <ScreenReaderOnly>
+        {formatMessage(messages.goBackToPreviousPage)}
+      </ScreenReaderOnly>
     </Button>
   );
 };

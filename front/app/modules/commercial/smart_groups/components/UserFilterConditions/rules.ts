@@ -4,6 +4,12 @@ import AreaValueSelector from './ValueSelector/AreaValueSelector';
 import AreaValuesSelector from './ValueSelector/AreaValuesSelector';
 import ProjectValueSelector from './ValueSelector/ProjectValueSelector';
 import ProjectValuesSelector from './ValueSelector/ProjectValuesSelector';
+import IdeaValueSelector from './ValueSelector/IdeaValueSelector';
+import IdeaValuesSelector from './ValueSelector/IdeaValuesSelector';
+import InitiativeValuesSelector from './ValueSelector/InitiativeValuesSelector';
+import InitiativeValueSelector from './ValueSelector/InitiativeValueSelector';
+import ProjectFolderValueSelector from './ValueSelector/ProjectFolderValueSelector';
+import ProjectFolderValuesSelector from './ValueSelector/ProjectFolderValuesSelector';
 import NumberValueSelector from './ValueSelector/NumberValueSelector';
 
 import CustomFieldOptionValueSelector from './ValueSelector/CustomFieldOptionValueSelector';
@@ -33,6 +39,7 @@ export type TRuleType = TStaticRuleType | TCustomRuleType;
 
 export type TStaticRuleType =
   | 'email'
+  | 'follow'
   | 'lives_in'
   | 'registration_completed_at'
   | 'role'
@@ -58,7 +65,20 @@ type TStaticPredicate =
   | TParticipatedInProjectPredicate
   | TParticipatedInTopicPredicate
   | TParticipatedInStatusPredicate
-  | TVerifiedPredicate;
+  | TVerifiedPredicate
+  | TFollowPredicate;
+
+type TFollowPredicate =
+  | 'something'
+  | 'nothing'
+  | 'is_not_project'
+  | 'is_not_folder'
+  | 'is_not_initiative'
+  | 'is_not_idea'
+  | 'is_one_of_projects'
+  | 'is_one_of_folders'
+  | 'is_one_of_ideas'
+  | 'is_one_of_initiatives';
 
 type TRolePredicate =
   | 'is_admin'
@@ -435,6 +455,21 @@ export type TRule =
       value?: string[];
     }
   | {
+      ruleType?: 'follow';
+      predicate?:
+        | 'something'
+        | 'nothing'
+        | 'is_not_project'
+        | 'is_not_folder'
+        | 'is_not_initiative'
+        | 'is_not_idea'
+        | 'is_one_of_projects'
+        | 'is_one_of_folders'
+        | 'is_one_of_ideas'
+        | 'is_one_of_initiatives';
+      value?: string | string[];
+    }
+  | {
       ruleType?: 'verified';
       predicate?: 'is_verified' | 'not_is_verified';
     };
@@ -490,6 +525,18 @@ export const ruleTypeConstraints = {
     not_begins_with: TextValueSelector,
     ends_on: TextValueSelector,
     not_ends_on: TextValueSelector,
+  },
+  follow: {
+    is_one_of_projects: ProjectValuesSelector,
+    is_not_project: ProjectValueSelector,
+    is_one_of_folders: ProjectFolderValuesSelector,
+    is_not_folder: ProjectFolderValueSelector,
+    is_one_of_ideas: IdeaValuesSelector,
+    is_not_idea: IdeaValueSelector,
+    is_one_of_initiatives: InitiativeValuesSelector,
+    is_not_initiative: InitiativeValueSelector,
+    something: null,
+    nothing: null,
   },
   lives_in: {
     has_value: AreaValueSelector,

@@ -14,7 +14,10 @@
 #  updated_at           :datetime         not null
 #
 class InitiativeStatus < ApplicationRecord
-  CODES = %w[proposed expired threshold_reached answered ineligible custom]
+  CODES = %w[review_pending changes_requested proposed expired threshold_reached answered ineligible custom].freeze
+
+  REVIEW_CODES = %w[review_pending changes_requested].freeze
+  NOT_REVIEW_CODES = (CODES - REVIEW_CODES).freeze
 
   has_many :initiative_status_changes, dependent: :nullify
   has_many :initiative_initiative_statuses
@@ -29,6 +32,14 @@ class InitiativeStatus < ApplicationRecord
   validates :code, inclusion: { in: CODES }
   validates :code, uniqueness: true, unless: :custom?
   validates :description_multiloc, presence: true, multiloc: { presence: true }
+
+  def self.initial_status_code
+    Initiative.review_required? ? 'review_pending' : 'proposed'
+  end
+
+  def public?
+    code.in?(NOT_REVIEW_CODES)
+  end
 
   def custom?
     code == 'custom'

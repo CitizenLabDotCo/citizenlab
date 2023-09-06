@@ -4,7 +4,7 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import { IBackgroundTask, BackgroundTasksKeys } from './types';
 import backgroundTasksKeys from './keys';
 
-const fetchBackgroundTask = (analysisId: string, id: string) =>
+const fetchBackgroundTask = (analysisId: string, id?: string) =>
   fetcher<IBackgroundTask>({
     path: `/analyses/${analysisId}/background_tasks/${id}`,
     action: 'get',
@@ -12,7 +12,7 @@ const fetchBackgroundTask = (analysisId: string, id: string) =>
 
 const useAnalysisBackgroundTask = (
   analysisId: string,
-  backgroundTaskId: string
+  backgroundTaskId?: string
 ) => {
   return useQuery<
     IBackgroundTask,
@@ -20,8 +20,9 @@ const useAnalysisBackgroundTask = (
     IBackgroundTask,
     BackgroundTasksKeys
   >({
-    queryKey: backgroundTasksKeys.item({ analysisId, id: backgroundTaskId }),
+    queryKey: backgroundTasksKeys.item({ id: backgroundTaskId }),
     queryFn: () => fetchBackgroundTask(analysisId, backgroundTaskId),
+    enabled: !!backgroundTaskId,
   });
 };
 

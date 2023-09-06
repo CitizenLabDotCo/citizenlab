@@ -12,6 +12,7 @@ interface Params {
   projectId: string;
   name?: boolean;
   email?: boolean;
+  phase_id?: string;
 }
 
 export async function saveIdeaFormAsPDF({
@@ -19,12 +20,13 @@ export async function saveIdeaFormAsPDF({
   locale,
   name,
   email,
+  phase_id,
 }: Params) {
   try {
     const blob = await requestBlob(
       `${API_PATH}/projects/${projectId}/custom_fields/to_pdf`,
       'application/pdf',
-      { locale, name, email }
+      { locale, name, email, phase_id }
     );
 
     saveAs(blob, 'idea_form.pdf');

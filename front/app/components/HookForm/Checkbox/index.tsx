@@ -11,9 +11,10 @@ interface Props
     'checked' | 'onChange'
   > {
   name: string;
+  handleSideEffects?: () => void;
 }
 
-const Checkbox = ({ name, ...rest }: Props) => {
+const Checkbox = ({ name, handleSideEffects, ...rest }: Props) => {
   const {
     formState: { errors: formContextErrors },
     control,
@@ -44,6 +45,7 @@ const Checkbox = ({ name, ...rest }: Props) => {
             checked={value}
             onChange={() => {
               setValue(name, !currentValue);
+              handleSideEffects?.();
             }}
           />
         )}

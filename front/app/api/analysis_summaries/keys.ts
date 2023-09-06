@@ -1,13 +1,12 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
-import { ISummaryParams } from './types';
 
 const baseKey = { type: 'summary' };
 
 const summariesKeys = {
   all: () => [baseKey],
-  lists: () => [{ ...baseKey, operation: 'list' }],
-  list: (parameters: ISummaryParams) => [
-    { ...baseKey, operation: 'list', parameters },
+  items: () => [{ ...baseKey, operation: 'item' }],
+  item: ({ id }: { id: string }) => [
+    { ...baseKey, operation: 'item', parameters: { id } },
   ],
 } satisfies QueryKeys;
 

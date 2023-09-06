@@ -31,6 +31,12 @@ FactoryBot.define do
     association :post, factory: :idea
   end
 
+  factory :cosponsor_of_your_initiative, parent: :notification, class: 'Notifications::CosponsorOfYourInitiative' do
+    association :post, factory: :initiative
+    cosponsors_initiative
+    initiating_user
+  end
+
   factory :internal_comment_on_idea_assigned_to_you,
     parent: :notification,
     class: 'Notifications::InternalComments::InternalCommentOnIdeaAssignedToYou' do
@@ -116,6 +122,17 @@ FactoryBot.define do
   factory :invite_accepted, parent: :notification, class: 'Notifications::InviteAccepted' do
     initiating_user
     invite
+  end
+
+  factory :invitation_to_cosponsor_initiative, parent: :notification, class: 'Notifications::InvitationToCosponsorInitiative' do
+    association :post, factory: :initiative
+    cosponsors_initiative
+    initiating_user
+  end
+
+  factory :initiative_resubmitted_for_review, parent: :notification, class: 'Notifications::InitiativeResubmittedForReview' do
+    association :post, factory: :initiative
+    association :post_status, factory: :initiative_status, code: 'review_pending'
   end
 
   factory :comment_on_your_idea, parent: :notification, class: 'Notifications::CommentOnYourIdea' do
