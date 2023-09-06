@@ -69,8 +69,9 @@ module EmailCampaigns
       project = event.project
 
       locale = recipient.locale
-      event_url = Frontend::UrlService.new.model_to_url(event, locale: locale)
-      project_url = Frontend::UrlService.new.model_to_url(project, locale: locale)
+      frontend_service = Frontend::UrlService.new
+      event_url = frontend_service.model_to_url(event, locale: locale)
+      project_url = frontend_service.model_to_url(project, locale: locale)
 
       [
         {
