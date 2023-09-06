@@ -335,8 +335,8 @@ describe BulkImportIdeas::ImportIdeasService do
       project = create(:project)
       idea_rows = [
         {
-          title_multiloc: { 'en' => '' },
-          body_multiloc: { 'en' => '' },
+          title_multiloc: {},
+          body_multiloc: {},
           project_id: project.id
         },
         {
@@ -346,6 +346,18 @@ describe BulkImportIdeas::ImportIdeasService do
       service.import_ideas(idea_rows, import_as_draft: true)
 
       expect(project.reload.ideas.count).to eq 2
+    end
+
+    it 'returns an error if title and body are blank when not importing as draft' do
+      project = create(:project)
+      idea_rows = [
+        {
+          title_multiloc: {},
+          body_multiloc: {},
+          project_id: project.id
+        }
+      ]
+      expect { service.import_ideas idea_rows }.to raise_error(an_instance_of(BulkImportIdeas::Error))
     end
 
     # TODO: Cannot be enabled because mocking image URLs is not working.
@@ -448,29 +460,23 @@ describe BulkImportIdeas::ImportIdeasService do
     end
 
     context 'surveys' do
-      it 'can import surveys' do
+      it 'can import surveys with' do
         project = create(:continuous_native_survey_project)
         create(:custom_form, participation_context: project)
 
-        # TODO: It shouldn't require either title or body to be present
         idea_rows = [
           {
-            title_multiloc: { 'en' => '' },
-            body_multiloc: { 'en' => '' },
+            title_multiloc: {},
+            body_multiloc: {},
             project_id: project.id,
             user_email: 'surveyimport@citizenlab.co'
           }
         ]
-        service.import_ideas idea_rows
+        service.import_ideas idea_rows, import_as_draft: true
 
         expect(Idea.count).to eq 1
         expect(User.count).to eq 2
       end
-
-      # TODO: it 'can approve surveys' do
-      # TODO: it 'can delete surveys' do
     end
   end
-
-
 end

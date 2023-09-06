@@ -94,13 +94,15 @@ module BulkImportIdeas
     def add_title_multiloc(idea_row, idea_attributes, draft)
       raise Error.new 'bulk_import_ideas_blank_title', row: idea_row[:id] if idea_row[:title_multiloc].blank? && !draft
 
-      idea_attributes[:title_multiloc] = idea_row[:title_multiloc]
+      title = idea_row[:title_multiloc] || {}
+      idea_attributes[:title_multiloc] = title
     end
 
     def add_body_multiloc(idea_row, idea_attributes, draft)
       raise Error.new 'bulk_import_ideas_blank_body', row: idea_row[:id] if idea_row[:body_multiloc].blank? && !draft
 
-      idea_attributes[:body_multiloc] = idea_row[:body_multiloc]
+      body = idea_row[:body_multiloc] || {}
+      idea_attributes[:body_multiloc] = body
     end
 
     def add_project(idea_row, idea_attributes)
