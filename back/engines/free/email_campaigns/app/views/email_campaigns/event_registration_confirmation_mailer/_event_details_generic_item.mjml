@@ -1,5 +1,5 @@
 
-<mj-text font-size="16px" font-weight="700" padding="0 0 12px" container-background-color="<%= local_assigns[:color] %>">
+<mj-text font-size="16px" font-weight="700" padding="0 0 12px">
   <div>
     <%= local_assigns[:label] %>
   </div>

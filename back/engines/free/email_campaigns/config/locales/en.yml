@@ -637,6 +637,17 @@ en:
       body_2: 'The results of the %{phaseTitle} vote in the %{organizationName} platform have been published!'
       body_3: 'We encourage you to review the results and stay tuned for further updates on the next steps.'
       cta_see_results: 'See results in the platform'
+    event_registration_confirmation:
+      subject: "You're in! Your registration for \"%{eventTitle}\" is confirmed"
+      event_details:
+        labels:
+          date: 'Date'
+          location: 'Location'
+          online_link: 'Online link'
+          description: 'Description'
+          project: 'Project'
+      cta_go_to_event: 'View the event'
+      cta_add_to_calendar: 'Add to your calendar'
     voting_phase_started:
       subject: '%{organizationName}: The voting phase started for %{projectName}'
       preheader: 'The voting phase started for %{projectName} on the participation platform of %{organizationName}'
