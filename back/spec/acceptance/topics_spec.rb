@@ -132,6 +132,7 @@ resource 'Topics' do
       with_options scope: :topic do
         parameter :title_multiloc, 'The title of the topic, as a multiloc string'
         parameter :description_multiloc, 'The description of the topic, as a multiloc string'
+        parameter :include_in_onboarding, 'Whether or not to include the topic in the list presented during onboarding, a boolean'
       end
       ValidationErrorHelper.new.error_fields(self, Topic)
 
@@ -139,11 +140,13 @@ resource 'Topics' do
       let(:id) { topic.id }
       let(:title_multiloc) { { 'en' => 'Comedy' } }
       let(:description_multiloc) { { 'en' => 'Stuff that tends to make you laugh' } }
+      let(:include_in_onboarding) { true }
 
       example_request 'Update a topic' do
         assert_status(200)
         expect(response_data.dig(:attributes, :title_multiloc).stringify_keys).to match title_multiloc
         expect(response_data.dig(:attributes, :description_multiloc).stringify_keys).to match description_multiloc
+        expect(response_data.dig(:attributes, :include_in_onboarding)).to be true
       end
 
       context do
