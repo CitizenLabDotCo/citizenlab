@@ -15,6 +15,10 @@ ach:
     rejected: crwdns902493:0crwdne902493:0
     rejected_description: crwdns902495:0crwdne902495:0
   initiative_statuses:
+    review_pending: crwdns1002829:0crwdne1002829:0
+    review_pending_description: crwdns1002831:0crwdne1002831:0
+    changes_requested: crwdns1002833:0crwdne1002833:0
+    changes_requested_description: crwdns1002835:0crwdne1002835:0
     proposed: crwdns902497:0crwdne902497:0
     proposed_description: crwdns902499:0crwdne902499:0
     expired: crwdns902501:0crwdne902501:0
@@ -181,6 +185,8 @@ ach:
       crwdns902715:0crwdne902715:0
     default_eligibility_criteria: >
       crwdns902717:0crwdne902717:0
+    default_posting_tips: >
+      crwdns1002837:0crwdne1002837:0
   reset_password_mailer:
     send_reset_password:
       cta_reset_password: 'crwdns902719:0crwdne902719:0'
@@ -228,6 +234,9 @@ ach:
       this_answer: 'crwdns933733:0crwdne933733:0'
       page: 'crwdns992985:0crwdne992985:0'
       date_published: 'crwdns993119:0crwdne993119:0'
+      instructions: 'crwdns1002839:0crwdne1002839:0'
+      write_as_clearly: 'crwdns1002841:0crwdne1002841:0'
+      write_in_language: 'crwdns1002843:0crwdne1002843:0'
   project_copy:
     title_suffix: 'crwdns902783:0crwdne902783:0'
   confirmations_mailer:
