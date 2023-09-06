@@ -17,6 +17,9 @@ fr:
       choose_as_many: Choisissez-en autant que vous le souhaitez
       this_answer: Cette réponse ne sera communiquée qu'aux modérateurs, et non au public.
       page: Page
+      instructions: 'Instructions'
+      write_as_clearly: 'Écrivez aussi <b>clairement</b> que possible: ces formulaires peuvent être numérisés'
+      write_in_language: 'Écrivez vos réponses dans la même langue que ce formulaire'
   custom_fields:
     ideas:
       title:
