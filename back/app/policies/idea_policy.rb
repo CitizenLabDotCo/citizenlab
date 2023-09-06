@@ -59,8 +59,9 @@ class IdeaPolicy < ApplicationPolicy
   end
 
   def update?
-    return true if record.draft? || (user && UserRoleService.new.can_moderate_project?(record.project, user))
+    return true if record.draft? && (user && UserRoleService.new.can_moderate_project?(record.project, user))
     return false if record.participation_method_on_creation.never_update?
+    return true if user && UserRoleService.new.can_moderate_project?(record.project, user)
     return false unless active? && owner? && ProjectPolicy.new(user, record.project).show?
 
     pcs = ParticipationContextService.new
