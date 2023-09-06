@@ -111,22 +111,24 @@ class PrintCustomFieldsService
 
     pdf.fill do
       pdf.fill_color '000000'
-      pdf.rectangle([0, pdf.cursor + 1.5.mm], 3, 40)
+      pdf.rectangle([0, pdf.cursor + 1.5.mm], 3, 32)
     end
 
-    save_cursor pdf
-    pdf.indent(5.mm) { pdf.text('•') }
-    reset_cursor pdf
+    %w[write_as_clearly write_in_language].each do |key|
+      save_cursor pdf
+      pdf.indent(5.mm) { pdf.text('•') }
+      reset_cursor pdf
 
-    pdf.indent(10.mm) do
-      pdf.text(
-        "#{I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.write_as_clearly') }}",
-        size: 12,
-        inline_format: true
-      )
+      pdf.indent(10.mm) do
+        pdf.text(
+          "#{I18n.with_locale(locale) { I18n.t("form_builder.pdf_export.#{key}") }}",
+          size: 12,
+          inline_format: true
+        )
+      end
     end
 
-    pdf.move_down 18.mm
+    pdf.move_down 8.mm
   end
 
   def render_text_field_with_name(pdf, name)
