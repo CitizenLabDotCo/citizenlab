@@ -30,6 +30,10 @@ const TopBar = ({ onClickPDFImport }: Props) => {
 
   const { data: project } = useProjectById(projectId);
   const projectTitle = project?.data.attributes.title_multiloc;
+  const backPath =
+    project?.data.attributes.participation_method === 'native_survey'
+      ? `/admin/projects/${projectId}/native-survey`
+      : `/admin/projects/${projectId}/ideas`;
 
   return (
     <Box
@@ -45,7 +49,7 @@ const TopBar = ({ onClickPDFImport }: Props) => {
       px="24px"
     >
       <Box display="flex" alignItems="center">
-        <GoBackButton linkTo={`/admin/projects/${projectId}/ideas`} />
+        <GoBackButton linkTo={backPath} />
         <Box ml="24px">
           <Title variant="h4" m="0px" mt="1px">
             {localize(projectTitle)}

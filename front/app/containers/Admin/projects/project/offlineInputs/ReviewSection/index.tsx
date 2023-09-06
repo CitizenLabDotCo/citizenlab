@@ -114,7 +114,7 @@ const ReviewSection = ({
           px="20px"
         >
           <Title variant="h1" color="primary">
-            <FormattedMessage {...messages.ideaImporter} />
+            <FormattedMessage {...messages.inputImporter} />
           </Title>
           <Text>
             <FormattedMessage
@@ -172,7 +172,7 @@ const ReviewSection = ({
     >
       <Box px="40px" display="flex" justifyContent="space-between">
         <Title variant="h2" color="primary" mt="8px" mb="20px">
-          <FormattedMessage {...messages.importedIdeas} />
+          <FormattedMessage {...messages.importedInputs} />
         </Title>
 
         <Box
