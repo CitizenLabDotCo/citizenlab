@@ -80,6 +80,7 @@ class Notification < ApplicationRecord
   belongs_to :project_folder, optional: true
   belongs_to :basket, optional: true
   belongs_to :cosponsors_initiative, optional: true
+  belongs_to :event, optional: true
 
   has_many :activities, as: :item
 

@@ -11,7 +11,7 @@ RSpec.describe Notifications::EventUpcoming do
 
       notifications = described_class.make_notifications_on activity
       expect(notifications.first).to have_attributes(
-        recipient_id: attendee..id,
+        recipient_id: attendee.id,
         event_id: event.id,
         project_id: event.project_id
       )
