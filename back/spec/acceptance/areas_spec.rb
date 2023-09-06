@@ -24,6 +24,13 @@ resource 'Areas' do
       expect(json_response[:data].size).to eq 5
     end
 
+    example 'List all topics for onboarding' do
+      @areas.last.update!(include_in_onboarding: true)
+      do_request for_onboarding: true
+      assert_status 200
+      expect(response_data.pluck(:id)).to eq [@areas.last.id]
+    end
+
     example 'List all areas sorted by project count' do
       projects = create_list(:project, 5)
       @areas[0].update!(projects: [projects[0], projects[2]])

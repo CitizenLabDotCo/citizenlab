@@ -17,7 +17,7 @@ resource 'Topics' do
 
     before do
       @code1, @code2 = Topic::CODES.take(2)
-      @topics = create_list(:topic, 2, code: @code1) + create_list(:topic, 3, code: @code2)
+      @topics = create_list(:topic, 2, code: @code1) + create_list(:topic, 3, code: @code2, include_in_onboarding: true)
     end
 
     example_request 'List all topics' do
@@ -34,6 +34,12 @@ resource 'Topics' do
     example_request 'List all topics by code exclusion' do
       do_request exclude_code: @code1
       assert_status(200)
+      expect(response_data.size).to eq 3
+    end
+
+    example 'List all topics for onboarding' do
+      do_request for_onboarding: true
+      assert_status 200
       expect(response_data.size).to eq 3
     end
 
