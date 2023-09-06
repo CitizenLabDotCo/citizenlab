@@ -279,10 +279,19 @@ class PrintCustomFieldsService
 
   def draw_linear_scale(pdf, custom_field)
     max_index = custom_field.maximum - 1
+    width = 80.mm
+
+    if custom_field.maximum > 3
+      width = 100.mm
+    end
+
+    if custom_field.maximum > 5
+      width = 120.mm
+    end
 
     # Draw number labels
     (0..max_index).each do |i|
-      pdf.indent(((i.to_f / max_index) * 100.mm) + 1.8.mm) do
+      pdf.indent(((i.to_f / max_index) * width) + 1.8.mm) do
         save_cursor pdf
 
         pdf.text((i + 1).to_s)
@@ -298,7 +307,7 @@ class PrintCustomFieldsService
       pdf.stroke_color '000000'
       pdf.stroke_circle(
         [
-          3.mm + ((i.to_f / max_index) * 100.mm),
+          3.mm + ((i.to_f / max_index) * width),
           pdf.cursor
         ],
         5
@@ -316,7 +325,7 @@ class PrintCustomFieldsService
 
     reset_cursor pdf
 
-    pdf.indent(101.mm) do
+    pdf.indent(width + 1.mm) do
       pdf.text custom_field.maximum_label_multiloc[locale]
     end
   end
