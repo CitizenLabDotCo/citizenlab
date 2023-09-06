@@ -75,7 +75,7 @@ const IdeaList = ({ ideaId, ideas, onSelectIdea, onDeleteIdea }: Props) => {
             fontSize="m"
             fontWeight={idea.id === ideaId ? 'bold' : 'normal'}
           >
-            {idea.attributes.title_multiloc
+            {Object.keys(idea.attributes.title_multiloc).length > 0
               ? truncate(localize(idea.attributes.title_multiloc), 80)
               : `${formatMessage(messages.noTitleInputLabel)} ${index + 1}`}
           </Text>
