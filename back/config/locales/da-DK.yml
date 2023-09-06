@@ -15,6 +15,10 @@ da:
     rejected: afvist
     rejected_description: Denne ide er blevet afvist
   initiative_statuses:
+    review_pending: afventer gennemgang
+    review_pending_description: afventer gennemgang
+    changes_requested: ønskede ændringer
+    changes_requested_description: ønskede ændringer
     proposed: aktive
     proposed_description: aktive
     expired: udløbet
@@ -181,6 +185,8 @@ da:
       <p>Tagerne er inviteret til at præsentere deres forslag på næste rådsmøde. Vi bringer en officiel opdatering.</p>
     default_eligibility_criteria: >
       <ul> <li>Det skal falde inden for kommunens politikområder og kompetencer</li> <li>Det tjener den offentlige interesse snarere end din individuelle interesse</li> <li>Det diskriminerer ikke andre borgere i forhold til køn, race, alder eller baggrund</li> <li>Det skader ikke andre</li></ul>
+    default_posting_tips: >
+      <ul><li>Giv dig tid til at uddybe dit forslag. Skriv om nødvendigt et udkast først og kopiér det derefter hertil.</li><li>Vælg en meningsfuld titel, der tydeligt forklarer, hvad dit forslag indebærer.</li><li>Sørg for at visualisere dit forslag med et passende billede, så det skiller sig mere ud.</li><li>Tilføj relevante vedhæftede filer, såsom videoer, inspirerende eksempler, tekniske detaljer eller planer.</li><li>Del din idé på de sociale medier og andre kanaler for at samle støtte fra andre.</li></ul>
   reset_password_mailer:
     send_reset_password:
       cta_reset_password: 'Nulstil din adgangskode'
@@ -228,6 +234,9 @@ da:
       this_answer: 'Dette svar vil kun blive delt med moderatorer og ikke med offentligheden.'
       page: 'Side'
       date_published: 'Dato for offentliggørelse (dd-mm-åååå)'
+      instructions: 'Instruktioner'
+      write_as_clearly: 'Skriv så <b>tydeligt</b> som du kan - disse formularer kan blive scannet.'
+      write_in_language: 'Skriv dine svar på samme sprog som denne formular'
   project_copy:
     title_suffix: 'Kopi'
   confirmations_mailer:
