@@ -234,6 +234,9 @@ en:
       this_answer: 'This answer will only be shared with moderators, and not to the public.'
       page: 'Page'
       date_published: 'Date Published (dd-mm-yyyy)'
+      instructions: 'Instructions'
+      write_as_clearly: 'Write as <b>clearly</b> as you can— these forms might be scanned'
+      write_in_language: 'Write your answers in the same language as this form'
   project_copy:
     title_suffix: 'Copy'
   confirmations_mailer:

@@ -47,12 +47,14 @@ export const IdeaForm = () => {
   const handleExportPDF = async ({
     name,
     email,
+    phase_id,
   }: {
     name: boolean;
     email: boolean;
+    phase_id?: string;
   }) => {
     if (isNilOrError(locale)) return;
-    await saveIdeaFormAsPDF({ projectId, locale, name, email });
+    await saveIdeaFormAsPDF({ projectId, locale, name, email, phase_id });
   };
 
   const downloadExampleFile = async () => {

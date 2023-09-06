@@ -1,33 +1,43 @@
 import React, { useState } from 'react';
 
+// router
+import { useParams } from 'react-router-dom';
+
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useProjectById from 'api/projects/useProjectById';
 
 // components
 import Modal from 'components/UI/Modal';
 import { Box, Button, Text, Title } from '@citizenlab/cl2-component-library';
+import PhaseSelector from './PhaseSelector';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // form
 import Checkbox from 'components/HookForm/Checkbox';
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { object, boolean } from 'yup';
+import { object, boolean, string } from 'yup';
 import { isCLErrorsIsh, handleCLErrorsIsh } from 'utils/errorUtils';
 
 const DEFAULT_VALUES = {
   name: false,
   email: false,
+  phase_id: undefined,
 } as const;
 
 interface Props {
   open: boolean;
   formType: 'idea_form' | 'survey';
   onClose: () => void;
-  onExport: (params: { name: boolean; email: boolean }) => Promise<void>;
+  onExport: (params: {
+    name: boolean;
+    email: boolean;
+    phase_id?: string;
+  }) => Promise<void>;
 }
 
 // For now we are hiding the option to add email and name fields to
@@ -35,14 +45,25 @@ interface Props {
 const ALLOW_EMAIL_AND_NAME = false;
 
 const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
+  const { formatMessage } = useIntl();
+  const { projectId } = useParams() as { projectId: string };
+  const { data: project } = useProjectById(projectId);
+
   const importPrintedFormsEnabled = useFeatureFlag({
     name: 'import_printed_forms',
   });
   const [loading, setLoading] = useState(false);
 
+  const isTimelineProject =
+    project?.data.attributes.process_type === 'timeline';
+
   const schema = object({
-    termsAndConditionsAccepted: boolean(),
-    privacyPolicyAccepted: boolean(),
+    name: boolean(),
+    email: boolean(),
+    phase_id:
+      isTimelineProject && formType === 'idea_form'
+        ? string().required(formatMessage(messages.selectIdeationPhase))
+        : string(),
   });
 
   const methods = useForm({
@@ -54,14 +75,16 @@ const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
   const handleExport = async ({
     name,
     email,
+    phase_id,
   }: {
     name: boolean;
     email: boolean;
+    phase_id?: string;
   }) => {
     setLoading(true);
 
     try {
-      await onExport({ name, email });
+      await onExport({ name, email, phase_id });
       setLoading(false);
       onClose();
     } catch (e) {
@@ -131,6 +154,11 @@ const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
                   </>
                 )}
               </>
+            )}
+            {isTimelineProject && formType === 'idea_form' && (
+              <Box mb="24px">
+                <PhaseSelector />
+              </Box>
             )}
             <Box w="100%" display="flex">
               <Button width="auto" type="submit" processing={loading}>
