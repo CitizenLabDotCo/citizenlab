@@ -109,11 +109,18 @@ class PrintCustomFieldsService
       inline_format: true
     )
 
+    pdf.move_down 5.mm
+
+    pdf.fill do
+      pdf.fill_color '000000'
+      pdf.rectangle([0, pdf.cursor + 1.5.mm], 3, 40)
+    end
+
     save_cursor pdf
-    pdf.indent(2.mm) { pdf.text('•') }
+    pdf.indent(5.mm) { pdf.text('•') }
     reset_cursor pdf
 
-    pdf.indent(5.mm) do
+    pdf.indent(10.mm) do
       pdf.text(
         "#{I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.write_as_clearly') }}",
         size: 12,
@@ -121,7 +128,7 @@ class PrintCustomFieldsService
       )
     end
 
-    pdf.move_down 10.mm
+    pdf.move_down 18.mm
   end
 
   def render_text_field_with_name(pdf, name)
