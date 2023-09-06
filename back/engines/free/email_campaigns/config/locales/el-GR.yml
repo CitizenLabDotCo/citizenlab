@@ -8,12 +8,15 @@ el:
       "comment_on_your_comment": Μια απάντηση στο σχόλιό μου
       "comment_on_your_idea": Ένα σχόλιο για την ιδέα μου
       "comment_on_your_initiative": Ένα σχόλιο σχετικά με την πρότασή μου
+      "cosponsor_of_your_initiative": Ένας χρήστης αποδέχεται την πρόσκλησή μου να συνυπογράψει την πρότασή μου
       "first_idea_published": Δημοσίευση της πρώτης μου ιδέας
       "idea_marked_as_spam": Αναφορά spam ιδεών
       "idea_published": Δημοσίευση της ιδέας μου
       "initiative_assigned_to_you": Ανάθεση πρότασης σε μένα
       "initiative_marked_as_spam": Έκθεση για την ανεπιθύμητη αλληλογραφία της πρότασης
       "initiative_published": Δημοσίευση της πρότασής μου
+      "invitation_to_cosponsor_initiative": Πρόσκληση για συν-χορηγία πρότασης
+      "initiative_resubmitted_for_review": Η πρόταση υποβάλλεται εκ νέου για επανεξέταση
       "invite_received": Προσκλήσεις
       "invite_reminder": Υπενθύμιση πρόσκλησης
       "internal_comment_on_idea_assigned_to_you": Εσωτερικό σχόλιο σχετικά με τις εισροές που μου έχουν ανατεθεί
@@ -138,6 +141,12 @@ el:
       main_header: '%{commentAuthor} σχολίασε την πρωτοβουλία σας'
       subject: 'Έχετε λάβει ένα σχόλιο στην πλατφόρμα %{organizationName}''s'
       preheader: '%{authorName} άφησε ένα σχόλιο στην πρωτοβουλία σας για το %{organizationName}'
+    cosponsor_of_your_initiative:
+      cta_reply_to: 'Δείτε την πρότασή σας'
+      event_description_initiative: 'Συγχαρητήρια! Το %{cosponsorName} αποδέχτηκε την πρόσκλησή σας να συνδιοργανώσει την πρότασή σας.'
+      main_header: '%{cosponsorName} αποδέχθηκε την πρόσκλησή σας να συνυποστηρίξει την πρότασή σας'
+      subject: '%{cosponsorName} αποδέχθηκε την πρόσκλησή σας να συνυποστηρίξει την πρότασή σας'
+      preheader_initiative: '%{cosponsorName} αποδέχθηκε την πρόσκλησή σας να συνυποστηρίξει την πρότασή σας'
     assignee_digest:
       subject: 'Ιδέες που απαιτούν τα σχόλιά σας: %{numberIdeas}'
       preheader: 'Ψηφίδα παραλήπτη της ιστοσελίδας %{organizationName}'
@@ -178,6 +187,22 @@ el:
       main_header: '%{firstName}, έχετε μια νέα αποστολή'
       subject: 'Έχετε μια αποστολή στην πλατφόρμα %{organizationName}'
       preheader_initiative: 'Σας έχει ανατεθεί η πρόταση της ιστοσελίδας %{authorName}'
+    invitation_to_cosponsor_initiative:
+      cta_reply_to: 'Συν-χορηγός αυτής της πρότασης'
+      event_description_initiative: '%{authorName} δημιούργησε μια νέα πρόταση και θα ήθελε να τη συνυποστηρίξετε.'
+      event_description_cosponsoring: 'Η συνυποστήριξη μιας πρότασης σημαίνει ότι το όνομά σας θα εμφανίζεται στη διεύθυνση <strong></strong> μαζί με τα ονόματα των άλλων συνυποστηρικτών της πρότασης.'
+      event_description_before_action: 'Για να δείτε την πρόταση και να αποδεχτείτε την πρόσκληση, πρέπει να είστε συνδεδεμένοι στο λογαριασμό σας.'
+      event_description_action: 'Κάντε κλικ παρακάτω για να διαβάσετε την πρόταση.'
+      main_header: 'Έχετε προσκληθεί να συνυπογράψετε μια πρόταση'
+      subject: 'Έχετε προσκληθεί να συνυπογράψετε μια πρόταση'
+      preheader_initiative: 'Έχετε προσκληθεί να συνυπογράψετε την πρόταση της ιστοσελίδας %{authorName}.'
+    initiative_resubmitted_for_review:
+      by_author: 'από %{authorName}'
+      cta_reply_to: 'Ανατροφοδότηση στο %{authorName}'
+      event_description_initiative: 'Υποβλήθηκε εκ νέου πρόταση για επανεξέταση. Δώστε σχόλια γράφοντας μια επίσημη ενημέρωση ή αλλάζοντας την κατάστασή της.'
+      main_header: '%{firstName}, έχετε μια πρόταση προς εξέταση'
+      subject: 'Έχετε μια πρόταση προς εξέταση στην πλατφόρμα %{organizationName}.'
+      preheader_initiative: 'Η πρόταση της %{authorName} υποβλήθηκε εκ νέου για επανεξέταση.'
     invite_reminder:
       cta_accept_invitation: 'Αποδεχτείτε την πρόσκλησή σας'
       invitation_header: 'Η πρόσκλησή σας εκκρεμεί'
@@ -633,6 +658,7 @@ el:
         managers: 'Διευθυντές'
         admins_assigned_to_a_proposal: 'Διαχειριστές που έχουν ανατεθεί σε μια πρόταση'
         admins_and_managers_assigned_to_the_input: 'Διαχειριστές & διαχειριστές που έχουν οριστεί για την είσοδο'
+        user_who_is_invited_to_cosponsor_a_proposal: 'Χρήστης που καλείται να συνυποστηρίξει μια πρόταση'
         user_who_is_receiving_admin_rights: 'Χρήστης που λαμβάνει δικαιώματα διαχειριστή'
         user_who_is_receiving_folder_moderator_rights: 'Χρήστης που λαμβάνει δικαιώματα συντονιστή φακέλου'
         user_who_is_receiving_project_moderator_rights: 'Χρήστης που λαμβάνει δικαιώματα συντονιστή έργου'
@@ -667,6 +693,7 @@ el:
         input_is_flagged_as_spam: 'Η είσοδος επισημαίνεται ως spam'
         input_is_updated: 'Η είσοδος ενημερώνεται'
         input_status_changes: 'Αλλαγές κατάστασης εισόδου'
+        initiative_resubmitted_for_review: 'Η πρόταση υποβάλλεται εκ νέου για επανεξέταση'
         internal_comment_is_posted_on_idea_assigned_to_user: 'Το εσωτερικό σχόλιο δημοσιεύεται στην είσοδο που έχει εκχωρηθεί στον χρήστη'
         internal_comment_is_posted_on_initiative_assigned_to_user: 'Το εσωτερικό σχόλιο δημοσιεύεται στην πρόταση που έχει ανατεθεί στον χρήστη'
         internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: 'Το εσωτερικό σχόλιο δημοσιεύεται στην είσοδο στο έργο ή στο φάκελο που διαχειρίζεται ο χρήστης'
@@ -675,6 +702,8 @@ el:
         internal_comment_is_posted_on_initiative_user_has_commented_internally_on: 'Το εσωτερικό σχόλιο δημοσιεύεται στην πρόταση που ο χρήστης σχολίασε εσωτερικά σε'
         internal_comment_is_posted_on_unassigned_initiative: 'Εσωτερικό σχόλιο αναρτάται σε μη ανατεθείσα πρόταση'
         internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Εσωτερικό σχόλιο δημοσιεύεται σε μη καθορισμένη είσοδο σε μη διαχειριζόμενο έργο'
+        user_accepts_invitation_to_cosponsor_a_proposal: 'Ο χρήστης αποδέχεται την πρόσκληση να συνυπογράψει μια πρόταση'
+        user_is_invited_to_cosponsor_a_proposal: 'Ο χρήστης καλείται να συν-χορηγήσει μια πρόταση'
         user_is_mentioned_in_internal_comment: 'Ο χρήστης αναφέρεται σε εσωτερικό σχόλιο'
         new_input_is_published: 'Δημοσιεύονται νέες εισροές'
         new_proposal_is_posted: 'Αναρτήθηκε νέα πρόταση'
