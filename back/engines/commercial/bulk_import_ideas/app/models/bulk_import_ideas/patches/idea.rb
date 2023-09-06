@@ -5,11 +5,10 @@ module BulkImportIdeas::Patches::Idea
     base.class_eval do
       has_one :idea_import, class_name: 'BulkImportIdeas::IdeaImport', dependent: :destroy
 
-      before_update :update_import
+      before_update :update_idea_import_approved_at
 
-      # TODO: Won't work for the global import where ideas are never draft - but not really needed there
-      def update_import
-        return unless publication_status_changed?(from: 'draft', to: 'published')
+      def update_idea_import_approved_at
+        return unless idea_import && publication_status_changed?(from: 'draft', to: 'published')
 
         idea_import.update!(approved_at: Time.now)
       end

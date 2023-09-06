@@ -32,7 +32,8 @@ module Analysis
 
     def execute(plan)
       task.set_in_progress!
-      summary.update!(accuracy: plan.accuracy, inputs_ids: filtered_inputs.ids)
+      summary.update!(accuracy: plan.accuracy)
+      summary.insight.update!(inputs_ids: filtered_inputs.ids)
       begin
         run(plan)
         task.set_succeeded!
@@ -63,6 +64,11 @@ module Analysis
 
     def enabled_llms
       LLMS.select(&:enabled?)
+    end
+
+    # What is the maximum context window any of the LLMs support?
+    def max_context_window
+      enabled_llms.map(&:context_window).max
     end
 
     # For now, we assume GPT tokenization for all llms

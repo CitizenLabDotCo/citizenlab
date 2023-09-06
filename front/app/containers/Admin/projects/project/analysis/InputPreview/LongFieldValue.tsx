@@ -3,11 +3,25 @@ import React from 'react';
 import { IInputsData } from 'api/analysis_inputs/types';
 import useIdeaCustomField from 'api/idea_custom_fields/useIdeaCustomField';
 
-import { Box, Title, Text, Checkbox } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Title,
+  Text,
+  Checkbox,
+  Button,
+} from '@citizenlab/cl2-component-library';
 
 import T from 'components/T';
 import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
 import { FormattedDate } from 'react-intl';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
+import { xor } from 'lodash-es';
+import { trackEventByName } from 'utils/analytics';
+import tracks from '../tracks';
+
+import { useIntl } from 'utils/cl-intl';
+import translations from '../translations';
 
 type Props = {
   customFieldId: string;
@@ -27,7 +41,39 @@ const SelectOptionText = ({
   const option = options?.data.find(
     (option) => option.attributes.key === selectedOptionKey
   );
-  return option ? <T value={option.attributes.title_multiloc} /> : null;
+  return option ? (
+    <T value={option.attributes.title_multiloc} />
+  ) : (
+    <>No answer</>
+  );
+};
+
+const FilterToggleButton = ({ customFieldId, value }) => {
+  const filters = useAnalysisFilterParams();
+  const filterValue = filters[`input_custom_${customFieldId}`];
+  const isFilterSet = filterValue?.includes(value);
+
+  const handleToggleFilterOption = (customFieldId, customOptionKey) => () => {
+    const newFilterValue = xor(filterValue, [customOptionKey]);
+    updateSearchParams({
+      [`input_custom_${customFieldId}`]: newFilterValue.length
+        ? newFilterValue
+        : undefined,
+    });
+    trackEventByName(tracks.inputCustomFieldFilterUsed.name, { customFieldId });
+  };
+
+  return (
+    <Button
+      onClick={handleToggleFilterOption(customFieldId, value)}
+      icon={isFilterSet ? 'close' : 'filter-2'}
+      buttonStyle="secondary"
+      size="s"
+      margin="0"
+      padding="1px"
+      iconSize="18px"
+    />
+  );
 };
 
 /**
@@ -35,6 +81,7 @@ const SelectOptionText = ({
  * representation of the value of the custom field for that input
  */
 const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
+  const { formatMessage } = useIntl();
   const containerId: { projectId?: string; phaseId?: string } = {};
   if (projectId) {
     containerId.projectId = projectId;
@@ -87,6 +134,18 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
         input.attributes.custom_field_values[customField.data.attributes.key];
       switch (customField.data.attributes.input_type) {
         case 'text':
+          return (
+            <Box>
+              <Title variant="h5">
+                <T value={customField.data.attributes.title_multiloc} />
+              </Title>
+              <Text m="0">
+                {input.attributes.custom_field_values[
+                  customField.data.attributes.key
+                ] || formatMessage(translations.noAnswer)}
+              </Text>
+            </Box>
+          );
         case 'number':
         case 'linear_scale': {
           return (
@@ -94,11 +153,23 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
               <Title variant="h5">
                 <T value={customField.data.attributes.title_multiloc} />
               </Title>
-              <Text>
-                {input.attributes.custom_field_values[
-                  customField.data.attributes.key
-                ] || 'No answer'}
-              </Text>
+              <Box
+                display="flex"
+                justifyContent="flex-start"
+                alignItems="flex-start"
+              >
+                <Text m="0">
+                  {input.attributes.custom_field_values[
+                    customField.data.attributes.key
+                  ] || formatMessage(translations.noAnswer)}
+                </Text>
+                <Box ml="8px">
+                  <FilterToggleButton
+                    customFieldId={customField.data.id}
+                    value={rawValue || null}
+                  />
+                </Box>
+              </Box>
             </Box>
           );
         }
@@ -111,7 +182,7 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
               <Text whiteSpace="pre-line">
                 {input.attributes.custom_field_values[
                   customField.data.attributes.key
-                ] || 'No answer'}
+                ] || formatMessage(translations.noAnswer)}
               </Text>
             </Box>
           );
@@ -122,12 +193,24 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
               <Title variant="h5">
                 <T value={customField.data.attributes.title_multiloc} />
               </Title>
-              <Text>
-                <SelectOptionText
-                  customFieldId={customField.data.id}
-                  selectedOptionKey={rawValue}
-                />
-              </Text>
+              <Box
+                display="flex"
+                justifyContent="flex-start"
+                alignItems="flex-start"
+              >
+                <Text m="0">
+                  <SelectOptionText
+                    customFieldId={customField.data.id}
+                    selectedOptionKey={rawValue}
+                  />
+                </Text>
+                <Box ml="8px">
+                  <FilterToggleButton
+                    customFieldId={customField.data.id}
+                    value={rawValue || null}
+                  />
+                </Box>
+              </Box>
             </Box>
           );
         }
@@ -138,15 +221,24 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
                 <T value={customField.data.attributes.title_multiloc} />
               </Title>
               <Text>
-                {(rawValue as string[]).map((optionKey, index) => (
-                  <>
-                    {index !== 0 && ', '}
+                {(rawValue as string[]).map((optionKey) => (
+                  <Box
+                    key={optionKey}
+                    display="flex"
+                    justifyContent="flex-start"
+                    alignItems="flex-start"
+                  >
                     <SelectOptionText
-                      key={`${optionKey}-${index}`}
                       customFieldId={customField.data.id}
                       selectedOptionKey={optionKey}
                     />
-                  </>
+                    <Box ml="8px">
+                      <FilterToggleButton
+                        customFieldId={customField.data.id}
+                        value={optionKey}
+                      />
+                    </Box>
+                  </Box>
                 ))}
               </Text>
             </Box>
@@ -162,7 +254,7 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
                 {rawValue === true || rawValue === false ? (
                   <Checkbox disabled checked={rawValue} onChange={() => {}} />
                 ) : (
-                  'No answer'
+                  formatMessage(translations.noAnswer)
                 )}
               </Text>
             </Box>
@@ -175,7 +267,11 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
                 <T value={customField.data.attributes.title_multiloc} />
               </Title>
               <Text>
-                {rawValue ? <FormattedDate value={rawValue} /> : 'No answer'}
+                {rawValue ? (
+                  <FormattedDate value={rawValue} />
+                ) : (
+                  formatMessage(translations.noAnswer)
+                )}
               </Text>
             </Box>
           );

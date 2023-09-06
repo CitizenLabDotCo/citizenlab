@@ -29,6 +29,11 @@ describe Analysis::InputsFinder do
       idea1 = create(:idea, project: analysis.project)
       idea2 = create(:idea, project: analysis.project)
       create(:tagging, input: idea1, tag: tag1)
+
+      analysis2 = create(:analysis)
+      tag2 = create(:tag, analysis: analysis2)
+      create(:tagging, input: idea2, tag: tag2)
+
       @params = { tag_ids: [nil] }
       expect(output).to contain_exactly(idea2)
     end
@@ -192,6 +197,16 @@ describe Analysis::InputsFinder do
       @params = { "author_custom_#{cf.id}": [nil] }
       expect(output).to contain_exactly(idea2, idea3)
     end
+
+    it 'works correctly with the domicile field, when passed custom_field_options for areas' do
+      area = create(:area)
+      cf = create(:custom_field_domicile)
+      author = create(:user, custom_field_values: { cf.key => area.id })
+      idea1 = create(:idea, project: analysis.source_project, author: author)
+      _idea2 = create(:idea, project: analysis.source_project)
+      @params = { "author_custom_#{cf.id}": [cf.options[0].key] }
+      expect(output).to contain_exactly(idea1)
+    end
   end
 
   describe 'author_custom_<uuid>_from and author_custom_<uuid>_to' do
@@ -201,12 +216,141 @@ describe Analysis::InputsFinder do
       author2 = create(:user, custom_field_values: { cf.key => 2000 })
       author3 = create(:user, custom_field_values: { cf.key => 2010 })
       author4 = create(:user)
+      author5 = create(:user, custom_field_values: { cf.key => nil })
       idea1 = create(:idea, project: analysis.source_project, author: author1)
       idea2 = create(:idea, project: analysis.source_project, author: author2)
       _idea3 = create(:idea, project: analysis.source_project, author: author3)
       _idea4 = create(:idea, project: analysis.source_project, author: author4)
+      _idea5 = create(:idea, project: analysis.source_project, author: author5)
       @params = { "author_custom_#{cf.id}_from": 1990, "author_custom_#{cf.id}_to": 2001 }
       expect(output).to contain_exactly(idea1, idea2)
+    end
+  end
+
+  describe 'input_custom_<uuid>[]' do
+    let_it_be(:analysis) { create(:analysis) }
+    let_it_be(:custom_form) { create(:custom_form) }
+    let_it_be(:custom_field_select) { create(:custom_field_select, :with_options, resource: custom_form) }
+    let_it_be(:custom_field_multiselect) { create(:custom_field_multiselect, :with_options, resource: custom_form) }
+    let_it_be(:custom_field_date) { create(:custom_field_date, resource: custom_form) }
+    let_it_be(:custom_field_number) { create(:custom_field_number, resource: custom_form) }
+    let_it_be(:custom_field_linear_scale) { create(:custom_field_linear_scale, resource: custom_form) }
+
+    let_it_be(:input0) { create(:idea, project: analysis.source_project) }
+    let_it_be(:input1) do
+      create(:idea, project: analysis.source_project, custom_field_values: {
+        custom_field_select.key => custom_field_select.options[0].key,
+        custom_field_multiselect.key => [custom_field_multiselect.options[0].key],
+        custom_field_date.key => '2022-01-01',
+        custom_field_number.key => 1,
+        custom_field_linear_scale.key => 1
+      })
+    end
+
+    let_it_be(:input2) do
+      create(:idea, project: analysis.source_project, custom_field_values: {
+        custom_field_select.key => custom_field_select.options[1].key,
+        custom_field_multiselect.key => [custom_field_multiselect.options[1].key],
+        custom_field_date.key => '2022-01-02',
+        custom_field_number.key => 2,
+        custom_field_linear_scale.key => 2
+      })
+    end
+
+    it 'filters correctly on custom_field with input_type select' do
+      @params = { "input_custom_#{custom_field_select.id}": [custom_field_select.options[0].key] }
+      expect(output).to contain_exactly(input1)
+    end
+
+    it 'filters correctly on custom_field with input_type date' do
+      @params = { "input_custom_#{custom_field_date.id}": ['2022-01-01'] }
+      expect(output).to contain_exactly(input1)
+    end
+
+    it 'filters correctly on custom_field with input_type multiselect' do
+      @params = { "input_custom_#{custom_field_multiselect.id}": [custom_field_multiselect.options[0].key, custom_field_multiselect.options[1].key] }
+      expect(output).to contain_exactly(input1, input2)
+    end
+
+    it 'filters correctly on custom_field with input_type number' do
+      @params = { "input_custom_#{custom_field_number.id}": [1, 2] }
+      expect(output).to contain_exactly(input1, input2)
+    end
+
+    it 'filters correctly on custom_field with input_type linear_scale' do
+      @params = { "input_custom_#{custom_field_linear_scale.id}": [1, 2] }
+      expect(output).to contain_exactly(input1, input2)
+    end
+
+    it 'errors when the parameter is not an array' do
+      @params = { 'input_custom_20cb54f4-ad15-4e96-86d2-10cf5a95bd29': 'some_value' }
+      expect { output }.to raise_error(ArgumentError)
+    end
+
+    it 'returns items with no value on an array with a nil value with input type select' do
+      @params = { "input_custom_#{custom_field_select.id}": [nil] }
+      expect(output).to contain_exactly(input0)
+    end
+
+    it 'returns items with no value on an array with a nil value with input type date' do
+      @params = { "input_custom_#{custom_field_date.id}": [nil] }
+      expect(output).to contain_exactly(input0)
+    end
+
+    it 'returns items with no values on an array with a nil value with input type multiselect' do
+      @params = { "input_custom_#{custom_field_multiselect.id}": [nil] }
+      expect(output).to contain_exactly(input0)
+    end
+
+    it 'returns items with no value on on an array with a nil value with input type number' do
+      @params = { "input_custom_#{custom_field_number.id}": [nil] }
+      expect(output).to contain_exactly(input0)
+    end
+
+    it 'returns items with no value on on an array with a nil value with input type linear_scale' do
+      @params = { "input_custom_#{custom_field_linear_scale.id}": [nil] }
+      expect(output).to contain_exactly(input0)
+    end
+  end
+
+  describe 'input_custom_<uuid>from/to' do
+    let_it_be(:analysis) { create(:analysis) }
+    let_it_be(:custom_form) { create(:custom_form) }
+    let_it_be(:custom_field_select) { create(:custom_field_select, :with_options, resource: custom_form) }
+    let_it_be(:custom_field_multiselect) { create(:custom_field_multiselect, :with_options, resource: custom_form) }
+    let_it_be(:custom_field_date) { create(:custom_field_date, resource: custom_form) }
+    let_it_be(:custom_field_number) { create(:custom_field_number, resource: custom_form) }
+    let_it_be(:custom_field_linear_scale) { create(:custom_field_linear_scale, resource: custom_form) }
+
+    let_it_be(:input0) { create(:idea, project: analysis.source_project) }
+    let_it_be(:input1) do
+      create(:idea, project: analysis.source_project, custom_field_values: {
+        custom_field_select.key => custom_field_select.options[0].key,
+        custom_field_multiselect.key => [custom_field_multiselect.options[0].key],
+        custom_field_date.key => '2022-01-01',
+        custom_field_number.key => 1,
+        custom_field_linear_scale.key => 1
+      })
+    end
+
+    let_it_be(:input2) do
+      create(:idea, project: analysis.source_project, custom_field_values: {
+        custom_field_select.key => custom_field_select.options[1].key,
+        custom_field_multiselect.key => [custom_field_multiselect.options[1].key],
+        custom_field_date.key => '2022-01-02',
+        custom_field_number.key => 2,
+        custom_field_linear_scale.key => 2
+      })
+    end
+
+    it 'filters correctly on custom_field with input_type number' do
+      @params = { "input_custom_#{custom_field_number.id}_to": 1 }
+      expect(output).to contain_exactly(input1)
+    end
+
+    it 'filters correctly on custom_field with input_type linear_scale' do
+      @params = { "input_custom_#{custom_field_linear_scale.id}_from": 1, "input_custom_#{custom_field_linear_scale.id}_to": 2 }
+      expect(output).to contain_exactly(input1, input2)
     end
   end
 end

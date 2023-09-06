@@ -54,7 +54,6 @@ module BulkImportIdeas
       XlsxService.new.hash_array_to_xlsx [columns]
     end
 
-    # pdf_raw_text is the raw text output from the google parser
     def parse_idea_rows(file, file_type)
       ideas = if file_type == 'pdf'
         parse_pdf_ideas(file)
@@ -98,10 +97,10 @@ module BulkImportIdeas
       idea_rows.compact
     end
 
+    private
+
     # Match all fields in the custom field by the text of their label in the specified locale
-    # TODO: Refactor this - too long and difficult to understand
     def process_custom_form_fields(doc, idea_row)
-      # Get the keys for the field/option names in the import locale
       core_field_codes = %w[title_multiloc body_multiloc location_description]
       text_field_types = %w[text multiline_text number]
       select_field_types = %w[select multiselect]
@@ -110,7 +109,6 @@ module BulkImportIdeas
       text_fields = []
       select_fields = []
       select_options = []
-
       @form_fields.each do |field|
         if core_field_codes.include? field[:code]
           core_fields << { name: field[:title_multiloc][@locale], code: field[:code], type: field[:input_type] }
@@ -125,6 +123,18 @@ module BulkImportIdeas
       end
 
       # Core fields
+      idea_row = extract_core_fields idea_row, doc, core_fields
+
+      # Custom fields
+      custom_fields = {}
+      custom_fields = extract_custom_text_fields custom_fields, doc, text_fields
+      custom_fields = extract_custom_select_fields custom_fields, doc, select_fields, select_options
+      idea_row[:custom_field_values] = custom_fields
+
+      idea_row
+    end
+
+    def extract_core_fields(idea_row, doc, core_fields)
       core_fields.each do |field|
         core_field = find_field(doc, field[:name])
         if core_field
@@ -134,11 +144,11 @@ module BulkImportIdeas
           doc.delete_if { |f| f == core_field }
         end
       end
+      idea_row
+    end
 
-      # Custom fields
-      custom_fields = {}
-
-      # Text & Number fields
+    # Text & Number fields
+    def extract_custom_text_fields(custom_fields, doc, text_fields)
       text_fields.each do |field|
         text_field = find_field(doc, field[:name])
         if text_field
@@ -146,8 +156,11 @@ module BulkImportIdeas
           doc.delete_if { |f| f == text_field }
         end
       end
+      custom_fields
+    end
 
-      # Select fields
+    # Single & Multiselect fields
+    def extract_custom_select_fields(custom_fields, doc, select_fields, select_options)
       select_fields.each do |field|
         select_field = find_field(doc, field[:name])
         if select_field && select_field[:value]
@@ -169,9 +182,7 @@ module BulkImportIdeas
           doc.delete_if { |f| f == select_field }
         end
       end
-
-      idea_row[:custom_field_values] = custom_fields
-      idea_row
+      custom_fields
     end
 
     def find_field(doc, name)

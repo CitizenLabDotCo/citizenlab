@@ -17,6 +17,7 @@ const Container = styled.div`
   position: relative;
   border-radius: ${(props) => props.theme.borderRadius};
   border: solid 1px #ccc;
+  z-index: 1500 !important;
 
   input {
     font-size: ${fontSizes.base}px;

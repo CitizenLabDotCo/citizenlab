@@ -3,8 +3,6 @@ import {
   IPermissionData,
   IParticipationContextPermissionAction,
 } from 'services/actionPermissions';
-import { IProjectData } from 'api/projects/types';
-import { isNilOrError } from 'utils/helperUtils';
 import messages from './messages';
 import { FieldType } from 'containers/Admin/settings/registration/CustomFieldRoutes/RegistrationCustomFieldForm';
 import { MessageDescriptor } from 'react-intl';
@@ -14,7 +12,6 @@ type GetPermissionActionMessageProps = {
     | IParticipationContextPermissionAction
     | IGlobalPermissionAction;
   postType: 'defaultInput' | 'nativeSurvey' | 'initiative';
-  project: IProjectData | null | undefined;
 };
 
 export type HandlePermissionChangeProps = {
@@ -28,9 +25,8 @@ export type HandlePermissionChangeProps = {
 export const getPermissionActionSectionSubtitle = ({
   permissionAction,
   postType,
-  project,
 }: GetPermissionActionMessageProps) => {
-  if (postType !== 'initiative' && !isNilOrError(project)) {
+  if (postType !== 'initiative') {
     const participationContextPermissionActionMessages: {
       [key in IParticipationContextPermissionAction]: MessageDescriptor;
     } = {
@@ -50,7 +46,7 @@ export const getPermissionActionSectionSubtitle = ({
   }
   if (postType === 'initiative') {
     const globalPermissionActionMessages: {
-      [key in IGlobalPermissionAction]: MessageDescriptor;
+      [key in Exclude<IGlobalPermissionAction, 'following'>]: MessageDescriptor;
     } = {
       reacting_initiative: messages.permissionAction_vote_proposals_subtitle,
       commenting_initiative:

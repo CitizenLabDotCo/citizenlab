@@ -8,12 +8,15 @@ sv:
       "comment_on_your_comment": Ett svar på min kommentar
       "comment_on_your_idea": En kommentar för min idé
       "comment_on_your_initiative": En kommentar för mitt förslag
+      "cosponsor_of_your_initiative": En användare accepterar min inbjudan att samsponsra mitt förslag
       "first_idea_published": Publicering av min första idé
       "idea_marked_as_spam": Skräppostrapport för idé
       "idea_published": Publicering av min idé
       "initiative_assigned_to_you": Tilldelning av ett förslag till mig
       "initiative_marked_as_spam": Skräppostrapport för förslag
       "initiative_published": Publicering av mitt förslag
+      "invitation_to_cosponsor_initiative": Inbjudan att vara medförslagsställare
+      "initiative_resubmitted_for_review": Förslaget lämnas in på nytt för granskning
       "invite_received": Inbjudan
       "invite_reminder": Påminnelse om inbjudan
       "internal_comment_on_idea_assigned_to_you": Intern kommentar om input som tilldelats mig
@@ -138,6 +141,12 @@ sv:
       main_header: '%{commentAuthor} kommenterade ditt initiativ'
       subject: 'Du har fått en kommentar på %{organizationName}s plattform'
       preheader: '%{authorName} lämnade en kommentar för ditt initiativ för %{organizationName}'
+    cosponsor_of_your_initiative:
+      cta_reply_to: 'Visa ditt förslag'
+      event_description_initiative: 'Grattis! %{cosponsorName} har accepterat din inbjudan att vara med och sponsra ditt förslag.'
+      main_header: '%{cosponsorName} har accepterat din inbjudan att medfinansiera ditt förslag'
+      subject: '%{cosponsorName} har accepterat din inbjudan att medfinansiera ditt förslag'
+      preheader_initiative: '%{cosponsorName} har accepterat din inbjudan att medfinansiera ditt förslag'
     assignee_digest:
       subject: 'Idéer som kräver din återkoppling: %{numberIdeas}'
       preheader: 'Sammanfattning av tilldelad person för %{organizationName}'
@@ -178,6 +187,22 @@ sv:
       main_header: '%{firstName}, du har ett nytt uppdrag'
       subject: 'Du har ett uppdrag på plattformen för %{organizationName}'
       preheader_initiative: 'Förslaget från %{authorName} har tilldelats dig'
+    invitation_to_cosponsor_initiative:
+      cta_reply_to: 'Stöd detta förslag'
+      event_description_initiative: '%{authorName} har skapat ett nytt förslag och vill att du ska stödja det.'
+      event_description_cosponsoring: 'Medsponsring av ett förslag innebär att <strong>ditt namn kommer att visas</strong> tillsammans med namnen på andra medsponsorer av förslaget.'
+      event_description_before_action: 'För att se förslaget och acceptera inbjudan måste du vara inloggad på ditt konto.'
+      event_description_action: 'Klicka nedan för att läsa förslaget.'
+      main_header: 'Du har blivit inbjuden att vara medförslagsställare'
+      subject: 'Du har blivit inbjuden att vara medförslagsställare'
+      preheader_initiative: 'Du har blivit inbjuden att vara medförslagsställare till %{authorName}'
+    initiative_resubmitted_for_review:
+      by_author: 'av %{authorName}'
+      cta_reply_to: 'Ge feedback till %{authorName}'
+      event_description_initiative: 'Ett förslag har lämnats in på nytt för granskning. Ge feedback genom att skriva en officiell uppdatering eller genom att ändra status.'
+      main_header: '%{firstName}, du har ett förslag att granska'
+      subject: 'Du har ett förslag att granska på plattformen %{organizationName}'
+      preheader_initiative: 'Förslaget till %{authorName} har lämnats in på nytt för granskning'
     invite_reminder:
       cta_accept_invitation: 'Acceptera din inbjudan'
       invitation_header: 'Din inbjudan väntar'
@@ -633,6 +658,7 @@ sv:
         managers: 'Chefer'
         admins_assigned_to_a_proposal: 'Administratörer som har tilldelats ett förslag'
         admins_and_managers_assigned_to_the_input: 'Administratörer och chefer som har tilldelats ingången'
+        user_who_is_invited_to_cosponsor_a_proposal: 'Användare som inbjuds att vara medsponsor för ett förslag'
         user_who_is_receiving_admin_rights: 'Användare som får administratörsrättigheter'
         user_who_is_receiving_folder_moderator_rights: 'Användare som får rättigheter som mappmoderator'
         user_who_is_receiving_project_moderator_rights: 'Användare som får rättigheter som projektmoderator'
@@ -667,6 +693,7 @@ sv:
         input_is_flagged_as_spam: 'Inmatning markeras som skräppost'
         input_is_updated: 'Inmatningen uppdateras'
         input_status_changes: 'Ändringar av ingångsstatus'
+        initiative_resubmitted_for_review: 'Förslaget lämnas in på nytt för granskning'
         internal_comment_is_posted_on_idea_assigned_to_user: 'Intern kommentar publiceras på input som tilldelats användaren'
         internal_comment_is_posted_on_initiative_assigned_to_user: 'Intern kommentar läggs upp på förslag som tilldelats användaren'
         internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: 'Intern kommentar publiceras om input i projekt eller mapp som användaren hanterar'
@@ -675,6 +702,8 @@ sv:
         internal_comment_is_posted_on_initiative_user_has_commented_internally_on: 'Intern kommentar publiceras på förslag som användaren kommenterat internt på'
         internal_comment_is_posted_on_unassigned_initiative: 'Intern kommentar publiceras på odelat förslag'
         internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Intern kommentar publiceras på icke tilldelad input i icke hanterat projekt'
+        user_accepts_invitation_to_cosponsor_a_proposal: 'Användaren accepterar inbjudan att vara medsponsor för ett förslag'
+        user_is_invited_to_cosponsor_a_proposal: 'Användaren inbjuds att vara medsponsor för ett förslag'
         user_is_mentioned_in_internal_comment: 'Användaren nämns i intern kommentar'
         new_input_is_published: 'Ny input publiceras'
         new_proposal_is_posted: 'Ett nytt förslag har lagts fram.'

@@ -14,6 +14,8 @@
 #  auto_tagging_method :string
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
+#  tags_ids            :jsonb
+#  filters             :jsonb            not null
 #
 # Indexes
 #
@@ -25,7 +27,7 @@
 #
 module Analysis
   class BackgroundTask < ::ApplicationRecord
-    TYPES = ['Analysis::AutoTaggingTask', 'Analysis::SummarizationTask']
+    TYPES = ['Analysis::AutoTaggingTask', 'Analysis::SummarizationTask', 'Analysis::QAndATask']
     STATES = %w[queued in_progress succeeded failed]
 
     belongs_to :analysis

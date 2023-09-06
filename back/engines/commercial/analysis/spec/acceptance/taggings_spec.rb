@@ -68,4 +68,31 @@ resource 'Taggings' do
       expect { Analysis::Tagging.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
+
+  post 'web_api/v1/analyses/:analysis_id/taggings/bulk_create' do
+    parameter :tag_id, 'The ID of the tag to associate the input with', required: true
+    parameter :filters, 'The filters to select the inputs to associate the tag with', required: true
+
+    ValidationErrorHelper.new.error_fields(self, Analysis::Tagging)
+
+    let(:analysis) { create(:analysis) }
+    let(:analysis_id) { analysis.id }
+    let!(:inputs) { create_list(:idea, 3, project: analysis.project) }
+
+    example 'Bulk create taggings' do
+      tag_id = create(:tag, analysis: analysis).id
+      idea = create(:idea, project: analysis.project, title_multiloc: {
+        'en' => 'My idea'
+      })
+      idea2 = create(:idea, project: analysis.project, title_multiloc: {
+        'en' => 'My idea is great'
+      })
+      create(:tagging, input: idea2, tag_id: tag_id)
+      do_request(tag_id: tag_id, filters: { search: 'My idea' })
+      expect(response_status).to eq 201
+      expect(Analysis::Tagging.count).to eq 2
+      expect(Analysis::Tagging.pluck(:tag_id)).to all(eq(tag_id))
+      expect(Analysis::Tagging.pluck(:input_id)).to match_array([idea.id, idea2.id])
+    end
+  end
 end

@@ -243,7 +243,6 @@ class WebApi::V1::IdeasController < ApplicationController
   def destroy
     input = Idea.find params[:id]
     authorize input
-    service.before_destroy(input, current_user)
     input = input.destroy
     if input.destroyed?
       service.after_destroy(input, current_user)
@@ -351,8 +350,14 @@ class WebApi::V1::IdeasController < ApplicationController
       # breaks if you don't fetch the ids in this way.
       reactions = Reaction.where(user: current_user, reactable_id: ideas.map(&:id), reactable_type: 'Idea')
       include << 'user_reaction'
+      user_followers = current_user.follows
+        .where(followable_type: 'Idea')
+        .group_by do |follower|
+          [follower.followable_id, follower.followable_type]
+        end
+      user_followers ||= {}
       {
-        params: jsonapi_serializer_params(vbii: reactions.index_by(&:reactable_id), pcs: ParticipationContextService.new),
+        params: jsonapi_serializer_params(vbii: reactions.index_by(&:reactable_id), user_followers: user_followers, pcs: ParticipationContextService.new),
         include: include
       }
     else

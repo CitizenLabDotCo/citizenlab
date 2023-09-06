@@ -6,13 +6,13 @@ import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-import { summariesData } from './__mocks__/useAnalysisSummaries';
+import { summaryData } from './__mocks__/useAnalysisSummary';
 
 const apiPath = '*analyses/:analysisId/summaries';
 
 const server = setupServer(
   rest.post(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: summariesData[0] }));
+    return res(ctx.status(200), ctx.json({ data: summaryData }));
   })
 );
 
@@ -35,7 +35,7 @@ describe('useAddAnalysisSummary', () => {
     });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
-    expect(result.current.data?.data).toEqual(summariesData[0]);
+    expect(result.current.data?.data).toEqual(summaryData);
   });
 
   it('returns error correctly', async () => {

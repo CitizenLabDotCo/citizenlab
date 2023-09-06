@@ -18,10 +18,20 @@ class WebApi::V1::FoldersController < ApplicationController
     # the current user.
     visible_children_count_by_parent_id = Hash.new(0).tap { |h| parent_ids_for_visible_children.each { |id| h[id] += 1 } }
 
+    user_followers = current_user&.follows
+      &.where(followable_type: 'ProjectFolders::Folder')
+      &.group_by do |follower|
+        [follower.followable_id, follower.followable_type]
+      end
+    user_followers ||= {}
+
     render json: linked_json(
       @project_folders,
       WebApi::V1::FolderSerializer,
-      params: jsonapi_serializer_params(visible_children_count_by_parent_id: visible_children_count_by_parent_id),
+      params: jsonapi_serializer_params(
+        visible_children_count_by_parent_id: visible_children_count_by_parent_id,
+        user_followers: user_followers
+      ),
       include: %i[admin_publication images]
     )
   end

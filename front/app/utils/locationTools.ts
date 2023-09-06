@@ -1,6 +1,7 @@
+import { Point } from 'geojson';
 import { isNumber } from 'lodash-es';
 
-export const geocode = (address: string | null | undefined) => {
+const geocode = (address: string | null | undefined) => {
   return new Promise((resolve: (value: GeoJSON.Point | null) => void) => {
     if (address && window?.google?.maps?.Geocoder) {
       const geocoder = new google.maps.Geocoder();
@@ -27,7 +28,7 @@ export const geocode = (address: string | null | undefined) => {
   });
 };
 
-export const reverseGeocode = (lat: number, lng: number) => {
+const reverseGeocode = (lat: number, lng: number) => {
   return new Promise((resolve: (value: string | undefined) => void) => {
     if (window?.google?.maps?.Geocoder) {
       const geocoder = new google.maps.Geocoder();
@@ -45,7 +46,6 @@ export const reverseGeocode = (lat: number, lng: number) => {
           if (status === google.maps.GeocoderStatus.OK && formattedAddress) {
             response = formattedAddress;
           }
-
           resolve(response);
         }
       );
@@ -54,3 +54,28 @@ export const reverseGeocode = (lat: number, lng: number) => {
     }
   });
 };
+
+const parsePosition = async (position?: string) => {
+  let location_point_geojson: Point | null | undefined;
+  let location_description: string | null | undefined;
+
+  switch (position) {
+    case '':
+      location_point_geojson = null;
+      location_description = null;
+      break;
+
+    case undefined:
+      location_point_geojson = undefined;
+      location_description = undefined;
+      break;
+
+    default:
+      location_point_geojson = await geocode(position);
+      location_description = position;
+      break;
+  }
+  return { location_point_geojson, location_description };
+};
+
+export { geocode, reverseGeocode, parsePosition };

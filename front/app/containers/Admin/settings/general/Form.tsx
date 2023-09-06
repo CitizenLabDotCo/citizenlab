@@ -104,7 +104,6 @@ const Form = ({ defaultValues, onSubmit }: Props) => {
 
           <SectionField>
             <InputMultilocWithLocaleSwitcher
-              type="text"
               id="organization_name"
               name="organization_name"
               label={<FormattedMessage {...messages.organizationName} />}

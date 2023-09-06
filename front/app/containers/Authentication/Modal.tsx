@@ -39,6 +39,9 @@ import errorMessages from 'components/UI/Error/messages';
 import { ErrorCode } from './typings';
 import VerificationSuccess from './steps/VerificationSuccess';
 import T from 'components/T';
+import { IInitiativeAction } from 'api/initiative_action_descriptors/types';
+import { IParticipationContextPermissionAction } from 'services/actionPermissions';
+import { IFollowingAction } from 'api/authentication/authentication_requirements/types';
 
 type Step = ReturnType<typeof useSteps>['currentStep'];
 
@@ -82,6 +85,30 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   // verification only
   'verification-only': messages.verifyYourIdentity,
   'verification-success': null,
+};
+
+const getHeaderMessage = (
+  step: Step,
+  action:
+    | 'visiting'
+    | IInitiativeAction
+    | IParticipationContextPermissionAction
+    | IFollowingAction
+) => {
+  if (
+    action === 'following' &&
+    [
+      'light-flow:email',
+      'light-flow:email-policies',
+      'light-flow:google-policies',
+      'light-flow:facebook-policies',
+      'light-flow:azure-ad-policies',
+      'light-flow:france-connect-login',
+    ].includes(step)
+  ) {
+    return messages.beforeYouFollow;
+  }
+  return HEADER_MESSAGES[step];
 };
 
 export const ERROR_CODE_MESSAGES: Record<ErrorCode, MessageDescriptor> = {
@@ -138,7 +165,10 @@ const AuthModal = ({ setModalOpen }: Props) => {
     currentStep !== 'success' &&
     currentStep !== 'clave-unica:email';
 
-  const headerMessage = HEADER_MESSAGES[currentStep];
+  const {
+    context: { action },
+  } = authenticationData;
+  const headerMessage = getHeaderMessage(currentStep, action);
 
   const handleClose = () => {
     if (!closable) return;
@@ -240,6 +270,7 @@ const AuthModal = ({ setModalOpen }: Props) => {
             onSwitchFlow={transition(currentStep, 'SWITCH_FLOW')}
             onGoBack={transition(currentStep, 'GO_BACK')}
             onSubmit={transition(currentStep, 'SIGN_IN')}
+            closeModal={transition(currentStep, 'CLOSE')}
           />
         )}
 

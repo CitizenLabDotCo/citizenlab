@@ -30,6 +30,7 @@ const useMachineTranslationByInitiativeId = ({
   >({
     queryKey: machineTranslationKeys.item({
       initiativeId: queryParameters.initiativeId,
+      machine_translation: queryParameters.machine_translation,
     }),
     queryFn: () => fetchMachineTranslationByInitiativeId(queryParameters),
     enabled,

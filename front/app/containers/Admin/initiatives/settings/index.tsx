@@ -1,12 +1,11 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { isEmpty, isNaN, isEqual } from 'lodash-es';
+import { isEmpty, isEqual } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useNavbarItems from 'api/navbar/useNavbarItems';
 import useCustomPageBySlug from 'api/custom_pages/useCustomPageBySlug';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import useUpdateCustomPage from 'api/custom_pages/useUpdateCustomPage';
 
 // services
@@ -14,21 +13,19 @@ import { ProposalsSettings } from 'api/app_configuration/types';
 import useUpdateAppConfiguration from 'api/app_configuration/useUpdateAppConfiguration';
 
 // components
-import {
-  SectionTitle,
-  SectionDescription,
-  Section,
-} from 'components/admin/Section';
+import { SectionTitle, SectionDescription } from 'components/admin/Section';
 import Warning from 'components/UI/Warning';
 import ProposalsFeatureToggle from './ProposalsFeatureToggle';
-import ReactingThreshold from './ReactingThreshold';
-import ReactingLimit from './ReactingLimit';
+import Thresholds from './Thresholds';
 import ThresholdReachedMessage from './ThresholdReachedMessage';
 import EligibilityCriteria from './EligibilityCriteria';
+import PostingTips from './PostingTips';
 import PageBody from './PageBody';
 import SubmitButton from './SubmitButton';
-import { AnonymousPostingToggle } from 'components/admin/AnonymousPostingToggle/AnonymousPostingToggle';
+import AnonymousPostingToggle from 'components/admin/AnonymousPostingToggle/AnonymousPostingToggle';
 import { Box, Title } from '@citizenlab/cl2-component-library';
+import RequireReviewToggle from './RequireReviewToggle';
+import Cosponsors from './Cosponsors';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -65,9 +62,6 @@ const InitiativesSettingsPage = () => {
     reset,
   } = useUpdateCustomPage();
   const { data: appConfiguration } = useAppConfiguration();
-  const hasAnonymousParticipationEnabled = useFeatureFlag({
-    name: 'anonymous_participation',
-  });
   const {
     mutate: updateAppConfiguration,
     isLoading: isAppConfigurationLoading,
@@ -140,9 +134,21 @@ const InitiativesSettingsPage = () => {
       validated = true;
 
       if (
-        isNaN(localProposalsSettings.reacting_threshold) ||
+        /* require_cosponsors: if the cosponsors feature is enabled for the first time,
+          cosponsors_number is undefined, hence the check to see if it's a number. If you erase
+          a number you already filled in, our code in Cosponsors.tsx will convert the empty string this
+          erasing produces to NaN, which qualifies as a number but is not a value we want.
+          To find the relevant code search for the comment hash below.
+          Using a fallback number value if parseInt produces NaN is not desirable either, because
+          that causes strange behavior in the UI.
+          Comment hash: #6bcea39
+        */
+        (localProposalsSettings.require_cosponsors &&
+          (typeof localProposalsSettings.cosponsors_number !== 'number' ||
+            Number.isNaN(localProposalsSettings.cosponsors_number))) ||
+        Number.isNaN(localProposalsSettings.reacting_threshold) ||
         localProposalsSettings.reacting_threshold < 2 ||
-        isNaN(localProposalsSettings.days_limit) ||
+        Number.isNaN(localProposalsSettings.days_limit) ||
         localProposalsSettings.days_limit < 1
       ) {
         validated = false;
@@ -227,46 +233,61 @@ const InitiativesSettingsPage = () => {
         <StyledSectionTitle>
           <FormattedMessage {...messages.settingsTabTitle} />
         </StyledSectionTitle>
-        <Section>
+        <Box mb="16px">
           <ProposalsFeatureToggle
             enabled={localProposalsSettings.enabled}
             onToggle={onToggle}
           />
-          {hasAnonymousParticipationEnabled && (
-            <AnonymousPostingToggle
-              allow_anonymous_participation={
-                localProposalsSettings.allow_anonymous_participation
-              }
-              handleAllowAnonymousParticipationOnChange={
-                onAnonymousPostingToggle
-              }
-            />
-          )}
-          <ReactingThreshold
-            value={localProposalsSettings.reacting_threshold}
-            onChange={updateProposalsSetting('reacting_threshold')}
+          <AnonymousPostingToggle
+            allow_anonymous_participation={
+              localProposalsSettings.allow_anonymous_participation
+            }
+            handleAllowAnonymousParticipationOnChange={onAnonymousPostingToggle}
+          />
+          <RequireReviewToggle
+            value={
+              typeof localProposalsSettings.require_review === 'boolean'
+                ? localProposalsSettings.require_review
+                : false
+            }
+            onChange={updateProposalsSetting('require_review')}
           />
 
-          <ReactingLimit
-            value={localProposalsSettings.days_limit}
-            onChange={updateProposalsSetting('days_limit')}
+          <Cosponsors
+            requireCosponsors={localProposalsSettings.require_cosponsors}
+            onChangeRequireSponsors={updateProposalsSetting(
+              'require_cosponsors'
+            )}
+            cosponsorsNumber={localProposalsSettings.cosponsors_number}
+            onChangeCosponsorsNumber={updateProposalsSetting(
+              'cosponsors_number'
+            )}
           />
-
-          <ThresholdReachedMessage
-            value={localProposalsSettings.threshold_reached_message}
-            onChange={updateProposalsSetting('threshold_reached_message')}
+          <Thresholds
+            numberOfVotesThreshold={localProposalsSettings.reacting_threshold}
+            onChangeNumberOfVotesThreshold={updateProposalsSetting(
+              'reacting_threshold'
+            )}
+            numberOfDaysThreshold={localProposalsSettings.days_limit}
+            onChangeNumberOfDaysThreshold={updateProposalsSetting('days_limit')}
           />
-
           <EligibilityCriteria
             value={localProposalsSettings.eligibility_criteria}
             onChange={updateProposalsSetting('eligibility_criteria')}
           />
-
+          <PostingTips
+            postingTips={localProposalsSettings.posting_tips}
+            onChangePostingTips={updateProposalsSetting('posting_tips')}
+          />
+          <ThresholdReachedMessage
+            value={localProposalsSettings.threshold_reached_message}
+            onChange={updateProposalsSetting('threshold_reached_message')}
+          />
           <PageBody
             value={newProposalsPageBody}
             onChange={updateProposalsPageBody}
           />
-        </Section>
+        </Box>
 
         <SubmitButton
           disabled={!validate()}

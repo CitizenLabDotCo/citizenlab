@@ -32,6 +32,17 @@ nl:
       not_ends_on: "%{property} eindigt niet op %{value}"
     email:
       property: "e-mail"
+    follow:
+      something: "Volgt iets"
+      nothing: "Volgt niets"
+      is_one_of_projects: "Volgt één van de volgende projecten %{value}"
+      is_not_project: "Volgt dit project niet %{value}"
+      is_one_of_folders: "Volgt één van deze folders %{value}"
+      is_not_folder: "Volgt deze folder niet %{value}"
+      is_one_of_ideas: "Volgt één van deze ideeën %{value}"
+      is_not_idea: "Volgt dit idee niet %{value}"
+      is_one_of_initiatives: "Volgt één van deze voorstellen %{value}"
+      is_not_initiative: "Volgt dit voorstel niet %{value}"
     lives_in:
       has_value_outside: "%{property} is ergens anders"
       not_has_value_outside: "%{property} is niet ergens anders"

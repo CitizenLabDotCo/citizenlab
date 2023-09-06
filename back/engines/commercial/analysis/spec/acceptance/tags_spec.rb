@@ -40,9 +40,12 @@ resource 'Tags' do
   get 'web_api/v1/analyses/:analysis_id/tags' do
     with_options required: false do
       parameter :search, 'Filter by searching in title and body'
-      parameter :'author_custom_<uuid>_from', 'Filter by custom field value of the author for numerical or date fields, larger than or equal to. Replace <uuid> with the custom_field id'
-      parameter :'author_custom_<uuid>_to', 'Filter by custom field value of the author for numerical or date fields, smaller than or equal to. Replace <uuid> with the custom_field id'
+      parameter :'author_custom_<uuid>_from', 'Filter by custom field value of the author for numerical fields, larger than or equal to. Replace <uuid> with the custom_field id'
+      parameter :'author_custom_<uuid>_to', 'Filter by custom field value of the author for numerical fields, smaller than or equal to. Replace <uuid> with the custom_field id'
       parameter :'author_custom_<uuid>', 'Filter by custom field value of the author, for select, multiselect, date and number fields (union). Replace <uuid> with the custom_field id', type: :array
+      parameter :'input_custom_<uuid>_from', 'Filter by custom field value of the input for numerical fields, larger than or equal to. Replace <uuid> with the custom_field id'
+      parameter :'input_custom_<uuid>_to', 'Filter by custom field value of the input for numerical fields, smaller than or equal to. Replace <uuid> with the custom_field id'
+      parameter :'input_custom_<uuid>', 'Filter by custom field value of the input, for select, multiselect, date and number fields (union). Replace <uuid> with the custom_field id', type: :array
       parameter :published_at_from, 'Filter by input publication date, after or equal to', type: :date
       parameter :published_at_to, 'Filter by input publication date, before or equal to', type: :date
       parameter :reactions_from, 'Filter by number of reactions on the input, larger than or equal to', type: :integer
@@ -70,7 +73,8 @@ resource 'Tags' do
 
       example_request 'lists all tags of an analysis' do
         assert_status 200
-        expect(response_data.pluck(:id)).to match_array(tags.pluck(:id))
+        # tags sorted by descending tag count, then by ascending creation time if equal
+        expect(response_data.pluck(:id)).to eq([tags[1].id, tags[0].id, tags[2].id])
         expect(json_response_body[:meta]).to eq({
           inputs_total: 3,
           filtered_inputs_total: 3,

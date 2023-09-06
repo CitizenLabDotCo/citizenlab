@@ -4,6 +4,7 @@ import streams from 'utils/streams';
 import { Multiloc, IParticipationContextType } from 'typings';
 import { IInitiativeAction } from 'api/initiative_action_descriptors/types';
 import { IParticipationContextPermissionAction } from './actionPermissions';
+import { IFollowingAction } from 'api/authentication/authentication_requirements/types';
 
 export interface Response {
   data: {
@@ -26,7 +27,9 @@ export function getPCParticipationConditions(
 }
 
 // TODO
-export function getGlobalParticipationConditions(action: IInitiativeAction) {
+export function getGlobalParticipationConditions(
+  action: IInitiativeAction | IFollowingAction
+) {
   return streams.get<Response>({
     apiEndpoint: `${API_PATH}/permissions/${action}/participation_conditions`,
   });

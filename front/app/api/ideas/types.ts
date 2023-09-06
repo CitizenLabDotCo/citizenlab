@@ -122,6 +122,7 @@ export interface IIdeaData {
     };
     anonymous: boolean;
     author_hash: string;
+    followers_count: number;
   };
   relationships: {
     topics?: {
@@ -146,6 +147,9 @@ export interface IIdeaData {
       data: IRelationship;
     };
     user_reaction?: {
+      data: IRelationship | null;
+    };
+    user_follower: {
       data: IRelationship | null;
     };
     idea_import?: {

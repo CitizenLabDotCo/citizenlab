@@ -2,17 +2,25 @@ import React from 'react';
 import EventsViewer from './EventsViewer';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
-export default injectIntl<WrappedComponentProps>(({ intl }) => (
-  <EventsViewer
-    showProjectFilter={true}
-    title={intl.formatMessage(messages.pastEvents)}
-    fallbackMessage={messages.noPastEvents}
-    eventsTime="past"
-    onClickTitleGoToProjectAndScrollToEvent={true}
-    projectPublicationStatuses={['published']}
-  />
-));
+type Props = {
+  attendeeId?: string;
+};
+const PastEvents = ({ attendeeId }: Props) => {
+  const { formatMessage } = useIntl();
+
+  return (
+    <EventsViewer
+      showProjectFilter={true}
+      title={formatMessage(messages.pastEvents)}
+      fallbackMessage={messages.noPastEvents}
+      eventsTime="past"
+      projectPublicationStatuses={['published']}
+      attendeeId={attendeeId}
+    />
+  );
+};
+
+export default PastEvents;

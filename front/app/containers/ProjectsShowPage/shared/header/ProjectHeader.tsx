@@ -15,6 +15,8 @@ import {
   HeaderImage,
   HeaderImageContainer,
 } from 'components/ProjectableHeader';
+import FollowUnfollow from 'components/FollowUnfollow';
+import { Box } from '@citizenlab/cl2-component-library';
 
 // hooks
 import useProjectById from 'api/projects/useProjectById';
@@ -57,7 +59,6 @@ const TopBar = styled.div`
 
 const EditButton = styled(Button)`
   display: table;
-  margin: 0 0 10px auto;
 
   ${isRtl`
     margin: 0 0 auto 10px;
@@ -100,25 +101,40 @@ const ProjectHeader = memo<Props & WrappedComponentProps>(
       return (
         <Container className={className || ''}>
           <ContentContainer maxWidth={maxPageWidth}>
-            {(projectFolderId || userCanEditProject) && (
-              <TopBar>
-                {projectFolderId && isProjectFoldersEnabled && (
-                  <ProjectFolderGoBackButton
-                    projectFolderId={projectFolderId}
-                  />
-                )}
-                {userCanEditProject && (
-                  <EditButton
-                    icon="edit"
-                    linkTo={adminProjectsProjectPath(project.data.id)}
-                    buttonStyle="secondary"
-                    padding="5px 8px"
-                  >
-                    {formatMessage(messages.editProject)}
-                  </EditButton>
-                )}
-              </TopBar>
-            )}
+            <TopBar>
+              {(projectFolderId || userCanEditProject) && (
+                <Box w="100%" display="flex" justifyContent="space-between">
+                  {projectFolderId && isProjectFoldersEnabled && (
+                    <ProjectFolderGoBackButton
+                      projectFolderId={projectFolderId}
+                    />
+                  )}
+                  <Box mr="8px" display="flex">
+                    {userCanEditProject && (
+                      <EditButton
+                        icon="edit"
+                        linkTo={adminProjectsProjectPath(project.data.id)}
+                        buttonStyle="secondary"
+                        padding="5px 8px"
+                      >
+                        {formatMessage(messages.editProject)}
+                      </EditButton>
+                    )}
+                  </Box>
+                </Box>
+              )}
+              <Box ml="auto">
+                <FollowUnfollow
+                  followableType="projects"
+                  followableId={project.data.id}
+                  followersCount={project.data.attributes.followers_count}
+                  followerId={
+                    project.data.relationships.user_follower?.data?.id
+                  }
+                  padding="5px 8px"
+                />
+              </Box>
+            </TopBar>
             {projectHeaderImageLargeUrl && (
               <HeaderImageContainer id="e2e-project-header-image">
                 <HeaderImage
@@ -137,7 +153,9 @@ const ProjectHeader = memo<Props & WrappedComponentProps>(
               hasHeaderImage={!!projectHeaderImageLargeUrl}
             />
             {!projectDescriptionBuilderEnabled && (
-              <ProjectInfo projectId={projectId} />
+              <>
+                <ProjectInfo projectId={projectId} />
+              </>
             )}
             <Outlet id="app.ProjectsShowPage.shared.header.ProjectInfo.projectDescriptionBuilder" />
           </ContentContainer>

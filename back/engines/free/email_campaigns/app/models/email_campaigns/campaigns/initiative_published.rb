@@ -43,7 +43,7 @@ module EmailCampaigns
     end
 
     def activity_triggers
-      { 'Initiative' => { 'published' => true } }
+      { 'Initiative' => { 'proposed' => true } }
     end
 
     def filter_recipient(users_scope, activity:, time: nil)

@@ -8,7 +8,9 @@ import Expired from './Expired';
 import ThresholdReached from './ThresholdReached';
 import Answered from './Answered';
 import Ineligible from './Ineligible';
-import Custom from './Custom';
+import ReviewPending from './ReviewPending';
+import FollowUnfollow from 'components/FollowUnfollow';
+import { Box } from '@citizenlab/cl2-component-library';
 
 // events
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
@@ -22,10 +24,6 @@ import useInitiativesPermissions, {
 } from 'hooks/useInitiativesPermissions';
 import useAddInitiativeReaction from 'api/initiative_reactions/useAddInitiativeReaction';
 import useDeleteInitiativeReaction from 'api/initiative_reactions/useDeleteInitiativeReaction';
-
-// styling
-import styled from 'styled-components';
-import { media, defaultCardStyle } from 'utils/styleUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -44,19 +42,8 @@ import {
 } from 'api/initiative_statuses/types';
 import { IAppConfigurationSettings } from 'api/app_configuration/types';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
-
-const Container = styled.div`
-  ${media.desktop`
-    margin-bottom: 45px;
-    padding: 35px;
-    border: 1px solid #e0e0e0;
-    ${defaultCardStyle};
-  `}
-
-  ${media.tablet`
-    padding: 15px;
-  `}
-`;
+import ChangesRequested from './ChangesRequested';
+import BorderContainer from '../BorderContainer';
 
 interface ReactionControlComponentProps {
   initiative: IInitiativeData;
@@ -87,6 +74,14 @@ const componentMap: TComponentMap = {
     reacted: Expired,
     notReacted: Expired,
   },
+  changes_requested: {
+    reacted: ChangesRequested,
+    notReacted: ChangesRequested,
+  },
+  review_pending: {
+    reacted: ReviewPending,
+    notReacted: ReviewPending,
+  },
   threshold_reached: {
     reacted: ThresholdReached,
     notReacted: ThresholdReached,
@@ -98,10 +93,6 @@ const componentMap: TComponentMap = {
   ineligible: {
     reacted: Ineligible,
     notReacted: Ineligible,
-  },
-  custom: {
-    reacted: Custom,
-    notReacted: Custom,
   },
 };
 
@@ -118,28 +109,26 @@ const context = {
 } as const;
 
 const ReactionControl = ({
-  className,
   onScrollToOfficialFeedback,
-  id,
   initiativeId,
+  id,
 }: Props) => {
   const { data: appConfiguration } = useAppConfiguration();
   const { data: initiative } = useInitiativeById(initiativeId);
+  const { data: initiativeStatus } = useInitiativeStatus(
+    initiative?.data.relationships.initiative_status?.data?.id
+  );
+  const reactingPermission = useInitiativesPermissions('reacting_initiative');
   const { mutate: addReaction } = useAddInitiativeReaction();
   const { mutate: deleteReaction } = useDeleteInitiativeReaction();
+
+  if (!initiative) return null;
 
   const reaction = () => {
     if (initiative) {
       addReaction({ initiativeId: initiative.data.id, mode: 'up' });
     }
   };
-
-  const { data: initiativeStatus } = useInitiativeStatus(
-    initiative?.data.relationships.initiative_status?.data?.id
-  );
-  const reactingPermission = useInitiativesPermissions('reacting_initiative');
-
-  if (!initiative) return null;
 
   const handleOnreaction = () => {
     const authenticationRequirements =
@@ -208,7 +197,7 @@ const ReactionControl = ({
     appConfiguration.data.attributes.settings.initiatives;
 
   return (
-    <Container id={id} className={className || ''} aria-live="polite">
+    <BorderContainer id={id}>
       <ScreenReaderOnly>
         <FormattedMessage tagName="h3" {...messages.invisibleTitle} />
       </ScreenReaderOnly>
@@ -222,7 +211,15 @@ const ReactionControl = ({
         onScrollToOfficialFeedback={onScrollToOfficialFeedback}
         disabledReason={reactingPermission?.disabledReason}
       />
-    </Container>
+      <Box mt="8px">
+        <FollowUnfollow
+          followableType="initiatives"
+          followableId={initiative.data.id}
+          followersCount={initiative.data.attributes.followers_count}
+          followerId={initiative.data.relationships.user_follower?.data?.id}
+        />
+      </Box>
+    </BorderContainer>
   );
 };
 

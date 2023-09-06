@@ -19,7 +19,10 @@ module Analysis
           render json: linked_json(
             @inputs,
             InputSerializer,
-            params: jsonapi_serializer_params,
+            params: {
+              app_configuration: AppConfiguration.instance,
+              **jsonapi_serializer_params
+            },
             include: [:author],
             meta: {
               filtered_count: filtered_count
@@ -29,7 +32,14 @@ module Analysis
 
         def show
           @input = @analysis.inputs.find(params[:id])
-          render json: InputSerializer.new(@input, params: jsonapi_serializer_params, include: [:author]).serializable_hash
+          render json: InputSerializer.new(
+            @input,
+            params: {
+              app_configuration: AppConfiguration.instance,
+              **jsonapi_serializer_params
+            },
+            include: [:author]
+          ).serializable_hash
         end
 
         private

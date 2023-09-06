@@ -8,12 +8,15 @@ pl:
       "comment_on_your_comment": Odpowiedź na mój komentarz
       "comment_on_your_idea": Komentarz do mojego pomysłu
       "comment_on_your_initiative": Komentarz do mojej propozycji
+      "cosponsor_of_your_initiative": Użytkownik akceptuje moje zaproszenie do współsponsorowania mojej propozycji.
       "first_idea_published": Publikacja mojego pierwszego pomysłu
       "idea_marked_as_spam": Raport dot. pomysłów oznaczonych jako spam
       "idea_published": Publikacja mojego pomysłu
       "initiative_assigned_to_you": Przydzielenie mi propozycji
       "initiative_marked_as_spam": Raport dot. propozycji oznaczonych jako spam
       "initiative_published": Publikacja mojej propozycji
+      "invitation_to_cosponsor_initiative": Zaproszenie do współsponsorowania wniosku
+      "initiative_resubmitted_for_review": Wniosek ponownie przesłany do przeglądu
       "invite_received": Zaproszenie
       "invite_reminder": Przypomnienie o zaproszeniu
       "internal_comment_on_idea_assigned_to_you": Wewnętrzny komentarz dotyczący przydzielonych mi danych wejściowych
@@ -138,6 +141,12 @@ pl:
       main_header: '%{commentAuthor} skomentował Twoją inicjatywę'
       subject: 'Otrzymałeś komentarz na platformie %{organizationName}'
       preheader: '%{authorName} skomentował Twoją inicjatywę na platformie %{organizationName}'
+    cosponsor_of_your_initiative:
+      cta_reply_to: 'Wyświetl swoją propozycję'
+      event_description_initiative: 'Gratulacje! %{cosponsorName} przyjął Twoje zaproszenie do współsponsorowania Twojego wniosku.'
+      main_header: '%{cosponsorName} przyjęła Twoje zaproszenie do współsponsorowania Twojego wniosku'
+      subject: '%{cosponsorName} przyjęła Twoje zaproszenie do współsponsorowania Twojego wniosku'
+      preheader_initiative: '%{cosponsorName} przyjęła Twoje zaproszenie do współsponsorowania Twojego wniosku'
     assignee_digest:
       subject: 'Pomysły wymagające Twojej opinii: %{numberIdeas}'
       preheader: 'Skrót dla pełnomocnika %{organizationName}'
@@ -178,6 +187,22 @@ pl:
       main_header: '%{firstName}, masz nowe zadanie'
       subject: 'Zostałeś przypisany na platformie %{organizationName}'
       preheader_initiative: 'Przypisano do Ciebie propozycję %{authorName}'
+    invitation_to_cosponsor_initiative:
+      cta_reply_to: 'Współsponsoruj tę propozycję'
+      event_description_initiative: '%{authorName} stworzył nową propozycję i chciałby, abyś ją współsponsorował.'
+      event_description_cosponsoring: 'Współsponsorowanie wniosku oznacza, że na stronie <strong>Twoje imię i nazwisko będzie wyświetlane</strong> wraz z imionami i nazwiskami innych współsponsorów wniosku.'
+      event_description_before_action: 'Aby zobaczyć propozycję i zaakceptować zaproszenie, musisz być zalogowany na swoje konto.'
+      event_description_action: 'Kliknij poniżej, aby przeczytać propozycję.'
+      main_header: 'Zostałeś zaproszony do współsponsorowania wniosku'
+      subject: 'Zostałeś zaproszony do współsponsorowania wniosku'
+      preheader_initiative: 'Zostałeś zaproszony do współsponsorowania propozycji %{authorName}'
+    initiative_resubmitted_for_review:
+      by_author: 'przez %{authorName}'
+      cta_reply_to: 'Prześlij opinię na adres %{authorName}'
+      event_description_initiative: 'Propozycja została ponownie przesłana do przeglądu. Przekaż opinię, pisząc oficjalną aktualizację lub zmieniając jej status.'
+      main_header: '%{firstName}masz propozycję do sprawdzenia'
+      subject: 'Masz propozycję do przejrzenia na platformie %{organizationName}'
+      preheader_initiative: 'Wniosek %{authorName} został ponownie przedłożony do przeglądu'
     invite_reminder:
       cta_accept_invitation: 'Przyjmij zaproszenie'
       invitation_header: 'Twoje zaproszenie jest w toku'
@@ -633,6 +658,7 @@ pl:
         managers: 'Menedżerowie'
         admins_assigned_to_a_proposal: 'Administratorzy przypisani do propozycji'
         admins_and_managers_assigned_to_the_input: 'Administratorzy i menedżerowie przypisani do wejścia'
+        user_who_is_invited_to_cosponsor_a_proposal: 'Użytkownik zaproszony do współsponsorowania propozycji'
         user_who_is_receiving_admin_rights: 'Użytkownik, który otrzymuje uprawnienia administratora'
         user_who_is_receiving_folder_moderator_rights: 'Użytkownik, który otrzymuje uprawnienia moderatora folderu'
         user_who_is_receiving_project_moderator_rights: 'Użytkownik, który otrzymuje uprawnienia moderatora projektu'
@@ -667,6 +693,7 @@ pl:
         input_is_flagged_as_spam: 'Wejście jest oznaczone jako spam'
         input_is_updated: 'Wejście jest aktualizowane'
         input_status_changes: 'Zmiany stanu wejścia'
+        initiative_resubmitted_for_review: 'Wniosek ponownie przesłany do przeglądu'
         internal_comment_is_posted_on_idea_assigned_to_user: 'Komentarz wewnętrzny jest publikowany na wejściu przypisanym do użytkownika'
         internal_comment_is_posted_on_initiative_assigned_to_user: 'Komentarz wewnętrzny jest publikowany do propozycji przypisanej do użytkownika'
         internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: 'Komentarz wewnętrzny jest publikowany na wejściu w projekcie lub folderze zarządzanym przez użytkownika'
@@ -675,6 +702,8 @@ pl:
         internal_comment_is_posted_on_initiative_user_has_commented_internally_on: 'Komentarz wewnętrzny jest publikowany na temat propozycji, którą użytkownik skomentował wewnętrznie'
         internal_comment_is_posted_on_unassigned_initiative: 'Komentarz wewnętrzny został opublikowany na nieprzypisanej propozycji'
         internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Komentarz wewnętrzny jest publikowany na nieprzypisanych danych wejściowych w niezarządzanym projekcie'
+        user_accepts_invitation_to_cosponsor_a_proposal: 'Użytkownik akceptuje zaproszenie do współsponsorowania propozycji'
+        user_is_invited_to_cosponsor_a_proposal: 'Użytkownik jest zaproszony do współsponsorowania propozycji'
         user_is_mentioned_in_internal_comment: 'Użytkownik jest wymieniony w komentarzu wewnętrznym'
         new_input_is_published: 'Nowy wkład jest publikowany'
         new_proposal_is_posted: 'Nowa propozycja została opublikowana'
