@@ -42,6 +42,16 @@ export default defineMessages({
     id: 'app.containers.AdminPage.projects.project.analysis.Insights.percentage',
     defaultMessage: '%',
   },
+  summaryAccuracyTooltip: {
+    id: 'app.containers.AdminPage.projects.project.analysis.Insights.summaryAccuracyTooltip',
+    defaultMessage:
+      'Summarizing fewer inputs leads to a higher accuracy. Reduce the current input selection by using tags, search or demographic filters.',
+  },
+  questionAccuracyTooltip: {
+    id: 'app.containers.AdminPage.projects.project.analysis.Insights.questionAccuracyTooltip',
+    defaultMessage:
+      'Asking questions about fewer inputs leads to a higher accuracy. Reduce the current input selection by using tags, search or demographic filters.',
+  },
   deleteSummary: {
     id: 'app.containers.AdminPage.projects.project.analysis.Insights.deleteSummary',
     defaultMessage: 'Delete summary',

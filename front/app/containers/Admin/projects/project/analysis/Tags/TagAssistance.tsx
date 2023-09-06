@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
 
 import Tippy from '@tippyjs/react';
 import {
@@ -12,12 +11,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import CloseIconButton from 'components/UI/CloseIconButton';
 import GoBackButton from 'components/UI/GoBackButton';
-
-const StyledWrapper = styled.div`
-  .tippy-arrow {
-    transform: scale(5);
-  }
-`;
 
 type Props = {
   tagId: string | null;
@@ -114,38 +107,36 @@ const FirstTagAssistance = ({ tagId, onHide }: Props) => {
   if (!anchorElement) return null;
 
   return (
-    <StyledWrapper>
-      <Tippy
-        content={
-          <Box p="16px" position="relative">
-            <Box position="absolute" top="5px" right="5px">
-              <CloseIconButton onClick={() => onHide()} />
-            </Box>
-            {step === 'step1' && <Step1 onSetStep={setStep} />}
-            {step === 'step2-manual' && <Step2Manual onSetStep={setStep} />}
-            {step === 'step2-auto' && <Step2Auto onSetStep={setStep} />}
-            <Box display="flex" justifyContent="flex-start" mt="24px">
-              <Label>
-                <Checkbox
-                  checked={dontShowAgainCheckbox}
-                  onChange={() =>
-                    setDontShowAgainCheckbox(!dontShowAgainCheckbox)
-                  }
-                />
-                Dont show this again
-              </Label>
-            </Box>
+    <Tippy
+      content={
+        <Box p="16px" position="relative">
+          <Box position="absolute" top="5px" right="5px">
+            <CloseIconButton onClick={() => onHide()} />
           </Box>
-        }
-        onClickOutside={() => onHide()}
-        reference={anchorElement}
-        zIndex={1000000000000000}
-        placement={step === 'step2-manual' ? 'left' : 'right'}
-        theme="light"
-        visible={visible}
-        interactive
-      />
-    </StyledWrapper>
+          {step === 'step1' && <Step1 onSetStep={setStep} />}
+          {step === 'step2-manual' && <Step2Manual onSetStep={setStep} />}
+          {step === 'step2-auto' && <Step2Auto onSetStep={setStep} />}
+          <Box display="flex" justifyContent="flex-start" mt="24px">
+            <Label>
+              <Checkbox
+                checked={dontShowAgainCheckbox}
+                onChange={() =>
+                  setDontShowAgainCheckbox(!dontShowAgainCheckbox)
+                }
+              />
+              Dont show this again
+            </Label>
+          </Box>
+        </Box>
+      }
+      onClickOutside={() => onHide()}
+      reference={anchorElement}
+      zIndex={1000000000000000}
+      placement={step === 'step2-manual' ? 'left' : 'right'}
+      theme="light"
+      visible={visible}
+      interactive
+    />
   );
 };
 
