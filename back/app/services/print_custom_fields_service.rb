@@ -6,9 +6,7 @@ require 'prawn/measurement_extensions'
 class PrintCustomFieldsService
   attr_reader :participation_context, :custom_fields, :params, :previous_cursor
 
-  # QUESTION_TYPES = %w[select multiselect text text_multiloc multiline_text html_multiloc linear_scale]
-  # Disable linear scales for now, as they're not detected correctly by form parser
-  QUESTION_TYPES = %w[select multiselect text text_multiloc multiline_text html_multiloc]
+  QUESTION_TYPES = %w[select multiselect text text_multiloc multiline_text html_multiloc linear_scale number]
   FORBIDDEN_HTML_TAGS_REGEX = %r{</?(div|span|ul|ol|li|em|img|a){1}[^>]*/?>}
 
   def initialize(participation_context, custom_fields, params)
@@ -182,6 +180,10 @@ class PrintCustomFieldsService
 
       if field_type == 'linear_scale'
         draw_linear_scale(pdf, custom_field)
+      end
+
+      if field_type == 'number'
+        draw_text_lines(pdf, 1)
       end
     end
 
