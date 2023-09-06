@@ -446,75 +446,78 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
     end
   end
 
-  # describe 'form with number input and linear scale' do
-  #   let(:project) { create(:continuous_project) }
-  #   let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
+  describe 'form with number input' do
+    let(:project) { create(:continuous_project) }
+    let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
 
-  #   before do
-  #     # Topics for project
-  #     project.allowed_input_topics << create(:topic_economy)
-  #     project.allowed_input_topics << create(:topic_waste)
+    before do
+      # Topics for project
+      project.allowed_input_topics << create(:topic_economy)
+      project.allowed_input_topics << create(:topic_waste)
 
-  #     # Custom fields
-  #     create(:custom_field, resource: custom_form,
-  #       key: 'pool_question',
-  #       title_multiloc: {
-  #         'en' => 'Your favourite name for a swimming pool',
-  #         'fr-FR' => 'Votre nom préféré pour une piscine'
-  #       },
-  #       description_multiloc: {
-  #         'en' => "<p>A slightly longer description under a field, with a bunch of words used to explain things to people. Please don't put anything weird in this field, thanks!</p>",
-  #         'fr-FR' => '<p>Une description un peu plus longue</p>'
-  #       },
-  #       input_type: 'text',
-  #       enabled: true,
-  #       required: false
-  #     )
+      # Custom fields
+      create(:custom_field, resource: custom_form,
+        key: 'pool_question',
+        title_multiloc: {
+          'en' => 'Your favourite name for a swimming pool',
+          'fr-FR' => 'Votre nom préféré pour une piscine'
+        },
+        description_multiloc: {
+          'en' => "<p>A slightly longer description under a field, with a bunch of words used to explain things to people. Please don't put anything weird in this field, thanks!</p>",
+          'fr-FR' => '<p>Une description un peu plus longue</p>'
+        },
+        input_type: 'text',
+        enabled: true,
+        required: false
+      )
 
-  #     # TODO
-  #   end
+      create(:custom_field, resource: custom_form,
+        key: 'number_field',
+        title_multiloc: {
+          'en' => 'What is your favorite number?'
+        },
+        description_multiloc: {
+          'en' => '<p>Some description</p>'
+        },
+        input_type: 'number',
+        enabled: true,
+        required: false
+      )
+    end
 
-  #   it 'parses text correctly (single document)' do
-  #     text = parse_pages [
-  #       "The\n
-  #       City\n
-  #       An idea? Bring it to your council!\n
-  #       Instructions\n
-  #       • Write as clearly as you can- these forms might be scanned\n
-  #       • Write your answers in the same language as this form\n
-  #       Title\n
-  #       dea\n
-  #       Whatever idea\n
-  #       Description\n
-  #       Bla Bla Bla. IBla. \n
-  #       I am\n
-  #       really\n
-  #       running out of ideasор\n
-  #       Your favourite name for a swimming pool (optional)\n
-  #       *This answer will only be shared with moderators, and not to the public.\n
-  #       The nice pool\n
-  #       Page 1\n",
-  #       "What is your favorite number?\n
-  #       Some description\n
-  #       *This answer will only be shared with moderators, and not to the public.\n
-  #       72296\n
-  #       Linear scale (optional)\n
-  #       *This answer will only be shared with moderators, and not to the public.\n
-  #       1\n
-  #       2\n
-  #       3\n
-  #       4\n
-  #       5\n
-  #       6\n
-  #       7\n
-  #       ○\n
-  #       ○\n
-  #       O\n
-  #       ○\n
-  #       Hate it\n
-  #       Love it\n
-  #       Page 2\n"
-  #     ]
-  #   end
-  # end
+    it 'parses text correctly (single document)' do
+      text = parse_pages [
+        "The\n
+        City\n
+        An idea? Bring it to your council!\n
+        Instructions\n
+        • Write as clearly as you can- these forms might be scanned\n
+        • Write your answers in the same language as this form\n
+        Title\n
+        dea\n
+        Whatever idea\n
+        Description\n
+        Bla Bla Bla. IBla. \n
+        I am\n
+        really\n
+        running out of ideasор\n
+        Location\n
+        Some location\n
+        Your favourite name for a swimming pool (optional)\n
+        *This answer will only be shared with moderators, and not to the public.\n
+        The nice pool\n
+        Page 1\n",
+        "What is your favorite number?\n
+        Some description\n
+        *This answer will only be shared with moderators, and not to the public.\n
+        72296\n
+        Page 2\n"
+      ]
+
+      service = described_class.new project.id, 'en', nil
+      docs = service.parse_text text
+
+      binding.pry
+    end
+  end
 end
