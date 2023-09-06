@@ -53,6 +53,7 @@ module Post
       where('ST_Intersects(ST_MakeEnvelope(?, ?, ?, ?), location_point)', x1, y1, x2, y2)
     end)
 
+    scope :draft, -> { where(publication_status: 'draft') }
     scope :published, -> { where publication_status: 'published' }
 
     scope :order_new, ->(direction = :desc) { order(published_at: direction) }
