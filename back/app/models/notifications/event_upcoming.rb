@@ -66,29 +66,20 @@
 #  fk_rails_...  (spam_report_id => spam_reports.id)
 #
 module Notifications
-  class VotingResultsPublished < Notification
-    validates :project, presence: true
-    validates :phase, presence: true
+  class EventUpcoming < Notification
+    validates :event, presence: true
 
-    ACTIVITY_TRIGGERS = { 'Phase' => { 'ended' => true } }
-    EVENT_NAME = 'Phase ended'
+    ACTIVITY_TRIGGERS = { 'Event' => { 'upcoming' => true } }.freeze
+    EVENT_NAME = 'Event upcoming'
 
     def self.make_notifications_on(activity)
-      phase = activity.item
-
-      if phase.voting?
-        user_scope = ParticipantsService.new.projects_participants(Project.where(id: phase.project_id))
-        ProjectPolicy::InverseScope.new(phase.project, user_scope).resolve.filter_map do |recipient|
-          next if ParticipationContextService.new.voting_disabled_reason_for_context phase, recipient
-
-          new(
-            recipient: recipient,
-            project: phase.project,
-            phase: phase
-          )
-        end
-      else
-        []
+      event = activity.item
+      event.attendee_ids.map do |recipient_id|
+        new(
+          recipient_id: recipient_id,
+          event: event,
+          project_id: event.project_id
+        )
       end
     end
   end
