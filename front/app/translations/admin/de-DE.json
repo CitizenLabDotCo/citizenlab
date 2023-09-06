@@ -786,7 +786,7 @@
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.imageSupportPageURL": "https://support.citizenlab.co/de/articles/1346397-welche-dimensionen-und-grossen-sind-fur-bilder-auf-der-plattform-empfohlen",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.supportPageLinkText": "unserer Wissensdatenbank",
   "app.containers.Admin.projects.all.PDFExportModal.phase": "Phase",
-  "app.containers.Admin.projects.all.PDFExportModal.selectIdeationPhase": "Bitte wählen Sie eine Ideationsphase aus.",
+  "app.containers.Admin.projects.all.PDFExportModal.selectIdeationPhase": "Bitte wählen Sie eine Phase mit einer Ideenfindung aus.",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm": "Klicken Sie unten auf 'Als pdf exportieren', um eine pdf-Version des Eingabeformulars herunterzuladen. Bitte beachten Sie, dass die Felder Bilder, Datei-Upload, Tags, Lineare Skalierung und Anzahl in der PDF-Version derzeit nicht unterstützt werden.",
   "app.containers.Admin.projects.all.clickExportToPDFSurvey": "Klicken Sie unten auf 'Als pdf exportieren', um eine pdf-Version der Umfrage herunterzuladen. Bitte beachten Sie, dass die Felder \"Lineare Skala\", \"Anzahl\" und \"Datei-Upload\" in der PDF-Version derzeit nicht unterstützt werden.",
   "app.containers.Admin.projects.all.components.archived": "Archiviert",
