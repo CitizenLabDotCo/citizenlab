@@ -838,7 +838,7 @@
   "app.containers.EventsShow.goToProject": "Accéder au projet",
   "app.containers.EventsShow.socialMediaSharingMessage": "Participez à cet événement : {eventTitle}",
   "app.containers.EventsShow.xParticipants": "{count, plural, no {# participants} one {# participant} other {# participants}}",
-  "app.containers.EventsViewer.allTime": "Jusqu’à maintenant",
+  "app.containers.EventsViewer.allTime": "Tout le temps",
   "app.containers.EventsViewer.date": "Date",
   "app.containers.EventsViewer.thisMonth2": "Mois à venir",
   "app.containers.EventsViewer.thisWeek2": "Semaine à venir",
