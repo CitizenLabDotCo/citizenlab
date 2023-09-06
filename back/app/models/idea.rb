@@ -151,6 +151,7 @@ class Idea < ApplicationRecord
   }
 
   scope :draft, -> { where(publication_status: 'draft') }
+  scope :published, -> { where(publication_status: 'published') }
 
   def just_published?
     publication_status_previous_change == %w[draft published] || publication_status_previous_change == [nil, 'published']
