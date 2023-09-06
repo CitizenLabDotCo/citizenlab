@@ -52,6 +52,8 @@ import {
   contentFadeInEasing,
 } from '.';
 import useInitiativeOfficialFeedback from 'api/initiative_official_feedback/useInitiativeOfficialFeedback';
+import CosponsorShipReminder from './CosponsorShipReminder';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 const Container = styled.main`
   display: flex;
@@ -173,6 +175,7 @@ const LargerThanPhone = ({
     initiativeId,
     pageSize: 1,
   });
+  const { data: appConfiguration } = useAppConfiguration();
   const officialFeedbackElement = useRef<HTMLDivElement>(null);
   const initiativeReviewRequired = useInitiativeReviewRequired();
   const officialFeedbacksList =
@@ -182,7 +185,14 @@ const LargerThanPhone = ({
     ? initiative?.data.attributes.public
     : true;
 
-  if (!initiative || isNilOrError(locale) || !initiativeImages) return null;
+  if (
+    !initiative ||
+    isNilOrError(locale) ||
+    !initiativeImages ||
+    !appConfiguration
+  ) {
+    return null;
+  }
 
   const initiativeHeaderImageLarge = initiative.data.attributes.header_bg.large;
   const authorId = initiative.data.relationships.author.data?.id;
@@ -196,6 +206,20 @@ const LargerThanPhone = ({
     initiative.data.attributes.location_point_geojson
   );
   const initiativeUrl = location.href;
+  const requiredNumberOfCosponsors =
+    appConfiguration.data.attributes.settings.initiatives?.cosponsors_number;
+  const signedInUserIsAuthor =
+    typeof authorId === 'string' && typeof authUser?.data.id === 'string'
+      ? authorId === authUser?.data.id
+      : false;
+  const acceptedCosponsorships =
+    initiative.data.attributes.cosponsorships.filter(
+      (c) => c.status === 'accepted'
+    );
+  const showCosponsorshipReminder =
+    signedInUserIsAuthor && typeof requiredNumberOfCosponsors === 'number'
+      ? requiredNumberOfCosponsors > acceptedCosponsorships.length
+      : false;
 
   return (
     <Container className={className}>
@@ -212,6 +236,15 @@ const LargerThanPhone = ({
       <InitiativeContainer>
         <Content>
           <LeftColumn>
+            {showCosponsorshipReminder &&
+              typeof requiredNumberOfCosponsors === 'number' && (
+                <Box mb="28px">
+                  <CosponsorShipReminder
+                    initiativeId={initiativeId}
+                    requiredNumberOfCosponsors={requiredNumberOfCosponsors}
+                  />
+                </Box>
+              )}
             <StyledTopics
               postType="initiative"
               postTopicIds={initiative.data.relationships.topics.data.map(

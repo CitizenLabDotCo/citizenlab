@@ -39,11 +39,15 @@ const ListOfCosponsors = ({ cosponsorships }: Props) => {
               <Avatar userId={cosponsorship.user_id} size={32} />
             </Box>
             <Box mr="4px">
-              <UserName userId={cosponsorship.user_id} isLinkToProfile />
+              <i>
+                <UserName userId={cosponsorship.user_id} isLinkToProfile />
+              </i>
             </Box>
             {cosponsorship.status === 'pending' && (
               <>
-                <Text>({formatMessage(messages.pending)})</Text>
+                <Text>
+                  <i>({formatMessage(messages.pending)})</i>
+                </Text>
               </>
             )}
           </Box>
