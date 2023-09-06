@@ -24,6 +24,7 @@ import Tag from './Tag';
 import AutotaggingModal from './AutoTaggingModal';
 import TagCount from './TagCount';
 import AddTag from './AddTag';
+import TagAssistance from './TagAssistance';
 
 import { useQueryClient } from '@tanstack/react-query';
 import inputsKeys from 'api/analysis_inputs/keys';
@@ -71,6 +72,9 @@ const Tags = () => {
   const [autotaggingModalIsOpened, setAutotaggingModalIsOpened] =
     useState(false);
   const [createdTagId, setCreatedTagId] = useState<string | null>(null);
+  const [tagAssistanceTagId, setTagAssistanceTagId] = useState<string | null>(
+    null
+  );
 
   const filters = useAnalysisFilterParams();
 
@@ -92,6 +96,7 @@ const Tags = () => {
         tagElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
       setCreatedTagId(null);
+      setTagAssistanceTagId(createdTagId);
     }
   }, [createdTagId, tags]);
 
@@ -140,6 +145,7 @@ const Tags = () => {
     <Box>
       <Box>
         <Button
+          id="auto-tag-button"
           onClick={() => setAutotaggingModalIsOpened(true)}
           icon="flash"
           mb="12px"
@@ -158,6 +164,10 @@ const Tags = () => {
           )}
         </Button>
         <AddTag onCreateTag={(tagId) => setCreatedTagId(tagId)} />
+        <TagAssistance
+          tagId={tagAssistanceTagId}
+          onHide={() => setTagAssistanceTagId(null)}
+        />
       </Box>
       <Box>
         <TagContainer
