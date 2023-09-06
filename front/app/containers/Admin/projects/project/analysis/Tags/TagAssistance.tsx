@@ -11,6 +11,8 @@ import {
 } from '@citizenlab/cl2-component-library';
 import CloseIconButton from 'components/UI/CloseIconButton';
 import GoBackButton from 'components/UI/GoBackButton';
+import translations from './translations';
+import { FormattedMessage } from 'utils/cl-intl';
 
 type Props = {
   tagId: string | null;
@@ -21,7 +23,7 @@ const Step1 = ({ onSetStep }) => {
   return (
     <Box>
       <Title variant="h3">
-        Do you want to automatically assign inputs to your tag?
+        <FormattedMessage {...translations.autoAssignQuestion} />
       </Title>
 
       <Box display="flex" gap="24px" mt="24px">
@@ -29,13 +31,13 @@ const Step1 = ({ onSetStep }) => {
           buttonStyle="primary-outlined"
           onClick={() => onSetStep('step2-auto')}
         >
-          Yes, auto-tag
+          <FormattedMessage {...translations.autoAssignYes} />
         </Button>
         <Button
           buttonStyle="primary-outlined"
           onClick={() => onSetStep('step2-manual')}
         >
-          {`No, I'll do it`}
+          <FormattedMessage {...translations.autoAssignNo} />
         </Button>
       </Box>
     </Box>
@@ -47,11 +49,24 @@ const Step2Auto = ({ onSetStep }) => {
     <Box>
       <GoBackButton onClick={() => onSetStep('step1')} />
       <Text>
-        There are <b>different methods</b> to automatically assign inputs to
-        tags.
+        <FormattedMessage
+          values={{
+            b: (chunks) => (
+              <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
+            ),
+          }}
+          {...translations.autoAssignStep2AutoText1}
+        />
       </Text>
       <Text>
-        Use <b>the auto-tag button</b> to launch your preferred method.
+        <FormattedMessage
+          values={{
+            b: (chunks) => (
+              <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
+            ),
+          }}
+          {...translations.autoAssignStep2AutoText2}
+        />
       </Text>
     </Box>
   );
@@ -62,7 +77,7 @@ const Step2Manual = ({ onSetStep }) => {
     <Box>
       <GoBackButton onClick={() => onSetStep('step1')} />
       <Text textAlign="right">
-        Click on your tag to assign it to the currently selected input.
+        <FormattedMessage {...translations.autoAssignStep2ManualText1} />
       </Text>
     </Box>
   );
@@ -124,7 +139,7 @@ const FirstTagAssistance = ({ tagId, onHide }: Props) => {
                   setDontShowAgainCheckbox(!dontShowAgainCheckbox)
                 }
               />
-              Dont show this again
+              <FormattedMessage {...translations.dontShowAgain} />
             </Label>
           </Box>
         </Box>
@@ -132,7 +147,7 @@ const FirstTagAssistance = ({ tagId, onHide }: Props) => {
       onClickOutside={() => onHide()}
       reference={anchorElement}
       zIndex={1000000000000000}
-      placement={step === 'step2-manual' ? 'left' : 'right'}
+      // placement={step === 'step2-manual' ? 'left' : 'right'}
       theme="light"
       visible={visible}
       interactive

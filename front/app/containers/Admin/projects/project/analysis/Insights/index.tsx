@@ -38,7 +38,9 @@ const Insights = () => {
           <SummarizeButton />
         </Box>
         <Box flex="1">
-          <QuestionButton onClick={() => setIsQuestionInputOpen(true)} />
+          <QuestionButton
+            onClick={() => setIsQuestionInputOpen(!isQuestionInputOpen)}
+          />
         </Box>
       </Box>
       <Box m="0" mb="12px" display="flex" justifyContent="center">

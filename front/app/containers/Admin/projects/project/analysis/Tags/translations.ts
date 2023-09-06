@@ -47,7 +47,7 @@ export default defineMessages({
   },
   addInputToTag: {
     id: 'app.containers.AdminPage.projects.project.analysis.Tags.addInputToTag',
-    defaultMessage: 'Add selected input to tag',
+    defaultMessage: 'Add selected inputs to tag',
   },
   autoTag: {
     id: 'app.containers.AdminPage.projects.project.analysis.Tags.autoTag',
@@ -209,5 +209,36 @@ export default defineMessages({
   launch: {
     id: 'app.containers.AdminPage.projects.project.analysis.Tags.launch',
     defaultMessage: 'Launch',
+  },
+  autoAssignQuestion: {
+    id: 'app.containers.AdminPage.projects.project.analysis.Tags.autoAssignQuestion',
+    defaultMessage: 'Do you want to automatically assign inputs to your tag?',
+  },
+  autoAssignYes: {
+    id: 'app.containers.AdminPage.projects.project.analysis.Tags.autoAssignYes',
+    defaultMessage: 'Yes, auto-tag',
+  },
+  autoAssignNo: {
+    id: 'app.containers.AdminPage.projects.project.analysis.Tags.autoAssignNo',
+    defaultMessage: "No, I'll do it",
+  },
+  autoAssignStep2AutoText1: {
+    id: 'app.containers.AdminPage.projects.project.analysis.Tags.autoAssignStep2AutoText1',
+    defaultMessage:
+      'There are <b>different methods</b> to automatically assign inputs to tags.',
+  },
+  autoAssignStep2AutoText2: {
+    id: 'app.containers.AdminPage.projects.project.analysis.Tags.autoAssignStep2AutoText2',
+    defaultMessage:
+      'Use <b>the auto-tag button</b> to launch your preferred method.',
+  },
+  autoAssignStep2ManualText1: {
+    id: 'app.containers.AdminPage.projects.project.analysis.Tags.autoAssignStep2ManualText1',
+    defaultMessage:
+      'Click on a tag to assign it to the currently selected input.',
+  },
+  dontShowAgain: {
+    id: 'app.containers.AdminPage.projects.project.analysis.Tags.dontShowAgain',
+    defaultMessage: "Don't show this again",
   },
 });
