@@ -632,7 +632,7 @@
   "app.components.formBuilder.layout": "Mise en page",
   "app.components.formBuilder.linearScale": "Échelle linéaire",
   "app.components.formBuilder.locationDescription": "Emplacement",
-  "app.components.formBuilder.logic": "Logic",
+  "app.components.formBuilder.logic": "Logique",
   "app.components.formBuilder.logicValidationError": "Logic ne peut pas créer de liens vers des pages antérieures",
   "app.components.formBuilder.longAnswer": "Réponse longue",
   "app.components.formBuilder.multipleChoice": "Choix multiples",
