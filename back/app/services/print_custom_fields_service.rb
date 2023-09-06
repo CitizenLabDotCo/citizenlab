@@ -6,9 +6,7 @@ require 'prawn/measurement_extensions'
 class PrintCustomFieldsService
   attr_reader :participation_context, :custom_fields, :params, :previous_cursor
 
-  # QUESTION_TYPES = %w[select multiselect text text_multiloc multiline_text html_multiloc linear_scale]
-  # Disable linear scales for now, as they're not detected correctly by form parser
-  QUESTION_TYPES = %w[select multiselect text text_multiloc multiline_text html_multiloc]
+  QUESTION_TYPES = %w[select multiselect text text_multiloc multiline_text html_multiloc linear_scale number]
   FORBIDDEN_HTML_TAGS_REGEX = %r{</?(div|span|ul|ol|li|em|img|a){1}[^>]*/?>}
 
   def initialize(participation_context, custom_fields, params)
@@ -19,7 +17,11 @@ class PrintCustomFieldsService
   end
 
   def create_pdf
-    pdf = Prawn::Document.new(page_size: 'A4', top_margin: 2.cm)
+    pdf = Prawn::Document.new(page_size: 'A4')
+
+    render_tenant_logo pdf
+    render_form_title pdf
+    render_instructions pdf
 
     if params[:name] == 'true'
       render_text_field_with_name(
@@ -57,7 +59,7 @@ class PrintCustomFieldsService
     page_copy = I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.page') }
     page_number_format = "#{page_copy} <page>"
     page_number_options = {
-      at: [pdf.bounds.right - 150, 275.mm],
+      at: [pdf.bounds.right - 150, 0],
       width: 150,
       align: :right
 
@@ -69,6 +71,65 @@ class PrintCustomFieldsService
   end
 
   private
+
+  def render_tenant_logo(pdf)
+    pdf.image open AppConfiguration.instance.logo.medium.to_s
+    pdf.move_down 10.mm
+  end
+
+  def render_form_title(pdf)
+    pc_title = @participation_context.title_multiloc[locale]
+
+    if @participation_context.instance_of? Project
+      pdf.text(
+        "<b>#{pc_title}</b>",
+        size: 20,
+        inline_format: true
+      )
+    else
+      project = Project.find(@participation_context.project_id)
+      project_title = project.title_multiloc[locale]
+
+      pdf.text(
+        "<b>#{project_title} - #{pc_title}</b>",
+        size: 20,
+        inline_format: true
+      )
+    end
+
+    pdf.move_down 9.mm
+  end
+
+  def render_instructions(pdf)
+    pdf.text(
+      "<b>#{I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.instructions') }}</b>",
+      size: 16,
+      inline_format: true
+    )
+
+    pdf.move_down 5.mm
+
+    pdf.fill do
+      pdf.fill_color '000000'
+      pdf.rectangle([0, pdf.cursor + 1.5.mm], 3, 32)
+    end
+
+    %w[write_as_clearly write_in_language].each do |key|
+      save_cursor pdf
+      pdf.indent(5.mm) { pdf.text('•') }
+      reset_cursor pdf
+
+      pdf.indent(10.mm) do
+        pdf.text(
+          "#{I18n.with_locale(locale) { I18n.t("form_builder.pdf_export.#{key}") }}",
+          size: 12,
+          inline_format: true
+        )
+      end
+    end
+
+    pdf.move_down 8.mm
+  end
 
   def render_text_field_with_name(pdf, name)
     title_multiloc = {}
@@ -122,6 +183,10 @@ class PrintCustomFieldsService
       if field_type == 'linear_scale'
         draw_linear_scale(pdf, custom_field)
       end
+
+      if field_type == 'number'
+        draw_text_lines(pdf, 1)
+      end
     end
 
     pdf.move_down 6.mm
@@ -132,15 +197,16 @@ class PrintCustomFieldsService
 
     pdf.text(
       "<b>#{custom_field.title_multiloc[locale]}</b>#{custom_field.required? ? '' : " (#{optional})"}",
-      size: 20,
+      size: 16,
       inline_format: true
     )
   end
 
   def write_description(pdf, custom_field)
     description = custom_field.description_multiloc[locale]
-
-    unless description.nil?
+    is_empty = description.nil? || description == ''
+ 
+    unless is_empty
       pdf.move_down 3.mm
       paragraphs = parse_html_tags(description)
 
@@ -161,15 +227,15 @@ class PrintCustomFieldsService
 
       if show_multiselect_instructions
         pdf.text(
-          "*#{I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.choose_as_many') }}",
-          size: 12
+          "*#{I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.choose_as_many') }}", 
+          size: 10
         )
       end
 
       if show_visibility_disclaimer
         pdf.text(
           "*#{I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.this_answer') }}",
-          size: 12
+          size: 10
         )
       end
     end
@@ -215,10 +281,19 @@ class PrintCustomFieldsService
 
   def draw_linear_scale(pdf, custom_field)
     max_index = custom_field.maximum - 1
+    width = 80.mm
+
+    if custom_field.maximum > 3
+      width = 100.mm
+    end
+
+    if custom_field.maximum > 5
+      width = 120.mm
+    end
 
     # Draw number labels
     (0..max_index).each do |i|
-      pdf.indent(((i.to_f / max_index) * 100.mm) + 1.8.mm) do
+      pdf.indent(((i.to_f / max_index) * width) + 1.8.mm) do
         save_cursor pdf
 
         pdf.text((i + 1).to_s)
@@ -234,7 +309,7 @@ class PrintCustomFieldsService
       pdf.stroke_color '000000'
       pdf.stroke_circle(
         [
-          3.mm + ((i.to_f / max_index) * 100.mm),
+          3.mm + ((i.to_f / max_index) * width),
           pdf.cursor
         ],
         5
@@ -252,7 +327,7 @@ class PrintCustomFieldsService
 
     reset_cursor pdf
 
-    pdf.indent(101.mm) do
+    pdf.indent(width + 1.mm) do
       pdf.text custom_field.maximum_label_multiloc[locale]
     end
   end

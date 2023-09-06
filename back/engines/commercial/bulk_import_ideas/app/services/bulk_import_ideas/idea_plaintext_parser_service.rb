@@ -61,32 +61,37 @@ module BulkImportIdeas
     def parse_page(page, page_number)
       lines = page.lines.map(&:rstrip)
 
-      lines.each_with_index do |line, index|
-        if index == 0
-          if new_document? line
-            unless @form.nil?
-              @documents << @form
-            end
+      # Reset state
+      @current_field_display_title = nil
+      @current_custom_field = nil
+      @current_description = nil
 
-            @form = {
-              pdf_pages: [],
-              form_pages: [],
-              fields: {}
-            }
+      last_index = lines.length - 1
+      last_line = lines.last
+
+      if page_number? last_line
+        if new_document? last_line
+          unless @form.nil?
+            @documents << @form
           end
-
-          @current_field_display_title = nil
-          @current_custom_field = nil
-          @current_description = nil
-
-          @form[:pdf_pages] << page_number
-
-          if page_number? line
-            @form[:form_pages] << get_page_number(line)
-          end
-
-          next
+  
+          @form = {
+            pdf_pages: [],
+            form_pages: [],
+            fields: {}
+          }
         end
+
+        @form[:form_pages] << get_page_number(last_line)
+      end
+
+      # Add page number
+      @form[:pdf_pages] << page_number
+
+      lines.each_with_index do |line, index|
+        # We skip the last line since it's the page number we already
+        # dealt with
+        next if index == last_index
 
         if @form.nil?
           raise StandardError, 'Unable to detect page number of first page'
@@ -143,7 +148,6 @@ module BulkImportIdeas
     end
 
     def new_document?(line)
-      return false unless page_number? line
       return true if line == "#{@page_copy} 1"
 
       page_number = get_page_number line

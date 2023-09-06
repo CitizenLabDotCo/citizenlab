@@ -59,11 +59,9 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
         title_multiloc: { 'en' => 'Not at all' })
     end
 
-    # Based on fixtures/slightly_better.pdf, with added page numbers
     it 'parses text correctly (single document)' do
       text = parse_pages [
-        "Page 1\n
-        Title\n
+        "Title\n
         My very good idea\n
         Description\n
         would suggest building the\n
@@ -80,12 +78,13 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
         How much do you like pizza (optional)\n
         *This answer will only be shared with moderators, and not to the public.\n
         A lot\n
-        ○ Not at all\n",
-        "Page 2\n
-        How much do you like burgers (optional)\n
+        ○ Not at all\n
+        Page 1\n",
+        "How much do you like burgers (optional)\n
         *This answer will only be shared with moderators, and not to the public.\n
         O A lot\n
-        Not at all\n"
+        Not at all\n
+        Page 2\n"
       ]
 
       service = described_class.new project.id, 'en', nil
@@ -108,11 +107,9 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
       expect(docs).to eq result
     end
 
-    # Based on fixtures/multiple.pdf, with added page numbers
     it 'parses text correctly (multiple documents)' do
       text = parse_pages [
-        "Page 1\n
-        Title\n
+        "Title\n
         Another great idea, wow\n
         Description\n
         Can you\n
@@ -126,14 +123,14 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
         How much do you like pizza (optional)\n
         *This answer will only be shared with moderators, and not to the public.\n
         ○ A lot\n
-        ① Not at all\n",
-        "Page 2\n
-        How much do you like burgers (optional)\n
+        ① Not at all\n
+        Page 1\n",
+        "How much do you like burgers (optional)\n
         *This answer will only be shared with moderators, and not to the public.\n
         ☑ A lot\n
-        ○ Not at all\n",
-        "Page 1\n
-        Title\n
+        ○ Not at all\n
+        Page 2\n",
+        "Title\n
         This one is a bil mediarre\n
         inedio,\n
         Description\n
@@ -147,12 +144,13 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
         How much do you like pizza (optional)\n
         *This answer will only be shared with moderators, and not to the public.\n
         A lot\n
-        ○ Not at all\n",
-        "Page 2\n
-        How much do you like burgers (optional)\n
+        ○ Not at all\n
+        Page 1\n",
+        "How much do you like burgers (optional)\n
         *This answer will only be shared with moderators, and not to the public.\n
         ⑨ A lot\n
-        ○ Not at all\n"
+        ○ Not at all\n
+        Page 2\n"
       ]
 
       service = described_class.new project.id, 'en', nil
@@ -268,11 +266,9 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
         title_multiloc: { 'en' => 'Pistachio', 'fr-FR': 'Pistache' })
     end
 
-    # Based on fixtures/with_page_numbers.pdf, but with description moved
     it 'parses text correctly (single document)' do
       text = parse_pages [
-        "Page 1\n
-        Title\n
+        "Title\n
         Page numbers test\n
         Description\n
         Page numbers test description\n
@@ -282,9 +278,9 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
         Your favourite name for a swimming pool (optional)\n
         A slightly longer description under a field, with a bunch of words used to explain things to\n
         people. Please don't put anything weird in this field, thanks!\n
-        *This answer will only be shared with moderators, and not to the public.\n",
-        "Page 2\n
-        How much do you like pizza (optional)\n
+        *This answer will only be shared with moderators, and not to the public.\n
+        Page 1\n",
+        "How much do you like pizza (optional)\n
         A short description\n
         *This answer will only be shared with moderators, and not to the public.\n
         A lot\n
@@ -299,7 +295,8 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
         ☐ Vanilla\n
         ☑ Strawberry\n
         Chocolate\n
-        Pistachio\n"
+        Pistachio\n
+        Page 2\n"
       ]
 
       service = described_class.new project.id, 'en', nil
@@ -322,8 +319,7 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
 
     it 'works in French' do
       text = parse_pages [
-        "Page 1\n
-        Titre\n
+        "Titre\n
         Test pour les page numbers\n
         Description\n
         Description du test pour les page numbers\n
@@ -332,9 +328,9 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
         Champs-Élysées\n
         Votre nom préféré pour une piscine (optionnel)\n
         Une description un peu plus longue\n
-        *Cette réponse ne sera communiquée qu'aux modérateurs, et non au public.\n",
-        "Page 2\n
-        A quel point aimez-vous la pizza (optionnel)\n
+        *Cette réponse ne sera communiquée qu'aux modérateurs, et non au public.\n
+        Page 1\n",
+        "A quel point aimez-vous la pizza (optionnel)\n
         Une brève description\n
         *Cette réponse ne sera communiquée qu'aux modérateurs, et non au public.\n
         Beaucoup\n
@@ -349,7 +345,8 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
         ☐ Vanille\n
         ☑ Fraise\n
         Chocolat\n
-        Pistache\n"
+        Pistache\n
+        Page 2\n"
       ]
 
       service = described_class.new project.id, 'fr-FR', nil
@@ -389,8 +386,7 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
         required: false)
 
       text = parse_pages [
-        "Page 1\n
-        Title\n
+        "Title\n
         Test\n
         Description\n
         Test description\n
@@ -400,7 +396,8 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
         Your favourite name for a swimming pool (optional)\n
         Answer this question with \"Pizza nutella\"\n
         *This answer will only be shared with moderators, and not to the public.\n
-        Pizza nutella\n"
+        Pizza nutella\n
+        Page 1\n"
       ]
 
       service = described_class.new project.id, 'en', nil
