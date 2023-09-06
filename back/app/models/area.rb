@@ -12,10 +12,12 @@
 #  ordering               :integer
 #  custom_field_option_id :uuid
 #  followers_count        :integer          default(0), not null
+#  include_in_onboarding  :boolean          default(FALSE), not null
 #
 # Indexes
 #
 #  index_areas_on_custom_field_option_id  (custom_field_option_id)
+#  index_areas_on_include_in_onboarding   (include_in_onboarding)
 #
 # Foreign Keys
 #
@@ -35,6 +37,7 @@ class Area < ApplicationRecord
 
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :description_multiloc, multiloc: { presence: false, html: true }
+  validates :include_in_onboarding, inclusion: { in: [true, false] }
 
   before_validation :sanitize_description_multiloc
   before_validation :strip_title
