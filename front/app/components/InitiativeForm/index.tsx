@@ -75,6 +75,7 @@ export type Props = {
   initiativeImage?: IInitiativeImageData;
   initiativeFiles?: IInitiativeFileData[];
 };
+export const MAX_NUMBER_OF_COSPONSORS = 10;
 
 const InitiativeForm = ({
   onSubmit,
@@ -92,7 +93,6 @@ const InitiativeForm = ({
   const { formatMessage } = useIntl();
   const initiativeReviewRequired = useInitiativeReviewRequired();
   const { data: topics } = useTopics({ excludeCode: 'custom' });
-  const maxNumberOfCosponsors = 10;
   const schema = object({
     title_multiloc: validateAtLeastOneLocale(
       formatMessage(messages.titleEmptyError),
@@ -123,8 +123,10 @@ const InitiativeForm = ({
         .required(formatMessage(messages.cosponsorsEmptyError))
         .min(1, formatMessage(messages.cosponsorsEmptyError))
         .max(
-          maxNumberOfCosponsors,
-          formatMessage(messages.cosponsorsMaxError, { maxNumberOfCosponsors })
+          MAX_NUMBER_OF_COSPONSORS,
+          formatMessage(messages.cosponsorsMaxError, {
+            maxNumberOfCosponsors: MAX_NUMBER_OF_COSPONSORS,
+          })
         ),
     }),
     local_initiative_files: mixed().optional(),

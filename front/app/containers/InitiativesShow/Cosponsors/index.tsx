@@ -5,6 +5,7 @@ import useInitiativeById from 'api/initiatives/useInitiativeById';
 import BorderContainer from '../BorderContainer';
 import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
+import useAuthUser from 'api/me/useAuthUser';
 
 interface Props {
   initiativeId: string;
@@ -12,13 +13,37 @@ interface Props {
 
 const Cosponsors = ({ initiativeId }: Props) => {
   const { data: initiative } = useInitiativeById(initiativeId);
+  const { data: authUser } = useAuthUser();
   const { formatMessage } = useIntl();
+
+  if (!initiative || !authUser) return null;
+
+  const authorId = initiative.data.relationships.author.data?.id;
+  const signedInUserIsAuthor = authorId === authUser.data.id;
   const acceptedCosponsorships =
-    initiative?.data.attributes.cosponsorships.filter(
+    initiative.data.attributes.cosponsorships.filter(
       (c) => c.status === 'accepted'
     );
 
-  if (!acceptedCosponsorships || acceptedCosponsorships.length === 0) {
+  const show = () => {
+    if (signedInUserIsAuthor) {
+      return initiative.data.attributes.cosponsorships.length > 0;
+    } else {
+      return acceptedCosponsorships.length > 0;
+    }
+  };
+
+  const proposalsToDisplay = () => {
+    if (signedInUserIsAuthor) {
+      return initiative.data.attributes.cosponsorships;
+    } else {
+      return acceptedCosponsorships;
+    }
+  };
+
+  const showComponent = show();
+
+  if (!showComponent) {
     return null;
   }
 
@@ -27,7 +52,7 @@ const Cosponsors = ({ initiativeId }: Props) => {
       <Title variant="h5" as="h2">
         {formatMessage(messages.titleCosponsorsTile)}
       </Title>
-      <ListOfCosponsors cosponsorships={acceptedCosponsorships} />
+      <ListOfCosponsors cosponsorships={proposalsToDisplay()} />
     </BorderContainer>
   );
 };

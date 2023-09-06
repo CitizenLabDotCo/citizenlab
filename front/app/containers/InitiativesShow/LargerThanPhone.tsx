@@ -15,6 +15,8 @@ import PostedBy from './PostedBy';
 import ActionBar from './ActionBar';
 import ReactionControl from './ReactionControl';
 import Outlet from 'components/Outlet';
+import InitiativeBanner from './InitiativeBanner';
+import CosponsorsSection from './CosponsorsSection';
 
 // utils
 import { getAddressOrFallbackDMS } from 'utils/map';
@@ -40,8 +42,6 @@ import useInitiativeById from 'api/initiatives/useInitiativeById';
 
 // types
 import useInitiativeReviewRequired from 'hooks/useInitiativeReviewRequired';
-import RequestToCosponsor from './RequestToCosponsor';
-import Cosponsors from './Cosponsors';
 import useLocale from 'hooks/useLocale';
 import useAuthUser from 'api/me/useAuthUser';
 import useInitiativeImages from 'api/initiative_images/useInitiativeImages';
@@ -52,7 +52,6 @@ import {
   contentFadeInEasing,
 } from '.';
 import useInitiativeOfficialFeedback from 'api/initiative_official_feedback/useInitiativeOfficialFeedback';
-import InitiativeBanner from './InitiativeBanner';
 
 const Container = styled.main`
   display: flex;
@@ -197,16 +196,6 @@ const LargerThanPhone = ({
     initiative.data.attributes.location_point_geojson
   );
   const initiativeUrl = location.href;
-  const utmParams = !isNilOrError(authUser)
-    ? {
-        source: 'share_initiative',
-        campaign: 'share_content',
-        content: authUser.data.id,
-      }
-    : {
-        source: 'share_initiative',
-        campaign: 'share_content',
-      };
 
   return (
     <Container className={className}>
@@ -306,8 +295,7 @@ const LargerThanPhone = ({
                 onScrollToOfficialFeedback={onScrollToOfficialFeedback}
                 id="e2e-initiative-reaction-control"
               />
-              <RequestToCosponsor initiativeId={initiativeId} />
-              <Cosponsors initiativeId={initiativeId} />
+              <CosponsorsSection initiativeId={initiativeId} />
               {showSharingOptions && (
                 <SharingWrapper>
                   <SharingButtons
@@ -330,7 +318,18 @@ const LargerThanPhone = ({
                       initiativeUrl,
                       initiativeTitle,
                     })}
-                    utmParams={utmParams}
+                    utmParams={
+                      !isNilOrError(authUser)
+                        ? {
+                            source: 'share_initiative',
+                            campaign: 'share_content',
+                            content: authUser.data.id,
+                          }
+                        : {
+                            source: 'share_initiative',
+                            campaign: 'share_content',
+                          }
+                    }
                   />
                 </SharingWrapper>
               )}

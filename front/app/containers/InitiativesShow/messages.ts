@@ -132,4 +132,22 @@ export default defineMessages({
     id: 'app.containers.InitiativesShow.cosponsorCTA',
     defaultMessage: 'Cosponsor this proposal',
   },
+  inviteMoreLinkText: {
+    id: 'app.containers.InitiativesShow.inviteMoreLinkText',
+    defaultMessage: 'invite more cosponsors',
+  },
+  numberOfCosponsorsNotYetMet: {
+    id: 'app.containers.InitiativesShow.numberOfCosponsorsNotYetMet',
+    defaultMessage:
+      'Your proposal has not reached the required number of accepted cosponsor invitations yet. Until then, it will not be published.',
+  },
+  remindOrInviteMoreCosponsors: {
+    id: 'app.containers.InitiativesShow.remindOrInviteMoreCosponsors',
+    defaultMessage:
+      'Remind your cosponsors to accept their invitation or {inviteMoreLink}. You can invite up to {maxNoOfCosponsors} cosponsors.',
+  },
+  pending: {
+    id: 'app.containers.InitiativesShow.pending',
+    defaultMessage: 'Pending',
+  },
 });
