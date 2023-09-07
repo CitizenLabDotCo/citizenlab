@@ -129,8 +129,6 @@ const ReviewSection = ({
     );
   }
 
-  // console.log(ideaMetadata?.data.attributes.import_type === 'pdf');
-
   const pages =
     ideaMetadata?.data.attributes.import_type === 'pdf'
       ? ideaMetadata?.data.attributes.page_range.map((page) => Number(page))
@@ -243,6 +241,7 @@ const ReviewSection = ({
                 showAllErrors={true}
                 apiErrors={apiErrors}
                 formData={formData}
+                ideaMetadata={ideaMetadata}
                 setFormData={setFormData}
               />
             )}

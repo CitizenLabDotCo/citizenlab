@@ -17,7 +17,7 @@ import { selectRenderers } from './formConfig';
 import { getDefaultAjvErrorMessage } from 'utils/errorUtils';
 
 // typings
-import { CLErrors } from 'typings';
+import { CLErrors, Locale } from 'typings';
 import { ApiErrorGetter, AjvErrorGetter, FormData } from '../../typings';
 import Ajv, { ErrorObject } from 'ajv';
 import { APIErrorsContext, FormContext } from '../../contexts';
@@ -35,6 +35,7 @@ interface Props {
   inputId?: string;
   formSubmitText?: MessageDescriptor;
   config?: 'default' | 'input' | 'survey';
+  locale?: Locale;
   onChange: (formData: FormData) => void;
   onSubmit?: (formData: FormData) => Promise<any>;
 }
@@ -52,6 +53,7 @@ const Fields = ({
   getAjvErrorMessage,
   getApiErrorMessage,
   config,
+  locale,
   onChange,
   onSubmit,
 }: Props) => {
@@ -92,6 +94,7 @@ const Fields = ({
           onSubmit,
           setShowAllErrors,
           formSubmitText,
+          locale,
         }}
       >
         <JsonForms

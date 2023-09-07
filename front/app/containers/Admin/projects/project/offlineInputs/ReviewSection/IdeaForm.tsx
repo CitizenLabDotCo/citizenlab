@@ -21,12 +21,14 @@ import {
   AjvErrorGetter,
 } from 'components/Form/typings';
 import { CLErrors } from 'typings';
+import { ImportedIdeaMetadataResponse } from 'api/import_ideas/types';
 
 interface Props {
   projectId: string;
   showAllErrors: boolean;
   apiErrors?: CLErrors;
   formData: FormData;
+  ideaMetadata?: ImportedIdeaMetadataResponse;
   setFormData: (formData: FormData) => void;
 }
 
@@ -35,6 +37,7 @@ const IdeaForm = ({
   showAllErrors,
   apiErrors,
   formData,
+  ideaMetadata,
   setFormData,
 }: Props) => {
   const { schema, uiSchema } = useInputSchema({
@@ -88,6 +91,7 @@ const IdeaForm = ({
         data={formData}
         onChange={setFormData}
         config="input"
+        locale={ideaMetadata?.data.attributes.locale}
         getApiErrorMessage={getApiErrorMessage}
         getAjvErrorMessage={getAjvErrorMessage}
       />
