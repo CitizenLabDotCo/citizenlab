@@ -39,14 +39,12 @@ const ListOfCosponsors = ({ cosponsorships }: Props) => {
               <Avatar userId={cosponsorship.user_id} size={32} />
             </Box>
             <Box mr="4px">
-              <i>
-                <UserName userId={cosponsorship.user_id} isLinkToProfile />
-              </i>
+              <UserName userId={cosponsorship.user_id} isLinkToProfile italic />
             </Box>
             {cosponsorship.status === 'pending' && (
               <>
-                <Text>
-                  <i>({formatMessage(messages.pending)})</i>
+                <Text fontStyle="italic">
+                  ({formatMessage(messages.pending)})
                 </Text>
               </>
             )}
