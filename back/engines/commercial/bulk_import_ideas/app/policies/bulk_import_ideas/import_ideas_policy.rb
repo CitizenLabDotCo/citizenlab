@@ -14,11 +14,7 @@ module BulkImportIdeas
       active_admin?
     end
 
-    def draft_project_ideas?
-      active_admin?
-    end
-
-    def draft_phase_ideas?
+    def draft_ideas?
       active_admin?
     end
 

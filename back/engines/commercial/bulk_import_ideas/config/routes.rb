@@ -10,11 +10,11 @@ BulkImportIdeas::Engine.routes.draw do
       resources :projects do
         post 'import_ideas/bulk_create', on: :member, to: 'import_ideas#bulk_create'
         get 'import_ideas/example_xlsx', on: :member, to: 'import_ideas#example_xlsx'
-        get 'import_ideas/draft_ideas', on: :member, to: 'import_ideas#draft_project_ideas'
+        get 'import_ideas/draft_ideas', on: :member, to: 'import_ideas#draft_ideas'
       end
       resources :phases do
         get 'import_ideas/example_xlsx', on: :member, to: 'import_ideas#example_xlsx'
-        get 'import_ideas/draft_ideas', on: :member, to: 'import_ideas#draft_phase_ideas'
+        get 'import_ideas/draft_ideas', on: :member, to: 'import_ideas#draft_ideas'
       end
       resources :idea_imports, on: :member, to: 'import_ideas#show'
     end

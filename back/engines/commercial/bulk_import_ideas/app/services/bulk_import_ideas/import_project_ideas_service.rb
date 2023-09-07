@@ -43,13 +43,15 @@ module BulkImportIdeas
         columns[column_name] = value
       end
 
-      locale_image_url_label = I18n.with_locale(@locale) { I18n.t('xlsx_export.column_headers.image_url') }
-      locale_latitude_label = I18n.with_locale(@locale) { I18n.t('xlsx_export.column_headers.latitude') }
-      locale_longitude_label = I18n.with_locale(@locale) { I18n.t('xlsx_export.column_headers.longitude') }
+      unless @project.native_survey? || @phase.native_survey?
+        locale_image_url_label = I18n.with_locale(@locale) { I18n.t('xlsx_export.column_headers.image_url') }
+        locale_latitude_label = I18n.with_locale(@locale) { I18n.t('xlsx_export.column_headers.latitude') }
+        locale_longitude_label = I18n.with_locale(@locale) { I18n.t('xlsx_export.column_headers.longitude') }
 
-      columns[locale_image_url_label] = 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_in_meeting_graphic.png'
-      columns[locale_latitude_label] = 50.5035
-      columns[locale_longitude_label] = 6.0944
+        columns[locale_image_url_label] = 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_in_meeting_graphic.png'
+        columns[locale_latitude_label] = 50.5035
+        columns[locale_longitude_label] = 6.0944
+      end
 
       XlsxService.new.hash_array_to_xlsx [columns]
     end
