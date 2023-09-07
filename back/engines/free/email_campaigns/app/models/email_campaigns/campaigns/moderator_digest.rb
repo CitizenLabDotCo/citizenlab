@@ -118,24 +118,16 @@ module EmailCampaigns
       ideas = Idea.published.where(project_id: project.id).load
       comments = Comment.where(post_id: ideas.map(&:id))
       {
-        activities: {
-          new_ideas_increase: stat_increase(
-            ideas.filter_map(&:published_at)
-          ),
-          new_comments_increase: stat_increase(
-            comments.filter_map(&:created_at)
-          )
-        },
-        users: {
-          new_participants_increase: participants_increase
-        }
+        new_ideas_increase: stat_increase(ideas.filter_map(&:published_at)),
+        new_comments_increase: stat_increase(comments.filter_map(&:created_at)),
+        new_participants_increase: participants_increase
       }
     end
 
     def zero_statistics?(statistics)
-      ((statistics.dig(:activities, :new_ideas_increase) == 0) &&
-         (statistics.dig(:activities, :new_comments_increase) == 0) &&
-         (statistics.dig(:users, :new_participants_increase) == 0)
+      ((statistics[:new_ideas_increase] == 0) &&
+         (statistics[:new_comments_increase] == 0) &&
+         (statistics[:new_participants_increase] == 0)
       )
     end
 

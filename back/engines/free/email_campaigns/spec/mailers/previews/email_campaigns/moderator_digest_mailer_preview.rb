@@ -18,13 +18,9 @@ module EmailCampaigns
           project_id: project_id,
           project_name: project_name,
           statistics: {
-            activities: {
-              new_ideas_increase: 3,
-              new_comments_increase: 2
-            },
-            users: {
-              new_participants_increase: 0
-            }
+            new_ideas_increase: 3,
+            new_comments_increase: 2,
+            new_participants_increase: 0
           },
           top_ideas: top_ideas.map do |idea|
             new_reactions = idea.reactions.where('created_at > ?', Time.now - 7)

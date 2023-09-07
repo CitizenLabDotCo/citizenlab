@@ -108,21 +108,17 @@ module EmailCampaigns
 
     def content_worth_sending?(_)
       [
-        statistics.dig(:activities, :new_ideas_increase),
-        statistics.dig(:activities, :new_comments_increase),
-        statistics.dig(:users, :new_users_increase)
+        statistics[:new_ideas_increase],
+        statistics[:new_comments_increase],
+        statistics[:new_users_increase]
       ].any?(&:positive?)
     end
 
     def statistics
       @statistics ||= {
-        activities: {
-          new_ideas_increase: stat_increase(Idea.pluck(:published_at).compact),
-          new_comments_increase: stat_increase(Comment.pluck(:created_at))
-        },
-        users: {
-          new_users_increase: stat_increase(User.pluck(:registration_completed_at).compact)
-        }
+        new_ideas_increase: stat_increase(Idea.pluck(:published_at).compact),
+        new_comments_increase: stat_increase(Comment.pluck(:created_at)),
+        new_users_increase: stat_increase(User.pluck(:registration_completed_at).compact)
       }
     end
 

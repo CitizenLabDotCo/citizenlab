@@ -13,13 +13,9 @@ module EmailCampaigns
         recipient: recipient_user,
         event_payload: {
           statistics: {
-            activities: {
-              new_ideas_increase: 1,
-              new_comments_increase: 1
-            },
-            users: {
-              new_users_increase: 1
-            }
+            new_ideas_increase: 1,
+            new_comments_increase: 1,
+            new_users_increase: 1
           },
           top_project_ideas: [
             {
