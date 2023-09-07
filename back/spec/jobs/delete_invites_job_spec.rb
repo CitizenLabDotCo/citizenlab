@@ -25,5 +25,19 @@ RSpec.describe DeleteInvitesJob do
       expect(invitee2.reload).to eq invitee2
       expect(invitee3.reload).to eq invitee3
     end
+
+    it 'logs the activity' do
+      expect { described_class.perform_now(expiry_time) }.to have_enqueued_job(LogActivityJob).with(
+        'Invite/11111111-1111-1111-1111-111111111111', # Hacky way to provide an id (required), whilst also highlighting that this does not relate to one specific invite
+        'bulk_destroy',
+        nil, # No user initiated this activity
+        Time.now.to_i,
+        payload: { destroyed_invites: [invite1.as_json, invite2.as_json] }
+      )
+    end
+
+    it 'does not log an activity if no invites were destroyed' do
+      expect { described_class.perform_now(9.days.ago) }.not_to have_enqueued_job(LogActivityJob)
+    end
   end
 end
