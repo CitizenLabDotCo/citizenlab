@@ -134,4 +134,42 @@ export default defineMessages({
     defaultMessage:
       'Additional address information that could help identify the location such as a building name, floor number, etc.',
   },
+  attendanceButton: {
+    id: 'app.containers.AdminPage.ProjectEvents.attendanceButton',
+    defaultMessage: 'Attendance button',
+  },
+  toggleCustomAttendanceButtonLabel: {
+    id: 'app.containers.AdminPage.ProjectEvents.toggleCustomAttendanceButtonLabel',
+    defaultMessage: 'Link the button to an external URL',
+  },
+  toggleCustomAttendanceButtonTooltip: {
+    id: 'app.containers.AdminPage.ProjectEvents.toggleCustomAttendanceButtonTooltip',
+    defaultMessage:
+      'By default, the in-platform attendance button will be shown allowing users to register their interest in an event. You can change this to link to an external URL instead.',
+  },
+  customButtonText: {
+    id: 'app.containers.AdminPage.ProjectEvents.customButtonText',
+    defaultMessage: 'Custom button text',
+  },
+  customButtonTextTooltip: {
+    id: 'app.containers.AdminPage.ProjectEvents.customButtonTextTooltip',
+    defaultMessage: 'Set the button text to a value other than "Attend".',
+  },
+  customButtonLink: {
+    id: 'app.containers.AdminPage.ProjectEvents.customButtonLink',
+    defaultMessage: 'External link',
+  },
+  customButtonLinkTooltip: {
+    id: 'app.containers.AdminPage.ProjectEvents.customButtonLinkTooltip',
+    defaultMessage:
+      'Add a link to an external URL (E.g. event service or ticketing website). Setting this will override the default attendance button behavior.',
+  },
+  preview: {
+    id: 'app.containers.AdminPage.ProjectEvents.preview',
+    defaultMessage: 'Preview',
+  },
+  attend: {
+    id: 'app.containers.AdminPage.ProjectEvents.attend',
+    defaultMessage: 'Attend',
+  },
 });

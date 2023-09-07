@@ -14,10 +14,12 @@ import {
   Box,
   Button,
   IconTooltip,
+  Input,
   Label,
   LocationInput,
   Spinner,
   Title,
+  Toggle,
 } from '@citizenlab/cl2-component-library';
 import Map from './components/map';
 import { leafletMapClicked$ } from 'components/UI/LeafletMap/events';
@@ -47,6 +49,7 @@ import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { useParams } from 'react-router-dom';
 import { geocode } from 'utils/locationTools';
+import { useTheme } from 'styled-components';
 
 type SubmitState = 'disabled' | 'enabled' | 'error' | 'success';
 type ErrorType =
@@ -68,12 +71,17 @@ const AdminProjectEventEdit = () => {
     projectId: string;
   };
   const { formatMessage } = useIntl();
+  const theme = useTheme();
+
+  // api
   const { mutate: addEvent } = useAddEvent();
   const { data: event, isInitialLoading } = useEvent(id);
   const { mutate: updateEvent } = useUpdateEvent();
   const { mutate: addEventFile } = useAddEventFile();
   const { mutate: deleteEventFile } = useDeleteEventFile();
   const { data: remoteEventFiles } = useEventFiles(id);
+
+  // state
   const [errors, setErrors] = useState<ErrorType>({});
   const [apiErrors, setApiErrors] = useState<ApiErrorType>({});
   const [saving, setSaving] = useState<boolean>(false);
@@ -81,6 +89,9 @@ const AdminProjectEventEdit = () => {
   const [eventFiles, setEventFiles] = useState<UploadFile[]>([]);
   const [attributeDiff, setAttributeDiff] = useState<IEventProperties>({});
   const [mapModalVisible, setMapModalVisible] = useState(false);
+  const [attendanceOptionsVisible, setAttendanceOptionsVisible] = useState(
+    event?.data.attributes.custom_attend_button_enabled || false
+  );
   const [locationPoint, setLocationPoint] = useState<GeoJSON.Point | null>(
     null
   );
@@ -180,6 +191,31 @@ const AdminProjectEventEdit = () => {
     setAttributeDiff({
       ...attributeDiff,
       description_multiloc: descriptionMultiloc,
+    });
+  };
+
+  const handleCustomButtonToggleOnChange = (toggleValue: boolean) => {
+    setAttendanceOptionsVisible(toggleValue);
+    setSubmitState('enabled');
+    setAttributeDiff({
+      ...attributeDiff,
+      custom_attend_button_enabled: toggleValue,
+    });
+  };
+
+  const handleCustomButtonMultilocOnChange = (buttonMultiloc: Multiloc) => {
+    setSubmitState('enabled');
+    setAttributeDiff({
+      ...attributeDiff,
+      custom_attend_button_multiloc: buttonMultiloc,
+    });
+  };
+
+  const handleCustomButtonLinkOnChange = (buttonLink: string) => {
+    setSubmitState('enabled');
+    setAttributeDiff({
+      ...attributeDiff,
+      custom_attend_button_link: buttonLink,
     });
   };
 
@@ -343,8 +379,6 @@ const AdminProjectEventEdit = () => {
     }
   };
 
-  const descriptionLabel = <FormattedMessage {...messages.descriptionLabel} />;
-
   const eventAttrs = event
     ? { ...event?.data.attributes, ...attributeDiff }
     : { ...attributeDiff };
@@ -377,7 +411,7 @@ const AdminProjectEventEdit = () => {
             <Box width="860px">
               <QuillMultilocWithLocaleSwitcher
                 id="description"
-                label={descriptionLabel}
+                label={<FormattedMessage {...messages.descriptionLabel} />}
                 valueMultiloc={eventAttrs.description_multiloc}
                 onChange={handleDescriptionMultilocOnChange}
                 withCTAButton
@@ -487,6 +521,86 @@ const AdminProjectEventEdit = () => {
               )}
             </Box>
           </SectionField>
+
+          <Title
+            variant="h4"
+            fontWeight="bold"
+            color="primary"
+            style={{ fontWeight: '600' }}
+            mt="48px"
+          >
+            {formatMessage(messages.attendanceButton)}
+          </Title>
+          <SectionField>
+            <Toggle
+              label={
+                <Box display="flex">
+                  {formatMessage(messages.toggleCustomAttendanceButtonLabel)}
+                  <Box ml="4px">
+                    <IconTooltip
+                      content={formatMessage(
+                        messages.toggleCustomAttendanceButtonTooltip
+                      )}
+                    />
+                  </Box>
+                </Box>
+              }
+              checked={eventAttrs.custom_attend_button_enabled || false}
+              onChange={() => {
+                handleCustomButtonToggleOnChange(!attendanceOptionsVisible);
+              }}
+            />
+          </SectionField>
+          {attendanceOptionsVisible && (
+            <>
+              <SectionField>
+                <Box maxWidth="400px">
+                  <InputMultilocWithLocaleSwitcher
+                    id="event-address-2"
+                    label={formatMessage(messages.customButtonText)}
+                    type="text"
+                    valueMultiloc={eventAttrs.custom_attend_button_multiloc}
+                    onChange={handleCustomButtonMultilocOnChange}
+                    labelTooltipText={formatMessage(
+                      messages.customButtonTextTooltip
+                    )}
+                  />
+                </Box>
+              </SectionField>
+              <SectionField>
+                <Box maxWidth="400px">
+                  <Input
+                    label={formatMessage(messages.customButtonLink)}
+                    type="text"
+                    value={eventAttrs.custom_attend_button_link}
+                    onChange={handleCustomButtonLinkOnChange}
+                    labelTooltipText={formatMessage(
+                      messages.customButtonLinkTooltip
+                    )}
+                    placeholder={'https://...'}
+                  />
+                </Box>
+              </SectionField>
+              <Box display="flex" flexWrap="wrap">
+                <Box width="100%">
+                  <Label>{formatMessage(messages.preview)}</Label>
+                </Box>
+                <Button
+                  minWidth="160px"
+                  iconPos={'right'}
+                  icon={attendanceOptionsVisible ? undefined : 'plus-circle'}
+                  iconSize="20px"
+                  bgColor={theme.colors.tenantPrimary}
+                  onClick={(event) => {
+                    event.preventDefault();
+                  }}
+                >
+                  {formatMessage(messages.attend)}
+                </Button>
+              </Box>
+            </>
+          )}
+
           <Title
             variant="h4"
             fontWeight="bold"

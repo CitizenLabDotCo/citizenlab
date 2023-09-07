@@ -19,6 +19,9 @@ export interface IEventData {
     created_at: string;
     updated_at: string;
     attendees_count: number;
+    custom_attend_button_multiloc?: Multiloc;
+    custom_attend_button_link?: string;
+    custom_attend_button_enabled?: boolean;
   };
   relationships: {
     project: {
@@ -71,6 +74,9 @@ export interface IEventProperties {
   location_point_geojson?: GeoJSON.Point | null;
   start_at?: string;
   end_at?: string;
+  custom_attend_button_multiloc?: Multiloc;
+  custom_attend_button_link?: string;
+  custom_attend_button_enabled?: boolean;
 }
 
 export interface IAddEventProperties {
