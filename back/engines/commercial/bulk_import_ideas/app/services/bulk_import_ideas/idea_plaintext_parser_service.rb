@@ -2,7 +2,7 @@
 
 module BulkImportIdeas
   class IdeaPlaintextParserService
-    QUESTION_TYPES = %w[select multiselect text text_multiloc multiline_text html_multiloc]
+    QUESTION_TYPES = %w[select multiselect text text_multiloc multiline_text html_multiloc number]
     TEXT_FIELD_TYPES = %w[text text_multiloc]
     MULTILINE_FIELD_TYPES = %w[multiline_text html_multiloc]
 
@@ -138,6 +138,10 @@ module BulkImportIdeas
         if field_type == 'multiselect'
           handle_multiselect_field(line)
         end
+
+        if field_type == 'number'
+          handle_number_field(line)
+        end
       end
     end
 
@@ -238,6 +242,34 @@ module BulkImportIdeas
           @form[:fields][@current_field_display_title] << value
         end
       end
+    end
+
+    def handle_number_field(line)
+      number_str = ''
+
+      line.split('').each do |char|
+        if char.to_i.to_s == char
+          number_str += char
+        end
+        
+        if char == 'o' || char == 'O'
+          number_str += '0'
+        end
+
+        if char == 'l' || char == 'i' || char == 'I'
+          number_str += '1'
+        end
+         
+        if char == 'z' || char == 'Z'
+          number_str += '2'
+        end
+
+        if char == 's' || char == 'S'
+          number_str += '5'
+        end
+      end
+
+      @form[:fields][@current_field_display_title] = number_str.to_i
     end
 
     def option_titles
