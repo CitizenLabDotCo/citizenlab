@@ -1155,6 +1155,7 @@
   "app.containers.NotificationMenu.cosponsorOfYourInitiative": "{name} cosponsored your proposal",
   "app.containers.NotificationMenu.deletedUser": "Unknown author",
   "app.containers.NotificationMenu.error": "Couldn't load notifications",
+  "app.containers.NotificationMenu.eventUpcoming": "The event {eventTitle} starts in 24 hours",
   "app.containers.NotificationMenu.initiativeResubmittedForReview": "\"{initiativeTitle}\" resubmitted for review",
   "app.containers.NotificationMenu.internalCommentOnIdeaAssignedToYou": "{name} commented internally on an input assigned to you",
   "app.containers.NotificationMenu.internalCommentOnIdeaYouCommentedInternallyOn": "{name} commented internally on an input that you commented on internally",
