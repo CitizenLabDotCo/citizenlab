@@ -1,5 +1,6 @@
 import { Keys } from 'utils/cl-react-query/types';
 import { importedIdeasKeys, importedIdeaMetadataKeys } from './keys';
+import { Locale } from 'typings';
 
 export type ImportedIdeasKeys = Keys<typeof importedIdeasKeys>;
 export type ImportedIdeaMetadataKeys = Keys<typeof importedIdeaMetadataKeys>;
@@ -21,6 +22,7 @@ export interface ImportedIdeaMetadata {
     import_type: string;
     page_range: string[];
     user_created: boolean;
+    locale: Locale;
     file: {
       url: string;
     };
