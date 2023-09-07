@@ -821,7 +821,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.addToPhase": "Add to phase",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.formLanguage": "Form language",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.here": "here",
-  "app.containers.Admin.projects.project.offlineInputs.ImportModal.ideaImporter": "Idea importer",
+  "app.containers.Admin.projects.project.offlineInputs.ImportModal.inputImporter": "Input importer",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.upload": "Upload",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.uploadAPdfExcelFile": "Upload a <b>PDF file of scanned forms</b> or a completed <b>Excel file</b>. The PDF must use a form printed from this project. The Excel file must use the template provided for this project. These can be downloaded {hereLink}.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approve": "Approve",
