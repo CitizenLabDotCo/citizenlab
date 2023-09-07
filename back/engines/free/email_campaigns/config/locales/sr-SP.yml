@@ -1,80 +1,13 @@
 sr-Cyrl:
   email_campaigns:
     campaign_type_description:
-      "manual": Званичне поруке
-      "admin_rights_received": Примљена су администраторска права
-      "comment_deleted_by_admin": Брисање мог коментара
-      "comment_marked_as_spam": Извештај о нежељеној пошти коментара
-      "comment_on_your_comment": Одговор на мој коментар
-      "comment_on_your_idea": Коментар на моју идеју
-      "comment_on_your_initiative": Коментар на мој предлог
-      "cosponsor_of_your_initiative": Корисник прихвата мој позив да буде ко-спонзор мог предлога
-      "first_idea_published": Објављивање моје прве идеје
-      "idea_marked_as_spam": Извештај о нежељеној пошти идеја
-      "idea_published": Објављивање моје идеје
-      "initiative_assigned_to_you": Додељивање предлога мени
-      "initiative_marked_as_spam": Извештај о нежељеној пошти предлога
-      "initiative_published": Објављивање мог предлога
-      "invitation_to_cosponsor_initiative": Позив за ко-спонзорисање предлога
-      "initiative_resubmitted_for_review": Предлог је поново достављен на разматрање
-      "invite_received": Позив
-      "invite_reminder": Подсетник за позив
-      "internal_comment_on_idea_assigned_to_you": Интерни коментар на унос који ми је додељен
-      "internal_comment_on_idea_you_commented_internally_on": Интерни коментар на унос који сам интерно коментарисао
-      "internal_comment_on_idea_you_moderate": Интерни коментар на унос у пројекту или фолдеру којим управљам
-      "internal_comment_on_initiative_assigned_to_you": Интерни коментар на предлог који ми је додељен
-      "internal_comment_on_initiative_you_commented_internally_on": Интерни коментар на предлог који сам интерно коментарисао
-      "internal_comment_on_unassigned_initiative": Интерни коментар на недодељени предлог
-      "internal_comment_on_unassigned_unmoderated_idea": Интерни коментар на недодељени унос у неуправљаном пројекту
-      "internal_comment_on_your_internal_comment": Интерни коментар на мој интерни коментар
-      "mention_in_official_feedback": Поменути у ажурирању
-      "mention_in_internal_comment": Поменути у интерном коментару
-      "new_comment_for_admin": Нови коментар у пројекту којим управљам
-      "new_comment_on_commented_idea": Нови коментар на идеју коју сам прокоментарисао
-      "new_comment_on_commented_initiative": Нови коментар на предлог који сам коментарисао
-      "new_comment_on_reacted_idea": Нови коментар на идеју на коју сам реаговао
-      "new_comment_on_reacted_initiative": Нови коментар на предлог за који сам гласао
-      "new_idea_for_admin": Нова идеја у пројекту којим управљам
-      "new_initiative_for_admin": Нови предлог
-      "official_feedback_on_commented_idea": Ажурирање идеје коју сам коментарисао
-      "official_feedback_on_commented_initiative": Ажурирање предлога који сам коментарисао
-      "official_feedback_on_reacted_idea": Ажурирање идеје на коју сам реаговао
-      "official_feedback_on_reacted_initiative": Ажурирање предлога за који сам гласао
-      "official_feedback_on_your_idea": Ажурирај моју идеју
-      "official_feedback_on_your_initiative": Ажурирање мог предлога
-      "password_reset": Ресетовање лозинке
-      "project_moderation_rights_received": Примљена права модерирања пројекта
-      "project_folder_moderation_rights_received": Примљена права менаџера фолдера
-      "project_phase_started": Нова фаза пројекта
-      "project_phase_upcoming": Предстојећа нова фаза пројекта
-      "status_change_of_commented_idea": Статусна промена идеје коју сам коментарисао
-      "status_change_of_commented_initiative": Промена статуса предлога који сам коментарисао
-      "status_change_of_reacted_idea": Статусна промена идеје на коју сам реаговао
-      "status_change_of_reacted_initiative": Статусна промена предлога на који сам реаговао
-      "status_change_of_your_idea": Статусна промена моје идеје
-      "status_change_of_your_initiative": Статусна промена мог предлога
-      "threshold_reached_for_admin": Предлог је достигао цензус за гласање
-      "welcome": Након регистрације
-      "admin_digest": Недељни преглед за администраторе
-      "moderator_digest": Недељни преглед за менаџере пројеката
-      "assignee_digest": Недељни преглед додељених идеја
-      "user_digest": Недељни преглед
-      "voting_basket_submitted": Потврда гласања
-      "voting_basket_not_submitted": Гласови нису предати
-      "voting_last_chance": Последња прилика за гласање
-      "voting_results": Резултати гласања
-      "your_proposed_initiatives_digest": Недељни преглед ваших предлога
-    schedules:
-      weekly:
-        "0": "Седмично, недељом у %{hourOfDay}"
-        "1": "Седмично, понедељком у %{hourOfDay}"
-        "2": "Седмично, уторком у %{hourOfDay}"
-        "3": "Седмично, средом у %{hourOfDay}"
-        "4": "Седмично, четвртком у %{hourOfDay}"
-        "5": "Недељно, петком у %{hourOfDay}"
-        "6": "Седмично, суботом у %{hourOfDay}"
+      "1": "Седмично, понедељком у %{hourOfDay}"
+      "2": "Седмично, уторком у %{hourOfDay}"
+      "3": "Седмично, средом у %{hourOfDay}"
+      "4": "Седмично, четвртком у %{hourOfDay}"
+      "5": "Недељно, петком у %{hourOfDay}"
+      "6": "Седмично, суботом у %{hourOfDay}"
     footer:
-      "link_privacy_policy": "Правила о приватности"
       "link_terms_conditions": "Услови коришћења"
       "link_unsubscribe": "Откажи претплату"
       "powered_by": "Покреће га"
