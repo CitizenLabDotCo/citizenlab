@@ -145,8 +145,8 @@ module EmailCampaigns
       ((t2 - t1) / 1.day).days
     end
 
-    def stat_increase(dates = [])
-      dates.count { |t| t > (Time.now - days_ago) }
+    def stat_increase(stat_dates = [])
+      stat_dates.count { |t| t > (Time.now - days_ago) }
     end
 
     # @param [UserDisplayNameService] name_service
