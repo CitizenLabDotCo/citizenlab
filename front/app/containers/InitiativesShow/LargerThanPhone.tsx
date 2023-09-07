@@ -53,7 +53,7 @@ import {
 } from '.';
 import useInitiativeOfficialFeedback from 'api/initiative_official_feedback/useInitiativeOfficialFeedback';
 import CosponsorShipReminder from './CosponsorShipReminder';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useShowCosponsorshipReminder from 'hooks/useShowCosponsorshipReminder';
 
 const Container = styled.main`
   display: flex;
@@ -167,6 +167,7 @@ const LargerThanPhone = ({
   const { data: initiativeImages } = useInitiativeImages(initiativeId);
   const { data: initiative } = useInitiativeById(initiativeId);
   const { data: initiativeFiles } = useInitiativeFiles(initiativeId);
+  const showCosponsorshipReminder = useShowCosponsorshipReminder(initiativeId);
   const postOfficialFeedbackPermission = usePermission({
     item: !isNilOrError(initiative) ? initiative.data : null,
     action: 'moderate',
@@ -175,7 +176,6 @@ const LargerThanPhone = ({
     initiativeId,
     pageSize: 1,
   });
-  const { data: appConfiguration } = useAppConfiguration();
   const officialFeedbackElement = useRef<HTMLDivElement>(null);
   const initiativeReviewRequired = useInitiativeReviewRequired();
   const officialFeedbacksList =
@@ -185,12 +185,7 @@ const LargerThanPhone = ({
     ? initiative?.data.attributes.public
     : true;
 
-  if (
-    !initiative ||
-    isNilOrError(locale) ||
-    !initiativeImages ||
-    !appConfiguration
-  ) {
+  if (!initiative || isNilOrError(locale) || !initiativeImages) {
     return null;
   }
 
@@ -206,20 +201,6 @@ const LargerThanPhone = ({
     initiative.data.attributes.location_point_geojson
   );
   const initiativeUrl = location.href;
-  const requiredNumberOfCosponsors =
-    appConfiguration.data.attributes.settings.initiatives?.cosponsors_number;
-  const signedInUserIsAuthor =
-    typeof authorId === 'string' && typeof authUser?.data.id === 'string'
-      ? authorId === authUser?.data.id
-      : false;
-  const acceptedCosponsorships =
-    initiative.data.attributes.cosponsorships.filter(
-      (c) => c.status === 'accepted'
-    );
-  const showCosponsorshipReminder =
-    signedInUserIsAuthor && typeof requiredNumberOfCosponsors === 'number'
-      ? requiredNumberOfCosponsors > acceptedCosponsorships.length
-      : false;
 
   return (
     <Container className={className}>
@@ -236,15 +217,11 @@ const LargerThanPhone = ({
       <InitiativeContainer>
         <Content>
           <LeftColumn>
-            {showCosponsorshipReminder &&
-              typeof requiredNumberOfCosponsors === 'number' && (
-                <Box mb="28px">
-                  <CosponsorShipReminder
-                    initiativeId={initiativeId}
-                    requiredNumberOfCosponsors={requiredNumberOfCosponsors}
-                  />
-                </Box>
-              )}
+            {showCosponsorshipReminder && (
+              <Box mb="28px">
+                <CosponsorShipReminder initiativeId={initiativeId} />
+              </Box>
+            )}
             <StyledTopics
               postType="initiative"
               postTopicIds={initiative.data.relationships.topics.data.map(

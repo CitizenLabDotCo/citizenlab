@@ -49,7 +49,7 @@ import RequestToCosponsor from './RequestToCosponsor';
 import Cosponsors from './Cosponsors';
 import InitiativeBanner from './InitiativeBanner';
 import CosponsorShipReminder from './CosponsorShipReminder';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useShowCosponsorshipReminder from 'hooks/useShowCosponsorshipReminder';
 
 const paddingSide = '32px';
 
@@ -124,7 +124,7 @@ const Phone = ({
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const locale = useLocale();
-  const { data: appConfiguration } = useAppConfiguration();
+  const showCosponsorShipReminder = useShowCosponsorshipReminder(initiativeId);
   const { data: authUser } = useAuthUser();
   const { data: initiativeImages } = useInitiativeImages(initiativeId);
   const { data: initiative } = useInitiativeById(initiativeId);
@@ -146,12 +146,7 @@ const Phone = ({
     ? initiative?.data.attributes.public
     : true;
 
-  if (
-    !initiative ||
-    isNilOrError(locale) ||
-    !initiativeImages ||
-    !appConfiguration
-  ) {
+  if (!initiative || isNilOrError(locale) || !initiativeImages) {
     return null;
   }
 
@@ -167,30 +162,12 @@ const Phone = ({
     initiative.data.attributes.location_point_geojson
   );
   const initiativeUrl = location.href;
-  const requiredNumberOfCosponsors =
-    appConfiguration.data.attributes.settings.initiatives?.cosponsors_number;
-  const signedInUserIsAuthor =
-    typeof authorId === 'string' && typeof authUser?.data.id === 'string'
-      ? authorId === authUser?.data.id
-      : false;
-  const acceptedCosponsorships =
-    initiative.data.attributes.cosponsorships.filter(
-      (c) => c.status === 'accepted'
-    );
-  const showCosponsorshipReminder =
-    signedInUserIsAuthor && typeof requiredNumberOfCosponsors === 'number'
-      ? requiredNumberOfCosponsors > acceptedCosponsorships.length
-      : false;
 
   return (
     <Container className={className}>
-      {showCosponsorshipReminder &&
-        typeof requiredNumberOfCosponsors === 'number' && (
-          <CosponsorShipReminder
-            initiativeId={initiativeId}
-            requiredNumberOfCosponsors={requiredNumberOfCosponsors}
-          />
-        )}
+      {showCosponsorShipReminder && (
+        <CosponsorShipReminder initiativeId={initiativeId} />
+      )}
       <InitiativeBanner initiativeHeaderImageLarge={initiativeHeaderImageLarge}>
         <InitiativeBannerContent>
           <MobileMoreActionContainer>
