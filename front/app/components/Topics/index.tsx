@@ -1,15 +1,20 @@
 import React from 'react';
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
 import useTopics from 'api/topics/useTopics';
-import Topic from './Topic';
+import UpdateFollowTopic from './UpdateFollowTopic';
+import UpdateOnboardingTopic from './UpdateOnboardingTopic';
 
 interface Props {
-  showHomePageTopics?: boolean;
+  showOnboardingTopics?: boolean;
+  action?: 'updateFollowPreferences' | 'updateOnboardingPreferences';
 }
 
-const Topics = ({ showHomePageTopics = false }: Props) => {
+const Topics = ({
+  showOnboardingTopics,
+  action = 'updateFollowPreferences',
+}: Props) => {
   const { data: topics, isLoading } = useTopics({
-    forHomepageFilter: showHomePageTopics,
+    forOnboarding: showOnboardingTopics,
     sort: 'projects_count',
   });
 
@@ -19,9 +24,13 @@ const Topics = ({ showHomePageTopics = false }: Props) => {
 
   return topics && topics.data.length > 0 ? (
     <Box display="flex" gap="20px" width="100%" flexWrap="wrap">
-      {topics.data.map((topic) => (
-        <Topic topic={topic} key={topic.id} />
-      ))}
+      {topics.data.map((topic) => {
+        return action === 'updateOnboardingPreferences' ? (
+          <UpdateOnboardingTopic key={topic.id} topic={topic} />
+        ) : (
+          <UpdateFollowTopic key={topic.id} topic={topic} />
+        );
+      })}
     </Box>
   ) : null;
 };

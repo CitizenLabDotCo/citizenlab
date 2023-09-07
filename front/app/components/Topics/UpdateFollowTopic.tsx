@@ -12,7 +12,7 @@ interface Props {
   topic: ITopicData;
 }
 
-const Topic = ({ topic }: Props) => {
+const UpdateFollowTopic = ({ topic }: Props) => {
   const { mutate: addFollower, isLoading: isAddingFollower } = useAddFollower();
   const { mutate: deleteFollower, isLoading: isDeletingFollower } =
     useDeleteFollower();
@@ -67,4 +67,4 @@ const Topic = ({ topic }: Props) => {
   );
 };
 
-export default Topic;
+export default UpdateFollowTopic;
