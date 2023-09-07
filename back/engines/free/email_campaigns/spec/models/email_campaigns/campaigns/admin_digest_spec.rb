@@ -19,11 +19,11 @@ RSpec.describe EmailCampaigns::Campaigns::AdminDigest do
       command = campaign.generate_commands(recipient: admin).first
 
       expect(
-        command.dig(:event_payload, :statistics, :activities, :new_ideas, :increase)
+        command.dig(:event_payload, :statistics, :new_ideas_increase)
       ).to eq(new_ideas.size)
       expect(
-        command.dig(:event_payload, :statistics, :activities, :new_reactions, :increase)
-      ).to eq(1)
+        command.dig(:event_payload, :statistics, :new_comments_increase)
+      ).to eq(0)
       expect(
         command.dig(:event_payload, :top_project_ideas).flat_map { |tpi| tpi[:top_ideas].pluck(:id) }
       ).to include(new_ideas.first.id)
@@ -80,6 +80,21 @@ RSpec.describe EmailCampaigns::Campaigns::AdminDigest do
       create(:project_moderator)
 
       expect(campaign.apply_recipient_filters).to match([admin])
+    end
+  end
+
+  describe 'content_worth_sending?' do
+    let(:campaign) { build(:admin_digest_campaign) }
+    let(:project) { create(:continuous_project, participation_method: 'ideation') }
+
+    it 'returns false when no significant stats' do
+      expect(campaign.send(:content_worth_sending?, {})).to be false
+    end
+
+    it 'returns true when significant stats' do
+      create(:idea, project: project)
+
+      expect(campaign.send(:content_worth_sending?, {})).to be true
     end
   end
 end
