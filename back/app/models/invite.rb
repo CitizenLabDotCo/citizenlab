@@ -28,6 +28,8 @@
 class Invite < ApplicationRecord
   include PgSearch::Model
 
+  EXPIRY_PERIOD = 7.days
+
   pg_search_scope :search_by_all, {
     associated_against: { invitee: %i[first_name last_name email] },
     using: { tsearch: { prefix: true } }
