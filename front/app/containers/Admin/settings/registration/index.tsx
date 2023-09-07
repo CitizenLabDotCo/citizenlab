@@ -200,7 +200,7 @@ const SettingsRegistrationTab = () => {
               }}
             />
           </form>
-          <Box maxWidth="500px" mt="35px">
+          <Box maxWidth="500px" mt="36px">
             <ToggleShowFollowPreferences
               onChange={handleOnboardingChange}
               isEnabled={isOnboardingEnabled}
@@ -211,7 +211,7 @@ const SettingsRegistrationTab = () => {
                   <FormattedMessage {...messages.selectOnboardingTopics} />
                 </SubSectionTitle>
                 <Topics action="updateOnboardingPreferences" />
-                <Box mt="35px">
+                <Box mt="36px">
                   <SubSectionTitle>
                     <FormattedMessage {...messages.selectOnboardingAreas} />
                   </SubSectionTitle>
