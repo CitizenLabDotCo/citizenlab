@@ -48,6 +48,8 @@ import useInitiativeOfficialFeedback from 'api/initiative_official_feedback/useI
 import RequestToCosponsor from './RequestToCosponsor';
 import Cosponsors from './Cosponsors';
 import InitiativeBanner from './InitiativeBanner';
+import CosponsorShipReminder from './CosponsorShipReminder';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 const paddingSide = '32px';
 
@@ -122,6 +124,7 @@ const Phone = ({
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const locale = useLocale();
+  const { data: appConfiguration } = useAppConfiguration();
   const { data: authUser } = useAuthUser();
   const { data: initiativeImages } = useInitiativeImages(initiativeId);
   const { data: initiative } = useInitiativeById(initiativeId);
@@ -143,7 +146,14 @@ const Phone = ({
     ? initiative?.data.attributes.public
     : true;
 
-  if (!initiative || isNilOrError(locale) || !initiativeImages) return null;
+  if (
+    !initiative ||
+    isNilOrError(locale) ||
+    !initiativeImages ||
+    !appConfiguration
+  ) {
+    return null;
+  }
 
   const initiativeHeaderImageLarge = initiative.data.attributes.header_bg.large;
   const authorId = initiative.data.relationships.author.data?.id;
@@ -157,19 +167,30 @@ const Phone = ({
     initiative.data.attributes.location_point_geojson
   );
   const initiativeUrl = location.href;
-  const utmParams = !isNilOrError(authUser)
-    ? {
-        source: 'share_initiative',
-        campaign: 'share_content',
-        content: authUser.data.id,
-      }
-    : {
-        source: 'share_initiative',
-        campaign: 'share_content',
-      };
+  const requiredNumberOfCosponsors =
+    appConfiguration.data.attributes.settings.initiatives?.cosponsors_number;
+  const signedInUserIsAuthor =
+    typeof authorId === 'string' && typeof authUser?.data.id === 'string'
+      ? authorId === authUser?.data.id
+      : false;
+  const acceptedCosponsorships =
+    initiative.data.attributes.cosponsorships.filter(
+      (c) => c.status === 'accepted'
+    );
+  const showCosponsorshipReminder =
+    signedInUserIsAuthor && typeof requiredNumberOfCosponsors === 'number'
+      ? requiredNumberOfCosponsors > acceptedCosponsorships.length
+      : false;
 
   return (
     <Container className={className}>
+      {showCosponsorshipReminder &&
+        typeof requiredNumberOfCosponsors === 'number' && (
+          <CosponsorShipReminder
+            initiativeId={initiativeId}
+            requiredNumberOfCosponsors={requiredNumberOfCosponsors}
+          />
+        )}
       <InitiativeBanner initiativeHeaderImageLarge={initiativeHeaderImageLarge}>
         <InitiativeBannerContent>
           <MobileMoreActionContainer>
@@ -271,7 +292,18 @@ const Phone = ({
                 initiativeUrl,
                 initiativeTitle,
               })}
-              utmParams={utmParams}
+              utmParams={
+                !isNilOrError(authUser)
+                  ? {
+                      source: 'share_initiative',
+                      campaign: 'share_content',
+                      content: authUser.data.id,
+                    }
+                  : {
+                      source: 'share_initiative',
+                      campaign: 'share_content',
+                    }
+              }
             />
           </Box>
         )}
