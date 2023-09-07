@@ -739,8 +739,6 @@
   "app.containers.Admin.initiatives.granularPermissionsTitle": "Who can contribute?",
   "app.containers.Admin.initiatives.initiativeMinimumDaysError": "The minimum number of days needs to be at least 1.",
   "app.containers.Admin.initiatives.initiativeMinimumVotesError": "The minimum number of votes needs to be at least 2.",
-  "app.containers.Admin.initiatives.fieldVotingDaysLimit": "Days to reach voting threshold",
-  "app.containers.Admin.initiatives.fieldVotingThreshold": "Voting threshold",
   "app.containers.Admin.initiatives.initiativeSettingsFormError": "Something went wrong. Please try again.",
   "app.containers.Admin.initiatives.initiativeSettingsFormSave": "Save",
   "app.containers.Admin.initiatives.initiativeSettingsFormSaved": "Saved!",
