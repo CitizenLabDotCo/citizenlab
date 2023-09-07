@@ -47,6 +47,15 @@ Rails.application.configure do
   # ActionMailer::Base.deliveries array.
   config.action_mailer.delivery_method = :test
 
+  # Required to be able to use the url helpers in the mailers.
+  config.action_mailer.default_url_options = {
+    # For consistency, we use the same host as the test tenant.
+    # Unfortunately, we cannot use the `:test_tenant` factory here to get the host
+    # value dynamically, because the factory is not available yet at this point in the
+    # initialization process.
+    host: 'example.org'
+  }
+
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
 
