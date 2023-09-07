@@ -204,7 +204,7 @@ const FilterSelector = ({
     >
       {filterSelectorStyle === 'button' ? (
         <Button
-          height={isMobileOrSmaller ? '32px' : '38px'}
+          height={isMobileOrSmaller ? '32px' : '36px'}
           borderRadius="24px"
           onClick={toggleExpanded}
         >

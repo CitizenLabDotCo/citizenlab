@@ -48,7 +48,7 @@ const TopBar = memo<Props>(
         justifyContent="space-between"
         pb="14px"
         borderBottom="solid 1px #ccc"
-        mb="29px"
+        mb="28px"
         flexDirection={theme.isRtl ? 'row-reverse' : 'row'}
       >
         <Title color={'tenantText'} m="0px" my="auto" variant="h3" as="h1">
