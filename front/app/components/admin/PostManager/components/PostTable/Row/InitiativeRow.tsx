@@ -211,10 +211,11 @@ const InitiativeRow = ({
             {attrs.cosponsorships.filter((c) => c.status === 'accepted').length}
           </Cell>
         )}
-        <Cell>
-          {!isNilOrError(locale) &&
-            timeAgo(Date.parse(initiative.attributes.created_at), locale)}
-        </Cell>
+        {!isNilOrError(locale) && (
+          <Cell>
+            {timeAgo(Date.parse(initiative.attributes.created_at), locale)}
+          </Cell>
+        )}
       </StyledRow>
       <SubRow
         {...{
