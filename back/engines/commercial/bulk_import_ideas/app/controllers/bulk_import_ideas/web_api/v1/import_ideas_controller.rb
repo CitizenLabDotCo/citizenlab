@@ -39,8 +39,19 @@ module BulkImportIdeas
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'ideas.xlsx'
     end
 
-    def draft_ideas
-      ideas = Idea.draft.where(project_id: params[:id])
+    # Return ideas
+    def draft_project_ideas
+      render_draft_ideas(Idea.draft.where(project_id: params[:id], creation_phase_id: nil))
+    end
+
+    # Return surveys - only surveys use this end point
+    def draft_phase_ideas
+      render_draft_ideas(Idea.draft.where(creation_phase_id: params[:id]))
+    end
+
+    private
+
+    def render_draft_ideas(ideas)
       render json: linked_json(
         paginate(ideas),
         ::WebApi::V1::IdeaSerializer,
@@ -48,8 +59,6 @@ module BulkImportIdeas
         params: jsonapi_serializer_params
       )
     end
-
-    private
 
     def bulk_create_params
       # TODO: Add other params in here: tags/topics, user custom fields?

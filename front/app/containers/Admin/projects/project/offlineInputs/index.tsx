@@ -29,14 +29,14 @@ import { getFormValues } from 'containers/IdeasEditPage/utils';
 // typings
 import { FormData } from 'components/Form/typings';
 import { CLErrors } from 'typings';
-import { geocode } from 'utils/locationTools';
 
 const OfflineInputImporter = () => {
   const importPrintedFormsEnabled = useFeatureFlag({
     name: 'import_printed_forms',
   });
-  const { projectId } = useParams() as {
+  const { projectId, phaseId } = useParams() as {
     projectId: string;
+    phaseId: string;
   };
 
   const [ideaId, setIdeaId] = useState<string | null>(null);
@@ -53,6 +53,7 @@ const OfflineInputImporter = () => {
 
   const { schema, uiSchema } = useInputSchema({
     projectId,
+    phaseId,
   });
 
   if (!importPrintedFormsEnabled) return null;
@@ -97,11 +98,11 @@ const OfflineInputImporter = () => {
       ...supportedFormData
     } = formData;
 
-    const location_point_geojson =
-      typeof location_description === 'string' &&
-      location_description.length > 0
-        ? await geocode(location_description)
-        : undefined;
+    // const location_point_geojson =
+    //   typeof location_description === 'string' &&
+    //   location_description.length > 0
+    //     ? await geocode(location_description)
+    //     : undefined;
 
     try {
       await updateIdea({
@@ -110,7 +111,7 @@ const OfflineInputImporter = () => {
           publication_status: 'published',
           ...supportedFormData,
           ...(location_description ? { location_description } : {}),
-          ...(location_point_geojson ? { location_point_geojson } : {}),
+          // ...(location_point_geojson ? { location_point_geojson } : {}),
         },
       });
     } catch (e) {

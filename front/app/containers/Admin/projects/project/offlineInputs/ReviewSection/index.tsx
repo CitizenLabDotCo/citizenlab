@@ -72,7 +72,7 @@ const ReviewSection = ({
   };
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
 
-  const { data: ideas, isLoading } = useImportedIdeas({ projectId });
+  const { data: ideas, isLoading } = useImportedIdeas({ projectId, phaseId });
   const { data: idea } = useIdeaById(ideaId ?? undefined);
   const { data: author } = useUserById(
     idea?.data.relationships.author?.data?.id,
@@ -130,8 +130,6 @@ const ReviewSection = ({
       </Box>
     );
   }
-
-  // console.log(ideaMetadata?.data.attributes.import_type === 'pdf');
 
   const pages =
     ideaMetadata?.data.attributes.import_type === 'pdf'

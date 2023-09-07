@@ -217,6 +217,7 @@ module BulkImportIdeas
     def add_phase(idea_row, idea_attributes)
       if idea_row[:phase_id]
         phase = Phase.find(idea_row[:phase_id])
+        idea_attributes[:creation_phase_id] = phase.id if phase&.native_survey?
       else
         return if idea_row[:phase_rank].blank?
 

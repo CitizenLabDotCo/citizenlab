@@ -84,28 +84,59 @@ resource 'BulkImportIdeasImportIdeas' do
         end
       end
 
-      get 'web_api/v1/projects/:id/import_ideas/draft_ideas' do
-        let!(:draft_ideas) do
-          create_list(:idea, 5, project: project, publication_status: 'draft', custom_field_values: { 'not_visible': 'value'}).each do |idea|
-            idea.update! idea_import: create(:idea_import, idea: idea)
+      context 'draft ideas' do
+        get 'web_api/v1/projects/:id/import_ideas/draft_ideas' do
+          let!(:draft_ideas) do
+            create_list(:idea, 5, project: project, publication_status: 'draft', custom_field_values: { 'not_visible': 'value'}).each do |idea|
+              idea.update! idea_import: create(:idea_import, idea: idea)
+            end
+          end
+          let!(:published_ideas) { create_list(:idea, 2, project: project) }
+
+          example_request 'Get the imported draft ideas for a project' do
+            assert_status 200
+            expect(response_data.count).to eq 5
+
+            # Should return only draft ideas and ignore published ideas
+            expect(response_data.pluck(:id)).to match_array draft_ideas.pluck(:id)
+            expect(response_data.pluck(:id)).not_to match_array published_ideas.pluck(:id)
+
+            # Relationships
+            expect(response_data.first.dig(:relationships, :idea_import, :data)).not_to be_nil
+            expect(json_response_body[:included].pluck(:type)).to include 'idea_import'
+
+            # Should return ALL custom_fields for draft even if not visible
+            expect(response_data.first[:attributes].keys).to include :not_visible
           end
         end
-        let!(:published_ideas) { create_list(:idea, 2, project: project) }
 
-        example_request 'Get the imported draft ideas for a project' do
-          assert_status 200
-          expect(response_data.count).to eq 5
+        get 'web_api/v1/phases/:id/import_ideas/draft_ideas' do
+          let(:project) { create(:project_with_active_native_survey_phase) }
+          let(:phase) { project.phases.first }
+          let!(:draft_ideas) do
+            create_list(:idea, 5, project: project, publication_status: 'draft').each do |idea|
+              idea.update! idea_import: create(:idea_import, idea: idea)
+            end
+          end
 
-          # Should return only draft ideas and ignore published ideas
-          expect(response_data.pluck(:id)).to match_array draft_ideas.pluck(:id)
-          expect(response_data.pluck(:id)).not_to match_array published_ideas.pluck(:id)
+          let(:id) { phase.id }
 
-          # Relationships
-          expect(response_data.first.dig(:relationships, :idea_import, :data)).not_to be_nil
-          expect(json_response_body[:included].pluck(:type)).to include 'idea_import'
+          before do
+            draft_ideas[0].update! creation_phase: phase
+            draft_ideas[1].update! creation_phase: phase
+          end
 
-          # Should return ALL custom_fields for draft even if not visible
-          expect(response_data.first[:attributes].keys).to include :not_visible
+          example_request 'Get the imported draft ideas (surveys) for a phase' do
+            assert_status 200
+
+            # Should return only the 2 draft ideas added to the phase
+            expect(response_data.count).to eq 2
+            expect(response_data.pluck(:id)).to match_array [draft_ideas[0][:id], draft_ideas[1][:id]]
+
+            # Relationships
+            expect(response_data.first.dig(:relationships, :idea_import, :data)).not_to be_nil
+            expect(json_response_body[:included].pluck(:type)).to include 'idea_import'
+          end
         end
       end
 
