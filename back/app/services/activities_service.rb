@@ -8,7 +8,7 @@ class ActivitiesService
 
     create_phase_started_activities now, last_time
     create_phase_upcoming_activities now, last_time
-    create_event_upcoming_activities now, last_time
+    create_event_upcoming_activities now
     create_invite_not_accepted_since_3_days_activities now, last_time
     create_phase_ending_soon_activities now
     create_basket_not_submitted_activities now
@@ -43,7 +43,7 @@ class ActivitiesService
     end
   end
 
-  def create_event_upcoming_activities(now, last_time)
+  def create_event_upcoming_activities(now)
     Event.where(start_at: (now + (24.hours - 30.minutes))..(now + (24.hours + 30.minutes))).each do |event|
       LogActivityJob.perform_later(event, 'upcoming', nil, now.to_i) if !Activity.exists?(item: event, action: 'upcoming')
     end
