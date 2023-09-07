@@ -41,10 +41,10 @@ module IdCriipto
 
     def config_parameters_schema
       {
-        method_name_multiloc: {
-          '$ref': '#/definitions/multiloc_string',
-          description: 'The name this verification method will have in the UI'
-        },
+        # method_name_multiloc: {
+        #   '$ref': '#/definitions/multiloc_string',
+        #   description: 'The name this verification method will have in the UI'
+        # },
         identity_source: {
           private: true,
           type: 'string',
