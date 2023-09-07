@@ -15,6 +15,7 @@ import { nativeSurveyConfig } from '../utils';
 import { saveSurveyAsPDF } from '../saveSurveyAsPDF';
 import { isNilOrError } from 'utils/helperUtils';
 import { SHOW_PRINT_FUNCTIONALITY } from '../flag';
+import { API_PATH } from 'containers/App/constants';
 
 const FormBuilder = lazy(() => import('components/FormBuilder/edit'));
 
@@ -31,6 +32,9 @@ const SurveyFormBuilder = () => {
   const locale = useLocale();
 
   const goBackUrl = `/admin/projects/${projectId}/native-survey`;
+  const downloadPdfLink = phaseId
+    ? `${API_PATH}/phases/${phaseId}/custom_fields/to_pdf`
+    : `${API_PATH}/projects/${projectId}/custom_fields/to_pdf`;
 
   const handleDownloadPDF = () => setExportModalOpen(true);
 
@@ -42,7 +46,6 @@ const SurveyFormBuilder = () => {
     email: boolean;
   }) => {
     if (isNilOrError(locale)) return;
-    const downloadPdfLink = 'path';
     await saveSurveyAsPDF({ downloadPdfLink, locale, name, email });
   };
 
