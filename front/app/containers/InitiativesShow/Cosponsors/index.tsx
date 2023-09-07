@@ -6,6 +6,7 @@ import BorderContainer from '../BorderContainer';
 import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import useAuthUser from 'api/me/useAuthUser';
+import { isAdmin } from 'services/permissions/roles';
 
 interface Props {
   initiativeId: string;
@@ -16,34 +17,30 @@ const Cosponsors = ({ initiativeId }: Props) => {
   const { data: authUser } = useAuthUser();
   const { formatMessage } = useIntl();
 
-  if (!initiative || !authUser) return null;
+  if (!initiative) return null;
 
   const authorId = initiative.data.relationships.author.data?.id;
-  const signedInUserIsAuthor = authorId === authUser.data.id;
-  const acceptedCosponsorships =
-    initiative.data.attributes.cosponsorships.filter(
-      (c) => c.status === 'accepted'
-    );
+  const authUserId = authUser?.data.id;
+  const authUserIsAuthor =
+    typeof authUserId === 'string' ? authUserId === authorId : false;
+  const showPendingInvites =
+    authUserIsAuthor || (authUser && isAdmin({ data: authUser.data }));
 
   const show = () => {
-    if (signedInUserIsAuthor) {
+    if (showPendingInvites) {
+      // Any cosponsorhips (accepted or pending)
       return initiative.data.attributes.cosponsorships.length > 0;
     } else {
-      return acceptedCosponsorships.length > 0;
+      // only accepted
+      return (
+        initiative.data.attributes.cosponsorships.filter(
+          (c) => c.status === 'accepted'
+        ).length > 0
+      );
     }
   };
 
-  const proposalsToDisplay = () => {
-    if (signedInUserIsAuthor) {
-      return initiative.data.attributes.cosponsorships;
-    } else {
-      return acceptedCosponsorships;
-    }
-  };
-
-  const showComponent = show();
-
-  if (!showComponent) {
+  if (!show()) {
     return null;
   }
 
@@ -52,7 +49,15 @@ const Cosponsors = ({ initiativeId }: Props) => {
       <Title variant="h5" as="h2">
         {formatMessage(messages.titleCosponsorsTile)}
       </Title>
-      <ListOfCosponsors cosponsorships={proposalsToDisplay()} />
+      <ListOfCosponsors
+        cosponsorships={
+          showPendingInvites
+            ? initiative.data.attributes.cosponsorships
+            : initiative.data.attributes.cosponsorships.filter(
+                (c) => c.status === 'accepted'
+              )
+        }
+      />
     </BorderContainer>
   );
 };
