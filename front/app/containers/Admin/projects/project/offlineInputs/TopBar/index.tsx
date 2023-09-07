@@ -13,7 +13,7 @@ import GoBackButton from 'components/UI/GoBackButton';
 // i18n
 import useLocalize from 'hooks/useLocalize';
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 
 // styling
 import { stylingConsts, colors } from 'utils/styleUtils';
