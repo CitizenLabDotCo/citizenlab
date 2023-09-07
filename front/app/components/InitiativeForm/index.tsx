@@ -75,7 +75,8 @@ export type Props = {
   initiativeImage?: IInitiativeImageData;
   initiativeFiles?: IInitiativeFileData[];
 };
-export const MAX_NUMBER_OF_COSPONSORS = 10;
+
+const MAX_NUMBER_OF_COSPONSORS = 10;
 
 const InitiativeForm = ({
   onSubmit,
