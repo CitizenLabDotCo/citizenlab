@@ -19,11 +19,11 @@ module EmailCampaigns
           project_name: project_name,
           statistics: {
             activities: {
-              new_ideas_count: 3,
-              new_comments_count: 2
+              new_ideas_increase: 3,
+              new_comments_increase: 2
             },
             users: {
-              new_participants_count: 0
+              new_participants_increase: 0
             }
           },
           top_ideas: top_ideas.map do |idea|

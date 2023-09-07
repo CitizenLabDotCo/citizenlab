@@ -108,20 +108,20 @@ module EmailCampaigns
 
     def content_worth_sending?(_)
       [
-        statistics.dig(:activities, :new_ideas_count),
-        statistics.dig(:activities, :new_comments_count),
-        statistics.dig(:users, :new_users_count)
+        statistics.dig(:activities, :new_ideas_increase),
+        statistics.dig(:activities, :new_comments_increase),
+        statistics.dig(:users, :new_users_increase)
       ].any?(&:positive?)
     end
 
     def statistics
       @statistics ||= {
         activities: {
-          new_ideas_count: stat_increase(Idea.pluck(:published_at).compact),
-          new_comments_count: stat_increase(Comment.pluck(:created_at))
+          new_ideas_increase: stat_increase(Idea.pluck(:published_at).compact),
+          new_comments_increase: stat_increase(Comment.pluck(:created_at))
         },
         users: {
-          new_users_count: stat_increase(User.pluck(:registration_completed_at).compact)
+          new_users_increase: stat_increase(User.pluck(:registration_completed_at).compact)
         }
       }
     end
@@ -218,12 +218,12 @@ module EmailCampaigns
       new_reactions = Reaction.where(reactable_id: idea_ids).where('created_at > ?', Time.now - days_ago)
       new_likes_counts = new_reactions.where(mode: 'up').group(:reactable_id).count
       new_dislikes_counts = new_reactions.where(mode: 'down').group(:reactable_id).count
-      new_comments_counts = Comment.where(post_id: idea_ids).where('created_at > ?', Time.now - days_ago).group(:post_id).count
+      new_comments_increases = Comment.where(post_id: idea_ids).where('created_at > ?', Time.now - days_ago).group(:post_id).count
 
       idea_ids.each_with_object({}) do |idea_id, object|
         likes = (new_likes_counts[idea_id] || 0)
         dislikes = (new_dislikes_counts[idea_id] || 0)
-        comments        = (new_comments_counts[idea_id] || 0)
+        comments        = (new_comments_increases[idea_id] || 0)
         total           = (likes + dislikes + comments)
         object[idea_id] = { likes: likes, dislikes: dislikes, comments: comments, total: total }
       end

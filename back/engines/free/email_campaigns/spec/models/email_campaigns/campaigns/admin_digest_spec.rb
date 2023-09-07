@@ -19,10 +19,10 @@ RSpec.describe EmailCampaigns::Campaigns::AdminDigest do
       command = campaign.generate_commands(recipient: admin).first
 
       expect(
-        command.dig(:event_payload, :statistics, :activities, :new_ideas_count)
+        command.dig(:event_payload, :statistics, :activities, :new_ideas_increase)
       ).to eq(new_ideas.size)
       expect(
-        command.dig(:event_payload, :statistics, :activities, :new_comments_count)
+        command.dig(:event_payload, :statistics, :activities, :new_comments_increase)
       ).to eq(0)
       expect(
         command.dig(:event_payload, :top_project_ideas).flat_map { |tpi| tpi[:top_ideas].pluck(:id) }

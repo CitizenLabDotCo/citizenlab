@@ -119,23 +119,23 @@ module EmailCampaigns
       comments = Comment.where(post_id: ideas.map(&:id))
       {
         activities: {
-          new_ideas_count: stat_increase(
+          new_ideas_increase: stat_increase(
             ideas.filter_map(&:published_at)
           ),
-          new_comments_count: stat_increase(
+          new_comments_increase: stat_increase(
             comments.filter_map(&:created_at)
           )
         },
         users: {
-          new_participants_count: participants_increase
+          new_participants_increase: participants_increase
         }
       }
     end
 
     def zero_statistics?(statistics)
-      ((statistics.dig(:activities, :new_ideas_count) == 0) &&
-         (statistics.dig(:activities, :new_comments_count) == 0) &&
-         (statistics.dig(:users, :new_participants_count) == 0)
+      ((statistics.dig(:activities, :new_ideas_increase) == 0) &&
+         (statistics.dig(:activities, :new_comments_increase) == 0) &&
+         (statistics.dig(:users, :new_participants_increase) == 0)
       )
     end
 
@@ -181,8 +181,8 @@ module EmailCampaigns
 
     def idea_activity_count(idea)
       new_reactions_count = idea.reactions.where('created_at > ?', Time.now - days_ago).count
-      new_comments_count = idea.comments.where('created_at > ?', Time.now - days_ago).count
-      new_reactions_count + new_comments_count
+      new_comments_increase = idea.comments.where('created_at > ?', Time.now - days_ago).count
+      new_reactions_count + new_comments_increase
     end
 
     protected

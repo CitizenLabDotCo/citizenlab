@@ -26,10 +26,10 @@ RSpec.describe 'EmailCampaigns::Campaigns::ModeratorDigest', skip: skip_reason d
       command = campaign.generate_commands(recipient: moderator).first
 
       expect(
-        command.dig(:event_payload, :statistics, :activities, :new_ideas_count)
+        command.dig(:event_payload, :statistics, :activities, :new_ideas_increase)
       ).to eq(new_ideas.size)
       expect(
-        command.dig(:event_payload, :statistics, :activities, :new_comments_count)
+        command.dig(:event_payload, :statistics, :activities, :new_comments_increase)
       ).to eq(1)
       expect(
         command.dig(:event_payload, :top_ideas).pluck(:id)
@@ -109,20 +109,20 @@ RSpec.describe 'EmailCampaigns::Campaigns::ModeratorDigest', skip: skip_reason d
       pp campaign.send(:statistics, project)
 
       stats = { activities:
-                { new_ideas_count: 0,
-                  new_comments_count: 0 },
+                { new_ideas_increase: 0,
+                  new_comments_increase: 0 },
                 users:
-                { new_participants_count: 0 } }
+                { new_participants_increase: 0 } }
 
       expect(campaign.send(:zero_statistics?, stats)).to be true
     end
 
     it 'returns false when significant stats' do
       stats = { activities:
-                { new_ideas_count: 1,
-                  new_comments_count: 0 },
+                { new_ideas_increase: 1,
+                  new_comments_increase: 0 },
                 users:
-                { new_participants_count: 0 } }
+                { new_participants_increase: 0 } }
 
       expect(campaign.send(:zero_statistics?, stats)).to be false
     end
