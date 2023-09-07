@@ -137,9 +137,9 @@ export default defineMessages({
     defaultMessage: 'Manage cosponsorship invitations',
   },
   numberOfCosponsorsNotYetMet: {
-    id: 'app.containers.InitiativesShow.numberOfCosponsorsNotYetMet1',
+    id: 'app.containers.InitiativesShow.numberOfCosponsorsNotYetMet',
     defaultMessage:
-      'Your proposal needs {requiredNumberOfCosponsors} accepted cosponsors. Until then, it will not be considered. {manageInvitationsLink}.',
+      'Your proposal needs {requiredNumberOfCosponsors} accepted cosponsorships. Until then, it will not be considered. {manageInvitationsLink}.',
   },
 
   pending: {
