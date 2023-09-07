@@ -23,7 +23,7 @@ const ImportModal = ({ open, onClose }: Props) => {
       close={onClose}
       header={
         <Title variant="h2" color="primary" px="24px" m="0">
-          <FormattedMessage {...messages.ideaImporter} />
+          <FormattedMessage {...messages.inputImporter} />
         </Title>
       }
       niceHeader
