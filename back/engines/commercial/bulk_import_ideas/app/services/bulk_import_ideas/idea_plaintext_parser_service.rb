@@ -2,7 +2,6 @@
 
 module BulkImportIdeas
   class IdeaPlaintextParserService
-    QUESTION_TYPES = %w[select multiselect text text_multiloc multiline_text html_multiloc]
     TEXT_FIELD_TYPES = %w[text text_multiloc]
     MULTILINE_FIELD_TYPES = %w[multiline_text html_multiloc]
 
@@ -10,16 +9,9 @@ module BulkImportIdeas
     EMPTY_SELECT_CIRCLES = ['O', '○']
     EMPTY_MULTISELECT_SQUARES = ['☐']
 
-    def initialize(project_id, locale, phase_id)
-      @project = Project.find(project_id)
-      @phase = phase_id ? @project.phases.find(phase_id) : TimelineService.new.current_phase(@project)
-      @custom_fields = IdeaCustomFieldsService.new(
-        Factory.instance.participation_method_for(@phase || @project).custom_form
-      )
-        .enabled_fields
-        .select { |field| QUESTION_TYPES.include? field.input_type }
-
-      @locale = locale || @locale
+    def initialize(custom_fields, locale)
+      @custom_fields = custom_fields
+      @locale = locale
 
       @optional_copy = I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.optional') }
       @choose_as_many_copy = I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.choose_as_many') }

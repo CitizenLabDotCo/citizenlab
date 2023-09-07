@@ -231,7 +231,7 @@ describe BulkImportIdeas::ImportIdeasService do
         }
       ]
 
-      service.import_ideas(idea_rows, import_as_draft: true)
+      service.import_ideas idea_rows
 
       expect(Idea.count).to eq 1
       idea = Idea.first
@@ -343,7 +343,7 @@ describe BulkImportIdeas::ImportIdeasService do
           project_id: project.id
         }
       ]
-      service.import_ideas(idea_rows, import_as_draft: true)
+      service.import_ideas idea_rows
 
       expect(project.reload.ideas.count).to eq 2
     end
@@ -472,7 +472,7 @@ describe BulkImportIdeas::ImportIdeasService do
             user_email: 'surveyimport@citizenlab.co'
           }
         ]
-        service.import_ideas idea_rows, import_as_draft: true
+        service.import_ideas idea_rows
 
         expect(Idea.count).to eq 1
         expect(User.count).to eq 2

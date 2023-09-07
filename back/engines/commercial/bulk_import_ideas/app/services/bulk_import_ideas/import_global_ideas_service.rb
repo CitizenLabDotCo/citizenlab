@@ -69,5 +69,9 @@ module BulkImportIdeas
       end
       idea_rows.compact
     end
+
+    def import_as_draft?
+      false
+    end
   end
 end

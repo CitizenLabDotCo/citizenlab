@@ -20,18 +20,19 @@ module BulkImportIdeas
       @all_projects = Project.all
       @all_topics = Topic.all
       @import_user = current_user
+      @form_fields = []
       @project = nil
       @phase = nil
       @file = nil
     end
 
-    def import_ideas(idea_rows, import_as_draft: false)
+    def import_ideas(idea_rows)
       raise Error.new 'bulk_import_ideas_maximum_ideas_exceeded', value: DEFAULT_MAX_IDEAS if idea_rows.size > DEFAULT_MAX_IDEAS
 
       ideas = []
       ActiveRecord::Base.transaction do
         idea_rows.each do |idea_row|
-          idea = import_idea idea_row, import_as_draft
+          idea = import_idea idea_row
           Rails.logger.info { "Created #{idea.id}" }
           ideas << idea
         end
@@ -63,17 +64,21 @@ module BulkImportIdeas
       nil
     end
 
+    def import_as_draft?
+      true
+    end
+
     private
 
     attr_reader :all_projects, :all_topics
 
-    def import_idea(idea_row, import_as_draft)
+    def import_idea(idea_row)
       idea_attributes = {}
-      add_title_multiloc idea_row, idea_attributes, import_as_draft
-      add_body_multiloc idea_row, idea_attributes, import_as_draft
+      add_title_multiloc idea_row, idea_attributes
+      add_body_multiloc idea_row, idea_attributes
       add_project idea_row, idea_attributes
       add_published_at idea_row, idea_attributes
-      add_publication_status idea_row, idea_attributes, import_as_draft
+      add_publication_status idea_row, idea_attributes
       add_location idea_row, idea_attributes
       add_phase idea_row, idea_attributes
       add_topics idea_row, idea_attributes
@@ -91,15 +96,15 @@ module BulkImportIdeas
       idea
     end
 
-    def add_title_multiloc(idea_row, idea_attributes, draft)
-      raise Error.new 'bulk_import_ideas_blank_title', row: idea_row[:id] if idea_row[:title_multiloc].blank? && !draft
+    def add_title_multiloc(idea_row, idea_attributes)
+      raise Error.new 'bulk_import_ideas_blank_title', row: idea_row[:id] if idea_row[:title_multiloc].blank? && !import_as_draft?
 
       title = idea_row[:title_multiloc] || {}
       idea_attributes[:title_multiloc] = title
     end
 
-    def add_body_multiloc(idea_row, idea_attributes, draft)
-      raise Error.new 'bulk_import_ideas_blank_body', row: idea_row[:id] if idea_row[:body_multiloc].blank? && !draft
+    def add_body_multiloc(idea_row, idea_attributes)
+      raise Error.new 'bulk_import_ideas_blank_body', row: idea_row[:id] if idea_row[:body_multiloc].blank? && !import_as_draft?
 
       body = idea_row[:body_multiloc] || {}
       idea_attributes[:body_multiloc] = body
@@ -182,8 +187,8 @@ module BulkImportIdeas
       idea_attributes[:published_at] = published_at
     end
 
-    def add_publication_status(_idea_row, idea_attributes, draft)
-      idea_attributes[:publication_status] = draft ? 'draft' : 'published'
+    def add_publication_status(_idea_row, idea_attributes)
+      idea_attributes[:publication_status] = import_as_draft? ? 'draft' : 'published'
     end
 
     def add_location(idea_row, idea_attributes)
@@ -293,7 +298,7 @@ module BulkImportIdeas
       pdf_file = decode_base64 file
       google_forms_service = GoogleFormParserService.new pdf_file
       IdeaPlaintextParserService.new(
-        @project.id, @locale, @phase&.id
+        @form_fields, @locale
       ).parse_text(google_forms_service.raw_text_page_array)
     end
 
