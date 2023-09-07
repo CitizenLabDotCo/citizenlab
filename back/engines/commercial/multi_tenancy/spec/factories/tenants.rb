@@ -45,8 +45,7 @@ FactoryBot.define do
             'nl-NL' => 'Luik',
             'fr-FR' => 'Liege'
           },
-          organization_type: 'medium_city',
-          onboarding: true
+          organization_type: 'medium_city'
         },
         initiatives: {
           enabled: true,
