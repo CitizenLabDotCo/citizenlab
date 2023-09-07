@@ -1,21 +1,21 @@
 #!/usr/bin/env ruby
 
-# Despite its name, this script can be used in general to copy-paste any code, not only campaigns.
-#
 # Usage:
 # back/bin/add_campaign_and_notification initiative_resubmitted_for_review new_cosponsor_added
 #
-# First argument is the name of a campaign (underscored) that should be used as an example.
-# Second argument is the name of a campaign (underscored) that should be added.
+# First argument is the name of a campaign (underscored) that should be used as an example (source).
+# Second argument is the name of a campaign (underscored) that should be added (target).
 #
-# This script copies all git-added files containing the name of the example campaign
-# and replaces the example campaign name with the result campaign name.
-# In all git-added files that contain a line with the example campaign name, it adds the same line,
-# but with the result campaign name.
+# This script copies all git-added files containing the name of the source campaign
+# and replaces the source campaign name with the target campaign name.
+# In all git-added files that contain a line with the source campaign name, it adds the same line,
+# but with the target campaign name.
+#
+# Despite its name, this script can be used in general to copy-paste any code, not only campaigns.
 #
 # Requirements:
 # - Ruby and installed activesupport gem
-# - All example files should be committed to git and not deleted
+# - All source files should be committed to git and not deleted
 
 require 'fileutils'
 require 'active_support/all'
@@ -27,13 +27,13 @@ def system!(*args)
   system(*args) || abort("\n== Command #{args} failed ==")
 end
 
-example_campaign = ARGV[0] # underscored
-result_campaign = ARGV[1] # underscored
+source_campaign = ARGV[0] # underscored
+target_campaign = ARGV[1] # underscored
 
-def replace_campaign(content, example_campaign, result_campaign)
-  content.gsub(example_campaign, result_campaign)
-    .gsub(example_campaign.camelize, result_campaign.camelize)
-    .gsub(example_campaign.camelize(:lower), result_campaign.camelize(:lower))
+def replace_campaign(content, source_campaign, target_campaign)
+  content.gsub(source_campaign, target_campaign)
+    .gsub(source_campaign.camelize, target_campaign.camelize)
+    .gsub(source_campaign.camelize(:lower), target_campaign.camelize(:lower))
 end
 
 def includes_campaign?(content, campaign)
@@ -43,13 +43,13 @@ end
 
 FileUtils.chdir APP_ROOT do
   all_files = `git ls-files`.split("\n")
-  new_files = all_files.select { |file| includes_campaign?(file, example_campaign) }
+  new_files = all_files.select { |file| includes_campaign?(file, source_campaign) }
 
-  new_files.each do |example_file|
-    result_file = replace_campaign(example_file, example_campaign, result_campaign)
+  new_files.each do |source_file|
+    result_file = replace_campaign(source_file, source_campaign, target_campaign)
     FileUtils.mkdir_p File.dirname(result_file)
 
-    result_content = replace_campaign(File.read(example_file), example_campaign, result_campaign)
+    result_content = replace_campaign(File.read(source_file), source_campaign, target_campaign)
 
     File.write(result_file, result_content)
   end
@@ -59,7 +59,7 @@ FileUtils.chdir APP_ROOT do
       (file.include?('/translations/') && !file.include?('/translations/en.json'))
       false
     else
-      includes_campaign?(File.read(file), example_campaign)
+      includes_campaign?(File.read(file), source_campaign)
     end
   rescue ArgumentError => e
     raise unless e.message == 'invalid byte sequence in UTF-8'
@@ -68,8 +68,8 @@ FileUtils.chdir APP_ROOT do
   files_to_edit.each do |file|
     lines = File.read(file).split("\n")
     content = lines.each_with_index do |line, i|
-      if includes_campaign?(line, example_campaign)
-        lines[i] = [replace_campaign(line, example_campaign, result_campaign), line].join("\n")
+      if includes_campaign?(line, source_campaign)
+        lines[i] = [replace_campaign(line, source_campaign, target_campaign), line].join("\n")
       end
     end.join("\n") + "\n"
     File.write(file, content)
