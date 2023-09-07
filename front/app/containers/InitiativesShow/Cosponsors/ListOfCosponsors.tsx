@@ -10,46 +10,58 @@ interface Props {
   cosponsorships: IInitiativeCosponsorship[];
 }
 
-const ListOfCosponsors = ({ cosponsorships }: Props) => {
+const AcceptedCosponsor = ({
+  cosponsorship,
+}: {
+  cosponsorship: IInitiativeCosponsorship;
+}) => {
+  return (
+    <Box display="flex" alignItems="center">
+      <Box mr="4px">
+        <Avatar userId={cosponsorship.user_id} size={32} />
+      </Box>
+      <Box mr="4px">
+        <UserName userId={cosponsorship.user_id} isLinkToProfile />
+      </Box>
+    </Box>
+  );
+};
+
+const PendingCosponsor = ({
+  cosponsorship,
+}: {
+  cosponsorship: IInitiativeCosponsorship;
+}) => {
   const { formatMessage } = useIntl();
+
+  return (
+    <Box display="flex" alignItems="center">
+      <Box mr="4px">
+        <Avatar userId={cosponsorship.user_id} size={32} />
+      </Box>
+      <Box mr="4px">
+        <UserName userId={cosponsorship.user_id} isLinkToProfile italic />
+      </Box>
+      <Text fontStyle="italic">({formatMessage(messages.pending)})</Text>
+    </Box>
+  );
+};
+
+const ListOfCosponsors = ({ cosponsorships }: Props) => {
   const acceptedCosponsorships = cosponsorships.filter(
     (c) => c.status === 'accepted'
   );
   const pendingCosponsorships = cosponsorships.filter(
     (c) => c.status === 'pending'
   );
+
   return (
     <>
       {acceptedCosponsorships.map((cosponsorship, index) => {
-        return (
-          <Box key={index} display="flex" alignItems="center">
-            <Box mr="4px">
-              <Avatar userId={cosponsorship.user_id} size={32} />
-            </Box>
-            <Box mr="4px">
-              <UserName userId={cosponsorship.user_id} isLinkToProfile />
-            </Box>
-          </Box>
-        );
+        return <AcceptedCosponsor cosponsorship={cosponsorship} key={index} />;
       })}
       {pendingCosponsorships.map((cosponsorship, index) => {
-        return (
-          <Box key={index} display="flex" alignItems="center">
-            <Box mr="4px">
-              <Avatar userId={cosponsorship.user_id} size={32} />
-            </Box>
-            <Box mr="4px">
-              <UserName userId={cosponsorship.user_id} isLinkToProfile italic />
-            </Box>
-            {cosponsorship.status === 'pending' && (
-              <>
-                <Text fontStyle="italic">
-                  ({formatMessage(messages.pending)})
-                </Text>
-              </>
-            )}
-          </Box>
-        );
+        return <PendingCosponsor cosponsorship={cosponsorship} key={index} />;
       })}
     </>
   );
