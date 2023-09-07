@@ -213,6 +213,7 @@ en:
       cta_accept_invitation: 'Accept your invitation'
       invitation_header: 'You are invited!'
       invitation_header_message: '%{organizationName} invited you to their participation platform.'
+      invitation_expiry_message: 'This invitation will expire in %{expiryDays} days.'
       preheader: '%{organizationName} sent you an invite to join their participation platform.'
       subject: 'You are invited to join the platform of %{organizationName}'
     initiative_published:

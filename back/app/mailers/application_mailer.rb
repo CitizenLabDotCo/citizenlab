@@ -16,7 +16,7 @@ class ApplicationMailer < ActionMailer::Base
     :text_direction
 
   helper_method :organization_name, :recipient_name,
-    :url_service, :multiloc_service, :organization_name,
+    :url_service, :multiloc_service, :invite_expiry_days,
     :loc, :localize_for_recipient, :recipient_first_name
 
   helper_method :unsubscribe_url, :terms_conditions_url, :privacy_policy_url, :home_url, :logo_url,
@@ -160,6 +160,10 @@ class ApplicationMailer < ActionMailer::Base
 
   def organization_name
     @organization_name ||= localize_for_recipient(app_settings.core.organization_name)
+  end
+
+  def invite_expiry_days
+    Invite::EXPIRY_DAYS
   end
 
   def app_configuration
