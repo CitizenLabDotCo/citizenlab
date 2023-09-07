@@ -17,12 +17,14 @@ import {
   SectionDescription,
 } from 'components/admin/Section';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import { IconTooltip } from '@citizenlab/cl2-component-library';
+import { IconTooltip, Box } from '@citizenlab/cl2-component-library';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import CustomFieldSettings from './CustomFieldSettings';
 import ToggleUserConfirmation from './ToggleUserConfirmation';
 import ToggleShowFollowPreferences from './ToggleShowFollowPreferences';
 import CustomFieldsSignupText from './CustomFieldsSignupText';
+import Topics from 'components/Topics';
+import Areas from 'components/Areas';
 
 // i18n
 import messages from 'containers/Admin/settings/messages';
@@ -208,6 +210,16 @@ const SettingsRegistrationTab = () => {
               }}
             />
           </form>
+          <Box w="500px">
+            <SubSectionTitle>
+              <FormattedMessage {...messages.selectOnboardingTopics} />
+            </SubSectionTitle>
+            <Topics action="updateOnboardingPreferences" />
+            <SubSectionTitle>
+              <FormattedMessage {...messages.selectOnboardingAreas} />
+            </SubSectionTitle>
+            <Areas action="updateOnboardingPreferences" />
+          </Box>
         </SignUpFieldsSection>
         <CustomFieldSettings />
       </>
