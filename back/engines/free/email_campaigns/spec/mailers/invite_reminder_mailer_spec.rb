@@ -42,7 +42,7 @@ RSpec.describe EmailCampaigns::InviteReminderMailer do
 
     it 'renders the expiry message' do
       expect(mail.body.encoded)
-        .to match('This invitation will expire in approximately 4 days and 21 hours.')
+        .to match('This invitation expires in approximately 4 days and 21 hours.')
     end
 
     it 'assigns organisation name' do
