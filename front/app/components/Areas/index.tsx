@@ -1,15 +1,20 @@
 import React from 'react';
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
-import Area from './Area';
+import UpdateFollowArea from './UpdateFollowArea';
+import UpdateOnboardingArea from './UpdateOnboardingArea';
 import useAreas from 'api/areas/useAreas';
 
 interface Props {
-  showHomePageAreas?: boolean;
+  showOnboardingAreas?: boolean;
+  action?: 'updateFollowPreferences' | 'updateOnboardingPreferences';
 }
 
-const Areas = ({ showHomePageAreas = false }: Props) => {
+const Areas = ({
+  showOnboardingAreas,
+  action = 'updateFollowPreferences',
+}: Props) => {
   const { data: areas, isLoading } = useAreas({
-    forHomepageFilter: showHomePageAreas,
+    forOnboarding: showOnboardingAreas,
     sort: 'projects_count',
   });
 
@@ -19,9 +24,13 @@ const Areas = ({ showHomePageAreas = false }: Props) => {
 
   return areas && areas.data.length > 0 ? (
     <Box display="flex" gap="20px" width="100%" flexWrap="wrap">
-      {areas.data.map((area) => (
-        <Area area={area} key={area.id} />
-      ))}
+      {areas.data.map((area) => {
+        return action === 'updateOnboardingPreferences' ? (
+          <UpdateOnboardingArea key={area.id} area={area} />
+        ) : (
+          <UpdateFollowArea key={area.id} area={area} />
+        );
+      })}
     </Box>
   ) : null;
 };

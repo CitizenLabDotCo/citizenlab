@@ -12,7 +12,7 @@ interface Props {
   area: IAreaData;
 }
 
-const Area = ({ area }: Props) => {
+const UpdateFollowArea = ({ area }: Props) => {
   const { mutate: addFollower, isLoading: isAddingFollower } = useAddFollower();
   const { mutate: deleteFollower, isLoading: isDeletingFollower } =
     useDeleteFollower();
@@ -67,4 +67,4 @@ const Area = ({ area }: Props) => {
   );
 };
 
-export default Area;
+export default UpdateFollowArea;
