@@ -267,6 +267,14 @@ const createAdminProjectsRoutes = () => {
               </PageLoading>
             ),
           },
+          {
+            path: 'phases/:phaseId/offline-inputs',
+            element: (
+              <PageLoading>
+                <OfflineInputImporter />
+              </PageLoading>
+            ),
+          },
           ...moduleConfiguration.routes['admin.projects.project'],
         ],
       },

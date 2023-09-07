@@ -37,7 +37,6 @@ import { saveSurveyAsPDF } from '../saveSurveyAsPDF';
 import ownMessages from '../../ideas/messages';
 import useFeatureFlag from '../../../../../../hooks/useFeatureFlag';
 import { requestBlob } from '../../../../../../utils/request';
-import { API_PATH } from '../../../../../App/constants';
 import { saveAs } from 'file-saver';
 
 type FormActionsProps = {
@@ -45,6 +44,9 @@ type FormActionsProps = {
   editFormLink: string;
   viewFormLink: string;
   viewFormResults: string;
+  offlineInputsLink: string;
+  downloadExcelLink: string;
+  downloadPdfLink: string;
   postingEnabled: boolean;
   heading?: Multiloc;
   togglePostingEnabled: () => void;
@@ -56,6 +58,9 @@ const FormActions = ({
   viewFormLink,
   editFormLink,
   viewFormResults,
+  offlineInputsLink,
+  downloadExcelLink,
+  downloadPdfLink,
   heading,
   postingEnabled,
   togglePostingEnabled,
@@ -96,12 +101,12 @@ const FormActions = ({
     email: boolean;
   }) => {
     if (isNilOrError(locale)) return;
-    await saveSurveyAsPDF({ projectId, locale, name, email });
+    await saveSurveyAsPDF({ downloadPdfLink, locale, name, email });
   };
 
   const downloadExampleFile = async () => {
     const blob = await requestBlob(
-      `${API_PATH}/projects/${projectId}/import_ideas/example_xlsx`,
+      downloadExcelLink,
       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     );
     saveAs(blob, 'example.xlsx');
@@ -215,7 +220,7 @@ const FormActions = ({
                   width="auto"
                   minWidth="312px"
                   buttonStyle="cl-blue"
-                  linkTo={`/admin/projects/${projectId}/offline-inputs`}
+                  linkTo={offlineInputsLink}
                   icon="page"
                 >
                   <FormattedMessage {...ownMessages.addOfflineInputs} />

@@ -42,7 +42,8 @@ const SurveyFormBuilder = () => {
     email: boolean;
   }) => {
     if (isNilOrError(locale)) return;
-    await saveSurveyAsPDF({ projectId, locale, name, email });
+    const downloadPdfLink = 'path';
+    await saveSurveyAsPDF({ downloadPdfLink, locale, name, email });
   };
 
   return (

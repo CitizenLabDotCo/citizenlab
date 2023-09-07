@@ -13,6 +13,24 @@ class WebApi::V1::PhaseCustomFieldsController < ApplicationController
     end
   end
 
+  def to_pdf
+    if phase
+      pdf = PrintCustomFieldsService.new(
+        phase,
+        custom_fields,
+        params
+      ).create_pdf
+
+      send_data(
+        pdf.render,
+        type: 'application/pdf',
+        filename: 'survey.pdf'
+      )
+    else
+      send_not_found
+    end
+  end
+
   private
 
   def phase
