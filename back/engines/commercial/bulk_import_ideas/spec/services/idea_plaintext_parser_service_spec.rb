@@ -25,8 +25,6 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
   end
 
   describe 'form without descriptions' do
-
-
     before do
       # Topics for project
       # project.allowed_input_topics << create(:topic_economy)

@@ -66,7 +66,7 @@ module BulkImportIdeas
           unless @form.nil?
             @documents << @form
           end
-  
+
           @form = {
             pdf_pages: [],
             form_pages: [],

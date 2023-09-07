@@ -87,7 +87,7 @@ resource 'BulkImportIdeasImportIdeas' do
       context 'draft ideas' do
         get 'web_api/v1/projects/:id/import_ideas/draft_ideas' do
           let!(:draft_ideas) do
-            create_list(:idea, 5, project: project, publication_status: 'draft', custom_field_values: { 'not_visible': 'value'}).each do |idea|
+            create_list(:idea, 5, project: project, publication_status: 'draft', custom_field_values: { not_visible: 'value' }).each do |idea|
               idea.update! idea_import: create(:idea_import, idea: idea)
             end
           end
