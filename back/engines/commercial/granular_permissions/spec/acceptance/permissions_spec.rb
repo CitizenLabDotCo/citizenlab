@@ -348,7 +348,7 @@ resource 'Permissions' do
           custom_field_values: { 'gender' => 'male' }
         )
 
-        create(:topic).tap { |topic| topic.projects_topics.create!(project: create(:project)) }
+        create(:topic, include_in_onboarding: true)
       end
 
       let(:action) { 'visiting' }
@@ -386,7 +386,7 @@ resource 'Permissions' do
         @permission = @project.permissions.first
         @permission.update!(permitted_by: 'users')
 
-        create(:topic).tap { |topic| topic.projects_topics.create!(project: create(:project)) }
+        create(:topic, include_in_onboarding: true)
       end
 
       let(:action) { @permission.action }
