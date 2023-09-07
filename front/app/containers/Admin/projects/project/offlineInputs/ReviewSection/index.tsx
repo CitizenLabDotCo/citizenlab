@@ -66,8 +66,9 @@ const ReviewSection = ({
   onDeleteIdea,
 }: Props) => {
   const localize = useLocalize();
-  const { projectId } = useParams() as {
+  const { projectId, phaseId } = useParams() as {
     projectId: string;
+    phaseId: string;
   };
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
 
@@ -81,8 +82,9 @@ const ReviewSection = ({
     id: isLoading ? undefined : idea?.data.relationships.idea_import?.data?.id,
   });
 
-  const phaseId = idea?.data.relationships.phases.data[0]?.id;
-  const { data: phase } = usePhase(phaseId);
+  const selectedPhaseId =
+    phaseId ?? idea?.data.relationships.phases.data[0]?.id;
+  const { data: phase } = usePhase(selectedPhaseId);
 
   if (isLoading) {
     return (
@@ -240,6 +242,7 @@ const ReviewSection = ({
             {idea && (
               <IdeaForm
                 projectId={projectId}
+                phaseId={selectedPhaseId}
                 showAllErrors={true}
                 apiErrors={apiErrors}
                 formData={formData}
