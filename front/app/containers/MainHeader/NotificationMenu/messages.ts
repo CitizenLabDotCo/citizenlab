@@ -368,4 +368,8 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.votingResults',
     defaultMessage: '{phaseTitle} vote results revealed',
   },
+  eventUpcoming: {
+    id: 'app.containers.NotificationMenu.eventUpcoming',
+    defaultMessage: 'The event {eventTitle} starts in 24 hours',
+  },
 });

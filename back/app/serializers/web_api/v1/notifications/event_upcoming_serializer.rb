@@ -13,10 +13,6 @@ class WebApi::V1::Notifications::EventUpcomingSerializer < WebApi::V1::Notificat
     object.event&.start_at
   end
 
-  attribute :project_slug do |object|
-    object.project&.slug
-  end
-
   attribute :project_title_multiloc do |object|
     object.project&.title_multiloc
   end

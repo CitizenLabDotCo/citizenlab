@@ -120,6 +120,18 @@ export interface ICosponsorOfYourInitiativeNotificationData
   };
 }
 
+export interface IEventUpcomingNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'event_upcoming';
+    read_at: string | null;
+    created_at: string;
+    event_id: string;
+    event_title_multiloc: Multiloc;
+    event_start_at: string | null;
+    project_title_multiloc: Multiloc;
+  };
+}
+
 export interface IIdeaAssignedToYouNotificationData
   extends IBaseNotificationData {
   attributes: {
@@ -515,6 +527,7 @@ export interface INotificationDataMap {
   ICommentOnYourIdeaNotificationData: ICommentOnYourIdeaNotificationData;
   ICommentOnYourInitiativeNotificationData: ICommentOnYourInitiativeNotificationData;
   ICosponsorOfYourInitiativeNotificationData: ICosponsorOfYourInitiativeNotificationData;
+  IEventUpcomingNotificationData: IEventUpcomingNotificationData;
   IIdeaAssignedToYouNotificationData: IIdeaAssignedToYouNotificationData;
   IIdeaMarkedAsSpamNotificationData: IIdeaMarkedAsSpamNotificationData;
   IInitiativeAssignedToYouNotificationData: IInitiativeAssignedToYouNotificationData;

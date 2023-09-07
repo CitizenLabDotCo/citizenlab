@@ -75,6 +75,7 @@ type RegisterUserCampaignName =
   | 'comment_on_your_comment'
   | 'comment_on_your_idea'
   | 'comment_on_your_initiative'
+  | 'event_upcoming'
   | 'idea_published'
   | 'invite_reminder'
   | 'initiative_published'
