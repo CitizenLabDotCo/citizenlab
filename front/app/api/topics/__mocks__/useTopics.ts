@@ -16,6 +16,7 @@ export const topicsData: ITopicData[] = [
       ordering: 1,
       static_page_ids: ['1'],
       followers_count: 2,
+      include_in_onboarding: true,
     },
     relationships: {
       static_pages: {
@@ -46,6 +47,7 @@ export const topicsData: ITopicData[] = [
       ordering: 2,
       static_page_ids: ['2'],
       followers_count: 2,
+      include_in_onboarding: true,
     },
     relationships: {
       static_pages: {
