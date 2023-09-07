@@ -41,10 +41,6 @@ export const LabelTooltip = styled.div`
   display: flex;
 `;
 
-const SignUpFieldsSection = styled.div`
-  margin-bottom: 60px;
-`;
-
 const SettingsRegistrationTab = () => {
   const { data: appConfig } = useAppConfiguration();
   const {
@@ -53,6 +49,9 @@ const SettingsRegistrationTab = () => {
     isLoading: isFormSubmitting,
     isSuccess: isFormSaved,
   } = useUpdateAppConfiguration();
+
+  // Creating another instance to update follow preferences separately
+  const { mutate: updateFollowPreferences } = useUpdateAppConfiguration();
 
   const userConfirmationIsAllowed = useFeatureFlag({
     name: 'user_confirmation',
@@ -132,18 +131,13 @@ const SettingsRegistrationTab = () => {
   };
 
   const handleOnboardingChange = (value: boolean) => {
-    const newAttributesDiff = {
-      ...attributesDiff,
+    updateFollowPreferences({
       settings: {
-        ...(attributesDiff.settings || {}),
         core: {
-          ...attributesDiff.settings?.core,
           onboarding: value,
         },
       },
-    };
-
-    setAttributesDiff(newAttributesDiff);
+    });
   };
 
   if (!isNilOrError(latestAppConfigSettings)) {
@@ -152,7 +146,7 @@ const SettingsRegistrationTab = () => {
         <SectionTitle>
           <FormattedMessage {...messages.registrationTitle} />
         </SectionTitle>
-        <SignUpFieldsSection key={'signup_fields'}>
+        <Box mb="60px" key={'signup_fields'}>
           <SubSectionTitle>
             <FormattedMessage {...messages.signupFormText} />
           </SubSectionTitle>
@@ -191,10 +185,6 @@ const SettingsRegistrationTab = () => {
                 latestAppConfigSettings.core.custom_fields_signup_helper_text
               }
             />
-            <ToggleShowFollowPreferences
-              onChange={handleOnboardingChange}
-              isEnabled={isOnboardingEnabled}
-            />
             <SubmitWrapper
               loading={isFormSubmitting}
               status={getSubmitState({
@@ -210,17 +200,27 @@ const SettingsRegistrationTab = () => {
               }}
             />
           </form>
-          <Box w="500px">
-            <SubSectionTitle>
-              <FormattedMessage {...messages.selectOnboardingTopics} />
-            </SubSectionTitle>
-            <Topics action="updateOnboardingPreferences" />
-            <SubSectionTitle>
-              <FormattedMessage {...messages.selectOnboardingAreas} />
-            </SubSectionTitle>
-            <Areas action="updateOnboardingPreferences" />
+          <Box maxWidth="500px" mt="35px">
+            <ToggleShowFollowPreferences
+              onChange={handleOnboardingChange}
+              isEnabled={isOnboardingEnabled}
+            />
+            {isOnboardingEnabled && (
+              <>
+                <SubSectionTitle>
+                  <FormattedMessage {...messages.selectOnboardingTopics} />
+                </SubSectionTitle>
+                <Topics action="updateOnboardingPreferences" />
+                <Box mt="35px">
+                  <SubSectionTitle>
+                    <FormattedMessage {...messages.selectOnboardingAreas} />
+                  </SubSectionTitle>
+                  <Areas action="updateOnboardingPreferences" />
+                </Box>
+              </>
+            )}
           </Box>
-        </SignUpFieldsSection>
+        </Box>
         <CustomFieldSettings />
       </>
     );

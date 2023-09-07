@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  Toggle,
-  Box,
-  IconTooltip,
-  Text,
-} from '@citizenlab/cl2-component-library';
+import { Toggle, Box, Text, Title } from '@citizenlab/cl2-component-library';
 import { FormattedMessage } from 'utils/cl-intl';
 import { colors } from 'utils/styleUtils';
 import messages from './messages';
@@ -21,10 +16,9 @@ const ToggleShowFollowPreferences = ({ isEnabled, onChange }: Props) => {
   };
 
   return (
-    <Box mb="35px">
+    <Box>
       <SubSectionTitle>
-        <FormattedMessage {...messages.requestFollowPreferences} />
-        <IconTooltip content={<FormattedMessage {...messages.helperText} />} />
+        <FormattedMessage {...messages.askFollowPreferences} />
       </SubSectionTitle>
       <Box as="label" display="flex" alignItems="center">
         <Box w="fit-content" display="flex" flexDirection="row-reverse">
@@ -35,13 +29,22 @@ const ToggleShowFollowPreferences = ({ isEnabled, onChange }: Props) => {
           />
         </Box>
 
-        <Text fontSize="base" color="textSecondary" pl="1rem" my="0px">
-          {isEnabled ? (
-            <FormattedMessage {...messages.enabled} />
-          ) : (
-            <FormattedMessage {...messages.disabled} />
-          )}
-        </Text>
+        <Box display="flex" flexDirection="column">
+          <Title
+            color="primary"
+            fontSize="l"
+            pl="1rem"
+            my="0px"
+            style={{ fontWeight: 500 }}
+          >
+            <Box w="100%" display="flex">
+              <FormattedMessage {...messages.followPreferences} />
+            </Box>
+          </Title>
+          <Text fontSize="s" color="textSecondary" pl="1rem" mt="4px">
+            <FormattedMessage {...messages.followHelperText} />
+          </Text>
+        </Box>
       </Box>
     </Box>
   );
