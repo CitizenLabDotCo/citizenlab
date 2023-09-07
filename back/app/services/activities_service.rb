@@ -44,10 +44,8 @@ class ActivitiesService
   end
 
   def create_event_upcoming_activities(now, last_time)
-    return if now < (last_time + 1.hour) # TODO: is this fine??
-
-    Event.where(start_at: (now + 24.hours)..(now + 25.hours)).each do |event| # TODO: test that it wont be sent out twice
-      LogActivityJob.perform_later(event, 'upcoming', nil, now.to_i)
+    Event.where(start_at: (now + (24.hours - 30.minutes))..(now + (24.hours + 30.minutes))).each do |event|
+      LogActivityJob.perform_later(event, 'upcoming', nil, now.to_i) if !Activity.exists?(item: event, action: 'upcoming')
     end
   end
 
