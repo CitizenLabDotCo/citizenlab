@@ -71,6 +71,15 @@ const InitiativesHeaderRow = ({
             <FormattedMessage {...messages.cosponsors} />
           </Th>
         )}
+        <SortableHeaderCell
+          width={getWidth(2)}
+          sortAttribute={sortAttribute}
+          sortDirection={sortDirection}
+          sortAttributeName="new"
+          onChange={handleSortClick('new')}
+        >
+          <FormattedMessage {...messages.publication_date} />
+        </SortableHeaderCell>
       </Tr>
     </Thead>
   );
