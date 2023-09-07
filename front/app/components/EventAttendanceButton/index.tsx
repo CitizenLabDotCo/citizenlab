@@ -25,15 +25,13 @@ import useEventsByUserId from 'api/events/useEventsByUserId';
 import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 import useLocalize from 'hooks/useLocalize';
-import useLocale from 'hooks/useLocale';
 
 // style
 import { useTheme } from 'styled-components';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 // utils
-import { capitalizeDates, getEventDateWithWeekdays } from 'utils/dateUtils';
-import { isNilOrError } from 'utils/helperUtils';
+import { getEventDateString } from 'utils/dateUtils';
 import { AddEventToCalendarButton } from 'components/AddEventToCalendarButton';
 
 type EventAttendanceButtonProps = {
@@ -44,7 +42,6 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
   const theme = useTheme();
   const { data: user } = useAuthUser();
   const { formatMessage } = useIntl();
-  const currentLocale = useLocale();
   const localize = useLocalize();
   const [confirmationModalVisible, setConfirmationModalVisible] =
     useState(false);
@@ -88,7 +85,7 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
   };
 
   const isLoading = isAddingAttendance || isRemovingAttendance;
-  const eventDateTime = getEventDateWithWeekdays(event, formatMessage);
+  const eventDateTime = getEventDateString(event);
 
   return (
     <>
@@ -132,9 +129,7 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
             {localize(event?.attributes?.title_multiloc)}
           </Title>
           <Text my="4px" color="coolGrey600" fontSize="m">
-            {!isNilOrError(currentLocale) && capitalizeDates(currentLocale)
-              ? eventDateTime
-              : eventDateTime.toLowerCase()}
+            {eventDateTime}
           </Text>
           <AddEventToCalendarButton eventId={event.id} />
           {event && (

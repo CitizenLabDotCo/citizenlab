@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
 // libraries
 import clHistory from 'utils/cl-router/history';
@@ -27,7 +27,6 @@ import useInitiativeById from 'api/initiatives/useInitiativeById';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { convertUrlToUploadFile } from 'utils/fileUtils';
 
 // components
 import PageNotFound from 'components/PageNotFound';
@@ -38,9 +37,6 @@ import PageLayout from 'components/InitiativeForm/PageLayout';
 // style
 import { media } from 'utils/styleUtils';
 import styled from 'styled-components';
-
-// types
-import { UploadFile } from 'typings';
 
 const StyledInitiativesEditFormWrapper = styled(InitiativesEditFormWrapper)`
   width: 100%;
@@ -66,29 +62,6 @@ const InitiativesEditPage = ({ previousPathName, authUser, locale }: Props) => {
   const { data: initiative } = useInitiativeById(initiativeId);
   const { data: initiativeFiles } = useInitiativeFiles(initiativeId);
   const { data: initiativeImages } = useInitiativeImages(initiativeId);
-  const [files, setFiles] = useState<UploadFile[]>([]);
-
-  useEffect(() => {
-    async function getFiles() {
-      let files: UploadFile[] = [];
-
-      if (initiativeFiles) {
-        files = (await Promise.all(
-          initiativeFiles.data.map(async (file) => {
-            const uploadFile = convertUrlToUploadFile(
-              file.attributes.file.url,
-              file.id,
-              file.attributes.name
-            );
-            return uploadFile;
-          })
-        )) as UploadFile[];
-      }
-      setFiles(files);
-    }
-
-    getFiles();
-  }, [initiativeFiles]);
 
   useEffect(() => {
     const isPrivilegedUser =
@@ -102,12 +75,7 @@ const InitiativesEditPage = ({ previousPathName, authUser, locale }: Props) => {
     }
   }, [authUser, previousPathName]);
 
-  if (
-    isNilOrError(authUser) ||
-    isNilOrError(locale) ||
-    !initiative ||
-    initiativeImages === undefined
-  ) {
+  if (isNilOrError(authUser) || isNilOrError(locale) || !initiative) {
     return null;
   }
 
@@ -127,13 +95,9 @@ const InitiativesEditPage = ({ previousPathName, authUser, locale }: Props) => {
         <StyledInitiativesEditFormWrapper
           locale={locale}
           initiative={initiative.data}
-          initiativeImage={
-            isNilOrError(initiativeImages) || initiativeImages.data.length === 0
-              ? null
-              : initiativeImages.data[0]
-          }
+          initiativeImage={initiativeImages?.data[0]}
           onPublished={onPublished}
-          initiativeFiles={files}
+          initiativeFiles={initiativeFiles}
         />
       </PageLayout>
     </HasPermission>

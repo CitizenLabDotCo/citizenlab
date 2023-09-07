@@ -18,8 +18,7 @@ import {
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
 
-import { useIntl } from 'utils/cl-intl';
-import messages from '../messages';
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import styled from 'styled-components';
 import { useSelectedInputContext } from '../SelectedInputContext';
 import useAnalysisQuestion from 'api/analysis_questions/useAnalysisQuestion';
@@ -29,6 +28,7 @@ import Rate from './Rate';
 
 import tracks from 'containers/Admin/projects/project/analysis/tracks';
 import { trackEventByName } from 'utils/analytics';
+import translations from './translations';
 import { deleteTrailingIncompleteIDs, refRegex, removeRefs } from './util';
 
 const StyledAnswerText = styled.div`
@@ -67,7 +67,9 @@ const Question = ({ insight }: Props) => {
     backgroundTask?.data.attributes.state === 'queued';
 
   const handleQuestionDelete = (id: string) => {
-    if (window.confirm(formatMessage(messages.deleteQuestionConfirmation))) {
+    if (
+      window.confirm(formatMessage(translations.deleteQuestionConfirmation))
+    ) {
       deleteQuestion(
         {
           analysisId,
@@ -169,7 +171,7 @@ const Question = ({ insight }: Props) => {
         >
           {hasFilters && (
             <>
-              <Text m="0px">Question for</Text>
+              <Text m="0px"> {formatMessage(translations.questionFor)}</Text>
               <FilterItems
                 filters={question.data.attributes.filters}
                 isEditable={false}
@@ -177,7 +179,11 @@ const Question = ({ insight }: Props) => {
             </>
           )}
 
-          {!hasFilters && <Text m="0px">Question for all input</Text>}
+          {!hasFilters && (
+            <Text m="0px">
+              {formatMessage(translations.questionForAllInputs)}
+            </Text>
+          )}
         </Box>
 
         <Text color="textSecondary" fontSize="s">
@@ -195,7 +201,13 @@ const Question = ({ insight }: Props) => {
         </Box>
         {question.data.attributes.accuracy && (
           <Box color={colors.teal700} my="16px">
-            Accuracy {question.data.attributes.accuracy * 100}%
+            <FormattedMessage
+              {...translations.accuracy}
+              values={{
+                accuracy: question.data.attributes.accuracy * 100,
+                percentage: formatMessage(translations.percentage),
+              }}
+            />
           </Box>
         )}
       </Box>
@@ -207,7 +219,7 @@ const Question = ({ insight }: Props) => {
         mt="16px"
       >
         <Button buttonStyle="white" onClick={handleRestoreFilters} p="4px 12px">
-          Restore filters
+          {formatMessage(translations.restoreFilters)}
         </Button>
 
         <Box display="flex">
@@ -224,7 +236,7 @@ const Question = ({ insight }: Props) => {
             onClick={() => handleQuestionDelete(insight.id)}
             iconColor={colors.teal400}
             iconColorOnHover={colors.teal700}
-            a11y_buttonActionMessage={formatMessage(messages.deleteSummary)}
+            a11y_buttonActionMessage={formatMessage(translations.deleteSummary)}
           />
         </Box>
       </Box>

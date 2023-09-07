@@ -44,11 +44,6 @@ export default defineMessages({
     defaultMessage:
       'The provided title is too short. Please add a title that is between 10 and 72 characters long.',
   },
-  titleMaxLengthError: {
-    id: 'app.components.InitiativeForm.titleMaxLengthError',
-    defaultMessage:
-      'The provided title is too long. Please add a title that is between 10 and 72 characters long.',
-  },
   titleLabel: {
     id: 'app.components.InitiativeForm.titleLabel',
     defaultMessage: 'Title',
@@ -82,6 +77,14 @@ export default defineMessages({
   topicEmptyError: {
     id: 'app.components.InitiativeForm.topicEmptyError',
     defaultMessage: 'Please provide a topic',
+  },
+  cosponsorsEmptyError: {
+    id: 'app.components.InitiativeForm.cosponsorsEmptyError',
+    defaultMessage: 'Please add the required number of cosponsors',
+  },
+  cosponsorsMaxError: {
+    id: 'app.components.InitiativeForm.cosponsorsMaxError',
+    defaultMessage: 'You can only add {maxNumberOfCosponsors} cosponsors',
   },
   topicsLabel: {
     id: 'app.components.InitiativeForm.topicsLabel',

@@ -20,6 +20,9 @@ import { xor } from 'lodash-es';
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../tracks';
 
+import { useIntl } from 'utils/cl-intl';
+import translations from '../translations';
+
 type Props = {
   customFieldId: string;
   input: IInputsData;
@@ -78,6 +81,7 @@ const FilterToggleButton = ({ customFieldId, value }) => {
  * representation of the value of the custom field for that input
  */
 const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
+  const { formatMessage } = useIntl();
   const containerId: { projectId?: string; phaseId?: string } = {};
   if (projectId) {
     containerId.projectId = projectId;
@@ -138,7 +142,7 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
               <Text m="0">
                 {input.attributes.custom_field_values[
                   customField.data.attributes.key
-                ] || 'No answer'}
+                ] || formatMessage(translations.noAnswer)}
               </Text>
             </Box>
           );
@@ -157,7 +161,7 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
                 <Text m="0">
                   {input.attributes.custom_field_values[
                     customField.data.attributes.key
-                  ] || 'No answer'}
+                  ] || formatMessage(translations.noAnswer)}
                 </Text>
                 <Box ml="8px">
                   <FilterToggleButton
@@ -178,7 +182,7 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
               <Text whiteSpace="pre-line">
                 {input.attributes.custom_field_values[
                   customField.data.attributes.key
-                ] || 'No answer'}
+                ] || formatMessage(translations.noAnswer)}
               </Text>
             </Box>
           );
@@ -250,7 +254,7 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
                 {rawValue === true || rawValue === false ? (
                   <Checkbox disabled checked={rawValue} onChange={() => {}} />
                 ) : (
-                  'No answer'
+                  formatMessage(translations.noAnswer)
                 )}
               </Text>
             </Box>
@@ -263,7 +267,11 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
                 <T value={customField.data.attributes.title_multiloc} />
               </Title>
               <Text>
-                {rawValue ? <FormattedDate value={rawValue} /> : 'No answer'}
+                {rawValue ? (
+                  <FormattedDate value={rawValue} />
+                ) : (
+                  formatMessage(translations.noAnswer)
+                )}
               </Text>
             </Box>
           );

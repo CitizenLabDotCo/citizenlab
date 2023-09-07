@@ -239,14 +239,12 @@ const CustomPageSettingsForm = ({
               <InputMultilocWithLocaleSwitcher
                 name="title_multiloc"
                 label={formatMessage(messages.titleLabel)}
-                type="text"
               />
             </Box>
             {showNavBarItemTitle && (
               <Box mb={fieldMarginBottom}>
                 <InputMultilocWithLocaleSwitcher
                   label={formatMessage(messages.navbarItemTitle)}
-                  type="text"
                   name="nav_bar_item_title_multiloc"
                 />
               </Box>

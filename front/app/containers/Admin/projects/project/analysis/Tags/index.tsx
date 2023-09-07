@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { omit } from 'lodash-es';
 
@@ -30,6 +30,8 @@ import inputsKeys from 'api/analysis_inputs/keys';
 import TagActions from './TagActions';
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../tracks';
+import translations from './translations';
+import { useIntl } from 'utils/cl-intl';
 
 const BlickingIcon = styled(Icon)`
   animation-name: blink-animation;
@@ -65,8 +67,10 @@ const TagContainer = styled(ListItem)`
 `;
 
 const Tags = () => {
+  const { formatMessage } = useIntl();
   const [autotaggingModalIsOpened, setAutotaggingModalIsOpened] =
     useState(false);
+  const [createdTagId, setCreatedTagId] = useState<string | null>(null);
 
   const filters = useAnalysisFilterParams();
 
@@ -77,6 +81,19 @@ const Tags = () => {
     analysisId,
     filters: omit(filters, 'tag_ids'),
   });
+
+  useEffect(() => {
+    if (
+      createdTagId &&
+      tags?.data.map((tag) => tag.id).includes(createdTagId)
+    ) {
+      const tagElement = document.getElementById(`tag-${createdTagId}`);
+      if (tagElement) {
+        tagElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      setCreatedTagId(null);
+    }
+  }, [createdTagId, tags]);
 
   if (isLoadingTags) {
     return (
@@ -127,20 +144,20 @@ const Tags = () => {
           icon="flash"
           mb="12px"
           size="s"
-          buttonStyle="secondary-outlined"
+          buttonStyle="admin-dark"
         >
-          Auto-tag
+          {formatMessage(translations.autoTag)}
           {!tags?.data.length && (
             <BlickingIcon
               name={'dot'}
               width="16px"
               height="16px"
-              fill={colors.primary}
+              fill={colors.white}
               ml="8px"
             />
           )}
         </Button>
-        <AddTag />
+        <AddTag onCreateTag={(tagId) => setCreatedTagId(tagId)} />
       </Box>
       <Box>
         <TagContainer
@@ -148,7 +165,7 @@ const Tags = () => {
           onClick={() => removeSearchParams(['tag_ids'])}
           className={!selectedTags ? 'selected' : ''}
         >
-          All inputs
+          {formatMessage(translations.allInputs)}
           <TagCount
             count={inputsTotal}
             totalCount={inputsTotal}
@@ -160,7 +177,7 @@ const Tags = () => {
           onClick={() => updateSearchParams({ tag_ids: [null] })}
           className={selectedTags && selectedTags[0] === null ? 'selected' : ''}
         >
-          Inputs without tags
+          {formatMessage(translations.inputsWithoutTags)}
           <TagCount
             count={inputsWithoutTags}
             totalCount={inputsTotal}
@@ -169,7 +186,7 @@ const Tags = () => {
         </TagContainer>
         {!isLoadingTags && tags?.data.length === 0 && (
           <Text p="6px" color="grey400">
-            You do not have any tags yet.
+            {formatMessage(translations.noTags)}
           </Text>
         )}
         {tags?.data.map((tag) => (

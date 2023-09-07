@@ -7,7 +7,7 @@ import {
   defaultStyles,
 } from '@citizenlab/cl2-component-library';
 import { useIntl } from 'utils/cl-intl';
-import messages from '../../messages';
+import translations from '../translations';
 import EngagementFilter from './EngagementFilter';
 import TimeFilter from './TimeFilter';
 import AuthorFilters from './AuthorFilters';
@@ -41,24 +41,24 @@ const Filters = ({ onClose }: FilterProps) => {
       <Box display="flex" gap="32px">
         <Box w="33%">
           <Text color="primary" fontWeight="bold">
-            {formatMessage(messages.author)}
+            {formatMessage(translations.author)}
           </Text>
           <AuthorFilters />
         </Box>
         <Box w="33%">
           <Text color="primary" fontWeight="bold" mb="44px">
-            {formatMessage(messages.input)}
+            {formatMessage(translations.input)}
           </Text>
           <TimeFilter />
         </Box>
         {analysis?.data.attributes.participation_method === 'ideation' && (
           <Box w="33%">
             <Text color="primary" fontWeight="bold">
-              {formatMessage(messages.engagement)}
+              {formatMessage(translations.engagement)}
             </Text>
             <EngagementFilter
               id="votes"
-              label={formatMessage(messages.numberOfVotes)}
+              label={formatMessage(translations.numberOfVotes)}
               searchParams={{
                 from: 'votes_from',
                 to: 'votes_to',
@@ -66,7 +66,7 @@ const Filters = ({ onClose }: FilterProps) => {
             />
             <EngagementFilter
               id="comments"
-              label={formatMessage(messages.numberOfComments)}
+              label={formatMessage(translations.numberOfComments)}
               searchParams={{
                 from: 'comments_from',
                 to: 'comments_to',
@@ -74,7 +74,7 @@ const Filters = ({ onClose }: FilterProps) => {
             />
             <EngagementFilter
               id="reactions"
-              label={formatMessage(messages.numberOfReactions)}
+              label={formatMessage(translations.numberOfReactions)}
               searchParams={{
                 from: 'reactions_from',
                 to: 'reactions_to',

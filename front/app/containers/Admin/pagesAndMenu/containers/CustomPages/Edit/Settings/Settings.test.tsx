@@ -56,8 +56,8 @@ describe('EditCustomPageSettings', () => {
       name: 'Save custom page',
     });
 
-    user.type(slugInput, '-');
-    user.click(submitButton);
+    await user.type(slugInput, '-');
+    await user.click(submitButton);
 
     await waitFor(() => {
       expect(screen.getByTestId('feedbackErrorMessage')).toBeInTheDocument();

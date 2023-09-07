@@ -18,6 +18,11 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.survey.analysisSelectQuestionsForAnalysis',
     defaultMessage: 'Select related questions for analysis',
   },
+  analysisSelectQuestionsDescription: {
+    id: 'app.containers.Admin.projects.project.survey.analysisSelectQuestionsSubtitle',
+    defaultMessage:
+      'Do you want to include any other related questions in your analysis of {question}?',
+  },
   createAnalysis: {
     id: 'app.containers.Admin.projects.project.survey.createAnalysis',
     defaultMessage: 'Create analysis',

@@ -5,6 +5,8 @@ import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCu
 import { FormattedDate } from 'react-intl';
 import { isNil } from 'lodash-es';
 import { IUserCustomField } from 'api/user_custom_fields/types';
+import { useIntl } from 'utils/cl-intl';
+import translations from '../translations';
 
 type Props = {
   customField: IUserCustomField;
@@ -31,8 +33,9 @@ const SelectOptionText = ({
  * the custom field for that input.
  */
 const ShortUserFieldValue = ({ customField, rawValue }: Props) => {
+  const { formatMessage } = useIntl();
   if (isNil(rawValue)) {
-    return <>No answer</>;
+    return <>{formatMessage(translations.noAnswer)}</>;
   }
 
   switch (customField.data.attributes.input_type) {
@@ -45,7 +48,7 @@ const ShortUserFieldValue = ({ customField, rawValue }: Props) => {
         typeof rawValue === undefined ||
         rawValue === ''
       ) {
-        return <>No Answer</>;
+        return <>{formatMessage(translations.noAnswer)}</>;
       } else {
         return <>{rawValue}</>;
       }

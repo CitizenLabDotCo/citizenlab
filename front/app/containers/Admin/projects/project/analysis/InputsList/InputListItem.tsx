@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import { isEmpty } from 'lodash-es';
 
 import { IInputsData } from 'api/analysis_inputs/types';
-import useUserById from 'api/users/useUserById';
+import useAnalysisUserById from 'api/analysis_users/useAnalysisUserById';
 
 import Taggings from '../Taggings';
 import { Box, Icon, colors, Text } from '@citizenlab/cl2-component-library';
@@ -10,13 +10,13 @@ import Divider from 'components/admin/Divider';
 
 import T from 'components/T';
 import { useIntl } from 'utils/cl-intl';
-import Avatar from 'components/Avatar';
 import { getFullName } from 'utils/textUtils';
 import { useParams } from 'react-router-dom';
 import useAnalysis from 'api/analyses/useAnalysis';
 import InputShortFieldValue from './FieldValue';
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../tracks';
+import translations from './translations';
 
 interface Props {
   input: IInputsData;
@@ -27,8 +27,11 @@ interface Props {
 const InputListItem = memo(({ input, onSelect, selected }: Props) => {
   const { analysisId } = useParams() as { analysisId: string };
   const { data: analysis } = useAnalysis(analysisId);
-  const { data: author } = useUserById(input.relationships.author.data?.id);
-  const { formatDate } = useIntl();
+  const { data: author } = useAnalysisUserById({
+    id: input.relationships.author.data?.id ?? null,
+    analysisId,
+  });
+  const { formatDate, formatMessage } = useIntl();
 
   if (!analysis || !input) return null;
 
@@ -59,14 +62,11 @@ const InputListItem = memo(({ input, onSelect, selected }: Props) => {
         >
           {!title_multiloc ||
             (isEmpty(title_multiloc) && author && (
-              <Box display="flex" alignItems="center">
-                <Avatar userId={author.data.id} size={24} />
-                <Text m="0px">{getFullName(author.data)}</Text>
-              </Box>
+              <Text m="0px">{getFullName(author.data)}</Text>
             ))}
           {!title_multiloc ||
             (isEmpty(title_multiloc) && !author && (
-              <Text m="0px">Anonymous input</Text>
+              <Text m="0px">{formatMessage(translations.anonymous)}</Text>
             ))}
           {title_multiloc && (
             <Text m="0px">
@@ -104,7 +104,7 @@ const InputListItem = memo(({ input, onSelect, selected }: Props) => {
             </Box>
           )}
           {(!title_multiloc || isEmpty(title_multiloc)) && (
-            <Box flex="1">
+            <Box flex="1" w="100%">
               {analysis.data.relationships.custom_fields.data
                 .slice(0, 3)
                 .map((customField) => (
@@ -116,7 +116,6 @@ const InputListItem = memo(({ input, onSelect, selected }: Props) => {
                     textOverflow="ellipsis"
                     overflow="hidden"
                     whiteSpace="nowrap"
-                    minWidth="0"
                   >
                     <InputShortFieldValue
                       customFieldId={customField.id}
