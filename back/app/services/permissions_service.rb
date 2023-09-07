@@ -210,7 +210,7 @@ class PermissionsService
   end
 
   def onboarding_possible?
-    Topic.where(include_in_onboarding: true).count > 0 || Areas.where(include_in_onboarding: true).count > 0
+    Topic.where(include_in_onboarding: true).count > 0 || Area.where(include_in_onboarding: true).count > 0
   end
 
   def ignore_password_for_sso!(requirements, user)
