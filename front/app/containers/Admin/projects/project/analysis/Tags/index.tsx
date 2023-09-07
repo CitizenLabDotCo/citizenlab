@@ -195,9 +195,14 @@ const Tags = () => {
           />
         </TagContainer>
         {!isLoadingTags && tags?.data.length === 0 && (
-          <Text p="6px" color="grey400">
-            {formatMessage(translations.noTags)}
-          </Text>
+          <Box>
+            <Text p="6px" color="grey600" textAlign="center">
+              {formatMessage(translations.noTags1)}
+            </Text>
+            <Text p="6px" color="grey600" textAlign="center">
+              {formatMessage(translations.noTags2)}
+            </Text>
+          </Box>
         )}
         {tags?.data.map((tag) => (
           <TagContainer
