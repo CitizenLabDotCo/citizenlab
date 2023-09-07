@@ -101,8 +101,6 @@ interface Props {
 }
 
 const PostTable = ({
-  sortAttribute: oldSortAttribute,
-  sortDirection: oldSortDirection,
   onChangeSort,
   selection,
   onChangeSelection,
@@ -125,8 +123,8 @@ const PostTable = ({
     (newSortAttribute: IdeasSortAttribute | InitiativesSortAttribute) => () => {
       if (isFunction(onChangeSort)) {
         let newSortSign = '-';
-        if (newSortAttribute === oldSortAttribute) {
-          newSortSign = oldSortDirection === 'ascending' ? '-' : '';
+        if (newSortAttribute === sortAttribute) {
+          newSortSign = sortDirection === 'ascending' ? '-' : '';
         }
         onChangeSort(
           `${newSortSign}${newSortAttribute}` as IdeasSort | InitiativesSort
