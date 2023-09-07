@@ -748,7 +748,9 @@ describe PermissionsService do
         end
 
         it 'does not ask onboarding for a fully registered confirmed resident when onboarding is not possible' do
-          Topic.update_all include_in_onboarding: false
+          app_configuration = AppConfiguration.instance
+          app_configuration.settings['core']['onboarding'] = false
+          app_configuration.save!
 
           expect(service.requirements(permission, user)).to eq({
             permitted: true,
