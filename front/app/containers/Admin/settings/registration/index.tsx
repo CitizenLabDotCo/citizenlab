@@ -57,6 +57,9 @@ const SettingsRegistrationTab = () => {
     name: 'user_confirmation',
     onlyCheckAllowed: true,
   });
+  const isFollowingEnabled = useFeatureFlag({
+    name: 'follow',
+  });
 
   const [attributesDiff, setAttributesDiff] =
     useState<IUpdatedAppConfigurationProperties>({});
@@ -200,26 +203,28 @@ const SettingsRegistrationTab = () => {
               }}
             />
           </form>
-          <Box maxWidth="500px" mt="36px">
-            <ToggleShowFollowPreferences
-              onChange={handleOnboardingChange}
-              isEnabled={isOnboardingEnabled}
-            />
-            {isOnboardingEnabled && (
-              <>
-                <SubSectionTitle>
-                  <FormattedMessage {...messages.selectOnboardingTopics} />
-                </SubSectionTitle>
-                <Topics action="updateOnboardingPreferences" />
-                <Box mt="36px">
+          {isFollowingEnabled && (
+            <Box maxWidth="500px" mt="36px">
+              <ToggleShowFollowPreferences
+                onChange={handleOnboardingChange}
+                isEnabled={isOnboardingEnabled}
+              />
+              {isOnboardingEnabled && (
+                <>
                   <SubSectionTitle>
-                    <FormattedMessage {...messages.selectOnboardingAreas} />
+                    <FormattedMessage {...messages.selectOnboardingTopics} />
                   </SubSectionTitle>
-                  <Areas action="updateOnboardingPreferences" />
-                </Box>
-              </>
-            )}
-          </Box>
+                  <Topics action="updateOnboardingPreferences" />
+                  <Box mt="36px">
+                    <SubSectionTitle>
+                      <FormattedMessage {...messages.selectOnboardingAreas} />
+                    </SubSectionTitle>
+                    <Areas action="updateOnboardingPreferences" />
+                  </Box>
+                </>
+              )}
+            </Box>
+          )}
         </Box>
         <CustomFieldSettings />
       </>
