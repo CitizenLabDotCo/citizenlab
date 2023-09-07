@@ -246,13 +246,14 @@ const ReviewSection = ({
           </Box>
         </Box>
         <Box w="40%">
-          {ideaMetadata && pages ? (
+          {ideaMetadata && pages && (
             <PDFViewer
               currentPageIndex={currentPageIndex}
               file={ideaMetadata.data.attributes.file.url}
               pages={pages}
             />
-          ) : (
+          )}
+          {ideaMetadata?.data.attributes.import_type === 'xlsx' && (
             <Box w="100%" h="100%" m="10px">
               <Text>
                 <FormattedMessage {...messages.pdfNotAvailable} />

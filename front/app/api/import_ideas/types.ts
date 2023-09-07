@@ -19,7 +19,7 @@ export interface ImportedIdeaMetadata {
   attributes: {
     created_at: string;
     updated_at: string;
-    import_type: string;
+    import_type: 'pdf' | 'xlsx';
     page_range: string[];
     user_created: boolean;
     locale: Locale;
