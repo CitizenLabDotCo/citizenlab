@@ -86,7 +86,7 @@ resource 'BulkImportIdeasImportIdeas' do
 
       get 'web_api/v1/projects/:id/import_ideas/draft_ideas' do
         let!(:draft_ideas) do
-          create_list(:idea, 5, project: project, publication_status: 'draft').each do |idea|
+          create_list(:idea, 5, project: project, publication_status: 'draft', custom_field_values: { 'not_visible': 'value'}).each do |idea|
             idea.update! idea_import: create(:idea_import, idea: idea)
           end
         end
@@ -103,6 +103,9 @@ resource 'BulkImportIdeasImportIdeas' do
           # Relationships
           expect(response_data.first.dig(:relationships, :idea_import, :data)).not_to be_nil
           expect(json_response_body[:included].pluck(:type)).to include 'idea_import'
+
+          # Should return ALL custom_fields for draft even if not visible
+          expect(response_data.first[:attributes].keys).to include :not_visible
         end
       end
 
