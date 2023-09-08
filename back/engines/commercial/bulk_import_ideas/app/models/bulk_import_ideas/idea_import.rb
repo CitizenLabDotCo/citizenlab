@@ -35,7 +35,5 @@ module BulkImportIdeas
     belongs_to :file, class_name: 'BulkImportIdeas::IdeaImportFile', optional: true
     belongs_to :idea
     belongs_to :import_user, class_name: 'User', optional: true
-
-    # TODO: Patch idea
   end
 end
