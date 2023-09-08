@@ -9,7 +9,7 @@ class DeleteInvitesJob < ApplicationJob
     invites_to_destroy = Invite.where('created_at < ?', expiry_time)
     payload = { destroyed_invites: [] }
 
-    invites_to_destroy.each do |invite|
+    invites_to_destroy.find_each(batch_size: 50) do |invite|
       invite.destroy!
       payload[:destroyed_invites] << invite.as_json
     rescue StandardError => e
