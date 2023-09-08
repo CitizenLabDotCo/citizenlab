@@ -86,7 +86,7 @@ interface Props {
   handleSortClick: (newSortAttribute: string) => () => void;
 }
 
-export default ({
+const IdeaHeaderRow = ({
   selectedProjectId,
   selectedPhaseId,
   sortAttribute,
@@ -314,3 +314,5 @@ export default ({
     </>
   );
 };
+
+export default IdeaHeaderRow;
