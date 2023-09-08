@@ -27,12 +27,16 @@ RSpec.describe DeleteInvitesJob do
     end
 
     it 'logs the activity' do
+      allow(Time).to receive(:now).and_return(Time.now)
+
+      invites_to_destroy = Invite.where('created_at < ?', expiry_time)
+
       expect { described_class.perform_now(expiry_time) }.to have_enqueued_job(LogActivityJob).with(
-        'Invite/11111111-1111-1111-1111-111111111111', # Hacky way to provide an id (required), whilst also highlighting that this does not relate to one specific invite
+        "Invite/#{invites_to_destroy.first.id}",
         'bulk_destroy',
         nil, # No user initiated this activity
         Time.now.to_i,
-        payload: { destroyed_invites: [invite1.as_json, invite2.as_json] }
+        payload: { destroyed_invites_count: 2 }
       )
     end
 

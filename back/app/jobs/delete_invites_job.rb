@@ -7,22 +7,23 @@ class DeleteInvitesJob < ApplicationJob
   # @param [expiry_time,ActiveSupport::TimeWithZone] the expiry time limit for invites
   def run(expiry_time = Invite::EXPIRY_DAYS.days.ago)
     invites_to_destroy = Invite.where('created_at < ?', expiry_time)
-    payload = { destroyed_invites: [] }
+    representative_invite = invites_to_destroy.first
+    destroyed_invites_count = 0
 
     invites_to_destroy.find_each(batch_size: 50) do |invite|
-      invite.destroy!
-      payload[:destroyed_invites] << invite.as_json
-    rescue StandardError => e
-      ErrorReporter.report e
+      ErrorReporter.handle do
+        invite.destroy!
+        destroyed_invites_count += 1
+      end
     end
 
-    unless payload[:destroyed_invites].empty?
+    if destroyed_invites_count.positive?
       LogActivityJob.perform_later(
-        'Invite/11111111-1111-1111-1111-111111111111', # Hacky way to provide an id (required), whilst also highlighting that this does not relate to one specific invite
+        "Invite/#{representative_invite.id}",
         'bulk_destroy',
         nil, # No user initiated this activity
         Time.now.to_i,
-        payload: payload
+        payload: { destroyed_invites_count: destroyed_invites_count }
       )
     end
   end
