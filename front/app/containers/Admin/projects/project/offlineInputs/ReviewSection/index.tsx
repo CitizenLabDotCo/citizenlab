@@ -10,6 +10,7 @@ import useImportedIdeaMetadata from 'api/import_ideas/useImportedIdeaMetadata';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useUserById from 'api/users/useUserById';
 import usePhase from 'api/phases/usePhase';
+import useInputSchema from 'hooks/useInputSchema';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -71,6 +72,9 @@ const ReviewSection = ({
   };
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
 
+  const { schema, uiSchema } = useInputSchema({
+    projectId,
+  });
   const { data: ideas, isLoading } = useImportedIdeas({ projectId });
   const { data: idea } = useIdeaById(ideaId ?? undefined);
   const { data: author } = useUserById(
@@ -92,6 +96,7 @@ const ReviewSection = ({
     );
   }
 
+  if (!schema || !uiSchema) return null;
   if (ideas === undefined) return null;
   if (ideas.data.length === 0) {
     return <EmptyState />;
@@ -205,9 +210,10 @@ const ReviewSection = ({
                 locale={locale}
               />
             )}
-            {idea && (
+            {ideaMetadata && (
               <IdeaForm
-                projectId={projectId}
+                schema={schema}
+                uiSchema={uiSchema}
                 showAllErrors={true}
                 apiErrors={apiErrors}
                 formData={formData}

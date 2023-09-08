@@ -33,10 +33,7 @@ import { useIntl, MessageDescriptor } from 'utils/cl-intl';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { sanitizeFormData, isValidData } from './utils';
-import {
-  parseRequiredMultilocsData,
-  parseRequiredMultilocsSchema,
-} from './parseRequiredMultilocs';
+import { parseRequiredMultilocsData } from './parseRequiredMultilocs';
 
 // typings
 import { CLErrors, Locale } from 'typings';
@@ -120,9 +117,6 @@ const Form = memo(
     const [data, setData] = useState<FormData>(() => {
       return parseRequiredMultilocsData(schema, locale, initialFormData);
     });
-    const [parsedSchema] = useState(() => {
-      return parseRequiredMultilocsSchema(schema, locale);
-    });
 
     const [apiErrors, setApiErrors] = useState<CLErrors | undefined>();
     const [loading, setLoading] = useState(false);
@@ -183,7 +177,7 @@ const Form = memo(
             apiErrors={apiErrors}
             showAllErrors={showAllErrors}
             setShowAllErrors={setShowAllErrors}
-            schema={parsedSchema}
+            schema={schema}
             uiSchema={uiSchema}
             ajv={customAjv}
             getApiErrorMessage={getApiErrorMessage}
@@ -191,6 +185,7 @@ const Form = memo(
             inputId={inputId}
             formSubmitText={formSubmitText}
             config={config}
+            locale={locale}
             onChange={handleChange}
             onSubmit={handleSubmit}
           />

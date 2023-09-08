@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 
 // jsonforms
 import { JsonForms } from '@jsonforms/react';
@@ -15,6 +15,7 @@ import { useIntl, MessageDescriptor } from 'utils/cl-intl';
 // utils
 import { selectRenderers } from './formConfig';
 import { getDefaultAjvErrorMessage } from 'utils/errorUtils';
+import { parseRequiredMultilocsSchema } from 'components/Form/parseRequiredMultilocs';
 
 // typings
 import { CLErrors, Locale } from 'typings';
@@ -35,7 +36,7 @@ interface Props {
   inputId?: string;
   formSubmitText?: MessageDescriptor;
   config?: 'default' | 'input' | 'survey';
-  locale?: Locale;
+  locale: Locale;
   onChange: (formData: FormData) => void;
   onSubmit?: (formData: FormData) => Promise<any>;
 }
@@ -58,6 +59,10 @@ const Fields = ({
   onSubmit,
 }: Props) => {
   const { formatMessage } = useIntl();
+
+  const [parsedSchema] = useState(() => {
+    return parseRequiredMultilocsSchema(schema, locale);
+  });
 
   const safeApiErrorMessages = useCallback(
     () => (getApiErrorMessage ? getApiErrorMessage : () => undefined),
@@ -98,7 +103,7 @@ const Fields = ({
         }}
       >
         <JsonForms
-          schema={schema}
+          schema={parsedSchema}
           uischema={uiSchema}
           data={data}
           renderers={renderers}
