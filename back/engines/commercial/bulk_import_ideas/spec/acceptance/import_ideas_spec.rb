@@ -307,7 +307,7 @@ resource 'BulkImportIdeasImportIdeas' do
   end
 
   def create_project_bulk_import_ideas_pdf
-    base_64_content = Base64.encode64 File.read('/cl2_back/engines/commercial/bulk_import_ideas/spec/fixtures/testscan.pdf')
+    base_64_content = Base64.encode64 Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/testscan.pdf').read
     "data:application/pdf;base64,#{base_64_content}"
   end
 

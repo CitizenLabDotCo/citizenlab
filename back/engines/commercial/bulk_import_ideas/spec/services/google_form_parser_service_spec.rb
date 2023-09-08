@@ -11,12 +11,10 @@ describe BulkImportIdeas::GoogleFormParserService do
       # expect_any_instance_of(described_class).to receive(:raw_text_page_array).and_return(
       #   ["Page1\nTitle\nMy very good idea\nDescription\nThis is the description"]
       # )
-      # file_content = nil
-      file_content = File.binread '/cl2_back/engines/commercial/bulk_import_ideas/spec/fixtures/with_branding_2.pdf'
+      file_content = nil
+      # file_content = Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/testscan.pdf').binread
       service = described_class.new file_content
       pages = service.raw_text_page_array
-
-      binding.pry
 
       expect(pages).not_to be_nil
       expect(pages).to be_an_instance_of(Array)

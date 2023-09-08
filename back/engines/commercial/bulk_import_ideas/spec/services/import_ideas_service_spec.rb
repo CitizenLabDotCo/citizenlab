@@ -7,7 +7,7 @@ describe BulkImportIdeas::ImportIdeasService do
 
   describe 'upload_file' do
     it 'uploads a file successfully' do
-      base_64_content = Base64.encode64 File.read('/cl2_back/engines/commercial/bulk_import_ideas/spec/fixtures/testscan.pdf')
+      base_64_content = Base64.encode64 Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/testscan.pdf').read
       service.upload_file "data:application/pdf;base64,#{base_64_content}", 'pdf'
       expect(BulkImportIdeas::IdeaImportFile.all.count).to eq 1
       expect(BulkImportIdeas::IdeaImportFile.first.import_type).to eq 'pdf'
