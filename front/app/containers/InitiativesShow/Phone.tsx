@@ -48,8 +48,8 @@ import useInitiativeOfficialFeedback from 'api/initiative_official_feedback/useI
 import RequestToCosponsor from './RequestToCosponsor';
 import Cosponsors from './Cosponsors';
 import InitiativeBanner from './InitiativeBanner';
-import CosponsorshipReminder from './CosponsorshipReminder';
 import useShowCosponsorshipReminder from 'containers/InitiativesShow/hooks/useShowCosponsorshipReminder';
+import CosponsorShipReminder from './CosponsorShipReminder';
 
 const paddingSide = '32px';
 
@@ -166,7 +166,7 @@ const Phone = ({
   return (
     <Container className={className}>
       {showCosponsorShipReminder && (
-        <CosponsorshipReminder initiativeId={initiativeId} />
+        <CosponsorShipReminder initiativeId={initiativeId} />
       )}
       <InitiativeBanner initiativeHeaderImageLarge={initiativeHeaderImageLarge}>
         <InitiativeBannerContent>
