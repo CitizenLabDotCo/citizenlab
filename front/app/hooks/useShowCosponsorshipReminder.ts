@@ -31,12 +31,13 @@ export default function useShowCosponsorshipReminder(initiativeId: string) {
     initiativeStatusCode !== 'review_pending' &&
     initiativeStatusCode !== 'changes_requested';
 
-  return signedInUserIsAuthor &&
+  return (
+    signedInUserIsAuthor &&
     typeof requiredNumberOfCosponsors === 'number' &&
     // Showing this warning only makes sense if proposal pre-approval/review
     // is enabled. Otherwise, proposals are published immediately anyway.
     requireReview === true &&
-    !initiativeHasBeenPublished
-    ? requiredNumberOfCosponsors > acceptedCosponsorships.length
-    : false;
+    !initiativeHasBeenPublished &&
+    requiredNumberOfCosponsors > acceptedCosponsorships.length
+  );
 }
