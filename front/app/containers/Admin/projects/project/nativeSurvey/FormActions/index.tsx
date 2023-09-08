@@ -17,16 +17,17 @@ import { useParams } from 'react-router-dom';
 
 // i18n
 import messages from '../messages';
+import ownMessages from '../../ideas/messages';
 import { Multiloc } from 'typings';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { SHOW_PRINT_FUNCTIONALITY } from '../flag';
 
 // hooks
 import useFormSubmissionCount from 'hooks/useFormSubmissionCount';
 import useInputSchema from 'hooks/useInputSchema';
 import useLocale from 'hooks/useLocale';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // styles
 import { colors } from 'utils/styleUtils';
@@ -34,9 +35,7 @@ import { colors } from 'utils/styleUtils';
 // services
 import { deleteFormResults } from 'services/formCustomFields';
 import { saveSurveyAsPDF } from '../saveSurveyAsPDF';
-import ownMessages from '../../ideas/messages';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import { requestBlob } from '../../../../../../utils/request';
+import { requestBlob } from 'utils/request';
 import { saveAs } from 'file-saver';
 
 type FormActionsProps = {
@@ -189,7 +188,7 @@ const FormActions = ({
               {formatMessage(messages.viewSurveyText2)}
             </Button>
           </Box>
-          {uiSchema && SHOW_PRINT_FUNCTIONALITY && (
+          {uiSchema && (
             <Box
               mt="12px"
               w="100%"
@@ -213,7 +212,7 @@ const FormActions = ({
                 minWidth="312px"
                 onClick={downloadExampleFile}
               >
-                Download an Excel template
+                {formatMessage(messages.downloadExcelTemplate)}
               </Button>
               {importPrintedFormsEnabled && (
                 <Button

@@ -26,10 +26,6 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
 
   describe 'form without descriptions' do
     before do
-      # Topics for project
-      # project.allowed_input_topics << create(:topic_economy)
-      # project.allowed_input_topics << create(:topic_waste)
-
       # Custom fields
       create(:custom_field, resource: custom_form,
         key: 'pool_question',

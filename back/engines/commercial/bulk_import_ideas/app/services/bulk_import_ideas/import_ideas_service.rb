@@ -134,8 +134,7 @@ module BulkImportIdeas
 
     def add_author(idea_row, idea_attributes)
       user_created = false
-      # TEMP CHANGE FOR DEMO
-      if idea_row[:user_email].blank? || idea_row[:user_email].exclude?('@')
+      if idea_row[:user_email].blank?
         author = User.new(unique_code: SecureRandom.uuid, locale: @locale)
         author = add_author_name author, idea_row
         author.save!
@@ -293,14 +292,6 @@ module BulkImportIdeas
       # TODO: Is StringIO needed here?
       xlsx_file = StringIO.new decode_base64(file)
       XlsxService.new.xlsx_to_hash_array xlsx_file
-    end
-
-    def parse_pdf_ideas(file)
-      pdf_file = decode_base64 file
-      google_forms_service = GoogleFormParserService.new pdf_file
-      IdeaPlaintextParserService.new(
-        @form_fields, @locale
-      ).parse_text(google_forms_service.raw_text_page_array)
     end
 
     def decode_base64(base64_file)

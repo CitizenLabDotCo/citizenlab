@@ -62,7 +62,6 @@ module BulkImportIdeas
     end
 
     def import_ideas_service
-      # TODO: Get phase id here first and get the project from it?
       locale = params[:import_ideas] ? bulk_create_params[:locale] : current_user.locale
       @import_ideas_service ||= if import_scope == :project
         project_id = params[:id]

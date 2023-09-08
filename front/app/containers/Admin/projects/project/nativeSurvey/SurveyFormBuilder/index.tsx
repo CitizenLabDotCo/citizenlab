@@ -14,7 +14,6 @@ import useLocale from 'hooks/useLocale';
 import { nativeSurveyConfig } from '../utils';
 import { saveSurveyAsPDF } from '../saveSurveyAsPDF';
 import { isNilOrError } from 'utils/helperUtils';
-import { SHOW_PRINT_FUNCTIONALITY } from '../flag';
 import { API_PATH } from 'containers/App/constants';
 
 const FormBuilder = lazy(() => import('components/FormBuilder/edit'));
@@ -56,9 +55,7 @@ const SurveyFormBuilder = () => {
           ...nativeSurveyConfig,
           formCustomFields,
           goBackUrl,
-          onDownloadPDF: SHOW_PRINT_FUNCTIONALITY
-            ? handleDownloadPDF
-            : undefined,
+          onDownloadPDF: handleDownloadPDF,
         }}
       />
       <PDFExportModal
