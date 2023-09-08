@@ -131,4 +131,124 @@ describe BulkImportIdeas::ImportGlobalIdeasService do
       )
     end
   end
+
+  # Importing published ideas
+  describe 'import_ideas' do
+    before { create(:idea_status, code: 'proposed') }
+
+    it 'imports ideas as published with publication info' do
+      create(:user, email: 'userimport@citizenlab.co')
+      create(:project, title_multiloc: { 'en' => 'Project title' })
+
+      idea_rows = [
+        {
+          title_multiloc: { 'en' => 'My idea title' },
+          body_multiloc: { 'en' => 'My idea description' },
+          project_title: 'Project title',
+          user_email: 'userimport@citizenlab.co',
+          published_at: '18-07-2022'
+        }
+      ]
+
+      service.import_ideas idea_rows
+
+      expect(Idea.count).to eq 1
+      idea = Idea.first
+      expect(idea.published_at).to eq Date.parse('2022-07-18')
+      expect(idea.publication_status).to eq 'published'
+    end
+
+    it 'imports ideas with location info' do
+      create(:user, email: 'userimport@citizenlab.co')
+      create(:project, title_multiloc: { 'en' => 'Project title' })
+
+      idea_rows = [
+        {
+          title_multiloc: { 'en' => 'My idea title' },
+          body_multiloc: { 'en' => 'My idea description' },
+          project_title: 'Project title',
+          user_email: 'userimport@citizenlab.co',
+          latitude: 50.5035,
+          longitude: 6.0944,
+          location_description: 'Panorama sur les Hautes Fagnes / Hohes Venn'
+        }
+      ]
+
+      service.import_ideas idea_rows
+
+      expect(Idea.count).to eq 1
+      idea = Idea.first
+      expect(RGeo::GeoJSON.encode(idea.location_point)&.dig('coordinates', 1)).to eq 50.5035
+      expect(RGeo::GeoJSON.encode(idea.location_point)&.dig('coordinates', 0)).to eq 6.0944
+      expect(idea.location_description).to eq 'Panorama sur les Hautes Fagnes / Hohes Venn'
+    end
+
+    it 'imports ideas in a phase' do
+      create(:user, email: 'userimport@citizenlab.co')
+      project = create(:project_with_phases, phases_count: 2, title_multiloc: { 'en' => 'Project title' })
+
+      idea_rows = [
+        {
+          title_multiloc: { 'en' => 'My idea title' },
+          body_multiloc: { 'en' => 'My idea description' },
+          project_title: 'Project title',
+          user_email: 'userimport@citizenlab.co',
+          phase_rank: 2
+        }
+      ]
+
+      service.import_ideas idea_rows
+
+      expect(Idea.count).to eq 1
+      idea = Idea.first
+      expect(idea.phase_ids).to eq [project.phases.order(:start_at).last.id]
+    end
+
+    it 'imports ideas with special date cells' do
+      create(:user, email: 'userimport@citizenlab.co')
+      create(:project, title_multiloc: { 'en' => 'Project title' })
+
+      idea_rows = [
+        {
+          title_multiloc: { 'en' => 'My idea title' },
+          body_multiloc: { 'en' => 'My idea description' },
+          project_title: 'Project title',
+          user_email: 'userimport@citizenlab.co',
+          published_at: Time.zone.today
+        }
+      ]
+
+      service.import_ideas idea_rows
+
+      expect(Idea.count).to eq 1
+      idea = Idea.first
+      expect(idea.published_at).to eq Time.zone.today
+      expect(idea.publication_status).to eq 'published'
+    end
+
+    it 'imports ideas with topics' do
+      create(:user, email: 'userimport@citizenlab.co')
+      create(:project, title_multiloc: { 'en' => 'Project title' })
+      create(:topic)
+      topic1 = create(:topic, title_multiloc: { 'en' => 'Topic 1' })
+      topic2 = create(:topic, title_multiloc: { 'nl-BE' => 'Project twee', 'en' => 'Topic 2' })
+
+      idea_rows = [
+        {
+          title_multiloc: { 'en' => 'My idea title' },
+          body_multiloc: { 'en' => 'My idea description' },
+          project_title: 'Project title',
+          user_email: 'userimport@citizenlab.co',
+          topic_titles: ['Topic 1', 'Topic 2']
+        }
+      ]
+
+      service.import_ideas idea_rows
+
+      expect(Idea.count).to eq 1
+      idea = Idea.first
+      expect(idea.topic_ids).to match_array [topic1.id, topic2.id]
+    end
+
+  end
 end

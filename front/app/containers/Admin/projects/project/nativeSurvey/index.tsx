@@ -100,6 +100,9 @@ const Forms = ({ intl: { formatMessage } }: WrappedComponentProps) => {
               editFormLink,
               viewFormLink,
               viewFormResults,
+              offlineInputsLink,
+              downloadExcelLink,
+              downloadPdfLink,
               heading,
               postingEnabled,
               togglePostingEnabled,
@@ -113,6 +116,9 @@ const Forms = ({ intl: { formatMessage } }: WrappedComponentProps) => {
                   editFormLink={editFormLink}
                   viewFormLink={viewFormLink}
                   viewFormResults={viewFormResults}
+                  offlineInputsLink={offlineInputsLink}
+                  downloadExcelLink={downloadExcelLink}
+                  downloadPdfLink={downloadPdfLink}
                   heading={heading}
                   postingEnabled={postingEnabled}
                   togglePostingEnabled={togglePostingEnabled}

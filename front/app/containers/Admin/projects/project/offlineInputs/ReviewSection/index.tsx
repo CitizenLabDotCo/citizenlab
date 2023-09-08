@@ -66,12 +66,13 @@ const ReviewSection = ({
   onDeleteIdea,
 }: Props) => {
   const localize = useLocalize();
-  const { projectId } = useParams() as {
+  const { projectId, phaseId } = useParams() as {
     projectId: string;
+    phaseId: string;
   };
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
 
-  const { data: ideas, isLoading } = useImportedIdeas({ projectId });
+  const { data: ideas, isLoading } = useImportedIdeas({ projectId, phaseId });
   const { data: idea } = useIdeaById(ideaId ?? undefined);
   const { data: author } = useUserById(
     idea?.data.relationships.author?.data?.id,
@@ -81,8 +82,9 @@ const ReviewSection = ({
     id: isLoading ? undefined : idea?.data.relationships.idea_import?.data?.id,
   });
 
-  const phaseId = idea?.data.relationships.phases.data[0]?.id;
-  const { data: phase } = usePhase(phaseId);
+  const selectedPhaseId =
+    phaseId ?? idea?.data.relationships.phases.data[0]?.id;
+  const { data: phase } = usePhase(selectedPhaseId);
 
   if (isLoading) {
     return (
@@ -114,7 +116,7 @@ const ReviewSection = ({
           px="20px"
         >
           <Title variant="h1" color="primary">
-            <FormattedMessage {...messages.ideaImporter} />
+            <FormattedMessage {...messages.inputImporter} />
           </Title>
           <Text>
             <FormattedMessage
@@ -128,8 +130,6 @@ const ReviewSection = ({
       </Box>
     );
   }
-
-  // console.log(ideaMetadata?.data.attributes.import_type === 'pdf');
 
   const pages =
     ideaMetadata?.data.attributes.import_type === 'pdf'
@@ -172,7 +172,7 @@ const ReviewSection = ({
     >
       <Box px="40px" display="flex" justifyContent="space-between">
         <Title variant="h2" color="primary" mt="8px" mb="20px">
-          <FormattedMessage {...messages.importedIdeas} />
+          <FormattedMessage {...messages.importedInputs} />
         </Title>
 
         <Box
@@ -240,6 +240,7 @@ const ReviewSection = ({
             {idea && (
               <IdeaForm
                 projectId={projectId}
+                phaseId={selectedPhaseId}
                 showAllErrors={true}
                 apiErrors={apiErrors}
                 formData={formData}

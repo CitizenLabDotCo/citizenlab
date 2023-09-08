@@ -24,6 +24,7 @@ import { CLErrors } from 'typings';
 
 interface Props {
   projectId: string;
+  phaseId?: string;
   showAllErrors: boolean;
   apiErrors?: CLErrors;
   formData: FormData;
@@ -32,6 +33,7 @@ interface Props {
 
 const IdeaForm = ({
   projectId,
+  phaseId,
   showAllErrors,
   apiErrors,
   formData,
@@ -39,6 +41,7 @@ const IdeaForm = ({
 }: Props) => {
   const { schema, uiSchema } = useInputSchema({
     projectId,
+    phaseId,
   });
 
   const getApiErrorMessage: ApiErrorGetter = useCallback(

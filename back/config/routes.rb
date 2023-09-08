@@ -149,6 +149,7 @@ Rails.application.routes.draw do
         delete 'inputs', on: :member, action: 'delete_inputs'
         resources :custom_fields, controller: 'phase_custom_fields', only: %i[] do
           get 'json_forms_schema', on: :collection
+          get 'to_pdf', on: :collection
         end
       end
 

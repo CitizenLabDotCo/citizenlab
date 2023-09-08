@@ -5,12 +5,13 @@ import { QueryParams, ImportedIdeasKeys } from './types';
 import { importedIdeasKeys } from './keys';
 import { IIdeas } from 'api/ideas/types';
 
-const fetchImportedIdeas = ({ projectId }: QueryParams) =>
+const fetchImportedIdeas = ({ projectId, phaseId }: QueryParams) =>
   fetcher<IIdeas>({
-    path: `/projects/${projectId}/import_ideas/draft_ideas`,
+    path: phaseId
+      ? `/phases/${phaseId}/import_ideas/draft_ideas`
+      : `/projects/${projectId}/import_ideas/draft_ideas`,
     action: 'get',
   });
-
 const useImportedIdeas = (queryParams: QueryParams) => {
   return useQuery<IIdeas, CLErrors, IIdeas, ImportedIdeasKeys>({
     queryKey: importedIdeasKeys.list(queryParams),

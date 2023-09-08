@@ -6,6 +6,8 @@ import { Box, Text, Button } from '@citizenlab/cl2-component-library';
 
 // i18n
 import useLocalize from 'hooks/useLocalize';
+import { useIntl } from 'utils/cl-intl';
+import messages from './messages';
 
 // styling
 import styled from 'styled-components';
@@ -42,6 +44,7 @@ interface Props {
 
 const IdeaList = ({ ideaId, ideas, onSelectIdea, onDeleteIdea }: Props) => {
   const localize = useLocalize();
+  const { formatMessage } = useIntl();
 
   const handleDeleteIdea = (ideaId: string) => (e: React.MouseEvent) => {
     e.preventDefault();
@@ -51,7 +54,7 @@ const IdeaList = ({ ideaId, ideas, onSelectIdea, onDeleteIdea }: Props) => {
 
   return (
     <>
-      {ideas.data.map((idea) => (
+      {ideas.data.map((idea, index) => (
         <StyledBox
           key={idea.id}
           py="8px"
@@ -69,7 +72,9 @@ const IdeaList = ({ ideaId, ideas, onSelectIdea, onDeleteIdea }: Props) => {
             fontSize="m"
             fontWeight={idea.id === ideaId ? 'bold' : 'normal'}
           >
-            {truncate(localize(idea.attributes.title_multiloc), 80)}
+            {Object.keys(idea.attributes.title_multiloc).length > 0
+              ? truncate(localize(idea.attributes.title_multiloc), 80)
+              : `${formatMessage(messages.noTitleInputLabel)} ${index + 1}`}
           </Text>
           <Text m="0" mt="3px" fontSize="s" color="grey600">
             {moment(idea.attributes.created_at).format('YYYY-MM-DD')}

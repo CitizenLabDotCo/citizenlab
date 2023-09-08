@@ -15,15 +15,17 @@ def parse_pages(pages)
 end
 
 describe BulkImportIdeas::IdeaPlaintextParserService do
+  let(:project) { create(:continuous_project) }
+  let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
+  let(:custom_fields) { IdeaCustomFieldsService.new(Factory.instance.participation_method_for(project).custom_form).importable_fields }
+
+  before do
+    project.allowed_input_topics << create(:topic_economy)
+    project.allowed_input_topics << create(:topic_waste)
+  end
+
   describe 'form without descriptions' do
-    let(:project) { create(:continuous_project) }
-    let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
-
     before do
-      # Topics for project
-      project.allowed_input_topics << create(:topic_economy)
-      project.allowed_input_topics << create(:topic_waste)
-
       # Custom fields
       create(:custom_field, resource: custom_form,
         key: 'pool_question',
@@ -93,7 +95,7 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
         Page 2\n"
       ]
 
-      service = described_class.new project.id, 'en', nil
+      service = described_class.new custom_fields, 'en'
       docs = service.parse_text text
 
       result = [{
@@ -165,7 +167,7 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
         Page 2\n"
       ]
 
-      service = described_class.new project.id, 'en', nil
+      service = described_class.new custom_fields, 'en'
       docs = service.parse_text text
 
       result = [{
@@ -196,14 +198,7 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
   end
 
   describe 'form with descriptions' do
-    let(:project) { create(:continuous_project) }
-    let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
-
     before do
-      # Topics for project
-      project.allowed_input_topics << create(:topic_economy)
-      project.allowed_input_topics << create(:topic_waste)
-
       # Custom fields
       create(:custom_field, resource: custom_form,
         key: 'pool_question',
@@ -317,7 +312,7 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
         Page 2\n"
       ]
 
-      service = described_class.new project.id, 'en', nil
+      service = described_class.new custom_fields, 'en'
       docs = service.parse_text text
 
       result = [{
@@ -373,7 +368,7 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
         Page 2\n"
       ]
 
-      service = described_class.new project.id, 'fr-FR', nil
+      service = described_class.new custom_fields, 'fr-FR'
       docs = service.parse_text text
 
       result = [{
@@ -416,8 +411,7 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
         },
         input_type: 'text',
         enabled: true,
-        required: false
-      )
+        required: false)
 
       create(:custom_field, resource: custom_form,
         key: 'number_field',
@@ -429,8 +423,7 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
         },
         input_type: 'number',
         enabled: true,
-        required: true
-      )
+        required: true)
     end
 
     it 'parses text correctly (single document)' do
@@ -462,18 +455,18 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
         Page 2\n"
       ]
 
-      service = described_class.new project.id, 'en', nil
+      service = described_class.new custom_fields, 'en'
       docs = service.parse_text text
 
       result = [{
-        :pdf_pages => [1, 2],
-        :form_pages => [1, 2],
-        :fields => {
-          "Title" => "dea Whatever idea",
-          "Description" => "Bla Bla Bla. IBla. I am really running out of ideasор",
-          "Location (optional)" => "Some location",
-          "Your favourite name for a swimming pool (optional)" => "The nice pool",
-          "What is your favorite number?" => 72296
+        pdf_pages: [1, 2],
+        form_pages: [1, 2],
+        fields: {
+          'Title' => 'dea Whatever idea',
+          'Description' => 'Bla Bla Bla. IBla. I am really running out of ideasор',
+          'Location (optional)' => 'Some location',
+          'Your favourite name for a swimming pool (optional)' => 'The nice pool',
+          'What is your favorite number?' => 72_296
         }
       }]
 
@@ -509,18 +502,18 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
         Page 2\n"
       ]
 
-      service = described_class.new project.id, 'en', nil
+      service = described_class.new custom_fields, 'en'
       docs = service.parse_text text
 
       result = [{
-        :pdf_pages => [1, 2],
-        :form_pages => [1, 2],
-        :fields => {
-          "Title" => "dea Whatever idea",
-          "Description" => "Bla Bla Bla. IBla. I am really running out of ideasор",
-          "Location (optional)" => "Some location",
-          "Your favourite name for a swimming pool (optional)" => "The nice pool",
-          "What is your favorite number?" => 20125
+        pdf_pages: [1, 2],
+        form_pages: [1, 2],
+        fields: {
+          'Title' => 'dea Whatever idea',
+          'Description' => 'Bla Bla Bla. IBla. I am really running out of ideasор',
+          'Location (optional)' => 'Some location',
+          'Your favourite name for a swimming pool (optional)' => 'The nice pool',
+          'What is your favorite number?' => 20_125
         }
       }]
 
@@ -530,11 +523,6 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
 
   describe 'edge cases' do
     it 'handles values matching substrings of description' do
-      project = create(:continuous_project)
-      custom_form = create(:custom_form, :with_default_fields, participation_context: project)
-      project.allowed_input_topics << create(:topic_economy)
-      project.allowed_input_topics << create(:topic_waste)
-
       create(:custom_field, resource: custom_form,
         key: 'pool_question',
         title_multiloc: { 'en' => 'Your favourite name for a swimming pool' },
@@ -564,7 +552,7 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
         Page 1\n"
       ]
 
-      service = described_class.new project.id, 'en', nil
+      service = described_class.new custom_fields, 'en'
       docs = service.parse_text text
 
       result = [{

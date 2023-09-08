@@ -1,9 +1,9 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  ideaImporter: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.ideaImporter',
-    defaultMessage: 'Idea importer',
+  inputImporter: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.inputImporter',
+    defaultMessage: 'Input importer',
   },
   uploadAPdfExcelFile: {
     id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.uploadAPdfExcelFile',
