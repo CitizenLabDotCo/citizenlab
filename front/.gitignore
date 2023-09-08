@@ -30,7 +30,7 @@ cypress/videos/
 cypress/screenshots/
 
 # Storybook generated output
-.out/
+dist/
 
 #Local VsCode config
 .vscode/*

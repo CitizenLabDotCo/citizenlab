@@ -33,7 +33,9 @@
     "find-unused-messages": "node internals/scripts/find-unused-messages.js",
     "prettier": "prettier --write .",
     "detect-deadcode": "ts-prune -p app/tsconfig.json -i '(node_modules|utils/testUtils/rtl.tsx|services/permissions|i18n|/*/*/__mocks__)' | (! grep -v 'used in module')",
-    "dependency-cruiser": "depcruise app  --validate"
+    "dependency-cruiser": "depcruise app  --validate",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "jest-junit": {
     "addFileAttribute": "true"
@@ -143,7 +145,7 @@
   },
   "devDependencies": {
     "@babel/cli": "7.x",
-    "@babel/core": "7.21.5",
+    "@babel/core": "^7.22.15",
     "@babel/node": "7.x",
     "@babel/plugin-transform-runtime": "^7.17.0",
     "@babel/preset-env": "^7.18.6",
@@ -153,6 +155,14 @@
     "@cypress/webpack-preprocessor": "^5.16.1",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
     "@sentry/webpack-plugin": "^1.18.8",
+    "@storybook/addon-essentials": "^7.4.0",
+    "@storybook/addon-interactions": "^7.4.0",
+    "@storybook/addon-links": "^7.4.0",
+    "@storybook/addon-onboarding": "^1.0.8",
+    "@storybook/blocks": "^7.4.0",
+    "@storybook/react": "^7.4.0",
+    "@storybook/react-webpack5": "^7.4.0",
+    "@storybook/testing-library": "^0.2.0",
     "@tanstack/react-query-devtools": "^4.22.4",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^12.1.5",
@@ -208,6 +218,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-storybook": "^0.6.13",
     "eslint-plugin-unused-imports": "^2.0.0",
     "express": "4.18.2",
     "fork-ts-checker-webpack-plugin": "6.4.0",
@@ -231,6 +242,7 @@
     "resize-observer-polyfill": "^1.5.1",
     "rimraf": "5.0.1",
     "shelljs": "0.8.5",
+    "storybook": "^7.4.0",
     "style-loader": "^3.3.3",
     "ts-jest": "^29.1.0",
     "ts-loader": "^9.4.4",

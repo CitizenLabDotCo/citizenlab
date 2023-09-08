@@ -1,0 +1,43 @@
+const path = require('path');
+import type { StorybookConfig } from '@storybook/react-webpack5';
+const webpack = require('webpack');
+
+const config: StorybookConfig = {
+  stories: [
+    '../app/**/*.mdx',
+    '../app/**/*.stories.@(js|jsx|mjs|ts|tsx)',
+  ],
+  addons: [
+    '@storybook/addon-links',
+    '@storybook/addon-essentials',
+    '@storybook/addon-onboarding',
+    '@storybook/addon-interactions',
+  ],
+  framework: {
+    name: '@storybook/react-webpack5',
+    options: {},
+  },
+  docs: {
+    autodocs: 'tag',
+  },
+  babel: async () => {
+    const opt = require('./.babelrc.json');
+    return opt;
+  },
+  webpackFinal(config, _options) {
+    config.resolve = {
+      ...config.resolve,
+      modules: [path.join(process.cwd(), 'app'), 'node_modules']
+    }
+
+    config.plugins = [
+      ...config.plugins,
+      new webpack.ProvidePlugin({
+        process: 'process/browser',
+      }),
+    ]
+    
+    return config;
+  },
+};
+export default config;
