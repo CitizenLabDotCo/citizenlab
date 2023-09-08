@@ -12,7 +12,6 @@ import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 import FileUploader from 'components/UI/FileUploader';
 import {
   Box,
-  Button,
   IconTooltip,
   Input,
   Label,
@@ -24,6 +23,7 @@ import {
 import Map from './components/map';
 import { leafletMapClicked$ } from 'components/UI/LeafletMap/events';
 import Modal from 'components/UI/Modal';
+import Button from 'components/UI/Button';
 
 // router
 import clHistory from 'utils/cl-router/history';
@@ -50,6 +50,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { useParams } from 'react-router-dom';
 import { geocode } from 'utils/locationTools';
 import { useTheme } from 'styled-components';
+import useLocale from 'hooks/useLocale';
 
 type SubmitState = 'disabled' | 'enabled' | 'error' | 'success';
 type ErrorType =
@@ -72,6 +73,7 @@ const AdminProjectEventEdit = () => {
   };
   const { formatMessage } = useIntl();
   const theme = useTheme();
+  const locale = useLocale();
 
   // api
   const { mutate: addEvent } = useAddEvent();
@@ -581,23 +583,26 @@ const AdminProjectEventEdit = () => {
                   />
                 </Box>
               </SectionField>
-              <Box display="flex" flexWrap="wrap">
-                <Box width="100%">
-                  <Label>{formatMessage(messages.preview)}</Label>
+              {!isNilOrError(locale) && (
+                <Box display="flex" flexWrap="wrap">
+                  <Box width="100%">
+                    <Label>{formatMessage(messages.preview)}</Label>
+                  </Box>
+                  <Button
+                    minWidth="160px"
+                    iconPos={'right'}
+                    icon={attendanceOptionsVisible ? undefined : 'plus-circle'}
+                    iconSize="20px"
+                    bgColor={theme.colors.tenantPrimary}
+                    linkTo={eventAttrs.custom_attend_button_link}
+                    openLinkInNewTab={true}
+                  >
+                    {eventAttrs?.custom_attend_button_multiloc
+                      ? eventAttrs?.custom_attend_button_multiloc[locale]
+                      : formatMessage(messages.newTextHere)}
+                  </Button>
                 </Box>
-                <Button
-                  minWidth="160px"
-                  iconPos={'right'}
-                  icon={attendanceOptionsVisible ? undefined : 'plus-circle'}
-                  iconSize="20px"
-                  bgColor={theme.colors.tenantPrimary}
-                  onClick={(event) => {
-                    event.preventDefault();
-                  }}
-                >
-                  {formatMessage(messages.attend)}
-                </Button>
-              </Box>
+              )}
             </>
           )}
 

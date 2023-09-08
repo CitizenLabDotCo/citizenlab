@@ -160,9 +160,9 @@ export default defineMessages({
     defaultMessage: 'External link',
   },
   customButtonLinkTooltip: {
-    id: 'app.containers.AdminPage.ProjectEvents.customButtonLinkTooltip',
+    id: 'app.containers.AdminPage.ProjectEvents.customButtonLinkTooltip2',
     defaultMessage:
-      'Add a link to an external URL (E.g. event service or ticketing website). Setting this will override the default attendance button behavior.',
+      'Add a link to an external URL (E.g. Event service or ticketing website). Setting this will override the default attendance button behavior.',
   },
   preview: {
     id: 'app.containers.AdminPage.ProjectEvents.preview',
@@ -171,5 +171,9 @@ export default defineMessages({
   attend: {
     id: 'app.containers.AdminPage.ProjectEvents.attend',
     defaultMessage: 'Attend',
+  },
+  newTextHere: {
+    id: 'app.containers.AdminPage.ProjectEvents.newTextHere',
+    defaultMessage: 'Button text here',
   },
 });
