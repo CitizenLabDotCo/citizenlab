@@ -123,7 +123,7 @@ class PrintCustomFieldsService
 
       pdf.indent(10.mm) do
         pdf.text(
-          "#{I18n.with_locale(locale) { I18n.t("form_builder.pdf_export.#{key}") }}",
+          (I18n.with_locale(locale) { I18n.t("form_builder.pdf_export.#{key}") }).to_s,
           size: 12,
           inline_format: true
         )
@@ -151,43 +151,43 @@ class PrintCustomFieldsService
     # The .group block makes sure that everything
     # inside of it will be on a new page if there
     # is not enough space on the current page
-    pdf.group do |pdf|
+    pdf.group do |pdf_group|
       # Write title
-      write_title(pdf, custom_field)
+      write_title(pdf_group, custom_field)
 
       # Write description if it exists
-      write_description(pdf, custom_field)
+      write_description(pdf_group, custom_field)
 
       # Write
       # - '*Choose as many as you like', and/or
       # - '*This answer will only be shared with moderators, and not to the public.'
       # if necessary
-      write_instructions_and_disclaimers(pdf, custom_field)
+      write_instructions_and_disclaimers(pdf_group, custom_field)
 
-      pdf.move_down 7.mm
+      pdf_group.move_down 7.mm
 
       if field_type == 'select'
-        draw_single_choice(pdf, custom_field)
+        draw_single_choice(pdf_group, custom_field)
       end
 
       if field_type == 'multiselect'
-        draw_multiple_choice(pdf, custom_field)
+        draw_multiple_choice(pdf_group, custom_field)
       end
 
       if %w[text text_multiloc].include? field_type
-        draw_text_lines(pdf, 1)
+        draw_text_lines(pdf_group, 1)
       end
 
       if %w[multiline_text html_multiloc].include? field_type
-        draw_text_lines(pdf, 7)
+        draw_text_lines(pdf_group, 7)
       end
 
       if field_type == 'linear_scale'
-        draw_linear_scale(pdf, custom_field)
+        draw_linear_scale(pdf_group, custom_field)
       end
 
       if field_type == 'number'
-        draw_text_lines(pdf, 1)
+        draw_text_lines(pdf_group, 1)
       end
     end
 
@@ -207,7 +207,7 @@ class PrintCustomFieldsService
   def write_description(pdf, custom_field)
     description = custom_field.description_multiloc[locale]
     is_empty = description.nil? || description == ''
- 
+
     unless is_empty
       pdf.move_down 3.mm
       paragraphs = parse_html_tags(description)
@@ -229,7 +229,7 @@ class PrintCustomFieldsService
 
       if show_multiselect_instructions
         pdf.text(
-          "*#{I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.choose_as_many') }}", 
+          "*#{I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.choose_as_many') }}",
           size: 10
         )
       end
