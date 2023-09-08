@@ -53,7 +53,7 @@ import {
 } from '.';
 import useInitiativeOfficialFeedback from 'api/initiative_official_feedback/useInitiativeOfficialFeedback';
 import CosponsorshipReminder from './CosponsorshipReminder';
-import useShowCosponsorshipReminder from 'hooks/useShowCosponsorshipReminder';
+import useShowCosponsorshipReminder from 'containers/InitiativesShow/hooks/useShowCosponsorshipReminder';
 
 const Container = styled.main`
   display: flex;

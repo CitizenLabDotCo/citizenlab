@@ -17,7 +17,7 @@ import { roundPercentage } from 'utils/math';
 // typings
 import { SortAttribute as InitiativesSortAttribute } from 'resources/GetInitiatives';
 import { SortDirection } from 'utils/paginationUtils';
-import useInitiativeCosponsorsRequired from 'hooks/useInitiativeCosponsorsRequired';
+import useInitiativeCosponsorsRequired from 'containers/InitiativesShow/hooks/useInitiativeCosponsorsRequired';
 
 interface Props {
   sortAttribute?: InitiativesSortAttribute;

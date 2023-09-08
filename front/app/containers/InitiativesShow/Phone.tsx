@@ -49,7 +49,7 @@ import RequestToCosponsor from './RequestToCosponsor';
 import Cosponsors from './Cosponsors';
 import InitiativeBanner from './InitiativeBanner';
 import CosponsorshipReminder from './CosponsorshipReminder';
-import useShowCosponsorshipReminder from 'hooks/useShowCosponsorshipReminder';
+import useShowCosponsorshipReminder from 'containers/InitiativesShow/hooks/useShowCosponsorshipReminder';
 
 const paddingSide = '32px';
 

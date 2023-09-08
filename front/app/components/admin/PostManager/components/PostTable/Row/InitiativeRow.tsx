@@ -37,7 +37,7 @@ import useUpdateInitiative from 'api/initiatives/useUpdateInitiative';
 
 // types
 import { IInitiativeData } from 'api/initiatives/types';
-import useInitiativeCosponsorsRequired from 'hooks/useInitiativeCosponsorsRequired';
+import useInitiativeCosponsorsRequired from 'containers/InitiativesShow/hooks/useInitiativeCosponsorsRequired';
 import useInitiativeAllowedTransitions from 'api/initiative_allowed_transitions/useInitiativeAllowedTransitions';
 
 interface Props {

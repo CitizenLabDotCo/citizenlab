@@ -48,7 +48,7 @@ import { IInitiativeImageData } from 'api/initiative_images/types';
 import { IInitiativeFileData } from 'api/initiative_files/types';
 import useInitiativeReviewRequired from 'hooks/useInitiativeReviewRequired';
 import { stripHtmlTags } from 'utils/helperUtils';
-import useInitiativeCosponsorsRequired from 'hooks/useInitiativeCosponsorsRequired';
+import useInitiativeCosponsorsRequired from 'containers/InitiativesShow/hooks/useInitiativeCosponsorsRequired';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 declare module 'components/UI/Error' {
