@@ -200,6 +200,7 @@ resource 'BulkImportIdeasImportIdeas' do
               expect(Idea.all.count).to eq 1
               expect(BulkImportIdeas::IdeaImport.count).to eq 1
               expect(BulkImportIdeas::IdeaImportFile.count).to eq 1
+              expect(BulkImportIdeas::IdeaImportFile.first[:num_pages]).to eq 1
               expect(project.reload.ideas_count).to eq 0 # Draft ideas should not be counted
 
               # Relationships

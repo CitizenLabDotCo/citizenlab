@@ -20,10 +20,9 @@ module BulkImportIdeas
       @all_projects = Project.all
       @all_topics = Topic.all
       @import_user = current_user
-      @form_fields = []
       @project = nil
-      @phase = nil
       @file = nil
+      @total_pages = 1
     end
 
     def import_ideas(idea_rows)
@@ -37,7 +36,9 @@ module BulkImportIdeas
           ideas << idea
         end
       end
+      @file&.update!(num_pages: @total_pages)
 
+      # TODO: Does this need to run?
       DumpTenantJob.perform_later Tenant.current
       ideas
     end

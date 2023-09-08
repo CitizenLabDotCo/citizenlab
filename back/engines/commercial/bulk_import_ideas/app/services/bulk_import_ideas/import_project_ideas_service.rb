@@ -59,7 +59,14 @@ module BulkImportIdeas
       else
         parse_xlsx_ideas(file).map { |idea| { pdf_pages: [1], fields: idea } }
       end
+      @total_pages = total_pages(ideas)
       ideas_to_idea_rows(ideas)
+    end
+
+    def total_pages(ideas)
+      return @total_pages unless ideas.present?
+
+      ideas.last[:pdf_pages].max
     end
 
     def ideas_to_idea_rows(ideas_array)
