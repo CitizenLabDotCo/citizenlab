@@ -115,42 +115,19 @@ module EmailCampaigns
     def statistics(project)
       ps = ParticipantsService.new
       participants_increase = ps.projects_participants([project], since: (Time.now - days_ago)).size
-      participants_past_increase = ps.projects_participants([project], since: (Time.now - (days_ago * 2))).size - participants_increase
       ideas = Idea.published.where(project_id: project.id).load
       comments = Comment.where(post_id: ideas.map(&:id))
-      reactions = Reaction.where(reactable_id: (ideas.map(&:id) + comments.map(&:id)))
       {
-        activities: {
-          new_ideas: stat_increase(
-            ideas.filter_map(&:published_at)
-          ),
-          new_reactions: stat_increase(
-            reactions.filter_map(&:created_at)
-          ),
-          new_comments: stat_increase(
-            comments.filter_map(&:created_at)
-          ),
-          total_ideas: ideas.size
-        },
-        users: {
-          new_visitors: stat_increase(
-            []
-          ),
-          new_participants: {
-            increase: participants_increase,
-            past_increase: participants_past_increase
-          },
-          total_participants: ps.projects_participants([project]).size
-        }
+        new_ideas_increase: stat_increase(ideas.filter_map(&:published_at)),
+        new_comments_increase: stat_increase(comments.filter_map(&:created_at)),
+        new_participants_increase: participants_increase
       }
     end
 
     def zero_statistics?(statistics)
-      ((statistics.dig(:activities, :new_ideas, :increase) == 0) &&
-         (statistics.dig(:activities, :new_comments, :increase) == 0) &&
-         (statistics.dig(:users, :new_visitors, :increase) == 0) &&
-         (statistics.dig(:users, :new_users, :increase) == 0) &&
-         (statistics.dig(:users, :active_users, :increase) == 0)
+      ((statistics[:new_ideas_increase] == 0) &&
+         (statistics[:new_comments_increase] == 0) &&
+         (statistics[:new_participants_increase] == 0)
       )
     end
 
@@ -160,13 +137,8 @@ module EmailCampaigns
       ((t2 - t1) / 1.day).days
     end
 
-    def stat_increase(ts)
-      second_last_agos = ts.select { |t| t > (Time.now - (days_ago * 2)) }
-      last_agos = second_last_agos.select { |t| t > (Time.now - days_ago) }
-      {
-        increase: last_agos.size,
-        past_increase: second_last_agos.size
-      }
+    def stat_increase(stat_dates = [])
+      stat_dates.count { |t| t > (Time.now - days_ago) }
     end
 
     # @param [UserDisplayNameService] name_service
@@ -201,8 +173,8 @@ module EmailCampaigns
 
     def idea_activity_count(idea)
       new_reactions_count = idea.reactions.where('created_at > ?', Time.now - days_ago).count
-      new_comments_count = idea.comments.where('created_at > ?', Time.now - days_ago).count
-      new_reactions_count + new_comments_count
+      new_comments_increase = idea.comments.where('created_at > ?', Time.now - days_ago).count
+      new_reactions_count + new_comments_increase
     end
 
     protected

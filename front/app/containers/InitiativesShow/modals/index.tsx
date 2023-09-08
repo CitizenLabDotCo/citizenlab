@@ -12,7 +12,7 @@ import messages from '../messages';
 import InitiativeCreatedModalContent from './InitiativeCreatedModalContent';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useInitiativeReviewRequired from 'hooks/useInitiativeReviewRequired';
+import useInitiativeReviewRequired from '../hooks/useInitiativeReviewRequired';
 
 interface Props {
   initiativeIdForSocialSharing: string | null;

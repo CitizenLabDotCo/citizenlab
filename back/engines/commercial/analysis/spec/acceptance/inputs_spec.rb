@@ -147,6 +147,15 @@ resource 'Inputs' do
         expect(response_data.pluck(:id)).to eq([idea1.id])
       end
     end
+
+    context 'when project_moderator' do
+      before { header_token_for(create(:project_moderator, projects: [analysis.source_project])) }
+
+      example_request 'lists all inputs in the analysis' do
+        expect(status).to eq(200)
+        expect(response_data.pluck(:id)).to match_array(inputs.pluck(:id))
+      end
+    end
   end
 
   get 'web_api/v1/analyses/:analysis_id/inputs/:id' do
