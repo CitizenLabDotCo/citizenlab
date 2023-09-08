@@ -185,7 +185,7 @@ export default defineMessages({
   fewShotSubtitle: {
     id: 'app.containers.AdminPage.projects.project.analysis.Tags.fewShotSubtitle',
     defaultMessage:
-      'Select maximum 10 tags you would like the inputs to be distributed between.',
+      'Select maximum 9 tags you would like the inputs to be distributed between.',
   },
   fewShotSubtitle2: {
     id: 'app.containers.AdminPage.projects.project.analysis.Tags.fewShotSubtitle2',
@@ -199,7 +199,7 @@ export default defineMessages({
   byLabelSubtitle1: {
     id: 'app.containers.AdminPage.projects.project.analysis.Tags.byLabelSubtitle1',
     defaultMessage:
-      'Select maximum 10 tags you would like the inputs to be distributed between. Inputs already associated with these tags will not be classified again.',
+      'Select maximum 9 tags you would like the inputs to be distributed between. Inputs already associated with these tags will not be classified again.',
   },
   byLabelSubtitle2: {
     id: 'app.containers.AdminPage.projects.project.analysis.Tags.byLabelSubtitle2',

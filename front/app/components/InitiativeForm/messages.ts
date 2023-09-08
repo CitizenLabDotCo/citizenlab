@@ -78,6 +78,14 @@ export default defineMessages({
     id: 'app.components.InitiativeForm.topicEmptyError',
     defaultMessage: 'Please provide a topic',
   },
+  cosponsorsEmptyError: {
+    id: 'app.components.InitiativeForm.cosponsorsEmptyError',
+    defaultMessage: 'Please add the required number of cosponsors',
+  },
+  cosponsorsMaxError: {
+    id: 'app.components.InitiativeForm.cosponsorsMaxError',
+    defaultMessage: 'You can only add {maxNumberOfCosponsors} cosponsors',
+  },
   topicsLabel: {
     id: 'app.components.InitiativeForm.topicsLabel',
     defaultMessage: 'Select the topic of your initiative',
