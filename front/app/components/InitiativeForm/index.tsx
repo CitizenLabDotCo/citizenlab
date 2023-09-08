@@ -46,9 +46,9 @@ import useTopics from 'api/topics/useTopics';
 import { IInitiativeData } from 'api/initiatives/types';
 import { IInitiativeImageData } from 'api/initiative_images/types';
 import { IInitiativeFileData } from 'api/initiative_files/types';
-import useInitiativeReviewRequired from 'hooks/useInitiativeReviewRequired';
+import useInitiativeReviewRequired from 'containers/InitiativesShow/hooks/useInitiativeReviewRequired';
 import { stripHtmlTags } from 'utils/helperUtils';
-import useInitiativeCosponsorsRequired from 'hooks/useInitiativeCosponsorsRequired';
+import useInitiativeCosponsorsRequired from 'containers/InitiativesShow/hooks/useInitiativeCosponsorsRequired';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 declare module 'components/UI/Error' {
@@ -77,6 +77,8 @@ export type Props = {
   initiativeFiles?: IInitiativeFileData[];
 };
 
+const MAX_NUMBER_OF_COSPONSORS = 10;
+
 const InitiativeForm = ({
   onSubmit,
   initiative,
@@ -91,7 +93,6 @@ const InitiativeForm = ({
   const initiativeReviewRequired = useInitiativeReviewRequired();
   const { data: appConfiguration } = useAppConfiguration();
   const { data: topics } = useTopics({ excludeCode: 'custom' });
-  const maxNumberOfCosponsors = 10;
   const schema = object({
     title_multiloc: validateAtLeastOneLocale(
       formatMessage(messages.titleEmptyError),
@@ -128,9 +129,9 @@ const InitiativeForm = ({
             formatMessage(messages.cosponsorsEmptyError)
           )
           .max(
-            maxNumberOfCosponsors,
+            MAX_NUMBER_OF_COSPONSORS,
             formatMessage(messages.cosponsorsMaxError, {
-              maxNumberOfCosponsors,
+              maxNumberOfCosponsors: MAX_NUMBER_OF_COSPONSORS,
             })
           ),
       }),
