@@ -124,6 +124,7 @@ const ReviewSection = ({
           await onApproveIdea();
 
           const nextIdeaId = getNextIdeaId(ideaId, ideas);
+          console.log({ nextIdeaId });
           onSelectIdea(nextIdeaId);
         }
       : undefined;
