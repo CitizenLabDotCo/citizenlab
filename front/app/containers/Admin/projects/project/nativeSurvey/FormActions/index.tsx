@@ -35,7 +35,7 @@ import { colors } from 'utils/styleUtils';
 import { deleteFormResults } from 'services/formCustomFields';
 import { saveSurveyAsPDF } from '../saveSurveyAsPDF';
 import ownMessages from '../../ideas/messages';
-import useFeatureFlag from '../../../../../../hooks/useFeatureFlag';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import { requestBlob } from '../../../../../../utils/request';
 import { saveAs } from 'file-saver';
 
