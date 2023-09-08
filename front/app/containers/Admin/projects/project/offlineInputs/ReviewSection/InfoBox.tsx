@@ -9,14 +9,16 @@ import { colors } from 'utils/styleUtils';
 // i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import { Locale } from 'typings';
 
 interface Props {
   phaseName?: string;
   authorName?: string;
   authorEmail?: string;
+  locale?: Locale;
 }
 
-const InfoBox = ({ phaseName, authorName, authorEmail }: Props) => {
+const InfoBox = ({ phaseName, authorName, authorEmail, locale }: Props) => {
   return (
     <Box
       w="90%"
@@ -28,6 +30,11 @@ const InfoBox = ({ phaseName, authorName, authorEmail }: Props) => {
         {phaseName && (
           <Text fontWeight="bold">
             <FormattedMessage {...messages.phase} />
+          </Text>
+        )}
+        {locale && (
+          <Text fontWeight="bold">
+            <FormattedMessage {...messages.locale} />
           </Text>
         )}
         {authorName && (
@@ -43,6 +50,7 @@ const InfoBox = ({ phaseName, authorName, authorEmail }: Props) => {
       </Box>
       <Box>
         {phaseName && <Text>{phaseName}</Text>}
+        {locale && <Text>{locale}</Text>}
         {authorName && <Text>{authorName}</Text>}
         {authorEmail && <Text mt="0">{authorEmail}</Text>}
       </Box>

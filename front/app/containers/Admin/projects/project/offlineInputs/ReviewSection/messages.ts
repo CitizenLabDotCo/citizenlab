@@ -48,4 +48,8 @@ export default defineMessages({
     defaultMessage:
       'Cannot display the imported file. Imported file viewing is only available for PDF imports.',
   },
+  locale: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.locale',
+    defaultMessage: 'Locale:',
+  },
 });

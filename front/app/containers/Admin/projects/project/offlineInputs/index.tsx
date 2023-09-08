@@ -32,9 +32,6 @@ import { CLErrors } from 'typings';
 import { geocode } from 'utils/locationTools';
 
 const OfflineInputImporter = () => {
-  const importPrintedFormsEnabled = useFeatureFlag({
-    name: 'import_printed_forms',
-  });
   const { projectId } = useParams() as {
     projectId: string;
   };
@@ -54,8 +51,6 @@ const OfflineInputImporter = () => {
   const { schema, uiSchema } = useInputSchema({
     projectId,
   });
-
-  if (!importPrintedFormsEnabled) return null;
 
   const formData: FormData =
     ideaId && formStatePerIdea[ideaId]
@@ -169,6 +164,11 @@ const OfflineInputImporter = () => {
 };
 
 const OfflineInputImporterWrapper = () => {
+  const importPrintedFormsEnabled = useFeatureFlag({
+    name: 'import_printed_forms',
+  });
+  if (!importPrintedFormsEnabled) return null;
+
   const modalPortalElement = document.getElementById('modal-portal');
   if (!modalPortalElement) return null;
 

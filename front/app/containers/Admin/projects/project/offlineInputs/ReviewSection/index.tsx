@@ -108,6 +108,7 @@ const ReviewSection = ({
 
   const authorName = author ? getFullName(author.data) : undefined;
   const authorEmail = author?.data.attributes.email;
+  const locale = ideaMetadata?.data.attributes.locale;
 
   const goToNextPage = () => setCurrentPageIndex((index) => index + 1);
   const goToPreviousPage = () => setCurrentPageIndex((index) => index - 1);
@@ -196,11 +197,12 @@ const ReviewSection = ({
             flexDirection="column"
             alignItems="center"
           >
-            {(phaseName || authorEmail || authorName) && (
+            {(phaseName || authorEmail || authorName || locale) && (
               <InfoBox
                 phaseName={phaseName}
                 authorName={authorName}
                 authorEmail={authorEmail}
+                locale={locale}
               />
             )}
             {idea && (
