@@ -52,7 +52,7 @@ import {
   contentFadeInEasing,
 } from '.';
 import useInitiativeOfficialFeedback from 'api/initiative_official_feedback/useInitiativeOfficialFeedback';
-import CosponsorShipReminder from './CosponsorShipReminder';
+import CosponsorshipReminder from './CosponsorshipReminder';
 import useShowCosponsorshipReminder from 'hooks/useShowCosponsorshipReminder';
 
 const Container = styled.main`
@@ -219,7 +219,7 @@ const LargerThanPhone = ({
           <LeftColumn>
             {showCosponsorshipReminder && (
               <Box mb="28px">
-                <CosponsorShipReminder initiativeId={initiativeId} />
+                <CosponsorshipReminder initiativeId={initiativeId} />
               </Box>
             )}
             <StyledTopics

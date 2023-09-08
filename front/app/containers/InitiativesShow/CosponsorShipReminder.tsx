@@ -9,7 +9,7 @@ interface Props {
   initiativeId: string;
 }
 
-const CosponsorShipReminder = ({ initiativeId }: Props) => {
+const CosponsorshipReminder = ({ initiativeId }: Props) => {
   const { formatMessage } = useIntl();
   const { data: appConfiguration } = useAppConfiguration();
   const requiredNumberOfCosponsors =
@@ -34,4 +34,4 @@ const CosponsorShipReminder = ({ initiativeId }: Props) => {
   );
 };
 
-export default CosponsorShipReminder;
+export default CosponsorshipReminder;
