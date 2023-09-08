@@ -1465,6 +1465,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResultsConfirmation2": "Are you sure you want to delete all survey results?",
   "app.containers.AdminPage.ProjectEdit.survey.disabledSurveyMessage2": "Survey content can't be edited as survey results have started coming in.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadAllResults2": "Download all survey results",
+  "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate": "Download an Excel template",
   "app.containers.AdminPage.ProjectEdit.survey.downloadResults2": "Download survey results",
   "app.containers.AdminPage.ProjectEdit.survey.downloadSurvey": "Download survey as pdf",
   "app.containers.AdminPage.ProjectEdit.survey.editSurveyContent2": "Edit survey content",
