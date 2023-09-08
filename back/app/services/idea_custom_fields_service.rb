@@ -31,6 +31,11 @@ class IdeaCustomFieldsService
     enabled_fields.reject { |field| unsubbmittable_input_types.include? field.input_type }
   end
 
+  def importable_fields
+    ignore_field_types = %w[page section date files image_files point linear_scale file_upload]
+    enabled_fields.reject { |field| ignore_field_types.include? field.input_type }
+  end
+
   def enabled_fields
     all_fields.select(&:enabled?)
   end

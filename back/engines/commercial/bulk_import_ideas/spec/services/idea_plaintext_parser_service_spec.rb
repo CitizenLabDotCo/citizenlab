@@ -17,7 +17,7 @@ end
 describe BulkImportIdeas::IdeaPlaintextParserService do
   let(:project) { create(:continuous_project) }
   let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
-  let(:custom_fields) { IdeaCustomFieldsService.new(Factory.instance.participation_method_for(project).custom_form).submittable_fields }
+  let(:custom_fields) { IdeaCustomFieldsService.new(Factory.instance.participation_method_for(project).custom_form).importable_fields }
 
   before do
     project.allowed_input_topics << create(:topic_economy)
@@ -455,7 +455,7 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
         Page 2\n"
       ]
 
-      service = described_class.new project.id, 'en', nil
+      service = described_class.new custom_fields, 'en'
       docs = service.parse_text text
 
       result = [{
@@ -502,7 +502,7 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
         Page 2\n"
       ]
 
-      service = described_class.new project.id, 'en', nil
+      service = described_class.new custom_fields, 'en'
       docs = service.parse_text text
 
       result = [{

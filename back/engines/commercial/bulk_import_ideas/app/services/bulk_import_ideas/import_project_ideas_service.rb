@@ -2,16 +2,11 @@
 
 module BulkImportIdeas
   class ImportProjectIdeasService < ImportIdeasService
-
-    # Field types from the custom form that cannot be processed
-    IGNORE_FIELDS = %w[date files image_files point linear_scale file_upload topic_ids].freeze
-
     def initialize(current_user, project_id, locale, phase_id)
       super(current_user)
       @project = Project.find(project_id)
       @phase = phase_id ? @project.phases.find(phase_id) : TimelineService.new.current_phase(@project)
-      @form_fields = IdeaCustomFieldsService.new(Factory.instance.participation_method_for(@phase || @project).custom_form).submittable_fields
-        .reject { |field| IGNORE_FIELDS.include? field.input_type }
+      @form_fields = IdeaCustomFieldsService.new(Factory.instance.participation_method_for(@phase || @project).custom_form).importable_fields
       @locale = locale || @locale
     end
 
@@ -221,7 +216,8 @@ module BulkImportIdeas
       pdf_file = decode_base64 file
       google_forms_service = GoogleFormParserService.new pdf_file
       IdeaPlaintextParserService.new(
-        @form_fields, @locale
+        @form_fields.reject { |field| field.input_type == 'topic_ids' }, # Temp
+        @locale
       ).parse_text(google_forms_service.raw_text_page_array)
     end
   end
