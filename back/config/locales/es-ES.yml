@@ -82,7 +82,7 @@ es:
     projects:
       title: Todos los proyectos
     all_input:
-      title: Entradas
+      title: Todos los aportes
     proposals:
       title: Propuestas
     events:
@@ -148,9 +148,9 @@ es:
     categories:
       main_content:
         idea:
-          title: '¿Cuál es su idea?'
+          title: '¿Cuál es tu idea?'
         question:
-          title: '¿Cuál es su pregunta?'
+          title: '¿Cuál es tu pregunta?'
         contribution:
           title: '¿Cuál es su propuesta?'
         project:
