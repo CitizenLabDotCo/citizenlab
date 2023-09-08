@@ -831,6 +831,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.ideaImporter": "Idea importer",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importFile": "Import",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedIdeas": "Imported ideas",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.locale": "Locale:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet3": "Nothing to review yet. Click \"{importFile}\" to import a PDF file containing scanned input forms or an Excel file containing inputs.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.page": "Page",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.pdfNotAvailable": "Cannot display the imported file. Imported file viewing is only available for PDF imports.",
