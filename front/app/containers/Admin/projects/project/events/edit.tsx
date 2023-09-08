@@ -63,17 +63,17 @@ type ApiErrorType =
     };
 
 const AdminProjectEventEdit = () => {
-  const { eventId, projectId } = useParams() as {
-    eventId: string;
+  const { id, projectId } = useParams() as {
+    id: string;
     projectId: string;
   };
   const { formatMessage } = useIntl();
   const { mutate: addEvent } = useAddEvent();
-  const { data: event, isInitialLoading } = useEvent(eventId);
+  const { data: event, isInitialLoading } = useEvent(id);
   const { mutate: updateEvent } = useUpdateEvent();
   const { mutate: addEventFile } = useAddEventFile();
   const { mutate: deleteEventFile } = useDeleteEventFile();
-  const { data: remoteEventFiles } = useEventFiles(eventId);
+  const { data: remoteEventFiles } = useEventFiles(id);
   const [errors, setErrors] = useState<ErrorType>({});
   const [apiErrors, setApiErrors] = useState<ApiErrorType>({});
   const [saving, setSaving] = useState<boolean>(false);

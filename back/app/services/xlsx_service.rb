@@ -173,7 +173,7 @@ class XlsxService
       { header: 'author_name',          f: ->(i) { format_author_name i } },
       { header: 'author_email',         f: ->(i) { i.author&.email } },
       { header: 'author_id',            f: ->(i) { i.author_id } },
-      { header: 'cosponsors',           f: ->(i) { i.cosponsors_initiatives.map { |ci| ci.user.email }.join(',') }, skip_sanitization: true },
+      { header: 'cosponsors',           f: ->(i) { i.cosponsors_initiatives.map { |ci| "#{ci.user.email} - status: #{ci.status}" }.join("\n") }, skip_sanitization: true },
       { header: 'published_at',         f: ->(i) { i.published_at },                                    skip_sanitization: true },
       { header: 'comments',             f: ->(i) { i.comments_count },                                  skip_sanitization: true },
       { header: 'likes', f: ->(i) { i.likes_count }, skip_sanitization: true },

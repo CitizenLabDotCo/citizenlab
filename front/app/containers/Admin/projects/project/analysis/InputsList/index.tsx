@@ -1,12 +1,12 @@
-import React, { Fragment, useCallback, useEffect, useMemo } from 'react';
-import { Box, Text, colors } from '@citizenlab/cl2-component-library';
+import React, { useCallback, useEffect, useMemo, Fragment } from 'react';
+import { Box, Text } from '@citizenlab/cl2-component-library';
 import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
 import { useParams } from 'react-router-dom';
-import InputListItem from './InputListItem';
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
-import Observer from '@researchgate/react-intersection-observer';
 import useKeyPress from 'hooks/useKeyPress';
 import { useSelectedInputContext } from '../SelectedInputContext';
+import Observer from '@researchgate/react-intersection-observer';
+import InputListItem from './InputListItem';
 import translations from './translations';
 import { useIntl } from 'utils/cl-intl';
 
@@ -22,11 +22,6 @@ const InputsList = () => {
       queryParams: filters,
     });
 
-  const inputs = useMemo(
-    () => data && data.pages.map((page) => page.data).flat(),
-    [data]
-  );
-
   const handleIntersection = useCallback(
     (event: IntersectionObserverEntry, unobserve: () => void) => {
       if (event.isIntersecting && hasNextPage) {
@@ -35,6 +30,11 @@ const InputsList = () => {
       }
     },
     [fetchNextPage, hasNextPage]
+  );
+
+  const inputs = useMemo(
+    () => data && data.pages.map((page) => page.data).flat(),
+    [data]
   );
 
   // Keyboard navigations
@@ -83,17 +83,19 @@ const InputsList = () => {
   );
 
   const emptyList = data?.pages[0].meta.filtered_count === 0;
+  if (!inputs) return null;
+
+  // const democraphicsOffset = isDemographicsOpen ? 210 : 60;
 
   return (
-    <Box bg={colors.white} w="100%">
-      {emptyList && (
+    <>
+      {emptyList ? (
         <Box display="flex" justifyContent="center">
           <Text px="24px" color="grey600">
             {formatMessage(translations.noInputs)}
           </Text>
         </Box>
-      )}
-      {!emptyList &&
+      ) : (
         data?.pages.map((page, i) => (
           <Fragment key={i}>
             {hasNextPage &&
@@ -112,8 +114,9 @@ const InputsList = () => {
               />
             ))}
           </Fragment>
-        ))}
-    </Box>
+        ))
+      )}
+    </>
   );
 };
 

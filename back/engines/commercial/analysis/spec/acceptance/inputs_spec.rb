@@ -73,7 +73,7 @@ resource 'Inputs' do
           votes_count: 0
         })
         expect(response_data.dig(0, :relationships, :author, :data)).to match({
-          type: 'user',
+          type: 'analysis_user',
           id: kind_of(String)
         })
         expect(response_data.dig(0, :relationships, :idea, :data)).to match({
@@ -145,6 +145,15 @@ resource 'Inputs' do
         do_request("author_custom_#{cf.id}": ['7'])
         expect(status).to eq(200)
         expect(response_data.pluck(:id)).to eq([idea1.id])
+      end
+    end
+
+    context 'when project_moderator' do
+      before { header_token_for(create(:project_moderator, projects: [analysis.source_project])) }
+
+      example_request 'lists all inputs in the analysis' do
+        expect(status).to eq(200)
+        expect(response_data.pluck(:id)).to match_array(inputs.pluck(:id))
       end
     end
   end

@@ -131,7 +131,7 @@ class Initiative < ApplicationRecord
   end
 
   def cosponsor_ids=(ids)
-    super(ids.uniq)
+    super(ids.uniq.excluding(author_id))
   end
 
   def reactions_needed(configuration = AppConfiguration.instance)

@@ -39,6 +39,7 @@ const AdminProjectEventsIndex = ({
   const { data: events } = useEvents({
     projectIds: [projectId],
     pageSize: 1000,
+    sort: 'start_at',
   });
 
   const { mutate: deleteEvent, isLoading } = useDeleteEvent();
