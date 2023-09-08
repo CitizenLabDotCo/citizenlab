@@ -15,6 +15,10 @@ kl:
     rejected: itigartinneqarpoq
     rejected_description: Isumassarsiaq una itigartinneqarpoq
   initiative_statuses:
+    review_pending: review pending
+    review_pending_description: review pending
+    changes_requested: changes requested
+    changes_requested_description: changes requested
     proposed: siunnersuutigineqareerpoq
     proposed_description: siunnersuutigineqareerpoq
     expired: ulloq qaangiutereerpoq
@@ -181,6 +185,8 @@ kl:
       <p> Tagerne er inviteret til at præsentere deres borgerforslag på næste rådsmøde. Vi bringer en officiel opdatering. </p>
     default_eligibility_criteria: >
       Kommunimi politikkeqarfiit piginnaasallu iluaniissaaq. Tamanna illit nammineq soqutigisat pinnagu tamat soqutigisaannut iluaqutaassaaq. Innuttaasut allat arnat angutillu, sumi inunngorsimaneq, ukiut imaluunniit tunuliaqutaasut piinnarlugit assigiinngisitsisoqarneq ajorpoq. Allanut ajoqutaanngilaq.
+    default_posting_tips: >
+      <ul><li>Take the time to elaborate on your proposal. If necessary, type a draft first and then copy-paste it here.</li><li>Choose a meaningful title that explains clearly what your proposal entails.</li><li>Visualize your proposal with a fitting image to help it stand out!</li><li>Add relevant attachments, such as videos, inspiring examples, technical details or plans.</li><li>Share your idea on social media and other channels to gather support from others.</li></ul>
   reset_password_mailer:
     send_reset_password:
       cta_reset_password: 'Kode isissutit allanngortiguk'
@@ -199,13 +205,17 @@ kl:
       created_at: 'Submitted at'
       published_at: 'Published at'
       comments_count: 'Comments'
-      upvotes_count: 'Upvotes'
-      downvotes_count: 'Downvotes'
+      likes_count: 'Likes'
+      dislikes_count: 'Dislikes'
+      picks: 'Picks'
+      participants: 'Participants'
+      votes_count: 'Votes'
       input_url: 'URL'
       project: 'Project'
       status: 'Status'
       assignee_fullname: 'Assignee'
       assignee_email: 'Assignee email'
+    anonymous: 'Anonymous'
   form_builder:
     default_select_field:
       title: 'Your question'
@@ -221,8 +231,30 @@ kl:
       subject: "%{organizationName} peqataatitsinikkut nittartagaanut emailit uppernarsaruk"
       header: "Uppernarsaaninnut isissutissat"
       header_message: "Aluu %{firstName}!"
+      confirm_email_address: "Emailit uppernarsaruk"
       thanks_for_signing_up: "Qujanaq, %{organizationName} peqataatitsinikkut nittartagaanut ilaasortanngoravit."
-      please_confirm_your_email_address: "Ilaasortanngornissat naammassiniarlugu, emailit uppernarsaruk."
+      best_regards: "Best regards,"
+      ignore_email: "If you didn't request a code, you can safely ignore this email."
+      expire_code: "This code will be expired in "
+      24_hours: "24 hours."
       copy_paste_the_link_below: "Isissutissaq ataaniittoq ilaasortanngornissamut immersugassamut ikkuguk."
       the_link_is_valid_for: "Una linkeq nalunaaquttap akunneri 24-it atuutissaaq. <a href=\"%{link}\"> qaangiuppat isissutissamik nutaamik qinusinnaavutit."
       did_you_receive_this_email_in_error: "Ajornartoornermi una emaili pissarsiaraajuk? <a href=\"%{link}\">."
+  user_blocked_mailer:
+    send_user_blocked_email:
+      subject: 'Your account has been temporarily disabled'
+      title_user_blocked: 'Your account has been temporarily disabled'
+      paragraph_1_without_reason: "Your account on the participation platform of %{organizationName} has been temporarily disabled for a violation of the community guidelines."
+      paragraph_1_with_reason: "Your account on the participation platform of %{organizationName} has been temporarily disabled for the following reason:"
+      for_more_information: "For more information on this, you can consult the %{termsAndConditionsPage}"
+      you_can_sign_in_again_from: "You can sign in again from %{date}"
+  user:
+    anon_first_name: "User"
+  time:
+    am: am
+    formats:
+      hour_of_day: "%H:%M"
+    pm: pm
+  voting_method:
+    default_voting_term_singular: "vote"
+    default_voting_term_plural: "votes"
