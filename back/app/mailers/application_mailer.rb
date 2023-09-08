@@ -15,8 +15,9 @@ class ApplicationMailer < ActionMailer::Base
     :show_header?, :preheader, :subject, :user, :recipient, :locale, :count_from, :days_since_publishing,
     :text_direction
 
-  helper_method :organization_name, :recipient_name, :url_service, :multiloc_service, :invite_expiry_days,
-    :invite_expires_in_days, :invite_expires_in_hours, :loc, :localize_for_recipient, :recipient_first_name
+  helper_method :organization_name, :recipient_name,
+    :url_service, :multiloc_service, :organization_name,
+    :loc, :localize_for_recipient, :recipient_first_name
 
   helper_method :unsubscribe_url, :terms_conditions_url, :privacy_policy_url, :home_url, :logo_url,
     :show_unsubscribe_link?, :show_terms_link?, :show_privacy_policy_link?, :format_message,
