@@ -75,6 +75,13 @@ const InputsList = () => {
     }
   }, [downArrow, inputs, setSelectedInputId]);
 
+  // Effect: Select first input on initialization
+  useEffect(() => {
+    if (!selectedInputId && data) {
+      setSelectedInputId(data.pages[0]?.data[0]?.id);
+    }
+  }, [selectedInputId, setSelectedInputId, data]);
+
   const handleOnSelectInput = useCallback(
     (inputId: string) => {
       setSelectedInputId(inputId);
@@ -84,8 +91,6 @@ const InputsList = () => {
 
   const emptyList = data?.pages[0].meta.filtered_count === 0;
   if (!inputs) return null;
-
-  // const democraphicsOffset = isDemographicsOpen ? 210 : 60;
 
   return (
     <>
