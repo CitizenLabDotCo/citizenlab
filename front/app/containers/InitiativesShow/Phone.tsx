@@ -34,7 +34,7 @@ import useInitiativeFiles from 'api/initiative_files/useInitiativeFiles';
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 
 // types
-import useInitiativeReviewRequired from 'hooks/useInitiativeReviewRequired';
+import useInitiativeReviewRequired from './hooks/useInitiativeReviewRequired';
 import useLocale from 'hooks/useLocale';
 import useAuthUser from 'api/me/useAuthUser';
 import useInitiativeImages from 'api/initiative_images/useInitiativeImages';
@@ -48,6 +48,8 @@ import useInitiativeOfficialFeedback from 'api/initiative_official_feedback/useI
 import RequestToCosponsor from './RequestToCosponsor';
 import Cosponsors from './Cosponsors';
 import InitiativeBanner from './InitiativeBanner';
+import useShowCosponsorshipReminder from 'containers/InitiativesShow/hooks/useShowCosponsorshipReminder';
+import CosponsorShipReminder from './CosponsorShipReminder';
 
 const paddingSide = '32px';
 
@@ -122,6 +124,7 @@ const Phone = ({
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const locale = useLocale();
+  const showCosponsorShipReminder = useShowCosponsorshipReminder(initiativeId);
   const { data: authUser } = useAuthUser();
   const { data: initiativeImages } = useInitiativeImages(initiativeId);
   const { data: initiative } = useInitiativeById(initiativeId);
@@ -143,7 +146,9 @@ const Phone = ({
     ? initiative?.data.attributes.public
     : true;
 
-  if (!initiative || isNilOrError(locale) || !initiativeImages) return null;
+  if (!initiative || isNilOrError(locale) || !initiativeImages) {
+    return null;
+  }
 
   const initiativeHeaderImageLarge = initiative.data.attributes.header_bg.large;
   const authorId = initiative.data.relationships.author.data?.id;
@@ -157,19 +162,12 @@ const Phone = ({
     initiative.data.attributes.location_point_geojson
   );
   const initiativeUrl = location.href;
-  const utmParams = !isNilOrError(authUser)
-    ? {
-        source: 'share_initiative',
-        campaign: 'share_content',
-        content: authUser.data.id,
-      }
-    : {
-        source: 'share_initiative',
-        campaign: 'share_content',
-      };
 
   return (
     <Container className={className}>
+      {showCosponsorShipReminder && (
+        <CosponsorShipReminder initiativeId={initiativeId} />
+      )}
       <InitiativeBanner initiativeHeaderImageLarge={initiativeHeaderImageLarge}>
         <InitiativeBannerContent>
           <MobileMoreActionContainer>
@@ -271,7 +269,18 @@ const Phone = ({
                 initiativeUrl,
                 initiativeTitle,
               })}
-              utmParams={utmParams}
+              utmParams={
+                !isNilOrError(authUser)
+                  ? {
+                      source: 'share_initiative',
+                      campaign: 'share_content',
+                      content: authUser.data.id,
+                    }
+                  : {
+                      source: 'share_initiative',
+                      campaign: 'share_content',
+                    }
+              }
             />
           </Box>
         )}
