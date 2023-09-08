@@ -122,11 +122,10 @@ const Tags = () => {
   // onboarding example tags
   const emptyState =
     tags?.data &&
-    (tags.data.length < 3 ||
-      isEqual(
-        ['onboarding_example'],
-        uniq(tags?.data.map((tag) => tag.attributes.tag_type))
-      ));
+    isEqual(
+      ['onboarding_example'],
+      uniq(tags.data.map((tag) => tag.attributes.tag_type))
+    );
 
   const toggleTagContainerClick = (id: string) => {
     updateSearchParams({ tag_ids: [id] });

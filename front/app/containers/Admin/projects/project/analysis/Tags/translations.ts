@@ -75,8 +75,8 @@ export default defineMessages({
     defaultMessage:
       'Auto-tags are automatically derived by the computer. You can change or remove them at all times.',
   },
-  autoTagSubtitle: {
-    id: 'app.containers.AdminPage.projects.project.analysis.Tags.autoTagSubtitle',
+  whatToTag: {
+    id: 'app.containers.AdminPage.projects.project.analysis.Tags.whatToTag',
     defaultMessage: 'What inputs do you want to tag?',
   },
   allInput: {
@@ -101,7 +101,7 @@ export default defineMessages({
   },
   fullyAutomatedTitle: {
     id: 'app.containers.AdminPage.projects.project.analysis.Tags.fullyAutomatedTitle',
-    defaultMessage: 'Fully automated',
+    defaultMessage: 'Topics: Fully automated',
   },
   fullyAutomatedTooltip: {
     id: 'app.containers.AdminPage.projects.project.analysis.Tags.fullyAutomatedTooltip',
@@ -111,30 +111,29 @@ export default defineMessages({
   fullyAutomatedDescription: {
     id: 'app.containers.AdminPage.projects.project.analysis.Tags.fullyAutomatedDescription',
     defaultMessage:
-      'The computer will automatically detect topics in your data and assign them to your inputs. You can change or remove them at all times.',
+      'The computer automatically detects topics and assigns them to your inputs.',
   },
   classificationByLabelTitle: {
     id: 'app.containers.AdminPage.projects.project.analysis.Tags.classificationByLabelTitle',
-    defaultMessage: 'Classification by label',
+    defaultMessage: 'Topics: By label',
   },
   classificationByLabelTooltip: {
     id: 'app.containers.AdminPage.projects.project.analysis.Tags.classificationByLabelTooltip',
     defaultMessage:
-      'Works well when you know what tags you are looking for, or when your project has a narrow scope in terms of topics.',
+      'Works well when you know what topics you are looking for, or when your project has a narrow scope in terms of topics.',
   },
   classificationByLabelDescription: {
     id: 'app.containers.AdminPage.projects.project.analysis.Tags.classificationByLabelDescription',
-    defaultMessage:
-      'You create the topics, the inputs are assigned by the computer',
+    defaultMessage: 'You create the topics, the computer assigns the inputs',
   },
   classificationByExampleTitle: {
     id: 'app.containers.AdminPage.projects.project.analysis.Tags.classificationByExampleTitle',
-    defaultMessage: 'Classification by example',
+    defaultMessage: 'Topics: By example',
   },
   classificationByExampleTooltip: {
     id: 'app.containers.AdminPage.projects.project.analysis.Tags.classificationByExampleTooltip',
     defaultMessage:
-      'Works well when you need to tag some really specific things. Use this in case "Classification by label" does not give you good results',
+      'Works well when you need to tag some really specific things. Use this in case "Topics: By label" does not give you good results',
   },
   classificationByExampleDescription: {
     id: 'app.containers.AdminPage.projects.project.analysis.Tags.classificationByExampleDescription',
@@ -143,7 +142,7 @@ export default defineMessages({
   },
   platformTagsTitle: {
     id: 'app.containers.AdminPage.projects.project.analysis.Tags.platformTags',
-    defaultMessage: 'Platform tags',
+    defaultMessage: 'Topics: Platform tags',
   },
   platformTagsDescription: {
     id: 'app.containers.AdminPage.projects.project.analysis.Tags.platformTagsDescription',
@@ -181,7 +180,7 @@ export default defineMessages({
   },
   fewShotTitle: {
     id: 'app.containers.AdminPage.projects.project.analysis.Tags.fewShotTitle',
-    defaultMessage: 'Classification by example',
+    defaultMessage: 'Topics: By example',
   },
   fewShotSubtitle: {
     id: 'app.containers.AdminPage.projects.project.analysis.Tags.fewShotSubtitle',
@@ -195,7 +194,7 @@ export default defineMessages({
   },
   byLabelTitle: {
     id: 'app.containers.AdminPage.projects.project.analysis.Tags.byLabelTitle',
-    defaultMessage: 'Classification by label',
+    defaultMessage: 'Topics: By label',
   },
   byLabelSubtitle1: {
     id: 'app.containers.AdminPage.projects.project.analysis.Tags.byLabelSubtitle1',
