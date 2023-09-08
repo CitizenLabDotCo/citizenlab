@@ -415,8 +415,7 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
         },
         input_type: 'text',
         enabled: true,
-        required: false
-      )
+        required: false)
 
       create(:custom_field, resource: custom_form,
         key: 'number_field',
@@ -428,8 +427,7 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
         },
         input_type: 'number',
         enabled: true,
-        required: true
-      )
+        required: true)
     end
 
     it 'parses text correctly (single document)' do
@@ -465,14 +463,14 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
       docs = service.parse_text text
 
       result = [{
-        :pdf_pages => [1, 2],
-        :form_pages => [1, 2],
-        :fields => {
-          "Title" => "dea Whatever idea",
-          "Description" => "Bla Bla Bla. IBla. I am really running out of ideasор",
-          "Location (optional)" => "Some location",
-          "Your favourite name for a swimming pool (optional)" => "The nice pool",
-          "What is your favorite number?" => 72296
+        pdf_pages: [1, 2],
+        form_pages: [1, 2],
+        fields: {
+          'Title' => 'dea Whatever idea',
+          'Description' => 'Bla Bla Bla. IBla. I am really running out of ideasор',
+          'Location (optional)' => 'Some location',
+          'Your favourite name for a swimming pool (optional)' => 'The nice pool',
+          'What is your favorite number?' => 72_296
         }
       }]
 
@@ -512,14 +510,14 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
       docs = service.parse_text text
 
       result = [{
-        :pdf_pages => [1, 2],
-        :form_pages => [1, 2],
-        :fields => {
-          "Title" => "dea Whatever idea",
-          "Description" => "Bla Bla Bla. IBla. I am really running out of ideasор",
-          "Location (optional)" => "Some location",
-          "Your favourite name for a swimming pool (optional)" => "The nice pool",
-          "What is your favorite number?" => 20125
+        pdf_pages: [1, 2],
+        form_pages: [1, 2],
+        fields: {
+          'Title' => 'dea Whatever idea',
+          'Description' => 'Bla Bla Bla. IBla. I am really running out of ideasор',
+          'Location (optional)' => 'Some location',
+          'Your favourite name for a swimming pool (optional)' => 'The nice pool',
+          'What is your favorite number?' => 20_125
         }
       }]
 
