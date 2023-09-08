@@ -56,13 +56,9 @@ module IdNemlogIn
     end
 
     def profile_to_user_attrs(auth)
-      first_name    = auth.extra.raw_info['https://data.gov.dk/model/core/eid/firstName']
-      last_name     = auth.extra.raw_info['https://data.gov.dk/model/core/eid/lastName']
-      cpr_number    = auth.extra.raw_info['https://data.gov.dk/model/core/eid/cprNumber']
+      cpr_number = auth.extra.raw_info['https://data.gov.dk/model/core/eid/cprNumber']
 
       {
-        first_name: first_name,
-        last_name: last_name,
         custom_field_values: {
           municipality_code: fetch_municipality_code(cpr_number)
         }
