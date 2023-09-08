@@ -43,7 +43,7 @@ module BulkImportIdeas
         columns[column_name] = value
       end
 
-      unless @project.native_survey? || @phase.native_survey?
+      unless @project&.native_survey? || @phase&.native_survey?
         locale_image_url_label = I18n.with_locale(@locale) { I18n.t('xlsx_export.column_headers.image_url') }
         locale_latitude_label = I18n.with_locale(@locale) { I18n.t('xlsx_export.column_headers.latitude') }
         locale_longitude_label = I18n.with_locale(@locale) { I18n.t('xlsx_export.column_headers.longitude') }
