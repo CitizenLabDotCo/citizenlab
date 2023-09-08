@@ -17,7 +17,6 @@ import { getOptions, getSubtextElement } from './controlUtils';
 
 const StyledMultipleSelect = styled(MultipleSelect)`
   flex-grow: 1;
-  min-width: 200px;
 `;
 
 const MultiSelectControl = ({
@@ -48,19 +47,22 @@ const MultiSelectControl = ({
         subtextSupportsHtml
       />
       <Box display="flex" flexDirection="row" overflow="visible">
-        <StyledMultipleSelect
-          value={data}
-          options={options}
-          onChange={(vals) => {
-            setDidBlur(true);
-            handleChange(
-              path,
-              vals.map((val) => val.value)
-            );
-          }}
-          inputId={sanitizeForClassname(id)}
-          disabled={uischema?.options?.readonly}
-        />
+        <Box flexGrow={1}>
+          <StyledMultipleSelect
+            value={data}
+            options={options}
+            onChange={(vals) => {
+              setDidBlur(true);
+              handleChange(
+                path,
+                vals.map((val) => val.value)
+              );
+            }}
+            inputId={sanitizeForClassname(id)}
+            disabled={uischema?.options?.readonly}
+          />
+        </Box>
+
         <VerificationIcon show={uischema?.options?.verificationLocked} />
       </Box>
       <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={didBlur} />
