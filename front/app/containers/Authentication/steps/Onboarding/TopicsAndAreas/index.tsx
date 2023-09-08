@@ -18,8 +18,8 @@ interface Props {
 const TopicsAndAreas = ({ onSubmit, onSkip }: Props) => {
   const { formatMessage } = useIntl();
   const { data: authUser } = useAuthUser();
-  const { data: areas } = useAreas({ forHomepageFilter: true });
-  const { data: topics } = useTopics({ forHomepageFilter: true });
+  const { data: areas } = useAreas({ forOnboarding: true });
+  const { data: topics } = useTopics({ forOnboarding: true });
   const hasAreas = areas && areas.data.length > 0;
   const hasTopics = topics && topics.data.length > 0;
 
@@ -40,7 +40,7 @@ const TopicsAndAreas = ({ onSubmit, onSkip }: Props) => {
             </Title>
           }
         >
-          <Topics showHomePageTopics />
+          <Topics showOnboardingTopics />
         </Accordion>
       )}
       {hasAreas && (
@@ -52,7 +52,7 @@ const TopicsAndAreas = ({ onSubmit, onSkip }: Props) => {
             </Title>
           }
         >
-          <Areas showHomePageAreas />
+          <Areas showOnboardingAreas />
         </Accordion>
       )}
       <Box display="flex" justifyContent="flex-end">
