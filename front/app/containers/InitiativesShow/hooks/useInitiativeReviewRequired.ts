@@ -10,9 +10,7 @@ export default function useInitiativeReviewRequired() {
     appConfig?.data.attributes.settings.initiatives?.require_review;
 
   if (initiativeReviewEnabled) {
-    return typeof reviewRequired === 'boolean'
-      ? initiativeReviewEnabled && reviewRequired
-      : false;
+    return typeof reviewRequired === 'boolean' ? reviewRequired : false;
   } else {
     return false;
   }
