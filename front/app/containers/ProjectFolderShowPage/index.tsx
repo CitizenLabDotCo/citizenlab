@@ -178,6 +178,8 @@ const ProjectFolderShowPage = memo<{
                       }
                       followableSlug={projectFolder.attributes.slug}
                       w="auto"
+                      py="6px"
+                      iconSize="20px"
                     />
                   </Box>
                 </Box>

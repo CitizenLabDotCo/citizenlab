@@ -3,6 +3,7 @@ import {
   Button,
   ButtonStyles,
   BoxWidthProps,
+  BoxPaddingProps,
 } from '@citizenlab/cl2-component-library';
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
@@ -19,11 +20,12 @@ import tracks from './tracks';
 import { trackEventByName } from 'utils/analytics';
 import { useLocation } from 'react-router-dom';
 
-interface Props extends BoxWidthProps {
+interface Props extends BoxWidthProps, BoxPaddingProps {
   followableType: FollowableType;
   followableId: string; // id of the project, folder, idea, proposal or anything to be followed
   followersCount?: number;
   followerId?: string; // id of the follower object
+  iconSize?: string;
   followableSlug?: string;
   buttonStyle?: ButtonStyles;
 }
@@ -34,6 +36,7 @@ const FollowUnfollow = ({
   followersCount,
   followerId,
   followableSlug,
+  iconSize = '24px',
   buttonStyle = 'primary',
   ...otherButtonProps
 }: Props) => {
@@ -131,8 +134,7 @@ const FollowUnfollow = ({
       buttonStyle={buttonStyle}
       icon="notification"
       onClick={handleButtonClick}
-      iconSize="16px"
-      py="6px"
+      iconSize={iconSize}
       px="12px"
       processing={isLoading}
       {...otherButtonProps}
