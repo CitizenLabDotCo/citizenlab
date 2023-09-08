@@ -1,5 +1,5 @@
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useFeatureFlag from './useFeatureFlag';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 export default function useInitiativeReviewRequired() {
   const initiativeReviewEnabled = useFeatureFlag({
@@ -9,5 +9,9 @@ export default function useInitiativeReviewRequired() {
   const reviewRequired =
     appConfig?.data.attributes.settings.initiatives?.require_review;
 
-  return initiativeReviewEnabled && reviewRequired;
+  if (initiativeReviewEnabled) {
+    return typeof reviewRequired === 'boolean' ? reviewRequired : false;
+  } else {
+    return false;
+  }
 }
