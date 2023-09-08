@@ -11,14 +11,12 @@ import messages from './messages';
 // router
 import { useSearchParams } from 'react-router-dom';
 
-type InputProps = {
+type Props = {
   onChange: (dateFilterValue: string[]) => void;
   textColor?: string;
   listTop?: string;
   mobileLeft?: string;
 };
-
-type Props = InputProps;
 
 const DateFilterDropdown = ({
   onChange,

@@ -78,19 +78,17 @@ const TopBar = memo<Props>(
               </Box>
             )}
             {showProjectFilter && (
-              <>
-                <ProjectFilterDropdown
-                  title={formatMessage(messages.filterDropdownTitle)}
-                  onChange={setProjectIds}
-                  textColor={theme.colors.tenantText}
-                  filterSelectorStyle="button"
-                  listTop="44px"
-                  mobileLeft={
-                    isMobileOrSmaller && !theme.isRtl ? '-70px' : 'auto'
-                  }
-                  eventsTime={eventsTime}
-                />
-              </>
+              <ProjectFilterDropdown
+                title={formatMessage(messages.filterDropdownTitle)}
+                onChange={setProjectIds}
+                textColor={theme.colors.tenantText}
+                filterSelectorStyle="button"
+                listTop="44px"
+                mobileLeft={
+                  isMobileOrSmaller && !theme.isRtl ? '-70px' : 'auto'
+                }
+                eventsTime={eventsTime}
+              />
             )}
           </Box>
         </ProjectFilterDropdownPositioner>
