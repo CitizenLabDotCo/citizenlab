@@ -11,6 +11,7 @@ export interface ITagParams {
 
 export const tagTypes = [
   'custom',
+  'onboarding_example',
   'language',
   'platform_topic',
   'nlp_topic',
