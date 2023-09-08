@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { omit } from 'lodash-es';
+import { isEqual, omit, uniq } from 'lodash-es';
 
 import { useParams } from 'react-router-dom';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
@@ -118,6 +118,16 @@ const Tags = () => {
   // https://github.com/microsoft/TypeScript/issues/44373
   const selectedTags = filters.tag_ids as any[] | undefined;
 
+  // We show the empty state in case the only tags there are the initial
+  // onboarding example tags
+  const emptyState =
+    tags?.data &&
+    (tags.data.length < 3 ||
+      isEqual(
+        ['onboarding_example'],
+        uniq(tags?.data.map((tag) => tag.attributes.tag_type))
+      ));
+
   const toggleTagContainerClick = (id: string) => {
     updateSearchParams({ tag_ids: [id] });
     queryClient.invalidateQueries(inputsKeys.lists());
@@ -143,6 +153,10 @@ const Tags = () => {
 
   return (
     <Box>
+      <TagAssistance
+        tagId={tagAssistanceTagId}
+        onHide={() => setTagAssistanceTagId(null)}
+      />
       <Box>
         <Button
           id="auto-tag-button"
@@ -153,7 +167,7 @@ const Tags = () => {
           buttonStyle="admin-dark"
         >
           {formatMessage(translations.autoTag)}
-          {!tags?.data.length && (
+          {emptyState && (
             <BlickingIcon
               name={'dot'}
               width="16px"
@@ -164,10 +178,6 @@ const Tags = () => {
           )}
         </Button>
         <AddTag onCreateTag={(tagId) => setCreatedTagId(tagId)} />
-        <TagAssistance
-          tagId={tagAssistanceTagId}
-          onHide={() => setTagAssistanceTagId(null)}
-        />
       </Box>
       <Box>
         <TagContainer
@@ -194,16 +204,7 @@ const Tags = () => {
             filteredCount={filteredInputsWithoutTags}
           />
         </TagContainer>
-        {!isLoadingTags && tags?.data.length === 0 && (
-          <Box>
-            <Text p="6px" color="grey600" textAlign="center">
-              {formatMessage(translations.noTags1)}
-            </Text>
-            <Text p="6px" color="grey600" textAlign="center">
-              {formatMessage(translations.noTags2)}
-            </Text>
-          </Box>
-        )}
+
         {tags?.data.map((tag) => (
           <TagContainer
             id={`tag-${tag.id}`}
@@ -256,6 +257,13 @@ const Tags = () => {
             </Box>
           </TagContainer>
         ))}
+        {!isLoadingTags && emptyState && (
+          <Box>
+            <Text p="6px" color="grey600" textAlign="center">
+              {formatMessage(translations.noTags)}
+            </Text>
+          </Box>
+        )}
       </Box>
       <Modal
         opened={autotaggingModalIsOpened}

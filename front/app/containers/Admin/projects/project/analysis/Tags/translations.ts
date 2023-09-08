@@ -61,14 +61,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.projects.project.analysis.Tags.inputsWithoutTags',
     defaultMessage: 'Inputs without tags',
   },
-  noTags1: {
-    id: 'app.containers.AdminPage.projects.project.analysis.Tags.noTags1',
-    defaultMessage: "You don't have any tags yet.",
-  },
-  noTags2: {
-    id: 'app.containers.AdminPage.projects.project.analysis.Tags.noTags2',
+  noTags: {
+    id: 'app.containers.AdminPage.projects.project.analysis.Tags.noTags',
     defaultMessage:
-      'Use tags to subdivide and filter the inputs, to make more accurate or targeted summaries.',
+      'Use tags to subdivide and filter the inputs, in order to make more accurate or targeted summaries.',
   },
   autoTagTitle: {
     id: 'app.containers.AdminPage.projects.project.analysis.Tags.autoTagTitle',
