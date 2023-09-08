@@ -161,18 +161,6 @@ class ApplicationMailer < ActionMailer::Base
     @organization_name ||= localize_for_recipient(app_settings.core.organization_name)
   end
 
-  def invite_expiry_days
-    Invite::EXPIRY_DAYS
-  end
-
-  def invite_expires_in_days(created_at)
-    (created_at - invite_expiry_days.days.ago).to_i / 1.day.to_i # days remaining in seconds / seconds in a day
-  end
-
-  def invite_expires_in_hours(created_at)
-    (created_at - invite_expiry_days.days.ago).to_i / 1.hour.to_i # hours remaining in seconds / seconds in an hour
-  end
-
   def app_configuration
     AppConfiguration.instance
   end

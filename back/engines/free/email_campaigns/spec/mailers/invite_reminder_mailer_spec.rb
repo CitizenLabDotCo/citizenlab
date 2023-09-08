@@ -41,8 +41,10 @@ RSpec.describe EmailCampaigns::InviteReminderMailer do
     end
 
     it 'renders the expiry message' do
+      expiry_days = described_class.new.send(:invite_expires_in_days, command.dig(:event_payload, :invite_created_at))
+
       expect(mail.body.encoded)
-        .to match('This invitation expires in approximately 4 days and 21 hours.')
+        .to match("This invitation expires in approximately #{expiry_days} days.")
     end
 
     it 'assigns organisation name' do

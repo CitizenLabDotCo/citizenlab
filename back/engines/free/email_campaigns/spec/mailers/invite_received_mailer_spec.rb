@@ -32,8 +32,10 @@ RSpec.describe EmailCampaigns::InviteReceivedMailer do
     end
 
     it 'renders the expiry message' do
+      expiry_days = described_class.new.send(:invite_expiry_days)
+
       expect(mail.body.encoded)
-        .to match("This invitation expires in #{Invite::EXPIRY_DAYS} days")
+        .to match("This invitation expires in #{expiry_days} days")
     end
 
     it 'renders the receiver email' do

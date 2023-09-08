@@ -2,6 +2,8 @@
 
 module EmailCampaigns
   class InviteReminderMailer < ApplicationMailer
+    helper_method :invite_expires_in_days
+
     protected
 
     def subject
@@ -18,6 +20,10 @@ module EmailCampaigns
 
     def preheader
       format_message('preheader', values: { organizationName: organization_name })
+    end
+
+    def invite_expires_in_days(created_at)
+      (created_at - Invite::EXPIRY_DAYS.days.ago).to_i / 1.day.to_i # days remaining in seconds / seconds in a day
     end
   end
 end
