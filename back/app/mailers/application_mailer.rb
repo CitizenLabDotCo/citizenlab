@@ -166,11 +166,11 @@ class ApplicationMailer < ActionMailer::Base
   end
 
   def invite_expires_in_days(created_at)
-    (created_at - invite_expiry_days.days.ago).to_i / 86_400 # days remaining in seconds / seconds in a day
+    (created_at - invite_expiry_days.days.ago).to_i / 1.day.to_i # days remaining in seconds / seconds in a day
   end
 
   def invite_expires_in_hours(created_at)
-    (created_at - invite_expiry_days.days.ago).to_i / 3_600 # hours remaining in seconds / seconds in an hour
+    (created_at - invite_expiry_days.days.ago).to_i / 1.hour.to_i # hours remaining in seconds / seconds in an hour
   end
 
   def app_configuration
