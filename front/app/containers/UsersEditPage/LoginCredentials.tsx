@@ -28,7 +28,7 @@ const LoginCredentials = ({ user }: PasswordChangeProps) => {
         message={messages.loginCredentialsTitle}
         subtitleMessage={messages.loginCredentialsSubtitle}
       />
-      <Box display="flex" gap="16px">
+      <Box display="flex" flexWrap="wrap" gap="16px">
         <Button
           linkTo="/profile/change-email"
           width="auto"

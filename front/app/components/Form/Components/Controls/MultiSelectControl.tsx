@@ -17,6 +17,7 @@ import { getOptions, getSubtextElement } from './controlUtils';
 
 const StyledMultipleSelect = styled(MultipleSelect)`
   flex-grow: 1;
+  min-width: 200px;
 `;
 
 const MultiSelectControl = ({
