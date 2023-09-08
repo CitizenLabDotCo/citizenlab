@@ -32,7 +32,7 @@ const Insights = () => {
   const inputsCount = data?.pages[0].meta.filtered_count;
 
   return (
-    <Box>
+    <Box display="flex" flexDirection="column" height="100%">
       <Box display="flex" gap="4px">
         <Box flex="1">
           <SummarizeButton />
@@ -52,25 +52,28 @@ const Insights = () => {
       {isQuestionInputOpen && (
         <QuestionInput onClose={() => setIsQuestionInputOpen(false)} />
       )}
-      {insights?.data.map((insight) => (
-        <div key={insight.id}>
-          {insight.relationships.insightable.data.type === 'summary' ? (
-            <Summary insight={insight} />
-          ) : (
-            <Question insight={insight} />
-          )}
-        </div>
-      ))}
-      {!isLoading && insights?.data?.length === 0 && (
-        <>
-          <Text px="24px" color="grey600">
-            {formatMessage(translations.emptyList)}
-          </Text>
-          <Text px="24px" color="grey600">
-            {formatMessage(translations.emptyListDescription)}
-          </Text>
-        </>
-      )}
+
+      <Box flex="1" overflow="auto">
+        {insights?.data.map((insight) => (
+          <div key={insight.id}>
+            {insight.relationships.insightable.data.type === 'summary' ? (
+              <Summary insight={insight} />
+            ) : (
+              <Question insight={insight} />
+            )}
+          </div>
+        ))}
+        {!isLoading && insights?.data?.length === 0 && (
+          <>
+            <Text px="24px" color="grey600">
+              {formatMessage(translations.emptyList)}
+            </Text>
+            <Text px="24px" color="grey600">
+              {formatMessage(translations.emptyListDescription)}
+            </Text>
+          </>
+        )}
+      </Box>
     </Box>
   );
 };

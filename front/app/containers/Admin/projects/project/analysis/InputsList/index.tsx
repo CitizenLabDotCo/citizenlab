@@ -92,8 +92,6 @@ const InputsList = () => {
   const emptyList = data?.pages[0].meta.filtered_count === 0;
   if (!inputs) return null;
 
-  // const democraphicsOffset = isDemographicsOpen ? 210 : 60;
-
   return (
     <>
       {emptyList ? (

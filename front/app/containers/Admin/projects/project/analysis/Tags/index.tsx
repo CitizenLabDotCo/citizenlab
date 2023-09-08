@@ -151,11 +151,19 @@ const Tags = () => {
   };
 
   return (
-    <Box>
+    <Box display="flex" flexDirection="column" height="100%">
       <TagAssistance
         tagId={tagAssistanceTagId}
         onHide={() => setTagAssistanceTagId(null)}
       />
+      <Modal
+        opened={autotaggingModalIsOpened}
+        close={() => setAutotaggingModalIsOpened(false)}
+      >
+        <AutotaggingModal
+          onCloseModal={() => setAutotaggingModalIsOpened(false)}
+        />
+      </Modal>
       <Box>
         <Button
           id="auto-tag-button"
@@ -203,7 +211,8 @@ const Tags = () => {
             filteredCount={filteredInputsWithoutTags}
           />
         </TagContainer>
-
+      </Box>
+      <Box flex="1" overflow="auto">
         {tags?.data.map((tag) => (
           <TagContainer
             id={`tag-${tag.id}`}
@@ -264,14 +273,6 @@ const Tags = () => {
           </Box>
         )}
       </Box>
-      <Modal
-        opened={autotaggingModalIsOpened}
-        close={() => setAutotaggingModalIsOpened(false)}
-      >
-        <AutotaggingModal
-          onCloseModal={() => setAutotaggingModalIsOpened(false)}
-        />
-      </Modal>
     </Box>
   );
 };
