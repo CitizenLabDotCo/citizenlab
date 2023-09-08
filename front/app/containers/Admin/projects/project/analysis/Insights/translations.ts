@@ -12,7 +12,7 @@ export default defineMessages({
   },
   emptyListDescription: {
     id: 'app.containers.AdminPage.projects.project.analysis.Insights.emptyListDescription',
-    defaultMessage: 'Start by adding some tags.',
+    defaultMessage: 'Click the Auto-summarize button above to get started.',
   },
   questionFor: {
     id: 'app.containers.AdminPage.projects.project.analysis.Insights.questionsFor',
@@ -46,6 +46,11 @@ export default defineMessages({
     id: 'app.containers.AdminPage.projects.project.analysis.Insights.summaryAccuracyTooltip',
     defaultMessage:
       'Summarizing fewer inputs leads to a higher accuracy. Reduce the current input selection by using tags, search or demographic filters.',
+  },
+  tooManyInputsTooltip: {
+    id: 'app.containers.AdminPage.projects.project.analysis.Insights.tooManyInputsTooltip',
+    defaultMessage:
+      'Reduce the current input selection by using tags, search or demographic filters',
   },
   questionAccuracyTooltip: {
     id: 'app.containers.AdminPage.projects.project.analysis.Insights.questionAccuracyTooltip',

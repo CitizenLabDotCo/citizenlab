@@ -51,22 +51,32 @@ const QuestionButton = ({ onClick }: { onClick: () => void }) => {
         {formatMessage(translations.askQuestion)}
         <br />
         <Text fontSize="s" m="0" color="grey600" whiteSpace="nowrap">
-          {questionPossible && questionAccuracy && (
-            <Box display="flex" gap="4px">
-              <FormattedMessage
-                {...translations.accuracy}
-                values={{
-                  accuracy: questionAccuracy * 100,
-                  percentage: formatMessage(translations.percentage),
-                }}
-              />
-              <IconTooltip
-                icon="info-outline"
-                content={formatMessage(translations.questionAccuracyTooltip)}
-              />
-            </Box>
-          )}
-          {!questionPossible && formatMessage(translations.tooManyInputs)}
+          <Box display="flex" gap="4px">
+            {questionPossible && questionAccuracy && (
+              <>
+                <FormattedMessage
+                  {...translations.accuracy}
+                  values={{
+                    accuracy: questionAccuracy * 100,
+                    percentage: formatMessage(translations.percentage),
+                  }}
+                />
+                <IconTooltip
+                  icon="info-outline"
+                  content={formatMessage(translations.questionAccuracyTooltip)}
+                />
+              </>
+            )}
+            {!questionPossible && (
+              <>
+                <FormattedMessage {...translations.tooManyInputs} />
+                <IconTooltip
+                  icon="info-solid"
+                  content={formatMessage(translations.tooManyInputsTooltip)}
+                />
+              </>
+            )}
+          </Box>
         </Text>
       </Button>
     </Box>

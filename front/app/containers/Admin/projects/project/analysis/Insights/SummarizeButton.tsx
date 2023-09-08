@@ -73,22 +73,32 @@ const SummarizeButton = () => {
         {formatMessage(translations.summarize)}
         <br />
         <Text fontSize="s" m="0" color="grey600" whiteSpace="nowrap">
-          {summaryPossible && summaryAccuracy && (
-            <Box display="flex" gap="4px">
-              <FormattedMessage
-                {...translations.accuracy}
-                values={{
-                  accuracy: summaryAccuracy * 100,
-                  percentage: formatMessage(translations.percentage),
-                }}
-              />
-              <IconTooltip
-                icon="info-outline"
-                content={formatMessage(translations.summaryAccuracyTooltip)}
-              />
-            </Box>
-          )}
-          {!summaryPossible && formatMessage(translations.tooManyInputs)}
+          <Box display="flex" gap="4px">
+            {summaryPossible && summaryAccuracy && (
+              <>
+                <FormattedMessage
+                  {...translations.accuracy}
+                  values={{
+                    accuracy: summaryAccuracy * 100,
+                    percentage: formatMessage(translations.percentage),
+                  }}
+                />
+                <IconTooltip
+                  icon="info-outline"
+                  content={formatMessage(translations.summaryAccuracyTooltip)}
+                />
+              </>
+            )}
+            {!summaryPossible && (
+              <>
+                <FormattedMessage {...translations.tooManyInputs} />
+                <IconTooltip
+                  icon="info-solid"
+                  content={formatMessage(translations.tooManyInputsTooltip)}
+                />
+              </>
+            )}
+          </Box>
         </Text>
       </Button>
     </Box>
