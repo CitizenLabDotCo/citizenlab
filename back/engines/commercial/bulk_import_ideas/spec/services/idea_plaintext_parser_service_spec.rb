@@ -67,7 +67,13 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
 
     it 'parses text correctly (single document)' do
       text = parse_pages [
-        "Title\n
+        "The\n
+        City\n
+        An idea? Bring it to your council!\n
+        Instructions\n
+        • Write as clearly as you can- these forms might be scanned\n
+        • Write your answers in the same language as this form\n
+        Title\n
         My very good idea\n
         Description\n
         would suggest building the\n
@@ -115,7 +121,13 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
 
     it 'parses text correctly (multiple documents)' do
       text = parse_pages [
-        "Title\n
+        "The\n
+        City\n
+        An idea? Bring it to your council!\n
+        Instructions\n
+        • Write as clearly as you can- these forms might be scanned\n
+        • Write your answers in the same language as this form\n
+        Title\n
         Another great idea, wow\n
         Description\n
         Can you\n
@@ -267,7 +279,13 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
 
     it 'parses text correctly (single document)' do
       text = parse_pages [
-        "Title\n
+        "The\n
+        City\n
+        An idea? Bring it to your council!\n
+        Instructions\n
+        • Write as clearly as you can- these forms might be scanned\n
+        • Write your answers in the same language as this form\n
+        Title\n
         Page numbers test\n
         Description\n
         Page numbers test description\n
@@ -318,7 +336,13 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
 
     it 'works in French' do
       text = parse_pages [
-        "Titre\n
+        "The\n
+        City\n
+        An idea? Bring it to your council!\n
+        Instructions\n
+        • Écrivez aussi clairement que possible: ces formulaires peuvent être numérisés\n
+        • Écrivez vos réponses dans la même langue que ce formulaire\n
+        Titre\n
         Test pour les page numbers\n
         Description\n
         Description du test pour les page numbers\n
@@ -369,6 +393,140 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
     end
   end
 
+  describe 'form with number input' do
+    let(:project) { create(:continuous_project) }
+    let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
+
+    before do
+      # Topics for project
+      project.allowed_input_topics << create(:topic_economy)
+      project.allowed_input_topics << create(:topic_waste)
+
+      # Custom fields
+      create(:custom_field, resource: custom_form,
+        key: 'pool_question',
+        title_multiloc: {
+          'en' => 'Your favourite name for a swimming pool',
+          'fr-FR' => 'Votre nom préféré pour une piscine'
+        },
+        description_multiloc: {
+          'en' => "<p>A slightly longer description under a field, with a bunch of words used to explain things to people. Please don't put anything weird in this field, thanks!</p>",
+          'fr-FR' => '<p>Une description un peu plus longue</p>'
+        },
+        input_type: 'text',
+        enabled: true,
+        required: false
+      )
+
+      create(:custom_field, resource: custom_form,
+        key: 'number_field',
+        title_multiloc: {
+          'en' => 'What is your favorite number?'
+        },
+        description_multiloc: {
+          'en' => '<p>Some description</p>'
+        },
+        input_type: 'number',
+        enabled: true,
+        required: true
+      )
+    end
+
+    it 'parses text correctly (single document)' do
+      text = parse_pages [
+        "The\n
+        City\n
+        An idea? Bring it to your council!\n
+        Instructions\n
+        • Write as clearly as you can- these forms might be scanned\n
+        • Write your answers in the same language as this form\n
+        Title\n
+        dea\n
+        Whatever idea\n
+        Description\n
+        Bla Bla Bla. IBla. \n
+        I am\n
+        really\n
+        running out of ideasор\n
+        Location (optional)\n
+        Some location\n
+        Your favourite name for a swimming pool (optional)\n
+        *This answer will only be shared with moderators, and not to the public.\n
+        The nice pool\n
+        Page 1\n",
+        "What is your favorite number?\n
+        Some description\n
+        *This answer will only be shared with moderators, and not to the public.\n
+        72296\n
+        Page 2\n"
+      ]
+
+      service = described_class.new project.id, 'en', nil
+      docs = service.parse_text text
+
+      result = [{
+        :pdf_pages => [1, 2],
+        :form_pages => [1, 2],
+        :fields => {
+          "Title" => "dea Whatever idea",
+          "Description" => "Bla Bla Bla. IBla. I am really running out of ideasор",
+          "Location (optional)" => "Some location",
+          "Your favourite name for a swimming pool (optional)" => "The nice pool",
+          "What is your favorite number?" => 72296
+        }
+      }]
+
+      expect(docs).to eq result
+    end
+
+    it 'handles non-integer characters' do
+      text = parse_pages [
+        "The\n
+        City\n
+        An idea? Bring it to your council!\n
+        Instructions\n
+        • Write as clearly as you can- these forms might be scanned\n
+        • Write your answers in the same language as this form\n
+        Title\n
+        dea\n
+        Whatever idea\n
+        Description\n
+        Bla Bla Bla. IBla. \n
+        I am\n
+        really\n
+        running out of ideasор\n
+        Location (optional)\n
+        Some location\n
+        Your favourite name for a swimming pool (optional)\n
+        *This answer will only be shared with moderators, and not to the public.\n
+        The nice pool\n
+        Page 1\n",
+        "What is your favorite number?\n
+        Some description\n
+        *This answer will only be shared with moderators, and not to the public.\n
+        2OIZS\n
+        Page 2\n"
+      ]
+
+      service = described_class.new project.id, 'en', nil
+      docs = service.parse_text text
+
+      result = [{
+        :pdf_pages => [1, 2],
+        :form_pages => [1, 2],
+        :fields => {
+          "Title" => "dea Whatever idea",
+          "Description" => "Bla Bla Bla. IBla. I am really running out of ideasор",
+          "Location (optional)" => "Some location",
+          "Your favourite name for a swimming pool (optional)" => "The nice pool",
+          "What is your favorite number?" => 20125
+        }
+      }]
+
+      expect(docs).to eq result
+    end
+  end
+
   describe 'edge cases' do
     it 'handles values matching substrings of description' do
       create(:custom_field, resource: custom_form,
@@ -380,7 +538,13 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
         required: false)
 
       text = parse_pages [
-        "Title\n
+        "The\n
+        City\n
+        An idea? Bring it to your council!\n
+        Instructions\n
+        • Write as clearly as you can- these forms might be scanned\n
+        • Write your answers in the same language as this form\n
+        Title\n
         Test\n
         Description\n
         Test description\n

@@ -19,9 +19,6 @@ import { truncate } from 'utils/textUtils';
 // typings
 import { IIdeas } from 'api/ideas/types';
 
-// TODO move to component library
-const TEAL50 = '#EDF8FA';
-
 const StyledButton = styled(Button)``;
 
 const StyledBox = styled(Box)`
@@ -30,7 +27,7 @@ const StyledBox = styled(Box)`
   }
 
   &:hover {
-    background-color: ${TEAL50};
+    background-color: ${colors.teal50};
 
     ${StyledButton} {
       display: block;
@@ -63,7 +60,7 @@ const IdeaList = ({ ideaId, ideas, onSelectIdea, onDeleteIdea }: Props) => {
           py="8px"
           borderBottom={`1px ${colors.grey400} solid`}
           style={{ cursor: 'pointer' }}
-          bgColor={idea.id === ideaId ? TEAL50 : undefined}
+          bgColor={idea.id === ideaId ? colors.teal50 : undefined}
           position="relative"
           onClick={() => {
             onSelectIdea(idea.id);
