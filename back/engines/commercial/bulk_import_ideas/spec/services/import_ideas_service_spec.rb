@@ -217,6 +217,22 @@ describe BulkImportIdeas::ImportIdeasService do
       )
     end
 
+    it 'imports an anonymous user if there is a problem with saving a named user' do
+      project = create(:project, title_multiloc: { 'en' => 'Project title' })
+      idea_rows = [
+        {
+          title_multiloc: { 'en' => 'My idea title' },
+          body_multiloc: { 'en' => 'My idea description' },
+          project_id: project.id,
+          user_email: 'userimport@@citizenlab....co'
+        }
+      ]
+      service.import_ideas idea_rows
+      expect(project.ideas.first).not_to be_nil
+      expect(project.ideas.first.author.email).to be_nil
+      expect(project.ideas.first.author.unique_code).not_to be_nil
+    end
+
     context 'surveys' do
       it 'can import surveys with' do
         project = create(:continuous_native_survey_project)

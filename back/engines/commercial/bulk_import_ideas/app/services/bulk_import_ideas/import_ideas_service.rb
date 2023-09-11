@@ -134,20 +134,27 @@ module BulkImportIdeas
     end
 
     def add_author(idea_row, idea_attributes)
+      author = nil
       user_created = false
-      if idea_row[:user_email].blank?
-        author = User.new(unique_code: SecureRandom.uuid, locale: @locale)
-        author = add_author_name author, idea_row
-        author.save!
-        user_created = true
-      else
+
+      if idea_row[:user_email].present?
         author = User.find_by_cimail idea_row[:user_email]
         unless author
           author = User.new(email: idea_row[:user_email], locale: @locale)
           author = add_author_name author, idea_row
-          author.save!
-          user_created = true
+          if author.save
+            user_created = true
+          else
+            author = nil
+          end
         end
+      end
+
+      unless author
+        author = User.new(unique_code: SecureRandom.uuid, locale: @locale)
+        author = add_author_name author, idea_row
+        author.save!
+        user_created = true
       end
 
       idea_attributes[:author] = author
