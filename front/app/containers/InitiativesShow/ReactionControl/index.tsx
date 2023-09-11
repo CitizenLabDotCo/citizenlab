@@ -30,7 +30,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { trackEventByName } from 'utils/analytics';
 
