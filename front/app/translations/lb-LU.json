@@ -153,6 +153,7 @@
   "app.components.FolderFolderCard.a11y_folderTitle": "Titel vum Dossier: ",
   "app.components.FolderFolderCard.archived": "Archivéiert",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# Projeten} one {# Projet} other {# Projeten}}",
+  "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Download als pdf",
   "app.components.GoBackButton.group.edit.goBack": "Zeréck",
   "app.components.GoBackButton.group.edit.goBackToPreviousPage": "Gitt zréck op déi virdrun Säit",
   "app.components.HookForm.Feedback.errorTitle": "Et gëtt e Problem.",
