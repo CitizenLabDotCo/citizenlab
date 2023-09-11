@@ -153,6 +153,7 @@
   "app.components.FolderFolderCard.a11y_folderTitle": "Klasör başlığı:",
   "app.components.FolderFolderCard.archived": "Arşivlenmiş",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, one {# proje} other {# proje}}",
+  "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Pdf olarak indir",
   "app.components.GoBackButton.group.edit.goBack": "Geri gidin",
   "app.components.GoBackButton.group.edit.goBackToPreviousPage": "Önceki sayfaya geri dön",
   "app.components.HookForm.Feedback.errorTitle": "Bir sorun var",
