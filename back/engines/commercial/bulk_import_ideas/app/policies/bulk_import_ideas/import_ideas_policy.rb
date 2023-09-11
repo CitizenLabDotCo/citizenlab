@@ -15,6 +15,7 @@ module BulkImportIdeas
     end
 
     def draft_ideas?
+      # active_admin_or_project_moderator?
       active_admin?
     end
 
@@ -29,5 +30,11 @@ module BulkImportIdeas
 
       user.active? && user.admin?
     end
+
+    # def active_admin_or_project_moderator?
+    #   return false unless user
+
+    #   user.active? && UserRoleService.new.can_moderate_project?(record, user)
+    # end
   end
 end
