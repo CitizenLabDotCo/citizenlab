@@ -24,7 +24,7 @@ export default defineMessages({
   invitationErrorMessage: {
     id: 'app.containers.SignUp.invitationErrorMessage',
     defaultMessage:
-      'Your invitation has expired or has already been used. Please sign up to continue.',
+      'Your invitation has expired or has already been used. If you have already used the invitation link to create an account, try signing in. Otherwise, sign up to create a new account.',
   },
   verifyYourIdentity: {
     id: 'app.components.VerificationModal.verifyYourIdentity',
