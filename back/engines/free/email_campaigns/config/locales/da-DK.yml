@@ -183,7 +183,7 @@ da:
     initiative_assigned_to_you:
       by_author: 'af %{authorName}'
       cta_reply_to: 'Giv feedback til %{authorName}'
-      event_description_initiative: 'Et forslag er blevet tildelt dig. Giv feedback ved at skrive en opdatering eller ved at ændre dets status.'
+      event_description_initiative: 'Et forslag er blevet tildelt dig. Giv feedback ved at skrive en opdatering eller ved at ændre dens status.'
       main_header: '%{firstName}, du har en ny tildeling'
       subject: 'Du har en ny tildeling på platformen for %{organizationName}'
       preheader_initiative: 'Du er blevet tildelt %{authorName}s forslag'
