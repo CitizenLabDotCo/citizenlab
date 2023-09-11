@@ -154,7 +154,7 @@ const EventsViewer = ({
     }
   }, [projectId]);
 
-  // Update projectIds URL params based on state
+  // Update projectIds URL params based on state, events time will not change after initial render
   useEffect(() => {
     const hasProjectFilter = projectIdList?.length;
     const eventParam =
@@ -168,7 +168,7 @@ const EventsViewer = ({
     }
   }, [eventsTime, projectIdList]);
 
-  // Update date filter URL params based on state
+  // Update date filter URL params based on state, events time will not change after initial render
   useEffect(() => {
     const hasDateFilter = dateFilter?.length && dateFilter[0] !== 'all';
     if (eventsTime === 'currentAndFuture') {
