@@ -215,6 +215,7 @@ nl-BE:
       status: 'Status'
       assignee_fullname: 'Toegewezen aan'
       assignee_email: 'E-mailadres toegewezen persoon'
+      image_url: 'Afbeelding URL'
     anonymous: 'Anoniem'
   form_builder:
     default_select_field:
@@ -224,6 +225,18 @@ nl-BE:
     survey_end_page:
       title: 'Einde enquête'
       description: "Dien uw antwoorden in door hieronder 'Enquête indienen' te selecteren."
+    pdf_export:
+      full_name: 'Volledige naam'
+      email_address: 'E-mailadres'
+      optional: 'optioneel'
+      permission: 'Toestemming'
+      choose_as_many: 'Kies er zoveel als je wilt'
+      this_answer: 'Dit antwoord wordt alleen gedeeld met beheerders, en niet publiekelijk.'
+      page: 'Pagina'
+      date_published: 'Datum gepubliceerd (dd-mm-jjjj)'
+      instructions: 'Instructies'
+      write_as_clearly: 'Schrijf zo <b>duidelijk</b> als je kunt - deze formulieren kunnen worden gescand.'
+      write_in_language: 'Schrijf je antwoorden in dezelfde taal als dit formulier'
   project_copy:
     title_suffix: 'Kopie'
   confirmations_mailer:
