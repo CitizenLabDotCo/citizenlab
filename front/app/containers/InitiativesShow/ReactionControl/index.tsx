@@ -122,12 +122,16 @@ const ReactionControl = ({
   const { mutate: addReaction } = useAddInitiativeReaction();
   const { mutate: deleteReaction } = useDeleteInitiativeReaction();
 
-  if (!initiative) return null;
+  if (
+    !initiative ||
+    !initiativeStatus ||
+    !appConfiguration?.data.attributes.settings.initiatives
+  ) {
+    return null;
+  }
 
   const reaction = () => {
-    if (initiative) {
-      addReaction({ initiativeId: initiative.data.id, mode: 'up' });
-    }
+    addReaction({ initiativeId: initiative.data.id, mode: 'up' });
   };
 
   const handleOnreaction = () => {
@@ -156,24 +160,13 @@ const ReactionControl = ({
   };
 
   const handleOnCancelReaction = () => {
-    if (
-      !isNilOrError(initiative) &&
-      initiative.data.relationships?.user_reaction?.data?.id
-    ) {
+    if (initiative.data.relationships.user_reaction?.data?.id) {
       deleteReaction({
         initiativeId: initiative.data.id,
         reactionId: initiative.data.relationships.user_reaction.data.id,
       });
     }
   };
-
-  if (
-    isNilOrError(initiativeStatus) ||
-    isNilOrError(appConfiguration) ||
-    !appConfiguration.data.attributes.settings.initiatives
-  ) {
-    return null;
-  }
 
   const expiresAt = moment(
     initiative.data.attributes.expires_at,

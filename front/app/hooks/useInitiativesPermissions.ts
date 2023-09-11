@@ -21,7 +21,7 @@ export default function useInitiativesPermissions(
 
   useEffect(() => {
     if (appConfiguration && actionDescriptor) {
-      if (actionDescriptor?.enabled) {
+      if (actionDescriptor.enabled) {
         setActionPermission({
           show: true,
           enabled: true,
@@ -29,7 +29,7 @@ export default function useInitiativesPermissions(
           authenticationRequirements: null,
         });
       } else {
-        switch (actionDescriptor?.disabled_reason) {
+        switch (actionDescriptor.disabled_reason) {
           case 'missing_data': {
             setActionPermission({
               show: true,
