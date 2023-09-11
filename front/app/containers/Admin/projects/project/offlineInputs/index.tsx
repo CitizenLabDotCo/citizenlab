@@ -8,6 +8,7 @@ import useIdeaById from 'api/ideas/useIdeaById';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
 import useInputSchema from 'hooks/useInputSchema';
 import useDeleteIdea from 'api/ideas/useDeleteIdea';
+import useImportedIdeas from 'api/import_ideas/useImportedIdeas';
 
 // routing
 import { useParams } from 'react-router-dom';
@@ -26,6 +27,7 @@ import { isValidData } from 'components/Form/utils';
 import { customAjv } from 'components/Form';
 import { getFormValues } from 'containers/IdeasEditPage/utils';
 import { geocode } from 'utils/locationTools';
+import { getNextIdeaId } from './utils';
 
 // typings
 import { FormData } from 'components/Form/typings';
@@ -45,6 +47,7 @@ const OfflineInputImporter = () => {
   >({});
 
   const { data: idea } = useIdeaById(ideaId ?? undefined, false);
+  const { data: ideas } = useImportedIdeas({ projectId, phaseId });
   const { mutateAsync: updateIdea, isLoading: loadingApproveIdea } =
     useUpdateIdea();
   const { mutate: deleteIdea } = useDeleteIdea();
@@ -84,7 +87,7 @@ const OfflineInputImporter = () => {
   );
 
   const onApproveIdea = async () => {
-    if (!ideaId || !formData || !formDataValid) return;
+    if (!ideaId || !formData || !formDataValid || !ideas) return;
 
     const {
       location_description,
@@ -110,6 +113,16 @@ const OfflineInputImporter = () => {
           ...(location_point_geojson ? { location_point_geojson } : {}),
         },
       });
+
+      setFormStatePerIdea((formState) => {
+        const clone = { ...formState };
+        delete clone[ideaId];
+
+        return clone;
+      });
+
+      const nextIdeaId = getNextIdeaId(ideaId, ideas);
+      setIdeaId(nextIdeaId);
     } catch (e) {
       setApiErrors(e.errors);
     }

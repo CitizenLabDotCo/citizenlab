@@ -8,8 +8,8 @@ export const getNextIdeaId = (ideaId: string, ideas: IIdeas) => {
   const lastIndex = numberOfIdeas - 1;
 
   if (indexOfCurrentIdea === lastIndex) {
-    return ideas.data[lastIndex - 1].id;
+    return ideas.data[indexOfCurrentIdea - 1].id;
   } else {
-    return ideas.data[lastIndex + 1].id;
+    return ideas.data[indexOfCurrentIdea + 1].id;
   }
 };

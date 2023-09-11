@@ -37,7 +37,6 @@ import { colors, stylingConsts } from 'utils/styleUtils';
 
 // utils
 import { getFullName } from 'utils/textUtils';
-import { getNextIdeaId } from './utils';
 
 // typings
 import { FormData } from 'components/Form/typings';
@@ -120,18 +119,6 @@ const ReviewSection = ({
 
   const goToNextPage = () => setCurrentPageIndex((index) => index + 1);
   const goToPreviousPage = () => setCurrentPageIndex((index) => index - 1);
-
-  const handleApproveIdea =
-    onApproveIdea && ideaId
-      ? async () => {
-          await onApproveIdea();
-
-          console.log({ ideaId, ideas });
-
-          const nextIdeaId = getNextIdeaId(ideaId, ideas);
-          onSelectIdea(nextIdeaId);
-        }
-      : undefined;
 
   const disabledReason = formDataValid ? null : (
     <FormattedMessage {...messages.formDataNotValid} />
@@ -236,7 +223,7 @@ const ReviewSection = ({
             flexDirection="column"
             justifyContent="flex-end"
           >
-            {handleApproveIdea && (
+            {onApproveIdea && (
               <Tippy
                 disabled={!disabledReason}
                 interactive={true}
@@ -249,7 +236,7 @@ const ReviewSection = ({
                     w="100%"
                     processing={loadingApproveIdea}
                     disabled={!formDataValid}
-                    onClick={handleApproveIdea}
+                    onClick={onApproveIdea}
                   >
                     <FormattedMessage {...messages.approve} />
                   </Button>
