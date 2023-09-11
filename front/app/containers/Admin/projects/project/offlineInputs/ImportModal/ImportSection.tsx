@@ -80,6 +80,9 @@ const ImportSection = ({ onFinishImport }: Props) => {
         onSuccess: () => {
           onFinishImport();
         },
+        onError: (errors) => {
+          console.log(errors);
+        },
       }
     );
   };
