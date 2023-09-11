@@ -12,6 +12,9 @@ import DateFilterDropdown from './DateFilterDropdown';
 // styling
 import styled, { useTheme } from 'styled-components';
 
+// types
+import { dateFilterKey } from '.';
+
 const ProjectFilterDropdownPositioner = styled.div`
   margin-top: auto;
   display: flex;
@@ -23,7 +26,7 @@ interface Props {
   showProjectFilter: boolean;
   showDateFilter?: boolean;
   setProjectIds: (projectIds: string[]) => void;
-  setDateFilter: (dateFilter: string[]) => void;
+  setDateFilter: (dateFilter: dateFilterKey[]) => void;
   eventsTime?: 'past' | 'currentAndFuture';
 }
 

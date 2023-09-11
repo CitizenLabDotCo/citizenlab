@@ -51,9 +51,11 @@ const StyledPagination = styled(Pagination)`
   margin: 36px auto 0px;
 `;
 
+export type dateFilterKey = 'today' | 'week' | 'month' | 'all';
+
 // Gets a time period from a given key (today, week, month) and
 // returns it as a range of two values stored in an array
-const getDatesFromKey = (dateFilter: string[] | undefined) => {
+const getDatesFromKey = (dateFilter: dateFilterKey[] | undefined) => {
   if (!dateFilter) {
     return undefined;
   }
@@ -117,13 +119,15 @@ const EventsViewer = ({
   const projectIdsFromUrl: string[] = projectIdsParam
     ? JSON.parse(projectIdsParam)
     : null;
-  const dateFilterFromUrl: string[] = dateParam ? JSON.parse(dateParam) : null;
+  const dateFilterFromUrl: dateFilterKey[] = dateParam
+    ? JSON.parse(dateParam)
+    : null;
 
   // Set state based on URL params
   const [projectIdList, setProjectIdList] = useState<string[] | undefined>(
     projectIdsFromUrl || (projectId ? [projectId] : [])
   );
-  const [dateFilter, setDateFilter] = useState<string[] | undefined>(
+  const [dateFilter, setDateFilter] = useState<dateFilterKey[] | undefined>(
     dateFilterFromUrl || []
   );
 
@@ -153,16 +157,14 @@ const EventsViewer = ({
   // Update projectIds URL params based on state
   useEffect(() => {
     const hasProjectFilter = projectIdList?.length;
+    const eventParam =
+      eventsTime === 'past'
+        ? 'past_events_project_ids'
+        : 'ongoing_events_project_ids';
     if (!location.pathname.includes('/projects')) {
-      if (eventsTime === 'past') {
-        updateSearchParams({
-          past_events_project_ids: hasProjectFilter ? projectIdList : null,
-        });
-      } else if (eventsTime === 'currentAndFuture') {
-        updateSearchParams({
-          ongoing_events_project_ids: hasProjectFilter ? projectIdList : null,
-        });
-      }
+      updateSearchParams({
+        [eventParam]: hasProjectFilter ? projectIdList : null,
+      });
     }
   }, [eventsTime, projectIdList]);
 
