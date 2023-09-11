@@ -19,9 +19,7 @@ import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useInitiativeStatus from 'api/initiative_statuses/useInitiativeStatus';
-import useInitiativesPermissions, {
-  IInitiativeDisabledReason,
-} from 'hooks/useInitiativesPermissions';
+import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
 import useAddInitiativeReaction from 'api/initiative_reactions/useAddInitiativeReaction';
 import useDeleteInitiativeReaction from 'api/initiative_reactions/useDeleteInitiativeReaction';
 
@@ -30,7 +28,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { trackEventByName } from 'utils/analytics';
 
@@ -40,20 +37,21 @@ import {
   InitiativeStatusCode,
   IInitiativeStatusData,
 } from 'api/initiative_statuses/types';
-import { IAppConfigurationSettings } from 'api/app_configuration/types';
+import { ProposalsSettings } from 'api/app_configuration/types';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 import ChangesRequested from './ChangesRequested';
 import BorderContainer from '../BorderContainer';
+import { InitiativeDisabledReason } from 'api/initiative_action_descriptors/types';
 
 interface ReactionControlComponentProps {
   initiative: IInitiativeData;
   initiativeStatus: IInitiativeStatusData;
-  initiativeSettings: IAppConfigurationSettings['initiatives'];
+  initiativeSettings: ProposalsSettings;
   userReacted: boolean;
   onReaction?: () => void;
   onCancelReaction?: () => void;
   onScrollToOfficialFeedback?: () => void;
-  disabledReason?: IInitiativeDisabledReason | null | undefined;
+  disabledReason?: InitiativeDisabledReason | null | undefined;
 }
 
 type TComponentMap = {

@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react';
-import { IInitiativeActionDescriptorName } from 'api/initiative_action_descriptors/types';
+import {
+  IInitiativeActionDescriptorName,
+  InitiativeDisabledReason,
+} from 'api/initiative_action_descriptors/types';
 import useInitativeActionDescriptors from 'api/initiative_action_descriptors/useInitiativeActionDescriptors';
 import { ActionPermission } from 'services/actionTakingRules';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -11,7 +14,7 @@ export default function useInitiativesPermissions(
   actionDescriptorName: IInitiativeActionDescriptorName
 ) {
   const [actionPermission, setActionPermission] = useState<
-    ActionPermission<IInitiativeDisabledReason> | null | undefined
+    ActionPermission<InitiativeDisabledReason> | null | undefined
   >(undefined);
   const { data: appConfiguration } = useAppConfiguration();
   const { data: actionDescriptors } = useInitativeActionDescriptors();
@@ -72,11 +75,19 @@ export default function useInitiativesPermissions(
               authenticationRequirements: 'complete_registration',
             });
             break;
+          case 'not_in_group':
+            setActionPermission({
+              show: true,
+              enabled: false,
+              disabledReason: 'not_in_group',
+              authenticationRequirements: null,
+            });
+            break;
           default:
             setActionPermission({
               show: true,
               enabled: false,
-              disabledReason: 'notPermitted',
+              disabledReason: 'not_permitted',
               authenticationRequirements: null,
             });
         }

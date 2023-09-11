@@ -153,4 +153,24 @@ export default defineMessages({
     id: 'app.containers.InitiativesShow.VoteControl.votingNotPermitted',
     defaultMessage: "You don't have the rights to vote on this proposal.",
   },
+  votingNotActive: {
+    id: 'app.containers.InitiativesShow.VoteControl.votingNotActive',
+    defaultMessage: 'Not active',
+  },
+  votingNotSignedIn: {
+    id: 'app.containers.InitiativesShow.VoteControl.votingNotSignedIn',
+    defaultMessage: 'Not signed in',
+  },
+  votingNotVerified: {
+    id: 'app.containers.InitiativesShow.VoteControl.votingNotVerified',
+    defaultMessage: 'Not verified',
+  },
+  votingNotMissingData: {
+    id: 'app.containers.InitiativesShow.VoteControl.votingNotMissingData',
+    defaultMessage: 'Missing data',
+  },
+  votingNotInGroup: {
+    id: 'app.containers.InitiativesShow.VoteControl.votingNotInGroup',
+    defaultMessage: 'Not in group',
+  },
 });

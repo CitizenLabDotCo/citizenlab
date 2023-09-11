@@ -28,12 +28,12 @@ const calculateMessageDescriptor = (
   if (commentingPermissions?.enabled === true) {
     return null;
   } else if (
-    commentingPermissions?.disabledReason === 'notPermitted' &&
+    commentingPermissions?.disabledReason === 'not_permitted' &&
     !isLoggedIn
   ) {
     return messages.commentingInitiativeMaybeNotPermitted;
   } else if (
-    commentingPermissions?.disabledReason === 'notPermitted' &&
+    commentingPermissions?.disabledReason === 'not_permitted' &&
     isLoggedIn
   ) {
     return messages.commentingInitiativeNotPermitted;
