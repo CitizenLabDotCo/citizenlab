@@ -153,6 +153,7 @@
   "app.components.FolderFolderCard.a11y_folderTitle": "Наслов фолдера:",
   "app.components.FolderFolderCard.archived": "Архивирано",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# пројекта} one {# пројекат} other {# пројекта}}",
+  "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Преузмите као пдф",
   "app.components.GoBackButton.group.edit.goBack": "Вратити се",
   "app.components.GoBackButton.group.edit.goBackToPreviousPage": "Вратите се на претходну страницу",
   "app.components.HookForm.Feedback.errorTitle": "Постоји проблем",
