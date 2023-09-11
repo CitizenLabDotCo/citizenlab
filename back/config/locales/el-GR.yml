@@ -215,6 +215,7 @@ el:
       status: 'Κατάσταση'
       assignee_fullname: 'Αποδέκτης'
       assignee_email: 'Email παραλήπτη'
+      image_url: 'URL εικόνας'
     anonymous: 'Ανώνυμος'
   form_builder:
     default_select_field:
@@ -224,6 +225,18 @@ el:
     survey_end_page:
       title: 'Τέλος της έρευνας'
       description: "Υποβάλετε τις απαντήσεις σας επιλέγοντας \"Υποβολή έρευνας\" παρακάτω."
+    pdf_export:
+      full_name: 'Ονοματεπώνυμο'
+      email_address: 'Διεύθυνση ηλεκτρονικού ταχυδρομείου'
+      optional: 'προαιρετικό'
+      permission: 'Άδεια'
+      choose_as_many: 'Επιλέξτε όσα θέλετε'
+      this_answer: 'Αυτή η απάντηση θα κοινοποιηθεί μόνο στους συντονιστές και όχι στο κοινό.'
+      page: 'Σελίδα'
+      date_published: 'Ημερομηνία δημοσίευσης (ηη-μμ-ηηη)'
+      instructions: 'Οδηγίες'
+      write_as_clearly: 'Γράψτε όσο το δυνατόν πιο καθαρά <b></b> - τα έντυπα αυτά μπορεί να σαρωθούν.'
+      write_in_language: 'Γράψτε τις απαντήσεις σας στην ίδια γλώσσα με το παρόν έντυπο.'
   project_copy:
     title_suffix: 'Aντίγραφο'
   confirmations_mailer:
