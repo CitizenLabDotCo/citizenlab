@@ -9,6 +9,7 @@ import { Multiloc } from 'typings';
 import { IPhaseData, UpdatePhaseObject } from 'api/phases/types';
 
 // utils
+import { API_PATH } from 'containers/App/constants';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -54,6 +55,9 @@ type FormActionsConfig = {
   editFormLink: string;
   viewFormLink: string;
   viewFormResults: string;
+  offlineInputsLink: string;
+  downloadExcelLink: string;
+  downloadPdfLink: string;
   heading?: Multiloc;
   postingEnabled: boolean;
   togglePostingEnabled: () => void;
@@ -79,6 +83,9 @@ export const getFormActionsConfig = (
         editFormLink: `/admin/projects/${project.id}/native-survey/edit`,
         viewFormLink: `/projects/${project.attributes.slug}/ideas/new`,
         viewFormResults: `/admin/projects/${project.id}/native-survey/results`,
+        offlineInputsLink: `/admin/projects/${project.id}/offline-inputs`,
+        downloadExcelLink: `${API_PATH}/projects/${project.id}/import_ideas/example_xlsx`,
+        downloadPdfLink: `${API_PATH}/projects/${project.id}/custom_fields/to_pdf`,
         postingEnabled: project.attributes.posting_enabled,
         togglePostingEnabled: () => {
           updateProject({
@@ -95,6 +102,9 @@ export const getFormActionsConfig = (
     editFormLink: `/admin/projects/${project.id}/phases/${phase.id}/native-survey/edit`,
     viewFormLink: `/projects/${project.attributes.slug}/ideas/new?phase_id=${phase.id}`,
     viewFormResults: `/admin/projects/${project.id}/native-survey/results?phase_id=${phase.id}`,
+    offlineInputsLink: `/admin/projects/${project.id}/phases/${phase.id}/offline-inputs`,
+    downloadExcelLink: `${API_PATH}/phases/${phase.id}/import_ideas/example_xlsx`,
+    downloadPdfLink: `${API_PATH}/phases/${phase.id}/custom_fields/to_pdf`,
     heading: phase.attributes.title_multiloc,
     postingEnabled: phase.attributes.posting_enabled,
     togglePostingEnabled: () => {

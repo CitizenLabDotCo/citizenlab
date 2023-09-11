@@ -9,7 +9,6 @@
 #  import_user_id :uuid
 #  file_id        :uuid
 #  user_created   :boolean          default(FALSE)
-#  required       :boolean          default(FALSE)
 #  approved_at    :datetime
 #  page_range     :text             default([]), is an Array
 #  created_at     :datetime         not null
@@ -35,7 +34,5 @@ module BulkImportIdeas
     belongs_to :file, class_name: 'BulkImportIdeas::IdeaImportFile', optional: true
     belongs_to :idea
     belongs_to :import_user, class_name: 'User', optional: true
-
-    # TODO: Patch idea
   end
 end

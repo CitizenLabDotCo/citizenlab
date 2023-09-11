@@ -25,15 +25,16 @@ import { colors, stylingConsts } from 'utils/styleUtils';
 import { isValidData } from 'components/Form/utils';
 import { customAjv } from 'components/Form';
 import { getFormValues } from 'containers/IdeasEditPage/utils';
+import { geocode } from 'utils/locationTools';
 
 // typings
 import { FormData } from 'components/Form/typings';
 import { CLErrors } from 'typings';
-import { geocode } from 'utils/locationTools';
 
 const OfflineInputImporter = () => {
-  const { projectId } = useParams() as {
+  const { projectId, phaseId } = useParams() as {
     projectId: string;
+    phaseId: string;
   };
 
   const [ideaId, setIdeaId] = useState<string | null>(null);
@@ -50,6 +51,7 @@ const OfflineInputImporter = () => {
 
   const { schema, uiSchema } = useInputSchema({
     projectId,
+    phaseId,
   });
 
   const formData: FormData =

@@ -21,6 +21,8 @@ import { IInputsFilterParams } from 'api/analysis_inputs/types';
 import { isEmpty } from 'lodash-es';
 import translations from '../translations';
 import { useIntl } from 'utils/cl-intl';
+import { useParams } from 'react-router-dom';
+import useAnalysis from 'api/analyses/useAnalysis';
 
 const AutoTagMethodContainer = styled.div<{ disabled: boolean }>`
   background-color: ${colors.grey100};
@@ -82,7 +84,10 @@ const AutoTagOption = ({
         alignItems="center"
         gap="6px"
       >
-        <Tag tagType={tagType} name={title} />
+        <Tag tagType={tagType} name="&nbsp;" />
+        <Title variant="h6" m="0px">
+          {title}
+        </Title>
         {isLoading && (
           <Box mx="16px">
             <Spinner size="24px" />
@@ -114,6 +119,9 @@ const Step1 = ({
   onChangeAutoTaggingTarget,
   filters,
 }: Props) => {
+  const { analysisId } = useParams() as { analysisId: string };
+  const { data: analysis } = useAnalysis(analysisId);
+
   const { formatMessage } = useIntl();
   return (
     <>
@@ -123,7 +131,7 @@ const Step1 = ({
       </Title>
       <Text mb="32px">{formatMessage(translations.autoTagDescription)}</Text>
 
-      <Title variant="h4">{formatMessage(translations.autoTagSubtitle)}</Title>
+      <Title variant="h4">{formatMessage(translations.whatToTag)}</Title>
 
       <Box display="flex" gap="16px">
         <AutoTagTargetContainer
@@ -175,10 +183,6 @@ const Step1 = ({
         gap="16px"
         opacity={isLoading ? 0.5 : undefined}
       >
-        <Title variant="h6" m="0">
-          {formatMessage(translations.topicDetection)}
-        </Title>
-
         <AutoTagOption
           tagType="nlp_topic"
           title={formatMessage(translations.fullyAutomatedTitle)}
@@ -212,19 +216,17 @@ const Step1 = ({
           {formatMessage(translations.classificationByExampleDescription)}
         </AutoTagOption>
 
-        <AutoTagOption
-          tagType="platform_topic"
-          title={formatMessage(translations.platformTagsTitle)}
-          onSelect={() => onSelectMethod('platform_topic')}
-          disabled={isLoading}
-          isLoading={isLoading && loadingMethod === 'platform_topic'}
-        >
-          {formatMessage(translations.platformTagsDescription)}
-        </AutoTagOption>
-
-        <Title variant="h6" m="0">
-          {formatMessage(translations.other)}
-        </Title>
+        {analysis?.data.attributes.participation_method === 'ideation' && (
+          <AutoTagOption
+            tagType="platform_topic"
+            title={formatMessage(translations.platformTagsTitle)}
+            onSelect={() => onSelectMethod('platform_topic')}
+            disabled={isLoading}
+            isLoading={isLoading && loadingMethod === 'platform_topic'}
+          >
+            {formatMessage(translations.platformTagsDescription)}
+          </AutoTagOption>
+        )}
 
         <AutoTagOption
           tagType="sentiment"
@@ -236,15 +238,17 @@ const Step1 = ({
           {formatMessage(translations.sentimentTagDescription)}
         </AutoTagOption>
 
-        <AutoTagOption
-          tagType="controversial"
-          title={formatMessage(translations.controversialTagTitle)}
-          onSelect={() => onSelectMethod('controversial')}
-          disabled={isLoading}
-          isLoading={isLoading && loadingMethod === 'controversial'}
-        >
-          {formatMessage(translations.controversialTagDescription)}
-        </AutoTagOption>
+        {analysis?.data.attributes.participation_method === 'ideation' && (
+          <AutoTagOption
+            tagType="controversial"
+            title={formatMessage(translations.controversialTagTitle)}
+            onSelect={() => onSelectMethod('controversial')}
+            disabled={isLoading}
+            isLoading={isLoading && loadingMethod === 'controversial'}
+          >
+            {formatMessage(translations.controversialTagDescription)}
+          </AutoTagOption>
+        )}
 
         <AutoTagOption
           tagType="language"

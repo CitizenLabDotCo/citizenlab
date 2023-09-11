@@ -1,13 +1,17 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  importedIdeas: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedIdeas',
-    defaultMessage: 'Imported ideas',
+  importedInputs: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedInputs',
+    defaultMessage: 'Imported inputs',
   },
-  ideaImporter: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.ideaImporter',
-    defaultMessage: 'Idea importer',
+  inputImporter: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputImporter',
+    defaultMessage: 'Input importer',
+  },
+  noTitleInputLabel: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.noTitleInputLabel',
+    defaultMessage: 'Input',
   },
   noIdeasYet: {
     id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet3',
@@ -27,9 +31,9 @@ export default defineMessages({
     defaultMessage: 'Page',
   },
   phaseNotAllowed: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.phaseNotAllowed',
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.phaseNotAllowed2',
     defaultMessage:
-      'The selected phase cannot contain ideas. Please select another one.',
+      'The selected phase cannot contain inputs. Please select another one.',
   },
   formDataNotValid: {
     id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.formDataNotValid',

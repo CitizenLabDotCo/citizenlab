@@ -10,13 +10,13 @@ module BulkImportIdeas
     end
 
     def raw_text
-      return dummy_raw_text.join("\n") unless ENV.fetch('GOOGLE_APPLICATION_CREDENTIALS', false) # Temp for development
+      return dummy_raw_text.join("\n") unless ENV.fetch('GOOGLE_APPLICATION_CREDENTIALS', false) && @document # Temp for development
 
       @document.text
     end
 
     def raw_text_page_array
-      return dummy_raw_text unless ENV.fetch('GOOGLE_APPLICATION_CREDENTIALS', false) # Temp for development
+      return dummy_raw_text unless ENV.fetch('GOOGLE_APPLICATION_CREDENTIALS', false) && @document # Temp for development
 
       text = @document.text
 

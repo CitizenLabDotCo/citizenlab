@@ -7,6 +7,10 @@ import useImportedIdeaMetadata from 'api/import_ideas/useImportedIdeaMetadata';
 // components
 import { Box, Text, Button } from '@citizenlab/cl2-component-library';
 
+// i18n
+import { useIntl } from 'utils/cl-intl';
+import messages from './messages';
+
 // styling
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
@@ -43,11 +47,12 @@ interface Props {
 const IdeaList = ({ ideaId, ideas, onSelectIdea, onDeleteIdea }: Props) => {
   return (
     <>
-      {ideas.data.map((idea) => (
+      {ideas.data.map((idea, i) => (
         <Idea
           key={idea.id}
           ideaId={ideaId}
           idea={idea}
+          ideaNumber={i + 1}
           onSelectIdea={onSelectIdea}
           onDeleteIdea={onDeleteIdea}
         />
@@ -59,11 +64,20 @@ const IdeaList = ({ ideaId, ideas, onSelectIdea, onDeleteIdea }: Props) => {
 interface IdeaProps {
   ideaId: string | null;
   idea: IIdeaData;
+  ideaNumber: number;
   onSelectIdea: (ideaId: string) => void;
   onDeleteIdea: (ideaId: string) => void;
 }
 
-const Idea = ({ ideaId, idea, onSelectIdea, onDeleteIdea }: IdeaProps) => {
+const Idea = ({
+  ideaId,
+  idea,
+  ideaNumber,
+  onSelectIdea,
+  onDeleteIdea,
+}: IdeaProps) => {
+  const { formatMessage } = useIntl();
+
   const { data: ideaMetadata } = useImportedIdeaMetadata({
     id: idea.relationships.idea_import?.data?.id,
   });
@@ -97,7 +111,9 @@ const Idea = ({ ideaId, idea, onSelectIdea, onDeleteIdea }: IdeaProps) => {
         fontSize="m"
         fontWeight={idea.id === ideaId ? 'bold' : 'normal'}
       >
-        {title ? truncate(title, 80) : undefined}
+        {title
+          ? truncate(title, 80)
+          : `${formatMessage(messages.noTitleInputLabel)} ${ideaNumber}`}
       </Text>
       <Text m="0" mt="3px" fontSize="s" color="grey600">
         {moment(idea.attributes.created_at).format('YYYY-MM-DD')}

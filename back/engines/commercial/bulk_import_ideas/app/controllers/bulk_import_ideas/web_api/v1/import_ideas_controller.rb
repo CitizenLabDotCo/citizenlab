@@ -18,11 +18,9 @@ module BulkImportIdeas
     def bulk_create
       file = bulk_create_params[:pdf] || bulk_create_params[:xlsx]
       file_type = bulk_create_params[:pdf] ? 'pdf' : 'xlsx'
-      draft = params[:id] # If project id is present then import as draft
-
       file_type = import_ideas_service.upload_file file, file_type
       idea_rows = import_ideas_service.parse_idea_rows file, file_type
-      ideas = import_ideas_service.import_ideas idea_rows, import_as_draft: draft
+      ideas = import_ideas_service.import_ideas idea_rows
       sidefx.after_success current_user
 
       render json: ::WebApi::V1::IdeaSerializer.new(
@@ -41,7 +39,12 @@ module BulkImportIdeas
     end
 
     def draft_ideas
-      ideas = Idea.draft.where(project_id: params[:id])
+      ideas = if import_scope == :phase
+        Idea.draft.where(creation_phase_id: params[:id])
+      else
+        Idea.draft.where(project_id: params[:id], creation_phase_id: nil)
+      end
+
       render json: linked_json(
         paginate(ideas),
         ::WebApi::V1::IdeaSerializer,
@@ -53,7 +56,6 @@ module BulkImportIdeas
     private
 
     def bulk_create_params
-      # TODO: Add other params in here: tags/topics, user custom fields?
       params
         .require(:import_ideas)
         .permit(%i[xlsx pdf locale phase_id])
@@ -61,13 +63,24 @@ module BulkImportIdeas
 
     def import_ideas_service
       locale = params[:import_ideas] ? bulk_create_params[:locale] : current_user.locale
-      project_id = params[:id]
-      @import_ideas_service ||= if project_id
+      @import_ideas_service ||= if import_scope == :project
+        project_id = params[:id]
         phase_id = params[:import_ideas] ? bulk_create_params[:phase_id] : nil
+        ImportProjectIdeasService.new(current_user, project_id, locale, phase_id)
+      elsif import_scope == :phase
+        phase_id = params[:id]
+        project_id = Phase.find(phase_id).project.id
         ImportProjectIdeasService.new(current_user, project_id, locale, phase_id)
       else
         ImportGlobalIdeasService.new(current_user)
       end
+    end
+
+    def import_scope
+      return :project if request.path.include? 'projects'
+      return :phase if request.path.include? 'phases'
+
+      :global
     end
 
     def authorize_bulk_import_ideas
