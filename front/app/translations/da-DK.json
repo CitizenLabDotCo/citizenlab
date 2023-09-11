@@ -153,6 +153,7 @@
   "app.components.FolderFolderCard.a11y_folderTitle": "Mappetitel:",
   "app.components.FolderFolderCard.archived": "Arkiveret",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# projekter} one {# projekt} other {# projekter}}",
+  "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Download som pdf",
   "app.components.GoBackButton.group.edit.goBack": "Gå tilbage",
   "app.components.GoBackButton.group.edit.goBackToPreviousPage": "Gå tilbage til forrige side",
   "app.components.HookForm.Feedback.errorTitle": "Der er et problem",
