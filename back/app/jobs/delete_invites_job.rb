@@ -6,7 +6,7 @@ class DeleteInvitesJob < ApplicationJob
 
   # @param [expiry_time,ActiveSupport::TimeWithZone] the expiry time limit for invites
   def run(expiry_time = Invite::EXPIRY_DAYS.days.ago)
-    invites_to_destroy = Invite.where('created_at < ?', expiry_time)
+    invites_to_destroy = Invite.where(created_at: Invite::NO_EXPIRY_BEFORE_CREATED_AT..expiry_time)
     destroyed_invites_ids = []
 
     invites_to_destroy.find_each(batch_size: 50) do |invite|
