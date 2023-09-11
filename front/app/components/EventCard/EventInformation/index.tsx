@@ -46,10 +46,8 @@ const EventInformation = ({ event, titleFontSize }: Props) => {
   const startAtMoment = moment(event.attributes.start_at);
   const endAtMoment = moment(event.attributes.end_at);
 
-  // const isPastEvent = moment().isAfter(endAtMoment); // TODO: Re-enable once event attendance smart group added
+  const isPastEvent = moment().isAfter(endAtMoment);
   const address1 = event?.attributes?.address_1;
-  const tempShowEventAttendance = false; // TODO: Replace once event attendance smart group added
-
   const eventDateTime = getEventDateString(event);
 
   return (
@@ -120,7 +118,7 @@ const EventInformation = ({ event, titleFontSize }: Props) => {
               </Text>
             </Box>
           )}
-          {tempShowEventAttendance &&
+          {!isPastEvent &&
             event.attributes.attendees_count > 0 && ( // TODO: Replace once event attendance smart group added
               <Box
                 display="flex"
@@ -145,7 +143,7 @@ const EventInformation = ({ event, titleFontSize }: Props) => {
             )}
         </Box>
       </Box>
-      {!tempShowEventAttendance ? ( // TODO: Replace once event attendance smart group added
+      {isPastEvent ? (
         <Button
           ml="auto"
           width={'100%'}

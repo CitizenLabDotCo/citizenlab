@@ -172,8 +172,4 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEvents.attend',
     defaultMessage: 'Attend',
   },
-  newTextHere: {
-    id: 'app.containers.AdminPage.ProjectEvents.newTextHere',
-    defaultMessage: 'Button text here',
-  },
 });

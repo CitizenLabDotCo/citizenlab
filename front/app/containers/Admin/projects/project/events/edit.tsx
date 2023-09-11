@@ -92,7 +92,7 @@ const AdminProjectEventEdit = () => {
   const [attributeDiff, setAttributeDiff] = useState<IEventProperties>({});
   const [mapModalVisible, setMapModalVisible] = useState(false);
   const [attendanceOptionsVisible, setAttendanceOptionsVisible] = useState(
-    !!event?.data.attributes.using_url || false
+    !!event?.data.attributes.using_url
   );
   const [locationPoint, setLocationPoint] = useState<GeoJSON.Point | null>(
     null
@@ -592,9 +592,9 @@ const AdminProjectEventEdit = () => {
                     linkTo={eventAttrs.using_url}
                     openLinkInNewTab={true}
                   >
-                    {eventAttrs?.attend_button_multiloc
+                    {eventAttrs?.attend_button_multiloc?.[locale]
                       ? eventAttrs?.attend_button_multiloc[locale]
-                      : formatMessage(messages.newTextHere)}
+                      : formatMessage(messages.attend)}
                   </Button>
                 </Box>
               )}
