@@ -30,10 +30,10 @@ module BulkImportIdeas
 
       ideas = []
       ActiveRecord::Base.transaction do
-        idea_rows.each do |idea_row|
+        ideas = idea_rows.map do |idea_row|
           idea = import_idea idea_row
           Rails.logger.info { "Created #{idea.id}" }
-          ideas << idea
+          idea
         end
       end
       @file&.update!(num_pages: @total_pages)

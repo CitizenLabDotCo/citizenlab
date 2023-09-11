@@ -7,6 +7,7 @@ class CreateIdeaImports < ActiveRecord::Migration[7.0]
       t.string :file
       t.string :name
       t.string :import_type
+      t.integer :num_pages, default: 0
       t.timestamps
     end
     create_table :idea_imports, id: :uuid do |t|
@@ -16,6 +17,7 @@ class CreateIdeaImports < ActiveRecord::Migration[7.0]
       t.boolean :user_created, :required, default: false
       t.timestamp :approved_at
       t.text :page_range, array: true, default: []
+      t.string :locale, :string
       t.timestamps
     end
   end

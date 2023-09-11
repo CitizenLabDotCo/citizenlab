@@ -6,7 +6,7 @@ module BulkImportIdeas
 
     # Show the metadata of a single imported idea
     def show
-      idea_import = IdeaImport.where(id: params[:id]).first
+      idea_import = IdeaImport.find(params[:id])
 
       render json: WebApi::V1::IdeaImportSerializer.new(
         idea_import,
