@@ -123,6 +123,8 @@ const ReviewSection = ({
       ? async () => {
           await onApproveIdea();
 
+          console.log({ ideaId, ideas });
+
           const nextIdeaId = getNextIdeaId(ideaId, ideas);
           onSelectIdea(nextIdeaId);
         }
