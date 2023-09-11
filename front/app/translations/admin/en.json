@@ -828,6 +828,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "Author:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.email": "Email:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.formDataNotValid": "Invalid form data. Check the form above for errors.",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.ideaImportedAnonymously": "This idea was imported anonymously.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importFile": "Import",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedInputs": "Imported inputs",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputImporter": "Input importer",
