@@ -1511,7 +1511,6 @@
   "app.containers.AdminPage.ProjectEvents.locationLabel": "Location",
   "app.containers.AdminPage.ProjectEvents.mapSelectionLabel2": "Refine where your event location marker is shown by clicking on the map:",
   "app.containers.AdminPage.ProjectEvents.newEventTitle": "Create a new event",
-  "app.containers.AdminPage.ProjectEvents.newTextHere": "Button text here",
   "app.containers.AdminPage.ProjectEvents.preview": "Preview",
   "app.containers.AdminPage.ProjectEvents.refineLocationCoordinates": "Refine map location",
   "app.containers.AdminPage.ProjectEvents.refineOnMap": "Refine location on map",
