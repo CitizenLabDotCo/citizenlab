@@ -215,6 +215,7 @@ it:
       status: 'Stato'
       assignee_fullname: 'Assegnatario'
       assignee_email: 'Email del destinatario'
+      image_url: 'URL immagine'
     anonymous: 'Anonimo'
   form_builder:
     default_select_field:
@@ -224,6 +225,18 @@ it:
     survey_end_page:
       title: 'Fine del sondaggio'
       description: "Inviate le vostre risposte selezionando \"Invia sondaggio\" qui sotto."
+    pdf_export:
+      full_name: 'Nome e cognome'
+      email_address: 'Indirizzo e-mail'
+      optional: 'opzionale'
+      permission: 'Permesso'
+      choose_as_many: 'Scegli tutti quelli che vuoi'
+      this_answer: 'Questa risposta sarà condivisa solo dai moderatori e non dal pubblico.'
+      page: 'Pagina'
+      date_published: 'Data di pubblicazione (gg-mm-aaaa)'
+      instructions: 'Istruzioni'
+      write_as_clearly: 'Scrivi il più chiaramente possibile <b></b> - questi moduli potrebbero essere scannerizzati.'
+      write_in_language: 'Scrivi le tue risposte nella stessa lingua di questo modulo'
   project_copy:
     title_suffix: 'Copia'
   confirmations_mailer:
