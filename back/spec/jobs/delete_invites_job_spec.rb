@@ -11,11 +11,12 @@ RSpec.describe DeleteInvitesJob do
   end
 
   describe '.perform_now' do
-    let(:no_expiry_before_created_at) { Invite::NO_EXPIRY_BEFORE_CREATED_AT }
     let(:expiry_days) { Invite::EXPIRY_DAYS }
     let(:expiry_time) { expiry_days.days.ago }
     let(:invitee1) { create(:user) }
-    let!(:invite1) { create(:invite, invitee: invitee1, created_at: no_expiry_before_created_at - 1.day, accepted_at: nil) }
+    let!(:invite1) do
+      create(:invite, invitee: invitee1, created_at: Invite::NO_EXPIRY_BEFORE_CREATED_AT - 1.day, accepted_at: nil)
+    end
     let(:invitee2) { create(:user) }
     let!(:invite2) { create(:invite, invitee: invitee2, created_at: (expiry_days + 1).days.ago, accepted_at: nil) }
     let(:invitee3) { create(:user) }
