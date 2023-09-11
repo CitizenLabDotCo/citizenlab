@@ -30,10 +30,10 @@ module BulkImportIdeas
 
       ideas = []
       ActiveRecord::Base.transaction do
-        idea_rows.each do |idea_row|
+        ideas = idea_rows.map do |idea_row|
           idea = import_idea idea_row
           Rails.logger.info { "Created #{idea.id}" }
-          ideas << idea
+          idea
         end
       end
       @file&.update!(num_pages: @total_pages)
@@ -134,20 +134,27 @@ module BulkImportIdeas
     end
 
     def add_author(idea_row, idea_attributes)
+      author = nil
       user_created = false
-      if idea_row[:user_email].blank?
-        author = User.new(unique_code: SecureRandom.uuid, locale: @locale)
-        author = add_author_name author, idea_row
-        author.save!
-        user_created = true
-      else
+
+      if idea_row[:user_email].present?
         author = User.find_by_cimail idea_row[:user_email]
         unless author
           author = User.new(email: idea_row[:user_email], locale: @locale)
           author = add_author_name author, idea_row
-          author.save!
-          user_created = true
+          if author.save
+            user_created = true
+          else
+            author = nil
+          end
         end
+      end
+
+      unless author
+        author = User.new(unique_code: SecureRandom.uuid, locale: @locale)
+        author = add_author_name author, idea_row
+        author.save!
+        user_created = true
       end
 
       idea_attributes[:author] = author

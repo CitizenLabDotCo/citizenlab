@@ -9,11 +9,13 @@
 #  import_user_id :uuid
 #  file_id        :uuid
 #  user_created   :boolean          default(FALSE)
+#  required       :boolean          default(FALSE)
 #  approved_at    :datetime
 #  page_range     :text             default([]), is an Array
+#  locale         :string
+#  string         :string
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
-#  locale         :string
 #
 # Indexes
 #

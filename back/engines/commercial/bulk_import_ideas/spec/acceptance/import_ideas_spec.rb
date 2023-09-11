@@ -256,7 +256,7 @@ resource 'BulkImportIdeasImportIdeas' do
       get 'web_api/v1/idea_imports/:id' do
         let(:id) do
           idea = create(:idea)
-          idea.update! idea_import: create(:idea_import, idea: idea)
+          create(:idea_import, idea: idea)
           idea.idea_import.id
         end
 

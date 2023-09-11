@@ -31,6 +31,7 @@ module BulkImportIdeas
     end
 
     def ideas_to_idea_rows(ideas_array)
+      app_locales = AppConfiguration.instance.settings('core', 'locales')
       idea_rows = ideas_array.map do |xlsx_row|
         next if idea_blank? xlsx_row
 
@@ -42,7 +43,7 @@ module BulkImportIdeas
           next unless key.include? '_'
 
           field, locale = key.split '_'
-          raise Error.new 'bulk_import_ideas_locale_not_valid', value: locale if AppConfiguration.instance.settings('core', 'locales').exclude?(locale)
+          raise Error.new 'bulk_import_ideas_locale_not_valid', value: locale if app_locales.exclude?(locale)
 
           case field
           when 'Title'

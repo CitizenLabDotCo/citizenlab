@@ -21,7 +21,7 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
-import { getCurrentPhase } from 'api/phases/utils';
+import { canContainIdeas, getCurrentPhase } from 'api/phases/utils';
 import { isNilOrError } from 'utils/helperUtils';
 
 // typings
@@ -38,7 +38,6 @@ const ImportSection = ({ onFinishImport }: Props) => {
   };
   const [file, setFile] = useState<UploadFile | null>(null);
   const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
-  const [selectedPhase, setSelectedPhase] = useState<string | null>(phaseId);
 
   const { mutate: addOfflineIdeas, isLoading } = useAddOfflineIdeas();
   const { data: project } = useProjectById(projectId);
@@ -46,13 +45,21 @@ const ImportSection = ({ onFinishImport }: Props) => {
   const platformLocale = useLocale();
 
   const currentPhase = getCurrentPhase(phases?.data);
-  const selectedPhaseId = selectedPhase ?? currentPhase?.id;
+  const phasesThatCanContainIdeas = phases?.data.filter(canContainIdeas);
+  const initialPhase = phasesThatCanContainIdeas
+    ?.map((p) => p.id || undefined)
+    .includes(currentPhase?.id)
+    ? currentPhase?.id
+    : undefined;
+
+  const [selectedPhase, setSelectedPhase] = useState<string | undefined>(
+    initialPhase
+  );
 
   if (isNilOrError(platformLocale) || !project) return null;
   const locale = selectedLocale ?? platformLocale;
 
   const isTimelineProject = project.data.attributes.process_type === 'timeline';
-
   const showPhaseSelector = isTimelineProject && !phaseId;
 
   const removeFile = () => {
@@ -67,7 +74,7 @@ const ImportSection = ({ onFinishImport }: Props) => {
         project_id: projectId,
         pdf: file.base64,
         locale,
-        ...(isTimelineProject ? { phase_id: selectedPhaseId } : {}),
+        ...(isTimelineProject ? { phase_id: selectedPhase } : {}),
       },
       {
         onSuccess: () => {
@@ -99,7 +106,7 @@ const ImportSection = ({ onFinishImport }: Props) => {
 
       <LocalePicker locale={locale} onChange={setSelectedLocale} />
       {showPhaseSelector && (
-        <PhaseSelector phaseId={selectedPhaseId} onChange={setSelectedPhase} />
+        <PhaseSelector phaseId={selectedPhase} onChange={setSelectedPhase} />
       )}
 
       <Box>

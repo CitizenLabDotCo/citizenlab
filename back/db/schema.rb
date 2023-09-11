@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_08_155024) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_25_121819) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -618,9 +618,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_08_155024) do
     t.string "file"
     t.string "name"
     t.string "import_type"
+    t.integer "num_pages", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "num_pages", default: 0
     t.index ["project_id"], name: "index_idea_import_files_on_project_id"
   end
 
@@ -629,11 +629,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_08_155024) do
     t.uuid "import_user_id"
     t.uuid "file_id"
     t.boolean "user_created", default: false
+    t.boolean "required", default: false
     t.datetime "approved_at", precision: nil
     t.text "page_range", default: [], array: true
+    t.string "locale"
+    t.string "string"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "locale"
     t.index ["file_id"], name: "index_idea_imports_on_file_id"
     t.index ["idea_id"], name: "index_idea_imports_on_idea_id"
     t.index ["import_user_id"], name: "index_idea_imports_on_import_user_id"

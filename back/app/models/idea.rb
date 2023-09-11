@@ -122,6 +122,10 @@ class Idea < ApplicationRecord
   after_create :assign_slug
   after_update :fix_comments_count_on_projects
 
+  pg_search_scope :search_by_all,
+    against: %i[title_multiloc body_multiloc custom_field_values],
+    using: { tsearch: { prefix: true } }
+
   scope :with_some_topics, (proc do |topics|
     ideas = joins(:ideas_topics).where(ideas_topics: { topic: topics })
     where(id: ideas)
