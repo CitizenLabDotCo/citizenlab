@@ -11,6 +11,7 @@
 #  import_type :string
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
+#  num_pages   :integer          default(0)
 #
 # Indexes
 #

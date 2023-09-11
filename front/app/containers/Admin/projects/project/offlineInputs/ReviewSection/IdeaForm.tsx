@@ -1,8 +1,5 @@
 import React, { useCallback } from 'react';
 
-// hooks
-import useInputSchema from 'hooks/useInputSchema';
-
 // i18n
 import ideaFormMessages from 'containers/IdeasNewPage/messages';
 
@@ -21,26 +18,28 @@ import {
   AjvErrorGetter,
 } from 'components/Form/typings';
 import { CLErrors } from 'typings';
+import { ImportedIdeaMetadataResponse } from 'api/import_ideas/types';
+import { JsonSchema7, Layout } from '@jsonforms/core';
 
 interface Props {
-  projectId: string;
+  schema: JsonSchema7;
+  uiSchema: Layout;
   showAllErrors: boolean;
-  apiErrors?: CLErrors;
   formData: FormData;
+  ideaMetadata: ImportedIdeaMetadataResponse;
+  apiErrors?: CLErrors;
   setFormData: (formData: FormData) => void;
 }
 
 const IdeaForm = ({
-  projectId,
+  schema,
+  uiSchema,
   showAllErrors,
   apiErrors,
   formData,
+  ideaMetadata,
   setFormData,
 }: Props) => {
-  const { schema, uiSchema } = useInputSchema({
-    projectId,
-  });
-
   const getApiErrorMessage: ApiErrorGetter = useCallback(
     (error) => {
       return (
@@ -75,8 +74,6 @@ const IdeaForm = ({
     [uiSchema]
   );
 
-  if (!schema || !uiSchema) return null;
-
   return (
     <Box w="90%">
       <Fields
@@ -88,6 +85,7 @@ const IdeaForm = ({
         data={formData}
         onChange={setFormData}
         config="input"
+        locale={ideaMetadata.data.attributes.locale}
         getApiErrorMessage={getApiErrorMessage}
         getAjvErrorMessage={getAjvErrorMessage}
       />

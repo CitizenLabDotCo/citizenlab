@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { darken } from 'polished';
 
 // components
@@ -17,16 +17,17 @@ import { useParams } from 'react-router-dom';
 
 // i18n
 import messages from '../messages';
+import ownMessages from '../../ideas/messages';
 import { Multiloc } from 'typings';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { SHOW_PRINT_FUNCTIONALITY } from '../flag';
 
 // hooks
 import useFormSubmissionCount from 'hooks/useFormSubmissionCount';
 import useInputSchema from 'hooks/useInputSchema';
 import useLocale from 'hooks/useLocale';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // styles
 import { colors } from 'utils/styleUtils';
@@ -34,12 +35,17 @@ import { colors } from 'utils/styleUtils';
 // services
 import { deleteFormResults } from 'services/formCustomFields';
 import { saveSurveyAsPDF } from '../saveSurveyAsPDF';
+import { requestBlob } from 'utils/request';
+import { saveAs } from 'file-saver';
 
 type FormActionsProps = {
   phaseId?: string;
   editFormLink: string;
   viewFormLink: string;
   viewFormResults: string;
+  offlineInputsLink: string;
+  downloadExcelLink: string;
+  downloadPdfLink: string;
   postingEnabled: boolean;
   heading?: Multiloc;
   togglePostingEnabled: () => void;
@@ -51,6 +57,9 @@ const FormActions = ({
   viewFormLink,
   editFormLink,
   viewFormResults,
+  offlineInputsLink,
+  downloadExcelLink,
+  downloadPdfLink,
   heading,
   postingEnabled,
   togglePostingEnabled,
@@ -66,6 +75,9 @@ const FormActions = ({
   });
   const { uiSchema } = useInputSchema({ projectId, phaseId });
   const locale = useLocale();
+  const importPrintedFormsEnabled = useFeatureFlag({
+    name: 'import_printed_forms',
+  });
 
   const closeModal = () => {
     setShowDeleteModal(false);
@@ -88,7 +100,15 @@ const FormActions = ({
     email: boolean;
   }) => {
     if (isNilOrError(locale)) return;
-    await saveSurveyAsPDF({ projectId, locale, name, email });
+    await saveSurveyAsPDF({ downloadPdfLink, locale, name, email });
+  };
+
+  const downloadExampleFile = async () => {
+    const blob = await requestBlob(
+      downloadExcelLink,
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    );
+    saveAs(blob, 'example.xlsx');
   };
 
   if (!isNilOrError(submissionCount)) {
@@ -168,8 +188,14 @@ const FormActions = ({
               {formatMessage(messages.viewSurveyText2)}
             </Button>
           </Box>
-          {uiSchema && SHOW_PRINT_FUNCTIONALITY && (
-            <Box mt="12px" w="100%" display="flex">
+          {uiSchema && (
+            <Box
+              mt="12px"
+              w="100%"
+              display="flex"
+              justifyContent="space-between"
+              gap="12px"
+            >
               <Button
                 icon="download"
                 buttonStyle="cl-blue"
@@ -179,8 +205,29 @@ const FormActions = ({
               >
                 {formatMessage(messages.downloadSurvey)}
               </Button>
+              <Button
+                icon="download"
+                buttonStyle="cl-blue"
+                width="auto"
+                minWidth="312px"
+                onClick={downloadExampleFile}
+              >
+                {formatMessage(messages.downloadExcelTemplate)}
+              </Button>
+              {importPrintedFormsEnabled && (
+                <Button
+                  width="auto"
+                  minWidth="312px"
+                  buttonStyle="cl-blue"
+                  linkTo={offlineInputsLink}
+                  icon="page"
+                >
+                  <FormattedMessage {...ownMessages.addOfflineInputs} />
+                </Button>
+              )}
             </Box>
           )}
+
           {haveSubmissionsComeIn && (
             <Box
               display="flex"

@@ -32,11 +32,13 @@ interface Props {
 }
 
 const ImportSection = ({ onFinishImport }: Props) => {
+  const { projectId, phaseId } = useParams() as {
+    projectId: string;
+    phaseId: string;
+  };
   const [file, setFile] = useState<UploadFile | null>(null);
   const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
-  const [selectedPhase, setSelectedPhase] = useState<string | null>(null);
-
-  const { projectId } = useParams() as { projectId: string };
+  const [selectedPhase, setSelectedPhase] = useState<string | null>(phaseId);
 
   const { mutate: addOfflineIdeas, isLoading } = useAddOfflineIdeas();
   const { data: project } = useProjectById(projectId);
@@ -44,12 +46,14 @@ const ImportSection = ({ onFinishImport }: Props) => {
   const platformLocale = useLocale();
 
   const currentPhase = getCurrentPhase(phases?.data);
-  const phaseId = selectedPhase ?? currentPhase?.id;
+  const selectedPhaseId = selectedPhase ?? currentPhase?.id;
 
   if (isNilOrError(platformLocale) || !project) return null;
   const locale = selectedLocale ?? platformLocale;
 
   const isTimelineProject = project.data.attributes.process_type === 'timeline';
+
+  const showPhaseSelector = isTimelineProject && !phaseId;
 
   const removeFile = () => {
     setFile(null);
@@ -63,7 +67,7 @@ const ImportSection = ({ onFinishImport }: Props) => {
         project_id: projectId,
         pdf: file.base64,
         locale,
-        ...(isTimelineProject ? { phase_id: phaseId } : {}),
+        ...(isTimelineProject ? { phase_id: selectedPhaseId } : {}),
       },
       {
         onSuccess: () => {
@@ -94,8 +98,8 @@ const ImportSection = ({ onFinishImport }: Props) => {
       </Box>
 
       <LocalePicker locale={locale} onChange={setSelectedLocale} />
-      {isTimelineProject && (
-        <PhaseSelector phaseId={phaseId} onChange={setSelectedPhase} />
+      {showPhaseSelector && (
+        <PhaseSelector phaseId={selectedPhaseId} onChange={setSelectedPhase} />
       )}
 
       <Box>

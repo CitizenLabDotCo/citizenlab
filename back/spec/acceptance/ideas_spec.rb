@@ -1208,6 +1208,21 @@ resource 'Ideas' do
                 expect(response_data[:attributes][:publication_status]).to eq 'published'
               end
             end
+
+            context 'Publishing an imported native survey response' do
+              let(:project) { create(:continuous_native_survey_project) }
+              let(:idea) { create(:native_survey_response, project: project, publication_status: 'draft') }
+
+              let(:id) { idea.id }
+              let(:publication_status) { 'published' }
+
+              before { idea.update! idea_import: create(:idea_import, idea: idea) }
+
+              example_request 'Can change an idea from draft to published (as an admin)' do
+                assert_status 200
+                expect(response_data[:attributes][:publication_status]).to eq 'published'
+              end
+            end
           end
 
           describe 'phase_ids' do

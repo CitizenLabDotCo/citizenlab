@@ -55,6 +55,18 @@ describe BulkImportIdeas::ImportProjectIdeasService do
     end
   end
 
+  describe 'total_pages' do
+    it 'gets the total number of pages in the document' do
+      ideas = [{ pdf_pages: [1, 2], fields: {} }, { pdf_pages: [3, 4], fields: {} }]
+      expect(service.total_pages(ideas)).to eq 4
+    end
+
+    it 'returns 1 even if there are no ideas' do
+      ideas = []
+      expect(service.total_pages(ideas)).to eq 1
+    end
+  end
+
   describe 'ideas_to_idea_rows' do
     let(:pdf_ideas) do
       [

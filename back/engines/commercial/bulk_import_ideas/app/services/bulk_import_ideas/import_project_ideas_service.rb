@@ -6,7 +6,7 @@ module BulkImportIdeas
       super(current_user)
       @project = Project.find(project_id)
       @phase = phase_id ? @project.phases.find(phase_id) : TimelineService.new.current_phase(@project)
-      @form_fields = IdeaCustomFieldsService.new(Factory.instance.participation_method_for(@phase || @project).custom_form).enabled_fields
+      @form_fields = IdeaCustomFieldsService.new(Factory.instance.participation_method_for(@phase || @project).custom_form).importable_fields
       @locale = locale || @locale
     end
 
@@ -23,10 +23,7 @@ module BulkImportIdeas
         locale_published_label => '18-07-2022'
       }
 
-      ignore_columns = %w[idea_files_attributes idea_images_attributes]
       @form_fields.each do |field|
-        next if field.input_type == 'section' || field.input_type == 'page' || ignore_columns.include?(field.code)
-
         column_name = field.title_multiloc[@locale]
         value = case field.input_type
         when 'select'
@@ -43,13 +40,15 @@ module BulkImportIdeas
         columns[column_name] = value
       end
 
-      locale_image_url_label = I18n.with_locale(@locale) { I18n.t('xlsx_export.column_headers.image_url') }
-      locale_latitude_label = I18n.with_locale(@locale) { I18n.t('xlsx_export.column_headers.latitude') }
-      locale_longitude_label = I18n.with_locale(@locale) { I18n.t('xlsx_export.column_headers.longitude') }
+      unless @project&.native_survey? || @phase&.native_survey?
+        locale_image_url_label = I18n.with_locale(@locale) { I18n.t('xlsx_export.column_headers.image_url') }
+        locale_latitude_label = I18n.with_locale(@locale) { I18n.t('xlsx_export.column_headers.latitude') }
+        locale_longitude_label = I18n.with_locale(@locale) { I18n.t('xlsx_export.column_headers.longitude') }
 
-      columns[locale_image_url_label] = 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_in_meeting_graphic.png'
-      columns[locale_latitude_label] = 50.5035
-      columns[locale_longitude_label] = 6.0944
+        columns[locale_image_url_label] = 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_in_meeting_graphic.png'
+        columns[locale_latitude_label] = 50.5035
+        columns[locale_longitude_label] = 6.0944
+      end
 
       XlsxService.new.hash_array_to_xlsx [columns]
     end
@@ -60,7 +59,14 @@ module BulkImportIdeas
       else
         parse_xlsx_ideas(file).map { |idea| { pdf_pages: [1], fields: idea } }
       end
+      @total_pages = total_pages(ideas)
       ideas_to_idea_rows(ideas)
+    end
+
+    def total_pages(ideas)
+      return @total_pages unless ideas.present?
+
+      ideas.last[:pdf_pages].max
     end
 
     def ideas_to_idea_rows(ideas_array)
@@ -211,6 +217,15 @@ module BulkImportIdeas
       end
 
       idea_row
+    end
+
+    def parse_pdf_ideas(file)
+      pdf_file = decode_base64 file
+      google_forms_service = GoogleFormParserService.new pdf_file
+      IdeaPlaintextParserService.new(
+        @form_fields.reject { |field| field.input_type == 'topic_ids' }, # Temp
+        @locale
+      ).parse_text(google_forms_service.raw_text_page_array)
     end
   end
 end

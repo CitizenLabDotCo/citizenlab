@@ -84,9 +84,19 @@ resource 'BulkImportIdeasImportIdeas' do
         end
       end
 
+      get 'web_api/v1/phases/:id/import_ideas/example_xlsx' do
+        let(:project) { create(:project_with_active_native_survey_phase) }
+        let(:phase) { project.phases.first }
+        let(:id) { phase.id }
+
+        example_request 'Get the example xlsx for a survey phase' do
+          assert_status 200
+        end
+      end
+
       get 'web_api/v1/projects/:id/import_ideas/draft_ideas' do
         let!(:draft_ideas) do
-          create_list(:idea, 5, project: project, publication_status: 'draft').each do |idea|
+          create_list(:idea, 5, project: project, publication_status: 'draft', custom_field_values: { not_visible: 'value' }).each do |idea|
             idea.update! idea_import: create(:idea_import, idea: idea)
           end
         end
@@ -99,6 +109,38 @@ resource 'BulkImportIdeasImportIdeas' do
           # Should return only draft ideas and ignore published ideas
           expect(response_data.pluck(:id)).to match_array draft_ideas.pluck(:id)
           expect(response_data.pluck(:id)).not_to match_array published_ideas.pluck(:id)
+
+          # Relationships
+          expect(response_data.first.dig(:relationships, :idea_import, :data)).not_to be_nil
+          expect(json_response_body[:included].pluck(:type)).to include 'idea_import'
+
+          # Should return ALL custom_fields for draft even if not visible
+          expect(response_data.first[:attributes].keys).to include :not_visible
+        end
+      end
+
+      get 'web_api/v1/phases/:id/import_ideas/draft_ideas' do
+        let(:project) { create(:project_with_active_native_survey_phase) }
+        let(:phase) { project.phases.first }
+        let!(:draft_ideas) do
+          create_list(:idea, 5, project: project, publication_status: 'draft').each do |idea|
+            idea.update! idea_import: create(:idea_import, idea: idea)
+          end
+        end
+
+        let(:id) { phase.id }
+
+        before do
+          draft_ideas[0].update! creation_phase: phase
+          draft_ideas[1].update! creation_phase: phase
+        end
+
+        example_request 'Get the imported draft ideas (surveys) for a phase' do
+          assert_status 200
+
+          # Should return only the 2 draft ideas added to the phase
+          expect(response_data.count).to eq 2
+          expect(response_data.pluck(:id)).to match_array [draft_ideas[0][:id], draft_ideas[1][:id]]
 
           # Relationships
           expect(response_data.first.dig(:relationships, :idea_import, :data)).not_to be_nil
@@ -147,6 +189,7 @@ resource 'BulkImportIdeasImportIdeas' do
           # NOTE: GoogleFormParserService is stubbed to avoid calls to google APIs
           context 'continuous projects' do
             example 'Bulk import ideas from scanned .pdf' do
+              expect_any_instance_of(BulkImportIdeas::GoogleFormParserService).to receive(:process_upload).and_return(nil)
               expect_any_instance_of(BulkImportIdeas::GoogleFormParserService).to receive(:raw_text_page_array).and_return(create_project_bulk_import_raw_text_array)
               do_request
               assert_status 201
@@ -157,6 +200,7 @@ resource 'BulkImportIdeasImportIdeas' do
               expect(Idea.all.count).to eq 1
               expect(BulkImportIdeas::IdeaImport.count).to eq 1
               expect(BulkImportIdeas::IdeaImportFile.count).to eq 1
+              expect(BulkImportIdeas::IdeaImportFile.first[:num_pages]).to eq 1
               expect(project.reload.ideas_count).to eq 0 # Draft ideas should not be counted
 
               # Relationships
@@ -173,6 +217,7 @@ resource 'BulkImportIdeasImportIdeas' do
 
             context 'current phase' do
               example 'Bulk import ideas from scanned .pdf to current phase' do
+                expect_any_instance_of(BulkImportIdeas::GoogleFormParserService).to receive(:process_upload).and_return(nil)
                 expect_any_instance_of(BulkImportIdeas::GoogleFormParserService).to receive(:raw_text_page_array).and_return(create_project_bulk_import_raw_text_array)
                 do_request
                 assert_status 201
@@ -189,6 +234,7 @@ resource 'BulkImportIdeasImportIdeas' do
               let(:phase_id) { project.phases.first.id }
 
               example 'Bulk import ideas from scanned .pdf to a specified phase' do
+                expect_any_instance_of(BulkImportIdeas::GoogleFormParserService).to receive(:process_upload).and_return(nil)
                 expect_any_instance_of(BulkImportIdeas::GoogleFormParserService).to receive(:raw_text_page_array).and_return(create_project_bulk_import_raw_text_array)
                 do_request
                 assert_status 201
@@ -265,19 +311,17 @@ resource 'BulkImportIdeasImportIdeas' do
   end
 
   def create_project_bulk_import_ideas_pdf
-    base_64_content = Base64.encode64 File.read('/cl2_back/engines/commercial/bulk_import_ideas/spec/fixtures/testscan.pdf')
+    base_64_content = Base64.encode64 Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/testscan.pdf').read
     "data:application/pdf;base64,#{base_64_content}"
   end
 
   def create_project_bulk_import_raw_text_array
-    ["Page 1\n" \
-     "Full name\nBob Test\n" \
-     "Email address\nbob@test.com\n" \
-     "Title\n" \
+    ["Title\n" \
      "This is really a great title\n" \
      "Description\n" \
      "And this is the body\n" \
      "Location (optional)\n" \
-     "Somewhere\n"]
+     "Somewhere\n" \
+     "Page 1\n"]
   end
 end

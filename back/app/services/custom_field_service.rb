@@ -124,6 +124,8 @@ class CustomFieldService
 
   # NOTE: Needs refactor. This is called by idea serializer so will have an n+1 issue
   def self.remove_not_visible_fields(idea, current_user)
+    return idea.custom_field_values if idea.draft?
+
     custom_form = CustomForm.find_or_initialize_by participation_context: idea.project
     fields = IdeaCustomFieldsService.new(custom_form).enabled_public_fields
     if can_see_admin_answers?(idea, current_user)

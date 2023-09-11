@@ -25,18 +25,16 @@ import { colors, stylingConsts } from 'utils/styleUtils';
 import { isValidData } from 'components/Form/utils';
 import { customAjv } from 'components/Form';
 import { getFormValues } from 'containers/IdeasEditPage/utils';
+import { geocode } from 'utils/locationTools';
 
 // typings
 import { FormData } from 'components/Form/typings';
 import { CLErrors } from 'typings';
-import { geocode } from 'utils/locationTools';
 
 const OfflineInputImporter = () => {
-  const importPrintedFormsEnabled = useFeatureFlag({
-    name: 'import_printed_forms',
-  });
-  const { projectId } = useParams() as {
+  const { projectId, phaseId } = useParams() as {
     projectId: string;
+    phaseId: string;
   };
 
   const [ideaId, setIdeaId] = useState<string | null>(null);
@@ -53,9 +51,8 @@ const OfflineInputImporter = () => {
 
   const { schema, uiSchema } = useInputSchema({
     projectId,
+    phaseId,
   });
-
-  if (!importPrintedFormsEnabled) return null;
 
   const formData: FormData =
     ideaId && formStatePerIdea[ideaId]
@@ -169,6 +166,11 @@ const OfflineInputImporter = () => {
 };
 
 const OfflineInputImporterWrapper = () => {
+  const importPrintedFormsEnabled = useFeatureFlag({
+    name: 'import_printed_forms',
+  });
+  if (!importPrintedFormsEnabled) return null;
+
   const modalPortalElement = document.getElementById('modal-portal');
   if (!modalPortalElement) return null;
 

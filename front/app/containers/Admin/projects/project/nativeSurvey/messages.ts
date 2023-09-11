@@ -148,4 +148,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.text2',
     defaultMessage: 'Short answer',
   },
+  downloadExcelTemplate: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate',
+    defaultMessage: 'Download an Excel template',
+  },
 });

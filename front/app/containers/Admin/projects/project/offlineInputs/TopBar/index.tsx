@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 
 // api
 import useProjectById from 'api/projects/useProjectById';
+import usePhase from 'api/phases/usePhase';
 
 // components
 import { Box, Title, Button } from '@citizenlab/cl2-component-library';
@@ -13,7 +14,7 @@ import GoBackButton from 'components/UI/GoBackButton';
 // i18n
 import useLocalize from 'hooks/useLocalize';
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 
 // styling
 import { stylingConsts, colors } from 'utils/styleUtils';
@@ -24,12 +25,25 @@ interface Props {
 
 const TopBar = ({ onClickPDFImport }: Props) => {
   const localize = useLocalize();
-  const { projectId } = useParams() as {
+  const { projectId, phaseId } = useParams() as {
     projectId: string;
+    phaseId: string;
   };
 
   const { data: project } = useProjectById(projectId);
-  const projectTitle = project?.data.attributes.title_multiloc;
+  const { data: phase } = usePhase(phaseId);
+
+  const topBarTitle =
+    localize(project?.data.attributes.title_multiloc) +
+    (phase ? ` - ${localize(phase?.data.attributes.title_multiloc)}` : '');
+
+  const isSurvey =
+    phase?.data.attributes.participation_method === 'native_survey' ||
+    project?.data.attributes.participation_method === 'native_survey';
+
+  const backPath = isSurvey
+    ? `/admin/projects/${projectId}/native-survey`
+    : `/admin/projects/${projectId}/ideas`;
 
   return (
     <Box
@@ -45,10 +59,10 @@ const TopBar = ({ onClickPDFImport }: Props) => {
       px="24px"
     >
       <Box display="flex" alignItems="center">
-        <GoBackButton linkTo={`/admin/projects/${projectId}/ideas`} />
+        <GoBackButton linkTo={backPath} />
         <Box ml="24px">
           <Title variant="h4" m="0px" mt="1px">
-            {localize(projectTitle)}
+            {topBarTitle}
           </Title>
         </Box>
       </Box>
