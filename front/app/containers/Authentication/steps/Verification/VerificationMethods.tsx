@@ -33,6 +33,7 @@ const Container = styled.div`
 
 const Content = styled.div`
   display: flex;
+  flex-direction: column;
 
   &.inModal {
     justify-content: center;
@@ -49,9 +50,7 @@ const Context = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  padding-right: 30px;
-  padding-top: 30px;
-  padding-bottom: 30px;
+  margin-bottom: 28px;
 
   ${media.tablet`
     padding: 0;
@@ -61,7 +60,7 @@ const Context = styled.div`
 
 const ContextLabel = styled.div`
   color: ${({ theme }) => theme.colors.tenantText};
-  font-size: ${fontSizes.s}px;
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: normal;
   margin-bottom: 17px;

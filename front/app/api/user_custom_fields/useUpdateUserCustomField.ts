@@ -23,7 +23,7 @@ const updateField = async ({
     body: { custom_field: otherFieldProperties },
   });
 
-const useUpdateUserCustomFields = () => {
+const useUpdateUserCustomField = () => {
   const queryClient = useQueryClient();
   return useMutation<IUserCustomField, { errors: CLErrors }, UpdateField>({
     mutationFn: updateField,
@@ -41,4 +41,4 @@ const useUpdateUserCustomFields = () => {
   });
 };
 
-export default useUpdateUserCustomFields;
+export default useUpdateUserCustomField;
