@@ -13,6 +13,7 @@ export type IInitiativeAction =
 export type InitiativeDisabledReason =
   | 'not_permitted'
   | 'not_verified'
+  | 'not_in_group'
   | 'not_signed_in'
   | 'not_active'
   | 'missing_data';
