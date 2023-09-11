@@ -1441,7 +1441,7 @@
   "app.containers.SignUp.goToLogIn": "crwdns1015783:0{goToOtherFlowLink}crwdne1015783:0",
   "app.containers.SignUp.iHaveReadAndAgreeTo": "crwdns1015785:0{link}crwdne1015785:0",
   "app.containers.SignUp.iHaveReadAndAgreeToVienna": "crwdns1015787:0{link}crwdne1015787:0",
-  "app.containers.SignUp.invitationError": "crwdns1015789:0crwdne1015789:0",
+  "app.containers.SignUp.invitationErrorText": "crwdns1022633:0crwdne1022633:0",
   "app.containers.SignUp.lastNameLabel": "crwdns1015791:0crwdne1015791:0",
   "app.containers.SignUp.privacyPolicyNotAcceptedError": "crwdns1015793:0crwdne1015793:0",
   "app.containers.SignUp.signUp2": "crwdns1015795:0crwdne1015795:0",
