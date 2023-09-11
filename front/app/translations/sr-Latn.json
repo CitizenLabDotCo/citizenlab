@@ -153,6 +153,7 @@
   "app.components.FolderFolderCard.a11y_folderTitle": "Naziv foldera:",
   "app.components.FolderFolderCard.archived": "Arhivirano",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# projekata} one {# projekat} other {# projekata}}",
+  "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Download as pdf",
   "app.components.GoBackButton.group.edit.goBack": "Povratak nazad",
   "app.components.GoBackButton.group.edit.goBackToPreviousPage": "Go back to previous page",
   "app.components.HookForm.Feedback.errorTitle": "Došlo je do problema",
