@@ -50,7 +50,7 @@ interface Props {
   loadingApproveIdea: boolean;
   onSelectIdea: (ideaId: string | null) => void;
   setFormData: (formData: FormData) => void;
-  onApproveIdea?: () => Promise<void>;
+  onApproveIdea: () => Promise<void>;
   onDeleteIdea: (ideaId: string) => void;
 }
 
@@ -223,7 +223,7 @@ const ReviewSection = ({
             flexDirection="column"
             justifyContent="flex-end"
           >
-            {onApproveIdea && (
+            {ideaId && (
               <Tippy
                 disabled={!disabledReason}
                 interactive={true}
