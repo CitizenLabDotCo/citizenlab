@@ -1,260 +1,273 @@
 ach:
   symbols:
-    outside: crwdns207702:0crwdne207702:0
+    outside: crwdns902471:0crwdne902471:0
   idea_statuses:
-    proposed: crwdns207704:0crwdne207704:0
-    proposed_description: crwdns207706:0crwdne207706:0
-    viewed: crwdns207708:0crwdne207708:0
-    viewed_description: crwdns207710:0crwdne207710:0
-    under_consideration: crwdns207712:0crwdne207712:0
-    under_consideration_description: crwdns207714:0crwdne207714:0
-    accepted: crwdns207716:0crwdne207716:0
-    accepted_description: crwdns207718:0crwdne207718:0
-    implemented: crwdns207720:0crwdne207720:0
-    implemented_description: crwdns207722:0crwdne207722:0
-    rejected: crwdns207724:0crwdne207724:0
-    rejected_description: crwdns207726:0crwdne207726:0
+    proposed: crwdns902473:0crwdne902473:0
+    proposed_description: crwdns902475:0crwdne902475:0
+    viewed: crwdns902477:0crwdne902477:0
+    viewed_description: crwdns902479:0crwdne902479:0
+    under_consideration: crwdns902481:0crwdne902481:0
+    under_consideration_description: crwdns902483:0crwdne902483:0
+    accepted: crwdns902485:0crwdne902485:0
+    accepted_description: crwdns902487:0crwdne902487:0
+    implemented: crwdns902489:0crwdne902489:0
+    implemented_description: crwdns902491:0crwdne902491:0
+    rejected: crwdns902493:0crwdne902493:0
+    rejected_description: crwdns902495:0crwdne902495:0
   initiative_statuses:
-    review_pending: crwdns904347:0crwdne904347:0
-    review_pending_description: crwdns904349:0crwdne904349:0
-    changes_requested: crwdns904351:0crwdne904351:0
-    changes_requested_description: crwdns904353:0crwdne904353:0
-    proposed: crwdns207728:0crwdne207728:0
-    proposed_description: crwdns207730:0crwdne207730:0
-    expired: crwdns207732:0crwdne207732:0
-    expired_description: crwdns207734:0crwdne207734:0
-    threshold_reached: crwdns207736:0crwdne207736:0
-    threshold_reached_description: crwdns207738:0crwdne207738:0
-    answered: crwdns207740:0crwdne207740:0
-    answered_description: crwdns207742:0crwdne207742:0
-    ineligible: crwdns207744:0crwdne207744:0
-    ineligible_description: crwdns207746:0crwdne207746:0
+    review_pending: crwdns1002829:0crwdne1002829:0
+    review_pending_description: crwdns1002831:0crwdne1002831:0
+    changes_requested: crwdns1002833:0crwdne1002833:0
+    changes_requested_description: crwdns1002835:0crwdne1002835:0
+    proposed: crwdns902497:0crwdne902497:0
+    proposed_description: crwdns902499:0crwdne902499:0
+    expired: crwdns902501:0crwdne902501:0
+    expired_description: crwdns902503:0crwdne902503:0
+    threshold_reached: crwdns902505:0crwdne902505:0
+    threshold_reached_description: crwdns902507:0crwdne902507:0
+    answered: crwdns902509:0crwdne902509:0
+    answered_description: crwdns902511:0crwdne902511:0
+    ineligible: crwdns902513:0crwdne902513:0
+    ineligible_description: crwdns902515:0crwdne902515:0
   topics:
-    nature: crwdns207748:0crwdne207748:0
-    nature_description: crwdns207750:0crwdne207750:0
-    waste: crwdns207752:0crwdne207752:0
-    waste_description: crwdns207754:0crwdne207754:0
-    sustainability: crwdns207756:0crwdne207756:0
-    sustainability_description: crwdns207758:0crwdne207758:0
-    mobility: crwdns207760:0crwdne207760:0
-    mobility_description: crwdns207762:0crwdne207762:0
-    technology: crwdns207764:0crwdne207764:0
-    technology_description: crwdns207766:0crwdne207766:0
-    economy: crwdns207768:0crwdne207768:0
-    economy_description: crwdns207770:0crwdne207770:0
-    housing: crwdns207772:0crwdne207772:0
-    housing_description: crwdns207774:0crwdne207774:0
-    public_space: crwdns207776:0crwdne207776:0
-    public_space_description: crwdns207778:0crwdne207778:0
-    safety: crwdns207780:0crwdne207780:0
-    safety_description: crwdns207782:0crwdne207782:0
-    education: crwdns207784:0crwdne207784:0
-    education_description: crwdns207786:0crwdne207786:0
-    culture: crwdns207788:0crwdne207788:0
-    culture_description: crwdns207790:0crwdne207790:0
-    health: crwdns207792:0crwdne207792:0
-    health_description: crwdns207794:0crwdne207794:0
-    inclusion: crwdns207796:0crwdne207796:0
-    inclusion_description: crwdns207798:0crwdne207798:0
-    community: crwdns207800:0crwdne207800:0
-    community_description: crwdns207802:0crwdne207802:0
-    services: crwdns207804:0crwdne207804:0
-    services_description: crwdns207806:0crwdne207806:0
-    other: crwdns207808:0crwdne207808:0
-    other_description: crwdns207810:0crwdne207810:0
+    nature: crwdns902517:0crwdne902517:0
+    nature_description: crwdns902519:0crwdne902519:0
+    waste: crwdns902521:0crwdne902521:0
+    waste_description: crwdns902523:0crwdne902523:0
+    sustainability: crwdns902525:0crwdne902525:0
+    sustainability_description: crwdns902527:0crwdne902527:0
+    mobility: crwdns902529:0crwdne902529:0
+    mobility_description: crwdns902531:0crwdne902531:0
+    technology: crwdns902533:0crwdne902533:0
+    technology_description: crwdns902535:0crwdne902535:0
+    economy: crwdns902537:0crwdne902537:0
+    economy_description: crwdns902539:0crwdne902539:0
+    housing: crwdns902541:0crwdne902541:0
+    housing_description: crwdns902543:0crwdne902543:0
+    public_space: crwdns902545:0crwdne902545:0
+    public_space_description: crwdns902547:0crwdne902547:0
+    safety: crwdns902549:0crwdne902549:0
+    safety_description: crwdns902551:0crwdne902551:0
+    education: crwdns902553:0crwdne902553:0
+    education_description: crwdns902555:0crwdne902555:0
+    culture: crwdns902557:0crwdne902557:0
+    culture_description: crwdns902559:0crwdne902559:0
+    health: crwdns902561:0crwdne902561:0
+    health_description: crwdns902563:0crwdne902563:0
+    inclusion: crwdns902565:0crwdne902565:0
+    inclusion_description: crwdns902567:0crwdne902567:0
+    community: crwdns902569:0crwdne902569:0
+    community_description: crwdns902571:0crwdne902571:0
+    services: crwdns902573:0crwdne902573:0
+    services_description: crwdns902575:0crwdne902575:0
+    other: crwdns902577:0crwdne902577:0
+    other_description: crwdns902579:0crwdne902579:0
   static_pages:
-    terms_and_conditions_title: crwdns207812:0crwdne207812:0
+    terms_and_conditions_title: crwdns902581:0crwdne902581:0
     terms_and_conditions_body: >
-      crwdns207814:0crwdne207814:0
-    privacy_policy_title: crwdns207816:0crwdne207816:0
+      crwdns902583:0crwdne902583:0
+    privacy_policy_title: crwdns902585:0crwdne902585:0
     privacy_policy_body: >
-      crwdns207818:0crwdne207818:0
-    infopage_title: crwdns207820:0crwdne207820:0
-    infopage_body: "crwdns207822:0crwdne207822:0"
-    faq_title: crwdns207824:0crwdne207824:0
-    faq_body: "crwdns207826:0crwdne207826:0"
-    initiatives_title: crwdns207828:0crwdne207828:0
+      crwdns902587:0crwdne902587:0
+    infopage_title: crwdns902589:0crwdne902589:0
+    infopage_body: "crwdns902591:0crwdne902591:0"
+    faq_title: crwdns902593:0crwdne902593:0
+    faq_body: "crwdns902595:0crwdne902595:0"
+    initiatives_title: crwdns902597:0crwdne902597:0
     initiatives_body: >
-      crwdns207830:0crwdne207830:0
+      crwdns902599:0crwdne902599:0
   nav_bar_items:
     home:
-      title: crwdns207832:0crwdne207832:0
+      title: crwdns902601:0crwdne902601:0
     projects:
-      title: crwdns207834:0crwdne207834:0
+      title: crwdns902603:0crwdne902603:0
     all_input:
-      title: crwdns207836:0crwdne207836:0
+      title: crwdns902605:0crwdne902605:0
     proposals:
-      title: crwdns207838:0crwdne207838:0
+      title: crwdns902607:0crwdne902607:0
     events:
-      title: crwdns207840:0crwdne207840:0
+      title: crwdns902609:0crwdne902609:0
     about:
-      title: crwdns207842:0crwdne207842:0
+      title: crwdns902611:0crwdne902611:0
     faq:
-      title: crwdns207844:0crwdne207844:0
+      title: crwdns902613:0crwdne902613:0
   projects:
-    open_idea_project_title: crwdns207846:0crwdne207846:0
-    open_idea_project_description_preview: crwdns207848:0crwdne207848:0
+    open_idea_project_title: crwdns902615:0crwdne902615:0
+    open_idea_project_description_preview: crwdns902617:0crwdne902617:0
     open_idea_project_description: >
-      crwdns207850:0crwdne207850:0
+      crwdns902619:0crwdne902619:0
   events:
-    council_meeting_title: crwdns207852:0crwdne207852:0
+    council_meeting_title: crwdns902621:0crwdne902621:0
     council_meeting_description: >
-      crwdns207854:0crwdne207854:0
+      crwdns902623:0crwdne902623:0
   custom_fields:
     users:
       gender:
-        title: crwdns207856:0crwdne207856:0
+        title: crwdns902625:0crwdne902625:0
       birthyear:
-        title: crwdns207858:0crwdne207858:0
+        title: crwdns902627:0crwdne902627:0
       domicile:
-        title: crwdns207860:0crwdne207860:0
+        title: crwdns902629:0crwdne902629:0
       education:
-        title: crwdns207862:0crwdne207862:0
+        title: crwdns902631:0crwdne902631:0
     ideas:
       title:
-        title: crwdns207864:0crwdne207864:0
-        description: crwdns207866:0crwdne207866:0
+        title: crwdns902633:0crwdne902633:0
+        description: crwdns902635:0crwdne902635:0
       body:
-        title: crwdns207868:0crwdne207868:0
-        description: crwdns207870:0crwdne207870:0
+        title: crwdns902637:0crwdne902637:0
+        description: crwdns902639:0crwdne902639:0
       author_id:
-        title: crwdns207872:0crwdne207872:0
+        title: crwdns902641:0crwdne902641:0
       topic_ids:
-        title: crwdns207874:0crwdne207874:0
-        description: crwdns207876:0crwdne207876:0
+        title: crwdns902643:0crwdne902643:0
+        description: crwdns902645:0crwdne902645:0
       location:
-        title: crwdns207878:0crwdne207878:0
-        description: crwdns207880:0crwdne207880:0
+        title: crwdns902647:0crwdne902647:0
+        description: crwdns902649:0crwdne902649:0
       proposed_budget:
-        title: crwdns207882:0crwdne207882:0
-        description: crwdns207884:0crwdne207884:0
+        title: crwdns902651:0crwdne902651:0
+        description: crwdns902653:0crwdne902653:0
       budget:
-        title: crwdns207886:0crwdne207886:0
+        title: crwdns902655:0crwdne902655:0
       images:
-        title: crwdns207888:0crwdne207888:0
-        description: crwdns207890:0crwdne207890:0
+        title: crwdns902657:0crwdne902657:0
+        description: crwdns902659:0crwdne902659:0
       attachments:
-        title: crwdns207892:0crwdne207892:0
-        description: crwdns207894:0crwdne207894:0
+        title: crwdns902661:0crwdne902661:0
+        description: crwdns902663:0crwdne902663:0
       section1:
-        description: crwdns207896:0crwdne207896:0
+        description: crwdns902665:0crwdne902665:0
       section2:
-        title: crwdns207898:0crwdne207898:0
-        description: crwdns207900:0crwdne207900:0
+        title: crwdns902667:0crwdne902667:0
+        description: crwdns902669:0crwdne902669:0
       section3:
-        title: crwdns207902:0crwdne207902:0
-        description: crwdns207904:0crwdne207904:0
+        title: crwdns902671:0crwdne902671:0
+        description: crwdns902673:0crwdne902673:0
   custom_forms:
     categories:
       main_content:
         idea:
-          title: crwdns207906:0crwdne207906:0
+          title: crwdns902675:0crwdne902675:0
         question:
-          title: crwdns207908:0crwdne207908:0
+          title: crwdns902677:0crwdne902677:0
         contribution:
-          title: crwdns207910:0crwdne207910:0
+          title: crwdns902679:0crwdne902679:0
         project:
-          title: crwdns207912:0crwdne207912:0
+          title: crwdns902681:0crwdne902681:0
         issue:
-          title: crwdns207914:0crwdne207914:0
+          title: crwdns902683:0crwdne902683:0
         option:
-          title: crwdns207916:0crwdne207916:0
+          title: crwdns902685:0crwdne902685:0
       details:
-        title: crwdns207918:0crwdne207918:0
+        title: crwdns902687:0crwdne902687:0
       attachements:
-        title: crwdns207920:0crwdne207920:0
+        title: crwdns902689:0crwdne902689:0
       extra:
-        title: crwdns207922:0crwdne207922:0
+        title: crwdns902691:0crwdne902691:0
   custom_field_options:
     gender:
-      male: crwdns207924:0crwdne207924:0
-      female: crwdns207926:0crwdne207926:0
-      unspecified: crwdns207928:0crwdne207928:0
+      male: crwdns902693:0crwdne902693:0
+      female: crwdns902695:0crwdne902695:0
+      unspecified: crwdns902697:0crwdne902697:0
     domicile:
-      outside: crwdns207930:0crwdne207930:0
+      outside: crwdns902699:0crwdne902699:0
     education:
-      ISCED2: crwdns207932:0crwdne207932:0
-      ISCED3: crwdns207934:0crwdne207934:0
-      ISCED4: crwdns207936:0crwdne207936:0
-      ISCED5: crwdns207938:0crwdne207938:0
-      ISCED6: crwdns207940:0crwdne207940:0
-      ISCED7: crwdns207942:0crwdne207942:0
-      ISCED8: crwdns207944:0crwdne207944:0
+      ISCED2: crwdns902701:0crwdne902701:0
+      ISCED3: crwdns902703:0crwdne902703:0
+      ISCED4: crwdns902705:0crwdne902705:0
+      ISCED5: crwdns902707:0crwdne902707:0
+      ISCED6: crwdns902709:0crwdne902709:0
+      ISCED7: crwdns902711:0crwdne902711:0
+      ISCED8: crwdns902713:0crwdne902713:0
   initiatives:
     default_threshold_reached_message: >
-      crwdns207946:0crwdne207946:0
+      crwdns902715:0crwdne902715:0
     default_eligibility_criteria: >
-      crwdns207948:0crwdne207948:0
+      crwdns902717:0crwdne902717:0
     default_posting_tips: >
-      crwdns963563:0crwdne963563:0
+      crwdns1002837:0crwdne1002837:0
   reset_password_mailer:
     send_reset_password:
-      cta_reset_password: 'crwdns207950:0crwdne207950:0'
-      message_you_reset_your_password: 'crwdns207952:0%{organizationName}crwdne207952:0'
-      subject: 'crwdns207954:0%{organizationName}crwdne207954:0'
-      title_reset_your_password: 'crwdns207956:0crwdne207956:0'
+      cta_reset_password: 'crwdns902719:0crwdne902719:0'
+      message_you_reset_your_password: 'crwdns902721:0%{organizationName}crwdne902721:0'
+      subject: 'crwdns902723:0%{organizationName}crwdne902723:0'
+      title_reset_your_password: 'crwdns902725:0crwdne902725:0'
   xlsx_export:
     column_headers:
-      input_id: 'crwdns207958:0crwdne207958:0'
-      latitude: 'crwdns207960:0crwdne207960:0'
-      longitude: 'crwdns207962:0crwdne207962:0'
-      author_fullname: 'crwdns207964:0crwdne207964:0'
-      author_email: 'crwdns207966:0crwdne207966:0'
-      author_id: 'crwdns207968:0crwdne207968:0'
-      budget: 'crwdns207970:0crwdne207970:0'
-      created_at: 'crwdns207972:0crwdne207972:0'
-      published_at: 'crwdns207974:0crwdne207974:0'
-      comments_count: 'crwdns207976:0crwdne207976:0'
-      likes_count: 'crwdns703335:0crwdne703335:0'
-      dislikes_count: 'crwdns703337:0crwdne703337:0'
-      picks: 'crwdns777771:0crwdne777771:0'
-      participants: 'crwdns777773:0crwdne777773:0'
-      votes_count: 'crwdns777775:0crwdne777775:0'
-      input_url: 'crwdns207984:0crwdne207984:0'
-      project: 'crwdns207986:0crwdne207986:0'
-      status: 'crwdns207988:0crwdne207988:0'
-      assignee_fullname: 'crwdns207990:0crwdne207990:0'
-      assignee_email: 'crwdns207992:0crwdne207992:0'
-    anonymous: 'crwdns604497:0crwdne604497:0'
+      input_id: 'crwdns902727:0crwdne902727:0'
+      latitude: 'crwdns902729:0crwdne902729:0'
+      longitude: 'crwdns902731:0crwdne902731:0'
+      author_fullname: 'crwdns902733:0crwdne902733:0'
+      author_email: 'crwdns902735:0crwdne902735:0'
+      author_id: 'crwdns902737:0crwdne902737:0'
+      budget: 'crwdns902739:0crwdne902739:0'
+      created_at: 'crwdns902741:0crwdne902741:0'
+      published_at: 'crwdns902743:0crwdne902743:0'
+      comments_count: 'crwdns902745:0crwdne902745:0'
+      likes_count: 'crwdns902747:0crwdne902747:0'
+      dislikes_count: 'crwdns902749:0crwdne902749:0'
+      picks: 'crwdns902751:0crwdne902751:0'
+      participants: 'crwdns902753:0crwdne902753:0'
+      votes_count: 'crwdns902755:0crwdne902755:0'
+      input_url: 'crwdns902757:0crwdne902757:0'
+      project: 'crwdns902759:0crwdne902759:0'
+      status: 'crwdns902761:0crwdne902761:0'
+      assignee_fullname: 'crwdns902763:0crwdne902763:0'
+      assignee_email: 'crwdns902765:0crwdne902765:0'
+      image_url: 'crwdns993115:0crwdne993115:0'
+    anonymous: 'crwdns902767:0crwdne902767:0'
   form_builder:
     default_select_field:
-      title: 'crwdns207994:0crwdne207994:0'
-      option1: 'crwdns207996:0crwdne207996:0'
-      option2: 'crwdns207998:0crwdne207998:0'
+      title: 'crwdns902769:0crwdne902769:0'
+      option1: 'crwdns902771:0crwdne902771:0'
+      option2: 'crwdns902773:0crwdne902773:0'
     survey_end_page:
-      title: 'crwdns208000:0crwdne208000:0'
-      description: "crwdns208002:0crwdne208002:0"
+      title: 'crwdns902775:0crwdne902775:0'
+      description: "crwdns902777:0crwdne902777:0"
+    pdf_export:
+      full_name: 'crwdns902779:0crwdne902779:0'
+      email_address: 'crwdns902781:0crwdne902781:0'
+      optional: 'crwdns933729:0crwdne933729:0'
+      permission: 'crwdns993117:0crwdne993117:0'
+      choose_as_many: 'crwdns933731:0crwdne933731:0'
+      this_answer: 'crwdns933733:0crwdne933733:0'
+      page: 'crwdns992985:0crwdne992985:0'
+      date_published: 'crwdns993119:0crwdne993119:0'
+      instructions: 'crwdns1002839:0crwdne1002839:0'
+      write_as_clearly: 'crwdns1002841:0crwdne1002841:0'
+      write_in_language: 'crwdns1002843:0crwdne1002843:0'
   project_copy:
-    title_suffix: 'crwdns208004:0crwdne208004:0'
+    title_suffix: 'crwdns902783:0crwdne902783:0'
   confirmations_mailer:
     send_confirmation_code:
-      subject: "crwdns208006:0%{organizationName}crwdne208006:0"
-      header: "crwdns208008:0crwdne208008:0"
-      header_message: "crwdns208010:0%{firstName}crwdne208010:0"
-      confirm_email_address: "crwdns327752:0crwdne327752:0"
-      thanks_for_signing_up: "crwdns208012:0%{organizationName}crwdne208012:0"
-      best_regards: "crwdns327754:0crwdne327754:0"
-      ignore_email: "crwdns327756:0crwdne327756:0"
-      expire_code: "crwdns327758:0crwdne327758:0"
-      24_hours: "crwdns327760:0crwdne327760:0"
-      copy_paste_the_link_below: "crwdns208016:0crwdne208016:0"
-      the_link_is_valid_for: "crwdns208018:0%{link}crwdne208018:0"
-      did_you_receive_this_email_in_error: "crwdns208020:0%{link}crwdne208020:0"
+      subject: "crwdns902785:0%{organizationName}crwdne902785:0"
+      header: "crwdns902787:0crwdne902787:0"
+      header_message: "crwdns902789:0%{firstName}crwdne902789:0"
+      confirm_email_address: "crwdns902791:0crwdne902791:0"
+      thanks_for_signing_up: "crwdns902793:0%{organizationName}crwdne902793:0"
+      best_regards: "crwdns902795:0crwdne902795:0"
+      ignore_email: "crwdns902797:0crwdne902797:0"
+      expire_code: "crwdns902799:0crwdne902799:0"
+      24_hours: "crwdns902801:0crwdne902801:0"
+      copy_paste_the_link_below: "crwdns902803:0crwdne902803:0"
+      the_link_is_valid_for: "crwdns902805:0%{link}crwdne902805:0"
+      did_you_receive_this_email_in_error: "crwdns902807:0%{link}crwdne902807:0"
   user_blocked_mailer:
     send_user_blocked_email:
-      subject: 'crwdns417898:0crwdne417898:0'
-      title_user_blocked: 'crwdns417900:0crwdne417900:0'
-      paragraph_1_without_reason: "crwdns417902:0%{organizationName}crwdne417902:0"
-      paragraph_1_with_reason: "crwdns417904:0%{organizationName}crwdne417904:0"
-      for_more_information: "crwdns417906:0%{termsAndConditionsPage}crwdne417906:0"
-      you_can_sign_in_again_from: "crwdns417908:0%{date}crwdne417908:0"
+      subject: 'crwdns902809:0crwdne902809:0'
+      title_user_blocked: 'crwdns902811:0crwdne902811:0'
+      paragraph_1_without_reason: "crwdns902813:0%{organizationName}crwdne902813:0"
+      paragraph_1_with_reason: "crwdns902815:0%{organizationName}crwdne902815:0"
+      for_more_information: "crwdns902817:0%{termsAndConditionsPage}crwdne902817:0"
+      you_can_sign_in_again_from: "crwdns902819:0%{date}crwdne902819:0"
   user:
-    anon_first_name: "crwdns523109:0crwdne523109:0"
+    anon_first_name: "crwdns902821:0crwdne902821:0"
   time:
-    am: crwdns522947:0crwdne522947:0
+    am: crwdns902823:0crwdne902823:0
     formats:
-      hour_of_day: "crwdns522949:0%lcrwdnd522949:0%pcrwdne522949:0"
-    pm: crwdns522951:0crwdne522951:0
+      hour_of_day: "crwdns902825:0%lcrwdnd902825:0%pcrwdne902825:0"
+    pm: crwdns902827:0crwdne902827:0
   voting_method:
-    default_voting_term_singular: "crwdns777777:0crwdne777777:0"
-    default_voting_term_plural: "crwdns777779:0crwdne777779:0"
+    default_voting_term_singular: "crwdns902829:0crwdne902829:0"
+    default_voting_term_plural: "crwdns902831:0crwdne902831:0"
