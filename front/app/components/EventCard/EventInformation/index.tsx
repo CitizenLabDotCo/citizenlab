@@ -118,29 +118,28 @@ const EventInformation = ({ event, titleFontSize }: Props) => {
               </Text>
             </Box>
           )}
-          {!isPastEvent &&
-            event.attributes.attendees_count > 0 && ( // TODO: Replace once event attendance smart group added
-              <Box
-                display="flex"
-                mb="12px"
-                flexDirection={theme.isRtl ? 'row-reverse' : 'row'}
-              >
-                <Box flexShrink={0} my="auto">
-                  <Icon
-                    my="auto"
-                    fill={colors.coolGrey300}
-                    name="user"
-                    ariaHidden
-                    mr={theme.isRtl ? '0px' : '8px'}
-                    ml={theme.isRtl ? '8px' : '0px'}
-                  />
-                </Box>
-                <Text m="0px" pt="2px" color={'coolGrey700'} fontSize="s">
-                  {event.attributes.attendees_count}{' '}
-                  {formatMessage(messages.attending)}
-                </Text>
+          {!isPastEvent && event.attributes.attendees_count > 0 && (
+            <Box
+              display="flex"
+              mb="12px"
+              flexDirection={theme.isRtl ? 'row-reverse' : 'row'}
+            >
+              <Box flexShrink={0} my="auto">
+                <Icon
+                  my="auto"
+                  fill={colors.coolGrey300}
+                  name="user"
+                  ariaHidden
+                  mr={theme.isRtl ? '0px' : '8px'}
+                  ml={theme.isRtl ? '8px' : '0px'}
+                />
               </Box>
-            )}
+              <Text m="0px" pt="2px" color={'coolGrey700'} fontSize="s">
+                {event.attributes.attendees_count}{' '}
+                {formatMessage(messages.attending)}
+              </Text>
+            </Box>
+          )}
         </Box>
       </Box>
       {isPastEvent ? (

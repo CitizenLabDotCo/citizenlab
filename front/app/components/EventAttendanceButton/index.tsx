@@ -59,16 +59,24 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
   const userIsAttending = !!userAttendingEventObject;
   const attendanceId =
     userAttendingEventObject?.relationships.user_attendance.data.id || null;
+  const useCustomButtonText = localize(
+    event?.attributes.attend_button_multiloc
+  );
 
   const handleClick = () => {
-    if (user) {
-      registerAttendance();
+    if (event?.attributes.using_url) {
+      window.open(event.attributes.using_url);
+      return;
     } else {
-      // Currently there are no granular permission for event attendance (I.e. requirements endpoint fails).
-      // As such, our only option at this point is to trigger the flow without a success action.
-      triggerAuthenticationFlow({
-        flow: 'signin',
-      });
+      if (user) {
+        registerAttendance();
+      } else {
+        // Currently there are no granular permission for event attendance (I.e. requirements endpoint fails).
+        // As such, our only option at this point is to trigger the flow without a success action.
+        triggerAuthenticationFlow({
+          flow: 'signin',
+        });
+      }
     }
   };
 
@@ -83,6 +91,24 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
     }
   };
 
+  const getButtonText = () => {
+    if (localize(event?.attributes.attend_button_multiloc)) {
+      return localize(event?.attributes.attend_button_multiloc);
+    } else if (userIsAttending) {
+      return formatMessage(messages.attending);
+    }
+    return formatMessage(messages.attend);
+  };
+
+  const getButtonIcon = () => {
+    if (useCustomButtonText || event?.attributes.using_url) {
+      return undefined;
+    } else if (userIsAttending) {
+      return 'check';
+    }
+    return 'plus-circle';
+  };
+
   const isLoading = isAddingAttendance || isRemovingAttendance;
   const eventDateTime = getEventDateString(event);
 
@@ -92,7 +118,7 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
         ml="auto"
         width={'100%'}
         iconPos={userIsAttending ? 'left' : 'right'}
-        icon={userIsAttending ? 'check' : 'plus-circle'}
+        icon={getButtonIcon()}
         iconSize="20px"
         bgColor={userIsAttending ? colors.success : theme.colors.tenantPrimary}
         onClick={(event) => {
@@ -102,9 +128,7 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
         processing={isLoading}
         id="e2e-event-attendance-button"
       >
-        {userIsAttending
-          ? formatMessage(messages.attending)
-          : formatMessage(messages.attend)}
+        {getButtonText()}
       </Button>
       <Modal
         opened={confirmationModalVisible}
