@@ -153,6 +153,7 @@
   "app.components.FolderFolderCard.a11y_folderTitle": "Mappetittel:",
   "app.components.FolderFolderCard.archived": "Arkivert",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, one {# prosjekt} other {# prosjekter}}",
+  "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Last ned som pdf",
   "app.components.GoBackButton.group.edit.goBack": "Gå tilbake",
   "app.components.GoBackButton.group.edit.goBackToPreviousPage": "Gå tilbake til forrige side",
   "app.components.HookForm.Feedback.errorTitle": "Det er et problem",
