@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { CLErrors } from 'typings';
+import { CLErrors, Locale } from 'typings';
 import { ApiErrorGetter } from './typings';
 import { MessageDescriptor } from 'utils/cl-intl';
 
@@ -12,10 +12,12 @@ export const FormContext = createContext<{
   inputId?: string | undefined;
   onSubmit?: (formData?: any) => void | Promise<void>;
   setShowAllErrors?: (showAllErrors: boolean) => void;
+  locale?: Locale;
 }>({
   showAllErrors: false,
   getApiErrorMessage: () => undefined,
   onSubmit: async () => undefined,
   setShowAllErrors: () => undefined,
   inputId: undefined,
+  locale: undefined,
 });

@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 
 // jsonforms
 import { JsonForms } from '@jsonforms/react';
@@ -15,9 +15,10 @@ import { useIntl, MessageDescriptor } from 'utils/cl-intl';
 // utils
 import { selectRenderers } from './formConfig';
 import { getDefaultAjvErrorMessage } from 'utils/errorUtils';
+import { parseRequiredMultilocsSchema } from 'components/Form/parseRequiredMultilocs';
 
 // typings
-import { CLErrors } from 'typings';
+import { CLErrors, Locale } from 'typings';
 import { ApiErrorGetter, AjvErrorGetter, FormData } from '../../typings';
 import Ajv, { ErrorObject } from 'ajv';
 import { APIErrorsContext, FormContext } from '../../contexts';
@@ -35,6 +36,7 @@ interface Props {
   inputId?: string;
   formSubmitText?: MessageDescriptor;
   config?: 'default' | 'input' | 'survey';
+  locale: Locale;
   onChange: (formData: FormData) => void;
   onSubmit?: (formData: FormData) => Promise<any>;
 }
@@ -52,10 +54,15 @@ const Fields = ({
   getAjvErrorMessage,
   getApiErrorMessage,
   config,
+  locale,
   onChange,
   onSubmit,
 }: Props) => {
   const { formatMessage } = useIntl();
+
+  const [parsedSchema] = useState(() => {
+    return parseRequiredMultilocsSchema(schema, locale);
+  });
 
   const safeApiErrorMessages = useCallback(
     () => (getApiErrorMessage ? getApiErrorMessage : () => undefined),
@@ -92,10 +99,11 @@ const Fields = ({
           onSubmit,
           setShowAllErrors,
           formSubmitText,
+          locale,
         }}
       >
         <JsonForms
-          schema={schema}
+          schema={parsedSchema}
           uischema={uiSchema}
           data={data}
           renderers={renderers}

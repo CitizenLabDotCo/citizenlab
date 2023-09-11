@@ -14,7 +14,7 @@ import GoBackButton from 'components/UI/GoBackButton';
 // i18n
 import useLocalize from 'hooks/useLocalize';
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 
 // styling
 import { stylingConsts, colors } from 'utils/styleUtils';
@@ -38,7 +38,8 @@ const TopBar = ({ onClickPDFImport }: Props) => {
     (phase ? ` - ${localize(phase?.data.attributes.title_multiloc)}` : '');
 
   const isSurvey =
-    phase?.data.attributes.participation_method === 'native_survey' || project?.data.attributes.participation_method === 'native_survey';
+    phase?.data.attributes.participation_method === 'native_survey' ||
+    project?.data.attributes.participation_method === 'native_survey';
 
   const backPath = isSurvey
     ? `/admin/projects/${projectId}/native-survey`

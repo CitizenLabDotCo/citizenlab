@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import { Box, Text, IconTooltip } from '@citizenlab/cl2-component-library';
 
 // styling
 import { colors } from 'utils/styleUtils';
@@ -9,14 +9,16 @@ import { colors } from 'utils/styleUtils';
 // i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import { Locale } from 'typings';
 
 interface Props {
   phaseName?: string;
   authorName?: string;
   authorEmail?: string;
+  locale?: Locale;
 }
 
-const InfoBox = ({ phaseName, authorName, authorEmail }: Props) => {
+const InfoBox = ({ phaseName, authorName, authorEmail, locale }: Props) => {
   return (
     <Box
       w="90%"
@@ -28,6 +30,11 @@ const InfoBox = ({ phaseName, authorName, authorEmail }: Props) => {
         {phaseName && (
           <Text fontWeight="bold">
             <FormattedMessage {...messages.phase} />
+          </Text>
+        )}
+        {locale && (
+          <Text fontWeight="bold">
+            <FormattedMessage {...messages.locale} />
           </Text>
         )}
         {authorName && (
@@ -43,7 +50,22 @@ const InfoBox = ({ phaseName, authorName, authorEmail }: Props) => {
       </Box>
       <Box>
         {phaseName && <Text>{phaseName}</Text>}
-        {authorName && <Text>{authorName}</Text>}
+        {locale && <Text>{locale}</Text>}
+        {authorName && (
+          <Text>
+            {authorName}
+            {!authorEmail && (
+              <IconTooltip
+                display="inline"
+                content={
+                  <FormattedMessage {...messages.ideaImportedAnonymously} />
+                }
+                marginLeft="4px"
+                transform="translate(0,-1)"
+              />
+            )}
+          </Text>
+        )}
         {authorEmail && <Text mt="0">{authorEmail}</Text>}
       </Box>
     </Box>

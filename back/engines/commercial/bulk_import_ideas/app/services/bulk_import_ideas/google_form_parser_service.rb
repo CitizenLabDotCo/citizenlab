@@ -72,7 +72,8 @@ module BulkImportIdeas
     def dummy_raw_text
       dummy_text = []
       rand(1..8).times do
-        dummy_text << "Page 1\nTitle\n#{Faker::Quote.yoda}\nDescription\n#{Faker::Hipster.paragraph}\nPage 2\nAnother field\n#{Faker::Quote.robin}"
+        dummy_text << "Title\n#{Faker::Quote.yoda}\nDescription\n#{Faker::Hipster.paragraph}\nPage 1"
+        dummy_text << "Another field\n#{Faker::Quote.robin}\nPage 2"
       end
       dummy_text
     end

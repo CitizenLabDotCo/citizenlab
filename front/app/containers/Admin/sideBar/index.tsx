@@ -34,6 +34,7 @@ import { useLocation } from 'react-router-dom';
 import useAuthUser from 'api/me/useAuthUser';
 import useIdeasCount from 'api/idea_count/useIdeasCount';
 import useInitiativesCount from 'api/initiative_counts/useInitiativesCount';
+import { isAdmin } from 'services/permissions/roles';
 
 const Menu = styled.div`
   z-index: 10;
@@ -90,10 +91,13 @@ const Sidebar = () => {
     feedback_needed: true,
     assignee: authUser?.data.id,
   });
-  const { data: initiativesCount } = useInitiativesCount({
-    feedback_needed: true,
-    assignee: authUser?.data.id,
-  });
+  const { data: initiativesCount } = useInitiativesCount(
+    {
+      feedback_needed: true,
+      assignee: authUser?.data.id,
+    },
+    authUser ? isAdmin(authUser) : false
+  );
   const [navItems, setNavItems] = useState<NavItem[]>(defaultNavItems);
   const isPagesAndMenuPage = isPage('pages_menu', pathname);
   const isSmallerThanPhone = useBreakpoint('tablet');
