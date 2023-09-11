@@ -488,6 +488,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_25_121819) do
     t.string "address_1"
     t.integer "attendees_count", default: 0, null: false
     t.jsonb "address_2_multiloc", default: {}, null: false
+    t.string "using_url"
+    t.jsonb "attend_button_multiloc", default: {}, null: false
     t.index ["location_point"], name: "index_events_on_location_point", using: :gist
     t.index ["project_id"], name: "index_events_on_project_id"
   end

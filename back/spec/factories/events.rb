@@ -30,6 +30,13 @@ FactoryBot.define do
           'nl-BE' => 'Bol 1'
         }
       end
+      using_url { 'https://example.com' }
+      attend_button_multiloc do
+        {
+          'en' => 'Attend',
+          'nl-BE' => 'Aanwezig'
+        }
+      end
 
       location_multiloc do
         %w[en nl-BE].index_with { |locale| "#{address_1} (#{locale})" }

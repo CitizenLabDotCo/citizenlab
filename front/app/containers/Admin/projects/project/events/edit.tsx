@@ -92,7 +92,7 @@ const AdminProjectEventEdit = () => {
   const [attributeDiff, setAttributeDiff] = useState<IEventProperties>({});
   const [mapModalVisible, setMapModalVisible] = useState(false);
   const [attendanceOptionsVisible, setAttendanceOptionsVisible] = useState(
-    event?.data.attributes.custom_attend_button_enabled || false
+    !!event?.data.attributes.using_url || false
   );
   const [locationPoint, setLocationPoint] = useState<GeoJSON.Point | null>(
     null
@@ -198,26 +198,21 @@ const AdminProjectEventEdit = () => {
 
   const handleCustomButtonToggleOnChange = (toggleValue: boolean) => {
     setAttendanceOptionsVisible(toggleValue);
-    setSubmitState('enabled');
-    setAttributeDiff({
-      ...attributeDiff,
-      custom_attend_button_enabled: toggleValue,
-    });
   };
 
   const handleCustomButtonMultilocOnChange = (buttonMultiloc: Multiloc) => {
     setSubmitState('enabled');
     setAttributeDiff({
       ...attributeDiff,
-      custom_attend_button_multiloc: buttonMultiloc,
+      attend_button_multiloc: buttonMultiloc,
     });
   };
 
-  const handleCustomButtonLinkOnChange = (buttonLink: string) => {
+  const handleCustomButtonLinkOnChange = (url: string) => {
     setSubmitState('enabled');
     setAttributeDiff({
       ...attributeDiff,
-      custom_attend_button_link: buttonLink,
+      using_url: url,
     });
   };
 
@@ -547,7 +542,7 @@ const AdminProjectEventEdit = () => {
                   </Box>
                 </Box>
               }
-              checked={eventAttrs.custom_attend_button_enabled || false}
+              checked={!!eventAttrs.using_url || attendanceOptionsVisible}
               onChange={() => {
                 handleCustomButtonToggleOnChange(!attendanceOptionsVisible);
               }}
@@ -561,7 +556,7 @@ const AdminProjectEventEdit = () => {
                     id="event-address-2"
                     label={formatMessage(messages.customButtonText)}
                     type="text"
-                    valueMultiloc={eventAttrs.custom_attend_button_multiloc}
+                    valueMultiloc={eventAttrs.attend_button_multiloc}
                     onChange={handleCustomButtonMultilocOnChange}
                     labelTooltipText={formatMessage(
                       messages.customButtonTextTooltip
@@ -574,7 +569,7 @@ const AdminProjectEventEdit = () => {
                   <Input
                     label={formatMessage(messages.customButtonLink)}
                     type="text"
-                    value={eventAttrs.custom_attend_button_link}
+                    value={eventAttrs.using_url}
                     onChange={handleCustomButtonLinkOnChange}
                     labelTooltipText={formatMessage(
                       messages.customButtonLinkTooltip
@@ -594,11 +589,11 @@ const AdminProjectEventEdit = () => {
                     icon={attendanceOptionsVisible ? undefined : 'plus-circle'}
                     iconSize="20px"
                     bgColor={theme.colors.tenantPrimary}
-                    linkTo={eventAttrs.custom_attend_button_link}
+                    linkTo={eventAttrs.using_url}
                     openLinkInNewTab={true}
                   >
-                    {eventAttrs?.custom_attend_button_multiloc
-                      ? eventAttrs?.custom_attend_button_multiloc[locale]
+                    {eventAttrs?.attend_button_multiloc
+                      ? eventAttrs?.attend_button_multiloc[locale]
                       : formatMessage(messages.newTextHere)}
                   </Button>
                 </Box>
