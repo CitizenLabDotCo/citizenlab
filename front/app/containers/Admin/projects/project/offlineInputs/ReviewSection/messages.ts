@@ -56,4 +56,8 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.locale',
     defaultMessage: 'Locale:',
   },
+  ideaImportedAnonymously: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.ideaImportedAnonymously',
+    defaultMessage: 'This idea was imported anonymously.',
+  },
 });

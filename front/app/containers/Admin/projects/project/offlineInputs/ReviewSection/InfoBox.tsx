@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import { Box, Text, IconTooltip } from '@citizenlab/cl2-component-library';
 
 // styling
 import { colors } from 'utils/styleUtils';
@@ -51,7 +51,21 @@ const InfoBox = ({ phaseName, authorName, authorEmail, locale }: Props) => {
       <Box>
         {phaseName && <Text>{phaseName}</Text>}
         {locale && <Text>{locale}</Text>}
-        {authorName && <Text>{authorName}</Text>}
+        {authorName && (
+          <Text>
+            {authorName}
+            {!authorEmail && (
+              <IconTooltip
+                display="inline"
+                content={
+                  <FormattedMessage {...messages.ideaImportedAnonymously} />
+                }
+                marginLeft="4px"
+                transform="translate(0,-1)"
+              />
+            )}
+          </Text>
+        )}
         {authorEmail && <Text mt="0">{authorEmail}</Text>}
       </Box>
     </Box>
