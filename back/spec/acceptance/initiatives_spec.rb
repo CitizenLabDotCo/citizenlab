@@ -296,7 +296,7 @@ resource 'Initiatives' do
       assert_status 200
     end
 
-    example 'List initiative counts when also using search filtering AND ordering', document: false do
+    example 'List initiative counts when also using search filtering AND sort', document: false do
       do_request(search: 'uniqque', sort: 'new')
       assert_status 200
     end
