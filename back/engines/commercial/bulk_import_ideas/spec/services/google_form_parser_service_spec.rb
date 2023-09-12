@@ -7,15 +7,14 @@ require 'rails_helper'
 describe BulkImportIdeas::GoogleFormParserService do
   describe 'raw_text_by_page' do
     it 'gets array of page text from the PDF file' do
-      # Comment out the following stubs to use the actual Google service
-      expect_any_instance_of(described_class).to receive(:process_upload).and_return(nil)
+      # Comment out the following stub to use the actual Google service
       expect_any_instance_of(described_class).to receive(:raw_text_page_array).and_return(
         ["Page1\nTitle\nMy very good idea\nDescription\nThis is the description"]
       )
 
-      file_content = Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/testscan.pdf').binread
-      service = described_class.new file_content
-      pages = service.raw_text_page_array
+      file_content = Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/scan_1.pdf').binread
+      service = described_class.new
+      pages = service.raw_text_page_array file_content
 
       expect(pages).not_to be_nil
       expect(pages).to be_an_instance_of(Array)

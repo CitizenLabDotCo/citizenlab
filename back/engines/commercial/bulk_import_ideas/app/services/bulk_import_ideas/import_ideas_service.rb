@@ -21,8 +21,18 @@ module BulkImportIdeas
       @all_topics = Topic.all
       @import_user = current_user
       @project = nil
-      @file = nil
-      @total_pages = 1
+      @uploaded_file = nil
+    end
+
+    def import_file(file)
+      files = upload_file file
+
+      ideas = []
+      files.each do |file|
+        idea_rows = parse_idea_rows file
+        ideas += import_ideas(idea_rows)
+      end
+      ideas
     end
 
     def import_ideas(idea_rows)
@@ -36,17 +46,15 @@ module BulkImportIdeas
           idea
         end
       end
-      @file&.update!(num_pages: @total_pages)
 
       # TODO: Does this need to run?
       DumpTenantJob.perform_later Tenant.current
       ideas
     end
 
-    def upload_file(file_content, file_type)
-      # Although file type is passed in, check that it is correct and default to xlsx otherwise
-      file_type = 'xlsx' if file_type == 'pdf' && !file_content.index('application/pdf')
-      @file = IdeaImportFile.create!(
+    def upload_file(file_content)
+      file_type = file_content.index('application/pdf') ? 'pdf' : 'xlsx'
+      @uploaded_file = IdeaImportFile.create!(
         import_type: file_type,
         project: @project,
         file_by_content: {
@@ -54,10 +62,10 @@ module BulkImportIdeas
           content: file_content # base64
         }
       )
-      file_type
+      [@uploaded_file]
     end
 
-    def parse_idea_rows(_file, _file_type)
+    def parse_idea_rows(_file)
       []
     end
 
@@ -297,15 +305,8 @@ module BulkImportIdeas
     end
 
     def parse_xlsx_ideas(file)
-      # TODO: Is StringIO needed here?
-      xlsx_file = StringIO.new decode_base64(file)
+      xlsx_file = File.open(file.file.file.file)
       XlsxService.new.xlsx_to_hash_array xlsx_file
-    end
-
-    def decode_base64(base64_file)
-      start = base64_file.index ';base64,'
-      base64_file = base64_file[(start + 8)..] if start
-      Base64.decode64(base64_file)
     end
   end
 end

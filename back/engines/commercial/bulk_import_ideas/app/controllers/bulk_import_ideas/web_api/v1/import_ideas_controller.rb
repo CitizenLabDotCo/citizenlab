@@ -17,10 +17,10 @@ module BulkImportIdeas
     # NOTE: PDF version will only work for a project endpoint
     def bulk_create
       file = bulk_create_params[:pdf] || bulk_create_params[:xlsx]
-      file_type = bulk_create_params[:pdf] ? 'pdf' : 'xlsx'
-      file_type = import_ideas_service.upload_file file, file_type
-      idea_rows = import_ideas_service.parse_idea_rows file, file_type
-      ideas = import_ideas_service.import_ideas idea_rows
+      ideas = import_ideas_service.import_file file
+
+      # idea_rows = import_ideas_service.parse_idea_rows file, file_type
+      # ideas = import_ideas_service.import_ideas idea_rows
       sidefx.after_success current_user
 
       render json: ::WebApi::V1::IdeaSerializer.new(

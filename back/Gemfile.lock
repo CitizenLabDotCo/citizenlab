@@ -543,6 +543,7 @@ GEM
       activesupport
     cloudfront-rails (0.4.0)
       railties (> 4.0)
+    cmdparse (3.0.7)
     coderay (1.1.3)
     concurrent-ruby (1.2.2)
     counter_culture (3.3.0)
@@ -620,6 +621,7 @@ GEM
       googleauth (~> 1.0)
       grpc (~> 1.36)
     gems (1.2.0)
+    geom2d (0.4.1)
     globalid (1.1.0)
       activesupport (>= 5.0)
     google-api-client (0.53.0)
@@ -697,6 +699,10 @@ GEM
       rexml (~> 3.0)
     hashdiff (1.0.1)
     hashie (5.0.0)
+    hexapdf (0.33.0)
+      cmdparse (~> 3.0, >= 3.0.3)
+      geom2d (~> 0.4, >= 0.4.1)
+      openssl (>= 2.2.1)
     htmlentities (4.3.4)
     http-accept (1.7.0)
     http-cookie (1.0.5)
@@ -862,6 +868,7 @@ GEM
       validate_email
       validate_url
       webfinger (~> 2.0)
+    openssl (3.1.0)
     order_as_specified (1.7)
       activerecord (>= 5.0.0)
     os (1.1.4)
@@ -1240,6 +1247,7 @@ DEPENDENCIES
   google_tag_manager!
   granular_permissions!
   groupdate (~> 4.1)
+  hexapdf
   icalendar (~> 2.9)
   ice_cube (~> 0.16)
   id_auth0!

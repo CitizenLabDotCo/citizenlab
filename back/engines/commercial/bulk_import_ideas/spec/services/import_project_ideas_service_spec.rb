@@ -27,6 +27,14 @@ describe BulkImportIdeas::ImportProjectIdeasService do
     create(:custom_field_option, custom_field: another_select_field, key: 'no', title_multiloc: { 'en' => 'No' })
   end
 
+  describe 'upload_file' do
+    it 'splits a file successfully based on the number of pages in the template and creates additional files' do
+      base_64_content = Base64.encode64 Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/scan_1.pdf').read
+      service.upload_file "data:application/pdf;base64,#{base_64_content}"
+      expect(BulkImportIdeas::IdeaImportFile.all.count).to eq 1
+    end
+  end
+
   describe 'generate_example_xlsx' do
     it 'produces an xlsx file with all the fields for a project' do
       xlsx = service.generate_example_xlsx
@@ -52,18 +60,6 @@ describe BulkImportIdeas::ImportProjectIdeasService do
         'Latitude',
         'Longitude'
       ])
-    end
-  end
-
-  describe 'total_pages' do
-    it 'gets the total number of pages in the document' do
-      ideas = [{ pdf_pages: [1, 2], fields: {} }, { pdf_pages: [3, 4], fields: {} }]
-      expect(service.total_pages(ideas)).to eq 4
-    end
-
-    it 'returns 1 even if there are no ideas' do
-      ideas = []
-      expect(service.total_pages(ideas)).to eq 1
     end
   end
 

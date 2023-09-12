@@ -25,7 +25,7 @@ module BulkImportIdeas
       ]
     end
 
-    def parse_idea_rows(file, _file_type)
+    def parse_idea_rows(file)
       xlsx_ideas = parse_xlsx_ideas file
       ideas_to_idea_rows xlsx_ideas
     end

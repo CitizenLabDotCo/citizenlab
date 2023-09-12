@@ -2,12 +2,59 @@
 
 module BulkImportIdeas
   class ImportProjectIdeasService < ImportIdeasService
+
+    MAX_PDF_PAGES = 8
+
     def initialize(current_user, project_id, locale, phase_id)
       super(current_user)
       @project = Project.find(project_id)
       @phase = phase_id ? @project.phases.find(phase_id) : TimelineService.new.current_phase(@project)
       @form_fields = IdeaCustomFieldsService.new(Factory.instance.participation_method_for(@phase || @project).custom_form).importable_fields
       @locale = locale || @locale
+      @google_forms_service = nil
+    end
+
+    def upload_file(file_content)
+      super(file_content)
+
+      # Split a pdf into smaller documents
+      split_pdf_files = []
+      if @uploaded_file&.import_type == 'pdf'
+        # Get number of pages in a form from the download
+        # TODO: Trap error if cannot get form
+        # TODO: Page count may be different if name and email are specified
+        params = {}
+        params[:locale] = @locale
+        pages_per_idea = PrintCustomFieldsService.new(@phase || @project, @form_fields, params).create_pdf.page_count
+
+        pdf = ::HexaPDF::Document.open(@uploaded_file.file.file.file)
+        return [@uploaded_file] if pdf.pages.count <= MAX_PDF_PAGES # Only need to split if the file is too big
+
+        new_pdf = ::HexaPDF::Document.new
+        pdf.pages.each_with_index do |page, index|
+          new_pdf.pages << new_pdf.import(page)
+          if (index + 1) % pages_per_idea == 0
+            # TODO: Would be better to send the new_pdf directly to IdeaImportFile, but doesn't seem possible
+            # Is all this file opening going to cause issues on S3?
+            file = Rails.root.join('tmp', "import_#{@uploaded_file.id}_#{index}.pdf")
+            new_pdf.write(file.to_s, validate: false, optimize: true)
+            base_64_content = Base64.encode64 file.read
+
+            # TODO: Add parent relationship to model?
+            split_pdf_files << IdeaImportFile.create!(
+              import_type: @uploaded_file.import_type,
+              project: @project,
+              num_pages: new_pdf.pages.count,
+              file_by_content: {
+                name: "import_#{index}.pdf",
+                content: "data:application/pdf;base64,#{base_64_content}"
+              }
+            )
+            new_pdf = ::HexaPDF::Document.new
+          end
+        end
+      end
+      split_pdf_files.presence || [@uploaded_file]
     end
 
     def generate_example_xlsx
@@ -53,20 +100,13 @@ module BulkImportIdeas
       XlsxService.new.hash_array_to_xlsx [columns]
     end
 
-    def parse_idea_rows(file, file_type)
-      ideas = if file_type == 'pdf'
+    def parse_idea_rows(file)
+      ideas = if file.import_type == 'pdf'
         parse_pdf_ideas(file)
       else
         parse_xlsx_ideas(file).map { |idea| { pdf_pages: [1], fields: idea } }
       end
-      @total_pages = total_pages(ideas)
       ideas_to_idea_rows(ideas)
-    end
-
-    def total_pages(ideas)
-      return @total_pages unless ideas.present?
-
-      ideas.last[:pdf_pages].max
     end
 
     def ideas_to_idea_rows(ideas_array)
@@ -220,12 +260,12 @@ module BulkImportIdeas
     end
 
     def parse_pdf_ideas(file)
-      pdf_file = decode_base64 file
-      google_forms_service = GoogleFormParserService.new pdf_file
+      pdf_file = File.open(file.file.file.file)
+      @google_forms_service ||= GoogleFormParserService.new
       IdeaPlaintextParserService.new(
         @form_fields.reject { |field| field.input_type == 'topic_ids' }, # Temp
         @locale
-      ).parse_text(google_forms_service.raw_text_page_array)
+      ).parse_text(@google_forms_service.raw_text_page_array(pdf_file))
     end
   end
 end
