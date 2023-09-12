@@ -80,8 +80,10 @@ const ImportSection = ({ onFinishImport }: Props) => {
         onSuccess: () => {
           onFinishImport();
         },
-        onError: (errors) => {
-          console.log(errors);
+        onError: (errors: any) => {
+          if (errors.error === 'Internal Server Error') {
+            console.log('sup');
+          }
         },
       }
     );
