@@ -15,15 +15,16 @@ import { Box, Text, Button } from '@citizenlab/cl2-component-library';
 import LocalePicker from './LocalePicker';
 import PhaseSelector from './PhaseSelector';
 import FileUploader from 'components/HookForm/FileUploader';
+import Checkbox from 'components/HookForm/Checkbox';
 
 // i18n
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
 
 // form
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { object, string, mixed } from 'yup';
+import { object, string, mixed, boolean } from 'yup';
 
 // utils
 import { canContainIdeas, getCurrentPhase } from 'api/phases/utils';
@@ -48,6 +49,7 @@ interface FormData {
   phase_id?: string;
   locale: Locale;
   files: UploadFile[];
+  google_consent: false;
 }
 
 const getInitialPhaseId = (phases: IPhases) => {
@@ -69,22 +71,39 @@ const getInitialPhaseId = (phases: IPhases) => {
   return;
 };
 
+const isTruthy = (value?: boolean) => !!value;
+
 const ImportSection = ({ onFinishImport, locale, project, phases }: Props) => {
+  const { formatMessage } = useIntl();
   const { mutate: addOfflineIdeas, isLoading } = useAddOfflineIdeas();
 
-  const initialPhaseId = phases ? getInitialPhaseId(phases) : undefined;
+  const isTimelineProject = !!phases;
 
-  const schema = object({
-    phase_id: string(),
-    locale: string().required(),
-    files: mixed(),
-  });
+  const initialPhaseId = isTimelineProject
+    ? getInitialPhaseId(phases)
+    : undefined;
 
   const defaultValues: FormData = {
     phase_id: initialPhaseId,
     locale,
     files: [],
+    google_consent: false,
   };
+
+  const schema = object({
+    ...(isTimelineProject ? { phase_id: string().required() } : {}),
+    locale: string().required(),
+    files: mixed().test(
+      '',
+      formatMessage(messages.pleaseUploadFile),
+      (files: UploadFile[]) => files.length > 0
+    ),
+    google_consent: boolean().test(
+      '',
+      formatMessage(messages.consentNeeded),
+      isTruthy
+    ),
+  });
 
   const methods = useForm({
     mode: 'onBlur',
@@ -92,11 +111,9 @@ const ImportSection = ({ onFinishImport, locale, project, phases }: Props) => {
     resolver: yupResolver(schema),
   });
 
-  const isTimelineProject = project.data.attributes.process_type === 'timeline';
-  const showPhaseSelector = isTimelineProject;
   const projectId = project.data.id;
 
-  const submitFile = ({ files, ...rest }: FormData) => {
+  const submitFile = ({ files, google_consent: _, ...rest }: FormData) => {
     addOfflineIdeas(
       {
         project_id: projectId,
@@ -139,10 +156,17 @@ const ImportSection = ({ onFinishImport, locale, project, phases }: Props) => {
           </Box>
 
           <LocalePicker />
-          {showPhaseSelector && <PhaseSelector />}
+          {isTimelineProject && <PhaseSelector />}
 
           <Box>
             <FileUploader name="files" maximumFiles={1} />
+          </Box>
+
+          <Box mt="24px">
+            <Checkbox
+              name="google_consent"
+              label={<FormattedMessage {...messages.googleConsent} />}
+            />
           </Box>
 
           <Box w="100%" display="flex" mt="32px">
@@ -166,18 +190,23 @@ const ImportSectionWrapper = (props: OuterProps) => {
   const { data: phases } = usePhases(projectId);
 
   if (!project || isNilOrError(locale)) return null;
-  if (project.data.attributes.process_type === 'timeline' && !phases) {
-    return null;
+
+  if (project.data.attributes.process_type === 'timeline' && phases) {
+    return (
+      <ImportSection
+        {...props}
+        locale={locale}
+        project={project}
+        phases={phases}
+      />
+    );
   }
 
-  return (
-    <ImportSection
-      {...props}
-      locale={locale}
-      project={project}
-      phases={phases}
-    />
-  );
+  if (project.data.attributes.process_type === 'continuous') {
+    return <ImportSection {...props} locale={locale} project={project} />;
+  }
+
+  return null;
 };
 
 export default ImportSectionWrapper;
