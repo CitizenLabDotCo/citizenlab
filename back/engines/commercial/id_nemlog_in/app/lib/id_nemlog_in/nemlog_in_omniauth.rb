@@ -113,7 +113,7 @@ module IdNemlogIn
     end
 
     def locked_custom_fields
-      %i[municipality_code date_of_birth]
+      %i[municipality_code]
     end
 
     def locked_attributes
