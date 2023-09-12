@@ -30,24 +30,24 @@ module BulkImportIdeas
       ideas = []
       files.each do |file|
         idea_rows = parse_idea_rows file
-        ideas += import_ideas(idea_rows)
+        ideas += import_ideas(idea_rows, file)
       end
       ideas
     end
 
-    def import_ideas(idea_rows)
+    def import_ideas(idea_rows, file = nil)
       raise Error.new 'bulk_import_ideas_maximum_ideas_exceeded', value: DEFAULT_MAX_IDEAS if idea_rows.size > DEFAULT_MAX_IDEAS
 
       ideas = []
       ActiveRecord::Base.transaction do
         ideas = idea_rows.map do |idea_row|
-          idea = import_idea idea_row
+          idea = import_idea idea_row, file
           Rails.logger.info { "Created #{idea.id}" }
           idea
         end
       end
 
-      # TODO: Does this need to run?
+      # To ensure the latest ideas are available in NLP stack
       DumpTenantJob.perform_later Tenant.current
       ideas
     end
@@ -81,7 +81,7 @@ module BulkImportIdeas
 
     attr_reader :all_projects, :all_topics
 
-    def import_idea(idea_row)
+    def import_idea(idea_row, file)
       idea_attributes = {}
       add_title_multiloc idea_row, idea_attributes
       add_body_multiloc idea_row, idea_attributes
@@ -100,7 +100,7 @@ module BulkImportIdeas
       idea.save!
 
       create_idea_image idea_row, idea
-      create_idea_import idea, user_created, idea_row[:pdf_pages]
+      create_idea_import idea, user_created, idea_row[:pdf_pages], file
 
       idea
     end
@@ -291,14 +291,14 @@ module BulkImportIdeas
       true
     end
 
-    def create_idea_import(idea, user_created, page_range)
+    def create_idea_import(idea, user_created, page_range, file)
       # Add import metadata
       idea_import = IdeaImport.new(
         idea: idea,
         page_range: page_range,
         import_user: @import_user,
         user_created: user_created,
-        file: @file,
+        file: file,
         locale: @locale
       )
       idea_import.save!

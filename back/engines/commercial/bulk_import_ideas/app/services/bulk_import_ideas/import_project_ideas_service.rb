@@ -2,8 +2,8 @@
 
 module BulkImportIdeas
   class ImportProjectIdeasService < ImportIdeasService
-
-    MAX_PDF_PAGES = 8
+    PAGES_TO_TRIGGER_NEW_PDF = 8
+    MAX_TOTAL_PAGES = 50
 
     def initialize(current_user, project_id, locale, phase_id)
       super(current_user)
@@ -18,6 +18,7 @@ module BulkImportIdeas
       super(file_content)
 
       # Split a pdf into smaller documents
+      # TODO: Refactor this into separate method
       split_pdf_files = []
       if @uploaded_file&.import_type == 'pdf'
         # Get number of pages in a form from the download
@@ -28,19 +29,28 @@ module BulkImportIdeas
         pages_per_idea = PrintCustomFieldsService.new(@phase || @project, @form_fields, params).create_pdf.page_count
 
         pdf = ::HexaPDF::Document.open(@uploaded_file.file.file.file)
-        return [@uploaded_file] if pdf.pages.count <= MAX_PDF_PAGES # Only need to split if the file is too big
+        @uploaded_file.update!(num_pages: pdf.pages.count)
+        # TODO: Probably shouldn't upload the file in the first place
+        raise Error.new 'bulk_import_ideas_maximum_pdf_pages_exceeded', value: pdf.pages.count if pdf.pages.count > MAX_TOTAL_PAGES
+
+        return [@uploaded_file] if pdf.pages.count <= PAGES_TO_TRIGGER_NEW_PDF # Only need to split if the file is too big
 
         new_pdf = ::HexaPDF::Document.new
         pdf.pages.each_with_index do |page, index|
           new_pdf.pages << new_pdf.import(page)
-          if (index + 1) % pages_per_idea == 0
+          save_to_file =
+            (index + 1) % pages_per_idea == 0 && new_pdf.pages.count >= PAGES_TO_TRIGGER_NEW_PDF ||
+            (index + 1 == pdf.pages.count)
+
+          if save_to_file
             # TODO: Would be better to send the new_pdf directly to IdeaImportFile, but doesn't seem possible
             # Is all this file opening going to cause issues on S3?
             file = Rails.root.join('tmp', "import_#{@uploaded_file.id}_#{index}.pdf")
             new_pdf.write(file.to_s, validate: false, optimize: true)
             base_64_content = Base64.encode64 file.read
+            # TODO: Delete the tmp file
 
-            # TODO: Add parent relationship to model?
+            # TODO: Add parent relationship to IdeaImportFile model?
             split_pdf_files << IdeaImportFile.create!(
               import_type: @uploaded_file.import_type,
               project: @project,
@@ -260,7 +270,9 @@ module BulkImportIdeas
     end
 
     def parse_pdf_ideas(file)
-      pdf_file = File.open(file.file.file.file)
+      # pdf_file = File.open(file.file.file.file).binread
+      pdf_file = Rails.root.join(file.file.file.file).binread
+
       @google_forms_service ||= GoogleFormParserService.new
       IdeaPlaintextParserService.new(
         @form_fields.reject { |field| field.input_type == 'topic_ids' }, # Temp

@@ -11,7 +11,7 @@ module BulkImportIdeas
       text = document.text
 
       # Try and sort the text better by location on the page
-      @document.pages.map do |page|
+      document.pages.map do |page|
         new_text = page.paragraphs.map do |paragraph|
           x = paragraph.layout.bounding_poly.normalized_vertices[0].y.round(2)
           y = paragraph.layout.bounding_poly.normalized_vertices[0].y.round(2)

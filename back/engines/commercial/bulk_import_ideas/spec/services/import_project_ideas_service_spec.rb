@@ -28,10 +28,18 @@ describe BulkImportIdeas::ImportProjectIdeasService do
   end
 
   describe 'upload_file' do
-    it 'splits a file successfully based on the number of pages in the template and creates additional files' do
-      base_64_content = Base64.encode64 Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/scan_1.pdf').read
+    it 'splits a 12 page file successfully based on the number of pages in the template (2) and creates additional files' do
+      base_64_content = Base64.encode64 Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/scan_12.pdf').read
       service.upload_file "data:application/pdf;base64,#{base_64_content}"
-      expect(BulkImportIdeas::IdeaImportFile.all.count).to eq 1
+      expect(BulkImportIdeas::IdeaImportFile.all.count).to eq 3
+      expect(BulkImportIdeas::IdeaImportFile.all.pluck(:num_pages)).to match_array [12, 8, 4]
+    end
+
+    it 'raises an error if a PDF file has too many pages (more than 50)' do
+      base_64_content = Base64.encode64 Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/scan_64.pdf').read
+      expect { service.upload_file "data:application/pdf;base64,#{base_64_content}" }.to raise_error(
+        an_instance_of(BulkImportIdeas::Error).and(having_attributes(key: 'bulk_import_ideas_maximum_pdf_pages_exceeded'))
+      )
     end
   end
 
