@@ -131,7 +131,11 @@ const ImportSection = ({ onFinishImport, locale, project, phases }: Props) => {
 
       onFinishImport();
     } catch (e) {
-      handleHookFormSubmissionError(e, methods.setError);
+      if (e.file[0].error.startsWith('bulk')) {
+        methods.setError('files', e.file[0]);
+      } else {
+        handleHookFormSubmissionError(e, methods.setError);
+      }
     }
   };
 
