@@ -75,8 +75,11 @@ class PrintCustomFieldsService
   private
 
   def render_tenant_logo(pdf)
-    pdf.image open AppConfiguration.instance.logo.medium.to_s
-    pdf.move_down 10.mm
+    logo = AppConfiguration.instance.logo&.medium.to_s
+    if logo
+      pdf.image open logo
+      pdf.move_down 10.mm
+    end
   end
 
   def render_form_title(pdf)
@@ -166,27 +169,16 @@ class PrintCustomFieldsService
 
       pdf_group.move_down 7.mm
 
-      if field_type == 'select'
+      case field_type
+      when 'select'
         draw_single_choice(pdf_group, custom_field)
-      end
-
-      if field_type == 'multiselect'
+      when 'multiselect'
         draw_multiple_choice(pdf_group, custom_field)
-      end
-
-      if %w[text text_multiloc].include? field_type
-        draw_text_lines(pdf_group, 1)
-      end
-
-      if %w[multiline_text html_multiloc].include? field_type
-        draw_text_lines(pdf_group, 7)
-      end
-
-      if field_type == 'linear_scale'
+      when 'linear_scale'
         draw_linear_scale(pdf_group, custom_field)
-      end
-
-      if field_type == 'number'
+      when 'multiline_text', 'html_multiloc'
+        draw_text_lines(pdf_group, 7)
+      else # text, text_multiloc, number
         draw_text_lines(pdf_group, 1)
       end
     end
@@ -206,9 +198,7 @@ class PrintCustomFieldsService
 
   def write_description(pdf, custom_field)
     description = custom_field.description_multiloc[locale]
-    is_empty = description.nil? || description == ''
-
-    unless is_empty
+    if description.present?
       pdf.move_down 3.mm
       paragraphs = parse_html_tags(description)
 
