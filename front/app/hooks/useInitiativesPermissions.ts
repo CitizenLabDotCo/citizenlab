@@ -8,14 +8,11 @@ import { ActionPermission } from 'services/actionTakingRules';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';
 
-export type IInitiativeDisabledReason = 'notPermitted';
-
 export default function useInitiativesPermissions(
   actionDescriptorName: IInitiativeActionDescriptorName
 ) {
-  const [actionPermission, setActionPermission] = useState<
-    ActionPermission<InitiativeDisabledReason> | null | undefined
-  >(undefined);
+  const [actionPermission, setActionPermission] =
+    useState<ActionPermission<InitiativeDisabledReason> | null>(null);
   const { data: appConfiguration } = useAppConfiguration();
   const { data: actionDescriptors } = useInitativeActionDescriptors();
   const { data: authUser } = useAuthUser();
