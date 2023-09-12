@@ -20,6 +20,11 @@ import FileUploader from 'components/UI/FileUploader';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
+// form
+// import { useForm, FormProvider } from 'react-hook-form';
+// import { yupResolver } from '@hookform/resolvers/yup';
+// import { object, boolean, string, mixed } from 'yup';
+
 // utils
 import { canContainIdeas, getCurrentPhase } from 'api/phases/utils';
 import { isNilOrError } from 'utils/helperUtils';
@@ -52,6 +57,10 @@ const ImportSection = ({ onFinishImport }: Props) => {
     ? currentPhase?.id
     : undefined;
 
+  // const schema = object({
+  //   files: mixed()
+  // })
+
   const [selectedPhase, setSelectedPhase] = useState<string | undefined>(
     initialPhase
   );
@@ -81,8 +90,8 @@ const ImportSection = ({ onFinishImport }: Props) => {
           onFinishImport();
         },
         onError: (errors: any) => {
-          if (errors.error === 'Internal Server Error') {
-            console.log('sup');
+          if (typeof errors.error === 'string') {
+            console.log(errors.error);
           }
         },
       }
@@ -120,6 +129,7 @@ const ImportSection = ({ onFinishImport }: Props) => {
           files={file ? [file] : null}
           onFileAdd={setFile}
           onFileRemove={removeFile}
+          maximumFiles={1}
         />
       </Box>
 

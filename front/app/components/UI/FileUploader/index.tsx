@@ -26,6 +26,7 @@ export interface Props {
   onFileAdd: (fileToAdd: UploadFile) => void;
   onFileRemove?: (fileToRemove: FileType) => void;
   files: FileType[] | null;
+  maximumFiles?: number;
   apiErrors?: { [fieldName: string]: CLError[] } | null;
 }
 
@@ -36,6 +37,7 @@ const FileUploader = ({
   apiErrors,
   id,
   className,
+  maximumFiles,
 }: Props) => {
   const handleFileOnAdd = (fileToAdd: UploadFile) => {
     if (!files?.find((file) => file.base64 === fileToAdd.base64)) {
@@ -51,9 +53,12 @@ const FileUploader = ({
     };
   const fileNames = files ? files.map((file) => file.name).join(', ') : '';
 
+  const maximumFilesReached =
+    maximumFiles && files ? maximumFiles <= files.length : false;
+
   return (
     <Container className={className} key={id}>
-      <FileInput onAdd={handleFileOnAdd} id={id} />
+      {!maximumFilesReached && <FileInput onAdd={handleFileOnAdd} id={id} />}
       <Error fieldName="file" apiErrors={apiErrors?.file} />
 
       {files &&
