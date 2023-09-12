@@ -29,7 +29,7 @@ export default defineMessages({
   workshopsSupportLink: {
     id: 'app.containers.Admin.tools.workshopsSupportLink',
     defaultMessage:
-      'https://support.citizenlab.co/en/articles/7043867-setting-up-and-moderating-an-online-workshop',
+      'https://support.citizenlab.co/articles/7043867',
   },
   widgetTitle: {
     id: 'app.containers.Admin.tools.widgetTitle',
