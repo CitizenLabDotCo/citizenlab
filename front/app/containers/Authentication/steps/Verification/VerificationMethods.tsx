@@ -68,9 +68,8 @@ const VerificationMethods = memo<Props>(({ onMethodSelected }) => {
 
         Ticket: CL-4042
         */}
-        {(appConfiguration?.data.id ===
-          '743d892a-9489-4765-a546-ecf0943d262d' ||
-          true) && (
+        {appConfiguration?.data.id ===
+          '743d892a-9489-4765-a546-ecf0943d262d' && (
           <Text mb="40px">
             For at stemme på københavnerforslag, skal du være MitID-verificeret
             borger i Københavns Kommune og fyldt 15 år. Hvis du vil stille et
