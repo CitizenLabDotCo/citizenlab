@@ -319,7 +319,6 @@ const AuthModal = ({ setModalOpen }: Props) => {
 
         {currentStep === 'sign-up:verification' && (
           <Verification
-            authenticationData={authenticationData}
             setError={setError}
             onCompleted={transition(currentStep, 'CONTINUE')}
           />
@@ -455,7 +454,6 @@ const AuthModal = ({ setModalOpen }: Props) => {
 
         {currentStep === 'missing-data:verification' && (
           <Verification
-            authenticationData={authenticationData}
             setError={setError}
             onCompleted={transition(currentStep, 'CONTINUE')}
           />
@@ -474,7 +472,6 @@ const AuthModal = ({ setModalOpen }: Props) => {
         {/* verification only */}
         {currentStep === 'verification-only' && (
           <Verification
-            authenticationData={authenticationData}
             setError={setError}
             onCompleted={transition(currentStep, 'CONTINUE')}
           />
