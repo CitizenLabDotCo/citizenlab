@@ -16,6 +16,7 @@ import LocalePicker from './LocalePicker';
 import PhaseSelector from './PhaseSelector';
 import FileUploader from 'components/HookForm/FileUploader';
 import Checkbox from 'components/HookForm/Checkbox';
+import Feedback from 'components/HookForm/Feedback';
 
 // i18n
 import messages from './messages';
@@ -25,6 +26,7 @@ import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { object, string, mixed, boolean } from 'yup';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 // utils
 import { canContainIdeas, getCurrentPhase } from 'api/phases/utils';
@@ -75,7 +77,7 @@ const isTruthy = (value?: boolean) => !!value;
 
 const ImportSection = ({ onFinishImport, locale, project, phases }: Props) => {
   const { formatMessage } = useIntl();
-  const { mutate: addOfflineIdeas, isLoading } = useAddOfflineIdeas();
+  const { mutateAsync: addOfflineIdeas, isLoading } = useAddOfflineIdeas();
 
   const isTimelineProject = !!phases;
 
@@ -115,30 +117,29 @@ const ImportSection = ({ onFinishImport, locale, project, phases }: Props) => {
 
   const projectId = project.data.id;
 
-  const submitFile = ({ files, google_consent: _, ...rest }: FormData) => {
-    addOfflineIdeas(
-      {
+  const submitFile = async ({
+    files,
+    google_consent: _,
+    ...rest
+  }: FormData) => {
+    try {
+      await addOfflineIdeas({
         project_id: projectId,
         pdf: files[0].base64,
         ...rest,
-      },
-      {
-        onSuccess: () => {
-          onFinishImport();
-        },
-        // onError: (errors: any) => {
-        //   if (typeof errors.error === 'string') {
-        //     console.log(errors.error);
-        //   }
-        // },
-      }
-    );
+      });
+
+      onFinishImport();
+    } catch (e) {
+      handleHookFormSubmissionError(e, methods.setError);
+    }
   };
 
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(submitFile)}>
         <Box w="100%" p="24px">
+          <Feedback />
           <Box mb="28px">
             <Text>
               <FormattedMessage

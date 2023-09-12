@@ -42,7 +42,7 @@ module BulkImportIdeas
     end
 
     def parse_text(pages)
-      pages.each_with_index do |page, i|
+      pages.each_with_index2 do |page, i|
         parse_page(page, i + 1)
       end
 
