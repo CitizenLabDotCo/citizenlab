@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import { Spinner } from '@citizenlab/cl2-component-library';
+import { Spinner, Text } from '@citizenlab/cl2-component-library';
 import Centerer from 'components/UI/Centerer';
 
 // hooks
@@ -15,24 +15,12 @@ import { colors, media } from 'utils/styleUtils';
 // typings
 import { TVerificationMethod } from 'api/verification_methods/types';
 import Outlet from 'components/Outlet';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: stretch;
-`;
-
-const Content = styled.div`
-  display: flex;
-  flex-direction: column;
-
-  &.inModal {
-    justify-content: center;
-  }
-
-  ${media.tablet`
-    flex-wrap: wrap;
-  `}
+  justify-content: center;
 `;
 
 const ButtonsContainer = styled.div`
@@ -40,17 +28,14 @@ const ButtonsContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  padding: 28px;
+  background: ${colors.background};
+  border-radius: ${(props) => props.theme.borderRadius};
+  max-width: 650px;
 
-  &.inModal {
-    padding: 28px;
-    background: ${colors.background};
-    border-radius: ${(props) => props.theme.borderRadius};
-    max-width: 650px;
-
-    ${media.phone`
-      padding: 14px;
-    `}
-  }
+  ${media.phone`
+    padding: 14px;
+  `}
 `;
 
 interface Props {
@@ -60,6 +45,7 @@ interface Props {
 
 const VerificationMethods = memo<Props>(({ onMethodSelected }) => {
   const { data: verificationMethods } = useVerificationMethods();
+  const { data: appConfiguration } = useAppConfiguration();
 
   const handleOnMethodSelected = (method: TVerificationMethod) => {
     onMethodSelected(method);
@@ -76,15 +62,28 @@ const VerificationMethods = memo<Props>(({ onMethodSelected }) => {
   if (!isNilOrError(verificationMethods)) {
     return (
       <Container id="e2e-verification-wizard-method-selection-step">
-        <Content className="inModal">
-          <ButtonsContainer className={'inModal'}>
-            <Outlet
-              id="app.components.VerificationModal.buttons"
-              onClick={handleOnMethodSelected}
-              verificationMethods={verificationMethods.data}
-            />
-          </ButtonsContainer>
-        </Content>
+        {/*
+          Custom message for Copenhagen.
+        To be replaced by sturdier solution if more similar requests are made.
+
+        Ticket: CL-4042
+        */}
+        {appConfiguration?.data.id ===
+          '743d892a-9489-4765-a546-ecf0943d262d' && (
+          <Text mb="40px">
+            For at stemme på københavnerforslag, skal du være MitID-verificeret
+            borger i Københavns Kommune og fyldt 15 år. Hvis du vil stille et
+            københavnerforslag, skal du være MitID-verificeret borger i Danmark
+            og fyldt 15 år.
+          </Text>
+        )}
+        <ButtonsContainer>
+          <Outlet
+            id="app.components.VerificationModal.buttons"
+            onClick={handleOnMethodSelected}
+            verificationMethods={verificationMethods.data}
+          />
+        </ButtonsContainer>
       </Container>
     );
   }
