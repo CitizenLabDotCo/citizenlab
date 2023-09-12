@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 // hooks
 import useAddOfflineIdeas from 'api/import_ideas/useAddOfflineIdeas';
@@ -14,7 +14,7 @@ import Link from 'utils/cl-router/Link';
 import { Box, Text, Button } from '@citizenlab/cl2-component-library';
 import LocalePicker from './LocalePicker';
 import PhaseSelector from './PhaseSelector';
-import FileUploader from 'components/UI/FileUploader';
+import FileUploader from 'components/HookForm/FileUploader';
 
 // i18n
 import messages from './messages';
@@ -70,8 +70,6 @@ const getInitialPhaseId = (phases: IPhases) => {
 };
 
 const ImportSection = ({ onFinishImport, locale, project, phases }: Props) => {
-  const [file, setFile] = useState<UploadFile | null>(null);
-
   const { mutate: addOfflineIdeas, isLoading } = useAddOfflineIdeas();
 
   const initialPhaseId = phases ? getInitialPhaseId(phases) : undefined;
@@ -98,10 +96,6 @@ const ImportSection = ({ onFinishImport, locale, project, phases }: Props) => {
   const showPhaseSelector = isTimelineProject;
   const projectId = project.data.id;
 
-  const removeFile = () => {
-    setFile(null);
-  };
-
   const submitFile = ({ files, ...rest }: FormData) => {
     addOfflineIdeas(
       {
@@ -113,11 +107,11 @@ const ImportSection = ({ onFinishImport, locale, project, phases }: Props) => {
         onSuccess: () => {
           onFinishImport();
         },
-        onError: (errors: any) => {
-          if (typeof errors.error === 'string') {
-            console.log(errors.error);
-          }
-        },
+        // onError: (errors: any) => {
+        //   if (typeof errors.error === 'string') {
+        //     console.log(errors.error);
+        //   }
+        // },
       }
     );
   };
@@ -148,13 +142,7 @@ const ImportSection = ({ onFinishImport, locale, project, phases }: Props) => {
           {showPhaseSelector && <PhaseSelector />}
 
           <Box>
-            <FileUploader
-              id="written-ideas-importer"
-              files={file ? [file] : null}
-              onFileAdd={setFile}
-              onFileRemove={removeFile}
-              maximumFiles={1}
-            />
+            <FileUploader name="files" maximumFiles={1} />
           </Box>
 
           <Box w="100%" display="flex" mt="32px">
