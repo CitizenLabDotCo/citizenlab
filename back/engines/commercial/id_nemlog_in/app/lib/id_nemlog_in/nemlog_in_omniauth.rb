@@ -64,7 +64,6 @@ module IdNemlogIn
         first_name: first_name,
         last_name: last_name,
         custom_field_values: {
-          date_of_birth: date_of_birth,
           municipality_code: fetch_municipality_code(cpr_number)
         }
       }
