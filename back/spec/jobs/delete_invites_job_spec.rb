@@ -41,8 +41,6 @@ RSpec.describe DeleteInvitesJob do
     end
 
     it 'logs the activity' do
-      # allow(Time).to receive(:now).and_return(Time.now)
-
       expect { described_class.perform_now(expiry_time) }.to have_enqueued_job(LogActivityJob).with(
         String,
         'bulk_destroy',
@@ -53,7 +51,7 @@ RSpec.describe DeleteInvitesJob do
     end
 
     it 'does not log an activity if no invites were destroyed' do
-      expect { described_class.perform_now(9.days.ago) }.not_to have_enqueued_job(LogActivityJob)
+      expect { described_class.perform_now((expiry_days + 2).days.ago) }.not_to have_enqueued_job(LogActivityJob)
     end
   end
 end
