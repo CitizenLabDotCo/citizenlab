@@ -58,7 +58,6 @@ module IdNemlogIn
     def profile_to_user_attrs(auth)
       first_name    = auth.extra.raw_info['https://data.gov.dk/model/core/eid/firstName']
       last_name     = auth.extra.raw_info['https://data.gov.dk/model/core/eid/lastName']
-      date_of_birth = auth.extra.raw_info['https://data.gov.dk/model/core/eid/dateOfBirth'] # "01-02-1999"
       cpr_number    = auth.extra.raw_info['https://data.gov.dk/model/core/eid/cprNumber']
 
       {

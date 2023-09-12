@@ -66,7 +66,6 @@ describe IdNemlogIn::NemlogInOmniauth do
       first_name: 'Rudolphi',
       last_name: 'Raindeari'
     })
-    expect(user.custom_field_values['date_of_birth']).to eq('28-08-1944')
     expect(user.custom_field_values).to have_key('municipality_code')
     uid = 'https://data.gov.dk/model/core/eid/professional/uuid/82dc2343-7f37-465d-a523-7f3e24feca46'
     expect(user.verifications.first).to have_attributes({
