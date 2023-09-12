@@ -21,9 +21,9 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // form
-// import { useForm, FormProvider } from 'react-hook-form';
-// import { yupResolver } from '@hookform/resolvers/yup';
-// import { object, boolean, string, mixed } from 'yup';
+import { useForm, FormProvider } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { object, string, mixed } from 'yup';
 
 // utils
 import { canContainIdeas, getCurrentPhase } from 'api/phases/utils';
@@ -31,59 +31,83 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // typings
 import { UploadFile, Locale } from 'typings';
+import { IProject } from 'api/projects/types';
+import { IPhases } from 'api/phases/types';
 
-interface Props {
+interface OuterProps {
   onFinishImport: () => void;
 }
 
-const ImportSection = ({ onFinishImport }: Props) => {
-  const { projectId, phaseId } = useParams() as {
-    projectId: string;
-    phaseId: string;
-  };
+interface Props extends OuterProps {
+  project: IProject;
+  phases?: IPhases;
+  locale: Locale;
+}
+
+interface FormData {
+  phase_id?: string;
+  locale: Locale;
+  files: UploadFile[];
+}
+
+const getInitialPhaseId = (phases: IPhases) => {
+  const currentPhase = getCurrentPhase(phases.data);
+  const phasesThatCanContainIdeas = phases.data
+    .filter(canContainIdeas)
+    .map((phase) => phase.id);
+
+  const currentPhaseId = currentPhase?.id;
+
+  if (currentPhaseId && phasesThatCanContainIdeas.includes(currentPhaseId)) {
+    return currentPhase.id;
+  }
+
+  if (phasesThatCanContainIdeas.length === 1) {
+    return phasesThatCanContainIdeas[0];
+  }
+
+  return;
+};
+
+const ImportSection = ({ onFinishImport, locale, project, phases }: Props) => {
   const [file, setFile] = useState<UploadFile | null>(null);
-  const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
 
   const { mutate: addOfflineIdeas, isLoading } = useAddOfflineIdeas();
-  const { data: project } = useProjectById(projectId);
-  const { data: phases } = usePhases(projectId);
-  const platformLocale = useLocale();
 
-  const currentPhase = getCurrentPhase(phases?.data);
-  const phasesThatCanContainIdeas = phases?.data.filter(canContainIdeas);
-  const initialPhase = phasesThatCanContainIdeas
-    ?.map((p) => p.id || undefined)
-    .includes(currentPhase?.id)
-    ? currentPhase?.id
-    : undefined;
+  const initialPhaseId = phases ? getInitialPhaseId(phases) : undefined;
 
-  // const schema = object({
-  //   files: mixed()
-  // })
+  const schema = object({
+    phase_id: string(),
+    locale: string().required(),
+    files: mixed(),
+  });
 
-  const [selectedPhase, setSelectedPhase] = useState<string | undefined>(
-    initialPhase
-  );
+  const defaultValues: FormData = {
+    phase_id: initialPhaseId,
+    locale,
+    files: [],
+  };
 
-  if (isNilOrError(platformLocale) || !project) return null;
-  const locale = selectedLocale ?? platformLocale;
+  const methods = useForm({
+    mode: 'onBlur',
+    defaultValues,
+    resolver: yupResolver(schema),
+  });
 
   const isTimelineProject = project.data.attributes.process_type === 'timeline';
-  const showPhaseSelector = isTimelineProject && !phaseId;
+  const showPhaseSelector = isTimelineProject;
+  const projectId = project.data.id;
 
   const removeFile = () => {
     setFile(null);
   };
 
-  const submitFile = () => {
-    if (!file) return;
-
+  const submitFile = ({ files, ...rest }: FormData) => {
     addOfflineIdeas(
       {
         project_id: projectId,
-        pdf: file.base64,
-        locale,
-        ...(isTimelineProject ? { phase_id: selectedPhase } : {}),
+        pdf: files[0].base64,
+        ...rest,
       },
       {
         onSuccess: () => {
@@ -99,52 +123,73 @@ const ImportSection = ({ onFinishImport }: Props) => {
   };
 
   return (
-    <Box w="100%" p="24px">
-      <Box mb="28px">
-        <Text>
-          <FormattedMessage
-            {...messages.uploadAPdfExcelFile}
-            values={{
-              b: (chunks) => (
-                <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
-              ),
-              hereLink: (
-                <Link to={`/admin/projects/${projectId}/ideaform`}>
-                  <FormattedMessage {...messages.here} />
-                </Link>
-              ),
-            }}
-          />
-        </Text>
-      </Box>
+    <FormProvider {...methods}>
+      <form onSubmit={methods.handleSubmit(submitFile)}>
+        <Box w="100%" p="24px">
+          <Box mb="28px">
+            <Text>
+              <FormattedMessage
+                {...messages.uploadAPdfExcelFile}
+                values={{
+                  b: (chunks) => (
+                    <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
+                  ),
+                  hereLink: (
+                    <Link to={`/admin/projects/${projectId}/ideaform`}>
+                      <FormattedMessage {...messages.here} />
+                    </Link>
+                  ),
+                }}
+              />
+            </Text>
+          </Box>
 
-      <LocalePicker locale={locale} onChange={setSelectedLocale} />
-      {showPhaseSelector && (
-        <PhaseSelector phaseId={selectedPhase} onChange={setSelectedPhase} />
-      )}
+          <LocalePicker />
+          {showPhaseSelector && <PhaseSelector />}
 
-      <Box>
-        <FileUploader
-          id="written-ideas-importer"
-          files={file ? [file] : null}
-          onFileAdd={setFile}
-          onFileRemove={removeFile}
-          maximumFiles={1}
-        />
-      </Box>
+          <Box>
+            <FileUploader
+              id="written-ideas-importer"
+              files={file ? [file] : null}
+              onFileAdd={setFile}
+              onFileRemove={removeFile}
+              maximumFiles={1}
+            />
+          </Box>
 
-      <Box w="100%" display="flex" mt="32px">
-        <Button
-          width="auto"
-          disabled={!file || (isTimelineProject && !selectedPhase)}
-          processing={isLoading}
-          onClick={submitFile}
-        >
-          <FormattedMessage {...messages.upload} />
-        </Button>
-      </Box>
-    </Box>
+          <Box w="100%" display="flex" mt="32px">
+            <Button width="auto" type="submit" processing={isLoading}>
+              <FormattedMessage {...messages.upload} />
+            </Button>
+          </Box>
+        </Box>
+      </form>
+    </FormProvider>
   );
 };
 
-export default ImportSection;
+const ImportSectionWrapper = (props: OuterProps) => {
+  const { projectId } = useParams() as {
+    projectId: string;
+  };
+
+  const locale = useLocale();
+  const { data: project } = useProjectById(projectId);
+  const { data: phases } = usePhases(projectId);
+
+  if (!project || isNilOrError(locale)) return null;
+  if (project.data.attributes.process_type === 'timeline' && !phases) {
+    return null;
+  }
+
+  return (
+    <ImportSection
+      {...props}
+      locale={locale}
+      project={project}
+      phases={phases}
+    />
+  );
+};
+
+export default ImportSectionWrapper;
