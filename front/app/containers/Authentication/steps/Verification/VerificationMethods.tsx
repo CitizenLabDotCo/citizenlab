@@ -64,7 +64,7 @@ const VerificationMethods = memo<Props>(({ onMethodSelected }) => {
       <Container id="e2e-verification-wizard-method-selection-step">
         {/*
           Custom message for Copenhagen.
-        To be replaced by sturdier if more similar requests are made.
+        To be replaced by sturdier solution if more similar requests are made.
 
         Ticket: CL-4042
         */}
