@@ -16,6 +16,8 @@ import ProposalProgressBar from './ProposalProgressBar';
 
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import messages from './messages';
+import globalMessages from 'utils/messages';
+import reactionControlMessages from 'components/ReactionControl/messages';
 import T from 'components/T';
 import { darken } from 'polished';
 import Tippy from '@tippyjs/react';
@@ -152,11 +154,11 @@ const disabledMessages: {
   [key in InitiativeDisabledReason]: MessageDescriptor;
 } = {
   not_permitted: messages.votingNotPermitted,
-  not_active: messages.votingNotActive,
-  not_signed_in: messages.votingNotSignedIn,
-  not_verified: messages.votingNotVerified,
-  missing_data: messages.votingNotMissingData,
-  not_in_group: messages.votingNotInGroup,
+  not_active: reactionControlMessages.completeProfileToReact,
+  not_signed_in: reactionControlMessages.reactingNotSignedIn,
+  not_verified: reactionControlMessages.reactingVerifyToReact,
+  missing_data: reactionControlMessages.completeProfileToReact,
+  not_in_group: globalMessages.notInGroup,
 };
 
 const ProposedNotReacted = ({

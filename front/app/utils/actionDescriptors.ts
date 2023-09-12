@@ -14,6 +14,7 @@ export type PermissionsDisabledReason =
 
 const FIXABLE_REASONS = new Set<string>([
   'not_signed_in',
+  // not_active here means "not registered or blocked or confirmation still required, see user.rb"
   'not_active',
   'not_verified',
   'missing_data',
