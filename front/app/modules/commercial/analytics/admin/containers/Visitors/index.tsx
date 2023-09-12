@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import moment, { Moment } from 'moment';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useAnalytics from 'api/analytics/useAnalytics';
+import { useIntl } from 'utils/cl-intl';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Text } from '@citizenlab/cl2-component-library';
 import ChartFilters from 'containers/Admin/dashboard/overview/ChartFilters';
 import Charts from './Charts';
+import Warning from 'components/UI/Warning';
 
 // utils
 import { getSensibleResolution } from 'containers/Admin/dashboard/overview/getSensibleResolution';
@@ -15,6 +18,24 @@ import { getSensibleResolution } from 'containers/Admin/dashboard/overview/getSe
 // typings
 import { IResolution } from 'components/admin/ResolutionControl';
 import { IOption } from 'typings';
+import { Query, QuerySchema } from 'api/analytics/types';
+import { Response } from '../../components/VisitorsLanguageCard/useVisitorLanguages/typings';
+
+import messages from './messages';
+
+const query = (): Query => {
+  const localesCountQuery: QuerySchema = {
+    fact: 'visit',
+    aggregations: {
+      all: 'count',
+      'dimension_date_first_action.date': 'first',
+    },
+  };
+
+  return {
+    query: localesCountQuery,
+  };
+};
 
 const Visitors = () => {
   const [startAtMoment, setStartAtMoment] = useState<Moment | null | undefined>(
@@ -23,6 +44,19 @@ const Visitors = () => {
   const [endAtMoment, setEndAtMoment] = useState<Moment | null>(moment());
   const [projectId, setProjectId] = useState<string | undefined>();
   const [resolution, setResolution] = useState<IResolution>('month');
+  const { formatMessage } = useIntl();
+
+  const { data: analytics } = useAnalytics<Response>(query());
+
+  useEffect(() => {
+    if (analytics && analytics.data.attributes.length > 0) {
+      const [countData] = analytics.data.attributes;
+      countData &&
+        setStartAtMoment(
+          moment(countData.first_dimension_date_first_action_date)
+        );
+    }
+  }, [analytics]);
 
   const handleChangeTimeRange = (
     startAtMoment: Moment | null,
@@ -38,6 +72,9 @@ const Visitors = () => {
     setProjectId(value);
   };
 
+  if (!analytics || analytics?.data.attributes.length === 0) return null;
+  const [countData] = analytics.data.attributes;
+
   return (
     <>
       <Box width="100%">
@@ -49,6 +86,20 @@ const Visitors = () => {
           onChangeTimeRange={handleChangeTimeRange}
           onProjectFilter={handleProjectFilter}
           onChangeResolution={setResolution}
+          showAllTime={false}
+        />
+      </Box>
+      <Box p="10px">
+        <Warning
+          text={
+            <Text color="primary" m="0px" fontSize="s">
+              {formatMessage(messages.dateInfo, {
+                date: moment(
+                  countData.first_dimension_date_first_action_date
+                ).format('MM/DD/YYYY'),
+              })}
+            </Text>
+          }
         />
       </Box>
 

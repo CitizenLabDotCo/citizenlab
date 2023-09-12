@@ -14,6 +14,7 @@ interface BaseRow {
   'dimension_locales.id': string;
   count_visitor_id: number;
   first_dimension_locales_name: string;
+  first_dimension_date_first_action_date: string;
 }
 
 export interface PieRow {
