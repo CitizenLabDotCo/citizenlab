@@ -8,6 +8,17 @@ module IdNemlogIn
       :omniauth
     end
 
+    def entitled?(auth)
+      # can we assume this setting is always present?
+      issuer = AppConfiguration.instance.settings['verification']['verification_methods'][0]['issuer']
+      return true unless issuer == 'https://kobenhavntaler.kk.dk'
+
+      age = auth.extra.raw_info.attributes['https://data.gov.dk/model/core/eid/age'][0].to_i
+      raise Verification::VerificationService::NotEntitledError, 'under_15_years_of_age' if age < 15
+
+      true
+    end
+
     def id
       'e7378672-add2-4eb1-a73b-77a805797eac'
     end

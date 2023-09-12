@@ -32,8 +32,9 @@ module Verification
               redirect_to url
             rescue VerificationService::VerificationTakenError
               fail_verification('taken')
-            rescue VerificationService::NotEntitledError
-              fail_verification('not_entitled')
+            rescue VerificationService::NotEntitledError => e
+              message = e.why ? "not_entitled_#{e.why}" : 'not_entitled'
+              fail_verification(message)
             end
           end
         rescue ActiveRecord::RecordNotFound
