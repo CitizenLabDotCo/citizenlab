@@ -91,7 +91,9 @@ const ImportSection = ({ onFinishImport, locale, project, phases }: Props) => {
   };
 
   const schema = object({
-    ...(isTimelineProject ? { phase_id: string().required() } : {}),
+    ...(isTimelineProject
+      ? { phase_id: string().required(formatMessage(messages.selectAPhase)) }
+      : {}),
     locale: string().required(),
     files: mixed().test(
       '',

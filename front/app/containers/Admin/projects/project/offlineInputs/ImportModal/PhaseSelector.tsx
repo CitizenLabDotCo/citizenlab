@@ -38,11 +38,6 @@ const PhaseSelectorWrapper = () => {
       <Box w="100%" maxWidth="300px">
         <PhaseSelector label={<FormattedMessage {...messages.addToPhase} />} />
       </Box>
-      <Box display="flex" alignItems="center" mt="12px">
-        <Text m="0" color="error">
-          <FormattedMessage {...messages.selectAnotherPhase} />
-        </Text>
-      </Box>
     </Box>
   );
 };
