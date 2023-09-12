@@ -81,7 +81,7 @@ const PublicComments = ({
   const { data: initiative } = useInitiativeById(initiativeId);
   const { data: idea } = useIdeaById(ideaId);
   const { pathname } = useLocation();
-  const [sortOrder, setSortOrder] = useState<CommentsSort>('-new');
+  const [sortOrder, setSortOrder] = useState<CommentsSort>('new');
   const {
     data: comments,
     isFetchingNextPage,

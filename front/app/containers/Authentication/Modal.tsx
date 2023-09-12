@@ -404,7 +404,6 @@ const AuthModal = ({ setModalOpen }: Props) => {
           currentStep === 'verification-only' ||
           currentStep === 'sign-up:verification') && (
           <Verification
-            authenticationData={authenticationData}
             setError={setError}
             onCompleted={transition(currentStep, 'CONTINUE')}
           />
