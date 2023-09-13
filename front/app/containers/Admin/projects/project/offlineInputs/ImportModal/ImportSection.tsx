@@ -26,7 +26,7 @@ import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { object, string, mixed, boolean } from 'yup';
-import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import { handleCLErrorWrapper } from 'utils/errorUtils';
 
 // utils
 import { canContainIdeas, getCurrentPhase } from 'api/phases/utils';
@@ -125,11 +125,7 @@ const ImportSection = ({ onFinishImport, locale, project, phases }: Props) => {
 
       onFinishImport();
     } catch (e) {
-      if (e.file[0].error.startsWith('bulk')) {
-        methods.setError('file', e.file[0]);
-      } else {
-        handleHookFormSubmissionError(e, methods.setError);
-      }
+      handleCLErrorWrapper(e, methods.setError);
     }
   };
 
