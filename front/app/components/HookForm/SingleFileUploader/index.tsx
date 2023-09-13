@@ -1,10 +1,11 @@
 import React from 'react';
+import { get } from 'lodash-es';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
 import SingleFileInput from 'components/UI/SingleFileUploader/FileInput';
 import FileDisplay from 'components/UI/SingleFileUploader/FileDisplay';
-// import Error from 'components/UI/Error';
+import Error from 'components/UI/Error';
 
 // form
 import { Controller, useFormContext } from 'react-hook-form';
@@ -23,10 +24,12 @@ export interface Props {
 const SingleFileUploader = ({ name }: Props) => {
   const {
     setValue,
-    // formState: { errors },
+    formState: { errors },
     control,
     trigger,
   } = useFormContext();
+
+  const errorMessage = get(errors, name)?.message as string | undefined;
 
   return (
     <>
@@ -73,6 +76,14 @@ const SingleFileUploader = ({ name }: Props) => {
           );
         }}
       />
+      {errorMessage && (
+        <Error
+          marginTop="8px"
+          marginBottom="8px"
+          text={errorMessage}
+          scrollIntoView={false}
+        />
+      )}
     </>
   );
 };
