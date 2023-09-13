@@ -153,7 +153,7 @@ export interface CLErrorsJSON {
 export type CLErrorsWrapper = CLErrorsJSON['json'];
 
 export type RHFErrors =
-  | { message?: string; error?: string; type?: string }
+  | { error: string; message?: string; type?: string; value?: string }
   | undefined;
 
 export interface ImageSizes {
