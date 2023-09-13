@@ -573,8 +573,6 @@ jobs:
       - run:
           command: SEGMENT_API_KEY=$SEGMENT_API_KEY_STAGING SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN SENTRY_DSN=$SENTRY_DSN SENTRY_ENV=$SENTRY_ENV_STAGING POSTHOG_API_KEY=$POSTHOG_API_KEY_STAGING npm run build
           no_output_timeout: "30m"
-      - run:
-          command: rm build/*.map
       - deploy:
           name: Deploy to S3 if tests pass and branch is Master
           command: |
@@ -599,8 +597,6 @@ jobs:
       - run:
           command: SEGMENT_API_KEY=$SEGMENT_API_KEY_PRODUCTION SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN SENTRY_DSN=$SENTRY_DSN POSTHOG_API_KEY=$POSTHOG_API_KEY_PRODUCTION npm run build
           no_output_timeout: "30m"
-      - run:
-          command: rm build/*.map
       - deploy:
           name: Deploy production version
           command: |
