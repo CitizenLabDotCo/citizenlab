@@ -18,6 +18,7 @@ export const getAppConfigurationData = (
   attributes: {
     name: 'wonderville',
     host: 'wonderville.com',
+    created_at: '2020-10-13T09:00:00.000Z',
     settings: {
       core: {
         allowed: true,
