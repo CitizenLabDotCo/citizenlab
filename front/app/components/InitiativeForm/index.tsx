@@ -39,7 +39,6 @@ import { Box } from '@citizenlab/cl2-component-library';
 const ImageAndAttachmentsSection = lazy(
   () => import('./ImagesAndAttachmentsSection')
 );
-import ErrorDisplay from 'components/Form/Components/ErrorDisplay';
 import Warning from 'components/UI/Warning';
 
 // Hooks
@@ -244,7 +243,6 @@ const InitiativeForm = ({
                     maxCharCount={72}
                   />
                 </FormLabel>
-                <ErrorDisplay fieldPath="title_multiloc" />
               </SectionField>
 
               <SectionField id="e2e-initiative-form-description-section">
@@ -259,7 +257,6 @@ const InitiativeForm = ({
                   noVideos
                   noAlign
                 />
-                <ErrorDisplay fieldPath="body_multiloc" />
               </SectionField>
               <Warning>
                 <>

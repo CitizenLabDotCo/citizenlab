@@ -1,11 +1,10 @@
-import React, { useCallback, useState } from 'react';
-import { CLError, CLErrors, ILocationInfo } from 'typings';
+import React from 'react';
+import { ILocationInfo } from 'typings';
 
 // components
 import InitiativeForm, {
   FormValues as FormValues2,
 } from 'components/InitiativeForm';
-import { APIErrorsContext, FormContext } from 'components/Form/contexts';
 
 // style
 import clHistory from 'utils/cl-router/history';
@@ -18,10 +17,6 @@ import useAddInitiative from 'api/initiatives/useAddInitiative';
 import useAddInitiativeImage from 'api/initiative_images/useAddInitiativeImage';
 import useAddInitiativeFile from 'api/initiative_files/useAddInitiativeFile';
 
-import { ApiErrorGetter } from 'components/Form';
-import messages from './messages';
-import { useForm } from 'react-hook-form';
-
 interface Props {
   locationInfo: ILocationInfo | null;
 }
@@ -30,15 +25,6 @@ const InitiativesNewFormWrapper = (_props: Props) => {
   const { mutate: addInitiative } = useAddInitiative();
   const { mutate: addInitiativeImage } = useAddInitiativeImage();
   const { mutate: addInitiativeFile } = useAddInitiativeFile();
-  const [apiErrors, setApiErrors] = useState<CLError[] | undefined>();
-  const {
-    register,
-    handleSubmit,
-    setError,
-    formState: { errors },
-  } = useForm({
-    criteriaMode: 'all',
-  });
 
   const handleOnSubmit = async ({
     position,
@@ -54,7 +40,7 @@ const InitiativesNewFormWrapper = (_props: Props) => {
     const { location_description, location_point_geojson } =
       await parsePosition(position);
 
-    await addInitiative(
+    addInitiative(
       {
         publication_status: 'published',
         title_multiloc,
@@ -91,31 +77,12 @@ const InitiativesNewFormWrapper = (_props: Props) => {
             search: `?new_initiative_id=${initiative.data.id}`,
           });
         },
-        // onError: (error) => {
-        //   // setApiErrors(error.errors);
-        //   // setError('apiErrors', { type: 'manual' });
-        //   handleHookFormSubmissionError(error, )
-        // },
+        onError: (error) => {},
       }
     );
   };
 
-  return (
-    <APIErrorsContext.Provider value={apiErrors}>
-      <FormContext.Provider
-        value={{
-          getApiErrorMessage: () => undefined,
-          showAllErrors: true,
-          setShowAllErrors: () => undefined,
-          setShowSubmitButton: () => undefined,
-          inputId: undefined,
-          onSubmit: () => undefined,
-        }}
-      >
-        <InitiativeForm onSubmit={handleOnSubmit} />
-      </FormContext.Provider>
-    </APIErrorsContext.Provider>
-  );
+  return <InitiativeForm onSubmit={handleOnSubmit} />;
 };
 
 export default InitiativesNewFormWrapper;

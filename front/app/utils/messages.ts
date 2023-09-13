@@ -90,12 +90,6 @@ export default defineMessages({
     id: 'app.utils.errors.default.api_error_even',
     defaultMessage: 'Must be even',
   },
-  api_error_includes_banned_words: {
-    id: 'app.utils.errors.default.api_error_includes_banned_words',
-    defaultMessage:
-      'You may have used one or more words that are considered profanity by {guidelinesLink}. Please alter your text to remove any profanities that might be present.',
-  },
-
   ajv_error_minItems: {
     id: 'app.utils.errors.default.ajv_error_minItems',
     defaultMessage:
