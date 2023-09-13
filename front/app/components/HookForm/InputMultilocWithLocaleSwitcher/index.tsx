@@ -25,9 +25,6 @@ const InputMultilocWithLocaleSwitcher = ({ name, ...rest }: Props) => {
   } = useFormContext();
   const locales = useAppConfigurationLocales();
 
-  console.log('formContextErrors');
-  console.log(formContextErrors);
-
   if (isNilOrError(locales)) {
     return null;
   }
@@ -46,9 +43,6 @@ const InputMultilocWithLocaleSwitcher = ({ name, ...rest }: Props) => {
 
   // If an API error with a matching name has been returned from the API response, apiError is set to an array with the error message as the only item
   const apiError = errors?.error && ([errors] as CLError[]);
-
-  console.log('apiError');
-  console.log(apiError);
 
   return (
     <>

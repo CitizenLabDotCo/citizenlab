@@ -77,7 +77,6 @@ const InitiativesNewFormWrapper = (_props: Props) => {
             search: `?new_initiative_id=${initiative.data.id}`,
           });
         },
-        onError: (error) => {},
       }
     );
   };
