@@ -217,7 +217,7 @@ export const handleCLErrorsIsh = (
 };
 
 export const handleHookFormSubmissionError = (
-  error: Error | CLErrorsJSON,
+  error: Error | CLErrorsJSON | CLErrorsWrapper,
   handleError: (
     name: string,
     error: { type: string; message?: string },
@@ -225,21 +225,14 @@ export const handleHookFormSubmissionError = (
   ) => void,
   fieldArrayKey?: string
 ) => {
-  console.log(error);
-
   if (isCLErrorsJSON(error)) {
     handleCLErrorsJSON(error, handleError, fieldArrayKey);
+  } else if (isCLErrorsWrapper(error)) {
+    handleCLErrorWrapper(error, handleError, fieldArrayKey);
   } else {
-    console.log(1);
-
-    handleError(
-      'title_multiloc',
-      {
-        message: 'You are using faulty language',
-        type: 'manual',
-      },
-      { shouldFocus: true }
-    );
+    handleError('submissionError', {
+      type: 'server',
+    });
   }
 };
 
