@@ -11,6 +11,7 @@ import InitiativeValueSelector from './ValueSelector/InitiativeValueSelector';
 import ProjectFolderValueSelector from './ValueSelector/ProjectFolderValueSelector';
 import ProjectFolderValuesSelector from './ValueSelector/ProjectFolderValuesSelector';
 import NumberValueSelector from './ValueSelector/NumberValueSelector';
+import EventValuesSelector from './ValueSelector/EventValuesSelector';
 
 import CustomFieldOptionValueSelector from './ValueSelector/CustomFieldOptionValueSelector';
 import CustomFieldOptionValuesSelector from './ValueSelector/CustomFieldOptionValuesSelector';
@@ -39,6 +40,7 @@ export type TRuleType = TStaticRuleType | TCustomRuleType;
 
 export type TStaticRuleType =
   | 'email'
+  | 'event_attendances'
   | 'follow'
   | 'lives_in'
   | 'registration_completed_at'
@@ -60,6 +62,7 @@ export type TPredicate = TStaticPredicate | TCustomPredicate;
 type TStaticPredicate =
   | TRolePredicate
   | TEmailPredicate
+  | TEventAttendancePredicate
   | TResidencePredicate
   | TRegistrationCompletedPredicate
   | TParticipatedInProjectPredicate
@@ -97,6 +100,12 @@ type TEmailPredicate =
   | 'not_begins_with'
   | 'ends_on'
   | 'not_ends_on';
+
+type TEventAttendancePredicate =
+  | 'attends_something'
+  | 'attends_nothing'
+  | 'attends_some_of'
+  | 'attends_none_of';
 
 type TResidencePredicate =
   | 'has_value'
@@ -337,6 +346,16 @@ export type TRule =
       value?: string;
     }
   | {
+      ruleType?: 'event_attendances';
+      predicate?: 'attends_something' | 'attends_nothing';
+      value?: undefined;
+    }
+  | {
+      ruleType?: 'event_attendances';
+      predicate?: 'attends_some_of' | 'attends_none_of';
+      value?: string[];
+    }
+  | {
       ruleType?: 'lives_in';
       predicate?: 'has_value' | 'not_has_value';
       /**
@@ -525,6 +544,12 @@ export const ruleTypeConstraints = {
     not_begins_with: TextValueSelector,
     ends_on: TextValueSelector,
     not_ends_on: TextValueSelector,
+  },
+  event_attendances: {
+    attends_something: null,
+    attends_nothing: null,
+    attends_some_of: EventValuesSelector,
+    attends_none_of: EventValuesSelector,
   },
   follow: {
     is_one_of_projects: ProjectValuesSelector,
