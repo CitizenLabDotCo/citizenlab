@@ -115,7 +115,7 @@ pt:
         title: Assunto
         description:
       body:
-        title: Descrição 
+        title: Descrição
         description:
       author_id:
         title: Autor
