@@ -3,23 +3,23 @@
 module BulkImportIdeas
   class ImportIdeasPolicy < ApplicationPolicy
     def show?
-      active_admin_or_project_moderator?
+      active_admin?
     end
 
     def bulk_create?
-      active_admin_or_project_moderator?
+      active_admin?
     end
 
     def example_xlsx?
-      active_admin_or_project_moderator?
+      active_admin?
     end
 
     def draft_ideas?
-      active_admin_or_project_moderator?
+      active_admin?
     end
 
     def idea_import?
-      active_admin_or_project_moderator?
+      active_admin?
     end
 
     private
@@ -30,12 +30,8 @@ module BulkImportIdeas
       user.active?
     end
 
-    # def active_admin?
-    #   active_user? && user.admin?
-    # end
-
-    def active_admin_or_project_moderator?
-      active_user? && (user.admin? || user.project_moderator?)
+    def active_admin?
+      active_user? && user.admin?
     end
   end
 end

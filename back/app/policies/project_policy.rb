@@ -185,3 +185,4 @@ end
 
 ProjectPolicy.prepend(Polls::Patches::ProjectPolicy)
 ProjectPolicy.prepend(IdeaAssignment::Patches::ProjectPolicy)
+ProjectPolicy.prepend(BulkImportIdeas::Patches::ProjectPolicy)
