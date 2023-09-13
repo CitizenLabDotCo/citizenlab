@@ -1505,6 +1505,8 @@
   "app.containers.AdminPage.ProjectEvents.locationLabel": "Lokalizacja",
   "app.containers.AdminPage.ProjectEvents.mapSelectionLabel2": "Określ, gdzie wyświetlany jest znacznik lokalizacji wydarzenia, klikając mapę:",
   "app.containers.AdminPage.ProjectEvents.newEventTitle": "Utwórz nowe wydarzenie",
+  "app.containers.AdminPage.ProjectEvents.onlineEventLinkLabel": "Link do wydarzenia online",
+  "app.containers.AdminPage.ProjectEvents.onlineEventLinkTooltip": "Jeśli Twoje wydarzenie jest dostępne online, dodaj link do niego tutaj.",
   "app.containers.AdminPage.ProjectEvents.refineLocationCoordinates": "Doprecyzuj lokalizację na mapie",
   "app.containers.AdminPage.ProjectEvents.refineOnMap": "Określ lokalizację na mapie",
   "app.containers.AdminPage.ProjectEvents.saveButtonLabel": "Zapisz",

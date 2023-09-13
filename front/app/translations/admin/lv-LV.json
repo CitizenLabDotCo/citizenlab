@@ -1505,6 +1505,8 @@
   "app.containers.AdminPage.ProjectEvents.locationLabel": "Atrašanās vieta",
   "app.containers.AdminPage.ProjectEvents.mapSelectionLabel2": "Uzklikšķinot uz kartes, precizējiet, kur tiek parādīta jūsu notikuma atrašanās vietas zīme:",
   "app.containers.AdminPage.ProjectEvents.newEventTitle": "Izveidot jaunu notikumu",
+  "app.containers.AdminPage.ProjectEvents.onlineEventLinkLabel": "Tiešsaistes saite uz pasākumu",
+  "app.containers.AdminPage.ProjectEvents.onlineEventLinkTooltip": "Ja jūsu pasākums ir pieejams tiešsaistē, pievienojiet saiti uz to šeit.",
   "app.containers.AdminPage.ProjectEvents.refineLocationCoordinates": "Precizēt kartes atrašanās vietu",
   "app.containers.AdminPage.ProjectEvents.refineOnMap": "Precizēt atrašanās vietu kartē",
   "app.containers.AdminPage.ProjectEvents.saveButtonLabel": "Saglabāt",
