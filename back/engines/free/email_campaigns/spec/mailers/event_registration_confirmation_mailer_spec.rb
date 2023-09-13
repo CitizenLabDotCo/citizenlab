@@ -4,17 +4,10 @@ require 'rails_helper'
 
 RSpec.describe EmailCampaigns::EventRegistrationConfirmationMailer do
   describe 'campaign_mail' do
-    let(:event_attributes) do
-      {
-        id: 'event-uuid',
-        title_multiloc: { 'en' => 'title-en', 'la' => 'title-la' },
-        description_multiloc: nil,
-        start_at: Time.zone.parse('2020-05-01 20:00'),
-        end_at: Time.zone.parse('2020-05-01 22:00'),
-        address_1: nil, # rubocop:disable Naming/VariableNumber
-        address_2_multiloc: nil
-      }
-    end
+    let_it_be(:event) { create(:event) }
+    let_it_be(:recipient) { create(:user, locale: 'en') }
+
+    let(:event_attributes) { event.attributes }
 
     let(:event_payload) do
       {
@@ -26,7 +19,6 @@ RSpec.describe EmailCampaigns::EventRegistrationConfirmationMailer do
       }
     end
 
-    let(:recipient) { create(:user, locale: 'en') }
     let(:mail) do
       campaign = EmailCampaigns::Campaigns::EventRegistrationConfirmation.create!
       command = { recipient: recipient, event_payload: event_payload }
@@ -34,7 +26,7 @@ RSpec.describe EmailCampaigns::EventRegistrationConfirmationMailer do
     end
 
     it 'has the correct subject' do
-      event_title = event_attributes[:title_multiloc][recipient.locale]
+      event_title = event_attributes['title_multiloc'][recipient.locale]
       expected_subject = "You're in! Your registration for \"#{event_title}\" is confirmed"
       expect(mail.subject).to eq expected_subject
     end
@@ -43,8 +35,22 @@ RSpec.describe EmailCampaigns::EventRegistrationConfirmationMailer do
       expect(mail.to).to eq([recipient.email])
     end
 
-    it 'renders the sender email' do
+    it 'has the correct sender address' do
       expect(mail.from).to all(end_with('@citizenlab.co'))
+    end
+
+    it 'has the correct ics attachment' do
+      expected_content = Events::IcsGenerator
+        .new.generate_ics(event, recipient.locale)
+        # Remove the UID line as a different one is generated when serializing the event.
+        .gsub(/^UID:.*$/, '')
+
+      content = mail
+        .attachments['event.ics']
+        .body.raw_source
+        .gsub(/^UID:.*$/, '')
+
+      expect(content).to eq(expected_content)
     end
 
     describe 'body' do
@@ -62,7 +68,7 @@ RSpec.describe EmailCampaigns::EventRegistrationConfirmationMailer do
           exact_text: /\s*#{recipient.first_name}, thanks for registering for\s*/
         )
 
-        event_title = event_attributes[:title_multiloc][recipient.locale]
+        event_title = event_attributes['title_multiloc'][recipient.locale]
         expect(first_div).to have_css('+ div', text: event_title)
       end
 
@@ -72,7 +78,7 @@ RSpec.describe EmailCampaigns::EventRegistrationConfirmationMailer do
       end
 
       it 'has an "Add to calendar" button with the correct link' do
-        href = "http://example.org/web_api/v1/events/#{event_attributes[:id]}.ics"
+        href = "http://example.org/web_api/v1/events/#{event_attributes['id']}.ics"
         expect(page).to have_css(%(a[href="#{href}"]), text: 'Add to your calendar')
       end
 
@@ -123,25 +129,31 @@ RSpec.describe EmailCampaigns::EventRegistrationConfirmationMailer do
       end
 
       context 'when the event has a description' do
-        let(:event_description) do
-          { 'en' => 'description-en', 'la' => 'description-la' }
-        end
-
-        before { event_attributes[:description_multiloc] = event_description }
+        include ActionView::Helpers::SanitizeHelper
 
         it 'contains the description' do
+          # Sanity check
+          event_description = event_attributes['description_multiloc']
+          expect(event_description).to be_present
+
           # Check for presence of:
           # <div> Description </div>
           # <div ...> Be there and learn everything about our future! </div>
           label_div = page.find('div', exact_text: /\s*Description\s*/)
-          expect(label_div).to have_css(
-            '+ div', text: event_description[recipient.locale]
-          )
+          description = strip_tags(event_description[recipient.locale])
+          expect(label_div).to have_css('+ div', text: description)
         end
       end
 
       context 'when the event has no description' do
+        before do
+          event_attributes['description_multiloc'] = {}
+        end
+
         it 'does not contain the description' do
+          # Sanity check
+          expect(event_attributes['description_multiloc']).to be_blank
+
           expect(page).not_to have_css('div', text: /\s*Description\s*/)
         end
       end

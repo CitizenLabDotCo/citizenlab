@@ -9,6 +9,15 @@ module EmailCampaigns
     helper_method :add_to_calendar_url, :event_description, :event_location, :event_time,
       :event_title, :project_title
 
+    def campaign_mail
+      attachments['event.ics'] = Events::IcsGenerator.new.generate_ics(
+        Event.find(event.event_attributes.id),
+        locale
+      )
+
+      super
+    end
+
     private
 
     def subject
