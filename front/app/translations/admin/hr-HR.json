@@ -807,7 +807,7 @@
   "app.containers.Admin.projects.project.ideas.consentModalTitle": "Prije nego nastavite",
   "app.containers.Admin.projects.project.survey.analysisButton": "Napravi analizu",
   "app.containers.Admin.projects.project.survey.analysisSelectQuestions": "Odaberite pitanja za analizu",
-  "app.containers.Admin.projects.project.survey.analysisSubtitle": "Otključajte automatizirane sažetke i postavljajte pitanja o svom projektu.",
+  "app.containers.Admin.projects.project.survey.analysisSubtitle": "Otključajte automatizirane sažetke i postavljajte pitanja o svom unosu projekta.",
   "app.containers.Admin.projects.project.survey.analysisTitle": "Analiza pomoću umjetne inteligencije",
   "app.containers.Admin.projects.project.survey.cancel": "Otkazati",
   "app.containers.Admin.projects.project.survey.consentModalButton": "Nastaviti",
