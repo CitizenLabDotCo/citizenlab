@@ -19,7 +19,9 @@ import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useInitiativeStatus from 'api/initiative_statuses/useInitiativeStatus';
-import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
+import useInitiativesPermissions, {
+  InitiativePermissionsDisabledReason,
+} from 'hooks/useInitiativesPermissions';
 import useAddInitiativeReaction from 'api/initiative_reactions/useAddInitiativeReaction';
 import useDeleteInitiativeReaction from 'api/initiative_reactions/useDeleteInitiativeReaction';
 
@@ -41,7 +43,6 @@ import { ProposalsSettings } from 'api/app_configuration/types';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 import ChangesRequested from './ChangesRequested';
 import BorderContainer from '../BorderContainer';
-import { InitiativeDisabledReason } from 'api/initiative_action_descriptors/types';
 
 interface ReactionControlComponentProps {
   initiative: IInitiativeData;
@@ -51,7 +52,7 @@ interface ReactionControlComponentProps {
   onReaction?: () => void;
   onCancelReaction?: () => void;
   onScrollToOfficialFeedback?: () => void;
-  disabledReason?: InitiativeDisabledReason | null | undefined;
+  disabledReason?: InitiativePermissionsDisabledReason | null | undefined;
 }
 
 type TComponentMap = {
@@ -119,6 +120,8 @@ const ReactionControl = ({
   const reactingPermission = useInitiativesPermissions('reacting_initiative');
   const { mutate: addReaction } = useAddInitiativeReaction();
   const { mutate: deleteReaction } = useDeleteInitiativeReaction();
+
+  console.log(reactingPermission?.disabledReason);
 
   if (
     !initiative ||
