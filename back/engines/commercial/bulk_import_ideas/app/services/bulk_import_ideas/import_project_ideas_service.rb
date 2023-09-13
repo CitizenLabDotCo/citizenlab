@@ -34,6 +34,7 @@ module BulkImportIdeas
         return [source_file] if pdf.pages.count <= PAGES_TO_TRIGGER_NEW_PDF # Only need to split if the file is too big
 
         new_pdf = ::HexaPDF::Document.new
+        new_pdf_count = 0
         pdf.pages.each_with_index do |page, index|
           new_pdf.pages << new_pdf.import(page)
           save_to_file =
@@ -43,18 +44,19 @@ module BulkImportIdeas
           if save_to_file
             # TODO: Would be better to send the new_pdf directly to IdeaImportFile, but doesn't seem possible
             # Is all this file opening going to cause issues on S3?
-            file = Rails.root.join('tmp', "import_#{source_file.id}_#{index}.pdf")
+            new_pdf_count += 1
+            file = Rails.root.join('tmp', "import_#{source_file.id}_#{new_pdf_count}.pdf")
             new_pdf.write(file.to_s, validate: false, optimize: true)
             base_64_content = Base64.encode64 file.read
-            # TODO: Delete the tmp file
+            file.delete
 
-            # TODO: Add parent relationship to IdeaImportFile model?
             split_pdf_files << IdeaImportFile.create!(
               import_type: source_file.import_type,
               project: @project,
               num_pages: new_pdf.pages.count,
+              parent: source_file,
               file_by_content: {
-                name: "import_#{index}.pdf",
+                name: "import_#{new_pdf_count}.pdf",
                 content: "data:application/pdf;base64,#{base_64_content}"
               }
             )

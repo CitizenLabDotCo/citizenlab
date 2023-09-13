@@ -33,6 +33,8 @@ describe BulkImportIdeas::ImportProjectIdeasService do
       service.create_files "data:application/pdf;base64,#{base_64_content}"
       expect(BulkImportIdeas::IdeaImportFile.all.count).to eq 3
       expect(BulkImportIdeas::IdeaImportFile.all.pluck(:num_pages)).to match_array [12, 8, 4]
+      expect(BulkImportIdeas::IdeaImportFile.all.pluck(:num_pages)).to match_array [12, 8, 4]
+      expect(BulkImportIdeas::IdeaImportFile.where(parent: nil).pluck(:num_pages)).to eq [12]
     end
 
     it 'raises an error if a PDF file has too many pages (more than 50)' do

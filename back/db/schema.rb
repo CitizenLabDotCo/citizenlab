@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_25_121819) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_13_121819) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -621,6 +621,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_25_121819) do
     t.integer "num_pages", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "parent_id"
+    t.index ["parent_id"], name: "index_idea_import_files_on_parent_id"
     t.index ["project_id"], name: "index_idea_import_files_on_project_id"
   end
 
@@ -1652,6 +1654,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_25_121819) do
   add_foreign_key "groups_projects", "projects"
   add_foreign_key "idea_files", "ideas"
   add_foreign_key "idea_images", "ideas"
+  add_foreign_key "idea_import_files", "idea_import_files", column: "parent_id"
   add_foreign_key "idea_import_files", "projects"
   add_foreign_key "idea_imports", "idea_import_files", column: "file_id"
   add_foreign_key "idea_imports", "ideas"

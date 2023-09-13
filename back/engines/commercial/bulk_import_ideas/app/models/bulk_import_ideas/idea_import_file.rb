@@ -9,16 +9,19 @@
 #  file        :string
 #  name        :string
 #  import_type :string
+#  num_pages   :integer          default(0)
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
-#  num_pages   :integer          default(0)
+#  parent_id   :uuid
 #
 # Indexes
 #
+#  index_idea_import_files_on_parent_id   (parent_id)
 #  index_idea_import_files_on_project_id  (project_id)
 #
 # Foreign Keys
 #
+#  fk_rails_...  (parent_id => idea_import_files.id)
 #  fk_rails_...  (project_id => projects.id)
 #
 module BulkImportIdeas
@@ -30,6 +33,9 @@ module BulkImportIdeas
     mount_base64_file_uploader :file, IdeaImportFileUploader
 
     belongs_to :project, optional: true
+
+    belongs_to :parent, class_name: 'IdeaImportFile', optional: true
+    has_many :children, class_name: 'IdeaImportFile', foreign_key: 'parent_id'
 
     validates :name, presence: true
     validates :file, presence: true, unless: proc { Current.loading_tenant_template }
