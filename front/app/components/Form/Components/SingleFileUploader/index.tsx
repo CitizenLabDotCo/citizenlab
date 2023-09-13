@@ -1,8 +1,8 @@
 import React from 'react';
 
 // components
-import SingleFileInput from './FileInput';
-import FileDisplay from './FileDisplay';
+import SingleFileInput from 'components/UI/SingleFileUploader/FileInput';
+import FileDisplay from 'components/UI/SingleFileUploader/FileDisplay';
 import Error from 'components/UI/Error';
 
 // typings
@@ -61,7 +61,7 @@ const SingleFileUploader = ({
           onDeleteClick={() => {
             onFileRemove();
           }}
-          file={file}
+          fileName={file.name}
         />
       )}
       <ScreenReaderOnly aria-live="polite">
