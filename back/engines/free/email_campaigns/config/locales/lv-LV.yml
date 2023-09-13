@@ -1,80 +1,13 @@
 lv:
   email_campaigns:
     campaign_type_description:
-      "manual": Oficiālie ziņojumi
-      "admin_rights_received": Saņemtās administratora tiesības
-      "comment_deleted_by_admin": Mana komentāra dzēšana
-      "comment_marked_as_spam": Ziņot par surogātpastu komentārā
-      "comment_on_your_comment": Atbilde uz manu komentāru
-      "comment_on_your_idea": Komentārs par manu ideju
-      "comment_on_your_initiative": Komentārs par manu priekšlikumu
-      "cosponsor_of_your_initiative": Lietotājs pieņem manu uzaicinājumu atbalstīt manu priekšlikumu.
-      "first_idea_published": Manas pirmās idejas publicēšana
-      "idea_marked_as_spam": Ziņot par ideju kā surogātpastu
-      "idea_published": Manas idejas publicēšana
-      "initiative_assigned_to_you": Priekšlikuma piešķiršana man
-      "initiative_marked_as_spam": Ziņot par priekšlikumu kā surogātpastu
-      "initiative_published": Mana priekšlikuma publicēšana
-      "invitation_to_cosponsor_initiative": Uzaicinājums līdzfinansēt priekšlikumu
-      "initiative_resubmitted_for_review": Priekšlikums atkārtoti iesniegts pārskatīšanai
-      "invite_received": Uzaicinājums
-      "invite_reminder": Atgādinājums par uzaicinājumu
-      "internal_comment_on_idea_assigned_to_you": Iekšējais komentārs par man piešķirto ieguldījumu
-      "internal_comment_on_idea_you_commented_internally_on": Iekšējs komentārs par ievadītajiem datiem, ko komentēju iekšēji
-      "internal_comment_on_idea_you_moderate": Iekšējs komentārs par ievades datiem projektā vai mapē, ko pārvaldu
-      "internal_comment_on_initiative_assigned_to_you": Iekšējais komentārs par man piešķirto priekšlikumu
-      "internal_comment_on_initiative_you_commented_internally_on": Iekšējs komentārs par priekšlikumu Iekšēji komentēju priekšlikumu
-      "internal_comment_on_unassigned_initiative": Iekšējais komentārs par nepiešķirtu priekšlikumu
-      "internal_comment_on_unassigned_unmoderated_idea": Iekšējais komentārs par nepiešķirtu ievades datu nepiešķirtiem ievades datiem neapsaimniekotā projektā
-      "internal_comment_on_your_internal_comment": Iekšējais komentārs par manu iekšējo komentāru
-      "mention_in_official_feedback": Minēt atjauninājumā
-      "mention_in_internal_comment": Pieminēšana iekšējā komentārā
-      "new_comment_for_admin": Jauns komentārs projektā, kuru es moderēju
-      "new_comment_on_commented_idea": Jauns komentārs par to ideju, kuru es komentēju
-      "new_comment_on_commented_initiative": Jauns komentārs par to priekšlikumu, kuru es komentēju
-      "new_comment_on_reacted_idea": Jauns komentārs par ideju es reaģēju uz
-      "new_comment_on_reacted_initiative": Jauns komentārs par priekšlikumu, par kuru balsoju
-      "new_idea_for_admin": Jauna ideja projektā, kuru es moderēju
-      "new_initiative_for_admin": Jauns priekšlikums
-      "official_feedback_on_commented_idea": Atjaunināta informācija par to ideju, kuru es komentēju
-      "official_feedback_on_commented_initiative": Atjaunināta informācija par to priekšlikumu, kuru es komentēju
-      "official_feedback_on_reacted_idea": Atjauninājums par ideju, uz kuru es reaģēju
-      "official_feedback_on_reacted_initiative": Atjauninājums par priekšlikumu, par kuru balsoju
-      "official_feedback_on_your_idea": Atjaunināta informācija par manu ideju
-      "official_feedback_on_your_initiative": Atjaunināta informācija par manu priekšlikumu
-      "password_reset": Paroles atiestatīšana
-      "project_moderation_rights_received": Saņemtās projekta moderēšanas tiesības
-      "project_folder_moderation_rights_received": Saņemtās mapju pārvaldnieka tiesības
-      "project_phase_started": Jauns projekta posms
-      "project_phase_upcoming": Gaidāmais jaunais projekta posms
-      "status_change_of_commented_idea": Idejas, kuru es komentēju, statusa maiņa
-      "status_change_of_commented_initiative": Priekšlikuma, kuru es komentēju, statusa maiņa
-      "status_change_of_reacted_idea": Statusa maiņa no idejas, uz kuru es reaģēju
-      "status_change_of_reacted_initiative": Statusa izmaiņas priekšlikumam, uz kuru es reaģēju
-      "status_change_of_your_idea": Manas idejas statusa maiņa
-      "status_change_of_your_initiative": Mana priekšlikuma statusa maiņa
-      "threshold_reached_for_admin": Priekšlikums sasniedzis balsošanas slieksni
-      "welcome": Pēc reģistrācijas
-      "admin_digest": Nedēļas pārskats administratoriem
-      "moderator_digest": Nedēļas pārskats projektu vadītājiem
-      "assignee_digest": Nedēļas pārskats par piešķirtajām idejām
-      "user_digest": Nedēļas pārskats
-      "voting_basket_submitted": Balsošanas apstiprināšana
-      "voting_basket_not_submitted": Neiesniegtās balsis
-      "voting_last_chance": Pēdējā iespēja balsot
-      "voting_results": Balsošanas rezultāti
-      "your_proposed_initiatives_digest": Nedēļas pārskats par jūsu priekšlikumiem
-    schedules:
-      weekly:
-        "0": "Ik nedēļu, svētdienās, %{hourOfDay}"
-        "1": "Ik nedēļu, pirmdienās %{hourOfDay}"
-        "2": "Ik nedēļu, otrdienās %{hourOfDay}"
-        "3": "Ik nedēļu, trešdienās %{hourOfDay}"
-        "4": "Ik nedēļu, ceturtdienās %{hourOfDay}"
-        "5": "Ik nedēļu, piektdienās %{hourOfDay}"
-        "6": "Ik nedēļu sestdienās %{atHour}"
+      "1": "Ik nedēļu, pirmdienās %{hourOfDay}"
+      "2": "Ik nedēļu, otrdienās %{hourOfDay}"
+      "3": "Ik nedēļu, trešdienās, %{hourOfDay}"
+      "4": "Ik nedēļu, ceturtdienās, %{hourOfDay}"
+      "5": "Ik nedēļu, piektdienās, %{hourOfDay}"
+      "6": "Ik nedēļu, sestdienās, %{hourOfDay}"
     footer:
-      "link_privacy_policy": "Privātuma politika"
       "link_terms_conditions": "Noteikumi un nosacījumi"
       "link_unsubscribe": "Atteikties"
       "powered_by": "Darbību nodrošina"
@@ -636,6 +569,17 @@ lv:
       body_2: 'Ir publicēti %{phaseTitle} platformas %{organizationName} balsojuma rezultāti!'
       body_3: 'Aicinām iepazīties ar rezultātiem un sekot līdzi turpmākai informācijai par nākamajiem soļiem.'
       cta_see_results: 'Skatiet rezultātus platformā'
+    event_registration_confirmation:
+      subject: "Jūs esat iekļauts! Jūsu reģistrācija \"%{eventTitle}\" ir apstiprināta"
+      event_details:
+        labels:
+          date: 'Datums'
+          location: 'Atrašanās vieta'
+          online_link: 'Tiešsaistes saite'
+          description: 'Apraksts'
+          project: 'Projekts'
+      cta_go_to_event: 'Apskatīt notikumu'
+      cta_add_to_calendar: 'Pievienot kalendāram'
     voting_phase_started:
       subject: '%{organizationName}: Sācies %{projectName}balsošanas posms'
       preheader: 'Sākās balsošanas posms par %{projectName} dalības platformā %{organizationName}.'
@@ -658,6 +602,7 @@ lv:
         managers: 'Vadītāji'
         admins_assigned_to_a_proposal: 'Priekšlikumam piešķirtie administratori'
         admins_and_managers_assigned_to_the_input: 'Ievadei piešķirtie administratori un vadītāji'
+        new_attendee: 'Jaunreģistrēts lietotājs'
         user_who_is_invited_to_cosponsor_a_proposal: 'Lietotājs, kurš ir uzaicināts līdzfinansēt priekšlikumu'
         user_who_is_receiving_admin_rights: 'Lietotājs, kurš saņem administratora tiesības'
         user_who_is_receiving_folder_moderator_rights: 'Lietotājs, kurš saņem mapes moderatora tiesības'
@@ -677,6 +622,7 @@ lv:
       content_type:
         comments: 'Komentāri'
         content_moderation: 'Satura moderēšana'
+        events: 'Notikumi'
         general: 'Vispārīgi'
         inputs: 'Ieejas'
         internal_comments: 'Iekšējās piezīmes'
@@ -731,3 +677,4 @@ lv:
         voting_basket_submitted: 'Tiek iesniegtas balsis'
         7_days_after_invite_is_sent: '7 dienas pēc uzaicinājuma nosūtīšanas'
         7_days_before_the_project_changes_phase: '7 dienas pirms projekta izmaiņu fāzes'
+        registration_to_event: 'Reģistrācija pasākumam'
