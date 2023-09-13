@@ -1,80 +1,13 @@
 de:
   email_campaigns:
     campaign_type_description:
-      "manual": Offizielle Mitteilungen
-      "admin_rights_received": Admin-Rechte erhalten
-      "comment_deleted_by_admin": Löschung eines Kommentars
-      "comment_marked_as_spam": Kommentar wird als Spam markiert
-      "comment_on_your_comment": Antwort auf einen Kommentar
-      "comment_on_your_idea": Kommentar zu einem Beitrag
-      "comment_on_your_initiative": Kommentar zu einem Vorschlag
-      "cosponsor_of_your_initiative": Nutzer*in nimmt meine Einladung an, meinen Vorschlag zu unterstützen
-      "first_idea_published": Veröffentlichung des ersten Beitrags
-      "idea_marked_as_spam": Beitrag wird als Spam gekennzeichnet
-      "idea_published": Veröffentlichung des Beitrags
-      "initiative_assigned_to_you": Zuweisung eines Vorschlags an mich
-      "initiative_marked_as_spam": Vorschlag wird als Spam markiert
-      "initiative_published": Veröffentlichung eines Vorschlags
-      "invitation_to_cosponsor_initiative": Einladung zur Unterstützung eines Vorschlags
-      "initiative_resubmitted_for_review": Vorschlag erneut zur Prüfung eingereicht
-      "invite_received": Einladung
-      "invite_reminder": Einladungserinnerung
-      "internal_comment_on_idea_assigned_to_you": Interner Kommentar zu einem mir zugewiesenen Beitrag
-      "internal_comment_on_idea_you_commented_internally_on": Interner Kommentar zu einem Beitrag, den ich intern kommentiert habe
-      "internal_comment_on_idea_you_moderate": Interner Kommentar zu einem Beitrag in einem von mir verwalteten Projekt oder Ordner
-      "internal_comment_on_initiative_assigned_to_you": Interner Kommentar zu einem mir zugewiesenen Vorschlag
-      "internal_comment_on_initiative_you_commented_internally_on": Interner Kommentar zu einem Vorschlag, den ich intern kommentiert habe
-      "internal_comment_on_unassigned_initiative": Interner Kommentar zu einem nicht zugewiesenen Vorschlag
-      "internal_comment_on_unassigned_unmoderated_idea": Interner Kommentar zu nicht zugewiesenem Beitrag in nicht verwaltetem Projekt
-      "internal_comment_on_your_internal_comment": Interner Kommentar zu meinem internen Kommentar
-      "mention_in_official_feedback": Erwähnung in einem offiziellen Update
-      "mention_in_internal_comment": Erwähnung in einem internen Kommentar
-      "new_comment_for_admin": Neuer Kommentar zu einem Projekt, das ich moderiere
-      "new_comment_on_commented_idea": Neuer Kommentar zu einem Beitrag, der kommentiert wurde
-      "new_comment_on_commented_initiative": Neuer Kommentar zu einem Vorschlag, der kommentiert wurde
-      "new_comment_on_reacted_idea": Neuer Kommentar zu einem Beitrag, auf den ich reagiert habe
-      "new_comment_on_reacted_initiative": Neuer Kommentar zu einem Vorschlag, für den ich gestimmt habe
-      "new_idea_for_admin": Neuer Beitrag zu einem Projekt, das moderiert wird
-      "new_initiative_for_admin": Neuer Vorschlag
-      "official_feedback_on_commented_idea": Offizielles Update zu einem Beitrag, der kommentiert wurde
-      "official_feedback_on_commented_initiative": Offizielles Update zu einem Vorschlag, der kommentiert wurde
-      "official_feedback_on_reacted_idea": Update zu einem Beitrag, auf den ich reagiert habe
-      "official_feedback_on_reacted_initiative": Update zu einem Vorschlag, für den ich abgestimmt habe
-      "official_feedback_on_your_idea": Offizielles Update zu einem Beitrag
-      "official_feedback_on_your_initiative": Update zu einem Vorschlag
-      "password_reset": Zurücksetzen des Passworts
-      "project_moderation_rights_received": Projektmanagementrechte erhalten
-      "project_folder_moderation_rights_received": Ordnermanagementrechte erhalten
-      "project_phase_started": Neue Projektphase
-      "project_phase_upcoming": Bevorstehende neue Projektphase
-      "status_change_of_commented_idea": Statusänderung eines Beitrags, der durch Nutzer*in kommentiert wurde
-      "status_change_of_commented_initiative": Statusänderung eines Vorschlags, der kommentiert wurde
-      "status_change_of_reacted_idea": Statusänderung eines Beitrags, auf den ich reagiert habe
-      "status_change_of_reacted_initiative": Statusänderung eines Vorschlags, auf den ich reagiert habe
-      "status_change_of_your_idea": Statusänderung eines Beitrags
-      "status_change_of_your_initiative": Statusänderung eines Vorschlags
-      "threshold_reached_for_admin": Vorschlag hat die Abstimmungsschwelle erreicht
-      "welcome": Nach der Registrierung
-      "admin_digest": Wöchentliche Übersicht für Admins
-      "moderator_digest": Wöchentliche Übersicht für Ordner- und Projektmanager*innen
-      "assignee_digest": Wöchentliche Übersicht über die zugewiesenen Beiträge
-      "user_digest": Wöchentliche Übersicht
-      "voting_basket_submitted": Bestätigung der Abstimmung
-      "voting_basket_not_submitted": Nicht abgegebene Stimmen
-      "voting_last_chance": Letzte Chance zur Abstimmung
-      "voting_results": Abstimmungsergebnisse
-      "your_proposed_initiatives_digest": Wöchentliche Übersicht eigener Vorschläge
-    schedules:
-      weekly:
-        "0": "Wöchentlich, sonntags um %{hourOfDay}"
-        "1": "Wöchentlich, montags um %{hourOfDay}"
-        "2": "Wöchentlich, dienstags um %{hourOfDay}"
-        "3": "Wöchentlich, mittwochs um %{hourOfDay}"
-        "4": "Wöchentlich, donnerstags um %{hourOfDay}"
-        "5": "Wöchentlich, freitags um %{hourOfDay}"
-        "6": "Wöchentlich, samstags um %{hourOfDay}"
+      "1": "Wöchentlich, montags um %{hourOfDay}"
+      "2": "Wöchentlich, dienstags um %{hourOfDay}"
+      "3": "Wöchentlich, mittwochs um %{hourOfDay}"
+      "4": "Wöchentlich, donnerstags um %{hourOfDay}"
+      "5": "Wöchentlich, freitags um %{hourOfDay}"
+      "6": "Wöchentlich, samstags um %{hourOfDay}"
     footer:
-      "link_privacy_policy": "Impressum & Datenschutz"
       "link_terms_conditions": "Nutzungsbedingungen"
       "link_unsubscribe": "Abbestellen"
       "powered_by": "Ermöglicht durch"
@@ -636,6 +569,17 @@ de:
       body_2: 'Die Ergebnisse der Abstimmung von %{phaseTitle} auf der Plattform %{organizationName} sind veröffentlicht worden!'
       body_3: 'Schauen Sie sich die Ergebnisse an. Wir halten Sie über die nächsten Schritte auf dem Laufenden.'
       cta_see_results: 'Ergebnisse auf der Plattform ansehen'
+    event_registration_confirmation:
+      subject: "Sie sind dabei! Ihre Anmeldung für \"%{eventTitle}\" ist bestätigt"
+      event_details:
+        labels:
+          date: 'Datum'
+          location: 'Ort'
+          online_link: 'Online-Link'
+          description: 'Beschreibung'
+          project: 'projekte'
+      cta_go_to_event: 'Das Ereignis ansehen'
+      cta_add_to_calendar: 'Zu Ihrem Kalender hinzufügen'
     voting_phase_started:
       subject: '%{organizationName}: Die Abstimmungsphase für %{projectName} hat begonnen'
       preheader: 'Die Abstimmungsphase für %{projectName} hat auf der Teilnahme-Plattform %{organizationName} begonnen'
@@ -658,6 +602,7 @@ de:
         managers: 'Manager*innen'
         admins_assigned_to_a_proposal: 'Einem Vorschlag zugewiesene Admins'
         admins_and_managers_assigned_to_the_input: 'Admins & Manager*innen, die dem Beitrag zugewiesen sind'
+        new_attendee: 'Neu registrierter Benutzer'
         user_who_is_invited_to_cosponsor_a_proposal: 'Nutzer*in wird zur Unterstützung eines Vorschlags eingeladen'
         user_who_is_receiving_admin_rights: 'Nutzer*in erhält Admin-Rechte'
         user_who_is_receiving_folder_moderator_rights: 'Nutzer*in erhält Ordner-Moderationsrechte'
@@ -677,6 +622,7 @@ de:
       content_type:
         comments: 'Kommentare'
         content_moderation: 'Inhaltsmoderation'
+        events: 'Veranstaltungen'
         general: 'Allgemein'
         inputs: 'Beiträge'
         internal_comments: 'Interne Kommentare'
@@ -731,3 +677,4 @@ de:
         voting_basket_submitted: 'Stimmen eingereicht'
         7_days_after_invite_is_sent: '7 Tage nach Versand der 1. Einladung'
         7_days_before_the_project_changes_phase: '7 Tage bevor das Projekt die Phase wechselt'
+        registration_to_event: 'Anmeldung zu einer Veranstaltung'
