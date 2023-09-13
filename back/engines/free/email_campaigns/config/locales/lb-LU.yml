@@ -1,80 +1,13 @@
 lb:
   email_campaigns:
     campaign_type_description:
-      "manual": Offiziell Noriichten
-      "admin_rights_received": Administratorrechter kritt
-      "comment_deleted_by_admin": Mäi Kommentar läschen
-      "comment_marked_as_spam": Kommentéiert de Bericht vum Spam
-      "comment_on_your_comment": Eng Äntwert op mäi Kommentar
-      "comment_on_your_idea": E Kommentar zu menger Iddi
-      "comment_on_your_initiative": E Kommentar zu mengem Virschlag
-      "cosponsor_of_your_initiative": E Benotzer akzeptéiert meng Invitatioun fir meng Propositioun ze sponsoren
-      "first_idea_published": Verëffentlechung vu menger éischter Iddi
-      "idea_marked_as_spam": Spambericht iwwer d'Iddien
-      "idea_published": Verëffentlechung vu menger Iddi
-      "initiative_assigned_to_you": E Virschlag gouf mir zougewisen
-      "initiative_marked_as_spam": Spambericht iwwer d'Virschléi
-      "initiative_published": Verëffentlechung vu mengem Virschlag
-      "invitation_to_cosponsor_initiative": Invitatioun fir eng Propositioun ze sponseren
-      "initiative_resubmitted_for_review": Propositioun nees fir Iwwerpréiwung presentéiert
-      "invite_received": Invitatioun
-      "invite_reminder": Invitatiounserënnerung
-      "internal_comment_on_idea_assigned_to_you": Interne Kommentar zum Input, deen mir zougewisen ass
-      "internal_comment_on_idea_you_commented_internally_on": Interne Commentaire op Input Ech kommentéiert intern op
-      "internal_comment_on_idea_you_moderate": Intern Kommentar op Input am Projet oder Dossier ech verwalten
-      "internal_comment_on_initiative_assigned_to_you": Interne Kommentar iwwer d'Propositioun, déi mir zougewisen ass
-      "internal_comment_on_initiative_you_commented_internally_on": Interne Commentaire zu Propositioun ech intern kommentéiert
-      "internal_comment_on_unassigned_initiative": Intern Kommentar iwwer net zougewisen Propositioun
-      "internal_comment_on_unassigned_unmoderated_idea": Intern Kommentar iwwer net zougewisen Input am net verwalteten Projet
-      "internal_comment_on_your_internal_comment": Interne Kommentar zu mengem internen Kommentar
-      "mention_in_official_feedback": Ernimmung an engem Update
-      "mention_in_internal_comment": Ernimmen an engem internen Commentaire
-      "new_comment_for_admin": Neie Kommentar an engem Projet, deen ech moderéieren
-      "new_comment_on_commented_idea": Neie Kommentar zu enger Iddi, déi ech kommentéiert hunn
-      "new_comment_on_commented_initiative": Neie Kommentar zu enger Virschlag, deen ech kommentéiert hunn
-      "new_comment_on_reacted_idea": Neie Kommentar op eng Iddi op déi ech reagéiert hunn
-      "new_comment_on_reacted_initiative": Neie Kommentar zu enger Propositioun fir déi ech gestëmmt hunn
-      "new_idea_for_admin": Nei Iddi an engem Projet, deen ech moderéien
-      "new_initiative_for_admin": Nei Propositioun
-      "official_feedback_on_commented_idea": Update zu enger Iddi, déi ech kommentéiert hunn
-      "official_feedback_on_commented_initiative": Update zu engem Virschlag, deen ech kommentéiert hunn
-      "official_feedback_on_reacted_idea": Update op eng Iddi op déi ech reagéiert hunn
-      "official_feedback_on_reacted_initiative": Update op eng Propositioun, déi ech gestëmmt hunn
-      "official_feedback_on_your_idea": Update zu menger Iddi
-      "official_feedback_on_your_initiative": Update zu mengem Virschlag
-      "password_reset": Passwuert zerécksetzen
-      "project_moderation_rights_received": Moderatiounsrechter fir Projete kritt
-      "project_folder_moderation_rights_received": Administratorrechter fir Dossier'en kritt
-      "project_phase_started": Nei Projetsphas
-      "project_phase_upcoming": Bevirstoend nei Projetsphas
-      "status_change_of_commented_idea": Statusännerung vun enger Iddi, déi ech kommentéiert hunn
-      "status_change_of_commented_initiative": Statusännerung vun engem Virschlag, deen ech kommentéiert hunn
-      "status_change_of_reacted_idea": Status Ännerung vun enger Iddi op ech reagéiert
-      "status_change_of_reacted_initiative": Status Ännerung vun enger Propositioun ech reagéiert fir
-      "status_change_of_your_idea": Statusännerung vu menger Iddi
-      "status_change_of_your_initiative": Statusännerung vu mengem Virschlag
-      "threshold_reached_for_admin": Virschlag huet d'Schwell vun de Stëmmen erreecht. 
-      "welcome": No der Aschreiwung
-      "admin_digest": Wéchentlechen Iwwerbléck fir Verwalteren
-      "moderator_digest": Wéchentlech Iwwersiicht fir Projetsmanageren
-      "assignee_digest": Wéchentlech Iwwersiicht iwwer zougewisen Iddien
-      "user_digest": Wéchentlech Iwwersiicht
-      "voting_basket_submitted": Bestätegung vum Vote
-      "voting_basket_not_submitted": Stëmmen net agereecht
-      "voting_last_chance": Déi lescht Chance fir ze wielen
-      "voting_results": Wahlresultater
-      "your_proposed_initiatives_digest": Wéchentlech Iwwersiicht vun Äre Virschléi
-    schedules:
-      weekly:
-        "0": "Wochemaart, Sonndes um %{hourOfDay}"
-        "1": "Wochemaart, op Méindes %{hourOfDay}"
-        "2": "Wochemaart, op Dënschdes %{hourOfDay}"
-        "3": "Wochemaart, Mëttwochs %{hourOfDay}"
-        "4": "Wochemaart, op Donneschden %{hourOfDay}"
-        "5": "Wochemaart, Freideg %{hourOfDay}"
-        "6": "Wochemaart, Samschdes %{hourOfDay}"
+      "1": "Wochemaart, op Méindes %{hourOfDay}"
+      "2": "Wochemaart, op Dënschdes %{hourOfDay}"
+      "3": "Wochemaart, Mëttwochs um %{hourOfDay}"
+      "4": "Wochemaart, Donneschdes um %{hourOfDay}"
+      "5": "Wochemaart, Freides um %{hourOfDay}"
+      "6": "Wochemaart, Samschdes um %{hourOfDay}"
     footer:
-      "link_privacy_policy": "Dateschutzrichtlinn"
       "link_terms_conditions": "Geschäftsbedéngungen"
       "link_unsubscribe": "Ofmellen"
       "powered_by": "Ënnerstëtzt vun"
@@ -636,6 +569,17 @@ lb:
       body_2: 'D''Resultater vum %{phaseTitle} Vote an der %{organizationName} Plattform sinn publizéiert ginn!'
       body_3: 'Mir encouragéieren Iech d''Resultater z''iwwerpréiwen a bleiwen ofgeschloss fir weider Updates iwwer déi nächst Schrëtt.'
       cta_see_results: 'Gesinn Resultater an der Plattform'
+    event_registration_confirmation:
+      subject: "Dir sidd an! Är Umeldung fir \"%{eventTitle}\" ass bestätegt"
+      event_details:
+        labels:
+          date: 'Datum'
+          location: 'Location'
+          online_link: 'Online Link'
+          description: 'Beschreiwung'
+          project: 'Projet'
+      cta_go_to_event: 'Kuckt d''Evenement'
+      cta_add_to_calendar: 'Füügt an Äre Kalenner'
     voting_phase_started:
       subject: '%{organizationName}: D''Stëmmphase huet fir den %{projectName}ugefaangen'
       preheader: 'D''Stëmmphase huet fir %{projectName} op der Participatiounsplattform vun %{organizationName}ugefaang'
@@ -658,6 +602,7 @@ lb:
         managers: 'Manager'
         admins_assigned_to_a_proposal: 'Administrateuren zu enger Propositioun zougewisen'
         admins_and_managers_assigned_to_the_input: 'Administrateuren & Manager ginn dem Input zougewisen'
+        new_attendee: 'Nei registréiert Benotzer'
         user_who_is_invited_to_cosponsor_a_proposal: 'Benotzer deen invitéiert ass eng Propositioun ze co-sponsoren'
         user_who_is_receiving_admin_rights: 'Benotzer deen Admin Rechter kritt'
         user_who_is_receiving_folder_moderator_rights: 'Benotzer deen Dossier Moderator Rechter kritt'
@@ -677,6 +622,7 @@ lb:
       content_type:
         comments: 'Kommentaren'
         content_moderation: 'Inhalt Moderatioun'
+        events: 'Evenementer'
         general: 'Général'
         inputs: 'Input'
         internal_comments: 'Intern Kommentaren'
@@ -731,3 +677,4 @@ lb:
         voting_basket_submitted: 'D''Stëmmen ginn agereecht'
         7_days_after_invite_is_sent: '7 Deeg no der Invitatioun geschéckt'
         7_days_before_the_project_changes_phase: '7 Deeg virum Projet Ännerungen Phas'
+        registration_to_event: 'Aschreiwung op en Event'
