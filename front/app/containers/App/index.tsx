@@ -354,7 +354,6 @@ const App = ({ children }: Props) => {
                 </ErrorBoundary>
               )}
               <Box
-                width="100vw"
                 display="flex"
                 flexDirection="column"
                 alignItems="stretch"

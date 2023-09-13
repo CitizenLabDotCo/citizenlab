@@ -523,6 +523,7 @@
   "app.containers.Admin.PagesAndMenu.addButton": "Додај на навигациону траку",
   "app.containers.Admin.PagesAndMenu.components.NavbarItemForm.navbarItemTitle": "Име у навигационој траци",
   "app.containers.Admin.PagesAndMenu.components.deletePageConfirmationHidden": "Да ли сте сигурни да желите да избришете ову страницу? Ово се не може поништити.",
+  "app.containers.Admin.PagesAndMenu.components.emptyTitleError": "Наведите наслов за све језике",
   "app.containers.Admin.PagesAndMenu.components.hiddenFromNavigation": "Друге доступне странице",
   "app.containers.Admin.PagesAndMenu.components.savePage": "Сачувај страницу",
   "app.containers.Admin.PagesAndMenu.components.saveSuccess": "Страница је успешно сачувана",
