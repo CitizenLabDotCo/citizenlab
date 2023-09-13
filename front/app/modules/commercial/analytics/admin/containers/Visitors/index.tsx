@@ -5,6 +5,7 @@ import moment, { Moment } from 'moment';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useAnalytics from 'api/analytics/useAnalytics';
 import { useIntl } from 'utils/cl-intl';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 // components
 import { Box, Text } from '@citizenlab/cl2-component-library';
@@ -45,18 +46,29 @@ const Visitors = () => {
   const [projectId, setProjectId] = useState<string | undefined>();
   const [resolution, setResolution] = useState<IResolution>('month');
   const { formatMessage } = useIntl();
-
+  const { data: appConfig } = useAppConfiguration();
   const { data: analytics } = useAnalytics<Response>(query());
+  const [hasPartialVisitorData, setHasPartialVisitorData] = useState(false);
 
   useEffect(() => {
-    if (analytics && analytics.data.attributes.length > 0) {
+    const createdAt = appConfig && moment(appConfig.data.attributes.created_at);
+    if (createdAt && analytics && analytics.data.attributes.length > 0) {
       const [countData] = analytics.data.attributes;
-      countData &&
-        setStartAtMoment(
-          moment(countData.first_dimension_date_first_action_date)
-        );
+      if (!countData) return;
+
+      const uniqueVisitorDataDate = moment(
+        countData.first_dimension_date_first_action_date
+      );
+      const createdAt = moment(appConfig.data.attributes.created_at);
+      const isUniqueVisitorDataAfterCreatedAt =
+        uniqueVisitorDataDate.isAfter(createdAt);
+      setHasPartialVisitorData(isUniqueVisitorDataAfterCreatedAt);
+
+      if (isUniqueVisitorDataAfterCreatedAt) {
+        setStartAtMoment(uniqueVisitorDataDate);
+      }
     }
-  }, [analytics]);
+  }, [analytics, appConfig]);
 
   const handleChangeTimeRange = (
     startAtMoment: Moment | null,
@@ -72,7 +84,8 @@ const Visitors = () => {
     setProjectId(value);
   };
 
-  if (!analytics || analytics?.data.attributes.length === 0) return null;
+  if (!appConfig || !analytics || analytics?.data.attributes.length === 0)
+    return null;
   const [countData] = analytics.data.attributes;
 
   return (
@@ -86,22 +99,24 @@ const Visitors = () => {
           onChangeTimeRange={handleChangeTimeRange}
           onProjectFilter={handleProjectFilter}
           onChangeResolution={setResolution}
-          showAllTime={false}
+          showAllTime={!hasPartialVisitorData}
         />
       </Box>
-      <Box p="10px">
-        <Warning
-          text={
-            <Text color="primary" m="0px" fontSize="s">
-              {formatMessage(messages.dateInfo, {
-                date: moment(
-                  countData.first_dimension_date_first_action_date
-                ).format('MM/DD/YYYY'),
-              })}
-            </Text>
-          }
-        />
-      </Box>
+      {hasPartialVisitorData && (
+        <Box p="10px">
+          <Warning
+            text={
+              <Text color="primary" m="0px" fontSize="s">
+                {formatMessage(messages.dateInfo, {
+                  date: moment(
+                    countData.first_dimension_date_first_action_date
+                  ).format('MM/DD/YYYY'),
+                })}
+              </Text>
+            }
+          />
+        </Box>
+      )}
 
       <Charts
         projectId={projectId}
