@@ -119,4 +119,31 @@ describe IdNemlogIn::NemlogInOmniauth do
 
     expect(response).to redirect_to('/whatever-page?verification_error=true&error=no_token_passed')
   end
+
+  context 'when tenant is Copenhagen' do
+    before do
+      configuration = AppConfiguration.instance
+      settings = configuration.settings
+      settings['verification']['verification_methods'][0]['issuer'] = 'https://kobenhavntaler.kk.dk'
+      configuration.save!
+    end
+
+    it 'does not verify an under 15-year-old' do
+      saml_auth_response.extra.raw_info.attributes['https://data.gov.dk/model/core/eid/age'][0] = '14'
+
+      get "/auth/nemlog_in?token=#{token}&random-passthrough-param=somevalue&pathname=/some-page"
+      follow_redirect!
+
+      expect(response).to redirect_to('/some-page?random-passthrough-param=somevalue&verification_error=true&error=not_entitled_under_15_years_of_age')
+    end
+
+    it 'verifies 15-year-old' do
+      saml_auth_response.extra.raw_info.attributes['https://data.gov.dk/model/core/eid/age'][0] = '15'
+
+      get "/auth/nemlog_in?token=#{token}&random-passthrough-param=somevalue&pathname=/some-page"
+      follow_redirect!
+
+      expect(response).to redirect_to('/en/some-page?random-passthrough-param=somevalue&verification_success=true')
+    end
+  end
 end

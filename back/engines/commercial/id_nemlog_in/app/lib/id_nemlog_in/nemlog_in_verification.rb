@@ -4,14 +4,15 @@ module IdNemlogIn
   module NemlogInVerification
     include Verification::VerificationMethod
 
+    HOSTS_WITH_AGE_MINIMUM_15 = %w[kobenhavntaler.kk.dk]
+
     def verification_method_type
       :omniauth
     end
 
     def entitled?(auth)
-      # can we assume this setting is always present?
       issuer = AppConfiguration.instance.settings['verification']['verification_methods'][0]['issuer']
-      return true unless issuer == 'https://kobenhavntaler.kk.dk'
+      return true unless HOSTS_WITH_AGE_MINIMUM_15.any? { |host| issuer.include?(host) }
 
       age = auth.extra.raw_info.attributes['https://data.gov.dk/model/core/eid/age'][0].to_i
       raise Verification::VerificationService::NotEntitledError, 'under_15_years_of_age' if age < 15
