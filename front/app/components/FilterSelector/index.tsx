@@ -96,6 +96,7 @@ interface Props extends DefaultProps {
   selected: string[];
   className?: string;
   filterSelectorStyle?: 'button' | 'text';
+  minWidth?: string;
 }
 
 const FilterSelector = ({
@@ -109,6 +110,7 @@ const FilterSelector = ({
   top,
   left,
   mobileLeft,
+  minWidth,
   right,
   mobileRight,
   name,
@@ -207,6 +209,7 @@ const FilterSelector = ({
           height={isMobileOrSmaller ? '32px' : '36px'}
           borderRadius="24px"
           onClick={toggleExpanded}
+          minWidth={minWidth ? minWidth : undefined}
         >
           <Box display="flex" gap="8px">
             {currentTitle}

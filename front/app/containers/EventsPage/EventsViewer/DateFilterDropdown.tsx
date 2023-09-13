@@ -60,6 +60,7 @@ const DateFilterDropdown = ({
         textColor={textColor}
         filterSelectorStyle="button"
         top={listTop}
+        minWidth="130px"
       />
     </Box>
   );

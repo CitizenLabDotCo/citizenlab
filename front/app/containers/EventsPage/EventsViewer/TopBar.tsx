@@ -76,7 +76,7 @@ const TopBar = memo<Props>(
                   onChange={setDateFilter}
                   textColor={theme.colors.tenantText}
                   listTop="44px"
-                  mobileLeft={isMobileOrSmaller ? '-60px' : mobileLeft}
+                  mobileLeft={isMobileOrSmaller ? '-70px' : mobileLeft}
                 />
               </Box>
             )}
