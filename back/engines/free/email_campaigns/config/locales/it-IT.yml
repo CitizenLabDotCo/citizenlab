@@ -1,80 +1,13 @@
 it:
   email_campaigns:
     campaign_type_description:
-      "manual": Messaggi ufficiali
-      "admin_rights_received": Diritti di amministratore ricevuti
-      "comment_deleted_by_admin": Cancellazione del mio commento
-      "comment_marked_as_spam": Segnalazione di spam di commenti
-      "comment_on_your_comment": Una risposta al mio commento
-      "comment_on_your_idea": Un commento sulla mia idea
-      "comment_on_your_initiative": Un commento sulla mia proposta
-      "cosponsor_of_your_initiative": Un utente accetta il mio invito a co-sponsorizzare la mia proposta
-      "first_idea_published": Pubblicazione della mia prima idea
-      "idea_marked_as_spam": Segnalazione di spam di idee
-      "idea_published": Pubblicazione della mia idea
-      "initiative_assigned_to_you": Assegnazione di una proposta a me
-      "initiative_marked_as_spam": Rapporto sullo spam della proposta
-      "initiative_published": Pubblicazione della mia proposta
-      "invitation_to_cosponsor_initiative": Invito a co-sponsorizzare una proposta
-      "initiative_resubmitted_for_review": Proposta ripresentata per la revisione
-      "invite_received": Invito
-      "invite_reminder": Promemoria dell'invito
-      "internal_comment_on_idea_assigned_to_you": Commento interno sull'input che mi è stato assegnato
-      "internal_comment_on_idea_you_commented_internally_on": Commento interno su input Ho commentato internamente su
-      "internal_comment_on_idea_you_moderate": Commento interno su un input nel progetto o nella cartella che gestisco
-      "internal_comment_on_initiative_assigned_to_you": Commento interno sulla proposta assegnatami
-      "internal_comment_on_initiative_you_commented_internally_on": Commento interno alla proposta Ho commentato internamente la proposta
-      "internal_comment_on_unassigned_initiative": Commento interno su proposta non assegnata
-      "internal_comment_on_unassigned_unmoderated_idea": Commento interno su un input non assegnato in un progetto non gestito
-      "internal_comment_on_your_internal_comment": Commento interno sul mio commento interno
-      "mention_in_official_feedback": Menzione in un aggiornamento
-      "mention_in_internal_comment": Menzione in un commento interno
-      "new_comment_for_admin": Nuovo commento in un progetto che modero
-      "new_comment_on_commented_idea": Nuovo commento su un'idea che ho commentato
-      "new_comment_on_commented_initiative": Nuovo commento su una proposta che ho commentato
-      "new_comment_on_reacted_idea": Nuovo commento su un'idea a cui ho reagito
-      "new_comment_on_reacted_initiative": Nuovo commento su una proposta che ho votato
-      "new_idea_for_admin": Nuova idea in un progetto che modero
-      "new_initiative_for_admin": Nuova proposta
-      "official_feedback_on_commented_idea": Aggiornamento su un'idea che ho commentato
-      "official_feedback_on_commented_initiative": Aggiornamento su una proposta che ho commentato
-      "official_feedback_on_reacted_idea": Aggiornamento su un'idea a cui ho reagito
-      "official_feedback_on_reacted_initiative": Aggiornamento su una proposta che ho votato
-      "official_feedback_on_your_idea": Aggiornamento sulla mia idea
-      "official_feedback_on_your_initiative": Aggiornamento sulla mia proposta
-      "password_reset": Ripristino della password
-      "project_moderation_rights_received": Diritti di moderazione del progetto ricevuti
-      "project_folder_moderation_rights_received": Diritti di gestione delle cartelle ricevuti
-      "project_phase_started": Nuova fase del progetto
-      "project_phase_upcoming": Prossima nuova fase del progetto
-      "status_change_of_commented_idea": Cambio di stato di un'idea che ho commentato
-      "status_change_of_commented_initiative": Cambio di stato di una proposta che ho commentato
-      "status_change_of_reacted_idea": Cambiamento di stato di un'idea a cui ho reagito
-      "status_change_of_reacted_initiative": Cambiamento di stato di una proposta per la quale ho reagito
-      "status_change_of_your_idea": Cambio di stato della mia idea
-      "status_change_of_your_initiative": Cambio di stato della mia proposta
-      "threshold_reached_for_admin": La proposta ha raggiunto la soglia di voto
-      "welcome": Dopo la registrazione
-      "admin_digest": Panoramica settimanale per gli amministratori
-      "moderator_digest": Panoramica settimanale per i project manager
-      "assignee_digest": Panoramica settimanale delle idee assegnate
-      "user_digest": Panoramica settimanale
-      "voting_basket_submitted": Conferma del voto
-      "voting_basket_not_submitted": Voti non inviati
-      "voting_last_chance": Ultima possibilità di voto
-      "voting_results": Risultati delle votazioni
-      "your_proposed_initiatives_digest": Panoramica settimanale delle tue proposte
-    schedules:
-      weekly:
-        "0": "Settimanalmente, la domenica su %{hourOfDay}"
-        "1": "Settimanalmente, il lunedì %{hourOfDay}"
-        "2": "Settimanalmente, il martedì %{hourOfDay}"
-        "3": "Settimanalmente, il mercoledì %{hourOfDay}"
-        "4": "Settimanalmente, il giovedì %{hourOfDay}"
-        "5": "Settimanalmente, il venerdì %{hourOfDay}"
-        "6": "Settimanalmente, il sabato %{hourOfDay}"
+      "1": "Settimanalmente, il lunedì %{hourOfDay}"
+      "2": "Settimanalmente, il martedì %{hourOfDay}"
+      "3": "Settimanalmente, il mercoledì a %{hourOfDay}"
+      "4": "Settimanalmente, il giovedì a %{hourOfDay}"
+      "5": "Settimanalmente, il venerdì su %{hourOfDay}"
+      "6": "Settimanalmente, il sabato all'indirizzo %{hourOfDay}"
     footer:
-      "link_privacy_policy": "Politica sulla privacy"
       "link_terms_conditions": "Termini e condizioni"
       "link_unsubscribe": "Cancella l'iscrizione"
       "powered_by": "Alimentato da"
@@ -636,6 +569,17 @@ it:
       body_2: 'Sono stati pubblicati i risultati della votazione di %{phaseTitle} nella piattaforma %{organizationName} !'
       body_3: 'Ti invitiamo a esaminare i risultati e a rimanere sintonizzato per ulteriori aggiornamenti sui prossimi passi.'
       cta_see_results: 'Vedi i risultati nella piattaforma'
+    event_registration_confirmation:
+      subject: "Sei dentro! La tua iscrizione a \"%{eventTitle}\" è confermata"
+      event_details:
+        labels:
+          date: 'Data'
+          location: 'Posizione'
+          online_link: 'Link online'
+          description: 'Descrizione'
+          project: 'Progetto'
+      cta_go_to_event: 'Guarda l''evento'
+      cta_add_to_calendar: 'Aggiungi al tuo calendario'
     voting_phase_started:
       subject: '%{organizationName}: La fase di voto è iniziata per %{projectName}'
       preheader: 'La fase di votazione è iniziata per %{projectName} sulla piattaforma di partecipazione di %{organizationName}.'
@@ -658,6 +602,7 @@ it:
         managers: 'Dirigenti'
         admins_assigned_to_a_proposal: 'Amministratori assegnati a una proposta'
         admins_and_managers_assigned_to_the_input: 'Amministratori e manager assegnati all''ingresso'
+        new_attendee: 'Utente appena registrato'
         user_who_is_invited_to_cosponsor_a_proposal: 'Utente che viene invitato a co-sponsorizzare una proposta'
         user_who_is_receiving_admin_rights: 'Utente che riceve i diritti di amministratore'
         user_who_is_receiving_folder_moderator_rights: 'Utente che riceve i diritti di moderatore della cartella'
@@ -677,6 +622,7 @@ it:
       content_type:
         comments: 'Commenti'
         content_moderation: 'Moderazione dei contenuti'
+        events: 'Eventi'
         general: 'Generale'
         inputs: 'Ingressi'
         internal_comments: 'Commenti interni'
@@ -731,3 +677,4 @@ it:
         voting_basket_submitted: 'I voti vengono inviati'
         7_days_after_invite_is_sent: '7 giorni dopo l''invio dell''invito'
         7_days_before_the_project_changes_phase: '7 giorni prima della fase di modifica del progetto'
+        registration_to_event: 'Registrazione ad un evento'
