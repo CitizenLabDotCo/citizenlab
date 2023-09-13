@@ -4,6 +4,7 @@ import {
   Text,
   colors,
   stylingConsts,
+  Spinner,
 } from '@citizenlab/cl2-component-library';
 
 import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
@@ -176,7 +177,9 @@ const InputsList = () => {
                   ref={measureElement}
                 >
                   {isLoaderRow ? (
-                    <div />
+                    <div>
+                      <Spinner />
+                    </div>
                   ) : (
                     <InputListItem
                       key={virtualRow.index}
