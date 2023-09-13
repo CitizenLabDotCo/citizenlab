@@ -6,7 +6,7 @@ import FileDisplay, { FileType } from './FileDisplay';
 import Error from 'components/UI/Error';
 
 // typings
-import { CLError, UploadFile } from 'typings';
+import { CLErrors, UploadFile } from 'typings';
 
 // style
 import styled from 'styled-components';
@@ -27,7 +27,7 @@ export interface Props {
   onFileRemove?: (fileToRemove: FileType) => void;
   files: FileType[] | null;
   maximumFiles?: number;
-  apiErrors?: { [fieldName: string]: CLError[] } | null;
+  apiErrors?: CLErrors | null;
 }
 
 const FileUploader = ({
