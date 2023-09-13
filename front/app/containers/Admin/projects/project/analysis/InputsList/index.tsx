@@ -177,9 +177,9 @@ const InputsList = () => {
                   ref={measureElement}
                 >
                   {isLoaderRow ? (
-                    <div>
+                    <Box mt="12px">
                       <Spinner />
-                    </div>
+                    </Box>
                   ) : (
                     <InputListItem
                       key={virtualRow.index}
