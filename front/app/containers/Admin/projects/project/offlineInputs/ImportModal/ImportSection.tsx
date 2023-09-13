@@ -14,7 +14,7 @@ import Link from 'utils/cl-router/Link';
 import { Box, Text, Button } from '@citizenlab/cl2-component-library';
 import LocalePicker from './LocalePicker';
 import PhaseSelector from './PhaseSelector';
-import FileUploader from 'components/HookForm/FileUploader';
+import SingleFileUploader from 'components/HookForm/SingleFileUploader';
 import Checkbox from 'components/HookForm/Checkbox';
 import Feedback from 'components/HookForm/Feedback';
 
@@ -50,7 +50,7 @@ interface Props extends OuterProps {
 interface FormData {
   phase_id?: string;
   locale: Locale;
-  files: UploadFile[];
+  file?: UploadFile;
   google_consent: false;
 }
 
@@ -88,7 +88,7 @@ const ImportSection = ({ onFinishImport, locale, project, phases }: Props) => {
   const defaultValues: FormData = {
     phase_id: initialPhaseId,
     locale,
-    files: [],
+    file: undefined,
     google_consent: false,
   };
 
@@ -97,11 +97,7 @@ const ImportSection = ({ onFinishImport, locale, project, phases }: Props) => {
       ? { phase_id: string().required(formatMessage(messages.selectAPhase)) }
       : {}),
     locale: string().required(),
-    files: mixed().test(
-      '',
-      formatMessage(messages.pleaseUploadFile),
-      (files: UploadFile[]) => files.length > 0
-    ),
+    file: mixed().required(formatMessage(messages.pleaseUploadFile)),
     google_consent: boolean().test(
       '',
       formatMessage(messages.consentNeeded),
@@ -117,22 +113,20 @@ const ImportSection = ({ onFinishImport, locale, project, phases }: Props) => {
 
   const projectId = project.data.id;
 
-  const submitFile = async ({
-    files,
-    google_consent: _,
-    ...rest
-  }: FormData) => {
+  const submitFile = async ({ file, google_consent: _, ...rest }: FormData) => {
+    if (!file) return;
+
     try {
       await addOfflineIdeas({
         project_id: projectId,
-        pdf: files[0].base64,
+        pdf: file.base64,
         ...rest,
       });
 
       onFinishImport();
     } catch (e) {
       if (e.file[0].error.startsWith('bulk')) {
-        methods.setError('files', e.file[0]);
+        methods.setError('file', e.file[0]);
       } else {
         handleHookFormSubmissionError(e, methods.setError);
       }
@@ -166,7 +160,7 @@ const ImportSection = ({ onFinishImport, locale, project, phases }: Props) => {
           {isTimelineProject && <PhaseSelector />}
 
           <Box>
-            <FileUploader name="files" maximumFiles={1} />
+            <SingleFileUploader name="file" />
           </Box>
 
           <Box mt="24px">
