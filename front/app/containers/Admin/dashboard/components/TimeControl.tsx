@@ -60,7 +60,7 @@ interface Props {
 }
 
 const TimeControl = ({
-  showAllTime = true, // Default value for showAllTime
+  showAllTime = true,
   startAtMoment,
   endAtMoment,
   onChange,
@@ -105,7 +105,7 @@ const TimeControl = ({
   ];
 
   const toggleDropdown = () => {
-    setDropdownOpened(!dropdownOpened);
+    setDropdownOpened((dropdownOpened) => !dropdownOpened);
   };
 
   const handleDatesChange = ({
