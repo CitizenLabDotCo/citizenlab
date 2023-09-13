@@ -6,6 +6,9 @@ import SingleFileInput from 'components/UI/SingleFileUploader/FileInput';
 import FileDisplay from 'components/UI/SingleFileUploader/FileDisplay';
 // import Error from 'components/UI/Error';
 
+// form
+import { Controller, useFormContext } from 'react-hook-form';
+
 // style
 import { ScreenReaderOnly } from 'utils/a11y';
 
@@ -13,38 +16,64 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from 'components/UI/FileUploader/messages';
 
-// typings
-import { UploadFile } from 'typings';
-
 export interface Props {
-  file: UploadFile | null;
+  name: string;
 }
 
-const SingleFileUploader = ({ file }: Props) => {
+const SingleFileUploader = ({ name }: Props) => {
+  const {
+    setValue,
+    // formState: { errors },
+    control,
+    trigger,
+  } = useFormContext();
+
   return (
-    <Box w="100%">
-      {!file?.filename && (
-        <Box mt="0px">
-          <SingleFileInput id="" onAdd={handleFileOnAdd} />
-        </Box>
-      )}
-      {/* <Error fieldName="file" apiErrors={apiErrors?.file} /> */}
-      {file && (
-        <FileDisplay
-          key={file.name}
-          onDeleteClick={() => {
-            onFileRemove();
-          }}
-          fileName={file.filename}
-        />
-      )}
-      <ScreenReaderOnly aria-live="polite">
-        <FormattedMessage
-          {...(file ? messages.a11y_filesToBeUploaded : messages.a11y_noFiles)}
-          values={{ fileNames: file?.name }}
-        />
-      </ScreenReaderOnly>
-    </Box>
+    <>
+      <Controller
+        name={name}
+        control={control}
+        defaultValue={undefined}
+        render={({ field: { ref: _ref, ...field } }) => {
+          const fileName = field?.value?.filename;
+
+          return (
+            <>
+              {!fileName && (
+                <Box mt="0px">
+                  <SingleFileInput
+                    id={name}
+                    onAdd={(file) => {
+                      setValue(name, file);
+                      trigger(name);
+                    }}
+                  />
+                </Box>
+              )}
+              {fileName && (
+                <FileDisplay
+                  key={fileName}
+                  onDeleteClick={() => {
+                    setValue(name, undefined);
+                    trigger(name);
+                  }}
+                  fileName={fileName}
+                />
+              )}
+
+              <ScreenReaderOnly aria-live="polite">
+                <FormattedMessage
+                  {...(fileName
+                    ? messages.a11y_filesToBeUploaded
+                    : messages.a11y_noFiles)}
+                  values={{ fileNames: fileName }}
+                />
+              </ScreenReaderOnly>
+            </>
+          );
+        }}
+      />
+    </>
   );
 };
 
