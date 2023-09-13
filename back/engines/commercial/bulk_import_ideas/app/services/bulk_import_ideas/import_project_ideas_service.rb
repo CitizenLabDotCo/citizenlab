@@ -18,7 +18,6 @@ module BulkImportIdeas
       source_file = upload_source_file file_content
 
       # Split a pdf into smaller documents
-      # TODO: Refactor this into separate method
       split_pdf_files = []
       if source_file&.import_type == 'pdf'
         # Get number of pages in a form from the download
