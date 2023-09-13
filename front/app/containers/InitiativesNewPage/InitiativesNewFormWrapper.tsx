@@ -22,7 +22,7 @@ interface Props {
 }
 
 const InitiativesNewFormWrapper = (_props: Props) => {
-  const { mutate: addInitiative } = useAddInitiative();
+  const { mutateAsync: addInitiative } = useAddInitiative();
   const { mutate: addInitiativeImage } = useAddInitiativeImage();
   const { mutate: addInitiativeFile } = useAddInitiativeFile();
 
@@ -40,7 +40,7 @@ const InitiativesNewFormWrapper = (_props: Props) => {
     const { location_description, location_point_geojson } =
       await parsePosition(position);
 
-    addInitiative(
+    await addInitiative(
       {
         publication_status: 'published',
         title_multiloc,
