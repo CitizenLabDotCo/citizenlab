@@ -1505,6 +1505,8 @@
   "app.containers.AdminPage.ProjectEvents.locationLabel": "Localisation",
   "app.containers.AdminPage.ProjectEvents.mapSelectionLabel2": "Affinez ou corriger l'emplacement du marqueur de votre événement en cliquant sur la carte :",
   "app.containers.AdminPage.ProjectEvents.newEventTitle": "Créer un nouvel événement",
+  "app.containers.AdminPage.ProjectEvents.onlineEventLinkLabel": "Lien vers l'événement en ligne",
+  "app.containers.AdminPage.ProjectEvents.onlineEventLinkTooltip": "Si votre événement est en ligne, ajoutez un lien vers celui-ci ici.",
   "app.containers.AdminPage.ProjectEvents.refineLocationCoordinates": "Affiner la localisation sur la carte",
   "app.containers.AdminPage.ProjectEvents.refineOnMap": "Affiner la localisation sur la carte",
   "app.containers.AdminPage.ProjectEvents.saveButtonLabel": "Enregistrer",
