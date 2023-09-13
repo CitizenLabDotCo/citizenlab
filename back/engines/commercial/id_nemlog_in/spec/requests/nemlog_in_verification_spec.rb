@@ -135,6 +135,9 @@ describe IdNemlogIn::NemlogInOmniauth do
       follow_redirect!
 
       expect(response).to redirect_to('/authentication-error?sso_pathname=%2Fsome-page&sso_response=true&error_code=not_entitled_under_15_years_of_age')
+      expect(user.reload).to have_attributes({
+        verified: false
+      })
     end
 
     it 'verifies 15-year-old' do
@@ -144,6 +147,9 @@ describe IdNemlogIn::NemlogInOmniauth do
       follow_redirect!
 
       expect(response).to redirect_to('/en/some-page?random-passthrough-param=somevalue&verification_success=true')
+      expect(user.reload).to have_attributes({
+        verified: true
+      })
     end
   end
 end
