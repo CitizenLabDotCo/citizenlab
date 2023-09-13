@@ -38,9 +38,9 @@ export default defineMessages({
     defaultMessage: 'Upload',
   },
   googleConsent: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.googleConsent',
+    id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.googleConsent2',
     defaultMessage:
-      'I hereby consent to processing these files using the Google Cloud Form Parser',
+      'I hereby consent to processing this file using the Google Cloud Form Parser',
   },
   consentNeeded: {
     id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.consentNeeded',

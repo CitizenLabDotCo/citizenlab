@@ -73,8 +73,6 @@ const getInitialPhaseId = (phases: IPhases) => {
   return;
 };
 
-const isTruthy = (value?: boolean) => !!value;
-
 const ImportSection = ({ onFinishImport, locale, project, phases }: Props) => {
   const { formatMessage } = useIntl();
   const { mutateAsync: addOfflineIdeas, isLoading } = useAddOfflineIdeas();
@@ -101,7 +99,13 @@ const ImportSection = ({ onFinishImport, locale, project, phases }: Props) => {
     google_consent: boolean().test(
       '',
       formatMessage(messages.consentNeeded),
-      isTruthy
+      (v, context) => {
+        if (context.parent.file?.extension === 'application/pdf') {
+          return !!v;
+        }
+
+        return true;
+      }
     ),
   });
 
@@ -159,12 +163,14 @@ const ImportSection = ({ onFinishImport, locale, project, phases }: Props) => {
             <SingleFileUploader name="file" />
           </Box>
 
-          <Box mt="24px">
-            <Checkbox
-              name="google_consent"
-              label={<FormattedMessage {...messages.googleConsent} />}
-            />
-          </Box>
+          {methods.watch('file')?.extension === 'application/pdf' && (
+            <Box mt="24px">
+              <Checkbox
+                name="google_consent"
+                label={<FormattedMessage {...messages.googleConsent} />}
+              />
+            </Box>
+          )}
 
           <Box w="100%" display="flex" mt="32px">
             <Button width="auto" type="submit" processing={isLoading}>
