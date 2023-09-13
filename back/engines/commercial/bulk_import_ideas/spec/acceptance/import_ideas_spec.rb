@@ -268,6 +268,58 @@ resource 'BulkImportIdeasImportIdeas' do
     end
   end
 
+  context 'when moderator' do
+    before { header_token_for create(:project_moderator, projects: [project]) }
+
+    context 'global import' do
+      post 'web_api/v1/import_ideas/bulk_create_xlsx' do
+        parameter(
+          :xlsx,
+          'Base64 encoded xlsx file with ideas details. See web_api/v1/import_ideas/example_xlsx for the format',
+          scope: :import_ideas,
+          required: true
+        )
+
+        let(:xlsx) { create_bulk_import_ideas_xlsx }
+
+        example 'Bulk import ideas returns unauthorized' do
+          do_request
+          assert_status 401
+        end
+      end
+    end
+
+    context 'project import' do
+      post 'web_api/v1/projects/:id/import_ideas/bulk_create' do
+        parameter(
+          :xlsx,
+          'Base64 encoded xlsx file with ideas details. See web_api/v1/projects/:id/import_ideas/example_xlsx for the format',
+          scope: :import_ideas
+        )
+
+        let(:xlsx) { create_project_bulk_import_ideas_xlsx }
+
+        context 'project can be moderated' do
+          let(:id) { project.id }
+
+          example 'Bulk import ideas is authorized' do
+            do_request
+            assert_status 201
+          end
+        end
+
+        context 'project can NOT be moderated' do
+          let(:id) { create(:project).id }
+
+          example 'Bulk import ideas is NOT authorized' do
+            do_request
+            assert_status 401
+          end
+        end
+      end
+    end
+  end
+
   def create_bulk_import_ideas_xlsx
     hash_array = [
       {
