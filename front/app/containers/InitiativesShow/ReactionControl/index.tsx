@@ -121,8 +121,6 @@ const ReactionControl = ({
   const { mutate: addReaction } = useAddInitiativeReaction();
   const { mutate: deleteReaction } = useDeleteInitiativeReaction();
 
-  console.log(reactingPermission?.disabledReason);
-
   if (
     !initiative ||
     !initiativeStatus ||
