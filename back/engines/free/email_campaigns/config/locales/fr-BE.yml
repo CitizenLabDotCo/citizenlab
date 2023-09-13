@@ -1,80 +1,13 @@
 fr-BE:
   email_campaigns:
     campaign_type_description:
-      "manual": Messages officiels
-      "admin_rights_received": Droits d'administrateur reçus
-      "comment_deleted_by_admin": Suppression de mon commentaire
-      "comment_marked_as_spam": Commenter le rapport de spam
-      "comment_on_your_comment": Une réponse à mon commentaire
-      "comment_on_your_idea": Un commentaire sur mon idée
-      "comment_on_your_initiative": Un commentaire sur mon proposition
-      "cosponsor_of_your_initiative": Un utilisateur accepte mon invitation à co-parrainer ma proposition
-      "first_idea_published": Publication de ma première idée
-      "idea_marked_as_spam": Rapport sur le spam d'idées
-      "idea_published": Publication de mon idée
-      "initiative_assigned_to_you": Attribution en ma faveur d'une proposition
-      "initiative_marked_as_spam": Rapport sur le spam de proposition
-      "initiative_published": Publication de mon proposition
-      "invitation_to_cosponsor_initiative": Invitation à coparrainer une proposition
-      "initiative_resubmitted_for_review": Proposition soumise à nouveau pour examen
-      "invite_received": Invitation
-      "invite_reminder": Rappel d'invitation
-      "internal_comment_on_idea_assigned_to_you": Commentaire interne sur une contribution qui m'est attribuée
-      "internal_comment_on_idea_you_commented_internally_on": Commentaire interne sur une contribution que j'ai commentée en interne
-      "internal_comment_on_idea_you_moderate": Commentaire interne sur les contributions dans le projet ou le dossier que je gère
-      "internal_comment_on_initiative_assigned_to_you": Commentaire interne sur la proposition qui m'a été confiée
-      "internal_comment_on_initiative_you_commented_internally_on": Commentaire interne sur la proposition que j'ai commentée en interne
-      "internal_comment_on_unassigned_initiative": Commentaire interne sur une proposition non attribuée
-      "internal_comment_on_unassigned_unmoderated_idea": Commentaire interne sur une contribution non attribuée dans un projet non géré
-      "internal_comment_on_your_internal_comment": Commentaire interne sur mon commentaire interne
-      "mention_in_official_feedback": Mention dans une mise à jour
-      "mention_in_internal_comment": Mention dans un commentaire interne
-      "new_comment_for_admin": Nouveau commentaire dans un projet que je modère
-      "new_comment_on_commented_idea": Nouveau commentaire sur une idée que j'ai commentée
-      "new_comment_on_commented_initiative": Nouveau commentaire sur une proposition que j'ai commentée
-      "new_comment_on_reacted_idea": Nouveau commentaire sur une idée à laquelle j'ai réagi
-      "new_comment_on_reacted_initiative": Nouveau commentaire sur une proposition pour laquelle j'ai voté
-      "new_idea_for_admin": Nouvelle idée dans un projet que je modère
-      "new_initiative_for_admin": Nouvelle proposition
-      "official_feedback_on_commented_idea": Mise à jour d'une idée que j'ai commentée
-      "official_feedback_on_commented_initiative": Mise à jour d'une proposition que j'ai commentée
-      "official_feedback_on_reacted_idea": Mise à jour d'une idée à laquelle j'ai réagi
-      "official_feedback_on_reacted_initiative": Mise à jour d'une proposition pour laquelle j'ai voté
-      "official_feedback_on_your_idea": Mise à jour de mon idée
-      "official_feedback_on_your_initiative": Mise à jour de mon proposition
-      "password_reset": Réinitialisation du mot de passe
-      "project_moderation_rights_received": Droits de modération de projet reçus
-      "project_folder_moderation_rights_received": Droits d'administrateur de dossiers reçus
-      "project_phase_started": Nouvelle phase de projet
-      "project_phase_upcoming": Nouvelle phase de projet à venir
-      "status_change_of_commented_idea": Changement de statut d'une idée que j'ai commentée
-      "status_change_of_commented_initiative": Changement de statut d'une proposition que j'ai commentée
-      "status_change_of_reacted_idea": Changement de statut d'une idée à laquelle j'ai réagi
-      "status_change_of_reacted_initiative": Changement de statut d'une proposition pour laquelle j'ai réagi
-      "status_change_of_your_idea": Changement de statut de mon idée
-      "status_change_of_your_initiative": Changement de statut de mon proposition
-      "threshold_reached_for_admin": La proposition a atteint le seuil de vote
-      "welcome": Après inscription
-      "admin_digest": Aperçu hebdomadaire pour les administrateurs
-      "moderator_digest": Aperçu hebdomadaire pour les administrateurs projet
-      "assignee_digest": Aperçu hebdomadaire des idées attribuées
-      "user_digest": Aperçu hebdomadaire
-      "voting_basket_submitted": Confirmation de vote
-      "voting_basket_not_submitted": Votes non soumis
-      "voting_last_chance": Dernière chance pour voter
-      "voting_results": Résultats du vote
-      "your_proposed_initiatives_digest": Aperçu hebdomadaire de vos propositions
-    schedules:
-      weekly:
-        "0": "Chaque semaine, le dimanche à %{hourOfDay}"
-        "1": "Chaque semaine, le lundi à %{hourOfDay}"
-        "2": "Chaque semaine, le mardi à %{hourOfDay}"
-        "3": "Chaque semaine, le mercredi à %{hourOfDay}"
-        "4": "Chaque semaine, le jeudi à %{hourOfDay}"
-        "5": "Chaque semaine, le vendredi à %{hourOfDay}"
-        "6": "Chaque semaine, le samedi à %{hourOfDay}"
+      "1": "Chaque semaine, le lundi à %{hourOfDay}"
+      "2": "Chaque semaine, le mardi à %{hourOfDay}"
+      "3": "Chaque semaine, le mercredi à %{hourOfDay}"
+      "4": "Chaque semaine, le jeudi à %{hourOfDay}"
+      "5": "Chaque semaine, le vendredi à %{hourOfDay}"
+      "6": "Chaque semaine, le samedi à %{hourOfDay}"
     footer:
-      "link_privacy_policy": "Politique de confidentialité"
       "link_terms_conditions": "Conditions Générales d'Utilisation"
       "link_unsubscribe": "Se désabonner"
       "powered_by": "Généré par"
@@ -143,11 +76,11 @@ fr-BE:
       preheader: '%{authorName} a commenté votre initiative pour %{organizationName}'
     cosponsor_of_your_initiative:
       cta_reply_to: 'Voir votre proposition'
-      event_description_initiative: 'Félicitations ! %{cosponsorName} a accepté votre invitation à co-parrainer votre proposition.'
-      event_description_cosponsoring: 'Le co-parrainage d''une proposition signifie que <strong>votre nom sera affiché</strong> avec les noms des autres co-parrains de la proposition.'
-      main_header: '%{cosponsorName} a accepté votre invitation à coparrainer votre proposition'
-      subject: '%{cosponsorName} a accepté votre invitation à coparrainer votre proposition'
-      preheader_initiative: '%{cosponsorName} a accepté votre invitation à coparrainer votre proposition'
+      event_description_initiative: 'Félicitations ! %{cosponsorName} a accepté de soutenir votre proposition.'
+      event_description_cosponsoring: 'Soutenir une proposition implique que <strong>votre nom sera affiché</strong> avec les noms des autres soutiens de la proposition.'
+      main_header: '%{cosponsorName} a accepté de soutenir votre proposition'
+      subject: '%{cosponsorName} a accepté de soutenir votre proposition'
+      preheader_initiative: '%{cosponsorName} a accepté de soutenir votre proposition'
     assignee_digest:
       subject: 'Idées en attente de mise à jour: %{numberIdeas}'
       preheader: 'Rapport de gestion de %{organizationName}'
@@ -189,19 +122,19 @@ fr-BE:
       subject: 'Vous avez une attribution sur la plate-forme de %{organizationName}'
       preheader_initiative: 'L''initiative de %{authorName} vous a été attribuée'
     invitation_to_cosponsor_initiative:
-      cta_reply_to: 'Co-sponsoriser cette proposition'
-      event_description_initiative: '%{authorName} a élaboré une nouvelle proposition et aimerait que vous la coparrainiez.'
-      event_description_cosponsoring: 'Le co-parrainage d''une proposition signifie que <strong>votre nom sera affiché</strong> avec les noms des autres co-parrains de la proposition.'
+      cta_reply_to: 'Soutenir cette proposition'
+      event_description_initiative: '%{authorName} a créé une nouvelle proposition et aimerait que vous la souteniez.'
+      event_description_cosponsoring: 'Soutenir une proposition implique que <strong>votre nom sera affiché</strong> avec les noms des autres soutiens de la proposition.'
       event_description_action: 'Cliquez ci-dessous pour lire la proposition.'
-      main_header: 'Vous avez été invité à co-parrainer une proposition'
-      subject: 'Vous avez été invité à co-parrainer une proposition'
-      preheader_initiative: 'Vous avez été invité à coparrainer la proposition de %{authorName}'
+      main_header: 'Vous avez été invité à soutenir une proposition'
+      subject: 'Vous avez été invité à soutenir une proposition'
+      preheader_initiative: 'Vous avez été invité à soutenir la proposition de %{authorName}'
     initiative_resubmitted_for_review:
       by_author: 'par %{authorName}'
       cta_reply_to: 'Faites votre retour à %{authorName}'
-      event_description_initiative: 'Une proposition a été soumise à nouveau pour examen. Donnez votre avis en rédigeant une mise à jour officielle ou en modifiant son statut.'
-      main_header: '%{firstName}vous avez une proposition à examiner'
-      subject: 'Vous avez une proposition à examiner sur la plateforme de %{organizationName}'
+      event_description_initiative: 'Une proposition a été soumise à nouveau pour examen. Donnez votre retour en rédigeant une mise à jour officielle ou en modifiant son statut.'
+      main_header: '%{firstName}, vous avez une proposition à examiner'
+      subject: 'Vous avez une proposition à vérifier sur la plateforme de %{organizationName}'
       preheader_initiative: 'La proposition de %{authorName} a été soumise à nouveau pour examen.'
     invite_reminder:
       cta_accept_invitation: 'Accepter votre invitation'
@@ -636,6 +569,17 @@ fr-BE:
       body_2: 'Les résultats du vote pour %{phaseTitle} sur la plateforme %{organizationName} ont été publiés !'
       body_3: 'Nous vous invitons à prendre connaissance des résultats et à rester attentifs pour de futures mises à jour concernant les prochaines étapes.'
       cta_see_results: 'Voir les résultats sur la plateforme'
+    event_registration_confirmation:
+      subject: "Vous êtes inscrit ! Votre inscription à \"%{eventTitle}\" est confirmée"
+      event_details:
+        labels:
+          date: 'Date'
+          location: 'Lieu'
+          online_link: 'Lien en ligne'
+          description: 'Description'
+          project: '{tenantName, select, frw {communes} other {projets}}'
+      cta_go_to_event: 'Voir l''événement'
+      cta_add_to_calendar: 'Ajouter à votre calendrier'
     voting_phase_started:
       subject: '%{organizationName}: La phase de vote a commencé pour %{projectName}'
       preheader: 'La phase de vote a commencé pour %{projectName} sur la plateforme de participation de %{organizationName}'
@@ -658,7 +602,8 @@ fr-BE:
         managers: 'Gestionnaires'
         admins_assigned_to_a_proposal: 'Administrateurs assignés à une proposition'
         admins_and_managers_assigned_to_the_input: 'Les administrateurs et les gestionnaires assignés à la contribution'
-        user_who_is_invited_to_cosponsor_a_proposal: 'Utilisateur invité à co-parrainer une proposition'
+        new_attendee: 'Utilisateur nouvellement inscrit'
+        user_who_is_invited_to_cosponsor_a_proposal: 'L''utilisateur invité à soutenir la proposition'
         user_who_is_receiving_admin_rights: 'L''utilisateur qui reçoit les droits d''administrateur'
         user_who_is_receiving_folder_moderator_rights: 'L''utilisateur qui reçoit les droits de gestionnaire de dossier'
         user_who_is_receiving_project_moderator_rights: 'L''utilisateur qui reçoit les droits de gestionnaire de projet'
@@ -677,6 +622,7 @@ fr-BE:
       content_type:
         comments: 'Commentaires'
         content_moderation: 'Modération du contenu'
+        events: 'Événements'
         general: 'Général'
         inputs: 'Contributions'
         internal_comments: 'Commentaires internes'
@@ -702,8 +648,8 @@ fr-BE:
         internal_comment_is_posted_on_initiative_user_has_commented_internally_on: 'Un commentaire interne est publié sur la proposition que l''utilisateur a commentée en interne'
         internal_comment_is_posted_on_unassigned_initiative: 'Un commentaire interne est publié sur une proposition non attribuée'
         internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Un commentaire interne est publié sur une entrée non attribuée dans un projet non géré'
-        user_accepts_invitation_to_cosponsor_a_proposal: 'L''utilisateur accepte l''invitation à co-parrainer une proposition'
-        user_is_invited_to_cosponsor_a_proposal: 'L''utilisateur est invité à co-parrainer une proposition'
+        user_accepts_invitation_to_cosponsor_a_proposal: 'Un utilisateur accepte de soutenir une proposition'
+        user_is_invited_to_cosponsor_a_proposal: 'Un utilisateur est invité à soutenir une proposition'
         user_is_mentioned_in_internal_comment: 'L''utilisateur est mentionné dans un commentaire interne'
         new_input_is_published: 'Une nouvelle contribution a été postée'
         new_proposal_is_posted: 'Publication d''une nouvelle proposition'
@@ -731,3 +677,4 @@ fr-BE:
         voting_basket_submitted: 'Les votes sont soumis'
         7_days_after_invite_is_sent: '7 jours après l''envoi de l''invitation'
         7_days_before_the_project_changes_phase: '7 jours avant le changement de phase du projet'
+        registration_to_event: 'Inscription à un événement'
