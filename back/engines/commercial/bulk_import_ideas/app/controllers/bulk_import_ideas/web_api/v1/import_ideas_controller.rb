@@ -20,7 +20,7 @@ module BulkImportIdeas
       ).serializable_hash, status: :created
     rescue BulkImportIdeas::Error => e
       sidefx.after_failure current_user
-      render json: { file: [{ error: e.key, **e.params }] }, status: :unprocessable_entity
+      render json: { errors: { file: [{ error: e.key, **e.params }] } }, status: :unprocessable_entity
     end
 
     def example_xlsx
