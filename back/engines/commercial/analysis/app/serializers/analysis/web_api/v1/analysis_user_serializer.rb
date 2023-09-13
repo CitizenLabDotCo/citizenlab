@@ -15,12 +15,12 @@ module Analysis
           :updated_at
 
         attribute :last_name do |object, params|
-          name_service = UserDisplayNameService.new(params[:app_configuration].name, current_user(params))
+          name_service = UserDisplayNameService.new(params[:app_configuration], current_user(params))
           name_service.last_name(object)
         end
 
         attribute :first_name do |object, params|
-          name_service = UserDisplayNameService.new(params[:app_configuration].name, current_user(params))
+          name_service = UserDisplayNameService.new(params[:app_configuration], current_user(params))
           name_service.first_name(object)
         end
 

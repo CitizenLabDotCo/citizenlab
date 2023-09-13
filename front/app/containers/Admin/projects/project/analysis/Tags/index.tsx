@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { omit } from 'lodash-es';
+import { isEqual, omit, uniq } from 'lodash-es';
 
 import { useParams } from 'react-router-dom';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
@@ -24,6 +24,7 @@ import Tag from './Tag';
 import AutotaggingModal from './AutoTaggingModal';
 import TagCount from './TagCount';
 import AddTag from './AddTag';
+import TagAssistance from './TagAssistance';
 
 import { useQueryClient } from '@tanstack/react-query';
 import inputsKeys from 'api/analysis_inputs/keys';
@@ -71,6 +72,9 @@ const Tags = () => {
   const [autotaggingModalIsOpened, setAutotaggingModalIsOpened] =
     useState(false);
   const [createdTagId, setCreatedTagId] = useState<string | null>(null);
+  const [tagAssistanceTagId, setTagAssistanceTagId] = useState<string | null>(
+    null
+  );
 
   const filters = useAnalysisFilterParams();
 
@@ -92,6 +96,7 @@ const Tags = () => {
         tagElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
       setCreatedTagId(null);
+      setTagAssistanceTagId(createdTagId);
     }
   }, [createdTagId, tags]);
 
@@ -112,6 +117,15 @@ const Tags = () => {
   // below of code using `selectedTags`
   // https://github.com/microsoft/TypeScript/issues/44373
   const selectedTags = filters.tag_ids as any[] | undefined;
+
+  // We show the empty state in case the only tags there are the initial
+  // onboarding example tags
+  const emptyState =
+    tags?.data &&
+    isEqual(
+      ['onboarding_example'],
+      uniq(tags.data.map((tag) => tag.attributes.tag_type))
+    );
 
   const toggleTagContainerClick = (id: string) => {
     updateSearchParams({ tag_ids: [id] });
@@ -137,9 +151,22 @@ const Tags = () => {
   };
 
   return (
-    <Box>
+    <Box display="flex" flexDirection="column" height="100%">
+      <TagAssistance
+        tagId={tagAssistanceTagId}
+        onHide={() => setTagAssistanceTagId(null)}
+      />
+      <Modal
+        opened={autotaggingModalIsOpened}
+        close={() => setAutotaggingModalIsOpened(false)}
+      >
+        <AutotaggingModal
+          onCloseModal={() => setAutotaggingModalIsOpened(false)}
+        />
+      </Modal>
       <Box>
         <Button
+          id="auto-tag-button"
           onClick={() => setAutotaggingModalIsOpened(true)}
           icon="flash"
           mb="12px"
@@ -147,7 +174,7 @@ const Tags = () => {
           buttonStyle="admin-dark"
         >
           {formatMessage(translations.autoTag)}
-          {!tags?.data.length && (
+          {emptyState && (
             <BlickingIcon
               name={'dot'}
               width="16px"
@@ -184,11 +211,8 @@ const Tags = () => {
             filteredCount={filteredInputsWithoutTags}
           />
         </TagContainer>
-        {!isLoadingTags && tags?.data.length === 0 && (
-          <Text p="6px" color="grey400">
-            {formatMessage(translations.noTags)}
-          </Text>
-        )}
+      </Box>
+      <Box flex="1" overflow="auto">
         {tags?.data.map((tag) => (
           <TagContainer
             id={`tag-${tag.id}`}
@@ -241,15 +265,14 @@ const Tags = () => {
             </Box>
           </TagContainer>
         ))}
+        {!isLoadingTags && emptyState && (
+          <Box>
+            <Text p="6px" color="grey600" textAlign="center">
+              {formatMessage(translations.noTags)}
+            </Text>
+          </Box>
+        )}
       </Box>
-      <Modal
-        opened={autotaggingModalIsOpened}
-        close={() => setAutotaggingModalIsOpened(false)}
-      >
-        <AutotaggingModal
-          onCloseModal={() => setAutotaggingModalIsOpened(false)}
-        />
-      </Modal>
     </Box>
   );
 };

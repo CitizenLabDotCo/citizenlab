@@ -1,4 +1,9 @@
-import { Box, Button, Text } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Button,
+  Text,
+  IconTooltip,
+} from '@citizenlab/cl2-component-library';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
@@ -68,16 +73,32 @@ const SummarizeButton = () => {
         {formatMessage(translations.summarize)}
         <br />
         <Text fontSize="s" m="0" color="grey600" whiteSpace="nowrap">
-          {summaryPossible && summaryAccuracy && (
-            <FormattedMessage
-              {...translations.accuracy}
-              values={{
-                accuracy: summaryAccuracy * 100,
-                percentage: formatMessage(translations.percentage),
-              }}
-            />
-          )}
-          {!summaryPossible && formatMessage(translations.tooManyInputs)}
+          <Box display="flex" gap="4px">
+            {summaryPossible && summaryAccuracy && (
+              <>
+                <FormattedMessage
+                  {...translations.accuracy}
+                  values={{
+                    accuracy: summaryAccuracy * 100,
+                    percentage: formatMessage(translations.percentage),
+                  }}
+                />
+                <IconTooltip
+                  icon="info-outline"
+                  content={formatMessage(translations.summaryAccuracyTooltip)}
+                />
+              </>
+            )}
+            {!summaryPossible && (
+              <>
+                <FormattedMessage {...translations.tooManyInputs} />
+                <IconTooltip
+                  icon="info-solid"
+                  content={formatMessage(translations.tooManyInputsTooltip)}
+                />
+              </>
+            )}
+          </Box>
         </Text>
       </Button>
     </Box>

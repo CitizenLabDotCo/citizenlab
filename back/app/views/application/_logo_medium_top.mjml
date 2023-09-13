@@ -1,5 +1,5 @@
 <mj-section padding="20px 25px 0">
   <mj-column>
-    <mj-image align="left" width=<%= "#{logo_width}px" %> src=<%= logo_url %> href=<%= home_url %> alt="Organization logo"/>
+    <mj-image css-class="logo" src=<%= logo_url %> href=<%= home_url %> alt="Organization logo"/>
   </mj-column>
 </mj-section>

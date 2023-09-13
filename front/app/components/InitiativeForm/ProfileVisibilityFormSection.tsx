@@ -2,7 +2,7 @@ import React from 'react';
 
 import { FormLabel, FormSection } from 'components/UI/FormComponents';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useInitiativeCosponsorsRequired from 'hooks/useInitiativeCosponsorsRequired';
+import useInitiativeCosponsorsRequired from 'containers/InitiativesShow/hooks/useInitiativeCosponsorsRequired';
 import { Text, IconTooltip } from '@citizenlab/cl2-component-library';
 
 // i18n
