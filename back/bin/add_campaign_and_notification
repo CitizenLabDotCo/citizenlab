@@ -1,0 +1,77 @@
+#!/usr/bin/env ruby
+
+# Usage:
+# back/bin/add_campaign_and_notification initiative_resubmitted_for_review new_cosponsor_added
+#
+# First argument is the name of a campaign (underscored) that should be used as an example (source).
+# Second argument is the name of a campaign (underscored) that should be added (target).
+#
+# This script copies all git-added files containing the name of the source campaign
+# and replaces the source campaign name with the target campaign name.
+# In all git-added files that contain a line with the source campaign name, it adds the same line,
+# but with the target campaign name.
+#
+# Despite its name, this script can be used in general to copy-paste any code, not only campaigns.
+#
+# Requirements:
+# - Ruby and installed activesupport gem
+# - All source files should be committed to git and not deleted
+
+require 'fileutils'
+require 'active_support/all'
+
+# path to your application root.
+APP_ROOT = File.expand_path('../..', __dir__)
+
+def system!(*args)
+  system(*args) || abort("\n== Command #{args} failed ==")
+end
+
+source_campaign = ARGV[0] # underscored
+target_campaign = ARGV[1] # underscored
+
+def replace_campaign(content, source_campaign, target_campaign)
+  content.gsub(source_campaign, target_campaign)
+    .gsub(source_campaign.camelize, target_campaign.camelize)
+    .gsub(source_campaign.camelize(:lower), target_campaign.camelize(:lower))
+end
+
+def includes_campaign?(content, campaign)
+  content.match?(/#{campaign}|#{campaign.camelize}|#{campaign.camelize(:lower)}/)
+
+end
+
+FileUtils.chdir APP_ROOT do
+  all_files = `git ls-files`.split("\n")
+  new_files = all_files.select { |file| includes_campaign?(file, source_campaign) }
+
+  new_files.each do |source_file|
+    result_file = replace_campaign(source_file, source_campaign, target_campaign)
+    FileUtils.mkdir_p File.dirname(result_file)
+
+    result_content = replace_campaign(File.read(source_file), source_campaign, target_campaign)
+
+    File.write(result_file, result_content)
+  end
+
+  files_to_edit = (all_files - new_files).select do |file|
+    if (file.include?('/locales/') && !file.include?('/locales/en.yml')) ||
+      (file.include?('/translations/') && !file.include?('/translations/en.json'))
+      false
+    else
+      includes_campaign?(File.read(file), source_campaign)
+    end
+  rescue ArgumentError => e
+    raise unless e.message == 'invalid byte sequence in UTF-8'
+  end - [$0]
+
+  files_to_edit.each do |file|
+    lines = File.read(file).split("\n")
+    content = lines.each_with_index do |line, i|
+      if includes_campaign?(line, source_campaign)
+        lines[i] = [replace_campaign(line, source_campaign, target_campaign), line].join("\n")
+      end
+    end.join("\n") + "\n"
+    File.write(file, content)
+  end
+end

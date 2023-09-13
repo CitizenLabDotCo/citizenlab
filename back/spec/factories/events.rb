@@ -19,6 +19,7 @@ FactoryBot.define do
 
     start_at { '2017-05-01 20:00' }
     end_at { '2017-05-01 22:00' }
+    sequence(:online_link) { |n| "https://example.com/#{n}" }
 
     trait :with_location do
       location_point { 'POINT(4.351710319519043 50.8465574798584)' }

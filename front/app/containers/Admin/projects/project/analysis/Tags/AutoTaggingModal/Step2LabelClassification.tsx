@@ -32,7 +32,7 @@ const Step2LabelClassification = ({ onLaunch }: Props) => {
     setSelectedTagIds((tagIds) => xor(tagIds, [tagId]));
   };
 
-  const listFull = selectedTagIds.length >= 10;
+  const listFull = selectedTagIds.length >= 9;
 
   return (
     <Box>

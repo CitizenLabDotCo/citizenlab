@@ -34,6 +34,14 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEvents.titleLabel',
     defaultMessage: 'Title',
   },
+  onlineEventLinkLabel: {
+    id: 'app.containers.AdminPage.ProjectEvents.onlineEventLinkLabel',
+    defaultMessage: 'Online event link',
+  },
+  onlineEventLinkTooltip: {
+    id: 'app.containers.AdminPage.ProjectEvents.onlineEventLinkTooltip',
+    defaultMessage: 'If your event is online, add a link to it here.',
+  },
   locationLabel: {
     id: 'app.containers.AdminPage.ProjectEvents.locationLabel',
     defaultMessage: 'Location',

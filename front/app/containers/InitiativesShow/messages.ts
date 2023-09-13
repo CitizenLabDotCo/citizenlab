@@ -132,4 +132,17 @@ export default defineMessages({
     id: 'app.containers.InitiativesShow.cosponsorCTA',
     defaultMessage: 'Cosponsor this proposal',
   },
+  manageInvitationsLinkText: {
+    id: 'app.containers.InitiativesShow.manageInvitationsLinkText',
+    defaultMessage: 'Manage cosponsorship invitations',
+  },
+  numberOfCosponsorsNotYetMet: {
+    id: 'app.containers.InitiativesShow.numberOfCosponsorsNotYetMet',
+    defaultMessage:
+      '{requiredNumberOfCosponsors, plural, one {Your proposal needs 1 accepted cosponsorship. Until then, it will not be considered. {manageInvitationsLink}.} other {Your proposal needs {requiredNumberOfCosponsors} accepted cosponsorships. Until then, it will not be considered. {manageInvitationsLink}.}}',
+  },
+  pending: {
+    id: 'app.containers.InitiativesShow.pending1',
+    defaultMessage: 'pending',
+  },
 });

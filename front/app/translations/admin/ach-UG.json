@@ -1505,6 +1505,8 @@
   "app.containers.AdminPage.ProjectEvents.locationLabel": "crwdns211554:0crwdne211554:0",
   "app.containers.AdminPage.ProjectEvents.mapSelectionLabel2": "crwdns953611:0crwdne953611:0",
   "app.containers.AdminPage.ProjectEvents.newEventTitle": "crwdns211556:0crwdne211556:0",
+  "app.containers.AdminPage.ProjectEvents.onlineEventLinkLabel": "crwdns1032379:0crwdne1032379:0",
+  "app.containers.AdminPage.ProjectEvents.onlineEventLinkTooltip": "crwdns1032381:0crwdne1032381:0",
   "app.containers.AdminPage.ProjectEvents.refineLocationCoordinates": "crwdns953613:0crwdne953613:0",
   "app.containers.AdminPage.ProjectEvents.refineOnMap": "crwdns953615:0crwdne953615:0",
   "app.containers.AdminPage.ProjectEvents.saveButtonLabel": "crwdns211558:0crwdne211558:0",

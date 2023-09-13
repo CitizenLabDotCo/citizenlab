@@ -65,7 +65,9 @@ const InputListItem = () => {
         </Box>
       )}
       <Divider />
-      <Taggings onlyShowTagged={false} inputId={selectedInputId} />
+      <Box id="tags-control">
+        <Taggings onlyShowTagged={false} inputId={selectedInputId} />
+      </Box>
     </Box>
   );
 };

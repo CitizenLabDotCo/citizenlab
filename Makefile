@@ -52,6 +52,12 @@ rails-console-exec:
 psql:
 	docker-compose run -it -e PGPASSWORD=postgres -e PGOPTIONS="--search_path=localhost" postgres psql -U postgres -h postgres -d cl2_back_development
 
+# Run it with:
+# make add-campaign-and-notification source=initiative_resubmitted_for_review target=new_cosponsor_added
+# See back/bin/add_campaign_and_notification for details.
+add-campaign-and-notification:
+	back/bin/add_campaign_and_notification ${source} ${target}
+
 # =================
 # E2E tests
 # =================

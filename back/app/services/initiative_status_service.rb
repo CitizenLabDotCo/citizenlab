@@ -8,6 +8,9 @@ class InitiativeStatusService
       },
       'changes_requested' => {
         feedback_required: true
+      },
+      'ineligible' => {
+        feedback_required: true
       }
     },
     'changes_requested' => {
@@ -16,6 +19,9 @@ class InitiativeStatusService
       },
       'proposed' => {
         feedback_required: false
+      },
+      'ineligible' => {
+        feedback_required: true
       }
     },
     'proposed' => {
