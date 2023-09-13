@@ -1505,6 +1505,8 @@
   "app.containers.AdminPage.ProjectEvents.locationLabel": "Locatie",
   "app.containers.AdminPage.ProjectEvents.mapSelectionLabel2": "Verfijn de locatie van je evenement door op de kaart te klikken:",
   "app.containers.AdminPage.ProjectEvents.newEventTitle": "Maak een nieuwe activiteit aan",
+  "app.containers.AdminPage.ProjectEvents.onlineEventLinkLabel": "Link naar online evenement",
+  "app.containers.AdminPage.ProjectEvents.onlineEventLinkTooltip": "Als je evenement online is, voeg hier dan een link naar het evenement toe.",
   "app.containers.AdminPage.ProjectEvents.refineLocationCoordinates": "Locatie verfijnen op de kaart",
   "app.containers.AdminPage.ProjectEvents.refineOnMap": "Locatie verfijnen op de kaart",
   "app.containers.AdminPage.ProjectEvents.saveButtonLabel": "Opslaan",
