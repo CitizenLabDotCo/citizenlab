@@ -354,11 +354,11 @@ export default defineMessages({
   title_multiloc_includes_banned_words: {
     id: 'app.errors.title_multiloc_includes_banned_words',
     defaultMessage:
-      'You may have used one or more words that are considered profanity by {guidelinesLink}. Please alter your text to remove any profanities that might be present.',
+      'The title contains words that are considered inappropriate.',
   },
   body_multiloc_includes_banned_words: {
     id: 'app.errors.body_multiloc_includes_banned_words',
     defaultMessage:
-      'You may have used one or more words that are considered profanity by {guidelinesLink}. Please alter your text to remove any profanities that might be present.',
+      'The description contains words that are considered inappropriate.',
   },
 });
