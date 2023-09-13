@@ -1,80 +1,13 @@
 hr:
   email_campaigns:
     campaign_type_description:
-      "manual": Službene poruke
-      "admin_rights_received": Dodjela administratorskih prava
-      "comment_deleted_by_admin": Brisanje mog komentara
-      "comment_marked_as_spam": Izvješće o neželjenim komentarima
-      "comment_on_your_comment": Odgovor na moj komentar
-      "comment_on_your_idea": Komentar na moju ideju
-      "comment_on_your_initiative": Komentar na moj prijedlog
-      "cosponsor_of_your_initiative": Korisnik prihvaća moj poziv da susponzorira moj prijedlog
-      "first_idea_published": Objava moje prve ideje
-      "idea_marked_as_spam": Izvješće o neželjenoj ideji
-      "idea_published": Objava moje ideje
-      "initiative_assigned_to_you": Dodijeljen mi je prijedlog
-      "initiative_marked_as_spam": Izvješće o neželjenom prijedlogu
-      "initiative_published": Objava mog prijedloga
-      "invitation_to_cosponsor_initiative": Poziv za susponzoriranje prijedloga
-      "initiative_resubmitted_for_review": Prijedlog ponovno poslan na pregled
-      "invite_received": Pozivnica
-      "invite_reminder": Podsjetnik o pozivnici
-      "internal_comment_on_idea_assigned_to_you": Interni komentar na unos koji mi je dodijeljen
-      "internal_comment_on_idea_you_commented_internally_on": Interni komentar na unos koji sam interno komentirao
-      "internal_comment_on_idea_you_moderate": Interni komentar na unos u projektu ili mapi kojom upravljam
-      "internal_comment_on_initiative_assigned_to_you": Interni komentar na prijedlog koji mi je dodijeljen
-      "internal_comment_on_initiative_you_commented_internally_on": Interni komentar na prijedlog Ja sam interno komentirao
-      "internal_comment_on_unassigned_initiative": Interni komentar na nedodijeljeni prijedlog
-      "internal_comment_on_unassigned_unmoderated_idea": Interni komentar na nedodijeljeni unos u neupravljanom projektu
-      "internal_comment_on_your_internal_comment": Interni komentar na moj interni komentar
-      "mention_in_official_feedback": Spominjanje u objavi
-      "mention_in_internal_comment": Spomenuti u internom komentaru
-      "new_comment_for_admin": Novi komentar u projektu kojim upravljam
-      "new_comment_on_commented_idea": Novi komentar na ideju koju sam komentirao/la
-      "new_comment_on_commented_initiative": Novi komentar na prijedlog koji sam komentirao/la
-      "new_comment_on_reacted_idea": Novi komentar na ideju na koju sam reagirao
-      "new_comment_on_reacted_initiative": Novi komentar na prijedlog za koji sam glasao
-      "new_idea_for_admin": Nova ideja u projektu kojim upravljam
-      "new_initiative_for_admin": Novi prijedlog
-      "official_feedback_on_commented_idea": Nove informacije o ideji koju sam komentirao/la
-      "official_feedback_on_commented_initiative": Nove informacije o prijedlogu koji sam komentirao/la
-      "official_feedback_on_reacted_idea": Ažuriranje ideje na koju sam reagirao
-      "official_feedback_on_reacted_initiative": Ažuriranje prijedloga za koji sam glasao
-      "official_feedback_on_your_idea": Nove informacije o mojoj ideji
-      "official_feedback_on_your_initiative": Nove informacije o mom prijedlogu
-      "password_reset": Ponovno postavljanje lozinke
-      "project_moderation_rights_received": Dodjela prava za moderiranje projekta
-      "project_folder_moderation_rights_received": Primljena prava upravitelja mape
-      "project_phase_started": Nova faza projekta
-      "project_phase_upcoming": Nadolazeća nova faza projekta
-      "status_change_of_commented_idea": Promjena statusa ideje koju sam komentirao/la
-      "status_change_of_commented_initiative": Promjena statusa prijedloga koji sam komentirao/la
-      "status_change_of_reacted_idea": Promjena statusa ideje na koju sam reagirao
-      "status_change_of_reacted_initiative": Promjena statusa prijedloga na koji sam reagirao
-      "status_change_of_your_idea": Promjena statusa moje ideje
-      "status_change_of_your_initiative": Promjena statusa mog prijedloga
-      "threshold_reached_for_admin": Prijedlog je dosegao prag glasovanja
-      "welcome": Nakon registracije
-      "admin_digest": Tjedni pregled za administratore
-      "moderator_digest": Tjedni pregled za voditelja projekata
-      "assignee_digest": Tjedni pregled dodijeljenih ideja
-      "user_digest": Tjedni pregled
-      "voting_basket_submitted": Potvrda glasovanja
-      "voting_basket_not_submitted": Glasovi nisu poslani
-      "voting_last_chance": Zadnja prilika za glasanje
-      "voting_results": Rezultati glasovanja
-      "your_proposed_initiatives_digest": Tjedni pregled vaših prijedloga
-    schedules:
-      weekly:
-        "0": "Tjedno, nedjeljom u %{hourOfDay}"
-        "1": "Tjedno, ponedjeljkom u %{hourOfDay}"
-        "2": "Tjedno utorkom %{hourOfDay}"
-        "3": "Tjedno, srijedom u %{hourOfDay}"
-        "4": "Tjedno, četvrtkom u %{hourOfDay}"
-        "5": "Tjedno, petkom u %{hourOfDay}"
-        "6": "Tjedno, subotom u %{hourOfDay}"
+      "1": "Tjedno, ponedjeljkom u %{hourOfDay}"
+      "2": "Tjedno, utorkom u %{hourOfDay}"
+      "3": "Tjedno, srijedom u %{hourOfDay}"
+      "4": "Tjedno, četvrtkom u %{hourOfDay}"
+      "5": "Tjedno, petkom u %{hourOfDay}"
+      "6": "Tjedno, subotom u %{hourOfDay}"
     footer:
-      "link_privacy_policy": "Pravila o privatnosti"
       "link_terms_conditions": "Uvjeti korištenja"
       "link_unsubscribe": "Odjavi se"
       "powered_by": "Omogućava"
