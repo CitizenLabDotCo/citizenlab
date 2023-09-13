@@ -60,11 +60,18 @@ const Visitors = () => {
         countData.first_dimension_date_first_action_date
       );
       const createdAt = moment(appConfig.data.attributes.created_at);
-      const isUniqueVisitorDataAfterCreatedAt =
-        uniqueVisitorDataDate.isAfter(createdAt);
-      setHasPartialVisitorData(isUniqueVisitorDataAfterCreatedAt);
+      const duration = moment.duration(uniqueVisitorDataDate.diff(createdAt));
 
-      if (isUniqueVisitorDataAfterCreatedAt) {
+      /* 
+        Check if the duration is greater than 7 days. We are using 7 days as a margin of error.
+        Technically it is possible for a tenant to be created and have no unique vistor data
+        immediately after. This is to take into account that possibility.
+      */
+      const isVisitorDataMoreThan7DaysAfterCreation = duration.asDays() > 7;
+
+      setHasPartialVisitorData(isVisitorDataMoreThan7DaysAfterCreation);
+
+      if (isVisitorDataMoreThan7DaysAfterCreation) {
         setStartAtMoment(uniqueVisitorDataDate);
       }
     }
@@ -84,8 +91,10 @@ const Visitors = () => {
     setProjectId(value);
   };
 
-  if (!appConfig || !analytics || analytics?.data.attributes.length === 0)
+  if (!appConfig || !analytics || analytics?.data.attributes.length === 0) {
     return null;
+  }
+
   const [countData] = analytics.data.attributes;
 
   return (
