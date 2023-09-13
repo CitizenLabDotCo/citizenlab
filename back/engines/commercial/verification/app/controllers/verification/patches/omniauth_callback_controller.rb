@@ -44,11 +44,22 @@ module Verification
 
       def fail_verification(error)
         omniauth_params = request.env['omniauth.params'].except('token', 'pathname')
-        url = add_uri_params(
-          Frontend::UrlService.new.verification_failure_url(pathname: request.env['omniauth.params']['pathname']),
-          omniauth_params.merge(verification_error: true, error: error)
-        )
-        redirect_to url
+
+        # It seems the FE is not parsing verification failure URLs, so we need to use the SSO failure URL structure
+        if error == 'not_entitled_under_15_years_of_age'
+          redirect_params = {
+            sso_pathname: request.env['omniauth.params']['pathname'],
+            sso_response: true,
+            error_code: 'not_entitled_under_15_years_of_age'
+          }
+          redirect_to(add_uri_params(Frontend::UrlService.new.signin_failure_url, redirect_params))
+        else # TODO: Check if this is ever used by the FE, or anywhere else.
+          url = add_uri_params(
+            Frontend::UrlService.new.verification_failure_url(pathname: request.env['omniauth.params']['pathname']),
+            omniauth_params.merge(verification_error: true, error: error)
+          )
+          redirect_to url
+        end
       end
 
       def verification_service

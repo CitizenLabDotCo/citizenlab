@@ -134,7 +134,7 @@ describe IdNemlogIn::NemlogInOmniauth do
       get "/auth/nemlog_in?token=#{token}&random-passthrough-param=somevalue&pathname=/some-page"
       follow_redirect!
 
-      expect(response).to redirect_to('/some-page?random-passthrough-param=somevalue&verification_error=true&error=not_entitled_under_15_years_of_age')
+      expect(response).to redirect_to('/authentication-error?sso_pathname=%2Fsome-page&sso_response=true&error_code=not_entitled_under_15_years_of_age')
     end
 
     it 'verifies 15-year-old' do
