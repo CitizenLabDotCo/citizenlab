@@ -8,7 +8,6 @@ import InputsList from './InputsList';
 import InputPreview from './InputPreview';
 import Insights from './Insights';
 import SelectedInputContext from './SelectedInputContext';
-import Demographics from './Demographics';
 
 const Analysis = () => {
   const modalPortalElement = document.getElementById('modal-portal');
@@ -44,20 +43,11 @@ const Analysis = () => {
             >
               <Tags />
             </Box>
-            <Box
-              flex="1"
-              h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px)`}
-              display="flex"
-              flexDirection="column"
-              minWidth="0"
-            >
-              <Box mt="12px" bg={colors.white}>
-                <Demographics />
-              </Box>
-              <Box flex="1" overflow="auto" p="12px" mt="8px" bg={colors.white}>
-                <InputsList />
-              </Box>
+
+            <Box flex="1" mt="12px">
+              <InputsList />
             </Box>
+
             <Box
               flex="1"
               overflow="auto"
