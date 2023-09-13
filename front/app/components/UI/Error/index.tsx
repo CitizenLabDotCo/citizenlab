@@ -5,8 +5,8 @@ import React, { useEffect, useRef } from 'react';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import { IInviteError } from 'api/invites/types';
 import styled from 'styled-components';
-import { CLError, Message } from 'typings';
-import { FormattedMessage } from 'utils/cl-intl';
+import { CLError } from 'typings';
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import { colors, fontSizes, isRtl } from 'utils/styleUtils';
 import messages from './messages';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -178,11 +178,11 @@ export const findErrorMessage = (
   error: string
 ) => {
   if (fieldName && messages[`${fieldName}_${error}`]) {
-    return messages[`${fieldName}_${error}`] as Message;
+    return messages[`${fieldName}_${error}`] as MessageDescriptor;
   }
 
   if (messages[error]) {
-    return messages[error] as Message;
+    return messages[error] as MessageDescriptor;
   }
   // Return a empty error message
   return '';
@@ -289,6 +289,7 @@ const Error = (props: Props) => {
                           // eslint-disable-next-line react/no-unescaped-entities
                           value: <strong>'{value}'</strong>,
                           supportEmail: <strong>{supportEmail}</strong>,
+                          ideasCount: (error as CLError).ideas_count,
                         };
 
                         values = payload ? { ...payload, ...values } : values;
@@ -315,9 +316,7 @@ const Error = (props: Props) => {
                             )}
                             <FormattedMessage
                               {...errorMessage}
-                              values={{
-                                ideasCount: (error as CLError).ideas_count,
-                              }}
+                              values={values}
                             />
                           </ErrorListItem>
                         );

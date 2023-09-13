@@ -112,11 +112,6 @@ export function isIOption(
   return maybeOption !== null;
 }
 
-export interface Message {
-  id: string;
-  defaultMessage: string;
-}
-
 export type Locale = keyof typeof appLocalePairs;
 
 export type GraphqlLocale = keyof typeof appGraphqlLocalePairs;
