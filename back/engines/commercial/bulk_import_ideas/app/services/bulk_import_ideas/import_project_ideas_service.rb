@@ -14,45 +14,43 @@ module BulkImportIdeas
       @google_forms_service = nil
     end
 
-    def upload_file(file_content)
-      super(file_content)
+    def create_files(file_content)
+      source_file = upload_source_file file_content
 
       # Split a pdf into smaller documents
       # TODO: Refactor this into separate method
       split_pdf_files = []
-      if @uploaded_file&.import_type == 'pdf'
+      if source_file&.import_type == 'pdf'
         # Get number of pages in a form from the download
-        # TODO: Trap error if cannot get form
-        # TODO: Page count may be different if name and email are specified
+        # NOTE: Page count may be different if name and email are specified - for future
         params = {}
         params[:locale] = @locale
         pages_per_idea = PrintCustomFieldsService.new(@phase || @project, @form_fields, params).create_pdf.page_count
 
-        pdf = ::HexaPDF::Document.open(@uploaded_file.file.file.file)
-        @uploaded_file.update!(num_pages: pdf.pages.count)
-        # TODO: Probably shouldn't upload the file in the first place
+        pdf = ::HexaPDF::Document.open(source_file.file.file.file)
+        source_file.update!(num_pages: pdf.pages.count)
         raise Error.new 'bulk_import_ideas_maximum_pdf_pages_exceeded', value: pdf.pages.count if pdf.pages.count > MAX_TOTAL_PAGES
 
-        return [@uploaded_file] if pdf.pages.count <= PAGES_TO_TRIGGER_NEW_PDF # Only need to split if the file is too big
+        return [source_file] if pdf.pages.count <= PAGES_TO_TRIGGER_NEW_PDF # Only need to split if the file is too big
 
         new_pdf = ::HexaPDF::Document.new
         pdf.pages.each_with_index do |page, index|
           new_pdf.pages << new_pdf.import(page)
           save_to_file =
-            (index + 1) % pages_per_idea == 0 && new_pdf.pages.count >= PAGES_TO_TRIGGER_NEW_PDF ||
+            ((index + 1) % pages_per_idea == 0 && new_pdf.pages.count >= PAGES_TO_TRIGGER_NEW_PDF) ||
             (index + 1 == pdf.pages.count)
 
           if save_to_file
             # TODO: Would be better to send the new_pdf directly to IdeaImportFile, but doesn't seem possible
             # Is all this file opening going to cause issues on S3?
-            file = Rails.root.join('tmp', "import_#{@uploaded_file.id}_#{index}.pdf")
+            file = Rails.root.join('tmp', "import_#{source_file.id}_#{index}.pdf")
             new_pdf.write(file.to_s, validate: false, optimize: true)
             base_64_content = Base64.encode64 file.read
             # TODO: Delete the tmp file
 
             # TODO: Add parent relationship to IdeaImportFile model?
             split_pdf_files << IdeaImportFile.create!(
-              import_type: @uploaded_file.import_type,
+              import_type: source_file.import_type,
               project: @project,
               num_pages: new_pdf.pages.count,
               file_by_content: {
@@ -64,7 +62,7 @@ module BulkImportIdeas
           end
         end
       end
-      split_pdf_files.presence || [@uploaded_file]
+      split_pdf_files.presence || [source_file]
     end
 
     def generate_example_xlsx

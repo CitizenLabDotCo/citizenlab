@@ -24,8 +24,8 @@ module BulkImportIdeas
       @uploaded_file = nil
     end
 
-    def import_file(file)
-      files = upload_file file
+    def import_file(file_content)
+      files = create_files file_content
 
       ideas = []
       files.each do |file|
@@ -33,6 +33,10 @@ module BulkImportIdeas
         ideas += import_ideas(idea_rows, file)
       end
       ideas
+    end
+
+    def create_files(file_content)
+      [upload_source_file(file_content)]
     end
 
     def import_ideas(idea_rows, file = nil)
@@ -52,19 +56,6 @@ module BulkImportIdeas
       ideas
     end
 
-    def upload_file(file_content)
-      file_type = file_content.index('application/pdf') ? 'pdf' : 'xlsx'
-      @uploaded_file = IdeaImportFile.create!(
-        import_type: file_type,
-        project: @project,
-        file_by_content: {
-          name: "import.#{file_type}",
-          content: file_content # base64
-        }
-      )
-      [@uploaded_file]
-    end
-
     def parse_idea_rows(_file)
       []
     end
@@ -80,6 +71,23 @@ module BulkImportIdeas
     private
 
     attr_reader :all_projects, :all_topics
+
+    def upload_source_file(file_content)
+      file_type = file_content.index('application/pdf') ? 'pdf' : 'xlsx'
+      IdeaImportFile.create!(
+        import_type: file_type,
+        project: @project,
+        file_by_content: {
+          name: "import.#{file_type}",
+          content: file_content # base64
+        }
+      )
+    end
+
+    def parse_xlsx_ideas(file)
+      xlsx_file = File.open(file.file.file.file)
+      XlsxService.new.xlsx_to_hash_array xlsx_file
+    end
 
     def import_idea(idea_row, file)
       idea_attributes = {}
@@ -302,11 +310,6 @@ module BulkImportIdeas
         locale: @locale
       )
       idea_import.save!
-    end
-
-    def parse_xlsx_ideas(file)
-      xlsx_file = File.open(file.file.file.file)
-      XlsxService.new.xlsx_to_hash_array xlsx_file
     end
   end
 end

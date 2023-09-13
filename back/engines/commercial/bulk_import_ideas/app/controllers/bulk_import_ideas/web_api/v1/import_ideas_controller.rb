@@ -14,13 +14,10 @@ module BulkImportIdeas
       ).serializable_hash
     end
 
-    # NOTE: PDF version will only work for a project endpoint
+    # NOTE: PDF version only works for a project endpoint
     def bulk_create
       file = bulk_create_params[:pdf] || bulk_create_params[:xlsx]
       ideas = import_ideas_service.import_file file
-
-      # idea_rows = import_ideas_service.parse_idea_rows file, file_type
-      # ideas = import_ideas_service.import_ideas idea_rows
       sidefx.after_success current_user
 
       render json: ::WebApi::V1::IdeaSerializer.new(
