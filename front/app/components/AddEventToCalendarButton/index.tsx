@@ -11,9 +11,11 @@ import { useIntl } from 'utils/cl-intl';
 import { requestBlob } from 'utils/request';
 import { API_PATH } from 'containers/App/constants';
 import saveAs from 'file-saver';
+import { useTheme } from 'styled-components';
 
 export const AddEventToCalendarButton = ({ eventId }: { eventId: string }) => {
   const { formatMessage } = useIntl();
+  const theme = useTheme();
   const [isError, setIsError] = useState(false);
 
   const handleICSDownload = async () => {
@@ -43,6 +45,7 @@ export const AddEventToCalendarButton = ({ eventId }: { eventId: string }) => {
             textDecoration: 'underline',
             justifyContent: 'left',
             textAlign: 'left',
+            color: `${theme.colors.tenantPrimary}`,
           }}
         >
           <Text mt="4px" color="tenantPrimary" m="0px" p="0px" fontSize="s">

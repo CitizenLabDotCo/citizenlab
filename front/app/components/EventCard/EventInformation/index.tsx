@@ -55,7 +55,7 @@ const EventInformation = ({ event, titleFontSize }: Props) => {
 
   return (
     <EventInformationContainer data-testid="EventInformation">
-      <Box>
+      <Box id="e2e-event-card">
         <Box
           display="flex"
           justifyContent="space-between"
