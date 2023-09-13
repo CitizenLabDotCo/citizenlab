@@ -1,80 +1,13 @@
 sr-Latn:
   email_campaigns:
     campaign_type_description:
-      "manual": Zvanične poruke
-      "admin_rights_received": Dodela administratorskih prava
-      "comment_deleted_by_admin": Brisanje mog komentara
-      "comment_marked_as_spam": Izveštaj o spam komentaru
-      "comment_on_your_comment": Odgovor na moj komentar
-      "comment_on_your_idea": Komentar na moju ideju
-      "comment_on_your_initiative": Komentar na moj predlog
-      "cosponsor_of_your_initiative": A user accepts my invitation to co-sponsor my proposal
-      "first_idea_published": Objava moje prve ideje
-      "idea_marked_as_spam": Izveštaj o spam ideji
-      "idea_published": Objava moje ideje
-      "initiative_assigned_to_you": Dodeljen mi je predlog
-      "initiative_marked_as_spam": Izveštaj o spam predlogu
-      "initiative_published": Objava mog predloga
-      "invitation_to_cosponsor_initiative": Invitation to co-sponsor a proposal
-      "initiative_resubmitted_for_review": Proposal resubmitted for review
-      "invite_received": Pozivnica
-      "invite_reminder": Podsetnik o pozivnici
-      "internal_comment_on_idea_assigned_to_you": Интерни коментар на унос који ми је додељен
-      "internal_comment_on_idea_you_commented_internally_on": Интерни коментар на унос који сам интерно коментарисао
-      "internal_comment_on_idea_you_moderate": Интерни коментар на унос у пројекту или фолдеру којим управљам
-      "internal_comment_on_initiative_assigned_to_you": Интерни коментар на предлог који ми је додељен
-      "internal_comment_on_initiative_you_commented_internally_on": Интерни коментар на предлог који сам интерно коментарисао
-      "internal_comment_on_unassigned_initiative": Интерни коментар на недодељени предлог
-      "internal_comment_on_unassigned_unmoderated_idea": Интерни коментар на недодељени унос у неуправљаном пројекту
-      "internal_comment_on_your_internal_comment": Интерни коментар на мој интерни коментар
-      "mention_in_official_feedback": Pominjanje u objavi
-      "mention_in_internal_comment": Поменути у интерном коментару
-      "new_comment_for_admin": Novi komentar u projektu kojim upravljam
-      "new_comment_on_commented_idea": Novi komentar na ideju koju komentarišem
-      "new_comment_on_commented_initiative": Novi komentar na predlog koji komentarišem
-      "new_comment_on_reacted_idea": Нови коментар на идеју на коју сам реаговао
-      "new_comment_on_reacted_initiative": Нови коментар на предлог за који сам гласао
-      "new_idea_for_admin": Nova ideja u projektu kojim upravljam
-      "new_initiative_for_admin": Novi predlog
-      "official_feedback_on_commented_idea": Nove informacije o ideji koju komentarišem
-      "official_feedback_on_commented_initiative": Nove informacije o predlogu koji komentarišem
-      "official_feedback_on_reacted_idea": Ажурирање идеје на коју сам реаговао
-      "official_feedback_on_reacted_initiative": Ажурирање предлога за који сам гласао
-      "official_feedback_on_your_idea": Nove informacije o mojoj ideji
-      "official_feedback_on_your_initiative": Nove informacije o mome predlogu
-      "password_reset": Resetovanje lozinke
-      "project_moderation_rights_received": Dodela prava za moderaciju projekta
-      "project_folder_moderation_rights_received": Stečena su prava menadžera projekta
-      "project_phase_started": Nova faza projekta
-      "project_phase_upcoming": Buduće faze projekta
-      "status_change_of_commented_idea": Promena statusa ideje koju komentarišem
-      "status_change_of_commented_initiative": Promena statusa predloga koji komentarišem
-      "status_change_of_reacted_idea": Статусна промена идеје на коју сам реаговао
-      "status_change_of_reacted_initiative": Статусна промена предлога на који сам реаговао
-      "status_change_of_your_idea": Promena statusa moje ideje
-      "status_change_of_your_initiative": Promena statusa mog predloga
-      "threshold_reached_for_admin": Predlog je dostigao neophodan broj glasova
-      "welcome": Nakon registracije
-      "admin_digest": Nedeljni pregled za administratore
-      "moderator_digest": Nedeljni pregled za menadžere projekata
-      "assignee_digest": Nedeljni pregled dodeljenih ideja
-      "user_digest": Nedeljni pregled
-      "voting_basket_submitted": Confirmation of voting
-      "voting_basket_not_submitted": Votes not submitted
-      "voting_last_chance": Last chance to vote
-      "voting_results": Voting results
-      "your_proposed_initiatives_digest": Nedeljni pregled vaših predloga
-    schedules:
-      weekly:
-        "0": "Седмично, недељом у %{hourOfDay}"
-        "1": "Недељно понедељком %{hourOfDay}"
-        "2": "Недељно уторком %{hourOfDay}"
-        "3": "Недељно средом %{hourOfDay}"
-        "4": "Седмично четвртком %{hourOfDay}"
-        "5": "Недељно петком %{hourOfDay}"
-        "6": "Седмично суботом %{hourOfDay}"
+      "1": "Недељно понедељком %{hourOfDay}"
+      "2": "Недељно уторком %{hourOfDay}"
+      "3": "Weekly, on Wednesdays at %{hourOfDay}"
+      "4": "Weekly, on Thursdays at %{hourOfDay}"
+      "5": "Weekly, on Fridays at %{hourOfDay}"
+      "6": "Weekly, on Saturdays at %{hourOfDay}"
     footer:
-      "link_privacy_policy": "Politika privatnosti"
       "link_terms_conditions": "Uslovi korišćenja"
       "link_unsubscribe": "Odjavi se"
       "powered_by": "Powered by"
@@ -636,6 +569,17 @@ sr-Latn:
       body_2: 'The results of the %{phaseTitle} vote in the %{organizationName} platform have been published!'
       body_3: 'We encourage you to review the results and stay tuned for further updates on the next steps.'
       cta_see_results: 'See results in the platform'
+    event_registration_confirmation:
+      subject: "You're in! Your registration for \"%{eventTitle}\" is confirmed"
+      event_details:
+        labels:
+          date: 'Date'
+          location: 'Location'
+          online_link: 'Online link'
+          description: 'Description'
+          project: 'Project'
+      cta_go_to_event: 'View the event'
+      cta_add_to_calendar: 'Add to your calendar'
     voting_phase_started:
       subject: '%{organizationName}: The voting phase started for %{projectName}'
       preheader: 'The voting phase started for %{projectName} on the participation platform of %{organizationName}'
@@ -658,6 +602,7 @@ sr-Latn:
         managers: 'Менаџери'
         admins_assigned_to_a_proposal: 'Администратори додељени предлогу'
         admins_and_managers_assigned_to_the_input: 'Администратори и менаџери додељени улазу'
+        new_attendee: 'Newly registered user'
         user_who_is_invited_to_cosponsor_a_proposal: 'User who is invited to co-sponsor a proposal'
         user_who_is_receiving_admin_rights: 'Корисник који добија администраторска права'
         user_who_is_receiving_folder_moderator_rights: 'Корисник који добија права модератора фолдера'
@@ -677,6 +622,7 @@ sr-Latn:
       content_type:
         comments: 'Коментари'
         content_moderation: 'Модерирање садржаја'
+        events: 'Events'
         general: 'Генерал'
         inputs: 'Инпутс'
         internal_comments: 'Интерни коментари'
@@ -731,3 +677,4 @@ sr-Latn:
         voting_basket_submitted: 'Votes are submitted'
         7_days_after_invite_is_sent: '7 дана након слања позивнице'
         7_days_before_the_project_changes_phase: '7 дана пре промене фазе пројекта'
+        registration_to_event: 'Registration to an event'
