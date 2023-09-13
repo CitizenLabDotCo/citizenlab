@@ -53,6 +53,8 @@ const Location = ({ event }: Props) => {
               <Button
                 m="0px"
                 p="0px"
+                fontWeight="bold"
+                fontSize="m"
                 buttonStyle="text"
                 onClick={() => {
                   setMapModalVisible(true);

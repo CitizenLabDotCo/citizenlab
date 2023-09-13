@@ -19,6 +19,7 @@ export interface IEventData {
     created_at: string;
     updated_at: string;
     attendees_count: number;
+    online_link?: string;
   };
   relationships: {
     project: {
@@ -69,6 +70,7 @@ export interface IEventProperties {
   address_2_multiloc?: Multiloc;
   address_1?: string | null;
   location_point_geojson?: GeoJSON.Point | null;
+  online_link?: string;
   start_at?: string;
   end_at?: string;
 }
