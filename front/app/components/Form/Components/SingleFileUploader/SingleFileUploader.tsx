@@ -6,7 +6,7 @@ import FileDisplay from './FileDisplay';
 import Error from 'components/UI/Error';
 
 // typings
-import { CLError, UploadFile } from 'typings';
+import { CLErrors, UploadFile } from 'typings';
 
 // style
 import styled from 'styled-components';
@@ -32,7 +32,7 @@ export interface FileUploaderProps {
   onFileAdd: (fileToAdd: AttachmentFile) => void;
   onFileRemove: () => void;
   file: AttachmentFile | null;
-  apiErrors?: { [fieldName: string]: CLError[] } | null;
+  apiErrors?: CLErrors | null;
 }
 
 const SingleFileUploader = ({
