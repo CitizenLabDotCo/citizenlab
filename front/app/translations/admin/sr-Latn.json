@@ -1505,6 +1505,8 @@
   "app.containers.AdminPage.ProjectEvents.locationLabel": "Lokacija",
   "app.containers.AdminPage.ProjectEvents.mapSelectionLabel2": "Refine where your event location marker is shown by clicking on the map:",
   "app.containers.AdminPage.ProjectEvents.newEventTitle": "Kreirajte novi događaj",
+  "app.containers.AdminPage.ProjectEvents.onlineEventLinkLabel": "Online event link",
+  "app.containers.AdminPage.ProjectEvents.onlineEventLinkTooltip": "If your event is online, add a link to it here.",
   "app.containers.AdminPage.ProjectEvents.refineLocationCoordinates": "Refine map location",
   "app.containers.AdminPage.ProjectEvents.refineOnMap": "Refine location on map",
   "app.containers.AdminPage.ProjectEvents.saveButtonLabel": "Sačuvajte",
