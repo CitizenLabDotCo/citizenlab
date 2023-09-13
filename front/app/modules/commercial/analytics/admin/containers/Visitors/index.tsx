@@ -66,6 +66,7 @@ const Visitors = () => {
         Check if the duration is greater than 7 days. We are using 7 days as a margin of error.
         Technically it is possible for a tenant to be created and have no unique vistor data
         immediately after. This is to take into account that possibility.
+        See https://citizenlab.atlassian.net/browse/CL-3994
       */
       const isVisitorDataMoreThan7DaysAfterCreation = duration.asDays() > 7;
 
