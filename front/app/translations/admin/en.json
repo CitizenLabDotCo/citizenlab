@@ -821,7 +821,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.addToPhase": "Add to phase",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.consentNeeded": "You need to consent to this before you can continue",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.formLanguage": "Form language",
-  "app.containers.Admin.projects.project.offlineInputs.ImportModal.googleConsent": "I hereby consent to processing these files using the Google Cloud Form Parser",
+  "app.containers.Admin.projects.project.offlineInputs.ImportModal.googleConsent2": "I hereby consent to processing this file using the Google Cloud Form Parser",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.here": "here",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.inputImporter": "Input importer",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.pleaseUploadFile": "Please upload a file to continue",
