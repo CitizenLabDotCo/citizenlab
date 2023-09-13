@@ -42,7 +42,9 @@ const InputMultilocWithLocaleSwitcher = ({ name, ...rest }: Props) => {
   )[0]?.message;
 
   // If an API error with a matching name has been returned from the API response, apiError is set to an array with the error message as the only item
-  const apiError = errors?.error && ([errors] as CLError[]);
+  const apiError: CLError[] | null = errors ? [errors] : null;
+  // Change above in different places?
+  // Search for "errors?.error && ([errors] as CLError[])"
 
   return (
     <>
