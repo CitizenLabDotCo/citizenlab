@@ -1505,6 +1505,8 @@
   "app.containers.AdminPage.ProjectEvents.locationLabel": "Konum",
   "app.containers.AdminPage.ProjectEvents.mapSelectionLabel2": "Haritaya tıklayarak etkinlik konumu işaretleyicinizin gösterildiği yeri daraltın:",
   "app.containers.AdminPage.ProjectEvents.newEventTitle": "Yeni bir etkinlik oluşturun",
+  "app.containers.AdminPage.ProjectEvents.onlineEventLinkLabel": "Çevrimiçi etkinlik bağlantısı",
+  "app.containers.AdminPage.ProjectEvents.onlineEventLinkTooltip": "Etkinliğiniz çevrimiçi ise, buraya bir bağlantı ekleyin.",
   "app.containers.AdminPage.ProjectEvents.refineLocationCoordinates": "Harita konumunu daraltın",
   "app.containers.AdminPage.ProjectEvents.refineOnMap": "Harita üzerinde konumu hassaslaştır",
   "app.containers.AdminPage.ProjectEvents.saveButtonLabel": "Kaydet",
