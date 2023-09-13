@@ -1,80 +1,13 @@
 da:
   email_campaigns:
     campaign_type_description:
-      "manual": Officielle beskeder
-      "admin_rights_received": Administratorrettigheder modtaget
-      "comment_deleted_by_admin": Sletning af min kommentar
-      "comment_marked_as_spam": Rapportering af kommentar-spam
-      "comment_on_your_comment": Et svar på min kommentar
-      "comment_on_your_idea": En kommentar på min idé
-      "comment_on_your_initiative": En kommentar på mit forslag
-      "cosponsor_of_your_initiative": En bruger accepterer min invitation til at være medstiller på mit forslag
-      "first_idea_published": Publicering af min første idé
-      "idea_marked_as_spam": Rapportering af idé-spam
-      "idea_published": Publicering af min idé
-      "initiative_assigned_to_you": Tildeling af et forslag til mig
-      "initiative_marked_as_spam": Rapportering af forslag-spam
-      "initiative_published": Publicering af mit forslag
-      "invitation_to_cosponsor_initiative": Invitation til at være medstiller på et forslag
-      "initiative_resubmitted_for_review": Forslaget indsendes igen til gennemgang
-      "invite_received": Invitation
-      "invite_reminder": Invitationspåmindelse
-      "internal_comment_on_idea_assigned_to_you": Intern kommentar til input, der er tildelt mig
-      "internal_comment_on_idea_you_commented_internally_on": Intern kommentar til input jeg kommenterede internt på
-      "internal_comment_on_idea_you_moderate": Intern kommentar til input i projekt eller mappe jeg administrerer
-      "internal_comment_on_initiative_assigned_to_you": Intern kommentar til forslag som jeg har fået tildelt
-      "internal_comment_on_initiative_you_commented_internally_on": Intern kommentar til forslag jeg kommenterede på
-      "internal_comment_on_unassigned_initiative": Intern kommentar til ikke-tildelt forslag
-      "internal_comment_on_unassigned_unmoderated_idea": Intern kommentar til ikke-tildelt input i ikke-administreret projekt
-      "internal_comment_on_your_internal_comment": Intern kommentar til min interne kommentar
-      "mention_in_official_feedback": Nævnelse i en opdatering
-      "mention_in_internal_comment": Nævnes i en intern kommentar
-      "new_comment_for_admin": Ny kommentar i et projekt jeg modererer
-      "new_comment_on_commented_idea": Ny kommentar på en idé jeg har kommenteret på
-      "new_comment_on_commented_initiative": Ny kommentar på et forslag jeg har kommenteret på
-      "new_comment_on_reacted_idea": Ny kommentar til en idé, jeg stemte på
-      "new_comment_on_reacted_initiative": Ny kommentar på et forslag jeg har stemt på
-      "new_idea_for_admin": Ny idé i et projekt jeg modererer
-      "new_initiative_for_admin": Nyt forslag
-      "official_feedback_on_commented_idea": Opdatering på en idé jeg har kommenteret på
-      "official_feedback_on_commented_initiative": Opdatering på et forslag jeg har kommenteret på
-      "official_feedback_on_reacted_idea": Opdatering på en idé, jeg stemte på
-      "official_feedback_on_reacted_initiative": Opdatering af et forslag, jeg har stemt om
-      "official_feedback_on_your_idea": Opdatering på min idé
-      "official_feedback_on_your_initiative": Opdatering på mit forslag
-      "password_reset": Nulstilling af adgangskode
-      "project_moderation_rights_received": Rettigheder til projektmoderering modtaget
-      "project_folder_moderation_rights_received": Projekt-mappens moderationsrettigheder modtaget
-      "project_phase_started": Ny projektfase
-      "project_phase_upcoming": Kommende ny projektfase
-      "status_change_of_commented_idea": Statusændring af en idé jeg har kommenteret på
-      "status_change_of_commented_initiative": Statusændring af et forslag jeg har kommenteret på
-      "status_change_of_reacted_idea": Statusændring af en idé, jeg stemte på
-      "status_change_of_reacted_initiative": Statusændring af et forslag, jeg stemte på
-      "status_change_of_your_idea": Statusændring af min idé
-      "status_change_of_your_initiative": Statusændring af mit forslag
-      "threshold_reached_for_admin": Forslag har nået stemmegrænsen
-      "welcome": Efter registrering
-      "admin_digest": Ugentlig oversigt for administratorer
-      "moderator_digest": Ugentlig oversigt for projektledere
-      "assignee_digest": Ugentlig oversigt over tildelte ideer
-      "user_digest": Ugentlig oversigt
-      "voting_basket_submitted": Bekræftelse af afstemning
-      "voting_basket_not_submitted": Stemmer ikke afgivet
-      "voting_last_chance": Sidste chance for at stemme
-      "voting_results": Afstemningsresultater
-      "your_proposed_initiatives_digest": Ugentlig oversigt over dine forslag
-    schedules:
-      weekly:
-        "0": "Hver uge, om søndagen på %{hourOfDay}"
-        "1": "Hver uge, om mandagen %{hourOfDay}"
-        "2": "Hver uge, om tirsdagen %{hourOfDay}"
-        "3": "Hver uge, om onsdagen %{hourOfDay}"
-        "4": "Hver uge, om torsdagen %{hourOfDay}"
-        "5": "Hver uge, om fredagen %{hourOfDay}"
-        "6": "Hver uge, om lørdagen %{hourOfDay}"
+      "1": "Hver uge, om mandagen %{hourOfDay}"
+      "2": "Hver uge, om tirsdagen %{hourOfDay}"
+      "3": "Hver uge, om onsdagen %{hourOfDay}"
+      "4": "Hver uge, om torsdagen %{hourOfDay}"
+      "5": "Hver uge, om fredagen %{hourOfDay}"
+      "6": "Hver uge, om lørdagen %{hourOfDay}"
     footer:
-      "link_privacy_policy": "Anonymitetspolitik"
       "link_terms_conditions": "Betingelser og vilkår"
       "link_unsubscribe": "Afmeld abonnement"
       "powered_by": "Drevet af"
