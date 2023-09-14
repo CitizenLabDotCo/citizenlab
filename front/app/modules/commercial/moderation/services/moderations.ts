@@ -2,7 +2,10 @@ import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 
 export interface IModerationsCount {
-  data: { attributes: { count: number } };
+  data: {
+    type: 'moderations_count';
+    attributes: { count: number };
+  };
 }
 
 export function moderationsCountStream(
