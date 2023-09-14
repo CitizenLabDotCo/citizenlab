@@ -59,9 +59,7 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
   const userIsAttending = !!userAttendingEventObject;
   const attendanceId =
     userAttendingEventObject?.relationships.user_attendance.data.id || null;
-  const useCustomButtonText = localize(
-    event?.attributes.attend_button_multiloc
-  );
+  const customButtonText = localize(event?.attributes.attend_button_multiloc);
 
   const handleClick = () => {
     if (event?.attributes.using_url) {
@@ -92,8 +90,8 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
   };
 
   const getButtonText = () => {
-    if (localize(event?.attributes.attend_button_multiloc)) {
-      return localize(event?.attributes.attend_button_multiloc);
+    if (customButtonText) {
+      return customButtonText;
     } else if (userIsAttending) {
       return formatMessage(messages.attending);
     }
@@ -101,7 +99,7 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
   };
 
   const getButtonIcon = () => {
-    if (useCustomButtonText || event?.attributes.using_url) {
+    if (customButtonText || event?.attributes.using_url) {
       return undefined;
     } else if (userIsAttending) {
       return 'check';
