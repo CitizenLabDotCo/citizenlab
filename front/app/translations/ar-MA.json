@@ -1108,7 +1108,7 @@
   "app.containers.InitiativesShow.manageInvitationsLinkText": "إدارة دعوات الرعاية المشتركة",
   "app.containers.InitiativesShow.metaOgTitle": "ادعم هذا المُقترح : {initiativeTitle}",
   "app.containers.InitiativesShow.metaTitle": "المقترح • {initiativeTitle}",
-  "app.containers.InitiativesShow.numberOfCosponsorsNotYetMet1": "{requiredNumberOfCosponsors, plural, one {اقتراحك يحتاج {requiredNumberOfCosponsors} الرعاية المقبولة. وحتى ذلك الحين، لن يتم النظر في ذلك. {manageInvitationsLink}.} other {اقتراحك يحتاج {requiredNumberOfCosponsors} الرعاية المقبولة. وحتى ذلك الحين، لن يتم النظر في ذلك. {manageInvitationsLink}.}}",
+  "app.containers.InitiativesShow.numberOfCosponsorsNotYetMet": "{requiredNumberOfCosponsors, plural, one {يحتاج اقتراحك إلى رعاية مشتركة واحدة مقبولة. وحتى ذلك الحين، لن يتم النظر في ذلك. {manageInvitationsLink}.} other {اقتراحك يحتاج {requiredNumberOfCosponsors} الرعاية المقبولة. وحتى ذلك الحين، لن يتم النظر في ذلك. {manageInvitationsLink}.}}",
   "app.containers.InitiativesShow.pending1": "قيد الانتظار",
   "app.containers.InitiativesShow.postedBy": "مُقترح نُشر بواسطة {authorName}",
   "app.containers.InitiativesShow.postedByShort": "تم النشر بواسطة {authorName}",
