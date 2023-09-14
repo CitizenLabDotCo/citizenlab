@@ -571,6 +571,7 @@ sv:
       cta_see_results: 'Se resultat i plattformen'
     event_registration_confirmation:
       subject: "Du har kommit in! Din anmälan till \"%{eventTitle}\" är bekräftad."
+      header_message: "%{firstName}, tack för att du registrerat dig för"
       event_details:
         labels:
           date: 'Datum'
