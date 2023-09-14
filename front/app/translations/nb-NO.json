@@ -1450,7 +1450,6 @@
   "app.containers.SignUp.goToLogIn": "Har du en konto allerede? {goToOtherFlowLink}",
   "app.containers.SignUp.iHaveReadAndAgreeTo": "Jeg har lest og aksepterer {link}.",
   "app.containers.SignUp.iHaveReadAndAgreeToVienna": "Jeg godtar at opplysningene blir brukt på mitgestalten.wien.gv.at. Du finner mer informasjon {link}.",
-  "app.containers.SignUp.invitationError": "Invitasjonen din har enten utløpt eller er allerede brukt.",
   "app.containers.SignUp.lastNameLabel": "Etternavn",
   "app.containers.SignUp.privacyPolicyNotAcceptedError": "Aksepter våre brukerregler for å fortsette",
   "app.containers.SignUp.signUp2": "Fortsett",

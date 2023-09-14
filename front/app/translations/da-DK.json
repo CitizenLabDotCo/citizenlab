@@ -1450,7 +1450,6 @@
   "app.containers.SignUp.goToLogIn": "Har du allerede en konto? {goToOtherFlowLink}",
   "app.containers.SignUp.iHaveReadAndAgreeTo": "Jeg har læst og accepterer {link}.",
   "app.containers.SignUp.iHaveReadAndAgreeToVienna": "Jeg accepterer, at oplysningerne anvendes på mitgestalten.wien.gv.at. Yderligere oplysninger kan findes {link}.",
-  "app.containers.SignUp.invitationError": "Din invitation er udløbet eller er allerede indløst.",
   "app.containers.SignUp.lastNameLabel": "Efternavn",
   "app.containers.SignUp.privacyPolicyNotAcceptedError": "Accepter vores privatlivspolitik for at fortsætte",
   "app.containers.SignUp.signUp2": "Registrer dig",

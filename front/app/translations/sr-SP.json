@@ -1450,7 +1450,6 @@
   "app.containers.SignUp.goToLogIn": "Већ имате налог? {goToOtherFlowLink}",
   "app.containers.SignUp.iHaveReadAndAgreeTo": "Прочитао сам и слажем се са {link}.",
   "app.containers.SignUp.iHaveReadAndAgreeToVienna": "Прихватам да ће се подаци користити на митгесталтен.виен.гв.ат. Додатне информације можете пронаћи {link}.",
-  "app.containers.SignUp.invitationError": "Ваша позивница је истекла или је већ искоришћена.",
   "app.containers.SignUp.lastNameLabel": "Презиме",
   "app.containers.SignUp.privacyPolicyNotAcceptedError": "Прихватите нашу политику приватности да бисте наставили",
   "app.containers.SignUp.signUp2": "Пријави се",

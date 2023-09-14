@@ -1450,7 +1450,6 @@
   "app.containers.SignUp.goToLogIn": "Hesabınız var mı? {goToOtherFlowLink}",
   "app.containers.SignUp.iHaveReadAndAgreeTo": "{link} belgesini okudum ve kabul ediyorum.",
   "app.containers.SignUp.iHaveReadAndAgreeToVienna": "Verilerin mitgestalten.wien.gv.at adresinde kullanılacağını kabul ediyorum. Daha fazla bilgi {link}adresinde bulunabilir.",
-  "app.containers.SignUp.invitationError": "Davetiyenizin süresi doldu veya davetiye kullanılmış.",
   "app.containers.SignUp.lastNameLabel": "Soyadı",
   "app.containers.SignUp.privacyPolicyNotAcceptedError": "Devam etmek için gizlilik politikamızı kabul edin",
   "app.containers.SignUp.signUp2": "Kaydolun",

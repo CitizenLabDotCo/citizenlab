@@ -1450,7 +1450,6 @@
   "app.containers.SignUp.goToLogIn": "Masz już konto? {goToOtherFlowLink}",
   "app.containers.SignUp.iHaveReadAndAgreeTo": "Przeczytałem i zgadzam się {link}.",
   "app.containers.SignUp.iHaveReadAndAgreeToVienna": "Akceptuję, że dane będą wykorzystywane na stronie mitgestalten.wien.gv.at. Więcej informacji można znaleźć na stronie {link}.",
-  "app.containers.SignUp.invitationError": "Twoje zaproszenie wygasło lub zostało już wykorzystane.",
   "app.containers.SignUp.lastNameLabel": "Nazwisko",
   "app.containers.SignUp.privacyPolicyNotAcceptedError": "Zaakceptuj naszą politykę prywatności, aby kontynuować",
   "app.containers.SignUp.signUp2": "Zarejestruj się",

@@ -1450,7 +1450,6 @@
   "app.containers.SignUp.goToLogIn": "Έχετε ήδη λογαριασμό; {goToOtherFlowLink}",
   "app.containers.SignUp.iHaveReadAndAgreeTo": "Έχω διαβάσει και συμφωνώ με {link}.",
   "app.containers.SignUp.iHaveReadAndAgreeToVienna": "Αποδέχομαι ότι τα δεδομένα θα χρησιμοποιηθούν στο mitgestalten.wien.gv.at. Περαιτέρω πληροφορίες μπορείτε να βρείτε {link}.",
-  "app.containers.SignUp.invitationError": "Η πρόσκλησή σας έχει λήξει ή έχει ήδη χρησιμοποιηθεί.",
   "app.containers.SignUp.lastNameLabel": "Επώνυμο",
   "app.containers.SignUp.privacyPolicyNotAcceptedError": "Αποδεχτείτε την πολιτική απορρήτου μας για να προχωρήσετε",
   "app.containers.SignUp.signUp2": "Εγγραφείτε",
