@@ -120,7 +120,7 @@ describe IdNemlogIn::NemlogInOmniauth do
     expect(response).to redirect_to('/whatever-page?verification_error=true&error=no_token_passed')
   end
 
-  context 'when tenant is Copenhagen' do
+  context "when verification method is used by Copenhagen" do
     before do
       configuration = AppConfiguration.instance
       settings = configuration.settings
