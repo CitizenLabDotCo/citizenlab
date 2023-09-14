@@ -32,6 +32,7 @@ import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 // utils
 import { getEventDateString } from 'utils/dateUtils';
+import { AddEventToCalendarButton } from 'components/AddEventToCalendarButton';
 
 type EventAttendanceButtonProps = {
   event: IEventData;
@@ -152,6 +153,7 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
           <Text my="4px" color="coolGrey600" fontSize="m">
             {eventDateTime}
           </Text>
+          <AddEventToCalendarButton eventId={event.id} />
           {event && (
             <Box mt="16px" width="100%" mx="auto">
               <Text

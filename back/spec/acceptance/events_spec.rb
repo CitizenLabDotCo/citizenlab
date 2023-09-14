@@ -11,7 +11,7 @@ resource 'Events' do
   before_all do
     @project = create(:project)
     @project2 = create(:project)
-    @events = create_list(:event, 2, project: @project, start_at: '2017-05-01', end_at: '2017-05-02')
+    @events = create_list(:event, 2, project: @project, online_link: 'https://example.com', start_at: '2017-05-01', end_at: '2017-05-02')
     @other_events = create_list(:event, 2, project: @project2, start_at: '2017-05-01', end_at: '2017-05-02')
   end
 
@@ -174,7 +174,8 @@ resource 'Events' do
           end_at: event.end_at.iso8601(3),
           created_at: event.created_at.iso8601(3),
           updated_at: event.updated_at.iso8601(3),
-          attendees_count: event.attendees_count
+          attendees_count: event.attendees_count,
+          online_link: event.online_link
         }
       )
     end
@@ -230,6 +231,7 @@ resource 'Events' do
         parameter :address_2_multiloc, 'Additional address details, such as floor or room number, in multiple languages.'
         parameter :using_url, 'A URL to an external website where the event is hosted.'
         parameter :attend_button_multiloc, 'The text to display on the attend button, in multiple languages.'
+        parameter :online_link, 'Link to the online event'
       end
 
       ValidationErrorHelper.new.error_fields(self, Event)
@@ -243,6 +245,7 @@ resource 'Events' do
         let(:description_multiloc) { event.description_multiloc }
         let(:start_at) { event.start_at }
         let(:end_at) { event.end_at }
+        let(:online_link) { event.online_link }
 
         example_request 'Create an event for a project' do
           assert_status 201
@@ -251,6 +254,7 @@ resource 'Events' do
           expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
           expect(json_response.dig(:data, :attributes, :start_at)).to eq start_at.iso8601(3)
           expect(json_response.dig(:data, :attributes, :end_at)).to eq end_at.iso8601(3)
+          expect(json_response.dig(:data, :attributes, :online_link)).to eq online_link
           expect(json_response.dig(:data, :relationships, :project, :data, :id)).to eq project_id
         end
       end
@@ -260,12 +264,14 @@ resource 'Events' do
         let(:title_multiloc) { { 'en' => '' } }
         let(:start_at) { event.start_at }
         let(:end_at) { event.start_at - 1.day }
+        let(:online_link) { 'Invalid' }
 
         example_request '[error] Create an invalid event' do
           assert_status 422
           json_response = json_parse response_body
           expect(json_response).to include_response_error(:title_multiloc, 'blank')
           expect(json_response).to include_response_error(:start_at, 'after_end_at')
+          expect(json_response).to include_response_error(:online_link, 'url')
         end
       end
 

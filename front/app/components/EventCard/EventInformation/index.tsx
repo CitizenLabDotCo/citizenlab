@@ -48,11 +48,12 @@ const EventInformation = ({ event, titleFontSize }: Props) => {
 
   const isPastEvent = moment().isAfter(endAtMoment);
   const address1 = event?.attributes?.address_1;
+  const onlineLink = event?.attributes?.online_link;
   const eventDateTime = getEventDateString(event);
 
   return (
     <EventInformationContainer data-testid="EventInformation">
-      <Box>
+      <Box id="e2e-event-card">
         <Box
           display="flex"
           justifyContent="space-between"
@@ -115,6 +116,32 @@ const EventInformation = ({ event, titleFontSize }: Props) => {
                 {address1?.includes(',')
                   ? address1?.slice(0, address1.indexOf(','))
                   : address1}
+              </Text>
+            </Box>
+          )}
+          {onlineLink && (
+            <Box display="flex" mb="12px">
+              <Icon
+                my="auto"
+                fill={colors.coolGrey300}
+                name="link"
+                ariaHidden
+                mr="8px"
+              />
+              <Text
+                m="0px"
+                color="coolGrey700"
+                fontSize="s"
+                role="button"
+                pt="2px"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  window.open(onlineLink, '_blank');
+                }}
+                style={{ textDecoration: 'underline' }}
+              >
+                {formatMessage(messages.online)}
               </Text>
             </Box>
           )}

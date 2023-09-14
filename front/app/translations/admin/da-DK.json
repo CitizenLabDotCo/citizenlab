@@ -1505,6 +1505,8 @@
   "app.containers.AdminPage.ProjectEvents.locationLabel": "Beliggenhed",
   "app.containers.AdminPage.ProjectEvents.mapSelectionLabel2": "Du kan præcisere, hvor markøren for din begivenhed vises ved at klikke på kortet:",
   "app.containers.AdminPage.ProjectEvents.newEventTitle": "Opret en ny begivenhed",
+  "app.containers.AdminPage.ProjectEvents.onlineEventLinkLabel": "Link til online begivenhed",
+  "app.containers.AdminPage.ProjectEvents.onlineEventLinkTooltip": "Hvis din begivenhed er online, skal du tilføje et link til den her.",
   "app.containers.AdminPage.ProjectEvents.refineLocationCoordinates": "Forfin kortets placering",
   "app.containers.AdminPage.ProjectEvents.refineOnMap": "Forfin placering på kort",
   "app.containers.AdminPage.ProjectEvents.saveButtonLabel": "Gem",

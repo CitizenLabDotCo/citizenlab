@@ -1505,6 +1505,8 @@
   "app.containers.AdminPage.ProjectEvents.locationLabel": "Локација",
   "app.containers.AdminPage.ProjectEvents.mapSelectionLabel2": "Прецизирајте где се приказује ознака локације вашег догађаја кликом на мапу:",
   "app.containers.AdminPage.ProjectEvents.newEventTitle": "Направите нови догађај",
+  "app.containers.AdminPage.ProjectEvents.onlineEventLinkLabel": "Линк за онлајн догађај",
+  "app.containers.AdminPage.ProjectEvents.onlineEventLinkTooltip": "Ако је ваш догађај онлајн, додајте линк до њега овде.",
   "app.containers.AdminPage.ProjectEvents.refineLocationCoordinates": "Прецизирајте локацију на мапи",
   "app.containers.AdminPage.ProjectEvents.refineOnMap": "Прецизирајте локацију на мапи",
   "app.containers.AdminPage.ProjectEvents.saveButtonLabel": "сачувати",

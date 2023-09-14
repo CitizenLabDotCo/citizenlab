@@ -180,6 +180,15 @@ const AdminProjectEventEdit = () => {
     });
   };
 
+  const handleOnlineLinkOnChange = async (onlineLink: string) => {
+    setSubmitState('enabled');
+    setAttributeDiff({
+      ...attributeDiff,
+      online_link: onlineLink,
+    });
+    setErrors({});
+  };
+
   const handleAddress1OnChange = async (location: string) => {
     setSubmitState('enabled');
     setAttributeDiff({
@@ -458,6 +467,23 @@ const AdminProjectEventEdit = () => {
           >
             {formatMessage(messages.eventLocation)}
           </Title>
+
+          <SectionField>
+            <Box mt="16px" maxWidth="400px">
+              <Input
+                id="event-location"
+                label={formatMessage(messages.onlineEventLinkLabel)}
+                type="text"
+                value={eventAttrs.online_link}
+                onChange={handleOnlineLinkOnChange}
+                labelTooltipText={formatMessage(
+                  messages.onlineEventLinkTooltip
+                )}
+                placeholder={'https://...'}
+              />
+            </Box>
+            <ErrorComponent apiErrors={get(errors, 'online_link')} />
+          </SectionField>
 
           <SectionField>
             <Box maxWidth="400px">

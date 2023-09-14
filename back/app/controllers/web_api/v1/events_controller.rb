@@ -108,6 +108,7 @@ class WebApi::V1::EventsController < ApplicationController
       :project_id,
       :start_at,
       :end_at,
+      :online_link,
       :address_1,
       :using_url,
       address_2_multiloc: CL2_SUPPORTED_LOCALES,
