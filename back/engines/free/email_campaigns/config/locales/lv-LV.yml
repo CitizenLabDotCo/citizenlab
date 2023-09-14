@@ -207,12 +207,14 @@ lv:
       cta_accept_invitation: 'Pieņemt jūsu uzaicinājumu'
       invitation_header: 'Jūsu uzaicinājums vēl nav pieņemts'
       preheader: '%{organizationName} pirms dažām dienām nosūtīja jums uzaicinājumu pievienoties viņu līdzdalības platformai.'
+      invitation_expiry_message: 'Šis ielūgums beidzas aptuveni pēc %{expiryDaysRemaining} dienām.'
       subject: 'Gaidāmais uzaicinājums uz %{organizationName} līdzdalības platformu'
     invite_received:
       added_a_message: '%{organizationName} uzrakstīja šādu ziņojumu:'
       cta_accept_invitation: 'Pieņemt jūsu uzaicinājumu'
       invitation_header: 'Jūs esat laipni aicināti!'
       invitation_header_message: '%{organizationName} uzaicināja jūs piedalīties viņu līdzdalības platformā.'
+      invitation_expiry_message: 'Šis ielūgums beidzas pēc %{expiryDays} dienām.'
       preheader: '%{organizationName} nosūtīja jums uzaicinājumu pievienoties viņu līdzdalības platformai.'
       subject: 'Jūs esat aicināts pievienoties %{organizationName} platformai'
     initiative_published:

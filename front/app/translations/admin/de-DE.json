@@ -437,6 +437,7 @@
   "app.containers.Admin.Invitations.helmetTitle": "Dashboard für Admin-Einladungen",
   "app.containers.Admin.Invitations.importOptionsInfo": "Diese Optionen werden nur berücksichtigt, wenn sie nicht in der Excel-Datei definiert sind.\n      Bitte besuchen Sie {supportPageLink} für weitere Informationen.",
   "app.containers.Admin.Invitations.importTab": "E-Mail-Adressen importieren",
+  "app.containers.Admin.Invitations.invitationExpirationWarning": "Beachten Sie, dass Einladungen nach 14 Tagen ablaufen. Nach Ablauf dieser Frist können Sie sie immer noch erneut versenden.",
   "app.containers.Admin.Invitations.invitationOptions": "Einladungsoptionen",
   "app.containers.Admin.Invitations.invitationSubtitle": "Laden Sie Personen zu einem beliebigen Zeitpunkt auf die Plattform ein. Diese erhalten eine neutrale Einladungs-E-Mail mit Ihrem Logo, in der sie aufgefordert werden, sich auf der Plattform zu registrieren.",
   "app.containers.Admin.Invitations.invitePeople": "Einladungen",
