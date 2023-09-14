@@ -571,6 +571,7 @@ lv:
       cta_see_results: 'Skatiet rezultātus platformā'
     event_registration_confirmation:
       subject: "Jūs esat iekļauts! Jūsu reģistrācija \"%{eventTitle}\" ir apstiprināta"
+      header_message: "%{firstName}, paldies par reģistrēšanos"
       event_details:
         labels:
           date: 'Datums'
