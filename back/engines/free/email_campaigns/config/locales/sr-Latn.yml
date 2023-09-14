@@ -1,8 +1,8 @@
 sr-Latn:
   email_campaigns:
     campaign_type_description:
-      "1": "Weekly, on Mondays at %{hourOfDay}"
-      "2": "Weekly, on Tuesdays at %{hourOfDay}"
+      "1": "Недељно понедељком %{hourOfDay}"
+      "2": "Недељно уторком %{hourOfDay}"
       "3": "Weekly, on Wednesdays at %{hourOfDay}"
       "4": "Weekly, on Thursdays at %{hourOfDay}"
       "5": "Weekly, on Fridays at %{hourOfDay}"
