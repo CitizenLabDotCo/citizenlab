@@ -3,6 +3,7 @@ import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import moderationKeys from './keys';
 import { IModeration, TModeratableType, TModerationStatus } from './types';
+import moderationsCountKeys from '../moderation_count/keys';
 
 type UpdateModerationStatus = {
   moderationId: string;
@@ -28,6 +29,9 @@ const useUpdateModerationStatus = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: moderationKeys.lists(),
+      });
+      queryClient.invalidateQueries({
+        queryKey: moderationsCountKeys.items(),
       });
     },
   });

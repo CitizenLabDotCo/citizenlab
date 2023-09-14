@@ -1,6 +1,9 @@
 import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 import { IRelationship } from 'typings';
+import { queryClient } from 'utils/cl-react-query/queryClient';
+import moderationsKeys from 'modules/commercial/moderation/api/moderations/keys';
+import moderationsCountKeys from 'modules/commercial/moderation/api/moderation_count/keys';
 
 // To keep in sync with spam report reason codes
 // Flags can't have the reason_code 'other' however
@@ -40,12 +43,11 @@ export async function removeInappropriateContentFlag(flagId: string) {
     {}
   );
 
-  await streams.fetchAllWith({
-    apiEndpoint: [
-      apiEndpoint,
-      `${API_PATH}/moderations`,
-      `${API_PATH}/moderations/moderations_count`,
-    ],
+  queryClient.invalidateQueries({
+    queryKey: moderationsKeys.lists(),
+  });
+  queryClient.invalidateQueries({
+    queryKey: moderationsCountKeys.items(),
   });
 
   return response;
