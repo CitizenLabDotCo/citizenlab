@@ -1441,7 +1441,7 @@
   "app.containers.SignUp.goToLogIn": "Sie haben bereits ein Konto? {goToOtherFlowLink}",
   "app.containers.SignUp.iHaveReadAndAgreeTo": "Ich stimme {link} zu.",
   "app.containers.SignUp.iHaveReadAndAgreeToVienna": "Ich stimme zu, dass diese Daten für meine Anmeldung auf mitgestalten.wien.gv.at übernommen werden. Weitere Informationen finden Sie in {link}.",
-  "app.containers.SignUp.invitationErrorText": "Ihre Einladung ist abgelaufen oder wurde bereits verwendet. Wenn Sie den Einladungslink bereits verwendet haben, um ein Konto zu erstellen, versuchen Sie, sich anzumelden. Andernfalls melden Sie sich an, um ein neues Konto zu erstellen.",
+  "app.containers.SignUp.invitationErrorText": "Ihre Einladung ist abgelaufen oder wurde bereits verwendet. Wenn Sie den Einladungslink bereits verwendet haben, um ein Konto zu erstellen, versuchen Sie sich anzumelden. Andernfalls registrieren Sie sich, um ein neues Konto zu erstellen.",
   "app.containers.SignUp.lastNameLabel": "Familienname",
   "app.containers.SignUp.privacyPolicyNotAcceptedError": "Akzeptieren Sie unsere Datenschutzbestimmungen, um fortzufahren",
   "app.containers.SignUp.signUp2": "Registrieren",
