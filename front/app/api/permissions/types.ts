@@ -77,6 +77,8 @@ export interface IGlobalPermissions {
 }
 
 export interface IPermissionUpdate {
+  id: string;
+  action: string;
   group_ids: string[];
   permitted_by: IPermissionData['attributes']['permitted_by'];
   global_custom_fields: boolean;
