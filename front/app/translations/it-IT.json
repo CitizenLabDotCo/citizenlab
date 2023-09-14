@@ -1108,7 +1108,7 @@
   "app.containers.InitiativesShow.manageInvitationsLinkText": "Gestisci gli inviti alla cosponsorizzazione",
   "app.containers.InitiativesShow.metaOgTitle": "Appoggia questa proposta : {initiativeTitle}",
   "app.containers.InitiativesShow.metaTitle": "Proposta - {initiativeTitle}",
-  "app.containers.InitiativesShow.numberOfCosponsorsNotYetMet1": "{requiredNumberOfCosponsors, plural, one {La tua proposta necessita di {requiredNumberOfCosponsors} una sponsorizzazione accettata. Fino ad allora, non sarà presa in considerazione. {manageInvitationsLink}.} other {La tua proposta necessita di {requiredNumberOfCosponsors} cosponsorizzazioni accettate. Fino ad allora, non sarà presa in considerazione. {manageInvitationsLink}.}}",
+  "app.containers.InitiativesShow.numberOfCosponsorsNotYetMet": "{requiredNumberOfCosponsors, plural, one {La tua proposta necessita di 1 cosponsorizzazione accettata. Fino ad allora, non sarà presa in considerazione. {manageInvitationsLink}.} other {La tua proposta necessita di {requiredNumberOfCosponsors} cosponsorizzazioni accettate. Fino ad allora, non sarà presa in considerazione. {manageInvitationsLink}.}}",
   "app.containers.InitiativesShow.pending1": "in attesa",
   "app.containers.InitiativesShow.postedBy": "Proposta inviata da {authorName}",
   "app.containers.InitiativesShow.postedByShort": "Inviato da {authorName}",
