@@ -29,7 +29,7 @@ import {
   IModerationData,
   TBelongsTo,
   TModeratableType,
-} from '../../api/moderations/types';
+} from 'api/moderations/types';
 
 // hooks
 import useInappropriateContentFlag from 'modules/commercial/flag_inappropriate_content/hooks/useInappropriateContentFlag';

@@ -27,11 +27,11 @@ import SearchInput from 'components/UI/SearchInput';
 import Outlet from 'components/Outlet';
 
 // hooks
-import useModerations from '../../api/moderations/useModerations';
-import useModerationsCount from '../../api/moderation_count/useModerationsCount';
+import useModerations from 'api/moderations/useModerations';
+import useModerationsCount from 'api/moderation_count/useModerationsCount';
 
 // services
-import { IModerationData, TModeratableType } from '../../api/moderations/types';
+import { IModerationData, TModeratableType } from 'api/moderations/types';
 import { removeInappropriateContentFlag } from 'modules/commercial/flag_inappropriate_content/services/inappropriateContentFlags';
 
 // i18n
@@ -49,7 +49,7 @@ import { colors, fontSizes } from 'utils/styleUtils';
 // typings
 import { IOption, InsertConfigurationOptions } from 'typings';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
-import useUpdateModerationStatus from '../../api/moderations/useUpdateModerationStatus';
+import useUpdateModerationStatus from 'api/moderations/useUpdateModerationStatus';
 
 const Container = styled.div`
   display: flex;

@@ -4,8 +4,8 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import { ISpamReport, ISpamReportAdd } from './types';
 import streams from 'utils/streams';
 import { API_PATH } from 'containers/App/constants';
-import moderationsKeys from 'modules/commercial/moderation/api/moderations/keys';
-import moderationsCountKeys from 'modules/commercial/moderation/api/moderation_count/keys';
+import moderationsKeys from 'api/moderations/keys';
+import moderationsCountKeys from 'api/moderation_count/keys';
 
 const addSpamReport = async ({
   targetId,
