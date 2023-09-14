@@ -128,8 +128,10 @@ class PrintCustomFieldsService
 
     pdf.fill do
       pdf.fill_color '000000'
-      pdf.rectangle([0, pdf.cursor + 1.5.mm], 3, 32)
+      pdf.rectangle([1, pdf.cursor + 1.5.mm], 3, 36)
     end
+
+    pdf.move_up 1.2.mm
 
     %w[write_as_clearly write_in_language].each do |key|
       save_cursor pdf
