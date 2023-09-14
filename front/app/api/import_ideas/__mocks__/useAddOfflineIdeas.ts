@@ -90,3 +90,7 @@ export const ideasData: IIdeaData[] = [
     },
   },
 ];
+
+export default jest.fn(() => {
+  return { data: { data: ideasData } };
+});
