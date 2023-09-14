@@ -354,7 +354,6 @@
   "app.components.PostComponents.SharingModalContent.questionWhatsAppMessage": "Delta i diskusjonen: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.twitterMessage": "Stem på {postTitle}",
   "app.components.PostComponents.SharingModalContent.whatsAppMessageProposal": "Jeg publiserte nettopp et forslag for {orgName}: {postTitle}",
-  "app.components.PostComponents.areas": "Områder",
   "app.components.PostComponents.linkToHomePage": "Lenke til nettside",
   "app.components.PostComponents.readMore": "Les mer...",
   "app.components.PostComponents.topics": "Emner",
