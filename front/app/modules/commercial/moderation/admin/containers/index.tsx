@@ -28,7 +28,7 @@ import Outlet from 'components/Outlet';
 
 // hooks
 import useModerations from '../../api/moderations/useModerations';
-import useModerationsCount from '../../hooks/useModerationsCount';
+import useModerationsCount from '../../api/moderation_count/useModerationsCount';
 
 // services
 import { IModerationData, TModeratableType } from '../../api/moderations/types';
@@ -239,7 +239,7 @@ const Moderation = () => {
     isFlagged: selectedTab === 'warnings',
   });
 
-  const moderationsWithActiveFlagCount = useModerationsCount({
+  const { data: moderationsWithActiveFlagCount } = useModerationsCount({
     isFlagged: true,
   });
 

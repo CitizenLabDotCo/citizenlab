@@ -9,7 +9,15 @@ const fetchModerationsCount = (queryParams: InputParameters) =>
   fetcher<IModerationsCount>({
     path: `/moderations/moderations_count`,
     action: 'get',
-    queryParams,
+    queryParams: {
+      'page[number]': queryParams.pageNumber,
+      'page[size]': queryParams.pageSize,
+      moderation_status: queryParams.moderationStatus,
+      moderatable_types: queryParams.moderatableTypes,
+      project_ids: queryParams.projectIds,
+      search: queryParams.searchTerm,
+      is_flagged: queryParams.isFlagged,
+    },
   });
 
 const useModerationsCount = (queryParams: InputParameters) => {
