@@ -24,9 +24,10 @@ export default defineMessages({
     defaultMessage:
       'This project does not contain any phases that can contain ideas.',
   },
-  selectAnotherPhase: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.TopBar.selectAnotherPhase2',
-    defaultMessage: 'Please select an ideation or voting phase.',
+  selectAPhase: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.TopBar.selectAPhase',
+    defaultMessage:
+      'Please select to which phase you want to add these inputs.',
   },
   addToPhase: {
     id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.addToPhase',
@@ -35,5 +36,18 @@ export default defineMessages({
   upload: {
     id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.upload',
     defaultMessage: 'Upload',
+  },
+  googleConsent: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.googleConsent2',
+    defaultMessage:
+      'I hereby consent to processing this file using the Google Cloud Form Parser',
+  },
+  consentNeeded: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.consentNeeded',
+    defaultMessage: 'You need to consent to this before you can continue',
+  },
+  pleaseUploadFile: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.pleaseUploadFile',
+    defaultMessage: 'Please upload a file to continue',
   },
 });

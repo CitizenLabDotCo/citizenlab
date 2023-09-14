@@ -10,18 +10,23 @@ import useProjectById from 'api/projects/useProjectById';
 // components
 import Modal from 'components/UI/Modal';
 import { Box, Button, Text, Title } from '@citizenlab/cl2-component-library';
-import PhaseSelector from './PhaseSelector';
+import PhaseSelector from '../PhaseSelector';
 
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // form
+import Feedback from 'components/HookForm/Feedback';
 import Checkbox from 'components/HookForm/Checkbox';
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { object, boolean, string } from 'yup';
-import { isCLErrorsIsh, handleCLErrorsIsh } from 'utils/errorUtils';
+import {
+  isCLErrorsIsh,
+  handleCLErrorsIsh,
+  handleCLErrorWrapper,
+} from 'utils/errorUtils';
 
 const DEFAULT_VALUES = {
   name: false,
@@ -94,6 +99,8 @@ const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
         handleCLErrorsIsh(e, methods.setError);
         return;
       }
+
+      handleCLErrorWrapper(e, methods.setError);
     }
   };
 
@@ -112,6 +119,7 @@ const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
     >
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(handleExport)}>
+          <Feedback />
           <Box p="24px" w="100%">
             <Text mb="20px" mt="0px" w="500px">
               {formType === 'idea_form' && (
@@ -157,7 +165,9 @@ const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
             )}
             {isTimelineProject && formType === 'idea_form' && (
               <Box mb="24px">
-                <PhaseSelector />
+                <PhaseSelector
+                  label={<FormattedMessage {...messages.phase} />}
+                />
               </Box>
             )}
             <Box w="100%" display="flex">

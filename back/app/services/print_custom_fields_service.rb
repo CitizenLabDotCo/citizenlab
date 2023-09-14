@@ -9,7 +9,7 @@ class PrintCustomFieldsService
   # We are still hiding linear scales for now because they are not supported
   # by the plaintext parse
   QUESTION_TYPES = %w[select multiselect text text_multiloc multiline_text html_multiloc number]
-  FORBIDDEN_HTML_TAGS_REGEX = %r{</?(div|span|ul|ol|li|em|img|a){1}[^>]*/?>}
+  FORBIDDEN_HTML_TAGS_REGEX = %r{</?(div|span|ul|ol|li|img|a){1}[^>]*/?>}
 
   def initialize(participation_context, custom_fields, params)
     @participation_context = participation_context
@@ -21,9 +21,11 @@ class PrintCustomFieldsService
   def create_pdf
     pdf = Prawn::Document.new(page_size: 'A4')
 
+    load_font pdf
+
     render_tenant_logo pdf
-    render_form_title pdf
-    render_instructions pdf
+    write_form_title pdf
+    write_instructions pdf
 
     if params[:name] == 'true'
       render_text_field_with_name(
@@ -74,12 +76,28 @@ class PrintCustomFieldsService
 
   private
 
+  def load_font(pdf)
+    open_sans_path = Rails.root.join('app/assets/fonts/Open_Sans/static')
+
+    pdf.font_families.update('OpenSans' => {
+      normal: "#{open_sans_path}/OpenSans-Regular.ttf",
+      italic: "#{open_sans_path}/OpenSans-Italic.ttf",
+      bold: "#{open_sans_path}/OpenSans-Bold.ttf",
+      bold_italic: "#{open_sans_path}/OpenSans-BoldItalic.ttf"
+    })
+
+    pdf.font 'OpenSans'
+  end
+
   def render_tenant_logo(pdf)
-    pdf.image open AppConfiguration.instance.logo.medium.to_s
+    logo = AppConfiguration.instance.logo.medium
+    return if logo.blank?
+
+    pdf.image open logo
     pdf.move_down 10.mm
   end
 
-  def render_form_title(pdf)
+  def write_form_title(pdf)
     pc_title = @participation_context.title_multiloc[locale]
 
     if @participation_context.instance_of? Project
@@ -102,7 +120,7 @@ class PrintCustomFieldsService
     pdf.move_down 9.mm
   end
 
-  def render_instructions(pdf)
+  def write_instructions(pdf)
     pdf.text(
       "<b>#{I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.instructions') }}</b>",
       size: 16,
@@ -113,8 +131,10 @@ class PrintCustomFieldsService
 
     pdf.fill do
       pdf.fill_color '000000'
-      pdf.rectangle([0, pdf.cursor + 1.5.mm], 3, 32)
+      pdf.rectangle([1, pdf.cursor + 1.5.mm], 3, 36)
     end
+
+    pdf.move_up 1.2.mm
 
     %w[write_as_clearly write_in_language].each do |key|
       save_cursor pdf
@@ -167,27 +187,27 @@ class PrintCustomFieldsService
       pdf_group.move_down 7.mm
 
       if field_type == 'select'
-        draw_single_choice(pdf_group, custom_field)
+        render_single_choice(pdf_group, custom_field)
       end
 
       if field_type == 'multiselect'
-        draw_multiple_choice(pdf_group, custom_field)
+        render_multiple_choice(pdf_group, custom_field)
       end
 
       if %w[text text_multiloc].include? field_type
-        draw_text_lines(pdf_group, 1)
+        render_text_lines(pdf_group, 1)
       end
 
       if %w[multiline_text html_multiloc].include? field_type
-        draw_text_lines(pdf_group, 7)
+        render_text_lines(pdf_group, 7)
       end
 
       if field_type == 'linear_scale'
-        draw_linear_scale(pdf_group, custom_field)
+        render_linear_scale(pdf_group, custom_field)
       end
 
       if field_type == 'number'
-        draw_text_lines(pdf_group, 1)
+        render_text_lines(pdf_group, 1)
       end
     end
 
@@ -216,7 +236,7 @@ class PrintCustomFieldsService
         pdf.text(paragraph, inline_format: true)
       end
 
-      pdf.move_down 2.mm
+      # pdf.move_down 2.mm
     end
   end
 
@@ -243,12 +263,12 @@ class PrintCustomFieldsService
     end
   end
 
-  def draw_single_choice(pdf, custom_field)
+  def render_single_choice(pdf, custom_field)
     custom_field.options.each do |option|
       pdf.stroke_color '000000'
       pdf.stroke_circle [3.mm, pdf.cursor], 5
 
-      pdf.move_up 1.2.mm
+      pdf.move_up 3.mm
 
       pdf.indent(7.mm) do
         pdf.text option.title_multiloc[locale]
@@ -258,14 +278,14 @@ class PrintCustomFieldsService
     end
   end
 
-  def draw_multiple_choice(pdf, custom_field)
+  def render_multiple_choice(pdf, custom_field)
     custom_field.options.each do |option|
       pdf.stroke do
         pdf.stroke_color '000000'
         pdf.rectangle([1.5.mm, pdf.cursor + 1.5.mm], 10, 10)
       end
 
-      pdf.move_up 1.2.mm
+      pdf.move_up 2.8.mm
 
       pdf.indent(7.mm) do
         pdf.text option.title_multiloc[locale]
@@ -275,13 +295,13 @@ class PrintCustomFieldsService
     end
   end
 
-  def draw_text_lines(pdf, lines)
+  def render_text_lines(pdf, lines)
     lines.times do
-      pdf.text '_' * 47, color: '666666', size: 20, leading: 15
+      pdf.text '_' * 59, color: '666666', size: 20, leading: 15
     end
   end
 
-  def draw_linear_scale(pdf, custom_field)
+  def render_linear_scale(pdf, custom_field)
     max_index = custom_field.maximum - 1
     width = 80.mm
 
@@ -336,6 +356,8 @@ class PrintCustomFieldsService
 
   def parse_html_tags(string)
     string
+      .gsub('<em>', '<i>')
+      .gsub('</em>', '</i>')
       .gsub(FORBIDDEN_HTML_TAGS_REGEX, '')
       .gsub('<p>', '')
       .split('</p>')

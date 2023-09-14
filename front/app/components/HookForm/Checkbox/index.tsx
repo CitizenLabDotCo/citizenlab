@@ -20,6 +20,7 @@ const Checkbox = ({ name, handleSideEffects, ...rest }: Props) => {
     control,
     watch,
     setValue,
+    trigger,
   } = useFormContext();
 
   const defaultValue = false;
@@ -46,6 +47,7 @@ const Checkbox = ({ name, handleSideEffects, ...rest }: Props) => {
             onChange={() => {
               setValue(name, !currentValue);
               handleSideEffects?.();
+              trigger(name);
             }}
           />
         )}

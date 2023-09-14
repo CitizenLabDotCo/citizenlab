@@ -2,17 +2,7 @@
 
 module BulkImportIdeas
   class WebApi::V1::ImportIdeasController < ApplicationController
-    before_action :authorize_bulk_import_ideas
-
-    # Show the metadata of a single imported idea
-    def show
-      idea_import = IdeaImport.find(params[:id])
-
-      render json: WebApi::V1::IdeaImportSerializer.new(
-        idea_import,
-        params: jsonapi_serializer_params
-      ).serializable_hash
-    end
+    before_action :authorize_bulk_import_ideas, only: %i[bulk_create example_xlsx draft_ideas]
 
     # NOTE: PDF version will only work for a project endpoint
     def bulk_create
@@ -30,7 +20,7 @@ module BulkImportIdeas
       ).serializable_hash, status: :created
     rescue BulkImportIdeas::Error => e
       sidefx.after_failure current_user
-      render json: { file: [{ error: e.key, **e.params }] }, status: :unprocessable_entity
+      render json: { errors: { file: [{ error: e.key, **e.params }] } }, status: :unprocessable_entity
     end
 
     def example_xlsx
@@ -51,6 +41,17 @@ module BulkImportIdeas
         include: %i[author idea_import],
         params: jsonapi_serializer_params
       )
+    end
+
+    # Show the metadata of a single imported idea
+    def show
+      idea_import = IdeaImport.find(params[:id])
+      authorize idea_import
+
+      render json: WebApi::V1::IdeaImportSerializer.new(
+        idea_import,
+        params: jsonapi_serializer_params
+      ).serializable_hash
     end
 
     private
@@ -84,7 +85,14 @@ module BulkImportIdeas
     end
 
     def authorize_bulk_import_ideas
-      authorize :'bulk_import_ideas/import_ideas'
+      project = nil
+      if import_scope == :project
+        project = Project.find(params[:id])
+      elsif import_scope == :phase
+        project = Phase.find(params[:id]).project
+      end
+
+      authorize project || :'bulk_import_ideas/import_ideas'
     end
 
     def sidefx

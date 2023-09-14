@@ -24,10 +24,14 @@ module BulkImportIdeas
 
     private
 
-    def active_admin?
+    def active_user?
       return false unless user
 
-      user.active? && user.admin?
+      user.active?
+    end
+
+    def active_admin?
+      active_user? && user.admin?
     end
   end
 end

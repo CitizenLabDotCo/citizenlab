@@ -14,7 +14,7 @@ import useImportedIdeas from 'api/import_ideas/useImportedIdeas';
 import { useParams } from 'react-router-dom';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Spinner } from '@citizenlab/cl2-component-library';
 import TopBar from './TopBar';
 import ImportModal from './ImportModal';
 import ReviewSection from './ReviewSection';
@@ -47,7 +47,7 @@ const OfflineInputImporter = () => {
   >({});
 
   const { data: idea } = useIdeaById(ideaId ?? undefined, false);
-  const { data: ideas } = useImportedIdeas({ projectId, phaseId });
+  const { data: ideas, isLoading } = useImportedIdeas({ projectId, phaseId });
   const { mutateAsync: updateIdea, isLoading: loadingApproveIdea } =
     useUpdateIdea();
   const { mutate: deleteIdea } = useDeleteIdea();
@@ -76,7 +76,23 @@ const OfflineInputImporter = () => {
   const openImportModal = () => setImportModalOpen(true);
   const closeImportModal = () => setImportModalOpen(false);
 
-  if (!schema || !uiSchema) return null;
+  if (!schema || !uiSchema || isLoading) {
+    return (
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        justifyContent="center"
+        w="100%"
+        zIndex="10000"
+        position="fixed"
+        bgColor={colors.background}
+        h="100vh"
+      >
+        <Spinner />
+      </Box>
+    );
+  }
 
   const formDataValid = isValidData(
     schema,
@@ -167,7 +183,7 @@ const OfflineInputImporter = () => {
               loadingApproveIdea={loadingApproveIdea}
               onSelectIdea={handleSelectIdea}
               setFormData={setFormData}
-              onApproveIdea={ideaId ? onApproveIdea : undefined}
+              onApproveIdea={onApproveIdea}
               onDeleteIdea={onDeleteIdea}
             />
           </Box>

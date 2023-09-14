@@ -32,5 +32,6 @@ export async function saveIdeaFormAsPDF({
     saveAs(blob, 'idea_form.pdf');
   } catch (error) {
     reportError(error);
+    throw error;
   }
 }
