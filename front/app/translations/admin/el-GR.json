@@ -437,6 +437,7 @@
   "app.containers.Admin.Invitations.helmetTitle": "Πίνακας εργαλείων πρόσκλησης διαχειριστή",
   "app.containers.Admin.Invitations.importOptionsInfo": "Αυτές οι επιλογές θα ληφθούν υπόψη μόνο όταν δεν έχουν οριστεί στο αρχείο Excel. Παρακαλούμε επισκεφθείτε τη σελίδα {supportPageLink} για περισσότερες πληροφορίες.",
   "app.containers.Admin.Invitations.importTab": "Εισαγωγή διευθύνσεων email",
+  "app.containers.Admin.Invitations.invitationExpirationWarning": "Be aware that invitations expire after 14 days. After this period, you can still resend them.",
   "app.containers.Admin.Invitations.invitationOptions": "Επιλογές πρόσκλησης",
   "app.containers.Admin.Invitations.invitationSubtitle": "Προσκαλέστε άτομα στην πλατφόρμα σε οποιαδήποτε χρονική στιγμή. Λαμβάνουν ένα ουδέτερο email πρόσκλησης με το λογότυπό σας, στο οποίο τους ζητείται να εγγραφούν στην πλατφόρμα.",
   "app.containers.Admin.Invitations.invitePeople": "Πρόσκληση ατόμων μέσω email",
