@@ -571,6 +571,7 @@ sr-Cyrl:
       cta_see_results: 'Погледајте резултате на платформи'
     event_registration_confirmation:
       subject: "Ти си у! Ваша регистрација за \"%{eventTitle}\" је потврђена"
+      header_message: "%{firstName}, хвала на регистрацији"
       event_details:
         labels:
           date: 'Датум'
