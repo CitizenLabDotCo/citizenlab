@@ -7,7 +7,7 @@ sr-Latn:
     viewed: pregledano
     viewed_description: Ova ideja je pogledana
     under_consideration: razmatra se
-    under_consideration_description: Ova ideja se razmatra 
+    under_consideration_description: Ova ideja se razmatra
     accepted: prihvaćeno
     accepted_description: Ova ideja je prihvaćena i biće realizovana
     implemented: realizovano
@@ -178,7 +178,7 @@ sr-Latn:
       ISCED4: Srednja škola stručnog usmerenja
       ISCED5: Viša škola
       ISCED6: Visoka stručna sprema
-      ISCED7: Master 
+      ISCED7: Master
       ISCED8: Doktor nauka
   initiatives:
     default_threshold_reached_message: >
