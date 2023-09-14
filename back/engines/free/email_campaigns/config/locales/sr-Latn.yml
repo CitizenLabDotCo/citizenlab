@@ -571,6 +571,7 @@ sr-Latn:
       cta_see_results: 'See results in the platform'
     event_registration_confirmation:
       subject: "You're in! Your registration for \"%{eventTitle}\" is confirmed"
+      header_message: "%{firstName}, thanks for registering for"
       event_details:
         labels:
           date: 'Date'
