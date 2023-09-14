@@ -571,6 +571,7 @@ hr:
       cta_see_results: 'Pogledajte rezultate na platformi'
     event_registration_confirmation:
       subject: "Upadas! Vaša registracija za \"%{eventTitle}\" je potvrđena"
+      header_message: "%{firstName}, hvala na registraciji za"
       event_details:
         labels:
           date: 'Datum'
