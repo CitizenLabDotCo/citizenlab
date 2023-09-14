@@ -35,7 +35,6 @@ const OnlineLink = ({ link }: Props) => {
               justifyContent: 'left',
               textAlign: 'left',
             }}
-            id="e2e-location-with-coordinates-button"
           >
             {formatMessage(messages.linkToOnlineEvent)}
           </Button>
