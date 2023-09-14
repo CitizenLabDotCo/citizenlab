@@ -90,7 +90,10 @@ class PrintCustomFieldsService
   end
 
   def render_tenant_logo(pdf)
-    pdf.image open AppConfiguration.instance.logo.medium.to_s
+    logo = AppConfiguration.instance.logo.medium
+    return if logo.blank?
+
+    pdf.image open logo
     pdf.move_down 10.mm
   end
 

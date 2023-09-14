@@ -102,8 +102,8 @@ const SettingsCustomizeTab = () => {
     event.preventDefault();
 
     if (
-      !isNilOrError(appConfiguration) &&
-      validate(appConfiguration, attributesDiff)
+      !isNilOrError(appConfiguration) // &&
+      // validate(appConfiguration, attributesDiff)
     ) {
       if (!isEmpty(attributesDiff)) {
         updateAppConfiguration(attributesDiff, {
