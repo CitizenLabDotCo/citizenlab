@@ -21,7 +21,7 @@ class PrintCustomFieldsService
   def create_pdf
     pdf = Prawn::Document.new(page_size: 'A4')
 
-    # load_font pdf
+    load_font pdf
 
     render_tenant_logo pdf
     render_form_title pdf
