@@ -1108,7 +1108,7 @@
   "app.containers.InitiativesShow.manageInvitationsLinkText": "Verwalte Cosponsorinvitatiounen",
   "app.containers.InitiativesShow.metaOgTitle": "Dëse Virschlag ënnerstëtzen: {initiativeTitle}",
   "app.containers.InitiativesShow.metaTitle": "Virschlag  • {initiativeTitle}",
-  "app.containers.InitiativesShow.numberOfCosponsorsNotYetMet1": "{requiredNumberOfCosponsors, plural, one {Är Propositioun brauch {requiredNumberOfCosponsors} akzeptéiert cosponsorship. Bis dohinner gëtt et net berücksichtegt. {manageInvitationsLink}.} other {Är Propositioun brauch {requiredNumberOfCosponsors} akzeptéiert cosponsorships. Bis dohinner gëtt et net berücksichtegt. {manageInvitationsLink}.}}",
+  "app.containers.InitiativesShow.numberOfCosponsorsNotYetMet": "{requiredNumberOfCosponsors, plural, one {Är Propositioun brauch 1 akzeptéiert Cosponsorship. Bis dohinner gëtt et net berücksichtegt. {manageInvitationsLink}.} other {Är Propositioun brauch {requiredNumberOfCosponsors} akzeptéiert cosponsorships. Bis dohinner gëtt et net berücksichtegt. {manageInvitationsLink}.}}",
   "app.containers.InitiativesShow.pending1": "amgaang",
   "app.containers.InitiativesShow.postedBy": "Virschlag gepost vum {authorName}",
   "app.containers.InitiativesShow.postedByShort": "Gepost vum {authorName}",
