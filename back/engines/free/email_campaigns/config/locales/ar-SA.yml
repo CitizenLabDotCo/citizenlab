@@ -571,6 +571,7 @@ ar:
       cta_see_results: 'رؤية النتائج في النظام الأساسي'
     event_registration_confirmation:
       subject: "اهلا بك! تم تأكيد تسجيلك لـ \"%{eventTitle}\"."
+      header_message: "%{firstName}شكرا على التسجيل"
       event_details:
         labels:
           date: 'تاريخ'
