@@ -30,5 +30,6 @@ export async function saveSurveyAsPDF({
     saveAs(blob, 'survey.pdf');
   } catch (error) {
     reportError(error);
+    throw error;
   }
 }
