@@ -1505,6 +1505,8 @@
   "app.containers.AdminPage.ProjectEvents.locationLabel": "الموقع",
   "app.containers.AdminPage.ProjectEvents.mapSelectionLabel2": "حدد مكان ظهور علامة موقع الحدث من خلال النقر على الخريطة:",
   "app.containers.AdminPage.ProjectEvents.newEventTitle": "أنشئ حدثًا جديدًا",
+  "app.containers.AdminPage.ProjectEvents.onlineEventLinkLabel": "رابط الحدث على الانترنت",
+  "app.containers.AdminPage.ProjectEvents.onlineEventLinkTooltip": "إذا كان الحدث الخاص بك متصلاً بالإنترنت، أضف رابطًا إليه هنا.",
   "app.containers.AdminPage.ProjectEvents.refineLocationCoordinates": "صقل موقع الخريطة",
   "app.containers.AdminPage.ProjectEvents.refineOnMap": "صقل الموقع على الخريطة",
   "app.containers.AdminPage.ProjectEvents.saveButtonLabel": "حفظ",

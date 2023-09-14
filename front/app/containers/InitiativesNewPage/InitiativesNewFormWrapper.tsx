@@ -2,9 +2,7 @@ import React from 'react';
 import { ILocationInfo } from 'typings';
 
 // components
-import InitiativeForm, {
-  FormValues as FormValues2,
-} from 'components/InitiativeForm';
+import InitiativeForm, { FormValues } from 'components/InitiativeForm';
 
 // style
 import clHistory from 'utils/cl-router/history';
@@ -36,7 +34,7 @@ const InitiativesNewFormWrapper = (_props: Props) => {
     images,
     header_bg,
     anonymous,
-  }: FormValues2) => {
+  }: FormValues) => {
     const { location_description, location_point_geojson } =
       await parsePosition(position);
 

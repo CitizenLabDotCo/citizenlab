@@ -351,6 +351,11 @@ export default defineMessages({
     defaultMessage:
       "Enter a valid link. Make sure the link starts with 'https://'.",
   },
+  url: {
+    id: 'app.errors.url',
+    defaultMessage:
+      'Enter a valid link. Make sure the link starts with https://',
+  },
   title_multiloc_includes_banned_words: {
     id: 'app.errors.title_multiloc_includes_banned_words1',
     defaultMessage:
