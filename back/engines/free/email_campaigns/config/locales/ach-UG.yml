@@ -571,6 +571,7 @@ ach:
       cta_see_results: 'crwdns1041943:0crwdne1041943:0'
     event_registration_confirmation:
       subject: "crwdns1041945:0%{eventTitle}crwdne1041945:0"
+      header_message: "crwdns1042161:0%{firstName}crwdne1042161:0"
       event_details:
         labels:
           date: 'crwdns1041947:0crwdne1041947:0'
