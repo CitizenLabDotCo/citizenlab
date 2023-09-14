@@ -1450,6 +1450,7 @@
   "app.containers.SignUp.goToLogIn": "Jums jau ir konts? {goToOtherFlowLink}",
   "app.containers.SignUp.iHaveReadAndAgreeTo": "Esmu izlasījis un piekrītu {link}.",
   "app.containers.SignUp.iHaveReadAndAgreeToVienna": "Es piekrītu, ka visi dati tiks izmantoti mitgestalten.wien.gv.at. Sīkāka informācija pieejama {link}.",
+  "app.containers.SignUp.invitationErrorText": "Jūsu ielūguma derīguma termiņš ir beidzies vai tas jau ir izmantots. Ja esat jau izmantojis uzaicinājuma saiti, lai izveidotu kontu, mēģiniet pierakstīties. Pretējā gadījumā reģistrējieties, lai izveidotu jaunu kontu.",
   "app.containers.SignUp.lastNameLabel": "Uzvārds",
   "app.containers.SignUp.privacyPolicyNotAcceptedError": "Lai turpinātu, piekrītiet mūsu privātuma politikai",
   "app.containers.SignUp.signUp2": "Reģistrēties",
