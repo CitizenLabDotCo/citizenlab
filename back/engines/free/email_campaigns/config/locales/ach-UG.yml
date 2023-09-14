@@ -207,12 +207,14 @@ ach:
       cta_accept_invitation: 'crwdns208442:0crwdne208442:0'
       invitation_header: 'crwdns208444:0crwdne208444:0'
       preheader: 'crwdns208446:0%{organizationName}crwdne208446:0'
+      invitation_expiry_message: 'crwdns1042149:0%{expiryDaysRemaining}crwdne1042149:0'
       subject: 'crwdns208448:0%{organizationName}crwdne208448:0'
     invite_received:
       added_a_message: 'crwdns208450:0%{organizationName}crwdne208450:0'
       cta_accept_invitation: 'crwdns208452:0crwdne208452:0'
       invitation_header: 'crwdns208454:0crwdne208454:0'
       invitation_header_message: 'crwdns208456:0%{organizationName}crwdne208456:0'
+      invitation_expiry_message: 'crwdns1042151:0%{expiryDays}crwdne1042151:0'
       preheader: 'crwdns208458:0%{organizationName}crwdne208458:0'
       subject: 'crwdns208460:0%{organizationName}crwdne208460:0'
     initiative_published:
