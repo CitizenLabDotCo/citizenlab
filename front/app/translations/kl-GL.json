@@ -354,7 +354,6 @@
   "app.components.PostComponents.SharingModalContent.questionWhatsAppMessage": "Oqallinnermut peqataagit: {postTitle}",
   "app.components.PostComponents.SharingModalContent.twitterMessage": "{tenantName, select, DeloitteDK {Isumarnik ikkussigit {postTitle}} other {Uani {postTitle} toqqaagit}}",
   "app.components.PostComponents.SharingModalContent.whatsAppMessageProposal": "I just posted a proposal for {orgName}: {postTitle}",
-  "app.components.PostComponents.areas": "Areas",
   "app.components.PostComponents.linkToHomePage": "Nittartakkamut iserneq innersuussut",
   "app.components.PostComponents.readMore": "Atuarnerugit...",
   "app.components.PostComponents.topics": "Topics",
