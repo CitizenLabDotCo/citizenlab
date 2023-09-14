@@ -1,11 +1,5 @@
 import React, { useState } from 'react';
 
-import { UploadFile } from 'typings';
-
-import { API_PATH } from 'containers/App/constants';
-import { saveAs } from 'file-saver';
-import { requestBlob } from 'utils/request';
-
 // components
 import FileUploader from 'components/UI/FileUploader';
 import { SectionField } from 'components/admin/Section';
@@ -18,19 +12,21 @@ import {
   Error,
 } from '@citizenlab/cl2-component-library';
 
-// resources
+// hooks
 import useImportIdeas from '../../api/import_ideas/useImportIdeas';
 
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
-// We need a custom function to check this because
-// this endpoint does not respect the conventional
-// error object structure
-const isApiError = (e) => {
-  return Object.keys(e).length === 1 && !!e.file;
-};
+// utils
+import { API_PATH } from 'containers/App/constants';
+import { saveAs } from 'file-saver';
+import { requestBlob } from 'utils/request';
+import { isCLErrorsWrapper } from 'utils/errorUtils';
+
+// typings
+import { CLErrorsWrapper, UploadFile } from 'typings';
 
 const Import = () => {
   const { formatMessage } = useIntl();
@@ -68,7 +64,7 @@ const Import = () => {
         return;
       }
 
-      if (isApiError(e)) {
+      if (isCLErrorsWrapper(e)) {
         // this will be handled by the error returned
         // by the hook
         return;
@@ -118,7 +114,9 @@ const Import = () => {
             reset();
           }}
           onFileAdd={handleFileOnAdd}
-          apiErrors={error}
+          apiErrors={
+            error ? (error as unknown as CLErrorsWrapper).errors : null
+          }
           files={file ? [file] : []}
         />
         <Box display="flex" flexDirection="row" alignItems="flex-start">

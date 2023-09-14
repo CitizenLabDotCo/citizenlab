@@ -10,7 +10,7 @@ import useProjectById from 'api/projects/useProjectById';
 // components
 import Modal from 'components/UI/Modal';
 import { Box, Button, Text, Title } from '@citizenlab/cl2-component-library';
-import PhaseSelector from './PhaseSelector';
+import PhaseSelector from '../PhaseSelector';
 
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -157,7 +157,9 @@ const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
             )}
             {isTimelineProject && formType === 'idea_form' && (
               <Box mb="24px">
-                <PhaseSelector />
+                <PhaseSelector
+                  label={<FormattedMessage {...messages.phase} />}
+                />
               </Box>
             )}
             <Box w="100%" display="flex">

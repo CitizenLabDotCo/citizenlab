@@ -8,8 +8,6 @@ import usePhases from 'api/phases/usePhases';
 
 // i18n
 import useLocalize from 'hooks/useLocalize';
-import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
 
 // components
 import Select from 'components/HookForm/Select';
@@ -20,9 +18,12 @@ import { canContainIdeas } from 'api/phases/utils';
 // typings
 import { IOption } from 'typings';
 
-const PhaseSelector = () => {
+interface Props {
+  label?: string | JSX.Element;
+}
+
+const PhaseSelector = ({ label }: Props) => {
   const localize = useLocalize();
-  const { formatMessage } = useIntl();
   const { projectId } = useParams() as { projectId: string };
 
   const { data: phases } = usePhases(projectId);
@@ -35,13 +36,7 @@ const PhaseSelector = () => {
     label: localize(phase.attributes.title_multiloc),
   }));
 
-  return (
-    <Select
-      name="phase_id"
-      options={options}
-      label={formatMessage(messages.phase)}
-    />
-  );
+  return <Select name="phase_id" options={options} label={label} />;
 };
 
 export default PhaseSelector;

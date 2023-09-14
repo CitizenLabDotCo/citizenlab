@@ -21,6 +21,8 @@ class PrintCustomFieldsService
   def create_pdf
     pdf = Prawn::Document.new(page_size: 'A4')
 
+    # load_font pdf
+
     render_tenant_logo pdf
     render_form_title pdf
     render_instructions pdf
@@ -73,6 +75,19 @@ class PrintCustomFieldsService
   end
 
   private
+
+  def load_font(pdf)
+    open_sans_path = Rails.root.join('app/assets/fonts/Open_Sans/static')
+
+    pdf.font_families.update('OpenSans' => {
+      normal: "#{open_sans_path}/OpenSans-Regular.ttf",
+      italic: "#{open_sans_path}/OpenSans-Italic.ttf",
+      bold: "#{open_sans_path}/OpenSans-Bold.ttf",
+      bold_italic: "#{open_sans_path}/OpenSans-BoldItalic.ttf"
+    })
+
+    pdf.font 'OpenSans'
+  end
 
   def render_tenant_logo(pdf)
     logo = AppConfiguration.instance.logo&.medium.to_s

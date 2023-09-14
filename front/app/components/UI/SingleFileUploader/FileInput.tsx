@@ -3,7 +3,7 @@ import { getBase64FromFile } from 'utils/fileUtils';
 import { UploadFile } from 'typings';
 
 // i18n
-import messages from '../../../UI/FileUploader/messages';
+import messages from 'components/UI/FileUploader/messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // styling
