@@ -1,8 +1,8 @@
 lb:
   email_campaigns:
     campaign_type_description:
-      "1": "Wochemaart, Méindes um %{hourOfDay}"
-      "2": "Wochemaart, Dënschdes um %{hourOfDay}"
+      "1": "Wochemaart, op Méindes %{hourOfDay}"
+      "2": "Wochemaart, op Dënschdes %{hourOfDay}"
       "3": "Wochemaart, Mëttwochs um %{hourOfDay}"
       "4": "Wochemaart, Donneschdes um %{hourOfDay}"
       "5": "Wochemaart, Freides um %{hourOfDay}"
