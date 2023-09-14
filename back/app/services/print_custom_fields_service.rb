@@ -9,7 +9,7 @@ class PrintCustomFieldsService
   # We are still hiding linear scales for now because they are not supported
   # by the plaintext parse
   QUESTION_TYPES = %w[select multiselect text text_multiloc multiline_text html_multiloc number]
-  FORBIDDEN_HTML_TAGS_REGEX = %r{</?(div|span|ul|ol|li|em|img|a){1}[^>]*/?>}
+  FORBIDDEN_HTML_TAGS_REGEX = %r{</?(div|span|ul|ol|li|img|a){1}[^>]*/?>}
 
   def initialize(participation_context, custom_fields, params)
     @participation_context = participation_context
@@ -353,6 +353,8 @@ class PrintCustomFieldsService
 
   def parse_html_tags(string)
     string
+      .gsub('<em>', '<i>')
+      .gsub('</em>', '</i>')
       .gsub(FORBIDDEN_HTML_TAGS_REGEX, '')
       .gsub('<p>', '')
       .split('</p>')
