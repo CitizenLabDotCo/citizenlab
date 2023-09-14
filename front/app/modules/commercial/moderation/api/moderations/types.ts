@@ -1,6 +1,9 @@
-import { API_PATH } from 'containers/App/constants';
-import streams, { IStreamParams } from 'utils/streams';
 import { Multiloc, ILinks, IRelationship } from 'typings';
+
+import { Keys } from 'utils/cl-react-query/types';
+import moderationsKeys from './keys';
+
+export type ModerationsKeys = Keys<typeof moderationsKeys>;
 
 export type TModerationStatus = 'read' | 'unread';
 export type TModeratableType = 'Idea' | 'Initiative' | 'Comment';
@@ -51,43 +54,12 @@ export interface IModerations {
   links: ILinks;
 }
 
-export function moderationsStream(streamParams: IStreamParams | null = null) {
-  return streams.get<IModerations>({
-    apiEndpoint: `${API_PATH}/moderations`,
-    ...streamParams,
-    cacheStream: false,
-  });
-}
-
-export async function updateModerationStatus(
-  moderationId: string,
-  moderatableType: TModeratableType,
-  moderationStatus: TModerationStatus
-) {
-  const apiEndpoint = `${API_PATH}/moderations/${moderatableType}/${moderationId}`;
-  const updateObject = {
-    moderation: {
-      moderation_status: moderationStatus,
-    },
-  };
-  const response = await streams.update<IModeration>(
-    apiEndpoint,
-    moderationId,
-    updateObject
-  );
-  await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/moderations`] });
-  return response;
-}
-
-export interface IModerationsCount {
-  count: number;
-}
-
-export function moderationsCountStream(
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<IModerationsCount>({
-    apiEndpoint: `${API_PATH}/moderations/moderations_count`,
-    ...streamParams,
-  });
+export interface InputParameters {
+  pageNumber?: number;
+  pageSize?: number;
+  moderationStatus?: TModerationStatus;
+  moderatableTypes?: TModeratableType[];
+  projectIds?: string[];
+  searchTerm?: string;
+  isFlagged?: boolean;
 }
