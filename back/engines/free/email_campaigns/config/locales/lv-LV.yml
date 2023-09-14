@@ -1,8 +1,8 @@
 lv:
   email_campaigns:
     campaign_type_description:
-      "1": "Ik nedēļu, pirmdienās, %{hourOfDay}"
-      "2": "Ik nedēļu, otrdienās, %{hourOfDay}"
+      "1": "Ik nedēļu, pirmdienās %{hourOfDay}"
+      "2": "Ik nedēļu, otrdienās %{hourOfDay}"
       "3": "Ik nedēļu, trešdienās, %{hourOfDay}"
       "4": "Ik nedēļu, ceturtdienās, %{hourOfDay}"
       "5": "Ik nedēļu, piektdienās, %{hourOfDay}"
