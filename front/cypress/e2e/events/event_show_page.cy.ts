@@ -80,7 +80,7 @@ describe('Event show page', () => {
     cy.get('#e2e-participants-count').should('not.exist');
     cy.get('#e2e-text-only-location').should('exist');
     cy.get('#e2e-location-with-coordinates-button').should('not.exist');
-    cy.get('#e2e-event-description').should('exist');
+    cy.get('[data-cy="e2e-event-description"]');
 
     // TODO: Re-enable attendance tests once smart group implemented
 
