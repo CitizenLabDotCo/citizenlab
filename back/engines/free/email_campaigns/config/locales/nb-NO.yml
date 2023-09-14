@@ -571,6 +571,7 @@
       cta_see_results: 'Se resultater i plattformen'
     event_registration_confirmation:
       subject: "Du er med! Din registrering for \"%{eventTitle}\" er bekreftet"
+      header_message: "%{firstName}, takk for at du registrerte deg for"
       event_details:
         labels:
           date: 'Dato'
