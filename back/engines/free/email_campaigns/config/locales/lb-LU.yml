@@ -571,6 +571,7 @@ lb:
       cta_see_results: 'Gesinn Resultater an der Plattform'
     event_registration_confirmation:
       subject: "Dir sidd an! Är Umeldung fir \"%{eventTitle}\" ass bestätegt"
+      header_message: "%{firstName}, merci fir Aschreiwung fir"
       event_details:
         labels:
           date: 'Datum'
