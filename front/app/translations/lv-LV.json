@@ -354,7 +354,6 @@
   "app.components.PostComponents.SharingModalContent.questionWhatsAppMessage": "Pievienoties diskusijai: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.twitterMessage": "Balsot par {postTitle}",
   "app.components.PostComponents.SharingModalContent.whatsAppMessageProposal": "Es tikko publicēju priekšlikumu {orgName}: {postTitle}",
-  "app.components.PostComponents.areas": "Jomas",
   "app.components.PostComponents.linkToHomePage": "Saite uz mājaslapu",
   "app.components.PostComponents.readMore": "Lasīt vairāk...",
   "app.components.PostComponents.topics": "Tēmas",
