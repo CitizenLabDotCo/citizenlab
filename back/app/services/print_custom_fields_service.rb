@@ -236,7 +236,7 @@ class PrintCustomFieldsService
         pdf.text(paragraph, inline_format: true)
       end
 
-      pdf.move_down 2.mm
+      # pdf.move_down 2.mm
     end
   end
 
