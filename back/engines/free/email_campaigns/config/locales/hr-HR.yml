@@ -2,7 +2,7 @@ hr:
   email_campaigns:
     campaign_type_description:
       "1": "Tjedno, ponedjeljkom u %{hourOfDay}"
-      "2": "Tjedno, utorkom u %{hourOfDay}"
+      "2": "Tjedno utorkom %{hourOfDay}"
       "3": "Tjedno, srijedom u %{hourOfDay}"
       "4": "Tjedno, četvrtkom u %{hourOfDay}"
       "5": "Tjedno, petkom u %{hourOfDay}"
