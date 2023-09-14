@@ -1108,7 +1108,7 @@
   "app.containers.InitiativesShow.manageInvitationsLinkText": "Administrer invitasjoner til sponsorskap",
   "app.containers.InitiativesShow.metaOgTitle": "Støtt forslaget : {initiativeTitle}",
   "app.containers.InitiativesShow.metaTitle": "Forslag  • {initiativeTitle}",
-  "app.containers.InitiativesShow.numberOfCosponsorsNotYetMet1": "{requiredNumberOfCosponsors, plural, one {Ditt forslag trenger {requiredNumberOfCosponsors} akseptert samsponsing. Inntil da vil det ikke bli vurdert. {manageInvitationsLink}.} other {Ditt forslag trenger {requiredNumberOfCosponsors} akseptert samsponsing. Inntil da vil det ikke bli vurdert. {manageInvitationsLink}.}}",
+  "app.containers.InitiativesShow.numberOfCosponsorsNotYetMet": "{requiredNumberOfCosponsors, plural, one {Forslaget ditt trenger 1 akseptert sponsing. Inntil da vil det ikke bli vurdert. {manageInvitationsLink}.} other {Ditt forslag trenger {requiredNumberOfCosponsors} akseptert samsponsing. Inntil da vil det ikke bli vurdert. {manageInvitationsLink}.}}",
   "app.containers.InitiativesShow.pending1": "Avventer",
   "app.containers.InitiativesShow.postedBy": "Forslag publisert av {authorName}",
   "app.containers.InitiativesShow.postedByShort": "Publisert av {authorName}",
