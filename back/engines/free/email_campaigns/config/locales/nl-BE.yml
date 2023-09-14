@@ -374,8 +374,8 @@ nl-BE:
       no_unread_notifications: "Tijd om deel te nemen!  Bezoek het platform om te ontdekken wat er aan het gebeuren is."
       unread_notifications: "Je hebt nieuwe meldingen! Bezoek het platform om te ontdekken wat er aan het gebeuren is."
     threshold_reached_for_admin:
-      cta_process_initiative: 'Zet dit voorstel in de volgende stappen'
-      event_description: 'Een voorstel heeft de kiesdrempel bereikt op jouw platform. Klik op de knop hieronder om verder te gaan!'
+      cta_process_initiative: 'Breng dit voorstel naar de volgende stappen'
+      event_description: 'Een voorstel heeft de kiesdrempel bereikt op jouw platform. Klik op de knop hieronder om het naar de volgende stappen te brengen!'
       main_header: 'Een voorstel heeft de kiesdrempel gehaald!'
       subject: 'Een voorstel heeft de kiesdrempel bereikt op jouw platform'
       preheader: 'Tijd om de volgende stappen te nemen'
