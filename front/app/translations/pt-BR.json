@@ -1108,7 +1108,7 @@
   "app.containers.InitiativesShow.manageInvitationsLinkText": "Gerir os convites de co-patrocínio",
   "app.containers.InitiativesShow.metaOgTitle": "Apoiar esta proposta : {initiativeTitle}",
   "app.containers.InitiativesShow.metaTitle": "Proposta - {initiativeTitle}",
-  "app.containers.InitiativesShow.numberOfCosponsorsNotYetMet1": "{requiredNumberOfCosponsors, plural, one {A sua proposta necessita {requiredNumberOfCosponsors} de um co-patrocínio aceite. Até lá, não será considerada. {manageInvitationsLink}} other {A sua proposta necessita de {requiredNumberOfCosponsors} co-patrocínios aceites. Até lá, não será considerada. {manageInvitationsLink}.}}",
+  "app.containers.InitiativesShow.numberOfCosponsorsNotYetMet": "{requiredNumberOfCosponsors, plural, one {A sua proposta necessita de 1 co-patrocínio aceite. Até lá, não será considerada. {manageInvitationsLink}} other {A sua proposta necessita de {requiredNumberOfCosponsors} co-patrocínios aceites. Até lá, não será considerada. {manageInvitationsLink}.}}",
   "app.containers.InitiativesShow.pending1": "pendente",
   "app.containers.InitiativesShow.postedBy": "Proposta publicada por {authorName}",
   "app.containers.InitiativesShow.postedByShort": "Publicado por {authorName}",
