@@ -29,7 +29,7 @@ class Invite < ApplicationRecord
   include PgSearch::Model
 
   EXPIRY_DAYS = 14
-  NO_EXPIRY_BEFORE_CREATED_AT = Date.new(2023, 9, 12)
+  NO_EXPIRY_BEFORE_CREATED_AT = Date.new(2023, 9, 18)
 
   pg_search_scope :search_by_all, {
     associated_against: { invitee: %i[first_name last_name email] },
