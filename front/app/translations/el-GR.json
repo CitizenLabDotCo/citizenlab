@@ -354,7 +354,6 @@
   "app.components.PostComponents.SharingModalContent.questionWhatsAppMessage": "Συμμετοχή στη συζήτηση: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.twitterMessage": "Ψηφίστε για το {postTitle} στο",
   "app.components.PostComponents.SharingModalContent.whatsAppMessageProposal": "Μόλις δημοσίευσα μια πρόταση για το {orgName}: {postTitle}",
-  "app.components.PostComponents.areas": "Περιοχές",
   "app.components.PostComponents.linkToHomePage": "Σύνδεση με την αρχική σελίδα",
   "app.components.PostComponents.readMore": "Διαβάστε περισσότερα...",
   "app.components.PostComponents.topics": "Θέματα",
