@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { CLErrors } from 'typings';
+import { CLErrorsWrapper } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import { ISpamReport, ISpamReportAdd } from './types';
 import streams from 'utils/streams';
@@ -17,7 +17,7 @@ const addSpamReport = async ({
   });
 
 const useAddSpamReport = () => {
-  return useMutation<ISpamReport, CLErrors, ISpamReportAdd>({
+  return useMutation<ISpamReport, CLErrorsWrapper, ISpamReportAdd>({
     mutationFn: addSpamReport,
     onSuccess: () => {
       streams.fetchAllWith({

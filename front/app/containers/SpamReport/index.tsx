@@ -9,12 +9,6 @@ import { ISpamReportAdd, ReasonCode } from 'api/spam_reports/types';
 import ReportForm from './SpamReportForm';
 import { ModalContentContainer } from 'components/UI/Modal';
 
-// Typings
-import { CLErrors } from 'typings';
-
-// Utils
-import { isCLErrorJSON } from 'utils/errorUtils';
-
 interface Props {
   targetType: 'comments' | 'ideas' | 'initiatives';
   targetId: string;
@@ -22,9 +16,14 @@ interface Props {
 
 const SpamReportForm = ({ targetType, targetId }: Props) => {
   const [diff, setDiff] = useState<ISpamReportAdd['spam_report'] | null>(null);
-  const [errors, setErrors] = useState<CLErrors | null>(null);
-  const [saved, setSaved] = useState(false);
-  const { mutate: addSpamReport, isLoading } = useAddSpamReport();
+
+  const {
+    mutate: addSpamReport,
+    isLoading,
+    isSuccess,
+    error,
+    reset,
+  } = useAddSpamReport();
 
   const handleSelectionChange = (reason_code: ReasonCode) => {
     // Clear the "other reason" text when it's not necessary
@@ -40,14 +39,14 @@ const SpamReportForm = ({ targetType, targetId }: Props) => {
       };
     });
 
-    setErrors(null);
+    reset();
   };
 
   const handleReasonTextUpdate = (other_reason: string) => {
     setDiff(
       diff ? { ...diff, other_reason } : { reason_code: 'other', other_reason }
     );
-    setErrors(null);
+    reset();
   };
 
   const handleSubmit = (event: FormEvent) => {
@@ -61,14 +60,7 @@ const SpamReportForm = ({ targetType, targetId }: Props) => {
       { targetId, targetType, spam_report: diff },
       {
         onSuccess: () => {
-          setSaved(true);
-          setErrors(null);
           setDiff(null);
-        },
-        onError: (e) => {
-          if (isCLErrorJSON(e)) {
-            setErrors(e.json.errors);
-          }
         },
       }
     );
@@ -83,8 +75,8 @@ const SpamReportForm = ({ targetType, targetId }: Props) => {
         onTextChange={handleReasonTextUpdate}
         onSubmit={handleSubmit}
         loading={isLoading}
-        saved={saved}
-        errors={errors}
+        saved={isSuccess}
+        errors={error?.errors || null}
       />
     </ModalContentContainer>
   );
