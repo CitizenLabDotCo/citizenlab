@@ -354,7 +354,6 @@
   "app.components.PostComponents.SharingModalContent.questionWhatsAppMessage": "Pridružite se raspravi: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.twitterMessage": "Glasujte za {postTitle} na",
   "app.components.PostComponents.SharingModalContent.whatsAppMessageProposal": "Upravo sam objavio/la prijedlog za {orgName}: {postTitle}",
-  "app.components.PostComponents.areas": "Područja",
   "app.components.PostComponents.linkToHomePage": "Veza do početne stranice",
   "app.components.PostComponents.readMore": "Pročitajte više...",
   "app.components.PostComponents.topics": "teme",
