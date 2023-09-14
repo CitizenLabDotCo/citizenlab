@@ -1108,7 +1108,7 @@
   "app.containers.InitiativesShow.manageInvitationsLinkText": "Gestionar les invitacions de copatrocini",
   "app.containers.InitiativesShow.metaOgTitle": "Doneu suport a aquesta proposta: {initiativeTitle}",
   "app.containers.InitiativesShow.metaTitle": "Proposta • {initiativeTitle}",
-  "app.containers.InitiativesShow.numberOfCosponsorsNotYetMet1": "{requiredNumberOfCosponsors, plural, one {La teva proposta necessita {requiredNumberOfCosponsors} copatrocini acceptat. Fins aleshores, no es tindrà en compte. {manageInvitationsLink}.} other {La teva proposta necessita {requiredNumberOfCosponsors} copatrocinis acceptats. Fins aleshores, no es tindrà en compte. {manageInvitationsLink}.}}",
+  "app.containers.InitiativesShow.numberOfCosponsorsNotYetMet": "{requiredNumberOfCosponsors, plural, one {La vostra proposta necessita 1 copatrocini acceptat. Fins aleshores, no es tindrà en compte. {manageInvitationsLink}.} other {La teva proposta necessita {requiredNumberOfCosponsors} copatrocinis acceptats. Fins aleshores, no es tindrà en compte. {manageInvitationsLink}.}}",
   "app.containers.InitiativesShow.pending1": "pendents",
   "app.containers.InitiativesShow.postedBy": "Proposta publicada per {authorName}",
   "app.containers.InitiativesShow.postedByShort": "Publicat per {authorName}",
