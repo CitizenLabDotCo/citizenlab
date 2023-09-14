@@ -1108,7 +1108,7 @@
   "app.containers.InitiativesShow.manageInvitationsLinkText": "Hantera inbjudningar till sponsring",
   "app.containers.InitiativesShow.metaOgTitle": "Stöd det här förslaget: {initiativeTitle}",
   "app.containers.InitiativesShow.metaTitle": "Förslag • {initiativeTitle}",
-  "app.containers.InitiativesShow.numberOfCosponsorsNotYetMet1": "{requiredNumberOfCosponsors, plural, one {Ditt förslag behöver {requiredNumberOfCosponsors} accepterad medfinansiering. Innan dess kommer det inte att beaktas. {manageInvitationsLink}.} other {Ditt förslag behöver {requiredNumberOfCosponsors} accepterade medfinansiärer. Fram till dess kommer det inte att beaktas. {manageInvitationsLink}.}}",
+  "app.containers.InitiativesShow.numberOfCosponsorsNotYetMet": "{requiredNumberOfCosponsors, plural, one {Ditt förslag behöver 1 accepterad medförslagsställare. Innan dess kommer det inte att beaktas. {manageInvitationsLink}.} other {Ditt förslag behöver {requiredNumberOfCosponsors} accepterade medfinansieringar. Innan dess kommer det inte att beaktas. {manageInvitationsLink}.}}",
   "app.containers.InitiativesShow.pending1": "väntande",
   "app.containers.InitiativesShow.postedBy": "Förslag publicerat av {authorName}",
   "app.containers.InitiativesShow.postedByShort": "Publicerades av {authorName}",
