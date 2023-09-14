@@ -437,6 +437,7 @@
   "app.containers.Admin.Invitations.helmetTitle": "Aqutsisut peqataaqqusissutaannut dashboardi",
   "app.containers.Admin.Invitations.importOptionsInfo": "Toqqagassat taakku Excel-fiilimi nassuiarneqareersimanngikkunik aatsaat eqqarsaatigineqassapput.",
   "app.containers.Admin.Invitations.importTab": "Emailadressit nuukkit",
+  "app.containers.Admin.Invitations.invitationExpirationWarning": "Be aware that invitations expire after 14 days. After this period, you can still resend them.",
   "app.containers.Admin.Invitations.invitationOptions": "Peqataaqqusissusiornissamut toqqagassat",
   "app.containers.Admin.Invitations.invitationSubtitle": "Inuit quppernermut qaqugukkulluunniit peqataaqqukkit. Peqataaqqusissummik Illit logo-nnik assiliartalimmik, quppernermut nalunaarsinnaanerinik aperisumik mailisissapput.",
   "app.containers.Admin.Invitations.invitePeople": "Inuit emailikkut peqataaqqukkit",
