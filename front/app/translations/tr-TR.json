@@ -354,7 +354,6 @@
   "app.components.PostComponents.SharingModalContent.questionWhatsAppMessage": "Tartışmaya katılın: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.twitterMessage": "{postTitle} için oy verin:",
   "app.components.PostComponents.SharingModalContent.whatsAppMessageProposal": "{orgName} için yeni bir öneri yayınladım: {postTitle}",
-  "app.components.PostComponents.areas": "Alanlar",
   "app.components.PostComponents.linkToHomePage": "Ana sayfaya bağlantı",
   "app.components.PostComponents.readMore": "Daha fazla bilgi...",
   "app.components.PostComponents.topics": "Konular",
