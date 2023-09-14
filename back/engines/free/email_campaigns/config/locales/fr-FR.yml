@@ -123,8 +123,8 @@ fr:
     initiative_resubmitted_for_review:
       by_author: 'par %{authorName}'
       cta_reply_to: 'Faites votre retour à %{authorName}'
-      event_description_initiative: 'Une proposition a été soumise à nouveau pour examen. Donnez votre avis en rédigeant une mise à jour officielle ou en modifiant son statut.'
-      main_header: '%{firstName}vous avez une proposition à examiner'
+      event_description_initiative: 'Une proposition a été soumise à nouveau pour examen. Donnez votre retour en rédigeant une mise à jour officielle ou en modifiant son statut.'
+      main_header: '%{firstName}, vous avez une proposition à examiner'
       subject: 'Vous avez une proposition à vérifier sur la plateforme de %{organizationName}'
       preheader_initiative: 'La proposition de %{authorName} a été soumise à nouveau pour examen.'
     invite_reminder:
@@ -194,13 +194,13 @@ fr:
       event_description: '%{authorNameFull} a réagi à votre idée « %{ideaTitle} ». Cliquez sur le bouton ci-dessous pour continuer la conversation avec %{authorName}.'
       main_header: '%{authorName} a commenté une idée que vous suivez'
       subject: 'Il y a un nouveau commentaire sur une idée que vous suivez'
-      preheader: '%{authorName} a laissé un commentaire sur une idée pour %{organizationName}'
+      preheader: '%{authorName} a publié un commentaire sur une idée pour %{organizationName}'
     comment_on_initiative_you_follow:
       cta_reply_to: 'Répondre à %{commentAuthor}'
-      event_description: '%{authorNameFull} a réagi à votre proposition %{initiativeTitle}''. Cliquez sur le bouton ci-dessous pour continuer la conversation avec %{authorName}.'
+      event_description: '%{authorNameFull} a réagi à votre proposition « %{initiativeTitle} ». Cliquez sur le bouton ci-dessous pour poursuivre la conversation avec %{authorName}.'
       main_header: '%{commentAuthor} a commenté une proposition que vous suivez'
       subject: 'Il y a un nouveau commentaire sur la proposition que vous suivez'
-      preheader: '%{authorName} a laissé un commentaire sur une initiative pour %{organizationName}'
+      preheader: '%{authorName} a publié un commentaire sur une initiative pour %{organizationName}'
     new_initiative_for_admin:
       cta_reply_to: 'Faites votre retour à %{authorName}'
       event_description: '%{authorName} a publié une nouvelle proposition sur votre plate-forme. Découvrez-la, faites un retour ou modifiez son statut !'
@@ -273,12 +273,12 @@ fr:
       main_header: '%{post}" a un nouveau commentaire interne'
       preheader: '%{post}" a un nouveau commentaire interne'
     official_feedback_on_idea_you_follow:
-      header_message: '%{officialName} a réagi à votre idée ''%{ideaTitle}''. Cliquez sur le bouton ci-dessous pour continuer la conversation avec %{officialName}.'
+      header_message: '"%{officialName} a publié un message officiel concernant l''idée « %{ideaTitle} ». Cliquez sur le bouton ci-dessous pour poursuivre la conversation avec %{officialName}.'
       header_title: 'Il y a une mise à jour sur une idée que vous suivez'
       subject: 'Une idée que vous suivez a reçu une mise à jour officielle sur la plateforme de %{organizationName}'
       preheader: 'Il y a une mise à jour sur une idée que vous suivez'
     official_feedback_on_initiative_you_follow:
-      header_message: '%{officialName} a réagi à la proposition ''%{initiativeTitle}''. Cliquez sur le bouton ci-dessous pour continuer la conversation avec %{organizationName}.'
+      header_message: '"%{officialName} a publié un message officiel concernant la proposition « %{initiativeTitle} ». Cliquez sur le bouton ci-dessous pour continuer la conversation avec %{organizationName}.'
       header_title: 'Il y a une mise à jour sur une proposition que vous suivez'
       subject: 'Une proposition que vous suivez a reçu une mise à jour officielle sur la plateforme de %{organizationName}'
       preheader: 'Il y a une mise à jour sur une proposition que vous suivez'
@@ -341,7 +341,7 @@ fr:
       preheader: 'Un nouveau projet a été publié'
     status_change_on_idea_you_follow:
       status_change: 'Le nouveau statut de cette idée est « %{ideaStatus} »'
-      header_message: '%{organizationName} a changé le statut de l''idée ''%{ideaTitle}'' sur leur plateforme de participation numérique.'
+      header_message: '%{organizationName} a changé le statut de l''idée « %{ideaTitle} » sur leur plateforme de participation.'
       header_title: 'Une idée que vous suivez a un nouveau statut'
       subject: 'Le statut d''une idée que vous suivez a changé'
       preheader: 'Une idée que vous suivez a un nouveau statut'
@@ -375,9 +375,9 @@ fr:
       unread_notifications: "Vous avez de nouvelles notifications ! Visitez la plate-forme pour découvrir ce qu'il s'y passe."
     threshold_reached_for_admin:
       cta_process_initiative: 'Faites passer cette proposition à l''étape suivante'
-      event_description: 'Une proposition a atteint le seuil de vote sur votre plateforme. Cliquez sur le bouton ci-dessous pour passer aux étapes suivantes !'
+      event_description: 'Une proposition a reçu le nombre de votes requis sur votre plateforme. Cliquez sur le bouton ci-dessous pour la faire passer à l''étape suivante !'
       main_header: 'An proposal reached the voting threshold!'
-      subject: 'Une proposition a atteint le seuil de vote sur votre plateforme'
+      subject: 'Une proposition a reçu le nombre de votes requis sur votre plateforme'
       preheader: 'Assurez-vous de passer aux étapes suivantes'
     first_idea_published:
       action_add_image: '%{addImageLink} pour donner plus de visibilité à votre idée'
