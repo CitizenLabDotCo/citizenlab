@@ -129,7 +129,6 @@ const ReviewSection = ({
       mt="40px"
       w="100%"
       bgColor={colors.white}
-      // pt="20px"
       h="100%"
       display="flex"
       flexDirection="column"

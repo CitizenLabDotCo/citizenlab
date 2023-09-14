@@ -107,7 +107,7 @@ class PrintCustomFieldsService
         inline_format: true
       )
     else
-      project = Project.find(@participation_context.project_id)
+      project = @participation_context.project
       project_title = project.title_multiloc[locale]
 
       pdf.text(
@@ -227,7 +227,8 @@ class PrintCustomFieldsService
 
   def write_instructions_and_disclaimers(pdf, custom_field)
     show_multiselect_instructions = custom_field.input_type == 'multiselect'
-    show_visibility_disclaimer = participation_context.participation_method == 'ideation' && custom_field.answer_visible_to == 'admins'
+    participation_method = Factory.instance.participation_method_for @participation_context
+    show_visibility_disclaimer = participation_method.supports_idea_form? && custom_field.answer_visible_to == 'admins'
 
     if show_multiselect_instructions || show_visibility_disclaimer
       pdf.move_down 5.mm

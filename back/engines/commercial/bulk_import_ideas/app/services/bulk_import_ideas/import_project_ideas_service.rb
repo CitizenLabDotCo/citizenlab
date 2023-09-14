@@ -9,7 +9,8 @@ module BulkImportIdeas
       super(current_user)
       @project = Project.find(project_id)
       @phase = phase_id ? @project.phases.find(phase_id) : TimelineService.new.current_phase(@project)
-      @form_fields = IdeaCustomFieldsService.new(Factory.instance.participation_method_for(@phase || @project).custom_form).importable_fields
+      @participation_method = Factory.instance.participation_method_for(@phase || @project)
+      @form_fields = IdeaCustomFieldsService.new(@participation_method.custom_form).importable_fields
       @locale = locale || @locale
       @google_forms_service = nil
     end
@@ -100,7 +101,7 @@ module BulkImportIdeas
         columns[column_name] = value
       end
 
-      unless @project&.native_survey? || @phase&.native_survey?
+      unless @participation_method.supports_survey_form?
         locale_image_url_label = I18n.with_locale(@locale) { I18n.t('xlsx_export.column_headers.image_url') }
         locale_latitude_label = I18n.with_locale(@locale) { I18n.t('xlsx_export.column_headers.latitude') }
         locale_longitude_label = I18n.with_locale(@locale) { I18n.t('xlsx_export.column_headers.longitude') }
