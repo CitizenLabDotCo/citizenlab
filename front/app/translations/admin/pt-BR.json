@@ -437,6 +437,7 @@
   "app.containers.Admin.Invitations.helmetTitle": "Painel de convite de administrador",
   "app.containers.Admin.Invitations.importOptionsInfo": "Você pode adicionar uma mensagem pessoal ao convite, adicionar pessoas a um grupo ou conceder a elas direitos de administrador ou moderação. Visite {supportPageLink} para mais informações.",
   "app.containers.Admin.Invitations.importTab": "Importar endereços de e-mail",
+  "app.containers.Admin.Invitations.invitationExpirationWarning": "Tenha em atenção que os convites expiram ao fim de 14 dias. Após este período, ainda pode reenviá-los.",
   "app.containers.Admin.Invitations.invitationOptions": "Opções de convite",
   "app.containers.Admin.Invitations.invitationSubtitle": "Convide pessoas que ainda não estão cadastradas na plataforma. Importe seus endereços de e-mail colocando-os no modelo de importação ou insira os endereços de e-mail manualmente. Se desejar, adicione uma mensagem pessoal, dê direitos extras às pessoas ou adicione-as a um grupo manual.",
   "app.containers.Admin.Invitations.invitePeople": "Convites",

@@ -207,12 +207,14 @@ es-CL:
       cta_accept_invitation: 'Aceptar tu invitación'
       invitation_header: 'Tu invitación está pendiente'
       preheader: '%{organizationName} te envió una invitación para unirte a su plataforma de participación unos días atras.'
+      invitation_expiry_message: 'Esta invitación caduca en aproximadamente %{expiryDaysRemaining} días.'
       subject: 'Tienes una invitación abierta para la plataforma de participación de %{organizationName}'
     invite_received:
       added_a_message: '%{organizationName} escribió el siguiente mensaje:'
       cta_accept_invitation: 'Aceptar tu invitación'
       invitation_header: 'Estás invitado!'
       invitation_header_message: '%{organizationName} te invitó a su plataforma de participación.'
+      invitation_expiry_message: 'Esta invitación caduca en %{expiryDays} días.'
       preheader: '%{organizationName} te envió una invitación a unirte a su plataforma de participación.'
       subject: 'Estas invitado para unirte a la plataforma de %{organizationName}'
     initiative_published:
