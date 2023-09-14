@@ -263,6 +263,17 @@ resource 'BulkImportIdeasImportIdeas' do
           expect(response_data[:type]).to eq 'idea_import'
         end
       end
+
+      get 'web_api/v1/idea_import_files/:id' do
+        let(:id) do
+          project = create(:continuous_project)
+          create(:idea_import_file, project: project).id
+        end
+
+        example_request 'Get an imported file' do
+          assert_status 200
+        end
+      end
     end
   end
 

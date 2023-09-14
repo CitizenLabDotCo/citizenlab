@@ -16,7 +16,8 @@ BulkImportIdeas::Engine.routes.draw do
         get 'import_ideas/example_xlsx', on: :member, to: 'import_ideas#example_xlsx'
         get 'import_ideas/draft_ideas', on: :member, to: 'import_ideas#draft_ideas'
       end
-      resources :idea_imports, on: :member, to: 'import_ideas#show'
+      resources :idea_imports, on: :member, to: 'import_ideas#show_idea_import'
+      resources :idea_import_files, on: :member, to: 'import_ideas#show_idea_import_file'
     end
   end
 end

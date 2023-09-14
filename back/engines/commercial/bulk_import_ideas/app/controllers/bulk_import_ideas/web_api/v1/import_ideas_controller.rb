@@ -5,7 +5,7 @@ module BulkImportIdeas
     before_action :authorize_bulk_import_ideas
 
     # Show the metadata of a single imported idea
-    def show
+    def show_idea_import
       idea_import = IdeaImport.find(params[:id])
 
       render json: WebApi::V1::IdeaImportSerializer.new(
@@ -48,6 +48,13 @@ module BulkImportIdeas
         include: %i[author idea_import],
         params: jsonapi_serializer_params
       )
+    end
+
+    def show_idea_import_file
+      idea_import_file = IdeaImportFile.find(params[:id])
+      authorize idea_import_file.project || :'bulk_import_ideas/import_ideas'
+
+      send_data open(idea_import_file.file.url).read, type: 'application/octet-stream'
     end
 
     private

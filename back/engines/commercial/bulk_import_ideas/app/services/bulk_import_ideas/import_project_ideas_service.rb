@@ -26,7 +26,10 @@ module BulkImportIdeas
         params[:locale] = @locale
         pages_per_idea = PrintCustomFieldsService.new(@phase || @project, @form_fields, params).create_pdf.page_count
 
-        pdf = ::HexaPDF::Document.open(source_file.file.file.file)
+        f = open(source_file.file.url)
+        pdf = ::HexaPDF::Document.open(f)
+
+        # binding.pry
         source_file.update!(num_pages: pdf.pages.count)
         raise Error.new 'bulk_import_ideas_maximum_pdf_pages_exceeded', value: pdf.pages.count if pdf.pages.count > MAX_TOTAL_PAGES
 
@@ -43,6 +46,7 @@ module BulkImportIdeas
           if save_to_file
             # TODO: Would be better to send the new_pdf directly to IdeaImportFile, but doesn't seem possible
             # Is all this file opening going to cause issues on S3?
+            # Create an io object here?
             new_pdf_count += 1
             file = Rails.root.join('tmp', "import_#{source_file.id}_#{new_pdf_count}.pdf")
             new_pdf.write(file.to_s, validate: false, optimize: true)
@@ -270,7 +274,7 @@ module BulkImportIdeas
     end
 
     def parse_pdf_ideas(file)
-      pdf_file = Rails.root.join(file.file.file.file).binread
+      pdf_file = open(file.file.url, &:read)
 
       @google_forms_service ||= GoogleFormParserService.new
       IdeaPlaintextParserService.new(

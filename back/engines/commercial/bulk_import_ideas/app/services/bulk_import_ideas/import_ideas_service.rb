@@ -85,7 +85,7 @@ module BulkImportIdeas
     end
 
     def parse_xlsx_ideas(file)
-      xlsx_file = File.open(file.file.file.file)
+      xlsx_file = open(file.file.url)
       XlsxService.new.xlsx_to_hash_array xlsx_file
     end
 
