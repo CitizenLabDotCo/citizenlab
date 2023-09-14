@@ -354,7 +354,6 @@
   "app.components.PostComponents.SharingModalContent.questionWhatsAppMessage": "Gå med i diskussionen: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.twitterMessage": "Rösta på {postTitle} på",
   "app.components.PostComponents.SharingModalContent.whatsAppMessageProposal": "Jag publicerade just ett förslag för {orgName}: {postTitle}",
-  "app.components.PostComponents.areas": "Områden",
   "app.components.PostComponents.linkToHomePage": "Länk till startsida",
   "app.components.PostComponents.readMore": "Läs mer...",
   "app.components.PostComponents.topics": "Ämnen",
