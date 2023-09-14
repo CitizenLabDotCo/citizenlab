@@ -13,8 +13,4 @@ export default defineMessages({
     id: 'app.components.PostComponents.topics',
     defaultMessage: 'Topics',
   },
-  areas: {
-    id: 'app.components.PostComponents.areas',
-    defaultMessage: 'Areas',
-  },
 });
