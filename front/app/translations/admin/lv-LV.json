@@ -437,6 +437,7 @@
   "app.containers.Admin.Invitations.helmetTitle": "Administrēt uzaicinājumu informācijas paneli",
   "app.containers.Admin.Invitations.importOptionsInfo": "Šīs iespējas tiks ņemtas vērā tikai tad, ja tās nav definētas Excel failā.\n      Vairāk informācijas vietnē {supportPageLink}.",
   "app.containers.Admin.Invitations.importTab": "E-pasta adrešu importēšana",
+  "app.containers.Admin.Invitations.invitationExpirationWarning": "Ņemiet vērā, ka ielūgumu derīguma termiņš beidzas pēc 14 dienām. Pēc šī termiņa beigām tos joprojām varat nosūtīt atkārtoti.",
   "app.containers.Admin.Invitations.invitationOptions": "Uzaicinājumu iespējas",
   "app.containers.Admin.Invitations.invitationSubtitle": "Uzaiciniet cilvēkus pievienoties platformai jebkurā brīdī. Viņi saņems neitrālu uzaicinājuma e-pastu ar jūsu logotipu, aicinot viņus reģistrēties platformā.",
   "app.containers.Admin.Invitations.invitePeople": "Ielūdziet cilvēkus, izmantojot e-pastu",
