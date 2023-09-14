@@ -8,7 +8,7 @@ import { rest } from 'msw';
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { ideasData } from './__mocks__/useAddOfflineIdeas';
 
-const apiPath = 'projects/:projectId/import_ideas/bulk_create';
+const apiPath = '*projects/:projectId/import_ideas/bulk_create';
 
 const server = setupServer(
   rest.post(apiPath, (_req, res, ctx) => {
