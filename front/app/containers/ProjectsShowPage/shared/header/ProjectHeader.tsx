@@ -17,8 +17,6 @@ import {
 } from 'components/ProjectableHeader';
 import FollowUnfollow from 'components/FollowUnfollow';
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
-import Topics from 'components/PostShowComponents/Topics';
-import Areas from 'components/PostShowComponents/Areas';
 
 // hooks
 import useProjectById from 'api/projects/useProjectById';
@@ -84,12 +82,6 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
   const projectFolderId = project?.data.attributes.folder_id;
 
   if (project) {
-    const topicIds = project.data.relationships.topics.data.map(
-      (topic) => topic.id
-    );
-    const areaIds = project.data.relationships.areas.data.map(
-      (area) => area.id
-    );
     const projectHeaderImageLargeUrl =
       project.data.attributes?.header_bg?.large;
     const userCanEditProject =
@@ -161,10 +153,6 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
             <ProjectInfo projectId={projectId} />
           )}
           <Outlet id="app.ProjectsShowPage.shared.header.ProjectInfo.projectDescriptionBuilder" />
-          <Box my="16px">
-            <Topics postType="initiative" postTopicIds={topicIds} showTitle />
-            <Areas areaIds={areaIds} />
-          </Box>
         </ContentContainer>
       </Container>
     );
