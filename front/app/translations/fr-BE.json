@@ -1106,7 +1106,7 @@
   "app.containers.InitiativesShow.initiativeOgDescription": "Que pensez-vous de cette proposition ? Votez et rejoignez la discussion sur pour que votre voix soit entendue.",
   "app.containers.InitiativesShow.invisibleTitleContent": "En quoi consiste cette proposition ?",
   "app.containers.InitiativesShow.learnMore": "En savoir plus sur les propositions",
-  "app.containers.InitiativesShow.manageInvitationsLinkText": "Gérer les invitations au coparrainage",
+  "app.containers.InitiativesShow.manageInvitationsLinkText": "Gérez les invitations à soutenir cette proposition",
   "app.containers.InitiativesShow.metaOgTitle": "Soutenir cette proposition : {initiativeTitle}",
   "app.containers.InitiativesShow.metaTitle": "Proposition  • {initiativeTitle}",
   "app.containers.InitiativesShow.numberOfCosponsorsNotYetMet": "{requiredNumberOfCosponsors, plural, one {Votre proposition a besoin d'un coparrainage accepté. En attendant, elle ne sera pas prise en compte. {manageInvitationsLink}} other {Votre proposition a besoin de {requiredNumberOfCosponsors} parrainages acceptés. A défaut, elle ne sera pas prise en considération. {manageInvitationsLink}.}}",
