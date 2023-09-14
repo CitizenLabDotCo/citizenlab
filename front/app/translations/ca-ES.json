@@ -354,7 +354,6 @@
   "app.components.PostComponents.SharingModalContent.questionWhatsAppMessage": "Uniu-vos a la discussió: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.twitterMessage": "Votar a {postTitle}",
   "app.components.PostComponents.SharingModalContent.whatsAppMessageProposal": "Acabo de publicar una proposta per a {orgName}: {postTitle}",
-  "app.components.PostComponents.areas": "Àrees",
   "app.components.PostComponents.linkToHomePage": "Enllaç a la pàgina d'inici",
   "app.components.PostComponents.readMore": "Llegir més...",
   "app.components.PostComponents.topics": "Temes",
