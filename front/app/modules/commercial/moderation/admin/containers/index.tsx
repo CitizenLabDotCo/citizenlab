@@ -31,11 +31,7 @@ import useModerations from '../../api/moderations/useModerations';
 import useModerationsCount from '../../hooks/useModerationsCount';
 
 // services
-import {
-  updateModerationStatus,
-  IModerationData,
-  TModeratableType,
-} from '../../services/moderations';
+import { IModerationData, TModeratableType } from '../../api/moderations/types';
 import { removeInappropriateContentFlag } from 'modules/commercial/flag_inappropriate_content/services/inappropriateContentFlags';
 
 // i18n
@@ -53,6 +49,7 @@ import { colors, fontSizes } from 'utils/styleUtils';
 // typings
 import { IOption, InsertConfigurationOptions } from 'typings';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
+import useUpdateModerationStatus from '../../api/moderations/useUpdateModerationStatus';
 
 const Container = styled.div`
   display: flex;
@@ -200,6 +197,7 @@ const pageSizes = [
 
 const Moderation = () => {
   const { formatMessage } = useIntl();
+  const { mutateAsync: updateModerationStatus } = useUpdateModerationStatus();
 
   const [selectedModerations, setSelectedModerations] = useState<
     IModerationData[]
@@ -350,11 +348,11 @@ const Moderation = () => {
       const updatedModerationStatus =
         moderationStatus === 'read' ? 'unread' : 'read';
       const promises = selectedModerations.map((moderation) =>
-        updateModerationStatus(
-          moderation.id,
-          moderation.attributes.moderatable_type,
-          updatedModerationStatus
-        )
+        updateModerationStatus({
+          moderationId: moderation.id,
+          moderatableType: moderation.attributes.moderatable_type,
+          moderationStatus: updatedModerationStatus,
+        })
       );
 
       try {

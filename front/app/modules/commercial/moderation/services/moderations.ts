@@ -51,14 +51,6 @@ export interface IModerations {
   links: ILinks;
 }
 
-export function moderationsStream(streamParams: IStreamParams | null = null) {
-  return streams.get<IModerations>({
-    apiEndpoint: `${API_PATH}/moderations`,
-    ...streamParams,
-    cacheStream: false,
-  });
-}
-
 export async function updateModerationStatus(
   moderationId: string,
   moderatableType: TModeratableType,
