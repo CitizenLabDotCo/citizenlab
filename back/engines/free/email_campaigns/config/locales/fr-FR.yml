@@ -570,14 +570,15 @@ fr:
       body_3: 'Nous vous invitons à prendre connaissance des résultats et à rester attentifs pour de futures mises à jour concernant les prochaines étapes.'
       cta_see_results: 'Voir les résultats sur la plateforme'
     event_registration_confirmation:
-      subject: "Vous êtes inscrit ! Votre inscription à \"%{eventTitle}\" est confirmée"
+      subject: "Votre inscription à \"%{eventTitle}\" est confirmée !"
+      header_message: "%{firstName}Merci de vous inscrire à"
       event_details:
         labels:
           date: 'Date'
           location: 'Lieu'
           online_link: 'Lien en ligne'
           description: 'Description'
-          project: '{tenantName, select, frw {communes} other {projets}}'
+          project: 'Projet'
       cta_go_to_event: 'Voir l''événement'
       cta_add_to_calendar: 'Ajouter à votre calendrier'
     voting_phase_started:
@@ -602,7 +603,7 @@ fr:
         managers: 'Gestionnaires'
         admins_assigned_to_a_proposal: 'Administrateurs assignés à une proposition'
         admins_and_managers_assigned_to_the_input: 'Les administrateurs et les gestionnaires assignés à la contribution'
-        new_attendee: 'Utilisateur nouvellement inscrit'
+        new_attendee: 'L''utilisateur qui s''est inscrit'
         user_who_is_invited_to_cosponsor_a_proposal: 'L''utilisateur invité à soutenir la proposition'
         user_who_is_receiving_admin_rights: 'L''utilisateur qui reçoit les droits d''administrateur'
         user_who_is_receiving_folder_moderator_rights: 'L''utilisateur qui reçoit les droits de gestionnaire de dossier'
