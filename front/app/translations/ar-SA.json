@@ -1450,6 +1450,7 @@
   "app.containers.SignUp.goToLogIn": "ألديك حساب بالفعل؟ {goToOtherFlowLink}",
   "app.containers.SignUp.iHaveReadAndAgreeTo": "لقد قرأت وأوافق على {link}.",
   "app.containers.SignUp.iHaveReadAndAgreeToVienna": "قبل استخدام البيانات في mitgestalten.wien.gv.at. يمكن العثور على مزيد من المعلومات {link}.",
+  "app.containers.SignUp.invitationErrorText": "لقد انتهت صلاحية دعوتك أو تم استخدامها بالفعل. إذا كنت قد استخدمت رابط الدعوة بالفعل لإنشاء حساب، فحاول تسجيل الدخول. وإلا، فقم بالتسجيل لإنشاء حساب جديد.",
   "app.containers.SignUp.lastNameLabel": "اسم العائلة",
   "app.containers.SignUp.privacyPolicyNotAcceptedError": "اقبل سياسة الخصوصية للمتابعة",
   "app.containers.SignUp.signUp2": "التسجيل",
