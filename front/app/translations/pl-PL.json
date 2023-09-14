@@ -1108,7 +1108,7 @@
   "app.containers.InitiativesShow.manageInvitationsLinkText": "Zarządzaj zaproszeniami do sponsorowania",
   "app.containers.InitiativesShow.metaOgTitle": "Poprzeć tę propozycję: {initiativeTitle}",
   "app.containers.InitiativesShow.metaTitle": "Propozycja • {initiativeTitle}",
-  "app.containers.InitiativesShow.numberOfCosponsorsNotYetMet1": "{requiredNumberOfCosponsors, plural, one {Twoja propozycja wymaga {requiredNumberOfCosponsors} zaakceptowanego współsponsorowania. Do tego czasu nie będzie brana pod uwagę. {manageInvitationsLink}.} other {Twoja propozycja wymaga {requiredNumberOfCosponsors} zaakceptowanych sponsorów. Do tego czasu nie będzie brana pod uwagę. {manageInvitationsLink}.}}",
+  "app.containers.InitiativesShow.numberOfCosponsorsNotYetMet": "{requiredNumberOfCosponsors, plural, one {Twoja propozycja wymaga 1 zaakceptowanego współwnioskodawcy. Do tego czasu nie będzie brana pod uwagę. {manageInvitationsLink}.} other {Twoja propozycja wymaga {requiredNumberOfCosponsors} zaakceptowanych sponsorów. Do tego czasu nie będzie brana pod uwagę. {manageInvitationsLink}.}}",
   "app.containers.InitiativesShow.pending1": "w toku",
   "app.containers.InitiativesShow.postedBy": "Propozycja zgłoszona przez {authorName}",
   "app.containers.InitiativesShow.postedByShort": "Zgłoszone przez {authorName}",
