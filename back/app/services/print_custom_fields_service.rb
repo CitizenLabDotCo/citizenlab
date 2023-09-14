@@ -24,8 +24,8 @@ class PrintCustomFieldsService
     load_font pdf
 
     render_tenant_logo pdf
-    render_form_title pdf
-    render_instructions pdf
+    write_form_title pdf
+    write_instructions pdf
 
     if params[:name] == 'true'
       render_text_field_with_name(
@@ -97,7 +97,7 @@ class PrintCustomFieldsService
     pdf.move_down 10.mm
   end
 
-  def render_form_title(pdf)
+  def write_form_title(pdf)
     pc_title = @participation_context.title_multiloc[locale]
 
     if @participation_context.instance_of? Project
@@ -120,7 +120,7 @@ class PrintCustomFieldsService
     pdf.move_down 9.mm
   end
 
-  def render_instructions(pdf)
+  def write_instructions(pdf)
     pdf.text(
       "<b>#{I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.instructions') }}</b>",
       size: 16,
@@ -187,27 +187,27 @@ class PrintCustomFieldsService
       pdf_group.move_down 7.mm
 
       if field_type == 'select'
-        draw_single_choice(pdf_group, custom_field)
+        render_single_choice(pdf_group, custom_field)
       end
 
       if field_type == 'multiselect'
-        draw_multiple_choice(pdf_group, custom_field)
+        render_multiple_choice(pdf_group, custom_field)
       end
 
       if %w[text text_multiloc].include? field_type
-        draw_text_lines(pdf_group, 1)
+        render_text_lines(pdf_group, 1)
       end
 
       if %w[multiline_text html_multiloc].include? field_type
-        draw_text_lines(pdf_group, 7)
+        render_text_lines(pdf_group, 7)
       end
 
       if field_type == 'linear_scale'
-        draw_linear_scale(pdf_group, custom_field)
+        render_linear_scale(pdf_group, custom_field)
       end
 
       if field_type == 'number'
-        draw_text_lines(pdf_group, 1)
+        render_text_lines(pdf_group, 1)
       end
     end
 
@@ -263,7 +263,7 @@ class PrintCustomFieldsService
     end
   end
 
-  def draw_single_choice(pdf, custom_field)
+  def render_single_choice(pdf, custom_field)
     custom_field.options.each do |option|
       pdf.stroke_color '000000'
       pdf.stroke_circle [3.mm, pdf.cursor], 5
@@ -278,7 +278,7 @@ class PrintCustomFieldsService
     end
   end
 
-  def draw_multiple_choice(pdf, custom_field)
+  def render_multiple_choice(pdf, custom_field)
     custom_field.options.each do |option|
       pdf.stroke do
         pdf.stroke_color '000000'
@@ -295,13 +295,13 @@ class PrintCustomFieldsService
     end
   end
 
-  def draw_text_lines(pdf, lines)
+  def render_text_lines(pdf, lines)
     lines.times do
       pdf.text '_' * 59, color: '666666', size: 20, leading: 15
     end
   end
 
-  def draw_linear_scale(pdf, custom_field)
+  def render_linear_scale(pdf, custom_field)
     max_index = custom_field.maximum - 1
     width = 80.mm
 
