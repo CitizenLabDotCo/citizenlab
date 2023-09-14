@@ -1,8 +1,8 @@
 pl:
   email_campaigns:
     campaign_type_description:
-      "1": "Co tydzień, w poniedziałki na stronie %{hourOfDay}"
-      "2": "Cotygodniowo, we wtorki na stronie %{hourOfDay}"
+      "1": "Co tydzień, w poniedziałki %{hourOfDay}"
+      "2": "Co tydzień, we wtorki %{hourOfDay}"
       "3": "Co tydzień, w środy na stronie %{hourOfDay}"
       "4": "Co tydzień, w czwartki na stronie %{hourOfDay}"
       "5": "Co tydzień, w piątki na stronie %{hourOfDay}"
