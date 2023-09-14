@@ -437,6 +437,7 @@
   "app.containers.Admin.Invitations.helmetTitle": "Контролна табла за позиве администратора",
   "app.containers.Admin.Invitations.importOptionsInfo": "Ове опције ће бити узете у обзир само када нису дефинисане у Екцел датотеци.\n      Молимо посетите {supportPageLink} за више информација.",
   "app.containers.Admin.Invitations.importTab": "Увезите адресе е-поште",
+  "app.containers.Admin.Invitations.invitationExpirationWarning": "Имајте на уму да позивнице истичу након 14 дана. Након овог периода, још увек можете да их поново пошаљете.",
   "app.containers.Admin.Invitations.invitationOptions": "Опције позива",
   "app.containers.Admin.Invitations.invitationSubtitle": "Позовите људе на платформу у било ком тренутку. Добијају неутралну позивницу са вашим логом у којој се од њих тражи да се региструју на платформи.",
   "app.containers.Admin.Invitations.invitePeople": "Позовите људе путем е-поште",
