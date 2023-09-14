@@ -437,6 +437,7 @@
   "app.containers.Admin.Invitations.helmetTitle": "Nadzorna ploča za pozivnice administratora",
   "app.containers.Admin.Invitations.importOptionsInfo": "Te opcije bit će uzete u obzir ako nisu definirane u Excel datoteci.\n      Posjetite {supportPageLink} za više informacija.",
   "app.containers.Admin.Invitations.importTab": "Uvezite adrese e-pošte",
+  "app.containers.Admin.Invitations.invitationExpirationWarning": "Imajte na umu da pozivnice istječu nakon 14 dana. Nakon tog razdoblja još uvijek ih možete ponovno poslati.",
   "app.containers.Admin.Invitations.invitationOptions": "Opcije pozivnica",
   "app.containers.Admin.Invitations.invitationSubtitle": "U bilo kojem trenutku pozovite ljude na platformu. Primit ćete neutralnu pozivnicu e-poštom s vašim logotipom u kojoj se od vas traži da se registrirate na platformi.",
   "app.containers.Admin.Invitations.invitePeople": "Pozovite osobe putem e-pošte",
