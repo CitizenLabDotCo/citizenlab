@@ -22,11 +22,13 @@ const EventDescription = ({ event }: Props) => {
   if (!isNilOrError(event)) {
     return (
       <>
-        <ReadMoreWrapper
-          fontSize="base"
-          contentId="event-description"
-          value={event.attributes?.description_multiloc}
-        />
+        <Box id="e2e-event-description">
+          <ReadMoreWrapper
+            fontSize="base"
+            contentId="event-description"
+            value={event.attributes?.description_multiloc}
+          />
+        </Box>
 
         {eventFiles && eventFiles.data.length > 0 && (
           <Box mt="28px" mb="24px" maxWidth="452px">
