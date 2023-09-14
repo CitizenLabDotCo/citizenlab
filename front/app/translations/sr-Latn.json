@@ -1108,7 +1108,7 @@
   "app.containers.InitiativesShow.manageInvitationsLinkText": "Manage cosponsorship invitations",
   "app.containers.InitiativesShow.metaOgTitle": "Podržite ovaj predlog: {initiativeTitle}",
   "app.containers.InitiativesShow.metaTitle": "Predlog  • {initiativeTitle}",
-  "app.containers.InitiativesShow.numberOfCosponsorsNotYetMet1": "{requiredNumberOfCosponsors, plural, one {Your proposal needs {requiredNumberOfCosponsors} accepted cosponsorship. Until then, it will not be considered. {manageInvitationsLink}.} other {Your proposal needs {requiredNumberOfCosponsors} accepted cosponsorships. Until then, it will not be considered. {manageInvitationsLink}.}}",
+  "app.containers.InitiativesShow.numberOfCosponsorsNotYetMet": "{requiredNumberOfCosponsors, plural, one {Your proposal needs 1 accepted cosponsorship. Until then, it will not be considered. {manageInvitationsLink}.} other {Your proposal needs {requiredNumberOfCosponsors} accepted cosponsorships. Until then, it will not be considered. {manageInvitationsLink}.}}",
   "app.containers.InitiativesShow.pending1": "pending",
   "app.containers.InitiativesShow.postedBy": "Predlog autora {authorName}",
   "app.containers.InitiativesShow.postedByShort": "Objavljeno od strane {authorName}",
