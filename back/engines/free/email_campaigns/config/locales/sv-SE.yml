@@ -207,12 +207,14 @@ sv:
       cta_accept_invitation: 'Acceptera din inbjudan'
       invitation_header: 'Din inbjudan väntar'
       preheader: '%{organizationName} skickade en inbjudan till dig om att gå med i deras plattform för deltagande för några dagar sedan.'
+      invitation_expiry_message: 'Denna inbjudan upphör att gälla om cirka %{expiryDaysRemaining} dagar.'
       subject: 'Väntande inbjudan till plattformen för deltagande för %{organizationName}'
     invite_received:
       added_a_message: '%{organizationName} skrev följande meddelande:'
       cta_accept_invitation: 'Acceptera din inbjudan'
       invitation_header: 'Du är inbjuden!'
       invitation_header_message: '%{organizationName} bjöd in dig till deras plattform för deltagande.'
+      invitation_expiry_message: 'Denna inbjudan upphör att gälla om %{expiryDays} dagar.'
       preheader: '%{organizationName} skickade en inbjudan till dig om att gå med i deras plattform för deltagande.'
       subject: 'Du är inbjuden att gå med i plattformen för %{organizationName}'
     initiative_published:
