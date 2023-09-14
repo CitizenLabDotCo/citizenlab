@@ -18,6 +18,7 @@ RSpec.describe EmailCampaigns::InviteReminderMailer do
           invitee_first_name: recipient.first_name,
           invitee_last_name: recipient.last_name,
           invite_text: "<p>#{invite_text}</p>",
+          invite_created_at: 50.5.hours.ago,
           activate_invite_url: Frontend::UrlService.new.invite_url(token, locale: recipient.locale)
         }
       }
@@ -37,6 +38,13 @@ RSpec.describe EmailCampaigns::InviteReminderMailer do
 
     it 'renders the sender email' do
       expect(mail.from).to all(end_with('@citizenlab.co'))
+    end
+
+    it 'renders the expiry message' do
+      expiry_days = described_class.new.send(:invite_expires_in_days, command.dig(:event_payload, :invite_created_at))
+
+      expect(mail.body.encoded)
+        .to match("This invitation expires in approximately #{expiry_days} days.")
     end
 
     it 'assigns organisation name' do

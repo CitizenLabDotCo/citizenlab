@@ -207,12 +207,14 @@ pl:
       cta_accept_invitation: 'Przyjmij zaproszenie'
       invitation_header: 'Twoje zaproszenie jest w toku'
       preheader: '%{organizationName} wysłał do Ciebie zaproszenie do udziału w platformie kilka dni temu.'
+      invitation_expiry_message: 'Zaproszenie wygasa za około %{expiryDaysRemaining} dni.'
       subject: 'W oczekiwaniu na zaproszenie na platformę uczestnictwa %{organizationName}'
     invite_received:
       added_a_message: '%{organizationName} napisał następującą wiadomość:'
       cta_accept_invitation: 'Przyjmij zaproszenie'
       invitation_header: 'Jesteś zaproszony!'
       invitation_header_message: '%{organizationName} zaprosił cię na ich platformę uczestnictwa.'
+      invitation_expiry_message: 'Zaproszenie wygasa za %{expiryDays} dni.'
       preheader: '%{organizationName} wysłał do Ciebie zaproszenie do przyłączenia się do jego platformy uczestnictwa.'
       subject: 'Jesteś zaproszony do platformy %{organizationName}'
     initiative_published:

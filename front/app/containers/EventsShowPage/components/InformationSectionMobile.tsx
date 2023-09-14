@@ -4,6 +4,10 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import EventAttendanceButton from 'components/EventAttendanceButton';
 import ParticipantsCount from './MetadataInformation/ParticipantsCount';
+import OnlineLink from './MetadataInformation/OnlineLink';
+import FullEventTime from './MetadataInformation/EventTimeTextual';
+import Location from './MetadataInformation/Location';
+import EventDateStylized from './MetadataInformation/EventDateStylized';
 import EventSharingButtons from './EventSharingButtons';
 
 // styling
@@ -11,9 +15,6 @@ import { colors } from 'utils/styleUtils';
 
 // typing
 import { IEventData } from 'api/events/types';
-import EventDateStylized from './MetadataInformation/EventDateStylized';
-import Location from './MetadataInformation/Location';
-import FullEventTime from './MetadataInformation/EventTimeTextual';
 
 // utils
 import moment from 'moment';
@@ -61,10 +62,14 @@ const InformationSectionMobile = ({ event }: Props) => {
               </>
 
               {event.attributes.address_1 && (
-                <>
+                <Box pb="16px" borderBottom={`solid 1px ${colors.divider}`}>
                   <Location event={event} />
-                  <Box borderBottom={`solid 1px ${colors.divider}`} />
-                </>
+                </Box>
+              )}
+              {event.attributes.online_link && (
+                <Box pb="16px" borderBottom={`solid 1px ${colors.divider}`}>
+                  <OnlineLink link={event.attributes.online_link} />
+                </Box>
               )}
               <FullEventTime event={event} />
             </Box>

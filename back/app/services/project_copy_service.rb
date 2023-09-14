@@ -499,6 +499,7 @@ class ProjectCopyService < TemplateService
         'title_multiloc' => event.title_multiloc,
         'description_multiloc' => event.description_multiloc,
         'location_multiloc' => event.location_multiloc,
+        'online_link' => event.online_link,
         'start_at' => shift_timestamp(event.start_at, shift_timestamps)&.iso8601,
         'end_at' => shift_timestamp(event.end_at, shift_timestamps)&.iso8601,
         'created_at' => shift_timestamp(event.created_at, shift_timestamps)&.iso8601,

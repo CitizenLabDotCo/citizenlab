@@ -2,6 +2,7 @@ import React from 'react';
 
 // components
 import { Text } from '@citizenlab/cl2-component-library';
+import { AddEventToCalendarButton } from 'components/AddEventToCalendarButton';
 
 // styling
 import { Container, Content, StyledIcon } from './MetadataInformationStyles';
@@ -26,6 +27,7 @@ const FullEventTime = ({ event }: Props) => {
         <Text my="4px" color="coolGrey600" fontSize="s">
           {eventDateString}
         </Text>
+        <AddEventToCalendarButton eventId={event.id} />
       </Content>
     </Container>
   );
