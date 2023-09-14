@@ -1108,7 +1108,7 @@
   "app.containers.InitiativesShow.manageInvitationsLinkText": "Gestionar las invitaciones de copatrocinio",
   "app.containers.InitiativesShow.metaOgTitle": "Apoya esta propuesta: {initiativeTitle}",
   "app.containers.InitiativesShow.metaTitle": "Propuesta • {initiativeTitle}",
-  "app.containers.InitiativesShow.numberOfCosponsorsNotYetMet1": "{requiredNumberOfCosponsors, plural, one {Your proposal needs {requiredNumberOfCosponsors} accepted cosponsorship. Until then, it will not be considered. {manageInvitationsLink}.} other {Your proposal needs {requiredNumberOfCosponsors} accepted cosponsorships. Until then, it will not be considered. {manageInvitationsLink}.}}",
+  "app.containers.InitiativesShow.numberOfCosponsorsNotYetMet": "{requiredNumberOfCosponsors, plural, one {Your proposal needs 1 accepted cosponsorship. Until then, it will not be considered. {manageInvitationsLink}.} other {Your proposal needs {requiredNumberOfCosponsors} accepted cosponsorships. Until then, it will not be considered. {manageInvitationsLink}.}}",
   "app.containers.InitiativesShow.pending1": "pendiente",
   "app.containers.InitiativesShow.postedBy": "Propuesta publicada por {authorName}",
   "app.containers.InitiativesShow.postedByShort": "Publicado por {authorName}",
