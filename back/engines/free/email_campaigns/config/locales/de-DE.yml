@@ -571,6 +571,7 @@ de:
       cta_see_results: 'Ergebnisse auf der Plattform ansehen'
     event_registration_confirmation:
       subject: "Sie sind dabei! Ihre Anmeldung für \"%{eventTitle}\" ist bestätigt"
+      header_message: "%{firstName}, danke für die Registrierung für"
       event_details:
         labels:
           date: 'Datum'
