@@ -354,7 +354,6 @@
   "app.components.PostComponents.SharingModalContent.questionWhatsAppMessage": "انضم إلى المناقشة: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.twitterMessage": "صوّت لـ {postTitle} على",
   "app.components.PostComponents.SharingModalContent.whatsAppMessageProposal": "لقد نشرت للتو اقتراحاً لـ {اسم المنظمة}: {عنوان آخر}",
-  "app.components.PostComponents.areas": "المناطق",
   "app.components.PostComponents.linkToHomePage": "اربط بالصفحة الرئيسية",
   "app.components.PostComponents.readMore": "اقرأ المزيد...",
   "app.components.PostComponents.topics": "المواضيع",
