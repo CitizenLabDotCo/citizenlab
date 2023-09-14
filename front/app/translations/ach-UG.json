@@ -1108,7 +1108,7 @@
   "app.containers.InitiativesShow.manageInvitationsLinkText": "crwdns1005387:0crwdne1005387:0",
   "app.containers.InitiativesShow.metaOgTitle": "crwdns1005389:0{initiativeTitle}crwdne1005389:0",
   "app.containers.InitiativesShow.metaTitle": "crwdns1005391:0{initiativeTitle}crwdne1005391:0",
-  "app.containers.InitiativesShow.numberOfCosponsorsNotYetMet1": "crwdns1005393:0requiredNumberOfCosponsors={requiredNumberOfCosponsors}crwdnd1005393:0requiredNumberOfCosponsors={requiredNumberOfCosponsors}crwdnd1005393:0manageInvitationsLink={manageInvitationsLink}crwdnd1005393:0requiredNumberOfCosponsors={requiredNumberOfCosponsors}crwdnd1005393:0manageInvitationsLink={manageInvitationsLink}crwdne1005393:0",
+  "app.containers.InitiativesShow.numberOfCosponsorsNotYetMet": "crwdns1042159:0requiredNumberOfCosponsors={requiredNumberOfCosponsors}crwdnd1042159:0manageInvitationsLink={manageInvitationsLink}crwdnd1042159:0requiredNumberOfCosponsors={requiredNumberOfCosponsors}crwdnd1042159:0manageInvitationsLink={manageInvitationsLink}crwdne1042159:0",
   "app.containers.InitiativesShow.pending1": "crwdns1005395:0crwdne1005395:0",
   "app.containers.InitiativesShow.postedBy": "crwdns1005397:0{authorName}crwdne1005397:0",
   "app.containers.InitiativesShow.postedByShort": "crwdns1005399:0{authorName}crwdne1005399:0",
