@@ -1,8 +1,8 @@
 tr:
   email_campaigns:
     campaign_type_description:
-      "1": "Haftalık, Pazartesi günleri %{hourOfDay}adresinde"
-      "2": "Haftalık, Salı günleri %{hourOfDay}adresinde"
+      "1": "Haftalık Pazartesi günleri %{hourOfDay}"
+      "2": "Haftalık Salı günleri %{hourOfDay}"
       "3": "Haftalık, Çarşamba günleri %{hourOfDay}adresinde"
       "4": "Haftalık, Perşembe günleri %{hourOfDay}adresinde"
       "5": "Haftalık, Cuma günleri %{hourOfDay}adresinde"
