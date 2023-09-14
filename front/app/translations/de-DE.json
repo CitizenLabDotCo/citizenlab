@@ -354,7 +354,6 @@
   "app.components.PostComponents.SharingModalContent.questionWhatsAppMessage": "Nehmen Sie an der Diskussion teil: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.twitterMessage": "Stimmen Sie für {postTitle} auf",
   "app.components.PostComponents.SharingModalContent.whatsAppMessageProposal": "Ich habe gerade einen Vorschlag für {orgName} gepostet: {postTitle}",
-  "app.components.PostComponents.areas": "Gebiete",
   "app.components.PostComponents.linkToHomePage": "Link zur Startseite",
   "app.components.PostComponents.readMore": "Weiterlesen …",
   "app.components.PostComponents.topics": "Themen",
