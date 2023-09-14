@@ -22,7 +22,7 @@ const EventDescription = ({ event }: Props) => {
   if (!isNilOrError(event)) {
     return (
       <>
-        <Box id="e2e-event-description">
+        <Box data-cy="e2e-event-description">
           <ReadMoreWrapper
             fontSize="base"
             contentId="event-description"
