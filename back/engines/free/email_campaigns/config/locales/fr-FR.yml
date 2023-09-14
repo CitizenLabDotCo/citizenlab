@@ -80,7 +80,7 @@ fr:
       "statement": "Cet e-mail vous a été envoyé par %{organizationName} via CitizenLab, car vous êtes un utilisateur de la plateforme %{organizationLink}. Vous pouvez %{unsubscribeLink} si vous ne voulez plus recevoir ces e-mails à l'avenir."
       "unsubscribe_text": "vous désabonner"
     follow:
-      "unfollow_here": "Vous avez reçu cette notification à cause d'un article que vous suivez. <a href=\"%{unfollow_url}\">Vous pouvez l'annuler ici.</a>"
+      "unfollow_here": "Vous avez reçu cette notification parce que vous suivez ce sujet. <a href=\"%{unfollow_url}\">Vous pouvez vous désabonner ici.</a>"
     comment_deleted_by_admin:
       reason: 'La raison pour laquelle votre commentaire a été supprimé :'
       cta_view: 'Voir cette idée'
@@ -196,8 +196,8 @@ fr:
     initiative_resubmitted_for_review:
       by_author: 'par %{authorName}'
       cta_reply_to: 'Faites votre retour à %{authorName}'
-      event_description_initiative: 'Une proposition a été soumise à nouveau pour examen. Donnez votre avis en rédigeant une mise à jour officielle ou en modifiant son statut.'
-      main_header: '%{firstName}vous avez une proposition à examiner'
+      event_description_initiative: 'Une proposition a été soumise à nouveau pour examen. Donnez votre retour en rédigeant une mise à jour officielle ou en modifiant son statut.'
+      main_header: '%{firstName}, vous avez une proposition à examiner'
       subject: 'Vous avez une proposition à vérifier sur la plateforme de %{organizationName}'
       preheader_initiative: 'La proposition de %{authorName} a été soumise à nouveau pour examen.'
     invite_reminder:
@@ -370,12 +370,12 @@ fr:
       main_header: '%{post}" a un nouveau commentaire interne'
       preheader: '%{post}" a un nouveau commentaire interne'
     official_feedback_on_idea_you_follow:
-      header_message: '%{officialName} a réagi à votre idée ''%{ideaTitle}''. Cliquez sur le bouton ci-dessous pour continuer la conversation avec %{officialName}.'
+      header_message: '"%{officialName} a publié un message officiel concernant l''idée « %{ideaTitle} ». Cliquez sur le bouton ci-dessous pour poursuivre la conversation avec %{officialName}.'
       header_title: 'Il y a une mise à jour sur une idée que vous suivez'
       subject: 'Une idée que vous suivez a reçu une mise à jour officielle sur la plateforme de %{organizationName}'
       preheader: 'Il y a une mise à jour sur une idée que vous suivez'
     official_feedback_on_initiative_you_follow:
-      header_message: '%{officialName} a réagi à la proposition ''%{initiativeTitle}''. Cliquez sur le bouton ci-dessous pour continuer la conversation avec %{organizationName}.'
+      header_message: '"%{officialName} a publié un message officiel concernant la proposition « %{initiativeTitle} ». Cliquez sur le bouton ci-dessous pour continuer la conversation avec %{organizationName}.'
       header_title: 'Il y a une mise à jour sur une proposition que vous suivez'
       subject: 'Une proposition que vous suivez a reçu une mise à jour officielle sur la plateforme de %{organizationName}'
       preheader: 'Il y a une mise à jour sur une proposition que vous suivez'
@@ -438,7 +438,7 @@ fr:
       preheader: 'Un nouveau projet a été publié'
     status_change_on_idea_you_follow:
       status_change: 'Le nouveau statut de cette idée est « %{ideaStatus} »'
-      header_message: '%{organizationName} a changé le statut de l''idée ''%{ideaTitle}'' sur leur plateforme de participation numérique.'
+      header_message: '%{organizationName} a changé le statut de l''idée « %{ideaTitle} » sur leur plateforme de participation.'
       header_title: 'Une idée que vous suivez a un nouveau statut'
       subject: 'Le statut d''une idée que vous suivez a changé'
       preheader: 'Une idée que vous suivez a un nouveau statut'
