@@ -1108,7 +1108,7 @@
   "app.containers.InitiativesShow.manageInvitationsLinkText": "Manage cosponsorship invitations",
   "app.containers.InitiativesShow.metaOgTitle": "Innuttaasup siunnersuutaa una tapersersoruk: {initiativeTitle}",
   "app.containers.InitiativesShow.metaTitle": "Innuttaasup siunnersuutaa  • {initiativeTitle}",
-  "app.containers.InitiativesShow.numberOfCosponsorsNotYetMet1": "{requiredNumberOfCosponsors, plural, one {Your proposal needs {requiredNumberOfCosponsors} accepted cosponsorship. Until then, it will not be considered. {manageInvitationsLink}.} other {Your proposal needs {requiredNumberOfCosponsors} accepted cosponsorships. Until then, it will not be considered. {manageInvitationsLink}.}}",
+  "app.containers.InitiativesShow.numberOfCosponsorsNotYetMet": "{requiredNumberOfCosponsors, plural, one {Your proposal needs 1 accepted cosponsorship. Until then, it will not be considered. {manageInvitationsLink}.} other {Your proposal needs {requiredNumberOfCosponsors} accepted cosponsorships. Until then, it will not be considered. {manageInvitationsLink}.}}",
   "app.containers.InitiativesShow.pending1": "pending",
   "app.containers.InitiativesShow.postedBy": "Uuma innuttaasup siunnersuutaa {authorName}",
   "app.containers.InitiativesShow.postedByShort": "Uuminnga ikkunneqarsimasoq {authorName}",
