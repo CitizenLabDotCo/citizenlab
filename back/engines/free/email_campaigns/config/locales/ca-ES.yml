@@ -571,6 +571,7 @@ ca:
       cta_see_results: 'Veure resultats a la plataforma'
     event_registration_confirmation:
       subject: "Estàs dins! El vostre registre per a \"%{eventTitle}\" està confirmat"
+      header_message: "%{firstName}, gràcies per registrar-te"
       event_details:
         labels:
           date: 'Data'
