@@ -354,7 +354,6 @@
   "app.components.PostComponents.SharingModalContent.questionWhatsAppMessage": "Neem deel aan de discussie: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.twitterMessage": "Stem voor {postTitle} op",
   "app.components.PostComponents.SharingModalContent.whatsAppMessageProposal": "Ik heb net een voorstel gepost voor {orgName}: {postTitle}",
-  "app.components.PostComponents.areas": "Gebieden",
   "app.components.PostComponents.linkToHomePage": "Link naar de homepagina",
   "app.components.PostComponents.readMore": "Lees meer...",
   "app.components.PostComponents.topics": "Tags",
