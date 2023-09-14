@@ -437,6 +437,7 @@
   "app.containers.Admin.Invitations.helmetTitle": "Admin invitation dashboard",
   "app.containers.Admin.Invitations.importOptionsInfo": "These options will only be taken into account when they are not defined in the Excel file.\n      Please visit the {supportPageLink} for more information.",
   "app.containers.Admin.Invitations.importTab": "Import email addresses",
+  "app.containers.Admin.Invitations.invitationExpirationWarning": "Be aware that invitations expire after 14 days. After this period, you can still resend them.",
   "app.containers.Admin.Invitations.invitationOptions": "Invitation options",
   "app.containers.Admin.Invitations.invitationSubtitle": "Invite people to the platform at any point in time. They get a neutral invitation email with your logo, in which they are asked to register on the platform.",
   "app.containers.Admin.Invitations.invitePeople": "Invite people via email",
