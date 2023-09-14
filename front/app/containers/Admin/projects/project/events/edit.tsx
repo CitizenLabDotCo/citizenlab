@@ -223,6 +223,7 @@ const AdminProjectEventEdit = () => {
       ...attributeDiff,
       using_url: url,
     });
+    setErrors({});
   };
 
   const handleDateTimePickerOnChange =
@@ -603,6 +604,7 @@ const AdminProjectEventEdit = () => {
                     placeholder={'https://...'}
                   />
                 </Box>
+                <ErrorComponent apiErrors={get(errors, 'using_url')} />
               </SectionField>
               {!isNilOrError(locale) && (
                 <Box display="flex" flexWrap="wrap">
