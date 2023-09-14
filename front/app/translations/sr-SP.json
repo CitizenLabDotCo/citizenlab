@@ -1108,7 +1108,7 @@
   "app.containers.InitiativesShow.manageInvitationsLinkText": "Управљајте позивима за коспонзорство",
   "app.containers.InitiativesShow.metaOgTitle": "Подржите овај предлог: {initiativeTitle}",
   "app.containers.InitiativesShow.metaTitle": "Предлог • {initiativeTitle}",
-  "app.containers.InitiativesShow.numberOfCosponsorsNotYetMet1": "{requiredNumberOfCosponsors, plural, one {Ваш предлог је потребан {requiredNumberOfCosponsors} прихватио коспонзорство. До тада се неће разматрати. {manageInvitationsLink}.} other {Ваш предлог је потребан {requiredNumberOfCosponsors} прихватио коспонзорства. До тада се неће разматрати. {manageInvitationsLink}.}}",
+  "app.containers.InitiativesShow.numberOfCosponsorsNotYetMet": "{requiredNumberOfCosponsors, plural, one {За ваш предлог је потребно 1 прихваћено коспонзорство. До тада се неће разматрати. {manageInvitationsLink}.} other {Ваш предлог је потребан {requiredNumberOfCosponsors} прихватио коспонзорства. До тада се неће разматрати. {manageInvitationsLink}.}}",
   "app.containers.InitiativesShow.pending1": "нерешен",
   "app.containers.InitiativesShow.postedBy": "Предлог је поставио {authorName}",
   "app.containers.InitiativesShow.postedByShort": "Објавио {authorName}",
