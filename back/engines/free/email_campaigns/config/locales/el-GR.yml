@@ -571,6 +571,7 @@ el:
       cta_see_results: 'Δείτε τα αποτελέσματα στην πλατφόρμα'
     event_registration_confirmation:
       subject: "Είσαι μέσα! Η εγγραφή σας για το \"%{eventTitle}\" είναι επιβεβαιωμένη"
+      header_message: "%{firstName}, ευχαριστώ για την εγγραφή σας για"
       event_details:
         labels:
           date: 'Ημερομηνία'
