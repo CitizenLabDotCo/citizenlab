@@ -413,7 +413,7 @@ const Moderation = () => {
                   onData={handleData}
                   activeFlagsCount={
                     !isNilOrError(moderationsWithActiveFlagCount)
-                      ? moderationsWithActiveFlagCount.count
+                      ? moderationsWithActiveFlagCount.data.attributes.count
                       : 0
                   }
                 />
