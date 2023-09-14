@@ -1,6 +1,8 @@
-import { API_PATH } from 'containers/App/constants';
-import streams from 'utils/streams';
 import { IRelationship } from 'typings';
+import permissionsKeys from './keys';
+import { Keys } from 'utils/cl-react-query/types';
+
+export type PermissionsKeys = Keys<typeof permissionsKeys>;
 
 export type IGlobalPermissionAction =
   | 'reacting_initiative'
@@ -37,7 +39,7 @@ export type IParticipationContextPermissionAction =
   | 'voting'
   | 'annotating_document';
 
-interface IParticipationContextPermissionData {
+export interface IParticipationContextPermissionData {
   id: string;
   type: string;
   attributes: {
@@ -66,24 +68,16 @@ export type IPermissionData =
   | IParticipationContextPermissionData
   | IGlobalPermissionData;
 
-interface IParticipationContextPermission {
+export interface IParticipationContextPermission {
   data: IParticipationContextPermissionData;
 }
 
-interface IPermissionUpdate {
+export interface IGlobalPermissions {
+  data: IGlobalPermissionData[];
+}
+
+export interface IPermissionUpdate {
   group_ids: string[];
   permitted_by: IPermissionData['attributes']['permitted_by'];
   global_custom_fields: boolean;
-}
-
-export function updateGlobalPermission(
-  permissionId: string,
-  action: string,
-  permission: Partial<IPermissionUpdate>
-) {
-  return streams.update<IParticipationContextPermission>(
-    `${API_PATH}/permissions/${action}`,
-    permissionId,
-    { permission }
-  );
 }
