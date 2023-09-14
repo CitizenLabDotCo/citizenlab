@@ -571,6 +571,7 @@ tr:
       cta_see_results: 'Platformdaki sonuçları görün'
     event_registration_confirmation:
       subject: "Girdiniz! \"%{eventTitle}\" için kaydınız onaylandı"
+      header_message: "%{firstName}'a kaydolduğunuz için teşekkür ederiz."
       event_details:
         labels:
           date: 'Tarih'
