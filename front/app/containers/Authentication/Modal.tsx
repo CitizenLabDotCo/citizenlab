@@ -39,6 +39,9 @@ import errorMessages from 'components/UI/Error/messages';
 import { ErrorCode } from './typings';
 import VerificationSuccess from './steps/VerificationSuccess';
 import T from 'components/T';
+import { IInitiativeAction } from 'api/initiative_action_descriptors/types';
+import { IParticipationContextPermissionAction } from 'services/actionPermissions';
+import { IFollowingAction } from 'api/authentication/authentication_requirements/types';
 
 type Step = ReturnType<typeof useSteps>['currentStep'];
 
@@ -82,6 +85,30 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   // verification only
   'verification-only': messages.verifyYourIdentity,
   'verification-success': null,
+};
+
+const getHeaderMessage = (
+  step: Step,
+  action:
+    | 'visiting'
+    | IInitiativeAction
+    | IParticipationContextPermissionAction
+    | IFollowingAction
+) => {
+  if (
+    action === 'following' &&
+    [
+      'light-flow:email',
+      'light-flow:email-policies',
+      'light-flow:google-policies',
+      'light-flow:facebook-policies',
+      'light-flow:azure-ad-policies',
+      'light-flow:france-connect-login',
+    ].includes(step)
+  ) {
+    return messages.beforeYouFollow;
+  }
+  return HEADER_MESSAGES[step];
 };
 
 export const ERROR_CODE_MESSAGES: Record<ErrorCode, MessageDescriptor> = {
@@ -138,7 +165,10 @@ const AuthModal = ({ setModalOpen }: Props) => {
     currentStep !== 'success' &&
     currentStep !== 'clave-unica:email';
 
-  const headerMessage = HEADER_MESSAGES[currentStep];
+  const {
+    context: { action },
+  } = authenticationData;
+  const headerMessage = getHeaderMessage(currentStep, action);
 
   const handleClose = () => {
     if (!closable) return;
@@ -240,6 +270,7 @@ const AuthModal = ({ setModalOpen }: Props) => {
             onSwitchFlow={transition(currentStep, 'SWITCH_FLOW')}
             onGoBack={transition(currentStep, 'GO_BACK')}
             onSubmit={transition(currentStep, 'SIGN_IN')}
+            closeModal={transition(currentStep, 'CLOSE')}
           />
         )}
 
@@ -267,40 +298,13 @@ const AuthModal = ({ setModalOpen }: Props) => {
           />
         )}
 
-        {currentStep === 'sign-up:email-confirmation' && (
-          <EmailConfirmation
-            state={state}
-            loading={loading}
-            setError={setError}
-            onConfirm={transition(currentStep, 'SUBMIT_CODE')}
-            onChangeEmail={transition(currentStep, 'CHANGE_EMAIL')}
-          />
-        )}
-
-        {currentStep === 'sign-up:change-email' && (
+        {(currentStep === 'sign-up:change-email' ||
+          currentStep === 'missing-data:change-email') && (
           <ChangeEmail
             loading={loading}
             setError={setError}
             onGoBack={transition(currentStep, 'GO_BACK')}
             onChangeEmail={transition(currentStep, 'RESEND_CODE')}
-          />
-        )}
-
-        {currentStep === 'sign-up:verification' && (
-          <Verification
-            authenticationData={authenticationData}
-            setError={setError}
-            onCompleted={transition(currentStep, 'CONTINUE')}
-          />
-        )}
-
-        {currentStep === 'sign-up:custom-fields' && (
-          <CustomFields
-            authenticationData={authenticationData}
-            loading={loading}
-            setError={setError}
-            onSubmit={transition(currentStep, 'SUBMIT')}
-            onSkip={transition(currentStep, 'SKIP')}
           />
         )}
 
@@ -317,16 +321,6 @@ const AuthModal = ({ setModalOpen }: Props) => {
             loading={loading}
             setError={setError}
             onSubmit={transition(currentStep, 'SUBMIT_EMAIL')}
-          />
-        )}
-
-        {currentStep === 'clave-unica:email-confirmation' && (
-          <EmailConfirmation
-            state={state}
-            loading={loading}
-            setError={setError}
-            onConfirm={transition(currentStep, 'SUBMIT_CODE')}
-            onChangeEmail={transition(currentStep, 'CHANGE_EMAIL')}
           />
         )}
 
@@ -374,16 +368,6 @@ const AuthModal = ({ setModalOpen }: Props) => {
           <FranceConnectLogin onLogin={transition(currentStep, 'LOGIN')} />
         )}
 
-        {currentStep === 'light-flow:email-confirmation' && (
-          <EmailConfirmation
-            state={state}
-            loading={loading}
-            setError={setError}
-            onConfirm={transition(currentStep, 'SUBMIT_CODE')}
-            onChangeEmail={transition(currentStep, 'CHANGE_EMAIL')}
-          />
-        )}
-
         {currentStep === 'light-flow:password' && (
           <Password
             state={state}
@@ -403,7 +387,10 @@ const AuthModal = ({ setModalOpen }: Props) => {
           />
         )}
 
-        {currentStep === 'missing-data:email-confirmation' && (
+        {(currentStep === 'sign-up:email-confirmation' ||
+          currentStep === 'light-flow:email-confirmation' ||
+          currentStep === 'missing-data:email-confirmation' ||
+          currentStep === 'clave-unica:email-confirmation') && (
           <EmailConfirmation
             state={state}
             loading={loading}
@@ -413,39 +400,23 @@ const AuthModal = ({ setModalOpen }: Props) => {
           />
         )}
 
-        {currentStep === 'missing-data:change-email' && (
-          <ChangeEmail
-            loading={loading}
-            setError={setError}
-            onGoBack={transition(currentStep, 'GO_BACK')}
-            onChangeEmail={transition(currentStep, 'RESEND_CODE')}
-          />
-        )}
-
-        {currentStep === 'missing-data:verification' && (
+        {(currentStep === 'missing-data:verification' ||
+          currentStep === 'verification-only' ||
+          currentStep === 'sign-up:verification') && (
           <Verification
-            authenticationData={authenticationData}
             setError={setError}
             onCompleted={transition(currentStep, 'CONTINUE')}
           />
         )}
 
-        {currentStep === 'missing-data:custom-fields' && (
+        {(currentStep === 'missing-data:custom-fields' ||
+          currentStep === 'sign-up:custom-fields') && (
           <CustomFields
             authenticationData={authenticationData}
             loading={loading}
             setError={setError}
             onSubmit={transition(currentStep, 'SUBMIT')}
             onSkip={transition(currentStep, 'SKIP')}
-          />
-        )}
-
-        {/* verification only */}
-        {currentStep === 'verification-only' && (
-          <Verification
-            authenticationData={authenticationData}
-            setError={setError}
-            onCompleted={transition(currentStep, 'CONTINUE')}
           />
         )}
 

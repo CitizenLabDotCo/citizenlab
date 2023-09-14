@@ -75,7 +75,7 @@ describe('Report builder Reactions By Time widget', () => {
     cy.get('.recharts-surface:first').trigger('mouseover');
 
     cy.contains('New Widget Title').should('exist');
-    cy.contains('Downvotes : 1').should('be.visible');
+    cy.contains('Dislikes : 1').should('be.visible');
   });
 
   it('deletes Reactions By Time widget correctly', function () {

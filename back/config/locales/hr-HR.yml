@@ -15,6 +15,10 @@ hr:
     rejected: odbijeno
     rejected_description: Ova je ideja odbijena
   initiative_statuses:
+    review_pending: pregled na čekanju
+    review_pending_description: pregled na čekanju
+    changes_requested: tražene izmjene
+    changes_requested_description: tražene izmjene
     proposed: predloženo
     proposed_description: predloženo
     expired: isteklo
@@ -181,6 +185,8 @@ hr:
       <p>Pozivaju se inicijatori da svoj prijedlog iznesu na sljedećem sastanku vijeća. Osigurat ćemo službeno ažuriranje.</p>
     default_eligibility_criteria: >
       <ul> <li>Mora spadati u područja politike i nadležnosti lokalne politike</li> <li>Služi javnom interesu, a ne vašem individualnom interesu</li> <li>Ne diskriminira na temelju spola, rase, dobi ili podrijetla</li> <li>Ne šteti drugima</li> </ul>
+    default_posting_tips: >
+      <ul><li>Odvojite vrijeme da razradite svoj prijedlog. Ako je potrebno, prvo upišite nacrt, a zatim ga kopirajte i zalijepite ovdje.</li><li>Odaberite smislen naslov koji jasno objašnjava što vaš prijedlog podrazumijeva.</li><li>Vizualizirajte svoj prijedlog prikladnom slikom kako bi se istaknuo!</li><li>Dodajte relevantne privitke, kao što su videozapisi, inspirativni primjeri, tehnički detalji ili planovi.</li><li>Podijelite svoju ideju na društvenim medijima i drugim kanalima kako biste prikupili podršku drugih.</li></ul>
   reset_password_mailer:
     send_reset_password:
       cta_reset_password: 'Poništite svoju lozinku'
@@ -201,7 +207,9 @@ hr:
       comments_count: 'Komentari'
       likes_count: 'Sviđa mi se'
       dislikes_count: 'Nesviđanja'
-      baskets_count: 'Košarice'
+      picks: 'Pijuci'
+      participants: 'Sudionici'
+      votes_count: 'Glasovi'
       input_url: 'URL'
       project: 'Projekt'
       status: 'Stanje'
@@ -247,3 +255,6 @@ hr:
     formats:
       hour_of_day: "%H:%M"
     pm: popodne
+  voting_method:
+    default_voting_term_singular: "glasanje"
+    default_voting_term_plural: "glasova"

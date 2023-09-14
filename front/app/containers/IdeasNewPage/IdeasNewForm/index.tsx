@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, lazy, Suspense } from 'react';
 
 // api
 import { isRegularUser } from 'services/permissions/roles';
@@ -23,19 +23,16 @@ import PageContainer from 'components/UI/PageContainer';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
 import { Heading } from './Heading';
 import { Box } from '@citizenlab/cl2-component-library';
-import ProfileVisiblity from 'components/ProfileVisibility';
+const ProfileVisiblity = lazy(() => import('./ProfileVisibility'));
 import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
 import Warning from 'components/UI/Warning';
 
 // utils
 import { geocode, reverseGeocode } from 'utils/locationTools';
-import {
-  ParticipationMethodConfig,
-  getMethodConfig,
-} from 'utils/participationMethodUtils';
+import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import { getLocationGeojson } from '../utils';
 import { isError, isNilOrError } from 'utils/helperUtils';
-import { getCurrentPhase } from 'api/phases/utils';
+import { getCurrentParticipationContext } from 'api/phases/utils';
 import { parse } from 'qs';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 
@@ -49,23 +46,13 @@ const getConfig = (
   phases: IPhases | undefined,
   project: IProject | undefined
 ) => {
-  let config: ParticipationMethodConfig | null | undefined = null;
-
-  if (!isNilOrError(phaseFromUrl)) {
-    config = getMethodConfig(phaseFromUrl.attributes.participation_method);
-  } else {
-    if (phases && project?.data.attributes.process_type === 'timeline') {
-      const participationMethod = getCurrentPhase(phases?.data)?.attributes
+  const participationMethod = phaseFromUrl
+    ? phaseFromUrl.attributes.participation_method
+    : getCurrentParticipationContext(project?.data, phases?.data)?.attributes
         .participation_method;
-      if (!isNilOrError(participationMethod)) {
-        config = getMethodConfig(participationMethod);
-      }
-    } else if (!isNilOrError(project)) {
-      config = getMethodConfig(project.data.attributes.participation_method);
-    }
-  }
 
-  return config;
+  if (!participationMethod) return;
+  return getMethodConfig(participationMethod);
 };
 
 interface FormValues {
@@ -102,17 +89,14 @@ const IdeasNewPageWithJSONForm = () => {
   const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
     useState(false);
   const [processingLocation, setProcessingLocation] = useState(false);
-  const [formDataOnSubmit, setFormDataOnSubmit] = useState<
-    FormValues | undefined
-  >(undefined);
   const [initialFormData, setInitialFormData] = useState({});
   const [postAnonymously, setPostAnonymously] = useState(false);
-  const currentPhase = getCurrentPhase(phases?.data);
-
+  const participationContext = getCurrentParticipationContext(
+    project?.data,
+    phases?.data
+  );
   const allowAnonymousPosting =
-    project?.data.attributes.allow_anonymous_participation ||
-    (phases &&
-      getCurrentPhase(phases.data)?.attributes.allow_anonymous_participation);
+    participationContext?.attributes.allow_anonymous_participation;
 
   useEffect(() => {
     // Click on map flow :
@@ -142,21 +126,12 @@ const IdeasNewPageWithJSONForm = () => {
     }
   }, [search]);
 
+  // get participation method config
+  const { data: phaseFromUrl } = usePhase(phaseId);
+  const config = getConfig(phaseFromUrl?.data, phases, project);
+
   const onSubmit = async (data: FormValues) => {
-    if (!project) return;
-
-    setFormDataOnSubmit(data);
-
-    if (allowAnonymousPosting && postAnonymously) {
-      setShowAnonymousConfirmationModal(true);
-    } else {
-      continueSubmission(data);
-    }
-  };
-
-  const continueSubmission = async (data: FormValues | undefined) => {
-    if (!project || !data) {
-      setShowAnonymousConfirmationModal(false);
+    if (!project) {
       return;
     }
 
@@ -183,28 +158,7 @@ const IdeasNewPageWithJSONForm = () => {
     });
 
     const ideaId = idea.data.id;
-
-    // Check ParticipationMethodConfig for form submission action
-    if (project?.data.attributes.process_type === 'timeline' && phases) {
-      // Check if URL contains specific phase_id
-      const phaseUsed =
-        phases.data.find((phase) => phase.id === phaseId) ||
-        getCurrentPhase(phases.data);
-      if (!isNilOrError(phaseUsed)) {
-        getMethodConfig(
-          phaseUsed?.attributes?.participation_method
-        ).onFormSubmission({
-          project: project.data,
-          ideaId,
-          idea,
-          phaseId: phaseUsed.id,
-        });
-      }
-    } else if (!isNilOrError(project)) {
-      getMethodConfig(
-        project?.data.attributes.participation_method
-      ).onFormSubmission({ project: project.data, ideaId, idea });
-    }
+    config?.onFormSubmission({ project: project.data, ideaId, idea });
   };
 
   const getApiErrorMessage: ApiErrorGetter = useCallback(
@@ -239,9 +193,13 @@ const IdeasNewPageWithJSONForm = () => {
     [uiSchema]
   );
 
-  // get participation method config
-  const { data: phaseFromUrl } = usePhase(phaseId);
-  const config = getConfig(phaseFromUrl?.data, phases, project);
+  const handleOnChangeAnonymousPosting = () => {
+    if (!postAnonymously) {
+      setShowAnonymousConfirmationModal(true);
+    }
+
+    setPostAnonymously((postAnonymously) => !postAnonymously);
+  };
 
   if (isNilOrError(project) || !config) {
     return null;
@@ -252,10 +210,7 @@ const IdeasNewPageWithJSONForm = () => {
     canModerateProject(project.data.id, { data: authUser.data });
 
   const isSurvey = config.postType === 'nativeSurvey';
-  const isAnonymousSurvey =
-    isSurvey &&
-    (project?.data.attributes.allow_anonymous_participation ||
-      currentPhase?.attributes?.allow_anonymous_participation);
+  const isAnonymousSurvey = isSurvey && allowAnonymousPosting;
 
   return (
     <PageContainer id="e2e-idea-new-page" overflow="hidden">
@@ -302,21 +257,12 @@ const IdeasNewPageWithJSONForm = () => {
             formSubmitText={isSurvey ? messages.submitSurvey : undefined}
             footer={
               !isSurvey && allowAnonymousPosting ? (
-                <Box
-                  p="40px"
-                  mb="20px"
-                  boxShadow="0px 2px 4px -1px rgba(0,0,0,0.06)"
-                  borderRadius="3px"
-                  width="100%"
-                  background="white"
-                >
-                  <Box mt="-20px">
-                    <ProfileVisiblity
-                      postAnonymously={postAnonymously}
-                      setPostAnonymously={setPostAnonymously}
-                    />
-                  </Box>
-                </Box>
+                <Suspense fallback={null}>
+                  <ProfileVisiblity
+                    postAnonymously={postAnonymously}
+                    onChange={handleOnChangeAnonymousPosting}
+                  />
+                </Suspense>
               ) : undefined
             }
           />
@@ -324,14 +270,13 @@ const IdeasNewPageWithJSONForm = () => {
       ) : isError(project) || inputSchemaError ? null : (
         <FullPageSpinner />
       )}
-      <AnonymousParticipationConfirmationModal
-        onConfirmAnonymousParticipation={() => {
-          setShowAnonymousConfirmationModal(false);
-          continueSubmission(formDataOnSubmit);
-        }}
-        showAnonymousConfirmationModal={showAnonymousConfirmationModal}
-        setShowAnonymousConfirmationModal={setShowAnonymousConfirmationModal}
-      />
+      {showAnonymousConfirmationModal && (
+        <AnonymousParticipationConfirmationModal
+          onCloseModal={() => {
+            setShowAnonymousConfirmationModal(false);
+          }}
+        />
+      )}
     </PageContainer>
   );
 };

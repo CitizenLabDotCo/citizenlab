@@ -86,7 +86,16 @@ export const UserMenu = () => {
             p={isSmallerThanPhone ? '10px 0' : '10px 8px 10px 16px'}
             justifyContent={isSmallerThanPhone ? 'center' : undefined}
           >
-            <Avatar userId={authUser.data.id} size={24} addVerificationBadge />
+            {/*
+              Margins are needed to align with other icons/items in sidebar.
+              Changes in Avatar component are needed so size prop behaves correctly.
+            */}
+            <Box
+              ml={isSmallerThanPhone ? '0' : '-2px'}
+              mr={isSmallerThanPhone ? '0' : '6px'}
+            >
+              <Avatar userId={authUser.data.id} size={20} />
+            </Box>
             {!isSmallerThanPhone && (
               <Box
                 display="flex"
@@ -164,6 +173,7 @@ export const UserMenu = () => {
             <Text my="0px" color="coolGrey600">
               {formatMessage({ ...messages.myProfile })}
             </Text>
+            <Icon name="user" fill={colors.grey600} />
           </Box>
         </ItemMenu>
         <ItemMenu buttonStyle="text" onClick={signOut}>

@@ -15,6 +15,10 @@ nl:
     rejected: afgewezen
     rejected_description: Dit idee is afgewezen
   initiative_statuses:
+    review_pending: beoordeling in behandeling
+    review_pending_description: beoordeling in behandeling
+    changes_requested: wijzigingen gevraagd
+    changes_requested_description: wijzigingen gevraagd
     proposed: voorgesteld
     proposed_description: voorgesteld
     expired: verstreken
@@ -181,6 +185,8 @@ nl:
       <p>De initiatiefnemers worden uitgenodigd om hun voorstel te komen presenteren op de volgende gemeenteraad, waarop een officiële reactie volgt.</p>
     default_eligibility_criteria: >
       <ul> <li>Het moet binnen de competenties van het lokale beleid vallen</li> <li>Het dient het algemeen belang in plaats van jouw individueel belang</li> <li>Het discrimineert niet op basis van geslacht, ras, leeftijd of achtergrond</li> <li>Het brengt anderen geen schade toe</li> </ul>
+    default_posting_tips: >
+      <ul><li>Neem de tijd om je voorstel uit te werken. Typ het eventueel eerst ergens anders en knip en plak het daarna hier.</li><li>Kies een sprekende titel, die direct en concreet uitlegt wat je voorstel omvat.</li><li>Illustreer je voorstel zeker met een passende afbeelding, zodat deze meer opvalt!</li><li>Voeg relevante bijlagen toe zoals video’s, inspirerende voorbeelden, technische details of plannen.</li><li>Deel je voorstel op social media en via andere kanalen om stemmen te verzamelen.</li></ul>
   reset_password_mailer:
     send_reset_password:
       cta_reset_password: 'Stel je wachtwoord opnieuw in'
@@ -201,7 +207,9 @@ nl:
       comments_count: 'Reacties'
       likes_count: 'Likes'
       dislikes_count: 'Dislikes'
-      baskets_count: 'Manden'
+      picks: 'Keuzes'
+      participants: 'Deelnemers'
+      votes_count: 'Stemmen'
       input_url: 'URL'
       project: 'Project'
       status: 'Status'
@@ -247,3 +255,6 @@ nl:
     formats:
       hour_of_day: "%H:%M"
     pm: '--'
+  voting_method:
+    default_voting_term_singular: "stem"
+    default_voting_term_plural: "stemmen"

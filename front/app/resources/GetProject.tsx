@@ -2,7 +2,7 @@ import useProjectById from 'api/projects/useProjectById';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
 import { IProjectData } from 'api/projects/types';
 
-export type GetProjectChildProps = IProjectData | undefined | null;
+export type GetProjectChildProps = IProjectData | undefined;
 
 type children = (renderProps: GetProjectChildProps) => JSX.Element | null;
 

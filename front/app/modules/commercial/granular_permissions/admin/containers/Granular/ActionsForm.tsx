@@ -14,9 +14,6 @@ import { Box, colors, Title } from '@citizenlab/cl2-component-library';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-// hooks
-import useProjectById from 'api/projects/useProjectById';
-
 // utils
 import {
   getPermissionActionSectionSubtitle,
@@ -68,7 +65,6 @@ const ActionsForm = ({
   initiativeContext,
   phaseId,
 }: Props) => {
-  const { data: project } = useProjectById(projectId);
   const [previousUsersGlobalCustomFields, setPreviousUsersGlobalCustomFields] =
     useState(true);
   const [
@@ -133,7 +129,6 @@ const ActionsForm = ({
                 <FormattedMessage
                   {...getPermissionActionSectionSubtitle({
                     permissionAction,
-                    project: project?.data,
                     postType,
                   })}
                 />

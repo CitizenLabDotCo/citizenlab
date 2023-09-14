@@ -272,6 +272,7 @@ const App = ({ children }: Props) => {
   const isIdeaFormPage = isPage('idea_form', location.pathname);
   const isIdeaEditPage = isPage('idea_edit', location.pathname);
   const isInitiativeEditPage = isPage('initiative_edit', location.pathname);
+  const isEventPage = isPage('event_page', location.pathname);
   const isSmallerThanTablet = useBreakpoint('tablet');
 
   const theme = getTheme(appConfiguration);
@@ -289,7 +290,10 @@ const App = ({ children }: Props) => {
     !isIdeaEditPage &&
     !isInitiativeEditPage;
   const { pathname } = removeLocale(location.pathname);
-  const showFrontOfficeNavbar = !isAdminPage || isPagesAndMenuPage;
+  const showFrontOfficeNavbar =
+    (isEventPage && !isSmallerThanTablet) || // Don't show the navbar on (mobile) event page
+    (!isAdminPage && !isEventPage) ||
+    isPagesAndMenuPage;
 
   // Ensure authUser is loaded before rendering the app
   if (!authUser && isLoading) {
@@ -350,7 +354,6 @@ const App = ({ children }: Props) => {
                 </ErrorBoundary>
               )}
               <Box
-                width="100vw"
                 display="flex"
                 flexDirection="column"
                 alignItems="stretch"

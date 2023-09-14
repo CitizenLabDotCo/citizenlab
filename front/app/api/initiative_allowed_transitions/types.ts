@@ -10,7 +10,7 @@ export interface IInitiativeAllowedTransitions {
     type: 'allowed_transitions';
     attributes: {
       [key: string]: {
-        feedback_needed: boolean;
+        feedback_required: boolean;
       };
     };
   };

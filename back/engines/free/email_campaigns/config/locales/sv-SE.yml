@@ -8,12 +8,15 @@ sv:
       "comment_on_your_comment": Ett svar på min kommentar
       "comment_on_your_idea": En kommentar för min idé
       "comment_on_your_initiative": En kommentar för mitt förslag
+      "cosponsor_of_your_initiative": En användare accepterar min inbjudan att samsponsra mitt förslag
       "first_idea_published": Publicering av min första idé
       "idea_marked_as_spam": Skräppostrapport för idé
       "idea_published": Publicering av min idé
       "initiative_assigned_to_you": Tilldelning av ett förslag till mig
       "initiative_marked_as_spam": Skräppostrapport för förslag
       "initiative_published": Publicering av mitt förslag
+      "invitation_to_cosponsor_initiative": Inbjudan att vara medförslagsställare
+      "initiative_resubmitted_for_review": Förslaget lämnas in på nytt för granskning
       "invite_received": Inbjudan
       "invite_reminder": Påminnelse om inbjudan
       "internal_comment_on_idea_assigned_to_you": Intern kommentar om input som tilldelats mig
@@ -29,14 +32,14 @@ sv:
       "new_comment_for_admin": Ny kommentar i ett projekt jag modererar
       "new_comment_on_commented_idea": Ny kommentar för en idé jag kommenterat
       "new_comment_on_commented_initiative": Ny kommentar för ett förslag jag kommenterat
-      "new_comment_on_voted_idea": Ny kommentar för en idé jag röstat på
-      "new_comment_on_voted_initiative": Ny kommentar för ett förslag jag röstat för
+      "new_comment_on_reacted_idea": Ny kommentar till en idé som jag reagerade på
+      "new_comment_on_reacted_initiative": Ny kommentar till ett förslag som jag röstade för
       "new_idea_for_admin": Ny idé i ett projekt jag modererar
       "new_initiative_for_admin": Nytt förslag
       "official_feedback_on_commented_idea": Uppdatering för en idé jag kommenterat
       "official_feedback_on_commented_initiative": Uppdatering för ett förslag jag kommenterat
-      "official_feedback_on_voted_idea": Uppdatering för en idé jag röstat på
-      "official_feedback_on_voted_initiative": Uppdatering för ett förslag jag röstat på
+      "official_feedback_on_reacted_idea": Uppdatering av en idé som jag reagerade på
+      "official_feedback_on_reacted_initiative": Uppdatering av ett förslag som jag röstade om
       "official_feedback_on_your_idea": Uppdatering för min idé
       "official_feedback_on_your_initiative": Uppdatering för mitt förslag
       "password_reset": Återställning av lösenord
@@ -46,8 +49,8 @@ sv:
       "project_phase_upcoming": Kommande ny projektfas
       "status_change_of_commented_idea": Statusändring för en idé jag kommenterat
       "status_change_of_commented_initiative": Statusändring för ett förslag jag kommenterat
-      "status_change_of_voted_idea": Statusändring för en idé jag röstat på
-      "status_change_of_voted_initiative": Statusändring för ett förslag jag röstat på
+      "status_change_of_reacted_idea": Statusförändring av en idé som jag reagerade på
+      "status_change_of_reacted_initiative": Statusförändring av ett förslag som jag reagerade för
       "status_change_of_your_idea": Statusändring av min idé
       "status_change_of_your_initiative": Statusändring av mitt förslag
       "threshold_reached_for_admin": Förslaget nådde rösttröskeln
@@ -56,6 +59,10 @@ sv:
       "moderator_digest": Veckoöversikt för projektledare
       "assignee_digest": Veckoöversikt över tilldelade idéer
       "user_digest": Veckoöversikt
+      "voting_basket_submitted": Bekräftelse av röstning
+      "voting_basket_not_submitted": Ej avgivna röster
+      "voting_last_chance": Sista chansen att rösta
+      "voting_results": Resultat av omröstningen
       "your_proposed_initiatives_digest": Veckoöversikt över dina förslag
     schedules:
       weekly:
@@ -134,6 +141,12 @@ sv:
       main_header: '%{commentAuthor} kommenterade ditt initiativ'
       subject: 'Du har fått en kommentar på %{organizationName}s plattform'
       preheader: '%{authorName} lämnade en kommentar för ditt initiativ för %{organizationName}'
+    cosponsor_of_your_initiative:
+      cta_reply_to: 'Visa ditt förslag'
+      event_description_initiative: 'Grattis! %{cosponsorName} har accepterat din inbjudan att vara med och sponsra ditt förslag.'
+      main_header: '%{cosponsorName} har accepterat din inbjudan att medfinansiera ditt förslag'
+      subject: '%{cosponsorName} har accepterat din inbjudan att medfinansiera ditt förslag'
+      preheader_initiative: '%{cosponsorName} har accepterat din inbjudan att medfinansiera ditt förslag'
     assignee_digest:
       subject: 'Idéer som kräver din återkoppling: %{numberIdeas}'
       preheader: 'Sammanfattning av tilldelad person för %{organizationName}'
@@ -174,6 +187,22 @@ sv:
       main_header: '%{firstName}, du har ett nytt uppdrag'
       subject: 'Du har ett uppdrag på plattformen för %{organizationName}'
       preheader_initiative: 'Förslaget från %{authorName} har tilldelats dig'
+    invitation_to_cosponsor_initiative:
+      cta_reply_to: 'Stöd detta förslag'
+      event_description_initiative: '%{authorName} har skapat ett nytt förslag och vill att du ska stödja det.'
+      event_description_cosponsoring: 'Medsponsring av ett förslag innebär att <strong>ditt namn kommer att visas</strong> tillsammans med namnen på andra medsponsorer av förslaget.'
+      event_description_before_action: 'För att se förslaget och acceptera inbjudan måste du vara inloggad på ditt konto.'
+      event_description_action: 'Klicka nedan för att läsa förslaget.'
+      main_header: 'Du har blivit inbjuden att vara medförslagsställare'
+      subject: 'Du har blivit inbjuden att vara medförslagsställare'
+      preheader_initiative: 'Du har blivit inbjuden att vara medförslagsställare till %{authorName}'
+    initiative_resubmitted_for_review:
+      by_author: 'av %{authorName}'
+      cta_reply_to: 'Ge feedback till %{authorName}'
+      event_description_initiative: 'Ett förslag har lämnats in på nytt för granskning. Ge feedback genom att skriva en officiell uppdatering eller genom att ändra status.'
+      main_header: '%{firstName}, du har ett förslag att granska'
+      subject: 'Du har ett förslag att granska på plattformen %{organizationName}'
+      preheader_initiative: 'Förslaget till %{authorName} har lämnats in på nytt för granskning'
     invite_reminder:
       cta_accept_invitation: 'Acceptera din inbjudan'
       invitation_header: 'Din inbjudan väntar'
@@ -270,23 +299,23 @@ sv:
       main_header: '%{authorName} kommenterade din idé'
       subject: 'Du har fått en kommentar på %{organizationName}s plattform'
       preheader: '%{authorName} lämnade en kommentar för din idé för %{organizationName}'
-    new_comment_on_voted_initiative:
+    new_comment_on_reacted_initiative:
       commented: '%{commentAuthor} skrev:'
-      cta_reply_to: 'Se det här förslaget'
-      event_description: '%{commentAuthor} har kommenterat förslaget %{initiativeTitle} som du har röstat på. Gå med i diskussionen på plattformen för %{organizationName}!'
-      main_header: '%{firstName}, det finns en ny kommentar för förslaget du har röstat på'
-      subject: 'Det finns en ny kommentar för förslaget du har röstat på'
-      preheader: '%{commentAuthor} lämnade en kommentar för förslaget du har röstat på på plattformen för %{organizationName}'
-    new_comment_on_voted_idea:
+      cta_reply_to: 'Se detta förslag'
+      event_description: '%{commentAuthor} har kommenterat förslaget ''%{initiativeTitle}'' som du har röstat på. Delta i diskussionen om plattformen för %{organizationName}!'
+      main_header: '%{firstName}, det finns en ny kommentar till det förslag du har röstat på'
+      subject: 'Det finns en ny kommentar till det förslag du har röstat på'
+      preheader: '%{commentAuthor} lämnat en kommentar till det förslag som du har röstat om på plattformen %{organizationName}'
+    new_comment_on_reacted_idea:
       commented: '%{commentAuthor} kommenterade:'
-      cta_reply_to: 'Svar till %{commentAuthor}'
+      cta_reply_to: 'Svara på %{commentAuthor}'
       days_ago: '%{numberOfDays} dagar sedan'
-      event_description: '%{commentAuthor} har kommenterat idén %{ideaTitle} som du har röstat på. Gå med i diskussionen på plattformen för %{organizationName}!'
-      main_header: '%{firstName}, det finns en ny kommentar för idén du har röstat på'
-      subject: 'Det finns en ny kommentar för idén du har röstat på'
-      preheader: '%{commentAuthor} lämnade en kommentar för idén du har röstat på på plattformen för %{organizationName}'
-      today: I dag
-      yesterday: I går
+      event_description: '%{commentAuthor} har kommenterat idén ''%{ideaTitle}'' som du har reagerat på. Delta i diskussionen på plattformen %{organizationName}!'
+      main_header: '%{firstName}, det finns en ny kommentar till den idé du har reagerat på'
+      subject: 'Det finns en ny kommentar till den idé du har reagerat på'
+      preheader: '%{commentAuthor} lämnat en kommentar om den idé du har reagerat på på plattformen för %{organizationName}'
+      today: Idag
+      yesterday: Igår
     new_initiative_for_admin:
       by_author: 'av %{authorName}'
       commented: '%{authorFirstName} skrev:'
@@ -369,13 +398,13 @@ sv:
       main_header: 'Det finns en uppdatering för ett förslag som du kommenterat'
       subject: 'Ett förslag som du kommenterat har fått en officiell uppdatering på plattformen för %{organizationName}'
       preheader: '%{officialName} lämnade en officiell uppdatering för ett förslag som du kommenterat'
-    official_feedback_on_voted_idea:
+    official_feedback_on_reacted_idea:
       by_author: 'av %{authorName}'
       updated: '%{officialName} skrev:'
-      cta_view: 'Gå till den här idén'
-      event_description: '%{officialName} gav en uppdatering för idén %{ideaTitle}. Klicka på knappen nedan för att gå in i konversationen med %{officialName}.'
-      subject: 'En idé du röstat på har fått en uppdatering på plattformen för %{organizationName}'
-      preheader: '%{officialName} lämnade en uppdatering för en idé du röstat på'
+      cta_view: 'Gå till denna idé'
+      event_description: '%{officialName} gav en uppdatering om idén ''%{ideaTitle}''. Klicka på knappen nedan för att delta i samtalet med %{officialName}.'
+      subject: 'En idé som du reagerade på har fått en uppdatering på plattformen %{organizationName}'
+      preheader: '%{officialName} lämnade en uppdatering om en idé som du reagerade på'
       main_header: ""
     official_feedback_on_commented_idea:
       by_author: 'av %{authorName}'
@@ -393,14 +422,14 @@ sv:
       main_header: 'Du har fått en uppdatering från %{organizationName}'
       subject: 'Du har fått en uppdatering från %{organizationName}'
       preheader: '%{officialName} lämnade en officiell uppdatering för din idé'
-    official_feedback_on_voted_initiative:
+    official_feedback_on_reacted_initiative:
       by_author: 'av %{authorName}'
       updated: '%{officialName} skrev:'
-      cta_view: 'Gå till det här förslaget'
-      event_description: '%{officialName} gav en uppdatering för förslaget %{initiativeTitle}. Klicka på knappen nedan för att gå in i konversationen med %{organizationName}.'
-      main_header: 'Det finns en uppdatering för ett förslag du röstat på'
-      subject: 'Ett förslag du röstat på har fått en officiell uppdatering på plattformen för %{organizationName}'
-      preheader: '%{officialName} lämnade en officiell uppdatering för ett förslag du röstat på'
+      cta_view: 'Gå till detta förslag'
+      event_description: '%{officialName} gav en uppdatering om förslaget ''%{initiativeTitle}''. Klicka på knappen nedan för att fortsätta samtalet med %{organizationName}.'
+      main_header: 'Det finns en uppdatering om ett förslag som du röstade om'
+      subject: 'Ett förslag som du röstade på har fått en officiell uppdatering på plattformen %{organizationName}'
+      preheader: '%{officialName} lämnat en officiell uppdatering om ett förslag som du röstade om'
     official_feedback_on_your_initiative:
       updated: '%{officialName} skrev:'
       cta_view: 'Gå till ditt förslag'
@@ -468,20 +497,20 @@ sv:
       main_header: 'Din idé har fått en ny status'
       subject: 'Statusen för din idé har ändrats'
       preheader: '%{organizationName} ändrade statusen för din idé'
-    status_change_of_voted_idea:
-      status_change: 'Den nya statusen för den här idén är %{ideaStatus}'
-      cta_view_idea: 'Gå till den här idén'
-      event_description: '%{organizationName} uppdaterade statusen för idén %{ideaTitle} på sin digitala plattform för deltagande.'
-      main_header: 'En idé du röstat på har en ny status'
-      subject: 'Statusen för en idé du röstat på har ändrats'
-      preheader: '%{organizationName} ändrade statusen för en idé du röstat på'
-    status_change_of_voted_initiative:
-      status_change: 'Den nya statusen för det här förslaget är %{initiativeStatus}'
-      cta_view_initiative: 'Gå till det här förslaget'
-      event_description: 'Statusen för förslaget %{initiativeTitle} har uppdaterats på %{organizationName}s digitala plattform för deltagande.'
-      main_header: 'Ett förslag du röstat på har en ny status'
-      subject: 'Statusen för ett förslag du röstat på har ändrats'
-      preheader: 'Statusen för ett förslag du röstat på ändrades'
+    status_change_of_reacted_idea:
+      status_change: 'Den nya statusen för denna idé är ''%{ideaStatus}'''
+      cta_view_idea: 'Gå till denna idé'
+      event_description: '%{organizationName} uppdaterade statusen för idén ''%{ideaTitle}'' på sin digitala deltagarplattform.'
+      main_header: 'En idé som du reagerade på har fått en ny status'
+      subject: 'Statusen för en idé som du reagerade på har ändrats'
+      preheader: '%{organizationName} ändrat status för en idé som du reagerade på'
+    status_change_of_reacted_initiative:
+      status_change: 'Den nya statusen för detta förslag är ''%{initiativeStatus}'''
+      cta_view_initiative: 'Gå till detta förslag'
+      event_description: 'Status för förslaget ''%{initiativeTitle}'' har uppdaterats på den digitala deltagandeplattformen för %{organizationName}.'
+      main_header: 'Ett förslag som du röstade om har fått en ny status'
+      subject: 'Statusen för ett förslag som du röstade om har ändrats'
+      preheader: 'Status för ett förslag som du röstade om ändrades'
     status_change_of_commented_initiative:
       status_change: 'Den nya statusen för det här förslaget är %{initiativeStatus}'
       cta_view_initiative: 'Gå till det här förslaget'
@@ -577,6 +606,42 @@ sv:
       new_votes: 'Nya röster'
       remaining_votes: 'Röster kvar'
       remaining_days: 'Dagar kvar'
+    voting_basket_submitted:
+      subject: '%{organizationName}: Du röstade framgångsrikt'
+      preheader: 'Du röstade framgångsrikt på deltagandeplattformen för %{organizationName}'
+      title_basket_submitted: 'Du röstade framgångsrikt'
+      event_description: 'Tack för ert deltagande. Dina röster har registrerats. Besök plattformen %{organizationName} för att se och hantera dina röster.'
+      cta_see_votes_submitted: 'Se avgivna röster'
+      cta_message: 'Klicka på knappen nedan för att delta'
+    voting_basket_not_submitted:
+      subject: '%{organizationName}: Du har inte skickat in dina röster'
+      preheader: 'Du har inte lämnat dina röster på deltagandeplattformen %{organizationName}'
+      title_basket_not_submitted: 'Du har inte avgett din röst'
+      event_description: 'Du valde några alternativ för %{contextTitle} men du skickade inte in ditt val.'
+      cta_view_options_and_vote: 'Visa alternativ och rösta'
+      cta_message: 'Klicka på knappen nedan för att skicka in dina valda alternativ'
+    voting_last_chance:
+      subject: '%{organizationName}: Sista chansen att rösta på %{phaseTitle}'
+      preheader: 'Sista chansen att rösta på %{phaseTitle} på deltagarplattformen för %{organizationName}'
+      title_last_chance: 'Sista chansen att rösta på %{phaseTitle}'
+      body_1: 'Omröstningsfasen för %{projectTitle} -projektet avslutas i morgon vid midnatt.'
+      body_2: 'Tiden rinner ut, och vi har märkt att du inte har röstat än! Gör det nu genom att klicka på knappen nedan för att delta.'
+      body_3: 'På så sätt får du tillgång till en rad olika alternativ och möjlighet att ge din syn på saken, vilket är avgörande för projektets framtid.'
+      cta_vote: 'Omröstning'
+    voting_results:
+      subject: '%{organizationName}: %{phaseTitle} omröstningsresultat avslöjade!'
+      preheader: '%{phaseTitle} röstresultat avslöjade på deltagandeplattformen %{organizationName}'
+      title_results: '%{phaseTitle} omröstningsresultaten avslöjade!'
+      body_1: 'Resultaten har kommit!'
+      body_2: 'Resultatet av omröstningen på %{phaseTitle} i plattformen %{organizationName} har offentliggjorts!'
+      body_3: 'Vi uppmanar er att granska resultaten och hålla utkik efter ytterligare uppdateringar om nästa steg.'
+      cta_see_results: 'Se resultat i plattformen'
+    voting_phase_started:
+      subject: '%{organizationName}: Omröstningsfasen har inletts för %{projectName}'
+      preheader: 'Omröstningsfasen inleddes för %{projectName} på deltagandeplattformen för %{organizationName}'
+      event_description: 'Projektet "%{projectName}" ber dig att rösta mellan %{numIdeas} alternativ:'
+      cta_message: 'Klicka på knappen nedan för att delta'
+      cta_vote: 'Gå till plattformen för att rösta'
     admin_labels:
       recipient_role:
         admins: 'Till administratörer'
@@ -593,6 +658,7 @@ sv:
         managers: 'Chefer'
         admins_assigned_to_a_proposal: 'Administratörer som har tilldelats ett förslag'
         admins_and_managers_assigned_to_the_input: 'Administratörer och chefer som har tilldelats ingången'
+        user_who_is_invited_to_cosponsor_a_proposal: 'Användare som inbjuds att vara medsponsor för ett förslag'
         user_who_is_receiving_admin_rights: 'Användare som får administratörsrättigheter'
         user_who_is_receiving_folder_moderator_rights: 'Användare som får rättigheter som mappmoderator'
         user_who_is_receiving_project_moderator_rights: 'Användare som får rättigheter som projektmoderator'
@@ -605,6 +671,9 @@ sv:
         users_who_engaged_with_the_input: 'Användare som engagerade sig i inmatningen'
         users_who_engaged_with_the_project: 'Användare som engagerade sig i projektet'
         users_who_engaged_with_the_proposal: 'Användare som engagerade sig i förslaget'
+        user_who_voted: 'Användare som röstade'
+        user_with_unsubmitted_votes: 'Användare som inte har lämnat sina röster'
+        users_who_engaged_but_not_voted: 'Användare som engagerat sig i projektet men inte röstat'
       content_type:
         comments: 'Kommentarer'
         content_moderation: 'Moderering av innehåll'
@@ -614,7 +683,8 @@ sv:
         permissions: 'Behörigheter'
         projects: 'Projekt'
         proposals: 'Förslag'
-        votes: 'Röster'
+        reactions: 'Reaktioner'
+        voting: 'Omröstning'
       trigger:
         comment_is_deleted: 'Kommentaren tas bort.'
         comment_is_flagged_as_spam: 'Kommentaren flaggas som skräppost'
@@ -623,6 +693,7 @@ sv:
         input_is_flagged_as_spam: 'Inmatning markeras som skräppost'
         input_is_updated: 'Inmatningen uppdateras'
         input_status_changes: 'Ändringar av ingångsstatus'
+        initiative_resubmitted_for_review: 'Förslaget lämnas in på nytt för granskning'
         internal_comment_is_posted_on_idea_assigned_to_user: 'Intern kommentar publiceras på input som tilldelats användaren'
         internal_comment_is_posted_on_initiative_assigned_to_user: 'Intern kommentar läggs upp på förslag som tilldelats användaren'
         internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: 'Intern kommentar publiceras om input i projekt eller mapp som användaren hanterar'
@@ -631,6 +702,8 @@ sv:
         internal_comment_is_posted_on_initiative_user_has_commented_internally_on: 'Intern kommentar publiceras på förslag som användaren kommenterat internt på'
         internal_comment_is_posted_on_unassigned_initiative: 'Intern kommentar publiceras på odelat förslag'
         internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Intern kommentar publiceras på icke tilldelad input i icke hanterat projekt'
+        user_accepts_invitation_to_cosponsor_a_proposal: 'Användaren accepterar inbjudan att vara medsponsor för ett förslag'
+        user_is_invited_to_cosponsor_a_proposal: 'Användaren inbjuds att vara medsponsor för ett förslag'
         user_is_mentioned_in_internal_comment: 'Användaren nämns i intern kommentar'
         new_input_is_published: 'Ny input publiceras'
         new_proposal_is_posted: 'Ett nytt förslag har lagts fram.'
@@ -652,5 +725,9 @@ sv:
         user_registers_for_the_first_time: 'Användaren registrerar sig för första gången'
         user_replies_to_comment: 'Användaren svarar på kommentaren'
         user_replies_to_internal_comment: 'Användaren svarar på intern kommentar'
+        voting_2_days_before_phase_closes: '2 dagar innan omröstningen avslutas'
+        voting_1_day_after_last_votes: '1 dag efter att användaren senast röstade'
+        voting_phase_ended: 'Omröstningsfasen avslutad'
+        voting_basket_submitted: 'Rösterna är avgivna'
         7_days_after_invite_is_sent: '7 dagar efter att inbjudan skickats'
         7_days_before_the_project_changes_phase: '7 dagar innan projektet byter fas'

@@ -168,6 +168,7 @@ export interface TFieldNameMap {
   nav_bar_item_title_multiloc: 'nav_bar_item_title_multiloc';
   banner_cta_button_multiloc: 'banner_cta_button_multiloc';
   banner_cta_button_url: 'banner_cta_button_url';
+  tag_name: 'tag_name';
 }
 
 export type TFieldName = TFieldNameMap[keyof TFieldNameMap];

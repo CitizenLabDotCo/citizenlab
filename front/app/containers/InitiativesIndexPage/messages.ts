@@ -43,14 +43,6 @@ export default defineMessages({
     defaultMessage:
       'Want to submit a proposal to {orgName}? Curious whether other people would support it? Post your proposal here and if it gets {constraints} votes within 90 days, {orgName} will get back to you. {link}',
   },
-  startInitiative: {
-    id: 'app.containers.InitiativesIndexPage.startInitiative',
-    defaultMessage: 'Start an initiative',
-  },
-  successStoryTitle: {
-    id: 'app.containers.InitiativesIndexPage.successStoryTitle',
-    defaultMessage: 'Learn from success stories',
-  },
   success: {
     id: 'app.containers.InitiativesIndexPage.success',
     defaultMessage: 'success',
@@ -58,15 +50,6 @@ export default defineMessages({
   footer: {
     id: 'app.containers.InitiativesIndexPage.footer',
     defaultMessage: 'Start your own initiative and make your voice heard',
-  },
-  footerPostingDisabled: {
-    id: 'app.containers.InitiativesIndexPage.footerPostingDisabled',
-    defaultMessage: 'Support citizen proposals and make your voice heard!',
-  },
-  postingDisabledExplanation: {
-    id: 'app.containers.InitiativesIndexPage.postingDisabledExplanation',
-    defaultMessage:
-      'New proposals are currently on hold. Please browse and lend your feedback and support to existing proposals!',
   },
   newProposalsNotPermitted: {
     id: 'app.containers.InitiativesIndexPage.newProposalsNotPermitted',

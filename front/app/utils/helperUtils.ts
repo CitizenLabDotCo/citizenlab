@@ -71,7 +71,8 @@ type pageKeys =
   | 'sign_in'
   | 'sign_up'
   | 'email-settings'
-  | 'pages_menu';
+  | 'pages_menu'
+  | 'event_page';
 
 export function isPage(pageKey: pageKeys, pathName: string) {
   /**
@@ -108,6 +109,8 @@ export function isPage(pageKey: pageKeys, pathName: string) {
       return pathnameWithoutLocale.startsWith('/sign-up');
     case 'pages_menu':
       return pathnameWithoutLocale.includes('/admin/pages-menu');
+    case 'event_page':
+      return pathnameWithoutLocale.startsWith('/events/');
   }
 }
 
@@ -115,6 +118,8 @@ export function stopPropagation(event) {
   event.stopPropagation();
 }
 
+// Still useful when checking lengt of content that gets wrapped with HTML
+// ===
 export function stripHtmlTags(str: string | null | undefined) {
   if (str === null || str === undefined || str === '') {
     return '';

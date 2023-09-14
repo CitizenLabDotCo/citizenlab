@@ -7,7 +7,7 @@ sr-Latn:
     viewed: pregledano
     viewed_description: Ova ideja je pogledana
     under_consideration: razmatra se
-    under_consideration_description: Ova ideja se razmatra 
+    under_consideration_description: Ova ideja se razmatra
     accepted: prihvaćeno
     accepted_description: Ova ideja je prihvaćena i biće realizovana
     implemented: realizovano
@@ -15,6 +15,10 @@ sr-Latn:
     rejected: odbijeno
     rejected_description: Ova ideja je odbijena
   initiative_statuses:
+    review_pending: review pending
+    review_pending_description: review pending
+    changes_requested: changes requested
+    changes_requested_description: changes requested
     proposed: predloženo
     proposed_description: predloženo
     expired: isteklo
@@ -174,13 +178,15 @@ sr-Latn:
       ISCED4: Srednja škola stručnog usmerenja
       ISCED5: Viša škola
       ISCED6: Visoka stručna sprema
-      ISCED7: Master 
+      ISCED7: Master
       ISCED8: Doktor nauka
   initiatives:
     default_threshold_reached_message: >
       <p>Inicijatori su pozvani da predstave svoj predlog na sledećem sastanku nadležnih organa. Uskoro ćemo objaviti zvanično obaveštenje.</p>
     default_eligibility_criteria: >
       <ul> <li>Mora biti u skladu sa važećim oblastima i kompetencijala lokalne uprave</li> <li>Mora staviti interes javnosti ispred ličnog interesa</li> <li>Ne sme podsticati diskriminaciju po bilo kom osnovu, ili imati negativan uticaj na druge</li></ul>
+    default_posting_tips: >
+      Pokušajte da se posvetite obrazloženju vašeg predloga. Ukoliko je potrebno, prethodno pripremite tekst pa ga kopirajte ovde.</li><li>Odaberite naziv koji jasno opisuje na šta se vaša ideja odnosi.</li><li>Vizualizujte svoj predlog odgovarajućom slikom koja će mu pomoći da se istakne!</li><li>Dodajte priloge poput video zapisa, ilustrativnih primera, tehničkih detalja ili planova.</li><li>Podelite vašu ideju na društvenim mrežama kako biste prikupili podršku od drugih.</li></ul>
   reset_password_mailer:
     send_reset_password:
       cta_reset_password: 'Resetujte vašu lozinku'
@@ -201,7 +207,9 @@ sr-Latn:
       comments_count: 'Komentari'
       likes_count: 'Свиђа'
       dislikes_count: 'Не свиђа ми се'
-      baskets_count: 'Korpe'
+      picks: 'Picks'
+      participants: 'Participants'
+      votes_count: 'Votes'
       input_url: 'URL'
       project: 'Projekat'
       status: 'Status'
@@ -247,3 +255,6 @@ sr-Latn:
     formats:
       hour_of_day: "%H:%M"
     pm: после подне
+  voting_method:
+    default_voting_term_singular: "vote"
+    default_voting_term_plural: "votes"

@@ -6,7 +6,7 @@ module DocumentAnnotation::DocumentAnnotationParticipationContext
   included do
     with_options if: :document_annotation?, unless: :timeline_project? do
       validates :document_annotation_embed_url, presence: true, format: {
-        with: %r{\Ahttps://.*\.konveio\.com/.*\z},
+        with: %r{\Ahttps://(?:.*\.konveio\.com|.*\.konveio\.site)/.*\z},
         message: 'Not a valid Konveio embed URL' # rubocop:disable Rails/I18nLocaleTexts
       }
       before_validation :strip_document_annotation_embed_url

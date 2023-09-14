@@ -3,20 +3,18 @@
 require 'finder/error'
 require 'finder/helpers'
 require 'finder/inflectors'
-require 'finder/sortable'
 
 module Finder
   class Base
     include Finder::Helpers
     include Finder::Inflectors
-    include Finder::Sortable
 
-    def initialize(params, scope: nil, includes: [], current_user: nil, paginate: true)
+    def initialize(params, scope: nil, includes: [], current_user: nil)
       @params            = params.respond_to?(:permit!) ? params.permit! : params
       @current_user      = current_user
       @base_scope        = scope || _base_scope
       @records           = @base_scope.includes(includes)
-      @paginate          = paginate
+      @includes          = includes
     end
 
     def find_records
@@ -26,8 +24,7 @@ module Finder
 
     protected
 
-    attr_reader :params, :records, :current_user, :paginate
-    alias paginate? paginate
+    attr_reader :params, :records, :current_user
 
     delegate :table_name, to: :_klass
 
@@ -36,8 +33,6 @@ module Finder
     def find
       _abort_if_records_class_invalid
       _filter_records
-      _sort_records
-      _paginate_records
     rescue ActiveRecord::StatementInvalid, PG::InFailedSqlTransaction, PG::UndefinedTable => e
       raise Finder::Error, e
     end
@@ -56,14 +51,6 @@ module Finder
 
         @records = new_records if new_records
       end
-    end
-
-    def _paginate_records
-      return unless paginate?
-
-      pagination_params = params[:page] || {}
-
-      @records = records.page(pagination_params[:number]).per(pagination_params[:size])
     end
 
     def _base_scope

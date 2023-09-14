@@ -111,6 +111,7 @@ export interface IMapConfigProps {
   noMarkerClustering?: boolean;
   zoomControlPosition?: 'topleft' | 'topright' | 'bottomleft' | 'bottomright';
   layersControlPosition?: 'topleft' | 'topright' | 'bottomleft' | 'bottomright';
+  singleClickEnabled?: boolean;
 }
 
 export interface IMapProps {
@@ -138,6 +139,7 @@ const Map = memo<IMapProps & IMapConfigProps>(
     onBoxClose,
     className,
     hideLegend,
+    singleClickEnabled,
   }) => {
     const { data: appConfig, isLoading } = useAppConfiguration();
     const customMapsEnabled = useFeatureFlag({ name: 'custom_maps' });
@@ -180,6 +182,7 @@ const Map = memo<IMapProps & IMapConfigProps>(
         tileOptions,
         zoomControlPosition,
         layersControlPosition,
+        singleClickEnabled,
         ...additionalLeafletConfig,
       };
     }, [
@@ -192,6 +195,7 @@ const Map = memo<IMapProps & IMapConfigProps>(
       tileOptions,
       zoomControlPosition,
       layersControlPosition,
+      singleClickEnabled,
       additionalLeafletConfig,
     ]);
 

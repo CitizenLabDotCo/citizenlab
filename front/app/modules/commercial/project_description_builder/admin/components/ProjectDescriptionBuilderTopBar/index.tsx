@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import useProjectById from 'api/projects/useProjectById';
 import useLocalize from 'hooks/useLocalize';
 import { useEditor, SerializedNodes } from '@craftjs/core';
+import useAddProjectDescriptionBuilderLayout from 'modules/commercial/project_description_builder/api/useAddProjectDescriptionBuilderLayout';
 
 // components
 import Container from 'components/admin/ContentBuilder/TopBar/Container';
@@ -21,9 +22,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 // routing
 import clHistory from 'utils/cl-router/history';
 import { useParams } from 'react-router-dom';
-
-// services
-import { addProjectDescriptionBuilderLayout } from '../../../services/projectDescriptionBuilder';
 
 // types
 import { Locale } from 'typings';
@@ -55,6 +53,8 @@ const ProjectDescriptionBuilderTopBar = ({
   const { query } = useEditor();
   const localize = useLocalize();
   const { data: project } = useProjectById(projectId);
+  const { mutateAsync: addProjectDescriptionBuilderLayout } =
+    useAddProjectDescriptionBuilderLayout();
 
   const disableSave = localesWithError.length > 0;
 
@@ -66,7 +66,8 @@ const ProjectDescriptionBuilderTopBar = ({
     if (selectedLocale) {
       try {
         setLoading(true);
-        await addProjectDescriptionBuilderLayout(projectId, {
+        await addProjectDescriptionBuilderLayout({
+          projectId,
           craftjs_jsonmultiloc: {
             ...draftEditorData,
             [selectedLocale]: query.getSerializedNodes(),

@@ -115,4 +115,6 @@ resource 'Phases' do
       end
     end
   end
+
+  include_examples '/api/v2/.../deleted', :phases
 end

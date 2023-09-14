@@ -11,8 +11,6 @@ module MultiTenancy
           reacting_dislike_method
           ideas_order
           input_term
-          max_budget
-          min_budget
           participation_method
           poll_anonymous
           posting_enabled
@@ -22,7 +20,16 @@ module MultiTenancy
           reacting_like_limited_max
           reacting_like_method
           reacting_enabled
+          baskets_count
+          votes_count
         ]
+
+        attribute(:voting_method, if: :voting?)
+        attribute(:voting_max_total, if: :voting?)
+        attribute(:voting_min_total, if: :voting?)
+        attribute(:voting_max_votes_per_idea, if: :voting?)
+        attribute(:voting_term_singular_multiloc, if: :voting?)
+        attribute(:voting_term_plural_multiloc, if: :voting?)
 
         attribute(:survey_embed_url, if: :survey?)
         attribute(:survey_service, if: :survey?)

@@ -34,6 +34,10 @@ export default defineMessages({
     defaultMessage:
       '{timeLeft, plural, =0 {Less than a day} one {# day} other {# days}} left',
   },
+  seeEvents: {
+    id: 'app.components.ParticipationCTABars.seeEvents3',
+    defaultMessage: 'See events',
+  },
   allocateBudget: {
     id: 'app.components.ParticipationCTABars.allocateBudget',
     defaultMessage: 'Allocate your budget',
@@ -49,5 +53,13 @@ export default defineMessages({
   seeIdeas: {
     id: 'app.components.ParticipationCTABars.seeIdeas',
     defaultMessage: 'See ideas',
+  },
+  submit: {
+    id: 'app.components.ParticipationCTABars.submit',
+    defaultMessage: 'Submit',
+  },
+  submitted: {
+    id: 'app.components.ParticipationCTABars.submitted',
+    defaultMessage: 'Submitted',
   },
 });

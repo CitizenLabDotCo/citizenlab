@@ -1,0 +1,2 @@
+<%= render 'email_campaigns/posts/post_with_image', post_image_url: event&.post_image_medium_url, post_title_multiloc: event.post_title_multiloc, post_body_multiloc: event.post_body_multiloc %>
+<%= render partial: 'application/cta_button', locals: { href: event.post_url, message: format_message('cta_reply_to', values: { authorName: event.post_author_name }) } %>

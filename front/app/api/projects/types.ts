@@ -6,18 +6,15 @@ import {
   ActionDescriptor,
   ActionDescriptorFutureEnabled,
 } from 'utils/actionDescriptors';
-import { ILinks, IRelationship, Multiloc, UploadFile, CLError } from 'typings';
+import { ILinks, IRelationship, Multiloc } from 'typings';
 import {
   TSurveyService,
   ParticipationMethod,
   IdeaDefaultSortMethod,
   InputTerm,
+  ParticipationContext,
 } from 'services/participationContexts';
 import { Keys } from 'utils/cl-react-query/types';
-import { ISubmitState } from 'components/admin/SubmitWrapper';
-import { Locale } from '@citizenlab/cl2-component-library';
-import { IAreaData } from 'api/areas/types';
-import { IAppConfiguration } from 'api/app_configuration/types';
 
 // Keys
 export type ProjectsKeys = Keys<typeof projectsKeys>;
@@ -28,74 +25,6 @@ export type PublicationStatus = 'draft' | 'published' | 'archived';
 
 interface ProjectHeaderBgImageSizes {
   large: string | null;
-}
-
-export interface IUpdatedProjectProperties {
-  // header_bg is only a string or null when it's
-  // in IUpdatedProjectProperties. The ProjectHeaderBgImageSizes needed
-  // to be added because we go from string here to ProjectHeaderBgImageSizes
-  // in IProjectAttributes (also in this file) when we save an image
-  // selected for upload. ProjectHeaderBgImageSizes needs to be here, because
-  // Otherwise TS will complain about this mismatch in
-  // front/app/containers/Admin/projects/general/index.tsx
-  // This oddity needs to be dealt with
-  header_bg?: string | ProjectHeaderBgImageSizes | null;
-  title_multiloc?: Multiloc;
-  description_multiloc?: Multiloc;
-  description_preview_multiloc?: Multiloc;
-  area_ids?: string[];
-  visible_to?: Visibility;
-  process_type?: ProcessType;
-  participation_method?: ParticipationMethod | null;
-  posting_enabled?: boolean | null;
-  commenting_enabled?: boolean | null;
-  reacting_enabled?: boolean | null;
-  reacting_like_method?: 'limited' | 'unlimited' | null;
-  reacting_dislike_method?: 'limited' | 'unlimited' | null;
-  reacting_like_limited_max?: number | null;
-  reacting_dislike_enabled?: boolean | null;
-  reacting_dislike_limited_max?: number | null;
-  presentation_mode?: PresentationMode | null;
-  admin_publication_attributes?: {
-    publication_status?: PublicationStatus;
-  };
-  publication_status?: PublicationStatus;
-  min_budget?: number | null;
-  max_budget?: number | null;
-  survey_service?: TSurveyService | null;
-  survey_embed_url?: string | null;
-  default_assignee_id?: string | null;
-  poll_anonymous?: boolean;
-  ideas_order?: IdeaDefaultSortMethod;
-  input_term?: InputTerm;
-  slug?: string;
-  topic_ids?: string[];
-  include_all_areas?: boolean;
-  folder_id?: string | null;
-}
-
-export interface IProjectFormState {
-  processing: boolean;
-  project: IProject | null | undefined;
-  publicationStatus: 'draft' | 'published' | 'archived';
-  projectType: 'continuous' | 'timeline';
-  projectAttributesDiff: IUpdatedProjectProperties;
-  projectHeaderImage: UploadFile[] | null;
-  presentationMode: 'map' | 'card';
-  projectCardImage: UploadFile | null;
-  projectCardImageToRemove: UploadFile | null;
-  projectFiles: UploadFile[];
-  projectFilesToRemove: UploadFile[];
-  titleError: Multiloc | null;
-  apiErrors: { [fieldName: string]: CLError[] };
-  saved: boolean;
-  areas: IAreaData[];
-  locale: Locale;
-  currentTenant: IAppConfiguration | null;
-  submitState: ISubmitState;
-  slug: string | null;
-  showSlugErrorMessage: boolean;
-  folder_id?: string | null;
 }
 
 // useProjects
@@ -129,51 +58,19 @@ export interface IProject {
   data: IProjectData;
 }
 
-export interface IProjectAttributes {
-  title_multiloc: Multiloc;
-  description_multiloc: Multiloc;
+export interface IProjectAttributes extends ParticipationContext {
   description_preview_multiloc: Multiloc;
   slug: string;
   header_bg: ProjectHeaderBgImageSizes;
-  ideas_count: number;
   comments_count: number;
   avatars_count: number;
-  created_at: string;
-  updated_at: string;
+  followers_count: number;
   visible_to: Visibility;
   process_type: ProcessType;
   timeline_active?: 'past' | 'present' | 'future' | null;
   participants_count: number;
-  participation_method: ParticipationMethod;
-  posting_enabled: boolean;
-  commenting_enabled: boolean;
-  // reacting_enabled should be used to update the project setting
-  // and as a read value if we don't know if the user is doing an up/down reaction
-  // (although the action_descriptor might be better for that too, to be checked).
-  //
-  // reacting_enabled doesn't take reacting_dislike_enabled into account
-  // or reacting_like_limited_max/reacting_dislike_limited_max.
-  // For more specific values, see the reacting_idea action_descriptor
-  reacting_enabled: boolean;
-  reacting_like_method: 'limited' | 'unlimited';
-  reacting_like_limited_max: number;
-  reacting_dislike_enabled: boolean;
-  allow_anonymous_participation: boolean;
-  reacting_dislike_method: 'limited' | 'unlimited';
-  reacting_dislike_limited_max: number;
-  presentation_mode: PresentationMode;
   internal_role: 'open_idea_box' | null;
   publication_status: PublicationStatus;
-  min_budget?: number | null;
-  max_budget?: number | null;
-  survey_service?: TSurveyService | null;
-  survey_embed_url?: string | null;
-  document_annotation_embed_url?: string | null;
-  // MISMATCH: ordering doesn't seem to exist on real response
-  // ordering: number;
-  poll_anonymous?: boolean;
-  ideas_order?: IdeaDefaultSortMethod;
-  input_term: InputTerm;
   include_all_areas: boolean;
   folder_id?: string | null;
   action_descriptor: {
@@ -217,6 +114,9 @@ export interface IProjectData {
       data: IRelationship | null;
     };
     admin_publication: {
+      data: IRelationship | null;
+    };
+    user_follower: {
       data: IRelationship | null;
     };
   };
@@ -300,8 +200,8 @@ export interface IUpdatedProjectProperties {
     publication_status?: PublicationStatus;
   };
   publication_status?: PublicationStatus;
-  min_budget?: number | null;
-  max_budget?: number | null;
+  voting_min_total?: number | null;
+  voting_max_total?: number | null;
   survey_service?: TSurveyService | null;
   survey_embed_url?: string | null;
   document_annotation_embed_url?: string | null;

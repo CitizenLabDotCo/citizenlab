@@ -8,12 +8,15 @@ sr-Cyrl:
       "comment_on_your_comment": Одговор на мој коментар
       "comment_on_your_idea": Коментар на моју идеју
       "comment_on_your_initiative": Коментар на мој предлог
+      "cosponsor_of_your_initiative": Корисник прихвата мој позив да буде ко-спонзор мог предлога
       "first_idea_published": Објављивање моје прве идеје
       "idea_marked_as_spam": Извештај о нежељеној пошти идеја
       "idea_published": Објављивање моје идеје
       "initiative_assigned_to_you": Додељивање предлога мени
       "initiative_marked_as_spam": Извештај о нежељеној пошти предлога
       "initiative_published": Објављивање мог предлога
+      "invitation_to_cosponsor_initiative": Позив за ко-спонзорисање предлога
+      "initiative_resubmitted_for_review": Предлог је поново достављен на разматрање
       "invite_received": Позив
       "invite_reminder": Подсетник за позив
       "internal_comment_on_idea_assigned_to_you": Интерни коментар на унос који ми је додељен
@@ -29,14 +32,14 @@ sr-Cyrl:
       "new_comment_for_admin": Нови коментар у пројекту којим управљам
       "new_comment_on_commented_idea": Нови коментар на идеју коју сам прокоментарисао
       "new_comment_on_commented_initiative": Нови коментар на предлог који сам коментарисао
-      "new_comment_on_voted_idea": Нови коментар на идеју за коју сам гласао
-      "new_comment_on_voted_initiative": Нови коментар на предлог за који сам гласао
+      "new_comment_on_reacted_idea": Нови коментар на идеју на коју сам реаговао
+      "new_comment_on_reacted_initiative": Нови коментар на предлог за који сам гласао
       "new_idea_for_admin": Нова идеја у пројекту којим управљам
       "new_initiative_for_admin": Нови предлог
       "official_feedback_on_commented_idea": Ажурирање идеје коју сам коментарисао
       "official_feedback_on_commented_initiative": Ажурирање предлога који сам коментарисао
-      "official_feedback_on_voted_idea": Ажурирање идеје за коју сам гласао
-      "official_feedback_on_voted_initiative": Ажурирање предлога за који сам гласао
+      "official_feedback_on_reacted_idea": Ажурирање идеје на коју сам реаговао
+      "official_feedback_on_reacted_initiative": Ажурирање предлога за који сам гласао
       "official_feedback_on_your_idea": Ажурирај моју идеју
       "official_feedback_on_your_initiative": Ажурирање мог предлога
       "password_reset": Ресетовање лозинке
@@ -46,8 +49,8 @@ sr-Cyrl:
       "project_phase_upcoming": Предстојећа нова фаза пројекта
       "status_change_of_commented_idea": Статусна промена идеје коју сам коментарисао
       "status_change_of_commented_initiative": Промена статуса предлога који сам коментарисао
-      "status_change_of_voted_idea": Статусна промена идеје за коју сам гласао
-      "status_change_of_voted_initiative": Промена статуса предлога за који сам гласао
+      "status_change_of_reacted_idea": Статусна промена идеје на коју сам реаговао
+      "status_change_of_reacted_initiative": Статусна промена предлога на који сам реаговао
       "status_change_of_your_idea": Статусна промена моје идеје
       "status_change_of_your_initiative": Статусна промена мог предлога
       "threshold_reached_for_admin": Предлог је достигао цензус за гласање
@@ -56,6 +59,10 @@ sr-Cyrl:
       "moderator_digest": Недељни преглед за менаџере пројеката
       "assignee_digest": Недељни преглед додељених идеја
       "user_digest": Недељни преглед
+      "voting_basket_submitted": Потврда гласања
+      "voting_basket_not_submitted": Гласови нису предати
+      "voting_last_chance": Последња прилика за гласање
+      "voting_results": Резултати гласања
       "your_proposed_initiatives_digest": Недељни преглед ваших предлога
     schedules:
       weekly:
@@ -134,6 +141,12 @@ sr-Cyrl:
       main_header: '%{commentAuthor} је коментарисало вашу иницијативу'
       subject: 'Примили сте коментар на платформи %{organizationName}'
       preheader: '%{authorName} је оставио коментар на вашу иницијативу за %{organizationName}'
+    cosponsor_of_your_initiative:
+      cta_reply_to: 'Погледајте свој предлог'
+      event_description_initiative: 'Честитам! %{cosponsorName} је прихватио ваш позив да буде ко-спонзор вашег предлога.'
+      main_header: '%{cosponsorName} је прихватио ваш позив да буде ко-спонзор вашег предлога'
+      subject: '%{cosponsorName} је прихватио ваш позив да буде ко-спонзор вашег предлога'
+      preheader_initiative: '%{cosponsorName} је прихватио ваш позив да буде ко-спонзор вашег предлога'
     assignee_digest:
       subject: 'Идеје које захтевају ваше повратне информације: %{numberIdeas}'
       preheader: 'Сажетак примаоца од %{organizationName}'
@@ -174,6 +187,22 @@ sr-Cyrl:
       main_header: '%{firstName}, имате нови задатак'
       subject: 'Имате задатак на платформи %{organizationName}'
       preheader_initiative: 'Предлог %{authorName} је додељен вама'
+    invitation_to_cosponsor_initiative:
+      cta_reply_to: 'Ко-спонзоришите овај предлог'
+      event_description_initiative: '%{authorName} је направио нови предлог и желео би да га суспонзоришете.'
+      event_description_cosponsoring: 'Ко-спонзорисање предлога значи да ће <strong>ваше име бити приказано</strong> са именима других ко-спонзора предлога.'
+      event_description_before_action: 'Да бисте видели предлог и прихватили позив, морате бити пријављени на свој налог.'
+      event_description_action: 'Кликните испод да прочитате предлог.'
+      main_header: 'Позвани сте да будете ко-спонзор предлога'
+      subject: 'Позвани сте да будете ко-спонзор предлога'
+      preheader_initiative: 'Позвани сте да будете ко-спонзор предлога %{authorName}'
+    initiative_resubmitted_for_review:
+      by_author: 'од %{authorName}'
+      cta_reply_to: 'Дајте повратну информацију %{authorName}'
+      event_description_initiative: 'Предлог је поново достављен на разматрање. Дајте повратне информације писањем званичног ажурирања или променом његовог статуса.'
+      main_header: '%{firstName}, имате предлог за разматрање'
+      subject: 'Имате предлог за преглед на платформи %{organizationName}'
+      preheader_initiative: 'Предлог %{authorName} је поново достављен на разматрање'
     invite_reminder:
       cta_accept_invitation: 'Прихватите позив'
       invitation_header: 'Ваш позив је на чекању'
@@ -270,21 +299,21 @@ sr-Cyrl:
       main_header: '%{authorName} је коментарисало вашу идеју'
       subject: 'Примили сте коментар на платформи %{organizationName}'
       preheader: '%{authorName} је оставио коментар на вашу идеју за %{organizationName}'
-    new_comment_on_voted_initiative:
+    new_comment_on_reacted_initiative:
       commented: '%{commentAuthor} је написао:'
       cta_reply_to: 'Погледајте овај предлог'
       event_description: '%{commentAuthor} је коментарисао предлог ''%{initiativeTitle}'' за који сте гласали. Придружите се дискусији на платформи %{organizationName}!'
       main_header: '%{firstName}, постоји нови коментар на предлог за који сте гласали'
       subject: 'Постоји нови коментар на предлог за који сте гласали'
       preheader: '%{commentAuthor} је оставио коментар на предлог за који сте гласали на платформи %{organizationName}'
-    new_comment_on_voted_idea:
+    new_comment_on_reacted_idea:
       commented: '%{commentAuthor} је коментарисало:'
       cta_reply_to: 'Одговори на %{commentAuthor}'
       days_ago: 'пре %{numberOfDays} дана'
-      event_description: '%{commentAuthor} је коментарисао идеју ''%{ideaTitle}'' за коју сте гласали. Придружите се дискусији на платформи %{organizationName}!'
-      main_header: '%{firstName}, постоји нови коментар на идеју за коју сте гласали'
-      subject: 'Постоји нови коментар на идеју за коју сте гласали'
-      preheader: '%{commentAuthor} је оставио коментар на идеју за коју сте гласали на платформи %{organizationName}'
+      event_description: '%{commentAuthor} је коментарисао идеју ''%{ideaTitle}'' на коју сте реаговали. Придружите се дискусији на платформи %{organizationName}!'
+      main_header: '%{firstName}, постоји нови коментар на идеју на коју сте реаговали'
+      subject: 'Постоји нови коментар на идеју на коју сте реаговали'
+      preheader: '%{commentAuthor} је оставио коментар на идеју на коју сте реаговали на платформи %{organizationName}'
       today: Данас
       yesterday: Јучер
     new_initiative_for_admin:
@@ -369,13 +398,13 @@ sr-Cyrl:
       main_header: 'Постоји ажурирање о предлогу који сте коментарисали'
       subject: 'Предлог који сте коментарисали добио је званично ажурирање на платформи %{organizationName}'
       preheader: '%{officialName} је оставио званично ажурирање о предлогу који сте коментарисали'
-    official_feedback_on_voted_idea:
+    official_feedback_on_reacted_idea:
       by_author: 'од %{authorName}'
       updated: '%{officialName} је написао:'
       cta_view: 'Иди на ову идеју'
       event_description: '%{officialName} је дао ажурирање идеје ''%{ideaTitle}''. Кликните на дугме испод да бисте ушли у разговор са %{officialName}.'
-      subject: 'Идеја за коју сте гласали је ажурирана на платформи %{organizationName}'
-      preheader: '%{officialName} је оставио ажурирање о идеји за коју сте гласали'
+      subject: 'Идеја на коју сте реаговали је добила ажурирање на платформи %{organizationName}'
+      preheader: '%{officialName} је оставио ажурирање на идеју на коју сте реаговали'
       main_header: ""
     official_feedback_on_commented_idea:
       by_author: 'од %{authorName}'
@@ -393,7 +422,7 @@ sr-Cyrl:
       main_header: 'Примили сте ажурирање од %{organizationName}'
       subject: 'Примили сте ажурирање од %{organizationName}'
       preheader: '%{officialName} је оставио званично ажурирање ваше идеје'
-    official_feedback_on_voted_initiative:
+    official_feedback_on_reacted_initiative:
       by_author: 'од %{authorName}'
       updated: '%{officialName} је написао:'
       cta_view: 'Иди на овај предлог'
@@ -468,14 +497,14 @@ sr-Cyrl:
       main_header: 'Ваша идеја има нови статус'
       subject: 'Статус ваше идеје је промењен'
       preheader: '%{organizationName} променио статус ваше идеје'
-    status_change_of_voted_idea:
+    status_change_of_reacted_idea:
       status_change: 'Нови статус ове идеје је ''%{ideaStatus}'''
       cta_view_idea: 'Иди на ову идеју'
       event_description: '%{organizationName} је ажурирао статус идеје ''%{ideaTitle}'' на својој платформи за дигитално учешће.'
-      main_header: 'Идеја за коју сте гласали има нови статус'
-      subject: 'Статус идеје за коју сте гласали је промењен'
-      preheader: '%{organizationName} је променио статус идеје за коју сте гласали'
-    status_change_of_voted_initiative:
+      main_header: 'Идеја на коју сте реаговали има нови статус'
+      subject: 'Статус идеје на коју сте реаговали је промењен'
+      preheader: '%{organizationName} је променио статус идеје на коју сте реаговали'
+    status_change_of_reacted_initiative:
       status_change: 'Нови статус овог предлога је ''%{initiativeStatus}'''
       cta_view_initiative: 'Иди на овај предлог'
       event_description: 'Статус предлога ''%{initiativeTitle}'' је ажуриран на дигиталној платформи за учешће %{organizationName}.'
@@ -577,6 +606,42 @@ sr-Cyrl:
       new_votes: 'Нови гласови'
       remaining_votes: 'Преостало гласова'
       remaining_days: 'Преостали дана'
+    voting_basket_submitted:
+      subject: '%{organizationName}: Успешно сте гласали'
+      preheader: 'Успешно сте гласали на платформи за учешће %{organizationName}'
+      title_basket_submitted: 'Успешно сте гласали'
+      event_description: 'Хвала на учешћу. Ваши гласови су забележени. Посетите платформу %{organizationName} да бисте видели и управљали својим гласовима.'
+      cta_see_votes_submitted: 'Погледајте достављене гласове'
+      cta_message: 'Кликните на дугме испод да бисте учествовали'
+    voting_basket_not_submitted:
+      subject: '%{organizationName}: Нисте послали своје гласове'
+      preheader: 'Нисте послали своје гласове на платформи за учешће %{organizationName}'
+      title_basket_not_submitted: 'Нисте предали своје гласове'
+      event_description: 'Изабрали сте неколико опција за %{contextTitle} , али нисте послали свој избор.'
+      cta_view_options_and_vote: 'Погледајте опције и гласајте'
+      cta_message: 'Кликните на дугме испод да бисте послали изабране опције'
+    voting_last_chance:
+      subject: '%{organizationName}: Последња прилика да гласате за %{phaseTitle}'
+      preheader: 'Последња прилика да гласате за %{phaseTitle} на платформи за учешће од %{organizationName}'
+      title_last_chance: 'Последња прилика да гласате за %{phaseTitle}'
+      body_1: 'Фаза гласања за пројекат %{projectTitle} завршава се сутра, у поноћ.'
+      body_2: 'Време истиче, а приметили смо да још нисте дали свој глас! Делујте сада једноставним кликом на дугме испод да бисте учествовали.'
+      body_3: 'На тај начин ћете добити приступ низу опција и имати прилику да дате свој допринос, што је кључно за одлучивање о будућности овог пројекта.'
+      cta_vote: 'Гласајте'
+    voting_results:
+      subject: 'Откривени резултати гласања %{organizationName}: %{phaseTitle}!'
+      preheader: '%{phaseTitle} резултата гласања откривено је на платформи за учешће од %{organizationName}'
+      title_results: 'Откривено %{phaseTitle} резултата гласања!'
+      body_1: 'Резултати су у!'
+      body_2: 'Објављени су резултати %{phaseTitle} гласања на платформи %{organizationName}!'
+      body_3: 'Препоручујемо вам да прегледате резултате и останите са нама за даља ажурирања о наредним корацима.'
+      cta_see_results: 'Погледајте резултате на платформи'
+    voting_phase_started:
+      subject: '%{organizationName}: Фаза гласања је почела за %{projectName}'
+      preheader: 'Фаза гласања је почела за %{projectName} на платформи за учешће од %{organizationName}'
+      event_description: 'Пројекат "%{projectName}" тражи од вас да гласате између %{numIdeas} опције:'
+      cta_message: 'Кликните на дугме испод да бисте учествовали'
+      cta_vote: 'Идите на платформу да гласате'
     admin_labels:
       recipient_role:
         admins: 'За администраторе'
@@ -593,6 +658,7 @@ sr-Cyrl:
         managers: 'Менаџери'
         admins_assigned_to_a_proposal: 'Администратори додељени предлогу'
         admins_and_managers_assigned_to_the_input: 'Администратори и менаџери додељени улазу'
+        user_who_is_invited_to_cosponsor_a_proposal: 'Корисник који је позван да буде ко-спонзор предлога'
         user_who_is_receiving_admin_rights: 'Корисник који добија администраторска права'
         user_who_is_receiving_folder_moderator_rights: 'Корисник који добија права модератора фолдера'
         user_who_is_receiving_project_moderator_rights: 'Корисник који добија права модератора пројекта'
@@ -605,6 +671,9 @@ sr-Cyrl:
         users_who_engaged_with_the_input: 'Корисници који су се бавили уносом'
         users_who_engaged_with_the_project: 'Корисници који су били ангажовани на пројекту'
         users_who_engaged_with_the_proposal: 'Корисници који су се бавили предлогом'
+        user_who_voted: 'Корисник који је гласао'
+        user_with_unsubmitted_votes: 'Корисник који није послао своје гласове'
+        users_who_engaged_but_not_voted: 'Корисници који су учествовали у пројекту, али нису гласали'
       content_type:
         comments: 'Коментари'
         content_moderation: 'Модерирање садржаја'
@@ -614,7 +683,8 @@ sr-Cyrl:
         permissions: 'Дозволе'
         projects: 'Пројекти'
         proposals: 'Предлози'
-        votes: 'Гласови'
+        reactions: 'Реакције'
+        voting: 'Гласање'
       trigger:
         comment_is_deleted: 'Коментар је обрисан'
         comment_is_flagged_as_spam: 'Коментар је означен као непожељан'
@@ -623,6 +693,7 @@ sr-Cyrl:
         input_is_flagged_as_spam: 'Унос је означен као нежељена пошта'
         input_is_updated: 'Унос је ажуриран'
         input_status_changes: 'Статус уноса се мења'
+        initiative_resubmitted_for_review: 'Предлог је поново достављен на разматрање'
         internal_comment_is_posted_on_idea_assigned_to_user: 'Интерни коментар се поставља на унос који је додељен кориснику'
         internal_comment_is_posted_on_initiative_assigned_to_user: 'Интерни коментар се поставља на предлог који је додељен кориснику'
         internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: 'Интерни коментар се поставља на унос у пројекту или фолдеру којим корисник управља'
@@ -631,6 +702,8 @@ sr-Cyrl:
         internal_comment_is_posted_on_initiative_user_has_commented_internally_on: 'Интерни коментар се поставља на предлог који је корисник интерно коментарисао'
         internal_comment_is_posted_on_unassigned_initiative: 'Интерни коментар се поставља на недодељени предлог'
         internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Интерни коментар се поставља на недодељени унос у неуправљаном пројекту'
+        user_accepts_invitation_to_cosponsor_a_proposal: 'Корисник прихвата позив за ко-спонзорисање предлога'
+        user_is_invited_to_cosponsor_a_proposal: 'Корисник је позван да буде ко-спонзор предлога'
         user_is_mentioned_in_internal_comment: 'Корисник је поменут у интерном коментару'
         new_input_is_published: 'Нови унос је објављен'
         new_proposal_is_posted: 'Нови предлог је објављен'
@@ -652,5 +725,9 @@ sr-Cyrl:
         user_registers_for_the_first_time: 'Корисник се региструје по први пут'
         user_replies_to_comment: 'Корисник одговара на коментар'
         user_replies_to_internal_comment: 'Корисник одговара на интерни коментар'
+        voting_2_days_before_phase_closes: '2 дана пре затварања фазе гласања'
+        voting_1_day_after_last_votes: '1 дан након што је корисник последњи пут гласао'
+        voting_phase_ended: 'Фаза гласања је завршена'
+        voting_basket_submitted: 'Гласови се предају'
         7_days_after_invite_is_sent: '7 дана након слања позива'
         7_days_before_the_project_changes_phase: '7 дана пре промене фазе пројекта'

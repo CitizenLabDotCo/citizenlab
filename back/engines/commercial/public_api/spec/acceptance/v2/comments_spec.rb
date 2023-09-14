@@ -135,4 +135,6 @@ resource 'Comments' do
       end
     end
   end
+
+  include_examples '/api/v2/.../deleted', :comments
 end

@@ -62,6 +62,8 @@ resource 'Users' do
       let(:id) { @user.id }
       example 'Get a non-authenticated user does not expose the email', document: false do
         do_request
+
+        assert_status 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :attributes, :email)).to be_nil
       end
@@ -680,13 +682,19 @@ resource 'Users' do
         let(:user) { create(:user) }
         let(:id) { user.id }
 
-        example_request 'Get a user by id includes user block data' do
-          expect(status).to eq 200
+        example 'Get a user by ID' do
+          create_list(:follower, 2, user: user)
+          create(:follower)
+
+          do_request
+
+          assert_status 200
           json_response = json_parse response_body
           expect(json_response.dig(:data, :attributes)).to have_key(:blocked)
           expect(json_response.dig(:data, :attributes)).to have_key(:block_start_at)
           expect(json_response.dig(:data, :attributes)).to have_key(:block_end_at)
           expect(json_response.dig(:data, :attributes)).to have_key(:block_reason)
+          expect(json_response.dig(:data, :attributes, :followings_count)).to eq 2
         end
       end
 

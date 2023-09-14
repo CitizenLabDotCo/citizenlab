@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
 class EventsFinder < ApplicationFinder
-  default_sort :start_at
-  sortable_attributes 'start_at'
-
   private
 
   def static_page_id_condition(static_page_id)
@@ -24,5 +21,20 @@ class EventsFinder < ApplicationFinder
 
   def ends_on_or_after_date_condition(date)
     where('end_at >= ?', date)
+  end
+
+  def attendee_id_condition(attendee_id)
+    records.joins(:attendances).where(attendances: { attendee_id: attendee_id })
+  end
+
+  # Returns only the events that overlap with the given datetime range.
+  def ongoing_during_condition(datetime_range)
+    start_dt, end_dt = datetime_range
+    start_dt ||= '-infinity'
+    end_dt ||= 'infinity'
+
+    records.where(<<~SQL.squish, start_datetime: start_dt, end_datetime: end_dt)
+      (start_at, end_at) OVERLAPS (:start_datetime, :end_datetime)
+    SQL
   end
 end

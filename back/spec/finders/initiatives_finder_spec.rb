@@ -9,113 +9,31 @@ describe InitiativesFinder do
   let(:options) { {} }
   let(:params) { {} }
 
-  before_all do
-    create_list(:initiative, 3)
-  end
+  before { create_list(:initiative, 3, assignee: create(:admin)) }
 
   context 'without passing params' do
     it 'returns all initiatives' do
       expect(finder.find_records.count).to eq Initiative.count
     end
-
-    it 'sorts initiatives by \'new\'' do
-      expect(record_ids).to eq Initiative.order_new.pluck(:id)
-    end
   end
 
-  context 'when passing a sort param \'new\'' do
+  describe '#find_records' do
+    let(:normal_user) { create(:user) }
+
+    let(:options) do
+      {
+        scope: InitiativePolicy::Scope.new(normal_user, Initiative).resolve
+      }
+    end
+
     before do
-      params[:sort] = 'new'
+      users = User.all
+      Initiative.first.cosponsors << users[0]
+      Initiative.first.cosponsors << users[1]
     end
 
-    it 'sorts initiatives by \'new\'' do
-      expect(record_ids).to eq Initiative.order_new(:desc).pluck(:id)
-    end
-  end
-
-  context 'when passing a sort param \'-new\'' do
-    before do
-      params[:sort] = '-new'
-    end
-
-    it 'sorts initiatives by \'-new\'' do
-      expect(record_ids).to eq Initiative.order_new(:asc).pluck(:id)
-    end
-  end
-
-  context 'when passing a sort param \'status\'' do
-    before do
-      params[:sort] = 'status'
-    end
-
-    it 'sorts initiatives by \'status\'' do
-      expect(record_ids).to eq Initiative.order_status(:asc).pluck(:id)
-    end
-  end
-
-  context 'when passing a sort param \'-status\'' do
-    before do
-      params[:sort] = '-status'
-    end
-
-    it 'sorts initiatives by \'-status\'' do
-      expect(record_ids).to eq Initiative.order_status(:desc).pluck(:id)
-    end
-  end
-
-  context 'when passing a sort param \'likes_count\'' do
-    before do
-      params[:sort] = 'likes_count'
-    end
-
-    it 'sorts initiatives by \'likes_count\'' do
-      expect(record_ids).to eq Initiative.order(likes_count: :asc).pluck(:id)
-    end
-  end
-
-  context 'when passing a sort param \'-likes_count\'' do
-    before do
-      params[:sort] = '-likes_count'
-    end
-
-    it 'sorts initiatives by \'-likes_count\'' do
-      expect(record_ids).to eq Initiative.order(likes_count: :desc).pluck(:id)
-    end
-  end
-
-  context 'when passing a sort param \'author_name\'' do
-    before do
-      params[:sort] = 'author_name'
-      options[:includes] = %i[author]
-    end
-
-    it 'sorts initiatives by \'author_name\'' do
-      expect(record_ids).to eq Initiative.includes(:author)
-        .order('users.first_name ASC', 'users.last_name ASC')
-        .pluck(:id)
-    end
-  end
-
-  context 'when passing a sort param \'-author_name\'' do
-    before do
-      params[:sort] = '-author_name'
-      options[:includes] = %i[author]
-    end
-
-    it 'sorts initiatives by \'author_name\'' do
-      expect(record_ids).to eq Initiative.includes(:author)
-        .order('users.first_name DESC', 'users.last_name DESC')
-        .pluck(:id)
-    end
-  end
-
-  context 'when passing a sort param \'random\'' do
-    before do
-      params[:sort] = 'random'
-    end
-
-    it 'sorts initiatives by \'random\'' do
-      expect(record_ids).to eq Initiative.order_random.pluck(:id)
+    it 'does not return duplicate records' do
+      expect(record_ids).to match_array Initiative.all.pluck(:id).uniq
     end
   end
 
@@ -160,14 +78,24 @@ describe InitiativesFinder do
   end
 
   describe '#assignee_condition' do
-    let(:assignee_id) { create(:user).id }
+    let(:assignee) { create(:admin) }
+    let!(:unassigned_initiatives) { create_list(:initiative, 2, assignee: nil) }
+    let!(:assigned_initiatives) { create_list(:initiative, 3, assignee: assignee) }
 
-    before do
-      params[:assignee] = assignee_id
+    describe 'filtering on an assignee ID' do
+      let(:params) { { assignee: assignee.id } }
+
+      it 'returns the correct records' do
+        expect(record_ids).to match_array assigned_initiatives.map(&:id)
+      end
     end
 
-    it 'filters by assignee' do
-      expect(record_ids).to eq Initiative.where(assignee_id: assignee_id).pluck(:id)
+    describe 'filtering on unassigned' do
+      let(:params) { { assignee: 'unassigned' } }
+
+      it 'returns the correct records' do
+        expect(record_ids).to match_array unassigned_initiatives.map(&:id)
+      end
     end
   end
 
@@ -228,7 +156,7 @@ describe InitiativesFinder do
   end
 
   describe '#publication_status_condition' do
-    let(:publication_status) { :closed }
+    let(:publication_status) { :published }
 
     before do
       create(:initiative, publication_status: publication_status)

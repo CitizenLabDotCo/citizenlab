@@ -21,27 +21,27 @@ describe('Idea creation', () => {
         projectId = project.body.data.id;
         projectSlug = project.body.data.attributes.slug;
 
-        cy.apiCreatePhase(
+        cy.apiCreatePhase({
           projectId,
-          'secondPhaseTitle',
-          moment().subtract(2, 'month').format('DD/MM/YYYY'),
-          moment().add(1, 'month').format('DD/MM/YYYY'),
-          'ideation',
-          true,
-          true,
-          true
-        );
+          title: 'secondPhaseTitle',
+          startAt: moment().subtract(2, 'month').format('DD/MM/YYYY'),
+          endAt: moment().add(1, 'month').format('DD/MM/YYYY'),
+          participationMethod: 'ideation',
+          canPost: true,
+          canReact: true,
+          canComment: true,
+        });
 
-        return cy.apiCreatePhase(
+        return cy.apiCreatePhase({
           projectId,
-          'firstPhaseTitle',
-          moment().subtract(9, 'month').format('DD/MM/YYYY'),
-          moment().subtract(3, 'month').format('DD/MM/YYYY'),
-          'ideation',
-          true,
-          true,
-          true
-        );
+          title: 'firstPhaseTitle',
+          startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
+          endAt: moment().subtract(3, 'month').format('DD/MM/YYYY'),
+          participationMethod: 'ideation',
+          canPost: true,
+          canComment: true,
+          canReact: true,
+        });
       })
       .then((phase) => {
         phaseId = phase.body.data.id;

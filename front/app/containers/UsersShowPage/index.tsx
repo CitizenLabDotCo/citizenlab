@@ -11,13 +11,18 @@ import { IdeaCardsWithoutFiltersSidebar } from 'components/IdeaCards';
 import ContentContainer from 'components/ContentContainer';
 import UsersShowPageMeta from './UsersShowPageMeta';
 import Button from 'components/UI/Button';
+import Following from './Following';
+import { Title, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { Sort } from 'components/IdeaCards/shared/Filters/SortFilterDropdown';
 
 // i18n
-import { useIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // hooks
 import useUserBySlug from 'api/users/useUserBySlug';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import useUserIdeasCount from 'api/user_ideas_count/useUserIdeasCount';
 
 // style
 import styled from 'styled-components';
@@ -34,7 +39,7 @@ import { ideaDefaultSortMethodFallback } from 'services/participationContexts';
 
 // typings
 import { IUserData } from 'api/users/types';
-import { Sort } from 'components/IdeaCards/shared/Filters/SortFilterDropdown';
+import UserEvents from './UserEvents';
 
 const NotFoundContainer = styled.main`
   min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px - 4rem);
@@ -82,7 +87,7 @@ const UserIdeas = styled.div`
   justify-content: center;
 `;
 
-export type UserTab = 'ideas' | 'comments';
+export type UserTab = 'ideas' | 'comments' | 'following' | 'events';
 
 interface InnerProps {
   className?: string;
@@ -102,8 +107,12 @@ interface QueryParameters {
 
 export const UsersShowPage = memo<InnerProps>(({ className, user }) => {
   const [currentTab, setCurrentTab] = useState<UserTab>('ideas');
+  const { data: ideasCount } = useUserIdeasCount({ userId: user.id });
   const [savedScrollIndex, setSavedScrollIndex] = useState<number>(0);
-
+  const isFollowingEnabled = useFeatureFlag({
+    name: 'follow',
+  });
+  const isMobileOrSmaller = useBreakpoint('phone');
   const [searchParams] = useSearchParams();
   const sortParam = searchParams.get('sort') as Sort | null;
   const searchParam = searchParams.get('search');
@@ -140,18 +149,36 @@ export const UsersShowPage = memo<InnerProps>(({ className, user }) => {
 
         <StyledContentContainer maxWidth={maxPageWidth}>
           {currentTab === 'ideas' && (
-            <UserIdeas>
-              <IdeaCardsWithoutFiltersSidebar
-                defaultSortingMethod={ideaQueryParameters.sort}
-                ideaQueryParameters={ideaQueryParameters}
-                onUpdateQuery={updateSearchParams}
-                invisibleTitleMessage={messages.invisibleTitlePostsList}
-                goBackMode="goToProject"
-              />
-            </UserIdeas>
+            <>
+              {isMobileOrSmaller && (
+                <Title mt="0px" variant="h3" as="h1">
+                  <FormattedMessage
+                    {...messages.postsWithCount}
+                    values={{
+                      ideasCount: ideasCount?.data.attributes.count || '0',
+                    }}
+                  />
+                </Title>
+              )}
+              <UserIdeas>
+                <IdeaCardsWithoutFiltersSidebar
+                  defaultSortingMethod={ideaQueryParameters.sort}
+                  ideaQueryParameters={ideaQueryParameters}
+                  onUpdateQuery={updateSearchParams}
+                  invisibleTitleMessage={messages.invisibleTitlePostsList}
+                  showSearchbar={true}
+                  showDropdownFilters={true}
+                  goBackMode="goToProject"
+                />
+              </UserIdeas>
+            </>
           )}
 
           {currentTab === 'comments' && <UserComments userId={user.id} />}
+          {currentTab === 'following' && isFollowingEnabled && (
+            <Following userId={user.id} />
+          )}
+          {currentTab === 'events' && <UserEvents userId={user.id} />}
         </StyledContentContainer>
       </Container>
     </>

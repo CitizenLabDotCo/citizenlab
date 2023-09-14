@@ -141,7 +141,7 @@ class CustomFields extends Component<Props & WrappedComponentProps, State> {
     }
   };
 
-  handleOnEnabledToggle = (field: IUserCustomFieldData) => () => {
+  handleOnEnabledToggle = (field: IUserCustomFieldData) => {
     if (!this.state.isProcessing) {
       this.setState({ isProcessing: true });
       this.props
@@ -250,7 +250,7 @@ class CustomFields extends Component<Props & WrappedComponentProps, State> {
                   }`}
                   checked={field.attributes.enabled}
                   disabled={isHiddenField(field)}
-                  onChange={this.handleOnEnabledToggle(field)}
+                  onChange={() => this.handleOnEnabledToggle(field)}
                 />
                 <StyledTextCell className="expand">
                   <TextCellContent>
@@ -334,7 +334,7 @@ class CustomFields extends Component<Props & WrappedComponentProps, State> {
 
 const CustomFieldsListWithHoCs = injectIntl(CustomFields);
 
-export default (inputProps: InputProps) => {
+export default () => {
   const { data: userCustomFields } = useUserCustomFields();
   const { mutateAsync: deleteUserCustomField } = useDeleteUserCustomField();
   const { mutateAsync: reorderCustomFieldForUsers } =
@@ -344,7 +344,6 @@ export default (inputProps: InputProps) => {
   return (
     <DndProvider backend={HTML5Backend}>
       <CustomFieldsListWithHoCs
-        {...inputProps}
         userCustomFields={userCustomFields?.data}
         deleteUserCustomField={deleteUserCustomField}
         reorderCustomFieldForUsers={reorderCustomFieldForUsers}

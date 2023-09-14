@@ -20,7 +20,7 @@ module Verification
         omniauth_params = request.env['omniauth.params'].except('token')
 
         begin
-          @user = AuthToken::AuthToken.new(token: request.env['omniauth.params']['token']).entity_for(::User)
+          @user = verification_method.fetch_user(request)
           if @user&.invite_not_pending?
             begin
               handle_verification(auth, @user)

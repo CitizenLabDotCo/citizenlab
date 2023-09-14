@@ -1,6 +1,5 @@
-import React, { memo, useState } from 'react';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import { Outlet as RouterOutlet } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Outlet as RouterOutlet, useLocation } from 'react-router-dom';
 
 // components
 import HelmetIntl from 'components/HelmetIntl';
@@ -11,72 +10,64 @@ import NavigationTabs, {
 
 // i18n
 import messages from './messages';
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 
 // styles
 import { InsertConfigurationOptions, ITab } from 'typings';
 import Outlet from 'components/Outlet';
 import { insertConfiguration } from 'utils/moduleUtils';
-import styled from 'styled-components';
 
 // utils
 import { isTopBarNavActive } from 'utils/helperUtils';
 
-const StyledTabsPageLayout = styled(TabsPageLayout)`
-  padding-left: 44px;
-`;
+const InitiativesPage = () => {
+  const { formatMessage } = useIntl();
+  const { pathname } = useLocation();
 
-const InitiativesPage = memo<WrappedComponentProps & WithRouterProps>(
-  ({ intl: { formatMessage }, location }) => {
-    const [tabs, setTabs] = useState<ITab[]>([
-      {
-        label: formatMessage(messages.proposals),
-        name: 'proposals',
-        url: '/admin/initiatives',
-      },
-      {
-        label: formatMessage(messages.settingsTab),
-        name: 'settings',
-        url: '/admin/initiatives/settings',
-      },
-    ]);
+  const [tabs, setTabs] = useState<ITab[]>([
+    {
+      label: formatMessage(messages.overviewTab),
+      name: 'proposals',
+      url: '/admin/initiatives',
+    },
+    {
+      label: formatMessage(messages.settingsTab),
+      name: 'settings',
+      url: '/admin/initiatives/settings',
+    },
+  ]);
 
-    const handleData = (data: InsertConfigurationOptions<ITab>) =>
-      setTabs(insertConfiguration<ITab>(data));
+  const handleData = (data: InsertConfigurationOptions<ITab>) =>
+    setTabs(insertConfiguration<ITab>(data));
 
-    const { pathname } = location;
-
-    return (
-      <>
-        <Outlet
-          id="app.containers.Admin.initiatives.tabs"
-          onData={handleData}
-          formatMessage={formatMessage}
-        />
-        <NavigationTabs>
-          {tabs.map(({ url, label }) => (
-            <Tab
-              label={label}
-              url={url}
-              key={url}
-              active={isTopBarNavActive('/admin/initiatives', pathname, url)}
-            />
-          ))}
-        </NavigationTabs>
-
-        <StyledTabsPageLayout>
-          <HelmetIntl
-            title={messages.metaTitle}
-            description={messages.metaDescription}
+  return (
+    <>
+      <Outlet
+        id="app.containers.Admin.initiatives.tabs"
+        onData={handleData}
+        formatMessage={formatMessage}
+      />
+      <NavigationTabs>
+        {tabs.map(({ url, label }) => (
+          <Tab
+            label={label}
+            url={url}
+            key={url}
+            active={isTopBarNavActive('/admin/initiatives', pathname, url)}
           />
-          <div id="e2e-initiatives-admin-container">
-            <RouterOutlet />
-          </div>
-        </StyledTabsPageLayout>
-      </>
-    );
-  }
-);
+        ))}
+      </NavigationTabs>
 
-export default withRouter(injectIntl(InitiativesPage));
+      <TabsPageLayout>
+        <HelmetIntl
+          title={messages.metaTitle}
+          description={messages.metaDescription}
+        />
+        <div id="e2e-initiatives-admin-container">
+          <RouterOutlet />
+        </div>
+      </TabsPageLayout>
+    </>
+  );
+};
+export default InitiativesPage;

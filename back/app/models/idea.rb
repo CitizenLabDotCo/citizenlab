@@ -31,6 +31,8 @@
 #  author_hash              :string
 #  anonymous                :boolean          default(FALSE), not null
 #  internal_comments_count  :integer          default(0), not null
+#  votes_count              :integer          default(0), not null
+#  followers_count          :integer          default(0), not null
 #
 # Indexes
 #
@@ -84,6 +86,7 @@ class Idea < ApplicationRecord
   has_many :baskets_ideas, dependent: :destroy
   has_many :baskets, through: :baskets_ideas
   has_many :text_images, as: :imageable, dependent: :destroy
+  has_many :followers, as: :followable, dependent: :destroy
 
   has_many :idea_images, -> { order(:ordering) }, dependent: :destroy, inverse_of: :idea
   has_many :idea_files, -> { order(:ordering) }, dependent: :destroy, inverse_of: :idea
@@ -119,6 +122,10 @@ class Idea < ApplicationRecord
   after_create :assign_slug
   after_update :fix_comments_count_on_projects
 
+  pg_search_scope :search_by_all,
+    against: %i[title_multiloc body_multiloc custom_field_values],
+    using: { tsearch: { prefix: true } }
+
   scope :with_some_topics, (proc do |topics|
     ideas = joins(:ideas_topics).where(ideas_topics: { topic: topics })
     where(id: ideas)
@@ -147,18 +154,6 @@ class Idea < ApplicationRecord
       .where('ideas.id NOT IN (SELECT DISTINCT(post_id) FROM official_feedbacks)')
   }
 
-  scope :order_with, lambda { |scope_name|
-    case scope_name
-    when 'random'   then order_random
-    when 'popular'  then order_popular
-    when 'new'      then order_new
-    when '-new'     then order_new(:asc)
-    else order_trending
-    end
-  }
-
-  scope :order_trending, -> { TrendingIdeaService.new.sort_trending(where('TRUE')) }
-
   def just_published?
     publication_status_previous_change == %w[draft published] || publication_status_previous_change == [nil, 'published']
   end
@@ -168,17 +163,14 @@ class Idea < ApplicationRecord
   end
 
   def custom_form
-    if participation_method_on_creation.form_in_phase?
-      creation_phase.custom_form || CustomForm.new(participation_context: creation_phase)
-    else
-      project.custom_form || CustomForm.new(participation_context: project)
-    end
+    participation_context = creation_phase || project
+    participation_context.custom_form || CustomForm.new(participation_context: participation_context)
   end
 
   def input_term
     return project.input_term if project.continuous?
 
-    return creation_phase.input_term if participation_method_on_creation.form_in_phase?
+    return creation_phase.input_term if participation_method_on_creation.creation_phase?
 
     participation_context = ParticipationContextService.new.get_participation_context(project)
     return participation_context.input_term if participation_context&.can_contain_ideas?
@@ -211,7 +203,7 @@ class Idea < ApplicationRecord
   end
 
   def schema_for_validation
-    fields = custom_form.custom_fields
+    fields = participation_method_on_creation.custom_form.custom_fields
     multiloc_schema = JsonSchemaGeneratorService.new.generate_for fields
     multiloc_schema.values.first
   end
@@ -271,19 +263,21 @@ class Idea < ApplicationRecord
       return
     end
 
-    return if participation_method_on_creation.form_in_phase?
-
-    errors.add(
-      :creation_phase,
-      :invalid_participation_method,
-      message: 'The creation phase cannot be set for transitive participation methods'
-    )
+    if !participation_method_on_creation.creation_phase?
+      errors.add(
+        :creation_phase,
+        :invalid_participation_method,
+        message: 'The creation phase cannot be set for transitive participation methods'
+      )
+    end
   end
 end
 
+Idea.include(SmartGroups::Concerns::ValueReferenceable)
 Idea.include(FlagInappropriateContent::Concerns::Flaggable)
 Idea.include(Insights::Concerns::Input)
 Idea.include(Moderation::Concerns::Moderatable)
 Idea.include(MachineTranslations::Concerns::Translatable)
 Idea.include(IdeaAssignment::Extensions::Idea)
 Idea.include(IdeaCustomFields::Extensions::Idea)
+Idea.include(Analysis::Patches::Idea)

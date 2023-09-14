@@ -31,6 +31,12 @@ FactoryBot.define do
     association :post, factory: :idea
   end
 
+  factory :cosponsor_of_your_initiative, parent: :notification, class: 'Notifications::CosponsorOfYourInitiative' do
+    association :post, factory: :initiative
+    cosponsors_initiative
+    initiating_user
+  end
+
   factory :internal_comment_on_idea_assigned_to_you,
     parent: :notification,
     class: 'Notifications::InternalComments::InternalCommentOnIdeaAssignedToYou' do
@@ -116,6 +122,17 @@ FactoryBot.define do
   factory :invite_accepted, parent: :notification, class: 'Notifications::InviteAccepted' do
     initiating_user
     invite
+  end
+
+  factory :invitation_to_cosponsor_initiative, parent: :notification, class: 'Notifications::InvitationToCosponsorInitiative' do
+    association :post, factory: :initiative
+    cosponsors_initiative
+    initiating_user
+  end
+
+  factory :initiative_resubmitted_for_review, parent: :notification, class: 'Notifications::InitiativeResubmittedForReview' do
+    association :post, factory: :initiative
+    association :post_status, factory: :initiative_status, code: 'review_pending'
   end
 
   factory :comment_on_your_idea, parent: :notification, class: 'Notifications::CommentOnYourIdea' do
@@ -265,5 +282,26 @@ FactoryBot.define do
     before(:create) do |notification|
       notification.post.initiative_status_changes.create!(initiative_status: notification.post_status)
     end
+  end
+
+  factory :voting_basket_submitted, parent: :notification, class: 'Notifications::VotingBasketSubmitted' do
+    project
+    basket
+  end
+
+  factory :voting_basket_not_submitted, parent: :notification, class: 'Notifications::VotingBasketNotSubmitted' do
+    project
+    phase
+    basket
+  end
+
+  factory :voting_last_chance, parent: :notification, class: 'Notifications::VotingLastChance' do
+    project
+    phase
+  end
+
+  factory :voting_results_published, parent: :notification, class: 'Notifications::VotingResultsPublished' do
+    project
+    phase
   end
 end

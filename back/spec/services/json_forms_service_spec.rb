@@ -394,10 +394,7 @@ describe JsonFormsService do
       end
 
       context 'when admin' do
-        before do
-          SettingsService.new.activate_feature! 'idea_author_change'
-          SettingsService.new.activate_feature! 'participatory_budgeting'
-        end
+        before { SettingsService.new.activate_feature! 'idea_author_change' }
 
         let(:user) { create(:admin) }
 

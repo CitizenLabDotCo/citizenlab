@@ -12,7 +12,7 @@ const fetchEvent = async ({ eventId }: { eventId?: string }) =>
 
 const useEvent = (eventId?: string) => {
   return useQuery<IEvent, CLErrors, IEvent, EventsKeys>({
-    queryKey: eventsKeys.item({ eventId }),
+    queryKey: eventsKeys.item({ id: eventId }),
     queryFn: () => fetchEvent({ eventId }),
     enabled: !!eventId,
   });

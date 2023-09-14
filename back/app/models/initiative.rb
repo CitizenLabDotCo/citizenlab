@@ -25,6 +25,8 @@
 #  author_hash              :string
 #  anonymous                :boolean          default(FALSE), not null
 #  internal_comments_count  :integer          default(0), not null
+#  editing_locked           :boolean          default(FALSE), not null
+#  followers_count          :integer          default(0), not null
 #
 # Indexes
 #
@@ -51,11 +53,14 @@ class Initiative < ApplicationRecord
   has_many :topics, -> { order(:ordering) }, through: :initiatives_topics
   has_many :areas_initiatives, dependent: :destroy
   has_many :areas, through: :areas_initiatives
+  has_many :cosponsors_initiatives, dependent: :destroy
+  has_many :cosponsors, through: :cosponsors_initiatives, source: :user, dependent: :destroy # dependent: :destroy destroys the associated cosponsors_inititiatve records, not the users
   has_many :initiative_status_changes, dependent: :destroy
   has_one :initiative_initiative_status
   has_one :initiative_status, through: :initiative_initiative_status
   has_many :text_images, as: :imageable, dependent: :destroy
   accepts_nested_attributes_for :text_images
+  has_many :followers, as: :followable, dependent: :destroy
 
   belongs_to :assignee, class_name: 'User', optional: true
 
@@ -83,6 +88,10 @@ class Initiative < ApplicationRecord
     before_validation :sanitize_body_multiloc, if: :body_multiloc
   end
 
+  pg_search_scope :search_by_all,
+    against: %i[title_multiloc body_multiloc],
+    using: { tsearch: { prefix: true } }
+
   scope :with_some_topics, (proc do |topic_ids|
     with_dups = joins(:initiatives_topics)
       .where(initiatives_topics: { topic_id: topic_ids })
@@ -95,11 +104,7 @@ class Initiative < ApplicationRecord
     where(id: with_dups)
   end)
 
-  scope :with_status_code, (proc do |code|
-    joins('LEFT OUTER JOIN initiative_initiative_statuses ON initiatives.id = initiative_initiative_statuses.initiative_id')
-      .joins('LEFT OUTER JOIN initiative_statuses ON initiative_statuses.id = initiative_initiative_statuses.initiative_status_id')
-      .where(initiative_statuses: { code: code })
-  end)
+  scope :with_status_code, proc { |code| joins(:initiative_status).where(initiative_status: { code: code }) }
 
   scope :order_status, lambda { |direction = :asc|
     joins('LEFT OUTER JOIN initiative_initiative_statuses ON initiatives.id = initiative_initiative_statuses.initiative_id')
@@ -107,22 +112,31 @@ class Initiative < ApplicationRecord
       .order("initiative_statuses.ordering #{direction}, initiatives.published_at #{direction}, initiatives.id")
   }
 
-  scope :feedback_needed, lambda {
-    joins('LEFT OUTER JOIN initiative_initiative_statuses ON initiatives.id = initiative_initiative_statuses.initiative_id')
-      .joins('LEFT OUTER JOIN initiative_statuses ON initiative_statuses.id = initiative_initiative_statuses.initiative_status_id')
-      .where(initiative_statuses: { code: 'threshold_reached' })
-  }
+  scope :feedback_needed, -> { with_status_code('threshold_reached') }
+  scope :no_feedback_needed, -> { with_status_code(InitiativeStatus::CODES - ['threshold_reached']) }
+  scope :proposed, -> { with_status_code('proposed') }
 
-  scope :no_feedback_needed, lambda {
-    includes(initiative_initiative_status: :initiative_status)
-      .where.not(initiative_statuses: { code: 'threshold_reached' })
-  }
+  scope :proposed_before, (proc do |time|
+    with_proposed_status_changes.where('initiative_status_changes.created_at < ?', time)
+  end)
+  scope :proposed_after, (proc do |time|
+    with_proposed_status_changes.where('initiative_status_changes.created_at > ?', time)
+  end)
+  scope :with_proposed_status_changes, (proc do
+    joins(:initiative_status_changes)
+      .where(initiative_status_changes: { initiative_status: InitiativeStatus.find_by(code: 'proposed') })
+  end)
 
-  scope :proposed, lambda {
-    joins('LEFT OUTER JOIN initiative_initiative_statuses ON initiatives.id = initiative_initiative_statuses.initiative_id')
-      .joins('LEFT OUTER JOIN initiative_statuses ON initiative_statuses.id = initiative_initiative_statuses.initiative_status_id')
-      .where(initiative_statuses: { code: 'proposed' })
-  }
+  def self.review_required?
+    app_config = AppConfiguration.instance
+    require_review = app_config.settings('initiatives', 'require_review')
+
+    app_config.feature_activated?('initiative_review') && require_review
+  end
+
+  def cosponsor_ids=(ids)
+    super(ids.uniq.excluding(author_id))
+  end
 
   def reactions_needed(configuration = AppConfiguration.instance)
     [configuration.settings('initiatives', 'reacting_threshold') - likes_count, 0].max
@@ -131,21 +145,33 @@ class Initiative < ApplicationRecord
   def expires_at(configuration = AppConfiguration.instance)
     return nil unless published?
 
-    published_at + configuration.settings('initiatives', 'days_limit').days
+    (proposed_at || published_at) + configuration.settings('initiatives', 'days_limit').days
   end
 
   def threshold_reached_at
-    initiative_status_changes
-      .where(initiative_status: InitiativeStatus.where(code: 'threshold_reached'))
-      .order(:created_at).pluck(:created_at).last
+    initiative_status_changed_at('threshold_reached')
+  end
+
+  def review_status?
+    InitiativeStatus::REVIEW_CODES.include? initiative_status&.code
   end
 
   private
 
+  def proposed_at
+    initiative_status_changed_at('proposed')
+  end
+
+  def initiative_status_changed_at(initiative_status_code)
+    initiative_status_changes
+      .where(initiative_status: InitiativeStatus.where(code: initiative_status_code))
+      .order(:created_at).pluck(:created_at).last
+  end
+
   def generate_slug
     return if slug
 
-    title = MultilocService.new.t title_multiloc, author
+    title = MultilocService.new.t title_multiloc, author&.locale
     self.slug ||= SlugService.new.generate_slug self, title
   end
 
@@ -170,7 +196,7 @@ class Initiative < ApplicationRecord
   end
 
   def initialize_initiative_status_changes
-    initial_status = InitiativeStatus.find_by(code: 'proposed')
+    initial_status = InitiativeStatus.find_by(code: InitiativeStatus.initial_status_code)
     return unless initial_status && initiative_status_changes.empty? && !draft?
 
     initiative_status_changes.build(initiative_status: initial_status)
@@ -181,6 +207,7 @@ class Initiative < ApplicationRecord
   end
 end
 
+Initiative.include(SmartGroups::Concerns::ValueReferenceable)
 Initiative.include(FlagInappropriateContent::Concerns::Flaggable)
 Initiative.include(Moderation::Concerns::Moderatable)
 Initiative.include(MachineTranslations::Concerns::Translatable)

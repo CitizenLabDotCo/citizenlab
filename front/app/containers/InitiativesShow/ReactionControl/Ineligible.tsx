@@ -1,11 +1,11 @@
-import React, { PureComponent } from 'react';
-import styled, { withTheme } from 'styled-components';
+import React from 'react';
+import styled, { useTheme } from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
 
 import { IInitiativeStatusData } from 'api/initiative_statuses/types';
 import { IAppConfigurationSettings } from 'api/app_configuration/types';
 
-import { Icon, IconTooltip } from '@citizenlab/cl2-component-library';
+import { Box, Icon, IconTooltip } from '@citizenlab/cl2-component-library';
 import { StatusWrapper, StatusExplanation } from './SharedStyles';
 
 import ProposalProgressBar from './ProposalProgressBar';
@@ -15,8 +15,6 @@ import T from 'components/T';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { IInitiativeData } from 'api/initiatives/types';
-
-const Container = styled.div``;
 
 const StatusIcon = styled(Icon)`
   path {
@@ -50,92 +48,86 @@ const StyledButton = styled(Button)`
   margin-top: 20px;
 `;
 
-interface InputProps {
+interface Props {
   initiative: IInitiativeData;
   initiativeStatus: IInitiativeStatusData;
   initiativeSettings: NonNullable<IAppConfigurationSettings['initiatives']>;
   userReacted: boolean;
   onScrollToOfficialFeedback: () => void;
 }
-interface DataProps {}
 
-interface Props extends InputProps, DataProps {
-  theme?: any;
-}
-
-interface State {}
-
-class Ineligible extends PureComponent<Props, State> {
-  handleOnReadAnswer = () => {
-    this.props.onScrollToOfficialFeedback();
+const Ineligible = (props: Props) => {
+  const theme = useTheme();
+  const handleOnReadAnswer = () => {
+    props.onScrollToOfficialFeedback();
   };
 
-  render() {
-    const {
-      initiative,
-      initiativeSettings: { eligibility_criteria, reacting_threshold },
-      initiativeStatus,
-    } = this.props;
-    const reactionCount = initiative.attributes.likes_count;
-    const reactionLimit = reacting_threshold;
+  const {
+    initiative,
+    initiativeSettings: { eligibility_criteria, reacting_threshold },
+    initiativeStatus,
+  } = props;
+  const reactionCount = initiative.attributes.likes_count;
+  const reactionLimit = reacting_threshold;
 
-    return (
-      <Container>
+  return (
+    <Box>
+      <Box mb="16px">
         <StatusWrapper>
           <T value={initiativeStatus.attributes.title_multiloc} />
         </StatusWrapper>
-        <StatusIcon ariaHidden name="halt" />
-        <StatusExplanation>
-          <FormattedMessage
-            {...messages.ineligibleStatusExplanation}
-            values={{
-              ineligibleStatusExplanationBold: (
-                <b>
-                  <FormattedMessage
-                    {...messages.ineligibleStatusExplanationBold}
-                  />
-                </b>
-              ),
-            }}
-          >
-            {(text) => (
-              <>
-                {text}
-                {eligibility_criteria && (
-                  <IconTooltip
-                    icon="info-outline"
-                    iconColor={this.props.theme.colors.tenantText}
-                    theme="light"
-                    placement="bottom"
-                    content={<T value={eligibility_criteria} supportHtml />}
-                  />
-                )}
-              </>
-            )}
-          </FormattedMessage>
-        </StatusExplanation>
-        <ReactionCounter>
-          <ReactionTexts>
-            <ReactionText>
-              <FormattedMessage
-                {...messages.xVotes}
-                values={{ count: reactionCount }}
-              />
-            </ReactionText>
-            <ReactionText>{reactionLimit}</ReactionText>
-          </ReactionTexts>
-          <ProposalProgressBar
-            reactionCount={reactionCount}
-            reactionLimit={reactionLimit}
-            barColor="linear-gradient(270deg, #84939E 0%, #C8D0D6 100%)"
-          />
-        </ReactionCounter>
-        <StyledButton onClick={this.handleOnReadAnswer}>
-          <FormattedMessage {...messages.readAnswer} />
-        </StyledButton>
-      </Container>
-    );
-  }
-}
+      </Box>
+      <StatusIcon ariaHidden name="halt" />
+      <StatusExplanation>
+        <FormattedMessage
+          {...messages.ineligibleStatusExplanation}
+          values={{
+            ineligibleStatusExplanationBold: (
+              <b>
+                <FormattedMessage
+                  {...messages.ineligibleStatusExplanationBold}
+                />
+              </b>
+            ),
+          }}
+        >
+          {(text) => (
+            <>
+              {text}
+              {eligibility_criteria && (
+                <IconTooltip
+                  icon="info-outline"
+                  iconColor={theme.colors.tenantText}
+                  theme="light"
+                  placement="bottom"
+                  content={<T value={eligibility_criteria} supportHtml />}
+                />
+              )}
+            </>
+          )}
+        </FormattedMessage>
+      </StatusExplanation>
+      <ReactionCounter>
+        <ReactionTexts>
+          <ReactionText>
+            <FormattedMessage
+              {...messages.xVotes}
+              values={{ count: reactionCount }}
+            />
+          </ReactionText>
+          <ReactionText>{reactionLimit}</ReactionText>
+        </ReactionTexts>
+        <ProposalProgressBar
+          reactionCount={reactionCount}
+          reactionLimit={reactionLimit}
+          barColor="linear-gradient(270deg, #84939E 0%, #C8D0D6 100%)"
+        />
+      </ReactionCounter>
+      <StyledButton onClick={handleOnReadAnswer}>
+        <FormattedMessage {...messages.readAnswer} />
+      </StyledButton>
+    </Box>
+  );
+};
 
-export default withTheme(Ineligible);
+export default Ineligible;

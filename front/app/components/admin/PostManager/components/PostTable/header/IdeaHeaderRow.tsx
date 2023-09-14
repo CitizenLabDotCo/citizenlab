@@ -1,13 +1,7 @@
 import React, { ChangeEvent, useState } from 'react';
 
 // components
-import {
-  Thead,
-  Tr,
-  Th,
-  Text,
-  Checkbox,
-} from '@citizenlab/cl2-component-library';
+import { Thead, Tr, Th, Checkbox } from '@citizenlab/cl2-component-library';
 import FeatureFlag from 'components/FeatureFlag';
 import Outlet from 'components/Outlet';
 
@@ -30,6 +24,9 @@ import {
 } from 'typings';
 import { SortAttribute as IdeasSortAttribute } from 'api/ideas/types';
 import { SortDirection } from 'utils/paginationUtils';
+
+// hooks
+import usePostManagerColumnFilter from 'hooks/usePostManagerColumnFilter';
 
 interface SortableHeaderCellProps {
   sortAttribute?: IdeasSortAttribute;
@@ -80,14 +77,18 @@ export type IdeaHeaderCellComponentProps = {
 };
 
 interface Props {
+  selectedProjectId?: string | null;
+  selectedPhaseId?: string | null;
   sortAttribute?: IdeasSortAttribute;
   sortDirection?: SortDirection;
   allSelected: boolean;
   toggleSelectAll: () => void;
-  handleSortClick: (newSortAttribute: IdeasSortAttribute) => () => void;
+  handleSortClick: (newSortAttribute: string) => () => void;
 }
 
-export default ({
+const IdeaHeaderRow = ({
+  selectedProjectId,
+  selectedPhaseId,
   sortAttribute,
   sortDirection,
   allSelected,
@@ -127,15 +128,71 @@ export default ({
       },
     },
     {
-      name: 'published_on',
-      cellProps: { width: 2 },
-      onChange: handleSortClick('new'),
+      name: 'votes',
+      cellProps: { width: 1 },
+      onChange: handleSortClick('votes_count'),
       Component: (
         props: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>
       ) => {
         return (
-          <SortableHeaderCell {...props} sortAttributeName="new">
-            <FormattedMessage {...messages.publication_date} />
+          <SortableHeaderCell {...props} sortAttributeName="votes_count">
+            <FormattedMessage {...messages.votes} />
+          </SortableHeaderCell>
+        );
+      },
+    },
+    {
+      name: 'picks',
+      cellProps: { width: 1 },
+      onChange: handleSortClick('baskets_count'),
+      Component: (
+        props: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>
+      ) => {
+        return (
+          <SortableHeaderCell {...props} sortAttributeName="baskets_count">
+            <FormattedMessage {...messages.participatoryBudgettingPicks} />
+          </SortableHeaderCell>
+        );
+      },
+    },
+    {
+      name: 'participants',
+      cellProps: { width: 1 },
+      onChange: handleSortClick('baskets_count'),
+      Component: (
+        props: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>
+      ) => {
+        return (
+          <SortableHeaderCell {...props} sortAttributeName="baskets_count">
+            <FormattedMessage {...messages.participants} />
+          </SortableHeaderCell>
+        );
+      },
+    },
+    {
+      name: 'budget',
+      cellProps: { width: 1 },
+      onChange: handleSortClick('budget'),
+      Component: (
+        props: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>
+      ) => {
+        return (
+          <SortableHeaderCell {...props} sortAttributeName="budget">
+            <FormattedMessage {...messages.cost} />
+          </SortableHeaderCell>
+        );
+      },
+    },
+    {
+      name: 'comments',
+      cellProps: { width: 1 },
+      onChange: handleSortClick('comments_count'),
+      Component: (
+        props: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>
+      ) => {
+        return (
+          <SortableHeaderCell {...props} sortAttributeName="comments_count">
+            <FormattedMessage {...messages.comments} />
           </SortableHeaderCell>
         );
       },
@@ -149,7 +206,7 @@ export default ({
       ) => {
         return (
           <SortableHeaderCell {...props} sortAttributeName="likes_count">
-            <FormattedMessage {...messages.up} />
+            <FormattedMessage {...messages.likes} />
           </SortableHeaderCell>
         );
       },
@@ -163,31 +220,31 @@ export default ({
       ) => {
         return (
           <SortableHeaderCell {...props} sortAttributeName="dislikes_count">
-            <FormattedMessage {...messages.down} />
+            <FormattedMessage {...messages.dislikes} />
           </SortableHeaderCell>
         );
       },
     },
     {
-      name: 'picks',
-      featureFlag: 'participatory_budgeting',
-      cellProps: { width: 1 },
-      Component: ({ width }) => {
+      name: 'published_on',
+      cellProps: { width: 2 },
+      onChange: handleSortClick('new'),
+      Component: (
+        props: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>
+      ) => {
         return (
-          <Th
-            width={width}
-            infoTooltip={
-              <Text mb="0px" mt="0px" fontSize="s">
-                <FormattedMessage {...messages.pbItemCountTooltip} />
-              </Text>
-            }
-          >
-            <FormattedMessage {...messages.participatoryBudgettingPicks} />
-          </Th>
+          <SortableHeaderCell {...props} sortAttributeName="new">
+            <FormattedMessage {...messages.publication_date} />
+          </SortableHeaderCell>
         );
       },
     },
   ]);
+
+  const displayColumns = usePostManagerColumnFilter(
+    selectedProjectId,
+    selectedPhaseId
+  );
 
   const totalWidth = cells.reduce((acc, cell) => {
     if (typeof cell.cellProps?.width === 'number') {
@@ -215,16 +272,17 @@ export default ({
       totalWidth
     )}%`;
 
-    const Content = (
-      <Component
-        sortAttribute={sortAttribute}
-        sortDirection={sortDirection}
-        allSelected={allSelected}
-        width={width}
-        {...handlers}
-        key={name}
-      />
-    );
+    const Content =
+      displayColumns && !displayColumns.has(name) ? null : (
+        <Component
+          sortAttribute={sortAttribute}
+          sortDirection={sortDirection}
+          allSelected={allSelected}
+          width={width}
+          {...handlers}
+          key={name}
+        />
+      );
 
     if (!featureFlag) return Content;
     return (
@@ -256,3 +314,5 @@ export default ({
     </>
   );
 };
+
+export default IdeaHeaderRow;

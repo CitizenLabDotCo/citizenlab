@@ -22,7 +22,10 @@ import { lighten } from 'polished';
 import { isString } from 'lodash-es';
 
 const Container = styled.div`
-  height: ${(props) => props.theme.mobileTopBarHeight}px;
+  // should use props.theme.mobileTopBarHeight but it needs to have the
+  // correct value first (or padding/margin on InitiativesShow should be fixed)
+  // height: ${(props) => props.theme.mobileTopBarHeight}px;
+  height: 78px;
   background: #fff;
   border-bottom: solid 1px ${lighten(0.4, colors.textSecondary)};
 

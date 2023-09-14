@@ -1,5 +1,4 @@
 import React, { memo, useState } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import { isEmpty, isNumber, round } from 'lodash-es';
 import moment from 'moment';
 import Observer from '@researchgate/react-intersection-observer';
@@ -10,9 +9,10 @@ import { TLayout } from 'components/ProjectAndFolderCards';
 import Link from 'utils/cl-router/Link';
 
 // components
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Icon, Box } from '@citizenlab/cl2-component-library';
 import Image from 'components/UI/Image';
 import AvatarBubbles from 'components/AvatarBubbles';
+import FollowUnfollow from 'components/FollowUnfollow';
 
 // services
 import { getProjectUrl } from 'api/projects/utils';
@@ -30,9 +30,7 @@ import useProjectImages, {
 
 // i18n
 import T from 'components/T';
-import { WrappedComponentProps } from 'react-intl';
-import { FormattedMessage } from 'utils/cl-intl';
-import injectIntl from 'utils/cl-intl/injectIntl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // tracking
@@ -52,7 +50,7 @@ import {
 import { ScreenReaderOnly } from 'utils/a11y';
 import { rgba, darken } from 'polished';
 import { getInputTermMessage } from 'utils/i18n';
-import { getMethodConfig } from 'utils/participationMethodUtils';
+import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 
 const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
   width: calc(33% - 12px);
@@ -151,14 +149,6 @@ const ProjectImageContainer = styled.div`
   `}
 `;
 
-const ProjectImagePlaceholder = styled.div`
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: ${colors.grey300};
-`;
-
 const ProjectImage = styled(Image)`
   width: 100%;
   height: 100%;
@@ -247,22 +237,6 @@ const ContentHeader = styled.div`
       padding-right: 10px;
     `}
   }
-`;
-
-const ContentHeaderLeft = styled.div`
-  min-height: ${ContentHeaderHeight}px;
-  flex-grow: 0;
-  flex-shrink: 1;
-  flex-basis: 140px;
-  margin-right: 15px;
-`;
-
-const ContentHeaderRight = styled.div`
-  min-height: ${ContentHeaderHeight}px;
-`;
-
-const Countdown = styled.div`
-  margin-top: 4px;
 `;
 
 const TimeRemaining = styled.div`
@@ -354,16 +328,13 @@ const ProjectDescription = styled.div`
 `;
 
 const ContentFooter = styled.div`
-  height: 45px;
   flex-shrink: 0;
   flex-grow: 0;
   flex-basis: 45px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 16px;
-  margin-top: 30px;
-  border-top: solid 1px #e0e0e0;
+  margin-bottom: 8px;
 
   &.hidden {
     border: none;
@@ -382,16 +353,6 @@ const ContentFooter = styled.div`
     }
   }
 `;
-
-const ContentFooterSection = styled.div`
-  height: 100%;
-  display: flex;
-  align-items: center;
-`;
-
-const ContentFooterLeft = styled(ContentFooterSection)``;
-
-const ContentFooterRight = styled(ContentFooterSection)``;
 
 const ContentHeaderLabel = styled.span`
   height: ${ContentHeaderHeight}px;
@@ -451,19 +412,19 @@ export interface InputProps {
   layout?: TLayout;
   hideDescriptionPreview?: boolean;
   className?: string;
+  showFollowButton?: boolean;
 }
 
-interface Props extends InputProps, WrappedComponentProps {}
-
-const ProjectCard = memo<Props>(
+const ProjectCard = memo<InputProps>(
   ({
     projectId,
     size,
     layout,
     hideDescriptionPreview,
     className,
-    intl: { formatMessage },
+    showFollowButton,
   }) => {
+    const { formatMessage } = useIntl();
     const { data: project } = useProjectById(projectId);
     const { data: authUser } = useAuthUser();
     const { data: projectImages } = useProjectImages(projectId);
@@ -504,11 +465,15 @@ const ProjectCard = memo<Props>(
       const postingPermission = getIdeaPostingRules({
         project: project?.data,
         phase: phase?.data,
-        authUser: !isNilOrError(authUser) ? authUser.data : null,
+        authUser: authUser?.data,
       });
       const participationMethod = phase
         ? phase.data.attributes.participation_method
         : project.data.attributes.participation_method;
+      const votingMethod = phase
+        ? phase.data.attributes.voting_method
+        : project.data.attributes.voting_method;
+
       const canPost = !!postingPermission.enabled;
       const canReact =
         project.data.attributes.action_descriptor.reacting_idea.enabled;
@@ -577,7 +542,7 @@ const ProjectCard = memo<Props>(
 
         countdown =
           typeof progress === 'number' ? (
-            <Countdown className="e2e-project-card-time-remaining">
+            <Box mt="4px" className="e2e-project-card-time-remaining">
               <TimeRemaining className={size}>
                 <FormattedMessage
                   {...messages.remaining}
@@ -592,11 +557,11 @@ const ProjectCard = memo<Props>(
                   />
                 </ProgressBar>
               </Observer>
-            </Countdown>
+            </Box>
           ) : null;
       }
 
-      if (participationMethod === 'budgeting') {
+      if (participationMethod === 'voting' && votingMethod === 'budgeting') {
         ctaMessage = <FormattedMessage {...messages.allocateYourBudget} />;
       } else if (participationMethod === 'information') {
         ctaMessage = <FormattedMessage {...messages.learnMore} />;
@@ -623,7 +588,7 @@ const ProjectCard = memo<Props>(
           />
         );
       } else if (participationMethod === 'ideation' && canReact) {
-        ctaMessage = <FormattedMessage {...messages.vote} />;
+        ctaMessage = <FormattedMessage {...messages.reaction} />;
       } else if (participationMethod === 'ideation' && canComment) {
         ctaMessage = <FormattedMessage {...messages.comment} />;
       } else if (participationMethod === 'ideation') {
@@ -650,11 +615,22 @@ const ProjectCard = memo<Props>(
           }`}
         >
           {countdown !== null && (
-            <ContentHeaderLeft className={size}>{countdown}</ContentHeaderLeft>
+            <Box
+              className={size}
+              minHeight={`${ContentHeaderHeight}px`}
+              display="flex"
+              flexGrow={0}
+              flexShrink={1}
+              flexBasis={140}
+              mr="15px"
+            >
+              {countdown}
+            </Box>
           )}
 
           {ctaMessage !== null && !isFinished && !isArchived && (
-            <ContentHeaderRight
+            <Box
+              minHeight={`${ContentHeaderHeight}px`}
               className={`${size} ${countdown ? 'hasProgressBar' : ''}`}
             >
               <ProjectLabel
@@ -663,7 +639,7 @@ const ProjectCard = memo<Props>(
               >
                 {ctaMessage}
               </ProjectLabel>
-            </ContentHeaderRight>
+            </Box>
           )}
         </ContentHeader>
       );
@@ -706,14 +682,20 @@ const ProjectCard = memo<Props>(
             {imageUrl ? (
               <ProjectImage src={imageUrl} alt="" cover={true} />
             ) : (
-              <ProjectImagePlaceholder>
+              <Box
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                flex="1"
+                background={colors.grey300}
+              >
                 <Icon
                   name="building"
                   width="80px"
                   height="80px"
                   fill={colors.white}
                 />
-              </ProjectImagePlaceholder>
+              </Box>
             )}
           </ProjectImageContainer>
 
@@ -745,53 +727,80 @@ const ProjectCard = memo<Props>(
               )}
             </ContentBody>
 
-            <ContentFooter className={`${size} ${!showFooter ? 'hidden' : ''}`}>
-              <ContentFooterLeft>
-                {hasAvatars && (
-                  <AvatarBubbles
-                    size={32}
-                    limit={3}
-                    userCountBgColor={theme.colors.tenantPrimary}
-                    avatarIds={avatarIds}
-                    userCount={project.data.attributes.participants_count}
-                  />
-                )}
-              </ContentFooterLeft>
+            {(hasAvatars || showIdeasCount || showCommentsCount) && (
+              <Box
+                borderTop={`1px solid ${colors.divider}`}
+                pt="16px"
+                mt="30px"
+              >
+                <ContentFooter
+                  className={`${size} ${!showFooter ? 'hidden' : ''}`}
+                >
+                  <Box h="100%" display="flex" alignItems="center">
+                    {hasAvatars && (
+                      <AvatarBubbles
+                        size={32}
+                        limit={3}
+                        userCountBgColor={theme.colors.tenantPrimary}
+                        avatarIds={avatarIds}
+                        userCount={project.data.attributes.participants_count}
+                      />
+                    )}
+                  </Box>
 
-              <ContentFooterRight>
-                <ProjectMetaItems>
-                  {showIdeasCount && (
-                    <MetaItem className="first">
-                      <MetaItemIcon ariaHidden name="idea" />
-                      <MetaItemText aria-hidden>{ideasCount}</MetaItemText>
-                      <ScreenReaderOnly>
-                        {formatMessage(
-                          getInputTermMessage(inputTerm, {
-                            idea: messages.xIdeas,
-                            option: messages.xOptions,
-                            contribution: messages.xContributions,
-                            project: messages.xProjects,
-                            issue: messages.xIssues,
-                            question: messages.xQuestions,
-                          }),
-                          { ideasCount }
-                        )}
-                      </ScreenReaderOnly>
-                    </MetaItem>
-                  )}
+                  <Box h="100%" display="flex" alignItems="center">
+                    <ProjectMetaItems>
+                      {showIdeasCount && (
+                        <MetaItem className="first">
+                          <MetaItemIcon ariaHidden name="idea" />
+                          <MetaItemText aria-hidden>{ideasCount}</MetaItemText>
+                          <ScreenReaderOnly>
+                            {formatMessage(
+                              getInputTermMessage(inputTerm, {
+                                idea: messages.xIdeas,
+                                option: messages.xOptions,
+                                contribution: messages.xContributions,
+                                project: messages.xProjects,
+                                issue: messages.xIssues,
+                                question: messages.xQuestions,
+                              }),
+                              { ideasCount }
+                            )}
+                          </ScreenReaderOnly>
+                        </MetaItem>
+                      )}
 
-                  {showCommentsCount && (
-                    <MetaItem>
-                      <CommentIcon ariaHidden name="comments" />
-                      <MetaItemText aria-hidden>{commentsCount}</MetaItemText>
-                      <ScreenReaderOnly>
-                        {formatMessage(messages.xComments, { commentsCount })}
-                      </ScreenReaderOnly>
-                    </MetaItem>
-                  )}
-                </ProjectMetaItems>
-              </ContentFooterRight>
-            </ContentFooter>
+                      {showCommentsCount && (
+                        <MetaItem>
+                          <CommentIcon ariaHidden name="comments" />
+                          <MetaItemText aria-hidden>
+                            {commentsCount}
+                          </MetaItemText>
+                          <ScreenReaderOnly>
+                            {formatMessage(messages.xComments, {
+                              commentsCount,
+                            })}
+                          </ScreenReaderOnly>
+                        </MetaItem>
+                      )}
+                    </ProjectMetaItems>
+                  </Box>
+                </ContentFooter>
+              </Box>
+            )}
+            {showFollowButton && (
+              <Box display="flex" justifyContent="flex-end">
+                <FollowUnfollow
+                  followableType="projects"
+                  followableId={project.data.id}
+                  followersCount={project.data.attributes.followers_count}
+                  followerId={
+                    project.data.relationships.user_follower?.data?.id
+                  }
+                  py="2px"
+                />
+              </Box>
+            )}
           </ProjectContent>
         </Container>
       );
@@ -801,4 +810,4 @@ const ProjectCard = memo<Props>(
   }
 );
 
-export default injectIntl(ProjectCard);
+export default ProjectCard;

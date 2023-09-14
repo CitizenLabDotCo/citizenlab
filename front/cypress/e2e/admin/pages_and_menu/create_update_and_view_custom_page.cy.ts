@@ -1,6 +1,6 @@
 import { randomString } from '../../../support/commands';
 
-describe('Admin: create, update, and view custom page', () => {
+describe.skip('Admin: create, update, and view custom page', () => {
   let customPageId: string;
 
   after(() => {

@@ -4,7 +4,6 @@ import Error, { TFieldName } from 'components/UI/Error';
 import { useFormContext } from 'react-hook-form';
 import { CLError, RHFErrors } from 'typings';
 
-import Radio from './Radio';
 import { Box } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
 
@@ -50,5 +49,4 @@ const RadioGroup = ({ name, children }: Props) => {
   );
 };
 
-export { Radio };
 export default RadioGroup;

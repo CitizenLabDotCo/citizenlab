@@ -8,11 +8,14 @@ import CommentMarkedAsSpamNotification from '../CommentMarkedAsSpamNotification'
 import CommentOnYourCommentNotification from '../CommentOnYourCommentNotification';
 import CommentOnYourIdeaNotification from '../CommentOnYourIdeaNotification';
 import CommentOnYourInitiativeNotification from '../CommentOnYourInitiativeNotification';
+import CosponsorOfYourInitiativeNotification from '../CosponsorOfYourInitiativeNotification';
 import IdeaAssignedToYouNotification from '../IdeaAssignedToYouNotification';
 import IdeaMarkedAsSpamNotification from '../IdeaMarkedAsSpamNotification';
 import InitiativeAssignedToYouNotification from '../InitiativeAssignedToYouNotification';
 import InitiativeMarkedAsSpamNotification from '../InitiativeMarkedAsSpamNotification';
+import InitiativeResubmittedForReviewNotification from '../InitiativeResubmittedForReviewNotification';
 import InviteAcceptedNotification from '../InviteAcceptedNotification';
+import InvitationToCosponsorInitiativeNotification from '../InvitationToCosponsorInitiativeNotification';
 import MentionInCommentNotification from '../MentionInCommentNotification';
 import InternalCommentNotification from '../InternalCommentNotification';
 import MentionInOfficialFeedbackNotification from '../MentionInOfficialFeedbackNotification';
@@ -33,6 +36,10 @@ import StatusChangeOnReactedIdeaNotification from '../StatusChangeOnReactedIdeaN
 import StatusChangeOnReactedInitiativeNotification from '../StatusChangeOnReactedInitiativeNotification';
 import ThresholdReachedForAdminNotification from '../ThresholdReachedForAdminNotification';
 import ProjectFolderModerationRightsReceivedNotification from '../ProjectFolderModerationRightsReceivedNotification';
+import VotingBasketSubmittedNotification from '../VotingBasketSubmittedNotification';
+import VotingBasketNotSubmittedNotification from '../VotingBasketNotSubmittedNotification';
+import VotingLastChanceNotification from '../VotingLastChanceNotification';
+import VotingResultsNotification from '../VotingResultsNotification';
 
 import {
   TNotificationData,
@@ -42,11 +49,14 @@ import {
   ICommentOnYourCommentNotificationData,
   ICommentOnYourIdeaNotificationData,
   ICommentOnYourInitiativeNotificationData,
+  ICosponsorOfYourInitiativeNotificationData,
   IIdeaAssignedToYouNotificationData,
   IIdeaMarkedAsSpamNotificationData,
   IInitiativeAssignedToYouNotificationData,
   IInitiativeMarkedAsSpamNotificationData,
+  IInitiativeResubmittedForReviewNotificationData,
   IInviteAcceptedNotificationData,
+  IInvitationToCosponsorInitiativeNotificationData,
   IMentionInCommentNotificationData,
   IInternalCommentNotificationData,
   IMentionInOfficialFeedbackNotificationData,
@@ -67,6 +77,10 @@ import {
   IStatusChangeOnReactedInitiativeNotificationData,
   IThresholdReachedForAdminNotificationData,
   IProjectFolderModerationRightsReceivedNotificationData,
+  IVotingBasketSubmittedNotificationData,
+  IVotingBasketNotSubmittedNotificationData,
+  IVotingLastChanceNotificationData,
+  IVotingResultsNotificationData,
 } from 'api/notifications/types';
 import styled from 'styled-components';
 import Outlet from 'components/Outlet';
@@ -121,6 +135,14 @@ const Notification = ({ notification }: Props) => {
           }
         />
       );
+    case 'cosponsor_of_your_initiative':
+      return (
+        <CosponsorOfYourInitiativeNotification
+          notification={
+            notification as ICosponsorOfYourInitiativeNotificationData
+          }
+        />
+      );
     case 'idea_assigned_to_you':
       return (
         <IdeaAssignedToYouNotification
@@ -147,10 +169,26 @@ const Notification = ({ notification }: Props) => {
           notification={notification as IInitiativeMarkedAsSpamNotificationData}
         />
       );
+    case 'initiative_resubmitted_for_review':
+      return (
+        <InitiativeResubmittedForReviewNotification
+          notification={
+            notification as IInitiativeResubmittedForReviewNotificationData
+          }
+        />
+      );
     case 'invite_accepted':
       return (
         <InviteAcceptedNotification
           notification={notification as IInviteAcceptedNotificationData}
+        />
+      );
+    case 'invitation_to_cosponsor_initiative':
+      return (
+        <InvitationToCosponsorInitiativeNotification
+          notification={
+            notification as IInvitationToCosponsorInitiativeNotificationData
+          }
         />
       );
     case 'mention_in_comment':
@@ -315,6 +353,32 @@ const Notification = ({ notification }: Props) => {
       } else {
         return null;
       }
+    case 'voting_basket_submitted':
+      return (
+        <VotingBasketSubmittedNotification
+          notification={notification as IVotingBasketSubmittedNotificationData}
+        />
+      );
+    case 'voting_basket_not_submitted':
+      return (
+        <VotingBasketNotSubmittedNotification
+          notification={
+            notification as IVotingBasketNotSubmittedNotificationData
+          }
+        />
+      );
+    case 'voting_last_chance':
+      return (
+        <VotingLastChanceNotification
+          notification={notification as IVotingLastChanceNotificationData}
+        />
+      );
+    case 'voting_results':
+      return (
+        <VotingResultsNotification
+          notification={notification as IVotingResultsNotificationData}
+        />
+      );
     default:
       return (
         <Outlet

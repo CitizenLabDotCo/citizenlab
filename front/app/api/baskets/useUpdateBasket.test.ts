@@ -27,10 +27,7 @@ describe('useUpdateBasket', () => {
     act(() => {
       result.current.mutate({
         id: 'id',
-        user_id: 'userId',
-        participation_context_id: 'contextId',
-        participation_context_type: 'Project',
-        idea_ids: ['ideaId'],
+        participation_context_type: 'Phase',
       });
     });
 
@@ -51,10 +48,7 @@ describe('useUpdateBasket', () => {
     act(() => {
       result.current.mutate({
         id: 'id',
-        user_id: 'userId',
-        participation_context_id: 'contextId',
-        participation_context_type: 'Project',
-        idea_ids: ['ideaId'],
+        participation_context_type: 'Phase',
       });
     });
     await waitFor(() => expect(result.current.isError).toBe(true));

@@ -6,7 +6,7 @@ module PublicApi
 
     def index
       ideas = PublicApi::IdeaPolicy::Scope.new(current_public_api_api_client, Idea).resolve
-      ideas = IdeasFinder.new({}, scope: ideas, includes: %i[idea_trending_info]).find_records
+      ideas = ::IdeasFinder.new({}, scope: ideas, includes: %i[idea_trending_info]).find_records
       ideas = ideas
         .page(params[:page_number])
         .per([params[:page_size]&.to_i || 12, 24].min) # default is 12, maximum is 24

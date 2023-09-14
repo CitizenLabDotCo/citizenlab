@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { adopt } from 'react-adopt';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -18,8 +17,6 @@ import messages from '../messages';
 // router
 import clHistory from 'utils/cl-router/history';
 
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-
 // hooks
 import useDeleteInitiative from 'api/initiatives/useDeleteInitiative';
 
@@ -34,26 +31,14 @@ const MoreActionsMenuWrapper = styled.div`
   margin-left: 35px;
 `;
 
-interface InputProps {
+interface Props {
   initiative: IInitiativeData;
   className?: string;
   color?: string;
   id: string;
 }
 
-interface DataProps {
-  authUser: GetAuthUserChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
-const InitiativeMoreActions = ({
-  initiative,
-  className,
-  authUser,
-  color,
-  id,
-}: Props) => {
+const InitiativeMoreActions = ({ initiative, className, color, id }: Props) => {
   const { formatMessage } = useIntl();
   const [spamModalVisible, setSpamModalVisible] = useState(false);
   const { mutate: deleteInitiative } = useDeleteInitiative();
@@ -85,7 +70,7 @@ const InitiativeMoreActions = ({
     }
   };
 
-  if (isNilOrError(authUser) || isNilOrError(initiative)) {
+  if (isNilOrError(initiative)) {
     return null;
   }
 
@@ -102,10 +87,14 @@ const InitiativeMoreActions = ({
                 label: <FormattedMessage {...messages.reportAsSpam} />,
                 handler: openSpamModal,
               },
-              {
-                label: <FormattedMessage {...messages.editInitiative} />,
-                handler: onEditInitiative,
-              },
+              ...(initiative.attributes.editing_locked
+                ? []
+                : [
+                    {
+                      label: <FormattedMessage {...messages.editInitiative} />,
+                      handler: onEditInitiative,
+                    },
+                  ]),
               {
                 label: <FormattedMessage {...messages.deleteInitiative} />,
                 handler: onDeleteInitiative(initiative.id),
@@ -138,12 +127,4 @@ const InitiativeMoreActions = ({
   );
 };
 
-const Data = adopt<DataProps, InputProps>({
-  authUser: <GetAuthUser />,
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <InitiativeMoreActions {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default InitiativeMoreActions;

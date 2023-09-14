@@ -9,8 +9,12 @@ import PageNotFound from 'components/PageNotFound';
 import Unauthorized from 'components/Unauthorized';
 import VerticalCenterer from 'components/VerticalCenterer';
 
+// context
+import { VotingContext } from 'api/baskets_ideas/useVoting';
+
 // hooks
 import useIdeaBySlug from 'api/ideas/useIdeaBySlug';
+import useProjectById from 'api/projects/useProjectById';
 
 // style
 import styled from 'styled-components';
@@ -18,6 +22,8 @@ import { media, colors } from 'utils/styleUtils';
 
 // utils
 import { isUnauthorizedRQ } from 'utils/errorUtils';
+import usePhases from 'api/phases/usePhases';
+import { getCurrentParticipationContext } from 'api/phases/utils';
 
 const StyledIdeaShowPageTopBar = styled(IdeaShowPageTopBar)`
   position: fixed;
@@ -54,6 +60,15 @@ const IdeasShowPage = () => {
   const { slug } = useParams() as { slug: string };
   const { data: idea, status, error } = useIdeaBySlug(slug);
   const isSmallerThanTablet = useBreakpoint('tablet');
+  const { data: project } = useProjectById(
+    idea?.data.relationships.project.data.id
+  );
+  const { data: phases } = usePhases(project?.data.id);
+
+  const participationContext = getCurrentParticipationContext(
+    project?.data,
+    phases?.data
+  );
 
   if (status === 'loading') {
     return (
@@ -73,18 +88,22 @@ const IdeasShowPage = () => {
 
   if (idea) {
     return (
-      <Box background={colors.white}>
-        {isSmallerThanTablet && (
-          <StyledIdeaShowPageTopBar
-            projectId={idea.data.relationships.project.data.id}
+      <VotingContext projectId={project?.data.id}>
+        <Box background={colors.white}>
+          {isSmallerThanTablet && (
+            <StyledIdeaShowPageTopBar
+              projectId={idea.data.relationships.project.data.id}
+              ideaId={idea.data.id}
+              participationContext={participationContext}
+            />
+          )}
+          <StyledIdeasShow
             ideaId={idea.data.id}
+            projectId={idea.data.relationships.project.data.id}
+            compact={isSmallerThanTablet}
           />
-        )}
-        <StyledIdeasShow
-          ideaId={idea.data.id}
-          projectId={idea.data.relationships.project.data.id}
-        />
-      </Box>
+        </Box>
+      </VotingContext>
     );
   }
 

@@ -16,30 +16,19 @@ export default defineMessages({
     id: 'app.containers.InitiativesNewPage.tipsTitle',
     defaultMessage: 'Tips and tricks for a successful initiative',
   },
-  elaborate: {
-    id: 'app.containers.InitiativesNewPage.elaborate',
-    defaultMessage:
-      'Take the time to elaborate on your proposal. If necessary, type a draft first and then copy-paste it here. As soon as you post it, others will be able to read it and the time will start running.',
+  makeSureReadyToBePublic: {
+    id: 'app.containers.InitiativesNewPage.makeSureReadyToBePublic',
+    defaultMessage: 'Make sure the proposal is ready to be published.',
   },
-  meaningfulTitle: {
-    id: 'app.containers.InitiativesNewPage.meaningfulTitle',
+  notEditableOnceReviewed: {
+    id: 'app.containers.InitiativesNewPage.notEditableOnceReviewed',
     defaultMessage:
-      'Choose a meaningful title that explains clearly what your proposal entails.',
+      "It won't be possible to edit it once it's reviewed and approved.",
   },
-  visualise: {
-    id: 'app.containers.InitiativesNewPage.visualise',
+  notEditableOnceVoted: {
+    id: 'app.containers.InitiativesNewPage.notEditableOnceVoted',
     defaultMessage:
-      'Make sure to visualise your proposal with a fitting image, so that it stands out more.',
-  },
-  relevantAttachments: {
-    id: 'app.containers.InitiativesNewPage.relevantAttachments',
-    defaultMessage:
-      'Add relevant attachments, such as videos, inspiring examples, technical details or plans.',
-  },
-  shareSocialMedia: {
-    id: 'app.containers.InitiativesNewPage.shareSocialMedia',
-    defaultMessage:
-      'Share your idea on social media and other channels to gather support from others.',
+      "It won't be possible to edit it once somebody votes for it.",
   },
   // Form Messages
   formGeneralSectionTitle: {
@@ -54,11 +43,6 @@ export default defineMessages({
     id: 'app.components.InitiativeForm.titleMinLengthError',
     defaultMessage:
       'The provided title is too short. Please add a title that is between 10 and 72 characters long.',
-  },
-  titleMaxLengthError: {
-    id: 'app.components.InitiativeForm.titleMaxLengthError',
-    defaultMessage:
-      'The provided title is too long. Please add a title that is between 10 and 72 characters long.',
   },
   titleLabel: {
     id: 'app.components.InitiativeForm.titleLabel',
@@ -94,6 +78,14 @@ export default defineMessages({
     id: 'app.components.InitiativeForm.topicEmptyError',
     defaultMessage: 'Please provide a topic',
   },
+  cosponsorsEmptyError: {
+    id: 'app.components.InitiativeForm.cosponsorsEmptyError',
+    defaultMessage: 'Please add the required number of cosponsors',
+  },
+  cosponsorsMaxError: {
+    id: 'app.components.InitiativeForm.cosponsorsMaxError',
+    defaultMessage: 'You can only add {maxNumberOfCosponsors} cosponsors',
+  },
   topicsLabel: {
     id: 'app.components.InitiativeForm.topicsLabel',
     defaultMessage: 'Select the topic of your initiative',
@@ -113,6 +105,25 @@ export default defineMessages({
   locationPlaceholder: {
     id: 'app.components.InitiativeForm.locationPlaceholder',
     defaultMessage: 'Type an address',
+  },
+  cosponsorSectionTitle: {
+    id: 'app.components.InitiativeForm.cosponsorSectionTitle',
+    defaultMessage: 'Cosponsors needed for review',
+  },
+  cosponsorSubtextBeforeInput: {
+    id: 'app.components.InitiativeForm.cosponsorSubtextBeforeInput',
+    defaultMessage:
+      "It's required that you have at least {noOfCosponsorsText} on your proposal. Invite cosponsors through the field below. The invited cosponsor(s) will receive an email.",
+  },
+  noOfCosponsorsText: {
+    id: 'app.components.InitiativeForm.noOfCosponsorsText',
+    defaultMessage:
+      '{cosponsorsNumber, plural, one {1 cosponsor} other {# cosponsors}}',
+  },
+  cosponsorSubtextBeforeInputNote: {
+    id: 'app.components.InitiativeForm.cosponsorSubtextBeforeInputNote',
+    defaultMessage:
+      "Your cosponsors need an account on this website before they'll appear in this list.",
   },
   formAttachmentsSectionTitle: {
     id: 'app.components.InitiativeForm.formAttachmentsSectionTitle',
@@ -155,6 +166,10 @@ export default defineMessages({
     id: 'app.components.InitiativeForm.publishButton',
     defaultMessage: 'Publish your initiative',
   },
+  submitButton: {
+    id: 'app.components.InitiativeForm.submitButton',
+    defaultMessage: 'Submit your proposal',
+  },
   submitApiError: {
     id: 'app.components.InitiativeForm.submitApiError',
     defaultMessage:
@@ -176,5 +191,13 @@ export default defineMessages({
   buttonEnabled: {
     id: 'UI.FormComponents.buttonEnabled',
     defaultMessage: 'Submit button enabled',
+  },
+  cosponsorsPlaceholder: {
+    id: 'app.components.InitiativeForm.cosponsorsPlaceholder',
+    defaultMessage: 'Start typing a name to search',
+  },
+  cosponsorsLabel: {
+    id: 'app.components.InitiativeForm.cosponsorsLabel',
+    defaultMessage: 'Cosponsors',
   },
 });

@@ -9,7 +9,7 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import StatusChangeForm from './StatusChangeForm';
 
 // resources
-import { isNilOrError } from 'utils/helperUtils';
+import { isEmptyMultiloc, isNilOrError } from 'utils/helperUtils';
 
 // services
 import useUpdateInitiativeStatus from 'api/initiative_statuses/useUpdateInitiativeStatus';
@@ -43,6 +43,7 @@ const ColoredText = styled.span<{ color: string }>`
 interface Props {
   initiativeId: string;
   newStatusId: string;
+  feedbackRequired?: boolean;
   closeModal: () => void;
 }
 
@@ -54,6 +55,7 @@ export interface FormValues extends MultilocFormValues {
 const StatusChangeFormWrapper = ({
   initiativeId,
   newStatusId,
+  feedbackRequired,
   closeModal,
 }: Props & WrappedComponentProps) => {
   const tenantLocales = useAppConfigurationLocales();
@@ -96,11 +98,22 @@ const StatusChangeFormWrapper = ({
     });
   };
 
+  const isFeedbackEmpty = () => {
+    return (
+      isEmptyMultiloc(newOfficialFeedback.body_multiloc) &&
+      isEmptyMultiloc(newOfficialFeedback.author_multiloc)
+    );
+  };
+
   const validate = () => {
     let validated = true;
 
     if (!isNilOrError(tenantLocales) && mode === 'new') {
       validated = false;
+
+      if (!feedbackRequired && isFeedbackEmpty()) {
+        return true;
+      }
 
       tenantLocales.forEach((locale) => {
         if (
@@ -128,16 +141,21 @@ const StatusChangeFormWrapper = ({
 
   const submit = () => {
     const { body_multiloc, author_multiloc } = newOfficialFeedback;
-    if (validate()) {
+
+    if (!feedbackRequired || validate()) {
       if (mode === 'new') {
         updateInitiativeStatus(
           {
             initiativeId,
             initiative_status_id: newStatusId,
-            official_feedback_attributes: {
-              body_multiloc,
-              author_multiloc,
-            },
+            ...(isFeedbackEmpty()
+              ? null
+              : {
+                  official_feedback_attributes: {
+                    body_multiloc,
+                    author_multiloc,
+                  },
+                }),
           },
           {
             onSuccess: closeModal,

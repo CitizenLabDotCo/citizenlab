@@ -2,10 +2,14 @@
 
 module ParticipationMethod
   class Ideation < Base
+    def assign_defaults_for_participation_context
+      participation_context.ideas_order ||= 'trending'
+    end
+
     # This method is invoked after creation of the input,
     # so store the new slug.
     def assign_slug(input)
-      title = MultilocService.new.t input.title_multiloc, input.author
+      title = MultilocService.new.t input.title_multiloc, input.author&.locale
       new_slug = SlugService.new.generate_slug input, title
       input.update_column :slug, new_slug
     end
@@ -265,7 +269,50 @@ module ParticipationMethod
       'section'
     end
 
+    def auto_create_default_form?
+      false
+    end
+
+    def create_default_form!
+      form = CustomForm.create(participation_context: participation_context)
+
+      default_fields(form).reverse_each do |field|
+        field.save!
+        field.move_to_top
+      end
+
+      participation_context.reload
+
+      form
+    end
+
     def validate_built_in_fields?
+      true
+    end
+
+    def author_in_form?(user)
+      AppConfiguration.instance.feature_activated?('idea_author_change') \
+      && !!user \
+      && UserRoleService.new.can_moderate_project?(participation_context.project, user)
+    end
+
+    def budget_in_form?(user)
+      return false if participation_context.project.continuous?
+
+      participation_context.project.phases.any? do |phase|
+        phase.voting? && Factory.instance.voting_method_for(phase).budget_in_form?(user)
+      end
+    end
+
+    def allowed_ideas_orders
+      %w[trending random popular -new new]
+    end
+
+    def posting_allowed?
+      true
+    end
+
+    def supports_exports?
       true
     end
 
@@ -281,14 +328,6 @@ module ParticipationMethod
       true
     end
 
-    def supports_baskets?
-      true
-    end
-
-    def supports_budget?
-      true
-    end
-
     def supports_status?
       true
     end
@@ -298,10 +337,6 @@ module ParticipationMethod
     end
 
     def sign_in_required_for_posting?
-      true
-    end
-
-    def include_author_budget_in_schema?
       true
     end
 

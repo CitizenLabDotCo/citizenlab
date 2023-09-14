@@ -16,12 +16,12 @@ import { Box, Title, Image } from '@citizenlab/cl2-component-library';
 import Modal from 'components/UI/Modal';
 
 // utils
-import { getMethodConfig, getPhase } from 'utils/participationMethodUtils';
-import { getCurrentPhase } from 'api/phases/utils';
+import {
+  getMethodConfig,
+  getPhase,
+} from 'utils/configs/participationMethodConfig';
+import { getCurrentParticipationContext } from 'api/phases/utils';
 import { isReady } from './utils';
-
-// typings
-import { ParticipationMethod } from 'services/participationContexts';
 
 interface Props {
   projectId: string;
@@ -51,25 +51,13 @@ const SuccessModal = ({ projectId }: Props) => {
 
   if (!ready) return null;
 
-  let phaseParticipationMethod: ParticipationMethod | undefined;
-
-  if (phases) {
-    const phaseInUrl = phaseIdParam
-      ? getPhase(phaseIdParam, phases.data)
-      : null;
-    if (phaseInUrl) {
-      phaseParticipationMethod = phaseInUrl.attributes.participation_method;
-    } else {
-      phaseParticipationMethod = getCurrentPhase(phases.data)?.attributes
-        .participation_method;
-    }
-  }
-
+  const phaseInUrl =
+    phaseIdParam && phases ? getPhase(phaseIdParam, phases.data) : undefined;
+  const participationContext =
+    phaseInUrl ?? getCurrentParticipationContext(project?.data, phases?.data);
   const participationMethod =
-    phaseParticipationMethod ??
-    (project?.data.attributes.participation_method as
-      | ParticipationMethod
-      | undefined);
+    participationContext?.attributes.participation_method;
+
   if (!participationMethod) return null;
 
   const config = getMethodConfig(participationMethod);

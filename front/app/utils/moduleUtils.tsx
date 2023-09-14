@@ -28,7 +28,6 @@ import { TTabName } from 'containers/Admin/projects/all/CreateProject';
 import { NavItem } from 'containers/Admin/sideBar/navItems';
 import { LatLngTuple } from 'leaflet';
 import { GetLocaleChildProps } from 'resources/GetLocale';
-import { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 import { IGroupDataAttributes, MembershipType } from 'api/groups/types';
 import { TNotificationData } from 'api/notifications/types';
 import { IPhaseData } from 'api/phases/types';
@@ -198,7 +197,6 @@ export interface OutletsPropertyMap {
     commentId: string;
   };
   'app.containers.InitiativesShow.left': {
-    windowSize: GetWindowSizeChildProps;
     translateButtonClicked: boolean;
     onClick: () => void;
     initiative: IInitiativeData;

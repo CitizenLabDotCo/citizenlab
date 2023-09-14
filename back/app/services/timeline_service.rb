@@ -24,15 +24,21 @@ class TimelineService
     end
   end
 
-  def current_or_last_ideation_phase(project, time = Time.now)
+  def phase_is_complete?(participation_context, time = Time.now)
+    return false unless participation_context.phase?
+
+    date = time.in_time_zone(AppConfiguration.instance.settings('core', 'timezone')).to_date
+    participation_context.end_at <= date
+  end
+
+  def current_or_last_can_contain_ideas_phase(project, time = Time.now)
     date = time.in_time_zone(AppConfiguration.instance.settings('core', 'timezone')).to_date
     return unless project.timeline?
 
     phases = project.phases
     return if phases.blank?
 
-    ideation_types = %w[ideation budgeting]
-    ideation_phases = phases.select { |phase| ideation_types.include? phase.participation_method }
+    ideation_phases = phases.select(&:can_contain_ideas?)
     return if ideation_phases.blank?
 
     current_phase = ideation_phases.find { |phase| phase.start_at <= date && date <= phase.end_at }
@@ -89,5 +95,10 @@ class TimelineService
       end
       [project.id, active]
     end
+  end
+
+  def phase_number(phase)
+    phase_ids = phase.project.phase_ids
+    phase_ids.find_index(phase.id) + 1
   end
 end

@@ -7,10 +7,7 @@ import FilterSelector from 'components/FilterSelector';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-// utils
-import { defaultSortingOptions } from 'utils/participationMethodUtils';
-
-export type Sort = 'random' | 'new' | '-new';
+export type Sort = 'random' | 'likes_count' | 'new' | '-new';
 
 type Props = {
   id?: string | undefined;
@@ -39,9 +36,15 @@ class SortFilterDropdown extends PureComponent<Props, State> {
   render() {
     const { alignment } = this.props;
     const { selectedValue } = this.state;
-    const options = defaultSortingOptions.filter(
-      (option) => option.value !== 'trending' && option.value !== 'popular'
-    );
+    const options = [
+      { text: <FormattedMessage {...messages.random} />, value: 'random' },
+      {
+        text: <FormattedMessage {...messages.popular} />,
+        value: 'likes_count',
+      },
+      { text: <FormattedMessage {...messages.newest} />, value: 'new' },
+      { text: <FormattedMessage {...messages.oldest} />, value: '-new' },
+    ];
 
     return (
       <FilterSelector

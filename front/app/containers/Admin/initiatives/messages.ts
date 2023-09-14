@@ -28,15 +28,54 @@ export default defineMessages({
   },
   warningTresholdSettings: {
     id: 'app.containers.Admin.initiatives.warningTresholdSettings',
-    defaultMessage: 'Changing this will impact all active initiatives',
+    defaultMessage: 'Changing this will impact all active proposals',
   },
-  fieldVotingThreshold: {
-    id: 'app.containers.Admin.initiatives.fieldVotingThreshold',
-    defaultMessage: 'Voting threshold',
+  requireReviewLabel: {
+    id: 'app.containers.Admin.initiatives.requireReviewLabel',
+    defaultMessage: 'Require review of proposals',
   },
-  fieldVotingDaysLimit: {
-    id: 'app.containers.Admin.initiatives.fieldVotingDaysLimit',
-    defaultMessage: 'Days to reach voting threshold',
+  requireReviewTooltip: {
+    id: 'app.containers.Admin.initiatives.requireReviewTooltip',
+    defaultMessage:
+      "It's impossible to edit proposals once they're reviewed and approved",
+  },
+  requireCosponsorsLabel: {
+    id: 'app.containers.Admin.initiatives.requireCosponsorsLabel',
+    defaultMessage: 'Require cosponsors per proposal',
+  },
+  requireCosponsorsInfo: {
+    id: 'app.containers.Admin.initiatives.requireCosponsorsInfo1',
+    defaultMessage:
+      "Proposals won't be visible until a number of cosponsors has been reached.",
+  },
+  cosponsorsNumberLabel: {
+    id: 'app.containers.Admin.initiatives.cosponsorsNumberLabel',
+    defaultMessage: 'Number of cosponsors',
+  },
+  cosponsorsNumberMinError: {
+    id: 'app.containers.Admin.initiatives.cosponsorsNumberMinError1',
+    defaultMessage: 'The number of cosponsors needs to be at least 1.',
+  },
+  requireReviewInfo: {
+    id: 'app.containers.Admin.initiatives.requireReviewInfo1',
+    defaultMessage:
+      "Proposals won't be visible until an admin reviews and approves them.",
+  },
+  numberOfVotesThreshold: {
+    id: 'app.containers.Admin.initiatives.numberOfVotesThreshold',
+    defaultMessage: 'Minimum number of votes to be considered',
+  },
+  numberOfDaysThreshold: {
+    id: 'app.containers.Admin.initiatives.numberOfDaysThreshold',
+    defaultMessage: 'Number of days to reach minimum number of votes',
+  },
+  postingTips: {
+    id: 'app.containers.Admin.initiatives.postingTips',
+    defaultMessage: 'Posting tips',
+  },
+  postingTipsInfo: {
+    id: 'app.containers.Admin.initiatives.postingTipsInfo',
+    defaultMessage: 'Give some specific tips for posting a proposal',
   },
   proposalEligibilityCriteria: {
     id: 'app.containers.Admin.initiatives.proposalEligibilityCriteria',
@@ -59,9 +98,13 @@ export default defineMessages({
     id: 'app.containers.Admin.initiatives.initiativeSettingsFormError',
     defaultMessage: 'Something went wrong. Please try again.',
   },
-  initiativeSettingsVotingThresholdError: {
-    id: 'app.containers.Admin.initiatives.initiativeSettingsVotingThresholdError',
-    defaultMessage: 'The voting treshold needs to be at least 2',
+  initiativeMinimumVotesError: {
+    id: 'app.containers.Admin.initiatives.initiativeMinimumVotesError',
+    defaultMessage: 'The minimum number of votes needs to be at least 2.',
+  },
+  initiativeMinimumDaysError: {
+    id: 'app.containers.Admin.initiatives.initiativeMinimumDaysError',
+    defaultMessage: 'The minimum number of days needs to be at least 1.',
   },
   initiativeSettingsFormSuccess: {
     id: 'app.containers.Admin.initiatives.initiativeSettingsFormSuccess',
@@ -109,8 +152,24 @@ export default defineMessages({
     id: 'app.containers.Admin.initiatives.enableProposals',
     defaultMessage: 'Enable proposals',
   },
-  proposals: {
-    id: 'app.containers.Admin.initiatives.proposals',
-    defaultMessage: 'Proposals',
+  overviewTab: {
+    id: 'app.containers.Admin.initiatives.overviewTab',
+    defaultMessage: 'Overview',
+  },
+  feature: {
+    id: 'app.containers.Admin.initiatives.feature',
+    defaultMessage: 'Feature',
+  },
+  review: {
+    id: 'app.containers.Admin.initiatives.review',
+    defaultMessage: 'Review',
+  },
+  cosponsors: {
+    id: 'app.containers.Admin.initiatives.cosponsors',
+    defaultMessage: 'Cosponsors',
+  },
+  thresholds: {
+    id: 'app.containers.Admin.initiatives.thresholds',
+    defaultMessage: 'Thresholds',
   },
 });

@@ -1,0 +1,15 @@
+<!-- Body text -->
+<mj-section padding="0 25px">
+  <mj-column>
+    <mj-text>
+      <p style="margin-top: 0px;"><%= format_message('body_1') %></p>
+      <p><%= format_message('body_2', values: { phaseTitle: localize_for_recipient(event.phase_title_multiloc), organizationName: organization_name }) %></p>
+      <p><%= format_message('body_3') %></p>
+    </mj-text>
+  </mj-column>
+</mj-section>
+
+<!-- TODO: RESULTS TO APPEAR HERE -->
+
+<!-- CTA button -->
+<%= render partial: 'application/cta_button', locals: { href: event.project_url, message: format_message('cta_see_results') } %>

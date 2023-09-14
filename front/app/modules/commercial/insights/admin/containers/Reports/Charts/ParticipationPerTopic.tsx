@@ -180,7 +180,7 @@ const ParticipationPerTopic = ({ endAt, projectId, className }: Props) => {
               </Column>
               <Column>
                 <ParticipationType>
-                  <FormattedMessage {...messages.votes} />
+                  <FormattedMessage {...messages.reactions} />
                 </ParticipationType>
                 {reactionsByTopicSerie &&
                   reactionsByTopicSerie.map((topic, index) => (

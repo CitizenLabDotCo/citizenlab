@@ -23,9 +23,9 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.PostPreview.deleteInitiativeConfirmation',
     defaultMessage: 'Are you sure you want to delete this initiative?',
   },
-  voteCounts: {
-    id: 'app.components.admin.PostManager.PostPreview.voteCounts',
-    defaultMessage: 'Vote counts:',
+  reactionCounts: {
+    id: 'app.components.admin.PostManager.PostPreview.reactionCounts',
+    defaultMessage: 'Reaction counts:',
   },
   currentStatus: {
     id: 'app.components.admin.PostManager.PostPreview.currentStatus',

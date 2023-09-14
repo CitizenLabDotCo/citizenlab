@@ -7,12 +7,12 @@ describe BasketPolicy do
 
   let(:basket) { create(:basket, participation_context: create(:continuous_budgeting_project)) }
 
-  context 'for a mortal user who owns the basket in a project where budgeting is not permitted' do
+  context 'for a mortal user who owns the basket in a project where voting is not permitted' do
     let!(:user) { create(:user) }
     let!(:basket) { create(:basket, user: user, participation_context: project) }
     let!(:project) do
       create(:continuous_budgeting_project, with_permissions: true).tap do |project|
-        project.permissions.find_by(action: 'budgeting')
+        project.permissions.find_by(action: 'voting')
           .update!(permitted_by: 'admins_moderators')
       end
     end

@@ -15,6 +15,10 @@ ar:
     rejected: تم رفضها
     rejected_description: تم رفض هذه الفكرة
   initiative_statuses:
+    review_pending: المراجعة معلقة
+    review_pending_description: المراجعة معلقة
+    changes_requested: التغييرات المطلوبة
+    changes_requested_description: التغييرات المطلوبة
     proposed: تم اقتراحها
     proposed_description: تم اقتراحها
     expired: انتهت صلاحيتها
@@ -181,6 +185,8 @@ ar:
       <p>تمت دعوة المبادرين لتقديم مُقترحهم في اجتماع المجلس القادم. سنقدم تحديثًا رسميًا بذلك.</p>
     default_eligibility_criteria: >
       <ul> <li> يجب أن تندرج ضمن مجالات وكفاءات السياسة المحلية</li> <li> يجب أن تخدم المصلحة العامة وليس مصلحتك الفردية</li> <li> يجب ألّا تقوم بالتمييز على أساس الجنس، العرق أو العمر أو الخلفية</li> <li>يجب ألّا تؤذي الآخرين</li> </ul>
+    default_posting_tips: >
+      <ul><li>خذ الوقت الكافي لكتابة مُقترحك وإيضاحه. إذا لزم الأمر، اكتب مسوّدة أولاً ثم انسخها والصقها هنا. بمجرد النشر، سيتمكن الآخرون من قراءة المُقترح وسيسير الوقت بسرعة.</li><li>اختر عنوانًا ذا معنى يشرح بوضوح ما ينطوي عليه اقتراحك.</li><li>تأكد من إضافة صورة مناسبة إلى مُقترحك، حتى يبرز من بين المُقترحات الأخرى.</li><li>أضِف مرفقات ذات صلة، مثل الفيديوهات،أو الأمثلة المُلهمة، أو التفاصيل الفنية، أو الخطط.</li><li>شارك فكرتك على وسائل التواصل الاجتماعي والقنوات الأخرى لحشد الدعم من الآخرين.</li></ul>
   reset_password_mailer:
     send_reset_password:
       cta_reset_password: 'إعادة تعيين كلمة المرور'
@@ -201,7 +207,9 @@ ar:
       comments_count: 'التعليقات'
       likes_count: 'الإعجابات'
       dislikes_count: 'يكره'
-      baskets_count: 'سلال'
+      picks: 'مختارات'
+      participants: 'مشاركون'
+      votes_count: 'الأصوات'
       input_url: 'URL'
       project: 'المشروع'
       status: 'الحالة'
@@ -247,3 +255,6 @@ ar:
     formats:
       hour_of_day: "%H:%M"
     pm: مساءً
+  voting_method:
+    default_voting_term_singular: "تصويت"
+    default_voting_term_plural: "أصوات"

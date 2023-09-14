@@ -63,12 +63,9 @@ class JsonFormsService
   private
 
   def add_author_budget_fields!(output, fields, current_user)
-    participation_context = fields.first.resource.participation_context
-    return if !Factory.instance.participation_method_for(participation_context).include_author_budget_in_schema?
+    participation_method = Factory.instance.participation_method_for fields.first.resource.participation_context
 
-    project = participation_context.project
-
-    if author_field_allowed? project, current_user
+    if participation_method.author_in_form? current_user
       output[:json_schema_multiloc].each_value do |json_schema|
         json_schema[:properties]['author_id'] = InputJsonSchemaGeneratorService.new.visit_text AUTHOR_FIELD
       end
@@ -80,61 +77,41 @@ class JsonFormsService
       end
     end
 
-    return if !budget_field_allowed? project, current_user
-
-    output[:json_schema_multiloc].each_value do |json_schema|
-      json_schema[:properties]['budget'] = InputJsonSchemaGeneratorService.new.visit_number BUDGET_FIELD
-    end
-    budget_schema = InputUiSchemaGeneratorService.new(nil, true).visit_number BUDGET_FIELD
-    output[:ui_schema_multiloc].each_value do |ui_schema|
-      details_section_id = fields.find { |field| field.code == 'ideation_section3' }&.id
-      if details_section_id
-        # Insert at the top of the details section if the section exists.
-        details_section = ui_schema[:elements].find do |elt|
-          elt.dig(:options, :id) == details_section_id
-        end
-        details_section[:elements].insert 0, budget_schema
-      elsif fields.find { |field| field.code == 'proposed_budget' }
-        # Insert before the proposed budget if there is no details section.
-        budget_section = ui_schema[:elements].find do |elt|
-          elt[:elements].any? do |subelt|
-            subelt[:scope] == '#/properties/proposed_budget'
+    if participation_method.budget_in_form? current_user
+      output[:json_schema_multiloc].each_value do |json_schema|
+        json_schema[:properties]['budget'] = InputJsonSchemaGeneratorService.new.visit_number BUDGET_FIELD
+      end
+      budget_schema = InputUiSchemaGeneratorService.new(nil, true).visit_number BUDGET_FIELD
+      output[:ui_schema_multiloc].each_value do |ui_schema|
+        details_section_id = fields.find { |field| field.code == 'ideation_section3' }&.id
+        if details_section_id
+          # Insert at the top of the details section if the section exists.
+          details_section = ui_schema[:elements].find do |elt|
+            elt.dig(:options, :id) == details_section_id
           end
+          details_section[:elements].insert 0, budget_schema
+        elsif fields.find { |field| field.code == 'proposed_budget' }
+          # Insert before the proposed budget if there is no details section.
+          budget_section = ui_schema[:elements].find do |elt|
+            elt[:elements].any? do |subelt|
+              subelt[:scope] == '#/properties/proposed_budget'
+            end
+          end
+          budget_position = budget_section[:elements].index do |elt|
+            elt[:scope] == '#/properties/proposed_budget'
+          end
+          budget_section[:elements].insert budget_position, budget_schema
+        else
+          # Insert below the body_multiloc field if there is no details section or proposed budget field.
+          schema_main_section = ui_schema[:elements].find do |elt|
+            elt.dig(:options, :id) == fields.find { |field| field.code == 'ideation_section1' }.id
+          end
+          body_multiloc_position = schema_main_section[:elements].index do |elt|
+            elt.dig(:options, :input_type) == 'html_multiloc' && elt[:elements].first[:scope].starts_with?('#/properties/body_multiloc/properties')
+          end
+          schema_main_section[:elements].insert (body_multiloc_position + 1), budget_schema
         end
-        budget_position = budget_section[:elements].index do |elt|
-          elt[:scope] == '#/properties/proposed_budget'
-        end
-        budget_section[:elements].insert budget_position, budget_schema
-      else
-        # Insert below the body_multiloc field if there is no details section or proposed budget field.
-        schema_main_section = ui_schema[:elements].find do |elt|
-          elt.dig(:options, :id) == fields.find { |field| field.code == 'ideation_section1' }.id
-        end
-        body_multiloc_position = schema_main_section[:elements].index do |elt|
-          elt.dig(:options, :input_type) == 'html_multiloc' && elt[:elements].first[:scope].starts_with?('#/properties/body_multiloc/properties')
-        end
-        schema_main_section[:elements].insert (body_multiloc_position + 1), budget_schema
       end
     end
-  end
-
-  def author_field_allowed?(project, current_user)
-    AppConfiguration.instance.feature_activated?('idea_author_change') &&
-      current_user &&
-      UserRoleService.new.can_moderate_project?(project, current_user)
-  end
-
-  def budget_field_allowed?(project, current_user)
-    return false unless AppConfiguration.instance.feature_activated?('participatory_budgeting')
-    return false unless current_user
-    return false unless UserRoleService.new.can_moderate_project?(project, current_user)
-
-    (
-      project&.process_type == 'continuous' &&
-      project&.participation_method == 'budgeting'
-    ) || (
-      project&.process_type == 'timeline' &&
-      project&.phases&.any? { |p| p.participation_method == 'budgeting' }
-    )
   end
 end

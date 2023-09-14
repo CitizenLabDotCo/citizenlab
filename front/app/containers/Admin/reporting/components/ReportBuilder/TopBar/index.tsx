@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
-// services
-import { updateReportLayout } from 'services/reports';
-
 // hooks
 import { useEditor, SerializedNodes } from '@craftjs/core';
-import useReport from 'hooks/useReport';
+import useReport from 'api/reports/useReport';
 
 // components
 import Container from 'components/admin/ContentBuilder/TopBar/Container';
@@ -34,6 +31,8 @@ import { isEqual } from 'lodash-es';
 
 // types
 import { Locale } from 'typings';
+
+import useUpdateReportLayout from 'api/report_layout/useUpdateReportLayout';
 
 const LocaleBadge = styled(Box)`
   display: inline-block;
@@ -70,11 +69,11 @@ const ContentBuilderTopBar = ({
   projectId,
 }: ContentBuilderTopBarProps) => {
   const [initialized, setInitialized] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [showQuitModal, setShowQuitModal] = useState(false);
   const [hasChange, setHasChange] = useState(false);
   const { query } = useEditor();
-  const report = useReport(reportId);
+  const { data: report } = useReport(reportId);
+  const { mutate: updateReportLayout, isLoading } = useUpdateReportLayout();
 
   const disableSave = localesWithError.length > 0;
 
@@ -94,19 +93,17 @@ const ContentBuilderTopBar = ({
   const doGoBack = () => {
     clHistory.push('/admin/reporting/report-builder');
   };
-  const handleSave = async () => {
+  const handleSave = () => {
     if (selectedLocale) {
-      try {
-        setHasChange(false);
-        setLoading(true);
-        await updateReportLayout(reportId, {
+      setHasChange(false);
+
+      updateReportLayout({
+        id: reportId,
+        craftMultiloc: {
           ...draftEditorData,
           [selectedLocale]: query.getSerializedNodes(),
-        });
-      } catch {
-        // Do nothing
-      }
-      setLoading(false);
+        },
+      });
     }
   };
 
@@ -147,9 +144,12 @@ const ContentBuilderTopBar = ({
 
     if (nodes?.[firstNode].displayName === 'ProjectTemplate') {
       setTimeout(() => {
-        updateReportLayout(reportId, {
-          ...draftEditorData,
-          [selectedLocale]: query.getSerializedNodes(),
+        updateReportLayout({
+          id: reportId,
+          craftMultiloc: {
+            ...draftEditorData,
+            [selectedLocale]: query.getSerializedNodes(),
+          },
         });
       }, 5000);
     }
@@ -162,6 +162,7 @@ const ContentBuilderTopBar = ({
     initialized,
     reportId,
     selectedLocale,
+    updateReportLayout,
   ]);
 
   const handleTogglePreview = () => {
@@ -209,7 +210,7 @@ const ContentBuilderTopBar = ({
             <FormattedMessage {...messages.reportBuilder} />
           </Text>
           <Title variant="h4" as="h1" color="primary">
-            {isNilOrError(report) ? <></> : report.attributes.name}
+            {isNilOrError(report) ? <></> : report.data.attributes.name}
             <LocaleBadge>{selectedLocale?.toUpperCase()}</LocaleBadge>
           </Title>
         </Box>
@@ -224,7 +225,7 @@ const ContentBuilderTopBar = ({
         </Box>
         <SaveButton
           disabled={!!(disableSave || hasPendingState)}
-          processing={loading}
+          processing={isLoading}
           onClick={handleSave}
         />
       </Box>

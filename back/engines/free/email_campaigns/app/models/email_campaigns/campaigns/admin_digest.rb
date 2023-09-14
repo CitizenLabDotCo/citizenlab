@@ -108,31 +108,17 @@ module EmailCampaigns
 
     def content_worth_sending?(_)
       [
-        statistics.dig(:activities, :new_ideas, :increase),
-        statistics.dig(:activities, :new_initiatives, :increase),
-        statistics.dig(:activities, :new_comments, :increase),
-        statistics.dig(:users, :new_visitors, :increase),
-        statistics.dig(:users, :new_users, :increase),
-        statistics.dig(:users, :active_users, :increase)
+        statistics[:new_ideas_increase],
+        statistics[:new_comments_increase],
+        statistics[:new_users_increase]
       ].any?(&:positive?)
     end
 
     def statistics
       @statistics ||= {
-        activities: {
-          new_ideas: stat_increase(Idea.pluck(:published_at).compact),
-          new_initiatives: stat_increase(Initiative.pluck(:published_at).compact),
-          new_reactions: stat_increase(Reaction.pluck(:created_at)),
-          new_comments: stat_increase(Comment.pluck(:created_at)),
-          total_ideas: Idea.count,
-          total_initiatives: Initiative.count,
-          total_users: User.count
-        },
-        users: {
-          new_visitors: stat_increase,
-          new_users: stat_increase(User.pluck(:registration_completed_at).compact),
-          active_users: stat_increase
-        }
+        new_ideas_increase: stat_increase(Idea.pluck(:published_at).compact),
+        new_comments_increase: stat_increase(Comment.pluck(:created_at)),
+        new_users_increase: stat_increase(User.pluck(:registration_completed_at).compact)
       }
     end
 
@@ -142,13 +128,8 @@ module EmailCampaigns
       ((t2 - t1) / 1.day).days
     end
 
-    def stat_increase(stats = [])
-      second_last_agos = stats.select { |t| t > (Time.now - (days_ago * 2)) }
-      last_agos = second_last_agos.select { |t| t > (Time.now - days_ago) }
-      {
-        increase: last_agos.size,
-        past_increase: second_last_agos.size
-      }
+    def stat_increase(stat_dates = [])
+      stat_dates.count { |t| t > (Time.now - days_ago) }
     end
 
     def top_project_ideas
@@ -211,7 +192,7 @@ module EmailCampaigns
     end
 
     def new_initiatives(time: Time.zone.today)
-      @new_initiatives ||= Initiative.published.where('published_at > ?', (time - 1.week))
+      @new_initiatives ||= Initiative.published.proposed_after(1.week.ago)
         .order(published_at: :desc)
         .includes(:initiative_images)
         .map { |initiative| serialize_initiative(initiative) }
@@ -222,7 +203,7 @@ module EmailCampaigns
         .published
         .joins(initiative_status_changes: :initiative_status)
         .includes(:initiative_images)
-        .where(initiative_statuses: { code: 'threshold_reached' })
+        .with_status_code('threshold_reached')
         .where('initiative_status_changes.created_at > ?', time - 1.week)
         .feedback_needed
         .map { |initiative| serialize_initiative(initiative) }
@@ -233,12 +214,12 @@ module EmailCampaigns
       new_reactions = Reaction.where(reactable_id: idea_ids).where('created_at > ?', Time.now - days_ago)
       new_likes_counts = new_reactions.where(mode: 'up').group(:reactable_id).count
       new_dislikes_counts = new_reactions.where(mode: 'down').group(:reactable_id).count
-      new_comments_counts = Comment.where(post_id: idea_ids).where('created_at > ?', Time.now - days_ago).group(:post_id).count
+      new_comments_increases = Comment.where(post_id: idea_ids).where('created_at > ?', Time.now - days_ago).group(:post_id).count
 
       idea_ids.each_with_object({}) do |idea_id, object|
         likes = (new_likes_counts[idea_id] || 0)
         dislikes = (new_dislikes_counts[idea_id] || 0)
-        comments        = (new_comments_counts[idea_id] || 0)
+        comments        = (new_comments_increases[idea_id] || 0)
         total           = (likes + dislikes + comments)
         object[idea_id] = { likes: likes, dislikes: dislikes, comments: comments, total: total }
       end

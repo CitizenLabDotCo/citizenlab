@@ -72,6 +72,9 @@ const AuthProviders = memo<Props>(
     const claveUnicaLoginEnabled = useFeatureFlag({
       name: 'clave_unica_login',
     });
+    const hoplrLoginEnabled = useFeatureFlag({
+      name: 'hoplr_login',
+    });
 
     const azureProviderName =
       tenantSettings?.azure_ad_login?.login_mechanism_name;
@@ -107,7 +110,8 @@ const AuthProviders = memo<Props>(
       facebookLoginEnabled ||
       azureAdLoginEnabled ||
       viennaCitizenLoginEnabled ||
-      claveUnicaLoginEnabled;
+      claveUnicaLoginEnabled ||
+      hoplrLoginEnabled;
 
     return (
       <Container
@@ -132,6 +136,17 @@ const AuthProviders = memo<Props>(
             flow={flow}
             onSelectAuthProvider={onSelectAuthProvider}
           />
+        )}
+
+        {hoplrLoginEnabled && (
+          <StyledAuthProviderButton
+            icon="hoplr"
+            flow={flow}
+            authProvider="hoplr"
+            onContinue={onSelectAuthProvider}
+          >
+            <FormattedMessage {...messages.continueWithHoplr} />
+          </StyledAuthProviderButton>
         )}
 
         <Outlet

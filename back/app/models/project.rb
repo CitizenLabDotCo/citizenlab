@@ -25,14 +25,14 @@
 #  internal_role                 :string
 #  survey_embed_url              :string
 #  survey_service                :string
-#  max_budget                    :integer
+#  voting_max_total              :integer
 #  comments_count                :integer          default(0), not null
 #  default_assignee_id           :uuid
 #  poll_anonymous                :boolean          default(FALSE), not null
 #  reacting_dislike_enabled      :boolean          default(TRUE), not null
 #  ideas_order                   :string
 #  input_term                    :string           default("idea")
-#  min_budget                    :integer          default(0)
+#  voting_min_total              :integer          default(0)
 #  reacting_dislike_method       :string           default("unlimited"), not null
 #  reacting_dislike_limited_max  :integer          default(10)
 #  include_all_areas             :boolean          default(FALSE), not null
@@ -40,6 +40,13 @@
 #  posting_limited_max           :integer          default(1)
 #  document_annotation_embed_url :string
 #  allow_anonymous_participation :boolean          default(FALSE), not null
+#  followers_count               :integer          default(0), not null
+#  voting_method                 :string
+#  voting_max_votes_per_idea     :integer
+#  voting_term_singular_multiloc :jsonb
+#  voting_term_plural_multiloc   :jsonb
+#  baskets_count                 :integer          default(0), not null
+#  votes_count                   :integer          default(0), not null
 #
 # Indexes
 #
@@ -77,6 +84,7 @@ class Project < ApplicationRecord
   has_many :text_images, as: :imageable, dependent: :destroy
   accepts_nested_attributes_for :text_images
   has_many :project_files, -> { order(:ordering) }, dependent: :destroy
+  has_many :followers, as: :followable, dependent: :destroy
 
   before_validation :generate_slug, on: :create
   before_validation :sanitize_description_multiloc, if: :description_multiloc
@@ -128,6 +136,10 @@ class Project < ApplicationRecord
     where.not(process_type: 'timeline')
   }
 
+  scope :is_timeline, lambda {
+    where(process_type: 'timeline')
+  }
+
   scope :ordered, lambda {
     includes(:admin_publication).order('admin_publications.ordering')
   }
@@ -163,10 +175,6 @@ class Project < ApplicationRecord
     process_type == 'timeline'
   end
 
-  def native_survey?
-    participation_method == 'native_survey'
-  end
-
   def project
     self
   end
@@ -194,7 +202,7 @@ class Project < ApplicationRecord
     admin_publication&.parent&.publication_id
   end
 
-  def folder?
+  def in_folder?
     !!folder_id
   end
 
@@ -321,8 +329,9 @@ class Project < ApplicationRecord
   end
 end
 
+Project.include(SmartGroups::Concerns::ValueReferenceable)
 Project.include(CustomMaps::Extensions::Project)
 Project.include(IdeaAssignment::Extensions::Project)
 Project.include(Insights::Patches::Project)
-Project.include(SmartGroups::Patches::Project)
 Project.include(ContentBuilder::Patches::Project)
+Project.include(Analysis::Patches::Project)

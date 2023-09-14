@@ -1,7 +1,7 @@
 import React from 'react';
 
 // hooks
-import useProjectDescriptionBuilderLayout from 'modules/commercial/project_description_builder/hooks/useProjectDescriptionBuilderLayout';
+import useProjectDescriptionBuilderLayout from 'modules/commercial/project_description_builder/api/useProjectDescriptionBuilderLayout';
 import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 import useProjectFiles from 'api/project_files/useProjectFiles';
@@ -37,14 +37,11 @@ const Preview = ({ projectId, projectTitle }: PreviewProps) => {
   const localize = useLocalize();
   const { data: projectFiles } = useProjectFiles(projectId);
 
-  const projectDescriptionBuilderLayout =
+  const { data: projectDescriptionBuilderLayout, isInitialLoading } =
     useProjectDescriptionBuilderLayout(projectId);
 
-  const isLoadingProjectDescriptionBuilderLayout =
-    projectDescriptionBuilderLayout === undefined;
-
   const projectDescriptionBuilderContent =
-    !isNilOrError(projectDescriptionBuilderLayout) &&
+    projectDescriptionBuilderLayout &&
     !isNilOrError(locale) &&
     projectDescriptionBuilderLayout.data.attributes.enabled &&
     projectDescriptionBuilderLayout.data.attributes.craftjs_jsonmultiloc[
@@ -60,32 +57,30 @@ const Preview = ({ projectId, projectTitle }: PreviewProps) => {
 
   return (
     <Box data-testid="projectDescriptionBuilderPreview">
-      {isLoadingProjectDescriptionBuilderLayout && <Spinner />}
-      {!isLoadingProjectDescriptionBuilderLayout &&
-        projectDescriptionBuilderContent && (
-          <Box data-testid="projectDescriptionBuilderPreviewContent">
-            <Title color="tenantText" variant="h1">
-              {localize(projectTitle)}
-            </Title>
-            <Editor isPreview={true}>
-              <ContentBuilderFrame
-                editorData={editorData}
-                onLoadImages={handleLoadImages}
-              />
-            </Editor>
-            {projectFiles && (
-              <Box maxWidth="750px" mb="25px">
-                <FileAttachments files={projectFiles.data} />
-              </Box>
-            )}
-          </Box>
-        )}
-      {!isLoadingProjectDescriptionBuilderLayout &&
-        !projectDescriptionBuilderContent && (
-          <Box data-testid="projectDescriptionBuilderProjectDescription">
-            <ProjectInfo projectId={projectId} />
-          </Box>
-        )}
+      {isInitialLoading && <Spinner />}
+      {!isInitialLoading && projectDescriptionBuilderContent && (
+        <Box data-testid="projectDescriptionBuilderPreviewContent">
+          <Title color="tenantText" variant="h1">
+            {localize(projectTitle)}
+          </Title>
+          <Editor isPreview={true}>
+            <ContentBuilderFrame
+              editorData={editorData}
+              onLoadImages={handleLoadImages}
+            />
+          </Editor>
+          {projectFiles && (
+            <Box maxWidth="750px" mb="25px">
+              <FileAttachments files={projectFiles.data} />
+            </Box>
+          )}
+        </Box>
+      )}
+      {!isInitialLoading && !projectDescriptionBuilderContent && (
+        <Box data-testid="projectDescriptionBuilderProjectDescription">
+          <ProjectInfo projectId={projectId} />
+        </Box>
+      )}
     </Box>
   );
 };

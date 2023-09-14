@@ -8,12 +8,15 @@ lb:
       "comment_on_your_comment": Eng Äntwert op mäi Kommentar
       "comment_on_your_idea": E Kommentar zu menger Iddi
       "comment_on_your_initiative": E Kommentar zu mengem Virschlag
+      "cosponsor_of_your_initiative": E Benotzer akzeptéiert meng Invitatioun fir meng Propositioun ze sponsoren
       "first_idea_published": Verëffentlechung vu menger éischter Iddi
       "idea_marked_as_spam": Spambericht iwwer d'Iddien
       "idea_published": Verëffentlechung vu menger Iddi
       "initiative_assigned_to_you": E Virschlag gouf mir zougewisen
       "initiative_marked_as_spam": Spambericht iwwer d'Virschléi
       "initiative_published": Verëffentlechung vu mengem Virschlag
+      "invitation_to_cosponsor_initiative": Invitatioun fir eng Propositioun ze sponseren
+      "initiative_resubmitted_for_review": Propositioun nees fir Iwwerpréiwung presentéiert
       "invite_received": Invitatioun
       "invite_reminder": Invitatiounserënnerung
       "internal_comment_on_idea_assigned_to_you": Interne Kommentar zum Input, deen mir zougewisen ass
@@ -29,14 +32,14 @@ lb:
       "new_comment_for_admin": Neie Kommentar an engem Projet, deen ech moderéieren
       "new_comment_on_commented_idea": Neie Kommentar zu enger Iddi, déi ech kommentéiert hunn
       "new_comment_on_commented_initiative": Neie Kommentar zu enger Virschlag, deen ech kommentéiert hunn
-      "new_comment_on_voted_idea": Neie Kommentar zu enger Iddi, fir déi ech gestëmmt hunn
-      "new_comment_on_voted_initiative": Neie Kommentar zu engem Virschlag, fir deen echt gestëmmt hunn
+      "new_comment_on_reacted_idea": Neie Kommentar op eng Iddi op déi ech reagéiert hunn
+      "new_comment_on_reacted_initiative": Neie Kommentar zu enger Propositioun fir déi ech gestëmmt hunn
       "new_idea_for_admin": Nei Iddi an engem Projet, deen ech moderéien
       "new_initiative_for_admin": Nei Propositioun
       "official_feedback_on_commented_idea": Update zu enger Iddi, déi ech kommentéiert hunn
       "official_feedback_on_commented_initiative": Update zu engem Virschlag, deen ech kommentéiert hunn
-      "official_feedback_on_voted_idea": Update zu enger Iddi, iwwer déi ech ofgestëmmt hunn
-      "official_feedback_on_voted_initiative": Update zu engem Virschlag, iwwer deen ech ofgestëmmt hunn
+      "official_feedback_on_reacted_idea": Update op eng Iddi op déi ech reagéiert hunn
+      "official_feedback_on_reacted_initiative": Update op eng Propositioun, déi ech gestëmmt hunn
       "official_feedback_on_your_idea": Update zu menger Iddi
       "official_feedback_on_your_initiative": Update zu mengem Virschlag
       "password_reset": Passwuert zerécksetzen
@@ -46,8 +49,8 @@ lb:
       "project_phase_upcoming": Bevirstoend nei Projetsphas
       "status_change_of_commented_idea": Statusännerung vun enger Iddi, déi ech kommentéiert hunn
       "status_change_of_commented_initiative": Statusännerung vun engem Virschlag, deen ech kommentéiert hunn
-      "status_change_of_voted_idea": Statusännerung vun enger Iddi, fir déi ech gestëmmt hunn
-      "status_change_of_voted_initiative": Statusännerung vun engem Virschlag, fir deen ech gestëmmt hunn
+      "status_change_of_reacted_idea": Status Ännerung vun enger Iddi op ech reagéiert
+      "status_change_of_reacted_initiative": Status Ännerung vun enger Propositioun ech reagéiert fir
       "status_change_of_your_idea": Statusännerung vu menger Iddi
       "status_change_of_your_initiative": Statusännerung vu mengem Virschlag
       "threshold_reached_for_admin": Virschlag huet d'Schwell vun de Stëmmen erreecht. 
@@ -56,6 +59,10 @@ lb:
       "moderator_digest": Wéchentlech Iwwersiicht fir Projetsmanageren
       "assignee_digest": Wéchentlech Iwwersiicht iwwer zougewisen Iddien
       "user_digest": Wéchentlech Iwwersiicht
+      "voting_basket_submitted": Bestätegung vum Vote
+      "voting_basket_not_submitted": Stëmmen net agereecht
+      "voting_last_chance": Déi lescht Chance fir ze wielen
+      "voting_results": Wahlresultater
       "your_proposed_initiatives_digest": Wéchentlech Iwwersiicht vun Äre Virschléi
     schedules:
       weekly:
@@ -134,6 +141,12 @@ lb:
       main_header: '%{commentAuthor} huet Äre Virschlag kommentéiert'
       subject: 'Dir hutt e Kommentar op der Plattform %{organizationName} kritt'
       preheader: '%{authorName} huet e Kommentar zu Ärem Virschlag op %{organizationName} hannerlooss'
+    cosponsor_of_your_initiative:
+      cta_reply_to: 'Kuckt Är Propositioun'
+      event_description_initiative: 'Gratulatioun! %{cosponsorName} huet Är Invitatioun ugeholl fir Är Propositioun ze co-sponsoren.'
+      main_header: '%{cosponsorName} huet Är Invitatioun ugeholl fir Är Propositioun ze co-sponsoren'
+      subject: '%{cosponsorName} huet Är Invitatioun ugeholl fir Är Propositioun ze co-sponsoren'
+      preheader_initiative: '%{cosponsorName} huet Är Invitatioun ugeholl fir Är Propositioun ze co-sponsoren'
     assignee_digest:
       subject: 'Iddien, déi Äre Feedback erfuerderen: %{numberIdeas}'
       preheader: 'Iwwersiicht vun den Elementer déi Iech zougewise goufen %{organizationName}'
@@ -174,6 +187,22 @@ lb:
       main_header: '%{firstName}, Dir hutt eng nei Zouweisung'
       subject: 'Dir hutt eng Zouweisung op der Plattform vun %{organizationName}'
       preheader_initiative: 'De Virschlag vum %{authorName} gouf Iech zougewisen'
+    invitation_to_cosponsor_initiative:
+      cta_reply_to: 'Co-Sponsor dës Propositioun'
+      event_description_initiative: '%{authorName} huet eng nei Propositioun erstallt a géif gären datt Dir se matsponséiert.'
+      event_description_cosponsoring: 'Co-Sponsoring eng Propositioun heescht, datt <strong>Ären Numm gëtt ugewisen</strong> mat den Nimm vun anere Co-Sponsoren vun der Propositioun.'
+      event_description_before_action: 'Fir d''Propositioun ze gesinn an d''Invitatioun unzehuelen, musst Dir op Äre Kont ageloggt sinn.'
+      event_description_action: 'Klickt hei ënnen fir d''Propositioun ze liesen.'
+      main_header: 'Dir sidd invitéiert fir eng Propositioun ze sponseren'
+      subject: 'Dir sidd invitéiert fir eng Propositioun ze sponseren'
+      preheader_initiative: 'Dir sidd invitéiert fir d''Propositioun vum %{authorName}ze co-sponsoren'
+    initiative_resubmitted_for_review:
+      by_author: 'vum %{authorName}'
+      cta_reply_to: 'Gitt Feedback op %{authorName}'
+      event_description_initiative: 'Eng Propositioun gouf fir Iwwerpréiwung nei virgestallt. Gitt Feedback andeems Dir en offiziellen Update schreift oder duerch säi Status z''änneren.'
+      main_header: '%{firstName}, Dir hutt eng Propositioun fir ze iwwerpréiwen'
+      subject: 'Dir hutt eng Propositioun fir op der Plattform vun %{organizationName}ze iwwerpréiwen'
+      preheader_initiative: 'D''Propositioun vun %{authorName} gouf fir Iwwerpréiwung nei virgestallt'
     invite_reminder:
       cta_accept_invitation: 'Invitatioun unhuelen'
       invitation_header: 'Är Invitatioun steet aus'
@@ -270,21 +299,21 @@ lb:
       main_header: '%{authorName} huet Är Iddi kommentéiert'
       subject: 'Dir hutt e Kommentar op der Plattform vun %{organizationName} kritt'
       preheader: '%{authorName} huet e Kommentar zu Ärer Iddi fir %{organizationName} hannerlooss'
-    new_comment_on_voted_initiative:
-      commented: '%{commentAuthor} huet geschriwwen:'
-      cta_reply_to: 'Virschléi ukucken'
-      event_description: '%{commentAuthor} huet de Virschlag ''%{initiativeTitle}'' kommentéiert, iwwer deen Dir ofgestëmmt hutt. Bedeelegt Iech un der Diskussioun op der %{organizationName} Plattform!'
-      main_header: '%{firstName}, et gëtt en neie Kommentar zu dem Virschlag, iwwer den Dir ofgestëmmt hutt'
-      subject: 'Et gëtt en neie Kommentar zu dem Virschlag, iwwer den Dir ofgestëmmt hutt'
-      preheader: '%{commentAuthor} huet e Kommentar zu dem Virschlag hannerlooss, iwwer deen Dir op der %{organizationName} Plattform ofgestëmmt hutt'
-    new_comment_on_voted_idea:
-      commented: '%{commentAuthor} huet kommentéiert:'
-      cta_reply_to: 'Äntwert %{commentAuthor}'
-      days_ago: 'Virun %{numberOfDays} Deeg'
-      event_description: '%{commentAuthor} huet d’Iddi ''%{ideaTitle}'' kommentéiert, iwwer déi Dir ofgestëmmt hutt. Bedeelegt Iech un der Diskussioun op der Plattform vun %{organizationName}!'
-      main_header: '%{firstName}, et gëtt en neie Kommentar zu der Iddi, iwwer déi Dir ofgestëmmt hutt'
-      subject: 'Et gëtt en neie Kommentar zu der Iddi, iwwer déi Dir ofgestëmmt hutt'
-      preheader: '%{commentAuthor} huet e Kommentar zu der Iddi hannerlooss, iwwert déi Dir op der Plattform vun %{organizationName} ofgestëmmt hutt'
+    new_comment_on_reacted_initiative:
+      commented: '%{commentAuthor} geschriwwen:'
+      cta_reply_to: 'Kuckt dës Propositioun'
+      event_description: '%{commentAuthor} huet d''Propositioun ''%{initiativeTitle}'' kommentéiert op där Dir gestëmmt hutt. Maacht mat an der Diskussioun op der Plattform vun %{organizationName}!'
+      main_header: '%{firstName}, et gëtt en neie Kommentar zu der Propositioun, déi Dir gestëmmt hutt'
+      subject: 'Et gëtt en neie Kommentar zu der Propositioun, déi Dir gestëmmt hutt'
+      preheader: '%{commentAuthor} huet e Kommentar iwwer d''Propositioun, op där Dir gestëmmt hutt, op der Plattform vum %{organizationName}hannerlooss'
+    new_comment_on_reacted_idea:
+      commented: '%{commentAuthor} kommentéiert:'
+      cta_reply_to: 'Äntwert op %{commentAuthor}'
+      days_ago: 'virun %{numberOfDays} Deeg'
+      event_description: '%{commentAuthor} huet op d''Iddi ''%{ideaTitle}'' kommentéiert op déi Dir reagéiert hutt. Maacht mat an der Diskussioun op der Plattform vun %{organizationName}!'
+      main_header: '%{firstName}, et gëtt en neie Kommentar zu der Iddi op déi Dir reagéiert hutt'
+      subject: 'Et gëtt en neie Kommentar zu der Iddi op déi Dir reagéiert hutt'
+      preheader: '%{commentAuthor} huet e Kommentar op d''Iddi op der Plattform vun %{organizationName}reagéiert'
       today: Haut
       yesterday: Gëschter
     new_initiative_for_admin:
@@ -369,13 +398,13 @@ lb:
       main_header: 'Et gëtt en Update zu engem Virschlag, deen Dir kommentéiert hutt'
       subject: 'E Virschlag, deen Dir kommentéiert hutt, huet en offiziellen Update op der %{organizationName} Plattform kritt'
       preheader: '%{officialName} huet en offiziellen Update zu engem Virschlag hannerlooss, deen Dir kommentéiert hutt'
-    official_feedback_on_voted_idea:
-      by_author: 'vun %{authorName}'
-      updated: '%{officialName} huet geschriwwen:'
-      cta_view: 'Bei dës Iddi goen'
-      event_description: '%{officialName} huet en Update zu der Iddi ''%{ideaTitle}'' ginn. Klickt hei ënnendrënner, fir mam %{officialName} an d''Gespréich ze kommen.'
-      subject: 'Eng Iddi, iwwer déi Dir ofgestëmmt hutt, huet en offiziellen Update op der Plattform vun %{organizationName} kritt'
-      preheader: '%{officialName} huet en Update zu enger Iddi, iwwer déi Dir ofgestëmmt hutt, hannerlooss'
+    official_feedback_on_reacted_idea:
+      by_author: 'vum %{authorName}'
+      updated: '%{officialName} geschriwwen:'
+      cta_view: 'Gitt op dës Iddi'
+      event_description: '%{officialName} huet en Update iwwer d''Iddi ''%{ideaTitle}'' ginn. Klickt op de Knäppchen hei ënnen fir an d''Gespréich mat %{officialName}anzegoen.'
+      subject: 'Eng Iddi op déi Dir reagéiert hutt huet en Update op der Plattform vun %{organizationName}kritt'
+      preheader: '%{officialName} huet en Update op eng Iddi hannerlooss op déi Dir reagéiert hutt'
       main_header: ""
     official_feedback_on_commented_idea:
       by_author: 'vun %{authorName}'
@@ -393,14 +422,14 @@ lb:
       main_header: 'Dir hutt en Update vun %{organizationName} kritt'
       subject: 'Dir hutt en Update vun %{organizationName} kritt'
       preheader: '%{officialName} huet en offiziellen Update zu Ärer Iddi hannerlooss'
-    official_feedback_on_voted_initiative:
-      by_author: 'vun %{authorName}'
-      updated: '%{officialName} huet geschriwwen:'
-      cta_view: 'Bei dës Propositioun goen'
-      event_description: '%{officialName} huet en Update zu der Propositioun ''%{initiativeTitle}'' ginn. Klickt op de Knapp hei ënnendrënner, fir Iech mat %{organizationName} z’ënnerhalen.'
-      main_header: 'Et gëtt en Update zu engem Virschlag, iwwer deen Dir ofgestëmmt hutt'
-      subject: 'E Virschlag, iwwer déi Dir ofgestëmmt hutt, huet en offiziellen Update op der Plattform vun %{organizationName} kritt'
-      preheader: '%{officialName} huet en offiziellen Update zu engem Virschlag hannerlooss, iwwer deen Dir ofgestëmmt hutt'
+    official_feedback_on_reacted_initiative:
+      by_author: 'vum %{authorName}'
+      updated: '%{officialName} geschriwwen:'
+      cta_view: 'Gitt op dës Propositioun'
+      event_description: '%{officialName} huet en Update iwwer d''Propositioun ''%{initiativeTitle}'' ginn. Klickt op de Knäppchen hei ënnen fir an d''Gespréich mat %{organizationName}anzegoen.'
+      main_header: 'Et gëtt en Update iwwer eng Propositioun op déi Dir gestëmmt hutt'
+      subject: 'Eng Propositioun op déi Dir gestëmmt hutt huet en offiziellen Update op der Plattform vun %{organizationName}kritt'
+      preheader: '%{officialName} huet en offiziellen Update iwwer eng Propositioun hannerlooss déi Dir gewielt hutt'
     official_feedback_on_your_initiative:
       updated: '%{officialName} huet geschriwwen:'
       cta_view: 'Bei Är Propositioun goen'
@@ -468,20 +497,20 @@ lb:
       main_header: 'Är Iddi huet en neie Status'
       subject: 'De Status vun Ärer Iddi gouf geännert'
       preheader: '%{organizationName} huet de Status vun Ärer Iddi geännert'
-    status_change_of_voted_idea:
+    status_change_of_reacted_idea:
       status_change: 'Den neie Status vun dëser Iddi ass ''%{ideaStatus}'''
-      cta_view_idea: 'Bei dës Iddi goen'
-      event_description: '%{organizationName} hunn de Status vun der Iddi ''%{ideaTitle}'' op hirer digitaler Bedeelegungsplattform aktualiséiert.'
-      main_header: 'Eng Iddi, iwwer déi Dir ofgestëmmt hutt, huet en neie Status'
-      subject: 'De Status vun enger Iddi, iwwer déi Dir ofgestëmmt hutt, gouf geännert'
-      preheader: '%{organizationName} huet de Status vun enger Iddi, iwwer déi Dir ofgestëmmt hutt, geännert'
-    status_change_of_voted_initiative:
-      status_change: 'Den neie Status vun dësem Virschlag ass ''%{initiativeStatus}'''
-      cta_view_initiative: 'Bei dës Propositioun goen'
-      event_description: 'De Status vun dem Virschlag ''%{initiativeTitle}'' gouf op der digitaler Plattform vum %{organizationName} aktualiséiert.'
-      main_header: 'E Virschlag, iwwer deen Dir ofgestëmmt hutt, huet en neie Status'
-      subject: 'De Status vun engem Virschlag, iwwer deen Dir ofgestëmmt hutt, huet sech geännert'
-      preheader: 'De Status vun engem Virschlag, iwwer deen Dir ofgestëmmt hutt, gouf geännert'
+      cta_view_idea: 'Gitt op dës Iddi'
+      event_description: '%{organizationName} huet de Status vun der Iddi ''%{ideaTitle}'' op hirer digitaler Participatiounsplattform aktualiséiert.'
+      main_header: 'Eng Iddi op déi Dir reagéiert hutt huet en neie Status'
+      subject: 'De Status vun enger Iddi op déi Dir reagéiert hutt ass geännert ginn'
+      preheader: '%{organizationName} huet de Status vun enger Iddi geännert op déi Dir reagéiert hutt'
+    status_change_of_reacted_initiative:
+      status_change: 'Den neie Status vun dëser Propositioun ass ''%{initiativeStatus}'''
+      cta_view_initiative: 'Gitt op dës Propositioun'
+      event_description: 'De Status vun der Propositioun ''%{initiativeTitle}'' gouf op der digitaler Participatiounsplattform vum %{organizationName}aktualiséiert.'
+      main_header: 'Eng Propositioun, déi Dir gestëmmt hutt, huet en neie Status'
+      subject: 'De Status vun enger Propositioun, déi Dir gestëmmt hutt, huet geännert'
+      preheader: 'De Status vun enger Propositioun, déi Dir gestëmmt hutt, huet geännert'
     status_change_of_commented_initiative:
       status_change: 'Den neie Status vun dëser Propositioun ass ''%{initiativeStatus}'''
       cta_view_initiative: 'Bei dës Propositioun goen'
@@ -577,6 +606,42 @@ lb:
       new_votes: 'Nei Ofstëmmungen'
       remaining_votes: 'Verbleiwend Stëmmen'
       remaining_days: 'Deeg iwwereg'
+    voting_basket_submitted:
+      subject: '%{organizationName}: Dir hutt erfollegräich gestëmmt'
+      preheader: 'Dir hutt erfollegräich op der Participatiounsplattform vun %{organizationName}gestëmmt'
+      title_basket_submitted: 'Dir hutt erfollegräich gestëmmt'
+      event_description: 'Merci fir d''Matmaachen. Är Stëmmen goufen opgeholl. Besicht d''Plattform vun %{organizationName} fir Är Stëmmen ze gesinn an ze managen.'
+      cta_see_votes_submitted: 'Gesinn Stëmmen presentéiert'
+      cta_message: 'Klickt op de Knäppchen hei ënnen fir matzemaachen'
+    voting_basket_not_submitted:
+      subject: '%{organizationName}: Dir hutt Är Stëmmen net ofginn'
+      preheader: 'Dir hutt Är Stëmmen net op der Participatiounsplattform vun %{organizationName}ofginn'
+      title_basket_not_submitted: 'Dir hutt Är Stëmmen net ofginn'
+      event_description: 'Dir hutt e puer Optiounen fir %{contextTitle} ausgewielt, awer Dir hutt Är Auswiel net ofginn.'
+      cta_view_options_and_vote: 'View Optiounen a Vote'
+      cta_message: 'Klickt op de Knäppchen hei ënnen fir Är gewielte Optiounen ofzeginn'
+    voting_last_chance:
+      subject: '%{organizationName}: Lescht Chance fir %{phaseTitle}ze wielen'
+      preheader: 'Lescht Chance fir %{phaseTitle} op der Participatiounsplattform vun %{organizationName}ze wielen'
+      title_last_chance: 'Déi lescht Chance fir %{phaseTitle}ze wielen'
+      body_1: 'D''Stëmmphase fir den %{projectTitle} Projet geet muer um Mëtternuecht op en Enn.'
+      body_2: 'D''Zäit leeft aus, a mir hu gemierkt datt Dir Är Stëmm nach net ofginn hutt! Akt elo andeems Dir einfach op de Knäppchen hei ënnen klickt fir matzemaachen.'
+      body_3: 'Wann Dir dëst maacht, kritt Dir Zougang zu enger Rei vun Optiounen an hutt d''Chance Ären Input ze ginn, wat entscheedend ass fir d''Zukunft vun dësem Projet ze entscheeden.'
+      cta_vote: 'Stëmmen'
+    voting_results:
+      subject: '%{organizationName}: %{phaseTitle} Stëmmen Resultater opgedeckt!'
+      preheader: '%{phaseTitle} Stëmme Resultater opgedeckt op der Participatioun Plattform vun %{organizationName}'
+      title_results: '%{phaseTitle} Stëmmen Resultater opgedeckt!'
+      body_1: 'Resultater sinn an!'
+      body_2: 'D''Resultater vum %{phaseTitle} Vote an der %{organizationName} Plattform sinn publizéiert ginn!'
+      body_3: 'Mir encouragéieren Iech d''Resultater z''iwwerpréiwen a bleiwen ofgeschloss fir weider Updates iwwer déi nächst Schrëtt.'
+      cta_see_results: 'Gesinn Resultater an der Plattform'
+    voting_phase_started:
+      subject: '%{organizationName}: D''Stëmmphase huet fir den %{projectName}ugefaangen'
+      preheader: 'D''Stëmmphase huet fir %{projectName} op der Participatiounsplattform vun %{organizationName}ugefaang'
+      event_description: 'De Projet "%{projectName}" freet Iech tëscht %{numIdeas} Optiounen ze stëmmen:'
+      cta_message: 'Klickt op de Knäppchen hei ënnen fir matzemaachen'
+      cta_vote: 'Gitt op d''Plattform fir ze wielen'
     admin_labels:
       recipient_role:
         admins: 'An den Admins'
@@ -593,6 +658,7 @@ lb:
         managers: 'Manager'
         admins_assigned_to_a_proposal: 'Administrateuren zu enger Propositioun zougewisen'
         admins_and_managers_assigned_to_the_input: 'Administrateuren & Manager ginn dem Input zougewisen'
+        user_who_is_invited_to_cosponsor_a_proposal: 'Benotzer deen invitéiert ass eng Propositioun ze co-sponsoren'
         user_who_is_receiving_admin_rights: 'Benotzer deen Admin Rechter kritt'
         user_who_is_receiving_folder_moderator_rights: 'Benotzer deen Dossier Moderator Rechter kritt'
         user_who_is_receiving_project_moderator_rights: 'Benotzer deen Projet Moderator Rechter kritt'
@@ -605,6 +671,9 @@ lb:
         users_who_engaged_with_the_input: 'Benotzer déi mam Input engagéiert hunn'
         users_who_engaged_with_the_project: 'Benotzer déi mam Projet engagéiert hunn'
         users_who_engaged_with_the_proposal: 'Benotzer déi mat der Propositioun engagéiert hunn'
+        user_who_voted: 'Benotzer deen gestëmmt huet'
+        user_with_unsubmitted_votes: 'Benotzer déi hir Stëmmen net ofginn huet'
+        users_who_engaged_but_not_voted: 'Benotzer déi mam Projet engagéiert hunn awer net gestëmmt hunn'
       content_type:
         comments: 'Kommentaren'
         content_moderation: 'Inhalt Moderatioun'
@@ -614,7 +683,8 @@ lb:
         permissions: 'Permissiounen'
         projects: 'Projeten'
         proposals: 'Propositioune'
-        votes: 'Stëmmen'
+        reactions: 'Reaktiounen'
+        voting: 'Ofstëmmung'
       trigger:
         comment_is_deleted: 'Commentaire geläscht'
         comment_is_flagged_as_spam: 'Kommentar gëtt als Spam markéiert'
@@ -623,6 +693,7 @@ lb:
         input_is_flagged_as_spam: 'Input gëtt als Spam markéiert'
         input_is_updated: 'Input gëtt aktualiséiert'
         input_status_changes: 'Input Status Ännerungen'
+        initiative_resubmitted_for_review: 'Propositioun nees fir Iwwerpréiwung presentéiert'
         internal_comment_is_posted_on_idea_assigned_to_user: 'Interne Kommentar gëtt op Input gepost dem Benotzer zougewisen'
         internal_comment_is_posted_on_initiative_assigned_to_user: 'Interne Kommentar gëtt op Propositioun gepost dem Benotzer zougewisen'
         internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: 'Interne Kommentar gëtt op Input am Projet oder Dossier gepost'
@@ -631,6 +702,8 @@ lb:
         internal_comment_is_posted_on_initiative_user_has_commented_internally_on: 'Interne Kommentar gëtt op Propositioun gepost Benotzer huet intern kommentéiert'
         internal_comment_is_posted_on_unassigned_initiative: 'Intern Kommentar gëtt op net zougewisen Propositioun gepost'
         internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Interne Kommentar gëtt op net zougewisenen Input am net verwalteten Projet gepost'
+        user_accepts_invitation_to_cosponsor_a_proposal: 'De Benotzer acceptéiert d''Invitatioun fir eng Propositioun ze sponsoren'
+        user_is_invited_to_cosponsor_a_proposal: 'De Benotzer ass invitéiert fir eng Propositioun ze sponseren'
         user_is_mentioned_in_internal_comment: 'Benotzer gëtt am internen Kommentar ernimmt'
         new_input_is_published: 'Neien Input gëtt publizéiert'
         new_proposal_is_posted: 'Nei Propositioun ass gepost'
@@ -652,5 +725,9 @@ lb:
         user_registers_for_the_first_time: 'Benotzer registréiert fir d''éischte Kéier'
         user_replies_to_comment: 'Benotzer Äntwerten op Commentaire'
         user_replies_to_internal_comment: 'Benotzer Äntwerten op intern Kommentar'
+        voting_2_days_before_phase_closes: '2 Deeg virum Ofstëmmungsphase zou'
+        voting_1_day_after_last_votes: '1 Dag nodeems de Benotzer lescht gestëmmt huet'
+        voting_phase_ended: 'D''Wahlphase ass eriwwer'
+        voting_basket_submitted: 'D''Stëmmen ginn agereecht'
         7_days_after_invite_is_sent: '7 Deeg no der Invitatioun geschéckt'
         7_days_before_the_project_changes_phase: '7 Deeg virum Projet Ännerungen Phas'

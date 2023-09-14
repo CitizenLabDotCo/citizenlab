@@ -357,7 +357,7 @@ resource 'Comments' do
           @idea.save!
         end
 
-        example 'Commenting should be enabled by default in a budgeting project', document: false do
+        example 'Commenting should be enabled by default in a voting project', document: false do
           do_request
           assert_status 201
         end

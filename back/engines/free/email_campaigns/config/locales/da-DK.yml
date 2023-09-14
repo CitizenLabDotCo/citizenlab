@@ -7,13 +7,16 @@ da:
       "comment_marked_as_spam": Rapportering af kommentar-spam
       "comment_on_your_comment": Et svar på min kommentar
       "comment_on_your_idea": En kommentar på min idé
-      "comment_on_your_initiative": En kommentar på mit borgerforslag
+      "comment_on_your_initiative": En kommentar på mit forslag
+      "cosponsor_of_your_initiative": En bruger accepterer min invitation til at være medstiller på mit forslag
       "first_idea_published": Publicering af min første idé
       "idea_marked_as_spam": Rapportering af idé-spam
       "idea_published": Publicering af min idé
-      "initiative_assigned_to_you": Tildeling af et borgerforslag til mig
-      "initiative_marked_as_spam": Rapportering af borgerforslag-spam
-      "initiative_published": Publicering af mit borgerforslag
+      "initiative_assigned_to_you": Tildeling af et forslag til mig
+      "initiative_marked_as_spam": Rapportering af forslag-spam
+      "initiative_published": Publicering af mit forslag
+      "invitation_to_cosponsor_initiative": Invitation til at være medstiller på et forslag
+      "initiative_resubmitted_for_review": Forslaget indsendes igen til gennemgang
       "invite_received": Invitation
       "invite_reminder": Invitationspåmindelse
       "internal_comment_on_idea_assigned_to_you": Intern kommentar til input, der er tildelt mig
@@ -28,35 +31,39 @@ da:
       "mention_in_internal_comment": Nævnes i en intern kommentar
       "new_comment_for_admin": Ny kommentar i et projekt jeg modererer
       "new_comment_on_commented_idea": Ny kommentar på en idé jeg har kommenteret på
-      "new_comment_on_commented_initiative": Ny kommentar på et borgerforslag jeg har kommenteret på
-      "new_comment_on_voted_idea": Ny kommentar på en idé jeg har stemt på
-      "new_comment_on_voted_initiative": Ny kommentar på et borgerforslag jeg har stemt på
+      "new_comment_on_commented_initiative": Ny kommentar på et forslag jeg har kommenteret på
+      "new_comment_on_reacted_idea": Ny kommentar til en idé, jeg stemte på
+      "new_comment_on_reacted_initiative": Ny kommentar på et forslag jeg har stemt på
       "new_idea_for_admin": Ny idé i et projekt jeg modererer
-      "new_initiative_for_admin": Nyt borgerforslag
+      "new_initiative_for_admin": Nyt forslag
       "official_feedback_on_commented_idea": Opdatering på en idé jeg har kommenteret på
-      "official_feedback_on_commented_initiative": Opdatering på et borgerforslag jeg har kommenteret på
-      "official_feedback_on_voted_idea": Opdatering på en idé jeg har stemt på
-      "official_feedback_on_voted_initiative": Opdatering på et borgerforslag jeg har stemt på
+      "official_feedback_on_commented_initiative": Opdatering på et forslag jeg har kommenteret på
+      "official_feedback_on_reacted_idea": Opdatering på en idé, jeg stemte på
+      "official_feedback_on_reacted_initiative": Opdatering af et forslag, jeg har stemt om
       "official_feedback_on_your_idea": Opdatering på min idé
-      "official_feedback_on_your_initiative": Opdatering på mit borgerforslag
+      "official_feedback_on_your_initiative": Opdatering på mit forslag
       "password_reset": Nulstilling af adgangskode
       "project_moderation_rights_received": Rettigheder til projektmoderering modtaget
       "project_folder_moderation_rights_received": Projekt-mappens moderationsrettigheder modtaget
       "project_phase_started": Ny projektfase
       "project_phase_upcoming": Kommende ny projektfase
       "status_change_of_commented_idea": Statusændring af en idé jeg har kommenteret på
-      "status_change_of_commented_initiative": Statusændring af et borgerforslag jeg har kommenteret på
-      "status_change_of_voted_idea": Statusændring af en idé jeg har stemt på
-      "status_change_of_voted_initiative": Statusændring af et borgerforslag jeg har stemt på
+      "status_change_of_commented_initiative": Statusændring af et forslag jeg har kommenteret på
+      "status_change_of_reacted_idea": Statusændring af en idé, jeg stemte på
+      "status_change_of_reacted_initiative": Statusændring af et forslag, jeg stemte på
       "status_change_of_your_idea": Statusændring af min idé
-      "status_change_of_your_initiative": Statusændring af mit borgerforslag
-      "threshold_reached_for_admin": Borgerforslag har nået stemmegrænsen
+      "status_change_of_your_initiative": Statusændring af mit forslag
+      "threshold_reached_for_admin": Forslag har nået stemmegrænsen
       "welcome": Efter registrering
       "admin_digest": Ugentlig oversigt for administratorer
       "moderator_digest": Ugentlig oversigt for projektledere
       "assignee_digest": Ugentlig oversigt over tildelte ideer
       "user_digest": Ugentlig oversigt
-      "your_proposed_initiatives_digest": Ugentlig oversigt over dine borgerforslag
+      "voting_basket_submitted": Bekræftelse af afstemning
+      "voting_basket_not_submitted": Stemmer ikke afgivet
+      "voting_last_chance": Sidste chance for at stemme
+      "voting_results": Afstemningsresultater
+      "your_proposed_initiatives_digest": Ugentlig oversigt over dine forslag
     schedules:
       weekly:
         "0": "Hver uge, om søndagen på %{hourOfDay}"
@@ -95,8 +102,8 @@ da:
       new_comments: 'Nye kommentarer'
       title_activity_past_week: 'Seneste uges aktivitet'
       title_no_activity_past_week: 'Der var ingen aktivitet i sidste uge'
-      title_initiatives_past_week: 'Nye borgerforslag for den sidste uge'
-      title_successful_initiatives_past_week: 'Borgerforslag der har nået stemmegrænsen i sidste uge'
+      title_initiatives_past_week: 'Nye forslag for den sidste uge'
+      title_successful_initiatives_past_week: 'Forslag der har nået stemmegrænsen i sidste uge'
       yesterday_by_author: 'I går af %{author}'
       today_by_author: 'I dag af %{author}'
       x_days_ago_by_author: '%{x} dage siden af %{author}'
@@ -130,10 +137,16 @@ da:
     comment_on_your_initiative:
       commented: '%{authorFirstName} skrev:'
       cta_reply_to: 'Svar til %{commentAuthor}'
-      event_description: '%{authorNameFull} angav en reaktion på dit borgerforslag "%{initiativeTitle}". Klik på nedenstående knap, for at fortsætte med %{authorName}.'
-      main_header: '%{commentAuthor} kommenterede dit borgerforslag'
+      event_description: '%{authorNameFull} angav en reaktion på dit forslag "%{initiativeTitle}". Klik på nedenstående knap, for at fortsætte med %{authorName}.'
+      main_header: '%{commentAuthor} kommenterede dit forslag'
       subject: 'Du har modtaget en kommentar på %{organizationName}s platform'
-      preheader: '%{authorName} efterlod en kommentar til dit borgerforslag for %{organizationName}'
+      preheader: '%{authorName} efterlod en kommentar til dit forslag for %{organizationName}'
+    cosponsor_of_your_initiative:
+      cta_reply_to: 'Se dit forslag'
+      event_description_initiative: 'Tillykke! %{cosponsorName} har accepteret din invitation til at være medstiller på dit forslag.'
+      main_header: '%{cosponsorName} har accepteret din invitation til at være medstiller på dit forslag'
+      subject: '%{cosponsorName} har accepteret din invitation til at være medstiller på dit dit forslag'
+      preheader_initiative: '%{cosponsorName} har accepteret din invitation til at være medstiller på dit forslag'
     assignee_digest:
       subject: 'Ideer der kræver din tilbagemelding: %{numberIdeas}'
       preheader: 'Repræsentantsammenfatning for %{organizationName}'
@@ -146,9 +159,9 @@ da:
       today_by_author: 'I dag af %{author}'
       x_days_ago_by_author: '%{x} dage siden af %{author}'
       idea_section: Idéer
-      initiative_section: Borgerforslag
-      title_initiatives_past_week: 'Nye borgerforslag tildelt dig'
-      title_successful_initiatives_past_week: 'Borgerforslag tildelt dig, som har nået tærskelgrænsen'
+      initiative_section: Forslag
+      title_initiatives_past_week: 'Nye forslag tildelt dig'
+      title_successful_initiatives_past_week: 'Forslag tildelt dig, som har nået tærskelgrænsen'
     idea_marked_as_spam:
       by_author: 'af %{authorName}'
       cta_review_idea: 'Bedøm idé'
@@ -160,9 +173,9 @@ da:
       title_spam_report: '%{firstName} %{lastName} rapporterede spam'
     initiative_marked_as_spam:
       by_author: 'af %{authorName}'
-      cta_review_initiative: 'Anmeld borgerforslag'
+      cta_review_initiative: 'Anmeld forslag'
       report_inappropriate_offensive_content: 'Jeg fandt dette indhold upassende eller stødende.'
-      report_not_an_initiative: 'Dette indhold er ikke en borgerforslag og hører ikke til her.'
+      report_not_an_initiative: 'Dette indhold er ikke en forslag og hører ikke til her.'
       subject: 'Du har en spam-rapport på platformen for %{organizationName}'
       preheader: 'Tag handling ud fra denne spamrapport'
       reported_this_because: '%{reporterFirstName} rapporterede dette fordi:'
@@ -170,10 +183,26 @@ da:
     initiative_assigned_to_you:
       by_author: 'af %{authorName}'
       cta_reply_to: 'Giv feedback til %{authorName}'
-      event_description_initiative: 'Et borgerforslag er blevet tildelt dig. Giv feedback ved at skrive en opdatering eller ved at ændre dens status.'
+      event_description_initiative: 'Et forslag er blevet tildelt dig. Giv feedback ved at skrive en opdatering eller ved at ændre dets status.'
       main_header: '%{firstName}, du har en ny tildeling'
       subject: 'Du har en ny tildeling på platformen for %{organizationName}'
-      preheader_initiative: 'Du er blevet tildelt %{authorName}s borgerforslag'
+      preheader_initiative: 'Du er blevet tildelt %{authorName}s forslag'
+    invitation_to_cosponsor_initiative:
+      cta_reply_to: 'Vær medstiller på dette forslag'
+      event_description_initiative: '%{authorName} har stillet et nyt forslag og vil gerne have dig til at være medstiller på det.'
+      event_description_cosponsoring: 'At være medstiller på et forslag betyder, at <strong>dit navn vil blive vist</strong> sammen med navnene på de øvrige medstillere.'
+      event_description_before_action: 'For at se forslaget og acceptere invitationen, skal du være logget ind på din konto.'
+      event_description_action: 'Klik nedenfor for at se forslaget.'
+      main_header: 'Du er blevet inviteret til at være medstiller på et forslag'
+      subject: 'Du er blevet inviteret til at være medstiller på et forslag'
+      preheader_initiative: 'Du er blevet inviteret til at være medstiller på forslaget fra %{authorName}'
+    initiative_resubmitted_for_review:
+      by_author: 'af %{authorName}'
+      cta_reply_to: 'Giv feedback til %{authorName}'
+      event_description_initiative: 'Et forslag er blevet genindsendt til gennemgang. Giv feedback ved at skrive en officiel opdatering eller ved at ændre status.'
+      main_header: '%{firstName}du har et forslag, der skal gennemgås'
+      subject: 'Du har et forslag, der skal gennemgås på platformen %{organizationName}'
+      preheader_initiative: 'Forslaget fra %{authorName} er blevet genfremsendt til gennemgang'
     invite_reminder:
       cta_accept_invitation: 'Acceptér din invitation'
       invitation_header: 'Din invitation er afventende'
@@ -188,19 +217,19 @@ da:
       subject: 'Du er inviteret til at deltage i platformen for %{organizationName}'
     initiative_published:
       action_add_image: '%{addImageLink} for at øge synlighed'
-      action_published_initiative: 'Udgivet borgerforslag'
+      action_published_initiative: 'Udgivet forslag'
       action_send_email: 'Send dine kontakter en %{sendEmailLink}'
       action_share_fb: 'Fortæl dine venner på %{fbLink}'
       action_share_link: 'Del det via enhver kanal ved at kopiere %{link}'
       action_share_twitter: 'Informer dine følgere på %{twitterLink}'
-      cta_view_initiative: 'Gå til dit borgerforslag'
+      cta_view_initiative: 'Gå til dit forslag'
       link: link
-      main_header: 'Du udgav et borgerforslag! Lad os finde noget støtte til det.'
-      message_next_steps: '%{userFirstName}, dit borgerforslag blev udgivet på deltagelsesplatformen for %{organizationName}. Du bliver underrettet når personer interagerer med dit borgerforslag. Find ud af dine næste trin nedenfor.'
+      main_header: 'Tillykke! Dit forslag er nu offentliggjort og er klar til at indsamle stemmer.'
+      message_next_steps: '%{userFirstName}, dit forslag er nu offentliggjort på %{organizationName}s digitale platform, og er dermed klar til at blive delt i dit netværk og indsamle stemmer. Du får besked, når dit forslag får stemmer eller kommentarer.'
       message_get_votes: 'Nå stemmetærsklen:'
-      preheader: 'Tak for at du deler dit borgerforslag, %{initiativeTitle}, for %{organizationName}. Det næste skridt er at få support for dit borgerforslag ved at dele den med hele dit netværk.'
+      preheader: 'Tak for at du deler dit forslag, %{initiativeTitle}, for %{organizationName}. Det næste skridt er at få support for dit forslag ved at dele den med hele dit netværk.'
       send_email: e-mail
-      subject: 'Dit borgerforslag blev publiceret på platformen for %{organizationName}'
+      subject: 'Dit forslag blev publiceret på platformen for %{organizationName}'
     mention_in_official_feedback:
       by_author: 'af %{authorName}'
       commented: '%{organizationName} skrev:'
@@ -247,10 +276,10 @@ da:
     new_comment_on_commented_initiative:
       commented: '%{commentAuthor} skrev:'
       cta_reply_to: 'Svar til %{commentAuthor}'
-      event_description: '%{commentAuthorFull} skrev også en kommentar til borgerforslag "%{initiativeTitle}" på deltagelsesplatformen for %{organizationName}. Klik på nedenstående knap, for at starte en samtale med %{commentAuthor}.'
-      main_header: '%{commentAuthor} skrev en kommentar til samme borgerforslag'
-      subject: 'Der er en anden kommentar til det borgerforslag, du kommenterede'
-      preheader: '%{commentAuthor} har også kommenteret til et borgerforslag til %{organizationName}'
+      event_description: '%{commentAuthorFull} skrev også en kommentar til forslag "%{initiativeTitle}" på deltagelsesplatformen for %{organizationName}. Klik på nedenstående knap, for at starte en samtale med %{commentAuthor}.'
+      main_header: '%{commentAuthor} skrev en kommentar til samme forslag'
+      subject: 'Der er en anden kommentar til det forslag, du kommenterede'
+      preheader: '%{commentAuthor} har også kommenteret til et forslag til %{organizationName}'
     new_comment_for_admin:
       by_author: 'af %{authorName}'
       commented: '%{authorFirstName} kommenterede:'
@@ -270,31 +299,31 @@ da:
       main_header: '%{authorName} kommenterede på din idé'
       subject: 'Du har modtaget en kommentar på %{organizationName}s platform'
       preheader: '%{authorName} efterlod en kommentar på din idé for %{organizationName}'
-    new_comment_on_voted_initiative:
+    new_comment_on_reacted_initiative:
       commented: '%{commentAuthor} skrev:'
-      cta_reply_to: 'Se dette borgerforslag'
-      event_description: '%{commentAuthor} har kommenteret borgerforslag ''%{initiativeTitle}'', som du har stemt på. Deltag i diskussion på %{organizationName}s platform!'
-      main_header: '%{firstName}, der er en ny kommentar til det borgerforslag, du har stemt på'
-      subject: 'Der er en ny kommentar til det borgerforslag, du har stemt på'
-      preheader: '%{commentAuthor} kommenterede til det borgerforslag, du har stemt på %{organizationName}s platform'
-    new_comment_on_voted_idea:
+      cta_reply_to: 'Se dette forslag'
+      event_description: '%{commentAuthor} har kommenteret på forslaget ''%{initiativeTitle}'', som du har stemt på. Deltag i diskussion på %{organizationName} s platform!'
+      main_header: '%{firstName}, der er en ny kommentar til det forslag, du har stemt på'
+      subject: 'Der er en ny kommentar til det forslag, du har stemt på'
+      preheader: '%{commentAuthor} kommenterede på det forslag, du har stemt på %{organizationName} s platform'
+    new_comment_on_reacted_idea:
       commented: '%{commentAuthor} kommenterede:'
-      cta_reply_to: 'Svar %{commentAuthor}'
+      cta_reply_to: 'Svar til %{commentAuthor}'
       days_ago: '%{numberOfDays} dage siden'
       event_description: '%{commentAuthor} har kommenteret på idéen ''%{ideaTitle}'', som du har stemt på. Deltag i diskussion på %{organizationName}s platform!'
-      main_header: '%{firstName}, der er en ny kommentar på den ide du har stemt på!'
-      subject: 'Der er en ny kommentar på den idé, du har stemt på! '
-      preheader: '%{commentAuthor} kommenterede på den idé, du har stemt på på %{organizationName}s platform'
+      main_header: '%{firstName}, der er en ny kommentar til den idé, du har stemt på'
+      subject: 'Der er en ny kommentar til den idé, du har stemt på'
+      preheader: '%{commentAuthor} efterlod en kommentar til den idé, du har stemt på, på platformen %{organizationName}'
       today: I dag
       yesterday: I går
     new_initiative_for_admin:
       by_author: 'af %{authorName}'
       commented: '%{authorFirstName} skrev:'
       cta_reply_to: 'Giv feedback til %{authorName}'
-      event_description: '%{authorName} har offentliggjort et nyt borgerforslag på din platform. Se den nu, giv feedback på den, eller ændr dens status!'
-      main_header: '%{firstName}, der er blevet offentliggjort et nyt borgerforslag på din platform'
-      subject: 'Nogen offentliggjorde et nyt borgerforslag på platformen til %{organizationName}'
-      preheader: '%{authorName} offentliggjorde et nyt borgerforslag på din platform'
+      event_description: '%{authorName} har offentliggjort et nyt forslag på din platform. Se den nu, giv feedback på den, eller ændr dens status!'
+      main_header: '%{firstName}, der er blevet offentliggjort et nyt forslag på din platform'
+      subject: 'Nogen offentliggjorde et nyt forslag på platformen til %{organizationName}'
+      preheader: '%{authorName} offentliggjorde et nyt forslag på din platform'
     new_idea_for_admin:
       by_author: 'af %{authorName}'
       commented: '%{authorFirstName} kommenterede:'
@@ -364,18 +393,18 @@ da:
     official_feedback_on_commented_initiative:
       by_author: 'af %{authorName}'
       updated: '%{officialName} skrev:'
-      cta_view: 'Gå til dette borgerforslag'
-      event_description: '%{officialName} har en opdatering om borgerforslag ''%{initiativeTitle}''. Klik på knappen nedenfor for at gå ind i samtalen med %{organizationName}.'
-      main_header: 'Der er en opdatering om et borgerforslag, du har kommenteret på'
-      subject: 'Et borgerforslag, du kommenterede, har fået en opdatering på platformen til %{organizationName}'
-      preheader: '%{officialName} gav feedback på et borgerforslag du kommenterede på'
-    official_feedback_on_voted_idea:
+      cta_view: 'Gå til dette forslag'
+      event_description: '%{officialName} har en opdatering om forslag ''%{initiativeTitle}''. Klik på knappen nedenfor for at gå ind i samtalen med %{organizationName}.'
+      main_header: 'Der er en opdatering om et forslag, du har kommenteret på'
+      subject: 'Et forslag, du kommenterede, har fået en opdatering på platformen til %{organizationName}'
+      preheader: '%{officialName} gav feedback på et forslag du kommenterede på'
+    official_feedback_on_reacted_idea:
       by_author: 'af %{authorName}'
       updated: '%{officialName} skrev:'
       cta_view: 'Gå til denne idé'
-      event_description: '%{officialName} har en opdatering af ideen ''%{ideaTitle}''. Klik på knappen nedenfor for at gå ind i samtalen med %{officialName}.'
-      subject: 'En ide du har stemt på, er blevet opdateret på %{organizationName} platformen'
-      preheader: '%{officialName} har opdateret en ide, du har stemt på'
+      event_description: '%{officialName} har en opdatering af idéen ''%{ideaTitle}''. Klik på knappen nedenfor for at gå ind i samtalen med %{officialName}.'
+      subject: 'En idé, du stemte på, har fået en opdatering på platformen %{organizationName}'
+      preheader: '%{officialName} efterlod en opdatering på en idé, du stemte på'
       main_header: ""
     official_feedback_on_commented_idea:
       by_author: 'af %{authorName}'
@@ -393,21 +422,21 @@ da:
       main_header: 'Du har modtaget en opdatering fra %{organizationName}'
       subject: 'Du har modtaget en opdatering fra %{organizationName}'
       preheader: '%{officialName} kom med en officiel opdatering på din ide'
-    official_feedback_on_voted_initiative:
+    official_feedback_on_reacted_initiative:
       by_author: 'af %{authorName}'
       updated: '%{officialName} skrev:'
-      cta_view: 'Gå til dette borgerforslag'
-      event_description: '%{officialName} har en opdatering om borgerforslag ''%{initiativeTitle}''. Klik på knappen nedenfor for at gå ind i samtalen med %{organizationName}.'
-      main_header: 'Der er en opdatering om et borgerforslag, du stemte på'
-      subject: 'Et borgerforslag, du stemte på, har fået en opdatering på platformen til %{organizationName}'
-      preheader: '%{officialName} gav feedback på et borgerforslag, du har stemt på'
+      cta_view: 'Gå til dette forslag'
+      event_description: '%{officialName} har en opdatering om forslag ''%{initiativeTitle}''. Klik på knappen nedenfor for at gå ind i samtalen med %{organizationName}.'
+      main_header: 'Der er en opdatering på et forslag, du stemte på'
+      subject: 'Et forslag, du stemte på, har fået en opdatering på platformen til %{organizationName}'
+      preheader: '%{officialName} gav feedback på et forslag, du har stemt på'
     official_feedback_on_your_initiative:
       updated: '%{officialName} skrev:'
-      cta_view: 'Gå til dit borgerforslag'
-      event_description: '%{officialName} har en opdatering på dit borgerforslag ''%{initiativeTitle}''. Klik på knappen nedenfor for at gå ind i samtalen med %{organizationName}.'
+      cta_view: 'Gå til dit forslag'
+      event_description: '%{officialName} har en opdatering på dit forslag ''%{initiativeTitle}''. Klik på knappen nedenfor for at gå ind i samtalen med %{organizationName}.'
       main_header: 'Du har modtaget en opdatering fra %{officialName}'
       subject: 'Du har modtaget en opdatering på platformen til %{organizationName}'
-      preheader: '%{officialName} kom med en officiel opdatering på dit borgerforslag'
+      preheader: '%{officialName} kom med en officiel opdatering på dit forslag'
     project_moderation_rights_received:
       cta_manage_project: 'Administrer dette projekt'
       message_you_became_moderator: 'En administrator af %{organizationName}s deltagelsesplatform har lige gjort dig til projektleder for følgende projekt:'
@@ -468,34 +497,34 @@ da:
       main_header: 'Din idé har en ny status'
       subject: 'Status på din idé er blevet ændret'
       preheader: '%{organizationName} ændrede status på din idé'
-    status_change_of_voted_idea:
+    status_change_of_reacted_idea:
       status_change: 'Den nye status for denne idé er ''%{ideaStatus}'''
-      cta_view_idea: 'Gå til idé'
-      event_description: '%{organizationName} opdaterede status for idéen ''%{ideaTitle}'' på deres digitale deltagelsesplatform.'
-      main_header: 'En idé, du stemte på, har en ny status'
-      subject: 'Status på en idé, du har stemt på, er blevet ændret'
-      preheader: '%{organizationName} ændrede status på en idé, du har stemt på'
-    status_change_of_voted_initiative:
-      status_change: 'Den nye status for dette borgerforslag er ''%{initiativeStatus}'''
-      cta_view_initiative: 'Gå til dette borgerforslag'
-      event_description: 'Status for borgerforslag ''%{initiativeTitle}'' er blevet opdateret på den digitale deltagelsesplatform for %{organizationName}.'
-      main_header: 'Et borgerforslag, du stemte på, har en ny status'
-      subject: 'Statussen for et borgerforslag, du har stemt på, er blevet ændret'
-      preheader: 'Statussen for et borgerforslag, du har stemt på, er blevet ændret'
+      cta_view_idea: 'Gå til denne idé'
+      event_description: '%{organizationName} opdaterede status for idéen ''%{ideaTitle}'' på deres digitale borgerinddragelsesplatform.'
+      main_header: 'En idé, du reagerede på, har fået en ny status'
+      subject: 'Status for en idé, du reagerede på, er blevet ændret'
+      preheader: '%{organizationName} har ændret status for en idé, du stemte på'
+    status_change_of_reacted_initiative:
+      status_change: 'Den nye status for dette forslag er ''%{initiativeStatus}'''
+      cta_view_initiative: 'Gå til dette forslag'
+      event_description: 'Status for dit forslag ''''%{initiativeTitle}'''' er blevet opdateret på %{organizationName}s digitale platform.'
+      main_header: 'Et forslag, du stemte på, har en ny status'
+      subject: 'Statussen for et forslag, du har stemt på er blevet ændret'
+      preheader: 'Statussen for et forslag du har stemt på, er blevet ændret'
     status_change_of_commented_initiative:
-      status_change: 'Den nye status for dette borgerforslag er ''%{initiativeStatus}'''
-      cta_view_initiative: 'Gå til dette borgerforslag'
-      event_description: 'Status for borgerforslag ''%{initiativeTitle}'' er blevet opdateret på den digitale deltagelsesplatform for %{organizationName}.'
-      main_header: 'Et borgerforslag, du kommenterede, har en ny status'
-      subject: 'Status for et borgerforslag, du kommenterede, er ændret'
-      preheader: 'Status for et borgerforslag, du kommenterede, er ændret'
+      status_change: 'Den nye status for dette forslag er ''%{initiativeStatus}'''
+      cta_view_initiative: 'Gå til dette forslag'
+      event_description: 'Status for dit forslag ''''%{initiativeTitle}'''' er blevet opdateret på %{organizationName}s digitale platform.'
+      main_header: 'Et forslag, du kommenterede, har en ny status'
+      subject: 'Status for et forslag, du kommenterede, er ændret'
+      preheader: 'Status for et forslag, du kommenterede, er ændret'
     status_change_of_your_initiative:
-      status_change: 'Den nye status for dit borgerforslag er ''%{initiativeStatus}'''
-      cta_view_initiative: 'Gå til dit borgerforslag'
-      event_description: 'Status for borgerforslag ''%{initiativeTitle}'' er blevet opdateret på den digitale deltagelsesplatform for %{organizationName}.'
-      main_header: 'Dit borgerforslag har en ny status'
-      subject: 'Status for dit borgerforslag er ændret'
-      preheader: 'Status for dit borgerforslag er ændret'
+      status_change: 'Den nye status for dit forslag er ''%{initiativeStatus}'''
+      cta_view_initiative: 'Gå til dit forslag'
+      event_description: 'Status for dit forslag ''''%{initiativeTitle}'''' er blevet opdateret på %{organizationName}s digitale platform.'
+      main_header: 'Dit forslag har en ny status'
+      subject: 'Status for dit forslag er ændret'
+      preheader: 'Status for dit forslag er ændret'
     user_digest:
       subject: "Ugentlig opdatering af deltagelsesplatformen for %{organizationName}"
       commented: "%{authorFirstName} kommenterede:"
@@ -506,7 +535,7 @@ da:
       title_no_activity_past_week: "Ingen aktivitet i den seneste uge"
       title_proposals: "Forslag startet"
       proposals_started_text: "Forslag er ideer, der skal ha’ opmærksomhed og støtte fra andre (personer som dig!) for at komme videre. Nedenfor er en liste over forslag, der er fremsat i den sidste uge. Klik på et af dem for at og tilbyd eventuelt din support og feedback!"
-      title_successful_proposals: "Opdag borgerforslag"
+      title_successful_proposals: "Opdag forslag"
       successful_proposals_text: "Disse forslag har fået tilstrækkelig støtte til at gå videre til næste fase! Klik på forslaget for at lære mere om, hvad der sker videre i processen."
       today_by_author: "I dag af %{author}"
       yesterday_by_author: "I går af %{author}"
@@ -568,15 +597,51 @@ da:
       subject: 'Din idé på %{organizationName}s platform '
       message_next_steps: ""
     your_proposed_initiatives_digest:
-      subject: 'Ugentlige opdateringer af dit borgerforslag'
-      preheader: 'Hvad skete der med dit borgerforslag i sidste uge?'
-      title_your_weekly_report: 'Hvordan klarer dit borgerforslag sig?'
-      text_introduction: 'Find nøgletalene nedenfor, og gå til dit borgerforslag side, for at handle og indsamle nok støtte rettidigt.'
-      cta_see_your_initiative: 'Gå til dit borgerforslag'
+      subject: 'Ugentlige opdateringer af dit forslag'
+      preheader: 'Hvad skete der med dit forslag i sidste uge?'
+      title_your_weekly_report: 'Hvordan klarer dit forslag sig?'
+      text_introduction: 'Du kan find nøgletallene for dit forslag nedenfor. Hvis du vil skabe yderligere opmærksomhed omkring dit forslag, kan du med fordel gå til dit forslags side, hvorfra du kan dele det på dine sociale medier eller via andre digitale kanaler.'
+      cta_see_your_initiative: 'Gå til dit forslag'
       total_votes: 'Antal stemmer'
       new_votes: 'Nye stemmer'
       remaining_votes: 'Resterende stemmer'
       remaining_days: 'Resterende dage'
+    voting_basket_submitted:
+      subject: '%{organizationName}: Du har stemt med succes'
+      preheader: 'Du har stemt med succes på borgerinddragelsesplatformen %{organizationName}'
+      title_basket_submitted: 'Du har stemt med succes'
+      event_description: 'Tak for din deltagelse. Dine stemmer er blevet registreret. Besøg platformen %{organizationName} for at se og administrere dine stemmer.'
+      cta_see_votes_submitted: 'Se afgivne stemmer'
+      cta_message: 'Klik på knappen nedenfor for at deltage'
+    voting_basket_not_submitted:
+      subject: '%{organizationName}: Du har ikke indsendt dine stemmer'
+      preheader: 'Du har ikke afgivet din stemme på borgerinddragelsesplatformen fra %{organizationName}'
+      title_basket_not_submitted: 'Du har ikke indsendt dine stemmer'
+      event_description: 'Du har valgt et par muligheder på %{contextTitle} , men du har ikke indsendt dit valg.'
+      cta_view_options_and_vote: 'Se mulighederne og stem'
+      cta_message: 'Klik på knappen nedenfor for at indsende dine valgte indstillinger'
+    voting_last_chance:
+      subject: '%{organizationName}: Sidste chance for at stemme på %{phaseTitle}'
+      preheader: 'Sidste chance for at stemme på %{phaseTitle} på borgerinddragelsesplatformen fra %{organizationName}'
+      title_last_chance: 'Sidste chance for at stemme på %{phaseTitle}'
+      body_1: 'Afstemningsfasen for %{projectTitle} -projektet afsluttes i morgen ved midnat.'
+      body_2: 'Tiden er ved at løbe ud, og vi har bemærket, at du ikke har afgivet din stemme endnu! Gør det nu ved blot at klikke på knappen nedenfor for at deltage.'
+      body_3: 'Ved at gøre det får du adgang til en række muligheder for at komme med dit input, som er afgørende for projektets fremtid.'
+      cta_vote: 'Stem'
+    voting_results:
+      subject: '%{organizationName}: %{phaseTitle} afstemningsresultater offentliggjort!'
+      preheader: '%{phaseTitle} afstemningsresultater offentliggjort på borgerinddragelsesplatformen fra %{organizationName}'
+      title_results: '%{phaseTitle} afstemningsresultater er offentliggjort!'
+      body_1: 'Resultaterne er kommet!'
+      body_2: 'Resultaterne af %{phaseTitle} afstemningen på %{organizationName} platform er blevet offentliggjort!'
+      body_3: 'Vi opfordrer dig til at gennemgå resultaterne og holde øje med yderligere opdateringer om de næste skridt.'
+      cta_see_results: 'Se resultaterne på platformen'
+    voting_phase_started:
+      subject: '%{organizationName}: Afstemningsfasen er startet for %{projectName}'
+      preheader: 'Afstemningsfasen startede for %{projectName} på borgerinddragelsesplatformen fra %{organizationName}'
+      event_description: 'Projektet "%{projectName}" beder dig om at stemme mellem %{numIdeas} muligheder:'
+      cta_message: 'Klik på knappen nedenfor for at deltage'
+      cta_vote: 'Gå til platformen for at stemme'
     admin_labels:
       recipient_role:
         admins: 'Til administratorer'
@@ -589,10 +654,11 @@ da:
         admins_and_managers_managing_the_project: 'Administratorer og projektledere, der forvalter projektet'
         managers_managing_the_project: 'Projektledere, der styrer projektet'
         all_users: 'Alle brugere'
-        all_users_who_uploaded_proposals: 'Alle brugere der har uploadet borgerforslag'
+        all_users_who_uploaded_proposals: 'Alle brugere der har uploadet forslag'
         managers: 'Projektledere'
         admins_assigned_to_a_proposal: 'Administratorer, der er tildelt et forslag'
         admins_and_managers_assigned_to_the_input: 'Administratorer og projektledere, der er tildelt input'
+        user_who_is_invited_to_cosponsor_a_proposal: 'Bruger der er inviteret til at være medstiller på et forslag'
         user_who_is_receiving_admin_rights: 'Bruger der får administratorrettigheder'
         user_who_is_receiving_folder_moderator_rights: 'Bruger der får rettigheder som mappemoderator'
         user_who_is_receiving_project_moderator_rights: 'Bruger der får rettigheder som projektleder'
@@ -605,6 +671,9 @@ da:
         users_who_engaged_with_the_input: 'Brugere der engagerede sig i input'
         users_who_engaged_with_the_project: 'Brugere der engagerede sig i projektet'
         users_who_engaged_with_the_proposal: 'Brugere der har engageret sig i forslaget'
+        user_who_voted: 'Bruger der stemte'
+        user_with_unsubmitted_votes: 'Bruger der ikke har afgivet sin stemme'
+        users_who_engaged_but_not_voted: 'Brugere der har engageret sig i projektet, men ikke har stemt'
       content_type:
         comments: 'Kommentarer'
         content_moderation: 'Moderation af indhold'
@@ -613,8 +682,9 @@ da:
         internal_comments: 'Interne kommentarer'
         permissions: 'Tilladelser'
         projects: 'Projekter'
-        proposals: 'Borgerforslag'
-        votes: 'Afstemninger'
+        proposals: 'Forslag'
+        reactions: 'Stemmer'
+        voting: 'Afstemning'
       trigger:
         comment_is_deleted: 'Kommentar er slettet'
         comment_is_flagged_as_spam: 'Kommentar er markeret som spam'
@@ -623,6 +693,7 @@ da:
         input_is_flagged_as_spam: 'Input er markeret som spam'
         input_is_updated: 'Input er opdateret'
         input_status_changes: 'Input-status ændres'
+        initiative_resubmitted_for_review: 'Forslaget indsendes igen til gennemgang'
         internal_comment_is_posted_on_idea_assigned_to_user: 'Intern kommentar på input tildelt bruger'
         internal_comment_is_posted_on_initiative_assigned_to_user: 'Intern kommentar er postet på forslag tildelt bruger'
         internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: 'Intern kommentar på input i projekt eller mappe, som brugeren administrerer'
@@ -631,6 +702,8 @@ da:
         internal_comment_is_posted_on_initiative_user_has_commented_internally_on: 'Intern kommentar er postet på forslag, som brugeren har kommenteret internt på'
         internal_comment_is_posted_on_unassigned_initiative: 'Intern kommentar er sendt på ikke-tildelt forslag'
         internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Intern kommentar er sendt på ikke-tildelt input i ikke-administreret projekt'
+        user_accepts_invitation_to_cosponsor_a_proposal: 'Brugeren accepterer invitationen til at være medstiller på et forslag'
+        user_is_invited_to_cosponsor_a_proposal: 'Brugeren inviteres til at være medstiller på et forslag'
         user_is_mentioned_in_internal_comment: 'Brugeren er nævnt i en intern kommentar'
         new_input_is_published: 'Nye input offentliggøres'
         new_proposal_is_posted: 'Nyt borgerorslag er offentliggjort'
@@ -638,11 +711,11 @@ da:
         proposal_gets_reported_as_spam: 'Forslaget bliver rapporteret som spam'
         proposal_is_assigned_to_admin: 'Forslaget er tildelt administrator'
         proposal_is_updated: 'Forslaget er opdateret'
-        proposal_is_upvoted_above_threshold: 'Borgerforslaget er opstemt over tærsklen'
+        proposal_is_upvoted_above_threshold: 'Forslaget er opstemt over tærsklen'
         proposal_status_changes: 'Ændringer i forslagets status'
         user_comments: 'Brugerkommentarer'
         user_comments_on_input: 'Brugerkommentarer til input'
-        user_comments_on_proposal: 'Brugernes kommentarer til borgerforslaget'
+        user_comments_on_proposal: 'Brugernes kommentarer til forslaget'
         user_is_given_admin_rights: 'Brugeren får administratorrettigheder'
         user_is_given_folder_moderator_rights: 'Brugeren får rettigheder som mappemoderator'
         user_is_given_project_moderator_rights: 'Brugeren har fået rettigheder som projektmoderator'
@@ -652,5 +725,9 @@ da:
         user_registers_for_the_first_time: 'Brugeren registrerer sig for første gang'
         user_replies_to_comment: 'Bruger svarer på kommentar'
         user_replies_to_internal_comment: 'Bruger svarer på intern kommentar'
+        voting_2_days_before_phase_closes: '2 dage før afstemningsfasen slutter'
+        voting_1_day_after_last_votes: '1 dag efter brugeren sidst stemte'
+        voting_phase_ended: 'Afstemningsfasen er slut'
+        voting_basket_submitted: 'Stemmerne er afgivet'
         7_days_after_invite_is_sent: '7 dage efter at invitationen er sendt'
         7_days_before_the_project_changes_phase: '7 dage før projektet ændre fase'

@@ -29,6 +29,9 @@ import useEvents from 'api/events/useEvents';
 import useAuthUser from 'api/me/useAuthUser';
 import { useIntl } from 'utils/cl-intl';
 
+// context
+import { VotingContext } from 'api/baskets_ideas/useVoting';
+
 // i18n
 import messages from 'utils/messages';
 
@@ -149,36 +152,39 @@ const ProjectsShowPage = ({ project }: Props) => {
             <TimelineContainer projectId={projectId} />
           )}
         </div>
-        <Box
-          display="flex"
-          flexDirection="column"
-          gap="48px"
-          mx="auto"
-          my="48px"
-          maxWidth="1166px"
-          padding={isSmallerThanTablet ? '20px' : '0px'}
-        >
-          <EventsViewer
-            showProjectFilter={false}
-            projectId={projectId}
-            eventsTime="currentAndFuture"
-            title={formatMessage(messages.upcomingAndOngoingEvents)}
-            fallbackMessage={messages.noUpcomingOrOngoingEvents}
-            onClickTitleGoToProjectAndScrollToEvent={false}
-            hideSectionIfNoEvents={true}
-            projectPublicationStatuses={['published', 'draft', 'archived']}
-          />
-          <EventsViewer
-            showProjectFilter={false}
-            projectId={projectId}
-            eventsTime="past"
-            title={formatMessage(messages.pastEvents)}
-            fallbackMessage={messages.noPastEvents}
-            onClickTitleGoToProjectAndScrollToEvent={false}
-            hideSectionIfNoEvents={true}
-            projectPublicationStatuses={['published', 'draft', 'archived']}
-          />
-        </Box>
+        {!!events?.data.length && (
+          <Box
+            id="e2e-events-section-project-page"
+            display="flex"
+            flexDirection="column"
+            gap="48px"
+            mx="auto"
+            my="48px"
+            maxWidth="1166px"
+            padding={isSmallerThanTablet ? '20px' : '0px'}
+          >
+            <EventsViewer
+              showProjectFilter={false}
+              projectId={projectId}
+              eventsTime="currentAndFuture"
+              title={formatMessage(messages.upcomingAndOngoingEvents)}
+              fallbackMessage={messages.noUpcomingOrOngoingEvents}
+              hideSectionIfNoEvents={true}
+              projectPublicationStatuses={['published', 'draft', 'archived']}
+            />
+            <EventsViewer
+              showProjectFilter={false}
+              projectId={projectId}
+              eventsTime="past"
+              title={formatMessage(messages.pastEvents)}
+              fallbackMessage={messages.noPastEvents}
+              hideSectionIfNoEvents={true}
+              projectPublicationStatuses={['published', 'draft', 'archived']}
+              showDateFilter={false}
+            />
+          </Box>
+        )}
+
         <SuccessModal projectId={projectId} />
       </ContentWrapper>
     );
@@ -270,7 +276,11 @@ const ProjectsShowPageWrapper = () => {
 
   if (!project) return null;
 
-  return <ProjectsShowPage project={project.data} />;
+  return (
+    <VotingContext projectId={project.data.id}>
+      <ProjectsShowPage project={project.data} />
+    </VotingContext>
+  );
 };
 
 export default () => (

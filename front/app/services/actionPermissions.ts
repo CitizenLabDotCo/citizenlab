@@ -5,7 +5,8 @@ import { IRelationship } from 'typings';
 export type IGlobalPermissionAction =
   | 'reacting_initiative'
   | 'commenting_initiative'
-  | 'posting_initiative';
+  | 'posting_initiative'
+  | 'following';
 
 export interface IGlobalPermissionData {
   id: string;
@@ -33,7 +34,7 @@ export type IParticipationContextPermissionAction =
   | 'commenting_idea'
   | 'taking_survey'
   | 'taking_poll'
-  | 'budgeting'
+  | 'voting'
   | 'annotating_document';
 
 interface IParticipationContextPermissionData {

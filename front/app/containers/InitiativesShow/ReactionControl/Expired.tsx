@@ -1,11 +1,11 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
 
 import { IInitiativeStatusData } from 'api/initiative_statuses/types';
 import { IAppConfigurationSettings } from 'api/app_configuration/types';
 
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Box, Icon } from '@citizenlab/cl2-component-library';
 import { StatusWrapper, StatusExplanation } from './SharedStyles';
 import ProposalProgressBar from './ProposalProgressBar';
 import Button from 'components/UI/Button';
@@ -49,78 +49,73 @@ const StyledButton = styled(Button)`
   margin-top: 20px;
 `;
 
-interface InputProps {
+interface Props {
   initiative: IInitiativeData;
   initiativeStatus: IInitiativeStatusData;
   initiativeSettings: NonNullable<IAppConfigurationSettings['initiatives']>;
   userReacted: boolean;
 }
-interface DataProps {}
 
-interface Props extends InputProps, DataProps {}
+const Expired = (props: Props) => {
+  const {
+    initiative,
+    initiativeSettings: { reacting_threshold },
+    initiativeStatus,
+    userReacted,
+  } = props;
 
-interface State {}
+  const reactionCount = initiative.attributes.likes_count;
+  const reactionLimit = reacting_threshold;
 
-class Expired extends PureComponent<Props, State> {
-  render() {
-    const {
-      initiative,
-      initiativeSettings: { reacting_threshold },
-      initiativeStatus,
-      userReacted,
-    } = this.props;
-
-    const reactionCount = initiative.attributes.likes_count;
-    const reactionLimit = reacting_threshold;
-
-    return (
-      <Container>
+  return (
+    <Container>
+      <Box mb="16px">
         <StatusWrapper>
           <T value={initiativeStatus.attributes.title_multiloc} />
         </StatusWrapper>
-        <StatusIcon ariaHidden name="clock" />
-        <StatusExplanation>
-          <FormattedMessage
-            {...messages.expiredStatusExplanation}
-            values={{
-              expiredStatusExplanationBold: (
-                <b>
-                  <FormattedMessage
-                    {...messages.expiredStatusExplanationBold}
-                    values={{ votingThreshold: reacting_threshold }}
-                  />
-                </b>
-              ),
-            }}
-          />
-        </StatusExplanation>
-        <ReactionCounter>
-          <ReactionTexts aria-hidden={true}>
-            <ReactionText>
-              <FormattedMessage
-                {...messages.xVotes}
-                values={{ count: reactionCount }}
-              />
-            </ReactionText>
-            <ReactionText>{reactionLimit}</ReactionText>
-          </ReactionTexts>
-          <ProposalProgressBar
-            reactionCount={reactionCount}
-            reactionLimit={reactionLimit}
-            barColor="linear-gradient(270deg, #84939E 0%, #C8D0D6 100%)"
-            bgShaded
-          />
-        </ReactionCounter>
-        <StyledButton icon="halt" disabled>
-          {userReacted ? (
-            <FormattedMessage {...messages.cancelVote} />
-          ) : (
-            <FormattedMessage {...messages.vote} />
-          )}
-        </StyledButton>
-      </Container>
-    );
-  }
-}
+      </Box>
+      <StatusIcon ariaHidden name="clock" />
+      <StatusExplanation>
+        <FormattedMessage
+          {...messages.expiredStatusExplanation}
+          values={{
+            expiredStatusExplanationBold: (
+              <b>
+                <FormattedMessage
+                  {...messages.expiredStatusExplanationBold}
+                  values={{ votingThreshold: reacting_threshold }}
+                />
+              </b>
+            ),
+          }}
+        />
+      </StatusExplanation>
+      <ReactionCounter>
+        <ReactionTexts aria-hidden={true}>
+          <ReactionText>
+            <FormattedMessage
+              {...messages.xVotes}
+              values={{ count: reactionCount }}
+            />
+          </ReactionText>
+          <ReactionText>{reactionLimit}</ReactionText>
+        </ReactionTexts>
+        <ProposalProgressBar
+          reactionCount={reactionCount}
+          reactionLimit={reactionLimit}
+          barColor="linear-gradient(270deg, #84939E 0%, #C8D0D6 100%)"
+          bgShaded
+        />
+      </ReactionCounter>
+      <StyledButton icon="halt" disabled>
+        {userReacted ? (
+          <FormattedMessage {...messages.cancelVote} />
+        ) : (
+          <FormattedMessage {...messages.vote} />
+        )}
+      </StyledButton>
+    </Container>
+  );
+};
 
 export default Expired;

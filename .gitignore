@@ -7,6 +7,8 @@ front-secret.env
 .env-front
 
 back/engines/ee
+back/config/tenant_templates/private/*.yml
+back/config/google_cloud.json
 node_modules
 
 *.DS_Store

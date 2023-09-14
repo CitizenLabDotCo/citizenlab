@@ -4,13 +4,18 @@ class SideFxBasketService
   include SideFxHelper
 
   def after_create(basket, user)
+    create_followers basket, user
     LogActivityJob.perform_later(basket, 'created', user, basket.created_at.to_i)
-    update_basket_counts
+    basket.update_counts! unless basket.submitted?
   end
 
   def after_update(basket, user)
-    LogActivityJob.perform_later(basket, 'changed', user, basket.updated_at.to_i)
-    update_basket_counts if basket.submitted_at_previously_changed?
+    if basket.submitted_at_previously_changed?(from: nil)
+      LogActivityJob.perform_later(basket, 'submitted', user, basket.updated_at.to_i)
+    else
+      LogActivityJob.perform_later(basket, 'changed', user, basket.updated_at.to_i)
+    end
+    basket.update_counts! if basket.submitted_at_previously_changed?
   end
 
   def after_destroy(frozen_basket, user)
@@ -20,22 +25,16 @@ class SideFxBasketService
       user, Time.now.to_i,
       payload: { basket: serialized_basket }
     )
+    frozen_basket.update_counts!
   end
 
-  def update_basket_counts
-    query =
-      '
-      UPDATE ideas
-      SET baskets_count = counts.count
-      FROM (
-        SELECT ideas.id as idea_id, count(submitted_baskets.id) as count
-        FROM ideas
-          LEFT OUTER JOIN baskets_ideas ON ideas.id = baskets_ideas.idea_id
-          LEFT OUTER JOIN (SELECT * FROM baskets WHERE submitted_at IS NOT NULL) as submitted_baskets ON baskets_ideas.basket_id = submitted_baskets.id
-        GROUP BY ideas.id
-      ) as counts
-      WHERE ideas.id = counts.idea_id
-    '
-    ActiveRecord::Base.connection.execute(query)
+  private
+
+  def create_followers(basket, user)
+    project = basket.participation_context.project
+    Follower.find_or_create_by(followable: project, user: user)
+    return if !project.in_folder?
+
+    Follower.find_or_create_by(followable: project.folder, user: user)
   end
 end

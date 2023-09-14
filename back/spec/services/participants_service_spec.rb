@@ -188,7 +188,7 @@ describe ParticipantsService do
       create(:basket, ideas: [i], participation_context: project, user: pp4)
       create(:idea, author: other)
 
-      expect(service.projects_participants([project], actions: %i[posting budgeting]).map(&:id)).to match_array [pp1.id, pp4.id]
+      expect(service.projects_participants([project], actions: %i[posting voting]).map(&:id)).to match_array [pp1.id, pp4.id]
     end
   end
 

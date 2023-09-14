@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :custom_field do
+  factory :custom_field, aliases: [:custom_field_text] do
     resource_type { 'User' }
     sequence(:key) { |n| "field_#{n}" }
     title_multiloc do
@@ -19,6 +19,25 @@ FactoryBot.define do
 
     trait :for_custom_form do
       association :resource, factory: :custom_form
+    end
+
+    factory :custom_field_multiline_text do
+      title_multiloc do
+        {
+          'en' => 'Why would you want to join the army?'
+        }
+      end
+      description_multiloc do
+        {
+          'en' => 'Please explain why you want to join the army.'
+        }
+      end
+      required { false }
+      input_type { 'multiline_text' }
+
+      trait :for_custom_form do
+        association :resource, factory: :custom_form
+      end
     end
 
     factory :custom_field_extra_custom_form do
@@ -125,6 +144,13 @@ FactoryBot.define do
       required { false }
       input_type { 'multiselect' }
       enabled { true }
+
+      trait :with_options do
+        after(:create) do |cf|
+          create(:custom_field_option, custom_field: cf, key: 'option1')
+          create(:custom_field_option, custom_field: cf, key: 'option2')
+        end
+      end
     end
 
     factory :custom_field_checkbox do

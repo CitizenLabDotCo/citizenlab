@@ -20,8 +20,8 @@ FactoryBot.define do
     participation_method { 'ideation' }
     start_at { '2017-05-01' }
     end_at { Date.parse(start_at) + 60.days }
-    min_budget { 1 }
-    max_budget { 10_000 }
+    voting_min_total { 1 }
+    voting_max_total { 10_000 }
     campaigns_settings { { project_phase_started: true } }
 
     transient do
@@ -54,12 +54,29 @@ FactoryBot.define do
       participation_method { 'poll' }
     end
 
+    factory :survey_phase do
+      participation_method { 'survey' }
+      survey_service { 'typeform' }
+      survey_embed_url { 'https://citizenlabco.typeform.com/to/HKGaPV?source=xxxxx' }
+    end
+
     factory :volunteering_phase do
       participation_method { 'volunteering' }
     end
 
     factory :native_survey_phase do
       participation_method { 'native_survey' }
+    end
+
+    factory :voting_phase do
+      participation_method { 'voting' }
+      voting_method { 'single_voting' }
+    end
+
+    factory :budgeting_phase do
+      participation_method { 'voting' }
+      voting_method { 'budgeting' }
+      voting_max_total { 1000 }
     end
   end
 end

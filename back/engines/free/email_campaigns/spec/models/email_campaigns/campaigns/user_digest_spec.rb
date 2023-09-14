@@ -63,6 +63,20 @@ RSpec.describe EmailCampaigns::Campaigns::UserDigest do
       command = campaign.generate_commands(recipient: user).first
       expect(command.dig(:tracked_content, :idea_ids)).not_to include response.id
     end
+
+    it "only includes 'new' initiatives" do
+      create(:initiative_status_proposed)
+
+      old_initiative = create(:initiative, build_status_change: false)
+      old_initiative.initiative_status_changes.first.update!(created_at: 8.days.ago) # more than 1 week ago
+
+      new_initiative = create(:initiative, build_status_change: false)
+      new_initiative.initiative_status_changes.first.update!(created_at: 6.days.ago) # less than 1 week ago
+
+      command = campaign.generate_commands(recipient: user).first
+
+      expect(command.dig(:event_payload, :new_initiatives).pluck(:id)).to match_array [new_initiative.id]
+    end
   end
 
   describe 'before_send_hooks' do

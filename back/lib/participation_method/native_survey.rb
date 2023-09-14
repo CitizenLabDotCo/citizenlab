@@ -48,9 +48,15 @@ module ParticipationMethod
         title_multiloc: MultilocService.new.i18n_to_multiloc('form_builder.default_select_field.option2')
       )
       participation_context.reload
+
+      form
     end
 
     def never_show?
+      true
+    end
+
+    def posting_allowed?
       true
     end
 
@@ -58,8 +64,12 @@ module ParticipationMethod
       true
     end
 
-    def form_in_phase?
+    def creation_phase?
       participation_context.project.timeline?
+    end
+
+    def custom_form
+      participation_context.custom_form || CustomForm.new(participation_context: participation_context)
     end
 
     def edit_custom_form_allowed?
@@ -67,6 +77,10 @@ module ParticipationMethod
     end
 
     def delete_inputs_on_pc_deletion?
+      true
+    end
+
+    def supports_exports?
       true
     end
 

@@ -187,6 +187,7 @@ const UserFieldSelection = ({
                   disabled={!permissionsCustomFieldsEnabled || !userIsAdmin}
                   onChange={() => {
                     onChange({
+                      phaseId,
                       permission,
                       groupIds,
                       globalCustomFields:

@@ -1,7 +1,12 @@
-import React, { memo } from 'react';
+import React from 'react';
 
 // components
-import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  BoxFlexProps,
+  Title,
+  useBreakpoint,
+} from '@citizenlab/cl2-component-library';
 import Facebook from '../buttons/Facebook';
 import Twitter from '../buttons/Twitter';
 import Messenger from '../buttons/Messenger';
@@ -11,14 +16,13 @@ import CopyLink from '../buttons/CopyLink';
 
 // i18n
 import messages from '../messages';
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
 import { getUrlWithUtm, UtmParams, Medium } from '../utils';
 
 interface Props {
-  context: 'idea' | 'project' | 'initiative' | 'folder';
+  context: 'idea' | 'project' | 'initiative' | 'folder' | 'event';
   url: string;
   twitterMessage: string;
   facebookMessage: string;
@@ -27,49 +31,59 @@ interface Props {
   emailBody?: string;
   utmParams: UtmParams;
   id?: string;
+  hideTitle?: boolean;
+  justifyContent?: BoxFlexProps['justifyContent'];
 }
 
-const SharingButtons = memo(
-  ({
-    context,
-    twitterMessage,
-    whatsAppMessage,
-    facebookMessage,
-    emailSubject,
-    emailBody,
-    id,
-    url,
-    utmParams,
-  }: Props & WrappedComponentProps) => {
-    const isSmallerThanTablet = useBreakpoint('tablet');
+const SharingButtons = ({
+  context,
+  twitterMessage,
+  whatsAppMessage,
+  facebookMessage,
+  emailSubject,
+  emailBody,
+  id,
+  url,
+  utmParams,
+  hideTitle,
+  justifyContent,
+}: Props) => {
+  const isSmallerThanTablet = useBreakpoint('tablet');
 
-    const getUrl = (medium: Medium) => {
-      return getUrlWithUtm(medium, url, utmParams);
-    };
-    const titleMessage = {
-      idea: <FormattedMessage {...messages.share} />,
-      project: <FormattedMessage {...messages.shareThisProject} />,
-      initiative: <FormattedMessage {...messages.shareThisInitiative} />,
-      folder: <FormattedMessage {...messages.shareThisFolder} />,
-    }[context];
+  const getUrl = (medium: Medium) => {
+    return getUrlWithUtm(medium, url, utmParams);
+  };
+  const titleMessage = {
+    idea: <FormattedMessage {...messages.share} />,
+    project: <FormattedMessage {...messages.shareThisProject} />,
+    initiative: <FormattedMessage {...messages.shareThisInitiative} />,
+    folder: <FormattedMessage {...messages.shareThisFolder} />,
+    event: <FormattedMessage {...messages.shareThisEvent} />,
+  }[context];
 
-    return (
-      <>
+  return (
+    <>
+      {!hideTitle && (
         <Title
           textAlign={isSmallerThanTablet ? 'center' : 'inherit'}
-          mb="12px"
+          mb="20px"
           color="textPrimary"
           variant="h3"
+          as="h2"
         >
           {titleMessage}
         </Title>
-        <Box
-          id={id}
-          justifyContent={isSmallerThanTablet ? 'center' : 'flex-start'}
-          display="flex"
-          gap="5px"
-          flexWrap="wrap"
-        >
+      )}
+      <Box
+        id={id}
+        alignItems={isSmallerThanTablet ? 'center' : 'flex-start'}
+        display="flex"
+        gap="5px"
+        flexWrap="wrap"
+        flexDirection={isSmallerThanTablet ? 'column' : 'row'}
+        justifyContent={justifyContent}
+      >
+        <Box display="flex" gap="4px">
           <Facebook
             facebookMessage={facebookMessage}
             url={getUrl('facebook')}
@@ -85,11 +99,16 @@ const SharingButtons = memo(
             emailBody={emailBody}
             isDropdownStyle={false}
           />
-          <CopyLink copyLink={url} />
         </Box>
-      </>
-    );
-  }
-);
+        {isSmallerThanTablet && (
+          <Box justifyContent="center">
+            <FormattedMessage {...messages.or} />
+          </Box>
+        )}
+        <CopyLink copyLink={url} />
+      </Box>
+    </>
+  );
+};
 
-export default injectIntl(SharingButtons);
+export default SharingButtons;

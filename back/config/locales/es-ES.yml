@@ -15,6 +15,10 @@ es:
     rejected: rechazada
     rejected_description: Esta idea ha sido rechazada
   initiative_statuses:
+    review_pending: revisión pendiente
+    review_pending_description: revisión pendiente
+    changes_requested: cambios solicitados
+    changes_requested_description: cambios solicitados
     proposed: propuesta
     proposed_description: propuesta
     expired: finalizado
@@ -78,7 +82,7 @@ es:
     projects:
       title: Todos los proyectos
     all_input:
-      title: Entradas
+      title: Todos los aportes
     proposals:
       title: Propuestas
     events:
@@ -144,9 +148,9 @@ es:
     categories:
       main_content:
         idea:
-          title: '¿Cuál es su idea?'
+          title: '¿Cuál es tu idea?'
         question:
-          title: '¿Cuál es su pregunta?'
+          title: '¿Cuál es tu pregunta?'
         contribution:
           title: '¿Cuál es su propuesta?'
         project:
@@ -181,6 +185,8 @@ es:
       <p>Se invita a los iniciadores a presentar su propuesta en la próxima reunión del consejo. Proporcionaremos una actualización oficial.</p>
     default_eligibility_criteria: >
       <ul> <li>Debe estar dentro de las áreas y competencias de la política local</li> <li>Es de interés público más que un interés particular.</li> <li>No discrimina en base a género, raza, edad u origen...</li> <li>No daña a los demás</li> </ul>
+    default_posting_tips: >
+      <ul><li>Tómate el tiempo necesario para elaborar tu propuesta. Si es necesario, escribe primero un borrador y luego cópiela y pégala aquí.</li><li>Elige un título explicativo que ilustre claramente lo que implica tu propuesta.</li><li>Asegúrate de visibilizar tu propuesta con una imagen adecuada, para que destaque más.</li><li>Añade anexos relevantes, como vídeos, ejemplos inspiradores, detalles técnicos o planos.</li><li>Comparte tu idea en las redes sociales y otros canales para conseguir votos.</li></ul>
   reset_password_mailer:
     send_reset_password:
       cta_reset_password: 'Restablece tu contraseña'
@@ -201,7 +207,9 @@ es:
       comments_count: 'Comentarios'
       likes_count: 'Me gusta'
       dislikes_count: 'No me gusta'
-      baskets_count: 'Cestas'
+      picks: 'Recoge'
+      participants: 'Participantes'
+      votes_count: 'Votos'
       input_url: 'URL'
       project: 'Proyecto'
       status: 'Estado'
@@ -247,3 +255,6 @@ es:
     formats:
       hour_of_day: "%H:%M"
     pm: pm
+  voting_method:
+    default_voting_term_singular: "votar"
+    default_voting_term_plural: "votos"

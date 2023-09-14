@@ -10,7 +10,7 @@ module FlagInappropriateContent
         ToxicityDetectionJob.perform_later initiative, attributes: SUPPORTED_ATTRS
       end
 
-      def after_update(initiative, user)
+      def after_update(initiative, user, _old_cosponsor_ids)
         # before super to reliably detect attribute changes
         atrs = updated_supported_attrs initiative
         if atrs.present?

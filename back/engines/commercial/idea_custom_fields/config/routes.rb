@@ -17,7 +17,7 @@ IdeaCustomFields::Engine.routes.draw do
         resources :phases, only: [] do
           resources(
             :custom_fields,
-            only: %i[index],
+            only: %i[index show],
             controller: 'idea_custom_fields',
             defaults: { container_type: 'Phase' }
           ) do

@@ -8,16 +8,20 @@ import styled from 'styled-components';
 import { rgba } from 'polished';
 
 // components
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Icon, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { UserTab } from './';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-// api
+// hooks
 import useUserIdeasCount from 'api/user_ideas_count/useUserIdeasCount';
 import useUserCommentsCount from 'api/user_comments_count/useUserCommentsCount';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import useAuthUser from 'api/me/useAuthUser';
+import useEventsByUserId from 'api/events/useEventsByUserId';
+import { ScreenReaderOnly } from 'utils/a11y';
 
 const UserNavbarWrapper = styled.div`
   width: 100%;
@@ -108,9 +112,20 @@ interface Props {
 
 const UserNavbar = memo<Props>(({ currentTab, selectTab, userId }) => {
   const { data: ideasCount } = useUserIdeasCount({ userId });
+  const isSmallerThanPhone = useBreakpoint('phone');
   const { data: commentsCount } = useUserCommentsCount({
     userId,
   });
+  const { data: events } = useEventsByUserId(userId);
+  const { data: authUser } = useAuthUser();
+
+  const eventsCount = events?.data.length;
+  // const showEventTab = authUser?.data?.id === userId; // TODO: Re-enable once event attendance smart group added
+  const showEventTab = false;
+  const isFollowingEnabled = useFeatureFlag({
+    name: 'follow',
+  });
+  const showFollowingTab = isFollowingEnabled && authUser?.data?.id === userId;
 
   return (
     <UserNavbarWrapper role="tablist">
@@ -123,11 +138,19 @@ const UserNavbar = memo<Props>(({ currentTab, selectTab, userId }) => {
       >
         <Border aria-hidden />
         <TabIcon name="idea" ariaHidden />
-        {ideasCount && (
+        {!isSmallerThanPhone && (
           <FormattedMessage
             {...messages.postsWithCount}
-            values={{ ideasCount: ideasCount.data.attributes.count }}
+            values={{ ideasCount: ideasCount?.data.attributes.count || '0' }}
           />
+        )}
+        {isSmallerThanPhone && (
+          <ScreenReaderOnly>
+            <FormattedMessage
+              {...messages.postsWithCount}
+              values={{ ideasCount: ideasCount?.data.attributes.count || '0' }}
+            />
+          </ScreenReaderOnly>
         )}
       </UserNavbarButton>
       <UserNavbarButton
@@ -141,13 +164,72 @@ const UserNavbar = memo<Props>(({ currentTab, selectTab, userId }) => {
       >
         <Border aria-hidden />
         <TabIcon name="comments" ariaHidden />
-        {commentsCount && (
+        {!isSmallerThanPhone && (
           <FormattedMessage
             {...messages.commentsWithCount}
-            values={{ commentsCount: commentsCount.data.attributes.count }}
+            values={{
+              commentsCount: commentsCount?.data.attributes.count || '0',
+            }}
           />
         )}
+        {isSmallerThanPhone && (
+          <ScreenReaderOnly>
+            <FormattedMessage
+              {...messages.commentsWithCount}
+              values={{
+                commentsCount: commentsCount?.data.attributes.count || '0',
+              }}
+            />
+          </ScreenReaderOnly>
+        )}
       </UserNavbarButton>
+      {showFollowingTab && (
+        <UserNavbarButton
+          onMouseDown={removeFocusAfterMouseClick}
+          onClick={selectTab('following')}
+          className={currentTab === 'following' ? 'active' : ''}
+          role="tab"
+          aria-selected={currentTab === 'following'}
+          data-cy="e2e-following-tab"
+        >
+          <Border aria-hidden />
+          <TabIcon name="notification-outline" ariaHidden />
+          {!isSmallerThanPhone && <FormattedMessage {...messages.following} />}
+          {isSmallerThanPhone && (
+            <ScreenReaderOnly>
+              <FormattedMessage {...messages.following} />
+            </ScreenReaderOnly>
+          )}
+        </UserNavbarButton>
+      )}
+      {showEventTab && (
+        <UserNavbarButton
+          onMouseDown={removeFocusAfterMouseClick}
+          onClick={selectTab('events')}
+          className={`e2e-events-nav ${
+            currentTab === 'events' ? 'active' : ''
+          }`}
+          role="tab"
+          aria-selected={currentTab === 'events'}
+        >
+          <Border aria-hidden />
+          <TabIcon name="calendar" ariaHidden />
+          {!isSmallerThanPhone && (
+            <FormattedMessage
+              {...messages.eventsWithCount}
+              values={{ eventsCount: eventsCount || '0' }}
+            />
+          )}
+          {isSmallerThanPhone && (
+            <ScreenReaderOnly>
+              <FormattedMessage
+                {...messages.eventsWithCount}
+                values={{ eventsCount: eventsCount || '0' }}
+              />
+            </ScreenReaderOnly>
+          )}
+        </UserNavbarButton>
+      )}
     </UserNavbarWrapper>
   );
 });

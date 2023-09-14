@@ -15,6 +15,10 @@ en-GB:
     rejected: rejected
     rejected_description: This idea has been rejected
   initiative_statuses:
+    review_pending: review pending
+    review_pending_description: review pending
+    changes_requested: changes requested
+    changes_requested_description: changes requested
     proposed: proposed
     proposed_description: proposed
     expired: expired
@@ -181,6 +185,8 @@ en-GB:
       <p>The initiators are invited to present their proposal at the next council meeting. We will provide an official update.</p>
     default_eligibility_criteria: >
       <ul> <li>It must fall within the policy areas and competencies of local policy</li> <li>It serves the public interest rather than your individual interest</li> <li>It does not discriminate based on gender, race, age, or background</li> <li>It does not harm others</li> </ul>
+    default_posting_tips: >
+      <ul><li>Take the time to elaborate on your proposal. If necessary, type a draft first and then copy-paste it here.</li><li>Choose a meaningful title that explains clearly what your proposal entails.</li><li>Visualize your proposal with a fitting image to help it stand out!</li><li>Add relevant attachments, such as videos, inspiring examples, technical details or plans.</li><li>Share your idea on social media and other channels to gather support from others.</li></ul>
   reset_password_mailer:
     send_reset_password:
       cta_reset_password: 'Reset your password'
@@ -201,7 +207,9 @@ en-GB:
       comments_count: 'Comments'
       likes_count: 'Likes'
       dislikes_count: 'Dislikes'
-      baskets_count: 'Baskets'
+      picks: 'Picks'
+      participants: 'Participants'
+      votes_count: 'Votes'
       input_url: 'URL'
       project: 'Project'
       status: 'Status'
@@ -247,3 +255,6 @@ en-GB:
     formats:
       hour_of_day: "%l %p"
     pm: pm
+  voting_method:
+    default_voting_term_singular: "vote"
+    default_voting_term_plural: "votes"
