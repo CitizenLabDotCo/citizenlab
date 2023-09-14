@@ -90,7 +90,7 @@ class PrintCustomFieldsService
   end
 
   def render_tenant_logo(pdf)
-    logo = AppConfiguration.instance.logo.medium
+    logo = AppConfiguration.instance.logo&.medium
     return if logo.blank?
 
     pdf.image open logo
@@ -107,7 +107,7 @@ class PrintCustomFieldsService
         inline_format: true
       )
     else
-      project = Project.find(@participation_context.project_id)
+      project = @participation_context.project
       project_title = project.title_multiloc[locale]
 
       pdf.text(
@@ -186,27 +186,16 @@ class PrintCustomFieldsService
 
       pdf_group.move_down 7.mm
 
-      if field_type == 'select'
+      case field_type
+      when 'select'
         render_single_choice(pdf_group, custom_field)
-      end
-
-      if field_type == 'multiselect'
+      when 'multiselect'
         render_multiple_choice(pdf_group, custom_field)
-      end
-
-      if %w[text text_multiloc].include? field_type
-        render_text_lines(pdf_group, 1)
-      end
-
-      if %w[multiline_text html_multiloc].include? field_type
-        render_text_lines(pdf_group, 7)
-      end
-
-      if field_type == 'linear_scale'
+      when 'linear_scale'
         render_linear_scale(pdf_group, custom_field)
-      end
-
-      if field_type == 'number'
+      when 'multiline_text', 'html_multiloc'
+        render_text_lines(pdf_group, 7)
+      else # text, text_multiloc, number
         render_text_lines(pdf_group, 1)
       end
     end
@@ -226,9 +215,7 @@ class PrintCustomFieldsService
 
   def write_description(pdf, custom_field)
     description = custom_field.description_multiloc[locale]
-    is_empty = description.nil? || description == ''
-
-    unless is_empty
+    if description.present?
       pdf.move_down 3.mm
       paragraphs = parse_html_tags(description)
 
@@ -242,7 +229,8 @@ class PrintCustomFieldsService
 
   def write_instructions_and_disclaimers(pdf, custom_field)
     show_multiselect_instructions = custom_field.input_type == 'multiselect'
-    show_visibility_disclaimer = participation_context.participation_method == 'ideation' && custom_field.answer_visible_to == 'admins'
+    participation_method = Factory.instance.participation_method_for @participation_context
+    show_visibility_disclaimer = participation_method.supports_idea_form? && custom_field.answer_visible_to == 'admins'
 
     if show_multiselect_instructions || show_visibility_disclaimer
       pdf.move_down 5.mm

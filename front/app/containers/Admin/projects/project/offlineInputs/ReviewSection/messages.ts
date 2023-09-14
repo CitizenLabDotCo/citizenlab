@@ -5,10 +5,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.importedInputs',
     defaultMessage: 'Imported inputs',
   },
-  inputImporter: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputImporter',
-    defaultMessage: 'Input importer',
-  },
   noTitleInputLabel: {
     id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.noTitleInputLabel',
     defaultMessage: 'Input',

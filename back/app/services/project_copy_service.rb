@@ -468,7 +468,8 @@ class ProjectCopyService < TemplateService
       'verified' => user.verified,
       'block_start_at' => user.block_start_at,
       'block_end_at' => user.block_end_at,
-      'block_reason' => user.block_reason
+      'block_reason' => user.block_reason,
+      'unique_code' => user.unique_code
     }.tap do |yml_user|
       unless yml_user['password_digest']
         yml_user['password'] = SecureRandom.urlsafe_base64 32

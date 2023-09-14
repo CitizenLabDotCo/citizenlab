@@ -7,10 +7,17 @@ describe BulkImportIdeas::ImportIdeasService do
 
   describe 'upload_file' do
     it 'uploads a file successfully' do
-      base_64_content = Base64.encode64 Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/testscan.pdf').read
-      service.upload_file "data:application/pdf;base64,#{base_64_content}", 'pdf'
+      base_64_content = Base64.encode64 Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/scan_1.pdf').read
+      service.create_files "data:application/pdf;base64,#{base_64_content}"
       expect(BulkImportIdeas::IdeaImportFile.all.count).to eq 1
       expect(BulkImportIdeas::IdeaImportFile.first.import_type).to eq 'pdf'
+    end
+
+    it 'detects the file type if an xlsx file is uploaded' do
+      base_64_content = Base64.encode64 Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/import.xlsx').read
+      service.create_files "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,#{base_64_content}"
+      expect(BulkImportIdeas::IdeaImportFile.all.count).to eq 1
+      expect(BulkImportIdeas::IdeaImportFile.first.import_type).to eq 'xlsx'
     end
   end
 

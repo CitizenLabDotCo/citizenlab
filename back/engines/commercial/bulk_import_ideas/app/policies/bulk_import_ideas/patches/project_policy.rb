@@ -14,6 +14,10 @@ module BulkImportIdeas
       def draft_ideas?
         active_moderator?
       end
+
+      def show_idea_import_file?
+        active_moderator?
+      end
     end
   end
 end

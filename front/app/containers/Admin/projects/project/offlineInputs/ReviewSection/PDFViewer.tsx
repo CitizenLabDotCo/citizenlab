@@ -8,6 +8,9 @@ import 'react-pdf/dist/Page/AnnotationLayer.css';
 // components
 import { Box } from '@citizenlab/cl2-component-library';
 
+// utils
+import { getJwt } from 'utils/auth/jwt';
+
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   'pdfjs-dist/build/pdf.worker.min.js',
   import.meta.url
@@ -27,11 +30,16 @@ const PDFViewer = ({ currentPageIndex, file, pages }: Props) => {
   };
 
   const currentPage = pages[currentPageIndex];
+  const jwt = getJwt();
+  const fileWithHeaders = {
+    url: file,
+    httpHeaders: { Authorization: jwt },
+  };
 
   return (
     <>
       <Box w="100%" h="100%" overflowY="scroll">
-        <Document file={file} onLoadSuccess={handleLoadSuccess}>
+        <Document file={fileWithHeaders} onLoadSuccess={handleLoadSuccess}>
           {currentPage && pagesInDocument && currentPage <= pagesInDocument && (
             <Page pageNumber={currentPage} />
           )}

@@ -4,24 +4,14 @@ require 'google/cloud/document_ai'
 
 module BulkImportIdeas
   class GoogleFormParserService
-    def initialize(pdf_file_content)
-      @pdf_file_content = pdf_file_content
-      @document = process_upload
-    end
+    def raw_text_page_array(pdf_file_content)
+      return dummy_raw_text unless ENV.fetch('GOOGLE_APPLICATION_CREDENTIALS', false) # Temp for development
 
-    def raw_text
-      return dummy_raw_text.join("\n") unless ENV.fetch('GOOGLE_APPLICATION_CREDENTIALS', false) && @document # Temp for development
-
-      @document.text
-    end
-
-    def raw_text_page_array
-      return dummy_raw_text unless ENV.fetch('GOOGLE_APPLICATION_CREDENTIALS', false) && @document # Temp for development
-
-      text = @document.text
+      document = process_upload pdf_file_content
+      text = document.text
 
       # Try and sort the text better by location on the page
-      @document.pages.map do |page|
+      document.pages.map do |page|
         new_text = page.paragraphs.map do |paragraph|
           x = paragraph.layout.bounding_poly.normalized_vertices[0].y.round(2)
           y = paragraph.layout.bounding_poly.normalized_vertices[0].y.round(2)
@@ -41,9 +31,7 @@ module BulkImportIdeas
 
     private
 
-    def process_upload
-      return unless @pdf_file_content && ENV.fetch('GOOGLE_APPLICATION_CREDENTIALS', false)
-
+    def process_upload(pdf_file_content)
       # Set up the DocumentAI processor.
       # TODO: Invalid location: 'eu' must match the server deployment 'us' even when the processor is set to eu?
       client = Google::Cloud::DocumentAI.document_processor_service
@@ -58,7 +46,7 @@ module BulkImportIdeas
         skip_human_review: true,
         name: name,
         raw_document: {
-          content: @pdf_file_content,
+          content: pdf_file_content,
           mime_type: 'application/pdf'
         }
       )
