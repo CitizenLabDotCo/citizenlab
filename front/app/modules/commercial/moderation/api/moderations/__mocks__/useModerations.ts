@@ -1,4 +1,4 @@
-import { IModerationData } from 'modules/commercial/moderation/services/moderations';
+import { IModerationData } from '../types';
 
 export const moderationsData: IModerationData[] = [
   {
