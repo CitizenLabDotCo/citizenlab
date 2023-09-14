@@ -1108,7 +1108,7 @@
   "app.containers.InitiativesShow.manageInvitationsLinkText": "Διαχείριση προσκλήσεων για συν-χορηγία",
   "app.containers.InitiativesShow.metaOgTitle": "Υποστηρίξτε αυτή την πρόταση: {initiativeTitle}",
   "app.containers.InitiativesShow.metaTitle": "Πρόταση • {initiativeTitle}",
-  "app.containers.InitiativesShow.numberOfCosponsorsNotYetMet1": "{requiredNumberOfCosponsors, plural, one {Η πρότασή σας χρειάζεται {requiredNumberOfCosponsors} αποδεκτή συμπαράσταση. Μέχρι τότε, δεν θα εξεταστεί. {manageInvitationsLink}. !} other {Η πρότασή σας χρειάζεται {requiredNumberOfCosponsors} αποδεκτές συν-χορηγίες. Μέχρι τότε, δεν θα εξεταστεί. {manageInvitationsLink}.}}",
+  "app.containers.InitiativesShow.numberOfCosponsorsNotYetMet": "{requiredNumberOfCosponsors, plural, one {Η πρότασή σας χρειάζεται 1 αποδεκτή συνυποστήριξη. Μέχρι τότε, δεν θα εξεταστεί. {manageInvitationsLink}.} other {Η πρότασή σας χρειάζεται {requiredNumberOfCosponsors} αποδεκτές συμπαραστάσεις. Μέχρι τότε, δεν θα εξεταστεί. {manageInvitationsLink}.}}",
   "app.containers.InitiativesShow.pending1": "σε εκκρεμότητα",
   "app.containers.InitiativesShow.postedBy": "Πρόταση που δημοσιεύθηκε από τον/την {authorName}",
   "app.containers.InitiativesShow.postedByShort": "Δημοσιεύτηκε από τον/την {authorName}",
