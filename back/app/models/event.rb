@@ -16,6 +16,7 @@
 #  location_point       :geography        point, 4326
 #  address_1            :string
 #  attendees_count      :integer          default(0), not null
+#  online_link          :string
 #  address_2_multiloc   :jsonb            not null
 #
 # Indexes

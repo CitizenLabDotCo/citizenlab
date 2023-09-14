@@ -8,7 +8,13 @@ import useProjectById from 'api/projects/useProjectById';
 import usePhase from 'api/phases/usePhase';
 
 // components
-import { Box, Title, Button } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Title,
+  Button,
+  Text,
+  Badge,
+} from '@citizenlab/cl2-component-library';
 import GoBackButton from 'components/UI/GoBackButton';
 
 // i18n
@@ -61,6 +67,15 @@ const TopBar = ({ onClickPDFImport }: Props) => {
       <Box display="flex" alignItems="center">
         <GoBackButton linkTo={backPath} />
         <Box ml="24px">
+          <Box display="flex" gap="8px" alignItems="center">
+            <Text m="0px" color="textSecondary">
+              <FormattedMessage {...messages.inputImporter} />
+            </Text>
+            <Badge color={colors.textSecondary} className="inverse">
+              BETA
+            </Badge>
+          </Box>
+
           <Title variant="h4" m="0px" mt="1px">
             {topBarTitle}
           </Title>

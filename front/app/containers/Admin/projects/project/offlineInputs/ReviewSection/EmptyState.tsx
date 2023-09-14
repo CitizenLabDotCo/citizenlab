@@ -25,7 +25,7 @@ const EmptyState = () => {
         px="20px"
       >
         <Title variant="h1" color="primary">
-          <FormattedMessage {...messages.inputImporter} />
+          <FormattedMessage {...sharedMessages.inputImporter} />
         </Title>
         <Text>
           <FormattedMessage
