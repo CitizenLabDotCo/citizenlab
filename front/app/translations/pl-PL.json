@@ -354,7 +354,6 @@
   "app.components.PostComponents.SharingModalContent.questionWhatsAppMessage": "Weź udział w dyskusji: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.twitterMessage": "Głosuj na {postTitle} w",
   "app.components.PostComponents.SharingModalContent.whatsAppMessageProposal": "Właśnie wysłałem propozycję na {orgName}: {postTitle}",
-  "app.components.PostComponents.areas": "Obszary",
   "app.components.PostComponents.linkToHomePage": "Link do strony głównej",
   "app.components.PostComponents.readMore": "Przeczytaj więcej...",
   "app.components.PostComponents.topics": "Tematy",
