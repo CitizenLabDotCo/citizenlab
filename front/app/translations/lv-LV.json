@@ -1108,7 +1108,7 @@
   "app.containers.InitiativesShow.manageInvitationsLinkText": "Pārvaldīt līdzfinansējuma ielūgumus",
   "app.containers.InitiativesShow.metaOgTitle": "Atbalstīt šo priekšlikumu: {initiativeTitle}",
   "app.containers.InitiativesShow.metaTitle": "Priekšlikums  • {initiativeTitle}",
-  "app.containers.InitiativesShow.numberOfCosponsorsNotYetMet1": "{requiredNumberOfCosponsors, plural, one {Jūsu priekšlikumam ir nepieciešama {requiredNumberOfCosponsors} apstiprināta līdzfinansēšana. Līdz tam tas netiks izskatīts. {manageInvitationsLink}.} other {Jūsu priekšlikumam nepieciešams {requiredNumberOfCosponsors} apstiprināts līdzfinansējums. Līdz tam tas netiks izskatīts. {manageInvitationsLink}.}}",
+  "app.containers.InitiativesShow.numberOfCosponsorsNotYetMet": "{requiredNumberOfCosponsors, plural, one {Jūsu priekšlikumam nepieciešams 1 apstiprināts līdzfinansējums. Līdz tam tas netiks izskatīts. {manageInvitationsLink}.} other {Jūsu priekšlikumam ir vajadzīgi {requiredNumberOfCosponsors} akceptēti līdzfinansētāji. Līdz tam tas netiks izskatīts. {manageInvitationsLink}.}}",
   "app.containers.InitiativesShow.pending1": "gaida",
   "app.containers.InitiativesShow.postedBy": "Priekšlikumu publicējis {authorName}",
   "app.containers.InitiativesShow.postedByShort": "Publicējis {authorName}",
