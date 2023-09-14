@@ -1450,7 +1450,7 @@
   "app.containers.SignUp.goToLogIn": "Već imate račun? {goToOtherFlowLink}",
   "app.containers.SignUp.iHaveReadAndAgreeTo": "Pročitao sam i slažem se {link}.",
   "app.containers.SignUp.iHaveReadAndAgreeToVienna": "Pristajem da se podaci koriste na web-mjestu mitgestalten.wien.gv.at. Više informacija možete pronaći na adresi {link}.",
-  "app.containers.SignUp.invitationError": "Vaša pozivnica je istekla ili je već iskorištena.",
+  "app.containers.SignUp.invitationErrorText": "Vaša pozivnica je istekla ili je već iskorištena. Ako ste već upotrijebili vezu za pozivnicu za stvaranje računa, pokušajte se prijaviti. U suprotnom, prijavite se za stvaranje novog računa.",
   "app.containers.SignUp.lastNameLabel": "Prezime",
   "app.containers.SignUp.privacyPolicyNotAcceptedError": "Za nastavak prihvatite naša pravila o privatnosti",
   "app.containers.SignUp.signUp2": "Registracija",
