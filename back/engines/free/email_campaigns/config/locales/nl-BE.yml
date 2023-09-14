@@ -571,6 +571,7 @@ nl-BE:
       cta_see_results: 'Bekijk resultaten op het platform'
     event_registration_confirmation:
       subject: "Je bent binnen! Je inschrijving voor \"%{eventTitle}\" is bevestigd"
+      header_message: "%{firstName}Bedankt voor het registreren voor"
       event_details:
         labels:
           date: 'Datum'
