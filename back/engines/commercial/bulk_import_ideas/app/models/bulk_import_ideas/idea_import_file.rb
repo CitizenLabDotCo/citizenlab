@@ -34,10 +34,15 @@ module BulkImportIdeas
 
     belongs_to :project, optional: true
 
-    belongs_to :parent, class_name: 'IdeaImportFile', optional: true
-    has_many :children, class_name: 'IdeaImportFile', foreign_key: 'parent_id'
+    belongs_to :parent, class_name: 'BulkImportIdeas::IdeaImportFile', optional: true
+    has_many :children, class_name: 'BulkImportIdeas::IdeaImportFile', foreign_key: 'parent_id'
 
     validates :name, presence: true
     validates :file, presence: true, unless: proc { Current.loading_tenant_template }
+
+    # Hack to enable files to be opened on test
+    def file_content_url
+      file.url.include?('http') ? file.url : file.file.file
+    end
   end
 end

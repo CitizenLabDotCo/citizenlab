@@ -26,7 +26,7 @@ module BulkImportIdeas
         params[:locale] = @locale
         pages_per_idea = PrintCustomFieldsService.new(@phase || @project, @form_fields, params).create_pdf.page_count
 
-        f = open(source_file.file.url)
+        f = open(source_file.file_content_url)
         pdf = ::HexaPDF::Document.open(f)
 
         # binding.pry
@@ -274,7 +274,7 @@ module BulkImportIdeas
     end
 
     def parse_pdf_ideas(file)
-      pdf_file = open(file.file.url, &:read)
+      pdf_file = open(file.file_content_url, &:read)
 
       @google_forms_service ||= GoogleFormParserService.new
       IdeaPlaintextParserService.new(
