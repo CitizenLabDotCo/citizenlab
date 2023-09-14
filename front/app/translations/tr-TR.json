@@ -1108,7 +1108,7 @@
   "app.containers.InitiativesShow.manageInvitationsLinkText": "Eş sponsorluk davetlerini yönetin",
   "app.containers.InitiativesShow.metaOgTitle": "Bu öneriye destek olun: {initiativeTitle}",
   "app.containers.InitiativesShow.metaTitle": "Öneri • {initiativeTitle}",
-  "app.containers.InitiativesShow.numberOfCosponsorsNotYetMet1": "{requiredNumberOfCosponsors, plural, one {Teklifinizin kabul edilmiş bir sponsorluğa ihtiyacı var {requiredNumberOfCosponsors} O zamana kadar dikkate alınmayacaktır. {manageInvitationsLink}.} other {Teklifinizin {requiredNumberOfCosponsors} kabul edilmiş sponsorluklara ihtiyacı var. O zamana kadar dikkate alınmayacaktır. {manageInvitationsLink}.}}",
+  "app.containers.InitiativesShow.numberOfCosponsorsNotYetMet": "{requiredNumberOfCosponsors, plural, one {Teklifinizin kabul edilmiş 1 sponsorluğa ihtiyacı vardır. O zamana kadar dikkate alınmayacaktır. {manageInvitationsLink}.} other {Teklifinizin {requiredNumberOfCosponsors} kabul edilmiş sponsorluklara ihtiyacı var. O zamana kadar değerlendirmeye alınmayacaktır. {manageInvitationsLink}.}}",
   "app.containers.InitiativesShow.pending1": "beklemede",
   "app.containers.InitiativesShow.postedBy": "Öneri {authorName} tarafından yayınlandı",
   "app.containers.InitiativesShow.postedByShort": "{authorName} tarafından yayınlandı",
