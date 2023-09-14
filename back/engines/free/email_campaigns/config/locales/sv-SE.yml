@@ -1,8 +1,8 @@
 sv:
   email_campaigns:
     campaign_type_description:
-      "1": "Varje vecka, på måndagar på %{hourOfDay}"
-      "2": "Varje vecka, på tisdagar %{hourOfDay}"
+      "1": "Veckovis på måndagar %{hourOfDay}"
+      "2": "Varje vecka på tisdagar %{hourOfDay}"
       "3": "Varje vecka, på onsdagar på %{hourOfDay}"
       "4": "Varje vecka, på torsdagar på %{hourOfDay}"
       "5": "Varje vecka, på fredagar på %{hourOfDay}"
