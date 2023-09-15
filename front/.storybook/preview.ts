@@ -1,7 +1,15 @@
 import contexts from './contexts';
 import { withRouter } from 'storybook-addon-react-router-v6';
+import { initialize, mswDecorator } from 'msw-storybook-addon';
+import mockServer from './mockServer'
 
-export const decorators = [withRouter, contexts];
+initialize();
+
+export const decorators = [
+  mswDecorator,
+  withRouter,
+  contexts
+];
 
 export const parameters = {
   options: {
@@ -11,4 +19,5 @@ export const parameters = {
       locales: '',
     },
   },
+  msw: mockServer
 };

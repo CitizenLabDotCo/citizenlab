@@ -96,6 +96,7 @@
     "lodash-es": "4.17.21",
     "moment": "2.29.4",
     "moment-timezone": "0.5.39",
+    "msw-storybook-addon": "^1.8.0",
     "path-to-regexp": "6.2.1",
     "polished": "^4.2.2",
     "posthog-js": "^1.57.2",
@@ -262,5 +263,8 @@
   },
   "optionalDependencies": {
     "fsevents": "^2"
+  },
+  "msw": {
+    "workerDirectory": ".storybook/public"
   }
 }
