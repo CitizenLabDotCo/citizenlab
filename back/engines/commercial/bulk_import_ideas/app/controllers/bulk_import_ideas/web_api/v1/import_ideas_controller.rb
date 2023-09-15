@@ -4,13 +4,10 @@ module BulkImportIdeas
   class WebApi::V1::ImportIdeasController < ApplicationController
     before_action :authorize_bulk_import_ideas, only: %i[bulk_create example_xlsx draft_ideas]
 
-    # NOTE: PDF version will only work for a project endpoint
+    # NOTE: PDF version only works for a project endpoint
     def bulk_create
       file = bulk_create_params[:pdf] || bulk_create_params[:xlsx]
-      file_type = bulk_create_params[:pdf] ? 'pdf' : 'xlsx'
-      file_type = import_ideas_service.upload_file file, file_type
-      idea_rows = import_ideas_service.parse_idea_rows file, file_type
-      ideas = import_ideas_service.import_ideas idea_rows
+      ideas = import_ideas_service.import_file file
       sidefx.after_success current_user
 
       render json: ::WebApi::V1::IdeaSerializer.new(
@@ -44,7 +41,7 @@ module BulkImportIdeas
     end
 
     # Show the metadata of a single imported idea
-    def show
+    def show_idea_import
       idea_import = IdeaImport.find(params[:id])
       authorize idea_import
 
@@ -52,6 +49,13 @@ module BulkImportIdeas
         idea_import,
         params: jsonapi_serializer_params
       ).serializable_hash
+    end
+
+    def show_idea_import_file
+      idea_import_file = IdeaImportFile.find(params[:id])
+      authorize idea_import_file.project || :'bulk_import_ideas/import_ideas'
+
+      send_data open(idea_import_file.file_content_url).read, type: 'application/octet-stream'
     end
 
     private

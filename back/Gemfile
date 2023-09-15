@@ -156,6 +156,7 @@ gem 'intercom', '~> 4.2'
 gem 'mjml-rails', '~> 4.9'
 gem 'cloudfront-rails', '~> 0.4'
 gem 'google-cloud-document_ai'
+gem 'hexapdf'
 
 free_engines = %w[
   document_annotation

@@ -14,9 +14,7 @@
 #
 #  index_events_attendances_on_attendee_id               (attendee_id)
 #  index_events_attendances_on_attendee_id_and_event_id  (attendee_id,event_id) UNIQUE
-#  index_events_attendances_on_created_at                (created_at)
 #  index_events_attendances_on_event_id                  (event_id)
-#  index_events_attendances_on_updated_at                (updated_at)
 #
 # Foreign Keys
 #

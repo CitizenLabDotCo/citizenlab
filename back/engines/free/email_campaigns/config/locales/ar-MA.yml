@@ -207,12 +207,14 @@ ar-MA:
       cta_accept_invitation: 'اقبل دعوتك'
       invitation_header: 'دعوتك قيد الانتظار'
       preheader: 'تم إرسال دعوة لك للانضمام إلى منصة المشاركة بواسطة %{organizationName} قبل بضعة أيام.'
+      invitation_expiry_message: 'تنتهي صلاحية هذه الدعوة خلال %{expiryDaysRemaining} يومًا تقريبًا.'
       subject: 'دعوة قيد الانتظار إلى منصة المشاركة الخاصة بـ %{organizationName}'
     invite_received:
       added_a_message: 'كتب %{organizationName} الرسالة التالية:'
       cta_accept_invitation: 'اقبل دعوتك'
       invitation_header: 'أنت مدعو!'
       invitation_header_message: 'تمت دعوتك إلى منصة المشاركة بواسطة %{organizationName}.'
+      invitation_expiry_message: 'تنتهي صلاحية هذه الدعوة خلال %{expiryDays} يومًا.'
       preheader: 'تم إرسال دعوة لك للانضمام إلى منصة المشاركة بواسطة %{organizationName}.'
       subject: 'أنت مدعو للانضمام إلى المنصة الخاصة بـ %{organizationName}'
     initiative_published:

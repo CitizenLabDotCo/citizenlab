@@ -21,43 +21,42 @@ module BulkImportIdeas
       @all_topics = Topic.all
       @import_user = current_user
       @project = nil
-      @file = nil
-      @total_pages = 1
+      @uploaded_file = nil
     end
 
-    def import_ideas(idea_rows)
+    def import_file(file_content)
+      files = create_files file_content
+
+      ideas = []
+      files.each do |file|
+        idea_rows = parse_idea_rows file
+        ideas += import_ideas(idea_rows, file)
+      end
+      ideas
+    end
+
+    def create_files(file_content)
+      [upload_source_file(file_content)]
+    end
+
+    def import_ideas(idea_rows, file = nil)
       raise Error.new 'bulk_import_ideas_maximum_ideas_exceeded', value: DEFAULT_MAX_IDEAS if idea_rows.size > DEFAULT_MAX_IDEAS
 
       ideas = []
       ActiveRecord::Base.transaction do
         ideas = idea_rows.map do |idea_row|
-          idea = import_idea idea_row
+          idea = import_idea idea_row, file
           Rails.logger.info { "Created #{idea.id}" }
           idea
         end
       end
-      @file&.update!(num_pages: @total_pages)
 
-      # TODO: Does this need to run?
+      # To ensure the latest ideas are available in NLP stack
       DumpTenantJob.perform_later Tenant.current
       ideas
     end
 
-    def upload_file(file_content, file_type)
-      # Although file type is passed in, check that it is correct and default to xlsx otherwise
-      file_type = 'xlsx' if file_type == 'pdf' && !file_content.index('application/pdf')
-      @file = IdeaImportFile.create!(
-        import_type: file_type,
-        project: @project,
-        file_by_content: {
-          name: "import.#{file_type}",
-          content: file_content # base64
-        }
-      )
-      file_type
-    end
-
-    def parse_idea_rows(_file, _file_type)
+    def parse_idea_rows(_file)
       []
     end
 
@@ -73,7 +72,24 @@ module BulkImportIdeas
 
     attr_reader :all_projects, :all_topics
 
-    def import_idea(idea_row)
+    def upload_source_file(file_content)
+      file_type = file_content.index('application/pdf') ? 'pdf' : 'xlsx'
+      IdeaImportFile.create!(
+        import_type: file_type,
+        project: @project,
+        file_by_content: {
+          name: "import.#{file_type}",
+          content: file_content # base64
+        }
+      )
+    end
+
+    def parse_xlsx_ideas(file)
+      xlsx_file = open(file.file_content_url)
+      XlsxService.new.xlsx_to_hash_array xlsx_file
+    end
+
+    def import_idea(idea_row, file)
       idea_attributes = {}
       add_title_multiloc idea_row, idea_attributes
       add_body_multiloc idea_row, idea_attributes
@@ -92,7 +108,7 @@ module BulkImportIdeas
       idea.save!
 
       create_idea_image idea_row, idea
-      create_idea_import idea, user_created, idea_row[:pdf_pages]
+      create_idea_import idea, user_created, idea_row[:pdf_pages], file
 
       idea
     end
@@ -224,7 +240,8 @@ module BulkImportIdeas
     def add_phase(idea_row, idea_attributes)
       if idea_row[:phase_id]
         phase = Phase.find(idea_row[:phase_id])
-        idea_attributes[:creation_phase_id] = phase.id if phase&.native_survey?
+        participation_method = Factory.instance.participation_method_for phase
+        idea_attributes[:creation_phase_id] = phase.id if participation_method.supports_survey_form?
       else
         return if idea_row[:phase_rank].blank?
 
@@ -283,29 +300,17 @@ module BulkImportIdeas
       true
     end
 
-    def create_idea_import(idea, user_created, page_range)
+    def create_idea_import(idea, user_created, page_range, file)
       # Add import metadata
       idea_import = IdeaImport.new(
         idea: idea,
         page_range: page_range,
         import_user: @import_user,
         user_created: user_created,
-        file: @file,
+        file: file,
         locale: @locale
       )
       idea_import.save!
-    end
-
-    def parse_xlsx_ideas(file)
-      # TODO: Is StringIO needed here?
-      xlsx_file = StringIO.new decode_base64(file)
-      XlsxService.new.xlsx_to_hash_array xlsx_file
-    end
-
-    def decode_base64(base64_file)
-      start = base64_file.index ';base64,'
-      base64_file = base64_file[(start + 8)..] if start
-      Base64.decode64(base64_file)
     end
   end
 end

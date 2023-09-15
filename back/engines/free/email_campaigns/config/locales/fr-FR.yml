@@ -199,20 +199,22 @@ fr:
     initiative_resubmitted_for_review:
       by_author: 'par %{authorName}'
       cta_reply_to: 'Faites votre retour à %{authorName}'
-      event_description_initiative: 'Une proposition a été soumise à nouveau pour examen. Donnez votre avis en rédigeant une mise à jour officielle ou en modifiant son statut.'
-      main_header: '%{firstName}vous avez une proposition à examiner'
+      event_description_initiative: 'Une proposition a été soumise à nouveau pour examen. Donnez votre retour en rédigeant une mise à jour officielle ou en modifiant son statut.'
+      main_header: '%{firstName}, vous avez une proposition à examiner'
       subject: 'Vous avez une proposition à vérifier sur la plateforme de %{organizationName}'
       preheader_initiative: 'La proposition de %{authorName} a été soumise à nouveau pour examen.'
     invite_reminder:
       cta_accept_invitation: 'Accepter votre invitation'
       invitation_header: 'Votre invitation est toujours en attente !'
       preheader: 'Il y a quelques jours, %{organizationName} vous a invité.e à rejoindre sa plateforme de participation.'
+      invitation_expiry_message: 'Cette invitation expire dans environ %{expiryDaysRemaining} jours.'
       subject: 'Invitation en attente pour rejoindre la plateforme de participation de %{organizationName}'
     invite_received:
       added_a_message: '%{organizationName} a écrit le message suivant :'
       cta_accept_invitation: 'Accepter votre invitation'
       invitation_header: 'Vous venez de recevoir une invitation !'
       invitation_header_message: '%{organizationName} vous a invité.e à rejoindre sa plateforme de participation.'
+      invitation_expiry_message: 'Cette invitation expire dans %{expiryDays} jours.'
       preheader: '%{organizationName} vous a envoyé une invitation à rejoindre leur plateforme de participation.'
       subject: 'Vous avez reçu une invitation pour rejoindre la plateforme de %{organizationName}'
     initiative_published:

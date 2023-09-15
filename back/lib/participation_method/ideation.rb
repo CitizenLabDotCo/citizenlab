@@ -343,5 +343,9 @@ module ParticipationMethod
     def supports_answer_visible_to?
       true
     end
+
+    def supports_idea_form?
+      true
+    end
   end
 end

@@ -77,6 +77,11 @@ module BulkImportIdeas
         @form[:form_pages] << get_page_number(last_line)
       end
 
+      if @form.nil?
+        raise Error.new 'bulk_import_ideas_no_first_page_number', value: 'Unable to detect page number of first page'
+        # raise StandardError, 'Unable to detect page number of first page'
+      end
+
       # Add page number
       @form[:pdf_pages] << page_number
 
@@ -84,10 +89,6 @@ module BulkImportIdeas
         # We skip the last line since it's the page number we already
         # dealt with
         next if index == last_index
-
-        if @form.nil?
-          raise StandardError, 'Unable to detect page number of first page'
-        end
 
         if field_title? line
           @form[:fields][line] = nil

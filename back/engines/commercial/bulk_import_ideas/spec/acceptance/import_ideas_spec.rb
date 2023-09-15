@@ -104,8 +104,6 @@ resource 'BulkImportIdeasImportIdeas' do
           example 'Bulk import ideas from .xlsx' do
             do_request
 
-            # binding.pry
-
             assert_status 201
             expect(response_data.count).to eq 2
             expect(Idea.count).to eq 2
@@ -119,13 +117,13 @@ resource 'BulkImportIdeasImportIdeas' do
         end
 
         context 'pdf import' do
-          let(:pdf) { create_project_bulk_import_ideas_pdf }
           let(:locale) { 'en' }
 
           # NOTE: GoogleFormParserService is stubbed to avoid calls to google APIs
-          context 'continuous projects' do
-            example 'Bulk import ideas from scanned .pdf' do
-              expect_any_instance_of(BulkImportIdeas::GoogleFormParserService).to receive(:process_upload).and_return(nil)
+          context 'continuous projects with single page idea form with 1 page scanned' do
+            let(:pdf) { create_project_bulk_import_ideas_pdf 1 }
+
+            example 'Bulk import ideas to continuous project from .pdf' do
               expect_any_instance_of(BulkImportIdeas::GoogleFormParserService).to receive(:raw_text_page_array).and_return(create_project_bulk_import_raw_text_array)
               do_request
               assert_status 201
@@ -136,7 +134,6 @@ resource 'BulkImportIdeasImportIdeas' do
               expect(Idea.all.count).to eq 1
               expect(BulkImportIdeas::IdeaImport.count).to eq 1
               expect(BulkImportIdeas::IdeaImportFile.count).to eq 1
-              expect(BulkImportIdeas::IdeaImportFile.first[:num_pages]).to eq 1
               expect(project.reload.ideas_count).to eq 0 # Draft ideas should not be counted
 
               # Relationships
@@ -151,9 +148,10 @@ resource 'BulkImportIdeasImportIdeas' do
 
             let(:id) { project.id }
 
-            context 'current phase' do
-              example 'Bulk import ideas from scanned .pdf to current phase' do
-                expect_any_instance_of(BulkImportIdeas::GoogleFormParserService).to receive(:process_upload).and_return(nil)
+            context 'current phase with single page idea form with 1 page scanned' do
+              let(:pdf) { create_project_bulk_import_ideas_pdf 1 }
+
+              example 'Bulk import ideas to current phase from .pdf' do
                 expect_any_instance_of(BulkImportIdeas::GoogleFormParserService).to receive(:raw_text_page_array).and_return(create_project_bulk_import_raw_text_array)
                 do_request
                 assert_status 201
@@ -166,11 +164,11 @@ resource 'BulkImportIdeasImportIdeas' do
               end
             end
 
-            context 'specified phase' do
+            context 'specified phase with single page idea form with 1 page scanned' do
               let(:phase_id) { project.phases.first.id }
+              let(:pdf) { create_project_bulk_import_ideas_pdf 1 }
 
-              example 'Bulk import ideas from scanned .pdf to a specified phase' do
-                expect_any_instance_of(BulkImportIdeas::GoogleFormParserService).to receive(:process_upload).and_return(nil)
+              example 'Bulk import ideas to a specified phase from .pdf' do
                 expect_any_instance_of(BulkImportIdeas::GoogleFormParserService).to receive(:raw_text_page_array).and_return(create_project_bulk_import_raw_text_array)
                 do_request
                 assert_status 201
@@ -264,6 +262,17 @@ resource 'BulkImportIdeasImportIdeas' do
         example_request 'Get the import meta data for an idea' do
           assert_status 200
           expect(response_data[:type]).to eq 'idea_import'
+        end
+      end
+
+      get 'web_api/v1/idea_import_files/:id' do
+        let(:id) do
+          project = create(:continuous_project)
+          create(:idea_import_file, project: project).id
+        end
+
+        example_request 'Get an imported file' do
+          assert_status 200
         end
       end
     end
@@ -451,8 +460,9 @@ resource 'BulkImportIdeasImportIdeas' do
     "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,#{base_64_content}"
   end
 
-  def create_project_bulk_import_ideas_pdf
-    base_64_content = Base64.encode64 Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/testscan.pdf').read
+  def create_project_bulk_import_ideas_pdf(num_pages)
+    # Open 1 page scan
+    base_64_content = Base64.encode64 Rails.root.join("engines/commercial/bulk_import_ideas/spec/fixtures/scan_#{num_pages}.pdf").read
     "data:application/pdf;base64,#{base_64_content}"
   end
 

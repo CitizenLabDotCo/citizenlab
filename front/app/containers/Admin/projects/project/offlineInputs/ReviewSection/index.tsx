@@ -129,12 +129,18 @@ const ReviewSection = ({
       mt="40px"
       w="100%"
       bgColor={colors.white}
-      pt="20px"
       h="100%"
       display="flex"
       flexDirection="column"
     >
-      <Box px="40px" display="flex" justifyContent="space-between">
+      <Box
+        px="40px"
+        display="flex"
+        justifyContent="space-between"
+        pt="10px"
+        borderTop={`10px ${colors.grey100} solid`}
+        borderBottom={`5px ${colors.grey200} solid`}
+      >
         <Title variant="h2" color="primary" mt="8px" mb="20px">
           <FormattedMessage {...messages.importedInputs} />
         </Title>

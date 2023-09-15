@@ -2,7 +2,11 @@
 
 module BulkImportIdeas
   class ImportIdeasPolicy < ApplicationPolicy
-    def show?
+    def show_idea_import?
+      active_admin?
+    end
+
+    def show_idea_import_file?
       active_admin?
     end
 

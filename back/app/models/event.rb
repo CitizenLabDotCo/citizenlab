@@ -16,6 +16,7 @@
 #  location_point       :geography        point, 4326
 #  address_1            :string
 #  attendees_count      :integer          default(0), not null
+#  online_link          :string
 #  address_2_multiloc   :jsonb            not null
 #
 # Indexes
@@ -41,6 +42,7 @@ class Event < ApplicationRecord
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :description_multiloc, multiloc: { presence: false, html: true }
   validates :location_multiloc, multiloc: { presence: false }
+  validates :online_link, url: true, allow_blank: true
   validates :address_2_multiloc, multiloc: { presence: false }
   validate :validate_start_at_before_end_at
 

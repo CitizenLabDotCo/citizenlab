@@ -7,7 +7,7 @@ module BulkImportIdeas
         attributes :user_created, :page_range, :locale, :created_at, :updated_at
 
         attribute :file do |object|
-          object.file&.file
+          object.file ? { url: "/web_api/v1/idea_import_files/#{object.file&.id}" } : nil
         end
 
         attribute :import_type do |object|

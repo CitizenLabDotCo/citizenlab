@@ -91,6 +91,7 @@ services:
 volumes:
   postgres:
   bundle_path:
-#networks:
-#  default:
-#    name: citizenlab
+
+networks:
+  citizenlab:
+    name: citizenlab
