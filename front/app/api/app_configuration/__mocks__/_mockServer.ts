@@ -58,10 +58,16 @@ export const getAppConfigurationData = (
   },
 });
 
-const endpoints = [
-  rest.get('/web_api/v1/app_configuration', (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: getAppConfigurationData() }));
-  }),
-];
+const endpoints = {
+  'GET app_configuration': rest.get(
+    '/web_api/v1/app_configuration',
+    (_req, res, ctx) => {
+      return res(
+        ctx.status(200),
+        ctx.json({ data: getAppConfigurationData() })
+      );
+    }
+  ),
+};
 
 export default endpoints;

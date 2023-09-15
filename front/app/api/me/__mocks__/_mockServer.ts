@@ -29,10 +29,10 @@ export const mockAuthUserData: IUserData = {
   },
 };
 
-const endpoints = [
-  rest.get('/web_api/v1/users/me', (_req, res, ctx) => {
+const endpoints = {
+  'GET users/me': rest.get('/web_api/v1/users/me', (_req, res, ctx) => {
     return res(ctx.status(200), ctx.json({ data: mockAuthUserData }));
   }),
-];
+};
 
 export default endpoints;

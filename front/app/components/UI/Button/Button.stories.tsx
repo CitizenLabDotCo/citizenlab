@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 // import { reactRouterParameters } from 'storybook-addon-react-router-v6';
-// import { rest } from 'msw';
+import { rest } from 'msw';
+import { mockAuthUserData } from 'api/me/__mocks__/_mockServer';
+import mockEndpoints from 'utils/storybook/mockEndpoints';
 
 import Button from '.';
 
@@ -29,19 +31,27 @@ type Story = StoryObj<typeof meta>;
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
 export const Primary: Story = {
   args: {},
-  // parameters: {
-  //   reactRouter: reactRouterParameters({
-  //     location: {
-  //       path: '/books/my-great-book',
-  //     },
-  //     routing: { path: '/books/:param' },
-  //   }),
-  // msw: [
-  //   rest.get('*', (_req, res, ctx) => {
-  //     return res(ctx.status(404));
-  //   })
-  // ]
-  // },
+  parameters: {
+    // reactRouter: reactRouterParameters({
+    //   location: {
+    //     path: '/books/my-great-book',
+    //   },
+    //   routing: { path: '/books/:param' },
+    // }),
+    msw: mockEndpoints({
+      'GET users/me': rest.get('/web_api/v1/users/me', (_req, res, ctx) => {
+        return res(
+          ctx.status(200),
+          ctx.json({
+            data: {
+              ...mockAuthUserData,
+              id: 'my-overwritten-id',
+            },
+          })
+        );
+      }),
+    }),
+  },
 };
 
 export const Secondary: Story = {

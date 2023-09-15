@@ -19,5 +19,5 @@ export const parameters = {
       locales: '',
     },
   },
-  msw: mockServer
+  msw: Object.values(mockServer)
 };

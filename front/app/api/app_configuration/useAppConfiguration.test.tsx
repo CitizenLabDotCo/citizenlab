@@ -10,7 +10,7 @@ import mockServer, { getAppConfigurationData } from './__mocks__/_mockServer';
 
 jest.unmock('./useAppConfiguration');
 
-const server = setupServer(...mockServer);
+const server = setupServer(mockServer['GET app_configuration']);
 
 describe('useAppConfiguration', () => {
   beforeAll(() => server.listen());
