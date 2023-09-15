@@ -55,7 +55,10 @@ interface FormData {
   google_consent: false;
 }
 
-const getInitialPhaseId = (phases: IPhases) => {
+const getInitialPhaseId = (phases: IPhases, phaseId: string) => {
+  if (phaseId) {
+    return phaseId;
+  }
   const currentPhase = getCurrentPhase(phases.data);
   const phasesThatCanContainIdeas = phases.data
     .filter(canContainIdeas)
@@ -83,11 +86,13 @@ const ImportSection = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const { mutateAsync: addOfflineIdeas, isLoading } = useAddOfflineIdeas();
-
+  const { phaseId } = useParams() as {
+    phaseId: string;
+  };
   const isTimelineProject = !!phases;
 
   const initialPhaseId = isTimelineProject
-    ? getInitialPhaseId(phases)
+    ? getInitialPhaseId(phases, phaseId)
     : undefined;
 
   const defaultValues: FormData = {
@@ -98,7 +103,7 @@ const ImportSection = ({
   };
 
   const schema = object({
-    ...(isTimelineProject && !isSurveyImporter
+    ...(isTimelineProject
       ? { phase_id: string().required(formatMessage(messages.selectAPhase)) }
       : {}),
     locale: string().required(),
