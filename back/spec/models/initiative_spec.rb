@@ -121,7 +121,14 @@ RSpec.describe Initiative do
       create(:initiative_status_proposed)
     end
 
-    let(:initiative) { create(:initiative, build_status_change: false) }
+    let(:initiative) do
+      create(
+        :initiative,
+        build_status_change: false,
+        created_at: 2.days.ago,
+        published_at: 2.days.ago
+      )
+    end
 
     it 'returns date when initiative status became proposed' do
       expect(initiative.proposed_at).to be_within(1.second).of(initiative.initiative_status_changes.first.created_at)
