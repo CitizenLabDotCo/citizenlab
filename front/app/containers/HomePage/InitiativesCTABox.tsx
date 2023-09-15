@@ -36,7 +36,6 @@ const BoxContainer = styled.div`
   padding: 60px 40px;
   position: relative;
   overflow: hidden;
-  margin-bottom: 70px;
   ${defaultCardStyle};
 
   ${media.tablet`
