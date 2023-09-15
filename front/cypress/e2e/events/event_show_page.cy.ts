@@ -42,6 +42,7 @@ describe('Event show page', () => {
           description: 'This is some event',
           startDate: moment().subtract(1, 'day').toDate(),
           endDate: moment().add(1, 'day').toDate(),
+          onlineLink: 'https://www.example.com',
         });
       })
       .then((event) => {
@@ -56,6 +57,7 @@ describe('Event show page', () => {
           description: 'This is some event',
           startDate: new Date('2022-04-04'),
           endDate: new Date('2022-05-05'),
+          onlineLink: 'https://www.example.com',
         });
       })
       .then((event) => {
@@ -78,6 +80,7 @@ describe('Event show page', () => {
     cy.get('#e2e-participants-count').should('not.exist');
     cy.get('#e2e-text-only-location').should('exist');
     cy.get('#e2e-location-with-coordinates-button').should('not.exist');
+    cy.get('[data-cy="e2e-event-description"]');
 
     // TODO: Re-enable attendance tests once smart group implemented
 

@@ -26,7 +26,7 @@ const GoBackButtonSolid = ({ text, iconSize = '26px', onClick }: Props) => {
 
   return (
     <Button
-      id="e2e-idea-other-link"
+      id="e2e-go-back-link"
       icon="arrow-left-circle"
       buttonStyle="text"
       iconSize={iconSize}
