@@ -6,7 +6,7 @@ export default defineMessages({
     defaultMessage: 'Input importer',
   },
   importFile: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.importFile',
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.importFile2',
     defaultMessage: 'Import',
   },
 });
