@@ -67,7 +67,7 @@ class WebApi::V1::InitiativesController < ApplicationController
       .joins('FULL OUTER JOIN areas_initiatives ON areas_initiatives.initiative_id = initiatives.id')
       .joins('FULL OUTER JOIN initiative_initiative_statuses ON initiative_initiative_statuses.initiative_id = initiatives.id')
       .select('initiative_initiative_statuses.initiative_status_id, areas_initiatives.area_id, initiatives_topics.topic_id, COUNT(DISTINCT(initiatives.id)) as count')
-      .reorder(nil) # Avoids SQL error on GROUP BY when a search string was used
+      .reorder(nil) # Avoids SQL error on GROUP BY when a search string is used
       .group('GROUPING SETS (initiative_initiative_statuses.initiative_status_id, areas_initiatives.area_id, initiatives_topics.topic_id)')
       .each do |record|
         attributes.each do |attribute|
@@ -75,7 +75,7 @@ class WebApi::V1::InitiativesController < ApplicationController
           counts[attribute][id] = record.count if id
         end
       end
-    counts['total'] = initiatives.distinct.count
+    counts['total'] = initiatives.reorder(nil).distinct.count # reorder(nil) avoids SQL error on SELECT DISTINCT when a search string is used
     render json: raw_json(counts)
   end
 

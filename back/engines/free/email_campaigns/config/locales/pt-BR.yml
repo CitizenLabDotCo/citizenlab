@@ -207,12 +207,14 @@ pt:
       cta_accept_invitation: 'Aceite o seu convite'
       invitation_header: 'O seu convite está pendente'
       preheader: '%{organizationName} enviou-lhe um convite para se juntar à sua plataforma de participação há alguns dias.'
+      invitation_expiry_message: 'Este convite expira aproximadamente em %{expiryDaysRemaining} dias.'
       subject: 'Você tem pendente um convite para a plataforma de participação de %{organizationName}'
     invite_received:
       added_a_message: '%{organizationName} escreveu a seguinte mensagem:'
       cta_accept_invitation: 'Aceite o seu convite'
       invitation_header: 'Você está convidado!'
       invitation_header_message: '%{organizationName} convidou-o para a sua plataforma de participação.'
+      invitation_expiry_message: 'Este convite expira em %{expiryDays} dias.'
       preheader: '%{organizationName} Convidou você para se juntar à sua plataforma de participação.'
       subject: 'Está convidado a juntar-se à plataforma de %{organizationName}'
     initiative_published:

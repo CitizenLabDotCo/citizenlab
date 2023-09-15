@@ -207,12 +207,14 @@ de:
       cta_accept_invitation: 'Einladung annehmen'
       invitation_header: 'Ihre Einladung steht noch aus'
       preheader: '%{organizationName} hat Ihnen vor einigen Tagen eine Einladung zur Teilnahme an ihrer Beteiligungsplattform geschickt.'
+      invitation_expiry_message: 'Diese Einladung läuft in etwa %{expiryDaysRemaining} Tagen ab.'
       subject: 'Ausstehende Einladung für die Beteiligungsplattform %{organizationName}'
     invite_received:
       added_a_message: '%{organizationName} hat die folgende Nachricht geschrieben:'
       cta_accept_invitation: 'Einladung annehmen'
       invitation_header: 'Sie sind eingeladen!'
       invitation_header_message: '%{organizationName} hat Sie auf ihre Beteiligungsplattform eingeladen.'
+      invitation_expiry_message: 'Diese Einladung läuft in %{expiryDays} Tagen ab.'
       preheader: '%{organizationName} hat Ihnen eine Einladung zur Teilnahme an ihrer Beteiligungsplattform geschickt.'
       subject: 'Sie sind eingeladen worden um an der Plattform von %{organizationName} teilzunehmen'
     initiative_published:

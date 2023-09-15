@@ -33,6 +33,8 @@ resource 'AppConfigurations' do
       json_response = json_parse(response_body)
       expect(json_response.with_indifferent_access.dig(:data, :attributes, :host)).to eq 'example.org'
       expect(json_response.with_indifferent_access.dig(:data, :attributes, :style)).to eq({})
+      expect(json_response.with_indifferent_access.dig(:data, :attributes, :created_at))
+        .to eq(AppConfiguration.instance.created_at.iso8601(3))
     end
   end
 

@@ -207,12 +207,14 @@ it:
       cta_accept_invitation: 'Accetta il tuo invito'
       invitation_header: 'Il tuo invito è in attesa'
       preheader: '%{organizationName} ti ha inviato un invito a partecipare alla loro piattaforma di partecipazione alcuni giorni fa.'
+      invitation_expiry_message: 'Questo invito scade tra circa %{expiryDaysRemaining} giorni.'
       subject: 'In attesa dell''invito per la piattaforma di partecipazione di %{organizationName}'
     invite_received:
       added_a_message: '%{organizationName} ha scritto il seguente messaggio:'
       cta_accept_invitation: 'Accetta il tuo invito'
       invitation_header: 'Sei invitato!'
       invitation_header_message: '%{organizationName} ti ha invitato alla loro piattaforma di partecipazione.'
+      invitation_expiry_message: 'Questo invito scade tra %{expiryDays} giorni.'
       preheader: '%{organizationName} ti ha invitato alla loro piattaforma di partecipazione.'
       subject: 'Siete invitati a partecipare alla piattaforma di %{organizationName}'
     initiative_published:
