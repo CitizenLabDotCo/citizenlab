@@ -28,7 +28,7 @@ export interface IEventData {
         type: string;
       };
       event_images: {
-        data: IRelationship[] | null;
+        data: IRelationship[];
       };
     };
     user_attendance: {
