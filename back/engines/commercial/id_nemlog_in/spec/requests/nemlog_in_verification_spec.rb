@@ -122,16 +122,14 @@ describe IdNemlogIn::NemlogInOmniauth do
 
   context 'when verification method is used by Copenhagen' do
     before do
-      configuration = AppConfiguration.instance
-      settings = configuration.settings
-      settings['verification']['verification_methods'][0]['issuer'] = 'https://kobenhavntaler.kk.dk'
-      configuration.save!
+      AppConfiguration.instance.update!(host: 'kobenhavntaler.kk.dk')
+      host! 'kobenhavntaler.kk.dk'
     end
 
     it 'does not verify an under 15-year-old' do
       saml_auth_response.extra.raw_info['https://data.gov.dk/model/core/eid/age'] = ['14']
 
-      get "/auth/nemlog_in?token=#{token}&random-passthrough-param=somevalue&pathname=/some-page"
+      get "/auth/nemlog_in?token=#{token}&pathname=/some-page"
       follow_redirect!
 
       expect(response).to redirect_to('/authentication-error?sso_pathname=%2Fsome-page&sso_response=true&error_code=not_entitled_under_15_years_of_age')
