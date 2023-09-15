@@ -206,5 +206,5 @@ export const ideaData: IIdeaData[] = [
 ];
 
 export default jest.fn(() => {
-  return { data: { data: ideaData } };
+  return { data: { data: ideaData[0] } };
 });

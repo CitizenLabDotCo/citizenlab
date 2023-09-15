@@ -301,7 +301,7 @@ const IdeaRow = ({
   const selectedTopics = idea.relationships.topics?.data.map((p) => p.id);
   const active = selection.has(idea.id);
   const projectId = idea.relationships.project.data.id;
-  const selectedStatus = idea.relationships.idea_status.data.id;
+  const selectedStatus = idea.relationships.idea_status.data?.id;
   const displayColumns = usePostManagerColumnFilter(
     selectedProjectId,
     selectedPhaseId

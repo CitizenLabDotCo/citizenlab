@@ -196,7 +196,8 @@ const Content = ({
           )}
           {compact &&
             participationContext?.attributes.participation_method !==
-              'voting' && (
+              'voting' &&
+            statusId && (
               <Box mb="30px">
                 {' '}
                 <MetaInformation
@@ -234,7 +235,7 @@ const Content = ({
           </Box>
         </Box>
 
-        {!compact && (
+        {!compact && statusId && (
           <StyledRightColumnDesktop
             ideaId={ideaId}
             projectId={project.id}
