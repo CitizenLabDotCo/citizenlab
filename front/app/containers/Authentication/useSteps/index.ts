@@ -266,20 +266,23 @@ export default function useSteps() {
         } as AuthenticationContext,
       };
 
-      if (pathname.endsWith('authentication-error')) {
-        transition(currentStep, 'TRIGGER_AUTH_ERROR')(error_code);
+      const handleRedirect = () => {
+        if (sso_pathname) {
+          clHistory.replace(sso_pathname);
+        } else {
+          // Remove all parameters from URL as they've already been captured
+          window.history.replaceState(null, '', '/');
+        }
+      };
 
-        // Remove all parameters from URL as they've already been captured
-        window.history.replaceState(null, '', '/');
+      if (pathname.endsWith('authentication-error')) {
+        handleRedirect();
+
+        transition(currentStep, 'TRIGGER_AUTH_ERROR')(error_code);
         return;
       }
 
-      if (sso_pathname) {
-        clHistory.replace(sso_pathname);
-      } else {
-        // Remove all parameters from URL as they've already been captured
-        window.history.replaceState(null, '', '/');
-      }
+      handleRedirect();
 
       const enterClaveUnicaEmail =
         !isNilOrError(authUser) && isNil(authUser.data.attributes.email);
