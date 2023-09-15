@@ -47,7 +47,10 @@ const MainContent = () => {
   return (
     <StyledContentContainer mode="page">
       {showProposalsAtTheTop && (
-        <Box mt="60px" mb={isSmallerThanTablet ? '0' : '40px'}>
+        <Box
+          mt={isSmallerThanTablet ? '60px' : '80px'}
+          mb={isSmallerThanTablet ? '0' : '20px'}
+        >
           <InitiativesCTABox />
         </Box>
       )}
