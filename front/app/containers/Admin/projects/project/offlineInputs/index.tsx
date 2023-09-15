@@ -26,7 +26,7 @@ import { colors, stylingConsts } from 'utils/styleUtils';
 import { isValidData } from 'components/Form/utils';
 import { customAjv } from 'components/Form';
 import { getFormValues } from 'containers/IdeasEditPage/utils';
-// import { geocode } from 'utils/locationTools';
+import { geocode } from 'utils/locationTools';
 import { getNextIdeaId } from './utils';
 
 // typings
@@ -113,12 +113,11 @@ const OfflineInputImporter = () => {
       ...supportedFormData
     } = formData;
 
-    // const location_point_geojson =
-    //   typeof location_description === 'string' &&
-    //   location_description.length > 0
-    //     ? await geocode(location_description)
-    //     : undefined;
-    const location_point_geojson = null;
+    const location_point_geojson =
+      typeof location_description === 'string' &&
+      location_description.length > 0
+        ? await geocode(location_description)
+        : undefined;
 
     try {
       await updateIdea({
