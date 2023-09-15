@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, { useTheme } from 'styled-components';
+import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 
 interface Props {
@@ -13,7 +13,6 @@ const ButtonComp = styled.button<{ bgColor?: string }>`
 
 const Button = ({ bgColor }: Props) => {
   const { param } = useParams();
-  const theme = useTheme();
 
   return <ButtonComp bgColor={bgColor}>Bla ({param})</ButtonComp>;
 };
