@@ -64,7 +64,7 @@ const MainContent = () => {
       <Outlet id="app.containers.HomePage.EventsWidget" />
 
       {showProposalsAtTheBottom && (
-        <Box mb="40px">
+        <Box mb="80px">
           <InitiativesCTABox />
         </Box>
       )}
