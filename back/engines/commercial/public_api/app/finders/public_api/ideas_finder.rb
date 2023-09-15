@@ -46,16 +46,16 @@ module PublicApi
     def filter_by_type(scope)
       return scope unless @type
 
-      binding.pry
-
       if @type == 'survey'
         scope
           .joins(:project)
           .where(project: { participation_method: 'native_survey' })
-      elsif @type == 'ideas'
+          .or(Idea.where.not(creation_phase_id: nil))
+      elsif @type == 'idea'
         scope
-          .joins(:projects)
-          .where.not(partication_method: 'native_survey')
+          .where(creation_phase_id: nil)
+          .joins(:project)
+          .where.not(project: { participation_method: 'native_survey' })
       else
         scope
       end

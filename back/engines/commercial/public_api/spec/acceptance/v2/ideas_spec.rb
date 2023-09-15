@@ -13,6 +13,7 @@ resource 'Posts' do
 
   include_context 'common_auth'
 
+  # 3 Ideas
   let!(:ideas) do
     create_list(:idea, 3, created_at: '2020-01-01').tap do |ideas|
       ideas.each do |idea|
@@ -23,7 +24,18 @@ resource 'Posts' do
       end
     end
   end
-  let!(:surveys) { create_list(:native_survey_response, 2, created_at: '2020-01-01') }
+
+  # 2 surveys
+  let!(:survey_continuous) { create(:native_survey_response, created_at: '2020-01-01') }
+  let!(:survey_timeline) do
+    timeline_project = create(:project_with_active_native_survey_phase)
+    create(
+      :native_survey_response,
+      created_at: '2020-01-01',
+      project: timeline_project,
+      creation_phase: timeline_project.phases.first
+    )
+  end
 
   # TODO: How do we get the format etc of response fields out into the spec? This doesn't seem to work
   response_field :created_at, 'Date the resource was created at'
@@ -64,7 +76,7 @@ resource 'Posts' do
 
     parameter(
       :type,
-      'Filter by type of idea - idea or survey - default ',
+      'Filter by type of idea - idea or survey - returns both by default',
       required: false,
       type: :string,
       in: :query
@@ -103,12 +115,24 @@ resource 'Posts' do
     end
 
     context 'when filtering by type' do
-      let(:type) { 'survey' }
+      context 'surveys' do
+        let(:type) { 'survey' }
 
-      example_request 'List only surveys' do
-        assert_status 200
-        expect(json_response_body[:ideas].size).to eq(2)
-        expect(json_response_body[:ideas].first[:project_id]).to eq(project_id)
+        example_request 'List only surveys' do
+          assert_status 200
+          expect(json_response_body[:ideas].size).to eq(2)
+          expect(json_response_body[:ideas].pluck(:type)).to eq %w[survey survey]
+        end
+      end
+
+      context 'ideas' do
+        let(:type) { 'idea' }
+
+        example_request 'List only ideas' do
+          assert_status 200
+          expect(json_response_body[:ideas].size).to eq(3)
+          expect(json_response_body[:ideas].pluck(:type)).to eq %w[idea idea idea]
+        end
       end
     end
 
