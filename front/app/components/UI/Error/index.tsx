@@ -287,7 +287,7 @@ const Error = (props: Props) => {
                             <strong>{rows.join(', ')}</strong>
                           ) : null,
                           // eslint-disable-next-line react/no-unescaped-entities
-                          value: <strong>'{value}'</strong>,
+                          value: <strong>{value}</strong>,
                           supportEmail: <strong>{supportEmail}</strong>,
                           ideasCount: (error as CLError).ideas_count,
                         };
