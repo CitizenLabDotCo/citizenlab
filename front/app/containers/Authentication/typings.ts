@@ -14,7 +14,8 @@ export type ErrorCode =
   | 'invitation_error'
   | 'unknown'
   | 'franceconnect_merging_failed'
-  | 'email_taken_and_user_can_be_verified';
+  | 'email_taken_and_user_can_be_verified'
+  | 'not_entitled_under_15_years_of_age';
 
 export interface State {
   email: string | null;
@@ -37,6 +38,7 @@ export type SetError = (errorCode: ErrorCode) => void;
 
 export type SignUpInFlow = 'signup' | 'signin';
 export type SignUpInError = 'general' | 'franceconnect_merging_failed';
+export type VerificationError = 'not_entitled_under_15_years_of_age';
 
 export interface AuthenticationData {
   flow: SignUpInFlow;
