@@ -426,7 +426,7 @@ const Invitations = () => {
             selectedValue={selectedView || 'import'}
             onClick={resetWithView}
           />
-          <Box mb="16px">
+          <Box mb={selectedView === 'template' ? '16px' : '36px'}>
             <Warning
               text={
                 <Text color="primary" m="0px">
