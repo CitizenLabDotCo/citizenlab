@@ -1,14 +1,16 @@
 <%= render partial: 'custom_header' %>
 
-<mj-section padding="24px 25px 0">
-  <mj-column>
-    <mj-image
-      padding-top="0"
-      src="<%= event.image_url %>"
-      alt="Event image"
-    />
-  </mj-column>
-</mj-section>
+<% if event.image_url.present? %>
+  <mj-section padding="24px 25px 0">
+    <mj-column>
+      <mj-image
+              padding-top="0"
+              src="<%= event.image_url %>"
+              alt="Event image"
+      />
+    </mj-column>
+  </mj-section>
+<% end %>
 
 <mj-section padding="24px 25px 0">
   <mj-column>
