@@ -216,5 +216,5 @@ export const getIdea = (id: string, enTitle?: string): IIdeaData => {
   };
 };
 export default jest.fn(() => {
-  return { data: { data: ideaData } };
+  return { data: { data: ideaData[0] } };
 });
