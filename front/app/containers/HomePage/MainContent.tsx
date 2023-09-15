@@ -32,10 +32,6 @@ const SectionContainer = styled.section`
   width: 100%;
 `;
 
-const StyledInitiativesCTABox = styled(InitiativesCTABox)`
-  margin-bottom: 40px;
-`;
-
 const MainContent = () => {
   const postingPermission = useInitiativesPermissions('posting_initiative');
   const postingProposalsEnabled = !!postingPermission?.enabled;
@@ -51,7 +47,7 @@ const MainContent = () => {
     <StyledContentContainer mode="page">
       {showProposalsAtTheTop && (
         <Box mt="40px">
-          <StyledInitiativesCTABox />
+          <InitiativesCTABox />
         </Box>
       )}
       <ProjectSection id="e2e-landing-page-project-section">
@@ -66,7 +62,11 @@ const MainContent = () => {
 
       <Outlet id="app.containers.HomePage.EventsWidget" />
 
-      {showProposalsAtTheBottom && <StyledInitiativesCTABox />}
+      {showProposalsAtTheBottom && (
+        <Box mb="70px">
+          <InitiativesCTABox />
+        </Box>
+      )}
     </StyledContentContainer>
   );
 };
