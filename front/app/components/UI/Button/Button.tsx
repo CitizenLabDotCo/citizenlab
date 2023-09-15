@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useParams, useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 interface Props {
   bgColor?: string;
@@ -9,14 +10,24 @@ interface Props {
 const ButtonComp = styled.button<{ bgColor?: string }>`
   background-color: ${({ bgColor }) => bgColor ?? 'red'};
   padding: 12px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: blue;
+  }
 `;
 
 const Button = ({ bgColor }: Props) => {
-  const params = useParams();
-  const location = useLocation();
-  console.log({ params, location });
+  const { param } = useParams();
 
-  return <ButtonComp bgColor={bgColor}>Bla ({params.param})</ButtonComp>;
+  return (
+    <ButtonComp
+      bgColor={bgColor}
+      onClick={() => updateSearchParams({ clicked: true })}
+    >
+      Bla ({param})
+    </ButtonComp>
+  );
 };
 
 export default Button;
