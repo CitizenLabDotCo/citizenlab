@@ -7,6 +7,7 @@ import Centerer from 'components/UI/Centerer';
 
 // hooks
 import useVerificationMethods from 'api/verification_methods/useVerificationMethods';
+import useCopenhagenPlatformCheck from 'hooks/useCopenhagenPlatformCheck';
 
 // style
 import styled from 'styled-components';
@@ -15,7 +16,6 @@ import { colors, media } from 'utils/styleUtils';
 // typings
 import { TVerificationMethod } from 'api/verification_methods/types';
 import Outlet from 'components/Outlet';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 const Container = styled.div`
   display: flex;
@@ -45,7 +45,7 @@ interface Props {
 
 const VerificationMethods = memo<Props>(({ onMethodSelected }) => {
   const { data: verificationMethods } = useVerificationMethods();
-  const { data: appConfiguration } = useAppConfiguration();
+  const isCopenhagenPlatform = useCopenhagenPlatformCheck();
 
   const handleOnMethodSelected = (method: TVerificationMethod) => {
     onMethodSelected(method);
@@ -68,8 +68,7 @@ const VerificationMethods = memo<Props>(({ onMethodSelected }) => {
 
         Ticket: CL-4042
         */}
-        {appConfiguration?.data.id ===
-          '743d892a-9489-4765-a546-ecf0943d262d' && (
+        {isCopenhagenPlatform && (
           <Text mb="40px">
             For at stemme på københavnerforslag, skal du være MitID-verificeret
             borger i Københavns Kommune og fyldt 15 år. Hvis du vil stille et

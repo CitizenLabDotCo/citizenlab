@@ -1,9 +1,11 @@
 import React from 'react';
 import ContentContainer from 'components/ContentContainer';
 import ProjectAndFolderCards from 'components/ProjectAndFolderCards';
-import FeatureFlag from 'components/FeatureFlag';
+import { Box } from '@citizenlab/cl2-component-library';
 import Outlet from 'components/Outlet';
 import InitiativesCTABox from './InitiativesCTABox';
+import useCopenhagenPlatformCheck from 'hooks/useCopenhagenPlatformCheck';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // style
 import styled from 'styled-components';
@@ -37,9 +39,21 @@ const StyledInitiativesCTABox = styled(InitiativesCTABox)`
 const MainContent = () => {
   const postingPermission = useInitiativesPermissions('posting_initiative');
   const postingProposalsEnabled = !!postingPermission?.enabled;
+  const hasProposalsEnabled = useFeatureFlag({
+    name: 'initiatives',
+  });
+  const isCopenhagenPlatform = useCopenhagenPlatformCheck();
+  const showProposalsCTA = postingProposalsEnabled && hasProposalsEnabled;
+  const showProposalsAtTheTop = isCopenhagenPlatform && showProposalsCTA;
+  const showProposalsAtTheBottom = !isCopenhagenPlatform && showProposalsCTA;
 
   return (
     <StyledContentContainer mode="page">
+      {showProposalsAtTheTop && (
+        <Box mt="40px">
+          <StyledInitiativesCTABox />
+        </Box>
+      )}
       <ProjectSection id="e2e-landing-page-project-section">
         <SectionContainer>
           <ProjectAndFolderCards
@@ -52,9 +66,7 @@ const MainContent = () => {
 
       <Outlet id="app.containers.HomePage.EventsWidget" />
 
-      <FeatureFlag name="initiatives">
-        {postingProposalsEnabled && <StyledInitiativesCTABox />}
-      </FeatureFlag>
+      {showProposalsAtTheBottom && <StyledInitiativesCTABox />}
     </StyledContentContainer>
   );
 };
