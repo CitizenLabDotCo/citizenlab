@@ -543,8 +543,10 @@ GEM
       activesupport
     cloudfront-rails (0.4.0)
       railties (> 4.0)
-    cmdparse (3.0.7)
     coderay (1.1.3)
+    combine_pdf (1.0.23)
+      matrix
+      ruby-rc4 (>= 0.1.5)
     concurrent-ruby (1.2.2)
     counter_culture (3.3.0)
       activerecord (>= 4.2)
@@ -621,7 +623,6 @@ GEM
       googleauth (~> 1.0)
       grpc (~> 1.36)
     gems (1.2.0)
-    geom2d (0.4.1)
     globalid (1.1.0)
       activesupport (>= 5.0)
     google-api-client (0.53.0)
@@ -699,10 +700,6 @@ GEM
       rexml (~> 3.0)
     hashdiff (1.0.1)
     hashie (5.0.0)
-    hexapdf (0.33.0)
-      cmdparse (~> 3.0, >= 3.0.3)
-      geom2d (~> 0.4, >= 0.4.1)
-      openssl (>= 2.2.1)
     htmlentities (4.3.4)
     http-accept (1.7.0)
     http-cookie (1.0.5)
@@ -782,6 +779,7 @@ GEM
     mailgun-ruby (1.2.8)
       rest-client (>= 2.0.2)
     marcel (1.0.2)
+    matrix (0.4.2)
     memoist (0.16.2)
     method_source (1.0.0)
     mime-types (3.4.1)
@@ -868,7 +866,6 @@ GEM
       validate_email
       validate_url
       webfinger (~> 2.0)
-    openssl (3.1.0)
     order_as_specified (1.7)
       activerecord (>= 5.0.0)
     os (1.1.4)
@@ -1075,6 +1072,7 @@ GEM
       faraday (>= 1)
       faraday-multipart (>= 1)
     ruby-progressbar (1.13.0)
+    ruby-rc4 (0.1.5)
     ruby-saml (1.14.0)
       nokogiri (>= 1.10.5)
       rexml
@@ -1228,6 +1226,7 @@ DEPENDENCIES
   carrierwave (~> 3.0.0.beta)
   carrierwave-base64 (~> 2.10)
   cloudfront-rails (~> 0.4)
+  combine_pdf
   content_builder!
   counter_culture (~> 3.3)
   custom_idea_statuses!
@@ -1247,7 +1246,6 @@ DEPENDENCIES
   google_tag_manager!
   granular_permissions!
   groupdate (~> 4.1)
-  hexapdf
   icalendar (~> 2.9)
   ice_cube (~> 0.16)
   id_auth0!

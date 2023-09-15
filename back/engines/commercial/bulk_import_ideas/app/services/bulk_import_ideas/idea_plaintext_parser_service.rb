@@ -79,7 +79,6 @@ module BulkImportIdeas
 
       if @form.nil?
         raise Error.new 'bulk_import_ideas_no_first_page_number', value: 'Unable to detect page number of first page'
-        # raise StandardError, 'Unable to detect page number of first page'
       end
 
       # Add page number

@@ -27,19 +27,16 @@ module BulkImportIdeas
         params[:locale] = @locale
         pages_per_idea = PrintCustomFieldsService.new(@phase || @project, @form_fields, params).create_pdf.page_count
 
-        f = open(source_file.file_content_url)
-        pdf = ::HexaPDF::Document.open(f)
-
-        # binding.pry
+        pdf = ::CombinePDF.parse open(source_file.file_content_url).read
         source_file.update!(num_pages: pdf.pages.count)
         raise Error.new 'bulk_import_ideas_maximum_pdf_pages_exceeded', value: pdf.pages.count if pdf.pages.count > MAX_TOTAL_PAGES
 
         return [source_file] if pdf.pages.count <= PAGES_TO_TRIGGER_NEW_PDF # Only need to split if the file is too big
 
-        new_pdf = ::HexaPDF::Document.new
+        new_pdf = ::CombinePDF.new
         new_pdf_count = 0
         pdf.pages.each_with_index do |page, index|
-          new_pdf.pages << new_pdf.import(page)
+          new_pdf << page
           save_to_file =
             ((index + 1) % pages_per_idea == 0 && new_pdf.pages.count >= PAGES_TO_TRIGGER_NEW_PDF) ||
             (index + 1 == pdf.pages.count)
@@ -50,7 +47,7 @@ module BulkImportIdeas
             # Create an io object here?
             new_pdf_count += 1
             file = Rails.root.join('tmp', "import_#{source_file.id}_#{new_pdf_count}.pdf")
-            new_pdf.write(file.to_s, validate: false, optimize: true)
+            new_pdf.save file.to_s
             base_64_content = Base64.encode64 file.read
             file.delete
 
@@ -64,7 +61,7 @@ module BulkImportIdeas
                 content: "data:application/pdf;base64,#{base_64_content}"
               }
             )
-            new_pdf = ::HexaPDF::Document.new
+            new_pdf = ::CombinePDF.new
           end
         end
       end
