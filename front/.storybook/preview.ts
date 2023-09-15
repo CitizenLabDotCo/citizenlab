@@ -1,5 +1,5 @@
 import contexts from './contexts';
-import { withRouter, reactRouterParameters } from 'storybook-addon-react-router-v6';
+import { withRouter } from 'storybook-addon-react-router-v6';
 
 export const decorators = [withRouter, contexts];
 
