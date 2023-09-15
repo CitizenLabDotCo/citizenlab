@@ -1,7 +1,4 @@
 files:
-  - source: /front/app/translations/en.json
-    translation: /front/app/translations/%locale%.json
-    update_option: update_without_changes
   - source: /back/config/locales/en.yml
     translation: /back/config/locales/%locale%.yml
     update_option: update_without_changes
