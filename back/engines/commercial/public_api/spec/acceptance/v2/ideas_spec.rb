@@ -14,7 +14,7 @@ resource 'Posts' do
   include_context 'common_auth'
 
   let!(:ideas) do
-    create_list(:idea, 5, created_at: '2020-01-01').tap do |ideas|
+    create_list(:idea, 3, created_at: '2020-01-01').tap do |ideas|
       ideas.each do |idea|
         idea.update!(custom_field_values: {
           'audience_size' => rand(101...4000),
@@ -23,6 +23,7 @@ resource 'Posts' do
       end
     end
   end
+  let!(:surveys) { create_list(:native_survey_response, 2, created_at: '2020-01-01') }
 
   # TODO: How do we get the format etc of response fields out into the spec? This doesn't seem to work
   response_field :created_at, 'Date the resource was created at'
@@ -61,6 +62,14 @@ resource 'Posts' do
       in: :query
     )
 
+    parameter(
+      :type,
+      'Filter by type of idea - idea or survey - default ',
+      required: false,
+      type: :string,
+      in: :query
+    )
+
     context 'when the page size is smaller than the total number of ideas' do
       let(:page_size) { 2 }
 
@@ -68,7 +77,7 @@ resource 'Posts' do
         assert_status 200
         expect(json_response_body[:ideas].size).to eq(page_size)
 
-        total_pages = (ideas.size.to_f / page_size).ceil
+        total_pages = ((ideas.size.to_f + surveys.size.to_f) / page_size).ceil
         expect(json_response_body[:meta]).to eq({ total_pages: total_pages, current_page: 1 })
       end
     end
@@ -89,6 +98,16 @@ resource 'Posts' do
       example_request 'List only the ideas of the specified project' do
         assert_status 200
         expect(json_response_body[:ideas].size).to eq(1)
+        expect(json_response_body[:ideas].first[:project_id]).to eq(project_id)
+      end
+    end
+
+    context 'when filtering by type' do
+      let(:type) { 'survey' }
+
+      example_request 'List only surveys' do
+        assert_status 200
+        expect(json_response_body[:ideas].size).to eq(2)
         expect(json_response_body[:ideas].first[:project_id]).to eq(project_id)
       end
     end
