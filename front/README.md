@@ -1,4 +1,4 @@
-# cl2_front (diff)
+# cl2_front
 
 ## Prerequisites
 
