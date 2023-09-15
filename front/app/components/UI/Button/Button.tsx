@@ -1,17 +1,23 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
+import { useParams } from 'react-router-dom';
 
 interface Props {
   bgColor?: string;
 }
 
 const ButtonComp = styled.button<{ bgColor?: string }>`
-  background-color: ${({ bgColor }) => bgColor};
+  background-color: ${({ bgColor }) => bgColor ?? 'red'};
   padding: 12px;
 `;
 
 const Button = ({ bgColor }: Props) => {
-  return <ButtonComp bgColor={bgColor}>Bla</ButtonComp>;
+  const { param } = useParams();
+  const theme = useTheme();
+
+  console.log(theme);
+
+  return <ButtonComp bgColor={bgColor}>Bla ({param})</ButtonComp>;
 };
 
 export default Button;
