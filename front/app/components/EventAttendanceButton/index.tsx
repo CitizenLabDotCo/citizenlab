@@ -11,6 +11,7 @@ import {
 import EventSharingButtons from 'containers/EventsShowPage/components/EventSharingButtons';
 import Modal from 'components/UI/Modal';
 import { EventModalConfetti } from './EventModalConfetti';
+import { AddEventToCalendarButton } from 'components/AddEventToCalendarButton';
 
 // types
 import { IEventData } from 'api/events/types';
@@ -20,6 +21,7 @@ import useAuthUser from 'api/me/useAuthUser';
 import useAddEventAttendance from 'api/event_attendance/useAddEventAttendance';
 import useDeleteEventAttendance from 'api/event_attendance/useDeleteEventAttendance';
 import useEventsByUserId from 'api/events/useEventsByUserId';
+import useAddFollower from 'api/follow_unfollow/useAddFollower';
 
 // intl
 import messages from './messages';
@@ -32,7 +34,6 @@ import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 // utils
 import { getEventDateString } from 'utils/dateUtils';
-import { AddEventToCalendarButton } from 'components/AddEventToCalendarButton';
 
 type EventAttendanceButtonProps = {
   event: IEventData;
@@ -41,6 +42,7 @@ type EventAttendanceButtonProps = {
 const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
   const theme = useTheme();
   const { data: user } = useAuthUser();
+  const { mutate: addFollower } = useAddFollower();
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const [confirmationModalVisible, setConfirmationModalVisible] =
@@ -86,6 +88,10 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
       });
     } else if (user) {
       addEventAttendance({ eventId: event.id, attendeeId: user.data?.id });
+      addFollower({
+        followableId: event.relationships.project.data.id,
+        followableType: 'projects',
+      });
       setConfirmationModalVisible(true);
     }
   };
