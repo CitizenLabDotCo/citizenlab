@@ -50,6 +50,10 @@ class WebApi::V1::InitiativeSerializer < WebApi::V1::BaseSerializer
     object.initiative_status ? object.initiative_status.public? : false
   end
 
+  attribute :proposed_at do |object|
+    object.proposed_at
+  end
+
   has_many :initiative_images, serializer: WebApi::V1::ImageSerializer
   has_many :topics
   has_many :areas
