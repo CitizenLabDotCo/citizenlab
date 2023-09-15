@@ -35,4 +35,11 @@ const endpoints = {
   }),
 };
 
+export const loggedOutHandler = rest.get(
+  '/web_api/v1/users/me',
+  (_req, res, ctx) => {
+    return res(ctx.status(401));
+  }
+);
+
 export default endpoints;

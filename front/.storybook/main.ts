@@ -26,10 +26,15 @@ const config: StorybookConfig = {
     return opt;
   },
   webpackFinal(config, _options) {
+    console.log(config.resolve)
     config.resolve = {
       ...config.resolve,
-      modules: [path.join(process.cwd(), 'app'), 'node_modules']
+      modules: [
+        path.join(process.cwd(), 'app'),
+        ...(config?.resolve?.modules ?? [])
+      ]
     }
+
 
     config.plugins = [
       ...(config?.plugins?.constructor === Array ? config.plugins : []),
