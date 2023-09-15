@@ -1,7 +1,7 @@
 import React from 'react';
 import ContentContainer from 'components/ContentContainer';
 import ProjectAndFolderCards from 'components/ProjectAndFolderCards';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import Outlet from 'components/Outlet';
 import InitiativesCTABox from './InitiativesCTABox';
 import useCopenhagenPlatformCheck from 'hooks/useCopenhagenPlatformCheck';
@@ -32,10 +32,6 @@ const SectionContainer = styled.section`
   width: 100%;
 `;
 
-const StyledInitiativesCTABox = styled(InitiativesCTABox)`
-  margin-bottom: 40px;
-`;
-
 const MainContent = () => {
   const postingPermission = useInitiativesPermissions('posting_initiative');
   const postingProposalsEnabled = !!postingPermission?.enabled;
@@ -46,12 +42,13 @@ const MainContent = () => {
   const showProposalsCTA = postingProposalsEnabled && hasProposalsEnabled;
   const showProposalsAtTheTop = isCopenhagenPlatform && showProposalsCTA;
   const showProposalsAtTheBottom = !isCopenhagenPlatform && showProposalsCTA;
+  const isSmallerThanTablet = useBreakpoint('tablet');
 
   return (
     <StyledContentContainer mode="page">
       {showProposalsAtTheTop && (
-        <Box mt="40px">
-          <StyledInitiativesCTABox />
+        <Box mt="60px" mb={isSmallerThanTablet ? '0' : '40px'}>
+          <InitiativesCTABox />
         </Box>
       )}
       <ProjectSection id="e2e-landing-page-project-section">
@@ -66,7 +63,11 @@ const MainContent = () => {
 
       <Outlet id="app.containers.HomePage.EventsWidget" />
 
-      {showProposalsAtTheBottom && <StyledInitiativesCTABox />}
+      {showProposalsAtTheBottom && (
+        <Box mb="40px">
+          <InitiativesCTABox />
+        </Box>
+      )}
     </StyledContentContainer>
   );
 };
