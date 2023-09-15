@@ -237,12 +237,14 @@ en:
       cta_accept_invitation: 'Accept your invitation'
       invitation_header: 'Your invitation is pending'
       preheader: '%{organizationName} sent you an invite to join their participation platform some days ago.'
+      invitation_expiry_message: 'This invitation expires in approximately %{expiryDaysRemaining} days.'
       subject: 'Pending invitation for the participation platform of %{organizationName}'
     invite_received:
       added_a_message: '%{organizationName} wrote the following message:'
       cta_accept_invitation: 'Accept your invitation'
       invitation_header: 'You are invited!'
       invitation_header_message: '%{organizationName} invited you to their participation platform.'
+      invitation_expiry_message: 'This invitation expires in %{expiryDays} days.'
       preheader: '%{organizationName} sent you an invite to join their participation platform.'
       subject: 'You are invited to join the platform of %{organizationName}'
     invitation_to_cosponsor_initative:

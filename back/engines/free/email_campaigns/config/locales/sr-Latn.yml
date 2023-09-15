@@ -207,12 +207,14 @@ sr-Latn:
       cta_accept_invitation: 'Prihvatite pozivnicu'
       invitation_header: 'Pozivnica je na čekanju'
       preheader: 'Pre nekoliko dana vam je poslata pozivnica za registraciju na %{organizationName} participativnoj platformi.'
+      invitation_expiry_message: 'This invitation expires in approximately %{expiryDaysRemaining} days.'
       subject: 'Pozivnica za %{organizationName} participativnu platformu je na čekanju'
     invite_received:
       added_a_message: '%{organizationName} je napisao sledeću poruku:'
       cta_accept_invitation: 'Prihvatite pozivnicu'
       invitation_header: 'Vi ste pozvani!'
       invitation_header_message: '%{organizationName} vas je pozvao na njihovu participativnu platformu.'
+      invitation_expiry_message: 'This invitation expires in %{expiryDays} days.'
       preheader: '%{organizationName} vam je poslao poziv da se pridružite njihovoj participativnoj platformi.'
       subject: 'Pozvani ste da se pridružite %{organizationName} platformi '
     initiative_published:

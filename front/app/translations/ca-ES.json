@@ -1450,7 +1450,7 @@
   "app.containers.SignUp.goToLogIn": "Ja teniu un compte? {goToOtherFlowLink}",
   "app.containers.SignUp.iHaveReadAndAgreeTo": "He llegit i accepto {link}.",
   "app.containers.SignUp.iHaveReadAndAgreeToVienna": "Accepto que les dades s'utilitzin a mitgestalten.wien.gv.at. Podeu trobar més informació a {link}.",
-  "app.containers.SignUp.invitationError": "La vostra invitació ha caducat o ja s'ha utilitzat.",
+  "app.containers.SignUp.invitationErrorText": "La teva invitació ha caducat o ja s'ha utilitzat. Si ja heu utilitzat l'enllaç d'invitació per crear un compte, proveu d'iniciar la sessió. En cas contrari, registreu-vos per crear un compte nou.",
   "app.containers.SignUp.lastNameLabel": "Cognom",
   "app.containers.SignUp.privacyPolicyNotAcceptedError": "Accepteu la nostra política de privadesa per continuar",
   "app.containers.SignUp.signUp2": "Registreu-vos",

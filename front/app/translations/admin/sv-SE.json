@@ -437,6 +437,7 @@
   "app.containers.Admin.Invitations.helmetTitle": "Inbjudningsdashboard för administratörer",
   "app.containers.Admin.Invitations.importOptionsInfo": "De här alternativen kommer endast att beaktas när de inte är definierade i Excel-filen.\n      Besök {supportPageLink} för mer information.",
   "app.containers.Admin.Invitations.importTab": "Importera e-postadresser",
+  "app.containers.Admin.Invitations.invitationExpirationWarning": "Tänk på att inbjudningar förfaller efter 14 dagar. Efter denna period kan du fortfarande skicka dem igen.",
   "app.containers.Admin.Invitations.invitationOptions": "Inbjudningsalternativ",
   "app.containers.Admin.Invitations.invitationSubtitle": "Bjud när som helst in människor till plattformen. De får ett neutralt inbjudningsmejl med din logotyp, där de ombes registrera sig på plattformen.",
   "app.containers.Admin.Invitations.invitePeople": "Bjud in personer via e-post",

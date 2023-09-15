@@ -207,12 +207,14 @@ ca:
       cta_accept_invitation: 'Accepta la teva invitació'
       invitation_header: 'La teva invitació està pendent'
       preheader: '%{organizationName} us va enviar una invitació per unir-vos a la seva plataforma de participació fa uns dies.'
+      invitation_expiry_message: 'Aquesta invitació caduca d''aquí a %{expiryDaysRemaining} dies aproximadament.'
       subject: 'Pendent invitació per a la plataforma de participació de %{organizationName}'
     invite_received:
       added_a_message: '%{organizationName} ha escrit el missatge següent:'
       cta_accept_invitation: 'Accepta la teva invitació'
       invitation_header: 'Vostè està convidat!'
       invitation_header_message: '%{organizationName} t''ha convidat a la seva plataforma de participació.'
+      invitation_expiry_message: 'Aquesta invitació caduca d''aquí a %{expiryDays} dies.'
       preheader: '%{organizationName} t''ha enviat una invitació per unir-te a la seva plataforma de participació.'
       subject: 'Esteu convidats a unir-vos a la plataforma de %{organizationName}'
     initiative_published:

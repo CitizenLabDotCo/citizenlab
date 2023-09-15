@@ -207,12 +207,14 @@
       cta_accept_invitation: 'Godta invitasjonen'
       invitation_header: 'Din inivtasjon venter'
       preheader: '%{organizationName} sendte deg en inivitasjon til å delta på deres plattform for innbyggerinnvolvering.'
+      invitation_expiry_message: 'Denne invitasjonen utløper om ca. %{expiryDaysRemaining} dager.'
       subject: 'Ventende invitasjon for å delta på plattformen til %{organizationName}'
     invite_received:
       added_a_message: '%{organizationName} skrev følgende melding'
       cta_accept_invitation: 'Godta invitasjonen'
       invitation_header: 'Du er invitert!'
       invitation_header_message: '%{organizationName} inviterte deg til å bli med på deres plattform for innbyggerinvolvering'
+      invitation_expiry_message: 'Denne invitasjonen utløper om %{expiryDays} dager.'
       preheader: '%{organizationName} sendte deg en invitasjon til å bli med på deres plattform for innbyggerinvolvering.'
       subject: 'Du er invitert til å bli med på plattformen til %{organizationName}'
     initiative_published:

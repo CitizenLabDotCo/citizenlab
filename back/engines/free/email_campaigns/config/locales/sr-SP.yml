@@ -207,12 +207,14 @@ sr-Cyrl:
       cta_accept_invitation: 'Прихватите позив'
       invitation_header: 'Ваш позив је на чекању'
       preheader: '%{organizationName} вам је послао позивницу да се придружите њиховој платформи за учешће пре неколико дана.'
+      invitation_expiry_message: 'Ова позивница истиче за отприлике %{expiryDaysRemaining} дана.'
       subject: 'Позив на чекању за платформу за учешће од %{organizationName}'
     invite_received:
       added_a_message: '%{organizationName} је написао следећу поруку:'
       cta_accept_invitation: 'Прихватите позив'
       invitation_header: 'Ти си позван!'
       invitation_header_message: '%{organizationName} вас је позвао на своју платформу за учешће.'
+      invitation_expiry_message: 'Ова позивница истиче за %{expiryDays} дана.'
       preheader: '%{organizationName} вам је послао позивницу да се придружите њиховој платформи за учешће.'
       subject: 'Позвани сте да се придружите платформи %{organizationName}'
     initiative_published:

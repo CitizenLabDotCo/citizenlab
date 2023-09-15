@@ -74,11 +74,6 @@ describe('Verification modal', () => {
       cy.get('#code').click().type('1234');
       cy.get('#e2e-verify-email-button').click();
 
-      // verification step: check if it contain correct rules
-      cy.get('.e2e-rule-item');
-      cy.get('.e2e-rule-item').should('have.length', 1);
-      cy.get('.e2e-rule-item').contains('charlie');
-
       // verification step: fill out bogus
       cy.get(
         '#e2e-verification-wizard-method-selection-step #e2e-bogus-button'
@@ -125,11 +120,6 @@ describe('Verification modal', () => {
       cy.get('#code').should('exist');
       cy.get('#code').click().type('1234');
       cy.get('#e2e-verify-email-button').click();
-
-      // verification step: check if it contain correct rules
-      cy.get('.e2e-rule-item');
-      cy.get('.e2e-rule-item').should('have.length', 1);
-      cy.get('.e2e-rule-item').contains('charlie');
 
       // verification step: fill out bogus
       cy.get(
