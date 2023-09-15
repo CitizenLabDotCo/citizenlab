@@ -1,7 +1,7 @@
 import React from 'react';
 import ContentContainer from 'components/ContentContainer';
 import ProjectAndFolderCards from 'components/ProjectAndFolderCards';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import Outlet from 'components/Outlet';
 import InitiativesCTABox from './InitiativesCTABox';
 import useCopenhagenPlatformCheck from 'hooks/useCopenhagenPlatformCheck';
@@ -42,11 +42,12 @@ const MainContent = () => {
   const showProposalsCTA = postingProposalsEnabled && hasProposalsEnabled;
   const showProposalsAtTheTop = isCopenhagenPlatform && showProposalsCTA;
   const showProposalsAtTheBottom = !isCopenhagenPlatform && showProposalsCTA;
+  const isSmallerThanTablet = useBreakpoint('tablet');
 
   return (
     <StyledContentContainer mode="page">
       {showProposalsAtTheTop && (
-        <Box mt="40px">
+        <Box mt="60px" mb={isSmallerThanTablet ? '0' : '40px'}>
           <InitiativesCTABox />
         </Box>
       )}
@@ -63,7 +64,7 @@ const MainContent = () => {
       <Outlet id="app.containers.HomePage.EventsWidget" />
 
       {showProposalsAtTheBottom && (
-        <Box mb="70px">
+        <Box mb="40px">
           <InitiativesCTABox />
         </Box>
       )}
