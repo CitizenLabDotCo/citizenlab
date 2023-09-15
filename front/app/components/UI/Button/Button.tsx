@@ -15,8 +15,6 @@ const Button = ({ bgColor }: Props) => {
   const { param } = useParams();
   const theme = useTheme();
 
-  console.log(theme);
-
   return <ButtonComp bgColor={bgColor}>Bla ({param})</ButtonComp>;
 };
 
