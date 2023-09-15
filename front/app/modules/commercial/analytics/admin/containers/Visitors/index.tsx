@@ -59,7 +59,6 @@ const Visitors = () => {
       const uniqueVisitorDataDate = moment(
         countData.first_dimension_date_first_action_date
       );
-      const createdAt = moment(appConfig.data.attributes.created_at);
       const duration = moment.duration(uniqueVisitorDataDate.diff(createdAt));
 
       /* 
@@ -120,7 +119,7 @@ const Visitors = () => {
                 {formatMessage(messages.dateInfo, {
                   date: moment(
                     countData.first_dimension_date_first_action_date
-                  ).format('MM/DD/YYYY'),
+                  ).format('LL'),
                 })}
               </Text>
             }
