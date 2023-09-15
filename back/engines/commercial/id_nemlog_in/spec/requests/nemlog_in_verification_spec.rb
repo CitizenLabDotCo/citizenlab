@@ -129,7 +129,7 @@ describe IdNemlogIn::NemlogInOmniauth do
     end
 
     it 'does not verify an under 15-year-old' do
-      saml_auth_response.extra.raw_info.attributes['https://data.gov.dk/model/core/eid/age'][0] = '14'
+      saml_auth_response.extra.raw_info['https://data.gov.dk/model/core/eid/age'] = ['14']
 
       get "/auth/nemlog_in?token=#{token}&random-passthrough-param=somevalue&pathname=/some-page"
       follow_redirect!
@@ -141,7 +141,7 @@ describe IdNemlogIn::NemlogInOmniauth do
     end
 
     it 'verifies 15-year-old' do
-      saml_auth_response.extra.raw_info.attributes['https://data.gov.dk/model/core/eid/age'][0] = '15'
+      saml_auth_response.extra.raw_info['https://data.gov.dk/model/core/eid/age'] = ['15']
 
       get "/auth/nemlog_in?token=#{token}&random-passthrough-param=somevalue&pathname=/some-page"
       follow_redirect!

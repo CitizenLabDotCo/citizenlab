@@ -14,7 +14,7 @@ module IdNemlogIn
       issuer = AppConfiguration.instance.settings['verification']['verification_methods'][0]['issuer']
       return true unless HOSTS_WITH_AGE_MINIMUM_15.any? { |host| issuer.include?(host) }
 
-      age = auth.extra.raw_info.attributes['https://data.gov.dk/model/core/eid/age'][0].to_i
+      age = auth.extra.raw_info['https://data.gov.dk/model/core/eid/age'].to_i
       raise Verification::VerificationService::NotEntitledError, 'under_15_years_of_age' if age < 15
 
       true
