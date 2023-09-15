@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { reactRouterParameters } from 'storybook-addon-react-router-v6';
 
 // import Button from '.';
 import Button from './Button';
@@ -25,6 +26,14 @@ type Story = StoryObj<typeof meta>;
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
 export const Primary: Story = {
   args: {},
+  parameters: {
+    reactRouter: reactRouterParameters({
+      location: {
+        path: '/books/my-great-book',
+      },
+      routing: { path: '/books/:param' },
+    }),
+  },
 };
 
 export const Secondary: Story = {

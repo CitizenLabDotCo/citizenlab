@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 
 interface Props {
   bgColor?: string;
@@ -12,9 +12,11 @@ const ButtonComp = styled.button<{ bgColor?: string }>`
 `;
 
 const Button = ({ bgColor }: Props) => {
-  const { param } = useParams();
+  const params = useParams();
+  const location = useLocation();
+  console.log({ params, location });
 
-  return <ButtonComp bgColor={bgColor}>Bla ({param})</ButtonComp>;
+  return <ButtonComp bgColor={bgColor}>Bla ({params.param})</ButtonComp>;
 };
 
 export default Button;

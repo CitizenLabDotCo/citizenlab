@@ -243,6 +243,7 @@
     "rimraf": "5.0.1",
     "shelljs": "0.8.5",
     "storybook": "^7.4.0",
+    "storybook-addon-react-router-v6": "^2.0.7",
     "style-loader": "^3.3.3",
     "ts-jest": "^29.1.0",
     "ts-loader": "^9.4.4",
