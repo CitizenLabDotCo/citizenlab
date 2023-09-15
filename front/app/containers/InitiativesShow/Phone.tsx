@@ -257,7 +257,7 @@ const Phone = ({
           <Cosponsors initiativeId={initiativeId} />
         </Box>
         <Box
-          mb={hasOfficialFeedback ? '80px' : '0'}
+          mb={hasOfficialFeedback ? '48px' : '0'}
           ref={officialFeedbackElement}
         >
           <OfficialFeedback
