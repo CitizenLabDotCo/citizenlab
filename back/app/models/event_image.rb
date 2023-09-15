@@ -20,12 +20,10 @@
 #  fk_rails_...  (event_id => events.id)
 #
 class EventImage < ApplicationRecord
-    attr_accessor :skip_image_presence
-  
     mount_base64_uploader :image, EventImageUploader
-    belongs_to :event, inverse_of: :event_images
+    belongs_to :event
   
-    validates :image, presence: true, unless: :skip_image_presence
     validates :event, presence: true
+    validates :ordering, numericality: { only_integer: true }, allow_nil: true
   end
   
