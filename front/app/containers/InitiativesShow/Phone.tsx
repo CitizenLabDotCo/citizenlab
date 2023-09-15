@@ -3,7 +3,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import FileAttachments from 'components/UI/FileAttachments';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import SharingButtons from 'components/Sharing/SharingButtons';
 import Topics from 'components/PostShowComponents/Topics';
 import Title from 'components/PostShowComponents/Title';
@@ -51,7 +51,7 @@ import InitiativeBanner from './InitiativeBanner';
 import useShowCosponsorshipReminder from 'containers/InitiativesShow/hooks/useShowCosponsorshipReminder';
 import CosponsorShipReminder from './CosponsorShipReminder';
 
-const paddingSide = '32px';
+const padding = '32px';
 
 const Container = styled.main`
   display: flex;
@@ -81,9 +81,9 @@ const InitiativeContainer = styled.div`
   margin-left: auto;
   margin-right: auto;
   padding: 0;
-  padding-top: 25px;
-  padding-left: ${paddingSide};
-  padding-right: ${paddingSide};
+  padding-top: ${padding};
+  padding-left: ${padding};
+  padding-right: ${padding};
 `;
 
 const InitiativeBannerContent = styled.div`
@@ -123,6 +123,8 @@ const Phone = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
+  const isSmallerThanTablet = useBreakpoint('tablet');
+
   const locale = useLocale();
   const showCosponsorShipReminder = useShowCosponsorshipReminder(initiativeId);
   const { data: authUser } = useAuthUser();
@@ -195,16 +197,24 @@ const Phone = ({
         </InitiativeBannerContent>
       </InitiativeBanner>
       <InitiativeContainer>
-        <Box mb="20px">
-          <Topics
-            postType="initiative"
-            postTopicIds={initiative.data.relationships.topics.data.map(
-              (topic) => topic.id
-            )}
+        <Box px={isSmallerThanTablet ? '0' : padding}>
+          <ReactionControl
+            initiativeId={initiativeId}
+            onScrollToOfficialFeedback={onScrollToOfficialFeedback}
           />
         </Box>
+        <Box px={isSmallerThanTablet ? '0' : padding}>
+          <RequestToCosponsor initiativeId={initiativeId} />
+        </Box>
+
         {initiativeImageLarge && (
-          <Image src={initiativeImageLarge} alt="" id="e2e-initiative-image" />
+          <Box mb="12px">
+            <Image
+              src={initiativeImageLarge}
+              alt=""
+              id="e2e-initiative-image"
+            />
+          </Box>
         )}
         <Outlet
           id="app.containers.InitiativesShow.left"
@@ -222,6 +232,14 @@ const Phone = ({
         <ScreenReaderOnly>
           <FormattedMessage tagName="h2" {...messages.invisibleTitleContent} />
         </ScreenReaderOnly>
+        <Box mb="20px">
+          <Topics
+            postType="initiative"
+            postTopicIds={initiative.data.relationships.topics.data.map(
+              (topic) => topic.id
+            )}
+          />
+        </Box>
         <Box mb="32px">
           <Body
             postId={initiativeId}
@@ -235,6 +253,9 @@ const Phone = ({
             <FileAttachments files={initiativeFiles.data} />
           </Box>
         )}
+        <Box px={isSmallerThanTablet ? '0' : padding}>
+          <Cosponsors initiativeId={initiativeId} />
+        </Box>
         <Box
           mb={hasOfficialFeedback ? '80px' : '0'}
           ref={officialFeedbackElement}
@@ -285,18 +306,6 @@ const Phone = ({
           </Box>
         )}
       </InitiativeContainer>
-      <Box px={paddingSide}>
-        <ReactionControl
-          initiativeId={initiativeId}
-          onScrollToOfficialFeedback={onScrollToOfficialFeedback}
-        />
-      </Box>
-      <Box px={paddingSide}>
-        <RequestToCosponsor initiativeId={initiativeId} />
-      </Box>
-      <Box px={paddingSide}>
-        <Cosponsors initiativeId={initiativeId} />
-      </Box>
     </Container>
   );
 };
