@@ -35,4 +35,4 @@ jest.mock('hooks/useLocalize');
 jest.mock('utils/cl-intl');
 jest.mock('services/locale');
 jest.mock('api/app_configuration/useAppConfiguration');
-jest.mock('modules', () => ({ streamsToReset: [] }));
+jest.mock('modules');

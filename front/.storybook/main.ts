@@ -1,6 +1,7 @@
 const path = require('path');
 import type { StorybookConfig } from '@storybook/react-webpack5';
 const webpack = require('webpack');
+import mockModules from './mockModules';
 
 const config: StorybookConfig = {
   stories: [
@@ -26,13 +27,16 @@ const config: StorybookConfig = {
     return opt;
   },
   webpackFinal(config, _options) {
-    console.log(config.resolve)
     config.resolve = {
       ...config.resolve,
       modules: [
         path.join(process.cwd(), 'app'),
         ...(config?.resolve?.modules ?? [])
-      ]
+      ],
+      alias: {
+        ...mockModules,
+        ...(config?.resolve?.alias ?? {})
+      }
     }
 
 
