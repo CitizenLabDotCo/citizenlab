@@ -153,6 +153,7 @@
   "app.components.FolderFolderCard.a11y_folderTitle": "Título da pasta:",
   "app.components.FolderFolderCard.archived": "Arquivado",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# projetos} one {# projeto} other {# projetos}}",
+  "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Descarregar como pdf",
   "app.components.GoBackButton.group.edit.goBack": "Voltar",
   "app.components.GoBackButton.group.edit.goBackToPreviousPage": "Voltar à página anterior",
   "app.components.HookForm.Feedback.errorTitle": "Há um problema",
