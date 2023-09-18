@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 
 import { isNilOrError } from 'utils/helperUtils';
 import { insertConfiguration } from 'utils/moduleUtils';
@@ -255,6 +255,7 @@ const Moderation = () => {
 
   const handleOnTabChange = (tabName: TActivityTabName) => {
     setSelectedTab(tabName);
+    setSelectedModerations([]);
     trackEventByName(tracks.tabClicked, {
       tabName,
     });
@@ -262,11 +263,13 @@ const Moderation = () => {
 
   const handleOnPageNumberChange = (pageNumber: number) => {
     trackEventByName(tracks.pageNumberClicked);
+    setSelectedModerations([]);
     setSelectedPageNumber(pageNumber);
   };
 
   const handleOnPageSizeChange = (option: IOption) => {
     setSelectedPageSize(option.value);
+    setSelectedModerations([]);
   };
 
   const handleOnModeratableTypesChange = (
@@ -382,12 +385,6 @@ const Moderation = () => {
       setTabs((tabs) => insertConfiguration(data)(tabs)),
     []
   );
-
-  useEffect(() => {
-    if (!processing) {
-      setSelectedModerations([]);
-    }
-  }, [selectedPageNumber, moderationStatus, selectedPageSize, processing]);
 
   if (moderations) {
     const lastPage = getPageNumberFromUrl(moderations.links?.last) || 1;
