@@ -9,6 +9,7 @@ const fetchAreas = (filters: IAreasQueryParams) => {
     pageNumber,
     pageSize,
     forHomepageFilter: for_homepage_filter,
+    forOnboarding: for_onboarding,
     includeStaticPages,
     ...queryParameters
   } = filters;
@@ -20,6 +21,7 @@ const fetchAreas = (filters: IAreasQueryParams) => {
       'page[number]': pageNumber || 1,
       'page[size]': pageSize || 5000,
       for_homepage_filter,
+      for_onboarding,
       ...(includeStaticPages && {
         include: 'static_pages',
       }),

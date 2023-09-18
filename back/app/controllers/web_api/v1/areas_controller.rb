@@ -105,7 +105,7 @@ class WebApi::V1::AreasController < ApplicationController
 
   def area_params
     params.require(:area).permit(
-      :ordering,
+      :include_in_onboarding,
       title_multiloc: CL2_SUPPORTED_LOCALES,
       description_multiloc: CL2_SUPPORTED_LOCALES
     )

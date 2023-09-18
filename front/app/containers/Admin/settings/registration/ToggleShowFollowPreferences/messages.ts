@@ -1,21 +1,17 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  helperText: {
-    id: 'app.components.onboarding.helperText',
+  followHelperText: {
+    id: 'app.components.onboarding.followHelperText',
     defaultMessage:
-      'Request which topics & areas a user wants to follow during onboarding so they can be kept in the loop when new projects launch.',
+      'This activates a step in the registration process where users will be able to follow areas or topics that you select below',
   },
-  requestFollowPreferences: {
-    id: 'app.components.onboarding.requestFollowPreferences',
-    defaultMessage: 'Request follow preferences',
+  askFollowPreferences: {
+    id: 'app.components.onboarding.askFollowPreferences',
+    defaultMessage: 'Ask users to follow areas or topics',
   },
-  enabled: {
-    id: 'app.components.onboarding.enabled',
-    defaultMessage: 'Enabled',
-  },
-  disabled: {
-    id: 'app.components.onboarding.disabled',
-    defaultMessage: 'Disabled',
+  followPreferences: {
+    id: 'app.components.onboarding.followPreferences',
+    defaultMessage: 'Follow preferences',
   },
 });

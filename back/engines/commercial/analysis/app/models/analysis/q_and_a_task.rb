@@ -15,7 +15,7 @@
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
 #  tags_ids            :jsonb
-#  filters             :jsonb
+#  filters             :jsonb            not null
 #
 # Indexes
 #

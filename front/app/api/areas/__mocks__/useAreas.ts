@@ -12,6 +12,7 @@ export const areasData: IAreaData[] = [
       ordering: 1,
       static_page_ids: ['3'],
       followers_count: 3,
+      include_in_onboarding: true,
     },
     relationships: {
       static_pages: {
@@ -39,6 +40,7 @@ export const areasData: IAreaData[] = [
       ordering: 1,
       static_page_ids: ['4'],
       followers_count: 3,
+      include_in_onboarding: true,
     },
     relationships: {
       static_pages: {

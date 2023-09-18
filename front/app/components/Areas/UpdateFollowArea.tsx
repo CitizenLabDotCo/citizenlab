@@ -3,22 +3,22 @@ import { Badge, colors, Button } from '@citizenlab/cl2-component-library';
 import T from 'components/T';
 import useAddFollower from 'api/follow_unfollow/useAddFollower';
 import useDeleteFollower from 'api/follow_unfollow/useDeleteFollower';
-import { ITopicData } from 'api/topics/types';
+import { IAreaData } from 'api/areas/types';
 import tracks from 'components/FollowUnfollow/tracks';
 import { trackEventByName } from 'utils/analytics';
 import { useLocation } from 'react-router-dom';
 
 interface Props {
-  topic: ITopicData;
+  area: IAreaData;
 }
 
-const Topic = ({ topic }: Props) => {
+const UpdateFollowArea = ({ area }: Props) => {
   const { mutate: addFollower, isLoading: isAddingFollower } = useAddFollower();
   const { mutate: deleteFollower, isLoading: isDeletingFollower } =
     useDeleteFollower();
   const { pathname } = useLocation();
   const isLoading = isAddingFollower || isDeletingFollower;
-  const followerId = topic.relationships.user_follower?.data?.id;
+  const followerId = area.relationships.user_follower?.data?.id;
   const isFollowing = !!followerId;
   const color = isFollowing ? colors.success : colors.coolGrey300;
   const iconName = isFollowing ? 'check-circle' : 'plus-circle';
@@ -26,22 +26,22 @@ const Topic = ({ topic }: Props) => {
     if (isFollowing) {
       deleteFollower({
         followerId,
-        followableId: topic.id,
-        followableType: 'topics',
+        followableId: area.id,
+        followableType: 'areas',
       });
       trackEventByName(tracks.unfollow, {
-        followableType: 'topics',
-        id: topic.id,
+        followableType: 'areas',
+        id: area.id,
         urlPathName: pathname,
       });
     } else {
       addFollower({
-        followableType: 'topics',
-        followableId: topic.id,
+        followableType: 'areas',
+        followableId: area.id,
       });
       trackEventByName(tracks.follow, {
-        followableType: 'topics',
-        id: topic.id,
+        followableType: 'areas',
+        id: area.id,
         urlPathName: pathname,
       });
     }
@@ -58,13 +58,13 @@ const Topic = ({ topic }: Props) => {
         my="0px"
         processing={isLoading}
         data-cy={
-          isFollowing ? 'e2e-unfollow-topic-button' : 'e2e-follow-topic-button'
+          isFollowing ? 'e2e-unfollow-area-button' : 'e2e-follow-area-button'
         }
       >
-        <T value={topic.attributes.title_multiloc} />
+        <T value={area.attributes.title_multiloc} />
       </Button>
     </Badge>
   );
 };
 
-export default Topic;
+export default UpdateFollowArea;

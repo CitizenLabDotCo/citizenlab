@@ -7,6 +7,8 @@
   "UI.FormComponents.optional": "optional",
   "app.ccomponents.InitiativeCards.noInitiativesForFilter": "No proposals found",
   "app.closeIconButton.a11y_buttonActionMessage": "Close",
+  "app.components.Areas.areaUpdateError": "An error occurred while saving your area. Please try again.",
+  "app.components.Areas.topicUpdateError": "An error occurred while saving your topic. Please try again.",
   "app.components.AssignBudgetControl.a11y_price": "Price:",
   "app.components.AssignBudgetControl.add": "Add",
   "app.components.AssignBudgetControl.added": "Added",

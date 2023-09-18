@@ -140,6 +140,8 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
                 followableId={project.data.id}
                 followersCount={project.data.attributes.followers_count}
                 followerId={project.data.relationships.user_follower?.data?.id}
+                py="6px"
+                iconSize="20px"
               />
             </Box>
           </Box>

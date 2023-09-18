@@ -17,7 +17,7 @@ resource 'Topics' do
 
     before do
       @code1, @code2 = Topic::CODES.take(2)
-      @topics = create_list(:topic, 2, code: @code1) + create_list(:topic, 3, code: @code2)
+      @topics = create_list(:topic, 2, code: @code1) + create_list(:topic, 3, code: @code2, include_in_onboarding: true)
     end
 
     example_request 'List all topics' do
@@ -34,6 +34,12 @@ resource 'Topics' do
     example_request 'List all topics by code exclusion' do
       do_request exclude_code: @code1
       assert_status(200)
+      expect(response_data.size).to eq 3
+    end
+
+    example 'List all topics for onboarding' do
+      do_request for_onboarding: true
+      assert_status 200
       expect(response_data.size).to eq 3
     end
 
@@ -132,6 +138,7 @@ resource 'Topics' do
       with_options scope: :topic do
         parameter :title_multiloc, 'The title of the topic, as a multiloc string'
         parameter :description_multiloc, 'The description of the topic, as a multiloc string'
+        parameter :include_in_onboarding, 'Whether or not to include the topic in the list presented during onboarding, a boolean'
       end
       ValidationErrorHelper.new.error_fields(self, Topic)
 
@@ -139,11 +146,13 @@ resource 'Topics' do
       let(:id) { topic.id }
       let(:title_multiloc) { { 'en' => 'Comedy' } }
       let(:description_multiloc) { { 'en' => 'Stuff that tends to make you laugh' } }
+      let(:include_in_onboarding) { true }
 
       example_request 'Update a topic' do
         assert_status(200)
         expect(response_data.dig(:attributes, :title_multiloc).stringify_keys).to match title_multiloc
         expect(response_data.dig(:attributes, :description_multiloc).stringify_keys).to match description_multiloc
+        expect(response_data.dig(:attributes, :include_in_onboarding)).to be true
       end
 
       context do

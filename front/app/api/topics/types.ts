@@ -35,6 +35,7 @@ export interface ITopicData {
     code: Code;
     static_page_ids: string[];
     followers_count: number;
+    include_in_onboarding: boolean;
   };
   relationships: {
     static_pages: {
@@ -59,6 +60,7 @@ export interface ITopicsQueryParams {
   excludeCode?: Code;
   sort?: 'new' | 'custom' | 'projects_count' | '-projects_count';
   forHomepageFilter?: boolean;
+  forOnboarding?: boolean;
   includeStaticPages?: boolean;
 }
 
@@ -71,4 +73,5 @@ export interface ITopicUpdate {
   id: string;
   title_multiloc?: Multiloc;
   description_multiloc?: Multiloc;
+  include_in_onboarding?: boolean;
 }

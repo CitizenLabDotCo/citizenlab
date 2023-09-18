@@ -24,6 +24,13 @@ resource 'Areas' do
       expect(json_response[:data].size).to eq 5
     end
 
+    example 'List all topics for onboarding' do
+      @areas.last.update!(include_in_onboarding: true)
+      do_request for_onboarding: true
+      assert_status 200
+      expect(response_data.pluck(:id)).to eq [@areas.last.id]
+    end
+
     example 'List all areas sorted by project count' do
       projects = create_list(:project, 5)
       @areas[0].update!(projects: [projects[0], projects[2]])
@@ -91,6 +98,7 @@ resource 'Areas' do
       with_options scope: :area do
         parameter :title_multiloc, 'The title of the area, as a multiloc string'
         parameter :description_multiloc, 'The description of the area, as a multiloc string'
+        parameter :include_in_onboarding, 'Whether or not to include the area in the list presented during onboarding, a boolean'
       end
       ValidationErrorHelper.new.error_fields(self, Area)
 
@@ -98,12 +106,14 @@ resource 'Areas' do
       let(:id) { area.id }
       let(:title_multiloc) { { 'en' => 'Krypton' } }
       let(:description_multiloc) { { 'en' => 'Home planet of Superman' } }
+      let(:include_in_onboarding) { true }
 
       example_request 'Update an area' do
-        expect(response_status).to eq 200
+        assert_status 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
         expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
+        expect(json_response.dig(:data, :attributes, :include_in_onboarding)).to be true
       end
     end
 
