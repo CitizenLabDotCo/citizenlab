@@ -18,11 +18,10 @@ import messages from '../messages';
 import { Multiloc } from 'typings';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
 import { useParams } from 'react-router-dom';
-import useFormSubmissionCount from 'hooks/useFormSubmissionCount';
+import useFormSubmissionCount from 'api/submission_count/useSubmissionCount';
 
 // styles
 import { colors } from 'utils/styleUtils';
@@ -54,7 +53,7 @@ const FormActions = ({
     projectId: string;
   };
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const submissionCount = useFormSubmissionCount({
+  const { data: submissionCount } = useFormSubmissionCount({
     projectId,
     phaseId,
   });
@@ -69,8 +68,9 @@ const FormActions = ({
     closeModal();
   };
 
-  if (!isNilOrError(submissionCount)) {
-    const haveSubmissionsComeIn = submissionCount.totalSubmissions > 0;
+  if (submissionCount) {
+    const haveSubmissionsComeIn =
+      submissionCount.data.attributes.totalSubmissions > 0;
 
     return (
       <Box width="100%" my="60px">
@@ -118,7 +118,7 @@ const FormActions = ({
             }}
           >
             {formatMessage(messages.viewSurveyResults2, {
-              count: submissionCount.totalSubmissions,
+              count: submissionCount.data.attributes.totalSubmissions,
             })}
           </Button>
           <Button
