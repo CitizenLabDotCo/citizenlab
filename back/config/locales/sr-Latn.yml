@@ -215,6 +215,7 @@ sr-Latn:
       status: 'Status'
       assignee_fullname: 'Dodeljeni korisnik'
       assignee_email: 'E-pošta dodeljenog korisnika'
+      image_url: 'Image URL'
     anonymous: 'Анонимоус'
   form_builder:
     default_select_field:
@@ -224,6 +225,18 @@ sr-Latn:
     survey_end_page:
       title: 'Kraj ankete'
       description: "Prosledite svoje odgovore tako što ćete ispod izabrati „Prosledi anketu”."
+    pdf_export:
+      full_name: 'Full name'
+      email_address: 'Email address'
+      optional: 'optional'
+      permission: 'Permission'
+      choose_as_many: 'Choose as many as you like'
+      this_answer: 'This answer will only be shared with moderators, and not to the public.'
+      page: 'Page'
+      date_published: 'Date Published (dd-mm-yyyy)'
+      instructions: 'Instructions'
+      write_as_clearly: 'Write as <b>clearly</b> as you can— these forms might be scanned'
+      write_in_language: 'Write your answers in the same language as this form'
   project_copy:
     title_suffix: 'Kopiraj'
   confirmations_mailer:
