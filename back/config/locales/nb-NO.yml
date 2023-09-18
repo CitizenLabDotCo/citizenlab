@@ -215,6 +215,7 @@
       status: 'Status'
       assignee_fullname: 'Anvist til'
       assignee_email: 'Oppdragstakerens e-postadresse'
+      image_url: 'Bilde-URL'
     anonymous: 'Anonym'
   form_builder:
     default_select_field:
@@ -224,6 +225,18 @@
     survey_end_page:
       title: 'Slutt på spørreundersøkelse'
       description: "Send inn svarene dine ved å velge «Send inn spørreundersøkelse» nedenfor."
+    pdf_export:
+      full_name: 'Fullt navn'
+      email_address: 'Epostadresse'
+      optional: 'valgfri'
+      permission: 'Tillatelse'
+      choose_as_many: 'Velg så mange du vil'
+      this_answer: 'Dette svaret vil kun bli delt med moderatorer, og ikke til offentligheten.'
+      page: 'Side'
+      date_published: 'Publiseringsdato (dd-mm-åååå)'
+      instructions: 'Bruksanvisning'
+      write_as_clearly: 'Skriv så tydelig <b>du kan</b> disse skjemaene kan bli skannet'
+      write_in_language: 'Skriv svarene dine på samme språk som dette skjemaet'
   project_copy:
     title_suffix: 'Kopi'
   confirmations_mailer:
