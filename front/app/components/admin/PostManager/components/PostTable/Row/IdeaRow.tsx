@@ -182,6 +182,8 @@ const IdeaRow = ({
     },
   ]);
 
+  const currentPhases = idea.relationships.phases.data.map((d) => d.id);
+
   const { mutate: updateIdea } = useUpdateIdea();
   const [_collected, drag] = useDrag({
     type: 'IDEA',
@@ -241,7 +243,6 @@ const IdeaRow = ({
         }
 
         if (dropResult.type === 'phase') {
-          const currentPhases = idea.relationships.phases.data.map((d) => d.id);
           const newPhases = uniq(currentPhases.concat(dropResult.id));
 
           ideaIds.forEach((ideaId) => {
@@ -335,6 +336,7 @@ const IdeaRow = ({
   };
 
   const onUpdateIdeaPhases = (selectedPhases: string[]) => {
+    console.log({ selectedPhases, currentPhases, idea });
     updateIdea({ id: idea.id, requestBody: { phase_ids: selectedPhases } });
   };
 
