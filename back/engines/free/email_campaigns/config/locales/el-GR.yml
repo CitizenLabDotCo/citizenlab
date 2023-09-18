@@ -6,8 +6,8 @@ el:
       "comment_deleted_by_admin": Διαγράψτε το σχόλιό μου
       "comment_marked_as_spam": Σχόλιο spam αναφορά
       "comment_on_your_comment": Μια απάντηση στο σχόλιό μου
-      "comment_on_your_idea": Ένα σχόλιο για την ιδέα μου
-      "comment_on_your_initiative": Ένα σχόλιο σχετικά με την πρότασή μου
+      "comment_on_idea_you_follow": Ένα σχόλιο για μια ιδέα που ακολουθείτε
+      "comment_on_initiative_you_follow": Ένα σχόλιο σχετικά με μια πρόταση που ακολουθείτε
       "cosponsor_of_your_initiative": Ένας χρήστης αποδέχεται την πρόσκλησή μου να συνυπογράψει την πρότασή μου
       "first_idea_published": Δημοσίευση της πρώτης μου ιδέας
       "idea_marked_as_spam": Αναφορά spam ιδεών
@@ -30,10 +30,6 @@ el:
       "mention_in_official_feedback": Αναφορά σε μια ενημέρωση
       "mention_in_internal_comment": Αναφορά σε εσωτερικό σχόλιο
       "new_comment_for_admin": Νέο σχόλιο σε ένα έργο που συντονίζω
-      "new_comment_on_commented_idea": Νέο σχόλιο σε μια ιδέα που σχολίασα
-      "new_comment_on_commented_initiative": Νέο σχόλιο για μια πρόταση που σχολίασα
-      "new_comment_on_reacted_idea": Νέο σχόλιο σε μια ιδέα στην οποία αντέδρασα
-      "new_comment_on_reacted_initiative": Νέο σχόλιο για μια πρόταση που ψήφισα
       "new_idea_for_admin": Νέα ιδέα σε ένα έργο που συντονίζω
       "new_initiative_for_admin": Νέα πρόταση
       "official_feedback_on_idea_you_follow": Ενημέρωση για μια ιδέα που ακολουθείτε
@@ -135,12 +131,6 @@ el:
       today: Σήμερα
       wrong_content: 'Το σχόλιο δεν είναι σχετικό.'
       yesterday: Χθες
-    comment_on_your_initiative:
-      cta_reply_to: 'Απάντηση στο %{commentAuthor}'
-      event_description: '%{authorNameFull} τοποθέτησε μια αντίδραση στην πρωτοβουλία σας ''%{initiativeTitle}''. Κάντε κλικ στο παρακάτω κουμπί για να συνεχίσετε τη συζήτηση με το %{authorName}.'
-      main_header: '%{commentAuthor} σχολίασε την πρωτοβουλία σας'
-      subject: 'Έχετε λάβει ένα σχόλιο στην πλατφόρμα %{organizationName}''s'
-      preheader: '%{authorName} άφησε ένα σχόλιο στην πρωτοβουλία σας για το %{organizationName}'
     cosponsor_of_your_initiative:
       cta_reply_to: 'Δείτε την πρότασή σας'
       event_description_initiative: 'Συγχαρητήρια! Το %{cosponsorName} αποδέχτηκε την πρόσκλησή σας να συνδιοργανώσει την πρότασή σας.'
@@ -226,12 +216,6 @@ el:
       preheader: 'Σας ευχαριστούμε που μοιραστήκατε την πρότασή σας %{initiativeTitle} για το %{organizationName}. Το επόμενο βήμα είναι να λάβετε υποστήριξη για την πρότασή σας, κοινοποιώντας την στο δίκτυό σας.'
       send_email: email
       subject: 'Η πρότασή σας δημοσιεύθηκε στην πλατφόρμα %{organizationName}.'
-    new_comment_on_commented_idea:
-      cta_reply_to: 'Απάντηση στο %{commentAuthor}'
-      event_description: '%{commentAuthorFull} έγραψε επίσης ένα σχόλιο σχετικά με την ιδέα ''%{ideaTitle}'' στην πλατφόρμα συμμετοχής του %{organizationName}. Κάντε κλικ στο παρακάτω κουμπί για να ξεκινήσετε τη συζήτηση με το %{commentAuthor}.'
-      main_header: '%{commentAuthor} έγραψε ένα σχόλιο για την ίδια ιδέα'
-      subject: 'Υπάρχει ένα άλλο σχόλιο σχετικά με την ιδέα που σχολιάσατε'
-      preheader: '%{commentAuthor} άφησε επίσης ένα σχόλιο σχετικά με μια ιδέα για το %{organizationName}'
     mention_in_comment:
       cta_reply_to: 'Απάντηση στο %{commentAuthor}'
       event_description: '%{commentAuthorFull} σας ανέφερε στο σχόλιό του σχετικά με την ιδέα ''%{post}''. Κάντε κλικ στον παρακάτω σύνδεσμο για να μπείτε στη συζήτηση με το %{commentAuthor}.'
@@ -258,13 +242,6 @@ el:
       yesterday_by_author: 'Χθες από %{author}'
       today_by_author: 'Σήμερα από %{author}'
       x_days_ago_by_author: '%{x} πριν από μέρες από %{author}'
-    new_comment_on_commented_initiative:
-      commented: '%{commentAuthor} έγραψε:'
-      cta_reply_to: 'Απάντηση στο %{commentAuthor}'
-      event_description: '%{commentAuthorFull} έγραψε επίσης ένα σχόλιο σχετικά με την πρόταση "%{initiativeTitle}" στην πλατφόρμα συμμετοχής του %{organizationName}. Κάντε κλικ στο παρακάτω κουμπί για να ξεκινήσετε τη συζήτηση με το %{commentAuthor}.'
-      main_header: '%{commentAuthor} έγραψε ένα σχόλιο σχετικά με την ίδια πρόταση'
-      subject: 'Υπάρχει ένα άλλο σχόλιο σχετικά με την πρόταση που σχολιάσατε'
-      preheader: '%{commentAuthor} άφησε επίσης ένα σχόλιο σε μια πρόταση για το %{organizationName}'
     new_comment_for_admin:
       commented: '%{authorFirstName} σχολίασε:'
       cta_reply_to: 'Δείτε το σχόλιο του %{commentAuthor}''s'
@@ -275,29 +252,18 @@ el:
       preheader: '%{authorName} άφησε ένα σχόλιο'
       today: Σήμερα
       yesterday: Χθες
-    comment_on_your_idea:
+    comment_on_idea_you_follow:
       cta_reply_to: 'Απάντηση στο %{commentAuthor}'
-      event_description: '%{authorNameFull} τοποθέτησε μια αντίδραση στην ιδέα σας ''%{ideaTitle}''. Κάντε κλικ στο παρακάτω κουμπί για να συνεχίσετε τη συζήτηση με το %{authorName}.'
-      main_header: '%{authorName} σχολίασε την ιδέα σας'
-      subject: 'Έχετε λάβει ένα σχόλιο στην πλατφόρμα %{organizationName}''s'
-      preheader: '%{authorName} άφησε ένα σχόλιο για την ιδέα σας για το %{organizationName}'
-    new_comment_on_reacted_initiative:
-      commented: '%{commentAuthor} έγραψε:'
-      cta_reply_to: 'Προβολή αυτής της πρότασης'
-      event_description: '%{commentAuthor} σχολίασε την πρόταση "%{initiativeTitle}" επί της οποίας ψηφίσατε. Συμμετέχετε στη συζήτηση στην πλατφόρμα %{organizationName}!'
-      main_header: '%{firstName}, υπάρχει ένα νέο σχόλιο για την πρόταση που ψηφίσατε'
-      subject: 'Υπάρχει ένα νέο σχόλιο για την πρόταση που έχετε ψηφίσει'
-      preheader: '%{commentAuthor} άφησε ένα σχόλιο σχετικά με την πρόταση που ψηφίσατε στην πλατφόρμα του %{organizationName}'
-    new_comment_on_reacted_idea:
-      commented: '%{commentAuthor} έγραψε:'
+      event_description: '%{authorNameFull} έθεσε μια αντίδραση στην ιδέα "%{ideaTitle}". Κάντε κλικ στο παρακάτω κουμπί για να συνεχίσετε τη συζήτηση με το %{authorName}.'
+      main_header: '%{authorName} σχολίασε μια ιδέα που ακολουθείτε'
+      subject: 'Υπάρχει ένα νέο σχόλιο σε μια ιδέα που ακολουθείτε'
+      preheader: '%{authorName} άφησε ένα σχόλιο για μια ιδέα για το %{organizationName}'
+    comment_on_initiative_you_follow:
       cta_reply_to: 'Απάντηση στο %{commentAuthor}'
-      days_ago: '%{numberOfDays} ημέρες πριν'
-      event_description: '%{commentAuthor} σχολίασε την ιδέα ''%{ideaTitle}'' στην οποία αντιδράσατε. Πάρτε μέρος στη συζήτηση στην πλατφόρμα του %{organizationName}!'
-      main_header: '%{firstName}, υπάρχει ένα νέο σχόλιο για την ιδέα στην οποία αντιδράσατε'
-      subject: 'Υπάρχει ένα νέο σχόλιο για την ιδέα στην οποία αντιδράσατε'
-      preheader: '%{commentAuthor} άφησε ένα σχόλιο για την ιδέα στην οποία αντιδράσατε στην πλατφόρμα του %{organizationName}'
-      today: Σήμερα
-      yesterday: Χθες
+      event_description: '%{authorNameFull} τοποθέτησε μια αντίδραση στην πρωτοβουλία "%{initiativeTitle}". Κάντε κλικ στο παρακάτω κουμπί για να συνεχίσετε τη συζήτηση με το %{authorName}.'
+      main_header: '%{commentAuthor} σχολιάσατε μια πρωτοβουλία που ακολουθείτε'
+      subject: 'Υπάρχει ένα νέο σχόλιο στην πρόταση που ακολουθείτε'
+      preheader: '%{authorName} άφησε ένα σχόλιο σε μια πρωτοβουλία για το %{organizationName}'
     new_initiative_for_admin:
       cta_reply_to: 'Ανατροφοδότηση στο %{authorName}'
       event_description: '%{authorName} δημοσίευσε μια νέα πρόταση στην πλατφόρμα σας. Ανακαλύψτε την τώρα, δώστε κάποια σχόλια ή αλλάξτε την κατάστασή της!'
@@ -471,10 +437,10 @@ el:
       no_unread_notifications: "Δεν έχετε αδιάβαστες ειδοποιήσεις. Επισκεφθείτε την πλατφόρμα για να συνεισφέρετε και να δημιουργήσετε νέες ειδοποιήσεις!"
       unread_notifications: "Έχετε αδιάβαστες ειδοποιήσεις. Επισκεφθείτε την πλατφόρμα για να ανακαλύψετε τι συμβαίνει!"
     threshold_reached_for_admin:
-      cta_process_initiative: 'Προχωρήστε αυτή την πρωτοβουλία στα επόμενα βήματα'
-      event_description: 'Μια πρωτοβουλία έφτασε το κατώφλι ψηφοφορίας στην πλατφόρμα σας. Κάντε κλικ στο παρακάτω κουμπί για να προχωρήσετε στα επόμενα βήματα!'
-      main_header: 'Μια πρωτοβουλία έφτασε στο όριο της ψηφοφορίας!'
-      subject: 'Μια πρωτοβουλία έφτασε το κατώφλι ψηφοφορίας στην πλατφόρμα σας'
+      cta_process_initiative: 'Προχωρήστε την πρόταση στα επόμενα βήματα'
+      event_description: 'Μια πρόταση έφθασε το κατώτατο όριο ψηφοφορίας στην πλατφόρμα σας. Κάντε κλικ στο παρακάτω κουμπί για να προχωρήσετε στα επόμενα βήματα!'
+      main_header: 'Μια πρόταση έφθασε το κατώφλι της ψηφοφορίας!'
+      subject: 'Μια πρόταση έφτασε το κατώφλι ψηφοφορίας στην πλατφόρμα σας'
       preheader: 'Φροντίστε να κάνετε τα επόμενα βήματα'
     first_idea_published:
       action_add_image: '%{addImageLink} για να αυξηθεί η ορατότητα'
@@ -590,9 +556,7 @@ el:
         user_who_published_the_input: 'Χρήστης που δημοσίευσε την είσοδο'
         user_who_registers: 'Χρήστης που εγγράφεται'
         user_who_was_invited: 'Χρήστης που προσκλήθηκε'
-        users_who_engaged_with_the_input: 'Χρήστες που ασχολήθηκαν με την εισαγωγή'
         users_who_engaged_with_the_project: 'Χρήστες που ασχολήθηκαν με το έργο'
-        users_who_engaged_with_the_proposal: 'Χρήστες που ασχολήθηκαν με την πρόταση'
         users_who_follow_the_proposal: 'Χρήστης που ακολουθεί την πρόταση'
         users_who_follow_the_input: 'Χρήστης που ακολουθεί την είσοδο'
         users_who_follow_the_project: 'Χρήστες που ακολουθούν το έργο'
