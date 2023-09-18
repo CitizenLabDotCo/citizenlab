@@ -11,7 +11,7 @@ import SingleDateStylized from './SingleDateStylized';
 // utils
 import { toThreeLetterMonth } from 'utils/dateUtils';
 
-// api
+// hooks
 import { useTheme } from 'styled-components';
 
 interface Props {
@@ -20,7 +20,6 @@ interface Props {
 
 const EventDateStylized = ({ event }: Props) => {
   const theme = useTheme();
-
   const startAtMoment = moment(event.attributes.start_at);
   const endAtMoment = moment(event.attributes.end_at);
   const startDateMonth = toThreeLetterMonth(event.attributes.start_at, 'month');

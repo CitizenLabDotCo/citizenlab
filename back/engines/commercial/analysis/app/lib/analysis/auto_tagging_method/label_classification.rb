@@ -84,8 +84,10 @@ module Analysis
       labels = tags.pluck(:name)
       # When using an LLM (e.g. gpt-j or llama2) the classifier has a tendency
       # to always want to assign inputs. We include an 'other' label to give it
-      # a way out, in case 'other' is not yet one of the provided labels
-      if (labels & OTHER_TERMS).empty? && labels.size < 10
+      # a way out, in case 'other' is not yet one of the provided labels Despite
+      # the NLPCloud claiming there is a max of 10 labels, we seem to get
+      # consistent errors when we go with 10 instead of 9 as the maximum
+      if (labels & OTHER_TERMS).empty? && labels.size < 9
         labels << 'other'
       end
     end

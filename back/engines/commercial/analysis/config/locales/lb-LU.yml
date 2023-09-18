@@ -1,0 +1,3 @@
+lb:
+  analysis:
+    example_tag_n: Beispill Tag %{n}

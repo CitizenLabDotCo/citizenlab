@@ -207,12 +207,14 @@ tr:
       cta_accept_invitation: 'Davetiyenizi kabul edin'
       invitation_header: 'Davetiyeniz beklemede'
       preheader: '%{organizationName} birkaç gün önce katılım platformlarına katılmanız için size bir davet gönderdi.'
+      invitation_expiry_message: 'Bu davetiyenin süresi yaklaşık %{expiryDaysRemaining} gün içinde dolacaktır.'
       subject: '%{organizationName} katılım platformu için bekleyen davetiye'
     invite_received:
       added_a_message: '%{organizationName} aşağıdaki mesajı yazdı:'
       cta_accept_invitation: 'Davetiyenizi kabul edin'
       invitation_header: 'Davet edildiniz!'
       invitation_header_message: '%{organizationName} sizi katılım platformlarına davet etti.'
+      invitation_expiry_message: 'Bu davet %{expiryDays} gün içinde sona erecektir.'
       preheader: '%{organizationName} katılım platformlarına katılmanız için size bir davet gönderdi.'
       subject: '%{organizationName} platformuna katılmaya davet edildiniz'
     initiative_published:

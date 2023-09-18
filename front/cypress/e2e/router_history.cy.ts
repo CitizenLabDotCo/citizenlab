@@ -46,7 +46,7 @@ describe('router history', () => {
         cy.location('pathname').should('eq', path);
 
         // Go back with on-page button
-        cy.get('#e2e-idea-other-link').click();
+        cy.get('#e2e-go-back-link').click();
         cy.location('pathname').should(
           'eq',
           '/en/projects/an-idea-bring-it-to-your-council'

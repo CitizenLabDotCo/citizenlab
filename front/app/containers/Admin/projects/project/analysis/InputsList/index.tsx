@@ -4,16 +4,18 @@ import {
   Text,
   colors,
   stylingConsts,
+  Spinner,
 } from '@citizenlab/cl2-component-library';
+
 import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
 import { useParams } from 'react-router-dom';
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 import useKeyPress from 'hooks/useKeyPress';
 import { useSelectedInputContext } from '../SelectedInputContext';
-import { useVirtualizer } from '@tanstack/react-virtual';
 import InputListItem from './InputListItem';
 import translations from './translations';
 import { useIntl } from 'utils/cl-intl';
+import { useVirtualizer } from '@tanstack/react-virtual';
 import Demographics from '../Demographics';
 import styled from 'styled-components';
 
@@ -120,6 +122,13 @@ const InputsList = () => {
     }
   }, [downArrow, inputs, setSelectedInputId]);
 
+  // Effect: Select first input on initialization
+  useEffect(() => {
+    if (!selectedInputId && data) {
+      setSelectedInputId(data.pages[0]?.data[0]?.id);
+    }
+  }, [selectedInputId, setSelectedInputId, data]);
+
   const handleOnSelectInput = useCallback(
     (inputId: string) => {
       setSelectedInputId(inputId);
@@ -131,7 +140,6 @@ const InputsList = () => {
   if (!inputs) return null;
 
   const democraphicsOffset = isDemographicsOpen ? 210 : 60;
-
   return (
     <>
       <Box bg={colors.white} mb="8px">
@@ -169,7 +177,9 @@ const InputsList = () => {
                   ref={measureElement}
                 >
                   {isLoaderRow ? (
-                    <div />
+                    <Box mt="12px">
+                      <Spinner />
+                    </Box>
                   ) : (
                     <InputListItem
                       key={virtualRow.index}

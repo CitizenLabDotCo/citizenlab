@@ -17,7 +17,7 @@ import { roundPercentage } from 'utils/math';
 // typings
 import { SortAttribute as InitiativesSortAttribute } from 'resources/GetInitiatives';
 import { SortDirection } from 'utils/paginationUtils';
-import useInitiativeCosponsorsRequired from 'hooks/useInitiativeCosponsorsRequired';
+import useInitiativeCosponsorsRequired from 'containers/InitiativesShow/hooks/useInitiativeCosponsorsRequired';
 
 interface Props {
   sortAttribute?: InitiativesSortAttribute;
@@ -71,6 +71,15 @@ const InitiativesHeaderRow = ({
             <FormattedMessage {...messages.cosponsors} />
           </Th>
         )}
+        <SortableHeaderCell
+          width={getWidth(2)}
+          sortAttribute={sortAttribute}
+          sortDirection={sortDirection}
+          sortAttributeName="new"
+          onChange={handleSortClick('new')}
+        >
+          <FormattedMessage {...messages.publication_date} />
+        </SortableHeaderCell>
       </Tr>
     </Thead>
   );

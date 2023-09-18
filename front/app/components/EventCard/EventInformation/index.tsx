@@ -26,6 +26,7 @@ import { colors } from 'utils/styleUtils';
 // utils
 import clHistory from 'utils/cl-router/history';
 import EventAttendanceButton from 'components/EventAttendanceButton';
+import { getEventDateString } from 'utils/dateUtils';
 
 const EventInformationContainer = styled.div`
   flex: 1;
@@ -35,35 +36,26 @@ const EventInformationContainer = styled.div`
 
 interface Props {
   event: IEventData;
-  startAtMoment: moment.Moment;
-  endAtMoment: moment.Moment;
-  isMultiDayEvent: boolean;
   titleFontSize?: number;
 }
 
-const EventInformation = ({
-  event,
-  isMultiDayEvent,
-  startAtMoment,
-  endAtMoment,
-  titleFontSize,
-}: Props) => {
+const EventInformation = ({ event, titleFontSize }: Props) => {
   const { formatMessage } = useIntl();
   const theme = useTheme();
 
+  const startAtMoment = moment(event.attributes.start_at);
+  const endAtMoment = moment(event.attributes.end_at);
+
   // const isPastEvent = moment().isAfter(endAtMoment); // TODO: Re-enable once event attendance smart group added
   const address1 = event?.attributes?.address_1;
+  const onlineLink = event?.attributes?.online_link;
   const tempShowEventAttendance = false; // TODO: Replace once event attendance smart group added
 
-  const eventDateTime = isMultiDayEvent
-    ? `${startAtMoment.format('LLL')} - ${endAtMoment.format('LLL')}`
-    : `${startAtMoment.format('LL')} • ${startAtMoment.format(
-        'LT'
-      )} - ${endAtMoment.format('LT')}`;
+  const eventDateTime = getEventDateString(event);
 
   return (
     <EventInformationContainer data-testid="EventInformation">
-      <Box>
+      <Box id="e2e-event-card">
         <Box
           display="flex"
           justifyContent="space-between"
@@ -126,6 +118,32 @@ const EventInformation = ({
                 {address1?.includes(',')
                   ? address1?.slice(0, address1.indexOf(','))
                   : address1}
+              </Text>
+            </Box>
+          )}
+          {onlineLink && (
+            <Box display="flex" mb="12px">
+              <Icon
+                my="auto"
+                fill={colors.coolGrey300}
+                name="link"
+                ariaHidden
+                mr="8px"
+              />
+              <Text
+                m="0px"
+                color="coolGrey700"
+                fontSize="s"
+                role="button"
+                pt="2px"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  window.open(onlineLink, '_blank');
+                }}
+                style={{ textDecoration: 'underline' }}
+              >
+                {formatMessage(messages.online)}
               </Text>
             </Box>
           )}

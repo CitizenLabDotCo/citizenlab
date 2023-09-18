@@ -1,1 +1,8 @@
+<mj-section padding="0 25px 20px" border-radius="5px" text-align="left">
+  <mj-column> 
+    <mj-text>
+      <%= format_message('invitation_expiry_message', values: { expiryDaysRemaining: invite_expires_in_days(event.invite_created_at) }) %>
+    </mj-text>
+  </mj-column>
+</mj-section>
 <%= render partial: 'application/cta_button', locals: { href: event.activate_invite_url, message: format_message('cta_accept_invitation') } %>

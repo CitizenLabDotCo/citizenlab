@@ -28,9 +28,12 @@ import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import ClickOutside from 'utils/containers/clickOutside';
 import styled from 'styled-components';
+<<<<<<< HEAD
 import { omit } from 'lodash-es';
 import useAuthUser from 'api/me/useAuthUser';
 import { get, set } from 'js-cookie';
+=======
+>>>>>>> master
 
 const TruncatedTitle = styled(Title)`
   white-space: nowrap;
@@ -150,7 +153,7 @@ const TopBar = () => {
         >
           {formatMessage(translations.filters)}
         </Button>
-        <FilterItems filters={omit(filters, 'tag_ids', 'search')} isEditable />
+        <FilterItems filters={filters} isEditable />
         <Box marginLeft="auto">
           <SearchInput
             key={urlParams.get('reset_filters')}

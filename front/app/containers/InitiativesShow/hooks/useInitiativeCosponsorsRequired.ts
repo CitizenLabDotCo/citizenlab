@@ -1,5 +1,5 @@
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useFeatureFlag from './useFeatureFlag';
+import useFeatureFlag from '../../../hooks/useFeatureFlag';
 
 export default function useInitiativeCosponsorsRequired() {
   const initiativeCosponsorsEnabled = useFeatureFlag({

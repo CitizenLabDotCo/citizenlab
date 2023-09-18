@@ -73,7 +73,8 @@ resource 'Tags' do
 
       example_request 'lists all tags of an analysis' do
         assert_status 200
-        expect(response_data.pluck(:id)).to match_array(tags.pluck(:id))
+        # tags sorted by descending tag count, then by ascending creation time if equal
+        expect(response_data.pluck(:id)).to eq([tags[1].id, tags[0].id, tags[2].id])
         expect(json_response_body[:meta]).to eq({
           inputs_total: 3,
           filtered_inputs_total: 3,

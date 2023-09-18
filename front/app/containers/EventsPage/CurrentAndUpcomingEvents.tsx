@@ -1,6 +1,9 @@
 import React from 'react';
-import EventsViewer from './EventsViewer';
 import styled from 'styled-components';
+
+// components
+import { Box } from '@citizenlab/cl2-component-library';
+import EventsViewer from './EventsViewer';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
@@ -18,14 +21,16 @@ const CurrentAndUpcomingEvents = ({
   intl: { formatMessage },
   attendeeId,
 }: Props & WrappedComponentProps) => (
-  <StyledEventsViewer
-    showProjectFilter={true}
-    title={formatMessage(messages.upcomingAndOngoingEvents)}
-    fallbackMessage={messages.noUpcomingOrOngoingEvents}
-    eventsTime="currentAndFuture"
-    projectPublicationStatuses={['published']}
-    attendeeId={attendeeId}
-  />
+  <Box id="e2e-current-and-upcoming-events">
+    <StyledEventsViewer
+      showProjectFilter={true}
+      title={formatMessage(messages.upcomingAndOngoingEvents)}
+      fallbackMessage={messages.noUpcomingOrOngoingEvents}
+      eventsTime="currentAndFuture"
+      projectPublicationStatuses={['published']}
+      attendeeId={attendeeId}
+    />
+  </Box>
 );
 
 export default injectIntl(CurrentAndUpcomingEvents);

@@ -207,12 +207,14 @@ nl-BE:
       cta_accept_invitation: 'Accepteer je uitnodiging'
       invitation_header: 'Je hebt je uitnodiging nog niet geaccepteerd'
       preheader: 'Werk mee aan de toekomst van %{organizationName}.'
+      invitation_expiry_message: 'Deze uitnodiging verloopt over ongeveer %{expiryDaysRemaining} dagen.'
       subject: 'Reminder: registreer je op het participatieplatform van %{organizationName}'
     invite_received:
       added_a_message: '%{organizationName} schreef het volgende bericht:'
       cta_accept_invitation: 'Accepteer je uitnodiging'
       invitation_header: 'Je bent uitgenodigd!'
       invitation_header_message: '%{organizationName} nodigde je uit op hun participatieplatform.'
+      invitation_expiry_message: 'Deze uitnodiging verloopt over %{expiryDays} dagen.'
       preheader: '%{organizationName} stuurde je een uitnodiging om je te registreren op hun participatieplatform.'
       subject: 'Je bent uitgenodigd om je te registeren op het participatieplatform van %{organizationName}'
     initiative_published:

@@ -6,7 +6,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // services
-import { TModeratableType } from '../../services/moderations';
+import { TModeratableType } from 'api/moderations/types';
 
 interface Props {
   onChange: (newModeratableType: TModeratableType[]) => void;

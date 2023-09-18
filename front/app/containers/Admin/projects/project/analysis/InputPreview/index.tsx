@@ -10,7 +10,7 @@ import Divider from 'components/admin/Divider';
 import Taggings from '../Taggings';
 import LongFieldValue from './LongFieldValue';
 import Avatar from 'components/Avatar';
-import useUserById from 'api/users/useUserById';
+import useAnalysisUserById from 'api/analysis_users/useAnalysisUserById';
 import { getFullName } from 'utils/textUtils';
 import { useSelectedInputContext } from '../SelectedInputContext';
 import { useIntl } from 'utils/cl-intl';
@@ -25,9 +25,11 @@ const InputListItem = () => {
     selectedInputId ?? undefined
   );
   const { data: analysis } = useAnalysis(analysisId);
-  const { data: author } = useUserById(
-    input?.data.relationships.author.data?.id
-  );
+  const { data: author, isRefetching: isRefetchingAuthor } =
+    useAnalysisUserById({
+      id: input?.data.relationships.author.data?.id ?? null,
+      analysisId,
+    });
 
   if (!analysis || !input || !selectedInputId) return null;
 
@@ -56,14 +58,16 @@ const InputListItem = () => {
           phaseId={analysis.data.relationships.phase?.data?.id}
         />
       ))}
-      {author && (
+      {author && !isRefetchingAuthor && (
         <Box mt="20px" display="flex" alignItems="center">
           <Avatar size={40} userId={author.data.id} />
           <Text m="0px">{getFullName(author?.data)}</Text>
         </Box>
       )}
       <Divider />
-      <Taggings onlyShowTagged={false} inputId={selectedInputId} />
+      <Box id="tags-control">
+        <Taggings onlyShowTagged={false} inputId={selectedInputId} />
+      </Box>
     </Box>
   );
 };
