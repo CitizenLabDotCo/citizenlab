@@ -340,7 +340,6 @@ const Moderation = () => {
         setProcessing(false);
         setSelectedModerations([]);
       } catch (e) {
-        console.log(e);
         setActionBarErrorMessage(formatMessage(messages.removeFlagsError));
         setProcessing(false);
       }
