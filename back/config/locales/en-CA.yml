@@ -215,6 +215,7 @@ en-CA:
       status: 'Status'
       assignee_fullname: 'Assignee'
       assignee_email: 'Assignee email'
+      image_url: 'Image URL'
     anonymous: 'Anonymous'
   form_builder:
     default_select_field:
@@ -224,6 +225,18 @@ en-CA:
     survey_end_page:
       title: 'Survey end'
       description: "Please submit your answers by selecting 'Submit survey' below."
+    pdf_export:
+      full_name: 'Full name'
+      email_address: 'Email address'
+      optional: 'optional'
+      permission: 'Permission'
+      choose_as_many: 'Choose as many as you like'
+      this_answer: 'This answer will only be shared with moderators, and not to the public.'
+      page: 'Page'
+      date_published: 'Date Published (dd-mm-yyyy)'
+      instructions: 'Instructions'
+      write_as_clearly: 'Write as <b>clearly</b> as you can— these forms might be scanned'
+      write_in_language: 'Write your answers in the same language as this form'
   project_copy:
     title_suffix: 'Copy'
   confirmations_mailer:
