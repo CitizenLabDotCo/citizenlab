@@ -138,12 +138,10 @@ export interface IIdeaData {
       data: IRelationship;
     };
     ideas_phases: {
-      data:
-        | {
-            id: string;
-            type: 'ideas_phase';
-          }[]
-        | null;
+      data: {
+        id: string;
+        type: 'ideas_phase';
+      }[];
     };
     phases: {
       data: IRelationship[];
