@@ -6,8 +6,8 @@ ar:
       "comment_deleted_by_admin": حذف حسابي
       "comment_marked_as_spam": الإبلاغ عن التعليق كـ مزعج
       "comment_on_your_comment": رد على تعليقي
-      "comment_on_your_idea": تعليق على فكرتي
-      "comment_on_your_initiative": تعليق على مُقترحي
+      "comment_on_idea_you_follow": تعليق على فكرة تتابعها
+      "comment_on_initiative_you_follow": تعليق على الاقتراح الذي تتبعه
       "cosponsor_of_your_initiative": يقبل أحد المستخدمين دعوتي للمشاركة في رعاية اقتراحي
       "first_idea_published": نشر فكرتي الأولى
       "idea_marked_as_spam": الإبلاغ عن الفكرة كـ مزعجة
@@ -30,10 +30,6 @@ ar:
       "mention_in_official_feedback": ذكر في تحديث
       "mention_in_internal_comment": أذكر في تعليق داخلي
       "new_comment_for_admin": تعليق جديد في مشروع أُشرف عليه
-      "new_comment_on_commented_idea": تعليق جديد على فكرة علّقت عليها
-      "new_comment_on_commented_initiative": تعليق جديد على مُقترح علّقت عليه
-      "new_comment_on_reacted_idea": تعليق جديد على فكرة تفاعلت معها
-      "new_comment_on_reacted_initiative": تعليق جديد على اقتراح قمت بالتصويت عليه
       "new_idea_for_admin": فكرة جديدة في مشروع أُشرف عليه
       "new_initiative_for_admin": مُقترح جديد
       "official_feedback_on_idea_you_follow": تحديث على فكرة تتابعها
@@ -135,12 +131,6 @@ ar:
       today: اليوم
       wrong_content: 'التعليق غير ذي صلة.'
       yesterday: الأمس
-    comment_on_your_initiative:
-      cta_reply_to: 'الرد على %{commentAuthor}'
-      event_description: 'أبدى %{authorNameFull} رد فعل على مبادرتك ''%{initiativeTitle}''. انقر الزر أدناه لمتابعة الحوار مع %{authorName}.'
-      main_header: 'علّق %{commentAuthor} على مبادرتك'
-      subject: 'لقد استلمت تعليقًا على المنصة الخاصة بـ %{organizationName}'
-      preheader: 'ترك %{authorName} تعليقًا على مبادرتك لـ %{organizationName}'
     cosponsor_of_your_initiative:
       cta_reply_to: 'عرض الاقتراح الخاص بك'
       event_description_initiative: 'تهانينا! لقد قبل %{cosponsorName} دعوتك للمشاركة في رعاية اقتراحك.'
@@ -226,12 +216,6 @@ ar:
       preheader: 'شكرًا لك على مشاركتك مُقترحك %{initiativeTitle} لـ %{organizationName}. تتمثل الخطوة التالية بحشد الدعم لمُقترحك من خلال مشاركته عبر شبكتك.'
       send_email: البريد الإلكتروني
       subject: 'تم نشر مُقترحك على منصة %{organizationName}'
-    new_comment_on_commented_idea:
-      cta_reply_to: 'الرد على %{commentAuthor}'
-      event_description: 'كتب %{commentAuthorFull} أيضًا تعليقًا على الفكرة ''%{ideaTitle}'' على منصة المشاركة الخاصة بـ %{organizationName}. انقر الزر أدناه لبدء حوار مع %{commentAuthor}.'
-      main_header: 'كتب %{commentAuthor} تعليقًا على نفس الفكرة'
-      subject: 'هناك تعليق آخر على الفكرة التي علّقت عليها'
-      preheader: 'ترك %{commentAuthor} أيضًا تعليقًا على فكرة لـ %{organizationName}'
     mention_in_comment:
       cta_reply_to: 'الرد على %{commentAuthor}'
       event_description: 'ذكرك %{commentAuthorFull} في تعليق على الفكرة ''%{post}‘. انقر على الرابط أدناه للمشاركة في حوار مع %{commentAuthor}'
@@ -258,13 +242,6 @@ ar:
       yesterday_by_author: 'الأمس بواسطة %{author}'
       today_by_author: 'اليوم بواسطة %{author}'
       x_days_ago_by_author: 'قبل %{x} يوم بواسطة %{author}'
-    new_comment_on_commented_initiative:
-      commented: 'كتب %{commentAuthor}:'
-      cta_reply_to: 'الرد على %{commentAuthor}'
-      event_description: 'كتب %{commentAuthorFull} أيضًا تعليقًا على المُقترح ''%{initiativeTitle}'' على منصة المشاركة الخاصة بـ %{organizationName}. انقر الزر أدناه لبدء حوار مع %{commentAuthor}.'
-      main_header: 'كتب %{commentAuthor} تعليقًا على نفس المُقترح'
-      subject: 'هناك تعليق آخر على المُقترح الذي علّقت عليه'
-      preheader: 'ترك %{commentAuthor} أيضًا تعليقًا على مُقترح لـ %{organizationName}'
     new_comment_for_admin:
       commented: 'علّق %{authorFirstName}:'
       cta_reply_to: 'اطلع على تعليق %{commentAuthor}'
@@ -275,29 +252,18 @@ ar:
       preheader: 'ترك %{authorName} تعليقًا'
       today: اليوم
       yesterday: الأمس
-    comment_on_your_idea:
+    comment_on_idea_you_follow:
       cta_reply_to: 'الرد على %{commentAuthor}'
-      event_description: 'أبدى %{authorNameFull} رد فعل على فكرتك ''%{ideaTitle}''. انقر الزر أدناه لمتابعة الحوار مع %{authorName}.'
-      main_header: 'علّق %{authorName} على فكرتك'
-      subject: 'لقد استلمت تعليقًا على المنصة الخاصة بـ %{organizationName}'
-      preheader: 'ترك %{authorName} تعليقًا على فكرتك لـ %{organizationName}'
-    new_comment_on_reacted_initiative:
-      commented: '%{commentAuthor} كتب:'
-      cta_reply_to: 'اعرض هذا الاقتراح'
-      event_description: 'قام %{commentAuthor} بالتعليق على الاقتراح "%{initiativeTitle}" الذي قمت بالتصويت عليه. انضم إلى المناقشة على منصة %{organizationName}!'
-      main_header: '%{firstName}، هناك تعليق جديد على الاقتراح الذي قمت بالتصويت عليه'
-      subject: 'هناك تعليق جديد على الاقتراح الذي قمت بالتصويت عليه'
-      preheader: '%{commentAuthor} ترك تعليقًا على الاقتراح الذي قمت بالتصويت عليه على منصة %{organizationName}'
-    new_comment_on_reacted_idea:
-      commented: '%{commentAuthor} كتب:'
+      event_description: '%{authorNameFull} وضع رد فعل على الفكرة ''%{ideaTitle}''. انقر فوق الزر أدناه لمواصلة المحادثة مع %{authorName}.'
+      main_header: '%{authorName} علق على فكرة تتابعها'
+      subject: 'هناك تعليق جديد على فكرة تتابعها'
+      preheader: '%{authorName} ترك تعليقًا على فكرة لـ %{organizationName}'
+    comment_on_initiative_you_follow:
       cta_reply_to: 'الرد على %{commentAuthor}'
-      days_ago: 'قبل %{numberOfDays} يوم'
-      event_description: 'لقد علق %{commentAuthor} على الفكرة "%{ideaTitle}" التي تفاعلت معها. انضم إلى المناقشة على منصة %{organizationName}!'
-      main_header: '%{firstName}، هناك تعليق جديد على الفكرة التي تفاعلت معها'
-      subject: 'هناك تعليق جديد على الفكرة التي تفاعلت معها'
-      preheader: '%{commentAuthor} ترك تعليقًا على الفكرة التي تفاعلت معها على منصة %{organizationName}'
-      today: اليوم
-      yesterday: أمس
+      event_description: '%{authorNameFull} وضع رد فعل على المبادرة ''%{initiativeTitle}''. انقر فوق الزر أدناه لمواصلة المحادثة مع %{authorName}.'
+      main_header: '%{commentAuthor} علق على مبادرة تتابعها'
+      subject: 'هناك تعليق جديد على الاقتراح الذي تتبعه'
+      preheader: '%{authorName} ترك تعليقاً على مبادرة لـ %{organizationName}'
     new_initiative_for_admin:
       cta_reply_to: 'قدّم ملاحظاتك لـ %{authorName}'
       event_description: 'قام %{authorName} بنشر مُقترح جديد على منصتك. تعرف عليه الآن، وقدّم ملاحظاتك أو غيّر حالته!'
@@ -471,10 +437,10 @@ ar:
       no_unread_notifications: "لا يوجد لديك أي إشعارات غير مقروءة. ومع ذلك، ندعوك لزيارة المنصة لاكتشاف ما يحدث."
       unread_notifications: "لديك إشعارات غير مقروءة. ندعوك لزيارة المنصة لاكتشاف ما يحدث."
     threshold_reached_for_admin:
-      cta_process_initiative: 'خذ هذه المبادرة إلى الخطوات التالية'
-      event_description: 'وصلت إحدى المبادرات إلى حد التصويت المطلوب على منصتك. انقر الزر أدناه للانتقال إلى الخطوات التالية!'
-      main_header: 'بلغت المبادرة حد التصويت المطلوب!'
-      subject: 'بلغت المبادرة حد التصويت المطلوب على منصتك'
+      cta_process_initiative: 'انتقل بهذا الاقتراح إلى الخطوات التالية'
+      event_description: 'وصل أحد الاقتراحات إلى حد التصويت على النظام الأساسي الخاص بك. انقر فوق الزر أدناه للانتقال إلى الخطوات التالية!'
+      main_header: 'مقترح وصل إلى عتبة التصويت!'
+      subject: 'وصل أحد الاقتراحات إلى حد التصويت على النظام الأساسي الخاص بك'
       preheader: 'تأكد من اتخاذ الخطوات التالية'
     first_idea_published:
       action_add_image: '%{addImageLink} لزيادة إمكانية الرؤية'
@@ -590,9 +556,7 @@ ar:
         user_who_published_the_input: 'المستخدم الذي نشر المدخلات'
         user_who_registers: 'المستخدم الذي يقوم بالتسجيل'
         user_who_was_invited: 'المستخدم الذي تمت دعوته'
-        users_who_engaged_with_the_input: 'المستخدمون الذين تفاعلوا مع المدخلات'
         users_who_engaged_with_the_project: 'المستخدمون الذين شاركوا في المشروع'
-        users_who_engaged_with_the_proposal: 'المستخدمون الذين تفاعلوا مع الاقتراح'
         users_who_follow_the_proposal: 'المستخدم الذي يتبع الاقتراح'
         users_who_follow_the_input: 'المستخدم الذي يتابع المدخلات'
         users_who_follow_the_project: 'المستخدمون الذين يتابعون المشروع'
