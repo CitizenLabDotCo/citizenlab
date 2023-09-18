@@ -13,15 +13,13 @@ describe('extractIdsFromValue', () => {
   });
 
   it('should handle a string with no mentions', () => {
-    const value = 'This is a test without mentions.';
-    const ids = extractIdsFromValue(value);
+    const ids = extractIdsFromValue('This is a test without mentions.');
 
     expect(ids).toEqual([]);
   });
 
   it('should handle an empty string', () => {
-    const value = '';
-    const ids = extractIdsFromValue(value);
+    const ids = extractIdsFromValue('');
 
     expect(ids).toEqual([]);
   });
