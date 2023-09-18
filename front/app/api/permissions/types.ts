@@ -1,6 +1,8 @@
-import { API_PATH } from 'containers/App/constants';
-import streams, { IStreamParams } from 'utils/streams';
 import { IRelationship } from 'typings';
+import permissionsKeys from './keys';
+import { Keys } from 'utils/cl-react-query/types';
+
+export type PermissionsKeys = Keys<typeof permissionsKeys>;
 
 export type IGlobalPermissionAction =
   | 'reacting_initiative'
@@ -10,7 +12,7 @@ export type IGlobalPermissionAction =
 
 export interface IGlobalPermissionData {
   id: string;
-  type: string;
+  type: 'permission';
   attributes: {
     action: IGlobalPermissionAction;
     permitted_by: 'everyone' | 'users' | 'groups' | 'admins_moderators';
@@ -37,7 +39,7 @@ export type IParticipationContextPermissionAction =
   | 'voting'
   | 'annotating_document';
 
-interface IParticipationContextPermissionData {
+export interface IParticipationContextPermissionData {
   id: string;
   type: string;
   attributes: {
@@ -66,35 +68,18 @@ export type IPermissionData =
   | IParticipationContextPermissionData
   | IGlobalPermissionData;
 
-interface IParticipationContextPermission {
+export interface IParticipationContextPermission {
   data: IParticipationContextPermissionData;
 }
 
-interface IGlobalPermissions {
+export interface IGlobalPermissions {
   data: IGlobalPermissionData[];
 }
 
-interface IPermissionUpdate {
+export interface IPermissionUpdate {
+  id: string;
+  action: string;
   group_ids: string[];
   permitted_by: IPermissionData['attributes']['permitted_by'];
   global_custom_fields: boolean;
-}
-
-export function globalPermissions(streamParams: IStreamParams | null = null) {
-  return streams.get<IGlobalPermissions>({
-    apiEndpoint: `${API_PATH}/permissions`, // or `${API_PATH}/action_descriptors/initiatives`
-    ...streamParams,
-  });
-}
-
-export function updateGlobalPermission(
-  permissionId: string,
-  action: string,
-  permission: Partial<IPermissionUpdate>
-) {
-  return streams.update<IParticipationContextPermission>(
-    `${API_PATH}/permissions/${action}`,
-    permissionId,
-    { permission }
-  );
 }

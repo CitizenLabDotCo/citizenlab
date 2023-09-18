@@ -14,7 +14,7 @@ import {
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 import permissionsMessages from 'containers/Admin/projects/project/permissions/messages';
-import { IPermissionData } from 'services/actionPermissions';
+import { IPermissionData } from 'api/permissions/types';
 import Warning from 'components/UI/Warning';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useGroups from 'api/groups/useGroups';

@@ -2,7 +2,7 @@ import {
   IGlobalPermissionAction,
   IPermissionData,
   IParticipationContextPermissionAction,
-} from 'services/actionPermissions';
+} from 'api/permissions/types';
 import messages from './messages';
 import { FieldType } from 'containers/Admin/settings/registration/CustomFieldRoutes/RegistrationCustomFieldForm';
 import { MessageDescriptor } from 'react-intl';
