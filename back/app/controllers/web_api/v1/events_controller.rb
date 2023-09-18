@@ -155,12 +155,7 @@ class WebApi::V1::EventsController < ApplicationController
     date_str = date_str.strip
     return nil if date_str.in?(['null', ''])
 
-    config_timezone.parse(date_str)
-  end
-
-  def config_timezone
-    timezone_str = AppConfiguration.instance.settings('core', 'timezone')
-    ActiveSupport::TimeZone[timezone_str] || (raise KeyError, timezone_str)
+    AppConfiguration.timezone.parse(date_str)
   end
 
   def default_locale
