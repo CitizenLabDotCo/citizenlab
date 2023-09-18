@@ -824,6 +824,7 @@ resource 'Projects' do
         expect(json_response).to eq(
           {
             data: {
+              type: 'survey_results',
               attributes: {
                 results: [
                   {
