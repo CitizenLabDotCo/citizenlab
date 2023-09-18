@@ -15,9 +15,9 @@ describe TimelineService do
     end
 
     it "returns the active phase when we're in the last day of the phase" do
-      now = Time.now.in_time_zone(AppConfiguration.instance.settings('core', 'timezone')).to_date
+      today = AppConfiguration.timezone.today
       project = create(:project)
-      phase = create(:phase, start_at: now - 1.week, end_at: now, project: project)
+      phase = create(:phase, start_at: today - 1.week, end_at: today, project: project)
       expect(service.current_phase(project)&.id).to eq(phase.id)
     end
 
@@ -173,8 +173,8 @@ describe TimelineService do
   end
 
   def create_active_phase(project, factory: :phase)
-    now = Time.now.in_time_zone(AppConfiguration.instance.settings('core', 'timezone')).to_date
-    create(factory, project: project, start_at: now - 2.weeks, end_at: now)
+    today = AppConfiguration.timezone.today
+    create(factory, project: project, start_at: today - 2.weeks, end_at: today)
   end
 
   def create_inactive_phase(project, phase_options = {})
