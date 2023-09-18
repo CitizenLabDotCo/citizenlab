@@ -5,7 +5,7 @@ import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-import { IFormSubmissionCount } from 'services/formCustomFields';
+import { IFormSubmissionCount } from 'api/submission_count/types';
 
 let apiPath = '*projects/:projectId/submission_count';
 

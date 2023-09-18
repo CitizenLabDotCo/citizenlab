@@ -224,8 +224,11 @@ export interface Result {
 }
 
 export interface SurveyResultData {
-  results: Result[];
-  totalSubmissions: number;
+  type: 'survey_results';
+  attributes: {
+    results: Result[];
+    totalSubmissions: number;
+  };
 }
 
 export interface SurveyResultsType {
