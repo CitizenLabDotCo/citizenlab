@@ -153,6 +153,7 @@
   "app.components.FolderFolderCard.a11y_folderTitle": "Maptitel:",
   "app.components.FolderFolderCard.archived": "Afgerond",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# projecten} one {# project} other {# projecten}}",
+  "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Download als pdf",
   "app.components.GoBackButton.group.edit.goBack": "Ga terug",
   "app.components.GoBackButton.group.edit.goBackToPreviousPage": "Ga terug naar de vorige pagina",
   "app.components.HookForm.Feedback.errorTitle": "Er gaat iets mis",
