@@ -10,6 +10,7 @@ import {
   Text,
 } from '@citizenlab/cl2-component-library';
 import DateBlocks from '../DateBlocks';
+import Image from 'components/UI/Image';
 
 // types
 import { IEventData } from 'api/events/types';
@@ -27,11 +28,20 @@ import { colors } from 'utils/styleUtils';
 import clHistory from 'utils/cl-router/history';
 import EventAttendanceButton from 'components/EventAttendanceButton';
 import { getEventDateString } from 'utils/dateUtils';
+import useEventImage from 'api/event_images/useEventImage';
 
 const EventInformationContainer = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
+`;
+
+const IdeaCardImage = styled(Image)`
+  width: 100%;
+  height: 100%;
+  flex: 1;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
 `;
 
 interface Props {
@@ -42,6 +52,8 @@ interface Props {
 const EventInformation = ({ event, titleFontSize }: Props) => {
   const { formatMessage } = useIntl();
   const theme = useTheme();
+  const remoteImageId = event?.relationships?.event_images?.data[0]?.id;
+  const { data: eventImage } = useEventImage(event.id, remoteImageId);
 
   const startAtMoment = moment(event.attributes.start_at);
   const endAtMoment = moment(event.attributes.end_at);
@@ -53,13 +65,21 @@ const EventInformation = ({ event, titleFontSize }: Props) => {
 
   const eventDateTime = getEventDateString(event);
 
+  const mediumImage = eventImage?.data?.attributes?.versions?.medium;
+
   return (
     <EventInformationContainer data-testid="EventInformation">
       <Box id="e2e-event-card">
+        {mediumImage && (
+          <Box height="140px" m="-16px">
+            <IdeaCardImage src={mediumImage} cover={true} alt="" />
+          </Box>
+        )}
         <Box
           display="flex"
           justifyContent="space-between"
           flexDirection={theme.isRtl ? 'row-reverse' : 'row'}
+          mt={remoteImageId ? '32px' : 'auto'}
         >
           <Title
             variant="h4"

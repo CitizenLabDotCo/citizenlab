@@ -17,6 +17,8 @@ import VerticalCenterer from 'components/VerticalCenterer';
 import MobileTopBar from './components/MobileTopBar';
 import EventDescription from './components/EventDescription';
 import InformationSectionMobile from './components/InformationSectionMobile';
+import Image from 'components/UI/Image';
+import ProjectLink from './components/ProjectLink';
 
 // styling
 import styled from 'styled-components';
@@ -24,16 +26,16 @@ import styled from 'styled-components';
 // router
 import { useParams } from 'react-router-dom';
 
-// api
+// hooks
 import useEvent from 'api/events/useEvent';
 import useLocale from 'hooks/useLocale';
 import useProjectById from 'api/projects/useProjectById';
+import useEventImage from 'api/event_images/useEventImage';
+import useLocalize from 'hooks/useLocalize';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { isUnauthorizedRQ } from 'utils/errorUtils';
-import useLocalize from 'hooks/useLocalize';
-import ProjectLink from './components/ProjectLink';
 
 const InnerContainer = styled(Box)`
   min-height: calc(
@@ -56,6 +58,16 @@ const InnerContainer = styled(Box)`
     padding-right: 15px;
   `}
 `;
+
+const EventImage = styled(Image)`
+  width: 100%;
+  height: 100%;
+  flex: 1;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  margin-bottom: 24px;
+`;
+
 const EventsShowPage = () => {
   const isSmallerThanTablet = useBreakpoint('tablet');
   const locale = useLocale();
@@ -67,6 +79,10 @@ const EventsShowPage = () => {
   const { data: project } = useProjectById(
     event?.data.relationships.project.data.id
   );
+  const remoteImageId = event?.data.relationships?.event_images?.data[0]?.id;
+  const { data: eventImage } = useEventImage(eventId, remoteImageId);
+  const largeImage = eventImage?.data.attributes?.versions?.large;
+
   const projectTitleLocalized = localize(
     project?.data.attributes.title_multiloc
   );
@@ -110,6 +126,11 @@ const EventsShowPage = () => {
                   projectTitleLocalized={projectTitleLocalized}
                   projectSlug={projectSlug}
                 />
+              )}
+              {largeImage && (
+                <Box aria-hidden="true">
+                  <EventImage src={largeImage} alt="" />
+                </Box>
               )}
               <Box mb="40px">
                 {event && <EventDescription event={event?.data} />}

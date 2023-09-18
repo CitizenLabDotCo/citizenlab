@@ -264,11 +264,16 @@ const AdminProjectEventEdit = () => {
 
   const handleEventImage = async (data: IEvent) => {
     const hasRemoteImage = !isNilOrError(remoteEventImage);
+    const remoteImageId = event?.data.relationships['event_images'].data[0].id;
 
-    if ((uploadedImage === null || !uploadedImage.remote) && hasRemoteImage) {
+    if (
+      (uploadedImage === null || !uploadedImage.remote) &&
+      hasRemoteImage &&
+      remoteImageId
+    ) {
       deleteEventImage({
         eventId: id,
-        imageId: event?.data.relationships['event_images'].data[0].id,
+        imageId: remoteImageId,
       });
     }
     if (uploadedImage && !uploadedImage.remote) {
@@ -338,6 +343,10 @@ const AdminProjectEventEdit = () => {
     const locationPointUpdated =
       eventAttrs.address_1 || successfulGeocode ? locationPoint : null;
 
+    const imageChanged =
+      (uploadedImage !== null && !uploadedImage.remote) ||
+      (uploadedImage === null && remoteEventImage !== undefined);
+
     e.preventDefault();
     try {
       setSaving(true);
@@ -346,6 +355,13 @@ const AdminProjectEventEdit = () => {
       if (isEmpty(attributeDiff) && eventFilesToRemove) {
         if (event) {
           handleEventFiles(event);
+        }
+      }
+
+      // If only image has changed
+      if (isEmpty(attributeDiff) && imageChanged) {
+        if (event) {
+          handleEventImage(event);
         }
       }
 
@@ -365,9 +381,9 @@ const AdminProjectEventEdit = () => {
             },
             {
               onSuccess: async (data) => {
-                setSubmitState('success');
-                handleEventFiles(data);
                 handleEventImage(data);
+                handleEventFiles(data);
+                setSubmitState('success');
               },
               onError: async (errors) => {
                 setSaving(false);
