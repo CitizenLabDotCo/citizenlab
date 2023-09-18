@@ -32,11 +32,17 @@ module EmailCampaigns
     end
 
     def event_time
-      timezone_name = AppConfiguration.instance.settings.dig('core', 'timezone')
-      timezone = ActiveSupport::TimeZone[timezone_name] || (raise KeyError, timezone_name)
+      timezone = AppConfiguration.timezone
 
-      start_at = I18n.l(event.event_attributes.start_at.in_time_zone(timezone), format: :short, locale: locale.locale_sym)
-      end_at = I18n.l(event.event_attributes.end_at.in_time_zone(timezone), format: :short, locale: locale.locale_sym)
+      start_at = I18n.l(
+        timezone.at(event.event_attributes.start_at),
+        format: :short, locale: locale.locale_sym
+      )
+
+      end_at = I18n.l(
+        timezone.at(event.event_attributes.end_at),
+        format: :short, locale: locale.locale_sym
+      )
 
       "#{start_at} – #{end_at}"
     end
