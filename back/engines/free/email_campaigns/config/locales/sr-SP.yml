@@ -6,8 +6,8 @@ sr-Cyrl:
       "comment_deleted_by_admin": Брисање мог коментара
       "comment_marked_as_spam": Извештај о нежељеној пошти коментара
       "comment_on_your_comment": Одговор на мој коментар
-      "comment_on_your_idea": Коментар на моју идеју
-      "comment_on_your_initiative": Коментар на мој предлог
+      "comment_on_idea_you_follow": Коментар идеје коју пратите
+      "comment_on_initiative_you_follow": Коментар на предлог који следите
       "cosponsor_of_your_initiative": Корисник прихвата мој позив да буде ко-спонзор мог предлога
       "first_idea_published": Објављивање моје прве идеје
       "idea_marked_as_spam": Извештај о нежељеној пошти идеја
@@ -30,10 +30,6 @@ sr-Cyrl:
       "mention_in_official_feedback": Поменути у ажурирању
       "mention_in_internal_comment": Поменути у интерном коментару
       "new_comment_for_admin": Нови коментар у пројекту којим управљам
-      "new_comment_on_commented_idea": Нови коментар на идеју коју сам прокоментарисао
-      "new_comment_on_commented_initiative": Нови коментар на предлог који сам коментарисао
-      "new_comment_on_reacted_idea": Нови коментар на идеју на коју сам реаговао
-      "new_comment_on_reacted_initiative": Нови коментар на предлог за који сам гласао
       "new_idea_for_admin": Нова идеја у пројекту којим управљам
       "new_initiative_for_admin": Нови предлог
       "official_feedback_on_idea_you_follow": Ажурирајте идеју коју пратите
@@ -135,12 +131,6 @@ sr-Cyrl:
       today: Данас
       wrong_content: 'Коментар није релевантан.'
       yesterday: Јучер
-    comment_on_your_initiative:
-      cta_reply_to: 'Одговори на %{commentAuthor}'
-      event_description: '%{authorNameFull} је реаговао на вашу иницијативу ''%{initiativeTitle}''. Кликните на дугме испод да бисте наставили разговор са %{authorName}.'
-      main_header: '%{commentAuthor} је коментарисало вашу иницијативу'
-      subject: 'Примили сте коментар на платформи %{organizationName}'
-      preheader: '%{authorName} је оставио коментар на вашу иницијативу за %{organizationName}'
     cosponsor_of_your_initiative:
       cta_reply_to: 'Погледајте свој предлог'
       event_description_initiative: 'Честитам! %{cosponsorName} је прихватио ваш позив да буде ко-спонзор вашег предлога.'
@@ -226,12 +216,6 @@ sr-Cyrl:
       preheader: 'Хвала вам што сте поделили свој предлог %{initiativeTitle} за %{organizationName}. Следећи корак је да добијете подршку за свој предлог тако што ћете га поделити на вашој мрежи.'
       send_email: емаил
       subject: 'Ваш предлог је објављен на платформи %{organizationName}'
-    new_comment_on_commented_idea:
-      cta_reply_to: 'Одговори на %{commentAuthor}'
-      event_description: '%{commentAuthorFull} је такође написао коментар на идеју ''%{ideaTitle}'' на платформи за учешће %{organizationName}. Кликните на дугме испод да бисте започели разговор са %{commentAuthor}.'
-      main_header: '%{commentAuthor} је написао коментар на исту идеју'
-      subject: 'Постоји још један коментар на идеју коју сте коментарисали'
-      preheader: '%{commentAuthor} је такође оставио коментар на идеју за %{organizationName}'
     mention_in_comment:
       cta_reply_to: 'Одговори на %{commentAuthor}'
       event_description: '%{commentAuthorFull} вас је поменуо у свом коментару на идеју ''%{post}''. Кликните на везу испод да бисте ушли у разговор са %{commentAuthor}'
@@ -258,13 +242,6 @@ sr-Cyrl:
       yesterday_by_author: 'Јуче до %{author}'
       today_by_author: 'Данас до %{author}'
       x_days_ago_by_author: 'Пре %{x} дана до %{author}'
-    new_comment_on_commented_initiative:
-      commented: '%{commentAuthor} је написао:'
-      cta_reply_to: 'Одговори на %{commentAuthor}'
-      event_description: '%{commentAuthorFull} је такође написао коментар на предлог ''%{initiativeTitle}'' на платформи за учешће %{organizationName}. Кликните на дугме испод да бисте започели разговор са %{commentAuthor}.'
-      main_header: '%{commentAuthor} је написао коментар на исти предлог'
-      subject: 'Постоји још један коментар на предлог који сте коментарисали'
-      preheader: '%{commentAuthor} је такође оставио коментар на предлог за %{organizationName}'
     new_comment_for_admin:
       commented: '%{authorFirstName} је коментарисало:'
       cta_reply_to: 'Погледај коментар %{commentAuthor}'
@@ -275,29 +252,18 @@ sr-Cyrl:
       preheader: '%{authorName} је оставио коментар'
       today: Данас
       yesterday: Јучер
-    comment_on_your_idea:
+    comment_on_idea_you_follow:
       cta_reply_to: 'Одговори на %{commentAuthor}'
-      event_description: '%{authorNameFull} је реаговао на вашу идеју ''%{ideaTitle}''. Кликните на дугме испод да бисте наставили разговор са %{authorName}.'
-      main_header: '%{authorName} је коментарисало вашу идеју'
-      subject: 'Примили сте коментар на платформи %{organizationName}'
-      preheader: '%{authorName} је оставио коментар на вашу идеју за %{organizationName}'
-    new_comment_on_reacted_initiative:
-      commented: '%{commentAuthor} је написао:'
-      cta_reply_to: 'Погледајте овај предлог'
-      event_description: '%{commentAuthor} је коментарисао предлог ''%{initiativeTitle}'' за који сте гласали. Придружите се дискусији на платформи %{organizationName}!'
-      main_header: '%{firstName}, постоји нови коментар на предлог за који сте гласали'
-      subject: 'Постоји нови коментар на предлог за који сте гласали'
-      preheader: '%{commentAuthor} је оставио коментар на предлог за који сте гласали на платформи %{organizationName}'
-    new_comment_on_reacted_idea:
-      commented: '%{commentAuthor} је написао:'
+      event_description: '%{authorNameFull} је реаговао на идеју ''%{ideaTitle}''. Кликните на дугме испод да бисте наставили разговор са %{authorName}.'
+      main_header: '%{authorName} је коментарисало идеју коју пратите'
+      subject: 'Постоји нови коментар на идеју коју пратите'
+      preheader: '%{authorName} је оставио коментар на идеју за %{organizationName}'
+    comment_on_initiative_you_follow:
       cta_reply_to: 'Одговори на %{commentAuthor}'
-      days_ago: 'пре %{numberOfDays} дана'
-      event_description: '%{commentAuthor} је коментарисао идеју ''%{ideaTitle}'' на коју сте реаговали. Придружите се дискусији на платформи %{organizationName}!'
-      main_header: '%{firstName}, постоји нови коментар на идеју на коју сте реаговали'
-      subject: 'Постоји нови коментар на идеју на коју сте реаговали'
-      preheader: '%{commentAuthor} је оставио коментар на идеју на коју сте реаговали на платформи %{organizationName}'
-      today: Данас
-      yesterday: Јучер
+      event_description: '%{authorNameFull} је реаговао на иницијативу ''%{initiativeTitle}''. Кликните на дугме испод да бисте наставили разговор са %{authorName}.'
+      main_header: '%{commentAuthor} је коментарисало иницијативу коју пратите'
+      subject: 'Постоји нови коментар на предлог који следите'
+      preheader: '%{authorName} је оставио коментар на иницијативу за %{organizationName}'
     new_initiative_for_admin:
       cta_reply_to: 'Дајте повратну информацију %{authorName}'
       event_description: '%{authorName} је објавио нови предлог на вашој платформи. Откријте га сада, дајте повратне информације или промените његов статус!'
@@ -471,10 +437,10 @@ sr-Cyrl:
       no_unread_notifications: "Немате ниједно непрочитано обавештење. Посетите платформу да дате свој допринос и генеришете нова обавештења!"
       unread_notifications: "Имате непрочитана обавештења. Посетите платформу да бисте открили шта се дешава!"
     threshold_reached_for_admin:
-      cta_process_initiative: 'Пренесите ову иницијативу на следеће кораке'
-      event_description: 'Иницијатива је достигла праг за гласање на вашој платформи. Кликните на дугме испод да бисте прешли на следеће кораке!'
-      main_header: 'Иницијатива је стигла до гласачког цензуса!'
-      subject: 'Иницијатива је достигла праг за гласање на вашој платформи'
+      cta_process_initiative: 'Пренесите овај предлог на следеће кораке'
+      event_description: 'Предлог је достигао праг за гласање на вашој платформи. Кликните на дугме испод да бисте прешли на следеће кораке!'
+      main_header: 'Предлог је достигао цензус за гласање!'
+      subject: 'Предлог је достигао праг за гласање на вашој платформи'
       preheader: 'Обавезно предузмите следеће кораке'
     first_idea_published:
       action_add_image: '%{addImageLink} за повећање видљивости'
@@ -590,9 +556,7 @@ sr-Cyrl:
         user_who_published_the_input: 'Корисник који је објавио унос'
         user_who_registers: 'Корисник који се региструје'
         user_who_was_invited: 'Корисник који је позван'
-        users_who_engaged_with_the_input: 'Корисници који су се бавили уносом'
         users_who_engaged_with_the_project: 'Корисници који су били ангажовани на пројекту'
-        users_who_engaged_with_the_proposal: 'Корисници који су се бавили предлогом'
         users_who_follow_the_proposal: 'Корисник који прати предлог'
         users_who_follow_the_input: 'Корисник који прати унос'
         users_who_follow_the_project: 'Корисници који прате пројекат'
