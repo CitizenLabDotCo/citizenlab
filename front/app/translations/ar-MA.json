@@ -153,6 +153,7 @@
   "app.components.FolderFolderCard.a11y_folderTitle": "عنوان المجلد:",
   "app.components.FolderFolderCard.archived": "موثق",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# من المشاريع} one {# مشروع} other {# من المشاريع}}",
+  "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "تحميل بصيغة pdf",
   "app.components.GoBackButton.group.edit.goBack": "رجوع",
   "app.components.GoBackButton.group.edit.goBackToPreviousPage": "عد إلى الصفحة السابقة",
   "app.components.HookForm.Feedback.errorTitle": "توجد مشكلة",
