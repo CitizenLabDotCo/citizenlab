@@ -215,6 +215,7 @@ es-CL:
       status: 'Estado'
       assignee_fullname: 'Asignado'
       assignee_email: 'Correo electrónico del beneficiario'
+      image_url: 'URL de la imagen'
     anonymous: 'Anónimo'
   form_builder:
     default_select_field:
@@ -224,6 +225,18 @@ es-CL:
     survey_end_page:
       title: 'Fin de la encuesta'
       description: "Envíe sus respuestas seleccionando \"Enviar encuesta\" a continuación."
+    pdf_export:
+      full_name: 'Nombre y apellidos'
+      email_address: 'Dirección de correo electrónico'
+      optional: 'opcional'
+      permission: 'Permiso'
+      choose_as_many: 'Elija tantos como quiera'
+      this_answer: 'Esta respuesta solo se compartirá con los moderadores y no con el público.'
+      page: 'Página'
+      date_published: 'Fecha de publicación (dd-mm-aaaa)'
+      instructions: 'Instrucciones'
+      write_as_clearly: 'Escribe tan claramente <b></b> como puedas - estos formularios podrían ser escaneados'
+      write_in_language: 'Escribe tus respuestas en la misma lengua que este formulario'
   project_copy:
     title_suffix: 'Copia'
   confirmations_mailer:
