@@ -29,10 +29,8 @@ import Outlet from 'components/Outlet';
 // hooks
 import useModerations from 'api/moderations/useModerations';
 import useModerationsCount from 'api/moderation_count/useModerationsCount';
-
-// services
-import { IModerationData, TModeratableType } from 'api/moderations/types';
-import { removeInappropriateContentFlag } from 'modules/commercial/flag_inappropriate_content/services/inappropriateContentFlags';
+import useRemoveInappropriateContentFlag from 'modules/commercial/flag_inappropriate_content/api/inappropriate_content_flags/useRemoveInappropriateContentFlag';
+import useUpdateModerationStatus from 'api/moderations/useUpdateModerationStatus';
 
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -49,7 +47,8 @@ import { colors, fontSizes } from 'utils/styleUtils';
 // typings
 import { IOption, InsertConfigurationOptions } from 'typings';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
-import useUpdateModerationStatus from 'api/moderations/useUpdateModerationStatus';
+
+import { IModerationData, TModeratableType } from 'api/moderations/types';
 
 const Container = styled.div`
   display: flex;
@@ -198,6 +197,8 @@ const pageSizes = [
 const Moderation = () => {
   const { formatMessage } = useIntl();
   const { mutateAsync: updateModerationStatus } = useUpdateModerationStatus();
+  const { mutateAsync: removeInappropriateContentFlag } =
+    useRemoveInappropriateContentFlag();
 
   const [selectedModerations, setSelectedModerations] = useState<
     IModerationData[]
@@ -338,7 +339,8 @@ const Moderation = () => {
 
         setProcessing(false);
         setSelectedModerations([]);
-      } catch {
+      } catch (e) {
+        console.log(e);
         setActionBarErrorMessage(formatMessage(messages.removeFlagsError));
         setProcessing(false);
       }
