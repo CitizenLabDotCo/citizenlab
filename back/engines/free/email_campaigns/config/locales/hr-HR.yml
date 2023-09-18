@@ -6,8 +6,8 @@ hr:
       "comment_deleted_by_admin": Brisanje mog komentara
       "comment_marked_as_spam": Izvješće o neželjenim komentarima
       "comment_on_your_comment": Odgovor na moj komentar
-      "comment_on_your_idea": Komentar na moju ideju
-      "comment_on_your_initiative": Komentar na moj prijedlog
+      "comment_on_idea_you_follow": Komentar na ideju koju slijedite
+      "comment_on_initiative_you_follow": Komentar na prijedlog koji slijedite
       "cosponsor_of_your_initiative": Korisnik prihvaća moj poziv da susponzorira moj prijedlog
       "first_idea_published": Objava moje prve ideje
       "idea_marked_as_spam": Izvješće o neželjenoj ideji
@@ -30,10 +30,6 @@ hr:
       "mention_in_official_feedback": Spominjanje u objavi
       "mention_in_internal_comment": Spomenuti u internom komentaru
       "new_comment_for_admin": Novi komentar u projektu kojim upravljam
-      "new_comment_on_commented_idea": Novi komentar na ideju koju sam komentirao/la
-      "new_comment_on_commented_initiative": Novi komentar na prijedlog koji sam komentirao/la
-      "new_comment_on_reacted_idea": Novi komentar na ideju na koju sam reagirao
-      "new_comment_on_reacted_initiative": Novi komentar na prijedlog za koji sam glasao
       "new_idea_for_admin": Nova ideja u projektu kojim upravljam
       "new_initiative_for_admin": Novi prijedlog
       "official_feedback_on_idea_you_follow": Ažuriranje ideje koju slijedite
@@ -135,12 +131,6 @@ hr:
       today: Danas
       wrong_content: 'Komentar nije relevantan.'
       yesterday: Jučer
-    comment_on_your_initiative:
-      cta_reply_to: 'Odgovorite %{commentAuthor}'
-      event_description: '%{authorNameFull} je reagirao/la na vašu inicijativu ''%{initiativeTitle}''. Kliknite na donji gumb kako biste nastavili razgovor s %{authorName}.'
-      main_header: '%{commentAuthor} je komentirao/la vašu inicijativu'
-      subject: 'Dobili ste komentar na platformi %{organizationName}'
-      preheader: '%{authorName} je ostavio komentar na vašu inicijativu za %{organizationName}'
     cosponsor_of_your_initiative:
       cta_reply_to: 'Pogledajte svoj prijedlog'
       event_description_initiative: 'Čestitamo! %{cosponsorName} je prihvatio vaš poziv da susponzorira vaš prijedlog.'
@@ -226,12 +216,6 @@ hr:
       preheader: 'Hvala vam što dijelite svoj prijedlog %{initiativeTitle} za %{organizationName}. Prikupite podršku tako što ćete ga podijeliti s drugima.'
       send_email: e-pošta
       subject: 'Vaš prijedlog je objavljen na platformi %{organizationName}'
-    new_comment_on_commented_idea:
-      cta_reply_to: 'Odgovorite %{commentAuthor}'
-      event_description: '%{commentAuthorFull} također komentira ideju ''%{ideaTitle}'' na %{organizationName} platformi za sudjelovanje. Kliknite na gumb dolje kako biste započeli razgovor s %{commentAuthor}.'
-      main_header: '%{commentAuthor} je napisao/la komentar na istu ideju'
-      subject: 'Dodan je još jedan komentar na ideju koji ste komentirali'
-      preheader: '%{commentAuthor} je također ostavio komentar na ideju za %{organizationName}'
     mention_in_comment:
       cta_reply_to: 'Odgovorite %{commentAuthor}'
       event_description: 'Spomenuti ste od strane %{commentAuthorFull} u komentaru ideje „%{post}“. Kliknite na poveznicu dolje kako biste započeli razgovor s %{commentAuthor}'
@@ -258,13 +242,6 @@ hr:
       yesterday_by_author: 'Jučer od autora %{author}'
       today_by_author: 'Danas od autora %{author}'
       x_days_ago_by_author: 'prije %{x} dana od %{author}'
-    new_comment_on_commented_initiative:
-      commented: '%{commentAuthor} je napisao/la:'
-      cta_reply_to: 'Odgovorite %{commentAuthor}'
-      event_description: '%{commentAuthorFull} također komentira prijedlog ''%{initiativeTitle}'' na %{organizationName} platformi za sudjelovanje. Kliknite na gumb dolje kako biste započeli razgovor s %{commentAuthor}.'
-      main_header: '%{commentAuthor} je napisao komentar na isti prijedlog'
-      subject: 'Dodan je još jedan komentar na prijedlog koji ste komentirali'
-      preheader: '%{commentAuthor} je također ostavio komentar na prijedlog za %{organizationName}'
     new_comment_for_admin:
       commented: '%{authorFirstName} je komentirao/la:'
       cta_reply_to: 'Provjerite komentar od %{commentAuthor}'
@@ -275,29 +252,18 @@ hr:
       preheader: '%{authorName} je ostavio/la komentar'
       today: Danas
       yesterday: Jučer
-    comment_on_your_idea:
-      cta_reply_to: 'Odgovorite %{commentAuthor}'
-      event_description: '%{authorNameFull} je reagirao/la na vašu ideju ''%{ideaTitle}''. Kliknite na gumb dolje kako biste nastavili razgovor s %{authorName}.'
-      main_header: '%{authorName} je komentirao/la vašu ideju'
-      subject: 'Dobili ste komentar na platformi %{organizationName}'
-      preheader: '%{authorName} je ostavio komentar na vašu ideju za %{organizationName}'
-    new_comment_on_reacted_initiative:
-      commented: '%{commentAuthor} je napisao:'
-      cta_reply_to: 'Pogledajte ovaj prijedlog'
-      event_description: '%{commentAuthor} je komentirao prijedlog ''%{initiativeTitle}'' o kojem ste glasovali. Pridružite se raspravi na platformi %{organizationName}!'
-      main_header: '%{firstName}, postoji novi komentar na prijedlog za koji ste glasovali'
-      subject: 'Postoji novi komentar na prijedlog za koji ste glasovali'
-      preheader: '%{commentAuthor} je ostavio komentar na prijedlog za koji ste glasovali na platformi %{organizationName}'
-    new_comment_on_reacted_idea:
-      commented: '%{commentAuthor} je napisao:'
-      cta_reply_to: 'Odgovori na %{commentAuthor}'
-      days_ago: 'prije %{numberOfDays} dana'
-      event_description: '%{commentAuthor} je komentirao ideju ''%{ideaTitle}'' na koju ste vi reagirali. Pridružite se raspravi na platformi %{organizationName}!'
-      main_header: '%{firstName}, postoji novi komentar na ideju na koju ste reagirali'
-      subject: 'Postoji novi komentar na ideju na koju ste reagirali'
-      preheader: '%{commentAuthor} je ostavio komentar na ideju na koju ste reagirali na platformi %{organizationName}'
-      today: Danas
-      yesterday: Jučer
+    comment_on_idea_you_follow:
+      cta_reply_to: 'Odgovorite na %{commentAuthor}'
+      event_description: '%{authorNameFull} je reagirao na ideju ''%{ideaTitle}''. Pritisnite donji gumb za nastavak razgovora s %{authorName}.'
+      main_header: '%{authorName} je komentirao ideju koju slijedite'
+      subject: 'Postoji novi komentar na ideju koju slijedite'
+      preheader: '%{authorName} je ostavilo komentar na ideju za %{organizationName}'
+    comment_on_initiative_you_follow:
+      cta_reply_to: 'Odgovorite na %{commentAuthor}'
+      event_description: '%{authorNameFull} je stavio reakciju na inicijativu ''%{initiativeTitle}''. Pritisnite donji gumb za nastavak razgovora s %{authorName}.'
+      main_header: '%{commentAuthor} je komentirao inicijativu koju pratite'
+      subject: 'Postoji novi komentar na prijedlog koji slijedite'
+      preheader: '%{authorName} je ostavilo komentar na inicijativu za %{organizationName}'
     new_initiative_for_admin:
       cta_reply_to: 'Pošaljite povratne informacije za %{authorName}'
       event_description: '%{authorName} je objavio/la novi prijedlog na vašoj platformi. Pogledajte ga, pružite povratne informacije ili promijenite njegov status!'
@@ -471,10 +437,10 @@ hr:
       no_unread_notifications: "Nema nepročitanih obavijesti. Posjetite platformu kako biste dali svoj doprinos i generirali nove obavijesti!"
       unread_notifications: "Imate nepročitane obavijesti. Posjetite platformu kako biste saznali novosti!"
     threshold_reached_for_admin:
-      cta_process_initiative: 'Pomognite ovoj inicijativi da prijeđe u narednu fazu'
-      event_description: 'Inicijativa je dosegla prag glasovanja na vašoj platformi. Kliknite na gumb u nastavku kako biste prešli na sljedeće korake!'
-      main_header: 'Inicijativa je dosegla prag glasovanja!'
-      subject: 'Inicijativa je dosegla prag glasovanja na vašoj platformi'
+      cta_process_initiative: 'Prenesite ovaj prijedlog na sljedeće korake'
+      event_description: 'Prijedlog je dosegao prag glasanja na vašoj platformi. Pritisnite gumb u nastavku da biste prešli na sljedeće korake!'
+      main_header: 'Prijedlog je dosegao prag za glasanje!'
+      subject: 'Prijedlog je dosegao prag glasanja na vašoj platformi'
       preheader: 'Obvezno poduzmite sljedeće korake'
     first_idea_published:
       action_add_image: '%{addImageLink} kako biste povećali vidljivost'
@@ -590,9 +556,7 @@ hr:
         user_who_published_the_input: 'Korisnik koji je objavio unos'
         user_who_registers: 'Korisnik koji se registrira'
         user_who_was_invited: 'Korisnik koji je pozvan'
-        users_who_engaged_with_the_input: 'Korisnici koji su se uključili s unosom'
         users_who_engaged_with_the_project: 'Korisnici koji su sudjelovali u projektu'
-        users_who_engaged_with_the_proposal: 'Korisnici koji su se angažirali s prijedlogom'
         users_who_follow_the_proposal: 'Korisnik koji prati prijedlog'
         users_who_follow_the_input: 'Korisnik koji prati unos'
         users_who_follow_the_project: 'Korisnici koji prate projekt'
