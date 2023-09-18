@@ -144,7 +144,7 @@ class WebApi::V1::ProjectsController < ApplicationController
 
   def submission_count
     count = SurveyResultsGeneratorService.new(@project).generate_submission_count
-    render json: count
+    render json: raw_json(count)
   end
 
   def index_xlsx

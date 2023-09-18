@@ -316,7 +316,7 @@ RSpec.describe SurveyResultsGeneratorService do
 
     describe '#generate_submission_count' do
       it 'returns the count' do
-        expect(generator.generate_submission_count).to eq({ data: { totalSubmissions: 20 } })
+        expect(generator.generate_submission_count).to eq({ totalSubmissions: 20 })
       end
     end
 
@@ -351,7 +351,7 @@ RSpec.describe SurveyResultsGeneratorService do
 
     describe '#generate_submission_count' do
       it 'returns the count' do
-        expect(generator.generate_submission_count).to eq({ data: { totalSubmissions: 20 } })
+        expect(generator.generate_submission_count).to eq({ totalSubmissions: 20 })
       end
     end
 

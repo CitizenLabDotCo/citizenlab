@@ -885,7 +885,7 @@ resource 'Projects' do
         do_request
         expect(status).to eq 200
 
-        expect(json_response).to eq({ data: { totalSubmissions: 3 } })
+        expect(json_response[:data][:attributes]).to eq({ totalSubmissions: 3 })
       end
     end
 
