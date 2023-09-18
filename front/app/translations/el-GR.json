@@ -153,6 +153,7 @@
   "app.components.FolderFolderCard.a11y_folderTitle": "Τίτλος φακέλου:",
   "app.components.FolderFolderCard.archived": "Αρχειοθετημένος",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# έργα} one {# έργο} other {# έργα}}",
+  "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Λήψη ως pdf",
   "app.components.GoBackButton.group.edit.goBack": "Επιστροφή",
   "app.components.GoBackButton.group.edit.goBackToPreviousPage": "Επιστροφή στην προηγούμενη σελίδα",
   "app.components.HookForm.Feedback.errorTitle": "Υπάρχει ένα πρόβλημα",
