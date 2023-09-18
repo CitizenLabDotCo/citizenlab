@@ -339,7 +339,7 @@ const Moderation = () => {
 
         setProcessing(false);
         setSelectedModerations([]);
-      } catch (e) {
+      } catch {
         setActionBarErrorMessage(formatMessage(messages.removeFlagsError));
         setProcessing(false);
       }
