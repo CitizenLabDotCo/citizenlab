@@ -125,10 +125,13 @@ resource 'BulkImportIdeasImportIdeas' do
 
             example 'Bulk import ideas to continuous project from .pdf' do
               expect_any_instance_of(BulkImportIdeas::GoogleFormParserService).to receive(:raw_text_page_array).and_return(create_project_bulk_import_raw_text_array)
+              expect_any_instance_of(BulkImportIdeas::GoogleFormParserService).to receive(:parse_pdf).and_return(create_project_bulk_import_parse_pdf)
               do_request
               assert_status 201
+
               expect(response_data.count).to eq 1
-              expect(response_data.first[:attributes][:title_multiloc][:en]).to eq 'This is really a great title'
+              expect(response_data.first[:attributes][:title_multiloc][:en]).to eq 'My very good idea'
+              expect(response_data.first[:attributes][:location_description]).to eq 'Somewhere'
               expect(response_data.first[:attributes][:publication_status]).to eq 'draft'
               expect(User.all.count).to eq 2 # 1 new user created
               expect(Idea.all.count).to eq 1
@@ -153,6 +156,7 @@ resource 'BulkImportIdeasImportIdeas' do
 
               example 'Bulk import ideas to current phase from .pdf' do
                 expect_any_instance_of(BulkImportIdeas::GoogleFormParserService).to receive(:raw_text_page_array).and_return(create_project_bulk_import_raw_text_array)
+                expect_any_instance_of(BulkImportIdeas::GoogleFormParserService).to receive(:parse_pdf).and_return(create_project_bulk_import_parse_pdf)
                 do_request
                 assert_status 201
                 expect(response_data.count).to eq 1
@@ -170,6 +174,7 @@ resource 'BulkImportIdeasImportIdeas' do
 
               example 'Bulk import ideas to a specified phase from .pdf' do
                 expect_any_instance_of(BulkImportIdeas::GoogleFormParserService).to receive(:raw_text_page_array).and_return(create_project_bulk_import_raw_text_array)
+                expect_any_instance_of(BulkImportIdeas::GoogleFormParserService).to receive(:parse_pdf).and_return(create_project_bulk_import_parse_pdf)
                 do_request
                 assert_status 201
                 expect(response_data.count).to eq 1
@@ -474,5 +479,16 @@ resource 'BulkImportIdeasImportIdeas' do
      "Location (optional)\n" \
      "Somewhere\n" \
      "Page 1\n"]
+  end
+
+  def create_project_bulk_import_parse_pdf
+    [{
+      form_pages: [1],
+      pdf_pages: [1],
+      fields: {
+        'Title' => 'My very good idea',
+        'Description' => 'And this is the very good body'
+      }
+    }]
   end
 end

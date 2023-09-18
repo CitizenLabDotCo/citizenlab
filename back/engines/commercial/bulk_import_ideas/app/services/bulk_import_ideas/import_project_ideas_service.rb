@@ -23,9 +23,7 @@ module BulkImportIdeas
       if source_file&.import_type == 'pdf'
         # Get number of pages in a form from the download
         # NOTE: Page count may be different if name and email are specified - for future
-        params = {}
-        params[:locale] = @locale
-        pages_per_idea = PrintCustomFieldsService.new(@phase || @project, @form_fields, params).create_pdf.page_count
+        pages_per_idea = pdf_form_page_count
 
         pdf = ::CombinePDF.parse open(source_file.file_content_url).read
         source_file.update!(num_pages: pdf.pages.count)
@@ -186,6 +184,7 @@ module BulkImportIdeas
       # Custom fields
       custom_fields = {}
       custom_fields = extract_custom_text_fields custom_fields, doc, text_fields
+      custom_fields = extract_custom_select_fields_from_options custom_fields, doc, select_fields, select_options
       custom_fields = extract_custom_select_fields custom_fields, doc, select_fields, select_options
       idea_row[:custom_field_values] = custom_fields
 
@@ -243,6 +242,32 @@ module BulkImportIdeas
       custom_fields
     end
 
+    def extract_custom_select_fields_from_options(custom_fields, doc, select_fields, select_options)
+      select_options.each do |option|
+        option_field = find_field(doc, option[:name])
+        # binding.pry
+        if option_field && option_field[:value].include?('checkbox')
+
+          # binding.pry
+          field_key = option[:field_key].to_sym
+          checked = option_field[:value] == 'filled_checkbox'
+          if option[:field_type] == 'multiselect' && checked
+            custom_fields[field_key] = custom_fields[field_key] || []
+            custom_fields[field_key] << option[:key]
+          elsif checked && !custom_fields[field_key]
+            # Only use the first selected option for a single select
+            custom_fields[field_key] = option[:key]
+            # TODO: This will not work for multiple keys where the version of fields that are just key pairs and not have the x,y values in there
+            # select_options.delete_if { |o| o[:key] == select_options[:key] }
+          end
+
+
+          doc.delete_if { |f| f == option_field }
+        end
+      end
+      custom_fields
+    end
+
     def find_field(doc, name)
       doc.find { |f| f[:name] == name }
     end
@@ -275,10 +300,25 @@ module BulkImportIdeas
       pdf_file = open(file.file_content_url, &:read)
 
       @google_forms_service ||= GoogleFormParserService.new
-      IdeaPlaintextParserService.new(
-        @form_fields.reject { |field| field.input_type == 'topic_ids' }, # Temp
-        @locale
-      ).parse_text(@google_forms_service.raw_text_page_array(pdf_file))
+      @google_forms_service.parse_pdf(pdf_file, pdf_form_page_count)
+
+      # NOTE: Slightly hacky way of merging values that don't exist from the form parser from the text parser
+      # form_parsed_ideas = @google_forms_service.parse_pdf(pdf_file, pdf_form_page_count)
+      # text_parsed_ideas = IdeaPlaintextParserService.new(
+      #   @form_fields.reject { |field| field.input_type == 'topic_ids' }, # Temp
+      #   @locale
+      # ).parse_text(@google_forms_service.raw_text_page_array(pdf_file))
+      #
+      # form_parsed_ideas.each_with_index.map do |idea, index|
+      #   idea[:fields] = text_parsed_ideas[index][:fields].merge(idea[:fields])
+      #   idea
+      # end
+    end
+
+    def pdf_form_page_count
+      params = {}
+      params[:locale] = @locale
+      PrintCustomFieldsService.new(@phase || @project, @form_fields, params).create_pdf.page_count
     end
   end
 end

@@ -29,6 +29,58 @@ module BulkImportIdeas
       end
     end
 
+    def parse_pdf(pdf_file_content, form_pages_count)
+      return dummy_parsed_data unless ENV.fetch('GOOGLE_APPLICATION_CREDENTIALS', false) # Temp for development
+
+      document = process_upload pdf_file_content
+
+      # Gets an array of all fields on all pages
+      fields = []
+      document.pages.each do |page|
+        page.form_fields.each do |field|
+          field_name = format_name field.field_name&.text_anchor&.content&.strip
+          field_value = field.field_value.text_anchor&.content&.strip
+          f = {
+            name: field_name,
+            value: format_value(field_name, field_value),
+            type: field.value_type,
+            page: page.page_number,
+            x: field.field_name.bounding_poly.normalized_vertices[0].x.round(2),
+            y: page.page_number + field.field_name.bounding_poly.normalized_vertices[0].y.round(2)
+          }
+          fields << f
+        end
+      end
+
+      # Now reorder 'fields' by y then x field placement in the doc
+      fields = fields.sort { |a, b| [a[:y], a[:x]] <=> [b[:y], b[:x]] }
+
+      # Then split into separate docs / pages based on the number of pages in the form
+      docs = []
+      doc = {
+        form_pages: [],
+        pdf_pages: [],
+        fields: {}
+      }
+      previous_page = 1
+      fields.each do |field|
+        current_page = field[:page]
+        if field[:page] % form_pages_count == 1 && current_page != previous_page # split by pages count
+          docs << doc
+          doc = {
+            form_pages: [1,2],
+            pdf_pages: [],
+            fields: {}
+          }
+        end
+        doc[:fields][field[:name].to_s] = field[:type].include?('checkbox') ? field[:type] : field[:value]
+        doc[:pdf_pages] << field[:page] unless doc[:pdf_pages].include? field[:page]
+        previous_page = field[:page]
+      end
+      docs << doc
+      docs
+    end
+
     private
 
     def process_upload(pdf_file_content)
@@ -65,5 +117,38 @@ module BulkImportIdeas
       end
       dummy_text
     end
+
+    def dummy_parsed_data
+      Array.new(rand(1..8)) do
+        [
+          # User details
+          { name: 'Full name', value: Faker::FunnyName.name, type: '', page: 1, x: 0.09, y: 1.16 },
+          { name: 'Email address', value: Faker::Internet.email, type: '', page: 1, x: 0.09, y: 1.24 },
+          # Core fields
+          { name: 'Title', value: Faker::Quote.yoda, type: '', page: 1, x: 0.09, y: 1.34 },
+          { name: 'Description', value: Faker::Hipster.paragraph, type: '', page: 1, x: 0.09, y: 1.41 },
+          # Select fields
+          { name: 'Yes', value: nil, type: %w[filled_checkbox unfilled_checkbox].sample, page: 1, x: 0.11, y: 1.66 },
+          { name: 'No', value: nil, type: %w[filled_checkbox unfilled_checkbox].sample, page: 1, x: 0.45, y: 1.66 },
+          { name: 'This', value: nil, type: %w[filled_checkbox unfilled_checkbox].sample, page: 1, x: 0.11, y: 1.86 },
+          { name: 'That', value: nil, type: %w[filled_checkbox unfilled_checkbox].sample, page: 1, x: 0.45, y: 1.86 },
+          # Custom text field
+          { name: 'Another field', value: Faker::Quote.robin, type: '', page: 2, x: 0.09, y: 2.12 }
+        ]
+      end
+    end
+
+    # Utility to correct common issues - ie remove new lines as they don't seem that accurate
+    def format_value(name, value)
+      if name == 'Email address'
+        value = value.squish.delete(' ').downcase
+      end
+      value&.squish
+    end
+
+    def format_name(name)
+      name.squish
+    end
+
   end
 end

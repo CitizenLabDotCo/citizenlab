@@ -204,6 +204,28 @@ describe BulkImportIdeas::ImportProjectIdeasService do
       expect(rows[0][:user_name]).to eq 'Jean Rambo'
     end
 
+    it 'can parse select fields from option values' do
+      ideas = [{
+        pdf_pages: [1, 2],
+        fields: {
+          'Title' => 'Free donuts for all',
+          'Description' => 'Give them all donuts',
+          'Yes' => 'filled_checkbox',
+          'This' => 'filled_checkbox',
+          'That' => 'filled_checkbox',
+          'Yes' => 'filled_checkbox'
+        }
+      }]
+      rows = service.ideas_to_idea_rows ideas
+
+      expect(rows[0][:title_multiloc]).to eq({ 'en': 'Free donuts for all' })
+      expect(rows[0][:body_multiloc]).to eq({ 'en': 'Give them all donuts' })
+      expect(rows[0][:custom_field_values][:select_field]).to eq 'yes'
+      expect(rows[0][:custom_field_values][:multiselect_field]).to match_array %w[this that]
+      # TODO: Cannot deal with field options appearing multiple times
+      # expect(rows[0][:custom_field_values][:another_select_field]).to eq 'yes'
+    end
+
     it 'can accept select fields as arrays as well as delimited strings' do
       pdf_ideas[0][:fields]['Multi select field'] = 'This;That'
       pdf_ideas[1][:fields]['Multi select field'] = %w[This That]
