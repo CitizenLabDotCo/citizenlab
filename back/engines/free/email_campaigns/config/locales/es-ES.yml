@@ -6,8 +6,8 @@ es:
       "comment_deleted_by_admin": Eliminación de mi comentario
       "comment_marked_as_spam": Informar de comentarios de spam
       "comment_on_your_comment": Una respuesta a mi comentario
-      "comment_on_your_idea": Un comentario sobre mi idea.
-      "comment_on_your_initiative": Un comentario sobre mi propuesta
+      "comment_on_idea_you_follow": Un comentario sobre una idea que sigues
+      "comment_on_initiative_you_follow": Un comentario sobre una propuesta que sigues
       "cosponsor_of_your_initiative": Un usuario acepta mi invitación a copatrocinar mi propuesta
       "first_idea_published": Publicación de mi primera idea
       "idea_marked_as_spam": Informar de spam de ideas
@@ -30,10 +30,6 @@ es:
       "mention_in_official_feedback": Mención en una actualización
       "mention_in_internal_comment": Mención en un comentario interno
       "new_comment_for_admin": Nuevo comentario en un proyecto moderado por mí
-      "new_comment_on_commented_idea": Nuevo comentario sobre una idea que comenté
-      "new_comment_on_commented_initiative": Nuevo comentario sobre una propuesta que comenté
-      "new_comment_on_reacted_idea": Nuevo comentario sobre una idea a la que reaccioné
-      "new_comment_on_reacted_initiative": Nuevo comentario sobre una propuesta por la que voté
       "new_idea_for_admin": Nueva idea en un proyecto moderado por mí
       "new_initiative_for_admin": Nueva propuesta
       "official_feedback_on_idea_you_follow": Actualización de una idea que sigues
@@ -135,12 +131,6 @@ es:
       today: Hoy
       wrong_content: 'Este comentario no es relevante.'
       yesterday: Ayer
-    comment_on_your_initiative:
-      cta_reply_to: 'Responder a %{commentAuthor}'
-      event_description: '%{authorNameFull} ha comentado tu propuesta ''%{initiativeTitle}''. Haga clic en el botón de abajo para continuar la conversación con %{authorName}.'
-      main_header: '%{commentAuthor} comentó tu propuesta'
-      subject: 'Has recibido un comentario en la plataforma de %{organizationName}'
-      preheader: '%{authorName} dejó un comentario sobre tu propuesta para %{organizationName}'
     cosponsor_of_your_initiative:
       cta_reply_to: 'Ver tu propuesta'
       event_description_initiative: 'Enhorabuena! %{cosponsorName} ha aceptado tu invitación para copatrocinar tu propuesta.'
@@ -226,12 +216,6 @@ es:
       preheader: 'Gracias por compartir tu propuesta %{initiativeTitle} de %{organizationName}. El siguiente paso es obtener apoyo para tu idea compartiéndola a través de tu red.'
       send_email: correo electrónico
       subject: 'Tu propuesta fue publicada en la plataforma de %{organizationName}'
-    new_comment_on_commented_idea:
-      cta_reply_to: 'Responder a%{commentAuthor}'
-      event_description: '%{commentAuthorFull} también escribió un comentario sobre la idea ''%{ideaTitle}'' en la plataforma de participación de %{organizationName}. Haga clic en el botón de abajo para iniciar la conversación con %{commentAuthor}.'
-      main_header: '%{commentAuthor} escribió un comentario sobre la misma idea'
-      subject: 'Hay un nuevo comentario sobre la idea que comentaste antes'
-      preheader: '%{commentAuthor} también dejo un comentario sobre la idea para %{organizationName}'
     mention_in_comment:
       cta_reply_to: 'Responder a%{commentAuthor}'
       event_description: '%{commentAuthorFull} te ha mencionado en su comentario sobre la idea ''%{post}''. Haga clic en el siguiente enlace para entrar en la conversación con %{commentAuthor}'
@@ -258,13 +242,6 @@ es:
       yesterday_by_author: 'Ayer por %{author}'
       today_by_author: 'Hoy por %{author}'
       x_days_ago_by_author: '%{x} días atrás por %{author}'
-    new_comment_on_commented_initiative:
-      commented: '%{commentAuthor} escribió:'
-      cta_reply_to: 'Responder a %{commentAuthor}'
-      event_description: '%{commentAuthorFull} también escribió un comentario sobre la propuesta ''%{initiativeTitle}'' en la plataforma de participación de %{organizationName}. Haga clic en el botón de abajo para iniciar la conversación con %{commentAuthor}.'
-      main_header: '%{commentAuthor} escribió un comentario sobre la misma propuesta'
-      subject: 'Hay un nuevo comentario sobre la propuesta que comentaste antes'
-      preheader: '%{commentAuthor} también dejo un comentario sobre la propuesta para %{organizationName}'
     new_comment_for_admin:
       commented: '%{authorFirstName} comentó:'
       cta_reply_to: 'Verifica el comentario de %{commentAuthor}'
@@ -275,29 +252,18 @@ es:
       preheader: '%{authorName} dejó un comentario'
       today: Hoy
       yesterday: Ayer
-    comment_on_your_idea:
-      cta_reply_to: 'Responder a%{commentAuthor}'
-      event_description: '%{authorNameFull} ha comentado tu idea ''%{ideaTitle}''. Haga clic en el botón de abajo para continuar la conversación con %{authorName}.'
-      main_header: '%{authorName} comentó tu idea'
-      subject: 'Has recibido un comentario en la plataforma de %{organizationName}'
-      preheader: '%{authorName} dejó un comentario sobre tu idea para %{organizationName}'
-    new_comment_on_reacted_initiative:
-      commented: '%{commentAuthor} escribió:'
-      cta_reply_to: 'Ver esta propuesta'
-      event_description: '%{commentAuthor} ha comentado en la propuesta ''%{initiativeTitle}'' sobre la que has votado. Únete al debate en la plataforma de %{organizationName}!'
-      main_header: '%{firstName}, hay un nuevo comentario sobre la propuesta por la que votaste'
-      subject: 'Hay un nuevo comentario sobre la propuesta por la que votaste'
-      preheader: '%{commentAuthor} dejó un comentario sobre la propuesta por la que tu votaste en la plataforma de %{organizationName}'
-    new_comment_on_reacted_idea:
-      commented: '%{commentAuthor} escribió:'
+    comment_on_idea_you_follow:
       cta_reply_to: 'Responder a %{commentAuthor}'
-      days_ago: 'hace %{numberOfDays} días'
-      event_description: '%{commentAuthor} ha comentado en la idea ''%{ideaTitle}'' sobre la que has reaccionado. Únete al debate en la plataforma de %{organizationName}!'
-      main_header: '%{firstName}hay un nuevo comentario sobre la idea a la que has reaccionado'
-      subject: 'Hay un nuevo comentario sobre la idea a la que has reaccionado'
-      preheader: '%{commentAuthor} deja un comentario sobre la idea a la que has reaccionado en la plataforma de %{organizationName}'
-      today: Hoy
-      yesterday: Ayer
+      event_description: '%{authorNameFull} ha comentado tu idea ''%{ideaTitle}''. Haga clic en el botón de abajo para continuar la conversación con %{authorName}.'
+      main_header: '%{authorName} comentó una idea que sigues'
+      subject: 'Hay un nuevo comentario sobre una idea que sigues'
+      preheader: '%{authorName} ha dejado un comentario sobre una idea para %{organizationName}'
+    comment_on_initiative_you_follow:
+      cta_reply_to: 'Responder a %{commentAuthor}'
+      event_description: '%{authorNameFull} ha comentado tu propuesta ''%{initiativeTitle}''. Haga clic en el botón de abajo para continuar la conversación con %{authorName}.'
+      main_header: '%{commentAuthor} comentaste una iniciativa que sigues'
+      subject: 'Hay un nuevo comentario sobre la propuesta que sigues'
+      preheader: '%{authorName} ha dejado un comentario sobre una iniciativa para %{organizationName}'
     new_initiative_for_admin:
       cta_reply_to: 'Envía tus comentarios a %{authorName}'
       event_description: '%{authorName} ha publicado una nueva propuesta en tu plataforma. Descúbrelo ahora, haznos llegar tus comentarios o cambia su estado!'
@@ -471,10 +437,10 @@ es:
       no_unread_notifications: "¡Es hora de generar algo nuevo! Visita la plataforma para descubrir lo que está pasando."
       unread_notifications: "¡Tienes nuevas notificaciones! Visita la plataforma para descubrir lo que está pasando."
     threshold_reached_for_admin:
-      cta_process_initiative: 'Lleve esta propuesta a los siguientes pasos'
-      event_description: 'Una propuesta ha alcanzado el número requerido de votos en su plataforma. Haga clic en el botón de abajo para llevarlo a los siguientes pasos!'
-      main_header: 'Una propuesta alcanzó el número requerido de votos!'
-      subject: 'Una propuesta alcanzó el número requerido de votos'
+      cta_process_initiative: 'Lleva esta propuesta a los siguientes pasos'
+      event_description: 'Una propuesta ha alcanzado el umbral de votos en tu plataforma. Haz clic en el botón de abajo para pasar a la siguiente fase.'
+      main_header: '¡Una propuesta ha alcanzado el umbral de votación!'
+      subject: 'Una propuesta ha alcanzado el umbral de votos en tu plataforma'
       preheader: 'Asegúrese de seguir los siguientes pasos'
     first_idea_published:
       action_add_image: '%{addImageLink} para aumentar visibilidad'
@@ -590,9 +556,7 @@ es:
         user_who_published_the_input: 'Usuario que publicó el aporte'
         user_who_registers: 'Usuario que se registra'
         user_who_was_invited: 'Usuario invitado'
-        users_who_engaged_with_the_input: 'Usuarios que se comprometieron con la aportación'
         users_who_engaged_with_the_project: 'Usuarios que participaron en el proyecto'
-        users_who_engaged_with_the_proposal: 'Usuarios que se comprometieron con la propuesta'
         users_who_follow_the_proposal: 'Usuario que sigue la propuesta'
         users_who_follow_the_input: 'Usuario que sigue la entrada'
         users_who_follow_the_project: 'Usuarios que siguen el proyecto'
