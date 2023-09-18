@@ -153,6 +153,7 @@
   "app.components.FolderFolderCard.a11y_folderTitle": "Titre du dossier :",
   "app.components.FolderFolderCard.archived": "Archivés",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# projets} one {# projet} other {# projets}}",
+  "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Télécharger au format PDF",
   "app.components.GoBackButton.group.edit.goBack": "Retour",
   "app.components.GoBackButton.group.edit.goBackToPreviousPage": "Retour à la page précédente",
   "app.components.HookForm.Feedback.errorTitle": "Il y a un problème",
