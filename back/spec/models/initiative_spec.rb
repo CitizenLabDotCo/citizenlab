@@ -116,10 +116,7 @@ RSpec.describe Initiative do
   end
 
   describe '#proposed_at' do
-    before do
-      allow(Time).to receive(:now).and_return(Time.now)
-      create(:initiative_status_proposed)
-    end
+    before { create(:initiative_status_proposed) }
 
     let(:initiative) do
       create(
