@@ -272,7 +272,10 @@ export interface IFormSubmissionCountData {
 }
 
 export interface IFormSubmissionCount {
-  data: IFormSubmissionCountData;
+  data: {
+    type: 'submission_count';
+    attributes: IFormSubmissionCountData;
+  };
 }
 
 const getSubmissionCountEndpoint = (

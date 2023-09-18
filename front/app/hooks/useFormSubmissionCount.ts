@@ -18,7 +18,7 @@ export default function useFormSubmissionCount({ projectId, phaseId }: Props) {
       projectId,
       phaseId
     ).observable.subscribe((submissionCount) => {
-      setSubmissionCount(submissionCount.data);
+      setSubmissionCount(submissionCount.data.attributes);
     });
 
     return () => subscription.unsubscribe();
