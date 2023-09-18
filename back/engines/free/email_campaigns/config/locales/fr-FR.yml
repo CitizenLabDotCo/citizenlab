@@ -1,80 +1,13 @@
 fr:
   email_campaigns:
     campaign_type_description:
-      "manual": Messages officiels
-      "admin_rights_received": Droits d'administrateur reçus
-      "comment_deleted_by_admin": Suppression de mon commentaire
-      "comment_marked_as_spam": Commenter le rapport de spam
-      "comment_on_your_comment": Une réponse à mon commentaire
-      "comment_on_your_idea": Un commentaire sur mon idée
-      "comment_on_your_initiative": Un commentaire sur ma proposition
-      "cosponsor_of_your_initiative": Un utilisateur accepte de soutenir ma proposition
-      "first_idea_published": Publication de ma première idée
-      "idea_marked_as_spam": Rapport sur le spam d'idées
-      "idea_published": Publication de mon idée
-      "initiative_assigned_to_you": Attribution en ma faveur d'une proposition
-      "initiative_marked_as_spam": Rapport sur le spam de proposition
-      "initiative_published": Publication de mon proposition
-      "invitation_to_cosponsor_initiative": Invitation à soutenir une proposition
-      "initiative_resubmitted_for_review": Proposition soumise à nouveau pour examen
-      "invite_received": Invitation
-      "invite_reminder": Rappel d'invitation
-      "internal_comment_on_idea_assigned_to_you": Commentaire interne sur une contribution qui m'est attribuée
-      "internal_comment_on_idea_you_commented_internally_on": Commentaire interne sur une contribution que j'ai commentée en interne
-      "internal_comment_on_idea_you_moderate": Commentaire interne sur les contributions dans le projet ou le dossier que je gère
-      "internal_comment_on_initiative_assigned_to_you": Commentaire interne sur la proposition qui m'a été confiée
-      "internal_comment_on_initiative_you_commented_internally_on": Commentaire interne sur la proposition que j'ai commentée en interne
-      "internal_comment_on_unassigned_initiative": Commentaire interne sur une proposition non attribuée
-      "internal_comment_on_unassigned_unmoderated_idea": Commentaire interne sur une contribution non attribuée dans un projet non géré
-      "internal_comment_on_your_internal_comment": Commentaire interne sur mon commentaire interne
-      "mention_in_official_feedback": Mention dans une mise à jour
-      "mention_in_internal_comment": Mention dans un commentaire interne
-      "new_comment_for_admin": Nouveau commentaire dans un projet que je modère
-      "new_comment_on_commented_idea": Nouveau commentaire sur une idée que j'ai commentée
-      "new_comment_on_commented_initiative": Nouveau commentaire sur une proposition que j'ai commentée
-      "new_comment_on_reacted_idea": Nouveau commentaire sur une idée à laquelle j'ai réagi
-      "new_comment_on_reacted_initiative": Nouveau commentaire sur une proposition pour laquelle j'ai voté
-      "new_idea_for_admin": Nouvelle idée dans un projet que je modère
-      "new_initiative_for_admin": Nouvelle proposition
-      "official_feedback_on_commented_idea": Mise à jour d'une idée que j'ai commentée
-      "official_feedback_on_commented_initiative": Mise à jour d'une proposition que j'ai commentée
-      "official_feedback_on_reacted_idea": Mise à jour d'une idée à laquelle j'ai réagi
-      "official_feedback_on_reacted_initiative": Mise à jour d'une proposition pour laquelle j'ai voté
-      "official_feedback_on_your_idea": Mise à jour de mon idée
-      "official_feedback_on_your_initiative": Mise à jour de mon proposition
-      "password_reset": Réinitialisation du mot de passe
-      "project_moderation_rights_received": Droits de modération de projet reçus
-      "project_folder_moderation_rights_received": Droits d'administrateur de dossiers reçus
-      "project_phase_started": Nouvelle phase de projet
-      "project_phase_upcoming": Nouvelle phase de projet à venir
-      "status_change_of_commented_idea": Changement de statut d'une idée que j'ai commentée
-      "status_change_of_commented_initiative": Changement de statut d'une proposition que j'ai commentée
-      "status_change_of_reacted_idea": Changement de statut d'une idée à laquelle j'ai réagi
-      "status_change_of_reacted_initiative": Changement de statut d'une proposition pour laquelle j'ai réagi
-      "status_change_of_your_idea": Changement de statut de mon idée
-      "status_change_of_your_initiative": Changement de statut de mon proposition
-      "threshold_reached_for_admin": La proposition a atteint le seuil de vote
-      "welcome": Après inscription
-      "admin_digest": Aperçu hebdomadaire pour les administrateurs
-      "moderator_digest": Aperçu hebdomadaire pour les administrateurs projet
-      "assignee_digest": Aperçu hebdomadaire des idées attribuées
-      "user_digest": Aperçu hebdomadaire
-      "voting_basket_submitted": Confirmation de vote
-      "voting_basket_not_submitted": Votes non soumis
-      "voting_last_chance": Dernière chance pour voter
-      "voting_results": Résultats du vote
-      "your_proposed_initiatives_digest": Aperçu hebdomadaire de vos propositions
-    schedules:
-      weekly:
-        "0": "Chaque semaine, le dimanche à %{hourOfDay}"
-        "1": "Chaque semaine, le lundi à %{hourOfDay}"
-        "2": "Chaque semaine, le mardi à %{hourOfDay}"
-        "3": "Chaque semaine, le mercredi à %{hourOfDay}"
-        "4": "Chaque semaine, le jeudi à %{hourOfDay}"
-        "5": "Chaque semaine, le vendredi à %{hourOfDay}"
-        "6": "Chaque semaine, le samedi à %{hourOfDay}"
+      "1": "Chaque semaine, le lundi à %{hourOfDay}"
+      "2": "Chaque semaine, le mardi à %{hourOfDay}"
+      "3": "Chaque semaine, le mercredi à %{hourOfDay}"
+      "4": "Chaque semaine, le jeudi à %{hourOfDay}"
+      "5": "Chaque semaine, le vendredi à %{hourOfDay}"
+      "6": "Chaque semaine, le samedi à %{hourOfDay}"
     footer:
-      "link_privacy_policy": "Politique de confidentialité"
       "link_terms_conditions": "Conditions Générales d'Utilisation"
       "link_unsubscribe": "Se désabonner"
       "powered_by": "Généré par"
