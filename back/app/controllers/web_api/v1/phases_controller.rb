@@ -61,7 +61,7 @@ class WebApi::V1::PhasesController < ApplicationController
 
   def survey_results
     results = SurveyResultsGeneratorService.new(@phase).generate_results
-    render json: results
+    render json: raw_json(results)
   end
 
   def submission_count
