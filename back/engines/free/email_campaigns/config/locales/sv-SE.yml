@@ -1,80 +1,13 @@
 sv:
   email_campaigns:
     campaign_type_description:
-      "manual": Officiella meddelanden
-      "admin_rights_received": Adminrättigheter har erhållits
-      "comment_deleted_by_admin": Borttagning av min kommentar
-      "comment_marked_as_spam": Kommentera skräppostrapport
-      "comment_on_your_comment": Ett svar på min kommentar
-      "comment_on_your_idea": En kommentar för min idé
-      "comment_on_your_initiative": En kommentar för mitt förslag
-      "cosponsor_of_your_initiative": En användare accepterar min inbjudan att samsponsra mitt förslag
-      "first_idea_published": Publicering av min första idé
-      "idea_marked_as_spam": Skräppostrapport för idé
-      "idea_published": Publicering av min idé
-      "initiative_assigned_to_you": Tilldelning av ett förslag till mig
-      "initiative_marked_as_spam": Skräppostrapport för förslag
-      "initiative_published": Publicering av mitt förslag
-      "invitation_to_cosponsor_initiative": Inbjudan att vara medförslagsställare
-      "initiative_resubmitted_for_review": Förslaget lämnas in på nytt för granskning
-      "invite_received": Inbjudan
-      "invite_reminder": Påminnelse om inbjudan
-      "internal_comment_on_idea_assigned_to_you": Intern kommentar om input som tilldelats mig
-      "internal_comment_on_idea_you_commented_internally_on": Intern kommentar på input Jag kommenterade internt på
-      "internal_comment_on_idea_you_moderate": Intern kommentar om input i projekt eller mappar som jag hanterar
-      "internal_comment_on_initiative_assigned_to_you": Intern kommentar till förslag som tilldelats mig
-      "internal_comment_on_initiative_you_commented_internally_on": Intern kommentar på förslag Jag kommenterade internt på
-      "internal_comment_on_unassigned_initiative": Intern kommentar till icke tilldelat förslag
-      "internal_comment_on_unassigned_unmoderated_idea": Intern kommentar om icke tilldelad input i icke hanterat projekt
-      "internal_comment_on_your_internal_comment": Intern kommentar till min interna kommentar
-      "mention_in_official_feedback": Nämn i en uppdatering
-      "mention_in_internal_comment": Omnämnande i en intern kommentar
-      "new_comment_for_admin": Ny kommentar i ett projekt jag modererar
-      "new_comment_on_commented_idea": Ny kommentar för en idé jag kommenterat
-      "new_comment_on_commented_initiative": Ny kommentar för ett förslag jag kommenterat
-      "new_comment_on_reacted_idea": Ny kommentar till en idé som jag reagerade på
-      "new_comment_on_reacted_initiative": Ny kommentar till ett förslag som jag röstade för
-      "new_idea_for_admin": Ny idé i ett projekt jag modererar
-      "new_initiative_for_admin": Nytt förslag
-      "official_feedback_on_commented_idea": Uppdatering för en idé jag kommenterat
-      "official_feedback_on_commented_initiative": Uppdatering för ett förslag jag kommenterat
-      "official_feedback_on_reacted_idea": Uppdatering av en idé som jag reagerade på
-      "official_feedback_on_reacted_initiative": Uppdatering av ett förslag som jag röstade om
-      "official_feedback_on_your_idea": Uppdatering för min idé
-      "official_feedback_on_your_initiative": Uppdatering för mitt förslag
-      "password_reset": Återställning av lösenord
-      "project_moderation_rights_received": Rättigheter för projektmoderering har erhållits
-      "project_folder_moderation_rights_received": Rättigheter som mapphanterare har erhållits
-      "project_phase_started": Ny projektfas
-      "project_phase_upcoming": Kommande ny projektfas
-      "status_change_of_commented_idea": Statusändring för en idé jag kommenterat
-      "status_change_of_commented_initiative": Statusändring för ett förslag jag kommenterat
-      "status_change_of_reacted_idea": Statusförändring av en idé som jag reagerade på
-      "status_change_of_reacted_initiative": Statusförändring av ett förslag som jag reagerade för
-      "status_change_of_your_idea": Statusändring av min idé
-      "status_change_of_your_initiative": Statusändring av mitt förslag
-      "threshold_reached_for_admin": Förslaget nådde rösttröskeln
-      "welcome": Efter registrering
-      "admin_digest": Veckoöversikt för administratörer
-      "moderator_digest": Veckoöversikt för projektledare
-      "assignee_digest": Veckoöversikt över tilldelade idéer
-      "user_digest": Veckoöversikt
-      "voting_basket_submitted": Bekräftelse av röstning
-      "voting_basket_not_submitted": Ej avgivna röster
-      "voting_last_chance": Sista chansen att rösta
-      "voting_results": Resultat av omröstningen
-      "your_proposed_initiatives_digest": Veckoöversikt över dina förslag
-    schedules:
-      weekly:
-        "0": "Varje vecka, på söndagar på %{hourOfDay}"
-        "1": "Veckovis på måndagar %{hourOfDay}"
-        "2": "Varje vecka på tisdagar %{hourOfDay}"
-        "3": "Veckovis på onsdagar %{hourOfDay}"
-        "4": "Varje vecka på torsdagar %{hourOfDay}"
-        "5": "Veckovis på fredagar %{hourOfDay}"
-        "6": "Veckovis på lördagar %{hourOfDay}"
+      "1": "Veckovis på måndagar %{hourOfDay}"
+      "2": "Varje vecka på tisdagar %{hourOfDay}"
+      "3": "Varje vecka, på onsdagar på %{hourOfDay}"
+      "4": "Varje vecka, på torsdagar på %{hourOfDay}"
+      "5": "Varje vecka, på fredagar på %{hourOfDay}"
+      "6": "Varje vecka, på lördagar på %{hourOfDay}"
     footer:
-      "link_privacy_policy": "Sekretesspolicy"
       "link_terms_conditions": "Villkor"
       "link_unsubscribe": "Avsluta prenumeration"
       "powered_by": "Drivs av"
