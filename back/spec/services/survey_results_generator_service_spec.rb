@@ -194,45 +194,45 @@ RSpec.describe SurveyResultsGeneratorService do
           totalResponses: 15,
           answers: [
             {
-               answer: {
+              answer: {
                 'en' => '5 - Strongly agree',
                 'fr-FR' => "5 - Tout à fait d'accord",
                 'nl-NL' => '5 - Strerk mee eens'
               },
-               responses: 1
-             },
-            { answer: { 'en' => '4', 'fr-FR' => '4', 'nl-NL' => '4' }, responses: 0 },
-              { answer: { 'en' => '3', 'fr-FR' => '3', 'nl-NL' => '3' }, responses: 7 },
-              { answer: { 'en' => '2', 'fr-FR' => '2', 'nl-NL' => '2' }, responses: 5 },
-              {
-                answer: {
-                  'en' => '1 - Strongly disagree',
-                  'fr-FR' => "1 - Pas du tout d'accord",
-                  'nl-NL' => '1 - Helemaal niet mee eens'
-                },
-                responses: 2
-              }
-            ],
-            customFieldId: linear_scale_field.id
-          },
-          {
-            inputType: 'select',
-            question: {
-              'en' => 'What city do you like best?',
-              'fr-FR' => 'Quelle ville préférez-vous ?',
-              'nl-NL' => 'Welke stad vind jij het leukst?'
+              responses: 1
             },
-            required: true,
-            totalResponses: 4,
-            answers: [
-              { answer: { 'en' => 'Los Angeles', 'fr-FR' => 'Los Angeles', 'nl-NL' => 'Los Angeles' }, responses: 3 },
-              { answer: { 'en' => 'New York', 'fr-FR' => 'New York', 'nl-NL' => 'New York' }, responses: 1 }
-            ],
-            customFieldId: select_field.id
-          }
-        ],
-        totalSubmissions: 20
-      }
+            { answer: { 'en' => '4', 'fr-FR' => '4', 'nl-NL' => '4' }, responses: 0 },
+            { answer: { 'en' => '3', 'fr-FR' => '3', 'nl-NL' => '3' }, responses: 7 },
+            { answer: { 'en' => '2', 'fr-FR' => '2', 'nl-NL' => '2' }, responses: 5 },
+            {
+              answer: {
+                'en' => '1 - Strongly disagree',
+                'fr-FR' => "1 - Pas du tout d'accord",
+                'nl-NL' => '1 - Helemaal niet mee eens'
+              },
+              responses: 2
+            }
+          ],
+          customFieldId: linear_scale_field.id
+        },
+        {
+          inputType: 'select',
+          question: {
+            'en' => 'What city do you like best?',
+            'fr-FR' => 'Quelle ville préférez-vous ?',
+            'nl-NL' => 'Welke stad vind jij het leukst?'
+          },
+          required: true,
+          totalResponses: 4,
+          answers: [
+            { answer: { 'en' => 'Los Angeles', 'fr-FR' => 'Los Angeles', 'nl-NL' => 'Los Angeles' }, responses: 3 },
+            { answer: { 'en' => 'New York', 'fr-FR' => 'New York', 'nl-NL' => 'New York' }, responses: 1 }
+          ],
+          customFieldId: select_field.id
+        }
+      ],
+      totalSubmissions: 20
+    }
   end
 
   let(:expected_result_without_minimum_and_maximum_labels) do
