@@ -129,6 +129,11 @@ class AppConfiguration < ApplicationRecord
         })
       end
     end
+
+    def timezone
+      timezone_str = instance.settings.dig('core', 'timezone')
+      ActiveSupport::TimeZone[timezone_str] or raise KeyError, timezone_str
+    end
   end
 
   # @return [AppConfiguration] self
