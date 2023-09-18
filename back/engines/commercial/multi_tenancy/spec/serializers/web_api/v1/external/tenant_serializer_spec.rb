@@ -31,6 +31,7 @@ describe 'WebApi::V1::External::TenantSerializer' do
             'days_limit' => 90,
             'reacting_threshold' => 300,
             'eligibility_criteria' => { 'en' => 'Eligibility criteria' },
+            'posting_tips' => { 'en' => 'Posting tips' },
             'threshold_reached_message' => { 'en' => 'Threshold reached' } }
       },
       style: {},

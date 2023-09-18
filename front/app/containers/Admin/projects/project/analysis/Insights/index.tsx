@@ -13,8 +13,11 @@ import QuestionInput from './QuestionInput';
 import Question from './Question';
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
+import translations from './translations';
+import { useIntl } from 'utils/cl-intl';
 
 const Insights = () => {
+  const { formatMessage } = useIntl();
   const [isQuestionInputOpen, setIsQuestionInputOpen] = useState(false);
   const { analysisId } = useParams() as { analysisId: string };
   const { data: insights, isLoading } = useAnalysisInsights({
@@ -40,7 +43,7 @@ const Insights = () => {
       </Box>
       <Box m="0" mb="12px" display="flex" justifyContent="center">
         <Text fontSize="s" m="0" variant="bodyXs" color="grey700">
-          Applies to currently selected inputs ({inputsCount})
+          {formatMessage(translations.appliesTo)} ({inputsCount})
         </Text>
       </Box>
 
@@ -59,11 +62,10 @@ const Insights = () => {
       {!isLoading && insights?.data?.length === 0 && (
         <>
           <Text px="24px" color="grey600">
-            Your text summaries will be displayed here, but you currently do not
-            have any yet.
+            {formatMessage(translations.emptyList)}
           </Text>
           <Text px="24px" color="grey600">
-            Start by adding some tags.
+            {formatMessage(translations.emptyListDescription)}
           </Text>
         </>
       )}

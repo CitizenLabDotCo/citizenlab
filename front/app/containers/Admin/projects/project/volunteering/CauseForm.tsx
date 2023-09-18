@@ -94,7 +94,6 @@ const CauseForm = ({ onSubmit, defaultValues, imageUrl }: PageFormProps) => {
           <InputMultilocWithLocaleSwitcher
             name="title_multiloc"
             label={formatMessage(messages.causeTitleLabel)}
-            type="text"
           />
         </SectionField>
         <SectionField>

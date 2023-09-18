@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_17_134213) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_06_104541) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -83,6 +83,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_17_134213) do
     t.string "auto_tagging_method"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.jsonb "tags_ids"
+    t.jsonb "filters", default: {}, null: false
     t.index ["analysis_id"], name: "index_analysis_background_tasks_on_analysis_id"
   end
 
@@ -124,8 +126,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_17_134213) do
   create_table "analysis_taggings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "tag_id", null: false
     t.uuid "input_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.uuid "background_task_id"
     t.index ["input_id"], name: "index_analysis_taggings_on_input_id"
     t.index ["tag_id", "input_id"], name: "index_analysis_taggings_on_tag_id_and_input_id", unique: true
     t.index ["tag_id"], name: "index_analysis_taggings_on_tag_id"
@@ -220,7 +221,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_17_134213) do
     t.integer "ordering"
     t.uuid "custom_field_option_id"
     t.integer "followers_count", default: 0, null: false
+    t.boolean "include_in_onboarding", default: false, null: false
     t.index ["custom_field_option_id"], name: "index_areas_on_custom_field_option_id"
+    t.index ["include_in_onboarding"], name: "index_areas_on_include_in_onboarding"
   end
 
   create_table "areas_ideas", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -770,8 +773,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_17_134213) do
     t.string "author_hash"
     t.boolean "anonymous", default: false, null: false
     t.integer "internal_comments_count", default: 0, null: false
-    t.boolean "editing_locked", default: false, null: false
     t.integer "followers_count", default: 0, null: false
+    t.boolean "editing_locked", default: false, null: false
     t.index "((to_tsvector('simple'::regconfig, COALESCE((title_multiloc)::text, ''::text)) || to_tsvector('simple'::regconfig, COALESCE((body_multiloc)::text, ''::text))))", name: "index_initiatives_search", using: :gin
     t.index ["author_id"], name: "index_initiatives_on_author_id"
     t.index ["location_point"], name: "index_initiatives_on_location_point", using: :gist
@@ -1493,6 +1496,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_17_134213) do
     t.integer "ordering"
     t.string "code", default: "custom", null: false
     t.integer "followers_count", default: 0, null: false
+    t.boolean "include_in_onboarding", default: false, null: false
+    t.index ["include_in_onboarding"], name: "index_topics_on_include_in_onboarding"
   end
 
   create_table "user_custom_fields_representativeness_ref_distributions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

@@ -2,11 +2,11 @@ import React from 'react';
 import { AuthenticationData } from 'containers/Authentication/typings';
 import useAuthenticationRequirements from 'api/authentication/authentication_requirements/useAuthenticationRequirements';
 import TopicsAndAreas from './TopicsAndAreas';
-import { RequirementStatus } from 'api/authentication/authentication_requirements/types';
+import { OnboardingType } from 'api/authentication/authentication_requirements/types';
 
 interface Props {
   authenticationData: AuthenticationData;
-  onSubmit: (id: string, onboarding: Record<string, RequirementStatus>) => void;
+  onSubmit: (id: string, onboarding: OnboardingType) => void;
   onSkip: () => void;
 }
 

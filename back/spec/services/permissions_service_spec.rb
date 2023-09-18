@@ -363,9 +363,7 @@ describe PermissionsService do
     end
 
     context 'when onboarding is possible (there are topics and areas assigned to projects)' do
-      before do
-        create(:topic).tap { |topic| topic.projects_topics.create!(project: create(:project)) }
-      end
+      before { create(:topic, include_in_onboarding: true) }
 
       context 'when permitted_by is set to everyone' do
         let(:permission) { create(:permission, permitted_by: 'everyone', global_custom_fields: false) }
@@ -749,10 +747,11 @@ describe PermissionsService do
           })
         end
 
-        it 'does not ask onboarding for a fully registered confirmed resident when onboarding is turned off' do
+        it 'does not ask onboarding for a fully registered confirmed resident when onboarding is not possible' do
           app_configuration = AppConfiguration.instance
           app_configuration.settings['core']['onboarding'] = false
           app_configuration.save!
+
           expect(service.requirements(permission, user)).to eq({
             permitted: true,
             requirements: {

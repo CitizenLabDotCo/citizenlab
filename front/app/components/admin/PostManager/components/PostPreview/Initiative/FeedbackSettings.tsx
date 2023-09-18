@@ -159,6 +159,8 @@ const FeedbackSettings = ({
     eventEmitter.emit<StatusChangeModalOpen>(events.statusChangeModalOpen, {
       initiativeId,
       newStatusId: statusOption.value,
+      feedbackRequired:
+        allowedTransitions?.[statusOption.value]?.feedback_required,
     });
 
     trackEventByName(tracks.initiativeStatusChange, {

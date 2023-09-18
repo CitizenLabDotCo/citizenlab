@@ -51,7 +51,7 @@ const TopicsControl = ({
       />
       <TopicsPicker
         selectedTopicIds={selectedTopicIds}
-        onChange={handleTopicsChange}
+        onClick={handleTopicsChange}
         availableTopics={availableTopics}
         id={sanitizeForClassname(id)}
       />

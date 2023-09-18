@@ -115,6 +115,7 @@ PATH
   remote: engines/commercial/id_clave_unica
   specs:
     id_clave_unica (0.1.0)
+      id_id_card_lookup
       omniauth_openid_connect
       rails (~> 7.0)
       verification
@@ -659,6 +660,8 @@ GEM
       socksify
     i18n (1.14.1)
       concurrent-ruby (~> 1.0)
+    icalendar (2.9.0)
+      ice_cube (~> 0.16)
     ice_cube (0.16.4)
     image_processing (1.12.2)
       mini_magick (>= 4.9.5, < 5)
@@ -1179,6 +1182,7 @@ DEPENDENCIES
   google_tag_manager!
   granular_permissions!
   groupdate (~> 4.1)
+  icalendar (~> 2.9)
   ice_cube (~> 0.16)
   id_auth0!
   id_bogus!

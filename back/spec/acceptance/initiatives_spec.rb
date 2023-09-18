@@ -347,6 +347,7 @@ resource 'Initiatives' do
       parameter :area_ids, 'Array of ids of the associated areas'
       parameter :assignee_id, 'The user id of the admin that takes ownership. Set automatically if not provided. Only allowed for admins.'
       parameter :anonymous, 'Post this initiative anonymously - true/false'
+      parameter :cosponsor_ids, 'Array of user ids of the desired cosponsors'
     end
     ValidationErrorHelper.new.error_fields(self, Initiative)
 
@@ -460,6 +461,23 @@ resource 'Initiatives' do
         end
       end
     end
+
+    describe 'cosponsor_ids' do
+      let(:cosponsor) { create(:user) }
+      let(:cosponsor_ids) { [cosponsor.id] }
+
+      example 'Update the cosponsors of an initiative' do
+        expect { do_request }
+          .to have_enqueued_job(LogActivityJob)
+          .with(instance_of(CosponsorsInitiative), 'created', @user, instance_of(Integer))
+          .exactly(1).times
+
+        assert_status 201
+        json_response = json_parse(response_body)
+
+        expect(json_response.dig(:data, :relationships, :cosponsors, :data).pluck(:id)).to match_array cosponsor_ids
+      end
+    end
   end
 
   patch 'web_api/v1/initiatives/:id' do
@@ -503,17 +521,6 @@ resource 'Initiatives' do
           expect(json_response.dig(:data, :attributes, :location_description)).to eq location_description
           expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
           expect(json_response.dig(:data, :relationships, :areas, :data).pluck(:id)).to match_array area_ids
-        end
-
-        example 'Check for the automatic creation of a like by the author when the publication status of an initiative is updated from draft to published', document: false do
-          @initiative.update!(publication_status: 'draft')
-          do_request initiative: { publication_status: 'published' }
-          json_response = json_parse(response_body)
-          new_initiative = Initiative.find(json_response.dig(:data, :id))
-          expect(new_initiative.reactions.size).to eq 1
-          expect(new_initiative.reactions[0].mode).to eq 'up'
-          expect(new_initiative.reactions[0].user.id).to eq @user.id
-          expect(json_response.dig(:data, :attributes, :likes_count)).to eq 1
         end
       end
 

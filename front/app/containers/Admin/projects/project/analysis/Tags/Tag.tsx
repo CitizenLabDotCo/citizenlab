@@ -1,6 +1,10 @@
 import { Box, Icon } from '@citizenlab/cl2-component-library';
-import { TagType } from 'api/analysis_tags/types';
+
 import React from 'react';
+
+import tracks from 'containers/Admin/projects/project/analysis/tracks';
+import { trackEventByName } from 'utils/analytics';
+import { TagType } from 'api/analysis_background_tasks/types';
 
 type TagProps = {
   name: string;
@@ -46,6 +50,15 @@ export const TagTypeColorMap: Record<
 };
 
 const Tag = ({ name, tagType, tagginsConfig }: TagProps) => {
+  const handleTagClick = () => {
+    if (tagginsConfig?.isSelectedAsTagging === true) {
+      trackEventByName(tracks.tagAssignmentDeleted.name);
+      tagginsConfig.onDeleteTagging();
+    } else if (tagginsConfig?.isSelectedAsTagging === false) {
+      trackEventByName(tracks.tagAssignmentCreated.name);
+      tagginsConfig.onAddTagging();
+    }
+  };
   return (
     <Box
       bg={TagTypeColorMap[tagType]?.background}
@@ -59,17 +72,7 @@ const Tag = ({ name, tagType, tagginsConfig }: TagProps) => {
       gap="4px"
       as={tagginsConfig ? 'button' : 'div'}
       border={`1px solid ${TagTypeColorMap[tagType]?.text}`}
-      onClick={
-        tagginsConfig
-          ? () => {
-              if (tagginsConfig?.isSelectedAsTagging === true) {
-                tagginsConfig.onDeleteTagging();
-              } else if (tagginsConfig?.isSelectedAsTagging === false) {
-                tagginsConfig.onAddTagging();
-              }
-            }
-          : undefined
-      }
+      onClick={tagginsConfig ? handleTagClick : undefined}
       tabIndex={tagginsConfig ? 0 : undefined}
       style={{
         cursor: tagginsConfig ? 'pointer' : undefined,

@@ -4,15 +4,20 @@
 #
 # Table name: topics
 #
-#  id                   :uuid             not null, primary key
-#  title_multiloc       :jsonb
-#  description_multiloc :jsonb
-#  icon                 :string
-#  created_at           :datetime         not null
-#  updated_at           :datetime         not null
-#  ordering             :integer
-#  code                 :string           default("custom"), not null
-#  followers_count      :integer          default(0), not null
+#  id                    :uuid             not null, primary key
+#  title_multiloc        :jsonb
+#  description_multiloc  :jsonb
+#  icon                  :string
+#  created_at            :datetime         not null
+#  updated_at            :datetime         not null
+#  ordering              :integer
+#  code                  :string           default("custom"), not null
+#  followers_count       :integer          default(0), not null
+#  include_in_onboarding :boolean          default(FALSE), not null
+#
+# Indexes
+#
+#  index_topics_on_include_in_onboarding  (include_in_onboarding)
 #
 class Topic < ApplicationRecord
   DEFAULT_CODES = %w[nature waste sustainability mobility technology economy housing public_space safety education culture health inclusion community services other].freeze
@@ -36,11 +41,18 @@ class Topic < ApplicationRecord
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :description_multiloc, multiloc: { presence: false }
   validates :code, inclusion: { in: CODES }
+  validates :include_in_onboarding, inclusion: { in: [true, false] }
 
   before_validation :set_code
   before_validation :strip_title
 
   scope :order_new, ->(direction = :desc) { order(created_at: direction, id: direction) }
+  scope :order_projects_count, lambda { |direction = :desc|
+    safe_dir = direction == :desc ? 'DESC' : 'ASC'
+    left_outer_joins(:projects_topics)
+      .group(:id)
+      .order("COUNT(projects_topics.project_id) #{safe_dir}, ordering")
+  }
   scope :defaults, -> { where(code: DEFAULT_CODES) }
 
   def custom?

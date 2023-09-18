@@ -16,7 +16,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import AnalysisBanner from './AnalysisBanner';
-import AnalysesList from './AnalysesList';
 
 // i18n
 import messages from '../messages';
@@ -100,10 +99,7 @@ const FormResults = ({ intl: { formatMessage } }: WrappedComponentProps) => {
       </Box>
 
       {analysisEnabled ? (
-        <>
-          <AnalysisBanner />
-          <AnalysesList />
-        </>
+        <AnalysisBanner />
       ) : (
         <Box
           bgColor={colors.teal100}
@@ -134,7 +130,14 @@ const FormResults = ({ intl: { formatMessage } }: WrappedComponentProps) => {
       <Box maxWidth="524px">
         {results.map(
           (
-            { question, inputType, answers, totalResponses, required },
+            {
+              question,
+              inputType,
+              answers,
+              totalResponses,
+              required,
+              customFieldId,
+            },
             index
           ) => {
             return (
@@ -146,6 +149,7 @@ const FormResults = ({ intl: { formatMessage } }: WrappedComponentProps) => {
                 answers={answers}
                 totalResponses={totalResponses}
                 required={required}
+                customFieldId={customFieldId}
               />
             );
           }

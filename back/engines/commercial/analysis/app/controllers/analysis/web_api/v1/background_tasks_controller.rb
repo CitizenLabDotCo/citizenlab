@@ -9,7 +9,14 @@ module Analysis
         before_action :set_background_task, only: [:show]
 
         def index
-          background_tasks = @analysis.background_tasks.order(created_at: :desc)
+          background_tasks = @analysis.background_tasks
+
+          background_tasks = background_tasks
+            .where(state: %w[queued in_progress])
+            .or(background_tasks.where('ended_at >= ?', 24.hours.ago))
+
+          background_tasks = background_tasks.order(created_at: :desc)
+
           render json: WebApi::V1::BackgroundTaskSerializer.new(background_tasks, params: jsonapi_serializer_params).serializable_hash
         end
 

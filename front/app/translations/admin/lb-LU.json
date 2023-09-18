@@ -527,7 +527,6 @@
   "app.containers.Admin.PagesAndMenu.addButton": "Zu der Navigatiounsleescht bäifügen",
   "app.containers.Admin.PagesAndMenu.components.NavbarItemForm.navbarItemTitle": "Numm an Navigatiounsleescht",
   "app.containers.Admin.PagesAndMenu.components.deletePageConfirmationHidden": "Sidd Dir sécher, datt Dir dës Säit läsche wëllt? Dëst kann net réckgängeg gemaach ginn.",
-  "app.containers.Admin.PagesAndMenu.components.emptyTitleError": "Stellt en Titel fir all Sprooche bereet",
   "app.containers.Admin.PagesAndMenu.components.hiddenFromNavigation": "Weider disponibel Säiten",
   "app.containers.Admin.PagesAndMenu.components.savePage": "Save page",
   "app.containers.Admin.PagesAndMenu.components.saveSuccess": "Page successfully saved",

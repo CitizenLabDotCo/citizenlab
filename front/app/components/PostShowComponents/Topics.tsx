@@ -1,17 +1,14 @@
 import React, { memo } from 'react';
 
-// hooks
-import useTopics from 'api/topics/useTopics';
-import useLocalize from 'hooks/useLocalize';
-import { useIntl } from 'utils/cl-intl';
-
 // styling
 import styled, { useTheme } from 'styled-components';
 import { fontSizes, isRtl } from 'utils/styleUtils';
 import { transparentize } from 'polished';
 
-// typings
-import { ITopicData } from 'api/topics/types';
+// hooks
+import useLocalize from 'hooks/useLocalize';
+import useTopic from 'api/topics/useTopic';
+import { useIntl } from 'utils/cl-intl';
 
 // components
 import { Box, Title } from '@citizenlab/cl2-component-library';
@@ -37,44 +34,60 @@ const Topic = styled.div`
 `;
 
 interface Props {
-  topicIds: string[];
+  postTopicIds: string[];
   className?: string;
   postType: 'idea' | 'initiative';
   showTitle?: boolean;
 }
 
-const Topics = memo<Props>(({ topicIds, className, postType, showTitle }) => {
-  const localize = useLocalize();
-  const { formatMessage } = useIntl();
-  const theme = useTheme();
-  const { data: topics } = useTopics();
-  const filteredTopics =
-    topics?.data.filter((topic) => topicIds.includes(topic.id)) || [];
+const Topics = memo(
+  ({ postTopicIds, className, postType, showTitle }: Props) => {
+    const { formatMessage } = useIntl();
+    const theme = useTheme();
+    return (
+      <Box display="flex" flexDirection="column">
+        {showTitle && (
+          <Title variant="h3">{formatMessage(messages.topics)}</Title>
+        )}
+        <Box
+          id={`e2e-${postType}-topics`}
+          className={className}
+          display="flex"
+          flexDirection={theme.isRtl ? 'row-reverse' : 'row'}
+          flexWrap="wrap"
+        >
+          {postTopicIds.map((topicId: string) => {
+            return (
+              <TopicComponent
+                key={topicId}
+                topicId={topicId}
+                postType={postType}
+              />
+            );
+          })}
+        </Box>
+      </Box>
+    );
+  }
+);
 
-  if (!topics || filteredTopics.length === 0) return null;
+const TopicComponent = ({
+  topicId,
+  postType,
+}: {
+  topicId: string;
+  postType: 'idea' | 'initiative';
+}) => {
+  const { data: topic } = useTopic(topicId);
+  const localize = useLocalize();
+
+  if (!topic) return null;
 
   return (
-    <Box display="flex" flexDirection="column">
-      {showTitle && (
-        <Title variant="h3">{formatMessage(messages.topics)}</Title>
-      )}
-      <Box
-        id={`e2e-${postType}-topics`}
-        className={className}
-        display="flex"
-        flexDirection={theme.isRtl ? 'row-reverse' : 'row'}
-        flexWrap="wrap"
-      >
-        {filteredTopics.map((topic: ITopicData) => {
-          return (
-            <Topic key={topic.id} className={`e2e-${postType}-topic`}>
-              {localize(topic.attributes.title_multiloc)}
-            </Topic>
-          );
-        })}
-      </Box>
-    </Box>
+    <Topic className={`e2e-${postType}-topic`}>
+      {localize(topic.data.attributes.title_multiloc)}
+    </Topic>
   );
-});
+};
 
 export default Topics;

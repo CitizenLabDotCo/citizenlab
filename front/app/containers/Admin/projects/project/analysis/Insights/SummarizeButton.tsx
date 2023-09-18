@@ -6,7 +6,14 @@ import useAddAnalysisSummary from 'api/analysis_summaries/useAddAnalysisSummary'
 import useAddAnalysisSummaryPreCheck from 'api/analysis_summary_pre_check/useAddAnalysisSummaryPreCheck';
 import { ISummaryPreCheck } from 'api/analysis_summary_pre_check/types';
 
+import tracks from 'containers/Admin/projects/project/analysis/tracks';
+import { trackEventByName } from 'utils/analytics';
+
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
+import translations from './translations';
+
 const SummarizeButton = () => {
+  const { formatMessage } = useIntl();
   const { mutate: addSummary, isLoading: isLoadingSummary } =
     useAddAnalysisSummary();
   const { mutate: addSummaryPreCheck, isLoading: isLoadingPreCheck } =
@@ -15,10 +22,19 @@ const SummarizeButton = () => {
   const filters = useAnalysisFilterParams();
 
   const handleSummaryCreate = () => {
-    addSummary({
-      analysisId,
-      filters,
-    });
+    addSummary(
+      {
+        analysisId,
+        filters,
+      },
+      {
+        onSuccess: () => {
+          trackEventByName(tracks.summaryCreated.name, {
+            extra: { analysisId },
+          });
+        },
+      }
+    );
   };
 
   const [preCheck, setPreCheck] = useState<ISummaryPreCheck | null>(null);
@@ -49,13 +65,19 @@ const SummarizeButton = () => {
         processing={isLoadingPreCheck || isLoadingSummary}
         whiteSpace="wrap"
       >
-        Auto-summarize
+        {formatMessage(translations.summarize)}
         <br />
-        <Text fontSize="s" m="0" color="grey600">
+        <Text fontSize="s" m="0" color="grey600" whiteSpace="nowrap">
           {summaryPossible && summaryAccuracy && (
-            <>{summaryAccuracy * 100}% accuracy</>
+            <FormattedMessage
+              {...translations.accuracy}
+              values={{
+                accuracy: summaryAccuracy * 100,
+                percentage: formatMessage(translations.percentage),
+              }}
+            />
           )}
-          {!summaryPossible && `Too many inputs`}
+          {!summaryPossible && formatMessage(translations.tooManyInputs)}
         </Text>
       </Button>
     </Box>

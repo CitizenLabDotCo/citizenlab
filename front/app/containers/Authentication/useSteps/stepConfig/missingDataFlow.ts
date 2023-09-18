@@ -3,10 +3,7 @@ import confirmEmail from 'api/authentication/confirm_email/confirmEmail';
 import resendEmailConfirmationCode from 'api/authentication/confirm_email/resendEmailConfirmationCode';
 import getAuthUser from 'api/authentication/auth_user/getAuthUser';
 import signOut from 'api/authentication/sign_in_out/signOut';
-
-import { UseMutateFunction } from '@tanstack/react-query';
-import { IUser, IUserUpdate } from 'api/users/types';
-import { CLErrorsJSON } from 'typings';
+import { updateUser } from 'api/users/useUpdateUser';
 
 // utils
 import {
@@ -18,12 +15,11 @@ import {
 // typings
 import { GetRequirements } from 'containers/Authentication/typings';
 import { Step, BuiltInFieldsUpdate } from './typings';
-import { RequirementStatus } from 'api/authentication/authentication_requirements/types';
+import { OnboardingType } from 'api/authentication/authentication_requirements/types';
 
 export const missingDataFlow = (
   getRequirements: GetRequirements,
-  setCurrentStep: (step: Step) => void,
-  updateUser: UseMutateFunction<IUser, CLErrorsJSON, IUserUpdate>
+  setCurrentStep: (step: Step) => void
 ) => {
   return {
     'missing-data:email-confirmation': {
@@ -88,37 +84,29 @@ export const missingDataFlow = (
         userId: string,
         builtInFieldUpdate: BuiltInFieldsUpdate
       ) => {
-        updateUser(
-          {
-            userId,
-            ...builtInFieldUpdate,
-          },
-          {
-            onSuccess: async () => {
-              const { requirements } = await getRequirements();
+        await updateUser({ userId, ...builtInFieldUpdate });
 
-              if (requirements.special.verification === 'require') {
-                setCurrentStep('missing-data:verification');
-                return;
-              }
+        const { requirements } = await getRequirements();
 
-              if (requiredCustomFields(requirements.custom_fields)) {
-                setCurrentStep('missing-data:custom-fields');
-                return;
-              }
+        if (requirements.special.verification === 'require') {
+          setCurrentStep('missing-data:verification');
+          return;
+        }
 
-              if (showOnboarding(requirements.onboarding)) {
-                setCurrentStep('missing-data:onboarding');
-                return;
-              }
+        if (requiredCustomFields(requirements.custom_fields)) {
+          setCurrentStep('missing-data:custom-fields');
+          return;
+        }
 
-              if (requirements.special.group_membership === 'require') {
-                setCurrentStep('closed');
-                return;
-              }
-            },
-          }
-        );
+        if (showOnboarding(requirements.onboarding)) {
+          setCurrentStep('missing-data:onboarding');
+          return;
+        }
+
+        if (requirements.special.group_membership === 'require') {
+          setCurrentStep('closed');
+          return;
+        }
       },
     },
 
@@ -149,26 +137,21 @@ export const missingDataFlow = (
     'missing-data:custom-fields': {
       CLOSE: () => setCurrentStep('closed'),
       SUBMIT: async (userId: string, formData: FormData) => {
-        updateUser(
-          { userId, custom_field_values: formData },
-          {
-            onSuccess: async () => {
-              const { requirements } = await getRequirements();
+        await updateUser({ userId, custom_field_values: formData });
 
-              if (showOnboarding(requirements.onboarding)) {
-                setCurrentStep('missing-data:onboarding');
-                return;
-              }
+        const { requirements } = await getRequirements();
 
-              if (requirements.special.group_membership === 'require') {
-                setCurrentStep('closed');
-                return;
-              }
+        if (showOnboarding(requirements.onboarding)) {
+          setCurrentStep('missing-data:onboarding');
+          return;
+        }
 
-              setCurrentStep('success');
-            },
-          }
-        );
+        if (requirements.special.group_membership === 'require') {
+          setCurrentStep('closed');
+          return;
+        }
+
+        setCurrentStep('success');
       },
       SKIP: async () => {
         const { requirements } = await getRequirements();
@@ -184,25 +167,17 @@ export const missingDataFlow = (
 
     'missing-data:onboarding': {
       CLOSE: () => setCurrentStep('closed'),
-      SUBMIT: async (
-        userId: string,
-        onboarding: Record<string, RequirementStatus>
-      ) => {
-        updateUser(
-          { userId, onboarding },
-          {
-            onSuccess: async () => {
-              const { requirements } = await getRequirements();
+      SUBMIT: async (userId: string, onboarding: OnboardingType) => {
+        await updateUser({ userId, onboarding });
 
-              if (requirements.special.group_membership === 'require') {
-                setCurrentStep('closed');
-                return;
-              }
+        const { requirements } = await getRequirements();
 
-              setCurrentStep('success');
-            },
-          }
-        );
+        if (requirements.special.group_membership === 'require') {
+          setCurrentStep('closed');
+          return;
+        }
+
+        setCurrentStep('success');
       },
       SKIP: async () => {
         setCurrentStep('success');

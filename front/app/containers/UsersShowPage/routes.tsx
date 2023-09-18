@@ -3,6 +3,7 @@ import { Navigate } from 'react-router-dom';
 import PageLoading from 'components/UI/PageLoading';
 import UserComments from './UserComments';
 import Following from './Following';
+import UserEvents from './UserEvents';
 import Submissions from './Submissions';
 import UsersShowPage from './';
 
@@ -29,6 +30,10 @@ export default () => ({
     {
       path: 'following',
       element: <Following />,
+    },
+    {
+      path: 'events',
+      element: <UserEvents />,
     },
   ],
 });

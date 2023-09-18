@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { FollowableObject } from 'api/follow_unfollow/types';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
@@ -61,6 +61,16 @@ const Following = () => {
 
   return (
     <Box display="flex" w="100%" flexDirection="column">
+      {isSmallerThanPhone && (
+        <Title mt="0px" variant="h3" as="h1">
+          <FormattedMessage
+            {...messages.followingWithCount}
+            values={{
+              followingCount: authUser?.data.attributes.followings_count,
+            }}
+          />
+        </Title>
+      )}
       <Box borderBottom="1px solid #d1d1d1" mb="24px">
         <FilterTabs
           currentTab={currentTab}
@@ -78,21 +88,6 @@ const Following = () => {
           getScreenReaderTextForTab={getScreenReaderTextForTab}
         />
       </Box>
-      {isSmallerThanPhone && (
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          mb="16px"
-        >
-          <FormattedMessage
-            {...messages.followingWithCount}
-            values={{
-              followingCount: authUser?.data.attributes.followings_count,
-            }}
-          />
-        </Box>
-      )}
       {currentTab === 'Topics' && <Topics />}
       {currentTab === 'Areas' && <Areas />}
       {currentTab !== 'Topics' && currentTab !== 'Areas' && (

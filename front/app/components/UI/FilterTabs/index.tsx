@@ -4,13 +4,13 @@ import styled from 'styled-components';
 import { fontSizes, isRtl, colors, media } from 'utils/styleUtils';
 import { rgba } from 'polished';
 import { FormattedMessage } from 'utils/cl-intl';
-
 import { MessageDescriptor } from 'react-intl';
 
 const TabsContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
+  overflow-x: auto;
 
   ${media.phone`
     width: 100%;
@@ -29,6 +29,7 @@ const Tab = styled.button<{ active: boolean }>`
   align-items: center;
   font-size: ${fontSizes.l}px;
   padding: 21px 15px;
+  white-space: nowrap;
 
   border-bottom: ${({ active, theme }) =>
     active

@@ -225,7 +225,7 @@ const LargerThanPhone = ({
           <LeftColumn>
             <StyledTopics
               postType="initiative"
-              topicIds={initiative.data.relationships.topics.data.map(
+              postTopicIds={initiative.data.relationships.topics.data.map(
                 (topic) => topic.id
               )}
             />

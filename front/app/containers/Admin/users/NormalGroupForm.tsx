@@ -91,7 +91,6 @@ const NormalGroupForm = ({
             <SectionField>
               <InputMultilocWithLocaleSwitcher
                 label={formatMessage(messages.fieldGroupName)}
-                type="text"
                 name="title_multiloc"
               />
             </SectionField>

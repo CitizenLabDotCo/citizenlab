@@ -210,7 +210,9 @@ class PermissionsService
   end
 
   def onboarding_possible?
-    app_configuration.settings.dig('core', 'onboarding') && (ProjectsTopic.count > 0 || AreasProject.count > 0)
+    app_configuration.settings.dig('core', 'onboarding') && (
+      Topic.where(include_in_onboarding: true).count > 0 || Area.where(include_in_onboarding: true).count > 0
+    )
   end
 
   def ignore_password_for_sso!(requirements, user)

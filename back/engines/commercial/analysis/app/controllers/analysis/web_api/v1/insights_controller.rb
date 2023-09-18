@@ -11,11 +11,11 @@ module Analysis
         def index
           insights = @analysis.insights
             .order(created_at: :desc)
-            .includes(:insightable)
+            .includes(insightable: :background_task)
           render json: WebApi::V1::InsightSerializer.new(
             insights,
             params: jsonapi_serializer_params,
-            include: [:insightable]
+            include: %i[insightable insightable.background_task]
           ).serializable_hash
         end
 
@@ -30,7 +30,18 @@ module Analysis
           end
         end
 
+        def rate
+          insight = @analysis.insights.find(params[:id])
+          rating = params[:rating]
+          side_fx_service.after_rate(insight, current_user, rating)
+          head :created
+        end
+
         private
+
+        def side_fx_service
+          @side_fx_service ||= SideFxInsightService.new
+        end
 
         def set_analysis
           @analysis = Analysis.find(params[:analysis_id])

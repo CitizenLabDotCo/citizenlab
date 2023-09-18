@@ -151,7 +151,7 @@
             "title": "Onboarding (Step 3)",
             "description": "Onboarding step after login or signup, asking for topics you are interested in.",
             "type": "boolean",
-            "default": true
+            "default": false
           },
           "areas_term": {
             "title": "Geographic Units",
@@ -256,8 +256,8 @@
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
-          "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false }
+          "allowed": { "type": "boolean", "default": true },
+          "enabled": { "type": "boolean", "default": true }
         }
       },
 
@@ -663,6 +663,15 @@
             "$ref": "#/definitions/multiloc_string",
             "default": <%= MultilocService.new.i18n_to_multiloc(
             'initiatives.default_eligibility_criteria',
+            locales: CL2_SUPPORTED_LOCALES).to_json
+            %>
+          },
+          "posting_tips": {
+            "title": "Posting tips",
+            "description": "Text specifying tips for posting a proposal.",
+            "$ref": "#/definitions/multiloc_string",
+            "default": <%= MultilocService.new.i18n_to_multiloc(
+            'initiatives.default_posting_tips',
             locales: CL2_SUPPORTED_LOCALES).to_json
             %>
           },

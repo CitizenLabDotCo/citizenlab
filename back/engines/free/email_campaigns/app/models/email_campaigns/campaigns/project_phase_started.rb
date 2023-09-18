@@ -31,7 +31,6 @@ module EmailCampaigns
     include Consentable
     include ActivityTriggerable
     include RecipientConfigurable
-    include Disableable
     include Trackable
     include LifecycleStageRestrictable
     allow_lifecycle_stages only: ['active']
@@ -57,7 +56,7 @@ module EmailCampaigns
     end
 
     def self.recipient_segment_multiloc_key
-      'email_campaigns.admin_labels.recipient_segment.users_who_engaged_with_the_project'
+      'email_campaigns.admin_labels.recipient_segment.users_who_follow_the_project'
     end
 
     def self.content_type_multiloc_key
@@ -82,7 +81,8 @@ module EmailCampaigns
             phase_end_at: notification.phase.end_at.iso8601,
             phase_url: Frontend::UrlService.new.model_to_url(notification.phase, locale: recipient.locale),
             project_title_multiloc: notification.project.title_multiloc,
-            project_description_preview_multiloc: notification.project.description_preview_multiloc
+            project_description_preview_multiloc: notification.project.description_preview_multiloc,
+            unfollow_url: Frontend::UrlService.new.unfollow_url(Follower.new(followable: notification.project, user: recipient))
           },
           delay: 8.hours.to_i
         }]

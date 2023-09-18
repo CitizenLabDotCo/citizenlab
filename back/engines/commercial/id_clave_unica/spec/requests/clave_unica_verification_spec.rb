@@ -144,6 +144,30 @@ describe 'clave_unica verification' do
     expect(response).to redirect_to('/en/complete-signup?pathname=%2Fsome-page')
   end
 
+  context 'when checking against list of verified RUTs registered in municipality' do
+    context 'when RUT is added to list' do
+      before { IdIdCardLookup::IdCard.create!(card_id: '44.444.444-4') }
+
+      it 'sets rut_verified custom field' do
+        get "/auth/clave_unica?token=#{@token}"
+        follow_redirect!
+
+        expect(@user.reload.custom_field_values).to eq({ 'rut_verified' => true })
+      end
+    end
+
+    context 'when RUT is not added to list' do
+      before { IdIdCardLookup::IdCard.create!(card_id: '55.555.555-5') }
+
+      it 'does not set rut_verified custom field' do
+        get "/auth/clave_unica?token=#{@token}"
+        follow_redirect!
+
+        expect(@user.reload.custom_field_values).to eq({})
+      end
+    end
+  end
+
   context 'when verification is already taken by new user' do
     before do
       get '/auth/clave_unica'

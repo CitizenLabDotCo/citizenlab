@@ -41,7 +41,7 @@ resource 'Insights' do
           }
         }
       })
-      expect(json_response_body[:included].pluck(:id)).to match_array([summary.id, question.id])
+      expect(json_response_body[:included].pluck(:id)).to match_array([summary.id, summary.background_task.id, question.id, question.background_task.id])
     end
   end
 
@@ -57,6 +57,24 @@ resource 'Insights' do
       expect(response_status).to eq 200
       expect { Analysis::Insight.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
       expect { Analysis::Summary.find(summary.id) }.to raise_error(ActiveRecord::RecordNotFound)
+    end
+  end
+
+  post 'web_api/v1/analyses/:analysis_id/insights/:id/rate' do
+    parameter :rating, 'The rating value, can be vote-up or vote-down'
+
+    let!(:summary) { create(:summary) }
+    let(:analysis_id) { summary.analysis.id }
+    let(:id) { summary.insight_id }
+
+    example 'Up-vote an insight' do
+      expect { do_request(rating: 'vote-up') }.to have_enqueued_job(LogActivityJob).with(Analysis::Insight.find(id), 'rated', kind_of(User), anything, payload: { rating: 'vote-up' })
+      expect(response_status).to eq 201
+    end
+
+    example 'Down-vote an insight' do
+      expect { do_request(rating: 'vote-down') }.to have_enqueued_job(LogActivityJob).with(Analysis::Insight.find(id), 'rated', kind_of(User), anything, payload: { rating: 'vote-down' })
+      expect(response_status).to eq 201
     end
   end
 end

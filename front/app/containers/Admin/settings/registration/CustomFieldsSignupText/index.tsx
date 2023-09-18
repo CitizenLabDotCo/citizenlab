@@ -22,7 +22,6 @@ const RegistrationQuestions = ({
 }: Props) => {
   return (
     <SectionField>
-      woohoooo
       <InputMultilocWithLocaleSwitcher
         type="text"
         valueMultiloc={customFieldsSignupHelperTextMultiloc}

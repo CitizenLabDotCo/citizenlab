@@ -1,3 +1,4 @@
+import { Multiloc } from 'typings';
 import { object, lazy, string } from 'yup';
 
 // validates that every key passed in (e.g. for a multiloc)
@@ -5,12 +6,12 @@ import { object, lazy, string } from 'yup';
 // and not the configured locales
 
 const validateMultilocForEveryLocale = (message: string) =>
-  lazy((obj) => {
-    const keys = Object.keys(obj);
+  lazy((multiloc: Multiloc) => {
+    const locales = Object.keys(multiloc);
 
     return object(
-      keys.reduce(
-        (acc, curr) => ((acc[curr] = string().required(message)), acc),
+      locales.reduce(
+        (acc, locale) => ((acc[locale] = string().required(message)), acc),
         {}
       )
     );

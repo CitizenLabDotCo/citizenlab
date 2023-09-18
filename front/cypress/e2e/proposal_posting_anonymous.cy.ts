@@ -35,7 +35,7 @@ describe('Initiatives with anonymous participation allowed', () => {
     cy.setAdminLoginCookie();
 
     cy.visit(`/initiatives/new`);
-    cy.get('#e2e-initiative-title-input').as('titleInput');
+    cy.get('#title_multiloc').as('titleInput');
     cy.get('#e2e-initiative-form-description-section .ql-editor').as(
       'descriptionInput'
     );
@@ -58,7 +58,7 @@ describe('Initiatives with anonymous participation allowed', () => {
     cy.wait(1000);
 
     // save the form
-    cy.get('.e2e-initiative-publish-button .e2e-submit-form').click({
+    cy.get('#e2e-initiative-publish-button').click({
       force: true,
     });
     cy.wait(1000);
@@ -82,7 +82,7 @@ describe('Initiatives with anonymous participation allowed', () => {
     cy.setLoginCookie(email, password);
 
     cy.visit(`/initiatives/new`);
-    cy.get('#e2e-initiative-title-input').as('titleInput');
+    cy.get('#title_multiloc').as('titleInput');
     cy.get('#e2e-initiative-form-description-section .ql-editor').as(
       'descriptionInput'
     );
@@ -105,7 +105,7 @@ describe('Initiatives with anonymous participation allowed', () => {
     cy.wait(1000);
 
     // save the form
-    cy.get('.e2e-initiative-publish-button .e2e-submit-form').click({
+    cy.get('#e2e-initiative-publish-button').click({
       force: true,
     });
     cy.wait(1000);

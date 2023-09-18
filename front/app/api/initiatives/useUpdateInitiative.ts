@@ -10,12 +10,13 @@ import initiativeFilterCountsKeys from 'api/initiatives_filter_counts/keys';
 const updateInitiative = ({
   initiativeId,
   requestBody,
-}: IUpdateInitiativeObject) =>
-  fetcher<IInitiative>({
+}: IUpdateInitiativeObject) => {
+  return fetcher<IInitiative>({
     path: `/initiatives/${initiativeId}`,
     action: 'patch',
     body: { initiative: requestBody },
   });
+};
 
 const useUpdateInitiative = () => {
   const queryClient = useQueryClient();

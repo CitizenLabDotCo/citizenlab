@@ -11,8 +11,7 @@ import 'quill/dist/quill.snow.css';
 import { Label, IconTooltip } from '@citizenlab/cl2-component-library';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // analytics
@@ -378,7 +377,7 @@ Quill.register(
 
 Quill.register(KeepHTML);
 
-const QuillEditor = memo<Props & WrappedComponentProps>(
+const QuillEditor = memo<Props>(
   ({
     id,
     value,
@@ -400,11 +399,10 @@ const QuillEditor = memo<Props & WrappedComponentProps>(
     onBlur,
     onFocus,
     withCTAButton,
-    intl: { formatMessage },
     children,
   }) => {
     const toolbarId = !noToolbar ? `ql-editor-toolbar-${id}` : null;
-
+    const { formatMessage } = useIntl();
     const [editor, setEditor] = useState<Quill | null>(null);
     const contentRef = useRef<string>(value || '');
     const prevEditor = usePrevious(editor);
@@ -862,4 +860,4 @@ const QuillEditor = memo<Props & WrappedComponentProps>(
   }
 );
 
-export default injectIntl(QuillEditor);
+export default QuillEditor;

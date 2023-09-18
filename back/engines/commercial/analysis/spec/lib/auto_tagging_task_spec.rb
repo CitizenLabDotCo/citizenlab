@@ -5,9 +5,10 @@ require 'rails_helper'
 RSpec.describe Analysis::AutoTaggingTask do
   describe 'Controversial auto_tagging' do
     it 'works' do
-      att = create(:auto_tagging_task, state: 'queued', auto_tagging_method: 'controversial')
+      att = create(:auto_tagging_task, state: 'queued', auto_tagging_method: 'controversial', filters: { 'reactions_from' => 101 })
       idea1 = create(:idea, project: att.analysis.project, likes_count: 100, dislikes_count: 100)
-      idea2 = create(:idea, project: att.analysis.project, likes_count: 100, dislikes_count: 0)
+      idea2 = create(:idea, project: att.analysis.project, likes_count: 50, dislikes_count: 50)
+      idea3 = create(:idea, project: att.analysis.project, likes_count: 100, dislikes_count: 0)
 
       expect { att.execute }
         .to change(Analysis::Tag, :count).from(0).to(1)
@@ -20,7 +21,9 @@ RSpec.describe Analysis::AutoTaggingTask do
       controversial_tag = Analysis::Tag.find_by(tag_type: Analysis::AutoTaggingMethod::Controversial::TAG_TYPE)
       expect(controversial_tag).to be_present
       expect(idea1.tags).to include(controversial_tag)
+      expect(idea1.taggings.first.background_task).to eq att
       expect(idea2.tags).not_to include(controversial_tag)
+      expect(idea3.tags).not_to include(controversial_tag)
     end
   end
 
@@ -47,6 +50,7 @@ RSpec.describe Analysis::AutoTaggingTask do
         progress: nil
       })
       expect(idea1.tags).to include(Analysis::Tag.find_by(name: shared_topic.title_multiloc.values))
+      expect(idea1.taggings.first.background_task).to eq att
       expect(idea1.tags).to include(Analysis::Tag.find_by(name: topic1.title_multiloc.values))
       expect(idea1.tags).not_to include(Analysis::Tag.find_by(name: topic2.title_multiloc.values))
     end
@@ -86,6 +90,7 @@ RSpec.describe Analysis::AutoTaggingTask do
       expect(positive_tag.reload).to be_present
 
       expect(idea.tags).to match_array([negative_tag])
+      expect(idea.taggings.first.background_task).to eq att
     end
   end
 
@@ -131,6 +136,7 @@ RSpec.describe Analysis::AutoTaggingTask do
       expect(nl_tag).to be_present
 
       expect(idea.tags).to match_array([nl_tag, fr_tag])
+      expect(idea.taggings.first.background_task).to eq att
     end
   end
 
@@ -166,6 +172,81 @@ RSpec.describe Analysis::AutoTaggingTask do
       expect(sport_tag).to be_present
 
       expect(idea.tags).to eq([sport_tag])
+      expect(idea.taggings.first.background_task).to eq att
+    end
+  end
+
+  describe 'LabelClassification auto_tagging' do
+    it 'works' do
+      project = create(:project)
+      custom_form = create(:custom_form, :with_default_fields, participation_context: project)
+      analysis = create(:analysis, custom_fields: custom_form.custom_fields, project: project)
+      tags = create_list(:tag, 3, analysis: analysis)
+      att = create(:auto_tagging_task, analysis: analysis, state: 'queued', auto_tagging_method: 'label_classification', tags_ids: [tags[0].id, tags[1].id], filters: { search: 'world' })
+      idea1 = create(:idea, project: project, title_multiloc: { en: 'Footbal is the greatest sport in the world' })
+      idea2 = create(:idea, project: project, title_multiloc: { en: 'This does contain world, but is already tagged so should not be auto-tagged' })
+      create(:tagging, input: idea2, tag: tags[0])
+      _idea3 = create(:idea, project: project, title_multiloc: { en: 'This does not contain w o r l d, so it should not be auto-tagged' })
+
+      mock_nlp_client = instance_double(NLPCloud::Client)
+
+      expect(mock_nlp_client).to receive(:classification).once.and_return({
+        'labels' => [tags[0].name, tags[1].name],
+        'scores' => [0.9258800745010376, 0.1938474327325821]
+      })
+      expect_any_instance_of(Analysis::AutoTaggingMethod::LabelClassification)
+        .to receive(:nlp_cloud_client_for)
+        .and_return(
+          mock_nlp_client
+        )
+
+      expect { att.execute }
+        .to change(Analysis::Tagging, :count).from(1).to(2)
+
+      expect(att.reload).to have_attributes({
+        state: 'succeeded',
+        progress: nil
+      })
+
+      expect(idea1.tags).to eq([tags[0]])
+      expect(idea1.taggings.first.background_task).to eq(att)
+    end
+  end
+
+  describe 'FewShotClassification auto_tagging' do
+    it 'works' do
+      project = create(:project)
+      custom_form = create(:custom_form, :with_default_fields, participation_context: project)
+      analysis = create(:analysis, custom_fields: custom_form.custom_fields, project: project)
+      tags = create_list(:tag, 3, analysis: analysis)
+      att = create(:auto_tagging_task, analysis: analysis, state: 'queued', auto_tagging_method: 'few_shot_classification', tags_ids: [tags[0].id, tags[1].id])
+      idea1 = create(:idea, project: project, title_multiloc: { en: 'Footbal is the greatest sport in the world' })
+      idea2 = create(:idea, project: project, title_multiloc: { en: 'We should have a dancing stage in the parc' })
+      idea3 = create(:idea, project: project, title_multiloc: { en: 'We need more houses' })
+      create(:tagging, input: idea3, tag: tags[0])
+
+      mock_llm = instance_double(Analysis::LLM::GPT48k)
+
+      expect_any_instance_of(Analysis::AutoTaggingMethod::FewShotClassification).to receive(:llm).and_return(mock_llm)
+      expect(mock_llm).to receive(:chat) do |prompt|
+        expect(prompt).to include(tags[0].name, tags[1].name, 'other')
+        expect(prompt).to include('other')
+        expect(prompt).to include('Footbal is the greatest sport in the world').once
+        expect(prompt).to include('We need more houses').once
+      end.and_return("#{tags[0].name}\n   #{tags[1].name.upcase}")
+
+      expect { att.execute }
+        .to change(Analysis::Tagging, :count).from(1).to(3)
+
+      expect(att.reload).to have_attributes({
+        state: 'succeeded',
+        progress: nil
+      })
+
+      expect(idea1.tags).to eq([tags[0]])
+      expect(idea1.taggings.first.background_task).to eq(att)
+      expect(idea2.tags).to eq([tags[1]])
+      expect(idea2.taggings.first.background_task).to eq(att)
     end
   end
 end

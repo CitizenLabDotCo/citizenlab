@@ -527,7 +527,6 @@
   "app.containers.Admin.PagesAndMenu.addButton": "Dodaj do paska nawigacyjnego",
   "app.containers.Admin.PagesAndMenu.components.NavbarItemForm.navbarItemTitle": "Nazwa w pasku nawigacyjnym",
   "app.containers.Admin.PagesAndMenu.components.deletePageConfirmationHidden": "Czy na pewno chcesz usunąć ten projekt? Tej operacji nie da się cofnąć.",
-  "app.containers.Admin.PagesAndMenu.components.emptyTitleError": "Wprowadź tytuły dla wszystkich języków",
   "app.containers.Admin.PagesAndMenu.components.hiddenFromNavigation": "Inne dostępne strony",
   "app.containers.Admin.PagesAndMenu.components.savePage": "Zapisz",
   "app.containers.Admin.PagesAndMenu.components.saveSuccess": "Strona została pomyślnie zapisana",

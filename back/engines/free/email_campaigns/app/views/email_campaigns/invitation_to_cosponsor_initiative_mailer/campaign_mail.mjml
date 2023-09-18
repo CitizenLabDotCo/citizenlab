@@ -9,6 +9,14 @@
 <mj-section padding="0 25px 0 25px">
   <mj-column>
     <mj-text>
+      <p><%= format_message('event_description_before_action', escape_html: false) %></p>
+    </mj-text>
+  </mj-column>
+</mj-section>
+
+<mj-section padding="0 25px 0 25px">
+  <mj-column>
+    <mj-text>
       <p><%= format_message('event_description_action') %></p>
     </mj-text>
   </mj-column>

@@ -7,16 +7,6 @@ describe SideFxInitiativeService do
   let(:user) { create(:user) }
 
   describe '#after_update' do
-    it "logs a 'published' action job when publication_state goes from draft to published" do
-      initiative = create(:initiative, publication_status: 'draft', author: user)
-      initiative.update!(publication_status: 'published')
-
-      expect { service.after_update(initiative, user, _cosponsor_ids = []) }
-        .to enqueue_job(LogActivityJob)
-        .with(initiative, 'published', user, initiative.published_at.to_i)
-        .exactly(1).times
-    end
-
     it "logs a 'changed' action job when the initiative has changed" do
       initiative = create(:initiative)
       initiative.update!(title_multiloc: { en: 'something else' })
@@ -84,55 +74,13 @@ describe SideFxInitiativeService do
           .exactly(1).times
       end
     end
-
-    context 'when initiative is published' do
-      let(:initiative) { create(:initiative, author: user, publication_status: 'draft') }
-
-      context "when initiative has status 'proposed'" do
-        let!(:initiative_status_change) do
-          create(
-            :initiative_status_change,
-            initiative: initiative,
-            initiative_status: create(:initiative_status_proposed)
-          )
-        end
-
-        it 'logs a proposed activity job' do
-          initiative.update!(publication_status: 'published')
-
-          expect { service.after_update(initiative, user, _cosponsor_ids = []) }
-            .to enqueue_job(LogActivityJob)
-            .with(initiative, 'proposed', user, initiative.updated_at.to_i)
-            .exactly(1).times
-        end
-      end
-
-      context "when initiative has status 'review_pending'" do
-        let!(:initiative_status_change) do
-          create(
-            :initiative_status_change,
-            initiative: initiative,
-            initiative_status: create(:initiative_status_review_pending)
-          )
-        end
-
-        it "doesn't log a proposed activity job" do
-          initiative.update!(publication_status: 'published')
-
-          expect { service.after_update(initiative, user, _cosponsor_ids = []) }
-            .not_to enqueue_job(LogActivityJob)
-            .with(instance_of(Initiative), 'proposed', anything, anything)
-        end
-      end
-    end
   end
 
   describe '#after_accept_cosponsorship_invite' do
-    let(:cosponsors_initiative) { create(:cosponsors_initiative) }
+    let(:initiative) { create(:initiative) }
+    let(:cosponsors_initiative) { create(:cosponsors_initiative, status: 'accepted', user: user, initiative: initiative) }
 
     it 'logs a cosponsorship_accepted activity job' do
-      cosponsors_initiative.update!(status: 'accepted')
-
       expect { service.after_accept_cosponsorship_invite(cosponsors_initiative, user) }
         .to enqueue_job(LogActivityJob)
         .with(
@@ -143,6 +91,14 @@ describe SideFxInitiativeService do
           payload: { change: %w[pending accepted] }
         )
         .exactly(1).times
+    end
+
+    it 'creates a follower' do
+      expect do
+        service.after_accept_cosponsorship_invite cosponsors_initiative, user
+      end.to change(Follower, :count).from(0).to(1)
+
+      expect(user.follows.pluck(:followable_id)).to contain_exactly initiative.id
     end
   end
 
@@ -170,6 +126,67 @@ describe SideFxInitiativeService do
       end.to change(Follower, :count).from(0).to(1)
 
       expect(user.follows.pluck(:followable_id)).to contain_exactly initiative.id
+    end
+
+    it 'creates a reaction (vote) for an author who can react (vote)' do
+      initiative = create(:initiative)
+
+      expect do
+        service.after_create initiative, user
+      end.to change(Reaction, :count).from(0).to(1)
+
+      expect(initiative.reactions.pluck(:user_id)).to contain_exactly initiative.author.id
+    end
+
+    it 'does not create a reaction (vote) for an author who cannot react (vote)' do
+      initiative = create(:initiative)
+
+      create(
+        :permission,
+        permission_scope: nil,
+        action: 'reacting_initiative',
+        permitted_by: 'groups',
+        groups: [create(:group)]
+      )
+
+      expect do
+        service.after_create initiative, user
+      end.not_to change(Reaction, :count)
+    end
+
+    context "when initiative has status 'proposed'" do
+      let(:initiative) { create(:initiative) }
+      let!(:initiative_status_change) do
+        create(
+          :initiative_status_change,
+          initiative: initiative,
+          initiative_status: create(:initiative_status_proposed)
+        )
+      end
+
+      it 'logs a proposed activity job' do
+        expect { service.after_create(initiative, user) }
+          .to enqueue_job(LogActivityJob)
+          .with(initiative, 'proposed', user, initiative.updated_at.to_i)
+          .exactly(1).times
+      end
+    end
+
+    context "when initiative has status 'review_pending'" do
+      let(:initiative) { create(:initiative) }
+      let!(:initiative_status_change) do
+        create(
+          :initiative_status_change,
+          initiative: initiative,
+          initiative_status: create(:initiative_status_review_pending)
+        )
+      end
+
+      it "doesn't log a proposed activity job" do
+        expect { service.after_update(initiative, user, _cosponsor_ids = []) }
+          .not_to enqueue_job(LogActivityJob)
+          .with(instance_of(Initiative), 'proposed', anything, anything)
+      end
     end
   end
 

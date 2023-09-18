@@ -44,7 +44,6 @@ const NavbarTitleField = ({
     <SectionField>
       <InputMultilocWithLocaleSwitcher
         label={formatMessage(messages.navbarItemTitle)}
-        type="text"
         name="nav_bar_item_title_multiloc"
       />
     </SectionField>

@@ -65,6 +65,7 @@ export type ProposalsSettings = {
   days_limit: number;
   allow_anonymous_participation?: boolean;
   eligibility_criteria: Multiloc;
+  posting_tips: Multiloc;
   threshold_reached_message: Multiloc;
   reacting_threshold: number;
 };

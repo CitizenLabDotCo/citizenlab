@@ -6,20 +6,20 @@ import Areas from 'components/Areas';
 import { useIntl } from 'utils/cl-intl';
 import useAuthUser from 'api/me/useAuthUser';
 import messages from '../messages';
-import { RequirementStatus } from 'api/authentication/authentication_requirements/types';
+import { OnboardingType } from 'api/authentication/authentication_requirements/types';
 import useAreas from 'api/areas/useAreas';
 import useTopics from 'api/topics/useTopics';
 
 interface Props {
-  onSubmit: (id: string, onboarding: Record<string, RequirementStatus>) => void;
+  onSubmit: (id: string, onboarding: OnboardingType) => void;
   onSkip: () => void;
 }
 
 const TopicsAndAreas = ({ onSubmit, onSkip }: Props) => {
   const { formatMessage } = useIntl();
   const { data: authUser } = useAuthUser();
-  const { data: areas } = useAreas({ forHomepageFilter: true });
-  const { data: topics } = useTopics({ forHomepageFilter: true });
+  const { data: areas } = useAreas({ forOnboarding: true });
+  const { data: topics } = useTopics({ forOnboarding: true });
   const hasAreas = areas && areas.data.length > 0;
   const hasTopics = topics && topics.data.length > 0;
 
@@ -40,7 +40,7 @@ const TopicsAndAreas = ({ onSubmit, onSkip }: Props) => {
             </Title>
           }
         >
-          <Topics showHomePageTopics />
+          <Topics showOnboardingTopics />
         </Accordion>
       )}
       {hasAreas && (
@@ -52,7 +52,7 @@ const TopicsAndAreas = ({ onSubmit, onSkip }: Props) => {
             </Title>
           }
         >
-          <Areas showHomePageAreas />
+          <Areas showOnboardingAreas />
         </Accordion>
       )}
       <Box display="flex" justifyContent="flex-end">

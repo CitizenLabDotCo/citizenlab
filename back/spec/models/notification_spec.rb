@@ -18,15 +18,16 @@ RSpec.describe Notification do
   end
 
   describe 'make_notifications_on' do
-    it 'makes a comment on your comment and comment on your idea notification on created comment activity' do
+    it 'makes a comment on your comment and comment on idea you follow notification on created comment activity' do
       idea = create(:idea)
       parent_comment = create(:comment, post: idea)
-      child_comment = create(:comment, parent: parent_comment)
+      child_comment = create(:comment, parent: parent_comment, post: idea)
+      create(:follower, followable: idea)
       activity = create(:activity, item: child_comment, action: 'created')
 
       notifications = Notifications::CommentOnYourComment.make_notifications_on activity
       expect(notifications).to be_present
-      notifications = Notifications::CommentOnYourIdea.make_notifications_on activity
+      notifications = Notifications::CommentOnIdeaYouFollow.make_notifications_on activity
       expect(notifications).to be_present
     end
 
@@ -59,12 +60,12 @@ RSpec.describe Notification do
       expect(notifications).to be_present
     end
 
-    it 'makes a status change of your idea notification on spam report created' do
-      recipient = create(:user)
-      idea = create(:idea, author: recipient)
+    it 'makes a status change on idea you follow notification on status changed' do
+      idea = create(:idea)
+      create(:follower, followable: idea)
       activity = create(:activity, item: idea, action: 'changed_status')
 
-      notifications = Notifications::StatusChangeOfYourIdea.make_notifications_on activity
+      notifications = Notifications::StatusChangeOnIdeaYouFollow.make_notifications_on activity
       expect(notifications).to be_present
     end
 
@@ -109,7 +110,7 @@ RSpec.describe Notification do
 
   it 'deleting a comment also deletes notifications requiring that comment' do
     comment = create(:comment)
-    create(:comment_on_your_idea, comment: comment)
+    create(:comment_on_idea_you_follow, comment: comment)
     count = described_class.count
     comment.destroy!
     expect(described_class.count).to eq(count - 1)
@@ -117,7 +118,7 @@ RSpec.describe Notification do
 
   it 'deleting a post also deletes notifications requiring that post' do
     post = create(:idea)
-    notification = create(:comment_on_your_idea, post: post)
+    notification = create(:comment_on_idea_you_follow, post: post)
     post.destroy!
 
     expect { described_class.find(notification.id) }.to raise_error(ActiveRecord::RecordNotFound)
@@ -125,7 +126,7 @@ RSpec.describe Notification do
 
   it 'deleting an idea status also deletes notifications requiring that idea status' do
     idea_status = create(:idea_status)
-    create(:status_change_of_your_idea, post_status: idea_status)
+    create(:status_change_on_idea_you_follow, post_status: idea_status)
     count = described_class.count
     idea_status.destroy!
     expect(described_class.count).to eq(count - 1)
@@ -133,7 +134,7 @@ RSpec.describe Notification do
 
   it 'deleting an initiative status also deletes notifications requiring that initiative status' do
     initiative_status = create(:initiative_status)
-    create(:status_change_of_your_initiative, post_status: initiative_status)
+    create(:status_change_on_initiative_you_follow, post_status: initiative_status)
     count = described_class.count
     initiative_status.destroy!
     expect(described_class.count).to eq(count - 1)
@@ -149,7 +150,7 @@ RSpec.describe Notification do
 
   it 'deleting an official feedback also deletes notifications requiring that official feedback' do
     official_feedback = create(:official_feedback)
-    create(:official_feedback_on_your_idea, official_feedback: official_feedback)
+    create(:official_feedback_on_idea_you_follow, official_feedback: official_feedback)
     count = described_class.count
     official_feedback.destroy!
     expect(described_class.count).to eq(count - 1)

@@ -54,7 +54,7 @@ class Initiative < ApplicationRecord
   has_many :areas_initiatives, dependent: :destroy
   has_many :areas, through: :areas_initiatives
   has_many :cosponsors_initiatives, dependent: :destroy
-  has_many :cosponsors, through: :cosponsors_initiatives, source: :user
+  has_many :cosponsors, through: :cosponsors_initiatives, source: :user, dependent: :destroy # dependent: :destroy destroys the associated cosponsors_inititiatve records, not the users
   has_many :initiative_status_changes, dependent: :destroy
   has_one :initiative_initiative_status
   has_one :initiative_status, through: :initiative_initiative_status
@@ -131,14 +131,7 @@ class Initiative < ApplicationRecord
   end
 
   def cosponsor_ids=(ids)
-    return unless ids
-
-    ids = ids.uniq
-    current_ids = cosponsors.pluck(:id).uniq
-    return if current_ids.sort == ids.sort
-
-    cosponsors_initiatives.where.not(user_id: ids).destroy_all
-    (ids - current_ids).each { |id| cosponsors_initiatives.create(user_id: id) }
+    super(ids.uniq)
   end
 
   def reactions_needed(configuration = AppConfiguration.instance)
@@ -174,7 +167,7 @@ class Initiative < ApplicationRecord
   def generate_slug
     return if slug
 
-    title = MultilocService.new.t title_multiloc, author
+    title = MultilocService.new.t title_multiloc, author&.locale
     self.slug ||= SlugService.new.generate_slug self, title
   end
 

@@ -118,6 +118,8 @@ export function stopPropagation(event) {
   event.stopPropagation();
 }
 
+// Still useful when checking lengt of content that gets wrapped with HTML
+// ===
 export function stripHtmlTags(str: string | null | undefined) {
   if (str === null || str === undefined || str === '') {
     return '';

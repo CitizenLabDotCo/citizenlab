@@ -3,6 +3,8 @@ import { isString } from 'lodash-es';
 import { Locale } from 'typings';
 import { IResolution } from 'components/admin/ResolutionControl';
 import messages from './messages';
+import { IEventData } from 'api/events/types';
+import { MessageDescriptor } from 'react-intl';
 
 export function getIsoDateForToday(): string {
   // this is based on the user's timezone in moment, so
@@ -126,6 +128,14 @@ export function convertSecondsToDDHHMM(seconds: number) {
   return `${formattedDaysLeft}:${formattedHoursLeft}:${formattedMinutesLeft}`;
 }
 
+export function capitalizeDates(locale: Locale) {
+  const localesWithCapitalizedWeekdays = ['en', 'de'];
+  if (localesWithCapitalizedWeekdays.includes(locale)) {
+    return true;
+  }
+  return false;
+}
+
 export function getDayName(dayInWeek: number) {
   switch (dayInWeek) {
     case 0:
@@ -178,3 +188,32 @@ export function toFullMonth(date: string, resolution: IResolution) {
     .utc(date, 'YYYY-MM-DD')
     .format(resolution === 'month' ? 'MMMM YYYY' : 'MMMM DD, YYYY');
 }
+
+// This function is used to display event start/end times with weekday names
+export const getEventDateWithWeekdays = (
+  event: IEventData,
+  formatMessage: (
+    messageDescriptor: MessageDescriptor,
+    values?:
+      | {
+          [key: string]: string | number | boolean | Date;
+        }
+      | undefined
+  ) => string
+) => {
+  const startAtMoment = moment(event.attributes.start_at);
+  const endAtMoment = moment(event.attributes.end_at);
+  const isEventMultipleDays =
+    startAtMoment.dayOfYear() !== endAtMoment.dayOfYear();
+  const startAtWeekday = getDayName(startAtMoment.weekday());
+  const endAtWeekday = getDayName(endAtMoment.weekday());
+  return isEventMultipleDays
+    ? `${
+        startAtWeekday && formatMessage(startAtWeekday)
+      }, ${startAtMoment.format('LLL')} - ${
+        endAtWeekday && formatMessage(endAtWeekday)
+      }, ${endAtMoment.format('LLL')}`
+    : `${startAtMoment.format('LL')} • ${startAtMoment.format(
+        'LT'
+      )} - ${endAtMoment.format('LT')}`;
+};

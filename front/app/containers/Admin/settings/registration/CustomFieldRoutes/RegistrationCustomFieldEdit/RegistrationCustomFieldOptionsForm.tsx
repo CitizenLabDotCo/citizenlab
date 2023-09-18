@@ -71,7 +71,6 @@ const RegistrationCustomFieldOptionsForm = ({
           <InputMultilocWithLocaleSwitcher
             name="title_multiloc"
             label={formatMessage(messages.answerOption)}
-            type="text"
           />
         </SectionField>
         <Box display="flex">

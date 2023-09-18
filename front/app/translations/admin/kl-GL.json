@@ -527,7 +527,6 @@
   "app.containers.Admin.PagesAndMenu.addButton": "Iserfiusinnaasut ilakkit",
   "app.containers.Admin.PagesAndMenu.components.NavbarItemForm.navbarItemTitle": "Navigationslinjemi taaguutaa allaguk",
   "app.containers.Admin.PagesAndMenu.components.deletePageConfirmationHidden": "Ilumut qupperneq una peerniarpiuk? Uterteqqissinnaanavianngilaq.",
-  "app.containers.Admin.PagesAndMenu.components.emptyTitleError": "Oqaatsinut tamanut qulequtsiigit",
   "app.containers.Admin.PagesAndMenu.components.hiddenFromNavigation": "Quppernerit takuneqariaannaasut",
   "app.containers.Admin.PagesAndMenu.components.savePage": "Save page",
   "app.containers.Admin.PagesAndMenu.components.saveSuccess": "Page successfully saved",

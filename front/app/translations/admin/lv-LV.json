@@ -527,7 +527,6 @@
   "app.containers.Admin.PagesAndMenu.addButton": "Pievienot navigācijas joslai",
   "app.containers.Admin.PagesAndMenu.components.NavbarItemForm.navbarItemTitle": "Nosaukums navigācijas joslā",
   "app.containers.Admin.PagesAndMenu.components.deletePageConfirmationHidden": "Vai esat pārliecināts, ka vēlaties dzēst šo lapu? Šo darbību nevar atsaukt.",
-  "app.containers.Admin.PagesAndMenu.components.emptyTitleError": "Norādīt virsrakstu visās valodās",
   "app.containers.Admin.PagesAndMenu.components.hiddenFromNavigation": "Citas pieejamās lapas",
   "app.containers.Admin.PagesAndMenu.components.savePage": "Saglabāt lapu",
   "app.containers.Admin.PagesAndMenu.components.saveSuccess": "Lapa veiksmīgi saglabāta",

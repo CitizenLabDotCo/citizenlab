@@ -50,7 +50,7 @@ const Cosponsors = ({
             onChangeRequireSponsors(!requireCosponsors);
           }}
           label={
-            // copied from front/app/containers/Admin/initiatives/settings/RequireApprovalToggle.tsx
+            // copied from front/app/components/admin/AnonymousPostingToggle/AnonymousPostingToggle.tsx
             <Box ml="8px">
               <Box display="flex">
                 <Text

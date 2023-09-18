@@ -127,7 +127,8 @@ RSpec.describe Initiative do
 
         reacting_threshold: 2,
         threshold_reached_message: { 'en' => 'Threshold reached' },
-        eligibility_criteria: { 'en' => 'Eligibility criteria' }
+        eligibility_criteria: { 'en' => 'Eligibility criteria' },
+        posting_tips: { 'en' => 'Posting tips' }
       }
       configuration.save!
     end
@@ -248,6 +249,10 @@ RSpec.describe Initiative do
       initiative.update!(cosponsor_ids: [cosponsor2.id])
 
       expect(initiative.reload.cosponsors).to match_array [cosponsor2]
+
+      # has_many :cosponsors, through: :cosponsors_initiatives, source: :user, dependent: :destroy
+      # destroys the associated cosponsors_intitiative record(s), not the user(s)
+      expect(User.find(cosponsor1.id)).to be_present
     end
 
     it 'removes cosponsors_initiative even when an associated notifcation exists' do
@@ -274,12 +279,6 @@ RSpec.describe Initiative do
 
     it 'handles duplicate IDs' do
       initiative.update!(cosponsor_ids: [cosponsor1.id, cosponsor1.id])
-
-      expect(initiative.reload.cosponsors).to match_array [cosponsor1]
-    end
-
-    it 'does nothing when given nil' do
-      initiative.update!(cosponsor_ids: nil)
 
       expect(initiative.reload.cosponsors).to match_array [cosponsor1]
     end

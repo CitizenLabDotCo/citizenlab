@@ -14,6 +14,18 @@ module Analysis
         }.merge(params))
       end
 
+      def chat(prompt, **params)
+        default_params = {
+          parameters: {
+            model: gpt_model,
+            messages: [{ role: 'user', content: prompt }],
+            temperature: 0.1
+          }
+        }
+        response = @client.chat(**default_params.deep_merge(params))
+        response.dig('choices', 0, 'message', 'content')
+      end
+
       def chat_async(prompt, **params)
         default_params = {
           parameters: {

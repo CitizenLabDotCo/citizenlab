@@ -527,7 +527,6 @@
   "app.containers.Admin.PagesAndMenu.addButton": "Tilføj til navigationslinjen",
   "app.containers.Admin.PagesAndMenu.components.NavbarItemForm.navbarItemTitle": "Navn i navbar",
   "app.containers.Admin.PagesAndMenu.components.deletePageConfirmationHidden": "Er du sikker på, at du vil slette denne side? Dette kan ikke fortrydes.",
-  "app.containers.Admin.PagesAndMenu.components.emptyTitleError": "Angiv titel for alle sprog",
   "app.containers.Admin.PagesAndMenu.components.hiddenFromNavigation": "Andre tilgængelige sider",
   "app.containers.Admin.PagesAndMenu.components.savePage": "Gem side",
   "app.containers.Admin.PagesAndMenu.components.saveSuccess": "Side gemt med succes",

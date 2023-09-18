@@ -1,5 +1,4 @@
 import React from 'react';
-import moment from 'moment';
 
 // components
 import { Text } from '@citizenlab/cl2-component-library';
@@ -13,7 +12,7 @@ import { IEventData } from 'api/events/types';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { getDayName } from 'utils/dateUtils';
+import { capitalizeDates, getEventDateWithWeekdays } from 'utils/dateUtils';
 import { useIntl } from 'utils/cl-intl';
 
 export interface Props {
@@ -23,31 +22,17 @@ export interface Props {
 const FullEventTime = ({ event }: Props) => {
   const currentLocale = useLocale();
   const { formatMessage } = useIntl();
-  const startAtMoment = moment(event.attributes.start_at);
-  const endAtMoment = moment(event.attributes.end_at);
-  const isEventMultipleDays =
-    startAtMoment.dayOfYear() !== endAtMoment.dayOfYear();
-
-  const startAtWeekday = getDayName(startAtMoment.weekday());
-  const endAtWeekday = getDayName(endAtMoment.weekday());
-
-  const eventDateTime = isEventMultipleDays
-    ? `${
-        startAtWeekday && formatMessage(startAtWeekday)
-      }, ${startAtMoment.format('LLL')} - ${
-        endAtWeekday && formatMessage(endAtWeekday)
-      }, ${endAtMoment.format('LLL')}`
-    : `${startAtMoment.format('LL')} • ${startAtMoment.format(
-        'LT'
-      )} - ${endAtMoment.format('LT')}`;
+  const eventDateTime = getEventDateWithWeekdays(event, formatMessage);
 
   if (location && !isNilOrError(currentLocale)) {
     return (
       <Container>
         <StyledIcon name="calendar" ariaHidden />
         <Content>
-          <Text color="coolGrey600" fontSize="s">
-            {eventDateTime}
+          <Text my="4px" color="coolGrey600" fontSize="s">
+            {capitalizeDates(currentLocale)
+              ? eventDateTime
+              : eventDateTime.toLowerCase()}
           </Text>
         </Content>
       </Container>

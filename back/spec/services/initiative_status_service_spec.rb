@@ -23,7 +23,8 @@ describe InitiativeStatusService do
         reacting_threshold: 2,
         days_limit: 20,
         threshold_reached_message: { 'en' => 'Threshold reached' },
-        eligibility_criteria: { 'en' => 'Eligibility criteria' }
+        eligibility_criteria: { 'en' => 'Eligibility criteria' },
+        posting_tips: { 'en' => 'Posting tips' }
       }
       configuration.save!
     end
@@ -93,7 +94,8 @@ describe InitiativeStatusService do
           reacting_threshold: 2,
           days_limit: 20,
           threshold_reached_message: { 'en' => 'Threshold reached' },
-          eligibility_criteria: { 'en' => 'Eligibility criteria' }
+          eligibility_criteria: { 'en' => 'Eligibility criteria' },
+          posting_tips: { 'en' => 'Posting tips' }
         }
         configuration.save!
       end

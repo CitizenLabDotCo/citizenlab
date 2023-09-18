@@ -36,6 +36,7 @@ const EventDateStylized = ({ event }: Props) => {
       display="flex"
       flexDirection={theme.isRtl ? 'row-reverse' : 'row'}
       justifyContent="center"
+      id="e2e-event-date-stylized"
     >
       <SingleDateStylized
         day={startAtMoment.format('DD')}

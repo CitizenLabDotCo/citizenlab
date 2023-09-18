@@ -12,8 +12,10 @@ import useLocalize from 'hooks/useLocalize';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { useSearchParams } from 'react-router-dom';
 import { useIntl } from 'utils/cl-intl';
-import messages from '../../messages';
+import translations from '../translations';
 import { handleArraySearchParam } from '../../util';
+import { trackEventByName } from 'utils/analytics';
+import tracks from '../../tracks';
 
 const AuthorFilters = () => {
   const localize = useLocalize();
@@ -76,9 +78,9 @@ const AuthorFilters = () => {
   return (
     <Box display="flex" flexDirection="column" gap="12px">
       <Text color="textSecondary" m="0px">
-        {formatMessage(messages.gender)}
+        {formatMessage(translations.gender)}
       </Text>
-      <Box display="flex" gap="12px">
+      <Box display="flex" gap="12px" flexWrap="wrap">
         <Button
           buttonStyle={!selectedGenderOptions ? 'admin-dark' : 'secondary'}
           onClick={() =>
@@ -88,7 +90,7 @@ const AuthorFilters = () => {
           }
           p="4px 12px"
         >
-          All
+          {formatMessage(translations.all)}
         </Button>
 
         {genderOptions?.data.map((option) => (
@@ -99,14 +101,19 @@ const AuthorFilters = () => {
                 ? 'admin-dark'
                 : 'secondary'
             }
-            onClick={() =>
+            onClick={() => {
               updateSearchParams({
                 [genderUrlQueryParamKey]: toggleOptionInArray(
                   selectedGenderOptions,
                   option.attributes.key
                 ),
-              })
-            }
+              });
+              trackEventByName(tracks.authorFilterUsed.name, {
+                extra: {
+                  type: 'gender',
+                },
+              });
+            }}
             p="4px 8px"
           >
             {localize(option.attributes.title_multiloc)}
@@ -114,9 +121,9 @@ const AuthorFilters = () => {
         ))}
       </Box>
       <Text color="textSecondary" m="0px">
-        {formatMessage(messages.domicile)}
+        {formatMessage(translations.domicile)}
       </Text>
-      <Box display="flex" gap="12px">
+      <Box display="flex" gap="12px" flexWrap="wrap">
         <Button
           buttonStyle={!selectedDomicileOptions ? 'admin-dark' : 'secondary'}
           onClick={() =>
@@ -126,7 +133,7 @@ const AuthorFilters = () => {
           }
           p="4px 12px"
         >
-          All
+          {formatMessage(translations.all)}
         </Button>
 
         {domicileOptions?.data.map((option) => (
@@ -137,14 +144,19 @@ const AuthorFilters = () => {
                 ? 'admin-dark'
                 : 'secondary'
             }
-            onClick={() =>
+            onClick={() => {
               updateSearchParams({
                 [domicileUrlQueryParamKey]: toggleOptionInArray(
                   selectedDomicileOptions,
                   option.attributes.key
                 ),
-              })
-            }
+              });
+              trackEventByName(tracks.authorFilterUsed.name, {
+                extra: {
+                  type: 'domicile',
+                },
+              });
+            }}
             p="4px 8px"
           >
             {localize(option.attributes.title_multiloc)}
@@ -153,31 +165,41 @@ const AuthorFilters = () => {
       </Box>
       {birthyearField && (
         <Box>
-          <Label>{formatMessage(messages.birthyear)}</Label>
+          <Label>{formatMessage(translations.birthyear)}</Label>
           <Box display="flex" gap="24px" w="100%">
             <Box w="50%">
               <Select
                 id="birthyear_from"
-                label={formatMessage(messages.from)}
+                label={formatMessage(translations.from)}
                 options={yearOptions}
-                onChange={(option) =>
+                onChange={(option) => {
                   updateSearchParams({
                     [birthyearUrlQueryParamFromKey]: option.value,
-                  })
-                }
+                  });
+                  trackEventByName(tracks.authorFilterUsed.name, {
+                    extra: {
+                      type: 'birthyear',
+                    },
+                  });
+                }}
                 value={searchParams.get(birthyearUrlQueryParamFromKey)}
               />
             </Box>
             <Box w="50%">
               <Select
                 id="birthyear_to"
-                label={formatMessage(messages.to)}
+                label={formatMessage(translations.to)}
                 options={yearOptions}
-                onChange={(option) =>
+                onChange={(option) => {
                   updateSearchParams({
                     [birthyearUrlQueryParamToKey]: option.value,
-                  })
-                }
+                  });
+                  trackEventByName(tracks.authorFilterUsed.name, {
+                    extra: {
+                      type: 'birthyear',
+                    },
+                  });
+                }}
                 value={searchParams.get(birthyearUrlQueryParamToKey)}
               />
             </Box>

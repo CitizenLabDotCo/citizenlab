@@ -200,7 +200,7 @@ const Phone = ({
         <Box mb="20px">
           <Topics
             postType="initiative"
-            topicIds={initiative.data.relationships.topics.data.map(
+            postTopicIds={initiative.data.relationships.topics.data.map(
               (topic) => topic.id
             )}
           />

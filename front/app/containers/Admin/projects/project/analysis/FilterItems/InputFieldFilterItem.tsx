@@ -11,6 +11,8 @@ import { useParams } from 'react-router-dom';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import ShortFieldValue from '../components/ShortInputFieldValue';
 import EllipsisFilterValue from './EllipsisFilterValue';
+import translations from './translations';
+import { useIntl } from 'utils/cl-intl';
 
 type Props = {
   customFieldId: string;
@@ -27,6 +29,7 @@ const InputFieldFilterItem = ({
   isEditable = true,
   predicate,
 }: Props) => {
+  const { formatMessage } = useIntl();
   const { analysisId } = useParams() as { analysisId: string };
   const { data: analysis } = useAnalysis(analysisId);
   const projectId = analysis?.data.relationships.project?.data?.id;
@@ -87,7 +90,7 @@ const InputFieldFilterItem = ({
           onClick={() => {
             removeSearchParams([filterKey]);
           }}
-          a11y_buttonActionMessage="Remove filter"
+          a11y_buttonActionMessage={formatMessage(translations.removeFilter)}
         />
       )}
     </Box>

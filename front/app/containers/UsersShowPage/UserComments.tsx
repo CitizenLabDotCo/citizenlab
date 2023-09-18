@@ -5,14 +5,13 @@ import { groupBy } from 'lodash-es';
 // components
 import PostCommentGroup from './PostCommentGroup';
 import Button from 'components/UI/Button';
-import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 import useUserBySlug from 'api/users/useUserBySlug';
 
 // style
 import styled, { useTheme } from 'styled-components';
 
-// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import { darken, rgba } from 'polished';
@@ -20,8 +19,6 @@ import { media, colors, fontSizes } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import useComments from 'api/comments/useComments';
 import useAuthUser from 'api/me/useAuthUser';
-
-// hooks
 import useUserCommentsCount from 'api/user_comments_count/useUserCommentsCount';
 
 const Container = styled.div`
@@ -117,20 +114,17 @@ export const UserComments = () => {
             {...messages.invisibleTitleUserComments}
           />
         </ScreenReaderOnly>
-        {commentsCount && isSmallerThanPhone && (
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            mb="16px"
-          >
-            <FormattedMessage
-              {...messages.commentsWithCount}
-              values={{ commentsCount: commentsCount.data.attributes.count }}
-            />
-          </Box>
-        )}
         <>
+          {isSmallerThanPhone && (
+            <Title mt="0px" variant="h3" as="h1">
+              <FormattedMessage
+                {...messages.commentsWithCount}
+                values={{
+                  commentsCount: commentsCount?.data.attributes.count || '0',
+                }}
+              />
+            </Title>
+          )}
           {Object.keys(commentGroups).map((postId) => {
             const commentGroup = commentGroups[postId];
             const postType = commentGroup[0].relationships.post.data.type as

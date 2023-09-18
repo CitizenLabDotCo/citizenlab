@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from 'utils/testUtils/rtl';
-import RadioGroup, { Radio } from './';
+import RadioGroup from './';
+import Radio from './Radio';
 import { useForm, FormProvider } from 'react-hook-form';
 import { string, object } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';

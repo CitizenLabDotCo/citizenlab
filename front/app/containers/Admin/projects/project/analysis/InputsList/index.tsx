@@ -7,8 +7,11 @@ import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 import Observer from '@researchgate/react-intersection-observer';
 import useKeyPress from 'hooks/useKeyPress';
 import { useSelectedInputContext } from '../SelectedInputContext';
+import translations from './translations';
+import { useIntl } from 'utils/cl-intl';
 
 const InputsList = () => {
+  const { formatMessage } = useIntl();
   const { selectedInputId, setSelectedInputId } = useSelectedInputContext();
   const { analysisId } = useParams() as { analysisId: string };
   const filters = useAnalysisFilterParams();
@@ -86,7 +89,7 @@ const InputsList = () => {
       {emptyList && (
         <Box display="flex" justifyContent="center">
           <Text px="24px" color="grey600">
-            No inputs correspond to your current filters
+            {formatMessage(translations.noInputs)}
           </Text>
         </Box>
       )}

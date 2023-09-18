@@ -1,33 +1,9 @@
 import React from 'react';
-import {
-  fontSizes,
-  Toggle,
-  Box,
-  IconTooltip,
-} from '@citizenlab/cl2-component-library';
+import { Toggle, Box, Text, Title } from '@citizenlab/cl2-component-library';
 import { FormattedMessage } from 'utils/cl-intl';
 import { colors } from 'utils/styleUtils';
 import messages from './messages';
-import styled from 'styled-components';
 import { SubSectionTitle } from 'components/admin/Section';
-
-const StyledToggle = styled(Toggle)`
-  flex-direction: row-reverse;
-  width: fit-content;
-
-  & > div {
-    font-weight: 600;
-    padding-left: 0;
-    padding-right: 1rem;
-  }
-`;
-
-const ToggleLabel = styled.label`
-  display: flex;
-  align-items: center;
-  color: ${colors.textSecondary};
-  font-size: ${fontSizes.base}px;
-`;
 
 type Props = {
   isEnabled: boolean;
@@ -40,23 +16,36 @@ const ToggleShowFollowPreferences = ({ isEnabled, onChange }: Props) => {
   };
 
   return (
-    <Box mb="35px">
+    <Box>
       <SubSectionTitle>
-        <FormattedMessage {...messages.requestFollowPreferences} />
-        <IconTooltip content={<FormattedMessage {...messages.helperText} />} />
+        <FormattedMessage {...messages.askFollowPreferences} />
       </SubSectionTitle>
-      <ToggleLabel>
-        <StyledToggle
-          checked={isEnabled}
-          onChange={handleChange}
-          labelTextColor={colors.primary}
-        />
-        {isEnabled ? (
-          <FormattedMessage {...messages.enabled} />
-        ) : (
-          <FormattedMessage {...messages.disabled} />
-        )}
-      </ToggleLabel>
+      <Box as="label" display="flex" alignItems="center">
+        <Box w="fit-content" display="flex" flexDirection="row-reverse">
+          <Toggle
+            checked={isEnabled}
+            onChange={handleChange}
+            labelTextColor={colors.primary}
+          />
+        </Box>
+
+        <Box display="flex" flexDirection="column">
+          <Title
+            color="primary"
+            fontSize="l"
+            pl="1rem"
+            my="0px"
+            style={{ fontWeight: 500 }}
+          >
+            <Box w="100%" display="flex">
+              <FormattedMessage {...messages.followPreferences} />
+            </Box>
+          </Title>
+          <Text fontSize="s" color="textSecondary" pl="1rem" mt="4px">
+            <FormattedMessage {...messages.followHelperText} />
+          </Text>
+        </Box>
+      </Box>
     </Box>
   );
 };

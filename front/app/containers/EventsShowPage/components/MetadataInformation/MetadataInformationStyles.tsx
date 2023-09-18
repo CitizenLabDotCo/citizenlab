@@ -19,7 +19,7 @@ export const StyledIcon = styled(Icon)`
   fill: ${colors.coolGrey600};
   margin-right: 8px;
   align-self: flex-start;
-  margin-top: 12px;
+  margin-top: 2px;
 
   ${isRtl`
     margin-right: 0;
