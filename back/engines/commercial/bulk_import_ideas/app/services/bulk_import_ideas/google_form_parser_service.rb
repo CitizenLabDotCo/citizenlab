@@ -68,7 +68,7 @@ module BulkImportIdeas
         if field[:page] % form_pages_count == 1 && current_page != previous_page # split by pages count
           docs << doc
           doc = {
-            form_pages: [1,2],
+            form_pages: [1, 2],
             pdf_pages: [],
             fields: {}
           }
@@ -149,6 +149,5 @@ module BulkImportIdeas
     def format_name(name)
       name.squish
     end
-
   end
 end

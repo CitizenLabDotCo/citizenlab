@@ -184,7 +184,7 @@ module BulkImportIdeas
       # Custom fields
       custom_fields = {}
       custom_fields = extract_custom_text_fields custom_fields, doc, text_fields
-      custom_fields = extract_custom_select_fields_from_options custom_fields, doc, select_fields, select_options
+      custom_fields = extract_custom_select_fields_from_options custom_fields, doc, select_options
       custom_fields = extract_custom_select_fields custom_fields, doc, select_fields, select_options
       idea_row[:custom_field_values] = custom_fields
 
@@ -242,7 +242,7 @@ module BulkImportIdeas
       custom_fields
     end
 
-    def extract_custom_select_fields_from_options(custom_fields, doc, select_fields, select_options)
+    def extract_custom_select_fields_from_options(custom_fields, doc, select_options)
       select_options.each do |option|
         option_field = find_field(doc, option[:name])
         # binding.pry
@@ -260,7 +260,6 @@ module BulkImportIdeas
             # TODO: This will not work for multiple keys where the version of fields that are just key pairs and not have the x,y values in there
             # select_options.delete_if { |o| o[:key] == select_options[:key] }
           end
-
 
           doc.delete_if { |f| f == option_field }
         end
