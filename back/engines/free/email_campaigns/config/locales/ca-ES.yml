@@ -6,8 +6,8 @@ ca:
       "comment_deleted_by_admin": Eliminació del meu comentari
       "comment_marked_as_spam": Comenteu l'informe de correu brossa
       "comment_on_your_comment": Una resposta al meu comentari
-      "comment_on_your_idea": Un comentari sobre la meva idea
-      "comment_on_your_initiative": Un comentari a la meva proposta
+      "comment_on_idea_you_follow": Un comentari sobre una idea que segueixes
+      "comment_on_initiative_you_follow": Un comentari sobre una proposta que seguiu
       "cosponsor_of_your_initiative": Un usuari accepta la meva invitació per copatrocinar la meva proposta
       "first_idea_published": Publicació de la meva primera idea
       "idea_marked_as_spam": Informe de correu brossa d'idees
@@ -30,10 +30,6 @@ ca:
       "mention_in_official_feedback": Esmenta en una actualització
       "mention_in_internal_comment": Esmenta en un comentari intern
       "new_comment_for_admin": Nou comentari en un projecte que modero
-      "new_comment_on_commented_idea": Nou comentari sobre una idea que vaig comentar
-      "new_comment_on_commented_initiative": Nou comentari a una proposta que vaig comentar
-      "new_comment_on_reacted_idea": Nou comentari sobre una idea a la qual vaig reaccionar
-      "new_comment_on_reacted_initiative": Nou comentari sobre una proposta que he votat
       "new_idea_for_admin": Nova idea en un projecte que modero
       "new_initiative_for_admin": Nova proposta
       "official_feedback_on_idea_you_follow": Actualitzeu una idea que seguiu
@@ -135,12 +131,6 @@ ca:
       today: Avui
       wrong_content: 'El comentari no és rellevant.'
       yesterday: Ahir
-    comment_on_your_initiative:
-      cta_reply_to: 'Respon a %{commentAuthor}'
-      event_description: '%{authorNameFull} ha fet una reacció a la teva iniciativa "%{initiativeTitle}". Feu clic al botó següent per continuar la conversa amb %{authorName}.'
-      main_header: '%{commentAuthor} han comentat la teva iniciativa'
-      subject: 'Has rebut un comentari a la plataforma de %{organizationName}'
-      preheader: '%{authorName} ha deixat un comentari sobre la teva iniciativa per a %{organizationName}'
     cosponsor_of_your_initiative:
       cta_reply_to: 'Consulta la teva proposta'
       event_description_initiative: 'Felicitats! %{cosponsorName} ha acceptat la teva invitació per copatrocinar la teva proposta.'
@@ -226,12 +216,6 @@ ca:
       preheader: 'Gràcies per compartir la teva proposta %{initiativeTitle} per %{organizationName}. El següent pas és obtenir suport per a la vostra proposta compartint-la a través de la vostra xarxa.'
       send_email: correu electrònic
       subject: 'La teva proposta s''ha publicat a la plataforma de %{organizationName}'
-    new_comment_on_commented_idea:
-      cta_reply_to: 'Respon a %{commentAuthor}'
-      event_description: '%{commentAuthorFull} també va escriure un comentari sobre la idea ''%{ideaTitle}'' a la plataforma de participació de %{organizationName}. Feu clic al botó següent per iniciar la conversa amb %{commentAuthor}.'
-      main_header: '%{commentAuthor} va escriure un comentari sobre la mateixa idea'
-      subject: 'Hi ha un altre comentari sobre la idea que vas comentar'
-      preheader: '%{commentAuthor} també va deixar un comentari sobre una idea per a %{organizationName}'
     mention_in_comment:
       cta_reply_to: 'Respon a %{commentAuthor}'
       event_description: '%{commentAuthorFull} t''ha esmentat en el seu comentari sobre la idea ''%{post}''. Feu clic a l''enllaç següent per entrar a la conversa amb %{commentAuthor}'
@@ -258,13 +242,6 @@ ca:
       yesterday_by_author: 'Ahir a les %{author}'
       today_by_author: 'Avui a les %{author}'
       x_days_ago_by_author: 'fa %{x} dies per %{author}'
-    new_comment_on_commented_initiative:
-      commented: '%{commentAuthor} va escriure:'
-      cta_reply_to: 'Respon a %{commentAuthor}'
-      event_description: '%{commentAuthorFull} també va escriure un comentari sobre la proposta ''%{initiativeTitle}'' a la plataforma de participació de %{organizationName}. Feu clic al botó següent per iniciar la conversa amb %{commentAuthor}.'
-      main_header: '%{commentAuthor} va escriure un comentari sobre la mateixa proposta'
-      subject: 'Hi ha un altre comentari sobre la proposta que has comentat'
-      preheader: '%{commentAuthor} també va deixar un comentari sobre una proposta per a %{organizationName}'
     new_comment_for_admin:
       commented: '%{authorFirstName} ha comentat:'
       cta_reply_to: 'Veure el comentari de %{commentAuthor}'
@@ -275,29 +252,18 @@ ca:
       preheader: '%{authorName} ha deixat un comentari'
       today: Avui
       yesterday: Ahir
-    comment_on_your_idea:
+    comment_on_idea_you_follow:
       cta_reply_to: 'Respon a %{commentAuthor}'
-      event_description: '%{authorNameFull} va fer una reacció a la teva idea "%{ideaTitle}". Feu clic al botó següent per continuar la conversa amb %{authorName}.'
-      main_header: '%{authorName} han comentat la teva idea'
-      subject: 'Has rebut un comentari a la plataforma de %{organizationName}'
-      preheader: '%{authorName} ha deixat un comentari sobre la teva idea per a %{organizationName}'
-    new_comment_on_reacted_initiative:
-      commented: '%{commentAuthor} va escriure:'
-      cta_reply_to: 'Consulta aquesta proposta'
-      event_description: '%{commentAuthor} ha comentat la proposta ''%{initiativeTitle}'' sobre la qual heu votat. Uneix-te a la discussió a la plataforma de %{organizationName}!'
-      main_header: '%{firstName}, hi ha un nou comentari sobre la proposta que has votat'
-      subject: 'Hi ha un nou comentari sobre la proposta que heu votat'
-      preheader: '%{commentAuthor} ha deixat un comentari sobre la proposta que has votat a la plataforma de %{organizationName}'
-    new_comment_on_reacted_idea:
-      commented: '%{commentAuthor} va escriure:'
+      event_description: '%{authorNameFull} va posar una reacció a la idea ''%{ideaTitle}''. Feu clic al botó següent per continuar la conversa amb %{authorName}.'
+      main_header: '%{authorName} ha comentat una idea que segueixes'
+      subject: 'Hi ha un nou comentari sobre una idea que segueixes'
+      preheader: '%{authorName} va deixar un comentari sobre una idea per a %{organizationName}'
+    comment_on_initiative_you_follow:
       cta_reply_to: 'Respon a %{commentAuthor}'
-      days_ago: 'fa %{numberOfDays} dies'
-      event_description: '%{commentAuthor} ha comentat la idea ''%{ideaTitle}'' sobre la qual has reaccionat. Uneix-te a la discussió a la plataforma de %{organizationName}!'
-      main_header: '%{firstName}, hi ha un nou comentari sobre la idea a la qual has reaccionat'
-      subject: 'Hi ha un nou comentari sobre la idea a la qual has reaccionat'
-      preheader: '%{commentAuthor} va deixar un comentari sobre la idea a la qual has reaccionat a la plataforma d'' %{organizationName}'
-      today: Avui
-      yesterday: Ahir
+      event_description: '%{authorNameFull} va posar una reacció a la iniciativa ''%{initiativeTitle}''. Feu clic al botó següent per continuar la conversa amb %{authorName}.'
+      main_header: '%{commentAuthor} ha comentat una iniciativa que segueixes'
+      subject: 'Hi ha un nou comentari sobre la proposta que seguiu'
+      preheader: '%{authorName} ha deixat un comentari sobre una iniciativa per a %{organizationName}'
     new_initiative_for_admin:
       cta_reply_to: 'Doneu comentaris a %{authorName}'
       event_description: '%{authorName} ha publicat una nova proposta a la teva plataforma. Descobriu-lo ara, feu-ne un comentari o canvieu-ne l''estat!'
@@ -471,10 +437,10 @@ ca:
       no_unread_notifications: "No teniu cap notificació no llegida. Visiteu la plataforma per aportar les vostres aportacions i generar noves notificacions!"
       unread_notifications: "Tens notificacions no llegides. Visita la plataforma per descobrir què està passant!"
     threshold_reached_for_admin:
-      cta_process_initiative: 'Porta aquesta iniciativa als passos següents'
-      event_description: 'Una iniciativa ha arribat al llindar de votació a la vostra plataforma. Feu clic al botó següent per passar als passos següents!'
-      main_header: 'Una iniciativa ha arribat al llindar de votació!'
-      subject: 'Una iniciativa ha arribat al llindar de votació a la vostra plataforma'
+      cta_process_initiative: 'Porta aquesta proposta als passos següents'
+      event_description: 'Una proposta ha arribat al llindar de votació a la vostra plataforma. Feu clic al botó següent per passar als passos següents!'
+      main_header: 'Una proposta ha arribat al llindar de votació!'
+      subject: 'Una proposta ha arribat al llindar de votació a la vostra plataforma'
       preheader: 'Assegureu-vos de fer els següents passos'
     first_idea_published:
       action_add_image: '%{addImageLink} per augmentar la visibilitat'
@@ -590,9 +556,7 @@ ca:
         user_who_published_the_input: 'Usuari que ha publicat l''entrada'
         user_who_registers: 'Usuari que es registra'
         user_who_was_invited: 'Usuari que va ser convidat'
-        users_who_engaged_with_the_input: 'Usuaris que han interaccionat amb l''entrada'
         users_who_engaged_with_the_project: 'Usuaris que han participat amb el projecte'
-        users_who_engaged_with_the_proposal: 'Usuaris que han interaccionat amb la proposta'
         users_who_follow_the_proposal: 'Usuari que segueix la proposta'
         users_who_follow_the_input: 'Usuari que segueix l''entrada'
         users_who_follow_the_project: 'Usuaris que segueixen el projecte'
