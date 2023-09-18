@@ -153,6 +153,7 @@ class WebApi::V1::UsersController < ApplicationController
     mark_custom_field_values_to_clear!
     user_params = permitted_attributes @user
     user_params[:custom_field_values] = @user.custom_field_values.merge(user_params[:custom_field_values] || {})
+    user_params[:onboarding] = @user.onboarding.merge(user_params[:onboarding] || {})
     user_params = user_params.to_h
     CustomFieldService.new.cleanup_custom_field_values! user_params[:custom_field_values]
     @user.assign_attributes user_params

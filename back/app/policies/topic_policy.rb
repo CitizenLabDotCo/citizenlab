@@ -43,7 +43,8 @@ class TopicPolicy < ApplicationPolicy
 
   def permitted_attributes_for_update
     attributes = [
-      description_multiloc: CL2_SUPPORTED_LOCALES
+      :include_in_onboarding,
+      { description_multiloc: CL2_SUPPORTED_LOCALES }
     ]
     attributes += [title_multiloc: CL2_SUPPORTED_LOCALES] if record.custom?
     attributes

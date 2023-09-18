@@ -6,13 +6,14 @@ import createAccountWithPassword, {
 import confirmEmail from 'api/authentication/confirm_email/confirmEmail';
 import resendEmailConfirmationCode from 'api/authentication/confirm_email/resendEmailConfirmationCode';
 import getUserDataFromToken from 'api/authentication/getUserDataFromToken';
+import { updateUser } from 'api/users/useUpdateUser';
 
 // tracks
 import tracks from '../../tracks';
 import { trackEventByName } from 'utils/analytics';
 
 // utils
-import { askCustomFields } from './utils';
+import { askCustomFields, showOnboarding } from './utils';
 
 // typings
 import {
@@ -22,17 +23,14 @@ import {
   UpdateState,
 } from '../../typings';
 import { Step } from './typings';
-import { UseMutateFunction } from '@tanstack/react-query';
-import { IUser, IUserUpdate } from 'api/users/types';
-import { CLErrorsJSON } from 'typings';
+import { OnboardingType } from 'api/authentication/authentication_requirements/types';
 
 export const signUpFlow = (
   getAuthenticationData: () => AuthenticationData,
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
   updateState: UpdateState,
-  anySSOProviderEnabled: boolean,
-  updateUser: UseMutateFunction<IUser, CLErrorsJSON, IUserUpdate>
+  anySSOProviderEnabled: boolean
 ) => {
   return {
     // old sign up flow
@@ -98,6 +96,11 @@ export const signUpFlow = (
             return;
           }
 
+          if (showOnboarding(requirements.onboarding)) {
+            setCurrentStep('sign-up:onboarding');
+            return;
+          }
+
           if (requirements.special.group_membership === 'require') {
             setCurrentStep('closed');
             return;
@@ -131,6 +134,11 @@ export const signUpFlow = (
           return;
         }
 
+        if (showOnboarding(requirements.onboarding)) {
+          setCurrentStep('sign-up:onboarding');
+          return;
+        }
+
         if (requirements.special.group_membership === 'require') {
           setCurrentStep('closed');
           return;
@@ -161,6 +169,11 @@ export const signUpFlow = (
           return;
         }
 
+        if (showOnboarding(requirements.onboarding)) {
+          setCurrentStep('sign-up:onboarding');
+          return;
+        }
+
         if (requirements.special.group_membership === 'require') {
           setCurrentStep('closed');
           return;
@@ -175,27 +188,68 @@ export const signUpFlow = (
         setCurrentStep('closed');
         trackEventByName(tracks.signUpCustomFieldsStepExited);
       },
-      SUBMIT: (userId: string, formData: FormData) => {
-        updateUser(
-          { userId, custom_field_values: formData },
-          {
-            onSuccess: async () => {
-              const { requirements } = await getRequirements();
+      SUBMIT: async (userId: string, formData: FormData) => {
+        try {
+          await updateUser({ userId, custom_field_values: formData });
 
-              if (requirements.special.group_membership === 'require') {
-                setCurrentStep('closed');
-                return;
-              }
+          const { requirements } = await getRequirements();
 
-              setCurrentStep('success');
-              trackEventByName(tracks.signUpCustomFieldsStepCompleted);
-            },
-            onError: (e) => {
-              trackEventByName(tracks.signUpCustomFieldsStepFailed);
-              throw e;
-            },
+          if (showOnboarding(requirements.onboarding)) {
+            setCurrentStep('sign-up:onboarding');
+            return;
           }
-        );
+
+          if (requirements.special.group_membership === 'require') {
+            setCurrentStep('closed');
+            return;
+          }
+
+          setCurrentStep('success');
+          trackEventByName(tracks.signUpCustomFieldsStepCompleted);
+        } catch (e) {
+          trackEventByName(tracks.signUpCustomFieldsStepFailed);
+          throw e;
+        }
+      },
+      SKIP: async () => {
+        const { requirements } = await getRequirements();
+
+        if (showOnboarding(requirements.onboarding)) {
+          setCurrentStep('sign-up:onboarding');
+          return;
+        }
+
+        if (requirements.special.group_membership === 'require') {
+          setCurrentStep('closed');
+          return;
+        }
+
+        setCurrentStep('success');
+        trackEventByName(tracks.signUpCustomFieldsStepSkipped);
+      },
+    },
+
+    'sign-up:onboarding': {
+      CLOSE: () => {
+        setCurrentStep('closed');
+        trackEventByName(tracks.signUpCustomFieldsStepExited);
+      },
+      SUBMIT: async (userId: string, onboarding: OnboardingType) => {
+        try {
+          await updateUser({ userId, onboarding });
+          const { requirements } = await getRequirements();
+
+          if (requirements.special.group_membership === 'require') {
+            setCurrentStep('closed');
+            return;
+          }
+
+          setCurrentStep('success');
+          trackEventByName(tracks.signUpCustomFieldsStepCompleted);
+        } catch (e) {
+          trackEventByName(tracks.signUpCustomFieldsStepFailed);
+          throw e;
+        }
       },
       SKIP: async () => {
         const { requirements } = await getRequirements();
@@ -206,7 +260,7 @@ export const signUpFlow = (
         }
 
         setCurrentStep('success');
-        trackEventByName(tracks.signUpCustomFieldsStepSkipped);
+        trackEventByName(tracks.signUpOnboardingStepSkipped);
       },
     },
 

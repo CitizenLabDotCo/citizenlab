@@ -14,9 +14,6 @@ import {
   SetError,
 } from '../../typings';
 import { Step } from './typings';
-import { UseMutateFunction } from '@tanstack/react-query';
-import { IUser, IUserUpdate } from 'api/users/types';
-import { CLErrorsJSON } from 'typings';
 
 export const getStepConfig = (
   getAuthenticationData: () => AuthenticationData,
@@ -24,8 +21,7 @@ export const getStepConfig = (
   setCurrentStep: (step: Step) => void,
   setError: SetError,
   updateState: UpdateState,
-  anySSOEnabled: boolean,
-  updateUser: UseMutateFunction<IUser, CLErrorsJSON, IUserUpdate>
+  anySSOEnabled: boolean
 ) => {
   return {
     ...lightFlow(
@@ -35,7 +31,7 @@ export const getStepConfig = (
       updateState
     ),
 
-    ...missingDataFlow(getRequirements, setCurrentStep, updateUser),
+    ...missingDataFlow(getRequirements, setCurrentStep),
 
     ...sharedSteps(
       getAuthenticationData,
@@ -58,11 +54,10 @@ export const getStepConfig = (
       getRequirements,
       setCurrentStep,
       updateState,
-      anySSOEnabled,
-      updateUser
+      anySSOEnabled
     ),
 
-    ...claveUnicaFlow(getRequirements, setCurrentStep, updateUser),
+    ...claveUnicaFlow(getRequirements, setCurrentStep),
 
     'verification-only': {
       CLOSE: () => setCurrentStep('closed'),

@@ -6,8 +6,8 @@ en:
       "comment_deleted_by_admin": Deletion of my comment
       "comment_marked_as_spam": Comment spam report
       "comment_on_your_comment": A reply on my comment
-      "comment_on_your_idea": A comment on my idea
-      "comment_on_your_initiative": A comment on my proposal
+      "comment_on_idea_you_follow": A comment on an idea that you follow
+      "comment_on_initiative_you_follow": A comment on a proposal that you follow
       "cosponsor_of_your_initiative": A user accepts my invitation to co-sponsor my proposal
       "first_idea_published": Publication of my first idea
       "idea_marked_as_spam": Idea spam report
@@ -30,10 +30,6 @@ en:
       "mention_in_official_feedback": Mention in an update
       "mention_in_internal_comment": Mention in an internal comment
       "new_comment_for_admin": New comment in a project I moderate
-      "new_comment_on_commented_idea": New comment on an idea I commented on
-      "new_comment_on_commented_initiative": New comment on a proposal I commented on
-      "new_comment_on_reacted_idea": New comment on an idea I reacted to
-      "new_comment_on_reacted_initiative": New comment on a proposal I voted for
       "new_idea_for_admin": New idea in a project I moderate
       "new_initiative_for_admin": New proposal
       "official_feedback_on_idea_you_follow": Update on an idea that you follow
@@ -135,12 +131,6 @@ en:
       today: Today
       wrong_content: 'The comment is not relevant.'
       yesterday: Yesterday
-    comment_on_your_initiative:
-      cta_reply_to: 'Reply to %{commentAuthor}'
-      event_description: '%{authorNameFull} placed a reaction on your initiative ''%{initiativeTitle}''. Click the button below to continue the conversation with %{authorName}.'
-      main_header: '%{commentAuthor} commented on your initiative'
-      subject: 'You''ve received a comment on %{organizationName}''s platform'
-      preheader: '%{authorName} left a comment on your initiative for %{organizationName}'
     cosponsor_of_your_initiative:
       cta_reply_to: 'View your proposal'
       event_description_initiative: 'Congratulations! %{cosponsorName} has accepted your invitation to co-sponsor your proposal.'
@@ -226,12 +216,6 @@ en:
       preheader: 'Thank you for sharing your proposal %{initiativeTitle} for %{organizationName}. The next step is to get support for your proposal by sharing it across your network.'
       send_email: email
       subject: 'Your proposal was published on the platform of %{organizationName}'
-    new_comment_on_commented_idea:
-      cta_reply_to: 'Reply to %{commentAuthor}'
-      event_description: '%{commentAuthorFull} also wrote a comment on the idea ''%{ideaTitle}'' on the participation platform of %{organizationName}. Click the button below to start the conversation with %{commentAuthor}.'
-      main_header: '%{commentAuthor} wrote a comment on the same idea'
-      subject: 'There''s another comment on the idea you commented on'
-      preheader: '%{commentAuthor} also left a comment on an idea for %{organizationName}'
     mention_in_comment:
       cta_reply_to: 'Reply to %{commentAuthor}'
       event_description: '%{commentAuthorFull} has mentioned you in his comment on the idea ''%{post}‘. Click the link below to enter the conversation with %{commentAuthor}'
@@ -258,13 +242,6 @@ en:
       yesterday_by_author: 'Yesterday by %{author}'
       today_by_author: 'Today by %{author}'
       x_days_ago_by_author: '%{x} days ago by %{author}'
-    new_comment_on_commented_initiative:
-      commented: '%{commentAuthor} wrote:'
-      cta_reply_to: 'Reply to %{commentAuthor}'
-      event_description: '%{commentAuthorFull} also wrote a comment on the proposal ''%{initiativeTitle}'' on the participation platform of %{organizationName}. Click the button below to start the conversation with %{commentAuthor}.'
-      main_header: '%{commentAuthor} wrote a comment on the same proposal'
-      subject: 'There''s another comment on the proposal you commented on'
-      preheader: '%{commentAuthor} also left a comment on an proposal for %{organizationName}'
     new_comment_for_admin:
       commented: '%{authorFirstName} commented:'
       cta_reply_to: 'View %{commentAuthor}''s comment'
@@ -275,29 +252,18 @@ en:
       preheader: '%{authorName} left a comment'
       today: Today
       yesterday: Yesterday
-    comment_on_your_idea:
+    comment_on_idea_you_follow:
       cta_reply_to: 'Reply to %{commentAuthor}'
-      event_description: '%{authorNameFull} placed a reaction on your idea ''%{ideaTitle}''. Click the button below to continu the conversation with %{authorName}.'
-      main_header: '%{authorName} commented on your idea'
-      subject: 'You''ve received a comment on %{organizationName}''s platform'
-      preheader: '%{authorName} left a comment on your idea for %{organizationName}'
-    new_comment_on_reacted_initiative:
-      commented: '%{commentAuthor} wrote:'
-      cta_reply_to: 'View this proposal'
-      event_description: '%{commentAuthor} has commented on the proposal ''%{initiativeTitle}'' on which you''ve voted. Join the discussion on the platform of %{organizationName}!'
-      main_header: '%{firstName}, there''s a new comment on the proposal you''ve voted on'
-      subject: 'There''s a new comment on the proposal you''ve voted on'
-      preheader: '%{commentAuthor} left a comment on the proposal you''ve voted on on the platform of %{organizationName}'
-    new_comment_on_reacted_idea:
-      commented: '%{commentAuthor} wrote:'
+      event_description: '%{authorNameFull} placed a reaction on the idea ''%{ideaTitle}''. Click the button below to continue the conversation with %{authorName}.'
+      main_header: '%{authorName} commented on an idea you follow'
+      subject: 'There''s a new comment on an idea you follow'
+      preheader: '%{authorName} left a comment on an idea for %{organizationName}'
+    comment_on_initiative_you_follow:
       cta_reply_to: 'Reply to %{commentAuthor}'
-      days_ago: '%{numberOfDays} days ago'
-      event_description: '%{commentAuthor} has commented on the idea ''%{ideaTitle}'' on which you''ve reacted. Join the discussion on the platform of %{organizationName}!'
-      main_header: '%{firstName}, there''s a new comment on the idea you''ve reacted to'
-      subject: 'There''s a new comment on the idea you''ve reacted to'
-      preheader: '%{commentAuthor} left a comment on the idea you''ve reacted to on the platform of %{organizationName}'
-      today: Today
-      yesterday: Yesterday
+      event_description: '%{authorNameFull} placed a reaction on the proposal ''%{initiativeTitle}''. Click the button below to continue the conversation with %{authorName}.'
+      main_header: '%{commentAuthor} commented on an proposal you follow'
+      subject: 'There''s a new comment on the proposal you follow'
+      preheader: '%{authorName} left a comment on an proposal for %{organizationName}'
     new_initiative_for_admin:
       cta_reply_to: 'Give feedback to %{authorName}'
       event_description: '%{authorName} has published a new proposal on your platform. Discover it now, give some feedback or change its status!'
@@ -471,10 +437,10 @@ en:
       no_unread_notifications: "You don't have any unread notifications. Visit the platform to contribute your input and generate new notifications!"
       unread_notifications: "You have unread notifications. Visit the platform to discover what's happening!"
     threshold_reached_for_admin:
-      cta_process_initiative: 'Take this initiative to the next steps'
-      event_description: 'An initiative reached the voting threshold on your platform. Click the button below to take it to the next steps!'
-      main_header: 'An initiative reached the voting threshold!'
-      subject: 'An initiative reached the voting threshold on your platform'
+      cta_process_initiative: 'Take this proposal to the next steps'
+      event_description: 'An proposal reached the voting threshold on your platform. Click the button below to take it to the next steps!'
+      main_header: 'An proposal reached the voting threshold!'
+      subject: 'An proposal reached the voting threshold on your platform'
       preheader: 'Make sure to take the next steps'
     first_idea_published:
       action_add_image: '%{addImageLink} to increase visibility'
@@ -590,9 +556,7 @@ en:
         user_who_published_the_input: 'User who published the input'
         user_who_registers: 'User who registers'
         user_who_was_invited: 'User who was invited'
-        users_who_engaged_with_the_input: 'Users who engaged with the input'
         users_who_engaged_with_the_project: 'Users who engaged with the project'
-        users_who_engaged_with_the_proposal: 'Users who engaged with the proposal'
         users_who_follow_the_proposal: 'User who follow the proposal'
         users_who_follow_the_input: 'User who follow the input'
         users_who_follow_the_project: 'Users who follow the project'

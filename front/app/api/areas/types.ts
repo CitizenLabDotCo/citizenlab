@@ -8,6 +8,8 @@ export interface IAreasQueryParams {
   pageNumber?: number;
   pageSize?: number;
   forHomepageFilter?: boolean;
+  forOnboarding?: boolean;
+  sort?: 'projects_count' | '-projects_count';
   includeStaticPages?: boolean;
 }
 
@@ -20,6 +22,7 @@ export interface IAreaData {
     ordering: number;
     static_page_ids: string[];
     followers_count: number;
+    include_in_onboarding: boolean;
   };
   relationships: {
     static_pages: {
@@ -49,4 +52,5 @@ export interface IAreaUpdate {
   title_multiloc?: Multiloc;
   description_multiloc?: Multiloc;
   ordering?: number;
+  include_in_onboarding?: boolean;
 }

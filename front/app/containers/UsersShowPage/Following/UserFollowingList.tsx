@@ -1,5 +1,11 @@
 import React from 'react';
-import { Box, Text, colors } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Text,
+  colors,
+  useBreakpoint,
+  Spinner,
+} from '@citizenlab/cl2-component-library';
 import useFollowers from 'api/follow_unfollow/useFollowers';
 import IdeaCard from 'components/IdeaCard';
 import { FollowableObject } from 'api/follow_unfollow/types';
@@ -8,29 +14,33 @@ import ProjectCard from 'components/ProjectCard';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import ProjectFolderCard from 'components/ProjectAndFolderCards/components/ProjectFolderCard';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useAuthUser from 'api/me/useAuthUser';
+import Button from 'components/UI/Button';
+import { useTheme } from 'styled-components';
 
 interface Props {
   value: FollowableObject;
-  userId: string;
 }
 
-const UserFollowingList = ({ userId, value }: Props) => {
-  const { data: followers, isLoading } = useFollowers({
+const UserFollowingList = ({ value }: Props) => {
+  const {
+    data: followers,
+    fetchNextPage,
+    isFetchingNextPage,
+    hasNextPage,
+    isLoading,
+  } = useFollowers({
     followableObject: value,
   });
-  const isFollowingEnabled = useFeatureFlag({
-    name: 'follow',
-  });
-  const { data: authUser } = useAuthUser();
-  const showFollowing = isFollowingEnabled && authUser?.data?.id === userId;
+  const isSmallerThanPhone = useBreakpoint('phone');
 
-  if (!showFollowing) return null;
+  const theme = useTheme();
+
+  const flatFollowers = followers?.pages.flatMap((page) => page.data) || [];
 
   return (
     <Box display="flex" w="100%" flexDirection="column">
-      {!isLoading && followers?.data.length === 0 ? (
+      {isLoading && <Spinner />}
+      {!isLoading && flatFollowers.length === 0 ? (
         <Box background={colors.white} p="36px">
           <Text variant="bodyL">
             <FormattedMessage {...messages.emptyInfoText} />
@@ -38,7 +48,7 @@ const UserFollowingList = ({ userId, value }: Props) => {
         </Box>
       ) : (
         <Box display="flex" flexWrap="wrap" gap="20px" w="100%">
-          {followers?.data.map((follower) => {
+          {flatFollowers.map((follower) => {
             if (follower.relationships.followable.data.type === 'idea') {
               return (
                 <Box
@@ -61,7 +71,10 @@ const UserFollowingList = ({ userId, value }: Props) => {
                 <Box
                   key={follower.id}
                   display="flex"
-                  flex="1 0 calc(100% * (1 / 3) - 26px)"
+                  flexGrow={0}
+                  w={
+                    isSmallerThanPhone ? '100%' : 'calc(100% * (1 / 3) - 26px)'
+                  }
                 >
                   <InitiativeCard
                     initiativeId={follower.relationships.followable.data.id}
@@ -96,6 +109,19 @@ const UserFollowingList = ({ userId, value }: Props) => {
             return null;
           })}
         </Box>
+      )}
+      {hasNextPage && (
+        <Button
+          onClick={() => fetchNextPage()}
+          buttonStyle="secondary"
+          text={<FormattedMessage {...messages.loadMore} />}
+          processing={isFetchingNextPage}
+          icon="refresh"
+          iconPos="left"
+          textColor={theme.colors.tenantText}
+          fontWeight="500"
+          width="auto"
+        />
       )}
     </Box>
   );

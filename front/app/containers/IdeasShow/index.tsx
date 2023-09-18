@@ -216,13 +216,13 @@ const Content = ({
             />
           )}
           {compact && (
-            <Box mt="16px">
+            <Box mt="24px">
               <FollowUnfollow
                 followableType="ideas"
                 followableId={ideaId}
                 followersCount={idea.data.attributes.followers_count}
                 followerId={idea.data.relationships.user_follower?.data?.id}
-                width="auto"
+                width="100%"
               />
             </Box>
           )}

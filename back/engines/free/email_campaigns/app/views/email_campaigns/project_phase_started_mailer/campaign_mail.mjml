@@ -17,4 +17,6 @@
 
 <%= render partial: 'email_campaigns/projects/about_project', locals: { homepage_description: localize_for_recipient(event.project_description_preview_multiloc), message: format_message('subtitle', values: { projectName: localize_for_recipient(event.project_title_multiloc) }) } %>
 
-<%= render 'email_campaigns/follow/card' %>
+<% if AppConfiguration.instance.feature_activated?('follow') %>
+  <%= render 'email_campaigns/follow/card' %>
+<% end %>

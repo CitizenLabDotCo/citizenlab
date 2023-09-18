@@ -12,10 +12,12 @@
 #  ordering               :integer
 #  custom_field_option_id :uuid
 #  followers_count        :integer          default(0), not null
+#  include_in_onboarding  :boolean          default(FALSE), not null
 #
 # Indexes
 #
 #  index_areas_on_custom_field_option_id  (custom_field_option_id)
+#  index_areas_on_include_in_onboarding   (include_in_onboarding)
 #
 # Foreign Keys
 #
@@ -23,7 +25,6 @@
 #
 class Area < ApplicationRecord
   acts_as_list column: :ordering, top_of_list: 0
-  default_scope -> { order(ordering: :asc) }
 
   has_many :areas_projects, dependent: :destroy
   has_many :projects, through: :areas_projects
@@ -36,6 +37,7 @@ class Area < ApplicationRecord
 
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :description_multiloc, multiloc: { presence: false, html: true }
+  validates :include_in_onboarding, inclusion: { in: [true, false] }
 
   before_validation :sanitize_description_multiloc
   before_validation :strip_title
@@ -52,6 +54,13 @@ class Area < ApplicationRecord
     only_integer: true,
     greater_than_or_equal_to: 0
   }, unless: ->(area) { area.ordering.nil? }
+
+  scope :order_projects_count, lambda { |direction = :desc|
+    safe_dir = direction == :desc ? 'DESC' : 'ASC'
+    left_outer_joins(:areas_projects)
+      .group(:id)
+      .order("COUNT(areas_projects.project_id) #{safe_dir}, ordering")
+  }
 
   def recreate_custom_field_option
     return unless (domicile_field = CustomField.find_by(key: 'domicile'))

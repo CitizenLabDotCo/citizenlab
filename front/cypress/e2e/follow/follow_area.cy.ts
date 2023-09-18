@@ -21,15 +21,13 @@ describe('Follow area', () => {
     }
   });
 
-  it('allows a user to follow and unfollow a area', () => {
+  it('allows a user to follow and unfollow an area', () => {
     cy.setLoginCookie(email, password);
 
-    cy.visit(`/profile/${userSlug}`);
+    cy.visit(`/profile/${userSlug}/following`);
     cy.acceptCookies();
-    cy.get('[data-cy="e2e-following-tab"]').click();
-    cy.get('#e2e-user-following-filter-selector').click();
 
-    cy.get('.e2e-sort-items').find('.e2e-sort-item-Areas').click();
+    cy.get('#tab-Areas').click();
 
     // Follow the first area
     cy.get('[data-cy="e2e-follow-area-button"]').should('exist');

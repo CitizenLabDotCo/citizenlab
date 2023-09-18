@@ -135,14 +135,14 @@ FactoryBot.define do
     association :post_status, factory: :initiative_status, code: 'review_pending'
   end
 
-  factory :comment_on_your_idea, parent: :notification, class: 'Notifications::CommentOnYourIdea' do
+  factory :comment_on_idea_you_follow, parent: :notification, class: 'Notifications::CommentOnIdeaYouFollow' do
     initiating_user
     comment
     association :post, factory: :idea
     project
   end
 
-  factory :comment_on_your_initiative, parent: :notification, class: 'Notifications::CommentOnYourInitiative' do
+  factory :comment_on_initiative_you_follow, parent: :notification, class: 'Notifications::CommentOnInitiativeYouFollow' do
     initiating_user
     comment
     association :post, factory: :initiative

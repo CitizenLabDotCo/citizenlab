@@ -6,8 +6,8 @@ import AdminRightsReceivedNotification from '../AdminRightsReceivedNotification'
 import CommentDeletedByAdminNotification from '../CommentDeletedByAdminNotification';
 import CommentMarkedAsSpamNotification from '../CommentMarkedAsSpamNotification';
 import CommentOnYourCommentNotification from '../CommentOnYourCommentNotification';
-import CommentOnYourIdeaNotification from '../CommentOnYourIdeaNotification';
-import CommentOnYourInitiativeNotification from '../CommentOnYourInitiativeNotification';
+import CommentOnIdeaYouFollowNotification from '../CommentOnIdeaYouFollowNotification';
+import CommentOnInitiativeYouFollowNotification from '../CommentOnInitiativeYouFollowNotification';
 import CosponsorOfYourInitiativeNotification from '../CosponsorOfYourInitiativeNotification';
 import IdeaAssignedToYouNotification from '../IdeaAssignedToYouNotification';
 import IdeaMarkedAsSpamNotification from '../IdeaMarkedAsSpamNotification';
@@ -40,8 +40,8 @@ import {
   ICommentDeletedByAdminNotificationData,
   ICommentMarkedAsSpamNotificationData,
   ICommentOnYourCommentNotificationData,
-  ICommentOnYourIdeaNotificationData,
-  ICommentOnYourInitiativeNotificationData,
+  ICommentOnIdeaYouFollowNotificationData,
+  ICommentOnInitiativeYouFollowNotificationData,
   ICosponsorOfYourInitiativeNotificationData,
   IIdeaAssignedToYouNotificationData,
   IIdeaMarkedAsSpamNotificationData,
@@ -107,17 +107,17 @@ const Notification = ({ notification }: Props) => {
           notification={notification as ICommentOnYourCommentNotificationData}
         />
       );
-    case 'comment_on_your_idea':
+    case 'comment_on_idea_you_follow':
       return (
-        <CommentOnYourIdeaNotification
-          notification={notification as ICommentOnYourIdeaNotificationData}
+        <CommentOnIdeaYouFollowNotification
+          notification={notification as ICommentOnIdeaYouFollowNotificationData}
         />
       );
-    case 'comment_on_your_initiative':
+    case 'comment_on_initiative_you_follow':
       return (
-        <CommentOnYourInitiativeNotification
+        <CommentOnInitiativeYouFollowNotification
           notification={
-            notification as ICommentOnYourInitiativeNotificationData
+            notification as ICommentOnInitiativeYouFollowNotificationData
           }
         />
       );

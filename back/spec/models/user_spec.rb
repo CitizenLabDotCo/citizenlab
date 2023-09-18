@@ -799,6 +799,28 @@ RSpec.describe User do
     end
   end
 
+  describe 'onboarding' do
+    it 'is valid when empty' do
+      u = build(:user, onboarding: {})
+      expect(u).to be_valid
+    end
+
+    it 'is valid when topics are satisfied' do
+      u = build(:user, onboarding: { topics_and_areas: 'satisfied' })
+      expect(u).to be_valid
+    end
+
+    it 'is invalid when the key is not valid' do
+      u = build(:user, onboarding: { bananas: 'satisfied' })
+      expect(u).to be_invalid
+    end
+
+    it 'is invalid when the value is not valid' do
+      u = build(:user, onboarding: { topics_and_areas: 'bananas' })
+      expect(u).to be_invalid
+    end
+  end
+
   describe 'custom_field_values' do
     # TODO: Allow light users without required fields
     # it 'validates when custom_field_values have changed' do

@@ -105,13 +105,17 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
                     projectFolderId={projectFolderId}
                   />
                 )}
-                <Box mr={isSmallerThanPhone ? '0px' : '8px'} display="flex">
+                <Box
+                  mr={isSmallerThanPhone ? '0px' : '8px'}
+                  ml="auto"
+                  display="flex"
+                >
                   {userCanEditProject && (
                     <EditButton
                       icon="edit"
                       linkTo={adminProjectsProjectPath(project.data.id)}
                       buttonStyle="secondary"
-                      padding="5px 8px"
+                      padding="6px 12px"
                     >
                       {formatMessage(messages.editProject)}
                     </EditButton>
@@ -128,7 +132,8 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
                 followableId={project.data.id}
                 followersCount={project.data.attributes.followers_count}
                 followerId={project.data.relationships.user_follower?.data?.id}
-                padding="5px 8px"
+                py="6px"
+                iconSize="20px"
               />
             </Box>
           </Box>

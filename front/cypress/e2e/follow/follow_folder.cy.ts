@@ -55,13 +55,9 @@ describe('Follow folder', () => {
     cy.get('[data-cy="e2e-unfollow-button"]').should('exist');
     cy.get('[data-cy="e2e-follow-button"]').should('not.exist');
 
-    cy.visit(`/profile/${userSlug}`);
-    cy.get('[data-cy="e2e-following-tab"]').click();
-    cy.get('#e2e-user-following-filter-selector').click();
+    cy.visit(`/profile/${userSlug}/following`);
+    cy.get('#tab-ProjectFolders\\:\\:Folder').click();
 
-    cy.get('.e2e-sort-items')
-      .find('.e2e-sort-item-ProjectFolders\\:\\:Folder')
-      .click();
     cy.get('.e2e-folder-card-folder-title').contains(folderTitle);
 
     cy.get('[data-cy="e2e-unfollow-button"]').should('exist');
