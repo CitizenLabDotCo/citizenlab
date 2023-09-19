@@ -301,6 +301,8 @@ module BulkImportIdeas
       @google_forms_service ||= GoogleFormParserService.new
       @google_forms_service.parse_pdf(pdf_file, pdf_form_page_count)
 
+      # TODO: Need to do the merge at the idea_row level not at this level
+
       # NOTE: Slightly hacky way of merging values that don't exist from the form parser from the text parser
       # form_parsed_ideas = @google_forms_service.parse_pdf(pdf_file, pdf_form_page_count)
       # text_parsed_ideas = IdeaPlaintextParserService.new(
