@@ -1,0 +1,35 @@
+<mj-section padding="12px 25px 28px">
+  <mj-column>
+    <mj-button
+            align="center"
+            background-color="#044D6C"
+            color="#fff"
+            border-radius="5px"
+            href="<%= event.event_url %>"
+            padding="12px 0">
+      <%= format_message('cta_go_to_event') %>
+    </mj-button>
+  </mj-column>
+
+  <mj-column>
+    <!-- Define a custom CSS class for the secondary CTA button. -->
+    <mj-raw>
+      <style>
+          .box-shadow a {
+              box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.10);
+          }
+      </style>
+    </mj-raw>
+
+    <mj-button
+            align="center"
+            background-color="#FFF"
+            color="#596B7A"
+            border-radius="5px"
+            href="<%= add_to_calendar_url %>"
+            padding="12px 0"
+            css-class="box-shadow">
+      <%= format_message('cta_add_to_calendar') %>
+    </mj-button>
+  </mj-column>
+</mj-section>

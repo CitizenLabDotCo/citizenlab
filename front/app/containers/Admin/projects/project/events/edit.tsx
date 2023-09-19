@@ -42,6 +42,7 @@ import useAddEventFile from 'api/event_files/useAddEventFile';
 import useDeleteEventFile from 'api/event_files/useDeleteEventFile';
 import useEventImage from 'api/event_images/useEventImage';
 import useAddEventImage from 'api/event_images/useAddEventImage';
+import useDeleteEventImage from 'api/event_images/useDeleteEventImage';
 
 // typings
 import { Multiloc, CLError, UploadFile } from 'typings';
@@ -51,7 +52,6 @@ import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { useParams } from 'react-router-dom';
 import { geocode } from 'utils/locationTools';
-import useDeleteEventImage from 'api/event_images/useDeleteEventImage';
 
 type SubmitState = 'disabled' | 'enabled' | 'error' | 'success';
 type ErrorType =
@@ -81,7 +81,7 @@ const AdminProjectEventEdit = () => {
   const { mutate: addEventImage } = useAddEventImage();
   const { mutate: deleteEventImage } = useDeleteEventImage();
   const remoteEventImageId =
-    event?.data.relationships?.['event_images']?.data?.[0]?.id;
+    event?.data.relationships?.event_images?.data?.[0]?.id;
   const { data: remoteEventImage } = useEventImage(
     id,
     remoteEventImageId || undefined
@@ -264,8 +264,9 @@ const AdminProjectEventEdit = () => {
 
   const handleEventImage = async (data: IEvent) => {
     const hasRemoteImage = !isNilOrError(remoteEventImage);
-    const remoteImageId = event?.data.relationships['event_images'].data[0].id;
-
+    const remoteImageId = hasRemoteImage
+      ? event?.data?.relationships?.event_images?.data?.[0].id
+      : undefined;
     if (
       (uploadedImage === null || !uploadedImage.remote) &&
       hasRemoteImage &&
@@ -406,6 +407,7 @@ const AdminProjectEventEdit = () => {
               onSuccess: async (data) => {
                 setSubmitState('success');
                 handleEventFiles(data);
+                handleEventImage(data);
                 clHistory.push(`/admin/projects/${projectId}/events`);
               },
               onError: async (errors) => {

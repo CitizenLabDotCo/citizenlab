@@ -37,7 +37,6 @@ const Analysis = () => {
             <Box
               w="300px"
               h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px)`}
-              p="12px"
               mt="12px"
               bg={colors.white}
             >
