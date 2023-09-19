@@ -235,7 +235,7 @@ fr:
       page: 'Page'
       date_published: 'Date de publication (jj-mm-aaaa)'
       instructions: 'Instructions'
-      write_as_clearly: 'Écrivez aussi clairement que possible sur <b></b> - ces formulaires peuvent être scannés.'
+      write_as_clearly: 'Écrivez aussi <b>clairement</b> que possible — ces formulaires pourraient être numérisés avec reconnaissance automatique du texte'
       write_in_language: 'Rédigez vos réponses dans la même langue que ce formulaire'
   project_copy:
     title_suffix: 'Copie'
