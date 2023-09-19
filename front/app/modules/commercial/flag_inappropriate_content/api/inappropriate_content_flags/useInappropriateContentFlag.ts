@@ -7,7 +7,7 @@ import {
   IInappropriateContentFlag,
 } from './types';
 
-const fetchInappropriateContentFlag = async ({ id }: { id?: string }) =>
+const fetchInappropriateContentFlag = ({ id }: { id?: string }) =>
   fetcher<IInappropriateContentFlag>({
     path: `/inappropriate_content_flags/${id}`,
     action: 'get',
