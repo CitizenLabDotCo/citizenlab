@@ -85,9 +85,9 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.Reports.inputs',
     defaultMessage: 'Inputs',
   },
-  votes: {
-    id: 'app.containers.Admin.Insights.Reports.votes',
-    defaultMessage: 'Votes',
+  reactions: {
+    id: 'app.containers.Admin.Insights.Reports.reactions',
+    defaultMessage: 'Reactions',
   },
   comments: {
     id: 'app.containers.Admin.Insights.Reports.comments',
@@ -97,9 +97,9 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.Reports.commentsByTimeTitle',
     defaultMessage: 'Comments',
   },
-  fiveInputsWithMostVotes: {
-    id: 'app.containers.Admin.Insights.Reports.fiveInputsWithMostVotes',
-    defaultMessage: 'Top 5 inputs by votes',
+  fiveInputsWithMostReactions: {
+    id: 'app.containers.Admin.Insights.Reports.fiveInputsWithMostReactions',
+    defaultMessage: 'Top 5 inputs by reactions',
   },
   total: {
     id: 'app.containers.Admin.Insights.Reports.total',
@@ -113,13 +113,13 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.Reports.perPeriod',
     defaultMessage: 'Per {period}',
   },
-  numberOfVotesUp: {
-    id: 'app.containers.Admin.Insights.Reports.numberOfVotesUp',
-    defaultMessage: 'Upvotes',
+  numberOfLikes: {
+    id: 'app.containers.Admin.Insights.Reports.numberOfLikes',
+    defaultMessage: 'Likes',
   },
-  numberOfVotesDown: {
-    id: 'app.containers.Admin.Insights.Reports.numberOfVotesDown',
-    defaultMessage: 'Downvotes',
+  numberOfDislikes: {
+    id: 'app.containers.Admin.Insights.Reports.numberOfDislikes',
+    defaultMessage: 'Dislikes',
   },
   day: {
     id: 'app.containers.Admin.Insights.Reports.day',

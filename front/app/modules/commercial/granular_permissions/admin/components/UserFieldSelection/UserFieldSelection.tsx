@@ -29,7 +29,7 @@ import FormattedMessageComponent from 'utils/cl-intl/FormattedMessage';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
-import { IPermissionData } from 'services/actionPermissions';
+import { IPermissionData } from 'api/permissions/types';
 import { IUserCustomFieldData } from 'api/user_custom_fields/types';
 import { IPermissionsCustomFieldData } from 'api/permissions_custom_fields/types';
 import { HandlePermissionChangeProps } from '../../containers/Granular/utils';
@@ -187,6 +187,7 @@ const UserFieldSelection = ({
                   disabled={!permissionsCustomFieldsEnabled || !userIsAdmin}
                   onChange={() => {
                     onChange({
+                      phaseId,
                       permission,
                       groupIds,
                       globalCustomFields:

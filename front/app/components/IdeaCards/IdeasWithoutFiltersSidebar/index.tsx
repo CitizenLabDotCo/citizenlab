@@ -3,7 +3,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
 import useLocale from 'hooks/useLocale';
-import { useWindowSize } from '@citizenlab/cl2-component-library';
+import { useBreakpoint } from '@citizenlab/cl2-component-library';
 import useProjectById from 'api/projects/useProjectById';
 import useIdeaCustomFieldsSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
 import useInfiniteIdeas from 'api/ideas/useInfiniteIdeas';
@@ -29,17 +29,15 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // style
 import styled from 'styled-components';
-import { media, viewportWidths, isRtl } from 'utils/styleUtils';
+import { media, isRtl } from 'utils/styleUtils';
 
 // constants
 import {
   ideaDefaultSortMethodFallback,
   IdeaDefaultSortMethod,
-  ParticipationMethod,
 } from 'services/participationContexts';
 
 // typings
-import { IParticipationContextType } from 'typings';
 import { isFieldEnabled } from 'utils/projectUtils';
 import { IQueryParameters } from 'api/ideas/types';
 import usePhase from 'api/phases/usePhase';
@@ -51,12 +49,11 @@ const Container = styled.div`
 
 const FiltersArea = styled.div`
   width: 100%;
-  min-height: 54px;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 15px;
+  margin-bottom: 12px;
   ${isRtl`
     flex-direction: row-reverse;
   `}
@@ -67,15 +64,10 @@ const FiltersArea = styled.div`
       margin-bottom: 0px;
     `}
   }
-  ${media.desktop`
-    &.mapView {
-      margin-top: -65px;
-    }
-  `}
   ${media.tablet`
     flex-direction: column;
     align-items: stretch;
-    margin-bottom: 30px;
+    margin-bottom: 8px;
   `}
 `;
 
@@ -155,11 +147,10 @@ export interface Props {
   showViewToggle?: boolean | undefined;
   defaultSortingMethod?: IdeaDefaultSortMethod;
   defaultView?: 'card' | 'map';
-  participationMethod?: ParticipationMethod | null;
-  participationContextId?: string | null;
-  participationContextType?: IParticipationContextType | null;
   className?: string;
   allowProjectsFilter?: boolean;
+  showSearchbar: boolean;
+  showDropdownFilters: boolean;
   goBackMode?: 'browserGoBackButton' | 'goToProject';
 }
 
@@ -173,15 +164,15 @@ const IdeasWithoutFiltersSidebar = ({
   defaultSortingMethod,
   className,
   allowProjectsFilter,
-  participationMethod,
-  participationContextId,
-  participationContextType,
+  showDropdownFilters,
+  showSearchbar,
   goBackMode,
 }: Props) => {
   const locale = useLocale();
-  const { windowWidth } = useWindowSize();
   const [searchParams] = useSearchParams();
   const selectedIdeaMarkerId = searchParams.get('idea_map_id');
+  const smallerThanTablet = useBreakpoint('tablet');
+  const smallerThanPhone = useBreakpoint('phone');
 
   const { data: project } = useProjectById(projectId);
 
@@ -249,23 +240,6 @@ const IdeasWithoutFiltersSidebar = ({
     : false;
   const showViewButtons = !!(locationEnabled && showViewToggle);
 
-  const smallerThanBigTablet = !!(
-    windowWidth && windowWidth <= viewportWidths.tablet
-  );
-  const smallerThanSmallTablet = !!(
-    windowWidth && windowWidth <= viewportWidths.tablet
-  );
-  const biggerThanSmallTablet = !!(
-    windowWidth && windowWidth >= viewportWidths.tablet
-  );
-  const biggerThanLargeTablet = !!(
-    windowWidth && windowWidth >= viewportWidths.tablet
-  );
-  const smallerThan1100px = !!(windowWidth && windowWidth <= 1100);
-  const smallerThanPhone = !!(
-    windowWidth && windowWidth <= viewportWidths.phone
-  );
-
   if (list) {
     return (
       <Container
@@ -281,13 +255,13 @@ const IdeasWithoutFiltersSidebar = ({
           }`}
         >
           <LeftFilterArea>
-            {showViewButtons && smallerThanSmallTablet && (
+            {showViewButtons && smallerThanTablet && (
               <MobileViewButtons
                 selectedView={selectedView}
                 onClick={setSelectedView}
               />
             )}
-            {!(selectedView === 'map') && (
+            {!(selectedView === 'map') && showSearchbar && (
               <StyledSearchInput
                 defaultValue={ideaQueryParameters.search}
                 className="e2e-search-ideas-input"
@@ -298,35 +272,39 @@ const IdeasWithoutFiltersSidebar = ({
           </LeftFilterArea>
 
           <RightFilterArea>
-            <DropdownFilters
-              className={`${selectedView === 'map' ? 'hidden' : 'visible'} ${
-                showViewButtons ? 'hasViewButtons' : ''
-              }`}
-            >
-              <SelectSort
-                value={defaultSortingMethod ?? ideaDefaultSortMethodFallback}
-                phase={phase?.data}
-                project={project?.data}
-                onChange={handleSortOnChange}
-                alignment={biggerThanLargeTablet ? 'right' : 'left'}
-              />
-              {allowProjectsFilter && (
-                <ProjectFilterDropdown
-                  title={<FormattedMessage {...messages.projectFilterTitle} />}
-                  onChange={handleProjectsOnChange}
+            {showDropdownFilters && (
+              <DropdownFilters
+                className={`${selectedView === 'map' ? 'hidden' : 'visible'} ${
+                  showViewButtons ? 'hasViewButtons' : ''
+                }`}
+              >
+                <SelectSort
+                  value={defaultSortingMethod ?? ideaDefaultSortMethodFallback}
+                  phase={phase?.data}
+                  project={project?.data}
+                  onChange={handleSortOnChange}
+                  alignment={!smallerThanTablet ? 'right' : 'left'}
                 />
-              )}
-              {topicsEnabled && !isNilOrError(project) && (
-                <TopicFilterDropdown
-                  selectedTopicIds={ideaQueryParameters.topics ?? []}
-                  onChange={handleTopicsOnChange}
-                  alignment={biggerThanLargeTablet ? 'right' : 'left'}
-                  projectId={project.data.id}
-                />
-              )}
-            </DropdownFilters>
+                {allowProjectsFilter && (
+                  <ProjectFilterDropdown
+                    title={
+                      <FormattedMessage {...messages.projectFilterTitle} />
+                    }
+                    onChange={handleProjectsOnChange}
+                  />
+                )}
+                {topicsEnabled && !isNilOrError(project) && projectId && (
+                  <TopicFilterDropdown
+                    projectId={projectId}
+                    selectedTopicIds={ideaQueryParameters.topics ?? []}
+                    onChange={handleTopicsOnChange}
+                    alignment={!smallerThanTablet ? 'right' : 'left'}
+                  />
+                )}
+              </DropdownFilters>
+            )}
 
-            {showViewButtons && !smallerThanSmallTablet && (
+            {showViewButtons && !smallerThanTablet && (
               <DesktopViewButtons
                 selectedView={selectedView}
                 onClick={setSelectedView}
@@ -340,17 +318,12 @@ const IdeasWithoutFiltersSidebar = ({
           onLoadMore={fetchNextPage}
           hasMore={!!hasNextPage}
           loadingMore={isFetchingNextPage}
-          hideImage={smallerThanBigTablet && biggerThanSmallTablet}
-          hideImagePlaceholder={smallerThanBigTablet}
-          hideIdeaStatus={
-            (biggerThanLargeTablet && smallerThan1100px) || smallerThanPhone
-          }
+          hideImage={false}
+          hideImagePlaceholder={smallerThanPhone}
+          hideIdeaStatus={smallerThanPhone}
           view={selectedView}
           projectId={projectId}
-          phaseId={phaseId || undefined}
-          participationMethod={participationMethod}
-          participationContextId={participationContextId}
-          participationContextType={participationContextType}
+          phaseId={phaseId}
           goBackMode={goBackMode}
         />
       </Container>

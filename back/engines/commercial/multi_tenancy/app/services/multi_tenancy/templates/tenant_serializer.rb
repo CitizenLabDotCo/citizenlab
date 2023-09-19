@@ -47,6 +47,7 @@ module MultiTenancy
           CustomForm => serialize_records(CustomForm),
           Event => serialize_records(Event),
           EventFile => serialize_records(EventFile),
+          Follower => serialize_records(Follower),
           HomePage => serialize_records(HomePage),
           IdeaStatus => serialize_records(IdeaStatus),
           InitiativeStatus => serialize_records(InitiativeStatus),
@@ -102,11 +103,13 @@ module MultiTenancy
           # Initiatives
           Initiative => serialize_records(initiatives),
           AreasInitiative => serialize_records(AreasInitiative.where(initiative: initiatives)),
+          CosponsorsInitiative => serialize_records(CosponsorsInitiative.where(initiative: initiatives)),
           InitiativeFile => serialize_records(InitiativeFile.where(initiative: initiatives)),
           InitiativeImage => serialize_records(InitiativeImage.where(initiative: initiatives)),
           InitiativesTopic => serialize_records(InitiativesTopic.where(initiative: initiatives)),
 
           Comment => serialize_comments(ideas, initiatives),
+          InternalComment => serialize_internal_comments(ideas, initiatives),
           Reaction => serialize_reactions(ideas).merge!(serialize_reactions(initiatives)),
           OfficialFeedback => serialize_records(OfficialFeedback.where(post: [ideas, initiatives])),
 
@@ -238,6 +241,24 @@ module MultiTenancy
         ordered_ids = TSort.tsort(each_node, each_child)
 
         comments.slice(*ordered_ids)
+      end
+
+      def serialize_internal_comments(*post_scopes)
+        internal_comments = post_scopes.each_with_object({}) do |scope, hash|
+          hash.merge!(serialize_records(InternalComment.where(post: scope)))
+        end
+
+        # The parent internal_comments must be listed before their children since the
+        # children internal_comments reference their parent.
+        child_to_parent = internal_comments.transform_values do |attributes|
+          Array.wrap(attributes[:parent_ref]&.id)
+        end
+
+        each_node = ->(&block) { child_to_parent.each_key(&block) }
+        each_child = ->(node, &block) { child_to_parent[node].each(&block) }
+        ordered_ids = TSort.tsort(each_node, each_child)
+
+        internal_comments.slice(*ordered_ids)
       end
 
       def serialize_reactions(post_scope)

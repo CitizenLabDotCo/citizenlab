@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { adopt } from 'react-adopt';
-import { isNilOrError, isPage } from 'utils/helperUtils';
+import { isPage } from 'utils/helperUtils';
 
 // components
 import {
@@ -24,13 +23,6 @@ import styled from 'styled-components';
 import { media, colors, stylingConsts } from 'utils/styleUtils';
 
 // resources
-import GetIdeasCount, {
-  GetIdeasCountChildProps,
-} from 'resources/GetIdeasCount';
-import GetInitiativesCount, {
-  GetInitiativesCountChildProps,
-} from 'resources/GetInitiativesCount';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import Outlet from 'components/Outlet';
 import { InsertConfigurationOptions } from 'typings';
 import { insertConfiguration } from 'utils/moduleUtils';
@@ -39,6 +31,9 @@ import defaultNavItems, { NavItem } from './navItems';
 
 // Hooks
 import { useLocation } from 'react-router-dom';
+import useAuthUser from 'api/me/useAuthUser';
+import useIdeasCount from 'api/idea_count/useIdeasCount';
+import useInitiativesCount from 'api/initiative_counts/useInitiativesCount';
 
 const Menu = styled.div`
   z-index: 10;
@@ -71,14 +66,6 @@ const MenuInner = styled.nav`
   `}
 `;
 
-interface InputProps {}
-interface DataProps {
-  authUser: GetAuthUserChildProps;
-  ideasCount: GetIdeasCountChildProps;
-  initiativesCount: GetInitiativesCountChildProps;
-}
-interface Props extends InputProps, DataProps {}
-
 const getTopAndBottomNavItems = (navItems: NavItem[]) => {
   // Using this to avoid looping twice
   const [topNavItems, bottomNavItems] = navItems.reduce(
@@ -95,9 +82,18 @@ const getTopAndBottomNavItems = (navItems: NavItem[]) => {
   return [topNavItems, bottomNavItems];
 };
 
-const Sidebar = ({ ideasCount, initiativesCount }: Props) => {
+const Sidebar = () => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
+  const { data: authUser } = useAuthUser();
+  const { data: ideasCount } = useIdeasCount({
+    feedback_needed: true,
+    assignee: authUser?.data.id,
+  });
+  const { data: initiativesCount } = useInitiativesCount({
+    feedback_needed: true,
+    assignee: authUser?.data.id,
+  });
   const [navItems, setNavItems] = useState<NavItem[]>(defaultNavItems);
   const isPagesAndMenuPage = isPage('pages_menu', pathname);
   const isSmallerThanPhone = useBreakpoint('tablet');
@@ -108,23 +104,26 @@ const Sidebar = ({ ideasCount, initiativesCount }: Props) => {
         (navItem: NavItem) => {
           if (
             navItem.name === 'ideas' &&
-            !isNilOrError(ideasCount.count) &&
-            ideasCount.count
+            ideasCount &&
+            ideasCount.data.attributes.count
           ) {
-            return { ...navItem, count: ideasCount.count };
+            return { ...navItem, count: ideasCount.data.attributes.count };
           } else if (
             navItem.name === 'initiatives' &&
-            !isNilOrError(initiativesCount.count) &&
-            initiativesCount.count
+            initiativesCount &&
+            initiativesCount.data.attributes.count
           ) {
-            return { ...navItem, count: initiativesCount.count };
+            return {
+              ...navItem,
+              count: initiativesCount.data.attributes.count,
+            };
           }
           return navItem;
         }
       );
       return updatedNavItems;
     });
-  }, [ideasCount.count, initiativesCount.count]);
+  }, [ideasCount, initiativesCount]);
 
   const handleData = (
     insertNavItemOptions: InsertConfigurationOptions<NavItem>
@@ -188,30 +187,12 @@ const Sidebar = ({ ideasCount, initiativesCount }: Props) => {
           <MenuItem navItem={navItem} key={navItem.name} />
         ))}
 
-        <SupportMenu />
         <NotificationsPopup />
         <UserMenu />
+        <SupportMenu />
       </MenuInner>
     </Menu>
   );
 };
 
-const Data = adopt<DataProps, InputProps>({
-  authUser: <GetAuthUser />,
-  ideasCount: ({ authUser, render }) => (
-    <GetIdeasCount feedbackNeeded assignee={authUser?.id}>
-      {render}
-    </GetIdeasCount>
-  ),
-  initiativesCount: ({ authUser, render }) => (
-    <GetInitiativesCount feedbackNeeded assignee={authUser?.id}>
-      {render}
-    </GetInitiativesCount>
-  ),
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <Sidebar {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default Sidebar;

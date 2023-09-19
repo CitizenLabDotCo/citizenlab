@@ -40,7 +40,7 @@ const MenuItemLink = styled(Link)`
   &:hover,
   &.active,
   &.focus-visible {
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(0, 0, 0, 0.7);
   }
 
   &:not(.active) {

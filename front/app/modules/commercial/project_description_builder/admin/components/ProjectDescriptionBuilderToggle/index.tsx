@@ -9,7 +9,8 @@ import styled from 'styled-components';
 
 // Hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import useProjectDescriptionBuilderLayout from '../../../hooks/useProjectDescriptionBuilderLayout';
+import useProjectDescriptionBuilderLayout from 'modules/commercial/project_description_builder/api/useProjectDescriptionBuilderLayout';
+import useAddProjectDescriptionBuilderLayout from 'modules/commercial/project_description_builder/api/useAddProjectDescriptionBuilderLayout';
 
 // Utils
 import Link from 'utils/cl-router/Link';
@@ -19,15 +20,11 @@ import { fontSizes } from 'utils/styleUtils';
 import { Toggle, IconTooltip, Box } from '@citizenlab/cl2-component-library';
 import Warning from 'components/UI/Warning';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
-import { addProjectDescriptionBuilderLayout } from 'modules/commercial/project_description_builder/services/projectDescriptionBuilder';
 
 // Messages
 import messages from '../../messages';
 import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
-
-// Helpers
-import { isNilOrError } from 'utils/helperUtils';
 
 type ProjectDescriptionBuilderToggleProps = {
   valueMultiloc: Multiloc | undefined | null;
@@ -63,14 +60,16 @@ const ProjectDescriptionBuilderToggle = ({
   const featureEnabled = useFeatureFlag({
     name: 'project_description_builder',
   });
-  const projectDescriptionBuilderLayout = useProjectDescriptionBuilderLayout(
-    params.projectId
-  );
+  const { data: projectDescriptionBuilderLayout } =
+    useProjectDescriptionBuilderLayout(params.projectId);
+
   const route = `/admin/project-description-builder/projects/${params.projectId}/description`;
   const [
     projectDescriptionBuilderLinkVisible,
     setProjectDescriptionBuilderLinkVisible,
   ] = useState<boolean | null>(null);
+  const { mutateAsync: addProjectDescriptionBuilderLayout } =
+    useAddProjectDescriptionBuilderLayout();
 
   useEffect(() => {
     if (!featureEnabled) return;
@@ -78,7 +77,7 @@ const ProjectDescriptionBuilderToggle = ({
   }, [onMount, featureEnabled]);
 
   useEffect(() => {
-    if (!isNilOrError(projectDescriptionBuilderLayout)) {
+    if (projectDescriptionBuilderLayout) {
       const projectDescriptionBuilderEnabled =
         projectDescriptionBuilderLayout.data.attributes.enabled;
       setProjectDescriptionBuilderLinkVisible(projectDescriptionBuilderEnabled);
@@ -97,11 +96,10 @@ const ProjectDescriptionBuilderToggle = ({
   };
 
   const toggleLayoutEnabledStatus = async (enabled: boolean) => {
-    try {
-      await addProjectDescriptionBuilderLayout(params.projectId, { enabled });
-    } catch {
-      // Do nothing
-    }
+    await addProjectDescriptionBuilderLayout({
+      projectId: params.projectId,
+      enabled,
+    });
   };
 
   return (

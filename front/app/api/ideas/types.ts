@@ -28,9 +28,9 @@ export type IdeaCommentingDisabledReason =
   | 'idea_not_in_current_phase'
   | CommentingDisabledReason;
 
-export type IdeaBudgetingDisabledReason =
+export type IdeaVotingDisabledReason =
   | 'project_inactive'
-  | 'not_budgeting'
+  | 'not_voting'
   | 'idea_not_in_current_phase'
   | PermissionsDisabledReason;
 
@@ -51,7 +51,13 @@ export type Sort =
   | 'baskets_count'
   | '-baskets_count'
   | 'status'
-  | '-status';
+  | '-status'
+  | 'votes_count'
+  | '-votes_count'
+  | 'comments_count'
+  | '-comments_count'
+  | 'budget'
+  | '-budget';
 
 export type SortAttribute =
   | 'new'
@@ -61,7 +67,10 @@ export type SortAttribute =
   | 'likes_count'
   | 'dislikes_count'
   | 'baskets_count'
-  | 'status';
+  | 'status'
+  | 'votes_count'
+  | 'comments_count'
+  | 'budget';
 
 type ReactingIdeaActionDescriptor =
   | { enabled: true; disabled_reason: null; cancelling_enabled: boolean }
@@ -85,7 +94,8 @@ export interface IIdeaData {
     comments_count: number;
     internal_comments_count: number;
     official_feedbacks_count: number;
-    baskets_count: number;
+    baskets_count?: number | null;
+    votes_count?: number | null;
     location_point_geojson: GeoJSON.Point | null;
     location_description: string | null;
     budget: number | null;
@@ -108,10 +118,11 @@ export interface IIdeaData {
       // For now, just know that 'comment_reacting_idea' is just an action descriptor,
       // but not an action (so e.g. it can't be used in the authentication_requirements API).
       comment_reacting_idea: ActionDescriptorFutureEnabled<IdeaCommentingDisabledReason>;
-      budgeting?: ActionDescriptorFutureEnabled<IdeaBudgetingDisabledReason>;
+      voting?: ActionDescriptorFutureEnabled<IdeaVotingDisabledReason>;
     };
     anonymous: boolean;
     author_hash: string;
+    followers_count: number;
   };
   relationships: {
     topics?: {
@@ -120,7 +131,7 @@ export interface IIdeaData {
     idea_images: {
       data: IRelationship[] | null;
     };
-    author: {
+    author?: {
       data: IRelationship | null;
     };
     assignee?: {
@@ -136,6 +147,9 @@ export interface IIdeaData {
       data: IRelationship;
     };
     user_reaction?: {
+      data: IRelationship | null;
+    };
+    user_follower: {
       data: IRelationship | null;
     };
   };

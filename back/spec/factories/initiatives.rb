@@ -23,8 +23,12 @@ FactoryBot.define do
       initiative_status { nil }
     end
 
-    before :create do |initiative|
-      if initiative.initiative_status_changes.blank?
+    transient do
+      build_status_change { true }
+    end
+
+    before :create do |initiative, evaluator|
+      if initiative.initiative_status_changes.blank? && evaluator.build_status_change
         initiative.initiative_status_changes << build(:initiative_status_change, initiative: initiative, official_feedback: nil)
       end
     end
@@ -59,16 +63,6 @@ FactoryBot.define do
         evaluator.areas_count.times do |_i|
           initiative.areas << create(:area)
         end
-      end
-    end
-
-    factory :assigned_initiative do
-      transient do
-        assigned_at { Time.now }
-      end
-      after(:create) do |initiative, evaluator|
-        initiative.assignee = create(:admin)
-        initiative.assigned_at = evaluator.assigned_at
       end
     end
   end

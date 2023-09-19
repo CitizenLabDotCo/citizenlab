@@ -1,485 +1,360 @@
-import * as React from 'react';
-import { useEffect, useState } from 'react';
+import React, { Suspense, lazy, useEffect, useState } from 'react';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
 
-// utils
-import { stripHtmlTags, isNilOrError } from 'utils/helperUtils';
-import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
-import Link from 'utils/cl-router/Link';
+// typings
+import { Multiloc, UploadFile } from 'typings';
 
-// Components
+// form
+import { FormProvider, useForm } from 'react-hook-form';
+import { SectionField } from 'components/admin/Section';
+import Feedback from 'components/HookForm/Feedback';
+import TopicsPicker from 'components/HookForm/TopicsPicker';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { object, array, mixed, string, boolean } from 'yup';
+import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 import {
   FormSection,
   FormSectionTitle,
   FormLabel,
 } from 'components/UI/FormComponents';
-import { SectionField } from 'components/admin/Section';
-import TopicsPicker from 'components/UI/TopicsPicker';
-import { Box, Input, LocationInput } from '@citizenlab/cl2-component-library';
-import QuillEditor from 'components/UI/QuillEditor';
-import ImagesDropzone from 'components/UI/ImagesDropzone';
-import FileUploader from 'components/UI/FileUploader';
-import Error from 'components/UI/Error';
-import ProfileVisiblity from 'components/ProfileVisibility';
 
 // intl
 import messages from './messages';
-import { MessageDescriptor, FormattedMessage, useIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
-// typings
-import { Multiloc, Locale, UploadFile } from 'typings';
-import { ITopicData } from 'api/topics/types';
-import { FormSubmitFooter } from './SubmitFooter';
+// Components
+import SubmitButtonBar from './SubmitButtonBar';
+import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
+const ProfileVisibilityFormSection = lazy(
+  () => import('./ProfileVisibilityFormSection')
+);
+const CosponsorsFormSection = lazy(() => import('./CosponsorsFormSection'));
+const AnonymousParticipationConfirmationModal = lazy(
+  () => import('components/AnonymousParticipationConfirmationModal')
+);
+import LocationInput from 'components/HookForm/LocationInput';
+import { Box } from '@citizenlab/cl2-component-library';
+const ImageAndAttachmentsSection = lazy(
+  () => import('./ImagesAndAttachmentsSection')
+);
+import Warning from 'components/UI/Warning';
+
+// Hooks
+import useTopics from 'api/topics/useTopics';
+import { IInitiativeData } from 'api/initiatives/types';
+import { IInitiativeImageData } from 'api/initiative_images/types';
+import { IInitiativeFileData } from 'api/initiative_files/types';
+import useInitiativeReviewRequired from 'containers/InitiativesShow/hooks/useInitiativeReviewRequired';
+import { stripHtmlTags } from 'utils/helperUtils';
+import useInitiativeCosponsorsRequired from 'containers/InitiativesShow/hooks/useInitiativeCosponsorsRequired';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 100px;
-  align-items: center;
-`;
-
-const StyledFormSection = styled(FormSection)`
-  ${media.phone`
-    padding-left: 18px;
-    padding-right: 18px;
-  `}
-`;
-
-export interface SimpleFormValues {
-  title_multiloc: Multiloc | undefined | null;
-  body_multiloc: Multiloc | undefined | null;
-  topic_ids: string[];
-  position: string | undefined | null;
+declare module 'components/UI/Error' {
+  interface TFieldNameMap {
+    position: 'position';
+  }
 }
 
-export interface FormValues extends SimpleFormValues {
-  banner: UploadFile | undefined | null;
-  image: UploadFile | undefined | null;
-  files: UploadFile[];
+export interface FormValues {
+  title_multiloc: Multiloc;
+  body_multiloc: Multiloc;
+  topic_ids?: string[];
+  position?: string;
+  cosponsor_ids?: string[];
+  local_initiative_files: UploadFile[];
+  // The uploaded image is stored in an array, even though we can only store 1
+  images: UploadFile[] | null;
+  header_bg: UploadFile[] | null;
+  anonymous: boolean;
 }
 
-export interface FormProps {
-  saving?: boolean;
-  publishing: boolean;
-  onSave: () => void;
-  onPublish: () => void;
-}
+export type Props = {
+  onSubmit: (formValues: FormValues) => Promise<void>;
+  initiative?: IInitiativeData;
+  initiativeImage?: IInitiativeImageData;
+  initiativeFiles?: IInitiativeFileData[];
+};
 
-interface Props extends FormValues, FormProps {
-  onChangeTitle: (newValue: Multiloc) => void;
-  onChangeBody: (newValue: Multiloc) => void;
-  onChangeTopics: (newValue: string[]) => void;
-  onChangePosition: (newValue: string) => void;
-  onChangeBanner: (newValue: UploadFile | null) => void;
-  onChangeImage: (newValue: UploadFile | null) => void;
-  onAddFile: (newValue: UploadFile) => void;
-  onRemoveFile: (newValue: UploadFile) => void;
-  locale: Locale;
-  publishError: boolean;
-  apiErrors: any;
-  topics: ITopicData[];
-  titleProfanityError: boolean;
-  descriptionProfanityError: boolean;
-  postAnonymously: boolean;
-  setPostAnonymously: (newValue: boolean) => void;
-  publishedAnonymously?: boolean;
-}
+const MAX_NUMBER_OF_COSPONSORS = 10;
 
 const InitiativeForm = ({
-  publishedAnonymously,
-  locale,
-  title_multiloc,
-  body_multiloc,
-  topic_ids,
-  image,
-  onSave,
-  onPublish,
-  onChangeTopics,
-  onChangeBanner,
-  onChangeImage,
-  onChangeTitle,
-  onChangeBody,
-  position,
-  onChangePosition,
-  banner,
-  files,
-  onAddFile,
-  onRemoveFile,
-  publishError,
-  apiErrors,
-  topics,
-  titleProfanityError,
-  descriptionProfanityError,
-  publishing,
-  setPostAnonymously,
-  postAnonymously,
+  onSubmit,
+  initiative,
+  initiativeImage,
+  initiativeFiles,
 }: Props) => {
-  const appConfiguration = useAppConfiguration();
-  const [touched, setTouched] = useState<{
-    [key in keyof FormValues]?: boolean | undefined;
-  }>({});
-  const [errors, setErrors] = useState<{
-    [key in keyof FormValues]?: { message: MessageDescriptor } | undefined;
-  }>({});
-
+  const mapsLoaded = window.googleMaps;
   const { formatMessage } = useIntl();
-  const titleMinLength = 10;
-  const titleMaxLength = 72;
-  const bodyMinLength = process.env.NODE_ENV === 'development' ? 10 : 30;
+  const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
+    useState(false);
+  const cosponsorsRequired = useInitiativeCosponsorsRequired();
+  const initiativeReviewRequired = useInitiativeReviewRequired();
+  const { data: appConfiguration } = useAppConfiguration();
+  const { data: topics } = useTopics({ excludeCode: 'custom' });
+  const schema = object({
+    title_multiloc: validateAtLeastOneLocale(
+      formatMessage(messages.titleEmptyError),
+      {
+        validateEachLocale: (schema) =>
+          schema.test({
+            message: formatMessage(messages.titleMinLengthError),
+            test: (value) => !value || value.length >= 10,
+          }),
+      }
+    ),
+    body_multiloc: validateAtLeastOneLocale(
+      formatMessage(messages.descriptionEmptyError),
+      {
+        validateEachLocale: (schema) =>
+          schema.test({
+            message: formatMessage(messages.descriptionBodyLengthError),
+            test: (value) => !value || stripHtmlTags(value).length >= 30,
+          }),
+      }
+    ),
+    position: string().optional().nullable(),
+    topic_ids: array()
+      .required(formatMessage(messages.topicEmptyError))
+      .min(1, formatMessage(messages.topicEmptyError)),
+    ...(cosponsorsRequired &&
+      typeof appConfiguration?.data.attributes.settings.initiatives
+        ?.cosponsors_number === 'number' && {
+        cosponsor_ids: array()
+          .required(formatMessage(messages.cosponsorsEmptyError))
+          .min(
+            appConfiguration.data.attributes.settings.initiatives
+              .cosponsors_number,
+            formatMessage(messages.cosponsorsEmptyError)
+          )
+          .max(
+            MAX_NUMBER_OF_COSPONSORS,
+            formatMessage(messages.cosponsorsMaxError, {
+              maxNumberOfCosponsors: MAX_NUMBER_OF_COSPONSORS,
+            })
+          ),
+      }),
+    local_initiative_files: mixed().optional(),
+    images: mixed().optional().nullable(),
+    header_bg: mixed().optional().nullable(),
+    anonymous: boolean().optional(),
+  });
+
+  const methods = useForm<FormValues>({
+    mode: 'onBlur',
+    defaultValues: initiative
+      ? {
+          title_multiloc: initiative.attributes.title_multiloc,
+          body_multiloc: initiative.attributes.body_multiloc,
+          position: initiative.attributes.location_description,
+          topic_ids: initiative.relationships.topics.data.map(
+            (topic) => topic.id
+          ),
+          cosponsor_ids: initiative.attributes.cosponsorships
+            ? initiative.attributes.cosponsorships.map(
+                (cosponsor) => cosponsor.user_id
+              )
+            : [],
+          anonymous: initiative.attributes.anonymous,
+        }
+      : undefined,
+    resolver: yupResolver(schema),
+  });
 
   useEffect(() => {
-    const requiredFields = ['title_multiloc', 'body_multiloc', 'topic_ids'];
+    const imageUrl = initiativeImage?.attributes.versions.large;
 
-    const validations = {
-      title_multiloc: () => {
-        const title = title_multiloc ? title_multiloc[locale] : undefined;
-
-        if (title && title.length > 0 && title.length < titleMinLength) {
-          return { message: messages.titleMinLengthError };
-        } else if (title && title.length > 0 && title.length > titleMaxLength) {
-          return { message: messages.titleMaxLengthError };
-        } else if (!title || title === '') {
-          return { message: messages.titleEmptyError };
+    if (imageUrl) {
+      const id = initiativeImage.id;
+      convertUrlToUploadFile(imageUrl, id, null).then((image) => {
+        if (image) {
+          methods.setValue('images', [image]);
         }
-
-        return undefined;
-      },
-      body_multiloc: () => {
-        const body = body_multiloc ? body_multiloc[locale] : undefined;
-        if (
-          body &&
-          stripHtmlTags(body).length < bodyMinLength &&
-          body.length > 0
-        ) {
-          return { message: messages.descriptionBodyLengthError };
-        } else if (!body || body === '') {
-          return { message: messages.descriptionEmptyError };
-        }
-        return undefined;
-      },
-      topic_ids: () => {
-        if (topic_ids.length === 0) {
-          return { message: messages.topicEmptyError };
-        }
-        return undefined;
-      },
-    };
-    const errorList = {};
-    requiredFields.forEach((fieldName) => {
-      errorList[fieldName] = validations[fieldName]();
-    });
-    setErrors(errorList);
-  }, [bodyMinLength, body_multiloc, image, locale, title_multiloc, topic_ids]);
-
-  const updateTouched = (fieldName: string) => {
-    const touchedArray = touched;
-    touchedArray[fieldName] = true;
-    setTouched(touchedArray);
-  };
-  const onBlur = (fieldName: string) => () => {
-    // making sure the props are updated before validation and save.
-    setTimeout(() => {
-      const touchedUpdate = Object.assign({}, touched);
-      touchedUpdate[fieldName] = true;
-      setTouched(touchedUpdate);
-      onSave();
-    }, 5);
-  };
-
-  const validateRequiredFields = () => {
-    const requiredFields = ['title_multiloc', 'body_multiloc', 'topic_ids'];
-    requiredFields.forEach((fieldName) => {
-      updateTouched(fieldName);
-      onBlur(fieldName)();
-    });
-  };
-
-  const handleOnPublish = () => {
-    validateRequiredFields();
-    if (Object.values(errors).every((val) => val === undefined)) {
-      onPublish();
-    }
-  };
-
-  const changeAndSaveTopics = (topic_ids: string[]) => {
-    updateTouched('topic_ids');
-    onChangeTopics(topic_ids.map((x) => x));
-  };
-
-  const addBanner = (banner: UploadFile[]) => {
-    updateTouched('banner');
-    onChangeBanner(banner[0]);
-    onBlur('banner')();
-  };
-
-  const removeBanner = () => {
-    updateTouched('banner');
-    onChangeBanner(null);
-    onBlur('banner')();
-  };
-
-  const addImage = (image: UploadFile[]) => {
-    updateTouched('image');
-    onChangeImage(image[0]);
-    onBlur('image')();
-  };
-
-  const removeImage = () => {
-    updateTouched('image');
-    onChangeImage(null);
-    onBlur('image')();
-  };
-
-  const handleTitleOnChange = (value: string) => {
-    updateTouched('title_multiloc');
-    if (locale && onChangeTitle) {
-      onChangeTitle({
-        ...title_multiloc,
-        [locale]: value,
       });
     }
-  };
+  }, [methods, initiativeImage]);
 
-  const handleBodyOnChange = (value: string) => {
-    updateTouched('body_multiloc');
-    if (locale && onChangeBody) {
-      onChangeBody({
-        ...body_multiloc,
-        [locale]: value,
+  useEffect(() => {
+    const bannerUrl = initiative?.attributes.header_bg.large;
+
+    if (bannerUrl) {
+      convertUrlToUploadFile(bannerUrl, null, null).then((image) => {
+        if (image) {
+          methods.setValue('header_bg', [image]);
+        }
       });
+    }
+  }, [methods, initiative]);
+
+  useEffect(() => {
+    (async () => {
+      if (initiativeFiles) {
+        const convertedFiles = initiativeFiles.map(
+          async (f) =>
+            await convertUrlToUploadFile(
+              f.attributes.file.url,
+              f.id,
+              f.attributes.name
+            )
+        );
+
+        const files = (await Promise.all(
+          convertedFiles.filter((f) => f !== null)
+        )) as UploadFile[];
+
+        methods.setValue('local_initiative_files', files);
+      }
+    })();
+  }, [methods, initiativeFiles]);
+
+  if (!topics) return null;
+
+  const onFormSubmit = async (formValues: FormValues) => {
+    try {
+      await onSubmit(formValues);
+    } catch (error) {
+      handleHookFormSubmissionError(error, methods.setError);
     }
   };
 
-  const allowAnonymousParticipation =
-    appConfiguration.data?.data.attributes.settings.initiatives
-      ?.allow_anonymous_participation;
-  const mapsLoaded = window.googleMaps;
-
-  if (!isNilOrError(topics)) {
-    const availableTopics = topics.filter((topic) => !isNilOrError(topic));
-
-    return (
-      <Form id="initiative-form">
-        <StyledFormSection>
-          <FormSectionTitle message={messages.formGeneralSectionTitle} />
-
-          <SectionField id="e2e-initiative-form-title-section">
-            <FormLabel
-              htmlFor="e2e-initiative-title-input"
-              labelMessage={messages.titleLabel}
-              subtextMessage={messages.titleLabelSubtext2}
-            >
-              <Input
-                type="text"
-                id="e2e-initiative-title-input"
-                value={title_multiloc?.[locale] || ''}
-                locale={locale}
-                onChange={handleTitleOnChange}
-                onBlur={onBlur('title_multiloc')}
-                autocomplete="off"
-                maxCharCount={72}
+  return (
+    <>
+      <FormProvider {...methods}>
+        <form
+          onSubmit={methods.handleSubmit(onFormSubmit)}
+          data-testid="initiativeForm"
+        >
+          <Box pb="92px">
+            <Feedback />
+            <FormSection>
+              <FormSectionTitle message={messages.formGeneralSectionTitle} />
+              <SectionField id="e2e-initiative-form-title-section">
+                <FormLabel
+                  htmlFor="title_multiloc"
+                  labelMessage={messages.titleLabel}
+                  subtextMessage={messages.titleLabelSubtext2}
+                >
+                  <InputMultilocWithLocaleSwitcher
+                    name="title_multiloc"
+                    autocomplete="off"
+                    maxCharCount={72}
+                  />
+                </FormLabel>
+                {/* {titleProfanityError && (
+              <Error
+                text={
+                  <FormattedMessage
+                    {...messages.profanityError}
+                    values={{
+                      guidelinesLink: (
+                        <Link to="/pages/faq" target="_blank">
+                          {formatMessage(messages.guidelinesLinkText)}
+                        </Link>
+                      ),
+                    }}
+                  />
+                }
               />
-              {touched.title_multiloc && errors.title_multiloc ? (
-                <Error
-                  id="e2e-proposal-title-error"
-                  text={formatMessage(errors.title_multiloc.message)}
+            )} */}
+              </SectionField>
+
+              <SectionField id="e2e-initiative-form-description-section">
+                <FormLabel
+                  id="description-label-id"
+                  htmlFor="body_multiloc"
+                  labelMessage={messages.descriptionLabel}
+                  subtextMessage={messages.descriptionLabelSubtext}
                 />
-              ) : (
-                apiErrors &&
-                apiErrors.title_multiloc && (
-                  <Error apiErrors={apiErrors.title_multiloc} />
-                )
+                <QuillMultilocWithLocaleSwitcher
+                  name="body_multiloc"
+                  noVideos
+                  noAlign
+                />
+                {/* {descriptionProfanityError && (
+                  <Error
+                    text={
+                      <FormattedMessage
+                        {...messages.profanityError}
+                        values={{
+                          guidelinesLink: (
+                            <Link to="/pages/faq" target="_blank">
+                              {formatMessage(messages.guidelinesLinkText)}
+                            </Link>
+                          ),
+                        }}
+                      />
+                    }
+                  />
+                )} */}
+              </SectionField>
+              <Warning>
+                <>
+                  <FormattedMessage {...messages.makeSureReadyToBePublic} />{' '}
+                  {initiativeReviewRequired ? (
+                    <FormattedMessage {...messages.notEditableOnceReviewed} />
+                  ) : (
+                    <FormattedMessage {...messages.notEditableOnceVoted} />
+                  )}
+                </>
+              </Warning>
+            </FormSection>
+            <FormSection>
+              <FormSectionTitle message={messages.formDetailsSectionTitle} />
+              <SectionField aria-live="polite">
+                <FormLabel
+                  labelMessage={messages.topicsLabel}
+                  subtextMessage={messages.topicsLabelDescription}
+                />
+                <TopicsPicker name="topic_ids" availableTopics={topics.data} />
+              </SectionField>
+              {mapsLoaded && (
+                <SectionField>
+                  <FormLabel
+                    labelMessage={messages.locationLabel}
+                    subtextMessage={messages.locationLabelSubtext}
+                    htmlFor="position"
+                    optional
+                  >
+                    <LocationInput
+                      name="position"
+                      className="e2e-initiative-location-input"
+                      placeholder={formatMessage(messages.locationPlaceholder)}
+                    />
+                  </FormLabel>
+                </SectionField>
               )}
-            </FormLabel>
-            {titleProfanityError && (
-              <Error
-                text={
-                  <FormattedMessage
-                    {...messages.profanityError}
-                    values={{
-                      guidelinesLink: (
-                        <Link to="/pages/faq" target="_blank">
-                          {formatMessage(messages.guidelinesLinkText)}
-                        </Link>
-                      ),
-                    }}
-                  />
-                }
+            </FormSection>
+            <Suspense fallback={null}>
+              <CosponsorsFormSection
+                cosponsorships={initiative?.attributes.cosponsorships}
               />
-            )}
-          </SectionField>
-
-          <SectionField id="e2e-initiative-form-description-section">
-            <FormLabel
-              id="description-label-id"
-              htmlFor="body"
-              labelMessage={messages.descriptionLabel}
-              subtextMessage={messages.descriptionLabelSubtext}
-            />
-            <QuillEditor
-              id="body"
-              value={body_multiloc?.[locale] || ''}
-              locale={locale}
-              noVideos={true}
-              noAlign={true}
-              onChange={handleBodyOnChange}
-              onBlur={onBlur('body_multiloc')}
-            />
-            {touched.body_multiloc && errors.body_multiloc ? (
-              <Error text={formatMessage(errors.body_multiloc.message)} />
-            ) : (
-              apiErrors &&
-              apiErrors.body_multiloc && (
-                <Error apiErrors={apiErrors.body_multiloc} />
-              )
-            )}
-            {descriptionProfanityError && (
-              <Error
-                text={
-                  <FormattedMessage
-                    {...messages.profanityError}
-                    values={{
-                      guidelinesLink: (
-                        <Link to="/pages/faq" target="_blank">
-                          {formatMessage(messages.guidelinesLinkText)}
-                        </Link>
-                      ),
-                    }}
-                  />
-                }
+            </Suspense>
+            <Suspense fallback={null}>
+              <ImageAndAttachmentsSection />
+            </Suspense>
+            <Suspense fallback={null}>
+              <ProfileVisibilityFormSection
+                triggerModal={() => {
+                  if (methods.watch('anonymous') === true) {
+                    setShowAnonymousConfirmationModal(true);
+                  }
+                }}
               />
-            )}
-          </SectionField>
-        </StyledFormSection>
-
-        <StyledFormSection>
-          <FormSectionTitle message={messages.formDetailsSectionTitle} />
-
-          <SectionField aria-live="polite">
-            <FormLabel
-              labelMessage={messages.topicsLabel}
-              subtextMessage={messages.topicsLabelDescription}
-              htmlFor="field-topic-multiple-picker"
-            />
-            <TopicsPicker
-              id="field-topic-multiple-picker"
-              selectedTopicIds={topic_ids}
-              onChange={changeAndSaveTopics}
-              availableTopics={availableTopics}
-            />
-            {touched.topic_ids && errors.topic_ids ? (
-              <Error text={formatMessage(errors.topic_ids.message)} />
-            ) : (
-              apiErrors &&
-              apiErrors.topic_ids && <Error apiErrors={apiErrors.topic_ids} />
-            )}
-          </SectionField>
-          {mapsLoaded && (
-            <SectionField>
-              <FormLabel
-                labelMessage={messages.locationLabel}
-                subtextMessage={messages.locationLabelSubtext}
-                htmlFor="initiative-location-picker"
-                optional
-              >
-                <LocationInput
-                  id="initiative-location-picker"
-                  className="e2e-initiative-location-input"
-                  value={position || ''}
-                  onChange={onChangePosition}
-                  onBlur={onBlur('position')}
-                  placeholder={formatMessage(messages.locationPlaceholder)}
-                />
-              </FormLabel>
-            </SectionField>
-          )}
-        </StyledFormSection>
-        <StyledFormSection>
-          <FormSectionTitle message={messages.formAttachmentsSectionTitle} />
-          <SectionField id="e2e-iniatiative-banner-dropzone">
-            <FormLabel
-              labelMessage={messages.bannerUploadLabel}
-              subtextMessage={messages.bannerUploadLabelSubtext}
-              htmlFor="initiative-banner-dropzone"
-              optional
-            />
-            <ImagesDropzone
-              id="initiative-banner-dropzone"
-              images={banner ? [banner] : null}
-              imagePreviewRatio={360 / 1440}
-              acceptedFileTypes={{
-                'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
-              }}
-              onAdd={addBanner}
-              onRemove={removeBanner}
-            />
-            {apiErrors && apiErrors.header_bg && (
-              <Error apiErrors={apiErrors.header_bg} />
-            )}
-          </SectionField>
-          <SectionField id="e2e-iniatiative-img-dropzone">
-            <FormLabel
-              labelMessage={messages.imageUploadLabel}
-              subtextMessage={messages.imageUploadLabelSubtext}
-              htmlFor="initiative-image-dropzone"
-              optional
-            />
-            <ImagesDropzone
-              id="initiative-image-dropzone"
-              images={image ? [image] : null}
-              imagePreviewRatio={135 / 298}
-              acceptedFileTypes={{
-                'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
-              }}
-              onAdd={addImage}
-              onRemove={removeImage}
-            />
-            {touched.image && errors.image && (
-              <Error text={formatMessage(errors.image.message)} />
-            )}
-          </SectionField>
-          <SectionField>
-            <FormLabel
-              labelMessage={messages.fileUploadLabel}
-              subtextMessage={messages.fileUploadLabelSubtext}
-              htmlFor="e2e-initiative-file-upload"
-              optional
-            >
-              <FileUploader
-                id="e2e-initiative-file-upload"
-                onFileAdd={onAddFile}
-                onFileRemove={onRemoveFile}
-                files={files}
-                apiErrors={apiErrors}
-              />
-            </FormLabel>
-          </SectionField>
-        </StyledFormSection>
-        {allowAnonymousParticipation && !publishedAnonymously && (
-          <StyledFormSection>
-            <Box mt="-20px">
-              <ProfileVisiblity
-                postAnonymously={postAnonymously}
-                setPostAnonymously={setPostAnonymously}
-              />
-            </Box>
-          </StyledFormSection>
+            </Suspense>
+          </Box>
+          <SubmitButtonBar processing={methods.formState.isSubmitting} />
+        </form>
+      </FormProvider>
+      <Suspense fallback={null}>
+        {showAnonymousConfirmationModal && (
+          <AnonymousParticipationConfirmationModal
+            onCloseModal={() => setShowAnonymousConfirmationModal(false)}
+          />
         )}
-
-        <FormSubmitFooter
-          className="e2e-initiative-publish-button"
-          message={messages.publishButton}
-          error={publishError}
-          errorMessage={messages.submitApiError}
-          processing={publishing}
-          onSubmit={handleOnPublish}
-        />
-      </Form>
-    );
-  }
-
-  return null;
+      </Suspense>
+    </>
+  );
 };
 
 export default InitiativeForm;

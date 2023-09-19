@@ -8,17 +8,17 @@ import {
   Toggle,
   colors,
   Title,
+  CardButton,
 } from '@citizenlab/cl2-component-library';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 import permissionsMessages from 'containers/Admin/projects/project/permissions/messages';
-import { IPermissionData } from 'services/actionPermissions';
+import { IPermissionData } from 'api/permissions/types';
 import Warning from 'components/UI/Warning';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useGroups from 'api/groups/useGroups';
 import useLocalize from 'hooks/useLocalize';
-import { PermissionCardButton } from 'components/admin/GranularPermissions/PermissionCardButton';
 
 const StyledMultipleSelect = styled(MultipleSelect)`
   width: 300px;
@@ -61,7 +61,8 @@ const ActionForm = ({
   };
 
   const handlePermittedByUpdate =
-    (value: IPermissionData['attributes']['permitted_by']) => () => {
+    (value: IPermissionData['attributes']['permitted_by']) => (e) => {
+      e.preventDefault();
       onChange(value, groupIds);
     };
 
@@ -111,39 +112,49 @@ const ActionForm = ({
             {/* TODO: Take a decision on which action we should use for native surveys versus ideation. One or separate?
             If separate, we will need to update code where we check for attributes.posting_idea */}
             {(action === 'taking_survey' || projectType === 'nativeSurvey') && (
-              <PermissionCardButton
-                title={permissionsMessages.permissionsAnyoneLabel}
-                subtitle={permissionsMessages.permissionsAnyoneLabelDescription}
+              <CardButton
+                title={formatMessage(
+                  permissionsMessages.permissionsAnyoneLabel
+                )}
+                subtitle={formatMessage(
+                  permissionsMessages.permissionsAnyoneLabelDescription
+                )}
                 onClick={handlePermittedByUpdate('everyone')}
                 selected={permittedBy === 'everyone'}
               />
             )}
             {emailConfirmPermissionEnabled && (
-              <PermissionCardButton
+              <CardButton
                 id="e2e-permission-email-confirmed-users"
                 iconName="email"
-                title={permissionsMessages.permissionsEmailConfirmLabel}
-                subtitle={
+                title={formatMessage(
+                  permissionsMessages.permissionsEmailConfirmLabel
+                )}
+                subtitle={formatMessage(
                   permissionsMessages.permissionsEmailConfirmLabelDescription
-                }
+                )}
                 onClick={handlePermittedByUpdate('everyone_confirmed_email')}
                 selected={permittedBy === 'everyone_confirmed_email'}
               />
             )}
-            <PermissionCardButton
+            <CardButton
               id="e2e-permission-registered-users"
               iconName="user-circle"
-              title={messages.permissionsUsersLabel}
-              subtitle={messages.permissionsUsersLabelDescription}
+              title={formatMessage(messages.permissionsUsersLabel)}
+              subtitle={formatMessage(
+                messages.permissionsUsersLabelDescription
+              )}
               onClick={handlePermittedByUpdate('users')}
               selected={permittedBy === 'users'}
             />
-            <PermissionCardButton
+            <CardButton
               iconName="group"
-              title={permissionsMessages.permissionsSelectionLabel}
-              subtitle={
+              title={formatMessage(
+                permissionsMessages.permissionsSelectionLabel
+              )}
+              subtitle={formatMessage(
                 permissionsMessages.permissionsSelectionLabelDescription
-              }
+              )}
               onClick={handlePermittedByUpdate('groups')}
               selected={permittedBy === 'groups'}
             />

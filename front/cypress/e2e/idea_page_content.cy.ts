@@ -16,7 +16,7 @@ describe('Idea Page', () => {
       cy.get('#e2e-idea-show-page-content');
 
       // shows the link to the project page with correct href
-      cy.get('#e2e-idea-other-link');
+      cy.get('#e2e-go-back-link');
 
       // shows the idea Title
       cy.get('#e2e-idea-title');
@@ -178,5 +178,80 @@ describe('Idea Page', () => {
       cy.apiRemoveIdea(ideaId);
       cy.apiRemoveProject(projectId);
     });
+  });
+});
+
+describe('Idea location', () => {
+  let projectId: string = null as any;
+  let ideaNoLocationPointId: string = null as any;
+  let ideaWithLocationPointId: string = null as any;
+  const projectTitle = randomString();
+  const projectDescriptionPreview = randomString();
+  const projectDescription = randomString();
+  const ideaNoLocationPointTitle = randomString();
+  const ideaWithLocationPointTitle = randomString();
+  const ideaContent = randomString();
+  const locationDescription = '43 Dummy Address';
+  const locationGeojson = {
+    type: 'Point',
+    coordinates: [4.436279683196275, 50.87327010998867],
+  };
+
+  before(() => {
+    cy.apiCreateProject({
+      type: 'continuous',
+      title: projectTitle,
+      descriptionPreview: projectDescriptionPreview,
+      description: projectDescription,
+      publicationStatus: 'published',
+      participationMethod: 'ideation',
+    })
+      .then((project) => {
+        projectId = project.body.data.id;
+        return cy.apiCreateIdea(
+          projectId,
+          ideaNoLocationPointTitle,
+          ideaContent,
+          undefined,
+          locationDescription
+        );
+      })
+      .then((idea) => {
+        ideaNoLocationPointId = idea.body.data.id;
+        return cy.apiCreateIdea(
+          projectId,
+          ideaWithLocationPointTitle,
+          ideaContent,
+          locationGeojson,
+          locationDescription
+        );
+      })
+      .then((idea) => {
+        ideaWithLocationPointId = idea.body.data.id;
+      });
+  });
+
+  it('has a correct location if missing location_point attribute', () => {
+    // Shows only the text location description if location_point missing
+    cy.visit(`/ideas/${ideaNoLocationPointTitle}`);
+    cy.get('#e2e-idea-show');
+    cy.get('#e2e-idea-show-page-content');
+    cy.get('#e2e-map-popup').should('not.exist');
+    cy.get('#e2e-address-text-only').should('exist');
+  });
+
+  it('has a correct location if contains location_point attribute', () => {
+    // Shows the clickable location link when there is a location_point
+    cy.visit(`/ideas/${ideaWithLocationPointTitle}`);
+    cy.get('#e2e-idea-show');
+    cy.get('#e2e-idea-show-page-content');
+    cy.get('#e2e-map-popup').should('exist');
+    cy.get('#e2e-address-text-only').should('not.exist');
+  });
+
+  after(() => {
+    cy.apiRemoveIdea(ideaNoLocationPointId);
+    cy.apiRemoveIdea(ideaWithLocationPointId);
+    cy.apiRemoveProject(projectId);
   });
 });

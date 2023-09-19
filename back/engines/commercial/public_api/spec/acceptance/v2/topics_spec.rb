@@ -82,4 +82,6 @@ resource 'Topics' do
       end
     end
   end
+
+  include_examples '/api/v2/.../deleted', :topics
 end

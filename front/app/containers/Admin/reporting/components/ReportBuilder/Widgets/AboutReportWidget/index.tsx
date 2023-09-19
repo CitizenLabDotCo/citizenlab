@@ -13,7 +13,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 import PageBreakBox from '../../../../../../../components/admin/ContentBuilder/Widgets/PageBreakBox';
 
 // hooks
-import useReport from 'hooks/useReport';
+import useReport from 'api/reports/useReport';
 import useUserById from 'api/users/useUserById';
 import useProjectById from 'api/projects/useProjectById';
 import useLocalize from 'hooks/useLocalize';
@@ -44,13 +44,13 @@ const AboutReportWidget = ({ reportId, projectId, startAt, endAt }: Props) => {
   const localize = useLocalize();
 
   // Title
-  const report = useReport(reportId);
-  const reportTitle = isNilOrError(report) ? null : report.attributes.name;
+  const { data: report } = useReport(reportId);
+  const reportTitle = isNilOrError(report) ? null : report.data.attributes.name;
 
   // Project mod
   const userId = isNilOrError(report)
     ? null
-    : report.relationships.owner.data.id;
+    : report.data.relationships.owner.data.id;
   const { data: user } = useUserById(userId);
   const projectModerator = !user ? null : getFullName(user.data);
 

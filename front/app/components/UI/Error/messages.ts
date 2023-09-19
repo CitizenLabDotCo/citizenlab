@@ -235,6 +235,10 @@ export default defineMessages({
     id: 'app.errors.category_name_taken',
     defaultMessage: 'A category with this name already exists',
   },
+  tag_name_taken: {
+    id: 'app.errors.tag_name_taken',
+    defaultMessage: 'A tag with this name already exists',
+  },
   bulk_import_ideas_maximum_ideas_exceeded: {
     id: 'app.errors.bulk_import_ideas_maximum_ideas_exceeded',
     defaultMessage: 'The maximum of {value} ideas has been exceeded.',
@@ -346,5 +350,10 @@ export default defineMessages({
     id: 'app.errors.banner_cta_button_url_url',
     defaultMessage:
       "Enter a valid link. Make sure the link starts with 'https://'.",
+  },
+  url: {
+    id: 'app.errors.url',
+    defaultMessage:
+      'Enter a valid link. Make sure the link starts with https://',
   },
 });

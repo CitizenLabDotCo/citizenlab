@@ -1,36 +1,13 @@
 # frozen_string_literal: true
 
 class IdeasFinder < ApplicationFinder
-  sortable_attributes 'likes_count', 'dislikes_count', 'baskets_count'
-
-  sort_scope 'new',          order_new: :desc
-  sort_scope '-new',         order_new: :asc
-  sort_scope 'popular',      order_popular: :desc
-  sort_scope '-popular',     order_popular: :asc
-  sort_scope 'random',       :order_random
-  sort_scope 'author_name',  ['users.first_name ASC', 'users.last_name ASC']
-  sort_scope '-author_name', ['users.first_name DESC', 'users.last_name DESC']
-  sort_scope 'status',       order_status: :asc
-  sort_scope '-status',      order_status: :desc
-
-  sort_scope 'trending',     lambda { |ideas|
-    ids = TrendingIdeaService.new.sort_trending(ideas).map(&:id)
-    Idea.unscoped.where(id: ids).order_as_specified(id: ids)
-  }
-
-  sort_scope '-trending', lambda { |ideas|
-    ids = TrendingIdeaService.new.sort_trending(ideas).map(&:id).reverse
-    Idea.unscoped.where(id: ids).order_as_specified(id: ids)
-  }
-
-  def initialize(params, scope: nil, includes: [], current_user: nil, paginate: true)
+  def initialize(params, scope: nil, includes: [], current_user: nil)
     scope ||= _base_scope
     super(
       params,
       scope: only_idea_inputs_scope(scope),
       includes: includes,
-      current_user: current_user,
-      paginate: paginate
+      current_user: current_user
     )
   end
 
@@ -39,7 +16,7 @@ class IdeasFinder < ApplicationFinder
   def only_idea_inputs_scope(scope)
     phase_ideas = scope.where(project: Project.where(process_type: 'timeline'), creation_phase: nil)
     project_ideas = scope.where(
-      project: Project.where(process_type: 'continuous', participation_method: %w[ideation budgeting])
+      project: Project.where(process_type: 'continuous', participation_method: %w[ideation voting])
     )
     phase_ideas.or(project_ideas)
   end

@@ -24,5 +24,21 @@ describe Frontend::UrlService do
       expect(service.model_to_url(internal_comment2, locale: 'en'))
         .to eq("#{base_uri}/en/admin/initiatives/#{internal_comment2.post.id}##{internal_comment2.id}")
     end
+
+    it 'returns the correct url for a phase' do
+      project = create(:project, slug: 'my-project')
+      _future_phase = create(:phase, project: project, start_at: (Time.zone.today + 20.days), end_at: (Time.zone.today + 25.days))
+      _past_phase = create(:phase, project: project, start_at: (Time.zone.today - 15.days), end_at: (Time.zone.today - 10.days))
+      current_phase = create(:phase, project: project, start_at: (Time.zone.today - 2.days), end_at: (Time.zone.today + 3.days))
+
+      expect(service.model_to_url(current_phase.reload, locale: 'en')).to eq "#{base_uri}/en/projects/my-project/2"
+    end
+
+    it 'returns the correct url for an event' do
+      event = create(:event)
+
+      url = service.model_to_url(event, locale: 'fa-KE')
+      expect(url).to eq "#{base_uri}/fa-KE/events/#{event.id}"
+    end
   end
 end

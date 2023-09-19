@@ -89,6 +89,10 @@ class CustomField < ApplicationRecord
     %w[select multiselect].include?(input_type)
   end
 
+  def support_free_text_value?
+    %w[text multiline_text text_multiloc multiline_text_multiloc html_multiloc].include?(input_type)
+  end
+
   def built_in?
     !!code
   end
@@ -186,7 +190,7 @@ class CustomField < ApplicationRecord
   def title_multiloc
     if code == 'ideation_section1'
       project = resource.participation_context
-      phase = TimelineService.new.current_or_last_ideation_phase project
+      phase = TimelineService.new.current_or_last_can_contain_ideas_phase project
       input_term = phase ? phase.input_term : project.input_term || ParticipationContext::DEFAULT_INPUT_TERM
 
       key = "custom_forms.categories.main_content.#{input_term}.title"
@@ -241,3 +245,4 @@ end
 
 CustomField.include(SmartGroups::Extensions::CustomField)
 CustomField.include(UserCustomFields::Patches::CustomField)
+CustomField.include(Analysis::Patches::CustomField)

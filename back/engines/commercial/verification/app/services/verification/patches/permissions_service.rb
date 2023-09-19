@@ -26,9 +26,13 @@ module Verification
 
       def mark_satisfied_requirements!(requirements, permission, user)
         super
-        return unless permission.permitted_by == 'groups' && user.verified? && VerificationService.new.find_verification_group(permission.groups)
+        return unless permission.permitted_by == 'groups' && VerificationService.new.find_verification_group(permission.groups)
 
-        requirements[:special][:verification] = 'satisfied'
+        if user.verified?
+          requirements[:special][:verification] = 'satisfied'
+        elsif user.in_any_groups? permission.groups
+          requirements[:special][:verification] = 'dont_ask'
+        end
       end
     end
   end

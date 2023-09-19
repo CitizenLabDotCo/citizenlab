@@ -70,7 +70,7 @@ export const NotificationsPopup = () => {
             display="flex"
             alignItems="center"
             w="100%"
-            p={isSmallerThanPhone ? '10px 0' : '10px 8px 10px 16px'}
+            p={isSmallerThanPhone ? '10px 0' : '10px 16px'}
             justifyContent={isSmallerThanPhone ? 'center' : undefined}
           >
             <Box
@@ -101,7 +101,7 @@ export const NotificationsPopup = () => {
             )}
             <Box
               w="auto"
-              h={isSmallerThanPhone ? '0px' : '18px'}
+              h={isSmallerThanPhone ? '0' : '18px'}
               ref={iconDivRef}
             >
               {unreadNotificationsCount > 0 && (
@@ -143,9 +143,7 @@ export const NotificationsPopup = () => {
         overflowY="auto"
         zIndex="10000"
       >
-        <Box height="100%">
-          <Notifications />
-        </Box>
+        <Notifications />
       </Box>
     </Popup>
   );

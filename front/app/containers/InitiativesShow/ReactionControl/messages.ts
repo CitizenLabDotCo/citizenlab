@@ -48,6 +48,28 @@ export default defineMessages({
     id: 'app.containers.InitiativesShow.VoteControl.ineligibleStatusExplanationBold',
     defaultMessage: 'to be eligible',
   },
+  reviewPendingStatusExplanationBold: {
+    id: 'app.containers.InitiativesShow.VoteControl.reviewPendingStatusExplanationBold',
+    defaultMessage: 'The city received this proposal and will review it.',
+  },
+  reviewPendingStatusExplanationSentenceTwo: {
+    id: 'app.containers.InitiativesShow.VoteControl.reviewPendingStatusExplanationSentenceTwo',
+    defaultMessage: "You will receive an email once it's reviewed.",
+  },
+  reviewPendingStatusExplanationSentenceThree: {
+    id: 'app.containers.InitiativesShow.VoteControl.reviewPendingStatusExplanationSentenceThree',
+    defaultMessage: "The proposal can't be shared until it's reviewed.",
+  },
+  changesRequestedStatusExplanationBold: {
+    id: 'app.containers.InitiativesShow.VoteControl.changesRequestedStatusExplanationBold',
+    defaultMessage:
+      'This proposal needs some changes before it can be approved.',
+  },
+  changesRequestedStatusExplanationSentenceTwo: {
+    id: 'app.containers.InitiativesShow.VoteControl.changesRequestedStatusExplanationSentenceTwo',
+    defaultMessage:
+      'Check the official update for an explanation of the requested changes.',
+  },
   expiredStatusExplanation: {
     id: 'app.containers.InitiativesShow.VoteControl.expiredStatusExplanation',
     defaultMessage:

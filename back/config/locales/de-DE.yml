@@ -15,6 +15,10 @@ de:
     rejected: abgelehnt
     rejected_description: Diese Idee wurde abgelehnt
   initiative_statuses:
+    review_pending: Überprüfung steht noch aus
+    review_pending_description: Überprüfung steht noch aus
+    changes_requested: Änderungen gewünscht
+    changes_requested_description: Änderungen gewünscht
     proposed: Offen
     proposed_description: eingereicht
     expired: Grenzwert nicht erreicht
@@ -181,6 +185,8 @@ de:
       <p>Die Initiatoren sind eingeladen, ihre Vorschlag bei der nächsten Stadtratssitzung zu präsentieren. Wir werden ein offizielles Update veröffentlichen.</p>
     default_eligibility_criteria: >
       <ul> <li>Es muss in die Politikbereiche und Kompetenzen des lokalen Politiks fallen.</li> <li>Es dient eher dem öffentlichen als dem individuellen Interesse</li> <li>Es diskriminiert nicht aufgrund von Geschlecht, Rasse, Alter oder Hintergrund.</li> <li>Es schadet anderen nicht</li></ul>
+    default_posting_tips: >
+      <ul><li>Nehmen Sie sich die Zeit, Ihren Vorschlag auszuarbeiten. Wenn nötig, schreiben Sie zuerst einen Entwurf und fügen ihn dann hier ein. Sobald Sie ihn veröffentlichen, können andere ihn lesen und die Zeit beginnt zu laufen.</li><li>Wählen Sie einen aussagekräftigen Titel, der deutlich macht, worum es in Ihrem Vorschlag geht.</li><li>Visualisieren Sie Ihren Vorschlag mit einem passenden Bild, damit er sich abhebt!</li><li>Fügen Sie relevante Anhänge hinzu, z.B. Videos, inspirierende Beispiele, technische Details oder Pläne.</li><li>Teilen Sie Ihre Idee in den sozialen Medien und anderen Kanälen, um Unterstützung von anderen zu erhalten.</li></ul>
   reset_password_mailer:
     send_reset_password:
       cta_reset_password: 'Ihr Passwort zurücksetzen'
@@ -201,7 +207,9 @@ de:
       comments_count: 'Kommentare'
       likes_count: 'Likes'
       dislikes_count: 'Dislikes'
-      baskets_count: 'Körbe'
+      picks: 'Auswahl'
+      participants: 'Teilnehmende'
+      votes_count: 'Stimmen'
       input_url: 'URL'
       project: '{orgName, select, München {Bezirke} other {Projekte}}'
       status: 'Status'
@@ -247,3 +255,6 @@ de:
     formats:
       hour_of_day: "%H:%M"
     pm: pm
+  voting_method:
+    default_voting_term_singular: "Stimme"
+    default_voting_term_plural: "Stimmen"

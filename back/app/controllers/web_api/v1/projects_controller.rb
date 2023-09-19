@@ -30,8 +30,16 @@ class WebApi::V1::ProjectsController < ApplicationController
       end
     user_baskets ||= {}
 
+    user_followers = current_user&.follows
+      &.where(followable_type: 'Project')
+      &.group_by do |follower|
+        [follower.followable_id, follower.followable_type]
+      end
+    user_followers ||= {}
+
     instance_options = {
       user_baskets: user_baskets,
+      user_followers: user_followers,
       allocated_budgets: ParticipationContextService.new.allocated_budgets(@projects),
       timeline_active: TimelineService.new.timeline_active_on_collection(@projects),
       visible_children_count_by_parent_id: {} # projects don't have children
@@ -142,7 +150,7 @@ class WebApi::V1::ProjectsController < ApplicationController
   def index_xlsx
     I18n.with_locale(current_user.locale) do
       include_private_attributes = Pundit.policy!(current_user, User).view_private_attributes?
-      xlsx = XlsxExport::GeneratorService.new.generate_for_project(@project.id, include_private_attributes)
+      xlsx = XlsxExport::GeneratorService.new.generate_inputs_for_project @project.id, include_private_attributes
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'inputs.xlsx'
     end
   end

@@ -186,6 +186,7 @@ export interface Result {
   totalResponses: number;
   answers: Answer[];
   required: boolean;
+  customFieldId: string;
 }
 
 export interface SurveyResultData {

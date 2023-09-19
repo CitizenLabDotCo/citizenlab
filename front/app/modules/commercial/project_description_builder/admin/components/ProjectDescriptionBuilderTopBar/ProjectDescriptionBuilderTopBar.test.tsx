@@ -2,10 +2,7 @@ import React from 'react';
 import { render, screen, fireEvent, act, within } from 'utils/testUtils/rtl';
 import ProjectDescriptionBuilderTopBar from '.';
 import { Editor } from '@craftjs/core';
-import {
-  IProjectDescriptionBuilderData,
-  addProjectDescriptionBuilderLayout,
-} from '../../../services/projectDescriptionBuilder';
+import { IProjectDescriptionBuilderData } from 'modules/commercial/project_description_builder/api/types';
 import clHistory from 'utils/cl-router/history';
 
 const mockEditorData: IProjectDescriptionBuilderData = {
@@ -32,13 +29,20 @@ const mockEditorData: IProjectDescriptionBuilderData = {
   },
 };
 
-jest.mock('../../../hooks/useProjectDescriptionBuilderLayout', () => {
-  return jest.fn(() => ({ data: mockEditorData }));
-});
+jest.mock(
+  'modules/commercial/project_description_builder/api/useProjectDescriptionBuilderLayout',
+  () => () => {
+    return {
+      data: mockEditorData,
+    };
+  }
+);
 
-jest.mock('../../../services/projectDescriptionBuilder', () => ({
-  addProjectDescriptionBuilderLayout: jest.fn(),
-}));
+const mockAddProjectDescriptionBuilderLayout = jest.fn();
+jest.mock(
+  'modules/commercial/project_description_builder/api/useAddProjectDescriptionBuilderLayout',
+  () => jest.fn(() => ({ mutateAsync: mockAddProjectDescriptionBuilderLayout }))
+);
 
 let mockLocalesData = ['en'];
 jest.mock('hooks/useAppConfigurationLocales', () =>
@@ -139,7 +143,8 @@ describe('ProjectDescriptionBuilderTopBar', () => {
       fireEvent.click(screen.getByTestId('contentBuilderTopBarSaveButton'));
     });
 
-    expect(addProjectDescriptionBuilderLayout).toHaveBeenCalledWith('id', {
+    expect(mockAddProjectDescriptionBuilderLayout).toHaveBeenCalledWith({
+      projectId: 'id',
       craftjs_jsonmultiloc: { en: {} },
     });
   });

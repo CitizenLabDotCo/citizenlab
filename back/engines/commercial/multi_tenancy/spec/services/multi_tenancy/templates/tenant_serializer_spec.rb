@@ -21,10 +21,10 @@ describe MultiTenancy::Templates::TenantSerializer do
 
       tenant.switch do
         MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
-
         expect(HomePage.count).to be 1
         expect(Area.count).to be > 0
         expect(Comment.count).to be > 0
+        expect(InternalComment.count).to be > 0
         expect(CustomField.count).to be > 0
         expect(CustomFieldOption.count).to be > 0
         expect(CustomForm.count).to be > 0
@@ -93,6 +93,25 @@ describe MultiTenancy::Templates::TenantSerializer do
 
       expect(template['models']).to be_present
       expect(template.dig('models', 'static_page', 0, 'remote_header_bg_url')).to match(%r{/uploads/.*/static_page/header_bg/.*.jpg})
+    end
+
+    it 'successfully copies over cosponsors_intiatives' do
+      initiative = create(:initiative, title_multiloc: { en: 'initiative-1' })
+      user = create(:user, email: 'user-1@g.com')
+      create(:cosponsors_initiative, user: user, initiative: initiative)
+
+      template = tenant_serializer.run(deserializer_format: true)
+
+      tenant = create(:tenant)
+      tenant.switch do
+        MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
+
+        expect(CosponsorsInitiative.count).to be 1
+
+        cosponsors_initiative = CosponsorsInitiative.first
+        expect(cosponsors_initiative.user.email).to eq user.email
+        expect(cosponsors_initiative.initiative.title_multiloc).to eq initiative.title_multiloc
+      end
     end
 
     it 'successfully copies over native surveys and responses' do
@@ -203,6 +222,27 @@ describe MultiTenancy::Templates::TenantSerializer do
         copied_project = Project.find_by(title_multiloc: project.title_multiloc)
         expect(copied_project.causes.order(:title_multiloc['en']).pluck(:ordering))
           .to eq(ordering_of_source_causes)
+      end
+    end
+
+    it 'can deal with baskets - with or without users' do
+      project = create(:continuous_multiple_voting_project)
+      idea = create(:idea, project: project)
+      user = create(:user)
+      basket1 = create(:basket, participation_context: project, user: user)
+      basket2 = create(:basket, participation_context: project, user: nil)
+      create(:baskets_idea, idea: idea, basket: basket1, votes: 1)
+      create(:baskets_idea, idea: idea, basket: basket2, votes: 2)
+
+      serializer = described_class.new(Tenant.current, uploads_full_urls: true)
+      template = serializer.run(deserializer_format: true)
+
+      tenant = create(:tenant, locales: AppConfiguration.instance.settings('core', 'locales'))
+      tenant.switch do
+        MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
+        expect(Basket.count).to eq 2
+        expect(BasketsIdea.count).to eq 2
+        expect(BasketsIdea.all.pluck(:votes)).to match_array([1, 2])
       end
     end
   end

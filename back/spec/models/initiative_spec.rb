@@ -57,7 +57,7 @@ RSpec.describe Initiative do
       travel_to t
       initiative = create(:initiative, publication_status: 'published')
       travel_to t + 1.week
-      initiative.update(publication_status: 'closed')
+      initiative.update(publication_status: 'draft')
       travel_to t + 1.week
       initiative.update(publication_status: 'published')
       expect(initiative.published_at.to_i).to eq t.to_i
@@ -112,6 +112,49 @@ RSpec.describe Initiative do
         initiative: i3, initiative_status: threshold_reached
       )
       expect(described_class.order_status.ids).to eq [i1.id, i2.id, i3.id]
+    end
+  end
+
+  describe '#proposed_at' do
+    before { create(:initiative_status_proposed) }
+
+    let(:initiative) do
+      create(
+        :initiative,
+        build_status_change: false,
+        created_at: 2.days.ago,
+        published_at: 2.days.ago
+      )
+    end
+
+    it 'returns date when initiative status became proposed' do
+      expect(initiative.proposed_at).to be_within(1.second).of(initiative.initiative_status_changes.first.created_at)
+    end
+  end
+
+  describe '#expires_at' do
+    before do
+      allow(Time).to receive(:now).and_return(Time.now)
+      create(:initiative_status_proposed)
+      configuration = AppConfiguration.instance
+      configuration.settings['initiatives'] = {
+        enabled: true,
+        allowed: true,
+        days_limit: 10,
+
+        reacting_threshold: 2,
+        threshold_reached_message: { 'en' => 'Threshold reached' },
+        eligibility_criteria: { 'en' => 'Eligibility criteria' },
+        posting_tips: { 'en' => 'Posting tips' }
+      }
+      configuration.save!
+    end
+
+    let(:initiative) { create(:initiative, build_status_change: false) }
+
+    it 'returns date when initiative is expired' do
+      proposed_at = initiative.initiative_status_changes.first.created_at
+      expect(initiative.expires_at).to be_within(1.second).of(proposed_at + 10.days)
     end
   end
 
@@ -201,6 +244,72 @@ RSpec.describe Initiative do
         initiative = build(:initiative, publication_status: 'draft', author: nil, anonymous: true)
         expect(initiative.save(context: :publication)).to be true
       end
+    end
+  end
+
+  describe 'cosponsor_ids=' do
+    let(:initiative) { create(:initiative) }
+    let(:cosponsor1) { create(:user) }
+    let!(:cosponsors_initiative) { create(:cosponsors_initiative, user_id: cosponsor1.id, initiative_id: initiative.id) }
+
+    it 'adds cosponsors_initiative when given array of user IDs including new ID' do
+      expect(initiative.reload.cosponsors).to match_array [cosponsor1]
+
+      cosponsor2 = create(:user)
+      initiative.update!(cosponsor_ids: [cosponsor2.id, cosponsor1.id])
+
+      expect(initiative.reload.cosponsors).to match_array [cosponsor1, cosponsor2]
+    end
+
+    it 'removes cosponsors_initiative when given array of user IDs excluding ID of existing co-sponsor' do
+      cosponsor2 = create(:user)
+      initiative.update!(cosponsor_ids: [cosponsor2.id])
+
+      expect(initiative.reload.cosponsors).to match_array [cosponsor2]
+
+      # has_many :cosponsors, through: :cosponsors_initiatives, source: :user, dependent: :destroy
+      # destroys the associated cosponsors_intitiative record(s), not the user(s)
+      expect(User.find(cosponsor1.id)).to be_present
+    end
+
+    it 'removes cosponsors_initiative even when an associated notifcation exists' do
+      cosponsor2 = create(:user)
+      create(:invitation_to_cosponsor_initiative, cosponsors_initiative: cosponsors_initiative)
+      initiative.update!(cosponsor_ids: [cosponsor2.id])
+
+      expect(initiative.reload.cosponsors).to match_array [cosponsor2]
+    end
+
+    it 'can add and remove cosponsors_initiatives at the same time' do
+      cosponsor2 = create(:user)
+      cosponsor3 = create(:user)
+      initiative.update!(cosponsor_ids: [cosponsor2.id, cosponsor3.id])
+
+      expect(initiative.reload.cosponsors).to match_array [cosponsor2, cosponsor3]
+    end
+
+    it 'removes all cosponsors_initiatives when given empty array' do
+      initiative.update!(cosponsor_ids: [])
+
+      expect(initiative.reload.cosponsors).to be_empty
+    end
+
+    it 'handles duplicate IDs' do
+      initiative.update!(cosponsor_ids: [cosponsor1.id, cosponsor1.id])
+
+      expect(initiative.reload.cosponsors).to match_array [cosponsor1]
+    end
+
+    it 'will not add initiative author as cosponsor' do
+      initiative.update!(cosponsor_ids: [initiative.author_id])
+
+      expect(initiative.reload.cosponsors).to be_empty
+    end
+
+    it 'does nothing if update validation fails' do
+      saved = initiative.update(cosponsor_ids: [], title_multiloc: {})
+      expect(saved).to be false
+      expect(initiative.reload.cosponsors).to be_present
     end
   end
 end

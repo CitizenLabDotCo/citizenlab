@@ -121,8 +121,8 @@ const LikeButton = ({
           />
           <ScreenReaderOnly>
             {!reacted
-              ? formatMessage(messages.upvoteComment)
-              : formatMessage(messages.a11y_undoUpvote)}
+              ? formatMessage(messages.likeComment)
+              : formatMessage(messages.a11y_undoLike)}
           </ScreenReaderOnly>
         </>
         {likeCount > 0 && (
@@ -137,8 +137,8 @@ const LikeButton = ({
         )}
       </ButtonWrapper>
       <ScreenReaderOnly aria-live="polite">
-        {formatMessage(messages.a11y_upvoteCount, {
-          upvoteCount: likeCount,
+        {formatMessage(messages.a11y_likeCount, {
+          likeCount,
         })}
       </ScreenReaderOnly>
     </Container>

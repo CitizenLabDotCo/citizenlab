@@ -16,15 +16,17 @@ const DEFAULT_PROJECT_DESCRIPTION_BUILDER_LAYOUT_DATA = {
   },
 };
 
-let mockProjectDescriptionBuilderLayoutData:
+const mockProjectDescriptionBuilderLayoutData:
   | typeof DEFAULT_PROJECT_DESCRIPTION_BUILDER_LAYOUT_DATA
   | undefined
   | Error = DEFAULT_PROJECT_DESCRIPTION_BUILDER_LAYOUT_DATA;
 
 jest.mock(
-  'modules/commercial/project_description_builder/hooks/useProjectDescriptionBuilderLayout',
-  () => {
-    return jest.fn(() => mockProjectDescriptionBuilderLayoutData);
+  'modules/commercial/project_description_builder/api/useProjectDescriptionBuilderLayout',
+  () => () => {
+    return {
+      data: mockProjectDescriptionBuilderLayoutData,
+    };
   }
 );
 
@@ -48,22 +50,5 @@ describe('Preview', () => {
     expect(
       screen.queryByTestId('projectDescriptionBuilderPreviewContent')
     ).not.toBeInTheDocument();
-  });
-
-  it('should shows description when project description builder hook returns error', () => {
-    mockProjectDescriptionBuilderLayoutData = new Error();
-    render(<Preview projectId={projectId} projectTitle={projectTitle} />);
-    expect(
-      screen.getByTestId('projectDescriptionBuilderProjectDescription')
-    ).toBeInTheDocument();
-    expect(
-      screen.queryByTestId('projectDescriptionBuilderPreviewContent')
-    ).not.toBeInTheDocument();
-  });
-  it('shows loading state correctly', () => {
-    mockProjectDescriptionBuilderLayoutData = undefined;
-    render(<Preview projectId={projectId} projectTitle={projectTitle} />);
-
-    expect(screen.getByTestId('spinner')).toBeInTheDocument();
   });
 });

@@ -3,9 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe ParticipationMethod::NativeSurvey do
-  subject(:participation_method) { described_class.new participation_context }
+  subject(:participation_method) { described_class.new context }
 
-  let(:participation_context) { create(:continuous_native_survey_project) }
+  let(:context) { create(:continuous_native_survey_project) }
 
   describe '#assign_slug' do
     let(:input) { create(:input, slug: nil) }
@@ -13,12 +13,18 @@ RSpec.describe ParticipationMethod::NativeSurvey do
     before { create(:idea_status_proposed) }
 
     describe '#assign_defaults_for_participation_context' do
-      let(:participation_context) { build(:continuous_native_survey_project) }
+      let(:context) { build(:continuous_native_survey_project) }
 
       it 'sets the limits posting to max one' do
         participation_method.assign_defaults_for_participation_context
-        expect(participation_context.posting_method).to eq 'limited'
-        expect(participation_context.posting_limited_max).to eq 1
+        expect(context.posting_method).to eq 'limited'
+        expect(context.posting_limited_max).to eq 1
+      end
+
+      it 'does not change the ideas_order' do
+        expect do
+          participation_method.assign_defaults_for_participation_context
+        end.not_to change(context, :ideas_order)
       end
     end
 
@@ -32,7 +38,7 @@ RSpec.describe ParticipationMethod::NativeSurvey do
 
   describe '#create_default_form!' do
     it 'persists a default form with a page for the participation context' do
-      expect(participation_context.custom_form).to be_nil
+      expect(context.custom_form).to be_nil
 
       participation_method.create_default_form!
       # create_default_form! does not reload associations for form/fields/options,
@@ -41,7 +47,7 @@ RSpec.describe ParticipationMethod::NativeSurvey do
       # Not doing this makes this test flaky, as create_default_form! creates fields
       # and CustomField uses acts_as_list for ordering fields. The ordering is ok
       # in the database, but not necessarily in memory.
-      participation_context_in_db = Project.find(participation_context.id)
+      participation_context_in_db = Project.find(context.id)
 
       expect(participation_context_in_db.custom_form.custom_fields.size).to eq 2
 
@@ -76,7 +82,7 @@ RSpec.describe ParticipationMethod::NativeSurvey do
   describe '#default_fields' do
     it 'returns an empty list' do
       expect(
-        participation_method.default_fields(create(:custom_form, participation_context: participation_context)).map(&:code)
+        participation_method.default_fields(create(:custom_form, participation_context: context)).map(&:code)
       ).to eq []
     end
   end
@@ -84,6 +90,19 @@ RSpec.describe ParticipationMethod::NativeSurvey do
   describe '#validate_built_in_fields?' do
     it 'returns false' do
       expect(participation_method.validate_built_in_fields?).to be false
+    end
+  end
+
+  describe '#author_in_form?' do
+    it 'returns false for a moderator when idea_author_change is activated' do
+      SettingsService.new.activate_feature! 'idea_author_change'
+      expect(participation_method.author_in_form?(create(:admin))).to be false
+    end
+  end
+
+  describe '#budget_in_form?' do
+    it 'returns false for a moderator' do
+      expect(participation_method.budget_in_form?(create(:admin))).to be false
     end
   end
 
@@ -114,26 +133,41 @@ RSpec.describe ParticipationMethod::NativeSurvey do
     end
   end
 
+  describe '#posting_allowed?' do
+    it 'returns true' do
+      expect(participation_method.posting_allowed?).to be true
+    end
+  end
+
   describe '#never_update?' do
     it 'returns true' do
       expect(participation_method.never_update?).to be true
     end
   end
 
-  describe '#form_in_phase?' do
+  describe '#creation_phase?' do
     context 'for a timeline project' do
       let(:project) { create(:project_with_active_native_survey_phase) }
-      let(:participation_context) { project.phases.first }
+      let(:context) { project.phases.first }
 
       it 'returns true' do
-        expect(participation_method.form_in_phase?).to be true
+        expect(participation_method.creation_phase?).to be true
       end
     end
 
     context 'for a continuous project' do
       it 'returns false' do
-        expect(participation_method.form_in_phase?).to be false
+        expect(participation_method.creation_phase?).to be false
       end
+    end
+  end
+
+  describe '#custom_form' do
+    let(:project_form) { create(:custom_form, participation_context: context.project) }
+    let(:participation_context) { create(:native_survey_phase) }
+
+    it 'returns the custom form of the phase' do
+      expect(participation_method.custom_form.participation_context_id).to eq context.id
     end
   end
 
@@ -147,11 +181,11 @@ RSpec.describe ParticipationMethod::NativeSurvey do
     context 'when there are responses' do
       before do
         IdeaStatus.create_defaults
-        create(:idea, project: participation_context)
+        create(:idea, project: context)
       end
 
       it 'returns false' do
-        participation_context.reload
+        context.reload
         expect(participation_method.edit_custom_form_allowed?).to be false
       end
     end
@@ -187,12 +221,13 @@ RSpec.describe ParticipationMethod::NativeSurvey do
     end
   end
 
+  its(:allowed_ideas_orders) { is_expected.to be_empty }
+  its(:supports_exports?) { is_expected.to be true }
   its(:supports_publication?) { is_expected.to be false }
   its(:supports_commenting?) { is_expected.to be false }
   its(:supports_reacting?) { is_expected.to be false }
-  its(:supports_baskets?) { is_expected.to be false }
-  its(:supports_budget?) { is_expected.to be false }
   its(:supports_status?) { is_expected.to be false }
   its(:supports_assignment?) { is_expected.to be false }
   its(:return_disabled_actions?) { is_expected.to be true }
+  its(:additional_export_columns) { is_expected.to eq [] }
 end

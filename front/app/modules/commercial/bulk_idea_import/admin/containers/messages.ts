@@ -29,4 +29,19 @@ export default defineMessages({
     id: 'app.containers.admin.import.successMessage',
     defaultMessage: 'File imported successfully!',
   },
+  ideasBeingImported: {
+    id: 'app.containers.admin.import.ideasBeingImported2',
+    defaultMessage:
+      'Your ideas are being imported. This can take a while. Please do not close this page.',
+  },
+  importTakingLonger: {
+    id: 'app.containers.admin.import.ideasBeingImported',
+    defaultMessage:
+      'Import taking longer than one minute. Try waiting another minute. If you then still see this message, try going back to the input manager, wait another minute, and refresh the page. If that does not work, try importing again.',
+  },
+  somethingWentWrong: {
+    id: 'app.containers.admin.import.somethingWentWrong2',
+    defaultMessage:
+      'Something went wrong. This could be an issue with your excel file. If you are completely sure that there are no problems with your excel file: try going back to the input manager, wait a few minutes, and refresh the page. If that does not work, try importing again.',
+  },
 });

@@ -8,6 +8,7 @@ en:
       "comment_on_your_comment": A reply on my comment
       "comment_on_your_idea": A comment on my idea
       "comment_on_your_initiative": A comment on my proposal
+      "cosponsor_of_your_initiative": A user accepts my invitation to co-sponor my proposal
       "first_idea_published": Publication of my first idea
       "idea_marked_as_spam": Idea spam report
       "idea_published": Publication of my idea
@@ -24,6 +25,7 @@ en:
       "internal_comment_on_your_internal_comment": Internal comment on my internal comment
       "invite_received": Invitation
       "invite_reminder": Invitation reminder
+      "invitation_to_cosponsor_initiative": Invitation to co-sponsor a proposal
       "mention_in_internal_comment": Mention in an internal comment
       "mention_in_official_feedback": Mention in an update
       "new_comment_for_admin": New comment in a project I moderate
@@ -65,6 +67,7 @@ en:
       "comment_on_your_comment": Reply on your comment - all users
       "comment_on_your_idea": Comment on your idea - all users
       "comment_on_your_initiative": Comment on your proposal - all users
+      "cosponsor_of_your_initiative": A user accepts your invitation to co-sponor your proposal - all users
       "first_idea_published": Publication of your first idea - all users
       "idea_marked_as_spam": Idea spam report - admins and project managers
       "idea_published": Publication of your idea - all users
@@ -81,6 +84,7 @@ en:
       "internal_comment_on_your_internal_comment": Internal comment on your internal comment - admins and project managers
       "invite_received": Invitation - all users
       "invite_reminder": Invitation reminder - all users
+      "invitation_to_cosponsor_initiative": Invitation to co-sponsor a proposal - all users
       "mention_in_comment": Mention in a comment - all users
       "mention_in_internal_comment": Mention in an internal comment - admins and project managers
       "mention_in_official_feedback": Mention in an update - all users
@@ -183,6 +187,12 @@ en:
       main_header: '%{commentAuthor} commented on your initiative'
       subject: 'You''ve received a comment on %{organizationName}''s platform'
       preheader: '%{authorName} left a comment on your initiative for %{organizationName}'
+    cosponsor_of_your_initiative:
+      cta_reply_to: 'View your proposal'
+      event_description_initiative: 'Congratulations! %{cosponsorName} has accepted your invitation to co-sponsor your proposal.'
+      main_header: '%{cosponsorName} has accepted your invitation to co-sponsor your proposal'
+      subject: '%{cosponsorName} has accepted your invitation to co-sponsor your proposal'
+      preheader_initiative: '%{cosponsorName} has accepted your invitation to co-sponsor your proposal'
     assignee_digest:
       subject: 'Ideas requiring your feedback: %{numberIdeas}'
       preheader: 'Assignee digest of %{organizationName}'
@@ -227,14 +237,25 @@ en:
       cta_accept_invitation: 'Accept your invitation'
       invitation_header: 'Your invitation is pending'
       preheader: '%{organizationName} sent you an invite to join their participation platform some days ago.'
+      invitation_expiry_message: 'This invitation expires in approximately %{expiryDaysRemaining} days.'
       subject: 'Pending invitation for the participation platform of %{organizationName}'
     invite_received:
       added_a_message: '%{organizationName} wrote the following message:'
       cta_accept_invitation: 'Accept your invitation'
       invitation_header: 'You are invited!'
       invitation_header_message: '%{organizationName} invited you to their participation platform.'
+      invitation_expiry_message: 'This invitation expires in %{expiryDays} days.'
       preheader: '%{organizationName} sent you an invite to join their participation platform.'
       subject: 'You are invited to join the platform of %{organizationName}'
+    invitation_to_cosponsor_initative:
+      cta_reply_to: 'Co-sponsor this proposal'
+      event_description_initiative: '%{authorName} has created a new proposal and would like you to co-sponsor it.'
+      event_description_cosponsoring: 'Co-sponsoring a proposal means that <strong>your name will be displayed</strong> with the names of other co-sponsors of the proposal'
+      event_description_before_action: 'To see the proposal and accept the invitation, you must be logged in to your account.'
+      event_description_action: 'Click below to read the proposal'
+      main_header: 'You have been invited to co-sponsor a proposal'
+      subject: 'You have been invited to co-sponsor a proposal'
+      preheader_initiative: 'You have been invited to co-sponsor the proposal of %{authorName}'
     initiative_published:
       action_add_image: '%{addImageLink} to increase visibility'
       action_published_initiative: 'Published proposal'
@@ -632,4 +653,39 @@ en:
       new_votes: 'New votes'
       remaining_votes: 'Votes remaining'
       remaining_days: 'Days remaining'
-
+    voting_basket_submitted:
+      subject: '%{organizationName}: You voted successfully'
+      preheader: 'You voted successfully on the participation platform of %{organizationName}'
+      title_basket_submitted: 'You voted successfully'
+      event_description: 'Thanks for participating. Your votes have been recorded. Visit the platform of %{organizationName} to see and manage your votes.'
+      cta_see_votes_submitted: 'See votes submitted'
+      cta_message: 'Click the button below to participate'
+    voting_basket_not_submitted:
+      subject: '%{organizationName}: You didn''t submit your votes'
+      preheader: 'You didn''t submit your votes on the participation platform of %{organizationName}'
+      title_basket_not_submitted: 'You didn''t submit your votes'
+      event_description: 'You selected a few options for %{contextTitle} but you didn''t submit your selection.'
+      cta_view_options_and_vote: 'View options and vote'
+      cta_message: 'Click the button below to submit your selected options'
+    voting_last_chance:
+      subject: '%{organizationName}: Last chance to vote for %{phaseTitle}'
+      preheader: 'Last chance to vote for %{phaseTitle} on the participation platform of %{organizationName}'
+      title_last_chance: 'Last chance to vote for %{phaseTitle}'
+      body_1: 'The voting phase for the %{projectTitle} project is coming to a close tomorrow, at midnight.'
+      body_2: 'Time is running out, and we noticed that you haven''t cast your vote yet! Act now by simply clicking the button below to participate.'
+      body_3: 'By doing so, you''ll gain access to a range of options and have the chance to provide your input, which is crucial in deciding the future of this project.'
+      cta_vote: 'Vote'
+    voting_results:
+      subject: '%{organizationName}: %{phaseTitle} vote results revealed!'
+      preheader: '%{phaseTitle} vote results revealed on the participation platform of %{organizationName}'
+      title_results: '%{phaseTitle} vote results revealed!'
+      body_1: 'Results are in!'
+      body_2: 'The results of the %{phaseTitle} vote in the %{organizationName} platform have been published!'
+      body_3: 'We encourage you to review the results and stay tuned for further updates on the next steps.'
+      cta_see_results: 'See results in the platform'
+    voting_phase_started:
+      subject: '%{organizationName}: The voting phase started for %{projectName}'
+      preheader: 'The voting phase started for %{projectName} on the participation platform of %{organizationName}'
+      event_description: 'The project "%{projectName}" is asking you to vote between %{numIdeas} options:'
+      cta_message: 'Click the button below to participate'
+      cta_vote: 'Go to the platform to vote'

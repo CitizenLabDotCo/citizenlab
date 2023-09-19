@@ -10,8 +10,8 @@ import { useWindowSize } from '@citizenlab/cl2-component-library';
 
 // components
 import MapIdeasList from './MapIdeasList';
-import IdeasShow from 'containers/IdeasShow';
 import IdeaShowPageTopBar from 'containers/IdeasShowPage/IdeaShowPageTopBar';
+import IdeasShow from 'containers/IdeasShow';
 
 // styling
 import styled from 'styled-components';

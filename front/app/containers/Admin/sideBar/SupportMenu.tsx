@@ -48,22 +48,22 @@ export const SupportMenu = () => {
               <Icon name="help" fill={colors.green400} width="24px" />
             </Box>
             {!isSmallerThanPhone && (
-              <>
-                <Text
-                  color="white"
-                  ml="15px"
-                  fontSize="base"
-                  textAlign="left"
-                  my="0px"
-                  w="100%"
-                >
-                  {formatMessage({ ...messages.support })}
-                </Text>
-                <Box ref={iconDivRef}>
-                  <Icon name="chevron-right" fill={colors.white} />
-                </Box>
-              </>
+              <Text
+                color="white"
+                ml="15px"
+                fontSize="base"
+                textAlign="left"
+                my="0px"
+                w="100%"
+              >
+                {formatMessage({ ...messages.support })}
+              </Text>
             )}
+            <Box ref={iconDivRef}>
+              {!isSmallerThanPhone && (
+                <Icon name="chevron-right" fill={colors.white} />
+              )}
+            </Box>
           </Box>
         </StyledBox>
       }

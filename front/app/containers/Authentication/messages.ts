@@ -5,6 +5,10 @@ export default defineMessages({
     id: 'app.containers.NewAuthModal.beforeYouParticipate',
     defaultMessage: 'Before you participate',
   },
+  beforeYouFollow: {
+    id: 'app.containers.NewAuthModal.beforeYouFollow',
+    defaultMessage: 'Before you follow',
+  },
   logIn: {
     id: 'app.containers.NewAuthModal.logIn',
     defaultMessage: 'Log in',
@@ -17,9 +21,10 @@ export default defineMessages({
     id: 'app.containers.SignUp.signUp2',
     defaultMessage: 'Sign up',
   },
-  invitationError: {
-    id: 'app.containers.SignUp.invitationError',
-    defaultMessage: 'Your invitation has expired or has already been redeemed.',
+  invitationErrorText: {
+    id: 'app.containers.SignUp.invitationErrorText',
+    defaultMessage:
+      'Your invitation has expired or has already been used. If you have already used the invitation link to create an account, try signing in. Otherwise, sign up to create a new account.',
   },
   verifyYourIdentity: {
     id: 'app.components.VerificationModal.verifyYourIdentity',

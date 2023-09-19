@@ -17,9 +17,7 @@ import { roundPercentage } from 'utils/math';
 // typings
 import { SortAttribute as InitiativesSortAttribute } from 'resources/GetInitiatives';
 import { SortDirection } from 'utils/paginationUtils';
-
-const TOTAL_WIDTH = 11;
-const getWidth = (width: number) => `${roundPercentage(width, TOTAL_WIDTH)}%`;
+import useInitiativeCosponsorsRequired from 'containers/InitiativesShow/hooks/useInitiativeCosponsorsRequired';
 
 interface Props {
   sortAttribute?: InitiativesSortAttribute;
@@ -29,49 +27,62 @@ interface Props {
   handleSortClick: (newSortAttribute: InitiativesSortAttribute) => () => void;
 }
 
-export default ({
+const InitiativesHeaderRow = ({
   sortAttribute,
   sortDirection,
   allSelected,
   toggleSelectAll,
   handleSortClick,
-}: Props) => (
-  <Thead>
-    <Tr background={colors.grey50}>
-      <Th width={getWidth(1)}>
-        <Checkbox
-          checked={!!allSelected}
-          onChange={toggleSelectAll}
-          size="21px"
-        />
-      </Th>
-      <Th width={getWidth(4)}>
-        <FormattedMessage {...messages.title} />
-      </Th>
-      <Th width={getWidth(2)}>
-        <FormattedMessage {...messages.assignee} />
-      </Th>
-      <SortableHeaderCell
-        width={getWidth(2)}
-        sortAttribute={sortAttribute}
-        sortDirection={sortDirection}
-        sortAttributeName="new"
-        onChange={handleSortClick('new')}
-      >
-        <FormattedMessage {...messages.remainingTime} />
-      </SortableHeaderCell>
-      <SortableHeaderCell
-        width={getWidth(1)}
-        sortAttribute={sortAttribute}
-        sortDirection={sortDirection}
-        sortAttributeName="likes_count"
-        onChange={handleSortClick('likes_count')}
-      >
-        <FormattedMessage {...messages.votes} />
-      </SortableHeaderCell>
-      <Th width={getWidth(1)}>
-        <FormattedMessage {...messages.comments} />
-      </Th>
-    </Tr>
-  </Thead>
-);
+}: Props) => {
+  const cosponsorsRequired = useInitiativeCosponsorsRequired();
+
+  const getWidth = (width: number) => `${roundPercentage(width, 11)}%`;
+
+  return (
+    <Thead>
+      <Tr background={colors.grey50}>
+        <Th width={getWidth(1)}>
+          <Checkbox
+            checked={!!allSelected}
+            onChange={toggleSelectAll}
+            size="21px"
+          />
+        </Th>
+        <Th width={getWidth(4)}>
+          <FormattedMessage {...messages.title} />
+        </Th>
+        <Th width={getWidth(2)}>
+          <FormattedMessage {...messages.assignee} />
+        </Th>
+        <SortableHeaderCell
+          width={getWidth(1)}
+          sortAttribute={sortAttribute}
+          sortDirection={sortDirection}
+          sortAttributeName="likes_count"
+          onChange={handleSortClick('likes_count')}
+        >
+          <FormattedMessage {...messages.votes} />
+        </SortableHeaderCell>
+        <Th width={getWidth(1)}>
+          <FormattedMessage {...messages.comments} />
+        </Th>
+        {cosponsorsRequired && (
+          <Th width={getWidth(1)}>
+            <FormattedMessage {...messages.cosponsors} />
+          </Th>
+        )}
+        <SortableHeaderCell
+          width={getWidth(2)}
+          sortAttribute={sortAttribute}
+          sortDirection={sortDirection}
+          sortAttributeName="new"
+          onChange={handleSortClick('new')}
+        >
+          <FormattedMessage {...messages.publication_date} />
+        </SortableHeaderCell>
+      </Tr>
+    </Thead>
+  );
+};
+
+export default InitiativesHeaderRow;

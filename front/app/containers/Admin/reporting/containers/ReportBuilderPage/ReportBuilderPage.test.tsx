@@ -1,20 +1,28 @@
 import React from 'react';
 import ReportBuilderPage from '.';
 import { render, screen, fireEvent, userEvent, act } from 'utils/testUtils/rtl';
-import { createReport, deleteReport } from 'services/reports';
-import clHistory from 'utils/cl-router/history';
 
-// service mocks
+import clHistory from 'utils/cl-router/history';
 
 // hook mocks
 jest.mock('hooks/useFeatureFlag', () => jest.fn(() => true));
 
 let mockReports;
-jest.mock('hooks/useReports', () => jest.fn(() => mockReports));
-jest.mock('services/reports', () => ({
-  createReport: jest.fn(),
-  deleteReport: jest.fn(),
-}));
+jest.mock('api/reports/useReports', () =>
+  jest.fn(() => ({ data: { data: mockReports } }))
+);
+
+const mockCreateReport = jest.fn();
+
+jest.mock('api/reports/useAddReport', () =>
+  jest.fn(() => ({ mutate: mockCreateReport }))
+);
+
+const mockDeleteReport = jest.fn();
+
+jest.mock('api/reports/useDeleteReport', () =>
+  jest.fn(() => ({ mutate: mockDeleteReport }))
+);
 
 const mockUser1 = { attributes: { first_name: 'User 1' } };
 const mockUser2 = { attributes: { first_name: 'User 2' } };
@@ -96,8 +104,11 @@ describe('<ReportBuilderPage />', () => {
       expect(input).toHaveValue('Test project');
 
       fireEvent.click(screen.getByTestId('create-report-button'));
-      expect(createReport).toHaveBeenCalledTimes(1);
-      expect(createReport).toHaveBeenCalledWith('Test project');
+      expect(mockCreateReport).toHaveBeenCalledTimes(1);
+      expect(mockCreateReport).toHaveBeenCalledWith(
+        { name: 'Test project' },
+        expect.anything()
+      );
     });
   });
 
@@ -126,7 +137,7 @@ describe('<ReportBuilderPage />', () => {
       fireEvent.click(deleteButtonSecondReport);
 
       expect(global.window.confirm).toHaveBeenCalledTimes(1);
-      expect(deleteReport).toHaveBeenCalledWith('r2');
+      expect(mockDeleteReport).toHaveBeenCalledWith('r2');
     });
 
     it('calls clHistory.push with correct arg when clicking "edit"', () => {

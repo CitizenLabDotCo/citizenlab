@@ -68,7 +68,6 @@ module MultiTenancy
         return unless project.timeline?
 
         start_at = Faker::Date.between(from: Tenant.current.created_at, to: 1.year.from_now)
-        has_budgeting = false
         rand(8).times do
           start_at += 1.day
           phase = project.phases.new({
@@ -76,17 +75,12 @@ module MultiTenancy
             description_multiloc: runner.create_for_tenant_locales { Faker::Lorem.paragraphs.map { |p| "<p>#{p}</p>" }.join },
             start_at: start_at,
             end_at: (start_at += rand(150).days),
-            participation_method: %w[ideation budgeting poll information ideation ideation][rand(6)],
+            participation_method: %w[ideation voting poll information ideation ideation][rand(6)],
             campaigns_settings: { project_phase_started: true }
           })
-          if phase.budgeting?
-            if has_budgeting
-              phase.participation_method = 'ideation'
-            else
-              has_budgeting = true
-            end
-          end
-          if phase.ideation?
+          if phase.voting?
+            phase.assign_attributes(voting_method: 'budgeting', voting_max_total: rand(100..1_000_099).round(-2))
+          elsif phase.ideation?
             phase.assign_attributes({
               posting_enabled: rand(4) != 0,
               reacting_enabled: rand(4) != 0,
@@ -96,11 +90,6 @@ module MultiTenancy
               reacting_like_limited_max: rand(1..15),
               reacting_dislike_method: %w[unlimited unlimited unlimited limited][rand(4)],
               reacting_dislike_limited_max: rand(1..15)
-            })
-          end
-          if phase.budgeting?
-            phase.assign_attributes({
-              max_budget: rand(100..1_000_099).round(-2)
             })
           end
           phase.save!

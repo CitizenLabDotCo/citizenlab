@@ -15,6 +15,10 @@ ca:
     rejected: rebutjada
     rejected_description: Aquesta idea ha estat rebutjada
   initiative_statuses:
+    review_pending: revisió pendent
+    review_pending_description: revisió pendent
+    changes_requested: canvis sol·licitats
+    changes_requested_description: canvis sol·licitats
     proposed: proposat
     proposed_description: proposat
     expired: caducat
@@ -181,6 +185,8 @@ ca:
       <p>Es convida els iniciadors a presentar la seva proposta a la propera reunió del consell. Us proporcionarem una actualització oficial.</p>
     default_eligibility_criteria: >
       <ul> <li>Ha d'estar dins de les àrees polítiques i competències de la política local</li> <li>Serveix l'interès públic més que el vostre interès individual</li> <li>No discrimina per sexe, raça, edat o antecedents</li> <li>No perjudica els altres</li> </ul>
+    default_posting_tips: >
+      <ul><li>Preneu-vos el temps per elaborar la vostra proposta. Si cal, escriviu primer un esborrany i després copieu-lo i enganxeu-lo aquí.</li><li>Trieu un títol significatiu que expliqui clarament què implica la vostra proposta.</li><li>Visualitzeu la vostra proposta amb una imatge adequada per ajudar-la a destacar!</li><li>Afegiu fitxers adjunts rellevants, com ara vídeos, exemples inspiradors, detalls tècnics o plans.</li><li>Compartiu la vostra idea a les xarxes socials i altres canals per obtenir el suport dels altres.</li></ul>
   reset_password_mailer:
     send_reset_password:
       cta_reset_password: 'Restablir la contrasenya'
@@ -201,7 +207,9 @@ ca:
       comments_count: 'Comentaris'
       likes_count: 'M''agrada'
       dislikes_count: 'No li agrada'
-      baskets_count: 'Cistelles'
+      picks: 'Seleccions'
+      participants: 'Participants'
+      votes_count: 'Vots'
       input_url: 'URL'
       project: 'Projecte'
       status: 'Estat'
@@ -247,3 +255,6 @@ ca:
     formats:
       hour_of_day: "%H:%M"
     pm: pm
+  voting_method:
+    default_voting_term_singular: "votar"
+    default_voting_term_plural: "vots"

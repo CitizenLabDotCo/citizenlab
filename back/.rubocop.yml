@@ -31,6 +31,8 @@ Style/Documentation:
 
 Style/GuardClause:
   Enabled: false
+Style/Next:
+  Enabled: false
 
 Style/SymbolProc:
   Enabled: true

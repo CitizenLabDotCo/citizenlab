@@ -44,7 +44,13 @@ const SurveyResults = ({ projectId, phaseId, shownQuestions }: Props) => {
     if (isNilOrError(formResults)) return null;
 
     const { results } = formResults;
-    return createResultRows(results, shownQuestions);
+    // Filtering out qualitative questions
+    const fitleredResults = results.filter((result) => {
+      return (
+        result.inputType !== 'text' && result.inputType !== 'multiline_text'
+      );
+    });
+    return createResultRows(fitleredResults, shownQuestions);
   }, [formResults, shownQuestions]);
 
   if (

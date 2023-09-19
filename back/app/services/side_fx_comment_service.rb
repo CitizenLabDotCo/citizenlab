@@ -13,6 +13,7 @@ class SideFxCommentService
   def after_create(comment, user)
     LogActivityJob.perform_later(comment, 'created', user_for_activity_on_anonymizable_item(comment, user), comment.created_at.to_i)
     notify_mentioned_users(comment, user)
+    create_followers comment, user
   end
 
   def before_update(comment, _user)
@@ -90,6 +91,16 @@ class SideFxCommentService
     mentioned_users.uniq.each do |mentioned_user|
       LogActivityJob.perform_later(comment, 'mentioned', user_for_activity_on_anonymizable_item(comment, user), comment.created_at.to_i, payload: { mentioned_user: mentioned_user.id })
     end
+  end
+
+  def create_followers(comment, user)
+    Follower.find_or_create_by(followable: comment.post, user: user)
+    return if comment.post_type != 'Idea'
+
+    Follower.find_or_create_by(followable: comment.post.project, user: user)
+    return if !comment.post.project.in_folder?
+
+    Follower.find_or_create_by(followable: comment.post.project.folder, user: user)
   end
 end
 

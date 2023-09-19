@@ -5,7 +5,6 @@ import { Icon, IconNames } from '@citizenlab/cl2-component-library';
 
 // utils
 import { fontSizes, colors, media } from 'utils/styleUtils';
-import clHistory from 'utils/cl-router/history';
 import { timeAgo } from 'utils/dateUtils';
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../../tracks';
@@ -13,8 +12,9 @@ import tracks from '../../tracks';
 // hooks
 import useLocale from 'hooks/useLocale';
 import { isNilOrError } from 'utils/helperUtils';
+import Link from 'utils/cl-router/Link';
 
-const Container = styled.button`
+const Container = styled(Link)`
   display: flex;
   text-align: left;
   cursor: pointer;
@@ -92,7 +92,7 @@ const Timing = styled.span`
 type Props = {
   icon?: IconNames;
   timing?: string;
-  children: any;
+  children: React.ReactNode;
   linkTo: string;
   isRead: boolean;
 };
@@ -105,16 +105,13 @@ const NotificationWrapper = ({
   linkTo,
 }: Props) => {
   const locale = useLocale();
-  const navigate = () => {
-    if (linkTo) {
-      trackEventByName(tracks.clickNotification.name, { extra: { linkTo } });
-      clHistory.push(linkTo);
-    }
+  const track = () => {
+    trackEventByName(tracks.clickNotification.name, { extra: { linkTo } });
   };
 
   if (!isNilOrError(locale)) {
     return (
-      <Container role="link" onClick={navigate}>
+      <Container to={linkTo} onClick={track}>
         <IconContainer>
           {icon && <StyledIcon name={icon} isRead={isRead} />}
         </IconContainer>

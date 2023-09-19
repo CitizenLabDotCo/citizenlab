@@ -50,11 +50,20 @@ class ExportIdeasButton extends React.PureComponent<
 
     try {
       this.setState({ exporting: true });
-      const blob = await requestBlob(
-        `${API_PATH}/ideas/as_xlsx`,
-        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        queryParametersObject
-      );
+      const { exportType } = this.props;
+      let blob;
+      if (exportType === 'project') {
+        blob = await requestBlob(
+          `${API_PATH}/projects/${exportQueryParameter}/as_xlsx`,
+          'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        );
+      } else {
+        blob = await requestBlob(
+          `${API_PATH}/ideas/as_xlsx`,
+          'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+          queryParametersObject
+        );
+      }
       saveAs(
         blob,
         `${formatMessage(messages.inputsExportFileName)}_${formatDate(

@@ -70,13 +70,13 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.publication_date',
     defaultMessage: 'Published on',
   },
-  remainingTime: {
-    id: 'app.components.admin.PostManager.remainingTime',
-    defaultMessage: 'Days Remaining',
+  likes: {
+    id: 'app.components.admin.PostManager.likes',
+    defaultMessage: 'Likes',
   },
-  up: {
-    id: 'app.components.admin.PostManager.up',
-    defaultMessage: 'Up',
+  reactions: {
+    id: 'app.components.admin.PostManager.reactions',
+    defaultMessage: 'Reactions',
   },
   votes: {
     id: 'app.components.admin.PostManager.votes',
@@ -86,9 +86,9 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.comments',
     defaultMessage: 'Comments',
   },
-  down: {
-    id: 'app.components.admin.PostManager.down',
-    defaultMessage: 'Down',
+  dislikes: {
+    id: 'app.components.admin.PostManager.dislikes',
+    defaultMessage: 'Dislikes',
   },
   participatoryBudgettingPicks: {
     id: 'app.components.admin.PostManager.participatoryBudgettingPicks',
@@ -311,5 +311,17 @@ export default defineMessages({
   initiatives: {
     id: 'app.components.admin.PostManager.initiatives',
     defaultMessage: 'initiatives',
+  },
+  cost: {
+    id: 'app.components.admin.PostManager.cost',
+    defaultMessage: 'Cost',
+  },
+  participants: {
+    id: 'app.components.admin.PostManager.participants',
+    defaultMessage: 'Participants',
+  },
+  cosponsors: {
+    id: 'app.components.admin.PostManager.cosponsors',
+    defaultMessage: 'Cosponsors',
   },
 });

@@ -15,27 +15,38 @@ interface Get {
   action: 'get';
   queryParams?: Record<string, any>;
   body?: never;
+  cacheIndividualItems?: boolean;
 }
 interface Patch {
   path: Path;
   action: 'patch';
   body?: Record<string, any>;
   queryParams?: never;
+  cacheIndividualItems?: never;
+}
+interface Put {
+  path: Path;
+  action: 'put';
+  body: Record<string, any>;
+  queryParams?: never;
+  cacheIndividualItems?: never;
 }
 interface Post {
   path: Path;
   action: 'post';
   body: Record<string, any> | null;
   queryParams?: never;
+  cacheIndividualItems?: never;
 }
 interface Delete {
   path: Path;
   action: 'delete';
   body?: Record<string, any> | null;
   queryParams?: never;
+  cacheIndividualItems?: never;
 }
 
-type FetcherArgs = Get | Patch | Post | Delete;
+type FetcherArgs = Get | Patch | Put | Post | Delete;
 
 type BaseData = { id?: string; type: string };
 
@@ -49,12 +60,25 @@ function fetcher<TResponseData extends BaseResponseData>(
   ? null
   : Promise<Omit<TResponseData, 'included'>>;
 
-async function fetcher({ path, action, body, queryParams }) {
+/**
+ * @param cacheIndividualItems : When set to true, if the API response returns an array of items, these items will individually be added to the cache in addition to the whole request.
+ * If the API response returns resources in the `included` array, these will also be added to the cache as individual items.
+ * Defaults to true.
+ */
+
+async function fetcher({
+  path,
+  action,
+  body,
+  queryParams,
+  cacheIndividualItems = true,
+}) {
   const methodMap = {
     get: 'GET',
     patch: 'PATCH',
     post: 'POST',
     delete: 'DELETE',
+    put: 'PUT',
   };
   const jwt = getJwt();
   // Remove query parameters that have an empty value from query object in order to keep
@@ -101,6 +125,11 @@ async function fetcher({ path, action, body, queryParams }) {
       return; // TODO temporary workaround
     }
 
+    if (response.status === 504) {
+      reportError('Gateway timeout');
+      throw new Error('Gateway timeout');
+    }
+
     if (path === '/users/me') {
       return null;
     }
@@ -120,20 +149,22 @@ async function fetcher({ path, action, body, queryParams }) {
   } else {
     if (data) {
       if (isArray(data.data)) {
-        data.data.forEach((entry) => {
-          if (entry.id) {
-            queryClient.setQueryData(
-              [
-                {
-                  type: entry.type,
-                  parameters: { id: entry.id },
-                  operation: 'item',
-                },
-              ],
-              () => ({ data: entry })
-            );
-          }
-        });
+        if (cacheIndividualItems) {
+          data.data.forEach((entry) => {
+            if (entry.id) {
+              queryClient.setQueryData(
+                [
+                  {
+                    type: entry.type,
+                    parameters: { id: entry.id },
+                    operation: 'item',
+                  },
+                ],
+                () => ({ data: entry })
+              );
+            }
+          });
+        }
       } else if (action === 'post' || action === 'patch') {
         if (data.data.id) {
           queryClient.setQueryData(
@@ -149,20 +180,22 @@ async function fetcher({ path, action, body, queryParams }) {
         }
       }
       if (data.included) {
-        data.included.forEach((entry) => {
-          if (entry.id) {
-            queryClient.setQueryData(
-              [
-                {
-                  type: entry.type,
-                  parameters: { id: entry.id },
-                  operation: 'item',
-                },
-              ],
-              () => ({ data: entry })
-            );
-          }
-        });
+        if (cacheIndividualItems) {
+          data.included.forEach((entry) => {
+            if (entry.id) {
+              queryClient.setQueryData(
+                [
+                  {
+                    type: entry.type,
+                    parameters: { id: entry.id },
+                    operation: 'item',
+                  },
+                ],
+                () => ({ data: entry })
+              );
+            }
+          });
+        }
       }
     }
   }

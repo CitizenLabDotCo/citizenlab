@@ -27,18 +27,18 @@ interface Props {
   startAtMoment: moment.Moment;
   endAtMoment: moment.Moment;
   isMultiDayEvent: boolean;
+  showOnlyStartDate?: boolean;
 }
 
 export default memo<Props>(
-  ({ startAtMoment, endAtMoment, isMultiDayEvent }) => {
+  ({ startAtMoment, endAtMoment, isMultiDayEvent, showOnlyStartDate }) => {
     const startAtDay = startAtMoment.format('DD');
     const endAtDay = endAtMoment.format('DD');
     const startAtMonth = startAtMoment.format('MMM');
     const endAtMonth = endAtMoment.format('MMM');
     const startAtYear = startAtMoment.format('YYYY');
     const endAtYear = endAtMoment.format('YYYY');
-
-    const isMultiYearEvent = startAtYear !== endAtYear;
+    const isMultiYearEvent = !showOnlyStartDate && startAtYear !== endAtYear;
 
     return (
       <EventDateBlocks aria-hidden>

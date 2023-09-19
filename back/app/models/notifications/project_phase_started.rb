@@ -26,9 +26,13 @@
 #  project_folder_id             :uuid
 #  inappropriate_content_flag_id :uuid
 #  internal_comment_id           :uuid
+#  basket_id                     :uuid
+#  cosponsors_initiative_id      :uuid
 #
 # Indexes
 #
+#  index_notifications_on_basket_id                            (basket_id)
+#  index_notifications_on_cosponsors_initiative_id             (cosponsors_initiative_id)
 #  index_notifications_on_created_at                           (created_at)
 #  index_notifications_on_inappropriate_content_flag_id        (inappropriate_content_flag_id)
 #  index_notifications_on_initiating_user_id                   (initiating_user_id)
@@ -45,7 +49,9 @@
 #
 # Foreign Keys
 #
+#  fk_rails_...  (basket_id => baskets.id)
 #  fk_rails_...  (comment_id => comments.id)
+#  fk_rails_...  (cosponsors_initiative_id => cosponsors_initiatives.id)
 #  fk_rails_...  (inappropriate_content_flag_id => flag_inappropriate_content_inappropriate_content_flags.id)
 #  fk_rails_...  (initiating_user_id => users.id)
 #  fk_rails_...  (internal_comment_id => internal_comments.id)
@@ -64,22 +70,13 @@ module Notifications
     EVENT_NAME = 'Project phase started'
 
     def self.make_notifications_on(activity)
-      service = ParticipationContextService.new
       phase = activity.item
 
-      if phase.project
-        user_scope = ParticipantsService.new.projects_participants(Project.where(id: phase.project_id))
-        ProjectPolicy::InverseScope.new(phase.project, user_scope).resolve.filter_map do |recipient|
-          next unless service.participation_possible_for_context? phase, recipient
-
-          new(
-            recipient: recipient,
-            phase: phase,
-            project: phase.project
-          )
-        end
-      else
-        []
+      participants = ParticipantsService.new.project_participants phase.project
+      followers = phase.project.followers
+      recipients = participants.or(User.from_follows(followers))
+      ProjectPolicy::InverseScope.new(phase.project, recipients).resolve.map do |recipient|
+        new(recipient: recipient, phase: phase, project: phase.project)
       end
     end
   end

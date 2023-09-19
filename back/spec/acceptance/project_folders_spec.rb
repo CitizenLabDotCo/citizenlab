@@ -25,14 +25,17 @@ resource 'ProjectFolder' do
     parameter :filter_ids, 'Filter out only folders with the given list of IDs', required: false
 
     example_request 'List all folders' do
-      expect(status).to eq(200)
+      assert_status 200
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
     end
 
     example 'List only folders with specified IDs', document: true do
       filter_ids = [@folders.first.id]
+
       do_request(filter_ids: filter_ids)
+
+      assert_status 200
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 1
       expect(json_response[:data].pluck(:id)).to match_array filter_ids
@@ -60,7 +63,7 @@ resource 'ProjectFolder' do
       expect(json_response.dig(:data, :relationships, :avatars)).to eq({ data: [{ id: idea.author_id, type: 'avatar' }] })
     end
 
-    example 'Get a folder includes ideas_count and comments_count', document: false do
+    example 'Get a folder includes ideas_count, comments_count and followers_count', document: false do
       idea = create(:idea)
       create(:comment, post: idea)
       draft_project = create(:project, admin_publication_attributes: { publication_status: 'draft' })
@@ -68,12 +71,14 @@ resource 'ProjectFolder' do
       create(:comment)
       also_idea = create(:idea)
       folder = create(:project_folder, projects: [idea.project, also_idea.project, draft_project])
+      create(:follower, followable: folder)
       do_request id: folder.id
 
       assert_status 200
       json_response = json_parse response_body
       expect(json_response.dig(:data, :attributes, :ideas_count)).to eq 2
       expect(json_response.dig(:data, :attributes, :comments_count)).to eq 1
+      expect(json_response.dig(:data, :attributes, :followers_count)).to eq 1
     end
   end
 
@@ -97,7 +102,27 @@ resource 'ProjectFolder' do
   end
 
   context 'when admin' do
-    before { admin_header_token }
+    before { header_token_for user }
+
+    let(:user) { create(:admin) }
+
+    get 'web_api/v1/project_folders' do
+      with_options scope: :page do
+        parameter :number, 'Page number'
+        parameter :size, 'Number of folders per page'
+      end
+      parameter :filter_ids, 'Filter out only folders with the given list of IDs', required: false
+
+      example 'List all folders include followers', document: false do
+        follower = create(:follower, followable: @folders.last, user: user)
+
+        do_request
+
+        assert_status 200
+        json_response = json_parse response_body
+        expect(json_response[:data].filter_map { |d| d.dig(:relationships, :user_follower, :data, :id) }.first).to eq follower.id
+      end
+    end
 
     post 'web_api/v1/project_folders' do
       with_options scope: :project_folder do

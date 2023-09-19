@@ -62,6 +62,7 @@ export interface ILeafletMapConfig {
   layerOverlay?: IOverlayStringOrObjectOrFunctionForLayer;
   layerTooltip?: ITooltipStringOrObjectOrFunctionForLayer;
   layerPopup?: IPopupStringOrObjectOrFunctionForLayer;
+  singleClickEnabled?: boolean;
   onInit?: (map: L.Map) => void;
 }
 
@@ -91,6 +92,7 @@ export default function useLeaflet(
     layerOverlay,
     layerTooltip,
     layerPopup,
+    singleClickEnabled = true,
     onInit,
   }: ILeafletMapConfig
 ) {
@@ -203,7 +205,20 @@ export default function useLeaflet(
 
     if (map) {
       map.on('click', (event: L.LeafletMouseEvent) => {
-        setLeafletMapClicked(event.latlng);
+        if (singleClickEnabled) {
+          setLeafletMapClicked(event.latlng);
+        }
+      });
+      map.on('moveend', (event: L.LeafletEvent) => {
+        const newCenter = event.target.getCenter() as L.LatLng;
+        const newCenterLat = newCenter.lat;
+        const newCenterLng = newCenter.lng;
+        setLeafletMapCenter([newCenterLat, newCenterLng]);
+      });
+
+      map.on('zoomend', (event: L.LeafletEvent) => {
+        const newZoom = event.target.getZoom() as number;
+        setLeafletMapZoom(newZoom);
       });
     }
 
@@ -212,7 +227,7 @@ export default function useLeaflet(
       map?.off('click');
     };
   };
-  useEffect(mapEvents, [map]);
+  useEffect(mapEvents, [map, singleClickEnabled]);
 
   // Effects
   const setup = () => {
@@ -326,6 +341,5 @@ export default function useLeaflet(
     });
   };
   useEffect(refreshClusterGroups, [map, markers, noMarkerClustering]);
-
   return map;
 }

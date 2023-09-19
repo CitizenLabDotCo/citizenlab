@@ -29,33 +29,33 @@ describe('Project timeline page', () => {
       .then((project) => {
         projectId = project.body.data.id;
         projectSlug = project.body.data.attributes.slug;
-        return cy.apiCreatePhase(
+        return cy.apiCreatePhase({
           projectId,
-          phaseOneTitle,
-          '2018-03-01',
-          '2025-01-01',
-          'ideation',
-          true,
-          true,
-          true
-        );
+          title: phaseOneTitle,
+          startAt: '2018-03-01',
+          endAt: '2025-01-01',
+          participationMethod: 'ideation',
+          canComment: true,
+          canPost: true,
+          canReact: true,
+        });
       })
       .then((phase) => {
         firstPhaseId = phase.body.data.id;
-        return cy.apiCreatePhase(
+        return cy.apiCreatePhase({
           projectId,
-          phaseTwoTitle,
-          '2025-01-02',
-          '2025-01-25',
-          'budgeting',
-          true,
-          true,
-          true,
-          'description',
-          undefined,
-          undefined,
-          400
-        );
+          title: phaseTwoTitle,
+          startAt: '2025-01-02',
+          endAt: '2025-01-25',
+          participationMethod: 'voting',
+          canComment: true,
+          canPost: true,
+          canReact: true,
+          description: 'description',
+          votingMaxTotal: 400,
+          allow_anonymous_participation: false,
+          votingMethod: 'budgeting',
+        });
       });
   });
 

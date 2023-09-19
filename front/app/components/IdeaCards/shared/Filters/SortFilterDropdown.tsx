@@ -8,7 +8,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 import { IProjectData } from 'api/projects/types';
 import { IPhaseData } from 'api/phases/types';
-import { getMethodConfig } from 'utils/participationMethodUtils';
+import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import { isNilOrError } from 'utils/helperUtils';
 
 export type Sort = 'trending' | 'random' | 'popular' | 'new' | '-new';

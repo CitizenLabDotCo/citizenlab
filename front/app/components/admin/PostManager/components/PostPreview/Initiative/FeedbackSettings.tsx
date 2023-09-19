@@ -1,6 +1,6 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
-import { get, memoize } from 'lodash-es';
+import { memoize } from 'lodash-es';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -84,13 +84,16 @@ const FeedbackSettings = ({
   const { data: initiative } = useInitiativeById(initiativeId);
   const { mutate: updateInitiative } = useUpdateInitiative();
 
-  const getStatusOptions = (statuses, allowedTransitions) => {
+  const getStatusOptions = (
+    statuses: GetInitiativeStatusesChildProps,
+    allowedTransitions: GetInitiativeAllowedTransitionsChildProps
+  ): IOption[] => {
     if (!isNilOrError(statuses)) {
       return statuses.map((status) => ({
         value: status.id,
         label: localize(status.attributes.title_multiloc),
-        isDisabled:
-          allowedTransitions && allowedTransitions[status.id] === undefined,
+        disabled:
+          !!allowedTransitions && allowedTransitions[status.id] === undefined,
       }));
     } else {
       return [];
@@ -107,8 +110,7 @@ const FeedbackSettings = ({
       ) {
         const initiativeStatus = statuses.find(
           (status) =>
-            status.id ===
-            get(initiative, 'relationships.initiative_status.data.id')
+            status.id === initiative.relationships.initiative_status?.data?.id
         );
         if (initiativeStatus) {
           return {
@@ -127,7 +129,7 @@ const FeedbackSettings = ({
       JSON.stringify({
         initiativeId: isNilOrError(initiative)
           ? undefined
-          : get(initiative, 'relationships.initiative_status.data.id'),
+          : initiative.relationships.initiative_status?.data?.id,
         statusesId: isNilOrError(statuses)
           ? undefined
           : statuses.map((status) => status.id),
@@ -157,6 +159,8 @@ const FeedbackSettings = ({
     eventEmitter.emit<StatusChangeModalOpen>(events.statusChangeModalOpen, {
       initiativeId,
       newStatusId: statusOption.value,
+      feedbackRequired:
+        allowedTransitions?.[statusOption.value]?.feedback_required,
     });
 
     trackEventByName(tracks.initiativeStatusChange, {
@@ -198,11 +202,8 @@ const FeedbackSettings = ({
     statuses
   );
   const assigneeOptions = getAssigneeOptions(prospectAssignees);
-  const initiativeAssigneeOption = get(
-    initiative,
-    'relationships.assignee.data.id',
-    'unassigned'
-  );
+  const initiativeAssigneeOption =
+    initiative.data.relationships.assignee.data?.id ?? 'unassigned';
 
   return (
     <Container className={`${className} e2e-initiative-settings`}>

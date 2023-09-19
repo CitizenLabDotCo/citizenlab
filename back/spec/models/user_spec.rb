@@ -9,6 +9,19 @@ RSpec.describe User do
     end
   end
 
+  describe 'associations' do
+    subject(:user) { build(:user) }
+
+    it { is_expected.to have_many(:ideas).dependent(:nullify) }
+    it { is_expected.to have_many(:initiatives).dependent(:nullify) }
+    it { is_expected.to have_many(:assigned_initiatives).class_name('Initiative').dependent(:nullify) }
+    it { is_expected.to have_many(:comments).dependent(:nullify) }
+    it { is_expected.to have_many(:internal_comments).dependent(:nullify) }
+    it { is_expected.to have_many(:official_feedbacks).dependent(:nullify) }
+    it { is_expected.to have_many(:reactions).dependent(:nullify) }
+    it { is_expected.to have_many(:event_attendances).class_name('Events::Attendance').dependent(:destroy) }
+  end
+
   describe '.destroy_all_async' do
     before { create_list(:user, 2) }
 

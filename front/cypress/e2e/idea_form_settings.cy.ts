@@ -60,16 +60,16 @@ describe('Idea form settings', () => {
         publicationStatus: 'published',
       }).then((project) => {
         timelineWithIdeationProjectId = project.body.data.id;
-        cy.apiCreatePhase(
-          timelineWithIdeationProjectId,
-          'phaseTitle',
-          moment().subtract(2, 'month').format('DD/MM/YYYY'),
-          moment().add(2, 'days').format('DD/MM/YYYY'),
-          'ideation',
-          true,
-          true,
-          true
-        );
+        cy.apiCreatePhase({
+          projectId: timelineWithIdeationProjectId,
+          title: 'phaseTitle',
+          startAt: moment().subtract(2, 'month').format('DD/MM/YYYY'),
+          endAt: moment().add(2, 'days').format('DD/MM/YYYY'),
+          participationMethod: 'ideation',
+          canPost: true,
+          canReact: true,
+          canComment: true,
+        });
       });
       // Timeline project with budget phase
       cy.apiCreateProject({
@@ -80,20 +80,23 @@ describe('Idea form settings', () => {
         publicationStatus: 'published',
       }).then((project) => {
         timelineWithBudgetProjectId = project.body.data.id;
-        cy.apiCreatePhase(
-          timelineWithBudgetProjectId,
-          'phaseTitle',
-          moment().add(5, 'month').format('DD/MM/YYYY'),
-          moment().add(7, 'month').format('DD/MM/YYYY'),
-          'budgeting',
-          true,
-          true,
-          true,
+        cy.apiCreatePhase({
+          projectId: timelineWithBudgetProjectId,
+          title: 'phaseTitle',
+          startAt: moment().add(5, 'month').format('DD/MM/YYYY'),
+          endAt: moment().add(7, 'month').format('DD/MM/YYYY'),
+          participationMethod: 'voting',
+          canComment: true,
+          canPost: true,
+          canReact: true,
           description,
-          'https://lifeship.typeform.com/to/YWeOlPu7?typeform-source=clickydrip.com',
-          'typeform',
-          400
-        );
+          surveyUrl:
+            'https://lifeship.typeform.com/to/YWeOlPu7?typeform-source=clickydrip.com',
+          surveyService: 'typeform',
+          votingMaxTotal: 400,
+          allow_anonymous_participation: undefined,
+          votingMethod: 'budgeting',
+        });
       });
 
       // Timeline project with native_survey phase
@@ -105,20 +108,21 @@ describe('Idea form settings', () => {
         publicationStatus: 'published',
       }).then((project) => {
         timelineWithNativeSurveyProjectId = project.body.data.id;
-        cy.apiCreatePhase(
-          timelineWithNativeSurveyProjectId,
-          'phaseTitle',
-          moment().add(5, 'month').format('DD/MM/YYYY'),
-          moment().add(7, 'month').format('DD/MM/YYYY'),
-          'native_survey',
-          true,
-          true,
-          true,
+        cy.apiCreatePhase({
+          projectId: timelineWithNativeSurveyProjectId,
+          title: 'phaseTitle',
+          startAt: moment().add(5, 'month').format('DD/MM/YYYY'),
+          endAt: moment().add(7, 'month').format('DD/MM/YYYY'),
+          participationMethod: 'native_survey',
+          canComment: true,
+          canPost: true,
+          canReact: true,
           description,
-          'https://lifeship.typeform.com/to/YWeOlPu7?typeform-source=clickydrip.com',
-          'typeform',
-          400
-        );
+          surveyUrl:
+            'https://lifeship.typeform.com/to/YWeOlPu7?typeform-source=clickydrip.com',
+          surveyService: 'typeform',
+          votingMaxTotal: 400,
+        });
       });
 
       // Continuous poll project
@@ -141,8 +145,9 @@ describe('Idea form settings', () => {
         descriptionPreview: description,
         description,
         publicationStatus: 'draft',
-        participationMethod: 'budgeting',
-        maxBudget: 100,
+        participationMethod: 'voting',
+        votingMethod: 'budgeting',
+        votingMaxTotal: 100,
       }).then((project) => {
         continuousBudgetProjectId = project.body.data.id;
         projectIds.push(continuousBudgetProjectId);
@@ -157,29 +162,30 @@ describe('Idea form settings', () => {
         publicationStatus: 'published',
       }).then((project) => {
         timelineWithoutIdeationOrBudgetProjectId = project.body.data.id;
-        cy.apiCreatePhase(
-          timelineWithoutIdeationOrBudgetProjectId,
-          'phaseTitle',
-          moment().subtract(2, 'month').format('DD/MM/YYYY'),
-          moment().add(2, 'days').format('DD/MM/YYYY'),
-          'poll',
-          true,
-          true,
-          true
-        );
-        cy.apiCreatePhase(
-          timelineWithoutIdeationOrBudgetProjectId,
-          'phaseTitle',
-          moment().add(3, 'days').format('DD/MM/YYYY'),
-          moment().add(2, 'month').format('DD/MM/YYYY'),
-          'survey',
-          true,
-          true,
-          true,
+        cy.apiCreatePhase({
+          projectId: timelineWithoutIdeationOrBudgetProjectId,
+          title: 'phaseTitle',
+          startAt: moment().subtract(2, 'month').format('DD/MM/YYYY'),
+          endAt: moment().add(2, 'days').format('DD/MM/YYYY'),
+          participationMethod: 'poll',
+          canComment: true,
+          canPost: true,
+          canReact: true,
+        });
+        cy.apiCreatePhase({
+          projectId: timelineWithoutIdeationOrBudgetProjectId,
+          title: 'phaseTitle',
+          startAt: moment().add(3, 'days').format('DD/MM/YYYY'),
+          endAt: moment().add(2, 'month').format('DD/MM/YYYY'),
+          participationMethod: 'survey',
+          canComment: true,
+          canPost: true,
+          canReact: true,
           description,
-          'https://lifeship.typeform.com/to/YWeOlPu7?typeform-source=clickydrip.com',
-          'typeform'
-        );
+          surveyUrl:
+            'https://lifeship.typeform.com/to/YWeOlPu7?typeform-source=clickydrip.com',
+          surveyService: 'typeform',
+        });
       });
 
       cy.setAdminLoginCookie();

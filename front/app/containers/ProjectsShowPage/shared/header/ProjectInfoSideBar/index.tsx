@@ -190,8 +190,8 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
     const projectType = project.data.attributes.process_type;
     const projectParticipantsCount = project.data.attributes.participants_count;
     const maxBudget =
-      currentPhase?.attributes?.max_budget ||
-      project.data.attributes?.max_budget ||
+      currentPhase?.attributes?.voting_max_total ||
+      project.data.attributes?.voting_max_total ||
       null;
     const hasProjectEnded = currentPhase
       ? pastPresentOrFuture([
@@ -216,6 +216,13 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
       projectType === 'continuous'
         ? messages.oneDocToReview
         : messages.oneDocToReviewInCurrentPhase;
+
+    const isParticipatoryBudgeting =
+      projectType === 'continuous'
+        ? project.data.attributes.participation_method === 'voting' &&
+          project.data.attributes.voting_method === 'budgeting'
+        : currentPhase?.attributes.participation_method === 'voting' &&
+          currentPhase?.attributes.voting_method === 'budgeting';
 
     return (
       <Container id="e2e-project-sidebar" className={className || ''}>
@@ -383,15 +390,12 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                   </ListItem>
                 </Box>
               )}
-            {((projectType === 'continuous' &&
-              projectParticipationMethod === 'budgeting') ||
-              currentPhase?.attributes.participation_method === 'budgeting') &&
-              maxBudget && (
-                <ListItem id="e2e-project-sidebar-pb-budget">
-                  <ListItemIcon ariaHidden name="coin-stack" />
-                  <FormattedBudget value={maxBudget} />
-                </ListItem>
-              )}
+            {isParticipatoryBudgeting && maxBudget && (
+              <ListItem id="e2e-project-sidebar-pb-budget">
+                <ListItemIcon ariaHidden name="coin-stack" />
+                <FormattedBudget value={maxBudget} />
+              </ListItem>
+            )}
             {((projectType === 'continuous' &&
               projectParticipationMethod === 'survey') ||
               currentPhaseParticipationMethod === 'survey') &&

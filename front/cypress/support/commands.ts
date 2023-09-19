@@ -1,9 +1,13 @@
 import 'cypress-file-upload';
 import './dnd';
-import { ParticipationMethod } from '../../app/services/participationContexts';
+import {
+  ParticipationMethod,
+  VotingMethod,
+} from '../../app/services/participationContexts';
 import { IUserUpdate } from '../../app/api/users/types';
-import jwtDecode from 'jwt-decode';
+import { IUpdatedAppConfigurationProperties } from '../../app/api/app_configuration/types';
 
+import jwtDecode from 'jwt-decode';
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
@@ -63,6 +67,7 @@ declare global {
       intersectsViewport: typeof intersectsViewport;
       notIntersectsViewport: typeof notIntersectsViewport;
       apiUpdateHomepageSettings: typeof apiUpdateHomepageSettings;
+      apiUpdateAppConfiguration: typeof apiUpdateAppConfiguration;
     }
   }
 }
@@ -819,10 +824,12 @@ export function apiCreateProject({
   description,
   publicationStatus = 'published',
   participationMethod,
+  votingMethod,
   assigneeId,
   surveyUrl,
   surveyService,
-  maxBudget,
+  votingMaxTotal,
+  votingMaxVotesPerIdea,
   postingEnabled,
   allow_anonymous_participation,
 }: {
@@ -832,9 +839,11 @@ export function apiCreateProject({
   description: string;
   publicationStatus?: 'draft' | 'published' | 'archived';
   participationMethod?: ParticipationMethod;
+  votingMethod?: VotingMethod;
   assigneeId?: string;
   surveyUrl?: string;
-  maxBudget?: number;
+  votingMaxTotal?: number;
+  votingMaxVotesPerIdea?: number;
   surveyService?: 'typeform' | 'survey_monkey' | 'google_forms';
   postingEnabled?: boolean;
   allow_anonymous_participation?: boolean;
@@ -874,9 +883,11 @@ export function apiCreateProject({
             type === 'continuous' && !participationMethod
               ? 'ideation'
               : participationMethod,
+          voting_method: votingMethod,
           survey_embed_url: surveyUrl,
           survey_service: surveyService,
-          max_budget: maxBudget,
+          voting_max_total: votingMaxTotal,
+          voting_max_votes_per_idea: votingMaxVotesPerIdea,
           posting_enabled: postingEnabled,
           allow_anonymous_participation: allow_anonymous_participation,
         },
@@ -895,7 +906,7 @@ export function apiEditProject({
   assigneeId,
   surveyUrl,
   surveyService,
-  maxBudget,
+  votingMaxTotal,
 }: {
   projectId: string;
   type?: 'timeline' | 'continuous';
@@ -905,7 +916,7 @@ export function apiEditProject({
   publicationStatus?: 'draft' | 'published' | 'archived';
   assigneeId?: string;
   surveyUrl?: string;
-  maxBudget?: number;
+  votingMaxTotal?: number;
   surveyService?: 'typeform' | 'survey_monkey' | 'google_forms';
 }) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
@@ -947,7 +958,7 @@ export function apiEditProject({
           ...(assigneeId && { default_assignee_id: assigneeId }),
           ...(surveyUrl && { survey_embed_url: surveyUrl }),
           ...(surveyService && { survey_service: surveyService }),
-          ...(maxBudget && { max_budget: maxBudget }),
+          ...(votingMaxTotal && { voting_max_total: votingMaxTotal }),
         },
       },
     });
@@ -1107,21 +1118,37 @@ export function apiAddPoll(
   });
 }
 
-export function apiCreatePhase(
-  projectId: string,
-  title: string,
-  startAt: string,
-  endAt: string,
-  participationMethod: ParticipationMethod,
-  canPost: boolean,
-  canReact: boolean,
-  canComment: boolean,
-  description?: string,
-  surveyUrl?: string,
-  surveyService?: 'typeform' | 'survey_monkey' | 'google_forms',
-  maxBudget?: number,
-  allow_anonymous_participation?: boolean
-) {
+export function apiCreatePhase({
+  projectId,
+  title,
+  startAt,
+  endAt,
+  participationMethod,
+  canPost,
+  canReact,
+  canComment,
+  description,
+  surveyUrl,
+  surveyService,
+  votingMaxTotal,
+  allow_anonymous_participation,
+  votingMethod,
+}: {
+  projectId: string;
+  title: string;
+  startAt: string;
+  endAt: string;
+  participationMethod: ParticipationMethod;
+  canPost: boolean;
+  canReact: boolean;
+  canComment: boolean;
+  description?: string;
+  surveyUrl?: string;
+  surveyService?: 'typeform' | 'survey_monkey' | 'google_forms';
+  votingMaxTotal?: number;
+  allow_anonymous_participation?: boolean;
+  votingMethod?: VotingMethod;
+}) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
@@ -1141,14 +1168,16 @@ export function apiCreatePhase(
             'nl-BE': title,
           },
           participation_method: participationMethod,
+          voting_method: votingMethod,
           posting_enabled: canPost,
           reacting_enabled: canReact,
           commenting_enabled: canComment,
           description_multiloc: { en: description },
           survey_embed_url: surveyUrl,
           survey_service: surveyService,
-          max_budget: maxBudget,
+          voting_max_total: votingMaxTotal,
           allow_anonymous_participation: allow_anonymous_participation,
+          campaigns_settings: { project_phase_started: true },
         },
       },
     });
@@ -1220,9 +1249,11 @@ export function apiCreateEvent({
   projectId,
   title,
   description,
+  includeLocation,
   location,
   startDate,
   endDate,
+  onlineLink,
 }: {
   projectId: string;
   title: string;
@@ -1230,6 +1261,8 @@ export function apiCreateEvent({
   location: string;
   startDate: Date;
   endDate: Date;
+  includeLocation?: boolean;
+  onlineLink?: string;
 }) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -1252,12 +1285,16 @@ export function apiCreateEvent({
             en: description,
             'nl-BE': description,
           },
-          location_multiloc: {
-            en: location,
-            'nl-BE': location,
-          },
+          address_1: location,
+          location_point_geojson: includeLocation
+            ? {
+                type: 'Point',
+                coordinates: [4.418731568531502, 50.86899604801978],
+              }
+            : undefined,
           start_at: startDate.toJSON(),
           end_at: endDate.toJSON(),
+          online_link: onlineLink,
         },
       },
     });
@@ -1320,6 +1357,28 @@ export function apiRemoveReportBuilder(reportId: string) {
       },
       method: 'DELETE',
       url: `web_api/v1/reports/${reportId}`,
+    });
+  });
+}
+
+export function apiUpdateAppConfiguration(
+  updatedAttributes: IUpdatedAppConfigurationProperties
+) {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'PATCH',
+      url: `web_api/v1/app_configuration/`,
+      body: {
+        app_configuration: {
+          updatedAttributes,
+        },
+      },
     });
   });
 }

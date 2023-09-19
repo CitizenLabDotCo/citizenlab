@@ -26,9 +26,42 @@ export default defineMessages({
     id: 'app.containers.UsersShowPage.commentsWithCount',
     defaultMessage: 'Comments ({commentsCount})',
   },
+  eventsWithCount: {
+    id: 'app.containers.UsersShowPage.eventsWithCount',
+    defaultMessage: 'Events ({eventsCount})',
+  },
+  following: {
+    id: 'app.containers.UsersShowPage.following',
+    defaultMessage: 'Following',
+  },
+  ideas: {
+    id: 'app.containers.UsersShowPage.ideas',
+    defaultMessage: 'Ideas',
+  },
+  projects: {
+    id: 'app.containers.UsersShowPage.projects',
+    defaultMessage: 'Projects',
+  },
+  initiatives: {
+    id: 'app.containers.UsersShowPage.initiatives',
+    defaultMessage: 'Initiatives',
+  },
+  projectFolders: {
+    id: 'app.containers.UsersShowPage.projectFolders',
+    defaultMessage: 'Project folders',
+  },
+  emptyInfoText: {
+    id: 'app.containers.UsersShowPage.emptyInfoText',
+    defaultMessage:
+      'You are not following any items of the specified filter above.',
+  },
   loadingComments: {
     id: 'app.containers.UsersShowPage.loadingComments',
     defaultMessage: 'Loading user comments...',
+  },
+  loadingEvents: {
+    id: 'app.containers.UsersShowPage.loadingEvents',
+    defaultMessage: 'Loading events...',
   },
   tryAgain: {
     id: 'app.containers.UsersShowPage.tryAgain',
@@ -41,6 +74,10 @@ export default defineMessages({
   noCommentsForUser: {
     id: 'app.containers.UsersShowPage.noCommentsForUser',
     defaultMessage: 'This user has not posted any comment yet.',
+  },
+  noEvents: {
+    id: 'app.containers.UsersShowPage.noEventsForUser',
+    defaultMessage: 'You have not attended any events yet.',
   },
   seePost: {
     id: 'app.containers.UsersShowPage.seePost',
@@ -84,9 +121,9 @@ export default defineMessages({
     id: 'app.containers.UsersShowPage.a11y_initiativePostedIn',
     defaultMessage: 'Initiative in which this comment was posted: ',
   },
-  a11y_upvotesCount: {
-    id: 'app.containers.UsersShowPage.a11y_upvotesCount',
+  a11y_likesCount: {
+    id: 'app.containers.UsersShowPage.a11y_likesCount',
     defaultMessage:
-      '{upvotesCount, plural, =0 {no upvotes} one {1 upvote} other {# upvotes}}',
+      '{likesCount, plural, =0 {no likes} one {1 like} other {# likes}}',
   },
 });

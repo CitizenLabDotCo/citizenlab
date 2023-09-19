@@ -13,18 +13,28 @@ PublicApi::Engine.routes.draw do
   namespace :v2 do
     post 'authenticate' => 'api_token#create'
 
-    resources :comments, only: %i[index show]
-    resources :ideas, only: %i[index show]
-    resources :initiatives, only: %i[index show]
-    resources :phases, only: %i[index show]
-    resources :project_folders, only: %i[index show]
-    resources :reactions, only: %i[index]
-    resources :topics, only: %i[index show]
-    resources :users, only: %i[index show]
-
-    resources :projects, only: %i[index show] do
-      resources :phases, only: %i[index]
+    concern :deleted_items do
+      get 'deleted', on: :collection
     end
+
+    with_options only: %i[index show], concerns: :deleted_items do |route_mapper|
+      route_mapper.resources :comments
+      route_mapper.resources :ideas
+      route_mapper.resources :initiatives
+      route_mapper.resources :phases
+      route_mapper.resources :project_folders
+      route_mapper.resources :reactions, only: %i[index]
+      route_mapper.resources :topics
+      route_mapper.resources :users
+
+      route_mapper.resources :projects do
+        resources :phases, only: %i[index]
+      end
+    end
+
+    # Association endpoints
+    resources :idea_topics, only: %i[index]
+    resources :project_topics, only: %i[index]
   end
 end
 

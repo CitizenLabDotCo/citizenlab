@@ -39,6 +39,7 @@ const AdminProjectEventsIndex = ({
   const { data: events } = useEvents({
     projectIds: [projectId],
     pageSize: 1000,
+    sort: 'start_at',
   });
 
   const { mutate: deleteEvent, isLoading } = useDeleteEvent();
@@ -89,9 +90,7 @@ const AdminProjectEventsIndex = ({
                       <h1>
                         <T value={event.attributes.title_multiloc} />
                       </h1>
-                      <p>
-                        <T value={event.attributes.location_multiloc} />
-                      </p>
+                      <p>{event.attributes.address_1}</p>
                       <p>
                         {startAt} → {endAt}
                       </p>

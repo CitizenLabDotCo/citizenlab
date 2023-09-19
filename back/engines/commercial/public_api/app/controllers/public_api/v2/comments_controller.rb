@@ -2,6 +2,8 @@
 
 module PublicApi
   class V2::CommentsController < PublicApiController
+    include DeletedItemsAction
+
     POST_TYPES = [Idea, Initiative].map do |klass|
       V2::BaseSerializer.classname_to_type(klass.name)
     end.freeze

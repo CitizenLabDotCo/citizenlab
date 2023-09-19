@@ -1,11 +1,7 @@
-import React, { memo, Suspense, lazy } from 'react';
+import React, { memo } from 'react';
 
 // components
-import LoadingComments from 'components/PostShowComponents/Comments/LoadingComments';
-const LazyComments = lazy(
-  () => import('components/PostShowComponents/Comments')
-);
-
+import Comments from 'components/PostShowComponents/Comments';
 // styling
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
@@ -28,13 +24,11 @@ const Content = styled.div`
   max-width: ${postPageContentMaxWidth}px;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 50px;
   padding-left: 60px;
   padding-right: 60px;
   padding-bottom: 80px;
 
   ${media.phone`
-    margin-top: 30px;
     padding-left: 15px;
     padding-right: 15px;
     padding-bottom: 30px;
@@ -66,18 +60,16 @@ const Footer = memo<Props>(({ postId, postType, className }) => {
     <Container className={className || ''}>
       <Content>
         <ContentInner>
-          <Suspense fallback={<LoadingComments />}>
-            <LazyComments
-              allowAnonymousParticipation={
-                postType === 'initiative'
-                  ? appConfiguration?.data.attributes.settings.initiatives
-                      ?.allow_anonymous_participation
-                  : undefined
-              }
-              postId={postId}
-              postType={postType}
-            />
-          </Suspense>
+          <Comments
+            allowAnonymousParticipation={
+              postType === 'initiative'
+                ? appConfiguration?.data.attributes.settings.initiatives
+                    ?.allow_anonymous_participation
+                : undefined
+            }
+            postId={postId}
+            postType={postType}
+          />
         </ContentInner>
       </Content>
     </Container>

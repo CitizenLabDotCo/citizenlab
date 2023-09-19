@@ -8,9 +8,11 @@ class NotificationService
     Notifications::CommentOnYourComment,
     Notifications::CommentOnYourIdea,
     Notifications::CommentOnYourInitiative,
+    Notifications::CosponsorOfYourInitiative,
     Notifications::IdeaMarkedAsSpam,
     Notifications::InitiativeAssignedToYou,
     Notifications::InitiativeMarkedAsSpam,
+    Notifications::InitiativeResubmittedForReview,
     Notifications::InternalComments::InternalCommentOnIdeaAssignedToYou,
     Notifications::InternalComments::InternalCommentOnIdeaYouCommentedInternallyOn,
     Notifications::InternalComments::InternalCommentOnIdeaYouModerate,
@@ -19,6 +21,7 @@ class NotificationService
     Notifications::InternalComments::InternalCommentOnUnassignedInitiative,
     Notifications::InternalComments::InternalCommentOnUnassignedUnmoderatedIdea,
     Notifications::InternalComments::InternalCommentOnYourInternalComment,
+    Notifications::InvitationToCosponsorInitiative,
     Notifications::InviteAccepted,
     Notifications::MentionInComment,
     Notifications::InternalComments::MentionInInternalComment,
@@ -39,7 +42,11 @@ class NotificationService
     Notifications::StatusChangeOnCommentedInitiative,
     Notifications::StatusChangeOnReactedIdea,
     Notifications::StatusChangeOnReactedInitiative,
-    Notifications::ThresholdReachedForAdmin
+    Notifications::ThresholdReachedForAdmin,
+    Notifications::VotingBasketSubmitted,
+    Notifications::VotingBasketNotSubmitted,
+    Notifications::VotingLastChance,
+    Notifications::VotingResultsPublished
   ].freeze
 
   def notification_classes

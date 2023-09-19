@@ -37,6 +37,10 @@ export default defineMessages({
     id: 'app.components.Sharing.shareThisFolder',
     defaultMessage: 'Share this folder',
   },
+  shareThisEvent: {
+    id: 'app.components.Sharing.shareThisEvent',
+    defaultMessage: 'Share this event',
+  },
   share: {
     id: 'app.components.Sharing.share',
     defaultMessage: 'Share',
@@ -44,5 +48,9 @@ export default defineMessages({
   linkCopied: {
     id: 'app.components.Sharing.linkCopied',
     defaultMessage: 'Link copied',
+  },
+  or: {
+    id: 'app.components.Sharing.or',
+    defaultMessage: 'or',
   },
 });

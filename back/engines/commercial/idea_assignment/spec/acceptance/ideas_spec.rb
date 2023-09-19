@@ -25,10 +25,22 @@ resource 'Ideas' do
 
         do_request assignee: assignee.id
 
-        expect(status).to eq 200
+        assert_status 200
         json_response = json_parse response_body
         expect(json_response[:data].size).to eq 1
         expect(json_response.dig(:data, 0, :id)).to eq idea.id
+      end
+
+      example 'List all unassigned ideas' do
+        create(:idea, assignee: create(:admin))
+        ideas = create_list(:idea, 2, assignee: nil)
+
+        do_request assignee: 'unassigned'
+
+        assert_status 200
+        json_response = json_parse response_body
+        expect(json_response[:data].size).to eq 2
+        expect(json_response[:data].pluck(:id)).to match_array ideas.map(&:id)
       end
     end
 
@@ -46,7 +58,7 @@ resource 'Ideas' do
 
         do_request assignee: assignee.id
 
-        expect(status).to eq 200
+        assert_status 200
         json_response = json_parse response_body
         expect(json_response[:data].size).to eq 2
         expect(json_response[:data].pluck(:id)).to match_array ideas.pluck(:id)
@@ -63,7 +75,7 @@ resource 'Ideas' do
 
         do_request assignee: assignee.id
 
-        expect(status).to eq 200
+        assert_status 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet.count).to eq(ideas.size + 1)
       end

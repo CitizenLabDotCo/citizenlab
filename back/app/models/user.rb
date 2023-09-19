@@ -32,6 +32,7 @@
 #  block_reason                        :string
 #  block_end_at                        :datetime
 #  new_email                           :string
+#  followings_count                    :integer          default(0), not null
 #
 # Indexes
 #
@@ -128,6 +129,10 @@ class User < ApplicationRecord
     AppConfiguration.instance.feature_activated?('abbreviated_user_names') ? by_first_name(username) : by_full_name(username)
   }
 
+  scope :from_follows, (proc do |follows|
+    where(id: joins(:follows).where(follows: follows))
+  end)
+
   has_many :ideas, foreign_key: :author_id, dependent: :nullify
   has_many :initiatives, foreign_key: :author_id, dependent: :nullify
   has_many :assigned_initiatives, class_name: 'Initiative', foreign_key: :assignee_id, dependent: :nullify
@@ -135,6 +140,9 @@ class User < ApplicationRecord
   has_many :internal_comments, foreign_key: :author_id, dependent: :nullify
   has_many :official_feedbacks, dependent: :nullify
   has_many :reactions, dependent: :nullify
+  has_many :event_attendances, class_name: 'Events::Attendance', foreign_key: :attendee_id, dependent: :destroy
+  has_many :follows, class_name: 'Follower', dependent: :destroy
+  has_many :cosponsors_initiatives, dependent: :destroy
 
   after_initialize do
     next unless has_attribute?('roles')
@@ -162,7 +170,8 @@ class User < ApplicationRecord
   has_many :memberships, dependent: :destroy
   has_many :manual_groups, class_name: 'Group', source: 'group', through: :memberships
   has_many :campaign_email_commands, class_name: 'EmailCampaigns::CampaignEmailCommand', foreign_key: :recipient_id, dependent: :destroy
-  has_many :baskets, dependent: :destroy
+  has_many :baskets
+  before_destroy :destroy_baskets
   has_many :initiative_status_changes, dependent: :nullify
 
   store_accessor :custom_field_values, :gender, :birthyear, :domicile, :education
@@ -275,6 +284,14 @@ class User < ApplicationRecord
     # use any conditions before `or` very carefully (inspect the generated SQL)
     project_moderator.or(User.project_folder_moderator).where.not(id: admin).not_citizenlab_member
   }
+
+  def update_merging_custom_fields!(attributes)
+    attributes = attributes.deep_stringify_keys
+    update!(
+      **attributes,
+      custom_field_values: custom_field_values.merge(attributes['custom_field_values'] || {})
+    )
+  end
 
   def assign_email_or_phone
     # Hack to embed phone numbers in email
@@ -659,6 +676,10 @@ class User < ApplicationRecord
 
   def use_fake_code?
     Rails.env.development?
+  end
+
+  def destroy_baskets
+    baskets.each(&:destroy_or_keep!)
   end
 end
 

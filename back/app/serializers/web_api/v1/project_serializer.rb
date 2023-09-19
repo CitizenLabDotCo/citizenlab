@@ -1,13 +1,12 @@
 # frozen_string_literal: true
 
-class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
-  include WebApi::V1::ParticipationContextSerializer
-
+class WebApi::V1::ProjectSerializer < WebApi::V1::ParticipationContextSerializer
   attributes(
     :description_preview_multiloc,
     :title_multiloc,
     :comments_count,
     :ideas_count,
+    :followers_count,
     :include_all_areas,
     :internal_role,
     :process_type,
@@ -44,6 +43,7 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
     annotating_document_disabled_reason = @participation_context_service.annotating_document_disabled_reason_for_project object, user
     taking_survey_disabled_reason = @participation_context_service.taking_survey_disabled_reason_for_project object, user
     taking_poll_disabled_reason = @participation_context_service.taking_poll_disabled_reason_for_project object, user
+    voting_disabled_reason = @participation_context_service.voting_disabled_reason_for_project object, user
     {
       posting_idea: {
         enabled: !posting_disabled_reason,
@@ -82,6 +82,10 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
       taking_poll: {
         enabled: !taking_poll_disabled_reason,
         disabled_reason: taking_poll_disabled_reason
+      },
+      voting: {
+        enabled: !voting_disabled_reason,
+        disabled_reason: voting_disabled_reason
       }
     }
   end
@@ -128,6 +132,13 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
   } do |object, params|
     user_basket object, params
   end
+
+  has_one :user_follower, record_type: :follower, if: proc { |object, params|
+    signed_in? object, params
+  } do |object, params|
+    user_follower object, params
+  end
+
   has_one :current_phase, serializer: WebApi::V1::PhaseSerializer, record_type: :phase, if: proc { |object, _params|
     !object.participation_context?
   } do |object|
@@ -146,6 +157,16 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
     else
       current_user(params)&.baskets&.find do |basket|
         basket.participation_context_id == object.id && basket.participation_context_type == 'Project'
+      end
+    end
+  end
+
+  def self.user_follower(object, params)
+    if params[:user_followers]
+      params.dig(:user_followers, [object.id, 'Project'])&.first
+    else
+      current_user(params)&.follows&.find do |follow|
+        follow.followable_id == object.id && follow.followable_type == 'Project'
       end
     end
   end

@@ -2,6 +2,8 @@
 
 module PublicApi
   class V2::ProjectFoldersController < PublicApiController
+    include DeletedItemsAction
+
     def index
       folders = ProjectFoldersFinder.new(
         ProjectFolders::Folder,

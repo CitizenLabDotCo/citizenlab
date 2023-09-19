@@ -59,23 +59,12 @@ resource 'Phases' do
   end
 
   get 'web_api/v1/phases/:id/as_xlsx' do
-    context 'for an ideation phase' do
-      let(:project) { create(:project_with_active_ideation_phase) }
-      let(:id) { project.phases.first.id }
+    describe do
+      let(:id) { create(:project_with_active_ideation_phase).phases.first.id }
 
       example '[error] Try downloading phase inputs' do
         do_request
-        expect(status).to eq 401
-      end
-    end
-
-    context 'for a native survey phase' do
-      let(:project) { create(:project_with_active_native_survey_phase) }
-      let(:id) { project.phases.first.id }
-
-      example '[error] Try downloading phase inputs' do
-        do_request
-        expect(status).to eq 401
+        assert_status 401
       end
     end
   end
@@ -115,8 +104,12 @@ resource 'Phases' do
         parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{ParticipationContext::PRESENTATION_MODES.join(',')}.", required: false
         parameter :survey_embed_url, 'The identifier for the survey from the external API, if participation_method is set to survey', required: false
         parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(',')}", required: false
-        parameter :min_budget, 'The minimum budget amount. Participatory budget should be greater or equal to input.', required: false
-        parameter :max_budget, 'The maximal budget amount each citizen can spend during participatory budgeting.', required: false
+        parameter :voting_method, "Either #{ParticipationContext::VOTING_METHODS.join(',')}. Required when the participation method is voting.", required: false
+        parameter :voting_min_total, 'The minimum value a basket can have.', required: false
+        parameter :voting_max_total, 'The maximal value a basket can have during voting. Required when the voting method is budgeting.', required: false
+        parameter :voting_max_votes_per_idea, 'The maximum amount of votes that can be assigned on the same idea.', required: false
+        parameter :voting_term_singular_multiloc, 'A multiloc term that is used to refer to the voting in singular form', required: false
+        parameter :voting_term_plural_multiloc, 'A multiloc term that is used to refer to the voting in plural form', required: false
         parameter :start_at, 'The start date of the phase', required: true
         parameter :end_at, 'The end date of the phase', required: true
         parameter :poll_anonymous, "Are users associated with their answer? Defaults to false. Only applies if participation_method is 'poll'", required: false
@@ -134,8 +127,6 @@ resource 'Phases' do
       let(:title_multiloc) { phase.title_multiloc }
       let(:description_multiloc) { phase.description_multiloc }
       let(:participation_method) { phase.participation_method }
-      let(:min_budget) { 100 }
-      let(:max_budget) { 1000 }
       let(:start_at) { phase.start_at }
       let(:end_at) { phase.end_at }
       let(:campaigns_settings) { phase.campaigns_settings }
@@ -157,17 +148,66 @@ resource 'Phases' do
         expect(json_response.dig(:data, :attributes, :reacting_dislike_enabled)).to be true
         expect(json_response.dig(:data, :attributes, :reacting_like_method)).to eq 'unlimited'
         expect(json_response.dig(:data, :attributes, :reacting_like_limited_max)).to eq 10
-        expect(json_response.dig(:data, :attributes, :min_budget)).to eq 100
-        expect(json_response.dig(:data, :attributes, :max_budget)).to eq 1000
         expect(json_response.dig(:data, :attributes, :start_at)).to eq start_at.to_s
         expect(json_response.dig(:data, :attributes, :end_at)).to eq end_at.to_s
         expect(json_response.dig(:data, :relationships, :project, :data, :id)).to eq project_id
       end
 
+      describe 'voting phases' do
+        let(:participation_method) { 'voting' }
+
+        context 'budgeting' do
+          let(:voting_method) { 'budgeting' }
+          let(:voting_max_total) { 100 }
+          let(:voting_min_total) { 10 }
+
+          example_request 'Create a voting (budgeting) phase' do
+            assert_status 201
+            expect(response_data.dig(:attributes, :participation_method)).to eq 'voting'
+            expect(response_data.dig(:attributes, :voting_method)).to eq 'budgeting'
+            expect(response_data.dig(:attributes, :voting_max_total)).to eq 100
+            expect(response_data.dig(:attributes, :voting_min_total)).to eq 10
+            expect(response_data.dig(:attributes, :ideas_order)).to eq 'random'
+          end
+        end
+
+        context 'multiple voting' do
+          let(:voting_method) { 'multiple_voting' }
+          let(:voting_max_total) { 10 }
+          let(:voting_max_votes_per_idea) { 5 }
+          let(:voting_term_singular_multiloc) { { 'en' => 'bean' } }
+          let(:voting_term_plural_multiloc) { { 'en' => 'beans' } }
+
+          example_request 'Create a voting (multiple voting) phase' do
+            assert_status 201
+            expect(response_data.dig(:attributes, :participation_method)).to eq 'voting'
+            expect(response_data.dig(:attributes, :voting_method)).to eq 'multiple_voting'
+            expect(response_data.dig(:attributes, :voting_max_total)).to eq 10
+            expect(response_data.dig(:attributes, :voting_min_total)).to eq 0
+            expect(response_data.dig(:attributes, :voting_max_votes_per_idea)).to eq 5
+            expect(response_data.dig(:attributes, :voting_term_singular_multiloc, :en)).to eq 'bean'
+            expect(response_data.dig(:attributes, :voting_term_plural_multiloc, :en)).to eq 'beans'
+            expect(response_data.dig(:attributes, :ideas_order)).to eq 'random'
+          end
+        end
+
+        context 'single voting' do
+          let(:voting_method) { 'single_voting' }
+
+          example_request 'Create a voting (single voting) phase' do
+            assert_status 201
+            expect(response_data.dig(:attributes, :participation_method)).to eq 'voting'
+            expect(response_data.dig(:attributes, :voting_method)).to eq 'single_voting'
+            expect(response_data.dig(:attributes, :voting_max_total)).to be_nil
+            expect(response_data.dig(:attributes, :voting_min_total)).to eq 0
+            expect(response_data.dig(:attributes, :voting_max_votes_per_idea)).to eq 1
+            expect(response_data.dig(:attributes, :ideas_order)).to eq 'random'
+          end
+        end
+      end
+
       context 'native survey' do
         let(:phase) { build(:native_survey_phase) }
-        let(:min_budget) { nil }
-        let(:max_budget) { nil }
 
         example 'Create a native survey phase', document: false do
           do_request
@@ -208,8 +248,6 @@ resource 'Phases' do
           expect(phase_in_db.description_multiloc).to match description_multiloc
           expect(phase_in_db.start_at).to eq start_at
           expect(phase_in_db.end_at).to eq end_at
-          expect(phase_in_db.min_budget).to be_nil
-          expect(phase_in_db.max_budget).to be_nil
 
           # A native survey phase still has some ideation-related state, all column defaults.
           expect(phase_in_db.input_term).to eq 'idea'
@@ -264,36 +302,15 @@ resource 'Phases' do
       # ?
 
       describe do
-        let(:participation_method) { 'budgeting' }
-        let(:max_budget) { 420_000 }
-        let(:ideas_order) { 'new' }
+        before { create(:budgeting_phase, project: @project, start_at: '2000-01-01', end_at: '2000-01-05') }
 
-        example 'Create a participatory budgeting phase', document: false do
+        let(:participation_method) { 'voting' }
+        let(:voting_method) { 'budgeting' }
+        let(:voting_max_total) { 300 }
+
+        example 'Create multiple voting phases with the same voting method', document: false do
           do_request
           assert_status 201
-          expect(json_response.dig(:data, :attributes, :max_budget)).to eq max_budget
-          expect(json_response.dig(:data, :attributes, :ideas_order)).to be_present
-          expect(json_response.dig(:data, :attributes, :ideas_order)).to eq 'new'
-          expect(json_response.dig(:data, :attributes, :input_term)).to be_present
-          expect(json_response.dig(:data, :attributes, :input_term)).to eq 'idea'
-        end
-      end
-
-      describe do
-        before do
-          @project.phases.first.update(
-            participation_method: 'budgeting',
-            max_budget: 30_000
-          )
-        end
-
-        let(:participation_method) { 'budgeting' }
-        let(:max_budget) { 420_000 }
-
-        example '[error] Create multiple budgeting phases', document: false do
-          do_request
-          assert_status 422
-          expect(json_response).to include_response_error(:base, 'has_other_budgeting_phases')
         end
       end
 
@@ -342,10 +359,16 @@ resource 'Phases' do
         parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{ParticipationContext::PRESENTATION_MODES.join(',')}.", required: false
         parameter :survey_embed_url, 'The identifier for the survey from the external API, if participation_method is set to survey', required: false
         parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(',')}", required: false
-        parameter :max_budget, 'The maximal budget amount each citizen can spend during participatory budgeting.', required: false
+        parameter :voting_method, "Either #{ParticipationContext::VOTING_METHODS.join(',')}", required: false
+        parameter :voting_min_total, 'The minimum value a basket can have.', required: false
+        parameter :voting_max_total, 'The maximal value a basket can have during voting', required: false
+        parameter :voting_max_votes_per_idea, 'The maximum amount of votes that can be assigned on the same idea.', required: false
+        parameter :voting_term_singular_multiloc, 'A multiloc term that is used to refer to the voting in singular form', required: false
+        parameter :voting_term_plural_multiloc, 'A multiloc term that is used to refer to the voting in plural form', required: false
         parameter :start_at, 'The start date of the phase'
         parameter :end_at, 'The end date of the phase'
         parameter :poll_anonymous, "Are users associated with their answer? Only applies if participation_method is 'poll'. Can't be changed after first answer.", required: false
+        parameter :ideas_order, 'The default order of ideas.'
       end
       ValidationErrorHelper.new.error_fields(self, Phase)
       response_field :project, "Array containing objects with signature {error: 'is_not_timeline_project'}", scope: :errors
@@ -381,10 +404,32 @@ resource 'Phases' do
       end
 
       describe do
+        let(:id) { create(:budgeting_phase).id }
+        let(:participation_method) { 'voting' }
+        let(:voting_min_total) { 3 }
+        let(:voting_max_total) { 15 }
+        let(:voting_max_votes_per_idea) { 1 } # Should ignore this
+        let(:voting_term_singular_multiloc) { { 'en' => 'Grocery shopping' } }
+        let(:voting_term_plural_multiloc) { { 'en' => 'Groceries shoppings' } }
+
+        example_request 'Update a voting phase' do
+          assert_status 200
+
+          expect(json_response.dig(:data, :attributes, :voting_min_total)).to eq 3
+          expect(json_response.dig(:data, :attributes, :voting_max_total)).to eq 15
+          expect(json_response.dig(:data, :attributes, :voting_max_votes_per_idea)).to be_nil
+          expect(json_response.dig(:data, :attributes, :voting_term_singular_multiloc, :en)).to eq 'Grocery shopping'
+          expect(json_response.dig(:data, :attributes, :voting_term_plural_multiloc, :en)).to eq 'Groceries shoppings'
+        end
+      end
+
+      describe do
         before do
           @project.phases.first.update!(
-            participation_method: 'budgeting',
-            max_budget: 30_000
+            participation_method: 'voting',
+            voting_method: 'budgeting',
+            voting_max_total: 30_000,
+            ideas_order: 'random'
           )
         end
 
@@ -394,7 +439,7 @@ resource 'Phases' do
 
         example 'Make a phase with ideas an information phase' do
           do_request
-          expect(response_status).to eq 200
+          assert_status 200
         end
       end
 
@@ -513,7 +558,8 @@ resource 'Phases' do
                   answers: [
                     { answer: { en: 'Cat' }, responses: 2 },
                     { answer: { en: 'Dog' }, responses: 1 }
-                  ]
+                  ],
+                  customFieldId: multiselect_field.id
                 }
               ],
               totalSubmissions: 2
@@ -579,240 +625,6 @@ resource 'Phases' do
     end
 
     get 'web_api/v1/phases/:id/as_xlsx' do
-      context 'for an ideation phase without persisted form' do
-        let(:project) { create(:project, process_type: 'timeline') }
-        let(:ideation_phase) do
-          create(
-            :phase,
-            project: project,
-            participation_method: 'ideation',
-            title_multiloc: {
-              'en' => 'Ideation phase',
-              'nl-BE' => 'Ideeënfase'
-            }
-          )
-        end
-        let(:id) { ideation_phase.id }
-
-        example 'Download an empty sheet', document: false do
-          do_request
-
-          assert_status 200
-          expect(xlsx_contents(response_body)).to eq([
-            {
-              sheet_name: ideation_phase.title_multiloc['en'],
-              column_headers: [
-                'ID',
-                'Title',
-                'Description',
-                'Attachments',
-                'Tags',
-                'Latitude',
-                'Longitude',
-                'Location',
-                'Proposed Budget',
-                'Author name',
-                'Author email',
-                'Author ID',
-                'Submitted at',
-                'Published at',
-                'Comments',
-                'Likes',
-                'Dislikes',
-                'Baskets',
-                'Budget',
-                'URL',
-                'Project',
-                'Status',
-                'Assignee',
-                'Assignee email'
-              ],
-              rows: []
-            }
-          ])
-        end
-      end
-
-      context 'for an ideation phase with persisted form' do
-        let(:project) { create(:project, process_type: 'timeline') }
-        let(:project_form) { create(:custom_form, :with_default_fields, participation_context: project) }
-        let(:ideation_phase) do
-          create(
-            :phase,
-            project: project,
-            participation_method: 'ideation',
-            title_multiloc: {
-              'en' => 'Ideation phase',
-              'nl-BE' => 'Ideeënfase'
-            }
-          )
-        end
-        let(:id) { ideation_phase.id }
-        let!(:extra_idea_field) do
-          create(
-            :custom_field_extra_custom_form,
-            resource: project_form
-          )
-        end
-
-        context 'when there are no inputs in the phase' do
-          example 'Download an empty sheet', document: false do
-            do_request
-            expect(status).to eq 200
-            expect(xlsx_contents(response_body)).to eq([
-              {
-                sheet_name: ideation_phase.title_multiloc['en'],
-                column_headers: [
-                  'ID',
-                  'Title',
-                  'Description',
-                  'Attachments',
-                  'Tags',
-                  'Latitude',
-                  'Longitude',
-                  'Location',
-                  'Proposed Budget',
-                  extra_idea_field.title_multiloc['en'],
-                  'Author name',
-                  'Author email',
-                  'Author ID',
-                  'Submitted at',
-                  'Published at',
-                  'Comments',
-                  'Likes',
-                  'Dislikes',
-                  'Baskets',
-                  'Budget',
-                  'URL',
-                  'Project',
-                  'Status',
-                  'Assignee',
-                  'Assignee email'
-                ],
-                rows: []
-              }
-            ])
-          end
-        end
-
-        context 'when there are inputs in the phase' do
-          let!(:assignee) { create(:admin, first_name: 'John', last_name: 'Doe') }
-          let!(:ideation_response1) do
-            create(
-              :idea_with_topics,
-              project: project,
-              phases: [ideation_phase],
-              custom_field_values: { extra_idea_field.key => 'Answer' },
-              assignee: assignee
-            )
-          end
-          let!(:attachment1) { create(:idea_file, idea: ideation_response1) }
-          let!(:attachment2) do
-            create(
-              :idea_file,
-              idea: ideation_response1,
-              file: Rails.root.join('spec/fixtures/david.csv').open,
-              name: 'david.csv'
-            )
-          end
-          let!(:comments) { create_list(:comment, 1, post: ideation_response1) }
-          let!(:likes) { create_list(:reaction, 2, reactable: ideation_response1) }
-          let!(:dislikes) { create_list(:dislike, 1, reactable: ideation_response1) }
-          let!(:baskets) { [] }
-
-          example 'Download ideation phase inputs in one sheet' do
-            do_request
-            assert_status 200
-            expect(xlsx_contents(response_body)).to match([
-              {
-                sheet_name: ideation_phase.title_multiloc['en'],
-                column_headers: [
-                  'ID',
-                  'Title',
-                  'Description',
-                  'Attachments',
-                  'Tags',
-                  'Latitude',
-                  'Longitude',
-                  'Location',
-                  'Proposed Budget',
-                  extra_idea_field.title_multiloc['en'],
-                  'Author name',
-                  'Author email',
-                  'Author ID',
-                  'Submitted at',
-                  'Published at',
-                  'Comments',
-                  'Likes',
-                  'Dislikes',
-                  'Baskets',
-                  'Budget',
-                  'URL',
-                  'Project',
-                  'Status',
-                  'Assignee',
-                  'Assignee email'
-                ],
-                rows: [
-                  [
-                    ideation_response1.id,
-                    ideation_response1.title_multiloc['en'],
-                    'It would improve the air quality!', # html tags are removed
-                    %r{\A/uploads/.+/idea_file/file/#{attachment1.id}/#{attachment1.name}\n/uploads/.+/idea_file/file/#{attachment2.id}/#{attachment2.name}\Z},
-                    "#{ideation_response1.topics[0].title_multiloc['en']}, #{ideation_response1.topics[1].title_multiloc['en']}",
-                    ideation_response1.location_point.coordinates.last,
-                    ideation_response1.location_point.coordinates.first,
-                    ideation_response1.location_description,
-                    ideation_response1.proposed_budget,
-                    'Answer',
-                    ideation_response1.author_name,
-                    ideation_response1.author.email,
-                    ideation_response1.author_id,
-                    an_instance_of(DateTime), # created_at
-                    an_instance_of(DateTime), # published_at
-                    comments.size,
-                    likes.size,
-                    dislikes.size,
-                    baskets.size,
-                    ideation_response1.budget,
-                    "http://example.org/ideas/#{ideation_response1.slug}",
-                    project.title_multiloc['en'],
-                    ideation_response1.idea_status.title_multiloc['en'],
-                    "#{assignee.first_name} #{assignee.last_name}",
-                    assignee.email
-                  ]
-                ]
-              }
-            ])
-          end
-        end
-      end
-
-      context 'for a native survey phase without persisted form' do
-        let(:project) { create(:project_with_active_native_survey_phase) }
-        let(:active_phase) { project.phases.first }
-        let(:id) { active_phase.id }
-
-        example 'Download an empty sheet', document: false do
-          do_request
-          expect(status).to eq 200
-          expect(xlsx_contents(response_body)).to match_array([
-            {
-              sheet_name: active_phase.title_multiloc['en'],
-              column_headers: [
-                'ID',
-                'Author name',
-                'Author email',
-                'Author ID',
-                'Submitted at',
-                'Project'
-              ],
-              rows: []
-            }
-          ])
-        end
-      end
-
       context 'for a native survey phase with persisted form' do
         let(:project) { create(:project_with_active_native_survey_phase) }
         let(:active_phase) { project.phases.first }
@@ -836,28 +648,6 @@ resource 'Phases' do
           create(:custom_field_option, custom_field: multiselect_field, key: 'dog', title_multiloc: { 'en' => 'Dog' })
         end
 
-        context 'when there are no inputs in the phase' do
-          example 'Download an empty sheet', document: false do
-            do_request
-            expect(status).to eq 200
-            expect(xlsx_contents(response_body)).to match_array([
-              {
-                sheet_name: active_phase.title_multiloc['en'],
-                column_headers: [
-                  'ID',
-                  multiselect_field.title_multiloc['en'],
-                  'Author name',
-                  'Author email',
-                  'Author ID',
-                  'Submitted at',
-                  'Project'
-                ],
-                rows: []
-              }
-            ])
-          end
-        end
-
         context 'when there are inputs in the phase' do
           let!(:survey_response1) do
             create(
@@ -877,21 +667,15 @@ resource 'Phases' do
               custom_field_values: { multiselect_field.key => %w[cat] }
             )
           end
-          let!(:survey_response3) do
-            create(
-              :idea,
-              project: project,
-              creation_phase: active_phase,
-              phases: [active_phase],
-              custom_field_values: { multiselect_field.key => %w[dog] },
-              author: nil
-            )
-          end
 
           example 'Download native survey phase inputs in one sheet' do
+            expected_params = [[survey_response1, survey_response2], active_phase, true]
+            allow(XlsxExport::InputSheetGenerator).to receive(:new).and_return(XlsxExport::InputSheetGenerator.new(*expected_params))
             do_request
-            expect(status).to eq 200
-            expect(xlsx_contents(response_body)).to match_array([
+            expect(XlsxExport::InputSheetGenerator).to have_received(:new).with(*expected_params)
+
+            assert_status 200
+            expect(xlsx_contents(response_body)).to match([
               {
                 sheet_name: active_phase.title_multiloc['en'],
                 column_headers: [
@@ -919,15 +703,6 @@ resource 'Phases' do
                     survey_response2.author_name,
                     survey_response2.author.email,
                     survey_response2.author_id,
-                    an_instance_of(DateTime), # created_at
-                    project.title_multiloc['en']
-                  ],
-                  [
-                    survey_response3.id,
-                    'Dog',
-                    nil,
-                    nil,
-                    nil,
                     an_instance_of(DateTime), # created_at
                     project.title_multiloc['en']
                   ]
@@ -968,153 +743,62 @@ resource 'Phases' do
   end
 
   context 'when project moderator' do
+    before { header_token_for create(:project_moderator, projects: [project]) }
+
     get 'web_api/v1/phases/:id/as_xlsx' do
-      before { header_token_for create(:project_moderator, projects: [project]) }
-
-      context 'for an ideation phase' do
-        let(:project) { create(:project, process_type: 'timeline') }
-        let(:project_form) { create(:custom_form, :with_default_fields, participation_context: project) }
-        let(:ideation_phase) do
-          create(
-            :phase,
-            project: project,
-            participation_method: 'ideation',
-            title_multiloc: {
-              'en' => 'Ideation phase',
-              'nl-BE' => 'Ideeënfase'
-            }
-          )
-        end
-        let(:id) { ideation_phase.id }
-        let!(:extra_idea_field) do
-          create(
-            :custom_field_extra_custom_form,
-            resource: project_form
-          )
-        end
-        let!(:assignee) { create(:admin, first_name: 'John', last_name: 'Doe') }
-        let!(:ideation_response) do
-          create(
-            :idea,
-            project: project,
-            phases: [ideation_phase],
-            custom_field_values: { extra_idea_field.key => 'Answer' },
-            assignee: assignee
-          )
-        end
-
-        example 'Download phase inputs without private user data', document: false do
-          custom_field = create(:custom_field, enabled: false)
-          do_request
-          assert_status 200
-          expect(xlsx_contents(response_body)).to match([
-            {
-              sheet_name: ideation_phase.title_multiloc['en'],
-              column_headers: [
-                'ID',
-                'Title',
-                'Description',
-                'Attachments',
-                'Tags',
-                'Latitude',
-                'Longitude',
-                'Location',
-                'Proposed Budget',
-                extra_idea_field.title_multiloc['en'],
-                'Submitted at',
-                'Published at',
-                'Comments',
-                'Likes',
-                'Dislikes',
-                'Baskets',
-                'Budget',
-                'URL',
-                'Project',
-                'Status',
-                custom_field.title_multiloc['en']
-              ],
-              rows: [
-                [
-                  ideation_response.id,
-                  ideation_response.title_multiloc['en'],
-                  'It would improve the air quality!', # html tags are removed
-                  '',
-                  '',
-                  ideation_response.location_point.coordinates.last,
-                  ideation_response.location_point.coordinates.first,
-                  ideation_response.location_description,
-                  ideation_response.proposed_budget,
-                  'Answer',
-                  an_instance_of(DateTime), # created_at
-                  an_instance_of(DateTime), # published_at
-                  0,
-                  0,
-                  0,
-                  0,
-                  ideation_response.budget,
-                  "http://example.org/ideas/#{ideation_response.slug}",
-                  project.title_multiloc['en'],
-                  ideation_response.idea_status.title_multiloc['en'],
-                  ''
-                ]
-              ]
-            }
-          ])
-        end
+      let(:project) { create(:project_with_active_native_survey_phase) }
+      let(:active_phase) { project.phases.first }
+      let(:form) { create(:custom_form, participation_context: active_phase) }
+      let(:id) { active_phase.id }
+      let(:multiselect_field) do
+        create(
+          :custom_field_multiselect,
+          resource: form,
+          title_multiloc: { 'en' => 'What are your favourite pets?' },
+          description_multiloc: {}
+        )
+      end
+      let!(:cat_option) do
+        create(:custom_field_option, custom_field: multiselect_field, key: 'cat', title_multiloc: { 'en' => 'Cat' })
+      end
+      let!(:dog_option) do
+        create(:custom_field_option, custom_field: multiselect_field, key: 'dog', title_multiloc: { 'en' => 'Dog' })
+      end
+      let!(:survey_response) do
+        create(
+          :idea,
+          project: project,
+          creation_phase: active_phase,
+          phases: [active_phase],
+          custom_field_values: { multiselect_field.key => %w[cat dog] }
+        )
       end
 
-      context 'for a native survey phase' do
-        let(:project) { create(:project_with_active_native_survey_phase) }
-        let(:active_phase) { project.phases.first }
-        let(:form) { create(:custom_form, participation_context: active_phase) }
-        let(:id) { active_phase.id }
-        let(:multiselect_field) do
-          create(
-            :custom_field_multiselect,
-            resource: form,
-            title_multiloc: { 'en' => 'What are your favourite pets?' },
-            description_multiloc: {}
-          )
-        end
-        let!(:cat_option) do
-          create(:custom_field_option, custom_field: multiselect_field, key: 'cat', title_multiloc: { 'en' => 'Cat' })
-        end
-        let!(:dog_option) do
-          create(:custom_field_option, custom_field: multiselect_field, key: 'dog', title_multiloc: { 'en' => 'Dog' })
-        end
-        let!(:survey_response) do
-          create(
-            :idea,
-            project: project,
-            creation_phase: active_phase,
-            phases: [active_phase],
-            custom_field_values: { multiselect_field.key => %w[cat dog] }
-          )
-        end
-
-        example 'Download phase inputs without private user data', document: false do
-          do_request
-          expect(status).to eq 200
-          expect(xlsx_contents(response_body)).to match_array([
-            {
-              sheet_name: active_phase.title_multiloc['en'],
-              column_headers: [
-                'ID',
-                multiselect_field.title_multiloc['en'],
-                'Submitted at',
-                'Project'
-              ],
-              rows: [
-                [
-                  survey_response.id,
-                  'Cat, Dog',
-                  an_instance_of(DateTime), # created_at
-                  project.title_multiloc['en']
-                ]
+      example 'Download phase inputs without private user data', document: false do
+        expected_params = [[survey_response], active_phase, false]
+        allow(XlsxExport::InputSheetGenerator).to receive(:new).and_return(XlsxExport::InputSheetGenerator.new(*expected_params))
+        do_request
+        expect(XlsxExport::InputSheetGenerator).to have_received(:new).with(*expected_params)
+        assert_status 200
+        expect(xlsx_contents(response_body)).to match([
+          {
+            sheet_name: active_phase.title_multiloc['en'],
+            column_headers: [
+              'ID',
+              multiselect_field.title_multiloc['en'],
+              'Submitted at',
+              'Project'
+            ],
+            rows: [
+              [
+                survey_response.id,
+                'Cat, Dog',
+                an_instance_of(DateTime), # created_at
+                project.title_multiloc['en']
               ]
-            }
-          ])
-        end
+            ]
+          }
+        ])
       end
     end
   end

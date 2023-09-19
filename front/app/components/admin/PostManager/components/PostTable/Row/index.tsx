@@ -43,16 +43,15 @@ export const TitleLink = styled.a`
   }
 `;
 
-function nothingHappens(event) {
-  event.preventDefault();
-  event.stopPropagation();
-}
+function nothingHappens() {}
 
 type Props = {
   type: ManagerType;
   post: IIdeaData | IInitiativeData;
   phases?: IPhaseData[];
   statuses?: IIdeaStatusData[] | IInitiativeStatusData[];
+  selectedPhaseId?: string | null;
+  selectedProjectId?: string | null;
   /** A set of ids of ideas/initiatives that are currently selected */
   selection: Set<string>;
   onUnselect: () => void;
@@ -70,12 +69,14 @@ const Row = ({
   activeFilterMenu,
   phases,
   statuses,
+  selectedProjectId,
+  selectedPhaseId,
   className,
   openPreview,
   onToggleSelect,
 }: Props) => {
   const locale = useLocale();
-  const onClickCheckbox = (event) => {
+  const onClickCheckbox = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.stopPropagation();
     onToggleSelect();
   };
@@ -98,6 +99,8 @@ const Row = ({
           type={type}
           idea={post as IIdeaData}
           statuses={statuses as IIdeaStatusData[]}
+          selectedProjectId={selectedProjectId}
+          selectedPhaseId={selectedPhaseId}
           phases={phases}
           selection={selection}
           activeFilterMenu={activeFilterMenu}

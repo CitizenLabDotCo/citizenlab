@@ -2,11 +2,18 @@ import { IInitiativeAction } from 'api/initiative_action_descriptors/types';
 import keys from './keys';
 import { Keys } from 'utils/cl-react-query/types';
 import { GLOBAL_CONTEXT } from './constants';
-import { IParticipationContextPermissionAction } from 'services/actionPermissions';
+import { IParticipationContextPermissionAction } from 'api/permissions/types';
 
 interface InitiativeContext {
   type: 'initiative';
   action: IInitiativeAction;
+}
+
+export type IFollowingAction = 'following';
+
+interface IFollowContext {
+  type: 'follow';
+  action: IFollowingAction;
 }
 
 export interface ProjectContext {
@@ -25,7 +32,8 @@ export type AuthenticationContext =
   | typeof GLOBAL_CONTEXT
   | InitiativeContext
   | ProjectContext
-  | IdeaContext;
+  | IdeaContext
+  | IFollowContext;
 
 export interface AuthenticationRequirementsResponse {
   data: {

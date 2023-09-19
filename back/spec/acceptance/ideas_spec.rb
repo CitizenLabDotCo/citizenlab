@@ -69,7 +69,7 @@ resource 'Ideas' do
       parameter :author, 'Filter by author (user id)', required: false
       parameter :idea_status, 'Filter by status (idea status id)', required: false
       parameter :search, 'Filter by searching in title and body', required: false
-      parameter :sort, "Either 'new', '-new', 'trending', '-trending', 'popular', '-popular', 'author_name', '-author_name', 'likes_count', '-likes_count', 'dislikes_count', '-dislikes_count', 'status', '-status', 'baskets_count', '-baskets_count', 'random'", required: false
+      parameter :sort, "Either 'new', '-new', 'trending', '-trending', 'popular', '-popular', 'author_name', '-author_name', 'likes_count', '-likes_count', 'dislikes_count', '-dislikes_count', 'status', '-status', 'baskets_count', '-baskets_count', 'votes_count', '-votes_count', 'budget', '-budget', 'random'", required: false
       parameter :publication_status, 'Filter by publication status; returns all published ideas by default', required: false
       parameter :project_publication_status, "Filter by project publication_status. One of #{AdminPublication::PUBLICATION_STATUSES.join(', ')}", required: false
       parameter :feedback_needed, 'Filter out ideas that need feedback', required: false
@@ -77,7 +77,7 @@ resource 'Ideas' do
 
       describe do
         before do
-          @ideas = %w[published published draft published spam published published].map do |ps|
+          @ideas = %w[published published draft published published published].map do |ps|
             create(:idea, publication_status: ps)
           end
           create(:idea, project: create(:continuous_native_survey_project))
@@ -261,12 +261,14 @@ resource 'Ideas' do
           expect(json_response[:data].size).to eq 6
         end
 
-        example 'List all ideas includes the user_reaction', document: false do
+        example 'List all ideas includes the user_reaction and user_follower', document: false do
           reaction = create(:reaction, user: @user)
+          follower = create(:follower, followable: create(:idea), user: @user)
 
           do_request
           json_response = json_parse(response_body)
-          expect(json_response[:data].filter_map { |d| d[:relationships][:user_reaction][:data] }.first[:id]).to eq reaction.id
+          expect(json_response[:data].filter_map { |d| d.dig(:relationships, :user_reaction, :data, :id) }.first).to eq reaction.id
+          expect(json_response[:data].filter_map { |d| d.dig(:relationships, :user_follower, :data, :id) }.first).to eq follower.id
           expect(json_response[:included].pluck(:id)).to include reaction.id
         end
 
@@ -283,6 +285,38 @@ resource 'Ideas' do
         example 'Default trending ordering', document: false do
           do_request project_publication_status: 'published', sort: 'trending'
           expect(status).to eq(200)
+        end
+
+        example 'List all ideas in a phase of a project - baskets_count and votes_count are overwritten with values from ideas_phase' do
+          pr = create(:project_with_active_budgeting_phase)
+          phase = pr.phases.first
+          ideas = create_list(:idea, 2, phases: [phase], project: pr)
+          basket = create(:basket, participation_context: phase, submitted_at: nil)
+          basket2 = create(:basket, participation_context: phase, submitted_at: nil)
+          basket.update!(ideas: ideas, submitted_at: Time.zone.now)
+          basket2.update!(ideas: ideas, submitted_at: Time.zone.now)
+          SideFxBasketService.new.after_update basket, user
+          SideFxBasketService.new.after_update basket2, user
+
+          # Different phase (should be ignored in the counts)
+          phase2 = create(:voting_phase, project: pr)
+          basket3 = create(:basket, participation_context: phase2, submitted_at: nil)
+          basket3.update!(ideas: ideas, submitted_at: Time.zone.now)
+          SideFxBasketService.new.after_update basket3, user
+
+          do_request phase: phase.id
+          assert_status 200
+
+          expect(response_data.size).to eq 2
+          expect(response_data.pluck(:id)).to match_array [ideas[0].id, ideas[1].id]
+          ideas_phases = json_response_body[:included].map { |i| i if i[:type] == 'ideas_phase' }.compact!
+          expect(ideas_phases.size).to eq 2
+          expect(ideas_phases[0][:attributes][:baskets_count]).to eq 2
+          expect(ideas_phases[1][:attributes][:baskets_count]).to eq 2
+
+          # Check the value in idea has also been overwritten
+          expect(ideas[0].reload[:baskets_count]).to eq 3
+          expect(response_data[0][:attributes][:baskets_count]).to eq 2
         end
       end
     end
@@ -351,7 +385,7 @@ resource 'Ideas' do
           @user = create(:admin)
           header_token_for @user
 
-          @ideas = %w[published published draft published spam published published].map do |ps|
+          @ideas = %w[published published draft published published published].map do |ps|
             create(:idea, publication_status: ps)
           end
         end
@@ -559,9 +593,9 @@ resource 'Ideas' do
               disabled_reason: nil,
               future_enabled: nil
             },
-            budgeting: {
+            voting: {
               enabled: false,
-              disabled_reason: 'not_budgeting',
+              disabled_reason: 'not_voting',
               future_enabled: nil
             }
           }
@@ -1014,7 +1048,7 @@ resource 'Ideas' do
       describe do
         before do
           @project = create(:continuous_project)
-          @idea =  create(:idea, author: @user, project: @project)
+          @idea = create(:idea, author: @user, project: @project)
         end
 
         let(:id) { @idea.id }
@@ -1052,6 +1086,15 @@ resource 'Ideas' do
 
             assert_status 401
             expect(json_parse(response_body)).to include_response_error(:base, 'i_dont_like_you')
+          end
+
+          example '[error] Normal resident cannot update an idea in a voting context', document: false do
+            @idea.update!(project: create(:continuous_budgeting_project))
+
+            do_request
+
+            assert_status 401
+            expect(json_response_body).to include_response_error(:base, 'not_ideation')
           end
         end
 
@@ -1171,6 +1214,31 @@ resource 'Ideas' do
               end
             end
 
+            context 'Moving the idea from a voting phase' do
+              let(:project) { create(:project_with_past_ideation_and_active_budgeting_phase) }
+              let(:idea) { create(:idea, project: project, phases: [project.phases.last]) }
+              let(:id) { idea.id }
+
+              context 'Moving between phases' do
+                let(:phase_ids) { [project.phases.first.id] }
+
+                example 'Move the idea from a voting phase', document: false do
+                  do_request
+                  assert_status 200
+                end
+              end
+
+              context 'Moving between projects' do
+                let(:new_project) { create(:continuous_project) }
+                let(:project_id) { new_project.id }
+
+                example 'Move the idea to another (non-voting) project', document: false do
+                  do_request
+                  assert_status 200
+                end
+              end
+            end
+
             context 'when passing an empty array of phase ids' do
               before do
                 @project = create(:project_with_phases)
@@ -1195,13 +1263,21 @@ resource 'Ideas' do
             end
           end
 
-          describe do
+          describe 'voting context' do
             let(:budget) { 1800 }
 
             example_request 'Change the participatory budget (as an admin)' do
               expect(status).to be 200
               json_response = json_parse response_body
               expect(json_response.dig(:data, :attributes, :budget)).to eq budget
+            end
+
+            example 'Admin can update an idea in a voting context', document: false do
+              @idea.update!(project: create(:continuous_budgeting_project))
+
+              do_request
+
+              assert_status 200
             end
           end
 
@@ -1376,6 +1452,16 @@ resource 'Ideas' do
           expect(response_status).to eq 200
           expect { Idea.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
           expect(phase.reload.ideas_count).to eq 0
+        end
+      end
+
+      context 'when a voting context' do
+        let(:idea) { create(:idea, project: create(:continuous_budgeting_project)) }
+        let(:id) { idea.id }
+
+        example_request '[error] Normal resident cannot delete an idea in a voting context', document: false do
+          assert_status 401
+          expect(json_parse(response_body)).to include_response_error(:base, 'Unauthorized!')
         end
       end
     end

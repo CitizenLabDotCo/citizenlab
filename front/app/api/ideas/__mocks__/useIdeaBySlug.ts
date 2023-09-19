@@ -58,7 +58,7 @@ export const ideaData: IIdeaData[] = [
           disabled_reason: null,
           future_enabled: null,
         },
-        budgeting: {
+        voting: {
           enabled: false,
           disabled_reason: 'not_permitted',
           future_enabled: null,
@@ -66,6 +66,7 @@ export const ideaData: IIdeaData[] = [
       },
       anonymous: false,
       author_hash: 'abc123',
+      followers_count: 8,
     },
     relationships: {
       topics: {
@@ -95,6 +96,9 @@ export const ideaData: IIdeaData[] = [
           id: '6a968b06-87ea-450a-887c-70b8e8dd4343',
           type: 'idea_statuses',
         },
+      },
+      user_follower: {
+        data: null,
       },
     },
   },
@@ -155,7 +159,7 @@ export const ideaData: IIdeaData[] = [
           disabled_reason: null,
           future_enabled: null,
         },
-        budgeting: {
+        voting: {
           enabled: false,
           disabled_reason: 'not_permitted',
           future_enabled: null,
@@ -163,6 +167,7 @@ export const ideaData: IIdeaData[] = [
       },
       anonymous: false,
       author_hash: 'abc123',
+      followers_count: 7,
     },
     relationships: {
       topics: {
@@ -192,6 +197,9 @@ export const ideaData: IIdeaData[] = [
           id: '6a968b06-87ea-450a-887c-70b8e8dd4343',
           type: 'idea_statuses',
         },
+      },
+      user_follower: {
+        data: null,
       },
     },
   },

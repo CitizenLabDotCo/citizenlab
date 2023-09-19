@@ -3,19 +3,18 @@ import React, { memo, useMemo } from 'react';
 // components
 import ContentContainer from 'components/ContentContainer';
 import { IdeaCardsWithoutFiltersSidebar } from 'components/IdeaCards';
-import PBExpenses from '../shared/pb/PBExpenses';
 import {
   ProjectPageSectionTitle,
   maxPageWidth,
 } from 'containers/ProjectsShowPage/styles';
 import SectionContainer from 'components/SectionContainer';
+import StatusModule from 'components/StatusModule';
 
 // router
 import { useSearchParams } from 'react-router-dom';
 
 // hooks
 import useProjectById from 'api/projects/useProjectById';
-import { useWindowSize } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -24,10 +23,9 @@ import { getInputTermMessage } from 'utils/i18n';
 
 // style
 import styled from 'styled-components';
-import { viewportWidths, colors } from 'utils/styleUtils';
+import { colors } from 'utils/styleUtils';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
 import { ideaDefaultSortMethodFallback } from 'services/participationContexts';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
@@ -43,11 +41,6 @@ const StyledContentContainer = styled(ContentContainer)`
 
 const StyledProjectPageSectionTitle = styled(ProjectPageSectionTitle)`
   margin-bottom: 20px;
-`;
-
-const StyledPBExpenses = styled(PBExpenses)`
-  padding: 20px;
-  margin-bottom: 50px;
 `;
 
 interface InnerProps {
@@ -68,8 +61,6 @@ interface QueryParameters {
 }
 
 const IdeasContainer = memo<InnerProps>(({ project, className }) => {
-  const windowSize = useWindowSize();
-
   const [searchParams] = useSearchParams();
   const sortParam = searchParams.get('sort') as Sort | null;
   const searchParam = searchParams.get('search');
@@ -94,54 +85,54 @@ const IdeasContainer = memo<InnerProps>(({ project, className }) => {
   const participationMethod = project.attributes.participation_method;
   const showIdeas = !!(
     projectType === 'continuous' &&
-    (participationMethod === 'budgeting' || participationMethod === 'ideation')
+    (participationMethod === 'voting' || participationMethod === 'ideation')
   );
 
-  if (!isNilOrError(project) && showIdeas) {
+  if (showIdeas) {
     const inputTerm = project.attributes.input_term;
-    const smallerThanBigTablet = windowSize?.windowWidth
-      ? windowSize?.windowWidth <= viewportWidths.tablet
-      : false;
-    const isPBProject = project.attributes.participation_method === 'budgeting';
+    const isVotingProject =
+      project.attributes.participation_method === 'voting';
 
     return (
       <Container
-        id="e2e-continuos-project-idea-cards"
+        id="e2e-continuous-project-idea-cards"
         className={className || ''}
       >
         <StyledContentContainer id="project-ideas" maxWidth={maxPageWidth}>
           <SectionContainer>
-            {isPBProject && (
-              <StyledPBExpenses
-                participationContextId={project.id}
-                participationContextType="project"
-                viewMode={smallerThanBigTablet ? 'column' : 'row'}
-              />
+            {isVotingProject && (
+              <>
+                <StatusModule
+                  votingMethod={project?.attributes.voting_method}
+                  project={project}
+                />
+              </>
             )}
-            <StyledProjectPageSectionTitle>
-              <FormattedMessage
-                {...getInputTermMessage(inputTerm, {
-                  idea: messages.ideas,
-                  option: messages.options,
-                  project: messages.projects,
-                  question: messages.questions,
-                  issue: messages.issues,
-                  contribution: messages.contributions,
-                })}
-              />
-            </StyledProjectPageSectionTitle>
+            {!isVotingProject && (
+              <StyledProjectPageSectionTitle>
+                <FormattedMessage
+                  {...getInputTermMessage(inputTerm, {
+                    idea: messages.ideas,
+                    option: messages.options,
+                    project: messages.projects,
+                    question: messages.questions,
+                    issue: messages.issues,
+                    contribution: messages.contributions,
+                  })}
+                />
+              </StyledProjectPageSectionTitle>
+            )}
 
             <IdeaCardsWithoutFiltersSidebar
               ideaQueryParameters={ideaQueryParameters}
               onUpdateQuery={updateSearchParams}
               projectId={project.id}
-              participationMethod={project.attributes.participation_method}
               defaultSortingMethod={ideaQueryParameters.sort}
-              participationContextId={project.id}
-              participationContextType="project"
               showViewToggle={true}
               defaultView={project.attributes.presentation_mode}
               invisibleTitleMessage={messages.a11y_titleInputs}
+              showDropdownFilters={isVotingProject ? false : true}
+              showSearchbar={isVotingProject ? false : true}
             />
           </SectionContainer>
         </StyledContentContainer>

@@ -43,33 +43,45 @@ models:
       color: '#04884C'
       description_multiloc: idea_statuses.implemented_description
   initiative_status:
+    - &review_pending
+      title_multiloc: initiative_statuses.review_pending
+      ordering: 50
+      code: review_pending
+      color: '#767676'
+      description_multiloc: initiative_statuses.review_pending_description
+    - &changes_requested
+      title_multiloc: initiative_statuses.changes_requested
+      ordering: 100
+      code: changes_requested
+      color: '#BDBDBD'
+      description_multiloc: initiative_statuses.changes_requested_description
     - &initiative_proposed
       title_multiloc: initiative_statuses.proposed
-      ordering: 100
+      ordering: 150
       code: proposed
-      color: '#687782'
+      color: '#BEE7EB'
       description_multiloc: initiative_statuses.proposed_description
-    - &initiative_expired
-      title_multiloc: initiative_statuses.expired
-      ordering: 200
-      code: expired
-      color: '#01A1B1'
-      description_multiloc: initiative_statuses.expired_description
     - &initiative_threshold_reached
       title_multiloc: initiative_statuses.threshold_reached
-      ordering: 300
+      ordering: 200
       code: threshold_reached
-      color: '#04884C'
+      color: '#40B8C5'
       description_multiloc: initiative_statuses.threshold_reached_description
     - &initiative_answered
       title_multiloc: initiative_statuses.answered
-      ordering: 500
+      ordering: 300
       code: answered
-      color: '#04884C'
+      color: '#147985'
       description_multiloc: initiative_statuses.answered_description
+    - &initiative_expired
+      title_multiloc: initiative_statuses.expired
+      ordering: 400
+      code: expired
+      color: '#FF672F'
+      description_multiloc: initiative_statuses.expired_description
     - &initiative_ineligible
       title_multiloc: initiative_statuses.ineligible
-      ordering: 400
+      ordering: 500
       code: ineligible
       color: '#E52516'
       description_multiloc: initiative_statuses.ineligible_description
@@ -705,7 +717,7 @@ models:
       en: Test group permissions with me Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
     presentation_mode: card
-    participation_method: budgeting
+    participation_method: voting
     process_type: continuous
     admin_publication_attributes:
       publication_status: published
@@ -716,7 +728,8 @@ models:
     reacting_enabled: true
     reacting_like_method: unlimited
     reacting_like_limited_max: 10
-    max_budget: 100000
+    voting_method: budgeting
+    voting_max_total: 100000
   - &charliesPb
     title_multiloc:
       en: Charlie Participatory Budgeting
@@ -731,7 +744,7 @@ models:
       en: Test group permissions with me Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
     presentation_mode: card
-    participation_method: budgeting
+    participation_method: voting
     process_type: continuous
     admin_publication_attributes:
       publication_status: published
@@ -742,7 +755,8 @@ models:
     reacting_enabled: true
     reacting_like_method: unlimited
     reacting_like_limited_max: 10
-    max_budget: 100000
+    voting_method: budgeting
+    voting_max_total: 100000
   - &verifiedPb
     title_multiloc:
       en: Verified Participatory Budgeting
@@ -757,7 +771,7 @@ models:
       en: Test group permissions with me Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
     presentation_mode: card
-    participation_method: budgeting
+    participation_method: voting
     process_type: continuous
     admin_publication_attributes:
       publication_status: published
@@ -768,7 +782,8 @@ models:
     reacting_enabled: true
     reacting_like_method: unlimited
     reacting_like_limited_max: 10
-    max_budget: 100000
+    voting_method: budgeting
+    voting_max_total: 100000
   - &project2
     title_multiloc:
       en: Test project 2 timeline
@@ -7269,7 +7284,7 @@ models:
     project_ref: *project1
     start_at_timediff: -5678
     end_at_timediff: -4760
-    participation_method: budgeting
+    participation_method: voting
     campaigns_settings:
       project_phase_started: true
     created_at: '2018-03-28 13:35:05'
@@ -7279,7 +7294,8 @@ models:
     reacting_enabled: false
     reacting_like_method: unlimited
     reacting_like_limited_max: 10
-    max_budget: 100000
+    voting_method: budgeting
+    voting_max_total: 100000
   - &project1futureIdeation
     title_multiloc:
       en: Future Ideation
@@ -8052,7 +8068,7 @@ models:
       permitted_by: groups
       permission_scope_ref: *verifiedPoll
     - &114
-      action: budgeting
+      action: voting
       permitted_by: groups
       permission_scope_ref: *verifiedPb
     - &115
@@ -8072,7 +8088,7 @@ models:
       permitted_by: everyone_confirmed_email
       permission_scope_ref: *charliesIdeation
     - &1114
-      action: budgeting
+      action: voting
       permitted_by: groups
       permission_scope_ref: *charliesPb
     - &1115

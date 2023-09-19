@@ -44,11 +44,12 @@ import useProjectFiles from 'api/project_files/useProjectFiles';
 import { useParams } from 'react-router-dom';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useAddProject from 'api/projects/useAddProject';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import {
   IUpdatedProjectProperties,
-  IProjectFormState,
   IProjectData,
+  PublicationStatus,
 } from 'api/projects/types';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import useAddProjectFile from 'api/project_files/useAddProjectFile';
@@ -79,12 +80,13 @@ import projectsKeys from 'api/projects/keys';
 export const TIMEOUT = 350;
 
 export type TOnProjectAttributesDiffChangeFunction = (
-  projectAttributesDiff: IProjectFormState['projectAttributesDiff'],
+  projectAttributesDiff: IUpdatedProjectProperties,
   submitState?: ISubmitState
 ) => void;
 
 const AdminProjectsProjectGeneral = () => {
   const { formatMessage } = useIntl();
+  const { data: appConfig } = useAppConfiguration();
   const { projectId } = useParams();
   const { data: project } = useProjectById(projectId);
   const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
@@ -101,41 +103,37 @@ const AdminProjectsProjectGeneral = () => {
   const { mutateAsync: deleteProjectFile } = useDeleteProjectFile();
   const [submitState, setSubmitState] = useState<ISubmitState>('disabled');
 
-  const [processing, setProcessing] =
-    useState<IProjectFormState['processing']>(false);
+  const [processing, setProcessing] = useState(false);
   const [apiErrors, setApiErrors] = useState<CLErrors>({});
-  const [projectAttributesDiff, setProjectAttributesDiff] = useState<
-    IProjectFormState['projectAttributesDiff']
-  >({});
-  const [titleError, setTitleError] =
-    useState<IProjectFormState['titleError']>(null);
+  const [projectAttributesDiff, setProjectAttributesDiff] =
+    useState<IUpdatedProjectProperties>({});
+  const [titleError, setTitleError] = useState<Multiloc | null>(null);
   // We should probably not have projectType, slug, publicationStatus, etc.
   // both in projectAttributesDiff and as separate state.
-  const [projectType, setProjectType] =
-    useState<IProjectFormState['projectType']>('timeline');
-  const [projectFiles, setProjectFiles] = useState<
-    IProjectFormState['projectFiles']
-  >([]);
+  const [projectType, setProjectType] = useState<'continuous' | 'timeline'>(
+    'timeline'
+  );
+  const [projectFiles, setProjectFiles] = useState<UploadFile[]>([]);
   const [projectFilesToRemove, setProjectFilesToRemove] = useState<
-    IProjectFormState['projectFilesToRemove']
+    UploadFile[]
   >([]);
-  const [projectCardImage, setProjectCardImage] =
-    useState<IProjectFormState['projectCardImage']>(null);
+  const [projectCardImage, setProjectCardImage] = useState<UploadFile | null>(
+    null
+  );
   // project_images should always store one record, but in practice it was (or is?) different (maybe because of a bug)
   // https://citizenlabco.slack.com/archives/C015M14HYSF/p1674228018666059
   const [projectCardImageToRemove, setProjectCardImageToRemove] =
-    useState<IProjectFormState['projectCardImageToRemove']>(null);
+    useState<UploadFile | null>(null);
   // If we use cropper, we need to store two different images:
   // original and cropped.
   const [croppedProjectCardBase64, setCroppedProjectCardBase64] = useState<
     string | null
   >(null);
 
-  const [slug, setSlug] = useState<IProjectFormState['slug']>(null);
-  const [showSlugErrorMessage, setShowSlugErrorMessage] =
-    useState<IProjectFormState['showSlugErrorMessage']>(false);
+  const [slug, setSlug] = useState<string | null>(null);
+  const [showSlugErrorMessage, setShowSlugErrorMessage] = useState(false);
   const [publicationStatus, setPublicationStatus] =
-    useState<IProjectFormState['publicationStatus']>('draft');
+    useState<PublicationStatus>('draft');
 
   useEffect(() => {
     (async () => {
@@ -418,9 +416,7 @@ const AdminProjectsProjectGeneral = () => {
     saveForm(participationContextConfig);
   };
 
-  const handleStatusChange = (
-    publicationStatus: IProjectFormState['publicationStatus']
-  ) => {
+  const handleStatusChange = (publicationStatus: PublicationStatus) => {
     setSubmitState('enabled');
     setPublicationStatus(publicationStatus);
     setProjectAttributesDiff((projectAttributesDiff) => ({
@@ -464,7 +460,7 @@ const AdminProjectsProjectGeneral = () => {
 
   const handleProjectAttributeDiffOnChange: TOnProjectAttributesDiffChangeFunction =
     (
-      projectAttributesDiff: IProjectFormState['projectAttributesDiff'],
+      projectAttributesDiff: IUpdatedProjectProperties,
       submitState: ISubmitState = 'enabled'
     ) => {
       setProjectAttributesDiff((currentProjectAttributesDiff) => {
@@ -567,6 +563,7 @@ const AdminProjectsProjectGeneral = () => {
                   onSubmit={handleParticipationContextOnSubmit}
                   onChange={handleParticipationContextOnChange}
                   apiErrors={apiErrors}
+                  appConfig={appConfig}
                 />
               </ParticipationContextWrapper>
             </CSSTransition>
@@ -579,6 +576,7 @@ const AdminProjectsProjectGeneral = () => {
             onSubmit={handleParticipationContextOnSubmit}
             onChange={handleParticipationContextOnChange}
             apiErrors={apiErrors}
+            appConfig={appConfig}
           />
         )}
 

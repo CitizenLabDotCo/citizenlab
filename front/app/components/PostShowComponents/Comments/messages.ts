@@ -171,19 +171,19 @@ export default defineMessages({
     id: 'app.components.Comments.mostRecent',
     defaultMessage: 'Most recent',
   },
-  mostUpvoted: {
-    id: 'app.components.Comments.mostUpvoted',
-    defaultMessage: 'Most voted',
+  mostLiked: {
+    id: 'app.components.Comments.mostLiked',
+    defaultMessage: 'Most reactions',
   },
-  upvoteComment: {
-    id: 'app.components.Comments.upvoteComment',
-    defaultMessage: 'Upvote this comment',
+  likeComment: {
+    id: 'app.components.Comments.likeComment',
+    defaultMessage: 'Like this comment',
   },
-  commentUpvote: {
-    id: 'app.containers.Comments.commentUpvote',
-    defaultMessage: 'Upvote',
+  commentLike: {
+    id: 'app.containers.Comments.commentLike',
+    defaultMessage: 'Like',
   },
-  commentCancelUpvote: {
+  commentCancelLike: {
     id: 'app.containers.Comments.commentCancelUpvote',
     defaultMessage: 'Cancel',
   },
@@ -251,14 +251,14 @@ export default defineMessages({
     id: 'app.containers.Comments.a11y_commentDeleted',
     defaultMessage: 'Comment deleted',
   },
-  a11y_upvoteCount: {
-    id: 'app.containers.Comments.a11y_upvoteCount',
+  a11y_likeCount: {
+    id: 'app.containers.Comments.a11y_likeCount',
     defaultMessage:
-      '{upvoteCount, plural, =0 {no upvotes} one {1 upvote} other {# upvotes}}',
+      '{likeCount, plural, =0 {no likes} one {1 like} other {# likes}}',
   },
-  a11y_undoUpvote: {
-    id: 'app.containers.Comments.a11y_undoUpvote',
-    defaultMessage: 'Undo upvote',
+  a11y_undoLike: {
+    id: 'app.containers.Comments.a11y_undoLike',
+    defaultMessage: 'Undo like',
   },
   profanityError: {
     id: 'app.containers.Comments.profanityError',

@@ -1,4 +1,3 @@
-import { assignBudget, AssignBudgetParams } from './assignBudget';
 import {
   redirectToIdeaForm,
   RedirectToIdeaFormParams,
@@ -7,9 +6,11 @@ import {
   redirectToInitiativeForm,
   RedirectToInitiativeFormParams,
 } from './redirectToInitiativeForm';
+import { follow, FollowActionParams } from './follow';
 import { replyToComment, ReplyToCommentParams } from './replyToComment';
 import { scrollTo, ScrollToParams } from './scrollTo';
 import { volunteer, VolunteerParams } from './volunteer';
+import { vote, VoteParams } from './vote';
 import {
   reactionOnComment,
   ReactionOnCommentParams,
@@ -20,11 +21,6 @@ import {
   ReactionOnInitiativeParams,
 } from './reactionOnInitiative';
 
-interface AssignBudgetAction {
-  name: 'assignBudget';
-  params: AssignBudgetParams;
-}
-
 interface RedirectToIdeaFormAction {
   name: 'redirectToIdeaForm';
   params: RedirectToIdeaFormParams;
@@ -33,6 +29,11 @@ interface RedirectToIdeaFormAction {
 interface RedirectToInitiativeFormAction {
   name: 'redirectToInitiativeForm';
   params: RedirectToInitiativeFormParams;
+}
+
+interface FollowAction {
+  name: 'follow';
+  params: FollowActionParams;
 }
 
 interface ReplyToCommentAction {
@@ -48,6 +49,11 @@ interface ScrollToAction {
 interface VolunteerAction {
   name: 'volunteer';
   params: VolunteerParams;
+}
+
+interface VoteAction {
+  name: 'vote';
+  params: VoteParams;
 }
 
 interface ReactionOnCommentAction {
@@ -66,25 +72,29 @@ interface ReactionOnInitiativeAction {
 }
 
 export type SuccessAction =
-  | AssignBudgetAction
   | RedirectToIdeaFormAction
   | RedirectToInitiativeFormAction
   | ReplyToCommentAction
   | ScrollToAction
   | VolunteerAction
+  | VoteAction
   | ReactionOnCommentAction
   | ReactionOnIdeaAction
-  | ReactionOnInitiativeAction;
+  | ReactionOnInitiativeAction
+  | FollowAction;
 
 export const getAction = ({ name, params }: SuccessAction) => {
-  if (name === 'assignBudget') return assignBudget(params);
   if (name === 'redirectToIdeaForm') return redirectToIdeaForm(params);
   if (name === 'redirectToInitiativeForm') {
     return redirectToInitiativeForm(params);
   }
+  if (name === 'follow') {
+    return follow(params);
+  }
   if (name === 'replyToComment') return replyToComment(params);
   if (name === 'scrollTo') return scrollTo(params);
   if (name === 'volunteer') return volunteer(params);
+  if (name === 'vote') return vote(params);
   if (name === 'reactionOnComment') return reactionOnComment(params);
   if (name === 'reactionOnIdea') return reactionOnIdea(params);
   return reactionOnInitiative(params);

@@ -16,16 +16,16 @@ describe('Project card component', () => {
       publicationStatus: 'published',
     }).then((project) => {
       projectId = project.body.data.id;
-      cy.apiCreatePhase(
+      cy.apiCreatePhase({
         projectId,
-        'phaseTitle',
-        moment().subtract(2, 'month').format('DD/MM/YYYY'),
-        moment().add(2, 'days').format('DD/MM/YYYY'),
-        'ideation',
-        true,
-        true,
-        true
-      );
+        title: 'phaseTitle',
+        startAt: moment().subtract(2, 'month').format('DD/MM/YYYY'),
+        endAt: moment().add(2, 'days').format('DD/MM/YYYY'),
+        participationMethod: 'ideation',
+        canComment: true,
+        canPost: true,
+        canReact: true,
+      });
       cy.goToLandingPage();
     });
   });

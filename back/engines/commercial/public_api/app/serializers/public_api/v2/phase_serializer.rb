@@ -20,8 +20,8 @@ class PublicApi::V2::PhaseSerializer < PublicApi::V2::BaseSerializer
     :reacting_dislike_enabled,
     :reacting_dislike_method,
     :reacting_dislike_limited_max,
-    :max_budget,
-    :min_budget
+    :voting_max_total,
+    :voting_min_total
 
   def title
     multiloc_service.t(object.title_multiloc)

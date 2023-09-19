@@ -69,14 +69,15 @@ export const data: IIdeaData[] = [
           disabled_reason: null,
           future_enabled: null,
         },
-        budgeting: {
+        voting: {
           enabled: false,
-          disabled_reason: 'not_budgeting',
+          disabled_reason: 'not_voting',
           future_enabled: null,
         },
       },
       anonymous: false,
       author_hash: 'abc123',
+      followers_count: 3,
     },
     relationships: {
       topics: {
@@ -107,6 +108,9 @@ export const data: IIdeaData[] = [
         },
       },
       user_reaction: {
+        data: null,
+      },
+      user_follower: {
         data: null,
       },
       assignee: {

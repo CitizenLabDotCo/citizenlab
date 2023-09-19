@@ -47,10 +47,6 @@ export const getAppConfigurationData = (
         allowed: true,
         enabled: true,
       },
-      participatory_budgeting: {
-        allowed: true,
-        enabled: true,
-      },
       custom_accessibility_statement_link: {
         allowed: false,
         enabled: false,

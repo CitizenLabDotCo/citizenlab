@@ -68,7 +68,7 @@ class ApplicationMailer < ActionMailer::Base
     when OpenStruct then multiloc_or_struct.to_h.stringify_keys
     end
 
-    multiloc_service.t(multiloc, recipient).html_safe if multiloc
+    multiloc_service.t(multiloc, recipient.locale).html_safe if multiloc
   end
 
   def count_from(value)
@@ -172,7 +172,7 @@ class ApplicationMailer < ActionMailer::Base
 
   def logo_url
     @logo_url ||= app_configuration.logo.versions.then do |versions|
-      versions[:medium].url || versions[:small].url || versions[:large].url || ''
+      versions[:large].url || versions[:medium].url || versions[:small].url || ''
     end
   end
 

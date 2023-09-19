@@ -14,8 +14,7 @@ module Insights
         if category.save
           ideas = IdeasFinder.new(
             { project: view.scope, topics: [topic] },
-            current_user: current_user,
-            paginate: false
+            current_user: current_user
           ).find_records
           assignment_service.add_assignments_batch(ideas, [category])
         end

@@ -180,8 +180,21 @@ describe EmailCampaigns::CampaignPolicy do
         it { is_expected.not_to permit(:update) }
         it { is_expected.not_to permit(:destroy) }
 
-        it 'does not index the campaign' do
-          expect(scope.resolve.size).to eq 0
+        it 'indexes the campaign' do
+          expect(scope.resolve.size).to eq 1
+        end
+      end
+
+      context 'of a private groups project on a campaign without groups' do
+        let(:project) { create(:private_groups_project) }
+
+        it { is_expected.not_to permit(:show) }
+        it { is_expected.not_to permit(:create) }
+        it { is_expected.not_to permit(:update) }
+        it { is_expected.not_to permit(:destroy) }
+
+        it 'indexes the campaign' do
+          expect(scope.resolve.size).to eq 1
         end
       end
     end

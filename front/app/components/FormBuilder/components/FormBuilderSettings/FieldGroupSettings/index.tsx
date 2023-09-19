@@ -31,7 +31,6 @@ const FieldGroupSettings = ({ field, locale }: Props) => {
             id="e2e-field-group-title-multiloc"
             name={`customFields.${field.index}.title_multiloc`}
             label={<FormattedMessage {...messages.titleLabel} />}
-            type="text"
           />
         </SectionField>
       )}

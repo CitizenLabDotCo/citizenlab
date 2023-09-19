@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 // utils
 import { isNilOrError, NilOrError, keys } from 'utils/helperUtils';
 import useLocale from 'hooks/useLocale';
-import { ReportLayout } from 'services/reports';
+import { ReportLayout } from 'api/report_layout/types';
 import { Locale } from 'typings';
 
 // Extracts the locale of the report from the multiloc

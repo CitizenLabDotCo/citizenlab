@@ -8,12 +8,16 @@ en:
       "comment_on_your_comment": A reply on my comment
       "comment_on_your_idea": A comment on my idea
       "comment_on_your_initiative": A comment on my proposal
+      "cosponsor_of_your_initiative": A user accepts my invitation to co-sponsor my proposal
+      "event_registration_confirmation": Event registration confirmation
       "first_idea_published": Publication of my first idea
       "idea_marked_as_spam": Idea spam report
       "idea_published": Publication of my idea
       "initiative_assigned_to_you": Assignment of a proposal to me
       "initiative_marked_as_spam": Proposal spam report
       "initiative_published": Publication of my proposal
+      "invitation_to_cosponsor_initiative": Invitation to co-sponsor a proposal
+      "initiative_resubmitted_for_review": Proposal resubmitted for review
       "invite_received": Invitation
       "invite_reminder": Invitation reminder
       "internal_comment_on_idea_assigned_to_you": Internal comment on input assigned to me
@@ -29,14 +33,14 @@ en:
       "new_comment_for_admin": New comment in a project I moderate
       "new_comment_on_commented_idea": New comment on an idea I commented on
       "new_comment_on_commented_initiative": New comment on a proposal I commented on
-      "new_comment_on_voted_idea": New comment on an idea I voted for
-      "new_comment_on_voted_initiative": New comment on a proposal I voted for
+      "new_comment_on_reacted_idea": New comment on an idea I reacted to
+      "new_comment_on_reacted_initiative": New comment on a proposal I voted for
       "new_idea_for_admin": New idea in a project I moderate
       "new_initiative_for_admin": New proposal
       "official_feedback_on_commented_idea": Update on an idea I commented on
       "official_feedback_on_commented_initiative": Update on a proposal I commented on
-      "official_feedback_on_voted_idea": Update on an idea I voted on
-      "official_feedback_on_voted_initiative": Update on a proposal I voted on
+      "official_feedback_on_reacted_idea": Update on an idea I reacted to
+      "official_feedback_on_reacted_initiative": Update on a proposal I voted on
       "official_feedback_on_your_idea": Update on my idea
       "official_feedback_on_your_initiative": Update on my proposal
       "password_reset": Password reset
@@ -46,8 +50,8 @@ en:
       "project_phase_upcoming": Upcoming new project phase
       "status_change_of_commented_idea": Status change of an idea I commented on
       "status_change_of_commented_initiative": Status change of a proposal I commented on
-      "status_change_of_voted_idea": Status change of an idea I voted for
-      "status_change_of_voted_initiative": Status change of a proposal I voted for
+      "status_change_of_reacted_idea": Status change of an idea I reacted to
+      "status_change_of_reacted_initiative": Status change of a proposal I reacted for
       "status_change_of_your_idea": Status change of my idea
       "status_change_of_your_initiative": Status change of my proposal
       "threshold_reached_for_admin": Proposal reached the voting threshold
@@ -56,6 +60,10 @@ en:
       "moderator_digest": Weekly overview for project managers
       "assignee_digest": Weekly overview of assigned ideas
       "user_digest": Weekly overview
+      "voting_basket_submitted": Confirmation of voting
+      "voting_basket_not_submitted": Votes not submitted
+      "voting_last_chance": Last chance to vote
+      "voting_results": Voting results
       "your_proposed_initiatives_digest": Weekly overview of your proposals
     schedules:
       weekly:
@@ -134,6 +142,12 @@ en:
       main_header: '%{commentAuthor} commented on your initiative'
       subject: 'You''ve received a comment on %{organizationName}''s platform'
       preheader: '%{authorName} left a comment on your initiative for %{organizationName}'
+    cosponsor_of_your_initiative:
+      cta_reply_to: 'View your proposal'
+      event_description_initiative: 'Congratulations! %{cosponsorName} has accepted your invitation to co-sponsor your proposal.'
+      main_header: '%{cosponsorName} has accepted your invitation to co-sponsor your proposal'
+      subject: '%{cosponsorName} has accepted your invitation to co-sponsor your proposal'
+      preheader_initiative: '%{cosponsorName} has accepted your invitation to co-sponsor your proposal'
     assignee_digest:
       subject: 'Ideas requiring your feedback: %{numberIdeas}'
       preheader: 'Assignee digest of %{organizationName}'
@@ -170,20 +184,38 @@ en:
     initiative_assigned_to_you:
       by_author: 'by %{authorName}'
       cta_reply_to: 'Give feedback to %{authorName}'
-      event_description_initiative: 'An proposal has been assigned to you. Give feedback by writing an official update or by changing its status.'
+      event_description_initiative: 'A proposal has been assigned to you. Give feedback by writing an official update or by changing its status.'
       main_header: '%{firstName}, you have a new assignment'
       subject: 'You have an assignment on the platform of %{organizationName}'
       preheader_initiative: 'The proposal of %{authorName} has been assigned to you'
+    invitation_to_cosponsor_initiative:
+      cta_reply_to: 'Co-sponsor this proposal'
+      event_description_initiative: '%{authorName} has created a new proposal and would like you to co-sponsor it.'
+      event_description_cosponsoring: 'Co-sponsoring a proposal means that <strong>your name will be displayed</strong> with the names of other co-sponsors of the proposal.'
+      event_description_before_action: 'To see the proposal and accept the invitation, you must be logged in to your account.'
+      event_description_action: 'Click below to read the proposal.'
+      main_header: 'You have been invited to co-sponsor a proposal'
+      subject: 'You have been invited to co-sponsor a proposal'
+      preheader_initiative: 'You have been invited to co-sponsor the proposal of %{authorName}'
+    initiative_resubmitted_for_review:
+      by_author: 'by %{authorName}'
+      cta_reply_to: 'Give feedback to %{authorName}'
+      event_description_initiative: 'A proposal has been resubmitted for review. Give feedback by writing an official update or by changing its status.'
+      main_header: '%{firstName}, you have a proposal to review'
+      subject: 'You have a proposal to review on the platform of %{organizationName}'
+      preheader_initiative: 'The proposal of %{authorName} has been resubmitted for review'
     invite_reminder:
       cta_accept_invitation: 'Accept your invitation'
       invitation_header: 'Your invitation is pending'
       preheader: '%{organizationName} sent you an invite to join their participation platform some days ago.'
+      invitation_expiry_message: 'This invitation expires in approximately %{expiryDaysRemaining} days.'
       subject: 'Pending invitation for the participation platform of %{organizationName}'
     invite_received:
       added_a_message: '%{organizationName} wrote the following message:'
       cta_accept_invitation: 'Accept your invitation'
       invitation_header: 'You are invited!'
       invitation_header_message: '%{organizationName} invited you to their participation platform.'
+      invitation_expiry_message: 'This invitation expires in %{expiryDays} days.'
       preheader: '%{organizationName} sent you an invite to join their participation platform.'
       subject: 'You are invited to join the platform of %{organizationName}'
     initiative_published:
@@ -270,21 +302,21 @@ en:
       main_header: '%{authorName} commented on your idea'
       subject: 'You''ve received a comment on %{organizationName}''s platform'
       preheader: '%{authorName} left a comment on your idea for %{organizationName}'
-    new_comment_on_voted_initiative:
+    new_comment_on_reacted_initiative:
       commented: '%{commentAuthor} wrote:'
       cta_reply_to: 'View this proposal'
       event_description: '%{commentAuthor} has commented on the proposal ''%{initiativeTitle}'' on which you''ve voted. Join the discussion on the platform of %{organizationName}!'
       main_header: '%{firstName}, there''s a new comment on the proposal you''ve voted on'
       subject: 'There''s a new comment on the proposal you''ve voted on'
       preheader: '%{commentAuthor} left a comment on the proposal you''ve voted on on the platform of %{organizationName}'
-    new_comment_on_voted_idea:
+    new_comment_on_reacted_idea:
       commented: '%{commentAuthor} commented:'
       cta_reply_to: 'Reply to %{commentAuthor}'
       days_ago: '%{numberOfDays} days ago'
-      event_description: '%{commentAuthor} has commented on the idea ''%{ideaTitle}'' on which you''ve voted. Join the discussion on the platform of %{organizationName}!'
-      main_header: '%{firstName}, there''s a new comment on the idea you''ve voted on'
-      subject: 'There''s a new comment on the idea you''ve voted on'
-      preheader: '%{commentAuthor} left a comment on the idea you''ve voted on on the platform of %{organizationName}'
+      event_description: '%{commentAuthor} has commented on the idea ''%{ideaTitle}'' on which you''ve reacted. Join the discussion on the platform of %{organizationName}!'
+      main_header: '%{firstName}, there''s a new comment on the idea you''ve reacted to'
+      subject: 'There''s a new comment on the idea you''ve reacted to'
+      preheader: '%{commentAuthor} left a comment on the idea you''ve reacted to on the platform of %{organizationName}'
       today: Today
       yesterday: Yesterday
     new_initiative_for_admin:
@@ -369,13 +401,13 @@ en:
       main_header: 'There''s an update on an proposal you commented on'
       subject: 'A proposal you commented on has received an official update on the platform of %{organizationName}'
       preheader: '%{officialName} left an official update on an proposal you commented on'
-    official_feedback_on_voted_idea:
+    official_feedback_on_reacted_idea:
       by_author: 'by %{authorName}'
       updated: '%{officialName} wrote:'
       cta_view: 'Go to this idea'
       event_description: '%{officialName} gave an update on the idea ''%{ideaTitle}''. Click the button below to enter the conversation with %{officialName}.'
-      subject: 'An idea you voted on has received an update on the platform of %{organizationName}'
-      preheader: '%{officialName} left an update on an idea you voted on'
+      subject: 'An idea you reacted to has received an update on the platform of %{organizationName}'
+      preheader: '%{officialName} left an update on an idea you reacted to'
       main_header: ""
     official_feedback_on_commented_idea:
       by_author: 'by %{authorName}'
@@ -393,7 +425,7 @@ en:
       main_header: 'You received an update from %{organizationName}'
       subject: 'You received an update from %{organizationName}'
       preheader: '%{officialName} left an official update on your idea'
-    official_feedback_on_voted_initiative:
+    official_feedback_on_reacted_initiative:
       by_author: 'by %{authorName}'
       updated: '%{officialName} wrote:'
       cta_view: 'Go to this proposal'
@@ -415,7 +447,7 @@ en:
       preheader: 'An adminstrator of the participation platform of %{organizationName} just made you a project manager of the following project'
       subject: 'You became a project manager on the platform of %{organizationName}'
       text_design_participatory_process: 'As a project manager, you can configure how users interact within your project. You can add new phases using the timeline. Each of these phases can have its own behaviour with regards to idea posting, commenting, and voting.'
-      text_moderate_analyse_input: 'Once the project is launched, the first ideas will come in. You will receive weekly reports with all key activities so that you stay on top of things. The ideas overview in your project manager view will help you understand which ideas got the most upvotes and downvotes.'
+      text_moderate_analyse_input: 'Once the project is launched, the first ideas will come in. You will receive weekly reports with all key activities so that you stay on top of things. The ideas overview in your project manager view will help you understand which ideas got the most likes and dislikes.'
       text_share_project_information: 'In order to increase the quality of the ideas you''re getting, it is key to share sufficient information: add a project description, attach images (incl. sketches and plans), and communicate all related events going on. Remember: good information precedes good participation!'
       title_design_participatory_process: 'Design the participatory process'
       title_moderate_analyse_input: 'Moderate and analyse the input'
@@ -468,14 +500,14 @@ en:
       main_header: 'Your idea has a new status'
       subject: 'The status of your idea has been changed'
       preheader: '%{organizationName} changed the status of your idea'
-    status_change_of_voted_idea:
+    status_change_of_reacted_idea:
       status_change: 'The new status of this idea is ''%{ideaStatus}'''
       cta_view_idea: 'Go to this idea'
       event_description: '%{organizationName} updated the status of the idea ''%{ideaTitle}'' on their digital participation platform.'
-      main_header: 'An idea you voted on has a new status'
-      subject: 'The status of an idea you voted on has been changed'
-      preheader: '%{organizationName} changed the status of an idea you voted on'
-    status_change_of_voted_initiative:
+      main_header: 'An idea you reacted to has a new status'
+      subject: 'The status of an idea you reacted to has been changed'
+      preheader: '%{organizationName} changed the status of an idea you reacted to'
+    status_change_of_reacted_initiative:
       status_change: 'The new status of this proposal is ''%{initiativeStatus}'''
       cta_view_initiative: 'Go to this proposal'
       event_description: 'The status of the proposal ''%{initiativeTitle}'' has been updated on the digital participation platform of %{organizationName}.'
@@ -577,6 +609,54 @@ en:
       new_votes: 'New votes'
       remaining_votes: 'Votes remaining'
       remaining_days: 'Days remaining'
+    voting_basket_submitted:
+      subject: '%{organizationName}: You voted successfully'
+      preheader: 'You voted successfully on the participation platform of %{organizationName}'
+      title_basket_submitted: 'You voted successfully'
+      event_description: 'Thanks for participating. Your votes have been recorded. Visit the platform of %{organizationName} to see and manage your votes.'
+      cta_see_votes_submitted: 'See votes submitted'
+      cta_message: 'Click the button below to participate'
+    voting_basket_not_submitted:
+      subject: '%{organizationName}: You didn''t submit your votes'
+      preheader: 'You didn''t submit your votes on the participation platform of %{organizationName}'
+      title_basket_not_submitted: 'You didn''t submit your votes'
+      event_description: 'You selected a few options for %{contextTitle} but you didn''t submit your selection.'
+      cta_view_options_and_vote: 'View options and vote'
+      cta_message: 'Click the button below to submit your selected options'
+    voting_last_chance:
+      subject: '%{organizationName}: Last chance to vote for %{phaseTitle}'
+      preheader: 'Last chance to vote for %{phaseTitle} on the participation platform of %{organizationName}'
+      title_last_chance: 'Last chance to vote for %{phaseTitle}'
+      body_1: 'The voting phase for the %{projectTitle} project is coming to a close tomorrow, at midnight.'
+      body_2: 'Time is running out, and we noticed that you haven''t cast your vote yet! Act now by simply clicking the button below to participate.'
+      body_3: 'By doing so, you''ll gain access to a range of options and have the chance to provide your input, which is crucial in deciding the future of this project.'
+      cta_vote: 'Vote'
+    voting_results:
+      subject: '%{organizationName}: %{phaseTitle} vote results revealed!'
+      preheader: '%{phaseTitle} vote results revealed on the participation platform of %{organizationName}'
+      title_results: '%{phaseTitle} vote results revealed!'
+      body_1: 'Results are in!'
+      body_2: 'The results of the %{phaseTitle} vote in the %{organizationName} platform have been published!'
+      body_3: 'We encourage you to review the results and stay tuned for further updates on the next steps.'
+      cta_see_results: 'See results in the platform'
+    event_registration_confirmation:
+      subject: "You're in! Your registration for \"%{eventTitle}\" is confirmed"
+      header_message: "%{firstName}, thanks for registering for"
+      event_details:
+        labels:
+          date: 'Date'
+          location: 'Location'
+          online_link: 'Online link'
+          description: 'Description'
+          project: 'Project'
+      cta_go_to_event: 'View the event'
+      cta_add_to_calendar: 'Add to your calendar'
+    voting_phase_started:
+      subject: '%{organizationName}: The voting phase started for %{projectName}'
+      preheader: 'The voting phase started for %{projectName} on the participation platform of %{organizationName}'
+      event_description: 'The project "%{projectName}" is asking you to vote between %{numIdeas} options:'
+      cta_message: 'Click the button below to participate'
+      cta_vote: 'Go to the platform to vote'
     admin_labels:
       recipient_role:
         admins: 'To admins'
@@ -593,6 +673,8 @@ en:
         managers: 'Managers'
         admins_assigned_to_a_proposal: 'Admins assigned to a proposal'
         admins_and_managers_assigned_to_the_input: 'Admins & managers assigned to the input'
+        new_attendee: 'Newly registered user'
+        user_who_is_invited_to_cosponsor_a_proposal: 'User who is invited to co-sponsor a proposal'
         user_who_is_receiving_admin_rights: 'User who is receiving admin rights'
         user_who_is_receiving_folder_moderator_rights: 'User who is receiving folder moderator rights'
         user_who_is_receiving_project_moderator_rights: 'User who is receiving project moderator rights'
@@ -605,16 +687,21 @@ en:
         users_who_engaged_with_the_input: 'Users who engaged with the input'
         users_who_engaged_with_the_project: 'Users who engaged with the project'
         users_who_engaged_with_the_proposal: 'Users who engaged with the proposal'
+        user_who_voted: 'User who voted'
+        user_with_unsubmitted_votes: 'User who has not submitted their votes'
+        users_who_engaged_but_not_voted: 'Users who engaged with the project but have not voted'
       content_type:
         comments: 'Comments'
         content_moderation: 'Content moderation'
+        events: 'Events'
         general: 'General'
         inputs: 'Inputs'
         internal_comments: 'Internal comments'
         permissions: 'Permissions'
         projects: 'Projects'
         proposals: 'Proposals'
-        votes: 'Votes'
+        reactions: 'Reactions'
+        voting: 'Voting'
       trigger:
         comment_is_deleted: 'Comment is deleted'
         comment_is_flagged_as_spam: 'Comment is flagged as spam'
@@ -623,6 +710,7 @@ en:
         input_is_flagged_as_spam: 'Input is flagged as spam'
         input_is_updated: 'Input is updated'
         input_status_changes: 'Input status changes'
+        initiative_resubmitted_for_review: 'Proposal resubmitted for review'
         internal_comment_is_posted_on_idea_assigned_to_user: 'Internal comment is posted on input assigned to user'
         internal_comment_is_posted_on_initiative_assigned_to_user: 'Internal comment is posted on proposal assigned to user'
         internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: 'Internal comment is posted on input in project or folder user manages'
@@ -631,6 +719,8 @@ en:
         internal_comment_is_posted_on_initiative_user_has_commented_internally_on: 'Internal comment is posted on proposal user commented internally on'
         internal_comment_is_posted_on_unassigned_initiative: 'Internal comment is posted on unassigned proposal'
         internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Internal comment is posted on unassigned input in unmanaged project'
+        user_accepts_invitation_to_cosponsor_a_proposal: 'User accepts invitation to co-sponsor a proposal'
+        user_is_invited_to_cosponsor_a_proposal: 'User is invited to co-sponsor a proposal'
         user_is_mentioned_in_internal_comment: 'User is mentioned in internal comment'
         new_input_is_published: 'New input is published'
         new_proposal_is_posted: 'New proposal is posted'
@@ -652,5 +742,10 @@ en:
         user_registers_for_the_first_time: 'User registers for the first time'
         user_replies_to_comment: 'User replies to comment'
         user_replies_to_internal_comment: 'User replies to internal comment'
+        voting_2_days_before_phase_closes: '2 days before voting phase closes'
+        voting_1_day_after_last_votes: '1 day after user last voted'
+        voting_phase_ended: 'Voting phase ended'
+        voting_basket_submitted: 'Votes are submitted'
         7_days_after_invite_is_sent: '7 days after invite is sent'
         7_days_before_the_project_changes_phase: '7 days before the project changes phase'
+        registration_to_event: 'Registration to an event'

@@ -2,7 +2,6 @@ import React, { memo, useMemo } from 'react';
 
 // components
 import Timeline from './Timeline';
-import PBExpenses from '../shared/pb/PBExpenses';
 import PhaseSurvey from './Survey';
 import PhasePoll from './Poll';
 import PhaseVolunteering from './Volunteering';
@@ -15,6 +14,8 @@ import {
 } from 'containers/ProjectsShowPage/styles';
 import SectionContainer from 'components/SectionContainer';
 import PhaseDocumentAnnotation from './document_annotation';
+import StatusModule from 'components/StatusModule';
+import VotingResults from './VotingResults';
 
 // router
 import setPhaseURL from './setPhaseURL';
@@ -23,7 +24,6 @@ import { useParams } from 'react-router-dom';
 // hooks
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
-import { useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // i18n
 import messages from 'containers/ProjectsShowPage/messages';
@@ -39,6 +39,7 @@ import { isValidPhase } from '../phaseParam';
 
 // typings
 import { IPhaseData } from 'api/phases/types';
+import { pastPresentOrFuture } from 'utils/dateUtils';
 
 const Container = styled.div``;
 
@@ -68,12 +69,6 @@ const StyledProjectPageSectionTitle = styled(ProjectPageSectionTitle)`
 const StyledTimeline = styled(Timeline)`
   margin-bottom: 22px;
 `;
-
-const StyledPBExpenses = styled(PBExpenses)`
-  padding: 20px;
-  margin-bottom: 50px;
-`;
-
 interface Props {
   projectId: string;
   className?: string;
@@ -83,7 +78,6 @@ const ProjectTimelineContainer = memo<Props>(({ projectId, className }) => {
   const { phaseNumber } = useParams();
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
-  const smallerThanTablet = useBreakpoint('tablet');
 
   const selectedPhase = useMemo(() => {
     if (!phases) return;
@@ -105,9 +99,16 @@ const ProjectTimelineContainer = memo<Props>(({ projectId, className }) => {
 
   if (project && selectedPhase) {
     const selectedPhaseId = selectedPhase.id;
-    const isPBPhase =
-      selectedPhase.attributes.participation_method === 'budgeting';
     const participationMethod = selectedPhase.attributes.participation_method;
+    const isPastPhase =
+      pastPresentOrFuture(selectedPhase.attributes.end_at) === 'past';
+
+    const isVotingPhase = participationMethod === 'voting';
+
+    const showIdeas =
+      participationMethod === 'ideation' || (isVotingPhase && !isPastPhase);
+
+    const showVotingResults = isVotingPhase && isPastPhase;
 
     return (
       <Container className={`${className || ''} e2e-project-process-page`}>
@@ -125,12 +126,17 @@ const ProjectTimelineContainer = memo<Props>(({ projectId, className }) => {
                 selectedPhase={selectedPhase}
                 setSelectedPhase={selectPhase}
               />
-              {isPBPhase && (
-                <StyledPBExpenses
-                  participationContextId={selectedPhaseId}
-                  participationContextType="phase"
-                  viewMode={smallerThanTablet ? 'column' : 'row'}
-                />
+              {isVotingPhase && (
+                <>
+                  <StatusModule
+                    phase={selectedPhase}
+                    project={project.data}
+                    votingMethod={
+                      selectedPhase?.attributes.voting_method ||
+                      project?.data.attributes.voting_method
+                    }
+                  />
+                </>
               )}
               <PhaseSurvey project={project.data} phaseId={selectedPhaseId} />
               {participationMethod === 'document_annotation' && (
@@ -148,11 +154,10 @@ const ProjectTimelineContainer = memo<Props>(({ projectId, className }) => {
                 projectId={projectId}
                 phaseId={selectedPhaseId}
               />
-              {(participationMethod === 'ideation' ||
-                participationMethod === 'budgeting') &&
-                selectedPhaseId && (
-                  <PhaseIdeas projectId={projectId} phaseId={selectedPhaseId} />
-                )}
+              {showIdeas && (
+                <PhaseIdeas projectId={projectId} phaseId={selectedPhaseId} />
+              )}
+              {showVotingResults && <VotingResults phaseId={selectedPhaseId} />}
             </ContentContainer>
           </div>
         </StyledSectionContainer>
