@@ -42,6 +42,9 @@ const Visitors = () => {
   const [startAtMoment, setStartAtMoment] = useState<Moment | null | undefined>(
     undefined
   );
+  const [uniqueVisitorDataDate, setUniqueVisitorDataDate] = useState<
+    Moment | undefined
+  >(undefined);
   const [endAtMoment, setEndAtMoment] = useState<Moment | null>(moment());
   const [projectId, setProjectId] = useState<string | undefined>();
   const [resolution, setResolution] = useState<IResolution>('month');
@@ -60,6 +63,7 @@ const Visitors = () => {
       );
 
       setStartAtMoment(uniqueVisitorDataDate);
+      setUniqueVisitorDataDate(uniqueVisitorDataDate);
     }
   }, [analytics, appConfig]);
 
@@ -77,11 +81,9 @@ const Visitors = () => {
     setProjectId(value);
   };
 
-  if (!appConfig || !analytics || analytics?.data.attributes.length === 0) {
+  if (!uniqueVisitorDataDate || !startAtMoment) {
     return null;
   }
-
-  const [countData] = analytics.data.attributes;
 
   return (
     <>
@@ -95,7 +97,7 @@ const Visitors = () => {
           onProjectFilter={handleProjectFilter}
           onChangeResolution={setResolution}
           showAllTime={false}
-          minDate={moment(countData.first_dimension_date_first_action_date)}
+          minDate={uniqueVisitorDataDate}
         />
       </Box>
       <Box p="10px">
@@ -103,9 +105,7 @@ const Visitors = () => {
           text={
             <Text color="primary" m="0px" fontSize="s">
               {formatMessage(messages.dateInfo, {
-                date: moment(
-                  countData.first_dimension_date_first_action_date
-                ).format('LL'),
+                date: uniqueVisitorDataDate.format('LL'),
               })}
             </Text>
           }
