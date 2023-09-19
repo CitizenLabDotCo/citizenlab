@@ -4,7 +4,7 @@ import {
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
   IOptionsType,
-} from 'services/formCustomFields';
+} from 'api/custom_fields/types';
 
 // styling
 import { colors, IconNames } from '@citizenlab/cl2-component-library';

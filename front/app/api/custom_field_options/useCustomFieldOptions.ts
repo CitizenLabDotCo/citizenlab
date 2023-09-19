@@ -2,7 +2,7 @@ import { UseQueryOptions, useQueries } from '@tanstack/react-query';
 import fetcher from 'utils/cl-react-query/fetcher';
 import customFieldsOptionKeys from './keys';
 import { IFormCustomFieldOption, ICustomFieldOptionParameters } from './types';
-import { ICustomFields } from 'services/formCustomFields';
+import { ICustomFields } from 'api/custom_fields/types';
 
 const fetchCustomFieldOptions = ({
   projectId,

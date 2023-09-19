@@ -2,7 +2,7 @@
 import {
   ICustomFieldInputType,
   IFlatCustomField,
-} from 'services/formCustomFields';
+} from 'api/custom_fields/types';
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 

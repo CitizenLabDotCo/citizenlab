@@ -2,7 +2,7 @@ import React from 'react';
 import {
   ICustomFieldInputType,
   IFlatCustomFieldWithIndex,
-} from 'services/formCustomFields';
+} from 'api/custom_fields/types';
 import { Locale } from 'typings';
 import messages from '../messages';
 
