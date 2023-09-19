@@ -28,6 +28,8 @@ import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import ClickOutside from 'utils/containers/clickOutside';
 import styled from 'styled-components';
+import useAuthUser from 'api/me/useAuthUser';
+import { get, set } from 'js-cookie';
 
 const TruncatedTitle = styled(Title)`
   white-space: nowrap;
@@ -37,17 +39,32 @@ const TruncatedTitle = styled(Title)`
 `;
 
 const TopBar = () => {
+  const [showLaunchModal, setShowLaunchModal] = useState(false);
+  const { data: authUser } = useAuthUser();
   const [urlParams] = useSearchParams();
   const phaseId = urlParams.get('phase_id') || undefined;
-
-  const showLaunchModal = urlParams.get('showLaunchModal') === 'true';
-  const resetFilters = urlParams.get('reset_filters') === 'true';
-
-  const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const { projectId, analysisId } = useParams() as {
     projectId: string;
     analysisId: string;
   };
+
+  const cookieName =
+    authUser &&
+    `analysis_launch_modal_for_user_id_${authUser.data.id}_analysis_id_${analysisId}_shown`;
+
+  useEffect(() => {
+    if (cookieName) {
+      const cookieValue = get(cookieName);
+      if (cookieValue !== 'true') {
+        setShowLaunchModal(true);
+      }
+    }
+  }, [cookieName, analysisId]);
+
+  const resetFilters = urlParams.get('reset_filters') === 'true';
+
+  const [isFiltersOpen, setIsFiltersOpen] = useState(false);
+
   const { data: project } = useProjectById(projectId);
   const { data: analysis } = useAnalysis(analysisId);
 
@@ -86,6 +103,13 @@ const TopBar = () => {
   const closeFilters = useCallback(() => {
     setIsFiltersOpen(false);
   }, []);
+
+  const closeLaunchModal = () => {
+    setShowLaunchModal(false);
+    if (cookieName) {
+      set(cookieName, 'true');
+    }
+  };
 
   return (
     <ClickOutside onClickOutside={closeFilters}>
@@ -137,13 +161,8 @@ const TopBar = () => {
         </Box>
         <Tasks />
         {isFiltersOpen && <Filters onClose={() => setIsFiltersOpen(false)} />}
-        <Modal
-          opened={showLaunchModal}
-          close={() => updateSearchParams({ showLaunchModal: false })}
-        >
-          <LaunchModal
-            onClose={() => updateSearchParams({ showLaunchModal: false })}
-          />
+        <Modal opened={showLaunchModal} close={closeLaunchModal}>
+          <LaunchModal onClose={closeLaunchModal} />
         </Modal>
       </Box>
     </ClickOutside>
