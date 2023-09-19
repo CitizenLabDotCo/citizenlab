@@ -16,10 +16,12 @@ import T from 'components/T';
 import Outlet from 'components/Outlet';
 import Checkbox from 'components/UI/Checkbox';
 import FeatureFlag from 'components/FeatureFlag';
+import PhaseDeselectModal from './PhaseDeselectModal';
 
 // utils
 import { timeAgo } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
+import { getRemovedPhase, ideaHasVotesInPhase } from './utils';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -41,6 +43,7 @@ import { insertConfiguration } from 'utils/moduleUtils';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
 import usePostManagerColumnFilter from 'hooks/usePostManagerColumnFilter';
 import FormattedBudget from '../../../../../../utils/currency/FormattedBudget';
+import useIdeasPhases from 'api/ideas_phases/useIdeasPhases';
 
 type Props = {
   type: ManagerType;
@@ -79,6 +82,19 @@ const IdeaRow = ({
   locale,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const ideasPhases = useIdeasPhases(
+    idea.relationships.ideas_phases.data.map((relation) => relation.id)
+  );
+  const [phasesToBeSelected, setPhasesToBeSeselected] = useState<
+    string[] | null
+  >(null);
+
+  const phaseDeselectModalOpen = !!phasesToBeSelected;
+  const closePhaseDeselectModal = () => setPhasesToBeSeselected(null);
+  const selectPhases = () => {
+    updateIdea({ id: idea.id, requestBody: { phase_ids: phasesToBeSelected } });
+  };
+
   const [cells, setCells] = useState<
     CellConfiguration<IdeaCellComponentProps>[]
   >([
@@ -336,8 +352,13 @@ const IdeaRow = ({
   };
 
   const onUpdateIdeaPhases = (selectedPhases: string[]) => {
-    console.log({ selectedPhases, currentPhases, idea });
-    updateIdea({ id: idea.id, requestBody: { phase_ids: selectedPhases } });
+    const removedPhaseId = getRemovedPhase(selectedPhases, currentPhases);
+
+    if (removedPhaseId && ideaHasVotesInPhase(removedPhaseId, ideasPhases)) {
+      setPhasesToBeSeselected(selectedPhases);
+    } else {
+      updateIdea({ id: idea.id, requestBody: { phase_ids: selectedPhases } });
+    }
   };
 
   const onUpdateIdeaTopics = (selectedTopics: string[]) => {
@@ -389,6 +410,11 @@ const IdeaRow = ({
         onUpdateTopics={onUpdateIdeaTopics}
         onUpdateStatus={onUpdateIdeaStatus}
         postType="idea"
+      />
+      <PhaseDeselectModal
+        open={phaseDeselectModalOpen}
+        onClose={closePhaseDeselectModal}
+        onConfirm={selectPhases}
       />
     </>
   );

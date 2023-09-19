@@ -24,3 +24,7 @@ export const ideasPhase: IdeasPhase = {
     },
   },
 };
+
+export default jest.fn(() => {
+  return { data: ideasPhase };
+});
