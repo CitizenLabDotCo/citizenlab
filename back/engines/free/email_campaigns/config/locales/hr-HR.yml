@@ -140,12 +140,14 @@ hr:
       cta_accept_invitation: 'Prihvatite pozivnicu'
       invitation_header: 'Pozivnica je na čekanju'
       preheader: 'Prije nekoliko dana poslana vam je pozivnica za registraciju na %{organizationName} platformi za sudjelovanje.'
+      invitation_expiry_message: 'Ova pozivnica istječe za otprilike %{expiryDaysRemaining} dana.'
       subject: 'Pozivnica za %{organizationName} platformu za sudjelovanje je na čekanju'
     invite_received:
       added_a_message: '%{organizationName} je napisao sljedeću poruku:'
       cta_accept_invitation: 'Prihvatite pozivnicu'
       invitation_header: 'Pozvani ste!'
       invitation_header_message: '%{organizationName} vas je pozvao na njihovu platformu za sudjelovanje.'
+      invitation_expiry_message: 'Ova pozivnica istječe za %{expiryDays} dana.'
       preheader: '%{organizationName} vam je poslao poziv da se pridružite njihovoj platformi za sudjelovanje.'
       subject: 'Pozvani ste da se pridružite %{organizationName} platformi '
     initiative_published:
@@ -569,6 +571,18 @@ hr:
       body_2: 'Objavljeni su rezultati %{phaseTitle} glasova u %{organizationName} platformi!'
       body_3: 'Potičemo vas da pregledate rezultate i ostanete s nama radi daljnjih ažuriranja o sljedećim koracima.'
       cta_see_results: 'Pogledajte rezultate na platformi'
+    event_registration_confirmation:
+      subject: "Upadas! Vaša registracija za \"%{eventTitle}\" je potvrđena"
+      header_message: "%{firstName}, hvala na registraciji za"
+      event_details:
+        labels:
+          date: 'Datum'
+          location: 'Mjesto'
+          online_link: 'Online poveznica'
+          description: 'Opis'
+          project: 'Projekt'
+      cta_go_to_event: 'Pogledajte događaj'
+      cta_add_to_calendar: 'Dodajte u svoj kalendar'
     voting_phase_started:
       subject: '%{organizationName}: Faza glasovanja započela je za %{projectName}'
       preheader: 'Faza glasovanja započela je za %{projectName} na platformi za sudjelovanje %{organizationName}'
@@ -591,6 +605,7 @@ hr:
         managers: 'Menadžeri'
         admins_assigned_to_a_proposal: 'Administratori dodijeljeni prijedlogu'
         admins_and_managers_assigned_to_the_input: 'Administratori i upravitelji dodijeljeni unosu'
+        new_attendee: 'Novo registrirani korisnik'
         user_who_is_invited_to_cosponsor_a_proposal: 'Korisnik koji je pozvan da susponzorira prijedlog'
         user_who_is_receiving_admin_rights: 'Korisnik koji dobiva administratorska prava'
         user_who_is_receiving_folder_moderator_rights: 'Korisnik koji dobiva prava moderatora mape'
@@ -610,6 +625,7 @@ hr:
       content_type:
         comments: 'Komentari'
         content_moderation: 'Moderiranje sadržaja'
+        events: 'Događaji'
         general: 'Općenito'
         inputs: 'Unosi'
         internal_comments: 'Interni komentari'
@@ -664,3 +680,4 @@ hr:
         voting_basket_submitted: 'Glasovi su poslani'
         7_days_after_invite_is_sent: '7 dana nakon slanja poziva'
         7_days_before_the_project_changes_phase: '7 dana prije promjene faze projekta'
+        registration_to_event: 'Prijava na događaj'
