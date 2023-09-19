@@ -41,7 +41,6 @@ const useUpdateCustomField = () => {
           phaseId: variables.phaseId,
         }),
       });
-      queryClient.invalidateQueries({ queryKey: customFieldsKeys.lists() });
     },
   });
 };
