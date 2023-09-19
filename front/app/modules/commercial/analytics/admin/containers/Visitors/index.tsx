@@ -42,13 +42,15 @@ const Visitors = () => {
   const [startAtMoment, setStartAtMoment] = useState<Moment | null | undefined>(
     undefined
   );
+  const [uniqueVisitorDataDate, setUniqueVisitorDataDate] = useState<
+    Moment | undefined
+  >(undefined);
   const [endAtMoment, setEndAtMoment] = useState<Moment | null>(moment());
   const [projectId, setProjectId] = useState<string | undefined>();
   const [resolution, setResolution] = useState<IResolution>('month');
   const { formatMessage } = useIntl();
   const { data: appConfig } = useAppConfiguration();
   const { data: analytics } = useAnalytics<Response>(query());
-  const [hasPartialVisitorData, setHasPartialVisitorData] = useState(false);
 
   useEffect(() => {
     const createdAt = appConfig && moment(appConfig.data.attributes.created_at);
@@ -59,21 +61,9 @@ const Visitors = () => {
       const uniqueVisitorDataDate = moment(
         countData.first_dimension_date_first_action_date
       );
-      const duration = moment.duration(uniqueVisitorDataDate.diff(createdAt));
 
-      /* 
-        Check if the duration is greater than 7 days. We are using 7 days as a margin of error.
-        Technically it is possible for a tenant to be created and have no unique vistor data
-        immediately after. This is to take into account that possibility.
-        See https://citizenlab.atlassian.net/browse/CL-3994
-      */
-      const isVisitorDataMoreThan7DaysAfterCreation = duration.asDays() > 7;
-
-      setHasPartialVisitorData(isVisitorDataMoreThan7DaysAfterCreation);
-
-      if (isVisitorDataMoreThan7DaysAfterCreation) {
-        setStartAtMoment(uniqueVisitorDataDate);
-      }
+      setStartAtMoment(uniqueVisitorDataDate);
+      setUniqueVisitorDataDate(uniqueVisitorDataDate);
     }
   }, [analytics, appConfig]);
 
@@ -91,11 +81,9 @@ const Visitors = () => {
     setProjectId(value);
   };
 
-  if (!appConfig || !analytics || analytics?.data.attributes.length === 0) {
+  if (!uniqueVisitorDataDate) {
     return null;
   }
-
-  const [countData] = analytics.data.attributes;
 
   return (
     <>
@@ -108,24 +96,21 @@ const Visitors = () => {
           onChangeTimeRange={handleChangeTimeRange}
           onProjectFilter={handleProjectFilter}
           onChangeResolution={setResolution}
-          showAllTime={!hasPartialVisitorData}
+          showAllTime={false}
+          minDate={uniqueVisitorDataDate}
         />
       </Box>
-      {hasPartialVisitorData && (
-        <Box p="10px">
-          <Warning
-            text={
-              <Text color="primary" m="0px" fontSize="s">
-                {formatMessage(messages.dateInfo, {
-                  date: moment(
-                    countData.first_dimension_date_first_action_date
-                  ).format('LL'),
-                })}
-              </Text>
-            }
-          />
-        </Box>
-      )}
+      <Box p="10px">
+        <Warning
+          text={
+            <Text color="primary" m="0px" fontSize="s">
+              {formatMessage(messages.dateInfo, {
+                date: uniqueVisitorDataDate.format('LL'),
+              })}
+            </Text>
+          }
+        />
+      </Box>
 
       <Charts
         projectId={projectId}
