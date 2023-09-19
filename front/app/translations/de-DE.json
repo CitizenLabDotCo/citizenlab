@@ -7,7 +7,7 @@
   "UI.FormComponents.optional": "optional",
   "app.ccomponents.InitiativeCards.noInitiativesForFilter": "Keine Vorschläge gefunden",
   "app.closeIconButton.a11y_buttonActionMessage": "Schließen",
-  "app.components.Areas.areaUpdateError": "Beim Speichern Ihres Bereichs ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
+  "app.components.Areas.areaUpdateError": "Beim Speichern Ihres Gebiets ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
   "app.components.Areas.topicUpdateError": "Beim Speichern Ihres Themas ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
   "app.components.AssignBudgetControl.a11y_price": "Preis:",
   "app.components.AssignBudgetControl.add": "Hinzufügen",
