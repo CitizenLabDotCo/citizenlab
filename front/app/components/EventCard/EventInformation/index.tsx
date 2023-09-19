@@ -28,6 +28,8 @@ import { colors } from 'utils/styleUtils';
 import clHistory from 'utils/cl-router/history';
 import EventAttendanceButton from 'components/EventAttendanceButton';
 import { getEventDateString } from 'utils/dateUtils';
+
+// hooks
 import useEventImage from 'api/event_images/useEventImage';
 
 const EventInformationContainer = styled.div`
@@ -36,7 +38,7 @@ const EventInformationContainer = styled.div`
   flex-direction: column;
 `;
 
-const IdeaCardImage = styled(Image)`
+const EventCardImage = styled(Image)`
   width: 100%;
   height: 100%;
   flex: 1;
@@ -52,8 +54,11 @@ interface Props {
 const EventInformation = ({ event, titleFontSize }: Props) => {
   const { formatMessage } = useIntl();
   const theme = useTheme();
-  const remoteImageId = event?.relationships?.event_images?.data[0]?.id;
+
+  // event image
+  const remoteImageId = event?.relationships?.event_images?.data?.[0]?.id;
   const { data: eventImage } = useEventImage(event.id, remoteImageId);
+  const mediumImage = eventImage?.data?.attributes?.versions?.medium;
 
   const startAtMoment = moment(event.attributes.start_at);
   const endAtMoment = moment(event.attributes.end_at);
@@ -64,15 +69,12 @@ const EventInformation = ({ event, titleFontSize }: Props) => {
   const tempShowEventAttendance = false; // TODO: Replace once event attendance smart group added
 
   const eventDateTime = getEventDateString(event);
-
-  const mediumImage = eventImage?.data?.attributes?.versions?.medium;
-
   return (
     <EventInformationContainer data-testid="EventInformation">
       <Box id="e2e-event-card">
         {mediumImage && (
           <Box height="140px" m="-16px">
-            <IdeaCardImage src={mediumImage} cover={true} alt="" />
+            <EventCardImage src={mediumImage} cover={true} alt="" />
           </Box>
         )}
         <Box
