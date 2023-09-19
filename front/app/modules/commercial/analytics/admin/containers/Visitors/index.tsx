@@ -48,7 +48,6 @@ const Visitors = () => {
   const { formatMessage } = useIntl();
   const { data: appConfig } = useAppConfiguration();
   const { data: analytics } = useAnalytics<Response>(query());
-  const [hasPartialVisitorData, setHasPartialVisitorData] = useState(false);
 
   useEffect(() => {
     const createdAt = appConfig && moment(appConfig.data.attributes.created_at);
@@ -59,21 +58,8 @@ const Visitors = () => {
       const uniqueVisitorDataDate = moment(
         countData.first_dimension_date_first_action_date
       );
-      const duration = moment.duration(uniqueVisitorDataDate.diff(createdAt));
 
-      /* 
-        Check if the duration is greater than 7 days. We are using 7 days as a margin of error.
-        Technically it is possible for a tenant to be created and have no unique vistor data
-        immediately after. This is to take into account that possibility.
-        See https://citizenlab.atlassian.net/browse/CL-3994
-      */
-      const isVisitorDataMoreThan7DaysAfterCreation = duration.asDays() > 7;
-
-      setHasPartialVisitorData(isVisitorDataMoreThan7DaysAfterCreation);
-
-      if (isVisitorDataMoreThan7DaysAfterCreation) {
-        setStartAtMoment(uniqueVisitorDataDate);
-      }
+      setStartAtMoment(uniqueVisitorDataDate);
     }
   }, [analytics, appConfig]);
 
@@ -108,24 +94,23 @@ const Visitors = () => {
           onChangeTimeRange={handleChangeTimeRange}
           onProjectFilter={handleProjectFilter}
           onChangeResolution={setResolution}
-          showAllTime={!hasPartialVisitorData}
+          showAllTime={false}
+          minDate={moment(countData.first_dimension_date_first_action_date)}
         />
       </Box>
-      {hasPartialVisitorData && (
-        <Box p="10px">
-          <Warning
-            text={
-              <Text color="primary" m="0px" fontSize="s">
-                {formatMessage(messages.dateInfo, {
-                  date: moment(
-                    countData.first_dimension_date_first_action_date
-                  ).format('LL'),
-                })}
-              </Text>
-            }
-          />
-        </Box>
-      )}
+      <Box p="10px">
+        <Warning
+          text={
+            <Text color="primary" m="0px" fontSize="s">
+              {formatMessage(messages.dateInfo, {
+                date: moment(
+                  countData.first_dimension_date_first_action_date
+                ).format('LL'),
+              })}
+            </Text>
+          }
+        />
+      </Box>
 
       <Charts
         projectId={projectId}

@@ -56,6 +56,7 @@ interface Props {
   showAllTime?: boolean;
   startAtMoment?: Moment | null;
   endAtMoment: Moment | null;
+  minDate?: Moment;
   onChange: (startAtMoment: Moment | null, endAtMoment: Moment | null) => void;
 }
 
@@ -63,6 +64,7 @@ const TimeControl = ({
   showAllTime = true,
   startAtMoment,
   endAtMoment,
+  minDate,
   onChange,
 }: Props) => {
   const [dropdownOpened, setDropdownOpened] = useState(false);
@@ -191,6 +193,7 @@ const TimeControl = ({
         startDate={startAtMoment === undefined ? null : startAtMoment}
         endDate={endAtMoment}
         onDatesChange={handleDatesChange}
+        minDate={minDate}
       />
     </Container>
   );
