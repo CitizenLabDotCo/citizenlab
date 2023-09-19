@@ -9,6 +9,7 @@ it:
       "comment_on_idea_you_follow": Un commento su un'idea che segui
       "comment_on_initiative_you_follow": Un commento su una proposta che segui
       "cosponsor_of_your_initiative": Un utente accetta il mio invito a co-sponsorizzare la mia proposta
+      "event_registration_confirmation": Conferma della registrazione all'evento
       "first_idea_published": Pubblicazione della mia prima idea
       "idea_marked_as_spam": Segnalazione di spam di idee
       "idea_published": Pubblicazione della mia idea
@@ -194,12 +195,14 @@ it:
       cta_accept_invitation: 'Accetta il tuo invito'
       invitation_header: 'Il tuo invito è in attesa'
       preheader: '%{organizationName} ti ha inviato un invito a partecipare alla loro piattaforma di partecipazione alcuni giorni fa.'
+      invitation_expiry_message: 'Questo invito scade tra circa %{expiryDaysRemaining} giorni.'
       subject: 'In attesa dell''invito per la piattaforma di partecipazione di %{organizationName}'
     invite_received:
       added_a_message: '%{organizationName} ha scritto il seguente messaggio:'
       cta_accept_invitation: 'Accetta il tuo invito'
       invitation_header: 'Sei invitato!'
       invitation_header_message: '%{organizationName} ti ha invitato alla loro piattaforma di partecipazione.'
+      invitation_expiry_message: 'Questo invito scade tra %{expiryDays} giorni.'
       preheader: '%{organizationName} ti ha invitato alla loro piattaforma di partecipazione.'
       subject: 'Siete invitati a partecipare alla piattaforma di %{organizationName}'
     initiative_published:
@@ -437,10 +440,10 @@ it:
       no_unread_notifications: "Non hai notifiche non lette. Visita la piattaforma per contribuire con il tuo contributo e generare nuove notifiche!"
       unread_notifications: "Hai delle notifiche non lette. Visita la piattaforma per scoprire cosa sta succedendo!"
     threshold_reached_for_admin:
-      cta_process_initiative: 'Porta questa proposta alle fasi successive'
-      event_description: 'Una proposta ha raggiunto la soglia di voto sulla tua piattaforma. Clicca sul pulsante qui sotto per passare alle fasi successive!'
-      main_header: 'Una proposta ha raggiunto la soglia di voto!'
-      subject: 'Una proposta ha raggiunto la soglia di voto sulla tua piattaforma'
+      cta_process_initiative: 'Portare questa iniziativa alle fasi successive'
+      event_description: 'Un''iniziativa ha raggiunto la soglia di voto sulla tua piattaforma. Clicca il pulsante qui sotto per portarla ai passi successivi!'
+      main_header: 'Un''iniziativa ha raggiunto la soglia di voto!'
+      subject: 'Un''iniziativa ha raggiunto la soglia di voto sulla tua piattaforma'
       preheader: 'Assicurati di fare i prossimi passi'
     first_idea_published:
       action_add_image: '%{addImageLink} per aumentare la visibilità'
@@ -524,6 +527,18 @@ it:
       body_2: 'Sono stati pubblicati i risultati della votazione di %{phaseTitle} nella piattaforma %{organizationName} !'
       body_3: 'Ti invitiamo a esaminare i risultati e a rimanere sintonizzato per ulteriori aggiornamenti sui prossimi passi.'
       cta_see_results: 'Vedi i risultati nella piattaforma'
+    event_registration_confirmation:
+      subject: "Sei dentro! La tua iscrizione a \"%{eventTitle}\" è confermata"
+      header_message: "%{firstName}, grazie per esserti registrato a"
+      event_details:
+        labels:
+          date: 'Data'
+          location: 'Posizione'
+          online_link: 'Link online'
+          description: 'Descrizione'
+          project: 'Progetto'
+      cta_go_to_event: 'Guarda l''evento'
+      cta_add_to_calendar: 'Aggiungi al tuo calendario'
     voting_phase_started:
       subject: '%{organizationName}: La fase di voto è iniziata per %{projectName}'
       preheader: 'La fase di votazione è iniziata per %{projectName} sulla piattaforma di partecipazione di %{organizationName}.'
@@ -546,6 +561,7 @@ it:
         managers: 'Dirigenti'
         admins_assigned_to_a_proposal: 'Amministratori assegnati a una proposta'
         admins_and_managers_assigned_to_the_input: 'Amministratori e manager assegnati all''ingresso'
+        new_attendee: 'Utente appena registrato'
         user_who_is_invited_to_cosponsor_a_proposal: 'Utente che viene invitato a co-sponsorizzare una proposta'
         user_who_is_receiving_admin_rights: 'Utente che riceve i diritti di amministratore'
         user_who_is_receiving_folder_moderator_rights: 'Utente che riceve i diritti di moderatore della cartella'
@@ -566,6 +582,7 @@ it:
       content_type:
         comments: 'Commenti'
         content_moderation: 'Moderazione dei contenuti'
+        events: 'Eventi'
         general: 'Generale'
         inputs: 'Ingressi'
         internal_comments: 'Commenti interni'
@@ -580,7 +597,7 @@ it:
         content_gets_flagged_as_innapropiate: 'Il contenuto viene segnalato come inappropiato'
         input_is_assigned: 'L''ingresso è assegnato'
         input_is_flagged_as_spam: 'L''input viene contrassegnato come spam'
-        input_is_updated: 'L''input riceve un feedback ufficiale'
+        input_is_updated: 'L''input viene aggiornato'
         input_status_changes: 'Cambiamento dello stato dell''ingresso'
         initiative_resubmitted_for_review: 'Proposta ripresentata per la revisione'
         internal_comment_is_posted_on_idea_assigned_to_user: 'Il commento interno è pubblicato sull''input assegnato all''utente'
@@ -600,7 +617,7 @@ it:
         project_published: 'Progetto pubblicato'
         proposal_gets_reported_as_spam: 'La proposta viene segnalata come spam'
         proposal_is_assigned_to_admin: 'La proposta è assegnata all''amministratore'
-        proposal_is_updated: 'La proposta riceve un feedback ufficiale'
+        proposal_is_updated: 'La proposta è aggiornata'
         proposal_is_upvoted_above_threshold: 'La proposta è votata oltre la soglia'
         proposal_status_changes: 'Modifiche allo stato della proposta'
         user_comments: 'Commenti degli utenti'
@@ -621,3 +638,4 @@ it:
         voting_basket_submitted: 'I voti vengono inviati'
         7_days_after_invite_is_sent: '7 giorni dopo l''invio dell''invito'
         7_days_before_the_project_changes_phase: '7 giorni prima della fase di modifica del progetto'
+        registration_to_event: 'Registrazione ad un evento'
