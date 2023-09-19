@@ -1,8 +1,4 @@
-import { Keys } from 'utils/cl-react-query/types';
-import customFieldsKeys from './keys';
 import { IAttributes } from 'api/custom_fields/types';
-
-export type CustomFieldsKeys = Keys<typeof customFieldsKeys>;
 
 export interface ICustomFieldOptionParameters {
   id: string;
