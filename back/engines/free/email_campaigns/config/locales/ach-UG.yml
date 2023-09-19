@@ -9,6 +9,7 @@ ach:
       "comment_on_idea_you_follow": crwdns1042315:0crwdne1042315:0
       "comment_on_initiative_you_follow": crwdns1042317:0crwdne1042317:0
       "cosponsor_of_your_initiative": crwdns933675:0crwdne933675:0
+      "event_registration_confirmation": crwdns1061832:0crwdne1061832:0
       "first_idea_published": crwdns883657:0crwdne883657:0
       "idea_marked_as_spam": crwdns883659:0crwdne883659:0
       "idea_published": crwdns883661:0crwdne883661:0
@@ -194,12 +195,14 @@ ach:
       cta_accept_invitation: 'crwdns883973:0crwdne883973:0'
       invitation_header: 'crwdns883975:0crwdne883975:0'
       preheader: 'crwdns883977:0%{organizationName}crwdne883977:0'
+      invitation_expiry_message: 'crwdns1061834:0%{expiryDaysRemaining}crwdne1061834:0'
       subject: 'crwdns883979:0%{organizationName}crwdne883979:0'
     invite_received:
       added_a_message: 'crwdns883981:0%{organizationName}crwdne883981:0'
       cta_accept_invitation: 'crwdns883983:0crwdne883983:0'
       invitation_header: 'crwdns883985:0crwdne883985:0'
       invitation_header_message: 'crwdns883987:0%{organizationName}crwdne883987:0'
+      invitation_expiry_message: 'crwdns1061836:0%{expiryDays}crwdne1061836:0'
       preheader: 'crwdns883989:0%{organizationName}crwdne883989:0'
       subject: 'crwdns883991:0%{organizationName}crwdne883991:0'
     initiative_published:
@@ -524,6 +527,18 @@ ach:
       body_2: 'crwdns884733:0%{phaseTitle}crwdnd884733:0%{organizationName}crwdne884733:0'
       body_3: 'crwdns884735:0crwdne884735:0'
       cta_see_results: 'crwdns884737:0crwdne884737:0'
+    event_registration_confirmation:
+      subject: "crwdns1061838:0%{eventTitle}crwdne1061838:0"
+      header_message: "crwdns1061840:0%{firstName}crwdne1061840:0"
+      event_details:
+        labels:
+          date: 'crwdns1061842:0crwdne1061842:0'
+          location: 'crwdns1061844:0crwdne1061844:0'
+          online_link: 'crwdns1061846:0crwdne1061846:0'
+          description: 'crwdns1061848:0crwdne1061848:0'
+          project: 'crwdns1061850:0crwdne1061850:0'
+      cta_go_to_event: 'crwdns1061852:0crwdne1061852:0'
+      cta_add_to_calendar: 'crwdns1061854:0crwdne1061854:0'
     voting_phase_started:
       subject: 'crwdns884739:0%{organizationName}crwdnd884739:0%{projectName}crwdne884739:0'
       preheader: 'crwdns884741:0%{projectName}crwdnd884741:0%{organizationName}crwdne884741:0'
@@ -546,6 +561,7 @@ ach:
         managers: 'crwdns884769:0crwdne884769:0'
         admins_assigned_to_a_proposal: 'crwdns884771:0crwdne884771:0'
         admins_and_managers_assigned_to_the_input: 'crwdns884773:0crwdne884773:0'
+        new_attendee: 'crwdns1061856:0crwdne1061856:0'
         user_who_is_invited_to_cosponsor_a_proposal: 'crwdns933719:0crwdne933719:0'
         user_who_is_receiving_admin_rights: 'crwdns884775:0crwdne884775:0'
         user_who_is_receiving_folder_moderator_rights: 'crwdns884777:0crwdne884777:0'
@@ -566,6 +582,7 @@ ach:
       content_type:
         comments: 'crwdns884805:0crwdne884805:0'
         content_moderation: 'crwdns884807:0crwdne884807:0'
+        events: 'crwdns1061858:0crwdne1061858:0'
         general: 'crwdns884809:0crwdne884809:0'
         inputs: 'crwdns884811:0crwdne884811:0'
         internal_comments: 'crwdns884813:0crwdne884813:0'
@@ -621,3 +638,4 @@ ach:
         voting_basket_submitted: 'crwdns884903:0crwdne884903:0'
         7_days_after_invite_is_sent: 'crwdns884905:0crwdne884905:0'
         7_days_before_the_project_changes_phase: 'crwdns884907:0crwdne884907:0'
+        registration_to_event: 'crwdns1061860:0crwdne1061860:0'
