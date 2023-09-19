@@ -227,7 +227,7 @@ da:
       description: "Indsend dine svar ved at vælge \"Indsend undersøgelse\" nedenfor."
     pdf_export:
       full_name: 'Fuldt navn'
-      email_address: 'E-mail-adresse'
+      email_address: 'E-mail adresse'
       optional: 'valgfrit'
       permission: 'Tilladelse'
       choose_as_many: 'Vælg så mange som du vil'
