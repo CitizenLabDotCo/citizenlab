@@ -81,7 +81,7 @@ const Visitors = () => {
     setProjectId(value);
   };
 
-  if (!uniqueVisitorDataDate || !startAtMoment) {
+  if (!uniqueVisitorDataDate) {
     return null;
   }
 

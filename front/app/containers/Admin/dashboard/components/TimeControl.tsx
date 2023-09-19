@@ -117,6 +117,13 @@ const TimeControl = ({
     startDate: Moment | null;
     endDate: Moment | null;
   }) => {
+    const isBefore = minDate && startDate && startDate.isBefore(minDate);
+
+    // Don't set the start date if it is before the min date
+    if (!isBefore) {
+      return;
+    }
+
     onChange(startDate, endDate);
   };
 
