@@ -4,7 +4,7 @@ import React, { lazy } from 'react';
 import { getUpdatedConfiguration } from 'components/FormBuilder/utils';
 
 // hooks
-import useFormCustomFields from 'hooks/useFormCustomFields';
+import useFormCustomFields from 'api/custom_fields/useCustomFields';
 import { useParams } from 'react-router-dom';
 
 // utils
@@ -17,7 +17,7 @@ const IdeaFormBuilder = () => {
     projectId: string;
   };
 
-  const formCustomFields = useFormCustomFields({
+  const { data: formCustomFields } = useFormCustomFields({
     projectId,
   });
 

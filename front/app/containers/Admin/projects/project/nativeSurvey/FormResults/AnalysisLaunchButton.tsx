@@ -14,7 +14,7 @@ import messages from './messages';
 import { useParams, useSearchParams } from 'react-router-dom';
 
 import useAddAnalysis from 'api/analyses/useAddAnalysis';
-import useFormCustomFields from 'hooks/useFormCustomFields';
+import useFormCustomFields from 'api/custom_fields/useCustomFields';
 import Modal from 'components/UI/Modal';
 import { isNilOrError } from 'utils/helperUtils';
 import useLocalize from 'hooks/useLocalize';
@@ -98,7 +98,7 @@ const CreateAnalysisModal = ({ onClose }: { onClose: () => void }) => {
 
   const [urlParams] = useSearchParams();
   const phaseId = urlParams.get('phase_id') || undefined;
-  const formCustomFields = useFormCustomFields({
+  const { data: formCustomFields } = useFormCustomFields({
     projectId,
     phaseId,
   });

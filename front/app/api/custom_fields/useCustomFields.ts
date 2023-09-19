@@ -53,7 +53,7 @@ const useCustomFields = ({
     customFields: result.data,
   });
 
-  const data: IFlatCustomField | undefined = result.data?.data.map(
+  const data: IFlatCustomField[] | undefined = result.data?.data.map(
     (customField) => {
       const optionsForCustomField = options.filter((option) => {
         const relationshipOptionIds =
@@ -67,9 +67,14 @@ const useCustomFields = ({
 
       return {
         ...customField,
+        ...customField.attributes,
         options:
           optionsForCustomField.length > 0
-            ? optionsForCustomField.map((option) => option.data?.data)
+            ? optionsForCustomField.map((option) => ({
+                id: option.data?.data.id,
+                title_multiloc:
+                  option.data?.data.attributes.title_multiloc || {},
+              }))
             : [],
       };
     }
