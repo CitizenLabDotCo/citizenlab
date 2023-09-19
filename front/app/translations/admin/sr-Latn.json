@@ -437,6 +437,7 @@
   "app.containers.Admin.Invitations.helmetTitle": "Administracija pozivnica",
   "app.containers.Admin.Invitations.importOptionsInfo": "Uz pozivnicu možete dodati i personalizovanu poruku, dodati osobe u grupu ili im omogućiti pravo administracije ili moderacije. Posetite {supportPageLink} za više informacija.",
   "app.containers.Admin.Invitations.importTab": "Uvezite email adrese",
+  "app.containers.Admin.Invitations.invitationExpirationWarning": "Be aware that invitations expire after 14 days. After this period, you can still resend them.",
   "app.containers.Admin.Invitations.invitationOptions": "Opcije pozivnica",
   "app.containers.Admin.Invitations.invitationSubtitle": "Pozovite ljude koji još uvek nisu registrovani na platformi. Uvezite njihove email adrese postavljanjem u šablon za uvoz ili ih unesite ručno. Ako želite, dodajte ličnu poruku, dajte korisnicima dodatna prava ili ih dodajte u manualnu grupu.",
   "app.containers.Admin.Invitations.invitePeople": "Pozivnice",

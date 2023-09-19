@@ -9,6 +9,7 @@ fr-BE:
       "comment_on_your_idea": Un commentaire sur mon idée
       "comment_on_your_initiative": Un commentaire sur mon proposition
       "cosponsor_of_your_initiative": Un utilisateur accepte de soutenir ma proposition
+      "event_registration_confirmation": Confirmation de l'inscription à l'événement
       "first_idea_published": Publication de ma première idée
       "idea_marked_as_spam": Rapport sur le spam d'idées
       "idea_published": Publication de mon idée
@@ -207,12 +208,14 @@ fr-BE:
       cta_accept_invitation: 'Accepter votre invitation'
       invitation_header: 'Votre invitation est en attente'
       preheader: 'Il y a quelques jours, %{organizationName} vous a invité à rejoindre sa plateforme de participation.'
+      invitation_expiry_message: 'Cette invitation expire dans environ %{expiryDaysRemaining} jours.'
       subject: 'Une invitation en attente pour la plate-forme de participation de %{organizationName}'
     invite_received:
       added_a_message: '%{organizationName} a écrit le message suivant :'
       cta_accept_invitation: 'Accepter votre invitation'
       invitation_header: 'Vous êtes invités !'
       invitation_header_message: '%{organizationName} vous a invité à rejoindre sa plateforme de participation.'
+      invitation_expiry_message: 'Cette invitation expire dans %{expiryDays} jours.'
       preheader: '%{organizationName} vous a envoyé une invitation à rejoindre leur plateforme de participation.'
       subject: 'Vous avez reçu une invitation pour rejoindre la plateforme de %{organizationName}'
     initiative_published:
@@ -636,6 +639,18 @@ fr-BE:
       body_2: 'Les résultats du vote pour %{phaseTitle} sur la plateforme %{organizationName} ont été publiés !'
       body_3: 'Nous vous invitons à prendre connaissance des résultats et à rester attentifs pour de futures mises à jour concernant les prochaines étapes.'
       cta_see_results: 'Voir les résultats sur la plateforme'
+    event_registration_confirmation:
+      subject: "Votre inscription à \"%{eventTitle}\" est confirmée !"
+      header_message: "%{firstName}, merci pour votre inscription à"
+      event_details:
+        labels:
+          date: 'Date'
+          location: 'Lieu'
+          online_link: 'Lien en ligne'
+          description: 'Description'
+          project: 'Projet'
+      cta_go_to_event: 'Voir l''événement'
+      cta_add_to_calendar: 'Ajouter à votre calendrier'
     voting_phase_started:
       subject: '%{organizationName}: La phase de vote a commencé pour %{projectName}'
       preheader: 'La phase de vote a commencé pour %{projectName} sur la plateforme de participation de %{organizationName}'
@@ -658,6 +673,7 @@ fr-BE:
         managers: 'Gestionnaires'
         admins_assigned_to_a_proposal: 'Administrateurs assignés à une proposition'
         admins_and_managers_assigned_to_the_input: 'Les administrateurs et les gestionnaires assignés à la contribution'
+        new_attendee: 'L''utilisateur qui s''est inscrit'
         user_who_is_invited_to_cosponsor_a_proposal: 'L''utilisateur invité à soutenir la proposition'
         user_who_is_receiving_admin_rights: 'L''utilisateur qui reçoit les droits d''administrateur'
         user_who_is_receiving_folder_moderator_rights: 'L''utilisateur qui reçoit les droits de gestionnaire de dossier'
@@ -677,6 +693,7 @@ fr-BE:
       content_type:
         comments: 'Commentaires'
         content_moderation: 'Modération du contenu'
+        events: 'Événements'
         general: 'Général'
         inputs: 'Contributions'
         internal_comments: 'Commentaires internes'
@@ -731,3 +748,4 @@ fr-BE:
         voting_basket_submitted: 'Les votes sont soumis'
         7_days_after_invite_is_sent: '7 jours après l''envoi de l''invitation'
         7_days_before_the_project_changes_phase: '7 jours avant le changement de phase du projet'
+        registration_to_event: 'Inscription à un événement'

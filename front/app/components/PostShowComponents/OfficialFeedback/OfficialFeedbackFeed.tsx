@@ -92,7 +92,7 @@ const OfficialFeedbackFeed = ({
   className,
   a11y_pronounceLatestOfficialFeedbackPost,
 }: Props) => {
-  const [pageSize, setPageSize] = React.useState(1);
+  const [pageSize, setPageSize] = React.useState(3);
   const {
     data: ideaFeedbacks,
     fetchNextPage: fetchNextPageIdeasFeedback,

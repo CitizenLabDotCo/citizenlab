@@ -10,7 +10,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
   end
 
   def generate_submission_count
-    { data: { totalSubmissions: inputs.size } }
+    { totalSubmissions: inputs.size }
   end
 
   def generate_results
@@ -18,10 +18,8 @@ class SurveyResultsGeneratorService < FieldVisitorService
       visit field
     end
     {
-      data: {
-        results: results,
-        totalSubmissions: inputs.size
-      }
+      results: results,
+      totalSubmissions: inputs.size
     }
   end
 

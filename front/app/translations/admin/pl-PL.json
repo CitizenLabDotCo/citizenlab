@@ -437,6 +437,7 @@
   "app.containers.Admin.Invitations.helmetTitle": "Panel administracyjny zaproszeń",
   "app.containers.Admin.Invitations.importOptionsInfo": "Te opcje będą brane pod uwagę tylko wtedy, gdy nie zostaną zdefiniowane w pliku Excel.\n      Więcej informacji można znaleźć na stronie {supportPageLink}.",
   "app.containers.Admin.Invitations.importTab": "Zaimportuj adresy e-mail",
+  "app.containers.Admin.Invitations.invitationExpirationWarning": "Pamiętaj, że zaproszenia tracą ważność po 14 dniach. Po tym okresie możesz je wysłać ponownie.",
   "app.containers.Admin.Invitations.invitationOptions": "Opcje zaproszeń",
   "app.containers.Admin.Invitations.invitationSubtitle": "Zaproś osoby, które nie są jeszcze zarejestrowane na platformie. Zaimportuj ich adresy e-mail, umieszczając je w szablonie do importu lub wprowadź je ręcznie. W razie potrzeby dodaj osobistą wiadomość, daj użytkownikom dodatkowe uprawnienia lub dodaj ich do grupy.",
   "app.containers.Admin.Invitations.invitePeople": "Zaproszenia",

@@ -1450,7 +1450,7 @@
   "app.containers.SignUp.goToLogIn": "Hai già un account? {goToOtherFlowLink}",
   "app.containers.SignUp.iHaveReadAndAgreeTo": "Ho letto e accetto {link}.",
   "app.containers.SignUp.iHaveReadAndAgreeToVienna": "Accetto che i dati vengano utilizzati su mitgestalten.wien.gv.at. Ulteriori informazioni sono disponibili all’indirizzo {link}.",
-  "app.containers.SignUp.invitationError": "Il tuo invito è scaduto o è già stato utilizzato.",
+  "app.containers.SignUp.invitationErrorText": "Il tuo invito è scaduto o è già stato utilizzato. Se hai già utilizzato il link di invito per creare un account, prova ad accedere. Altrimenti, registrati per creare un nuovo account.",
   "app.containers.SignUp.lastNameLabel": "Nome e cognome",
   "app.containers.SignUp.privacyPolicyNotAcceptedError": "Accetta la nostra politica sulla privacy per procedere",
   "app.containers.SignUp.signUp2": "Iscriversi",

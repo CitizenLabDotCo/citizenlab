@@ -40,7 +40,7 @@ import { ErrorCode } from './typings';
 import VerificationSuccess from './steps/VerificationSuccess';
 import T from 'components/T';
 import { IInitiativeAction } from 'api/initiative_action_descriptors/types';
-import { IParticipationContextPermissionAction } from 'services/actionPermissions';
+import { IParticipationContextPermissionAction } from 'api/permissions/types';
 import { IFollowingAction } from 'api/authentication/authentication_requirements/types';
 
 type Step = ReturnType<typeof useSteps>['currentStep'];
@@ -117,7 +117,7 @@ export const ERROR_CODE_MESSAGES: Record<ErrorCode, MessageDescriptor> = {
   sign_in_failed: messages.signInError,
   requirements_fetching_failed: messages.unknownError,
   unknown: messages.unknownError,
-  invitation_error: messages.invitationError,
+  invitation_error: messages.invitationErrorText,
   franceconnect_merging_failed: messages.franceConnectMergingFailed,
   email_taken_and_user_can_be_verified: messages.emailTakenAndUserCanBeVerified,
 };

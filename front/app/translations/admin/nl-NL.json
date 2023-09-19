@@ -437,6 +437,7 @@
   "app.containers.Admin.Invitations.helmetTitle": "Platformbeheerdersuitnodigingen dashboard",
   "app.containers.Admin.Invitations.importOptionsInfo": "Met deze opties wordt alleen rekening gehouden wanneer ze niet zijn gedefinieerd in het Excel-bestand. Bezoek de {supportPageLink} voor meer informatie.",
   "app.containers.Admin.Invitations.importTab": "Importeer e-mailadressen",
+  "app.containers.Admin.Invitations.invitationExpirationWarning": "Houd er rekening mee dat uitnodigingen na 14 dagen verlopen. Na deze periode kun je ze nog steeds opnieuw versturen.",
   "app.containers.Admin.Invitations.invitationOptions": "Opties voor uitnodigingen",
   "app.containers.Admin.Invitations.invitationSubtitle": "Nodig mensen uit die nog niet geregistreerd zijn op het platform. Importeer je e-mailadressen door ze in het import-sjabloon te plaatsen of voer de e-mailadressen handmatig in. Voeg indien gewenst een persoonlijk bericht toe, geef ze extra rechten of voeg ze toe aan een handmatige groep.",
   "app.containers.Admin.Invitations.invitePeople": "Uitnodigingen",

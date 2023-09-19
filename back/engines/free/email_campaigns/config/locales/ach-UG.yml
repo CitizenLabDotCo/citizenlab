@@ -9,6 +9,7 @@ ach:
       "comment_on_your_idea": crwdns208066:0crwdne208066:0
       "comment_on_your_initiative": crwdns208068:0crwdne208068:0
       "cosponsor_of_your_initiative": crwdns904355:0crwdne904355:0
+      "event_registration_confirmation": crwdns1061713:0crwdne1061713:0
       "first_idea_published": crwdns208070:0crwdne208070:0
       "idea_marked_as_spam": crwdns208072:0crwdne208072:0
       "idea_published": crwdns208074:0crwdne208074:0
@@ -207,12 +208,14 @@ ach:
       cta_accept_invitation: 'crwdns208442:0crwdne208442:0'
       invitation_header: 'crwdns208444:0crwdne208444:0'
       preheader: 'crwdns208446:0%{organizationName}crwdne208446:0'
+      invitation_expiry_message: 'crwdns1042149:0%{expiryDaysRemaining}crwdne1042149:0'
       subject: 'crwdns208448:0%{organizationName}crwdne208448:0'
     invite_received:
       added_a_message: 'crwdns208450:0%{organizationName}crwdne208450:0'
       cta_accept_invitation: 'crwdns208452:0crwdne208452:0'
       invitation_header: 'crwdns208454:0crwdne208454:0'
       invitation_header_message: 'crwdns208456:0%{organizationName}crwdne208456:0'
+      invitation_expiry_message: 'crwdns1042151:0%{expiryDays}crwdne1042151:0'
       preheader: 'crwdns208458:0%{organizationName}crwdne208458:0'
       subject: 'crwdns208460:0%{organizationName}crwdne208460:0'
     initiative_published:
@@ -636,6 +639,18 @@ ach:
       body_2: 'crwdns777473:0%{phaseTitle}crwdnd777473:0%{organizationName}crwdne777473:0'
       body_3: 'crwdns777475:0crwdne777475:0'
       cta_see_results: 'crwdns777477:0crwdne777477:0'
+    event_registration_confirmation:
+      subject: "crwdns1061715:0%{eventTitle}crwdne1061715:0"
+      header_message: "crwdns1061717:0%{firstName}crwdne1061717:0"
+      event_details:
+        labels:
+          date: 'crwdns1061719:0crwdne1061719:0'
+          location: 'crwdns1061721:0crwdne1061721:0'
+          online_link: 'crwdns1061723:0crwdne1061723:0'
+          description: 'crwdns1061725:0crwdne1061725:0'
+          project: 'crwdns1061727:0crwdne1061727:0'
+      cta_go_to_event: 'crwdns1061729:0crwdne1061729:0'
+      cta_add_to_calendar: 'crwdns1061731:0crwdne1061731:0'
     voting_phase_started:
       subject: 'crwdns777479:0%{organizationName}crwdnd777479:0%{projectName}crwdne777479:0'
       preheader: 'crwdns777481:0%{projectName}crwdnd777481:0%{organizationName}crwdne777481:0'
@@ -658,6 +673,7 @@ ach:
         managers: 'crwdns522409:0crwdne522409:0'
         admins_assigned_to_a_proposal: 'crwdns576959:0crwdne576959:0'
         admins_and_managers_assigned_to_the_input: 'crwdns576961:0crwdne576961:0'
+        new_attendee: 'crwdns1061733:0crwdne1061733:0'
         user_who_is_invited_to_cosponsor_a_proposal: 'crwdns904399:0crwdne904399:0'
         user_who_is_receiving_admin_rights: 'crwdns649225:0crwdne649225:0'
         user_who_is_receiving_folder_moderator_rights: 'crwdns649227:0crwdne649227:0'
@@ -677,6 +693,7 @@ ach:
       content_type:
         comments: 'crwdns522439:0crwdne522439:0'
         content_moderation: 'crwdns522441:0crwdne522441:0'
+        events: 'crwdns1061735:0crwdne1061735:0'
         general: 'crwdns522443:0crwdne522443:0'
         inputs: 'crwdns576969:0crwdne576969:0'
         internal_comments: 'crwdns748803:0crwdne748803:0'
@@ -731,3 +748,4 @@ ach:
         voting_basket_submitted: 'crwdns777505:0crwdne777505:0'
         7_days_after_invite_is_sent: 'crwdns522507:0crwdne522507:0'
         7_days_before_the_project_changes_phase: 'crwdns576991:0crwdne576991:0'
+        registration_to_event: 'crwdns1061737:0crwdne1061737:0'
