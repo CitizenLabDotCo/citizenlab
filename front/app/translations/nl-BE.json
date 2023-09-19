@@ -8,7 +8,7 @@
   "app.ccomponents.InitiativeCards.noInitiativesForFilter": "Geen voorstellen gevonden",
   "app.closeIconButton.a11y_buttonActionMessage": "Sluiten",
   "app.components.Areas.areaUpdateError": "Er is een fout opgetreden tijdens het opslaan van je gebied. Probeer het opnieuw.",
-  "app.components.Areas.topicUpdateError": "Er is een fout opgetreden tijdens het opslaan van je onderwerp. Probeer het opnieuw.",
+  "app.components.Areas.topicUpdateError": "Er is een fout opgetreden tijdens het opslaan van je thema. Probeer het opnieuw.",
   "app.components.AssignBudgetControl.a11y_price": "Prijs:",
   "app.components.AssignBudgetControl.add": "Toevoegen",
   "app.components.AssignBudgetControl.added": "Toegevoegd",
