@@ -14,7 +14,7 @@ describe Events::SideFxAttendanceService do
         .with(attendance, 'created', user, attendance.created_at.to_i)
     end
 
-    it 'updates event attendance counts when an attendance is created' do
+    it 'updates smart group counts when an attendance is created' do
       expect { service.after_create(attendance, user) }
         .to enqueue_job(UpdateMemberCountJob)
     end
@@ -29,7 +29,7 @@ describe Events::SideFxAttendanceService do
       end
     end
 
-    it 'updates event attendance counts when an attendance is destroyed' do
+    it 'updates smart group counts when an attendance is destroyed' do
       expect { service.after_create(attendance, user) }
         .to enqueue_job(UpdateMemberCountJob)
     end
