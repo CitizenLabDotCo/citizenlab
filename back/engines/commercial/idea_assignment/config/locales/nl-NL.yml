@@ -5,4 +5,4 @@ nl:
         Assignment of an idea to me admin_campaign_type_description:
           ""idea_assigned_to_you"":
             Assignment of an idea - admins and project managers idea_assigned_to_you:
-              by_author: 'door %{authorName}'' cta_reply_to: ''Geef feedback aan %{authorName}'' event_description_idea: ''Er is een idee aan je toegewezen. Geef feedback door een officiële update te schrijven of door de status aan te passen.'' main_header: ''%{firstName}, je hebt een nieuwe opdracht'' subject: ''Je hebt een opdracht op het platform van %{organizationName}'' preheader_idea: ''Het idee van %{authorName} is aan jou toegewezen.'
+              by_author: 'door %{authorName}'' cta_reply_to: ''Geef feedback aan %{authorName}'' event_description_idea: ''Er is een idee aan je toegewezen. Geef feedback door een officiële update te schrijven of door de status aan te passen.'' main_header: ''%{firstName}, je hebt een nieuwe toewijzing'' subject: ''Je hebt een toewijzing op het platform van %{organizationName}'' preheader_idea: ''Het idee van %{authorName} is aan jou toegewezen.'
