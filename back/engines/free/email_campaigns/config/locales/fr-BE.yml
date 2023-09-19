@@ -439,8 +439,8 @@ fr-BE:
     threshold_reached_for_admin:
       cta_process_initiative: 'Faites passer cette proposition à l''étape suivante'
       event_description: 'Une proposition a reçu le nombre de votes requis sur votre plateforme. Cliquez sur le bouton ci-dessous pour la faire passer à l''étape suivante !'
-      main_header: 'Une proposition a atteint le seuil de vote !'
-      subject: 'Une proposition a reçu le nombre de votes requis sur votre plateforme'
+      main_header: 'Une proposition a obtenu le nombre de votes requis !'
+      subject: 'Une proposition a obtenu le nombre de votes requis sur votre plateforme'
       preheader: 'Assurez-vous de passer aux étapes suivantes'
     first_idea_published:
       action_add_image: '%{addImageLink} pour donner plus de visibilité à votre idée'
