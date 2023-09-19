@@ -140,12 +140,14 @@ de:
       cta_accept_invitation: 'Einladung annehmen'
       invitation_header: 'Ihre Einladung steht noch aus'
       preheader: '%{organizationName} hat Ihnen vor einigen Tagen eine Einladung zur Teilnahme an ihrer Beteiligungsplattform geschickt.'
+      invitation_expiry_message: 'Diese Einladung läuft in etwa %{expiryDaysRemaining} Tagen ab.'
       subject: 'Ausstehende Einladung für die Beteiligungsplattform %{organizationName}'
     invite_received:
       added_a_message: '%{organizationName} hat die folgende Nachricht geschrieben:'
       cta_accept_invitation: 'Einladung annehmen'
       invitation_header: 'Sie sind eingeladen!'
       invitation_header_message: '%{organizationName} hat Sie auf ihre Beteiligungsplattform eingeladen.'
+      invitation_expiry_message: 'Diese Einladung läuft in %{expiryDays} Tagen ab.'
       preheader: '%{organizationName} hat Ihnen eine Einladung zur Teilnahme an ihrer Beteiligungsplattform geschickt.'
       subject: 'Sie sind eingeladen worden um an der Plattform von %{organizationName} teilzunehmen'
     initiative_published:
@@ -569,6 +571,18 @@ de:
       body_2: 'Die Ergebnisse der Abstimmung von %{phaseTitle} auf der Plattform %{organizationName} sind veröffentlicht worden!'
       body_3: 'Schauen Sie sich die Ergebnisse an. Wir halten Sie über die nächsten Schritte auf dem Laufenden.'
       cta_see_results: 'Ergebnisse auf der Plattform ansehen'
+    event_registration_confirmation:
+      subject: "Sie sind dabei! Ihre Anmeldung für \"%{eventTitle}\" ist bestätigt"
+      header_message: "%{firstName}, danke für die Registrierung für"
+      event_details:
+        labels:
+          date: 'Datum'
+          location: 'Ort'
+          online_link: 'Online-Link'
+          description: 'Beschreibung'
+          project: 'Projekt'
+      cta_go_to_event: 'Veranstaltung ansehen'
+      cta_add_to_calendar: 'Zu Ihrem Kalender hinzufügen'
     voting_phase_started:
       subject: '%{organizationName}: Die Abstimmungsphase für %{projectName} hat begonnen'
       preheader: 'Die Abstimmungsphase für %{projectName} hat auf der Teilnahme-Plattform %{organizationName} begonnen'
@@ -591,6 +605,7 @@ de:
         managers: 'Manager*innen'
         admins_assigned_to_a_proposal: 'Einem Vorschlag zugewiesene Admins'
         admins_and_managers_assigned_to_the_input: 'Admins & Manager*innen, die dem Beitrag zugewiesen sind'
+        new_attendee: 'Neu registrierte*r Benutzer*in'
         user_who_is_invited_to_cosponsor_a_proposal: 'Nutzer*in wird zur Unterstützung eines Vorschlags eingeladen'
         user_who_is_receiving_admin_rights: 'Nutzer*in erhält Admin-Rechte'
         user_who_is_receiving_folder_moderator_rights: 'Nutzer*in erhält Ordner-Moderationsrechte'
@@ -610,6 +625,7 @@ de:
       content_type:
         comments: 'Kommentare'
         content_moderation: 'Inhaltsmoderation'
+        events: 'Veranstaltungen'
         general: 'Allgemein'
         inputs: 'Beiträge'
         internal_comments: 'Interne Kommentare'
@@ -664,3 +680,4 @@ de:
         voting_basket_submitted: 'Stimmen eingereicht'
         7_days_after_invite_is_sent: '7 Tage nach Versand der 1. Einladung'
         7_days_before_the_project_changes_phase: '7 Tage bevor das Projekt die Phase wechselt'
+        registration_to_event: 'Anmeldung zu einer Veranstaltung'
