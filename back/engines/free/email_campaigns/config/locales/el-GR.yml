@@ -9,6 +9,7 @@ el:
       "comment_on_idea_you_follow": Ένα σχόλιο για μια ιδέα που ακολουθείτε
       "comment_on_initiative_you_follow": Ένα σχόλιο σχετικά με μια πρόταση που ακολουθείτε
       "cosponsor_of_your_initiative": Ένας χρήστης αποδέχεται την πρόσκλησή μου να συνυπογράψει την πρότασή μου
+      "event_registration_confirmation": Επιβεβαίωση εγγραφής στην εκδήλωση
       "first_idea_published": Δημοσίευση της πρώτης μου ιδέας
       "idea_marked_as_spam": Αναφορά spam ιδεών
       "idea_published": Δημοσίευση της ιδέας μου
@@ -194,12 +195,14 @@ el:
       cta_accept_invitation: 'Αποδεχτείτε την πρόσκλησή σας'
       invitation_header: 'Η πρόσκλησή σας εκκρεμεί'
       preheader: '%{organizationName} σας έστειλε πρόσκληση για να ενταχθείτε στην πλατφόρμα συμμετοχής τους πριν από μερικές ημέρες.'
+      invitation_expiry_message: 'Η πρόσκληση αυτή λήγει σε περίπου %{expiryDaysRemaining} ημέρες.'
       subject: 'Εκκρεμεί πρόσκληση για την πλατφόρμα συμμετοχής του %{organizationName}'
     invite_received:
       added_a_message: '%{organizationName} έγραψε το ακόλουθο μήνυμα:'
       cta_accept_invitation: 'Αποδεχτείτε την πρόσκλησή σας'
       invitation_header: 'Είστε προσκεκλημένοι!'
       invitation_header_message: '%{organizationName} σας προσκάλεσε στην πλατφόρμα συμμετοχής τους.'
+      invitation_expiry_message: 'Η πρόσκληση αυτή λήγει σε %{expiryDays} ημέρες.'
       preheader: '%{organizationName} σας έστειλε πρόσκληση για να συμμετάσχετε στην πλατφόρμα συμμετοχής τους.'
       subject: 'Σας προσκαλούμε να συμμετάσχετε στην πλατφόρμα %{organizationName}'
     initiative_published:
@@ -437,10 +440,10 @@ el:
       no_unread_notifications: "Δεν έχετε αδιάβαστες ειδοποιήσεις. Επισκεφθείτε την πλατφόρμα για να συνεισφέρετε και να δημιουργήσετε νέες ειδοποιήσεις!"
       unread_notifications: "Έχετε αδιάβαστες ειδοποιήσεις. Επισκεφθείτε την πλατφόρμα για να ανακαλύψετε τι συμβαίνει!"
     threshold_reached_for_admin:
-      cta_process_initiative: 'Προχωρήστε την πρόταση στα επόμενα βήματα'
-      event_description: 'Μια πρόταση έφθασε το κατώτατο όριο ψηφοφορίας στην πλατφόρμα σας. Κάντε κλικ στο παρακάτω κουμπί για να προχωρήσετε στα επόμενα βήματα!'
-      main_header: 'Μια πρόταση έφθασε το κατώφλι της ψηφοφορίας!'
-      subject: 'Μια πρόταση έφτασε το κατώφλι ψηφοφορίας στην πλατφόρμα σας'
+      cta_process_initiative: 'Προχωρήστε αυτή την πρωτοβουλία στα επόμενα βήματα'
+      event_description: 'Μια πρωτοβουλία έφτασε το κατώφλι ψηφοφορίας στην πλατφόρμα σας. Κάντε κλικ στο παρακάτω κουμπί για να προχωρήσετε στα επόμενα βήματα!'
+      main_header: 'Μια πρωτοβουλία έφτασε στο όριο της ψηφοφορίας!'
+      subject: 'Μια πρωτοβουλία έφτασε το κατώφλι ψηφοφορίας στην πλατφόρμα σας'
       preheader: 'Φροντίστε να κάνετε τα επόμενα βήματα'
     first_idea_published:
       action_add_image: '%{addImageLink} για να αυξηθεί η ορατότητα'
@@ -524,6 +527,18 @@ el:
       body_2: 'Τα αποτελέσματα της ψηφοφορίας %{phaseTitle} στην πλατφόρμα %{organizationName} έχουν δημοσιευθεί!'
       body_3: 'Σας ενθαρρύνουμε να εξετάσετε τα αποτελέσματα και να μείνετε συντονισμένοι για περαιτέρω ενημερώσεις σχετικά με τα επόμενα βήματα.'
       cta_see_results: 'Δείτε τα αποτελέσματα στην πλατφόρμα'
+    event_registration_confirmation:
+      subject: "Είσαι μέσα! Η εγγραφή σας για το \"%{eventTitle}\" είναι επιβεβαιωμένη"
+      header_message: "%{firstName}, ευχαριστώ για την εγγραφή σας για"
+      event_details:
+        labels:
+          date: 'Ημερομηνία'
+          location: 'Τοποθεσία'
+          online_link: 'Ηλεκτρονικός σύνδεσμος'
+          description: 'Περιγραφή'
+          project: 'Έργο'
+      cta_go_to_event: 'Δείτε την εκδήλωση'
+      cta_add_to_calendar: 'Προσθέστε στο ημερολόγιό σας'
     voting_phase_started:
       subject: '%{organizationName}: Ξεκίνησε η φάση της ψηφοφορίας για το %{projectName}'
       preheader: 'Η φάση της ψηφοφορίας ξεκίνησε για το %{projectName} στην πλατφόρμα συμμετοχής του %{organizationName}.'
@@ -546,6 +561,7 @@ el:
         managers: 'Διευθυντές'
         admins_assigned_to_a_proposal: 'Διαχειριστές που έχουν ανατεθεί σε μια πρόταση'
         admins_and_managers_assigned_to_the_input: 'Διαχειριστές & διαχειριστές που έχουν οριστεί για την είσοδο'
+        new_attendee: 'Πρόσφατα εγγεγραμμένος χρήστης'
         user_who_is_invited_to_cosponsor_a_proposal: 'Χρήστης που καλείται να συνυποστηρίξει μια πρόταση'
         user_who_is_receiving_admin_rights: 'Χρήστης που λαμβάνει δικαιώματα διαχειριστή'
         user_who_is_receiving_folder_moderator_rights: 'Χρήστης που λαμβάνει δικαιώματα συντονιστή φακέλου'
@@ -566,6 +582,7 @@ el:
       content_type:
         comments: 'Σχόλια'
         content_moderation: 'Μετριασμός περιεχομένου'
+        events: 'Εκδηλώσεις'
         general: 'Γενικά'
         inputs: 'Είσοδοι'
         internal_comments: 'Εσωτερικά σχόλια'
@@ -580,7 +597,7 @@ el:
         content_gets_flagged_as_innapropiate: 'Το περιεχόμενο επισημαίνεται ως μη κατάλληλο'
         input_is_assigned: 'Η είσοδος εκχωρείται'
         input_is_flagged_as_spam: 'Η είσοδος επισημαίνεται ως spam'
-        input_is_updated: 'Η εισροή λαμβάνει επίσημη ανατροφοδότηση'
+        input_is_updated: 'Η είσοδος ενημερώνεται'
         input_status_changes: 'Αλλαγές κατάστασης εισόδου'
         initiative_resubmitted_for_review: 'Η πρόταση υποβάλλεται εκ νέου για επανεξέταση'
         internal_comment_is_posted_on_idea_assigned_to_user: 'Το εσωτερικό σχόλιο δημοσιεύεται στην είσοδο που έχει εκχωρηθεί στον χρήστη'
@@ -600,7 +617,7 @@ el:
         project_published: 'Δημοσιευμένο έργο'
         proposal_gets_reported_as_spam: 'Η πρόταση αναφέρεται ως spam'
         proposal_is_assigned_to_admin: 'Η πρόταση ανατίθεται στον admin'
-        proposal_is_updated: 'Η πρόταση λαμβάνει επίσημα σχόλια'
+        proposal_is_updated: 'Η πρόταση επικαιροποιείται'
         proposal_is_upvoted_above_threshold: 'Η πρόταση υπερκαλύπτει το όριο'
         proposal_status_changes: 'Αλλαγές στην κατάσταση της πρότασης'
         user_comments: 'Σχόλια χρηστών'
@@ -621,3 +638,4 @@ el:
         voting_basket_submitted: 'Υποβάλλονται οι ψήφοι'
         7_days_after_invite_is_sent: '7 ημέρες μετά την αποστολή της πρόσκλησης'
         7_days_before_the_project_changes_phase: '7 ημέρες πριν από τη φάση αλλαγής του έργου'
+        registration_to_event: 'Εγγραφή σε μια εκδήλωση'
