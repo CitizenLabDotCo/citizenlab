@@ -19,10 +19,6 @@ export interface IEventImage {
   data: IEventImageData;
 }
 
-export interface IEventImages {
-  data: IEventImageData[];
-}
-
 export interface AddEventImageObject {
   eventId: string;
   image: { image: string };
