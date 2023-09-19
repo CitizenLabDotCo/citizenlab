@@ -9,6 +9,7 @@ ca:
       "comment_on_idea_you_follow": Un comentari sobre una idea que segueixes
       "comment_on_initiative_you_follow": Un comentari sobre una proposta que seguiu
       "cosponsor_of_your_initiative": Un usuari accepta la meva invitació per copatrocinar la meva proposta
+      "event_registration_confirmation": Confirmació de registre de l'esdeveniment
       "first_idea_published": Publicació de la meva primera idea
       "idea_marked_as_spam": Informe de correu brossa d'idees
       "idea_published": Publicació de la meva idea
@@ -194,12 +195,14 @@ ca:
       cta_accept_invitation: 'Accepta la teva invitació'
       invitation_header: 'La teva invitació està pendent'
       preheader: '%{organizationName} us va enviar una invitació per unir-vos a la seva plataforma de participació fa uns dies.'
+      invitation_expiry_message: 'Aquesta invitació caduca d''aquí a %{expiryDaysRemaining} dies aproximadament.'
       subject: 'Pendent invitació per a la plataforma de participació de %{organizationName}'
     invite_received:
       added_a_message: '%{organizationName} ha escrit el missatge següent:'
       cta_accept_invitation: 'Accepta la teva invitació'
       invitation_header: 'Vostè està convidat!'
       invitation_header_message: '%{organizationName} t''ha convidat a la seva plataforma de participació.'
+      invitation_expiry_message: 'Aquesta invitació caduca d''aquí a %{expiryDays} dies.'
       preheader: '%{organizationName} t''ha enviat una invitació per unir-te a la seva plataforma de participació.'
       subject: 'Esteu convidats a unir-vos a la plataforma de %{organizationName}'
     initiative_published:
@@ -437,10 +440,10 @@ ca:
       no_unread_notifications: "No teniu cap notificació no llegida. Visiteu la plataforma per aportar les vostres aportacions i generar noves notificacions!"
       unread_notifications: "Tens notificacions no llegides. Visita la plataforma per descobrir què està passant!"
     threshold_reached_for_admin:
-      cta_process_initiative: 'Porta aquesta proposta als passos següents'
-      event_description: 'Una proposta ha arribat al llindar de votació a la vostra plataforma. Feu clic al botó següent per passar als passos següents!'
-      main_header: 'Una proposta ha arribat al llindar de votació!'
-      subject: 'Una proposta ha arribat al llindar de votació a la vostra plataforma'
+      cta_process_initiative: 'Porta aquesta iniciativa als passos següents'
+      event_description: 'Una iniciativa ha arribat al llindar de votació a la vostra plataforma. Feu clic al botó següent per passar als passos següents!'
+      main_header: 'Una iniciativa ha arribat al llindar de votació!'
+      subject: 'Una iniciativa ha arribat al llindar de votació a la vostra plataforma'
       preheader: 'Assegureu-vos de fer els següents passos'
     first_idea_published:
       action_add_image: '%{addImageLink} per augmentar la visibilitat'
@@ -524,6 +527,18 @@ ca:
       body_2: 'S''han publicat els resultats de la votació %{phaseTitle} a la plataforma %{organizationName}!'
       body_3: 'Us animem a revisar els resultats i estar atents per a més actualitzacions sobre els passos següents.'
       cta_see_results: 'Veure resultats a la plataforma'
+    event_registration_confirmation:
+      subject: "Estàs dins! El vostre registre per a \"%{eventTitle}\" està confirmat"
+      header_message: "%{firstName}, gràcies per registrar-te"
+      event_details:
+        labels:
+          date: 'Data'
+          location: 'Ubicació'
+          online_link: 'Enllaç en línia'
+          description: 'Descripció'
+          project: 'Projecte'
+      cta_go_to_event: 'Veure l''esdeveniment'
+      cta_add_to_calendar: 'Afegeix al teu calendari'
     voting_phase_started:
       subject: '%{organizationName}: la fase de votació va començar per a %{projectName}'
       preheader: 'La fase de votació va començar per %{projectName} a la plataforma de participació de l'' %{organizationName}'
@@ -546,6 +561,7 @@ ca:
         managers: 'Gestors'
         admins_assigned_to_a_proposal: 'Administradors assignats a una proposta'
         admins_and_managers_assigned_to_the_input: 'Administradors i gestors assignats a l''entrada'
+        new_attendee: 'Usuari recent registrat'
         user_who_is_invited_to_cosponsor_a_proposal: 'Usuari que està convidat a copatrocinar una proposta'
         user_who_is_receiving_admin_rights: 'Usuari que està rebent drets d''administrador'
         user_who_is_receiving_folder_moderator_rights: 'Usuari que està rebent drets de moderador de carpetes'
@@ -566,6 +582,7 @@ ca:
       content_type:
         comments: 'Comentaris'
         content_moderation: 'Moderació de continguts'
+        events: 'Esdeveniments'
         general: 'General'
         inputs: 'Entrades'
         internal_comments: 'Comentaris interns'
@@ -580,7 +597,7 @@ ca:
         content_gets_flagged_as_innapropiate: 'El contingut es marca com a innapropiat'
         input_is_assigned: 'S''assigna l''entrada'
         input_is_flagged_as_spam: 'L''entrada està marcada com a correu brossa'
-        input_is_updated: 'L''entrada rep comentaris oficials'
+        input_is_updated: 'L''entrada s''actualitza'
         input_status_changes: 'Canvis d''estat d''entrada'
         initiative_resubmitted_for_review: 'S''ha tornat a enviar la proposta per a la seva revisió'
         internal_comment_is_posted_on_idea_assigned_to_user: 'El comentari intern es publica a l''entrada assignada a l''usuari'
@@ -600,7 +617,7 @@ ca:
         project_published: 'Projecte publicat'
         proposal_gets_reported_as_spam: 'La proposta s''informa com a correu brossa'
         proposal_is_assigned_to_admin: 'La proposta s''assigna a l''administrador'
-        proposal_is_updated: 'La proposta rep comentaris oficials'
+        proposal_is_updated: 'La proposta s''actualitza'
         proposal_is_upvoted_above_threshold: 'La proposta es vota a favor per sobre del llindar'
         proposal_status_changes: 'Canvis d''estat de la proposta'
         user_comments: 'Comentaris dels usuaris'
@@ -621,3 +638,4 @@ ca:
         voting_basket_submitted: 'Es presenten els vots'
         7_days_after_invite_is_sent: '7 dies després de l''enviament de la invitació'
         7_days_before_the_project_changes_phase: '7 dies abans del canvi de fase del projecte'
+        registration_to_event: 'Inscripció a un esdeveniment'
