@@ -9,6 +9,7 @@ sr-Cyrl:
       "comment_on_idea_you_follow": Коментар идеје коју пратите
       "comment_on_initiative_you_follow": Коментар на предлог који следите
       "cosponsor_of_your_initiative": Корисник прихвата мој позив да буде ко-спонзор мог предлога
+      "event_registration_confirmation": Потврда регистрације догађаја
       "first_idea_published": Објављивање моје прве идеје
       "idea_marked_as_spam": Извештај о нежељеној пошти идеја
       "idea_published": Објављивање моје идеје
@@ -194,12 +195,14 @@ sr-Cyrl:
       cta_accept_invitation: 'Прихватите позив'
       invitation_header: 'Ваш позив је на чекању'
       preheader: '%{organizationName} вам је послао позивницу да се придружите њиховој платформи за учешће пре неколико дана.'
+      invitation_expiry_message: 'Ова позивница истиче за отприлике %{expiryDaysRemaining} дана.'
       subject: 'Позив на чекању за платформу за учешће од %{organizationName}'
     invite_received:
       added_a_message: '%{organizationName} је написао следећу поруку:'
       cta_accept_invitation: 'Прихватите позив'
       invitation_header: 'Ти си позван!'
       invitation_header_message: '%{organizationName} вас је позвао на своју платформу за учешће.'
+      invitation_expiry_message: 'Ова позивница истиче за %{expiryDays} дана.'
       preheader: '%{organizationName} вам је послао позивницу да се придружите њиховој платформи за учешће.'
       subject: 'Позвани сте да се придружите платформи %{organizationName}'
     initiative_published:
@@ -437,10 +440,10 @@ sr-Cyrl:
       no_unread_notifications: "Немате ниједно непрочитано обавештење. Посетите платформу да дате свој допринос и генеришете нова обавештења!"
       unread_notifications: "Имате непрочитана обавештења. Посетите платформу да бисте открили шта се дешава!"
     threshold_reached_for_admin:
-      cta_process_initiative: 'Пренесите овај предлог на следеће кораке'
-      event_description: 'Предлог је достигао праг за гласање на вашој платформи. Кликните на дугме испод да бисте прешли на следеће кораке!'
-      main_header: 'Предлог је достигао цензус за гласање!'
-      subject: 'Предлог је достигао праг за гласање на вашој платформи'
+      cta_process_initiative: 'Пренесите ову иницијативу на следеће кораке'
+      event_description: 'Иницијатива је достигла праг за гласање на вашој платформи. Кликните на дугме испод да бисте прешли на следеће кораке!'
+      main_header: 'Иницијатива је стигла до гласачког цензуса!'
+      subject: 'Иницијатива је достигла праг за гласање на вашој платформи'
       preheader: 'Обавезно предузмите следеће кораке'
     first_idea_published:
       action_add_image: '%{addImageLink} за повећање видљивости'
@@ -524,6 +527,18 @@ sr-Cyrl:
       body_2: 'Објављени су резултати %{phaseTitle} гласања на платформи %{organizationName}!'
       body_3: 'Препоручујемо вам да прегледате резултате и останите са нама за даља ажурирања о наредним корацима.'
       cta_see_results: 'Погледајте резултате на платформи'
+    event_registration_confirmation:
+      subject: "Ти си у! Ваша регистрација за \"%{eventTitle}\" је потврђена"
+      header_message: "%{firstName}, хвала на регистрацији"
+      event_details:
+        labels:
+          date: 'Датум'
+          location: 'Локација'
+          online_link: 'Онлине линк'
+          description: 'Опис'
+          project: 'Пројекат'
+      cta_go_to_event: 'Погледајте догађај'
+      cta_add_to_calendar: 'Додајте у свој календар'
     voting_phase_started:
       subject: '%{organizationName}: Фаза гласања је почела за %{projectName}'
       preheader: 'Фаза гласања је почела за %{projectName} на платформи за учешће од %{organizationName}'
@@ -546,6 +561,7 @@ sr-Cyrl:
         managers: 'Менаџери'
         admins_assigned_to_a_proposal: 'Администратори додељени предлогу'
         admins_and_managers_assigned_to_the_input: 'Администратори и менаџери додељени улазу'
+        new_attendee: 'Новорегистровани корисник'
         user_who_is_invited_to_cosponsor_a_proposal: 'Корисник који је позван да буде ко-спонзор предлога'
         user_who_is_receiving_admin_rights: 'Корисник који добија администраторска права'
         user_who_is_receiving_folder_moderator_rights: 'Корисник који добија права модератора фолдера'
@@ -566,6 +582,7 @@ sr-Cyrl:
       content_type:
         comments: 'Коментари'
         content_moderation: 'Модерирање садржаја'
+        events: 'Догађаји'
         general: 'Генерал'
         inputs: 'Инпутс'
         internal_comments: 'Интерни коментари'
@@ -580,7 +597,7 @@ sr-Cyrl:
         content_gets_flagged_as_innapropiate: 'Садржај се означава као неприкладан'
         input_is_assigned: 'Улаз је додељен'
         input_is_flagged_as_spam: 'Унос је означен као нежељена пошта'
-        input_is_updated: 'Унос добија званичне повратне информације'
+        input_is_updated: 'Унос је ажуриран'
         input_status_changes: 'Статус уноса се мења'
         initiative_resubmitted_for_review: 'Предлог је поново достављен на разматрање'
         internal_comment_is_posted_on_idea_assigned_to_user: 'Интерни коментар се поставља на унос који је додељен кориснику'
@@ -600,7 +617,7 @@ sr-Cyrl:
         project_published: 'Пројекат објављен'
         proposal_gets_reported_as_spam: 'Предлог се пријављује као нежељена пошта'
         proposal_is_assigned_to_admin: 'Предлог се додељује администратору'
-        proposal_is_updated: 'Предлог добија званичне повратне информације'
+        proposal_is_updated: 'Предлог је ажуриран'
         proposal_is_upvoted_above_threshold: 'За предлог се гласа изнад прага'
         proposal_status_changes: 'Промене статуса предлога'
         user_comments: 'Коментари корисника'
@@ -621,3 +638,4 @@ sr-Cyrl:
         voting_basket_submitted: 'Гласови се предају'
         7_days_after_invite_is_sent: '7 дана након слања позива'
         7_days_before_the_project_changes_phase: '7 дана пре промене фазе пројекта'
+        registration_to_event: 'Регистрација на догађај'
