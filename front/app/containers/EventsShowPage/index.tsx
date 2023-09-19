@@ -63,8 +63,6 @@ const EventImage = styled(Image)`
   width: 100%;
   height: 100%;
   flex: 1;
-  border-top-left-radius: 6px;
-  border-top-right-radius: 6px;
   margin-bottom: 24px;
 `;
 

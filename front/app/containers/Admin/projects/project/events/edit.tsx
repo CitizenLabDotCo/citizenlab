@@ -264,8 +264,9 @@ const AdminProjectEventEdit = () => {
 
   const handleEventImage = async (data: IEvent) => {
     const hasRemoteImage = !isNilOrError(remoteEventImage);
-    const remoteImageId = event?.data.relationships['event_images'].data[0].id;
-
+    const remoteImageId = hasRemoteImage
+      ? event?.data?.relationships?.event_images?.data?.[0].id
+      : undefined;
     if (
       (uploadedImage === null || !uploadedImage.remote) &&
       hasRemoteImage &&
@@ -406,6 +407,7 @@ const AdminProjectEventEdit = () => {
               onSuccess: async (data) => {
                 setSubmitState('success');
                 handleEventFiles(data);
+                handleEventImage(data);
                 clHistory.push(`/admin/projects/${projectId}/events`);
               },
               onError: async (errors) => {
