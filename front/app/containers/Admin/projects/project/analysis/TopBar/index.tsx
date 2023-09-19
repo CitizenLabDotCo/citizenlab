@@ -7,6 +7,7 @@ import {
   Button,
   Badge,
   Text,
+  IconButton,
 } from '@citizenlab/cl2-component-library';
 import GoBackButton from 'components/UI/GoBackButton';
 import clHistory from 'utils/cl-router/history';
@@ -123,8 +124,8 @@ const TopBar = () => {
         background={`${colors.white}`}
         borderBottom={`1px solid ${colors.grey500}`}
         alignContent="center"
-        gap="24px"
-        px="24px"
+        gap="20px"
+        px="20px"
       >
         <GoBackButton onClick={goBack} />
         <Box>
@@ -160,6 +161,17 @@ const TopBar = () => {
           />
         </Box>
         <Tasks />
+        {window.Intercom && (
+          <IconButton
+            iconName="info-solid"
+            a11y_buttonActionMessage="Support article"
+            onClick={() => {
+              window.Intercom('showArticle', 8316692);
+            }}
+            iconColor={colors.grey800}
+            iconColorOnHover={colors.black}
+          />
+        )}
         {isFiltersOpen && <Filters onClose={() => setIsFiltersOpen(false)} />}
         <Modal opened={showLaunchModal} close={closeLaunchModal}>
           <LaunchModal onClose={closeLaunchModal} />
