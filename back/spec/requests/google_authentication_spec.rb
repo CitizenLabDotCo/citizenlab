@@ -94,7 +94,7 @@ describe 'google authentication' do
     expect(cookies[:cl2_jwt]).to be_present
   end
 
-  it 'updates the avatar when re-authenticating an existing user without an avatar' do
+  it 'does not update the avatar when re-authenticating an existing user with an avatar' do
     user = create(
       :user,
       email: 'boris.brompton@orange.uk',
@@ -107,7 +107,7 @@ describe 'google authentication' do
     expect(user.reload.avatar.file.file).to be_present
   end
 
-  it 'does not update the avatar when re-authenticating an existing user with an avatar' do
+  it 'updates the avatar when re-authenticating an existing user without an avatar' do
     user = create(
       :user,
       email: 'boris.brompton@orange.uk',
