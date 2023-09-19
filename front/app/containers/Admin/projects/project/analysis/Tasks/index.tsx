@@ -91,7 +91,7 @@ const Tasks = () => {
           buttonStyle="text"
           width="24px"
           height="24px"
-          aria-label="background jobs"
+          aria-label={formatMessage(translations.backgroundJobs)}
           onClick={() => setIsDropdownOpened(!isDropdownOpened)}
         >
           <Spinner />
@@ -99,7 +99,7 @@ const Tasks = () => {
       ) : (
         <IconButton
           iconName="list"
-          a11y_buttonActionMessage="background jobs"
+          a11y_buttonActionMessage={formatMessage(translations.backgroundJobs)}
           iconColor={colors.grey800}
           iconColorOnHover={colors.black}
           onClick={() => setIsDropdownOpened(!isDropdownOpened)}
