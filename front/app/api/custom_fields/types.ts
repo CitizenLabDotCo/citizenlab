@@ -115,3 +115,7 @@ export type IFlatCreateCustomField = Optional<
 export interface ICustomFields {
   data: ICustomFieldResponse[];
 }
+
+export interface ICustomField {
+  data: ICustomFieldResponse;
+}

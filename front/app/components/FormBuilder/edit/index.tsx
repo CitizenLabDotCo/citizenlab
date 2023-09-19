@@ -32,11 +32,9 @@ import {
   DragAndDropResult,
 } from './utils';
 
-// services
-import { updateFormCustomFields } from 'services/formCustomFields';
-
 // hooks
 import useFormSubmissionCount from 'api/submission_count/useSubmissionCount';
+import useUpdateCustomField from 'api/custom_fields/useUpdateCustomFields';
 
 // intl
 import { WrappedComponentProps } from 'react-intl';
@@ -86,6 +84,7 @@ export const FormEdit = ({
   const [selectedField, setSelectedField] = useState<
     IFlatCustomFieldWithIndex | undefined
   >(undefined);
+  const { mutateAsync: updateFormCustomFields } = useUpdateCustomField();
   const {
     groupingType,
     isEditPermittedAfterSubmissions,
@@ -202,11 +201,11 @@ export const FormEdit = ({
           maximum: field.maximum.toString(),
         }),
       }));
-      await updateFormCustomFields(
+      await updateFormCustomFields({
         projectId,
-        finalResponseArray,
-        isFormPhaseSpecific ? phaseId : undefined
-      );
+        customFields: finalResponseArray,
+        phaseId: isFormPhaseSpecific ? phaseId : undefined,
+      });
     } catch (error) {
       handleHookFormSubmissionError(error, setError, 'customFields');
     }
