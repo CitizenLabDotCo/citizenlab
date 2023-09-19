@@ -164,7 +164,9 @@ const TopBar = () => {
         {window.Intercom && (
           <IconButton
             iconName="info-solid"
-            a11y_buttonActionMessage="Support article"
+            a11y_buttonActionMessage={formatMessage(
+              translations.supportArticle
+            )}
             onClick={() => {
               window.Intercom('showArticle', 8316692);
             }}
