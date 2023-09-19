@@ -9,6 +9,7 @@ hr:
       "comment_on_idea_you_follow": Komentar na ideju koju slijedite
       "comment_on_initiative_you_follow": Komentar na prijedlog koji slijedite
       "cosponsor_of_your_initiative": Korisnik prihvaća moj poziv da susponzorira moj prijedlog
+      "event_registration_confirmation": Potvrda prijave za događaj
       "first_idea_published": Objava moje prve ideje
       "idea_marked_as_spam": Izvješće o neželjenoj ideji
       "idea_published": Objava moje ideje
@@ -194,12 +195,14 @@ hr:
       cta_accept_invitation: 'Prihvatite pozivnicu'
       invitation_header: 'Pozivnica je na čekanju'
       preheader: 'Prije nekoliko dana poslana vam je pozivnica za registraciju na %{organizationName} platformi za sudjelovanje.'
+      invitation_expiry_message: 'Ova pozivnica istječe za otprilike %{expiryDaysRemaining} dana.'
       subject: 'Pozivnica za %{organizationName} platformu za sudjelovanje je na čekanju'
     invite_received:
       added_a_message: '%{organizationName} je napisao sljedeću poruku:'
       cta_accept_invitation: 'Prihvatite pozivnicu'
       invitation_header: 'Pozvani ste!'
       invitation_header_message: '%{organizationName} vas je pozvao na njihovu platformu za sudjelovanje.'
+      invitation_expiry_message: 'Ova pozivnica istječe za %{expiryDays} dana.'
       preheader: '%{organizationName} vam je poslao poziv da se pridružite njihovoj platformi za sudjelovanje.'
       subject: 'Pozvani ste da se pridružite %{organizationName} platformi '
     initiative_published:
@@ -437,10 +440,10 @@ hr:
       no_unread_notifications: "Nema nepročitanih obavijesti. Posjetite platformu kako biste dali svoj doprinos i generirali nove obavijesti!"
       unread_notifications: "Imate nepročitane obavijesti. Posjetite platformu kako biste saznali novosti!"
     threshold_reached_for_admin:
-      cta_process_initiative: 'Prenesite ovaj prijedlog na sljedeće korake'
-      event_description: 'Prijedlog je dosegao prag glasanja na vašoj platformi. Pritisnite gumb u nastavku da biste prešli na sljedeće korake!'
-      main_header: 'Prijedlog je dosegao prag za glasanje!'
-      subject: 'Prijedlog je dosegao prag glasanja na vašoj platformi'
+      cta_process_initiative: 'Pomognite ovoj inicijativi da prijeđe u narednu fazu'
+      event_description: 'Inicijativa je dosegla prag glasovanja na vašoj platformi. Kliknite na gumb u nastavku kako biste prešli na sljedeće korake!'
+      main_header: 'Inicijativa je dosegla prag glasovanja!'
+      subject: 'Inicijativa je dosegla prag glasovanja na vašoj platformi'
       preheader: 'Obvezno poduzmite sljedeće korake'
     first_idea_published:
       action_add_image: '%{addImageLink} kako biste povećali vidljivost'
@@ -524,6 +527,18 @@ hr:
       body_2: 'Objavljeni su rezultati %{phaseTitle} glasova u %{organizationName} platformi!'
       body_3: 'Potičemo vas da pregledate rezultate i ostanete s nama radi daljnjih ažuriranja o sljedećim koracima.'
       cta_see_results: 'Pogledajte rezultate na platformi'
+    event_registration_confirmation:
+      subject: "Upadas! Vaša registracija za \"%{eventTitle}\" je potvrđena"
+      header_message: "%{firstName}, hvala na registraciji za"
+      event_details:
+        labels:
+          date: 'Datum'
+          location: 'Mjesto'
+          online_link: 'Online poveznica'
+          description: 'Opis'
+          project: 'Projekt'
+      cta_go_to_event: 'Pogledajte događaj'
+      cta_add_to_calendar: 'Dodajte u svoj kalendar'
     voting_phase_started:
       subject: '%{organizationName}: Faza glasovanja započela je za %{projectName}'
       preheader: 'Faza glasovanja započela je za %{projectName} na platformi za sudjelovanje %{organizationName}'
@@ -546,6 +561,7 @@ hr:
         managers: 'Menadžeri'
         admins_assigned_to_a_proposal: 'Administratori dodijeljeni prijedlogu'
         admins_and_managers_assigned_to_the_input: 'Administratori i upravitelji dodijeljeni unosu'
+        new_attendee: 'Novo registrirani korisnik'
         user_who_is_invited_to_cosponsor_a_proposal: 'Korisnik koji je pozvan da susponzorira prijedlog'
         user_who_is_receiving_admin_rights: 'Korisnik koji dobiva administratorska prava'
         user_who_is_receiving_folder_moderator_rights: 'Korisnik koji dobiva prava moderatora mape'
@@ -566,6 +582,7 @@ hr:
       content_type:
         comments: 'Komentari'
         content_moderation: 'Moderiranje sadržaja'
+        events: 'Događaji'
         general: 'Općenito'
         inputs: 'Unosi'
         internal_comments: 'Interni komentari'
@@ -580,7 +597,7 @@ hr:
         content_gets_flagged_as_innapropiate: 'Sadržaj se označava kao neprikladan'
         input_is_assigned: 'Unos je dodijeljen'
         input_is_flagged_as_spam: 'Unos je označen kao spam'
-        input_is_updated: 'Unos dobiva službene povratne informacije'
+        input_is_updated: 'Unos je ažuriran'
         input_status_changes: 'Promjene statusa ulaza'
         initiative_resubmitted_for_review: 'Prijedlog ponovno poslan na pregled'
         internal_comment_is_posted_on_idea_assigned_to_user: 'Interni komentar objavljen je na unosu dodijeljenom korisniku'
@@ -600,7 +617,7 @@ hr:
         project_published: 'Projekt objavljen'
         proposal_gets_reported_as_spam: 'Prijedlog se prijavljuje kao neželjena pošta'
         proposal_is_assigned_to_admin: 'Prijedlog je dodijeljen adminu'
-        proposal_is_updated: 'Prijedlog dobiva službene povratne informacije'
+        proposal_is_updated: 'Prijedlog je ažuriran'
         proposal_is_upvoted_above_threshold: 'Za prijedlog se glasa iznad praga'
         proposal_status_changes: 'Promjene statusa prijedloga'
         user_comments: 'Komentari korisnika'
@@ -621,3 +638,4 @@ hr:
         voting_basket_submitted: 'Glasovi su poslani'
         7_days_after_invite_is_sent: '7 dana nakon slanja poziva'
         7_days_before_the_project_changes_phase: '7 dana prije promjene faze projekta'
+        registration_to_event: 'Prijava na događaj'
