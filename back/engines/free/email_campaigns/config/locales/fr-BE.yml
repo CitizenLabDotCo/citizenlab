@@ -9,6 +9,7 @@ fr-BE:
       "comment_on_idea_you_follow": Un commentaire sur une idée que vous suivez
       "comment_on_initiative_you_follow": Un commentaire sur une proposition que vous suivez
       "cosponsor_of_your_initiative": Un utilisateur accepte de soutenir ma proposition
+      "event_registration_confirmation": Confirmation de l'inscription à l'événement
       "first_idea_published": Publication de ma première idée
       "idea_marked_as_spam": Rapport sur le spam d'idées
       "idea_published": Publication de mon idée
@@ -194,12 +195,14 @@ fr-BE:
       cta_accept_invitation: 'Accepter votre invitation'
       invitation_header: 'Votre invitation est en attente'
       preheader: 'Il y a quelques jours, %{organizationName} vous a invité à rejoindre sa plateforme de participation.'
+      invitation_expiry_message: 'Cette invitation expire dans environ %{expiryDaysRemaining} jours.'
       subject: 'Une invitation en attente pour la plate-forme de participation de %{organizationName}'
     invite_received:
       added_a_message: '%{organizationName} a écrit le message suivant :'
       cta_accept_invitation: 'Accepter votre invitation'
       invitation_header: 'Vous êtes invités !'
       invitation_header_message: '%{organizationName} vous a invité à rejoindre sa plateforme de participation.'
+      invitation_expiry_message: 'Cette invitation expire dans %{expiryDays} jours.'
       preheader: '%{organizationName} vous a envoyé une invitation à rejoindre leur plateforme de participation.'
       subject: 'Vous avez reçu une invitation pour rejoindre la plateforme de %{organizationName}'
     initiative_published:
@@ -437,10 +440,10 @@ fr-BE:
       no_unread_notifications: "Il est temps de recréer de l'activité ! Visitez la plateforme pour découvrir ce qu'il s'y passe."
       unread_notifications: "Vous avez de nouvelles notifications ! Visitez la plate-forme pour découvrir ce qu'il s'y passe."
     threshold_reached_for_admin:
-      cta_process_initiative: 'Faites passer cette proposition à l''étape suivante'
-      event_description: 'Une proposition a reçu le nombre de votes requis sur votre plateforme. Cliquez sur le bouton ci-dessous pour la faire passer à l''étape suivante !'
-      main_header: 'Une proposition a obtenu le nombre de votes requis !'
-      subject: 'Une proposition a obtenu le nombre de votes requis sur votre plateforme'
+      cta_process_initiative: 'Passez cette initiative à l''étape suivante'
+      event_description: 'Une initiative a atteint le seuil de vote sur votre plateforme. Cliquez sur le bouton ci-dessous pour passer aux étapes suivantes !'
+      main_header: 'Une initiative a atteint le nombre de voix requis!'
+      subject: 'Une initiative a atteint le nombre de voix requis sur votre plateforme'
       preheader: 'Assurez-vous de passer aux étapes suivantes'
     first_idea_published:
       action_add_image: '%{addImageLink} pour donner plus de visibilité à votre idée'
@@ -524,6 +527,18 @@ fr-BE:
       body_2: 'Les résultats du vote pour %{phaseTitle} sur la plateforme %{organizationName} ont été publiés !'
       body_3: 'Nous vous invitons à prendre connaissance des résultats et à rester attentifs pour de futures mises à jour concernant les prochaines étapes.'
       cta_see_results: 'Voir les résultats sur la plateforme'
+    event_registration_confirmation:
+      subject: "Votre inscription à \"%{eventTitle}\" est confirmée !"
+      header_message: "%{firstName}, merci pour votre inscription à"
+      event_details:
+        labels:
+          date: 'Date'
+          location: 'Lieu'
+          online_link: 'Lien en ligne'
+          description: 'Description'
+          project: 'Projet'
+      cta_go_to_event: 'Voir l''événement'
+      cta_add_to_calendar: 'Ajouter à votre calendrier'
     voting_phase_started:
       subject: '%{organizationName}: La phase de vote a commencé pour %{projectName}'
       preheader: 'La phase de vote a commencé pour %{projectName} sur la plateforme de participation de %{organizationName}'
@@ -546,6 +561,7 @@ fr-BE:
         managers: 'Gestionnaires'
         admins_assigned_to_a_proposal: 'Administrateurs assignés à une proposition'
         admins_and_managers_assigned_to_the_input: 'Les administrateurs et les gestionnaires assignés à la contribution'
+        new_attendee: 'L''utilisateur qui s''est inscrit'
         user_who_is_invited_to_cosponsor_a_proposal: 'L''utilisateur invité à soutenir la proposition'
         user_who_is_receiving_admin_rights: 'L''utilisateur qui reçoit les droits d''administrateur'
         user_who_is_receiving_folder_moderator_rights: 'L''utilisateur qui reçoit les droits de gestionnaire de dossier'
@@ -566,6 +582,7 @@ fr-BE:
       content_type:
         comments: 'Commentaires'
         content_moderation: 'Modération du contenu'
+        events: 'Événements'
         general: 'Général'
         inputs: 'Contributions'
         internal_comments: 'Commentaires internes'
@@ -580,7 +597,7 @@ fr-BE:
         content_gets_flagged_as_innapropiate: 'Contenu signalé comme inapproprié'
         input_is_assigned: 'Une contribution est assignée'
         input_is_flagged_as_spam: 'Une contribution est signalée comme spam'
-        input_is_updated: 'La contribution reçoit un retour d''information officiel'
+        input_is_updated: 'Une contribution est mise à jour'
         input_status_changes: 'Changements du statut d''une contribution'
         initiative_resubmitted_for_review: 'Proposition soumise à nouveau pour examen'
         internal_comment_is_posted_on_idea_assigned_to_user: 'Un commentaire interne est publié sur la contribution attribuée à l''utilisateur'
@@ -600,7 +617,7 @@ fr-BE:
         project_published: 'Publication d''un projet'
         proposal_gets_reported_as_spam: 'Proposition marquée comme spam'
         proposal_is_assigned_to_admin: 'Une proposition est assignée à un administrateur'
-        proposal_is_updated: 'La proposition reçoit une mise à jour officielle'
+        proposal_is_updated: 'Mise à jour d''une proposition'
         proposal_is_upvoted_above_threshold: 'Une proposition dépasse le seuil de votes requis '
         proposal_status_changes: 'Changement du statut d''une proposition'
         user_comments: 'Nouveaux commentaires d''utilisateurs'
@@ -621,3 +638,4 @@ fr-BE:
         voting_basket_submitted: 'Les votes sont soumis'
         7_days_after_invite_is_sent: '7 jours après l''envoi de l''invitation'
         7_days_before_the_project_changes_phase: '7 jours avant le changement de phase du projet'
+        registration_to_event: 'Inscription à un événement'
