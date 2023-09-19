@@ -73,6 +73,26 @@ resource 'Posts' do
           .to eq initiative.title_multiloc['nl-NL']
       end
     end
+
+    context 'when initiative is successful' do
+      create(:initiative_status_threshold_reached)
+      settings = AppConfiguration.instance.settings
+      settings['initiatives']['reacting_threshold'] = 1
+      AppConfiguration.instance.update! settings: settings
+
+      create_list(:reaction, 2, reactable: initiative, mode: 'up')
+      InitiativeStatusService.new.automated_transitions!
+
+      # expect(@initiative.reload.initiative_status.code).to eq 'threshold_reached'
+
+
+      example_request 'Return the initiative with successful date', document: false do
+        assert_status 200
+
+        binding.pry
+      end
+    end
+
   end
 
   include_examples '/api/v2/.../deleted', :initiatives
