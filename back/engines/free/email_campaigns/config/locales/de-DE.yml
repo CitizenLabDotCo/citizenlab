@@ -7,7 +7,7 @@ de:
       "comment_marked_as_spam": Kommentar wird als Spam markiert
       "comment_on_your_comment": Antwort auf einen Kommentar
       "comment_on_idea_you_follow": Ein Kommentar zu einer Idee, der Sie folgen
-      "comment_on_initiative_you_follow": Ein Kommentar zu einem Vorschlag, dem Sie verfolgen
+      "comment_on_initiative_you_follow": Ein Kommentar zu einem Vorschlag, dem Sie folgen
       "cosponsor_of_your_initiative": Nutzer*in nimmt meine Einladung an, meinen Vorschlag zu unterstützen
       "event_registration_confirmation": Anmeldebestätigung für die Veranstaltung
       "first_idea_published": Veröffentlichung des ersten Beitrags
@@ -441,9 +441,9 @@ de:
       unread_notifications: "Sie haben ungelesene Benachrichtigungen. Besuchen Sie die Plattform, um zu erfahren, was los ist."
     threshold_reached_for_admin:
       cta_process_initiative: 'Nächste Schritte für diesen Vorschlag'
-      event_description: 'Eine Initiative hat die Abstimmungsschwelle auf Ihrer Plattform erreicht. Klicken Sie auf den Button unten, um die nächsten Schritte einzuleiten!'
+      event_description: 'Ein Vorschlag hat die Abstimmungsschwelle auf Ihrer Plattform erreicht. Klicken Sie auf die Schaltfläche unten, um die nächsten Schritte einzuleiten!'
       main_header: 'Ein Vorschlag hat die Abstimmungsschwelle erreicht!'
-      subject: 'Eine Initiative hat die Abstimmungsschwelle auf Ihrer Plattform erreicht'
+      subject: 'Ein Vorschlag hat die Abstimmungsschwelle auf Ihrer Plattform erreicht'
       preheader: 'Stelle sicher, dass du die nächsten Schritte ausführst'
     first_idea_published:
       action_add_image: '%{addImageLink} um die Sichtbarkeit zu erhöhen'
