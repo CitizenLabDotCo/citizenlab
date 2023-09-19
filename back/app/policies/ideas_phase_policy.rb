@@ -10,12 +10,12 @@ class IdeasPhasePolicy < ApplicationPolicy
     end
 
     def resolve
-      phase_id = Pundit.policy_scope(user, Phase).pluck(:id)
-      scope.where(phase: phase_id)
+      scope.all
     end
   end
 
   def show?
-    PhasePolicy.new(user, record.phase).show?
+    # user&.active? && user&.admin?
+    true
   end
 end

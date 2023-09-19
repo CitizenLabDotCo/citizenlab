@@ -8,17 +8,20 @@ resource 'IdeasPhases' do
 
   before do
     header 'Content-Type', 'application/json'
-    @ideas_phases = create_list(:ideas_phase, 3)
+    @project = create(:project_with_active_ideation_phase)
+    @phase = @project.phases.first
+    @idea = create(:idea, phases: [@phase], project: @project)
+    @ideas_phase = @idea.ideas_phases.first
   end
 
   context 'when not logged in' do
     get 'web_api/v1/ideas_phases/:id' do
-      let(:id) { @ideas_phases.first.id }
+      let(:id) { @ideas_phase.id }
 
       example_request 'Get one ideas_phase by id' do
         expect(status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :id)).to eq @ideas_phases.first.id
+        expect(json_response.dig(:data, :id)).to eq @ideas_phase.id
       end
     end
   end
