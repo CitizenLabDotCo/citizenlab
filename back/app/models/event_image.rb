@@ -20,10 +20,9 @@
 #  fk_rails_...  (event_id => events.id)
 #
 class EventImage < ApplicationRecord
-    mount_base64_uploader :image, EventImageUploader
-    belongs_to :event
+  mount_base64_uploader :image, EventImageUploader
+  belongs_to :event
   
-    validates :event, presence: true
-    validates :ordering, numericality: { only_integer: true }, allow_nil: true
-  end
-  
+  validates :event, presence: true
+  validates :ordering, numericality: { only_integer: true }, allow_nil: true
+end
