@@ -11,19 +11,6 @@ import { snakeCase } from 'lodash-es';
 import submissionsCountKeys from 'api/submission_count/keys';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 
-export async function updateFormCustomFields(
-  projectId: string,
-  customFields,
-  phaseId?: string
-) {
-  const apiEndpoint = phaseId
-    ? `${API_PATH}/admin/phases/${phaseId}/custom_fields/update_all`
-    : `${API_PATH}/admin/projects/${projectId}/custom_fields/update_all`;
-  return streams.update(apiEndpoint, `${projectId}/custom_fields`, {
-    custom_fields: customFields,
-  });
-}
-
 export interface Answer {
   answer: Multiloc;
   responses: number;
