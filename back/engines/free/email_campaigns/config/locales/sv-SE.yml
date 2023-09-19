@@ -140,12 +140,14 @@ sv:
       cta_accept_invitation: 'Acceptera din inbjudan'
       invitation_header: 'Din inbjudan väntar'
       preheader: '%{organizationName} skickade en inbjudan till dig om att gå med i deras plattform för deltagande för några dagar sedan.'
+      invitation_expiry_message: 'Denna inbjudan upphör att gälla om cirka %{expiryDaysRemaining} dagar.'
       subject: 'Väntande inbjudan till plattformen för deltagande för %{organizationName}'
     invite_received:
       added_a_message: '%{organizationName} skrev följande meddelande:'
       cta_accept_invitation: 'Acceptera din inbjudan'
       invitation_header: 'Du är inbjuden!'
       invitation_header_message: '%{organizationName} bjöd in dig till deras plattform för deltagande.'
+      invitation_expiry_message: 'Denna inbjudan upphör att gälla om %{expiryDays} dagar.'
       preheader: '%{organizationName} skickade en inbjudan till dig om att gå med i deras plattform för deltagande.'
       subject: 'Du är inbjuden att gå med i plattformen för %{organizationName}'
     initiative_published:
@@ -569,6 +571,18 @@ sv:
       body_2: 'Resultatet av omröstningen på %{phaseTitle} i plattformen %{organizationName} har offentliggjorts!'
       body_3: 'Vi uppmanar er att granska resultaten och hålla utkik efter ytterligare uppdateringar om nästa steg.'
       cta_see_results: 'Se resultat i plattformen'
+    event_registration_confirmation:
+      subject: "Du har kommit in! Din anmälan till \"%{eventTitle}\" är bekräftad."
+      header_message: "%{firstName}, tack för att du registrerat dig för"
+      event_details:
+        labels:
+          date: 'Datum'
+          location: 'Plats'
+          online_link: 'Länk online'
+          description: 'Beskrivning'
+          project: 'Projekt'
+      cta_go_to_event: 'Se evenemanget'
+      cta_add_to_calendar: 'Lägg till i din kalender'
     voting_phase_started:
       subject: '%{organizationName}: Omröstningsfasen har inletts för %{projectName}'
       preheader: 'Omröstningsfasen inleddes för %{projectName} på deltagandeplattformen för %{organizationName}'
@@ -591,6 +605,7 @@ sv:
         managers: 'Chefer'
         admins_assigned_to_a_proposal: 'Administratörer som har tilldelats ett förslag'
         admins_and_managers_assigned_to_the_input: 'Administratörer och chefer som har tilldelats ingången'
+        new_attendee: 'Nyligen registrerad användare'
         user_who_is_invited_to_cosponsor_a_proposal: 'Användare som inbjuds att vara medsponsor för ett förslag'
         user_who_is_receiving_admin_rights: 'Användare som får administratörsrättigheter'
         user_who_is_receiving_folder_moderator_rights: 'Användare som får rättigheter som mappmoderator'
@@ -610,6 +625,7 @@ sv:
       content_type:
         comments: 'Kommentarer'
         content_moderation: 'Moderering av innehåll'
+        events: 'Händelser'
         general: 'Allmänt'
         inputs: 'Ingångar'
         internal_comments: 'Interna kommentarer'
@@ -664,3 +680,4 @@ sv:
         voting_basket_submitted: 'Rösterna är avgivna'
         7_days_after_invite_is_sent: '7 dagar efter att inbjudan skickats'
         7_days_before_the_project_changes_phase: '7 dagar innan projektet byter fas'
+        registration_to_event: 'Anmälan till ett evenemang'
