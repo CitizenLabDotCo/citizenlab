@@ -46,11 +46,9 @@ const EventInformation = ({ event, titleFontSize }: Props) => {
   const startAtMoment = moment(event.attributes.start_at);
   const endAtMoment = moment(event.attributes.end_at);
 
-  // const isPastEvent = moment().isAfter(endAtMoment); // TODO: Re-enable once event attendance smart group added
+  const isPastEvent = moment().isAfter(endAtMoment);
   const address1 = event?.attributes?.address_1;
   const onlineLink = event?.attributes?.online_link;
-  const tempShowEventAttendance = false; // TODO: Replace once event attendance smart group added
-
   const eventDateTime = getEventDateString(event);
 
   return (
@@ -147,32 +145,31 @@ const EventInformation = ({ event, titleFontSize }: Props) => {
               </Text>
             </Box>
           )}
-          {tempShowEventAttendance &&
-            event.attributes.attendees_count > 0 && ( // TODO: Replace once event attendance smart group added
-              <Box
-                display="flex"
-                mb="12px"
-                flexDirection={theme.isRtl ? 'row-reverse' : 'row'}
-              >
-                <Box flexShrink={0} my="auto">
-                  <Icon
-                    my="auto"
-                    fill={colors.coolGrey300}
-                    name="user"
-                    ariaHidden
-                    mr={theme.isRtl ? '0px' : '8px'}
-                    ml={theme.isRtl ? '8px' : '0px'}
-                  />
-                </Box>
-                <Text m="0px" pt="2px" color={'coolGrey700'} fontSize="s">
-                  {event.attributes.attendees_count}{' '}
-                  {formatMessage(messages.attending)}
-                </Text>
+          {!isPastEvent && event.attributes.attendees_count > 0 && (
+            <Box
+              display="flex"
+              mb="12px"
+              flexDirection={theme.isRtl ? 'row-reverse' : 'row'}
+            >
+              <Box flexShrink={0} my="auto">
+                <Icon
+                  my="auto"
+                  fill={colors.coolGrey300}
+                  name="user"
+                  ariaHidden
+                  mr={theme.isRtl ? '0px' : '8px'}
+                  ml={theme.isRtl ? '8px' : '0px'}
+                />
               </Box>
-            )}
+              <Text m="0px" pt="2px" color={'coolGrey700'} fontSize="s">
+                {event.attributes.attendees_count}{' '}
+                {formatMessage(messages.attending)}
+              </Text>
+            </Box>
+          )}
         </Box>
       </Box>
-      {!tempShowEventAttendance ? ( // TODO: Replace once event attendance smart group added
+      {isPastEvent ? (
         <Button
           ml="auto"
           width={'100%'}

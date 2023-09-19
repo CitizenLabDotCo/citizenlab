@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_25_121819) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_11_121820) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -489,6 +489,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_25_121819) do
     t.integer "attendees_count", default: 0, null: false
     t.string "online_link"
     t.jsonb "address_2_multiloc", default: {}, null: false
+    t.string "using_url"
+    t.jsonb "attend_button_multiloc", default: {}, null: false
     t.index ["location_point"], name: "index_events_on_location_point", using: :gist
     t.index ["project_id"], name: "index_events_on_project_id"
   end

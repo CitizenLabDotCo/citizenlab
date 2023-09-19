@@ -4,20 +4,22 @@
 #
 # Table name: events
 #
-#  id                   :uuid             not null, primary key
-#  project_id           :uuid
-#  title_multiloc       :jsonb
-#  description_multiloc :jsonb
-#  location_multiloc    :jsonb
-#  online_link          :string
-#  start_at             :datetime
-#  end_at               :datetime
-#  created_at           :datetime         not null
-#  updated_at           :datetime         not null
-#  location_point       :geography        point, 4326
-#  address_1            :string
-#  attendees_count      :integer          default(0), not null
-#  address_2_multiloc   :jsonb            not null
+#  id                     :uuid             not null, primary key
+#  project_id             :uuid
+#  title_multiloc         :jsonb
+#  description_multiloc   :jsonb
+#  location_multiloc      :jsonb
+#  online_link            :string
+#  start_at               :datetime
+#  end_at                 :datetime
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
+#  location_point         :geography        point, 4326
+#  address_1              :string
+#  attendees_count        :integer          default(0), not null
+#  address_2_multiloc     :jsonb            not null
+#  using_url              :string
+#  attend_button_multiloc :jsonb            not null
 #
 # Indexes
 #
@@ -44,6 +46,8 @@ class Event < ApplicationRecord
   validates :location_multiloc, multiloc: { presence: false }
   validates :online_link, url: true, allow_blank: true
   validates :address_2_multiloc, multiloc: { presence: false }
+  validates :attend_button_multiloc, multiloc: { presence: false }
+  validates :using_url, url: true, allow_blank: true
   validate :validate_start_at_before_end_at
 
   before_validation :sanitize_description_multiloc

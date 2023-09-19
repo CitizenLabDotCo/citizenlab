@@ -110,10 +110,12 @@ class WebApi::V1::EventsController < ApplicationController
       :end_at,
       :online_link,
       :address_1,
+      :using_url,
       address_2_multiloc: CL2_SUPPORTED_LOCALES,
       location_multiloc: CL2_SUPPORTED_LOCALES,
       title_multiloc: CL2_SUPPORTED_LOCALES,
       description_multiloc: CL2_SUPPORTED_LOCALES,
+      attend_button_multiloc: CL2_SUPPORTED_LOCALES,
       location_point_geojson: [:type, { coordinates: [] }]
     ).tap do |p|
       # Allow removing the location point.

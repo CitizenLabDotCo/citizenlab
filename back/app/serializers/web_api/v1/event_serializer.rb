@@ -8,6 +8,8 @@ class WebApi::V1::EventSerializer < WebApi::V1::BaseSerializer
     :address_1,
     :address_2_multiloc,
     :location_point_geojson,
+    :using_url,
+    :attend_button_multiloc,
     :attendees_count,
     :start_at,
     :end_at,
