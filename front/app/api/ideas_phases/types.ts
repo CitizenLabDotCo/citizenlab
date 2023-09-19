@@ -1,3 +1,8 @@
+import { Keys } from 'utils/cl-react-query/types';
+import ideasPhasesKeys from './keys';
+
+export type IdeasPhasesKeys = Keys<typeof ideasPhasesKeys>;
+
 export interface IdeasPhase {
   data: {
     id: string;
@@ -12,11 +17,17 @@ export interface IdeasPhase {
           id: string;
           type: 'idea';
         };
-        phase: {
+      };
+      phase: {
+        data: {
           id: string;
           type: 'phase';
         };
       };
     };
   };
+}
+
+export interface Params {
+  id?: string;
 }
