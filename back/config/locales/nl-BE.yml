@@ -234,7 +234,7 @@ nl-BE:
       this_answer: 'Dit antwoord wordt alleen gedeeld met beheerders, en niet publiekelijk.'
       page: 'Pagina'
       date_published: 'Datum gepubliceerd (dd-mm-jjjj)'
-      instructions: 'Instructies'
+      instructions: 'Richtlijnen'
       write_as_clearly: 'Schrijf zo <b>duidelijk</b> als je kunt - deze formulieren kunnen worden gescand.'
       write_in_language: 'Schrijf je antwoorden in dezelfde taal als dit formulier'
   project_copy:
