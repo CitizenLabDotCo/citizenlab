@@ -9,6 +9,7 @@ tr:
       "comment_on_idea_you_follow": Takip ettiğiniz bir fikir hakkında yorum
       "comment_on_initiative_you_follow": Takip ettiğiniz bir teklif hakkında yorum
       "cosponsor_of_your_initiative": Bir kullanıcı teklifime ortak sponsor olma davetimi kabul ediyor
+      "event_registration_confirmation": Etkinlik kayıt onayı
       "first_idea_published": İlk fikrimin yayımlanması
       "idea_marked_as_spam": Fikrin spam olarak bildirilmesi
       "idea_published": Fikrimin yayımlanması
@@ -194,12 +195,14 @@ tr:
       cta_accept_invitation: 'Davetiyenizi kabul edin'
       invitation_header: 'Davetiyeniz beklemede'
       preheader: '%{organizationName} birkaç gün önce katılım platformlarına katılmanız için size bir davet gönderdi.'
+      invitation_expiry_message: 'Bu davetiyenin süresi yaklaşık %{expiryDaysRemaining} gün içinde dolacaktır.'
       subject: '%{organizationName} katılım platformu için bekleyen davetiye'
     invite_received:
       added_a_message: '%{organizationName} aşağıdaki mesajı yazdı:'
       cta_accept_invitation: 'Davetiyenizi kabul edin'
       invitation_header: 'Davet edildiniz!'
       invitation_header_message: '%{organizationName} sizi katılım platformlarına davet etti.'
+      invitation_expiry_message: 'Bu davet %{expiryDays} gün içinde sona erecektir.'
       preheader: '%{organizationName} katılım platformlarına katılmanız için size bir davet gönderdi.'
       subject: '%{organizationName} platformuna katılmaya davet edildiniz'
     initiative_published:
@@ -437,10 +440,10 @@ tr:
       no_unread_notifications: "Okunmamış bildiriminiz yok. Girdilerinizle katkı yapmak ve yeni bildirimler oluşturmak için platformu ziyaret edin."
       unread_notifications: "Okunmamış bildirileriniz var. Neler olup bittiğini öğrenmek için platformu ziyaret edin."
     threshold_reached_for_admin:
-      cta_process_initiative: 'Bu teklifi bir sonraki adıma taşıyın'
-      event_description: 'Platformunuzda bir teklif oylama eşiğine ulaştı. Sonraki adımlara geçmek için aşağıdaki butona tıklayın!'
-      main_header: 'Bir teklif oylama eşiğine ulaştı!'
-      subject: 'Platformunuzda bir teklif oylama eşiğine ulaştı'
+      cta_process_initiative: 'Bu girişimi sonraki adımlara taşıyın'
+      event_description: 'Bir girişim, platformunuzdaki oylama eşiğine ulaştı. Onu sonraki adımlara taşımak için aşağıdaki düğmeye tıklayın.'
+      main_header: 'Bir girişim oylama eşiğine ulaştı.'
+      subject: 'Bir girişim, platformunuzdaki oylama eşiğine ulaştı'
       preheader: 'Sonraki adımları mutlaka gerçekleştirin'
     first_idea_published:
       action_add_image: 'Görünürlüğünüzü artırmak için %{addImageLink}'
@@ -524,6 +527,18 @@ tr:
       body_2: '%{organizationName} platformundaki %{phaseTitle} oylamasının sonuçları yayınlandı!'
       body_3: 'Sonuçları incelemenizi ve sonraki adımlarla ilgili güncellemeler için bizi takip etmenizi öneririz.'
       cta_see_results: 'Platformdaki sonuçları görün'
+    event_registration_confirmation:
+      subject: "Girdiniz! \"%{eventTitle}\" için kaydınız onaylandı"
+      header_message: "%{firstName}'a kaydolduğunuz için teşekkür ederiz."
+      event_details:
+        labels:
+          date: 'Tarih'
+          location: 'Konum'
+          online_link: 'Çevrimiçi bağlantı'
+          description: 'Açıklama'
+          project: 'Proje'
+      cta_go_to_event: 'Etkinliği görüntüleyin'
+      cta_add_to_calendar: 'Takviminize ekleyin'
     voting_phase_started:
       subject: '%{organizationName}: %{projectName}için oylama aşaması başladı'
       preheader: '%{projectName} için %{organizationName}katılım platformunda oylama süreci başladı.'
@@ -546,6 +561,7 @@ tr:
         managers: 'Yöneticiler'
         admins_assigned_to_a_proposal: 'Bir teklife atanan yöneticiler'
         admins_and_managers_assigned_to_the_input: 'Girişe atanan yöneticiler ve müdürler'
+        new_attendee: 'Yeni kayıtlı kullanıcı'
         user_who_is_invited_to_cosponsor_a_proposal: 'Bir teklife eş sponsorluk yapmaya davet edilen kullanıcı'
         user_who_is_receiving_admin_rights: 'Yönetici haklarını alan kullanıcı'
         user_who_is_receiving_folder_moderator_rights: 'Klasör moderatörü haklarını alan kullanıcı'
@@ -566,6 +582,7 @@ tr:
       content_type:
         comments: 'Yorumlar'
         content_moderation: 'İçerik moderasyonu'
+        events: 'Etkinlikler'
         general: 'Genel'
         inputs: 'Girişler'
         internal_comments: 'Dahili yorumlar'
@@ -580,7 +597,7 @@ tr:
         content_gets_flagged_as_innapropiate: 'İçerik uygunsuz olarak işaretlenir'
         input_is_assigned: 'Giriş atanmıştır'
         input_is_flagged_as_spam: 'Girdi spam olarak işaretlendi'
-        input_is_updated: 'Girdi resmi geri bildirim alır'
+        input_is_updated: 'Girdi güncellenir'
         input_status_changes: 'Giriş durumu değişiklikleri'
         initiative_resubmitted_for_review: 'Teklif incelenmek üzere yeniden sunuldu'
         internal_comment_is_posted_on_idea_assigned_to_user: 'Kullanıcıya atanan girdiye dahili yorum gönderilir'''
@@ -600,7 +617,7 @@ tr:
         project_published: 'Proje yayınlandı'
         proposal_gets_reported_as_spam: 'Teklif spam olarak bildiriliyor'
         proposal_is_assigned_to_admin: 'Teklif yöneticiye atanır'
-        proposal_is_updated: 'Teklif resmi geri bildirim aldı'
+        proposal_is_updated: 'Teklif güncellendi'
         proposal_is_upvoted_above_threshold: 'Teklif eşik değerin üzerinde oylandı'
         proposal_status_changes: 'Teklif durumu değişiklikleri'
         user_comments: 'Kullanıcı yorumları'
@@ -621,3 +638,4 @@ tr:
         voting_basket_submitted: 'Oylar teslim edildi'
         7_days_after_invite_is_sent: 'Davetiye gönderildikten 7 gün sonra'
         7_days_before_the_project_changes_phase: 'Proje değişiklik aşamasından 7 gün önce'
+        registration_to_event: 'Bir etkinliğe kayıt'
