@@ -100,12 +100,11 @@ describe 'google authentication' do
       email: 'boris.brompton@orange.uk',
       avatar: nil
     )
-    original_file = user.avatar.file.file
 
     get '/auth/google'
     follow_redirect!
 
-    expect(user.reload.avatar.file.file).not_to eq original_file
+    expect(user.reload.avatar.file.file).to be_present
   end
 
   it 'does not update the avatar when re-authenticating an existing user with an avatar' do
