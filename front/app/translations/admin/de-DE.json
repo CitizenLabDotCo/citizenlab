@@ -1713,7 +1713,7 @@
   "app.containers.AdminPage.SettingsPage.saveErrorMessage": "Etwas ging schief, bitte versuchen Sie es später nochmal.",
   "app.containers.AdminPage.SettingsPage.saveSuccess": "Gespeichert!",
   "app.containers.AdminPage.SettingsPage.saveSuccessMessage": "Ihre Änderungen wurden gespeichert.",
-  "app.containers.AdminPage.SettingsPage.selectOnboardingAreas": "Wählen Sie die Bereiche aus, die den Benutzer*innen nach der Registrierung angezeigt werden sollen",
+  "app.containers.AdminPage.SettingsPage.selectOnboardingAreas": "Wählen Sie die Gebiete aus, die den Benutzer*innen nach der Registrierung angezeigt werden sollen",
   "app.containers.AdminPage.SettingsPage.selectOnboardingTopics": "Wählen Sie die Themen aus, die den Benutzer*innen nach der Registrierung angezeigt werden sollen",
   "app.containers.AdminPage.SettingsPage.settingsSavingError": "Speichern fehlgeschlagen. Ändern Sie die Einstellung erneut.",
   "app.containers.AdminPage.SettingsPage.sign_up_button": "\"Registrieren\"",
