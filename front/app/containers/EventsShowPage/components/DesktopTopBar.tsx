@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Button } from '@citizenlab/cl2-component-library';
 import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
 
 // router
@@ -19,6 +19,11 @@ import { useLocation } from 'react-router-dom';
 import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
+// api
+import { isAdmin } from 'services/permissions/roles';
+import useAuthUser from 'api/me/useAuthUser';
+import { IEventData } from 'api/events/types';
+
 const Bar = styled.div`
   display: flex;
   justify-content: space-between;
@@ -30,15 +35,18 @@ const Bar = styled.div`
 `;
 interface Props {
   project: IProjectData;
+  event?: IEventData;
 }
 
-const TopBar = ({ project }: Props) => {
+const TopBar = ({ project, event }: Props) => {
   const location = useLocation();
+  const user = useAuthUser();
   const { formatMessage } = useIntl();
+  const isAdminUser = isAdmin(user.data);
 
   return (
     <Bar>
-      <Box mb="40px">
+      <Box mb="40px" display="flex" width="100%" justifyContent="space-between">
         <GoBackButtonSolid
           text={formatMessage(messages.goBack)}
           onClick={() => {
@@ -48,6 +56,21 @@ const TopBar = ({ project }: Props) => {
               : clHistory.push(`/projects/${project.attributes.slug}`);
           }}
         />
+        {isAdminUser && event && (
+          <Button
+            buttonStyle="secondary"
+            m="0px"
+            icon="edit"
+            px="8px"
+            py="4px"
+            text={formatMessage(messages.editEvent)}
+            onClick={() => {
+              clHistory.push(
+                `/admin/projects/${project.id}/events/${event.id}`
+              );
+            }}
+          />
+        )}
       </Box>
     </Bar>
   );

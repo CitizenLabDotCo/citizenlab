@@ -114,7 +114,9 @@ const EventsShowPage = () => {
       )}
       <Container>
         <InnerContainer>
-          {!isSmallerThanTablet && <DesktopTopBar project={project.data} />}
+          {!isSmallerThanTablet && (
+            <DesktopTopBar event={event.data} project={project.data} />
+          )}
 
           <Box display="flex" id="e2e-idea-show-page-content">
             <Box flex="1 1 100%">
