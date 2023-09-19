@@ -15,6 +15,6 @@ class IdeasPhasePolicy < ApplicationPolicy
   end
 
   def show?
-    (user&.active? && user&.admin?) || UserRoleService.new.can_moderate_project?(record.phase.project, user)
+    user.present? && UserRoleService.new.can_moderate_project?(record.phase.project, user)
   end
 end
