@@ -174,7 +174,7 @@ resource 'Moderations' do
           example_request 'Count only moderations for ideas or comments' do
             expect(status).to eq(200)
             json_response = json_parse(response_body)
-            expect(json_response[:count]).to eq 3
+            expect(json_response[:data][:attributes][:count]).to eq 3
           end
         end
       end

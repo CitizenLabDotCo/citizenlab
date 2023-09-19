@@ -3,7 +3,7 @@ import eventsKeys from './keys';
 import {
   IGlobalPermissionAction,
   IParticipationContextPermissionAction,
-} from 'services/actionPermissions';
+} from 'api/permissions/types';
 
 export type EventsKeys = Keys<typeof eventsKeys>;
 

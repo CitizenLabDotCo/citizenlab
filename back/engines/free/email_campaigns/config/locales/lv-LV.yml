@@ -9,6 +9,7 @@ lv:
       "comment_on_your_idea": Komentārs par manu ideju
       "comment_on_your_initiative": Komentārs par manu priekšlikumu
       "cosponsor_of_your_initiative": Lietotājs pieņem manu uzaicinājumu atbalstīt manu priekšlikumu.
+      "event_registration_confirmation": Pasākuma reģistrācijas apstiprinājums
       "first_idea_published": Manas pirmās idejas publicēšana
       "idea_marked_as_spam": Ziņot par ideju kā surogātpastu
       "idea_published": Manas idejas publicēšana
@@ -638,6 +639,18 @@ lv:
       body_2: 'Ir publicēti %{phaseTitle} platformas %{organizationName} balsojuma rezultāti!'
       body_3: 'Aicinām iepazīties ar rezultātiem un sekot līdzi turpmākai informācijai par nākamajiem soļiem.'
       cta_see_results: 'Skatiet rezultātus platformā'
+    event_registration_confirmation:
+      subject: "Jūs esat iekļauts! Jūsu reģistrācija \"%{eventTitle}\" ir apstiprināta"
+      header_message: "%{firstName}, paldies par reģistrēšanos"
+      event_details:
+        labels:
+          date: 'Datums'
+          location: 'Atrašanās vieta'
+          online_link: 'Tiešsaistes saite'
+          description: 'Apraksts'
+          project: 'Projekts'
+      cta_go_to_event: 'Apskatīt notikumu'
+      cta_add_to_calendar: 'Pievienot kalendāram'
     voting_phase_started:
       subject: '%{organizationName}: Sācies %{projectName}balsošanas posms'
       preheader: 'Sākās balsošanas posms par %{projectName} dalības platformā %{organizationName}.'
@@ -660,6 +673,7 @@ lv:
         managers: 'Vadītāji'
         admins_assigned_to_a_proposal: 'Priekšlikumam piešķirtie administratori'
         admins_and_managers_assigned_to_the_input: 'Ievadei piešķirtie administratori un vadītāji'
+        new_attendee: 'Jaunreģistrēts lietotājs'
         user_who_is_invited_to_cosponsor_a_proposal: 'Lietotājs, kurš ir uzaicināts līdzfinansēt priekšlikumu'
         user_who_is_receiving_admin_rights: 'Lietotājs, kurš saņem administratora tiesības'
         user_who_is_receiving_folder_moderator_rights: 'Lietotājs, kurš saņem mapes moderatora tiesības'
@@ -679,6 +693,7 @@ lv:
       content_type:
         comments: 'Komentāri'
         content_moderation: 'Satura moderēšana'
+        events: 'Notikumi'
         general: 'Vispārīgi'
         inputs: 'Ieejas'
         internal_comments: 'Iekšējās piezīmes'
@@ -733,3 +748,4 @@ lv:
         voting_basket_submitted: 'Tiek iesniegtas balsis'
         7_days_after_invite_is_sent: '7 dienas pēc uzaicinājuma nosūtīšanas'
         7_days_before_the_project_changes_phase: '7 dienas pirms projekta izmaiņu fāzes'
+        registration_to_event: 'Reģistrācija pasākumam'

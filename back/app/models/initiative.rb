@@ -156,11 +156,11 @@ class Initiative < ApplicationRecord
     InitiativeStatus::REVIEW_CODES.include? initiative_status&.code
   end
 
-  private
-
   def proposed_at
     initiative_status_changed_at('proposed')
   end
+
+  private
 
   def initiative_status_changed_at(initiative_status_code)
     initiative_status_changes

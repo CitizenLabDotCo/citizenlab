@@ -12,7 +12,7 @@ interface Props {
 
 export default function useFormResults({ projectId, phaseId }: Props) {
   const [results, setResults] = useState<
-    SurveyResultData | undefined | null | Error
+    SurveyResultData['attributes'] | undefined | null | Error
   >(undefined);
 
   useEffect(() => {
@@ -23,7 +23,7 @@ export default function useFormResults({ projectId, phaseId }: Props) {
       },
       phaseId
     ).observable.subscribe((results) => {
-      setResults(results.data);
+      setResults(results.data.attributes);
     });
 
     return () => subscription.unsubscribe();

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { isEmpty } from 'lodash-es';
 
 // services
-import { IPermissionData } from 'services/actionPermissions';
+import { IPermissionData } from 'api/permissions/types';
 
 // components
 import ActionForm from './ActionForm';

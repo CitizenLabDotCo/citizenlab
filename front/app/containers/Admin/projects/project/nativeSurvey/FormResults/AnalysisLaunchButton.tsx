@@ -127,9 +127,9 @@ const CreateAnalysisModal = ({ onClose }: { onClose: () => void }) => {
             extra: { projectId },
           });
           clHistory.push(
-            `/admin/projects/${projectId}/analysis/${
-              analysis.data.id
-            }?showLaunchModal=true${phaseId ? `&phase_id=${phaseId}` : ''}`
+            `/admin/projects/${projectId}/analysis/${analysis.data.id}${
+              phaseId ? `?phase_id=${phaseId}` : ''
+            }`
           );
           onClose();
         },

@@ -36,7 +36,7 @@ const ConsentModal = ({ onClose }: { onClose: () => void }) => {
         onSuccess: (analysis) => {
           onClose();
           clHistory.push(
-            `/admin/projects/${projectId}/analysis/${analysis.data.id}?showLaunchModal=true`
+            `/admin/projects/${projectId}/analysis/${analysis.data.id}`
           );
           trackEventByName(tracks.analysisForIdeationCreated.name, {
             extra: { projectId },

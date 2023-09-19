@@ -9,6 +9,7 @@ es-CL:
       "comment_on_your_idea": Un comentario sobre mi idea.
       "comment_on_your_initiative": Un comentario sobre mi propuesta
       "cosponsor_of_your_initiative": Un usuario acepta mi invitación para co-patrocinar mi propuesta
+      "event_registration_confirmation": Confirmación de inscripción al evento
       "first_idea_published": Publicación de mi primera idea
       "idea_marked_as_spam": Informar de spam de ideas
       "idea_published": Publicación de mi idea
@@ -638,6 +639,18 @@ es-CL:
       body_2: '¡Se han publicado los resultados de la votación %{phaseTitle} en la plataforma %{organizationName} !'
       body_3: 'Te animamos a que revises los resultados y permanezcas atento a las actualizaciones sobre los próximos pasos.'
       cta_see_results: 'Ver resultados en la plataforma'
+    event_registration_confirmation:
+      subject: "¡Estás dentro! Tu inscripción en \"%{eventTitle}\" está confirmada"
+      header_message: "%{firstName}gracias por registrarte en"
+      event_details:
+        labels:
+          date: 'Fecha'
+          location: 'Ubicación'
+          online_link: 'Enlace en línea'
+          description: 'Descripción'
+          project: 'proyectos'
+      cta_go_to_event: 'Ver el evento'
+      cta_add_to_calendar: 'Añadir a tu calendario'
     voting_phase_started:
       subject: '%{organizationName}: Comienza la fase de votación para %{projectName}'
       preheader: 'La fase de votación comenzó para %{projectName} en la plataforma de participación de %{organizationName}'
@@ -660,6 +673,7 @@ es-CL:
         managers: 'Gestores'
         admins_assigned_to_a_proposal: 'Administratodres asignados a una propuesta'
         admins_and_managers_assigned_to_the_input: 'Administradores y gestores asignados al aporte'
+        new_attendee: 'Usuario recién registrado'
         user_who_is_invited_to_cosponsor_a_proposal: 'Usuario al que se invita a copatrocinar una propuesta'
         user_who_is_receiving_admin_rights: 'Usuario que recibe derechos de administrador'
         user_who_is_receiving_folder_moderator_rights: 'Usuario que recibe derechos de moderador de carpeta'
@@ -679,6 +693,7 @@ es-CL:
       content_type:
         comments: 'Comentarios'
         content_moderation: 'Moderación de contenidos'
+        events: 'Eventos'
         general: 'General'
         inputs: 'Aportes'
         internal_comments: 'Comentarios internos'
@@ -733,3 +748,4 @@ es-CL:
         voting_basket_submitted: 'Se envían los votos'
         7_days_after_invite_is_sent: '7 días después del envío de la invitación'
         7_days_before_the_project_changes_phase: '7 días antes de que el proyecto cambie de fase'
+        registration_to_event: 'Inscripción a un acto'
