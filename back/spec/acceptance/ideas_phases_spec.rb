@@ -19,6 +19,36 @@ resource 'IdeasPhases' do
       let(:id) { @ideas_phase.id }
 
       example_request 'Get one ideas_phase by id' do
+        expect(status).to eq 401
+      end
+    end
+  end
+
+  context 'when logged in as an admin' do
+    before do
+      admin_header_token
+    end
+
+    get 'web_api/v1/ideas_phases/:id' do
+      let(:id) { @ideas_phase.id }
+
+      example_request 'Get one ideas_phase by id' do
+        expect(status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data, :id)).to eq @ideas_phase.id
+      end
+    end
+  end
+
+  context 'when logged in as a project moderator' do
+    before do
+      header_token_for(create(:user, roles: [{ 'type' => 'project_moderator', 'project_id' => @project.id }]))
+    end
+
+    get 'web_api/v1/ideas_phases/:id' do
+      let(:id) { @ideas_phase.id }
+
+      example_request 'Get one ideas_phase by id' do
         expect(status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :id)).to eq @ideas_phase.id
