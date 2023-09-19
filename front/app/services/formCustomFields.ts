@@ -8,6 +8,8 @@ import { IProjectData } from 'api/projects/types';
 import { isNilOrError } from 'utils/helperUtils';
 import { IPhaseData } from 'api/phases/types';
 import { snakeCase } from 'lodash-es';
+import submissionsCountKeys from 'api/submission_count/keys';
+import { queryClient } from 'utils/cl-react-query/queryClient';
 
 export async function updateFormCustomFields(
   projectId: string,
@@ -37,8 +39,11 @@ export interface Result {
 }
 
 export interface SurveyResultData {
-  results: Result[];
-  totalSubmissions: number;
+  type: 'survey_results';
+  attributes: {
+    results: Result[];
+    totalSubmissions: number;
+  };
 }
 
 export interface SurveyResultsType {
@@ -82,35 +87,6 @@ export const downloadSurveyResults = async (
   saveAs(blob, fileName);
 };
 
-export interface IFormSubmissionCountData {
-  totalSubmissions: number;
-}
-
-export interface IFormSubmissionCount {
-  data: IFormSubmissionCountData;
-}
-
-const getSubmissionCountEndpoint = (
-  projectId: string,
-  phaseId?: string | null
-) => {
-  return phaseId
-    ? `${API_PATH}/phases/${phaseId}/submission_count`
-    : `${API_PATH}/projects/${projectId}/submission_count`;
-};
-
-export function formSubmissionCountStream(
-  projectId: string,
-  phaseId?: string | null,
-  streamParams: IStreamParams | null = null
-) {
-  return streams.get<IFormSubmissionCount>({
-    apiEndpoint: getSubmissionCountEndpoint(projectId, phaseId),
-    cacheStream: false,
-    ...streamParams,
-  });
-}
-
 export async function deleteFormResults(projectId: string, phaseId?: string) {
   const deleteApiEndpoint = phaseId
     ? `${API_PATH}/phases/${phaseId}/inputs`
@@ -121,9 +97,9 @@ export async function deleteFormResults(projectId: string, phaseId?: string) {
     `${projectId}/${phaseId}`
   );
 
-  await streams.fetchAllWith({
-    apiEndpoint: [getSubmissionCountEndpoint(projectId, phaseId)],
-  });
+  queryClient.invalidateQueries(
+    submissionsCountKeys.item({ projectId, phaseId })
+  );
 
   return response;
 }
