@@ -12,35 +12,16 @@ module EmailCampaigns
       project_id = project.id
       project_name = project.title_multiloc[recipient_user.locale] || project.title_multiloc[I18n.default_locale]
 
+      # TODO: generate commands with campaign#generate_commands method
       command = {
         recipient: recipient_user,
         event_payload: {
           project_id: project_id,
           project_name: project_name,
           statistics: {
-            activities: {
-              new_ideas: {
-                increase: 3,
-                past_increase: 4
-              },
-              new_reactions: {
-                increase: 2,
-                past_increase: 4
-              },
-              new_comments: {
-                increase: 2,
-                past_increase: 3
-              },
-              total_ideas: 100
-            },
-            users: {
-              new_visitors: 0,
-              new_participants: {
-                increase: 0,
-                past_increase: 3
-              },
-              total_participants: 0
-            }
+            new_ideas_increase: 3,
+            new_comments_increase: 2,
+            new_participants_increase: 0
           },
           top_ideas: top_ideas.map do |idea|
             new_reactions = idea.reactions.where('created_at > ?', Time.now - 7)

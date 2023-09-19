@@ -122,3 +122,4 @@ end
 
 SideFxUserService.prepend(IdeaAssignment::Patches::SideFxUserService)
 SideFxUserService.prepend(Matomo::Patches::SideFxUserService)
+SideFxUserService.prepend(PosthogIntegration::Patches::SideFxUserService)

@@ -77,6 +77,11 @@ resource 'Analyses' do
         # If no custom_fields are passed, all textual fields must be added automatically
         expect(response_data.dig(:relationships, :custom_fields, :data)).not_to be_empty
         expect(json_response_body[:included].map { |d| d[:attributes][:code] }).to match_array(%w[title_multiloc body_multiloc location_description])
+
+        # Example tags must be present
+        tags = Analysis::Analysis.find(response_data[:id]).tags
+        expect(tags.count).to be > 0
+        expect(tags.pluck(:tag_type).uniq).to eq ['onboarding_example']
       end
     end
 

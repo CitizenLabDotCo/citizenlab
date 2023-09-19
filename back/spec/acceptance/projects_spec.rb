@@ -784,20 +784,23 @@ resource 'Projects' do
         expect(json_response).to eq(
           {
             data: {
-              results: [
-                {
-                  inputType: 'multiselect',
-                  question: { en: 'What are your favourite pets?' },
-                  required: true,
-                  totalResponses: 3,
-                  answers: [
-                    { answer: { en: 'Cat' }, responses: 2 },
-                    { answer: { en: 'Dog' }, responses: 1 }
-                  ],
-                  customFieldId: multiselect_field.id
-                }
-              ],
-              totalSubmissions: 2
+              type: 'survey_results',
+              attributes: {
+                results: [
+                  {
+                    inputType: 'multiselect',
+                    question: { en: 'What are your favourite pets?' },
+                    required: true,
+                    totalResponses: 3,
+                    answers: [
+                      { answer: { en: 'Cat' }, responses: 2 },
+                      { answer: { en: 'Dog' }, responses: 1 }
+                    ],
+                    customFieldId: multiselect_field.id
+                  }
+                ],
+                totalSubmissions: 2
+              }
             }
           }
         )
@@ -845,7 +848,7 @@ resource 'Projects' do
         do_request
         expect(status).to eq 200
 
-        expect(json_response).to eq({ data: { totalSubmissions: 3 } })
+        expect(json_response[:data][:attributes]).to eq({ totalSubmissions: 3 })
       end
     end
 

@@ -9,6 +9,7 @@ lb:
       "comment_on_your_idea": E Kommentar zu menger Iddi
       "comment_on_your_initiative": E Kommentar zu mengem Virschlag
       "cosponsor_of_your_initiative": E Benotzer akzeptéiert meng Invitatioun fir meng Propositioun ze sponsoren
+      "event_registration_confirmation": Event Aschreiwung Bestätegung
       "first_idea_published": Verëffentlechung vu menger éischter Iddi
       "idea_marked_as_spam": Spambericht iwwer d'Iddien
       "idea_published": Verëffentlechung vu menger Iddi
@@ -207,12 +208,14 @@ lb:
       cta_accept_invitation: 'Invitatioun unhuelen'
       invitation_header: 'Är Invitatioun steet aus'
       preheader: '%{organizationName} huet Iech virun e puer Deeg eng Invitatioun geschéckt, fir hirer participativer Plattform bäizetrieden.'
+      invitation_expiry_message: 'Dës Invitatioun leeft no ongeféier %{expiryDaysRemaining} Deeg of.'
       subject: 'Ausstoend Invitatioun fir d’participativ Plattform %{organizationName}'
     invite_received:
       added_a_message: '%{organizationName} huet déi folgend Noriicht geschriwwen:'
       cta_accept_invitation: 'Huelt Är Invitatioun un'
       invitation_header: 'Dir sidd invitéiert!'
       invitation_header_message: '%{organizationName} huet Iech op hir participativ Plattform invitéiert.'
+      invitation_expiry_message: 'Dës Invitatioun leeft an %{expiryDays} Deeg aus.'
       preheader: '%{organizationName} huet Iech eng Invitatioun geschéckt, fir hirer participativer Plattform bäizetrieden.'
       subject: 'Dir sidd invitéiert, fir der Plattform vun %{organizationName} bäizetrieden'
     initiative_published:
@@ -636,6 +639,18 @@ lb:
       body_2: 'D''Resultater vum %{phaseTitle} Vote an der %{organizationName} Plattform sinn publizéiert ginn!'
       body_3: 'Mir encouragéieren Iech d''Resultater z''iwwerpréiwen a bleiwen ofgeschloss fir weider Updates iwwer déi nächst Schrëtt.'
       cta_see_results: 'Gesinn Resultater an der Plattform'
+    event_registration_confirmation:
+      subject: "Dir sidd an! Är Umeldung fir \"%{eventTitle}\" ass bestätegt"
+      header_message: "%{firstName}, merci fir Aschreiwung fir"
+      event_details:
+        labels:
+          date: 'Datum'
+          location: 'Location'
+          online_link: 'Online Link'
+          description: 'Beschreiwung'
+          project: 'Projet'
+      cta_go_to_event: 'Kuckt d''Evenement'
+      cta_add_to_calendar: 'Füügt an Äre Kalenner'
     voting_phase_started:
       subject: '%{organizationName}: D''Stëmmphase huet fir den %{projectName}ugefaangen'
       preheader: 'D''Stëmmphase huet fir %{projectName} op der Participatiounsplattform vun %{organizationName}ugefaang'
@@ -658,6 +673,7 @@ lb:
         managers: 'Manager'
         admins_assigned_to_a_proposal: 'Administrateuren zu enger Propositioun zougewisen'
         admins_and_managers_assigned_to_the_input: 'Administrateuren & Manager ginn dem Input zougewisen'
+        new_attendee: 'Nei registréiert Benotzer'
         user_who_is_invited_to_cosponsor_a_proposal: 'Benotzer deen invitéiert ass eng Propositioun ze co-sponsoren'
         user_who_is_receiving_admin_rights: 'Benotzer deen Admin Rechter kritt'
         user_who_is_receiving_folder_moderator_rights: 'Benotzer deen Dossier Moderator Rechter kritt'
@@ -677,6 +693,7 @@ lb:
       content_type:
         comments: 'Kommentaren'
         content_moderation: 'Inhalt Moderatioun'
+        events: 'Evenementer'
         general: 'Général'
         inputs: 'Input'
         internal_comments: 'Intern Kommentaren'
@@ -731,3 +748,4 @@ lb:
         voting_basket_submitted: 'D''Stëmmen ginn agereecht'
         7_days_after_invite_is_sent: '7 Deeg no der Invitatioun geschéckt'
         7_days_before_the_project_changes_phase: '7 Deeg virum Projet Ännerungen Phas'
+        registration_to_event: 'Aschreiwung op en Event'

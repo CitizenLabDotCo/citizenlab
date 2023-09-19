@@ -5,14 +5,17 @@ import { ActionPermission } from 'services/actionTakingRules';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';
 
-export type IInitiativeDisabledReason = 'notPermitted';
+export type InitiativePermissionsDisabledReason =
+  // Only the ones set below via setActionPermissions's disabledReason
+  'not_permitted' | 'not_in_group';
 
 export default function useInitiativesPermissions(
   actionDescriptorName: IInitiativeActionDescriptorName
 ) {
-  const [actionPermission, setActionPermission] = useState<
-    ActionPermission<IInitiativeDisabledReason> | null | undefined
-  >(undefined);
+  const [actionPermission, setActionPermission] =
+    useState<ActionPermission<InitiativePermissionsDisabledReason> | null>(
+      null
+    );
   const { data: appConfiguration } = useAppConfiguration();
   const { data: actionDescriptors } = useInitativeActionDescriptors();
   const { data: authUser } = useAuthUser();
@@ -21,7 +24,7 @@ export default function useInitiativesPermissions(
 
   useEffect(() => {
     if (appConfiguration && actionDescriptor) {
-      if (actionDescriptor?.enabled) {
+      if (actionDescriptor.enabled) {
         setActionPermission({
           show: true,
           enabled: true,
@@ -29,7 +32,7 @@ export default function useInitiativesPermissions(
           authenticationRequirements: null,
         });
       } else {
-        switch (actionDescriptor?.disabled_reason) {
+        switch (actionDescriptor.disabled_reason) {
           case 'missing_data': {
             setActionPermission({
               show: true,
@@ -72,11 +75,19 @@ export default function useInitiativesPermissions(
               authenticationRequirements: 'complete_registration',
             });
             break;
+          case 'not_in_group':
+            setActionPermission({
+              show: true,
+              enabled: false,
+              disabledReason: 'not_in_group',
+              authenticationRequirements: null,
+            });
+            break;
           default:
             setActionPermission({
               show: true,
               enabled: false,
-              disabledReason: 'notPermitted',
+              disabledReason: 'not_permitted',
               authenticationRequirements: null,
             });
         }

@@ -67,7 +67,7 @@ const InitiativeMeta = ({ initiativeId }: Props) => {
       '@type': 'WebPage',
       '@id': initiativeUrl,
     },
-    datePublished: initiative.data.attributes.published_at,
+    datePublished: initiative.data.attributes.proposed_at,
   };
 
   const json = {

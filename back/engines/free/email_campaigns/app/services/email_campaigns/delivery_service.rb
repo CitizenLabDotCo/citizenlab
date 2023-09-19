@@ -12,6 +12,7 @@ module EmailCampaigns
       Campaigns::CommentOnIdeaYouFollow,
       Campaigns::CommentOnInitiativeYouFollow,
       Campaigns::CosponsorOfYourInitiative,
+      Campaigns::EventRegistrationConfirmation,
       Campaigns::IdeaMarkedAsSpam,
       Campaigns::IdeaPublished,
       Campaigns::InitiativeAssignedToYou,

@@ -9,28 +9,28 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 // i18n
 import messages from './messages';
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 
 import clHistory from 'utils/cl-router/history';
 
-const InvitationsPage = (props: WrappedComponentProps) => {
+const InvitationsPage = () => {
+  const { formatMessage } = useIntl();
   const location = useLocation();
   const tabs = [
     {
-      label: props.intl.formatMessage(messages.tabInviteUsers),
+      label: formatMessage(messages.tabInviteUsers),
       url: '/admin/users/invitations',
       name: 'index',
     },
     {
-      label: props.intl.formatMessage(messages.tabAllInvitations),
+      label: formatMessage(messages.tabAllInvitations),
       url: '/admin/users/invitations/all',
       name: 'all',
     },
   ];
   const resource = {
-    title: props.intl.formatMessage(messages.invitePeople),
-    subtitle: props.intl.formatMessage(messages.invitationSubtitle),
+    title: formatMessage(messages.invitePeople),
+    subtitle: formatMessage(messages.invitationSubtitle),
   };
 
   const goBack = () => {
@@ -50,12 +50,10 @@ const InvitationsPage = (props: WrappedComponentProps) => {
           title={messages.helmetTitle}
           description={messages.helmetDescription}
         />
-        <div>
-          <RouterOutlet />
-        </div>
+        <RouterOutlet />
       </TabbedResource>
     </>
   );
 };
 
-export default injectIntl(InvitationsPage);
+export default InvitationsPage;

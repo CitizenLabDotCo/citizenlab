@@ -39,7 +39,7 @@ const useAddPermissionCustomField = ({
     mutationFn: addPermissionsCustomField,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: permissionsCustomFieldsKeys.lists({
+        queryKey: permissionsCustomFieldsKeys.list({
           phaseId,
           projectId,
           initiativeContext,

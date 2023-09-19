@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import T from 'components/T';
 import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
@@ -21,8 +21,12 @@ const SelectOptionText = ({
   selectedOptionKey: string;
 }) => {
   const { data: options } = useUserCustomFieldsOptions(customFieldId);
-  const option = options?.data.find(
-    (option) => option.attributes.key === selectedOptionKey
+  const option = useMemo(
+    () =>
+      options?.data.find(
+        (option) => option.attributes.key === selectedOptionKey
+      ),
+    [options, selectedOptionKey]
   );
   return option ? <T value={option.attributes.title_multiloc} /> : null;
 };

@@ -9,6 +9,7 @@ sr-Cyrl:
       "comment_on_your_idea": Коментар на моју идеју
       "comment_on_your_initiative": Коментар на мој предлог
       "cosponsor_of_your_initiative": Корисник прихвата мој позив да буде ко-спонзор мог предлога
+      "event_registration_confirmation": Потврда регистрације догађаја
       "first_idea_published": Објављивање моје прве идеје
       "idea_marked_as_spam": Извештај о нежељеној пошти идеја
       "idea_published": Објављивање моје идеје
@@ -207,12 +208,14 @@ sr-Cyrl:
       cta_accept_invitation: 'Прихватите позив'
       invitation_header: 'Ваш позив је на чекању'
       preheader: '%{organizationName} вам је послао позивницу да се придружите њиховој платформи за учешће пре неколико дана.'
+      invitation_expiry_message: 'Ова позивница истиче за отприлике %{expiryDaysRemaining} дана.'
       subject: 'Позив на чекању за платформу за учешће од %{organizationName}'
     invite_received:
       added_a_message: '%{organizationName} је написао следећу поруку:'
       cta_accept_invitation: 'Прихватите позив'
       invitation_header: 'Ти си позван!'
       invitation_header_message: '%{organizationName} вас је позвао на своју платформу за учешће.'
+      invitation_expiry_message: 'Ова позивница истиче за %{expiryDays} дана.'
       preheader: '%{organizationName} вам је послао позивницу да се придружите њиховој платформи за учешће.'
       subject: 'Позвани сте да се придружите платформи %{organizationName}'
     initiative_published:
@@ -636,6 +639,18 @@ sr-Cyrl:
       body_2: 'Објављени су резултати %{phaseTitle} гласања на платформи %{organizationName}!'
       body_3: 'Препоручујемо вам да прегледате резултате и останите са нама за даља ажурирања о наредним корацима.'
       cta_see_results: 'Погледајте резултате на платформи'
+    event_registration_confirmation:
+      subject: "Ти си у! Ваша регистрација за \"%{eventTitle}\" је потврђена"
+      header_message: "%{firstName}, хвала на регистрацији"
+      event_details:
+        labels:
+          date: 'Датум'
+          location: 'Локација'
+          online_link: 'Онлине линк'
+          description: 'Опис'
+          project: 'Пројекат'
+      cta_go_to_event: 'Погледајте догађај'
+      cta_add_to_calendar: 'Додајте у свој календар'
     voting_phase_started:
       subject: '%{organizationName}: Фаза гласања је почела за %{projectName}'
       preheader: 'Фаза гласања је почела за %{projectName} на платформи за учешће од %{organizationName}'
@@ -658,6 +673,7 @@ sr-Cyrl:
         managers: 'Менаџери'
         admins_assigned_to_a_proposal: 'Администратори додељени предлогу'
         admins_and_managers_assigned_to_the_input: 'Администратори и менаџери додељени улазу'
+        new_attendee: 'Новорегистровани корисник'
         user_who_is_invited_to_cosponsor_a_proposal: 'Корисник који је позван да буде ко-спонзор предлога'
         user_who_is_receiving_admin_rights: 'Корисник који добија администраторска права'
         user_who_is_receiving_folder_moderator_rights: 'Корисник који добија права модератора фолдера'
@@ -677,6 +693,7 @@ sr-Cyrl:
       content_type:
         comments: 'Коментари'
         content_moderation: 'Модерирање садржаја'
+        events: 'Догађаји'
         general: 'Генерал'
         inputs: 'Инпутс'
         internal_comments: 'Интерни коментари'
@@ -731,3 +748,4 @@ sr-Cyrl:
         voting_basket_submitted: 'Гласови се предају'
         7_days_after_invite_is_sent: '7 дана након слања позива'
         7_days_before_the_project_changes_phase: '7 дана пре промене фазе пројекта'
+        registration_to_event: 'Регистрација на догађај'

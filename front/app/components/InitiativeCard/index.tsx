@@ -22,10 +22,6 @@ import useInitiativeImage from 'api/initiative_images/useInitiativeImage';
 import useLocalize from 'hooks/useLocalize';
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 
-const StyledAuthor = styled(Author)`
-  margin-left: -4px;
-`;
-
 const FooterInner = styled.div`
   width: 100%;
   min-height: 50px;
@@ -100,12 +96,14 @@ const InitiativeCard = ({
       imageUrl={initiativeImageUrl}
       title={initiativeTitle}
       body={
-        <StyledAuthor
-          authorId={initiativeAuthorId}
-          createdAt={initiative.data.attributes.published_at}
-          size={34}
-          anonymous={initiative.data.attributes.anonymous}
-        />
+        <Box ml="-4px">
+          <Author
+            authorId={initiativeAuthorId}
+            createdAt={initiative.data.attributes.proposed_at}
+            size={34}
+            anonymous={initiative.data.attributes.anonymous}
+          />
+        </Box>
       }
       footer={
         <>

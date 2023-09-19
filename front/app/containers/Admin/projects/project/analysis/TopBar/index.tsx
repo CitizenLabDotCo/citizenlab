@@ -5,6 +5,9 @@ import {
   colors,
   Title,
   Button,
+  Badge,
+  Text,
+  IconButton,
 } from '@citizenlab/cl2-component-library';
 import GoBackButton from 'components/UI/GoBackButton';
 import clHistory from 'utils/cl-router/history';
@@ -26,7 +29,8 @@ import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import ClickOutside from 'utils/containers/clickOutside';
 import styled from 'styled-components';
-import { omit } from 'lodash-es';
+import useAuthUser from 'api/me/useAuthUser';
+import { get, set } from 'js-cookie';
 
 const TruncatedTitle = styled(Title)`
   white-space: nowrap;
@@ -36,17 +40,32 @@ const TruncatedTitle = styled(Title)`
 `;
 
 const TopBar = () => {
+  const [showLaunchModal, setShowLaunchModal] = useState(false);
+  const { data: authUser } = useAuthUser();
   const [urlParams] = useSearchParams();
   const phaseId = urlParams.get('phase_id') || undefined;
-
-  const showLaunchModal = urlParams.get('showLaunchModal') === 'true';
-  const resetFilters = urlParams.get('reset_filters') === 'true';
-
-  const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const { projectId, analysisId } = useParams() as {
     projectId: string;
     analysisId: string;
   };
+
+  const cookieName =
+    authUser &&
+    `analysis_launch_modal_for_user_id_${authUser.data.id}_analysis_id_${analysisId}_shown`;
+
+  useEffect(() => {
+    if (cookieName) {
+      const cookieValue = get(cookieName);
+      if (cookieValue !== 'true') {
+        setShowLaunchModal(true);
+      }
+    }
+  }, [cookieName, analysisId]);
+
+  const resetFilters = urlParams.get('reset_filters') === 'true';
+
+  const [isFiltersOpen, setIsFiltersOpen] = useState(false);
+
   const { data: project } = useProjectById(projectId);
   const { data: analysis } = useAnalysis(analysisId);
 
@@ -86,6 +105,13 @@ const TopBar = () => {
     setIsFiltersOpen(false);
   }, []);
 
+  const closeLaunchModal = () => {
+    setShowLaunchModal(false);
+    if (cookieName) {
+      set(cookieName, 'true');
+    }
+  };
+
   return (
     <ClickOutside onClickOutside={closeFilters}>
       <Box
@@ -98,13 +124,24 @@ const TopBar = () => {
         background={`${colors.white}`}
         borderBottom={`1px solid ${colors.grey500}`}
         alignContent="center"
-        gap="24px"
-        px="24px"
+        gap="20px"
+        px="20px"
       >
         <GoBackButton onClick={goBack} />
-        <TruncatedTitle variant="h4" m="0px">
-          {localize(projectTitle)}
-        </TruncatedTitle>
+        <Box>
+          <Box display="flex" gap="8px" alignItems="center">
+            <Text m="0px" color="textSecondary">
+              {formatMessage(translations.AIAnalysis)}
+            </Text>
+            <Badge color={colors.textSecondary} className="inverse">
+              BETA
+            </Badge>
+          </Box>
+
+          <TruncatedTitle variant="h4" m="0px">
+            {localize(projectTitle)}
+          </TruncatedTitle>
+        </Box>
         <Button
           buttonStyle="secondary"
           icon="filter"
@@ -113,7 +150,7 @@ const TopBar = () => {
         >
           {formatMessage(translations.filters)}
         </Button>
-        <FilterItems filters={omit(filters, 'tag_ids', 'search')} isEditable />
+        <FilterItems filters={filters} isEditable />
         <Box marginLeft="auto">
           <SearchInput
             key={urlParams.get('reset_filters')}
@@ -124,14 +161,22 @@ const TopBar = () => {
           />
         </Box>
         <Tasks />
-        {isFiltersOpen && <Filters onClose={() => setIsFiltersOpen(false)} />}
-        <Modal
-          opened={showLaunchModal}
-          close={() => updateSearchParams({ showLaunchModal: false })}
-        >
-          <LaunchModal
-            onClose={() => updateSearchParams({ showLaunchModal: false })}
+        {window.Intercom && (
+          <IconButton
+            iconName="info-solid"
+            a11y_buttonActionMessage={formatMessage(
+              translations.supportArticle
+            )}
+            onClick={() => {
+              window.Intercom('showArticle', 8316692);
+            }}
+            iconColor={colors.grey800}
+            iconColorOnHover={colors.black}
           />
+        )}
+        {isFiltersOpen && <Filters onClose={() => setIsFiltersOpen(false)} />}
+        <Modal opened={showLaunchModal} close={closeLaunchModal}>
+          <LaunchModal onClose={closeLaunchModal} />
         </Modal>
       </Box>
     </ClickOutside>

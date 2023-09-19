@@ -9,6 +9,7 @@ pl:
       "comment_on_your_idea": Komentarz do mojego pomysłu
       "comment_on_your_initiative": Komentarz do mojej propozycji
       "cosponsor_of_your_initiative": Użytkownik akceptuje moje zaproszenie do współsponsorowania mojej propozycji.
+      "event_registration_confirmation": Potwierdzenie rejestracji na wydarzenie
       "first_idea_published": Publikacja mojego pierwszego pomysłu
       "idea_marked_as_spam": Raport dot. pomysłów oznaczonych jako spam
       "idea_published": Publikacja mojego pomysłu
@@ -207,12 +208,14 @@ pl:
       cta_accept_invitation: 'Przyjmij zaproszenie'
       invitation_header: 'Twoje zaproszenie jest w toku'
       preheader: '%{organizationName} wysłał do Ciebie zaproszenie do udziału w platformie kilka dni temu.'
+      invitation_expiry_message: 'Zaproszenie wygasa za około %{expiryDaysRemaining} dni.'
       subject: 'W oczekiwaniu na zaproszenie na platformę uczestnictwa %{organizationName}'
     invite_received:
       added_a_message: '%{organizationName} napisał następującą wiadomość:'
       cta_accept_invitation: 'Przyjmij zaproszenie'
       invitation_header: 'Jesteś zaproszony!'
       invitation_header_message: '%{organizationName} zaprosił cię na ich platformę uczestnictwa.'
+      invitation_expiry_message: 'Zaproszenie wygasa za %{expiryDays} dni.'
       preheader: '%{organizationName} wysłał do Ciebie zaproszenie do przyłączenia się do jego platformy uczestnictwa.'
       subject: 'Jesteś zaproszony do platformy %{organizationName}'
     initiative_published:
@@ -636,6 +639,18 @@ pl:
       body_2: '%{organizationName} Wyniki głosowania na platformie %{phaseTitle} zostały opublikowane!'
       body_3: 'Zachęcamy do zapoznania się z wynikami i czekania na dalsze aktualizacje dotyczące kolejnych kroków.'
       cta_see_results: 'Zobacz wyniki na platformie'
+    event_registration_confirmation:
+      subject: "Jesteś na miejscu! Twoja rejestracja na \"%{eventTitle}\" została potwierdzona"
+      header_message: "%{firstName}dzięki za rejestrację na"
+      event_details:
+        labels:
+          date: 'Data'
+          location: 'Lokalizacja'
+          online_link: 'Link online'
+          description: 'Opis'
+          project: 'Projekt'
+      cta_go_to_event: 'Zobacz wydarzenie'
+      cta_add_to_calendar: 'Dodaj do swojego kalendarza'
     voting_phase_started:
       subject: '%{organizationName}Rozpoczęła się faza głosowania na %{projectName}'
       preheader: 'Rozpoczęła się faza głosowania na stronie %{projectName} na platformie uczestnictwa %{organizationName}.'
@@ -658,6 +673,7 @@ pl:
         managers: 'Menedżerowie'
         admins_assigned_to_a_proposal: 'Administratorzy przypisani do propozycji'
         admins_and_managers_assigned_to_the_input: 'Administratorzy i menedżerowie przypisani do wejścia'
+        new_attendee: 'Nowo zarejestrowany użytkownik'
         user_who_is_invited_to_cosponsor_a_proposal: 'Użytkownik zaproszony do współsponsorowania propozycji'
         user_who_is_receiving_admin_rights: 'Użytkownik, który otrzymuje uprawnienia administratora'
         user_who_is_receiving_folder_moderator_rights: 'Użytkownik, który otrzymuje uprawnienia moderatora folderu'
@@ -677,6 +693,7 @@ pl:
       content_type:
         comments: 'Komentarze'
         content_moderation: 'Moderacja treści'
+        events: 'Wydarzenia'
         general: 'Ogólne'
         inputs: 'Wejścia'
         internal_comments: 'Uwagi wewnętrzne'
@@ -731,3 +748,4 @@ pl:
         voting_basket_submitted: 'Głosy są oddawane'
         7_days_after_invite_is_sent: '7 dni po wysłaniu zaproszenia'
         7_days_before_the_project_changes_phase: '7 dni przed zmianą fazy projektu'
+        registration_to_event: 'Rejestracja na wydarzenie'

@@ -35,6 +35,9 @@ module Frontend
       when ProjectFolders::Folder
         subroute = 'folders'
         slug = model_instance.slug
+      when Event
+        subroute = 'events'
+        slug = model_instance.id
       else
         subroute = nil
         slug = nil

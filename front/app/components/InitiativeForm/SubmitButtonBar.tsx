@@ -5,7 +5,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import Button from 'components/UI/Button';
 import { media } from 'utils/styleUtils';
 import messages from './messages';
-import useInitiativeReviewRequired from 'hooks/useInitiativeReviewRequired';
+import useInitiativeReviewRequired from 'containers/InitiativesShow/hooks/useInitiativeReviewRequired';
 
 const StyledButton = styled(Button)`
   margin-right: 10px;

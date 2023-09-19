@@ -214,7 +214,7 @@ const CommentsMoreActions = ({
         close={closeSpamModal}
         header={<FormattedMessage {...messages.reportAsSpamModalTitle} />}
       >
-        <SpamReportForm resourceId={comment.id} resourceType="comments" />
+        <SpamReportForm targetId={comment.id} targetType="comments" />
       </Modal>
     </>
   );

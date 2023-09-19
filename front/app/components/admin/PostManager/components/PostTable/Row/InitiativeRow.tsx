@@ -37,8 +37,11 @@ import useUpdateInitiative from 'api/initiatives/useUpdateInitiative';
 
 // types
 import { IInitiativeData } from 'api/initiatives/types';
-import useInitiativeCosponsorsRequired from 'hooks/useInitiativeCosponsorsRequired';
+import useInitiativeCosponsorsRequired from 'containers/InitiativesShow/hooks/useInitiativeCosponsorsRequired';
 import useInitiativeAllowedTransitions from 'api/initiative_allowed_transitions/useInitiativeAllowedTransitions';
+import { timeAgo } from 'utils/dateUtils';
+import useLocale from 'hooks/useLocale';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
   type: ManagerType;
@@ -79,6 +82,7 @@ const InitiativeRow = ({
   const { data: allowedTransitions } = useInitiativeAllowedTransitions(
     initiative.id
   );
+  const locale = useLocale();
   const cosponsorsRequired = useInitiativeCosponsorsRequired();
 
   const [_collected, drag] = useDrag({
@@ -205,6 +209,11 @@ const InitiativeRow = ({
         {cosponsorsRequired && (
           <Cell>
             {attrs.cosponsorships.filter((c) => c.status === 'accepted').length}
+          </Cell>
+        )}
+        {!isNilOrError(locale) && (
+          <Cell>
+            {timeAgo(Date.parse(initiative.attributes.created_at), locale)}
           </Cell>
         )}
       </StyledRow>

@@ -12,7 +12,13 @@ import {
 // components
 import Title from './title';
 import ValuesList from './valuesList';
-import { Box, Button, Icon, colors } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Button,
+  Icon,
+  colors,
+  useBreakpoint,
+} from '@citizenlab/cl2-component-library';
 
 // style
 import styled from 'styled-components';
@@ -90,6 +96,7 @@ interface Props extends DefaultProps {
   selected: string[];
   className?: string;
   filterSelectorStyle?: 'button' | 'text';
+  minWidth?: string;
 }
 
 const FilterSelector = ({
@@ -103,6 +110,7 @@ const FilterSelector = ({
   top,
   left,
   mobileLeft,
+  minWidth,
   right,
   mobileRight,
   name,
@@ -116,6 +124,7 @@ const FilterSelector = ({
 }: Props) => {
   const baseID = `filter-${Math.floor(Math.random() * 10000000)}`;
   const [opened, setOpened] = useState(false);
+  const isMobileOrSmaller = useBreakpoint('phone');
 
   const getTitle = (
     selection: string[],
@@ -196,7 +205,12 @@ const FilterSelector = ({
       }`}
     >
       {filterSelectorStyle === 'button' ? (
-        <Button height="38px" borderRadius="24px" onClick={toggleExpanded}>
+        <Button
+          height={isMobileOrSmaller ? '32px' : '36px'}
+          borderRadius="24px"
+          onClick={toggleExpanded}
+          minWidth={minWidth ? minWidth : undefined}
+        >
           <Box display="flex" gap="8px">
             {currentTitle}
             <Icon fill={colors.white} name={'chevron-down'} />
