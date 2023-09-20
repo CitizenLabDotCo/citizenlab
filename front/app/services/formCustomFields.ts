@@ -1,8 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { IRelationship, Multiloc } from 'typings';
-import submissionsCountKeys from 'api/submission_count/keys';
-import { queryClient } from 'utils/cl-react-query/queryClient';
 
 // We can add more input types here when we support them
 export type ICustomFieldInputType =
@@ -200,21 +198,4 @@ export function formCustomFieldOptionStream(
     apiEndpoint,
     ...streamParams,
   });
-}
-
-export async function deleteFormResults(projectId: string, phaseId?: string) {
-  const deleteApiEndpoint = phaseId
-    ? `${API_PATH}/phases/${phaseId}/inputs`
-    : `${API_PATH}/projects/${projectId}/inputs`;
-
-  const response = await streams.delete(
-    deleteApiEndpoint,
-    `${projectId}/${phaseId}`
-  );
-
-  queryClient.invalidateQueries(
-    submissionsCountKeys.item({ projectId, phaseId })
-  );
-
-  return response;
 }
