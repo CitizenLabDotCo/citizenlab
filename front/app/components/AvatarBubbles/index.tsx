@@ -137,6 +137,7 @@ export const AvatarBubbles = ({
     limit: defaultLimit,
     context_type: context?.type,
     context_id: context?.id,
+    enabled: !avatarIds,
   });
 
   const avatarsWithIdsQueries = useAvatarsWithIds(avatarIds);
