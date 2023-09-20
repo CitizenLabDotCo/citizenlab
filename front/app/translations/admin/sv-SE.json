@@ -1500,6 +1500,7 @@
   "app.containers.AdminPage.ProjectEvents.editButtonLabel": "Redigera",
   "app.containers.AdminPage.ProjectEvents.editEventTitle": "Redigera evenemang",
   "app.containers.AdminPage.ProjectEvents.eventDates": "Datum för evenemang",
+  "app.containers.AdminPage.ProjectEvents.eventImage": "Bild av evenemang",
   "app.containers.AdminPage.ProjectEvents.eventLocation": "Plats för evenemanget",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabel": "Bilagor (max 50 MB)",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabelTooltip": "Bilagor visas under evenemangsbeskrivningen.",
