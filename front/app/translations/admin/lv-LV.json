@@ -1500,6 +1500,7 @@
   "app.containers.AdminPage.ProjectEvents.editButtonLabel": "Rediģēt",
   "app.containers.AdminPage.ProjectEvents.editEventTitle": "Rediģēt notikumu",
   "app.containers.AdminPage.ProjectEvents.eventDates": "Notikumu datumi",
+  "app.containers.AdminPage.ProjectEvents.eventImage": "Pasākuma attēls",
   "app.containers.AdminPage.ProjectEvents.eventLocation": "Pasākuma vieta",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabel": "Pielikumi (ne vairāk kā 50 MB)",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabelTooltip": "Pielikumi ir redzami zem notikuma apraksta.",
