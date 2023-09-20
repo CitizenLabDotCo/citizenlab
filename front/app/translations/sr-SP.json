@@ -835,6 +835,7 @@
   "app.containers.DisabledAccount.title": "Ваш налог је привремено онемогућен",
   "app.containers.EventsShow.addToCalendar": "Додај у календар",
   "app.containers.EventsShow.attending": "присуствовање",
+  "app.containers.EventsShow.editEvent": "Уредите догађај",
   "app.containers.EventsShow.emailSharingBody": "Присуствујте овом догађају: {eventTitle} у {eventLocation}",
   "app.containers.EventsShow.eventFrom": "Догађај од \"{eventTitle}\"",
   "app.containers.EventsShow.goBack": "Вратити се",
