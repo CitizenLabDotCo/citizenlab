@@ -1,9 +1,6 @@
 import React, { memo, useState } from 'react';
 import clHistory from 'utils/cl-router/history';
 
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
 // components
 import HasPermission from 'components/HasPermission';
 import MoreActionsMenu from 'components/UI/MoreActionsMenu';
@@ -13,6 +10,7 @@ import SpamReportForm from 'containers/SpamReport';
 // hooks
 import useAuthUser from 'api/me/useAuthUser';
 import useProjectById from 'api/projects/useProjectById';
+import usePhases from 'api/phases/usePhases';
 
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -24,6 +22,10 @@ import useDeleteIdea from 'api/ideas/useDeleteIdea';
 
 // styling
 import styled from 'styled-components';
+
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import { getCurrentPhase } from 'api/phases/utils';
 
 // typings
 import { IIdeaData } from 'api/ideas/types';
@@ -47,6 +49,7 @@ const IdeaMoreActions = memo(({ idea, className, projectId }: Props) => {
   const { data: authUser } = useAuthUser();
   const { data: project } = useProjectById(projectId);
   const { mutate: deleteIdea } = useDeleteIdea();
+  const { data: phases } = usePhases(projectId);
 
   const openSpamModal = () => {
     setIsSpamModalVisible(true);
@@ -82,6 +85,28 @@ const IdeaMoreActions = memo(({ idea, className, projectId }: Props) => {
   ) {
     const ideaId = idea.id;
     const processType = project.data.attributes.process_type;
+    const currentPhase = getCurrentPhase(phases?.data);
+    const isIdeationPhase =
+      currentPhase?.attributes.participation_method === 'ideation';
+
+    const actions = [
+      {
+        label: <FormattedMessage {...messages.reportAsSpam} />,
+        handler: openSpamModal,
+      },
+      ...(processType === 'timeline' && !isIdeationPhase
+        ? []
+        : [
+            {
+              label: <FormattedMessage {...messages.editPost} />,
+              handler: onEditIdea,
+            },
+            {
+              label: <FormattedMessage {...messages.deletePost} />,
+              handler: onDeleteIdea(ideaId, processType),
+            },
+          ]),
+    ];
 
     return (
       <Container className={className}>
@@ -91,20 +116,7 @@ const IdeaMoreActions = memo(({ idea, className, projectId }: Props) => {
               labelAndTitle={<FormattedMessage {...messages.moreOptions} />}
               showLabel={false}
               id="e2e-idea-more-actions"
-              actions={[
-                {
-                  label: <FormattedMessage {...messages.reportAsSpam} />,
-                  handler: openSpamModal,
-                },
-                {
-                  label: <FormattedMessage {...messages.editPost} />,
-                  handler: onEditIdea,
-                },
-                {
-                  label: <FormattedMessage {...messages.deletePost} />,
-                  handler: onDeleteIdea(ideaId, processType),
-                },
-              ]}
+              actions={actions}
             />
             <HasPermission.No>
               <MoreActionsMenu
