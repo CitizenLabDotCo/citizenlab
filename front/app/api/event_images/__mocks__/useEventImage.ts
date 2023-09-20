@@ -43,7 +43,12 @@ export const eventData = {
   },
   relationships: {
     event_images: {
-      data: [],
+      data: [
+        {
+          id: '30c1b604-71fd-4ac4-9cd7-3e5601d9cb0f',
+          type: 'image',
+        },
+      ],
     },
     project: {
       data: {
