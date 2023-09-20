@@ -23,6 +23,7 @@ import {
 import Map from './components/map';
 import { leafletMapClicked$ } from 'components/UI/LeafletMap/events';
 import Modal from 'components/UI/Modal';
+import ImagesDropzone from 'components/UI/ImagesDropzone';
 
 // router
 import clHistory from 'utils/cl-router/history';
@@ -39,6 +40,9 @@ import useEvent from 'api/events/useEvent';
 import useEventFiles from 'api/event_files/useEventFiles';
 import useAddEventFile from 'api/event_files/useAddEventFile';
 import useDeleteEventFile from 'api/event_files/useDeleteEventFile';
+import useEventImage from 'api/event_images/useEventImage';
+import useAddEventImage from 'api/event_images/useAddEventImage';
+import useDeleteEventImage from 'api/event_images/useDeleteEventImage';
 
 // typings
 import { Multiloc, CLError, UploadFile } from 'typings';
@@ -72,9 +76,18 @@ const AdminProjectEventEdit = () => {
   const { mutate: addEvent } = useAddEvent();
   const { data: event, isInitialLoading } = useEvent(id);
   const { mutate: updateEvent } = useUpdateEvent();
+
+  // event files
   const { mutate: addEventFile } = useAddEventFile();
   const { mutate: deleteEventFile } = useDeleteEventFile();
   const { data: remoteEventFiles } = useEventFiles(id);
+
+  // event image
+  const { mutate: addEventImage } = useAddEventImage();
+  const { mutate: deleteEventImage } = useDeleteEventImage();
+  const { data: remoteEventImage } = useEventImage(event?.data);
+
+  // state
   const [errors, setErrors] = useState<ErrorType>({});
   const [apiErrors, setApiErrors] = useState<ApiErrorType>({});
   const [saving, setSaving] = useState<boolean>(false);
@@ -82,24 +95,39 @@ const AdminProjectEventEdit = () => {
   const [eventFiles, setEventFiles] = useState<UploadFile[]>([]);
   const [attributeDiff, setAttributeDiff] = useState<IEventProperties>({});
   const [mapModalVisible, setMapModalVisible] = useState(false);
+  const [uploadedImage, setUploadedImage] = useState<UploadFile | null>(null);
   const [locationPoint, setLocationPoint] = useState<GeoJSON.Point | null>(
-    null
+    event?.data?.attributes?.location_point_geojson || null
   );
-  const [address1, setAddress1] = useState('');
   const [eventFilesToRemove, setEventFilesToRemove] = useState<UploadFile[]>(
     []
   );
   const [successfulGeocode, setSuccessfulGeocode] = useState(false);
 
+  // Remote values
   const remotePoint = event?.data?.attributes?.location_point_geojson;
-  const remoteAddress1 = event?.data?.attributes?.address_1;
 
+  const eventAttrs = event
+    ? { ...event?.data.attributes, ...attributeDiff }
+    : { ...attributeDiff };
+
+  // Set image value to remote image if present
   useEffect(() => {
-    if (!isNilOrError(remoteAddress1)) {
-      setAddress1(() => remoteAddress1);
+    async function convertRemoteImage() {
+      if (remoteEventImage) {
+        const imageUrl = remoteEventImage.data.attributes.versions.medium;
+        if (imageUrl) {
+          const imageFile = await convertUrlToUploadFile(imageUrl);
+          setUploadedImage(imageFile);
+        }
+      }
     }
-  }, [remoteAddress1]);
+    if (remoteEventImage) {
+      convertRemoteImage();
+    }
+  }, [remoteEventImage]);
 
+  // If there is already a remote point, set successful geocode value to true
   useEffect(() => {
     if (!isNilOrError(remotePoint)) {
       setLocationPoint(() => remotePoint);
@@ -107,6 +135,7 @@ const AdminProjectEventEdit = () => {
     }
   }, [remotePoint]);
 
+  // Listen for map clicks to update the location point
   useEffect(() => {
     const subscriptions = [
       leafletMapClicked$.subscribe(async (latLng) => {
@@ -124,10 +153,11 @@ const AdminProjectEventEdit = () => {
     };
   }, []);
 
+  // When address 1 is updated, geocode the location point to match
   useEffect(() => {
-    if (address1 !== event?.data.attributes.address_1) {
+    if (eventAttrs.address_1 !== event?.data.attributes.address_1) {
       const delayDebounceFn = setTimeout(async () => {
-        const point = await geocode(address1);
+        const point = await geocode(eventAttrs.address_1);
         setLocationPoint(point);
         setSuccessfulGeocode(!!point);
       }, 500);
@@ -136,8 +166,9 @@ const AdminProjectEventEdit = () => {
     }
     setSuccessfulGeocode(false);
     return;
-  }, [address1, event, attributeDiff]);
+  }, [eventAttrs.address_1, event]);
 
+  // Set event files to remote event files
   useEffect(() => {
     if (!isNilOrError(remoteEventFiles)) {
       (async () => {
@@ -207,6 +238,16 @@ const AdminProjectEventEdit = () => {
       }
     };
 
+  const handleOnImageAdd = (imageFiles: UploadFile[]) => {
+    setSubmitState('enabled');
+    setUploadedImage(imageFiles[0]);
+  };
+
+  const handleOnImageRemove = () => {
+    setSubmitState('enabled');
+    setUploadedImage(null);
+  };
+
   const handleEventFileOnAdd = (newFile: UploadFile) => {
     setSubmitState('enabled');
     setEventFiles([...eventFiles, newFile]);
@@ -220,6 +261,31 @@ const AdminProjectEventEdit = () => {
         (eventFile) => eventFile.base64 !== eventFileToRemove.base64
       )
     );
+  };
+
+  const handleEventImage = async (data: IEvent) => {
+    const hasRemoteImage = !isNilOrError(remoteEventImage);
+    const remoteImageId = hasRemoteImage
+      ? event?.data?.relationships?.event_images?.data?.[0].id
+      : undefined;
+    if (
+      (uploadedImage === null || !uploadedImage.remote) &&
+      hasRemoteImage &&
+      remoteImageId
+    ) {
+      deleteEventImage({
+        eventId: id,
+        imageId: remoteImageId,
+      });
+    }
+    if (uploadedImage && !uploadedImage.remote) {
+      addEventImage({
+        eventId: data.data.id,
+        image: {
+          image: uploadedImage.base64,
+        },
+      });
+    }
   };
 
   const handleEventFiles = async (data: IEvent) => {
@@ -277,7 +343,11 @@ const AdminProjectEventEdit = () => {
       locationPoint !== event?.data.attributes.location_point_geojson;
 
     const locationPointUpdated =
-      address1 || successfulGeocode ? locationPoint : null;
+      eventAttrs.address_1 || successfulGeocode ? locationPoint : null;
+
+    const imageChanged =
+      (uploadedImage !== null && !uploadedImage.remote) ||
+      (uploadedImage === null && remoteEventImage !== undefined);
 
     e.preventDefault();
     try {
@@ -287,6 +357,13 @@ const AdminProjectEventEdit = () => {
       if (isEmpty(attributeDiff) && eventFilesToRemove) {
         if (event) {
           handleEventFiles(event);
+        }
+      }
+
+      // If only image has changed
+      if (isEmpty(attributeDiff) && imageChanged) {
+        if (event) {
+          handleEventImage(event);
         }
       }
 
@@ -306,8 +383,9 @@ const AdminProjectEventEdit = () => {
             },
             {
               onSuccess: async (data) => {
-                setSubmitState('success');
+                handleEventImage(data);
                 handleEventFiles(data);
+                setSubmitState('success');
               },
               onError: async (errors) => {
                 setSaving(false);
@@ -330,6 +408,7 @@ const AdminProjectEventEdit = () => {
               onSuccess: async (data) => {
                 setSubmitState('success');
                 handleEventFiles(data);
+                handleEventImage(data);
                 clHistory.push(`/admin/projects/${projectId}/events`);
               },
               onError: async (errors) => {
@@ -354,10 +433,6 @@ const AdminProjectEventEdit = () => {
   };
 
   const descriptionLabel = <FormattedMessage {...messages.descriptionLabel} />;
-
-  const eventAttrs = event
-    ? { ...event?.data.attributes, ...attributeDiff }
-    : { ...attributeDiff };
 
   if (event !== undefined && isInitialLoading) {
     return <Spinner />;
@@ -393,10 +468,22 @@ const AdminProjectEventEdit = () => {
                 withCTAButton
               />
             </Box>
-
             <ErrorComponent apiErrors={get(errors, 'description_multiloc')} />
           </SectionField>
-
+          <SectionField>
+            <Label>{formatMessage(messages.eventImage)}</Label>
+            <ImagesDropzone
+              images={uploadedImage ? [uploadedImage] : []}
+              maxImagePreviewWidth="360px"
+              objectFit="contain"
+              acceptedFileTypes={{
+                'image/*': ['.jpg', '.jpeg', '.png'],
+              }}
+              onAdd={handleOnImageAdd}
+              onRemove={handleOnImageRemove}
+              imagePreviewRatio={1 / 2}
+            />
+          </SectionField>
           <Title
             variant="h4"
             fontWeight="bold"
@@ -472,7 +559,6 @@ const AdminProjectEventEdit = () => {
                 value={eventAttrs.address_1 || ''}
                 onChange={(value) => {
                   handleAddress1OnChange(value);
-                  setAddress1(value);
                 }}
                 placeholder={formatMessage(messages.searchForLocation)}
               />

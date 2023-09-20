@@ -97,6 +97,10 @@ export default defineMessages({
     defaultMessage:
       'Refine where your event location marker is shown by clicking on the map:',
   },
+  eventImage: {
+    id: 'app.containers.AdminPage.ProjectEvents.eventImage',
+    defaultMessage: 'Event image',
+  },
   addressOneLabel: {
     id: 'app.containers.AdminPage.ProjectEvents.addressOneLabel',
     defaultMessage: 'Address 1',
