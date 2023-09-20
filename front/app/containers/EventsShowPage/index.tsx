@@ -77,8 +77,7 @@ const EventsShowPage = () => {
   const { data: project } = useProjectById(
     event?.data.relationships.project.data.id
   );
-  const remoteImageId = event?.data.relationships?.event_images?.data[0]?.id;
-  const { data: eventImage } = useEventImage(eventId, remoteImageId);
+  const { data: eventImage } = useEventImage(event?.data);
   const largeImage = eventImage?.data.attributes?.versions?.large;
 
   const projectTitleLocalized = localize(

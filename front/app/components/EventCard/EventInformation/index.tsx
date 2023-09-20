@@ -56,8 +56,7 @@ const EventInformation = ({ event, titleFontSize }: Props) => {
   const theme = useTheme();
 
   // event image
-  const remoteImageId = event?.relationships?.event_images?.data?.[0]?.id;
-  const { data: eventImage } = useEventImage(event.id, remoteImageId);
+  const { data: eventImage } = useEventImage(event);
   const mediumImage = eventImage?.data?.attributes?.versions?.medium;
 
   const startAtMoment = moment(event.attributes.start_at);
@@ -81,7 +80,7 @@ const EventInformation = ({ event, titleFontSize }: Props) => {
           display="flex"
           justifyContent="space-between"
           flexDirection={theme.isRtl ? 'row-reverse' : 'row'}
-          mt={remoteImageId ? '32px' : 'auto'}
+          mt={eventImage ? '32px' : 'auto'}
         >
           <Title
             variant="h4"

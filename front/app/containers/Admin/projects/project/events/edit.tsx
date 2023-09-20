@@ -76,17 +76,18 @@ const AdminProjectEventEdit = () => {
   const { mutate: addEvent } = useAddEvent();
   const { data: event, isInitialLoading } = useEvent(id);
   const { mutate: updateEvent } = useUpdateEvent();
+
+  // event files
   const { mutate: addEventFile } = useAddEventFile();
   const { mutate: deleteEventFile } = useDeleteEventFile();
+  const { data: remoteEventFiles } = useEventFiles(id);
+
+  // event image
   const { mutate: addEventImage } = useAddEventImage();
   const { mutate: deleteEventImage } = useDeleteEventImage();
-  const remoteEventImageId =
-    event?.data.relationships?.event_images?.data?.[0]?.id;
-  const { data: remoteEventImage } = useEventImage(
-    id,
-    remoteEventImageId || undefined
-  );
-  const { data: remoteEventFiles } = useEventFiles(id);
+  const { data: remoteEventImage } = useEventImage(event?.data);
+
+  // state
   const [errors, setErrors] = useState<ErrorType>({});
   const [apiErrors, setApiErrors] = useState<ApiErrorType>({});
   const [saving, setSaving] = useState<boolean>(false);

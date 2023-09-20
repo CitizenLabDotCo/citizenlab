@@ -9,7 +9,7 @@ const eventImagesKeys = {
     { ...baseKey, operation: 'list', parameters: { eventId } },
   ],
   items: () => [{ ...baseKey, operation: 'item' }],
-  item: ({ eventId, imageId }: { eventId: string; imageId?: string }) => [
+  item: ({ eventId, imageId }: { eventId?: string; imageId?: string }) => [
     {
       ...baseKey,
       operation: 'item',

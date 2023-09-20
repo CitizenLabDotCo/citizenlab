@@ -7,6 +7,7 @@ import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { eventImageData } from './__mocks__/useEventImage';
+import { eventData } from 'api/event_images/__mocks__/useEventImage';
 
 const apiPath = '*/events/:eventId/images/:imageId';
 
@@ -21,7 +22,7 @@ describe('useEventImage', () => {
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useEventImage('1', '2'), {
+    const { result, waitFor } = renderHook(() => useEventImage(eventData), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -40,7 +41,7 @@ describe('useEventImage', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useEventImage('1', '2'), {
+    const { result, waitFor } = renderHook(() => useEventImage(eventData), {
       wrapper: createQueryClientWrapper(),
     });
 

@@ -20,7 +20,7 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 // api
-import { isAdmin } from 'services/permissions/roles';
+import { isAdmin, isProjectModerator } from 'services/permissions/roles';
 import useAuthUser from 'api/me/useAuthUser';
 import { IEventData } from 'api/events/types';
 
@@ -43,6 +43,7 @@ const TopBar = ({ project, event }: Props) => {
   const user = useAuthUser();
   const { formatMessage } = useIntl();
   const isAdminUser = isAdmin(user.data);
+  const isModerator = isProjectModerator(user.data, project.id);
 
   return (
     <Bar>
@@ -56,7 +57,7 @@ const TopBar = ({ project, event }: Props) => {
               : clHistory.push(`/projects/${project.attributes.slug}`);
           }}
         />
-        {isAdminUser && event && (
+        {(isAdminUser || isModerator) && event && (
           <Button
             buttonStyle="secondary"
             m="0px"
