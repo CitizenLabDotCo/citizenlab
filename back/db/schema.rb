@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_06_104541) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_20_100436) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -1135,7 +1135,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_06_104541) do
     t.integer "posting_limited_max", default: 1
     t.string "document_annotation_embed_url"
     t.boolean "allow_anonymous_participation", default: false, null: false
-    t.jsonb "campaigns_settings", default: {}
     t.string "voting_method"
     t.integer "voting_max_votes_per_idea"
     t.jsonb "voting_term_singular_multiloc", default: {}
