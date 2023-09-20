@@ -835,6 +835,7 @@
   "app.containers.DisabledAccount.title": "Äre Kont gouf temporär deaktivéiert",
   "app.containers.EventsShow.addToCalendar": "Füügt an de Kalenner",
   "app.containers.EventsShow.attending": "matmaachen",
+  "app.containers.EventsShow.editEvent": "Event änneren",
   "app.containers.EventsShow.emailSharingBody": "Bei dësem Event deelhuelen: {eventTitle} um {eventLocation}",
   "app.containers.EventsShow.eventFrom": "Event vun \"{eventTitle}\"",
   "app.containers.EventsShow.goBack": "Géi zréck",
