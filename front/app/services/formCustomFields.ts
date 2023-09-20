@@ -202,47 +202,6 @@ export function formCustomFieldOptionStream(
   });
 }
 
-export interface Answer {
-  answer: Multiloc;
-  responses: number;
-}
-
-export interface Result {
-  inputType: string;
-  question: Multiloc;
-  totalResponses: number;
-  answers: Answer[];
-  required: boolean;
-  customFieldId: string;
-}
-
-export interface SurveyResultData {
-  type: 'survey_results';
-  attributes: {
-    results: Result[];
-    totalSubmissions: number;
-  };
-}
-
-export interface SurveyResultsType {
-  data: SurveyResultData;
-}
-
-export function formCustomFieldsResultsStream(
-  projectId: string,
-  streamParams: IStreamParams | null = null,
-  phaseId?: string | null
-) {
-  const apiEndpoint = phaseId
-    ? `${API_PATH}/phases/${phaseId}/survey_results`
-    : `${API_PATH}/projects/${projectId}/survey_results`;
-  return streams.get<SurveyResultsType>({
-    apiEndpoint,
-    cacheStream: false,
-    ...streamParams,
-  });
-}
-
 export async function deleteFormResults(projectId: string, phaseId?: string) {
   const deleteApiEndpoint = phaseId
     ? `${API_PATH}/phases/${phaseId}/inputs`

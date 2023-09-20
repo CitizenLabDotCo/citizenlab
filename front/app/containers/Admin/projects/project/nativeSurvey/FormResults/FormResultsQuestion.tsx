@@ -16,7 +16,7 @@ import { get, snakeCase } from 'lodash-es';
 
 // typings
 import { Locale, Multiloc } from 'typings';
-import { Answer } from 'services/formCustomFields';
+import { Answer } from 'api/survey_results/types';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import AnalysisLaunchButton from './AnalysisLaunchButton';
 import AnalysesList from './AnalysesList';

@@ -24,7 +24,7 @@ import messages from '../messages';
 import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
-import useFormResults from 'hooks/useFormResults';
+import useFormResults from 'api/survey_results/useSurveyResults';
 import useProjectById from 'api/projects/useProjectById';
 import usePhase from 'api/phases/usePhase';
 
@@ -43,7 +43,7 @@ const FormResults = ({ intl: { formatMessage } }: WrappedComponentProps) => {
   const phaseId = urlParams.get('phase_id');
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
-  const formResults = useFormResults({
+  const { data: formResults } = useFormResults({
     projectId,
     phaseId,
   });
@@ -54,7 +54,7 @@ const FormResults = ({ intl: { formatMessage } }: WrappedComponentProps) => {
     return null;
   }
 
-  const { totalSubmissions, results } = formResults;
+  const { totalSubmissions, results } = formResults.data.attributes;
 
   const handleDownloadResults = async () => {
     try {
