@@ -1500,6 +1500,7 @@
   "app.containers.AdminPage.ProjectEvents.editButtonLabel": "Edit",
   "app.containers.AdminPage.ProjectEvents.editEventTitle": "Editar l'esdeveniment",
   "app.containers.AdminPage.ProjectEvents.eventDates": "Dates de l'esdeveniment",
+  "app.containers.AdminPage.ProjectEvents.eventImage": "Imatge de l'esdeveniment",
   "app.containers.AdminPage.ProjectEvents.eventLocation": "Lloc de l'esdeveniment",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabel": "Attachments (max 50MB)",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabelTooltip": "Els fitxers adjunts es mostren a sota de la descripció de l'esdeveniment.",
