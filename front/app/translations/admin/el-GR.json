@@ -1500,6 +1500,7 @@
   "app.containers.AdminPage.ProjectEvents.editButtonLabel": "Edit",
   "app.containers.AdminPage.ProjectEvents.editEventTitle": "Επεξεργασία εκδήλωσης",
   "app.containers.AdminPage.ProjectEvents.eventDates": "Ημερομηνίες εκδηλώσεων",
+  "app.containers.AdminPage.ProjectEvents.eventImage": "Εικόνα συμβάντος",
   "app.containers.AdminPage.ProjectEvents.eventLocation": "Τοποθεσία εκδήλωσης",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabel": "Attachments (max 50MB)",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabelTooltip": "Τα συνημμένα αρχεία εμφανίζονται κάτω από την περιγραφή της εκδήλωσης.",
