@@ -835,6 +835,7 @@
   "app.containers.DisabledAccount.title": "crwdns1063530:0crwdne1063530:0",
   "app.containers.EventsShow.addToCalendar": "crwdns1063532:0crwdne1063532:0",
   "app.containers.EventsShow.attending": "crwdns1063534:0crwdne1063534:0",
+  "app.containers.EventsShow.editEvent": "crwdns1071636:0crwdne1071636:0",
   "app.containers.EventsShow.emailSharingBody": "crwdns1063536:0{eventTitle}crwdnd1063536:0{eventLocation}crwdne1063536:0",
   "app.containers.EventsShow.eventFrom": "crwdns1063538:0{eventTitle}crwdne1063538:0",
   "app.containers.EventsShow.goBack": "crwdns1063540:0crwdne1063540:0",
