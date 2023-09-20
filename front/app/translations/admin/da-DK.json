@@ -1500,6 +1500,7 @@
   "app.containers.AdminPage.ProjectEvents.editButtonLabel": "Rediger",
   "app.containers.AdminPage.ProjectEvents.editEventTitle": "Rediger begivenhed",
   "app.containers.AdminPage.ProjectEvents.eventDates": "Datoer for begivenheder",
+  "app.containers.AdminPage.ProjectEvents.eventImage": "Billede af begivenhed",
   "app.containers.AdminPage.ProjectEvents.eventLocation": "Arrangementets placering",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabel": "Vedhæftede filer (maks. 50 MB)",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabelTooltip": "Vedhæftede filer vises under beskrivelsen af begivenheden.",
