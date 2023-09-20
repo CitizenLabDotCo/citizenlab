@@ -117,6 +117,7 @@ interface Props {
   userCountBgColor?: string;
   avatarIds?: string[];
   className?: string;
+  userCount?: number;
 }
 
 const defaultLimit = 4;
@@ -128,6 +129,7 @@ export const AvatarBubbles = ({
   overlap,
   className,
   userCountBgColor = colors.textSecondary,
+  userCount,
 }: Props) => {
   const { formatMessage } = useIntl();
   const { data: randomAvatars } = useRandomAvatars({
@@ -137,7 +139,7 @@ export const AvatarBubbles = ({
     enabled: !avatarIds,
   });
 
-  const userCount = randomAvatars?.meta?.total;
+  const currentUserCount = userCount || randomAvatars?.meta?.total;
 
   const avatarsWithIdsQueries = useAvatarsWithIds(avatarIds);
 
@@ -149,7 +151,7 @@ export const AvatarBubbles = ({
 
   const avatars = avatarIds ? avatarsWithIds : randomAvatars?.data;
 
-  if (avatars && isNumber(userCount) && userCount > 0) {
+  if (avatars && isNumber(currentUserCount) && currentUserCount > 0) {
     const bubbleSize = size + 4;
     const bubbleOverlap = overlap || 10;
     const imageSize = bubbleSize > 160 ? 'large' : 'medium';
@@ -162,7 +164,7 @@ export const AvatarBubbles = ({
     ) as IAvatarData[];
 
     const avatarImagesCount = avatarsWithImage.length;
-    const remainingUsers = userCount - avatarImagesCount;
+    const remainingUsers = currentUserCount - avatarImagesCount;
     const remainingUsersDigits = remainingUsers.toString().length;
     const bubblesCount = avatarImagesCount + (remainingUsers > 0 ? 1 : 0);
     const containerHeight = bubbleSize + 2;
@@ -224,7 +226,7 @@ export const AvatarBubbles = ({
               </UserCountBubbleInner>
               <ScreenReaderOnly>
                 {formatMessage(messages.numberOfUsers, {
-                  numberOfUsers: userCount,
+                  numberOfUsers: currentUserCount,
                 })}
               </ScreenReaderOnly>
             </UserCountBubble>
