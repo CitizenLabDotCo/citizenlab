@@ -22,7 +22,6 @@ FactoryBot.define do
     end_at { Date.parse(start_at) + 60.days }
     voting_min_total { 1 }
     voting_max_total { 10_000 }
-    campaigns_settings { { project_phase_started: true } }
 
     transient do
       with_permissions { false }

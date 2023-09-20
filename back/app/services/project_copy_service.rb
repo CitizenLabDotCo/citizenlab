@@ -301,7 +301,6 @@ class ProjectCopyService < TemplateService
         'project_ref' => lookup_ref(phase.project_id, :project),
         'title_multiloc' => phase.title_multiloc,
         'description_multiloc' => phase.description_multiloc,
-        'campaigns_settings' => phase.campaigns_settings,
         'start_at' => shift_timestamp(phase.start_at, shift_timestamps, leave_blank: false)&.iso8601,
         'end_at' => shift_timestamp(phase.end_at, shift_timestamps, leave_blank: false)&.iso8601,
         'created_at' => shift_timestamp(phase.created_at, shift_timestamps)&.iso8601,

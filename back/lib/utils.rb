@@ -22,9 +22,5 @@ class Utils
     rescue ArgumentError
       Float(value)
     end
-
-    def boolean?(value)
-      [true, false].include? value
-    end
   end
 end

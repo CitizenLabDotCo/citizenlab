@@ -121,7 +121,6 @@ resource 'Campaigns' do
       parameter :subject_multiloc, 'The of the email, as a multiloc string', required: true
       parameter :body_multiloc, 'The body of the email campaign, as a multiloc string. Supports basic HTML', required: true
       parameter :group_ids, 'Array of group ids to whom the email should be sent', required: false
-      parameter :enabled, 'Whether the campaign is enabled or not, as a boolean', required: false
     end
     ValidationErrorHelper.new.error_fields self, EmailCampaigns::Campaign
 
@@ -143,35 +142,6 @@ resource 'Campaigns' do
       expect(json_response.dig(:data, :attributes, :reply_to)).to match reply_to
       expect(json_response.dig(:data, :relationships, :author, :data, :id)).to eq campaign.author_id
       expect(json_response.dig(:data, :relationships, :groups, :data).pluck(:id)).to eq group_ids
-    end
-
-    context 'when updating ProjectPhaseStarted campaign' do
-      let!(:phase_with_campaign_enabled) { create(:phase, campaigns_settings: { project_phase_started: true }) }
-      let!(:phase_with_campaign_disabled) { create(:phase, campaigns_settings: { project_phase_started: false }) }
-
-      context do
-        let(:campaign) { create(:project_phase_started_campaign, enabled: true) }
-        let(:id) { campaign.id }
-        let(:enabled) { false }
-
-        example_request 'Update campaign enabled to false' do
-          assert_status 200
-          expect(phase_with_campaign_enabled.reload.campaigns_settings['project_phase_started']).to be false
-          expect(phase_with_campaign_disabled.reload.campaigns_settings['project_phase_started']).to be false
-        end
-      end
-
-      context do
-        let(:campaign) { create(:project_phase_started_campaign, enabled: false) }
-        let(:id) { campaign.id }
-        let(:enabled) { true }
-
-        example_request 'Update campaign enabled to false' do
-          assert_status 200
-          expect(phase_with_campaign_enabled.reload.campaigns_settings['project_phase_started']).to be true
-          expect(phase_with_campaign_disabled.reload.campaigns_settings['project_phase_started']).to be true
-        end
-      end
     end
   end
 

@@ -126,8 +126,7 @@ class WebApi::V1::PhasesController < ApplicationController
         title_multiloc: CL2_SUPPORTED_LOCALES,
         description_multiloc: CL2_SUPPORTED_LOCALES,
         voting_term_singular_multiloc: CL2_SUPPORTED_LOCALES,
-        voting_term_plural_multiloc: CL2_SUPPORTED_LOCALES,
-        campaigns_settings: Phase::CAMPAIGNS
+        voting_term_plural_multiloc: CL2_SUPPORTED_LOCALES
       }
     ]
     if AppConfiguration.instance.feature_activated? 'disable_disliking'

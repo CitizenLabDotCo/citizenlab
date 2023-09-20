@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::PhaseSerializer < WebApi::V1::ParticipationContextSerializer
-  attributes :title_multiloc, :start_at, :end_at, :created_at, :updated_at, :ideas_count, :campaigns_settings
+  attributes :title_multiloc, :start_at, :end_at, :created_at, :updated_at, :ideas_count
 
   attribute :description_multiloc do |object|
     TextImageService.new.render_data_images object, :description_multiloc

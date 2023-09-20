@@ -111,33 +111,6 @@ RSpec.describe Phase do
     end
   end
 
-  describe 'campaigns_settings validation' do
-    it 'fails when null' do
-      phase = build(:phase, campaigns_settings: nil)
-      expect(phase).to be_invalid
-    end
-
-    it 'fails when empty' do
-      phase = build(:phase, campaigns_settings: {})
-      expect(phase).to be_invalid
-    end
-
-    it 'fails when contains invalid key' do
-      phase = build(:phase, campaigns_settings: { invalid_key: true })
-      expect(phase).to be_invalid
-    end
-
-    it 'fails when contains invalid value' do
-      phase = build(:phase, campaigns_settings: { project_phase_started: 'not_a_boolean' })
-      expect(phase).to be_invalid
-    end
-
-    it 'succeeds when contains valid key and value' do
-      phase = build(:phase, campaigns_settings: { project_phase_started: true })
-      expect(phase).to be_valid
-    end
-  end
-
   describe 'project validation' do
     it 'succeeds when the associated project is a timeline project' do
       phase = build(:phase, project: build(:project, process_type: 'timeline'))
