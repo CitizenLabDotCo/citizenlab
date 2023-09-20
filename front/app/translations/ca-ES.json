@@ -835,6 +835,7 @@
   "app.containers.DisabledAccount.title": "El teu compte s'ha desactivat temporalment",
   "app.containers.EventsShow.addToCalendar": "Afegeix al calendari",
   "app.containers.EventsShow.attending": "assistint",
+  "app.containers.EventsShow.editEvent": "Edita l'esdeveniment",
   "app.containers.EventsShow.emailSharingBody": "Assistiu a aquest esdeveniment: {eventTitle} a {eventLocation}",
   "app.containers.EventsShow.eventFrom": "Esdeveniment de \"{eventTitle}\"",
   "app.containers.EventsShow.goBack": "Torna",
