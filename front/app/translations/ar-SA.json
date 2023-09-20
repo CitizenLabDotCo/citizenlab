@@ -835,6 +835,7 @@
   "app.containers.DisabledAccount.title": "تم تعطيل حسابك مؤقتا",
   "app.containers.EventsShow.addToCalendar": "إضافة إلى التقويم",
   "app.containers.EventsShow.attending": "حضور",
+  "app.containers.EventsShow.editEvent": "تحرير الحدث",
   "app.containers.EventsShow.emailSharingBody": "احضر هذا الحدث: {eventTitle} الساعة {eventLocation}",
   "app.containers.EventsShow.eventFrom": "حدث من \"{eventTitle}\"",
   "app.containers.EventsShow.goBack": "عُد",
