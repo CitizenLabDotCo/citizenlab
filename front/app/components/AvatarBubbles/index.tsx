@@ -6,18 +6,17 @@ import { isNilOrError } from 'utils/helperUtils';
 import { IAvatarData } from 'services/avatars';
 
 // resources
-import GetRandomAvatars from 'resources/GetRandomAvatars';
-import GetAvatars from 'resources/GetAvatars';
 
 // i18n
-import injectIntl from 'utils/cl-intl/injectIntl';
-import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 
 // styling
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
+import useRandomAvatars from 'api/avatars/useRandomAvatars';
+import useAvatarsWithIds from 'api/avatars/useAvatarsWithIds';
+import { useIntl } from 'utils/cl-intl';
 
 const getFontSize = (size: number, digits: number) => {
   if (size >= 34) {
@@ -108,7 +107,7 @@ const UserCountBubbleInner = styled.div<{ size: number; digits: number }>`
  * size: image size, each bubble will be 4px bigger because of margins, defaults to 30px
  * overlap: the number of pixel the bubbles overlap, defaults to 7
  */
-interface InputProps {
+interface Props {
   limit?: number;
   context?: {
     type: 'project' | 'group';
@@ -122,12 +121,6 @@ interface InputProps {
   userCount?: number;
 }
 
-interface DataProps {
-  avatars: (IAvatarData | Error)[] | null;
-}
-
-interface Props extends InputProps, DataProps {}
-
 const defaultLimit = 4;
 
 export const AvatarBubbles = ({
@@ -137,10 +130,25 @@ export const AvatarBubbles = ({
   overlap,
   className,
   userCountBgColor = colors.textSecondary,
-  intl: { formatMessage },
-  avatars,
   userCount,
-}: Props & WrappedComponentProps) => {
+}: Props) => {
+  const { formatMessage } = useIntl();
+  const { data: randomAvatars } = useRandomAvatars({
+    limit: defaultLimit,
+    context_type: context?.type,
+    context_id: context?.id,
+  });
+
+  const avatarsWithIdsQueries = useAvatarsWithIds(avatarIds);
+
+  const avatarsWithIds = avatarsWithIdsQueries
+    .filter((query) => query.data !== undefined)
+    .map((query) => {
+      return query.data?.data;
+    }) as IAvatarData[];
+
+  const avatars = avatarIds ? avatarsWithIds : randomAvatars?.data;
+
   if (!isNilOrError(avatars) && isNumber(userCount) && userCount > 0) {
     const bubbleSize = size + 4;
     const bubbleOverlap = overlap || 10;
@@ -230,34 +238,4 @@ export const AvatarBubbles = ({
   return null;
 };
 
-const AvatarBubblesWithHoCs = injectIntl(AvatarBubbles);
-
-export default (inputProps: InputProps) => {
-  if (inputProps.avatarIds) {
-    return (
-      <GetAvatars ids={inputProps.avatarIds}>
-        {(avatars) => (
-          <AvatarBubblesWithHoCs
-            {...inputProps}
-            avatars={!isNilOrError(avatars) ? avatars : null}
-          />
-        )}
-      </GetAvatars>
-    );
-  }
-
-  return (
-    <GetRandomAvatars
-      limit={inputProps.limit || defaultLimit}
-      context={inputProps.context}
-    >
-      {(avatars) => (
-        <AvatarBubblesWithHoCs
-          {...inputProps}
-          avatars={!isNilOrError(avatars) ? avatars.data : null}
-          userCount={!isNilOrError(avatars) ? avatars.meta.total : undefined}
-        />
-      )}
-    </GetRandomAvatars>
-  );
-};
+export default AvatarBubbles;
