@@ -1500,7 +1500,7 @@
   "app.containers.AdminPage.ProjectEvents.editButtonLabel": "Bewerk",
   "app.containers.AdminPage.ProjectEvents.editEventTitle": "Activiteit bewerken",
   "app.containers.AdminPage.ProjectEvents.eventDates": "Data evenement",
-  "app.containers.AdminPage.ProjectEvents.eventImage": "Afbeelding evenement",
+  "app.containers.AdminPage.ProjectEvents.eventImage": "Afbeelding event",
   "app.containers.AdminPage.ProjectEvents.eventLocation": "Locatie evenement",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabel": "Bijlagen (max. 50MB)",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabelTooltip": "Bijlagen worden op de activiteitkaart zelf weergegeven.",
