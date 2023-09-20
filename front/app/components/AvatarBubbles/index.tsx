@@ -3,7 +3,7 @@ import { isNumber } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
-import { IAvatarData } from 'services/avatars';
+import { IAvatarData } from 'api/avatars/types';
 
 // resources
 
