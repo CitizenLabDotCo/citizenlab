@@ -1500,6 +1500,7 @@
   "app.containers.AdminPage.ProjectEvents.editButtonLabel": "Editar",
   "app.containers.AdminPage.ProjectEvents.editEventTitle": "Editar evento",
   "app.containers.AdminPage.ProjectEvents.eventDates": "Datas do evento",
+  "app.containers.AdminPage.ProjectEvents.eventImage": "Imagem do evento",
   "app.containers.AdminPage.ProjectEvents.eventLocation": "Local do evento",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabel": "Anexos (max. 50MB)",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabelTooltip": "Os anexos são mostrados abaixo da descrição do evento.",
