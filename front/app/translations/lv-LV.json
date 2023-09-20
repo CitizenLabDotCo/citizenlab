@@ -835,6 +835,7 @@
   "app.containers.DisabledAccount.title": "Jūsu konts ir uz laiku atspējots",
   "app.containers.EventsShow.addToCalendar": "Pievienot kalendāram",
   "app.containers.EventsShow.attending": "apmeklē .",
+  "app.containers.EventsShow.editEvent": "Rediģēt notikumu",
   "app.containers.EventsShow.emailSharingBody": "Apmeklējiet šo pasākumu: {eventTitle} vietnē {eventLocation}.",
   "app.containers.EventsShow.eventFrom": "Notikums no \"{eventTitle}\"",
   "app.containers.EventsShow.goBack": "Atgriezties",
