@@ -1500,6 +1500,7 @@
   "app.containers.AdminPage.ProjectEvents.editButtonLabel": "Düzenle",
   "app.containers.AdminPage.ProjectEvents.editEventTitle": "Etkinliği düzenleyin",
   "app.containers.AdminPage.ProjectEvents.eventDates": "Etkinlik tarihleri",
+  "app.containers.AdminPage.ProjectEvents.eventImage": "Etkinlik görüntüsü",
   "app.containers.AdminPage.ProjectEvents.eventLocation": "Etkinlik yeri",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabel": "Ekler (maksimum 50 MB)",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabelTooltip": "Ekler etkinlik açıklamasının altında gösterilir.",
