@@ -1500,6 +1500,7 @@
   "app.containers.AdminPage.ProjectEvents.editButtonLabel": "Modifier",
   "app.containers.AdminPage.ProjectEvents.editEventTitle": "Modifier l’événement",
   "app.containers.AdminPage.ProjectEvents.eventDates": "Dates de l'événement",
+  "app.containers.AdminPage.ProjectEvents.eventImage": "Image de l'événement",
   "app.containers.AdminPage.ProjectEvents.eventLocation": "Lieu de l'événement",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabel": "Pièces jointes (max. 50Mo)",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabelTooltip": "Les pièces jointes seront directement visibles sur les évènements.",
