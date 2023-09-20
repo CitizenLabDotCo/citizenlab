@@ -5,15 +5,15 @@ const baseKey = { type: 'image', variant: 'event' };
 const eventImagesKeys = {
   all: () => [baseKey],
   lists: () => [{ ...baseKey, operation: 'list' }],
-  list: ({ eventId }: { eventId: string }) => [
-    { ...baseKey, operation: 'list', parameters: { eventId } },
+  list: ({ id }: { id: string }) => [
+    { ...baseKey, operation: 'list', parameters: { id } },
   ],
   items: () => [{ ...baseKey, operation: 'item' }],
-  item: ({ eventId, imageId }: { eventId?: string; imageId?: string }) => [
+  item: ({ id }: { id?: string }) => [
     {
       ...baseKey,
       operation: 'item',
-      parameters: { eventId, imageId },
+      parameters: { id },
     },
   ],
 } satisfies QueryKeys;

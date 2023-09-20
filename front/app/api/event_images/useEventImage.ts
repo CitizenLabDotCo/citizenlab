@@ -21,7 +21,7 @@ const useEventImage = (event: IEventData | undefined) => {
   const eventId = event?.id;
   const imageId = event?.relationships?.event_images?.data?.[0]?.id;
   return useQuery<IEventImage, CLErrors, IEventImage, EventImagesKeys>({
-    queryKey: eventImagesKeys.item({ eventId, imageId }),
+    queryKey: eventImagesKeys.item({ id: imageId }),
     queryFn: () => fetchEventImage({ eventId, imageId }),
     enabled: !!eventId && !!imageId,
   });

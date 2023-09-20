@@ -22,7 +22,7 @@ const useAddEventImage = () => {
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({
         queryKey: eventImagesKeys.list({
-          eventId: variables.eventId,
+          id: variables.eventId,
         }),
       });
       queryClient.invalidateQueries({
