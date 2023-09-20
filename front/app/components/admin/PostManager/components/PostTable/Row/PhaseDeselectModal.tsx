@@ -17,11 +17,12 @@ import messages from './messages';
 
 interface Props {
   open: boolean;
+  isLoading: boolean;
   onClose: () => void;
   onConfirm: () => void;
 }
 
-const PhaseDeselectModal = ({ open, onClose, onConfirm }: Props) => {
+const PhaseDeselectModal = ({ open, isLoading, onClose, onConfirm }: Props) => {
   return (
     <Modal width="460px" opened={open} close={onClose}>
       <Box
@@ -59,7 +60,7 @@ const PhaseDeselectModal = ({ open, onClose, onConfirm }: Props) => {
           <Button buttonStyle="secondary" onClick={onClose}>
             <FormattedMessage {...messages.cancel} />
           </Button>
-          <Button onClick={onConfirm}>
+          <Button onClick={onConfirm} processing={isLoading}>
             <FormattedMessage {...messages.confirm} />
           </Button>
         </Box>

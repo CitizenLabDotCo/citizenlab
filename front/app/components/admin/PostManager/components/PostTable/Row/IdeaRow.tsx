@@ -91,8 +91,12 @@ const IdeaRow = ({
 
   const phaseDeselectModalOpen = !!phasesToBeSelected;
   const closePhaseDeselectModal = () => setPhasesToBeSeselected(null);
-  const selectPhases = () => {
+
+  const { mutate: updateIdea, isLoading: updatingIdea } = useUpdateIdea();
+
+  const handleConfirmDeselectPhase = () => {
     updateIdea({ id: idea.id, requestBody: { phase_ids: phasesToBeSelected } });
+    closePhaseDeselectModal();
   };
 
   const [cells, setCells] = useState<
@@ -200,7 +204,6 @@ const IdeaRow = ({
 
   const currentPhases = idea.relationships.phases.data.map((d) => d.id);
 
-  const { mutate: updateIdea } = useUpdateIdea();
   const [_collected, drag] = useDrag({
     type: 'IDEA',
     item: {
@@ -413,8 +416,9 @@ const IdeaRow = ({
       />
       <PhaseDeselectModal
         open={phaseDeselectModalOpen}
+        isLoading={updatingIdea}
         onClose={closePhaseDeselectModal}
-        onConfirm={selectPhases}
+        onConfirm={handleConfirmDeselectPhase}
       />
     </>
   );

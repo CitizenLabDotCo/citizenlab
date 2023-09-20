@@ -1,14 +1,14 @@
-import { useQueryClient } from '@tanstack/react-query';
+import { useQueries } from '@tanstack/react-query';
 import ideasPhasesKeys from './keys';
+import { fetchIdeasPhase } from './useIdeasPhase';
 
-const useIdeasPhases = (_ids: string[]) => {
-  const queryClient = useQueryClient();
+const useIdeasPhases = (ids: string[]) => {
+  const queries = ids.map((id) => ({
+    queryKey: ideasPhasesKeys.item({ id }),
+    queryFn: () => fetchIdeasPhase({ id }),
+  }));
 
-  const data = queryClient.getQueryData([{ type: 'ideas_phase' }]);
-  console.log({ data });
-
-  // return data;
-  return [];
+  return useQueries({ queries }).map((res) => res.data);
 };
 
 export default useIdeasPhases;
