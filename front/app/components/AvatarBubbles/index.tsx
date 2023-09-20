@@ -1,5 +1,5 @@
 import React from 'react';
-import { isNumber, isError } from 'lodash-es';
+import { isNumber } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
@@ -153,10 +153,11 @@ export const AvatarBubbles = ({
     const bubbleSize = size + 4;
     const bubbleOverlap = overlap || 10;
     const imageSize = bubbleSize > 160 ? 'large' : 'medium';
+
     const avatarsWithImage = avatars.filter(
       (avatar) =>
-        !isError(avatar) &&
-        avatar.attributes.avatar &&
+        avatar &&
+        avatar.attributes?.avatar &&
         avatar.attributes.avatar[imageSize]
     ) as IAvatarData[];
 
