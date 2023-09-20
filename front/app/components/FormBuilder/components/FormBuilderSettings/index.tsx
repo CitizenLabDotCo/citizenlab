@@ -10,7 +10,7 @@ import {
   Button,
 } from '@citizenlab/cl2-component-library';
 import CloseIconButton from 'components/UI/CloseIconButton';
-import { getIndexForTitle } from '../FormFields/utils';
+import { getQuestionNumbers } from '../FormFields/utils';
 import { LogicSettings } from './LogicSettings';
 import { ContentSettings } from './ContentSettings';
 import Modal from 'components/UI/Modal';
@@ -119,6 +119,8 @@ const FormBuilderSettings = ({
     setFieldIndexToDelete(undefined);
   };
 
+  const questionNumbers = getQuestionNumbers(formCustomFields);
+
   const getPageList = () => {
     const pageArray: { value: string; label: string }[] = [];
 
@@ -126,10 +128,7 @@ const FormBuilderSettings = ({
       if (field.input_type === 'page') {
         pageArray.push({
           value: field.temp_id || field.id,
-          label: `${formatMessage(messages.page)} ${getIndexForTitle(
-            formCustomFields,
-            field
-          )}`,
+          label: `${formatMessage(messages.page)} ${questionNumbers[field.id]}`,
         });
       }
     });

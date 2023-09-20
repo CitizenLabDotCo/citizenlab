@@ -2,7 +2,6 @@
 import {
   ICustomFieldInputType,
   IFlatCustomField,
-  IFlatCustomFieldWithIndex,
   IOptionsType,
 } from 'services/formCustomFields';
 
@@ -48,23 +47,17 @@ export const getIndexTitleColor = (inputType: ICustomFieldInputType) => {
   return ['page', 'section'].includes(inputType) ? 'blue500' : 'teal400';
 };
 
-export const getIndexForTitle = (
-  formCustomFields: IFlatCustomField[],
-  field: IFlatCustomField | IFlatCustomFieldWithIndex
-) => {
-  const fieldIndex = formCustomFields
-    .filter((customField) => {
-      if (field.input_type === 'section') {
-        return customField.input_type === 'section';
-      } else if (field.input_type === 'page') {
-        return customField.input_type === 'page';
-      }
+export const getQuestionNumbers = (formCustomFields: IFlatCustomField[]) => {
+  return formCustomFields.reduce<Record<string, number>>((acc, field) => {
+    if (['page', 'section'].includes(field.input_type) || !field.enabled) {
+      return acc;
+    }
 
-      return !['page', 'section'].includes(customField.input_type);
-    })
-    .findIndex((f) => f.id === field.id);
-
-  return ` ${fieldIndex + 1}`;
+    return {
+      ...acc,
+      [field.id]: Object.keys(acc).length + 1,
+    };
+  }, {});
 };
 
 export const getOptionRule = (
@@ -132,7 +125,8 @@ export const getTitleFromPageId = (
   formCustomFields: IFlatCustomField[],
   pageId: string | number | undefined,
   formEndMessage: string,
-  pageMessage: string
+  pageMessage: string,
+  questionNumbers: Record<string, number>
 ) => {
   if (pageId) {
     // Return the related page title for the provided ID
@@ -143,7 +137,7 @@ export const getTitleFromPageId = (
       (field) => field.id === pageId || field.temp_id === pageId
     );
     if (!isNilOrError(page)) {
-      return `${pageMessage} ${getIndexForTitle(formCustomFields, page)}`;
+      return `${pageMessage} ${questionNumbers[page.id]}`;
     }
   }
   return undefined;

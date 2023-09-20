@@ -8,7 +8,6 @@ import messages from '../messages';
 // utils
 import {
   getFieldBackgroundColor,
-  getIndexForTitle,
   getIndexTitleColor,
   getLinearScaleOptions,
   getLinearScaleRule,
@@ -16,6 +15,7 @@ import {
   getTitleFromAnswerId,
   getTitleFromPageId,
   getFieldIcon,
+  getQuestionNumbers,
 } from './utils';
 import { isPageRuleValid, isRuleValid } from 'utils/yup/validateLogic';
 
@@ -84,6 +84,8 @@ export const FieldElement = (props: Props) => {
   const index = formCustomFields.findIndex((f) => f.id === field.id);
   const lockedAttributes = field?.constraints?.locks;
 
+  const questionNumbers = getQuestionNumbers(formCustomFields);
+
   const showVisibilityIcon =
     builderConfig.displayBuiltInFields &&
     field.input_type !== 'section' &&
@@ -151,7 +153,7 @@ export const FieldElement = (props: Props) => {
                 >
                   <>
                     <FormattedMessage {...rowTitle} />
-                    {getIndexForTitle(formCustomFields, field)}
+                    {questionNumbers[field.id]}
                   </>
                 </Text>
                 <Text
@@ -206,7 +208,8 @@ export const FieldElement = (props: Props) => {
                                 builderConfig.formEndPageLogicOption ||
                                   messages.formEnd
                               ),
-                              formatMessage(messages.page)
+                              formatMessage(messages.page),
+                              questionNumbers
                             )}
                           />
                         </Box>
@@ -235,7 +238,8 @@ export const FieldElement = (props: Props) => {
                                 builderConfig.formEndPageLogicOption ||
                                   messages.formEnd
                               ),
-                              formatMessage(messages.page)
+                              formatMessage(messages.page),
+                              questionNumbers
                             )}
                           />
                         </Box>
@@ -249,7 +253,7 @@ export const FieldElement = (props: Props) => {
                         field.temp_id || field.id,
                         field.logic.next_page_id
                       )}
-                      answerTitle={getIndexForTitle(formCustomFields, field)}
+                      answerTitle={questionNumbers[field.id].toString()}
                       targetPage={getTitleFromPageId(
                         formCustomFields,
                         field.logic.next_page_id,
@@ -257,7 +261,8 @@ export const FieldElement = (props: Props) => {
                           builderConfig.formEndPageLogicOption ||
                             messages.formEnd
                         ),
-                        formatMessage(messages.page)
+                        formatMessage(messages.page),
+                        questionNumbers
                       )}
                       textColor={getIndexTitleColor(field.input_type)}
                     />
