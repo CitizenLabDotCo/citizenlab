@@ -35,11 +35,16 @@ const LeafletConfig = memo<Props>(
   ({ onLeafletConfigChange, projectId, centerLatLng, zoomLevel, points }) => {
     const localize = useLocalize();
 
-    const { data: mapConfig, isLoading: isLoadingMapConfig } =
-      useMapConfig(projectId);
+    const {
+      data: mapConfig,
+      isLoading: isLoadingMapConfig,
+      fetchStatus: mapConfigFetchStatus,
+    } = useMapConfig(projectId);
     const { data: appConfig, isLoading } = useAppConfiguration();
 
-    const loading = isLoading || isLoadingMapConfig;
+    // We check for the mapConfigFetchStatus because the query could be disabled if projectId is not provided
+    const loading =
+      isLoading || (isLoadingMapConfig && mapConfigFetchStatus !== 'idle');
 
     const center = useMemo(() => {
       if (loading) return;
