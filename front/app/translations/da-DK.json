@@ -835,6 +835,7 @@
   "app.containers.DisabledAccount.title": "Din konto er blevet midlertidigt deaktiveret",
   "app.containers.EventsShow.addToCalendar": "Tilføj til kalender",
   "app.containers.EventsShow.attending": "deltager",
+  "app.containers.EventsShow.editEvent": "Rediger begivenhed",
   "app.containers.EventsShow.emailSharingBody": "Deltag i dette arrangement: {eventTitle} på {eventLocation}",
   "app.containers.EventsShow.eventFrom": "Begivenhed fra \"{eventTitle}\"",
   "app.containers.EventsShow.goBack": "Gå tilbage",
