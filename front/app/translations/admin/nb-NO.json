@@ -1500,6 +1500,7 @@
   "app.containers.AdminPage.ProjectEvents.editButtonLabel": "Rediger",
   "app.containers.AdminPage.ProjectEvents.editEventTitle": "Rediger hendelse",
   "app.containers.AdminPage.ProjectEvents.eventDates": "Arrangementsdatoer",
+  "app.containers.AdminPage.ProjectEvents.eventImage": "Eventbilde",
   "app.containers.AdminPage.ProjectEvents.eventLocation": "Begivenhetssted",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabel": "Vedlegg (maks 50 MB)",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabelTooltip": "Vedlegg vises under hendelsesbeskrivelsen.",
