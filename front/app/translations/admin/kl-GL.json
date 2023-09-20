@@ -1500,6 +1500,7 @@
   "app.containers.AdminPage.ProjectEvents.editButtonLabel": "Edit",
   "app.containers.AdminPage.ProjectEvents.editEventTitle": "Pisussaq allanngortiteruk",
   "app.containers.AdminPage.ProjectEvents.eventDates": "Event dates",
+  "app.containers.AdminPage.ProjectEvents.eventImage": "Event image",
   "app.containers.AdminPage.ProjectEvents.eventLocation": "Event location",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabel": "Kakkiussinerit (annerpaamik 50MB)",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabelTooltip": "Fiilit kakkiussat nassuiaatip ataani takuneqarsinnaapput.",
