@@ -9,6 +9,7 @@ import {
   Text,
   Checkbox,
   Button,
+  IconTooltip,
 } from '@citizenlab/cl2-component-library';
 
 import T from 'components/T';
@@ -49,6 +50,7 @@ const SelectOptionText = ({
 };
 
 const FilterToggleButton = ({ customFieldId, value }) => {
+  const { formatMessage } = useIntl();
   const filters = useAnalysisFilterParams();
   const filterValue = filters[`input_custom_${customFieldId}`];
   const isFilterSet = filterValue?.includes(value);
@@ -66,13 +68,22 @@ const FilterToggleButton = ({ customFieldId, value }) => {
   return (
     <Button
       onClick={handleToggleFilterOption(customFieldId, value)}
-      icon={isFilterSet ? 'close' : 'filter-2'}
       buttonStyle="secondary"
       size="s"
       margin="0"
       padding="1px"
-      iconSize="18px"
-    />
+    >
+      <IconTooltip
+        icon={isFilterSet ? 'close' : 'filter-2'}
+        content={
+          <Box minWidth="150px">
+            {isFilterSet
+              ? formatMessage(translations.removeFilter)
+              : formatMessage(translations.filter)}
+          </Box>
+        }
+      />
+    </Button>
   );
 };
 
