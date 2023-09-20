@@ -1500,6 +1500,7 @@
   "app.containers.AdminPage.ProjectEvents.editButtonLabel": "Уредити",
   "app.containers.AdminPage.ProjectEvents.editEventTitle": "Уреди догађај",
   "app.containers.AdminPage.ProjectEvents.eventDates": "Датуми догађаја",
+  "app.containers.AdminPage.ProjectEvents.eventImage": "Слика догађаја",
   "app.containers.AdminPage.ProjectEvents.eventLocation": "Локација догађаја",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabel": "Прилози (макс. 50МБ)",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabelTooltip": "Прилози су приказани испод описа догађаја.",
