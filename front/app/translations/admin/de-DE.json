@@ -1500,6 +1500,7 @@
   "app.containers.AdminPage.ProjectEvents.editButtonLabel": "Bearbeiten",
   "app.containers.AdminPage.ProjectEvents.editEventTitle": "Veranstaltung bearbeiten",
   "app.containers.AdminPage.ProjectEvents.eventDates": "Veranstaltungstermine",
+  "app.containers.AdminPage.ProjectEvents.eventImage": "Ereignis-Bild",
   "app.containers.AdminPage.ProjectEvents.eventLocation": "Veranstaltungsort",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabel": "Anhänge (max. 50MB)",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabelTooltip": "Anhänge werden unterhalb der Ereignisbeschreibung angezeigt.",
