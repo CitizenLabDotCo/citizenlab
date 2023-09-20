@@ -835,7 +835,7 @@
   "app.containers.DisabledAccount.title": "Je account is tijdelijk uitgeschakeld",
   "app.containers.EventsShow.addToCalendar": "Toevoegen aan kalender",
   "app.containers.EventsShow.attending": "bijwonen",
-  "app.containers.EventsShow.editEvent": "Gebeurtenis bewerken",
+  "app.containers.EventsShow.editEvent": "Event bewerken",
   "app.containers.EventsShow.emailSharingBody": "Woon dit evenement bij: {eventTitle} in {eventLocation}",
   "app.containers.EventsShow.eventFrom": "Evenement van \"{eventTitle}\"",
   "app.containers.EventsShow.goBack": "Ga terug",
