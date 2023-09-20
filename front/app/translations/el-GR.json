@@ -835,6 +835,7 @@
   "app.containers.DisabledAccount.title": "Ο λογαριασμός σας έχει απενεργοποιηθεί προσωρινά",
   "app.containers.EventsShow.addToCalendar": "Προσθήκη στο ημερολόγιο",
   "app.containers.EventsShow.attending": "που παρακολουθεί το",
+  "app.containers.EventsShow.editEvent": "Επεξεργασία συμβάντος",
   "app.containers.EventsShow.emailSharingBody": "Παρακολουθήστε αυτή την εκδήλωση: {eventTitle} στο {eventLocation}",
   "app.containers.EventsShow.eventFrom": "Εκδήλωση από το \"{eventTitle}\"",
   "app.containers.EventsShow.goBack": "Πηγαίνετε πίσω",
