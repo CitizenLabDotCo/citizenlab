@@ -1,13 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { IRelationship, Multiloc } from 'typings';
-import { saveAs } from 'file-saver';
-import moment from 'moment';
-import { requestBlob } from 'utils/request';
-import { IProjectData } from 'api/projects/types';
-import { isNilOrError } from 'utils/helperUtils';
-import { IPhaseData } from 'api/phases/types';
-import { snakeCase } from 'lodash-es';
 import submissionsCountKeys from 'api/submission_count/keys';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 
@@ -249,28 +242,6 @@ export function formCustomFieldsResultsStream(
     ...streamParams,
   });
 }
-
-export const downloadSurveyResults = async (
-  project: IProjectData,
-  locale: string,
-  phase?: IPhaseData
-) => {
-  const apiEndpoint = !isNilOrError(phase)
-    ? `${API_PATH}/phases/${phase.id}/as_xlsx`
-    : `${API_PATH}/projects/${project.id}/as_xlsx`;
-  const fileNameTitle = !isNilOrError(phase)
-    ? phase.attributes.title_multiloc
-    : project.attributes.title_multiloc;
-  const fileName = `${snakeCase(fileNameTitle[locale])}_${moment().format(
-    'YYYY-MM-DD'
-  )}.xlsx`;
-
-  const blob = await requestBlob(
-    apiEndpoint,
-    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-  );
-  saveAs(blob, fileName);
-};
 
 export async function deleteFormResults(projectId: string, phaseId?: string) {
   const deleteApiEndpoint = phaseId

@@ -29,7 +29,7 @@ import useProjectById from 'api/projects/useProjectById';
 import usePhase from 'api/phases/usePhase';
 
 // Services
-import { downloadSurveyResults } from 'services/formCustomFields';
+import { downloadSurveyResults } from 'api/survey_results/utils';
 import FormResultsQuestion from './FormResultsQuestion';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
