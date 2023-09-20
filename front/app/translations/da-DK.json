@@ -508,7 +508,7 @@
   "app.components.admin.UserFilterConditions.field_role": "Rolle",
   "app.components.admin.UserFilterConditions.field_verified": "Verifikation",
   "app.components.admin.UserFilterConditions.predicate_attends_none_of": "er ikke tilmeldt nogen af disse begivenheder",
-  "app.components.admin.UserFilterConditions.predicate_attends_nothing": "er ikke tilmeldt noget arrangement",
+  "app.components.admin.UserFilterConditions.predicate_attends_nothing": "er ikke tilmeldt nogen begivenhed",
   "app.components.admin.UserFilterConditions.predicate_attends_some_of": "er tilmeldt en af disse begivenheder",
   "app.components.admin.UserFilterConditions.predicate_attends_something": "er tilmeldt mindst én begivenhed",
   "app.components.admin.UserFilterConditions.predicate_begins_with": "begynder med",
