@@ -437,6 +437,7 @@
   "app.containers.Admin.Invitations.helmetTitle": "اللوحة الرئيسية لدعوات المسؤول",
   "app.containers.Admin.Invitations.importOptionsInfo": "يمكنك إضافة رسالة شخصية إلى الدعوة، أو إضافة أشخاص إلى مجموعة أو منحهم حقوق المسؤول أو المُشرف. لمزيد من المعلومات قم بزيارة {supportPageLink}.",
   "app.containers.Admin.Invitations.importTab": "استيراد عناوين البريد الإلكتروني",
+  "app.containers.Admin.Invitations.invitationExpirationWarning": "انتبه إلى أن الدعوات تنتهي صلاحيتها بعد 14 يومًا. وبعد هذه الفترة، لا يزال بإمكانك إعادة إرسالها.",
   "app.containers.Admin.Invitations.invitationOptions": "خيارات الدعوة",
   "app.containers.Admin.Invitations.invitationSubtitle": "ادعُ الأشخاص الذين لم يتم تسجيلهم على المنصة بعد. قم باستيراد عناوين البريد الإلكتروني الخاصة بهم عن طريق وضعها في قالب الاستيراد أو بإدخال عناوين البريد الإلكتروني يدويًا. إذا رغبت في ذلك، يمكنك إضافة رسالة شخصية أو منح الأشخاص حقوقًا إضافية أو إضافتهم إلى مجموعة يدوية.",
   "app.containers.Admin.Invitations.invitePeople": "الدعوات",

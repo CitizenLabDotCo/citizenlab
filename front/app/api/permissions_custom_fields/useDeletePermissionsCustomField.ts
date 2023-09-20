@@ -21,7 +21,7 @@ const useDeletePermissionsCustomField = ({
     mutationFn: deletePermissionsCustomField,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: permissionsCustomFieldsKeys.lists({
+        queryKey: permissionsCustomFieldsKeys.list({
           phaseId,
           projectId,
           initiativeContext,

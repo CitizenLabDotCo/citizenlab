@@ -1450,7 +1450,7 @@
   "app.containers.SignUp.goToLogIn": "Već imate nalog? {goToOtherFlowLink}",
   "app.containers.SignUp.iHaveReadAndAgreeTo": "Pročitao/la sam i slažem se sa {link}.",
   "app.containers.SignUp.iHaveReadAndAgreeToVienna": "Prihvatam da se podaci koriste na mitgestalten.wien.gv.at. Dalje informacije mogu se pronaći na {link}.",
-  "app.containers.SignUp.invitationError": "Vaša pozivnica je istekla ili je već iskorišćena.",
+  "app.containers.SignUp.invitationErrorText": "Your invitation has expired or has already been used. If you have already used the invitation link to create an account, try signing in. Otherwise, sign up to create a new account.",
   "app.containers.SignUp.lastNameLabel": "Prezime",
   "app.containers.SignUp.privacyPolicyNotAcceptedError": "Za nastavak prihvatite našu politiku privatnosti",
   "app.containers.SignUp.signUp2": "Registrujte se",

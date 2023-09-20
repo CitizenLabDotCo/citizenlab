@@ -59,7 +59,7 @@ export const sharedSteps = (
             updateState({ token, prefilledBuiltInFields });
             setCurrentStep('sign-up:email-password');
           } catch {
-            setCurrentStep('sign-up:invite');
+            setCurrentStep('sign-up:email-password');
             setError('invitation_error');
           }
         } else {

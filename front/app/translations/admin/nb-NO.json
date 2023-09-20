@@ -437,6 +437,7 @@
   "app.containers.Admin.Invitations.helmetTitle": "Instrumentbord for administratorinvitasjoner",
   "app.containers.Admin.Invitations.importOptionsInfo": "Disse alternativene brukes bare dersom de ikke er definert i Excel-filen. Besøk {supportPageLink} for mer informasjon.",
   "app.containers.Admin.Invitations.importTab": "Importer e-postadresser",
+  "app.containers.Admin.Invitations.invitationExpirationWarning": "Vær oppmerksom på at invitasjoner utløper etter 14 dager. Etter denne perioden kan du fortsatt sende dem på nytt.",
   "app.containers.Admin.Invitations.invitationOptions": "Alternativer for invitasjon",
   "app.containers.Admin.Invitations.invitationSubtitle": "Du kan når som helst invitere personer til plattformen. De mottar en nøytral e-postinvitasjon med din logo, der de blir bedt om å registrere seg på plattformen.",
   "app.containers.Admin.Invitations.invitePeople": "Inviter personer via e-post",
