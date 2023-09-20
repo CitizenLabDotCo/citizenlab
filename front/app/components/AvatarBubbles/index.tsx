@@ -1,6 +1,5 @@
 import React from 'react';
 import { isNumber } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
 
 // services
 import { IAvatarData } from 'api/avatars/types';
@@ -118,7 +117,6 @@ interface Props {
   userCountBgColor?: string;
   avatarIds?: string[];
   className?: string;
-  userCount?: number;
 }
 
 const defaultLimit = 4;
@@ -130,7 +128,6 @@ export const AvatarBubbles = ({
   overlap,
   className,
   userCountBgColor = colors.textSecondary,
-  userCount,
 }: Props) => {
   const { formatMessage } = useIntl();
   const { data: randomAvatars } = useRandomAvatars({
@@ -139,6 +136,8 @@ export const AvatarBubbles = ({
     context_id: context?.id,
     enabled: !avatarIds,
   });
+
+  const userCount = randomAvatars?.meta?.total;
 
   const avatarsWithIdsQueries = useAvatarsWithIds(avatarIds);
 
@@ -150,7 +149,7 @@ export const AvatarBubbles = ({
 
   const avatars = avatarIds ? avatarsWithIds : randomAvatars?.data;
 
-  if (!isNilOrError(avatars) && isNumber(userCount) && userCount > 0) {
+  if (avatars && isNumber(userCount) && userCount > 0) {
     const bubbleSize = size + 4;
     const bubbleOverlap = overlap || 10;
     const imageSize = bubbleSize > 160 ? 'large' : 'medium';

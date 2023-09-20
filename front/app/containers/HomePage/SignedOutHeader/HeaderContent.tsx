@@ -83,6 +83,7 @@ const HeaderContent = ({
     const displayHeaderAvatars =
       homepageAttributes.banner_avatars_enabled && !hideAvatarsForThisLayout;
 
+    console.log({ displayHeaderAvatars });
     return (
       <Container
         id="hook-header-content"
