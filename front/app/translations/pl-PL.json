@@ -835,6 +835,7 @@
   "app.containers.DisabledAccount.title": "Twoje konto zostało tymczasowo wyłączone",
   "app.containers.EventsShow.addToCalendar": "Dodaj do kalendarza",
   "app.containers.EventsShow.attending": "obecność",
+  "app.containers.EventsShow.editEvent": "Edytuj wydarzenie",
   "app.containers.EventsShow.emailSharingBody": "Weź udział w tym wydarzeniu: {eventTitle} na {eventLocation}",
   "app.containers.EventsShow.eventFrom": "Wydarzenie z \"{eventTitle}\"",
   "app.containers.EventsShow.goBack": "Wróć",
