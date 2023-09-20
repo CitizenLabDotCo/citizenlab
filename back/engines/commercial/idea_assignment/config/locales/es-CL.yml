@@ -1,13 +1,8 @@
 es-CL:
   email_campaigns:
     campaign_type_description:
-      "idea_assigned_to_you": Asignación de una idea para mí
-    admin_campaign_type_description:
-      "idea_assigned_to_you": Asignación de una idea - administradores y administradores de proyecto
-    idea_assigned_to_you:
-      by_author: 'por %{authorName}'
-      cta_reply_to: 'Dale retroalimentación a %{authorName}'
-      event_description_idea: 'Una idea ha sido asignada a ti. Dale retroalimentación, escribiendo una actualización oficial o cambiando el estado de la idea.'
-      main_header: '%{firstName}, tienes una nueva asignación'
-      subject: 'Tienes una asignación en la plataforma de %{organizationName}'
-      preheader_idea: 'La idea de %{authorName} ha sido asignada a ti'
+      ""idea_assigned_to_you"":
+        Assignment of an idea to me admin_campaign_type_description:
+          ""idea_assigned_to_you"":
+            Assignment of an idea - admins and project managers idea_assigned_to_you:
+              by_author: 'por %{authorName}'' cta_reply_to: ''Dar comentarios a %{authorName}'' event_description_idea: ''Se te ha asignado una idea. Envíe sus comentarios escribiendo una actualización oficial o cambiando su estado.'' main_header: ''%{firstName}, tienes una nueva tarea'' asunto: ''Tienes una tarea en la plataforma de %{organizationName}'' preheader_idea: ''La idea de %{authorName} te ha sido asignada'
