@@ -835,6 +835,7 @@
   "app.containers.DisabledAccount.title": "Votre compte a été temporairement désactivé",
   "app.containers.EventsShow.addToCalendar": "Ajouter au calendrier",
   "app.containers.EventsShow.attending": "inscrit(e)",
+  "app.containers.EventsShow.editEvent": "Modifier l'événement",
   "app.containers.EventsShow.emailSharingBody": "Participez à cet événement : {eventTitle} à {eventLocation}",
   "app.containers.EventsShow.eventFrom": "Événement de \"{eventTitle}\"",
   "app.containers.EventsShow.goBack": "Retour",
