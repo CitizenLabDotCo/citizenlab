@@ -1500,6 +1500,7 @@
   "app.containers.AdminPage.ProjectEvents.editButtonLabel": "تعديل",
   "app.containers.AdminPage.ProjectEvents.editEventTitle": "تعديل الحدث",
   "app.containers.AdminPage.ProjectEvents.eventDates": "تواريخ الحدث",
+  "app.containers.AdminPage.ProjectEvents.eventImage": "صورة الحدث",
   "app.containers.AdminPage.ProjectEvents.eventLocation": "موقع الحدث",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabel": "المُرفقات (بحجم أقصى 50 ميغابايت)",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabelTooltip": "تظهر المرفقات أسفل وصف الحدث.",
