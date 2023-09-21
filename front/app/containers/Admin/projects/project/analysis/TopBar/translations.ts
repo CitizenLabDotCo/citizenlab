@@ -65,4 +65,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.projects.project.analysis.AIAnalysis',
     defaultMessage: 'AI Analysis',
   },
+  supportArticle: {
+    id: 'app.containers.AdminPage.projects.project.analysis.supportArticle',
+    defaultMessage: 'Support Article',
+  },
 });
