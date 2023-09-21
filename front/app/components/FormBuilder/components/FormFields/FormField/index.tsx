@@ -90,9 +90,7 @@ export const FormField = ({
               <FieldTitle
                 hasErrors={hasErrors}
                 field={field}
-                fieldNumber={
-                  field.id in fieldNumbers ? fieldNumbers[field.id] : undefined
-                }
+                fieldNumber={fieldNumbers[field.id]}
               />
               {showLogicOnRow && (
                 <Logic

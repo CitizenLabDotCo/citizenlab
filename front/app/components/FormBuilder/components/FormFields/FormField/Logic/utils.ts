@@ -76,7 +76,5 @@ export const getTitleFromPageId = (
   if (!pageId) return;
   if (pageId === formEndOption) return formEndMessage;
 
-  return pageId in fieldNumbers
-    ? `${pageMessage} ${fieldNumbers[pageId]}`
-    : pageMessage;
+  return `${pageMessage} ${fieldNumbers[pageId]}`;
 };
