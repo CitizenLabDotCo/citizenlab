@@ -1499,7 +1499,7 @@
   "app.containers.AdminPage.ProjectEvents.customButtonLink": "External link",
   "app.containers.AdminPage.ProjectEvents.customButtonLinkTooltip2": "Add a link to an external URL (E.g. Event service or ticketing website). Setting this will override the default attendance button behavior.",
   "app.containers.AdminPage.ProjectEvents.customButtonText": "Custom button text",
-  "app.containers.AdminPage.ProjectEvents.customButtonTextTooltip": "Set the button text to a value other than \"Attend\".",
+  "app.containers.AdminPage.ProjectEvents.customButtonTextTooltip2": "Set the button text to a value other than \"Attend\" when an external URL is set.",
   "app.containers.AdminPage.ProjectEvents.dateStartLabel": "Start",
   "app.containers.AdminPage.ProjectEvents.datesEndLabel": "End",
   "app.containers.AdminPage.ProjectEvents.deleteButtonLabel": "Delete",
