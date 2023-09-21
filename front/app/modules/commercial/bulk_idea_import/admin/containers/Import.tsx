@@ -63,7 +63,6 @@ const Import = () => {
     try {
       await addIdeaImportFile(file.base64);
     } catch (e) {
-      console.log(e);
       if (e?.message === 'Gateway timeout') {
         setIdeasTakingLong(true);
         return;
