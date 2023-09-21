@@ -13,7 +13,6 @@ import { object, string } from 'yup';
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { handleCLErrorsIsh } from 'utils/errorUtils';
-import Feedback from 'components/HookForm/Feedback';
 import Input from 'components/HookForm/Input';
 
 type RenameTagProps = {
@@ -34,7 +33,7 @@ const RenameTag = ({
   analysisId,
 }: RenameTagProps) => {
   const { formatMessage } = useIntl();
-  const { mutate: updateTag, isLoading } = useUpdateAnalysisTag();
+  const { mutateAsync: updateTag, isLoading } = useUpdateAnalysisTag();
 
   const schema = object({
     name: string().required(formatMessage(translations.emptyNameError)),
@@ -49,15 +48,12 @@ const RenameTag = ({
   });
 
   const onFormSubmit = async ({ name }: FormValues) => {
-    updateTag(
-      { analysisId, id, name },
-      {
-        onSuccess: closeRenameModal,
-        onError: (errors) => {
-          handleCLErrorsIsh({ errors }, methods.setError);
-        },
-      }
-    );
+    try {
+      await updateTag({ analysisId, id, name });
+      closeRenameModal();
+    } catch (errors) {
+      handleCLErrorsIsh(errors, methods.setError);
+    }
   };
 
   return (
@@ -65,10 +61,10 @@ const RenameTag = ({
       <Title>{formatMessage(translations.renameTagModalTitle)}</Title>
       <FormProvider {...methods}>
         <Box as="form" mt="40px" onSubmit={methods.handleSubmit(onFormSubmit)}>
-          <Feedback />
           <Input
             type="text"
             name="name"
+            fieldName="tag_name"
             label={formatMessage(translations.renameTagModalNameLabel)}
           />
           <Box display="flex" justifyContent="flex-end" mt="40px" gap="24px">
