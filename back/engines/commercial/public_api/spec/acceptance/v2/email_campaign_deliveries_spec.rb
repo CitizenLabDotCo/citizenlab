@@ -58,7 +58,6 @@ resource 'Email campaign deliveries' do
     example_request 'Returns the delivery' do
       assert_status 200
       expect(json_response_body[:email_campaign_delivery]).to include({ id: id })
-      binding.pry
     end
   end
 
