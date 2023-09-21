@@ -92,6 +92,28 @@ export default defineMessages({
     defaultMessage:
       'Add offline events or meetings that are linked to your project here. Upcoming and past events are always shown immediately under your project.',
   },
+  eventAttendanceExportText: {
+    id: 'app.containers.AdminPage.ProjectEvents.eventAttendanceExportText',
+    defaultMessage:
+      'In order to see event attendees, go to the {userTabLink} tab and create a smart group for the event. {supportArticleLink}.',
+  },
+  usersTabLink: {
+    id: 'app.containers.AdminPage.ProjectEvents.usersTabLink',
+    defaultMessage: '/admin/users',
+  },
+  usersTabLinkText: {
+    id: 'app.containers.AdminPage.ProjectEvents.usersTabLinkText',
+    defaultMessage: 'Users',
+  },
+  attendanceSupportArticleLinkText: {
+    id: 'app.containers.AdminPage.ProjectEvents.attendanceSupportArticleLinkText',
+    defaultMessage: 'See the support article',
+  },
+  attendanceSupportArticleLink: {
+    id: 'app.containers.AdminPage.ProjectEvents.attendanceSupportArticleLink',
+    defaultMessage:
+      'https://support.citizenlab.co/en/articles/5481527-adding-events-to-your-platform',
+  },
   mapSelectionLabel: {
     id: 'app.containers.AdminPage.ProjectEvents.mapSelectionLabel2',
     defaultMessage:
@@ -145,5 +167,44 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEvents.addressTwoTooltip',
     defaultMessage:
       'Additional address information that could help identify the location such as a building name, floor number, etc.',
+  },
+  attendanceButton: {
+    id: 'app.containers.AdminPage.ProjectEvents.attendanceButton',
+    defaultMessage: 'Attendance button',
+  },
+  toggleCustomAttendanceButtonLabel: {
+    id: 'app.containers.AdminPage.ProjectEvents.toggleCustomAttendanceButtonLabel',
+    defaultMessage: 'Link the button to an external URL',
+  },
+  toggleCustomAttendanceButtonTooltip: {
+    id: 'app.containers.AdminPage.ProjectEvents.toggleCustomAttendanceButtonTooltip',
+    defaultMessage:
+      'By default, the in-platform attendance button will be shown allowing users to register their interest in an event. You can change this to link to an external URL instead.',
+  },
+  customButtonText: {
+    id: 'app.containers.AdminPage.ProjectEvents.customButtonText',
+    defaultMessage: 'Custom button text',
+  },
+  customButtonTextTooltip: {
+    id: 'app.containers.AdminPage.ProjectEvents.customButtonTextTooltip2',
+    defaultMessage:
+      'Set the button text to a value other than "Attend" when an external URL is set.',
+  },
+  customButtonLink: {
+    id: 'app.containers.AdminPage.ProjectEvents.customButtonLink',
+    defaultMessage: 'External link',
+  },
+  customButtonLinkTooltip: {
+    id: 'app.containers.AdminPage.ProjectEvents.customButtonLinkTooltip2',
+    defaultMessage:
+      'Add a link to an external URL (E.g. Event service or ticketing website). Setting this will override the default attendance button behavior.',
+  },
+  preview: {
+    id: 'app.containers.AdminPage.ProjectEvents.preview',
+    defaultMessage: 'Preview',
+  },
+  attend: {
+    id: 'app.containers.AdminPage.ProjectEvents.attend',
+    defaultMessage: 'Attend',
   },
 });

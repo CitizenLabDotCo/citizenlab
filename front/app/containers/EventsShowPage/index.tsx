@@ -118,7 +118,7 @@ const EventsShowPage = () => {
           <Box display="flex" id="e2e-idea-show-page-content">
             <Box flex="1 1 100%">
               <Title id="e2e-event-title" variant="h1">
-                {event?.data.attributes.title_multiloc[locale]}
+                {localize(event?.data.attributes.title_multiloc)}
               </Title>
               {projectTitleLocalized && projectSlug && (
                 <ProjectLink

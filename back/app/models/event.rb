@@ -47,6 +47,8 @@ class Event < ApplicationRecord
   validates :location_multiloc, multiloc: { presence: false }
   validates :online_link, url: true, allow_blank: true
   validates :address_2_multiloc, multiloc: { presence: false }
+  validates :attend_button_multiloc, multiloc: { presence: false }
+  validates :using_url, url: true, allow_blank: true
   validate :validate_start_at_before_end_at
 
   before_validation :sanitize_description_multiloc
