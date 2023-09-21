@@ -103,7 +103,7 @@ const useScanForCategorySuggestions = (
         });
       }
       queryClient.invalidateQueries(inputsKeys.list({ viewId }));
-      queryClient.invalidateQueries(inputsKeys.item({ viewId }));
+      queryClient.invalidateQueries(inputsKeys.items());
       queryClient.invalidateQueries(statsKeys.item({ viewId }));
     },
     structuralSharing: (oldData, newData) => {
