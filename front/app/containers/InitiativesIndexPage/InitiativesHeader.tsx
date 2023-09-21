@@ -108,7 +108,7 @@ const InitiativesHeader = ({ className }: Props) => {
         />
       </ScreenReaderOnly>
       <Content>
-        <Title>
+        <Title style={{ hyphens: 'auto' }}>
           {proposalSubmissionEnabled ? (
             <FormattedMessage
               {...messages.header}
