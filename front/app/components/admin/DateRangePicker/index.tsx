@@ -14,12 +14,14 @@ import messages from './messages';
 import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 import { omit } from 'lodash-es';
+import { Moment } from 'moment';
 
 interface Props
   extends Omit<
     DateRangePickerShape,
     'focusedInput' | 'onFocusChange' | 'renderMonthText'
   > {
+  isOutsideRange?: ((day: Moment) => boolean) | undefined;
   className?: string;
 }
 
@@ -63,6 +65,13 @@ class OurDateRangePicker extends PureComponent<
     this.setState({ focusedInput });
   };
 
+  handleIsOutsideRange = (day: Moment) => {
+    if (this.props.isOutsideRange) {
+      return this.props.isOutsideRange(day);
+    }
+    return false;
+  };
+
   render() {
     return (
       <StylingWrapper className={this.props.className}>
@@ -78,6 +87,7 @@ class OurDateRangePicker extends PureComponent<
           endDatePlaceholderText={this.props.intl.formatMessage(
             messages.endDatePlaceholder
           )}
+          isOutsideRange={this.handleIsOutsideRange}
         />
       </StylingWrapper>
     );
