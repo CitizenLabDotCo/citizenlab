@@ -12,7 +12,7 @@ class PublicApi::V2::InitiativeSerializer < PublicApi::V2::BaseSerializer
     :publication_status,
     :created_at,
     :updated_at,
-    :successful_at,
+    :threshold_reached_at,
     :location_point, # TODO: Should we format this to just lat,long?
     :location_description,
     :slug,
@@ -31,10 +31,6 @@ class PublicApi::V2::InitiativeSerializer < PublicApi::V2::BaseSerializer
 
   def href
     Frontend::UrlService.new.model_to_url object
-  end
-
-  def successful_at
-    object
   end
 
   private

@@ -62,6 +62,7 @@ resource 'Posts' do
     example_request 'Return the initiative in the default locale' do
       assert_status 200
       expect(json_response_body[:initiative]).to include({ id: id })
+      expect(json_response_body.dig(:initiative, :threshold_reached_at)).to be_nil
     end
 
     context 'when requesting the initiative in a specific locale' do
@@ -69,30 +70,18 @@ resource 'Posts' do
 
       example_request 'Return the initiative in the requested locale', document: false do
         assert_status 200
-        expect(json_response_body.dig(:initiative, :title))
-          .to eq initiative.title_multiloc['nl-NL']
+        expect(json_response_body.dig(:initiative, :title)).to eq initiative.title_multiloc['nl-NL']
       end
     end
 
     context 'when initiative is successful' do
-      create(:initiative_status_threshold_reached)
-      settings = AppConfiguration.instance.settings
-      settings['initiatives']['reacting_threshold'] = 1
-      AppConfiguration.instance.update! settings: settings
-
-      create_list(:reaction, 2, reactable: initiative, mode: 'up')
-      InitiativeStatusService.new.automated_transitions!
-
-      # expect(@initiative.reload.initiative_status.code).to eq 'threshold_reached'
-
+      let(:initiative) { create(:initiative, initiative_status: create(:initiative_status_threshold_reached)) }
 
       example_request 'Return the initiative with successful date', document: false do
         assert_status 200
-
-        binding.pry
+        expect(json_response_body.dig(:initiative, :threshold_reached_at)).not_to be_nil
       end
     end
-
   end
 
   include_examples '/api/v2/.../deleted', :initiatives
