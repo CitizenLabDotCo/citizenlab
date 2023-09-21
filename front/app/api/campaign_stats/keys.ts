@@ -8,7 +8,7 @@ const campaignStatsKeys = {
   all: () => [baseKey],
   items: () => [{ ...baseKey, operation: 'item' }],
   item: ({ campaignId }: { campaignId: string }) => [
-    { ...baseKey, operation: 'item', parameters: { campaignId } },
+    { ...baseKey, operation: 'item', parameters: { id: campaignId } },
   ],
 } satisfies QueryKeys;
 
