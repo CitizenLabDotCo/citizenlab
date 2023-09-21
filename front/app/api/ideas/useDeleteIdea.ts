@@ -32,7 +32,7 @@ const useDeleteIdea = () => {
         queryKey: ideaImagesKeys.list({ ideaId }),
       });
       queryClient.invalidateQueries({
-        queryKey: ideaImagesKeys.item({ ideaId }),
+        queryKey: ideaImagesKeys.items(),
       });
       queryClient.invalidateQueries({ queryKey: projectsKeys.lists() });
       queryClient.invalidateQueries({
