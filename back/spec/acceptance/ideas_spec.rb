@@ -1258,7 +1258,6 @@ resource 'Ideas' do
                 end
               end
 
-
               context 'Moving to a different project' do
                 let(:new_project) { create(:continuous_project) }
                 let(:project_id) { new_project.id }
