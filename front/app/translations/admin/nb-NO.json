@@ -2142,6 +2142,7 @@
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.visits": "Besøk",
   "app.modules.commercial.analytics.admin.components.VisitorsTypesCard.title": "Typer besøkende",
   "app.modules.commercial.analytics.admin.components.VisitorsTypesCard.visitors": "Besøkende",
+  "app.modules.commercial.analytics.admin.containers.visitors.dateInfo": "Unike besøksdata er tilgjengelig fra {date} og utover.",
   "app.modules.commercial.analytics.admin.hooks.useActiveUsers.timeSeries": "Aktive brukere over tid",
   "app.modules.commercial.analytics.admin.hooks.useEmailDeliveries.timeSeries": "E-postleveranser over tid",
   "app.modules.commercial.analytics.admin.hooks.useRegistrations.timeSeries": "Registreringer over tid",
