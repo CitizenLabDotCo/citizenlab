@@ -6,7 +6,7 @@ import signOut from 'api/authentication/sign_in_out/signOut';
 
 import { UseMutateFunction } from '@tanstack/react-query';
 import { IUser, IUserUpdate } from 'api/users/types';
-import { CLErrorsJSON } from 'typings';
+import { CLErrorsWrapper } from 'typings';
 
 // utils
 import { requiredCustomFields, requiredBuiltInFields } from './utils';
@@ -18,7 +18,7 @@ import { Step, BuiltInFieldsUpdate } from './typings';
 export const missingDataFlow = (
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
-  updateUser: UseMutateFunction<IUser, CLErrorsJSON, IUserUpdate>
+  updateUser: UseMutateFunction<IUser, CLErrorsWrapper, IUserUpdate>
 ) => {
   return {
     'missing-data:email-confirmation': {
