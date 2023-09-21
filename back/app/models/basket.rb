@@ -57,7 +57,11 @@ class Basket < ApplicationRecord
   end
 
   def update_counts!
-    # NOTE: we cannot use counter_culture because we can't trigger it from another model being updated (basket)
+    self.class.update_counts participation_context, participation_context_type
+  end
+
+  # NOTE: we cannot use counter_culture because we can't trigger it from another model being updated (basket)
+  def self.update_counts(participation_context, participation_context_type)
     project = participation_context.project
 
     # Update ideas
@@ -110,7 +114,7 @@ class Basket < ApplicationRecord
   end
 
   # NOTE: All ideas on the project are updated in case ideas have been removed from a basket or a basket is unpublished
-  def update_ideas_counts(table, project_id, phase_id = nil)
+  def self.update_ideas_counts(table, project_id, phase_id = nil)
     table_id = table == 'ideas' ? 'id' : 'idea_id'
     query = "
       UPDATE #{table}
@@ -136,7 +140,7 @@ class Basket < ApplicationRecord
     ActiveRecord::Base.connection.execute(query)
   end
 
-  def update_participation_context_counts(count_contexts, update_context)
+  def self.update_participation_context_counts(count_contexts, update_context)
     baskets = Basket.where(participation_context: count_contexts).submitted
     baskets_count = baskets.count
     votes_count = BasketsIdea.where(basket: baskets).sum(:votes)
