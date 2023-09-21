@@ -3,21 +3,15 @@ import { useFormContext } from 'react-hook-form';
 
 // intl
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
-import messages from '../messages';
+import messages from '../../messages';
 
 // utils
 import {
   getFieldBackgroundColor,
   getIndexForTitle,
   getIndexTitleColor,
-  getLinearScaleOptions,
-  getLinearScaleRule,
-  getOptionRule,
-  getTitleFromAnswerId,
-  getTitleFromPageId,
   getFieldIcon,
-} from './utils';
-import { isPageRuleValid, isRuleValid } from 'utils/yup/validateLogic';
+} from '../utils';
 
 // components
 import {
@@ -28,9 +22,9 @@ import {
   IconTooltip,
   Icon,
 } from '@citizenlab/cl2-component-library';
+import Logic from './Logic';
 import T from 'components/T';
-import { FlexibleRow } from '../FlexibleRow';
-import { FieldRuleDisplay } from './FieldRuleDisplay';
+import { FlexibleRow } from '../../FlexibleRow';
 import {
   builtInFieldKeys,
   FormBuilderConfig,
@@ -45,7 +39,6 @@ import {
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
 } from 'services/formCustomFields';
-import useLocale from 'hooks/useLocale';
 
 const FormFieldsContainer = styled(Box)`
   &:hover {
@@ -77,7 +70,6 @@ export const FieldElement = (props: Props) => {
     formState: { errors },
     trigger,
   } = useFormContext();
-  const locale = useLocale();
   const { formatMessage } = useIntl();
 
   const formCustomFields: IFlatCustomField[] = watch('customFields');
@@ -182,87 +174,11 @@ export const FieldElement = (props: Props) => {
                 </Text>
               </Box>
               {showLogicOnRow && (
-                <Box>
-                  {field.input_type === 'select' &&
-                    field.options &&
-                    field.options.map((option) => {
-                      return (
-                        <Box key={option.id}>
-                          <FieldRuleDisplay
-                            isRuleValid={isRuleValid(
-                              getOptionRule(option, field),
-                              field.temp_id || field.id,
-                              formCustomFields
-                            )}
-                            answerTitle={getTitleFromAnswerId(
-                              field,
-                              getOptionRule(option, field)?.if,
-                              locale
-                            )}
-                            targetPage={getTitleFromPageId(
-                              formCustomFields,
-                              getOptionRule(option, field)?.goto_page_id,
-                              formatMessage(
-                                builderConfig.formEndPageLogicOption ||
-                                  messages.formEnd
-                              ),
-                              formatMessage(messages.page)
-                            )}
-                          />
-                        </Box>
-                      );
-                    })}
-                  {field.input_type === 'linear_scale' &&
-                    field.maximum &&
-                    getLinearScaleOptions(field.maximum).map((option) => {
-                      return (
-                        <Box key={option.key}>
-                          <FieldRuleDisplay
-                            isRuleValid={isRuleValid(
-                              getLinearScaleRule(option, field),
-                              field.temp_id || field.id,
-                              formCustomFields
-                            )}
-                            answerTitle={getTitleFromAnswerId(
-                              field,
-                              getLinearScaleRule(option, field)?.if,
-                              locale
-                            )}
-                            targetPage={getTitleFromPageId(
-                              formCustomFields,
-                              getLinearScaleRule(option, field)?.goto_page_id,
-                              formatMessage(
-                                builderConfig.formEndPageLogicOption ||
-                                  messages.formEnd
-                              ),
-                              formatMessage(messages.page)
-                            )}
-                          />
-                        </Box>
-                      );
-                    })}
-                  {field.input_type === 'page' && (
-                    <FieldRuleDisplay
-                      isPageRule
-                      isRuleValid={isPageRuleValid(
-                        formCustomFields,
-                        field.temp_id || field.id,
-                        field.logic.next_page_id
-                      )}
-                      answerTitle={getIndexForTitle(formCustomFields, field)}
-                      targetPage={getTitleFromPageId(
-                        formCustomFields,
-                        field.logic.next_page_id,
-                        formatMessage(
-                          builderConfig.formEndPageLogicOption ||
-                            messages.formEnd
-                        ),
-                        formatMessage(messages.page)
-                      )}
-                      textColor={getIndexTitleColor(field.input_type)}
-                    />
-                  )}
-                </Box>
+                <Logic
+                  field={field}
+                  formCustomFields={formCustomFields}
+                  formEndPageLogicOption={builderConfig.formEndPageLogicOption}
+                />
               )}
             </Box>
           </Box>

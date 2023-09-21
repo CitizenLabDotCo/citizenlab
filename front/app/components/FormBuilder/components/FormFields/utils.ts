@@ -3,7 +3,6 @@ import {
   ICustomFieldInputType,
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
-  IOptionsType,
 } from 'services/formCustomFields';
 
 // styling
@@ -11,13 +10,8 @@ import { colors, IconNames } from '@citizenlab/cl2-component-library';
 import { rgba } from 'polished';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
 import { builtInFieldKeys } from 'components/FormBuilder/utils';
 import { MessageDescriptor } from 'utils/cl-intl';
-
-// types
-import { Locale } from 'typings';
-import { formEndOption } from '../FormBuilderSettings/utils';
 
 // intl
 import messages from '../messages';
@@ -65,88 +59,6 @@ export const getIndexForTitle = (
     .findIndex((f) => f.id === field.id);
 
   return ` ${fieldIndex + 1}`;
-};
-
-export const getOptionRule = (
-  option: IOptionsType,
-  field: IFlatCustomField
-) => {
-  const rules = field.logic?.rules;
-  if (!isNilOrError(rules) && (option.id || option.temp_id)) {
-    const rule = rules.find(
-      (rule) => rule.if === option.id || rule.if === option.temp_id
-    );
-    if (rule && rule.if && rule.goto_page_id) {
-      return rule;
-    }
-  }
-  return undefined;
-};
-
-export const getLinearScaleRule = (
-  option: { key: number; label: string },
-  field: IFlatCustomField
-) => {
-  const rules = field.logic?.rules;
-  if (!isNilOrError(rules) && option.key) {
-    const rule = rules.find((rule) => rule.if === option.key);
-    if (rule && rule.if && rule.goto_page_id) {
-      return rule;
-    }
-  }
-  return undefined;
-};
-
-export const getLinearScaleOptions = (maximum: number) => {
-  const linearScaleOptionArray = Array.from(
-    { length: maximum },
-    (_, i) => i + 1
-  );
-  const answers = linearScaleOptionArray.map((option) => ({
-    key: option,
-    label: option.toString(),
-  }));
-  return answers;
-};
-
-export const getTitleFromAnswerId = (
-  field: IFlatCustomField,
-  answerId: string | number | undefined,
-  locale: Locale | undefined | null | Error
-) => {
-  if (answerId && !isNilOrError(locale)) {
-    // If number, this is a linear scale option. Return the value as a string.
-    if (typeof answerId === 'number') {
-      return answerId.toString();
-    }
-    // Otherwise this is an option ID, return the related option title
-    const option = field?.options?.find(
-      (option) => option.id === answerId || option.temp_id === answerId
-    );
-    return option?.title_multiloc[locale];
-  }
-  return undefined;
-};
-
-export const getTitleFromPageId = (
-  formCustomFields: IFlatCustomField[],
-  pageId: string | number | undefined,
-  formEndMessage: string,
-  pageMessage: string
-) => {
-  if (pageId) {
-    // Return the related page title for the provided ID
-    if (pageId === formEndOption) {
-      return formEndMessage;
-    }
-    const page = formCustomFields.find(
-      (field) => field.id === pageId || field.temp_id === pageId
-    );
-    if (!isNilOrError(page)) {
-      return `${pageMessage} ${getIndexForTitle(formCustomFields, page)}`;
-    }
-  }
-  return undefined;
 };
 
 const getBuiltinFieldIcon = (key: string): IconNames => {
