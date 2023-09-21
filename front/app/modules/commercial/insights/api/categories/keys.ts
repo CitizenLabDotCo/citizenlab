@@ -11,11 +11,11 @@ const categoriesKeys = {
     { ...baseKey, operation: 'list', parameters: { viewId } },
   ],
   items: () => [{ ...baseKey, operation: 'item' }],
-  item: ({ viewId, id }: { viewId: string; id: string }) => [
+  item: ({ id }: { id: string }) => [
     {
       ...baseKey,
       operation: 'item',
-      parameters: { viewId, id },
+      parameters: { id },
     },
   ],
 } satisfies QueryKeys;
