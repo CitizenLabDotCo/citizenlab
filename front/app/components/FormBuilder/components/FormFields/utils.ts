@@ -38,10 +38,6 @@ export const getFieldBackgroundColor = (
   return undefined;
 };
 
-export const getIndexTitleColor = (inputType: ICustomFieldInputType) => {
-  return ['page', 'section'].includes(inputType) ? 'blue500' : 'teal400';
-};
-
 export const getIndexForTitle = (
   formCustomFields: IFlatCustomField[],
   field: IFlatCustomField | IFlatCustomFieldWithIndex

@@ -17,7 +17,7 @@ import messages from '../../../messages';
 import T from 'components/T';
 
 // utils
-import { getIndexTitleColor, getIndexForTitle } from '../../utils';
+import { getIndexForTitle } from '../../utils';
 import { IFlatCustomField } from 'services/formCustomFields';
 
 interface Props {
@@ -38,6 +38,9 @@ const FieldTitle = ({ hasErrors, field, formCustomFields }: Props) => {
   }
 
   const lockedAttributes = field.constraints?.locks;
+  const titleColor = ['page', 'section'].includes(field.input_type)
+    ? 'blue500'
+    : 'teal400';
 
   return (
     <Box display="flex">
@@ -47,13 +50,13 @@ const FieldTitle = ({ hasErrors, field, formCustomFields }: Props) => {
       <Icon
         ml={hasErrors ? '8px' : '28px'}
         width="12px"
-        fill={getIndexTitleColor(field.input_type)}
+        fill={titleColor}
         name="sort"
         pb="4px"
       />
       <Text
         as="span"
-        color={getIndexTitleColor(field.input_type)}
+        color={titleColor}
         fontSize="base"
         mt="auto"
         mb="auto"
