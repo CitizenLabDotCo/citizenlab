@@ -82,7 +82,7 @@ export const getTitleFromPageId = (
     const page = formCustomFields.find(
       (field) => field.id === pageId || field.temp_id === pageId
     );
-    if (!isNilOrError(page)) {
+    if (page) {
       return `${pageMessage} ${getIndexForTitle(formCustomFields, page)}`;
     }
   }

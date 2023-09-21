@@ -2,7 +2,8 @@ import React from 'react';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
-import { FieldRuleDisplay } from './FieldRuleDisplay';
+import { QuestionRuleDisplay } from './QuestionRuleDisplay';
+import { PageRuleDisplay } from './PageRuleDisplay';
 
 // i18n
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
@@ -18,7 +19,6 @@ import {
   getTitleFromAnswerId,
   getTitleFromPageId,
 } from './utils';
-import { getIndexForTitle, getIndexTitleColor } from '../../utils';
 
 // typings
 import { IFlatCustomField } from 'services/formCustomFields';
@@ -48,7 +48,7 @@ const Logic = ({ field, formCustomFields, formEndPageLogicOption }: Props) => {
 
           return (
             <Box key={option.id}>
-              <FieldRuleDisplay
+              <QuestionRuleDisplay
                 isRuleValid={isRuleValid(
                   optionRule,
                   field.temp_id || field.id,
@@ -76,7 +76,7 @@ const Logic = ({ field, formCustomFields, formEndPageLogicOption }: Props) => {
 
           return (
             <Box key={option.key}>
-              <FieldRuleDisplay
+              <QuestionRuleDisplay
                 isRuleValid={isRuleValid(
                   linearScaleRule,
                   field.temp_id || field.id,
@@ -98,21 +98,18 @@ const Logic = ({ field, formCustomFields, formEndPageLogicOption }: Props) => {
           );
         })}
       {field.input_type === 'page' && (
-        <FieldRuleDisplay
-          isPageRule
+        <PageRuleDisplay
           isRuleValid={isPageRuleValid(
             formCustomFields,
             field.temp_id || field.id,
             field.logic.next_page_id
           )}
-          answerTitle={getIndexForTitle(formCustomFields, field)}
           targetPage={getTitleFromPageId(
             formCustomFields,
             field.logic.next_page_id,
             formEndMessage,
             pageMessage
           )}
-          textColor={getIndexTitleColor(field.input_type)}
         />
       )}
     </Box>

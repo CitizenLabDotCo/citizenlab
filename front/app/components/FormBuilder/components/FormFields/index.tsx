@@ -11,7 +11,7 @@ import {
   builtInFieldKeys,
   FormBuilderConfig,
 } from 'components/FormBuilder/utils';
-import { FieldElement } from './FieldElement';
+import { FormField } from './FormField';
 
 // hooks and services
 import useLocale from 'hooks/useLocale';
@@ -86,7 +86,7 @@ const FormFields = ({
           {nestedGroupData.map((grouping, pageIndex) => {
             return (
               <Drag key={grouping.id} id={grouping.id} index={pageIndex}>
-                <FieldElement
+                <FormField
                   field={grouping.groupElement}
                   isEditingDisabled={isEditingDisabled}
                   selectedFieldId={selectedFieldId}
@@ -106,7 +106,7 @@ const FormFields = ({
                               id={question.id}
                               index={index}
                             >
-                              <FieldElement
+                              <FormField
                                 key={question.id}
                                 field={question}
                                 isEditingDisabled={isEditingDisabled}

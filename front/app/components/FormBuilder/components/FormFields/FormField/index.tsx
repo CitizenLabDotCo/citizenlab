@@ -37,7 +37,7 @@ type Props = {
   builderConfig: FormBuilderConfig;
 };
 
-export const FieldElement = ({
+export const FormField = ({
   field,
   isEditingDisabled,
   onEditField,
