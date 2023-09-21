@@ -4,7 +4,6 @@ import { useFormContext } from 'react-hook-form';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { DragAndDropResult, NestedGroupingStructure } from '../../edit/utils';
-import { getTranslatedFieldBadgeLabel } from './utils';
 
 // components
 import { Box, colors } from '@citizenlab/cl2-component-library';
@@ -90,7 +89,6 @@ const FormFields = ({
                 <FieldElement
                   field={grouping.groupElement}
                   isEditingDisabled={isEditingDisabled}
-                  getTranslatedFieldBadgeLabel={getTranslatedFieldBadgeLabel}
                   selectedFieldId={selectedFieldId}
                   onEditField={onEditField}
                   builderConfig={builderConfig}
@@ -112,9 +110,6 @@ const FormFields = ({
                                 key={question.id}
                                 field={question}
                                 isEditingDisabled={isEditingDisabled}
-                                getTranslatedFieldBadgeLabel={
-                                  getTranslatedFieldBadgeLabel
-                                }
                                 selectedFieldId={selectedFieldId}
                                 onEditField={onEditField}
                                 builderConfig={builderConfig}

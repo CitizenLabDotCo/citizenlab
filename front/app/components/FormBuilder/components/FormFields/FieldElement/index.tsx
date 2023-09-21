@@ -1,44 +1,26 @@
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
 
-// intl
-import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
-import messages from '../../messages';
-
-// utils
-import {
-  getFieldBackgroundColor,
-  getIndexForTitle,
-  getIndexTitleColor,
-  getFieldIcon,
-} from '../utils';
-
 // components
-import {
-  Box,
-  Badge,
-  Text,
-  colors,
-  IconTooltip,
-  Icon,
-} from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
+import FieldTitle from './FieldTitle';
 import Logic from './Logic';
-import T from 'components/T';
+import IconsAndBadges from './IconsAndBadges';
 import { FlexibleRow } from '../../FlexibleRow';
-import {
-  builtInFieldKeys,
-  FormBuilderConfig,
-} from 'components/FormBuilder/utils';
 
 // styling
 import styled from 'styled-components';
 import { rgba } from 'polished';
 
-// hooks and services
+// utils
+import { getFieldBackgroundColor } from '../utils';
+
+// typings
 import {
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
 } from 'services/formCustomFields';
+import { FormBuilderConfig } from 'components/FormBuilder/utils';
 
 const FormFieldsContainer = styled(Box)`
   &:hover {
@@ -51,45 +33,32 @@ type Props = {
   field: IFlatCustomField;
   isEditingDisabled: boolean;
   onEditField: (field: IFlatCustomFieldWithIndex) => void;
-  getTranslatedFieldBadgeLabel: (field: IFlatCustomField) => MessageDescriptor;
   selectedFieldId?: string;
   builderConfig: FormBuilderConfig;
 };
 
-export const FieldElement = (props: Props) => {
-  const {
-    field,
-    isEditingDisabled,
-    onEditField,
-    getTranslatedFieldBadgeLabel,
-    selectedFieldId,
-    builderConfig,
-  } = props;
+export const FieldElement = ({
+  field,
+  isEditingDisabled,
+  onEditField,
+  selectedFieldId,
+  builderConfig,
+}: Props) => {
   const {
     watch,
     formState: { errors },
     trigger,
   } = useFormContext();
-  const { formatMessage } = useIntl();
 
   const formCustomFields: IFlatCustomField[] = watch('customFields');
   const index = formCustomFields.findIndex((f) => f.id === field.id);
-  const lockedAttributes = field?.constraints?.locks;
 
-  const showVisibilityIcon =
-    builderConfig.displayBuiltInFields &&
-    field.input_type !== 'section' &&
-    !builtInFieldKeys.includes(field.key);
   const hasErrors = !!errors.customFields?.[index];
+
   const showLogicOnRow =
     field.input_type !== 'page' ? field.logic.rules : field.logic;
+
   const isFieldGrouping = ['page', 'section'].includes(field.input_type);
-  let rowTitle: MessageDescriptor = messages.question;
-  if (field.input_type === 'page') {
-    rowTitle = messages.page;
-  } else if (field.input_type === 'section') {
-    rowTitle = messages.section;
-  }
 
   const editFieldAndValidate = () => {
     onEditField({ ...field, index });
@@ -116,63 +85,11 @@ export const FieldElement = (props: Props) => {
         >
           <Box display="flex" alignItems="center" height="100%">
             <Box display="block">
-              <Box display="flex">
-                {hasErrors && (
-                  <Icon
-                    ml="28px"
-                    width="20px"
-                    fill={colors.error}
-                    name="alert-circle"
-                  />
-                )}
-                <Icon
-                  ml={hasErrors ? '8px' : '28px'}
-                  width="12px"
-                  fill={getIndexTitleColor(field.input_type)}
-                  name="sort"
-                  pb="4px"
-                />
-                <Text
-                  as="span"
-                  color={getIndexTitleColor(field.input_type)}
-                  fontSize="base"
-                  mt="auto"
-                  mb="auto"
-                  fontWeight="bold"
-                  mx="12px"
-                >
-                  <>
-                    <FormattedMessage {...rowTitle} />
-                    {getIndexForTitle(formCustomFields, field)}
-                  </>
-                </Text>
-                <Text
-                  as="span"
-                  fontSize="base"
-                  mt="auto"
-                  mb="auto"
-                  color="grey800"
-                >
-                  <Box display="flex">
-                    <T value={field.title_multiloc} />
-                    {lockedAttributes?.enabled && (
-                      <IconTooltip
-                        placement="top-start"
-                        iconColor={colors.coolGrey500}
-                        mb="4px"
-                        iconSize="16px"
-                        ml="4px"
-                        icon="lock"
-                        content={
-                          field.input_type === 'section'
-                            ? formatMessage(messages.sectionCannotBeDeleted)
-                            : formatMessage(messages.questionCannotBeDeleted)
-                        }
-                      />
-                    )}
-                  </Box>
-                </Text>
-              </Box>
+              <FieldTitle
+                hasErrors={hasErrors}
+                field={field}
+                formCustomFields={formCustomFields}
+              />
               {showLogicOnRow && (
                 <Logic
                   field={field}
@@ -182,66 +99,10 @@ export const FieldElement = (props: Props) => {
               )}
             </Box>
           </Box>
-          <Box pr="32px" display="flex" height="100%" alignContent="center">
-            {showVisibilityIcon && (
-              <IconTooltip
-                placement="top"
-                icon="eye-off"
-                iconColor={colors.coolGrey300}
-                content={formatMessage(messages.fieldIsNotVisibleTooltip)}
-                maxTooltipWidth={250}
-              />
-            )}
-            {field.required && (
-              <Box mt="auto" mb="auto" ml="12px">
-                {' '}
-                <Badge className="inverse" color={colors.green100}>
-                  <Text
-                    color="green500"
-                    py="0px"
-                    my="0px"
-                    fontSize="xs"
-                    fontWeight="bold"
-                  >
-                    <FormattedMessage {...messages.required} />
-                  </Text>
-                </Badge>
-              </Box>
-            )}
-            {!isFieldGrouping && (
-              <Box my="auto" ml="12px">
-                {' '}
-                <Badge className="inverse" color={colors.grey200}>
-                  <Box
-                    display="flex"
-                    flexDirection="row"
-                    alignItems="center"
-                    flexWrap="nowrap"
-                  >
-                    <Icon
-                      fill={colors.coolGrey600}
-                      width="16px"
-                      height="16px"
-                      name={getFieldIcon(field.input_type, field.key)}
-                    />
-                    <Text
-                      color="coolGrey600"
-                      py="0px"
-                      my="0px"
-                      fontSize="xs"
-                      fontWeight="bold"
-                      ml="4px"
-                      whiteSpace="nowrap"
-                    >
-                      <FormattedMessage
-                        {...getTranslatedFieldBadgeLabel(field)}
-                      />
-                    </Text>
-                  </Box>
-                </Badge>
-              </Box>
-            )}
-          </Box>
+          <IconsAndBadges
+            field={field}
+            displayBuiltInFields={builderConfig.displayBuiltInFields}
+          />
         </Box>
       </FlexibleRow>
     </FormFieldsContainer>
