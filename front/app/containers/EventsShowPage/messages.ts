@@ -22,4 +22,8 @@ export default defineMessages({
     id: 'app.containers.EventsShow.goBack',
     defaultMessage: 'Go back',
   },
+  editEvent: {
+    id: 'app.containers.EventsShow.editEvent',
+    defaultMessage: 'Edit event',
+  },
 });

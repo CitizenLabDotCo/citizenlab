@@ -1509,6 +1509,7 @@
   "app.containers.AdminPage.ProjectEvents.editEventTitle": "Edit Event",
   "app.containers.AdminPage.ProjectEvents.eventAttendanceExportText": "In order to see event attendees, go to the {userTabLink} tab and create a smart group for the event. {supportArticleLink}.",
   "app.containers.AdminPage.ProjectEvents.eventDates": "Event dates",
+  "app.containers.AdminPage.ProjectEvents.eventImage": "Event image",
   "app.containers.AdminPage.ProjectEvents.eventLocation": "Event location",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabel": "Attachments (max 50MB)",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabelTooltip": "Attachments are shown below the event description.",

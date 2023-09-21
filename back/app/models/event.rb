@@ -9,7 +9,6 @@
 #  title_multiloc         :jsonb
 #  description_multiloc   :jsonb
 #  location_multiloc      :jsonb
-#  online_link            :string
 #  start_at               :datetime
 #  end_at                 :datetime
 #  created_at             :datetime         not null
@@ -20,6 +19,7 @@
 #  address_2_multiloc     :jsonb            not null
 #  using_url              :string
 #  attend_button_multiloc :jsonb            not null
+#  online_link            :string
 #
 # Indexes
 #
@@ -38,7 +38,8 @@ class Event < ApplicationRecord
   has_many :attendees, through: :attendances
   has_many :event_files, -> { order(:ordering) }, dependent: :destroy
   has_many :text_images, as: :imageable, dependent: :destroy
-  accepts_nested_attributes_for :text_images
+  has_many :event_images, -> { order(:ordering) }, dependent: :destroy, inverse_of: :event
+  accepts_nested_attributes_for :text_images, :event_images
 
   validates :project, presence: true
   validates :title_multiloc, presence: true, multiloc: { presence: true }

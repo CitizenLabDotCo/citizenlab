@@ -21,6 +21,8 @@ class WebApi::V1::EventSerializer < WebApi::V1::BaseSerializer
     TextImageService.new.render_data_images object, :description_multiloc
   end
 
+  has_many :event_images, serializer: WebApi::V1::ImageSerializer
+
   belongs_to :project
 
   belongs_to(
