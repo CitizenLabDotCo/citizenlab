@@ -33,6 +33,8 @@ PublicApi::Engine.routes.draw do
 
       route_mapper.resources :email_campaigns
       route_mapper.resources :email_campaign_deliveries
+      route_mapper.resources :volunteering_causes
+      route_mapper.resources :volunteering_volunteers
     end
 
     # Association endpoints
