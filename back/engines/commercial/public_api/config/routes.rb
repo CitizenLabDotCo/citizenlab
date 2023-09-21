@@ -30,6 +30,9 @@ PublicApi::Engine.routes.draw do
       route_mapper.resources :projects do
         resources :phases, only: %i[index]
       end
+
+      route_mapper.resources :email_campaigns
+      route_mapper.resources :email_campaign_deliveries
     end
 
     # Association endpoints
