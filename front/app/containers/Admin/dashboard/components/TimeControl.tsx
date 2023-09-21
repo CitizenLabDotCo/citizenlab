@@ -111,7 +111,7 @@ const TimeControl = ({
   };
 
   const isOutsideRange = (date: Moment) => {
-    return !!(minDate && date.isBefore(minDate, 'day'));
+    return minDate ? date.isBefore(minDate, 'day') : false;
   };
 
   const handleDatesChange = ({
