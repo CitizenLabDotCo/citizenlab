@@ -107,7 +107,7 @@
   "app.components.admin.PostManager.comments": "Commentaires",
   "app.components.admin.PostManager.components.PostTable.Row.cancel": "Annuler",
   "app.components.admin.PostManager.components.PostTable.Row.confirm": "Confirmer",
-  "app.components.admin.PostManager.components.PostTable.Row.theIdeaYouAreMoving": "Vous essayez de retirer cette idée d'une phase où elle a reçu des votes. Si vous le faites, ces votes seront perdus. Êtes-vous sûr de vouloir retirer cette idée de cette phase ?",
+  "app.components.admin.PostManager.components.PostTable.Row.theIdeaYouAreMoving": "Vous essayez de retirer cette idée d'une phase où elle a reçu des votes. Si vous le faites, ces votes seront perdus. Êtes-vous sûr(e) de vouloir retirer cette idée de cette phase ?",
   "app.components.admin.PostManager.components.PostTable.Row.theVotesAssociated": "Les votes associés à cette idée seront perdus",
   "app.components.admin.PostManager.components.goToInputManager": "Aller dans le gestionnaire de contributions",
   "app.components.admin.PostManager.components.goToProposalManager": "Aller dans le gestionnaire de propositions",
