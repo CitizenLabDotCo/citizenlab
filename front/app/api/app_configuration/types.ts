@@ -283,6 +283,7 @@ interface IAppConfigurationAttributes {
   logo: ImageSizes | null;
   favicon?: ImageSizes | null;
   style?: IAppConfigurationStyle;
+  created_at: string;
 }
 
 export interface IAppConfigurationData {

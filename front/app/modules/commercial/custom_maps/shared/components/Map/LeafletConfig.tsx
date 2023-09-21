@@ -34,27 +34,20 @@ interface Props {
 const LeafletConfig = memo<Props>(
   ({ onLeafletConfigChange, projectId, centerLatLng, zoomLevel, points }) => {
     const localize = useLocalize();
-
-    const { data: mapConfig, isLoading: isLoadingMapConfig } =
-      useMapConfig(projectId);
-    const { data: appConfig, isLoading } = useAppConfiguration();
-
-    const loading = isLoading || isLoadingMapConfig;
+    const { data: mapConfig } = useMapConfig(projectId);
+    const { data: appConfig } = useAppConfiguration();
 
     const center = useMemo(() => {
-      if (loading) return;
       return getCenter(centerLatLng, appConfig?.data, mapConfig?.data);
-    }, [loading, centerLatLng, appConfig, mapConfig]);
+    }, [centerLatLng, appConfig, mapConfig]);
 
     const zoom = useMemo(() => {
-      if (loading) return;
       return getZoomLevel(zoomLevel, appConfig?.data, mapConfig?.data);
-    }, [loading, zoomLevel, appConfig, mapConfig]);
+    }, [zoomLevel, appConfig, mapConfig]);
 
     const tileProvider = useMemo(() => {
-      if (loading) return;
       return getTileProvider(appConfig?.data, mapConfig?.data);
-    }, [loading, appConfig, mapConfig]);
+    }, [appConfig, mapConfig]);
 
     const tileOptions = useMemo(() => {
       if (!tileProvider) return;
