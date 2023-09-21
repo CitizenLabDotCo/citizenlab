@@ -102,9 +102,8 @@ const AdminProjectEventEdit = () => {
   const [eventFiles, setEventFiles] = useState<UploadFile[]>([]);
   const [attributeDiff, setAttributeDiff] = useState<IEventProperties>({});
   const [mapModalVisible, setMapModalVisible] = useState(false);
-  const [attendanceOptionsVisible, setAttendanceOptionsVisible] = useState(
-    !!event?.data.attributes.using_url
-  );
+  const [attendanceOptionsVisible, setAttendanceOptionsVisible] =
+    useState(false);
   const [uploadedImage, setUploadedImage] = useState<UploadFile | null>(null);
   const [locationPoint, setLocationPoint] = useState<GeoJSON.Point | null>(
     event?.data?.attributes?.location_point_geojson || null
@@ -144,6 +143,13 @@ const AdminProjectEventEdit = () => {
       setSuccessfulGeocode(true);
     }
   }, [remotePoint]);
+
+  // If there is a custom button url, set the state accordingly
+  useEffect(() => {
+    if (eventAttrs.using_url) {
+      setAttendanceOptionsVisible(true);
+    }
+  }, [eventAttrs.using_url]);
 
   // Listen for map clicks to update the location point
   useEffect(() => {
@@ -235,7 +241,12 @@ const AdminProjectEventEdit = () => {
   };
 
   const handleCustomButtonToggleOnChange = (toggleValue: boolean) => {
+    setSubmitState('enabled');
     setAttendanceOptionsVisible(toggleValue);
+    setAttributeDiff({
+      ...attributeDiff,
+      using_url: '',
+    });
   };
 
   const handleCustomButtonMultilocOnChange = (buttonMultiloc: Multiloc) => {
@@ -653,7 +664,7 @@ const AdminProjectEventEdit = () => {
                   </Box>
                 </Box>
               }
-              checked={!!eventAttrs.using_url || attendanceOptionsVisible}
+              checked={attendanceOptionsVisible}
               onChange={() => {
                 handleCustomButtonToggleOnChange(!attendanceOptionsVisible);
               }}
@@ -672,6 +683,7 @@ const AdminProjectEventEdit = () => {
                     labelTooltipText={formatMessage(
                       messages.customButtonTextTooltip
                     )}
+                    maxCharCount={28}
                   />
                 </Box>
               </SectionField>

@@ -186,8 +186,9 @@ export default defineMessages({
     defaultMessage: 'Custom button text',
   },
   customButtonTextTooltip: {
-    id: 'app.containers.AdminPage.ProjectEvents.customButtonTextTooltip',
-    defaultMessage: 'Set the button text to a value other than "Attend".',
+    id: 'app.containers.AdminPage.ProjectEvents.customButtonTextTooltip2',
+    defaultMessage:
+      'Set the button text to a value other than "Attend" when an external URL is set.',
   },
   customButtonLink: {
     id: 'app.containers.AdminPage.ProjectEvents.customButtonLink',

@@ -97,7 +97,7 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
   };
 
   const getButtonText = () => {
-    if (customButtonText) {
+    if (customButtonText && event?.attributes.using_url) {
       return customButtonText;
     } else if (userIsAttending) {
       return formatMessage(messages.attending);
@@ -106,7 +106,7 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
   };
 
   const getButtonIcon = () => {
-    if (customButtonText || event?.attributes.using_url) {
+    if (event?.attributes.using_url) {
       return undefined;
     } else if (userIsAttending) {
       return 'check';
