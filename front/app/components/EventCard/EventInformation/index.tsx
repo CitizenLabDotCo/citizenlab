@@ -82,9 +82,13 @@ const EventInformation = ({ event, titleFontSize }: Props) => {
         >
           <Title
             variant="h4"
+            as="h2"
             style={{ fontSize: titleFontSize, fontWeight: '600' }}
             pr="8px"
             color="tenantText"
+            m="0px"
+            mt="auto"
+            mb="auto"
           >
             <T value={event.attributes.title_multiloc} />
           </Title>
