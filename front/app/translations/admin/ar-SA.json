@@ -2137,6 +2137,7 @@
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.visits": "الزيارات",
   "app.modules.commercial.analytics.admin.components.VisitorsTypesCard.title": "أنواع الزائرين",
   "app.modules.commercial.analytics.admin.components.VisitorsTypesCard.visitors": "زوار",
+  "app.modules.commercial.analytics.admin.containers.visitors.dateInfo": "تتوفر بيانات الزائر الفريدة بدءًا من {date} فصاعدًا.",
   "app.modules.commercial.analytics.admin.hooks.useActiveUsers.timeSeries": "مستخدمون نشطون بمرور الوقت",
   "app.modules.commercial.analytics.admin.hooks.useEmailDeliveries.timeSeries": "عمليات تسليم البريد الإلكتروني بمرور الوقت",
   "app.modules.commercial.analytics.admin.hooks.useRegistrations.timeSeries": "تسجيلات بمرور الوقت",
