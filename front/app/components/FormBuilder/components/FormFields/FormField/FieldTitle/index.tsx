@@ -17,16 +17,15 @@ import messages from '../../../messages';
 import T from 'components/T';
 
 // utils
-import { getIndexForTitle } from '../../utils';
 import { IFlatCustomField } from 'services/formCustomFields';
 
 interface Props {
   hasErrors: boolean;
   field: IFlatCustomField;
-  formCustomFields: IFlatCustomField[];
+  fieldNumber?: number;
 }
 
-const FieldTitle = ({ hasErrors, field, formCustomFields }: Props) => {
+const FieldTitle = ({ hasErrors, field, fieldNumber }: Props) => {
   const { formatMessage } = useIntl();
 
   let rowTitle = messages.question;
@@ -65,7 +64,7 @@ const FieldTitle = ({ hasErrors, field, formCustomFields }: Props) => {
       >
         <>
           <FormattedMessage {...rowTitle} />
-          {getIndexForTitle(formCustomFields, field)}
+          {` ${fieldNumber}`}
         </>
       </Text>
       <Text as="span" fontSize="base" mt="auto" mb="auto" color="grey800">

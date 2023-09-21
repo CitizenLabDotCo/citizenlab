@@ -10,7 +10,6 @@ import {
   Button,
 } from '@citizenlab/cl2-component-library';
 import CloseIconButton from 'components/UI/CloseIconButton';
-import { getIndexForTitle } from '../FormFields/utils';
 import { LogicSettings } from './LogicSettings';
 import { ContentSettings } from './ContentSettings';
 import Modal from 'components/UI/Modal';
@@ -31,7 +30,10 @@ import { useFormContext } from 'react-hook-form';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import { getFieldNumbers } from '../utils';
 import { formEndOption, getTranslatedStringKey } from './utils';
+
+// typings
 import { FormBuilderConfig } from 'components/FormBuilder/utils';
 
 interface Props {
@@ -120,16 +122,16 @@ const FormBuilderSettings = ({
   };
 
   const getPageList = () => {
+    const fieldNumbers = getFieldNumbers(formCustomFields);
     const pageArray: { value: string; label: string }[] = [];
 
     formCustomFields?.forEach((field) => {
       if (field.input_type === 'page') {
         pageArray.push({
           value: field.temp_id || field.id,
-          label: `${formatMessage(messages.page)} ${getIndexForTitle(
-            formCustomFields,
-            field
-          )}`,
+          label: `${formatMessage(messages.page)} ${
+            fieldNumbers.pageNumbers[field.id]
+          }`,
         });
       }
     });

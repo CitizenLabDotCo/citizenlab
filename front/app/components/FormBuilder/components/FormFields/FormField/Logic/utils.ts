@@ -69,22 +69,13 @@ export const getTitleFromAnswerId = (
 };
 
 export const getTitleFromPageId = (
-  formCustomFields: IFlatCustomField[],
   pageId: string | number | undefined,
   formEndMessage: string,
-  pageMessage: string
+  pageMessage: string,
+  pageNumber?: number
 ) => {
-  if (pageId) {
-    // Return the related page title for the provided ID
-    if (pageId === formEndOption) {
-      return formEndMessage;
-    }
-    const page = formCustomFields.find(
-      (field) => field.id === pageId || field.temp_id === pageId
-    );
-    if (page) {
-      return `${pageMessage} ${getIndexForTitle(formCustomFields, page)}`;
-    }
-  }
-  return undefined;
+  if (!pageId) return;
+  if (pageId === formEndOption) return formEndMessage;
+
+  return `${pageMessage} ${pageNumber}`;
 };
