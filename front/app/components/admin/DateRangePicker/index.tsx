@@ -63,10 +63,6 @@ class OurDateRangePicker extends PureComponent<
     this.setState({ focusedInput });
   };
 
-  handleIsOutsideRange = () => {
-    return false;
-  };
-
   render() {
     return (
       <StylingWrapper className={this.props.className}>
@@ -82,7 +78,6 @@ class OurDateRangePicker extends PureComponent<
           endDatePlaceholderText={this.props.intl.formatMessage(
             messages.endDatePlaceholder
           )}
-          isOutsideRange={this.handleIsOutsideRange}
         />
       </StylingWrapper>
     );

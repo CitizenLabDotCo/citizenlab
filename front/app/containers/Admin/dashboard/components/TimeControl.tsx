@@ -110,6 +110,10 @@ const TimeControl = ({
     setDropdownOpened((dropdownOpened) => !dropdownOpened);
   };
 
+  const isOutsideRange = (date: Moment) => {
+    return !!(minDate && date.isBefore(minDate, 'day'));
+  };
+
   const handleDatesChange = ({
     startDate,
     endDate,
@@ -201,6 +205,7 @@ const TimeControl = ({
         endDate={endAtMoment}
         onDatesChange={handleDatesChange}
         minDate={minDate}
+        isOutsideRange={isOutsideRange}
       />
     </Container>
   );
