@@ -129,9 +129,7 @@ const FormBuilderSettings = ({
       if (field.input_type === 'page') {
         pageArray.push({
           value: field.temp_id || field.id,
-          label: `${formatMessage(messages.page)} ${
-            fieldNumbers.pageNumbers[field.id]
-          }`,
+          label: `${formatMessage(messages.page)} ${fieldNumbers[field.id]}`,
         });
       }
     });

@@ -35,7 +35,7 @@ type Props = {
   onEditField: (field: IFlatCustomFieldWithIndex) => void;
   selectedFieldId?: string;
   builderConfig: FormBuilderConfig;
-  fieldNumber: number | undefined;
+  fieldNumbers: Record<string, number>;
 };
 
 export const FormField = ({
@@ -44,7 +44,7 @@ export const FormField = ({
   onEditField,
   selectedFieldId,
   builderConfig,
-  fieldNumber,
+  fieldNumbers,
 }: Props) => {
   const {
     watch,
@@ -90,12 +90,15 @@ export const FormField = ({
               <FieldTitle
                 hasErrors={hasErrors}
                 field={field}
-                fieldNumber={fieldNumber}
+                fieldNumber={
+                  field.id in fieldNumbers ? fieldNumbers[field.id] : undefined
+                }
               />
               {showLogicOnRow && (
                 <Logic
                   field={field}
                   formCustomFields={formCustomFields}
+                  fieldNumbers={fieldNumbers}
                   formEndPageLogicOption={builderConfig.formEndPageLogicOption}
                 />
               )}

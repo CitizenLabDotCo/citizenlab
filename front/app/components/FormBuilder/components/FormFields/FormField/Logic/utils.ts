@@ -1,6 +1,5 @@
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { getIndexForTitle } from '../../utils';
 import { formEndOption } from 'components/FormBuilder/components/FormBuilderSettings/utils';
 
 // typings
@@ -72,10 +71,12 @@ export const getTitleFromPageId = (
   pageId: string | number | undefined,
   formEndMessage: string,
   pageMessage: string,
-  pageNumber?: number
+  fieldNumbers: Record<string, number>
 ) => {
   if (!pageId) return;
   if (pageId === formEndOption) return formEndMessage;
 
-  return `${pageMessage} ${pageNumber}`;
+  return pageId in fieldNumbers
+    ? `${pageMessage} ${fieldNumbers[pageId]}`
+    : pageMessage;
 };

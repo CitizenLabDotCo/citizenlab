@@ -98,11 +98,7 @@ const FormFields = ({
                   selectedFieldId={selectedFieldId}
                   onEditField={onEditField}
                   builderConfig={builderConfig}
-                  fieldNumber={
-                    grouping.id in fieldNumbers
-                      ? fieldNumbers[grouping.id]
-                      : undefined
-                  }
+                  fieldNumbers={fieldNumbers}
                 />
                 <Drop key={grouping.id} id={grouping.id} type={questionDNDType}>
                   <Box height="100%">
@@ -124,15 +120,11 @@ const FormFields = ({
                                 selectedFieldId={selectedFieldId}
                                 onEditField={onEditField}
                                 builderConfig={builderConfig}
-                                fieldNumber={
-                                  question.id in fieldNumbers
-                                    ? fieldNumbers[question.id]
-                                    : undefined
-                                }
+                                fieldNumbers={fieldNumbers}
                               />
                             </Drag>
                           ) : (
-                            <Box height="1px" />
+                            <Box key={question.id} height="1px" />
                           );
                         })}
                       </>

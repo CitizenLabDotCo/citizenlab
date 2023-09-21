@@ -2,7 +2,6 @@
 import {
   ICustomFieldInputType,
   IFlatCustomField,
-  IFlatCustomFieldWithIndex,
 } from 'services/formCustomFields';
 
 // styling
@@ -36,25 +35,6 @@ export const getFieldBackgroundColor = (
     return rgba(colors.coolGrey300, 0.15);
   }
   return undefined;
-};
-
-export const getIndexForTitle = (
-  formCustomFields: IFlatCustomField[],
-  field: IFlatCustomField | IFlatCustomFieldWithIndex
-) => {
-  const fieldIndex = formCustomFields
-    .filter((customField) => {
-      if (field.input_type === 'section') {
-        return customField.input_type === 'section';
-      } else if (field.input_type === 'page') {
-        return customField.input_type === 'page';
-      }
-
-      return !['page', 'section'].includes(customField.input_type);
-    })
-    .findIndex((f) => f.id === field.id);
-
-  return ` ${fieldIndex + 1}`;
 };
 
 const getBuiltinFieldBadgeLabel = (key: string): MessageDescriptor => {

@@ -25,14 +25,14 @@ import { IFlatCustomField } from 'services/formCustomFields';
 
 interface Props {
   field: IFlatCustomField;
-  fieldNumber?: number;
+  fieldNumbers: Record<string, number>;
   formCustomFields: IFlatCustomField[];
   formEndPageLogicOption?: MessageDescriptor;
 }
 
 const Logic = ({
   field,
-  fieldNumber,
+  fieldNumbers,
   formCustomFields,
   formEndPageLogicOption,
 }: Props) => {
@@ -66,10 +66,10 @@ const Logic = ({
                   locale
                 )}
                 targetPage={getTitleFromPageId(
-                  formCustomFields,
                   optionRule?.goto_page_id,
                   formEndMessage,
-                  pageMessage
+                  pageMessage,
+                  fieldNumbers
                 )}
               />
             </Box>
@@ -97,7 +97,7 @@ const Logic = ({
                   linearScaleRule?.goto_page_id,
                   formEndMessage,
                   pageMessage,
-                  fieldNumber
+                  fieldNumbers
                 )}
               />
             </Box>
@@ -114,7 +114,7 @@ const Logic = ({
             field.logic.next_page_id,
             formEndMessage,
             pageMessage,
-            fieldNumber
+            fieldNumbers
           )}
         />
       )}
