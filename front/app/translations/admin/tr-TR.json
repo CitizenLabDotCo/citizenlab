@@ -2142,6 +2142,7 @@
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.visits": "Ziyaretler",
   "app.modules.commercial.analytics.admin.components.VisitorsTypesCard.title": "Ziyaretçi Türleri",
   "app.modules.commercial.analytics.admin.components.VisitorsTypesCard.visitors": "Ziyaretçiler",
+  "app.modules.commercial.analytics.admin.containers.visitors.dateInfo": "Tekil ziyaretçi verilerine {date} adresinden ulaşılabilir.",
   "app.modules.commercial.analytics.admin.hooks.useActiveUsers.timeSeries": "Zaman içinde aktif kullanıcılar",
   "app.modules.commercial.analytics.admin.hooks.useEmailDeliveries.timeSeries": "Zaman içinde e-posta teslimatları",
   "app.modules.commercial.analytics.admin.hooks.useRegistrations.timeSeries": "Zaman içinde kayıtlar",
