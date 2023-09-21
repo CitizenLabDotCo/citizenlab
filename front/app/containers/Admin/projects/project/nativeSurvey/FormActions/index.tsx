@@ -22,12 +22,10 @@ import { Multiloc } from 'typings';
 // hooks
 import { useParams } from 'react-router-dom';
 import useFormSubmissionCount from 'api/submission_count/useSubmissionCount';
+import useDeleteSurveyResults from 'api/survey_results/useDeleteSurveyResults';
 
 // styles
 import { colors } from 'utils/styleUtils';
-
-// services
-import { deleteFormResults } from 'services/formCustomFields';
 
 type FormActionsProps = {
   phaseId?: string;
@@ -52,6 +50,7 @@ const FormActions = ({
   const { projectId } = useParams() as {
     projectId: string;
   };
+  const { mutate: deleteFormResults } = useDeleteSurveyResults();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const { data: submissionCount } = useFormSubmissionCount({
     projectId,
@@ -63,9 +62,15 @@ const FormActions = ({
   const openModal = () => {
     setShowDeleteModal(true);
   };
-  const deleteResults = async () => {
-    await deleteFormResults(projectId, phaseId);
-    closeModal();
+  const deleteResults = () => {
+    deleteFormResults(
+      { projectId, phaseId },
+      {
+        onSuccess: () => {
+          closeModal();
+        },
+      }
+    );
   };
 
   if (submissionCount) {
