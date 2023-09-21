@@ -2137,6 +2137,7 @@
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.visits": "Visites",
   "app.modules.commercial.analytics.admin.components.VisitorsTypesCard.title": "Types de visiteurs",
   "app.modules.commercial.analytics.admin.components.VisitorsTypesCard.visitors": "Visiteurs",
+  "app.modules.commercial.analytics.admin.containers.visitors.dateInfo": "Les données sur les visiteurs uniques sont disponibles à partir du {date} .",
   "app.modules.commercial.analytics.admin.hooks.useActiveUsers.timeSeries": "Utilisateurs actifs dans le temps",
   "app.modules.commercial.analytics.admin.hooks.useEmailDeliveries.timeSeries": "Livraisons d'e-mails dans le temps",
   "app.modules.commercial.analytics.admin.hooks.useRegistrations.timeSeries": "Inscriptions au fil du temps",
