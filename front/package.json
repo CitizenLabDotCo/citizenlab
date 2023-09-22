@@ -36,8 +36,9 @@
     "dependency-cruiser": "depcruise app  --validate",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "visual-test": "npx playwright test Button",
-    "visual-test:update": "npx playwright test Button --update-snapshots"
+    "prepare-snapshot-tests": "node internals/scripts/prepare-snapshot-tests.js",
+    "snapshot-tests": "npm run prepare-snapshot-tests && npx playwright test runner",
+    "snapshot-tests:update": "npm run prepare-snapshot-tests && npx playwright test runner --update-snapshots"
   },
   "jest-junit": {
     "addFileAttribute": "true"

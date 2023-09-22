@@ -29,8 +29,9 @@ app/tsconfig.tsbuildinfo
 cypress/videos/
 cypress/screenshots/
 
-.storybook/playwright/test-results
-.storybook/**/*.spec.ts-snapshots
+.storybook/snapshots/test-results
+.storybook/snapshots/test-runner/runner.spec.ts-snapshots
+.storybook/playwright/snapshot-tests.json
 
 # Storybook generated output
 dist/
