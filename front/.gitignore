@@ -31,6 +31,7 @@ cypress/screenshots/
 
 .storybook/snapshots/test-results
 .storybook/snapshots/test-runner/runner.spec.ts-snapshots
+.storybook/snapshots/test-report
 .storybook/snapshots/snapshot-tests.json
 
 # Storybook generated output
