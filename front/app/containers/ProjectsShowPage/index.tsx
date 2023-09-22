@@ -212,21 +212,19 @@ const ProjectsShowPageWrapper = () => {
     data: project,
     status: statusProject,
     error,
+    isInitialLoading: isInitialProjectLoading,
   } = useProjectBySlug(slug);
-  const { data: phases, status: statusPhases } = usePhases(project?.data.id);
-  const { data: user, status: statusUser } = useAuthUser();
-
+  const { data: phases, isInitialLoading: isInitialPhasesLoading } = usePhases(
+    project?.data.id
+  );
+  const { data: user, isLoading: isUserLoading } = useAuthUser();
   const processType = project?.data.attributes?.process_type;
   const urlSegments = pathname
     .replace(/^\/|\/$/g, '')
     .split('/')
     .filter((segment) => segment !== '');
-
-  const projectPending = statusProject === 'loading';
-  const userPending = statusUser === 'loading';
-  const phasesPending = statusPhases === 'loading';
-
-  const pending = projectPending || userPending || phasesPending;
+  const pending =
+    isInitialProjectLoading || isUserLoading || isInitialPhasesLoading;
 
   useEffect(() => {
     if (pending) return;
