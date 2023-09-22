@@ -6,7 +6,8 @@ require './engines/commercial/public_api/spec/acceptance/v2/support/shared'
 
 resource 'Volunteering' do
   explanation <<~DESC.squish
-    TODO add description
+    Volunteering endpoints provide details about the volunteering causes on the platform
+    and users that have signed up as volunteers to those causes.
   DESC
 
   include_context 'common_auth'
@@ -14,14 +15,12 @@ resource 'Volunteering' do
   let!(:volunteering_causes) { create_list(:cause, 5) }
 
   get '/api/v2/volunteering_causes/' do
-    route_summary 'List email campaigns'
-    route_description <<~DESC.squish
-      TODO add description
-    DESC
+    route_summary 'List volunteering causes'
+    route_description 'All volunteering causes added to the platform'
 
     include_context 'common_list_params'
 
-    context 'when the page size is smaller than the total number of topics' do
+    context 'when the page size is smaller than the total number of volunteering causes' do
       let(:page_size) { 2 }
 
       example_request 'Successful response' do

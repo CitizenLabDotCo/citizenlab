@@ -4,24 +4,18 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 require './engines/commercial/public_api/spec/acceptance/v2/support/shared'
 
-resource 'Volunteers' do
-  explanation <<~DESC.squish
-    TODO add description
-  DESC
-
+resource 'Volunteering' do
   include_context 'common_auth'
 
   let!(:volunteers) { create_list(:volunteer, 5) }
 
   get '/api/v2/volunteering_volunteers/' do
     route_summary 'List volunteers'
-    route_description <<~DESC.squish
-      TODO add description
-    DESC
+    route_description 'All users signed up as volunteers against causes.'
 
     include_context 'common_list_params'
 
-    context 'when the page size is smaller than the total number of topics' do
+    context 'when the page size is smaller than the total number of volunteers' do
       let(:page_size) { 2 }
 
       example_request 'Successful response' do
@@ -48,7 +42,7 @@ resource 'Volunteers' do
 
   get '/api/v2/volunteering_volunteers/:id' do
     route_summary 'Get a volunteer'
-    route_description 'Retrieve a single email campaign by its ID.'
+    route_description 'Retrieve a single volunteer by its ID.'
 
     include_context 'common_item_params'
 

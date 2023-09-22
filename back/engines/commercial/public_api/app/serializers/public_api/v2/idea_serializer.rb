@@ -19,6 +19,7 @@ class PublicApi::V2::IdeaSerializer < PublicApi::V2::BaseSerializer
     :slug,
     :budget,
     :baskets_count,
+    :votes_count,
     :official_feedbacks_count,
     :assignee_id,
     :assigned_at,
