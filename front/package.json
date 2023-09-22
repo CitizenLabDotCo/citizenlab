@@ -35,7 +35,9 @@
     "detect-deadcode": "ts-prune -p app/tsconfig.json -i '(node_modules|utils/testUtils/rtl.tsx|services/permissions|i18n|/*/*/__mocks__)' | (! grep -v 'used in module')",
     "dependency-cruiser": "depcruise app  --validate",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "visual-test": "npx playwright test Button",
+    "visual-test:update": "npx playwright test Button --update-snapshots"
   },
   "jest-junit": {
     "addFileAttribute": "true"
@@ -154,6 +156,7 @@
     "@babel/preset-typescript": "7.x",
     "@cypress/skip-test": "^2.6.1",
     "@cypress/webpack-preprocessor": "^5.16.1",
+    "@playwright/test": "^1.38.1",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
     "@sentry/webpack-plugin": "^1.18.8",
     "@storybook/addon-essentials": "^7.4.0",
@@ -216,6 +219,7 @@
     "dependency-cruiser": "^12.12.1",
     "eslint": "^8.35.0",
     "eslint-plugin-jsx-a11y": "^6.7.1",
+    "eslint-plugin-playwright": "^0.16.0",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
