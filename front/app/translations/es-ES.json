@@ -1604,7 +1604,7 @@
   "app.containers.landing.completeProfile": "Completa tu perfil",
   "app.containers.landing.completeYourProfile": "{tenantName, select, Unicef {Bienvenida, {firstName}. Completa tu perfil.} other {Bienvenido, {firstName}. Completa tu perfil.}}",
   "app.containers.landing.createAccount": "Inscríbete",
-  "app.containers.landing.defaultSignedInMessage": "{firstName}, impulsa un cambio hoy!",
+  "app.containers.landing.defaultSignedInMessage": "{firstName} ¡Impulsa un cambio hoy!",
   "app.containers.landing.doItLater": "Lo voy a hacer más tarde",
   "app.containers.landing.initiativesBoxText": "Publica tu propuesta en la plataforma, reúne apoyo y colócala en la agenda. O revisa las sugerencias de otros.",
   "app.containers.landing.initiativesBoxTitle": "¿Cuál es tu propuesta?",
