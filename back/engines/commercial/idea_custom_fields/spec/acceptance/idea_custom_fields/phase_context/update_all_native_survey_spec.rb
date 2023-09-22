@@ -120,6 +120,7 @@ resource 'Idea Custom Fields' do
               required: false,
               maximum_select_count: 2,
               minimum_select_count: 1,
+              select_count_enabled: false,
               enabled: true,
               options: [
                 {
