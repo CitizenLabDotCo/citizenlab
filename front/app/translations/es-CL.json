@@ -492,6 +492,8 @@
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmitted": "Ya has enviado tu presupuesto. Haz clic en \"Modificar tu presupuesto\" para cambiar tu presupuesto.",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage": "Ya has enviado tu presupuesto. Para modificar tu presupuesto, vuelve a la página del proyecto y haz clic en \"Modificar tu presupuesto\".",
   "app.components.VoteInputs.single.youHaveVotedForX2": "Has votado por {votes, plural, =0 {# opciones} one {# opción} other {# opciones}}",
+  "app.components.admin.PostManager.components.PostTable.Row.cancel": "Cancelar",
+  "app.components.admin.PostManager.components.PostTable.Row.confirm": "Confirmar",
   "app.components.admin.SlugInput.resultingURL": "URL resultante",
   "app.components.admin.SlugInput.slugTooltip": "El slug es el conjunto único de palabras al final de la dirección web de la página, o URL.",
   "app.components.admin.SlugInput.urlSlugBrokenLinkWarning": "Si cambia la URL, los enlaces a la página con la antigua URL ya no funcionarán.",
