@@ -492,6 +492,8 @@
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmitted": "Você já enviou seu orçamento. Clique em \"Modificar seu orçamento\" para alterar seu orçamento.",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage": "Você já enviou seu orçamento. Para alterar seu orçamento, volte à página do projeto e clique em \"Modificar seu orçamento\".",
   "app.components.VoteInputs.single.youHaveVotedForX2": "Você votou em {votes, plural, =0 {#opções} one {#opção} other {#opções}}",
+  "app.components.admin.PostManager.components.PostTable.Row.cancel": "Cancelar",
+  "app.components.admin.PostManager.components.PostTable.Row.confirm": "Confirmar",
   "app.components.admin.SlugInput.resultingURL": "URL resultante",
   "app.components.admin.SlugInput.slugTooltip": "A lesma é o conjunto único de palavras no final do endereço web, ou URL da página.",
   "app.components.admin.SlugInput.urlSlugBrokenLinkWarning": "Se você mudar o URL, os links para esta página usando o antigo URL não funcionarão mais.",
