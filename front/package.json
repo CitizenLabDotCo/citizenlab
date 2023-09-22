@@ -37,8 +37,8 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "prepare-snapshot-tests": "node internals/scripts/prepare-snapshot-tests.js",
-    "snapshot-tests": "npm run prepare-snapshot-tests && npx playwright test runner",
-    "snapshot-tests:update": "npm run prepare-snapshot-tests && npx playwright test runner --update-snapshots"
+    "snapshot-tests": "npm run prepare-snapshot-tests && npx playwright test runner -c .storybook/snapshots/playwright.config.ts",
+    "snapshot-tests:update": "npm run prepare-snapshot-tests && npx playwright test -c .storybook/snapshots/playwright.config.ts runner --update-snapshots"
   },
   "jest-junit": {
     "addFileAttribute": "true"

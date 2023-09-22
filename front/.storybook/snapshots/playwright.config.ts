@@ -3,8 +3,8 @@ import { PlaywrightTestConfig, devices } from '@playwright/test';
 const baseUrl = 'http://localhost:6006';
 
 const config: PlaywrightTestConfig = {
-  testDir: '.storybook/snapshots/test-runner',
-  outputDir: '.storybook/snapshots/test-results',
+  testDir: './test-runner',
+  outputDir: './test-results',
   workers: undefined,
   timeout: 60 * 1000,
   use: {
@@ -65,13 +65,13 @@ const config: PlaywrightTestConfig = {
     [
       'html',
       {
-        outputFolder: '.storybook/snapshots/test-report',
+        outputFolder: './test-report',
         open: 'never',
       },
     ],
     ['dot'],
-    ['junit', { outputFile: '.storybook/snapshots/test-report/report.xml' }],
-    ['json', { outputFile: '.storybook/snapshots/test-report/report.json' }],
+    ['junit', { outputFile: './test-report/report.xml' }],
+    ['json', { outputFile: './test-report/report.json' }],
   ],
 };
 export default config;
