@@ -24,11 +24,7 @@ const Form = () => {
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit((formData) => onSubmit(formData))}>
-        <InputMultilocWithLocaleSwitcher
-          name="title"
-          placeholder="title"
-          type="text"
-        />
+        <InputMultilocWithLocaleSwitcher name="title" placeholder="title" />
         <button type="submit">Submit</button>
       </form>
     </FormProvider>
@@ -84,11 +80,7 @@ describe('InputMultilocWithLocaleSwitcher', () => {
               methods.setError('title', { error: 'blank' } as any)
             )}
           >
-            <InputMultilocWithLocaleSwitcher
-              name="title"
-              label="title"
-              type="text"
-            />
+            <InputMultilocWithLocaleSwitcher name="title" label="title" />
             <button type="submit">Submit</button>
           </form>
         </FormProvider>

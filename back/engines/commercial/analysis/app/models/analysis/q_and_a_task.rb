@@ -14,6 +14,8 @@
 #  auto_tagging_method :string
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
+#  tags_ids            :jsonb
+#  filters             :jsonb
 #
 # Indexes
 #
@@ -26,6 +28,6 @@
 module Analysis
   class QAndATask < BackgroundTask
     belongs_to :analysis, class_name: 'Analysis::Analysis'
-    has_one :question, class_name: 'Analysis::Question', foreign_key: :background_task_id
+    has_one :question, class_name: 'Analysis::Question', foreign_key: :background_task_id, dependent: :destroy
   end
 end

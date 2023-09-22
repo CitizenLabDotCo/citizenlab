@@ -16,11 +16,12 @@ import ProposalProgressBar from './ProposalProgressBar';
 
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import messages from './messages';
+import globalMessages from 'utils/messages';
 import T from 'components/T';
-import { IInitiativeDisabledReason } from 'hooks/useInitiativesPermissions';
 import { darken } from 'polished';
 import Tippy from '@tippyjs/react';
 import { IInitiativeData } from 'api/initiatives/types';
+import { InitiativePermissionsDisabledReason } from 'hooks/useInitiativesPermissions';
 
 const Container = styled.div``;
 
@@ -143,15 +144,16 @@ interface InputProps {
   initiativeSettings: NonNullable<IAppConfigurationSettings['initiatives']>;
   userReacted: boolean;
   onReaction: () => void;
-  disabledReason: IInitiativeDisabledReason;
+  disabledReason: InitiativePermissionsDisabledReason;
 }
 
 interface Props extends InputProps {}
 
 const disabledMessages: {
-  [key in IInitiativeDisabledReason]: MessageDescriptor;
+  [key in InitiativePermissionsDisabledReason]: MessageDescriptor;
 } = {
-  notPermitted: messages.votingNotPermitted,
+  not_permitted: messages.votingNotPermitted,
+  not_in_group: globalMessages.notInGroup,
 };
 
 const ProposedNotReacted = ({

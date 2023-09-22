@@ -28,7 +28,8 @@ interface Props {
   projectId?: string;
   statuses?: IIdeaStatusData[] | IInitiativeStatusData[] | undefined;
   selectedStatus: string | undefined;
-  onUpdatePhases: (id: string[]) => void;
+  // Only ideas can have phases, hence optional
+  onUpdatePhases?: (id: string[]) => void;
   onUpdateTopics: (id: string[]) => void;
   onUpdateStatus: (id: string) => void;
   allowedTransitions: IInitiativeAllowedTransitions | null;
@@ -56,7 +57,7 @@ const SubRow = ({
     <Tr className={className} background={active ? colors.grey300 : undefined}>
       <Td />
       <Td colSpan={6}>
-        {activeFilterMenu === 'phases' && phases && (
+        {activeFilterMenu === 'phases' && phases && onUpdatePhases && (
           <PhasesSelector
             selectedPhases={selectedPhases || []}
             phases={phases}

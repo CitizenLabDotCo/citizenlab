@@ -2,6 +2,8 @@
 
 module EmailCampaigns
   class InviteReceivedMailer < ApplicationMailer
+    helper_method :invite_expiry_days
+
     protected
 
     def subject
@@ -14,6 +16,10 @@ module EmailCampaigns
 
     def header_message
       format_message('invitation_header_message', values: { organizationName: organization_name })
+    end
+
+    def invite_expiry_days
+      Invite::EXPIRY_DAYS
     end
   end
 end

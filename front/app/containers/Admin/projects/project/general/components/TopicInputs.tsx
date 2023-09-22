@@ -60,7 +60,7 @@ const TopicInputs = ({ selectedTopicIds, onChange }: Props) => {
       <TopicsPicker
         availableTopics={availableTopics.data}
         selectedTopicIds={selectedTopicIds}
-        onChange={onChange}
+        onClick={onChange}
       />
     </StyledSectionField>
   );

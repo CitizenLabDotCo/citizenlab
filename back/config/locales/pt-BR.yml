@@ -115,7 +115,7 @@ pt:
         title: Assunto
         description:
       body:
-        title: Descrição 
+        title: Descrição
         description:
       author_id:
         title: Autor
@@ -185,6 +185,8 @@ pt:
       <p>Os iniciadores são convidados a apresentar a sua proposta na próxima reunião do conselho. Nós forneceremos uma atualização oficial.</p>
     default_eligibility_criteria: >
       <ul> <li>Deve enquadrar-se nas áreas de política e competências da política local</li> <li>Serve o interesse público e não o seu interesse individual</li> <li>Não discrimina com base no género, raça, idade ou origem</li> <li>Não prejudica os outros</li> </ul>
+    default_posting_tips: >
+      <ul><li>Reserve um tempo para elaborar a sua proposta. Se for necessário, digite primeiro um rascunho e depois copie e cole na caixa ao lado.</li><li>Escolha um título significativo que explique exatamente o que é sua proposta</li><li>Certifique-se de visualizar a sua proposta com uma imagem adequada, para que ela se destaque mais.</li><li>Adicione anexos relevantes, tais como vídeos, exemplos inspiradores, detalhes técnicos ou planos.</li><li>Compartilhe a sua ideia nas redes sociais e outros canais para obter o apoio de outros.</li></ul>
   reset_password_mailer:
     send_reset_password:
       cta_reset_password: 'Resetar sua senha'

@@ -1,19 +1,40 @@
-import React, { Fragment, useCallback, useEffect, useMemo } from 'react';
-import { Box, Text, colors } from '@citizenlab/cl2-component-library';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import {
+  Box,
+  Text,
+  colors,
+  stylingConsts,
+  Spinner,
+} from '@citizenlab/cl2-component-library';
+
 import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
 import { useParams } from 'react-router-dom';
-import InputListItem from './InputListItem';
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
-import Observer from '@researchgate/react-intersection-observer';
 import useKeyPress from 'hooks/useKeyPress';
 import { useSelectedInputContext } from '../SelectedInputContext';
+import InputListItem from './InputListItem';
+import translations from './translations';
+import { useIntl } from 'utils/cl-intl';
+import { useVirtualizer } from '@tanstack/react-virtual';
+import Demographics from '../Demographics';
+import styled from 'styled-components';
+
+const Item = styled.div<{ start: number }>`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  transform: translateY(${(props) => props.start}px);
+`;
 
 const InputsList = () => {
+  const [isDemographicsOpen, setIsDemographicsOpen] = useState(false);
+  const { formatMessage } = useIntl();
   const { selectedInputId, setSelectedInputId } = useSelectedInputContext();
   const { analysisId } = useParams() as { analysisId: string };
   const filters = useAnalysisFilterParams();
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isSuccess } =
     useInfiniteAnalysisInputs({
       analysisId,
       queryParams: filters,
@@ -24,15 +45,44 @@ const InputsList = () => {
     [data]
   );
 
-  const handleIntersection = useCallback(
-    (event: IntersectionObserverEntry, unobserve: () => void) => {
-      if (event.isIntersecting && hasNextPage) {
-        fetchNextPage();
-        unobserve();
-      }
-    },
-    [fetchNextPage, hasNextPage]
-  );
+  const inputsLength = inputs?.length || 1;
+  const parentRef = React.useRef<HTMLDivElement | null>(null);
+
+  const { getVirtualItems, getTotalSize, measureElement, scrollToIndex } =
+    useVirtualizer({
+      count: hasNextPage ? inputsLength + 1 : inputsLength,
+      getScrollElement: () => parentRef.current,
+      estimateSize: () => 250,
+      overscan: 5,
+    });
+
+  const virtualItems = getVirtualItems();
+
+  useEffect(() => {
+    const [lastItem] = [...virtualItems].reverse();
+
+    if (!lastItem) {
+      return;
+    }
+
+    if (
+      lastItem.index >= inputsLength - 1 &&
+      hasNextPage &&
+      !isFetchingNextPage
+    ) {
+      fetchNextPage();
+    }
+  }, [
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+    inputsLength,
+    virtualItems,
+  ]);
+
+  useEffect(() => {
+    isSuccess && scrollToIndex(0);
+  }, [filters, scrollToIndex, isSuccess]);
 
   // Keyboard navigations
 
@@ -72,6 +122,13 @@ const InputsList = () => {
     }
   }, [downArrow, inputs, setSelectedInputId]);
 
+  // Effect: Select first input on initialization
+  useEffect(() => {
+    if (!selectedInputId && data) {
+      setSelectedInputId(data.pages[0]?.data[0]?.id);
+    }
+  }, [selectedInputId, setSelectedInputId, data]);
+
   const handleOnSelectInput = useCallback(
     (inputId: string) => {
       setSelectedInputId(inputId);
@@ -80,37 +137,64 @@ const InputsList = () => {
   );
 
   const emptyList = data?.pages[0].meta.filtered_count === 0;
+  if (!inputs) return null;
 
+  const democraphicsOffset = isDemographicsOpen ? 210 : 60;
   return (
-    <Box bg={colors.white} w="100%">
-      {emptyList && (
+    <>
+      <Box bg={colors.white} mb="8px">
+        <Demographics
+          isDemographicsOpen={isDemographicsOpen}
+          setIsDemographicsOpen={setIsDemographicsOpen}
+        />
+      </Box>
+      {emptyList ? (
         <Box display="flex" justifyContent="center">
           <Text px="24px" color="grey600">
-            No inputs correspond to your current filters
+            {formatMessage(translations.noInputs)}
           </Text>
         </Box>
+      ) : (
+        <Box
+          bg={colors.white}
+          ref={parentRef}
+          overflow="auto"
+          h={`calc(100vh - ${
+            stylingConsts.mobileMenuHeight + democraphicsOffset
+          }px)`}
+          p="12px"
+        >
+          <Box height={`${getTotalSize()}px`} width="100%" position="relative">
+            {getVirtualItems().map((virtualRow) => {
+              const isLoaderRow = virtualRow.index > inputs.length - 1;
+              const post = inputs[virtualRow.index];
+
+              return (
+                <Item
+                  key={virtualRow.index}
+                  start={virtualRow.start}
+                  data-index={virtualRow.index}
+                  ref={measureElement}
+                >
+                  {isLoaderRow ? (
+                    <Box mt="12px">
+                      <Spinner />
+                    </Box>
+                  ) : (
+                    <InputListItem
+                      key={virtualRow.index}
+                      input={post}
+                      onSelect={handleOnSelectInput}
+                      selected={post.id === selectedInputId}
+                    />
+                  )}
+                </Item>
+              );
+            })}
+          </Box>
+        </Box>
       )}
-      {!emptyList &&
-        data?.pages.map((page, i) => (
-          <Fragment key={i}>
-            {hasNextPage &&
-              !isFetchingNextPage &&
-              data?.pages.length === i + 1 && (
-                <Observer onChange={handleIntersection} rootMargin="100px">
-                  <Box w="100%" />
-                </Observer>
-              )}
-            {page.data.map((input) => (
-              <InputListItem
-                key={input.id}
-                input={input}
-                onSelect={handleOnSelectInput}
-                selected={input.id === selectedInputId}
-              />
-            ))}
-          </Fragment>
-        ))}
-    </Box>
+    </>
   );
 };
 

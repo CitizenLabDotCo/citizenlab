@@ -9,6 +9,7 @@ es-CL:
       "comment_on_your_idea": Un comentario sobre mi idea.
       "comment_on_your_initiative": Un comentario sobre mi propuesta
       "cosponsor_of_your_initiative": Un usuario acepta mi invitación para co-patrocinar mi propuesta
+      "event_registration_confirmation": Confirmación de inscripción al evento
       "first_idea_published": Publicación de mi primera idea
       "idea_marked_as_spam": Informar de spam de ideas
       "idea_published": Publicación de mi idea
@@ -144,7 +145,6 @@ es-CL:
     cosponsor_of_your_initiative:
       cta_reply_to: 'Ver tu propuesta'
       event_description_initiative: '¡Felicidades! %{cosponsorName} ha aceptado su invitación para copatrocinar su propuesta.'
-      event_description_cosponsoring: 'Copatrocinar una propuesta significa que <strong>tu nombre aparecerá</strong> con los nombres de otros copatrocinadores de la propuesta.'
       main_header: '%{cosponsorName} ha aceptado tu invitación para co-patrocinar tu propuesta'
       subject: '%{cosponsorName} ha aceptado tu invitación para co-patrocinar tu propuesta'
       preheader_initiative: '%{cosponsorName} ha aceptado tu invitación para co-patrocinar tu propuesta'
@@ -192,6 +192,7 @@ es-CL:
       cta_reply_to: 'Co-patrocinar esta propuesta'
       event_description_initiative: '%{authorName} ha creado una nueva propuesta y le gustaría que la copatrocines.'
       event_description_cosponsoring: 'Copatrocinar una propuesta significa que <strong>tu nombre aparecerá</strong> con los nombres de otros copatrocinadores de la propuesta.'
+      event_description_before_action: 'Para ver la propuesta y aceptar la invitación, tienes que iniciar sesión primero con tu cuenta.'
       event_description_action: 'Haz clic abajo para leer la propuesta.'
       main_header: 'Has sido invitado a co-patrocinar una propuesta'
       subject: 'Has sido invitado a co-patrocinar una propuesta'
@@ -207,12 +208,14 @@ es-CL:
       cta_accept_invitation: 'Aceptar tu invitación'
       invitation_header: 'Tu invitación está pendiente'
       preheader: '%{organizationName} te envió una invitación para unirte a su plataforma de participación unos días atras.'
+      invitation_expiry_message: 'Esta invitación caduca en aproximadamente %{expiryDaysRemaining} días.'
       subject: 'Tienes una invitación abierta para la plataforma de participación de %{organizationName}'
     invite_received:
       added_a_message: '%{organizationName} escribió el siguiente mensaje:'
       cta_accept_invitation: 'Aceptar tu invitación'
       invitation_header: 'Estás invitado!'
       invitation_header_message: '%{organizationName} te invitó a su plataforma de participación.'
+      invitation_expiry_message: 'Esta invitación caduca en %{expiryDays} días.'
       preheader: '%{organizationName} te envió una invitación a unirte a su plataforma de participación.'
       subject: 'Estas invitado para unirte a la plataforma de %{organizationName}'
     initiative_published:
@@ -636,6 +639,18 @@ es-CL:
       body_2: '¡Se han publicado los resultados de la votación %{phaseTitle} en la plataforma %{organizationName} !'
       body_3: 'Te animamos a que revises los resultados y permanezcas atento a las actualizaciones sobre los próximos pasos.'
       cta_see_results: 'Ver resultados en la plataforma'
+    event_registration_confirmation:
+      subject: "¡Estás dentro! Tu inscripción en \"%{eventTitle}\" está confirmada"
+      header_message: "%{firstName}gracias por registrarte en"
+      event_details:
+        labels:
+          date: 'Fecha'
+          location: 'Ubicación'
+          online_link: 'Enlace en línea'
+          description: 'Descripción'
+          project: 'proyectos'
+      cta_go_to_event: 'Ver el evento'
+      cta_add_to_calendar: 'Añadir a tu calendario'
     voting_phase_started:
       subject: '%{organizationName}: Comienza la fase de votación para %{projectName}'
       preheader: 'La fase de votación comenzó para %{projectName} en la plataforma de participación de %{organizationName}'
@@ -658,6 +673,7 @@ es-CL:
         managers: 'Gestores'
         admins_assigned_to_a_proposal: 'Administratodres asignados a una propuesta'
         admins_and_managers_assigned_to_the_input: 'Administradores y gestores asignados al aporte'
+        new_attendee: 'Usuario recién registrado'
         user_who_is_invited_to_cosponsor_a_proposal: 'Usuario al que se invita a copatrocinar una propuesta'
         user_who_is_receiving_admin_rights: 'Usuario que recibe derechos de administrador'
         user_who_is_receiving_folder_moderator_rights: 'Usuario que recibe derechos de moderador de carpeta'
@@ -677,6 +693,7 @@ es-CL:
       content_type:
         comments: 'Comentarios'
         content_moderation: 'Moderación de contenidos'
+        events: 'Eventos'
         general: 'General'
         inputs: 'Aportes'
         internal_comments: 'Comentarios internos'
@@ -731,3 +748,4 @@ es-CL:
         voting_basket_submitted: 'Se envían los votos'
         7_days_after_invite_is_sent: '7 días después del envío de la invitación'
         7_days_before_the_project_changes_phase: '7 días antes de que el proyecto cambie de fase'
+        registration_to_event: 'Inscripción a un acto'

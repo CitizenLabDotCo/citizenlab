@@ -1,4 +1,4 @@
-import { Result } from 'services/formCustomFields';
+import { Result } from 'api/survey_results/types';
 
 export const createResultRows = (
   results: Result[],

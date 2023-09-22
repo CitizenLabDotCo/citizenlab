@@ -1,16 +1,13 @@
 import React, { memo } from 'react';
 
-// hooks
-import useTopics from 'api/topics/useTopics';
-
 // styling
 import styled from 'styled-components';
 import { fontSizes, isRtl } from 'utils/styleUtils';
 import { transparentize } from 'polished';
 
 // typings
-import { ITopicData } from 'api/topics/types';
 import useLocalize from 'hooks/useLocalize';
+import useTopic from 'api/topics/useTopic';
 
 const Container = styled.div`
   display: flex;
@@ -39,36 +36,40 @@ const Topic = styled.div`
 `;
 
 interface Props {
-  topicIds: string[];
+  postTopicIds: string[];
   className?: string;
   postType: 'idea' | 'initiative';
 }
 
-const Topics = memo(({ topicIds, className, postType }: Props) => {
-  const localize = useLocalize();
-  const { data: topics } = useTopics();
-
-  if (!topics) return null;
-
-  const filteredTopics = topics.data.filter((topic) =>
-    topicIds.includes(topic.id)
+const Topics = memo(({ postTopicIds, className, postType }: Props) => {
+  return (
+    <Container id={`e2e-${postType}-topics`} className={className}>
+      {postTopicIds.map((topicId: string) => {
+        return (
+          <TopicComponent key={topicId} topicId={topicId} postType={postType} />
+        );
+      })}
+    </Container>
   );
-
-  if (filteredTopics.length > 0) {
-    return (
-      <Container id={`e2e-${postType}-topics`} className={className}>
-        {filteredTopics.map((topic: ITopicData) => {
-          return (
-            <Topic key={topic.id} className={`e2e-${postType}-topic`}>
-              {localize(topic.attributes.title_multiloc)}
-            </Topic>
-          );
-        })}
-      </Container>
-    );
-  }
-
-  return null;
 });
+
+const TopicComponent = ({
+  topicId,
+  postType,
+}: {
+  topicId: string;
+  postType: 'idea' | 'initiative';
+}) => {
+  const { data: topic } = useTopic(topicId);
+  const localize = useLocalize();
+
+  if (!topic) return null;
+
+  return (
+    <Topic className={`e2e-${postType}-topic`}>
+      {localize(topic.data.attributes.title_multiloc)}
+    </Topic>
+  );
+};
 
 export default Topics;

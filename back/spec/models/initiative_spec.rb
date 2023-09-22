@@ -115,6 +115,23 @@ RSpec.describe Initiative do
     end
   end
 
+  describe '#proposed_at' do
+    before { create(:initiative_status_proposed) }
+
+    let(:initiative) do
+      create(
+        :initiative,
+        build_status_change: false,
+        created_at: 2.days.ago,
+        published_at: 2.days.ago
+      )
+    end
+
+    it 'returns date when initiative status became proposed' do
+      expect(initiative.proposed_at).to be_within(1.second).of(initiative.initiative_status_changes.first.created_at)
+    end
+  end
+
   describe '#expires_at' do
     before do
       allow(Time).to receive(:now).and_return(Time.now)
@@ -127,7 +144,8 @@ RSpec.describe Initiative do
 
         reacting_threshold: 2,
         threshold_reached_message: { 'en' => 'Threshold reached' },
-        eligibility_criteria: { 'en' => 'Eligibility criteria' }
+        eligibility_criteria: { 'en' => 'Eligibility criteria' },
+        posting_tips: { 'en' => 'Posting tips' }
       }
       configuration.save!
     end
@@ -248,6 +266,10 @@ RSpec.describe Initiative do
       initiative.update!(cosponsor_ids: [cosponsor2.id])
 
       expect(initiative.reload.cosponsors).to match_array [cosponsor2]
+
+      # has_many :cosponsors, through: :cosponsors_initiatives, source: :user, dependent: :destroy
+      # destroys the associated cosponsors_intitiative record(s), not the user(s)
+      expect(User.find(cosponsor1.id)).to be_present
     end
 
     it 'removes cosponsors_initiative even when an associated notifcation exists' do
@@ -278,10 +300,10 @@ RSpec.describe Initiative do
       expect(initiative.reload.cosponsors).to match_array [cosponsor1]
     end
 
-    it 'does nothing when given nil' do
-      initiative.update!(cosponsor_ids: nil)
+    it 'will not add initiative author as cosponsor' do
+      initiative.update!(cosponsor_ids: [initiative.author_id])
 
-      expect(initiative.reload.cosponsors).to match_array [cosponsor1]
+      expect(initiative.reload.cosponsors).to be_empty
     end
 
     it 'does nothing if update validation fails' do

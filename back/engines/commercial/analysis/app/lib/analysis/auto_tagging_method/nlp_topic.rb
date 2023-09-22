@@ -11,9 +11,9 @@ module Analysis
 
     # Use `execute` on the parent class to actually use the method
     def run
-      total_inputs = analysis.inputs.size
+      total_inputs = filtered_inputs.size
 
-      analysis.inputs.includes(:author).each_with_index do |input, i|
+      filtered_inputs.includes(:author).each_with_index do |input, i|
         update_progress(i / total_inputs.to_f)
 
         nlp = nlp_cloud_client_for(
@@ -35,7 +35,7 @@ module Analysis
           .reject { |(_label, score)| !score || score < DETECTION_THRESHOLD }
           .each do |(label, _score)|
           tag = Tag.find_or_create_by!(name: label, tag_type: TAG_TYPE, analysis: analysis)
-          Tagging.find_or_create_by!(input_id: input.id, tag_id: tag.id)
+          find_or_create_tagging!(input_id: input.id, tag_id: tag.id)
         end
       end
     rescue StandardError => e

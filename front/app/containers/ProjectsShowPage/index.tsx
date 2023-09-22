@@ -152,36 +152,39 @@ const ProjectsShowPage = ({ project }: Props) => {
             <TimelineContainer projectId={projectId} />
           )}
         </div>
-        <Box
-          display="flex"
-          flexDirection="column"
-          gap="48px"
-          mx="auto"
-          my="48px"
-          maxWidth="1166px"
-          padding={isSmallerThanTablet ? '20px' : '0px'}
-        >
-          <EventsViewer
-            showProjectFilter={false}
-            projectId={projectId}
-            eventsTime="currentAndFuture"
-            title={formatMessage(messages.upcomingAndOngoingEvents)}
-            fallbackMessage={messages.noUpcomingOrOngoingEvents}
-            onClickTitleGoToProjectAndScrollToEvent={false}
-            hideSectionIfNoEvents={true}
-            projectPublicationStatuses={['published', 'draft', 'archived']}
-          />
-          <EventsViewer
-            showProjectFilter={false}
-            projectId={projectId}
-            eventsTime="past"
-            title={formatMessage(messages.pastEvents)}
-            fallbackMessage={messages.noPastEvents}
-            onClickTitleGoToProjectAndScrollToEvent={false}
-            hideSectionIfNoEvents={true}
-            projectPublicationStatuses={['published', 'draft', 'archived']}
-          />
-        </Box>
+        {!!events?.data.length && (
+          <Box
+            id="e2e-events-section-project-page"
+            display="flex"
+            flexDirection="column"
+            gap="48px"
+            mx="auto"
+            my="48px"
+            maxWidth="1166px"
+            padding={isSmallerThanTablet ? '20px' : '0px'}
+          >
+            <EventsViewer
+              showProjectFilter={false}
+              projectId={projectId}
+              eventsTime="currentAndFuture"
+              title={formatMessage(messages.upcomingAndOngoingEvents)}
+              fallbackMessage={messages.noUpcomingOrOngoingEvents}
+              hideSectionIfNoEvents={true}
+              projectPublicationStatuses={['published', 'draft', 'archived']}
+            />
+            <EventsViewer
+              showProjectFilter={false}
+              projectId={projectId}
+              eventsTime="past"
+              title={formatMessage(messages.pastEvents)}
+              fallbackMessage={messages.noPastEvents}
+              hideSectionIfNoEvents={true}
+              projectPublicationStatuses={['published', 'draft', 'archived']}
+              showDateFilter={false}
+            />
+          </Box>
+        )}
+
         <SuccessModal projectId={projectId} />
       </ContentWrapper>
     );

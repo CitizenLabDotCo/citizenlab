@@ -12,6 +12,9 @@ import styled, { useTheme } from 'styled-components';
 import { colors, fontSizes, defaultStyles } from 'utils/styleUtils';
 import { transparentize } from 'polished';
 
+// Utils
+import { extractIdsFromValue } from './utils';
+
 // typings
 import { Locale } from 'typings';
 import { MentionRoles } from 'api/mentions/types';
@@ -79,6 +82,7 @@ export interface Props {
   children?: React.ReactNode;
   roles?: MentionRoles[];
   trigger?: string;
+  showUniqueUsers?: boolean;
   onChangeMentions?: (mentions: MentionItem[]) => void;
   // Determines whether we get back the user id or slug
   // in mention of onChangeMentions
@@ -115,6 +119,7 @@ const MentionsTextArea = ({
   roles,
   trigger = '@',
   userReferenceType = 'slug',
+  showUniqueUsers = false,
 }: Props) => {
   const textareaElement = useRef<HTMLTextAreaElement | null>(null);
   const theme = useTheme();
@@ -230,6 +235,13 @@ const MentionsTextArea = ({
           }`,
           id: userReferenceType === 'slug' ? user.attributes.slug : user.id,
         }));
+      }
+
+      if (showUniqueUsers && value) {
+        const ids = extractIdsFromValue(value);
+        const uniqueUsers = users.filter((user) => !ids.includes(user.id));
+        callback(uniqueUsers);
+        return;
       }
 
       callback(users);

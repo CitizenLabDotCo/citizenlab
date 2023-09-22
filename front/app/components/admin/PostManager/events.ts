@@ -1,6 +1,7 @@
 export interface StatusChangeModalOpen {
   initiativeId: string;
   newStatusId: string;
+  feedbackRequired?: boolean;
 }
 
 enum ModalEvents {

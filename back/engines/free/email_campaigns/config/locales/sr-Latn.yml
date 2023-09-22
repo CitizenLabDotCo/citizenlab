@@ -9,6 +9,7 @@ sr-Latn:
       "comment_on_your_idea": Komentar na moju ideju
       "comment_on_your_initiative": Komentar na moj predlog
       "cosponsor_of_your_initiative": A user accepts my invitation to co-sponsor my proposal
+      "event_registration_confirmation": Event registration confirmation
       "first_idea_published": Objava moje prve ideje
       "idea_marked_as_spam": Izveštaj o spam ideji
       "idea_published": Objava moje ideje
@@ -144,7 +145,6 @@ sr-Latn:
     cosponsor_of_your_initiative:
       cta_reply_to: 'View your proposal'
       event_description_initiative: 'Congratulations! %{cosponsorName} has accepted your invitation to co-sponsor your proposal.'
-      event_description_cosponsoring: 'Co-sponsoring a proposal means that <strong>your name will be displayed</strong> with the names of other co-sponsors of the proposal.'
       main_header: '%{cosponsorName} has accepted your invitation to co-sponsor your proposal'
       subject: '%{cosponsorName} has accepted your invitation to co-sponsor your proposal'
       preheader_initiative: '%{cosponsorName} has accepted your invitation to co-sponsor your proposal'
@@ -192,6 +192,7 @@ sr-Latn:
       cta_reply_to: 'Co-sponsor this proposal'
       event_description_initiative: '%{authorName} has created a new proposal and would like you to co-sponsor it.'
       event_description_cosponsoring: 'Co-sponsoring a proposal means that <strong>your name will be displayed</strong> with the names of other co-sponsors of the proposal.'
+      event_description_before_action: 'To see the proposal and accept the invitation, you must be logged in to your account.'
       event_description_action: 'Click below to read the proposal.'
       main_header: 'You have been invited to co-sponsor a proposal'
       subject: 'You have been invited to co-sponsor a proposal'
@@ -207,12 +208,14 @@ sr-Latn:
       cta_accept_invitation: 'Prihvatite pozivnicu'
       invitation_header: 'Pozivnica je na čekanju'
       preheader: 'Pre nekoliko dana vam je poslata pozivnica za registraciju na %{organizationName} participativnoj platformi.'
+      invitation_expiry_message: 'This invitation expires in approximately %{expiryDaysRemaining} days.'
       subject: 'Pozivnica za %{organizationName} participativnu platformu je na čekanju'
     invite_received:
       added_a_message: '%{organizationName} je napisao sledeću poruku:'
       cta_accept_invitation: 'Prihvatite pozivnicu'
       invitation_header: 'Vi ste pozvani!'
       invitation_header_message: '%{organizationName} vas je pozvao na njihovu participativnu platformu.'
+      invitation_expiry_message: 'This invitation expires in %{expiryDays} days.'
       preheader: '%{organizationName} vam je poslao poziv da se pridružite njihovoj participativnoj platformi.'
       subject: 'Pozvani ste da se pridružite %{organizationName} platformi '
     initiative_published:
@@ -636,6 +639,18 @@ sr-Latn:
       body_2: 'The results of the %{phaseTitle} vote in the %{organizationName} platform have been published!'
       body_3: 'We encourage you to review the results and stay tuned for further updates on the next steps.'
       cta_see_results: 'See results in the platform'
+    event_registration_confirmation:
+      subject: "You're in! Your registration for \"%{eventTitle}\" is confirmed"
+      header_message: "%{firstName}, thanks for registering for"
+      event_details:
+        labels:
+          date: 'Date'
+          location: 'Location'
+          online_link: 'Online link'
+          description: 'Description'
+          project: 'Project'
+      cta_go_to_event: 'View the event'
+      cta_add_to_calendar: 'Add to your calendar'
     voting_phase_started:
       subject: '%{organizationName}: The voting phase started for %{projectName}'
       preheader: 'The voting phase started for %{projectName} on the participation platform of %{organizationName}'
@@ -658,6 +673,7 @@ sr-Latn:
         managers: 'Менаџери'
         admins_assigned_to_a_proposal: 'Администратори додељени предлогу'
         admins_and_managers_assigned_to_the_input: 'Администратори и менаџери додељени улазу'
+        new_attendee: 'Newly registered user'
         user_who_is_invited_to_cosponsor_a_proposal: 'User who is invited to co-sponsor a proposal'
         user_who_is_receiving_admin_rights: 'Корисник који добија администраторска права'
         user_who_is_receiving_folder_moderator_rights: 'Корисник који добија права модератора фолдера'
@@ -677,6 +693,7 @@ sr-Latn:
       content_type:
         comments: 'Коментари'
         content_moderation: 'Модерирање садржаја'
+        events: 'Events'
         general: 'Генерал'
         inputs: 'Инпутс'
         internal_comments: 'Интерни коментари'
@@ -731,3 +748,4 @@ sr-Latn:
         voting_basket_submitted: 'Votes are submitted'
         7_days_after_invite_is_sent: '7 дана након слања позивнице'
         7_days_before_the_project_changes_phase: '7 дана пре промене фазе пројекта'
+        registration_to_event: 'Registration to an event'

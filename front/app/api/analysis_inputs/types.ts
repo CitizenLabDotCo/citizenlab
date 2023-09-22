@@ -13,7 +13,7 @@ type InputCustomInFilterKey = `input_custom_${string}_in`;
 
 export type IInputsFilterParams = {
   search?: string;
-  tag_ids?: string[];
+  tag_ids?: string[] | null[];
   published_at_from?: string;
   published_at_to?: string;
   reactions_from?: string | number;

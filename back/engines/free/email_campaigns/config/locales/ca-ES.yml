@@ -9,6 +9,7 @@ ca:
       "comment_on_your_idea": Un comentari sobre la meva idea
       "comment_on_your_initiative": Un comentari a la meva proposta
       "cosponsor_of_your_initiative": Un usuari accepta la meva invitació per copatrocinar la meva proposta
+      "event_registration_confirmation": Confirmació de registre de l'esdeveniment
       "first_idea_published": Publicació de la meva primera idea
       "idea_marked_as_spam": Informe de correu brossa d'idees
       "idea_published": Publicació de la meva idea
@@ -144,7 +145,6 @@ ca:
     cosponsor_of_your_initiative:
       cta_reply_to: 'Consulta la teva proposta'
       event_description_initiative: 'Felicitats! %{cosponsorName} ha acceptat la teva invitació per copatrocinar la teva proposta.'
-      event_description_cosponsoring: 'Copatrocinar una proposta significa que <strong>el vostre nom es mostrarà</strong> amb els noms d''altres copatrocinadors de la proposta.'
       main_header: '%{cosponsorName} ha acceptat la teva invitació per copatrocinar la teva proposta'
       subject: '%{cosponsorName} ha acceptat la teva invitació per copatrocinar la teva proposta'
       preheader_initiative: '%{cosponsorName} ha acceptat la teva invitació per copatrocinar la teva proposta'
@@ -192,6 +192,7 @@ ca:
       cta_reply_to: 'Copatrocina aquesta proposta'
       event_description_initiative: '%{authorName} ha creat una nova proposta i voldria que la copatrocinis.'
       event_description_cosponsoring: 'Copatrocinar una proposta significa que <strong>el vostre nom es mostrarà</strong> amb els noms d''altres copatrocinadors de la proposta.'
+      event_description_before_action: 'Per veure la proposta i acceptar la invitació, heu d''iniciar sessió al vostre compte.'
       event_description_action: 'Feu clic a continuació per llegir la proposta.'
       main_header: 'Us han convidat a copatrocinar una proposta'
       subject: 'Us han convidat a copatrocinar una proposta'
@@ -207,12 +208,14 @@ ca:
       cta_accept_invitation: 'Accepta la teva invitació'
       invitation_header: 'La teva invitació està pendent'
       preheader: '%{organizationName} us va enviar una invitació per unir-vos a la seva plataforma de participació fa uns dies.'
+      invitation_expiry_message: 'Aquesta invitació caduca d''aquí a %{expiryDaysRemaining} dies aproximadament.'
       subject: 'Pendent invitació per a la plataforma de participació de %{organizationName}'
     invite_received:
       added_a_message: '%{organizationName} ha escrit el missatge següent:'
       cta_accept_invitation: 'Accepta la teva invitació'
       invitation_header: 'Vostè està convidat!'
       invitation_header_message: '%{organizationName} t''ha convidat a la seva plataforma de participació.'
+      invitation_expiry_message: 'Aquesta invitació caduca d''aquí a %{expiryDays} dies.'
       preheader: '%{organizationName} t''ha enviat una invitació per unir-te a la seva plataforma de participació.'
       subject: 'Esteu convidats a unir-vos a la plataforma de %{organizationName}'
     initiative_published:
@@ -636,6 +639,18 @@ ca:
       body_2: 'S''han publicat els resultats de la votació %{phaseTitle} a la plataforma %{organizationName}!'
       body_3: 'Us animem a revisar els resultats i estar atents per a més actualitzacions sobre els passos següents.'
       cta_see_results: 'Veure resultats a la plataforma'
+    event_registration_confirmation:
+      subject: "Estàs dins! El vostre registre per a \"%{eventTitle}\" està confirmat"
+      header_message: "%{firstName}, gràcies per registrar-te"
+      event_details:
+        labels:
+          date: 'Data'
+          location: 'Ubicació'
+          online_link: 'Enllaç en línia'
+          description: 'Descripció'
+          project: 'Projecte'
+      cta_go_to_event: 'Veure l''esdeveniment'
+      cta_add_to_calendar: 'Afegeix al teu calendari'
     voting_phase_started:
       subject: '%{organizationName}: la fase de votació va començar per a %{projectName}'
       preheader: 'La fase de votació va començar per %{projectName} a la plataforma de participació de l'' %{organizationName}'
@@ -658,6 +673,7 @@ ca:
         managers: 'Gestors'
         admins_assigned_to_a_proposal: 'Administradors assignats a una proposta'
         admins_and_managers_assigned_to_the_input: 'Administradors i gestors assignats a l''entrada'
+        new_attendee: 'Usuari recent registrat'
         user_who_is_invited_to_cosponsor_a_proposal: 'Usuari que està convidat a copatrocinar una proposta'
         user_who_is_receiving_admin_rights: 'Usuari que està rebent drets d''administrador'
         user_who_is_receiving_folder_moderator_rights: 'Usuari que està rebent drets de moderador de carpetes'
@@ -677,6 +693,7 @@ ca:
       content_type:
         comments: 'Comentaris'
         content_moderation: 'Moderació de continguts'
+        events: 'Esdeveniments'
         general: 'General'
         inputs: 'Entrades'
         internal_comments: 'Comentaris interns'
@@ -731,3 +748,4 @@ ca:
         voting_basket_submitted: 'Es presenten els vots'
         7_days_after_invite_is_sent: '7 dies després de l''enviament de la invitació'
         7_days_before_the_project_changes_phase: '7 dies abans del canvi de fase del projecte'
+        registration_to_event: 'Inscripció a un esdeveniment'

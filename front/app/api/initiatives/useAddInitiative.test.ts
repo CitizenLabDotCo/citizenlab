@@ -27,6 +27,7 @@ describe('useAddInitiative', () => {
 
     act(() => {
       result.current.mutate({
+        publication_status: 'published',
         title_multiloc: {
           en: 'test',
         },
@@ -53,6 +54,7 @@ describe('useAddInitiative', () => {
 
     act(() => {
       result.current.mutate({
+        publication_status: 'published',
         title_multiloc: {
           en: 'test',
         },

@@ -54,7 +54,7 @@ class Initiative < ApplicationRecord
   has_many :areas_initiatives, dependent: :destroy
   has_many :areas, through: :areas_initiatives
   has_many :cosponsors_initiatives, dependent: :destroy
-  has_many :cosponsors, through: :cosponsors_initiatives, source: :user
+  has_many :cosponsors, through: :cosponsors_initiatives, source: :user, dependent: :destroy # dependent: :destroy destroys the associated cosponsors_inititiatve records, not the users
   has_many :initiative_status_changes, dependent: :destroy
   has_one :initiative_initiative_status
   has_one :initiative_status, through: :initiative_initiative_status
@@ -87,6 +87,10 @@ class Initiative < ApplicationRecord
     before_validation :initialize_initiative_status_changes
     before_validation :sanitize_body_multiloc, if: :body_multiloc
   end
+
+  pg_search_scope :search_by_all,
+    against: %i[title_multiloc body_multiloc],
+    using: { tsearch: { prefix: true } }
 
   scope :with_some_topics, (proc do |topic_ids|
     with_dups = joins(:initiatives_topics)
@@ -131,14 +135,7 @@ class Initiative < ApplicationRecord
   end
 
   def cosponsor_ids=(ids)
-    return unless ids
-
-    ids = ids.uniq
-    current_ids = cosponsors.pluck(:id).uniq
-    return if current_ids.sort == ids.sort
-
-    cosponsors_initiatives.where.not(user_id: ids).destroy_all
-    (ids - current_ids).each { |id| cosponsors_initiatives.create(user_id: id) }
+    super(ids.uniq.excluding(author_id))
   end
 
   def reactions_needed(configuration = AppConfiguration.instance)
@@ -159,11 +156,11 @@ class Initiative < ApplicationRecord
     InitiativeStatus::REVIEW_CODES.include? initiative_status&.code
   end
 
-  private
-
   def proposed_at
     initiative_status_changed_at('proposed')
   end
+
+  private
 
   def initiative_status_changed_at(initiative_status_code)
     initiative_status_changes

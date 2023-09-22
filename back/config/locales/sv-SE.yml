@@ -185,6 +185,8 @@ sv:
       <p>Initiativtagarna bjuds in för att presentera sitt förslag vid nästa rådsmöte. Vi kommer att ge en officiell uppdatering.</p>
     default_eligibility_criteria: >
       <ul> <li>Det måste falla inom den lokala politikens områden och kompetens</li> <li>Det tjänar allmänhetens intresse snarare än ditt individuella intresse</li> <li>Det diskriminerar inte utifrån kön, ras, ålder eller bakgrund</li> <li>Det skadar inte andra</li> </ul>
+    default_posting_tips: >
+      <ul><li>Ta tid på dig att utveckla ditt förslag. Om det behövs skriver du först ett utkast och kopierar och klistrar sedan in det här.</li><li>Välj en meningsfull titel som tydligt förklarar vad ditt förslag innebär.</li><li>Visualisera ditt förslag med en passande bild så att det sticker ut!</li><li>Lägg till relevanta bilagor, t. ex. videor, inspirerande exempel, teknisk information eller planer.</li><li>Dela din idé i sociala medier och andra kanaler för att samla stöd från andra.</li></ul>
   reset_password_mailer:
     send_reset_password:
       cta_reset_password: 'Återställ ditt lösenord'

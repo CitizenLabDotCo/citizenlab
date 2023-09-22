@@ -185,6 +185,8 @@ de:
       <p>Die Initiatoren sind eingeladen, ihre Vorschlag bei der nächsten Stadtratssitzung zu präsentieren. Wir werden ein offizielles Update veröffentlichen.</p>
     default_eligibility_criteria: >
       <ul> <li>Es muss in die Politikbereiche und Kompetenzen des lokalen Politiks fallen.</li> <li>Es dient eher dem öffentlichen als dem individuellen Interesse</li> <li>Es diskriminiert nicht aufgrund von Geschlecht, Rasse, Alter oder Hintergrund.</li> <li>Es schadet anderen nicht</li></ul>
+    default_posting_tips: >
+      <ul><li>Nehmen Sie sich die Zeit, Ihren Vorschlag auszuarbeiten. Wenn nötig, schreiben Sie zuerst einen Entwurf und fügen ihn dann hier ein. Sobald Sie ihn veröffentlichen, können andere ihn lesen und die Zeit beginnt zu laufen.</li><li>Wählen Sie einen aussagekräftigen Titel, der deutlich macht, worum es in Ihrem Vorschlag geht.</li><li>Visualisieren Sie Ihren Vorschlag mit einem passenden Bild, damit er sich abhebt!</li><li>Fügen Sie relevante Anhänge hinzu, z.B. Videos, inspirierende Beispiele, technische Details oder Pläne.</li><li>Teilen Sie Ihre Idee in den sozialen Medien und anderen Kanälen, um Unterstützung von anderen zu erhalten.</li></ul>
   reset_password_mailer:
     send_reset_password:
       cta_reset_password: 'Ihr Passwort zurücksetzen'

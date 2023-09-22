@@ -16,15 +16,19 @@ import { get, snakeCase } from 'lodash-es';
 
 // typings
 import { Locale, Multiloc } from 'typings';
-import { Answer } from 'services/formCustomFields';
+import { Answer } from 'api/survey_results/types';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import AnalysisLaunchButton from './AnalysisLaunchButton';
+import AnalysesList from './AnalysesList';
 
 type FormResultsQuestionProps = {
   locale: Locale;
   question: Multiloc;
   inputType: string;
-  answers: Answer[];
+  answers?: Answer[];
   totalResponses: number;
   required: boolean;
+  customFieldId: string;
 };
 
 const FormResultsQuestion = ({
@@ -34,7 +38,9 @@ const FormResultsQuestion = ({
   answers,
   totalResponses,
   required,
+  customFieldId,
 }: FormResultsQuestionProps) => {
+  const isAnalysisEnabled = useFeatureFlag({ name: 'analysis' });
   const { formatMessage } = useIntl();
 
   // TODO: Replace hardcoded '2' here. Urgent to relese to fix bug though right now.
@@ -46,6 +52,13 @@ const FormResultsQuestion = ({
     inputTypeText
   )} - ${requiredOrOptionalText.toLowerCase()}`;
 
+  if (
+    !isAnalysisEnabled &&
+    (inputType === 'text' || inputType === 'multiline_text')
+  ) {
+    return null;
+  }
+
   return (
     <Box data-cy={`e2e-${snakeCase(question[locale])}`} mb="56px">
       <Title variant="h3" mb="0">
@@ -56,22 +69,30 @@ const FormResultsQuestion = ({
           {inputTypeLabel}
         </Text>
       )}
-      {answers.map(({ answer, responses }, index) => {
-        const percentage = Math.round((responses / totalResponses) * 1000) / 10;
+      {answers ? (
+        answers.map(({ answer, responses }, index) => {
+          const percentage =
+            Math.round((responses / totalResponses) * 1000) / 10;
 
-        return (
-          <CompletionBar
-            key={index}
-            bgColor={colors.primary}
-            completed={percentage}
-            leftLabel={answer}
-            rightLabel={formatMessage(messages.choiceCount2, {
-              choiceCount: responses,
-              percentage,
-            })}
-          />
-        );
-      })}
+          return (
+            <CompletionBar
+              key={index}
+              bgColor={colors.primary}
+              completed={percentage}
+              leftLabel={answer}
+              rightLabel={formatMessage(messages.choiceCount2, {
+                choiceCount: responses,
+                percentage,
+              })}
+            />
+          );
+        })
+      ) : (
+        <>
+          <AnalysisLaunchButton customFieldId={customFieldId} />
+          <AnalysesList customFieldId={customFieldId} />
+        </>
+      )}
     </Box>
   );
 };

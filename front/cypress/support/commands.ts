@@ -5,8 +5,9 @@ import {
   VotingMethod,
 } from '../../app/services/participationContexts';
 import { IUserUpdate } from '../../app/api/users/types';
-import jwtDecode from 'jwt-decode';
+import { IUpdatedAppConfigurationProperties } from '../../app/api/app_configuration/types';
 
+import jwtDecode from 'jwt-decode';
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
@@ -66,6 +67,7 @@ declare global {
       intersectsViewport: typeof intersectsViewport;
       notIntersectsViewport: typeof notIntersectsViewport;
       apiUpdateHomepageSettings: typeof apiUpdateHomepageSettings;
+      apiUpdateAppConfiguration: typeof apiUpdateAppConfiguration;
     }
   }
 }
@@ -1247,9 +1249,11 @@ export function apiCreateEvent({
   projectId,
   title,
   description,
+  includeLocation,
   location,
   startDate,
   endDate,
+  onlineLink,
 }: {
   projectId: string;
   title: string;
@@ -1257,6 +1261,8 @@ export function apiCreateEvent({
   location: string;
   startDate: Date;
   endDate: Date;
+  includeLocation?: boolean;
+  onlineLink?: string;
 }) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -1279,12 +1285,16 @@ export function apiCreateEvent({
             en: description,
             'nl-BE': description,
           },
-          location_multiloc: {
-            en: location,
-            'nl-BE': location,
-          },
+          address_1: location,
+          location_point_geojson: includeLocation
+            ? {
+                type: 'Point',
+                coordinates: [4.418731568531502, 50.86899604801978],
+              }
+            : undefined,
           start_at: startDate.toJSON(),
           end_at: endDate.toJSON(),
+          online_link: onlineLink,
         },
       },
     });
@@ -1347,6 +1357,28 @@ export function apiRemoveReportBuilder(reportId: string) {
       },
       method: 'DELETE',
       url: `web_api/v1/reports/${reportId}`,
+    });
+  });
+}
+
+export function apiUpdateAppConfiguration(
+  updatedAttributes: IUpdatedAppConfigurationProperties
+) {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'PATCH',
+      url: `web_api/v1/app_configuration/`,
+      body: {
+        app_configuration: {
+          updatedAttributes,
+        },
+      },
     });
   });
 }

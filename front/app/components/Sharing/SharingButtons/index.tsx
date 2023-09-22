@@ -1,7 +1,12 @@
 import React from 'react';
 
 // components
-import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  BoxFlexProps,
+  Title,
+  useBreakpoint,
+} from '@citizenlab/cl2-component-library';
 import Facebook from '../buttons/Facebook';
 import Twitter from '../buttons/Twitter';
 import Messenger from '../buttons/Messenger';
@@ -26,6 +31,8 @@ interface Props {
   emailBody?: string;
   utmParams: UtmParams;
   id?: string;
+  hideTitle?: boolean;
+  justifyContent?: BoxFlexProps['justifyContent'];
 }
 
 const SharingButtons = ({
@@ -38,6 +45,8 @@ const SharingButtons = ({
   id,
   url,
   utmParams,
+  hideTitle,
+  justifyContent,
 }: Props) => {
   const isSmallerThanTablet = useBreakpoint('tablet');
 
@@ -54,15 +63,17 @@ const SharingButtons = ({
 
   return (
     <>
-      <Title
-        textAlign={isSmallerThanTablet ? 'center' : 'inherit'}
-        mb="20px"
-        color="textPrimary"
-        variant="h3"
-        as="h2"
-      >
-        {titleMessage}
-      </Title>
+      {!hideTitle && (
+        <Title
+          textAlign={isSmallerThanTablet ? 'center' : 'inherit'}
+          mb="20px"
+          color="textPrimary"
+          variant="h3"
+          as="h2"
+        >
+          {titleMessage}
+        </Title>
+      )}
       <Box
         id={id}
         alignItems={isSmallerThanTablet ? 'center' : 'flex-start'}
@@ -70,6 +81,7 @@ const SharingButtons = ({
         gap="5px"
         flexWrap="wrap"
         flexDirection={isSmallerThanTablet ? 'column' : 'row'}
+        justifyContent={justifyContent}
       >
         <Box display="flex" gap="4px">
           <Facebook

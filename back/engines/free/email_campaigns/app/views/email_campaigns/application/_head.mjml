@@ -4,7 +4,13 @@
       font-size: 25px;
       margin-bottom: 25px;
     }
+    
     a {text-decoration: none;}
+    
+    .logo img {
+      height: 80px !important;
+      width: auto !important;
+    }
 
     <%# From https://github.com/mjmlio/mjml/issues/230 %>
     <% if text_direction == "rtl" %>

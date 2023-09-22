@@ -9,6 +9,7 @@ da:
       "comment_on_your_idea": En kommentar på min idé
       "comment_on_your_initiative": En kommentar på mit forslag
       "cosponsor_of_your_initiative": En bruger accepterer min invitation til at være medstiller på mit forslag
+      "event_registration_confirmation": Bekræftelse af tilmelding til begivenhed
       "first_idea_published": Publicering af min første idé
       "idea_marked_as_spam": Rapportering af idé-spam
       "idea_published": Publicering af min idé
@@ -144,7 +145,6 @@ da:
     cosponsor_of_your_initiative:
       cta_reply_to: 'Se dit forslag'
       event_description_initiative: 'Tillykke! %{cosponsorName} har accepteret din invitation til at være medstiller på dit forslag.'
-      event_description_cosponsoring: 'At være medstiller på et forslag betyder, at <strong>dit navn vil blive vist</strong> sammen med navnene på de andre medstillere af forslaget.'
       main_header: '%{cosponsorName} har accepteret din invitation til at være medstiller på dit forslag'
       subject: '%{cosponsorName} har accepteret din invitation til at være medstiller på dit dit forslag'
       preheader_initiative: '%{cosponsorName} har accepteret din invitation til at være medstiller på dit forslag'
@@ -190,10 +190,11 @@ da:
       preheader_initiative: 'Du er blevet tildelt %{authorName}s forslag'
     invitation_to_cosponsor_initiative:
       cta_reply_to: 'Vær medstiller på dette forslag'
-      event_description_initiative: '%{authorName} har lavet et nyt forslag og vil gerne have dig til at støtte det.'
-      event_description_cosponsoring: 'At være medstiller på et forslag betyder, at <strong>dit navn vil blive vist</strong> sammen med navnene på de andre medstillere på forslaget.'
-      event_description_action: 'Klik nedenfor for at læse forslaget.'
-      main_header: 'Du er blevet inviteret til at medsponsorere et forslag'
+      event_description_initiative: '%{authorName} har stillet et nyt forslag og vil gerne have dig til at være medstiller på det.'
+      event_description_cosponsoring: 'At være medstiller på et forslag betyder, at <strong>dit navn vil blive vist</strong> sammen med navnene på de øvrige medstillere.'
+      event_description_before_action: 'For at se forslaget og acceptere invitationen, skal du være logget ind på din konto.'
+      event_description_action: 'Klik nedenfor for at se forslaget.'
+      main_header: 'Du er blevet inviteret til at være medstiller på et forslag'
       subject: 'Du er blevet inviteret til at være medstiller på et forslag'
       preheader_initiative: 'Du er blevet inviteret til at være medstiller på forslaget fra %{authorName}'
     initiative_resubmitted_for_review:
@@ -207,12 +208,14 @@ da:
       cta_accept_invitation: 'Acceptér din invitation'
       invitation_header: 'Din invitation er afventende'
       preheader: '%{organizationName} sendte dig en invitation til at deltage på deres deltagelsesplatform for nogle dage siden.'
+      invitation_expiry_message: 'Denne invitation udløber om cirka %{expiryDaysRemaining} dage.'
       subject: 'Afventende invitation for deltagelsesplatformen for %{organizationName}'
     invite_received:
       added_a_message: '%{organizationName} skrev dette:'
       cta_accept_invitation: 'Acceptér din invitation'
       invitation_header: 'Du er inviteret!'
       invitation_header_message: '%{organizationName} inviterede dig til deres deltagelsesplatform.'
+      invitation_expiry_message: 'Denne invitation udløber om %{expiryDays} dage.'
       preheader: '%{organizationName} sendte dig en invitation til at deltage i deres deltagelsesplatform.'
       subject: 'Du er inviteret til at deltage i platformen for %{organizationName}'
     initiative_published:
@@ -224,8 +227,8 @@ da:
       action_share_twitter: 'Informer dine følgere på %{twitterLink}'
       cta_view_initiative: 'Gå til dit forslag'
       link: link
-      main_header: 'Du udgav et forslag! Lad os finde noget støtte til det.'
-      message_next_steps: '%{userFirstName}, dit forslag blev udgivet på deltagelsesplatformen for %{organizationName}. Du bliver underrettet når personer interagerer med dit forslag. Find ud af dine næste trin nedenfor.'
+      main_header: 'Tillykke! Dit forslag er nu offentliggjort og er klar til at indsamle stemmer.'
+      message_next_steps: '%{userFirstName}, dit forslag er nu offentliggjort på %{organizationName}s digitale platform, og er dermed klar til at blive delt i dit netværk og indsamle stemmer. Du får besked, når dit forslag får stemmer eller kommentarer.'
       message_get_votes: 'Nå stemmetærsklen:'
       preheader: 'Tak for at du deler dit forslag, %{initiativeTitle}, for %{organizationName}. Det næste skridt er at få support for dit forslag ved at dele den med hele dit netværk.'
       send_email: e-mail
@@ -507,21 +510,21 @@ da:
     status_change_of_reacted_initiative:
       status_change: 'Den nye status for dette forslag er ''%{initiativeStatus}'''
       cta_view_initiative: 'Gå til dette forslag'
-      event_description: 'Status for forslag ''%{initiativeTitle}'' er blevet opdateret på borgerinddragelsesplatformen for %{organizationName}.'
+      event_description: 'Status for dit forslag ''''%{initiativeTitle}'''' er blevet opdateret på %{organizationName}s digitale platform.'
       main_header: 'Et forslag, du stemte på, har en ny status'
       subject: 'Statussen for et forslag, du har stemt på er blevet ændret'
       preheader: 'Statussen for et forslag du har stemt på, er blevet ændret'
     status_change_of_commented_initiative:
       status_change: 'Den nye status for dette forslag er ''%{initiativeStatus}'''
       cta_view_initiative: 'Gå til dette forslag'
-      event_description: 'Status for forslag ''%{initiativeTitle}'' er blevet opdateret på den digitale deltagelsesplatform for %{organizationName}.'
+      event_description: 'Status for dit forslag ''''%{initiativeTitle}'''' er blevet opdateret på %{organizationName}s digitale platform.'
       main_header: 'Et forslag, du kommenterede, har en ny status'
       subject: 'Status for et forslag, du kommenterede, er ændret'
       preheader: 'Status for et forslag, du kommenterede, er ændret'
     status_change_of_your_initiative:
       status_change: 'Den nye status for dit forslag er ''%{initiativeStatus}'''
       cta_view_initiative: 'Gå til dit forslag'
-      event_description: 'Status for forslag ''%{initiativeTitle}'' er blevet opdateret på den digitale deltagelsesplatform for %{organizationName}.'
+      event_description: 'Status for dit forslag ''''%{initiativeTitle}'''' er blevet opdateret på %{organizationName}s digitale platform.'
       main_header: 'Dit forslag har en ny status'
       subject: 'Status for dit forslag er ændret'
       preheader: 'Status for dit forslag er ændret'
@@ -600,7 +603,7 @@ da:
       subject: 'Ugentlige opdateringer af dit forslag'
       preheader: 'Hvad skete der med dit forslag i sidste uge?'
       title_your_weekly_report: 'Hvordan klarer dit forslag sig?'
-      text_introduction: 'Find nøgletalene nedenfor, og gå til dit forslag side, for at handle og indsamle nok støtte rettidigt.'
+      text_introduction: 'Du kan find nøgletallene for dit forslag nedenfor. Hvis du vil skabe yderligere opmærksomhed omkring dit forslag, kan du med fordel gå til dit forslags side, hvorfra du kan dele det på dine sociale medier eller via andre digitale kanaler.'
       cta_see_your_initiative: 'Gå til dit forslag'
       total_votes: 'Antal stemmer'
       new_votes: 'Nye stemmer'
@@ -636,6 +639,18 @@ da:
       body_2: 'Resultaterne af %{phaseTitle} afstemningen på %{organizationName} platform er blevet offentliggjort!'
       body_3: 'Vi opfordrer dig til at gennemgå resultaterne og holde øje med yderligere opdateringer om de næste skridt.'
       cta_see_results: 'Se resultaterne på platformen'
+    event_registration_confirmation:
+      subject: "Så er du med! Din tilmelding til \"%{eventTitle}\" er bekræftet."
+      header_message: "%{firstName}, tak for din tilmelding til"
+      event_details:
+        labels:
+          date: 'Dato'
+          location: 'Placering'
+          online_link: 'Online link'
+          description: 'Beskrivelse'
+          project: 'Projekt'
+      cta_go_to_event: 'Se begivenheden'
+      cta_add_to_calendar: 'Tilføj til din kalender'
     voting_phase_started:
       subject: '%{organizationName}: Afstemningsfasen er startet for %{projectName}'
       preheader: 'Afstemningsfasen startede for %{projectName} på borgerinddragelsesplatformen fra %{organizationName}'
@@ -658,6 +673,7 @@ da:
         managers: 'Projektledere'
         admins_assigned_to_a_proposal: 'Administratorer, der er tildelt et forslag'
         admins_and_managers_assigned_to_the_input: 'Administratorer og projektledere, der er tildelt input'
+        new_attendee: 'Nyligt registreret bruger'
         user_who_is_invited_to_cosponsor_a_proposal: 'Bruger der er inviteret til at være medstiller på et forslag'
         user_who_is_receiving_admin_rights: 'Bruger der får administratorrettigheder'
         user_who_is_receiving_folder_moderator_rights: 'Bruger der får rettigheder som mappemoderator'
@@ -677,6 +693,7 @@ da:
       content_type:
         comments: 'Kommentarer'
         content_moderation: 'Moderation af indhold'
+        events: 'Begivenheder'
         general: 'Generelt'
         inputs: 'Input'
         internal_comments: 'Interne kommentarer'
@@ -731,3 +748,4 @@ da:
         voting_basket_submitted: 'Stemmerne er afgivet'
         7_days_after_invite_is_sent: '7 dage efter at invitationen er sendt'
         7_days_before_the_project_changes_phase: '7 dage før projektet ændre fase'
+        registration_to_event: 'Tilmelding til en begivenhed'

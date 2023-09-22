@@ -31,7 +31,7 @@ describe('Idea new page for continuous project', () => {
   });
 
   it('shows a back button to navigate to the projects page', () => {
-    cy.get('#e2e-idea-other-link').click();
+    cy.get('#e2e-go-back-link').click();
     cy.location('pathname').should(
       'eq',
       '/en/projects/an-idea-bring-it-to-your-council'

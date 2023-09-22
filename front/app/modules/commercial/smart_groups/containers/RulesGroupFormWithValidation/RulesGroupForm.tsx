@@ -109,7 +109,6 @@ const RulesGroupForm = ({
           <SSectionField>
             <InputMultilocWithLocaleSwitcher
               label={formatMessage(adminUsersMessages.fieldGroupName)}
-              type="text"
               name="title_multiloc"
               id="group-title-field"
             />

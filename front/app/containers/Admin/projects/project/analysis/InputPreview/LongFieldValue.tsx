@@ -9,6 +9,7 @@ import {
   Text,
   Checkbox,
   Button,
+  IconTooltip,
 } from '@citizenlab/cl2-component-library';
 
 import T from 'components/T';
@@ -17,6 +18,11 @@ import { FormattedDate } from 'react-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 import { xor } from 'lodash-es';
+import { trackEventByName } from 'utils/analytics';
+import tracks from '../tracks';
+
+import { useIntl } from 'utils/cl-intl';
+import translations from '../translations';
 
 type Props = {
   customFieldId: string;
@@ -44,6 +50,7 @@ const SelectOptionText = ({
 };
 
 const FilterToggleButton = ({ customFieldId, value }) => {
+  const { formatMessage } = useIntl();
   const filters = useAnalysisFilterParams();
   const filterValue = filters[`input_custom_${customFieldId}`];
   const isFilterSet = filterValue?.includes(value);
@@ -55,18 +62,28 @@ const FilterToggleButton = ({ customFieldId, value }) => {
         ? newFilterValue
         : undefined,
     });
+    trackEventByName(tracks.inputCustomFieldFilterUsed.name, { customFieldId });
   };
 
   return (
     <Button
       onClick={handleToggleFilterOption(customFieldId, value)}
-      icon={isFilterSet ? 'close' : 'filter-2'}
       buttonStyle="secondary"
       size="s"
       margin="0"
       padding="1px"
-      iconSize="18px"
-    />
+    >
+      <IconTooltip
+        icon={isFilterSet ? 'close' : 'filter-2'}
+        content={
+          <Box minWidth="150px">
+            {isFilterSet
+              ? formatMessage(translations.removeFilter)
+              : formatMessage(translations.filter)}
+          </Box>
+        }
+      />
+    </Button>
   );
 };
 
@@ -75,6 +92,7 @@ const FilterToggleButton = ({ customFieldId, value }) => {
  * representation of the value of the custom field for that input
  */
 const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
+  const { formatMessage } = useIntl();
   const containerId: { projectId?: string; phaseId?: string } = {};
   if (projectId) {
     containerId.projectId = projectId;
@@ -135,7 +153,7 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
               <Text m="0">
                 {input.attributes.custom_field_values[
                   customField.data.attributes.key
-                ] || 'No answer'}
+                ] || formatMessage(translations.noAnswer)}
               </Text>
             </Box>
           );
@@ -154,7 +172,7 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
                 <Text m="0">
                   {input.attributes.custom_field_values[
                     customField.data.attributes.key
-                  ] || 'No answer'}
+                  ] || formatMessage(translations.noAnswer)}
                 </Text>
                 <Box ml="8px">
                   <FilterToggleButton
@@ -175,7 +193,7 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
               <Text whiteSpace="pre-line">
                 {input.attributes.custom_field_values[
                   customField.data.attributes.key
-                ] || 'No answer'}
+                ] || formatMessage(translations.noAnswer)}
               </Text>
             </Box>
           );
@@ -247,7 +265,7 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
                 {rawValue === true || rawValue === false ? (
                   <Checkbox disabled checked={rawValue} onChange={() => {}} />
                 ) : (
-                  'No answer'
+                  formatMessage(translations.noAnswer)
                 )}
               </Text>
             </Box>
@@ -260,7 +278,11 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
                 <T value={customField.data.attributes.title_multiloc} />
               </Title>
               <Text>
-                {rawValue ? <FormattedDate value={rawValue} /> : 'No answer'}
+                {rawValue ? (
+                  <FormattedDate value={rawValue} />
+                ) : (
+                  formatMessage(translations.noAnswer)
+                )}
               </Text>
             </Box>
           );

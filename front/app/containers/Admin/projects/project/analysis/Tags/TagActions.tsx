@@ -13,13 +13,16 @@ import {
 import useDeleteAnalysisTag from 'api/analysis_tags/useDeleteAnalysisTag';
 import { useIntl } from 'utils/cl-intl';
 import { useParams } from 'react-router-dom';
-import messages from '../messages';
+import translations from './translations';
 import RenameTagModal from './RenameTagModal';
 import Modal from 'components/UI/Modal';
 import { ITagData } from 'api/analysis_tags/types';
 import useAddAnalysisBulkTagging from 'api/analysis_taggings/useAnalysisBulkTaggings';
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 import styled from 'styled-components';
+
+import tracks from 'containers/Admin/projects/project/analysis/tracks';
+import { trackEventByName } from 'utils/analytics';
 
 const StyledSpinner = styled(Spinner)`
   margin-right: 8px;
@@ -48,7 +51,7 @@ const TagActions = ({ tag }: { tag: ITagData }) => {
   };
 
   const handleTagDelete = () => {
-    if (window.confirm(formatMessage(messages.deleteTagConfirmation))) {
+    if (window.confirm(formatMessage(translations.deleteTagConfirmation))) {
       deleteTag(
         {
           analysisId,
@@ -56,6 +59,9 @@ const TagActions = ({ tag }: { tag: ITagData }) => {
         },
         {
           onSuccess: () => {
+            trackEventByName(tracks.tagDeleted.name, {
+              extra: { analysisId },
+            });
             closeDropdown();
           },
         }
@@ -81,6 +87,9 @@ const TagActions = ({ tag }: { tag: ITagData }) => {
       },
       {
         onSuccess: () => {
+          trackEventByName(tracks.bulkTagAssignmentPerformed.name, {
+            extra: { analysisId },
+          });
           closeDropdown();
         },
       }
@@ -104,9 +113,26 @@ const TagActions = ({ tag }: { tag: ITagData }) => {
         onClickOutside={closeDropdown}
         className="dropdown"
         right="0px"
-        top="40px"
+        top="-150px"
         content={
           <>
+            <DropdownListItem
+              onClick={(e) => {
+                e.stopPropagation();
+                createAnalysisBulkTaggings();
+              }}
+            >
+              <Text textAlign="left" m="0px">
+                <Box display="flex" gap="8px">
+                  {bulkTaggingIsLoading ? (
+                    <StyledSpinner size="20px" />
+                  ) : (
+                    <Icon name="plus-circle" />
+                  )}
+                  {formatMessage(translations.addInputToTag)}
+                </Box>
+              </Text>
+            </DropdownListItem>
             <DropdownListItem
               onClick={(e) => {
                 e.stopPropagation();
@@ -115,7 +141,7 @@ const TagActions = ({ tag }: { tag: ITagData }) => {
             >
               <Text textAlign="left" m="0px">
                 <Icon name="edit" mr="8px" />
-                Rename tag
+                {formatMessage(translations.renameTag)}
               </Text>
             </DropdownListItem>
             <DropdownListItem
@@ -131,24 +157,7 @@ const TagActions = ({ tag }: { tag: ITagData }) => {
                   ) : (
                     <Icon name="delete" />
                   )}
-                  Delete tag
-                </Box>
-              </Text>
-            </DropdownListItem>
-            <DropdownListItem
-              onClick={(e) => {
-                e.stopPropagation();
-                createAnalysisBulkTaggings();
-              }}
-            >
-              <Text textAlign="left" m="0px">
-                <Box display="flex" gap="8px">
-                  {bulkTaggingIsLoading ? (
-                    <StyledSpinner size="20px" />
-                  ) : (
-                    <Icon name="plus-circle" />
-                  )}
-                  Add selected inputs to tag
+                  {formatMessage(translations.deleteTag)}
                 </Box>
               </Text>
             </DropdownListItem>

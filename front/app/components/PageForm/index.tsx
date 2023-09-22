@@ -126,7 +126,6 @@ const PageForm = ({ onSubmit, defaultValues, pageId }: Props) => {
         <SectionField>
           <InputMultilocWithLocaleSwitcher
             label={formatMessage(messages.pageTitle)}
-            type="text"
             name="title_multiloc"
           />
         </SectionField>

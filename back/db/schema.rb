@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_17_134213) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_25_121819) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -83,6 +83,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_17_134213) do
     t.string "auto_tagging_method"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.jsonb "tags_ids"
+    t.jsonb "filters", default: {}, null: false
     t.index ["analysis_id"], name: "index_analysis_background_tasks_on_analysis_id"
   end
 
@@ -124,8 +126,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_17_134213) do
   create_table "analysis_taggings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "tag_id", null: false
     t.uuid "input_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.uuid "background_task_id"
     t.index ["input_id"], name: "index_analysis_taggings_on_input_id"
     t.index ["tag_id", "input_id"], name: "index_analysis_taggings_on_tag_id_and_input_id", unique: true
     t.index ["tag_id"], name: "index_analysis_taggings_on_tag_id"
@@ -489,6 +490,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_17_134213) do
     t.geography "location_point", limit: {:srid=>4326, :type=>"st_point", :geographic=>true}
     t.string "address_1"
     t.integer "attendees_count", default: 0, null: false
+    t.string "online_link"
     t.jsonb "address_2_multiloc", default: {}, null: false
     t.index ["location_point"], name: "index_events_on_location_point", using: :gist
     t.index ["project_id"], name: "index_events_on_project_id"
@@ -501,9 +503,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_17_134213) do
     t.datetime "updated_at", null: false
     t.index ["attendee_id", "event_id"], name: "index_events_attendances_on_attendee_id_and_event_id", unique: true
     t.index ["attendee_id"], name: "index_events_attendances_on_attendee_id"
-    t.index ["created_at"], name: "index_events_attendances_on_created_at"
     t.index ["event_id"], name: "index_events_attendances_on_event_id"
-    t.index ["updated_at"], name: "index_events_attendances_on_updated_at"
   end
 
   create_table "experiments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -772,8 +772,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_17_134213) do
     t.string "author_hash"
     t.boolean "anonymous", default: false, null: false
     t.integer "internal_comments_count", default: 0, null: false
-    t.boolean "editing_locked", default: false, null: false
     t.integer "followers_count", default: 0, null: false
+    t.boolean "editing_locked", default: false, null: false
     t.index "((to_tsvector('simple'::regconfig, COALESCE((title_multiloc)::text, ''::text)) || to_tsvector('simple'::regconfig, COALESCE((body_multiloc)::text, ''::text))))", name: "index_initiatives_search", using: :gin
     t.index ["author_id"], name: "index_initiatives_on_author_id"
     t.index ["location_point"], name: "index_initiatives_on_location_point", using: :gist

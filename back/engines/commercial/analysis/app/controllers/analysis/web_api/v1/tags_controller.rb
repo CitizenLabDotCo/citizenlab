@@ -19,6 +19,9 @@ module Analysis
           inputs_without_tags = TagCounter.new(@analysis, tags: @tags, filters: { tag_ids: [nil] }).total_count
           filtered_inputs_without_tags = TagCounter.new(@analysis, tags: @tags, filters: filters.merge(tag_ids: [nil])).total_count
 
+          # tags sorted by descending tag count, then by ascending creation time if equal
+          @tags = @tags.sort_by { |tag| - (inputs_count_by_tag[tag.id] || 0) + (tag.created_at.to_i / 1_000_000_000_0.0) }
+
           render json: WebApi::V1::TagSerializer.new(
             @tags,
             params: {

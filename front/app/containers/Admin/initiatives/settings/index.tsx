@@ -19,6 +19,7 @@ import ProposalsFeatureToggle from './ProposalsFeatureToggle';
 import Thresholds from './Thresholds';
 import ThresholdReachedMessage from './ThresholdReachedMessage';
 import EligibilityCriteria from './EligibilityCriteria';
+import PostingTips from './PostingTips';
 import PageBody from './PageBody';
 import SubmitButton from './SubmitButton';
 import AnonymousPostingToggle from 'components/admin/AnonymousPostingToggle/AnonymousPostingToggle';
@@ -273,6 +274,10 @@ const InitiativesSettingsPage = () => {
           <EligibilityCriteria
             value={localProposalsSettings.eligibility_criteria}
             onChange={updateProposalsSetting('eligibility_criteria')}
+          />
+          <PostingTips
+            postingTips={localProposalsSettings.posting_tips}
+            onChangePostingTips={updateProposalsSetting('posting_tips')}
           />
           <ThresholdReachedMessage
             value={localProposalsSettings.threshold_reached_message}

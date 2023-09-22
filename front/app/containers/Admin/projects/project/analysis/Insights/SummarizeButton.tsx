@@ -1,4 +1,9 @@
-import { Box, Button, Text } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Button,
+  Text,
+  IconTooltip,
+} from '@citizenlab/cl2-component-library';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
@@ -6,7 +11,14 @@ import useAddAnalysisSummary from 'api/analysis_summaries/useAddAnalysisSummary'
 import useAddAnalysisSummaryPreCheck from 'api/analysis_summary_pre_check/useAddAnalysisSummaryPreCheck';
 import { ISummaryPreCheck } from 'api/analysis_summary_pre_check/types';
 
+import tracks from 'containers/Admin/projects/project/analysis/tracks';
+import { trackEventByName } from 'utils/analytics';
+
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
+import translations from './translations';
+
 const SummarizeButton = () => {
+  const { formatMessage } = useIntl();
   const { mutate: addSummary, isLoading: isLoadingSummary } =
     useAddAnalysisSummary();
   const { mutate: addSummaryPreCheck, isLoading: isLoadingPreCheck } =
@@ -15,10 +27,19 @@ const SummarizeButton = () => {
   const filters = useAnalysisFilterParams();
 
   const handleSummaryCreate = () => {
-    addSummary({
-      analysisId,
-      filters,
-    });
+    addSummary(
+      {
+        analysisId,
+        filters,
+      },
+      {
+        onSuccess: () => {
+          trackEventByName(tracks.summaryCreated.name, {
+            extra: { analysisId },
+          });
+        },
+      }
+    );
   };
 
   const [preCheck, setPreCheck] = useState<ISummaryPreCheck | null>(null);
@@ -49,13 +70,35 @@ const SummarizeButton = () => {
         processing={isLoadingPreCheck || isLoadingSummary}
         whiteSpace="wrap"
       >
-        Auto-summarize
+        {formatMessage(translations.summarize)}
         <br />
-        <Text fontSize="s" m="0" color="grey600">
-          {summaryPossible && summaryAccuracy && (
-            <>{summaryAccuracy * 100}% accuracy</>
-          )}
-          {!summaryPossible && `Too many inputs`}
+        <Text fontSize="s" m="0" color="grey600" whiteSpace="nowrap">
+          <Box display="flex" gap="4px">
+            {summaryPossible && summaryAccuracy && (
+              <>
+                <FormattedMessage
+                  {...translations.accuracy}
+                  values={{
+                    accuracy: summaryAccuracy * 100,
+                    percentage: formatMessage(translations.percentage),
+                  }}
+                />
+                <IconTooltip
+                  icon="info-outline"
+                  content={formatMessage(translations.summaryAccuracyTooltip)}
+                />
+              </>
+            )}
+            {!summaryPossible && (
+              <>
+                <FormattedMessage {...translations.tooManyInputs} />
+                <IconTooltip
+                  icon="info-solid"
+                  content={formatMessage(translations.tooManyInputsTooltip)}
+                />
+              </>
+            )}
+          </Box>
         </Text>
       </Button>
     </Box>

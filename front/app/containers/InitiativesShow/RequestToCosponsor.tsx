@@ -11,7 +11,7 @@ import {
   StatusExplanation,
 } from './ReactionControl/SharedStyles';
 import useAcceptInitiativeCosponsorshipInvite from 'api/cosponsors_initiatives/useAcceptInitiativeCosponsorshipInvite';
-import useInitiativeCosponsorsRequired from 'hooks/useInitiativeCosponsorsRequired';
+import useInitiativeCosponsorsRequired from 'containers/InitiativesShow/hooks/useInitiativeCosponsorsRequired';
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useAuthUser from 'api/me/useAuthUser';
 import BorderContainer from './BorderContainer';
@@ -35,8 +35,9 @@ const RequestToCosponsor = ({ initiativeId }: Props) => {
   const { data: appConfiguration } = useAppConfiguration();
   const { formatMessage } = useIntl();
 
-  if (!cosponsorsRequired || !initiative || !authUser || !appConfiguration)
+  if (!cosponsorsRequired || !initiative || !authUser || !appConfiguration) {
     return null;
+  }
 
   const handleOnClickCosponsor = () => {
     acceptInitiativeConsponsorshipInvite(initiativeId);

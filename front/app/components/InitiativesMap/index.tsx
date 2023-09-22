@@ -28,9 +28,6 @@ import {
 import GetInitiativeMarkers, {
   GetInitiativeMarkersChildProps,
 } from 'resources/GetInitiativeMarkers';
-import GetWindowSize, {
-  GetWindowSizeChildProps,
-} from 'resources/GetWindowSize';
 import GetInitiativesPermissions, {
   GetInitiativesPermissionsChildProps,
 } from 'resources/GetInitiativesPermissions';
@@ -64,7 +61,6 @@ interface InputProps {
 
 interface DataProps {
   initiativeMarkers: GetInitiativeMarkersChildProps;
-  windowSize: GetWindowSizeChildProps;
   initiativePermissions: GetInitiativesPermissionsChildProps;
 }
 
@@ -244,7 +240,6 @@ export class InitiativesMap extends PureComponent<Props, State> {
 
 const Data = adopt<DataProps, InputProps>({
   initiativeMarkers: <GetInitiativeMarkers />,
-  windowSize: <GetWindowSize />,
   initiativePermissions: (
     <GetInitiativesPermissions action="posting_initiative" />
   ),

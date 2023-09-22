@@ -10,8 +10,15 @@ import React, { useState } from 'react';
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 import { useParams } from 'react-router-dom';
 
+import tracks from 'containers/Admin/projects/project/analysis/tracks';
+import { trackEventByName } from 'utils/analytics';
+
+import { useIntl } from 'utils/cl-intl';
+import translations from './translations';
+
 const QuestionInput = ({ onClose }: { onClose: () => void }) => {
   const [question, setQuestion] = useState('');
+  const { formatMessage } = useIntl();
   const { mutate: askQuestion, isLoading } = useAddAnalysisQuestion();
   const { analysisId } = useParams() as { analysisId: string };
   const filters = useAnalysisFilterParams();
@@ -25,6 +32,9 @@ const QuestionInput = ({ onClose }: { onClose: () => void }) => {
       },
       {
         onSuccess: () => {
+          trackEventByName(tracks.questionCreated.name, {
+            extra: { analysisId },
+          });
           onClose();
         },
       }
@@ -56,7 +66,7 @@ const QuestionInput = ({ onClose }: { onClose: () => void }) => {
           disabled={!question}
           type="submit"
         >
-          Ask
+          {formatMessage(translations.ask)}
         </Button>
       </Box>
     </Box>

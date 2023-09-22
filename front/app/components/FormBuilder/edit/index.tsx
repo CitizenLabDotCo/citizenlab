@@ -42,7 +42,7 @@ import {
 } from 'services/formCustomFields';
 
 // hooks
-import useFormSubmissionCount from 'hooks/useFormSubmissionCount';
+import useFormSubmissionCount from 'api/submission_count/useSubmissionCount';
 
 // intl
 import { WrappedComponentProps } from 'react-intl';
@@ -339,7 +339,7 @@ const FormBuilderPage = ({ builderConfig }: FormBuilderPageProps) => {
     projectId: string;
     phaseId?: string;
   };
-  const submissionCount = useFormSubmissionCount({
+  const { data: submissionCount } = useFormSubmissionCount({
     projectId,
     phaseId,
   });
@@ -357,7 +357,7 @@ const FormBuilderPage = ({ builderConfig }: FormBuilderPageProps) => {
           defaultValues={{ customFields: formCustomFields }}
           phaseId={phaseId}
           projectId={projectId}
-          totalSubmissions={submissionCount.totalSubmissions}
+          totalSubmissions={submissionCount.data.attributes.totalSubmissions}
           builderConfig={builderConfig}
         />,
         modalPortalElement

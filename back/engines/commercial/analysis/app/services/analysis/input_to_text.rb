@@ -8,17 +8,10 @@ module Analysis
       @custom_fields = custom_fields
       @app_configuration = app_configuration
       @multiloc_service = MultilocService.new(app_configuration: @app_configuration)
+      @memoized_field_values = Hash.new { |h, k| h[k] = {} } # Hash with empty hash as default values
     end
 
     def execute(input, include_id: false, truncate_values: nil, override_field_labels: {})
-      # We currently piggyback on the XlsxExport::ValueVisitor, which transforms
-      # idea fields (built-in and custom) to string values suitable to display
-      # in an excel sheet. Our needs are currently very similar (transforming an
-      # input to a plaintext representation suitable for a LLM), so we are
-      # reusing this. Probably this should be changed to its own implementation
-      # once we optimize further for the LLM use case.
-      vv = XlsxExport::ValueVisitor.new(input, {}, app_configuration: @app_configuration)
-
       initial_object = if include_id
         { 'ID' => input.id }
       else
@@ -26,7 +19,7 @@ module Analysis
       end
       @custom_fields.each_with_object(initial_object) do |field, obj|
         label = override_field_labels[field.id] || @multiloc_service.t(field.title_multiloc)
-        full_value = field.accept(vv)
+        full_value = input_field_value(input, field)
         next if full_value&.blank? || (full_value.is_a?(String) && full_value.strip.blank?)
 
         value = truncate_values ? full_value&.truncate(truncate_values) : full_value
@@ -72,6 +65,24 @@ module Analysis
       else
         formatted_inputs
       end
+    end
+
+    private
+
+    def input_field_value(input, custom_field)
+      # We memoize as certain of these operations can be relatively slow,
+      # especially in case of HTML fields, since they need to be converted to
+      # plain text
+      return @memoized_field_values[input.id][custom_field.id] if input.id && @memoized_field_values[input.id][custom_field.id]
+
+      # We currently piggyback on the XlsxExport::ValueVisitor, which transforms
+      # idea fields (built-in and custom) to string values suitable to display
+      # in an excel sheet. Our needs are currently very similar (transforming an
+      # input to a plaintext representation suitable for a LLM), so we are
+      # reusing this. Probably this should be changed to its own implementation
+      # once we optimize further for the LLM use case.
+      vv = XlsxExport::ValueVisitor.new(input, {}, app_configuration: @app_configuration)
+      @memoized_field_values[input.id][custom_field.id] = custom_field.accept(vv)
     end
   end
 end

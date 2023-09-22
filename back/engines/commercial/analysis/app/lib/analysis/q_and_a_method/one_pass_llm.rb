@@ -26,6 +26,12 @@ module Analysis
         prompt = prompt(@analysis.source_project, inputs_text)
         complete_token_count = token_count(prompt) + TOKENS_FOR_RESPONSE
 
+        # As a rule of thumb, 1 token corresponds to ~4 charachters in English.
+        # Since calculating the token_count is slow, as an optimization, we
+        # don't even bother calculating the token count for a safe worst case of
+        # 6 charachters/token
+        next if prompt.size > (max_context_window * 6)
+
         # Is there an LLM that can handle the prompt size?
         selected_llm = enabled_llms
           .sort_by { |llm| -llm.accuracy }

@@ -112,7 +112,6 @@ const RegistrationCustomFieldForm = ({
           <SectionField>
             <InputMultilocWithLocaleSwitcher
               label={formatMessage(messages.fieldName)}
-              type="text"
               name="title_multiloc"
               disabled={builtInField}
             />

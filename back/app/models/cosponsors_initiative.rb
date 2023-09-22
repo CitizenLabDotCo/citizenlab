@@ -27,19 +27,8 @@ class CosponsorsInitiative < ApplicationRecord
   belongs_to :user
   belongs_to :initiative
 
-  before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, dependent: :nullify
 
   validates :user, :initiative, presence: true
   validates :status, inclusion: { in: STATUSES }
-
-  private
-
-  def remove_notifications
-    notifications.each do |notification|
-      unless notification.update cosponsors_initiative: nil
-        notification.destroy!
-      end
-    end
-  end
 end

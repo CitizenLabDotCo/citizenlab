@@ -14,6 +14,8 @@
 #  auto_tagging_method :string
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
+#  tags_ids            :jsonb
+#  filters             :jsonb
 #
 # Indexes
 #
@@ -26,6 +28,6 @@
 module Analysis
   class SummarizationTask < BackgroundTask
     belongs_to :analysis, class_name: 'Analysis::Analysis'
-    has_one :summary, class_name: 'Analysis::Summary', foreign_key: :background_task_id
+    has_one :summary, class_name: 'Analysis::Summary', foreign_key: :background_task_id, dependent: :destroy
   end
 end

@@ -9,6 +9,7 @@ el:
       "comment_on_your_idea": Ένα σχόλιο για την ιδέα μου
       "comment_on_your_initiative": Ένα σχόλιο σχετικά με την πρότασή μου
       "cosponsor_of_your_initiative": Ένας χρήστης αποδέχεται την πρόσκλησή μου να συνυπογράψει την πρότασή μου
+      "event_registration_confirmation": Επιβεβαίωση εγγραφής στην εκδήλωση
       "first_idea_published": Δημοσίευση της πρώτης μου ιδέας
       "idea_marked_as_spam": Αναφορά spam ιδεών
       "idea_published": Δημοσίευση της ιδέας μου
@@ -144,7 +145,6 @@ el:
     cosponsor_of_your_initiative:
       cta_reply_to: 'Δείτε την πρότασή σας'
       event_description_initiative: 'Συγχαρητήρια! Το %{cosponsorName} αποδέχτηκε την πρόσκλησή σας να συνδιοργανώσει την πρότασή σας.'
-      event_description_cosponsoring: 'Η συνυποστήριξη μιας πρότασης σημαίνει ότι το όνομά σας θα εμφανίζεται στη διεύθυνση <strong></strong> μαζί με τα ονόματα των άλλων συνυποστηρικτών της πρότασης.'
       main_header: '%{cosponsorName} αποδέχθηκε την πρόσκλησή σας να συνυποστηρίξει την πρότασή σας'
       subject: '%{cosponsorName} αποδέχθηκε την πρόσκλησή σας να συνυποστηρίξει την πρότασή σας'
       preheader_initiative: '%{cosponsorName} αποδέχθηκε την πρόσκλησή σας να συνυποστηρίξει την πρότασή σας'
@@ -192,6 +192,7 @@ el:
       cta_reply_to: 'Συν-χορηγός αυτής της πρότασης'
       event_description_initiative: '%{authorName} δημιούργησε μια νέα πρόταση και θα ήθελε να τη συνυποστηρίξετε.'
       event_description_cosponsoring: 'Η συνυποστήριξη μιας πρότασης σημαίνει ότι το όνομά σας θα εμφανίζεται στη διεύθυνση <strong></strong> μαζί με τα ονόματα των άλλων συνυποστηρικτών της πρότασης.'
+      event_description_before_action: 'Για να δείτε την πρόταση και να αποδεχτείτε την πρόσκληση, πρέπει να είστε συνδεδεμένοι στο λογαριασμό σας.'
       event_description_action: 'Κάντε κλικ παρακάτω για να διαβάσετε την πρόταση.'
       main_header: 'Έχετε προσκληθεί να συνυπογράψετε μια πρόταση'
       subject: 'Έχετε προσκληθεί να συνυπογράψετε μια πρόταση'
@@ -207,12 +208,14 @@ el:
       cta_accept_invitation: 'Αποδεχτείτε την πρόσκλησή σας'
       invitation_header: 'Η πρόσκλησή σας εκκρεμεί'
       preheader: '%{organizationName} σας έστειλε πρόσκληση για να ενταχθείτε στην πλατφόρμα συμμετοχής τους πριν από μερικές ημέρες.'
+      invitation_expiry_message: 'Η πρόσκληση αυτή λήγει σε περίπου %{expiryDaysRemaining} ημέρες.'
       subject: 'Εκκρεμεί πρόσκληση για την πλατφόρμα συμμετοχής του %{organizationName}'
     invite_received:
       added_a_message: '%{organizationName} έγραψε το ακόλουθο μήνυμα:'
       cta_accept_invitation: 'Αποδεχτείτε την πρόσκλησή σας'
       invitation_header: 'Είστε προσκεκλημένοι!'
       invitation_header_message: '%{organizationName} σας προσκάλεσε στην πλατφόρμα συμμετοχής τους.'
+      invitation_expiry_message: 'Η πρόσκληση αυτή λήγει σε %{expiryDays} ημέρες.'
       preheader: '%{organizationName} σας έστειλε πρόσκληση για να συμμετάσχετε στην πλατφόρμα συμμετοχής τους.'
       subject: 'Σας προσκαλούμε να συμμετάσχετε στην πλατφόρμα %{organizationName}'
     initiative_published:
@@ -636,6 +639,18 @@ el:
       body_2: 'Τα αποτελέσματα της ψηφοφορίας %{phaseTitle} στην πλατφόρμα %{organizationName} έχουν δημοσιευθεί!'
       body_3: 'Σας ενθαρρύνουμε να εξετάσετε τα αποτελέσματα και να μείνετε συντονισμένοι για περαιτέρω ενημερώσεις σχετικά με τα επόμενα βήματα.'
       cta_see_results: 'Δείτε τα αποτελέσματα στην πλατφόρμα'
+    event_registration_confirmation:
+      subject: "Είσαι μέσα! Η εγγραφή σας για το \"%{eventTitle}\" είναι επιβεβαιωμένη"
+      header_message: "%{firstName}, ευχαριστώ για την εγγραφή σας για"
+      event_details:
+        labels:
+          date: 'Ημερομηνία'
+          location: 'Τοποθεσία'
+          online_link: 'Ηλεκτρονικός σύνδεσμος'
+          description: 'Περιγραφή'
+          project: 'Έργο'
+      cta_go_to_event: 'Δείτε την εκδήλωση'
+      cta_add_to_calendar: 'Προσθέστε στο ημερολόγιό σας'
     voting_phase_started:
       subject: '%{organizationName}: Ξεκίνησε η φάση της ψηφοφορίας για το %{projectName}'
       preheader: 'Η φάση της ψηφοφορίας ξεκίνησε για το %{projectName} στην πλατφόρμα συμμετοχής του %{organizationName}.'
@@ -658,6 +673,7 @@ el:
         managers: 'Διευθυντές'
         admins_assigned_to_a_proposal: 'Διαχειριστές που έχουν ανατεθεί σε μια πρόταση'
         admins_and_managers_assigned_to_the_input: 'Διαχειριστές & διαχειριστές που έχουν οριστεί για την είσοδο'
+        new_attendee: 'Πρόσφατα εγγεγραμμένος χρήστης'
         user_who_is_invited_to_cosponsor_a_proposal: 'Χρήστης που καλείται να συνυποστηρίξει μια πρόταση'
         user_who_is_receiving_admin_rights: 'Χρήστης που λαμβάνει δικαιώματα διαχειριστή'
         user_who_is_receiving_folder_moderator_rights: 'Χρήστης που λαμβάνει δικαιώματα συντονιστή φακέλου'
@@ -677,6 +693,7 @@ el:
       content_type:
         comments: 'Σχόλια'
         content_moderation: 'Μετριασμός περιεχομένου'
+        events: 'Εκδηλώσεις'
         general: 'Γενικά'
         inputs: 'Είσοδοι'
         internal_comments: 'Εσωτερικά σχόλια'
@@ -731,3 +748,4 @@ el:
         voting_basket_submitted: 'Υποβάλλονται οι ψήφοι'
         7_days_after_invite_is_sent: '7 ημέρες μετά την αποστολή της πρόσκλησης'
         7_days_before_the_project_changes_phase: '7 ημέρες πριν από τη φάση αλλαγής του έργου'
+        registration_to_event: 'Εγγραφή σε μια εκδήλωση'

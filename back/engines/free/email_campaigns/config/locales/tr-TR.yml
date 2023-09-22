@@ -9,6 +9,7 @@ tr:
       "comment_on_your_idea": Fikrim hakkında bir yorum
       "comment_on_your_initiative": Önerim hakkında bir yorum
       "cosponsor_of_your_initiative": Bir kullanıcı teklifime ortak sponsor olma davetimi kabul ediyor
+      "event_registration_confirmation": Etkinlik kayıt onayı
       "first_idea_published": İlk fikrimin yayımlanması
       "idea_marked_as_spam": Fikrin spam olarak bildirilmesi
       "idea_published": Fikrimin yayımlanması
@@ -144,7 +145,6 @@ tr:
     cosponsor_of_your_initiative:
       cta_reply_to: 'Teklifinizi görüntüleyin'
       event_description_initiative: 'Tebrikler! %{cosponsorName} teklifinize eş sponsorluk yapma davetinizi kabul etti.'
-      event_description_cosponsoring: 'Bir teklife eş-sponsorluk yapmak, adınızın <strong>teklifin diğer eş-sponsorlarının adlarıyla birlikte</strong> görüntüleneceği anlamına gelir.'
       main_header: '%{cosponsorName} teklifinize eş sponsorluk yapma davetinizi kabul etti'
       subject: '%{cosponsorName} teklifinize eş sponsorluk yapma davetinizi kabul etti'
       preheader_initiative: '%{cosponsorName} teklifinize eş sponsorluk yapma davetinizi kabul etti'
@@ -192,6 +192,7 @@ tr:
       cta_reply_to: 'Bu teklife eş sponsorluk yapın'
       event_description_initiative: '%{authorName} yeni bir teklif hazırladı ve sizin de bu teklife destek vermenizi istiyor.'
       event_description_cosponsoring: 'Bir teklife eş-sponsorluk yapmak, adınızın <strong>teklifin diğer eş-sponsorlarının adlarıyla birlikte</strong> görüntüleneceği anlamına gelir.'
+      event_description_before_action: 'Teklifi görmek ve daveti kabul etmek için hesabınıza giriş yapmış olmanız gerekmektedir.'
       event_description_action: 'Teklifi okumak için aşağıya tıklayın.'
       main_header: 'Bir teklife eş sponsorluk yapmaya davet edildiniz'
       subject: 'Bir teklife eş sponsorluk yapmaya davet edildiniz'
@@ -207,12 +208,14 @@ tr:
       cta_accept_invitation: 'Davetiyenizi kabul edin'
       invitation_header: 'Davetiyeniz beklemede'
       preheader: '%{organizationName} birkaç gün önce katılım platformlarına katılmanız için size bir davet gönderdi.'
+      invitation_expiry_message: 'Bu davetiyenin süresi yaklaşık %{expiryDaysRemaining} gün içinde dolacaktır.'
       subject: '%{organizationName} katılım platformu için bekleyen davetiye'
     invite_received:
       added_a_message: '%{organizationName} aşağıdaki mesajı yazdı:'
       cta_accept_invitation: 'Davetiyenizi kabul edin'
       invitation_header: 'Davet edildiniz!'
       invitation_header_message: '%{organizationName} sizi katılım platformlarına davet etti.'
+      invitation_expiry_message: 'Bu davet %{expiryDays} gün içinde sona erecektir.'
       preheader: '%{organizationName} katılım platformlarına katılmanız için size bir davet gönderdi.'
       subject: '%{organizationName} platformuna katılmaya davet edildiniz'
     initiative_published:
@@ -636,6 +639,18 @@ tr:
       body_2: '%{organizationName} platformundaki %{phaseTitle} oylamasının sonuçları yayınlandı!'
       body_3: 'Sonuçları incelemenizi ve sonraki adımlarla ilgili güncellemeler için bizi takip etmenizi öneririz.'
       cta_see_results: 'Platformdaki sonuçları görün'
+    event_registration_confirmation:
+      subject: "Girdiniz! \"%{eventTitle}\" için kaydınız onaylandı"
+      header_message: "%{firstName}'a kaydolduğunuz için teşekkür ederiz."
+      event_details:
+        labels:
+          date: 'Tarih'
+          location: 'Konum'
+          online_link: 'Çevrimiçi bağlantı'
+          description: 'Açıklama'
+          project: 'Proje'
+      cta_go_to_event: 'Etkinliği görüntüleyin'
+      cta_add_to_calendar: 'Takviminize ekleyin'
     voting_phase_started:
       subject: '%{organizationName}: %{projectName}için oylama aşaması başladı'
       preheader: '%{projectName} için %{organizationName}katılım platformunda oylama süreci başladı.'
@@ -658,6 +673,7 @@ tr:
         managers: 'Yöneticiler'
         admins_assigned_to_a_proposal: 'Bir teklife atanan yöneticiler'
         admins_and_managers_assigned_to_the_input: 'Girişe atanan yöneticiler ve müdürler'
+        new_attendee: 'Yeni kayıtlı kullanıcı'
         user_who_is_invited_to_cosponsor_a_proposal: 'Bir teklife eş sponsorluk yapmaya davet edilen kullanıcı'
         user_who_is_receiving_admin_rights: 'Yönetici haklarını alan kullanıcı'
         user_who_is_receiving_folder_moderator_rights: 'Klasör moderatörü haklarını alan kullanıcı'
@@ -677,6 +693,7 @@ tr:
       content_type:
         comments: 'Yorumlar'
         content_moderation: 'İçerik moderasyonu'
+        events: 'Etkinlikler'
         general: 'Genel'
         inputs: 'Girişler'
         internal_comments: 'Dahili yorumlar'
@@ -731,3 +748,4 @@ tr:
         voting_basket_submitted: 'Oylar teslim edildi'
         7_days_after_invite_is_sent: 'Davetiye gönderildikten 7 gün sonra'
         7_days_before_the_project_changes_phase: 'Proje değişiklik aşamasından 7 gün önce'
+        registration_to_event: 'Bir etkinliğe kayıt'

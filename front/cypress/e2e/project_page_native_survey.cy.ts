@@ -1,9 +1,11 @@
+import moment = require('moment');
 import { randomString, randomEmail } from '../support/commands';
 
 describe('New continuous project with native survey', () => {
   const projectTitle = randomString();
   const projectDescription = randomString();
   const projectDescriptionPreview = randomString(30);
+  const eventTitle = randomString();
   let projectId: string;
   let projectSlug: string;
 
@@ -18,6 +20,16 @@ describe('New continuous project with native survey', () => {
     }).then((project) => {
       projectId = project.body.data.id;
       projectSlug = project.body.data.attributes.slug;
+
+      cy.apiCreateEvent({
+        projectId,
+        title: eventTitle,
+        location: 'Event location',
+        includeLocation: true,
+        description: 'Event description',
+        startDate: moment().subtract(1, 'day').toDate(),
+        endDate: moment().add(1, 'day').toDate(),
+      });
     });
   });
 
@@ -36,6 +48,9 @@ describe('New continuous project with native survey', () => {
   it('shows the survey buttons', () => {
     cy.contains('Take the survey').should('exist');
     cy.contains('1 survey').should('exist');
+
+    // Shows the event CTA when there is an upcoming event
+    cy.get('#e2e-project-see-events-button').should('exist');
   });
 
   after(() => {

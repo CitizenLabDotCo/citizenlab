@@ -16,6 +16,8 @@ class SideFxInitiativeService
     return unless initiative.published?
 
     after_publish initiative, user
+
+    log_activities_if_cosponsors_added(initiative, user, _old_cosponsor_ids = [])
   end
 
   def before_update(initiative, user)
@@ -29,11 +31,7 @@ class SideFxInitiativeService
     transition_to_review_pending_if_required(initiative, user)
     remove_user_from_past_activities_with_item(initiative, user) if initiative.anonymous_previously_changed?(to: true)
 
-    if initiative.publication_status_previous_change == %w[draft published]
-      after_publish initiative, user
-    elsif initiative.published?
-      LogActivityJob.perform_later(initiative, 'changed', user_for_activity_on_anonymizable_item(initiative, user), initiative.updated_at.to_i)
-    end
+    LogActivityJob.perform_later(initiative, 'changed', user_for_activity_on_anonymizable_item(initiative, user), initiative.updated_at.to_i)
 
     if initiative.assignee_id_previously_changed?
       initiating_user = @automatic_assignment ? nil : user
@@ -109,7 +107,7 @@ class SideFxInitiativeService
   end
 
   def after_publish(initiative, user)
-    add_autoreaction initiative
+    add_autoreaction initiative, user
     log_activity_jobs_after_published initiative, user
     create_followers initiative, user
   end
@@ -122,9 +120,22 @@ class SideFxInitiativeService
     @automatic_assignment = true
   end
 
-  def add_autoreaction(initiative)
-    initiative.reactions.create!(mode: 'up', user: initiative.author)
-    initiative.reload
+  def add_autoreaction(initiative, user)
+    reaction = Reaction.new(reactable: initiative, user: user, mode: 'up')
+
+    begin
+      Pundit.authorize(
+        user,
+        reaction,
+        :create?,
+        policy_class: InitiativeReactionPolicy
+      )
+    rescue Pundit::NotAuthorizedErrorWithReason
+      # Do not create the auto-reaction.
+    else
+      initiative.reactions.create!(mode: 'up', user: initiative.author)
+      initiative.reload
+    end
   end
 
   def log_activity_jobs_after_published(initiative, user)

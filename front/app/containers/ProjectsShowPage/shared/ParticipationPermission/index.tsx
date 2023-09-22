@@ -14,7 +14,7 @@ import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import styled from 'styled-components';
 
 // utils
-import { IParticipationContextPermissionAction } from 'services/actionPermissions';
+import { IParticipationContextPermissionAction } from 'api/permissions/types';
 
 const Container = styled.div`
   position: relative;

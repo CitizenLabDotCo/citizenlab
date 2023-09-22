@@ -92,13 +92,11 @@ commands:
 
   copy_secrets_from_lastpass:
     steps:
-      - run: |
-          if command -v sudo &> /dev/null
-          then
-            sudo apt-get update && sudo apt-get install -y lastpass-cli
-          else
-            apt-get update && apt-get install -y lastpass-cli
-          fi
+      # Installing LastPass CLI from GitHub instead of using apt-get because the last
+      # version available in the source repositories is 1.3.3, which has been broken by
+      # a change of SSL certificate. For more information, see:
+      # https://github.com/lastpass/lastpass-cli/issues/653
+      - run: sudo .circleci/install_lpass.sh v1.3.5
       - run: echo $LASTPASS_PASSWORD | LPASS_DISABLE_PINENTRY=1 lpass login ${LASTPASS_EMAIL}
       - run: lpass show --notes 'citizenlab back-secret.env' > env_files/back-secret.env
       - run: lpass show --notes 'citizenlab front-secret.env' > env_files/front-secret.env
@@ -575,8 +573,6 @@ jobs:
       - run:
           command: SEGMENT_API_KEY=$SEGMENT_API_KEY_STAGING SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN SENTRY_DSN=$SENTRY_DSN SENTRY_ENV=$SENTRY_ENV_STAGING POSTHOG_API_KEY=$POSTHOG_API_KEY_STAGING npm run build
           no_output_timeout: "30m"
-      - run:
-          command: rm build/*.map
       - deploy:
           name: Deploy to S3 if tests pass and branch is Master
           command: |
@@ -601,8 +597,6 @@ jobs:
       - run:
           command: SEGMENT_API_KEY=$SEGMENT_API_KEY_PRODUCTION SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN SENTRY_DSN=$SENTRY_DSN POSTHOG_API_KEY=$POSTHOG_API_KEY_PRODUCTION npm run build
           no_output_timeout: "30m"
-      - run:
-          command: rm build/*.map
       - deploy:
           name: Deploy production version
           command: |

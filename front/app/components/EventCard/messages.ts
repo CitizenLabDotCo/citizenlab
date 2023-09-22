@@ -25,4 +25,16 @@ export default defineMessages({
     id: 'app.components.EventCard.a11y_lessContentVisible',
     defaultMessage: 'Less event information became visble.',
   },
+  readMore: {
+    id: 'app.components.EventCard.readMore',
+    defaultMessage: 'Read more',
+  },
+  attending: {
+    id: 'app.containers.EventsShow.attending',
+    defaultMessage: 'attending',
+  },
+  online: {
+    id: 'app.containers.EventsShow.online2',
+    defaultMessage: 'Online meeting',
+  },
 });
