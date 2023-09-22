@@ -492,6 +492,8 @@
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmitted": "Jūs jau esat iesniedzis savu budžetu. Lai mainītu budžetu, noklikšķiniet uz \"Mainīt budžetu\".",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage": "Jūs jau esat iesniedzis savu budžetu. Lai mainītu budžetu, atgriezieties projekta lapā un noklikšķiniet uz \"Mainīt budžetu\".",
   "app.components.VoteInputs.single.youHaveVotedForX2": "Jūs balsojāt par {votes, plural, =0 {# iespējas} one {# opcija} other {# iespējas}}",
+  "app.components.admin.PostManager.components.PostTable.Row.cancel": "Atcelt",
+  "app.components.admin.PostManager.components.PostTable.Row.confirm": "Apstipriniet",
   "app.components.admin.SlugInput.resultingURL": "Rezultātā iegūtais URL",
   "app.components.admin.SlugInput.slugTooltip": "Slugs ir unikāls vārdu kopums lapas tīmekļa adreses jeb URL adreses beigās.",
   "app.components.admin.SlugInput.urlSlugBrokenLinkWarning": "Ja nomainīsiet URL, saites uz lapu, izmantojot iepriekšējo URL, vairs nedarbosies.",
