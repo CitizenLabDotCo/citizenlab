@@ -4,7 +4,13 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'Authentication' do
-  explanation 'Contact support@citizenlab.co to get hold of your client_id and client_secret. Authenticate with your client_id and client_secret to retrieve a JWT token. You need to send the JWT token you got back along with every request to the API, as part of the `Authorization` header. The JWT token expires after 24h, so make sure to re-authenticate.'
+  explanation <<~DESC.squish
+    To obtain your client_id and client_secret please visit 'Admin > Tools > Public API Access' within your Citizenlab platform.
+    If this feature is not enabled on your platform then please contact support@citizenlab.co. 
+    Authenticate with your client_id and client_secret to retrieve a JWT token. 
+    You need to send the JWT token you got back along with every request to the API, as part of the `Authorization` header. 
+    The JWT token expires after 24h, so make sure to re-authenticate.
+  DESC
 
   post '/api/v2/authenticate' do
     route_summary 'Retrieve a JWT token for authentication.'
