@@ -492,6 +492,8 @@
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmitted": "Je hebt je budget al ingediend. Klik op \"Wijzig je budget\" om je budget te wijzigen.",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage": "Je hebt je budget al ingediend. Om je budget te wijzigen, ga je terug naar de projectpagina en klik je op \"Wijzig je budget\".",
   "app.components.VoteInputs.single.youHaveVotedForX2": "Je hebt gestemd op {votes, plural, =0 {# opties} one {# optie} other {# opties}}",
+  "app.components.admin.PostManager.components.PostTable.Row.cancel": "Annuleer",
+  "app.components.admin.PostManager.components.PostTable.Row.confirm": "Bevestigen",
   "app.components.admin.SlugInput.resultingURL": "Resulterende URL",
   "app.components.admin.SlugInput.slugTooltip": "De slug is de unieke reeks woorden aan het eind van het webadres van een pagina, of URL.",
   "app.components.admin.SlugInput.urlSlugBrokenLinkWarning": "Als je de URL verandert, zullen links naar de pagina met de oude URL niet langer functioneren.",
