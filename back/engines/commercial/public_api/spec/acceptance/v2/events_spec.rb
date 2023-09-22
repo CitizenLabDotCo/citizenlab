@@ -6,7 +6,7 @@ require './engines/commercial/public_api/spec/acceptance/v2/support/shared'
 
 resource 'Events' do
   explanation <<~DESC.squish
-    TODO
+    Events can be created in projects and residents can sign up to attend events (event_attendances).
   DESC
 
   include_context 'common_auth'
@@ -15,9 +15,7 @@ resource 'Events' do
 
   get '/api/v2/events' do
     route_summary 'List all events'
-    route_description <<~DESC.squish
-      TODO
-    DESC
+    route_description 'List all events created on the platform.'
 
     include_context 'common_list_params'
 
