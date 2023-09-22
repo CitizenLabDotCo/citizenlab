@@ -6,7 +6,7 @@ const pollOptionsKeys = {
   all: () => [baseKey],
   lists: () => [{ ...baseKey, operation: 'list' }],
   list: ({ questionId }: { questionId?: string }) => [
-    { ...baseKey, operation: 'list', parameters: { questionId } },
+    { ...baseKey, operation: 'list', parameters: { id: questionId } },
   ],
 } satisfies QueryKeys;
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 
 import { isNilOrError } from 'utils/helperUtils';
 import { insertConfiguration } from 'utils/moduleUtils';
@@ -27,16 +27,10 @@ import SearchInput from 'components/UI/SearchInput';
 import Outlet from 'components/Outlet';
 
 // hooks
-import useModerations from '../../hooks/useModerations';
-import useModerationsCount from '../../hooks/useModerationsCount';
-
-// services
-import {
-  updateModerationStatus,
-  IModerationData,
-  TModeratableType,
-} from '../../services/moderations';
-import { removeInappropriateContentFlag } from 'modules/commercial/flag_inappropriate_content/services/inappropriateContentFlags';
+import useModerations from 'api/moderations/useModerations';
+import useModerationsCount from 'api/moderation_count/useModerationsCount';
+import useRemoveInappropriateContentFlag from 'modules/commercial/flag_inappropriate_content/api/inappropriate_content_flags/useRemoveInappropriateContentFlag';
+import useUpdateModerationStatus from 'api/moderations/useUpdateModerationStatus';
 
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -52,6 +46,9 @@ import { colors, fontSizes } from 'utils/styleUtils';
 
 // typings
 import { IOption, InsertConfigurationOptions } from 'typings';
+import { getPageNumberFromUrl } from 'utils/paginationUtils';
+
+import { IModerationData, TModeratableType } from 'api/moderations/types';
 
 const Container = styled.div`
   display: flex;
@@ -173,6 +170,7 @@ const Uppercase = styled.span`
 export interface ITabNamesMap {
   read: 'read';
   unread: 'unread';
+  warnings: 'warnings';
 }
 
 export type TActivityTabName = ITabNamesMap[keyof ITabNamesMap];
@@ -198,6 +196,9 @@ const pageSizes = [
 
 const Moderation = () => {
   const { formatMessage } = useIntl();
+  const { mutateAsync: updateModerationStatus } = useUpdateModerationStatus();
+  const { mutateAsync: removeInappropriateContentFlag } =
+    useRemoveInappropriateContentFlag();
 
   const [selectedModerations, setSelectedModerations] = useState<
     IModerationData[]
@@ -209,8 +210,10 @@ const Moderation = () => {
   const [selectedPageSize, setSelectedPageSize] = useState<number>(
     pageSizes[1].value
   );
-  const [searchTerm, setSearchTerm] = useState<string>('');
+
   const [selectedTab, setSelectedTab] = useState<TActivityTabName>('unread');
+  const [searchTerm, setSearchTerm] = useState<string>('');
+
   const [actionBarErrorMessage, setActionBarErrorMessage] = useState<
     string | null
   >(null);
@@ -225,71 +228,50 @@ const Moderation = () => {
     },
   ]);
 
-  const {
-    list: moderations,
-    pageSize,
-    pageNumber,
-    moderationStatus,
-    lastPage,
-    onModerationStatusChange,
-    onPageNumberChange,
-    onPageSizeChange,
-    onModeratableTypesChange,
-    onProjectIdsChange,
-    onSearchTermChange,
-    onIsFlaggedChange,
-  } = useModerations({
+  const moderationStatus = selectedTab === 'warnings' ? undefined : selectedTab;
+
+  const { data: moderations } = useModerations({
     pageSize: selectedPageSize,
-    moderationStatus: 'unread',
+    moderationStatus,
+    pageNumber: selectedPageNumber,
+    searchTerm,
+    moderatableTypes: selectedTypes,
+    projectIds: selectedProjectIds,
+    isFlagged: selectedTab === 'warnings',
   });
-  const moderationsWithActiveFlagCount = useModerationsCount({
+
+  const { data: moderationsWithActiveFlagCount } = useModerationsCount({
     isFlagged: true,
   });
 
   const handleOnSelectAll = (_event: React.ChangeEvent) => {
     if (!processing && !isNilOrError(moderations)) {
       setSelectedModerations(
-        selectedModerations.length < moderations.length ? moderations : []
+        selectedModerations.length < moderations.data.length
+          ? moderations.data
+          : []
       );
     }
   };
 
   const handleOnTabChange = (tabName: TActivityTabName) => {
     setSelectedTab(tabName);
+    setSelectedModerations([]);
     trackEventByName(tracks.tabClicked, {
       tabName,
     });
   };
 
-  useEffect(() => {
-    if (selectedTab === 'read' || selectedTab === 'unread') {
-      onIsFlaggedChange(false);
-      onModerationStatusChange(selectedTab);
-    }
-
-    // OS: how to?
-    if (selectedTab === 'warnings') {
-      onIsFlaggedChange(true);
-      onModerationStatusChange(null);
-    }
-  }, [selectedTab, onIsFlaggedChange, onModerationStatusChange]);
-
   const handleOnPageNumberChange = (pageNumber: number) => {
     trackEventByName(tracks.pageNumberClicked);
+    setSelectedModerations([]);
     setSelectedPageNumber(pageNumber);
   };
 
-  useEffect(() => {
-    onPageNumberChange(selectedPageNumber);
-  }, [selectedPageNumber, onPageNumberChange]);
-
   const handleOnPageSizeChange = (option: IOption) => {
     setSelectedPageSize(option.value);
+    setSelectedModerations([]);
   };
-
-  useEffect(() => {
-    onPageSizeChange(selectedPageSize);
-  }, [selectedPageSize, onPageSizeChange]);
 
   const handleOnModeratableTypesChange = (
     newSelectedTypes: TModeratableType[]
@@ -298,18 +280,10 @@ const Moderation = () => {
     trackEventByName(tracks.typeFilterUsed);
   };
 
-  useEffect(() => {
-    onModeratableTypesChange(selectedTypes);
-  }, [selectedTypes, onModeratableTypesChange]);
-
   const handleOnProjectIdsChange = (newProjectIds: string[]) => {
     setSelectedProjectIds(newProjectIds);
     trackEventByName(tracks.projectFilterUsed);
   };
-
-  useEffect(() => {
-    onProjectIdsChange(selectedProjectIds);
-  }, [selectedProjectIds, onProjectIdsChange]);
 
   const handleSearchTermChange = (searchTerm: string) => {
     setSearchTerm(searchTerm);
@@ -317,10 +291,6 @@ const Moderation = () => {
       searchTerm,
     });
   };
-
-  useEffect(() => {
-    onSearchTermChange(searchTerm);
-  }, [searchTerm, onSearchTermChange]);
 
   const isModerationSelected = (
     selectedModeration: IModerationData,
@@ -382,11 +352,11 @@ const Moderation = () => {
       const updatedModerationStatus =
         moderationStatus === 'read' ? 'unread' : 'read';
       const promises = selectedModerations.map((moderation) =>
-        updateModerationStatus(
-          moderation.id,
-          moderation.attributes.moderatable_type,
-          updatedModerationStatus
-        )
+        updateModerationStatus({
+          moderationId: moderation.id,
+          moderatableType: moderation.attributes.moderatable_type,
+          moderationStatus: updatedModerationStatus,
+        })
       );
 
       try {
@@ -417,13 +387,8 @@ const Moderation = () => {
     []
   );
 
-  useEffect(() => {
-    if (!processing) {
-      setSelectedModerations([]);
-    }
-  }, [pageNumber, moderationStatus, pageSize, processing]);
-
-  if (!isNilOrError(moderations)) {
+  if (moderations) {
+    const lastPage = getPageNumberFromUrl(moderations.links?.last) || 1;
     return (
       <Container>
         <PageTitleWrapper>
@@ -446,7 +411,7 @@ const Moderation = () => {
                   onData={handleData}
                   activeFlagsCount={
                     !isNilOrError(moderationsWithActiveFlagCount)
-                      ? moderationsWithActiveFlagCount.count
+                      ? moderationsWithActiveFlagCount.data.attributes.count
                       : 0
                   }
                 />
@@ -497,7 +462,7 @@ const Moderation = () => {
             )}
             <StyledSearchInput
               onChange={handleSearchTermChange}
-              a11y_numberOfSearchResults={moderations.length}
+              a11y_numberOfSearchResults={moderations.data.length}
             />
           </ActionBarTop>
           <ActionBarBottom>
@@ -511,14 +476,14 @@ const Moderation = () => {
               <Th className="checkbox">
                 <StyledCheckbox
                   checked={
-                    moderations.length > 0 &&
-                    selectedModerations.length === moderations.length
+                    moderations.data.length > 0 &&
+                    selectedModerations.length === moderations.data.length
                   }
                   indeterminate={
                     selectedModerations.length > 0 &&
-                    selectedModerations.length < moderations.length
+                    selectedModerations.length < moderations.data.length
                   }
-                  disabled={moderations.length === 0}
+                  disabled={moderations.data.length === 0}
                   onChange={handleOnSelectAll}
                 />
               </Th>
@@ -545,9 +510,9 @@ const Moderation = () => {
               <Th className="goto">&nbsp;</Th>
             </Tr>
           </Thead>
-          {moderations.length > 0 && (
+          {moderations.data.length > 0 && (
             <Tbody>
-              {moderations.map((moderationItem) => (
+              {moderations.data.map((moderationItem) => (
                 <ModerationRow
                   key={moderationItem.id}
                   moderation={moderationItem}
@@ -566,10 +531,10 @@ const Moderation = () => {
           )}
         </Table>
 
-        {moderations.length > 0 && (
+        {moderations.data.length > 0 && (
           <Footer>
             <StyledPagination
-              currentPage={pageNumber}
+              currentPage={selectedPageNumber}
               totalPages={lastPage}
               loadPage={handleOnPageNumberChange}
             />
@@ -583,13 +548,15 @@ const Moderation = () => {
               <PageSizeSelect
                 options={pageSizes}
                 onChange={handleOnPageSizeChange}
-                value={pageSizes.find((item) => item.value === pageSize)}
+                value={pageSizes.find(
+                  (item) => item.value === selectedPageSize
+                )}
               />
             </RowsPerPage>
           </Footer>
         )}
 
-        {moderations.length === 0 && (
+        {moderations.data.length === 0 && (
           <Empty>
             <EmptyIcon name="inbox" width="60px" height="60px" fill="#bfe7eb" />
             <EmptyMessage>

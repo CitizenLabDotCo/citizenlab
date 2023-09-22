@@ -1,10 +1,11 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
 import { AuthenticationContext } from 'api/authentication/authentication_requirements/types';
 
+const baseType = { type: 'custom_fields_json_forms_schema' };
 const schemaKeys = {
-  all: () => [{ type: 'custom_fields_json_forms_schema' }],
+  all: () => [baseType],
   item: (authenticationContext: AuthenticationContext) => [
-    { ...schemaKeys.all()[0], authenticationContext },
+    { ...baseType, operation: 'item', parameters: { authenticationContext } },
   ],
 } satisfies QueryKeys;
 

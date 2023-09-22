@@ -203,7 +203,7 @@ const ReactionControl = ({
         onScrollToOfficialFeedback={onScrollToOfficialFeedback}
         disabledReason={reactingPermission?.disabledReason}
       />
-      <Box mt="8px">
+      <Box mt="20px">
         <FollowUnfollow
           followableType="initiatives"
           followableId={initiative.data.id}
