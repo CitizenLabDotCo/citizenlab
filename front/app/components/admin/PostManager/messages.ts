@@ -21,22 +21,6 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.inputsNeedFeedbackToggle',
     defaultMessage: 'Only show inputs that need feedback',
   },
-  deleteAllSelectedInputs: {
-    id: 'app.components.admin.PostManager.deleteAllSelectedInputs',
-    defaultMessage: 'Delete {count} inputs',
-  },
-  deleteInputsConfirmation: {
-    id: 'app.components.admin.PostManager.deleteInputsConfirmation',
-    defaultMessage: 'Are you sure you want to delete {count} inputs?',
-  },
-  deleteAllSelectedInitiatives: {
-    id: 'app.components.admin.PostManager.deleteAllSelectedInitiatives',
-    defaultMessage: 'Delete {count} selected initiatives',
-  },
-  deleteInitiativesConfirmation: {
-    id: 'app.components.admin.PostManager.deleteInitiativesConfirmation',
-    defaultMessage: 'Are you sure you want to delete {count} initiatives?',
-  },
   loseIdeaPhaseInfoConfirmation: {
     id: 'app.components.admin.PostManager.loseIdeaPhaseInfoConfirmation',
     defaultMessage:
