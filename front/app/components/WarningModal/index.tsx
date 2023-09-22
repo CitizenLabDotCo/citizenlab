@@ -17,14 +17,14 @@ import messages from './messages';
 
 interface Props {
   open: boolean;
-  isLoading: boolean;
+  isLoading?: boolean;
   title: React.ReactNode;
-  explanation: React.ReactNode;
+  explanation?: React.ReactNode;
   onClose: () => void;
   onConfirm: () => void;
 }
 
-const PhaseDeselectModal = ({
+const WarningModal = ({
   open,
   isLoading,
   title,
@@ -78,4 +78,4 @@ const PhaseDeselectModal = ({
   );
 };
 
-export default PhaseDeselectModal;
+export default WarningModal;
