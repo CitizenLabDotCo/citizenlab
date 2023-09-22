@@ -492,6 +492,8 @@
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmitted": "Ja heu enviat el vostre pressupost. Feu clic a \"Modifica el pressupost\" per canviar el pressupost.",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage": "Ja heu enviat el vostre pressupost. Per canviar el pressupost, torneu a la pàgina del projecte i feu clic a \"Modifica el pressupost\".",
   "app.components.VoteInputs.single.youHaveVotedForX2": "Has votat {votes, plural, =0 {# opcions} one {#opció} other {# opcions}}",
+  "app.components.admin.PostManager.components.PostTable.Row.cancel": "Cancel · lar",
+  "app.components.admin.PostManager.components.PostTable.Row.confirm": "Confirmeu",
   "app.components.admin.SlugInput.resultingURL": "URL resultant",
   "app.components.admin.SlugInput.slugTooltip": "L’identificador d’URL és el conjunt únic de paraules al final de l'adreça web o URL de la pàgina.",
   "app.components.admin.SlugInput.urlSlugBrokenLinkWarning": "Si canvieu l'URL, els enllaços a la pàgina que utilitzin l'URL antic deixaran de funcionar.",
