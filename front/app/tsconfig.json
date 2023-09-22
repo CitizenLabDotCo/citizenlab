@@ -25,6 +25,6 @@
     ]
   },
   "files": ["custom.d.ts"],
-  "include": ["**/*"],
+  "include": ["**/*", "../playwright.config.ts"],
   "exclude": ["node_modules"]
 }
