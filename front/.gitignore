@@ -31,7 +31,7 @@ cypress/screenshots/
 
 .storybook/snapshots/test-results
 .storybook/snapshots/test-runner/runner.spec.ts-snapshots
-.storybook/playwright/snapshot-tests.json
+.storybook/snapshots/snapshot-tests.json
 
 # Storybook generated output
 dist/
