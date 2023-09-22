@@ -33,6 +33,8 @@ const LaunchModal = ({ onClose }: LaunchModalProps) => {
           <b>{formatMessage(translations.limitation2Title)}</b>{' '}
           {formatMessage(translations.limitation2Text)}
         </Text>
+        <Text>{formatMessage(translations.description1)}</Text>
+        <Text>{formatMessage(translations.description2)}</Text>
       </Box>
       <Button onClick={onClose}>
         {formatMessage(translations.agreeButton)}

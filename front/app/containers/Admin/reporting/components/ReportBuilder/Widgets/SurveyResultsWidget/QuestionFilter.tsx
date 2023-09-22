@@ -1,7 +1,7 @@
 import React, { ChangeEvent } from 'react';
 
 // hooks
-import useFormResults from 'hooks/useFormResults';
+import useFormResults from 'api/survey_results/useSurveyResults';
 import useLocalize from 'hooks/useLocalize';
 
 // utils
@@ -27,14 +27,14 @@ const QuestionFilter = ({
 }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
-  const formResults = useFormResults({
+  const { data: formResults } = useFormResults({
     projectId,
     phaseId,
   });
 
   const fitleredResults =
     !isNilOrError(formResults) &&
-    formResults.results.filter((result) => {
+    formResults.data.attributes.results.filter((result) => {
       return (
         result.inputType !== 'text' && result.inputType !== 'multiline_text'
       );

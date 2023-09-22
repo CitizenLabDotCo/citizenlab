@@ -86,6 +86,7 @@ const CosponsorsFormSection = ({ cosponsorships }: Props) => {
                 placeholder={formatMessage(messages.cosponsorsPlaceholder)}
                 onChangeInputField={handleOnChangeInputField}
                 displayValue={cosponsorsText}
+                showUniqueUsers
               />
             </FormLabel>
           </SectionField>
