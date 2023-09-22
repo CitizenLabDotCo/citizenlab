@@ -10,12 +10,4 @@ export default defineMessages({
     defaultMessage:
       'You are trying to remove this idea from a phase where it has received votes. If you do this, these votes will be lost. Are you sure you want to remove this idea from this phase?',
   },
-  cancel: {
-    id: 'app.components.admin.PostManager.components.PostTable.Row.cancel',
-    defaultMessage: 'Cancel',
-  },
-  confirm: {
-    id: 'app.components.admin.PostManager.components.PostTable.Row.confirm',
-    defaultMessage: 'Confirm',
-  },
 });
