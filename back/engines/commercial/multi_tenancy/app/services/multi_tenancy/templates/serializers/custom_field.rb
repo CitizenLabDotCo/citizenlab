@@ -16,6 +16,7 @@ module MultiTenancy
           maximum
           maximum_label_multiloc
           minimum_label_multiloc
+          select_count_enabled
           ordering
           title_multiloc
         ]

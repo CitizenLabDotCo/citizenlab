@@ -51,7 +51,7 @@ class CustomField < ApplicationRecord
   CODES = %w[gender birthyear domicile education title_multiloc body_multiloc topic_ids location_description proposed_budget idea_images_attributes idea_files_attributes author_id budget ideation_section1 ideation_section2 ideation_section3].freeze
   VISIBLE_TO_PUBLIC = 'public'
   VISIBLE_TO_ADMINS = 'admins'
-
+  
   validates :resource_type, presence: true, inclusion: { in: FIELDABLE_TYPES }
   validates(
     :key,
@@ -65,6 +65,7 @@ class CustomField < ApplicationRecord
   validates :required, inclusion: { in: [true, false] }
   validates :enabled, inclusion: { in: [true, false] }
   validates :hidden, inclusion: { in: [true, false] }
+  validates :select_count_enabled, inclusion: { in: [true, false] }
   validates :code, inclusion: { in: CODES }, uniqueness: { scope: %i[resource_type resource_id] }, allow_nil: true
   validates :answer_visible_to, presence: true, inclusion: { in: [VISIBLE_TO_PUBLIC, VISIBLE_TO_ADMINS] }
 
