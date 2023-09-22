@@ -17,7 +17,7 @@ resource 'Email Campaigns' do
 
     include_context 'common_list_params'
 
-    context 'when the page size is smaller than the total number of topics' do
+    context 'when the page size is smaller than the total number of deliveries' do
       let(:page_size) { 2 }
 
       example_request 'Successful response' do
@@ -30,16 +30,8 @@ resource 'Email Campaigns' do
       end
     end
 
-    # include_examples 'filtering_by_date', :email_campaign, :created_at
-    #
-    # # Temporarily disable acts_as_list callbacks because they modify the updated_at
-    # # attribute and break the tests. We use `it_behaves_like` to include the tests
-    # # in a nested context to limit the scope of the `around` block.
-    # it_behaves_like 'filtering_by_date', :email_campaign, :updated_at do
-    #   around do |example|
-    #     EmailCampaigns::Campaign.acts_as_list_no_update { example.run }
-    #   end
-    # end
+    include_examples 'filtering_by_date', :delivery, :created_at, 'email_campaign_delivery'
+    include_examples 'filtering_by_date', :delivery, :updated_at, 'email_campaign_delivery'
   end
 
   get '/api/v2/email_campaign_deliveries/:id' do

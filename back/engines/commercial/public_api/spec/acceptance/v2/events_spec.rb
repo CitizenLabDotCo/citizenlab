@@ -35,16 +35,8 @@ resource 'Events' do
       end
     end
 
-    # include_examples 'filtering_by_date', :email_campaign, :created_at
-    #
-    # # Temporarily disable acts_as_list callbacks because they modify the updated_at
-    # # attribute and break the tests. We use `it_behaves_like` to include the tests
-    # # in a nested context to limit the scope of the `around` block.
-    # it_behaves_like 'filtering_by_date', :email_campaign, :updated_at do
-    #   around do |example|
-    #     EmailCampaigns::Campaign.acts_as_list_no_update { example.run }
-    #   end
-    # end
+    include_examples 'filtering_by_date', :event, :created_at
+    include_examples 'filtering_by_date', :event, :updated_at
   end
 
   get '/api/v2/events/:id' do
