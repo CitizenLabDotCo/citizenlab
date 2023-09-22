@@ -492,6 +492,8 @@
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmitted": "Hai già inviato il tuo budget. Clicca su \"Modifica il tuo budget\" per modificarlo.",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage": "Hai già inviato il tuo budget. Per modificare il tuo budget, torna alla pagina del progetto e clicca su \"Modifica il tuo budget\".",
   "app.components.VoteInputs.single.youHaveVotedForX2": "Hai votato per {votes, plural, =0 {# opzioni} one {# opzione} other {# opzioni}}",
+  "app.components.admin.PostManager.components.PostTable.Row.cancel": "Annullamento",
+  "app.components.admin.PostManager.components.PostTable.Row.confirm": "Confermare",
   "app.components.admin.SlugInput.resultingURL": "URL risultante",
   "app.components.admin.SlugInput.slugTooltip": "Il campo dati dinamico è l'insieme univoco di parole alla fine dell'indirizzo Web o URL della pagina.",
   "app.components.admin.SlugInput.urlSlugBrokenLinkWarning": "Se si modifica l'URL, i collegamenti alla pagina utilizzando l'URL precedente non funzioneranno più.",
