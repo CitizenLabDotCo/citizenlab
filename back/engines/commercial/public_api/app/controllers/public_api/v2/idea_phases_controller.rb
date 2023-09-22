@@ -3,12 +3,7 @@
 module PublicApi
   class V2::IdeaPhasesController < PublicApiController
     def index
-      idea_phases = IdeasPhase
-        .where(query_filters)
-        .order(:id)
-        .page(params[:page_number])
-        .per(num_per_page)
-      list_items idea_phases, V2::IdeaPhaseSerializer
+      list_items IdeasPhase.where(query_filters), V2::IdeaPhaseSerializer
     end
 
     private

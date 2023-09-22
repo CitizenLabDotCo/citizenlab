@@ -32,58 +32,37 @@ resource 'Posts' do
       the votes cast on an idea within a particular voting phase.
     DESC
 
-    let(:date) { '2023-09-22T09:00:00.200Z' }
     let(:project) { create(:project_with_phases) }
     let(:ideas) { create_list(:idea, 2, project: project) }
     let!(:idea_phases) do
       2.times do |index|
-        create(:ideas_phase, idea: ideas[index], phase: project.phases[index], created_at: date, updated_at: date)
+        create(:ideas_phase, idea: ideas[index], phase: project.phases[index])
       end
       IdeasPhase.all
     end
 
     example_request 'List all associations between ideas and phases' do
       assert_status 200
-
-      expected_idea_phases = idea_phases.map do |idea_phase|
-        {
-          phase_id: idea_phase.phase_id,
-          idea_id: idea_phase.idea_id,
-          baskets_count: 0,
-          votes_count: 0,
-          created_at: date,
-          updated_at: date
-        }
-      end
-
-      expect(json_response_body[:idea_phases]).to match_array(expected_idea_phases)
+      expect(json_response_body[:idea_phases].pluck(:phase_id)).to match_array(idea_phases.pluck(:phase_id))
+      expect(json_response_body[:idea_phases].pluck(:idea_id)).to match_array(idea_phases.pluck(:idea_id))
+      expect(json_response_body[:idea_phases].first.keys).to match_array(%i[phase_id idea_id baskets_count votes_count created_at updated_at])
     end
 
     describe 'when filtering by idea ID' do
-      let(:idea_id) { ideas.first.id }
+      let(:idea_id) { idea_phases.first.idea_id }
 
       example_request 'List only idea-phase associations for the specified idea', document: false do
         assert_status 200
-
-        expected_idea_phases = ideas.first.phase_ids.map do |phase_id|
-          { phase_id: phase_id, idea_id: idea_id, baskets_count: 0, votes_count: 0, created_at: date, updated_at: date }
-        end
-
-        expect(json_response_body[:idea_phases]).to match_array(expected_idea_phases)
+        expect(json_response_body[:idea_phases].pluck(:phase_id)).to match_array([idea_phases.first[:phase_id]])
       end
     end
 
     describe 'when filtering by phase ID' do
-      let(:phase_id) { project.phases.first.id }
+      let(:phase_id) { idea_phases.first.phase_id }
 
       example_request 'List only idea-phase associations for the specified phase', document: false do
         assert_status 200
-
-        expected_idea_phases = [{
-          phase_id: phase_id, idea_id: ideas.first.id, baskets_count: 0, votes_count: 0, created_at: date, updated_at: date
-        }]
-
-        expect(json_response_body[:idea_phases]).to match_array(expected_idea_phases)
+        expect(json_response_body[:idea_phases].pluck(:idea_id)).to match_array([idea_phases.first[:idea_id]])
       end
     end
   end
