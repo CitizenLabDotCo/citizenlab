@@ -492,6 +492,8 @@
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmitted": "Dir hutt Äre Budget scho virgeluecht. Klickt op \"Ännere Budget änneren\" fir Äre Budget z'änneren.",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage": "Dir hutt Äre Budget scho virgeluecht. Fir Äert Budget z'änneren, gitt zréck op d'Projet Säit a klickt \"Ännere Budget änneren\".",
   "app.components.VoteInputs.single.youHaveVotedForX2": "Dir hutt gestëmmt {votes, plural, =0 {# Optiounen} one {#Optioun} other {# Optiounen}}",
+  "app.components.admin.PostManager.components.PostTable.Row.cancel": "Ofbriechen",
+  "app.components.admin.PostManager.components.PostTable.Row.confirm": "Confirméieren",
   "app.components.admin.SlugInput.resultingURL": "Resultéierend URL",
   "app.components.admin.SlugInput.slugTooltip": "De Slug ass den eemolege Set vu Wierder um Enn vun der Säitenadress oder URL.",
   "app.components.admin.SlugInput.urlSlugBrokenLinkWarning": "Wann Dir d’URL ännert, funktionéiere Linken op d’Säit net méi.",
