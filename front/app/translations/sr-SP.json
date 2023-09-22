@@ -492,6 +492,8 @@
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmitted": "Већ сте послали свој буџет. Кликните на „Измени буџет“ да бисте променили буџет.",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage": "Већ сте послали свој буџет. Да бисте променили буџет, вратите се на страницу пројекта и кликните на „Измени буџет“.",
   "app.components.VoteInputs.single.youHaveVotedForX2": "Гласали сте за {votes, plural, =0 {# Опције} one {# опција} other {# Опције}}",
+  "app.components.admin.PostManager.components.PostTable.Row.cancel": "Поништити, отказати",
+  "app.components.admin.PostManager.components.PostTable.Row.confirm": "Потврди",
   "app.components.admin.SlugInput.resultingURL": "Резултат УРЛ",
   "app.components.admin.SlugInput.slugTooltip": "Пуж је јединствени скуп речи на крају веб адресе или УРЛ адресе.",
   "app.components.admin.SlugInput.urlSlugBrokenLinkWarning": "Ако промените УРЛ, везе до странице које користе стари УРЛ више неће радити.",
