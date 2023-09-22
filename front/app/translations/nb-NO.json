@@ -492,6 +492,8 @@
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmitted": "Du har allerede sendt inn budsjettet ditt. Klikk på «Endre budsjettet» for å endre budsjettet.",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage": "Du har allerede sendt inn budsjettet ditt. For å endre budsjettet, gå tilbake til prosjektsiden og klikk \"Endre budsjettet\".",
   "app.components.VoteInputs.single.youHaveVotedForX2": "Du har stemt på {votes, plural, =0 {# alternativer} one {# alternativ} other {# alternativer}}",
+  "app.components.admin.PostManager.components.PostTable.Row.cancel": "Avbryt",
+  "app.components.admin.PostManager.components.PostTable.Row.confirm": "Bekrefte",
   "app.components.admin.SlugInput.resultingURL": "Resultater URL",
   "app.components.admin.SlugInput.slugTooltip": "Kortbeskrivelsen er et unikt sett med ord på slutten av nettadressen, eller URL-adressen, til en side.",
   "app.components.admin.SlugInput.urlSlugBrokenLinkWarning": "Hvis du endrer URL-adressen vil koblinger til denne siden som bruker den gamle URL-adressen slutte å fungere.",
