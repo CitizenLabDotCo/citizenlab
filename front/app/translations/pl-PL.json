@@ -492,6 +492,8 @@
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmitted": "Przesłałeś już swój budżet. Kliknij \"Modyfikuj budżet\", aby go zmienić.",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage": "Przesłałeś już swój budżet. Aby zmienić budżet, wróć do strony projektu i kliknij \"Modyfikuj budżet\".",
   "app.components.VoteInputs.single.youHaveVotedForX2": "Głosowałeś na {votes, plural, =0 {# opcje} one {# opcje} other {# opcje}}",
+  "app.components.admin.PostManager.components.PostTable.Row.cancel": "Anuluj",
+  "app.components.admin.PostManager.components.PostTable.Row.confirm": "Potwierdź",
   "app.components.admin.SlugInput.resultingURL": "Wynikowy adres URL",
   "app.components.admin.SlugInput.slugTooltip": "Slug to unikalny zestaw słów na końcu adresu internetowego strony, czyli URL.",
   "app.components.admin.SlugInput.urlSlugBrokenLinkWarning": "Jeśli zmienisz adres URL, linki do strony używające starego adresu URL nie będą już działać.",
