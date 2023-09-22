@@ -4,11 +4,7 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 require './engines/commercial/public_api/spec/acceptance/v2/support/shared'
 
-resource 'Email campaign deliveries' do
-  explanation <<~DESC.squish
-    TODO add description
-  DESC
-
+resource 'Email Campaigns' do
   include_context 'common_auth'
 
   let!(:email_campaign_deliveries) { create_list(:delivery, 5, campaign: create(:manual_campaign)) }
@@ -16,7 +12,7 @@ resource 'Email campaign deliveries' do
   get '/api/v2/email_campaign_deliveries/' do
     route_summary 'List email campaign deliveries'
     route_description <<~DESC.squish
-      TODO add description
+      List all the emails that have been sent out for a particular campaign.
     DESC
 
     include_context 'common_list_params'

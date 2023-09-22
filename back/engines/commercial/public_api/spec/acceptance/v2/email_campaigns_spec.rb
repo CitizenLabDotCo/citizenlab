@@ -4,9 +4,9 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 require './engines/commercial/public_api/spec/acceptance/v2/support/shared'
 
-resource 'Email campaigns' do
+resource 'Email Campaigns' do
   explanation <<~DESC.squish
-    TODO add description
+    Emails campaigns are created to send emails out to users of the platform.
   DESC
 
   include_context 'common_auth'
@@ -16,7 +16,7 @@ resource 'Email campaigns' do
   get '/api/v2/email_campaigns/' do
     route_summary 'List email campaigns'
     route_description <<~DESC.squish
-      TODO add description
+      List all manually created emails campaigns
     DESC
 
     include_context 'common_list_params'
