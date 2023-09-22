@@ -150,6 +150,7 @@ resource 'Idea Custom Fields' do
             key: 'inserted_field',
             ordering: 1,
             required: false,
+            select_count_enabled: false,
             maximum_select_count: 2,
             minimum_select_count: 1,
             title_multiloc: { en: 'Inserted field' },
