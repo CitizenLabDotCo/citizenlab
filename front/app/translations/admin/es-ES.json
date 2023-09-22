@@ -106,7 +106,7 @@
   "app.components.admin.PostManager.changeStatusModalTitle": "Cambiar el estado de esta propuesta",
   "app.components.admin.PostManager.comments": "Comentarios",
   "app.components.admin.PostManager.components.ActionBar.deleteInitiativeExplanation": "Esto significa que perderás todos los datos asociados a esta iniciativa, como comentarios y votos. Esta acción no puede deshacerse.",
-  "app.components.admin.PostManager.components.ActionBar.deleteInitiativeTitle": "¿Estás seguro de que quieres borrar esta propuesta?",
+  "app.components.admin.PostManager.components.ActionBar.deleteInitiativeTitle": "¿Estás seguro de qué quieres borrar esta iniciativa?",
   "app.components.admin.PostManager.components.ActionBar.deleteInitiativesExplanation": "Esto significa que perderás todos los datos asociados a estas iniciativas, como comentarios y votos. Esta acción no puede deshacerse.",
   "app.components.admin.PostManager.components.ActionBar.deleteInitiativesTitle": "¿Estás seguro de que quieres eliminar estas iniciativas?",
   "app.components.admin.PostManager.components.ActionBar.deleteInputExplanation": "Esto significa que perderás todos los datos asociados a esta entrada, como comentarios, reacciones y votos. Esta acción no se puede deshacer.",
