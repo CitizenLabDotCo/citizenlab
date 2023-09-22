@@ -492,6 +492,8 @@
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmitted": "crwdns1072618:0crwdne1072618:0",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage": "crwdns1072620:0crwdne1072620:0",
   "app.components.VoteInputs.single.youHaveVotedForX2": "crwdns1072622:0votes={votes}crwdne1072622:0",
+  "app.components.admin.PostManager.components.PostTable.Row.cancel": "crwdns1081454:0crwdne1081454:0",
+  "app.components.admin.PostManager.components.PostTable.Row.confirm": "crwdns1081456:0crwdne1081456:0",
   "app.components.admin.SlugInput.resultingURL": "crwdns1072624:0crwdne1072624:0",
   "app.components.admin.SlugInput.slugTooltip": "crwdns1072626:0crwdne1072626:0",
   "app.components.admin.SlugInput.urlSlugBrokenLinkWarning": "crwdns1072628:0crwdne1072628:0",
