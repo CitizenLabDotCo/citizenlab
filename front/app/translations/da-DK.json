@@ -492,7 +492,7 @@
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmitted": "Du har allerede indsendt dit budget. Klik på \"Ændre dit budget\" for at ændre dit budget.",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage": "Du har allerede indsendt dit budget. Hvis du vil ændre dit budget, skal du gå tilbage til projektsiden og klikke på \"Ændr dit budget\".",
   "app.components.VoteInputs.single.youHaveVotedForX2": "Du har stemt på {votes, plural, =0 {# muligheder} one {# mulighed} other {# muligheder}}",
-  "app.components.admin.PostManager.components.PostTable.Row.cancel": "Afbryd",
+  "app.components.admin.PostManager.components.PostTable.Row.cancel": "Annuller",
   "app.components.admin.PostManager.components.PostTable.Row.confirm": "Bekræft",
   "app.components.admin.SlugInput.resultingURL": "Resulterende URL",
   "app.components.admin.SlugInput.slugTooltip": "Sluggen er det unikke sæt ord i slutningen af sidens webadresse eller URL.",
