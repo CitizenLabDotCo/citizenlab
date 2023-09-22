@@ -62,10 +62,22 @@ const config: PlaywrightTestConfig = {
     },
   ],
   reporter: [
-    ['html', { outputFolder: 'out/report', open: 'never' }],
+    [
+      'html',
+      {
+        outputFolder: '.storybook/playwright/test-results/report',
+        open: 'never',
+      },
+    ],
     ['dot'],
-    ['junit', { outputFile: 'out/report/report.xml' }],
-    ['json', { outputFile: 'out/report/report.json' }],
+    [
+      'junit',
+      { outputFile: '.storybook/playwright/test-results/report/report.xml' },
+    ],
+    [
+      'json',
+      { outputFile: '.storybook/playwright/test-results/report/report.json' },
+    ],
   ],
 };
 export default config;

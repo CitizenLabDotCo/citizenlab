@@ -30,6 +30,7 @@ cypress/videos/
 cypress/screenshots/
 
 .storybook/playwright/test-results
+.storybook/**/*.spec.ts-snapshots
 
 # Storybook generated output
 dist/

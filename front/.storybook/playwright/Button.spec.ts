@@ -5,6 +5,10 @@ test.describe('Button', () => {
     await page.goto('http://localhost:6006/?path=/story/example-button--primary');
     await page.waitForTimeout(1000);
 
-    expect(await page.screenshot({ animations: 'disabled' })).toMatchSnapshot('button-primary.png')
+    expect(
+      await page
+        .locator('#storybook-preview-iframe')
+        .screenshot({ animations: 'disabled' })
+      ).toMatchSnapshot('button-primary.png')
   })
 })
