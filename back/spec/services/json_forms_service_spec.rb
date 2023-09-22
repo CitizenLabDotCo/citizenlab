@@ -62,7 +62,6 @@ describe JsonFormsService do
         expect(JSON::Validator.validate!(metaschema, schema)).to be true
         expect(schema).to match(
           { type: 'object',
-            additionalProperties: false,
             properties: { 'field1' =>
               { type: 'string' },
                           'field2' =>
