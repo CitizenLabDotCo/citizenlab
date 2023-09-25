@@ -29,12 +29,8 @@ module BulkImportIdeas
         @fields_by_display_title[display_title] = field
       end
 
-      # documents is an array of forms.
-      # A form is a hash with the field title
-      # as key, and the detected answer as value.
-      # If no answer is found it is set to nil
-      @documents = []
-      @form = nil
+      @forms = []
+      @form = new_form
 
       @current_field_display_title = nil
       @current_custom_field = nil
@@ -46,11 +42,11 @@ module BulkImportIdeas
         parse_page(page, i + 1)
       end
 
-      @documents << @form
-      @documents
+      @forms << @form
+      @forms
     end
 
-    def parse_page(page, page_number)
+    def parse_page(page, pdf_page_number)
       lines = page.lines.map(&:rstrip)
 
       # Reset state
@@ -58,36 +54,25 @@ module BulkImportIdeas
       @current_custom_field = nil
       @current_description = nil
 
-      last_index = lines.length - 1
-      last_line = lines.last
+      # Find page number
+      line_with_page_number = find_line_with_page_number(lines)
+      form_page_number = get_page_number(line_with_page_number)
 
-      if page_number? last_line
-        if new_document? last_line
-          unless @form.nil?
-            @documents << @form
-          end
-
-          @form = {
-            pdf_pages: [],
-            form_pages: [],
-            fields: {}
-          }
+      # Check if new form
+      if form_page_number
+        if form_page_number == 1 && pdf_page_number != 1
+          @forms << @form
+          @form = new_form
         end
 
-        @form[:form_pages] << get_page_number(last_line)
-      end
-
-      if @form.nil?
-        raise Error.new 'bulk_import_ideas_no_first_page_number', value: 'Unable to detect page number of first page'
+        @form[:form_pages] << form_page_number
       end
 
       # Add page number
-      @form[:pdf_pages] << page_number
+      @form[:pdf_pages] << pdf_page_number
 
-      lines.each_with_index do |line, index|
-        # We skip the last line since it's the page number we already
-        # dealt with
-        next if index == last_index
+      lines.each do |line|
+        next if line == line_with_page_number
 
         if field_title? line
           @form[:fields][line] = nil
@@ -139,21 +124,26 @@ module BulkImportIdeas
 
     private
 
-    def page_number?(line)
-      @page_number_regex.match? line
+    def new_form
+      {
+        pdf_pages: [],
+        form_pages: [],
+        fields: {}
+      }
     end
 
-    def new_document?(line)
-      return true if line == "#{@page_copy} 1"
+    def find_line_with_page_number(lines)
+      # Check last three lines for page number
+      last_index = lines.length
 
-      page_number = get_page_number line
-      form_pages = @form[:form_pages]
-      last_page = form_pages[form_pages.length - 1]
+      (1..3).each do |n|
+        line = lines[last_index - n]
+        return line if page_number? line
+      end
+    end
 
-      # If you were just on page 2, and now you're on
-      # page 1, we will assume you went to the next document
-      # but it's missing the first page
-      page_number <= last_page
+    def page_number?(line)
+      @page_number_regex.match? line
     end
 
     def get_page_number(line)
