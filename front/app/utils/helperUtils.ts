@@ -5,7 +5,7 @@ import {
   IParticipationContextType,
 } from 'typings';
 import { trim, isUndefined } from 'lodash-es';
-import { removeUrlLocale } from 'services/locale';
+import { removeUrlLocale } from 'utils/locale';
 import { viewportWidths } from 'utils/styleUtils';
 
 export function capitalizeParticipationContextType(

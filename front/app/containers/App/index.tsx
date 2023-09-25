@@ -34,7 +34,7 @@ import HasPermission from 'components/HasPermission';
 // services
 import { IAppConfigurationStyle } from 'api/app_configuration/types';
 import useDeleteSelf from 'api/users/useDeleteSelf';
-import { localeStream } from 'services/locale';
+import { localeStream } from 'utils/locale';
 
 // hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';

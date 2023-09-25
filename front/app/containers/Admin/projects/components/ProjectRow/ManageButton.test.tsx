@@ -3,7 +3,7 @@ import { render, screen } from 'utils/testUtils/rtl';
 import ManageButton from './ManageButton';
 
 jest.mock('utils/cl-router/Link');
-jest.mock('services/locale');
+jest.mock('utils/locale');
 const projectId = '1';
 
 describe('ManageButton', () => {

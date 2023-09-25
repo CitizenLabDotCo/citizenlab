@@ -5,7 +5,7 @@ import matchPath, { getAllPathsFromRoutes } from './matchPath';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { tenantInfo, IEvent } from 'utils/analytics';
-import { getUrlLocale } from 'services/locale';
+import { getUrlLocale } from 'utils/locale';
 import { getProjectId } from './getProjectId';
 
 // typings
