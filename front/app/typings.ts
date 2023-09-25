@@ -145,12 +145,6 @@ export interface CLErrors {
   [fieldName: TFieldName | string]: CLError[];
 }
 
-export interface CLErrorsJSON {
-  json: {
-    errors: CLErrors;
-  };
-}
-
 export type CLErrorsWrapper = {
   errors: CLErrors;
 };
