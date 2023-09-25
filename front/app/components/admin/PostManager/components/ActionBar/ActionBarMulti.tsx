@@ -38,23 +38,27 @@ const ActionBarMulti = ({ selection, resetSelection, type }: Props) => {
   const handleDelete = async () => {
     if (type === 'Initiatives') {
       setIsLoadingDeleteInitiative(true);
-
-      const promises = [...selection].map((id) =>
-        deleteInitiative({ initiativeId: id })
-      );
       resetSelection();
 
-      await Promise.all(promises);
+      // Yes, terribly inefficient, but if you try to do this in
+      // parallel the database crashes. To do this properly
+      // we should add a bulk delete endpoint instead.
+      for (const initiativeId of selection) {
+        await deleteInitiative({ initiativeId });
+      }
 
       setIsLoadingDeleteInitiative(false);
       closeWarningModal();
     } else {
       setIsLoadingDeleteIdea(true);
-
-      const promises = [...selection].map((id) => deleteIdea(id));
       resetSelection();
 
-      await Promise.all(promises);
+      // Yes, terribly inefficient, but if you try to do this in
+      // parallel the database crashes. To do this properly
+      // we should add a bulk delete endpoint instead.
+      for (const ideaId of selection) {
+        await deleteIdea(ideaId);
+      }
 
       setIsLoadingDeleteIdea(false);
       closeWarningModal();
