@@ -571,6 +571,18 @@ ar-MA:
       body_2: 'تم نشر نتائج التصويت %{phaseTitle} في منصة %{organizationName}!'
       body_3: 'نحن نشجعك على مراجعة النتائج ومتابعة المزيد من التحديثات حول الخطوات التالية.'
       cta_see_results: 'رؤية النتائج في النظام الأساسي'
+    event_registration_confirmation:
+      subject: "اهلا بك! تم تأكيد تسجيلك لـ \"%{eventTitle}\"."
+      header_message: "%{firstName}شكرا على التسجيل"
+      event_details:
+        labels:
+          date: 'تاريخ'
+          location: 'موقع'
+          online_link: 'الرابط على الانترنت'
+          description: 'وصف'
+          project: 'مشروع'
+      cta_go_to_event: 'شاهد الحدث'
+      cta_add_to_calendar: 'أضف إلى التقويم الخاص بك'
     voting_phase_started:
       subject: '%{organizationName}: بدأت مرحلة التصويت لـ %{projectName}'
       preheader: 'بدأت مرحلة التصويت لـ %{projectName} على منصة المشاركة %{organizationName}'
@@ -593,6 +605,7 @@ ar-MA:
         managers: 'المديرين'
         admins_assigned_to_a_proposal: 'المسؤولون المعينون لاقتراح'
         admins_and_managers_assigned_to_the_input: 'المسؤولون والمديرون المعينون للإدخال'
+        new_attendee: 'مستخدم مسجل حديثا'
         user_who_is_invited_to_cosponsor_a_proposal: 'المستخدم الذي تمت دعوته للمشاركة في رعاية اقتراح'
         user_who_is_receiving_admin_rights: 'المستخدم الذي يتلقى حقوق المسؤول'
         user_who_is_receiving_folder_moderator_rights: 'المستخدم الذي يتلقى حقوق وسيط المجلد'
@@ -612,6 +625,7 @@ ar-MA:
       content_type:
         comments: 'تعليقات'
         content_moderation: 'تعديل المحتوى'
+        events: 'الأحداث'
         general: 'عام'
         inputs: 'المدخلات'
         internal_comments: 'التعليقات الداخلية'
@@ -666,3 +680,4 @@ ar-MA:
         voting_basket_submitted: 'يتم إرسال الأصوات'
         7_days_after_invite_is_sent: '7 أيام بعد إرسال الدعوة'
         7_days_before_the_project_changes_phase: '7 أيام قبل مرحلة تغييرات المشروع'
+        registration_to_event: 'التسجيل في هذا الحدث'
