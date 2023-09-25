@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 // components
 import PageNotFound from 'components/PageNotFound';
@@ -32,12 +32,7 @@ const StyledInitiativeShowPageTopBar = styled(InitiativeShowPageTopBar)`
 const InitiativesShowPage = () => {
   const initiativesEnabled = useFeatureFlag({ name: 'initiatives' });
   const { slug } = useParams() as { slug: string };
-
   const { data: initiative, status, error } = useInitiativeBySlug(slug);
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [initiative]);
 
   if (!initiativesEnabled) {
     // Ideally, this is covered by status === 'error' but currently there
