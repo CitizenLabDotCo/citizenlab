@@ -204,10 +204,6 @@ const PostManager = ({
   const resetSelection = () => {
     setSelection(new Set());
   };
-
-  const handleChangeSelection = (selection: Set<string>) => {
-    setSelection(selection);
-  };
   // End selection management
 
   // Filter menu
@@ -384,7 +380,7 @@ const PostManager = ({
               selection={selection}
               selectedPhaseId={selectedPhaseId}
               selectedProjectId={selectedProjectId}
-              onChangeSelection={handleChangeSelection}
+              onChangeSelection={setSelection}
               currentPageNumber={posts.currentPage}
               lastPageNumber={posts.lastPage}
               onChangePage={posts.onChangePage}
