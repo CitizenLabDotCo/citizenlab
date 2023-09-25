@@ -1044,7 +1044,7 @@
   "app.containers.InitiativesIndexPage.constraints": "{voteThreshold} stemmer inden for {daysLimit} dage",
   "app.containers.InitiativesIndexPage.explanationContent": "{tenantName, select, KøbenhavnsKommune {Har du et forslag til, hvordan København kan blive en endnu bedre by at bo og færdes i? Så har du mulighed for at stille dit københavnerforslag og sætte det til offentlig afstemning her på platformen. Hvis dit forslag opfylder kriterierne og opnår {constraints}, vil det blive behandlet af vores kommunalpolitikere. {link}} other {Du har et forslag, som du vil sende til {orgName}, og du er nysgerrig efter at se, om andre borgere også støtter det? Send det her, få {constraints}, og {orgName} vil vende tilbage til dig. {link}}}",
   "app.containers.InitiativesIndexPage.explanationTitle": "Hvordan virker det?",
-  "app.containers.InitiativesIndexPage.footer": "Stil dit eget forslag og få din stemme hørt",
+  "app.containers.InitiativesIndexPage.footer": "{tenantName, select, KøbenhavnsKommune {Stil dit eget københavnerforslag og få din stemme hørt} other {Stil dit eget forslag og få din stemme hørt}}",
   "app.containers.InitiativesIndexPage.header": "{tenantName, select, KøbenhavnsKommune {Hvad er dit københavnerforslag?} other {Aflever dit forslag her og sæt det på dagsordenen hos {styledOrgName}}}",
   "app.containers.InitiativesIndexPage.headerPostingProposalDisabled": "Udforsk forslag fra {styledOrgName}",
   "app.containers.InitiativesIndexPage.invisibleInitiativesPageTitle": "Opdag forslag",
