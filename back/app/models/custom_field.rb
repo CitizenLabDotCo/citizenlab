@@ -25,7 +25,6 @@
 #  answer_visible_to      :string
 #  select_count_enabled   :boolean          default(FALSE), not null
 #  maximum_select_count   :integer
-#  minimum_select_count   :integer
 #
 # Indexes
 #
@@ -68,6 +67,8 @@ class CustomField < ApplicationRecord
   validates :select_count_enabled, inclusion: { in: [true, false] }
   validates :code, inclusion: { in: CODES }, uniqueness: { scope: %i[resource_type resource_id] }, allow_nil: true
   validates :answer_visible_to, presence: true, inclusion: { in: [VISIBLE_TO_PUBLIC, VISIBLE_TO_ADMINS] }
+  validates :maximum_select_count, comparison: { less_than_or_equal_to: ->(custom_field) {custom_field.options.size}, greater_than_or_equal_to: 0}, if: :multiselect?, allow_nil: true
+  validates :minimum_select_count, comparison: { less_than_or_equal_to: :maximum_select_count}, if: :multiselect?, allow_nil: true
 
   before_validation :set_default_enabled
   before_validation :set_default_answer_visible_to
@@ -127,6 +128,10 @@ class CustomField < ApplicationRecord
 
   def section?
     input_type == 'section'
+  end
+
+  def multiselect?
+    input_type == 'multiselect'
   end
 
   def page_or_section?
