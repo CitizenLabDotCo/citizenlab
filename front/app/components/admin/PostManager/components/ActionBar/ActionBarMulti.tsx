@@ -42,21 +42,21 @@ const ActionBarMulti = ({ selection, resetSelection, type }: Props) => {
       const promises = [...selection].map((id) =>
         deleteInitiative({ initiativeId: id })
       );
+      resetSelection();
 
       await Promise.all(promises);
 
       setIsLoadingDeleteInitiative(false);
-      resetSelection();
       closeWarningModal();
     } else {
       setIsLoadingDeleteIdea(true);
 
       const promises = [...selection].map((id) => deleteIdea(id));
+      resetSelection();
 
       await Promise.all(promises);
 
       setIsLoadingDeleteIdea(false);
-      resetSelection();
       closeWarningModal();
     }
   };
