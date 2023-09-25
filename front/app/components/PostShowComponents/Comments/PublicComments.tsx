@@ -14,8 +14,8 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSizes, media, isRtl } from 'utils/styleUtils';
-import { Box, Title } from '@citizenlab/cl2-component-library';
+import { colors, fontSizes, isRtl } from 'utils/styleUtils';
+import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // typings
 import { CommentsSort } from 'api/comments/types';
@@ -45,18 +45,6 @@ const CommentCount = styled.span`
   margin-left: 5px;
 `;
 
-const StyledCommentSorting = styled(CommentSorting)`
-  display: flex;
-  justify-content: flex-end;
-  width: 100%;
-
-  ${media.phone`
-    margin-left: 16px;
-    margin-top: 4px;
-    justify-content: flex-start;
-  `}
-`;
-
 const LoadingMoreMessage = styled.div`
   color: ${colors.textSecondary};
   font-size: ${fontSizes.m}px;
@@ -76,6 +64,7 @@ const PublicComments = ({
   className,
   allowAnonymousParticipation,
 }: Props) => {
+  const isSmallerThanPhone = useBreakpoint('phone');
   const initiativeId = postType === 'initiative' ? postId : undefined;
   const ideaId = postType === 'idea' ? postId : undefined;
   const { data: initiative } = useInitiativeById(initiativeId);
@@ -135,19 +124,27 @@ const PublicComments = ({
       {showHeader && (
         <Header
           display="flex"
-          alignItems="center"
+          flexDirection={isSmallerThanPhone ? 'column' : 'row'}
+          alignItems={isSmallerThanPhone ? 'initial' : 'center'}
           justifyContent="space-between"
           mt="16px"
         >
-          <Title color="tenantText" variant="h2" id="comments-main-title">
+          <Title
+            color="tenantText"
+            variant="h2"
+            fontSize={isSmallerThanPhone ? 'xl' : 'xxl'}
+            id="comments-main-title"
+          >
             <FormattedMessage {...messages.invisibleTitleComments} />
             {showCommentCount && <CommentCount>({commentCount})</CommentCount>}
           </Title>
           {hasComments && (
-            <StyledCommentSorting
-              onChange={handleSortOrderChange}
-              selectedCommentSort={sortOrder}
-            />
+            <Box ml="auto">
+              <CommentSorting
+                onChange={handleSortOrderChange}
+                selectedCommentSort={sortOrder}
+              />
+            </Box>
           )}
         </Header>
       )}
