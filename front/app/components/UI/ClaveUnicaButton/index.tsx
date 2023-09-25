@@ -83,7 +83,7 @@ const ClaveUnicaButton = ({
   const handleOnClick = () => {
     onClick(method);
     // Probably, it doesn't affect the functionality. The actual location change happens in
-    // setHref of front/app/services/singleSignOn.ts
+    // setHref of front/app/api/authentication/singleSignOn.ts
     // TODO: remove.
     const jwt = getJwt();
     window.location.href = `${AUTH_PATH}/clave_unica?token=${jwt}&pathname=${removeUrlLocale(

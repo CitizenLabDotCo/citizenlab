@@ -3,7 +3,7 @@ import createEmailOnlyAccount from 'api/authentication/sign_up/createEmailOnlyAc
 import signIn from 'api/authentication/sign_in_out/signIn';
 import signOut from 'api/authentication/sign_in_out/signOut';
 import confirmEmail from 'api/authentication/confirm_email/confirmEmail';
-import { handleOnSSOClick } from 'services/singleSignOn';
+import { handleOnSSOClick } from 'api/authentication/singleSignOn';
 import checkUser from 'api/users/checkUser';
 
 // cache

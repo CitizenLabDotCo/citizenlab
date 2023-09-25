@@ -1,6 +1,6 @@
 // authentication
 import signIn from 'api/authentication/sign_in_out/signIn';
-import { handleOnSSOClick } from 'services/singleSignOn';
+import { handleOnSSOClick } from 'api/authentication/singleSignOn';
 
 // events
 import { triggerSuccessAction } from 'containers/Authentication/SuccessActions';
