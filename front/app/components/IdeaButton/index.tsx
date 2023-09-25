@@ -10,7 +10,7 @@ import { IParticipationContextType } from 'typings';
 import {
   getIdeaPostingRules,
   IIdeaPostingDisabledReason,
-} from 'services/actionTakingRules';
+} from 'utils/actionTakingRules';
 import {
   getInputTerm,
   ParticipationMethod,
