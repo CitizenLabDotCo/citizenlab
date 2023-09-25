@@ -2178,6 +2178,7 @@
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.visits": "crwdns1060023:0crwdne1060023:0",
   "app.modules.commercial.analytics.admin.components.VisitorsTypesCard.title": "crwdns1060025:0crwdne1060025:0",
   "app.modules.commercial.analytics.admin.components.VisitorsTypesCard.visitors": "crwdns1060027:0crwdne1060027:0",
+  "app.modules.commercial.analytics.admin.containers.visitors.dateInfo": "crwdns1081466:0{date}crwdne1081466:0",
   "app.modules.commercial.analytics.admin.hooks.useActiveUsers.timeSeries": "crwdns1060029:0crwdne1060029:0",
   "app.modules.commercial.analytics.admin.hooks.useEmailDeliveries.timeSeries": "crwdns1060031:0crwdne1060031:0",
   "app.modules.commercial.analytics.admin.hooks.useRegistrations.timeSeries": "crwdns1060033:0crwdne1060033:0",
