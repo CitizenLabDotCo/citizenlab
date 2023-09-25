@@ -32,10 +32,6 @@ export interface IRelationship {
   type: string;
 }
 
-export interface IHttpMethod {
-  method: 'PUT' | 'POST' | 'GET' | 'PATCH' | 'DELETE';
-}
-
 export type ILocationInfo =
   | {
       location_description: string | undefined;
