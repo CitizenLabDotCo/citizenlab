@@ -571,6 +571,18 @@
       body_2: 'Resultatene av %{phaseTitle} stemmen i %{organizationName} -plattformen er publisert!'
       body_3: 'Vi oppfordrer deg til å gå gjennom resultatene og følge med for ytterligere oppdateringer om de neste trinnene.'
       cta_see_results: 'Se resultater i plattformen'
+    event_registration_confirmation:
+      subject: "Du er med! Din registrering for \"%{eventTitle}\" er bekreftet"
+      header_message: "%{firstName}, takk for at du registrerte deg for"
+      event_details:
+        labels:
+          date: 'Dato'
+          location: 'plassering'
+          online_link: 'Online lenke'
+          description: 'Beskrivelse'
+          project: 'Prosjekt'
+      cta_go_to_event: 'Se arrangementet'
+      cta_add_to_calendar: 'Legg til i kalenderen din'
     voting_phase_started:
       subject: '%{organizationName}: Stemmefasen startet for %{projectName}'
       preheader: 'Stemmefasen startet for %{projectName} på deltakelsesplattformen til %{organizationName}'
@@ -593,6 +605,7 @@
         managers: 'Ledere'
         admins_assigned_to_a_proposal: 'Administratorer tildelt et forslag'
         admins_and_managers_assigned_to_the_input: 'Administratorer og ledere tilordnet input'
+        new_attendee: 'Nyregistrert bruker'
         user_who_is_invited_to_cosponsor_a_proposal: 'Bruker som er invitert til å sponse et forslag'
         user_who_is_receiving_admin_rights: 'Bruker som mottar administratorrettigheter'
         user_who_is_receiving_folder_moderator_rights: 'Bruker som mottar mappemoderatorrettigheter'
@@ -612,6 +625,7 @@
       content_type:
         comments: 'Kommentarer'
         content_moderation: 'Moderering av innhold'
+        events: 'arrangementer'
         general: 'Generell'
         inputs: 'Innganger'
         internal_comments: 'Interne kommentarer'
@@ -666,3 +680,4 @@
         voting_basket_submitted: 'Stemmer sendes inn'
         7_days_after_invite_is_sent: '7 dager etter at invitasjonen er sendt'
         7_days_before_the_project_changes_phase: '7 dager før prosjektet endrer fase'
+        registration_to_event: 'Påmelding til et arrangement'
