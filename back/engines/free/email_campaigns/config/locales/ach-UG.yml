@@ -571,6 +571,18 @@ ach:
       body_2: 'crwdns1061523:0%{phaseTitle}crwdnd1061523:0%{organizationName}crwdne1061523:0'
       body_3: 'crwdns1061525:0crwdne1061525:0'
       cta_see_results: 'crwdns1061527:0crwdne1061527:0'
+    event_registration_confirmation:
+      subject: "crwdns1081468:0%{eventTitle}crwdne1081468:0"
+      header_message: "crwdns1081470:0%{firstName}crwdne1081470:0"
+      event_details:
+        labels:
+          date: 'crwdns1081472:0crwdne1081472:0'
+          location: 'crwdns1081474:0crwdne1081474:0'
+          online_link: 'crwdns1081476:0crwdne1081476:0'
+          description: 'crwdns1081478:0crwdne1081478:0'
+          project: 'crwdns1081480:0crwdne1081480:0'
+      cta_go_to_event: 'crwdns1081482:0crwdne1081482:0'
+      cta_add_to_calendar: 'crwdns1081484:0crwdne1081484:0'
     voting_phase_started:
       subject: 'crwdns1061529:0%{organizationName}crwdnd1061529:0%{projectName}crwdne1061529:0'
       preheader: 'crwdns1061531:0%{projectName}crwdnd1061531:0%{organizationName}crwdne1061531:0'
@@ -593,6 +605,7 @@ ach:
         managers: 'crwdns1061559:0crwdne1061559:0'
         admins_assigned_to_a_proposal: 'crwdns1061561:0crwdne1061561:0'
         admins_and_managers_assigned_to_the_input: 'crwdns1061563:0crwdne1061563:0'
+        new_attendee: 'crwdns1081486:0crwdne1081486:0'
         user_who_is_invited_to_cosponsor_a_proposal: 'crwdns1061565:0crwdne1061565:0'
         user_who_is_receiving_admin_rights: 'crwdns1061567:0crwdne1061567:0'
         user_who_is_receiving_folder_moderator_rights: 'crwdns1061569:0crwdne1061569:0'
@@ -612,6 +625,7 @@ ach:
       content_type:
         comments: 'crwdns1061597:0crwdne1061597:0'
         content_moderation: 'crwdns1061599:0crwdne1061599:0'
+        events: 'crwdns1081488:0crwdne1081488:0'
         general: 'crwdns1061601:0crwdne1061601:0'
         inputs: 'crwdns1061603:0crwdne1061603:0'
         internal_comments: 'crwdns1061605:0crwdne1061605:0'
@@ -666,3 +680,4 @@ ach:
         voting_basket_submitted: 'crwdns1061701:0crwdne1061701:0'
         7_days_after_invite_is_sent: 'crwdns1061703:0crwdne1061703:0'
         7_days_before_the_project_changes_phase: 'crwdns1061705:0crwdne1061705:0'
+        registration_to_event: 'crwdns1081490:0crwdne1081490:0'
