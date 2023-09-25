@@ -452,6 +452,7 @@ RSpec.describe CustomField do
       field.maximum_select_count = field.options.size + 1
       expect(field.valid?).to be false
     end
+
     it 'cannot be less than 0' do
       field.maximum_select_count = -1
       expect(field.valid?).to be false
@@ -465,6 +466,7 @@ RSpec.describe CustomField do
       field.minimum_select_count = field.options.size + 1
       expect(field.valid?).to be false
     end
+    
     it 'cannot be less than 0' do
       field.minimum_select_count = -1
       expect(field.valid?).to be false
