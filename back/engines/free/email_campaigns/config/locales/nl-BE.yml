@@ -571,6 +571,18 @@ nl-BE:
       body_2: 'De resultaten van de %{phaseTitle} stemming op het %{organizationName} platform zijn gepubliceerd!'
       body_3: 'We raden je aan om de resultaten te bekijken en op de hoogte te blijven van de volgende stappen.'
       cta_see_results: 'Bekijk resultaten op het platform'
+    event_registration_confirmation:
+      subject: "Je bent binnen! Je inschrijving voor \"%{eventTitle}\" is bevestigd"
+      header_message: "%{firstName}Bedankt voor het registreren voor"
+      event_details:
+        labels:
+          date: 'Datum'
+          location: 'Locatie'
+          online_link: 'Online link'
+          description: 'Beschrijving'
+          project: 'projecten'
+      cta_go_to_event: 'Bekijk het evenement'
+      cta_add_to_calendar: 'Toevoegen aan je kalender'
     voting_phase_started:
       subject: '%{organizationName}: De stemmingsfase is begonnen voor %{projectName}'
       preheader: 'De stemmingsfase is begonnen voor %{projectName} op het participatieplatform van %{organizationName}'
@@ -593,6 +605,7 @@ nl-BE:
         managers: 'Beheerders'
         admins_assigned_to_a_proposal: 'Aan een voorstel toegewezen platformbeheerders'
         admins_and_managers_assigned_to_the_input: 'Aan de bijdrage toegewezen beheerders'
+        new_attendee: 'Nieuw geregistreerde gebruiker'
         user_who_is_invited_to_cosponsor_a_proposal: 'Gebruiker die is uitgenodigd om een voorstel te steunen'
         user_who_is_receiving_admin_rights: 'Gebruiker die platformbeheerdersrechten krijgt'
         user_who_is_receiving_folder_moderator_rights: 'Gebruiker die mapbeheerdersrechten krijgt'
@@ -612,6 +625,7 @@ nl-BE:
       content_type:
         comments: 'Reacties'
         content_moderation: 'Inhoudelijke moderatie'
+        events: 'Evenementen'
         general: 'Algemeen'
         inputs: 'Bijdragen'
         internal_comments: 'Interne reacties'
@@ -666,3 +680,4 @@ nl-BE:
         voting_basket_submitted: 'Stemmen zijn ingediend'
         7_days_after_invite_is_sent: '7 dagen na verzending van de uitnodiging'
         7_days_before_the_project_changes_phase: '7 dagen voor het project van fase verandert'
+        registration_to_event: 'Registratie voor een evenement'
