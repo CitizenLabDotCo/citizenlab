@@ -5,12 +5,12 @@ import { askCustomFields } from './utils';
 import resendEmailConfirmationCode from 'api/authentication/confirm_email/resendEmailConfirmationCode';
 import { UseMutateFunction } from '@tanstack/react-query';
 import { IUser, IUserUpdate } from 'api/users/types';
-import { CLErrorsJSON } from 'typings';
+import { CLErrorsWrapper } from 'typings';
 
 export const claveUnicaFlow = (
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
-  updateUser: UseMutateFunction<IUser, CLErrorsJSON, IUserUpdate>
+  updateUser: UseMutateFunction<IUser, CLErrorsWrapper, IUserUpdate>
 ) => {
   return {
     'clave-unica:email': {

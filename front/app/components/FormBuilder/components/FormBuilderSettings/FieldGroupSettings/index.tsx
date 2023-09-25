@@ -6,7 +6,7 @@ import { SectionField } from 'components/admin/Section';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
 
 // types
-import { IFlatCustomFieldWithIndex } from 'services/formCustomFields';
+import { IFlatCustomFieldWithIndex } from 'api/custom_fields/types';
 
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
