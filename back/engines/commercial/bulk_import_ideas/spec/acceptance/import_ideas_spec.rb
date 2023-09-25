@@ -131,7 +131,7 @@ resource 'BulkImportIdeasImportIdeas' do
 
               expect(response_data.count).to eq 1
               expect(response_data.first[:attributes][:title_multiloc][:en]).to eq 'My very good idea'
-              # expect(response_data.first[:attributes][:location_description]).to eq 'Somewhere'
+              expect(response_data.first[:attributes][:location_description]).to eq 'Somewhere'
               expect(response_data.first[:attributes][:publication_status]).to eq 'draft'
               expect(User.all.count).to eq 2 # 1 new user created
               expect(Idea.all.count).to eq 1
@@ -173,7 +173,7 @@ resource 'BulkImportIdeasImportIdeas' do
               let(:pdf) { create_project_bulk_import_ideas_pdf 1 }
 
               example 'Bulk import ideas to a specified phase from .pdf' do
-                # expect_any_instance_of(BulkImportIdeas::GoogleFormParserService).to receive(:raw_text_page_array).and_return(create_project_bulk_import_raw_text_array)
+                expect_any_instance_of(BulkImportIdeas::GoogleFormParserService).to receive(:raw_text_page_array).and_return(create_project_bulk_import_raw_text_array)
                 expect_any_instance_of(BulkImportIdeas::GoogleFormParserService).to receive(:parse_pdf).and_return(create_project_bulk_import_parse_pdf)
                 do_request
                 assert_status 201
