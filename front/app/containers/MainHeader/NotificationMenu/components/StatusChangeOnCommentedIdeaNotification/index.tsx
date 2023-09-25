@@ -6,7 +6,7 @@ import useIdeaBySlug from 'api/ideas/useIdeaBySlug';
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
 import { isNilOrError } from 'utils/helperUtils';
-import { getInputTerm } from 'services/participationContexts';
+import { getInputTerm } from 'utils/participationContexts';
 
 // // i18n
 import { FormattedMessage } from 'utils/cl-intl';

@@ -16,7 +16,7 @@ import FollowUnfollow from 'components/FollowUnfollow';
 
 // services
 import { getProjectUrl } from 'api/projects/utils';
-import { getInputTerm } from 'services/participationContexts';
+import { getInputTerm } from 'utils/participationContexts';
 import { getIdeaPostingRules } from 'utils/actionTakingRules';
 
 // resources

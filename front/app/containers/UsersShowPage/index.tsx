@@ -35,7 +35,7 @@ import Unauthorized from 'components/Unauthorized';
 
 // utils
 import { isError } from 'utils/helperUtils';
-import { ideaDefaultSortMethodFallback } from 'services/participationContexts';
+import { ideaDefaultSortMethodFallback } from 'utils/participationContexts';
 
 // typings
 import { IUserData } from 'api/users/types';

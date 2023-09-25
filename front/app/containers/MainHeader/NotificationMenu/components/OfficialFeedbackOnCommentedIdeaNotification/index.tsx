@@ -4,7 +4,7 @@ import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
 import { IOfficialFeedbackOnCommentedIdeaNotificationData } from 'api/notifications/types';
 import { isNilOrError } from 'utils/helperUtils';
-import { getInputTerm } from 'services/participationContexts';
+import { getInputTerm } from 'utils/participationContexts';
 
 // i18n
 import messages from '../../messages';

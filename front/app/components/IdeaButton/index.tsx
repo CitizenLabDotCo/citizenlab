@@ -11,10 +11,7 @@ import {
   getIdeaPostingRules,
   IIdeaPostingDisabledReason,
 } from 'utils/actionTakingRules';
-import {
-  getInputTerm,
-  ParticipationMethod,
-} from 'services/participationContexts';
+import { getInputTerm, ParticipationMethod } from 'utils/participationContexts';
 
 // components
 import Button, { Props as ButtonProps } from 'components/UI/Button';
