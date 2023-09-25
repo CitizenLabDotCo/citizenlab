@@ -32,7 +32,7 @@
     "majestic": "majestic --port 4231",
     "find-unused-messages": "node internals/scripts/find-unused-messages.js",
     "prettier": "prettier --write .",
-    "detect-deadcode": "ts-prune -p app/tsconfig.json -i '(node_modules|utils/testUtils/rtl.tsx|services/permissions|i18n|/*/*/__mocks__)' | (! grep -v 'used in module')",
+    "detect-deadcode": "ts-prune -p app/tsconfig.json -i '(node_modules|utils/testUtils/rtl.tsx|utils/permissions|i18n|/*/*/__mocks__)' | (! grep -v 'used in module')",
     "dependency-cruiser": "depcruise app  --validate"
   },
   "jest-junit": {

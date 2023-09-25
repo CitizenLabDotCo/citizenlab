@@ -1,4 +1,4 @@
-import { TRole } from 'services/permissions/roles';
+import { TRole } from 'utils/permissions/roles';
 import { ImageSizes, Locale, Multiloc } from 'typings';
 
 import { Keys } from 'utils/cl-react-query/types';

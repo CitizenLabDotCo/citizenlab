@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 
 import { isNilOrError } from 'utils/helperUtils';
-import { canModerateProject } from 'services/permissions/rules/projectPermissions';
+import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
 
 // components

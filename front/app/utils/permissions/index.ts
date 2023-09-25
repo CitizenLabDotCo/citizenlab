@@ -1,4 +1,4 @@
-import { hasPermission } from 'services/permissions/permissions';
+import { hasPermission } from 'utils/permissions/permissions';
 import './rules/routePermissions';
 import './rules/ideaPermissions';
 import './rules/initiativePermissions';

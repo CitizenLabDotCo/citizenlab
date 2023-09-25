@@ -25,7 +25,7 @@ import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // services
-import { canModerateProject } from 'services/permissions/rules/projectPermissions';
+import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 // resources
 
