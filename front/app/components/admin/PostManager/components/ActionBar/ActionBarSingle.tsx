@@ -11,6 +11,7 @@ import WarningModal from 'components/WarningModal';
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
+import modalMessages from 'components/WarningModal/messages';
 
 // typings
 import { ManagerType } from '../..';
@@ -76,13 +77,13 @@ const ActionBarSingle = ({
         isLoading={isLoadingDeleteIdea || isLoadingDeleteInitiative}
         title={
           type === 'Initiatives'
-            ? formatMessage(messages.deleteInitiativeTitle)
-            : formatMessage(messages.deleteInputTitle)
+            ? formatMessage(modalMessages.deleteInitiativeTitle)
+            : formatMessage(modalMessages.deleteInputTitle)
         }
         explanation={
           type === 'Initiatives'
-            ? formatMessage(messages.deleteInitiativeExplanation)
-            : formatMessage(messages.deleteInputExplanation)
+            ? formatMessage(modalMessages.deleteInitiativeExplanation)
+            : formatMessage(modalMessages.deleteInputExplanation)
         }
         onClose={closeWarningModal}
         onConfirm={handleDelete}
