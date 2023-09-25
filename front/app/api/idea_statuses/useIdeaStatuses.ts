@@ -7,10 +7,11 @@ import { IIdeaStatuses, IdeaStatusesKeys } from './types';
 const fetchIdeaStatuses = () =>
   fetcher<IIdeaStatuses>({ path: '/idea_statuses', action: 'get' });
 
-const useIdeaStatuses = () => {
+const useIdeaStatuses = (enabled = true) => {
   return useQuery<IIdeaStatuses, CLErrors, IIdeaStatuses, IdeaStatusesKeys>({
     queryKey: ideaStatusesKeys.lists(),
     queryFn: fetchIdeaStatuses,
+    enabled,
   });
 };
 
