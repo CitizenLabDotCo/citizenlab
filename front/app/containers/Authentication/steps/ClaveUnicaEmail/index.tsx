@@ -5,7 +5,10 @@ import { useForm, FormProvider } from 'react-hook-form';
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import Input from 'components/HookForm/Input';
 import Button from 'components/UI/Button';
-import { isCLErrorsIsh, handleCLErrorsIsh } from 'utils/errorUtils';
+import {
+  isCLErrorsWrapper,
+  handleHookFormSubmissionError,
+} from 'utils/errorUtils';
 import { SetError } from 'containers/Authentication/typings';
 import { yupResolver } from '@hookform/resolvers/yup';
 import sharedMessages from '../messages';
@@ -45,8 +48,8 @@ const ClaveUnicaEmail = ({ loading, setError, onSubmit }: Props) => {
     try {
       await onSubmit({ email, userId: authUser.data.id });
     } catch (e) {
-      if (isCLErrorsIsh(e)) {
-        handleCLErrorsIsh(e, methods.setError);
+      if (isCLErrorsWrapper(e)) {
+        handleHookFormSubmissionError(e, methods.setError);
         return;
       }
 

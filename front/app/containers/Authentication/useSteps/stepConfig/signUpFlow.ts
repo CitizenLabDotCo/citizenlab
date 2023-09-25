@@ -24,7 +24,7 @@ import {
 import { Step } from './typings';
 import { UseMutateFunction } from '@tanstack/react-query';
 import { IUser, IUserUpdate } from 'api/users/types';
-import { CLErrorsJSON } from 'typings';
+import { CLErrorsWrapper } from 'typings';
 
 export const signUpFlow = (
   getAuthenticationData: () => AuthenticationData,
@@ -32,7 +32,7 @@ export const signUpFlow = (
   setCurrentStep: (step: Step) => void,
   updateState: UpdateState,
   anySSOProviderEnabled: boolean,
-  updateUser: UseMutateFunction<IUser, CLErrorsJSON, IUserUpdate>
+  updateUser: UseMutateFunction<IUser, CLErrorsWrapper, IUserUpdate>
 ) => {
   return {
     // old sign up flow
