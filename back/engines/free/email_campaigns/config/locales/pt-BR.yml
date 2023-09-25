@@ -571,6 +571,18 @@ pt:
       body_2: 'Os resultados da votação %{phaseTitle} na plataforma %{organizationName} foram publicados!'
       body_3: 'Recomendamos que você analise os resultados e fique atento para mais atualizações sobre as próximas etapas.'
       cta_see_results: 'Veja os resultados na plataforma'
+    event_registration_confirmation:
+      subject: "Está inscrito! A sua inscrição em \"%{eventTitle}\" está confirmada"
+      header_message: "%{firstName}obrigado por se registar em"
+      event_details:
+        labels:
+          date: 'Data'
+          location: 'Localização'
+          online_link: 'Ligação em linha'
+          description: 'Descrição'
+          project: 'Projeto'
+      cta_go_to_event: 'Ver o evento'
+      cta_add_to_calendar: 'Adicionar ao seu calendário'
     voting_phase_started:
       subject: '%{organizationName}: A fase de votação começou em %{projectName}'
       preheader: 'Começou a fase de votação para %{projectName} na plataforma de participação de %{organizationName}'
@@ -593,6 +605,7 @@ pt:
         managers: 'Gestores'
         admins_assigned_to_a_proposal: 'Administradores atribuídos a uma proposta'
         admins_and_managers_assigned_to_the_input: 'Administradores e gestores atribuídos à entrada'
+        new_attendee: 'Utilizador recentemente registado'
         user_who_is_invited_to_cosponsor_a_proposal: 'Utilizador que é convidado a co-patrocinar uma proposta'
         user_who_is_receiving_admin_rights: 'Usuário que está recebendo direitos de administrador'
         user_who_is_receiving_folder_moderator_rights: 'Usuário que está recebendo direitos de moderador de pasta'
@@ -612,6 +625,7 @@ pt:
       content_type:
         comments: 'Comentários'
         content_moderation: 'Moderação de conteúdo'
+        events: 'Eventos'
         general: 'Geral'
         inputs: 'Entradas'
         internal_comments: 'Observações internas'
@@ -666,3 +680,4 @@ pt:
         voting_basket_submitted: 'Os votos são enviados'
         7_days_after_invite_is_sent: '7 dias após o envio do convite'
         7_days_before_the_project_changes_phase: '7 dias antes da fase de mudanças do projeto'
+        registration_to_event: 'Inscrição num evento'
