@@ -12,7 +12,7 @@ resource 'Email Campaigns' do
   get '/api/v2/email_campaign_deliveries/' do
     route_summary 'List email campaign deliveries'
     route_description <<~DESC.squish
-      List all the emails that have been sent out for a particular campaign.
+      List all the emails that have been sent out for all campaigns.
     DESC
 
     include_context 'common_list_params'

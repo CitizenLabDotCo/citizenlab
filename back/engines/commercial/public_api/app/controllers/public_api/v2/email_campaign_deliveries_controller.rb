@@ -5,7 +5,6 @@ module PublicApi
     include DeletedItemsAction
 
     def index
-      # Only include manual campaigns - system generated campaigns should stay internal
       list_items EmailCampaigns::Delivery, V2::EmailCampaignDeliverySerializer, root_key: 'email_campaign_deliveries'
     end
 

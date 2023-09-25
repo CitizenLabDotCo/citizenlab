@@ -10,13 +10,10 @@ class PublicApi::V2::VolunteeringCauseSerializer < PublicApi::V2::BaseSerializer
     :created_at,
     :updated_at
 
-  def title
-    multiloc_service.t(object.title_multiloc)
-  end
-
-  def description
-    multiloc_service.t(object.description_multiloc)
-  end
+  multiloc_attributes(
+    :title_multiloc,
+    :description_multiloc
+  )
 
   def project_id
     object.participation_context.project_id

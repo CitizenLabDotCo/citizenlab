@@ -79,6 +79,7 @@ resource 'Posts' do
       'Filter by type of idea - idea or survey - returns both by default',
       required: false,
       type: :string,
+      enum: %w[idea survey],
       in: :query
     )
 
@@ -89,7 +90,7 @@ resource 'Posts' do
         assert_status 200
         expect(json_response_body[:ideas].size).to eq(page_size)
 
-        total_pages = ((ideas.size.to_f + 2) / page_size).ceil # 2 = surveys
+        total_pages = (Idea.count / page_size).ceil
         expect(json_response_body[:meta]).to eq({ total_pages: total_pages, current_page: 1 })
       end
     end
@@ -121,7 +122,7 @@ resource 'Posts' do
         example_request 'List only surveys' do
           assert_status 200
           expect(json_response_body[:ideas].size).to eq(2)
-          expect(json_response_body[:ideas].pluck(:type)).to eq %w[survey survey]
+          expect(json_response_body[:ideas].pluck(:type)).to all eq 'survey'
         end
       end
 
@@ -131,7 +132,7 @@ resource 'Posts' do
         example_request 'List only ideas' do
           assert_status 200
           expect(json_response_body[:ideas].size).to eq(3)
-          expect(json_response_body[:ideas].pluck(:type)).to eq %w[idea idea idea]
+          expect(json_response_body[:ideas].pluck(:type)).to all eq 'idea'
         end
       end
     end

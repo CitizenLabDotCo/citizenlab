@@ -5,7 +5,7 @@ module PublicApi
     include DeletedItemsAction
 
     def index
-      list_items Basket.all, V2::BasketSerializer
+      list_items Basket.all.includes(:participation_context), V2::BasketSerializer
     end
 
     def show

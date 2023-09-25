@@ -24,9 +24,9 @@ resource 'Voting' do
   )
 
   get '/api/v2/basket_ideas' do
-    route_summary 'List relations between baskets and ideas'
+    route_summary 'List associations between baskets and ideas'
     route_description <<~DESC.squish
-      Basket idea relations define which ideas a user has voted for. 
+      Basket idea associations define which ideas a user has voted for. 
       The `votes` field defines how many votes a user has given to the idea 
       or in the case of budgeting projects/phases, how much budget they have allocated.
     DESC
@@ -37,8 +37,9 @@ resource 'Voting' do
 
     example_request 'List all associations between baskets and ideas' do
       assert_status 200
-      expect(json_response_body[:basket_ideas].pluck(:basket_id)).to match_array(basket_ideas.pluck(:basket_id))
-      expect(json_response_body[:basket_ideas].pluck(:idea_id)).to match_array(basket_ideas.pluck(:idea_id))
+      associations = json_response_body[:basket_ideas].map { |bi| [bi[:basket_id], bi[:idea_id]] }
+      expected_associations = basket_ideas.map { |bi| [bi.basket_id, bi.idea_id] }
+      expect(associations).to match_array(expected_associations)
       expect(json_response_body[:basket_ideas].first.keys).to match_array(%i[basket_id idea_id votes created_at updated_at])
     end
 

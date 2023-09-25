@@ -21,13 +21,10 @@ class PublicApi::V2::InitiativeSerializer < PublicApi::V2::BaseSerializer
     :assigned_at,
     :href
 
-  def title
-    multiloc_service.t(object.title_multiloc)
-  end
-
-  def body
-    multiloc_service.t(object.body_multiloc)
-  end
+  multiloc_attributes(
+    :title_multiloc,
+    :body_multiloc
+  )
 
   def href
     Frontend::UrlService.new.model_to_url object

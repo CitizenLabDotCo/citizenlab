@@ -7,22 +7,6 @@ require './engines/commercial/public_api/spec/acceptance/v2/support/shared'
 resource 'Posts' do
   include_context 'common_auth'
 
-  parameter(
-    :idea_id,
-    'Filter by idea ID',
-    required: false,
-    type: :string,
-    in: :query
-  )
-
-  parameter(
-    :phase_id,
-    'Filter by phase ID',
-    required: false,
-    type: :string,
-    in: :query
-  )
-
   get '/api/v2/idea_phases' do
     route_summary 'List relations between ideas and phases'
     route_description <<~DESC.squish
@@ -31,6 +15,22 @@ resource 'Posts' do
       be associated with multiple ideas. Basket & vote counts on this object represent
       the votes cast on an idea within a particular voting phase.
     DESC
+
+    parameter(
+      :idea_id,
+      'Filter by idea ID',
+      required: false,
+      type: :string,
+      in: :query
+    )
+
+    parameter(
+      :phase_id,
+      'Filter by phase ID',
+      required: false,
+      type: :string,
+      in: :query
+    )
 
     let(:project) { create(:project_with_phases) }
     let(:ideas) { create_list(:idea, 2, project: project) }
@@ -43,8 +43,9 @@ resource 'Posts' do
 
     example_request 'List all associations between ideas and phases' do
       assert_status 200
-      expect(json_response_body[:idea_phases].pluck(:phase_id)).to match_array(idea_phases.pluck(:phase_id))
-      expect(json_response_body[:idea_phases].pluck(:idea_id)).to match_array(idea_phases.pluck(:idea_id))
+      associations = json_response_body[:idea_phases].map { |ip| [ip[:idea_id], ip[:phase_id]] }
+      expected_associations = idea_phases.map { |ip| [ip.idea_id, ip.phase_id] }
+      expect(associations).to match_array(expected_associations)
       expect(json_response_body[:idea_phases].first.keys).to match_array(%i[phase_id idea_id baskets_count votes_count created_at updated_at])
     end
 

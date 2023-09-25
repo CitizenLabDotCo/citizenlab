@@ -15,7 +15,7 @@ resource 'Events' do
 
     include_context 'common_list_params'
 
-    context 'when the page size is smaller than the total number of volunteers' do
+    context 'when the page size is smaller than the total number of attendances' do
       let(:page_size) { 2 }
 
       example_request 'Successful response' do

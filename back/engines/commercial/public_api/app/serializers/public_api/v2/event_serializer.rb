@@ -13,15 +13,9 @@ class PublicApi::V2::EventSerializer < PublicApi::V2::BaseSerializer
     :created_at,
     :updated_at
 
-  def title
-    multiloc_service.t(object.title_multiloc)
-  end
-
-  def description
-    multiloc_service.t(object.description_multiloc)
-  end
-
-  def location
-    multiloc_service.t(object.location_multiloc)
-  end
+  multiloc_attributes(
+    :title_multiloc,
+    :description_multiloc,
+    :location_multiloc
+  )
 end

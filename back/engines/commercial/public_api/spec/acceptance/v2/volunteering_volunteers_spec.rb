@@ -38,7 +38,7 @@ resource 'Volunteering' do
 
     include_context 'common_item_params'
 
-    let(:volunteer) { volunteers[0] }
+    let(:volunteer) { volunteers.first }
     let(:id) { volunteer.id }
 
     example_request 'Returns the volunteer' do

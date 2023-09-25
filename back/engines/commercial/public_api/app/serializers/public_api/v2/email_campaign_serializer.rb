@@ -10,11 +10,8 @@ class PublicApi::V2::EmailCampaignSerializer < PublicApi::V2::BaseSerializer
     :updated_at,
     :deliveries_count
 
-  def subject
-    multiloc_service.t(object.subject_multiloc)
-  end
-
-  def body
-    multiloc_service.t(object.body_multiloc)
-  end
+  multiloc_attributes(
+    :subject_multiloc,
+    :body_multiloc
+  )
 end

@@ -24,7 +24,7 @@ resource 'Topics' do
   )
 
   get '/api/v2/project_topics' do
-    route_summary 'List relations between ideas and projects'
+    route_summary 'List associations between topics and projects'
     route_description <<~DESC.squish
       Project topics represent associations between projects and topics. This is a
       many-to-many relationship: Projects can have multiple topics, and topics can

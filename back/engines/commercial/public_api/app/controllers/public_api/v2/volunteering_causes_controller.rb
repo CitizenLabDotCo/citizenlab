@@ -5,8 +5,7 @@ module PublicApi
     include DeletedItemsAction
 
     def index
-      # Only include manual campaigns - system generated campaigns should stay internal
-      list_items Volunteering::Cause, V2::VolunteeringCauseSerializer, root_key: 'volunteering_causes'
+      list_items Volunteering::Cause.all.includes(:participation_context), V2::VolunteeringCauseSerializer, root_key: 'volunteering_causes'
     end
 
     def show

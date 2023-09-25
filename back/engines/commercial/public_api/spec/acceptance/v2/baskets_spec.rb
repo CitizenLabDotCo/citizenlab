@@ -29,7 +29,6 @@ resource 'Voting' do
 
       example_request 'Successful response' do
         assert_status 200
-
         expect(json_response_body[:baskets].size).to eq(page_size)
         expect(json_response_body[:baskets].first.keys).to match_array(%i[id user_id project_id phase_id submitted_at created_at updated_at])
 
@@ -53,6 +52,17 @@ resource 'Voting' do
     example_request 'Returns the basket' do
       assert_status 200
       expect(json_response_body[:basket]).to include({ id: id })
+    end
+
+    context 'when the basket is on a phase' do
+      let(:phase) { create(:project_with_active_budgeting_phase).phases.last }
+      let(:basket) { create(:basket, participation_context: phase) }
+      let(:id) { basket.id }
+
+      example_request 'Returns the phase ID in the response' do
+        assert_status 200
+        expect(json_response_body[:basket]).to include({ phase_id: phase.id })
+      end
     end
   end
 
