@@ -1,9 +1,8 @@
 import { setJwt } from 'utils/auth/jwt';
 import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
 import signOut from './signOut';
-import { API_PATH } from 'containers/App/constants';
 import getAuthUser from '../auth_user/getAuthUser';
-import fetcher from 'utils/cl-react-query/fetcher';
+import { API_PATH } from 'containers/App/constants';
 
 interface Parameters {
   email: string;
@@ -35,14 +34,19 @@ export async function getAndSetToken({
 }: Parameters) {
   const bodyData = { auth: { email, password, remember_me: rememberMe } };
 
-  // TODO: Fix type after BE request data format updated
+  // TODO: Replace with fetcher after the backend is updated
 
-  const { jwt } = await fetcher<any>({
-    path: `${API_PATH}/user_token`,
-    action: 'post',
-    body: bodyData,
-  });
-  setJwt(jwt, rememberMe, tokenLifetime);
+  return await fetch(`${API_PATH}/user_token`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(bodyData),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      setJwt(data.jwt, rememberMe, tokenLifetime);
+    });
 }
 
 async function getAuthUserAsync() {
