@@ -2178,6 +2178,7 @@
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.visits": "Posete",
   "app.modules.commercial.analytics.admin.components.VisitorsTypesCard.title": "Tipovi posetioca",
   "app.modules.commercial.analytics.admin.components.VisitorsTypesCard.visitors": "Posetioci",
+  "app.modules.commercial.analytics.admin.containers.visitors.dateInfo": "Unique visitor data is available from {date} onwards.",
   "app.modules.commercial.analytics.admin.hooks.useActiveUsers.timeSeries": "Aktivni korisnici tokom vremena",
   "app.modules.commercial.analytics.admin.hooks.useEmailDeliveries.timeSeries": "Isporuka e-pošte tokom vremena",
   "app.modules.commercial.analytics.admin.hooks.useRegistrations.timeSeries": "Registracije tokom vremena",
