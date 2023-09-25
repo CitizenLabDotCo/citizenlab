@@ -7,7 +7,7 @@ class OmniauthCallbackController < ApplicationController
 
   def create
     auth_provider = request.env.dig('omniauth.auth', 'provider')
-    auth_method = AuthenticationService.new.method_by_provider(auth_provider)
+    auth_method = authentication_service.method_by_provider(auth_provider)
     verification_method = get_verification_method(auth_provider)
 
     if auth_method && verification_method
@@ -29,7 +29,7 @@ class OmniauthCallbackController < ApplicationController
     provider = params[:provider]
     user_id = params[:user_id]
     user = User.find(user_id)
-    auth_service = AuthenticationService.new
+    auth_service = authentication_service
 
     url = auth_service.logout_url(provider, user)
 
@@ -65,6 +65,7 @@ class OmniauthCallbackController < ApplicationController
     @identity = Identity.find_or_build_with_omniauth(auth, authver_method)
 
     @user = @identity.user
+    @user = authentication_service.prevent_user_account_hijacking @user
 
     if @user.nil? && user_attrs.key?(:email) # some providers (ClaveUnica) don't return email
       @user = User.find_by_cimail(user_attrs.fetch(:email))
@@ -174,7 +175,7 @@ class OmniauthCallbackController < ApplicationController
 
     AuthToken::AuthToken.new payload: payload.merge({
       provider: provider,
-      logout_supported: AuthenticationService.new.supports_logout?(provider)
+      logout_supported: authentication_service.supports_logout?(provider)
     })
   end
 
@@ -227,6 +228,10 @@ class OmniauthCallbackController < ApplicationController
 
   def verification_callback(_verification_method)
     # overridden
+  end
+
+  def authentication_service
+    @authentication_service ||= AuthenticationService.new
   end
 end
 
