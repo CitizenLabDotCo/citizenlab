@@ -1,6 +1,6 @@
 import React, { lazy } from 'react';
 import { useParams } from 'react-router-dom';
-import useFormCustomFields from 'hooks/useFormCustomFields';
+import useFormCustomFields from 'api/custom_fields/useCustomFields';
 import { nativeSurveyConfig } from '../utils';
 import { getUpdatedConfiguration } from 'components/FormBuilder/utils';
 
@@ -12,11 +12,10 @@ const SurveyFormBuilder = () => {
     phaseId?: string;
   };
 
-  const formCustomFields = useFormCustomFields({
+  const { data: formCustomFields } = useFormCustomFields({
     projectId,
     phaseId,
   });
-
   const goBackUrl = `/admin/projects/${projectId}/native-survey`;
 
   return (
