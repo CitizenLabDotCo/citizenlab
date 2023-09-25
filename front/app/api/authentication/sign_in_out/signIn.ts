@@ -1,4 +1,4 @@
-import { setJwt } from 'utils/auth/jwt';
+import { getJwt, setJwt } from 'utils/auth/jwt';
 import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
 import signOut from './signOut';
 import getAuthUser from '../auth_user/getAuthUser';
@@ -35,11 +35,12 @@ export async function getAndSetToken({
   const bodyData = { auth: { email, password, remember_me: rememberMe } };
 
   // TODO: Replace with fetcher after the backend is updated
-
+  const jwt = getJwt();
   return await fetch(`${API_PATH}/user_token`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${jwt}`,
     },
     body: JSON.stringify(bodyData),
   })
