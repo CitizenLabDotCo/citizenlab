@@ -2,10 +2,9 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrorsWrapper } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import { ISpamReport, ISpamReportAdd } from './types';
-import streams from 'utils/streams';
-import { API_PATH } from 'containers/App/constants';
 import moderationsKeys from 'api/moderations/keys';
 import moderationsCountKeys from 'api/moderation_count/keys';
+import inappropriateContentFlagsKeys from 'modules/commercial/flag_inappropriate_content/api/inappropriate_content_flags/keys';
 
 const addSpamReport = async ({
   targetId,
@@ -29,8 +28,8 @@ const useAddSpamReport = () => {
       queryClient.invalidateQueries({
         queryKey: moderationsCountKeys.items(),
       });
-      streams.fetchAllWith({
-        apiEndpoint: [`${API_PATH}/inappropriate_content_flags`],
+      queryClient.invalidateQueries({
+        queryKey: inappropriateContentFlagsKeys.items(),
       });
     },
   });

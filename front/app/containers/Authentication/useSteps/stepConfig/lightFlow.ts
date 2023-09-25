@@ -7,7 +7,6 @@ import { handleOnSSOClick } from 'services/singleSignOn';
 import checkUser from 'api/users/checkUser';
 
 // cache
-import streams from 'utils/streams';
 import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
 
 // tracks
@@ -205,7 +204,7 @@ export const lightFlow = (
           return;
         }
 
-        await Promise.all([streams.reset(), invalidateQueryCache()]);
+        invalidateQueryCache();
         setCurrentStep('closed');
 
         trackEventByName(tracks.signUpFlowCompleted);

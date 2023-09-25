@@ -1,8 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { API_PATH } from 'containers/App/constants';
 import Frame from 'react-frame-component';
-import request from 'utils/request';
+import fetcher from 'utils/cl-react-query/fetcher';
 
 const StyledFrame = styled(Frame)`
   border-radius: ${(props) => props.theme.borderRadius};
@@ -31,13 +30,12 @@ class PreviewFrame extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    request<{ html: string }>(
-      `${API_PATH}/campaigns/${this.props.campaignId}/preview`,
-      null,
-      null,
-      null
-    ).then((json) => {
-      this.setState({ previewHtml: json.html });
+    // TODO: Fix types when back-end format becomes compatible with fetcher
+    fetcher<any>({
+      path: `/campaigns/${this.props.campaignId}/preview`,
+      action: 'get',
+    }).then((result: any) => {
+      this.setState({ previewHtml: result.html });
     });
   }
 

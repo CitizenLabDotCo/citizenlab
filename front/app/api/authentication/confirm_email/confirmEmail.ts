@@ -1,11 +1,10 @@
-import { API_PATH } from 'containers/App/constants';
-import streams from 'utils/streams';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import requirementsKeys from 'api/authentication/authentication_requirements/keys';
 import meKeys from 'api/me/keys';
 import onboardingCampaignsKeys from 'api/onboarding_campaigns/keys';
+import fetcher from 'utils/cl-react-query/fetcher';
 
-const confirmationApiEndpoint = `${API_PATH}/user/confirm`;
+const confirmationApiEndpoint = `user/confirm`;
 
 export type IConfirmation = {
   code?: string | null;
@@ -18,7 +17,11 @@ export default async function confirmEmail(
     confirmation,
   };
   try {
-    await streams.add(confirmationApiEndpoint, bodyData);
+    await fetcher({
+      path: `/${confirmationApiEndpoint}`,
+      action: 'post',
+      body: bodyData,
+    });
 
     queryClient.invalidateQueries({ queryKey: requirementsKeys.all() });
     queryClient.invalidateQueries({ queryKey: meKeys.all() });
@@ -26,6 +29,6 @@ export default async function confirmEmail(
 
     return true;
   } catch (errors) {
-    throw errors.json.errors;
+    throw errors.errors;
   }
 }
