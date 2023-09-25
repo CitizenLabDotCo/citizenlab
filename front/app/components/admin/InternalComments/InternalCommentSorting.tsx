@@ -52,7 +52,7 @@ const InternalCommentSorting = ({
         multipleSelectionAllowed={false}
         width="180px"
         right="-10px"
-        mobileLeft="-5px"
+        mobileRight="0"
       />
     </Box>
   );
