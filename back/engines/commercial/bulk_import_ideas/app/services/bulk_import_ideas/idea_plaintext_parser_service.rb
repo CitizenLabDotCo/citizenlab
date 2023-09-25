@@ -9,9 +9,17 @@ module BulkImportIdeas
     EMPTY_SELECT_CIRCLES = ['O', '○']
     EMPTY_MULTISELECT_SQUARES = ['☐']
 
-    def initialize(custom_fields, locale)
+    def initialize(participation_context, custom_fields, locale)
       @custom_fields = custom_fields
       @locale = locale
+
+      pdf = PrintCustomFieldsService.new(
+        participation_context,
+        custom_fields,
+        { locale: locale }
+      ).create_pdf
+
+      @number_of_pages_per_form = pdf.page_count
 
       @optional_copy = I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.optional') }
       @choose_as_many_copy = I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.choose_as_many') }
@@ -30,7 +38,7 @@ module BulkImportIdeas
       end
 
       @forms = []
-      @form = new_form
+      @form = nil
 
       @current_field_display_title = nil
       @current_custom_field = nil
@@ -59,16 +67,17 @@ module BulkImportIdeas
       form_page_number = get_page_number(line_with_page_number)
 
       # Check if new form
-      if form_page_number
-        if form_page_number == 1 && pdf_page_number != 1
-          @forms << @form
-          @form = new_form
-        end
+      if new_form?(pdf_page_number, form_page_number)
+        @forms << @form if @form.present?
+        @form = new_form
+      end
 
+      # Add form page number
+      if form_page_number
         @form[:form_pages] << form_page_number
       end
 
-      # Add page number
+      # Add pdf page number
       @form[:pdf_pages] << pdf_page_number
 
       lines.each do |line|
@@ -148,6 +157,14 @@ module BulkImportIdeas
 
     def get_page_number(line)
       line[@page_copy.length + 1, line.length].to_i
+    end
+
+    def new_form?(pdf_page_number, form_page_number)
+      return true if pdf_page_number == 1
+      return true if form_page_number == 1
+
+      number_of_pages_in_form = @form[:pdf_pages].length
+      number_of_pages_in_form == @number_of_pages_per_form
     end
 
     def field_title?(line)
