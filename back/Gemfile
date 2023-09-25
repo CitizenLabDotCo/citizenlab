@@ -144,7 +144,7 @@ gem 'ice_cube', '~> 0.16'
 gem 'aws-sdk-s3', '~> 1'
 gem 'bootsnap', '~> 1', require: false
 gem 'dalli', '~> 3.2.4'
-gem 'mailgun-ruby', '~>1.2.8'
+gem 'mailgun-ruby', '~>1.2.11'
 gem 'rails_semantic_logger'
 gem 'rinku', '~> 2'
 gem 'jsonapi-serializer'
