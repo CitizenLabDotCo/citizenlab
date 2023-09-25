@@ -4,7 +4,7 @@ import {
   isProjectModerator,
   isSuperAdmin,
 } from './roles';
-import { makeUser } from 'services/__mocks__/users';
+import { makeUser } from 'api/users/__mocks__/useUsers';
 
 describe('isAdmin', () => {
   it('returns true when a user is an admin', () => {
