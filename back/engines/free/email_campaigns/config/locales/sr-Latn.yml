@@ -571,6 +571,18 @@ sr-Latn:
       body_2: 'The results of the %{phaseTitle} vote in the %{organizationName} platform have been published!'
       body_3: 'We encourage you to review the results and stay tuned for further updates on the next steps.'
       cta_see_results: 'See results in the platform'
+    event_registration_confirmation:
+      subject: "You're in! Your registration for \"%{eventTitle}\" is confirmed"
+      header_message: "%{firstName}, thanks for registering for"
+      event_details:
+        labels:
+          date: 'Date'
+          location: 'Location'
+          online_link: 'Online link'
+          description: 'Description'
+          project: 'Project'
+      cta_go_to_event: 'View the event'
+      cta_add_to_calendar: 'Add to your calendar'
     voting_phase_started:
       subject: '%{organizationName}: The voting phase started for %{projectName}'
       preheader: 'The voting phase started for %{projectName} on the participation platform of %{organizationName}'
@@ -593,6 +605,7 @@ sr-Latn:
         managers: 'Менаџери'
         admins_assigned_to_a_proposal: 'Администратори додељени предлогу'
         admins_and_managers_assigned_to_the_input: 'Администратори и менаџери додељени улазу'
+        new_attendee: 'Newly registered user'
         user_who_is_invited_to_cosponsor_a_proposal: 'User who is invited to co-sponsor a proposal'
         user_who_is_receiving_admin_rights: 'Корисник који добија администраторска права'
         user_who_is_receiving_folder_moderator_rights: 'Корисник који добија права модератора фолдера'
@@ -612,6 +625,7 @@ sr-Latn:
       content_type:
         comments: 'Коментари'
         content_moderation: 'Модерирање садржаја'
+        events: 'Events'
         general: 'Генерал'
         inputs: 'Инпутс'
         internal_comments: 'Интерни коментари'
@@ -666,3 +680,4 @@ sr-Latn:
         voting_basket_submitted: 'Votes are submitted'
         7_days_after_invite_is_sent: '7 дана након слања позивнице'
         7_days_before_the_project_changes_phase: '7 дана пре промене фазе пројекта'
+        registration_to_event: 'Registration to an event'
