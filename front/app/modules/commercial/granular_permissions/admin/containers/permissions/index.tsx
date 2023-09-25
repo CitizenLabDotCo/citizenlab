@@ -7,17 +7,19 @@ import GetGlobalPermissions, {
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import { isNilOrError } from 'utils/helperUtils';
-import { updateGlobalPermission } from 'services/actionPermissions';
+
 import { Box, Title } from '@citizenlab/cl2-component-library';
 import { colors } from 'utils/styleUtils';
 import { HandlePermissionChangeProps } from '../Granular/utils';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useUpdatePermission from 'api/permissions/useUpdatePermission';
 
 interface DataProps {
   permissions: GetGlobalPermissionsChildProps;
 }
 
 const PermissionsInitiatives = ({ permissions }: DataProps) => {
+  const { mutate: updateGlobalPermission } = useUpdatePermission();
   const featureEnabled = useFeatureFlag({ name: 'granular_permissions' });
 
   if (!featureEnabled || isNilOrError(permissions)) return null;
@@ -36,7 +38,9 @@ const PermissionsInitiatives = ({ permissions }: DataProps) => {
     groupIds,
     globalCustomFields,
   }: HandlePermissionChangeProps) => {
-    updateGlobalPermission(permission.id, permission.attributes.action, {
+    updateGlobalPermission({
+      id: permission.id,
+      action: permission.attributes.action,
       permitted_by: permittedBy,
       group_ids: groupIds,
       global_custom_fields: globalCustomFields,

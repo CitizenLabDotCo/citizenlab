@@ -1,7 +1,7 @@
 import React, { useState, lazy } from 'react';
 
 // hooks
-import useFormCustomFields from 'hooks/useFormCustomFields';
+import useFormCustomFields from 'api/custom_fields/useCustomFields';
 import { useParams } from 'react-router-dom';
 import useLocale from 'hooks/useLocale';
 
@@ -21,7 +21,8 @@ const IdeaFormBuilder = () => {
   const { projectId } = useParams() as {
     projectId: string;
   };
-  const formCustomFields = useFormCustomFields({
+
+  const { data: formCustomFields } = useFormCustomFields({
     projectId,
   });
   const locale = useLocale();

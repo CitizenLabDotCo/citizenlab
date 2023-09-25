@@ -9,6 +9,7 @@ hr:
       "comment_on_your_idea": Komentar na moju ideju
       "comment_on_your_initiative": Komentar na moj prijedlog
       "cosponsor_of_your_initiative": Korisnik prihvaća moj poziv da susponzorira moj prijedlog
+      "event_registration_confirmation": Potvrda prijave za događaj
       "first_idea_published": Objava moje prve ideje
       "idea_marked_as_spam": Izvješće o neželjenoj ideji
       "idea_published": Objava moje ideje
@@ -638,6 +639,18 @@ hr:
       body_2: 'Objavljeni su rezultati %{phaseTitle} glasova u %{organizationName} platformi!'
       body_3: 'Potičemo vas da pregledate rezultate i ostanete s nama radi daljnjih ažuriranja o sljedećim koracima.'
       cta_see_results: 'Pogledajte rezultate na platformi'
+    event_registration_confirmation:
+      subject: "Upadas! Vaša registracija za \"%{eventTitle}\" je potvrđena"
+      header_message: "%{firstName}, hvala na registraciji za"
+      event_details:
+        labels:
+          date: 'Datum'
+          location: 'Mjesto'
+          online_link: 'Online poveznica'
+          description: 'Opis'
+          project: 'Projekt'
+      cta_go_to_event: 'Pogledajte događaj'
+      cta_add_to_calendar: 'Dodajte u svoj kalendar'
     voting_phase_started:
       subject: '%{organizationName}: Faza glasovanja započela je za %{projectName}'
       preheader: 'Faza glasovanja započela je za %{projectName} na platformi za sudjelovanje %{organizationName}'
@@ -660,6 +673,7 @@ hr:
         managers: 'Menadžeri'
         admins_assigned_to_a_proposal: 'Administratori dodijeljeni prijedlogu'
         admins_and_managers_assigned_to_the_input: 'Administratori i upravitelji dodijeljeni unosu'
+        new_attendee: 'Novo registrirani korisnik'
         user_who_is_invited_to_cosponsor_a_proposal: 'Korisnik koji je pozvan da susponzorira prijedlog'
         user_who_is_receiving_admin_rights: 'Korisnik koji dobiva administratorska prava'
         user_who_is_receiving_folder_moderator_rights: 'Korisnik koji dobiva prava moderatora mape'
@@ -679,6 +693,7 @@ hr:
       content_type:
         comments: 'Komentari'
         content_moderation: 'Moderiranje sadržaja'
+        events: 'Događaji'
         general: 'Općenito'
         inputs: 'Unosi'
         internal_comments: 'Interni komentari'
@@ -733,3 +748,4 @@ hr:
         voting_basket_submitted: 'Glasovi su poslani'
         7_days_after_invite_is_sent: '7 dana nakon slanja poziva'
         7_days_before_the_project_changes_phase: '7 dana prije promjene faze projekta'
+        registration_to_event: 'Prijava na događaj'

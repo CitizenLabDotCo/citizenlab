@@ -6,7 +6,7 @@ import { ListItem, Box } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
-import useFormCustomFields from 'hooks/useFormCustomFields';
+import useFormCustomFields from 'api/custom_fields/useCustomFields';
 import { isNilOrError } from 'utils/helperUtils';
 import useLocalize from 'hooks/useLocalize';
 import tracks from 'containers/Admin/projects/project/analysis/tracks';
@@ -26,7 +26,7 @@ const AnalysesList = ({ customFieldId }: { customFieldId: string }) => {
     phaseId,
   });
 
-  const formCustomFields = useFormCustomFields({
+  const { data: formCustomFields } = useFormCustomFields({
     projectId,
     phaseId,
   });

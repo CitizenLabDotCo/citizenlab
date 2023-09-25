@@ -8,7 +8,7 @@ const basketsIdeasKeys = {
   all: () => [baseKey],
   items: () => [{ ...baseKey, operation: 'item' }],
   item: ({ basketId }: { basketId?: string }) => [
-    { ...baseKey, operation: 'item', parameters: { basketId } },
+    { ...baseKey, operation: 'item', parameters: { id: basketId } },
   ],
 } satisfies QueryKeys;
 

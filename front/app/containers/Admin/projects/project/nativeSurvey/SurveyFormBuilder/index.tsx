@@ -7,7 +7,7 @@ import PDFExportModal from 'containers/Admin/projects/components/PDFExportModal'
 import { useParams } from 'react-router-dom';
 
 // hooks
-import useFormCustomFields from 'hooks/useFormCustomFields';
+import useFormCustomFields from 'api/custom_fields/useCustomFields';
 import useLocale from 'hooks/useLocale';
 
 // utils
@@ -24,11 +24,12 @@ const SurveyFormBuilder = () => {
     projectId: string;
     phaseId?: string;
   };
-  const formCustomFields = useFormCustomFields({
+
+  const locale = useLocale();
+  const { data: formCustomFields } = useFormCustomFields({
     projectId,
     phaseId,
   });
-  const locale = useLocale();
 
   const goBackUrl = `/admin/projects/${projectId}/native-survey`;
   const downloadPdfLink = phaseId

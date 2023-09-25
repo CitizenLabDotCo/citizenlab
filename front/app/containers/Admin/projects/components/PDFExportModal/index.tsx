@@ -22,11 +22,7 @@ import Checkbox from 'components/HookForm/Checkbox';
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { object, boolean, string } from 'yup';
-import {
-  isCLErrorsIsh,
-  handleCLErrorsIsh,
-  handleCLErrorWrapper,
-} from 'utils/errorUtils';
+import { handleCLErrorWrapper } from 'utils/errorUtils';
 
 const DEFAULT_VALUES = {
   name: false,
@@ -94,11 +90,6 @@ const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
       onClose();
     } catch (e) {
       setLoading(false);
-
-      if (isCLErrorsIsh(e)) {
-        handleCLErrorsIsh(e, methods.setError);
-        return;
-      }
 
       handleCLErrorWrapper(e, methods.setError);
     }

@@ -1,28 +1,8 @@
-import { CLErrorsJSON, CLErrors, CLErrorsWrapper } from 'typings';
+import { CLErrors, CLErrorsWrapper } from 'typings';
 import messages from './messages';
 import { isArray } from 'lodash-es';
 import { isObject } from './helperUtils';
 import clHistory from 'utils/cl-router/history';
-
-export function isCLErrorJSON(value: unknown): value is CLErrorsJSON {
-  let objectToCheck = value;
-  for (const prop of ['json', 'errors']) {
-    if (
-      // value is an object
-      typeof objectToCheck === 'object' &&
-      !Array.isArray(objectToCheck) &&
-      objectToCheck !== null &&
-      // value object has prop as key
-      Object.prototype.hasOwnProperty.call(objectToCheck, prop)
-    ) {
-      objectToCheck = objectToCheck[prop];
-    } else {
-      return false;
-    }
-  }
-
-  return true;
-}
 
 // NB: initially I wated to pass in a translated field name to the generic error message but in most languages that won't work, not without hacky phrase building.
 
@@ -147,24 +127,8 @@ export function getDefaultAjvErrorMessage({
   );
 }
 
-// There's a similar function above but it's kind of insane, so
-// I'm creating a new one
-export const isCLErrorsJSON = (value: unknown): value is CLErrorsJSON => {
-  return isObject(value) && 'json' in value && isObject(value.json.errors);
-};
-
-// This is to check if it's not the JSON wrapper but the normal response
 export const isCLErrorsWrapper = (value: unknown): value is CLErrorsWrapper => {
   return isObject(value) && isObject(value.errors);
-};
-
-// This one checks both. Needed because right now the 'old' utils/request
-// and the new fetcher deal with errors differently (the former wraps it in json)
-// attribute, the latter doesn't)
-export const isCLErrorsIsh = (
-  value: unknown
-): value is CLErrorsJSON | CLErrorsWrapper => {
-  return isCLErrorJSON(value) || isCLErrorsWrapper(value);
 };
 
 export const handleCLErrorWrapper = (
@@ -195,34 +159,13 @@ export const handleCLErrorWrapper = (
       });
 };
 
-export const handleCLErrorsJSON = (
-  error: CLErrorsJSON,
-  handleError: (error: string, options: Record<string, any>) => void,
-  fieldArrayKey?: string
-) => {
-  handleCLErrorWrapper(error.json, handleError, fieldArrayKey);
-};
-
-// This one handles both. Needed because right now the 'old' utils/request
-// and the new fetcher deal with errors differently (the former wraps it in json
-// attribute, the latter doesn't)
-export const handleCLErrorsIsh = (
-  error: CLErrorsJSON | CLErrorsWrapper,
-  handleError: (error: string, options: Record<string, any>) => void,
-  fieldArrayKey?: string
-) => {
-  isCLErrorJSON(error)
-    ? handleCLErrorsJSON(error, handleError, fieldArrayKey)
-    : handleCLErrorWrapper(error, handleError, fieldArrayKey);
-};
-
 export const handleHookFormSubmissionError = (
-  error: Error | CLErrorsJSON,
+  error: Error | CLErrorsWrapper,
   handleError: (error: string, options: Record<string, any>) => void,
   fieldArrayKey?: string
 ) => {
-  if (isCLErrorsJSON(error)) {
-    handleCLErrorsJSON(error, handleError, fieldArrayKey);
+  if (isCLErrorsWrapper(error)) {
+    handleCLErrorWrapper(error, handleError, fieldArrayKey);
   } else {
     handleError('submissionError', {
       type: 'server',

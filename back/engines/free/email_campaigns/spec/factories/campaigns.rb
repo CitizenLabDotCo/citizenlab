@@ -259,6 +259,10 @@ FactoryBot.define do
     enabled { true }
   end
 
+  factory :event_registration_confirmation_campaign, class: EmailCampaigns::Campaigns::EventRegistrationConfirmation do
+    enabled { true }
+  end
+
   factory :voting_phase_started_campaign, class: EmailCampaigns::Campaigns::VotingPhaseStarted do
     enabled { true }
   end

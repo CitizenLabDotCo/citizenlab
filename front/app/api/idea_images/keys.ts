@@ -9,11 +9,11 @@ const ideaImagesKeys = {
     { ...baseKey, operation: 'list', parameters: { ideaId } },
   ],
   items: () => [{ ...baseKey, operation: 'item' }],
-  item: ({ ideaId, imageId }: { ideaId: string; imageId?: string }) => [
+  item: ({ imageId }: { imageId?: string }) => [
     {
       ...baseKey,
       operation: 'item',
-      parameters: { ideaId, imageId },
+      parameters: { id: imageId },
     },
   ],
 } satisfies QueryKeys;

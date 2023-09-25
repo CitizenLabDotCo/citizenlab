@@ -20,23 +20,23 @@ import messages from '../messages';
 import ownMessages from '../../ideas/messages';
 import { Multiloc } from 'typings';
 
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
-// hooks
-import useFormSubmissionCount from 'hooks/useFormSubmissionCount';
+// api
 import useInputSchema from 'hooks/useInputSchema';
 import useLocale from 'hooks/useLocale';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useFormSubmissionCount from 'api/submission_count/useSubmissionCount';
+import useDeleteSurveyResults from 'api/survey_results/useDeleteSurveyResults';
 
 // styles
 import { colors } from 'utils/styleUtils';
 
 // services
-import { deleteFormResults } from 'services/formCustomFields';
 import { saveSurveyAsPDF } from '../saveSurveyAsPDF';
-import { requestBlob } from 'utils/request';
 import { saveAs } from 'file-saver';
+
+// utils
+import { requestBlob } from 'utils/request';
+import { isNilOrError } from 'utils/helperUtils';
 
 type FormActionsProps = {
   phaseId?: string;
@@ -68,8 +68,9 @@ const FormActions = ({
   const { projectId } = useParams() as {
     projectId: string;
   };
+  const { mutate: deleteFormResults } = useDeleteSurveyResults();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const submissionCount = useFormSubmissionCount({
+  const { data: submissionCount } = useFormSubmissionCount({
     projectId,
     phaseId,
   });
@@ -85,9 +86,15 @@ const FormActions = ({
   const openModal = () => {
     setShowDeleteModal(true);
   };
-  const deleteResults = async () => {
-    await deleteFormResults(projectId, phaseId);
-    closeModal();
+  const deleteResults = () => {
+    deleteFormResults(
+      { projectId, phaseId },
+      {
+        onSuccess: () => {
+          closeModal();
+        },
+      }
+    );
   };
 
   const handleDownloadPDF = () => setExportModalOpen(true);
@@ -112,7 +119,8 @@ const FormActions = ({
   };
 
   if (!isNilOrError(submissionCount)) {
-    const haveSubmissionsComeIn = submissionCount.totalSubmissions > 0;
+    const haveSubmissionsComeIn =
+      submissionCount.data.attributes.totalSubmissions > 0;
 
     return (
       <>
@@ -161,7 +169,7 @@ const FormActions = ({
               }}
             >
               {formatMessage(messages.viewSurveyResults2, {
-                count: submissionCount.totalSubmissions,
+                count: submissionCount.data.attributes.totalSubmissions,
               })}
             </Button>
             <Button

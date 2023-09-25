@@ -75,6 +75,9 @@ group :test do
   gem 'rubyXL'
   gem 'shoulda-matchers', '~> 5.3.0'
   gem 'webmock', '~> 3.18'
+
+  # Adds rspec matchers and helpers for testing html structure and styling.
+  gem 'capybara', '~> 3.39'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

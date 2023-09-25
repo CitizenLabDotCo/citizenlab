@@ -16,7 +16,7 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 import useAddApiClient from 'api/api_clients/useAddApiClient';
-import { handleCLErrorsIsh } from 'utils/errorUtils';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import styled from 'styled-components';
 
 interface FormValues {
@@ -51,7 +51,7 @@ const CreateTokenModal = ({ onClose }: CreateTokenModalProps) => {
       setSecret(result.data.attributes.secret);
       setSuccess(true);
     } catch (error) {
-      handleCLErrorsIsh(error, methods.setError);
+      handleHookFormSubmissionError(error, methods.setError);
     }
   };
 
