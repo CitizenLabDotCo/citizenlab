@@ -32,6 +32,7 @@ export interface Props {
 const VerificationSteps = memo<Props>(({ onCompleted, onError }) => {
   const [activeStep, setActiveStep] =
     useState<TVerificationStep>('method-selection');
+  console.log('activeStep', activeStep);
   const [method, setMethod] = useState<TVerificationMethod | null>(null);
 
   const { data: authUser } = useAuthUser();
@@ -54,11 +55,9 @@ const VerificationSteps = memo<Props>(({ onCompleted, onError }) => {
 
   const goToSuccessStep = useCallback(() => {
     if (!isNilOrError(authUser)) {
-      () => {
-        invalidateQueryCache();
-        setActiveStep('success');
-        setMethod(null);
-      };
+      invalidateQueryCache();
+      setActiveStep('success');
+      setMethod(null);
     }
   }, [authUser]);
 
