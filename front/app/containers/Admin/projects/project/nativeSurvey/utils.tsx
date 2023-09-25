@@ -1,5 +1,3 @@
-import React from 'react';
-
 // api
 import { updateProject } from 'api/projects/useUpdateProject';
 import { IProjectData } from 'api/projects/types';
@@ -12,7 +10,6 @@ import { IPhaseData, UpdatePhaseObject } from 'api/phases/types';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import DeleteFormResultsNotice from './DeleteFormResultsNotice';
 import { FormBuilderConfig } from 'components/FormBuilder/utils';
 
 // intl
@@ -34,19 +31,9 @@ export const nativeSurveyConfig: FormBuilderConfig = {
   displayBuiltInFields: false,
   showStatusBadge: true,
   isLogicEnabled: true,
-  isEditPermittedAfterSubmissions: false,
   alwaysShowCustomFields: true,
   isFormPhaseSpecific: true,
-
   groupingType: 'page',
-  getDeletionNotice: (projectId: string) => {
-    return (
-      <DeleteFormResultsNotice
-        projectId={projectId}
-        redirectToSurveyPage={true}
-      />
-    );
-  },
 };
 
 type FormActionsConfig = {

@@ -8,7 +8,6 @@ import { Toggle, Box, Title, Text } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import T from 'components/T';
 import Modal from 'components/UI/Modal';
-import DeleteFormResultsNotice from '../DeleteFormResultsNotice';
 
 // routing
 import clHistory from 'utils/cl-router/history';
@@ -99,11 +98,6 @@ const FormActions = ({
             }}
           />
         </Box>
-        {haveSubmissionsComeIn && (
-          <Box width="100%" mb="36px">
-            <DeleteFormResultsNotice projectId={projectId} />
-          </Box>
-        )}
         <Box
           display="flex"
           alignItems="center"
@@ -131,7 +125,6 @@ const FormActions = ({
             buttonStyle="cl-blue"
             width="auto"
             minWidth="312px"
-            disabled={haveSubmissionsComeIn}
             onClick={() => {
               clHistory.push(editFormLink);
             }}

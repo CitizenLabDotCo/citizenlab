@@ -41,13 +41,11 @@ const StyledStatusLabel = styled(StatusLabel)`
 
 type FormBuilderTopBarProps = {
   isSubmitting: boolean;
-  isEditingDisabled: boolean;
   builderConfig: FormBuilderConfig;
 };
 
 const FormBuilderTopBar = ({
   isSubmitting,
-  isEditingDisabled,
   builderConfig,
 }: FormBuilderTopBarProps) => {
   const localize = useLocalize();
@@ -141,7 +139,6 @@ const FormBuilderTopBar = ({
         </Button>
         <Button
           buttonStyle="admin-dark"
-          disabled={isEditingDisabled}
           processing={isSubmitting}
           type="submit"
         >

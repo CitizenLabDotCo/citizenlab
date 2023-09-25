@@ -32,7 +32,6 @@ interface FormFieldsProps {
     result: DragAndDropResult,
     nestedGroupData: NestedGroupingStructure[]
   ) => void;
-  isEditingDisabled: boolean;
   selectedFieldId?: string;
   builderConfig: FormBuilderConfig;
 }
@@ -40,7 +39,6 @@ interface FormFieldsProps {
 const FormFields = ({
   onEditField,
   selectedFieldId,
-  isEditingDisabled,
   handleDragEnd,
   builderConfig,
 }: FormFieldsProps) => {
@@ -89,7 +87,6 @@ const FormFields = ({
               <Drag key={grouping.id} id={grouping.id} index={pageIndex}>
                 <FieldElement
                   field={grouping.groupElement}
-                  isEditingDisabled={isEditingDisabled}
                   getTranslatedFieldBadgeLabel={getTranslatedFieldBadgeLabel}
                   selectedFieldId={selectedFieldId}
                   onEditField={onEditField}
@@ -111,7 +108,6 @@ const FormFields = ({
                               <FieldElement
                                 key={question.id}
                                 field={question}
-                                isEditingDisabled={isEditingDisabled}
                                 getTranslatedFieldBadgeLabel={
                                   getTranslatedFieldBadgeLabel
                                 }

@@ -56,7 +56,6 @@ const FormFieldsContainer = styled(Box)`
 
 type Props = {
   field: IFlatCustomField;
-  isEditingDisabled: boolean;
   onEditField: (field: IFlatCustomFieldWithIndex) => void;
   getTranslatedFieldBadgeLabel: (field: IFlatCustomField) => MessageDescriptor;
   selectedFieldId?: string;
@@ -66,7 +65,6 @@ type Props = {
 export const FieldElement = (props: Props) => {
   const {
     field,
-    isEditingDisabled,
     onEditField,
     getTranslatedFieldBadgeLabel,
     selectedFieldId,
@@ -109,9 +107,7 @@ export const FieldElement = (props: Props) => {
       role={'button'}
       key={field.id}
       background={getFieldBackgroundColor(selectedFieldId, field, hasErrors)}
-      onClick={() => {
-        isEditingDisabled ? undefined : editFieldAndValidate();
-      }}
+      onClick={() => editFieldAndValidate()}
       data-cy="e2e-field-row"
     >
       <FlexibleRow rowHeight={isFieldGrouping ? '50px' : '70px'}>

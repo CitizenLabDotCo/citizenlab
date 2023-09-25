@@ -22,7 +22,6 @@ export const ideationConfig: FormBuilderConfig = {
 
   showStatusBadge: false,
   isLogicEnabled: false,
-  isEditPermittedAfterSubmissions: true,
   alwaysShowCustomFields: false,
   isFormPhaseSpecific: false,
 

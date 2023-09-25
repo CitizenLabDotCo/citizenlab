@@ -71,7 +71,6 @@ type FormEditProps = {
   };
   projectId: string;
   phaseId?: string;
-  totalSubmissions: number;
   builderConfig: FormBuilderConfig;
 } & WrappedComponentProps;
 
@@ -80,22 +79,13 @@ export const FormEdit = ({
   defaultValues,
   phaseId,
   projectId,
-  totalSubmissions,
   builderConfig,
 }: FormEditProps) => {
   const [selectedField, setSelectedField] = useState<
     IFlatCustomFieldWithIndex | undefined
   >(undefined);
-  const {
-    groupingType,
-    isEditPermittedAfterSubmissions,
-    formSavedSuccessMessage,
-    isFormPhaseSpecific,
-  } = builderConfig;
-
-  const isEditingDisabled =
-    totalSubmissions > 0 && !isEditPermittedAfterSubmissions;
-  const showWarningNotice = totalSubmissions > 0;
+  const { groupingType, formSavedSuccessMessage, isFormPhaseSpecific } =
+    builderConfig;
 
   const schema = object().shape({
     customFields: array().of(
@@ -253,13 +243,11 @@ export const FormEdit = ({
             <form onSubmit={handleSubmit(onFormSubmit)}>
               <FormBuilderTopBar
                 isSubmitting={isSubmitting}
-                isEditingDisabled={isEditingDisabled}
                 builderConfig={builderConfig}
               />
               <Box mt={`${stylingConsts.menuHeight}px`} display="flex">
                 <FormBuilderToolbox
                   onAddField={onAddField}
-                  isEditingDisabled={isEditingDisabled}
                   builderConfig={builderConfig}
                   move={move}
                 />
@@ -278,12 +266,6 @@ export const FormEdit = ({
                     <Feedback
                       successMessage={formatMessage(formSavedSuccessMessage)}
                     />
-                    {isEditingDisabled &&
-                      builderConfig.getDeletionNotice &&
-                      builderConfig.getDeletionNotice(projectId)}
-                    {showWarningNotice &&
-                      builderConfig.getWarningNotice &&
-                      builderConfig.getWarningNotice()}
                     <Box
                       borderRadius="3px"
                       boxShadow="0px 2px 4px rgba(0, 0, 0, 0.2)"
@@ -293,7 +275,6 @@ export const FormEdit = ({
                       <FormFields
                         onEditField={setSelectedField}
                         selectedFieldId={selectedField?.id}
-                        isEditingDisabled={isEditingDisabled}
                         handleDragEnd={reorderFields}
                         builderConfig={builderConfig}
                       />
@@ -349,7 +330,6 @@ const FormBuilderPage = ({ builderConfig }: FormBuilderPageProps) => {
           defaultValues={{ customFields: formCustomFields }}
           phaseId={phaseId}
           projectId={projectId}
-          totalSubmissions={submissionCount.data.attributes.totalSubmissions}
           builderConfig={builderConfig}
         />,
         modalPortalElement
