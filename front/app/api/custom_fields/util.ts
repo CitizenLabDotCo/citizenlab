@@ -1,6 +1,6 @@
 import { IFlatCustomFieldWithIndex } from './types';
 
-const doesOjectHaveProperties = (
+const doesObjectHaveProperties = (
   element: unknown,
   propertyNames: string[]
 ): boolean => {
@@ -30,4 +30,4 @@ const properties = [
 export const isNewCustomFieldObject = (
   element: unknown
 ): element is IFlatCustomFieldWithIndex =>
-  doesOjectHaveProperties(element, properties);
+  doesObjectHaveProperties(element, properties);
