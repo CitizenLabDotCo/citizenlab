@@ -337,7 +337,7 @@ describe BulkImportIdeas::ImportProjectIdeasService do
           },
           {
             pdf_pages: [3, 4],
-            fields: { 'Title' => 'Form title 2', 'Description' => 'Form description 2' }
+            fields: { 'Title' => 'Form title 2', 'Description' => 'Form description 2', 'Select field' => 'Yes' }
           }
         ],
         text_parsed_ideas: [
@@ -347,7 +347,7 @@ describe BulkImportIdeas::ImportProjectIdeasService do
           },
           {
             pdf_pages: [3, 4],
-            fields: { 'Title' => 'Text title 2', 'Description' => 'Text description 2', 'Location' => 'Textington' }
+            fields: { 'Title' => 'Text title 2', 'Description' => 'Text description 2', 'Location' => 'Textington', 'Another select field' => 'No' }
           }
         ]
       }
@@ -365,6 +365,11 @@ describe BulkImportIdeas::ImportProjectIdeasService do
         body_multiloc: { en: 'Form description 2' },
         location_description: 'Textington'
       })
+    end
+
+    it 'merges custom fields successfully' do
+      rows = service.merge_pdf_rows pdf_ideas
+      expect(rows[1][:custom_field_values]).to match_array({ select_field: 'yes', another_select_field: 'no' })
     end
 
     it 'ignores the text parsed ideas if the array lengths differ' do

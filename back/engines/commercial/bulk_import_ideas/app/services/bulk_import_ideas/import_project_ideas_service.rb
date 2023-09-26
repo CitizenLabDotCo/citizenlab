@@ -162,6 +162,7 @@ module BulkImportIdeas
       return form_parsed_ideas unless form_parsed_ideas.count == text_parsed_ideas.count
 
       form_parsed_ideas.each_with_index.map do |idea, index|
+        idea[:custom_field_values] = text_parsed_ideas[index][:custom_field_values].merge(idea[:custom_field_values])
         text_parsed_ideas[index].merge(idea)
       end
     end
