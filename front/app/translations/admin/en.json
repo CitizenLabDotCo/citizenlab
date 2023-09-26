@@ -1436,6 +1436,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.downloadAllResults2": "Download all survey results",
   "app.containers.AdminPage.ProjectEdit.survey.downloadResults2": "Download survey results",
   "app.containers.AdminPage.ProjectEdit.survey.editSurveyContent2": "Edit survey content",
+  "app.containers.AdminPage.ProjectEdit.survey.existingSubmissionsWarning": "Submissions to this survey have started to come in. Changes to the survey may result in data loss and incomplete data in the exported files.",
   "app.containers.AdminPage.ProjectEdit.survey.informationText2": "Responses to short and long answer questions are currently only available in the survey download",
   "app.containers.AdminPage.ProjectEdit.survey.linear_scale2": "Linear scale",
   "app.containers.AdminPage.ProjectEdit.survey.multiline_text2": "Long answer",
