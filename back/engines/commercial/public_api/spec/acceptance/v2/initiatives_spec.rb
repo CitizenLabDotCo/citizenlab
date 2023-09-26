@@ -16,7 +16,7 @@ resource 'Posts' do
   let!(:initiatives) { create_list(:initiative, 5, created_at: '2020-01-01') }
 
   get '/api/v2/initiatives/' do
-    route_summary 'List initiatives'
+    route_summary 'List initiatives - known as proposals in the platform'
     route_description <<~DESC.squish
       Retrieve a paginated list of all the initiatives in the platform, with the most
       recent ones appearing first.
@@ -41,7 +41,7 @@ resource 'Posts' do
   end
 
   get '/api/v2/initiatives/:id' do
-    route_summary 'Get initiative (proposal)'
+    route_summary 'Get an initiative (proposal)'
     route_description 'Retrieve a single initiative (proposal) by its ID.'
 
     include_context 'common_item_params'
@@ -62,6 +62,7 @@ resource 'Posts' do
     example_request 'Return the initiative in the default locale' do
       assert_status 200
       expect(json_response_body[:initiative]).to include({ id: id })
+      expect(json_response_body.dig(:initiative, :threshold_reached_at)).to be_nil
     end
 
     context 'when requesting the initiative in a specific locale' do
@@ -69,8 +70,16 @@ resource 'Posts' do
 
       example_request 'Return the initiative in the requested locale', document: false do
         assert_status 200
-        expect(json_response_body.dig(:initiative, :title))
-          .to eq initiative.title_multiloc['nl-NL']
+        expect(json_response_body.dig(:initiative, :title)).to eq initiative.title_multiloc['nl-NL']
+      end
+    end
+
+    context 'when initiative is successful' do
+      let(:initiative) { create(:initiative, initiative_status: create(:initiative_status_threshold_reached)) }
+
+      example_request 'Return the initiative with successful date', document: false do
+        assert_status 200
+        expect(json_response_body.dig(:initiative, :threshold_reached_at)).not_to be_nil
       end
     end
   end

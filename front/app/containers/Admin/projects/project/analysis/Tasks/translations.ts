@@ -73,4 +73,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.projects.project.analysis.Tasks.endedAt',
     defaultMessage: 'Ended at',
   },
+  backgroundJobs: {
+    id: 'app.containers.AdminPage.projects.project.analysis.backgroundJobs',
+    defaultMessage: 'Background Jobs',
+  },
 });

@@ -5,7 +5,7 @@ const baseKey = { type: 'permissions_custom_field' };
 
 const permissionsCustomFieldsKeys = {
   all: () => [baseKey],
-  lists: () => [{ ...permissionsCustomFieldsKeys.all()[0], operation: 'list' }],
+  lists: () => [{ ...baseKey, operation: 'list' }],
   list: (parameters: IListParameters) => [
     { ...baseKey, operation: 'list', parameters },
   ],

@@ -10,6 +10,7 @@ import {
   Text,
 } from '@citizenlab/cl2-component-library';
 import DateBlocks from '../DateBlocks';
+import Image from 'components/UI/Image';
 
 // types
 import { IEventData } from 'api/events/types';
@@ -28,10 +29,21 @@ import clHistory from 'utils/cl-router/history';
 import EventAttendanceButton from 'components/EventAttendanceButton';
 import { getEventDateString } from 'utils/dateUtils';
 
+// hooks
+import useEventImage from 'api/event_images/useEventImage';
+
 const EventInformationContainer = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
+`;
+
+const EventCardImage = styled(Image)`
+  width: 100%;
+  height: 100%;
+  flex: 1;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
 `;
 
 interface Props {
@@ -43,28 +55,40 @@ const EventInformation = ({ event, titleFontSize }: Props) => {
   const { formatMessage } = useIntl();
   const theme = useTheme();
 
+  // event image
+  const { data: eventImage } = useEventImage(event);
+  const mediumImage = eventImage?.data?.attributes?.versions?.medium;
+
   const startAtMoment = moment(event.attributes.start_at);
   const endAtMoment = moment(event.attributes.end_at);
 
-  // const isPastEvent = moment().isAfter(endAtMoment); // TODO: Re-enable once event attendance smart group added
+  const isPastEvent = moment().isAfter(endAtMoment);
   const address1 = event?.attributes?.address_1;
-  const tempShowEventAttendance = false; // TODO: Replace once event attendance smart group added
-
+  const onlineLink = event?.attributes?.online_link;
   const eventDateTime = getEventDateString(event);
-
   return (
     <EventInformationContainer data-testid="EventInformation">
-      <Box>
+      <Box id="e2e-event-card">
+        {mediumImage && (
+          <Box height="140px" m="-16px">
+            <EventCardImage src={mediumImage} cover={true} alt="" />
+          </Box>
+        )}
         <Box
           display="flex"
           justifyContent="space-between"
           flexDirection={theme.isRtl ? 'row-reverse' : 'row'}
+          mt={eventImage ? '32px' : 'auto'}
         >
           <Title
             variant="h4"
+            as="h2"
             style={{ fontSize: titleFontSize, fontWeight: '600' }}
             pr="8px"
             color="tenantText"
+            m="0px"
+            mt="auto"
+            mb="auto"
           >
             <T value={event.attributes.title_multiloc} />
           </Title>
@@ -120,32 +144,57 @@ const EventInformation = ({ event, titleFontSize }: Props) => {
               </Text>
             </Box>
           )}
-          {tempShowEventAttendance &&
-            event.attributes.attendees_count > 0 && ( // TODO: Replace once event attendance smart group added
-              <Box
-                display="flex"
-                mb="12px"
-                flexDirection={theme.isRtl ? 'row-reverse' : 'row'}
+          {onlineLink && (
+            <Box display="flex" mb="12px">
+              <Icon
+                my="auto"
+                fill={colors.coolGrey300}
+                name="link"
+                ariaHidden
+                mr="8px"
+              />
+              <Text
+                m="0px"
+                color="coolGrey700"
+                fontSize="s"
+                role="button"
+                pt="2px"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  window.open(onlineLink, '_blank');
+                }}
+                style={{ textDecoration: 'underline' }}
               >
-                <Box flexShrink={0} my="auto">
-                  <Icon
-                    my="auto"
-                    fill={colors.coolGrey300}
-                    name="user"
-                    ariaHidden
-                    mr={theme.isRtl ? '0px' : '8px'}
-                    ml={theme.isRtl ? '8px' : '0px'}
-                  />
-                </Box>
-                <Text m="0px" pt="2px" color={'coolGrey700'} fontSize="s">
-                  {event.attributes.attendees_count}{' '}
-                  {formatMessage(messages.attending)}
-                </Text>
+                {formatMessage(messages.online)}
+              </Text>
+            </Box>
+          )}
+          {!isPastEvent && event.attributes.attendees_count > 0 && (
+            <Box
+              display="flex"
+              mb="12px"
+              flexDirection={theme.isRtl ? 'row-reverse' : 'row'}
+            >
+              <Box flexShrink={0} my="auto">
+                <Icon
+                  my="auto"
+                  fill={colors.coolGrey300}
+                  name="user"
+                  ariaHidden
+                  mr={theme.isRtl ? '0px' : '8px'}
+                  ml={theme.isRtl ? '8px' : '0px'}
+                />
               </Box>
-            )}
+              <Text m="0px" pt="2px" color={'coolGrey700'} fontSize="s">
+                {event.attributes.attendees_count}{' '}
+                {formatMessage(messages.attending)}
+              </Text>
+            </Box>
+          )}
         </Box>
       </Box>
-      {!tempShowEventAttendance ? ( // TODO: Replace once event attendance smart group added
+      {isPastEvent ? (
         <Button
           ml="auto"
           width={'100%'}

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_25_121819) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_15_391649) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -475,6 +475,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_25_121819) do
     t.index ["event_id"], name: "index_event_files_on_event_id"
   end
 
+  create_table "event_images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "event_id"
+    t.string "image"
+    t.integer "ordering"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_event_images_on_event_id"
+  end
+
   create_table "events", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "project_id"
     t.jsonb "title_multiloc", default: {}
@@ -488,6 +497,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_25_121819) do
     t.string "address_1"
     t.integer "attendees_count", default: 0, null: false
     t.jsonb "address_2_multiloc", default: {}, null: false
+    t.string "using_url"
+    t.jsonb "attend_button_multiloc", default: {}, null: false
+    t.string "online_link"
     t.index ["location_point"], name: "index_events_on_location_point", using: :gist
     t.index ["project_id"], name: "index_events_on_project_id"
   end
@@ -1612,6 +1624,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_25_121819) do
   add_foreign_key "email_campaigns_deliveries", "email_campaigns_campaigns", column: "campaign_id"
   add_foreign_key "email_campaigns_examples", "users", column: "recipient_id"
   add_foreign_key "event_files", "events"
+  add_foreign_key "event_images", "events"
   add_foreign_key "events", "projects"
   add_foreign_key "events_attendances", "events"
   add_foreign_key "events_attendances", "users", column: "attendee_id"

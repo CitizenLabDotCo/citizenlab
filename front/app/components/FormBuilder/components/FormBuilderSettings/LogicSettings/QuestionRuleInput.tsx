@@ -23,7 +23,7 @@ import {
   IFlatCustomField,
   LogicType,
   QuestionRuleType,
-} from 'services/formCustomFields';
+} from 'api/custom_fields/types';
 
 type QuestionRuleInputProps = {
   fieldId: string;

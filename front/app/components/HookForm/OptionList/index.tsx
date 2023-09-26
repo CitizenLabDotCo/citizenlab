@@ -21,7 +21,7 @@ import Error, { TFieldName } from 'components/UI/Error';
 
 // Typings
 import { Locale, CLError, RHFErrors, Multiloc } from 'typings';
-import { IOptionsType } from 'services/formCustomFields';
+import { IOptionsType } from 'api/custom_fields/types';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';

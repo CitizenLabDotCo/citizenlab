@@ -88,6 +88,10 @@ class Initiative < ApplicationRecord
     before_validation :sanitize_body_multiloc, if: :body_multiloc
   end
 
+  pg_search_scope :search_by_all,
+    against: %i[title_multiloc body_multiloc],
+    using: { tsearch: { prefix: true } }
+
   scope :with_some_topics, (proc do |topic_ids|
     with_dups = joins(:initiatives_topics)
       .where(initiatives_topics: { topic_id: topic_ids })
@@ -152,11 +156,11 @@ class Initiative < ApplicationRecord
     InitiativeStatus::REVIEW_CODES.include? initiative_status&.code
   end
 
-  private
-
   def proposed_at
     initiative_status_changed_at('proposed')
   end
+
+  private
 
   def initiative_status_changed_at(initiative_status_code)
     initiative_status_changes

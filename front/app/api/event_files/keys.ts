@@ -14,7 +14,7 @@ const eventFilesKeys = {
     {
       ...baseKey,
       operation: 'item',
-      parameters: properties,
+      parameters: { id: properties.eventId },
     },
   ],
 } satisfies QueryKeys;

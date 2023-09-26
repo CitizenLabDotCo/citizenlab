@@ -126,7 +126,7 @@ const IdeaMoreActions = memo(({ idea, className, projectId }: Props) => {
           close={closeSpamModal}
           header={<FormattedMessage {...messages.reportAsSpamModalTitle} />}
         >
-          <SpamReportForm resourceId={idea.id} resourceType="ideas" />
+          <SpamReportForm targetId={idea.id} targetType="ideas" />
         </Modal>
       </Container>
     );

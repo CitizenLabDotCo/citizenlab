@@ -1,3 +1,10 @@
+<mj-section padding="0 25px 20px" border-radius="5px" text-align="left">
+  <mj-column> 
+    <mj-text>
+      <%= format_message('invitation_expiry_message', values: { expiryDays: invite_expiry_days }) %>
+    </mj-text>
+  </mj-column>
+</mj-section>
 <mj-raw>
   <% if event.invite_text.present? %>
 </mj-raw>

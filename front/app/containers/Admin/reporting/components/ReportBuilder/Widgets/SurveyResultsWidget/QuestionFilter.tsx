@@ -1,7 +1,7 @@
 import React, { ChangeEvent } from 'react';
 
 // hooks
-import useFormResults from 'hooks/useFormResults';
+import useFormResults from 'api/survey_results/useSurveyResults';
 import useLocalize from 'hooks/useLocalize';
 
 // utils
@@ -27,12 +27,19 @@ const QuestionFilter = ({
 }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
-  const formResults = useFormResults({
+  const { data: formResults } = useFormResults({
     projectId,
     phaseId,
   });
 
-  if (isNilOrError(formResults) || formResults.results.length === 0) {
+  const fitleredResults =
+    !isNilOrError(formResults) &&
+    formResults.data.attributes.results.filter((result) => {
+      return (
+        result.inputType !== 'text' && result.inputType !== 'multiline_text'
+      );
+    });
+  if (!fitleredResults || fitleredResults.length === 0) {
     // This never seems to get shown
     return (
       <Text variant="bodyM" color="textSecondary">
@@ -41,14 +48,12 @@ const QuestionFilter = ({
     );
   }
 
-  const { results } = formResults;
-
   // Add/remove from selected questions
   const toggleQuestion =
     (questionIndex: number) => (event: ChangeEvent<HTMLInputElement>) => {
       event.stopPropagation();
 
-      const numberOfQuestions = results.length;
+      const numberOfQuestions = fitleredResults.length;
       onToggleQuestion(questionIndex, numberOfQuestions);
     };
 
@@ -57,7 +62,7 @@ const QuestionFilter = ({
       <Text variant="bodyM" color="textSecondary">
         {formatMessage(messages.surveyChooseQuestions)}
       </Text>
-      {results.map(({ question }, index) => (
+      {fitleredResults.map(({ question }, index) => (
         <Box key={index} mb="10px">
           <Checkbox
             checked={

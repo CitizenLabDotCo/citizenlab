@@ -9,6 +9,7 @@ nl:
       "comment_on_your_idea": Een reactie op mijn idee
       "comment_on_your_initiative": Een reactie op mijn voorstel
       "cosponsor_of_your_initiative": Een gebruiker accepteert mijn uitnodiging om mijn voorstel te steunen
+      "event_registration_confirmation": Bevestiging registratie event
       "first_idea_published": Posten van mijn eerste idee
       "idea_marked_as_spam": Idee spammelding
       "idea_published": Posten van mijn idee
@@ -207,12 +208,14 @@ nl:
       cta_accept_invitation: 'Aanvaard je uitnodiging'
       invitation_header: 'Je hebt je uitnodiging nog niet geaccepteerd'
       preheader: 'Werk mee aan de toekomst van %{organizationName}.'
+      invitation_expiry_message: 'Deze uitnodiging verloopt over ongeveer %{expiryDaysRemaining} dagen.'
       subject: 'Reminder: registreer je op het participatieplatform van %{organizationName}'
     invite_received:
       added_a_message: '%{organizationName} schreef het volgende bericht:'
       cta_accept_invitation: 'Aanvaard je uitnodiging'
       invitation_header: 'Je bent uitgenodigd!'
       invitation_header_message: '%{organizationName} nodigde je uit op hun participatieplatform.'
+      invitation_expiry_message: 'Deze uitnodiging verloopt over %{expiryDays} dagen.'
       preheader: '%{organizationName} stuurde je een uitnodiging om je te registreren op hun participatieplatform.'
       subject: 'Je bent uitgenodigd om je te registeren op het participatieplatform van %{organizationName}'
     initiative_published:
@@ -636,6 +639,18 @@ nl:
       body_2: 'De resultaten van de %{phaseTitle} stemming op het %{organizationName} platform zijn gepubliceerd!'
       body_3: 'We raden je aan om de resultaten te bekijken en op de hoogte te blijven van de volgende stappen.'
       cta_see_results: 'Bekijk resultaten op het platform'
+    event_registration_confirmation:
+      subject: "Je bent binnen! Je inschrijving voor \"%{eventTitle}\" is bevestigd"
+      header_message: "%{firstName}Bedankt voor het registreren voor"
+      event_details:
+        labels:
+          date: 'Datum'
+          location: 'Locatie'
+          online_link: 'Online link'
+          description: 'Beschrijving'
+          project: 'projecten'
+      cta_go_to_event: 'Bekijk het evenement'
+      cta_add_to_calendar: 'Toevoegen aan je kalender'
     voting_phase_started:
       subject: '%{organizationName}: De stemmingsfase is begonnen voor %{projectName}'
       preheader: 'De stemmingsfase is begonnen voor %{projectName} op het participatieplatform van %{organizationName}'
@@ -658,6 +673,7 @@ nl:
         managers: 'Beheerders'
         admins_assigned_to_a_proposal: 'Aan een voorstel toegewezen platformbeheerders'
         admins_and_managers_assigned_to_the_input: 'Aan de bijdrage toegewezen beheerders'
+        new_attendee: 'Nieuw geregistreerde gebruiker'
         user_who_is_invited_to_cosponsor_a_proposal: 'Gebruiker die is uitgenodigd om een voorstel te steunen'
         user_who_is_receiving_admin_rights: 'Gebruiker die platformbeheerdersrechten krijgt'
         user_who_is_receiving_folder_moderator_rights: 'Gebruiker die mapbeheerdersrechten krijgt'
@@ -677,6 +693,7 @@ nl:
       content_type:
         comments: 'Reacties'
         content_moderation: 'Inhoudelijke moderatie'
+        events: 'Evenementen'
         general: 'Algemeen'
         inputs: 'Bijdragen'
         internal_comments: 'Interne reacties'
@@ -731,3 +748,4 @@ nl:
         voting_basket_submitted: 'Stemmen zijn ingediend'
         7_days_after_invite_is_sent: '7 dagen na verzending van de uitnodiging'
         7_days_before_the_project_changes_phase: '7 dagen voor het project van fase verandert'
+        registration_to_event: 'Registratie voor een evenement'
