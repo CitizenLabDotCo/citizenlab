@@ -1,81 +1,13 @@
 nl:
   email_campaigns:
     campaign_type_description:
-      "manual": Officiële berichten
-      "admin_rights_received": Platformbeheerdersrechten ontvangen
-      "comment_deleted_by_admin": Verwijderen van mijn reactie
-      "comment_marked_as_spam": Reactie spammelding
-      "comment_on_your_comment": Een antwoord op mijn reactie
-      "comment_on_your_idea": Een reactie op mijn idee
-      "comment_on_your_initiative": Een reactie op mijn voorstel
-      "cosponsor_of_your_initiative": Een gebruiker accepteert mijn uitnodiging om mijn voorstel te steunen
-      "event_registration_confirmation": Bevestiging registratie event
-      "first_idea_published": Posten van mijn eerste idee
-      "idea_marked_as_spam": Idee spammelding
-      "idea_published": Posten van mijn idee
-      "initiative_assigned_to_you": Toewijzing van een voorstel aan mij
-      "initiative_marked_as_spam": Voorstel spammelding
-      "initiative_published": Publicatie van mijn voorstel
-      "invitation_to_cosponsor_initiative": Uitnodiging om een voorstel te steunen
-      "initiative_resubmitted_for_review": Voorstel opnieuw ingediend voor beoordeling
-      "invite_received": Uitnodiging
-      "invite_reminder": Herinnering uitnodiging
-      "internal_comment_on_idea_assigned_to_you": Interne reactie op aan mij toegewezen bijdrage
-      "internal_comment_on_idea_you_commented_internally_on": Interne reactie op een bijdrage waarop ik intern heb gereageerd
-      "internal_comment_on_idea_you_moderate": Interne reactie op een bijdrage in een project of map die ik beheer
-      "internal_comment_on_initiative_assigned_to_you": Interne reactie op een voorstel dat aan mij is toegewezen
-      "internal_comment_on_initiative_you_commented_internally_on": Interne reactie op een voorstel waarop ik intern heb gereageerd
-      "internal_comment_on_unassigned_initiative": Interne reactie op een niet-toegewezen voorstel
-      "internal_comment_on_unassigned_unmoderated_idea": Interne reactie op een niet-toegewezen bijdrage in een onbeheerd project
-      "internal_comment_on_your_internal_comment": Interne reactie op mijn interne reactie
-      "mention_in_official_feedback": Vermelding in een update
-      "mention_in_internal_comment": Vermelding in een interne reactie
-      "new_comment_for_admin": Nieuwe reactie in een project dat ik modereer
-      "new_comment_on_commented_idea": Nieuwe reactie op een idee waar ik op reageerde
-      "new_comment_on_commented_initiative": Nieuwe reactie op een voorstel waar ik op reageerde
-      "new_comment_on_reacted_idea": Nieuwe reactie op een idee waar ik op reageerde
-      "new_comment_on_reacted_initiative": Nieuwe reactie op een voorstel waar ik op stemde
-      "new_idea_for_admin": Nieuw idee in een project dat ik modereer
-      "new_initiative_for_admin": Nieuw voorstel
-      "official_feedback_on_commented_idea": Update op een idee waar ik op reageerde
-      "official_feedback_on_commented_initiative": Update op een voorstel waar ik op reageerde
-      "official_feedback_on_reacted_idea": Update van een idee waar ik op reageerde
-      "official_feedback_on_reacted_initiative": Update van een voorstel waar ik op stemde
-      "official_feedback_on_your_idea": Update op mijn idee
-      "official_feedback_on_your_initiative": Update op mijn voorstel
-      "password_reset": Herstel wachtwoord
-      "project_moderation_rights_received": Projectbeheerdersrechten ontvangen
-      "project_folder_moderation_rights_received": Mapbeheerdersrechten ontvangen
-      "project_phase_started": Nieuwe projectfase
-      "project_phase_upcoming": Opkomende nieuwe projectfase
-      "status_change_of_commented_idea": Statuswijziging van een idee waar ik op reageerde
-      "status_change_of_commented_initiative": Statuswijziging van een voorstel waar ik op reageerde
-      "status_change_of_reacted_idea": Statuswijziging van een idee waar ik op reageerde
-      "status_change_of_reacted_initiative": Statuswijziging van een voorstel waar ik op reageerde
-      "status_change_of_your_idea": Statuswijziging van mijn idee
-      "status_change_of_your_initiative": Statuswijziging van mijn voorstel
-      "threshold_reached_for_admin": Een voorstel bereikte het benodigd aantal stemmen
-      "welcome": Na registratie
-      "admin_digest": Weekoverzicht voor platformbeheerders
-      "moderator_digest": Weekoverzicht voor projectbeheerders
-      "assignee_digest": Weekoverzicht van toegewezen ideeën
-      "user_digest": Weekoverzicht
-      "voting_basket_submitted": Bevestiging van stemming
-      "voting_basket_not_submitted": Niet-ingediende stemmen
-      "voting_last_chance": Laatste kans om te stemmen
-      "voting_results": Stemresultaten
-      "your_proposed_initiatives_digest": Weekoverzicht van je voorstellen
-    schedules:
-      weekly:
-        "0": "Wekelijks, op zondag om %{hourOfDay}"
-        "1": "Wekelijks, op maandag om %{hourOfDay}"
-        "2": "Wekelijks, op dinsdag om %{hourOfDay}"
-        "3": "Wekelijks, op woensdag om %{hourOfDay}"
-        "4": "Wekelijks, op donderdag om %{hourOfDay}"
-        "5": "Wekelijks, op vrijdag om %{hourOfDay}"
-        "6": "Wekelijks, op zaterdag om %{hourOfDay}"
+      "1": "Wekelijks, op maandag om %{hourOfDay}"
+      "2": "Wekelijks, op dinsdag om %{hourOfDay}"
+      "3": "Wekelijks, op woensdag om %{hourOfDay}"
+      "4": "Wekelijks, op donderdag om %{hourOfDay}"
+      "5": "Wekelijks, op vrijdag om %{hourOfDay}"
+      "6": "Wekelijks, op zaterdag om %{hourOfDay}"
     footer:
-      "link_privacy_policy": "Privacybeleid"
       "link_terms_conditions": "Gebruiksvoorwaarden"
       "link_unsubscribe": "Uitschrijven"
       "powered_by": "Mogelijk gemaakt door"
