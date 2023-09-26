@@ -2152,6 +2152,7 @@
   "app.modules.commercial.analytics.admin.components.VisitorsTrafficSourcesCard.visits": "Visits",
   "app.modules.commercial.analytics.admin.components.VisitorsTypesCard.title": "Τύποι επισκεπτών",
   "app.modules.commercial.analytics.admin.components.VisitorsTypesCard.visitors": "Visitors",
+  "app.modules.commercial.analytics.admin.containers.visitors.dateInfo": "Τα στοιχεία των μοναδικών επισκεπτών είναι διαθέσιμα από το {date} και μετά.",
   "app.modules.commercial.analytics.admin.hooks.useActiveUsers.timeSeries": "Ενεργοί χρήστες διαχρονικά",
   "app.modules.commercial.analytics.admin.hooks.useEmailDeliveries.timeSeries": "Παραδόσεις email διαχρονικά",
   "app.modules.commercial.analytics.admin.hooks.useRegistrations.timeSeries": "Εγγραφές διαχρονικά",
