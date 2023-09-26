@@ -6,7 +6,7 @@ import createAccountWithPassword, {
 import confirmEmail from 'api/authentication/confirm_email/confirmEmail';
 import resendEmailConfirmationCode from 'api/authentication/confirm_email/resendEmailConfirmationCode';
 import getUserDataFromToken from 'api/authentication/getUserDataFromToken';
-import { updateUser } from 'api/users/useUpdateUser';
+import { OnboardingType } from 'api/authentication/authentication_requirements/types';
 
 // tracks
 import tracks from '../../tracks';

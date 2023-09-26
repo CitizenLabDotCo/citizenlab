@@ -58,7 +58,8 @@ export const getStepConfig = (
       getRequirements,
       setCurrentStep,
       updateState,
-      anySSOEnabled
+      anySSOEnabled,
+      updateUser
     ),
 
     ...claveUnicaFlow(getRequirements, setCurrentStep, updateUser),

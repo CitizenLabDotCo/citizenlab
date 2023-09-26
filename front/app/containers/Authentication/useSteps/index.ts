@@ -36,6 +36,7 @@ import {
 } from '../typings';
 import { SSOParams } from 'services/singleSignOn';
 import { isNil, isNilOrError } from 'utils/helperUtils';
+import useUpdateUser from 'api/users/useUpdateUser';
 
 let initialized = false;
 
@@ -43,6 +44,7 @@ export default function useSteps() {
   const anySSOEnabled = useAnySSOEnabled();
   const { pathname, search } = useLocation();
   const { data: authUser } = useAuthUser();
+  const { mutate: updateUser } = useUpdateUser();
 
   // The authentication data will be initialized with the global sign up flow.
   // In practice, this will be overwritten before firing the flow (see event
@@ -117,7 +119,8 @@ export default function useSteps() {
       setCurrentStep,
       setError,
       updateState,
-      anySSOEnabled
+      anySSOEnabled,
+      updateUser
     );
   }, [
     getAuthenticationData,
@@ -126,6 +129,7 @@ export default function useSteps() {
     setError,
     updateState,
     anySSOEnabled,
+    updateUser,
   ]);
 
   /** given the current step and a transition supported by that step, performs the transition */
