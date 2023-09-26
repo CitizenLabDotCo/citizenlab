@@ -95,7 +95,7 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
         Page 2\n"
       ]
 
-      service = described_class.new project, custom_fields, 'en'
+      service = described_class.new project, custom_fields, 'en', 2
       docs = service.parse_text text
 
       result = [{
@@ -167,7 +167,7 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
         Page 2\n"
       ]
 
-      service = described_class.new project, custom_fields, 'en'
+      service = described_class.new project, custom_fields, 'en', 2
       docs = service.parse_text text
 
       result = [{
@@ -312,7 +312,7 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
         Page 2\n"
       ]
 
-      service = described_class.new project, custom_fields, 'en'
+      service = described_class.new project, custom_fields, 'en', 2
       docs = service.parse_text text
 
       result = [{
@@ -368,7 +368,7 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
         Page 2\n"
       ]
 
-      service = described_class.new project, custom_fields, 'fr-FR'
+      service = described_class.new project, custom_fields, 'fr-FR', 2
       docs = service.parse_text text
 
       result = [{
@@ -455,7 +455,7 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
         Page 2\n"
       ]
 
-      service = described_class.new project, custom_fields, 'en'
+      service = described_class.new project, custom_fields, 'en', 2
       docs = service.parse_text text
 
       result = [{
@@ -502,7 +502,7 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
         Page 2\n"
       ]
 
-      service = described_class.new project, custom_fields, 'en'
+      service = described_class.new project, custom_fields, 'en', 2
       docs = service.parse_text text
 
       result = [{
@@ -554,7 +554,7 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
         Page 1\n"
       ]
 
-      service = described_class.new project, custom_fields, 'en'
+      service = described_class.new project, custom_fields, 'en', 1
       docs = service.parse_text text
 
       result = [{
@@ -607,7 +607,7 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
         Pizza nutella\n"
       ]
 
-      service = described_class.new project, custom_fields, 'en'
+      service = described_class.new project, custom_fields, 'en', 2
       docs = service.parse_text text
 
       result = [{
@@ -663,7 +663,7 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
         Pizza nutella\n"
       ]
 
-      service = described_class.new project, custom_fields, 'en'
+      service = described_class.new project, custom_fields, 'en', 2
       docs = service.parse_text text
 
       result = [{
