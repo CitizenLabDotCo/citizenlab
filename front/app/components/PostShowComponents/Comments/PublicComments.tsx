@@ -126,9 +126,6 @@ const PublicComments = ({
   const canComment = {
     idea: !idea?.data.attributes.action_descriptor.commenting_idea
       .disabled_reason,
-    // authUser check is needed for proposals, because disabled reasons don't include
-    // anything related to authentication for proposals so there would be whitespace in the
-    // UI from the box that's displayed using this condition.
     initiative:
       !commentingPermissionInitiative?.disabledReason &&
       !commentingPermissionInitiative?.authenticationRequirements,
