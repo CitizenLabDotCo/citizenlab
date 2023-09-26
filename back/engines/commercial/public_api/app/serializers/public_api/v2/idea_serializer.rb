@@ -19,6 +19,7 @@ class PublicApi::V2::IdeaSerializer < PublicApi::V2::BaseSerializer
     :slug,
     :budget,
     :baskets_count,
+    :votes_count,
     :official_feedbacks_count,
     :assignee_id,
     :assigned_at,
@@ -27,7 +28,8 @@ class PublicApi::V2::IdeaSerializer < PublicApi::V2::BaseSerializer
     :images, # Not in spec
     :href, # Not in spec
     :status, # idea_status in spec
-    :custom_field_values # Not nested in spec
+    :custom_field_values, # Not nested in spec
+    :type
 
   def title
     multiloc_service.t(object.title_multiloc)
@@ -49,6 +51,10 @@ class PublicApi::V2::IdeaSerializer < PublicApi::V2::BaseSerializer
 
   def status
     multiloc_service.t(object.idea_status&.title_multiloc)
+  end
+
+  def type
+    object.project&.native_survey? || object.creation_phase_id.present? ? 'survey' : 'idea'
   end
 
   def href
