@@ -781,7 +781,7 @@
   "app.containers.Comments.commentLike": "Synes godt om",
   "app.containers.Comments.commentReplyButton": "Svar",
   "app.containers.Comments.commentsSortTitle": "Sortér kommentarer efter",
-  "app.containers.Comments.completeProfileLinkText": "udfylde din profil",
+  "app.containers.Comments.completeProfileLinkText": "Udfylde din profil",
   "app.containers.Comments.completeProfileToComment": "{completeRegistrationLink} for at kommentere.",
   "app.containers.Comments.confirmCommentDeletion": "Er du sikker på at du vil slette denne kommentar? Der er ingen vej tilbage!",
   "app.containers.Comments.deleteComment": "Slet",
