@@ -57,5 +57,14 @@ describe XlsxService do
         expect { workbook }.not_to raise_error
       end
     end
+
+    describe 'when there are multiple causes with different titles over 30 chars that start with same 30 chars' do
+      let!(:cause1) { create(:cause, title_multiloc: { 'en' => 'AAAAAAAAAABBBBBBBBBBCCCCCCCCC - version 1' }, participation_context: cause.participation_context) }
+      let!(:cause2) { create(:cause, title_multiloc: { 'en' => 'AAAAAAAAAABBBBBBBBBBCCCCCCCCC - number 2' }, participation_context: cause.participation_context) }
+
+      it 'exports a valid excel file' do
+        expect { workbook }.not_to raise_error
+      end
+    end
   end
 end

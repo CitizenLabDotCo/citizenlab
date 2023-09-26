@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { CLErrorsJSON } from 'typings';
+import { CLErrorsWrapper } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import { IUser, IUserUpdate } from './types';
 import usersKeys from './keys';
@@ -18,7 +18,7 @@ export const updateUser = async ({ userId, ...requestBody }: IUserUpdate) =>
 
 const useUpdateUser = () => {
   const queryClient = useQueryClient();
-  return useMutation<IUser, CLErrorsJSON, IUserUpdate>({
+  return useMutation<IUser, CLErrorsWrapper, IUserUpdate>({
     mutationFn: updateUser,
     onSuccess: async (_data, variables) => {
       // Invalidate seats if the user's roles have changed

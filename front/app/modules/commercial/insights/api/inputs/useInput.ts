@@ -12,7 +12,7 @@ const fetchInput = (viewId: string, id: string) =>
 
 const useInput = (viewId: string, id: string) => {
   return useQuery<IInsightsInput, CLErrors, IInsightsInput, InputsKeys>({
-    queryKey: inputsKeys.item({ viewId, id }),
+    queryKey: inputsKeys.item({ id }),
     queryFn: () => fetchInput(viewId, id),
   });
 };

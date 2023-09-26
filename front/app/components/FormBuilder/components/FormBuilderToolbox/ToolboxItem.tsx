@@ -9,7 +9,7 @@ import Tippy from '@tippyjs/react';
 import { colors } from 'utils/styleUtils';
 
 // services
-import { ICustomFieldInputType } from 'services/formCustomFields';
+import { ICustomFieldInputType } from 'api/custom_fields/types';
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 interface Props {

@@ -12,7 +12,7 @@ import useUpdateAnalysisTag from 'api/analysis_tags/useUpdateAnalysisTag';
 import { object, string } from 'yup';
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { handleCLErrorsIsh } from 'utils/errorUtils';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import Input from 'components/HookForm/Input';
 
 type RenameTagProps = {
@@ -52,7 +52,7 @@ const RenameTag = ({
       await updateTag({ analysisId, id, name });
       closeRenameModal();
     } catch (errors) {
-      handleCLErrorsIsh(errors, methods.setError);
+      handleHookFormSubmissionError({ errors }, methods.setError);
     }
   };
 
