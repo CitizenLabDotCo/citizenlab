@@ -169,16 +169,17 @@ module BulkImportIdeas
       pdf_file = open(file.file_content_url, &:read)
       @google_forms_service ||= GoogleFormParserService.new
 
+      # NOTE: We return both parsed values so we can later merge the best values from both
       form_parsed_ideas = @google_forms_service.parse_pdf(pdf_file, pdf_form_page_count)
       text_parsed_ideas = begin
         IdeaPlaintextParserService.new(
           @form_fields.reject { |field| field.input_type == 'topic_ids' }, # Temp
           @locale
         ).parse_text(@google_forms_service.raw_text_page_array(pdf_file))
-      rescue
+      rescue BulkImportIdeas::Error
         []
       end
-      # NOTE: Returning both parsed values so we can later merge the best values from both
+
       {
         form_parsed_ideas: form_parsed_ideas,
         text_parsed_ideas: text_parsed_ideas
