@@ -50,9 +50,9 @@ const FooterMessage = styled.h2`
   max-width: 500px;
   text-align: center;
 
-  ${media.tablet`
-      font-size: ${fontSizes.xxl}px;
-    `}
+  ${media.phone`
+    font-size: ${fontSizes.xxl}px;
+  `}
 `;
 
 const StyledContentContainer = styled(ContentContainer)`
