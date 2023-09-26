@@ -54,7 +54,7 @@ class PublicApi::V2::IdeaSerializer < PublicApi::V2::BaseSerializer
   end
 
   def type
-    object.project&.native_survey? || object.creation_phase.present? ? 'survey' : 'idea'
+    object.project&.native_survey? || object.creation_phase_id.present? ? 'survey' : 'idea'
   end
 
   def href
