@@ -124,7 +124,7 @@ resource 'BulkImportIdeasImportIdeas' do
             let(:pdf) { create_project_bulk_import_ideas_pdf 1 }
 
             example 'Bulk import ideas to continuous project from .pdf' do
-              # expect_any_instance_of(BulkImportIdeas::GoogleFormParserService).to receive(:raw_text_page_array).and_return(create_project_bulk_import_raw_text_array)
+              expect_any_instance_of(BulkImportIdeas::GoogleFormParserService).to receive(:raw_text_page_array).and_return(create_project_bulk_import_raw_text_array)
               expect_any_instance_of(BulkImportIdeas::GoogleFormParserService).to receive(:parse_pdf).and_return(create_project_bulk_import_parse_pdf)
               do_request
               assert_status 201

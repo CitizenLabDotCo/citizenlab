@@ -371,31 +371,31 @@ describe BulkImportIdeas::ImportProjectIdeasService do
       pdf_ideas[:text_parsed_ideas].pop
       rows = service.merge_pdf_rows pdf_ideas
       expect(rows[0]).not_to include({
-                                   body_multiloc: { en: 'Text description 1' },
-                                 })
+        body_multiloc: { en: 'Text description 1' }
+      })
       expect(rows[1]).not_to include({
-                                   location_description: 'Textington'
-                                 })
+        location_description: 'Textington'
+      })
     end
   end
 
   describe 'parse_pdf' do
     it 'ignores errors from the plain text service' do
       form_parser_output = [{
-                              form_pages: [1],
-                              pdf_pages: [1],
-                              fields: {
-                                'Title' => 'My very good idea',
-                                'Description' => 'And this is the very good body'
-                              }
-                            }]
+        form_pages: [1],
+        pdf_pages: [1],
+        fields: {
+          'Title' => 'My very good idea',
+          'Description' => 'And this is the very good body'
+        }
+      }]
       expect_any_instance_of(BulkImportIdeas::GoogleFormParserService).to receive(:parse_pdf).and_return(form_parser_output)
       expect_any_instance_of(BulkImportIdeas::GoogleFormParserService).to receive(:raw_text_page_array).and_raise(BulkImportIdeas::Error.new('something'))
 
-      # TODO: open(file) does not work here
-      expect(service.parse_pdf_ideas nil).to eq(
-                                               { form_parser_output: form_parser_output, text_parser_output: [] }
-                                             )
+      file = create(:idea_import_file)
+      expect(service.parse_pdf_ideas(file)).to eq(
+        { form_parsed_ideas: form_parser_output, text_parsed_ideas: [] }
+      )
     end
   end
 end
