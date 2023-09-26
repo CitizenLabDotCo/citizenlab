@@ -71,7 +71,6 @@ const PublicComments = ({
   const ideaId = postType === 'idea' ? postId : undefined;
   const { data: initiative } = useInitiativeById(initiativeId);
   const { data: idea } = useIdeaById(ideaId);
-  const { data: authUser } = useAuthUser();
   const { pathname } = useLocation();
   const [sortOrder, setSortOrder] = useState<CommentsSort>('new');
   const {
@@ -131,7 +130,8 @@ const PublicComments = ({
     // anything related to authentication for proposals so there would be whitespace in the
     // UI from the box that's displayed using this condition.
     initiative:
-      !commentingPermissionInitiative?.disabledReason && authUser !== undefined,
+      !commentingPermissionInitiative?.disabledReason &&
+      !commentingPermissionInitiative?.authenticationRequirements,
   }[postType];
 
   return (
