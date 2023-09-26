@@ -35,8 +35,8 @@ import {
   AuthenticationData,
 } from '../typings';
 import { SSOParams } from 'services/singleSignOn';
-import useUpdateUser from 'api/users/useUpdateUser';
 import { isNil, isNilOrError } from 'utils/helperUtils';
+import useUpdateUser from 'api/users/useUpdateUser';
 
 let initialized = false;
 

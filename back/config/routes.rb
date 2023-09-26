@@ -110,10 +110,14 @@ Rails.application.routes.draw do
 
       resources :topics do
         patch 'reorder', on: :member
+
+        resources :followers, only: [:create], defaults: { followable: 'Topic' }
       end
 
       resources :areas do
         patch 'reorder', on: :member
+
+        resources :followers, only: [:create], defaults: { followable: 'Area' }
       end
 
       resources :followers, except: %i[create update]

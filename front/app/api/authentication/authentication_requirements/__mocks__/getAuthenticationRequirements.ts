@@ -13,6 +13,7 @@ export const initiativeResponse: AuthenticationRequirementsResponse = {
             email: 'require',
           },
           custom_fields: {},
+          onboarding: {},
           special: {
             password: 'require',
             confirmation: 'require',
@@ -38,6 +39,7 @@ export const projectResponse: AuthenticationRequirementsResponse = {
             email: 'require',
           },
           custom_fields: {},
+          onboarding: {},
           special: {
             password: 'dont_ask',
             confirmation: 'require',
@@ -63,6 +65,7 @@ export const phaseResponse: AuthenticationRequirementsResponse = {
             email: 'satisfied',
           },
           custom_fields: {},
+          onboarding: {},
           special: {
             password: 'satisfied',
             confirmation: 'require',
@@ -88,6 +91,7 @@ export const ideaResponse: AuthenticationRequirementsResponse = {
             email: 'satisfied',
           },
           custom_fields: {},
+          onboarding: {},
           special: {
             password: 'satisfied',
             confirmation: 'satisfied',
