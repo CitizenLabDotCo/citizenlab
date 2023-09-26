@@ -23,7 +23,7 @@ const EditWarningModal = () => {
       header={formatMessage(messages.title)}
     >
       <Box m="24px">
-        <Text mb="24px">{formatMessage(messages.loseDataWarning)}</Text>
+        <Text mb="32px">{formatMessage(messages.loseDataWarning)}</Text>
 
         <Box display="flex">
           <Box my="auto" mr="24px">
