@@ -32,6 +32,11 @@ en:
       not_ends_on: "%{property} doesn't end on %{value}"
     email:
       property: "e-mail"
+    event_attendances:
+      attends_something: "User is registered for at least one event"
+      attends_nothing: "User is not registered for any event"
+      attends_some_of: "User is registered for at least one of the following events: %{value}"
+      attends_none_of: "User is not registered for any of the following events: %{value}"
     follow:
       something: "Follows something"
       nothing: "Does not follow anything"

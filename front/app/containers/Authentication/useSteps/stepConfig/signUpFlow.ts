@@ -23,14 +23,17 @@ import {
   UpdateState,
 } from '../../typings';
 import { Step } from './typings';
-import { OnboardingType } from 'api/authentication/authentication_requirements/types';
+import { UseMutateFunction } from '@tanstack/react-query';
+import { IUser, IUserUpdate } from 'api/users/types';
+import { CLErrorsWrapper } from 'typings';
 
 export const signUpFlow = (
   getAuthenticationData: () => AuthenticationData,
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
   updateState: UpdateState,
-  anySSOProviderEnabled: boolean
+  anySSOProviderEnabled: boolean,
+  updateUser: UseMutateFunction<IUser, CLErrorsWrapper, IUserUpdate>
 ) => {
   return {
     // old sign up flow

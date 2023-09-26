@@ -9,6 +9,10 @@ export default defineMessages({
     id: 'app.components.admin.UserFilterConditions.field_email',
     defaultMessage: 'Email',
   },
+  field_event_attendances: {
+    id: 'app.components.admin.UserFilterConditions.field_event_attendance',
+    defaultMessage: 'Event registrations',
+  },
   field_follow: {
     id: 'app.components.admin.UserFilterConditions.field_follow',
     defaultMessage: 'Follow',
@@ -269,6 +273,22 @@ export default defineMessages({
   predicate_is_not_initiative: {
     id: 'app.components.admin.UserFilterConditions.predicate_is_not_initiative',
     defaultMessage: 'excludes proposal',
+  },
+  predicate_attends_something: {
+    id: 'app.components.admin.UserFilterConditions.predicate_attends_something',
+    defaultMessage: 'is registered for at least one event',
+  },
+  predicate_attends_nothing: {
+    id: 'app.components.admin.UserFilterConditions.predicate_attends_nothing',
+    defaultMessage: 'is not registered for any event',
+  },
+  predicate_attends_some_of: {
+    id: 'app.components.admin.UserFilterConditions.predicate_attends_some_of',
+    defaultMessage: 'is registered for one of these events',
+  },
+  predicate_attends_none_of: {
+    id: 'app.components.admin.UserFilterConditions.predicate_attends_none_of',
+    defaultMessage: 'is not registered for any of these events',
   },
   predicate_is_one_of_topics: {
     id: 'app.components.admin.UserFilterConditions.predicate_is_one_of_topics',

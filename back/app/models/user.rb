@@ -158,6 +158,7 @@ class User < ApplicationRecord
   has_many :official_feedbacks, dependent: :nullify
   has_many :reactions, dependent: :nullify
   has_many :event_attendances, class_name: 'Events::Attendance', foreign_key: :attendee_id, dependent: :destroy
+  has_many :attended_events, through: :event_attendances, source: :event
   has_many :follows, class_name: 'Follower', dependent: :destroy
   has_many :cosponsors_initiatives, dependent: :destroy
 

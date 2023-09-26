@@ -87,6 +87,12 @@ const PredicateSelector = memo(
         predicate_is_one_of_initiatives:
           messages.predicate_is_one_of_initiatives,
         predicate_is_not_initiative: messages.predicate_is_not_initiative,
+
+        // Event attendance
+        predicate_attends_something: messages.predicate_attends_something,
+        predicate_attends_nothing: messages.predicate_attends_nothing,
+        predicate_attends_some_of: messages.predicate_attends_some_of,
+        predicate_attends_none_of: messages.predicate_attends_none_of,
         predicate_is_one_of_topics: messages.predicate_is_one_of_topics,
         predicate_is_not_topic: messages.predicate_is_not_topic,
         predicate_is_one_of_areas: messages.predicate_is_one_of_areas,
