@@ -30,6 +30,7 @@ export const usersData: IUserData[] = [
         politician: 'retired_politician',
       },
       unread_notifications: 0,
+      followings_count: 2,
     },
   },
   {
@@ -56,6 +57,7 @@ export const usersData: IUserData[] = [
       unread_notifications: 0,
       confirmation_required: false,
       verified: false,
+      followings_count: 2,
     },
   },
 ];
@@ -91,6 +93,7 @@ export const makeUser = (attributes = {}, id?: string): IUser => {
           politician: 'retired_politician',
         },
         unread_notifications: 0,
+        followings_count: 2,
         ...attributes,
       },
     },

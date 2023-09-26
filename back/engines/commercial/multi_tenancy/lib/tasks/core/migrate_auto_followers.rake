@@ -10,6 +10,7 @@ namespace :fix_existing_tenants do
         migrate_idea_followers!
         migrate_initiative_followers!
         migrate_folder_followers!
+        migrate_area_followers!
       end
     end
   end
@@ -36,6 +37,9 @@ namespace :fix_existing_tenants do
         Follower.find_or_create_by(followable: initiative, user: participant)
       end
     end
+    CosponsorsInitiative.includes(:initiative, :user).where(status: 'accepted').each do |cosponsor|
+      Follower.find_or_create_by(followable: cosponsor.initiative, user: cosponsor.user)
+    end
   end
 
   def migrate_folder_followers!
@@ -43,6 +47,13 @@ namespace :fix_existing_tenants do
       participants_service.projects_participants(folder.projects).each do |participant|
         Follower.find_or_create_by(followable: folder, user: participant)
       end
+    end
+  end
+
+  def migrate_area_followers!
+    User.where("custom_field_values->>'domicile' IS NOT NULL AND custom_field_values->>'domicile' != 'outside'").each do |user|
+      area = Area.where(id: user.domicile).first
+      Follower.find_or_create_by(followable: area, user: user) if area
     end
   end
 

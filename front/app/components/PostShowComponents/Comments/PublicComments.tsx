@@ -14,8 +14,8 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSizes, media, isRtl } from 'utils/styleUtils';
-import { Box, Title } from '@citizenlab/cl2-component-library';
+import { colors, fontSizes, isRtl } from 'utils/styleUtils';
+import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // typings
 import { CommentsSort } from 'api/comments/types';
@@ -34,6 +34,8 @@ import CommentingIdeaDisabled from './CommentingIdeaDisabled';
 
 // utils
 import { isPage } from 'utils/helperUtils';
+import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
+import useAuthUser from 'api/me/useAuthUser';
 
 const Header = styled(Box)`
   ${isRtl`
@@ -43,18 +45,6 @@ const Header = styled(Box)`
 
 const CommentCount = styled.span`
   margin-left: 5px;
-`;
-
-const StyledCommentSorting = styled(CommentSorting)`
-  display: flex;
-  justify-content: flex-end;
-  width: 100%;
-
-  ${media.phone`
-    margin-left: 16px;
-    margin-top: 4px;
-    justify-content: flex-start;
-  `}
 `;
 
 const LoadingMoreMessage = styled.div`
@@ -76,10 +66,12 @@ const PublicComments = ({
   className,
   allowAnonymousParticipation,
 }: Props) => {
+  const isSmallerThanPhone = useBreakpoint('phone');
   const initiativeId = postType === 'initiative' ? postId : undefined;
   const ideaId = postType === 'idea' ? postId : undefined;
   const { data: initiative } = useInitiativeById(initiativeId);
   const { data: idea } = useIdeaById(ideaId);
+  const { data: authUser } = useAuthUser();
   const { pathname } = useLocation();
   const [sortOrder, setSortOrder] = useState<CommentsSort>('new');
   const {
@@ -93,6 +85,9 @@ const PublicComments = ({
     ideaId: postType === 'idea' ? postId : undefined,
     sort: sortOrder,
   });
+  const commentingPermissionInitiative = useInitiativesPermissions(
+    'commenting_initiative'
+  );
 
   const commentsList = comments?.pages.flatMap((page) => page.data);
 
@@ -129,45 +124,62 @@ const PublicComments = ({
   const isAdminPage = isPage('admin', pathname);
   const showCommentCount = !isAdminPage && hasComments;
   const showHeader = !isAdminPage || hasComments;
+  const canComment = {
+    idea: !idea?.data.attributes.action_descriptor.commenting_idea
+      .disabled_reason,
+    // authUser check is needed for proposals, because disabled reasons don't include
+    // anything related to authentication for proposals so there would be whitespace in the
+    // UI from the box that's displayed using this condition.
+    initiative:
+      !commentingPermissionInitiative?.disabledReason && authUser !== undefined,
+  }[postType];
 
   return (
     <Box className={className || ''}>
       {showHeader && (
         <Header
           display="flex"
-          alignItems="center"
+          flexDirection="column"
           justifyContent="space-between"
           mt="16px"
         >
-          <Title color="tenantText" variant="h2" id="comments-main-title">
+          <Title
+            color="tenantText"
+            variant="h2"
+            fontSize={isSmallerThanPhone ? 'xl' : 'xxl'}
+            id="comments-main-title"
+          >
             <FormattedMessage {...messages.invisibleTitleComments} />
             {showCommentCount && <CommentCount>({commentCount})</CommentCount>}
           </Title>
+          <Box mb="24px">
+            {postType === 'idea' && idea ? (
+              <CommentingIdeaDisabled idea={idea} phaseId={phaseId} />
+            ) : (
+              <CommentingProposalDisabled />
+            )}
+          </Box>
           {hasComments && (
-            <StyledCommentSorting
-              onChange={handleSortOrderChange}
-              selectedCommentSort={sortOrder}
-            />
+            <Box ml="auto" mb="24px">
+              <CommentSorting
+                onChange={handleSortOrderChange}
+                selectedCommentSort={sortOrder}
+              />
+            </Box>
           )}
         </Header>
       )}
-
-      {postType === 'idea' && idea ? (
-        <CommentingIdeaDisabled idea={idea} phaseId={phaseId} />
-      ) : (
-        <CommentingProposalDisabled />
+      {canComment && (
+        <Box mb="24px">
+          <ParentCommentForm
+            ideaId={ideaId}
+            initiativeId={initiativeId}
+            postType={postType}
+            postingComment={handleCommentPosting}
+            allowAnonymousParticipation={allowAnonymousParticipation}
+          />
+        </Box>
       )}
-
-      <Box my="24px">
-        <ParentCommentForm
-          ideaId={ideaId}
-          initiativeId={initiativeId}
-          postType={postType}
-          postingComment={handleCommentPosting}
-          allowAnonymousParticipation={allowAnonymousParticipation}
-        />
-      </Box>
-
       <Comments
         ideaId={ideaId}
         initiativeId={initiativeId}

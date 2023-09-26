@@ -268,6 +268,19 @@ resource 'User Custom Fields' do
         expect(CustomField.with_resource_type('User').order(:ordering)[1].id).to eq id
         expect(CustomField.with_resource_type('User').order(:ordering).map(&:ordering)).to eq (0..3).to_a
       end
+
+      example 'Fix the custom field order when ordering has gone wrong' do
+        ActiveRecord::Base.connection.execute("UPDATE custom_fields SET ordering = 0 WHERE id != '#{custom_field.id}'")
+        expect(custom_field.ordering).to eq 3
+        expect(CustomField.with_resource_type('User').order(:ordering).map(&:ordering)).to eq [0, 0, 0, 3]
+        do_request
+        expect(response_status).to eq 200
+        assert_status 200
+        expect(response_data.dig(:attributes, :ordering)).to match ordering
+        expect(custom_field.reload.ordering).to eq 1
+        expect(CustomField.with_resource_type('User').order(:ordering)[1].id).to eq id
+        expect(CustomField.with_resource_type('User').order(:ordering).map(&:ordering)).to eq (0..3).to_a
+      end
     end
 
     delete 'web_api/v1/users/custom_fields/:id' do
