@@ -9,19 +9,12 @@ module BulkImportIdeas
     EMPTY_SELECT_CIRCLES = ['O', '○']
     EMPTY_MULTISELECT_SQUARES = ['☐']
 
-    def initialize(participation_context, custom_fields, locale)
+    def initialize(participation_context, custom_fields, locale, pdf_form_page_count)
       @custom_fields = custom_fields
       @locale = locale
 
       @form_title = get_form_title participation_context
-
-      pdf = PrintCustomFieldsService.new(
-        participation_context,
-        custom_fields,
-        { locale: locale }
-      ).create_pdf
-
-      @number_of_pages_per_form = pdf.page_count
+      @pdf_form_page_count = pdf_form_page_count
 
       @optional_copy = I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.optional') }
       @choose_as_many_copy = I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.choose_as_many') }
@@ -180,7 +173,7 @@ module BulkImportIdeas
       return true if form_page_number == 1
 
       number_of_pages_in_form = @form[:pdf_pages].length
-      return true if number_of_pages_in_form == @number_of_pages_per_form
+      return true if number_of_pages_in_form == @pdf_form_page_count
 
       contain_form_title?(lines)
     end
