@@ -13,6 +13,7 @@ module BulkImportIdeas
       @form_fields = IdeaCustomFieldsService.new(@participation_method.custom_form).importable_fields
       @locale = locale || @locale
       @google_forms_service = nil
+      @pdf_form_page_count = pdf_form_page_count
     end
 
     def create_files(file_content)
@@ -23,7 +24,7 @@ module BulkImportIdeas
       if source_file&.import_type == 'pdf'
         # Get number of pages in a form from the download
         # NOTE: Page count may be different if name and email are specified - for future
-        pages_per_idea = pdf_form_page_count
+        pages_per_idea = @pdf_form_page_count
 
         pdf = ::CombinePDF.parse open(source_file.file_content_url).read
         source_file.update!(num_pages: pdf.pages.count)
@@ -110,12 +111,13 @@ module BulkImportIdeas
     end
 
     def parse_idea_rows(file)
-      ideas = if file.import_type == 'pdf'
-        parse_pdf_ideas(file)
+      if file.import_type == 'pdf'
+        parsed_ideas = parse_pdf_ideas(file)
+        merge_pdf_rows(parsed_ideas)
       else
-        parse_xlsx_ideas(file).map { |idea| { pdf_pages: [1], fields: idea } }
+        xlsx_ideas = parse_xlsx_ideas(file).map { |idea| { pdf_pages: [1], fields: idea } }
+        ideas_to_idea_rows(xlsx_ideas)
       end
-      ideas_to_idea_rows(ideas)
     end
 
     def ideas_to_idea_rows(ideas_array)
@@ -151,6 +153,39 @@ module BulkImportIdeas
         idea_row
       end
       idea_rows.compact
+    end
+
+    def merge_pdf_rows(parsed_ideas)
+      form_parsed_ideas = ideas_to_idea_rows(parsed_ideas[:form_parsed_ideas])
+      text_parsed_ideas = ideas_to_idea_rows(parsed_ideas[:text_parsed_ideas])
+
+      return form_parsed_ideas unless form_parsed_ideas.count == text_parsed_ideas.count
+
+      form_parsed_ideas.each_with_index.map do |idea, index|
+        idea[:custom_field_values] = text_parsed_ideas[index][:custom_field_values].merge(idea[:custom_field_values])
+        text_parsed_ideas[index].merge(idea)
+      end
+    end
+
+    def parse_pdf_ideas(file)
+      pdf_file = open(file.file_content_url, &:read)
+      @google_forms_service ||= GoogleFormParserService.new
+
+      # NOTE: We return both parsed values so we can later merge the best values from both
+      form_parsed_ideas = @google_forms_service.parse_pdf(pdf_file, @pdf_form_page_count)
+      text_parsed_ideas = begin
+        IdeaPlaintextParserService.new(
+          @form_fields.reject { |field| field.input_type == 'topic_ids' }, # Temp
+          @locale
+        ).parse_text(@google_forms_service.raw_text_page_array(pdf_file))
+      rescue BulkImportIdeas::Error
+        []
+      end
+
+      {
+        form_parsed_ideas: form_parsed_ideas,
+        text_parsed_ideas: text_parsed_ideas
+      }
     end
 
     private
@@ -293,25 +328,6 @@ module BulkImportIdeas
       end
 
       idea_row
-    end
-
-    def parse_pdf_ideas(file)
-      pdf_file = open(file.file_content_url, &:read)
-
-      @google_forms_service ||= GoogleFormParserService.new
-      @google_forms_service.parse_pdf(pdf_file, pdf_form_page_count)
-
-      # NOTE: Slightly hacky way of merging values that don't exist from the form parser from the text parser
-      # form_parsed_ideas = @google_forms_service.parse_pdf(pdf_file, pdf_form_page_count)
-      # text_parsed_ideas = IdeaPlaintextParserService.new(
-      #   @form_fields.reject { |field| field.input_type == 'topic_ids' }, # Temp
-      #   @locale
-      # ).parse_text(@google_forms_service.raw_text_page_array(pdf_file))
-      #
-      # form_parsed_ideas.each_with_index.map do |idea, index|
-      #   idea[:fields] = text_parsed_ideas[index][:fields].merge(idea[:fields])
-      #   idea
-      # end
     end
 
     def pdf_form_page_count

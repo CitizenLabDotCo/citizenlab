@@ -4,10 +4,14 @@ require 'google/cloud/document_ai'
 
 module BulkImportIdeas
   class GoogleFormParserService
+    def initialize
+      @document = nil
+    end
+
     def raw_text_page_array(pdf_file_content)
       return dummy_raw_text unless ENV.fetch('GOOGLE_APPLICATION_CREDENTIALS', false) # Temp for development
 
-      document = process_upload pdf_file_content
+      @document ||= process_upload pdf_file_content
       text = document.text
 
       # Try and sort the text better by location on the page
@@ -32,7 +36,7 @@ module BulkImportIdeas
     def parse_pdf(pdf_file_content, form_pages_count)
       return dummy_parsed_data unless ENV.fetch('GOOGLE_APPLICATION_CREDENTIALS', false) # Temp for development
 
-      document = process_upload pdf_file_content
+      @document ||= process_upload pdf_file_content
 
       # Gets an array of all fields on all pages
       fields = []
