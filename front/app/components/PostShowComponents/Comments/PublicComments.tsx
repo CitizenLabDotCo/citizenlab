@@ -35,7 +35,6 @@ import CommentingIdeaDisabled from './CommentingIdeaDisabled';
 // utils
 import { isPage } from 'utils/helperUtils';
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
-import useAuthUser from 'api/me/useAuthUser';
 
 const Header = styled(Box)`
   ${isRtl`
@@ -71,7 +70,6 @@ const PublicComments = ({
   const ideaId = postType === 'idea' ? postId : undefined;
   const { data: initiative } = useInitiativeById(initiativeId);
   const { data: idea } = useIdeaById(ideaId);
-  const { data: authUser } = useAuthUser();
   const { pathname } = useLocation();
   const [sortOrder, setSortOrder] = useState<CommentsSort>('new');
   const {
@@ -127,11 +125,9 @@ const PublicComments = ({
   const canComment = {
     idea: !idea?.data.attributes.action_descriptor.commenting_idea
       .disabled_reason,
-    // authUser check is needed for proposals, because disabled reasons don't include
-    // anything related to authentication for proposals so there would be whitespace in the
-    // UI from the box that's displayed using this condition.
     initiative:
-      !commentingPermissionInitiative?.disabledReason && authUser !== undefined,
+      !commentingPermissionInitiative?.disabledReason &&
+      !commentingPermissionInitiative?.authenticationRequirements,
   }[postType];
 
   return (
