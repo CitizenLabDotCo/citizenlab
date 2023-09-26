@@ -1,75 +1,49 @@
-import React, { useState } from 'react';
-import moment, { Moment } from 'moment';
+import React from 'react';
+import moment from 'moment';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
-
-// components
-import { Box } from '@citizenlab/cl2-component-library';
-import ChartFilters from 'containers/Admin/dashboard/overview/ChartFilters';
-import Charts from './Charts';
-
-// utils
-import { getSensibleResolution } from 'containers/Admin/dashboard/overview/getSensibleResolution';
+import useAnalytics from 'api/analytics/useAnalytics';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 // typings
-import { IResolution } from 'components/admin/ResolutionControl';
-import { IOption } from 'typings';
+import { Query, QuerySchema } from 'api/analytics/types';
+import { Response } from '../../components/VisitorsLanguageCard/useVisitorLanguages/typings';
 
-const Visitors = () => {
-  const [startAtMoment, setStartAtMoment] = useState<Moment | null | undefined>(
-    undefined
-  );
-  const [endAtMoment, setEndAtMoment] = useState<Moment | null>(moment());
-  const [projectId, setProjectId] = useState<string | undefined>();
-  const [resolution, setResolution] = useState<IResolution>('month');
+// components
+import VisitorsOverview from './VisitorsOverview';
 
-  const handleChangeTimeRange = (
-    startAtMoment: Moment | null,
-    endAtMoment: Moment | null
-  ) => {
-    const resolution = getSensibleResolution(startAtMoment, endAtMoment);
-    setStartAtMoment(startAtMoment);
-    setEndAtMoment(endAtMoment);
-    setResolution(resolution);
+const query = (): Query => {
+  const localesCountQuery: QuerySchema = {
+    fact: 'visit',
+    aggregations: {
+      all: 'count',
+      'dimension_date_first_action.date': 'first',
+    },
   };
 
-  const handleProjectFilter = ({ value }: IOption) => {
-    setProjectId(value);
+  return {
+    query: localesCountQuery,
   };
-
-  return (
-    <>
-      <Box width="100%">
-        <ChartFilters
-          startAtMoment={startAtMoment}
-          endAtMoment={endAtMoment}
-          currentProjectFilter={projectId}
-          resolution={resolution}
-          onChangeTimeRange={handleChangeTimeRange}
-          onProjectFilter={handleProjectFilter}
-          onChangeResolution={setResolution}
-        />
-      </Box>
-
-      <Charts
-        projectId={projectId}
-        startAtMoment={startAtMoment}
-        endAtMoment={endAtMoment}
-        resolution={resolution}
-      />
-    </>
-  );
 };
 
-const FeatureFlagWrapper = () => {
+const Visitors = () => {
+  const { data: appConfig } = useAppConfiguration();
+  const { data: analytics } = useAnalytics<Response>(query());
   const visitorsDashboardEnabled = useFeatureFlag({
     name: 'visitors_dashboard',
   });
 
-  if (!visitorsDashboardEnabled) return null;
+  if (!visitorsDashboardEnabled || !appConfig || !analytics) return null;
 
-  return <Visitors />;
+  const [countData] = analytics.data.attributes;
+  if (!countData) return null;
+
+  const uniqueVisitorDataDate = moment(
+    countData.first_dimension_date_first_action_date
+  );
+
+  return <VisitorsOverview uniqueVisitorDataDate={uniqueVisitorDataDate} />;
 };
 
-export default FeatureFlagWrapper;
+export default Visitors;

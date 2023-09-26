@@ -155,7 +155,9 @@ export interface CLErrorsJSON {
   };
 }
 
-export type CLErrorsWrapper = CLErrorsJSON['json'];
+export type CLErrorsWrapper = {
+  errors: CLErrors;
+};
 
 export type RHFErrors =
   | { message?: string; error?: string; type?: string }

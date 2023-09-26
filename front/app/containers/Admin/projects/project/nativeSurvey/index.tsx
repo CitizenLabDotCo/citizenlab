@@ -25,7 +25,7 @@ import { getFormActionsConfig } from './utils';
 import { colors } from 'utils/styleUtils';
 
 // Services
-import { downloadSurveyResults } from 'services/formCustomFields';
+import { downloadSurveyResults } from 'api/survey_results/utils';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
 
 const Forms = ({ intl: { formatMessage } }: WrappedComponentProps) => {

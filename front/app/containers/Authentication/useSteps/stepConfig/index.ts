@@ -16,7 +16,7 @@ import {
 import { Step } from './typings';
 import { UseMutateFunction } from '@tanstack/react-query';
 import { IUser, IUserUpdate } from 'api/users/types';
-import { CLErrorsJSON } from 'typings';
+import { CLErrorsWrapper } from 'typings';
 
 export const getStepConfig = (
   getAuthenticationData: () => AuthenticationData,
@@ -25,7 +25,7 @@ export const getStepConfig = (
   setError: SetError,
   updateState: UpdateState,
   anySSOEnabled: boolean,
-  updateUser: UseMutateFunction<IUser, CLErrorsJSON, IUserUpdate>
+  updateUser: UseMutateFunction<IUser, CLErrorsWrapper, IUserUpdate>
 ) => {
   return {
     ...lightFlow(

@@ -10,7 +10,7 @@ import tracks from './tracks';
 
 // components
 import Button from 'components/UI/Button';
-import { exportSurveyResults } from 'services/surveyResults';
+import { exportSurveyResults } from 'api/survey_results/utils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
