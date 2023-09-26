@@ -611,7 +611,7 @@
   "app.components.formBuilder.editButtonLabel": "Edit",
   "app.components.formBuilder.editWarningModal.exportYouResponses": "export your responses",
   "app.components.formBuilder.editWarningModal.loseDataWarning": "Warning: You might lose response data forever. Before continuing, export your responses.",
-  "app.components.formBuilder.editWarningModal.title": "Edit answers",
+  "app.components.formBuilder.editWarningModal.title2": "Edit fields",
   "app.components.formBuilder.emptyOptionError": "Provide at least 1 answer",
   "app.components.formBuilder.emptyTitleError": "Provide a question title",
   "app.components.formBuilder.enable": "Enable",
