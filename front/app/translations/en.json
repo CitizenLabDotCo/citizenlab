@@ -30,6 +30,7 @@
   "app.components.AuthProviders.continueWithGoogle": "Continue with Google",
   "app.components.AuthProviders.continueWithHoplr": "Continue with Hoplr",
   "app.components.AuthProviders.continueWithLoginMechanism": "Continue with {loginMechanismName}",
+  "app.components.AuthProviders.copenhagenUnder15VerificationFailed": "You must be 15 years of age or above to be verified.",
   "app.components.AuthProviders.franceConnectMergingFailed": "An account already exists with this email address.{br}{br}You cannot access the platform using FranceConnect as the personal details do not match. To log in using FranceConnect, you will have to first change your first name or last name on this platform to match your official details.{br}{br}You can log in as you normally do below.",
   "app.components.AuthProviders.goToLogIn": "Already have an account? {goToOtherFlowLink}",
   "app.components.AuthProviders.goToSignUp": "Don't have an account? {goToOtherFlowLink}",

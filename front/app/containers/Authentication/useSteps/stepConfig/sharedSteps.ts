@@ -28,6 +28,7 @@ import {
   UpdateState,
   AuthenticationData,
   SignUpInError,
+  VerificationError,
 } from '../../typings';
 import { Step } from './typings';
 
@@ -179,10 +180,13 @@ export const sharedSteps = (
         setCurrentStep('clave-unica:email');
       },
 
-      TRIGGER_AUTH_ERROR: (error_code?: SignUpInError) => {
+      TRIGGER_AUTH_ERROR: (error_code?: SignUpInError | VerificationError) => {
         if (error_code === 'franceconnect_merging_failed') {
           setCurrentStep('sign-up:auth-providers');
           setError('franceconnect_merging_failed');
+        } else if (error_code === 'not_entitled_under_15_years_of_age') {
+          setCurrentStep('missing-data:verification');
+          setError('not_entitled_under_15_years_of_age');
         } else {
           setCurrentStep('sign-up:auth-providers');
           setError('unknown');
