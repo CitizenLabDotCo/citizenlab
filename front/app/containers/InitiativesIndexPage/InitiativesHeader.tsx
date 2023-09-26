@@ -71,7 +71,7 @@ const Title = styled.h2`
   margin-bottom: 18px;
 
   ${media.tablet`
-    font-size: ${fontSizes.xxxl}px;
+    font-size: ${fontSizes.xxl}px;
   `}
 `;
 

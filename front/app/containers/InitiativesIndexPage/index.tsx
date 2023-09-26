@@ -51,7 +51,7 @@ const FooterMessage = styled.h2`
   text-align: center;
 
   ${media.tablet`
-      font-size: ${fontSizes.xxxl}px;
+      font-size: ${fontSizes.xxl}px;
     `}
 `;
 
