@@ -38,6 +38,8 @@ class AuthenticationService
     # When a user created an account with someone else's email, chose a password, but could not
     # verify the email, we don't want that user to hijack the real email owner after they create
     # an account (with SSO).
+    return nil if !user
+
     if AppConfiguration.instance.feature_activated? 'user_confirmation'
       if user.password_digest && user.confirmation_required?
         user.destroy!
