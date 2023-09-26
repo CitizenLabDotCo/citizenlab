@@ -48,7 +48,8 @@ describe IdNemlogIn::NemlogInOmniauth do
         name: 'nemlog_in',
         environment: 'pre_production_integration',
         issuer: 'https://example.com',
-        private_key: "-----BEGIN PRIVATE KEY-----\n123123\n-----END PRIVATE KEY-----"
+        private_key: "-----BEGIN PRIVATE KEY-----\n123123\n-----END PRIVATE KEY-----",
+        minimum_age: 15
       }]
     }
     configuration.save!

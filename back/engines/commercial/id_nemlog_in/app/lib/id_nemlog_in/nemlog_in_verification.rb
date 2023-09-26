@@ -4,20 +4,17 @@ module IdNemlogIn
   module NemlogInVerification
     include Verification::VerificationMethod
 
-    MINIMUM_AGE_REQUIREMENTS = { 'kobenhavntaler.kk.dk' => 15 }.freeze
-
     def verification_method_type
       :omniauth
     end
 
     def entitled?(auth)
-      host = AppConfiguration.instance.host
-      return true unless MINIMUM_AGE_REQUIREMENTS.key?(host)
+      minimum_age = config[:minimum_age]
+      return true unless minimum_age
 
-      age_requirement = MINIMUM_AGE_REQUIREMENTS[host]
       age = auth.extra.raw_info['https://data.gov.dk/model/core/eid/age'].to_i
-      raise Verification::VerificationService::NotEntitledError, <<~MSG.strip if age < age_requirement
-        under_#{age_requirement}_years_of_age
+      raise Verification::VerificationService::NotEntitledError, <<~MSG.strip if age < minimum_age
+        under_#{minimum_age}_years_of_age
       MSG
 
       true
