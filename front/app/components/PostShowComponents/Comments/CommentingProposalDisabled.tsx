@@ -2,7 +2,6 @@ import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
 import Warning from 'components/UI/Warning';
 
 // hooks
@@ -84,39 +83,37 @@ const CommentingProposalDisabled = () => {
   if (!messageDescriptor) return null;
 
   return (
-    <Box mb="30px">
-      <Warning>
-        <FormattedMessage
-          {...messageDescriptor}
-          values={{
-            signUpLink: (
-              <button onClick={signUp}>
-                <FormattedMessage {...messages.signUpLinkText} />
-              </button>
-            ),
-            signInLink: (
-              <button onClick={signIn}>
-                <FormattedMessage {...messages.signInLinkText} />
-              </button>
-            ),
-            completeRegistrationLink: (
-              <button
-                onClick={() => {
-                  triggerAuthenticationFlow();
-                }}
-              >
-                <FormattedMessage {...messages.completeProfileLinkText} />
-              </button>
-            ),
-            verifyIdentityLink: (
-              <button onClick={signUp}>
-                <FormattedMessage {...messages.verifyIdentityLinkText} />
-              </button>
-            ),
-          }}
-        />
-      </Warning>
-    </Box>
+    <Warning>
+      <FormattedMessage
+        {...messageDescriptor}
+        values={{
+          signUpLink: (
+            <button onClick={signUp}>
+              <FormattedMessage {...messages.signUpLinkText} />
+            </button>
+          ),
+          signInLink: (
+            <button onClick={signIn}>
+              <FormattedMessage {...messages.signInLinkText} />
+            </button>
+          ),
+          completeRegistrationLink: (
+            <button
+              onClick={() => {
+                triggerAuthenticationFlow();
+              }}
+            >
+              <FormattedMessage {...messages.completeProfileLinkText} />
+            </button>
+          ),
+          verifyIdentityLink: (
+            <button onClick={signUp}>
+              <FormattedMessage {...messages.verifyIdentityLinkText} />
+            </button>
+          ),
+        }}
+      />
+    </Warning>
   );
 };
 

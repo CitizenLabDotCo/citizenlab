@@ -46,6 +46,10 @@ export interface AuthenticationRequirementsResponse {
 
 type RequirementStatus = 'dont_ask' | 'require' | 'satisfied' | 'ask';
 
+export type OnboardingType = {
+  topics_and_areas?: RequirementStatus;
+};
+
 export interface AuthenticationRequirements {
   permitted: boolean;
   requirements: {
@@ -54,9 +58,8 @@ export interface AuthenticationRequirements {
       last_name: RequirementStatus;
       email: RequirementStatus;
     };
-
     custom_fields: Record<string, RequirementStatus>;
-
+    onboarding: OnboardingType;
     special: {
       password: RequirementStatus;
       confirmation: RequirementStatus;

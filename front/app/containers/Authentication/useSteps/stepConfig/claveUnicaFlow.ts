@@ -1,7 +1,7 @@
 import { Step } from './typings';
 import confirmEmail from 'api/authentication/confirm_email/confirmEmail';
 import { GetRequirements } from 'containers/Authentication/typings';
-import { askCustomFields } from './utils';
+import { askCustomFields, showOnboarding } from './utils';
 import resendEmailConfirmationCode from 'api/authentication/confirm_email/resendEmailConfirmationCode';
 import { UseMutateFunction } from '@tanstack/react-query';
 import { IUser, IUserUpdate } from 'api/users/types';
@@ -43,6 +43,11 @@ export const claveUnicaFlow = (
 
         if (askCustomFields(requirements.custom_fields)) {
           setCurrentStep('sign-up:custom-fields');
+          return;
+        }
+
+        if (showOnboarding(requirements.onboarding)) {
+          setCurrentStep('sign-up:onboarding');
           return;
         }
 

@@ -33,6 +33,7 @@
 #  block_end_at                        :datetime
 #  new_email                           :string
 #  followings_count                    :integer          default(0), not null
+#  onboarding                          :jsonb            not null
 #
 # Indexes
 #
@@ -74,6 +75,22 @@ class User < ApplicationRecord
     # Returns (and memoize) the schema of all declared roles without restrictions.
     def _roles_json_schema
       @_roles_json_schema ||= JSON.parse(Rails.root.join('config/schemas/user_roles.json_schema').read)
+    end
+
+    def onboarding_json_schema
+      {
+        'type' => 'object',
+        'propertyNames' => {
+          'type' => 'string',
+          'enum' => ['topics_and_areas']
+        },
+        'properties' => {
+          'topics_and_areas' => {
+            'type' => 'string',
+            'enum' => ['satisfied']
+          }
+        }
+      }
     end
 
     # Returns the user record from the database which matches the specified
@@ -176,6 +193,7 @@ class User < ApplicationRecord
   has_many :initiative_status_changes, dependent: :nullify
 
   store_accessor :custom_field_values, :gender, :birthyear, :domicile, :education
+  store_accessor :onboarding, :topics_and_areas
 
   validates :email, presence: true, unless: -> { invite_pending? || (sso? && identities.none?(&:email_always_present?)) }
   validates :locale, presence: true, unless: :invite_pending?
@@ -205,6 +223,7 @@ class User < ApplicationRecord
   validate :validate_password_not_common
 
   validates :roles, json: { schema: -> { User.roles_json_schema } }
+  validates :onboarding, json: { schema: -> { User.onboarding_json_schema } }
 
   validate :validate_not_duplicate_email
   validate :validate_not_duplicate_new_email

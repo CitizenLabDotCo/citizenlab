@@ -81,7 +81,9 @@ type TFollowPredicate =
   | 'is_one_of_projects'
   | 'is_one_of_folders'
   | 'is_one_of_ideas'
-  | 'is_one_of_initiatives';
+  | 'is_one_of_initiatives'
+  | 'is_one_of_topics'
+  | 'is_one_of_areas';
 
 type TRolePredicate =
   | 'is_admin'
@@ -485,7 +487,9 @@ export type TRule =
         | 'is_one_of_projects'
         | 'is_one_of_folders'
         | 'is_one_of_ideas'
-        | 'is_one_of_initiatives';
+        | 'is_one_of_initiatives'
+        | 'is_one_of_topics'
+        | 'is_one_of_areas';
       value?: string | string[];
     }
   | {
@@ -560,6 +564,10 @@ export const ruleTypeConstraints = {
     is_not_idea: IdeaValueSelector,
     is_one_of_initiatives: InitiativeValuesSelector,
     is_not_initiative: InitiativeValueSelector,
+    is_one_of_topics: TopicValuesSelector,
+    is_not_topic: TopicValueSelector,
+    is_one_of_areas: AreaValuesSelector,
+    is_not_area: AreaValueSelector,
     something: null,
     nothing: null,
   },

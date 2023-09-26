@@ -35,6 +35,7 @@ import CommentingIdeaDisabled from './CommentingIdeaDisabled';
 // utils
 import { isPage } from 'utils/helperUtils';
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
+import useAuthUser from 'api/me/useAuthUser';
 
 const Header = styled(Box)`
   ${isRtl`
@@ -70,6 +71,7 @@ const PublicComments = ({
   const ideaId = postType === 'idea' ? postId : undefined;
   const { data: initiative } = useInitiativeById(initiativeId);
   const { data: idea } = useIdeaById(ideaId);
+  const { data: authUser } = useAuthUser();
   const { pathname } = useLocation();
   const [sortOrder, setSortOrder] = useState<CommentsSort>('new');
   const {
@@ -122,12 +124,15 @@ const PublicComments = ({
   const isAdminPage = isPage('admin', pathname);
   const showCommentCount = !isAdminPage && hasComments;
   const showHeader = !isAdminPage || hasComments;
-  const commentingDisabledReason =
-    postType === 'initiative'
-      ? commentingPermissionInitiative?.disabledReason
-      : idea?.data.attributes?.action_descriptor.commenting_idea
-          .disabled_reason;
-  const canComment = !commentingDisabledReason;
+  const canComment = {
+    idea: !idea?.data.attributes.action_descriptor.commenting_idea
+      .disabled_reason,
+    // authUser check is needed for proposals, because disabled reasons don't include
+    // anything related to authentication for proposals so there would be whitespace in the
+    // UI from the box that's displayed using this condition.
+    initiative:
+      !commentingPermissionInitiative?.disabledReason && authUser !== undefined,
+  }[postType];
 
   return (
     <Box className={className || ''}>
@@ -147,15 +152,15 @@ const PublicComments = ({
             <FormattedMessage {...messages.invisibleTitleComments} />
             {showCommentCount && <CommentCount>({commentCount})</CommentCount>}
           </Title>
-          <>
+          <Box mb="24px">
             {postType === 'idea' && idea ? (
               <CommentingIdeaDisabled idea={idea} phaseId={phaseId} />
             ) : (
               <CommentingProposalDisabled />
             )}
-          </>
+          </Box>
           {hasComments && (
-            <Box ml="auto" mb="20px">
+            <Box ml="auto" mb="24px">
               <CommentSorting
                 onChange={handleSortOrderChange}
                 selectedCommentSort={sortOrder}

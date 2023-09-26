@@ -26,6 +26,7 @@ const moderator: IUserData = {
     email: 'johnny@citizenlab.co',
     confirmation_required: false,
     unread_notifications: 0,
+    followings_count: 2,
   },
 };
 
@@ -46,6 +47,7 @@ const mockAuthUserData: IUserData = {
     unread_notifications: 0,
     invite_status: null,
     confirmation_required: false,
+    followings_count: 2,
   },
 };
 
