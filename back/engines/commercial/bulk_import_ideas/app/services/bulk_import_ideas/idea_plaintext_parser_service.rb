@@ -9,12 +9,11 @@ module BulkImportIdeas
     EMPTY_SELECT_CIRCLES = ['O', '○']
     EMPTY_MULTISELECT_SQUARES = ['☐']
 
-    def initialize(participation_context, custom_fields, locale, id = '1')
+    def initialize(participation_context, custom_fields, locale)
       @custom_fields = custom_fields
       @locale = locale
 
-      # TODO: remove
-      @id = id
+      @form_title = get_form_title participation_context
 
       pdf = PrintCustomFieldsService.new(
         participation_context,
@@ -57,6 +56,8 @@ module BulkImportIdeas
       @forms
     end
 
+    private
+
     def parse_page(page, pdf_page_number)
       lines = page.lines.map(&:rstrip)
 
@@ -70,7 +71,7 @@ module BulkImportIdeas
       form_page_number = get_page_number(line_with_page_number)
 
       # Check if new form
-      if new_form?(pdf_page_number, form_page_number)
+      if new_form?(pdf_page_number, form_page_number, lines)
         @forms << @form if @form.present?
         @form = new_form
       end
@@ -134,7 +135,15 @@ module BulkImportIdeas
       end
     end
 
-    private
+    def get_form_title(participation_context)
+      pc_title = participation_context.title_multiloc[@locale]
+      return pc_title if participation_context.instance_of? Project
+
+      project = participation_context.project
+      project_title = project.title_multiloc[@locale]
+
+      "#{project_title} - #{pc_title}"
+    end
 
     def new_form
       {
@@ -166,12 +175,23 @@ module BulkImportIdeas
       line[@page_copy.length + 1, line.length].to_i
     end
 
-    def new_form?(pdf_page_number, form_page_number)
+    def new_form?(pdf_page_number, form_page_number, lines)
       return true if pdf_page_number == 1
       return true if form_page_number == 1
 
       number_of_pages_in_form = @form[:pdf_pages].length
-      number_of_pages_in_form == @number_of_pages_per_form
+      return true if number_of_pages_in_form == @number_of_pages_per_form
+
+      contain_form_title?(lines)
+    end
+
+    def contain_form_title?(lines)
+      lines.each do |line|
+        return true if line == @form_title
+        return false if field_title? line
+      end
+
+      false
     end
 
     def field_title?(line)
