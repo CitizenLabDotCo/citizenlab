@@ -95,7 +95,7 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
         Page 2\n"
       ]
 
-      service = described_class.new custom_fields, 'en'
+      service = described_class.new project, custom_fields, 'en', 2
       docs = service.parse_text text
 
       result = [{
@@ -167,7 +167,7 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
         Page 2\n"
       ]
 
-      service = described_class.new custom_fields, 'en'
+      service = described_class.new project, custom_fields, 'en', 2
       docs = service.parse_text text
 
       result = [{
@@ -312,7 +312,7 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
         Page 2\n"
       ]
 
-      service = described_class.new custom_fields, 'en'
+      service = described_class.new project, custom_fields, 'en', 2
       docs = service.parse_text text
 
       result = [{
@@ -368,7 +368,7 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
         Page 2\n"
       ]
 
-      service = described_class.new custom_fields, 'fr-FR'
+      service = described_class.new project, custom_fields, 'fr-FR', 2
       docs = service.parse_text text
 
       result = [{
@@ -455,7 +455,7 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
         Page 2\n"
       ]
 
-      service = described_class.new custom_fields, 'en'
+      service = described_class.new project, custom_fields, 'en', 2
       docs = service.parse_text text
 
       result = [{
@@ -502,7 +502,7 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
         Page 2\n"
       ]
 
-      service = described_class.new custom_fields, 'en'
+      service = described_class.new project, custom_fields, 'en', 2
       docs = service.parse_text text
 
       result = [{
@@ -522,7 +522,7 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
   end
 
   describe 'edge cases' do
-    it 'handles values matching substrings of description' do
+    before do
       create(:custom_field, resource: custom_form,
         key: 'pool_question',
         title_multiloc: { 'en' => 'Your favourite name for a swimming pool' },
@@ -530,7 +530,9 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
         input_type: 'text',
         enabled: true,
         required: false)
+    end
 
+    it 'handles values matching substrings of description' do
       text = parse_pages [
         "The\n
         City\n
@@ -552,12 +554,127 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
         Page 1\n"
       ]
 
-      service = described_class.new custom_fields, 'en'
+      service = described_class.new project, custom_fields, 'en', 1
       docs = service.parse_text text
 
       result = [{
         form_pages: [1],
         pdf_pages: [1],
+        fields: { 'Title' => 'Test',
+                  'Description' => 'Test description with words and things',
+                  'Location (optional)' => 'Somewhere',
+                  'Your favourite name for a swimming pool (optional)' => 'Pizza nutella' }
+      }]
+
+      expect(docs).to eq result
+    end
+
+    it 'handles missing page numbers' do
+      text = parse_pages [
+        "The\n
+        City\n
+        An idea? Bring it to your council!\n
+        Instructions\n
+        • Write as clearly as you can- these forms might be scanned\n
+        • Write your answers in the same language as this form\n
+        Title\n
+        Test\n
+        Description\n
+        Test description\n
+        with words and things\n
+        Location (optional)\n
+        Somewhere\n",
+        "Your favourite name for a swimming pool (optional)\n
+        Answer this question with \"Pizza nutella\"\n
+        *This answer will only be shared with moderators, and not to the public.\n
+        Pizza nutella\n",
+        "The\n
+        City\n
+        An idea? Bring it to your council!\n
+        Instructions\n
+        • Write as clearly as you can- these forms might be scanned\n
+        • Write your answers in the same language as this form\n
+        Title\n
+        Test\n
+        Description\n
+        Test description\n
+        with words and things\n
+        Location (optional)\n
+        Somewhere\n",
+        "Your favourite name for a swimming pool (optional)\n
+        Answer this question with \"Pizza nutella\"\n
+        *This answer will only be shared with moderators, and not to the public.\n
+        Pizza nutella\n"
+      ]
+
+      service = described_class.new project, custom_fields, 'en', 2
+      docs = service.parse_text text
+
+      result = [{
+        form_pages: [],
+        pdf_pages: [1, 2],
+        fields: { 'Title' => 'Test',
+                  'Description' => 'Test description with words and things',
+                  'Location (optional)' => 'Somewhere',
+                  'Your favourite name for a swimming pool (optional)' => 'Pizza nutella' }
+      }, {
+        form_pages: [],
+        pdf_pages: [3, 4],
+        fields: { 'Title' => 'Test',
+                  'Description' => 'Test description with words and things',
+                  'Location (optional)' => 'Somewhere',
+                  'Your favourite name for a swimming pool (optional)' => 'Pizza nutella' }
+      }]
+
+      expect(docs).to eq result
+    end
+
+    it 'handles missing page numbers and missing pages' do
+      text = parse_pages [
+        "The\n
+        City\n
+        Renew West Parc\n
+        Instructions\n
+        • Write as clearly as you can- these forms might be scanned\n
+        • Write your answers in the same language as this form\n
+        Title\n
+        Test\n
+        Description\n
+        Test description\n
+        with words and things\n
+        Location (optional)\n
+        Somewhere\n",
+        "The\n
+        City\n
+        Renew West Parc\n
+        Instructions\n
+        • Write as clearly as you can- these forms might be scanned\n
+        • Write your answers in the same language as this form\n
+        Title\n
+        Test\n
+        Description\n
+        Test description\n
+        with words and things\n
+        Location (optional)\n
+        Somewhere\n",
+        "Your favourite name for a swimming pool (optional)\n
+        Answer this question with \"Pizza nutella\"\n
+        *This answer will only be shared with moderators, and not to the public.\n
+        Pizza nutella\n"
+      ]
+
+      service = described_class.new project, custom_fields, 'en', 2
+      docs = service.parse_text text
+
+      result = [{
+        form_pages: [],
+        pdf_pages: [1],
+        fields: { 'Title' => 'Test',
+                  'Description' => 'Test description with words and things',
+                  'Location (optional)' => 'Somewhere' }
+      }, {
+        form_pages: [],
+        pdf_pages: [2, 3],
         fields: { 'Title' => 'Test',
                   'Description' => 'Test description with words and things',
                   'Location (optional)' => 'Somewhere',
