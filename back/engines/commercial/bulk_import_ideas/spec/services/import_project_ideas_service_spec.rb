@@ -326,4 +326,76 @@ describe BulkImportIdeas::ImportProjectIdeasService do
       end
     end
   end
+
+  describe 'merge_pdf_rows' do
+    let(:pdf_ideas) do
+      {
+        form_parsed_ideas: [
+          {
+            pdf_pages: [1, 2],
+            fields: { 'Title' => 'Form title 1', 'Location' => 'Formville' }
+          },
+          {
+            pdf_pages: [3, 4],
+            fields: { 'Title' => 'Form title 2', 'Description' => 'Form description 2' }
+          }
+        ],
+        text_parsed_ideas: [
+          {
+            pdf_pages: [1, 2],
+            fields: { 'Title' => 'Text title 1', 'Description' => 'Text description 1', 'Location' => 'Textville' }
+          },
+          {
+            pdf_pages: [3, 4],
+            fields: { 'Title' => 'Text title 2', 'Description' => 'Text description 2', 'Location' => 'Textington' }
+          }
+        ]
+      }
+    end
+
+    it 'merges both sources, prioritising those from the form parser' do
+      rows = service.merge_pdf_rows pdf_ideas
+      expect(rows[0]).to include({
+        title_multiloc: { en: 'Form title 1' },
+        body_multiloc: { en: 'Text description 1' },
+        location_description: 'Formville'
+      })
+      expect(rows[1]).to include({
+        title_multiloc: { en: 'Form title 2' },
+        body_multiloc: { en: 'Form description 2' },
+        location_description: 'Textington'
+      })
+    end
+
+    it 'ignores the text parsed ideas if the array lengths differ' do
+      pdf_ideas[:text_parsed_ideas].pop
+      rows = service.merge_pdf_rows pdf_ideas
+      expect(rows[0]).not_to include({
+        body_multiloc: { en: 'Text description 1' }
+      })
+      expect(rows[1]).not_to include({
+        location_description: 'Textington'
+      })
+    end
+  end
+
+  describe 'parse_pdf' do
+    it 'ignores errors from the plain text service' do
+      form_parser_output = [{
+        form_pages: [1],
+        pdf_pages: [1],
+        fields: {
+          'Title' => 'My very good idea',
+          'Description' => 'And this is the very good body'
+        }
+      }]
+      expect_any_instance_of(BulkImportIdeas::GoogleFormParserService).to receive(:parse_pdf).and_return(form_parser_output)
+      expect_any_instance_of(BulkImportIdeas::GoogleFormParserService).to receive(:raw_text_page_array).and_raise(BulkImportIdeas::Error.new('something'))
+
+      file = create(:idea_import_file)
+      expect(service.parse_pdf_ideas(file)).to eq(
+        { form_parsed_ideas: form_parser_output, text_parsed_ideas: [] }
+      )
+    end
+  end
 end
