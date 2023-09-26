@@ -176,7 +176,7 @@ module BulkImportIdeas
 
       text_parsed_ideas = begin
         IdeaPlaintextParserService.new(
-          @participation_context,
+          @phase || @project,
           @form_fields.reject { |field| field.input_type == 'topic_ids' }, # Temp
           @locale,
           @pdf_form_page_count
