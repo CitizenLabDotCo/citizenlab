@@ -120,8 +120,8 @@ export const ERROR_CODE_MESSAGES: Record<ErrorCode, MessageDescriptor> = {
   invitation_error: messages.invitationErrorText,
   franceconnect_merging_failed: messages.franceConnectMergingFailed,
   email_taken_and_user_can_be_verified: messages.emailTakenAndUserCanBeVerified,
-  not_entitled_under_15_years_of_age:
-    messages.copenhagenUnder15VerificationFailed,
+  not_entitled_under_minimum_age:
+    messages.nemlogInUnderMinimumAgeVerificationFailed,
 };
 
 type HelperTextKey = 'signup_helper_text' | 'custom_fields_signup_helper_text';
