@@ -32,7 +32,6 @@ export interface Props {
 const VerificationSteps = memo<Props>(({ onCompleted, onError }) => {
   const [activeStep, setActiveStep] =
     useState<TVerificationStep>('method-selection');
-  console.log('activeStep', activeStep);
   const [method, setMethod] = useState<TVerificationMethod | null>(null);
 
   const { data: authUser } = useAuthUser();
