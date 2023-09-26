@@ -13,6 +13,7 @@ module BulkImportIdeas
       @form_fields = IdeaCustomFieldsService.new(@participation_method.custom_form).importable_fields
       @locale = locale || @locale
       @google_forms_service = nil
+      @pdf_form_page_count = pdf_form_page_count
     end
 
     def create_files(file_content)
@@ -23,7 +24,7 @@ module BulkImportIdeas
       if source_file&.import_type == 'pdf'
         # Get number of pages in a form from the download
         # NOTE: Page count may be different if name and email are specified - for future
-        pages_per_idea = pdf_form_page_count
+        pages_per_idea = @pdf_form_page_count
 
         pdf = ::CombinePDF.parse open(source_file.file_content_url).read
         source_file.update!(num_pages: pdf.pages.count)
@@ -170,7 +171,7 @@ module BulkImportIdeas
       @google_forms_service ||= GoogleFormParserService.new
 
       # NOTE: We return both parsed values so we can later merge the best values from both
-      form_parsed_ideas = @google_forms_service.parse_pdf(pdf_file, pdf_form_page_count)
+      form_parsed_ideas = @google_forms_service.parse_pdf(pdf_file, @pdf_form_page_count)
       text_parsed_ideas = begin
         IdeaPlaintextParserService.new(
           @form_fields.reject { |field| field.input_type == 'topic_ids' }, # Temp
