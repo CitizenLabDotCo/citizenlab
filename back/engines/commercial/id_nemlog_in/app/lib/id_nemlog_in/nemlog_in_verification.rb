@@ -14,8 +14,6 @@ module IdNemlogIn
 
       age = auth.extra.raw_info['https://data.gov.dk/model/core/eid/age'].to_i
 
-      puts "entitled_age: #{age}"
-
       raise Verification::VerificationService::NotEntitledError, 'under_minimum_age' if age < minimum_age
 
       true
@@ -34,7 +32,7 @@ module IdNemlogIn
         environment
         issuer
         private_key
-        mimimum_age
+        minimum_age
       ]
     end
 
@@ -56,7 +54,7 @@ module IdNemlogIn
           type: 'string',
           description: 'Private key. Looks sth like `-----BEGIN PRIVATE KEY-----\nD_zoDdzvVNoCA...\nSHy4aX_pQ...==\n-----END PRIVATE KEY-----`. Public key is specified in the SP metadata file.'
         },
-        mimimum_age: {
+        minimum_age: {
           private: true,
           type: 'integer',
           description: 'Minimum age required to validate (in years). No value means no age minimum.'
