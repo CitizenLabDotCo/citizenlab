@@ -41,10 +41,6 @@ interface Props {
   }) => Promise<void>;
 }
 
-// For now we are hiding the option to add email and name fields to
-// the printed form, since this flow needs a bit more work
-const ALLOW_EMAIL_AND_NAME = false;
-
 const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
   const { formatMessage } = useIntl();
   const { projectId } = useParams() as { projectId: string };
@@ -125,33 +121,31 @@ const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
                 <Text mb="24px">
                   <FormattedMessage {...messages.itIsAlsoPossible} />
                 </Text>
-                {ALLOW_EMAIL_AND_NAME && (
-                  <>
-                    <Text mb="24px">
-                      <FormattedMessage {...messages.nameAndEmailExplanation} />
-                    </Text>
-                    <Box mb="12px">
-                      <Checkbox
-                        name="name"
-                        label={
-                          <Text m="0">
-                            <FormattedMessage {...messages.includeFullName} />
-                          </Text>
-                        }
-                      />
-                    </Box>
-                    <Box mb="24px">
-                      <Checkbox
-                        name="email"
-                        label={
-                          <Text m="0">
-                            <FormattedMessage {...messages.includeEmail} />
-                          </Text>
-                        }
-                      />
-                    </Box>
-                  </>
-                )}
+                <>
+                  <Text mb="24px">
+                    <FormattedMessage {...messages.nameAndEmailExplanation} />
+                  </Text>
+                  <Box mb="12px">
+                    <Checkbox
+                      name="name"
+                      label={
+                        <Text m="0">
+                          <FormattedMessage {...messages.includeFullName} />
+                        </Text>
+                      }
+                    />
+                  </Box>
+                  <Box mb="24px">
+                    <Checkbox
+                      name="email"
+                      label={
+                        <Text m="0">
+                          <FormattedMessage {...messages.includeEmail} />
+                        </Text>
+                      }
+                    />
+                  </Box>
+                </>
               </>
             )}
             {isTimelineProject && formType === 'idea_form' && (
