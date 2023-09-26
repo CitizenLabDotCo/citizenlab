@@ -32,6 +32,11 @@ fr:
       not_ends_on: "%{property} ne se termine pas sur %{value}"
     email:
       property: "adresse e-mail"
+    event_attendances:
+      attends_something: "L'utilisateur est inscrit à au moins un événement"
+      attends_nothing: "L'utilisateur n'est inscrit à aucun événement"
+      attends_some_of: "L'utilisateur est inscrit à au moins un des événements suivants: %{value}"
+      attends_none_of: "L'utilisateur n'est inscrit à aucun des événements suivants: %{value}"
     follow:
       something: "Suit quelque chose"
       nothing: "Suit rien"
