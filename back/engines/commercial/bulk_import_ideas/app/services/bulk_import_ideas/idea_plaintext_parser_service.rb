@@ -9,9 +9,12 @@ module BulkImportIdeas
     EMPTY_SELECT_CIRCLES = ['O', '○']
     EMPTY_MULTISELECT_SQUARES = ['☐']
 
-    def initialize(participation_context, custom_fields, locale)
+    def initialize(participation_context, custom_fields, locale, id = '1')
       @custom_fields = custom_fields
       @locale = locale
+
+      # TODO: remove
+      @id = id
 
       pdf = PrintCustomFieldsService.new(
         participation_context,
@@ -149,6 +152,8 @@ module BulkImportIdeas
         line = lines[last_index - n]
         return line if page_number? line
       end
+
+      nil
     end
 
     def page_number?(line)
@@ -156,6 +161,8 @@ module BulkImportIdeas
     end
 
     def get_page_number(line)
+      return nil if line.nil?
+
       line[@page_copy.length + 1, line.length].to_i
     end
 

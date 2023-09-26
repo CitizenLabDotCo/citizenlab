@@ -607,7 +607,7 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
         Pizza nutella\n"
       ]
 
-      service = described_class.new project, custom_fields, 'en'
+      service = described_class.new project, custom_fields, 'en', 'test'
       docs = service.parse_text text
 
       result = [{
