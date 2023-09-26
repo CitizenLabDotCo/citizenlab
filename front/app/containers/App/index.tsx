@@ -18,7 +18,12 @@ import { trackPage } from 'utils/analytics';
 const ConsentManager = lazy(() => import('components/ConsentManager'));
 
 // components
-import { Box, Spinner, useBreakpoint } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Spinner,
+  useBreakpoint,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import ErrorBoundary from 'components/ErrorBoundary';
 import Navigate from 'utils/cl-router/Navigate';
 import Authentication from 'containers/Authentication';
@@ -45,7 +50,7 @@ import { useLocation } from 'react-router-dom';
 import eventEmitter from 'utils/eventEmitter';
 
 // style
-import styled, { ThemeProvider } from 'styled-components';
+import { ThemeProvider } from 'styled-components';
 import { getTheme, stylingConsts } from 'utils/styleUtils';
 
 // typings
@@ -55,25 +60,6 @@ import { Locale } from 'typings';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 import useAuthUser from 'api/me/useAuthUser';
 import { configureScope } from '@sentry/react';
-
-const Container = styled.div<{
-  disableScroll?: boolean;
-}>`
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  position: relative;
-  background: #fff;
-
-  // for instances with e.g. a fullscreen modal, we want to
-  // be able to disable scrolling on the page behind the modal
-  ${(props) =>
-    props.disableScroll &&
-    `
-      height: 100%;
-      overflow: hidden;
-    `};
-`;
 
 interface Props {
   children: React.ReactNode;
@@ -310,6 +296,8 @@ const App = ({ children }: Props) => {
     );
   }
 
+  const disableScroll = fullscreenModalEnabled && signUpInModalOpened;
+
   return (
     <>
       {appConfiguration && (
@@ -318,11 +306,20 @@ const App = ({ children }: Props) => {
             theme={{ ...theme, isRtl: !!locale?.startsWith('ar') }}
           >
             <GlobalStyle />
-            <Container
-              // when the fullscreen modal is enabled on a platform and
-              // is currently open, we want to disable scrolling on the
-              // app sitting below it (CL-1101)
-              disableScroll={fullscreenModalEnabled && signUpInModalOpened}
+            <Box
+              display="flex"
+              flexDirection="column"
+              alignItems="stretch"
+              position="relative"
+              background={colors.white}
+              /* When the fullscreen modal is enabled on a platform and
+               * is currently open, we want to disable scrolling on the
+               * app sitting below it (CL-1101).
+               * For instance, with a fullscreen modal, we want to
+               * be able to disable scrolling on the page behind the modal
+               */
+              overflow={disableScroll ? 'hidden' : undefined}
+              minHeight="100vh"
             >
               <Meta />
               <ErrorBoundary>
@@ -357,17 +354,12 @@ const App = ({ children }: Props) => {
                 display="flex"
                 flexDirection="column"
                 alignItems="stretch"
+                flex="1"
+                overflowY="auto"
                 pt={
                   showFrontOfficeNavbar
                     ? `${stylingConsts.menuHeight}px`
                     : undefined
-                }
-                minHeight={
-                  isSmallerThanTablet
-                    ? `calc(100vh - ${stylingConsts.menuHeight}px - ${
-                        stylingConsts.mobileMenuHeight * 2
-                      }px)`
-                    : `calc(100vh - ${stylingConsts.menuHeight}px)`
                 }
               >
                 <HasPermission
@@ -392,7 +384,7 @@ const App = ({ children }: Props) => {
               <ErrorBoundary>
                 <div id="mobile-nav-portal" />
               </ErrorBoundary>
-            </Container>
+            </Box>
           </ThemeProvider>
         </PreviousPathnameContext.Provider>
       )}
