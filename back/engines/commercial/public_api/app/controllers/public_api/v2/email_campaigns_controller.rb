@@ -6,7 +6,7 @@ module PublicApi
 
     def index
       # Only include manual campaigns - system generated campaigns should stay internal
-      list_items EmailCampaigns::Campaign.where(type: 'EmailCampaigns::Campaigns::Manual'), V2::EmailCampaignSerializer, root_key: 'email_campaigns'
+      list_items EmailCampaigns::Campaign.manual, V2::EmailCampaignSerializer, root_key: 'email_campaigns'
     end
 
     def show

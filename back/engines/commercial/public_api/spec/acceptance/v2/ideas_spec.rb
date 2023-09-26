@@ -90,7 +90,7 @@ resource 'Posts' do
         assert_status 200
         expect(json_response_body[:ideas].size).to eq(page_size)
 
-        total_pages = (Idea.count / page_size).ceil
+        total_pages = (Idea.count.to_f / page_size).ceil
         expect(json_response_body[:meta]).to eq({ total_pages: total_pages, current_page: 1 })
       end
     end

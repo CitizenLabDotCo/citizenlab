@@ -12,7 +12,7 @@ resource 'Volunteering' do
 
   include_context 'common_auth'
 
-  let!(:volunteering_causes) { create_list(:cause, 5) }
+  let!(:volunteering_causes) { create_list(:cause, 3) }
 
   get '/api/v2/volunteering_causes/' do
     route_summary 'List volunteering causes'
