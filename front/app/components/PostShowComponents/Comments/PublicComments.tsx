@@ -35,7 +35,6 @@ import CommentingIdeaDisabled from './CommentingIdeaDisabled';
 // utils
 import { isPage } from 'utils/helperUtils';
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
-import useAuthUser from 'api/me/useAuthUser';
 
 const Header = styled(Box)`
   ${isRtl`
