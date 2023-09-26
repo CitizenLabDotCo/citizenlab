@@ -124,16 +124,15 @@ const PublicComments = ({
   const isAdminPage = isPage('admin', pathname);
   const showCommentCount = !isAdminPage && hasComments;
   const showHeader = !isAdminPage || hasComments;
-  const commentingDisabledReason =
-    postType === 'initiative'
-      ? commentingPermissionInitiative?.disabledReason
-      : idea?.data.attributes?.action_descriptor.commenting_idea
-          .disabled_reason;
-  // authUser check is needed for proposals, because disabled reasons don't include
-  // anything related to authentication for proposals. In the way we use canComment
-  // (to show the comment input form), authUser check also doesn't hurt for ideas
-  // because you need to be signed in before you can comment.
-  const canComment = !commentingDisabledReason && authUser !== undefined;
+  const canComment = {
+    idea: !idea?.data.attributes.action_descriptor.commenting_idea
+      .disabled_reason,
+    // authUser check is needed for proposals, because disabled reasons don't include
+    // anything related to authentication for proposals so there would be whitespace in the
+    // UI from the box that's displayed using this condition.
+    initiative:
+      !commentingPermissionInitiative?.disabledReason && authUser !== undefined,
+  }[postType];
 
   return (
     <Box className={className || ''}>
