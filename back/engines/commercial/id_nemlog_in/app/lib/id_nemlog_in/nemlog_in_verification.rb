@@ -36,6 +36,7 @@ module IdNemlogIn
         environment
         issuer
         private_key
+        mimimum_age
       ]
     end
 
@@ -56,6 +57,11 @@ module IdNemlogIn
           private: true,
           type: 'string',
           description: 'Private key. Looks sth like `-----BEGIN PRIVATE KEY-----\nD_zoDdzvVNoCA...\nSHy4aX_pQ...==\n-----END PRIVATE KEY-----`. Public key is specified in the SP metadata file.'
+        },
+        mimimum_age: {
+          private: true,
+          type: 'integer',
+          description: 'Minimum age required to validate (in years). No value means no age minimum.'
         }
       }
     end
