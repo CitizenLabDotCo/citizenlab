@@ -13,9 +13,7 @@ module IdNemlogIn
       return true unless minimum_age
 
       age = auth.extra.raw_info['https://data.gov.dk/model/core/eid/age'].to_i
-      raise Verification::VerificationService::NotEntitledError, <<~MSG.strip if age < minimum_age
-        under_#{minimum_age}_years_of_age
-      MSG
+      raise Verification::VerificationService::NotEntitledError, 'under_minimum_age' if age < minimum_age
 
       true
     end

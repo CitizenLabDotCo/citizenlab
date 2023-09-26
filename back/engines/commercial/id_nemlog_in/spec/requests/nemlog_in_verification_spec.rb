@@ -133,7 +133,7 @@ describe IdNemlogIn::NemlogInOmniauth do
       get "/auth/nemlog_in?token=#{token}&pathname=/some-page"
       follow_redirect!
 
-      expect(response).to redirect_to('/some-page?verification_error=true&error=not_entitled_under_15_years_of_age')
+      expect(response).to redirect_to('/some-page?verification_error=true&error=not_entitled_under_minimum_age')
       expect(user.reload).to have_attributes({
         verified: false
       })
