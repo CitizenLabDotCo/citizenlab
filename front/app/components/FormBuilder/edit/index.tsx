@@ -50,6 +50,7 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import { FormBuilderConfig } from '../utils';
 import HelmetIntl from 'components/HelmetIntl';
+import EditWarningModal from '../components/EditWarningModal';
 
 const StyledRightColumn = styled(RightColumn)`
   height: calc(100vh - ${stylingConsts.menuHeight}px);
@@ -72,6 +73,7 @@ type FormEditProps = {
   projectId: string;
   phaseId?: string;
   builderConfig: FormBuilderConfig;
+  totalSubmissions: number;
 } & WrappedComponentProps;
 
 export const FormEdit = ({
@@ -80,12 +82,15 @@ export const FormEdit = ({
   phaseId,
   projectId,
   builderConfig,
+  totalSubmissions,
 }: FormEditProps) => {
   const [selectedField, setSelectedField] = useState<
     IFlatCustomFieldWithIndex | undefined
   >(undefined);
   const { groupingType, formSavedSuccessMessage, isFormPhaseSpecific } =
     builderConfig;
+
+  const showWarningNotice = totalSubmissions > 0;
 
   const schema = object().shape({
     customFields: array().of(
@@ -266,6 +271,9 @@ export const FormEdit = ({
                     <Feedback
                       successMessage={formatMessage(formSavedSuccessMessage)}
                     />
+                    {showWarningNotice &&
+                      builderConfig.getWarningNotice &&
+                      builderConfig.getWarningNotice()}
                     <Box
                       borderRadius="3px"
                       boxShadow="0px 2px 4px rgba(0, 0, 0, 0.2)"
@@ -295,6 +303,7 @@ export const FormEdit = ({
             </form>
           </FormProvider>
         </FocusOn>
+        <EditWarningModal />
       </Box>
     );
   }
@@ -331,6 +340,7 @@ const FormBuilderPage = ({ builderConfig }: FormBuilderPageProps) => {
           phaseId={phaseId}
           projectId={projectId}
           builderConfig={builderConfig}
+          totalSubmissions={submissionCount.data.attributes.totalSubmissions}
         />,
         modalPortalElement
       )

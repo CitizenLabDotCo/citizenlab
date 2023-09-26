@@ -1,3 +1,5 @@
+import React from 'react';
+
 // api
 import { updateProject } from 'api/projects/useUpdateProject';
 import { IProjectData } from 'api/projects/types';
@@ -11,9 +13,12 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import { FormBuilderConfig } from 'components/FormBuilder/utils';
+import { Box } from '@citizenlab/cl2-component-library';
+import Warning from 'components/UI/Warning';
 
 // intl
 import messages from './messages';
+import { FormattedMessage } from 'utils/cl-intl';
 
 export const nativeSurveyConfig: FormBuilderConfig = {
   formBuilderTitle: messages.survey2,
@@ -34,6 +39,15 @@ export const nativeSurveyConfig: FormBuilderConfig = {
   alwaysShowCustomFields: true,
   isFormPhaseSpecific: true,
   groupingType: 'page',
+  getWarningNotice: () => {
+    return (
+      <Box id="e2e-warning-notice" mb="20px">
+        <Warning>
+          <FormattedMessage {...messages.existingSubmissionsWarning} />
+        </Warning>
+      </Box>
+    );
+  },
 };
 
 type FormActionsConfig = {

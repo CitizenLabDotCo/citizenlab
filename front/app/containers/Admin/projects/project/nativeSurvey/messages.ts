@@ -67,6 +67,11 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.viewSurveyText2',
     defaultMessage: 'View survey',
   },
+  existingSubmissionsWarning: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.existingSubmissionsWarning',
+    defaultMessage:
+      'Submissions to this survey have started to come in. Changes to the survey may result in data loss and incomplete data in the exported files.',
+  },
   deleteResultsConfirmationQuestion2: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResultsConfirmation2',
     defaultMessage: 'Are you sure you want to delete all survey results?',
