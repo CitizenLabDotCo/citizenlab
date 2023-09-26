@@ -35,6 +35,7 @@ import CommentingIdeaDisabled from './CommentingIdeaDisabled';
 // utils
 import { isPage } from 'utils/helperUtils';
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
+import useAuthUser from 'api/me/useAuthUser';
 
 const Header = styled(Box)`
   ${isRtl`
@@ -70,6 +71,7 @@ const PublicComments = ({
   const ideaId = postType === 'idea' ? postId : undefined;
   const { data: initiative } = useInitiativeById(initiativeId);
   const { data: idea } = useIdeaById(ideaId);
+  const { data: authUser } = useAuthUser();
   const { pathname } = useLocation();
   const [sortOrder, setSortOrder] = useState<CommentsSort>('new');
   const {
@@ -127,7 +129,11 @@ const PublicComments = ({
       ? commentingPermissionInitiative?.disabledReason
       : idea?.data.attributes?.action_descriptor.commenting_idea
           .disabled_reason;
-  const canComment = !commentingDisabledReason;
+  // authUser check is needed for proposals, because disabled reasons don't include
+  // anything related to authentication for proposals. In the way we use canComment
+  // (to show the comment input form), authUser check also doesn't hurt for ideas
+  // because you need to be signed in before you can comment.
+  const canComment = !commentingDisabledReason && authUser !== undefined;
 
   return (
     <Box className={className || ''}>
@@ -147,15 +153,15 @@ const PublicComments = ({
             <FormattedMessage {...messages.invisibleTitleComments} />
             {showCommentCount && <CommentCount>({commentCount})</CommentCount>}
           </Title>
-          <>
+          <Box mb="24px">
             {postType === 'idea' && idea ? (
               <CommentingIdeaDisabled idea={idea} phaseId={phaseId} />
             ) : (
               <CommentingProposalDisabled />
             )}
-          </>
+          </Box>
           {hasComments && (
-            <Box ml="auto" mb="20px">
+            <Box ml="auto" mb="24px">
               <CommentSorting
                 onChange={handleSortOrderChange}
                 selectedCommentSort={sortOrder}

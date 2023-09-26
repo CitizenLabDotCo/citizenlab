@@ -2,7 +2,6 @@ import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
 import Warning from 'components/UI/Warning';
 import T from 'components/T';
 
@@ -106,40 +105,38 @@ const CommentingDisabled = ({
   if (!messageDescriptor) return null;
 
   return (
-    <Box mt="15px" mb="30px" className="e2e-commenting-disabled">
-      <Warning>
-        <FormattedMessage
-          {...messageDescriptor}
-          values={{
-            signUpLink: (
-              <button onClick={signUp}>
-                <FormattedMessage {...messages.signUpLinkText} />
-              </button>
-            ),
-            signInLink: (
-              <button onClick={signIn}>
-                <FormattedMessage {...messages.signInLinkText} />
-              </button>
-            ),
-            completeRegistrationLink: (
-              <button
-                onClick={() => {
-                  triggerAuthenticationFlow();
-                }}
-              >
-                <FormattedMessage {...messages.completeProfileLinkText} />
-              </button>
-            ),
-            verifyIdentityLink: (
-              <button id="e2e-verify-identity-to-comment" onClick={signUp}>
-                <FormattedMessage {...messages.verifyIdentityLinkText} />
-              </button>
-            ),
-            projectName: projectTitle && <T value={projectTitle} />,
-          }}
-        />
-      </Warning>
-    </Box>
+    <Warning className="e2e-commenting-disabled">
+      <FormattedMessage
+        {...messageDescriptor}
+        values={{
+          signUpLink: (
+            <button onClick={signUp}>
+              <FormattedMessage {...messages.signUpLinkText} />
+            </button>
+          ),
+          signInLink: (
+            <button onClick={signIn}>
+              <FormattedMessage {...messages.signInLinkText} />
+            </button>
+          ),
+          completeRegistrationLink: (
+            <button
+              onClick={() => {
+                triggerAuthenticationFlow();
+              }}
+            >
+              <FormattedMessage {...messages.completeProfileLinkText} />
+            </button>
+          ),
+          verifyIdentityLink: (
+            <button id="e2e-verify-identity-to-comment" onClick={signUp}>
+              <FormattedMessage {...messages.verifyIdentityLinkText} />
+            </button>
+          ),
+          projectName: projectTitle && <T value={projectTitle} />,
+        }}
+      />
+    </Warning>
   );
 };
 
