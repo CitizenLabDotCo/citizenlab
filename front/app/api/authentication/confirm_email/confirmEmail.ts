@@ -31,7 +31,6 @@ export default async function confirmEmail(
 
     return true;
   } catch (errors) {
-    console.log(errors);
     throw errors.errors;
   }
 }
