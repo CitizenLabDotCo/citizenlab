@@ -80,14 +80,14 @@ const ImportSection = ({ onFinishImport, locale, project, phases }: Props) => {
 
   const isTimelineProject = !!phases;
 
-  // We need to know if this project is a timeline ideation project,
-  // because in this case we need to show the PhaseSelector.
-  // For survey timeline projects we don't need to do this because we
-  // already know in which survey phase we are because of the phaseId
-  // URL parameter.
+  // We need to know if the user wants to import ideas in a timeline
+  // project, because in this case we need to show the PhaseSelector.
+  // For survey timeline imports we don't need to do this because we
+  // already know in to which survey phase the user wants to import
+  // because of the phaseId URL parameter.
   // So, if we know we are in a timeline project, and we don't detect
-  // this phase parameter, we know we are in a timeline ideation
-  // project.
+  // this phase parameter, we know that the user is trying to import
+  // ideas to a timeline project.
   // Is this confusing? Yup. Should be made more clear in the future.
   const isSurveyImporter = !!phaseId;
   const isTimelineIdeaImporter = isTimelineProject && !isSurveyImporter;
