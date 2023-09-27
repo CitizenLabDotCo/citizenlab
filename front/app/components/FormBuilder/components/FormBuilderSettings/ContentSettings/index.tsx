@@ -17,7 +17,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
 import { getAdditionalSettings } from '../utils';
-import { IFlatCustomFieldWithIndex } from 'services/formCustomFields';
+import { IFlatCustomFieldWithIndex } from 'api/custom_fields/types';
 import useLocale from 'hooks/useLocale';
 import { isNilOrError } from 'utils/helperUtils';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';

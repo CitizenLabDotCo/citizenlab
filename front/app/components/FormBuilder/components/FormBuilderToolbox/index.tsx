@@ -23,7 +23,7 @@ import { colors } from 'utils/styleUtils';
 import {
   ICustomFieldInputType,
   IFlatCreateCustomField,
-} from 'services/formCustomFields';
+} from 'api/custom_fields/types';
 
 // hooks
 import useLocale from 'hooks/useLocale';

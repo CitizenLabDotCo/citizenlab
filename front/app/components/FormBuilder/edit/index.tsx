@@ -32,17 +32,9 @@ import {
   DragAndDropResult,
 } from './utils';
 
-// services
-import {
-  IFlatCreateCustomField,
-  IFlatCustomField,
-  IFlatCustomFieldWithIndex,
-  updateFormCustomFields,
-  isNewCustomFieldObject,
-} from 'services/formCustomFields';
-
 // hooks
 import useFormSubmissionCount from 'api/submission_count/useSubmissionCount';
+import useUpdateCustomField from 'api/custom_fields/useUpdateCustomFields';
 
 // intl
 import { WrappedComponentProps } from 'react-intl';
@@ -51,6 +43,12 @@ import messages from '../messages';
 import { FormBuilderConfig } from '../utils';
 import HelmetIntl from 'components/HelmetIntl';
 import EditWarningModal from '../components/EditWarningModal';
+import {
+  IFlatCreateCustomField,
+  IFlatCustomField,
+  IFlatCustomFieldWithIndex,
+} from 'api/custom_fields/types';
+import { isNewCustomFieldObject } from 'api/custom_fields/util';
 
 const StyledRightColumn = styled(RightColumn)`
   height: calc(100vh - ${stylingConsts.menuHeight}px);
@@ -89,7 +87,7 @@ export const FormEdit = ({
   >(undefined);
   const { groupingType, formSavedSuccessMessage, isFormPhaseSpecific } =
     builderConfig;
-
+  const { mutateAsync: updateFormCustomFields } = useUpdateCustomField();
   const showWarningNotice = totalSubmissions > 0;
 
   const schema = object().shape({
@@ -197,11 +195,11 @@ export const FormEdit = ({
           maximum: field.maximum.toString(),
         }),
       }));
-      await updateFormCustomFields(
+      await updateFormCustomFields({
         projectId,
-        finalResponseArray,
-        isFormPhaseSpecific ? phaseId : undefined
-      );
+        customFields: finalResponseArray,
+        phaseId: isFormPhaseSpecific ? phaseId : undefined,
+      });
     } catch (error) {
       handleHookFormSubmissionError(error, setError, 'customFields');
     }

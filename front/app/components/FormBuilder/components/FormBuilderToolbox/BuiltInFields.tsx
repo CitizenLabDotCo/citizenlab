@@ -10,7 +10,7 @@ import ToolboxItem from './ToolboxItem';
 import { Box, Title } from '@citizenlab/cl2-component-library';
 
 // types
-import { IFlatCustomField } from 'services/formCustomFields';
+import { IFlatCustomField } from 'api/custom_fields/types';
 
 // utils
 import { builtInFieldKeys, BuiltInKeyType } from 'components/FormBuilder/utils';

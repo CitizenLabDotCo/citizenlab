@@ -44,7 +44,7 @@ import { rgba } from 'polished';
 import {
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
-} from 'services/formCustomFields';
+} from 'api/custom_fields/types';
 import useLocale from 'hooks/useLocale';
 
 const FormFieldsContainer = styled(Box)`

@@ -24,16 +24,21 @@ const NoEventsText = styled.div`
 const CardsContainer = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  gap: 16px;
 
-  ${media.tablet`
-    flex-direction: column;
-    gap: 16px;
-  `}
+  flex-wrap: wrap;
 `;
 
 const StyledEventCard = styled(EventCard)`
   flex: 0 0 32.3%;
+
+  ${media.tablet`
+    flex: 0 0 48.8%;
+  `}
+
+  ${media.phone`
+    flex: 0 0 100%;
+  `}
 `;
 
 const Header = styled.div`
