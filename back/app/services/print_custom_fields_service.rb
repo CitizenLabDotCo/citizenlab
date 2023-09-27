@@ -27,18 +27,8 @@ class PrintCustomFieldsService
     write_form_title pdf
     write_instructions pdf
 
-    if params[:name] == 'true'
-      render_text_field_with_name(
-        pdf,
-        I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.full_name') }
-      )
-    end
-
-    if params[:email] == 'true'
-      render_text_field_with_name(
-        pdf,
-        I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.email_address') }
-      )
+    if params[:personal_data] == 'true'
+      render_personal_data_section pdf
     end
 
     custom_fields.each_with_index do |custom_field, i|
@@ -151,6 +141,42 @@ class PrintCustomFieldsService
     end
 
     pdf.move_down 8.mm
+  end
+
+  def render_personal_data_section(pdf)
+    pdf.text(
+      "<b>#{I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.personal_data') }}</b>",
+      size: 16,
+      inline_format: true
+    )
+
+    pdf.move_down 4.mm
+
+    participation_method = @participation_context.participation_method
+    personal_data_explanation_key = "form_builder.pdf_export.personal_data_explanation_#{participation_method}"
+    pdf.text I18n.with_locale(locale) { I18n.t(personal_data_explanation_key) }
+
+    pdf.move_down 6.mm
+
+    %w[first_name last_name email_address].each do |key|
+      render_text_field_with_name(
+        pdf,
+        I18n.with_locale(locale) { I18n.t("form_builder.pdf_export.#{key}") }
+      )
+    end
+
+    pdf.stroke do
+      pdf.stroke_color '000000'
+      pdf.rectangle([1.5.mm, pdf.cursor + 1.5.mm], 10, 10)
+    end
+
+    pdf.move_up 2.8.mm
+
+    pdf.indent(7.mm) do
+      pdf.text I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.by_checking_this_box') }
+    end
+
+    pdf.start_new_page(size: 'A4')
   end
 
   def render_text_field_with_name(pdf, name)

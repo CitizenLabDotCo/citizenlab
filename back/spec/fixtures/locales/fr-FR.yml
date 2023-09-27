@@ -10,8 +10,13 @@ fr:
       option1: Première option
       option2: Deuxième option
     pdf_export:
-      full_name: Nom et prénom
+      personal_data: 'Données personelles'
+      personal_data_explanation_ideation: "Explication ideation"
+      personal_data_explanation_native_survey: "Explication native_survey"
+      first_name: 'Prénom(s)'
+      last_name: 'Nom de famille'
       email_address: Adresse e-mail
+      by_checking_this_box: "By checking this box I consent to my data being used to create an account on %{organizationName}'s participation platform."
       optional: optionnel
       permission: Autorisation
       choose_as_many: Choisissez-en autant que vous le souhaitez

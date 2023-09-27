@@ -10,8 +10,13 @@ en:
       option1: First option
       option2: Second option
     pdf_export:
-      full_name: Full name
+      personal_data: 'Personal data'
+      personal_data_explanation_ideation: "We will submit your input to [organizationName]'s online participation platform. If you want to be publicly listed as author of this input and receive updates relevant to your input by email, please fill out the following fields on this page and we will create an account for you. If you want to remain anonymous, or do not want an account, you can leave them empty."
+      personal_data_explanation_native_survey: "We will submit your input to [organizationName]'s online participation platform. If you want to receive updates relevant to this project by email, please fill out the following fields on this page and we will create an account for you. If you want to remain anonymous, or do not want an account, you can leave them empty."
+      first_name: First name(s)
+      last_name: Last name
       email_address: Email address
+      by_checking_this_box: "By checking this box I consent to my data being used to create an account on %{organizationName}'s participation platform."
       optional: optional
       permission: Permission
       choose_as_many: Choose as many as you like
