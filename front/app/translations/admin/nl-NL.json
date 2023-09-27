@@ -1495,7 +1495,7 @@
   "app.containers.AdminPage.ProjectEvents.addressTwoLabel": "Adres 2",
   "app.containers.AdminPage.ProjectEvents.addressTwoPlaceholder": "Bijv. appartement, gebouw",
   "app.containers.AdminPage.ProjectEvents.addressTwoTooltip": "Aanvullende adresinformatie die kan helpen bij het identificeren van de locatie, zoals de naam van het gebouw, het verdiepingsnummer, etc.",
-  "app.containers.AdminPage.ProjectEvents.attend": "Deelnemen",
+  "app.containers.AdminPage.ProjectEvents.attend": "Bijwonen",
   "app.containers.AdminPage.ProjectEvents.attendanceButton": "Deelnameknop",
   "app.containers.AdminPage.ProjectEvents.attendanceSupportArticleLink": "https://support.citizenlab.co/nl/articles/5481527-evenementen-toevoegen-aan-je-platform",
   "app.containers.AdminPage.ProjectEvents.attendanceSupportArticleLinkText": "Zie het support-artikel",
