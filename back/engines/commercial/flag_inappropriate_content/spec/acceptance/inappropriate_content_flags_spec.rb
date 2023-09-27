@@ -27,7 +27,7 @@ resource 'Inappropriate content flags' do
     example 'Mark a flag as deleted' do
       expect(flag.deleted?).to be false
       do_request
-      expect(status).to be 200
+      expect(status).to be 202
       expect(flag.reload.deleted?).to be true
     end
   end

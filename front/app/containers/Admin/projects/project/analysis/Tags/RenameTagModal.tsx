@@ -12,7 +12,7 @@ import useUpdateAnalysisTag from 'api/analysis_tags/useUpdateAnalysisTag';
 import { object, string } from 'yup';
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { handleCLErrorsIsh } from 'utils/errorUtils';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import Feedback from 'components/HookForm/Feedback';
 import Input from 'components/HookForm/Input';
 
@@ -54,7 +54,7 @@ const RenameTag = ({
       {
         onSuccess: closeRenameModal,
         onError: (errors) => {
-          handleCLErrorsIsh({ errors }, methods.setError);
+          handleHookFormSubmissionError({ errors }, methods.setError);
         },
       }
     );

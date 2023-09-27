@@ -28,7 +28,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../../../../messages';
 
 // typings
-import { VotingMethod } from 'services/participationContexts';
+import { VotingMethod } from 'utils/participationContexts';
 import { ApiErrors } from '../../../';
 import { Multiloc } from 'typings';
 

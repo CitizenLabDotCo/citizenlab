@@ -146,6 +146,7 @@ class PermissionsService
         email: 'dont_ask'
       },
       custom_fields: requirements_fields(permission).to_h { |field| [field.key, 'dont_ask'] },
+      onboarding: { topics_and_areas: 'dont_ask' },
       special: {
         password: 'dont_ask',
         confirmation: 'dont_ask',
@@ -163,6 +164,7 @@ class PermissionsService
     users = everyone_confirmed_email.deep_dup.tap do |requirements|
       requirements[:built_in][:first_name] = 'require'
       requirements[:built_in][:last_name] = 'require'
+      requirements[:onboarding].transform_values! { 'ask' } if onboarding_possible?
       requirements[:special][:password] = 'require'
     end
 
@@ -191,6 +193,9 @@ class PermissionsService
     requirements[:custom_fields]&.each_key do |key|
       requirements[:custom_fields][key] = 'satisfied' if user.custom_field_values.key?(key)
     end
+    %w[topics_and_areas].each do |onboarding_key|
+      requirements[:onboarding][onboarding_key] = 'satisfied' if user.onboarding[onboarding_key] == 'satisfied'
+    end
     requirements[:special]&.each_key do |special_key|
       is_satisfied = case special_key
       when :password
@@ -204,10 +209,20 @@ class PermissionsService
     end
   end
 
+  def onboarding_possible?
+    app_configuration.settings.dig('core', 'onboarding') && (
+      Topic.where(include_in_onboarding: true).count > 0 || Area.where(include_in_onboarding: true).count > 0
+    )
+  end
+
   def ignore_password_for_sso!(requirements, user)
     return requirements if !user
 
     requirements[:special][:password] = 'dont_ask' if user.sso?
+  end
+
+  def app_configuration
+    @app_configuration ||= AppConfiguration.instance
   end
 end
 

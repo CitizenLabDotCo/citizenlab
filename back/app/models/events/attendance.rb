@@ -36,3 +36,5 @@ module Events
     counter_culture :event, column_name: 'attendees_count'
   end
 end
+
+Idea.include(SmartGroups::Concerns::ValueReferenceable)

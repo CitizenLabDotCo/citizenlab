@@ -244,6 +244,7 @@ resource 'Permissions' do
               email: 'satisfied'
             },
             custom_fields: {},
+            onboarding: { topics_and_areas: 'dont_ask' },
             special: {
               password: 'satisfied',
               confirmation: 'satisfied',
@@ -288,6 +289,7 @@ resource 'Permissions' do
               email: 'satisfied'
             },
             custom_fields: {},
+            onboarding: { topics_and_areas: 'dont_ask' },
             special: {
               password: 'dont_ask',
               confirmation: 'require',
@@ -319,6 +321,7 @@ resource 'Permissions' do
               email: 'satisfied'
             },
             custom_fields: {},
+            onboarding: { topics_and_areas: 'dont_ask' },
             special: {
               password: 'satisfied',
               confirmation: 'satisfied',
@@ -344,6 +347,8 @@ resource 'Permissions' do
           password_digest: nil,
           custom_field_values: { 'gender' => 'male' }
         )
+
+        create(:topic, include_in_onboarding: true)
       end
 
       let(:action) { 'visiting' }
@@ -364,6 +369,7 @@ resource 'Permissions' do
               gender: 'satisfied',
               extra_field: 'require'
             },
+            onboarding: { topics_and_areas: 'ask' },
             special: {
               password: 'require',
               confirmation: 'satisfied',
@@ -379,6 +385,8 @@ resource 'Permissions' do
       before do
         @permission = @project.permissions.first
         @permission.update!(permitted_by: 'users')
+
+        create(:topic, include_in_onboarding: true)
       end
 
       let(:action) { @permission.action }
@@ -397,6 +405,7 @@ resource 'Permissions' do
               email: 'satisfied'
             },
             custom_fields: {},
+            onboarding: { topics_and_areas: 'ask' },
             special: {
               password: 'satisfied',
               confirmation: 'satisfied',

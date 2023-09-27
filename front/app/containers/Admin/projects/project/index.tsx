@@ -38,7 +38,7 @@ import styled from 'styled-components';
 
 // typings
 import { InsertConfigurationOptions, ITab } from 'typings';
-import { getInputTerm } from 'services/participationContexts';
+import { getInputTerm } from 'utils/participationContexts';
 import { IProjectData } from 'api/projects/types';
 
 // utils

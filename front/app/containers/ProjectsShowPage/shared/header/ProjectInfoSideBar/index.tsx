@@ -14,10 +14,10 @@ import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
 import useEvents from 'api/events/useEvents';
 import useAuthUser from 'api/me/useAuthUser';
-import useFormSubmissionCount from 'hooks/useFormSubmissionCount';
+import useFormSubmissionCount from 'api/submission_count/useSubmissionCount';
 import usePhasesPermissions from 'api/phase_permissions/usePhasesPermissions';
 import useProjectPermissions from 'api/project_permissions/useProjectPermissions';
-import { isAdmin } from 'services/permissions/roles';
+import { isAdmin } from 'utils/permissions/roles';
 
 // services
 import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
@@ -144,7 +144,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
   const { formatMessage } = useIntl();
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
   const [shareModalOpened, setShareModalOpened] = useState(false);
-  const surveySubmissionCount = useFormSubmissionCount({ projectId });
+  const { data: surveySubmissionCount } = useFormSubmissionCount({ projectId });
   const isAdminUser = !isNilOrError(authUser)
     ? isAdmin({ data: authUser.data })
     : false;
@@ -371,8 +371,8 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                 <Box>
                   <ListItem>
                     <ListItemIcon ariaHidden name="chart-bar" />
-                    {!isNilOrError(surveySubmissionCount) &&
-                      surveySubmissionCount.totalSubmissions}
+                    {surveySubmissionCount &&
+                      surveySubmissionCount.data.attributes.totalSubmissions}
                     <Box ml="4px">
                       <FormattedMessage {...messages.surveySubmissions} />
                     </Box>

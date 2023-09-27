@@ -1,6 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
 import { IParticipationContextType } from 'typings';
-import { requestBlob } from 'utils/request';
+import { requestBlob } from 'utils/requestBlob';
 import { saveAs } from 'file-saver';
 
 export async function exportVolunteers(

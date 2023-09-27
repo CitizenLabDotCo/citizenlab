@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
-import { getInputTerm } from 'services/participationContexts';
+import { getInputTerm } from 'utils/participationContexts';
 
 // components
 import SharingButtons from 'components/Sharing/SharingButtons';
