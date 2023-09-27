@@ -226,7 +226,8 @@ sr-Cyrl:
       title: 'Крај анкете'
       description: "Пошаљите своје одговоре тако што ћете изабрати „Пошаљи анкету“ испод."
     pdf_export:
-      full_name: 'Пуно име'
+      first_name: 'Име'
+      last_name: 'Презиме'
       email_address: 'Адреса Е-поште'
       optional: 'опционо'
       permission: 'Дозвола'
