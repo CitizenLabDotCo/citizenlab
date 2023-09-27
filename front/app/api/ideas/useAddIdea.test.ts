@@ -8,13 +8,6 @@ import { rest } from 'msw';
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { ideaData } from './__mocks__/useIdeaById';
 
-jest.mock('utils/streams', () => ({
-  __esModule: true,
-  default: {
-    fetchAllWith: jest.fn(),
-  },
-}));
-
 const apiPath = '*ideas';
 
 const server = setupServer(

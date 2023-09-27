@@ -18,7 +18,7 @@ import { colors, stylingConsts } from 'utils/styleUtils';
 
 // utils
 import { API_PATH } from 'containers/App/constants';
-import { requestBlob } from 'utils/request';
+import { requestBlob } from 'utils/requestBlob';
 import { isEmpty } from 'lodash-es';
 import { saveAs } from 'file-saver';
 import { Sort, SortAttribute } from 'api/invites/types';

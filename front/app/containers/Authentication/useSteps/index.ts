@@ -34,9 +34,9 @@ import {
   Step,
   AuthenticationData,
 } from '../typings';
-import { SSOParams } from 'services/singleSignOn';
-import { isNil, isNilOrError } from 'utils/helperUtils';
+import { SSOParams } from 'api/authentication/singleSignOn';
 import useUpdateUser from 'api/users/useUpdateUser';
+import { isNil, isNilOrError } from 'utils/helperUtils';
 
 let initialized = false;
 

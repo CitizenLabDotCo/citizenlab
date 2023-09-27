@@ -6,11 +6,7 @@ import { adopt } from 'react-adopt';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // services
-import {
-  isAdmin,
-  isSuperAdmin,
-  isRegularUser,
-} from 'services/permissions/roles';
+import { isAdmin, isSuperAdmin, isRegularUser } from 'utils/permissions/roles';
 
 // resources
 import HasPermission from 'components/HasPermission';

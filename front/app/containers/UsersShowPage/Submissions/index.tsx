@@ -8,7 +8,7 @@ import useUserIdeasCount from 'api/user_ideas_count/useUserIdeasCount';
 import messages from '../messages';
 import useUserBySlug from 'api/users/useUserBySlug';
 import { Sort } from 'components/IdeaCards/shared/Filters/SortFilterDropdown';
-import { ideaDefaultSortMethodFallback } from 'services/participationContexts';
+import { ideaDefaultSortMethodFallback } from 'utils/participationContexts';
 
 interface QueryParameters {
   // constants

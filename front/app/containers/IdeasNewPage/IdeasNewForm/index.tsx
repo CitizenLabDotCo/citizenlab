@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useCallback, lazy, Suspense } from 'react';
 
 // api
-import { isRegularUser } from 'services/permissions/roles';
-import { canModerateProject } from 'services/permissions/rules/projectPermissions';
+import { isRegularUser } from 'utils/permissions/roles';
+import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import useAuthUser from 'api/me/useAuthUser';
 import useProjectBySlug from 'api/projects/useProjectBySlug';

@@ -1,5 +1,5 @@
 // authentication
-import { handleOnSSOClick } from 'services/singleSignOn';
+import { handleOnSSOClick } from 'api/authentication/singleSignOn';
 import createAccountWithPassword, {
   Parameters as CreateAccountParameters,
 } from 'api/authentication/sign_up/createAccountWithPassword';

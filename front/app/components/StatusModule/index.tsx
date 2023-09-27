@@ -14,7 +14,7 @@ import ConfettiSvg from './ConfettiSvg';
 import Warning from 'components/UI/Warning';
 
 // api
-import { VotingMethod } from 'services/participationContexts';
+import { VotingMethod } from 'utils/participationContexts';
 import { useTheme } from 'styled-components';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { IPhaseData } from 'api/phases/types';

@@ -31,7 +31,7 @@ import {
   getDefaultSortMethodFallback,
   InputTerm,
   VotingMethod,
-} from 'services/participationContexts';
+} from 'utils/participationContexts';
 import eventEmitter from 'utils/eventEmitter';
 
 // resources

@@ -2,7 +2,7 @@ import {
   userModeratesFolder,
   isProjectFolderModerator,
 } from './projectFolderPermissions';
-import { makeUser } from 'services/__mocks__/users';
+import { makeUser } from 'api/users/__mocks__/useUsers';
 
 describe('isProjectFolderModerator', () => {
   it('returns true when a user is project folder moderator', () => {

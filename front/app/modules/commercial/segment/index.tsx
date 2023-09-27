@@ -10,7 +10,7 @@ import {
   isProjectModerator,
   isAdmin,
   isSuperAdmin,
-} from 'services/permissions/roles';
+} from 'utils/permissions/roles';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
 const CL_SEGMENT_API_KEY = process.env.SEGMENT_API_KEY;

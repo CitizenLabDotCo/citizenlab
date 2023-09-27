@@ -1,7 +1,7 @@
 import React from 'react';
 import IdeasList from './IdeasList';
 import IdeasMap from 'components/IdeasMap';
-import { IdeaDefaultSortMethod } from 'services/participationContexts';
+import { IdeaDefaultSortMethod } from 'utils/participationContexts';
 import { IIdeaData } from 'api/ideas/types';
 
 interface Props {

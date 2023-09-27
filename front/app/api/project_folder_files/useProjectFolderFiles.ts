@@ -12,9 +12,6 @@ const fetchProjectFolderFiles = (queryParameters: IQueryParameters) =>
   fetcher<IProjectFolderFiles>({
     path: `/project_folders/${queryParameters.projectFolderId}/files`,
     action: 'get',
-    queryParams: {
-      ...queryParameters.streamParams,
-    },
   });
 
 const useProjectFolderFiles = (queryParams: IQueryParameters) => {

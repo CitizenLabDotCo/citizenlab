@@ -1,6 +1,6 @@
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { IProjectData, PostingDisabledReason } from 'api/projects/types';
-import { isAdmin, isProjectModerator } from 'services/permissions/roles';
+import { isAdmin, isProjectModerator } from 'utils/permissions/roles';
 import { IUserData } from 'api/users/types';
 import { IPhaseData } from 'api/phases/types';
 
