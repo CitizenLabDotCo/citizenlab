@@ -29,7 +29,7 @@ import { media, colors } from 'utils/styleUtils';
 // utils
 import { isError } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
-import { userModeratesFolder } from 'services/permissions/rules/projectFolderPermissions';
+import { userModeratesFolder } from 'utils/permissions/rules/projectFolderPermissions';
 
 // typings
 import { IProjectFolderData } from 'api/project_folders/types';

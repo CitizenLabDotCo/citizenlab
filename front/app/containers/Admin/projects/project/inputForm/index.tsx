@@ -16,7 +16,7 @@ import { useParams } from 'react-router-dom';
 import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase } from 'api/phases/utils';
 import { IPhaseData } from 'api/phases/types';
-import { ParticipationMethod } from 'services/participationContexts';
+import { ParticipationMethod } from 'utils/participationContexts';
 
 export const IdeaForm = () => {
   const { projectId } = useParams() as {

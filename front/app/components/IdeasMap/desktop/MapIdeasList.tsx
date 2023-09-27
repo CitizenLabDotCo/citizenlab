@@ -22,7 +22,7 @@ import { useSearchParams } from 'react-router-dom';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 // services
-import { ideaDefaultSortMethodFallback } from 'services/participationContexts';
+import { ideaDefaultSortMethodFallback } from 'utils/participationContexts';
 
 // i18n
 import messages from '../messages';

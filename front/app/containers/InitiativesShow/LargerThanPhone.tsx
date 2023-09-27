@@ -45,7 +45,7 @@ import useInitiativeReviewRequired from './hooks/useInitiativeReviewRequired';
 import useLocale from 'hooks/useLocale';
 import useAuthUser from 'api/me/useAuthUser';
 import useInitiativeImages from 'api/initiative_images/useInitiativeImages';
-import { usePermission } from 'services/permissions';
+import { usePermission } from 'utils/permissions';
 import {
   contentFadeInDelay,
   contentFadeInDuration,
@@ -137,6 +137,7 @@ const MetaContent = styled.div`
 const SharingWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
 `;
 
 const StyledOfficialFeedback = styled(OfficialFeedback)`

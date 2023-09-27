@@ -1,14 +1,14 @@
 import { IUserData, IUser } from 'api/users/types';
-import { isAdmin, TRole } from 'services/permissions/roles';
+import { isAdmin, TRole } from 'utils/permissions/roles';
 import { IProjectFolderData } from 'api/project_folders/types';
 import {
   definePermissionRule,
   IRouteItem,
-} from 'services/permissions/permissions';
+} from 'utils/permissions/permissions';
 import {
   canAccessRoute,
   isModeratorRoute,
-} from 'services/permissions/rules/routePermissions';
+} from 'utils/permissions/rules/routePermissions';
 import { IAppConfigurationData } from 'api/app_configuration/types';
 import { isNilOrError } from 'utils/helperUtils';
 

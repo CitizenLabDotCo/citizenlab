@@ -1,7 +1,7 @@
 import {
   definePermissionRule,
   IRouteItem,
-} from 'services/permissions/permissions';
+} from 'utils/permissions/permissions';
 import {
   isAdmin,
   isRegularUser,

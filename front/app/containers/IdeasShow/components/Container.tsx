@@ -34,7 +34,7 @@ import {
 } from '../styleConstants';
 
 // utils
-import { getInputTerm } from 'services/participationContexts';
+import { getInputTerm } from 'utils/participationContexts';
 import { isString } from 'utils/helperUtils';
 
 const Main = styled.main`
