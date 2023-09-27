@@ -356,12 +356,6 @@ module MultiTenancy
                   client_secret: 'fake_client_secret',
                   domain: 'fake_domain',
                   method_name_multiloc: { en: 'Verify with Auth0' }
-                },
-                {
-                  name: 'nemlog_in',
-                  environment: 'pre_production_integration',
-                  issuer: ENV.fetch('DEFAULT_NEMLOG_IN_ISSUER'),
-                  private_key: ENV.fetch('DEFAULT_NEMLOG_IN_PRIVATE_KEY')
                 }
               ]
             },
