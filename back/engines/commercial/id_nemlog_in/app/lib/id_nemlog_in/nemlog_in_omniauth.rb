@@ -101,7 +101,7 @@ module IdNemlogIn
       # If the request comes from #callback_uri, it means the form below was already submitted
       # which means the previous nemlog_in/callback "redirected" here.
       # It also means that the cookies are present in the current request.
-      return false if controller.request.referer.include?(nemlog_in_callback_uri)
+      return false if controller.request.referer.nil? || controller.request.referer.include?(nemlog_in_callback_uri)
 
       controller.request.session_options[:skip] = true # without this line, session is overwritten with a new (almost empty) one
 
