@@ -226,7 +226,8 @@ ca:
       title: 'Final de l''enquesta'
       description: "Envieu les vostres respostes seleccionant \"Envia l'enquesta\" a continuació."
     pdf_export:
-      full_name: 'Nom complet'
+      first_name: 'Nom'
+      last_name: 'Cognom'
       email_address: 'Correu electrònic'
       optional: 'opcional'
       permission: 'Permís'
