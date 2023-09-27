@@ -226,7 +226,8 @@ lb:
       title: 'Enn vun der Ëmfro'
       description: "Wgl. wielt ‘Ëmfro areechen’ hei ënnendrënner aus, fir Är Äntwert anzereechen."
     pdf_export:
-      full_name: 'Ganzen numm'
+      first_name: 'Virnumm'
+      last_name: 'Familljennumm'
       email_address: 'E-Mailadress'
       optional: 'fakultativ'
       permission: 'Erlaabnis'
