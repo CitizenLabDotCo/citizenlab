@@ -12,15 +12,5 @@ module Verification
         .symbolize_keys
         .presence
     end
-
-    def fetch_user(request)
-      # `token` can be unusual here. See different `fetch_token` implementations.
-      token = fetch_token(request)
-      AuthToken::AuthToken.new(token: token).entity_for(::User)
-    end
-
-    def fetch_token(request)
-      request.env['omniauth.params']['token']
-    end
   end
 end
