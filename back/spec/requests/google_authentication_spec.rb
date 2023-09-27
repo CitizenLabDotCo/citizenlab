@@ -107,6 +107,28 @@ describe 'google authentication' do
     expect(user.reload.avatar.file.file).to be_present
   end
 
+  it 'deletes the previous user if unverified with password and verification is enabled' do
+    SettingsService.new.activate_feature! 'user_confirmation'
+    user = create(:user, email: 'boris.brompton@orange.uk', password: 'supersecret')
+    user.update_column(:confirmation_required, true)
+    user_id = user.id
+
+    get '/auth/google?random-passthrough-param=somevalue'
+    follow_redirect!
+
+    expect(User.exists?(user_id)).to be false
+  end
+
+  it 'clears the password if verification is disabled' do
+    SettingsService.new.deactivate_feature! 'user_confirmation'
+    user = create(:user, email: 'boris.brompton@orange.uk', password: 'supersecret')
+
+    get '/auth/google?random-passthrough-param=somevalue'
+    follow_redirect!
+
+    expect(user.reload.authenticate('supersecret')).to be false
+  end
+
   it 'updates the avatar when re-authenticating an existing user without an avatar' do
     user = create(
       :user,
