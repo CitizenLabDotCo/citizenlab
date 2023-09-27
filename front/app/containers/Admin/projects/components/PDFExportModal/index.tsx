@@ -114,24 +114,14 @@ const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
                 </Text>
                 <>
                   <Text mb="24px">
-                    <FormattedMessage {...messages.nameAndEmailExplanation} />
+                    <FormattedMessage {...messages.personalDataExplanation} />
                   </Text>
-                  <Box mb="12px">
-                    <Checkbox
-                      name="name"
-                      label={
-                        <Text m="0">
-                          <FormattedMessage {...messages.includeFullName} />
-                        </Text>
-                      }
-                    />
-                  </Box>
                   <Box mb="24px">
                     <Checkbox
-                      name="email"
+                      name="personal_data"
                       label={
                         <Text m="0">
-                          <FormattedMessage {...messages.includeEmail} />
+                          <FormattedMessage {...messages.askPersonalData} />
                         </Text>
                       }
                     />

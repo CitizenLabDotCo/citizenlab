@@ -5,13 +5,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.exportAsPDF',
     defaultMessage: 'Export as pdf',
   },
-  includeFullName: {
-    id: 'app.containers.Admin.projects.all.includeFullName',
-    defaultMessage: 'Include full name',
-  },
-  includeEmail: {
-    id: 'app.containers.Admin.projects.all.includeEmail',
-    defaultMessage: 'Include email',
+  askPersonalData: {
+    id: 'app.containers.Admin.projects.all.askPersonalData',
+    defaultMessage: 'Ask personal data',
   },
   clickExportToPDFIdeaForm: {
     id: 'app.containers.Admin.projects.all.clickExportToPDFIdeaForm2',
@@ -28,10 +24,10 @@ export default defineMessages({
     defaultMessage:
       "It is also possible to upload the filled-out input forms back to the platform. Our Offline Input Importer will automatically detect the handwriting on the forms. This makes combining online and offline participation a lot easier. To open the Offline Input Importer, go to the 'Input manager' tab of this project, and click 'Add offline inputs'.",
   },
-  nameAndEmailExplanation: {
-    id: 'app.containers.Admin.projects.all.nameAndEmailExplanation',
+  personalDataExplanation: {
+    id: 'app.containers.Admin.projects.all.personalDataExplanation',
     defaultMessage:
-      "To add a 'Full name' and/or 'Email' field to the pdf form, tick the desired boxes below. The Offline Input Importer will automatically create an account using the provided information. If you don't add these fields, or if they are left blank by the respondent, the input will be treated as anonymous.",
+      "To ask people for their name, email, and consent to automatically create an account for them, tick the checkbox below. If you don't check this box, or if the user does not consent to having an account created, the input will be treated as anonymous.",
   },
   phase: {
     id: 'app.containers.Admin.projects.all.PDFExportModal.phase',
