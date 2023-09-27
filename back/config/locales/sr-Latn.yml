@@ -226,7 +226,8 @@ sr-Latn:
       title: 'Kraj ankete'
       description: "Prosledite svoje odgovore tako što ćete ispod izabrati „Prosledi anketu”."
     pdf_export:
-      full_name: 'Full name'
+      first_name: 'First name'
+      last_name: 'Last name'
       email_address: 'Email address'
       optional: 'optional'
       permission: 'Permission'
