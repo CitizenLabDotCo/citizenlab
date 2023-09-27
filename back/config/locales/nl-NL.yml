@@ -226,7 +226,8 @@ nl:
       title: 'Einde vragenlijst'
       description: "Dien je antwoorden in door hieronder 'Vragenlijst indienen' te selecteren."
     pdf_export:
-      full_name: 'Volledige naam'
+      first_name: 'Voornaam'
+      last_name: 'Achternaam'
       email_address: 'E-mailadres'
       optional: 'optioneel'
       permission: 'Toestemming'
