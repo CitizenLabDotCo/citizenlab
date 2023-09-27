@@ -38,5 +38,14 @@ RSpec.describe Notifications::OfficialFeedbackOnInitiativeYouFollow do
       notifications = described_class.make_notifications_on(activity)
       expect(notifications).to eq []
     end
+
+    it "doesn't generate notifications when the post is an idea" do
+      idea = create(:idea)
+      official_feedback = create(:official_feedback, post: idea)
+      activity = create(:activity, item: official_feedback, action: :created)
+
+      notifications = described_class.make_notifications_on(activity)
+      expect(notifications).to eq []
+    end
   end
 end
