@@ -226,7 +226,8 @@ fr:
       title: 'Fin de l''enquête'
       description: "Veuillez soumettre vos réponses en sélectionnant « Envoyer l'enquête » ci-dessous."
     pdf_export:
-      full_name: 'Nom complet'
+      first_name: 'Prénom'
+      last_name: 'Nom'
       email_address: 'Adresse e-mail'
       optional: 'optionnel'
       permission: 'Permission'
