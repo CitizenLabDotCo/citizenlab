@@ -127,7 +127,7 @@ export function getDefaultAjvErrorMessage({
 }
 
 // This is to check if it's not the JSON wrapper but the normal response
-const isCLErrorsWrapper = (value: unknown): value is CLErrorsWrapper => {
+export const isCLErrorsWrapper = (value: unknown): value is CLErrorsWrapper => {
   return isObject(value) && isObject(value.errors);
 };
 
