@@ -226,7 +226,8 @@ pl:
       title: 'Koniec ankiety'
       description: "Odpowiedzi prosimy przesyłać wybierając poniżej opcję \"Prześlij ankietę\"."
     pdf_export:
-      full_name: 'Imię i nazwisko'
+      first_name: 'Imię'
+      last_name: 'Nazwisko'
       email_address: 'Adres e-mail'
       optional: 'opcjonalny'
       permission: 'Zezwolenie'
