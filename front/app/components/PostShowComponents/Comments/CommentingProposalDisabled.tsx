@@ -17,46 +17,46 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { Box } from '@citizenlab/cl2-component-library';
 
-const calculateMessageDescriptor = (
-  authUser: IUserData | undefined,
-  commentingPermissions: ReturnType<typeof useInitiativesPermissions>
-) => {
-  const isLoggedIn = !isNilOrError(authUser);
-  const authenticationRequirements =
-    commentingPermissions?.authenticationRequirements;
-
-  if (commentingPermissions?.enabled === true) {
-    return null;
-  } else if (
-    commentingPermissions?.disabledReason === 'not_permitted' &&
-    !isLoggedIn
-  ) {
-    return messages.commentingInitiativeMaybeNotPermitted;
-  } else if (
-    commentingPermissions?.disabledReason === 'not_permitted' &&
-    isLoggedIn
-  ) {
-    return messages.commentingInitiativeNotPermitted;
-  } else if (authenticationRequirements === 'verify') {
-    return messages.commentingDisabledUnverified;
-  } else if (
-    authUser &&
-    authenticationRequirements === 'complete_registration'
-  ) {
-    return messages.completeProfileToComment;
-  } else if (authenticationRequirements === 'sign_in_up') {
-    return messages.signInToCommentInitiative;
-  } else if (authenticationRequirements === 'sign_in_up_and_verify') {
-    return messages.signInAndVerifyToCommentInitiative;
-  }
-  return;
-};
-
 const CommentingProposalDisabled = () => {
   const { data: authUser } = useAuthUser();
   const commentingPermissions = useInitiativesPermissions(
     'commenting_initiative'
   );
+
+  const calculateMessageDescriptor = (
+    authUser: IUserData | undefined,
+    commentingPermissions: ReturnType<typeof useInitiativesPermissions>
+  ) => {
+    const isLoggedIn = !isNilOrError(authUser);
+    const authenticationRequirements =
+      commentingPermissions?.authenticationRequirements;
+
+    if (commentingPermissions?.enabled === true) {
+      return null;
+    } else if (
+      commentingPermissions?.disabledReason === 'not_permitted' &&
+      !isLoggedIn
+    ) {
+      return messages.commentingInitiativeMaybeNotPermitted;
+    } else if (
+      commentingPermissions?.disabledReason === 'not_permitted' &&
+      isLoggedIn
+    ) {
+      return messages.commentingInitiativeNotPermitted;
+    } else if (authenticationRequirements === 'verify') {
+      return messages.commentingDisabledUnverified;
+    } else if (
+      authUser &&
+      authenticationRequirements === 'complete_registration'
+    ) {
+      return messages.completeProfileToComment;
+    } else if (authenticationRequirements === 'sign_in_up') {
+      return messages.signInToCommentInitiative;
+    } else if (authenticationRequirements === 'sign_in_up_and_verify') {
+      return messages.signInAndVerifyToCommentInitiative;
+    }
+    return;
+  };
 
   const messageDescriptor = calculateMessageDescriptor(
     authUser?.data,
