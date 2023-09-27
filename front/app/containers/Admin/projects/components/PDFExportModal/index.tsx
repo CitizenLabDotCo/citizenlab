@@ -24,21 +24,21 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { object, boolean, string } from 'yup';
 import { handleCLErrorWrapper } from 'utils/errorUtils';
 
+export interface FormValues {
+  personal_data: boolean;
+  phase_id?: string;
+}
+
 const DEFAULT_VALUES = {
-  name: false,
-  email: false,
+  personal_data: false,
   phase_id: undefined,
-} as const;
+} satisfies FormValues;
 
 interface Props {
   open: boolean;
   formType: 'idea_form' | 'survey';
   onClose: () => void;
-  onExport: (params: {
-    name: boolean;
-    email: boolean;
-    phase_id?: string;
-  }) => Promise<void>;
+  onExport: (params: FormValues) => Promise<void>;
 }
 
 const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
@@ -55,8 +55,7 @@ const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
     project?.data.attributes.process_type === 'timeline';
 
   const schema = object({
-    name: boolean(),
-    email: boolean(),
+    personal_data: boolean(),
     phase_id:
       isTimelineProject && formType === 'idea_form'
         ? string().required(formatMessage(messages.selectIdeationPhase))
@@ -69,19 +68,11 @@ const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
     resolver: yupResolver(schema),
   });
 
-  const handleExport = async ({
-    name,
-    email,
-    phase_id,
-  }: {
-    name: boolean;
-    email: boolean;
-    phase_id?: string;
-  }) => {
+  const handleExport = async (formValues: FormValues) => {
     setLoading(true);
 
     try {
-      await onExport({ name, email, phase_id });
+      await onExport(formValues);
       setLoading(false);
       onClose();
     } catch (e) {

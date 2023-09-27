@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { WrappedComponentProps } from 'react-intl';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { darken } from 'polished';
 
 // components
@@ -9,7 +8,9 @@ import Button from 'components/UI/Button';
 import T from 'components/T';
 import Modal from 'components/UI/Modal';
 import DeleteFormResultsNotice from '../DeleteFormResultsNotice';
-import PDFExportModal from 'containers/Admin/projects/components/PDFExportModal';
+import PDFExportModal, {
+  FormValues,
+} from 'containers/Admin/projects/components/PDFExportModal';
 
 // routing
 import clHistory from 'utils/cl-router/history';
@@ -49,11 +50,10 @@ type FormActionsProps = {
   postingEnabled: boolean;
   heading?: Multiloc;
   togglePostingEnabled: () => void;
-} & WrappedComponentProps;
+};
 
 const FormActions = ({
   phaseId,
-  intl: { formatMessage },
   viewFormLink,
   editFormLink,
   viewFormResults,
@@ -64,6 +64,8 @@ const FormActions = ({
   postingEnabled,
   togglePostingEnabled,
 }: FormActionsProps) => {
+  const { formatMessage } = useIntl();
+
   const [exportModalOpen, setExportModalOpen] = useState(false);
   const { projectId } = useParams() as {
     projectId: string;
@@ -99,15 +101,9 @@ const FormActions = ({
 
   const handleDownloadPDF = () => setExportModalOpen(true);
 
-  const handleExportPDF = async ({
-    name,
-    email,
-  }: {
-    name: boolean;
-    email: boolean;
-  }) => {
+  const handleExportPDF = async ({ personal_data }: FormValues) => {
     if (isNilOrError(locale)) return;
-    await saveSurveyAsPDF({ downloadPdfLink, locale, name, email });
+    await saveSurveyAsPDF({ downloadPdfLink, locale, personal_data });
   };
 
   const downloadExampleFile = async () => {
@@ -310,4 +306,4 @@ const FormActions = ({
   return null;
 };
 
-export default injectIntl(FormActions);
+export default FormActions;

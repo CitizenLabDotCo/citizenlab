@@ -6,7 +6,9 @@ import { useParams } from 'react-router-dom';
 import useLocale from 'hooks/useLocale';
 
 // components
-import PDFExportModal from 'containers/Admin/projects/components/PDFExportModal';
+import PDFExportModal, {
+  FormValues,
+} from 'containers/Admin/projects/components/PDFExportModal';
 
 // utils
 import { ideationConfig } from '../utils';
@@ -31,17 +33,9 @@ const IdeaFormBuilder = () => {
 
   const handleDownloadPDF = () => setExportModalOpen(true);
 
-  const handleExportPDF = async ({
-    name,
-    email,
-    phase_id,
-  }: {
-    name: boolean;
-    email: boolean;
-    phase_id?: string;
-  }) => {
+  const handleExportPDF = async ({ personal_data, phase_id }: FormValues) => {
     if (isNilOrError(locale)) return;
-    await saveIdeaFormAsPDF({ projectId, locale, name, email, phase_id });
+    await saveIdeaFormAsPDF({ projectId, locale, personal_data, phase_id });
   };
 
   return (

@@ -9,22 +9,19 @@ import { Locale } from 'typings';
 interface Params {
   downloadPdfLink: string;
   locale: Locale;
-  name?: boolean;
-  email?: boolean;
+  personal_data: boolean;
   phase_id?: string;
 }
 
 export async function saveSurveyAsPDF({
   downloadPdfLink,
   locale,
-  name,
-  email,
+  personal_data,
 }: Params) {
   try {
     const blob = await requestBlob(downloadPdfLink, 'application/pdf', {
       locale,
-      name,
-      email,
+      personal_data,
     });
 
     saveAs(blob, 'survey.pdf');
