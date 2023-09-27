@@ -19,6 +19,17 @@ module Analysis
           ).serializable_hash
         end
 
+        def toggle_bookmark
+          insight = @analysis.insights.find(params[:id])
+          # toggle the bookmarked attribute
+          insight.bookmarked = !insight.bookmarked
+          if insight.save
+            head :ok
+          else
+            render json: { errors: insight.errors.details }, status: :unprocessable_entity
+          end
+        end
+
         def destroy
           insightable = @insight.insightable
           side_fx_service = side_fx_service_for_insightable
