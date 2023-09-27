@@ -226,7 +226,8 @@ hr:
       title: 'Završetak upitnika'
       description: "Pošaljite svoje odgovore tako da odaberete „Pošalji anketu“ u nastavku."
     pdf_export:
-      full_name: 'Puno ime'
+      first_name: 'Ime'
+      last_name: 'Prezime'
       email_address: 'Email adresa'
       optional: 'neobavezan'
       permission: 'Dopuštenje'
