@@ -7,7 +7,7 @@ export default defineMessages({
   },
   exportYouResponses: {
     id: 'app.components.formBuilder.editWarningModal.exportYouResponses2',
-    defaultMessage: ' export your responses.',
+    defaultMessage: 'export your responses.',
   },
   loseDataWarning: {
     id: 'app.components.formBuilder.editWarningModal.loseDataWarning3',

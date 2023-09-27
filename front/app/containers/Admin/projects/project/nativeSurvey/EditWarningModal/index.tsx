@@ -44,7 +44,7 @@ const EditWarningModal = ({
       <Box m="24px">
         <Box mb="32px" display="flex">
           <Text m="0px" fontSize="s">
-            {formatMessage(messages.loseDataWarning)}
+            {formatMessage(messages.loseDataWarning)}{' '}
             <span
               role="button"
               onClick={handleDownloadResults}
