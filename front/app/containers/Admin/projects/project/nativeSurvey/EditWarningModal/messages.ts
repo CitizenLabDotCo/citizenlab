@@ -2,8 +2,8 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   title: {
-    id: 'app.components.formBuilder.editWarningModal.title2',
-    defaultMessage: 'Edit fields',
+    id: 'app.components.formBuilder.editWarningModal.title3',
+    defaultMessage: 'Edit live survey',
   },
   exportYouResponses: {
     id: 'app.components.formBuilder.editWarningModal.exportYouResponses2',

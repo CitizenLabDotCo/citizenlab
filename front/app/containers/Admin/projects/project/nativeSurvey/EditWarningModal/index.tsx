@@ -99,7 +99,8 @@ const EditWarningModal = ({
 
         <Box mt="40px" display="flex" justifyContent="space-between">
           <Button
-            pl="0px"
+            p="0px"
+            m="0px"
             buttonStyle="text"
             onClick={() => {
               setShowEditWarningModal(false);
