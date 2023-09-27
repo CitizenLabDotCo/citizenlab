@@ -21,6 +21,7 @@ module IdNemlogIn
     }.freeze
 
     def profile_to_user_attrs(auth)
+      # puts auth.extra['response_object'].decrypted_document
       cpr_number = auth.extra.raw_info['https://data.gov.dk/model/core/eid/cprNumber']
 
       {
@@ -43,12 +44,12 @@ module IdNemlogIn
       metadata = idp_metadata.merge({
         issuer: verification_config[:issuer],
 
-        # without it (or with assertion_consumer_service_url: nil), localtunnes gives "502 Bad Gateway nginx/1.17.9"
+        # without it (or with assertion_consumer_service_url: nil), localtunnel gives "502 Bad Gateway nginx/1.17.9"
         # after clicking "Verify with MitID" on https://nemlogin-k3kd.loca.lt/auth/nemlog_in?token=eyJhbGc...
         # Probably, because the request has a token and so the size of request is too big
         # <samlp:AuthnRequest AssertionConsumerServiceURL='https://nemlogin-k3kd.loca.lt/auth/nemlog_in/callback?token=eyJhbG
         # Nemlog-in also fails without this line.
-        assertion_consumer_service_url: redirect_uri(configuration),
+        assertion_consumer_service_url: callback_uri(configuration),
 
         # certificate: verification_config[:certificate], # not required as it's used in our SP metadata file, which is uploaded to NemLog-in
         private_key: verification_config[:private_key], # should start with "-----BEGIN PRIVATE KEY-----". "Bag Attributes" part should be removed
@@ -80,6 +81,52 @@ module IdNemlogIn
       %i[]
     end
 
+    # Why do we need cookies?
+    # The omniauth gem saves our params (token and path) to the session here
+    # https://github.com/omniauth/omniauth/blob/a13cd110beb9538ea51be6c614bf43351c3f4e95/lib/omniauth/strategy.rb#L233
+    # Then we use both params in Verification::Patches::OmniauthCallbackController.
+    #
+    # In some omniauth strategies (e.g., OIDC for ClaveUnica), the provider (ClaveUnica)
+    # redirects a user to our app via the 302 code. This way, the cookies are passed to our app.
+    #
+    # But in other strategies (e.g., SAML for Nemlog-in), the provider (Nemlog-in)
+    # "redirects" using an html POST form (see below).
+    # This way, the cookies are not passed to our app.
+    # See:
+    # - https://web.dev/samesite-cookie-recipes/#:~:text=primarily%20POST%20requests.-,Cookies%20marked%20as,-SameSite%3DLax%20will
+    # - https://citizenlabco.slack.com/archives/C65GX921W/p1695740292043389
+    #
+    def redirect_callback_to_get_cookies(controller)
+      nemlog_in_callback_uri = callback_uri(AppConfiguration.instance)
+      # If the request comes from #callback_uri, it means the form below was already submitted
+      # which means the previous nemlog_in/callback "redirected" here.
+      # It also means that the cookies are present in the current request.
+      return false if controller.request.referer.include?(nemlog_in_callback_uri)
+
+      controller.request.session_options[:skip] = true # without this line, session is overwritten with a new (almost empty) one
+
+      # We cannot use redirect_to, because SAMLResponse can be many kilobytes long,
+      # and so doesn't fit into a GET response for many web servers.
+      # Nemlog-in uses the same form to "redirect" to our app.
+      # rubocop:disable Rails/OutputSafety
+      controller.render html: <<-HTML.html_safe
+        <form action="#{nemlog_in_callback_uri}" method="post">
+          <div>
+            <input type="hidden" name="RelayState" value="#{controller.params['RelayState']}"/>
+            <input type="hidden" name="SAMLResponse" value="#{controller.params['SAMLResponse']}"/>
+          </div>
+        </form>
+        <script>
+          window.addEventListener('DOMContentLoaded', function() {
+            document.forms[0].submit()
+          })
+        </script>
+      HTML
+      # rubocop:enable Rails/OutputSafety
+
+      true
+    end
+
     def logout_url; end
 
     private
@@ -88,7 +135,7 @@ module IdNemlogIn
       IdNemlogIn::KkiLocationApi.new.municipality_code(cpr_number)
     end
 
-    def redirect_uri(configuration)
+    def callback_uri(configuration)
       "#{configuration.base_backend_uri}/auth/nemlog_in/callback"
     end
   end

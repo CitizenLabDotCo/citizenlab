@@ -10,6 +10,8 @@ class OmniauthCallbackController < ApplicationController
     auth_method = AuthenticationService.new.method_by_provider(auth_provider)
     verification_method = get_verification_method(auth_provider)
 
+    return if (auth_method || verification_method).redirect_callback_to_get_cookies(self)
+
     if auth_method && verification_method
       auth_or_verification_callback(verify: verification_method, authver_method: auth_method)
     elsif auth_method
