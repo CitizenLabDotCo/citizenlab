@@ -188,7 +188,7 @@ describe BulkImportIdeas::ImportGlobalIdeasService do
           project_title: 'Project 1',
           user_email: 'userimport1@citizenlab.co',
           user_first_name: 'Gary',
-          user_last_name: 'Import',
+          user_last_name: 'Import'
         },
         {
           title_multiloc: { 'en' => 'My idea title 2' },
