@@ -226,7 +226,8 @@ it:
       title: 'Fine del sondaggio'
       description: "Inviate le vostre risposte selezionando \"Invia sondaggio\" qui sotto."
     pdf_export:
-      full_name: 'Nome e cognome'
+      first_name: 'Nome'
+      last_name: 'Cognome'
       email_address: 'Indirizzo e-mail'
       optional: 'opzionale'
       permission: 'Permesso'
