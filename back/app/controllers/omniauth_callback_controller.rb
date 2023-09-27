@@ -65,24 +65,23 @@ class OmniauthCallbackController < ApplicationController
     @identity = Identity.find_or_build_with_omniauth(auth, authver_method)
 
     @user = @identity.user
+    @user = User.find_by_cimail(user_attrs.fetch(:email)) if @user.nil? && user_attrs.key?(:email) # some providers (ClaveUnica) don't return email
+
     @user = authentication_service.prevent_user_account_hijacking @user
 
-    if @user.nil? && user_attrs.key?(:email) # some providers (ClaveUnica) don't return email
-      @user = User.find_by_cimail(user_attrs.fetch(:email))
-      # https://github.com/CitizenLabDotCo/citizenlab/pull/3055#discussion_r1019061643
-      if @user && !authver_method.can_merge?(@user, user_attrs, params[:sso_verification])
-        # `sso_flow: 'signin'` - even if user signs up, we propose to sign in due to the content of the error message
-        #
-        # `sso_pathname: '/'` - when sso_pathname is `/en/sign-in`, it's not redirected to /en/sign-in and the error message is not shown
-        # On the FE, this hack can be tested accessing this URL
-        # http://localhost:3000/authentication-error?sso_response=true&sso_flow=signin&sso_pathname=%2F&error_code=franceconnect_merging_failed
-        # Note, that the modal is not shown with this URL
-        # http://localhost:3000/authentication-error?sso_response=true&sso_flow=signin&sso_pathname=%2Fen%2Fsign-in&error_code=franceconnect_merging_failed
-        #
-        # Probaby, it would be possible to fix both issues on the FE, but it seems to be much more complicated.
-        failure_redirect(error_code: authver_method.merging_error_code, sso_flow: 'signin', sso_pathname: '/')
-        return
-      end
+    # https://github.com/CitizenLabDotCo/citizenlab/pull/3055#discussion_r1019061643
+    if @user && !authver_method.can_merge?(@user, user_attrs, params[:sso_verification])
+      # `sso_flow: 'signin'` - even if user signs up, we propose to sign in due to the content of the error message
+      #
+      # `sso_pathname: '/'` - when sso_pathname is `/en/sign-in`, it's not redirected to /en/sign-in and the error message is not shown
+      # On the FE, this hack can be tested accessing this URL
+      # http://localhost:3000/authentication-error?sso_response=true&sso_flow=signin&sso_pathname=%2F&error_code=franceconnect_merging_failed
+      # Note, that the modal is not shown with this URL
+      # http://localhost:3000/authentication-error?sso_response=true&sso_flow=signin&sso_pathname=%2Fen%2Fsign-in&error_code=franceconnect_merging_failed
+      #
+      # Probaby, it would be possible to fix both issues on the FE, but it seems to be much more complicated.
+      failure_redirect(error_code: authver_method.merging_error_code, sso_flow: 'signin', sso_pathname: '/')
+      return
     end
 
     if @user
