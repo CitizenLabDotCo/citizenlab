@@ -227,8 +227,8 @@ en:
       description: "Please submit your answers by selecting 'Submit survey' below."
     pdf_export:
       personal_data: 'Personal data'
-      personal_data_explanation_ideation: "We will submit your input to [organizationName]'s online participation platform. If you want to be publicly listed as author of this input and receive updates relevant to your input by email, please fill out the following fields on this page and we will create an account for you. If you want to remain anonymous, or do not want an account, you can leave them empty."
-      personal_data_explanation_native_survey: "We will submit your input to [organizationName]'s online participation platform. If you want to receive updates relevant to this project by email, please fill out the following fields on this page and we will create an account for you. If you want to remain anonymous, or do not want an account, you can leave them empty."
+      personal_data_explanation_ideation: "We will submit your input to %{organizationName}'s online participation platform. If you want your name to be displayed as author of this input and receive updates relevant to your input by email, please fill out the following fields on this page and we will create an account for you. Your email will not be public and will only be used by %{organizationName}. If you want to remain anonymous, or do not agree for us to use your personal data in this way, you can leave them empty."
+      personal_data_explanation_native_survey: "We will submit your input to %{organizationName}'s online participation platform. If you want to receive updates relevant to your input by email, please fill out the following fields on this page and we will create an account for you. Your data will not be public and will only be used by %{organizationName}. If you do not agree for us to use your personal data in this way, you can leave them empty."
       first_name: 'First name(s)'
       last_name: 'Last name'
       email_address: 'Email address'

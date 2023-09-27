@@ -16,6 +16,7 @@ class PrintCustomFieldsService
     @custom_fields = custom_fields
     @params = params
     @previous_cursor = nil
+    @app_configuration = AppConfiguration.instance
   end
 
   def create_pdf
@@ -80,7 +81,7 @@ class PrintCustomFieldsService
   end
 
   def render_tenant_logo(pdf)
-    logo = AppConfiguration.instance.logo&.medium
+    logo = @app_configuration.logo&.medium
     return if logo.blank?
 
     pdf.image open logo.to_s
@@ -144,6 +145,7 @@ class PrintCustomFieldsService
   end
 
   def render_personal_data_section(pdf)
+    # Personal data header
     pdf.text(
       "<b>#{I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.personal_data') }}</b>",
       size: 16,
@@ -152,12 +154,14 @@ class PrintCustomFieldsService
 
     pdf.move_down 4.mm
 
+    # Personal data explanation
     participation_method = @participation_context.participation_method
     personal_data_explanation_key = "form_builder.pdf_export.personal_data_explanation_#{participation_method}"
-    pdf.text I18n.with_locale(locale) { I18n.t(personal_data_explanation_key) }
+    pdf.text I18n.with_locale(locale) { I18n.t(personal_data_explanation_key, { organizationName: organization_name }) }
 
-    pdf.move_down 6.mm
+    pdf.move_down 8.mm
 
+    # Fields
     %w[first_name last_name email_address].each do |key|
       render_text_field_with_name(
         pdf,
@@ -165,6 +169,7 @@ class PrintCustomFieldsService
       )
     end
 
+    # Checkbox
     pdf.stroke do
       pdf.stroke_color '000000'
       pdf.rectangle([1.5.mm, pdf.cursor + 1.5.mm], 10, 10)
@@ -387,5 +392,9 @@ class PrintCustomFieldsService
 
   def locale
     params[:locale]
+  end
+
+  def organization_name
+    @app_configuration.settings('core', 'organization_name')[locale]
   end
 end
