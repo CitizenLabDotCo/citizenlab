@@ -11,6 +11,8 @@ namespace :fix_existing_tenants do
         migrate_initiative_followers!
         migrate_folder_followers!
         migrate_area_followers!
+      rescue StandardError => e
+        puts "An error occurred: #{e.message}"
       end
     end
   end
