@@ -8,6 +8,7 @@ import { Box, Title, Text } from '@citizenlab/cl2-component-library';
 import FormActions from './FormActions';
 import FormResults from './FormResults';
 import Button from 'components/UI/Button';
+import EditWarningModal from './EditWarningModal';
 
 // i18n
 import messages from './messages';
@@ -31,6 +32,7 @@ import useUpdatePhase from 'api/phases/useUpdatePhase';
 const Forms = ({ intl: { formatMessage } }: WrappedComponentProps) => {
   const { projectId } = useParams() as { projectId: string };
   const [isDownloading, setIsDownloading] = useState(false);
+  const [showEditWarningModal, setShowEditWarningModal] = useState(false);
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
   const locale = useLocale();
@@ -116,10 +118,17 @@ const Forms = ({ intl: { formatMessage } }: WrappedComponentProps) => {
                   heading={heading}
                   postingEnabled={postingEnabled}
                   togglePostingEnabled={togglePostingEnabled}
+                  setShowEditWarningModal={setShowEditWarningModal}
                 />
                 {index !== formActionsConfigs.length - 1 && (
                   <Box height="1px" border={`1px solid ${colors.divider}`} />
                 )}
+                <EditWarningModal
+                  editFormLink={editFormLink}
+                  showEditWarningModal={showEditWarningModal}
+                  setShowEditWarningModal={setShowEditWarningModal}
+                  handleDownloadResults={handleDownloadResults}
+                />
               </Fragment>
             );
           }

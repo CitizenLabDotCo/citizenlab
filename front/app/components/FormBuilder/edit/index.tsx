@@ -42,7 +42,6 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import { FormBuilderConfig } from '../utils';
 import HelmetIntl from 'components/HelmetIntl';
-import EditWarningModal from '../components/EditWarningModal';
 import {
   IFlatCreateCustomField,
   IFlatCustomField,
@@ -301,7 +300,6 @@ export const FormEdit = ({
             </form>
           </FormProvider>
         </FocusOn>
-        <EditWarningModal />
       </Box>
     );
   }

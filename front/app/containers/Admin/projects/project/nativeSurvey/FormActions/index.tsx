@@ -34,6 +34,7 @@ type FormActionsProps = {
   postingEnabled: boolean;
   heading?: Multiloc;
   togglePostingEnabled: () => void;
+  setShowEditWarningModal: (show: boolean) => void;
 } & WrappedComponentProps;
 
 const FormActions = ({
@@ -45,6 +46,7 @@ const FormActions = ({
   heading,
   postingEnabled,
   togglePostingEnabled,
+  setShowEditWarningModal,
 }: FormActionsProps) => {
   const { projectId } = useParams() as {
     projectId: string;
@@ -126,7 +128,9 @@ const FormActions = ({
             width="auto"
             minWidth="312px"
             onClick={() => {
-              clHistory.push(editFormLink);
+              haveSubmissionsComeIn
+                ? setShowEditWarningModal(true)
+                : clHistory.push(editFormLink);
             }}
             data-cy="e2e-edit-survey-content"
           >
