@@ -226,7 +226,8 @@
       title: 'Slutt på spørreundersøkelse'
       description: "Send inn svarene dine ved å velge «Send inn spørreundersøkelse» nedenfor."
     pdf_export:
-      full_name: 'Fullt navn'
+      first_name: 'Fornavn'
+      last_name: 'Etternavn'
       email_address: 'Epostadresse'
       optional: 'valgfri'
       permission: 'Tillatelse'
