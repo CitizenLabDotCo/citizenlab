@@ -6,7 +6,6 @@ import Warning from 'components/UI/Warning';
 
 // hooks
 import useAuthUser from 'api/me/useAuthUser';
-import { IUserData } from 'api/users/types';
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
 
 // i18n
@@ -24,7 +23,6 @@ const CommentingProposalDisabled = () => {
   );
 
   const calculateMessageDescriptor = (
-    authUser: IUserData | undefined,
     commentingPermissions: ReturnType<typeof useInitiativesPermissions>
   ) => {
     const isLoggedIn = !isNilOrError(authUser);
@@ -58,10 +56,7 @@ const CommentingProposalDisabled = () => {
     return;
   };
 
-  const messageDescriptor = calculateMessageDescriptor(
-    authUser?.data,
-    commentingPermissions
-  );
+  const messageDescriptor = calculateMessageDescriptor(commentingPermissions);
 
   const signUpIn = (flow: 'signin' | 'signup') => {
     triggerAuthenticationFlow({

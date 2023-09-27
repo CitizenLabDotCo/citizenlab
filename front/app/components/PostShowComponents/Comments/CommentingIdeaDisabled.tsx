@@ -6,7 +6,6 @@ import Warning from 'components/UI/Warning';
 
 // hooks
 import useAuthUser from 'api/me/useAuthUser';
-import { IUserData } from 'api/users/types';
 
 // services
 import { IIdea, IdeaCommentingDisabledReason } from 'api/ideas/types';
@@ -59,8 +58,7 @@ const CommentingIdeaDisabled = ({ phaseId, idea }: Props) => {
 
   const calculateMessageDescriptor = (
     commentingEnabled: boolean,
-    commentingDisabledReason: IdeaCommentingDisabledReason | null,
-    authUser: IUserData | undefined
+    commentingDisabledReason: IdeaCommentingDisabledReason | null
   ) => {
     const isLoggedIn = !isNilOrError(authUser);
 
@@ -91,8 +89,7 @@ const CommentingIdeaDisabled = ({ phaseId, idea }: Props) => {
 
   const messageDescriptor = calculateMessageDescriptor(
     commentingEnabled,
-    commentingDisabledReason,
-    authUser?.data
+    commentingDisabledReason
   );
 
   if (!messageDescriptor) return null;
