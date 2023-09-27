@@ -31,8 +31,8 @@ RSpec.describe BulkImportIdeas::IdeaImport do
     context 'users created by the idea import' do
       it 'deletes a user when deleting a draft idea' do
         user = create(:user)
-        idea = create(:idea, publication_status: 'draft')
-        create(:idea_import, idea: idea, import_user: user, user_created: true)
+        idea = create(:idea, publication_status: 'draft', author: user)
+        create(:idea_import, idea: idea, user_created: true)
         idea.destroy!
 
         expect(Idea.all.count).to eq 0
@@ -42,8 +42,8 @@ RSpec.describe BulkImportIdeas::IdeaImport do
 
       it 'does not delete a user when deleting a published idea' do
         user = create(:user)
-        idea = create(:idea, publication_status: 'published')
-        create(:idea_import, idea: idea, import_user: user, user_created: true)
+        idea = create(:idea, publication_status: 'published', author: user)
+        create(:idea_import, idea: idea, user_created: true)
         idea.destroy!
 
         expect(Idea.all.count).to eq 0
@@ -53,8 +53,8 @@ RSpec.describe BulkImportIdeas::IdeaImport do
 
       it 'does not delete a pre-existing user when deleting a draft idea' do
         user = create(:user)
-        idea = create(:idea, publication_status: 'draft')
-        create(:idea_import, idea: idea, import_user: user, user_created: false)
+        idea = create(:idea, publication_status: 'draft', author: user)
+        create(:idea_import, idea: idea, user_created: false)
         idea.destroy!
 
         expect(Idea.all.count).to eq 0
