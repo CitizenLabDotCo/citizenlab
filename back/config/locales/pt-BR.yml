@@ -226,7 +226,8 @@ pt:
       title: 'Fim da pesquisa'
       description: "Por favor, submeta as suas respostas, selecionando abaixo 'Submeter pesquisa'."
     pdf_export:
-      full_name: 'Nome completo'
+      first_name: 'Nome próprio'
+      last_name: 'Apelido'
       email_address: 'Endereço de correio eletrónico'
       optional: 'facultativo'
       permission: 'Autorização'
