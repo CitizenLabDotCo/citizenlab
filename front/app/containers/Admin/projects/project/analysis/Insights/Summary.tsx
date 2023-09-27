@@ -232,6 +232,14 @@ const Summary = ({ insight }: Props) => {
             placement="left-end"
           />
           <IconButton
+            iconName="bookmark"
+            iconColor={colors.teal400}
+            iconColorOnHover={colors.teal700}
+            a11y_buttonActionMessage={formatMessage(translations.deleteSummary)}
+            onClick={() => {}}
+          />
+
+          <IconButton
             iconName="delete"
             onClick={() => handleSummaryDelete(insight.id)}
             iconColor={colors.teal400}
