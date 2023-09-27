@@ -226,7 +226,8 @@ da:
       title: 'Undersøgelse slut'
       description: "Indsend dine svar ved at vælge \"Indsend undersøgelse\" nedenfor."
     pdf_export:
-      full_name: 'Fuldt navn'
+      first_name: 'Fornavn'
+      last_name: 'Efternavn'
       email_address: 'E-mail adresse'
       optional: 'valgfrit'
       permission: 'Tilladelse'
