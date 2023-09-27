@@ -5,7 +5,7 @@ module BulkImportIdeas
     module UserPolicy
       def update?
         # Allow users to be edited by moderators of an idea if the user was imported and they only have draft ideas
-        return super unless user.project_folder_moderator? || user.project_moderator?
+        return super unless user&.project_folder_moderator? || user&.project_moderator?
 
         return super if record.ideas.published.count > 0
 
