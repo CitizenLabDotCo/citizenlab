@@ -16,7 +16,7 @@ import {
   HeaderImageContainer,
 } from 'components/ProjectableHeader';
 import FollowUnfollow from 'components/FollowUnfollow';
-import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 
 // hooks
 import useProjectById from 'api/projects/useProjectById';
@@ -28,7 +28,7 @@ import { useIntl } from 'utils/cl-intl';
 import messages from 'containers/ProjectsShowPage/messages';
 
 // style
-import styled, { useTheme } from 'styled-components';
+import styled from 'styled-components';
 import { media, isRtl } from 'utils/styleUtils';
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 
@@ -71,8 +71,6 @@ interface Props {
 
 const ProjectHeader = memo<Props>(({ projectId, className }) => {
   const { formatMessage } = useIntl();
-  const theme = useTheme();
-  const isSmallerThanPhone = useBreakpoint('phone');
   const projectDescriptionBuilderEnabled = useFeatureFlag({
     name: 'project_description_builder',
   });
@@ -86,30 +84,29 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
       project.data.attributes?.header_bg?.large;
     const userCanEditProject =
       !isNilOrError(authUser) && canModerateProject(project.data.id, authUser);
-    const rowDirection = theme.isRtl ? 'row-reverse' : 'row';
 
     return (
       <Container className={className || ''}>
         <ContentContainer maxWidth={maxPageWidth}>
           <Box
             display="flex"
-            justifyContent="space-between"
+            justifyContent="center"
             alignItems="center"
             mb="20px"
-            flexDirection={isSmallerThanPhone ? 'column' : rowDirection}
           >
             {(projectFolderId || userCanEditProject) && (
-              <Box w="100%" display="flex" justifyContent="space-between">
+              <Box
+                w="100%"
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+              >
                 {projectFolderId && isProjectFoldersEnabled && (
                   <ProjectFolderGoBackButton
                     projectFolderId={projectFolderId}
                   />
                 )}
-                <Box
-                  mr={isSmallerThanPhone ? '0px' : '8px'}
-                  ml="auto"
-                  display="flex"
-                >
+                <Box mr="8px" ml="auto" display="flex">
                   {userCanEditProject && (
                     <EditButton
                       icon="edit"
@@ -123,10 +120,7 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
                 </Box>
               </Box>
             )}
-            <Box
-              ml={isSmallerThanPhone ? '8px' : 'auto'}
-              mt={isSmallerThanPhone ? '16px' : '0px'}
-            >
+            <Box ml="auto" mt="0px">
               <FollowUnfollow
                 followableType="projects"
                 followableId={project.data.id}
