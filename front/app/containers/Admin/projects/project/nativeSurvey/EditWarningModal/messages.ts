@@ -2,17 +2,17 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   title: {
-    id: 'app.components.formBuilder.editWarningModal.title3',
+    id: 'app.components.formBuilder.editWarningModal.title4',
     defaultMessage: 'Edit live survey',
   },
   exportYouResponses: {
     id: 'app.components.formBuilder.editWarningModal.exportYouResponses2',
-    defaultMessage: 'export your responses.',
+    defaultMessage: ' export your responses.',
   },
   loseDataWarning: {
-    id: 'app.components.formBuilder.editWarningModal.loseDataWarning2',
+    id: 'app.components.formBuilder.editWarningModal.loseDataWarning3',
     defaultMessage:
-      'Warning: You might lose response data forever. Before continuing, ',
+      'Warning: You might lose response data forever. Before continuing,',
   },
   deteleAQuestion: {
     id: 'app.components.formBuilder.editWarningModal.deteleAQuestion',
