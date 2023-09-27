@@ -226,7 +226,8 @@ nl-BE:
       title: 'Einde enquête'
       description: "Dien uw antwoorden in door hieronder 'Enquête indienen' te selecteren."
     pdf_export:
-      full_name: 'Volledige naam'
+      first_name: 'Voornaam'
+      last_name: 'Achternaam'
       email_address: 'E-mailadres'
       optional: 'optioneel'
       permission: 'Toestemming'
