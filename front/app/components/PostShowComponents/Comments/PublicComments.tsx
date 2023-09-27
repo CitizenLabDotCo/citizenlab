@@ -148,13 +148,11 @@ const PublicComments = ({
             <FormattedMessage {...messages.invisibleTitleComments} />
             {showCommentCount && <CommentCount>({commentCount})</CommentCount>}
           </Title>
-          <Box mb="24px">
-            {postType === 'idea' && idea ? (
-              <CommentingIdeaDisabled idea={idea} phaseId={phaseId} />
-            ) : (
-              <CommentingProposalDisabled />
-            )}
-          </Box>
+          {postType === 'idea' && idea ? (
+            <CommentingIdeaDisabled idea={idea} phaseId={phaseId} />
+          ) : (
+            <CommentingProposalDisabled />
+          )}
           {hasComments && (
             <Box ml="auto" mb="24px">
               <CommentSorting

@@ -18,6 +18,7 @@ import globalMessages from 'utils/messages';
 
 // events
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+import { Box } from '@citizenlab/cl2-component-library';
 
 interface Props {
   phaseId: string | undefined;
@@ -97,37 +98,44 @@ const CommentingIdeaDisabled = ({ phaseId, idea }: Props) => {
   if (!messageDescriptor) return null;
 
   return (
-    <Warning className="e2e-commenting-disabled">
-      <FormattedMessage
-        {...messageDescriptor}
-        values={{
-          signUpLink: (
-            <button onClick={signUp}>
-              <FormattedMessage {...messages.signUpLinkText} />
-            </button>
-          ),
-          signInLink: (
-            <button onClick={signIn}>
-              <FormattedMessage {...messages.signInLinkText} />
-            </button>
-          ),
-          completeRegistrationLink: (
-            <button
-              onClick={() => {
-                triggerAuthenticationFlow();
-              }}
-            >
-              <FormattedMessage {...messages.completeProfileLinkText} />
-            </button>
-          ),
-          verifyIdentityLink: (
-            <button id="e2e-verify-identity-to-comment" onClick={signUp}>
-              <FormattedMessage {...messages.verifyIdentityLinkText} />
-            </button>
-          ),
-        }}
-      />
-    </Warning>
+    /*
+      Normally margins on containers are not done, but this component is local and we would
+      otherwise need another intermediary component, because we can't add the Box in the component
+      where this is rendered, because it would always render and create whitespace in the UI.
+    */
+    <Box mb="24px">
+      <Warning className="e2e-commenting-disabled">
+        <FormattedMessage
+          {...messageDescriptor}
+          values={{
+            signUpLink: (
+              <button onClick={signUp}>
+                <FormattedMessage {...messages.signUpLinkText} />
+              </button>
+            ),
+            signInLink: (
+              <button onClick={signIn}>
+                <FormattedMessage {...messages.signInLinkText} />
+              </button>
+            ),
+            completeRegistrationLink: (
+              <button
+                onClick={() => {
+                  triggerAuthenticationFlow();
+                }}
+              >
+                <FormattedMessage {...messages.completeProfileLinkText} />
+              </button>
+            ),
+            verifyIdentityLink: (
+              <button id="e2e-verify-identity-to-comment" onClick={signUp}>
+                <FormattedMessage {...messages.verifyIdentityLinkText} />
+              </button>
+            ),
+          }}
+        />
+      </Warning>
+    </Box>
   );
 };
 
