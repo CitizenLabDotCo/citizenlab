@@ -226,7 +226,8 @@ de:
       title: 'Ende der Umfrage'
       description: "Bitte übermitteln Sie Ihre Antworten, indem Sie unten auf \"Umfrage abschicken\" klicken."
     pdf_export:
-      full_name: 'Vollständiger Name'
+      first_name: 'Vorname'
+      last_name: 'Nachname'
       email_address: 'E-Mail-Adresse'
       optional: 'optional'
       permission: 'Berechtigung'
