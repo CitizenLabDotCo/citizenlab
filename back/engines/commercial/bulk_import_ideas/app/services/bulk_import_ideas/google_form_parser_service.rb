@@ -12,10 +12,10 @@ module BulkImportIdeas
       return dummy_raw_text unless ENV.fetch('GOOGLE_APPLICATION_CREDENTIALS', false) # Temp for development
 
       @document ||= process_upload pdf_file_content
-      text = document.text
+      text = @document.text
 
       # Try and sort the text better by location on the page
-      document.pages.map do |page|
+      @document.pages.map do |page|
         new_text = page.paragraphs.map do |paragraph|
           x = paragraph.layout.bounding_poly.normalized_vertices[0].y.round(2)
           y = paragraph.layout.bounding_poly.normalized_vertices[0].y.round(2)
@@ -40,7 +40,7 @@ module BulkImportIdeas
 
       # Gets an array of all fields on all pages
       fields = []
-      document.pages.each do |page|
+      @document.pages.each do |page|
         page.form_fields.each do |field|
           field_name = format_name field.field_name&.text_anchor&.content&.strip
           field_value = field.field_value.text_anchor&.content&.strip
