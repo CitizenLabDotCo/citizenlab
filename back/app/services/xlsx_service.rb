@@ -176,7 +176,7 @@ class XlsxService
       { header: 'cosponsors',           f: ->(i) { i.cosponsors_initiatives.map { |ci| "#{ci.user.email} - status: #{ci.status}" }.join("\n") }, skip_sanitization: true },
       { header: 'published_at',         f: ->(i) { i.published_at },                                    skip_sanitization: true },
       { header: 'comments',             f: ->(i) { i.comments_count },                                  skip_sanitization: true },
-      { header: 'likes', f: ->(i) { i.likes_count }, skip_sanitization: true },
+      { header: 'likes',                f: ->(i) { i.likes_count }, skip_sanitization: true },
       { header: 'url',                  f: ->(i) { Frontend::UrlService.new.model_to_url(i) }, skip_sanitization: true, hyperlink: true },
       { header: 'topics',               f: ->(i) { i.topics.map { |t| multiloc_service.t(t.title_multiloc) }.join(',') } },
       { header: 'initiative_status',    f: ->(i) { multiloc_service.t(i&.initiative_status&.title_multiloc) } },
@@ -185,7 +185,7 @@ class XlsxService
       { header: 'latitude',             f: ->(i) { i.location_point&.coordinates&.last },               skip_sanitization: true },
       { header: 'longitude',            f: ->(i) { i.location_point&.coordinates&.first },              skip_sanitization: true },
       { header: 'location_description', f: ->(i) { i.location_description } },
-      { header: 'attachments',           f: ->(i) { i.initiative_files.map { |f| f.file.url }.join("\n") }, skip_sanitization: true, width: 2 }
+      { header: 'attachments',          f: ->(i) { i.initiative_files.map { |f| f.file.url }.join("\n") }, skip_sanitization: true, width: 2 }
     ]
     columns.concat user_custom_field_columns(:author)
     columns.reject! { |c| %w[author_name author_email assignee assignee_email author_id].include?(c[:header]) } unless view_private_attributes
@@ -310,4 +310,5 @@ class XlsxService
 end
 
 XlsxService.prepend(IdeaCustomFields::Patches::XlsxService)
+XlsxService.prepend(BulkImportIdeas::Patches::XlsxService)
 XlsxService.prepend(Verification::Patches::XlsxService)
