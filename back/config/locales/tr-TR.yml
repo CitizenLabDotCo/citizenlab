@@ -226,7 +226,8 @@ tr:
       title: 'Anket sonu'
       description: "Lütfen cevaplarınızı aşağıdaki 'Anketi gönder' seçeneğini seçerek gönderin."
     pdf_export:
-      full_name: 'Tam adınız'
+      first_name: 'İlk isim'
+      last_name: 'Soyadı'
       email_address: 'E-posta adresi'
       optional: 'isteğe bağlı'
       permission: 'İzin'
