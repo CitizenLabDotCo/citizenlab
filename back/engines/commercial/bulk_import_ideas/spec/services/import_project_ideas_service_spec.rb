@@ -53,7 +53,8 @@ describe BulkImportIdeas::ImportProjectIdeasService do
       expect(xlsx).not_to be_nil
       expect(xlsx_hash.count).to eq 1
       expect(xlsx_hash[0].keys).to match_array([
-        'Full name',
+        'First name',
+        'Last name',
         'Email address',
         'Permission',
         'Date Published (dd-mm-yyyy)',
@@ -79,7 +80,8 @@ describe BulkImportIdeas::ImportProjectIdeasService do
         {
           pdf_pages: [1, 2],
           fields: {
-            'Full name' => 'John Rambo',
+            'First name' => 'John',
+            'Last name' => 'Rambo',
             'Email address' => 'john_rambo@gravy.com',
             'Permission' => 'X',
             'Title' => 'Free donuts for all',
@@ -96,7 +98,8 @@ describe BulkImportIdeas::ImportProjectIdeasService do
         {
           pdf_pages: [3, 4],
           fields: {
-            'Full name' => 'Ned Flanders',
+            'First name' => 'Ned',
+            'Last name' => 'Flanders',
             'Email address' => 'ned@simpsons.com',
             'Permission' => '',
             'Title' => 'New Wrestling Arena needed',
@@ -124,12 +127,14 @@ describe BulkImportIdeas::ImportProjectIdeasService do
 
     it 'includes user details when "Permissions" field is completed' do
       expect(rows[0][:user_email]).to eq 'john_rambo@gravy.com'
-      expect(rows[0][:user_name]).to eq 'John Rambo'
+      expect(rows[0][:user_first_name]).to eq 'John'
+      expect(rows[0][:user_last_name]).to eq 'Rambo'
     end
 
     it 'does not include user details when "Permissions" field is blank' do
       expect(rows[1][:user_email]).to be_nil
-      expect(rows[1][:user_name]).to be_nil
+      expect(rows[1][:user_first_name]).to be_nil
+      expect(rows[1][:user_last_name]).to be_nil
     end
 
     it 'converts text & number custom fields' do
@@ -165,7 +170,7 @@ describe BulkImportIdeas::ImportProjectIdeasService do
     it 'ignores fields/options that it cannot find in the form' do
       # check that option name or field value does not appear in a text representation of the rows object
       expect(rows.count).to eq 2
-      expect(rows.inspect).to include 'John Rambo'
+      expect(rows.inspect).to include 'John'
       expect(rows.inspect).not_to include 'Ignored value'
       expect(rows.inspect).not_to include 'Ignored option'
     end
@@ -178,7 +183,7 @@ describe BulkImportIdeas::ImportProjectIdeasService do
     it 'does not return an email if it does not validate' do
       ideas = [{
         pdf_pages: [1, 2],
-        fields: { 'Full name' => 'John Rambo', 'Email address' => 'john_rambo.com' }
+        fields: { 'First name' => 'John', 'Last name' => 'Rambo', 'Email address' => 'john_rambo.com' }
       }]
       rows = service.ideas_to_idea_rows ideas
       expect(rows[0].keys).not_to include :user_email
@@ -189,7 +194,8 @@ describe BulkImportIdeas::ImportProjectIdeasService do
       ideas = [{
         pdf_pages: [1, 2],
         fields: {
-          'Nom et prénom' => 'Jean Rambo',
+          'Prénom' => 'Jean',
+          'Nom' => 'Rambo',
           'Adresse e-mail' => 'jean@france.com',
           'Autorisation' => 'X',
           'Titre' => 'Bonjour',
@@ -201,7 +207,8 @@ describe BulkImportIdeas::ImportProjectIdeasService do
       expect(rows[0][:title_multiloc]).to eq({ 'fr-FR': 'Bonjour' })
       expect(rows[0][:body_multiloc]).to eq({ 'fr-FR': "Je suis un chien. J'aime les chats." })
       expect(rows[0][:user_email]).to eq 'jean@france.com'
-      expect(rows[0][:user_name]).to eq 'Jean Rambo'
+      expect(rows[0][:user_first_name]).to eq 'Jean'
+      expect(rows[0][:user_last_name]).to eq 'Rambo'
     end
 
     it 'can parse select fields from option values' do
@@ -237,7 +244,8 @@ describe BulkImportIdeas::ImportProjectIdeasService do
           {
             pdf_pages: [1],
             fields: {
-              'Full name' => 'Bill Test',
+              'First name' => 'Bill',
+              'Last name' => 'Test',
               'Email address' => 'bill@citizenlab.co',
               'Permission' => 'X',
               'Date Published (dd-mm-yyyy)' => '15-08-2023',
@@ -276,7 +284,8 @@ describe BulkImportIdeas::ImportProjectIdeasService do
 
       it 'includes user details when "Permission" is not blank' do
         expect(rows[0]).to include({
-          user_name: 'Bill Test',
+          user_first_name: 'Bill',
+          user_last_name: 'Test',
           user_email: 'bill@citizenlab.co'
         })
       end
@@ -286,7 +295,8 @@ describe BulkImportIdeas::ImportProjectIdeasService do
         rows = service.ideas_to_idea_rows xlsx_ideas_array
 
         expect(rows[0]).not_to include({
-          user_name: 'Bill Test',
+          user_first_name: 'Bill',
+          user_last_name: 'Test',
           user_email: 'bill@citizenlab.co'
         })
       end
@@ -304,7 +314,8 @@ describe BulkImportIdeas::ImportProjectIdeasService do
           {
             pdf_pages: [1],
             fields: {
-              'Full name' => '',
+              'First name' => '',
+              'Last name' => '',
               'Email address' => '',
               'Permission' => '',
               'Date Published (dd-mm-yyyy)' => '',

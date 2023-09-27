@@ -10,7 +10,8 @@ fr:
       option1: Première option
       option2: Deuxième option
     pdf_export:
-      full_name: Nom et prénom
+      first_name: Prénom
+      last_name: Nom
       email_address: Adresse e-mail
       optional: optionnel
       permission: Autorisation
