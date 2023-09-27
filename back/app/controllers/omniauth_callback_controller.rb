@@ -45,7 +45,7 @@ class OmniauthCallbackController < ApplicationController
   # Only methods that support both verification and authentication use it.
   def auth_or_verification_callback(verify:, authver_method:)
     # If token is present, the user is already logged in, which means they try to verify not authenticate.
-    if verify.fetch_token(request).present? && authver_method.verification_prioritized?
+    if request.env['omniauth.params']['token'].present? && authver_method.verification_prioritized?
       # We need it only for providers that support both auth and ver except FC.
       # For FC, we never verify, only authenticate (even when user clicks "verify").
       verification_callback(verify)
