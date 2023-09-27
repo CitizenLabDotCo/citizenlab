@@ -244,6 +244,14 @@ export default function useSteps() {
       ignoreQueryPrefix: true,
     }) as any;
 
+    if (urlSearchParams.verification_error === 'true') {
+      transition(
+        currentStep,
+        'TRIGGER_VERIFICATION_ERROR'
+      )(urlSearchParams.error);
+      return;
+    }
+
     // detect whether we're entering from a redirect of a 3rd party
     // authentication method through an URL param, and launch the corresponding
     // flow
@@ -266,23 +274,20 @@ export default function useSteps() {
         } as AuthenticationContext,
       };
 
-      const handleRedirect = () => {
-        if (sso_pathname) {
-          clHistory.replace(sso_pathname);
-        } else {
-          // Remove all parameters from URL as they've already been captured
-          window.history.replaceState(null, '', '/');
-        }
-      };
-
       if (pathname.endsWith('authentication-error')) {
-        handleRedirect();
-
         transition(currentStep, 'TRIGGER_AUTH_ERROR')(error_code);
+
+        // Remove all parameters from URL as they've already been captured
+        window.history.replaceState(null, '', '/');
         return;
       }
 
-      handleRedirect();
+      if (sso_pathname) {
+        clHistory.replace(sso_pathname);
+      } else {
+        // Remove all parameters from URL as they've already been captured
+        window.history.replaceState(null, '', '/');
+      }
 
       const enterClaveUnicaEmail =
         !isNilOrError(authUser) && isNil(authUser.data.attributes.email);

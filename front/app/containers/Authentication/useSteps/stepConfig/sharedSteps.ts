@@ -180,13 +180,20 @@ export const sharedSteps = (
         setCurrentStep('clave-unica:email');
       },
 
-      TRIGGER_AUTH_ERROR: (error_code?: SignUpInError | VerificationError) => {
+      TRIGGER_VERIFICATION_ERROR: (error_code?: VerificationError) => {
+        if (error_code === 'not_entitled_under_minimum_age') {
+          setCurrentStep('missing-data:verification');
+          setError('not_entitled_under_minimum_age');
+        } else {
+          setCurrentStep('sign-up:auth-providers');
+          setError('unknown');
+        }
+      },
+
+      TRIGGER_AUTH_ERROR: (error_code?: SignUpInError) => {
         if (error_code === 'franceconnect_merging_failed') {
           setCurrentStep('sign-up:auth-providers');
           setError('franceconnect_merging_failed');
-        } else if (error_code === 'not_entitled_under_minimum_age') {
-          setCurrentStep('missing-data:verification');
-          setError('not_entitled_under_minimum_age');
         } else {
           setCurrentStep('sign-up:auth-providers');
           setError('unknown');
