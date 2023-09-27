@@ -20,6 +20,7 @@ RSpec.describe User do
     it { is_expected.to have_many(:official_feedbacks).dependent(:nullify) }
     it { is_expected.to have_many(:reactions).dependent(:nullify) }
     it { is_expected.to have_many(:event_attendances).class_name('Events::Attendance').dependent(:destroy) }
+    it { is_expected.to have_many(:attended_events).through(:event_attendances).source(:event) }
   end
 
   describe '.destroy_all_async' do
@@ -796,6 +797,28 @@ RSpec.describe User do
 
     it 'correctly returns the highest role a moderator posesses' do
       expect(build_stubbed(:project_moderator).highest_role).to eq :project_moderator
+    end
+  end
+
+  describe 'onboarding' do
+    it 'is valid when empty' do
+      u = build(:user, onboarding: {})
+      expect(u).to be_valid
+    end
+
+    it 'is valid when topics are satisfied' do
+      u = build(:user, onboarding: { topics_and_areas: 'satisfied' })
+      expect(u).to be_valid
+    end
+
+    it 'is invalid when the key is not valid' do
+      u = build(:user, onboarding: { bananas: 'satisfied' })
+      expect(u).to be_invalid
+    end
+
+    it 'is invalid when the value is not valid' do
+      u = build(:user, onboarding: { topics_and_areas: 'bananas' })
+      expect(u).to be_invalid
     end
   end
 

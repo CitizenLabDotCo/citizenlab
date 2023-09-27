@@ -1,5 +1,5 @@
 import React from 'react';
-import { removeUrlLocale } from 'services/locale';
+import { removeUrlLocale } from 'utils/locale';
 import { isPage } from 'utils/helperUtils';
 
 /**

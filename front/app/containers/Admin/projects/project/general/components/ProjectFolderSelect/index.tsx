@@ -5,11 +5,11 @@ import { TOnProjectAttributesDiffChangeFunction } from 'containers/Admin/project
 // hooks
 import useProjectFolders from 'api/project_folders/useProjectFolders';
 import useLocalize from 'hooks/useLocalize';
-import { usePermission } from 'services/permissions';
+import { usePermission } from 'utils/permissions';
 
 // services
 import { IUpdatedProjectProperties } from 'api/projects/types';
-import { userModeratesFolder } from 'services/permissions/rules/projectFolderPermissions';
+import { userModeratesFolder } from 'utils/permissions/rules/projectFolderPermissions';
 
 // components
 import {

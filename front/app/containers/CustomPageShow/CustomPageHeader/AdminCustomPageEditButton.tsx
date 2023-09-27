@@ -3,7 +3,7 @@ import { adminCustomPageContentPath } from 'containers/Admin/pagesAndMenu/routes
 import useAuthUser from 'api/me/useAuthUser';
 import React from 'react';
 import { WrappedComponentProps } from 'react-intl';
-import { isAdmin } from 'services/permissions/roles';
+import { isAdmin } from 'utils/permissions/roles';
 import { injectIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import messages from '../messages';

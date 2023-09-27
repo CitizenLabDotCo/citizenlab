@@ -57,6 +57,10 @@ class WebApi::V1::FollowersController < ApplicationController
       :initiative_id
     when 'Idea'
       :idea_id
+    when 'Topic'
+      :topic_id
+    when 'Area'
+      :area_id
     else
       raise "Unsupported followable type #{followable_type}"
     end

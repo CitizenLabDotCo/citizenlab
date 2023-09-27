@@ -6,7 +6,7 @@ import { isNilOrError, isPage } from 'utils/helperUtils';
 import { useLocation } from 'react-router-dom';
 
 // services
-import { canModerateProject } from 'services/permissions/rules/projectPermissions';
+import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 // components
 import Button from 'components/UI/Button';

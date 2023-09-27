@@ -22,6 +22,7 @@ import MetaInformation from './components/MetaInformation';
 import MobileSharingButtonComponent from './components/Buttons/MobileSharingButtonComponent';
 import RightColumnDesktop from './components/RightColumnDesktop';
 import ErrorToast from 'components/ErrorToast';
+import FollowUnfollow from 'components/FollowUnfollow';
 
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
@@ -213,6 +214,17 @@ const Content = ({
               ideaId={ideaId}
               buttonComponent={<MobileSharingButtonComponent />}
             />
+          )}
+          {compact && (
+            <Box mt="24px">
+              <FollowUnfollow
+                followableType="ideas"
+                followableId={ideaId}
+                followersCount={idea.data.attributes.followers_count}
+                followerId={idea.data.relationships.user_follower?.data?.id}
+                width="100%"
+              />
+            </Box>
           )}
           <Box my="80px">
             <OfficialFeedback
