@@ -226,7 +226,8 @@ lv:
       title: 'Aptaujas beigas'
       description: "Lūdzu, iesniedziet savas atbildes, izvēloties \"Iesniegt aptauju\"."
     pdf_export:
-      full_name: 'Pilns nosaukums'
+      first_name: 'Vārds'
+      last_name: 'Uzvārds'
       email_address: 'E-pasta adrese'
       optional: 'izvēles'
       permission: 'Atļauja'
