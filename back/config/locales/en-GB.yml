@@ -226,7 +226,8 @@ en-GB:
       title: 'Survey end'
       description: "Please submit your answers by selecting 'Submit survey' below."
     pdf_export:
-      full_name: 'Full name'
+      first_name: 'First name'
+      last_name: 'Last name'
       email_address: 'Email address'
       optional: 'optional'
       permission: 'Permission'
