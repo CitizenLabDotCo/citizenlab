@@ -183,9 +183,14 @@ module MultiTenancy
       # Replace the Ref objects in the models hash with actual references to the
       # serialized records that they point to.
       def resolve_references!(models)
-        models.each do |_record_class, instances|
-          instances.each do |_identifier, serialized_instance|
+        models.each do |record_class, instances|
+          instances.each do |identifier, serialized_instance|
             serialized_instance.transform_values! { |value| value.resolve(models) }
+          rescue Serializers::Core::Ref::UnresolvedReferenceError => e
+            raise <<~ERROR
+              Could not resolve reference of #{record_class.name} (id: #{identifier}) 
+              to #{e.klass} (id: #{e.id}).
+            ERROR
           end
         end
       end
