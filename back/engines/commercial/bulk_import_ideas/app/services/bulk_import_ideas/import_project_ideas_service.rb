@@ -68,13 +68,15 @@ module BulkImportIdeas
     end
 
     def generate_example_xlsx
-      locale_name_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.full_name') }
+      locale_first_name_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.first_name') }
+      locale_last_name_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.last_name') }
       locale_email_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.email_address') }
       locale_permission_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.permission') }
       locale_published_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.date_published') }
 
       columns = {
-        locale_name_label => 'Bill Test',
+        locale_first_name_label => 'Bill',
+        locale_last_name_label => 'Test',
         locale_email_label => 'bill@citizenlab.co',
         locale_permission_label => 'X',
         locale_published_label => '18-07-2022'
@@ -320,9 +322,13 @@ module BulkImportIdeas
       locale_permission_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.permission') }
       permission = find_field(doc, locale_permission_label)
       if permission && permission[:value].present?
-        locale_name_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.full_name') }
-        name = find_field(doc, locale_name_label)
-        idea_row[:user_name] = name[:value] if name
+        locale_first_name_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.first_name') }
+        first_name = find_field(doc, locale_first_name_label)
+        idea_row[:user_first_name] = first_name[:value] if first_name
+
+        locale_last_name_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.last_name') }
+        last_name = find_field(doc, locale_last_name_label)
+        idea_row[:user_last_name] = last_name[:value] if last_name
 
         # Ignore any emails that don't validate
         locale_email_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.email_address') }

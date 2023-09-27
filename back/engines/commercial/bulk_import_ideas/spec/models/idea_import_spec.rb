@@ -27,5 +27,40 @@ RSpec.describe BulkImportIdeas::IdeaImport do
 
       expect(idea_import.approved_at).not_to be_nil
     end
+
+    context 'users created by the idea import' do
+      it 'deletes a user when deleting a draft idea' do
+        user = create(:user)
+        idea = create(:idea, publication_status: 'draft', author: user)
+        create(:idea_import, idea: idea, user_created: true)
+        idea.destroy!
+
+        expect(Idea.all.count).to eq 0
+        expect(described_class.all.count).to eq 0
+        expect { user.reload }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+
+      it 'does not delete a user when deleting a published idea' do
+        user = create(:user)
+        idea = create(:idea, publication_status: 'published', author: user)
+        create(:idea_import, idea: idea, user_created: true)
+        idea.destroy!
+
+        expect(Idea.all.count).to eq 0
+        expect(described_class.all.count).to eq 0
+        expect(user.reload).to eq user
+      end
+
+      it 'does not delete a pre-existing user when deleting a draft idea' do
+        user = create(:user)
+        idea = create(:idea, publication_status: 'draft', author: user)
+        create(:idea_import, idea: idea, user_created: false)
+        idea.destroy!
+
+        expect(Idea.all.count).to eq 0
+        expect(described_class.all.count).to eq 0
+        expect(user.reload).to eq user
+      end
+    end
   end
 end

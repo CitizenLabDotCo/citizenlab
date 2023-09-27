@@ -156,8 +156,12 @@ module BulkImportIdeas
       if idea_row[:user_email].present?
         author = User.find_by_cimail idea_row[:user_email]
         unless author
-          author = User.new(email: idea_row[:user_email], locale: @locale)
-          author = add_author_name author, idea_row
+          author = User.new(
+            email: idea_row[:user_email],
+            first_name: idea_row[:user_first_name],
+            last_name: idea_row[:user_last_name],
+            locale: @locale
+          )
           if author.save
             user_created = true
           else
@@ -168,22 +172,12 @@ module BulkImportIdeas
 
       unless author
         author = User.new(unique_code: SecureRandom.uuid, locale: @locale)
-        author = add_author_name author, idea_row
         author.save!
         user_created = true
       end
 
       idea_attributes[:author] = author
       user_created
-    end
-
-    def add_author_name(author, idea_row)
-      if idea_row[:user_name]
-        name = idea_row[:user_name].split(' ', 2)
-        author.first_name = name[0] if name[0].present?
-        author.last_name = name[1] if name[1].present?
-      end
-      author
     end
 
     def add_published_at(idea_row, idea_attributes)

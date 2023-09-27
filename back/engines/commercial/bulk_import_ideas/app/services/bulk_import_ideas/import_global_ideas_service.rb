@@ -11,7 +11,8 @@ module BulkImportIdeas
           'Body_nl-BE' => 'Mijn idee inhoud',
           'Body_fr-BE' => 'Mon idée contenu',
           'Email' => 'moderator@citizenlab.co',
-          'Full name' => 'Paul Moderator',
+          'First name' => 'Paul',
+          'Last name' => 'Moderator',
           'Permission' => 'X',
           'Project' => 'Project 1',
           'Phase' => 1,
@@ -53,19 +54,22 @@ module BulkImportIdeas
           end
         end
 
+        idea_row[:id]                   = xlsx_row['ID']
         idea_row[:title_multiloc]       = title_multiloc
         idea_row[:body_multiloc]        = body_multiloc
         idea_row[:topic_titles]         = (xlsx_row['Topics'] || '').split(';').map(&:strip).select(&:present?)
         idea_row[:project_title]        = xlsx_row['Project']
-        idea_row[:user_email]           = xlsx_row['Email'] if xlsx_row['Permission']&.present?
-        idea_row[:user_name]            = xlsx_row['Full name'] if xlsx_row['Permission']&.present?
         idea_row[:image_url]            = xlsx_row['Image URL']
         idea_row[:phase_rank]           = xlsx_row['Phase']
         idea_row[:published_at]         = xlsx_row['Date (dd-mm-yyyy)']
         idea_row[:latitude]             = xlsx_row['Latitude']
         idea_row[:longitude]            = xlsx_row['Longitude']
         idea_row[:location_description] = xlsx_row['Location Description']
-        idea_row[:id]                   = xlsx_row['ID']
+        if xlsx_row['Permission']&.present?
+          idea_row[:user_email]           = xlsx_row['Email']
+          idea_row[:user_first_name]      = xlsx_row['First name']
+          idea_row[:user_last_name]       = xlsx_row['Last name']
+        end
         idea_row
       end
       idea_rows.compact
