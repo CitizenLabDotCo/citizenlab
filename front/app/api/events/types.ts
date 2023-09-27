@@ -1,6 +1,6 @@
 import { Keys } from 'utils/cl-react-query/types';
 import eventsKeys from './keys';
-import { Multiloc, ILinks } from 'typings';
+import { Multiloc, ILinks, IRelationship } from 'typings';
 import { PublicationStatus } from 'api/projects/types';
 
 export type EventsKeys = Keys<typeof eventsKeys>;
@@ -19,7 +19,9 @@ export interface IEventData {
     created_at: string;
     updated_at: string;
     attendees_count: number;
-    online_link?: string;
+    attend_button_multiloc?: Multiloc;
+    using_url?: string;
+    online_link?: string | null;
   };
   relationships: {
     project: {
@@ -27,6 +29,9 @@ export interface IEventData {
         id: string;
         type: string;
       };
+    };
+    event_images: {
+      data: IRelationship[];
     };
     user_attendance: {
       data: {
@@ -73,6 +78,8 @@ export interface IEventProperties {
   online_link?: string;
   start_at?: string;
   end_at?: string;
+  attend_button_multiloc?: Multiloc;
+  using_url?: string;
 }
 
 export interface IAddEventProperties {

@@ -35,6 +35,9 @@ module Frontend
       when ProjectFolders::Folder
         subroute = 'folders'
         slug = model_instance.slug
+      when Event
+        subroute = 'events'
+        slug = model_instance.id
       else
         subroute = nil
         slug = nil
@@ -44,7 +47,8 @@ module Frontend
     end
 
     def model_to_url(model_instance, options = {})
-      "#{home_url(options)}/#{model_to_path(model_instance)}"
+      path = model_to_path model_instance
+      path && "#{home_url(options)}/#{path}"
     end
 
     def admin_project_folder_url(project_folder_id, locale: nil)
@@ -124,6 +128,11 @@ module Frontend
       else
         home_url(app_configuration: configuration)
       end
+    end
+
+    def unfollow_url(follower)
+      url = model_to_url(follower.followable, locale: follower.user&.locale)
+      url || "#{home_url(locale: follower.user.locale)}/profile/#{follower.user.slug}/following"
     end
 
     def terms_conditions_url(configuration = app_config_instance)

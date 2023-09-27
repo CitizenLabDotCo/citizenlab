@@ -35,7 +35,7 @@ const useUpdateIdea = () => {
         queryKey: ideaImagesKeys.list({ ideaId: idea.data.id }),
       });
       queryClient.invalidateQueries({
-        queryKey: ideaImagesKeys.item({ ideaId: idea.data.id }),
+        queryKey: ideaImagesKeys.items(),
       });
 
       const projectId = idea.data.relationships?.project.data.id;

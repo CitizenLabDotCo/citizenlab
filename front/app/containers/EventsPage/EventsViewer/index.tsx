@@ -38,12 +38,12 @@ const StyledEventCard = styled(EventCard)<IStyledEventCard>`
   flex: 0 0 32.3%;
 
   ${media.tablet`
-  flex: 0 0 48.6%;
-  `}
+  flex: 0 0 48.8%;
+`}
 
   ${media.phone`
   flex: 0 0 100%;
-  `}
+`}
 `;
 
 const StyledPagination = styled(Pagination)`

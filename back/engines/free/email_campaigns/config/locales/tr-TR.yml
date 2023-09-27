@@ -6,9 +6,10 @@ tr:
       "comment_deleted_by_admin": Yorumumun silinmesi
       "comment_marked_as_spam": Yorumun spam olarak bildirilmesi
       "comment_on_your_comment": Yorumuma bir yanıt
-      "comment_on_your_idea": Fikrim hakkında bir yorum
-      "comment_on_your_initiative": Önerim hakkında bir yorum
+      "comment_on_idea_you_follow": Takip ettiğiniz bir fikir hakkında yorum
+      "comment_on_initiative_you_follow": Takip ettiğiniz bir teklif hakkında yorum
       "cosponsor_of_your_initiative": Bir kullanıcı teklifime ortak sponsor olma davetimi kabul ediyor
+      "event_registration_confirmation": Etkinlik kayıt onayı
       "first_idea_published": İlk fikrimin yayımlanması
       "idea_marked_as_spam": Fikrin spam olarak bildirilmesi
       "idea_published": Fikrimin yayımlanması
@@ -30,29 +31,18 @@ tr:
       "mention_in_official_feedback": Bir bildirimde bahis
       "mention_in_internal_comment": Dahili bir yorumda bahsedin
       "new_comment_for_admin": Yönettiğim bir projede yeni yorum
-      "new_comment_on_commented_idea": Yorum yaptığım bir fikir hakkında yeni yorum
-      "new_comment_on_commented_initiative": Yorum yaptığım bir öneri hakkında yeni yorum
-      "new_comment_on_reacted_idea": Tepki gösterdiğim bir fikir hakkında yeni yorum
-      "new_comment_on_reacted_initiative": Oy verdiğim bir teklif hakkında yeni yorum
       "new_idea_for_admin": Yönettiğim bir projede yeni fikir
       "new_initiative_for_admin": Yeni öneri
-      "official_feedback_on_commented_idea": Yorum yaptığım bir fikir hakkında bilgilendirme
-      "official_feedback_on_commented_initiative": Yorum yaptığım bir öneri hakkında bilgilendirme
-      "official_feedback_on_reacted_idea": Tepki gösterdiğim bir fikir hakkında güncelleme
-      "official_feedback_on_reacted_initiative": Oyladığım bir teklifle ilgili güncelleme
-      "official_feedback_on_your_idea": Fikrim hakkında bilgilendirme
-      "official_feedback_on_your_initiative": Önerim hakkında bilgilendirme
+      "official_feedback_on_idea_you_follow": Takip ettiğiniz bir fikir hakkında güncelleme
+      "official_feedback_on_initiative_you_follow": Takip ettiğiniz bir teklifle ilgili güncelleme
       "password_reset": Parola sıfırla
       "project_moderation_rights_received": Proje moderasyon hakları alındı
       "project_folder_moderation_rights_received": Klasör yöneticisi hakları alındı
       "project_phase_started": Yeni proje aşaması
       "project_phase_upcoming": Yaklaşan yeni proje aşaması
-      "status_change_of_commented_idea": Yorum yaptığım bir fikrin durum değişikliği
-      "status_change_of_commented_initiative": Yorum yaptığım bir önerinin durum değişikliği
-      "status_change_of_reacted_idea": Tepki gösterdiğim bir fikrin durum değişikliği
-      "status_change_of_reacted_initiative": Tepki verdiğim bir teklifin durum değişikliği
-      "status_change_of_your_idea": Fikrimin durum değişikliği
-      "status_change_of_your_initiative": Önerimin durum değişikliği
+      "project_published": Proje yayınlandı
+      "status_change_on_idea_you_follow": Takip ettiğiniz bir fikrin durum değişikliği
+      "status_change_on_initiative_you_follow": Takip ettiğiniz bir teklifin durum değişikliği
       "threshold_reached_for_admin": Öneri oylama eşiğine ulaştı
       "welcome": Kayıttan sonra
       "admin_digest": Yöneticiler için haftalık genel bakış
@@ -64,6 +54,12 @@ tr:
       "voting_last_chance": Oy vermek için son şans
       "voting_results": Oylama sonuçları
       "your_proposed_initiatives_digest": Önerilerinize haftalık genel bakış
+    general:
+      by_author: 'tarafından %{authorName}'
+      author_wrote: '%{authorName} yazdı:'
+      cta_goto_idea: 'Bu fikre git'
+      cta_goto_proposal: 'Bu teklife gidin'
+      cta_goto_project: 'Bu projeye gidin'
     schedules:
       weekly:
         "0": "Haftalık, Pazar günleri %{hourOfDay}adresinde"
@@ -80,6 +76,8 @@ tr:
       "powered_by": "Destekleyen"
       "statement": "Bu e-posta %{organizationName} adına CitizenLab tarafından kayıtlı bir %{organizationLink} kullanıcısı olduğunuz için gönderilmiştir. Bu e-postaları almaya devam etmek istemiyorsanız %{unsubscribeLink}."
       "unsubscribe_text": "abonelikten ayrılabilirsiniz"
+    follow:
+      "unfollow_here": "Takip ettiğiniz bir öğe nedeniyle bu bildirimi aldınız. <a href=\"%{unfollow_url}\">Buradan takibi bırakabilirsiniz.</a>"
     comment_deleted_by_admin:
       reason: 'Yorumunuzun silinme nedeni:'
       cta_view: 'Bu fikri görüntüle'
@@ -134,13 +132,6 @@ tr:
       today: Bugün
       wrong_content: 'Bu yorum konuyla alakasız.'
       yesterday: Dün
-    comment_on_your_initiative:
-      commented: '%{authorFirstName} yazdı:'
-      cta_reply_to: '%{commentAuthor} yorumunu yanıtlayın'
-      event_description: '%{authorNameFull}, ''%{initiativeTitle}'' girişiminiz için bir tepki ekledi. %{authorName} ile sohbete devam etmek için aşağıdaki düğmeye tıklayın.'
-      main_header: '%{commentAuthor} girişiminiz hakkında yorum yaptı'
-      subject: '%{organizationName} platformunda bir yorum aldınız'
-      preheader: '%{authorName}, %{organizationName} ile ilgili girişiminiz hakkında bir yorum bıraktı'
     cosponsor_of_your_initiative:
       cta_reply_to: 'Teklifinizi görüntüleyin'
       event_description_initiative: 'Tebrikler! %{cosponsorName} teklifinize eş sponsorluk yapma davetinizi kabul etti.'
@@ -163,7 +154,6 @@ tr:
       title_initiatives_past_week: 'Size atanan yeni öneriler'
       title_successful_initiatives_past_week: 'Size atanan ve eşiğe ulaşan öneriler'
     idea_marked_as_spam:
-      by_author: '%{authorName} tarafından'
       cta_review_idea: 'Fikri inceleyin'
       report_inappropriate_offensive_content: 'Bu içeriği uygunsuz veya küçük düşürücü buluyorum.'
       report_not_an_idea: 'Bu içerik bir fikir değil, burada bulunmaması gerekir.'
@@ -172,7 +162,6 @@ tr:
       reported_this_because: '%{reporterFirstName} bunu bildirdi:'
       title_spam_report: '%{firstName} %{lastName} spam bildirdi'
     initiative_marked_as_spam:
-      by_author: '%{authorName} tarafından'
       cta_review_initiative: 'Önerileri inceleyin'
       report_inappropriate_offensive_content: 'Bu içeriği uygunsuz veya küçük düşürücü buluyorum.'
       report_not_an_initiative: 'Bu içerik bir öneri değil, burada bulunmaması gerekir.'
@@ -181,7 +170,6 @@ tr:
       reported_this_because: '%{reporterFirstName} bunu bildirdi:'
       title_spam_report: '%{firstName} %{lastName} spam bildirdi'
     initiative_assigned_to_you:
-      by_author: '%{authorName} tarafından'
       cta_reply_to: '%{authorName} için geri bildirim sağlayın'
       event_description_initiative: 'Size bir öneri atandı. Resmi bilgilendirme yazarak veya önerinin durumunu değiştirerek geri bildirim sağlayın.'
       main_header: '%{firstName}, yeni bir atamanız var'
@@ -224,7 +212,6 @@ tr:
       action_share_fb: '%{fbLink} arkadaşlarınıza haber verin'
       action_share_link: '%{link} kopyalayarak her tür kanaldan paylaşın'
       action_share_twitter: '%{twitterLink} takipçilerinize haber verin'
-      cta_view_initiative: 'Önerinize gidin'
       link: Bağlantı
       main_header: 'Bir öneri yayınladınız. Şimdi destek toplayalım.'
       message_next_steps: '%{userFirstName}, öneriniz %{organizationName} katılım platformunda başarıyla yayımlandı. Diğer kişiler önerinizle etkileşim kurduğunda bilgilendirilirsiniz. Şimdi neler yapabileceğinizi aşağıdan öğrenin.'
@@ -232,24 +219,7 @@ tr:
       preheader: '%{organizationName} ile ilgili %{initiativeTitle} önerinizi paylaştığınız için teşekkür ederiz. Bir sonraki adım, ağınızda paylaşıp öneriniz için destek toplamak.'
       send_email: e-posta
       subject: 'Öneriniz %{organizationName} platformunda yayımlandı'
-    mention_in_official_feedback:
-      by_author: '%{authorName} tarafından'
-      commented: '%{organizationName} şunu yazdı:'
-      cta_reply_to: '%{organizationName} yorumunu yanıtlayın'
-      event_description: '%{organizationName} ''%{post}‘ ile ilgili geri bildiriminde sizden bahsetti. %{organizationName} ile sohbete katılmak için aşağıdaki bağlantıya tıklayın'
-      main_header: 'Sizden bahsedildi'
-      subject: '%{organizationName} geri bildiriminde sizden bahsetti'
-      preheader: '%{commentAuthor} geri bildirimde sizden bahsetti'
-    new_comment_on_commented_idea:
-      commented: '%{commentAuthor} şunu yazdı:'
-      cta_reply_to: '%{commentAuthor} yorumunu yanıtlayın'
-      event_description: '%{commentAuthorFull} adlı kişi de %{organizationName} katılım platformundaki ''%{ideaTitle}'' fikri hakkında yorum yaptı. %{commentAuthor} adlı kişi ile sohbet başlatmak için aşağıdaki düğmeye tıklayın.'
-      main_header: '%{commentAuthor} aynı fikir hakkında yorum yazdı'
-      subject: 'Yorum yaptığınız fikir hakkında başka bir yorum daha var'
-      preheader: '%{commentAuthor} adlı kişi de %{organizationName} için sunulan bir fikir hakkında yorum yaptı'
     mention_in_comment:
-      by_author: '%{authorName} tarafından'
-      commented: '%{commentAuthor} şunu yazdı:'
       cta_reply_to: '%{commentAuthor} yorumunu yanıtlayın'
       event_description: '%{commentAuthorFull} ''%{post}‘ fikri hakkındaki yorumunda sizden bahsetti. %{commentAuthor} ile sohbete başlamak için aşağıdaki bağlantıya tıklayın'
       main_header: 'İnsanlar sizin hakkınızda konuşuyor'
@@ -275,15 +245,7 @@ tr:
       yesterday_by_author: '%{author} tarafından dün'
       today_by_author: '%{author} tarafından bugün'
       x_days_ago_by_author: '%{author} tarafından %{x} gün önce'
-    new_comment_on_commented_initiative:
-      commented: '%{commentAuthor} şunu yazdı:'
-      cta_reply_to: '%{commentAuthor} yorumunu yanıtlayın'
-      event_description: '%{commentAuthorFull} adlı kişi de %{organizationName} katılım platformundaki ''%{initiativeTitle}'' önerisi hakkında yorum yaptı. %{commentAuthor} adlı kişi ile sohbet başlatmak için aşağıdaki düğmeye tıklayın.'
-      main_header: '%{commentAuthor} aynı öneri hakkında yorum yazdı'
-      subject: 'Yorum yaptığınız öneri hakkında başka bir yorum daha var'
-      preheader: '%{commentAuthor} adlı kişi de %{organizationName} için sunulan bir öneri hakkında yorum yaptı'
     new_comment_for_admin:
-      by_author: '%{authorName} tarafından'
       commented: '%{authorFirstName} yorum yaptı:'
       cta_reply_to: '%{commentAuthor} adlı kişinin yorumunu görün'
       days_ago: '%{numberOfDays} gün önce'
@@ -293,41 +255,25 @@ tr:
       preheader: '%{authorName} bir yorum bıraktı'
       today: Bugün
       yesterday: Dün
-    comment_on_your_idea:
-      by_author: '%{authorName} tarafından'
-      commented: '%{authorFirstName} yazdı:'
-      cta_reply_to: '%{commentAuthor} yorumunu yanıtlayın'
-      event_description: '%{authorNameFull}, ''%{ideaTitle}'' fikriniz için bir tepki ekledi. %{authorName} ile sohbete devam etmek için aşağıdaki düğmeye tıklayın.'
-      main_header: '%{authorName} fikriniz hakkında yorum yaptı'
-      subject: '%{organizationName} platformunda bir yorum aldınız'
-      preheader: '%{authorName}, %{organizationName} ile ilgili fikriniz hakkında bir yorum bıraktı'
-    new_comment_on_reacted_initiative:
-      commented: '%{commentAuthor} yazdı:'
-      cta_reply_to: 'Bu teklifi görüntüleyin'
-      event_description: '%{commentAuthor} oy verdiğiniz ''%{initiativeTitle}'' teklifi hakkında yorum yaptı. %{organizationName}platformundaki tartışmaya katılın!'
-      main_header: '%{firstName}, oyladığınız teklifle ilgili yeni bir yorum var'
-      subject: 'Oyladığınız teklifle ilgili yeni bir yorum var'
-      preheader: '%{commentAuthor} %{organizationName}platformunda oyladığınız teklif hakkında bir yorum bırakın'
-    new_comment_on_reacted_idea:
-      commented: '%{commentAuthor} yorum yaptı:'
+    comment_on_idea_you_follow:
       cta_reply_to: 'Yanıtla %{commentAuthor}'
-      days_ago: '%{numberOfDays} günler önce'
-      event_description: '%{commentAuthor} sizin tepki verdiğiniz ''%{ideaTitle}'' fikri hakkında yorum yaptı. %{organizationName}platformundaki tartışmaya katılın!'
-      main_header: '%{firstName}, tepki verdiğiniz fikir hakkında yeni bir yorum var'
-      subject: 'Tepki verdiğiniz fikirle ilgili yeni bir yorum var'
-      preheader: '%{commentAuthor} %{organizationName}platformunda tepki gösterdiğiniz fikir hakkında bir yorum bırakın'
-      today: Bugün
-      yesterday: Dün
+      event_description: '%{authorNameFull} ''%{ideaTitle}'' fikrine bir tepki verdi. Konuşmaya %{authorName}ile devam etmek için aşağıdaki düğmeyi tıklayın.'
+      main_header: '%{authorName} takip ettiğiniz bir fikir hakkında yorum yaptı'
+      subject: 'Takip ettiğiniz bir fikir hakkında yeni bir yorum var'
+      preheader: '%{authorName} %{organizationName}için bir fikir üzerine bir yorum bıraktı'
+    comment_on_initiative_you_follow:
+      cta_reply_to: 'Yanıtla %{commentAuthor}'
+      event_description: '%{authorNameFull} ''%{initiativeTitle}'' girişimine bir tepki verdi. Sohbete %{authorName}ile devam etmek için aşağıdaki butona tıklayın.'
+      main_header: '%{commentAuthor} takip ettiğiniz bir girişim hakkında yorum yaptı'
+      subject: 'Takip ettiğiniz teklifle ilgili yeni bir yorum var'
+      preheader: '%{authorName} %{organizationName}için bir girişim hakkında yorum bıraktı'
     new_initiative_for_admin:
-      by_author: '%{authorName} tarafından'
-      commented: '%{authorFirstName} yazdı:'
       cta_reply_to: '%{authorName} için geri bildirim sağlayın'
       event_description: '%{authorName} platformunuzda yeni bir öneri yayımladı. Şimdi inceleyin, görüşlerinizi bildirin veya durumunu değiştirin!'
       main_header: '%{firstName}, platformunuzda yeni bir öneri yayımlandı'
       subject: 'Birileri %{organizationName} platformunda yeni bir öneri yayımladı'
       preheader: '%{authorName} platformunuza yeni bir öneri yayımladı'
     new_idea_for_admin:
-      by_author: '%{authorName} tarafından'
       commented: '%{authorFirstName} yorum yaptı:'
       cta_reply_to: '%{authorName} için geri bildirim sağlayın'
       days_ago: '%{numberOfDays} gün önce'
@@ -392,53 +338,22 @@ tr:
       subject: '''%{post}'' yeni bir dahili yoruma sahiptir'
       main_header: '''%{post}'' yeni bir dahili yoruma sahiptir'
       preheader: '''%{post}'' yeni bir dahili yoruma sahiptir'
-    official_feedback_on_commented_initiative:
-      by_author: '%{authorName} tarafından'
-      updated: '%{officialName} şunu yazdı:'
-      cta_view: 'Bu öneriye gidin'
-      event_description: '%{officialName} ''%{initiativeTitle}‘ önerisi hakkında bir bilgilendirme sundu. %{organizationName} ile sohbete katılmak için aşağıdaki düğmeye tıklayın.'
-      main_header: 'Yorum yaptığınız öneri hakkında bir bilgilendirme var'
-      subject: 'Yorum yaptığınız bir öneri, %{organizationName} platformunda resmi bir bilgilendirme aldı'
-      preheader: '%{officialName} yorum yaptığınız bir öneri hakkında resmi bir bilgilendirme sundu'
-    official_feedback_on_reacted_idea:
-      by_author: 'tarafından %{authorName}'
-      updated: '%{officialName} yazdı:'
-      cta_view: 'Bu fikre git'
-      event_description: '%{officialName} ''%{ideaTitle}'' fikri hakkında bir güncelleme yaptı. %{officialName}ile sohbete girmek için aşağıdaki butona tıklayın.'
-      subject: 'Tepki verdiğiniz bir fikir %{organizationName}platformunda güncellendi.'
-      preheader: '%{officialName} tepki gösterdiğiniz bir fikir hakkında güncelleme bıraktı'
-      main_header: ""
-    official_feedback_on_commented_idea:
-      by_author: '%{authorName} tarafından'
-      updated: '%{officialName} şunu yazdı:'
-      cta_view: 'Bu fikre gidin'
-      event_description: '%{officialName} ''%{ideaTitle}‘ fikri hakkında bir bilgilendirme sundu. %{officialName} ile sohbete katılmak için aşağıdaki düğmeye tıklayın.'
-      main_header: 'Yorum yaptığınız fikir hakkında bir bilgilendirme var'
-      subject: 'Yorum yaptığınız bir fikir, %{organizationName} platformunda resmi bir bilgilendirme aldı'
-      preheader: '%{officialName} yorum yaptığınız bir fikir hakkında resmi bir bilgilendirme sundu'
-    official_feedback_on_your_idea:
-      by_author: '%{authorName} tarafından'
-      updated: '%{officialName} şunu yazdı:'
-      cta_view: 'Fikrinize gidin'
-      event_description: '%{officialName} ''%{ideaTitle}‘ fikriniz hakkında bir bilgilendirme sundu. %{officialName} ile sohbete katılmak için aşağıdaki düğmeye tıklayın.'
-      main_header: '%{organizationName} size bir bilgilendirme sundu'
-      subject: '%{organizationName} size bir bilgilendirme sundu'
-      preheader: '%{officialName} fikriniz hakkında resmi bir bilgilendirme sundu'
-    official_feedback_on_reacted_initiative:
-      by_author: 'tarafından %{authorName}'
-      updated: '%{officialName} yazdı:'
-      cta_view: 'Bu teklife gidin'
-      event_description: '%{officialName} ''%{initiativeTitle}'' önerisi hakkında bir güncelleme yaptı. %{organizationName}ile sohbete girmek için aşağıdaki butona tıklayın.'
-      main_header: 'Oyladığınız bir teklifle ilgili bir güncelleme var'
-      subject: 'Oyladığınız bir teklif %{organizationName}platformunda resmi bir güncelleme aldı'
-      preheader: '%{officialName} Oy verdiğiniz bir teklifle ilgili resmi bir güncelleme bıraktınız'
-    official_feedback_on_your_initiative:
-      updated: '%{officialName} şunu yazdı:'
-      cta_view: 'Önerinize gidin'
-      event_description: '%{officialName} ''%{initiativeTitle}‘ yorumunuz hakkında bir bilgilendirme sundu. %{organizationName} ile sohbete katılmak için aşağıdaki düğmeye tıklayın.'
-      main_header: '%{officialName} size bir bilgilendirme sundu'
-      subject: '%{organizationName} platformunda resmi bir bilgilendirme aldınız'
-      preheader: '%{officialName} öneriniz hakkında resmi bir bilgilendirme sundu'
+    official_feedback_on_idea_you_follow:
+      header_message: '%{officialName} ''%{ideaTitle}'' fikri hakkında bir güncelleme yaptı. %{officialName}ile sohbete girmek için aşağıdaki butona tıklayın.'
+      header_title: 'Takip ettiğiniz bir fikirle ilgili bir güncelleme var'
+      subject: 'Takip ettiğiniz bir fikir %{organizationName}platformunda resmi bir güncelleme aldı'
+      preheader: 'Takip ettiğiniz bir fikirle ilgili bir güncelleme var'
+    official_feedback_on_initiative_you_follow:
+      header_message: '%{officialName} ''%{initiativeTitle}'' önerisi hakkında bir güncelleme yaptı. %{organizationName}ile sohbete girmek için aşağıdaki butona tıklayın.'
+      header_title: 'Takip ettiğiniz bir teklifle ilgili bir güncelleme var'
+      subject: 'Takip ettiğiniz bir teklif %{organizationName}platformunda resmi bir güncelleme aldı'
+      preheader: 'Takip ettiğiniz bir teklifle ilgili bir güncelleme var'
+    mention_in_official_feedback:
+      cta_reply_to: '%{organizationName} yorumunu yanıtlayın'
+      event_description: '%{organizationName} ''%{post}‘ ile ilgili geri bildiriminde sizden bahsetti. %{organizationName} ile sohbete katılmak için aşağıdaki bağlantıya tıklayın'
+      main_header: 'Sizden bahsedildi'
+      subject: '%{organizationName} geri bildiriminde sizden bahsetti'
+      preheader: '%{commentAuthor} geri bildirimde sizden bahsetti'
     project_moderation_rights_received:
       cta_manage_project: 'Bu projeyi yönetin'
       message_you_became_moderator: '%{organizationName} katılım platformundaki bir yönetici sizi şu projenin proje yöneticisi yaptı:'
@@ -485,48 +400,23 @@ tr:
       new_phase: 'Proje ''%{phaseTitle}'' aşamasına geçecek'
       subject: '%{projectName} için yeni aşama ile ilgili her şeyi ayarlayın'
       preheader: '%{projectName} için yakında yeni bir aşama başlıyor'
-    status_change_of_commented_idea:
-      status_change: 'Bu fikrin yeni durumu ''%{ideaStatus}'''
-      cta_view_idea: 'Bu fikre gidin'
-      event_description: '%{organizationName} dijital katılım platformunda ''%{ideaTitle}'' fikrinin durumunu güncelledi.'
-      main_header: 'Yorum yaptığınız bir fikir yeni bir duruma sahip'
-      subject: 'Yorum yaptığınız bir fikrin durumu değişti'
-      preheader: '%{organizationName} yorum yaptığınız bir fikrin durumunu değiştirdi'
-    status_change_of_your_idea:
-      status_change: 'Fikrinizin yeni durumu ''%{ideaStatus}'''
-      cta_view_idea: 'Fikrinize gidin'
-      event_description: '%{organizationName} dijital katılım platformunda ''%{ideaTitle}'' fikrinizin durumunu güncelledi.'
-      main_header: 'Fikrinizin yeni bir durumu var'
-      subject: 'Fikrinizin durumu değişti'
-      preheader: '%{organizationName} fikrinizin durumunu değiştirdi'
-    status_change_of_reacted_idea:
+    project_published:
+      subject: '%{organizationName}platformunda yeni bir proje yayınlandı'
+      header_title: 'Yeni bir proje yayınlandı'
+      header_message: '%{organizationName} katılım platformu aşağıdaki projeyi yayınladı:'
+      preheader: 'Yeni bir proje yayınlandı'
+    status_change_on_idea_you_follow:
       status_change: 'Bu fikrin yeni statüsü ''%{ideaStatus}'''
-      cta_view_idea: 'Bu fikre git'
-      event_description: '%{organizationName} dijital katılım platformunda ''%{ideaTitle}'' fikrinin durumunu güncelledi.'
-      main_header: 'Tepki gösterdiğiniz bir fikir yeni bir statüye sahip'
-      subject: 'Tepki verdiğiniz bir fikrin durumu değiştirildi'
-      preheader: '%{organizationName} tepki verdiğiniz bir fikrin durumunu değiştirdi'
-    status_change_of_reacted_initiative:
+      header_message: '%{organizationName} dijital katılım platformunda ''%{ideaTitle}'' fikrinin durumunu güncelledi.'
+      header_title: 'Takip ettiğiniz bir fikir yeni bir statüye sahip'
+      subject: 'Takip ettiğiniz bir fikrin durumu değiştirildi'
+      preheader: 'Takip ettiğiniz bir fikir yeni bir statüye sahip'
+    status_change_on_initiative_you_follow:
       status_change: 'Bu teklifin yeni durumu ''%{initiativeStatus}'' şeklindedir.'
-      cta_view_initiative: 'Bu teklife gidin'
-      event_description: 'Teklifin durumu ''%{initiativeTitle}'' %{organizationName}dijital katılım platformunda güncellenmiştir.'
-      main_header: 'Oyladığınız bir teklif yeni bir statüye sahip'
-      subject: 'Oy verdiğiniz bir teklifin durumu değişti'
-      preheader: 'Oyladığınız bir teklifin durumu değişti'
-    status_change_of_commented_initiative:
-      status_change: 'Bu önerinin yeni durumu ''%{initiativeStatus}'''
-      cta_view_initiative: 'Bu öneriye gidin'
-      event_description: '''%{initiativeTitle}'' önerisinin durumu %{organizationName} dijital katılım platformunda güncellendi.'
-      main_header: 'Yorum yaptığınız bir öneri yeni bir duruma sahip'
-      subject: 'Yorum yaptığınız bir önerinin durumu değişti'
-      preheader: 'Yorum yaptığınız bir önerinin durumu değişti'
-    status_change_of_your_initiative:
-      status_change: 'Önerinizin yeni durumu ''%{initiativeStatus}'''
-      cta_view_initiative: 'Önerinize gidin'
-      event_description: '''%{initiativeTitle}'' önerisinin durumu %{organizationName} dijital katılım platformunda güncellendi.'
-      main_header: 'Önerinizin yeni bir durumu var'
-      subject: 'Önerinizin durumu değişti'
-      preheader: 'Önerinizin durumu değişti'
+      header_message: 'Teklifin durumu ''%{initiativeTitle}'' %{organizationName}dijital katılım platformunda güncellenmiştir.'
+      header_title: 'Takip ettiğiniz bir teklifin yeni bir durumu var'
+      subject: 'Takip ettiğiniz bir teklifin durumu değişti'
+      preheader: 'Takip ettiğiniz bir teklifin yeni bir durumu var'
     user_digest:
       subject: "%{organizationName} katılım platformundaki etkinlik durumunuz"
       commented: "%{authorFirstName} yorum yaptı:"
@@ -550,7 +440,6 @@ tr:
       no_unread_notifications: "Okunmamış bildiriminiz yok. Girdilerinizle katkı yapmak ve yeni bildirimler oluşturmak için platformu ziyaret edin."
       unread_notifications: "Okunmamış bildirileriniz var. Neler olup bittiğini öğrenmek için platformu ziyaret edin."
     threshold_reached_for_admin:
-      by_author: '%{authorName} tarafından'
       cta_process_initiative: 'Bu girişimi sonraki adımlara taşıyın'
       event_description: 'Bir girişim, platformunuzdaki oylama eşiğine ulaştı. Onu sonraki adımlara taşımak için aşağıdaki düğmeye tıklayın.'
       main_header: 'Bir girişim oylama eşiğine ulaştı.'
@@ -638,6 +527,18 @@ tr:
       body_2: '%{organizationName} platformundaki %{phaseTitle} oylamasının sonuçları yayınlandı!'
       body_3: 'Sonuçları incelemenizi ve sonraki adımlarla ilgili güncellemeler için bizi takip etmenizi öneririz.'
       cta_see_results: 'Platformdaki sonuçları görün'
+    event_registration_confirmation:
+      subject: "Girdiniz! \"%{eventTitle}\" için kaydınız onaylandı"
+      header_message: "%{firstName}'a kaydolduğunuz için teşekkür ederiz."
+      event_details:
+        labels:
+          date: 'Tarih'
+          location: 'Konum'
+          online_link: 'Çevrimiçi bağlantı'
+          description: 'Açıklama'
+          project: 'Proje'
+      cta_go_to_event: 'Etkinliği görüntüleyin'
+      cta_add_to_calendar: 'Takviminize ekleyin'
     voting_phase_started:
       subject: '%{organizationName}: %{projectName}için oylama aşaması başladı'
       preheader: '%{projectName} için %{organizationName}katılım platformunda oylama süreci başladı.'
@@ -660,6 +561,7 @@ tr:
         managers: 'Yöneticiler'
         admins_assigned_to_a_proposal: 'Bir teklife atanan yöneticiler'
         admins_and_managers_assigned_to_the_input: 'Girişe atanan yöneticiler ve müdürler'
+        new_attendee: 'Yeni kayıtlı kullanıcı'
         user_who_is_invited_to_cosponsor_a_proposal: 'Bir teklife eş sponsorluk yapmaya davet edilen kullanıcı'
         user_who_is_receiving_admin_rights: 'Yönetici haklarını alan kullanıcı'
         user_who_is_receiving_folder_moderator_rights: 'Klasör moderatörü haklarını alan kullanıcı'
@@ -670,15 +572,17 @@ tr:
         user_who_published_the_input: 'Girdiyi yayınlayan kullanıcı'
         user_who_registers: 'Kayıt olan kullanıcı'
         user_who_was_invited: 'Davet edilen kullanıcı'
-        users_who_engaged_with_the_input: 'Girdi ile etkileşime geçen kullanıcılar'
         users_who_engaged_with_the_project: 'Proje ile etkileşime geçen kullanıcılar'
-        users_who_engaged_with_the_proposal: 'Teklifle etkileşime geçen kullanıcılar'
+        users_who_follow_the_proposal: 'Teklifi takip eden kullanıcı'
+        users_who_follow_the_input: 'Girdiyi takip eden kullanıcı'
+        users_who_follow_the_project: 'Projeyi takip eden kullanıcılar'
         user_who_voted: 'Oy veren kullanıcı'
         user_with_unsubmitted_votes: 'Oylarını göndermemiş olan kullanıcı'
         users_who_engaged_but_not_voted: 'Proje ile ilgilenen ancak oy kullanmayan kullanıcılar'
       content_type:
         comments: 'Yorumlar'
         content_moderation: 'İçerik moderasyonu'
+        events: 'Etkinlikler'
         general: 'Genel'
         inputs: 'Girişler'
         internal_comments: 'Dahili yorumlar'
@@ -710,6 +614,7 @@ tr:
         new_input_is_published: 'Yeni girdi yayınlandı'
         new_proposal_is_posted: 'Yeni teklif yayınlandı'
         project_phase_changes: 'Proje aşaması değişiklikleri'
+        project_published: 'Proje yayınlandı'
         proposal_gets_reported_as_spam: 'Teklif spam olarak bildiriliyor'
         proposal_is_assigned_to_admin: 'Teklif yöneticiye atanır'
         proposal_is_updated: 'Teklif güncellendi'
@@ -733,3 +638,4 @@ tr:
         voting_basket_submitted: 'Oylar teslim edildi'
         7_days_after_invite_is_sent: 'Davetiye gönderildikten 7 gün sonra'
         7_days_before_the_project_changes_phase: 'Proje değişiklik aşamasından 7 gün önce'
+        registration_to_event: 'Bir etkinliğe kayıt'

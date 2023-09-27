@@ -123,8 +123,6 @@ class OmniauthCallbackController < ApplicationController
       @user = User.new(user_attrs)
       @user.locale = selected_locale(omniauth_params) if selected_locale(omniauth_params)
 
-      SideFxUserService.new.before_create(@user, nil)
-
       @user.identities << @identity
       begin
         @user.save!
@@ -194,6 +192,7 @@ class OmniauthCallbackController < ApplicationController
 
     attrs = authver_method.updateable_user_attrs
     update_hash = authver_method.profile_to_user_attrs(auth).slice(*attrs).compact
+    update_hash.delete(:remote_avatar_url) if user.avatar.present? # don't overwrite avatar if already present
     user.confirm! # confirm user email if not already confirmed
 
     if authver_method.overwrite_user_attrs?

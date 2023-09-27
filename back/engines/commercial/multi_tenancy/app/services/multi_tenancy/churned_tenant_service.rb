@@ -16,10 +16,9 @@ module MultiTenancy
     def remove_expired_pii(tenants = nil)
       return unless @pii_retention_period
 
-      tenants = (tenants || Tenant.not_deleted).churned
-      tenants.each do |tenant|
-        churn_date = churn_datetime(tenant).to_date
-        tenant.switch { User.destroy_all_async } if pii_expired?(churn_date)
+      expired_tenants = send(:expired_tenants, tenants)
+      expired_tenants.each do |tenant|
+        tenant.switch { User.destroy_all_async }
       end
     end
 
@@ -43,9 +42,19 @@ module MultiTenancy
         .first&.acted_at
     end
 
+    def expired_tenants(tenants = nil)
+      tenants = (tenants || Tenant.not_deleted).churned
+
+      tenants.select do |tenant|
+        churn_datetime = send(:churn_datetime, tenant)
+        pii_expired?(churn_datetime)
+      end
+    end
+
     def pii_expired?(churn_datetime)
+      churn_date = churn_datetime.to_date
       today = Time.zone.today
-      (today - churn_datetime) > pii_retention_period
+      (today - churn_date) > pii_retention_period
     end
 
     class UnknownChurnDatetime < RuntimeError; end

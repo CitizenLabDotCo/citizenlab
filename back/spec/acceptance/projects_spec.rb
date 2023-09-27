@@ -307,26 +307,6 @@ resource 'Projects' do
           expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :ordering)).to eq 0
         end
 
-        example 'Log activities', document: false do
-          # It's easier to use a null object instead of a more restrictive spy here
-          # because some of the expected jobs are configured before being queued:
-          #   LogActivityJob.set(...).perform_later(...)
-          stub_const('LogActivityJob', double.as_null_object)
-
-          do_request
-          project = Project.find(response_data[:id])
-
-          expect(LogActivityJob).to have_received('perform_later').exactly(2).times
-
-          expect(LogActivityJob)
-            .to have_received('perform_later')
-            .with(project, 'created', @user, be_a(Numeric))
-
-          expect(LogActivityJob)
-            .to have_received('perform_later')
-            .with(project, 'draft', @user, be_a(Numeric), payload: [nil, 'draft'])
-        end
-
         example 'Create a project in a folder' do
           folder = create(:project_folder)
           do_request folder_id: folder.id
@@ -668,26 +648,6 @@ resource 'Projects' do
         end
       end
 
-      example 'Log activities', document: false do
-        # It's easier to use a null object instead of a more restrictive spy here
-        # because some of the expected jobs are configured before being queued:
-        #   LogActivityJob.set(...).perform_later(...)
-        stub_const('LogActivityJob', double.as_null_object)
-
-        do_request
-        project = Project.find(response_data[:id])
-
-        expect(LogActivityJob).to have_received('perform_later').exactly(2).times
-
-        expect(LogActivityJob)
-          .to have_received('perform_later')
-          .with(project, 'changed', @user, be_a(Numeric))
-
-        expect(LogActivityJob)
-          .to have_received('perform_later')
-          .with(project, 'archived', @user, be_a(Numeric), payload: %w[published archived])
-      end
-
       example 'Add a project to a folder' do
         folder = create(:project_folder)
 
@@ -824,20 +784,23 @@ resource 'Projects' do
         expect(json_response).to eq(
           {
             data: {
-              results: [
-                {
-                  inputType: 'multiselect',
-                  question: { en: 'What are your favourite pets?' },
-                  required: true,
-                  totalResponses: 3,
-                  answers: [
-                    { answer: { en: 'Cat' }, responses: 2 },
-                    { answer: { en: 'Dog' }, responses: 1 }
-                  ],
-                  customFieldId: multiselect_field.id
-                }
-              ],
-              totalSubmissions: 2
+              type: 'survey_results',
+              attributes: {
+                results: [
+                  {
+                    inputType: 'multiselect',
+                    question: { en: 'What are your favourite pets?' },
+                    required: true,
+                    totalResponses: 3,
+                    answers: [
+                      { answer: { en: 'Cat' }, responses: 2 },
+                      { answer: { en: 'Dog' }, responses: 1 }
+                    ],
+                    customFieldId: multiselect_field.id
+                  }
+                ],
+                totalSubmissions: 2
+              }
             }
           }
         )
@@ -885,7 +848,7 @@ resource 'Projects' do
         do_request
         expect(status).to eq 200
 
-        expect(json_response).to eq({ data: { totalSubmissions: 3 } })
+        expect(json_response[:data][:attributes]).to eq({ totalSubmissions: 3 })
       end
     end
 

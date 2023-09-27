@@ -11,7 +11,7 @@ import messages from '../../messages';
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
 
 // services & hooks
-import { IFlatCustomFieldWithIndex } from 'services/formCustomFields';
+import { IFlatCustomFieldWithIndex } from 'api/custom_fields/types';
 import useLocale from 'hooks/useLocale';
 import { isNilOrError } from 'utils/helperUtils';
 import { useFormContext } from 'react-hook-form';

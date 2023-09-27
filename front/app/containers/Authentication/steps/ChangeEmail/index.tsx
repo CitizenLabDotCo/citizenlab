@@ -17,7 +17,10 @@ import { string, object } from 'yup';
 import Input from 'components/HookForm/Input';
 
 // errors
-import { isCLErrorsIsh, handleCLErrorsIsh } from 'utils/errorUtils';
+import {
+  isCLErrorsWrapper,
+  handleHookFormSubmissionError,
+} from 'utils/errorUtils';
 
 // typings
 import { SetError } from 'containers/Authentication/typings';
@@ -60,8 +63,8 @@ const ChangeEmail = ({ loading, setError, onGoBack, onChangeEmail }: Props) => {
     try {
       await onChangeEmail(email);
     } catch (e) {
-      if (isCLErrorsIsh(e)) {
-        handleCLErrorsIsh(e, methods.setError);
+      if (isCLErrorsWrapper(e)) {
+        handleHookFormSubmissionError(e, methods.setError);
         return;
       }
 

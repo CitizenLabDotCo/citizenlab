@@ -137,6 +137,7 @@ const MetaContent = styled.div`
 const SharingWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
 `;
 
 const StyledOfficialFeedback = styled(OfficialFeedback)`
@@ -282,7 +283,7 @@ const LargerThanPhone = ({
               </Box>
             )}
             <Box
-              mb={hasOfficialFeedback ? '80px' : '0'}
+              mb={hasOfficialFeedback ? '48px' : '0'}
               ref={officialFeedbackElement}
             >
               <StyledOfficialFeedback
