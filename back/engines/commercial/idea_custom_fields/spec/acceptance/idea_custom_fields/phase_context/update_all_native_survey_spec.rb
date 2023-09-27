@@ -258,16 +258,6 @@ resource 'Idea Custom Fields' do
         })
       end
 
-      example '[error] Updating custom fields in a native survey phase when there are responses' do
-        IdeaStatus.create_defaults
-        create(:idea, project: context.project, creation_phase: context, phases: [context])
-
-        do_request(custom_fields: [])
-
-        assert_status 401
-        expect(json_response_body).to eq({ error: 'updating_form_with_input' })
-      end
-
       example 'Updating custom fields in a native survey phase when there are no responses' do
         ideation_phase = create(:phase, participation_method: 'ideation', project: context.project, start_at: (context.start_at - 7.days), end_at: (context.start_at - 1.day))
         create(:idea, project: ideation_phase.project, phases: [ideation_phase])

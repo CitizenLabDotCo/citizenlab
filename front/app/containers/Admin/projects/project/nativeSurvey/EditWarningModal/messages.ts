@@ -31,8 +31,8 @@ export default defineMessages({
     defaultMessage: 'Your response data may be inaccurate',
   },
   changeQuestionText: {
-    id: 'app.components.formBuilder.editWarningModal.changeQuestionText',
-    defaultMessage: 'Change question text',
+    id: 'app.components.formBuilder.editWarningModal.changeQuestionText2',
+    defaultMessage: 'Edit text',
   },
   changeQuestionTextDescription: {
     id: 'app.components.formBuilder.editWarningModal.changeQuestionTextDescription',
