@@ -157,7 +157,12 @@ class PrintCustomFieldsService
     # Personal data explanation
     participation_method = @participation_context.participation_method
     personal_data_explanation_key = "form_builder.pdf_export.personal_data_explanation_#{participation_method}"
-    pdf.text I18n.with_locale(locale) { I18n.t(personal_data_explanation_key, { organizationName: organization_name }) }
+    pdf.text I18n.with_locale(locale) {
+      I18n.t(
+        personal_data_explanation_key, 
+        { organizationName: organization_name }
+      )
+    }
 
     pdf.move_down 8.mm
 
@@ -178,7 +183,12 @@ class PrintCustomFieldsService
     pdf.move_up 2.8.mm
 
     pdf.indent(7.mm) do
-      pdf.text I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.by_checking_this_box') }
+      pdf.text I18n.with_locale(locale) {
+        I18n.t(
+          'form_builder.pdf_export.by_checking_this_box',
+          { organizationName: organization_name }
+        )
+      }
     end
 
     pdf.start_new_page(size: 'A4')
