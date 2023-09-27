@@ -47,10 +47,11 @@ interface Props extends OuterProps {
   locale: Locale;
 }
 
-interface FormData {
+interface FormValues {
   phase_id?: string;
   locale: Locale;
   file?: UploadFile;
+  personal_data: boolean;
   google_consent: false;
 }
 
@@ -101,10 +102,11 @@ const ImportSection = ({ onFinishImport, locale, project, phases }: Props) => {
     : // phase found in the URL
       undefined; // for continuous projects there is no phase obviously
 
-  const defaultValues: FormData = {
+  const defaultValues: FormValues = {
     phase_id: initialPhaseId,
     locale,
     file: undefined,
+    personal_data: false,
     google_consent: false,
   };
 
@@ -114,6 +116,7 @@ const ImportSection = ({ onFinishImport, locale, project, phases }: Props) => {
       : {}),
     locale: string().required(),
     file: mixed().required(formatMessage(messages.pleaseUploadFile)),
+    personal_data: boolean(),
     google_consent: boolean().test(
       '',
       formatMessage(messages.consentNeeded),
@@ -135,7 +138,11 @@ const ImportSection = ({ onFinishImport, locale, project, phases }: Props) => {
 
   const projectId = project.data.id;
 
-  const submitFile = async ({ file, google_consent: _, ...rest }: FormData) => {
+  const submitFile = async ({
+    file,
+    google_consent: _,
+    ...rest
+  }: FormValues) => {
     if (!file) return;
 
     try {
@@ -179,6 +186,13 @@ const ImportSection = ({ onFinishImport, locale, project, phases }: Props) => {
 
           <Box>
             <SingleFileUploader name="file" />
+          </Box>
+
+          <Box mt="24px">
+            <Checkbox
+              name="personal_data"
+              label={<FormattedMessage {...messages.formHasPersonalData} />}
+            />
           </Box>
 
           {methods.watch('file')?.extension === 'application/pdf' && (

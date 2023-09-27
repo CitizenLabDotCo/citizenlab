@@ -50,4 +50,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.pleaseUploadFile',
     defaultMessage: 'Please upload a file to continue',
   },
+  formHasPersonalData: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.formHasPersonalData',
+    defaultMessage:
+      'The uploaded form was created with the "Personal data" section',
+  },
 });
