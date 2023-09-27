@@ -226,7 +226,8 @@ sv:
       title: 'Undersökningens slut'
       description: "Skicka in dina svar genom att klicka på Skicka undersökning nedan."
     pdf_export:
-      full_name: 'Fullständigt namn'
+      first_name: 'Förnamn'
+      last_name: 'Efternamn'
       email_address: 'E-postadress'
       optional: 'valfri'
       permission: 'Tillstånd'
