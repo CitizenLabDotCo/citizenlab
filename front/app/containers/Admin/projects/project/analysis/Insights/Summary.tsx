@@ -31,6 +31,7 @@ import tracks from 'containers/Admin/projects/project/analysis/tracks';
 import { trackEventByName } from 'utils/analytics';
 
 import { deleteTrailingIncompleteIDs, refRegex, removeRefs } from './util';
+import useToggleInsightBookmark from 'api/analysis_insights/useBookmarkAnalysisInsight';
 
 const StyledSummaryText = styled.div`
   white-space: pre-wrap;
@@ -53,6 +54,7 @@ const Summary = ({ insight }: Props) => {
   const { formatMessage, formatDate } = useIntl();
   const { analysisId } = useParams() as { analysisId: string };
   const { mutate: deleteSummary } = useDeleteAnalysisInsight();
+  const { mutate: toggleBookmark } = useToggleInsightBookmark();
 
   const { data: summary } = useAnalysisSummary({
     analysisId,
@@ -223,6 +225,13 @@ const Summary = ({ insight }: Props) => {
           {formatMessage(translations.restoreFilters)}
         </Button>
         <Box display="flex">
+          <IconButton
+            iconName="delete"
+            onClick={() => handleSummaryDelete(insight.id)}
+            iconColor={colors.teal400}
+            iconColorOnHover={colors.teal700}
+            a11y_buttonActionMessage={formatMessage(translations.deleteSummary)}
+          />
           <IconTooltip
             icon="flag"
             content={<Rate insightId={insight.id} />}
@@ -232,19 +241,15 @@ const Summary = ({ insight }: Props) => {
             placement="left-end"
           />
           <IconButton
-            iconName="bookmark"
+            iconName={
+              summary.data.attributes.bookmarked
+                ? 'bookmark'
+                : 'bookmark-outline'
+            }
             iconColor={colors.teal400}
             iconColorOnHover={colors.teal700}
             a11y_buttonActionMessage={formatMessage(translations.deleteSummary)}
-            onClick={() => {}}
-          />
-
-          <IconButton
-            iconName="delete"
-            onClick={() => handleSummaryDelete(insight.id)}
-            iconColor={colors.teal400}
-            iconColorOnHover={colors.teal700}
-            a11y_buttonActionMessage={formatMessage(translations.deleteSummary)}
+            onClick={() => toggleBookmark({ analysisId, id: insight.id })}
           />
         </Box>
       </Box>
