@@ -245,10 +245,9 @@ const IdeasNewPageWithJSONForm = () => {
                 />
                 {isAnonymousSurvey && (
                   <Box mx="auto" p="20px" maxWidth="700px">
-                    <Warning
-                      icon="shield-checkered"
-                      text={formatMessage(messages.anonymousSurveyMessage)}
-                    />
+                    <Warning icon="shield-checkered">
+                      {formatMessage(messages.anonymousSurveyMessage)}
+                    </Warning>
                   </Box>
                 )}
               </>
