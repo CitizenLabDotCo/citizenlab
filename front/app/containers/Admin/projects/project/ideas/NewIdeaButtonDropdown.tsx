@@ -1,10 +1,5 @@
 import React from 'react';
 
-// intl
-import { injectIntl } from 'utils/cl-intl';
-import messages from '../messages';
-import { WrappedComponentProps } from 'react-intl';
-
 // components
 import {
   Box,
@@ -15,13 +10,16 @@ import {
 } from '@citizenlab/cl2-component-library';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
 import { colors } from 'utils/styleUtils';
 import clHistory from 'utils/cl-router/history';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 
-// hooks & services
+// i18n
+import { useIntl } from 'utils/cl-intl';
 import useLocalize from 'hooks/useLocalize';
+import messages from '../messages';
+
+// typings
 import { IProjectData } from 'api/projects/types';
 import { IPhaseData } from 'api/phases/types';
 
@@ -31,43 +29,8 @@ interface Props {
   showDropdown: any;
 }
 
-const NewIdeaButtonDropdown = ({
-  phases,
-  project,
-  showDropdown,
-  intl: { formatMessage },
-}: Props & WrappedComponentProps) => {
-  const DropdownContent = () => {
-    const localize = useLocalize();
-    if (!isNilOrError(phases)) {
-      return (
-        <>
-          {phases.map((phase, i) => (
-            <>
-              {getMethodConfig(phase.attributes.participation_method)
-                .showInputManager && (
-                <DropdownListItem key={i}>
-                  <Box
-                    onClick={() => {
-                      clHistory.push(
-                        `/projects/${project.attributes.slug}/ideas/new?phase_id=${phase.id}`
-                      );
-                    }}
-                    id={`e2e-phase-${phase.id}`}
-                  >
-                    <Text mt="0" mb="0" textAlign="left">
-                      {localize(phase.attributes.title_multiloc)}
-                    </Text>
-                  </Box>
-                </DropdownListItem>
-              )}
-            </>
-          ))}
-        </>
-      );
-    }
-    return null;
-  };
+const NewIdeaButtonDropdown = ({ phases, project, showDropdown }: Props) => {
+  const { formatMessage } = useIntl();
 
   return (
     <>
@@ -93,9 +56,51 @@ const NewIdeaButtonDropdown = ({
           {formatMessage(messages.addNewInput)}
         </Text>
       </Box>
-      <Dropdown opened={showDropdown} content={<DropdownContent />} />
+      <Dropdown
+        opened={showDropdown}
+        content={<DropdownContent phases={phases} project={project} />}
+      />
     </>
   );
 };
 
-export default injectIntl(NewIdeaButtonDropdown);
+interface DropdownContentProps {
+  phases: IPhaseData[] | null;
+  project: IProjectData;
+}
+
+const DropdownContent = ({ phases, project }: DropdownContentProps) => {
+  const localize = useLocalize();
+
+  if (!phases) return null;
+
+  return (
+    <>
+      {phases.map((phase, i) => {
+        const methodConfig = getMethodConfig(
+          phase.attributes.participation_method
+        );
+        if (!methodConfig.showInputManager) return null;
+
+        return (
+          <DropdownListItem key={i}>
+            <Box
+              onClick={() => {
+                clHistory.push(
+                  `/projects/${project.attributes.slug}/ideas/new?phase_id=${phase.id}`
+                );
+              }}
+              id={`e2e-phase-${phase.id}`}
+            >
+              <Text mt="0" mb="0" textAlign="left">
+                {localize(phase.attributes.title_multiloc)}
+              </Text>
+            </Box>
+          </DropdownListItem>
+        );
+      })}
+    </>
+  );
+};
+
+export default NewIdeaButtonDropdown;

@@ -1215,20 +1215,50 @@ resource 'Ideas' do
             end
 
             context 'Moving the idea from a voting phase' do
-              let(:project) { create(:project_with_past_ideation_and_active_budgeting_phase) }
-              let(:idea) { create(:idea, project: project, phases: [project.phases.last]) }
+              let!(:project) { create(:project_with_past_ideation_and_active_budgeting_phase) }
+              let!(:idea) { create(:idea, project: project, phases: project.phases) }
+
               let(:id) { idea.id }
 
-              context 'Moving between phases' do
+              # TODO: Baskets_ideas
+              before do
+                basket = create(:basket, participation_context: project.phases.last)
+                basket.update!(ideas: [idea], submitted_at: Time.zone.now)
+                basket.baskets_ideas.update_all(votes: 1)
+                basket.update_counts!
+              end
+
+              context 'Removing the idea from a voting phase' do
                 let(:phase_ids) { [project.phases.first.id] }
 
-                example 'Move the idea from a voting phase', document: false do
+                example 'Successfully removes the idea from a voting phase and recalculates vote counts', document: false do
+                  # Voting counts before
+                  expect(idea.ideas_phases.pluck(:votes_count)).to match_array [0, 1]
+
                   do_request
                   assert_status 200
+
+                  # Voting phase counts after
+                  expect(idea.ideas_phases.pluck(:votes_count)).to match_array [0]
                 end
               end
 
-              context 'Moving between projects' do
+              context 'Add an idea back into a voting phase' do
+                let(:phase_ids) { [project.phases.last.id] }
+
+                example 'Successfully added the idea to the voting phase and restores vote counts', document: false do
+                  # Voting counts before
+                  idea.update!(phases: [project.phases.first])
+                  expect(idea.ideas_phases.pluck(:votes_count)).to match_array [0]
+
+                  do_request
+                  assert_status 200
+
+                  expect(idea.ideas_phases.pluck(:votes_count)).to match_array [1]
+                end
+              end
+
+              context 'Moving to a different project' do
                 let(:new_project) { create(:continuous_project) }
                 let(:project_id) { new_project.id }
 
