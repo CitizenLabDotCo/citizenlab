@@ -804,6 +804,7 @@
   "app.containers.Admin.projects.all.deleteProjectError": "There was an error deleting this project, please try again later.",
   "app.containers.Admin.projects.all.exportAsPDF": "Export as pdf",
   "app.containers.Admin.projects.all.itIsAlsoPossible": "It is also possible to upload the filled-out input forms back to the platform. Our Offline Input Importer will automatically detect the handwriting on the forms. This makes combining online and offline participation a lot easier. To open the Offline Input Importer, go to the 'Input manager' tab of this project, and click 'Add offline inputs'.",
+  "app.containers.Admin.projects.all.itIsAlsoPossibleSurvey": "It is also possible to upload the filled-out surveys back to the platform. Our Offline Input Importer will automatically detect the handwriting on the forms. This makes combining online and offline participation a lot easier. To open the Offline Input Importer, go to the 'Survey' tab of this project, and click 'Add offline inputs'.",
   "app.containers.Admin.projects.all.personalDataExplanation": "To ask people for their name, email, and consent to automatically create an account for them, tick the checkbox below. If you don't check this box, or if the user does not consent to having an account created, the input will be treated as anonymous.",
   "app.containers.Admin.projects.project.ideas.addOfflineInputs": "Add offline inputs",
   "app.containers.Admin.projects.project.ideas.analysisAction": "Go to AI analysis",
