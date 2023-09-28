@@ -187,7 +187,7 @@ module MultiTenancy
           instances.each do |identifier, serialized_instance|
             serialized_instance.transform_values! { |value| value.resolve(models) }
           rescue Serializers::Core::Ref::UnresolvedReferenceError => e
-            raise <<~ERROR
+            raise <<~ERROR.squish
               Could not resolve reference of #{record_class.name} (id: #{identifier}) 
               to #{e.klass} (id: #{e.id}).
             ERROR
