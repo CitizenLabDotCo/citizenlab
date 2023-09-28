@@ -827,7 +827,7 @@
   "app.containers.Admin.projects.project.survey.createAnalysis": "Create analysis",
   "app.containers.Admin.projects.project.survey.deleteAnalysis": "Delete",
   "app.containers.Admin.projects.project.survey.deleteAnalysisConfirmation": "Are you sure you want to delete this analysis? This action cannot be undone.",
-  "app.containers.Admin.projects.project.survey.launchAnalysis": "Launch AI-powered analysis",
+  "app.containers.Admin.projects.project.survey.openAnalysis": "Open AI analysis",
   "app.containers.Admin.projects.project.survey.viewAnalysis": "View",
   "app.containers.Admin.reporting.chartsSection": "CHARTS",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.descriptionPlaceHolder": "This is some text. You can edit and format it by using the editor in the panel on the right.",

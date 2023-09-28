@@ -827,7 +827,6 @@
   "app.containers.Admin.projects.project.survey.createAnalysis": "Criar análise",
   "app.containers.Admin.projects.project.survey.deleteAnalysis": "Deletar",
   "app.containers.Admin.projects.project.survey.deleteAnalysisConfirmation": "Tem certeza de que deseja excluir esta entrada? Essa ação não pode ser desfeita.",
-  "app.containers.Admin.projects.project.survey.launchAnalysis": "Lançar análises baseadas em IA",
   "app.containers.Admin.projects.project.survey.viewAnalysis": "Visualizar",
   "app.containers.Admin.reporting.chartsSection": "CARTUCHOS",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.descriptionPlaceHolder": "Esse é o texto. Você pode editá-lo e formatá-lo usando o editor no painel à direita.",

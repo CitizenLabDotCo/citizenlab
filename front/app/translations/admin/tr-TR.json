@@ -827,7 +827,6 @@
   "app.containers.Admin.projects.project.survey.createAnalysis": "Analiz oluşturun",
   "app.containers.Admin.projects.project.survey.deleteAnalysis": "Silme",
   "app.containers.Admin.projects.project.survey.deleteAnalysisConfirmation": "Bu analizi silmek istediğinizden emin misiniz? Bu eylem geri alınamaz.",
-  "app.containers.Admin.projects.project.survey.launchAnalysis": "Yapay zeka destekli analizi başlatın",
   "app.containers.Admin.projects.project.survey.viewAnalysis": "Görünüm",
   "app.containers.Admin.reporting.chartsSection": "ÇİZELGELER",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.descriptionPlaceHolder": "Bu bir metin içeriğidir. Sağdaki panelde bulunan düzenleyiciyi kullanarak düzenleyebilir ve biçimlendirebilirsiniz.",

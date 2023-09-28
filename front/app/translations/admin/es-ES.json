@@ -827,7 +827,6 @@
   "app.containers.Admin.projects.project.survey.createAnalysis": "Crear análisis",
   "app.containers.Admin.projects.project.survey.deleteAnalysis": "Borrar",
   "app.containers.Admin.projects.project.survey.deleteAnalysisConfirmation": "¿Estás seguro de que quieres borrar este análisis? Esta acción no se puede deshacer.",
-  "app.containers.Admin.projects.project.survey.launchAnalysis": "Iniciar análisis basados en IA",
   "app.containers.Admin.projects.project.survey.viewAnalysis": "Ver",
   "app.containers.Admin.reporting.chartsSection": "GRÁFICOS",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.descriptionPlaceHolder": "Aquí tiene texto. Puede editarlo y darle formato utilizando el editor del panel de la derecha.",

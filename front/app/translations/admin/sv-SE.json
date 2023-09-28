@@ -827,7 +827,6 @@
   "app.containers.Admin.projects.project.survey.createAnalysis": "Skapa analys",
   "app.containers.Admin.projects.project.survey.deleteAnalysis": "Radera",
   "app.containers.Admin.projects.project.survey.deleteAnalysisConfirmation": "Är du säker på att du vill radera denna analys? Denna åtgärd kan inte ångras.",
-  "app.containers.Admin.projects.project.survey.launchAnalysis": "Lansera AI-driven analys",
   "app.containers.Admin.projects.project.survey.viewAnalysis": "Utsikt",
   "app.containers.Admin.reporting.chartsSection": "DIAGRAM",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.descriptionPlaceHolder": "Det här är lite text. Du kan redigera och formatera den genom att använda redigeraren i panelen till höger.",

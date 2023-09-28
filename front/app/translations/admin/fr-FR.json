@@ -827,7 +827,6 @@
   "app.containers.Admin.projects.project.survey.createAnalysis": "Créer une analyse",
   "app.containers.Admin.projects.project.survey.deleteAnalysis": "Annuler",
   "app.containers.Admin.projects.project.survey.deleteAnalysisConfirmation": "Êtes-vous sûr de vouloir supprimer cette analyse ? Cette action ne peut pas être annulée.",
-  "app.containers.Admin.projects.project.survey.launchAnalysis": "Démarrez l'analyse par IA",
   "app.containers.Admin.projects.project.survey.viewAnalysis": "Voir",
   "app.containers.Admin.reporting.chartsSection": "GRAPHIQUES",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.descriptionPlaceHolder": "Voici du texte. Vous pouvez le modifier et le mettre en forme en utilisant l'éditeur dans le panneau de droite.",

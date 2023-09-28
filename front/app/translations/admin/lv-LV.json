@@ -827,7 +827,6 @@
   "app.containers.Admin.projects.project.survey.createAnalysis": "Izveidot analīzi",
   "app.containers.Admin.projects.project.survey.deleteAnalysis": "Dzēst",
   "app.containers.Admin.projects.project.survey.deleteAnalysisConfirmation": "Vai esat pārliecināts, ka vēlaties dzēst šo analīzi? Šo darbību nevar atcelt.",
-  "app.containers.Admin.projects.project.survey.launchAnalysis": "Uzsākt ar mākslīgo intelektu darbināmu analīzi",
   "app.containers.Admin.projects.project.survey.viewAnalysis": "Skatīt",
   "app.containers.Admin.reporting.chartsSection": "DIAGRAMMATAS",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.descriptionPlaceHolder": "Šeit ir teksts. To var rediģēt un formatēt, izmantojot redaktoru panelī labajā pusē.",
