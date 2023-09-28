@@ -1,15 +1,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  analysisTitle: {
-    id: 'app.containers.Admin.projects.project.survey.analysisTitle',
-    defaultMessage: 'AI-powered analysis',
-  },
-  analysisSubtitle: {
-    id: 'app.containers.Admin.projects.project.survey.analysisSubtitleText',
-    defaultMessage:
-      'Unlock automated summaries and ask questions about your project input. Go to your text questions below to launch the analysis.',
-  },
   launchAnalysis: {
     id: 'app.containers.Admin.projects.project.survey.launchAnalysis',
     defaultMessage: 'Launch AI-powered analysis',
