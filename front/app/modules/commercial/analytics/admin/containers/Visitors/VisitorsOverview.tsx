@@ -67,7 +67,7 @@ const VisitorsOverview = ({ uniqueVisitorDataDate }: Props) => {
       </Box>
       <Box p="10px">
         <Warning>
-          <Text color="primary" m="0px" fontSize="s">
+          <Text color="primary" m="0px">
             {formatMessage(messages.dateInfo, {
               date: uniqueVisitorDataDate.format('LL'),
             })}
