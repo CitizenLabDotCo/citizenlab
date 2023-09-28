@@ -55,4 +55,20 @@ resource 'IdeasPhases' do
       end
     end
   end
+
+  context 'when logged in as a regular user' do
+    let(:user) { create(:user_with_confirmation) }
+
+    before do
+      header_token_for(user)
+    end
+
+    get 'web_api/v1/ideas_phases/:id' do
+      let(:id) { @ideas_phase.id }
+
+      example_request 'Get one ideas_phase by id' do
+        expect(status).to eq 401
+      end
+    end
+  end
 end
