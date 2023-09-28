@@ -804,7 +804,6 @@
   "app.containers.Admin.projects.project.ideas.consentModalText4Link": "https://openai.com/api-data-privacy",
   "app.containers.Admin.projects.project.ideas.consentModalText4LinkText": "here",
   "app.containers.Admin.projects.project.ideas.consentModalTitle": "Before you continue",
-  "app.containers.Admin.projects.project.survey.analysisTitle": "AI-powered analysis",
   "app.containers.Admin.projects.project.survey.cancel": "Cancel",
   "app.containers.Admin.projects.project.survey.consentModalButton": "Continue",
   "app.containers.Admin.projects.project.survey.consentModalCancel": "Cancel",

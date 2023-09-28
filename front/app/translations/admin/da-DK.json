@@ -813,8 +813,6 @@
   "app.containers.Admin.projects.project.ideas.consentModalTitle": "Før du fortsætter",
   "app.containers.Admin.projects.project.survey.analysisSelectQuestionsForAnalysis": "Vælg relaterede spørgsmål til analyse",
   "app.containers.Admin.projects.project.survey.analysisSelectQuestionsSubtitle": "Ønsker du at inkludere andre relaterede spørgsmål i din analyse af {question}?",
-  "app.containers.Admin.projects.project.survey.analysisSubtitleText": "Lås op for automatiske resuméer og stil spørgsmål om jeres projektinput. Gå til dine tekstspørgsmål nedenfor for at starte analysen.",
-  "app.containers.Admin.projects.project.survey.analysisTitle": "AI-drevet analyse",
   "app.containers.Admin.projects.project.survey.cancel": "Annuller",
   "app.containers.Admin.projects.project.survey.consentModalButton": "Fortsæt",
   "app.containers.Admin.projects.project.survey.consentModalCancel": "Annuller",

@@ -813,8 +813,6 @@
   "app.containers.Admin.projects.project.ideas.consentModalTitle": "Innan du fortsätter",
   "app.containers.Admin.projects.project.survey.analysisSelectQuestionsForAnalysis": "Välj relaterade frågor för analys",
   "app.containers.Admin.projects.project.survey.analysisSelectQuestionsSubtitle": "Vill du inkludera andra relaterade frågor i din analys av {question}?",
-  "app.containers.Admin.projects.project.survey.analysisSubtitleText": "Lås upp automatiserade sammanfattningar och ställ frågor om din projektinmatning. Gå till dina textfrågor nedan för att starta analysen.",
-  "app.containers.Admin.projects.project.survey.analysisTitle": "AI-driven analys",
   "app.containers.Admin.projects.project.survey.cancel": "Avbryt",
   "app.containers.Admin.projects.project.survey.consentModalButton": "Fortsätta",
   "app.containers.Admin.projects.project.survey.consentModalCancel": "Avbryt",
