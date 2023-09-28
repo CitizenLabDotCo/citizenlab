@@ -527,7 +527,6 @@
   "app.containers.Admin.PagesAndMenu.addButton": "Legg til på navigasjonslinjen",
   "app.containers.Admin.PagesAndMenu.components.NavbarItemForm.navbarItemTitle": "Navn i navigasjonslinjen",
   "app.containers.Admin.PagesAndMenu.components.deletePageConfirmationHidden": "Er du sikker på at du vil slette denne siden? Dette kan ikke angres.",
-  "app.containers.Admin.PagesAndMenu.components.emptyTitleError": "Oppgi en tittel på alle språk",
   "app.containers.Admin.PagesAndMenu.components.hiddenFromNavigation": "Andre tilgjengelige sider",
   "app.containers.Admin.PagesAndMenu.components.savePage": "Lagre siden",
   "app.containers.Admin.PagesAndMenu.components.saveSuccess": "Siden er lagret",
