@@ -4,16 +4,19 @@ import React, { useState } from 'react';
 import useUserById from 'api/users/useUserById';
 import useInfiniteUsers from 'api/users/useInfiniteUsers';
 
+// styling
+import { colors } from 'utils/styleUtils';
+
 // components
-import BaseUserSelect from './BaseUserSelect';
+import BaseUserSelect from 'components/UI/UserSelect/BaseUserSelect';
 import { Box } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 
 // utils
-import { optionIsUser } from './utils';
+import { optionIsUser } from 'components/UI/UserSelect/utils';
 
 // typings
-import { Option } from './typings';
+import { Option } from 'components/UI/UserSelect/typings';
 import { IUserData } from 'api/users/types';
 
 interface Props {
@@ -21,23 +24,17 @@ interface Props {
   placeholder: string;
   id: string;
   inputId: string;
-  // Exclude users that can moderate the project from selectable users.
-  // We pass the projectId here.
-  isNotProjectModeratorOfProjectId?: string;
-  // Exclude users that can moderate the folder from selectable users.
-  // We pass the folderId here.
-  isNotFolderModeratorOfFolderId?: string;
   onChange: (user?: IUserData) => void;
+  onCreateUser: (email: string) => void;
 }
 
-const UserSelect = ({
+const AuthorSelect = ({
   selectedUserId,
   placeholder,
   id,
   inputId,
-  isNotFolderModeratorOfFolderId,
-  isNotProjectModeratorOfProjectId,
   onChange,
+  onCreateUser,
 }: Props) => {
   const [searchValue, setSearchValue] = useState('');
   const {
@@ -48,8 +45,6 @@ const UserSelect = ({
   } = useInfiniteUsers({
     pageSize: 5,
     sort: 'last_name',
-    is_not_folder_moderator: isNotFolderModeratorOfFolderId,
-    is_not_project_moderator: isNotProjectModeratorOfProjectId,
     search: searchValue,
   });
 
@@ -75,6 +70,12 @@ const UserSelect = ({
     onChange();
   };
 
+  const options = [
+    { value: 'newUser' },
+    ...usersList,
+    ...(hasNextPage ? [{ value: 'loadMore' }] : []),
+  ];
+
   return (
     <BaseUserSelect
       id={id}
@@ -83,13 +84,15 @@ const UserSelect = ({
       // I'm preferring this over refetching on clear because it's faster and avoids a fetch that we technically don't need.
       value={(selectedUserId && selectedUser?.data) || null}
       placeholder={placeholder}
-      options={hasNextPage ? [...usersList, { value: 'loadMore' }] : usersList}
+      options={options}
       getOptionLabel={(option) => (
         <OptionLabel
+          searchValue={searchValue}
           option={option}
           hasNextPage={hasNextPage}
           isLoading={isLoading}
           fetchNextPage={() => fetchNextPage()}
+          onCreateUser={onCreateUser}
         />
       )}
       onMenuOpen={handleClear}
@@ -101,17 +104,21 @@ const UserSelect = ({
 };
 
 interface OptionLabelProps {
+  searchValue: string;
   option: Option;
   hasNextPage?: boolean;
   isLoading: boolean;
   fetchNextPage: () => void;
+  onCreateUser: (email: string) => void;
 }
 
 const OptionLabel = ({
+  searchValue,
   option,
   hasNextPage,
   isLoading,
   fetchNextPage,
+  onCreateUser,
 }: OptionLabelProps) => {
   if (optionIsUser(option)) {
     return (
@@ -138,7 +145,22 @@ const OptionLabel = ({
     );
   }
 
+  if (option.value === 'newUser') {
+    return (
+      <Button
+        bgColor={colors.green100}
+        icon="user"
+        buttonStyle="text"
+        padding="0px"
+        margin="0px"
+        onClick={() => onCreateUser(searchValue)}
+      >
+        New user
+      </Button>
+    );
+  }
+
   return null;
 };
 
-export default UserSelect;
+export default AuthorSelect;

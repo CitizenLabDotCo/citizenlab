@@ -8,7 +8,8 @@ import {
 import React from 'react';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import ErrorDisplay from '../ErrorDisplay';
-import UserSelect from 'components/UI/UserSelect';
+// import UserSelect from 'components/UI/UserSelect';
+import AuthorSelect from 'containers/Admin/projects/project/offlineInputs/ReviewSection/AuthorSelect';
 import messages from '../../messages';
 import controlMessages from './messages';
 import { FormLabel } from 'components/UI/FormComponents';
@@ -59,12 +60,14 @@ const UserPickerControl = ({
         subtextValue={getSubtextElement(uischema.options?.description)}
         subtextSupportsHtml
       />
-      <UserSelect
+      {/* <UserSelect */}
+      <AuthorSelect
         id={id}
         inputId={sanitizeForClassname(id)}
         selectedUserId={data}
         onChange={(userOption) => handleChange(path, userOption?.id)}
         placeholder={formatMessage(messages.userPickerPlaceholder)}
+        onCreateUser={console.log}
       />
       <ErrorDisplay ajvErrors={errors} fieldPath={path} />
     </>
