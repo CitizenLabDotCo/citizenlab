@@ -813,8 +813,6 @@
   "app.containers.Admin.projects.project.ideas.consentModalTitle": "Zanim przejdziesz dalej",
   "app.containers.Admin.projects.project.survey.analysisSelectQuestionsForAnalysis": "Wybierz powiązane pytania do analizy",
   "app.containers.Admin.projects.project.survey.analysisSelectQuestionsSubtitle": "Czy chcesz uwzględnić inne powiązane pytania w swojej analizie {question}?",
-  "app.containers.Admin.projects.project.survey.analysisSubtitleText": "Odblokuj automatyczne podsumowania i zadawaj pytania dotyczące danych wejściowych projektu. Przejdź do pytań tekstowych poniżej, aby uruchomić analizę.",
-  "app.containers.Admin.projects.project.survey.analysisTitle": "Analiza oparta na sztucznej inteligencji",
   "app.containers.Admin.projects.project.survey.cancel": "Anuluj",
   "app.containers.Admin.projects.project.survey.consentModalButton": "Kontynuuj",
   "app.containers.Admin.projects.project.survey.consentModalCancel": "Anuluj",

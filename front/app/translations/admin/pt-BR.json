@@ -813,8 +813,6 @@
   "app.containers.Admin.projects.project.ideas.consentModalTitle": "Antes de continuar",
   "app.containers.Admin.projects.project.survey.analysisSelectQuestionsForAnalysis": "Selecione questões relacionadas para análise",
   "app.containers.Admin.projects.project.survey.analysisSelectQuestionsSubtitle": "Deseja incluir alguma outra questão relacionada em sua análise de {question}?",
-  "app.containers.Admin.projects.project.survey.analysisSubtitleText": "Desbloqueie resumos automatizados e faça perguntas sobre as contribuições do seu projeto. Vá para suas perguntas de texto abaixo para iniciar a análise.",
-  "app.containers.Admin.projects.project.survey.analysisTitle": "Análise alimentada por IA",
   "app.containers.Admin.projects.project.survey.cancel": "Cancelar",
   "app.containers.Admin.projects.project.survey.consentModalButton": "Continuar",
   "app.containers.Admin.projects.project.survey.consentModalCancel": "Cancelar",

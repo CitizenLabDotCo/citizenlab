@@ -813,8 +813,6 @@
   "app.containers.Admin.projects.project.ideas.consentModalTitle": "قبل المتابعة",
   "app.containers.Admin.projects.project.survey.analysisSelectQuestionsForAnalysis": "حدد الأسئلة ذات الصلة للتحليل",
   "app.containers.Admin.projects.project.survey.analysisSelectQuestionsSubtitle": "هل تريد تضمين أي أسئلة أخرى ذات صلة في تحليلك لـ {question}؟",
-  "app.containers.Admin.projects.project.survey.analysisSubtitleText": "افتح الملخصات الآلية واطرح أسئلة حول مدخلات مشروعك. انتقل إلى الأسئلة النصية أدناه لبدء التحليل.",
-  "app.containers.Admin.projects.project.survey.analysisTitle": "تحليل مدعوم بالذكاء الاصطناعي",
   "app.containers.Admin.projects.project.survey.cancel": "يلغي",
   "app.containers.Admin.projects.project.survey.consentModalButton": "يكمل",
   "app.containers.Admin.projects.project.survey.consentModalCancel": "يلغي",

@@ -813,8 +813,6 @@
   "app.containers.Admin.projects.project.ideas.consentModalTitle": "Bevor Sie fortfahren",
   "app.containers.Admin.projects.project.survey.analysisSelectQuestionsForAnalysis": "Fragen für die Analyse auswählen",
   "app.containers.Admin.projects.project.survey.analysisSelectQuestionsSubtitle": "Möchten Sie noch andere Fragen in Ihre Analyse von {question} aufnehmen?",
-  "app.containers.Admin.projects.project.survey.analysisSubtitleText": "Schalten Sie automatische Zusammenfassungen frei und stellen Sie Fragen zu Ihren Beiträgen. Gehen Sie unten zu Ihren Textfragen, um die Analyse zu starten.",
-  "app.containers.Admin.projects.project.survey.analysisTitle": "KI-gestützte Analyse",
   "app.containers.Admin.projects.project.survey.cancel": "Abbrechen",
   "app.containers.Admin.projects.project.survey.consentModalButton": "Fortfahren",
   "app.containers.Admin.projects.project.survey.consentModalCancel": "Abbrechen",

@@ -813,8 +813,6 @@
   "app.containers.Admin.projects.project.ideas.consentModalTitle": "Voordat je verder gaat",
   "app.containers.Admin.projects.project.survey.analysisSelectQuestionsForAnalysis": "Selecteer gerelateerde vragen voor analyse",
   "app.containers.Admin.projects.project.survey.analysisSelectQuestionsSubtitle": "Wil je nog andere gerelateerde vragen opnemen in je analyse van {question}?",
-  "app.containers.Admin.projects.project.survey.analysisSubtitleText": "Ontgrendel geautomatiseerde samenvattingen en stel vragen over je projectbijdragen. Ga hieronder naar je tekstvragen om de analyse te starten.",
-  "app.containers.Admin.projects.project.survey.analysisTitle": "AI-gestuurde analyse",
   "app.containers.Admin.projects.project.survey.cancel": "Annuleren",
   "app.containers.Admin.projects.project.survey.consentModalButton": "Ga verder",
   "app.containers.Admin.projects.project.survey.consentModalCancel": "Annuleer",

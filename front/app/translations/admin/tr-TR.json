@@ -813,8 +813,6 @@
   "app.containers.Admin.projects.project.ideas.consentModalTitle": "Devam etmeden önce",
   "app.containers.Admin.projects.project.survey.analysisSelectQuestionsForAnalysis": "Analiz için ilgili soruları seçin",
   "app.containers.Admin.projects.project.survey.analysisSelectQuestionsSubtitle": "{question}adresindeki analizinize ilgili başka sorular da eklemek ister misiniz?",
-  "app.containers.Admin.projects.project.survey.analysisSubtitleText": "Otomatik özetlerin kilidini açın ve proje girdiniz hakkında sorular sorun. Analizi başlatmak için aşağıdaki metin sorularınıza gidin.",
-  "app.containers.Admin.projects.project.survey.analysisTitle": "Yapay zeka destekli analiz",
   "app.containers.Admin.projects.project.survey.cancel": "İptal",
   "app.containers.Admin.projects.project.survey.consentModalButton": "Devam et",
   "app.containers.Admin.projects.project.survey.consentModalCancel": "İptal",

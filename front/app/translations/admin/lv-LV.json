@@ -813,8 +813,6 @@
   "app.containers.Admin.projects.project.ideas.consentModalTitle": "Pirms turpināt",
   "app.containers.Admin.projects.project.survey.analysisSelectQuestionsForAnalysis": "Izvēlieties saistītus jautājumus analīzei",
   "app.containers.Admin.projects.project.survey.analysisSelectQuestionsSubtitle": "Vai {question}analīzē vēlaties iekļaut arī citus saistītus jautājumus?",
-  "app.containers.Admin.projects.project.survey.analysisSubtitleText": "Atbloķējiet automatizētus kopsavilkumus un uzdodiet jautājumus par savu projekta ieguldījumu. Lai sāktu analīzi, dodieties uz teksta jautājumiem tālāk tekstā.",
-  "app.containers.Admin.projects.project.survey.analysisTitle": "Ar mākslīgo intelektu darbināta analīze",
   "app.containers.Admin.projects.project.survey.cancel": "Atcelt",
   "app.containers.Admin.projects.project.survey.consentModalButton": "Turpināt",
   "app.containers.Admin.projects.project.survey.consentModalCancel": "Atcelt",
