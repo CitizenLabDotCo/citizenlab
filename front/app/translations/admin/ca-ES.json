@@ -527,7 +527,7 @@
   "app.containers.Admin.PagesAndMenu.addButton": "Afegiu a la barra de navegació",
   "app.containers.Admin.PagesAndMenu.components.NavbarItemForm.navbarItemTitle": "Nom a la barra de navegació",
   "app.containers.Admin.PagesAndMenu.components.deletePageConfirmationHidden": "Esteu segur que voleu eliminar aquesta pàgina? Això no es pot desfer.",
-  "app.containers.Admin.PagesAndMenu.components.emptyTitleError": "Proporcioneu un títol per a tots els idiomes",
+  "app.containers.Admin.PagesAndMenu.components.emptyTitleError1": "Proporcioneu un títol per a tots els idiomes",
   "app.containers.Admin.PagesAndMenu.components.hiddenFromNavigation": "Altres pàgines disponibles",
   "app.containers.Admin.PagesAndMenu.components.savePage": "Save page",
   "app.containers.Admin.PagesAndMenu.components.saveSuccess": "Page successfully saved",
