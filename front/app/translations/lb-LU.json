@@ -36,6 +36,7 @@
   "app.components.AuthProviders.logIn2": "Umellen",
   "app.components.AuthProviders.logInWithEmail": "Mat Ärer E-Mail-Adress umellen",
   "app.components.AuthProviders.logInWithPhoneOrEmail": "Mat Telefon oder E-Mail aloggen",
+  "app.components.AuthProviders.nemlogInUnderMinimumAgeVerificationFailed": "Dir musst de spezifizéierte Mindestalter oder méi héich sinn fir verifizéiert ze ginn.",
   "app.components.AuthProviders.signUp2": "Aschreiwen",
   "app.components.AuthProviders.signUpButtonAltText": "Mat {loginMechanismName} umellen",
   "app.components.AuthProviders.signUpWithEmail": "Mat Ärer E-Mail-Adress aschreiwen",
