@@ -527,7 +527,7 @@
   "app.containers.Admin.PagesAndMenu.addButton": "Zur Nav.-Leiste hinzufügen",
   "app.containers.Admin.PagesAndMenu.components.NavbarItemForm.navbarItemTitle": "Name in der Navigationsleiste",
   "app.containers.Admin.PagesAndMenu.components.deletePageConfirmationHidden": "Sind Sie sicher, dass Sie diese Seite löschen möchten? Dies kann nicht rückgängig gemacht werden.",
-  "app.containers.Admin.PagesAndMenu.components.emptyTitleError": "Titel für alle Sprachen bereitstellen",
+  "app.containers.Admin.PagesAndMenu.components.emptyTitleError1": "Geben Sie einen Titel für alle Sprachen an",
   "app.containers.Admin.PagesAndMenu.components.hiddenFromNavigation": "Andere verfügbare Seiten",
   "app.containers.Admin.PagesAndMenu.components.savePage": "Seite speichern",
   "app.containers.Admin.PagesAndMenu.components.saveSuccess": "Seite erfolgreich gespeichert",
