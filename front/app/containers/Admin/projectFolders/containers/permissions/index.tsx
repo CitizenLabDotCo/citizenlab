@@ -22,7 +22,7 @@ import Avatar from 'components/Avatar';
 const AddModeratorsModal = lazy(
   () => import('components/admin/SeatBasedBilling/AddModeratorsModal')
 );
-import UserSelect, { UserOptionTypeBase } from 'components/UI/UserSelect';
+import UserSelect from 'components/UI/UserSelect';
 import SeatInfo from 'components/admin/SeatBasedBilling/SeatInfo';
 
 // Hooks
@@ -30,6 +30,9 @@ import useExceedsSeats from 'hooks/useExceedsSeats';
 import useDeleteProjectFolderModerator from 'api/project_folder_moderators/useDeleteProjectFolderModerator';
 import useAddProjectFolderModerator from 'api/project_folder_moderators/useAddProjectFolderModerator';
 import { getFullName } from 'utils/textUtils';
+
+// typings
+import { IUserData } from 'api/users/types';
 
 const StyledA = styled.a`
   &:hover {
@@ -56,8 +59,7 @@ const FolderPermissions = () => {
     projectFolderId,
   });
   const [showModal, setShowModal] = useState(false);
-  const [moderatorToAdd, setModeratorToAdd] =
-    useState<UserOptionTypeBase | null>(null);
+  const [moderatorToAdd, setModeratorToAdd] = useState<IUserData | null>(null);
 
   const exceedsSeats = useExceedsSeats()({
     newlyAddedModeratorsNumber: 1,
@@ -67,7 +69,7 @@ const FolderPermissions = () => {
     setShowModal(false);
   };
 
-  const handleOnChange = (user?: UserOptionTypeBase) => {
+  const handleOnChange = (user?: IUserData) => {
     setModeratorToAdd(user || null);
   };
 

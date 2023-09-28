@@ -1,33 +1,24 @@
-import React, { useState, useMemo } from 'react';
-import ReactSelect, { OptionTypeBase } from 'react-select';
+import React, { useState } from 'react';
 
 // api
 import useUserById from 'api/users/useUserById';
 import useInfiniteUsers from 'api/users/useInfiniteUsers';
 
 // components
+import BaseUserSelect from './BaseUserSelect';
 import { Box } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 
-// styling
-import selectStyles from 'components/UI/MultipleSelect/styles';
-import styled from 'styled-components';
-
 // utils
-import { debounce } from 'lodash-es';
+import { optionIsUser } from './utils';
+
+// typings
+import { Option } from './typings';
 import { IUserData } from 'api/users/types';
 
-export interface UserOptionTypeBase extends OptionTypeBase, IUserData {
-  // If the option is 'load more' instead of a user, we don't have IUserData
-  // but { value: 'loadMore' }
-  value?: string;
-}
-
 interface Props {
-  onChange: (user?: UserOptionTypeBase) => void;
   selectedUserId: string | null;
   placeholder: string;
-  className?: string;
   id: string;
   inputId: string;
   // Exclude users that can moderate the project from selectable users.
@@ -36,22 +27,17 @@ interface Props {
   // Exclude users that can moderate the folder from selectable users.
   // We pass the folderId here.
   isNotFolderModeratorOfFolderId?: string;
+  onChange: (user?: IUserData) => void;
 }
 
-const UserOption = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
 const UserSelect = ({
-  onChange,
   selectedUserId,
   placeholder,
-  className,
   id,
   inputId,
   isNotFolderModeratorOfFolderId,
   isNotProjectModeratorOfProjectId,
+  onChange,
 }: Props) => {
   const [searchValue, setSearchValue] = useState('');
   const {
@@ -71,72 +57,52 @@ const UserSelect = ({
 
   const { data: selectedUser } = useUserById(selectedUserId);
 
-  const handleChange = (option: UserOptionTypeBase, { action }) => {
+  const handleChange = (option: Option, { action }) => {
     if (action === 'clear') {
       handleClear();
-    } else if (action === 'select-option' && option.value !== 'loadMore') {
-      onChange(option);
-    } else if (action === 'select-option' && option.value === 'loadMore') {
-      fetchNextPage();
+      return;
     }
-  };
 
-  const handleInputChange = useMemo(() => {
-    return debounce((searchTerm) => {
-      setSearchValue(searchTerm);
-    }, 500);
-  }, []);
-
-  const handleMenuScrollToBottom = () => {
-    fetchNextPage();
+    if (optionIsUser(option)) {
+      onChange(option);
+    } else {
+      if (option.value === 'loadMore') {
+        fetchNextPage();
+      }
+    }
   };
 
   const handleClear = () => {
     onChange();
   };
 
-  const getOptionId = (option: UserOptionTypeBase) => option.id;
-
   return (
-    <Box data-cy="e2e-user-select">
-      <ReactSelect
-        id={id}
-        inputId={inputId}
-        className={className}
-        isSearchable
-        blurInputOnSelect
-        backspaceRemovesValue={false}
-        menuShouldScrollIntoView={false}
-        isClearable
-        // We check if selectedUserId is present because setting it to null won't trigger a refetch so will have old data. I'm preferring this over refetching on clear because it's faster and avoids a fetch that we technically don't need.
-        value={(selectedUserId && selectedUser?.data) || null}
-        placeholder={placeholder}
-        options={
-          hasNextPage ? [...usersList, { value: 'loadMore' }] : usersList
-        }
-        getOptionValue={getOptionId}
-        getOptionLabel={(option) => (
-          <OptionLabel
-            option={option}
-            hasNextPage={hasNextPage}
-            isLoading={isLoading}
-            fetchNextPage={() => fetchNextPage()}
-          />
-        )}
-        onChange={handleChange}
-        onInputChange={handleInputChange}
-        menuPlacement="auto"
-        styles={selectStyles}
-        onMenuScrollToBottom={handleMenuScrollToBottom}
-        filterOption={() => true}
-        onMenuOpen={handleClear}
-      />
-    </Box>
+    <BaseUserSelect
+      id={id}
+      inputId={inputId}
+      // We check if selectedUserId is present because setting it to null won't trigger a refetch so will have old data.
+      // I'm preferring this over refetching on clear because it's faster and avoids a fetch that we technically don't need.
+      value={(selectedUserId && selectedUser?.data) || null}
+      placeholder={placeholder}
+      options={hasNextPage ? [...usersList, { value: 'loadMore' }] : usersList}
+      getOptionLabel={(option) => (
+        <OptionLabel
+          option={option}
+          hasNextPage={hasNextPage}
+          isLoading={isLoading}
+          fetchNextPage={() => fetchNextPage()}
+        />
+      )}
+      onMenuOpen={handleClear}
+      onInputChange={setSearchValue}
+      onMenuScrollToBottom={() => fetchNextPage()}
+      onChange={handleChange}
+    />
   );
 };
 
 interface OptionLabelProps {
-  option: UserOptionTypeBase;
+  option: Option;
   hasNextPage?: boolean;
   isLoading: boolean;
   fetchNextPage: () => void;
@@ -148,6 +114,19 @@ const OptionLabel = ({
   isLoading,
   fetchNextPage,
 }: OptionLabelProps) => {
+  if (optionIsUser(option)) {
+    return (
+      <Box
+        display="flex"
+        alignItems="center"
+        data-cy={`e2e-user-${option.attributes.email}`}
+      >
+        {option.attributes.last_name}, {option.attributes.first_name} (
+        {option.attributes.email})
+      </Box>
+    );
+  }
+
   if (option.value === 'loadMore' && hasNextPage) {
     return (
       <Button
@@ -157,13 +136,6 @@ const OptionLabel = ({
         buttonStyle="text"
         padding="0px"
       />
-    );
-  } else if (option.attributes) {
-    return (
-      <UserOption data-cy={`e2e-user-${option.attributes.email}`}>
-        {option.attributes.last_name}, {option.attributes.first_name} (
-        {option.attributes.email})
-      </UserOption>
     );
   }
 

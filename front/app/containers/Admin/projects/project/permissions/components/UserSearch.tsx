@@ -18,10 +18,13 @@ const AddModeratorsModal = lazy(
   () => import('components/admin/SeatBasedBilling/AddModeratorsModal')
 );
 import { Box, Label } from '@citizenlab/cl2-component-library';
-import UserSelect, { UserOptionTypeBase } from 'components/UI/UserSelect';
+import UserSelect from 'components/UI/UserSelect';
 
 // Style
 import styled from 'styled-components';
+
+// typings
+import { IUserData } from 'api/users/types';
 
 const AddButton = styled(Button)`
   flex-grow: 0;
@@ -42,8 +45,7 @@ const UserSearch = memo(({ projectId, label }: Props) => {
   const { mutate: addProjectModerator, isLoading } = useAddProjectModerator();
 
   const [showModal, setShowModal] = useState(false);
-  const [moderatorToAdd, setModeratorToAdd] =
-    useState<UserOptionTypeBase | null>(null);
+  const [moderatorToAdd, setModeratorToAdd] = useState<IUserData | null>(null);
 
   const exceedsSeats = useExceedsSeats()({
     newlyAddedModeratorsNumber: 1,
@@ -57,7 +59,7 @@ const UserSearch = memo(({ projectId, label }: Props) => {
     setShowModal(true);
   };
 
-  const handleOnChange = (user?: UserOptionTypeBase) => {
+  const handleOnChange = (user?: IUserData) => {
     setModeratorToAdd(user || null);
   };
 
