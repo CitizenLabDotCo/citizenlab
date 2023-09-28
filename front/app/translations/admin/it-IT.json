@@ -527,7 +527,7 @@
   "app.containers.Admin.PagesAndMenu.addButton": "Aggiungi alla barra di navigazione",
   "app.containers.Admin.PagesAndMenu.components.NavbarItemForm.navbarItemTitle": "Nome nella barra di navigazione",
   "app.containers.Admin.PagesAndMenu.components.deletePageConfirmationHidden": "Sei sicuro di volerlo cancellare? Questa azione non può essere annullata.",
-  "app.containers.Admin.PagesAndMenu.components.emptyTitleError": "Fornire il titolo per tutte le lingue",
+  "app.containers.Admin.PagesAndMenu.components.emptyTitleError1": "Fornisci un titolo per tutte le lingue",
   "app.containers.Admin.PagesAndMenu.components.hiddenFromNavigation": "Altre pagine disponibili",
   "app.containers.Admin.PagesAndMenu.components.savePage": "Save page",
   "app.containers.Admin.PagesAndMenu.components.saveSuccess": "Page successfully saved",
