@@ -36,6 +36,7 @@
   "app.components.AuthProviders.logIn2": "Пријавите се",
   "app.components.AuthProviders.logInWithEmail": "Пријавите се путем е-поште",
   "app.components.AuthProviders.logInWithPhoneOrEmail": "Пријавите се путем телефона или е-поште",
+  "app.components.AuthProviders.nemlogInUnderMinimumAgeVerificationFailed": "Морате имати наведену минималну старост или више да бисте били верификовани.",
   "app.components.AuthProviders.signUp2": "Пријави се",
   "app.components.AuthProviders.signUpButtonAltText": "Пријавите се са {loginMechanismName}",
   "app.components.AuthProviders.signUpWithEmail": "Пријавите се путем е-поште",
