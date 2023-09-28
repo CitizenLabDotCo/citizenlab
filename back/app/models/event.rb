@@ -59,11 +59,6 @@ class Event < ApplicationRecord
       .where(projects: { admin_publications: { publication_status: publication_statuses } })
   end)
 
-  def online_link
-    # TODO
-    'https://citizenlab.co'
-  end
-
   private
 
   def sanitize_description_multiloc
