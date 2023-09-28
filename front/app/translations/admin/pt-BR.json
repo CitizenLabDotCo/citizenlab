@@ -527,7 +527,7 @@
   "app.containers.Admin.PagesAndMenu.addButton": "Adicionar à barra de navegação",
   "app.containers.Admin.PagesAndMenu.components.NavbarItemForm.navbarItemTitle": "Nome na barra de navegação",
   "app.containers.Admin.PagesAndMenu.components.deletePageConfirmationHidden": "Tem a certeza de que quer apagar esta página? Isto não pode ser desfeito.",
-  "app.containers.Admin.PagesAndMenu.components.emptyTitleError": "Por favor, forneça o conteúdo para todas as línguas",
+  "app.containers.Admin.PagesAndMenu.components.emptyTitleError1": "Fornecer um título para todas as línguas",
   "app.containers.Admin.PagesAndMenu.components.hiddenFromNavigation": "Outras páginas disponíveis",
   "app.containers.Admin.PagesAndMenu.components.savePage": "Salvar página",
   "app.containers.Admin.PagesAndMenu.components.saveSuccess": "Página salva com sucesso",
