@@ -56,7 +56,7 @@ module IdNemlogIn
         minimum_age: {
           private: true,
           type: 'integer',
-          description: 'Minimum age required to validate (in years). No value means no age minimum.'
+          description: 'Minimum age required to verify (in years). No value means no age minimum.'
         }
       }
     end
