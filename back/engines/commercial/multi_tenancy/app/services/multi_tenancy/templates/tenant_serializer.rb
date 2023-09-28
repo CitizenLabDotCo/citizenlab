@@ -47,7 +47,6 @@ module MultiTenancy
           CustomForm => serialize_records(CustomForm),
           Event => serialize_records(Event),
           EventFile => serialize_records(EventFile),
-          Follower => serialize_records(Follower),
           HomePage => serialize_records(HomePage),
           IdeaStatus => serialize_records(IdeaStatus),
           InitiativeStatus => serialize_records(InitiativeStatus),
@@ -125,6 +124,7 @@ module MultiTenancy
           # Users
           User => serialize_records(users),
           Membership => serialize_records(Membership.where(user: users)),
+          Follower => serialize_followers(users, initiatives),
 
           TextImage => serialize_records(TextImage.where(imageable: [
             CustomField.all,
@@ -271,6 +271,16 @@ module MultiTenancy
         comment_reactions = Reaction.where.not(user_id: nil).where(reactable: Comment.where(post: post_scope))
         reactions = post_reactions.chain(comment_reactions)
         serialize_records(reactions)
+      end
+
+      def serialize_followers(users, initiatives)
+        followers = Follower.where(user: users)
+
+        followers = followers
+          .where(followable: initiatives)
+          .or(followers.where.not(followable_type: 'Initiative'))
+
+        serialize_records(followers)
       end
     end
   end
