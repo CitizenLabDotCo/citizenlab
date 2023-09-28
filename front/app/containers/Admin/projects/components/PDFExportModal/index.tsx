@@ -41,6 +41,16 @@ interface Props {
   onExport: (params: FormValues) => Promise<void>;
 }
 
+const CLICK_EXPORT_MESSAGES = {
+  idea_form: messages.clickExportToPDFIdeaForm,
+  survey: messages.clickExportToPDFSurvey,
+} as const;
+
+const IT_IS_POSSIBLE_MESSAGES = {
+  idea_form: messages.itIsAlsoPossibleIdeation,
+  survey: messages.itIsAlsoPossibleSurvey,
+};
+
 const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
   const { formatMessage } = useIntl();
   const { projectId } = useParams() as { projectId: string };
@@ -100,17 +110,12 @@ const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
           <Feedback />
           <Box p="24px" w="100%">
             <Text mb="20px" mt="0px" w="500px">
-              {formType === 'idea_form' && (
-                <FormattedMessage {...messages.clickExportToPDFIdeaForm} />
-              )}
-              {formType === 'survey' && (
-                <FormattedMessage {...messages.clickExportToPDFSurvey} />
-              )}
+              <FormattedMessage {...CLICK_EXPORT_MESSAGES[formType]} />
             </Text>
-            {formType === 'idea_form' && importPrintedFormsEnabled && (
+            {importPrintedFormsEnabled && (
               <>
                 <Text mb="24px">
-                  <FormattedMessage {...messages.itIsAlsoPossible} />
+                  <FormattedMessage {...IT_IS_POSSIBLE_MESSAGES[formType]} />
                 </Text>
                 <>
                   <Text mb="24px">
