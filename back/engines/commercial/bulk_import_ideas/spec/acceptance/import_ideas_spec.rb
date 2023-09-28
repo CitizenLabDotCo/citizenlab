@@ -97,6 +97,7 @@ resource 'BulkImportIdeasImportIdeas' do
         )
         parameter(:locale, 'Locale of the ideas being imported.', scope: :import_ideas)
         parameter(:phase_id, 'ID of the phase to import these ideas to', scope: :import_ideas)
+        parameter(:personal_data, 'Has the uploaded form got the personal data section in it', scope: :import_ideas)
 
         context 'xlsx import' do
           let(:xlsx) { create_project_bulk_import_ideas_xlsx }
@@ -122,6 +123,7 @@ resource 'BulkImportIdeasImportIdeas' do
           # NOTE: GoogleFormParserService is stubbed to avoid calls to google APIs
           context 'continuous projects with single page idea form with 1 page scanned' do
             let(:pdf) { create_project_bulk_import_ideas_pdf 1 }
+            let(:personal_data) { 'true' }
 
             example 'Bulk import ideas to continuous project from .pdf' do
               expect_any_instance_of(BulkImportIdeas::GoogleFormParserService).to receive(:raw_text_page_array).and_return(create_project_bulk_import_raw_text_array)

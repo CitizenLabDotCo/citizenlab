@@ -5,7 +5,7 @@ module BulkImportIdeas
     PAGES_TO_TRIGGER_NEW_PDF = 8
     MAX_TOTAL_PAGES = 50
 
-    def initialize(current_user, project_id, locale, phase_id)
+    def initialize(current_user, project_id, locale, phase_id, personal_data_enabled)
       super(current_user)
       @project = Project.find(project_id)
       @phase = phase_id ? @project.phases.find(phase_id) : TimelineService.new.current_phase(@project)
@@ -13,7 +13,7 @@ module BulkImportIdeas
       @form_fields = IdeaCustomFieldsService.new(@participation_method.custom_form).importable_fields
       @locale = locale || @locale
       @google_forms_service = nil
-      @pdf_form_page_count = pdf_form_page_count
+      @pdf_form_page_count = pdf_form_page_count(personal_data_enabled)
     end
 
     def create_files(file_content)
@@ -23,7 +23,6 @@ module BulkImportIdeas
       split_pdf_files = []
       if source_file&.import_type == 'pdf'
         # Get number of pages in a form from the download
-        # NOTE: Page count may be different if name and email are specified - for future
         pages_per_idea = @pdf_form_page_count
 
         pdf = ::CombinePDF.parse open(source_file.file_content_url).read
@@ -187,6 +186,8 @@ module BulkImportIdeas
         []
       end
 
+      binding.pry
+
       {
         form_parsed_ideas: form_parsed_ideas,
         text_parsed_ideas: text_parsed_ideas
@@ -348,10 +349,8 @@ module BulkImportIdeas
       idea_row
     end
 
-    def pdf_form_page_count
-      params = {}
-      params[:locale] = @locale
-      PrintCustomFieldsService.new(@phase || @project, @form_fields, params).create_pdf.page_count
+    def pdf_form_page_count(personal_data_enabled)
+      PrintCustomFieldsService.new(@phase || @project, @form_fields, @locale, personal_data_enabled).create_pdf.page_count
     end
   end
 end

@@ -59,30 +59,26 @@ module BulkImportIdeas
       # Now reorder 'fields' by y then x field placement in the doc
       fields = fields.sort { |a, b| [a[:y], a[:x]] <=> [b[:y], b[:x]] }
 
-      # Then split into separate docs / pages based on the number of pages in the form
-      docs = []
-      doc = {
-        form_pages: [],
-        pdf_pages: [],
-        fields: {}
-      }
+      # Then split into separate ideas based on the number of pages in the PDF form (form_pages_count)
+      ideas = []
+      idea = { form_pages: [], pdf_pages: [], fields: {} }
       previous_page = 1
+      page_count = 0
       fields.each do |field|
         current_page = field[:page]
-        if field[:page] % form_pages_count == 1 && current_page != previous_page # split by pages count
-          docs << doc
-          doc = {
-            form_pages: [1, 2],
-            pdf_pages: [],
-            fields: {}
-          }
+        page_count += 1 if current_page != previous_page
+        if page_count == form_pages_count # split by pages count
+          ideas << idea
+          idea = { form_pages: [], pdf_pages: [], fields: {} }
+          page_count = 0
         end
-        doc[:fields][field[:name].to_s] = field[:type].include?('checkbox') ? field[:type] : field[:value]
-        doc[:pdf_pages] << field[:page] unless doc[:pdf_pages].include? field[:page]
+        idea[:fields][field[:name].to_s] = field[:type].include?('checkbox') ? field[:type] : field[:value]
+        idea[:pdf_pages] << field[:page] unless idea[:pdf_pages].include? field[:page]
+        idea[:form_pages] << (page_count + 1) unless idea[:form_pages].include?(page_count + 1)
         previous_page = field[:page]
       end
-      docs << doc
-      docs
+      ideas << idea
+      ideas
     end
 
     private
