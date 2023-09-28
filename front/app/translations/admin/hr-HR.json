@@ -824,7 +824,6 @@
   "app.containers.Admin.projects.project.survey.consentModalText4Link": "https://openai.com/api-data-privacy",
   "app.containers.Admin.projects.project.survey.consentModalText4LinkText": "ovdje",
   "app.containers.Admin.projects.project.survey.consentModalTitle": "Prije nego nastavite",
-  "app.containers.Admin.projects.project.survey.createAnalysis": "Napravi analizu",
   "app.containers.Admin.projects.project.survey.deleteAnalysis": "Izbrisati",
   "app.containers.Admin.projects.project.survey.deleteAnalysisConfirmation": "Jeste li sigurni da želite izbrisati ovu analizu? Ova se radnja ne može poništiti.",
   "app.containers.Admin.projects.project.survey.viewAnalysis": "Pogled",

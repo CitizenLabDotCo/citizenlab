@@ -824,7 +824,6 @@
   "app.containers.Admin.projects.project.survey.consentModalText4Link": "https://openai.com/api-data-privacy",
   "app.containers.Admin.projects.project.survey.consentModalText4LinkText": "här",
   "app.containers.Admin.projects.project.survey.consentModalTitle": "Innan du fortsätter",
-  "app.containers.Admin.projects.project.survey.createAnalysis": "Skapa analys",
   "app.containers.Admin.projects.project.survey.deleteAnalysis": "Radera",
   "app.containers.Admin.projects.project.survey.deleteAnalysisConfirmation": "Är du säker på att du vill radera denna analys? Denna åtgärd kan inte ångras.",
   "app.containers.Admin.projects.project.survey.viewAnalysis": "Utsikt",
