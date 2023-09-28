@@ -32,11 +32,9 @@ describe 'SideFxAppConfigurationService' do
     end
 
     it "logs a 'changed_lifecycle_stage' action job when the lifecycle has changed" do
-      settings = config.settings
-      old_lifecycle_stage = settings.dig('core', 'lifecycle_stage')
-      settings['core']['lifecycle_stage'] = 'churned'
-
-      config.update!(settings: settings)
+      old_lifecycle_stage = config.settings.dig('core', 'lifecycle_stage')
+      config.settings['core']['lifecycle_stage'] = 'churned'
+      config.save!
 
       options = { payload: { changes: [old_lifecycle_stage, 'churned'] } }
       updated_at = config.updated_at.to_i

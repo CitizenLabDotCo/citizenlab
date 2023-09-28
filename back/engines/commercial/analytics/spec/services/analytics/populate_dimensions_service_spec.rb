@@ -14,7 +14,7 @@ describe Analytics::PopulateDimensionsService do
     end
 
     it 'has a first dimension date the same as the app configuration date' do
-      expect(Analytics::DimensionDate.first.date).to eq(AppConfiguration.first.created_at.to_date)
+      expect(Analytics::DimensionDate.first.date).to eq(AppConfiguration.instance.created_at.to_date)
     end
 
     it 'has at least 180 date dimensions (minimum dates in 6 months)' do
@@ -38,7 +38,7 @@ describe Analytics::PopulateDimensionsService do
     end
 
     it 'backfills date dimensions if an idea has a created date before the app configuration created date' do
-      idea_date = AppConfiguration.first.created_at - 5.days
+      idea_date = AppConfiguration.instance.created_at - 5.days
       create(:idea, created_at: idea_date)
       expect { described_class.run }.to change(Analytics::DimensionDate, :count).by(5)
       expect(Analytics::DimensionDate.order(:date).first.date).to eq(idea_date.to_date)

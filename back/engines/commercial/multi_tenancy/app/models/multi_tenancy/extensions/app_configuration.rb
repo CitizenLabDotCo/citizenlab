@@ -33,14 +33,25 @@ module MultiTenancy
       end
 
       def update_tenant
-        tenant = Tenant.current
-        app_config = ::AppConfiguration.instance
-        attrs_delta = tenant.send(:attributes_delta, app_config, tenant)
+        Tenant.transaction do
+          tenant = Tenant.current
+          # When computing the attributes delta, we cannot compare the tenant with:
+          # - `AppConfiguration.instance` because the delta would include both, stale
+          # and dirty attributes from the `AppConfiguration.instance` record. We only
+          # want the dirty attributes.
+          # - `AppConfiguration.instance.reload` because reloading the record wipes out
+          # the `previous_changes` hash of the record which are needed for the
+          # `AppConfiguration` side effects (`SideFxAppConfigurationService`).
+          #
+          # So we compare with `AppConfiguration.first` instead.
+          app_config = ::AppConfiguration.send(:first)
+          attrs_delta = tenant.send(:attributes_delta, app_config, tenant)
 
-        return if attrs_delta.blank?
+          next if attrs_delta.blank?
 
-        tenant.attributes = attrs_delta
-        tenant.without_config_sync(&:save)
+          tenant.attributes = attrs_delta
+          tenant.without_config_sync(&:save)
+        end
       end
 
       def validate_lifecycle_stage_change

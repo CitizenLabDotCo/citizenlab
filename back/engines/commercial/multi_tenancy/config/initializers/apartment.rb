@@ -152,14 +152,24 @@ Rails.application.config.middleware.insert_after ActionDispatch::Session::Cookie
 # https://github.com/rails-on-services/apartment/tree/2.11.0#callbacks
 require 'apartment/adapters/abstract_adapter'
 
-module Apartment
-  module Adapters
-    class AbstractAdapter
-      set_callback :switch, :after do |object|
-        # It's not always correct. E.g. it's `public` tracking errors by sentry-rails gem in controllers.
-        # But still extremely useful for errors in background jobs, rake tasks, and the console.
-        Sentry.set_tags(switched_tenant: ::Tenant.schema_name_to_host(object.current)) if defined?(Sentry)
-      end
-    end
+# Registering +switch+ callbacks
+Apartment::Adapters::AbstractAdapter.set_callback :switch, :before do
+  AppConfiguration.reset_instance
+end
+
+Apartment::Adapters::AbstractAdapter.set_callback :switch, :after do |object|
+  # It's not always correct. E.g. it's `public` tracking errors by sentry-rails gem in controllers.
+  # But still extremely useful for errors in background jobs, rake tasks, and the console.
+  Sentry.set_tags(switched_tenant: Tenant.schema_name_to_host(object.current)) if defined?(Sentry)
+end
+
+# Patching +AbstractAdapter+ to invalidate the +AppConfiguration+ instance when the
+# tenant connection is reset.
+module Apartment::Adapters::AbstractAdapterPatch
+  def reset
+    AppConfiguration.reset_instance
+    super
   end
 end
+
+Apartment::Adapters::AbstractAdapter.prepend(Apartment::Adapters::AbstractAdapterPatch)

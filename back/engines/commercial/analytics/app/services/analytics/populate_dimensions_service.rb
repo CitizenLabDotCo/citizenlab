@@ -29,7 +29,7 @@ module Analytics
         from = Time.zone.today
         to = from + 180.days
 
-        tenant_creation = AppConfiguration.first.created_at
+        tenant_creation = AppConfiguration.instance.created_at
         first_idea = Idea.order(:created_at).limit(1).pluck(:created_at)[0]
         first_initiative = Initiative.order(:created_at).limit(1).pluck(:created_at)[0]
         first_activity_date = [tenant_creation, first_idea, first_initiative].compact.min.to_date

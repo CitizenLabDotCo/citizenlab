@@ -35,10 +35,6 @@ class AppConfiguration < ApplicationRecord
   before_validation :validate_missing_feature_dependencies
   before_validation :add_missing_features_and_settings, on: :create
 
-  after_update do
-    AppConfiguration.instance.reload
-  end
-
   module Settings
     extend CitizenLab::Mixins::SettingsSpecification
 
@@ -95,10 +91,28 @@ class AppConfiguration < ApplicationRecord
   end
 
   class << self
-    private :new # We need a singleton
+    # We prevent the direct instantiation of AppConfiguration, because it is a singleton.
+    private :new
+
+    # `AppConfiguration.instance` returns a cached (memoized) version of the
+    # app configuration. So, unless you know what you're doing, all operations on the
+    # app configuration should be done through `AppConfiguration.instance`. For instance,
+    # by default, any change made to another instance of `AppConfiguration` will not be
+    # reflected in the cached version. To decrease the risk associated with this, we make
+    # some methods private. Ideally, `find` should also be private, but it is used when
+    # deserializing Que-job arguments that refer to ActiveRecord objects.
+    private(
+      :find_by, :find_by!, :find_or_create_by, :find_or_create_by!,
+      :first, :first!,
+      :last, :last!
+    )
 
     def instance
-      first!
+      @instance ||= first!
+    end
+
+    def reset_instance
+      @instance = nil
     end
 
     def timezone
