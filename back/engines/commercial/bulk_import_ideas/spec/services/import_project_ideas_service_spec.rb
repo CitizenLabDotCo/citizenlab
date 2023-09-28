@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe BulkImportIdeas::ImportProjectIdeasService do
   let(:project) { create(:continuous_project) }
-  let(:service) { described_class.new create(:admin), project.id, 'en', nil }
+  let(:service) { described_class.new create(:admin), project.id, 'en', nil, false }
   let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
 
   before do
@@ -13,7 +13,6 @@ describe BulkImportIdeas::ImportProjectIdeasService do
     project.allowed_input_topics << create(:topic_waste)
 
     # Custom fields
-    # custom_form = create(:custom_form, :with_default_fields, participation_context: project)
     create(:custom_field, resource: custom_form, key: 'a_text_field', title_multiloc: { 'en' => 'A text field' }, enabled: true)
     create(:custom_field, resource: custom_form, key: 'number_field', title_multiloc: { 'en' => 'Number field' }, input_type: 'number', enabled: true)
     select_field = create(:custom_field, resource: custom_form, key: 'select_field', title_multiloc: { 'en' => 'Select field' }, input_type: 'select', enabled: true)
@@ -32,7 +31,6 @@ describe BulkImportIdeas::ImportProjectIdeasService do
       base_64_content = Base64.encode64 Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/scan_12.pdf').read
       service.create_files "data:application/pdf;base64,#{base_64_content}"
       expect(BulkImportIdeas::IdeaImportFile.all.count).to eq 3
-      expect(BulkImportIdeas::IdeaImportFile.all.pluck(:num_pages)).to match_array [12, 8, 4]
       expect(BulkImportIdeas::IdeaImportFile.all.pluck(:num_pages)).to match_array [12, 8, 4]
       expect(BulkImportIdeas::IdeaImportFile.where(parent: nil).pluck(:num_pages)).to eq [12]
     end
@@ -190,7 +188,7 @@ describe BulkImportIdeas::ImportProjectIdeasService do
     end
 
     it 'can convert a document in french' do
-      service = described_class.new create(:admin), project.id, 'fr-FR', nil
+      service = described_class.new create(:admin), project.id, 'fr-FR', nil, true
       ideas = [{
         pdf_pages: [1, 2],
         fields: {

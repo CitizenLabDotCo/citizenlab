@@ -35,9 +35,10 @@ module BulkImportIdeas
         new_pdf_count = 0
         pdf.pages.each_with_index do |page, index|
           new_pdf << page
+          current_page_num = index + 1
           save_to_file =
-            ((index + 1) % pages_per_idea == 0 && new_pdf.pages.count >= PAGES_TO_TRIGGER_NEW_PDF) ||
-            (index + 1 == pdf.pages.count)
+            (current_page_num % pages_per_idea == 0 && new_pdf.pages.count >= PAGES_TO_TRIGGER_NEW_PDF) ||
+            (current_page_num == pdf.pages.count)
 
           if save_to_file
             # TODO: Would be better to send the new_pdf directly to IdeaImportFile, but doesn't seem possible
