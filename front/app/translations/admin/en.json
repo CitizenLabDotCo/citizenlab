@@ -820,6 +820,7 @@
   "app.containers.Admin.projects.project.ideas.consentModalTitle": "Before you continue",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.addToPhase": "Add to phase",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.consentNeeded": "You need to consent to this before you can continue",
+  "app.containers.Admin.projects.project.offlineInputs.ImportModal.formHasPersonalData": "The uploaded form was created with the \"Personal data\" section",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.formLanguage": "Form language",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.googleConsent2": "I hereby consent to processing this file using the Google Cloud Form Parser",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.here": "here",
