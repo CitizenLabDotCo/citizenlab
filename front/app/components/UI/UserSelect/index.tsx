@@ -1,18 +1,21 @@
-import React from 'react';
-import { adopt } from 'react-adopt';
-import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
+import React, { useState, useMemo } from 'react';
 import ReactSelect, { OptionTypeBase } from 'react-select';
-import selectStyles from 'components/UI/MultipleSelect/styles';
-import { Box } from '@citizenlab/cl2-component-library';
-import { debounce } from 'lodash-es';
-import styled from 'styled-components';
-import { IUserData } from 'api/users/types';
-import Button from 'components/UI/Button';
-import useUserById from 'api/users/useUserById';
 
-interface DataProps {
-  users: GetUsersChildProps;
-}
+// api
+import useUserById from 'api/users/useUserById';
+import useInfiniteUsers from 'api/users/useInfiniteUsers';
+
+// components
+import { Box } from '@citizenlab/cl2-component-library';
+import Button from 'components/UI/Button';
+
+// styling
+import selectStyles from 'components/UI/MultipleSelect/styles';
+import styled from 'styled-components';
+
+// utils
+import { debounce } from 'lodash-es';
+import { IUserData } from 'api/users/types';
 
 export interface UserOptionTypeBase extends OptionTypeBase, IUserData {
   // If the option is 'load more' instead of a user, we don't have IUserData
@@ -20,7 +23,7 @@ export interface UserOptionTypeBase extends OptionTypeBase, IUserData {
   value?: string;
 }
 
-interface InputProps {
+interface Props {
   onChange: (user?: UserOptionTypeBase) => void;
   selectedUserId: string | null;
   placeholder: string;
@@ -35,24 +38,37 @@ interface InputProps {
   isNotFolderModeratorOfFolderId?: string;
 }
 
-interface Props extends DataProps, InputProps {}
-
 const UserOption = styled.div`
   display: flex;
   align-items: center;
 `;
 
 const UserSelect = ({
-  users,
   onChange,
   selectedUserId,
   placeholder,
   className,
   id,
   inputId,
-}: DataProps & Props) => {
-  const canLoadMore = users.hasNextPage;
-  const usersList = Array.isArray(users.usersList) ? users.usersList : [];
+  isNotFolderModeratorOfFolderId,
+  isNotProjectModeratorOfProjectId,
+}: Props) => {
+  const [searchValue, setSearchValue] = useState('');
+  const {
+    data: users,
+    isLoading,
+    hasNextPage,
+    fetchNextPage,
+  } = useInfiniteUsers({
+    pageSize: 5,
+    sort: 'last_name',
+    is_not_folder_moderator: isNotFolderModeratorOfFolderId,
+    is_not_project_moderator: isNotProjectModeratorOfProjectId,
+    search: searchValue,
+  });
+
+  const usersList = users?.pages.flatMap((page) => page.data) ?? [];
+
   const { data: selectedUser } = useUserById(selectedUserId);
 
   const handleChange = (option: UserOptionTypeBase, { action }) => {
@@ -61,47 +77,22 @@ const UserSelect = ({
     } else if (action === 'select-option' && option.value !== 'loadMore') {
       onChange(option);
     } else if (action === 'select-option' && option.value === 'loadMore') {
-      handleLoadMore();
+      fetchNextPage();
     }
   };
 
-  const handleInputChange = debounce((searchTerm) => {
-    users.onChangeSearchTerm(searchTerm);
-  }, 500);
+  const handleInputChange = useMemo(() => {
+    return debounce((searchTerm) => {
+      setSearchValue(searchTerm);
+    }, 500);
+  }, []);
 
   const handleMenuScrollToBottom = () => {
-    handleLoadMore();
-  };
-
-  const handleLoadMore = () => {
-    users.onLoadMore();
+    fetchNextPage();
   };
 
   const handleClear = () => {
     onChange();
-  };
-
-  const getOptionLabel = (option: UserOptionTypeBase) => {
-    if (option.value === 'loadMore' && canLoadMore) {
-      return (
-        <Button
-          onClick={handleLoadMore}
-          processing={users.isLoading}
-          icon="refresh"
-          buttonStyle="text"
-          padding="0px"
-        />
-      );
-    } else if (option.attributes) {
-      return (
-        <UserOption data-cy={`e2e-user-${option.attributes.email}`}>
-          {option.attributes.last_name}, {option.attributes.first_name} (
-          {option.attributes.email})
-        </UserOption>
-      );
-    }
-
-    return null;
   };
 
   const getOptionId = (option: UserOptionTypeBase) => option.id;
@@ -121,10 +112,17 @@ const UserSelect = ({
         value={(selectedUserId && selectedUser?.data) || null}
         placeholder={placeholder}
         options={
-          canLoadMore ? [...usersList, { value: 'loadMore' }] : usersList
+          hasNextPage ? [...usersList, { value: 'loadMore' }] : usersList
         }
         getOptionValue={getOptionId}
-        getOptionLabel={getOptionLabel}
+        getOptionLabel={(option) => (
+          <OptionLabel
+            option={option}
+            hasNextPage={hasNextPage}
+            isLoading={isLoading}
+            fetchNextPage={() => fetchNextPage()}
+          />
+        )}
         onChange={handleChange}
         onInputChange={handleInputChange}
         menuPlacement="auto"
@@ -137,25 +135,39 @@ const UserSelect = ({
   );
 };
 
-const Data = adopt<DataProps, InputProps>({
-  users: ({
-    isNotProjectModeratorOfProjectId,
-    isNotFolderModeratorOfFolderId,
-    render,
-  }) => (
-    <GetUsers
-      pageSize={5}
-      sort="last_name"
-      is_not_project_moderator={isNotProjectModeratorOfProjectId}
-      is_not_folder_moderator={isNotFolderModeratorOfFolderId}
-    >
-      {render}
-    </GetUsers>
-  ),
-});
+interface OptionLabelProps {
+  option: UserOptionTypeBase;
+  hasNextPage?: boolean;
+  isLoading: boolean;
+  fetchNextPage: () => void;
+}
 
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps: DataProps) => <UserSelect {...dataProps} {...inputProps} />}
-  </Data>
-);
+const OptionLabel = ({
+  option,
+  hasNextPage,
+  isLoading,
+  fetchNextPage,
+}: OptionLabelProps) => {
+  if (option.value === 'loadMore' && hasNextPage) {
+    return (
+      <Button
+        onClick={fetchNextPage}
+        processing={isLoading}
+        icon="refresh"
+        buttonStyle="text"
+        padding="0px"
+      />
+    );
+  } else if (option.attributes) {
+    return (
+      <UserOption data-cy={`e2e-user-${option.attributes.email}`}>
+        {option.attributes.last_name}, {option.attributes.first_name} (
+        {option.attributes.email})
+      </UserOption>
+    );
+  }
+
+  return null;
+};
+
+export default UserSelect;
