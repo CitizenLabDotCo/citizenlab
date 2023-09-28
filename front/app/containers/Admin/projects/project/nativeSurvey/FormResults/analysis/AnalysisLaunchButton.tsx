@@ -1,6 +1,13 @@
 import React, { useState } from 'react';
 
-import { Box, ListItem } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Dropdown,
+  DropdownListItem,
+  Icon,
+  IconButton,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
@@ -16,13 +23,13 @@ import { useParams, useSearchParams } from 'react-router-dom';
 import Button from 'components/UI/Button';
 import useFormCustomFields from 'api/custom_fields/useCustomFields';
 import { isNilOrError } from 'utils/helperUtils';
-import useLocalize from 'hooks/useLocalize';
 import tracks from 'containers/Admin/projects/project/analysis/tracks';
 import { trackEventByName } from 'utils/analytics';
+import clHistory from 'utils/cl-router/history';
 
 const AnalysisLaunchButton = ({ customFieldId }: { customFieldId: string }) => {
+  const [dropdownIsOpened, setDropdownIsOpened] = useState(false);
   const { formatMessage } = useIntl();
-  const localize = useLocalize();
 
   const { projectId } = useParams() as { projectId: string };
   const [urlParams] = useSearchParams();
@@ -72,11 +79,95 @@ const AnalysisLaunchButton = ({ customFieldId }: { customFieldId: string }) => {
     setIsCreateAnalysisModalOpened(true);
   };
 
+  const relevantAnalyses =
+    analyses?.data &&
+    analyses?.data?.filter((analysis) =>
+      analysis.relationships.custom_fields.data.some(
+        (field) => field.id === customFieldId
+      )
+    );
+  const hasAnalyses = relevantAnalyses && relevantAnalyses.length > 0;
+
   return (
-    <Box my="16px">
-      <Button buttonStyle="admin-dark" onClick={openConsentModal} icon="flash">
-        {formatMessage(messages.launchAnalysis)}
+    <Box my="16px" display="flex" justifyContent="flex-end" position="relative">
+      <Button
+        buttonStyle="admin-dark"
+        onClick={() => {
+          hasAnalyses
+            ? setDropdownIsOpened(!dropdownIsOpened)
+            : openConsentModal();
+        }}
+        icon="flash"
+      >
+        {formatMessage(messages.openAnalysis)}
+        {hasAnalyses && (
+          <Icon
+            name={dropdownIsOpened ? 'chevron-up' : 'chevron-down'}
+            fill={colors.white}
+            ml="8px"
+          />
+        )}
       </Button>
+      <Dropdown
+        opened={dropdownIsOpened}
+        onClickOutside={() => setDropdownIsOpened(false)}
+        top="48px"
+        content={
+          <div>
+            {relevantAnalyses?.map((analysis) => {
+              return (
+                <DropdownListItem
+                  key={analysis.id}
+                  onClick={() =>
+                    clHistory.push(
+                      `/admin/projects/${projectId}/analysis/${analysis.id}${
+                        phaseId ? `?phase_id=${phaseId}` : ''
+                      }`
+                    )
+                  }
+                >
+                  <Box
+                    display="flex"
+                    justifyContent="space-between"
+                    alignItems="center"
+                    width="100%"
+                  >
+                    <Box>
+                      {analysis.relationships.custom_fields.data.map(
+                        (field, index, array) => {
+                          return (
+                            <span key={field.id}>
+                              Q
+                              {!isNilOrError(formCustomFields) &&
+                                formCustomFields?.find((f) => f.id === field.id)
+                                  ?.ordering}
+                              {index !== array.length - 1 && ' + '}
+                            </span>
+                          );
+                        }
+                      )}
+                    </Box>
+
+                    <IconButton
+                      onClick={(e) => {
+                        e?.stopPropagation();
+                        handleDeleteAnalysis(analysis.id);
+                      }}
+                      iconName="delete"
+                      iconColor={colors.grey800}
+                      iconColorOnHover={colors.black}
+                      a11y_buttonActionMessage={formatMessage(
+                        messages.deleteAnalysis
+                      )}
+                    />
+                  </Box>
+                </DropdownListItem>
+              );
+            })}
+          </div>
+        }
+      />
+
       <Modal
         opened={isCreateAnalysisModalOpened}
         close={closeCreateAnalysisModal}
@@ -86,59 +177,6 @@ const AnalysisLaunchButton = ({ customFieldId }: { customFieldId: string }) => {
       <Modal opened={consentModalIsOpened} close={closeConsentModal}>
         <ConsentModal onClose={closeConsentModal} onAccept={onAcceptConsent} />
       </Modal>
-      <div>
-        {analyses?.data
-          .filter((analysis) =>
-            analysis.relationships.custom_fields.data.some(
-              (field) => field.id === customFieldId
-            )
-          )
-          .map((analysis) => {
-            return (
-              <ListItem
-                key={analysis.id}
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
-                py="16px"
-                gap="24px"
-              >
-                <ul>
-                  {analysis.relationships.custom_fields.data.map((field) => {
-                    return (
-                      <li key={field.id}>
-                        {!isNilOrError(formCustomFields) &&
-                          localize(
-                            formCustomFields?.find((f) => f.id === field.id)
-                              ?.title_multiloc
-                          )}
-                      </li>
-                    );
-                  })}
-                </ul>
-
-                <Box display="flex" gap="24px">
-                  <Button
-                    linkTo={`/admin/projects/${projectId}/analysis/${
-                      analysis.id
-                    }${phaseId ? `?phase_id=${phaseId}` : ''}`}
-                    icon="eye"
-                    buttonStyle="secondary"
-                  >
-                    {formatMessage(messages.viewAnalysis)}
-                  </Button>
-                  <Button
-                    onClick={() => handleDeleteAnalysis(analysis.id)}
-                    icon="delete"
-                    buttonStyle="secondary"
-                  >
-                    {formatMessage(messages.deleteAnalysis)}
-                  </Button>
-                </Box>
-              </ListItem>
-            );
-          })}
-      </div>
     </Box>
   );
 };

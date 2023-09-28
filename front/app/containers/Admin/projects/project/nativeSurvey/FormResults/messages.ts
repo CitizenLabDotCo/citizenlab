@@ -1,9 +1,9 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  launchAnalysis: {
-    id: 'app.containers.Admin.projects.project.survey.launchAnalysis',
-    defaultMessage: 'Launch AI-powered analysis',
+  openAnalysis: {
+    id: 'app.containers.Admin.projects.project.survey.openAnalysis',
+    defaultMessage: 'Open AI analysis',
   },
   analysisSelectQuestions: {
     id: 'app.containers.Admin.projects.project.survey.analysisSelectQuestionsForAnalysis',
