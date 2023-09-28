@@ -13,7 +13,7 @@ import { WrappedComponentProps } from 'react-intl';
 
 // utils
 import { colors } from 'utils/styleUtils';
-import { requestBlob } from 'utils/request';
+import { requestBlob } from 'utils/requestBlob';
 import { isNilOrError } from 'utils/helperUtils';
 
 // hooks

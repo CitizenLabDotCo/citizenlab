@@ -51,7 +51,6 @@ class SideFxReactionService
     when 'Idea', 'Initiative'
       reaction.reactable
     end
-    Follower.find_or_create_by(followable: post, user: user)
     return if !post.is_a? Idea
 
     Follower.find_or_create_by(followable: post.project, user: user)

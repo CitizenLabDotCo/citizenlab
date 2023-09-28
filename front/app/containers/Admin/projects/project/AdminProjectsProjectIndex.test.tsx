@@ -10,7 +10,7 @@ import {
   mockPhaseSurveyTypeformData,
   mockPhaseSurveyGoogleFormData,
   mockPhaseInformationData,
-} from 'services/__mocks__/phases';
+} from 'api/phases/__mocks__/usePhases';
 import { getProject } from 'api/projects/__mocks__/getProject';
 import { localizeProps } from 'utils/testUtils/localizeProps';
 import { getDummyIntlObject } from 'utils/testUtils/mockedIntl';

@@ -32,10 +32,6 @@ export interface IRelationship {
   type: string;
 }
 
-export interface IHttpMethod {
-  method: 'PUT' | 'POST' | 'GET' | 'PATCH' | 'DELETE';
-}
-
 export type ILocationInfo =
   | {
       location_description: string | undefined;
@@ -147,12 +143,6 @@ export interface CLError {
 
 export interface CLErrors {
   [fieldName: TFieldName | string]: CLError[];
-}
-
-export interface CLErrorsJSON {
-  json: {
-    errors: CLErrors;
-  };
 }
 
 export type CLErrorsWrapper = {

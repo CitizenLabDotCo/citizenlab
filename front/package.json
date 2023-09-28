@@ -32,7 +32,7 @@
     "majestic": "majestic --port 4231",
     "find-unused-messages": "node internals/scripts/find-unused-messages.js",
     "prettier": "prettier --write .",
-    "detect-deadcode": "ts-prune -p app/tsconfig.json -i '(node_modules|utils/testUtils/rtl.tsx|services/permissions|i18n|/*/*/__mocks__)' | (! grep -v 'used in module')",
+    "detect-deadcode": "ts-prune -p app/tsconfig.json -i '(node_modules|utils/testUtils/rtl.tsx|utils/permissions|i18n|/*/*/__mocks__)' | (! grep -v 'used in module')",
     "dependency-cruiser": "depcruise app  --validate"
   },
   "jest-junit": {
@@ -49,7 +49,7 @@
   "dependencies": {
     "@apollo/client": "^3.5.6",
     "@babel/runtime": "7.x",
-    "@citizenlab/cl2-component-library": "^0.11.18",
+    "@citizenlab/cl2-component-library": "^0.11.19",
     "@craftjs/core": "^0.2.0-beta.5",
     "@hookform/resolvers": "^3.1.0",
     "@jsonforms/core": "3.0.0-beta.0",

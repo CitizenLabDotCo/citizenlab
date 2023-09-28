@@ -7,7 +7,7 @@ export type ProjectAllowedInputTopicsKeys = Keys<
 >;
 
 export type IProjectAllowedTopicsParams = {
-  projectId: string;
+  projectId?: string;
 };
 
 export interface IProjectAllowedInputTopicData {

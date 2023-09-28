@@ -20,7 +20,7 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 // api
-import { isAdmin, isProjectModerator } from 'services/permissions/roles';
+import { isAdmin, isProjectModerator } from 'utils/permissions/roles';
 import useAuthUser from 'api/me/useAuthUser';
 import { IEventData } from 'api/events/types';
 
