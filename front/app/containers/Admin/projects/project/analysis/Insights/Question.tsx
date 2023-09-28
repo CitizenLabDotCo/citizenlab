@@ -225,6 +225,13 @@ const Question = ({ insight }: Props) => {
         </Button>
 
         <Box display="flex">
+          <IconButton
+            iconName="delete"
+            onClick={() => handleQuestionDelete(insight.id)}
+            iconColor={colors.teal400}
+            iconColorOnHover={colors.teal700}
+            a11y_buttonActionMessage={formatMessage(translations.deleteSummary)}
+          />
           <IconTooltip
             icon="flag"
             content={<Rate insightId={insight.id} />}
@@ -232,13 +239,6 @@ const Question = ({ insight }: Props) => {
             iconSize="24px"
             iconColor={colors.teal400}
             placement="left-end"
-          />
-          <IconButton
-            iconName="delete"
-            onClick={() => handleQuestionDelete(insight.id)}
-            iconColor={colors.teal400}
-            iconColorOnHover={colors.teal700}
-            a11y_buttonActionMessage={formatMessage(translations.deleteSummary)}
           />
           <IconButton
             iconName={
