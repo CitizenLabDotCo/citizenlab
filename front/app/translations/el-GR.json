@@ -36,6 +36,7 @@
   "app.components.AuthProviders.logIn2": "Σύνδεση",
   "app.components.AuthProviders.logInWithEmail": "Σύνδεση με Email",
   "app.components.AuthProviders.logInWithPhoneOrEmail": "Σύνδεση με τηλέφωνο ή email",
+  "app.components.AuthProviders.nemlogInUnderMinimumAgeVerificationFailed": "Πρέπει να έχετε το καθορισμένο ελάχιστο όριο ηλικίας ή μεγαλύτερο για να επαληθευτείτε.",
   "app.components.AuthProviders.signUp2": "Εγγραφείτε",
   "app.components.AuthProviders.signUpButtonAltText": "Εγγραφείτε με {loginMechanismName}",
   "app.components.AuthProviders.signUpWithEmail": "Εγγραφείτε με Email",
