@@ -36,6 +36,7 @@
   "app.components.AuthProviders.logIn2": "Logga in",
   "app.components.AuthProviders.logInWithEmail": "Logga in med e-postadress",
   "app.components.AuthProviders.logInWithPhoneOrEmail": "Logga in med telefonnummer eller e-postadress",
+  "app.components.AuthProviders.nemlogInUnderMinimumAgeVerificationFailed": "Du måste ha uppnått den angivna minimiåldern eller vara äldre för att verifieras.",
   "app.components.AuthProviders.signUp2": "Registrera dig",
   "app.components.AuthProviders.signUpButtonAltText": "Registrera dig med {loginMechanismName}",
   "app.components.AuthProviders.signUpWithEmail": "Registrera dig med e-postadress",
