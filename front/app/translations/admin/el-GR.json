@@ -527,7 +527,7 @@
   "app.containers.Admin.PagesAndMenu.addButton": "Προσθήκη στη γραμμή πλοήγησης",
   "app.containers.Admin.PagesAndMenu.components.NavbarItemForm.navbarItemTitle": "Όνομα στη γραμμή πλοήγησης",
   "app.containers.Admin.PagesAndMenu.components.deletePageConfirmationHidden": "Είστε σίγουροι ότι θέλετε να διαγράψετε αυτή τη σελίδα; Αυτό δεν μπορεί να αναιρεθεί.",
-  "app.containers.Admin.PagesAndMenu.components.emptyTitleError": "Παροχή τίτλου για όλες τις γλώσσες",
+  "app.containers.Admin.PagesAndMenu.components.emptyTitleError1": "Παρέχετε έναν τίτλο για όλες τις γλώσσες",
   "app.containers.Admin.PagesAndMenu.components.hiddenFromNavigation": "Άλλες διαθέσιμες σελίδες",
   "app.containers.Admin.PagesAndMenu.components.savePage": "Save page",
   "app.containers.Admin.PagesAndMenu.components.saveSuccess": "Page successfully saved",
