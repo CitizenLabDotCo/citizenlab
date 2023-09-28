@@ -824,7 +824,6 @@
   "app.containers.Admin.projects.project.survey.consentModalText4Link": "https://openai.com/api-data-privacy",
   "app.containers.Admin.projects.project.survey.consentModalText4LinkText": "hier",
   "app.containers.Admin.projects.project.survey.consentModalTitle": "Bevor Sie fortfahren",
-  "app.containers.Admin.projects.project.survey.createAnalysis": "Analyse erstellen",
   "app.containers.Admin.projects.project.survey.deleteAnalysis": "Löschen",
   "app.containers.Admin.projects.project.survey.deleteAnalysisConfirmation": "Sind Sie sicher, dass Sie diese Analyse löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
   "app.containers.Admin.projects.project.survey.viewAnalysis": "Vorschau",

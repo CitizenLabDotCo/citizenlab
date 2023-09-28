@@ -824,7 +824,6 @@
   "app.containers.Admin.projects.project.survey.consentModalText4Link": "https://openai.com/api-data-privacy",
   "app.containers.Admin.projects.project.survey.consentModalText4LinkText": "her",
   "app.containers.Admin.projects.project.survey.consentModalTitle": "Før du fortsetter",
-  "app.containers.Admin.projects.project.survey.createAnalysis": "Lag analyse",
   "app.containers.Admin.projects.project.survey.deleteAnalysis": "Slett",
   "app.containers.Admin.projects.project.survey.deleteAnalysisConfirmation": "Er du sikker på at du vil slette denne analysen? Denne handlingen kan ikke angres.",
   "app.containers.Admin.projects.project.survey.viewAnalysis": "Utsikt",

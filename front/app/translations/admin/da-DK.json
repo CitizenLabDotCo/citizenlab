@@ -824,7 +824,6 @@
   "app.containers.Admin.projects.project.survey.consentModalText4Link": "https://openai.com/api-data-privacy",
   "app.containers.Admin.projects.project.survey.consentModalText4LinkText": "Lær, hvordan du opretter en workshop",
   "app.containers.Admin.projects.project.survey.consentModalTitle": "Før du fortsætter",
-  "app.containers.Admin.projects.project.survey.createAnalysis": "Opret analyse",
   "app.containers.Admin.projects.project.survey.deleteAnalysis": "Slet",
   "app.containers.Admin.projects.project.survey.deleteAnalysisConfirmation": "Er du sikker på, at du vil slette denne analyse? Denne handling kan ikke fortrydes.",
   "app.containers.Admin.projects.project.survey.viewAnalysis": "Se",
