@@ -28,6 +28,10 @@ module OmniauthMethods
       true
     end
 
+    def redirect_callback_to_get_cookies(_controller)
+      false
+    end
+
     # It never runs if #can_merge? always returns true.
     # So, override only if you need to override #can_merge?
     def merging_error_code

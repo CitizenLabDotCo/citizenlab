@@ -62,6 +62,7 @@ export interface IInitiativeData {
     created_at: string;
     updated_at: string;
     published_at: string;
+    proposed_at: string;
     header_bg: ImageSizes;
     expires_at: string;
     anonymous: boolean;

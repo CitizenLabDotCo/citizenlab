@@ -25,9 +25,11 @@ const InputListItem = () => {
     selectedInputId ?? undefined
   );
   const { data: analysis } = useAnalysis(analysisId);
+
+  const authorId = input?.data.relationships.author.data?.id;
   const { data: author, isRefetching: isRefetchingAuthor } =
     useAnalysisUserById({
-      id: input?.data.relationships.author.data?.id ?? null,
+      id: authorId ?? null,
       analysisId,
     });
 
@@ -58,14 +60,16 @@ const InputListItem = () => {
           phaseId={analysis.data.relationships.phase?.data?.id}
         />
       ))}
-      {author && !isRefetchingAuthor && (
+      {authorId && author && !isRefetchingAuthor && (
         <Box mt="20px" display="flex" alignItems="center">
           <Avatar size={40} userId={author.data.id} />
           <Text m="0px">{getFullName(author?.data)}</Text>
         </Box>
       )}
       <Divider />
-      <Taggings onlyShowTagged={false} inputId={selectedInputId} />
+      <Box id="tags-control">
+        <Taggings onlyShowTagged={false} inputId={selectedInputId} />
+      </Box>
     </Box>
   );
 };

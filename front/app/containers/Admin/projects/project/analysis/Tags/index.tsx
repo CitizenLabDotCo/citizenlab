@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { omit } from 'lodash-es';
+import { isEqual, omit, uniq } from 'lodash-es';
 
 import { useParams } from 'react-router-dom';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
@@ -24,6 +24,7 @@ import Tag from './Tag';
 import AutotaggingModal from './AutoTaggingModal';
 import TagCount from './TagCount';
 import AddTag from './AddTag';
+import TagAssistance from './TagAssistance';
 
 import { useQueryClient } from '@tanstack/react-query';
 import inputsKeys from 'api/analysis_inputs/keys';
@@ -67,10 +68,21 @@ const TagContainer = styled(ListItem)`
 `;
 
 const Tags = () => {
+  const [height, setHeight] = useState(0);
+
+  const measuredRef = useCallback((node) => {
+    if (node !== null) {
+      setHeight(node.getBoundingClientRect().height);
+    }
+  }, []);
+
   const { formatMessage } = useIntl();
   const [autotaggingModalIsOpened, setAutotaggingModalIsOpened] =
     useState(false);
   const [createdTagId, setCreatedTagId] = useState<string | null>(null);
+  const [tagAssistanceTagId, setTagAssistanceTagId] = useState<string | null>(
+    null
+  );
 
   const filters = useAnalysisFilterParams();
 
@@ -92,6 +104,7 @@ const Tags = () => {
         tagElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
       setCreatedTagId(null);
+      setTagAssistanceTagId(createdTagId);
     }
   }, [createdTagId, tags]);
 
@@ -112,6 +125,15 @@ const Tags = () => {
   // below of code using `selectedTags`
   // https://github.com/microsoft/TypeScript/issues/44373
   const selectedTags = filters.tag_ids as any[] | undefined;
+
+  // We show the empty state in case the only tags there are the initial
+  // onboarding example tags
+  const emptyState =
+    tags?.data &&
+    isEqual(
+      ['onboarding_example'],
+      uniq(tags.data.map((tag) => tag.attributes.tag_type))
+    );
 
   const toggleTagContainerClick = (id: string) => {
     updateSearchParams({ tag_ids: [id] });
@@ -137,58 +159,84 @@ const Tags = () => {
   };
 
   return (
-    <Box>
-      <Box>
-        <Button
-          onClick={() => setAutotaggingModalIsOpened(true)}
-          icon="flash"
-          mb="12px"
-          size="s"
-          buttonStyle="admin-dark"
-        >
-          {formatMessage(translations.autoTag)}
-          {!tags?.data.length && (
-            <BlickingIcon
-              name={'dot'}
-              width="16px"
-              height="16px"
-              fill={colors.white}
-              ml="8px"
+    <Box
+      display="flex"
+      flexDirection="column"
+      height="100%"
+      overflow="auto"
+      p="12px"
+    >
+      <TagAssistance
+        tagId={tagAssistanceTagId}
+        onHide={() => setTagAssistanceTagId(null)}
+      />
+      <Modal
+        opened={autotaggingModalIsOpened}
+        close={() => setAutotaggingModalIsOpened(false)}
+      >
+        <AutotaggingModal
+          onCloseModal={() => setAutotaggingModalIsOpened(false)}
+        />
+      </Modal>
+      <Box
+        position="fixed"
+        bgColor={colors.white}
+        zIndex="2"
+        ref={measuredRef}
+        w="265px"
+      >
+        <Box>
+          <Button
+            id="auto-tag-button"
+            onClick={() => setAutotaggingModalIsOpened(true)}
+            icon="flash"
+            mb="12px"
+            size="s"
+            buttonStyle="admin-dark"
+          >
+            {formatMessage(translations.autoTag)}
+            {emptyState && (
+              <BlickingIcon
+                name={'dot'}
+                width="16px"
+                height="16px"
+                fill={colors.white}
+                ml="8px"
+              />
+            )}
+          </Button>
+          <AddTag onCreateTag={(tagId) => setCreatedTagId(tagId)} />
+        </Box>
+        <Box>
+          <TagContainer
+            tabIndex={0}
+            onClick={() => removeSearchParams(['tag_ids'])}
+            className={!selectedTags ? 'selected' : ''}
+          >
+            {formatMessage(translations.allInputs)}
+            <TagCount
+              count={inputsTotal}
+              totalCount={inputsTotal}
+              filteredCount={filteredInputsTotal}
             />
-          )}
-        </Button>
-        <AddTag onCreateTag={(tagId) => setCreatedTagId(tagId)} />
+          </TagContainer>
+          <TagContainer
+            tabIndex={0}
+            onClick={() => updateSearchParams({ tag_ids: [null] })}
+            className={
+              selectedTags && selectedTags[0] === null ? 'selected' : ''
+            }
+          >
+            {formatMessage(translations.inputsWithoutTags)}
+            <TagCount
+              count={inputsWithoutTags}
+              totalCount={inputsTotal}
+              filteredCount={filteredInputsWithoutTags}
+            />
+          </TagContainer>
+        </Box>
       </Box>
-      <Box>
-        <TagContainer
-          tabIndex={0}
-          onClick={() => removeSearchParams(['tag_ids'])}
-          className={!selectedTags ? 'selected' : ''}
-        >
-          {formatMessage(translations.allInputs)}
-          <TagCount
-            count={inputsTotal}
-            totalCount={inputsTotal}
-            filteredCount={filteredInputsTotal}
-          />
-        </TagContainer>
-        <TagContainer
-          tabIndex={0}
-          onClick={() => updateSearchParams({ tag_ids: [null] })}
-          className={selectedTags && selectedTags[0] === null ? 'selected' : ''}
-        >
-          {formatMessage(translations.inputsWithoutTags)}
-          <TagCount
-            count={inputsWithoutTags}
-            totalCount={inputsTotal}
-            filteredCount={filteredInputsWithoutTags}
-          />
-        </TagContainer>
-        {!isLoadingTags && tags?.data.length === 0 && (
-          <Text p="6px" color="grey400">
-            {formatMessage(translations.noTags)}
-          </Text>
-        )}
+      <Box flex="1" mt={`${height - 1}px`} w="265px">
         {tags?.data.map((tag) => (
           <TagContainer
             id={`tag-${tag.id}`}
@@ -241,15 +289,14 @@ const Tags = () => {
             </Box>
           </TagContainer>
         ))}
+        {!isLoadingTags && emptyState && (
+          <Box>
+            <Text p="6px" color="grey600" textAlign="center">
+              {formatMessage(translations.noTags)}
+            </Text>
+          </Box>
+        )}
       </Box>
-      <Modal
-        opened={autotaggingModalIsOpened}
-        close={() => setAutotaggingModalIsOpened(false)}
-      >
-        <AutotaggingModal
-          onCloseModal={() => setAutotaggingModalIsOpened(false)}
-        />
-      </Modal>
     </Box>
   );
 };

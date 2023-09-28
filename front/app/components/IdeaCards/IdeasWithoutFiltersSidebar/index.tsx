@@ -35,7 +35,7 @@ import { media, isRtl } from 'utils/styleUtils';
 import {
   ideaDefaultSortMethodFallback,
   IdeaDefaultSortMethod,
-} from 'services/participationContexts';
+} from 'utils/participationContexts';
 
 // typings
 import { isFieldEnabled } from 'utils/projectUtils';

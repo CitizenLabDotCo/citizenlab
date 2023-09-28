@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Title } from '@citizenlab/cl2-component-library';
 import { useIntl } from 'utils/cl-intl';
-import { isAdmin } from 'services/permissions/roles';
+import { isAdmin } from 'utils/permissions/roles';
 import useAuthUser from 'api/me/useAuthUser';
 import { isNilOrError } from 'utils/helperUtils';
 import messages from './messages';

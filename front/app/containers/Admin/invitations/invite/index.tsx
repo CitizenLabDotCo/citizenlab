@@ -11,7 +11,7 @@ import { getBase64FromFile } from 'utils/fileUtils';
 
 // components
 import Error from 'components/UI/Error';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Text } from '@citizenlab/cl2-component-library';
 import Tabs from 'components/UI/Tabs';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionField } from 'components/admin/Section';
@@ -51,6 +51,7 @@ import { colors } from 'utils/styleUtils';
 
 // typings
 import { Locale, IOption } from 'typings';
+import Warning from 'components/UI/Warning';
 
 const StyledTabs = styled(Tabs)`
   margin-bottom: 35px;
@@ -425,6 +426,13 @@ const Invitations = () => {
             selectedValue={selectedView || 'import'}
             onClick={resetWithView}
           />
+          <Box mb={selectedView === 'template' ? '16px' : '36px'}>
+            <Warning>
+              <Text color="primary" m="0px">
+                {formatMessage(messages.invitationExpirationWarning)}
+              </Text>
+            </Warning>
+          </Box>
           {selectedView === 'template' && (
             <TemplateTab
               filetypeError={filetypeError}
@@ -458,7 +466,6 @@ const Invitations = () => {
               selectedInviteText={selectedInviteText}
             />
           </Suspense>
-
           <SectionField>
             <Box display="flex" alignItems="center" paddingTop="30px">
               <SubmitWrapper

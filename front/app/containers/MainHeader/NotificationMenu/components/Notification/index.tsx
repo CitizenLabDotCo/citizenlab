@@ -6,8 +6,8 @@ import AdminRightsReceivedNotification from '../AdminRightsReceivedNotification'
 import CommentDeletedByAdminNotification from '../CommentDeletedByAdminNotification';
 import CommentMarkedAsSpamNotification from '../CommentMarkedAsSpamNotification';
 import CommentOnYourCommentNotification from '../CommentOnYourCommentNotification';
-import CommentOnYourIdeaNotification from '../CommentOnYourIdeaNotification';
-import CommentOnYourInitiativeNotification from '../CommentOnYourInitiativeNotification';
+import CommentOnIdeaYouFollowNotification from '../CommentOnIdeaYouFollowNotification';
+import CommentOnInitiativeYouFollowNotification from '../CommentOnInitiativeYouFollowNotification';
 import CosponsorOfYourInitiativeNotification from '../CosponsorOfYourInitiativeNotification';
 import EventUpcomingNotification from '../EventUpcomingNotification';
 import IdeaAssignedToYouNotification from '../IdeaAssignedToYouNotification';
@@ -20,21 +20,14 @@ import InvitationToCosponsorInitiativeNotification from '../InvitationToCosponso
 import MentionInCommentNotification from '../MentionInCommentNotification';
 import InternalCommentNotification from '../InternalCommentNotification';
 import MentionInOfficialFeedbackNotification from '../MentionInOfficialFeedbackNotification';
-import OfficialFeedbackOnCommentedIdeaNotification from '../OfficialFeedbackOnCommentedIdeaNotification';
-import OfficialFeedbackOnCommentedInitiativeNotification from '../OfficialFeedbackOnCommentedInitiativeNotification';
-import OfficialFeedbackOnReactedIdeaNotification from '../OfficialFeedbackOnReactedIdeaNotification';
-import OfficialFeedbackOnReactedInitiativeNotification from '../OfficialFeedbackOnReactedInitiativeNotification';
-import OfficialFeedbackOnYourIdeaNotification from '../OfficialFeedbackOnYourIdeaNotification';
-import OfficialFeedbackOnYourInitiativeNotification from '../OfficialFeedbackOnYourInitiativeNotification';
+import OfficialFeedbackOnIdeaYouFollowNotification from '../OfficialFeedbackOnIdeaYouFollowNotification';
+import OfficialFeedbackOnInitiativeYouFollowNotification from '../OfficialFeedbackOnInitiativeYouFollowNotification';
 import ProjectModerationRightsReceivedNotification from '../ProjectModerationRightsReceivedNotification';
 import ProjectPhaseStartedNotification from '../ProjectPhaseStartedNotification';
 import ProjectPhaseUpcomingNotification from '../ProjectPhaseUpcomingNotification';
-import StatusChangeOfYourIdeaNotification from '../StatusChangeOfYourIdeaNotification';
-import StatusChangeOfYourInitiativeNotification from '../StatusChangeOfYourInitiativeNotification';
-import StatusChangeOnCommentedIdeaNotification from '../StatusChangeOnCommentedIdeaNotification';
-import StatusChangeOnCommentedInitiativeNotification from '../StatusChangeOnCommentedInitiativeNotification';
-import StatusChangeOnReactedIdeaNotification from '../StatusChangeOnReactedIdeaNotification';
-import StatusChangeOnReactedInitiativeNotification from '../StatusChangeOnReactedInitiativeNotification';
+import ProjectPublishedNotification from '../ProjectPublishedNotification';
+import StatusChangeOnIdeaYouFollowNotification from '../StatusChangeOnIdeaYouFollowNotification';
+import StatusChangeOnInitiativeYouFollowNotification from '../StatusChangeOnInitiativeYouFollowNotification';
 import ThresholdReachedForAdminNotification from '../ThresholdReachedForAdminNotification';
 import ProjectFolderModerationRightsReceivedNotification from '../ProjectFolderModerationRightsReceivedNotification';
 import VotingBasketSubmittedNotification from '../VotingBasketSubmittedNotification';
@@ -48,8 +41,8 @@ import {
   ICommentDeletedByAdminNotificationData,
   ICommentMarkedAsSpamNotificationData,
   ICommentOnYourCommentNotificationData,
-  ICommentOnYourIdeaNotificationData,
-  ICommentOnYourInitiativeNotificationData,
+  ICommentOnIdeaYouFollowNotificationData,
+  ICommentOnInitiativeYouFollowNotificationData,
   ICosponsorOfYourInitiativeNotificationData,
   IEventUpcomingNotificationData,
   IIdeaAssignedToYouNotificationData,
@@ -62,21 +55,14 @@ import {
   IMentionInCommentNotificationData,
   IInternalCommentNotificationData,
   IMentionInOfficialFeedbackNotificationData,
-  IOfficialFeedbackOnCommentedIdeaNotificationData,
-  IOfficialFeedbackOnCommentedInitiativeNotificationData,
-  IOfficialFeedbackOnReactedIdeaNotificationData,
-  IOfficialFeedbackOnReactedInitiativeNotificationData,
-  IOfficialFeedbackOnYourIdeaNotificationData,
-  IOfficialFeedbackOnYourInitiativeNotificationData,
+  IOfficialFeedbackOnIdeaYouFollowNotificationData,
+  IOfficialFeedbackOnInitiativeYouFollowNotificationData,
   IProjectModerationRightsReceivedNotificationData,
   IProjectPhaseStartedNotificationData,
   IProjectPhaseUpcomingNotificationData,
-  IStatusChangeOfYourIdeaNotificationData,
-  IStatusChangeOfYourInitiativeNotificationData,
-  IStatusChangeOnCommentedIdeaNotificationData,
-  IStatusChangeOnCommentedInitiativeNotificationData,
-  IStatusChangeOnReactedIdeaNotificationData,
-  IStatusChangeOnReactedInitiativeNotificationData,
+  IProjectPublishedNotificationData,
+  IStatusChangeOnIdeaYouFollowNotificationData,
+  IStatusChangeOnInitiativeYouFollowNotificationData,
   IThresholdReachedForAdminNotificationData,
   IProjectFolderModerationRightsReceivedNotificationData,
   IVotingBasketSubmittedNotificationData,
@@ -123,17 +109,17 @@ const Notification = ({ notification }: Props) => {
           notification={notification as ICommentOnYourCommentNotificationData}
         />
       );
-    case 'comment_on_your_idea':
+    case 'comment_on_idea_you_follow':
       return (
-        <CommentOnYourIdeaNotification
-          notification={notification as ICommentOnYourIdeaNotificationData}
+        <CommentOnIdeaYouFollowNotification
+          notification={notification as ICommentOnIdeaYouFollowNotificationData}
         />
       );
-    case 'comment_on_your_initiative':
+    case 'comment_on_initiative_you_follow':
       return (
-        <CommentOnYourInitiativeNotification
+        <CommentOnInitiativeYouFollowNotification
           notification={
-            notification as ICommentOnYourInitiativeNotificationData
+            notification as ICommentOnInitiativeYouFollowNotificationData
           }
         />
       );
@@ -227,51 +213,19 @@ const Notification = ({ notification }: Props) => {
           }
         />
       );
-    case 'official_feedback_on_commented_idea':
+    case 'official_feedback_on_idea_you_follow':
       return (
-        <OfficialFeedbackOnCommentedIdeaNotification
+        <OfficialFeedbackOnIdeaYouFollowNotification
           notification={
-            notification as IOfficialFeedbackOnCommentedIdeaNotificationData
+            notification as IOfficialFeedbackOnIdeaYouFollowNotificationData
           }
         />
       );
-    case 'official_feedback_on_commented_initiative':
+    case 'official_feedback_on_initiative_you_follow':
       return (
-        <OfficialFeedbackOnCommentedInitiativeNotification
+        <OfficialFeedbackOnInitiativeYouFollowNotification
           notification={
-            notification as IOfficialFeedbackOnCommentedInitiativeNotificationData
-          }
-        />
-      );
-    case 'official_feedback_on_reacted_idea':
-      return (
-        <OfficialFeedbackOnReactedIdeaNotification
-          notification={
-            notification as IOfficialFeedbackOnReactedIdeaNotificationData
-          }
-        />
-      );
-    case 'official_feedback_on_reacted_initiative':
-      return (
-        <OfficialFeedbackOnReactedInitiativeNotification
-          notification={
-            notification as IOfficialFeedbackOnReactedInitiativeNotificationData
-          }
-        />
-      );
-    case 'official_feedback_on_your_idea':
-      return (
-        <OfficialFeedbackOnYourIdeaNotification
-          notification={
-            notification as IOfficialFeedbackOnYourIdeaNotificationData
-          }
-        />
-      );
-    case 'official_feedback_on_your_initiative':
-      return (
-        <OfficialFeedbackOnYourInitiativeNotification
-          notification={
-            notification as IOfficialFeedbackOnYourInitiativeNotificationData
+            notification as IOfficialFeedbackOnInitiativeYouFollowNotificationData
           }
         />
       );
@@ -295,49 +249,25 @@ const Notification = ({ notification }: Props) => {
           notification={notification as IProjectPhaseUpcomingNotificationData}
         />
       );
-    case 'status_change_of_your_idea':
+    case 'project_published':
       return (
-        <StatusChangeOfYourIdeaNotification
-          notification={notification as IStatusChangeOfYourIdeaNotificationData}
+        <ProjectPublishedNotification
+          notification={notification as IProjectPublishedNotificationData}
         />
       );
-    case 'status_change_of_your_initiative':
+    case 'status_change_on_idea_you_follow':
       return (
-        <StatusChangeOfYourInitiativeNotification
+        <StatusChangeOnIdeaYouFollowNotification
           notification={
-            notification as IStatusChangeOfYourInitiativeNotificationData
+            notification as IStatusChangeOnIdeaYouFollowNotificationData
           }
         />
       );
-    case 'status_change_on_commented_idea':
+    case 'status_change_on_initiative_you_follow':
       return (
-        <StatusChangeOnCommentedIdeaNotification
+        <StatusChangeOnInitiativeYouFollowNotification
           notification={
-            notification as IStatusChangeOnCommentedIdeaNotificationData
-          }
-        />
-      );
-    case 'status_change_on_commented_initiative':
-      return (
-        <StatusChangeOnCommentedInitiativeNotification
-          notification={
-            notification as IStatusChangeOnCommentedInitiativeNotificationData
-          }
-        />
-      );
-    case 'status_change_on_reacted_idea':
-      return (
-        <StatusChangeOnReactedIdeaNotification
-          notification={
-            notification as IStatusChangeOnReactedIdeaNotificationData
-          }
-        />
-      );
-    case 'status_change_on_reacted_initiative':
-      return (
-        <StatusChangeOnReactedInitiativeNotification
-          notification={
-            notification as IStatusChangeOnReactedInitiativeNotificationData
+            notification as IStatusChangeOnInitiativeYouFollowNotificationData
           }
         />
       );

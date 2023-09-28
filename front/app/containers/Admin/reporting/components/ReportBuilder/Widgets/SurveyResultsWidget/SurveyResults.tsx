@@ -4,7 +4,7 @@ import React, { useMemo } from 'react';
 import useLocale from 'hooks/useLocale';
 import useProjectById from 'api/projects/useProjectById';
 import usePhase from 'api/phases/usePhase';
-import useFormResults from 'hooks/useFormResults';
+import useFormResults from 'api/survey_results/useSurveyResults';
 
 // components
 import { Box, Text } from '@citizenlab/cl2-component-library';
@@ -35,7 +35,7 @@ const SurveyResults = ({ projectId, phaseId, shownQuestions }: Props) => {
   const localize = useLocalize();
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId ?? null);
-  const formResults = useFormResults({
+  const { data: formResults } = useFormResults({
     projectId,
     phaseId,
   });
@@ -43,15 +43,21 @@ const SurveyResults = ({ projectId, phaseId, shownQuestions }: Props) => {
   const resultRows = useMemo(() => {
     if (isNilOrError(formResults)) return null;
 
-    const { results } = formResults;
-    return createResultRows(results, shownQuestions);
+    const { results } = formResults.data.attributes;
+    // Filtering out qualitative questions
+    const fitleredResults = results.filter((result) => {
+      return (
+        result.inputType !== 'text' && result.inputType !== 'multiline_text'
+      );
+    });
+    return createResultRows(fitleredResults, shownQuestions);
   }, [formResults, shownQuestions]);
 
   if (
     isNilOrError(formResults) ||
     isNilOrError(locale) ||
     !project ||
-    formResults.results.length === 0
+    formResults.data.attributes.results.length === 0
   ) {
     return <NoData message={messages.surveyNoQuestions} />;
   }
@@ -59,7 +65,7 @@ const SurveyResults = ({ projectId, phaseId, shownQuestions }: Props) => {
   if (resultRows === null) return null;
 
   const surveyResponseMessage = formatMessage(messages.totalParticipants, {
-    numberOfParticipants: formResults.totalSubmissions,
+    numberOfParticipants: formResults.data.attributes.totalSubmissions,
   });
 
   return (

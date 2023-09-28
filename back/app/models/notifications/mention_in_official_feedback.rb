@@ -76,12 +76,9 @@ module Notifications
       official_feedback = activity.item
       recipient_id = activity.payload['mentioned_user']
       initiator_id = official_feedback&.user_id
-      participant_ids = [official_feedback.post.author_id]
-      participant_ids += official_feedback.post.reactions.pluck(:user_id)
-      participant_ids += official_feedback.post.comments.pluck(:author_id)
-      participant_ids.uniq!
+      follower_user_ids = official_feedback.post.followers.pluck(:user_id)
 
-      if recipient_id && initiator_id && (recipient_id != initiator_id) && participant_ids.exclude?(recipient_id)
+      if recipient_id && initiator_id && (recipient_id != initiator_id) && follower_user_ids.exclude?(recipient_id)
         attributes = {
           recipient_id: recipient_id,
           initiating_user_id: initiator_id,

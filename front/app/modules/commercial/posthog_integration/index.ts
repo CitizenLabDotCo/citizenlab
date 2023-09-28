@@ -11,7 +11,7 @@ import authUserStream from 'api/me/authUserStream';
 import { events$, pageChanges$ } from 'utils/analytics';
 import { isNilOrError } from 'utils/helperUtils';
 
-import { isAdmin, isRegularUser } from 'services/permissions/roles';
+import { isAdmin, isRegularUser } from 'utils/permissions/roles';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import { IUser } from 'api/users/types';
 import appConfigurationStream from 'api/app_configuration/appConfigurationStream';

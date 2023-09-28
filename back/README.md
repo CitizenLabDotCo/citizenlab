@@ -19,7 +19,6 @@ docker-compose run --user "$(id -u):$(id -g)" --rm web /bin/bash
 ```
 
 Mac or Windows:
-
 ```
 docker-compose run --rm web /bin/bash
 ```
@@ -52,30 +51,17 @@ make reset-dev-env
 ## Testing
 
 ### Unit and integration tests
-Resetting the database, with the previous command, upsets the testing database as well. Before running the tests, it's sometimes necessary to put it back in it's default shape. We can do this with the following command:
+To run the tests:
 
-```
-docker-compose run --rm --user "$(id -u):$(id -g)" -e RAILS_ENV=test web bundle exec rake db:environment:set db:drop db:create db:schema:load
-```
+- If you're on Linux, use this command:
+  ```bash
+  docker-compose run --rm --user "$(id -u):$(id -g)" web rspec
+  ```
 
-Mac or Windows:
-
-```
-docker-compose run --rm -e RAILS_ENV=test web bundle exec rake db:environment:set db:drop db:create db:schema:load
-```
-
-To actually run the tests:
-```
-docker-compose run --rm --user "$(id -u):$(id -g)" web rspec
-
-```
-
-Mac or Windows:
-
-```
-docker-compose run --rm web rspec
-
-```
+- If you're on Mac or Windows, run:
+  ```bash
+  docker-compose run --rm web rspec
+  ```
 
 For debugging random test failures, it's can be useful to run the tests multiple times, but stop as soon as one of the test runs fails (for Mac or Windows):
 
