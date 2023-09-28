@@ -186,8 +186,6 @@ module BulkImportIdeas
         []
       end
 
-      binding.pry
-
       {
         form_parsed_ideas: form_parsed_ideas,
         text_parsed_ideas: text_parsed_ideas
