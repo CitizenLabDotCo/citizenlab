@@ -527,7 +527,7 @@
   "app.containers.Admin.PagesAndMenu.addButton": "Add to navbar",
   "app.containers.Admin.PagesAndMenu.components.NavbarItemForm.navbarItemTitle": "Name in navbar",
   "app.containers.Admin.PagesAndMenu.components.deletePageConfirmationHidden": "Are you sure you want to delete this page? This cannot be undone.",
-  "app.containers.Admin.PagesAndMenu.components.emptyTitleError": "Provide title for all languages",
+  "app.containers.Admin.PagesAndMenu.components.emptyTitleError1": "Provide a title for all languages",
   "app.containers.Admin.PagesAndMenu.components.hiddenFromNavigation": "Other available pages",
   "app.containers.Admin.PagesAndMenu.components.savePage": "Save page",
   "app.containers.Admin.PagesAndMenu.components.saveSuccess": "Page successfully saved",
