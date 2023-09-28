@@ -234,6 +234,13 @@ describe('Survey builder', () => {
       `[data-cy="e2e-${snakeCase(multipleChoiceChooseManyTitle)}"]`
     ).should('exist');
     cy.get(`[data-cy="e2e-${snakeCase(linearScaleTitle)}"]`).should('exist');
+
+    // Verify that when trying to edit the survey, a warning modal is now shown
+    cy.visit(`admin/projects/${projectId}/native-survey`);
+    cy.get(`[data-cy="e2e-edit-survey-content"]`).click();
+    cy.get(`[data-cy="e2e-edit-warning-modal"]`).should('exist');
+    cy.get(`[data-cy="e2e-edit-warning-modal-continue"]`).click();
+    cy.url().should('include', `/native-survey/edit`);
   });
 
   it('navigates to live project in a new tab when view project button in content builder is clicked', () => {

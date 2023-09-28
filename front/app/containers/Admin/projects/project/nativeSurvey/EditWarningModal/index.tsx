@@ -41,7 +41,7 @@ const EditWarningModal = ({
       }}
       header={formatMessage(messages.title)}
     >
-      <Box m="24px">
+      <Box m="24px" data-cy="e2e-edit-warning-modal">
         <Box mb="32px" display="flex">
           <Text m="0px" fontSize="s">
             {formatMessage(messages.loseDataWarning)}{' '}
@@ -113,6 +113,7 @@ const EditWarningModal = ({
             onClick={() => {
               clHistory.push(editFormLink);
             }}
+            data-cy="e2e-edit-warning-modal-continue"
           >
             {formatMessage(messages.yesContinue)}
           </Button>
