@@ -7,22 +7,16 @@ import { DndProvider } from 'react-dnd';
 import { isNilOrError } from 'utils/helperUtils';
 
 // api
-import { IProjectData } from 'api/projects/types';
+import useInitiativeStatuses from 'api/initiative_statuses/useInitiativeStatuses';
+import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
+import useTopics from 'api/topics/useTopics';
+import useProjectAllowedInputTopics from 'api/project_allowed_input_topics/useProjectAllowedInputTopics';
 
 // resources
-import GetIdeaStatuses, {
-  GetIdeaStatusesChildProps,
-} from 'resources/GetIdeaStatuses';
-import GetInitiativeStatuses, {
-  GetInitiativeStatusesChildProps,
-} from 'resources/GetInitiativeStatuses';
 import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
 import GetInitiatives, {
   GetInitiativesChildProps,
 } from 'resources/GetInitiatives';
-import { TPhases } from 'api/phases/types';
-import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
-import GetProjectAllowedInputTopics from 'resources/GetProjectAllowedInputTopics';
 import { getTopicIds } from 'api/project_allowed_input_topics/util/getProjectTopicsIds';
 
 // components
@@ -43,6 +37,13 @@ import LazyStatusChangeModal from './components/StatusChangeModal/LazyStatusChan
 import Outlet from 'components/Outlet';
 import { useSearchParams } from 'react-router-dom';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+
+// typings
+import { IIdeaStatuses } from 'api/idea_statuses/types';
+import { IInitiativeStatuses } from 'api/initiative_statuses/types';
+import { IProjectData } from 'api/projects/types';
+import { ITopics } from 'api/topics/types';
+import { TPhases } from 'api/phases/types';
 
 const StyledExportMenu = styled(ExportMenu)`
   margin-left: auto;
@@ -115,11 +116,12 @@ interface InputProps {
 
 interface DataProps {
   posts: GetIdeasChildProps | GetInitiativesChildProps;
-  postStatuses: GetIdeaStatusesChildProps | GetInitiativeStatusesChildProps;
-  topics: GetTopicsChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps {
+  postStatuses?: IIdeaStatuses | IInitiativeStatuses;
+  topicsData?: ITopics['data'];
+}
 
 export type TFilterMenu = 'topics' | 'phases' | 'projects' | 'statuses';
 export type PreviewMode = 'view' | 'edit';
@@ -133,7 +135,7 @@ const PostManager = ({
   projectId,
   phases,
   postStatuses,
-  topics,
+  topicsData,
 }: Props) => {
   const [search] = useSearchParams();
   const [selection, setSelection] = useState<Set<string>>(new Set());
@@ -203,10 +205,6 @@ const PostManager = ({
 
   const resetSelection = () => {
     setSelection(new Set());
-  };
-
-  const handleChangeSelection = (selection: Set<string>) => {
-    setSelection(selection);
   };
   // End selection management
 
@@ -285,7 +283,7 @@ const PostManager = ({
   const { onChangePhase, selectedPhaseId, selectedStatus } =
     getNonSharedParams();
 
-  if (!isNilOrError(topics)) {
+  if (topicsData) {
     return (
       <>
         <TopActionBar>
@@ -358,8 +356,8 @@ const PostManager = ({
                 onChangeActiveFilterMenu={handleChangeActiveFilterMenu}
                 phases={!isNilOrError(phases) ? phases : undefined}
                 projects={!isNilOrError(projects) ? projects : undefined}
-                statuses={!isNilOrError(postStatuses) ? postStatuses : []}
-                topics={topics}
+                statuses={postStatuses?.data ?? []}
+                topics={topicsData}
                 selectedPhase={selectedPhaseId}
                 selectedTopics={selectedTopics}
                 selectedStatus={selectedStatus}
@@ -380,11 +378,11 @@ const PostManager = ({
               onChangeSort={posts.onChangeSorting}
               posts={list || undefined}
               phases={!isNilOrError(phases) ? phases : undefined}
-              statuses={!isNilOrError(postStatuses) ? postStatuses : []}
+              statuses={postStatuses?.data ?? []}
               selection={selection}
               selectedPhaseId={selectedPhaseId}
               selectedProjectId={selectedProjectId}
-              onChangeSelection={handleChangeSelection}
+              onChangeSelection={setSelection}
               currentPageNumber={posts.currentPage}
               lastPageNumber={posts.lastPage}
               onChangePage={posts.onChangePage}
@@ -448,42 +446,52 @@ const Data = adopt<DataProps, InputProps>({
 
     return null;
   },
-  postStatuses: ({ type, render }) =>
-    type === 'Initiatives' ? (
-      <GetInitiativeStatuses>{render}</GetInitiativeStatuses>
-    ) : (
-      <GetIdeaStatuses>{render}</GetIdeaStatuses>
-    ),
-  topics: ({ type, projectId, render }) => {
-    if (type === 'Initiatives') {
-      return <GetTopics excludeCode="custom">{render}</GetTopics>;
-    }
-
-    if (type === 'ProjectIdeas' && projectId) {
-      return (
-        <GetProjectAllowedInputTopics projectId={projectId}>
-          {(projectAllowedInputTopics) => {
-            const topicIds = getTopicIds(projectAllowedInputTopics);
-
-            return <GetTopics topicIds={topicIds}>{render}</GetTopics>;
-          }}
-        </GetProjectAllowedInputTopics>
-      );
-    }
-
-    if (type === 'AllIdeas') {
-      return <GetTopics>{render}</GetTopics>;
-    }
-
-    return null;
-  },
 });
 
 export default (inputProps: InputProps) => {
+  const { type } = inputProps;
+  const projectId = inputProps.projectId ?? undefined;
+
+  const { data: initiativeStatuses } = useInitiativeStatuses({
+    enabled: type === 'Initiatives',
+  });
+  const { data: ideaStatuses } = useIdeaStatuses({
+    enabled: type !== 'Initiatives',
+  });
+
+  const postStatuses = initiativeStatuses || ideaStatuses;
+
+  const { data: initiativeTopics } = useTopics(
+    { excludeCode: 'custom' },
+    { enabled: type === 'Initiatives' }
+  );
+  const { data: ideaTopics } = useTopics(
+    {},
+    { enabled: type !== 'Initiatives' }
+  );
+
+  const { data: projectAllowedInputTopics } = useProjectAllowedInputTopics({
+    projectId: type === 'ProjectIdeas' ? projectId : undefined,
+  });
+  const topicIds = getTopicIds(projectAllowedInputTopics?.data);
+  const topicIdsSet = topicIds ? new Set(topicIds) : undefined;
+
+  const topicsData =
+    initiativeTopics ?? topicIdsSet
+      ? ideaTopics?.data.filter((topic) => topicIdsSet?.has(topic.id))
+      : ideaTopics?.data;
+
   return (
     <DndProvider backend={HTML5Backend}>
       <Data {...inputProps}>
-        {(dataProps) => <PostManager {...inputProps} {...dataProps} />}
+        {(dataProps) => (
+          <PostManager
+            {...inputProps}
+            {...dataProps}
+            postStatuses={postStatuses}
+            topicsData={topicsData}
+          />
+        )}
       </Data>
     </DndProvider>
   );
