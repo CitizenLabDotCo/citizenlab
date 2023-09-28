@@ -31,14 +31,6 @@ module Analysis
     has_many :taggings, class_name: 'Analysis::Tagging', through: :tags
     has_many :background_tasks, class_name: 'Analysis::BackgroundTask', dependent: :destroy
     has_many :insights, class_name: 'Analysis::Insight', dependent: :destroy
-    has_many :bookmarked_insights, -> { where(analysis_insights: { bookmarked: true }) }, class_name: 'Analysis::Insight'
-    has_many(
-      :bookmarked_insightables,
-      through: :bookmarked_insights,
-      source: :insightable,
-      source_type: %w[Analysis::Summary Analysis::Question],
-      class_name: 'Analysis::Insight'
-    )
 
     validate :project_xor_phase_present
     validate :project_or_phase_form_context, on: :create

@@ -12,6 +12,11 @@ module Analysis
           insights = @analysis.insights
             .order(created_at: :desc)
             .includes(insightable: :background_task)
+
+            if params[:bookmarked].present?
+              insights = insights.where(bookmarked: true)
+            end
+            
           render json: WebApi::V1::InsightSerializer.new(
             insights,
             params: jsonapi_serializer_params,
