@@ -126,7 +126,7 @@ const ProjectDescription = memo<
     }
   }, [project, formValues, updateProject]);
 
-  const apiError = error?.json?.errors || {};
+  const apiError = error?.errors || {};
 
   if (!isNilOrError(project)) {
     return (

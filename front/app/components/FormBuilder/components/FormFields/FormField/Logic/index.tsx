@@ -21,7 +21,7 @@ import {
 } from './utils';
 
 // typings
-import { IFlatCustomField } from 'services/formCustomFields';
+import { IFlatCustomField } from 'api/custom_fields/types';
 
 interface Props {
   field: IFlatCustomField;

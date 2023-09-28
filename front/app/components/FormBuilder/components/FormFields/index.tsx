@@ -21,7 +21,7 @@ import { DragAndDropResult, NestedGroupingStructure } from '../../edit/utils';
 import {
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
-} from 'services/formCustomFields';
+} from 'api/custom_fields/types';
 
 import { DragAndDrop, Drag, Drop } from '../DragAndDrop';
 

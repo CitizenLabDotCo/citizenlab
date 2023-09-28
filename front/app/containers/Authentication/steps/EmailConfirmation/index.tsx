@@ -20,7 +20,10 @@ import { string, object } from 'yup';
 import Input from 'components/HookForm/Input';
 
 // errors
-import { isCLErrorsIsh, handleCLErrorsIsh } from 'utils/errorUtils';
+import {
+  isCLErrorsWrapper,
+  handleHookFormSubmissionError,
+} from 'utils/errorUtils';
 
 // typings
 import { State, SetError } from '../../typings';
@@ -81,8 +84,8 @@ const EmailConfirmation = ({
     try {
       await onConfirm(code);
     } catch (e) {
-      if (isCLErrorsIsh(e)) {
-        handleCLErrorsIsh(e, methods.setError);
+      if (isCLErrorsWrapper(e)) {
+        handleHookFormSubmissionError(e, methods.setError);
         return;
       }
 

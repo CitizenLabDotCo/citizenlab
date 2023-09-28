@@ -14,7 +14,7 @@ import {
   IDestinationConfig,
   registerDestination,
 } from 'components/ConsentManager/destinations';
-import { isAdmin, isRegularUser } from 'services/permissions/roles';
+import { isAdmin, isRegularUser } from 'utils/permissions/roles';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import { getFullName } from 'utils/textUtils';
 

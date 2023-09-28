@@ -17,7 +17,7 @@ import messages from '../../../messages';
 import T from 'components/T';
 
 // utils
-import { IFlatCustomField } from 'services/formCustomFields';
+import { IFlatCustomField } from 'api/custom_fields/types';
 
 interface Props {
   hasErrors: boolean;

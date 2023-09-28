@@ -6,7 +6,7 @@ import Avatar from 'components/Avatar';
 import UserName from 'components/UI/UserName';
 
 // services
-import { canModerateProject } from 'services/permissions/rules/projectPermissions';
+import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 // hooks
 import useUserById from 'api/users/useUserById';

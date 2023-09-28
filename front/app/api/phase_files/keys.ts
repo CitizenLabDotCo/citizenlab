@@ -14,14 +14,6 @@ const PhaseFilesKeys = {
   list: ({ phaseId }: { phaseId: string | null }) => [
     { ...baseKey, operation: 'list', parameters: { phaseId } },
   ],
-  items: () => [{ ...baseKey, operation: 'item' }],
-  item: ({ phaseId, fileId }: { phaseId: string; fileId: string }) => [
-    {
-      ...baseKey,
-      operation: 'item',
-      parameters: { phaseId, fileId },
-    },
-  ],
 } satisfies QueryKeys;
 
 export default PhaseFilesKeys;

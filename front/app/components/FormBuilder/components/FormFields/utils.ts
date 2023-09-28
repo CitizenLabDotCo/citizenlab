@@ -2,7 +2,7 @@
 import {
   ICustomFieldInputType,
   IFlatCustomField,
-} from 'services/formCustomFields';
+} from 'api/custom_fields/types';
 
 // styling
 import { colors } from '@citizenlab/cl2-component-library';

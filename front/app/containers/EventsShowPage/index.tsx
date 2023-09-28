@@ -17,6 +17,8 @@ import VerticalCenterer from 'components/VerticalCenterer';
 import MobileTopBar from './components/MobileTopBar';
 import EventDescription from './components/EventDescription';
 import InformationSectionMobile from './components/InformationSectionMobile';
+import Image from 'components/UI/Image';
+import ProjectLink from './components/ProjectLink';
 
 // styling
 import styled from 'styled-components';
@@ -24,16 +26,16 @@ import styled from 'styled-components';
 // router
 import { useParams } from 'react-router-dom';
 
-// api
+// hooks
 import useEvent from 'api/events/useEvent';
 import useLocale from 'hooks/useLocale';
 import useProjectById from 'api/projects/useProjectById';
+import useEventImage from 'api/event_images/useEventImage';
+import useLocalize from 'hooks/useLocalize';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { isUnauthorizedRQ } from 'utils/errorUtils';
-import useLocalize from 'hooks/useLocalize';
-import ProjectLink from './components/ProjectLink';
 
 const InnerContainer = styled(Box)`
   min-height: calc(
@@ -56,6 +58,14 @@ const InnerContainer = styled(Box)`
     padding-right: 15px;
   `}
 `;
+
+const EventImage = styled(Image)`
+  width: 100%;
+  height: 100%;
+  flex: 1;
+  margin-bottom: 24px;
+`;
+
 const EventsShowPage = () => {
   const isSmallerThanTablet = useBreakpoint('tablet');
   const locale = useLocale();
@@ -67,6 +77,9 @@ const EventsShowPage = () => {
   const { data: project } = useProjectById(
     event?.data.relationships.project.data.id
   );
+  const { data: eventImage } = useEventImage(event?.data);
+  const largeImage = eventImage?.data.attributes?.versions?.large;
+
   const projectTitleLocalized = localize(
     project?.data.attributes.title_multiloc
   );
@@ -98,18 +111,25 @@ const EventsShowPage = () => {
       )}
       <Container>
         <InnerContainer>
-          {!isSmallerThanTablet && <DesktopTopBar project={project.data} />}
+          {!isSmallerThanTablet && (
+            <DesktopTopBar event={event.data} project={project.data} />
+          )}
 
           <Box display="flex" id="e2e-idea-show-page-content">
             <Box flex="1 1 100%">
               <Title id="e2e-event-title" variant="h1">
-                {event?.data.attributes.title_multiloc[locale]}
+                {localize(event?.data.attributes.title_multiloc)}
               </Title>
               {projectTitleLocalized && projectSlug && (
                 <ProjectLink
                   projectTitleLocalized={projectTitleLocalized}
                   projectSlug={projectSlug}
                 />
+              )}
+              {largeImage && (
+                <Box aria-hidden="true">
+                  <EventImage src={largeImage} alt="" />
+                </Box>
               )}
               <Box mb="40px">
                 {event && <EventDescription event={event?.data} />}

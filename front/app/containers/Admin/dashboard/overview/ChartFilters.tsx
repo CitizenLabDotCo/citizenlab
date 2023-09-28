@@ -19,6 +19,7 @@ import { Moment } from 'moment';
 interface Props {
   startAtMoment?: Moment | null | undefined;
   endAtMoment: Moment | null;
+  minDate?: Moment;
   currentProjectFilter: string | undefined;
   resolution: IResolution;
   onChangeTimeRange: (
@@ -27,16 +28,19 @@ interface Props {
   ) => void;
   onProjectFilter: (filter: IOption) => void;
   onChangeResolution: (resolution: IResolution) => void;
+  showAllTime?: boolean;
 }
 
 const ChartFilters = ({
   startAtMoment,
   endAtMoment,
+  minDate,
   currentProjectFilter,
   resolution,
   onChangeTimeRange,
   onProjectFilter,
   onChangeResolution,
+  showAllTime,
 }: Props) => {
   const { formatMessage } = useIntl();
   const isSmallerThanSmallDesktop = useBreakpoint('smallDesktop');
@@ -55,6 +59,8 @@ const ChartFilters = ({
           startAtMoment={startAtMoment}
           endAtMoment={endAtMoment}
           onChange={onChangeTimeRange}
+          showAllTime={showAllTime}
+          minDate={minDate}
         />
         <Box ml="12px" maxWidth="350px">
           <ProjectFilter

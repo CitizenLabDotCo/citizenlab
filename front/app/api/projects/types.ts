@@ -13,7 +13,7 @@ import {
   IdeaDefaultSortMethod,
   InputTerm,
   ParticipationContext,
-} from 'services/participationContexts';
+} from 'utils/participationContexts';
 import { Keys } from 'utils/cl-react-query/types';
 
 // Keys

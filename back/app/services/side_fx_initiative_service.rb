@@ -57,6 +57,7 @@ class SideFxInitiativeService
       cosponsors_initiative.updated_at.to_i,
       payload: { change: cosponsors_initiative.status_previous_change }
     )
+    create_followers cosponsors_initiative.initiative, cosponsors_initiative.user
   end
 
   def before_destroy(initiative, user); end

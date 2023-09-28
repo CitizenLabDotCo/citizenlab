@@ -25,7 +25,7 @@ import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // services
-import { canModerateProject } from 'services/permissions/rules/projectPermissions';
+import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 // resources
 
@@ -44,7 +44,6 @@ import useAddCommentToInitiative from 'api/comments/useAddCommentToInitiative';
 import useLocale from 'hooks/useLocale';
 import useAuthUser from 'api/me/useAuthUser';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
 import { useLocation } from 'react-router-dom';
 
 const Container = styled.div`
@@ -138,9 +137,6 @@ const ParentCommentForm = ({
     mutate: addCommentToInitiative,
     isLoading: addCommentToInitiativeIsLoading,
   } = useAddCommentToInitiative();
-  const commentingPermissionInitiative = useInitiativesPermissions(
-    'commenting_initiative'
-  );
   const textareaElement = useRef<HTMLTextAreaElement | null>(null);
   const [inputValue, setInputValue] = useState('');
   const [focused, setFocused] = useState(false);
@@ -344,13 +340,7 @@ const ParentCommentForm = ({
     return null;
   };
 
-  const commentingDisabledReason =
-    postType === 'initiative'
-      ? commentingPermissionInitiative?.disabledReason
-      : idea?.data.attributes?.action_descriptor.commenting_idea
-          .disabled_reason;
   const isModerator = canModerateProject(projectId, authUser);
-  const canComment = !commentingDisabledReason;
   const buttonText: MessageDescriptor = isAdminPage
     ? messages.postPublicComment
     : messages.publishComment;
@@ -359,111 +349,107 @@ const ParentCommentForm = ({
     : messages[`${postType}CommentBodyPlaceholder`];
   const placeholder = formatMessage(placeholderMessage);
 
-  if (canComment) {
-    return (
-      <Container className={className || ''}>
-        <StyledAvatar
-          userId={authUser.data.id}
-          size={30}
-          isLinkToProfile={!!authUser.data.id}
-          moderator={isModerator}
+  return (
+    <Container className={className || ''}>
+      <StyledAvatar
+        userId={authUser.data.id}
+        size={30}
+        isLinkToProfile={!!authUser.data.id}
+        moderator={isModerator}
+      />
+      <FormContainer
+        className="ideaCommentForm"
+        onClickOutside={close}
+        closeOnClickOutsideEnabled={false}
+      >
+        <Anchor id="submit-comment-anchor" />
+        <Form className={focused ? 'focused' : ''}>
+          <label htmlFor="submit-comment">
+            <HiddenLabel>
+              <FormattedMessage {...messages.yourComment} />
+            </HiddenLabel>
+            <MentionsTextArea
+              id="submit-comment"
+              className="e2e-parent-comment-form"
+              name="comment"
+              placeholder={placeholder}
+              rows={focused || processing ? 4 : 1}
+              postId={ideaId || initiativeId}
+              postType={postType}
+              value={inputValue}
+              error={getErrorMessage()}
+              onChange={onChange}
+              onFocus={onFocus}
+              fontWeight="300"
+              padding="10px"
+              borderRadius="none"
+              border="none"
+              boxShadow="none"
+              getTextareaRef={setRef}
+            />
+            <ButtonWrapper className={focused || processing ? 'visible' : ''}>
+              {allowAnonymousParticipation && (
+                <Checkbox
+                  id="e2e-anonymous-comment-checkbox"
+                  ml="8px"
+                  checked={postAnonymously}
+                  label={
+                    <Text mb="12px" fontSize="s" color="coolGrey600">
+                      {formatMessage(messages.postAnonymously)}
+                      <IconTooltip
+                        content={
+                          <Text color="white" fontSize="s" m="0">
+                            {formatMessage(
+                              messages.inputsAssociatedWithProfile
+                            )}
+                          </Text>
+                        }
+                        iconSize="16px"
+                        placement="top-start"
+                        display="inline"
+                        ml="4px"
+                        transform="translate(0,-1)"
+                      />
+                    </Text>
+                  }
+                  onChange={() => setPostAnonymously(!postAnonymously)}
+                />
+              )}
+              <CancelButton
+                disabled={processing}
+                onClick={close}
+                buttonStyle="secondary"
+                padding={smallerThanTablet ? '6px 12px' : undefined}
+              >
+                <FormattedMessage {...messages.cancel} />
+              </CancelButton>
+              <Button
+                className="e2e-submit-parentcomment"
+                processing={processing}
+                onClick={onSubmit}
+                disabled={hasEmptyError}
+                padding={smallerThanTablet ? '6px 12px' : undefined}
+                icon={isAdminPage ? 'users' : undefined}
+              >
+                <FormattedMessage {...buttonText} />
+              </Button>
+            </ButtonWrapper>
+          </label>
+        </Form>
+      </FormContainer>
+      {showAnonymousConfirmationModal && (
+        <OldAnonymousParticipationConfirmationModal
+          onConfirmAnonymousParticipation={() => {
+            setShowAnonymousConfirmationModal(false);
+            continueSubmission();
+          }}
+          onCloseModal={() => {
+            setShowAnonymousConfirmationModal(false);
+          }}
         />
-        <FormContainer
-          className="ideaCommentForm"
-          onClickOutside={close}
-          closeOnClickOutsideEnabled={false}
-        >
-          <Anchor id="submit-comment-anchor" />
-          <Form className={focused ? 'focused' : ''}>
-            <label htmlFor="submit-comment">
-              <HiddenLabel>
-                <FormattedMessage {...messages.yourComment} />
-              </HiddenLabel>
-              <MentionsTextArea
-                id="submit-comment"
-                className="e2e-parent-comment-form"
-                name="comment"
-                placeholder={placeholder}
-                rows={focused || processing ? 4 : 1}
-                postId={ideaId || initiativeId}
-                postType={postType}
-                value={inputValue}
-                error={getErrorMessage()}
-                onChange={onChange}
-                onFocus={onFocus}
-                fontWeight="300"
-                padding="10px"
-                borderRadius="none"
-                border="none"
-                boxShadow="none"
-                getTextareaRef={setRef}
-              />
-              <ButtonWrapper className={focused || processing ? 'visible' : ''}>
-                {allowAnonymousParticipation && (
-                  <Checkbox
-                    id="e2e-anonymous-comment-checkbox"
-                    ml="8px"
-                    checked={postAnonymously}
-                    label={
-                      <Text mb="12px" fontSize="s" color="coolGrey600">
-                        {formatMessage(messages.postAnonymously)}
-                        <IconTooltip
-                          content={
-                            <Text color="white" fontSize="s" m="0">
-                              {formatMessage(
-                                messages.inputsAssociatedWithProfile
-                              )}
-                            </Text>
-                          }
-                          iconSize="16px"
-                          placement="top-start"
-                          display="inline"
-                          ml="4px"
-                          transform="translate(0,-1)"
-                        />
-                      </Text>
-                    }
-                    onChange={() => setPostAnonymously(!postAnonymously)}
-                  />
-                )}
-                <CancelButton
-                  disabled={processing}
-                  onClick={close}
-                  buttonStyle="secondary"
-                  padding={smallerThanTablet ? '6px 12px' : undefined}
-                >
-                  <FormattedMessage {...messages.cancel} />
-                </CancelButton>
-                <Button
-                  className="e2e-submit-parentcomment"
-                  processing={processing}
-                  onClick={onSubmit}
-                  disabled={hasEmptyError}
-                  padding={smallerThanTablet ? '6px 12px' : undefined}
-                  icon={isAdminPage ? 'users' : undefined}
-                >
-                  <FormattedMessage {...buttonText} />
-                </Button>
-              </ButtonWrapper>
-            </label>
-          </Form>
-        </FormContainer>
-        {showAnonymousConfirmationModal && (
-          <OldAnonymousParticipationConfirmationModal
-            onConfirmAnonymousParticipation={() => {
-              setShowAnonymousConfirmationModal(false);
-              continueSubmission();
-            }}
-            onCloseModal={() => {
-              setShowAnonymousConfirmationModal(false);
-            }}
-          />
-        )}
-      </Container>
-    );
-  }
-
-  return null;
+      )}
+    </Container>
+  );
 };
 
 export default ParentCommentForm;

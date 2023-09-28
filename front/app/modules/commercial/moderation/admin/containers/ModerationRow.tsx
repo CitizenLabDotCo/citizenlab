@@ -32,7 +32,7 @@ import {
 } from 'api/moderations/types';
 
 // hooks
-import useInappropriateContentFlag from 'modules/commercial/flag_inappropriate_content/api/inappropriate_content_flags/useInappropriateContentFlag';
+import useInappropriateContentFlag from 'api/inappropriate_content_flags/useInappropriateContentFlag';
 
 const Container = styled(Tr)<{ bgColor: string; flagged: boolean }>`
   background: ${({ bgColor, flagged }) =>

@@ -4,7 +4,7 @@ import { UploadFile } from 'typings';
 
 import { API_PATH } from 'containers/App/constants';
 import { saveAs } from 'file-saver';
-import { requestBlob } from 'utils/request';
+import { requestBlob } from 'utils/requestBlob';
 
 // components
 import FileUploader from 'components/UI/FileUploader';

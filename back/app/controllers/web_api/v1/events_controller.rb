@@ -13,8 +13,14 @@ class WebApi::V1::EventsController < ApplicationController
     skip_policy_scope
 
     events = EventsFinder
-      .new(finder_params, scope: scope, current_user: current_user)
-      .find_records
+      .new(
+        finder_params,
+        scope: scope,
+        current_user: current_user,
+        includes: [
+          :event_images
+        ]
+      ).find_records
 
     events = paginate SortByParamsService.new.sort_events(events, params)
 
@@ -32,8 +38,11 @@ class WebApi::V1::EventsController < ApplicationController
     respond_to do |format|
       format.json do
         render json: WebApi::V1::EventSerializer
-          .new(@event, params: jsonapi_serializer_params)
-          .serializable_hash
+          .new(
+            @event,
+            params: jsonapi_serializer_params,
+            include: %i[event_images]
+          ).serializable_hash
       end
 
       format.ics do
@@ -53,7 +62,7 @@ class WebApi::V1::EventsController < ApplicationController
 
     if event.save
       SideFxEventService.new.after_create(event, current_user)
-      render json: WebApi::V1::EventSerializer.new(event, params: jsonapi_serializer_params).serializable_hash, status: :created
+      render json: WebApi::V1::EventSerializer.new(event, params: jsonapi_serializer_params, include: %i[event_images]).serializable_hash, status: :created
     else
       render json: { errors: event.errors.details }, status: :unprocessable_entity
     end
@@ -65,7 +74,7 @@ class WebApi::V1::EventsController < ApplicationController
     SideFxEventService.new.before_update(@event, current_user)
     if @event.save
       SideFxEventService.new.after_update(@event, current_user)
-      render json: WebApi::V1::EventSerializer.new(@event, params: jsonapi_serializer_params).serializable_hash, status: :ok
+      render json: WebApi::V1::EventSerializer.new(@event, params: jsonapi_serializer_params, include: %i[event_images]).serializable_hash, status: :ok
     else
       render json: { errors: @event.errors.details }, status: :unprocessable_entity
     end
@@ -110,10 +119,12 @@ class WebApi::V1::EventsController < ApplicationController
       :end_at,
       :online_link,
       :address_1,
+      :using_url,
       address_2_multiloc: CL2_SUPPORTED_LOCALES,
       location_multiloc: CL2_SUPPORTED_LOCALES,
       title_multiloc: CL2_SUPPORTED_LOCALES,
       description_multiloc: CL2_SUPPORTED_LOCALES,
+      attend_button_multiloc: CL2_SUPPORTED_LOCALES,
       location_point_geojson: [:type, { coordinates: [] }]
     ).tap do |p|
       # Allow removing the location point.

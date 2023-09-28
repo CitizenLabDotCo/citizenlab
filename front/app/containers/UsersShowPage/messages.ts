@@ -30,9 +30,9 @@ export default defineMessages({
     id: 'app.containers.UsersShowPage.eventsWithCount',
     defaultMessage: 'Events ({eventsCount})',
   },
-  following: {
-    id: 'app.containers.UsersShowPage.following',
-    defaultMessage: 'Following',
+  followingWithCount: {
+    id: 'app.containers.UsersShowPage.followingWithCount',
+    defaultMessage: 'Following ({followingCount})',
   },
   ideas: {
     id: 'app.containers.UsersShowPage.ideas',
@@ -45,6 +45,14 @@ export default defineMessages({
   initiatives: {
     id: 'app.containers.UsersShowPage.initiatives',
     defaultMessage: 'Initiatives',
+  },
+  topics: {
+    id: 'app.containers.UsersShowPage.topics',
+    defaultMessage: 'Topics',
+  },
+  areas: {
+    id: 'app.containers.UsersShowPage.areas',
+    defaultMessage: 'Areas',
   },
   projectFolders: {
     id: 'app.containers.UsersShowPage.projectFolders',
@@ -99,6 +107,10 @@ export default defineMessages({
   loadMoreComments: {
     id: 'app.containers.UsersShowPage.loadMoreComments',
     defaultMessage: 'Load more comments',
+  },
+  loadMore: {
+    id: 'app.containers.UsersShowPage.loadMore',
+    defaultMessage: 'Load more',
   },
   memberSince: {
     id: 'app.containers.UsersShowPage.memberSince',

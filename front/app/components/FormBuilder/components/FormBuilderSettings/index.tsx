@@ -22,7 +22,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import {
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
-} from 'services/formCustomFields';
+} from 'api/custom_fields/types';
 
 // hooks
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';

@@ -3,7 +3,7 @@ import './dnd';
 import {
   ParticipationMethod,
   VotingMethod,
-} from '../../app/services/participationContexts';
+} from '../../app/utils/participationContexts';
 import { IUserUpdate } from '../../app/api/users/types';
 import { IUpdatedAppConfigurationProperties } from '../../app/api/app_configuration/types';
 
