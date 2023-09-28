@@ -242,9 +242,6 @@ describe BulkImportIdeas::ImportProjectIdeasService do
       # Remove permission field and use output from checkbox on PDF scan
       pdf_ideas[0][:fields].delete('Permission')
       pdf_ideas[0][:fields]['By checking this box I consent to my data'] = 'filled_checkbox'
-
-      # binding.pry
-
       rows = service.ideas_to_idea_rows pdf_ideas
 
       expect(rows[0][:user_email]).to eq 'john_rambo@gravy.com'

@@ -284,10 +284,7 @@ module BulkImportIdeas
     def extract_custom_select_fields_from_options(custom_fields, doc, select_options)
       select_options.each do |option|
         option_field = find_field(doc, option[:name])
-        # binding.pry
         if option_field && option_field[:value].include?('checkbox')
-
-          # binding.pry
           field_key = option[:field_key].to_sym
           checked = option_field[:value] == 'filled_checkbox'
           if option[:field_type] == 'multiselect' && checked
