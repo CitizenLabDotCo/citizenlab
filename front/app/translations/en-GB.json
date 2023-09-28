@@ -36,6 +36,7 @@
   "app.components.AuthProviders.logIn2": "Log in",
   "app.components.AuthProviders.logInWithEmail": "Log in with Email",
   "app.components.AuthProviders.logInWithPhoneOrEmail": "Log in with Phone or Email",
+  "app.components.AuthProviders.nemlogInUnderMinimumAgeVerificationFailed": "You must be the specified minimum age or above to be verified.",
   "app.components.AuthProviders.signUp2": "Sign up",
   "app.components.AuthProviders.signUpButtonAltText": "Sign up with {loginMechanismName}",
   "app.components.AuthProviders.signUpWithEmail": "Sign up with Email",
