@@ -452,18 +452,23 @@ export default (inputProps: InputProps) => {
   const { type } = inputProps;
   const projectId = inputProps.projectId ?? undefined;
 
-  const { data: initiativeStatuses } = useInitiativeStatuses(
-    type === 'Initiatives'
-  );
-  const { data: ideaStatuses } = useIdeaStatuses(type !== 'Initiatives');
+  const { data: initiativeStatuses } = useInitiativeStatuses({
+    enabled: type === 'Initiatives',
+  });
+  const { data: ideaStatuses } = useIdeaStatuses({
+    enabled: type !== 'Initiatives',
+  });
 
   const postStatuses = initiativeStatuses || ideaStatuses;
 
   const { data: initiativeTopics } = useTopics(
     { excludeCode: 'custom' },
-    type === 'Initiatives'
+    { enabled: type === 'Initiatives' }
   );
-  const { data: ideaTopics } = useTopics({}, type !== 'Initiatives');
+  const { data: ideaTopics } = useTopics(
+    {},
+    { enabled: type !== 'Initiatives' }
+  );
 
   const { data: projectAllowedInputTopics } = useProjectAllowedInputTopics({
     projectId: type === 'ProjectIdeas' ? projectId : undefined,

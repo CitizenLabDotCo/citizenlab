@@ -7,7 +7,7 @@ import { IInitiativeStatuses, InitiativeStatusesKeys } from './types';
 const fetchInitiativeStatuses = () =>
   fetcher<IInitiativeStatuses>({ path: '/initiative_statuses', action: 'get' });
 
-const useInitiativeStatuses = (enabled = true) => {
+const useInitiativeStatuses = ({ enabled = true } = {}) => {
   return useQuery<
     IInitiativeStatuses,
     CLErrors,

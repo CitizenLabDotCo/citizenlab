@@ -23,7 +23,10 @@ const fetchTopics = ({
     },
   });
 
-const useTopics = (queryParameters?: ITopicsQueryParams, enabled = true) => {
+const useTopics = (
+  queryParameters?: ITopicsQueryParams,
+  { enabled = true } = {}
+) => {
   return useQuery<ITopics, CLErrors, ITopics, TopicsKeys>({
     queryKey: causesKeys.list(queryParameters || {}),
     queryFn: () => fetchTopics(queryParameters || {}),
