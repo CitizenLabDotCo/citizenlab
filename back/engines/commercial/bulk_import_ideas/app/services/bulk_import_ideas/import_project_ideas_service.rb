@@ -313,8 +313,17 @@ module BulkImportIdeas
 
     def clean_field_names(idea)
       locale_optional_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.optional') }
+      idea = extract_permission_checkbox(idea)
       idea = idea.map { |k, v| { name: k, value: v } } # Temp: Need to just use in this format
       idea.map { |f| { name: f[:name].gsub("(#{locale_optional_label})", '').squish, value: f[:value], type: f[:type], page: f[:page], x: f[:x], y: f[:y] } }
+    end
+
+    def extract_permission_checkbox(idea)
+      # Truncate the checkbox label for better multiline checkbox detection
+      permission_checkbox_label = (I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.by_checking_this_box') })[0..30]
+      checkbox = idea.select { |key, value| key.match(/^#{permission_checkbox_label}/) && value == 'filled_checkbox' }
+      idea['Permission'] = 'X' if checkbox != {}
+      idea
     end
 
     def process_user_details(doc, idea_row)
