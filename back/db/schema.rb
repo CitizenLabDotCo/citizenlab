@@ -96,7 +96,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_27_135924) do
     t.jsonb "inputs_ids"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "bookmarked", default: false
+    t.boolean "bookmarked", default: false, null: false
     t.index ["analysis_id"], name: "index_analysis_insights_on_analysis_id"
     t.index ["insightable_type", "insightable_id"], name: "index_analysis_insights_on_insightable"
   end
