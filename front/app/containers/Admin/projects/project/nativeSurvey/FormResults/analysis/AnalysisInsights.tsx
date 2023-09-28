@@ -9,6 +9,8 @@ import useAnalysisInsightsWithIds from 'api/analysis_insights/useAnalysisInsight
 import useAnalysisQuestion from 'api/analysis_questions/useAnalysisQuestion';
 import useAnalysisSummary from 'api/analysis_summaries/useAnalysisSummary';
 import React, { useState } from 'react';
+import { useIntl } from 'utils/cl-intl';
+import messages from '../messages';
 
 type AnalysisInsight = {
   analysisId: string;
@@ -26,7 +28,11 @@ const Summary = ({
   analysisId: string;
 }) => {
   const { data } = useAnalysisSummary({ analysisId, id: summaryId });
-  return <Text fontSize="s">{data?.data.attributes.summary}</Text>;
+  return (
+    <Text fontSize="s" mt="0px">
+      {data?.data.attributes.summary}
+    </Text>
+  );
 };
 
 const Question = ({
@@ -37,10 +43,15 @@ const Question = ({
   analysisId: string;
 }) => {
   const { data } = useAnalysisQuestion({ analysisId, id: summaryId });
-  return <Text fontSize="s">{data?.data.attributes.answer}</Text>;
+  return (
+    <Text fontSize="s" mt="0px">
+      {data?.data.attributes.answer}
+    </Text>
+  );
 };
 
 const AnalysisInsights = ({ analyses }: { analyses: IAnalysisData[] }) => {
+  const { formatMessage } = useIntl();
   const [selectedInsightIndex, setSelectedInsightIndex] = useState(0);
   const result = useAnalysisInsightsWithIds(analyses?.map((a) => a.id) || []);
 
@@ -62,31 +73,38 @@ const AnalysisInsights = ({ analyses }: { analyses: IAnalysisData[] }) => {
 
   return (
     <Box>
-      <Box display="flex" justifyContent="center" alignItems="center" w="100%">
-        <IconButton
-          iconName="chevron-left"
-          onClick={() => {
-            selectedInsightIndex > 0 &&
-              setSelectedInsightIndex(selectedInsightIndex - 1);
-          }}
-          iconColor={colors.black}
-          iconColorOnHover={colors.black}
-          a11y_buttonActionMessage="Previous insight"
-        />
-        <Text>
-          {selectedInsightIndex + 1} / {bookmarkedInsights.length}
-        </Text>
-        <IconButton
-          iconName="chevron-right"
-          onClick={() => {
-            selectedInsightIndex < bookmarkedInsights.length - 1 &&
-              setSelectedInsightIndex(selectedInsightIndex + 1);
-          }}
-          iconColor={colors.black}
-          iconColorOnHover={colors.black}
-          a11y_buttonActionMessage="Previous insight"
-        />
-      </Box>
+      {bookmarkedInsights.length > 1 && (
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          w="100%"
+        >
+          <IconButton
+            iconName="chevron-left"
+            onClick={() => {
+              selectedInsightIndex > 0 &&
+                setSelectedInsightIndex(selectedInsightIndex - 1);
+            }}
+            iconColor={colors.black}
+            iconColorOnHover={colors.black}
+            a11y_buttonActionMessage={formatMessage(messages.previousInsight)}
+          />
+          <Text>
+            {selectedInsightIndex + 1} / {bookmarkedInsights.length}
+          </Text>
+          <IconButton
+            iconName="chevron-right"
+            onClick={() => {
+              selectedInsightIndex < bookmarkedInsights.length - 1 &&
+                setSelectedInsightIndex(selectedInsightIndex + 1);
+            }}
+            iconColor={colors.black}
+            iconColorOnHover={colors.black}
+            a11y_buttonActionMessage={formatMessage(messages.nextInsight)}
+          />
+        </Box>
+      )}
       {selectedInsight && (
         <>
           {selectedInsight.relationship.type === 'analysis_question' ? (

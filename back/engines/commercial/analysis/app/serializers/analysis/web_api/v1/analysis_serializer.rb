@@ -8,4 +8,3 @@ class Analysis::WebApi::V1::AnalysisSerializer < WebApi::V1::BaseSerializer
 
   has_many :custom_fields, serializer: ::WebApi::V1::CustomFieldSerializer
 end
-

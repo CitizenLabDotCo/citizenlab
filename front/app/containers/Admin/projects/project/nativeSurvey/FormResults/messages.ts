@@ -14,6 +14,14 @@ export default defineMessages({
     defaultMessage:
       'Do you want to include any other related questions in your analysis of {question}?',
   },
+  previousInsight: {
+    id: 'app.containers.Admin.projects.project.survey.previousInsight',
+    defaultMessage: 'Previous insight',
+  },
+  nextInsight: {
+    id: 'app.containers.Admin.projects.project.survey.nextInsight',
+    defaultMessage: 'Next insight',
+  },
   createAnalysis: {
     id: 'app.containers.Admin.projects.project.survey.newAnalysis',
     defaultMessage: 'New analysis',
