@@ -827,7 +827,6 @@
   "app.containers.Admin.projects.project.survey.createAnalysis": "إنشاء التحليل",
   "app.containers.Admin.projects.project.survey.deleteAnalysis": "يمسح",
   "app.containers.Admin.projects.project.survey.deleteAnalysisConfirmation": "هل أنت متأكد أنك تريد حذف هذا التحليل؟ لا يمكن التراجع عن هذا الإجراء.",
-  "app.containers.Admin.projects.project.survey.launchAnalysis": "إطلاق التحليل المدعوم بالذكاء الاصطناعي",
   "app.containers.Admin.projects.project.survey.viewAnalysis": "منظر",
   "app.containers.Admin.reporting.chartsSection": "مخططات",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.descriptionPlaceHolder": "يشير إلى نص معين. يمكنك تعديله وتهيئته باستخدام المحرر في اللوحة على اليمين.",

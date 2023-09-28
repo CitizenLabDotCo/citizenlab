@@ -827,7 +827,6 @@
   "app.containers.Admin.projects.project.survey.createAnalysis": "Analyse erstellen",
   "app.containers.Admin.projects.project.survey.deleteAnalysis": "Löschen",
   "app.containers.Admin.projects.project.survey.deleteAnalysisConfirmation": "Sind Sie sicher, dass Sie diese Analyse löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
-  "app.containers.Admin.projects.project.survey.launchAnalysis": "KI-gestützte Analyse starten",
   "app.containers.Admin.projects.project.survey.viewAnalysis": "Vorschau",
   "app.containers.Admin.reporting.chartsSection": "CHARTS",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.descriptionPlaceHolder": "Dies ist ein text. Sie können ihn mit dem editor in der leiste auf der rechten seite bearbeiten und formatieren.",

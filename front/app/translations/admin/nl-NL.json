@@ -827,7 +827,6 @@
   "app.containers.Admin.projects.project.survey.createAnalysis": "Analyse maken",
   "app.containers.Admin.projects.project.survey.deleteAnalysis": "Verwijder",
   "app.containers.Admin.projects.project.survey.deleteAnalysisConfirmation": "Weet je zeker dat je deze analyse wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
-  "app.containers.Admin.projects.project.survey.launchAnalysis": "Start AI-gestuurde analyse",
   "app.containers.Admin.projects.project.survey.viewAnalysis": "Bekijk",
   "app.containers.Admin.reporting.chartsSection": "GRAFIEKEN",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.descriptionPlaceHolder": "Dit is tekst. Je kunt het aanpassen en formatteren met behulp van de editor in het paneel aan de rechterzijde.",

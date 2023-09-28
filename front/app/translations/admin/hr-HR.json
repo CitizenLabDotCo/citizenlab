@@ -827,7 +827,6 @@
   "app.containers.Admin.projects.project.survey.createAnalysis": "Napravi analizu",
   "app.containers.Admin.projects.project.survey.deleteAnalysis": "Izbrisati",
   "app.containers.Admin.projects.project.survey.deleteAnalysisConfirmation": "Jeste li sigurni da želite izbrisati ovu analizu? Ova se radnja ne može poništiti.",
-  "app.containers.Admin.projects.project.survey.launchAnalysis": "Pokrenite analizu pomoću umjetne inteligencije",
   "app.containers.Admin.projects.project.survey.viewAnalysis": "Pogled",
   "app.containers.Admin.reporting.chartsSection": "GRAFIKONI",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.descriptionPlaceHolder": "Ovo je neki tekst. Možete ga uređivati i formatirati pomoću uređivača u ploči s desne strane.",

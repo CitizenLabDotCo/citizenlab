@@ -827,7 +827,6 @@
   "app.containers.Admin.projects.project.survey.createAnalysis": "Utwórz analizę",
   "app.containers.Admin.projects.project.survey.deleteAnalysis": "Usuń",
   "app.containers.Admin.projects.project.survey.deleteAnalysisConfirmation": "Czy na pewno chcesz usunąć tę analizę? Tej czynności nie można cofnąć.",
-  "app.containers.Admin.projects.project.survey.launchAnalysis": "Uruchom analizę opartą na sztucznej inteligencji",
   "app.containers.Admin.projects.project.survey.viewAnalysis": "Zobacz",
   "app.containers.Admin.reporting.chartsSection": "CHARAKTERYSTYKA",
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.descriptionPlaceHolder": "To jest przykładowy tekst. Można go edytować i formatować za pomocą edytora w panelu po prawej stronie.",
