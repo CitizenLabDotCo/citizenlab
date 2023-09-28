@@ -18,7 +18,7 @@ import { get, snakeCase } from 'lodash-es';
 import { Locale, Multiloc } from 'typings';
 import { Answer } from 'api/survey_results/types';
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import AnalysisLaunchButton from './analysis/AnalysisLaunchButton';
+import Analysis from './analysis';
 
 type FormResultsQuestionProps = {
   locale: Locale;
@@ -87,7 +87,7 @@ const FormResultsQuestion = ({
           );
         })
       ) : (
-        <AnalysisLaunchButton customFieldId={customFieldId} />
+        <Analysis customFieldId={customFieldId} />
       )}
     </Box>
   );

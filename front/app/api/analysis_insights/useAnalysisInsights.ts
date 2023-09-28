@@ -4,7 +4,7 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import insightsKeys from './keys';
 import { IInsights, InsightsKeys, IInsightsParams } from './types';
 
-const fetchInsights = ({ analysisId, bookmarked }: IInsightsParams) => {
+export const fetchInsights = ({ analysisId, bookmarked }: IInsightsParams) => {
   return fetcher<IInsights>({
     path: `/analyses/${analysisId}/insights`,
     action: 'get',
