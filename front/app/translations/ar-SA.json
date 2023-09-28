@@ -36,6 +36,7 @@
   "app.components.AuthProviders.logIn2": "تسجيل الدخول",
   "app.components.AuthProviders.logInWithEmail": "سجّل الدخول باستخدام البريد الإلكتروني",
   "app.components.AuthProviders.logInWithPhoneOrEmail": "تسجيل الدخول باستخدام الهاتف أو البريد الإلكتروني",
+  "app.components.AuthProviders.nemlogInUnderMinimumAgeVerificationFailed": "يجب أن تكون الحد الأدنى للعمر المحدد أو أعلى ليتم التحقق منك.",
   "app.components.AuthProviders.signUp2": "التسجيل",
   "app.components.AuthProviders.signUpButtonAltText": "سجّل باستخدام {loginMechanismName}",
   "app.components.AuthProviders.signUpWithEmail": "سجّل باستخدام البريد الإلكتروني",
