@@ -19,7 +19,7 @@ import { getFieldBackgroundColor } from '../utils';
 import {
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
-} from 'services/formCustomFields';
+} from 'api/custom_fields/types';
 import { FormBuilderConfig } from 'components/FormBuilder/utils';
 
 const FormFieldsContainer = styled(Box)`

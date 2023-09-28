@@ -1,5 +1,5 @@
 import { IconNames } from '@citizenlab/cl2-component-library';
-import { ICustomFieldInputType } from 'services/formCustomFields';
+import { ICustomFieldInputType } from 'api/custom_fields/types';
 import { builtInFieldKeys } from 'components/FormBuilder/utils';
 
 const getBuiltinFieldIcon = (key: string): IconNames => {

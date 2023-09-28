@@ -1,4 +1,4 @@
-import { IFlatCustomField } from 'services/formCustomFields';
+import { IFlatCustomField } from 'api/custom_fields/types';
 
 type NumberHash = Record<string, number>;
 

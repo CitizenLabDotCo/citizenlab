@@ -3,7 +3,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { formEndOption } from 'components/FormBuilder/components/FormBuilderSettings/utils';
 
 // typings
-import { IFlatCustomField, IOptionsType } from 'services/formCustomFields';
+import { IFlatCustomField, IOptionsType } from 'api/custom_fields/types';
 import { Locale } from 'typings';
 
 export const getOptionRule = (
