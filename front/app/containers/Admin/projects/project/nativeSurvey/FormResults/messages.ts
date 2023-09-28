@@ -15,8 +15,8 @@ export default defineMessages({
       'Do you want to include any other related questions in your analysis of {question}?',
   },
   createAnalysis: {
-    id: 'app.containers.Admin.projects.project.survey.createAnalysis',
-    defaultMessage: 'Create analysis',
+    id: 'app.containers.Admin.projects.project.survey.newAnalysis',
+    defaultMessage: 'New analysis',
   },
   cancel: {
     id: 'app.containers.Admin.projects.project.survey.cancel',

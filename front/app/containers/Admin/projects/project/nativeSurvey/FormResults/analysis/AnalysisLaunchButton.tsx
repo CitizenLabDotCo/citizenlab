@@ -26,6 +26,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import tracks from 'containers/Admin/projects/project/analysis/tracks';
 import { trackEventByName } from 'utils/analytics';
 import clHistory from 'utils/cl-router/history';
+import Divider from 'components/admin/Divider';
 
 const AnalysisLaunchButton = ({ customFieldId }: { customFieldId: string }) => {
   const [dropdownIsOpened, setDropdownIsOpened] = useState(false);
@@ -164,6 +165,18 @@ const AnalysisLaunchButton = ({ customFieldId }: { customFieldId: string }) => {
                 </DropdownListItem>
               );
             })}
+            <Divider mb="8px" />
+            <DropdownListItem
+              onClick={() => {
+                setDropdownIsOpened(false);
+                openConsentModal();
+              }}
+            >
+              <Box display="flex" gap="16px" alignItems="center">
+                <Icon name="plus" />
+                {formatMessage(messages.createAnalysis)}
+              </Box>
+            </DropdownListItem>
           </div>
         }
       />
