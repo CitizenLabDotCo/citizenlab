@@ -1,83 +1,19 @@
 en-CA:
   email_campaigns:
     campaign_type_description:
-      "manual": Official messages
-      "admin_rights_received": Admin rights received
-      "comment_deleted_by_admin": Deletion of my comment
-      "comment_marked_as_spam": Comment spam report
-      "comment_on_your_comment": A reply on my comment
-      "comment_on_idea_you_follow": A comment on an idea that you follow
-      "comment_on_initiative_you_follow": A comment on a proposal that you follow
-      "cosponsor_of_your_initiative": A user accepts my invitation to co-sponsor my proposal
-      "event_registration_confirmation": Event registration confirmation
-      "first_idea_published": Publication of my first idea
-      "idea_marked_as_spam": Idea spam report
-      "idea_published": Publication of my idea
-      "initiative_assigned_to_you": Assignment of a proposal to me
-      "initiative_marked_as_spam": Proposal spam report
-      "initiative_published": Publication of my proposal
-      "invitation_to_cosponsor_initiative": Invitation to co-sponsor a proposal
-      "initiative_resubmitted_for_review": Proposal resubmitted for review
-      "invite_received": Invitation
-      "invite_reminder": Invitation reminder
-      "internal_comment_on_idea_assigned_to_you": Internal comment on input assigned to me
-      "internal_comment_on_idea_you_commented_internally_on": Internal comment on input I commented internally on
-      "internal_comment_on_idea_you_moderate": Internal comment on input in project or folder I manage
-      "internal_comment_on_initiative_assigned_to_you": Internal comment on proposal assigned to me
-      "internal_comment_on_initiative_you_commented_internally_on": Internal comment on proposal I commented internally on
-      "internal_comment_on_unassigned_initiative": Internal comment on unassigned proposal
-      "internal_comment_on_unassigned_unmoderated_idea": Internal comment on unassigned input in unmanaged project
-      "internal_comment_on_your_internal_comment": Internal comment on my internal comment
-      "mention_in_official_feedback": Mention in an update
-      "mention_in_internal_comment": Mention in an internal comment
-      "new_comment_for_admin": New comment in a project I moderate
-      "new_idea_for_admin": New idea in a project I moderate
-      "new_initiative_for_admin": New proposal
-      "official_feedback_on_idea_you_follow": Update on an idea that you follow
-      "official_feedback_on_initiative_you_follow": Update on a proposal that you follow
-      "password_reset": Password reset
-      "project_moderation_rights_received": Project moderation rights received
-      "project_folder_moderation_rights_received": Folder manager rights received
-      "project_phase_started": New project phase
-      "project_phase_upcoming": Upcoming new project phase
-      "project_published": Project published
-      "status_change_on_idea_you_follow": Status change of an idea that you follow
-      "status_change_on_initiative_you_follow": Status change of a proposal that you follow
-      "threshold_reached_for_admin": Proposal reached the voting threshold
-      "welcome": After registration
-      "admin_digest": Weekly overview for admins
-      "moderator_digest": Weekly overview for project managers
-      "assignee_digest": Weekly overview of assigned ideas
-      "user_digest": Weekly overview
-      "voting_basket_submitted": Confirmation of voting
-      "voting_basket_not_submitted": Votes not submitted
-      "voting_last_chance": Last chance to vote
-      "voting_results": Voting results
-      "your_proposed_initiatives_digest": Weekly overview of your proposals
-    general:
-      by_author: 'by %{authorName}'
-      author_wrote: '%{authorName} wrote:'
-      cta_goto_idea: 'Go to this idea'
-      cta_goto_proposal: 'Go to this proposal'
-      cta_goto_project: 'Go to this project'
-    schedules:
-      weekly:
-        "0": "Weekly, on Sundays at %{hourOfDay}"
-        "1": "Weekly, on Mondays at %{hourOfDay}"
-        "2": "Weekly, on Tuesdays at %{hourOfDay}"
-        "3": "Weekly, on Wednesdays at %{hourOfDay}"
-        "4": "Weekly, on Thursdays at %{hourOfDay}"
-        "5": "Weekly, on Fridays at %{hourOfDay}"
-        "6": "Weekly, on Saturdays at %{hourOfDay}"
+      "1": "Weekly, on Mondays at %{hourOfDay}"
+      "2": "Weekly, on Tuesdays at %{hourOfDay}"
+      "3": "Weekly, on Wednesdays at %{hourOfDay}"
+      "4": "Weekly, on Thursdays at %{hourOfDay}"
+      "5": "Weekly, on Fridays at %{hourOfDay}"
+      "6": "Weekly, on Saturdays at %{hourOfDay}"
     footer:
-      "link_privacy_policy": "Privacy Policy"
       "link_terms_conditions": "Terms & Conditions"
       "link_unsubscribe": "Unsubscribe"
       "powered_by": "Powered by"
       "statement": "This e-mail was sent to you by CitizenLab on behalf of %{organizationName}, because you are a registered user of %{organizationLink}. You can %{unsubscribeLink} if you do not want to receive these e-mails in the future."
       "unsubscribe_text": "unsubscribe"
-    follow:
-      "unfollow_here": "You have received this notification because of an item that you follow. <a href=\"%{unfollow_url}\">You can unfollow it here.</a>"
+    follow: "unfollow_here\": \"You have received this notification because of an item that you follow. <a href=\"%{unfollow_url}\">You can unfollow it here.</a>"
     comment_deleted_by_admin:
       reason: 'The reason why your comment was deleted:'
       cta_view: 'View this idea'
