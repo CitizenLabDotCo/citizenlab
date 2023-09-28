@@ -527,7 +527,7 @@
   "app.containers.Admin.PagesAndMenu.addButton": "Dodaj na navigacijsku traku",
   "app.containers.Admin.PagesAndMenu.components.NavbarItemForm.navbarItemTitle": "Naziv u navigacijskoj traci",
   "app.containers.Admin.PagesAndMenu.components.deletePageConfirmationHidden": "Jeste li sigurni da želite izbrisati ovu stranicu? Ovu radnju ne možete poništiti.",
-  "app.containers.Admin.PagesAndMenu.components.emptyTitleError": "Unesite naslov za sve jezike",
+  "app.containers.Admin.PagesAndMenu.components.emptyTitleError1": "Navedite naslov za sve jezike",
   "app.containers.Admin.PagesAndMenu.components.hiddenFromNavigation": "Ostale dostupne stranice",
   "app.containers.Admin.PagesAndMenu.components.savePage": "Spremi stranicu",
   "app.containers.Admin.PagesAndMenu.components.saveSuccess": "Stranica uspješno spremljena",
