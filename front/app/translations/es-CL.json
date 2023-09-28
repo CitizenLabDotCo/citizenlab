@@ -36,6 +36,7 @@
   "app.components.AuthProviders.logIn2": "Inicia sesión",
   "app.components.AuthProviders.logInWithEmail": "Ingresa con el correo electrónico",
   "app.components.AuthProviders.logInWithPhoneOrEmail": "Inicia sesión con el teléfono o el correo electrónico",
+  "app.components.AuthProviders.nemlogInUnderMinimumAgeVerificationFailed": "Debes tener la edad mínima especificada o superior para ser verificado.",
   "app.components.AuthProviders.signUp2": "Inscríbete",
   "app.components.AuthProviders.signUpButtonAltText": "Registrate con {loginMechanismName}",
   "app.components.AuthProviders.signUpWithEmail": "Ingresa con el correo electrónico",
