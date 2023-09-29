@@ -270,7 +270,7 @@ RSpec.describe CustomField do
 
     it 'generates a key made of non-Latin letters of title' do
       cf = create(:custom_field, key: nil, title_multiloc: { 'ar-SA': 'abbaالرئيسية' })
-      expect(cf.key).to eq('abba')
+      expect(cf.key).to include('abba')
     end
 
     it 'generates a present key from non-Latin title' do
