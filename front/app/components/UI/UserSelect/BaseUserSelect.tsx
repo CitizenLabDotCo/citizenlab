@@ -71,15 +71,9 @@ const BaseUserSelect = ({
         onInputChange={handleInputChange}
         onMenuScrollToBottom={onMenuScrollToBottom}
         onChange={onChange}
-        components={{
-          Option: CustomOption,
-        }}
       />
     </Box>
   );
 };
-
-const CustomOption = ({ innerProps, isDisabled }) =>
-  isDisabled ? null : <div {...innerProps}>Test</div>;
 
 export default BaseUserSelect;
