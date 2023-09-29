@@ -83,6 +83,7 @@ export interface IProjectAttributes extends ParticipationContext {
     taking_survey: ActionDescriptor<SurveyDisabledReason>;
     taking_poll: ActionDescriptor<PollDisabledReason>;
     annotating_document: ActionDescriptor<DocumentAnnotationDisabledReason>;
+    volunteering: ActionDescriptor<VolunteeringDisabledReason>; // TODO: add VolunteeringDisabledReason
   };
   uses_content_builder: boolean;
 }

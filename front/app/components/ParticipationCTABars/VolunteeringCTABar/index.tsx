@@ -17,6 +17,7 @@ import {
 
 // utils
 import { scrollToElement } from 'utils/scroll';
+import { isFixableByAuthentication } from 'utils/actionDescriptors';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -29,6 +30,14 @@ export const VolunteeringCTABar = ({ phases, project }: CTABarProps) => {
   useEffect(() => {
     setCurrentPhase(getCurrentPhase(phases) || getLastPhase(phases));
   }, [phases]);
+
+  const { enabled, disabled_reason } =
+    project.attributes.action_descriptor.volunteering;
+
+  // TODO: add causes to PC serializer
+  const showVolunteer =
+    (enabled || isFixableByAuthentication(disabled_reason)) &&
+    pc.relationships.causes.size > 0;
 
   const handleVolunteerClick = (event: FormEvent) => {
     event.preventDefault();
@@ -57,7 +66,7 @@ export const VolunteeringCTABar = ({ phases, project }: CTABarProps) => {
   return (
     <ParticipationCTAContent
       currentPhase={currentPhase}
-      CTAButton={CTAButton}
+      CTAButton={showVolunteer ? CTAButton : null}
       project={project}
     />
   );

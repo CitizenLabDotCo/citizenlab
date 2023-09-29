@@ -203,6 +203,9 @@ const CauseCard = ({ cause, className, disabled }: Props) => {
     params: { cause },
   } as const;
 
+  const { enabled, disabled_reason } =
+    cause.relationships.project.attributes.action_descriptor.volunteering; // TODO add project to serializer
+
   const handleOnVolunteerButtonClick = async () => {
     const response = await getAuthenticationRequirements(GLOBAL_CONTEXT);
     const { requirements } = response.data.attributes;
@@ -285,7 +288,7 @@ const CauseCard = ({ cause, className, disabled }: Props) => {
         </Content>
 
         <ActionWrapper>
-          {!authUser ? (
+          {!authUser ? ( // TODO: and must be compatible with disabled_reason?
             <Warning>
               <FormattedMessage
                 {...messages.notLoggedIn}
@@ -293,6 +296,7 @@ const CauseCard = ({ cause, className, disabled }: Props) => {
               />
             </Warning>
           ) : (
+            // TODO: hide button (show warning) if not permitted (not enabled)
             <Button
               onClick={handleOnVolunteerButtonClick}
               icon={!isVolunteer ? 'volunteer' : 'volunteer-off'}
