@@ -76,16 +76,16 @@ class CustomFieldService
   end
 
   def generate_key(_record, title)
-    key = keyify(title)
+    keyify(title)
   end
 
   def keyify(str)
     key = str.parameterize.tr('-', '_').presence || '_'
-    return generate_token(key)
+    generate_token(key)
   end
 
   def generate_token(str)
-    str.dup.concat('_', ([*('a'..'z'), *('0'..'9')].sample(3).join))
+    str.dup.concat('_', [*('a'..'z'), *('0'..'9')].sample(3).join)
   end
 
   def cleanup_custom_field_values!(custom_field_values)

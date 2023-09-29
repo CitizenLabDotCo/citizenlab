@@ -28,7 +28,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
       .select("custom_field_values->'#{field.key}' as value")
       .where("custom_field_values->'#{field.key}' IS NOT NULL")
     distribution = Idea.select(:value).from(values).group(:value).order(Arel.sql('COUNT(value) DESC')).count.to_a
-    filtered_distribution = distribution.select { |(value, _count)| option_keys.values.include? ( value ) }
+    filtered_distribution = distribution.select { |(value, _count)| option_keys.value? value }
     option_titles = field.options.each_with_object({}) do |option, accu|
       accu[option.key] = option.title_multiloc
     end
@@ -41,7 +41,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
     end
     flattened_values = inputs.select(:id, "jsonb_array_elements(custom_field_values->'#{field.key}') as value")
     distribution = Idea.select(:value).from(flattened_values).group(:value).order(Arel.sql('COUNT(value) DESC')).count.to_a
-    filtered_distribution = distribution.select { |(value, _count)| option_keys.values.include? ( value ) }
+    filtered_distribution = distribution.select { |(value, _count)| option_keys.value? value }
     option_titles = field.options.each_with_object({}) do |option, accu|
       accu[option.key] = option.title_multiloc
     end
