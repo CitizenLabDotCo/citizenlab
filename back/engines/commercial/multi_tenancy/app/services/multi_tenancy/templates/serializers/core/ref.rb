@@ -16,6 +16,20 @@ module MultiTenancy
             return nil if id.nil?
 
             context.fetch(klass).fetch(id)
+          rescue KeyError
+            raise UnresolvedReferenceError.new(klass, id)
+          end
+
+          class UnresolvedReferenceError < StandardError
+            attr_reader :klass, :id
+
+            def initialize(klass, id)
+              message = "Could not resolve instance of #{klass} with id #{id}."
+              super(message)
+
+              @klass = klass
+              @id = id
+            end
           end
         end
       end

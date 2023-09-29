@@ -26,7 +26,7 @@ import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import { isNilOrError } from 'utils/helperUtils';
 
 // typings
-import { ParticipationMethod } from 'services/participationContexts';
+import { ParticipationMethod } from 'utils/participationContexts';
 import { ApiErrors } from '..';
 import { IPhase } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';

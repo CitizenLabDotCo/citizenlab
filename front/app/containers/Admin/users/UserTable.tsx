@@ -1,6 +1,6 @@
 // Libraries
 import React from 'react';
-import { TRole } from 'services/permissions/roles';
+import { TRole } from 'utils/permissions/roles';
 import { includes, isArray } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 // Components

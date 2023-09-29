@@ -6,7 +6,7 @@ import messages from './messages';
 // typings
 import { ITabsOutlet } from 'utils/moduleUtils';
 
-import { isAdmin } from 'services/permissions/roles';
+import { isAdmin } from 'utils/permissions/roles';
 import useAuthUser from 'api/me/useAuthUser';
 
 const Tab = ({ onData, formatMessage }: ITabsOutlet) => {

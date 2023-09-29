@@ -203,12 +203,13 @@ const ReactionControl = ({
         onScrollToOfficialFeedback={onScrollToOfficialFeedback}
         disabledReason={reactingPermission?.disabledReason}
       />
-      <Box mt="20px">
+      <Box mt="24px">
         <FollowUnfollow
           followableType="initiatives"
           followableId={initiative.data.id}
           followersCount={initiative.data.attributes.followers_count}
           followerId={initiative.data.relationships.user_follower?.data?.id}
+          buttonStyle="secondary"
         />
       </Box>
     </BorderContainer>

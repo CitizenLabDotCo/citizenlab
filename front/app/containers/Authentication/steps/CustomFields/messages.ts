@@ -1,9 +1,9 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  completeSignUp: {
-    id: 'app.containers.SignUp.completeSignUp',
-    defaultMessage: 'Complete sign up',
+  continue: {
+    id: 'app.containers.SignUp.continue',
+    defaultMessage: 'Continue',
   },
   skip: {
     id: 'app.containers.SignUp.skip',

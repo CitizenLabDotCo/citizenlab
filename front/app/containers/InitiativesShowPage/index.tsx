@@ -32,7 +32,6 @@ const StyledInitiativeShowPageTopBar = styled(InitiativeShowPageTopBar)`
 const InitiativesShowPage = () => {
   const initiativesEnabled = useFeatureFlag({ name: 'initiatives' });
   const { slug } = useParams() as { slug: string };
-
   const { data: initiative, status, error } = useInitiativeBySlug(slug);
 
   if (!initiativesEnabled) {

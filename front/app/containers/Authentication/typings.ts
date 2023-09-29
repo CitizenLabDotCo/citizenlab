@@ -3,7 +3,7 @@ import {
   AuthenticationRequirements,
   AuthenticationContext,
 } from 'api/authentication/authentication_requirements/types';
-import { SSOProvider } from 'services/singleSignOn';
+import { SSOProvider } from 'api/authentication/singleSignOn';
 import { SuccessAction } from './SuccessActions/actions';
 
 export interface ModalProps {

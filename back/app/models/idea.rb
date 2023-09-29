@@ -82,7 +82,7 @@ class Idea < ApplicationRecord
   has_many :ideas_topics, dependent: :destroy
   has_many :topics, -> { order(:ordering) }, through: :ideas_topics
   has_many :ideas_phases, dependent: :destroy
-  has_many :phases, through: :ideas_phases, after_add: :update_phase_ideas_count, after_remove: :update_phase_ideas_count
+  has_many :phases, through: :ideas_phases, after_add: :update_phase_counts, after_remove: :update_phase_counts
   has_many :baskets_ideas, dependent: :destroy
   has_many :baskets, through: :baskets_ideas
   has_many :text_images, as: :imageable, dependent: :destroy
@@ -238,8 +238,12 @@ class Idea < ApplicationRecord
     Comment.counter_culture_fix_counts only: [%i[idea project]]
   end
 
-  def update_phase_ideas_count(_)
+  def update_phase_counts(_)
     IdeasPhase.counter_culture_fix_counts only: %i[phase]
+    phases.select { |p| p.participation_method == 'voting' }.each do |phase|
+      # NOTE: this does not get called when removing a phase - but phase counts are not actually used
+      Basket.update_counts(phase, 'Phase')
+    end
   end
 
   def validate_creation_phase

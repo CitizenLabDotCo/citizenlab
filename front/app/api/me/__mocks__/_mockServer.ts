@@ -8,7 +8,7 @@ export const mockAuthUserData: IUserData = {
     slug: 'sylvester-kalinoski',
     locale: 'en',
     roles: [{ type: 'admin' }],
-    highest_role: 'super_admin',
+    highest_role: 'admin',
     bio_multiloc: {},
     registration_completed_at: '2018-03-28T13:34:57.000Z',
     invite_status: null,
@@ -26,6 +26,7 @@ export const mockAuthUserData: IUserData = {
     unread_notifications: 5,
     confirmation_required: false,
     verified: false,
+    followings_count: 2,
   },
 };
 

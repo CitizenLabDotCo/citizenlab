@@ -2,7 +2,7 @@ import {
   IFlatCustomField,
   LogicType,
   QuestionRuleType,
-} from 'services/formCustomFields';
+} from 'api/custom_fields/types';
 import { isNilOrError } from 'utils/helperUtils';
 import { object } from 'yup';
 

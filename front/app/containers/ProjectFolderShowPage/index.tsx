@@ -7,9 +7,10 @@ import ProjectFolderDescription from './ProjectFolderDescription';
 import ProjectFolderProjectCards from './ProjectFolderProjectCards';
 import Button from 'components/UI/Button';
 import PageNotFound from 'components/PageNotFound';
-import { Spinner, useWindowSize } from '@citizenlab/cl2-component-library';
+import { Box, Spinner, useWindowSize } from '@citizenlab/cl2-component-library';
 import ContentContainer from 'components/ContentContainer';
 import Centerer from 'components/UI/Centerer';
+import FollowUnfollow from 'components/FollowUnfollow';
 
 // hooks
 import useAuthUser from 'api/me/useAuthUser';
@@ -28,7 +29,7 @@ import { media, colors } from 'utils/styleUtils';
 // utils
 import { isError } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
-import { userModeratesFolder } from 'services/permissions/rules/projectFolderPermissions';
+import { userModeratesFolder } from 'utils/permissions/rules/projectFolderPermissions';
 
 // typings
 import { IProjectFolderData } from 'api/project_folders/types';
@@ -153,18 +154,36 @@ const ProjectFolderShowPage = memo<{
         ) : projectFolder ? (
           <>
             <StyledContentContainer maxWidth={maxPageWidth}>
-              {userCanEditFolder && (
-                <ButtonBar>
-                  <EditButton
-                    icon="edit"
-                    linkTo={`/admin/projects/folders/${projectFolder.id}/settings`}
-                    buttonStyle="secondary"
-                    padding="5px 8px"
-                  >
-                    <FormattedMessage {...messages.editFolder} />
-                  </EditButton>
-                </ButtonBar>
-              )}
+              <Box display="flex" width="100%">
+                <Box ml="auto" display="flex">
+                  {userCanEditFolder && (
+                    <ButtonBar>
+                      <EditButton
+                        icon="edit"
+                        linkTo={`/admin/projects/folders/${projectFolder.id}/settings`}
+                        buttonStyle="secondary"
+                        padding="6px 12px"
+                      >
+                        <FormattedMessage {...messages.editFolder} />
+                      </EditButton>
+                    </ButtonBar>
+                  )}
+                  <Box ml="8px">
+                    <FollowUnfollow
+                      followableType="project_folders"
+                      followableId={projectFolder.id}
+                      followersCount={projectFolder.attributes.followers_count}
+                      followerId={
+                        projectFolder.relationships.user_follower?.data?.id
+                      }
+                      followableSlug={projectFolder.attributes.slug}
+                      w="auto"
+                      py="6px"
+                      iconSize="20px"
+                    />
+                  </Box>
+                </Box>
+              </Box>
               <ProjectFolderHeader projectFolder={projectFolder} />
               {!smallerThan1280px ? (
                 <Content>

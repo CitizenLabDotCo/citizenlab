@@ -5,11 +5,11 @@ import useCopyProject from 'api/projects/useCopyProject';
 import useDeleteProject from 'api/projects/useDeleteProject';
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 import { useIntl } from 'utils/cl-intl';
-import { isAdmin } from 'services/permissions/roles';
+import { isAdmin } from 'utils/permissions/roles';
 import useAuthUser from 'api/me/useAuthUser';
 import { isNilOrError } from 'utils/helperUtils';
 import useProjectById from 'api/projects/useProjectById';
-import { userModeratesFolder } from 'services/permissions/rules/projectFolderPermissions';
+import { userModeratesFolder } from 'utils/permissions/rules/projectFolderPermissions';
 
 export type ActionType = 'deleting' | 'copying';
 

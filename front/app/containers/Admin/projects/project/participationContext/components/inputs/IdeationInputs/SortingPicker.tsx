@@ -10,7 +10,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../../../messages';
 
 // typings
-import { IdeaDefaultSortMethod } from 'services/participationContexts';
+import { IdeaDefaultSortMethod } from 'utils/participationContexts';
 import { ApiErrors } from '../../..';
 
 interface Props {

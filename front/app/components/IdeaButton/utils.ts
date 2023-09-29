@@ -1,4 +1,4 @@
-import { InputTerm } from 'services/participationContexts';
+import { InputTerm } from 'utils/participationContexts';
 import { Props } from '.';
 import { getInputTermMessage } from 'utils/i18n';
 import messages from './messages';

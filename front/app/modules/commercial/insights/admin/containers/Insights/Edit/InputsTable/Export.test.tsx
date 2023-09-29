@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent } from 'utils/testUtils/rtl';
-import { requestBlob } from 'utils/request';
+import { requestBlob } from 'utils/requestBlob';
 
 import Export from './Export';
 
@@ -12,7 +12,7 @@ let mockLocationData: { query: Record<string, unknown> } = { query: {} };
 
 jest.mock('modules/commercial/insights/api/views/useView');
 
-jest.mock('utils/request');
+jest.mock('utils/requestBlob');
 
 jest.mock('utils/cl-router/withRouter', () => {
   return {

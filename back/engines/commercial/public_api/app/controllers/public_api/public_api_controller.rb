@@ -38,9 +38,10 @@ module PublicApi
         meta: meta_properties(@items)
     end
 
-    def show_item(query, serializer)
+    def show_item(query, serializer, root_key: nil)
       render json: query,
         serializer: serializer,
+        root: root_key,
         adapter: :json
     end
 

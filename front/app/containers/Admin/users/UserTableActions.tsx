@@ -17,7 +17,7 @@ import useAddMembership from 'api/group_memberships/useAddMembership';
 import useGroups from 'api/groups/useGroups';
 
 // Utils
-import { requestBlob } from 'utils/request';
+import { requestBlob } from 'utils/requestBlob';
 import { API_PATH } from 'containers/App/constants';
 
 // Events
@@ -38,7 +38,7 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import { rgba } from 'polished';
 
 // Typings
-import { CLErrorsJSON } from 'typings';
+import { CLErrorsWrapper } from 'typings';
 import usersKeys from 'api/users/keys';
 import { useQueryClient } from '@tanstack/react-query';
 
@@ -228,7 +228,7 @@ const UserTableActions = ({
   const addUsersToGroups = async () => {
     if (selectedGroupIds && selectedGroupIds.length > 0) {
       const usersIds = selectedUsers === 'all' ? allUsersIds : selectedUsers;
-      const promises: Promise<IGroupMemberships | CLErrorsJSON>[] = [];
+      const promises: Promise<IGroupMemberships | CLErrorsWrapper>[] = [];
       const timeout = (ms) => new Promise((res) => setTimeout(res, ms));
       const success = () => {
         eventEmitter.emit<MembershipAdd>(events.membershipAdd, {
