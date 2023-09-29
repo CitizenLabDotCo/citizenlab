@@ -313,16 +313,14 @@ module BulkImportIdeas
       idea = extract_permission_checkbox(idea)
       # idea = idea.map { |k, v| { name: k, value: v } } # Temp: Need to just use in this format
 
-      binding.pry
-
       idea.map do |name, value|
-        binding.pry
+        option = name.match /(.*)_(\d).(\d{2})/ # Is this an option (checkbox)?
         {
-          name: name.gsub("(#{locale_optional_label})", '').squish,
+          name: option ? option[1] : name.gsub("(#{locale_optional_label})", '').squish,
           value: value,
-          type: value.include?('checkbox') ? 'option' : 'field',
-          page: nil,
-          position: nil
+          type: value.to_s.include?('checkbox') ? 'option' : 'field',
+          page: option ? option[2].to_i : nil,
+          position: option ? option[3].to_i : nil
         }
       end
     end
