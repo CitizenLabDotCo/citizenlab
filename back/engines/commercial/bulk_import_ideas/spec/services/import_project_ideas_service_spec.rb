@@ -53,7 +53,7 @@ describe BulkImportIdeas::ImportProjectIdeasService do
       expect(xlsx).not_to be_nil
       expect(xlsx_hash.count).to eq 1
       expect(xlsx_hash[0].keys).to match_array([
-        'First name',
+        'First name(s)',
         'Last name',
         'Email address',
         'Permission',
@@ -80,9 +80,9 @@ describe BulkImportIdeas::ImportProjectIdeasService do
         {
           pdf_pages: [1, 2],
           fields: {
-            'First name' => 'John',
-            'Last name' => 'Rambo',
-            'Email address' => 'john_rambo@gravy.com',
+            'First name(s) (optional)' => 'John',
+            'Last name (optional)' => 'Rambo',
+            'Email address (optional)' => 'john_rambo@gravy.com',
             'Permission' => 'X',
             'Title' => 'Free donuts for all',
             'Description' => 'Give them all donuts',
@@ -98,9 +98,9 @@ describe BulkImportIdeas::ImportProjectIdeasService do
         {
           pdf_pages: [3, 4],
           fields: {
-            'First name' => 'Ned',
-            'Last name' => 'Flanders',
-            'Email address' => 'ned@simpsons.com',
+            'First name(s) (optional)' => 'Ned',
+            'Last name (optional)' => 'Flanders',
+            'Email address (optional)' => 'ned@simpsons.com',
             'Permission' => '',
             'Title' => 'New Wrestling Arena needed',
             'Description' => 'I am convinced that if we do not get this we will be sad.',
@@ -194,8 +194,8 @@ describe BulkImportIdeas::ImportProjectIdeasService do
       ideas = [{
         pdf_pages: [1, 2],
         fields: {
-          'Prénom' => 'Jean',
-          'Nom' => 'Rambo',
+          'Prénom(s)' => 'Jean',
+          'Nom de famille' => 'Rambo',
           'Adresse e-mail' => 'jean@france.com',
           'Autorisation' => 'X',
           'Titre' => 'Bonjour',
@@ -238,13 +238,28 @@ describe BulkImportIdeas::ImportProjectIdeasService do
       expect(rows[1][:custom_field_values][:multiselect_field]).to match_array %w[this that]
     end
 
+    it 'includes user details when "PDF Permission Checkbox" field is present in PDF output' do
+      # Remove permission field and use output from checkbox on PDF scan
+      pdf_ideas[0][:fields].delete('Permission')
+      pdf_ideas[0][:fields]['By checking this box I consent to my data'] = 'filled_checkbox'
+
+      # binding.pry
+
+      rows = service.ideas_to_idea_rows pdf_ideas
+
+      expect(rows[0][:user_email]).to eq 'john_rambo@gravy.com'
+      expect(rows[0][:user_first_name]).to eq 'John'
+      expect(rows[0][:user_last_name]).to eq 'Rambo'
+    end
+
+
     context 'xlsx specific fields' do
       let(:xlsx_ideas_array) do
         [
           {
             pdf_pages: [1],
             fields: {
-              'First name' => 'Bill',
+              'First name(s)' => 'Bill',
               'Last name' => 'Test',
               'Email address' => 'bill@citizenlab.co',
               'Permission' => 'X',

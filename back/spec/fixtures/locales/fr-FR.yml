@@ -16,7 +16,7 @@ fr:
       first_name: 'Prénom(s)'
       last_name: 'Nom de famille'
       email_address: Adresse e-mail
-      by_checking_this_box: "By checking this box I consent to my data being used to create an account on %{organizationName}'s participation platform."
+      by_checking_this_box: "En cochant cette case, j'accepte que mes données soient utilisées pour créer un compte sur la plateforme de participation de %{organizationName}."
       optional: optionnel
       permission: Autorisation
       choose_as_many: Choisissez-en autant que vous le souhaitez
