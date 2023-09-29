@@ -40,15 +40,13 @@ class AuthenticationService
     # an account (with SSO).
     return nil if !user
 
-    if AppConfiguration.instance.feature_activated? 'user_confirmation'
-      if user.password_digest && user.confirmation_required?
-        user.destroy!
-        nil
-      else
-        user
-      end
-    else
-      user.tap { |user| user.update!(password: nil) }
+    if user.confirmation_required? && !user.email_confirmed_at && user.password_digest
+      user.destroy!
+      return nil
     end
+
+    return user.tap { |tapped_user| tapped_user.update!(password: nil) } unless AppConfiguration.instance.feature_activated? 'user_confirmation'
+
+    user
   end
 end

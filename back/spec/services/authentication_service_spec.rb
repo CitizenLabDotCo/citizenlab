@@ -13,7 +13,7 @@ describe AuthenticationService do
       before { SettingsService.new.activate_feature! 'user_confirmation' }
 
       context 'when the user is not confirmed' do
-        before { user.update_column(:confirmation_required, true) }
+        before { user.update_columns(confirmation_required: true, email_confirmed_at: nil) }
 
         it 'removes the user account' do
           user_id = user.id

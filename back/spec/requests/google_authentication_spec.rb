@@ -110,7 +110,7 @@ describe 'google authentication' do
   it 'deletes the previous user if unverified with password and verification is enabled' do
     SettingsService.new.activate_feature! 'user_confirmation'
     user = create(:user, email: 'boris.brompton@orange.uk', password: 'supersecret')
-    user.update_column(:confirmation_required, true)
+    user.update_columns(confirmation_required: true, email_confirmed_at: nil)
     user_id = user.id
 
     get '/auth/google?random-passthrough-param=somevalue'
