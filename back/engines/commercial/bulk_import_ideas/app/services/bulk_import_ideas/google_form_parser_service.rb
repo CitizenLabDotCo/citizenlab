@@ -72,7 +72,11 @@ module BulkImportIdeas
           idea = { form_pages: [], pdf_pages: [], fields: {} }
           page_count = 0
         end
-        idea[:fields][field[:name].to_s] = field[:type].include?('checkbox') ? field[:type] : field[:value]
+
+
+        # Include field y value in name to allow checkbox values to be used multiple times
+        field_name = field[:type].include?('checkbox') ? "#{field[:name].to_s}_#{field[:y].to_s[0..3]}" : field[:name].to_s
+        idea[:fields][field_name] = field[:type].include?('checkbox') ? field[:type] : field[:value]
         idea[:pdf_pages] << field[:page] unless idea[:pdf_pages].include? field[:page]
         idea[:form_pages] << (page_count + 1) unless idea[:form_pages].include?(page_count + 1)
         previous_page = field[:page]
