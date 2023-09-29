@@ -7,17 +7,7 @@ class WebApi::V1::InitiativesController < ApplicationController
   skip_before_action :authenticate_user
   skip_after_action :verify_authorized, only: %i[index_xlsx index_initiative_markers filter_counts]
 
-  class ProfanityBlockedError < StandardError
-    attr_reader :violating_attributes
-
-    def initialize(violating_attributes)
-      super
-      @violating_attributes = violating_attributes
-    end
-  end
-
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
-  rescue_from ProfanityBlockedError, with: :render_profanity_blocked
 
   def index
     initiatives = InitiativesFinder.new(
@@ -211,37 +201,9 @@ class WebApi::V1::InitiativesController < ApplicationController
 
   private
 
-  def verify_profanity(object)
-    return unless AppConfiguration.instance.feature_activated? 'blocking_profanity'
-
-    # blocked_words = []
-    violating_attributes = []
-    service = ProfanityService.new
-    attrs = SUPPORTED_CLASS_ATTRS[object.class.name]
-    attrs&.each do |atr|
-      next if object[atr].blank?
-
-      values = if atr.to_s.ends_with? '_multiloc'
-        object[atr]
-      else
-        { nil => object[atr] }
-      end
-      values.each do |_locale, text|
-        next if text.blank?
-
-        if service.search_blocked_words(text).present?
-          violating_attributes << atr
-          # result[:locale] = locale if locale
-          # result[:attribute] = atr
-          # blocked_words.push result
-        end
-      end
-    end
-    raise ProfanityBlockedError, violating_attributes if violating_attributes.present?
-  end
-
+  # renders errors in the new HookForm format
   def render_profanity_blocked(exception)
-    errors = exception.violating_attributes.index_with { [{ error: :includes_banned_words, value: 'some value' }] }
+    errors = exception.violating_attributes.index_with { [{ error: :includes_banned_words }] }
     render json: { errors: errors }, status: :unprocessable_entity
   end
 
