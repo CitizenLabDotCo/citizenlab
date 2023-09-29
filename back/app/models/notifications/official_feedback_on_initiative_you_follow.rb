@@ -85,6 +85,8 @@ module Notifications
             official_feedback: official_feedback
           )
         end
+      else
+        []
       end
     end
   end
