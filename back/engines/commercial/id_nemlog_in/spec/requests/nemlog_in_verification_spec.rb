@@ -122,11 +122,6 @@ describe IdNemlogIn::NemlogInOmniauth do
   end
 
   context 'when verification method is used by Copenhagen' do
-    before do
-      AppConfiguration.instance.update!(host: 'kobenhavntaler.kk.dk')
-      host! 'kobenhavntaler.kk.dk'
-    end
-
     it 'does not verify an under 15-year-old' do
       saml_auth_response.extra.raw_info['https://data.gov.dk/model/core/eid/age'] = ['14']
 
