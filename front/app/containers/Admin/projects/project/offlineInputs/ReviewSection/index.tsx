@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Tippy from '@tippyjs/react';
 
 // routing
 import { useParams } from 'react-router-dom';
@@ -8,35 +7,22 @@ import { useParams } from 'react-router-dom';
 import useImportedIdeas from 'api/import_ideas/useImportedIdeas';
 import useImportedIdeaMetadata from 'api/import_ideas/useImportedIdeaMetadata';
 import useIdeaById from 'api/ideas/useIdeaById';
-import useUserById from 'api/users/useUserById';
-import usePhase from 'api/phases/usePhase';
 import useInputSchema from 'hooks/useInputSchema';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import useLocalize from 'hooks/useLocalize';
 import messages from './messages';
 
 // components
-import {
-  Box,
-  Spinner,
-  Title,
-  Text,
-  Button,
-} from '@citizenlab/cl2-component-library';
+import { Box, Spinner, Title, Text } from '@citizenlab/cl2-component-library';
 import EmptyState from './EmptyState';
 import IdeaList from './IdeaList';
-import InfoBox from './InfoBox';
-import IdeaForm from './IdeaForm';
+import IdeaEditor from './IdeaEditor';
 import PDFPageControl from './PDFPageControl';
 import PDFViewer from './PDFViewer';
 
 // styling
 import { colors, stylingConsts } from 'utils/styleUtils';
-
-// utils
-import { getFullName } from 'utils/textUtils';
 
 // typings
 import { FormData } from 'components/Form/typings';
@@ -65,10 +51,9 @@ const ReviewSection = ({
   onApproveIdea,
   onDeleteIdea,
 }: Props) => {
-  const localize = useLocalize();
   const { projectId, phaseId } = useParams() as {
     projectId: string;
-    phaseId: string;
+    phaseId?: string;
   };
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
 
@@ -78,17 +63,9 @@ const ReviewSection = ({
   });
   const { data: ideas, isLoading } = useImportedIdeas({ projectId, phaseId });
   const { data: idea } = useIdeaById(ideaId ?? undefined);
-  const { data: author } = useUserById(
-    idea?.data.relationships.author?.data?.id,
-    false
-  );
   const { data: ideaMetadata } = useImportedIdeaMetadata({
     id: isLoading ? undefined : idea?.data.relationships.idea_import?.data?.id,
   });
-
-  const selectedPhaseId =
-    phaseId ?? idea?.data.relationships.phases.data[0]?.id;
-  const { data: phase } = usePhase(selectedPhaseId);
 
   if (isLoading) {
     return (
@@ -109,20 +86,8 @@ const ReviewSection = ({
       ? ideaMetadata?.data.attributes.page_range.map((page) => Number(page))
       : null;
 
-  const phaseName = phase
-    ? localize(phase.data.attributes.title_multiloc)
-    : undefined;
-
-  const authorName = author ? getFullName(author.data) : undefined;
-  const authorEmail = author?.data.attributes.email;
-  const locale = ideaMetadata?.data.attributes.locale;
-
   const goToNextPage = () => setCurrentPageIndex((index) => index + 1);
   const goToPreviousPage = () => setCurrentPageIndex((index) => index - 1);
-
-  const disabledReason = formDataValid ? null : (
-    <FormattedMessage {...messages.formDataNotValid} />
-  );
 
   return (
     <Box
@@ -190,66 +155,15 @@ const ReviewSection = ({
           alignItems="center"
           h="100%"
         >
-          <Box
-            px="12px"
-            borderBottom={`1px ${colors.grey400} solid`}
-            overflowY="scroll"
-            w="100%"
-            h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px - 160px)`}
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-          >
-            {(phaseName || authorEmail || authorName || locale) && (
-              <InfoBox
-                phaseName={phaseName}
-                authorName={authorName}
-                authorEmail={authorEmail}
-                locale={locale}
-              />
-            )}
-            {ideaMetadata && (
-              <IdeaForm
-                schema={schema}
-                uiSchema={uiSchema}
-                showAllErrors={true}
-                apiErrors={apiErrors}
-                formData={formData}
-                ideaMetadata={ideaMetadata}
-                setFormData={setFormData}
-              />
-            )}
-          </Box>
-          <Box
-            h="60px"
-            px="24px"
-            pb="4px"
-            w="100%"
-            display="flex"
-            flexDirection="column"
-            justifyContent="flex-end"
-          >
-            {ideaId && (
-              <Tippy
-                disabled={!disabledReason}
-                interactive={true}
-                placement="top"
-                content={disabledReason || <></>}
-              >
-                <div>
-                  <Button
-                    icon="check"
-                    w="100%"
-                    processing={loadingApproveIdea}
-                    disabled={!formDataValid}
-                    onClick={onApproveIdea}
-                  >
-                    <FormattedMessage {...messages.approve} />
-                  </Button>
-                </div>
-              </Tippy>
-            )}
-          </Box>
+          <IdeaEditor
+            ideaId={ideaId}
+            apiErrors={apiErrors}
+            formData={formData}
+            formDataValid={formDataValid}
+            loadingApproveIdea={loadingApproveIdea}
+            setFormData={setFormData}
+            onApproveIdea={onApproveIdea}
+          />
         </Box>
         <Box w="40%">
           {ideaMetadata && pages && (

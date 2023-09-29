@@ -7,7 +7,7 @@ import { Box, Text, IconTooltip } from '@citizenlab/cl2-component-library';
 import { colors } from 'utils/styleUtils';
 
 // i18n
-import messages from './messages';
+import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { Locale } from 'typings';
 
