@@ -1,19 +1,18 @@
 import { renderHook } from '@testing-library/react-hooks';
 
 import useInitiativeImage from './useInitiativeImage';
-import { initiativeImagesData } from './__mocks__/initiativeImages';
 
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import endpoints, {
+  initiativeImagesData,
+  apiPath,
+} from './__mocks__/_mockServer';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
-const apiPath = '*initiatives/:initiativeId/images/:imageId';
-
 const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: initiativeImagesData[0] }));
-  })
+  endpoints['GET initiatives/:initiativeId/images/:imageId']
 );
 
 describe('useInitiativeImage', () => {

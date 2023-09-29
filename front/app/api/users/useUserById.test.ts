@@ -4,17 +4,12 @@ import { renderHook } from '@testing-library/react-hooks';
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-import { usersData } from './__mocks__/useUsers';
+import endpoints, { apiPath } from './__mocks__/_mockServer';
+import { usersData } from './__mocks__/_mockServer';
 
 const userId = 'be3f645b-3e1d-4afc-b91b-d68c4dc0100b';
 
-const apiPath = `*users/${userId}`;
-
-const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: usersData[0] }));
-  })
-);
+const server = setupServer(endpoints['GET users/:id']);
 
 describe('useUserById', () => {
   beforeAll(() => server.listen());

@@ -6,7 +6,7 @@ import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-import { initiativeImagesData } from './__mocks__/initiativeImages';
+import { initiativeImagesData } from './__mocks__/_mockServer';
 
 const apiPath = '*initiatives/:initiativeId/images';
 
