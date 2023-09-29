@@ -18,6 +18,7 @@ class PrintCustomFieldsService
     @personal_data_enabled = personal_data_enabled
     @previous_cursor = nil
     @app_configuration = AppConfiguration.instance
+    @form_fields = []
   end
 
   def create_pdf
@@ -243,7 +244,16 @@ class PrintCustomFieldsService
     end
 
     pdf.move_down 6.mm
+
+    # Add to array to use in import
+    add_to_export_fields(custom_field, page, position)
+
   end
+
+  def add_to_export_fields(custom_field, page, position)
+    @form_fields << custom_field
+  end
+
 
   def write_title(pdf, custom_field)
     optional = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.optional') }
