@@ -85,7 +85,7 @@ class CustomFieldService
   end
 
   def generate_token(str)
-    str.concat('_', ([*('a'..'z'), *('0'..'9')].sample(3).join))
+    str.dup.concat('_', ([*('a'..'z'), *('0'..'9')].sample(3).join))
   end
 
   def cleanup_custom_field_values!(custom_field_values)
