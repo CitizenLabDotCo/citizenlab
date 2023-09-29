@@ -171,9 +171,7 @@ class ApplicationMailer < ActionMailer::Base
   end
 
   def logo_url
-    @logo_url ||= app_configuration.logo.versions.then do |versions|
-      versions[:large].url || versions[:medium].url || versions[:small].url || ''
-    end
+    versions[:medium].url || versions[:small].url || versions[:large].url || ''
   end
 
   def formatted_todays_date
