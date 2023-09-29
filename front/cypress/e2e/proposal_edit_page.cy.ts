@@ -5,10 +5,10 @@ describe('Initiative form page', () => {
   const lastName = randomString();
   const email = randomEmail();
   const password = randomString();
-  const initiativeTitle = randomString(40);
-  const initiativeContent = randomString(60);
-  const newInitiativeTitle = randomString(40);
-  const newInitiativeContent = randomString(60);
+  const initiativeTitle = randomString(10);
+  const initiativeContent = randomString(30);
+  const newInitiativeTitle = randomString(10);
+  const newInitiativeContent = randomString(30);
   let jwt: string;
   let initiativeId: string;
 
