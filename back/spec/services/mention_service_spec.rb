@@ -105,7 +105,7 @@ describe MentionService do
       expect(result).to match_array [@u1, @u2]
     end
 
-    it 'handles case gracefully' do
+    it 'handles character case gracefully' do
       result = service.users_from_post('Ja', @idea, 5)
       expect(result.size).to eq 2
       expect(result).to match_array [@u1, @u2]

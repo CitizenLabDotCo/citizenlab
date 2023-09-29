@@ -115,6 +115,23 @@ RSpec.describe Initiative do
     end
   end
 
+  describe '#proposed_at' do
+    before { create(:initiative_status_proposed) }
+
+    let(:initiative) do
+      create(
+        :initiative,
+        build_status_change: false,
+        created_at: 2.days.ago,
+        published_at: 2.days.ago
+      )
+    end
+
+    it 'returns date when initiative status became proposed' do
+      expect(initiative.proposed_at).to be_within(1.second).of(initiative.initiative_status_changes.first.created_at)
+    end
+  end
+
   describe '#expires_at' do
     before do
       allow(Time).to receive(:now).and_return(Time.now)
@@ -281,6 +298,12 @@ RSpec.describe Initiative do
       initiative.update!(cosponsor_ids: [cosponsor1.id, cosponsor1.id])
 
       expect(initiative.reload.cosponsors).to match_array [cosponsor1]
+    end
+
+    it 'will not add initiative author as cosponsor' do
+      initiative.update!(cosponsor_ids: [initiative.author_id])
+
+      expect(initiative.reload.cosponsors).to be_empty
     end
 
     it 'does nothing if update validation fails' do

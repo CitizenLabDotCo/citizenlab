@@ -14,7 +14,7 @@ import messages from './messages';
 import { useParams, useSearchParams } from 'react-router-dom';
 
 import useAddAnalysis from 'api/analyses/useAddAnalysis';
-import useFormCustomFields from 'hooks/useFormCustomFields';
+import useFormCustomFields from 'api/custom_fields/useCustomFields';
 import Modal from 'components/UI/Modal';
 import { isNilOrError } from 'utils/helperUtils';
 import useLocalize from 'hooks/useLocalize';
@@ -98,7 +98,7 @@ const CreateAnalysisModal = ({ onClose }: { onClose: () => void }) => {
 
   const [urlParams] = useSearchParams();
   const phaseId = urlParams.get('phase_id') || undefined;
-  const formCustomFields = useFormCustomFields({
+  const { data: formCustomFields } = useFormCustomFields({
     projectId,
     phaseId,
   });
@@ -127,9 +127,9 @@ const CreateAnalysisModal = ({ onClose }: { onClose: () => void }) => {
             extra: { projectId },
           });
           clHistory.push(
-            `/admin/projects/${projectId}/analysis/${
-              analysis.data.id
-            }?showLaunchModal=true${phaseId ? `&phase_id=${phaseId}` : ''}`
+            `/admin/projects/${projectId}/analysis/${analysis.data.id}${
+              phaseId ? `?phase_id=${phaseId}` : ''
+            }`
           );
           onClose();
         },
@@ -159,8 +159,14 @@ const CreateAnalysisModal = ({ onClose }: { onClose: () => void }) => {
       <Box>
         <Title>{formatMessage(messages.analysisSelectQuestions)}</Title>
         <Text>
-          Do you want to include any other related questions in your analysis of{' '}
-          <b>&quot;{localize(initialQuestion?.title_multiloc)}&quot;</b>?
+          <FormattedMessage
+            {...messages.analysisSelectQuestionsDescription}
+            values={{
+              question: (
+                <b>&quot;{localize(initialQuestion?.title_multiloc)}&quot;</b>
+              ),
+            }}
+          />
         </Text>
       </Box>
       <Box>

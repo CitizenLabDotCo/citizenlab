@@ -14,8 +14,8 @@ export default defineMessages({
     defaultMessage: 'Name in navbar',
   },
   emptyTitleError: {
-    id: 'app.containers.Admin.PagesAndMenu.components.emptyTitleError',
-    defaultMessage: 'Provide title for all languages',
+    id: 'app.containers.Admin.PagesAndMenu.components.emptyTitleError1',
+    defaultMessage: 'Provide a title for all languages',
   },
   savePage: {
     id: 'app.containers.Admin.PagesAndMenu.components.savePage',

@@ -6,7 +6,7 @@ import useUpdateProjectFolderMembership from 'api/projects/useUpdateProjectFolde
 
 // services
 import { PublicationStatus } from 'api/projects/types';
-import { isAdmin } from 'services/permissions/roles';
+import { isAdmin } from 'utils/permissions/roles';
 
 // hooks
 import useAdminPublications from 'api/admin_publications/useAdminPublications';

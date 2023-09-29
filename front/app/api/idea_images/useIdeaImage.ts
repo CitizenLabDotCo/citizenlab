@@ -18,7 +18,7 @@ const fetchIdeaImage = ({
 
 const useIdeaImage = (ideaId: string, imageId?: string) => {
   return useQuery<IIdeaImage, CLErrors, IIdeaImage, IdeaImagesKeys>({
-    queryKey: ideaImagesKeys.item({ ideaId, imageId }),
+    queryKey: ideaImagesKeys.item({ imageId }),
     queryFn: () => fetchIdeaImage({ ideaId, imageId }),
     enabled: !!imageId,
   });

@@ -24,7 +24,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 // Components
-const SubmitButtonBar = lazy(() => import('./SubmitButtonBar'));
+import SubmitButtonBar from './SubmitButtonBar';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
 const ProfileVisibilityFormSection = lazy(
@@ -39,15 +39,17 @@ import { Box } from '@citizenlab/cl2-component-library';
 const ImageAndAttachmentsSection = lazy(
   () => import('./ImagesAndAttachmentsSection')
 );
+import Warning from 'components/UI/Warning';
 
 // Hooks
 import useTopics from 'api/topics/useTopics';
 import { IInitiativeData } from 'api/initiatives/types';
 import { IInitiativeImageData } from 'api/initiative_images/types';
 import { IInitiativeFileData } from 'api/initiative_files/types';
-import Warning from 'components/UI/Warning';
-import useInitiativeReviewRequired from 'hooks/useInitiativeReviewRequired';
+import useInitiativeReviewRequired from 'containers/InitiativesShow/hooks/useInitiativeReviewRequired';
 import { stripHtmlTags } from 'utils/helperUtils';
+import useInitiativeCosponsorsRequired from 'containers/InitiativesShow/hooks/useInitiativeCosponsorsRequired';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 declare module 'components/UI/Error' {
   interface TFieldNameMap {
@@ -75,6 +77,8 @@ export type Props = {
   initiativeFiles?: IInitiativeFileData[];
 };
 
+const MAX_NUMBER_OF_COSPONSORS = 10;
+
 const InitiativeForm = ({
   onSubmit,
   initiative,
@@ -82,10 +86,12 @@ const InitiativeForm = ({
   initiativeFiles,
 }: Props) => {
   const mapsLoaded = window.googleMaps;
+  const { formatMessage } = useIntl();
   const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
     useState(false);
-  const { formatMessage } = useIntl();
+  const cosponsorsRequired = useInitiativeCosponsorsRequired();
   const initiativeReviewRequired = useInitiativeReviewRequired();
+  const { data: appConfiguration } = useAppConfiguration();
   const { data: topics } = useTopics({ excludeCode: 'custom' });
   const schema = object({
     title_multiloc: validateAtLeastOneLocale(
@@ -112,7 +118,23 @@ const InitiativeForm = ({
     topic_ids: array()
       .required(formatMessage(messages.topicEmptyError))
       .min(1, formatMessage(messages.topicEmptyError)),
-    cosponsor_ids: array().optional(),
+    ...(cosponsorsRequired &&
+      typeof appConfiguration?.data.attributes.settings.initiatives
+        ?.cosponsors_number === 'number' && {
+        cosponsor_ids: array()
+          .required(formatMessage(messages.cosponsorsEmptyError))
+          .min(
+            appConfiguration.data.attributes.settings.initiatives
+              .cosponsors_number,
+            formatMessage(messages.cosponsorsEmptyError)
+          )
+          .max(
+            MAX_NUMBER_OF_COSPONSORS,
+            formatMessage(messages.cosponsorsMaxError, {
+              maxNumberOfCosponsors: MAX_NUMBER_OF_COSPONSORS,
+            })
+          ),
+      }),
     local_initiative_files: mixed().optional(),
     images: mixed().optional().nullable(),
     header_bg: mixed().optional().nullable(),
@@ -321,9 +343,7 @@ const InitiativeForm = ({
               />
             </Suspense>
           </Box>
-          <Suspense fallback={null}>
-            <SubmitButtonBar processing={methods.formState.isSubmitting} />
-          </Suspense>
+          <SubmitButtonBar processing={methods.formState.isSubmitting} />
         </form>
       </FormProvider>
       <Suspense fallback={null}>

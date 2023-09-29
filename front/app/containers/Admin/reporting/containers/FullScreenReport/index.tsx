@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 // services
-import { LocaleSubject } from 'services/locale';
+import { LocaleSubject } from 'utils/locale';
 
 // hooks
 import useReportLayout from 'api/report_layout/useReportLayout';

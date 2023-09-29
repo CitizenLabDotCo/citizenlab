@@ -58,7 +58,7 @@ const InternalCommentsSection = ({ postId, postType, className }: Props) => {
   const ideaId = postType === 'idea' ? postId : undefined;
   const { data: initiative } = useInitiativeById(initiativeId);
   const { data: idea } = useIdeaById(ideaId);
-  const [sortOrder, setSortOrder] = useState<InternalCommentSort>('-new');
+  const [sortOrder, setSortOrder] = useState<InternalCommentSort>('new');
   const {
     data: comments,
     isFetchingNextPage,

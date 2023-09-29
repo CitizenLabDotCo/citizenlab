@@ -20,13 +20,16 @@ import { string, object } from 'yup';
 import Input from 'components/HookForm/Input';
 
 // errors
-import { isCLErrorsIsh, handleCLErrorsIsh } from 'utils/errorUtils';
+import {
+  isCLErrorsWrapper,
+  handleHookFormSubmissionError,
+} from 'utils/errorUtils';
 
 // utils
 import { isValidEmail } from 'utils/validate';
 
 // typings
-import { SSOProvider } from 'services/singleSignOn';
+import { SSOProvider } from 'api/authentication/singleSignOn';
 import { Locale } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
 import { SetError } from 'containers/Authentication/typings';
@@ -84,8 +87,8 @@ const LightFlowStart = ({
     try {
       await onSubmit(email, locale);
     } catch (e) {
-      if (isCLErrorsIsh(e)) {
-        handleCLErrorsIsh(e, methods.setError);
+      if (isCLErrorsWrapper(e)) {
+        handleHookFormSubmissionError(e, methods.setError);
         return;
       }
 

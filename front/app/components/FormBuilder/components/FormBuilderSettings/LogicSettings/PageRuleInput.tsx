@@ -18,7 +18,7 @@ import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // types
-import { IFlatCustomField, LogicType } from 'services/formCustomFields';
+import { IFlatCustomField, LogicType } from 'api/custom_fields/types';
 
 // utils
 import { isPageRuleValid } from 'utils/yup/validateLogic';

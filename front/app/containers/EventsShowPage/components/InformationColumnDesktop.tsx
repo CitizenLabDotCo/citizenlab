@@ -7,6 +7,7 @@ import EventDateStylized from './MetadataInformation/EventDateStylized';
 import Location from './MetadataInformation/Location';
 import FullEventTime from './MetadataInformation/EventTimeTextual';
 import EventSharingButtons from './EventSharingButtons';
+import OnlineLink from './MetadataInformation/OnlineLink';
 import ParticipantsCount from './MetadataInformation/ParticipantsCount';
 
 // styling
@@ -66,10 +67,14 @@ const InformationColumnDesktop = ({ event, className }: Props) => {
               </>
 
               {event.attributes.address_1 && (
-                <>
+                <Box pb="16px" borderBottom={`solid 1px ${colors.divider}`}>
                   <Location event={event} />
-                  <Box borderBottom={`solid 1px ${colors.divider}`} />
-                </>
+                </Box>
+              )}
+              {event.attributes.online_link && (
+                <Box pb="16px" borderBottom={`solid 1px ${colors.divider}`}>
+                  <OnlineLink link={event.attributes.online_link} />
+                </Box>
               )}
               <FullEventTime event={event} />
             </Box>

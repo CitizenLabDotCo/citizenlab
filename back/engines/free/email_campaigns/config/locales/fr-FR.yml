@@ -6,9 +6,10 @@ fr:
       "comment_deleted_by_admin": Suppression de mon commentaire
       "comment_marked_as_spam": Commenter le rapport de spam
       "comment_on_your_comment": Une réponse à mon commentaire
-      "comment_on_your_idea": Un commentaire sur mon idée
-      "comment_on_your_initiative": Un commentaire sur ma proposition
+      "comment_on_idea_you_follow": Un commentaire sur une idée que vous suivez
+      "comment_on_initiative_you_follow": Un commentaire sur une proposition que vous suivez
       "cosponsor_of_your_initiative": Un utilisateur accepte de soutenir ma proposition
+      "event_registration_confirmation": Confirmation de l'inscription à l'événement
       "first_idea_published": Publication de ma première idée
       "idea_marked_as_spam": Rapport sur le spam d'idées
       "idea_published": Publication de mon idée
@@ -30,29 +31,18 @@ fr:
       "mention_in_official_feedback": Mention dans une mise à jour
       "mention_in_internal_comment": Mention dans un commentaire interne
       "new_comment_for_admin": Nouveau commentaire dans un projet que je modère
-      "new_comment_on_commented_idea": Nouveau commentaire sur une idée que j'ai commentée
-      "new_comment_on_commented_initiative": Nouveau commentaire sur une proposition que j'ai commentée
-      "new_comment_on_reacted_idea": Nouveau commentaire sur une idée à laquelle j'ai réagi
-      "new_comment_on_reacted_initiative": Nouveau commentaire sur une proposition pour laquelle j'ai voté
       "new_idea_for_admin": Nouvelle idée dans un projet que je modère
       "new_initiative_for_admin": Nouvelle proposition
-      "official_feedback_on_commented_idea": Mise à jour d'une idée que j'ai commentée
-      "official_feedback_on_commented_initiative": Mise à jour d'une proposition que j'ai commentée
-      "official_feedback_on_reacted_idea": Mise à jour d'une idée à laquelle j'ai réagi
-      "official_feedback_on_reacted_initiative": Mise à jour d'une proposition pour laquelle j'ai voté
-      "official_feedback_on_your_idea": Mise à jour de mon idée
-      "official_feedback_on_your_initiative": Mise à jour de mon proposition
+      "official_feedback_on_idea_you_follow": Mise à jour d'une idée que vous suivez
+      "official_feedback_on_initiative_you_follow": Mise à jour d'une proposition que vous suivez
       "password_reset": Réinitialisation du mot de passe
       "project_moderation_rights_received": Droits de modération de projet reçus
       "project_folder_moderation_rights_received": Droits d'administrateur de dossiers reçus
       "project_phase_started": Nouvelle phase de projet
       "project_phase_upcoming": Nouvelle phase de projet à venir
-      "status_change_of_commented_idea": Changement de statut d'une idée que j'ai commentée
-      "status_change_of_commented_initiative": Changement de statut d'une proposition que j'ai commentée
-      "status_change_of_reacted_idea": Changement de statut d'une idée à laquelle j'ai réagi
-      "status_change_of_reacted_initiative": Changement de statut d'une proposition pour laquelle j'ai réagi
-      "status_change_of_your_idea": Changement de statut de mon idée
-      "status_change_of_your_initiative": Changement de statut de mon proposition
+      "project_published": Projet publié
+      "status_change_on_idea_you_follow": Changement de statut d'une idée que vous suivez
+      "status_change_on_initiative_you_follow": Changement de statut d'une proposition que vous suivez
       "threshold_reached_for_admin": La proposition a atteint le seuil de vote
       "welcome": Après inscription
       "admin_digest": Aperçu hebdomadaire pour les administrateurs
@@ -64,6 +54,12 @@ fr:
       "voting_last_chance": Dernière chance pour voter
       "voting_results": Résultats du vote
       "your_proposed_initiatives_digest": Aperçu hebdomadaire de vos propositions
+    general:
+      by_author: 'par %{authorName}'
+      author_wrote: '%{authorName} a écrit :'
+      cta_goto_idea: 'Voir l''idée'
+      cta_goto_proposal: 'Voir la proposition'
+      cta_goto_project: 'Aller à ce projet'
     schedules:
       weekly:
         "0": "Chaque semaine, le dimanche à %{hourOfDay}"
@@ -80,6 +76,8 @@ fr:
       "powered_by": "Généré par"
       "statement": "Cet e-mail vous a été envoyé par %{organizationName} via CitizenLab, car vous êtes un utilisateur de la plateforme %{organizationLink}. Vous pouvez %{unsubscribeLink} si vous ne voulez plus recevoir ces e-mails à l'avenir."
       "unsubscribe_text": "vous désabonner"
+    follow:
+      "unfollow_here": "Vous avez reçu cette notification parce que vous suivez ce sujet. <a href=\"%{unfollow_url}\">Vous pouvez vous désabonner ici.</a>"
     comment_deleted_by_admin:
       reason: 'La raison pour laquelle votre commentaire a été supprimé :'
       cta_view: 'Voir cette idée'
@@ -134,13 +132,6 @@ fr:
       today: Aujourd'hui
       wrong_content: 'Le commentaire n’est pas pertinent.'
       yesterday: Hier
-    comment_on_your_initiative:
-      commented: '%{authorFirstName} a écrit :'
-      cta_reply_to: 'Répondre à %{commentAuthor}'
-      event_description: '%{authorNameFull} a réagi à votre proposition %{initiativeTitle}''. Cliquez sur le bouton ci-dessous pour continuer la conversation avec %{authorName}.'
-      main_header: '%{commentAuthor} a commenté votre proposition'
-      subject: 'Vous avez reçu un commentaire sur la plateforme de %{organizationName}'
-      preheader: '%{authorName} a commenté votre proposition pour %{organizationName}'
     cosponsor_of_your_initiative:
       cta_reply_to: 'Voir votre proposition'
       event_description_initiative: 'Félicitations ! %{cosponsorName} a accepté de soutenir votre proposition.'
@@ -163,7 +154,6 @@ fr:
       title_initiatives_past_week: 'Nouvelles propositions qui vous sont confiées'
       title_successful_initiatives_past_week: 'Les propositions qui vous sont confiées et qui ont atteint le nombre de voix requis'
     idea_marked_as_spam:
-      by_author: 'par %{authorName}'
       cta_review_idea: 'Examiner cette idée'
       report_inappropriate_offensive_content: 'Je trouve ce contenu inapproprié ou offensant.'
       report_not_an_idea: 'Ce contenu n''est pas une idée et n''a pas sa place ici.'
@@ -172,7 +162,6 @@ fr:
       reported_this_because: '%{reporterFirstName} a signalé ceci parce que :'
       title_spam_report: '%{firstName} %{lastName} a signalé un spam :'
     initiative_marked_as_spam:
-      by_author: 'par %{authorName}'
       cta_review_initiative: 'Voir la proposition'
       report_inappropriate_offensive_content: 'Je trouve ce contenu inapproprié ou offensant.'
       report_not_an_initiative: 'Ce contenu n''est pas une proposition et n''a pas sa place ici.'
@@ -181,7 +170,6 @@ fr:
       reported_this_because: '%{reporterFirstName} a signalé ceci parce que :'
       title_spam_report: '%{firstName} %{lastName} a signalé un spam :'
     initiative_assigned_to_you:
-      by_author: 'par %{authorName}'
       cta_reply_to: 'Faites votre retour à %{authorName}'
       event_description_initiative: 'Une proposition vous a été assignée. Mettez-la à jour en écrivant un commentaire officiel ou en changeant son statut.'
       main_header: '%{firstName}, vous avez une nouvelle attribution'
@@ -199,20 +187,22 @@ fr:
     initiative_resubmitted_for_review:
       by_author: 'par %{authorName}'
       cta_reply_to: 'Faites votre retour à %{authorName}'
-      event_description_initiative: 'Une proposition a été soumise à nouveau pour examen. Donnez votre avis en rédigeant une mise à jour officielle ou en modifiant son statut.'
-      main_header: '%{firstName}vous avez une proposition à examiner'
+      event_description_initiative: 'Une proposition a été soumise à nouveau pour examen. Donnez votre retour en rédigeant une mise à jour officielle ou en modifiant son statut.'
+      main_header: '%{firstName}, vous avez une proposition à examiner'
       subject: 'Vous avez une proposition à vérifier sur la plateforme de %{organizationName}'
       preheader_initiative: 'La proposition de %{authorName} a été soumise à nouveau pour examen.'
     invite_reminder:
       cta_accept_invitation: 'Accepter votre invitation'
       invitation_header: 'Votre invitation est toujours en attente !'
       preheader: 'Il y a quelques jours, %{organizationName} vous a invité.e à rejoindre sa plateforme de participation.'
+      invitation_expiry_message: 'Cette invitation expire dans environ %{expiryDaysRemaining} jours.'
       subject: 'Invitation en attente pour rejoindre la plateforme de participation de %{organizationName}'
     invite_received:
       added_a_message: '%{organizationName} a écrit le message suivant :'
       cta_accept_invitation: 'Accepter votre invitation'
       invitation_header: 'Vous venez de recevoir une invitation !'
       invitation_header_message: '%{organizationName} vous a invité.e à rejoindre sa plateforme de participation.'
+      invitation_expiry_message: 'Cette invitation expire dans %{expiryDays} jours.'
       preheader: '%{organizationName} vous a envoyé une invitation à rejoindre leur plateforme de participation.'
       subject: 'Vous avez reçu une invitation pour rejoindre la plateforme de %{organizationName}'
     initiative_published:
@@ -222,7 +212,6 @@ fr:
       action_share_fb: 'Informez vos amis sur %{fbLink}'
       action_share_link: 'Partagez-la via n''importe quel canal en copiant le %{link}'
       action_share_twitter: 'Informez vos followers sur %{twitterLink}'
-      cta_view_initiative: 'Aller à votre proposition'
       link: lien
       main_header: 'Votre proposition a été postée ! Partagez-la autour de vous pour recueillir du soutien.'
       message_next_steps: '%{userFirstName}, votre proposition a été publiée avec succès sur la plateforme de participation de %{organizationName}. Vous serez averti lorsque des personnes interagissent avec votre proposition. Découvrez les prochaines étapes à suivre ci-dessous.'
@@ -230,24 +219,7 @@ fr:
       preheader: 'Merci d''avoir partagé votre proposition "%{initiativeTitle}" pour %{organizationName}. L'' étape suivante est de la partager avec vos connaissances.'
       send_email: courriel
       subject: 'Votre proposition a été publiée sur la plateforme de %{organizationName}'
-    mention_in_official_feedback:
-      by_author: 'par %{authorName}'
-      commented: '%{organizationName} a écrit :'
-      cta_reply_to: 'Répondre à %{organizationName}'
-      event_description: '%{organizationName} vous ont mentionné dans leurs commentaires sur l''idée ''%{post}''. Cliquez sur le lien ci-dessous pour entrer dans la conversation avec %{organizationName}'
-      main_header: 'Vous avez été mentionné'
-      subject: '%{organizationName} vous ont mentionné dans leurs commentaires'
-      preheader: '%{commentAuthor} vous a mentionné dans un commentaire'
-    new_comment_on_commented_idea:
-      commented: '%{commentAuthor} a écrit :'
-      cta_reply_to: 'Répondre à %{commentAuthor}'
-      event_description: '%{commentAuthorFull} a aussi écrit un commentaire sur l''idée ''%{ideaTitle}'' sur la plate-forme de participation de %{organizationName}. Cliquez sur le bouton ci-dessous pour démarrer la conversation avec %{commentAuthor}.'
-      main_header: '%{commentAuthor} a écrit un commentaire sur la même idée'
-      subject: 'Il y a un autre commentaire sur l''idée que vous avez commentée'
-      preheader: '%{commentAuthor} a aussi commenté une idée pour %{organizationName}'
     mention_in_comment:
-      by_author: 'par %{authorName}'
-      commented: '%{commentAuthor} a écrit :'
       cta_reply_to: 'Répondre à %{commentAuthor}'
       event_description: '%{commentAuthorFull} vous a mentionné dans son commentaire sur l''idée ''%{post}''. Cliquez sur le lien ci-dessous pour entrer dans la conversation avec %{commentAuthor}'
       main_header: 'Les gens parlent de vous'
@@ -273,15 +245,7 @@ fr:
       yesterday_by_author: 'Hier par %{author}'
       today_by_author: 'Aujourd''hui par %{author}'
       x_days_ago_by_author: 'Il y a %{x} jours par %{author}'
-    new_comment_on_commented_initiative:
-      commented: '%{commentAuthor} a écrit :'
-      cta_reply_to: 'Répondre à %{commentAuthor}'
-      event_description: '%{commentAuthorFull} a également écrit un commentaire sur la proposition ''%{initiativeTitle}'' sur la plate-forme de participation de %{organizationName}. Cliquez sur le bouton ci-dessous pour démarrer la conversation avec %{commentAuthor}.'
-      main_header: '%{commentAuthor} a écrit un commentaire sur la même proposition'
-      subject: 'Il y a un autre commentaire sur la proposition que vous avez commentée'
-      preheader: '%{commentAuthor} a aussi commenté une proposition pour %{organizationName}'
     new_comment_for_admin:
-      by_author: 'par %{authorName}'
       commented: '%{authorFirstName} a commenté :'
       cta_reply_to: 'Vérifier le commentaire %{commentAuthor}'
       days_ago: 'Il y a %{numberOfDays} jours'
@@ -291,41 +255,25 @@ fr:
       preheader: '%{authorName} a laissé un commentaire'
       today: Aujourd'hui
       yesterday: Hier
-    comment_on_your_idea:
-      by_author: 'par %{authorName}'
-      commented: '%{authorFirstName} a écrit :'
+    comment_on_idea_you_follow:
       cta_reply_to: 'Répondre à %{commentAuthor}'
-      event_description: '%{authorNameFull} a réagi à votre idée ''%{ideaTitle}''. Cliquez sur le bouton ci-dessous pour continuer la conversation avec %{authorName}.'
-      main_header: '%{authorName} a commenté votre idée'
-      subject: 'Vous avez reçu un commentaire sur la plateforme de %{organizationName}'
-      preheader: '%{authorName} a commenté votre idée pour %{organizationName}'
-    new_comment_on_reacted_initiative:
-      commented: '%{commentAuthor} a écrit :'
-      cta_reply_to: 'Voir cette proposition'
-      event_description: '%{commentAuthor} a commenté la proposition %{initiativeTitle} pour laquelle vous avez voté. Rejoignez la discussion sur la plateforme de %{organizationName} !'
-      main_header: '%{firstName}, il y a un nouveau commentaire sur une proposition pour laquelle vous avez voté'
-      subject: 'Il y a un nouveau commentaire sur une proposition pour laquelle vous avez voté'
-      preheader: '%{commentAuthor} a commenté la proposition pour laquelle vous avez voté sur la plateforme de %{organizationName}'
-    new_comment_on_reacted_idea:
-      commented: '%{commentAuthor} a commenté :'
+      event_description: '%{authorNameFull} a réagi à votre idée « %{ideaTitle} ». Cliquez sur le bouton ci-dessous pour continuer la conversation avec %{authorName}.'
+      main_header: '%{authorName} a commenté une idée que vous suivez'
+      subject: 'Il y a un nouveau commentaire sur une idée que vous suivez'
+      preheader: '%{authorName} a publié un commentaire sur une idée pour %{organizationName}'
+    comment_on_initiative_you_follow:
       cta_reply_to: 'Répondre à %{commentAuthor}'
-      days_ago: 'Il y a %{numberOfDays} jours'
-      event_description: '%{commentAuthor} a commenté l''idée %{ideaTitle} pour laquelle vous avez voté. Rejoignez la discussion sur la plateforme de %{organizationName} !'
-      main_header: '%{firstName}, il y a un nouveau commentaire sur l''idée à laquelle vous avez réagi'
-      subject: 'Il y a un nouveau commentaire sur l''idée à laquelle vous avez réagi'
-      preheader: '%{commentAuthor} a laissé un commentaire sur l''idée à laquelle vous avez réagi sur la plateforme de %{organizationName}'
-      today: Aujourd'hui
-      yesterday: Hier
+      event_description: '%{authorNameFull} a réagi à votre proposition « %{initiativeTitle} ». Cliquez sur le bouton ci-dessous pour poursuivre la conversation avec %{authorName}.'
+      main_header: '%{commentAuthor} a commenté une proposition que vous suivez'
+      subject: 'Il y a un nouveau commentaire sur la proposition que vous suivez'
+      preheader: '%{authorName} a publié un commentaire sur une initiative pour %{organizationName}'
     new_initiative_for_admin:
-      by_author: 'par %{authorName}'
-      commented: '%{authorFirstName} a écrit :'
       cta_reply_to: 'Faites votre retour à %{authorName}'
       event_description: '%{authorName} a publié une nouvelle proposition sur votre plate-forme. Découvrez-la, faites un retour ou modifiez son statut !'
       main_header: '%{firstName}, une nouvelle proposition a été postée sur votre plate-forme'
       subject: 'Une nouvelle proposition a été publiée sur la plateforme de %{organizationName}'
       preheader: '%{authorName} a publié une nouvelle proposition sur votre plateforme'
     new_idea_for_admin:
-      by_author: 'par %{authorName}'
       commented: '%{authorFirstName} a commenté :'
       cta_reply_to: 'Faites votre retour à %{authorName}'
       days_ago: 'Il y a %{numberOfDays} jours'
@@ -390,53 +338,22 @@ fr:
       subject: '%{post} a un nouveau commentaire interne'
       main_header: '%{post}" a un nouveau commentaire interne'
       preheader: '%{post}" a un nouveau commentaire interne'
-    official_feedback_on_commented_initiative:
-      by_author: 'par %{authorName}'
-      updated: '%{officialName} a écrit :'
-      cta_view: 'Aller à cette proposition'
-      event_description: '%{officialName} a réagi à la proposition ''%{initiativeTitle}''. Cliquez sur le bouton ci-dessous pour continuer la conversation avec %{organizationName}.'
-      main_header: 'Il y a une mise à jour sur une proposition que vous avez commentée'
-      subject: 'Une proposition que vous avez commenté a reçu une mise à jour officielle sur la plate-forme de %{organizationName}'
-      preheader: '%{officialName} a fait un retour officiel sur une proposition que vous avez commenté'
-    official_feedback_on_reacted_idea:
-      by_author: 'par %{authorName}'
-      updated: '%{officialName} a écrit :'
-      cta_view: 'Voir l''idée'
-      event_description: '%{officialName} a réagi à votre idée ''%{ideaTitle}''. Cliquez sur le bouton ci-dessous pour continuer la conversation avec %{officialName}.'
-      subject: 'Une idée à laquelle vous avez réagi a fait l''objet d''une mise à jour sur la plateforme %{organizationName}.'
-      preheader: '%{officialName} a laissé une mise à jour sur une idée à laquelle vous avez réagi'
-      main_header: ""
-    official_feedback_on_commented_idea:
-      by_author: 'par %{authorName}'
-      updated: '%{officialName} a écrit :'
-      cta_view: 'Voir la mise à jour officielle'
-      event_description: '%{officialName} a réagi à l''idée ''%{ideaTitle}''. Cliquez sur le bouton ci-dessous pour continuer la conversation avec %{officialName}.'
-      main_header: 'Une idée que vous avez commentée a reçu une mise à jour officielle'
-      subject: 'Une idée que vous avez commenté a reçu une mise à jour officielle sur la plate-forme de %{organizationName}'
-      preheader: '%{officialName} a fait un retour officiel sur une idée que vous avez commentée'
-    official_feedback_on_your_idea:
-      by_author: 'par %{authorName}'
-      updated: '%{officialName} a écrit :'
-      cta_view: 'Aller à votre idée'
-      event_description: '%{officialName} a réagi à votre idée ''%{ideaTitle}''. Cliquez sur le bouton ci-dessous pour continuer la conversation avec %{officialName}.'
-      main_header: 'Vous avez reçu une mise à jour de %{organizationName}'
-      subject: 'Vous avez reçu une mise à jour de %{organizationName}'
-      preheader: '%{officialName} a fait une mise à jour officielle sur votre idée'
-    official_feedback_on_reacted_initiative:
-      by_author: 'par %{authorName}'
-      updated: '%{officialName} a écrit :'
-      cta_view: 'Aller à cette proposition'
-      event_description: '%{officialName} a réagi à la proposition ''%{initiativeTitle}''. Cliquez sur le bouton ci-dessous pour continuer la conversation avec %{organizationName}.'
-      main_header: 'Il y a un retour officiel sur une proposition pour laquelle vous avez voté'
-      subject: 'Une proposition sur laquelle vous avez voté a reçu une mise à jour sur la plateforme de %{organizationName}'
-      preheader: '%{officialName} a fait un retour sur une proposition pour laquelle vous avez voté'
-    official_feedback_on_your_initiative:
-      updated: '%{officialName} a écrit :'
-      cta_view: 'Aller à votre proposition'
-      event_description: '%{officialName} a réagi à votre proposition ''%{initiativeTitle}''. Cliquez sur le bouton ci-dessous pour continuer la conversation avec %{organizationName}.'
-      main_header: 'Vous avez reçu une mise à jour de %{officialName}'
-      subject: 'Vous avez reçu une mise à jour officielle sur la plateforme de %{organizationName}'
-      preheader: '%{officialName} a fait une mise à jour officielle sur votre proposition'
+    official_feedback_on_idea_you_follow:
+      header_message: '"%{officialName} a publié un message officiel concernant l''idée « %{ideaTitle} ». Cliquez sur le bouton ci-dessous pour poursuivre la conversation avec %{officialName}.'
+      header_title: 'Il y a une mise à jour sur une idée que vous suivez'
+      subject: 'Une idée que vous suivez a reçu une mise à jour officielle sur la plateforme de %{organizationName}'
+      preheader: 'Il y a une mise à jour sur une idée que vous suivez'
+    official_feedback_on_initiative_you_follow:
+      header_message: '"%{officialName} a publié un message officiel concernant la proposition « %{initiativeTitle} ». Cliquez sur le bouton ci-dessous pour continuer la conversation avec %{organizationName}.'
+      header_title: 'Il y a une mise à jour sur une proposition que vous suivez'
+      subject: 'Une proposition que vous suivez a reçu une mise à jour officielle sur la plateforme de %{organizationName}'
+      preheader: 'Il y a une mise à jour sur une proposition que vous suivez'
+    mention_in_official_feedback:
+      cta_reply_to: 'Répondre à %{organizationName}'
+      event_description: '%{organizationName} vous ont mentionné dans leurs commentaires sur l''idée ''%{post}''. Cliquez sur le lien ci-dessous pour entrer dans la conversation avec %{organizationName}'
+      main_header: 'Vous avez été mentionné'
+      subject: '%{organizationName} vous ont mentionné dans leurs commentaires'
+      preheader: '%{commentAuthor} vous a mentionné dans un commentaire'
     project_moderation_rights_received:
       cta_manage_project: 'Gérez ce projet'
       message_you_became_moderator: 'Un administrateur de la plateforme de %{organizationName} vous a nommé administrateur projet du projet suivant :'
@@ -483,48 +400,23 @@ fr:
       new_phase: 'Le projet va rentrer dans la phase ''%{phaseTitle}'''
       subject: 'Configurez les détails nécessaires à la nouvelle phase de %{projectName}'
       preheader: 'Une nouvelle phase va bientôt commencer pour %{projectName}'
-    status_change_of_commented_idea:
-      status_change: 'Le nouveau statut de cette idée est ''%{ideaStatus}'''
-      cta_view_idea: 'Voir l''idée'
-      event_description: '%{organizationName} a changé le statut de l''idée ''%{ideaTitle}'' sur leur plateforme de participation numérique.'
-      main_header: 'Une idée que vous avez commentée a un nouveau statut'
-      subject: 'Le statut d''une idée que vous avez commentée a été changé'
-      preheader: '%{organizationName} a changé le statut d''une idée que vous avez commentée'
-    status_change_of_your_idea:
-      status_change: 'Le nouveau statut de votre idée est ''%{ideaStatus}'''
-      cta_view_idea: 'Aller à votre idée'
-      event_description: '%{organizationName} a changé le statut de votre idée ''%{ideaTitle}'' sur leur plateforme de participation numérique.'
-      main_header: 'Votre idée a un nouveau statut'
-      subject: 'Le statut de votre idée a été modifié'
-      preheader: '%{organizationName} a modifié le statut de votre idée'
-    status_change_of_reacted_idea:
-      status_change: 'Le nouveau statut de cette idée est ''%{ideaStatus}'''
-      cta_view_idea: 'Voir l''idée'
-      event_description: '%{organizationName} a changé le statut de l''idée ''%{ideaTitle}'' sur leur plateforme de participation numérique.'
-      main_header: 'Une idée à laquelle vous avez réagi a un nouveau statut'
-      subject: 'Le statut d''une idée à laquelle vous avez réagi a été modifié'
-      preheader: '%{organizationName} a modifié le statut d''une idée à laquelle vous avez réagi'
-    status_change_of_reacted_initiative:
-      status_change: 'Le nouveau statut de cette proposition est ''%{initiativeStatus}'''
-      cta_view_initiative: 'Aller à cette proposition'
-      event_description: 'Le statut de la proposition ''%{initiativeTitle}'' a été changé sur la plate-forme de participation numérique de %{organizationName}.'
-      main_header: 'Une proposition sur laquelle vous avez voté a un nouveau statut'
-      subject: 'Le statut d''une proposition pour laquelle vous avez voté a changé'
-      preheader: 'Le statut d''une proposition pour laquelle vous avez voté a changé'
-    status_change_of_commented_initiative:
-      status_change: 'Le nouveau statut de cette proposition est ''%{initiativeStatus}'''
-      cta_view_initiative: 'Aller à cette proposition'
-      event_description: 'Le statut de la proposition ''%{initiativeTitle}'' a été changé sur la plate-forme de participation numérique de %{organizationName}.'
-      main_header: 'Une proposition que vous avez commentée a un nouveau statut'
-      subject: 'Le statut d''une proposition que vous avez commentée a été changé'
-      preheader: 'Le statut d''une proposition que vous avez commentée a été changé'
-    status_change_of_your_initiative:
-      status_change: 'Le nouveau statut de votre proposition est ''%{initiativeStatus}'''
-      cta_view_initiative: 'Aller à votre proposition'
-      event_description: 'Le statut de la proposition ''%{initiativeTitle}'' a été changé sur la plate-forme de participation numérique de %{organizationName}.'
-      main_header: 'Votre proposition a un nouveau statut'
-      subject: 'Le statut de votre proposition a été modifié'
-      preheader: 'Le statut de votre proposition a été modifié'
+    project_published:
+      subject: 'Un nouveau projet a été publié sur la plateforme de %{organizationName}'
+      header_title: 'Un nouveau projet a été publié'
+      header_message: 'La plateforme de participation de %{organizationName} vient de publier le projet suivant :'
+      preheader: 'Un nouveau projet a été publié'
+    status_change_on_idea_you_follow:
+      status_change: 'Le nouveau statut de cette idée est « %{ideaStatus} »'
+      header_message: '%{organizationName} a changé le statut de l''idée « %{ideaTitle} » sur leur plateforme de participation.'
+      header_title: 'Une idée que vous suivez a un nouveau statut'
+      subject: 'Le statut d''une idée que vous suivez a changé'
+      preheader: 'Une idée que vous suivez a un nouveau statut'
+    status_change_on_initiative_you_follow:
+      status_change: 'Le nouveau statut de cette proposition est « %{initiativeStatus} »'
+      header_message: 'Le statut de la proposition « %{initiativeTitle} » a été changé sur la plateforme de participation de %{organizationName}.'
+      header_title: 'Une proposition que vous suivez a un nouveau statut'
+      subject: 'Le statut d''une proposition que vous suivez a changé'
+      preheader: 'Une proposition que vous suivez a un nouveau statut'
     user_digest:
       subject: "Mise à jour hebdomadaire de la plate-forme de participation de %{organizationName}"
       commented: "%{authorFirstName} a commenté :"
@@ -548,7 +440,6 @@ fr:
       no_unread_notifications: "Il est temps de recréer de l'activité ! Visitez la plateforme pour découvrir ce qu'il s'y passe."
       unread_notifications: "Vous avez de nouvelles notifications ! Visitez la plate-forme pour découvrir ce qu'il s'y passe."
     threshold_reached_for_admin:
-      by_author: 'par %{authorName}'
       cta_process_initiative: 'Passez cette proposition à l''étape suivante'
       event_description: 'Une proposition a atteint le seuil de vote sur votre plateforme. Cliquez sur le bouton ci-dessous pour passer aux étapes suivantes !'
       main_header: 'Une proposition a atteint le nombre de voix requis!'
@@ -636,6 +527,18 @@ fr:
       body_2: 'Les résultats du vote pour %{phaseTitle} sur la plateforme %{organizationName} ont été publiés !'
       body_3: 'Nous vous invitons à prendre connaissance des résultats et à rester attentifs pour de futures mises à jour concernant les prochaines étapes.'
       cta_see_results: 'Voir les résultats sur la plateforme'
+    event_registration_confirmation:
+      subject: "Votre inscription à \"%{eventTitle}\" est confirmée !"
+      header_message: "%{firstName}, merci pour votre inscription à"
+      event_details:
+        labels:
+          date: 'Date'
+          location: 'Lieu'
+          online_link: 'Lien en ligne'
+          description: 'Description'
+          project: 'Projet'
+      cta_go_to_event: 'Voir l''événement'
+      cta_add_to_calendar: 'Ajouter à votre calendrier'
     voting_phase_started:
       subject: '%{organizationName}: La phase de vote a commencé pour %{projectName}'
       preheader: 'La phase de vote a commencé pour %{projectName} sur la plateforme de participation de %{organizationName}'
@@ -658,6 +561,7 @@ fr:
         managers: 'Gestionnaires'
         admins_assigned_to_a_proposal: 'Administrateurs assignés à une proposition'
         admins_and_managers_assigned_to_the_input: 'Les administrateurs et les gestionnaires assignés à la contribution'
+        new_attendee: 'L''utilisateur qui s''est inscrit'
         user_who_is_invited_to_cosponsor_a_proposal: 'L''utilisateur invité à soutenir la proposition'
         user_who_is_receiving_admin_rights: 'L''utilisateur qui reçoit les droits d''administrateur'
         user_who_is_receiving_folder_moderator_rights: 'L''utilisateur qui reçoit les droits de gestionnaire de dossier'
@@ -668,15 +572,17 @@ fr:
         user_who_published_the_input: 'L''utilisateur qui a posté la contribution'
         user_who_registers: 'Utilisateur qui s''inscrit'
         user_who_was_invited: 'Utilisateur invité'
-        users_who_engaged_with_the_input: 'Les utilisateurs qui ont interagi avec la contribution'
         users_who_engaged_with_the_project: 'Les utilisateurs qui ont participé au projet'
-        users_who_engaged_with_the_proposal: 'Les utilisateurs qui ont interagi avec la proposition'
+        users_who_follow_the_proposal: 'L''utilisateur qui suit la proposition'
+        users_who_follow_the_input: 'L''utilisateur qui suit la contribution'
+        users_who_follow_the_project: 'Les utilisateurs qui suivent le projet'
         user_who_voted: 'Utilisateur ayant voté'
         user_with_unsubmitted_votes: 'Utilisateur qui n''a pas soumis ses votes'
         users_who_engaged_but_not_voted: 'Utilisateurs ayant participé au projet, mais n''ayant pas voté'
       content_type:
         comments: 'Commentaires'
         content_moderation: 'Modération du contenu'
+        events: 'Événements'
         general: 'Général'
         inputs: 'Contributions'
         internal_comments: 'Commentaires internes'
@@ -708,6 +614,7 @@ fr:
         new_input_is_published: 'Une nouvelle contribution a été postée'
         new_proposal_is_posted: 'Publication d''une nouvelle proposition'
         project_phase_changes: 'Changements de phase du projet'
+        project_published: 'Publication d''un projet'
         proposal_gets_reported_as_spam: 'Proposition marquée comme spam'
         proposal_is_assigned_to_admin: 'Une proposition est assignée à un administrateur'
         proposal_is_updated: 'Mise à jour d''une proposition'
@@ -731,3 +638,4 @@ fr:
         voting_basket_submitted: 'Les votes sont soumis'
         7_days_after_invite_is_sent: '7 jours après l''envoi de l''invitation'
         7_days_before_the_project_changes_phase: '7 jours avant le changement de phase du projet'
+        registration_to_event: 'Inscription à un événement'

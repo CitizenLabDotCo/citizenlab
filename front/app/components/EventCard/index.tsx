@@ -1,5 +1,4 @@
 import React, { memo } from 'react';
-import moment from 'moment';
 
 // components
 import EventInformation from './EventInformation';
@@ -12,7 +11,6 @@ import styled from 'styled-components';
 import { defaultCardHoverStyle, defaultCardStyle } from 'utils/styleUtils';
 
 // utils
-import { getIsoDate } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
 
@@ -42,12 +40,6 @@ const EventCard = memo<Props>((props) => {
   const { event, className, id, ...otherProps } = props;
 
   if (!isNilOrError(event)) {
-    const startAtMoment = moment(event.attributes.start_at);
-    const endAtMoment = moment(event.attributes.end_at);
-    const startAtIsoDate = getIsoDate(event.attributes.start_at);
-    const endAtIsoDate = getIsoDate(event.attributes.end_at);
-    const isMultiDayEvent = startAtIsoDate !== endAtIsoDate;
-
     const navigateToEventPage = () => {
       clHistory.push(`/events/${event.id}`);
     };
@@ -58,14 +50,14 @@ const EventCard = memo<Props>((props) => {
         id={id}
         role="button"
         onClick={navigateToEventPage}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            navigateToEventPage();
+          }
+        }}
+        tabIndex={0}
       >
-        <EventInformation
-          event={event}
-          startAtMoment={startAtMoment}
-          endAtMoment={endAtMoment}
-          isMultiDayEvent={isMultiDayEvent}
-          {...otherProps}
-        />
+        <EventInformation event={event} {...otherProps} />
       </Container>
     );
   }

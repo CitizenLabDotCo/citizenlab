@@ -7,7 +7,7 @@ import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { useSearchParams } from 'react-router-dom';
 
 import { useIntl } from 'utils/cl-intl';
-import messages from '../../messages';
+import translations from '../translations';
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../../tracks';
 
@@ -38,11 +38,11 @@ const EngagementFilter = ({
           <Select
             options={[
               {
-                label: formatMessage(messages.above),
+                label: formatMessage(translations.above),
                 value: from,
               },
               {
-                label: formatMessage(messages.below),
+                label: formatMessage(translations.below),
                 value: to,
               },
             ]}

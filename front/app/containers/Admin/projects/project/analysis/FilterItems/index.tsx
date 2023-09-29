@@ -13,6 +13,8 @@ import EllipsisFilterValue from './EllipsisFilterValue';
 import { useParams } from 'react-router-dom';
 import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
 import Tag from '../Tags/Tag';
+import translations from './translations';
+import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 const clauseToPredicate = (clause?: string): '>' | '<' | '=' => {
   if (clause === 'from') {
@@ -31,47 +33,48 @@ type FilterItemsProps = {
 
 const translationKeys: Record<
   string,
-  { translationKey: string; predicate: '>' | '<' | '=' }
+  { translationKey: MessageDescriptor; predicate: '>' | '<' | '=' }
 > = {
   search: {
-    translationKey: 'Search',
+    translationKey: translations.search,
     predicate: '=',
   },
   published_at_from: {
-    translationKey: 'Start',
+    translationKey: translations.start,
     predicate: '>',
   },
   published_at_to: {
-    translationKey: 'End',
+    translationKey: translations.end,
     predicate: '<',
   },
   reactions_from: {
-    translationKey: 'Reactions',
+    translationKey: translations.reactions,
     predicate: '>',
   },
   reactions_to: {
-    translationKey: 'Reactions',
+    translationKey: translations.reactions,
     predicate: '<',
   },
   votes_from: {
-    translationKey: 'Votes',
+    translationKey: translations.votes,
     predicate: '>',
   },
   votes_to: {
-    translationKey: 'Votes',
+    translationKey: translations.votes,
     predicate: '<',
   },
   comments_from: {
-    translationKey: 'Comments',
+    translationKey: translations.comments,
     predicate: '>',
   },
   comments_to: {
-    translationKey: 'Comments',
+    translationKey: translations.comments,
     predicate: '<',
   },
 };
 
 const FilterItems = ({ filters, isEditable }: FilterItemsProps) => {
+  const { formatMessage } = useIntl();
   const { analysisId } = useParams() as { analysisId: string };
   const { data: tags } = useAnalysisTags({ analysisId });
 
@@ -109,7 +112,11 @@ const FilterItems = ({ filters, isEditable }: FilterItemsProps) => {
           (value as string[] | null[])[0] === null
         ) {
           return (
-            <Tag key={null} name="Inputs without tags" tagType={'custom'} />
+            <Tag
+              key={null}
+              name={formatMessage(translations.inputsWIthoutTags)}
+              tagType={'custom'}
+            />
           );
         } else if (key === 'tag_ids') {
           return (
@@ -139,7 +146,7 @@ const FilterItems = ({ filters, isEditable }: FilterItemsProps) => {
               color={colors.success}
               display="flex"
             >
-              <Box>{translationKeys[key].translationKey}</Box>
+              <Box>{formatMessage(translationKeys[key].translationKey)}</Box>
               <Box mx="3px">{translationKeys[key].predicate}</Box>
               <EllipsisFilterValue>{value}</EllipsisFilterValue>
               {isEditable && (
@@ -152,7 +159,9 @@ const FilterItems = ({ filters, isEditable }: FilterItemsProps) => {
                   onClick={() => {
                     removeSearchParams([key]);
                   }}
-                  a11y_buttonActionMessage="Remove filter"
+                  a11y_buttonActionMessage={formatMessage(
+                    translations.removeFilter
+                  )}
                 />
               )}
             </Box>

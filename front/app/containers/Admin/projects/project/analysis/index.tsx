@@ -36,25 +36,17 @@ const Analysis = () => {
           >
             <Box
               w="300px"
-              overflow="auto"
               h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px)`}
-              p="12px"
               mt="12px"
               bg={colors.white}
             >
               <Tags />
             </Box>
 
-            <Box
-              flex="1"
-              overflow="auto"
-              h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px)`}
-              p="12px"
-              mt="12px"
-              bg={colors.white}
-            >
+            <Box flex="1" mt="12px">
               <InputsList />
             </Box>
+
             <Box
               flex="1"
               overflow="auto"
@@ -73,7 +65,6 @@ const Analysis = () => {
               flex="1"
               p="12px"
               mt="12px"
-              overflow="auto"
               h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px)`}
               bg={colors.white}
             >

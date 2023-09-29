@@ -147,6 +147,12 @@
             "description": "Optional short text, shown at the top of Step 2 of the sign up form (i.e., additional registration fields). Supports HTML.",
             "$ref": "#/definitions/multiloc_string"
           },
+          "onboarding":  {
+            "title": "Onboarding (Step 3)",
+            "description": "Onboarding step after login or signup, asking for topics you are interested in.",
+            "type": "boolean",
+            "default": false
+          },
           "areas_term": {
             "title": "Geographic Units",
             "description": "What a geographic unit should be called on this platform (e.g., neighbourhoods, districts, etc.). Input the plural form here with all lowercase letters. If left blank, this field defaults to 'areas'.",
@@ -250,8 +256,8 @@
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
-          "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false }
+          "allowed": { "type": "boolean", "default": true },
+          "enabled": { "type": "boolean", "default": true }
         }
       },
 

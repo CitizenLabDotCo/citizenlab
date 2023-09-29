@@ -62,6 +62,7 @@ export interface IInitiativeData {
     created_at: string;
     updated_at: string;
     published_at: string;
+    proposed_at: string;
     header_bg: ImageSizes;
     expires_at: string;
     anonymous: boolean;
@@ -121,6 +122,7 @@ export interface IInitiativeAdd {
   header_bg?: string;
   author_id?: string | null;
   assignee_id?: string | null;
+  // should actually be required by the BE as we require >=1 topic
   topic_ids?: string[] | null;
   area_ids?: string[] | null;
   location_point_geojson?: GeoJSON.Point | null;

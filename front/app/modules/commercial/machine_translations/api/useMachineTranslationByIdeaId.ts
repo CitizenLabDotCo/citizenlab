@@ -28,7 +28,10 @@ const useMachineTranslationByIdeaId = ({
     IMachineTranslation,
     MachineTranslationKeys
   >({
-    queryKey: machineTranslationKeys.item({ ideaId: queryParameters.ideaId }),
+    queryKey: machineTranslationKeys.item({
+      ideaId: queryParameters.ideaId,
+      machine_translation: queryParameters.machine_translation,
+    }),
     queryFn: () => fetchMachineTranslationByIdeaId(queryParameters),
     enabled,
   });

@@ -131,9 +131,9 @@ module Analysis
         cf = CustomField.find(custom_field_id)
 
         scope = if predicate == 'from'
-          scope.joins(:author).where("(users.custom_field_values->'#{cf.key}')::numeric >= ?", value)
+          scope.joins(:author).where("coalesce(users.custom_field_values->>'#{cf.key}', (-99999)::text)::numeric >= ?", value)
         elsif predicate == 'to'
-          scope.joins(:author).where("(users.custom_field_values->'#{cf.key}')::numeric <= ?", value)
+          scope.joins(:author).where("coalesce(users.custom_field_values->>'#{cf.key}', (99999)::text)::numeric <= ?", value)
         else
           raise ArgumentError, "invalid predicate #{predicate}"
         end
@@ -235,6 +235,8 @@ module Analysis
     # area_id in order for the filter to work. Also see
     # back/engines/commercial/user_custom_fields/app/services/user_custom_fields/field_value_counter.rb:37
     def convert_domicile_value(option_keys)
+      return [nil] if option_keys == [nil]
+
       area_ids = CustomFieldOption.where(key: option_keys).filter_map do |option|
         option&.area&.id
       end

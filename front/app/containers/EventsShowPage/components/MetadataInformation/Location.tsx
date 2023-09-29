@@ -53,6 +53,7 @@ const Location = ({ event }: Props) => {
               <Button
                 m="0px"
                 p="0px"
+                fontSize="m"
                 buttonStyle="text"
                 onClick={() => {
                   setMapModalVisible(true);
@@ -65,14 +66,7 @@ const Location = ({ event }: Props) => {
                 }}
                 id="e2e-location-with-coordinates-button"
               >
-                <Text
-                  fontWeight="bold"
-                  mt="4px"
-                  color="coolGrey600"
-                  m="0px"
-                  p="0px"
-                  fontSize="s"
-                >
+                <Text mt="4px" color="coolGrey600" m="0px" p="0px" fontSize="s">
                   {address1.slice(0, address1.indexOf(','))}
                 </Text>
               </Button>

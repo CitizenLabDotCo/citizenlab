@@ -11,7 +11,7 @@ import {
   StatusExplanation,
 } from './ReactionControl/SharedStyles';
 import useAcceptInitiativeCosponsorshipInvite from 'api/cosponsors_initiatives/useAcceptInitiativeCosponsorshipInvite';
-import useInitiativeCosponsorsRequired from 'hooks/useInitiativeCosponsorsRequired';
+import useInitiativeCosponsorsRequired from 'containers/InitiativesShow/hooks/useInitiativeCosponsorsRequired';
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useAuthUser from 'api/me/useAuthUser';
 import BorderContainer from './BorderContainer';

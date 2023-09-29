@@ -12,7 +12,7 @@ const InfoSection = lazy(
   () => import('components/LandingPages/citizen/InfoSection')
 );
 const Footer = lazy(() => import('./Footer'));
-import { canAccessRoute } from 'services/permissions/rules/routePermissions';
+import { canAccessRoute } from 'utils/permissions/rules/routePermissions';
 
 // hooks
 import useAuthUser from 'api/me/useAuthUser';

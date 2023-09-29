@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { isEmpty, forOwn } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import moment from 'moment';
-import { isAdmin } from 'services/permissions/roles';
+import { isAdmin } from 'utils/permissions/roles';
 
 // components
 import Avatar from 'components/Avatar';

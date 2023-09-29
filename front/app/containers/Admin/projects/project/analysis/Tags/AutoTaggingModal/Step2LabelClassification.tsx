@@ -12,10 +12,14 @@ import { xor } from 'lodash-es';
 import Tag from '../Tag';
 import AddTag from '../AddTag';
 
+import { useIntl } from 'utils/cl-intl';
+import translations from '../translations';
+
 type Props = {
   onLaunch: (tagsIds: string[]) => void;
 };
 const Step2LabelClassification = ({ onLaunch }: Props) => {
+  const { formatMessage } = useIntl();
   const { analysisId } = useParams() as { analysisId: string };
   const { data: tags } = useAnalysisTags({ analysisId });
 
@@ -28,20 +32,13 @@ const Step2LabelClassification = ({ onLaunch }: Props) => {
     setSelectedTagIds((tagIds) => xor(tagIds, [tagId]));
   };
 
-  const listFull = selectedTagIds.length >= 10;
+  const listFull = selectedTagIds.length >= 9;
 
   return (
     <Box>
-      <Title>Classification by label</Title>
-      <Text>
-        Select maximum 10 tags you would like the inputs to be distributed
-        between. Inputs already associated with these tags will not be
-        classified again.
-      </Text>
-      <Text>
-        The classification is solely based on the name of the tag. Pick relevant
-        keywords for the best results.
-      </Text>
+      <Title>{formatMessage(translations.byLabelTitle)}</Title>
+      <Text>{formatMessage(translations.byLabelSubtitle1)}</Text>
+      <Text>{formatMessage(translations.byLabelSubtitle2)}</Text>
       <Box>
         {customTags?.map((tag) => (
           <Box key={tag.id} display="flex" justifyContent="flex-start" mb="8px">
@@ -69,7 +66,7 @@ const Step2LabelClassification = ({ onLaunch }: Props) => {
           disabled={selectedTagIds.length === 0}
           onClick={() => onLaunch(selectedTagIds)}
         >
-          Launch
+          {formatMessage(translations.launch)}
         </Button>
       </Box>
     </Box>

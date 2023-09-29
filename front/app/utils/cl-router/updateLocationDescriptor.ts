@@ -5,7 +5,7 @@ import {
   getUrlLocale,
   replacePathnameLocale,
   setPathnameLocale,
-} from 'services/locale';
+} from 'utils/locale';
 import { Locale } from 'typings';
 
 type LocationDescriptorObject = Partial<Location> | string;

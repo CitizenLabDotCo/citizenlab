@@ -26,7 +26,7 @@ import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
 // utils
-import { ideaDefaultSortMethodFallback } from 'services/participationContexts';
+import { ideaDefaultSortMethodFallback } from 'utils/participationContexts';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 // typings

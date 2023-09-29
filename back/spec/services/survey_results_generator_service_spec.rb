@@ -151,100 +151,98 @@ RSpec.describe SurveyResultsGeneratorService do
 
   let(:expected_result) do
     {
-      data: {
-        results: [
-          {
-            inputType: 'text',
-            question: { 'en' => 'What is your favourite colour?' },
-            required: false,
-            totalResponses: 4,
-            customFieldId: text_field.id
+      results: [
+        {
+          inputType: 'text',
+          question: { 'en' => 'What is your favourite colour?' },
+          required: false,
+          totalResponses: 4,
+          customFieldId: text_field.id
+        },
+        {
+          inputType: 'multiline_text',
+          question: { 'en' => 'What is your favourite recipe?' },
+          required: false,
+          totalResponses: 0,
+          customFieldId: multiline_text_field.id
+        },
+        {
+          inputType: 'multiselect',
+          question: {
+            'en' => 'What are your favourite pets?',
+            'fr-FR' => 'Quels sont vos animaux de compagnie préférés ?',
+            'nl-NL' => 'Wat zijn je favoriete huisdieren?'
           },
-          {
-            inputType: 'multiline_text',
-            question: { 'en' => 'What is your favourite recipe?' },
-            required: false,
-            totalResponses: 0,
-            customFieldId: multiline_text_field.id
+          required: false,
+          totalResponses: 10,
+          answers: [
+            { answer: { 'en' => 'Cat', 'fr-FR' => 'Chat', 'nl-NL' => 'Kat' }, responses: 4 },
+            { answer: { 'en' => 'Dog', 'fr-FR' => 'Chien', 'nl-NL' => 'Hond' }, responses: 3 },
+            { answer: { 'en' => 'Cow', 'fr-FR' => 'Vache', 'nl-NL' => 'Koe' }, responses: 2 },
+            { answer: { 'en' => 'Pig', 'fr-FR' => 'Porc', 'nl-NL' => 'Varken' }, responses: 1 }
+          ],
+          customFieldId: multiselect_field.id
+        },
+        {
+          inputType: 'linear_scale',
+          question: {
+            'en' => 'Do you agree with the vision?',
+            'fr-FR' => "Êtes-vous d'accord avec la vision ?",
+            'nl-NL' => 'Ben je het eens met de visie?'
           },
-          {
-            inputType: 'multiselect',
-            question: {
-              'en' => 'What are your favourite pets?',
-              'fr-FR' => 'Quels sont vos animaux de compagnie préférés ?',
-              'nl-NL' => 'Wat zijn je favoriete huisdieren?'
-            },
-            required: false,
-            totalResponses: 10,
-            answers: [
-              { answer: { 'en' => 'Cat', 'fr-FR' => 'Chat', 'nl-NL' => 'Kat' }, responses: 4 },
-              { answer: { 'en' => 'Dog', 'fr-FR' => 'Chien', 'nl-NL' => 'Hond' }, responses: 3 },
-              { answer: { 'en' => 'Cow', 'fr-FR' => 'Vache', 'nl-NL' => 'Koe' }, responses: 2 },
-              { answer: { 'en' => 'Pig', 'fr-FR' => 'Porc', 'nl-NL' => 'Varken' }, responses: 1 }
-            ],
-            customFieldId: multiselect_field.id
-          },
-          {
-            inputType: 'linear_scale',
-            question: {
-              'en' => 'Do you agree with the vision?',
-              'fr-FR' => "Êtes-vous d'accord avec la vision ?",
-              'nl-NL' => 'Ben je het eens met de visie?'
-            },
-            required: true,
-            totalResponses: 15,
-            answers: [
-              {
-                answer: {
-                  'en' => '5 - Strongly agree',
-                  'fr-FR' => "5 - Tout à fait d'accord",
-                  'nl-NL' => '5 - Strerk mee eens'
-                },
-                responses: 1
+          required: true,
+          totalResponses: 15,
+          answers: [
+            {
+              answer: {
+                'en' => '5 - Strongly agree',
+                'fr-FR' => "5 - Tout à fait d'accord",
+                'nl-NL' => '5 - Strerk mee eens'
               },
-              { answer: { 'en' => '4', 'fr-FR' => '4', 'nl-NL' => '4' }, responses: 0 },
-              { answer: { 'en' => '3', 'fr-FR' => '3', 'nl-NL' => '3' }, responses: 7 },
-              { answer: { 'en' => '2', 'fr-FR' => '2', 'nl-NL' => '2' }, responses: 5 },
-              {
-                answer: {
-                  'en' => '1 - Strongly disagree',
-                  'fr-FR' => "1 - Pas du tout d'accord",
-                  'nl-NL' => '1 - Helemaal niet mee eens'
-                },
-                responses: 2
-              }
-            ],
-            customFieldId: linear_scale_field.id
-          },
-          {
-            inputType: 'select',
-            question: {
-              'en' => 'What city do you like best?',
-              'fr-FR' => 'Quelle ville préférez-vous ?',
-              'nl-NL' => 'Welke stad vind jij het leukst?'
+              responses: 1
             },
-            required: true,
-            totalResponses: 4,
-            answers: [
-              { answer: { 'en' => 'Los Angeles', 'fr-FR' => 'Los Angeles', 'nl-NL' => 'Los Angeles' }, responses: 3 },
-              { answer: { 'en' => 'New York', 'fr-FR' => 'New York', 'nl-NL' => 'New York' }, responses: 1 }
-            ],
-            customFieldId: select_field.id
-          }
-        ],
-        totalSubmissions: 20
-      }
+            { answer: { 'en' => '4', 'fr-FR' => '4', 'nl-NL' => '4' }, responses: 0 },
+            { answer: { 'en' => '3', 'fr-FR' => '3', 'nl-NL' => '3' }, responses: 7 },
+            { answer: { 'en' => '2', 'fr-FR' => '2', 'nl-NL' => '2' }, responses: 5 },
+            {
+              answer: {
+                'en' => '1 - Strongly disagree',
+                'fr-FR' => "1 - Pas du tout d'accord",
+                'nl-NL' => '1 - Helemaal niet mee eens'
+              },
+              responses: 2
+            }
+          ],
+          customFieldId: linear_scale_field.id
+        },
+        {
+          inputType: 'select',
+          question: {
+            'en' => 'What city do you like best?',
+            'fr-FR' => 'Quelle ville préférez-vous ?',
+            'nl-NL' => 'Welke stad vind jij het leukst?'
+          },
+          required: true,
+          totalResponses: 4,
+          answers: [
+            { answer: { 'en' => 'Los Angeles', 'fr-FR' => 'Los Angeles', 'nl-NL' => 'Los Angeles' }, responses: 3 },
+            { answer: { 'en' => 'New York', 'fr-FR' => 'New York', 'nl-NL' => 'New York' }, responses: 1 }
+          ],
+          customFieldId: select_field.id
+        }
+      ],
+      totalSubmissions: 20
     }
   end
 
   let(:expected_result_without_minimum_and_maximum_labels) do
     expected_result.tap do |result|
-      result[:data][:results][3][:answers][0][:answer] = {
+      result[:results][3][:answers][0][:answer] = {
         'en' => '5 - Strongly agree',
         'fr-FR' => '5',
         'nl-NL' => '5'
       }
-      result[:data][:results][3][:answers][4][:answer] = {
+      result[:results][3][:answers][4][:answer] = {
         'en' => '1',
         'fr-FR' => "1 - Pas du tout d'accord",
         'nl-NL' => '1'
@@ -316,7 +314,7 @@ RSpec.describe SurveyResultsGeneratorService do
 
     describe '#generate_submission_count' do
       it 'returns the count' do
-        expect(generator.generate_submission_count).to eq({ data: { totalSubmissions: 20 } })
+        expect(generator.generate_submission_count).to eq({ totalSubmissions: 20 })
       end
     end
 
@@ -351,7 +349,7 @@ RSpec.describe SurveyResultsGeneratorService do
 
     describe '#generate_submission_count' do
       it 'returns the count' do
-        expect(generator.generate_submission_count).to eq({ data: { totalSubmissions: 20 } })
+        expect(generator.generate_submission_count).to eq({ totalSubmissions: 20 })
       end
     end
 

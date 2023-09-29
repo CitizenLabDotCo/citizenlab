@@ -72,10 +72,6 @@ export default defineMessages({
     id: 'app.components.InitiativesShow.deleteInitiative',
     defaultMessage: 'Delete initiative',
   },
-  deleteInitiativeConfirmation: {
-    id: 'app.components.InitiativesShow.deleteInitiativeConfirmation',
-    defaultMessage: 'Are you sure you want to delete this initiative?',
-  },
   reportAsSpamModalTitle: {
     id: 'app.containers.InitiativesShow.reportAsSpamModalTitle',
     defaultMessage: 'Why do you want to report this as spam?',
@@ -131,5 +127,18 @@ export default defineMessages({
   cosponsorCTA: {
     id: 'app.containers.InitiativesShow.cosponsorCTA',
     defaultMessage: 'Cosponsor this proposal',
+  },
+  manageInvitationsLinkText: {
+    id: 'app.containers.InitiativesShow.manageInvitationsLinkText',
+    defaultMessage: 'Manage cosponsorship invitations',
+  },
+  numberOfCosponsorsNotYetMet: {
+    id: 'app.containers.InitiativesShow.numberOfCosponsorsNotYetMet',
+    defaultMessage:
+      '{requiredNumberOfCosponsors, plural, one {Your proposal needs 1 accepted cosponsorship. Until then, it will not be considered. {manageInvitationsLink}.} other {Your proposal needs {requiredNumberOfCosponsors} accepted cosponsorships. Until then, it will not be considered. {manageInvitationsLink}.}}',
+  },
+  pending: {
+    id: 'app.containers.InitiativesShow.pending1',
+    defaultMessage: 'pending',
   },
 });

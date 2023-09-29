@@ -1,9 +1,10 @@
 import { Box, Icon } from '@citizenlab/cl2-component-library';
-import { TagType } from 'api/analysis_tags/types';
+
 import React from 'react';
 
 import tracks from 'containers/Admin/projects/project/analysis/tracks';
 import { trackEventByName } from 'utils/analytics';
+import { TagType } from 'api/analysis_tags/types';
 
 type TagProps = {
   name: string;
@@ -23,7 +24,11 @@ export const TagTypeColorMap: Record<
   }
 > = {
   custom: {
-    background: '#F6EAD3',
+    background: '#FFF3DB',
+    text: '#D49210',
+  },
+  onboarding_example: {
+    background: '#F2E6D0',
     text: '#D49210',
   },
   controversial: {

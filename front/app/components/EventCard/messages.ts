@@ -33,4 +33,8 @@ export default defineMessages({
     id: 'app.containers.EventsShow.attending',
     defaultMessage: 'attending',
   },
+  online: {
+    id: 'app.containers.EventsShow.online2',
+    defaultMessage: 'Online meeting',
+  },
 });

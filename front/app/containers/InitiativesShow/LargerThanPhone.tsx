@@ -15,6 +15,8 @@ import PostedBy from './PostedBy';
 import ActionBar from './ActionBar';
 import ReactionControl from './ReactionControl';
 import Outlet from 'components/Outlet';
+import InitiativeBanner from './InitiativeBanner';
+import CosponsorsSection from './CosponsorsSection';
 
 // utils
 import { getAddressOrFallbackDMS } from 'utils/map';
@@ -39,20 +41,19 @@ import useInitiativeFiles from 'api/initiative_files/useInitiativeFiles';
 import useInitiativeById from 'api/initiatives/useInitiativeById';
 
 // types
-import useInitiativeReviewRequired from 'hooks/useInitiativeReviewRequired';
-import RequestToCosponsor from './RequestToCosponsor';
-import Cosponsors from './Cosponsors';
+import useInitiativeReviewRequired from './hooks/useInitiativeReviewRequired';
 import useLocale from 'hooks/useLocale';
 import useAuthUser from 'api/me/useAuthUser';
 import useInitiativeImages from 'api/initiative_images/useInitiativeImages';
-import { usePermission } from 'services/permissions';
+import { usePermission } from 'utils/permissions';
 import {
   contentFadeInDelay,
   contentFadeInDuration,
   contentFadeInEasing,
 } from '.';
 import useInitiativeOfficialFeedback from 'api/initiative_official_feedback/useInitiativeOfficialFeedback';
-import InitiativeBanner from './InitiativeBanner';
+import useShowCosponsorshipReminder from 'containers/InitiativesShow/hooks/useShowCosponsorshipReminder';
+import CosponsorShipReminder from './CosponsorShipReminder';
 
 const Container = styled.main`
   display: flex;
@@ -136,6 +137,7 @@ const MetaContent = styled.div`
 const SharingWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
 `;
 
 const StyledOfficialFeedback = styled(OfficialFeedback)`
@@ -166,6 +168,7 @@ const LargerThanPhone = ({
   const { data: initiativeImages } = useInitiativeImages(initiativeId);
   const { data: initiative } = useInitiativeById(initiativeId);
   const { data: initiativeFiles } = useInitiativeFiles(initiativeId);
+  const showCosponsorshipReminder = useShowCosponsorshipReminder(initiativeId);
   const postOfficialFeedbackPermission = usePermission({
     item: !isNilOrError(initiative) ? initiative.data : null,
     action: 'moderate',
@@ -183,7 +186,9 @@ const LargerThanPhone = ({
     ? initiative?.data.attributes.public
     : true;
 
-  if (!initiative || isNilOrError(locale) || !initiativeImages) return null;
+  if (!initiative || isNilOrError(locale) || !initiativeImages) {
+    return null;
+  }
 
   const initiativeHeaderImageLarge = initiative.data.attributes.header_bg.large;
   const authorId = initiative.data.relationships.author.data?.id;
@@ -197,16 +202,6 @@ const LargerThanPhone = ({
     initiative.data.attributes.location_point_geojson
   );
   const initiativeUrl = location.href;
-  const utmParams = !isNilOrError(authUser)
-    ? {
-        source: 'share_initiative',
-        campaign: 'share_content',
-        content: authUser.data.id,
-      }
-    : {
-        source: 'share_initiative',
-        campaign: 'share_content',
-      };
 
   return (
     <Container className={className}>
@@ -223,6 +218,11 @@ const LargerThanPhone = ({
       <InitiativeContainer>
         <Content>
           <LeftColumn>
+            {showCosponsorshipReminder && (
+              <Box mb="28px">
+                <CosponsorShipReminder initiativeId={initiativeId} />
+              </Box>
+            )}
             <StyledTopics
               postType="initiative"
               postTopicIds={initiative.data.relationships.topics.data.map(
@@ -283,7 +283,7 @@ const LargerThanPhone = ({
               </Box>
             )}
             <Box
-              mb={hasOfficialFeedback ? '80px' : '0'}
+              mb={hasOfficialFeedback ? '48px' : '0'}
               ref={officialFeedbackElement}
             >
               <StyledOfficialFeedback
@@ -306,8 +306,7 @@ const LargerThanPhone = ({
                 onScrollToOfficialFeedback={onScrollToOfficialFeedback}
                 id="e2e-initiative-reaction-control"
               />
-              <RequestToCosponsor initiativeId={initiativeId} />
-              <Cosponsors initiativeId={initiativeId} />
+              <CosponsorsSection initiativeId={initiativeId} />
               {showSharingOptions && (
                 <SharingWrapper>
                   <SharingButtons
@@ -330,7 +329,18 @@ const LargerThanPhone = ({
                       initiativeUrl,
                       initiativeTitle,
                     })}
-                    utmParams={utmParams}
+                    utmParams={
+                      !isNilOrError(authUser)
+                        ? {
+                            source: 'share_initiative',
+                            campaign: 'share_content',
+                            content: authUser.data.id,
+                          }
+                        : {
+                            source: 'share_initiative',
+                            campaign: 'share_content',
+                          }
+                    }
                   />
                 </SharingWrapper>
               )}

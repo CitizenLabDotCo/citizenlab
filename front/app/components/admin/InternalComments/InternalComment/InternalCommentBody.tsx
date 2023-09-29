@@ -19,8 +19,7 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 import styled, { useTheme } from 'styled-components';
 
 // Typings
-import { CLErrorsJSON, CLErrors } from 'typings';
-import { isCLErrorJSON } from 'utils/errorUtils';
+import { CLErrors } from 'typings';
 
 import useInternalComment from 'api/internal_comments/useInternalComment';
 import useLocale from 'hooks/useLocale';
@@ -154,10 +153,8 @@ const InternalCommentBody = ({
           setCommentContent('');
         },
         onError: (error) => {
-          if (isCLErrorJSON(error)) {
-            const apiErrors = (error as CLErrorsJSON).json.errors;
-            setApiErrors(apiErrors);
-          }
+          const apiErrors = error?.errors;
+          setApiErrors(apiErrors);
         },
       }
     );

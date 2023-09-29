@@ -25,11 +25,13 @@ const Name = styled.span<{
   fontWeight?: number;
   fontSize?: number;
   underline?: boolean;
+  italic?: boolean;
 }>`
   color: ${({ color, theme }) => color || theme.colors.tenantText};
   font-weight: ${({ fontWeight }) => fontWeight || 400};
   font-size: ${({ fontSize }) => fontSize || fontSizes.base}px;
   text-decoration: ${({ underline }) => (underline ? 'underline' : 'none')};
+  font-style: ${({ italic }) => (italic ? 'italic' : 'normal')};
   hyphens: auto;
 
   &.isLinkToProfile {
@@ -65,8 +67,8 @@ interface StyleProps {
   fontWeight?: number;
   fontSize?: number;
   underline?: boolean;
+  italic?: boolean;
   color?: string;
-  canModerate?: boolean;
 }
 
 interface Props extends StyleProps {
@@ -76,6 +78,7 @@ interface Props extends StyleProps {
   isLinkToProfile?: boolean;
   hideLastName?: boolean;
   anonymous?: boolean;
+  canModerate?: boolean;
 }
 
 const UserName = ({
@@ -86,12 +89,21 @@ const UserName = ({
   fontWeight,
   fontSize,
   underline,
+  italic,
   color,
   canModerate,
   anonymous,
 }: Props) => {
   const { formatMessage } = useIntl();
   const { data: user } = useUserById(userId);
+
+  const sharedNameProps: StyleProps = {
+    fontWeight,
+    fontSize,
+    underline,
+    italic,
+    color,
+  };
 
   if (anonymous) {
     return (
@@ -109,14 +121,8 @@ const UserName = ({
       >
         <Name
           id="e2e-anonymous-username"
-          fontWeight={fontWeight}
-          fontSize={fontSize}
-          underline={underline}
-          className={`
-          ${className || ''}
-          e2e-username
-        `}
-          color={color}
+          className={`${className || ''} e2e-username`}
+          {...sharedNameProps}
         >
           {formatMessage(messages.anonymous)}
         </Name>
@@ -128,15 +134,12 @@ const UserName = ({
     // Deleted user
     return (
       <Name
-        fontWeight={fontWeight}
-        fontSize={fontSize}
-        underline={underline}
+        {...sharedNameProps}
         className={`
       ${className || ''}
       isUnknownUser
       e2e-username
     `}
-        color={color}
       >
         {formatMessage(messages.deletedUser)}
       </Name>
@@ -162,26 +165,14 @@ const UserName = ({
     if (isLinkToProfile) {
       return (
         <Link to={profileLink} className={`e2e-author-link ${className || ''}`}>
-          <Name
-            fontWeight={fontWeight}
-            fontSize={fontSize}
-            underline={underline}
-            className={classNames}
-            color={color}
-          >
+          <Name {...sharedNameProps} className={classNames}>
             {name}
           </Name>
         </Link>
       );
     } else {
       return (
-        <Name
-          fontWeight={fontWeight}
-          fontSize={fontSize}
-          underline={underline}
-          className={classNames}
-          color={color}
-        >
+        <Name {...sharedNameProps} className={classNames}>
           {name}
         </Name>
       );

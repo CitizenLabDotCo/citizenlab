@@ -1,4 +1,3 @@
-import moment = require('moment');
 import { randomEmail, randomString } from '../support/commands';
 
 describe('Idea with anonymous commenting allowed', () => {

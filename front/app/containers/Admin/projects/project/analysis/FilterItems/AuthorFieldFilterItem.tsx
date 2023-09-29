@@ -10,6 +10,8 @@ import useUserCustomField from 'api/user_custom_fields/useUserCustomField';
 import T from 'components/T';
 import ShortUserFieldValue from '../components/ShortUserFieldValue';
 import ElipsisFilterValue from './EllipsisFilterValue';
+import { useIntl } from 'utils/cl-intl';
+import translations from './translations';
 
 type Props = {
   customFieldId: string;
@@ -26,6 +28,7 @@ const AuthorFieldFilterItem = ({
   isEditable = true,
   predicate,
 }: Props) => {
+  const { formatMessage } = useIntl();
   const { data: customField } = useUserCustomField(customFieldId);
 
   if (!customField) return null;
@@ -78,7 +81,7 @@ const AuthorFieldFilterItem = ({
           onClick={() => {
             removeSearchParams([filterKey]);
           }}
-          a11y_buttonActionMessage="Remove filter"
+          a11y_buttonActionMessage={formatMessage(translations.removeFilter)}
         />
       )}
     </Box>

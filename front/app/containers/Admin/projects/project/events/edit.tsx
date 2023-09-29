@@ -12,16 +12,19 @@ import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 import FileUploader from 'components/UI/FileUploader';
 import {
   Box,
-  Button,
   IconTooltip,
+  Input,
   Label,
   LocationInput,
   Spinner,
   Title,
+  Toggle,
 } from '@citizenlab/cl2-component-library';
 import Map from './components/map';
 import { leafletMapClicked$ } from 'components/UI/LeafletMap/events';
 import Modal from 'components/UI/Modal';
+import Button from 'components/UI/Button';
+import ImagesDropzone from 'components/UI/ImagesDropzone';
 
 // router
 import clHistory from 'utils/cl-router/history';
@@ -38,6 +41,9 @@ import useEvent from 'api/events/useEvent';
 import useEventFiles from 'api/event_files/useEventFiles';
 import useAddEventFile from 'api/event_files/useAddEventFile';
 import useDeleteEventFile from 'api/event_files/useDeleteEventFile';
+import useEventImage from 'api/event_images/useEventImage';
+import useAddEventImage from 'api/event_images/useAddEventImage';
+import useDeleteEventImage from 'api/event_images/useDeleteEventImage';
 
 // typings
 import { Multiloc, CLError, UploadFile } from 'typings';
@@ -47,6 +53,8 @@ import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { useParams } from 'react-router-dom';
 import { geocode } from 'utils/locationTools';
+import { useTheme } from 'styled-components';
+import useLocale from 'hooks/useLocale';
 
 type SubmitState = 'disabled' | 'enabled' | 'error' | 'success';
 type ErrorType =
@@ -63,17 +71,30 @@ type ApiErrorType =
     };
 
 const AdminProjectEventEdit = () => {
-  const { eventId, projectId } = useParams() as {
-    eventId: string;
+  const { id, projectId } = useParams() as {
+    id: string;
     projectId: string;
   };
   const { formatMessage } = useIntl();
+  const theme = useTheme();
+  const locale = useLocale();
+
+  // api
   const { mutate: addEvent } = useAddEvent();
-  const { data: event, isInitialLoading } = useEvent(eventId);
+  const { data: event, isInitialLoading } = useEvent(id);
   const { mutate: updateEvent } = useUpdateEvent();
+
+  // event files
   const { mutate: addEventFile } = useAddEventFile();
   const { mutate: deleteEventFile } = useDeleteEventFile();
-  const { data: remoteEventFiles } = useEventFiles(eventId);
+  const { data: remoteEventFiles } = useEventFiles(id);
+
+  // event image
+  const { mutate: addEventImage } = useAddEventImage();
+  const { mutate: deleteEventImage } = useDeleteEventImage();
+  const { data: remoteEventImage } = useEventImage(event?.data);
+
+  // state
   const [errors, setErrors] = useState<ErrorType>({});
   const [apiErrors, setApiErrors] = useState<ApiErrorType>({});
   const [saving, setSaving] = useState<boolean>(false);
@@ -81,24 +102,41 @@ const AdminProjectEventEdit = () => {
   const [eventFiles, setEventFiles] = useState<UploadFile[]>([]);
   const [attributeDiff, setAttributeDiff] = useState<IEventProperties>({});
   const [mapModalVisible, setMapModalVisible] = useState(false);
+  const [attendanceOptionsVisible, setAttendanceOptionsVisible] =
+    useState(false);
+  const [uploadedImage, setUploadedImage] = useState<UploadFile | null>(null);
   const [locationPoint, setLocationPoint] = useState<GeoJSON.Point | null>(
-    null
+    event?.data?.attributes?.location_point_geojson || null
   );
-  const [address1, setAddress1] = useState('');
   const [eventFilesToRemove, setEventFilesToRemove] = useState<UploadFile[]>(
     []
   );
   const [successfulGeocode, setSuccessfulGeocode] = useState(false);
 
+  // Remote values
   const remotePoint = event?.data?.attributes?.location_point_geojson;
-  const remoteAddress1 = event?.data?.attributes?.address_1;
 
+  const eventAttrs = event
+    ? { ...event?.data.attributes, ...attributeDiff }
+    : { ...attributeDiff };
+
+  // Set image value to remote image if present
   useEffect(() => {
-    if (!isNilOrError(remoteAddress1)) {
-      setAddress1(() => remoteAddress1);
+    async function convertRemoteImage() {
+      if (remoteEventImage) {
+        const imageUrl = remoteEventImage.data.attributes.versions.medium;
+        if (imageUrl) {
+          const imageFile = await convertUrlToUploadFile(imageUrl);
+          setUploadedImage(imageFile);
+        }
+      }
     }
-  }, [remoteAddress1]);
+    if (remoteEventImage) {
+      convertRemoteImage();
+    }
+  }, [remoteEventImage]);
 
+  // If there is already a remote point, set successful geocode value to true
   useEffect(() => {
     if (!isNilOrError(remotePoint)) {
       setLocationPoint(() => remotePoint);
@@ -106,6 +144,14 @@ const AdminProjectEventEdit = () => {
     }
   }, [remotePoint]);
 
+  // If there is a custom button url, set the state accordingly
+  useEffect(() => {
+    if (eventAttrs.using_url) {
+      setAttendanceOptionsVisible(true);
+    }
+  }, [eventAttrs.using_url]);
+
+  // Listen for map clicks to update the location point
   useEffect(() => {
     const subscriptions = [
       leafletMapClicked$.subscribe(async (latLng) => {
@@ -123,10 +169,11 @@ const AdminProjectEventEdit = () => {
     };
   }, []);
 
+  // When address 1 is updated, geocode the location point to match
   useEffect(() => {
-    if (address1 !== event?.data.attributes.address_1) {
+    if (eventAttrs.address_1 !== event?.data.attributes.address_1) {
       const delayDebounceFn = setTimeout(async () => {
-        const point = await geocode(address1);
+        const point = await geocode(eventAttrs.address_1);
         setLocationPoint(point);
         setSuccessfulGeocode(!!point);
       }, 500);
@@ -135,8 +182,9 @@ const AdminProjectEventEdit = () => {
     }
     setSuccessfulGeocode(false);
     return;
-  }, [address1, event, attributeDiff]);
+  }, [eventAttrs.address_1, event]);
 
+  // Set event files to remote event files
   useEffect(() => {
     if (!isNilOrError(remoteEventFiles)) {
       (async () => {
@@ -167,6 +215,15 @@ const AdminProjectEventEdit = () => {
     });
   };
 
+  const handleOnlineLinkOnChange = async (onlineLink: string) => {
+    setSubmitState('enabled');
+    setAttributeDiff({
+      ...attributeDiff,
+      online_link: onlineLink,
+    });
+    setErrors({});
+  };
+
   const handleAddress1OnChange = async (location: string) => {
     setSubmitState('enabled');
     setAttributeDiff({
@@ -183,6 +240,32 @@ const AdminProjectEventEdit = () => {
     });
   };
 
+  const handleCustomButtonToggleOnChange = (toggleValue: boolean) => {
+    setSubmitState('enabled');
+    setAttendanceOptionsVisible(toggleValue);
+    setAttributeDiff({
+      ...attributeDiff,
+      using_url: '',
+    });
+  };
+
+  const handleCustomButtonMultilocOnChange = (buttonMultiloc: Multiloc) => {
+    setSubmitState('enabled');
+    setAttributeDiff({
+      ...attributeDiff,
+      attend_button_multiloc: buttonMultiloc,
+    });
+  };
+
+  const handleCustomButtonLinkOnChange = (url: string) => {
+    setSubmitState('enabled');
+    setAttributeDiff({
+      ...attributeDiff,
+      using_url: url,
+    });
+    setErrors({});
+  };
+
   const handleDateTimePickerOnChange =
     (name: 'start_at' | 'end_at') => (moment: moment.Moment) => {
       if (!isInitialLoading) {
@@ -197,6 +280,16 @@ const AdminProjectEventEdit = () => {
       }
     };
 
+  const handleOnImageAdd = (imageFiles: UploadFile[]) => {
+    setSubmitState('enabled');
+    setUploadedImage(imageFiles[0]);
+  };
+
+  const handleOnImageRemove = () => {
+    setSubmitState('enabled');
+    setUploadedImage(null);
+  };
+
   const handleEventFileOnAdd = (newFile: UploadFile) => {
     setSubmitState('enabled');
     setEventFiles([...eventFiles, newFile]);
@@ -210,6 +303,31 @@ const AdminProjectEventEdit = () => {
         (eventFile) => eventFile.base64 !== eventFileToRemove.base64
       )
     );
+  };
+
+  const handleEventImage = async (data: IEvent) => {
+    const hasRemoteImage = !isNilOrError(remoteEventImage);
+    const remoteImageId = hasRemoteImage
+      ? event?.data?.relationships?.event_images?.data?.[0].id
+      : undefined;
+    if (
+      (uploadedImage === null || !uploadedImage.remote) &&
+      hasRemoteImage &&
+      remoteImageId
+    ) {
+      deleteEventImage({
+        eventId: id,
+        imageId: remoteImageId,
+      });
+    }
+    if (uploadedImage && !uploadedImage.remote) {
+      addEventImage({
+        eventId: data.data.id,
+        image: {
+          image: uploadedImage.base64,
+        },
+      });
+    }
   };
 
   const handleEventFiles = async (data: IEvent) => {
@@ -267,7 +385,11 @@ const AdminProjectEventEdit = () => {
       locationPoint !== event?.data.attributes.location_point_geojson;
 
     const locationPointUpdated =
-      address1 || successfulGeocode ? locationPoint : null;
+      eventAttrs.address_1 || successfulGeocode ? locationPoint : null;
+
+    const imageChanged =
+      (uploadedImage !== null && !uploadedImage.remote) ||
+      (uploadedImage === null && remoteEventImage !== undefined);
 
     e.preventDefault();
     try {
@@ -277,6 +399,13 @@ const AdminProjectEventEdit = () => {
       if (isEmpty(attributeDiff) && eventFilesToRemove) {
         if (event) {
           handleEventFiles(event);
+        }
+      }
+
+      // If only image has changed
+      if (isEmpty(attributeDiff) && imageChanged) {
+        if (event) {
+          handleEventImage(event);
         }
       }
 
@@ -296,8 +425,9 @@ const AdminProjectEventEdit = () => {
             },
             {
               onSuccess: async (data) => {
-                setSubmitState('success');
+                handleEventImage(data);
                 handleEventFiles(data);
+                setSubmitState('success');
               },
               onError: async (errors) => {
                 setSaving(false);
@@ -320,6 +450,7 @@ const AdminProjectEventEdit = () => {
               onSuccess: async (data) => {
                 setSubmitState('success');
                 handleEventFiles(data);
+                handleEventImage(data);
                 clHistory.push(`/admin/projects/${projectId}/events`);
               },
               onError: async (errors) => {
@@ -342,12 +473,6 @@ const AdminProjectEventEdit = () => {
       }
     }
   };
-
-  const descriptionLabel = <FormattedMessage {...messages.descriptionLabel} />;
-
-  const eventAttrs = event
-    ? { ...event?.data.attributes, ...attributeDiff }
-    : { ...attributeDiff };
 
   if (event !== undefined && isInitialLoading) {
     return <Spinner />;
@@ -377,16 +502,28 @@ const AdminProjectEventEdit = () => {
             <Box width="860px">
               <QuillMultilocWithLocaleSwitcher
                 id="description"
-                label={descriptionLabel}
+                label={<FormattedMessage {...messages.descriptionLabel} />}
                 valueMultiloc={eventAttrs.description_multiloc}
                 onChange={handleDescriptionMultilocOnChange}
                 withCTAButton
               />
             </Box>
-
             <ErrorComponent apiErrors={get(errors, 'description_multiloc')} />
           </SectionField>
-
+          <SectionField>
+            <Label>{formatMessage(messages.eventImage)}</Label>
+            <ImagesDropzone
+              images={uploadedImage ? [uploadedImage] : []}
+              maxImagePreviewWidth="360px"
+              objectFit="contain"
+              acceptedFileTypes={{
+                'image/*': ['.jpg', '.jpeg', '.png'],
+              }}
+              onAdd={handleOnImageAdd}
+              onRemove={handleOnImageRemove}
+              imagePreviewRatio={1 / 2}
+            />
+          </SectionField>
           <Title
             variant="h4"
             fontWeight="bold"
@@ -429,6 +566,23 @@ const AdminProjectEventEdit = () => {
           </Title>
 
           <SectionField>
+            <Box mt="16px" maxWidth="400px">
+              <Input
+                id="event-location"
+                label={formatMessage(messages.onlineEventLinkLabel)}
+                type="text"
+                value={eventAttrs.online_link}
+                onChange={handleOnlineLinkOnChange}
+                labelTooltipText={formatMessage(
+                  messages.onlineEventLinkTooltip
+                )}
+                placeholder={'https://...'}
+              />
+            </Box>
+            <ErrorComponent apiErrors={get(errors, 'online_link')} />
+          </SectionField>
+
+          <SectionField>
             <Box maxWidth="400px">
               <Box mb="8px">
                 <Label>
@@ -445,7 +599,6 @@ const AdminProjectEventEdit = () => {
                 value={eventAttrs.address_1 || ''}
                 onChange={(value) => {
                   handleAddress1OnChange(value);
-                  setAddress1(value);
                 }}
                 placeholder={formatMessage(messages.searchForLocation)}
               />
@@ -487,6 +640,91 @@ const AdminProjectEventEdit = () => {
               )}
             </Box>
           </SectionField>
+
+          <Title
+            variant="h4"
+            fontWeight="bold"
+            color="primary"
+            style={{ fontWeight: '600' }}
+            mt="48px"
+          >
+            {formatMessage(messages.attendanceButton)}
+          </Title>
+          <SectionField>
+            <Toggle
+              label={
+                <Box display="flex">
+                  {formatMessage(messages.toggleCustomAttendanceButtonLabel)}
+                  <Box ml="4px">
+                    <IconTooltip
+                      content={formatMessage(
+                        messages.toggleCustomAttendanceButtonTooltip
+                      )}
+                    />
+                  </Box>
+                </Box>
+              }
+              checked={attendanceOptionsVisible}
+              onChange={() => {
+                handleCustomButtonToggleOnChange(!attendanceOptionsVisible);
+              }}
+            />
+          </SectionField>
+          {attendanceOptionsVisible && (
+            <>
+              <SectionField>
+                <Box maxWidth="400px">
+                  <InputMultilocWithLocaleSwitcher
+                    id="event-address-2"
+                    label={formatMessage(messages.customButtonText)}
+                    type="text"
+                    valueMultiloc={eventAttrs.attend_button_multiloc}
+                    onChange={handleCustomButtonMultilocOnChange}
+                    labelTooltipText={formatMessage(
+                      messages.customButtonTextTooltip
+                    )}
+                    maxCharCount={28}
+                  />
+                </Box>
+              </SectionField>
+              <SectionField>
+                <Box maxWidth="400px">
+                  <Input
+                    label={formatMessage(messages.customButtonLink)}
+                    type="text"
+                    value={eventAttrs.using_url}
+                    onChange={handleCustomButtonLinkOnChange}
+                    labelTooltipText={formatMessage(
+                      messages.customButtonLinkTooltip
+                    )}
+                    placeholder={'https://...'}
+                  />
+                </Box>
+                <ErrorComponent apiErrors={get(errors, 'using_url')} />
+              </SectionField>
+              {!isNilOrError(locale) && (
+                <Box display="flex" flexWrap="wrap">
+                  <Box width="100%">
+                    <Label>{formatMessage(messages.preview)}</Label>
+                  </Box>
+                  <Button
+                    minWidth="160px"
+                    iconPos={'right'}
+                    icon={attendanceOptionsVisible ? undefined : 'plus-circle'}
+                    iconSize="20px"
+                    bgColor={theme.colors.tenantPrimary}
+                    linkTo={eventAttrs.using_url}
+                    openLinkInNewTab={true}
+                  >
+                    {eventAttrs?.attend_button_multiloc?.[locale]
+                      ? eventAttrs?.attend_button_multiloc[locale]
+                      : formatMessage(messages.attend)}
+                  </Button>
+                </Box>
+              )}
+            </>
+          )}
+
           <Title
             variant="h4"
             fontWeight="bold"

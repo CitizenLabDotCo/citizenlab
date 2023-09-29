@@ -11,6 +11,7 @@ import {
 import EventSharingButtons from 'containers/EventsShowPage/components/EventSharingButtons';
 import Modal from 'components/UI/Modal';
 import { EventModalConfetti } from './EventModalConfetti';
+import { AddEventToCalendarButton } from 'components/AddEventToCalendarButton';
 
 // types
 import { IEventData } from 'api/events/types';
@@ -20,20 +21,19 @@ import useAuthUser from 'api/me/useAuthUser';
 import useAddEventAttendance from 'api/event_attendance/useAddEventAttendance';
 import useDeleteEventAttendance from 'api/event_attendance/useDeleteEventAttendance';
 import useEventsByUserId from 'api/events/useEventsByUserId';
+import useAddFollower from 'api/follow_unfollow/useAddFollower';
 
 // intl
 import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 import useLocalize from 'hooks/useLocalize';
-import useLocale from 'hooks/useLocale';
 
 // style
 import { useTheme } from 'styled-components';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 // utils
-import { capitalizeDates, getEventDateWithWeekdays } from 'utils/dateUtils';
-import { isNilOrError } from 'utils/helperUtils';
+import { getEventDateString } from 'utils/dateUtils';
 
 type EventAttendanceButtonProps = {
   event: IEventData;
@@ -42,8 +42,8 @@ type EventAttendanceButtonProps = {
 const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
   const theme = useTheme();
   const { data: user } = useAuthUser();
+  const { mutate: addFollower } = useAddFollower();
   const { formatMessage } = useIntl();
-  const currentLocale = useLocale();
   const localize = useLocalize();
   const [confirmationModalVisible, setConfirmationModalVisible] =
     useState(false);
@@ -62,16 +62,22 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
   const userIsAttending = !!userAttendingEventObject;
   const attendanceId =
     userAttendingEventObject?.relationships.user_attendance.data.id || null;
+  const customButtonText = localize(event?.attributes.attend_button_multiloc);
 
   const handleClick = () => {
-    if (user) {
-      registerAttendance();
+    if (event?.attributes.using_url) {
+      window.open(event.attributes.using_url);
+      return;
     } else {
-      // Currently there are no granular permission for event attendance (I.e. requirements endpoint fails).
-      // As such, our only option at this point is to trigger the flow without a success action.
-      triggerAuthenticationFlow({
-        flow: 'signin',
-      });
+      if (user) {
+        registerAttendance();
+      } else {
+        // Currently there are no granular permission for event attendance (I.e. requirements endpoint fails).
+        // As such, our only option at this point is to trigger the flow without a success action.
+        triggerAuthenticationFlow({
+          flow: 'signin',
+        });
+      }
     }
   };
 
@@ -82,12 +88,34 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
       });
     } else if (user) {
       addEventAttendance({ eventId: event.id, attendeeId: user.data?.id });
+      addFollower({
+        followableId: event.relationships.project.data.id,
+        followableType: 'projects',
+      });
       setConfirmationModalVisible(true);
     }
   };
 
+  const getButtonText = () => {
+    if (customButtonText && event?.attributes.using_url) {
+      return customButtonText;
+    } else if (userIsAttending) {
+      return formatMessage(messages.attending);
+    }
+    return formatMessage(messages.attend);
+  };
+
+  const getButtonIcon = () => {
+    if (event?.attributes.using_url) {
+      return undefined;
+    } else if (userIsAttending) {
+      return 'check';
+    }
+    return 'plus-circle';
+  };
+
   const isLoading = isAddingAttendance || isRemovingAttendance;
-  const eventDateTime = getEventDateWithWeekdays(event, formatMessage);
+  const eventDateTime = getEventDateString(event);
 
   return (
     <>
@@ -95,7 +123,7 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
         ml="auto"
         width={'100%'}
         iconPos={userIsAttending ? 'left' : 'right'}
-        icon={userIsAttending ? 'check' : 'plus-circle'}
+        icon={getButtonIcon()}
         iconSize="20px"
         bgColor={userIsAttending ? colors.success : theme.colors.tenantPrimary}
         onClick={(event) => {
@@ -105,9 +133,7 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
         processing={isLoading}
         id="e2e-event-attendance-button"
       >
-        {userIsAttending
-          ? formatMessage(messages.attending)
-          : formatMessage(messages.attend)}
+        {getButtonText()}
       </Button>
       <Modal
         opened={confirmationModalVisible}
@@ -131,10 +157,9 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
             {localize(event?.attributes?.title_multiloc)}
           </Title>
           <Text my="4px" color="coolGrey600" fontSize="m">
-            {!isNilOrError(currentLocale) && capitalizeDates(currentLocale)
-              ? eventDateTime
-              : eventDateTime.toLowerCase()}
+            {eventDateTime}
           </Text>
+          <AddEventToCalendarButton eventId={event.id} />
           {event && (
             <Box mt="16px" width="100%" mx="auto">
               <Text
