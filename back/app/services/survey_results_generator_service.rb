@@ -24,6 +24,9 @@ class SurveyResultsGeneratorService < FieldVisitorService
   end
 
   def visit_select(field)
+    option_keys = field.options.each_with_object({}) do |option, accu|
+      accu[option.key] = option.key
+    end
     values = inputs
       .select("custom_field_values->'#{field.key}' as value")
       .where("custom_field_values->'#{field.key}' IS NOT NULL")
