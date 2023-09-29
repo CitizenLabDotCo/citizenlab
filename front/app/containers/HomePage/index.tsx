@@ -37,6 +37,7 @@ const HomePage = () => {
           appConfiguration.data
         )
       : false;
+
   useEffect(() => {
     if (pressedLetterAKey && userHasAdminAccess) {
       clHistory.push(adminRedirectPath);
