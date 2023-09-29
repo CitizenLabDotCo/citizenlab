@@ -529,6 +529,7 @@
   "app.containers.Admin.PagesAndMenu.addButton": "إضافة إلى شريط التنقل",
   "app.containers.Admin.PagesAndMenu.components.NavbarItemForm.navbarItemTitle": "الاسم في شريط التنقل",
   "app.containers.Admin.PagesAndMenu.components.deletePageConfirmationHidden": "هل تريد بالتأكيد حذف هذه الصفحة؟ لا يمكن التراجع عن هذا الإجراء.",
+  "app.containers.Admin.PagesAndMenu.components.emptyTitleError1": "توفير عنوان لجميع اللغات",
   "app.containers.Admin.PagesAndMenu.components.hiddenFromNavigation": "صفحات متوفرة أخرى",
   "app.containers.Admin.PagesAndMenu.components.savePage": "حفظ الصفحة",
   "app.containers.Admin.PagesAndMenu.components.saveSuccess": "تم حفظ الصفحة بنجاح.",

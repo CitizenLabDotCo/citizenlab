@@ -529,6 +529,7 @@
   "app.containers.Admin.PagesAndMenu.addButton": "Voeg toe aan navigatiebalk",
   "app.containers.Admin.PagesAndMenu.components.NavbarItemForm.navbarItemTitle": "Naam in navigatiebalk",
   "app.containers.Admin.PagesAndMenu.components.deletePageConfirmationHidden": "Weet je zeker dat je deze pagina wilt verwijderen? Dit kan niet ongedaan gemaakt worden.",
+  "app.containers.Admin.PagesAndMenu.components.emptyTitleError1": "Geef een titel voor alle talen",
   "app.containers.Admin.PagesAndMenu.components.hiddenFromNavigation": "Andere beschikbare pagina's",
   "app.containers.Admin.PagesAndMenu.components.savePage": "Pagina opslaan",
   "app.containers.Admin.PagesAndMenu.components.saveSuccess": "Pagina succesvol opgeslagen",

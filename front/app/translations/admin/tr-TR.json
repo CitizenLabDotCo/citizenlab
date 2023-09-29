@@ -529,6 +529,7 @@
   "app.containers.Admin.PagesAndMenu.addButton": "Gezinme çubuğuna ekle",
   "app.containers.Admin.PagesAndMenu.components.NavbarItemForm.navbarItemTitle": "Gezinme çubuğundaki ad",
   "app.containers.Admin.PagesAndMenu.components.deletePageConfirmationHidden": "Bu sayfayı silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.",
+  "app.containers.Admin.PagesAndMenu.components.emptyTitleError1": "Tüm diller için bir başlık sağlayın",
   "app.containers.Admin.PagesAndMenu.components.hiddenFromNavigation": "Kullanılabilen diğer sayfalar",
   "app.containers.Admin.PagesAndMenu.components.savePage": "Sayfayı kaydet",
   "app.containers.Admin.PagesAndMenu.components.saveSuccess": "Sayfa başarıyla kaydedildi",
