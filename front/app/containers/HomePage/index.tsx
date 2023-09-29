@@ -29,14 +29,7 @@ const HomePage = () => {
   const { data: authUser } = useAuthUser();
   const { data: appConfiguration } = useAppConfiguration();
   const pressedLetterAKey = useKeyPress('a');
-  const userHasAdminAccess =
-    !isNilOrError(authUser) && !isNilOrError(appConfiguration)
-      ? canAccessRoute(
-          { type: 'route', path: '/admin' },
-          authUser,
-          appConfiguration.data
-        )
-      : false;
+  const userHasAdminAccess = true;
 
   useEffect(() => {
     if (pressedLetterAKey && userHasAdminAccess) {
