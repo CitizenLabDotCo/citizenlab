@@ -529,7 +529,6 @@
   "app.containers.Admin.PagesAndMenu.addButton": "Lägg till i navigeringsfältet",
   "app.containers.Admin.PagesAndMenu.components.NavbarItemForm.navbarItemTitle": "Namn i navigeringsfältet",
   "app.containers.Admin.PagesAndMenu.components.deletePageConfirmationHidden": "Är du säker på att du vill ta bort den här sidan? Du kan inte ångra den här åtgärden.",
-  "app.containers.Admin.PagesAndMenu.components.emptyTitleError": "Ange titel för alla språk",
   "app.containers.Admin.PagesAndMenu.components.hiddenFromNavigation": "Andra tillgängliga sidor",
   "app.containers.Admin.PagesAndMenu.components.savePage": "Spara sida",
   "app.containers.Admin.PagesAndMenu.components.saveSuccess": "Sidan har sparats",

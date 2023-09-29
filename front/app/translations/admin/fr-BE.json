@@ -529,7 +529,6 @@
   "app.containers.Admin.PagesAndMenu.addButton": "Ajouter à la barre de navigation",
   "app.containers.Admin.PagesAndMenu.components.NavbarItemForm.navbarItemTitle": "Nom dans la barre de navigation",
   "app.containers.Admin.PagesAndMenu.components.deletePageConfirmationHidden": "Êtes-vous sûr de vouloir supprimer cette page ? Cette suppression ne peut être annulée.",
-  "app.containers.Admin.PagesAndMenu.components.emptyTitleError": "Fournir un titre pour toutes les langues",
   "app.containers.Admin.PagesAndMenu.components.hiddenFromNavigation": "Autres pages disponibles",
   "app.containers.Admin.PagesAndMenu.components.savePage": "Sauvegarder la page",
   "app.containers.Admin.PagesAndMenu.components.saveSuccess": "Page sauvegardée avec succès",
