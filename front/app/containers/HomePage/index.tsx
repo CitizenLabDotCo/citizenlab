@@ -29,8 +29,14 @@ const HomePage = () => {
   const { data: authUser } = useAuthUser();
   const { data: appConfiguration } = useAppConfiguration();
   const pressedLetterAKey = useKeyPress('a');
-  const userHasAdminAccess = true;
-
+  const userHasAdminAccess =
+    !isNilOrError(authUser) && !isNilOrError(appConfiguration)
+      ? canAccessRoute(
+          { type: 'route', path: '/admin' },
+          authUser,
+          appConfiguration.data
+        )
+      : false;
   useEffect(() => {
     if (pressedLetterAKey && userHasAdminAccess) {
       clHistory.push(adminRedirectPath);
