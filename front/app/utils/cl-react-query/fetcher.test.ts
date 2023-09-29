@@ -64,6 +64,21 @@ describe('fetcher', () => {
       );
     });
 
+    it('works correctly with a GET request for collection of resources when cache optimization is disabled', async () => {
+      mockDataObject = baseDataArray;
+
+      const result = await fetcher({
+        path: '/path',
+        action: 'get',
+        cacheIndividualItems: false,
+      });
+
+      expect(result).toEqual(baseDataArray);
+
+      // setQueryData is called with the correct query keys
+      expect(mockSetQueryData).toHaveBeenCalledTimes(0);
+    });
+
     it('works correctly with a GET request on error', async () => {
       mockStatus = 404;
       mockOk = false;

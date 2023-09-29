@@ -13,4 +13,10 @@ FactoryBot.define do
     state { 'in_progress' }
     started_at { Time.now }
   end
+
+  factory :q_and_a_task, class: 'Analysis::QAndATask' do
+    analysis
+    state { 'in_progress' }
+    started_at { Time.now }
+  end
 end

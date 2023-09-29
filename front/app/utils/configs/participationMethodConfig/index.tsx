@@ -5,10 +5,7 @@ import { FormattedMessage } from '../../cl-intl';
 import messages from '../../messages';
 
 // services
-import {
-  ParticipationMethod,
-  getInputTerm,
-} from 'services/participationContexts';
+import { ParticipationMethod, getInputTerm } from 'utils/participationContexts';
 import { getCurrentParticipationContext } from 'api/phases/utils';
 import { IProjectData } from 'api/projects/types';
 import { IPhaseData } from 'api/phases/types';
@@ -29,6 +26,7 @@ import { CTABarProps } from 'components/ParticipationCTABars/utils';
 import { isNilOrError, NilOrError } from '../../helperUtils';
 import clHistory from 'utils/cl-router/history';
 import { IIdea } from 'api/ideas/types';
+import { EventsCTABar } from 'components/ParticipationCTABars/EventsCTABar';
 
 export const defaultSortingOptions = [
   { text: <FormattedMessage {...messages.trending} />, value: 'trending' },
@@ -160,6 +158,12 @@ const ideationConfig: ParticipationMethodConfig = {
   },
   postSortingOptions: defaultSortingOptions,
   hideAuthorOnIdeas: false,
+  useProjectClosedCTABarStyle: (participationContext) => {
+    const { commenting_enabled, reacting_enabled, posting_enabled } =
+      participationContext.attributes;
+
+    return !commenting_enabled && !reacting_enabled && !posting_enabled;
+  },
 };
 
 const nativeSurveyConfig: ParticipationMethodConfig = {
@@ -219,8 +223,8 @@ const informationConfig: ParticipationMethodConfig = {
   postType: 'defaultInput',
   showInputManager: false,
   isMethodLocked: false,
-  renderCTABar: () => {
-    return null;
+  renderCTABar: (props: CTABarProps) => {
+    return <EventsCTABar project={props.project} phases={props.phases} />;
   },
 };
 

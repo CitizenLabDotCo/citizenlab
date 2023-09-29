@@ -11,7 +11,7 @@ const fetch = ({
 }: {
   projectId?: string;
   phaseId?: string;
-  customFieldId: string;
+  customFieldId?: string;
 }) => {
   if (projectId) {
     return fetcher<IIdeaCustomField>({
@@ -33,7 +33,7 @@ const useIdeaCustomField = ({
 }: {
   projectId?: string;
   phaseId?: string;
-  customFieldId: string;
+  customFieldId?: string;
 }) => {
   return useQuery<
     IIdeaCustomField,
@@ -43,6 +43,7 @@ const useIdeaCustomField = ({
   >({
     queryKey: ideaCustomFieldsKeys.item({ customFieldId }),
     queryFn: () => fetch({ projectId, phaseId, customFieldId }),
+    enabled: !!customFieldId,
   });
 };
 

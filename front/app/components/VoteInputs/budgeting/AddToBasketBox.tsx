@@ -2,21 +2,25 @@ import React, { memo } from 'react';
 
 // api
 import useIdeaById from 'api/ideas/useIdeaById';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useVoting from 'api/baskets_ideas/useVoting';
 
 // components
 import AddToBasketButton from './AddToBasketButton';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { Box, Text } from '@citizenlab/cl2-component-library';
-import VotesCounter from 'components/VotesCounter';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../_shared/messages';
+import messages from './messages';
 import FormattedBudget from 'utils/currency/FormattedBudget';
 
 // styles
 import styled from 'styled-components';
 import { fontSizes, colors, defaultCardStyle, media } from 'utils/styleUtils';
+
+// utils
+import { isNil } from 'utils/helperUtils';
 
 // typings
 import { IProjectData } from 'api/projects/types';
@@ -61,12 +65,19 @@ interface Props {
 
 const AddToBasketBox = memo(({ ideaId, participationContext }: Props) => {
   const { data: idea } = useIdeaById(ideaId);
+  const { data: appConfig } = useAppConfiguration();
+  const { numberOfVotesCast } = useVoting();
+
   const ideaBudget = idea?.data.attributes.budget;
   const actionDescriptor = idea?.data.attributes.action_descriptor.voting;
+  const { voting_max_total } = participationContext.attributes;
 
-  if (!actionDescriptor || !ideaBudget) {
+  if (!actionDescriptor || !ideaBudget || isNil(voting_max_total)) {
     return null;
   }
+
+  const budgetLeft = voting_max_total - (numberOfVotesCast ?? 0);
+  const currency = appConfig?.data.attributes.settings.core.currency;
 
   return (
     <IdeaPageContainer
@@ -80,7 +91,14 @@ const AddToBasketBox = memo(({ ideaId, participationContext }: Props) => {
           <Box>
             <FormattedBudget value={ideaBudget} />
             <Text mb="0px" mt="8px" color="grey600" fontSize="xs">
-              <VotesCounter participationContext={participationContext} />
+              <FormattedMessage
+                {...messages.currencyLeft}
+                values={{
+                  budgetLeft: budgetLeft.toLocaleString(),
+                  totalBudget: voting_max_total.toLocaleString(),
+                  currency,
+                }}
+              />
             </Text>
           </Box>
         </Budget>

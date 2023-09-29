@@ -32,6 +32,26 @@ nl:
       not_ends_on: "%{property} eindigt niet op %{value}"
     email:
       property: "e-mail"
+    event_attendances:
+      attends_something: "Gebruiker is ingeschreven voor minstens één evenement"
+      attends_nothing: "Gebruiker is niet ingeschreven voor een evenement"
+      attends_some_of: "Gebruiker is ingeschreven voor minstens één van de volgende evenementen: %{value}"
+      attends_none_of: "Gebruiker is niet ingeschreven voor een van de volgende evenementen: %{value}"
+    follow:
+      something: "Volgt iets"
+      nothing: "Volgt niets"
+      is_one_of_projects: "Volgt één van de volgende projecten %{value}"
+      is_not_project: "Volgt dit project niet %{value}"
+      is_one_of_folders: "Volgt één van deze folders %{value}"
+      is_not_folder: "Volgt deze folder niet %{value}"
+      is_one_of_ideas: "Volgt één van deze ideeën %{value}"
+      is_not_idea: "Volgt dit idee niet %{value}"
+      is_one_of_initiatives: "Volgt één van deze voorstellen %{value}"
+      is_not_initiative: "Volgt dit voorstel niet %{value}"
+      is_one_of_topics: "Volgt één van deze onderwerpen %{value}"
+      is_not_topic: "Volgt dit onderwerp niet %{value}"
+      is_one_of_areas: "Volgt één van deze gebieden %{value}"
+      is_not_area: "Volgt dit gebied niet %{value}"
     lives_in:
       has_value_outside: "%{property} is ergens anders"
       not_has_value_outside: "%{property} is niet ergens anders"

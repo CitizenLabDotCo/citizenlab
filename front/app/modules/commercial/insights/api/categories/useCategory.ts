@@ -17,7 +17,7 @@ const useCategory = (viewId: string, id: string) => {
     IInsightsCategory,
     CategoriesKeys
   >({
-    queryKey: categoriesKeys.item({ viewId, id }),
+    queryKey: categoriesKeys.item({ id }),
     queryFn: () => fetchCategory({ viewId, id }),
   });
 };

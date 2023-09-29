@@ -2,11 +2,12 @@ import React, { memo, useEffect } from 'react';
 
 // components
 import Card from 'components/UI/Card/Compact';
-import { useBreakpoint } from '@citizenlab/cl2-component-library';
+import { useBreakpoint, Box } from '@citizenlab/cl2-component-library';
 import Body from './Body';
 import ImagePlaceholder from './ImagePlaceholder';
 import Footer from './Footer';
 import Interactions from './Interactions';
+import FollowUnfollow from 'components/FollowUnfollow';
 
 // router
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
@@ -42,6 +43,7 @@ interface Props {
   hideImagePlaceholder?: boolean;
   hideIdeaStatus?: boolean;
   goBackMode?: 'browserGoBackButton' | 'goToProject';
+  showFollowButton?: boolean;
 }
 
 const IdeaLoading = (props: Props) => {
@@ -67,6 +69,7 @@ const IdeaCard = memo<IdeaCardProps>(
     hideImagePlaceholder = false,
     hideIdeaStatus = false,
     goBackMode = 'browserGoBackButton',
+    showFollowButton,
   }) => {
     const isGeneralIdeasPage = window.location.pathname.endsWith('/ideas');
     const smallerThanPhone = useBreakpoint('phone');
@@ -122,7 +125,6 @@ const IdeaCard = memo<IdeaCardProps>(
     const handleClick = (e: React.MouseEvent) => {
       e.preventDefault();
       updateSearchParams({ scroll_to_card: idea.data.id });
-
       clHistory.push(`/ideas/${slug}${params}`);
     };
 
@@ -149,6 +151,7 @@ const IdeaCard = memo<IdeaCardProps>(
             />
           )
         }
+        innerHeight={showFollowButton ? '192px' : undefined}
         body={hideBody ? undefined : <Body idea={idea} />}
         interactions={
           hideInteractions ? null : (
@@ -159,12 +162,25 @@ const IdeaCard = memo<IdeaCardProps>(
           )
         }
         footer={
-          <Footer
-            project={project}
-            idea={idea.data}
-            hideIdeaStatus={hideIdeaStatus}
-            participationMethod={participationMethod}
-          />
+          <>
+            <Footer
+              project={project}
+              idea={idea.data}
+              hideIdeaStatus={hideIdeaStatus}
+              participationMethod={participationMethod}
+            />
+            {showFollowButton && (
+              <Box mt="16px" display="flex" justifyContent="flex-end">
+                <FollowUnfollow
+                  followableType="ideas"
+                  followableId={idea.data.id}
+                  followersCount={idea.data.attributes.followers_count}
+                  followerId={idea.data.relationships.user_follower?.data?.id}
+                  w="auto"
+                />
+              </Box>
+            )}
+          </>
         }
       />
     );

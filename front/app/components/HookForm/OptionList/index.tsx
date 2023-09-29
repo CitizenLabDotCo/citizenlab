@@ -21,7 +21,7 @@ import Error, { TFieldName } from 'components/UI/Error';
 
 // Typings
 import { Locale, CLError, RHFErrors, Multiloc } from 'typings';
-import { IOptionsType } from 'services/formCustomFields';
+import { IOptionsType } from 'api/custom_fields/types';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -129,7 +129,7 @@ const OptionList = ({
   const apiError = errors?.error && ([errors] as CLError[]);
   const validationError = errors?.message;
 
-  if (isNilOrError(platformLocale) || isNilOrError(locales)) {
+  if (isNilOrError(locales)) {
     return null;
   }
 
@@ -171,7 +171,7 @@ const OptionList = ({
                     <Box>
                       <LocaleSwitcher
                         onSelectedLocaleChange={handleOnSelectedLocaleChange}
-                        locales={!isNilOrError(locales) ? locales : []}
+                        locales={locales}
                         selectedLocale={selectedLocale}
                         values={validatedValues}
                       />

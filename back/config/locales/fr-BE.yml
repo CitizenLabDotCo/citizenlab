@@ -15,6 +15,10 @@ fr-BE:
     rejected: non-retenu.e
     rejected_description: Cette idée n'a pas été retenue
   initiative_statuses:
+    review_pending: examen en cours
+    review_pending_description: examen en cours
+    changes_requested: modifications requises
+    changes_requested_description: modifications requises
     proposed: soumise
     proposed_description: soumise
     expired: expirée
@@ -181,6 +185,8 @@ fr-BE:
       <p>Les porteurs de projets sont invités à présenter leur proposition à la prochaine réunion du conseil. Nous fourniront une mise à jour officielle.</p>
     default_eligibility_criteria: >
       <ul> <li>Doit s’inscrire dans les compétences de l’autorité locale</li> <li>Doit servir l’intérêt général plutôt que votre intérêt personnel</li> <li>Ne peut pas être discriminatoire en terme de sexe, de race, d’âge ou d’origine</li> <li>Ne peut pas nuire à autrui</li></ul>
+    default_posting_tips: >
+      <ul><li>Prenez le temps d’élaborer votre proposition en détails. Si nécessaire, écrivez un brouillon quelque part et copiez-collez sur la plateforme une fois que vous êtes prêt.</li><li>Choisissez un titre évocateur qui explique clairement ce que votre proposition comporte.</li><li>Assurez-vous d’illustrer votre proposition avec une image de bonnes dimensions de sorte à la faire ressortir plus distinctement.</li><li>Ajouter des pièces jointes telles que des vidéos, des exemples inspirants, des détails techniques ou des plans.</li><li>Partagez votre idée sur les réseaux sociaux et via d’autres canaux afin de récolter des votes.</li></ul>
   reset_password_mailer:
     send_reset_password:
       cta_reset_password: 'Réinitialisez votre mot de passe'

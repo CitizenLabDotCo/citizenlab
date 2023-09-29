@@ -9,14 +9,16 @@ import {
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 import Container from './components/Container';
-import RightColumnDesktop from './components/RightColumnDesktop';
+import InformationColumnDesktop from './components/InformationColumnDesktop';
 import DesktopTopBar from './components/DesktopTopBar';
 import Unauthorized from 'components/Unauthorized';
 import PageNotFound from 'components/PageNotFound';
 import VerticalCenterer from 'components/VerticalCenterer';
-import EventTopBarMobile from './components/EventTopBarMobile';
+import MobileTopBar from './components/MobileTopBar';
 import EventDescription from './components/EventDescription';
 import InformationSectionMobile from './components/InformationSectionMobile';
+import Image from 'components/UI/Image';
+import ProjectLink from './components/ProjectLink';
 
 // styling
 import styled from 'styled-components';
@@ -24,10 +26,12 @@ import styled from 'styled-components';
 // router
 import { useParams } from 'react-router-dom';
 
-// api
+// hooks
 import useEvent from 'api/events/useEvent';
 import useLocale from 'hooks/useLocale';
 import useProjectById from 'api/projects/useProjectById';
+import useEventImage from 'api/event_images/useEventImage';
+import useLocalize from 'hooks/useLocalize';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -54,9 +58,18 @@ const InnerContainer = styled(Box)`
     padding-right: 15px;
   `}
 `;
+
+const EventImage = styled(Image)`
+  width: 100%;
+  height: 100%;
+  flex: 1;
+  margin-bottom: 24px;
+`;
+
 const EventsShowPage = () => {
   const isSmallerThanTablet = useBreakpoint('tablet');
   const locale = useLocale();
+  const localize = useLocalize();
   const { eventId } = useParams() as {
     eventId: string;
   };
@@ -64,6 +77,13 @@ const EventsShowPage = () => {
   const { data: project } = useProjectById(
     event?.data.relationships.project.data.id
   );
+  const { data: eventImage } = useEventImage(event?.data);
+  const largeImage = eventImage?.data.attributes?.versions?.large;
+
+  const projectTitleLocalized = localize(
+    project?.data.attributes.title_multiloc
+  );
+  const projectSlug = project?.data.attributes.slug;
 
   if (status === 'loading') {
     return (
@@ -87,19 +107,30 @@ const EventsShowPage = () => {
   return (
     <>
       {isSmallerThanTablet && (
-        <EventTopBarMobile
-          projectId={event?.data.relationships.project.data.id}
-        />
+        <MobileTopBar projectId={event?.data.relationships.project.data.id} />
       )}
       <Container>
         <InnerContainer>
-          {!isSmallerThanTablet && <DesktopTopBar project={project.data} />}
+          {!isSmallerThanTablet && (
+            <DesktopTopBar event={event.data} project={project.data} />
+          )}
 
           <Box display="flex" id="e2e-idea-show-page-content">
             <Box flex="1 1 100%">
               <Title id="e2e-event-title" variant="h1">
-                {event?.data.attributes.title_multiloc[locale]}
+                {localize(event?.data.attributes.title_multiloc)}
               </Title>
+              {projectTitleLocalized && projectSlug && (
+                <ProjectLink
+                  projectTitleLocalized={projectTitleLocalized}
+                  projectSlug={projectSlug}
+                />
+              )}
+              {largeImage && (
+                <Box aria-hidden="true">
+                  <EventImage src={largeImage} alt="" />
+                </Box>
+              )}
               <Box mb="40px">
                 {event && <EventDescription event={event?.data} />}
                 {isSmallerThanTablet && event && (
@@ -108,7 +139,7 @@ const EventsShowPage = () => {
               </Box>
             </Box>
             {!isSmallerThanTablet && event && (
-              <RightColumnDesktop event={event.data} />
+              <InformationColumnDesktop event={event.data} />
             )}
           </Box>
         </InnerContainer>

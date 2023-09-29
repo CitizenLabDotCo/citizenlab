@@ -4,7 +4,7 @@ import { Outlet as RouterOutlet } from 'react-router-dom';
 
 // permissions
 import useAuthUser from 'api/me/useAuthUser';
-import { usePermission } from 'services/permissions';
+import { usePermission } from 'utils/permissions';
 import HasPermission from 'components/HasPermission';
 
 // components

@@ -62,6 +62,8 @@ resource 'Users' do
       let(:id) { @user.id }
       example 'Get a non-authenticated user does not expose the email', document: false do
         do_request
+
+        assert_status 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :attributes, :email)).to be_nil
       end
@@ -680,13 +682,19 @@ resource 'Users' do
         let(:user) { create(:user) }
         let(:id) { user.id }
 
-        example_request 'Get a user by id includes user block data' do
-          expect(status).to eq 200
+        example 'Get a user by ID' do
+          create_list(:follower, 2, user: user)
+          create(:follower)
+
+          do_request
+
+          assert_status 200
           json_response = json_parse response_body
           expect(json_response.dig(:data, :attributes)).to have_key(:blocked)
           expect(json_response.dig(:data, :attributes)).to have_key(:block_start_at)
           expect(json_response.dig(:data, :attributes)).to have_key(:block_end_at)
           expect(json_response.dig(:data, :attributes)).to have_key(:block_reason)
+          expect(json_response.dig(:data, :attributes, :followings_count)).to eq 2
         end
       end
 
@@ -957,6 +965,7 @@ resource 'Users' do
           parameter :password, 'Password'
           parameter :locale, 'Locale. Should be one of the tenants locales'
           parameter :avatar, 'Base64 encoded avatar image'
+          parameter :onboarding, 'Onboarding parameters'
           parameter :roles, 'Roles array, only allowed when admin'
           parameter :bio_multiloc, 'A little text, allowing the user to describe herself. Multiloc and non-html'
           parameter :custom_field_values, 'An object that can only contain keys for custom fields for users'
@@ -969,10 +978,12 @@ resource 'Users' do
         describe do
           let(:custom_field_values) { { birthyear: 1984 } }
           let(:project) { create(:continuous_project) }
+          let(:onboarding) { { topics_and_areas: 'satisfied' } }
 
           example_request 'Update a user' do
             assert_status 200
             expect(response_data.dig(:attributes, :first_name)).to eq first_name
+            expect(response_data.dig(:attributes, :onboarding)).to eq onboarding
           end
         end
 

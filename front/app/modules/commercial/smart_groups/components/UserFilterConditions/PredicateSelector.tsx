@@ -76,6 +76,27 @@ const PredicateSelector = memo(
         predicate_volunteered_in: messages.predicate_volunteered_in,
         predicate_reacted_comment_in: messages.predicate_reacted_comment_in,
         predicate_reacted_idea_in: messages.predicate_reacted_input_in,
+        predicate_something: messages.predicate_something,
+        predicate_nothing: messages.predicate_nothing,
+        predicate_is_one_of_projects: messages.predicate_is_one_of_projects,
+        predicate_is_not_project: messages.predicate_is_not_project,
+        predicate_is_one_of_folders: messages.predicate_is_one_of_folders,
+        predicate_is_not_folder: messages.predicate_is_not_folder,
+        predicate_is_one_of_ideas: messages.predicate_is_one_of_ideas,
+        predicate_is_not_idea: messages.predicate_is_not_idea,
+        predicate_is_one_of_initiatives:
+          messages.predicate_is_one_of_initiatives,
+        predicate_is_not_initiative: messages.predicate_is_not_initiative,
+
+        // Event attendance
+        predicate_attends_something: messages.predicate_attends_something,
+        predicate_attends_nothing: messages.predicate_attends_nothing,
+        predicate_attends_some_of: messages.predicate_attends_some_of,
+        predicate_attends_none_of: messages.predicate_attends_none_of,
+        predicate_is_one_of_topics: messages.predicate_is_one_of_topics,
+        predicate_is_not_topic: messages.predicate_is_not_topic,
+        predicate_is_one_of_areas: messages.predicate_is_one_of_areas,
+        predicate_is_not_area: messages.predicate_is_not_area,
       };
 
       return predicateMessages[`predicate_${predicate}`];

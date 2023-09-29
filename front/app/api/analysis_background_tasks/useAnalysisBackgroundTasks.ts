@@ -5,7 +5,7 @@ import backgroundTasksKeys from './keys';
 import { IBackgroundTasks, BackgroundTasksKeys } from './types';
 import tagsKeys from 'api/analysis_tags/keys';
 import taggingKeys from 'api/analysis_taggings/keys';
-import summariesKeys from 'api/analysis_summaries/keys';
+import insightsKeys from 'api/analysis_insights/keys';
 
 const fetchBackgroundTasks = (analysisId: string) => {
   return fetcher<IBackgroundTasks>({
@@ -27,23 +27,15 @@ const useAnalysisBackgroundTasks = (analysisId: string) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: tagsKeys.lists() });
       queryClient.invalidateQueries({ queryKey: taggingKeys.lists() });
-      queryClient.invalidateQueries({ queryKey: summariesKeys.lists() });
-      queryClient.invalidateQueries({ queryKey: backgroundTasksKeys.items() });
+      queryClient.invalidateQueries({ queryKey: insightsKeys.lists() });
     },
-    // Refetch every 5 seconds when tasks are active
+    // Refetch every 2 seconds when tasks are active
     refetchInterval: (data) => {
       const activeTask = data?.data.find((task) => {
-        const { updated_at, state } = task.attributes;
-        // Updated in the last 2 minutes?
-        const up_date = Date.parse(updated_at);
-        const now = Date.now();
-        const recently_updated = now - up_date < 2 * 60 * 1000;
-
-        return (
-          state === 'queued' || state === 'in_progress' || recently_updated
-        );
+        const { state } = task.attributes;
+        return state === 'queued' || state === 'in_progress';
       });
-      return activeTask ? 5000 : false;
+      return activeTask ? 2000 : false;
     },
     keepPreviousData: false,
   });

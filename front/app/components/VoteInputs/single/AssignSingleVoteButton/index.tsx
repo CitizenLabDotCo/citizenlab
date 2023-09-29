@@ -96,11 +96,11 @@ const AssignSingleVoteButton = ({
 
   const onAdd = async () => {
     const maxVotes = participationContext?.attributes.voting_max_total;
-    if (!maxVotes || numberOfVotesCast === undefined) {
+    if (numberOfVotesCast === undefined) {
       return;
     }
 
-    if (numberOfVotesCast === maxVotes) {
+    if (maxVotes && numberOfVotesCast === maxVotes) {
       eventEmitter.emit(VOTES_EXCEEDED_ERROR_EVENT);
       return;
     }

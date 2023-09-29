@@ -72,10 +72,6 @@ export default defineMessages({
     id: 'app.components.InitiativesShow.deleteInitiative',
     defaultMessage: 'Delete initiative',
   },
-  deleteInitiativeConfirmation: {
-    id: 'app.components.InitiativesShow.deleteInitiativeConfirmation',
-    defaultMessage: 'Are you sure you want to delete this initiative?',
-  },
   reportAsSpamModalTitle: {
     id: 'app.containers.InitiativesShow.reportAsSpamModalTitle',
     defaultMessage: 'Why do you want to report this as spam?',
@@ -86,15 +82,63 @@ export default defineMessages({
   },
   shareTitle: {
     id: 'app.components.InitiativesShow.shareTitle',
-    defaultMessage: 'Congratulations, your initiative was successfully posted!',
+    defaultMessage: 'Congratulations, your proposal was successfully posted!',
   },
   shareSubtitle: {
     id: 'app.components.InitiativesShow.shareSubtitle',
     defaultMessage:
-      'Share your initiative to reach {votingThreshold} votes in {daysLimit} days.',
+      'Share your proposal to reach {votingThreshold} votes in {daysLimit} days.',
+  },
+  createdModalTitle: {
+    id: 'app.components.InitiativesShow.createdModalTitle',
+    defaultMessage:
+      'Congratulations, your proposal has been submitted for review!',
+  },
+  createdModalSubtitle: {
+    id: 'app.components.InitiativesShow.createdModalSubtitle',
+    defaultMessage:
+      'An admin will review your proposal shortly - you will be notified when the review is completed.',
   },
   a11y_voteControl: {
     id: 'app.containers.InitiativesShow.a11y_voteControl',
     defaultMessage: 'Voting and status',
+  },
+  cosponsorshipSuccess: {
+    id: 'app.containers.InitiativesShow.cosponsorshipSuccess',
+    defaultMessage: "You've succesfully cosponsored this proposal!",
+  },
+  titleCosponsorsTile: {
+    id: 'app.containers.InitiativesShow.titleCosponsorsTile',
+    defaultMessage: 'Cosponsors of this proposal',
+  },
+  youWereInvitedToConsponsorBy: {
+    id: 'app.containers.InitiativesShow.youWereInvitedToConsponsorBy',
+    defaultMessage: '{authorName} invited you to cosponsor this proposal.',
+  },
+  cosponsorRequirementInfo: {
+    id: 'app.containers.InitiativesShow.cosponsorRequirementInfo',
+    defaultMessage:
+      '{requiredNumberOfCosponsors, plural, one {At least 1 person needs to cosponsor for the proposal to be considered.} other {At least # people need to cosponsor for the proposal to be considered.}}',
+  },
+  cosponsor: {
+    id: 'app.containers.InitiativesShow.cosponsor',
+    defaultMessage: 'Cosponsor',
+  },
+  cosponsorCTA: {
+    id: 'app.containers.InitiativesShow.cosponsorCTA',
+    defaultMessage: 'Cosponsor this proposal',
+  },
+  manageInvitationsLinkText: {
+    id: 'app.containers.InitiativesShow.manageInvitationsLinkText',
+    defaultMessage: 'Manage cosponsorship invitations',
+  },
+  numberOfCosponsorsNotYetMet: {
+    id: 'app.containers.InitiativesShow.numberOfCosponsorsNotYetMet',
+    defaultMessage:
+      '{requiredNumberOfCosponsors, plural, one {Your proposal needs 1 accepted cosponsorship. Until then, it will not be considered. {manageInvitationsLink}.} other {Your proposal needs {requiredNumberOfCosponsors} accepted cosponsorships. Until then, it will not be considered. {manageInvitationsLink}.}}',
+  },
+  pending: {
+    id: 'app.containers.InitiativesShow.pending1',
+    defaultMessage: 'pending',
   },
 });

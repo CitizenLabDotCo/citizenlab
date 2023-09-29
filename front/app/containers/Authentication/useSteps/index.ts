@@ -34,7 +34,7 @@ import {
   Step,
   AuthenticationData,
 } from '../typings';
-import { SSOParams } from 'services/singleSignOn';
+import { SSOParams } from 'api/authentication/singleSignOn';
 import useUpdateUser from 'api/users/useUpdateUser';
 import { isNil, isNilOrError } from 'utils/helperUtils';
 
@@ -166,6 +166,7 @@ export default function useSteps() {
       if (currentStep !== 'closed') return;
 
       authenticationDataRef.current = event.eventValue;
+
       transition(currentStep, 'TRIGGER_AUTHENTICATION_FLOW')();
     });
 

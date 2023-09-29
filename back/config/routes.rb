@@ -23,6 +23,9 @@ Rails.application.routes.draw do
           post :down, on: :collection
         end
       end
+      concern :followable do
+        resources :followers, only: [:create]
+      end
       concern :post do
         resources :activities, only: [:index]
         resources :comments, shallow: true,
@@ -43,8 +46,8 @@ Rails.application.routes.draw do
       end
 
       resources :ideas,
-        concerns: %i[reactable spam_reportable post],
-        defaults: { reactable: 'Idea', spam_reportable: 'Idea', post: 'Idea' } do
+        concerns: %i[reactable spam_reportable post followable],
+        defaults: { reactable: 'Idea', spam_reportable: 'Idea', post: 'Idea', followable: 'Idea' } do
         resources :images, defaults: { container_type: 'Idea' }
         resources :files, defaults: { container_type: 'Idea' }
 
@@ -57,8 +60,8 @@ Rails.application.routes.draw do
       end
 
       resources :initiatives,
-        concerns: %i[reactable spam_reportable post],
-        defaults: { reactable: 'Initiative', spam_reportable: 'Initiative', post: 'Initiative' } do
+        concerns: %i[reactable spam_reportable post followable],
+        defaults: { reactable: 'Initiative', spam_reportable: 'Initiative', post: 'Initiative', followable: 'Initiative' } do
         resources :images, defaults: { container_type: 'Initiative' }
         resources :files, defaults: { container_type: 'Initiative' }
 
@@ -69,6 +72,7 @@ Rails.application.routes.draw do
         get :as_markers, on: :collection, action: 'index_initiative_markers'
         get :filter_counts, on: :collection
         get :allowed_transitions, on: :member
+        patch :accept_cosponsorship_invite, on: :member
       end
 
       resources :idea_statuses, only: %i[index show]
@@ -95,6 +99,8 @@ Rails.application.routes.draw do
 
         resources :comments, only: [:index], controller: 'user_comments'
       end
+
+      get 'users/:attendee_id/events', to: 'events#index'
       get 'users/:id', to: 'users#show', constraints: { id: /\b(?!custom_fields|me)\b\S+/ }
 
       scope path: 'user' do
@@ -104,11 +110,17 @@ Rails.application.routes.draw do
 
       resources :topics do
         patch 'reorder', on: :member
+
+        resources :followers, only: [:create], defaults: { followable: 'Topic' }
       end
 
       resources :areas do
         patch 'reorder', on: :member
+
+        resources :followers, only: [:create], defaults: { followable: 'Area' }
       end
+
+      resources :followers, except: %i[create update]
 
       resource :app_configuration, only: %i[show update]
 
@@ -129,7 +141,10 @@ Rails.application.routes.draw do
 
       resources :events, only: %i[index show edit update destroy] do
         resources :files, defaults: { container_type: 'Event' }, shallow: false
+        resources :images, defaults: { container_type: 'Event' }
+        resources :attendances, module: 'events', only: %i[create index]
       end
+      resources :event_attendances, only: %i[destroy], controller: 'events/attendances'
 
       resources :phases, only: %i[show edit update destroy] do
         resources :files, defaults: { container_type: 'Phase' }, shallow: false
@@ -142,7 +157,7 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :projects do
+      resources :projects, concerns: [:followable], defaults: { followable: 'Project' } do
         resources :events, only: %i[new create]
         resources :projects_allowed_input_topics, only: [:index]
         resources :phases, only: %i[index new create]
@@ -175,7 +190,7 @@ Rails.application.routes.draw do
         get 'status_counts', on: :collection
       end
 
-      resources :project_folders, controller: 'folders' do
+      resources :project_folders, controller: 'folders', concerns: [:followable], defaults: { followable: 'ProjectFolders::Folder' } do
         resources :moderators, controller: 'folder_moderators', except: %i[update]
 
         resources :images, controller: '/web_api/v1/images', defaults: { container_type: 'ProjectFolder' }
@@ -269,6 +284,8 @@ Rails.application.routes.draw do
       put 'baskets/ideas/:idea_id', to: 'baskets_ideas#upsert'
 
       resources :avatars, only: %i[index show]
+
+      resources :ideas_phases, only: %i[show]
     end
   end
 

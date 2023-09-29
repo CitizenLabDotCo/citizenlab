@@ -16,6 +16,8 @@ class PublicApi::V2::ProjectSerializer < PublicApi::V2::BaseSerializer
     :updated_at,
     :ideas_count,
     :comments_count,
+    :baskets_count,
+    :votes_count,
     :map_center_geojson, # Not in spec
     :posting_enabled,
     :commenting_enabled,

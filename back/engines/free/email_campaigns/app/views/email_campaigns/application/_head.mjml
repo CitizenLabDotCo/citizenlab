@@ -4,6 +4,7 @@
       font-size: 25px;
       margin-bottom: 25px;
     }
+    
     a {text-decoration: none;}
 
     <%# From https://github.com/mjmlio/mjml/issues/230 %>

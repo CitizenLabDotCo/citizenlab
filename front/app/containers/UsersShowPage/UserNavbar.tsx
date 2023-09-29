@@ -1,6 +1,8 @@
 import React, { memo } from 'react';
+import { useLocation } from 'react-router-dom';
 
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
+import clHistory from 'utils/cl-router/history';
 
 // styles
 import { fontSizes, media } from 'utils/styleUtils';
@@ -8,16 +10,20 @@ import styled from 'styled-components';
 import { rgba } from 'polished';
 
 // components
-import { Icon } from '@citizenlab/cl2-component-library';
-import { UserTab } from './';
+import { Icon, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-// api
+// hooks
 import useUserIdeasCount from 'api/user_ideas_count/useUserIdeasCount';
 import useUserCommentsCount from 'api/user_comments_count/useUserCommentsCount';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import useAuthUser from 'api/me/useAuthUser';
+import useEventsByUserId from 'api/events/useEventsByUserId';
+import { ScreenReaderOnly } from 'utils/a11y';
+import { IUserData } from 'api/users/types';
 
 const UserNavbarWrapper = styled.div`
   width: 100%;
@@ -101,53 +107,157 @@ const TabIcon = styled(Icon)`
 `;
 
 interface Props {
-  currentTab: UserTab;
-  selectTab: (tab: UserTab) => () => void;
-  userId: string;
+  user: IUserData;
 }
 
-const UserNavbar = memo<Props>(({ currentTab, selectTab, userId }) => {
-  const { data: ideasCount } = useUserIdeasCount({ userId });
+const UserNavbar = memo<Props>(({ user }) => {
+  const { data: ideasCount } = useUserIdeasCount({ userId: user.id });
+  const isSmallerThanPhone = useBreakpoint('phone');
+  const { pathname } = useLocation();
   const { data: commentsCount } = useUserCommentsCount({
-    userId,
+    userId: user.id,
   });
+  const { data: events } = useEventsByUserId(user.id);
+  const { data: authUser } = useAuthUser();
+
+  const eventsCount = events?.data.length;
+  const showEventTab = authUser?.data?.id === user.id;
+  const isFollowingEnabled = useFeatureFlag({
+    name: 'follow',
+  });
+  const showFollowingTab = isFollowingEnabled && authUser?.data?.id === user.id;
 
   return (
     <UserNavbarWrapper role="tablist">
       <UserNavbarButton
         onMouseDown={removeFocusAfterMouseClick}
-        onClick={selectTab('ideas')}
-        className={currentTab === 'ideas' ? 'active' : ''}
+        onClick={() =>
+          clHistory.push(`/profile/${user.attributes.slug}/submissions`)
+        }
+        className={pathname.endsWith('submissions') ? 'active' : ''}
         role="tab"
-        aria-selected={currentTab === 'ideas'}
+        aria-selected={pathname.endsWith('submissions')}
       >
         <Border aria-hidden />
         <TabIcon name="idea" ariaHidden />
-        {ideasCount && (
+        {!isSmallerThanPhone && (
           <FormattedMessage
             {...messages.postsWithCount}
-            values={{ ideasCount: ideasCount.data.attributes.count }}
+            values={{ ideasCount: ideasCount?.data.attributes.count || '0' }}
           />
+        )}
+        {isSmallerThanPhone && (
+          <ScreenReaderOnly>
+            <FormattedMessage
+              {...messages.postsWithCount}
+              values={{ ideasCount: ideasCount?.data.attributes.count || '0' }}
+            />
+          </ScreenReaderOnly>
+        )}
+        {isSmallerThanPhone && (
+          <ScreenReaderOnly>
+            <FormattedMessage
+              {...messages.postsWithCount}
+              values={{ ideasCount: ideasCount?.data.attributes.count || '0' }}
+            />
+          </ScreenReaderOnly>
         )}
       </UserNavbarButton>
       <UserNavbarButton
         onMouseDown={removeFocusAfterMouseClick}
-        onClick={selectTab('comments')}
+        onClick={() =>
+          clHistory.push(`/profile/${user.attributes.slug}/comments`)
+        }
         className={`e2e-comment-section-nav ${
-          currentTab === 'comments' ? 'active' : ''
+          pathname.endsWith('comments') ? 'active' : ''
         }`}
         role="tab"
-        aria-selected={currentTab === 'comments'}
+        aria-selected={pathname.endsWith('comments')}
       >
         <Border aria-hidden />
         <TabIcon name="comments" ariaHidden />
-        {commentsCount && (
+        {!isSmallerThanPhone && (
           <FormattedMessage
             {...messages.commentsWithCount}
-            values={{ commentsCount: commentsCount.data.attributes.count }}
+            values={{
+              commentsCount: commentsCount?.data.attributes.count || '0',
+            }}
           />
         )}
+        {isSmallerThanPhone && (
+          <ScreenReaderOnly>
+            <FormattedMessage
+              {...messages.commentsWithCount}
+              values={{
+                commentsCount: commentsCount?.data.attributes.count || '0',
+              }}
+            />
+          </ScreenReaderOnly>
+        )}
       </UserNavbarButton>
+      {showFollowingTab && (
+        <UserNavbarButton
+          onMouseDown={removeFocusAfterMouseClick}
+          onClick={() =>
+            clHistory.push(`/profile/${user.attributes.slug}/following`)
+          }
+          className={pathname.endsWith('following') ? 'active' : ''}
+          role="tab"
+          aria-selected={pathname.endsWith('following')}
+          data-cy="e2e-following-tab"
+        >
+          <Border aria-hidden />
+          <TabIcon name="notification-outline" ariaHidden />
+          {!isSmallerThanPhone && (
+            <FormattedMessage
+              {...messages.followingWithCount}
+              values={{
+                followingCount: authUser?.data.attributes.followings_count,
+              }}
+            />
+          )}
+          {isSmallerThanPhone && (
+            <ScreenReaderOnly>
+              <FormattedMessage
+                {...messages.followingWithCount}
+                values={{
+                  followingCount: authUser?.data.attributes.followings_count,
+                }}
+              />
+            </ScreenReaderOnly>
+          )}
+        </UserNavbarButton>
+      )}
+      {showEventTab && (
+        <UserNavbarButton
+          onMouseDown={removeFocusAfterMouseClick}
+          onClick={() =>
+            clHistory.push(`/profile/${user.attributes.slug}/events`)
+          }
+          className={`e2e-events-nav ${
+            pathname.endsWith('events') ? 'active' : ''
+          }`}
+          role="tab"
+          aria-selected={pathname.endsWith('events')}
+        >
+          <Border aria-hidden />
+          <TabIcon name="calendar" ariaHidden />
+          {!isSmallerThanPhone && (
+            <FormattedMessage
+              {...messages.eventsWithCount}
+              values={{ eventsCount: eventsCount || '0' }}
+            />
+          )}
+          {isSmallerThanPhone && (
+            <ScreenReaderOnly>
+              <FormattedMessage
+                {...messages.eventsWithCount}
+                values={{ eventsCount: eventsCount || '0' }}
+              />
+            </ScreenReaderOnly>
+          )}
+        </UserNavbarButton>
+      )}
     </UserNavbarWrapper>
   );
 });

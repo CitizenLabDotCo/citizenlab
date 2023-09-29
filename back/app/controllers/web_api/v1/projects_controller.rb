@@ -30,8 +30,16 @@ class WebApi::V1::ProjectsController < ApplicationController
       end
     user_baskets ||= {}
 
+    user_followers = current_user&.follows
+      &.where(followable_type: 'Project')
+      &.group_by do |follower|
+        [follower.followable_id, follower.followable_type]
+      end
+    user_followers ||= {}
+
     instance_options = {
       user_baskets: user_baskets,
+      user_followers: user_followers,
       allocated_budgets: ParticipationContextService.new.allocated_budgets(@projects),
       timeline_active: TimelineService.new.timeline_active_on_collection(@projects),
       visible_children_count_by_parent_id: {} # projects don't have children
@@ -131,12 +139,12 @@ class WebApi::V1::ProjectsController < ApplicationController
 
   def survey_results
     results = SurveyResultsGeneratorService.new(@project).generate_results
-    render json: results
+    render json: raw_json(results)
   end
 
   def submission_count
     count = SurveyResultsGeneratorService.new(@project).generate_submission_count
-    render json: count
+    render json: raw_json(count)
   end
 
   def index_xlsx

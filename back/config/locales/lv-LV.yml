@@ -15,6 +15,10 @@ lv:
     rejected: noraidīts
     rejected_description: Šī ideja ir noraidīta
   initiative_statuses:
+    review_pending: pārskatīšana vēl nav pabeigta
+    review_pending_description: pārskatīšana vēl nav pabeigta
+    changes_requested: pieprasītās izmaiņas
+    changes_requested_description: pieprasītās izmaiņas
     proposed: ierosinātais
     proposed_description: ierosinātais
     expired: termiņš ir beidzies
@@ -181,6 +185,8 @@ lv:
       <p>Iniciatori tiek aicināti iepazīstināt ar saviem priekšlikumiem nākamajā padomes sēdē. Mēs sniegsim oficiālu atjauninātu informāciju.</p>
     default_eligibility_criteria: >
       <ul> <li>Tai ir jāiekļaujas vietējās politikas jomās un kompetencē</li> <li>Tai ir jākalpo sabiedrības interesēm, nevis jūsu individuālajām interesēm</li> <li>Tā nediskriminē pēc dzimuma, rases, vecuma vai izcelsmes </li> <li>Tā nekaitē citiem</li> </ul>.
+    default_posting_tips: >
+      <ul><li>Atvēliet laiku, lai detalizēti izklāstītu savu priekšlikumu. Ja nepieciešams, vispirms uzrakstiet melnrakstu un pēc tam kopējiet un ielīmējiet to šeit.</li><li>Izvēlieties jēgpilnu nosaukumu, kas skaidri paskaidro, ko ietver jūsu priekšlikums.</li><li>Vizualizējiet savu priekšlikumu ar atbilstošu attēlu, kas palīdzēs tam izcelties!</li><li>Pievienojiet attiecīgus pielikumus, piemēram, videoklipus, iedvesmojošus piemērus, tehnisko informāciju vai plānus.</li><li>Koplietojiet savu ideju sociālajos medijos un citos kanālos, lai iegūtu atbalstu no citiem.</li></ul>
   reset_password_mailer:
     send_reset_password:
       cta_reset_password: 'Atiestatīt jūsu paroli'

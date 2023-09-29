@@ -14,7 +14,7 @@ import ConfettiSvg from './ConfettiSvg';
 import Warning from 'components/UI/Warning';
 
 // api
-import { VotingMethod } from 'services/participationContexts';
+import { VotingMethod } from 'utils/participationContexts';
 import { useTheme } from 'styled-components';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { IPhaseData } from 'api/phases/types';
@@ -169,11 +169,12 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
                 );
               }}
             >
-              {formatMessage(messages.modifyYour)}{' '}
-              {config?.getSubmissionTerm &&
-                formatMessage(
-                  config.getSubmissionTerm('singular')
-                ).toLowerCase()}
+              {config &&
+                formatMessage(messages.modifyYourSubmission, {
+                  submissionTerm: formatMessage(
+                    config.getSubmissionTerm('singular')
+                  ).toLowerCase(),
+                })}
             </Button>
           </Box>
         )}

@@ -22,6 +22,7 @@ describe 'WebApi::V1::External::TenantSerializer' do
             'lifecycle_stage' => 'active',
             'organization_name' => { 'en' => 'Liege', 'fr-FR' => 'Liege', 'nl-NL' => 'Luik' },
             'organization_type' => 'medium_city',
+            'onboarding' => true,
             'authentication_token_lifetime_in_days' => 30
           },
         'initiatives' =>
@@ -30,6 +31,7 @@ describe 'WebApi::V1::External::TenantSerializer' do
             'days_limit' => 90,
             'reacting_threshold' => 300,
             'eligibility_criteria' => { 'en' => 'Eligibility criteria' },
+            'posting_tips' => { 'en' => 'Posting tips' },
             'threshold_reached_message' => { 'en' => 'Threshold reached' } }
       },
       style: {},

@@ -10,16 +10,14 @@ import { parse } from 'qs';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import { PreviousPathnameContext } from 'context';
-import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { isAdmin } from 'services/permissions/roles';
+import { isAdmin } from 'utils/permissions/roles';
 
 // components
 import PageNotFound from 'components/PageNotFound';
@@ -33,9 +31,7 @@ import GetInitiativesPermissions, {
 
 interface DataProps {
   authUser: GetAuthUserChildProps;
-  locale: GetLocaleChildProps;
   previousPathName: string | null;
-  topics: GetTopicsChildProps;
   postingPermission: GetInitiativesPermissionsChildProps;
 }
 
@@ -101,27 +97,17 @@ export class InitiativesNewPage extends React.PureComponent<
   };
 
   render() {
-    const { authUser, locale, topics } = this.props;
+    const { authUser } = this.props;
     const { locationInfo } = this.state;
-    if (
-      isNilOrError(authUser) ||
-      isNilOrError(locale) ||
-      isNilOrError(topics) ||
-      locationInfo === undefined
-    ) {
+    if (isNilOrError(authUser) || locationInfo === undefined) {
       return null;
     }
-    const initiativeTopics = topics.filter((topic) => !isNilOrError(topic));
 
     return (
       <>
         <InitiativesNewMeta />
         <PageLayout isAdmin={isAdmin({ data: authUser })}>
-          <InitiativesNewFormWrapper
-            locale={locale}
-            topics={initiativeTopics}
-            {...locationInfo}
-          />
+          <InitiativesNewFormWrapper locationInfo={locationInfo} />
         </PageLayout>
       </>
     );
@@ -130,8 +116,6 @@ export class InitiativesNewPage extends React.PureComponent<
 
 const Data = adopt<DataProps>({
   authUser: <GetAuthUser />,
-  locale: <GetLocale />,
-  topics: <GetTopics excludeCode={'custom'} />,
   previousPathName: ({ render }) => (
     <PreviousPathnameContext.Consumer>
       {render}

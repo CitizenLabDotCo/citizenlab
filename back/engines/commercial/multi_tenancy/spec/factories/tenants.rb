@@ -45,7 +45,8 @@ FactoryBot.define do
             'nl-NL' => 'Luik',
             'fr-FR' => 'Liege'
           },
-          organization_type: 'medium_city'
+          organization_type: 'medium_city',
+          onboarding: true
         },
         initiatives: {
           enabled: true,
@@ -53,7 +54,8 @@ FactoryBot.define do
           reacting_threshold: 300,
           days_limit: 90,
           threshold_reached_message: { 'en' => 'Threshold reached' },
-          eligibility_criteria: { 'en' => 'Eligibility criteria' }
+          eligibility_criteria: { 'en' => 'Eligibility criteria' },
+          posting_tips: { 'en' => 'Posting tips' }
         },
         user_confirmation: {
           enabled: false,
@@ -62,6 +64,10 @@ FactoryBot.define do
         verification: {
           enabled: false,
           allowed: false
+        },
+        follow: {
+          enabled: true,
+          allowed: true
         }
       })
     end

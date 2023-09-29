@@ -1,7 +1,7 @@
 // libraries
 import React from 'react';
 import styled from 'styled-components';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { injectIntl, FormattedMessage, useIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from './messages';
 import { isNilOrError } from 'utils/helperUtils';
@@ -17,6 +17,8 @@ import T from 'components/T';
 import Button from 'components/UI/Button';
 import { List, Row, HeadRow } from 'components/admin/ResourceList';
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
+import Warning from 'components/UI/Warning';
+import { Box } from '@citizenlab/cl2-component-library';
 
 const ListWrapper = styled.div`
   display: flex;
@@ -35,10 +37,12 @@ const AdminProjectEventsIndex = ({
   intl,
   params,
 }: WithRouterProps & WrappedComponentProps) => {
+  const { formatMessage } = useIntl();
   const { projectId } = params;
   const { data: events } = useEvents({
     projectIds: [projectId],
     pageSize: 1000,
+    sort: 'start_at',
   });
 
   const { mutate: deleteEvent, isLoading } = useDeleteEvent();
@@ -71,6 +75,36 @@ const AdminProjectEventsIndex = ({
           <FormattedMessage {...messages.addEventButton} />
         </AddButton>
 
+        <Box maxWidth="600px" mt="24px">
+          <Warning>
+            <FormattedMessage
+              {...messages.eventAttendanceExportText}
+              values={{
+                userTabLink: (
+                  <a
+                    href={formatMessage(messages.usersTabLink)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <FormattedMessage {...messages.usersTabLinkText} />
+                  </a>
+                ),
+                supportArticleLink: (
+                  <a
+                    href={formatMessage(messages.attendanceSupportArticleLink)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <FormattedMessage
+                      {...messages.attendanceSupportArticleLinkText}
+                    />
+                  </a>
+                ),
+              }}
+            />
+          </Warning>
+        </Box>
+
         {!isNilOrError(events) && events.data.length > 0 && (
           <StyledList>
             <>
@@ -89,9 +123,7 @@ const AdminProjectEventsIndex = ({
                       <h1>
                         <T value={event.attributes.title_multiloc} />
                       </h1>
-                      <p>
-                        <T value={event.attributes.location_multiloc} />
-                      </p>
+                      <p>{event.attributes.address_1}</p>
                       <p>
                         {startAt} → {endAt}
                       </p>

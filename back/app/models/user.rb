@@ -32,6 +32,8 @@
 #  block_reason                        :string
 #  block_end_at                        :datetime
 #  new_email                           :string
+#  followings_count                    :integer          default(0), not null
+#  onboarding                          :jsonb            not null
 #
 # Indexes
 #
@@ -73,6 +75,22 @@ class User < ApplicationRecord
     # Returns (and memoize) the schema of all declared roles without restrictions.
     def _roles_json_schema
       @_roles_json_schema ||= JSON.parse(Rails.root.join('config/schemas/user_roles.json_schema').read)
+    end
+
+    def onboarding_json_schema
+      {
+        'type' => 'object',
+        'propertyNames' => {
+          'type' => 'string',
+          'enum' => ['topics_and_areas']
+        },
+        'properties' => {
+          'topics_and_areas' => {
+            'type' => 'string',
+            'enum' => ['satisfied']
+          }
+        }
+      }
     end
 
     # Returns the user record from the database which matches the specified
@@ -128,6 +146,10 @@ class User < ApplicationRecord
     AppConfiguration.instance.feature_activated?('abbreviated_user_names') ? by_first_name(username) : by_full_name(username)
   }
 
+  scope :from_follows, (proc do |follows|
+    where(id: joins(:follows).where(follows: follows))
+  end)
+
   has_many :ideas, foreign_key: :author_id, dependent: :nullify
   has_many :initiatives, foreign_key: :author_id, dependent: :nullify
   has_many :assigned_initiatives, class_name: 'Initiative', foreign_key: :assignee_id, dependent: :nullify
@@ -135,6 +157,10 @@ class User < ApplicationRecord
   has_many :internal_comments, foreign_key: :author_id, dependent: :nullify
   has_many :official_feedbacks, dependent: :nullify
   has_many :reactions, dependent: :nullify
+  has_many :event_attendances, class_name: 'Events::Attendance', foreign_key: :attendee_id, dependent: :destroy
+  has_many :attended_events, through: :event_attendances, source: :event
+  has_many :follows, class_name: 'Follower', dependent: :destroy
+  has_many :cosponsors_initiatives, dependent: :destroy
 
   after_initialize do
     next unless has_attribute?('roles')
@@ -167,6 +193,7 @@ class User < ApplicationRecord
   has_many :initiative_status_changes, dependent: :nullify
 
   store_accessor :custom_field_values, :gender, :birthyear, :domicile, :education
+  store_accessor :onboarding, :topics_and_areas
 
   validates :email, presence: true, unless: -> { invite_pending? || (sso? && identities.none?(&:email_always_present?)) }
   validates :locale, presence: true, unless: :invite_pending?
@@ -196,6 +223,7 @@ class User < ApplicationRecord
   validate :validate_password_not_common
 
   validates :roles, json: { schema: -> { User.roles_json_schema } }
+  validates :onboarding, json: { schema: -> { User.onboarding_json_schema } }
 
   validate :validate_not_duplicate_email
   validate :validate_not_duplicate_new_email
@@ -276,6 +304,14 @@ class User < ApplicationRecord
     # use any conditions before `or` very carefully (inspect the generated SQL)
     project_moderator.or(User.project_folder_moderator).where.not(id: admin).not_citizenlab_member
   }
+
+  def update_merging_custom_fields!(attributes)
+    attributes = attributes.deep_stringify_keys
+    update!(
+      **attributes,
+      custom_field_values: custom_field_values.merge(attributes['custom_field_values'] || {})
+    )
+  end
 
   def assign_email_or_phone
     # Hack to embed phone numbers in email

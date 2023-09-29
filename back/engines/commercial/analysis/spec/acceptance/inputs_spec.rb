@@ -17,9 +17,12 @@ resource 'Inputs' do
     with_options required: false do
       parameter :search, 'Filter by searching in title and body'
       parameter :tag_ids, 'Filter inputs by analysis_tags (union)', type: :array
-      parameter :'author_custom_<uuid>_from', 'Filter by custom field value of the author for numerical or date fields, larger than or equal to. Replace <uuid> with the custom_field id'
-      parameter :'author_custom_<uuid>_to', 'Filter by custom field value of the author for numerical or date fields, smaller than or equal to. Replace <uuid> with the custom_field id'
+      parameter :'author_custom_<uuid>_from', 'Filter by custom field value of the author for numerical fields, larger than or equal to. Replace <uuid> with the custom_field id'
+      parameter :'author_custom_<uuid>_to', 'Filter by custom field value of the author for numerical fields, smaller than or equal to. Replace <uuid> with the custom_field id'
       parameter :'author_custom_<uuid>', 'Filter by custom field value of the author, for select, multiselect, date and number fields (union). Replace <uuid> with the custom_field id', type: :array
+      parameter :'input_custom_<uuid>_from', 'Filter by custom field value of the input for numerical fields, larger than or equal to. Replace <uuid> with the custom_field id'
+      parameter :'input_custom_<uuid>_to', 'Filter by custom field value of the input for numerical fields, smaller than or equal to. Replace <uuid> with the custom_field id'
+      parameter :'input_custom_<uuid>', 'Filter by custom field value of the input, for select, multiselect, date and number fields (union). Replace <uuid> with the custom_field id', type: :array
       parameter :published_at_from, 'Filter by input publication date, after or equal to', type: :date
       parameter :published_at_to, 'Filter by input publication date, before or equal to', type: :date
       parameter :reactions_from, 'Filter by number of reactions on the input, larger than or equal to', type: :integer
@@ -70,7 +73,7 @@ resource 'Inputs' do
           votes_count: 0
         })
         expect(response_data.dig(0, :relationships, :author, :data)).to match({
-          type: 'user',
+          type: 'analysis_user',
           id: kind_of(String)
         })
         expect(response_data.dig(0, :relationships, :idea, :data)).to match({
@@ -78,6 +81,9 @@ resource 'Inputs' do
           id: response_data.dig(0, :id)
         })
         expect(json_response_body[:included].pluck(:id)).to include(*inputs.map(&:author_id))
+        expect(json_response_body[:meta]).to match({
+          filtered_count: 3
+        })
       end
 
       # We smoke test a few filters, more extensive coverage is taken care of by the filter service spec
@@ -87,6 +93,9 @@ resource 'Inputs' do
         do_request(search: 'peace')
         expect(status).to eq(200)
         expect(response_data.pluck(:id)).to eq([idea.id])
+        expect(json_response_body[:meta]).to match({
+          filtered_count: 1
+        })
       end
 
       example 'supports published_at_to filter', document: false do
@@ -94,6 +103,37 @@ resource 'Inputs' do
         do_request(published_at_to: '2001-01-01')
         expect(status).to eq(200)
         expect(response_data.pluck(:id)).to eq([idea.id])
+      end
+
+      example 'supports input_custom_uuid[] filter', document: false do
+        custom_form = create(:custom_form, participation_context: analysis.source_project)
+        custom_field = create(:custom_field_select, :with_options, resource: custom_form)
+        idea = create(:idea, project: analysis.source_project, custom_field_values: {
+          custom_field.key => custom_field.options[0].key
+        })
+        do_request("input_custom_#{custom_field.id}" => [custom_field.options[0].key])
+        expect(status).to eq(200)
+        expect(response_data.pluck(:id)).to eq([idea.id])
+      end
+
+      example 'supports tag_ids empty filtering', document: false do
+        tagged_idea = create(:idea, project: analysis.source_project)
+        tag = create(:tag, analysis: analysis)
+        create(:tagging, input: tagged_idea, tag: tag)
+
+        # What the front-end passes to its request framework
+        #  -> `tag_ids: [null]`
+        # How it gets encoded in url parameters
+        #  -> `?tag_ids[]=`
+        # How rails interprets this and passed it in the params object
+        #  -> `tag_ids: [""]`
+
+        # do_request bypasses first 2 layers, so we feed it the rails
+        # interpretations immediately
+        do_request('tag_ids' => [''])
+
+        expect(status).to eq(200)
+        expect(response_data.pluck(:id)).to match_array(inputs.pluck(:id))
       end
 
       example 'supports custom_author_<uuid>[] filter', document: false do
@@ -105,6 +145,15 @@ resource 'Inputs' do
         do_request("author_custom_#{cf.id}": ['7'])
         expect(status).to eq(200)
         expect(response_data.pluck(:id)).to eq([idea1.id])
+      end
+    end
+
+    context 'when project_moderator' do
+      before { header_token_for(create(:project_moderator, projects: [analysis.source_project])) }
+
+      example_request 'lists all inputs in the analysis' do
+        expect(status).to eq(200)
+        expect(response_data.pluck(:id)).to match_array(inputs.pluck(:id))
       end
     end
   end

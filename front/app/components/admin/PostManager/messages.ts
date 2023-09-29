@@ -21,42 +21,10 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.inputsNeedFeedbackToggle',
     defaultMessage: 'Only show inputs that need feedback',
   },
-  delete: {
-    id: 'app.components.admin.PostManager.delete',
-    defaultMessage: 'Delete',
-  },
-  deleteAllSelectedInputs: {
-    id: 'app.components.admin.PostManager.deleteAllSelectedInputs',
-    defaultMessage: 'Delete {count} inputs',
-  },
-  deleteInputConfirmation: {
-    id: 'app.components.admin.PostManager.deleteInputConfirmation',
-    defaultMessage: 'Are you sure you want to delete this input?',
-  },
-  deleteInputsConfirmation: {
-    id: 'app.components.admin.PostManager.deleteInputsConfirmation',
-    defaultMessage: 'Are you sure you want to delete {count} inputs?',
-  },
-  deleteAllSelectedInitiatives: {
-    id: 'app.components.admin.PostManager.deleteAllSelectedInitiatives',
-    defaultMessage: 'Delete {count} selected initiatives',
-  },
-  deleteInitiativeConfirmation: {
-    id: 'app.components.admin.PostManager.deleteInitiativeConfirmation',
-    defaultMessage: 'Are you sure you want to delete this initiative?',
-  },
-  deleteInitiativesConfirmation: {
-    id: 'app.components.admin.PostManager.deleteInitiativesConfirmation',
-    defaultMessage: 'Are you sure you want to delete {count} initiatives?',
-  },
   loseIdeaPhaseInfoConfirmation: {
     id: 'app.components.admin.PostManager.loseIdeaPhaseInfoConfirmation',
     defaultMessage:
       'Moving this input away from its current project will lose the information about its assigned phases. Do you want to proceed?',
-  },
-  edit: {
-    id: 'app.components.admin.PostManager.edit',
-    defaultMessage: 'Edit',
   },
   title: {
     id: 'app.components.admin.PostManager.title',
@@ -69,10 +37,6 @@ export default defineMessages({
   publication_date: {
     id: 'app.components.admin.PostManager.publication_date',
     defaultMessage: 'Published on',
-  },
-  remainingTime: {
-    id: 'app.components.admin.PostManager.remainingTime',
-    defaultMessage: 'Days Remaining',
   },
   likes: {
     id: 'app.components.admin.PostManager.likes',
@@ -323,5 +287,9 @@ export default defineMessages({
   participants: {
     id: 'app.components.admin.PostManager.participants',
     defaultMessage: 'Participants',
+  },
+  cosponsors: {
+    id: 'app.components.admin.PostManager.cosponsors',
+    defaultMessage: 'Cosponsors',
   },
 });

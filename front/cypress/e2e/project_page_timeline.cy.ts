@@ -79,46 +79,46 @@ describe('New timeline project', () => {
       projectId = project.body.data.id;
       projectSlug = project.body.data.attributes.slug;
       // create new phases
-      cy.apiCreatePhase(
+      cy.apiCreatePhase({
         projectId,
-        phasePastTitle,
-        twoMonthsAgo,
-        twoDaysAgo,
-        'ideation',
-        true,
-        true,
-        true,
-        `description ${phasePastTitle}`
-      );
-      cy.apiCreatePhase(
+        title: phasePastTitle,
+        startAt: twoMonthsAgo,
+        endAt: twoDaysAgo,
+        participationMethod: 'ideation',
+        canComment: true,
+        canPost: true,
+        canReact: true,
+        description: `description ${phasePastTitle}`,
+      });
+      cy.apiCreatePhase({
         projectId,
-        phaseCurrentTitle,
-        today,
-        today,
-        'ideation',
-        true,
-        true,
-        true,
-        phaseLongDescription
-      );
-      cy.apiCreatePhase(
+        title: phaseCurrentTitle,
+        startAt: today,
+        endAt: today,
+        participationMethod: 'ideation',
+        canComment: true,
+        canPost: true,
+        canReact: true,
+        description: phaseLongDescription,
+      });
+      cy.apiCreatePhase({
         projectId,
-        phaseFutureTitle,
-        inTwoDays,
-        inTwoMonths,
-        'ideation',
-        true,
-        true,
-        true,
-        `description ${phaseFutureTitle}`
-      );
+        title: phaseFutureTitle,
+        startAt: inTwoDays,
+        endAt: inTwoMonths,
+        participationMethod: 'ideation',
+        canComment: true,
+        canPost: true,
+        canReact: true,
+        description: `description ${phaseFutureTitle}`,
+      });
       return cy.apiCreateEvent({
         projectId,
         title: 'Some event',
         location: 'Some location',
         description: 'This is some event',
-        startDate: new Date(),
-        endDate: new Date(),
+        startDate: moment().subtract(1, 'day').toDate(),
+        endDate: moment().add(1, 'day').toDate(),
       });
     });
   });
@@ -160,6 +160,11 @@ describe('New timeline project', () => {
     cy.get('#e2e-project-phase-description-see-less-button')
       .should('exist')
       .click();
+  });
+
+  it('shows the event CTA button', () => {
+    // Shows the event CTA when there is an upcoming event
+    cy.get('#e2e-project-see-events-button').should('exist');
   });
 
   it('shows the previous phase', () => {

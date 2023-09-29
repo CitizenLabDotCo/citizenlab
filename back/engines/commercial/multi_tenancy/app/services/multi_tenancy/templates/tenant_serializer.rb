@@ -102,6 +102,7 @@ module MultiTenancy
           # Initiatives
           Initiative => serialize_records(initiatives),
           AreasInitiative => serialize_records(AreasInitiative.where(initiative: initiatives)),
+          CosponsorsInitiative => serialize_records(CosponsorsInitiative.where(initiative: initiatives)),
           InitiativeFile => serialize_records(InitiativeFile.where(initiative: initiatives)),
           InitiativeImage => serialize_records(InitiativeImage.where(initiative: initiatives)),
           InitiativesTopic => serialize_records(InitiativesTopic.where(initiative: initiatives)),
@@ -123,6 +124,7 @@ module MultiTenancy
           # Users
           User => serialize_records(users),
           Membership => serialize_records(Membership.where(user: users)),
+          Follower => serialize_followers(users, initiatives),
 
           TextImage => serialize_records(TextImage.where(imageable: [
             CustomField.all,
@@ -181,9 +183,14 @@ module MultiTenancy
       # Replace the Ref objects in the models hash with actual references to the
       # serialized records that they point to.
       def resolve_references!(models)
-        models.each do |_record_class, instances|
-          instances.each do |_identifier, serialized_instance|
+        models.each do |record_class, instances|
+          instances.each do |identifier, serialized_instance|
             serialized_instance.transform_values! { |value| value.resolve(models) }
+          rescue Serializers::Core::Ref::UnresolvedReferenceError => e
+            raise <<~ERROR.squish
+              Could not resolve reference of #{record_class.name} (id: #{identifier}) 
+              to #{e.klass} (id: #{e.id}).
+            ERROR
           end
         end
       end
@@ -264,6 +271,16 @@ module MultiTenancy
         comment_reactions = Reaction.where.not(user_id: nil).where(reactable: Comment.where(post: post_scope))
         reactions = post_reactions.chain(comment_reactions)
         serialize_records(reactions)
+      end
+
+      def serialize_followers(users, initiatives)
+        followers = Follower.where(user: users)
+
+        followers = followers
+          .where(followable: initiatives)
+          .or(followers.where.not(followable_type: 'Initiative'))
+
+        serialize_records(followers)
       end
     end
   end

@@ -31,7 +31,7 @@ describe('Idea new page for continuous project', () => {
   });
 
   it('shows a back button to navigate to the projects page', () => {
-    cy.get('#e2e-idea-other-link').click();
+    cy.get('#e2e-go-back-link').click();
     cy.location('pathname').should(
       'eq',
       '/en/projects/an-idea-bring-it-to-your-council'
@@ -203,17 +203,17 @@ describe('Idea new page for timeline project', () => {
       projectId = project.body.data.id;
       projectSlug = project.body.data.attributes.slug;
       // create active ideation phase
-      cy.apiCreatePhase(
+      cy.apiCreatePhase({
         projectId,
-        phasePastTitle,
-        twoMonthsAgo,
-        inTwoMonths,
-        'ideation',
-        true,
-        true,
-        true,
-        `description ${phasePastTitle}`
-      );
+        title: phasePastTitle,
+        startAt: twoMonthsAgo,
+        endAt: inTwoMonths,
+        participationMethod: 'ideation',
+        canComment: true,
+        canPost: true,
+        canReact: true,
+        description: `description ${phasePastTitle}`,
+      });
     });
   });
 

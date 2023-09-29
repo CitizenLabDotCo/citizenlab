@@ -8,6 +8,7 @@ module EmailCampaigns
       name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient_user)
       ideas = Idea.take(2)
       initiatives = Initiative.take(3)
+      # TODO: generate commands with campaign#generate_commands method
       command = {
         recipient: recipient_user,
         event_payload: {

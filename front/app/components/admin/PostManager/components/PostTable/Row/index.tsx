@@ -43,26 +43,20 @@ export const TitleLink = styled.a`
   }
 `;
 
-function nothingHappens(event) {
-  event.preventDefault();
-  event.stopPropagation();
-}
+function nothingHappens() {}
 
 type Props = {
   type: ManagerType;
   post: IIdeaData | IInitiativeData;
+  /** A set of ids of ideas/initiatives that are currently selected */
+  selection: Set<string>;
+  activeFilterMenu: TFilterMenu;
   phases?: IPhaseData[];
   statuses?: IIdeaStatusData[] | IInitiativeStatusData[];
   selectedPhaseId?: string | null;
   selectedProjectId?: string | null;
-  /** A set of ids of ideas/initiatives that are currently selected */
-  selection: Set<string>;
-  onUnselect: () => void;
   onToggleSelect: () => void;
-  onSingleSelect: () => void;
-  activeFilterMenu: TFilterMenu;
   openPreview: (ideaId: string) => void;
-  className?: string;
 };
 
 const Row = ({
@@ -74,12 +68,11 @@ const Row = ({
   statuses,
   selectedProjectId,
   selectedPhaseId,
-  className,
   openPreview,
   onToggleSelect,
 }: Props) => {
   const locale = useLocale();
-  const onClickCheckbox = (event) => {
+  const onClickCheckbox = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.stopPropagation();
     onToggleSelect();
   };
@@ -107,7 +100,6 @@ const Row = ({
           phases={phases}
           selection={selection}
           activeFilterMenu={activeFilterMenu}
-          className={className}
           onClickCheckbox={onClickCheckbox}
           onClickTitle={onClickTitle}
           locale={locale}
@@ -123,7 +115,6 @@ const Row = ({
           statuses={statuses as IInitiativeStatusData[]}
           selection={selection}
           activeFilterMenu={activeFilterMenu}
-          className={className}
           onClickCheckbox={onClickCheckbox}
           onClickTitle={onClickTitle}
           nothingHappens={nothingHappens}

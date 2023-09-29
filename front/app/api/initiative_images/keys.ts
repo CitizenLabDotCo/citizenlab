@@ -9,17 +9,11 @@ const initiativeImagesKeys = {
     { ...baseKey, operation: 'list', parameters: { initiativeId } },
   ],
   items: () => [{ ...baseKey, operation: 'item' }],
-  item: ({
-    initiativeId,
-    imageId,
-  }: {
-    initiativeId: string;
-    imageId: string;
-  }) => [
+  item: ({ imageId }: { imageId?: string }) => [
     {
       ...baseKey,
       operation: 'item',
-      parameters: { initiativeId, imageId },
+      parameters: { id: imageId },
     },
   ],
 } satisfies QueryKeys;

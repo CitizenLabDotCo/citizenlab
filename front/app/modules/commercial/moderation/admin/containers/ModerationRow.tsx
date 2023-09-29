@@ -29,11 +29,10 @@ import {
   IModerationData,
   TBelongsTo,
   TModeratableType,
-} from '../../services/moderations';
+} from 'api/moderations/types';
 
 // hooks
-import useInappropriateContentFlag from 'modules/commercial/flag_inappropriate_content/hooks/useInappropriateContentFlag';
-import { isNilOrError } from 'utils/helperUtils';
+import useInappropriateContentFlag from 'api/inappropriate_content_flags/useInappropriateContentFlag';
 
 const Container = styled(Tr)<{ bgColor: string; flagged: boolean }>`
   background: ${({ bgColor, flagged }) =>
@@ -123,14 +122,12 @@ const ModerationRow = memo<Props & WrappedComponentProps>(
     inappropriateContentFlagId,
   }) => {
     const localize = useLocalize();
-    const inappropriateContentFlag = inappropriateContentFlagId
-      ? // eslint-disable-next-line react-hooks/rules-of-hooks
-        useInappropriateContentFlag(inappropriateContentFlagId)
-      : null;
-    const hasActiveInappropriateContentFlag = !isNilOrError(
-      inappropriateContentFlag
-    )
-      ? inappropriateContentFlag.attributes.reason_code !== null
+    const { data: inappropriateContentFlag } = useInappropriateContentFlag(
+      inappropriateContentFlagId
+    );
+
+    const hasActiveInappropriateContentFlag = inappropriateContentFlag
+      ? inappropriateContentFlag.data.attributes.reason_code !== null
       : false;
     const contentTitle = moderation.attributes.content_title_multiloc;
     const contentBody = moderation.attributes.content_body_multiloc;

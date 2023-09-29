@@ -25,14 +25,8 @@ import messages from '../../../../messages';
 
 // typings
 import { ApiErrors } from '../../..';
-import {
-  IdeaDefaultSortMethod,
-  InputTerm,
-} from 'services/participationContexts';
-import { AnonymousPostingToggle } from 'components/admin/AnonymousPostingToggle/AnonymousPostingToggle';
-
-// hooks
-import useFeatureFlag from 'hooks/useFeatureFlag';
+import { IdeaDefaultSortMethod, InputTerm } from 'utils/participationContexts';
+import AnonymousPostingToggle from 'components/admin/AnonymousPostingToggle/AnonymousPostingToggle';
 
 interface Props {
   isCustomInputTermEnabled: boolean;
@@ -106,11 +100,6 @@ export default ({
   handleIdeaDefaultSortMethodChange,
 }: Props) => {
   const { formatMessage } = useIntl();
-
-  const hasAnonymousParticipationEnabled = useFeatureFlag({
-    name: 'anonymous_participation',
-  });
-
   const reactingLimited = useRef(
     reacting_like_method === 'limited' || reacting_dislike_method === 'limited'
   );
@@ -118,14 +107,12 @@ export default ({
 
   return (
     <>
-      {hasAnonymousParticipationEnabled && (
-        <AnonymousPostingToggle
-          allow_anonymous_participation={allow_anonymous_participation}
-          handleAllowAnonymousParticipationOnChange={
-            handleAllowAnonymousParticipationOnChange
-          }
-        />
-      )}
+      <AnonymousPostingToggle
+        allow_anonymous_participation={allow_anonymous_participation}
+        handleAllowAnonymousParticipationOnChange={
+          handleAllowAnonymousParticipationOnChange
+        }
+      />
 
       {isCustomInputTermEnabled && (
         <CustomFieldPicker

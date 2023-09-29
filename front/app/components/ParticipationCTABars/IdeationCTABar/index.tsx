@@ -12,7 +12,7 @@ import useAuthUser from 'api/me/useAuthUser';
 // services
 import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
 import { IPhaseData } from 'api/phases/types';
-import { getIdeaPostingRules } from 'services/actionTakingRules';
+import { getIdeaPostingRules } from 'utils/actionTakingRules';
 
 // utils
 import { scrollToElement } from 'utils/scroll';
@@ -47,6 +47,7 @@ export const IdeationCTABar = ({ phases, project }: CTABarProps) => {
     phase: currentPhase,
     authUser: authUser?.data,
   });
+
   const hasUserParticipated = disabledReason === 'postingLimitedMaxReached';
 
   const scrollToIdeas = (event: FormEvent) => {
@@ -55,7 +56,7 @@ export const IdeationCTABar = ({ phases, project }: CTABarProps) => {
     scrollToElement({ id: 'project-ideas', shouldFocus: true });
   };
 
-  let CTAButton: React.ReactNode = null;
+  let CTAButton: React.ReactNode | null = null;
 
   if (hasUserParticipated) {
     CTAButton = null;

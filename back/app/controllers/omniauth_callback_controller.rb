@@ -10,6 +10,8 @@ class OmniauthCallbackController < ApplicationController
     auth_method = AuthenticationService.new.method_by_provider(auth_provider)
     verification_method = get_verification_method(auth_provider)
 
+    return if (auth_method || verification_method).redirect_callback_to_get_cookies(self)
+
     if auth_method && verification_method
       auth_or_verification_callback(verify: verification_method, authver_method: auth_method)
     elsif auth_method
@@ -40,11 +42,12 @@ class OmniauthCallbackController < ApplicationController
 
   private
 
-  # Currently, only FranceConnect and ClaveUnica use this method (support both verification and authentication).
+  # Only methods that support both verification and authentication use it.
   def auth_or_verification_callback(verify:, authver_method:)
     # If token is present, the user is already logged in, which means they try to verify not authenticate.
     if request.env['omniauth.params']['token'].present? && authver_method.verification_prioritized?
-      # We need it only for ClaveUnica. For FC, we never verify, only authenticate (even when user clicks "verify").
+      # We need it only for providers that support both auth and ver except FC.
+      # For FC, we never verify, only authenticate (even when user clicks "verify").
       verification_callback(verify)
       # Apart from verification, we also create an identity to be able to authenticate with this provider.
       auth = request.env['omniauth.auth']
@@ -122,8 +125,6 @@ class OmniauthCallbackController < ApplicationController
       @user = User.new(user_attrs)
       @user.locale = selected_locale(omniauth_params) if selected_locale(omniauth_params)
 
-      SideFxUserService.new.before_create(@user, nil)
-
       @user.identities << @identity
       begin
         @user.save!
@@ -193,10 +194,11 @@ class OmniauthCallbackController < ApplicationController
 
     attrs = authver_method.updateable_user_attrs
     update_hash = authver_method.profile_to_user_attrs(auth).slice(*attrs).compact
+    update_hash.delete(:remote_avatar_url) if user.avatar.present? # don't overwrite avatar if already present
     user.confirm! # confirm user email if not already confirmed
 
     if authver_method.overwrite_user_attrs?
-      user.update!(update_hash)
+      user.update_merging_custom_fields!(update_hash)
     else
       update_hash.each_pair do |attr, value|
         user.assign_attributes(attr => value) unless user.attribute_present?(attr)

@@ -15,12 +15,13 @@ import {
 } from 'utils/styleUtils';
 
 const cardPadding = '17px';
-const cardInnerHeight = '162px';
 const cardInnerHeightExtended = '180px';
 
-const Container = styled(Link)`
+const Container = styled(Link)<{ cardInnerHeight: string }>`
   width: 100%;
-  min-height: calc(${cardInnerHeight} + ${cardPadding} + ${cardPadding});
+  min-height: calc(
+    ${(props) => props.cardInnerHeight} + ${cardPadding} + ${cardPadding}
+  );
   display: flex;
   align-items: center;
   padding: ${cardPadding};
@@ -45,10 +46,10 @@ const Container = styled(Link)`
   `}
 `;
 
-const IdeaCardImageWrapper = styled.div`
-  flex: 0 0 ${cardInnerHeight};
-  width: ${cardInnerHeight};
-  height: ${cardInnerHeight};
+const IdeaCardImageWrapper = styled.div<{ cardInnerHeight: string }>`
+  flex: 0 0 ${(props) => props.cardInnerHeight};
+  width: ${(props) => props.cardInnerHeight};
+  height: ${(props) => props.cardInnerHeight};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -72,8 +73,9 @@ const IdeaCardImage = styled(Image)`
   flex: 1;
 `;
 
-const ContentWrapper = styled.div`
-  height: ${cardInnerHeight};
+const ContentWrapper = styled(Box)<{ cardInnerHeight: string }>`
+  height: ${(props) => props.cardInnerHeight};
+  height: auto;
   flex: 0 1 100%;
   display: flex;
   flex-direction: column;
@@ -141,6 +143,7 @@ interface Props {
   footer: JSX.Element | null;
   onClick?: (event: MouseEvent<HTMLAnchorElement>) => void;
   className?: string;
+  innerHeight?: string;
 }
 
 export const Card = memo<Props>(
@@ -155,6 +158,7 @@ export const Card = memo<Props>(
     footer,
     className,
     onClick,
+    innerHeight = '162px',
   }) => {
     return (
       <Container
@@ -163,19 +167,22 @@ export const Card = memo<Props>(
         className={`e2e-card ${className} ${
           !(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'
         }`}
+        cardInnerHeight={innerHeight}
         id={id}
       >
         {image && (
-          <IdeaCardImageWrapper>
+          <IdeaCardImageWrapper cardInnerHeight={innerHeight}>
             <IdeaCardImage src={image} cover={true} alt="" />
           </IdeaCardImageWrapper>
         )}
 
         {!image && imagePlaceholder && (
-          <IdeaCardImageWrapper>{imagePlaceholder}</IdeaCardImageWrapper>
+          <IdeaCardImageWrapper cardInnerHeight={innerHeight}>
+            {imagePlaceholder}
+          </IdeaCardImageWrapper>
         )}
 
-        <ContentWrapper>
+        <ContentWrapper cardInnerHeight={innerHeight}>
           <Header className="e2e-card-title">
             {typeof title === 'string' ? (
               <Title title={title}>{title}</Title>

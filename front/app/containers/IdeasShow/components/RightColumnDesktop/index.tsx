@@ -9,9 +9,10 @@ import useIdeaById from 'api/ideas/useIdeaById';
 import { Box } from '@citizenlab/cl2-component-library';
 import MetaInformation from '../MetaInformation';
 import ReactionControl from 'components/ReactionControl';
-import Buttons from 'containers/IdeasShow/components/CTABox/Buttons';
 import IdeaSharingButton from '../Buttons/IdeaSharingButton';
 import SharingButtonComponent from '../Buttons/SharingButtonComponent';
+import FollowUnfollow from 'components/FollowUnfollow';
+import GoToCommentsButton from '../Buttons/GoToCommentsButton';
 
 // styling
 import styled from 'styled-components';
@@ -58,6 +59,8 @@ const RightColumnDesktop = ({
   const { data: phases } = usePhases(projectId);
   const { data: idea } = useIdeaById(ideaId);
 
+  if (!idea) return null;
+
   const participationContext = getCurrentParticipationContext(
     project?.data,
     phases?.data
@@ -74,8 +77,6 @@ const RightColumnDesktop = ({
   const commentingEnabled =
     !!idea?.data.attributes.action_descriptor.commenting_idea.enabled;
 
-  const showGreyBox = ideaIsInParticipationContext || commentingEnabled;
-
   return (
     <Box
       flex={`0 0 ${rightColumnWidthDesktop}px`}
@@ -86,30 +87,42 @@ const RightColumnDesktop = ({
       className={className}
     >
       <InnerContainer>
-        {showGreyBox && (
-          <Box
-            padding="20px"
-            borderRadius="3px"
-            background={colors.background}
-            mb="12px"
-          >
-            <StyledReactionControl
-              styleType="shadow"
-              ideaId={ideaId}
-              size="4"
-            />
-            <Box pb="23px" mb="23px" borderBottom="solid 1px #ccc">
-              {participationContext &&
-                ideaIsInParticipationContext &&
-                votingConfig?.getIdeaPageVoteInput({
-                  ideaId,
-                  participationContext,
-                  compact: false,
-                })}
-            </Box>
-            {commentingEnabled && <Buttons />}
-          </Box>
-        )}
+        <Box
+          padding="20px"
+          borderRadius="3px"
+          background={colors.background}
+          mb="12px"
+        >
+          {(ideaIsInParticipationContext || commentingEnabled) && (
+            <>
+              <StyledReactionControl
+                styleType="shadow"
+                ideaId={ideaId}
+                size="4"
+              />
+              <Box pb="23px" mb="23px" borderBottom="solid 1px #ccc">
+                {participationContext &&
+                  ideaIsInParticipationContext &&
+                  votingConfig?.getIdeaPageVoteInput({
+                    ideaId,
+                    participationContext,
+                    compact: false,
+                  })}
+              </Box>
+              {commentingEnabled && (
+                <Box mb="10px">
+                  <GoToCommentsButton />
+                </Box>
+              )}
+            </>
+          )}
+          <FollowUnfollow
+            followableType="ideas"
+            followableId={ideaId}
+            followersCount={idea.data.attributes.followers_count}
+            followerId={idea.data.relationships.user_follower?.data?.id}
+          />
+        </Box>
         <Box mb="16px">
           <IdeaSharingButton
             ideaId={ideaId}

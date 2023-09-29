@@ -2,16 +2,11 @@ import { PublicationStatus } from 'api/projects/types';
 import { Multiloc, ImageSizes, IRelationship } from 'typings';
 import projectFoldersKeys from './keys';
 import { Keys } from 'utils/cl-react-query/types';
-import { IObject } from 'utils/streams';
 
 export type ProjectFoldersKeys = Keys<typeof projectFoldersKeys>;
 export interface IQueryParameters {
   pageNumber?: number;
   pageSize?: number;
-  bodyData?: IObject | null;
-  queryParameters?: IObject | null;
-  cacheStream?: boolean;
-  skipSanitizationFor?: string[];
 }
 export interface IProjectFolders {
   data: IProjectFolderData[];
@@ -46,6 +41,7 @@ export interface IProjectFolderData {
     slug: string;
     header_bg?: ImageSizes;
     publication_status: PublicationStatus;
+    followers_count: number;
   };
   relationships: {
     projects: {
@@ -56,6 +52,9 @@ export interface IProjectFolderData {
     };
     avatars: {
       data: IRelationship[] | null;
+    };
+    user_follower: {
+      data: IRelationship | null;
     };
   };
 }

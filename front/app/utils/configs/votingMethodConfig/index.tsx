@@ -21,7 +21,7 @@ import { toFullMonth } from 'utils/dateUtils';
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 import { IAppConfiguration } from 'api/app_configuration/types';
-import { VotingMethod } from 'services/participationContexts';
+import { VotingMethod } from 'utils/participationContexts';
 import { FormatMessage } from 'typings';
 /*
   Configuration Specifications
@@ -79,7 +79,7 @@ export type VotingMethodConfig = {
     compact,
     participationContext,
   }: IdeaPageVoteInputProps) => JSX.Element | null;
-  getSubmissionTerm?: (form: 'singular' | 'plural') => MessageDescriptor;
+  getSubmissionTerm: (form: 'singular' | 'plural') => MessageDescriptor;
   preSubmissionWarning: () => MessageDescriptor;
   useVoteTerm: boolean;
 };

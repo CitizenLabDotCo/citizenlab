@@ -11,7 +11,7 @@ const ideaCustomFieldsKeys = {
   ],
   items: () => [{ ...baseKey, operation: 'item' }],
   item: ({ customFieldId }: { customFieldId?: string }) => [
-    { ...baseKey, operation: 'item', parameters: { customFieldId } },
+    { ...baseKey, operation: 'item', parameters: { id: customFieldId } },
   ],
 } satisfies QueryKeys;
 

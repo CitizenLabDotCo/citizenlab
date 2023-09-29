@@ -33,7 +33,7 @@ import { Multiloc } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
 import validateOneOptionForMultiSelect from 'utils/yup/validateOneOptionForMultiSelect';
 import { getLabelForInputType } from '../../../containers/Granular/utils';
-import { IOptionsType } from 'services/formCustomFields';
+import { IOptionsType } from 'api/custom_fields/types';
 import useAddUserCustomFieldOption from 'api/user_custom_fields_options/useAddUserCustomFieldOption';
 import useAddUserCustomField from 'api/user_custom_fields/useAddUserCustomField';
 
@@ -154,7 +154,6 @@ export const AddFieldScreen = ({
                       </Text>
                     </>
                   }
-                  type="text"
                 />
               </SectionField>
               <SectionField>
@@ -167,7 +166,6 @@ export const AddFieldScreen = ({
                       </Text>
                     </>
                   }
-                  type="text"
                 />
               </SectionField>
               {(inputType === 'select' || inputType === 'multiselect') && (

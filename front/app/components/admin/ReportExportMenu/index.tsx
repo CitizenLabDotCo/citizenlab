@@ -13,17 +13,14 @@ import { fontSizes } from 'utils/styleUtils';
 import Button from 'components/UI/Button';
 import { Dropdown } from '@citizenlab/cl2-component-library';
 import { saveAs } from 'file-saver';
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 import { IResolution } from 'components/admin/ResolutionControl';
 
 // utils
-import { requestBlob } from 'utils/request';
+import { requestBlob } from 'utils/requestBlob';
 import { reportError } from 'utils/loggingUtils';
 import { truncate } from 'utils/textUtils';
-
-const DropdownButton = styled(Button)``;
 
 const Container = styled.div`
   display: flex;
@@ -71,17 +68,6 @@ interface XlsxConfigOnDownload {
 
 export type XlsxData = Record<string, Record<string, any>[]>;
 
-const downloadXlsxData = (data: XlsxData, fileName: string) => {
-  const workbook = XLSX.utils.book_new();
-
-  Object.entries(data).forEach(([sheet_name, sheet_data]) => {
-    const worksheet = XLSX.utils.json_to_sheet(sheet_data);
-    XLSX.utils.book_append_sheet(workbook, worksheet, truncate(sheet_name, 31));
-  });
-
-  XLSX.writeFile(workbook, `${fileName}.xlsx`);
-};
-
 const ReportExportMenu = ({
   svgNode,
   className,
@@ -96,8 +82,8 @@ const ReportExportMenu = ({
   currentTopicFilterLabel,
   currentProjectFilterLabel,
   xlsx,
-  intl: { formatMessage, formatDate },
-}: ReportExportMenuProps & WrappedComponentProps) => {
+}: ReportExportMenuProps) => {
+  const { formatMessage, formatDate } = useIntl();
   const [dropdownOpened, setDropdownOpened] = useState(false);
   const [exportingXls, setExportingXls] = useState(false);
 
@@ -215,6 +201,28 @@ const ReportExportMenu = ({
     setDropdownOpened(value || !dropdownOpened);
   };
 
+  const downloadXlsxData = (data: XlsxData, fileName: string) => {
+    const workbook = XLSX.utils.book_new();
+
+    Object.entries(data).forEach(([sheet_name, sheet_data]) => {
+      // Added after production bug.
+      // Error from XLSX package: sheet names can't contain characters from the following array:
+      // [':', ']', '[', '*', '?', '/', '\\']
+      const sheetNameWithoutForbiddenChars = sheet_name.replace(
+        /[:\][*?/\\]/g,
+        '_'
+      );
+      const worksheet = XLSX.utils.json_to_sheet(sheet_data);
+      XLSX.utils.book_append_sheet(
+        workbook,
+        worksheet,
+        truncate(sheetNameWithoutForbiddenChars, 31)
+      );
+    });
+
+    XLSX.writeFile(workbook, `${fileName}.xlsx`);
+  };
+
   const downloadXlsx = async () => {
     setExportingXls(true);
 
@@ -261,7 +269,7 @@ const ReportExportMenu = ({
 
   return (
     <Container className={`${className} intercom-admin-export-button`}>
-      <DropdownButton
+      <Button
         buttonStyle="admin-dark-text"
         onClick={toggleDropdown()}
         icon="download"
@@ -315,4 +323,4 @@ const ReportExportMenu = ({
   );
 };
 
-export default injectIntl(ReportExportMenu);
+export default ReportExportMenu;

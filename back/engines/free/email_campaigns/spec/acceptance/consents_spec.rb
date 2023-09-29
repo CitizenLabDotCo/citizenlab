@@ -58,7 +58,7 @@ resource 'Campaign consents' do
           consent[:attributes][:content_type_multiloc]
         end
 
-        expect(response_content_type_multiloc).to eq campaigns_content_type_multiloc
+        expect(response_content_type_multiloc).to match_array campaigns_content_type_multiloc
       end
 
       context 'when using without_campaign_names' do

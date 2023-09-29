@@ -40,6 +40,7 @@
 #  posting_limited_max           :integer          default(1)
 #  document_annotation_embed_url :string
 #  allow_anonymous_participation :boolean          default(FALSE), not null
+#  followers_count               :integer          default(0), not null
 #  voting_method                 :string
 #  voting_max_votes_per_idea     :integer
 #  voting_term_singular_multiloc :jsonb
@@ -83,6 +84,7 @@ class Project < ApplicationRecord
   has_many :text_images, as: :imageable, dependent: :destroy
   accepts_nested_attributes_for :text_images
   has_many :project_files, -> { order(:ordering) }, dependent: :destroy
+  has_many :followers, as: :followable, dependent: :destroy
 
   before_validation :generate_slug, on: :create
   before_validation :sanitize_description_multiloc, if: :description_multiloc
@@ -200,7 +202,7 @@ class Project < ApplicationRecord
     admin_publication&.parent&.publication_id
   end
 
-  def folder?
+  def in_folder?
     !!folder_id
   end
 
@@ -327,8 +329,9 @@ class Project < ApplicationRecord
   end
 end
 
+Project.include(SmartGroups::Concerns::ValueReferenceable)
 Project.include(CustomMaps::Extensions::Project)
 Project.include(IdeaAssignment::Extensions::Project)
 Project.include(Insights::Patches::Project)
-Project.include(SmartGroups::Patches::Project)
 Project.include(ContentBuilder::Patches::Project)
+Project.include(Analysis::Patches::Project)

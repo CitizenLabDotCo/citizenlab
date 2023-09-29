@@ -10,6 +10,7 @@ export const project1: IProjectData = {
     poll_anonymous: false,
     participation_method: 'ideation',
     posting_enabled: true,
+    followers_count: 2,
     // MISMATCH: doesn't seem to exist on our type
     // posting_method: "unlimited",
     // posting_limited_max: 1,
@@ -139,6 +140,9 @@ export const project1: IProjectData = {
     user_basket: {
       data: null,
     },
+    user_follower: {
+      data: null,
+    },
     default_assignee: {
       data: null,
     },
@@ -163,6 +167,7 @@ export const project2: IProjectData = {
     reacting_enabled: true,
     reacting_like_method: 'unlimited',
     reacting_like_limited_max: 10,
+    followers_count: 2,
     reacting_dislike_enabled: true,
     reacting_dislike_method: 'unlimited',
     reacting_dislike_limited_max: 10,
@@ -271,6 +276,9 @@ export const project2: IProjectData = {
       ],
     },
     user_basket: {
+      data: null,
+    },
+    user_follower: {
       data: null,
     },
     default_assignee: {

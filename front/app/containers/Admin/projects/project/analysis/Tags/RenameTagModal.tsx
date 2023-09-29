@@ -2,7 +2,7 @@ import React from 'react';
 // styles
 
 // intl
-import messages from '../messages';
+import translations from './translations';
 import { useIntl } from 'utils/cl-intl';
 
 // components
@@ -12,7 +12,7 @@ import useUpdateAnalysisTag from 'api/analysis_tags/useUpdateAnalysisTag';
 import { object, string } from 'yup';
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { handleCLErrorsIsh } from 'utils/errorUtils';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import Feedback from 'components/HookForm/Feedback';
 import Input from 'components/HookForm/Input';
 
@@ -37,7 +37,7 @@ const RenameTag = ({
   const { mutate: updateTag, isLoading } = useUpdateAnalysisTag();
 
   const schema = object({
-    name: string().required(formatMessage(messages.emptyNameError)),
+    name: string().required(formatMessage(translations.emptyNameError)),
   });
 
   const methods = useForm({
@@ -54,7 +54,7 @@ const RenameTag = ({
       {
         onSuccess: closeRenameModal,
         onError: (errors) => {
-          handleCLErrorsIsh({ errors }, methods.setError);
+          handleHookFormSubmissionError({ errors }, methods.setError);
         },
       }
     );
@@ -62,14 +62,14 @@ const RenameTag = ({
 
   return (
     <Box>
-      <Title>{formatMessage(messages.renameTagModalTitle)}</Title>
+      <Title>{formatMessage(translations.renameTagModalTitle)}</Title>
       <FormProvider {...methods}>
         <Box as="form" mt="40px" onSubmit={methods.handleSubmit(onFormSubmit)}>
           <Feedback />
           <Input
             type="text"
             name="name"
-            label={formatMessage(messages.renameTagModalNameLabel)}
+            label={formatMessage(translations.renameTagModalNameLabel)}
           />
           <Box display="flex" justifyContent="flex-end" mt="40px" gap="24px">
             <Button
@@ -77,14 +77,14 @@ const RenameTag = ({
               buttonStyle="secondary"
               type="button"
             >
-              {formatMessage(messages.renameTagModalCancel)}
+              {formatMessage(translations.renameTagModalCancel)}
             </Button>
             <Button
               processing={isLoading}
               type="submit"
               bgColor={colors.primary}
             >
-              {formatMessage(messages.renameTagModalSave)}
+              {formatMessage(translations.renameTagModalSave)}
             </Button>
           </Box>
         </Box>

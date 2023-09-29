@@ -27,35 +27,32 @@ describe('Idea button and tab behaviour in timeline project with multiple ideati
       .then((project) => {
         projectId = project.body.data.id;
         projectSlug = project.body.data.attributes.slug;
-        return cy.apiCreatePhase(
+        return cy.apiCreatePhase({
           projectId,
-          'Ideation phase 1',
-          '2018-03-01',
-          '2025-01-01',
-          'ideation',
-          true,
-          true,
-          true
-        );
+          title: 'Ideation phase 1',
+          startAt: '2018-03-01',
+          endAt: '2025-01-01',
+          participationMethod: 'ideation',
+          canComment: true,
+          canPost: true,
+          canReact: true,
+        });
       })
       .then((phase) => {
         firstPhaseId = phase.body.data.id;
-        return cy.apiCreatePhase(
+        return cy.apiCreatePhase({
           projectId,
-          'Budgeting phase 1',
-          '2025-01-02',
-          '2025-01-25',
-          'voting',
-          true,
-          true,
-          true,
-          'description',
-          undefined,
-          undefined,
-          400,
-          undefined,
-          'budgeting'
-        );
+          title: 'Budgeting phase 1',
+          startAt: '2025-01-02',
+          endAt: '2025-01-25',
+          participationMethod: 'voting',
+          canComment: true,
+          canPost: true,
+          canReact: true,
+          description: 'description',
+          votingMaxTotal: 400,
+          votingMethod: 'budgeting',
+        });
       });
   });
 
@@ -117,16 +114,16 @@ describe('Idea button and tab behaviour in timeline project with one ideation ph
       .then((project) => {
         projectId = project.body.data.id;
         projectSlug = project.body.data.attributes.slug;
-        return cy.apiCreatePhase(
+        return cy.apiCreatePhase({
           projectId,
-          'Ideation phase 1',
-          '2018-03-01',
-          '2025-01-01',
-          'ideation',
-          true,
-          true,
-          true
-        );
+          title: 'Ideation phase 1',
+          startAt: '2018-03-01',
+          endAt: '2025-01-01',
+          participationMethod: 'ideation',
+          canComment: true,
+          canPost: true,
+          canReact: true,
+        });
       })
       .then((phase) => {
         phaseId = phase.body.data.id;
@@ -180,16 +177,16 @@ describe('Idea button and tab behaviour in timeline project with no ideation pha
       })
       .then((project) => {
         projectId = project.body.data.id;
-        return cy.apiCreatePhase(
+        return cy.apiCreatePhase({
           projectId,
-          'Poll phase 1',
-          '2018-03-01',
-          '2025-01-01',
-          'poll',
-          true,
-          true,
-          true
-        );
+          title: 'Poll phase 1',
+          startAt: '2018-03-01',
+          endAt: '2025-01-01',
+          participationMethod: 'poll',
+          canComment: true,
+          canPost: true,
+          canReact: true,
+        });
       });
   });
 

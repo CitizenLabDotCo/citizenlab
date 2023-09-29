@@ -1,8 +1,6 @@
-import React, { MouseEvent } from 'react';
-import { uniq, get } from 'lodash-es';
+import React, { MouseEvent, ChangeEvent, ReactNode } from 'react';
+import { uniq } from 'lodash-es';
 import { useDrag } from 'react-dnd';
-import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
 
 // services
 import { IInitiativeStatusData } from 'api/initiative_statuses/types';
@@ -13,7 +11,7 @@ import StyledRow from './StyledRow';
 import { Icon } from 'semantic-ui-react';
 import T from 'components/T';
 import Checkbox from 'components/UI/Checkbox';
-import { Td, StatusLabel } from '@citizenlab/cl2-component-library';
+import { Td } from '@citizenlab/cl2-component-library';
 import SubRow from './SubRow';
 import AssigneeSelect from '../AssigneeSelect';
 
@@ -27,15 +25,6 @@ import tracks from '../../../tracks';
 // typings
 import { TFilterMenu, ManagerType } from '../../..';
 
-// resources
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
-import GetInitiativeAllowedTransitions, {
-  GetInitiativeAllowedTransitionsChildProps,
-} from 'resources/GetInitiativeAllowedTransitions';
-import { getPeriodRemainingUntil } from 'utils/dateUtils';
-
 // events
 import eventEmitter from 'utils/eventEmitter';
 import events, {
@@ -48,13 +37,13 @@ import useUpdateInitiative from 'api/initiatives/useUpdateInitiative';
 
 // types
 import { IInitiativeData } from 'api/initiatives/types';
+import useInitiativeCosponsorsRequired from 'containers/InitiativesShow/hooks/useInitiativeCosponsorsRequired';
+import useInitiativeAllowedTransitions from 'api/initiative_allowed_transitions/useInitiativeAllowedTransitions';
+import { timeAgo } from 'utils/dateUtils';
+import useLocale from 'hooks/useLocale';
+import { isNilOrError } from 'utils/helperUtils';
 
-interface DataProps {
-  tenant: GetAppConfigurationChildProps;
-  allowedTransitions: GetInitiativeAllowedTransitionsChildProps;
-}
-
-interface InputProps {
+interface Props {
   type: ManagerType;
   initiative: IInitiativeData;
   statuses?: IInitiativeStatusData[];
@@ -62,16 +51,14 @@ interface InputProps {
   selection: Set<string>;
   activeFilterMenu: TFilterMenu;
   className?: string;
-  onClickCheckbox: (event) => void;
+  onClickCheckbox: (event: ChangeEvent<HTMLInputElement>) => void;
   onClickTitle: (event: MouseEvent) => void;
-  nothingHappens: (event) => void;
+  nothingHappens: () => void;
 }
 
-interface Props extends DataProps, InputProps {}
-
 interface CellProps {
-  onClick?: (event: any) => void;
-  children: React.ReactNode;
+  onClick?: (event: MouseEvent) => void;
+  children: ReactNode;
 }
 
 const Cell = ({ onClick, children }: CellProps) => (
@@ -89,11 +76,14 @@ const InitiativeRow = ({
   onClickCheckbox,
   onClickTitle,
   nothingHappens,
-  allowedTransitions,
-  tenant,
 }: Props) => {
   const { data: initiatives } = useInitiatives({});
   const { mutate: updateInitiative } = useUpdateInitiative();
+  const { data: allowedTransitions } = useInitiativeAllowedTransitions(
+    initiative.id
+  );
+  const locale = useLocale();
+  const cosponsorsRequired = useInitiativeCosponsorsRequired();
 
   const [_collected, drag] = useDrag({
     type: 'IDEA',
@@ -137,14 +127,7 @@ const InitiativeRow = ({
     },
   });
 
-  const onUpdateInitiativePhases = (selectedPhases: string[]) => {
-    updateInitiative({
-      initiativeId: initiative.id,
-      requestBody: {
-        phase_ids: selectedPhases,
-      },
-    });
-  };
+  if (!allowedTransitions) return null;
 
   const onUpdateInitiativeTopics = (selectedTopics: string[]) => {
     updateInitiative({
@@ -187,41 +170,11 @@ const InitiativeRow = ({
     });
   };
 
-  const renderTimingCell = () => {
-    const selectedStatus: string | undefined = get(
-      initiative,
-      'relationships.initiative_status.data.id'
-    );
-    const selectedStatusObject =
-      statuses && statuses.find((status) => status.id === selectedStatus);
-
-    if (
-      selectedStatusObject &&
-      !isNilOrError(tenant) &&
-      tenant.attributes.settings.initiatives
-    ) {
-      if (selectedStatusObject.attributes.code === 'proposed') {
-        return getPeriodRemainingUntil(initiative.attributes.expires_at);
-      } else {
-        return (
-          <StatusLabel
-            text={<T value={selectedStatusObject.attributes.title_multiloc} />}
-            backgroundColor={selectedStatusObject.attributes.color}
-          />
-        );
-      }
-    }
-    return null;
-  };
-
-  const selectedStatus: string | undefined = get(
-    initiative,
-    'relationships.initiative_status.data.id'
-  );
+  const selectedStatus = initiative.relationships.initiative_status?.data?.id;
   const selectedTopics = initiative.relationships.topics.data.map((p) => p.id);
   const attrs = initiative.attributes;
   const active = selection.has(initiative.id);
-  const assigneeId = get(initiative, 'relationships.assignee.data.id');
+  const assigneeId = initiative.relationships.assignee.data?.id;
 
   return (
     <>
@@ -248,12 +201,21 @@ const InitiativeRow = ({
             assigneeId={assigneeId}
           />
         </Cell>
-        <Cell>{renderTimingCell()}</Cell>
         <Cell>
           <Icon name="thumbs up" />
           {attrs.likes_count}
         </Cell>
         <Cell>{attrs.comments_count}</Cell>
+        {cosponsorsRequired && (
+          <Cell>
+            {attrs.cosponsorships.filter((c) => c.status === 'accepted').length}
+          </Cell>
+        )}
+        {!isNilOrError(locale) && (
+          <Cell>
+            {timeAgo(Date.parse(initiative.attributes.created_at), locale)}
+          </Cell>
+        )}
       </StyledRow>
       <SubRow
         {...{
@@ -265,7 +227,6 @@ const InitiativeRow = ({
           selectedStatus,
           allowedTransitions,
         }}
-        onUpdatePhases={onUpdateInitiativePhases}
         onUpdateTopics={onUpdateInitiativeTopics}
         onUpdateStatus={onUpdateInitiativeStatus}
         postType="initiative"
@@ -274,17 +235,4 @@ const InitiativeRow = ({
   );
 };
 
-const Data = adopt<DataProps, InputProps>({
-  tenant: <GetAppConfiguration />,
-  allowedTransitions: ({ initiative, render }) => (
-    <GetInitiativeAllowedTransitions id={initiative.id}>
-      {render}
-    </GetInitiativeAllowedTransitions>
-  ),
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps: DataProps) => <InitiativeRow {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default InitiativeRow;

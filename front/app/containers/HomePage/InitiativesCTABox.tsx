@@ -1,4 +1,4 @@
-import React, { memo, useCallback } from 'react';
+import React, { useCallback } from 'react';
 
 // hooks
 import useAuthUser from 'api/me/useAuthUser';
@@ -7,7 +7,7 @@ import useAuthUser from 'api/me/useAuthUser';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 // styling
-import styled, { withTheme } from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import {
   colors,
   fontSizes,
@@ -27,21 +27,17 @@ import { isNilOrError } from 'utils/helperUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-const Container = styled.div``;
-
-const BoxContainer = styled.div`
+const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 60px 40px;
   position: relative;
   overflow: hidden;
-  margin-bottom: 70px;
   ${defaultCardStyle};
 
   ${media.tablet`
     padding: 60px 50px 50px;
-    margin-bottom: 20px;
   `}
 
   ${media.phone`
@@ -123,17 +119,14 @@ const StartInitiativeButton = styled(Button)`
   `}
 `;
 
-interface InputProps {
+interface Props {
   className?: string;
 }
 
-interface Props extends InputProps {
-  theme: any;
-}
-
-const InitiativesCTABox = memo<Props>(({ theme, className }) => {
+const InitiativesCTABox = ({ className }: Props) => {
   const { data: authUser } = useAuthUser();
   const { windowWidth } = useWindowSize();
+  const theme = useTheme();
 
   const smallerThanSmallTablet = windowWidth <= viewportWidths.tablet;
 
@@ -153,41 +146,39 @@ const InitiativesCTABox = memo<Props>(({ theme, className }) => {
 
   return (
     <Container className={className}>
-      <BoxContainer>
-        <BackgroundIcon name="initiatives" />
-        <TextContainer>
-          <Title>
-            <FormattedMessage {...messages.initiativesBoxTitle} />
-          </Title>
-          <Text>
-            <FormattedMessage {...messages.initiativesBoxText} />
-          </Text>
-        </TextContainer>
-        <ButtonContainer>
-          <BrowseInitiativesButton
-            fontWeight="500"
-            padding="13px 22px"
-            buttonStyle="text"
-            textColor={theme.colors.tenantPrimary}
-            textDecorationHover="underline"
-            fullWidth={smallerThanSmallTablet}
-            linkTo="/initiatives"
-            text={<FormattedMessage {...messages.browseInitiative} />}
-            className="e2e-initiatives-landing-CTA-browse"
-          />
-          <StartInitiativeButton
-            fontWeight="500"
-            padding="13px 22px"
-            linkTo={!isNilOrError(authUser) ? '/initiatives/new' : undefined}
-            onClick={!authUser ? signUp : undefined}
-            fullWidth={smallerThanSmallTablet}
-            text={<FormattedMessage {...messages.startInitiative} />}
-            className="e2e-initiatives-landing-CTA-new"
-          />
-        </ButtonContainer>
-      </BoxContainer>
+      <BackgroundIcon name="initiatives" />
+      <TextContainer>
+        <Title>
+          <FormattedMessage {...messages.initiativesBoxTitle} />
+        </Title>
+        <Text>
+          <FormattedMessage {...messages.initiativesBoxText} />
+        </Text>
+      </TextContainer>
+      <ButtonContainer>
+        <BrowseInitiativesButton
+          fontWeight="500"
+          padding="13px 22px"
+          buttonStyle="text"
+          textColor={theme.colors.tenantPrimary}
+          textDecorationHover="underline"
+          fullWidth={smallerThanSmallTablet}
+          linkTo="/initiatives"
+          text={<FormattedMessage {...messages.browseInitiative} />}
+          className="e2e-initiatives-landing-CTA-browse"
+        />
+        <StartInitiativeButton
+          fontWeight="500"
+          padding="13px 22px"
+          linkTo={!isNilOrError(authUser) ? '/initiatives/new' : undefined}
+          onClick={!authUser ? signUp : undefined}
+          fullWidth={smallerThanSmallTablet}
+          text={<FormattedMessage {...messages.startInitiative} />}
+          className="e2e-initiatives-landing-CTA-new"
+        />
+      </ButtonContainer>
     </Container>
   );
-});
+};
 
-export default withTheme(InitiativesCTABox);
+export default InitiativesCTABox;

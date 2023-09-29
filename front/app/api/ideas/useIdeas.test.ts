@@ -77,6 +77,7 @@ export const data: IIdeaData[] = [
       },
       anonymous: false,
       author_hash: 'abc123',
+      followers_count: 3,
     },
     relationships: {
       topics: {
@@ -106,7 +107,13 @@ export const data: IIdeaData[] = [
           type: 'idea_status',
         },
       },
+      ideas_phases: {
+        data: [],
+      },
       user_reaction: {
+        data: null,
+      },
+      user_follower: {
         data: null,
       },
       assignee: {

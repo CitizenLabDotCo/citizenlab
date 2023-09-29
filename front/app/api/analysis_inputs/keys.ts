@@ -21,11 +21,11 @@ const inputsKeys = {
     },
   ],
   items: () => [{ ...baseKey, operation: 'item' }],
-  item: ({ analysisId, id }: { analysisId: string; id?: string }) => [
+  item: ({ id }: { id?: string }) => [
     {
       ...baseKey,
       operation: 'item',
-      parameters: { id, analysisId },
+      parameters: { id },
     },
   ],
 } satisfies QueryKeys;

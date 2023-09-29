@@ -5,14 +5,16 @@ import { isNumber } from 'lodash-es';
 // hooks
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
+import useEvents from 'api/events/useEvents';
 
 // events
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 
 // services
 import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
 import { IPhaseData } from 'api/phases/types';
-import { getInputTerm } from 'services/participationContexts';
+import { getInputTerm } from 'utils/participationContexts';
 
 // components
 import Button from 'components/UI/Button';
@@ -20,6 +22,9 @@ import IdeaButton from 'components/IdeaButton';
 
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
+import { scrollTo } from 'containers/Authentication/SuccessActions/actions/scrollTo';
+import { scrollToElement } from 'utils/scroll';
+import { isFixableByAuthentication } from 'utils/actionDescriptors';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -31,9 +36,6 @@ import styled from 'styled-components';
 
 // router
 import { useLocation } from 'react-router-dom';
-import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
-import { isFixableByAuthentication } from 'utils/actionDescriptors';
-import { scrollTo } from 'containers/Authentication/SuccessActions/actions/scrollTo';
 
 const Container = styled.div``;
 
@@ -51,6 +53,11 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
   const { data: phases } = usePhases(projectId);
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
   const { pathname, hash: divId } = useLocation();
+  const { data: events } = useEvents({
+    projectIds: [projectId],
+    currentAndFutureOnly: true,
+    sort: 'start_at',
+  });
 
   useEffect(() => {
     setCurrentPhase(
@@ -198,8 +205,25 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
     isParticipationMethodDocumentAnnotation &&
     !hasCurrentPhaseEnded;
 
+  const showEventsCTAButton = !!events?.data?.length;
+
   return (
     <Container className={className || ''}>
+      {showEventsCTAButton &&
+        !showSeeIdeasButton && ( // Only show events button when there is no other secondary CTA present
+          <Button
+            id="e2e-project-see-events-button"
+            buttonStyle="secondary"
+            onClick={() => {
+              scrollToElement({ id: 'project-events' });
+            }}
+            fontWeight="500"
+            mb="8px"
+          >
+            <FormattedMessage {...messages.seeUpcomingEvents} />
+          </Button>
+        )}
+
       {showSeeIdeasButton && (
         <SeeIdeasButton
           id="e2e-project-see-ideas-button"

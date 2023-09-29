@@ -33,7 +33,7 @@ class WebApi::V1::IdeasController < ApplicationController
     ).find_records
     ideas = paginate SortByParamsService.new.sort_ideas(ideas, params, current_user)
 
-    ideas = update_phase_voting_counts ideas, params
+    ideas = convert_phase_voting_counts ideas, params
 
     render json: linked_json(ideas, WebApi::V1::IdeaSerializer, serialization_options_for(ideas))
   end
@@ -243,7 +243,6 @@ class WebApi::V1::IdeasController < ApplicationController
   def destroy
     input = Idea.find params[:id]
     authorize input
-    service.before_destroy(input, current_user)
     input = input.destroy
     if input.destroyed?
       service.after_destroy(input, current_user)
@@ -351,8 +350,14 @@ class WebApi::V1::IdeasController < ApplicationController
       # breaks if you don't fetch the ids in this way.
       reactions = Reaction.where(user: current_user, reactable_id: ideas.map(&:id), reactable_type: 'Idea')
       include << 'user_reaction'
+      user_followers = current_user.follows
+        .where(followable_type: 'Idea')
+        .group_by do |follower|
+          [follower.followable_id, follower.followable_type]
+        end
+      user_followers ||= {}
       {
-        params: jsonapi_serializer_params(vbii: reactions.index_by(&:reactable_id), pcs: ParticipationContextService.new),
+        params: jsonapi_serializer_params(vbii: reactions.index_by(&:reactable_id), user_followers: user_followers, pcs: ParticipationContextService.new),
         include: include
       }
     else
@@ -386,7 +391,7 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   # Change counts on idea for values for phase, if filtered by phase
-  def update_phase_voting_counts(ideas, params)
+  def convert_phase_voting_counts(ideas, params)
     if params[:phase]
       phase_id = params[:phase]
       ideas.map do |idea|

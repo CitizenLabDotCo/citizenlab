@@ -9,21 +9,21 @@ const fetchInitiativeImage = ({
   imageId,
 }: {
   initiativeId: string;
-  imageId: string;
+  imageId?: string;
 }) =>
   fetcher<IInitiativeImage>({
     path: `/initiatives/${initiativeId}/images/${imageId}`,
     action: 'get',
   });
 
-const useInitiativeImage = (initiativeId: string, imageId: string) => {
+const useInitiativeImage = (initiativeId: string, imageId?: string) => {
   return useQuery<
     IInitiativeImage,
     CLErrors,
     IInitiativeImage,
     InitiativeImagesKeys
   >({
-    queryKey: initiativeImagesKeys.item({ initiativeId, imageId }),
+    queryKey: initiativeImagesKeys.item({ imageId }),
     queryFn: () => fetchInitiativeImage({ initiativeId, imageId }),
     enabled: !!imageId,
   });

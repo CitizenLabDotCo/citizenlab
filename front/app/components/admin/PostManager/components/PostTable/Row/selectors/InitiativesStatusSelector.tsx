@@ -25,53 +25,52 @@ type Props = {
   selectedStatus?: string;
   statuses: IInitiativeStatusData[];
   onUpdateStatus: (statusId: string) => void;
-  allowedTransitions:
-    | IInitiativeAllowedTransitions['data']['attributes']
-    | null;
+  allowedTransitions: IInitiativeAllowedTransitions | null;
 };
 
-class InitiativesStatusSelector extends React.PureComponent<Props> {
-  isActive = (statusId: string) => {
-    return this.props.selectedStatus === statusId;
+const InitiativesStatusSelector = ({
+  selectedStatus,
+  statuses,
+  onUpdateStatus,
+  allowedTransitions,
+}: Props) => {
+  const isActive = (statusId: string) => {
+    return selectedStatus === statusId;
   };
 
-  isAllowed = (statusId: string) => {
-    return (
-      this.props.allowedTransitions &&
-      this.props.allowedTransitions[statusId] !== undefined
-    );
+  const isAllowed = (statusId: string) => {
+    if (allowedTransitions === null) return false;
+
+    return allowedTransitions.data.attributes[statusId] !== undefined;
   };
 
-  handleStatusClick = (statusId: string) => (event: MouseEvent) => {
+  const handleStatusClick = (statusId: string) => (event: MouseEvent) => {
     event.stopPropagation();
-    if (this.isAllowed(statusId)) {
-      this.props.onUpdateStatus(statusId);
+    if (isAllowed(statusId)) {
+      onUpdateStatus(statusId);
     }
   };
 
-  render() {
-    const { statuses } = this.props;
-    return (
-      <Container>
-        {statuses.map((status) => (
-          <Popup
-            key={status.id}
-            basic
-            trigger={
-              <ColorIndicator
-                disabled={!this.isAllowed(status.id)}
-                color={status.attributes.color}
-                active={this.isActive(status.id)}
-                onClick={this.handleStatusClick(status.id)}
-              />
-            }
-            content={<T value={status.attributes.title_multiloc} />}
-            position="top center"
-          />
-        ))}
-      </Container>
-    );
-  }
-}
+  return (
+    <Container>
+      {statuses.map((status) => (
+        <Popup
+          key={status.id}
+          basic
+          trigger={
+            <ColorIndicator
+              disabled={!isAllowed(status.id)}
+              color={status.attributes.color}
+              active={isActive(status.id)}
+              onClick={handleStatusClick(status.id)}
+            />
+          }
+          content={<T value={status.attributes.title_multiloc} />}
+          position="top center"
+        />
+      ))}
+    </Container>
+  );
+};
 
 export default InitiativesStatusSelector;

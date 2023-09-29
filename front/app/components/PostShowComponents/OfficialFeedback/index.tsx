@@ -1,5 +1,4 @@
 import React, { memo } from 'react';
-import { isBoolean } from 'lodash-es';
 
 // components
 import OfficialFeedbackForm from './OfficialFeedbackForm';
@@ -26,7 +25,7 @@ const OfficialFeedback = memo<Props>(
     a11y_pronounceLatestOfficialFeedbackPost,
     className,
   }) => {
-    if (isBoolean(permissionToPost)) {
+    if (typeof permissionToPost === 'boolean') {
       return (
         <Container className={className || ''}>
           {permissionToPost && (

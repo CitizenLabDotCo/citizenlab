@@ -64,7 +64,6 @@ const AreaForm = ({
             <Feedback />
             <InputMultilocWithLocaleSwitcher
               label={formatMessage(messages.fieldTitle)}
-              type="text"
               name="title_multiloc"
               labelTooltipText={formatMessage(messages.fieldTitleTooltip)}
             />

@@ -28,6 +28,7 @@ import usePhases from 'api/phases/usePhases';
 import useEvents from 'api/events/useEvents';
 import useAuthUser from 'api/me/useAuthUser';
 import { useIntl } from 'utils/cl-intl';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 // context
 import { VotingContext } from 'api/baskets_ideas/useVoting';
@@ -152,36 +153,39 @@ const ProjectsShowPage = ({ project }: Props) => {
             <TimelineContainer projectId={projectId} />
           )}
         </div>
-        <Box
-          display="flex"
-          flexDirection="column"
-          gap="48px"
-          mx="auto"
-          my="48px"
-          maxWidth="1166px"
-          padding={isSmallerThanTablet ? '20px' : '0px'}
-        >
-          <EventsViewer
-            showProjectFilter={false}
-            projectId={projectId}
-            eventsTime="currentAndFuture"
-            title={formatMessage(messages.upcomingAndOngoingEvents)}
-            fallbackMessage={messages.noUpcomingOrOngoingEvents}
-            onClickTitleGoToProjectAndScrollToEvent={false}
-            hideSectionIfNoEvents={true}
-            projectPublicationStatuses={['published', 'draft', 'archived']}
-          />
-          <EventsViewer
-            showProjectFilter={false}
-            projectId={projectId}
-            eventsTime="past"
-            title={formatMessage(messages.pastEvents)}
-            fallbackMessage={messages.noPastEvents}
-            onClickTitleGoToProjectAndScrollToEvent={false}
-            hideSectionIfNoEvents={true}
-            projectPublicationStatuses={['published', 'draft', 'archived']}
-          />
-        </Box>
+        {!!events?.data.length && (
+          <Box
+            id="e2e-events-section-project-page"
+            display="flex"
+            flexDirection="column"
+            gap="48px"
+            mx="auto"
+            my="48px"
+            maxWidth="1166px"
+            padding={isSmallerThanTablet ? '20px' : '0px'}
+          >
+            <EventsViewer
+              showProjectFilter={false}
+              projectId={projectId}
+              eventsTime="currentAndFuture"
+              title={formatMessage(messages.upcomingAndOngoingEvents)}
+              fallbackMessage={messages.noUpcomingOrOngoingEvents}
+              hideSectionIfNoEvents={true}
+              projectPublicationStatuses={['published', 'draft', 'archived']}
+            />
+            <EventsViewer
+              showProjectFilter={false}
+              projectId={projectId}
+              eventsTime="past"
+              title={formatMessage(messages.pastEvents)}
+              fallbackMessage={messages.noPastEvents}
+              hideSectionIfNoEvents={true}
+              projectPublicationStatuses={['published', 'draft', 'archived']}
+              showDateFilter={false}
+            />
+          </Box>
+        )}
+
         <SuccessModal projectId={projectId} />
       </ContentWrapper>
     );
@@ -201,35 +205,39 @@ const ProjectsShowPage = ({ project }: Props) => {
 };
 
 const ProjectsShowPageWrapper = () => {
-  const [userWasLoggedIn, setUserWasLoggedIn] = useState(false);
-
   const { pathname } = useLocation();
   const { slug, phaseNumber } = useParams();
   const {
     data: project,
     status: statusProject,
     error,
+    isInitialLoading: isInitialProjectLoading,
   } = useProjectBySlug(slug);
-  const { data: phases, status: statusPhases } = usePhases(project?.data.id);
-  const { data: user, status: statusUser } = useAuthUser();
-
+  const { data: phases, isInitialLoading: isInitialPhasesLoading } = usePhases(
+    project?.data.id
+  );
+  const { data: user, isLoading: isUserLoading } = useAuthUser();
   const processType = project?.data.attributes?.process_type;
   const urlSegments = pathname
     .replace(/^\/|\/$/g, '')
     .split('/')
     .filter((segment) => segment !== '');
-
-  const projectPending = statusProject === 'loading';
-  const userPending = statusUser === 'loading';
-  const phasesPending = statusPhases === 'loading';
-
-  const pending = projectPending || userPending || phasesPending;
+  const pending =
+    isInitialProjectLoading || isUserLoading || isInitialPhasesLoading;
+  const [search] = useSearchParams();
+  const hasAccess = search.get('hasAccess');
 
   useEffect(() => {
     if (pending) return;
     if (isError(user)) return;
 
-    if (user) setUserWasLoggedIn(true);
+    if (user) {
+      /* Using the search params to pass the hasAccess flag here. Something is not very clear
+       * with how the component tree is being rendered on login/logout. This is a temporary
+       * solution until we can find a better way to track the previous value of the user.
+       */
+      updateSearchParams({ hasAccess: true });
+    }
   }, [pending, user]);
 
   if (pending) {
@@ -240,7 +248,7 @@ const ProjectsShowPageWrapper = () => {
     );
   }
 
-  const userJustLoggedOut = userWasLoggedIn && user === null;
+  const userJustLoggedOut = hasAccess === 'true' && user === null;
   const unauthorized = statusProject === 'error' && isUnauthorizedRQ(error);
 
   if (userJustLoggedOut && unauthorized) {

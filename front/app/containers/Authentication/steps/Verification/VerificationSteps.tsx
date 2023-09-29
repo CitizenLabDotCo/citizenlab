@@ -1,5 +1,4 @@
 import React, { memo, useCallback, useState, useEffect } from 'react';
-import streams from 'utils/streams';
 
 // components
 import VerificationMethods from './VerificationMethods';
@@ -16,7 +15,6 @@ import styled from 'styled-components';
 import { TVerificationMethod } from 'api/verification_methods/types';
 import { isNilOrError } from 'utils/helperUtils';
 import { TVerificationStep } from 'containers/Authentication/steps/Verification/utils';
-import { AuthenticationContext } from 'api/authentication/authentication_requirements/types';
 
 import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
 
@@ -27,12 +25,11 @@ const Container = styled.div`
 `;
 
 export interface Props {
-  context: AuthenticationContext | null;
   onCompleted?: () => void;
   onError?: () => void;
 }
 
-const VerificationSteps = memo<Props>(({ context, onCompleted, onError }) => {
+const VerificationSteps = memo<Props>(({ onCompleted, onError }) => {
   const [activeStep, setActiveStep] =
     useState<TVerificationStep>('method-selection');
   const [method, setMethod] = useState<TVerificationMethod | null>(null);
@@ -57,11 +54,9 @@ const VerificationSteps = memo<Props>(({ context, onCompleted, onError }) => {
 
   const goToSuccessStep = useCallback(() => {
     if (!isNilOrError(authUser)) {
-      streams.reset().then(async () => {
-        invalidateQueryCache();
-        setActiveStep('success');
-        setMethod(null);
-      });
+      invalidateQueryCache();
+      setActiveStep('success');
+      setMethod(null);
     }
   }, [authUser]);
 
@@ -78,10 +73,7 @@ const VerificationSteps = memo<Props>(({ context, onCompleted, onError }) => {
     return (
       <Container id="e2e-verification-wizard-root">
         {activeStep === 'method-selection' && (
-          <VerificationMethods
-            context={context}
-            onMethodSelected={onMethodSelected}
-          />
+          <VerificationMethods onMethodSelected={onMethodSelected} />
         )}
 
         <Outlet

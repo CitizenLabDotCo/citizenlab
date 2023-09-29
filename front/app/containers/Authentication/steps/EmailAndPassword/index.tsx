@@ -26,7 +26,10 @@ import PasswordInput from 'components/HookForm/PasswordInput';
 import Checkbox from 'components/HookForm/Checkbox';
 
 // errors
-import { isCLErrorsIsh, handleCLErrorsIsh } from 'utils/errorUtils';
+import {
+  isCLErrorsWrapper,
+  handleHookFormSubmissionError,
+} from 'utils/errorUtils';
 
 // utils
 import { isValidEmail, isValidPhoneNumber } from 'utils/validate';
@@ -47,6 +50,7 @@ interface Props {
   ) => void;
   onGoBack: () => void;
   onSwitchFlow: () => void;
+  closeModal: () => void;
 }
 
 interface FormValues {
@@ -67,6 +71,7 @@ const EmailAndPassword = ({
   onSubmit,
   onGoBack,
   onSwitchFlow,
+  closeModal,
 }: Props) => {
   const passwordLoginEnabled = useFeatureFlag({ name: 'password_login' });
   const anySSOEnabled = useAnySSOEnabled();
@@ -117,8 +122,8 @@ const EmailAndPassword = ({
     try {
       await onSubmit(email, password, rememberMe, tokenLifetime);
     } catch (e) {
-      if (isCLErrorsIsh(e)) {
-        handleCLErrorsIsh(e, methods.setError);
+      if (isCLErrorsWrapper(e)) {
+        handleHookFormSubmissionError(e, methods.setError);
         return;
       }
 
@@ -179,6 +184,7 @@ const EmailAndPassword = ({
           <TextLink
             to="/password-recovery"
             className="e2e-password-recovery-link"
+            onClick={closeModal}
           >
             {formatMessage(sharedMessages.forgotPassword)}
           </TextLink>

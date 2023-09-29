@@ -147,6 +147,12 @@
             "description": "Optional short text, shown at the top of Step 2 of the sign up form (i.e., additional registration fields). Supports HTML.",
             "$ref": "#/definitions/multiloc_string"
           },
+          "onboarding":  {
+            "title": "Onboarding (Step 3)",
+            "description": "Onboarding step after login or signup, asking for topics you are interested in.",
+            "type": "boolean",
+            "default": false
+          },
           "areas_term": {
             "title": "Geographic Units",
             "description": "What a geographic unit should be called on this platform (e.g., neighbourhoods, districts, etc.). Input the plural form here with all lowercase letters. If left blank, this field defaults to 'areas'.",
@@ -240,6 +246,18 @@
         "properties": {
           "allowed": { "type": "boolean", "default": false },
           "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "follow": {
+        "type": "object",
+        "title": "Follow",
+        "description": "Allow users to passively follow and get notifications about some parts of the application",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true },
+          "enabled": { "type": "boolean", "default": true }
         }
       },
 
@@ -590,6 +608,25 @@
         "properties": {
           "allowed": { "type": "boolean", "default": true },
           "enabled": { "type": "boolean", "default": true },
+          "require_review":{
+            "title": "Require Review",
+            "description": "Require Review. If enabled, proposals will need to be approved by an admin before they are visible to the public.",
+            "type": "boolean",
+            "default": false
+          },
+          "require_cosponsors":{
+            "title": "Require Cosponsors",
+            "description": "Require Cosponsors. If enabled, proposals will need to be cosponsored by other users.",
+            "type": "boolean",
+            "default": false
+          },
+          "cosponsors_number": {
+            "title": "Number of cosponsors",
+            "description": "The number of cosponsors required to publish a proposal.",
+            "type": "integer",
+            "minimum": 1,
+            "default": 3
+          },
           "voting_threshold": {
             "title": "Voting Threshold",
             "description": "Deprecated - Use 'Reacting Threshold'",
@@ -629,12 +666,45 @@
             locales: CL2_SUPPORTED_LOCALES).to_json
             %>
           },
+          "posting_tips": {
+            "title": "Posting tips",
+            "description": "Text specifying tips for posting a proposal.",
+            "$ref": "#/definitions/multiloc_string",
+            "default": <%= MultilocService.new.i18n_to_multiloc(
+            'initiatives.default_posting_tips',
+            locales: CL2_SUPPORTED_LOCALES).to_json
+            %>
+          },
           "allow_anonymous_participation": {
             "title": "Allow users to participate anonymously",
             "description": "Users may still choose to participate with their real name, but they will have the option to submit inputs or comments anonymously if they choose to do so. All users will still need to comply with the requirements set in the Access Rights tab for their comments and/or inputs to go through. Admins and/or project moderators will not be able to know the identity of users behind anonymous inputs or comments. They will, however, still be able to moderate these submissions as they do for non anonymous ones.",
             "type": "boolean",
             "default": false
           }
+        }
+      },
+
+      "initiative_review": {
+        "type": "object",
+        "title": "Proposal Review",
+        "description": "Allow proposal review. When this is enabled, the feature is activated. When disabled the require_review toggle in the BO & Proposal settings here will be ignored.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "initiative_cosponsors": {
+        "type": "object",
+        "title": "Proposal Cosponsors",
+        "description": "This feature makes it possible to require cosponsors to publish a proposal.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
         }
       },
 

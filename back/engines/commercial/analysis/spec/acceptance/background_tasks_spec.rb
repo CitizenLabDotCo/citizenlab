@@ -16,6 +16,7 @@ resource 'Background tasks' do
     let(:analysis_id) { analysis.id }
     let!(:task) { create(:auto_tagging_task, analysis: analysis) }
     let!(:other_task) { create(:auto_tagging_task) }
+    let!(:old_task) { create(:q_and_a_task, analysis: analysis, state: 'completed', created_at: 26.hours.ago, ended_at: 25.hours.ago) }
 
     example_request 'List all background tasks' do
       expect(status).to eq(200)

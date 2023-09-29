@@ -1,10 +1,12 @@
 import React from 'react';
-import { isError } from 'lodash-es';
 
 // components
 import PageNotFound from 'components/PageNotFound';
 import InitiativesShow from 'containers/InitiativesShow';
 import InitiativeShowPageTopBar from './InitiativeShowPageTopBar';
+import Unauthorized from 'components/Unauthorized';
+import VerticalCenterer from 'components/VerticalCenterer';
+import { Spinner } from '@citizenlab/cl2-component-library';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -13,6 +15,7 @@ import { useParams } from 'react-router-dom';
 
 // style
 import styled from 'styled-components';
+import { isUnauthorizedRQ } from 'utils/errorUtils';
 
 const Container = styled.div`
   background: #fff;
@@ -29,10 +32,28 @@ const StyledInitiativeShowPageTopBar = styled(InitiativeShowPageTopBar)`
 const InitiativesShowPage = () => {
   const initiativesEnabled = useFeatureFlag({ name: 'initiatives' });
   const { slug } = useParams() as { slug: string };
+  const { data: initiative, status, error } = useInitiativeBySlug(slug);
 
-  const { data: initiative } = useInitiativeBySlug(slug);
+  if (!initiativesEnabled) {
+    // Ideally, this is covered by status === 'error' but currently there
+    // a bug (in the BE?) that still shows this page to people with URL, even
+    // if the feature is disabled.
+    return <PageNotFound />;
+  }
 
-  if (!initiativesEnabled || isError(initiative)) {
+  if (status === 'loading') {
+    return (
+      <VerticalCenterer>
+        <Spinner />
+      </VerticalCenterer>
+    );
+  }
+
+  if (status === 'error') {
+    if (isUnauthorizedRQ(error)) {
+      return <Unauthorized />;
+    }
+
     return <PageNotFound />;
   }
 

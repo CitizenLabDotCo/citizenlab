@@ -4,9 +4,10 @@
 #
 # Table name: analysis_taggings
 #
-#  id       :uuid             not null, primary key
-#  tag_id   :uuid             not null
-#  input_id :uuid             not null
+#  id                 :uuid             not null, primary key
+#  tag_id             :uuid             not null
+#  input_id           :uuid             not null
+#  background_task_id :uuid
 #
 # Indexes
 #
@@ -23,6 +24,7 @@ module Analysis
   class Tagging < ApplicationRecord
     belongs_to :tag, class_name: 'Analysis::Tag'
     belongs_to :input, class_name: 'Idea'
+    belongs_to :background_task, class_name: 'AutoTaggingTask', optional: true
 
     validates :tag_id, presence: true, uniqueness: { scope: :input_id }
   end

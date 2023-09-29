@@ -26,9 +26,50 @@ export default defineMessages({
     id: 'app.containers.UsersShowPage.commentsWithCount',
     defaultMessage: 'Comments ({commentsCount})',
   },
+  eventsWithCount: {
+    id: 'app.containers.UsersShowPage.eventsWithCount',
+    defaultMessage: 'Events ({eventsCount})',
+  },
+  followingWithCount: {
+    id: 'app.containers.UsersShowPage.followingWithCount',
+    defaultMessage: 'Following ({followingCount})',
+  },
+  ideas: {
+    id: 'app.containers.UsersShowPage.ideas',
+    defaultMessage: 'Ideas',
+  },
+  projects: {
+    id: 'app.containers.UsersShowPage.projects',
+    defaultMessage: 'Projects',
+  },
+  initiatives: {
+    id: 'app.containers.UsersShowPage.initiatives',
+    defaultMessage: 'Initiatives',
+  },
+  topics: {
+    id: 'app.containers.UsersShowPage.topics',
+    defaultMessage: 'Topics',
+  },
+  areas: {
+    id: 'app.containers.UsersShowPage.areas',
+    defaultMessage: 'Areas',
+  },
+  projectFolders: {
+    id: 'app.containers.UsersShowPage.projectFolders',
+    defaultMessage: 'Project folders',
+  },
+  emptyInfoText: {
+    id: 'app.containers.UsersShowPage.emptyInfoText',
+    defaultMessage:
+      'You are not following any items of the specified filter above.',
+  },
   loadingComments: {
     id: 'app.containers.UsersShowPage.loadingComments',
     defaultMessage: 'Loading user comments...',
+  },
+  loadingEvents: {
+    id: 'app.containers.UsersShowPage.loadingEvents',
+    defaultMessage: 'Loading events...',
   },
   tryAgain: {
     id: 'app.containers.UsersShowPage.tryAgain',
@@ -41,6 +82,10 @@ export default defineMessages({
   noCommentsForUser: {
     id: 'app.containers.UsersShowPage.noCommentsForUser',
     defaultMessage: 'This user has not posted any comment yet.',
+  },
+  noEvents: {
+    id: 'app.containers.UsersShowPage.noEventsForUser',
+    defaultMessage: 'You have not attended any events yet.',
   },
   seePost: {
     id: 'app.containers.UsersShowPage.seePost',
@@ -62,6 +107,10 @@ export default defineMessages({
   loadMoreComments: {
     id: 'app.containers.UsersShowPage.loadMoreComments',
     defaultMessage: 'Load more comments',
+  },
+  loadMore: {
+    id: 'app.containers.UsersShowPage.loadMore',
+    defaultMessage: 'Load more',
   },
   memberSince: {
     id: 'app.containers.UsersShowPage.memberSince',

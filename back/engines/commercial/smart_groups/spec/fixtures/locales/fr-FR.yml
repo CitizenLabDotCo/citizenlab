@@ -32,6 +32,26 @@ fr:
       not_ends_on: "%{property} ne se termine pas sur %{value}"
     email:
       property: "adresse e-mail"
+    event_attendances:
+      attends_something: "L'utilisateur est inscrit à au moins un événement"
+      attends_nothing: "L'utilisateur n'est inscrit à aucun événement"
+      attends_some_of: "L'utilisateur est inscrit à au moins un des événements suivants: %{value}"
+      attends_none_of: "L'utilisateur n'est inscrit à aucun des événements suivants: %{value}"
+    follow:
+      something: "Suit quelque chose"
+      nothing: "Suit rien"
+      is_one_of_projects: "Suit un des projets %{value}"
+      is_not_project: "Ne suit pas le projet %{value}"
+      is_one_of_folders: "Suit un des dossiers %{value}"
+      is_not_folder: "Ne suit pas le dossier %{value}"
+      is_one_of_ideas: "Suit un des idées %{value}"
+      is_not_idea: "Ne suit pas l'idée %{value}"
+      is_one_of_initiatives: "Suit une des propositions %{value}"
+      is_not_initiative: "Ne suit pas la proposition %{value}"
+      is_one_of_topics: "Suit une des sujets %{value}"
+      is_not_topic: "Ne suit pas le sujet %{value}"
+      is_one_of_areas: "Suit une des zones %{value}"
+      is_not_area: "Ne suit pas la zone %{value}"
     lives_in:
       has_value_outside: "%{property} est ailleurs"
       not_has_value_outside: "%{property} n'est pas ailleurs"

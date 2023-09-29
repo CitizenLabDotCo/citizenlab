@@ -34,12 +34,17 @@ export const data: IInitiativeData = {
     location_description: 'Test location',
     created_at: '2021-03-01T12:00:00.000Z',
     updated_at: '2021-03-01T12:00:00.000Z',
+    proposed_at: '2021-03-01T12:00:00.000Z',
     expires_at: '2021-03-01T12:00:00.000Z',
     header_bg: {
       small: 'http://localhost:3000/system/images/1/small/test.jpg',
       medium: 'http://localhost:3000/system/images/1/medium/test.jpg',
       large: 'http://localhost:3000/system/images/1/large/test.jpg',
     },
+    editing_locked: false,
+    public: true,
+    cosponsorships: [{ user_id: '1', name: 'Cosponsor 1', status: 'accepted' }],
+    followers_count: 3,
   },
   relationships: {
     topics: {
@@ -69,6 +74,9 @@ export const data: IInitiativeData = {
         id: '1',
         type: 'user',
       },
+    },
+    user_follower: {
+      data: null,
     },
   },
 };

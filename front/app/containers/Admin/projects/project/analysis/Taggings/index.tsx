@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
 import useAnalysisTaggings from 'api/analysis_taggings/useAnalysisTaggings';
@@ -9,7 +9,13 @@ import { useParams } from 'react-router-dom';
 import Tag from '../Tags/Tag';
 import { Box } from '@citizenlab/cl2-component-library';
 
-const Taggings = ({ inputId }: { inputId: string }) => {
+const Taggings = ({
+  inputId,
+  onlyShowTagged = true,
+}: {
+  inputId: string;
+  onlyShowTagged?: boolean;
+}) => {
   const { analysisId } = useParams() as { analysisId: string };
 
   const { data: tags } = useAnalysisTags({
@@ -20,8 +26,12 @@ const Taggings = ({ inputId }: { inputId: string }) => {
 
   const { data: taggings } = useAnalysisTaggings(analysisId);
 
-  const taggingsForInput = taggings?.data?.filter(
-    (tagging) => tagging.relationships.input.data.id === inputId
+  const taggingsForInput = useMemo(
+    () =>
+      taggings?.data?.filter(
+        (tagging) => tagging.relationships.input.data.id === inputId
+      ),
+    [taggings, inputId]
   );
 
   return (
@@ -30,6 +40,7 @@ const Taggings = ({ inputId }: { inputId: string }) => {
         const taggingForTag = taggingsForInput?.find(
           (tagging) => tagging.relationships.tag.data.id === tag.id
         );
+        if (onlyShowTagged && !taggingForTag) return null;
         return (
           <Tag
             key={tag.id}

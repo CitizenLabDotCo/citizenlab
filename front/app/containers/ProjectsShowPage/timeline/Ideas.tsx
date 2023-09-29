@@ -20,7 +20,7 @@ import { getInputTermMessage } from 'utils/i18n';
 import styled from 'styled-components';
 
 // utils
-import { ideaDefaultSortMethodFallback } from 'services/participationContexts';
+import { ideaDefaultSortMethodFallback } from 'utils/participationContexts';
 
 // typings
 import { IPhaseData } from 'api/phases/types';

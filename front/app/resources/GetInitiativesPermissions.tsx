@@ -1,7 +1,7 @@
 import { IInitiativeAction } from 'api/initiative_action_descriptors/types';
-import { ActionPermission } from 'services/actionTakingRules';
+import { ActionPermission } from 'utils/actionTakingRules';
 import useInitiativesPermissions, {
-  IInitiativeDisabledReason,
+  InitiativePermissionsDisabledReason,
 } from 'hooks/useInitiativesPermissions';
 
 type children = (
@@ -14,7 +14,7 @@ interface Props {
 }
 
 export type GetInitiativesPermissionsChildProps =
-  | ActionPermission<IInitiativeDisabledReason>
+  | ActionPermission<InitiativePermissionsDisabledReason>
   | null
   | undefined;
 

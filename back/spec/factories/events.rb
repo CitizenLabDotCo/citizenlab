@@ -9,21 +9,32 @@ FactoryBot.define do
         'nl-BE' => 'Info avond'
       }
     end
+
     description_multiloc do
       {
         'en' => '<p>Be there and learn everything about our future!</p>',
         'nl-BE' => '<p>Kom en ontdek de toekomst!</p>'
       }
     end
-    location_multiloc do
-      {
-        'en' => 'Vogelstraat 4, around the corner',
-        'nl-BE' => 'Vogelstraat 4, om de hoek'
-      }
-    end
-    location_description { location_multiloc.values.first }
 
     start_at { '2017-05-01 20:00' }
     end_at { '2017-05-01 22:00' }
+    sequence(:online_link) { |n| "https://example.com/#{n}" }
+
+    trait :with_location do
+      location_point { 'POINT(4.351710319519043 50.8465574798584)' }
+
+      address_1 { 'Atomiumsquare 1, 1020 Brussels, Belgium' }
+      address_2_multiloc do
+        {
+          'en' => 'Sphere 1',
+          'nl-BE' => 'Bol 1'
+        }
+      end
+
+      location_multiloc do
+        %w[en nl-BE].index_with { |locale| "#{address_1} (#{locale})" }
+      end
+    end
   end
 end

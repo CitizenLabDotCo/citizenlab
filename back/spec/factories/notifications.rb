@@ -31,6 +31,12 @@ FactoryBot.define do
     association :post, factory: :idea
   end
 
+  factory :cosponsor_of_your_initiative, parent: :notification, class: 'Notifications::CosponsorOfYourInitiative' do
+    association :post, factory: :initiative
+    cosponsors_initiative
+    initiating_user
+  end
+
   factory :internal_comment_on_idea_assigned_to_you,
     parent: :notification,
     class: 'Notifications::InternalComments::InternalCommentOnIdeaAssignedToYou' do
@@ -118,14 +124,25 @@ FactoryBot.define do
     invite
   end
 
-  factory :comment_on_your_idea, parent: :notification, class: 'Notifications::CommentOnYourIdea' do
+  factory :invitation_to_cosponsor_initiative, parent: :notification, class: 'Notifications::InvitationToCosponsorInitiative' do
+    association :post, factory: :initiative
+    cosponsors_initiative
+    initiating_user
+  end
+
+  factory :initiative_resubmitted_for_review, parent: :notification, class: 'Notifications::InitiativeResubmittedForReview' do
+    association :post, factory: :initiative
+    association :post_status, factory: :initiative_status, code: 'review_pending'
+  end
+
+  factory :comment_on_idea_you_follow, parent: :notification, class: 'Notifications::CommentOnIdeaYouFollow' do
     initiating_user
     comment
     association :post, factory: :idea
     project
   end
 
-  factory :comment_on_your_initiative, parent: :notification, class: 'Notifications::CommentOnYourInitiative' do
+  factory :comment_on_initiative_you_follow, parent: :notification, class: 'Notifications::CommentOnInitiativeYouFollow' do
     initiating_user
     comment
     association :post, factory: :initiative
@@ -149,40 +166,14 @@ FactoryBot.define do
     association :post, factory: :idea
   end
 
-  factory :official_feedback_on_commented_idea, parent: :notification, class: 'Notifications::OfficialFeedbackOnCommentedIdea' do
+  factory :official_feedback_on_idea_you_follow, parent: :notification, class: 'Notifications::OfficialFeedbackOnIdeaYouFollow' do
     initiating_user
     official_feedback
     association :post, factory: :idea
     project
   end
 
-  factory :official_feedback_on_commented_initiative, parent: :notification, class: 'Notifications::OfficialFeedbackOnCommentedInitiative' do
-    initiating_user
-    official_feedback
-    association :post, factory: :initiative
-  end
-
-  factory :official_feedback_on_reacted_idea, parent: :notification, class: 'Notifications::OfficialFeedbackOnReactedIdea' do
-    initiating_user
-    official_feedback
-    association :post, factory: :idea
-    project
-  end
-
-  factory :official_feedback_on_reacted_initiative, parent: :notification, class: 'Notifications::OfficialFeedbackOnReactedInitiative' do
-    initiating_user
-    official_feedback
-    association :post, factory: :initiative
-  end
-
-  factory :official_feedback_on_your_idea, parent: :notification, class: 'Notifications::OfficialFeedbackOnYourIdea' do
-    initiating_user
-    official_feedback
-    association :post, factory: :idea
-    project
-  end
-
-  factory :official_feedback_on_your_initiative, parent: :notification, class: 'Notifications::OfficialFeedbackOnYourInitiative' do
+  factory :official_feedback_on_initiative_you_follow, parent: :notification, class: 'Notifications::OfficialFeedbackOnInitiativeYouFollow' do
     initiating_user
     official_feedback
     association :post, factory: :initiative
@@ -208,7 +199,12 @@ FactoryBot.define do
     phase
   end
 
-  factory :status_change_on_commented_idea, parent: :notification, class: 'Notifications::StatusChangeOnCommentedIdea' do
+  factory :project_published, parent: :notification, class: 'Notifications::ProjectPublished' do
+    initiating_user
+    project
+  end
+
+  factory :status_change_on_idea_you_follow, parent: :notification, class: 'Notifications::StatusChangeOnIdeaYouFollow' do
     association :post, factory: :idea
     project
     association :post_status, factory: :idea_status
@@ -217,41 +213,7 @@ FactoryBot.define do
     end
   end
 
-  factory :status_change_on_commented_initiative, parent: :notification, class: 'Notifications::StatusChangeOnCommentedInitiative' do
-    association :post, factory: :initiative
-    association :post_status, factory: :initiative_status
-    before(:create) do |notification|
-      notification.post.initiative_status_changes.create!(initiative_status: notification.post_status)
-    end
-  end
-
-  factory :status_change_on_reacted_idea, parent: :notification, class: 'Notifications::StatusChangeOnReactedIdea' do
-    association :post, factory: :idea
-    project
-    association :post_status, factory: :idea_status
-    before(:create) do |notification|
-      notification.post.idea_status = notification.post_status
-    end
-  end
-
-  factory :status_change_on_reacted_initiative, parent: :notification, class: 'Notifications::StatusChangeOnReactedInitiative' do
-    association :post, factory: :initiative
-    association :post_status, factory: :initiative_status
-    before(:create) do |notification|
-      notification.post.initiative_status_changes.create!(initiative_status: notification.post_status)
-    end
-  end
-
-  factory :status_change_of_your_idea, parent: :notification, class: 'Notifications::StatusChangeOfYourIdea' do
-    association :post, factory: :idea
-    project
-    association :post_status, factory: :idea_status
-    before(:create) do |notification|
-      notification.post.idea_status = notification.post_status
-    end
-  end
-
-  factory :status_change_of_your_initiative, parent: :notification, class: 'Notifications::StatusChangeOfYourInitiative' do
+  factory :status_change_on_initiative_you_follow, parent: :notification, class: 'Notifications::StatusChangeOnInitiativeYouFollow' do
     association :post, factory: :initiative
     association :post_status, factory: :initiative_status
     before(:create) do |notification|

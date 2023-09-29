@@ -425,7 +425,7 @@ RSpec.describe Idea do
       travel_to t
       idea = create(:idea, publication_status: 'published')
       travel_to t + 1.week
-      idea.update(publication_status: 'closed')
+      idea.update(publication_status: 'draft')
       travel_to t + 1.week
       idea.update(publication_status: 'published')
       expect(idea.published_at.to_i).to eq t.to_i

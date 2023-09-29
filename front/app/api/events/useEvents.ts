@@ -14,6 +14,8 @@ const fetchEvents = (filters: InputParameters) => {
     pageSize,
     projectPublicationStatuses: project_publication_statuses,
     staticPageId: static_page_id,
+    attendeeId: attendee_id,
+    ongoing_during,
   } = filters;
   return fetcher<IEvents>({
     path: '/events',
@@ -27,6 +29,9 @@ const fetchEvents = (filters: InputParameters) => {
       'page[number]': pageNumber,
       'page[size]': pageSize,
       project_publication_statuses,
+      attendee_id,
+      ongoing_during:
+        ongoing_during && `[${ongoing_during[0]}, ${ongoing_during[1]}]`,
     },
   });
 };
@@ -42,16 +47,20 @@ const useEvents = ({
   sort,
   projectPublicationStatuses,
   pageNumber,
+  attendeeId,
+  ongoing_during,
 }: InputParameters) => {
   const queryParams: InputParameters = {
     projectPublicationStatuses,
-    sort: currentAndFutureOnly ? 'start_at' : pastOnly ? '-start_at' : sort,
+    sort: sort || (currentAndFutureOnly ? 'start_at' : '-start_at'),
     endsOnOrAfterDate: currentAndFutureOnly ? newDate : undefined,
     endsBeforeDate: pastOnly ? newDate : undefined,
     pageNumber,
     pageSize,
     projectIds,
     staticPageId,
+    attendeeId,
+    ongoing_during,
   };
 
   return useQuery<IEvents, CLErrors, IEvents, EventsKeys>({

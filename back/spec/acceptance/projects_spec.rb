@@ -172,18 +172,29 @@ resource 'Projects' do
         project = create(:continuous_budgeting_project)
         basket = create(:basket, participation_context: project, user: @user)
         do_request id: project.id
-        expect(status).to eq 200
-        expect(response_data.dig(:relationships, :user_basket, :data, :id)).to eq basket.id
+        assert_status 200
+        expect(json_response.dig(:data, :relationships, :user_basket, :data, :id)).to eq basket.id
         expect(response_data.dig(:attributes, :action_descriptor, :voting)).to eq(
           { enabled: true, disabled_reason: nil }
         )
+      end
+
+      example 'Get a project with followers', document: false do
+        project = create(:project)
+        followers = [@user, create(:user)].map do |user|
+          create(:follower, followable: project, user: user)
+        end
+        do_request id: project.id
+        assert_status 200
+        expect(json_response.dig(:data, :attributes, :followers_count)).to eq 2
+        expect(json_response.dig(:data, :relationships, :user_follower, :data, :id)).to eq followers.first.id
       end
 
       example 'Get a project on a timeline project includes the current_phase', document: false do
         project = create(:project_with_current_phase)
         current_phase = project.phases[2]
         do_request id: project.id
-        expect(status).to eq 200
+        assert_status 200
         expect(json_response.dig(:data, :relationships, :current_phase, :data, :id)).to eq current_phase.id
         expect(json_response[:included].pluck(:id)).to include(current_phase.id)
       end
@@ -192,7 +203,7 @@ resource 'Projects' do
         idea = create(:idea)
         project = idea.project
         do_request id: project.id
-        expect(status).to eq 200
+        assert_status 200
         expect(json_response.dig(:data, :attributes, :participants_count)).to eq 1
         expect(json_response.dig(:data, :attributes, :avatars_count)).to eq 1
       end
@@ -202,7 +213,7 @@ resource 'Projects' do
       let(:slug) { @projects.first.slug }
 
       example_request 'Get one project by slug' do
-        expect(status).to eq 200
+        assert_status 200
         expect(json_response.dig(:data, :id)).to eq @projects.first.id
       end
 
@@ -211,7 +222,7 @@ resource 'Projects' do
 
         example 'Get an unexisting project by slug', document: false do
           do_request
-          expect(status).to eq 404
+          assert_status 404
         end
       end
     end
@@ -295,26 +306,6 @@ resource 'Projects' do
           expect(json_response.dig(:data, :attributes, :header_bg)).to be_present
           # New projects are added to the top
           expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :ordering)).to eq 0
-        end
-
-        example 'Log activities', document: false do
-          # It's easier to use a null object instead of a more restrictive spy here
-          # because some of the expected jobs are configured before being queued:
-          #   LogActivityJob.set(...).perform_later(...)
-          stub_const('LogActivityJob', double.as_null_object)
-
-          do_request
-          project = Project.find(response_data[:id])
-
-          expect(LogActivityJob).to have_received('perform_later').exactly(2).times
-
-          expect(LogActivityJob)
-            .to have_received('perform_later')
-            .with(project, 'created', @user, be_a(Numeric))
-
-          expect(LogActivityJob)
-            .to have_received('perform_later')
-            .with(project, 'draft', @user, be_a(Numeric), payload: [nil, 'draft'])
         end
 
         example 'Create a project in a folder' do
@@ -658,26 +649,6 @@ resource 'Projects' do
         end
       end
 
-      example 'Log activities', document: false do
-        # It's easier to use a null object instead of a more restrictive spy here
-        # because some of the expected jobs are configured before being queued:
-        #   LogActivityJob.set(...).perform_later(...)
-        stub_const('LogActivityJob', double.as_null_object)
-
-        do_request
-        project = Project.find(response_data[:id])
-
-        expect(LogActivityJob).to have_received('perform_later').exactly(2).times
-
-        expect(LogActivityJob)
-          .to have_received('perform_later')
-          .with(project, 'changed', @user, be_a(Numeric))
-
-        expect(LogActivityJob)
-          .to have_received('perform_later')
-          .with(project, 'archived', @user, be_a(Numeric), payload: %w[published archived])
-      end
-
       example 'Add a project to a folder' do
         folder = create(:project_folder)
 
@@ -814,19 +785,23 @@ resource 'Projects' do
         expect(json_response).to eq(
           {
             data: {
-              results: [
-                {
-                  inputType: 'multiselect',
-                  question: { en: 'What are your favourite pets?' },
-                  required: true,
-                  totalResponses: 3,
-                  answers: [
-                    { answer: { en: 'Cat' }, responses: 2 },
-                    { answer: { en: 'Dog' }, responses: 1 }
-                  ]
-                }
-              ],
-              totalSubmissions: 2
+              type: 'survey_results',
+              attributes: {
+                results: [
+                  {
+                    inputType: 'multiselect',
+                    question: { en: 'What are your favourite pets?' },
+                    required: true,
+                    totalResponses: 3,
+                    answers: [
+                      { answer: { en: 'Cat' }, responses: 2 },
+                      { answer: { en: 'Dog' }, responses: 1 }
+                    ],
+                    customFieldId: multiselect_field.id
+                  }
+                ],
+                totalSubmissions: 2
+              }
             }
           }
         )
@@ -874,7 +849,7 @@ resource 'Projects' do
         do_request
         expect(status).to eq 200
 
-        expect(json_response).to eq({ data: { totalSubmissions: 3 } })
+        expect(json_response[:data][:attributes]).to eq({ totalSubmissions: 3 })
       end
     end
 

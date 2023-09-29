@@ -7,10 +7,13 @@ export type InputsKeys = Keys<typeof inputsKeys>;
 type AuthorCustomFromFilterKey = `author_custom_${string}_from`;
 type AuthorCustomToFilterKey = `author_custom_${string}_to`;
 type AuthorCustomInFilterKey = `author_custom_${string}_in`;
+type InputCustomFromFilterKey = `input_custom_${string}_from`;
+type InputCustomToFilterKey = `input_custom_${string}_to`;
+type InputCustomInFilterKey = `input_custom_${string}_in`;
 
 export type IInputsFilterParams = {
   search?: string;
-  tag_ids?: string[];
+  tag_ids?: string[] | null[];
   published_at_from?: string;
   published_at_to?: string;
   reactions_from?: string | number;
@@ -21,7 +24,11 @@ export type IInputsFilterParams = {
   comments_to?: string | number;
 } & { [K in AuthorCustomFromFilterKey]?: string } & {
   [K in AuthorCustomToFilterKey]?: string;
-} & { [K in AuthorCustomInFilterKey]?: string[] };
+} & { [K in AuthorCustomInFilterKey]?: string[] } & {
+  [K in InputCustomFromFilterKey]?: string;
+} & {
+  [K in InputCustomToFilterKey]?: string;
+} & { [K in InputCustomInFilterKey]?: string[] };
 
 export type IInputsQueryParams = {
   pageNumber?: number;
@@ -58,6 +65,9 @@ export interface IInputsData {
 export interface IInputs {
   data: IInputsData[];
   links: ILinks;
+  meta: {
+    filtered_count: number;
+  };
 }
 
 export interface IInput {

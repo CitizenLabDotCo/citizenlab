@@ -122,19 +122,26 @@ export interface IIdeaData {
     };
     anonymous: boolean;
     author_hash: string;
+    followers_count: number;
   };
   relationships: {
-    topics?: {
-      data: IRelationship[];
-    };
-    idea_images: {
-      data: IRelationship[] | null;
+    assignee?: {
+      data: IRelationship | null;
     };
     author?: {
       data: IRelationship | null;
     };
-    assignee?: {
-      data: IRelationship | null;
+    idea_images: {
+      data: IRelationship[] | null;
+    };
+    idea_status: {
+      data: IRelationship;
+    };
+    ideas_phases: {
+      data: {
+        id: string;
+        type: 'ideas_phase';
+      }[];
     };
     phases: {
       data: IRelationship[];
@@ -142,8 +149,11 @@ export interface IIdeaData {
     project: {
       data: IRelationship;
     };
-    idea_status: {
-      data: IRelationship;
+    topics?: {
+      data: IRelationship[];
+    };
+    user_follower: {
+      data: IRelationship | null;
     };
     user_reaction?: {
       data: IRelationship | null;

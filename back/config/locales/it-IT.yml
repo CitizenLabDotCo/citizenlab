@@ -15,6 +15,10 @@ it:
     rejected: rifiutato
     rejected_description: Questa idea è stata respinta
   initiative_statuses:
+    review_pending: in attesa di revisione
+    review_pending_description: in attesa di revisione
+    changes_requested: modifiche richieste
+    changes_requested_description: modifiche richieste
     proposed: proposto
     proposed_description: proposto
     expired: scaduto
@@ -181,6 +185,8 @@ it:
       <p>I promotori sono invitati a presentare la loro proposta alla prossima riunione del consiglio. Forniremo un aggiornamento ufficiale.</p>
     default_eligibility_criteria: >
       <ul> <li>Deve rientrare nei settori e nelle competenze della politica locale</li> <li>Serve l'interesse pubblico piuttosto che il tuo interesse individuale</li> <li>Non discrimina in base al sesso, razza, età o provenienza</li> <li>Non danneggia gli altri</li> </ul>
+    default_posting_tips: >
+      <ul><li>Prenditi il tempo per elaborare la tua proposta. Se necessario, scrivi prima una bozza e poi fai un copia-incolla qui.</li><li>Scegli un titolo significativo che spieghi chiaramente cosa comporta la tua proposta.</li><li>Visualizzate la vostra proposta con un'immagine adatta per farla risaltare!</li><li>Aggiungi allegati rilevanti, come video, esempi ispiratori, dettagli tecnici o piani.</li><li>Condividi la tua idea sui social media e altri canali per raccogliere il sostegno degli altri.</li></ul>
   reset_password_mailer:
     send_reset_password:
       cta_reset_password: 'Ripristina la tua password'

@@ -95,6 +95,25 @@ describe MultiTenancy::Templates::TenantSerializer do
       expect(template.dig('models', 'static_page', 0, 'remote_header_bg_url')).to match(%r{/uploads/.*/static_page/header_bg/.*.jpg})
     end
 
+    it 'successfully copies over cosponsors_intiatives' do
+      initiative = create(:initiative, title_multiloc: { en: 'initiative-1' })
+      user = create(:user, email: 'user-1@g.com')
+      create(:cosponsors_initiative, user: user, initiative: initiative)
+
+      template = tenant_serializer.run(deserializer_format: true)
+
+      tenant = create(:tenant)
+      tenant.switch do
+        MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
+
+        expect(CosponsorsInitiative.count).to be 1
+
+        cosponsors_initiative = CosponsorsInitiative.first
+        expect(cosponsors_initiative.user.email).to eq user.email
+        expect(cosponsors_initiative.initiative.title_multiloc).to eq initiative.title_multiloc
+      end
+    end
+
     it 'successfully copies over native surveys and responses' do
       IdeaStatus.create_defaults
 

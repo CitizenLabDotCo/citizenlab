@@ -13,7 +13,7 @@ import {
   IdeaDefaultSortMethod,
   InputTerm,
   ParticipationContext,
-} from 'services/participationContexts';
+} from 'utils/participationContexts';
 import { Keys } from 'utils/cl-react-query/types';
 
 // Keys
@@ -64,6 +64,7 @@ export interface IProjectAttributes extends ParticipationContext {
   header_bg: ProjectHeaderBgImageSizes;
   comments_count: number;
   avatars_count: number;
+  followers_count: number;
   visible_to: Visibility;
   process_type: ProcessType;
   timeline_active?: 'past' | 'present' | 'future' | null;
@@ -113,6 +114,9 @@ export interface IProjectData {
       data: IRelationship | null;
     };
     admin_publication: {
+      data: IRelationship | null;
+    };
+    user_follower: {
       data: IRelationship | null;
     };
   };

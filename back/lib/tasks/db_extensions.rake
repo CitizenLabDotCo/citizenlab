@@ -13,12 +13,24 @@
 namespace :db do
   desc 'Also create shared_extensions Schema'
   task extensions: :environment do
-    # Create Schema
-    ActiveRecord::Base.connection.execute 'CREATE SCHEMA IF NOT EXISTS shared_extensions;'
-    # Enable UUID-OSSP
-    ActiveRecord::Base.connection.execute 'CREATE EXTENSION IF NOT EXISTS "uuid-ossp" SCHEMA shared_extensions;'
-    ActiveRecord::Base.connection.execute 'CREATE EXTENSION IF NOT EXISTS "pgcrypto" SCHEMA shared_extensions;'
-    ActiveRecord::Base.connection.execute 'CREATE EXTENSION IF NOT EXISTS "postgis" SCHEMA shared_extensions;'
+    # We must use `:each_current_configuration` to mimic the behavior of `db:create`
+    # which sometimes runs for more than one environment, potentially creating more than
+    # one database. If we don't reproduce this behavior, the extensions will only be
+    # installed correctly for database of the first environment (`Rails.env`). Currently,
+    # there is only one situation where the `db:create` task is run for more than one
+    # environment: when running it for the `development` environment, it will also run
+    # for the `test` environment.
+    ActiveRecord::Tasks::DatabaseTasks.send(:each_current_configuration, Rails.env) do |db_config|
+      ActiveRecord::Base.establish_connection(db_config)
+
+      # Create the schema that will hold the extensions
+      ActiveRecord::Base.connection.execute 'CREATE SCHEMA IF NOT EXISTS shared_extensions;'
+
+      # Install the extensions
+      ActiveRecord::Base.connection.execute 'CREATE EXTENSION IF NOT EXISTS "uuid-ossp" SCHEMA shared_extensions;'
+      ActiveRecord::Base.connection.execute 'CREATE EXTENSION IF NOT EXISTS "pgcrypto" SCHEMA shared_extensions;'
+      ActiveRecord::Base.connection.execute 'CREATE EXTENSION IF NOT EXISTS "postgis" SCHEMA shared_extensions;'
+    end
   end
 
   desc 'Erase all tables'

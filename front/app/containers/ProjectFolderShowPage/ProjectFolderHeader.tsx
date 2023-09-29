@@ -8,7 +8,7 @@ import {
 } from 'components/ProjectableHeader';
 
 // hooks
-import { useWindowSize } from '@citizenlab/cl2-component-library';
+import { useWindowSize, Box } from '@citizenlab/cl2-component-library';
 
 // style
 import styled from 'styled-components';
@@ -18,10 +18,6 @@ import { media } from 'utils/styleUtils';
 import { IProjectFolderData } from 'api/project_folders/types';
 
 const StyledProjectFolderShareButton = styled(ProjectFolderShareButton)`
-  position: absolute;
-  right: 25px;
-  bottom: 20px;
-
   ${media.tablet`
     right: 10px;
     top: 10px;
@@ -49,11 +45,19 @@ const ProjectFolderHeader = memo<Props>(({ projectFolder, className }) => {
           placeholderBg="transparent"
           alt=""
         />
-        <StyledProjectFolderShareButton
-          projectFolder={projectFolder}
-          buttonStyle="white"
-          padding={smallerThan1100px ? '4px 10px' : '6px 13px'}
-        />
+        <Box
+          position="absolute"
+          bottom="20px"
+          right="25px"
+          display="flex"
+          justifyContent="center"
+        >
+          <StyledProjectFolderShareButton
+            projectFolder={projectFolder}
+            buttonStyle="white"
+            padding={smallerThan1100px ? '4px 10px' : '6px 13px'}
+          />
+        </Box>
       </HeaderImageContainer>
     );
   }

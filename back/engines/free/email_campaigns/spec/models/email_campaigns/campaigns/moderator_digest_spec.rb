@@ -18,6 +18,7 @@ RSpec.describe 'EmailCampaigns::Campaigns::ModeratorDigest', skip: skip_reason d
     let!(:old_ideas) { create_list(:idea, 2, project: project, published_at: 20.days.ago) }
     let!(:new_ideas) { create_list(:idea, 3, project: project, published_at: 1.day.ago) }
     let!(:reaction) { create(:reaction, mode: 'up', reactable: new_ideas.first) }
+    let!(:comment) { create(:comment, idea: old_ideas[0]) }
     let!(:other_idea) { create(:idea, project: create(:project)) }
     let!(:draft) { create(:idea, project: project, publication_status: 'draft') }
 
@@ -25,10 +26,10 @@ RSpec.describe 'EmailCampaigns::Campaigns::ModeratorDigest', skip: skip_reason d
       command = campaign.generate_commands(recipient: moderator).first
 
       expect(
-        command.dig(:event_payload, :statistics, :activities, :new_ideas, :increase)
+        command.dig(:event_payload, :statistics, :new_ideas_increase)
       ).to eq(new_ideas.size)
       expect(
-        command.dig(:event_payload, :statistics, :activities, :new_reactions, :increase)
+        command.dig(:event_payload, :statistics, :new_comments_increase)
       ).to eq(1)
       expect(
         command.dig(:event_payload, :top_ideas).pluck(:id)
@@ -73,6 +74,12 @@ RSpec.describe 'EmailCampaigns::Campaigns::ModeratorDigest', skip: skip_reason d
         commands.flat_map { |command| command.dig(:event_payload, :top_ideas).pluck(:id) }
       ).not_to include response.id
     end
+
+    it 'does not generate a command for archived projects' do
+      project.admin_publication.update! publication_status: 'archived'
+      commands = campaign.generate_commands(recipient: moderator).first
+      expect(commands).to be_blank
+    end
   end
 
   describe 'apply_recipient_filters' do
@@ -91,6 +98,29 @@ RSpec.describe 'EmailCampaigns::Campaigns::ModeratorDigest', skip: skip_reason d
       create(:user)
 
       expect(campaign.apply_recipient_filters).to match([moderator])
+    end
+  end
+
+  describe 'zero_statistics?' do
+    let(:campaign) { build(:moderator_digest_campaign) }
+    let(:project) { create(:project) }
+
+    it 'returns true when no significant stats' do
+      pp campaign.send(:statistics, project)
+
+      stats = { new_ideas_increase: 0,
+                new_comments_increase: 0,
+                new_participants_increase: 0 }
+
+      expect(campaign.send(:zero_statistics?, stats)).to be true
+    end
+
+    it 'returns false when significant stats' do
+      stats = { new_ideas_increase: 1,
+                new_comments_increase: 0,
+                new_participants_increase: 0 }
+
+      expect(campaign.send(:zero_statistics?, stats)).to be false
     end
   end
 end

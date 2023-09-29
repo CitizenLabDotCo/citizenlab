@@ -2,6 +2,28 @@
 
 class InitiativeStatusService
   MANUAL_TRANSITIONS = {
+    'review_pending' => {
+      'proposed' => {
+        feedback_required: false
+      },
+      'changes_requested' => {
+        feedback_required: true
+      },
+      'ineligible' => {
+        feedback_required: true
+      }
+    },
+    'changes_requested' => {
+      'review_pending' => {
+        feedback_required: true
+      },
+      'proposed' => {
+        feedback_required: false
+      },
+      'ineligible' => {
+        feedback_required: true
+      }
+    },
     'proposed' => {
       'answered' => {
         feedback_required: true
@@ -50,10 +72,7 @@ class InitiativeStatusService
       },
       'expired' => {
         scope_contition: lambda { |initiative_scope|
-          initiative_scope.where(
-            'initiatives.published_at < ?',
-            (Time.now - AppConfiguration.instance.settings('initiatives', 'days_limit').days)
-          )
+          initiative_scope.proposed_before(Time.now - AppConfiguration.instance.settings('initiatives', 'days_limit').days)
         }
       }
     }
@@ -74,17 +93,21 @@ class InitiativeStatusService
         status_id_to = InitiativeStatus.find_by(code: status_code_to)&.id
         next unless status_id_to
 
-        changes = InitiativeStatusChange.create!(initiatives.ids.map do |id|
-          {
-            initiative_id: id,
-            initiative_status_id: status_id_to
-          }
-        end)
-        # Log the status change activities.
-        InitiativeStatusChange.where(id: changes.map(&:id)).includes(:initiative, :initiative_status).each do |change|
-          log_status_change change
-        end
+        transition!(initiatives.ids, status_id_to)
       end
+    end
+  end
+
+  def transition!(initiative_ids, status_id_to)
+    changes = InitiativeStatusChange.create!(initiative_ids.map do |id|
+      {
+        initiative_id: id,
+        initiative_status_id: status_id_to
+      }
+    end)
+    # Log the status change activities.
+    InitiativeStatusChange.where(id: changes.map(&:id)).includes(:initiative, :initiative_status).each do |change|
+      log_status_change change
     end
   end
 
@@ -106,7 +129,11 @@ class InitiativeStatusService
   end
 
   def manual_status_ids
-    InitiativeStatus.where(code: MANUAL_TRANSITIONS.values.map(&:keys).flatten.uniq).ids
+    statuses = InitiativeStatus.where(code: MANUAL_TRANSITIONS.values.map(&:keys).flatten.uniq)
+
+    statuses = statuses.where.not(code: InitiativeStatus.initial_status_code)
+
+    statuses.ids
   end
 
   def log_status_change(change, user: nil)

@@ -15,6 +15,10 @@ es-CL:
     rejected: rechazada
     rejected_description: Esta idea ha sido rechazada
   initiative_statuses:
+    review_pending: revisión pendiente
+    review_pending_description: revisión pendiente
+    changes_requested: cambios solicitados
+    changes_requested_description: cambios solicitados
     proposed: propuesta
     proposed_description: propuesta
     expired: finalizado
@@ -181,6 +185,8 @@ es-CL:
       <p>Se invita a los iniciadores a presentar su propuesta en la próxima reunión del consejo. Proporcionaremos una actualización oficial.</p>
     default_eligibility_criteria: >
       <ul> <li>Debe estar dentro de las áreas y competencias de la política local</li> <li>Es de interés público más que un interés particular.</li> <li>No discrimina en base a género, raza, edad u origen...</li> <li>No daña a los demás</li> </ul>
+    default_posting_tips: >
+      <ul><li>Tómate el tiempo necesario para elaborar tu propuesta. Si es necesario, escribe primero un borrador y luego cópiela y pégala aquí. </li><li>Elige un título explicativo que ilustre claramente lo que implica tu propuesta.</li><li>Asegúrate de visibilizar tu propuesta con una imagen adecuada, para que destaque más.</li><li>Añade anexos relevantes, como vídeos, ejemplos inspiradores, detalles técnicos o planos.</li><li>Comparte tu idea en las redes sociales y otros canales para conseguir votos.</li></ul>
   reset_password_mailer:
     send_reset_password:
       cta_reset_password: 'Restablece tu contraseña'

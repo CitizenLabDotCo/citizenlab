@@ -20,14 +20,15 @@ import { string, object } from 'yup';
 import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import TextAreaMultilocWithLocaleSwitcher from 'components/HookForm/TextAreaMultilocWithLocaleSwitcher';
-import RadioGroup, { Radio } from 'components/HookForm/RadioGroup';
+import RadioGroup from 'components/HookForm/RadioGroup';
+import Radio from 'components/HookForm/RadioGroup/Radio';
+
 import ColorPicker from 'components/HookForm/ColorPicker';
 import Feedback from 'components/HookForm/Feedback';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 // i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 export interface FormValues {
@@ -40,7 +41,7 @@ export interface FormValues {
 export type Props = {
   onSubmit: (formValues: FormValues) => void | Promise<void>;
   defaultValues?: Partial<FormValues>;
-} & WrappedComponentProps;
+};
 
 const StyledSection = styled(Section)`
   margin-bottom: 40px;
@@ -73,11 +74,8 @@ const StyledLabel = styled(Label)`
   margin-bottom: 32px;
 `;
 
-const IdeaStatusForm = ({
-  defaultValues,
-  onSubmit,
-  intl: { formatMessage },
-}: Props) => {
+const IdeaStatusForm = ({ defaultValues, onSubmit }: Props) => {
+  const { formatMessage } = useIntl();
   const schema = object({
     color: string(),
     title_multiloc: validateMultilocForEveryLocale(
@@ -121,7 +119,6 @@ const IdeaStatusForm = ({
           <SectionField>
             <InputMultilocWithLocaleSwitcher
               label={formatMessage(messages.fieldTitle)}
-              type="text"
               name="title_multiloc"
             />
           </SectionField>
@@ -200,4 +197,4 @@ const IdeaStatusForm = ({
   );
 };
 
-export default injectIntl(IdeaStatusForm);
+export default IdeaStatusForm;

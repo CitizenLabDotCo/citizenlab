@@ -23,8 +23,12 @@ FactoryBot.define do
       initiative_status { nil }
     end
 
-    before :create do |initiative|
-      if initiative.initiative_status_changes.blank?
+    transient do
+      build_status_change { true }
+    end
+
+    before :create do |initiative, evaluator|
+      if initiative.initiative_status_changes.blank? && evaluator.build_status_change
         initiative.initiative_status_changes << build(:initiative_status_change, initiative: initiative, official_feedback: nil)
       end
     end

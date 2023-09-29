@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { isString, isEmpty, capitalize } from 'lodash-es';
 
 // libraries
-import { MentionsInput, Mention } from 'react-mentions';
+import { MentionsInput, Mention, MentionItem } from 'react-mentions';
 
 // components
 import Error from 'components/UI/Error';
@@ -11,6 +11,9 @@ import Error from 'components/UI/Error';
 import styled, { useTheme } from 'styled-components';
 import { colors, fontSizes, defaultStyles } from 'utils/styleUtils';
 import { transparentize } from 'polished';
+
+// Utils
+import { extractIdsFromValue } from './utils';
 
 // typings
 import { Locale } from 'typings';
@@ -78,6 +81,12 @@ export interface Props {
   ariaLabel?: string;
   children?: React.ReactNode;
   roles?: MentionRoles[];
+  trigger?: string;
+  showUniqueUsers?: boolean;
+  onChangeMentions?: (mentions: MentionItem[]) => void;
+  // Determines whether we get back the user id or slug
+  // in mention of onChangeMentions
+  userReferenceType?: 'slug' | 'id';
 }
 
 const MentionsTextArea = ({
@@ -92,6 +101,7 @@ const MentionsTextArea = ({
   background = '#fff',
   rows,
   onChange,
+  onChangeMentions,
   onBlur,
   onFocus,
   locale,
@@ -107,6 +117,9 @@ const MentionsTextArea = ({
   error,
   children,
   roles,
+  trigger = '@',
+  userReferenceType = 'slug',
+  showUniqueUsers = false,
 }: Props) => {
   const textareaElement = useRef<HTMLTextAreaElement | null>(null);
   const theme = useTheme();
@@ -178,7 +191,7 @@ const MentionsTextArea = ({
   };
 
   const mentionDisplayTransform = (_id, display) => {
-    return `@${display}`;
+    return `${trigger}${display}`;
   };
 
   const handleOnChange = (event) => {
@@ -210,7 +223,7 @@ const MentionsTextArea = ({
         mention: query.toLowerCase(),
         post_id: postId,
         post_type: capitalize(postType) as 'Idea' | 'Initiative',
-        roles: roles,
+        roles,
       };
 
       const response = await getMentions(queryParameters);
@@ -220,8 +233,15 @@ const MentionsTextArea = ({
           display: `${user.attributes.first_name} ${
             user.attributes.last_name ? user.attributes.last_name : ''
           }`,
-          id: user.attributes.slug,
+          id: userReferenceType === 'slug' ? user.attributes.slug : user.id,
         }));
+      }
+
+      if (showUniqueUsers && value) {
+        const ids = extractIdsFromValue(value);
+        const uniqueUsers = users.filter((user) => !ids.includes(user.id));
+        callback(uniqueUsers);
+        return;
       }
 
       callback(users);
@@ -241,8 +261,10 @@ const MentionsTextArea = ({
           rows={rows}
           value={value || ''}
           placeholder={placeholder}
-          markup={'@[__display__](__id__)'}
-          onChange={handleOnChange}
+          onChange={(event, _newValue, _newPlainTextValue, mentions) => {
+            handleOnChange(event);
+            onChangeMentions?.(mentions);
+          }}
           onFocus={handleOnFocus}
           onBlur={handleOnBlur}
           aria-label={ariaLabel}
@@ -251,11 +273,12 @@ const MentionsTextArea = ({
           autoFocus={false}
         >
           <Mention
-            trigger="@"
+            trigger={trigger}
             data={getUsers}
             appendSpaceOnAdd={true}
             style={mentionStyle}
             displayTransform={mentionDisplayTransform}
+            markup={'@[__display__](__id__)'}
           />
         </StyledMentionsInput>
         {children}

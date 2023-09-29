@@ -1,5 +1,5 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$schema": "http://json-schema.org/draft-06/schema#",
   "description": "Schema for validating the filters associated with a summary",
   "type": "object",
   "additionalProperties": false,
@@ -25,35 +25,53 @@
     "comments_to": {
       "type": "number"
     },
+    "published_at_from": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "published_at_to": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
     "tag_ids": {
       "type": "array",
       "items": {
-        "type": "string"
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
       }
+    }
+  },
+  "patternProperties": {
+    "^(author|input)_custom_([a-f0-9\-]+)_(from|to)$": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "number"
+        }
+      ]
     },
-    "patternProperties": {
-      "^author_custom_([a-f0-9-]+)_(from|to)$": {
+    "^(author|input)_custom_([a-f0-9\-]+)$": {
+      "type": "array",
+      "items": {
         "anyOf": [
           {
             "type": "string"
           },
           {
             "type": "number"
+          },
+          {
+            "type": "null"
           }
         ]
-      },
-      "^author_custom_([a-f0-9-]+)$": {
-        "type": "array",
-        "items": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "number"
-            }
-          ]
-        }
       }
     }
   }

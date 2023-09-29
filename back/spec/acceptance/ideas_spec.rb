@@ -77,7 +77,7 @@ resource 'Ideas' do
 
       describe do
         before do
-          @ideas = %w[published published draft published spam published published].map do |ps|
+          @ideas = %w[published published draft published published published].map do |ps|
             create(:idea, publication_status: ps)
           end
           create(:idea, project: create(:continuous_native_survey_project))
@@ -261,12 +261,14 @@ resource 'Ideas' do
           expect(json_response[:data].size).to eq 6
         end
 
-        example 'List all ideas includes the user_reaction', document: false do
+        example 'List all ideas includes the user_reaction and user_follower', document: false do
           reaction = create(:reaction, user: @user)
+          follower = create(:follower, followable: create(:idea), user: @user)
 
           do_request
           json_response = json_parse(response_body)
-          expect(json_response[:data].filter_map { |d| d[:relationships][:user_reaction][:data] }.first[:id]).to eq reaction.id
+          expect(json_response[:data].filter_map { |d| d.dig(:relationships, :user_reaction, :data, :id) }.first).to eq reaction.id
+          expect(json_response[:data].filter_map { |d| d.dig(:relationships, :user_follower, :data, :id) }.first).to eq follower.id
           expect(json_response[:included].pluck(:id)).to include reaction.id
         end
 
@@ -383,7 +385,7 @@ resource 'Ideas' do
           @user = create(:admin)
           header_token_for @user
 
-          @ideas = %w[published published draft published spam published published].map do |ps|
+          @ideas = %w[published published draft published published published].map do |ps|
             create(:idea, publication_status: ps)
           end
         end
@@ -1213,20 +1215,50 @@ resource 'Ideas' do
             end
 
             context 'Moving the idea from a voting phase' do
-              let(:project) { create(:project_with_past_ideation_and_active_budgeting_phase) }
-              let(:idea) { create(:idea, project: project, phases: [project.phases.last]) }
+              let!(:project) { create(:project_with_past_ideation_and_active_budgeting_phase) }
+              let!(:idea) { create(:idea, project: project, phases: project.phases) }
+
               let(:id) { idea.id }
 
-              context 'Moving between phases' do
+              # TODO: Baskets_ideas
+              before do
+                basket = create(:basket, participation_context: project.phases.last)
+                basket.update!(ideas: [idea], submitted_at: Time.zone.now)
+                basket.baskets_ideas.update_all(votes: 1)
+                basket.update_counts!
+              end
+
+              context 'Removing the idea from a voting phase' do
                 let(:phase_ids) { [project.phases.first.id] }
 
-                example 'Move the idea from a voting phase', document: false do
+                example 'Successfully removes the idea from a voting phase and recalculates vote counts', document: false do
+                  # Voting counts before
+                  expect(idea.ideas_phases.pluck(:votes_count)).to match_array [0, 1]
+
                   do_request
                   assert_status 200
+
+                  # Voting phase counts after
+                  expect(idea.ideas_phases.pluck(:votes_count)).to match_array [0]
                 end
               end
 
-              context 'Moving between projects' do
+              context 'Add an idea back into a voting phase' do
+                let(:phase_ids) { [project.phases.last.id] }
+
+                example 'Successfully added the idea to the voting phase and restores vote counts', document: false do
+                  # Voting counts before
+                  idea.update!(phases: [project.phases.first])
+                  expect(idea.ideas_phases.pluck(:votes_count)).to match_array [0]
+
+                  do_request
+                  assert_status 200
+
+                  expect(idea.ideas_phases.pluck(:votes_count)).to match_array [1]
+                end
+              end
+
+              context 'Moving to a different project' do
                 let(:new_project) { create(:continuous_project) }
                 let(:project_id) { new_project.id }
 

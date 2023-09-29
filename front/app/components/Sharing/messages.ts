@@ -49,4 +49,8 @@ export default defineMessages({
     id: 'app.components.Sharing.linkCopied',
     defaultMessage: 'Link copied',
   },
+  or: {
+    id: 'app.components.Sharing.or',
+    defaultMessage: 'or',
+  },
 });

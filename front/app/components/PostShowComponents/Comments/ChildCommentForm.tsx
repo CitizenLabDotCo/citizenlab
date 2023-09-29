@@ -6,7 +6,7 @@ import { isNilOrError, isPage } from 'utils/helperUtils';
 import { useLocation } from 'react-router-dom';
 
 // services
-import { canModerateProject } from 'services/permissions/rules/projectPermissions';
+import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 // components
 import Button from 'components/UI/Button';
@@ -41,7 +41,7 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';
 import useAddCommentToIdea from 'api/comments/useAddCommentToIdea';
 import useAddCommentToInitiative from 'api/comments/useAddCommentToInitiative';
-import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
+import OldAnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal/OldAnonymousParticipationConfirmationModal';
 
 const Container = styled.div`
   display: flex;
@@ -458,14 +458,17 @@ const ChildCommentForm = ({
             </label>
           </Form>
         </FormContainer>
-        <AnonymousParticipationConfirmationModal
-          onConfirmAnonymousParticipation={() => {
-            setShowAnonymousConfirmationModal(false);
-            continueSubmission();
-          }}
-          showAnonymousConfirmationModal={showAnonymousConfirmationModal}
-          setShowAnonymousConfirmationModal={setShowAnonymousConfirmationModal}
-        />
+        {showAnonymousConfirmationModal && (
+          <OldAnonymousParticipationConfirmationModal
+            onConfirmAnonymousParticipation={() => {
+              setShowAnonymousConfirmationModal(false);
+              continueSubmission();
+            }}
+            onCloseModal={() => {
+              setShowAnonymousConfirmationModal(false);
+            }}
+          />
+        )}
       </Container>
     );
   }

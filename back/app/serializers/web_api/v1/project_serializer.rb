@@ -6,6 +6,7 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::ParticipationContextSerializer
     :title_multiloc,
     :comments_count,
     :ideas_count,
+    :followers_count,
     :include_all_areas,
     :internal_role,
     :process_type,
@@ -136,6 +137,13 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::ParticipationContextSerializer
   } do |object, params|
     user_basket object, params
   end
+
+  has_one :user_follower, record_type: :follower, if: proc { |object, params|
+    signed_in? object, params
+  } do |object, params|
+    user_follower object, params
+  end
+
   has_one :current_phase, serializer: WebApi::V1::PhaseSerializer, record_type: :phase, if: proc { |object, _params|
     !object.participation_context?
   } do |object|
@@ -154,6 +162,16 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::ParticipationContextSerializer
     else
       current_user(params)&.baskets&.find do |basket|
         basket.participation_context_id == object.id && basket.participation_context_type == 'Project'
+      end
+    end
+  end
+
+  def self.user_follower(object, params)
+    if params[:user_followers]
+      params.dig(:user_followers, [object.id, 'Project'])&.first
+    else
+      current_user(params)&.follows&.find do |follow|
+        follow.followable_id == object.id && follow.followable_type == 'Project'
       end
     end
   end

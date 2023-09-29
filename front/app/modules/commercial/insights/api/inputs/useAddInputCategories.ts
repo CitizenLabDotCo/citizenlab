@@ -28,7 +28,6 @@ const useAddInputCategories = () => {
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({
         queryKey: inputsKeys.item({
-          viewId: variables.viewId,
           id: variables.inputId,
         }),
       });

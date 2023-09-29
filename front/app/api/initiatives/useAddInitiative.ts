@@ -7,12 +7,13 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import initiativesKeys from './keys';
 import { IInitiative, IInitiativeAdd } from './types';
 
-const addInitiative = async (requestBody: IInitiativeAdd) =>
-  fetcher<IInitiative>({
+const addInitiative = async (requestBody: IInitiativeAdd) => {
+  return fetcher<IInitiative>({
     path: `/initiatives`,
     action: 'post',
-    body: requestBody,
+    body: { initiative: requestBody },
   });
+};
 
 const useAddInitiative = () => {
   const queryClient = useQueryClient();
