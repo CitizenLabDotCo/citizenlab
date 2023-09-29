@@ -476,10 +476,17 @@ export default (inputProps: InputProps) => {
   const topicIds = getTopicIds(projectAllowedInputTopics?.data);
   const topicIdsSet = topicIds ? new Set(topicIds) : undefined;
 
-  const topicsData =
-    initiativeTopics ?? topicIdsSet
-      ? ideaTopics?.data.filter((topic) => topicIdsSet?.has(topic.id))
-      : ideaTopics?.data;
+  const getTopicsData = () => {
+    if (initiativeTopics?.data) return initiativeTopics.data;
+
+    if (topicIdsSet) {
+      return ideaTopics?.data.filter((topic) => topicIdsSet?.has(topic.id));
+    }
+
+    return ideaTopics?.data;
+  };
+
+  const topicsData = getTopicsData();
 
   return (
     <DndProvider backend={HTML5Backend}>
