@@ -141,6 +141,13 @@ en:
       main_header: 'Your event is coming up:'
       subject: 'Your event is coming up!'
       preheader: 'Your event is coming up'
+      event_date: 'Date'
+      event_location: 'Location'
+      event_link: 'Online link'
+      event_description: 'Description'
+      event_project: 'Project'
+      cta_go_to_event: 'View the event'
+      cta_add_to_calendar: 'Add to your calendar'
     assignee_digest:
       subject: 'Ideas requiring your feedback: %{numberIdeas}'
       preheader: 'Assignee digest of %{organizationName}'

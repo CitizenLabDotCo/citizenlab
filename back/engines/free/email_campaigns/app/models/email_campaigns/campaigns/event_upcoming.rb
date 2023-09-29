@@ -44,9 +44,11 @@ module EmailCampaigns
       notification = activity.item
       [{
         event_payload: {
+          event_id: notification.event_id,
           event_title_multiloc: notification.event.title_multiloc,
           event_description_multiloc: notification.event.description_multiloc,
           event_start_at: notification.event.start_at.iso8601,
+          event_end_at: notification.event.end_at.iso8601,
           event_location_multiloc: notification.event.location_multiloc,
           event_online_link: notification.event.online_link,
           event_url: Frontend::UrlService.new.model_to_url(notification.event, locale: recipient.locale),

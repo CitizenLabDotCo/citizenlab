@@ -1,1 +1,121 @@
-<!-- render 'email_campaigns/events/card' -->
+<mj-section>
+  <mj-column>
+    <mj-text font-size="22px" font-weight="400" line-height="1.3" padding="24px 25px 0">
+      <div>
+        <%= format_message('main_header') %>
+      </div>
+
+      <div style="font-weight: 700">
+        <%= event_title %>
+      </div>
+    </mj-text>
+  </mj-column>
+</mj-section>
+
+<% if event.project_image_url.present? %>
+  <mj-section padding="24px 25px 0">
+    <mj-column>
+      <mj-image
+              padding-top="0"
+              src="<%= event.project_image_url %>"
+              alt="Project image"
+      />
+    </mj-column>
+  </mj-section>
+<% end %>
+
+<mj-section padding="24px 25px 0">
+  <mj-column>
+    <mj-text font-size="16px" font-weight="700" padding="0 0 12px">
+      <div>
+        <%= format_message('event_date') %>
+      </div>
+
+      <div style="font-weight: 400">
+        <%= event_date %>
+      </div>
+    </mj-text>
+
+    <mj-text font-size="16px" font-weight="700" padding="0 0 12px">
+      <div>
+        <%= format_message('event_description') %>
+      </div>
+
+      <div style="font-weight: 400">
+        <%= event_description %>
+      </div>
+    </mj-text>
+
+    <% if event_location.present? %>
+      <mj-text font-size="16px" font-weight="700" padding="0 0 12px">
+        <div>
+          <%= format_message('event_location') %>
+        </div>
+
+        <div style="font-weight: 400">
+          <%= event_location %>
+        </div>
+      </mj-text>
+    <% end %>
+
+    <% if event_link.present? %>
+      <mj-text font-size="16px" font-weight="700" padding="0 0 12px">
+        <div>
+          <%= format_message('event_link') %>
+        </div>
+
+        <div style="font-weight: 400">
+          <a href="<%= event_link %>">
+            <%= event_link %>
+          </a>
+        </div>
+      </mj-text>
+    <% end %>
+
+    <mj-text font-size="16px" font-weight="700" padding="0 0 12px">
+      <div>
+        <%= format_message('event_project') %>
+      </div>
+
+      <div style="font-weight: 400">
+        <%= event_project %>
+      </div>
+    </mj-text>
+  </mj-column>
+</mj-section>
+
+<mj-section padding="12px 25px 28px">
+  <mj-column>
+    <mj-button
+            align="center"
+            background-color="#044D6C"
+            color="#fff"
+            border-radius="5px"
+            href="<%= event.event_url %>"
+            padding="12px 0">
+      <%= format_message('cta_go_to_event') %>
+    </mj-button>
+  </mj-column>
+
+  <mj-column>
+    <!-- Define a custom CSS class for the secondary CTA button. -->
+    <mj-raw>
+      <style>
+          .box-shadow a {
+              box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.10);
+          }
+      </style>
+    </mj-raw>
+
+    <mj-button
+            align="center"
+            background-color="#FFF"
+            color="#596B7A"
+            border-radius="5px"
+            href="<%= add_to_calendar_url %>"
+            padding="12px 0"
+            css-class="box-shadow">
+      <%= format_message('cta_add_to_calendar') %>
+    </mj-button>
+  </mj-column>
+</mj-section>

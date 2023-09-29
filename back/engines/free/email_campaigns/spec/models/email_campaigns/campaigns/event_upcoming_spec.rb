@@ -22,9 +22,11 @@ RSpec.describe EmailCampaigns::Campaigns::EventUpcoming do
     it 'generates a command with the desired payload and tracked content' do
       expect(command).to match({
         event_payload: hash_including(
+          event_id: event.id,
           event_title_multiloc: event.title_multiloc,
           event_description_multiloc: event.description_multiloc,
           event_start_at: an_instance_of(String),
+          event_end_at: an_instance_of(String),
           event_location_multiloc: event.location_multiloc,
           event_online_link: event.online_link,
           event_url: an_instance_of(String),
