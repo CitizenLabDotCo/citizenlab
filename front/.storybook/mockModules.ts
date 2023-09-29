@@ -4,7 +4,7 @@ const appFolder = path.join(process.cwd(), 'app');
 const rel = (...args: string[]) => path.resolve(path.join(appFolder, ...args));
 
 const mockModules = {
-  'services/locale': rel('services', '__mocks__', 'locale'),
+  'utils/locale': rel('utils', '__mocks__', 'locale'),
   'modules': rel('modules', '__mocks__', 'index'),
   'utils/cl-router/Link': rel('utils', 'cl-router', '__mocks__', 'Link'),
   '@researchgate/react-intersection-observer': path.join(

@@ -85,7 +85,7 @@ self.addEventListener('message', async function (event) {
 })
 
 self.addEventListener('fetch', function (event) {
-  const { request } = event
+  const { request } = event;
   const accept = request.headers.get('accept') || ''
 
   // Bypass server-sent events.
