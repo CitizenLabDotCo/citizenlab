@@ -46,7 +46,7 @@ RSpec.describe EmailCampaigns::EventUpcomingMailer do
 
     it 'assigns view the add to your calendar CTA' do
       expect(mail.body.encoded).to match('Add to your calendar')
-      expect(mail.body.encoded).to match(%r{.*/events/.+\.ics}) # match(events/.*\.ics) # match(%r{http://example\.org/web_api/v1/events/.*\.ics})
+      expect(mail.body.encoded).to match(%r{.*/events/.+\.ics})
     end
   end
 end
