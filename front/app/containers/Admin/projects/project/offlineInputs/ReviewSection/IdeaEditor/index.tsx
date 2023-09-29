@@ -13,7 +13,7 @@ import usePhase from 'api/phases/usePhase';
 
 // components
 import { Box, Button } from '@citizenlab/cl2-component-library';
-import InfoBox from './InfoBox';
+import MetaBox from './MetaBox';
 import IdeaForm from './IdeaForm';
 
 // i18n
@@ -23,9 +23,6 @@ import messages from '../messages';
 
 // styling
 import { colors, stylingConsts } from 'utils/styleUtils';
-
-// utils
-import { getFullName } from 'utils/textUtils';
 
 // typings
 import { FormData } from 'components/Form/typings';
@@ -80,8 +77,6 @@ const IdeaEditor = ({
     ? localize(phase.data.attributes.title_multiloc)
     : undefined;
 
-  const authorName = author ? getFullName(author.data) : undefined;
-  const authorEmail = author?.data.attributes.email;
   const locale = ideaMetadata?.data.attributes.locale;
 
   const disabledReason = formDataValid ? null : (
@@ -100,84 +95,21 @@ const IdeaEditor = ({
         flexDirection="column"
         alignItems="center"
       >
-        {(phaseName || authorEmail || authorName || locale) && (
-          <InfoBox
-            phaseName={phaseName}
-            authorName={authorName}
-            authorEmail={authorEmail}
-            locale={locale}
-          />
-        )}
         {ideaMetadata && (
-          <IdeaForm
-            schema={schema}
-            uiSchema={uiSchema}
-            showAllErrors={true}
-            apiErrors={apiErrors}
-            formData={formData}
-            ideaMetadata={ideaMetadata}
-            setFormData={setFormData}
-          />
-        )}
-      </Box>
-      <Box
-        h="60px"
-        px="24px"
-        pb="4px"
-        w="100%"
-        display="flex"
-        flexDirection="column"
-        justifyContent="flex-end"
-      >
-        {ideaId && (
-          <Tippy
-            disabled={!disabledReason}
-            interactive={true}
-            placement="top"
-            content={disabledReason || <></>}
-          >
-            <div>
-              <Button
-                icon="check"
-                w="100%"
-                processing={loadingApproveIdea}
-                disabled={!formDataValid}
-                onClick={onApproveIdea}
-              >
-                <FormattedMessage {...messages.approve} />
-              </Button>
-            </div>
-          </Tippy>
-        )}
-      </Box>
-      <Box
-        px="12px"
-        borderBottom={`1px ${colors.grey400} solid`}
-        overflowY="scroll"
-        w="100%"
-        h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px - 160px)`}
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-      >
-        {(phaseName || authorEmail || authorName || locale) && (
-          <InfoBox
-            phaseName={phaseName}
-            authorName={authorName}
-            authorEmail={authorEmail}
-            locale={locale}
-          />
-        )}
-        {ideaMetadata && (
-          <IdeaForm
-            schema={schema}
-            uiSchema={uiSchema}
-            showAllErrors={true}
-            apiErrors={apiErrors}
-            formData={formData}
-            ideaMetadata={ideaMetadata}
-            setFormData={setFormData}
-          />
+          <>
+            {author && (
+              <MetaBox phaseName={phaseName} locale={locale} author={author} />
+            )}
+            <IdeaForm
+              schema={schema}
+              uiSchema={uiSchema}
+              showAllErrors={true}
+              apiErrors={apiErrors}
+              formData={formData}
+              ideaMetadata={ideaMetadata}
+              setFormData={setFormData}
+            />
+          </>
         )}
       </Box>
       <Box
