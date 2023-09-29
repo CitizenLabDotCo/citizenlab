@@ -46,7 +46,7 @@ const CosponsorsFormSection = ({ cosponsorships }: Props) => {
   };
 
   const cosponsorsNumber =
-    appConfiguration.data.attributes.settings.initiatives?.cosponsors_number;
+    appConfiguration.data.attributes.settings.initiatives.cosponsors_number;
 
   return (
     <>

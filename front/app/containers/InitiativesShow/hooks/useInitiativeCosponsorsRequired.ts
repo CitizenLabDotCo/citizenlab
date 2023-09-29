@@ -7,7 +7,7 @@ export default function useInitiativeCosponsorsRequired() {
   });
   const { data: appConfig } = useAppConfiguration();
   const reviewRequired =
-    appConfig?.data.attributes.settings.initiatives?.require_cosponsors;
+    appConfig?.data.attributes.settings.initiatives.require_cosponsors;
 
   if (typeof reviewRequired === 'boolean') {
     return initiativeCosponsorsEnabled && reviewRequired;

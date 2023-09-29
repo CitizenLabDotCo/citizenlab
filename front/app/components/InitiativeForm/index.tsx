@@ -120,7 +120,7 @@ const InitiativeForm = ({
       .min(1, formatMessage(messages.topicEmptyError)),
     ...(cosponsorsRequired &&
       typeof appConfiguration?.data.attributes.settings.initiatives
-        ?.cosponsors_number === 'number' && {
+        .cosponsors_number === 'number' && {
         cosponsor_ids: array()
           .required(formatMessage(messages.cosponsorsEmptyError))
           .min(
