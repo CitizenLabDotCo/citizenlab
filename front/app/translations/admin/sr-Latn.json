@@ -529,7 +529,7 @@
   "app.containers.Admin.PagesAndMenu.addButton": "Dodaj u traku za navigaciju",
   "app.containers.Admin.PagesAndMenu.components.NavbarItemForm.navbarItemTitle": "Ime u traci za navigaciju",
   "app.containers.Admin.PagesAndMenu.components.deletePageConfirmationHidden": "Da li ste sigurni da želite da izbrišete ovu stranicu? Ova radnja ne može se poništiti.",
-  "app.containers.Admin.PagesAndMenu.components.emptyTitleError": "Obezbedite naslov za sve jezike",
+  "app.containers.Admin.PagesAndMenu.components.emptyTitleError1": "Provide a title for all languages",
   "app.containers.Admin.PagesAndMenu.components.hiddenFromNavigation": "Ostale dostupne stranice",
   "app.containers.Admin.PagesAndMenu.components.savePage": "Sačuvaj stranicu",
   "app.containers.Admin.PagesAndMenu.components.saveSuccess": "Stranica je uspešno sačuvana",
