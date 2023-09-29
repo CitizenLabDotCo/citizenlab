@@ -33,11 +33,8 @@ module Verification
             rescue VerificationService::VerificationTakenError
               fail_verification('taken')
             rescue VerificationService::NotEntitledError => e
-              if e.message == 'not_entitled_under_minimum_age'
-                fail_verification(e.message)
-              else
-                fail_verification('not_entitled')
-              end
+              message = e.why ? "not_entitled_#{e.why}" : 'not_entitled'
+              fail_verification(message)
             end
           end
         rescue ActiveRecord::RecordNotFound
