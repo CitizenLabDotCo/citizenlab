@@ -139,7 +139,7 @@
     "util": "^0.12.5",
     "webfontloader": "1.6.28",
     "xlsx": "https://cdn.sheetjs.com/xlsx-0.18.10/xlsx-0.18.10.tgz",
-    "yup": "^0.32.11"
+    "yup": "^1.3.2"
   },
   "devDependencies": {
     "@babel/cli": "7.x",
