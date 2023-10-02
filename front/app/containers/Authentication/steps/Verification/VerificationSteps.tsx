@@ -1,5 +1,4 @@
 import React, { memo, useCallback, useState, useEffect } from 'react';
-import streams from 'utils/streams';
 
 // components
 import VerificationMethods from './VerificationMethods';
@@ -55,11 +54,9 @@ const VerificationSteps = memo<Props>(({ onCompleted, onError }) => {
 
   const goToSuccessStep = useCallback(() => {
     if (!isNilOrError(authUser)) {
-      streams.reset().then(async () => {
-        invalidateQueryCache();
-        setActiveStep('success');
-        setMethod(null);
-      });
+      invalidateQueryCache();
+      setActiveStep('success');
+      setMethod(null);
     }
   }, [authUser]);
 

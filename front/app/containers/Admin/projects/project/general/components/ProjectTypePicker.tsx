@@ -22,9 +22,9 @@ export default ({ projectType, handleProjectTypeOnChange }: Props) => (
         content={<FormattedMessage {...messages.projectTypeTooltip} />}
       />
     </SubSectionTitle>
-    <StyledWarning
-      text={<FormattedMessage {...messages.projectTypeWarning} />}
-    />
+    <StyledWarning>
+      <FormattedMessage {...messages.projectTypeWarning} />
+    </StyledWarning>
     <Radio
       className="e2e-project-type-timeline"
       onChange={handleProjectTypeOnChange}

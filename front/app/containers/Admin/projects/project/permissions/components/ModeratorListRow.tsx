@@ -5,7 +5,7 @@ import Button from 'components/UI/Button';
 import { Row } from 'components/admin/ResourceList';
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
-import { isAdmin } from 'services/permissions/roles';
+import { isAdmin } from 'utils/permissions/roles';
 import { IUserData } from 'api/users/types';
 import styled from 'styled-components';
 import useAuthUser from 'api/me/useAuthUser';

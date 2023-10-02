@@ -36,7 +36,10 @@ const InitiativeBanner = ({ initiativeHeaderImageLarge, children }: Props) => {
     <InitiativeBannerContainer>
       {typeof initiativeHeaderImageLarge === 'string' && (
         <>
-          <InitiativeBannerImage src={initiativeHeaderImageLarge} />
+          <InitiativeBannerImage
+            src={initiativeHeaderImageLarge}
+            data-cy="e2e-initiative-banner-image"
+          />
           <InitiativeHeaderOverlay />
         </>
       )}

@@ -64,13 +64,11 @@ const OldAnonymousParticipationConfirmationModal = ({
               {...messages.participateAnonymouslyModalTextSection2}
             />
           </Text>
-          <Warning
-            text={
-              <Text color="primary" m="0px" fontSize="s">
-                {formatMessage(messages.anonymousParticipationWarning)}
-              </Text>
-            }
-          />
+          <Warning>
+            <Text color="primary" m="0px" fontSize="s">
+              {formatMessage(messages.anonymousParticipationWarning)}
+            </Text>
+          </Warning>
         </Box>
         <Box
           display="flex"

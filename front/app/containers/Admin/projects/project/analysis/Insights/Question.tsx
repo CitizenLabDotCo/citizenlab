@@ -30,6 +30,7 @@ import tracks from 'containers/Admin/projects/project/analysis/tracks';
 import { trackEventByName } from 'utils/analytics';
 import translations from './translations';
 import { deleteTrailingIncompleteIDs, refRegex, removeRefs } from './util';
+import useToggleInsightBookmark from 'api/analysis_insights/useBookmarkAnalysisInsight';
 
 const StyledAnswerText = styled.div`
   white-space: pre-wrap;
@@ -52,6 +53,7 @@ const Question = ({ insight }: Props) => {
   const { formatMessage, formatDate } = useIntl();
   const { analysisId } = useParams() as { analysisId: string };
   const { mutate: deleteQuestion } = useDeleteAnalysisInsight();
+  const { mutate: toggleBookmark } = useToggleInsightBookmark();
 
   const { data: question } = useAnalysisQuestion({
     analysisId,
@@ -223,6 +225,13 @@ const Question = ({ insight }: Props) => {
         </Button>
 
         <Box display="flex">
+          <IconButton
+            iconName="delete"
+            onClick={() => handleQuestionDelete(insight.id)}
+            iconColor={colors.teal400}
+            iconColorOnHover={colors.teal700}
+            a11y_buttonActionMessage={formatMessage(translations.deleteSummary)}
+          />
           <IconTooltip
             icon="flag"
             content={<Rate insightId={insight.id} />}
@@ -232,11 +241,15 @@ const Question = ({ insight }: Props) => {
             placement="left-end"
           />
           <IconButton
-            iconName="delete"
-            onClick={() => handleQuestionDelete(insight.id)}
+            iconName={
+              question.data.attributes.bookmarked
+                ? 'bookmark'
+                : 'bookmark-outline'
+            }
             iconColor={colors.teal400}
             iconColorOnHover={colors.teal700}
             a11y_buttonActionMessage={formatMessage(translations.deleteSummary)}
+            onClick={() => toggleBookmark({ analysisId, id: insight.id })}
           />
         </Box>
       </Box>

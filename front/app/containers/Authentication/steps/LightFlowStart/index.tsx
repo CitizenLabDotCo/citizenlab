@@ -29,7 +29,7 @@ import {
 import { isValidEmail } from 'utils/validate';
 
 // typings
-import { SSOProvider } from 'services/singleSignOn';
+import { SSOProvider } from 'api/authentication/singleSignOn';
 import { Locale } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
 import { SetError } from 'containers/Authentication/typings';

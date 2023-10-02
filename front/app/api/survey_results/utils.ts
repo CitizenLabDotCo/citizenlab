@@ -1,5 +1,5 @@
 import { API_PATH } from 'containers/App/constants';
-import { requestBlob } from 'utils/request';
+import { requestBlob } from 'utils/requestBlob';
 import { saveAs } from 'file-saver';
 import { IParticipationContextType } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';

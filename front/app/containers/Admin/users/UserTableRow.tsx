@@ -1,6 +1,6 @@
 // Libraries
 import React, { useState, lazy, Suspense } from 'react';
-import { isAdmin, isRegularUser } from 'services/permissions/roles';
+import { isAdmin, isRegularUser } from 'utils/permissions/roles';
 import moment from 'moment';
 
 // Utils

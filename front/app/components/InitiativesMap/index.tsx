@@ -173,10 +173,6 @@ export class InitiativesMap extends PureComponent<Props, State> {
     return;
   };
 
-  noInitiativesWithLocationMessage = (
-    <FormattedMessage {...messages.noInitiativesWithLocation} />
-  );
-
   render() {
     const {
       selectedInitiativeMarkerId,
@@ -203,9 +199,10 @@ export class InitiativesMap extends PureComponent<Props, State> {
           {initiativeMarkers &&
             initiativeMarkers.length > 0 &&
             points.length === 0 && (
-              <StyledWarning text={this.noInitiativesWithLocationMessage} />
+              <StyledWarning>
+                <FormattedMessage {...messages.noInitiativesWithLocation} />
+              </StyledWarning>
             )}
-
           <Map
             initialSelectedPointId={initiallySelectedMarkerId ?? undefined}
             onInit={this.handleMapOnInit}

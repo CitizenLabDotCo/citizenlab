@@ -1,7 +1,6 @@
 import { AUTH_PATH } from 'containers/App/constants';
 import { getJwt, removeJwt, decode } from 'utils/auth/jwt';
 import { endsWith } from 'utils/helperUtils';
-import streams from 'utils/streams';
 import clHistory from 'utils/cl-router/history';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 import {
@@ -24,7 +23,6 @@ export default async function signOut() {
     } else {
       await resetMeQuery();
       invalidateQueryCache();
-      await streams.reset();
       const { pathname } = removeLocale(location.pathname);
 
       if (
