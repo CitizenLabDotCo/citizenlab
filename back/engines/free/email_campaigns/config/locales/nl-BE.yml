@@ -1,83 +1,19 @@
 nl-BE:
   email_campaigns:
     campaign_type_description:
-      "manual": Officiële berichten
-      "admin_rights_received": Administratierechten ontvangen
-      "comment_deleted_by_admin": Verwijderen van mijn reactie
-      "comment_marked_as_spam": Reactie spammelding
-      "comment_on_your_comment": Een antwoord op mijn reactie
-      "comment_on_idea_you_follow": Een reactie op een idee dat je volgt
-      "comment_on_initiative_you_follow": Een reactie op een voorstel dat je volgt
-      "cosponsor_of_your_initiative": Een gebruiker accepteert mijn uitnodiging om mijn voorstel te steunen
-      "event_registration_confirmation": Bevestiging registratie event
-      "first_idea_published": Posten van mijn eerste idee
-      "idea_marked_as_spam": Idee spammelding
-      "idea_published": Posten van mijn idee
-      "initiative_assigned_to_you": Toewijzing van een voorstel aan mij
-      "initiative_marked_as_spam": Voorstel spammelding
-      "initiative_published": Posten van mijn voorstel
-      "invitation_to_cosponsor_initiative": Uitnodiging om een voorstel te steunen
-      "initiative_resubmitted_for_review": Voorstel opnieuw ingediend voor beoordeling
-      "invite_received": Uitnodiging
-      "invite_reminder": Herinnering uitnodiging
-      "internal_comment_on_idea_assigned_to_you": Interne reactie op aan mij toegewezen bijdrage
-      "internal_comment_on_idea_you_commented_internally_on": Interne reactie op een bijdrage waarop ik intern heb gereageerd
-      "internal_comment_on_idea_you_moderate": Interne reactie op een bijdrage in een project of map die ik beheer
-      "internal_comment_on_initiative_assigned_to_you": Interne reactie op een voorstel dat aan mij is toegewezen
-      "internal_comment_on_initiative_you_commented_internally_on": Interne reactie op een voorstel waarop ik intern heb gereageerd
-      "internal_comment_on_unassigned_initiative": Interne reactie op een niet-toegewezen voorstel
-      "internal_comment_on_unassigned_unmoderated_idea": Interne reactie op een niet-toegewezen bijdrage in een onbeheerd project
-      "internal_comment_on_your_internal_comment": Interne reactie op mijn interne reactie
-      "mention_in_official_feedback": Vermelding in een update
-      "mention_in_internal_comment": Vermelding in een interne reactie
-      "new_comment_for_admin": Nieuwe reactie in een project dat ik modereer
-      "new_idea_for_admin": Nieuw idee in een project dat ik modereer
-      "new_initiative_for_admin": Nieuw voorstel
-      "official_feedback_on_idea_you_follow": Update over een idee dat je volgt
-      "official_feedback_on_initiative_you_follow": Update over een voorstel dat je volgt
-      "password_reset": Herstel wachtwoord
-      "project_moderation_rights_received": Projectbeheerdersrechten ontvangen
-      "project_folder_moderation_rights_received": Mapbeheerdersrechten ontvangen
-      "project_phase_started": Nieuwe projectfase
-      "project_phase_upcoming": Opkomende nieuwe projectfase
-      "project_published": Project gepubliceerd
-      "status_change_on_idea_you_follow": Statuswijziging van een idee dat je volgt
-      "status_change_on_initiative_you_follow": Statuswijziging van een voorstel dat je volgt
-      "threshold_reached_for_admin": Een voorstel bereikte het benodigd aantal stemmen
-      "welcome": Na registratie
-      "admin_digest": Weekoverzicht voor admins
-      "moderator_digest": Weekoverzicht voor projectbeheerders
-      "assignee_digest": Weekoverzicht van toegewezen ideeën
-      "user_digest": Weekoverzicht
-      "voting_basket_submitted": Bevestiging van stemming
-      "voting_basket_not_submitted": Niet-ingediende stemmen
-      "voting_last_chance": Laatste kans om te stemmen
-      "voting_results": Stemresultaten
-      "your_proposed_initiatives_digest": Weekoverzicht van je voorstellen
-    general:
-      by_author: 'door %{authorName}'
-      author_wrote: '%{authorName} schreef:'
-      cta_goto_idea: 'Ga naar dit idee'
-      cta_goto_proposal: 'Ga naar dit voorstel'
-      cta_goto_project: 'Ga naar dit project'
-    schedules:
-      weekly:
-        "0": "Wekelijks, op zondag om %{hourOfDay}"
-        "1": "Wekelijks, op maandag om %{hourOfDay}"
-        "2": "Wekelijks, op dinsdag om %{hourOfDay}"
-        "3": "Wekelijks, op woensdag om %{hourOfDay}"
-        "4": "Wekelijks, op donderdag om %{hourOfDay}"
-        "5": "Wekelijks, op vrijdag om %{hourOfDay}"
-        "6": "Wekelijks, op zaterdag om %{hourOfDay}"
+      "1": "Wekelijks, op maandag om %{hourOfDay}"
+      "2": "Wekelijks, op dinsdag om %{hourOfDay}"
+      "3": "Wekelijks, op woensdag om %{hourOfDay}"
+      "4": "Wekelijks, op donderdag om %{hourOfDay}"
+      "5": "Wekelijks, op vrijdag om %{hourOfDay}"
+      "6": "Wekelijks, op zaterdag om %{hourOfDay}"
     footer:
-      "link_privacy_policy": "Privacybeleid"
       "link_terms_conditions": "Gebruiksvoorwaarden"
       "link_unsubscribe": "Uitschrijven"
       "powered_by": "Mogelijk gemaakt door"
       "statement": "Je kreeg deze e-mail van CitizenLab in naam van %{organizationName} omdat je geregistreerd bent als gebruiker op %{organizationLink}. Je kan je %{unsubscribeLink} als je deze e-mails niet meer wil ontvangen in de toekomst."
       "unsubscribe_text": "uitschrijven"
-    follow:
-      "unfollow_here": "Je hebt deze melding ontvangen vanwege een item dat je volgt. <a href=\"%{unfollow_url}\">Je kunt het hier ontvolgen.</a>"
+    follow: "unfollow_hier\": \"Je hebt deze melding ontvangen vanwege een item dat je volgt. <a href=\"%{unfollow_url}\">Je kunt het hier ontvolgen.</a>"
     comment_deleted_by_admin:
       reason: 'De reden waarom je reactie is verwijderd:'
       cta_view: 'Bekijk dit idee'
