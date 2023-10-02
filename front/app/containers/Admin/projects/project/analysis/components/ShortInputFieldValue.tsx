@@ -6,7 +6,7 @@ import { FormattedDate } from 'react-intl';
 import { isNil } from 'lodash-es';
 import { IIdeaCustomField } from 'api/idea_custom_fields/types';
 import { useIntl } from 'utils/cl-intl';
-import translations from '../translations';
+import messages from '../messages';
 
 type Props = {
   customField: IIdeaCustomField;
@@ -44,7 +44,7 @@ const ShortInputFieldValue = ({ customField, rawValue }: Props) => {
   if (customField.data.attributes.code) return null;
 
   if (isNil(rawValue)) {
-    return <>{formatMessage(translations.noAnswer)}</>;
+    return <>{formatMessage(messages.noAnswer)}</>;
   }
 
   switch (customField.data.attributes.input_type) {
