@@ -424,14 +424,18 @@ resource 'Initiatives' do
     describe do
       before { SettingsService.new.activate_feature! 'blocking_profanity' }
 
-      let(:location_description) { 'fuck' }
+      let(:title_multiloc) { { 'nl-BE' => 'Fuck' } }
+      let(:body_multiloc) { { 'fr-FR' => 'Fuck' } }
 
       example_request '[error] Create an initiative with blocked words' do
         assert_status 422
         json_response = json_parse(response_body)
-        blocked_error = json_response.dig(:errors, :base)&.select { |err| err[:error] == 'includes_banned_words' }&.first
-        expect(blocked_error).to be_present
-        expect(blocked_error[:blocked_words].pluck(:attribute).uniq).to eq(['location_description'])
+        title_multiloc_error = json_response
+        .dig(:errors, :title_multiloc)&.select { |err| err[:error] == 'includes_banned_words' }
+        body_multiloc_error = json_response
+        .dig(:errors, :body_multiloc)&.select { |err| err[:error] == 'includes_banned_words' }
+        expect(title_multiloc_error).to be_present
+        expect(body_multiloc_error).to be_present
       end
     end
 
