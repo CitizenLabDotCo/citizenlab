@@ -11,7 +11,7 @@ import { UserFormData } from './typings';
 
 interface Props {
   userFormData: UserFormData;
-  setUserFormData: (newData: Partial<UserFormData>) => void;
+  setUserFormData: (userFormData: UserFormData) => void;
 }
 
 const BlackLabel = ({ text }: { text: string }) => (
@@ -19,6 +19,13 @@ const BlackLabel = ({ text }: { text: string }) => (
 );
 
 const UserForm = ({ userFormData, setUserFormData }: Props) => {
+  const updateUserFormData = (newUserFormData: Partial<UserFormData>) => {
+    setUserFormData({
+      ...userFormData,
+      ...newUserFormData,
+    });
+  };
+
   return (
     <Box
       w="90%"
@@ -31,7 +38,7 @@ const UserForm = ({ userFormData, setUserFormData }: Props) => {
           type="email"
           value={userFormData.email}
           label={<BlackLabel text="Email" />}
-          onChange={(email) => setUserFormData({ email })}
+          onChange={(email) => updateUserFormData({ email })}
         />
       </Box>
       {userFormData.newUser && (
@@ -41,7 +48,7 @@ const UserForm = ({ userFormData, setUserFormData }: Props) => {
               type="text"
               value={userFormData.first_name}
               label={<BlackLabel text="First name" />}
-              onChange={(first_name) => setUserFormData({ first_name })}
+              onChange={(first_name) => updateUserFormData({ first_name })}
             />
           </Box>
           <Box mt="20px">
@@ -49,7 +56,7 @@ const UserForm = ({ userFormData, setUserFormData }: Props) => {
               type="text"
               value={userFormData.last_name}
               label={<BlackLabel text="Last name" />}
-              onChange={(last_name) => setUserFormData({ last_name })}
+              onChange={(last_name) => updateUserFormData({ last_name })}
             />
           </Box>
         </>

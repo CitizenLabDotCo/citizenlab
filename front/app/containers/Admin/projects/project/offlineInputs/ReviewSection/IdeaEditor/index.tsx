@@ -14,7 +14,7 @@ import useImportedIdeas from 'api/import_ideas/useImportedIdeas';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
 
 // components
-import { Box, Button, Spinner } from '@citizenlab/cl2-component-library';
+import { Box, Button } from '@citizenlab/cl2-component-library';
 import MetaBox from './MetaBox';
 import IdeaForm from './IdeaForm';
 
@@ -46,6 +46,7 @@ interface Props {
 
 const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
   const localize = useLocalize();
+
   const { projectId, phaseId } = useParams() as {
     projectId: string;
     phaseId?: string;
@@ -74,12 +75,22 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
   const { mutateAsync: updateIdea, isLoading: loadingApproveIdea } =
     useUpdateIdea();
 
-  const userFormData: UserFormData | null =
-    ideaId && userFormStatePerIdea[ideaId]
-      ? userFormStatePerIdea[ideaId]
-      : author
-      ? getUserFormValues(author)
-      : null;
+  const { data: ideaMetadata } = useImportedIdeaMetadata({
+    id: idea?.data.relationships.idea_import?.data?.id,
+  });
+
+  const selectedPhaseId =
+    phaseId ?? idea?.data.relationships.phases.data[0]?.id;
+  const { data: phase } = usePhase(selectedPhaseId);
+
+  if (!schema || !uiSchema) return null;
+
+  const userFormData = getUserFormValues(
+    ideaId,
+    userFormStatePerIdea,
+    author,
+    ideaMetadata
+  );
 
   const ideaFormData: FormData | null =
     ideaId && ideaFormStatePerIdea[ideaId]
@@ -88,15 +99,12 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
       ? getIdeaFormValues(idea, schema)
       : null;
 
-  const setUserFormData = (userFormData: Partial<UserFormData>) => {
+  const setUserFormData = (userFormData: UserFormData) => {
     if (!ideaId) return;
 
     setUserFormStatePerIdea((userFormDataPerIdea) => ({
       ...userFormDataPerIdea,
-      [ideaId]: {
-        ...userFormDataPerIdea[ideaId],
-        ...userFormData,
-      },
+      [ideaId]: userFormData,
     }));
   };
 
@@ -108,32 +116,6 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
       [ideaId]: ideaFormData,
     }));
   };
-
-  const { data: ideaMetadata } = useImportedIdeaMetadata({
-    id: idea?.data.relationships.idea_import?.data?.id,
-  });
-
-  const selectedPhaseId =
-    phaseId ?? idea?.data.relationships.phases.data[0]?.id;
-  const { data: phase } = usePhase(selectedPhaseId);
-
-  if (!schema || !uiSchema) {
-    return (
-      <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        justifyContent="center"
-        w="100%"
-        zIndex="10000"
-        position="fixed"
-        bgColor={colors.background}
-        h="100vh"
-      >
-        <Spinner />
-      </Box>
-    );
-  }
 
   const formDataValid = isValidData(
     schema,

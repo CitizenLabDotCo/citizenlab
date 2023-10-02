@@ -2,11 +2,15 @@ import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 
+// routing
+import { useParams } from 'react-router-dom';
+
 // api
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useInputSchema from 'hooks/useInputSchema';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Spinner } from '@citizenlab/cl2-component-library';
 import TopBar from './TopBar';
 import ImportModal from './ImportModal';
 import ReviewSection from './ReviewSection';
@@ -15,7 +19,35 @@ import ReviewSection from './ReviewSection';
 import { colors, stylingConsts } from 'utils/styleUtils';
 
 const OfflineInputImporter = () => {
+  const { projectId, phaseId } = useParams() as {
+    projectId: string;
+    phaseId?: string;
+  };
+
   const [importModalOpen, setImportModalOpen] = useState(false);
+
+  const { schema, uiSchema } = useInputSchema({
+    projectId,
+    phaseId,
+  });
+
+  if (!schema || !uiSchema) {
+    return (
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        justifyContent="center"
+        w="100%"
+        zIndex="10000"
+        position="fixed"
+        bgColor={colors.background}
+        h="100vh"
+      >
+        <Spinner />
+      </Box>
+    );
+  }
 
   const openImportModal = () => setImportModalOpen(true);
   const closeImportModal = () => setImportModalOpen(false);

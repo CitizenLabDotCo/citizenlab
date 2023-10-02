@@ -1,6 +1,7 @@
 import { IIdeas } from 'api/ideas/types';
 import { IUser } from 'api/users/types';
 import { UserFormData } from './typings';
+import { ImportedIdeaMetadataResponse } from 'api/import_ideas/types';
 
 export const getNextIdeaId = (ideaId: string, ideas: IIdeas) => {
   const numberOfIdeas = ideas.data.length;
@@ -16,12 +17,31 @@ export const getNextIdeaId = (ideaId: string, ideas: IIdeas) => {
   }
 };
 
-export const getUserFormValues = (user: IUser): UserFormData | null => {
-  const { email, first_name, last_name } = user.data.attributes;
-  if (!email) return null;
+export const getUserFormValues = (
+  ideaId: string | null,
+  userFormStatePerIdea: Record<string, UserFormData>,
+  author: IUser | undefined,
+  ideaMetadata: ImportedIdeaMetadataResponse | undefined
+): UserFormData | null => {
+  if (!ideaId || !author || !ideaMetadata) return null;
+
+  const changes = userFormStatePerIdea[ideaId];
+  const defaultUserFormValues = getUserFormDefaultValues(author, ideaMetadata);
 
   return {
-    newUser: true, // TODO
+    ...defaultUserFormValues,
+    ...changes,
+  };
+};
+
+const getUserFormDefaultValues = (
+  author: IUser,
+  ideaMetadata: ImportedIdeaMetadataResponse
+): UserFormData => {
+  const { email, first_name, last_name } = author.data.attributes;
+
+  return {
+    newUser: ideaMetadata?.data.attributes.user_created === false,
     email,
     first_name: first_name ?? undefined,
     last_name: last_name ?? undefined,
