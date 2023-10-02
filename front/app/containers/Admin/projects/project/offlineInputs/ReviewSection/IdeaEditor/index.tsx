@@ -31,7 +31,7 @@ import { isValidData } from 'components/Form/utils';
 import { customAjv } from 'components/Form';
 import { getFormValues } from 'containers/IdeasEditPage/utils';
 import { geocode } from 'utils/locationTools';
-import { getNextIdeaId } from '../../utils';
+import { getNextIdeaId } from './utils';
 
 // typings
 import { FormData } from 'components/Form/typings';
