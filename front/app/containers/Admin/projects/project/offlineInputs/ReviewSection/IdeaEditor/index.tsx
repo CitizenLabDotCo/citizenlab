@@ -49,7 +49,9 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
     phaseId?: string;
   };
 
-  const [apiErrors, setApiErrors] = useState<CLErrors | undefined>();
+  const [ideaFormApiErrors, setIdeaFormApiErrors] = useState<
+    CLErrors | undefined
+  >();
   const [ideaFormStatePerIdea, setIdeaFormStatePerIdea] = useState<
     Record<string, FormData>
   >({});
@@ -155,7 +157,7 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
       const nextIdeaId = getNextIdeaId(ideaId, ideas);
       setIdeaId(nextIdeaId);
     } catch (e) {
-      setApiErrors(e.errors);
+      setIdeaFormApiErrors(e.errors);
     }
   };
 
@@ -190,7 +192,7 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
               schema={schema}
               uiSchema={uiSchema}
               showAllErrors={true}
-              apiErrors={apiErrors}
+              apiErrors={ideaFormApiErrors}
               formData={ideaFormData}
               ideaMetadata={ideaMetadata}
               setFormData={setIdeaFormData}
