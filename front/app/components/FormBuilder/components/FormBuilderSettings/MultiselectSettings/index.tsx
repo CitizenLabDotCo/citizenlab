@@ -17,7 +17,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 
 const StyledLabel = styled(Label)`
   height: 100%;
-  margin-top: autol;
+  margin-top: auto;
   margin-bottom: auto;
 `;
 

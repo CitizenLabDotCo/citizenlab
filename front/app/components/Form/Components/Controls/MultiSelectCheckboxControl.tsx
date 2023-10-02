@@ -57,7 +57,7 @@ const MultiSelectCheckboxControl = ({
   }
 
   const getInstructionMessage = () => {
-    if ((minItems === 1 || minItems === 0) && maxItems === options?.length) {
+    if (minItems && minItems <= 1 && maxItems === options?.length) {
       return formatMessage(messages.selectAsManyAsYouLike);
     } else if (minItems && maxItems) {
       if (maxItems === minItems) {
@@ -108,14 +108,12 @@ const MultiSelectCheckboxControl = ({
               checked={dataArray.includes(option.value)}
               onChange={() => {
                 if (dataArray.includes(option.value)) {
-                  if (dataArray.length === 1) {
-                    handleChange(path, undefined);
-                  } else {
-                    handleChange(
-                      path,
-                      dataArray.filter((value) => value !== option.value)
-                    );
-                  }
+                  dataArray.length === 1
+                    ? handleChange(path, undefined)
+                    : handleChange(
+                        path,
+                        dataArray.filter((value) => value !== option.value)
+                      );
                 } else {
                   handleChange(path, [...dataArray, option.value]);
                 }
