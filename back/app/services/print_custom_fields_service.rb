@@ -18,7 +18,7 @@ class PrintCustomFieldsService
     @personal_data_enabled = personal_data_enabled
     @previous_cursor = nil
     @app_configuration = AppConfiguration.instance
-    @form_fields = []
+    @importer_fields = []
   end
 
   def create_pdf
@@ -65,6 +65,13 @@ class PrintCustomFieldsService
     pdf.number_pages page_number_format, page_number_options
 
     pdf
+  end
+
+  def importer_data
+    {
+      page_count: create_pdf.page_count,
+      fields: @importer_fields
+    }
   end
 
   private
@@ -215,6 +222,10 @@ class PrintCustomFieldsService
     # inside of it will be on a new page if there
     # is not enough space on the current page
     pdf.group do |pdf_group|
+
+      # Add field to array to use in import
+      add_to_importer_fields(custom_field, 'field', pdf.page_number, pdf.y)
+
       # Write title
       write_title(pdf_group, custom_field)
 
@@ -244,16 +255,7 @@ class PrintCustomFieldsService
     end
 
     pdf.move_down 6.mm
-
-    # Add to array to use in import
-    add_to_export_fields(custom_field, page, position)
-
   end
-
-  def add_to_export_fields(custom_field, page, position)
-    @form_fields << custom_field
-  end
-
 
   def write_title(pdf, custom_field)
     optional = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.optional') }
@@ -305,6 +307,9 @@ class PrintCustomFieldsService
 
   def render_single_choice(pdf, custom_field)
     custom_field.options.each do |option|
+      # Add option to array to use in import
+      add_to_importer_fields(option, 'option', pdf.page_number, pdf.y)
+
       pdf.stroke_color '000000'
       pdf.stroke_circle [3.mm, pdf.cursor], 5
 
@@ -320,6 +325,9 @@ class PrintCustomFieldsService
 
   def render_multiple_choice(pdf, custom_field)
     custom_field.options.each do |option|
+      # Add option to array to use in import
+      add_to_importer_fields(option, 'option', pdf.page_number, pdf.y)
+
       pdf.stroke do
         pdf.stroke_color '000000'
         pdf.rectangle([1.5.mm, pdf.cursor + 1.5.mm], 10, 10)
@@ -413,5 +421,27 @@ class PrintCustomFieldsService
 
   def organization_name
     @app_configuration.settings('core', 'organization_name')[@locale]
+  end
+
+  def add_to_importer_fields(field, type, page, position)
+    # TODO: Position of options is wrong if question moved onto next page
+    position = (700 - position) / 7
+
+    key = field[:key]
+    parent_key = type == 'option' ? field.custom_field.key : nil
+
+    # Because of the way pdf group works we delete if value is already there and always use the last value for the field
+    @importer_fields.delete_if { |f| f[:key] == key && f[:parent_key] == parent_key }
+
+    @importer_fields << {
+      name: field[:title_multiloc][@locale],
+      type: type,
+      input_type: field[:input_type],
+      code: field[:code],
+      key: key,
+      parent_key: parent_key,
+      page: page,
+      position: position.to_i
+    }
   end
 end

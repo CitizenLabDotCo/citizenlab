@@ -115,7 +115,7 @@ describe BulkImportIdeas::ImportProjectIdeasService do
           }
         ]
       end
-      let(:rows) { service.ideas_to_idea_rows pdf_ideas }
+      let(:rows) { service.send(:ideas_to_idea_rows, pdf_ideas) }
 
       it 'converts the output from GoogleFormParser into idea rows' do
         expect(rows.count).to eq 2
@@ -185,7 +185,7 @@ describe BulkImportIdeas::ImportProjectIdeasService do
           pdf_pages: [1, 2],
           fields: { 'First name' => 'John', 'Last name' => 'Rambo', 'Email address' => 'john_rambo.com' }
         }]
-        rows = service.ideas_to_idea_rows ideas
+        rows = service.send(:ideas_to_idea_rows, ideas)
         expect(rows[0].keys).not_to include :user_email
       end
 
@@ -202,7 +202,7 @@ describe BulkImportIdeas::ImportProjectIdeasService do
             'Description' => "Je suis un chien. J'aime les chats."
           }
         }]
-        rows = service.ideas_to_idea_rows ideas
+        rows = service.send(:ideas_to_idea_rows, ideas)
 
         expect(rows[0][:title_multiloc]).to eq({ 'fr-FR': 'Bonjour' })
         expect(rows[0][:body_multiloc]).to eq({ 'fr-FR': "Je suis un chien. J'aime les chats." })
@@ -211,18 +211,18 @@ describe BulkImportIdeas::ImportProjectIdeasService do
         expect(rows[0][:user_last_name]).to eq 'Rambo'
       end
 
-      it 'can parse select fields from option values' do
+      it 'can parse select fields from option values with page locations' do
         ideas = [{
           pdf_pages: [1, 2],
           fields: {
             'Title' => 'Free donuts for all',
             'Description' => 'Give them all donuts',
-            'Yes' => 'filled_checkbox',
-            'This' => 'filled_checkbox',
-            'That' => 'filled_checkbox'
+            'Yes_2.21' => 'filled_checkbox',
+            'This_2.32' => 'filled_checkbox',
+            'That_2.42' => 'filled_checkbox'
           }
         }]
-        rows = service.ideas_to_idea_rows ideas
+        rows = service.send(:ideas_to_idea_rows, ideas)
 
         expect(rows[0][:title_multiloc]).to eq({ en: 'Free donuts for all' })
         expect(rows[0][:body_multiloc]).to eq({ en: 'Give them all donuts' })
@@ -242,7 +242,7 @@ describe BulkImportIdeas::ImportProjectIdeasService do
         # Remove permission field and use output from checkbox on PDF scan
         pdf_ideas[0][:fields].delete('Permission')
         pdf_ideas[0][:fields]['By checking this box I consent to my data'] = 'filled_checkbox'
-        rows = service.ideas_to_idea_rows pdf_ideas
+        rows = service.send(:ideas_to_idea_rows, pdf_ideas)
 
         expect(rows[0][:user_email]).to eq 'john_rambo@gravy.com'
         expect(rows[0][:user_first_name]).to eq 'John'
@@ -277,7 +277,7 @@ describe BulkImportIdeas::ImportProjectIdeasService do
             }
           ]
         end
-        let(:rows) { service.ideas_to_idea_rows xlsx_ideas_array }
+        let(:rows) { service.send(:ideas_to_idea_rows, xlsx_ideas_array) }
 
         it 'converts parsed XLSX core fields into idea rows' do
           expect(rows[0]).to include({
@@ -304,7 +304,7 @@ describe BulkImportIdeas::ImportProjectIdeasService do
 
         it 'does not include user details when "Permission" is blank' do
           xlsx_ideas_array[0][:fields]['Permission'] = ''
-          rows = service.ideas_to_idea_rows xlsx_ideas_array
+          rows = service.send(:ideas_to_idea_rows, xlsx_ideas_array)
 
           expect(rows[0]).not_to include({
             user_first_name: 'Bill',
@@ -344,7 +344,7 @@ describe BulkImportIdeas::ImportProjectIdeasService do
               }
             }
           ]
-          idea_rows = service.ideas_to_idea_rows xlsx_ideas_array
+          idea_rows = service.send(:ideas_to_idea_rows, xlsx_ideas_array)
           expect(idea_rows.count).to eq 0
         end
       end
@@ -377,7 +377,7 @@ describe BulkImportIdeas::ImportProjectIdeasService do
       end
 
       it 'merges both sources, prioritising those from the form parser' do
-        rows = service.merge_pdf_rows pdf_ideas
+        rows = service.send(:merge_pdf_rows, pdf_ideas)
         expect(rows[0]).to include({
           title_multiloc: { en: 'Form title 1' },
           body_multiloc: { en: 'Text description 1' },
@@ -391,13 +391,13 @@ describe BulkImportIdeas::ImportProjectIdeasService do
       end
 
       it 'merges custom fields successfully' do
-        rows = service.merge_pdf_rows pdf_ideas
+        rows = service.send(:merge_pdf_rows, pdf_ideas)
         expect(rows[1][:custom_field_values]).to match_array({ select_field: 'yes', another_select_field: 'no' })
       end
 
       it 'ignores the text parsed ideas if the array lengths differ' do
         pdf_ideas[:text_parsed_ideas].pop
-        rows = service.merge_pdf_rows pdf_ideas
+        rows = service.send(:merge_pdf_rows, pdf_ideas)
         expect(rows[0]).not_to include({
           body_multiloc: { en: 'Text description 1' }
         })
@@ -421,7 +421,7 @@ describe BulkImportIdeas::ImportProjectIdeasService do
         expect_any_instance_of(BulkImportIdeas::GoogleFormParserService).to receive(:raw_text_page_array).and_raise(BulkImportIdeas::Error.new('something'))
 
         file = create(:idea_import_file)
-        expect(service.parse_pdf_ideas(file)).to eq(
+        expect(service.send(:parse_pdf_ideas, file)).to eq(
           { form_parsed_ideas: form_parser_output, text_parsed_ideas: [] }
         )
       end
@@ -438,6 +438,37 @@ describe BulkImportIdeas::ImportProjectIdeasService do
           { name: 'Title', value: 'This fine title', type: 'field', page: nil, position: nil },
           { name: 'Yes', value: 'filled_checkbox', type: 'option', page: 1, position: 23 }
         ])
+      end
+    end
+
+    describe 'process_custom_form_fields' do
+      it 'maps values onto actual form fields' do
+        idea = [
+          { name: 'Title', value: 'This fine title', type: 'field', page: nil, position: nil },
+          { name: 'Description', value: 'A description', type: 'field', page: nil, position: nil },
+          { name: 'Location', value: 'Somewhere', type: 'field', page: nil, position: nil },
+          { name: 'A text field', value: 'Some text yeah', type: 'field', page: nil, position: nil },
+          { name: 'Yes', value: 'filled_checkbox', type: 'option', page: 2, position: 23 },
+          { name: 'This', value: 'filled_checkbox', type: 'option', page: 2, position: 23 },
+          { name: 'That', value: 'filled_checkbox', type: 'option', page: 2, position: 33 },
+          { name: 'Yes', value: 'filled_checkbox', type: 'option', page: 2, position: 63 }
+        ]
+        idea_row = service.send(:process_custom_form_fields, idea, {})
+
+        expect(idea_row).to include({
+          title_multiloc: { en: 'This fine title' },
+          body_multiloc: { en: 'A description' },
+          location_description: 'Somewhere'
+        })
+        expect(idea_row[:custom_field_values]).to include({
+          a_text_field: 'Some text yeah',
+          select_field: 'yes',
+          multiselect_field: %w[this that],
+          another_select_field: 'yes'
+        })
+      end
+      it 'can cope with multiple checkboxes with same values' do
+        # TODO: Test
       end
     end
   end
