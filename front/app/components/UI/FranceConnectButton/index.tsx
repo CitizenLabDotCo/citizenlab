@@ -49,12 +49,10 @@ const FranceConnectButtonLink = styled.button`
     cursor: not-allowed;
   }
 
-  #background {
-    fill: #000091;
-  }
-
-  #background:hover {
-    fill: #2183f0;
+  // colors are copied from https://www.systeme-de-design.gouv.fr/elements-d-interface/composants/bouton-franceconnect/
+  color: #000091;
+  &:hover {
+    color: #1212ff;
   }
 `;
 
