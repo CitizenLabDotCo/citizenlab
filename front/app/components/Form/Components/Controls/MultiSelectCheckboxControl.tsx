@@ -57,14 +57,16 @@ const MultiSelectCheckboxControl = ({
   }
 
   const getInstructionMessage = () => {
-    if (minItems && minItems <= 1 && maxItems === options?.length) {
-      return formatMessage(messages.selectAsManyAsYouLike);
-    } else if (minItems && maxItems) {
+    if (minItems && maxItems) {
+      if (minItems <= 1 && maxItems === options?.length) {
+        return formatMessage(messages.selectAsManyAsYouLike);
+      }
       if (maxItems === minItems) {
         return formatMessage(messages.selectExactly, {
           selectExactly: maxItems,
         });
-      } else if (minItems !== maxItems) {
+      }
+      if (minItems !== maxItems) {
         return formatMessage(messages.selectBetween, {
           minItems,
           maxItems,
