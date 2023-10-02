@@ -6,11 +6,12 @@ export default function useInitiativeCosponsorsRequired() {
     name: 'initiative_cosponsors',
   });
   const { data: appConfig } = useAppConfiguration();
-  const reviewRequired =
+
+  const cosponsorsRequired =
     appConfig?.data.attributes.settings.initiatives.require_cosponsors;
 
-  if (typeof reviewRequired === 'boolean') {
-    return initiativeCosponsorsEnabled && reviewRequired;
+  if (typeof cosponsorsRequired === 'boolean') {
+    return initiativeCosponsorsEnabled && cosponsorsRequired;
   }
 
   // setting doesn't exist (is not configured, so we don't require cosponsors)
