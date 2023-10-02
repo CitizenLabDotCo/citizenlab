@@ -82,14 +82,12 @@ describe('Event show page', () => {
     cy.get('#e2e-location-with-coordinates-button').should('not.exist');
     cy.get('[data-cy="e2e-event-description"]');
 
-    // TODO: Re-enable attendance tests once smart group implemented
-
-    // // Click attend button
-    // cy.get('#e2e-event-attendance-button').click();
-    // // Confirm that the button now shows "attending"
-    // cy.get('#e2e-event-attendance-button').contains('Attending');
-    // // Confirm that participant count is now shown
-    // cy.get('#e2e-participants-count').should('exist');
+    // Click attend button
+    cy.get('#e2e-event-attendance-button').click();
+    // Confirm that the button now shows "attending"
+    cy.get('#e2e-event-attendance-button').contains('Attending');
+    // Confirm that participant count is now shown
+    cy.get('#e2e-participants-count').should('exist');
   });
 
   it('shows map modal when location coordinates exist', () => {

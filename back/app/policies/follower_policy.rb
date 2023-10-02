@@ -44,6 +44,10 @@ class FollowerPolicy < ApplicationPolicy
         InitiativePolicy
       when 'Idea'
         IdeaPolicy
+      when 'Topic'
+        TopicPolicy
+      when 'Area'
+        AreaPolicy
       else
         raise "Unsupported followable type: #{record.followable_type}"
       end

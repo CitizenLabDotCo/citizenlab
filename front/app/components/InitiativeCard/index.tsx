@@ -127,7 +127,7 @@ const InitiativeCard = ({
             </CommentInfo>
           </FooterInner>
           {showFollowButton && (
-            <Box p="8px" display="flex" justifyContent="flex-end">
+            <Box p="8px" display="flex" justifyContent="flex-end" my="24px">
               <FollowUnfollow
                 followableType="initiatives"
                 followableId={initiative.data.id}
@@ -135,7 +135,7 @@ const InitiativeCard = ({
                 followerId={
                   initiative.data.relationships.user_follower?.data?.id
                 }
-                py="2px"
+                w="100%"
               />
             </Box>
           )}

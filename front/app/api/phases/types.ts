@@ -5,7 +5,7 @@ import {
   IdeaDefaultSortMethod,
   InputTerm,
   ParticipationContext,
-} from 'services/participationContexts';
+} from 'utils/participationContexts';
 import { Keys } from 'utils/cl-react-query/types';
 import phasesKeys from './keys';
 import { CampaignName } from 'api/campaigns/types';

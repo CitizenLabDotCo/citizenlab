@@ -5,7 +5,7 @@ require 'rspec_api_documentation/dsl'
 require './engines/commercial/public_api/spec/acceptance/v2/support/shared'
 
 resource 'Reactions' do
-  explanation 'All reactions created in the platform'
+  explanation 'All reactions (likes/dislikes) created in the platform'
 
   include_context 'common_auth'
 

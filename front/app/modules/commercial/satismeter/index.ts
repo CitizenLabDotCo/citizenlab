@@ -10,11 +10,7 @@ import {
   registerDestination,
   IDestinationConfig,
 } from 'components/ConsentManager/destinations';
-import {
-  isAdmin,
-  isRegularUser,
-  isSuperAdmin,
-} from 'services/permissions/roles';
+import { isAdmin, isRegularUser, isSuperAdmin } from 'utils/permissions/roles';
 import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import { getFullName } from 'utils/textUtils';

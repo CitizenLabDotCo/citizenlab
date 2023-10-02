@@ -19,6 +19,12 @@ PublicApi::Engine.routes.draw do
 
     with_options only: %i[index show], concerns: :deleted_items do |route_mapper|
       route_mapper.resources :comments
+      route_mapper.resources :baskets
+      route_mapper.resources :basket_ideas
+      route_mapper.resources :email_campaigns
+      route_mapper.resources :email_campaign_deliveries
+      route_mapper.resources :events
+      route_mapper.resources :event_attendances
       route_mapper.resources :ideas
       route_mapper.resources :initiatives
       route_mapper.resources :phases
@@ -26,6 +32,8 @@ PublicApi::Engine.routes.draw do
       route_mapper.resources :reactions, only: %i[index]
       route_mapper.resources :topics
       route_mapper.resources :users
+      route_mapper.resources :volunteering_causes
+      route_mapper.resources :volunteering_volunteers
 
       route_mapper.resources :projects do
         resources :phases, only: %i[index]
@@ -33,6 +41,7 @@ PublicApi::Engine.routes.draw do
     end
 
     # Association endpoints
+    resources :idea_phases, only: %i[index]
     resources :idea_topics, only: %i[index]
     resources :project_topics, only: %i[index]
   end

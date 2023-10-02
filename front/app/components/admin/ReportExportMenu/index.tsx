@@ -18,7 +18,7 @@ import messages from './messages';
 import { IResolution } from 'components/admin/ResolutionControl';
 
 // utils
-import { requestBlob } from 'utils/request';
+import { requestBlob } from 'utils/requestBlob';
 import { reportError } from 'utils/loggingUtils';
 import { truncate } from 'utils/textUtils';
 

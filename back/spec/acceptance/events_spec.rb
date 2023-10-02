@@ -166,6 +166,8 @@ resource 'Events' do
           description_multiloc: event.description_multiloc,
           address_1: event.address_1,
           address_2_multiloc: event.address_2_multiloc,
+          attend_button_multiloc: event.attend_button_multiloc,
+          using_url: event.using_url,
           location_multiloc: event.location_multiloc,
           location_point_geojson: event.location_point_geojson,
           start_at: event.start_at.iso8601(3),
@@ -227,6 +229,8 @@ resource 'Events' do
         parameter :location_point_geojson, 'A GeoJSON point representing the event location.'
         parameter :address_1, 'A human-readable primary address for the event location.'
         parameter :address_2_multiloc, 'Additional address details, such as floor or room number, in multiple languages.'
+        parameter :using_url, 'A URL to an external website where the event is hosted.'
+        parameter :attend_button_multiloc, 'The text to display on the attend button, in multiple languages.'
         parameter :online_link, 'Link to the online event'
       end
 
@@ -353,6 +357,8 @@ resource 'Events' do
         parameter :address_2_multiloc, 'Additional address details, such as floor or room number, in multiple languages.'
         parameter :start_at, 'The start datetime of the event'
         parameter :end_at, 'The end datetime of the event'
+        parameter :using_url, 'A URL to an external website where the event is hosted.'
+        parameter :attend_button_multiloc, 'The text to display on the attend button, in multiple languages.'
       end
 
       ValidationErrorHelper.new.error_fields(self, Event)
