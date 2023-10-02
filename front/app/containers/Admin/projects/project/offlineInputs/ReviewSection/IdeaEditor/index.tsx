@@ -50,7 +50,7 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
   };
 
   const [apiErrors, setApiErrors] = useState<CLErrors | undefined>();
-  const [formStatePerIdea, setFormStatePerIdea] = useState<
+  const [ideaFormStatePerIdea, setIdeaFormStatePerIdea] = useState<
     Record<string, FormData>
   >({});
 
@@ -67,19 +67,19 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
   const { mutateAsync: updateIdea, isLoading: loadingApproveIdea } =
     useUpdateIdea();
 
-  const formData: FormData =
-    ideaId && formStatePerIdea[ideaId]
-      ? formStatePerIdea[ideaId]
+  const ideaFormData: FormData =
+    ideaId && ideaFormStatePerIdea[ideaId]
+      ? ideaFormStatePerIdea[ideaId]
       : idea && schema
       ? getFormValues(idea, schema)
       : null;
 
-  const setFormData = (formData: FormData) => {
+  const setIdeaFormData = (ideaFormData: FormData) => {
     if (!ideaId) return;
 
-    setFormStatePerIdea((formState) => ({
-      ...formState,
-      [ideaId]: formData,
+    setIdeaFormStatePerIdea((ideaFormStatePerIdea) => ({
+      ...ideaFormStatePerIdea,
+      [ideaId]: ideaFormData,
     }));
   };
 
@@ -112,13 +112,13 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
   const formDataValid = isValidData(
     schema,
     uiSchema,
-    formData,
+    ideaFormData,
     customAjv,
     false
   );
 
   const onApproveIdea = async () => {
-    if (!ideaId || !formData || !formDataValid || !ideas) return;
+    if (!ideaId || !ideaFormData || !formDataValid || !ideas) return;
 
     const {
       location_description,
@@ -126,7 +126,7 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
       idea_images_attributes: _idea_images_attributes,
       topic_ids: _topic_ideas,
       ...supportedFormData
-    } = formData;
+    } = ideaFormData;
 
     const location_point_geojson =
       typeof location_description === 'string' &&
@@ -145,8 +145,8 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
         },
       });
 
-      setFormStatePerIdea((formState) => {
-        const clone = { ...formState };
+      setIdeaFormStatePerIdea((ideaFormState) => {
+        const clone = { ...ideaFormState };
         delete clone[ideaId];
 
         return clone;
@@ -191,9 +191,9 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
               uiSchema={uiSchema}
               showAllErrors={true}
               apiErrors={apiErrors}
-              formData={formData}
+              formData={ideaFormData}
               ideaMetadata={ideaMetadata}
-              setFormData={setFormData}
+              setFormData={setIdeaFormData}
             />
           </>
         )}
