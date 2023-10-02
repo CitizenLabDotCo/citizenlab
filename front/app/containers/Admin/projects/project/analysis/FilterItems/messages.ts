@@ -2,7 +2,7 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   removeFilter: {
-    id: 'app.containers.AdminPage.projects.project.analysis.removeFilter',
+    id: 'app.containers.AdminPage.projects.project.analysis.removeFilterItem',
     defaultMessage: 'Remove filter',
   },
   search: {
