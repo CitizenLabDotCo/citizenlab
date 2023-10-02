@@ -24,6 +24,7 @@ import messages from './messages';
 // style
 import { darken } from 'polished';
 import styled from 'styled-components';
+import { isNilOrError } from 'utils/helperUtils';
 
 const StyledBox = styled(Box)`
   background-color: ${colors.grey100};
@@ -57,8 +58,8 @@ const MultiSelectCheckboxControl = ({
   }
 
   const getInstructionMessage = () => {
-    if (minItems && maxItems) {
-      if (minItems <= 1 && maxItems === options?.length) {
+    if (!isNilOrError(minItems) && !isNilOrError(maxItems)) {
+      if (minItems < 1 && maxItems === options?.length) {
         return formatMessage(messages.selectAsManyAsYouLike);
       }
       if (maxItems === minItems) {
