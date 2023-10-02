@@ -1,83 +1,19 @@
 lv:
   email_campaigns:
     campaign_type_description:
-      "manual": Oficiālie ziņojumi
-      "admin_rights_received": Saņemtās administratora tiesības
-      "comment_deleted_by_admin": Mana komentāra dzēšana
-      "comment_marked_as_spam": Ziņot par surogātpastu komentārā
-      "comment_on_your_comment": Atbilde uz manu komentāru
-      "comment_on_idea_you_follow": Komentārs par ideju, kurai jūs sekojat
-      "comment_on_initiative_you_follow": Komentārs par priekšlikumu, kuram jūs sekojat.
-      "cosponsor_of_your_initiative": Lietotājs pieņem manu uzaicinājumu atbalstīt manu priekšlikumu.
-      "event_registration_confirmation": Pasākuma reģistrācijas apstiprinājums
-      "first_idea_published": Manas pirmās idejas publicēšana
-      "idea_marked_as_spam": Ziņot par ideju kā surogātpastu
-      "idea_published": Manas idejas publicēšana
-      "initiative_assigned_to_you": Priekšlikuma piešķiršana man
-      "initiative_marked_as_spam": Ziņot par priekšlikumu kā surogātpastu
-      "initiative_published": Mana priekšlikuma publicēšana
-      "invitation_to_cosponsor_initiative": Uzaicinājums līdzfinansēt priekšlikumu
-      "initiative_resubmitted_for_review": Priekšlikums atkārtoti iesniegts pārskatīšanai
-      "invite_received": Uzaicinājums
-      "invite_reminder": Atgādinājums par uzaicinājumu
-      "internal_comment_on_idea_assigned_to_you": Iekšējais komentārs par man piešķirto ieguldījumu
-      "internal_comment_on_idea_you_commented_internally_on": Iekšējs komentārs par ievadītajiem datiem, ko komentēju iekšēji
-      "internal_comment_on_idea_you_moderate": Iekšējs komentārs par ievades datiem projektā vai mapē, ko pārvaldu
-      "internal_comment_on_initiative_assigned_to_you": Iekšējais komentārs par man piešķirto priekšlikumu
-      "internal_comment_on_initiative_you_commented_internally_on": Iekšējs komentārs par priekšlikumu Iekšēji komentēju priekšlikumu
-      "internal_comment_on_unassigned_initiative": Iekšējais komentārs par nepiešķirtu priekšlikumu
-      "internal_comment_on_unassigned_unmoderated_idea": Iekšējais komentārs par nepiešķirtu ievades datu nepiešķirtiem ievades datiem neapsaimniekotā projektā
-      "internal_comment_on_your_internal_comment": Iekšējais komentārs par manu iekšējo komentāru
-      "mention_in_official_feedback": Minēt atjauninājumā
-      "mention_in_internal_comment": Pieminēšana iekšējā komentārā
-      "new_comment_for_admin": Jauns komentārs projektā, kuru es moderēju
-      "new_idea_for_admin": Jauna ideja projektā, kuru es moderēju
-      "new_initiative_for_admin": Jauns priekšlikums
-      "official_feedback_on_idea_you_follow": Atjaunināt ideju, kurai sekojat
-      "official_feedback_on_initiative_you_follow": Atjauninājums par priekšlikumu, kuram jūs sekojat
-      "password_reset": Paroles atiestatīšana
-      "project_moderation_rights_received": Saņemtās projekta moderēšanas tiesības
-      "project_folder_moderation_rights_received": Saņemtās mapju pārvaldnieka tiesības
-      "project_phase_started": Jauns projekta posms
-      "project_phase_upcoming": Gaidāmais jaunais projekta posms
-      "project_published": Publicēts projekts
-      "status_change_on_idea_you_follow": Idejas statusa maiņa, kurai jūs sekojat
-      "status_change_on_initiative_you_follow": Izmaiņas statusā priekšlikumam, kuram jūs sekojat
-      "threshold_reached_for_admin": Priekšlikums sasniedzis balsošanas slieksni
-      "welcome": Pēc reģistrācijas
-      "admin_digest": Nedēļas pārskats administratoriem
-      "moderator_digest": Nedēļas pārskats projektu vadītājiem
-      "assignee_digest": Nedēļas pārskats par piešķirtajām idejām
-      "user_digest": Nedēļas pārskats
-      "voting_basket_submitted": Balsošanas apstiprināšana
-      "voting_basket_not_submitted": Neiesniegtās balsis
-      "voting_last_chance": Pēdējā iespēja balsot
-      "voting_results": Balsošanas rezultāti
-      "your_proposed_initiatives_digest": Nedēļas pārskats par jūsu priekšlikumiem
-    general:
-      by_author: 'līdz %{authorName}'
-      author_wrote: '%{authorName} rakstīja:'
-      cta_goto_idea: 'Pārejiet uz šo ideju'
-      cta_goto_proposal: 'Pārejiet uz šo priekšlikumu'
-      cta_goto_project: 'Dodieties uz šo projektu'
-    schedules:
-      weekly:
-        "0": "Ik nedēļu, svētdienās, %{hourOfDay}"
-        "1": "Ik nedēļu, pirmdienās %{hourOfDay}"
-        "2": "Ik nedēļu, otrdienās %{hourOfDay}"
-        "3": "Ik nedēļu, trešdienās %{hourOfDay}"
-        "4": "Ik nedēļu, ceturtdienās %{hourOfDay}"
-        "5": "Ik nedēļu, piektdienās %{hourOfDay}"
-        "6": "Ik nedēļu sestdienās %{atHour}"
+      "1": "Ik nedēļu, pirmdienās %{hourOfDay}"
+      "2": "Ik nedēļu, otrdienās %{hourOfDay}"
+      "3": "Ik nedēļu, trešdienās, %{hourOfDay}"
+      "4": "Ik nedēļu, ceturtdienās, %{hourOfDay}"
+      "5": "Ik nedēļu, piektdienās, %{hourOfDay}"
+      "6": "Ik nedēļu, sestdienās, %{hourOfDay}"
     footer:
-      "link_privacy_policy": "Privātuma politika"
       "link_terms_conditions": "Noteikumi un nosacījumi"
       "link_unsubscribe": "Atteikties"
       "powered_by": "Darbību nodrošina"
       "statement": "Šo e-pastu jums nosūtīja CitizenLab %{organizationName} vārdā, jo jūs esat %{organizationLink} reģistrēts lietotājs. Jūs varat %{unsubscribeLink}, ja nevēlaties turpmāk saņemt šos e-pastus."
       "unsubscribe_text": "atteikties"
-    follow:
-      "unfollow_here": "Jūs esat saņēmis šo paziņojumu, jo jums ir sekots līdzi. <a href=\"%{unfollow_url}\">Jūs varat to atcelt šeit.</a>"
+    follow: "atteikties no \"unfollow_here\": \"Jūs esat saņēmis šo paziņojumu, jo jums ir sekots kāds objekts. <a href=\"%{unfollow_url}\">Jūs varat to atcelt šeit.</a>"
     comment_deleted_by_admin:
       reason: 'Iemesls, kāpēc jūsu komentārs tika dzēsts:'
       cta_view: 'Skatīt šo ideju'
