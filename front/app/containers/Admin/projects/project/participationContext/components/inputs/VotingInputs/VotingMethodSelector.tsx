@@ -17,7 +17,7 @@ import MultipleVotingIcon from './CardIcons/MultipleVotingIcon';
 import SingleVotingIcon from './CardIcons/SingleVotingIcon';
 
 // types
-import { VotingMethod } from 'services/participationContexts';
+import { VotingMethod } from 'utils/participationContexts';
 
 type VotingMethodSelectorProps = {
   voting_method?: VotingMethod | null;

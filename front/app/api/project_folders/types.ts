@@ -2,16 +2,11 @@ import { PublicationStatus } from 'api/projects/types';
 import { Multiloc, ImageSizes, IRelationship } from 'typings';
 import projectFoldersKeys from './keys';
 import { Keys } from 'utils/cl-react-query/types';
-import { IObject } from 'utils/streams';
 
 export type ProjectFoldersKeys = Keys<typeof projectFoldersKeys>;
 export interface IQueryParameters {
   pageNumber?: number;
   pageSize?: number;
-  bodyData?: IObject | null;
-  queryParameters?: IObject | null;
-  cacheStream?: boolean;
-  skipSanitizationFor?: string[];
 }
 export interface IProjectFolders {
   data: IProjectFolderData[];

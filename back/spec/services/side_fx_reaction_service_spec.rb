@@ -43,15 +43,16 @@ describe SideFxReactionService do
 
       expect do
         service.after_create reaction.reload, user
-      end.to change(Follower, :count).from(0).to(3)
+      end.to change(Follower, :count).from(0).to(2)
 
-      expect(user.follows.pluck(:followable_id)).to contain_exactly idea.id, project.id, folder.id
+      expect(user.follows.pluck(:followable_id)).to contain_exactly project.id, folder.id
     end
 
-    it 'does not create a follower if the user already follows the post' do
-      initiative = create(:initiative)
-      reaction = create(:reaction, reactable: initiative)
-      create(:follower, followable: initiative, user: user)
+    it 'does not create a follower if the user already follows the project' do
+      project = create(:project)
+      idea = create(:idea, project: project)
+      reaction = create(:reaction, reactable: idea)
+      create(:follower, followable: project, user: user)
 
       expect do
         service.after_create reaction, user

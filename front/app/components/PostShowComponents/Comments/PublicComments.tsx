@@ -122,12 +122,13 @@ const PublicComments = ({
   const isAdminPage = isPage('admin', pathname);
   const showCommentCount = !isAdminPage && hasComments;
   const showHeader = !isAdminPage || hasComments;
-  const commentingDisabledReason =
-    postType === 'initiative'
-      ? commentingPermissionInitiative?.disabledReason
-      : idea?.data.attributes?.action_descriptor.commenting_idea
-          .disabled_reason;
-  const canComment = !commentingDisabledReason;
+  const canComment = {
+    idea: !idea?.data.attributes.action_descriptor.commenting_idea
+      .disabled_reason,
+    initiative:
+      !commentingPermissionInitiative?.disabledReason &&
+      !commentingPermissionInitiative?.authenticationRequirements,
+  }[postType];
 
   return (
     <Box className={className || ''}>
@@ -147,15 +148,13 @@ const PublicComments = ({
             <FormattedMessage {...messages.invisibleTitleComments} />
             {showCommentCount && <CommentCount>({commentCount})</CommentCount>}
           </Title>
-          <>
-            {postType === 'idea' && idea ? (
-              <CommentingIdeaDisabled idea={idea} phaseId={phaseId} />
-            ) : (
-              <CommentingProposalDisabled />
-            )}
-          </>
+          {postType === 'idea' && idea ? (
+            <CommentingIdeaDisabled idea={idea} phaseId={phaseId} />
+          ) : (
+            <CommentingProposalDisabled />
+          )}
           {hasComments && (
-            <Box ml="auto" mb="20px">
+            <Box ml="auto" mb="24px">
               <CommentSorting
                 onChange={handleSortOrderChange}
                 selectedCommentSort={sortOrder}

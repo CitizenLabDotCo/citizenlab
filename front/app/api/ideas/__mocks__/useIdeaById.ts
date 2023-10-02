@@ -78,6 +78,7 @@ export const ideaData: IIdeaData[] = [
         ],
       },
       idea_images: { data: [] },
+      ideas_phases: { data: [] },
       phases: { data: [] },
       author: {
         data: {
@@ -179,6 +180,7 @@ export const ideaData: IIdeaData[] = [
         ],
       },
       idea_images: { data: [] },
+      ideas_phases: { data: [] },
       phases: { data: [] },
       author: {
         data: {

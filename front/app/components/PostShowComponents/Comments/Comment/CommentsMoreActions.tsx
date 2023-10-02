@@ -11,7 +11,7 @@ import Modal from 'components/UI/Modal';
 import SpamReportForm from 'containers/SpamReport';
 import Button from 'components/UI/Button';
 import CommentsAdminDeletionModal from '../CommentsAdminDeletionModal';
-import { usePermission } from 'services/permissions';
+import { usePermission } from 'utils/permissions';
 
 // events
 import { deleteCommentModalClosed } from '../events';

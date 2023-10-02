@@ -5,7 +5,7 @@ import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 import { Icon, Dropdown } from '@citizenlab/cl2-component-library';
 
 // services
-import { updateLocale } from 'services/locale';
+import { updateLocale } from 'utils/locale';
 
 // hooks
 import useLocale from 'hooks/useLocale';

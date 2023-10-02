@@ -97,6 +97,9 @@ export const ideaData: IIdeaData[] = [
           type: 'idea_statuses',
         },
       },
+      ideas_phases: {
+        data: [],
+      },
       user_follower: {
         data: null,
       },
@@ -178,6 +181,7 @@ export const ideaData: IIdeaData[] = [
           },
         ],
       },
+      ideas_phases: { data: [] },
       idea_images: { data: [] },
       phases: { data: [] },
       author: {

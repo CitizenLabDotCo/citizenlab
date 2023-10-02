@@ -34,10 +34,15 @@ export interface ITopicData {
     ordering: number;
     code: Code;
     static_page_ids: string[];
+    followers_count: number;
+    include_in_onboarding: boolean;
   };
   relationships: {
     static_pages: {
       data: IRelationship[];
+    };
+    user_follower: {
+      data: IRelationship | null;
     };
   };
 }
@@ -53,8 +58,9 @@ export interface ITopics {
 export interface ITopicsQueryParams {
   code?: Code;
   excludeCode?: Code;
-  sort?: 'new' | 'custom';
+  sort?: 'new' | 'custom' | 'projects_count' | '-projects_count';
   forHomepageFilter?: boolean;
+  forOnboarding?: boolean;
   includeStaticPages?: boolean;
 }
 
@@ -67,4 +73,5 @@ export interface ITopicUpdate {
   id: string;
   title_multiloc?: Multiloc;
   description_multiloc?: Multiloc;
+  include_in_onboarding?: boolean;
 }

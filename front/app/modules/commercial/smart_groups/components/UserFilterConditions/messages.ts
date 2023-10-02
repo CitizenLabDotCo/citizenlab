@@ -290,6 +290,22 @@ export default defineMessages({
     id: 'app.components.admin.UserFilterConditions.predicate_attends_none_of',
     defaultMessage: 'is not registered for any of these events',
   },
+  predicate_is_one_of_topics: {
+    id: 'app.components.admin.UserFilterConditions.predicate_is_one_of_topics',
+    defaultMessage: 'one of the topics',
+  },
+  predicate_is_not_topic: {
+    id: 'app.components.admin.UserFilterConditions.predicate_is_not_topic',
+    defaultMessage: 'excludes topic',
+  },
+  predicate_is_one_of_areas: {
+    id: 'app.components.admin.UserFilterConditions.predicate_is_one_of_areas',
+    defaultMessage: 'one of the areas',
+  },
+  predicate_is_not_area: {
+    id: 'app.components.admin.UserFilterConditions.predicate_is_not_area',
+    defaultMessage: 'excludes area',
+  },
 
   rulesFormLabelField: {
     id: 'app.components.admin.UserFilterConditions.rulesFormLabelField',

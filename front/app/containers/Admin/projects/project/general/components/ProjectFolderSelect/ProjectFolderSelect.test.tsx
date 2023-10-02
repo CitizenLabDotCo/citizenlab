@@ -4,7 +4,7 @@ import { fireEvent, render, screen } from 'utils/testUtils/rtl';
 import ProjectFolderSelect from './';
 
 let mockPermission = false;
-jest.mock('services/permissions', () => {
+jest.mock('utils/permissions', () => {
   return { usePermission: () => mockPermission };
 });
 
