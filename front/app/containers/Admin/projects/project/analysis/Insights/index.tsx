@@ -13,7 +13,7 @@ import QuestionInput from './QuestionInput';
 import Question from './Question';
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
-import translations from './translations';
+import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 
 const Insights = () => {
@@ -45,7 +45,7 @@ const Insights = () => {
       </Box>
       <Box m="0" mb="12px" display="flex" justifyContent="center">
         <Text fontSize="s" m="0" variant="bodyXs" color="grey700">
-          {formatMessage(translations.appliesTo)} ({inputsCount})
+          {formatMessage(messages.appliesTo)} ({inputsCount})
         </Text>
       </Box>
 
@@ -66,10 +66,10 @@ const Insights = () => {
         {!isLoading && insights?.data?.length === 0 && (
           <>
             <Text px="24px" color="grey600">
-              {formatMessage(translations.emptyList)}
+              {formatMessage(messages.emptyList)}
             </Text>
             <Text px="24px" color="grey600">
-              {formatMessage(translations.emptyListDescription)}
+              {formatMessage(messages.emptyListDescription)}
             </Text>
           </>
         )}

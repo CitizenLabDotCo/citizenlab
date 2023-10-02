@@ -19,7 +19,7 @@ import SearchInput from 'components/UI/SearchInput';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import Filters from './Filters';
 import { useIntl } from 'utils/cl-intl';
-import translations from './translations';
+import messages from './messages';
 import useAnalysis from 'api/analyses/useAnalysis';
 import Tasks from '../Tasks';
 import LaunchModal from '../LaunchModal';
@@ -131,7 +131,7 @@ const TopBar = () => {
         <Box>
           <Box display="flex" gap="8px" alignItems="center">
             <Text m="0px" color="textSecondary">
-              {formatMessage(translations.AIAnalysis)}
+              {formatMessage(messages.AIAnalysis)}
             </Text>
             <Badge color={colors.textSecondary} className="inverse">
               BETA
@@ -148,7 +148,7 @@ const TopBar = () => {
           size="s"
           onClick={toggleFilters}
         >
-          {formatMessage(translations.filters)}
+          {formatMessage(messages.filters)}
         </Button>
         <FilterItems filters={filters} isEditable />
         <Box marginLeft="auto">
@@ -164,9 +164,7 @@ const TopBar = () => {
         {window.Intercom && (
           <IconButton
             iconName="info-solid"
-            a11y_buttonActionMessage={formatMessage(
-              translations.supportArticle
-            )}
+            a11y_buttonActionMessage={formatMessage(messages.supportArticle)}
             onClick={() => {
               window.Intercom('showArticle', 8316692);
             }}

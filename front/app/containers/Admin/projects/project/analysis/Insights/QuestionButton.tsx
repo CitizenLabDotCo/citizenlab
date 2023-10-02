@@ -11,7 +11,7 @@ import useAddAnalysisQuestionPreCheck from 'api/analysis_question_pre_check/useA
 import { IQuestionPreCheck } from 'api/analysis_question_pre_check/types';
 
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
-import translations from './translations';
+import messages from './messages';
 
 const QuestionButton = ({ onClick }: { onClick: () => void }) => {
   const { formatMessage } = useIntl();
@@ -48,31 +48,31 @@ const QuestionButton = ({ onClick }: { onClick: () => void }) => {
         disabled={!questionPossible}
         whiteSpace="wrap"
       >
-        {formatMessage(translations.askQuestion)}
+        {formatMessage(messages.askQuestion)}
         <br />
         <Text fontSize="s" m="0" color="grey600" whiteSpace="nowrap">
           <Box display="flex" gap="4px">
             {questionPossible && questionAccuracy && (
               <>
                 <FormattedMessage
-                  {...translations.accuracy}
+                  {...messages.accuracy}
                   values={{
                     accuracy: questionAccuracy * 100,
-                    percentage: formatMessage(translations.percentage),
+                    percentage: formatMessage(messages.percentage),
                   }}
                 />
                 <IconTooltip
                   icon="info-outline"
-                  content={formatMessage(translations.questionAccuracyTooltip)}
+                  content={formatMessage(messages.questionAccuracyTooltip)}
                 />
               </>
             )}
             {!questionPossible && (
               <>
-                <FormattedMessage {...translations.tooManyInputs} />
+                <FormattedMessage {...messages.tooManyInputs} />
                 <IconTooltip
                   icon="info-solid"
-                  content={formatMessage(translations.tooManyInputsTooltip)}
+                  content={formatMessage(messages.tooManyInputsTooltip)}
                 />
               </>
             )}

@@ -8,7 +8,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 
 import { useIntl } from 'utils/cl-intl';
-import translations from './translations';
+import messages from './messages';
 
 import useRateAnalysisInsight from 'api/analysis_insights/useRateAnalysisInsight';
 import { useParams } from 'react-router-dom';
@@ -52,11 +52,11 @@ const Rate = ({ insightId }: { insightId: string }) => {
           gap="8px"
         >
           <Icon fill={colors.success} name="check-circle" />
-          <Text>{formatMessage(translations.thankYou)}</Text>
+          <Text>{formatMessage(messages.thankYou)}</Text>
         </Box>
       ) : (
         <Box>
-          <Text> {formatMessage(translations.rate)}</Text>
+          <Text> {formatMessage(messages.rate)}</Text>
           <Box display="flex" w="100%" justifyContent="center">
             <IconButton
               iconName="vote-up"

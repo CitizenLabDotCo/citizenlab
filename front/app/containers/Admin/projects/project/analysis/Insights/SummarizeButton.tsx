@@ -15,7 +15,7 @@ import tracks from 'containers/Admin/projects/project/analysis/tracks';
 import { trackEventByName } from 'utils/analytics';
 
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
-import translations from './translations';
+import messages from './messages';
 
 const SummarizeButton = () => {
   const { formatMessage } = useIntl();
@@ -70,31 +70,31 @@ const SummarizeButton = () => {
         processing={isLoadingPreCheck || isLoadingSummary}
         whiteSpace="wrap"
       >
-        {formatMessage(translations.summarize)}
+        {formatMessage(messages.summarize)}
         <br />
         <Text fontSize="s" m="0" color="grey600" whiteSpace="nowrap">
           <Box display="flex" gap="4px">
             {summaryPossible && summaryAccuracy && (
               <>
                 <FormattedMessage
-                  {...translations.accuracy}
+                  {...messages.accuracy}
                   values={{
                     accuracy: summaryAccuracy * 100,
-                    percentage: formatMessage(translations.percentage),
+                    percentage: formatMessage(messages.percentage),
                   }}
                 />
                 <IconTooltip
                   icon="info-outline"
-                  content={formatMessage(translations.summaryAccuracyTooltip)}
+                  content={formatMessage(messages.summaryAccuracyTooltip)}
                 />
               </>
             )}
             {!summaryPossible && (
               <>
-                <FormattedMessage {...translations.tooManyInputs} />
+                <FormattedMessage {...messages.tooManyInputs} />
                 <IconTooltip
                   icon="info-solid"
-                  content={formatMessage(translations.tooManyInputsTooltip)}
+                  content={formatMessage(messages.tooManyInputsTooltip)}
                 />
               </>
             )}
