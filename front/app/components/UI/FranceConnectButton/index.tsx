@@ -49,7 +49,11 @@ const FranceConnectButtonLink = styled.button`
     cursor: not-allowed;
   }
 
-  &:hover #Fond {
+  #background {
+    fill: #000091;
+  }
+
+  #background:hover {
     fill: #2183f0;
   }
 `;
