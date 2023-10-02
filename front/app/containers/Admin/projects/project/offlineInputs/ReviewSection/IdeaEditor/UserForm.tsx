@@ -2,7 +2,9 @@ import React from 'react';
 
 // components
 import { Box, Input } from '@citizenlab/cl2-component-library';
-// import Input from 'components/HookForm/Input';
+
+// styling
+import { colors } from 'utils/styleUtils';
 
 // typings
 import { UserFormData } from './typings';
@@ -12,32 +14,41 @@ interface Props {
   setUserFormData: (newData: Partial<UserFormData>) => void;
 }
 
+const BlackLabel = ({ text }: { text: string }) => (
+  <span style={{ color: 'rgb(51,51,51)', fontWeight: 600 }}>{text}</span>
+);
+
 const UserForm = ({ userFormData, setUserFormData }: Props) => {
   return (
-    <Box>
+    <Box
+      w="90%"
+      borderBottom={`1px solid ${colors.borderLight}`}
+      mb="24px"
+      pb="24px"
+    >
       <Box>
         <Input
           type="email"
           value={userFormData.email}
-          label="Email"
+          label={<BlackLabel text="Email" />}
           onChange={(email) => setUserFormData({ email })}
         />
       </Box>
       {userFormData.newUser && (
         <>
-          <Box mt="12px">
+          <Box mt="20px">
             <Input
               type="text"
               value={userFormData.first_name}
-              label="First name"
+              label={<BlackLabel text="First name" />}
               onChange={(first_name) => setUserFormData({ first_name })}
             />
           </Box>
-          <Box mt="12px">
+          <Box mt="20px">
             <Input
               type="text"
               value={userFormData.last_name}
-              label="Last name"
+              label={<BlackLabel text="Last name" />}
               onChange={(last_name) => setUserFormData({ last_name })}
             />
           </Box>

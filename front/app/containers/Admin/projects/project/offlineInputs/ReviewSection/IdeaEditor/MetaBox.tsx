@@ -18,29 +18,27 @@ interface Props {
 
 const MetaBox = ({ phaseName, locale }: Props) => {
   return (
-    <Box w="90%" borderBottom={`1px solid ${colors.borderLight}`} mb="20px">
-      <Box
-        w="100%"
-        display="flex"
-        borderBottom={`1px solid ${colors.borderLight}`}
-        mb="20px"
-      >
-        <Box pr="12px">
-          {phaseName && (
-            <Text fontWeight="bold">
-              <FormattedMessage {...messages.phase} />
-            </Text>
-          )}
-          {locale && (
-            <Text fontWeight="bold">
-              <FormattedMessage {...messages.locale} />
-            </Text>
-          )}
-        </Box>
-        <Box>
-          {phaseName && <Text>{phaseName}</Text>}
-          {locale && <Text>{locale}</Text>}
-        </Box>
+    <Box
+      w="90%"
+      borderBottom={`1px solid ${colors.borderLight}`}
+      mb="20px"
+      display="flex"
+    >
+      <Box pr="12px">
+        {phaseName && (
+          <Text fontWeight="bold">
+            <FormattedMessage {...messages.phase} />
+          </Text>
+        )}
+        {locale && (
+          <Text fontWeight="bold">
+            <FormattedMessage {...messages.locale} />
+          </Text>
+        )}
+      </Box>
+      <Box>
+        {phaseName && <Text>{phaseName}</Text>}
+        {locale && <Text>{locale}</Text>}
       </Box>
     </Box>
   );
