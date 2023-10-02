@@ -35,7 +35,11 @@ const IdeasTab = () => {
         <FormattedMessage {...messages.inputManagerPageSubtitle} />
       </SectionDescription>
       <Box background={colors.white} p="40px">
-        {isLoading && <Spinner />}
+        {isLoading && (
+          <Box mb="28px">
+            <Spinner />
+          </Box>
+        )}
         <PostManager
           type="AllIdeas"
           defaultFilterMenu={defaultFilterMenu}
