@@ -25,7 +25,7 @@ import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCu
 import { xor } from 'lodash-es';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import translations from './translations';
+import messages from './messages';
 
 // Custom tooltip is rendered when the user hovers over a bar
 const CustomTooltip = ({ payload }: { payload?: any }) => {
@@ -93,7 +93,7 @@ const AuthorsByDomicile = ({ customFieldId }: Props) => {
         let optionKey;
 
         if (optionId === '_blank') {
-          name = formatMessage(translations.unknown);
+          name = formatMessage(messages.unknown);
           shortName = '?';
           filtered =
             filteredAuthorsByDomicile?.data.attributes.series.users[optionId];
@@ -145,7 +145,7 @@ const AuthorsByDomicile = ({ customFieldId }: Props) => {
   if (chartData.length > 27) {
     return (
       <Text m="0" color="grey600" fontSize="s" textAlign="center">
-        <FormattedMessage {...translations.domicileChartTooLarge} />
+        <FormattedMessage {...messages.domicileChartTooLarge} />
       </Text>
     );
   }
@@ -153,7 +153,7 @@ const AuthorsByDomicile = ({ customFieldId }: Props) => {
   return (
     <Box display="flex" flexDirection="column" alignItems="center">
       <Title my="0" variant="h6" fontWeight="normal">
-        <FormattedMessage {...translations.authorsByDomicile} />
+        <FormattedMessage {...messages.authorsByDomicile} />
       </Title>
       <ResponsiveContainer width="100%" height={100}>
         <BarChart data={chartData} margin={{ top: 20, left: 8, right: 8 }}>
