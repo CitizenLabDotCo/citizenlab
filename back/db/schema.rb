@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_27_135924) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_02_173048) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -1558,6 +1558,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_27_135924) do
     t.index ["slug"], name: "index_users_on_slug", unique: true
   end
 
+  create_table "verification_reactions_verifications_hashed_uids", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "reaction_id"
+    t.string "verification_hashed_uid"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["reaction_id"], name: "index_on_reaction_id"
+    t.index ["verification_hashed_uid"], name: "index_on_verification_hashed_uid"
+  end
+
   create_table "verification_verifications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "user_id"
     t.string "method_name", null: false
@@ -1713,6 +1722,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_27_135924) do
   add_foreign_key "static_pages_topics", "static_pages"
   add_foreign_key "static_pages_topics", "topics"
   add_foreign_key "user_custom_fields_representativeness_ref_distributions", "custom_fields"
+  add_foreign_key "verification_reactions_verifications_hashed_uids", "reactions"
   add_foreign_key "volunteering_volunteers", "volunteering_causes", column: "cause_id"
 
   create_view "initiative_initiative_statuses", sql_definition: <<-SQL

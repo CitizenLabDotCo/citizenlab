@@ -35,10 +35,13 @@ class Reaction < ApplicationRecord
     }
   )
   belongs_to :user, optional: true
+  has_many :verification_reactions_verifications_hashed_uids, class_name: 'Verification::ReactionsVerificationsHashedUid', dependent: :destroy
 
   validates :reactable, :mode, presence: true
   validates :mode, inclusion: { in: MODES }
   validates :user_id, uniqueness: { scope: %i[reactable_id reactable_type mode], allow_nil: true }
+
+  after_create :create_verification_reactions_verifications_hashed_uids
 
   scope :up, -> { where mode: 'up' }
   scope :down, -> { where mode: 'down' }
@@ -53,5 +56,13 @@ class Reaction < ApplicationRecord
 
   def project_id
     reactable.try(:project_id)
+  end
+
+  private
+
+  def create_verification_reactions_verifications_hashed_uids
+    user.verifications.each do |verification|
+      verification_reactions_verifications_hashed_uids.create(verification_hashed_uid: verification.hashed_uid)
+    end
   end
 end
