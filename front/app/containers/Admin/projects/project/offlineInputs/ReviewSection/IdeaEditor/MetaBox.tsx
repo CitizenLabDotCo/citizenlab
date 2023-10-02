@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import { Box, Text, Input } from '@citizenlab/cl2-component-library';
+import { Box, Text } from '@citizenlab/cl2-component-library';
 
 // styling
 import { colors } from 'utils/styleUtils';
@@ -10,20 +10,13 @@ import { colors } from 'utils/styleUtils';
 import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { Locale } from 'typings';
-import { IUser } from 'api/users/types';
 
 interface Props {
   phaseName?: string;
   locale?: Locale;
-  author: IUser;
 }
 
-const MetaBox = ({ phaseName, locale, author }: Props) => {
-  // const firstName = author?.data.attributes.first_name;
-  // const lastName = author?.data.attributes.last_name;
-  // const email = author?.data.attributes.email;
-  const { first_name, last_name, email } = author.data.attributes;
-
+const MetaBox = ({ phaseName, locale }: Props) => {
   return (
     <Box w="90%" borderBottom={`1px solid ${colors.borderLight}`} mb="20px">
       <Box
@@ -48,15 +41,6 @@ const MetaBox = ({ phaseName, locale, author }: Props) => {
           {phaseName && <Text>{phaseName}</Text>}
           {locale && <Text>{locale}</Text>}
         </Box>
-      </Box>
-      <Box mt="0px" mb="20px">
-        <Box mb="12px">
-          <Input type="email" label="Email" value={email} />
-        </Box>
-        <Box mb="12px">
-          <Input type="text" label="First name" value={first_name} />
-        </Box>
-        <Input type="text" label="Last name" value={last_name} />
       </Box>
     </Box>
   );

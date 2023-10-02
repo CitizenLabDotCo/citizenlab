@@ -29,13 +29,15 @@ import { colors, stylingConsts } from 'utils/styleUtils';
 // utils
 import { isValidData } from 'components/Form/utils';
 import { customAjv } from 'components/Form';
-import { getFormValues } from 'containers/IdeasEditPage/utils';
+import { getFormValues as getIdeaFormValues } from 'containers/IdeasEditPage/utils';
 import { geocode } from 'utils/locationTools';
-import { getNextIdeaId } from './utils';
+import { getNextIdeaId, getUserFormValues } from './utils';
 
 // typings
 import { FormData } from 'components/Form/typings';
 import { CLErrors } from 'typings';
+import { UserFormData } from './typings';
+import UserForm from './UserForm';
 
 interface Props {
   ideaId: string | null;
@@ -49,12 +51,15 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
     phaseId?: string;
   };
 
-  const [ideaFormApiErrors, setIdeaFormApiErrors] = useState<
-    CLErrors | undefined
-  >();
+  const [userFormStatePerIdea, setUserFormStatePerIdea] = useState<
+    Record<string, UserFormData>
+  >({});
   const [ideaFormStatePerIdea, setIdeaFormStatePerIdea] = useState<
     Record<string, FormData>
   >({});
+  const [ideaFormApiErrors, setIdeaFormApiErrors] = useState<
+    CLErrors | undefined
+  >();
 
   const { schema, uiSchema } = useInputSchema({
     projectId,
@@ -69,12 +74,31 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
   const { mutateAsync: updateIdea, isLoading: loadingApproveIdea } =
     useUpdateIdea();
 
-  const ideaFormData: FormData =
+  const userFormData: UserFormData | null =
+    ideaId && userFormStatePerIdea[ideaId]
+      ? userFormStatePerIdea[ideaId]
+      : author
+      ? getUserFormValues(author)
+      : null;
+
+  const ideaFormData: FormData | null =
     ideaId && ideaFormStatePerIdea[ideaId]
       ? ideaFormStatePerIdea[ideaId]
       : idea && schema
-      ? getFormValues(idea, schema)
+      ? getIdeaFormValues(idea, schema)
       : null;
+
+  const setUserFormData = (userFormData: Partial<UserFormData>) => {
+    if (!ideaId) return;
+
+    setUserFormStatePerIdea((userFormDataPerIdea) => ({
+      ...userFormDataPerIdea,
+      [ideaId]: {
+        ...userFormDataPerIdea[ideaId],
+        ...userFormData,
+      },
+    }));
+  };
 
   const setIdeaFormData = (ideaFormData: FormData) => {
     if (!ideaId) return;
@@ -185,8 +209,12 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
       >
         {ideaMetadata && (
           <>
-            {author && (
-              <MetaBox phaseName={phaseName} locale={locale} author={author} />
+            <MetaBox phaseName={phaseName} locale={locale} />
+            {userFormData && (
+              <UserForm
+                userFormData={userFormData}
+                setUserFormData={setUserFormData}
+              />
             )}
             <IdeaForm
               schema={schema}
