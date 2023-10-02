@@ -8,6 +8,8 @@ import useImportedIdeas from 'api/import_ideas/useImportedIdeas';
 import useImportedIdeaMetadata from 'api/import_ideas/useImportedIdeaMetadata';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useInputSchema from 'hooks/useInputSchema';
+import useUpdateIdea from 'api/ideas/useUpdateIdea';
+import useDeleteIdea from 'api/ideas/useDeleteIdea';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -24,48 +26,140 @@ import PDFViewer from './PDFViewer';
 // styling
 import { colors, stylingConsts } from 'utils/styleUtils';
 
+// utils
+import { isValidData } from 'components/Form/utils';
+import { customAjv } from 'components/Form';
+import { getFormValues } from 'containers/IdeasEditPage/utils';
+import { geocode } from 'utils/locationTools';
+import { getNextIdeaId } from '../utils';
+
 // typings
 import { FormData } from 'components/Form/typings';
 import { CLErrors } from 'typings';
 
-interface Props {
-  ideaId: string | null;
-  apiErrors?: CLErrors;
-  formData: FormData;
-  formDataValid: boolean;
-  loadingApproveIdea: boolean;
-  onSelectIdea: (ideaId: string | null) => void;
-  setFormData: (formData: FormData) => void;
-  onApproveIdea: () => Promise<void>;
-  onDeleteIdea: (ideaId: string) => void;
-}
-
-const ReviewSection = ({
-  ideaId,
-  apiErrors,
-  formData,
-  formDataValid,
-  loadingApproveIdea,
-  onSelectIdea,
-  setFormData,
-  onApproveIdea,
-  onDeleteIdea,
-}: Props) => {
+const ReviewSection = () => {
   const { projectId, phaseId } = useParams() as {
     projectId: string;
     phaseId?: string;
   };
-  const [currentPageIndex, setCurrentPageIndex] = useState(0);
+
+  const [ideaId, setIdeaId] = useState<string | null>(null);
+  const [apiErrors, setApiErrors] = useState<CLErrors | undefined>();
+
+  const [formStatePerIdea, setFormStatePerIdea] = useState<
+    Record<string, FormData>
+  >({});
+
+  const { data: idea } = useIdeaById(ideaId ?? undefined, false);
+  const { data: ideas, isLoading } = useImportedIdeas({ projectId, phaseId });
+  const { mutateAsync: updateIdea, isLoading: loadingApproveIdea } =
+    useUpdateIdea();
+  const { mutate: deleteIdea } = useDeleteIdea();
 
   const { schema, uiSchema } = useInputSchema({
     projectId,
     phaseId,
   });
-  const { data: ideas, isLoading } = useImportedIdeas({ projectId, phaseId });
-  const { data: idea } = useIdeaById(ideaId ?? undefined);
+
+  const formData: FormData =
+    ideaId && formStatePerIdea[ideaId]
+      ? formStatePerIdea[ideaId]
+      : idea && schema
+      ? getFormValues(idea, schema)
+      : null;
+
+  const setFormData = (formData: FormData) => {
+    if (!ideaId) return;
+
+    setFormStatePerIdea((formState) => ({
+      ...formState,
+      [ideaId]: formData,
+    }));
+  };
+
+  const [currentPageIndex, setCurrentPageIndex] = useState(0);
+
   const { data: ideaMetadata } = useImportedIdeaMetadata({
     id: isLoading ? undefined : idea?.data.relationships.idea_import?.data?.id,
   });
+
+  if (!schema || !uiSchema || isLoading) {
+    return (
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        justifyContent="center"
+        w="100%"
+        zIndex="10000"
+        position="fixed"
+        bgColor={colors.background}
+        h="100vh"
+      >
+        <Spinner />
+      </Box>
+    );
+  }
+
+  const formDataValid = isValidData(
+    schema,
+    uiSchema,
+    formData,
+    customAjv,
+    false
+  );
+
+  const onApproveIdea = async () => {
+    if (!ideaId || !formData || !formDataValid || !ideas) return;
+
+    const {
+      location_description,
+      idea_files_attributes: _idea_files_attributes,
+      idea_images_attributes: _idea_images_attributes,
+      topic_ids: _topic_ideas,
+      ...supportedFormData
+    } = formData;
+
+    const location_point_geojson =
+      typeof location_description === 'string' &&
+      location_description.length > 0
+        ? await geocode(location_description)
+        : undefined;
+
+    try {
+      await updateIdea({
+        id: ideaId,
+        requestBody: {
+          publication_status: 'published',
+          ...supportedFormData,
+          ...(location_description ? { location_description } : {}),
+          ...(location_point_geojson ? { location_point_geojson } : {}),
+        },
+      });
+
+      setFormStatePerIdea((formState) => {
+        const clone = { ...formState };
+        delete clone[ideaId];
+
+        return clone;
+      });
+
+      const nextIdeaId = getNextIdeaId(ideaId, ideas);
+      setIdeaId(nextIdeaId);
+    } catch (e) {
+      setApiErrors(e.errors);
+    }
+  };
+
+  const onDeleteIdea = (idToBeDeleted: string) => {
+    deleteIdea(idToBeDeleted, {
+      onSuccess: () => {
+        if (ideaId === idToBeDeleted) {
+          setIdeaId(null);
+        }
+      },
+    });
+  };
 
   if (isLoading) {
     return (
@@ -143,7 +237,7 @@ const ReviewSection = ({
           <IdeaList
             ideaId={ideaId}
             ideas={ideas}
-            onSelectIdea={onSelectIdea}
+            onSelectIdea={setIdeaId}
             onDeleteIdea={onDeleteIdea}
           />
         </Box>
