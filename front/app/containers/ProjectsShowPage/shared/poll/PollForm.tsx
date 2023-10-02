@@ -10,12 +10,16 @@ import { IPollQuestionData } from 'api/poll_questions/types';
 import styled from 'styled-components';
 import { fontSizes, defaultCardStyle } from 'utils/styleUtils';
 
+// hooks
+import useAddPollResponse from 'api/poll_responses/useAddPollResponse';
+import useAuthUser from 'api/me/useAuthUser';
+
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import PollSingleChoice from './PollSingleChoice';
 import PollMultipleChoice from './PollMultipleChoice';
-import useAddPollResponse from 'api/poll_responses/useAddPollResponse';
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 const PollContainer = styled.div`
   color: ${({ theme }) => theme.colors.tenantText};
@@ -59,6 +63,8 @@ export const QuestionText = styled.span`
 interface Props {
   questions: IPollQuestionData[];
   projectId: string;
+  phaseId?: string | null;
+  contextId: string;
   id: string | null;
   type: IParticipationContextType;
   disabled: boolean;
@@ -68,10 +74,17 @@ interface Answers {
   [questionId: string]: string[];
 }
 
-const PollForm = ({ questions, id, type, disabled, projectId }: Props) => {
+const PollForm = ({
+  questions,
+  id,
+  type,
+  disabled,
+  projectId,
+  phaseId,
+}: Props) => {
   const [answers, setAnswers] = useState<Answers>({});
   const { mutate: addPollResponse } = useAddPollResponse();
-
+  const { data: user } = useAuthUser();
   const changeAnswerSingle = (questionId: string, optionId: string) => () => {
     setAnswers({ ...answers, [questionId]: [optionId] });
   };
@@ -85,13 +98,39 @@ const PollForm = ({ questions, id, type, disabled, projectId }: Props) => {
   };
 
   const sendAnswer = () => {
-    if (validate() && id) {
-      addPollResponse({
-        participationContextId: id,
-        participationContextType: type,
-        optionIds: Object.values(answers).flat(),
-        projectId,
-      });
+    if (id) {
+      const submitPollResponse = () => {
+        addPollResponse({
+          participationContextId: id,
+          participationContextType: type,
+          optionIds: Object.values(answers).flat(),
+          projectId,
+        });
+      };
+
+      if (validate()) {
+        submitPollResponse();
+      }
+
+      if (!user?.data) {
+        const pcType = phaseId ? 'phase' : 'project';
+        const pcId = phaseId ? phaseId : projectId;
+
+        if (!pcId || !pcType) return;
+
+        triggerAuthenticationFlow({
+          flow: 'signup',
+          context: {
+            action: 'taking_poll',
+            id: pcId,
+            type: pcType,
+          },
+          successAction: {
+            name: 'submit_poll',
+            params: { submitPollResponse },
+          },
+        });
+      }
     }
   };
 

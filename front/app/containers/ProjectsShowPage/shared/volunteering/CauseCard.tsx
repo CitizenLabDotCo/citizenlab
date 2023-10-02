@@ -6,9 +6,6 @@ import getAuthenticationRequirements from 'api/authentication/authentication_req
 // constants
 import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/constants';
 
-// hooks
-import useAuthUser from 'api/me/useAuthUser';
-
 // events
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
@@ -17,7 +14,6 @@ import Image from 'components/UI/Image';
 import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
-import Warning from 'components/UI/Warning';
 
 // utils
 import { isEmptyMultiloc } from 'utils/helperUtils';
@@ -177,14 +173,12 @@ const ActionWrapper = styled.div`
 interface Props {
   cause: ICauseData;
   className?: string;
-  disabled?: boolean;
 }
 
-const CauseCard = ({ cause, className, disabled }: Props) => {
+const CauseCard = ({ cause, className }: Props) => {
   const { mutate: addVolunteer } = useAddVolunteer();
   const { mutate: deleteVolunteer } = useDeleteVolunteer();
   const theme = useTheme();
-  const { data: authUser } = useAuthUser();
   const { windowWidth } = useWindowSize();
 
   const volunteer = useCallback(() => {
@@ -214,23 +208,8 @@ const CauseCard = ({ cause, className, disabled }: Props) => {
     }
   };
 
-  const signIn = () =>
-    triggerAuthenticationFlow({ flow: 'signin', successAction });
-  const signUp = () =>
-    triggerAuthenticationFlow({ flow: 'signup', successAction });
-
   const isVolunteer = !!cause.relationships?.user_volunteer?.data;
   const smallerThanSmallTablet = windowWidth <= viewportWidths.tablet;
-  const signUpLink = (
-    <button onClick={signUp}>
-      <FormattedMessage {...messages.signUpLinkText} />
-    </button>
-  );
-  const signInLink = (
-    <button onClick={signIn}>
-      <FormattedMessage {...messages.signInLinkText} />
-    </button>
-  );
 
   return (
     <Container className={className}>
@@ -285,28 +264,18 @@ const CauseCard = ({ cause, className, disabled }: Props) => {
         </Content>
 
         <ActionWrapper>
-          {!authUser ? (
-            <Warning>
-              <FormattedMessage
-                {...messages.notLoggedIn}
-                values={{ signUpLink, signInLink }}
-              />
-            </Warning>
-          ) : (
-            <Button
-              onClick={handleOnVolunteerButtonClick}
-              icon={!isVolunteer ? 'volunteer' : 'volunteer-off'}
-              disabled={!authUser || disabled}
-              buttonStyle={!isVolunteer ? 'primary' : 'secondary'}
-              fullWidth={smallerThanSmallTablet}
-            >
-              {isVolunteer ? (
-                <FormattedMessage {...messages.withdrawVolunteerButton} />
-              ) : (
-                <FormattedMessage {...messages.becomeVolunteerButton} />
-              )}
-            </Button>
-          )}
+          <Button
+            onClick={handleOnVolunteerButtonClick}
+            icon={!isVolunteer ? 'volunteer' : 'volunteer-off'}
+            buttonStyle={!isVolunteer ? 'primary' : 'secondary'}
+            fullWidth={smallerThanSmallTablet}
+          >
+            {isVolunteer ? (
+              <FormattedMessage {...messages.withdrawVolunteerButton} />
+            ) : (
+              <FormattedMessage {...messages.becomeVolunteerButton} />
+            )}
+          </Button>
         </ActionWrapper>
       </Right>
     </Container>

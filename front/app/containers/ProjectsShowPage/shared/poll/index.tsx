@@ -160,10 +160,12 @@ export const Poll = ({ pollQuestions, projectId, phaseId, type }: Props) => {
           )}
           <PollForm
             projectId={projectId}
+            phaseId={phaseId}
             questions={pollQuestions}
             id={type === 'project' ? projectId : phaseId}
             type={type}
-            disabled={!enabled}
+            contextId={''}
+            disabled={false}
           />
         </>
       )}

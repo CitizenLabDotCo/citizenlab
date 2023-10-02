@@ -18,7 +18,6 @@ import styled from 'styled-components';
 
 // typings
 import { IParticipationContextType } from 'typings';
-import { pastPresentOrFuture } from 'utils/dateUtils';
 
 const Container = styled.div`
   color: ${({ theme }) => theme.colors.tenantText};
@@ -60,25 +59,10 @@ const Volunteering = memo<Props>(
       (!isNilOrError(project) ||
         (participationContextType === 'phase' && !isNilOrError(phase)))
     ) {
-      const disabledPhase =
-        phase &&
-        pastPresentOrFuture([
-          phase.attributes.start_at,
-          phase.attributes.end_at,
-        ]) !== 'present';
-
-      const disabledProject =
-        !isNilOrError(project) &&
-        project.attributes.publication_status !== 'published';
-
       return (
         <Container className={className} id="volunteering">
           {causes.data.map((cause) => (
-            <CauseCard
-              key={cause.id}
-              cause={cause}
-              disabled={disabledPhase || disabledProject}
-            />
+            <CauseCard key={cause.id} cause={cause} />
           ))}
         </Container>
       );
