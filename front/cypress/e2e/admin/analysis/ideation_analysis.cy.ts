@@ -40,5 +40,21 @@ describe('Admin: ideation analysis', () => {
       'include',
       '/en/admin/projects/' + projectId + '/analysis'
     );
+
+    // Launch modal
+    cy.get('#e2e-analysis-launch-modal').should('exist');
+    cy.get('#e2e-analysis-launch-modal-agree-button').click();
+  });
+
+  it('searches inputs correctly', () => {
+    cy.get('[data-cy="e2e-analysis-input-item"]').should('have.length', 3);
+    cy.get('#search-input').type('first');
+    cy.get('[data-cy="e2e-analysis-input-item"]').should('have.length', 1);
+    cy.get('#search-input').clear();
+    cy.get('[data-cy="e2e-analysis-input-item"]').should('have.length', 3);
+  });
+
+  after(() => {
+    cy.apiRemoveProject(projectId);
   });
 });

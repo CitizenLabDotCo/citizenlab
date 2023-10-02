@@ -38,7 +38,7 @@ const InputListItem = memo(({ input, onSelect, selected }: Props) => {
   const { title_multiloc } = input.attributes;
 
   return (
-    <>
+    <Box data-cy="e2e-analysis-input-item">
       <Box
         id={`input-${input.id}`}
         onClick={() => {
@@ -132,7 +132,7 @@ const InputListItem = memo(({ input, onSelect, selected }: Props) => {
         <Taggings inputId={input.id} />
       </Box>
       <Divider m="0px" />
-    </>
+    </Box>
   );
 });
 

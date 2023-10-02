@@ -18,7 +18,13 @@ type LaunchModalProps = {
 const LaunchModal = ({ onClose }: LaunchModalProps) => {
   const { formatMessage } = useIntl();
   return (
-    <Box px="20px" display="flex" flexDirection="column" gap="16px">
+    <Box
+      px="20px"
+      display="flex"
+      flexDirection="column"
+      gap="16px"
+      id="e2e-analysis-launch-modal"
+    >
       <Box display="flex" gap="16px" alignItems="center">
         <Icon name="flash" fill={colors.orange} width="40px" height="40px" />
         <Title>{formatMessage(translations.title)}</Title>
@@ -36,7 +42,7 @@ const LaunchModal = ({ onClose }: LaunchModalProps) => {
         <Text>{formatMessage(translations.description1)}</Text>
         <Text>{formatMessage(translations.description2)}</Text>
       </Box>
-      <Button onClick={onClose}>
+      <Button onClick={onClose} id="e2e-analysis-launch-modal-agree-button">
         {formatMessage(translations.agreeButton)}
       </Button>
     </Box>
