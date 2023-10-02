@@ -431,9 +431,9 @@ resource 'Initiatives' do
         assert_status 422
         json_response = json_parse(response_body)
         title_multiloc_error = json_response
-        .dig(:errors, :title_multiloc)&.select { |err| err[:error] == 'includes_banned_words' }
+          .dig(:errors, :title_multiloc)&.select { |err| err[:error] == 'includes_banned_words' }
         body_multiloc_error = json_response
-        .dig(:errors, :body_multiloc)&.select { |err| err[:error] == 'includes_banned_words' }
+          .dig(:errors, :body_multiloc)&.select { |err| err[:error] == 'includes_banned_words' }
         expect(title_multiloc_error).to be_present
         expect(body_multiloc_error).to be_present
       end
