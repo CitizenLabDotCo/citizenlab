@@ -101,6 +101,11 @@ const ReviewSection = () => {
     );
   }
 
+  if (ideas === undefined) return null;
+  if (ideas.data.length === 0) {
+    return <EmptyState />;
+  }
+
   const formDataValid = isValidData(
     schema,
     uiSchema,
@@ -110,7 +115,7 @@ const ReviewSection = () => {
   );
 
   const onApproveIdea = async () => {
-    if (!ideaId || !formData || !formDataValid || !ideas) return;
+    if (!ideaId || !formData || !formDataValid) return;
 
     const {
       location_description,
@@ -160,20 +165,6 @@ const ReviewSection = () => {
       },
     });
   };
-
-  if (isLoading) {
-    return (
-      <Box w="100%" mt="160px" display="flex" justifyContent="center">
-        <Spinner />
-      </Box>
-    );
-  }
-
-  if (!schema || !uiSchema) return null;
-  if (ideas === undefined) return null;
-  if (ideas.data.length === 0) {
-    return <EmptyState />;
-  }
 
   const pages =
     ideaMetadata?.data.attributes.import_type === 'pdf'
