@@ -5,5 +5,6 @@ FactoryBot.define do
     association :insightable, factory: :summary
     analysis
     filters { {} }
+    bookmarked { false }
   end
 end
