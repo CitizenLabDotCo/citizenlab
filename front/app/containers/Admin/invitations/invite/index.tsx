@@ -427,13 +427,11 @@ const Invitations = () => {
             onClick={resetWithView}
           />
           <Box mb={selectedView === 'template' ? '16px' : '36px'}>
-            <Warning
-              text={
-                <Text color="primary" m="0px">
-                  {formatMessage(messages.invitationExpirationWarning)}
-                </Text>
-              }
-            />
+            <Warning>
+              <Text color="primary" m="0px">
+                {formatMessage(messages.invitationExpirationWarning)}
+              </Text>
+            </Warning>
           </Box>
           {selectedView === 'template' && (
             <TemplateTab

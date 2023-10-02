@@ -110,10 +110,14 @@ Rails.application.routes.draw do
 
       resources :topics do
         patch 'reorder', on: :member
+
+        resources :followers, only: [:create], defaults: { followable: 'Topic' }
       end
 
       resources :areas do
         patch 'reorder', on: :member
+
+        resources :followers, only: [:create], defaults: { followable: 'Area' }
       end
 
       resources :followers, except: %i[create update]
@@ -280,6 +284,8 @@ Rails.application.routes.draw do
       put 'baskets/ideas/:idea_id', to: 'baskets_ideas#upsert'
 
       resources :avatars, only: %i[index show]
+
+      resources :ideas_phases, only: %i[show]
     end
   end
 

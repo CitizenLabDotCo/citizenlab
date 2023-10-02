@@ -73,6 +73,10 @@ const Title = styled.h2`
   ${media.tablet`
     font-size: ${fontSizes.xxxl}px;
   `}
+
+  ${media.phone`
+    font-size: ${fontSizes.xxl}px;
+  `}
 `;
 
 const StyledAvatarBubbles = styled(AvatarBubbles)`

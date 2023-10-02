@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_15_391649) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_27_135924) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -96,6 +96,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_15_391649) do
     t.jsonb "inputs_ids"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "bookmarked", default: false, null: false
     t.index ["analysis_id"], name: "index_analysis_insights_on_analysis_id"
     t.index ["insightable_type", "insightable_id"], name: "index_analysis_insights_on_insightable"
   end
@@ -220,7 +221,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_15_391649) do
     t.datetime "updated_at", precision: nil, null: false
     t.integer "ordering"
     t.uuid "custom_field_option_id"
+    t.integer "followers_count", default: 0, null: false
+    t.boolean "include_in_onboarding", default: false, null: false
     t.index ["custom_field_option_id"], name: "index_areas_on_custom_field_option_id"
+    t.index ["include_in_onboarding"], name: "index_areas_on_include_in_onboarding"
   end
 
   create_table "areas_ideas", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -1504,6 +1508,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_15_391649) do
     t.datetime "updated_at", precision: nil, null: false
     t.integer "ordering"
     t.string "code", default: "custom", null: false
+    t.integer "followers_count", default: 0, null: false
+    t.boolean "include_in_onboarding", default: false, null: false
+    t.index ["include_in_onboarding"], name: "index_topics_on_include_in_onboarding"
   end
 
   create_table "user_custom_fields_representativeness_ref_distributions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1544,6 +1551,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_15_391649) do
     t.datetime "block_end_at", precision: nil
     t.string "new_email"
     t.integer "followings_count", default: 0, null: false
+    t.jsonb "onboarding", default: {}, null: false
     t.index "lower((email)::text)", name: "users_unique_lower_email_idx", unique: true
     t.index ["email"], name: "index_users_on_email"
     t.index ["registration_completed_at"], name: "index_users_on_registration_completed_at"

@@ -1,18 +1,9 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  analysisTitle: {
-    id: 'app.containers.Admin.projects.project.survey.analysisTitle',
-    defaultMessage: 'AI-powered analysis',
-  },
-  analysisSubtitle: {
-    id: 'app.containers.Admin.projects.project.survey.analysisSubtitleText',
-    defaultMessage:
-      'Unlock automated summaries and ask questions about your project input. Go to your text questions below to launch the analysis.',
-  },
-  launchAnalysis: {
-    id: 'app.containers.Admin.projects.project.survey.launchAnalysis',
-    defaultMessage: 'Launch AI-powered analysis',
+  openAnalysis: {
+    id: 'app.containers.Admin.projects.project.survey.openAnalysis',
+    defaultMessage: 'Open AI analysis',
   },
   analysisSelectQuestions: {
     id: 'app.containers.Admin.projects.project.survey.analysisSelectQuestionsForAnalysis',
@@ -23,9 +14,17 @@ export default defineMessages({
     defaultMessage:
       'Do you want to include any other related questions in your analysis of {question}?',
   },
+  previousInsight: {
+    id: 'app.containers.Admin.projects.project.survey.previousInsight',
+    defaultMessage: 'Previous insight',
+  },
+  nextInsight: {
+    id: 'app.containers.Admin.projects.project.survey.nextInsight',
+    defaultMessage: 'Next insight',
+  },
   createAnalysis: {
-    id: 'app.containers.Admin.projects.project.survey.createAnalysis',
-    defaultMessage: 'Create analysis',
+    id: 'app.containers.Admin.projects.project.survey.newAnalysis',
+    defaultMessage: 'New analysis',
   },
   cancel: {
     id: 'app.containers.Admin.projects.project.survey.cancel',

@@ -7,7 +7,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // services
 import useProjectFolderModerators from 'api/project_folder_moderators/useProjectFolderModerators';
-import { isRegularUser } from 'services/permissions/roles';
+import { isRegularUser } from 'utils/permissions/roles';
 
 // i18n
 import messages from './messages';

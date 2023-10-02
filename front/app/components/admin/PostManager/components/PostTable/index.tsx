@@ -91,7 +91,7 @@ interface Props {
   onChangeSort?: (sort: IdeasSort | InitiativesSort) => void;
   /** A set of ids of ideas/initiatives that are currently selected */
   selection: Set<string>;
-  onChangeSelection: (newSelection: Set<string>) => void;
+  onChangeSelection: React.Dispatch<React.SetStateAction<Set<string>>>;
   currentPageNumber?: number;
   lastPageNumber?: number;
   onChangePage?: (number: number) => void;
@@ -132,44 +132,36 @@ const PostTable = ({
       }
     };
 
-  const select = (postId: string) => () => {
-    const newSelection = new Set(selection);
-    newSelection.add(postId);
-    onChangeSelection(newSelection);
-  };
-
-  const unselect = (postId: string) => () => {
-    const newSelection = new Set(selection);
-    const success = newSelection.delete(postId);
-    success && onChangeSelection(newSelection);
-    return success;
-  };
-
   const toggleSelect = (postId: string) => () => {
-    unselect(postId)() || select(postId)();
+    onChangeSelection((currentSelection) => {
+      const selectionClone = new Set([...currentSelection]);
+
+      selectionClone.has(postId)
+        ? selectionClone.delete(postId)
+        : selectionClone.add(postId);
+
+      return selectionClone;
+    });
   };
 
   const toggleSelectAll = () => {
-    if (allSelected()) {
-      onChangeSelection(new Set());
-    } else {
-      // TODO fix typings here, with the conditional type here, ts complains
-      posts &&
-        onChangeSelection(
-          new Set((posts as IIdeaData[]).map((post) => post.id))
-        );
-    }
-  };
+    if (!posts) return;
 
-  const singleSelect = (postId: string) => () => {
-    onChangeSelection(new Set([postId]));
+    onChangeSelection((currentSelection) => {
+      if (allSelected(currentSelection)) {
+        return new Set();
+      } else {
+        // TODO fix typings here, with the conditional type here, ts complains
+        return new Set((posts as IIdeaData[]).map((post) => post.id));
+      }
+    });
   };
 
   const handlePaginationClick = (page) => {
     onChangePage && onChangePage(page);
   };
 
-  const allSelected = () => {
+  const allSelected = (selection: Set<string>) => {
     return (
       !isEmpty(posts) &&
       every(posts, (post: IIdeaData | IInitiativeData) =>
@@ -192,7 +184,7 @@ const PostTable = ({
           <InitiativesHeaderRow
             sortAttribute={sortAttribute as InitiativesSortAttribute}
             sortDirection={sortDirection}
-            allSelected={allSelected()}
+            allSelected={allSelected(selection)}
             toggleSelectAll={toggleSelectAll}
             handleSortClick={handleSortClick}
           />
@@ -202,7 +194,7 @@ const PostTable = ({
             selectedPhaseId={selectedPhaseId}
             sortAttribute={sortAttribute}
             sortDirection={sortDirection}
-            allSelected={allSelected()}
+            allSelected={allSelected(selection)}
             toggleSelectAll={toggleSelectAll}
             handleSortClick={handleSortClick}
           />
@@ -218,15 +210,13 @@ const PostTable = ({
                       key={post.id}
                       type={type}
                       post={post}
+                      selection={selection}
+                      activeFilterMenu={activeFilterMenu}
                       phases={phases}
                       statuses={statuses}
                       selectedProjectId={selectedProjectId}
                       selectedPhaseId={selectedPhaseId}
-                      onUnselect={unselect(post.id)}
                       onToggleSelect={toggleSelect(post.id)}
-                      onSingleSelect={singleSelect(post.id)}
-                      selection={selection}
-                      activeFilterMenu={activeFilterMenu}
                       openPreview={openPreview}
                     />
                   </CSSTransition>

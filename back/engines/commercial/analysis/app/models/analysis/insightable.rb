@@ -5,7 +5,7 @@ module Analysis
     extend ActiveSupport::Concern
 
     included do
-      delegate :analysis, :analysis_id, :filters, :inputs_ids, to: :insight
+      delegate :analysis, :analysis_id, :filters, :inputs_ids, :bookmarked, to: :insight
 
       has_one :insight, as: :insightable, touch: true, dependent: :destroy, required: true, inverse_of: :insightable
 

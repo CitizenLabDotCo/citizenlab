@@ -5,10 +5,7 @@ import { FormattedMessage } from '../../cl-intl';
 import messages from '../../messages';
 
 // services
-import {
-  ParticipationMethod,
-  getInputTerm,
-} from 'services/participationContexts';
+import { ParticipationMethod, getInputTerm } from 'utils/participationContexts';
 import { getCurrentParticipationContext } from 'api/phases/utils';
 import { IProjectData } from 'api/projects/types';
 import { IPhaseData } from 'api/phases/types';

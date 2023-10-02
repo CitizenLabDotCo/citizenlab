@@ -34,6 +34,7 @@ import CommentingIdeaDisabled from './CommentingIdeaDisabled';
 
 // utils
 import { isPage } from 'utils/helperUtils';
+import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
 
 const Header = styled(Box)`
   ${isRtl`
@@ -82,6 +83,9 @@ const PublicComments = ({
     ideaId: postType === 'idea' ? postId : undefined,
     sort: sortOrder,
   });
+  const commentingPermissionInitiative = useInitiativesPermissions(
+    'commenting_initiative'
+  );
 
   const commentsList = comments?.pages.flatMap((page) => page.data);
 
@@ -118,14 +122,20 @@ const PublicComments = ({
   const isAdminPage = isPage('admin', pathname);
   const showCommentCount = !isAdminPage && hasComments;
   const showHeader = !isAdminPage || hasComments;
+  const canComment = {
+    idea: !idea?.data.attributes.action_descriptor.commenting_idea
+      .disabled_reason,
+    initiative:
+      !commentingPermissionInitiative?.disabledReason &&
+      !commentingPermissionInitiative?.authenticationRequirements,
+  }[postType];
 
   return (
     <Box className={className || ''}>
       {showHeader && (
         <Header
           display="flex"
-          flexDirection={isSmallerThanPhone ? 'column' : 'row'}
-          alignItems={isSmallerThanPhone ? 'initial' : 'center'}
+          flexDirection="column"
           justifyContent="space-between"
           mt="16px"
         >
@@ -138,15 +148,13 @@ const PublicComments = ({
             <FormattedMessage {...messages.invisibleTitleComments} />
             {showCommentCount && <CommentCount>({commentCount})</CommentCount>}
           </Title>
-          <>
-            {postType === 'idea' && idea ? (
-              <CommentingIdeaDisabled idea={idea} phaseId={phaseId} />
-            ) : (
-              <CommentingProposalDisabled />
-            )}
-          </>
+          {postType === 'idea' && idea ? (
+            <CommentingIdeaDisabled idea={idea} phaseId={phaseId} />
+          ) : (
+            <CommentingProposalDisabled />
+          )}
           {hasComments && (
-            <Box ml="auto">
+            <Box ml="auto" mb="24px">
               <CommentSorting
                 onChange={handleSortOrderChange}
                 selectedCommentSort={sortOrder}
@@ -155,17 +163,17 @@ const PublicComments = ({
           )}
         </Header>
       )}
-
-      <Box my="24px">
-        <ParentCommentForm
-          ideaId={ideaId}
-          initiativeId={initiativeId}
-          postType={postType}
-          postingComment={handleCommentPosting}
-          allowAnonymousParticipation={allowAnonymousParticipation}
-        />
-      </Box>
-
+      {canComment && (
+        <Box mb="24px">
+          <ParentCommentForm
+            ideaId={ideaId}
+            initiativeId={initiativeId}
+            postType={postType}
+            postingComment={handleCommentPosting}
+            allowAnonymousParticipation={allowAnonymousParticipation}
+          />
+        </Box>
+      )}
       <Comments
         ideaId={ideaId}
         initiativeId={initiativeId}

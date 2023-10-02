@@ -17,7 +17,7 @@ import useAuthUser from 'api/me/useAuthUser';
 import useFormSubmissionCount from 'api/submission_count/useSubmissionCount';
 import usePhasesPermissions from 'api/phase_permissions/usePhasesPermissions';
 import useProjectPermissions from 'api/project_permissions/useProjectPermissions';
-import { isAdmin } from 'services/permissions/roles';
+import { isAdmin } from 'utils/permissions/roles';
 
 // services
 import { getCurrentPhase, getLastPhase } from 'api/phases/utils';

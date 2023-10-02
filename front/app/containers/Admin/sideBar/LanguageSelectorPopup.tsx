@@ -14,7 +14,7 @@ import useLocale from 'hooks/useLocale';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 // services
-import { updateLocale } from 'services/locale';
+import { updateLocale } from 'utils/locale';
 
 // styles
 import { ItemMenu } from './styles';
