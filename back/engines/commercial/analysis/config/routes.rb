@@ -13,6 +13,7 @@ Analysis::Engine.routes.draw do
         resources :background_tasks, only: %i[index show]
         resources :insights, only: %i[index destroy] do
           post :rate, on: :member
+          post :toggle_bookmark, on: :member
         end
         resources :summaries, only: %i[create show] do
           post :pre_check, on: :collection
