@@ -241,7 +241,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectTerm": "Projekt",
   "app.components.app.containers.AdminPage.ProjectEdit.questionTerm": "Frage",
   "app.components.formBuilder.editWarningModal.addOrReorder": "Fragen hinzufügen oder neu anordnen",
-  "app.components.formBuilder.editWarningModal.addOrReorderDescription": "Ihre Antwortdaten können ungenau sein",
+  "app.components.formBuilder.editWarningModal.addOrReorderDescription": "Ihre Antwortdaten sind möglicherweise ungenau",
   "app.components.formBuilder.editWarningModal.changeQuestionText2": "Text bearbeiten",
   "app.components.formBuilder.editWarningModal.changeQuestionTextDescription": "Sie korrigieren einen Tippfehler? Das hat keinen Einfluss auf Ihre Antwortdaten",
   "app.components.formBuilder.editWarningModal.deleteAQuestionDescription": "Sie verlieren die mit dieser Frage verbundenen Antwortdaten",
