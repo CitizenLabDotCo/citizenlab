@@ -7,7 +7,7 @@ import Error from 'components/UI/Error';
 import { Box, Button, Input } from '@citizenlab/cl2-component-library';
 
 import { useIntl } from 'utils/cl-intl';
-import translations from './translations';
+import messages from './messages';
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../tracks';
 
@@ -48,7 +48,7 @@ const AddTag = ({ onCreateTag }: { onCreateTag?: (tagId: string) => void }) => {
           type="text"
           value={name}
           onChange={onChangeName}
-          placeholder={formatMessage(translations.addTag)}
+          placeholder={formatMessage(messages.addTag)}
           size="small"
         />
         <Button

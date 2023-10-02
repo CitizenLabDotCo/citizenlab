@@ -13,7 +13,7 @@ import {
 import useDeleteAnalysisTag from 'api/analysis_tags/useDeleteAnalysisTag';
 import { useIntl } from 'utils/cl-intl';
 import { useParams } from 'react-router-dom';
-import translations from './translations';
+import messages from './messages';
 import RenameTagModal from './RenameTagModal';
 import Modal from 'components/UI/Modal';
 import { ITagData } from 'api/analysis_tags/types';
@@ -51,7 +51,7 @@ const TagActions = ({ tag }: { tag: ITagData }) => {
   };
 
   const handleTagDelete = () => {
-    if (window.confirm(formatMessage(translations.deleteTagConfirmation))) {
+    if (window.confirm(formatMessage(messages.deleteTagConfirmation))) {
       deleteTag(
         {
           analysisId,
@@ -129,7 +129,7 @@ const TagActions = ({ tag }: { tag: ITagData }) => {
                   ) : (
                     <Icon name="plus-circle" />
                   )}
-                  {formatMessage(translations.addInputToTag)}
+                  {formatMessage(messages.addInputToTag)}
                 </Box>
               </Text>
             </DropdownListItem>
@@ -141,7 +141,7 @@ const TagActions = ({ tag }: { tag: ITagData }) => {
             >
               <Text textAlign="left" m="0px">
                 <Icon name="edit" mr="8px" />
-                {formatMessage(translations.renameTag)}
+                {formatMessage(messages.renameTag)}
               </Text>
             </DropdownListItem>
             <DropdownListItem
@@ -157,7 +157,7 @@ const TagActions = ({ tag }: { tag: ITagData }) => {
                   ) : (
                     <Icon name="delete" />
                   )}
-                  {formatMessage(translations.deleteTag)}
+                  {formatMessage(messages.deleteTag)}
                 </Box>
               </Text>
             </DropdownListItem>

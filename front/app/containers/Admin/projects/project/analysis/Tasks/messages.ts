@@ -23,11 +23,11 @@ export default defineMessages({
   },
   platformTopic: {
     id: 'app.containers.AdminPage.projects.project.analysis.Tasks.platformTopic',
-    defaultMessage: 'Platform topic',
+    defaultMessage: 'Platform tag',
   },
   nlpTopic: {
     id: 'app.containers.AdminPage.projects.project.analysis.Tasks.nlpTopic',
-    defaultMessage: 'NLP topic',
+    defaultMessage: 'NLP tag',
   },
   sentiment: {
     id: 'app.containers.AdminPage.projects.project.analysis.Tasks.sentiment',

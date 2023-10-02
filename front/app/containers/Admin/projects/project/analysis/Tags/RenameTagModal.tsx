@@ -2,7 +2,7 @@ import React from 'react';
 // styles
 
 // intl
-import translations from './translations';
+import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 
 // components
@@ -37,7 +37,7 @@ const RenameTag = ({
   const { mutate: updateTag, isLoading } = useUpdateAnalysisTag();
 
   const schema = object({
-    name: string().required(formatMessage(translations.emptyNameError)),
+    name: string().required(formatMessage(messages.emptyNameError)),
   });
 
   const methods = useForm({
@@ -62,14 +62,14 @@ const RenameTag = ({
 
   return (
     <Box>
-      <Title>{formatMessage(translations.renameTagModalTitle)}</Title>
+      <Title>{formatMessage(messages.renameTagModalTitle)}</Title>
       <FormProvider {...methods}>
         <Box as="form" mt="40px" onSubmit={methods.handleSubmit(onFormSubmit)}>
           <Feedback />
           <Input
             type="text"
             name="name"
-            label={formatMessage(translations.renameTagModalNameLabel)}
+            label={formatMessage(messages.renameTagModalNameLabel)}
           />
           <Box display="flex" justifyContent="flex-end" mt="40px" gap="24px">
             <Button
@@ -77,14 +77,14 @@ const RenameTag = ({
               buttonStyle="secondary"
               type="button"
             >
-              {formatMessage(translations.renameTagModalCancel)}
+              {formatMessage(messages.renameTagModalCancel)}
             </Button>
             <Button
               processing={isLoading}
               type="submit"
               bgColor={colors.primary}
             >
-              {formatMessage(translations.renameTagModalSave)}
+              {formatMessage(messages.renameTagModalSave)}
             </Button>
           </Box>
         </Box>

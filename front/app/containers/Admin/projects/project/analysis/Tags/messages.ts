@@ -95,54 +95,54 @@ export default defineMessages({
     id: 'app.containers.AdminPage.projects.project.analysis.Tags.howToTag',
     defaultMessage: 'How do you want to tag?',
   },
-  topicDetection: {
-    id: 'app.containers.AdminPage.projects.project.analysis.Tags.topicDetection',
-    defaultMessage: 'Topic detection',
+  tagDetection: {
+    id: 'app.containers.AdminPage.projects.project.analysis.Tags.tagDetection',
+    defaultMessage: 'Tag detection',
   },
   fullyAutomatedTitle: {
     id: 'app.containers.AdminPage.projects.project.analysis.Tags.fullyAutomatedTitle',
-    defaultMessage: 'Topics: Fully automated',
+    defaultMessage: 'Tags: Fully automated',
   },
   fullyAutomatedTooltip: {
     id: 'app.containers.AdminPage.projects.project.analysis.Tags.fullyAutomatedTooltip',
     defaultMessage:
-      'Works well when your projects covers a broad range of topics. Good place to start.',
+      'Works well when your projects covers a broad range of tags. Good place to start.',
   },
   fullyAutomatedDescription: {
     id: 'app.containers.AdminPage.projects.project.analysis.Tags.fullyAutomatedDescription',
     defaultMessage:
-      'The computer automatically detects topics and assigns them to your inputs.',
+      'The computer automatically detects tags and assigns them to your inputs.',
   },
   classificationByLabelTitle: {
     id: 'app.containers.AdminPage.projects.project.analysis.Tags.classificationByLabelTitle',
-    defaultMessage: 'Topics: By label',
+    defaultMessage: 'Tags: By label',
   },
   classificationByLabelTooltip: {
     id: 'app.containers.AdminPage.projects.project.analysis.Tags.classificationByLabelTooltip',
     defaultMessage:
-      'Works well when you know what topics you are looking for, or when your project has a narrow scope in terms of topics.',
+      'This works well when you have a pre-defined set of tags or when your project has a limited scope in terms of tags.',
   },
   classificationByLabelDescription: {
     id: 'app.containers.AdminPage.projects.project.analysis.Tags.classificationByLabelDescription',
-    defaultMessage: 'You create the topics, the computer assigns the inputs',
+    defaultMessage: 'You create the tags, the computer assigns the inputs',
   },
   classificationByExampleTitle: {
     id: 'app.containers.AdminPage.projects.project.analysis.Tags.classificationByExampleTitle',
-    defaultMessage: 'Topics: By example',
+    defaultMessage: 'Tags: By example',
   },
   classificationByExampleTooltip: {
     id: 'app.containers.AdminPage.projects.project.analysis.Tags.classificationByExampleTooltip',
     defaultMessage:
-      'Works well when you need to tag some really specific things. Use this in case "Topics: By label" does not give you good results',
+      'Similar to "Tags: by label" but with increased accuracy as you’re training the system with good examples.',
   },
   classificationByExampleDescription: {
     id: 'app.containers.AdminPage.projects.project.analysis.Tags.classificationByExampleDescription',
     defaultMessage:
-      'You create the topics and manually assign a few inputs as an example, the computer assigns the rest',
+      'You create the tags and manually assign a few inputs as an example, the computer assigns the rest',
   },
   platformTagsTitle: {
     id: 'app.containers.AdminPage.projects.project.analysis.Tags.platformTags',
-    defaultMessage: 'Topics: Platform tags',
+    defaultMessage: 'Tags: Platform tags',
   },
   platformTagsDescription: {
     id: 'app.containers.AdminPage.projects.project.analysis.Tags.platformTagsDescription',
@@ -180,7 +180,7 @@ export default defineMessages({
   },
   fewShotTitle: {
     id: 'app.containers.AdminPage.projects.project.analysis.Tags.fewShotTitle',
-    defaultMessage: 'Topics: By example',
+    defaultMessage: 'Tags: By example',
   },
   fewShotSubtitle: {
     id: 'app.containers.AdminPage.projects.project.analysis.Tags.fewShotSubtitle',
@@ -194,7 +194,7 @@ export default defineMessages({
   },
   byLabelTitle: {
     id: 'app.containers.AdminPage.projects.project.analysis.Tags.byLabelTitle',
-    defaultMessage: 'Topics: By label',
+    defaultMessage: 'Tags: By label',
   },
   byLabelSubtitle1: {
     id: 'app.containers.AdminPage.projects.project.analysis.Tags.byLabelSubtitle1',

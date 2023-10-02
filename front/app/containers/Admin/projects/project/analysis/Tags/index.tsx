@@ -31,7 +31,7 @@ import inputsKeys from 'api/analysis_inputs/keys';
 import TagActions from './TagActions';
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../tracks';
-import translations from './translations';
+import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 
 const BlickingIcon = styled(Icon)`
@@ -194,7 +194,7 @@ const Tags = () => {
             size="s"
             buttonStyle="admin-dark"
           >
-            {formatMessage(translations.autoTag)}
+            {formatMessage(messages.autoTag)}
             {emptyState && (
               <BlickingIcon
                 name={'dot'}
@@ -213,7 +213,7 @@ const Tags = () => {
             onClick={() => removeSearchParams(['tag_ids'])}
             className={!selectedTags ? 'selected' : ''}
           >
-            {formatMessage(translations.allInputs)}
+            {formatMessage(messages.allInputs)}
             <TagCount
               count={inputsTotal}
               totalCount={inputsTotal}
@@ -227,7 +227,7 @@ const Tags = () => {
               selectedTags && selectedTags[0] === null ? 'selected' : ''
             }
           >
-            {formatMessage(translations.inputsWithoutTags)}
+            {formatMessage(messages.inputsWithoutTags)}
             <TagCount
               count={inputsWithoutTags}
               totalCount={inputsTotal}
@@ -292,7 +292,7 @@ const Tags = () => {
         {!isLoadingTags && emptyState && (
           <Box>
             <Text p="6px" color="grey600" textAlign="center">
-              {formatMessage(translations.noTags)}
+              {formatMessage(messages.noTags)}
             </Text>
           </Box>
         )}
