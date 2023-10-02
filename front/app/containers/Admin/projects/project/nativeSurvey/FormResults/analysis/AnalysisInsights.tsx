@@ -53,7 +53,10 @@ const Question = ({
 const AnalysisInsights = ({ analyses }: { analyses: IAnalysisData[] }) => {
   const { formatMessage } = useIntl();
   const [selectedInsightIndex, setSelectedInsightIndex] = useState(0);
-  const result = useAnalysisInsightsWithIds(analyses?.map((a) => a.id) || []);
+  const result = useAnalysisInsightsWithIds({
+    analysisIds: analyses?.map((a) => a.id) || [],
+    bookmarked: true,
+  });
 
   const bookmarkedInsights = result
     .flatMap(({ data }, i) =>

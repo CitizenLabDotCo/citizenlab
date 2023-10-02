@@ -5,15 +5,20 @@ import { fetchInsights } from './useAnalysisInsights';
 
 type AnalysisInsightsWithIdsReturnType = UseQueryOptions<IInsights>[];
 
-const useAnalysisInsightsWithIds = (analysisIds?: string[]) => {
+const useAnalysisInsightsWithIds = ({
+  analysisIds,
+  bookmarked,
+}: {
+  analysisIds: string[];
+  bookmarked?: boolean;
+}) => {
   const queries = analysisIds
     ? analysisIds.map((analysisIds) => ({
         queryKey: insightsKeys.list({
           analysisId: analysisIds,
-          bookmarked: true,
+          bookmarked,
         }),
-        queryFn: () =>
-          fetchInsights({ analysisId: analysisIds, bookmarked: true }),
+        queryFn: () => fetchInsights({ analysisId: analysisIds, bookmarked }),
       }))
     : [];
   return useQueries<AnalysisInsightsWithIdsReturnType>({
