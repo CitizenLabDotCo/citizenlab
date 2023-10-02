@@ -41,7 +41,7 @@ const getUserFormDefaultValues = (
   const { email, first_name, last_name } = author.data.attributes;
 
   return {
-    newUser: ideaMetadata?.data.attributes.user_created === false,
+    newUser: ideaMetadata?.data.attributes.user_created === true,
     email,
     first_name: first_name ?? undefined,
     last_name: last_name ?? undefined,
