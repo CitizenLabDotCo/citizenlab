@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 // components
 import { Box, Icon } from '@citizenlab/cl2-component-library';
@@ -12,7 +12,7 @@ import { optionIsUser } from 'components/UI/UserSelect/utils';
 import { isValidEmail } from 'utils/validate';
 
 // typings
-import { IUserData } from 'api/users/types';
+import { Option } from 'components/UI/UserSelect/typings';
 
 const NewUserButton = styled.button<{ disabled: boolean }>`
   background-color: ${colors.successLight};
@@ -43,26 +43,50 @@ const UserRow = styled(Box)`
 interface Props {
   children: React.ReactNode;
   innerProps: any;
-  data: IUserData | { value: string; payload?: string };
+  data: Option;
+  options: Option[];
 }
 
-const CustomOption = ({ children, innerProps, data }: Props) => {
+const CustomOption = ({ children, innerProps, data, options }: Props) => {
+  const emailAddresses = useMemo(() => {
+    const emailAddressesSet = new Set<string>();
+
+    options.forEach((option) => {
+      if (optionIsUser(option) && option.attributes.email) {
+        emailAddressesSet.add(option.attributes.email);
+      }
+    });
+
+    return emailAddressesSet;
+  }, [options]);
+
   if (!optionIsUser(data) && data.value === 'newUser') {
-    const invalidEmail =
-      data.payload !== undefined ? !isValidEmail(data.payload) : false;
+    const email = data.payload;
+    if (email === undefined) return null;
+
+    const existingUser = emailAddresses.has(email);
+    if (existingUser) return null;
+
+    const invalidEmail = !isValidEmail(email);
 
     return (
       <NewUserButton {...innerProps} disabled={invalidEmail}>
-        <Icon
-          display="inline"
-          name="plus-circle"
-          width={`${fontSizes.l}px`}
-          height={`${fontSizes.l}px`}
-          fill={invalidEmail ? colors.grey700 : colors.success}
-          mr="4px"
-          transform="translate(0,-1)"
-        />
-        Add new user {invalidEmail ? <b>(invalid email)</b> : ''}
+        {invalidEmail ? (
+          <b>Invalid email</b>
+        ) : (
+          <>
+            <Icon
+              display="inline"
+              name="plus-circle"
+              width={`${fontSizes.l}px`}
+              height={`${fontSizes.l}px`}
+              fill={colors.success}
+              mr="4px"
+              transform="translate(0,-1)"
+            />
+            Add new user
+          </>
+        )}
       </NewUserButton>
     );
   }
