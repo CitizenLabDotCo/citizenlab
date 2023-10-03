@@ -57,22 +57,22 @@ const Volunteering = memo<Props>(
       participationContextId,
     });
 
-    const disabledPhase =
-      phase &&
-      pastPresentOrFuture([
-        phase.attributes.start_at,
-        phase.attributes.end_at,
-      ]) !== 'present';
-
-    const disabledProject =
-      !isNilOrError(project) &&
-      project.attributes.publication_status !== 'published';
-
     if (
       !isNilOrError(causes) &&
       (!isNilOrError(project) ||
         (participationContextType === 'phase' && !isNilOrError(phase)))
     ) {
+      const disabledPhase =
+        phase &&
+        pastPresentOrFuture([
+          phase.attributes.start_at,
+          phase.attributes.end_at,
+        ]) !== 'present';
+
+      const disabledProject =
+        !isNilOrError(project) &&
+        project.attributes.publication_status !== 'published';
+
       return (
         <Container className={className} id="volunteering">
           {causes.data.map((cause) => (

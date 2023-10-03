@@ -133,14 +133,12 @@ const PollForm = ({
           },
         });
       } else {
-        if (validate()) {
-          addPollResponse({
-            participationContextId: id,
-            participationContextType: type,
-            optionIds: Object.values(answers).flat(),
-            projectId,
-          });
-        }
+        addPollResponse({
+          participationContextId: id,
+          participationContextType: type,
+          optionIds: Object.values(answers).flat(),
+          projectId,
+        });
       }
     }
   };
