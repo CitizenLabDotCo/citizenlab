@@ -290,7 +290,8 @@ module BulkImportIdeas
       # Do not add any personal details if 'Permission' field is not present or blank
       locale_permission_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.permission') }
       permission = doc.find { |f| f[:name] == locale_permission_label }
-      if permission && permission[:value].present?
+      idea_row[:user_consent] = permission && permission[:value].present?
+      if idea_row[:user_consent]
         locale_first_name_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.first_name') }
         first_name = doc.find { |f| f[:name] == locale_first_name_label }
         idea_row[:user_first_name] = first_name[:value] if first_name

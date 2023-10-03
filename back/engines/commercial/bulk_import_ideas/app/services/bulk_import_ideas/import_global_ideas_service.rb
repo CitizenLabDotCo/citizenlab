@@ -65,7 +65,9 @@ module BulkImportIdeas
         idea_row[:latitude]             = xlsx_row['Latitude']
         idea_row[:longitude]            = xlsx_row['Longitude']
         idea_row[:location_description] = xlsx_row['Location Description']
-        if xlsx_row['Permission']&.present?
+        idea_row[:user_consent]         = xlsx_row['Permission']&.present? ? true : false
+        if idea_row[:user_consent]
+          idea_row[:user_consent]         = true
           idea_row[:user_email]           = xlsx_row['Email']
           idea_row[:user_first_name]      = xlsx_row['First name']
           idea_row[:user_last_name]       = xlsx_row['Last name']
