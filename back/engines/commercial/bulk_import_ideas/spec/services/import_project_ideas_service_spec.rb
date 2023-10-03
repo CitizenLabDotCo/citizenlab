@@ -73,7 +73,6 @@ describe BulkImportIdeas::ImportProjectIdeasService do
   end
 
   describe 'private' do
-    # TODO: Make these methods private
     describe 'ideas_to_idea_rows' do
       let(:pdf_ideas) do
         [
