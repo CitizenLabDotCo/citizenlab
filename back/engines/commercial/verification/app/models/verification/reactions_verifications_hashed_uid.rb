@@ -12,9 +12,7 @@
 #
 #  id                      :uuid             not null, primary key
 #  reaction_id             :uuid
-#  verification_hashed_uid :string
-#  created_at              :datetime         not null
-#  updated_at              :datetime         not null
+#  verification_hashed_uid :string           not null
 #
 # Indexes
 #

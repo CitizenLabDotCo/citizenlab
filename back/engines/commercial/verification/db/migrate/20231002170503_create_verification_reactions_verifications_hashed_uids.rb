@@ -4,8 +4,7 @@ class CreateVerificationReactionsVerificationsHashedUids < ActiveRecord::Migrati
   def change
     create_table :verification_reactions_verifications_hashed_uids, id: :uuid do |t|
       t.references :reaction, foreign_key: true, type: :uuid, index: { name: 'index_on_reaction_id' }
-      t.string :verification_hashed_uid
-      t.timestamps
+      t.string :verification_hashed_uid, null: false
     end
   end
 end
