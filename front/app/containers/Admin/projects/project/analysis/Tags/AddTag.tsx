@@ -50,6 +50,7 @@ const AddTag = ({ onCreateTag }: { onCreateTag?: (tagId: string) => void }) => {
           onChange={onChangeName}
           placeholder={formatMessage(translations.addTag)}
           size="small"
+          id="e2e-analysis-add-tag-input"
         />
         <Button
           ml="4px"
@@ -57,6 +58,7 @@ const AddTag = ({ onCreateTag }: { onCreateTag?: (tagId: string) => void }) => {
           onClick={handleTagSubmit}
           disabled={!name || isLoading}
           icon="plus"
+          id="e2e-analysis-add-tag-button"
         />
       </Box>
       <div>

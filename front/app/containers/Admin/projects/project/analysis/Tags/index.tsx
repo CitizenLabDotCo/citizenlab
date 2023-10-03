@@ -212,6 +212,7 @@ const Tags = () => {
             tabIndex={0}
             onClick={() => removeSearchParams(['tag_ids'])}
             className={!selectedTags ? 'selected' : ''}
+            data-cy="e2e-analysis-all-tags"
           >
             {formatMessage(translations.allInputs)}
             <TagCount
@@ -226,6 +227,7 @@ const Tags = () => {
             className={
               selectedTags && selectedTags[0] === null ? 'selected' : ''
             }
+            data-cy="e2e-analysis-inputs-without-tags"
           >
             {formatMessage(translations.inputsWithoutTags)}
             <TagCount
@@ -251,6 +253,7 @@ const Tags = () => {
                 toggleTagContainerClick(tag.id);
               }
             }}
+            data-cy="e2e-analysis-tag-container"
           >
             <Box
               position="absolute"

@@ -36,7 +36,7 @@ const InputListItem = () => {
   if (!analysis || !input || !selectedInputId) return null;
 
   return (
-    <Box>
+    <Box data-cy="e2e-analysis-input-preview">
       {analysis.data.attributes.participation_method === 'ideation' && (
         <Box display="flex" justifyContent="flex-end">
           <Button
