@@ -26,7 +26,6 @@ describe('Admin: can', () => {
       cy.get('#create-custom-page').click();
 
       // type title in each language
-
       cy.clickLocaleSwitcherAndType(page1);
 
       // submit

@@ -1415,7 +1415,6 @@ export function clickLocaleSwitcherAndType(title: string) {
   cy.get('.e2e-localeswitcher').each((button) => {
     cy.wrap(button).click();
     cy.get('#title_multiloc').clear().type(title);
-    // cy.get('#title_multiloc').type(title);
   });
 }
 
