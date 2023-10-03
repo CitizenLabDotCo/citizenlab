@@ -1387,7 +1387,7 @@
   "app.containers.AdminPage.ProjectEdit.inputManagerLinkText": "bijdragebeheerder",
   "app.containers.AdminPage.ProjectEdit.inputManagerTab": "Beheer bijdragen",
   "app.containers.AdminPage.ProjectEdit.inputPostingEnabled": "Bijdragen toevoegen",
-  "app.containers.AdminPage.ProjectEdit.inputReactingEnabled": "Bijdragen 'liken' en 'unliken'",
+  "app.containers.AdminPage.ProjectEdit.inputReactingEnabled": "Bijdragen 'liken' en 'disliken'",
   "app.containers.AdminPage.ProjectEdit.inputsDefaultView": "Standaardweergave",
   "app.containers.AdminPage.ProjectEdit.inputsDefaultViewTooltip": "De standaardweergave van de bijdragen van de deelnemer kiezen: kaarten in een rasterweergave of pins op een kaart. Deelnemers kunnen handmatig schakelen tussen de twee weergaven.",
   "app.containers.AdminPage.ProjectEdit.konveioDocumentAnnotationEmbedUrl": "Konveio URL",
