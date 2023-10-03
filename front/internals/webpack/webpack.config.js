@@ -11,7 +11,6 @@ const { EsbuildPlugin } = require('esbuild-loader');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 const MomentTimezoneDataPlugin = require('moment-timezone-data-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
@@ -91,19 +90,6 @@ const config = {
 
   module: {
     rules: [
-      // {
-      //   test: /\.(tsx?)|(js)$/,
-      //   include: path.join(process.cwd(), 'app'),
-      //   use: {
-      //     loader: 'babel-loader',
-      //     options: {
-      //       cacheDirectory: true,
-      //       plugins: [isDev && require.resolve('react-refresh/babel')].filter(
-      //         Boolean
-      //       ),
-      //     },
-      //   },
-      // },
       {
         test: /\.[tj]sx?$/,
         include: path.join(process.cwd(), 'app'),
@@ -113,10 +99,16 @@ const config = {
         },
       },
       {
-        test: /\.css$/,
+        test: /\.css$/i,
         use: [
-          { loader: isDev ? 'style-loader' : MiniCssExtractPlugin.loader },
-          { loader: 'css-loader' },
+          'style-loader',
+          'css-loader',
+          {
+            loader: 'esbuild-loader',
+            options: {
+              minify: true,
+            },
+          },
         ],
       },
       {
