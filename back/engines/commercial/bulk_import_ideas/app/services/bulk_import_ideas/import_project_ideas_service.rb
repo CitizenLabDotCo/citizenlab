@@ -4,6 +4,7 @@ module BulkImportIdeas
   class ImportProjectIdeasService < ImportIdeasService
     PAGES_TO_TRIGGER_NEW_PDF = 8
     MAX_TOTAL_PAGES = 50
+    POSITION_VARIANCE = 10
 
     def initialize(current_user, project_id, locale, phase_id, personal_data_enabled)
       super(current_user)
@@ -13,8 +14,7 @@ module BulkImportIdeas
       @form_fields = IdeaCustomFieldsService.new(@participation_method.custom_form).importable_fields
       @locale = locale || @locale
       @google_forms_service = nil
-      # TODO: If this is an xlsx import then it just needs the fields direct from custom fields
-      @pdf_form_data = pdf_form_data(personal_data_enabled)
+      @input_form_data = import_form_data(personal_data_enabled)
     end
 
     def generate_example_xlsx
@@ -35,17 +35,17 @@ module BulkImportIdeas
       @form_fields.each do |field|
         column_name = field.title_multiloc[@locale]
         value = case field.input_type
-                when 'select'
-                  field.options.first.title_multiloc[@locale]
-                when 'multiselect'
-                  field.options.map { |o| o.title_multiloc[@locale] }.join '; '
-                when 'topic_ids'
-                  @project.allowed_input_topics.map { |t| t.title_multiloc[@locale] }.join '; '
-                when 'number'
-                  5
-                else
-                  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
-                end
+        when 'select'
+          field.options.first.title_multiloc[@locale]
+        when 'multiselect'
+          field.options.map { |o| o.title_multiloc[@locale] }.join '; '
+        when 'topic_ids'
+          @project.allowed_input_topics.map { |t| t.title_multiloc[@locale] }.join '; '
+        when 'number'
+          5
+        else
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
+        end
         columns[column_name] = value
       end
 
@@ -69,7 +69,7 @@ module BulkImportIdeas
       split_pdf_files = []
       if source_file&.import_type == 'pdf'
         # Get number of pages in a form from the download
-        pages_per_idea = @pdf_form_data[:page_count]
+        pages_per_idea = @input_form_data[:page_count]
 
         pdf = ::CombinePDF.parse open(source_file.file_content_url).read
         source_file.update!(num_pages: pdf.pages.count)
@@ -177,18 +177,18 @@ module BulkImportIdeas
       @google_forms_service ||= GoogleFormParserService.new
 
       # NOTE: We return both parsed values so we can later merge the best values from both
-      form_parsed_ideas = @google_forms_service.parse_pdf(pdf_file, @pdf_form_data[:page_count])
+      form_parsed_ideas = @google_forms_service.parse_pdf(pdf_file, @input_form_data[:page_count])
 
       text_parsed_ideas = begin
-                            IdeaPlaintextParserService.new(
-                              @phase || @project,
-                              @form_fields.reject { |field| field.input_type == 'topic_ids' }, # Temp
-                              @locale,
-                              @pdf_form_data[:page_count]
-                            ).parse_text(@google_forms_service.raw_text_page_array(pdf_file))
-                          rescue BulkImportIdeas::Error
-                            []
-                          end
+        IdeaPlaintextParserService.new(
+          @phase || @project,
+          @form_fields.reject { |field| field.input_type == 'topic_ids' }, # Temp
+          @locale,
+          @input_form_data[:page_count]
+        ).parse_text(@google_forms_service.raw_text_page_array(pdf_file))
+      rescue BulkImportIdeas::Error
+        []
+      end
 
       {
         form_parsed_ideas: form_parsed_ideas,
@@ -198,9 +198,9 @@ module BulkImportIdeas
 
     # Match all fields in the forms field with values returned by parser / xlsx sheet
     def process_custom_form_fields(idea, idea_row)
-      # Merge the form fields with the import values
+      # Merge the form fields with the import values into a single array
       merged_idea = []
-      form_fields = @pdf_form_data[:fields]
+      form_fields = @input_form_data[:fields]
       form_fields.each do |form_field|
         idea.each do |idea_field|
           if form_field[:name] == idea_field[:name]
@@ -213,21 +213,21 @@ module BulkImportIdeas
               idea.delete_if { |f| f == idea_field }
               break
             elsif idea_field[:value] == 'filled_checkbox' && form_field[:page] == idea_field[:page]
-              # Options - from form parser
-              # TODO: Match first value in idea - if option then only match with the one in the page - and must be within threshold (20?) of closeness
-              select_field = merged_idea.find { |f| f[:key] == form_field[:parent_key] } || form_fields.find { |f| f[:key] == form_field[:parent_key] }
-              select_field[:value] = select_field[:value] ? select_field[:value] << form_field[:key] : [form_field[:key]]
-              merged_idea << select_field
-              idea.delete_if { |f| f == idea_field }
-              form_fields.delete_if { |f| f == idea_field } if select_field[:input_type] == 'select'
-              break
+              # Check that the value is near to the position on the page it should be
+              if idea_field[:position].between?(form_field[:position].to_i - POSITION_VARIANCE, form_field[:position].to_i + POSITION_VARIANCE)
+                select_field = merged_idea.find { |f| f[:key] == form_field[:parent_key] } || form_fields.find { |f| f[:key] == form_field[:parent_key] }
+                select_field[:value] = select_field[:value] ? select_field[:value] << form_field[:key] : [form_field[:key]]
+                merged_idea << select_field
+                idea.delete_if { |f| f == idea_field }
+                form_fields.delete_if { |f| f == idea_field } if select_field[:input_type] == 'select'
+                break
+              end
             end
           end
         end
       end
 
       # Now add to the idea row
-      # TODO: Delete any options left?
       custom_fields = {}
       merged_idea.each do |field|
         next if field[:key].nil?
@@ -243,38 +243,6 @@ module BulkImportIdeas
         end
       end
       idea_row[:custom_field_values] = custom_fields
-
-      # core_field_codes = %w[title_multiloc body_multiloc location_description]
-      # text_field_types = %w[text multiline_text number]
-      # select_field_types = %w[select multiselect]
-      #
-      # core_fields = []
-      # text_fields = []
-      # select_fields = []
-      # select_options = []
-      # @form_fields.each do |field|
-      #   if core_field_codes.include? field[:code]
-      #     core_fields << { name: field[:title_multiloc][@locale], code: field[:code], type: field[:input_type] }
-      #   elsif text_field_types.include? field[:input_type]
-      #     text_fields << { name: field[:title_multiloc][@locale], key: field[:key], type: field[:input_type] }
-      #   elsif select_field_types.include? field[:input_type]
-      #     select_fields << { name: field[:title_multiloc][@locale], key: field[:key], type: field[:input_type] }
-      #     field.options.each do |option|
-      #       select_options << { name: option[:title_multiloc][@locale], key: option[:key], field_key: field[:key], field_type: field[:input_type] }
-      #     end
-      #   end
-      # end
-      #
-      # # Core fields
-      # idea_row = extract_core_fields idea_row, doc, core_fields
-      #
-      # # Custom fields
-      # custom_fields = {}
-      # custom_fields = extract_custom_text_fields custom_fields, doc, text_fields
-
-      # custom_fields = extract_custom_select_fields_from_options custom_fields, doc, select_options
-      # custom_fields = extract_custom_select_fields custom_fields, doc, select_fields, select_options
-      # idea_row[:custom_field_values] = custom_fields
 
       idea_row
     end
@@ -295,86 +263,11 @@ module BulkImportIdeas
       field
     end
 
-    # def extract_core_fields(idea_row, doc, core_fields)
-    #   core_fields.each do |field|
-    #     core_field = find_field(doc, field[:name])
-    #     if core_field
-    #       code = field[:code]
-    #       value = core_field[:value]
-    #       idea_row[code.to_sym] = field[:type].include?('multiloc') ? { @locale.to_sym => value } : value
-    #       doc.delete_if { |f| f == core_field }
-    #     end
-    #   end
-    #   idea_row
-    # end
-    #
-    # # Text & Number fields
-    # def extract_custom_text_fields(custom_fields, doc, text_fields)
-    #   text_fields.each do |field|
-    #     text_field = find_field(doc, field[:name])
-    #     if text_field
-    #       custom_fields[field[:key].to_sym] = (field[:type] == 'number' ? text_field[:value].to_i : text_field[:value])
-    #       doc.delete_if { |f| f == text_field }
-    #     end
-    #   end
-    #   custom_fields
-    # end
-    #
-    # # Single & Multiselect fields
-    # def extract_custom_select_fields(custom_fields, doc, select_fields, select_options)
-    #   select_fields.each do |field|
-    #     select_field = find_field(doc, field[:name])
-    #     if select_field && select_field[:value]
-    #       values = select_field[:value].is_a?(Array) ? select_field[:value] : select_field[:value].split(';')
-    #       if values.count > 0
-    #         if field[:type] == 'select'
-    #           value = values[0].strip # Only use the first value for single fields
-    #           option = select_options.find { |f| f[:field_key] == field[:key] && f[:name] == value }
-    #           custom_fields[field[:key].to_sym] = option[:key] if option
-    #         else
-    #           options = []
-    #           values.each do |select_value|
-    #             option = select_options.find { |f| f[:field_key] == field[:key] && f[:name] == select_value.strip }
-    #             options << option[:key] if option
-    #           end
-    #           custom_fields[field[:key].to_sym] = options
-    #         end
-    #       end
-    #       doc.delete_if { |f| f == select_field }
-    #     end
-    #   end
-    #   custom_fields
-    # end
-    #
-    # def extract_custom_select_fields_from_options(custom_fields, doc, select_options)
-    #   select_options.each do |option|
-    #     option_field = find_field(doc, option[:name])
-    #     if option_field && option_field[:value].include?('checkbox')
-    #       field_key = option[:field_key].to_sym
-    #       checked = option_field[:value] == 'filled_checkbox'
-    #       if option[:field_type] == 'multiselect' && checked
-    #         custom_fields[field_key] = custom_fields[field_key] || []
-    #         custom_fields[field_key] << option[:key]
-    #       elsif checked && !custom_fields[field_key]
-    #         # Only use the first selected option for a single select
-    #         custom_fields[field_key] = option[:key]
-    #         # TODO: This will not work for multiple keys where the version of fields that are just key pairs and not have the x,y values in there
-    #         # select_options.delete_if { |o| o[:key] == select_options[:key] }
-    #       end
-    #
-    #       doc.delete_if { |f| f == option_field }
-    #     end
-    #   end
-    #   custom_fields
-    # end
-
     def clean_field_names(idea)
       locale_optional_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.optional') }
       idea = extract_permission_checkbox(idea)
-      # idea = idea.map { |k, v| { name: k, value: v } } # Temp: Need to just use in this format
-
       idea.map do |name, value|
-        option = name.match /(.*)_(\d).(\d{2})/ # Is this an option (checkbox)?
+        option = name.match(/(.*)_(\d).(\d{2})/) # Is this an option (checkbox)?
         {
           name: option ? option[1] : name.gsub("(#{locale_optional_label})", '').squish,
           value: value,
@@ -415,7 +308,9 @@ module BulkImportIdeas
       idea_row
     end
 
-    def pdf_form_data(personal_data_enabled)
+    # Return the fields and page count to import data to
+    def import_form_data(personal_data_enabled)
+      # TODO: If this is an xlsx import then it just needs the fields direct from custom fields
       PrintCustomFieldsService.new(@phase || @project, @form_fields, @locale, personal_data_enabled).importer_data
     end
   end

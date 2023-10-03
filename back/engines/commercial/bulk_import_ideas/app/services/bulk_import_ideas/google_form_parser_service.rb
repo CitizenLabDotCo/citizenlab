@@ -73,9 +73,8 @@ module BulkImportIdeas
           page_count = 0
         end
 
-
         # Include field y value in name to allow checkbox values to be used multiple times
-        field_name = field[:type].include?('checkbox') ? "#{field[:name].to_s}_#{field[:y].to_s[0..3]}" : field[:name].to_s
+        field_name = field[:type].include?('checkbox') ? "#{field[:name]}_#{field[:y].to_s[0..3]}" : field[:name].to_s
         idea[:fields][field_name] = field[:type].include?('checkbox') ? field[:type] : field[:value]
         idea[:pdf_pages] << field[:page] unless idea[:pdf_pages].include? field[:page]
         idea[:form_pages] << (page_count + 1) unless idea[:form_pages].include?(page_count + 1)
@@ -112,6 +111,18 @@ module BulkImportIdeas
       response.document
     end
 
+    # Utility to correct common issues - ie remove new lines as they don't seem that accurate
+    def format_value(name, value)
+      if name == 'Email address'
+        value = value.squish.delete(' ').downcase
+      end
+      value&.squish
+    end
+
+    def format_name(name)
+      name.squish
+    end
+
     # NOTE: For DEVELOPMENT ONLY to avoid Google API being called - disable GOOGLE_APPLICATION_CREDENTIALS in back-secret.env
     def dummy_raw_text
       dummy_text = []
@@ -125,33 +136,20 @@ module BulkImportIdeas
     def dummy_parsed_data
       Array.new(rand(1..8)) do
         [
-          # User details
-          { name: 'Full name', value: Faker::FunnyName.name, type: '', page: 1, x: 0.09, y: 1.16 },
-          { name: 'Email address', value: Faker::Internet.email, type: '', page: 1, x: 0.09, y: 1.24 },
-          # Core fields
-          { name: 'Title', value: Faker::Quote.yoda, type: '', page: 1, x: 0.09, y: 1.34 },
-          { name: 'Description', value: Faker::Hipster.paragraph, type: '', page: 1, x: 0.09, y: 1.41 },
-          # Select fields
-          { name: 'Yes', value: nil, type: %w[filled_checkbox unfilled_checkbox].sample, page: 1, x: 0.11, y: 1.66 },
-          { name: 'No', value: nil, type: %w[filled_checkbox unfilled_checkbox].sample, page: 1, x: 0.45, y: 1.66 },
-          { name: 'This', value: nil, type: %w[filled_checkbox unfilled_checkbox].sample, page: 1, x: 0.11, y: 1.86 },
-          { name: 'That', value: nil, type: %w[filled_checkbox unfilled_checkbox].sample, page: 1, x: 0.45, y: 1.86 },
-          # Custom text field
-          { name: 'Another field', value: Faker::Quote.robin, type: '', page: 2, x: 0.09, y: 2.12 }
+          form_pages: [],
+          pdf_pages: [1,2],
+          fields: {
+            'First name' => Faker::FunnyName.name,
+            'Last name' => Faker::FunnyName.name,
+            'Email address' => Faker::Internet.email,
+            'Title' => Faker::Quote.yoda,
+            'Description' => Faker::Hipster.paragraph,
+            'Yes_1.82' => %w[filled_checkbox unfilled_checkbox].sample,
+            'No_1.82' => %w[filled_checkbox unfilled_checkbox].sample,
+            'Another field' =>Faker::Quote.robin
+          }
         ]
       end
-    end
-
-    # Utility to correct common issues - ie remove new lines as they don't seem that accurate
-    def format_value(name, value)
-      if name == 'Email address'
-        value = value.squish.delete(' ').downcase
-      end
-      value&.squish
-    end
-
-    def format_name(name)
-      name.squish
     end
   end
 end
