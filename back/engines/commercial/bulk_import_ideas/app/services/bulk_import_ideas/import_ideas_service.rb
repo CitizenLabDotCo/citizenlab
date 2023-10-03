@@ -170,12 +170,6 @@ module BulkImportIdeas
         end
       end
 
-      unless author
-        author = User.new(unique_code: SecureRandom.uuid, locale: @locale)
-        author.save!
-        user_created = true
-      end
-
       idea_attributes[:author] = author
       user_created
     end

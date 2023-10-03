@@ -15,6 +15,10 @@ module BulkImportIdeas
 
         super
       end
+
+      def destroy?
+        update?
+      end
     end
   end
 end

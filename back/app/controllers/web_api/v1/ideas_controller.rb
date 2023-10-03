@@ -383,9 +383,11 @@ class WebApi::V1::IdeasController < ApplicationController
 
   def invalid_blank_author_for_update?(input, params)
     author_removal = params[:idea].key?(:author_id) && params[:idea][:author_id].nil?
-    publishing = params[:idea][:publication_status] == 'published' && input.publication_status != 'published'
+    publishing = params[:idea][:publication_status] == 'published' && input.publication_status != 'published' && !input.author_id
 
-    return false unless author_removal || (publishing && !input.author_id)
+    return false unless author_removal || publishing
+
+    return false if input.idea_import&.published_at.nil?
 
     input.participation_method_on_creation.sign_in_required_for_posting?
   end

@@ -109,7 +109,7 @@ describe BulkImportIdeas::ImportIdeasService do
       expect(project.reload.ideas_count).to eq 0
       expect(ideas[0].idea_import).not_to be_nil
       expect(ideas[0].idea_import.page_range).to eq %w[1 2]
-      expect(ideas[0].idea_import.user_created).to be true
+      expect(ideas[0].idea_import.user_created).to be false
       expect(ideas[0].idea_import.user_consent).to be false
       expect(ideas[1].idea_import).not_to be_nil
       expect(ideas[1].idea_import.page_range).to eq %w[3 4]
@@ -229,20 +229,21 @@ describe BulkImportIdeas::ImportIdeasService do
       )
     end
 
-    it 'imports an anonymous user if there is a problem with saving a named user' do
+    it 'does not import a user if there is a problem with saving a named user' do
       project = create(:project, title_multiloc: { 'en' => 'Project title' })
       idea_rows = [
         {
           title_multiloc: { 'en' => 'My idea title' },
           body_multiloc: { 'en' => 'My idea description' },
           project_id: project.id,
+          user_consent: true,
           user_email: 'userimport@@citizenlab....co'
         }
       ]
       service.import_ideas idea_rows
       expect(project.ideas.first).not_to be_nil
-      expect(project.ideas.first.author.email).to be_nil
-      expect(project.ideas.first.author.unique_code).not_to be_nil
+      expect(project.ideas.first.author).to be_nil
+      expect(User.count).to eq 1
     end
 
     context 'surveys' do

@@ -189,6 +189,7 @@ describe BulkImportIdeas::ImportGlobalIdeasService do
           title_multiloc: { 'en' => 'My idea title' },
           body_multiloc: { 'en' => 'My idea description' },
           project_title: 'Project 1',
+          user_consent: true,
           user_email: 'userimport1@citizenlab.co',
           user_first_name: 'Gary',
           user_last_name: 'Import'
@@ -197,12 +198,13 @@ describe BulkImportIdeas::ImportGlobalIdeasService do
           title_multiloc: { 'en' => 'My idea title 2' },
           body_multiloc: { 'en' => 'My idea description 2' },
           project_title: 'Project 2',
-          user_email: nil
+          user_consent: false,
         },
         {
           title_multiloc: { 'en' => 'My idea title 3' },
           body_multiloc: { 'en' => 'My idea description 3' },
           project_title: 'Project 3',
+          user_consent: true,
           user_email: 'userimport1@citizenlab.co'
         }
       ]
@@ -217,15 +219,16 @@ describe BulkImportIdeas::ImportGlobalIdeasService do
       expect(idea1.author[:first_name]).to eq 'Gary'
       expect(idea1.author[:last_name]).to eq 'Import'
       expect(idea1.idea_import.user_created).to be true
+      expect(idea1.idea_import.user_consent).to be true
 
       expect(project2.reload.ideas_count).to eq 1
       idea2 = project2.ideas.first
       expect(idea2.project_id).to eq project2.id
       expect(idea2.title_multiloc).to eq({ 'en' => 'My idea title 2' })
       expect(idea2.body_multiloc).to eq({ 'en' => 'My idea description 2' })
-      expect(idea2.author.email).to be_nil
-      expect(idea2.author.unique_code).not_to be_nil
-      expect(idea2.idea_import.user_created).to be true
+      expect(idea2.author).to be_nil
+      expect(idea2.idea_import.user_created).to be false
+      expect(idea2.idea_import.user_consent).to be false
 
       expect(project3.reload.ideas_count).to eq 1
       idea3 = project3.ideas.first
@@ -234,6 +237,7 @@ describe BulkImportIdeas::ImportGlobalIdeasService do
       expect(idea3.body_multiloc).to eq({ 'en' => 'My idea description 3' })
       expect(idea3.author).to eq idea1.author
       expect(idea3.idea_import.user_created).to be false
+      expect(idea3.idea_import.user_consent).to be true
     end
 
     it 'imports published ideas with publication info' do
