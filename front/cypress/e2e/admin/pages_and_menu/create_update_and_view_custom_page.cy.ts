@@ -27,10 +27,7 @@ describe('Admin: can', () => {
 
       // type title in each language
 
-      cy.get('.e2e-localeswitcher').each((button) => {
-        cy.wrap(button).click();
-        cy.get('#title_multiloc').type(page1);
-      });
+      cy.clickLocaleSwitcherAndType(page1);
 
       // submit
       cy.get('[data-cy="e2e-submit-custom-page"]').click();
