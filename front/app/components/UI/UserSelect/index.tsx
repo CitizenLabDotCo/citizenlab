@@ -57,24 +57,6 @@ const UserSelect = ({
 
   const { data: selectedUser } = useUserById(selectedUserId);
 
-  const handleChange = (
-    option: Option,
-    { action }: { action: 'clear' | 'select-option' }
-  ) => {
-    if (action === 'clear') {
-      handleClear();
-      return;
-    }
-
-    if (optionIsUser(option)) {
-      onChange(option);
-    }
-  };
-
-  const handleClear = () => {
-    onChange();
-  };
-
   return (
     <BaseUserSelect
       id={id}
@@ -92,10 +74,10 @@ const UserSelect = ({
           fetchNextPage={() => fetchNextPage()}
         />
       )}
-      onMenuOpen={handleClear}
       onInputChange={setSearchValue}
       onMenuScrollToBottom={() => fetchNextPage()}
-      onChange={handleChange}
+      onChange={onChange}
+      onMenuOpen={onChange}
     />
   );
 };

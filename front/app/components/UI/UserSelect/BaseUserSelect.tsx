@@ -9,7 +9,7 @@ import selectStyles from 'components/UI/MultipleSelect/styles';
 
 // utils
 import { debounce } from 'lodash-es';
-import { getOptionId } from './utils';
+import { getOptionId, optionIsUser } from './utils';
 
 // typings
 import { IUserData } from 'api/users/types';
@@ -20,16 +20,13 @@ interface Props {
   inputId: string;
   value: IUserData | null;
   placeholder: string;
-  options: Option[];
+  options: (IUserData | { value: string })[];
   components?: { Option: FC };
   getOptionLabel: (option: Option) => JSX.Element;
   onMenuOpen: () => void;
   onInputChange: (searchTerm: string) => void;
   onMenuScrollToBottom: () => void;
-  onChange: (
-    option: Option,
-    { action }: { action: 'clear' | 'select-option' }
-  ) => void;
+  onChange: (option: IUserData | undefined) => void;
 }
 
 const BaseUserSelect = ({
@@ -50,6 +47,20 @@ const BaseUserSelect = ({
       onInputChange(searchTerm);
     }, 500);
   }, [onInputChange]);
+
+  const handleChange = (
+    option: Option,
+    { action }: { action: 'clear' | 'select-option' }
+  ) => {
+    if (action === 'clear') {
+      onChange(undefined);
+      return;
+    }
+
+    if (optionIsUser(option)) {
+      onChange(option);
+    }
+  };
 
   return (
     <Box data-cy="e2e-user-select">
@@ -73,7 +84,7 @@ const BaseUserSelect = ({
         onMenuOpen={onMenuOpen}
         onInputChange={handleInputChange}
         onMenuScrollToBottom={onMenuScrollToBottom}
-        onChange={onChange}
+        onChange={handleChange}
       />
     </Box>
   );
