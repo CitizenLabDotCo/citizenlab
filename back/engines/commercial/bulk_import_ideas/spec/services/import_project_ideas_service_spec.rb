@@ -212,14 +212,15 @@ describe BulkImportIdeas::ImportProjectIdeasService do
       end
 
       it 'can parse select fields from option values with page locations' do
+        expect_any_instance_of(described_class).to receive(:import_form_data).and_return(pdf_form_data)
         ideas = [{
           pdf_pages: [1, 2],
           fields: {
             'Title' => 'Free donuts for all',
             'Description' => 'Give them all donuts',
-            'Yes_2.21' => 'filled_checkbox',
-            'This_2.32' => 'filled_checkbox',
-            'That_2.42' => 'filled_checkbox'
+            'Yes_2.50' => 'filled_checkbox',
+            'This_2.70' => 'filled_checkbox',
+            'That_2.73' => 'filled_checkbox'
           }
         }]
         rows = service.send(:ideas_to_idea_rows, ideas)

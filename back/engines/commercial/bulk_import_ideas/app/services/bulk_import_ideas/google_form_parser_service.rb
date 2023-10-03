@@ -137,7 +137,7 @@ module BulkImportIdeas
       Array.new(rand(1..8)) do
         [
           form_pages: [],
-          pdf_pages: [1,2],
+          pdf_pages: [1, 2],
           fields: {
             'First name' => Faker::FunnyName.name,
             'Last name' => Faker::FunnyName.name,
@@ -146,7 +146,7 @@ module BulkImportIdeas
             'Description' => Faker::Hipster.paragraph,
             'Yes_1.82' => %w[filled_checkbox unfilled_checkbox].sample,
             'No_1.82' => %w[filled_checkbox unfilled_checkbox].sample,
-            'Another field' =>Faker::Quote.robin
+            'Another field' => Faker::Quote.robin
           }
         ]
       end

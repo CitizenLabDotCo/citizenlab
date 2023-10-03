@@ -168,7 +168,7 @@ class PrintCustomFieldsService
     personal_data_explanation_key = "form_builder.pdf_export.personal_data_explanation_#{participation_method}"
     pdf.text I18n.with_locale(@locale) {
       I18n.t(
-        personal_data_explanation_key, 
+        personal_data_explanation_key,
         { organizationName: organization_name }
       )
     }
@@ -222,7 +222,6 @@ class PrintCustomFieldsService
     # inside of it will be on a new page if there
     # is not enough space on the current page
     pdf.group do |pdf_group|
-
       # Add field to array to use in import
       add_to_importer_fields(custom_field, 'field', pdf.page_number, pdf.y)
 
