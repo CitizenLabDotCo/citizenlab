@@ -10,7 +10,7 @@ import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
 
 // other
-import { TIMEOUT } from '..';
+export const TIMEOUT = 350;
 
 export const StyledForm = styled.form`
   width: 500px;

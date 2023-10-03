@@ -558,7 +558,7 @@ jobs:
   front-deploy-staging:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
-    resource_class: large
+    resource_class: medium
     working_directory: ~/citizenlab/front
     steps:
       - shallow-clone
@@ -584,7 +584,7 @@ jobs:
   front-deploy-production:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
-    resource_class: large
+    resource_class: medium
     working_directory: ~/citizenlab/front
     steps:
       - shallow-clone

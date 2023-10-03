@@ -92,9 +92,6 @@ const config = {
         test: /\.[tj]sx?$/,
         include: path.join(process.cwd(), 'app'),
         loader: 'esbuild-loader',
-        options: {
-          target: 'es2015',
-        },
       },
       {
         test: /\.css$/i,
