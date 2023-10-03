@@ -7,6 +7,7 @@ const isProd = process.env.NODE_ENV === 'production';
 
 const webpack = require('webpack');
 
+const { EsbuildPlugin } = require('esbuild-loader');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -84,7 +85,7 @@ const config = {
     optimization: {
       runtimeChunk: 'single',
       minimize: true,
-      minimizer: ['...', new CssMinimizerPlugin()],
+      minimizer: [new EsbuildPlugin()],
     },
   }),
 
@@ -97,22 +98,11 @@ const config = {
           loader: 'babel-loader',
           options: {
             cacheDirectory: true,
+            plugins: [isDev && require.resolve('react-refresh/babel')].filter(
+              Boolean
+            ),
           },
         },
-      },
-      {
-        test: /\.[jt]sx?$/,
-        exclude: /node_modules/,
-        use: [
-          {
-            loader: require.resolve('babel-loader'),
-            options: {
-              plugins: [isDev && require.resolve('react-refresh/babel')].filter(
-                Boolean
-              ),
-            },
-          },
-        ],
       },
       {
         test: /\.css$/,
