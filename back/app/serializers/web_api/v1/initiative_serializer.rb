@@ -90,10 +90,10 @@ class WebApi::V1::InitiativeSerializer < WebApi::V1::BaseSerializer
       # we check if a reaction on the initiative is associated with any of the user's verification uids,
       # through the reactions_verifications_hashed_uids table.
       # If so, we return the first reaction associated with the user's verifications.
-      # This means the FE can display the reaction as if the user had reacted to the initiative.
+      # This means the FE can behave as if the user had reacted to the initiative. E.g. hide the 'vote' button, etc.
       #
       # TO DO:
-      # Only run this code if the verification required to react to initiatives. To be implemented.
+      # Only run this code if verification is required to react to initiatives. To be implemented.
       # Refactor and improve this code. Queries are probably inneficient.
 
       # If the user has no reaction on the initiative, we check if they have any verifications.
