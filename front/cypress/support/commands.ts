@@ -69,6 +69,7 @@ declare global {
       notIntersectsViewport: typeof notIntersectsViewport;
       apiUpdateHomepageSettings: typeof apiUpdateHomepageSettings;
       apiUpdateAppConfiguration: typeof apiUpdateAppConfiguration;
+      clickLocaleSwitcherAndType: typeof clickLocaleSwitcherAndType;
     }
   }
 }
@@ -1410,6 +1411,14 @@ export function apiUpdateAppConfiguration(
   });
 }
 
+export function clickLocaleSwitcherAndType(title: string) {
+  cy.get('.e2e-localeswitcher').each((button) => {
+    cy.wrap(button).click();
+    cy.get('#title_multiloc').clear().type(title);
+    // cy.get('#title_multiloc').type(title);
+  });
+}
+
 export function apiUpdateHomepageSettings({
   top_info_section_enabled,
   bottom_info_section_enabled,
@@ -1595,3 +1604,4 @@ Cypress.Commands.add(
 Cypress.Commands.add('apiUpdateHomepageSettings', apiUpdateHomepageSettings);
 Cypress.Commands.add('apiRemoveCustomPage', apiRemoveCustomPage);
 Cypress.Commands.add('apiCreateCustomPage', apiCreateCustomPage);
+Cypress.Commands.add('clickLocaleSwitcherAndType', clickLocaleSwitcherAndType);
