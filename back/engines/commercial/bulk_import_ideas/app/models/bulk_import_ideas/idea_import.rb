@@ -4,18 +4,18 @@
 #
 # Table name: idea_imports
 #
-#  id             :uuid             not null, primary key
-#  idea_id        :uuid
-#  import_user_id :uuid
-#  file_id        :uuid
-#  user_created   :boolean          default(FALSE)
-#  required       :boolean          default(FALSE)
-#  approved_at    :datetime
-#  page_range     :text             default([]), is an Array
-#  locale         :string
-#  string         :string
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
+#  id              :uuid             not null, primary key
+#  idea_id         :uuid
+#  import_user_id  :uuid
+#  file_id         :uuid
+#  user_created    :boolean          default(FALSE)
+#  approved_at     :datetime
+#  page_range      :text             default([]), is an Array
+#  locale          :string
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  user_consent    :boolean          default(FALSE), not null
+#  content_changes :jsonb
 #
 # Indexes
 #
