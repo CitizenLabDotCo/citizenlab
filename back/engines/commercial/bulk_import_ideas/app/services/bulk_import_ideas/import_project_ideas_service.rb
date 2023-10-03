@@ -4,7 +4,7 @@ module BulkImportIdeas
   class ImportProjectIdeasService < ImportIdeasService
     PAGES_TO_TRIGGER_NEW_PDF = 8
     MAX_TOTAL_PAGES = 50
-    POSITION_VARIANCE = 10
+    POSITION_TOLERANCE = 10
 
     def initialize(current_user, project_id, locale, phase_id, personal_data_enabled)
       super(current_user)
@@ -214,7 +214,7 @@ module BulkImportIdeas
               break
             elsif idea_field[:value] == 'filled_checkbox' && form_field[:page] == idea_field[:page]
               # Check that the value is near to the position on the page it should be
-              if idea_field[:position].between?(form_field[:position].to_i - POSITION_VARIANCE, form_field[:position].to_i + POSITION_VARIANCE)
+              if idea_field[:position].between?(form_field[:position].to_i - POSITION_TOLERANCE, form_field[:position].to_i + POSITION_TOLERANCE)
                 select_field = merged_idea.find { |f| f[:key] == form_field[:parent_key] } || form_fields.find { |f| f[:key] == form_field[:parent_key] }
                 select_field[:value] = select_field[:value] ? select_field[:value] << form_field[:key] : [form_field[:key]]
                 merged_idea << select_field
