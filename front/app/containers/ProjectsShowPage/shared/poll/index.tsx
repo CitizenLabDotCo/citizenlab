@@ -57,10 +57,10 @@ interface Props extends InputProps, DataProps {}
 
 const disabledMessages: { [key in PollDisabledReason] } = {
   project_inactive: messages.pollDisabledProjectInactive,
-  not_active: messages.pollDisabledNotActiveUser,
-  not_verified: messages.pollDisabledNotVerified,
-  missing_data: messages.pollDisabledNotActiveUser,
-  not_signed_in: messages.pollDisabledMaybeNotPermitted,
+  not_active: undefined,
+  not_verified: undefined,
+  missing_data: undefined,
+  not_signed_in: undefined,
   not_in_group: globalMessages.notInGroup,
   not_poll: messages.pollDisabledNotActivePhase,
   already_responded: messages.pollDisabledAlreadyResponded,
