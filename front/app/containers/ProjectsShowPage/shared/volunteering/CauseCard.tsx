@@ -20,7 +20,7 @@ import { isEmptyMultiloc } from 'utils/helperUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import T from 'components/T';
 import messages from './messages';
 
@@ -39,6 +39,7 @@ import useDeleteVolunteer from 'api/causes/useDeleteVolunteer';
 
 // typings
 import { ICauseData } from 'api/causes/types';
+import Tippy from '@tippyjs/react';
 
 const Container = styled.div`
   padding: 20px;
@@ -173,12 +174,14 @@ const ActionWrapper = styled.div`
 interface Props {
   cause: ICauseData;
   className?: string;
+  disabled?: boolean;
 }
 
-const CauseCard = ({ cause, className }: Props) => {
+const CauseCard = ({ cause, className, disabled }: Props) => {
   const { mutate: addVolunteer } = useAddVolunteer();
   const { mutate: deleteVolunteer } = useDeleteVolunteer();
   const theme = useTheme();
+  const { formatMessage } = useIntl();
   const { windowWidth } = useWindowSize();
 
   const volunteer = useCallback(() => {
@@ -264,18 +267,28 @@ const CauseCard = ({ cause, className }: Props) => {
         </Content>
 
         <ActionWrapper>
-          <Button
-            onClick={handleOnVolunteerButtonClick}
-            icon={!isVolunteer ? 'volunteer' : 'volunteer-off'}
-            buttonStyle={!isVolunteer ? 'primary' : 'secondary'}
-            fullWidth={smallerThanSmallTablet}
+          <Tippy
+            disabled={!disabled}
+            interactive={true}
+            placement="bottom"
+            content={formatMessage(messages.notOpenParticipation)}
           >
-            {isVolunteer ? (
-              <FormattedMessage {...messages.withdrawVolunteerButton} />
-            ) : (
-              <FormattedMessage {...messages.becomeVolunteerButton} />
-            )}
-          </Button>
+            <div>
+              <Button
+                onClick={handleOnVolunteerButtonClick}
+                icon={!isVolunteer ? 'volunteer' : 'volunteer-off'}
+                buttonStyle={!isVolunteer ? 'primary' : 'secondary'}
+                fullWidth={smallerThanSmallTablet}
+                disabled={disabled}
+              >
+                {isVolunteer ? (
+                  <FormattedMessage {...messages.withdrawVolunteerButton} />
+                ) : (
+                  <FormattedMessage {...messages.becomeVolunteerButton} />
+                )}
+              </Button>
+            </div>
+          </Tippy>
         </ActionWrapper>
       </Right>
     </Container>

@@ -10,6 +10,8 @@ import PollSingleChoice from './PollSingleChoice';
 import PollMultipleChoice from './PollMultipleChoice';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import Tippy from '@tippyjs/react';
+import Warning from 'components/UI/Warning';
+import { Box } from '@citizenlab/cl2-component-library';
 
 // style
 import styled from 'styled-components';
@@ -25,8 +27,6 @@ import messages from './messages';
 
 // utils
 import { isNilOrError, toggleElementInArray } from 'utils/helperUtils';
-import Warning from 'components/UI/Warning';
-import { Box } from '@citizenlab/cl2-component-library';
 
 const PollContainer = styled.div`
   color: ${({ theme }) => theme.colors.tenantText};
@@ -71,7 +71,6 @@ interface Props {
   questions: IPollQuestionData[];
   projectId: string;
   phaseId?: string | null;
-  contextId: string;
   id: string | null;
   type: IParticipationContextType;
   disabled: boolean;
@@ -111,15 +110,6 @@ const PollForm = ({
 
   const sendAnswer = () => {
     if (id) {
-      const submitPollResponse = () => {
-        addPollResponse({
-          participationContextId: id,
-          participationContextType: type,
-          optionIds: Object.values(answers).flat(),
-          projectId,
-        });
-      };
-
       if (!authUser || !actionDisabledAndNotFixable) {
         const pcType = phaseId ? 'phase' : 'project';
         const pcId = phaseId ? phaseId : projectId;
@@ -144,7 +134,12 @@ const PollForm = ({
         });
       } else {
         if (validate()) {
-          submitPollResponse();
+          addPollResponse({
+            participationContextId: id,
+            participationContextType: type,
+            optionIds: Object.values(answers).flat(),
+            projectId,
+          });
         }
       }
     }

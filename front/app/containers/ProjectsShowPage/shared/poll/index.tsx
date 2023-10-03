@@ -25,6 +25,8 @@ import globalMessages from 'utils/messages';
 
 // events
 import { PollDisabledReason } from 'api/projects/types';
+
+// utils
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
 
 const Container = styled.div`
@@ -101,7 +103,6 @@ export const Poll = ({ pollQuestions, projectId, phaseId, type }: Props) => {
             questions={pollQuestions}
             id={type === 'project' ? projectId : phaseId}
             type={type}
-            contextId={''}
             disabled={false}
             disabledMessage={message}
             actionDisabledAndNotFixable={actionDisabledAndNotFixable}

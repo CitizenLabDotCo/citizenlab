@@ -27,4 +27,8 @@ export default defineMessages({
     id: 'app.containers.ProjectsShowPage.VolunteeringSection.signUpLinkText',
     defaultMessage: 'sign up',
   },
+  notOpenParticipation: {
+    id: 'app.containers.ProjectsShowPage.VolunteeringSection.notOpenParticipation',
+    defaultMessage: 'Participation is not currently open for this activity.',
+  },
 });
