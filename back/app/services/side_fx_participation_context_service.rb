@@ -22,7 +22,23 @@ class SideFxParticipationContextService
     end
   end
 
-  def after_update(pc, _user)
+  def after_update(pc, user)
+    %i[
+      description_multiloc voting_method voting_max_votes_per_idea voting_max_total voting_min_total
+      posting_enabled posting_method posting_limited_max commenting_enabled reacting_enabled
+      reacting_like_method reacting_like_limited_max reacting_dislike_enabled presentation_mode
+    ].each do |attribute|
+      if pc.send "#{attribute}_previously_changed?"
+        LogActivityJob.perform_later(
+          pc,
+          "changed_#{attribute}",
+          user,
+          pc.updated_at.to_i,
+          payload: { change: pc.send("#{attribute}_previous_change") }
+        )
+      end
+    end
+
     Surveys::WebhookManagerJob.perform_later(
       'participation_context_changed',
       pc,
