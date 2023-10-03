@@ -1,83 +1,19 @@
 ar:
   email_campaigns:
     campaign_type_description:
-      "manual": رسائل رسمية
-      "admin_rights_received": تم استلام حقوق المسؤول
-      "comment_deleted_by_admin": حذف حسابي
-      "comment_marked_as_spam": الإبلاغ عن التعليق كـ مزعج
-      "comment_on_your_comment": رد على تعليقي
-      "comment_on_idea_you_follow": تعليق على فكرة تتابعها
-      "comment_on_initiative_you_follow": تعليق على الاقتراح الذي تتبعه
-      "cosponsor_of_your_initiative": يقبل أحد المستخدمين دعوتي للمشاركة في رعاية اقتراحي
-      "event_registration_confirmation": تأكيد تسجيل الحدث
-      "first_idea_published": نشر فكرتي الأولى
-      "idea_marked_as_spam": الإبلاغ عن الفكرة كـ مزعجة
-      "idea_published": نشر فكرتي
-      "initiative_assigned_to_you": تعيين مُقترح إلي
-      "initiative_marked_as_spam": الإبلاغ عن المُقترح كـ مزعج
-      "initiative_published": نشر مُقترحي
-      "invitation_to_cosponsor_initiative": دعوة للمشاركة في رعاية اقتراح
-      "initiative_resubmitted_for_review": تمت إعادة تقديم الاقتراح للمراجعة
-      "invite_received": دعوة
-      "invite_reminder": تذكير بالدعوة
-      "internal_comment_on_idea_assigned_to_you": تعليق داخلي على المدخلات المخصصة لي
-      "internal_comment_on_idea_you_commented_internally_on": تعليق داخلي على المدخلات التي علقت عليها داخليًا
-      "internal_comment_on_idea_you_moderate": تعليق داخلي على الإدخال في المشروع أو المجلد الذي أديره
-      "internal_comment_on_initiative_assigned_to_you": تعليق داخلي على الاقتراح المخصص لي
-      "internal_comment_on_initiative_you_commented_internally_on": تعليق داخلي على الاقتراح الذي علقت عليه داخليًا
-      "internal_comment_on_unassigned_initiative": تعليق داخلي على اقتراح غير مخصص
-      "internal_comment_on_unassigned_unmoderated_idea": تعليق داخلي على المدخلات غير المعينة في مشروع غير مُدار
-      "internal_comment_on_your_internal_comment": تعليق داخلي على تعليقي الداخلي
-      "mention_in_official_feedback": ذكر في تحديث
-      "mention_in_internal_comment": أذكر في تعليق داخلي
-      "new_comment_for_admin": تعليق جديد في مشروع أُشرف عليه
-      "new_idea_for_admin": فكرة جديدة في مشروع أُشرف عليه
-      "new_initiative_for_admin": مُقترح جديد
-      "official_feedback_on_idea_you_follow": تحديث على فكرة تتابعها
-      "official_feedback_on_initiative_you_follow": تحديث على الاقتراح الذي تتابعه
-      "password_reset": تمت إعادة تعيين كلمة المرور
-      "project_moderation_rights_received": تم استلام حقوق الإشراف على المشروع
-      "project_folder_moderation_rights_received": تم استلام حقوق الإشراف على مجلد المشروع
-      "project_phase_started": مرحلة مشروع جديدة
-      "project_phase_upcoming": مرحلة مشروع جديدة قادمة
-      "project_published": تم نشر المشروع
-      "status_change_on_idea_you_follow": تغيير حالة الفكرة التي تتابعها
-      "status_change_on_initiative_you_follow": تغيير حالة الاقتراح الذي تتابعه
-      "threshold_reached_for_admin": بلغ المُقترح حد التصويت المطلوب
-      "welcome": بعد التسجيل
-      "admin_digest": نظرة عامة أسبوعية للمسؤولين
-      "moderator_digest": نظرة عامة أسبوعية لمديري المشاريع
-      "assignee_digest": نظرة عامة أسبوعية على الأفكار المعيّنة
-      "user_digest": نظرة عامة أسبوعية
-      "voting_basket_submitted": تأكيد التصويت
-      "voting_basket_not_submitted": لم يتم تقديم الأصوات
-      "voting_last_chance": آخر فرصة للتصويت
-      "voting_results": نتائج التصويت
-      "your_proposed_initiatives_digest": نظرة عامة أسبوعية على مُقترحاتك
-    general:
-      by_author: 'بواسطة %{authorName}'
-      author_wrote: '%{authorName} كتب:'
-      cta_goto_idea: 'اذهب إلى هذه الفكرة'
-      cta_goto_proposal: 'اذهب إلى هذا الاقتراح'
-      cta_goto_project: 'اذهب إلى هذا المشروع'
-    schedules:
-      weekly:
-        "0": "أسبوعيًا ، أيام الأحد الساعة %{hourOfDay}"
-        "1": "أسبوعيًا يوم الاثنين %{atHour}"
-        "2": "أسبوعيًا كل يوم ثلاثاء %{atHour}"
-        "3": "أسبوعيًا في أيام الأربعاء %{atHour}"
-        "4": "أسبوعيًا يوم الخميس %{atHour}"
-        "5": "أسبوعيًا أيام الجمعة %{atHour}"
-        "6": "أسبوعيًا أيام السبت %{atHour}"
+      "1": "أسبوعيًا يوم الاثنين %{atHour}"
+      "2": "أسبوعيًا كل يوم ثلاثاء %{atHour}"
+      "3": "أسبوعيًا، يوم الأربعاء الساعة %{hourOfDay}"
+      "4": "أسبوعيًا، يوم الخميس الساعة %{hourOfDay}"
+      "5": "أسبوعيًا، يوم الجمعة الساعة %{hourOfDay}"
+      "6": "أسبوعيًا، يوم السبت الساعة %{hourOfDay}"
     footer:
-      "link_privacy_policy": "سياسة الخصوصية"
       "link_terms_conditions": "الشروط والأحكام"
       "link_unsubscribe": "إلغاء الاشتراك"
       "powered_by": "مشغّل بواسطة"
       "statement": "تم إرسال هذه الرسالة الإلكترونية بواسطة CitizenLab بالنيابة عن %{organizationName}، لأنك مستخدم مسجل لدى %{organizationLink}. يمكنك %{unsubscribeLink} إذا لم تعُد ترغب في استلام هذه الرسائل الإلكترونية في المستقبل."
       "unsubscribe_text": "إلغاء الاشتراك"
-    follow:
-      "unfollow_here": "لقد تلقيت هذا الإشعار بسبب عنصر تتابعه. <a href=\"%{unfollow_url}\">يمكنك إلغاء متابعته هنا.</a>"
+    follow: "unfollow_here\": \"لقد تلقيت هذا الإشعار بسبب عنصر تتابعه. <a href=\"%{unfollow_url}\">يمكنك إلغاء متابعته هنا.</a>"
     comment_deleted_by_admin:
       reason: 'سبب حذف تعليقك:'
       cta_view: 'اعرض هذه الفكرة'
