@@ -54,6 +54,7 @@ declare global {
       apiRemoveFolder: typeof apiRemoveFolder;
       apiRemoveProject: typeof apiRemoveProject;
       apiRemoveCustomPage: typeof apiRemoveCustomPage;
+      apiCreateCustomPage: typeof apiCreateCustomPage;
       apiAddProjectsToFolder: typeof apiAddProjectsToFolder;
       apiCreatePhase: typeof apiCreatePhase;
       apiCreateCustomField: typeof apiCreateCustomField;
@@ -68,6 +69,7 @@ declare global {
       notIntersectsViewport: typeof notIntersectsViewport;
       apiUpdateHomepageSettings: typeof apiUpdateHomepageSettings;
       apiUpdateAppConfiguration: typeof apiUpdateAppConfiguration;
+      clickLocaleSwitcherAndType: typeof clickLocaleSwitcherAndType;
     }
   }
 }
@@ -1060,6 +1062,32 @@ export function apiRemoveFolder(folderId: string) {
   });
 }
 
+export function apiCreateCustomPage(title: string) {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'POST',
+      url: `web_api/v1/static_pages`,
+      body: {
+        static_page: {
+          projects_filter_type: 'no_filter',
+          topic_ids: [],
+          title_multiloc: {
+            en: title,
+            'nl-BE': title,
+            'nl-NL': title,
+            'fr-BE': title,
+          },
+        },
+      },
+    });
+  });
+}
 export function apiRemoveCustomPage(customPageId: string) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -1383,6 +1411,13 @@ export function apiUpdateAppConfiguration(
   });
 }
 
+export function clickLocaleSwitcherAndType(title: string) {
+  cy.get('.e2e-localeswitcher').each((button) => {
+    cy.wrap(button).click();
+    cy.get('#title_multiloc').clear().type(title);
+  });
+}
+
 export function apiUpdateHomepageSettings({
   top_info_section_enabled,
   bottom_info_section_enabled,
@@ -1567,3 +1602,5 @@ Cypress.Commands.add(
 );
 Cypress.Commands.add('apiUpdateHomepageSettings', apiUpdateHomepageSettings);
 Cypress.Commands.add('apiRemoveCustomPage', apiRemoveCustomPage);
+Cypress.Commands.add('apiCreateCustomPage', apiCreateCustomPage);
+Cypress.Commands.add('clickLocaleSwitcherAndType', clickLocaleSwitcherAndType);
