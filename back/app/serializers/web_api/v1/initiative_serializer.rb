@@ -82,7 +82,31 @@ class WebApi::V1::InitiativeSerializer < WebApi::V1::BaseSerializer
     if params[:vbii]
       params.dig(:vbii, object.id)
     else
-      object.reactions.where(user_id: current_user(params)&.id).first
+      reactions = object.reactions
+      reaction = reactions.where(user_id: current_user(params)&.id).first
+      return reaction if reaction
+
+      # If the user has no reaction on the initiative && verification is required to react to an initiative,
+      # we check if a reaction on the initiative is associated with any of the user's verification uids,
+      # through the reactions_verifications_hashed_uids table.
+      # If so, we return the first reaction associated with the user's verifications.
+      # This means the FE can display the reaction as if the user had reacted to the initiative.
+      #
+      # TO DO:
+      # Only run this code if the verification required to react to initiatives. To be implemented.
+      # Refactor and improve this code. Queries are probably inneficient.
+
+      # If the user has no reaction on the initiative, we check if they have any verifications.
+      user_verifications_hashed_uids = current_user(params)&.verifications&.map(&:hashed_uid)&.uniq
+      return nil unless user_verifications_hashed_uids&.any?
+
+      # If the user has verifications, we check if any of the reactions on the initiative have asssociated
+      # reactions_verifications_hashed_uids records.
+      object_reactions_verification_hashed_uids = Verification::ReactionsVerificationsHashedUid.where(reaction: reactions)
+      return nil unless object_reactions_verification_hashed_uids&.any?
+
+      # First reaction (if any) associated with verification hashed_uid that matches any found in user's verifications.
+      object_reactions_verification_hashed_uids.where(verification_hashed_uid: user_verifications_hashed_uids).first&.reaction
     end
   end
 
