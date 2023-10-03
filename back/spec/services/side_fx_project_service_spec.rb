@@ -62,6 +62,31 @@ describe SideFxProjectService do
         .with(project, 'changed', user, project.updated_at.to_i, project_id: project.id)
     end
 
+    {
+      description_multiloc: { 'en' => 'changed' },
+      voting_method: 'multiple_voting',
+      voting_max_votes_per_idea: 9,
+      voting_max_total: 11,
+      voting_min_total: 2,
+      posting_enabled: false,
+      posting_method: 'limited',
+      posting_limited_max: 3,
+      commenting_enabled: false,
+      reacting_enabled: false,
+      reacting_like_method: 'limited',
+      reacting_like_limited_max: 9,
+      reacting_dislike_enabled: false,
+      presentation_mode: 'map'
+    }.each do |attribute, new_value|
+      it "logs a '#{attribute}_changed' action job when the project has changed" do
+        old_value = project[attribute]
+        project.update!(attribute => new_value)
+        expect { service.after_update(project, user) }
+          .to have_enqueued_job(LogActivityJob)
+          .with(project, "changed_#{attribute}", user, project.updated_at.to_i, project_id: project.id, payload: { change: [old_value, new_value] })
+      end
+    end
+
     it "logs a 'published' action when a draft project is published" do
       project.admin_publication.update!(publication_status: 'draft')
       service.before_update project, user

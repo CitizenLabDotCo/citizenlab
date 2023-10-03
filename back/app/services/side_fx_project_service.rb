@@ -46,6 +46,21 @@ class SideFxProjectService
 
   def after_update(project, user)
     LogActivityJob.perform_later project, 'changed', user, project.updated_at.to_i
+    %i[
+      description_multiloc voting_method voting_max_votes_per_idea voting_max_total voting_min_total
+      posting_enabled posting_method posting_limited_max commenting_enabled reacting_enabled
+      reacting_like_method reacting_like_limited_max reacting_dislike_enabled presentation_mode
+    ].each do |attribute|
+      if project.send "#{attribute}_previously_changed?"
+        LogActivityJob.perform_later(
+          project,
+          "changed_#{attribute}",
+          user,
+          project.updated_at.to_i,
+          payload: { change: project.send("#{attribute}_previous_change") }
+        )
+      end
+    end
 
     after_folder_changed project, user if @folder_id_was != project.folder_id
     @sfx_pc.after_update project, user if project.participation_context?
