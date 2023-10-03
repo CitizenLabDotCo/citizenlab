@@ -110,7 +110,12 @@ RSpec.describe AppConfiguration do
   describe '#public_settings' do
     it 'does not include private fields' do
       app_config.settings['franceconnect_login'] = {
-        allowed: true, enabled: true, environment: 'production', identifier: 'id', secret: 'secret'
+        allowed: true,
+        enabled: true,
+        environment: 'production',
+        identifier: 'id',
+        secret: 'secret',
+        scope: %w[email given_name family_name]
       }
       app_config.settings['verification'] = {
         allowed: true, enabled: true, verification_methods: [
