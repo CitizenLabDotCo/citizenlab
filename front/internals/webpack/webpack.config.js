@@ -42,7 +42,6 @@ const currentYear = new Date().getFullYear();
 
 const config = {
   entry: path.join(process.cwd(), 'app/root'),
-
   output: {
     path: path.join(process.cwd(), 'build'),
     pathinfo: false,
@@ -190,11 +189,11 @@ const config = {
         chunkFilename: '[name].[contenthash].chunk.min.css',
       }),
 
-    // sourceMapToSentry &&
-    //   new SentryCliPlugin({
-    //     include: path.join(process.cwd(), 'build'),
-    //     release: process.env.CIRCLE_BUILD_NUM,
-    //   }),
+    sourceMapToSentry &&
+      new SentryCliPlugin({
+        include: path.join(process.cwd(), 'build'),
+        release: process.env.CIRCLE_BUILD_NUM,
+      }),
   ].filter(Boolean),
 
   resolve: {
