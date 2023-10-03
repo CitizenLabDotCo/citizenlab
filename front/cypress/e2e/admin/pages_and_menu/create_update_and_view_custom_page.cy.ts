@@ -1,200 +1,259 @@
 import { randomString } from '../../../support/commands';
 
-describe.skip('Admin: create, update, and view custom page', () => {
-  let customPageId: string;
-
-  after(() => {
-    cy.apiRemoveCustomPage(customPageId);
+describe('Admin: can', () => {
+  beforeEach(() => {
+    cy.setAdminLoginCookie();
+    cy.visit('/admin/pages-menu/');
+    cy.acceptCookies();
   });
 
-  it('creates a custom page successfully', () => {
-    cy.intercept('PATCH', '**/static_pages/**').as('updateCustomPage');
-    cy.intercept('POST', '**/static_pages').as('createCustomPage');
+  describe('create', () => {
+    const page1 = randomString(4);
+    let customPageId1: string;
 
-    const pageName = randomString();
+    after(() => {
+      if (customPageId1) {
+        cy.apiRemoveCustomPage(customPageId1);
+      }
+    });
+
+    it('and view a custom page successfully', () => {
+      cy.intercept('POST', '**/static_pages').as('createCustomPage');
+
+      cy.visit('/admin/pages-menu/');
+
+      // go to custom page creation form
+      cy.get('#create-custom-page').click();
+
+      // type title in each language
+
+      cy.get('.e2e-localeswitcher').each((button) => {
+        cy.wrap(button).click();
+        cy.get('#title_multiloc').type(page1);
+      });
+
+      // submit
+      cy.get('[data-cy="e2e-submit-custom-page"]').click();
+
+      cy.wait('@createCustomPage').then((interception) => {
+        customPageId1 = interception.response?.body.data.id;
+      });
+
+      // visit our custom page by slug
+      cy.visit(`/en/pages/${page1}`);
+      cy.contains(page1).should('exist');
+    });
+  });
+
+  describe('edit or add', () => {
+    const page2 = randomString(4);
+    const page3 = randomString(4);
+    const page4 = randomString(4);
+    let customPageId2: string;
+    let customPageId3: string;
+    let customPageId4: string;
     const headerContent = randomString();
     const subheaderContent = randomString();
     const ctaContent = randomString();
     const topInfoContent = randomString();
 
-    // log in as admin, visit the pages and menu section in admin
-    cy.setAdminLoginCookie();
-    cy.visit('/admin/pages-menu/');
-    cy.acceptCookies();
-
-    // go to custom page creation form
-    cy.get('#create-custom-page').click();
-
-    // type title in each language
-
-    cy.get('.e2e-localeswitcher').each((button) => {
-      cy.wrap(button).click();
-      cy.get('#title_multiloc').type(pageName);
+    before(() => {
+      cy.apiCreateCustomPage(page2).then((page) => {
+        customPageId2 = page.body.data.id;
+      });
+      cy.apiCreateCustomPage(page3).then((page) => {
+        customPageId3 = page.body.data.id;
+      });
+      cy.apiCreateCustomPage(page4).then((page) => {
+        customPageId4 = page.body.data.id;
+      });
     });
 
-    // submit
-    cy.get('[data-cy="e2e-submit-custom-page"]').click();
-
-    // intercept the response and save the ID of the new page
-    cy.wait('@createCustomPage').then((interception) => {
-      customPageId = interception.response?.body.data.id;
+    after(() => {
+      [customPageId2, customPageId3, customPageId4].forEach((id) => {
+        if (id) {
+          cy.apiRemoveCustomPage(id);
+        }
+      });
     });
 
-    // click the page content tab
-    cy.contains('Page content').click();
+    it('custom page banner and view it', () => {
+      cy.intercept('PATCH', '**/static_pages/**').as('updateCustomPage');
 
-    const sectionNames = [
-      'banner_enabled',
-      'top_info_section_enabled',
-      'files_section_enabled',
-    ];
+      cy.visit(`/en/admin/pages-menu/pages/${customPageId2}/content`);
 
-    // toggle top info section and wait for requests to complete
-    sectionNames.forEach((sectionName) => {
-      // click the toggle
-      cy.get(`[data-cy="e2e-admin-section-toggle-${sectionName}"]`).click();
+      // toggle banner section
+      cy.get('[data-cy="e2e-admin-section-toggle-banner_enabled"]').click();
       // wait for the call to complete
       cy.wait('@updateCustomPage');
       // wait for the toggle to become enabled in the UI
-      cy.get(`[data-cy="e2e-admin-section-toggle-${sectionName}"]`)
+      cy.get('[data-cy="e2e-admin-section-toggle-banner_enabled"]')
         .find('i')
         .should('have.class', 'enabled');
+
+      // go to the hero banner edit
+      cy.get('[data-cy="e2e-admin-edit-button-banner_enabled"]').click();
+
+      // check for section enabled banner and check that enable button is not present
+      cy.contains('Shown on page').should('exist');
+      cy.get('[data-cy="e2e-submit-wrapper-secondary-submit-button"]').should(
+        'not.exist'
+      );
+
+      // focus the header dropzone and drop an image onto it
+      cy.get('#header-dropzone').attachFile('icon.png', {
+        subjectType: 'drag-n-drop',
+      });
+
+      // update the header text
+      cy.get('[data-cy="e2e-signed-out-header-section"]').scrollIntoView();
+      cy.get('[data-cy="e2e-signed-out-header-section"]')
+        .find('.e2e-localeswitcher')
+        .each((button) => {
+          cy.wrap(button).click();
+          cy.get('[data-cy="e2e-signed-out-header-section"]')
+            .find('input')
+            .type(headerContent);
+        });
+
+      // update the subheader text
+      cy.get('[data-cy="e2e-signed-out-subheader-section"]').scrollIntoView();
+      cy.get('[data-cy="e2e-signed-out-subheader-section"]')
+        .find('.e2e-localeswitcher')
+        .each((button) => {
+          cy.wrap(button).click();
+          cy.get('[data-cy="e2e-signed-out-subheader-section"]')
+            .find('input')
+            .type(subheaderContent);
+        });
+
+      // enable custom button
+      cy.get('[data-cy="e2e-cta-settings-custom-customized_button"]').click();
+
+      // enter button multiloc content
+      cy.get('[data-cy="e2e-cta-settings-custom-customized_button"]')
+        .find('.e2e-localeswitcher')
+        .each((button) => {
+          cy.wrap(button).click();
+          cy.get('[data-testid="inputMultilocLocaleSwitcher"]')
+            .find('input')
+            .type(ctaContent);
+        });
+
+      // type the url
+      cy.get('#buttonConfigInput').type('https://www.coolwebsite.biz');
+
+      // submit form
+      cy.get('.e2e-submit-wrapper-button').click();
+
+      cy.visit(`/en/pages/${page2}`);
+
+      cy.get('[data-cy="e2e-header-image-background"]')
+        .should('have.attr', 'src')
+        .should('include', '.png');
+      cy.contains(headerContent);
+      cy.contains(subheaderContent);
+      cy.contains(ctaContent);
     });
 
-    // go to the hero banner edit
-    cy.get('[data-cy="e2e-admin-edit-button-banner_enabled"]').click();
+    it('custom page top info section and view it', () => {
+      cy.intercept('PATCH', '**/static_pages/**').as('updateCustomPage');
 
-    // check for section enabled banner and check that enable button is not present
-    cy.contains('Shown on page').should('exist');
-    cy.get('[data-cy="e2e-submit-wrapper-secondary-submit-button"]').should(
-      'not.exist'
-    );
+      cy.visit(`/en/admin/pages-menu/pages/${customPageId3}/content`);
 
-    // focus the header dropzone and drop an image onto it
-    cy.get('#header-dropzone').attachFile('icon.png', {
-      subjectType: 'drag-n-drop',
+      // toggle top info section
+      cy.get(
+        '[data-cy="e2e-admin-section-toggle-top_info_section_enabled"]'
+      ).click();
+      // wait for the call to complete
+      cy.wait('@updateCustomPage');
+      // wait for the toggle to become enabled in the UI
+      cy.get('[data-cy="e2e-admin-section-toggle-top_info_section_enabled"]')
+        .find('i')
+        .should('have.class', 'enabled');
+
+      // go to top info section edit page
+      cy.get(
+        '[data-cy="e2e-admin-edit-button-top_info_section_enabled"]'
+      ).click();
+
+      cy.contains('Shown on page').should('exist');
+
+      // fill out top info section
+      cy.get('[data-cy="e2e-top-info-form"]')
+        .find('.e2e-localeswitcher')
+        .each((button) => {
+          cy.wrap(button).click();
+          cy.get('#top_info_section_multiloc-en').type(topInfoContent);
+          cy.wrap(button).get('.notEmpty');
+        });
+
+      // submit
+      cy.get('[data-cy="e2e-top-info-section-submit"]').click();
+
+      // scroll to breadcrumbs, go back to main page to test enabling it differently
+      cy.visit(`/en/admin/pages-menu/pages/${customPageId3}/content`);
+      // turn off top info section again
+      cy.get(
+        `[data-cy="e2e-admin-section-toggle-top_info_section_enabled"]`
+      ).click();
+      // wait for the call to complete
+      cy.wait('@updateCustomPage');
+
+      // go to top info section edit page
+      cy.get(
+        '[data-cy="e2e-admin-edit-button-top_info_section_enabled"]'
+      ).click();
+
+      // check that the section is now disabled
+      cy.contains('Not shown on page').should('exist');
+
+      // enable it via the save + enable button
+      cy.get('[data-cy="e2e-top-info-section-secondary-submit"]').click();
+
+      // wait for the badge showing that it was enabled
+      cy.contains('Shown on page').should('exist');
+
+      cy.visit(`/en/pages/${page3}`);
+
+      // check that top info section content is present
+      cy.contains(topInfoContent);
     });
 
-    // update the header text
-    cy.get('[data-cy="e2e-signed-out-header-section"]').scrollIntoView();
-    cy.get('[data-cy="e2e-signed-out-header-section"]')
-      .find('.e2e-localeswitcher')
-      .each((button) => {
-        cy.wrap(button).click();
-        cy.get('[data-cy="e2e-signed-out-header-section"]')
-          .find('input')
-          .type(headerContent);
-      });
+    it('custom page attachments and view them', () => {
+      cy.intercept('PATCH', '**/static_pages/**').as('updateCustomPage');
 
-    // update the subheader text
-    cy.get('[data-cy="e2e-signed-out-subheader-section"]').scrollIntoView();
-    cy.get('[data-cy="e2e-signed-out-subheader-section"]')
-      .find('.e2e-localeswitcher')
-      .each((button) => {
-        cy.wrap(button).click();
-        cy.get('[data-cy="e2e-signed-out-subheader-section"]')
-          .find('input')
-          .type(subheaderContent);
-      });
+      cy.visit(`/en/admin/pages-menu/pages/${customPageId4}/content`);
 
-    // enable custom button
-    cy.get('[data-cy="e2e-cta-settings-custom-customized_button"]').click();
+      // toggle attachments section
+      cy.get(
+        '[data-cy="e2e-admin-section-toggle-files_section_enabled"]'
+      ).click();
+      // wait for the call to complete
+      cy.wait('@updateCustomPage');
+      // wait for the toggle to become enabled in the UI
+      cy.get('[data-cy="e2e-admin-section-toggle-files_section_enabled"]')
+        .find('i')
+        .should('have.class', 'enabled');
 
-    // enter button multiloc content
-    cy.get('[data-cy="e2e-cta-settings-custom-customized_button"]')
-      .find('.e2e-localeswitcher')
-      .each((button) => {
-        cy.wrap(button).click();
-        cy.get('[data-testid="inputMultilocLocaleSwitcher"]')
-          .find('input')
-          .type(ctaContent);
-      });
+      // go to attachments section edit page
+      cy.get('[data-cy="e2e-admin-edit-button-files_section_enabled"]').click();
 
-    // type the url
-    cy.get('#buttonConfigInput').type('https://www.coolwebsite.biz');
+      cy.contains('Shown on page').should('exist');
 
-    // submit form
-    cy.get('.e2e-submit-wrapper-button').click();
+      cy.get('#local_page_files').selectFile('cypress/fixtures/example.pdf');
+      cy.get('[data-cy="e2e-file-uploader-container"]').should('exist');
 
-    // scroll to breadcrumbs, go back to main page
-    cy.get(`[data-cy="breadcrumbs-${pageName}"]`).click();
+      cy.get('[data-cy="e2e-file-uploader-container"]').contains('example.pdf');
 
-    // go to top info section edit page
-    cy.get(
-      '[data-cy="e2e-admin-edit-button-top_info_section_enabled"]'
-    ).click();
+      // submit
+      cy.get('[data-cy="e2e-attachments-section-submit"]').click();
 
-    // check for enabled banner to exist
-    cy.contains('Shown on page').should('exist');
+      // wait for success toast
+      cy.get('[data-testid="feedbackSuccessMessage"');
 
-    // fill out top info section
-    cy.get('[data-cy="e2e-top-info-form"]')
-      .find('.e2e-localeswitcher')
-      .each((button) => {
-        cy.wrap(button).click();
-        cy.get('#top_info_section_multiloc-en').type(topInfoContent);
-        cy.wrap(button).get('.notEmpty');
-      });
-
-    // submit
-    cy.get('[data-cy="e2e-top-info-section-submit"]').click();
-
-    // scroll to breadcrumbs, go back to main page
-    cy.get(`[data-cy="breadcrumbs-${pageName}"]`).click();
-
-    // go to attachments section edit page
-    cy.get('[data-cy="e2e-admin-edit-button-files_section_enabled"]').click();
-
-    // drop an example pdf file and wait for it to be uploaded
-    cy.get('#local_page_files').selectFile('cypress/fixtures/example.pdf');
-    cy.contains('example.pdf');
-
-    // submit
-    cy.get('[data-cy="e2e-attachments-section-submit"]').click();
-
-    // wait for success toast
-    cy.get('[data-testid="feedbackSuccessMessage"');
-
-    //  go back to main page
-    cy.get(`[data-cy="breadcrumbs-${pageName}"]`).click();
-
-    // turn off top info section again
-    cy.get(
-      `[data-cy="e2e-admin-section-toggle-top_info_section_enabled"]`
-    ).click();
-    // wait for the call to complete
-    cy.wait('@updateCustomPage');
-
-    // wait for the toggle to become enabled in the UI
-    cy.get(`[data-cy="e2e-admin-section-toggle-top_info_section_enabled"]`)
-      .find('i')
-      .should('have.class', 'enabled');
-
-    // go to top info section edit page
-    cy.get(
-      '[data-cy="e2e-admin-edit-button-top_info_section_enabled"]'
-    ).click();
-
-    // check that the section is now disabled
-    cy.contains('Not shown on page').should('exist');
-
-    // enable it via the save + enable button
-    cy.get('[data-cy="e2e-top-info-section-secondary-submit"]').click();
-
-    // wait for the badge showing that it was enabled
-    cy.contains('Shown on page').should('exist');
-
-    // visit our custom page by slug
-    cy.visit(`/en/pages/${pageName}`);
-
-    // check for presence of image in header and text content
-    cy.get('[data-cy="e2e-header-image-background"]')
-      .should('have.attr', 'src')
-      .should('include', '.png');
-    cy.contains(headerContent);
-    cy.contains(subheaderContent);
-    cy.contains(ctaContent);
-    cy.contains(topInfoContent);
-    cy.contains('example.pdf');
+      cy.visit(`/en/pages/${page4}`);
+      cy.contains('example.pdf');
+    });
   });
 });
