@@ -66,6 +66,30 @@ resource 'Reactions' do
       expect(@initiative.reload.likes_count).to eq 3
     end
 
+    context 'when user has verifications' do
+      let(:verification1) { create(:verification, user: @user, hashed_uid: '1234', method_name: 'cow', active: true) }
+      let(:verification2) { create(:verification, user: @user, hashed_uid: '1234', method_name: 'cow', active: false) }
+      let(:verification3) { create(:verification, user: @user, hashed_uid: '999', method_name: 'bogus', active: false) }
+
+      before do
+        @user.verifications = [verification1, verification2, verification3]
+      end
+
+      example_request 'Create a reaction to an initiative also creates reactions_verifications_hashed_uid records' do
+        assert_status 201
+
+        json_response = json_parse(response_body)
+        reaction_id = json_response.dig(:data, :id)
+        reactions_verifications_hashed_uids =
+          Verification::ReactionsVerificationsHashedUid.where(reaction_id: reaction_id)
+
+        # Expect only one record per unique verification hashed_uid (in user.verifications)
+        expect(reactions_verifications_hashed_uids.count).to eq 2
+        expect(reactions_verifications_hashed_uids.map(&:verification_hashed_uid))
+          .to match_array [verification1.hashed_uid, verification3.hashed_uid]
+      end
+    end
+
     example 'Reaching the voting threshold immediately triggers status change', document: false do
       settings = AppConfiguration.instance.settings
       settings['initiatives']['reacting_threshold'] = 3
