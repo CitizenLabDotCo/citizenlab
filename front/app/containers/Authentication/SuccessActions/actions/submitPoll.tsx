@@ -3,6 +3,7 @@ import { IParticipationContextType } from 'typings';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import pollResponsesKeys from 'api/poll_responses/keys';
 import projectsKeys from 'api/projects/keys';
+
 export interface SubmitPollParams {
   id: string;
   type: IParticipationContextType;
