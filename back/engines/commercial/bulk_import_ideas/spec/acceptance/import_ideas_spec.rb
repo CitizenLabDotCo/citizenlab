@@ -63,7 +63,7 @@ resource 'BulkImportIdeasImportIdeas' do
           expect(response_data.count).to eq 2
           expect(Idea.count).to eq 2
           expect(Idea.all.pluck(:title_multiloc)).to match_array [{ 'en' => 'My idea title 1' }, { 'en' => 'My idea title 2' }]
-          expect(User.count).to eq 3
+          expect(User.count).to eq 2
           expect(User.all.pluck(:email)).to include 'dave@citizenlab.co'
           expect(User.all.pluck(:email)).not_to include 'bob@citizenlab.co'
           expect(BulkImportIdeas::IdeaImport.count).to eq 2
@@ -97,6 +97,7 @@ resource 'BulkImportIdeasImportIdeas' do
         )
         parameter(:locale, 'Locale of the ideas being imported.', scope: :import_ideas)
         parameter(:phase_id, 'ID of the phase to import these ideas to', scope: :import_ideas)
+        parameter(:personal_data, 'Has the uploaded form got the personal data section in it', scope: :import_ideas)
 
         context 'xlsx import' do
           let(:xlsx) { create_project_bulk_import_ideas_xlsx }
@@ -108,7 +109,7 @@ resource 'BulkImportIdeasImportIdeas' do
             expect(response_data.count).to eq 2
             expect(Idea.count).to eq 2
             expect(Idea.all.pluck(:title_multiloc)).to match_array [{ 'en' => 'My project idea title 1' }, { 'en' => 'My project idea title 2' }]
-            expect(User.count).to eq 3
+            expect(User.count).to eq 2
             expect(User.all.pluck(:email)).to include 'dave@citizenlab.co'
             expect(User.all.pluck(:email)).not_to include 'bob@citizenlab.co'
             expect(BulkImportIdeas::IdeaImport.count).to eq 2
@@ -122,6 +123,7 @@ resource 'BulkImportIdeasImportIdeas' do
           # NOTE: GoogleFormParserService is stubbed to avoid calls to google APIs
           context 'continuous projects with single page idea form with 1 page scanned' do
             let(:pdf) { create_project_bulk_import_ideas_pdf 1 }
+            let(:personal_data) { 'true' }
 
             example 'Bulk import ideas to continuous project from .pdf' do
               expect_any_instance_of(BulkImportIdeas::GoogleFormParserService).to receive(:raw_text_page_array).and_return(create_project_bulk_import_raw_text_array)
@@ -133,7 +135,7 @@ resource 'BulkImportIdeasImportIdeas' do
               expect(response_data.first[:attributes][:title_multiloc][:en]).to eq 'My very good idea'
               expect(response_data.first[:attributes][:location_description]).to eq 'Somewhere'
               expect(response_data.first[:attributes][:publication_status]).to eq 'draft'
-              expect(User.all.count).to eq 2 # 1 new user created
+              expect(User.all.count).to eq 1 # No new users created
               expect(Idea.all.count).to eq 1
               expect(BulkImportIdeas::IdeaImport.count).to eq 1
               expect(BulkImportIdeas::IdeaImportFile.count).to eq 1
@@ -267,6 +269,7 @@ resource 'BulkImportIdeasImportIdeas' do
         example_request 'Get the import meta data for an idea' do
           assert_status 200
           expect(response_data[:type]).to eq 'idea_import'
+          expect(response_data[:attributes].keys).to eq %i[user_created user_consent page_range locale created_at updated_at file import_type]
         end
       end
 

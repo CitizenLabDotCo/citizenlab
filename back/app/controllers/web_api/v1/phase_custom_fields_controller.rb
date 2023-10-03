@@ -14,11 +14,14 @@ class WebApi::V1::PhaseCustomFieldsController < ApplicationController
   end
 
   def to_pdf
+    locale = params[:locale] || current_user.locale
+    personal_data_enabled = params[:personal_data] == 'true'
     if phase
       pdf = PrintCustomFieldsService.new(
         phase,
         custom_fields,
-        params
+        locale,
+        personal_data_enabled
       ).create_pdf
 
       send_data(
