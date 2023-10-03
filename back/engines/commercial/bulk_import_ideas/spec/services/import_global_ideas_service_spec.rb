@@ -198,7 +198,7 @@ describe BulkImportIdeas::ImportGlobalIdeasService do
           title_multiloc: { 'en' => 'My idea title 2' },
           body_multiloc: { 'en' => 'My idea description 2' },
           project_title: 'Project 2',
-          user_consent: false,
+          user_consent: false
         },
         {
           title_multiloc: { 'en' => 'My idea title 3' },
