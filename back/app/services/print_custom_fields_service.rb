@@ -424,9 +424,7 @@ class PrintCustomFieldsService
   end
 
   def add_to_importer_fields(field, type, page, position)
-    # TODO: Position of options is wrong if question moved onto next page
-    position = (810 - position) / 8.1
-
+    position = (810 - position) / 8.1 # Convert the position into equivalent of what form parser returns
     key = field[:key]
     parent_key = type == 'option' ? field.custom_field.key : nil
 
