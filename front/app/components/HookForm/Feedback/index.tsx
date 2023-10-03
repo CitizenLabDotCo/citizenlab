@@ -39,7 +39,6 @@ const Feedback = ({ successMessage }: FeedbackProps) => {
       const errors = get(formContextErrors, field) as RHFErrors;
       const standardFieldError = errors?.message;
       const apiError = errors?.error;
-      const apiErrorValue = errors?.value;
       const multilocFieldFirstError = Object.values(
         errors as Record<string, any>
       )[0]?.message;
@@ -57,12 +56,7 @@ const Feedback = ({ successMessage }: FeedbackProps) => {
 
         errorMessages.push({
           field,
-          message: apiErrorMessage
-            ? formatMessage(
-                apiErrorMessage,
-                apiErrorValue ? { value: apiErrorValue } : undefined
-              )
-            : '',
+          message: apiErrorMessage ? formatMessage(apiErrorMessage) : '',
         });
       } else if (multilocFieldFirstError) {
         errorMessages.push({
