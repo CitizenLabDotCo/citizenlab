@@ -10,7 +10,7 @@ type AddPollResponse = {
   projectId?: string;
 } & IPollResponseParameters;
 
-const addPollResponse = async ({
+export const addPollResponse = async ({
   participationContextId,
   participationContextType,
   optionIds,

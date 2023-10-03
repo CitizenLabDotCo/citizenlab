@@ -1,9 +1,22 @@
+import { addPollResponse } from 'api/poll_responses/useAddPollResponse';
+import { IParticipationContextType } from 'typings';
+
 export interface SubmitPollParams {
-  submitPollResponse: () => void;
+  id: string;
+  type: IParticipationContextType;
+  answers: string[];
+  projectId: string;
 }
 
 export const submitPoll =
-  ({ submitPollResponse }: SubmitPollParams) =>
+  ({ id, type, answers, projectId }: SubmitPollParams) =>
   async () => {
-    submitPollResponse();
+    await addPollResponse({
+      participationContextId: id,
+      participationContextType: type,
+      optionIds: answers,
+      projectId,
+    });
+
+    // Query invalidation
   };
