@@ -33,4 +33,20 @@ class AuthenticationService
   def supports_logout?(provider)
     method_by_provider(provider).respond_to? :logout_url
   end
+
+  def prevent_user_account_hijacking(user)
+    # When a user created an account with someone else's email, chose a password, but could not
+    # verify the email, we don't want that user to hijack the real email owner after they create
+    # an account (with SSO).
+    return nil if !user
+
+    if user.confirmation_required? && !user.email_confirmed_at && user.password_digest
+      user.destroy!
+      return nil
+    end
+
+    return user.tap { |tapped_user| tapped_user.update!(password: nil) } unless AppConfiguration.instance.feature_activated? 'user_confirmation'
+
+    user
+  end
 end
