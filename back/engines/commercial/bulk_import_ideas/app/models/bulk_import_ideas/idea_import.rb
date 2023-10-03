@@ -14,7 +14,7 @@
 #  locale          :string
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
-#  user_consent    :boolean
+#  user_consent    :boolean          default(FALSE), not null
 #  content_changes :jsonb
 #
 # Indexes

@@ -91,14 +91,15 @@ describe BulkImportIdeas::ImportIdeasService do
           body_multiloc: { 'en' => 'My idea description' },
           project_id: project.id,
           pdf_pages: [1, 2],
-          user_email: 'userimport@citizenlab.co'
+          user_consent: false
         },
         {
           title_multiloc: { 'en' => 'My idea title 2' },
           body_multiloc: { 'en' => 'My idea description 2' },
           project_id: project.id,
           pdf_pages: [3, 4],
-          user_email: 'userimport@citizenlab.co'
+          user_email: 'userimport@citizenlab.co',
+          user_consent: true
         }
       ]
       service.import_ideas idea_rows
@@ -108,8 +109,12 @@ describe BulkImportIdeas::ImportIdeasService do
       expect(project.reload.ideas_count).to eq 0
       expect(ideas[0].idea_import).not_to be_nil
       expect(ideas[0].idea_import.page_range).to eq %w[1 2]
+      expect(ideas[0].idea_import.user_created).to be true
+      expect(ideas[0].idea_import.user_consent).to be false
       expect(ideas[1].idea_import).not_to be_nil
       expect(ideas[1].idea_import.page_range).to eq %w[3 4]
+      expect(ideas[1].idea_import.user_created).to be true
+      expect(ideas[1].idea_import.user_consent).to be true
     end
 
     it 'imports ideas as draft with publication info' do

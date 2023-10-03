@@ -267,6 +267,7 @@ resource 'BulkImportIdeasImportIdeas' do
         example_request 'Get the import meta data for an idea' do
           assert_status 200
           expect(response_data[:type]).to eq 'idea_import'
+          expect(response_data[:attributes].keys).to eq %i[user_created user_consent page_range locale created_at updated_at file import_type]
         end
       end
 

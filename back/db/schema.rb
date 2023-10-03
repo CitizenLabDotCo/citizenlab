@@ -637,7 +637,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_03_095622) do
     t.string "locale"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "user_consent"
+    t.boolean "user_consent", default: false, null: false
     t.jsonb "content_changes", default: {}
     t.index ["file_id"], name: "index_idea_imports_on_file_id"
     t.index ["idea_id"], name: "index_idea_imports_on_idea_id"

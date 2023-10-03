@@ -108,7 +108,7 @@ module BulkImportIdeas
       idea.save!
 
       create_idea_image idea_row, idea
-      create_idea_import idea, user_created, idea_row[:pdf_pages], file
+      create_idea_import idea, user_created, idea_row[:user_consent], idea_row[:pdf_pages], file
 
       idea
     end
@@ -294,13 +294,14 @@ module BulkImportIdeas
       true
     end
 
-    def create_idea_import(idea, user_created, page_range, file)
+    def create_idea_import(idea, user_created, user_consent, page_range, file)
       # Add import metadata
       idea_import = IdeaImport.new(
         idea: idea,
         page_range: page_range,
         import_user: @import_user,
         user_created: user_created,
+        user_consent: user_consent,
         file: file,
         locale: @locale
       )
