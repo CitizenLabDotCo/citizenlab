@@ -80,10 +80,6 @@ class Permission < ApplicationRecord
     sql
   end
 
-  def participation_conditions
-    []
-  end
-
   private
 
   def set_permitted_by_and_global_custom_fields
