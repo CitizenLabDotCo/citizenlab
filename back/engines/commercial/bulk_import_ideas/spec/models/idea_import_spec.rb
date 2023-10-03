@@ -26,6 +26,15 @@ RSpec.describe BulkImportIdeas::IdeaImport do
       idea.update!(publication_status: 'published')
 
       expect(idea_import.approved_at).not_to be_nil
+      expect(idea_import.content_changes).to eq({})
+    end
+
+    it 'logs any changes made when the idea was approved' do
+      idea = create(:idea, publication_status: 'draft', title_multiloc: { en: 'A title' })
+      idea_import = create(:idea_import, idea: idea)
+      idea.update!(publication_status: 'published', title_multiloc: { en: 'A new title' })
+
+      expect(idea_import.content_changes.keys).to eq ['title_multiloc']
     end
 
     context 'users created by the idea import' do

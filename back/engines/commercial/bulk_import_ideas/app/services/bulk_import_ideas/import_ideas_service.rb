@@ -301,7 +301,7 @@ module BulkImportIdeas
         page_range: page_range,
         import_user: @import_user,
         user_created: user_created,
-        user_consent: user_consent,
+        user_consent: user_consent || false,
         file: file,
         locale: @locale
       )
