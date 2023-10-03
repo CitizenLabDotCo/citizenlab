@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, FC } from 'react';
 import ReactSelect from 'react-select';
 
 // components
@@ -21,6 +21,7 @@ interface Props {
   value: IUserData | null;
   placeholder: string;
   options: Option[];
+  components?: { Option: FC };
   getOptionLabel: (option: Option) => JSX.Element;
   onMenuOpen: () => void;
   onInputChange: (searchTerm: string) => void;
@@ -37,6 +38,7 @@ const BaseUserSelect = ({
   value,
   placeholder,
   options,
+  components,
   getOptionLabel,
   onMenuOpen,
   onInputChange,
@@ -67,6 +69,7 @@ const BaseUserSelect = ({
         menuPlacement="auto"
         styles={selectStyles}
         filterOption={() => true}
+        components={components}
         onMenuOpen={onMenuOpen}
         onInputChange={handleInputChange}
         onMenuScrollToBottom={onMenuScrollToBottom}
