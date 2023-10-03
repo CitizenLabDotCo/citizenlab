@@ -16,8 +16,8 @@ import { IUserData } from 'api/users/types';
 import { Option } from './typings';
 
 interface Props {
-  id: string;
-  inputId: string;
+  id?: string;
+  inputId?: string;
   value: IUserData | null;
   placeholder: string;
   options: (IUserData | { value: string })[];

@@ -1,36 +1,57 @@
-// import React from 'react';
+import React, { useState } from 'react';
 
-// // components
-// import { Box } from '@citizenlab/cl2-component-library';
-// import BaseUserSelect from "components/UI/UserSelect/BaseUserSelect";
+// api
+import useInfiniteUsers from 'api/users/useInfiniteUsers';
+import useUserById from 'api/users/useUserById';
 
-// const AuthorSelect = () => {
-//   return (
-//     <Box data-cy="e2e-user-select">
-//       <ReactSelect
-//         id={id}
-//         inputId={inputId}
-//         isSearchable
-//         blurInputOnSelect
-//         backspaceRemovesValue={false}
-//         menuShouldScrollIntoView={false}
-//         isClearable
-//         value={value}
-//         placeholder={placeholder}
-//         options={options}
-//         getOptionValue={getOptionId}
-//         getOptionLabel={getOptionLabel}
-//         menuPlacement="auto"
-//         styles={selectStyles}
-//         filterOption={() => true}
-//         components={components}
-//         onMenuOpen={onMenuOpen}
-//         onInputChange={handleInputChange}
-//         onMenuScrollToBottom={onMenuScrollToBottom}
-//         onChange={onChange}
-//       />
-//     </Box>
-//   );
-// };
+// components
+import BaseUserSelect from 'components/UI/UserSelect/BaseUserSelect';
+import OptionLabel from 'components/UI/UserSelect/OptionLabel';
 
-// export default AuthorSelect;
+// typings
+import { IUserData } from 'api/users/types';
+
+interface Props {
+  selectedUserId?: string;
+  onChange: (user?: IUserData) => void;
+}
+
+const AuthorSelect = ({ selectedUserId, onChange }: Props) => {
+  const [searchValue, setSearchValue] = useState('');
+  const {
+    data: users,
+    isLoading,
+    hasNextPage,
+    fetchNextPage,
+  } = useInfiniteUsers({
+    pageSize: 5,
+    sort: 'email',
+    search: searchValue,
+  });
+
+  const usersList = users?.pages.flatMap((page) => page.data) ?? [];
+
+  const { data: selectedUser } = useUserById(selectedUserId);
+
+  return (
+    <BaseUserSelect
+      value={(selectedUserId && selectedUser?.data) || null}
+      placeholder={'Placeholder'}
+      options={hasNextPage ? [...usersList, { value: 'loadMore' }] : usersList}
+      getOptionLabel={(option) => (
+        <OptionLabel
+          option={option}
+          hasNextPage={hasNextPage}
+          isLoading={isLoading}
+          fetchNextPage={() => fetchNextPage()}
+        />
+      )}
+      onInputChange={setSearchValue}
+      onMenuScrollToBottom={() => fetchNextPage()}
+      onChange={onChange}
+      onMenuOpen={onChange}
+    />
+  );
+};
+
+export default AuthorSelect;
