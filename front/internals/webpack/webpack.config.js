@@ -91,17 +91,25 @@ const config = {
 
   module: {
     rules: [
+      // {
+      //   test: /\.(tsx?)|(js)$/,
+      //   include: path.join(process.cwd(), 'app'),
+      //   use: {
+      //     loader: 'babel-loader',
+      //     options: {
+      //       cacheDirectory: true,
+      //       plugins: [isDev && require.resolve('react-refresh/babel')].filter(
+      //         Boolean
+      //       ),
+      //     },
+      //   },
+      // },
       {
-        test: /\.(tsx?)|(js)$/,
+        test: /\.[tj]sx?$/,
         include: path.join(process.cwd(), 'app'),
-        use: {
-          loader: 'babel-loader',
-          options: {
-            cacheDirectory: true,
-            plugins: [isDev && require.resolve('react-refresh/babel')].filter(
-              Boolean
-            ),
-          },
+        loader: 'esbuild-loader',
+        options: {
+          target: 'es2015',
         },
       },
       {
