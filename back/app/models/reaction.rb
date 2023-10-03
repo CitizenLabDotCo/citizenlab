@@ -63,8 +63,10 @@ class Reaction < ApplicationRecord
   def create_verification_reactions_verifications_hashed_uids
     return unless user&.verifications&.any?
 
-    user.verifications.each do |verification|
-      verification_reactions_verifications_hashed_uids.create(verification_hashed_uid: verification.hashed_uid)
+    unique_verifications_hashed_uids = user.verifications.map(&:hashed_uid).uniq
+
+    unique_verifications_hashed_uids.each do |uid|
+      verification_reactions_verifications_hashed_uids.create(verification_hashed_uid: uid)
     end
   end
 end

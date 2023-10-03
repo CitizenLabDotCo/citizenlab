@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Because we never delete reactions (votes), but we set user_id to null when user is deleted,
+# Because we never delete reactions (votes), but we set reaction.user_id to null when user is deleted,
 # we need to keep track of the verification_hashed_uids of the user who reacted (voted).
 # This enables us to check if a user, who is verified, has already reacted (voted) on a reactable,
 # perhaps as different user (different account, using same verification ID, with the user account subsequently deleted).
@@ -18,8 +18,7 @@
 #
 # Indexes
 #
-#  index_on_reaction_id              (reaction_id)
-#  index_on_verification_hashed_uid  (verification_hashed_uid)
+#  index_on_reaction_id  (reaction_id)
 #
 # Foreign Keys
 #
