@@ -10,7 +10,6 @@ const webpack = require('webpack');
 const { EsbuildPlugin } = require('esbuild-loader');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 const MomentTimezoneDataPlugin = require('moment-timezone-data-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
@@ -181,12 +180,6 @@ const config = {
       new MomentTimezoneDataPlugin({
         startYear: 2014,
         endYear: currentYear + 8,
-      }),
-
-    !isDev &&
-      new MiniCssExtractPlugin({
-        filename: '[name].[contenthash].min.css',
-        chunkFilename: '[name].[contenthash].chunk.min.css',
       }),
 
     sourceMapToSentry &&

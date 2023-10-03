@@ -218,7 +218,6 @@
     "jest-cli": "^29.5.0",
     "jest-environment-jsdom": "^29.5.0",
     "jest-junit": "^15.0.0",
-    "mini-css-extract-plugin": "^2.7.2",
     "moment-locales-webpack-plugin": "1.2.0",
     "moment-timezone-data-webpack-plugin": "1.5.1",
     "msw": "^1.0.1",
