@@ -16,10 +16,9 @@ class WebApi::V1::ResetPasswordController < ApplicationController
     reset_password_service.send_email_later user, token
     reset_password_service.log_activity user, token
     head :accepted
-    
-    rescue ActiveRecord::RecordNotFound
-      head :accepted
-    end
+
+  rescue ActiveRecord::RecordNotFound
+    head :accepted
   end
 
   def reset_password
