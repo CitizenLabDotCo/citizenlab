@@ -2,8 +2,8 @@ const path = require('path');
 
 const isDev = process.env.NODE_ENV === 'development';
 const isProd = process.env.NODE_ENV === 'production';
-// const isTestBuild = process.env.TEST_BUILD === 'true';
-// const sourceMapToSentry = !isDev && !isTestBuild && process.env.CI;
+const isTestBuild = process.env.TEST_BUILD === 'true';
+const sourceMapToSentry = !isDev && !isTestBuild && process.env.CI;
 
 const webpack = require('webpack');
 
@@ -57,9 +57,9 @@ const config = {
 
   devtool: isDev
     ? 'eval-cheap-module-source-map'
-    : // : !isTestBuild
-      // ? 'hidden-source-map'
-      false,
+    : !isTestBuild
+    ? 'hidden-source-map'
+    : false,
 
   devServer: {
     port: 3000,
