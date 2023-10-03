@@ -126,26 +126,13 @@ export function getDefaultAjvErrorMessage({
   );
 }
 
-// This is to check if it's not the JSON wrapper but the normal response
 export const isCLErrorsWrapper = (value: unknown): value is CLErrorsWrapper => {
   return isObject(value) && isObject(value.errors);
 };
 
-// Roughly inspired on setError's type (UseFormSetError) from react-hook-form, but more adjustments needed
-// error type doesn't fully match
-type THandleError = (
-  name: string,
-  error?: {
-    error?: string;
-    value?: string;
-    type?: string;
-    message?: string;
-  }
-) => void;
-
 const handleCLErrorWrapper = (
   error: CLErrorsWrapper,
-  handleError: THandleError,
+  handleError: (error: string, options: Record<string, any>) => void,
   fieldArrayKey?: string
 ) => {
   error.errors
