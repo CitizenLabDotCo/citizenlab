@@ -1432,7 +1432,7 @@
   "app.containers.SignIn.or": "Ou",
   "app.containers.SignIn.signInError": "Les informations fournies ne sont pas correctes. Cliquez sur « Mot de passe oublié » ci-dessous pour réinitialiser votre mot de passe.",
   "app.containers.SignIn.useFranceConnectToLoginCreateOrVerifyYourAccount": "Utilisez FranceConnect pour vous connecter, créer ou vérifier votre compte.",
-  "app.containers.SignIn.whatIsFranceConnect": "Qu'est ce que France Connect ?",
+  "app.containers.SignIn.whatIsFranceConnect": "Qu'est-ce que FranceConnect ?",
   "app.containers.SignUp.backToSignUpOptions": "Retour aux options d'inscription",
   "app.containers.SignUp.continue": "Continuer",
   "app.containers.SignUp.emailConsent": "En vous inscrivant, vous acceptez de recevoir des e-mails envoyés depuis cette plateforme. Vous pouvez paramétrer quels e-mails vous recevez dans vos préférences utilisateur.",
