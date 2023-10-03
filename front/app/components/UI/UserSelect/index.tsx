@@ -10,6 +10,8 @@ import OptionLabel from './OptionLabel';
 
 // typings
 import { IUserData } from 'api/users/types';
+import { Option } from './typings';
+import { optionIsUser } from './utils';
 
 interface Props {
   selectedUserId: string | null;
@@ -52,6 +54,15 @@ const UserSelect = ({
 
   const { data: selectedUser } = useUserById(selectedUserId);
 
+  const handleChange = (option?: Option) => {
+    if (!option) {
+      onChange(undefined);
+      return;
+    }
+
+    if (optionIsUser(option)) onChange(option);
+  };
+
   return (
     <BaseUserSelect
       id={id}
@@ -71,8 +82,8 @@ const UserSelect = ({
       )}
       onInputChange={setSearchValue}
       onMenuScrollToBottom={() => fetchNextPage()}
-      onChange={onChange}
-      onMenuOpen={onChange}
+      onChange={handleChange}
+      onMenuOpen={handleChange}
     />
   );
 };

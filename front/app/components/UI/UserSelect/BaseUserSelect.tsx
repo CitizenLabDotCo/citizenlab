@@ -9,7 +9,7 @@ import selectStyles from 'components/UI/MultipleSelect/styles';
 
 // utils
 import { debounce } from 'lodash-es';
-import { getOptionId, optionIsUser } from './utils';
+import { getOptionId } from './utils';
 
 // typings
 import { IUserData } from 'api/users/types';
@@ -20,13 +20,13 @@ interface Props {
   inputId?: string;
   value: IUserData | null;
   placeholder: string;
-  options: (IUserData | { value: string })[];
+  options: Option[];
   components?: { Option: FC };
   getOptionLabel: (option: Option) => JSX.Element;
   onMenuOpen: () => void;
   onInputChange: (searchTerm: string) => void;
   onMenuScrollToBottom: () => void;
-  onChange: (option: IUserData | undefined) => void;
+  onChange: (option?: Option) => void;
 }
 
 const BaseUserSelect = ({
@@ -57,9 +57,7 @@ const BaseUserSelect = ({
       return;
     }
 
-    if (optionIsUser(option)) {
-      onChange(option);
-    }
+    onChange(option);
   };
 
   return (

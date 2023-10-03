@@ -99,12 +99,14 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
       ? getIdeaFormValues(idea, schema)
       : null;
 
-  const setUserFormData = (userFormData: UserFormData) => {
+  const setUserFormData = (
+    getUserFormData: (oldData: UserFormData) => UserFormData
+  ) => {
     if (!ideaId) return;
 
     setUserFormStatePerIdea((userFormDataPerIdea) => ({
       ...userFormDataPerIdea,
-      [ideaId]: userFormData,
+      [ideaId]: getUserFormData(userFormDataPerIdea[ideaId]),
     }));
   };
 

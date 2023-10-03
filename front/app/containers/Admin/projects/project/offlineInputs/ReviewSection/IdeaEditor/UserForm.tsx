@@ -1,17 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 // components
 import { Box, Input, Icon, Success } from '@citizenlab/cl2-component-library';
+import AuthorSelect from './AuthorSelect';
 
 // styling
 import { colors } from 'utils/styleUtils';
 
 // typings
 import { UserFormData } from './typings';
+import { SelectedAuthor } from './AuthorSelect/typings';
 
 interface Props {
   userFormData: UserFormData;
-  setUserFormData: (userFormData: UserFormData) => void;
+  setUserFormData: (
+    getUserFormData: (oldData: UserFormData) => UserFormData
+  ) => void;
 }
 
 const BlackLabel = ({ text }: { text: string }) => (
@@ -19,11 +23,33 @@ const BlackLabel = ({ text }: { text: string }) => (
 );
 
 const UserForm = ({ userFormData, setUserFormData }: Props) => {
-  const updateUserFormData = (newUserFormData: Partial<UserFormData>) => {
-    setUserFormData({
-      ...userFormData,
-      ...newUserFormData,
+  const [exitingUserId, setExistingUserId] = useState<string>();
+
+  const updateUserFormData = (newData: Partial<UserFormData>) => {
+    setUserFormData((oldData) => ({
+      ...oldData,
+      ...newData,
+    }));
+  };
+
+  const handleSelect = (selectedAuthor?: SelectedAuthor) => {
+    if (!selectedAuthor) {
+      updateUserFormData({ newUser: true, email: undefined });
+      setExistingUserId(undefined);
+      return;
+    }
+
+    if (selectedAuthor.newUser) {
+      updateUserFormData({ newUser: true, email: selectedAuthor.email });
+      setExistingUserId(undefined);
+      return;
+    }
+
+    updateUserFormData({
+      newUser: false,
+      email: selectedAuthor.email,
     });
+    setExistingUserId(selectedAuthor.id);
   };
 
   return (
@@ -34,11 +60,17 @@ const UserForm = ({ userFormData, setUserFormData }: Props) => {
       pb="24px"
     >
       <Box>
-        <Input
-          type="email"
-          value={userFormData.email}
-          label={<BlackLabel text="Email" />}
-          onChange={(email) => updateUserFormData({ email })}
+        <AuthorSelect
+          selectedAuthor={
+            userFormData.newUser === true
+              ? { newUser: true, email: userFormData.email }
+              : {
+                  newUser: false,
+                  email: userFormData.email,
+                  id: exitingUserId ?? undefined,
+                }
+          }
+          onSelect={handleSelect}
         />
       </Box>
       {!userFormData.newUser && (
