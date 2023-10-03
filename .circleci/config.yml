@@ -597,7 +597,7 @@ jobs:
             - /root/.npm
           key: v2-npm-cache-{{ checksum "package-lock.json" }}
       - run:
-          command: SEGMENT_API_KEY=$SEGMENT_API_KEY_PRODUCTION SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN SENTRY_DSN=$SENTRY_DSN POSTHOG_API_KEY=$POSTHOG_API_KEY_PRODUCTION npm run build
+          command: SEGMENT_API_KEY=$SEGMENT_API_KEY_PRODUCTION SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN SENTRY_DSN=$SENTRY_DSN SENTRY_ENV=$SENTRY_ENV_PRODUCTION POSTHOG_API_KEY=$POSTHOG_API_KEY_PRODUCTION npm run build
           no_output_timeout: "30m"
       - run:
           command: rm build/*.map
