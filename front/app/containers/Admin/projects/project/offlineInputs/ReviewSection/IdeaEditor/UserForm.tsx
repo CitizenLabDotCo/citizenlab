@@ -8,14 +8,14 @@ import {
   Success,
   Checkbox,
 } from '@citizenlab/cl2-component-library';
-import AuthorSelect from './AuthorSelect';
+import AuthorInput from './AuthorInput';
 
 // styling
 import { colors } from 'utils/styleUtils';
 
 // typings
 import { UserFormData } from './typings';
-import { SelectedAuthor } from './AuthorSelect/typings';
+import { SelectedAuthor } from './AuthorInput/typings';
 
 interface Props {
   userFormData: UserFormData;
@@ -71,7 +71,7 @@ const UserForm = ({ userFormData, setUserFormData }: Props) => {
       {userFormData.consent ? (
         <Box>
           <Box>
-            <AuthorSelect
+            <AuthorInput
               selectedAuthor={{
                 userState: userFormData.userState,
                 email: userFormData.email,
