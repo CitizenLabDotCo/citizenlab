@@ -202,7 +202,6 @@ describe('Initaitve manager', () => {
     });
 
     it('Assigns a user to an initiative', () => {
-      // Refresh page to make sure new admin is picked up
       cy.visit('/admin/initiatives/');
       // grab and open assignee filter menu
       cy.get('#e2e-select-assignee-filter').click();
