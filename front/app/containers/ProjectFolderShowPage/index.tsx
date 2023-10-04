@@ -65,18 +65,6 @@ const StyledContentContainer = styled(ContentContainer)`
   }
 `;
 
-const ButtonBar = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  margin-bottom: 10px;
-`;
-
-const EditButton = styled(Button)`
-  margin-left: 30px;
-  margin-bottom: 16px;
-`;
-
 const Content = styled.div`
   display: flex;
   align-items: flex-start;
@@ -155,18 +143,23 @@ const ProjectFolderShowPage = memo<{
           <>
             <StyledContentContainer maxWidth={maxPageWidth}>
               <Box display="flex" width="100%">
-                <Box ml="auto" display="flex">
+                <Box ml="auto" display="flex" mb="24px">
                   {userCanEditFolder && (
-                    <ButtonBar>
-                      <EditButton
+                    <Box
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="flex-end"
+                      ml="30px"
+                    >
+                      <Button
                         icon="edit"
                         linkTo={`/admin/projects/folders/${projectFolder.id}/settings`}
                         buttonStyle="secondary"
                         padding="6px 12px"
                       >
                         <FormattedMessage {...messages.editFolder} />
-                      </EditButton>
-                    </ButtonBar>
+                      </Button>
+                    </Box>
                   )}
                   <Box ml="8px">
                     <FollowUnfollow
