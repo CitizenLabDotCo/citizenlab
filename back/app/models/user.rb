@@ -558,6 +558,10 @@ class User < ApplicationRecord
     self.new_email = nil
   end
 
+  def verifications_hashed_uids
+    verifications&.map(&:hashed_uid)&.uniq
+  end
+
   private
 
   def validate_not_duplicate_new_email

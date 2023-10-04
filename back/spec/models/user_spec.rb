@@ -1363,4 +1363,18 @@ RSpec.describe User do
       end
     end
   end
+
+  # TO DO: Remove this TDD test?
+  describe 'verifications_hashed_uids' do
+    let(:user1) { create(:user) }
+    let(:user2) { create(:user) }
+    let!(:verification1) { create(:verification, user: user2, hashed_uid: '111') }
+    let!(:verification2) { create(:verification, user: user2, hashed_uid: '111') }
+    let!(:verification3) { create(:verification, user: user2, hashed_uid: '222') }
+
+    it 'returns an array of unique user verifications hashed_uids' do
+      expect(user1.verifications_hashed_uids).to eq []
+      expect(user2.verifications_hashed_uids).to match_array %w[111 222]
+    end
+  end
 end

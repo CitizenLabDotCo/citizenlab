@@ -96,7 +96,7 @@ class WebApi::V1::InitiativeSerializer < WebApi::V1::BaseSerializer
       # Only run this code if verification is required to react to initiatives. To be implemented.
       # Refactor and improve this code. Query chain is probably inneficient.
 
-      user_verifications_hashed_uids = current_user(params)&.verifications&.map(&:hashed_uid)&.uniq
+      user_verifications_hashed_uids = current_user(params).verifications_hashed_uids
       return nil unless user_verifications_hashed_uids&.any?
 
       object.reactions

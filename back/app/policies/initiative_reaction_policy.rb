@@ -40,7 +40,7 @@ class InitiativeReactionPolicy < ApplicationPolicy
     if record.user_id == user.id
       true
     elsif record.user_id.nil?
-      user_verifications_hashed_uids = user&.verifications&.map(&:hashed_uid)&.uniq
+      user_verifications_hashed_uids = user.verifications_hashed_uids
       return false unless user_verifications_hashed_uids&.any?
 
       reaction_verifications_hashed_uids =

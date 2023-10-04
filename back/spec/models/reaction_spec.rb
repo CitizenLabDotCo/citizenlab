@@ -38,7 +38,7 @@ RSpec.describe Reaction do
     end
   end
 
-  # TO DO: Remove this TDD test
+  # TO DO: Remove this TDD test?
   describe 'scope: linked_to_verification_hashed_uids' do
     let(:reaction1) { create(:reaction) }
     let!(:reactions_verifications_hashed_uid1) do
