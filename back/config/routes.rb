@@ -149,7 +149,6 @@ Rails.application.routes.draw do
         delete 'inputs', on: :member, action: 'delete_inputs'
         resources :custom_fields, controller: 'phase_custom_fields', only: %i[] do
           get 'json_forms_schema', on: :collection
-          get 'to_pdf', on: :collection
         end
       end
 
@@ -160,12 +159,9 @@ Rails.application.routes.draw do
         resources :images, defaults: { container_type: 'Project' }
         resources :files, defaults: { container_type: 'Project' }
         resources :groups_projects, shallow: true, except: [:update]
-
         resources :custom_fields, controller: 'project_custom_fields', only: %i[] do
           get 'json_forms_schema', on: :collection
-          get 'to_pdf', on: :collection
         end
-
         resources :moderators, controller: 'project_moderators', except: [:update] do
           get :users_search, on: :collection
         end
