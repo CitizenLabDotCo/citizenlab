@@ -28,7 +28,27 @@ class InitiativeReactionPolicy < ApplicationPolicy
   end
 
   def destroy?
-    create?
+    return if !user&.active?
+
+    reason = reacting_denied_reason user
+    raise_not_authorized(reason) if reason
+
+    # TO DO:
+    # Improve
+    # Wrap in conditional: Is verification required to react?
+    # Should this be a patch from verification module?
+    return false if record.user_id
+
+    user_verifications_hashed_uids = user&.verifications&.map(&:hashed_uid)&.uniq
+    return false unless user_verifications_hashed_uids&.any?
+
+    reaction_verifications_hashed_uids =
+      Verification::ReactionsVerificationsHashedUid.where(reaction: record).pluck(:verification_hashed_uid)
+    return false unless reaction_verifications_hashed_uids&.any?
+
+    return true if reaction_verifications_hashed_uids.any? { |uid| user_verifications_hashed_uids.include?(uid) }
+
+    false
   end
 
   def up?

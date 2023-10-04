@@ -88,7 +88,7 @@ class WebApi::V1::InitiativeSerializer < WebApi::V1::BaseSerializer
       # If the user has no reaction on the initiative && verification is required to react to an initiative,
       # we check if a reaction on the initiative is associated with any of the user's verification uids,
       # through the reactions_verifications_hashed_uids table.
-      # If so, we return the first reaction associated with the user's verifications.
+      # If so, we return the first reaction associated with the user's verifications (& not associated with other user).
       # This means the FE can behave as if the user had reacted to the initiative. E.g. hide the 'vote' button, etc.
       #
       # TO DO:
@@ -96,6 +96,7 @@ class WebApi::V1::InitiativeSerializer < WebApi::V1::BaseSerializer
       # Refactor and improve this code. Queries are probably inneficient.
 
       # If the user has no reaction on the initiative, we check if they have any verifications.
+      # If they do, we collect the hashed_uids of the verifications.
       user_verifications_hashed_uids = current_user(params)&.verifications&.map(&:hashed_uid)&.uniq
       return nil unless user_verifications_hashed_uids&.any?
 
