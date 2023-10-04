@@ -23,41 +23,6 @@ describe InitiativeReactionPolicy do
     end
   end
 
-  context 'for user with verification associated with reaction' do
-    let(:user) { create(:user) }
-    let(:verification) { create(:verification, user: user) }
-
-    context 'when reaction has no associated user' do
-      let!(:reaction) { create(:reaction, user: nil, reactable: reactable) }
-      let!(:reactions_verifications_hashed_uid) do
-        create(
-          :reactions_verifications_hashed_uid,
-          reaction: reaction,
-          verification_hashed_uid: verification.hashed_uid
-        )
-      end
-
-      it { is_expected.to permit(:destroy) }
-
-      # What about indexing?
-    end
-
-    context 'when reaction is associated with other user' do
-      let!(:reaction) { create(:reaction, user: create(:user), reactable: reactable) }
-      let!(:reactions_verifications_hashed_uid) do
-        create(
-          :reactions_verifications_hashed_uid,
-          reaction: reaction,
-          verification_hashed_uid: verification.hashed_uid
-        )
-      end
-
-      it { is_expected.not_to permit(:destroy) }
-
-      # What about indexing?
-    end
-  end
-
   context 'for a mortal user on a reaction of another user' do
     let(:user) { create(:user) }
 
@@ -104,6 +69,41 @@ describe InitiativeReactionPolicy do
 
     it 'should index the reaction' do
       expect(scope.resolve.size).to eq 1
+    end
+  end
+
+  context 'for user with verification associated with reaction' do
+    let(:user) { create(:user) }
+    let(:verification) { create(:verification, user: user) }
+
+    context 'when reaction has no associated user' do
+      let!(:reaction) { create(:reaction, user: nil, reactable: reactable) }
+      let!(:reactions_verifications_hashed_uid) do
+        create(
+          :reactions_verifications_hashed_uid,
+          reaction: reaction,
+          verification_hashed_uid: verification.hashed_uid
+        )
+      end
+
+      it { is_expected.to permit(:destroy) }
+
+      # What about indexing?
+    end
+
+    context 'when reaction is associated with other user' do
+      let!(:reaction) { create(:reaction, user: create(:user), reactable: reactable) }
+      let!(:reactions_verifications_hashed_uid) do
+        create(
+          :reactions_verifications_hashed_uid,
+          reaction: reaction,
+          verification_hashed_uid: verification.hashed_uid
+        )
+      end
+
+      it { is_expected.not_to permit(:destroy) }
+
+      # What about indexing?
     end
   end
 end
