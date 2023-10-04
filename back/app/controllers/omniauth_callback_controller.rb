@@ -27,17 +27,12 @@ class OmniauthCallbackController < ApplicationController
     failure_redirect
   end
 
-  def logout
+  def logout_data
     provider = params[:provider]
     user_id = params[:user_id]
-    user = User.find(user_id)
-    auth_service = AuthenticationService.new
-
-    url = auth_service.logout_url(provider, user)
-
-    redirect_to url, allow_other_host: true
-  rescue ActiveRecord::RecordNotFound
-    redirect_to Frontend::UrlService.new.home_url
+    user = User.find_by(id: user_id)
+    url = user ? AuthenticationService.new.logout_url(provider, user) : Frontend::UrlService.new.home_url
+    render json: { url: url }
   end
 
   private

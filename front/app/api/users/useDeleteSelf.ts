@@ -1,5 +1,4 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { AUTH_PATH } from 'containers/App/constants';
 import fetcher from 'utils/cl-react-query/fetcher';
 import usersKeys from './keys';
 import groupsKeys from 'api/groups/keys';
@@ -8,6 +7,7 @@ import { getJwt, removeJwt, decode } from 'utils/auth/jwt';
 import clHistory from 'utils/cl-router/history';
 import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
 import userCountKeys from 'api/users_count/keys';
+import logoutUrl from 'api/authentication/sign_in_out/logoutUrl';
 
 const deleteUser = (id?: string) =>
   fetcher({
@@ -19,15 +19,18 @@ const useDeleteSelf = () => {
   const queryClient = useQueryClient();
   const jwt = getJwt();
   const decodedJwt = jwt ? decode(jwt) : null;
+  let cachedLogoutUrl: string;
 
   return useMutation({
-    mutationFn: () => deleteUser(decodedJwt?.sub),
+    mutationFn: async () => {
+      cachedLogoutUrl = await logoutUrl(decodedJwt);
+      return deleteUser(decodedJwt?.sub);
+    },
     onSuccess: async () => {
       if (!decodedJwt) return;
       removeJwt();
       if (decodedJwt.logout_supported) {
-        const url = `${AUTH_PATH}/${decodedJwt.provider}/logout?user_id=${decodedJwt.sub}`;
-        window.location.href = url;
+        window.location.href = cachedLogoutUrl;
       } else {
         invalidateQueryCache();
       }
