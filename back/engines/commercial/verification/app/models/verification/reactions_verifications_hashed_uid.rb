@@ -16,7 +16,8 @@
 #
 # Indexes
 #
-#  index_on_reaction_id  (reaction_id)
+#  index_on_reaction_id              (reaction_id)
+#  index_on_verification_hashed_uid  (verification_hashed_uid)
 #
 # Foreign Keys
 #

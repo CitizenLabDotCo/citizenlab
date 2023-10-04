@@ -1562,6 +1562,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_02_173048) do
     t.uuid "reaction_id"
     t.string "verification_hashed_uid", null: false
     t.index ["reaction_id"], name: "index_on_reaction_id"
+    t.index ["verification_hashed_uid"], name: "index_on_verification_hashed_uid"
   end
 
   create_table "verification_verifications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
