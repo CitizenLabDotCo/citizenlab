@@ -21,6 +21,7 @@ import styled from 'styled-components';
 
 // utils
 import { ideaDefaultSortMethodFallback } from 'utils/participationContexts';
+import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 
 // typings
 import { IPhaseData } from 'api/phases/types';
@@ -56,12 +57,12 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
   const sortParam = searchParams.get('sort') as Sort | null;
   const searchParam = searchParams.get('search');
   const topicsParam = searchParams.get('topics');
+  const config = getMethodConfig(phase.attributes.participation_method);
 
   const ideaQueryParameters = useMemo<QueryParameters>(
     () => ({
       'page[number]': 1,
-      'page[size]':
-        phase.attributes.participation_method === 'voting' ? 100 : 24,
+      'page[size]': config.inputsListPageSize || 24,
       projects: [projectId],
       phase: phase.id,
       sort:
@@ -71,7 +72,7 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
       search: searchParam ?? undefined,
       topics: topicsParam ? JSON.parse(topicsParam) : undefined,
     }),
-    [projectId, sortParam, searchParam, phase, topicsParam]
+    [config, projectId, sortParam, searchParam, phase, topicsParam]
   );
 
   const participationMethod = phase.attributes.participation_method;

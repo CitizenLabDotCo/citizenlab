@@ -28,6 +28,7 @@ import { colors } from 'utils/styleUtils';
 // utils
 import { ideaDefaultSortMethodFallback } from 'utils/participationContexts';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 
 // typings
 import { IProjectData } from 'api/projects/types';
@@ -65,12 +66,12 @@ const IdeasContainer = memo<InnerProps>(({ project, className }) => {
   const sortParam = searchParams.get('sort') as Sort | null;
   const searchParam = searchParams.get('search');
   const topicsParam = searchParams.get('topics');
+  const config = getMethodConfig(project.attributes.participation_method);
 
   const ideaQueryParameters = useMemo<QueryParameters>(
     () => ({
       'page[number]': 1,
-      'page[size]':
-        project.attributes.participation_method === 'voting' ? 100 : 24,
+      'page[size]': config.inputsListPageSize || 24,
       projects: [project.id],
       sort:
         sortParam ??
@@ -79,7 +80,14 @@ const IdeasContainer = memo<InnerProps>(({ project, className }) => {
       search: searchParam ?? undefined,
       topics: topicsParam ? JSON.parse(topicsParam) : undefined,
     }),
-    [sortParam, searchParam, topicsParam, project]
+    [
+      config,
+      project.id,
+      project.attributes.ideas_order,
+      sortParam,
+      searchParam,
+      topicsParam,
+    ]
   );
 
   const projectType = project.attributes.process_type;
