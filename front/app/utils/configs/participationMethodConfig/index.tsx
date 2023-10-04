@@ -72,7 +72,7 @@ renderCTABar: Returns whether the CTA bar should be rendered.
 postSortingOptions?: Returns the sorting options for posts.
 showInputCount: Returns the input count to be used on project cards.
 useProjectClosedCTABarStyle?: Used to determine if the CTA bar should display "closed" styling.
-inputsListPageSize?: Returns the page size the ideas endpoint should use.
+inputsPageSize?: Returns the page size the ideas endpoint should use.
 */
 
 export type ParticipationMethodConfig = {
@@ -95,14 +95,14 @@ export type ParticipationMethodConfig = {
   useProjectClosedCTABarStyle?: (
     participationContext: IPhaseData | IProjectData
   ) => boolean;
-  inputsListPageSize?: number;
+  inputsPageSize?: number;
 };
 
 const ideationConfig: ParticipationMethodConfig = {
   showInputCount: true,
   showIdeaFilters: true,
   formEditor: 'simpleFormEditor',
-  inputsListPageSize: 24,
+  inputsPageSize: 24,
   getMethodPickerMessage: () => {
     return <FormattedMessage {...messages.inputAndFeedback} />;
   },
@@ -279,7 +279,7 @@ const votingConfig: ParticipationMethodConfig = {
   showInputCount: false,
   formEditor: 'simpleFormEditor',
   showIdeaFilters: false,
-  inputsListPageSize: 100,
+  inputsPageSize: 100,
   getMethodPickerMessage: () => {
     return <FormattedMessage {...messages.conductParticipatoryBudgetingText} />;
   },

@@ -62,7 +62,7 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
   const ideaQueryParameters = useMemo<QueryParameters>(
     () => ({
       'page[number]': 1,
-      'page[size]': config.inputsListPageSize || 24,
+      'page[size]': config.inputsPageSize || 24,
       projects: [projectId],
       phase: phase.id,
       sort:

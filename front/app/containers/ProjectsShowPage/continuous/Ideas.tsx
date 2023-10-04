@@ -71,7 +71,7 @@ const IdeasContainer = memo<InnerProps>(({ project, className }) => {
   const ideaQueryParameters = useMemo<QueryParameters>(
     () => ({
       'page[number]': 1,
-      'page[size]': config.inputsListPageSize || 24,
+      'page[size]': config.inputsPageSize || 24,
       projects: [project.id],
       sort:
         sortParam ??
