@@ -1,7 +1,7 @@
 export interface UserFormData {
-  consent: boolean;
-  newUser?: boolean;
-  email?: string;
+  userState: 'no-user' | 'new-user' | 'existing-user';
   first_name?: string;
   last_name?: string;
+  email?: string;
+  consent: boolean;
 }

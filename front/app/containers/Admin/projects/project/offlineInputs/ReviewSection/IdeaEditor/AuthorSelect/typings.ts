@@ -1,12 +1,5 @@
-interface NewAuthor {
-  newUser: true;
-  email?: string;
-}
-
-interface ExistingAuthor {
-  newUser: false;
+export interface SelectedAuthor {
   email?: string;
   id?: string;
+  userState: 'no-user' | 'new-user' | 'existing-user';
 }
-
-export type SelectedAuthor = NewAuthor | ExistingAuthor;

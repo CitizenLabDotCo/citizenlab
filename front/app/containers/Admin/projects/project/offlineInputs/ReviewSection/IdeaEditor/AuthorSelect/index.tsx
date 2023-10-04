@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 
 // api
 import useInfiniteUsers from 'api/users/useInfiniteUsers';
@@ -17,13 +17,12 @@ import { SelectedAuthor } from './typings';
 import { Option } from 'components/UI/UserSelect/typings';
 
 interface Props {
-  selectedAuthor?: SelectedAuthor;
+  selectedAuthor: SelectedAuthor;
   onSelect: (selectedAuthor?: SelectedAuthor) => void;
-  onSearch: (searchTerm: string) => void;
 }
 
-const AuthorSelect = ({ selectedAuthor, onSelect, onSearch }: Props) => {
-  const searchValue = selectedAuthor?.email;
+const AuthorSelect = ({ selectedAuthor, onSelect }: Props) => {
+  const [searchValue, setSearchValue] = useState('');
 
   const {
     data: users,
@@ -44,16 +43,14 @@ const AuthorSelect = ({ selectedAuthor, onSelect, onSearch }: Props) => {
     ];
   }, [searchValue, users, hasNextPage]);
 
-  const { data: selectedUser } = useUserById(
-    selectedAuthor?.newUser ? undefined : selectedAuthor?.id
-  );
+  const { data: selectedUser } = useUserById(selectedAuthor?.id);
 
   const handleSelectExistingUser = (option?: Option) => {
     if (!option) return;
 
     if (optionIsUser(option)) {
       onSelect({
-        newUser: false,
+        userState: 'existing-user',
         email: option.attributes.email,
         id: option.id,
       });
@@ -62,7 +59,7 @@ const AuthorSelect = ({ selectedAuthor, onSelect, onSearch }: Props) => {
 
     if (option.value === 'newUser') {
       onSelect({
-        newUser: true,
+        userState: 'new-user',
         email: option.payload,
       });
     }
@@ -71,7 +68,6 @@ const AuthorSelect = ({ selectedAuthor, onSelect, onSearch }: Props) => {
   return (
     <BaseUserSelect
       value={selectedUser?.data ?? null}
-      inputValue={searchValue}
       placeholder={'Enter an email address'}
       options={options}
       components={{ Option: CustomOption }}
@@ -83,7 +79,7 @@ const AuthorSelect = ({ selectedAuthor, onSelect, onSearch }: Props) => {
           fetchNextPage={() => fetchNextPage()}
         />
       )}
-      onInputChange={onSearch}
+      onInputChange={setSearchValue}
       onMenuScrollToBottom={() => fetchNextPage()}
       onChange={handleSelectExistingUser}
       onMenuOpen={onSelect}

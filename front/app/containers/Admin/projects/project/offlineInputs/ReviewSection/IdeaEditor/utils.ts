@@ -42,21 +42,24 @@ const getUserFormDefaultValues = (
 
   if (!author) {
     return {
-      consent,
-      newUser: undefined,
-      email: undefined,
+      userState: 'no-user',
       first_name: undefined,
       last_name: undefined,
+      email: undefined,
+      consent,
     };
   }
 
   const { email, first_name, last_name } = author.data.attributes;
 
   return {
-    consent,
-    newUser: ideaMetadata.data.attributes.user_created === true,
-    email,
+    userState:
+      ideaMetadata.data.attributes.user_created === true
+        ? 'new-user'
+        : 'existing-user',
     first_name: first_name ?? undefined,
     last_name: last_name ?? undefined,
+    email,
+    consent,
   };
 };

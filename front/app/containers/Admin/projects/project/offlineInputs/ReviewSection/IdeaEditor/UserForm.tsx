@@ -29,7 +29,7 @@ const BlackLabel = ({ text }: { text: string }) => (
 );
 
 const UserForm = ({ userFormData, setUserFormData }: Props) => {
-  const [exitingUserId, setExistingUserId] = useState<string>();
+  const [existingUserId, setExistingUserId] = useState<string>();
 
   const updateUserFormData = (newData: Partial<UserFormData>) => {
     setUserFormData((oldData) => ({
@@ -40,27 +40,25 @@ const UserForm = ({ userFormData, setUserFormData }: Props) => {
 
   const handleSelect = (selectedAuthor?: SelectedAuthor) => {
     if (!selectedAuthor) {
-      updateUserFormData({ newUser: true, email: undefined });
+      updateUserFormData({ userState: 'no-user' });
       setExistingUserId(undefined);
       return;
     }
 
-    if (selectedAuthor.newUser) {
-      updateUserFormData({ newUser: true, email: selectedAuthor.email });
+    if (selectedAuthor.userState === 'new-user') {
+      updateUserFormData({
+        userState: 'new-user',
+        email: selectedAuthor.email,
+      });
       setExistingUserId(undefined);
       return;
     }
 
     updateUserFormData({
-      newUser: false,
+      userState: 'existing-user',
       email: selectedAuthor.email,
     });
     setExistingUserId(selectedAuthor.id);
-  };
-
-  const handleSearch = (searchTerm: string) => {
-    setExistingUserId(undefined);
-    updateUserFormData({ email: searchTerm, newUser: true });
   };
 
   return (
@@ -74,20 +72,15 @@ const UserForm = ({ userFormData, setUserFormData }: Props) => {
         <Box>
           <Box>
             <AuthorSelect
-              selectedAuthor={
-                userFormData.newUser === true
-                  ? { newUser: true, email: userFormData.email }
-                  : {
-                      newUser: false,
-                      email: userFormData.email,
-                      id: exitingUserId ?? undefined,
-                    }
-              }
+              selectedAuthor={{
+                userState: userFormData.userState,
+                email: userFormData.email,
+                id: existingUserId,
+              }}
               onSelect={handleSelect}
-              onSearch={handleSearch}
             />
           </Box>
-          {!userFormData.newUser && (
+          {userFormData.userState === 'existing-user' && (
             <Box display="flex" alignItems="center" mt="12px">
               <Icon
                 width="40px"
@@ -102,7 +95,7 @@ const UserForm = ({ userFormData, setUserFormData }: Props) => {
               />
             </Box>
           )}
-          {userFormData.newUser && (
+          {userFormData.userState === 'new-user' && (
             <>
               <Box display="flex" alignItems="center" mt="12px">
                 <Icon
