@@ -46,6 +46,11 @@ class Reaction < ApplicationRecord
   scope :up, -> { where mode: 'up' }
   scope :down, -> { where mode: 'down' }
 
+  scope :linked_to_verification_hashed_uids, (proc do |hashed_uids|
+    joins(:verification_reactions_verifications_hashed_uids)
+      .where(verification_reactions_verifications_hashed_uids: { verification_hashed_uid: hashed_uids })
+  end)
+
   def up?
     mode == 'up'
   end

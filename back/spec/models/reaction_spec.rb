@@ -37,4 +37,31 @@ RSpec.describe Reaction do
       expect(v2.reload).to be_valid
     end
   end
+
+  # TO DO: Remove this TDD test
+  describe 'scope: linked_to_verification_hashed_uids' do
+    let(:reaction1) { create(:reaction) }
+    let!(:reactions_verifications_hashed_uid1) do
+      create(:reactions_verifications_hashed_uid,
+        reaction: reaction1,
+        verification_hashed_uid: '111')
+    end
+    let!(:reactions_verifications_hashed_uid2) do
+      create(:reactions_verifications_hashed_uid,
+        reaction: reaction1,
+        verification_hashed_uid: '222')
+    end
+
+    let(:reaction2) { create(:reaction) }
+    let!(:reactions_verifications_hashed_uid3) do
+      create(:reactions_verifications_hashed_uid,
+        reaction: reaction2,
+        verification_hashed_uid: '333')
+    end
+
+    it 'returns reactions associated with given verifications_hashed_uids' do
+      expect(described_class.linked_to_verification_hashed_uids(%w[111 333])).to match_array([reaction1, reaction2])
+      expect(described_class.linked_to_verification_hashed_uids(['222'])).to match_array([reaction1])
+    end
+  end
 end
