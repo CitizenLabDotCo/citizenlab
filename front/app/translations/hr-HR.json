@@ -38,6 +38,7 @@
   "app.components.AuthProviders.logIn2": "Prijava",
   "app.components.AuthProviders.logInWithEmail": "Prijavi se putem e-pošte",
   "app.components.AuthProviders.logInWithPhoneOrEmail": "Prijava putem telefona ili e-pošte",
+  "app.components.AuthProviders.nemlogInUnderMinimumAgeVerificationFailed": "Morate imati navedenu minimalnu dob ili više da biste bili potvrđeni.",
   "app.components.AuthProviders.signUp2": "Registracija",
   "app.components.AuthProviders.signUpButtonAltText": "Registrirajte se pomoću {loginMechanismName}",
   "app.components.AuthProviders.signUpWithEmail": "Registrirajte se putem e-pošte",
