@@ -95,5 +95,3 @@ class Permission < ApplicationRecord
     self.global_custom_fields = false if permitted_by == 'everyone_confirmed_email'
   end
 end
-
-Permission.prepend(SmartGroups::Patches::Permission)
