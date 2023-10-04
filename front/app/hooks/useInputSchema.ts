@@ -51,10 +51,6 @@ const useInputSchema = ({ projectId, phaseId, inputId }: Props) => {
               title: 'Option 2',
             },
             {
-              const: 'option_3',
-              title: 'Option 3',
-            },
-            {
               const: 'other',
               title: 'Other',
             },
