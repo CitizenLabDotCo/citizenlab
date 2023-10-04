@@ -82,8 +82,7 @@ class WebApi::V1::InitiativeSerializer < WebApi::V1::BaseSerializer
     if params[:vbii]
       params.dig(:vbii, object.id)
     else
-      reactions = object.reactions
-      reaction = reactions.where(user_id: current_user(params)&.id).first
+      reaction = object.reactions.where(user_id: current_user(params)&.id).first
       return reaction if reaction
 
       # If the user has no reaction on the initiative && verification is required to react to an initiative,
@@ -101,7 +100,8 @@ class WebApi::V1::InitiativeSerializer < WebApi::V1::BaseSerializer
       return nil unless user_verifications_hashed_uids&.any?
 
       # If the user has verifications, we check if any of the reactions on the initiative have asssociated
-      # reactions_verifications_hashed_uids records.
+      # reactions_verifications_hashed_uids records for reactions with no associated user (user deleted).
+      reactions = object.reactions.where(user_id: nil)
       object_reactions_verification_hashed_uids = Verification::ReactionsVerificationsHashedUid.where(reaction: reactions)
       return nil unless object_reactions_verification_hashed_uids&.any?
 
