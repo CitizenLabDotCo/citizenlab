@@ -38,6 +38,7 @@
   "app.components.AuthProviders.logIn2": "Pierakstīties",
   "app.components.AuthProviders.logInWithEmail": "Pierakstīties, izmantojot e-pastu",
   "app.components.AuthProviders.logInWithPhoneOrEmail": "Piesakieties, izmantojot tālruni vai e-pastu",
+  "app.components.AuthProviders.nemlogInUnderMinimumAgeVerificationFailed": "Lai jūs varētu verificēt, jums jābūt vismaz norādītajam minimālajam vecumam.",
   "app.components.AuthProviders.signUp2": "Reģistrēties",
   "app.components.AuthProviders.signUpButtonAltText": "Reģistrēties, izmantojot {loginMechanismName}",
   "app.components.AuthProviders.signUpWithEmail": "Reģistrēties, izmantojot e-pastu",
