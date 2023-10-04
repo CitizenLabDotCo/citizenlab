@@ -10,7 +10,7 @@ interface Props {
 }
 
 const AuthorInput = ({ selectedAuthor, onSelect }: Props) => {
-  if (selectedAuthor.userState !== 'no-user') {
+  if (['new-user', 'existing-user'].includes(selectedAuthor.userState)) {
     return <Input disabled type="text" value={selectedAuthor.email} />;
   }
 

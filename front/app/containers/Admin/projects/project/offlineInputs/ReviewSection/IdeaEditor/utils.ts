@@ -2,6 +2,7 @@ import { IIdeas } from 'api/ideas/types';
 import { IUser } from 'api/users/types';
 import { UserFormData } from './typings';
 import { ImportedIdeaMetadataResponse } from 'api/import_ideas/types';
+import { isValidEmail } from 'utils/validate';
 
 export const getNextIdeaId = (ideaId: string, ideas: IIdeas) => {
   const numberOfIdeas = ideas.data.length;
@@ -52,11 +53,14 @@ const getUserFormDefaultValues = (
 
   const { email, first_name, last_name } = author.data.attributes;
 
+  const validEmail = email ? isValidEmail(email) : false;
+
   return {
-    userState:
-      ideaMetadata.data.attributes.user_created === true
-        ? 'new-user'
-        : 'existing-user',
+    userState: !validEmail
+      ? 'invalid-email'
+      : ideaMetadata.data.attributes.user_created === true
+      ? 'new-user'
+      : 'existing-user',
     first_name: first_name ?? undefined,
     last_name: last_name ?? undefined,
     email,

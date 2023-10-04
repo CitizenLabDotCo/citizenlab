@@ -7,6 +7,7 @@ import {
   Icon,
   Success,
   Checkbox,
+  Text,
 } from '@citizenlab/cl2-component-library';
 import AuthorInput from './AuthorInput';
 
@@ -95,21 +96,30 @@ const UserForm = ({ userFormData, setUserFormData }: Props) => {
               />
             </Box>
           )}
-          {userFormData.userState === 'new-user' && (
+          {['new-user', 'invalid-email'].includes(userFormData.userState) && (
             <>
-              <Box display="flex" alignItems="center" mt="12px">
-                <Icon
-                  width="40px"
-                  height="40px"
-                  name="plus-circle"
-                  fill={colors.success}
-                />
-                <Success
-                  text={
-                    'A new account will be created with this email. This input will be added to it.'
-                  }
-                />
-              </Box>
+              {userFormData.userState === 'new-user' && (
+                <Box display="flex" alignItems="center" mt="12px">
+                  <Icon
+                    width="40px"
+                    height="40px"
+                    name="plus-circle"
+                    fill={colors.success}
+                  />
+                  <Success
+                    text={
+                      'A new account will be created with this email. This input will be added to it.'
+                    }
+                  />
+                </Box>
+              )}
+              {userFormData.userState === 'invalid-email' && (
+                <Box display="flex" alignItems="center" mt="12px">
+                  <Text color="orange" mb="15px">
+                    Please enter a valid email address.
+                  </Text>
+                </Box>
+              )}
               <Box mt="20px">
                 <Input
                   type="text"
