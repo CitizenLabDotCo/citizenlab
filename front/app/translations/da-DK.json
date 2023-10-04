@@ -38,6 +38,7 @@
   "app.components.AuthProviders.logIn2": "Log ind",
   "app.components.AuthProviders.logInWithEmail": "Log ind med Email",
   "app.components.AuthProviders.logInWithPhoneOrEmail": "Log ind med telefon eller e-mail",
+  "app.components.AuthProviders.nemlogInUnderMinimumAgeVerificationFailed": "Du skal have den angivne minimumsalder eller derover for at blive verificeret.",
   "app.components.AuthProviders.signUp2": "Registrer dig",
   "app.components.AuthProviders.signUpButtonAltText": "Tilmeld dig med {loginMechanismName}",
   "app.components.AuthProviders.signUpWithEmail": "Registrer dig med Email",
