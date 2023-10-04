@@ -38,6 +38,7 @@
   "app.components.AuthProviders.logIn2": "Oturum açın",
   "app.components.AuthProviders.logInWithEmail": "E-posta ile oturum açın",
   "app.components.AuthProviders.logInWithPhoneOrEmail": "Telefon veya E-posta ile Giriş Yapın",
+  "app.components.AuthProviders.nemlogInUnderMinimumAgeVerificationFailed": "Doğrulanmak için belirtilen minimum yaşta veya üzerinde olmalısınız.",
   "app.components.AuthProviders.signUp2": "Kaydolun",
   "app.components.AuthProviders.signUpButtonAltText": "{loginMechanismName} ile kaydolun",
   "app.components.AuthProviders.signUpWithEmail": "E-posta ile kaydolun",
