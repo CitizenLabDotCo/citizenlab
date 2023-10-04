@@ -79,7 +79,7 @@ const IdeasNewPageWithJSONForm = () => {
   const phaseId = queryParams.get('phase_id');
 
   const { data: phases } = usePhases(project?.data.id);
-  const { schema, uiSchema, inputSchemaError } = useInputSchema({
+  const { uiSchema, schema, inputSchemaError } = useInputSchema({
     projectId: project?.data.id,
     phaseId,
   });

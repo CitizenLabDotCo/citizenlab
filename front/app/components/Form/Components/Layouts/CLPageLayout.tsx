@@ -115,9 +115,30 @@ const CLPageLayout = memo(
         await onSubmit(getFilteredDataForUserPath(userPagePath, data));
         return;
       }
-
       const currentPageCategorization = uiPages[currentStep];
       userPagePath.push(uiPages[currentStep]);
+
+      // Testing (messy)
+      const schemaRequirementsFiltered = schema;
+      const currentPageElements = currentPageCategorization.elements;
+
+      // If an "Other" element has a rule which isn't fired, remove it from the validation schema.
+      currentPageElements.map((element) => {
+        if (element.rule?.effect === 'HIDE') {
+          if (element.scope.includes('other') && schema.required) {
+            if (data['mc_w_constraints'].includes('other')) {
+              if (!schema.required.includes('mc_w_constraints_other')) {
+                schema.required.push('mc_w_constraints_other');
+              }
+            } else {
+              schema.required = schema.required.filter(
+                (item) => item !== 'mc_w_constraints_other'
+              );
+            }
+          }
+        }
+      });
+
       if (
         customAjv.validate(
           getPageSchema(
