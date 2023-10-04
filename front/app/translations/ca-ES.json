@@ -38,6 +38,7 @@
   "app.components.AuthProviders.logIn2": "Iniciar Sessió",
   "app.components.AuthProviders.logInWithEmail": "Inicieu sessió amb correu electrònic",
   "app.components.AuthProviders.logInWithPhoneOrEmail": "Iniciar sessió amb telèfon o correu electrònic",
+  "app.components.AuthProviders.nemlogInUnderMinimumAgeVerificationFailed": "Heu de tenir l'edat mínima especificada o més per ser verificat.",
   "app.components.AuthProviders.signUp2": "Registreu-vos",
   "app.components.AuthProviders.signUpButtonAltText": "Registreu-vos amb {loginMechanismName}",
   "app.components.AuthProviders.signUpWithEmail": "Registreu-vos amb correu electrònic",

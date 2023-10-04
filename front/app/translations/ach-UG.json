@@ -38,6 +38,7 @@
   "app.components.AuthProviders.logIn2": "crwdns212844:0crwdne212844:0",
   "app.components.AuthProviders.logInWithEmail": "crwdns212846:0crwdne212846:0",
   "app.components.AuthProviders.logInWithPhoneOrEmail": "crwdns212848:0crwdne212848:0",
+  "app.components.AuthProviders.nemlogInUnderMinimumAgeVerificationFailed": "crwdns1140374:0crwdne1140374:0",
   "app.components.AuthProviders.signUp2": "crwdns212850:0crwdne212850:0",
   "app.components.AuthProviders.signUpButtonAltText": "crwdns212852:0{loginMechanismName}crwdne212852:0",
   "app.components.AuthProviders.signUpWithEmail": "crwdns212854:0crwdne212854:0",
