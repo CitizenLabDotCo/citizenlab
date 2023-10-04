@@ -246,6 +246,27 @@ describe BulkImportIdeas::ImportIdeasService do
       expect(User.count).to eq 1
     end
 
+    it 'imports a user with no email if first name & consent are present' do
+      project = create(:project)
+      idea_rows = [
+        {
+          title_multiloc: { 'en' => 'My idea title' },
+          body_multiloc: { 'en' => 'My idea description' },
+          project_id: project.id,
+          user_consent: true,
+          user_first_name: 'Terry',
+          user_last_name: 'McBerry'
+        }
+      ]
+      service.import_ideas idea_rows
+
+      author = project.reload.ideas.first.author
+      expect(author).not_to be_nil
+      expect(author.first_name).to eq 'Terry'
+      expect(author.email).to be_nil
+      expect(author.unique_code).not_to be_nil
+    end
+
     context 'surveys' do
       it 'can import surveys with' do
         project = create(:continuous_native_survey_project)

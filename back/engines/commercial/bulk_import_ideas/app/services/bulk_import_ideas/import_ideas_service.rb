@@ -153,15 +153,20 @@ module BulkImportIdeas
       author = nil
       user_created = false
 
-      if idea_row[:user_email].present?
-        author = User.find_by_cimail idea_row[:user_email]
+      if idea_row[:user_email].present? || idea_row[:user_first_name].present?
+        author = idea_row[:user_email].present? ? User.find_by_cimail(idea_row[:user_email]) : nil
         unless author
           author = User.new(
-            email: idea_row[:user_email],
+            locale: @locale,
             first_name: idea_row[:user_first_name],
-            last_name: idea_row[:user_last_name],
-            locale: @locale
+            last_name: idea_row[:user_last_name]
           )
+          if idea_row[:user_email].present?
+            author.email = idea_row[:user_email]
+          else
+            author.unique_code = SecureRandom.uuid
+          end
+
           if author.save
             user_created = true
           else
