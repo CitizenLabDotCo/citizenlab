@@ -69,7 +69,8 @@ const IdeasContainer = memo<InnerProps>(({ project, className }) => {
   const ideaQueryParameters = useMemo<QueryParameters>(
     () => ({
       'page[number]': 1,
-      'page[size]': 24,
+      'page[size]':
+        project.attributes.participation_method === 'voting' ? 100 : 24,
       projects: [project.id],
       sort:
         sortParam ??
