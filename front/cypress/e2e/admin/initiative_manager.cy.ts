@@ -140,7 +140,6 @@ describe('Initaitve manager', () => {
       cy.get('#e2e-select-assignee-filter').click();
       // click on Assigned to me filter
       cy.get('#e2e-assignee-filter-assigned-to-user').click();
-      // cy.visit('/admin/initiatives');
 
       // Turn the 'need feedback' toggle on and check whether it only shows the initiative assigned to user without official feedback
       cy.get('#e2e-feedback_needed_filter_toggle').click();
