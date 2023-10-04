@@ -3,4 +3,5 @@ import injectIntl from './injectIntl';
 import useIntl from './useIntl';
 import { MessageDescriptor } from 'react-intl';
 
-export { FormattedMessage, injectIntl, MessageDescriptor, useIntl };
+export { FormattedMessage, injectIntl, useIntl };
+export type { MessageDescriptor };

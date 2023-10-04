@@ -30,6 +30,7 @@ import {
   ProjectType,
   StyledSectionField,
   ParticipationContextWrapper,
+  TIMEOUT,
 } from './components/styling';
 import ProjectFolderSelect from './components/ProjectFolderSelect';
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
@@ -76,8 +77,6 @@ import eventEmitter from 'utils/eventEmitter';
 import { convertUrlToUploadFile, isUploadFile } from 'utils/fileUtils';
 import useUpdateProject from 'api/projects/useUpdateProject';
 import projectsKeys from 'api/projects/keys';
-
-export const TIMEOUT = 350;
 
 export type TOnProjectAttributesDiffChangeFunction = (
   projectAttributesDiff: IUpdatedProjectProperties,

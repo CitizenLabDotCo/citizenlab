@@ -24,4 +24,4 @@ export interface IInitiativesFilterCounts {
   };
 }
 
-export { Sort, IQueryParameters };
+export type { Sort, IQueryParameters };
