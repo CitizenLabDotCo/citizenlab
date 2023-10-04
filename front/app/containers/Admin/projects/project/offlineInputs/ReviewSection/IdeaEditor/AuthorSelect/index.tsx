@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useMemo } from 'react';
 
 // api
 import useInfiniteUsers from 'api/users/useInfiniteUsers';
@@ -19,10 +19,12 @@ import { Option } from 'components/UI/UserSelect/typings';
 interface Props {
   selectedAuthor?: SelectedAuthor;
   onSelect: (selectedAuthor?: SelectedAuthor) => void;
+  onSearch: (searchTerm: string) => void;
 }
 
-const AuthorSelect = ({ selectedAuthor, onSelect }: Props) => {
-  const [searchValue, setSearchValue] = useState('');
+const AuthorSelect = ({ selectedAuthor, onSelect, onSearch }: Props) => {
+  const searchValue = selectedAuthor?.email;
+
   const {
     data: users,
     isLoading,
@@ -69,6 +71,7 @@ const AuthorSelect = ({ selectedAuthor, onSelect }: Props) => {
   return (
     <BaseUserSelect
       value={selectedUser?.data ?? null}
+      inputValue={searchValue}
       placeholder={'Enter an email address'}
       options={options}
       components={{ Option: CustomOption }}
@@ -80,7 +83,7 @@ const AuthorSelect = ({ selectedAuthor, onSelect }: Props) => {
           fetchNextPage={() => fetchNextPage()}
         />
       )}
-      onInputChange={setSearchValue}
+      onInputChange={onSearch}
       onMenuScrollToBottom={() => fetchNextPage()}
       onChange={handleSelectExistingUser}
       onMenuOpen={onSelect}

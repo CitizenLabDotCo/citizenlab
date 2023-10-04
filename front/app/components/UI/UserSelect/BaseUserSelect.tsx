@@ -19,6 +19,7 @@ interface Props {
   id?: string;
   inputId?: string;
   value: IUserData | null;
+  inputValue?: string;
   placeholder: string;
   options: Option[];
   components?: { Option: FC };
@@ -33,6 +34,7 @@ const BaseUserSelect = ({
   id,
   inputId,
   value,
+  inputValue,
   placeholder,
   options,
   components,
@@ -71,6 +73,7 @@ const BaseUserSelect = ({
         menuShouldScrollIntoView={false}
         isClearable
         value={value}
+        inputValue={inputValue}
         placeholder={placeholder}
         options={options}
         getOptionValue={getOptionId}

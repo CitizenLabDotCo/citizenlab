@@ -49,6 +49,10 @@ interface Props {
 
 const CustomOption = ({ children, innerProps, data, options }: Props) => {
   const emailAddresses = useMemo(() => {
+    if (optionIsUser(data) || data.value !== 'newUser') {
+      return null;
+    }
+
     const emailAddressesSet = new Set<string>();
 
     options.forEach((option) => {
@@ -58,13 +62,13 @@ const CustomOption = ({ children, innerProps, data, options }: Props) => {
     });
 
     return emailAddressesSet;
-  }, [options]);
+  }, [data, options]);
 
   if (!optionIsUser(data) && data.value === 'newUser') {
     const email = data.payload;
     if (email === undefined) return null;
 
-    const existingUser = emailAddresses.has(email);
+    const existingUser = emailAddresses?.has(email);
     if (existingUser) return null;
 
     const invalidEmail = !isValidEmail(email);

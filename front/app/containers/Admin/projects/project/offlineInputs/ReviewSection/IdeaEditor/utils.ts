@@ -23,10 +23,10 @@ export const getUserFormValues = (
   author: IUser | undefined,
   ideaMetadata: ImportedIdeaMetadataResponse | undefined
 ): UserFormData | null => {
-  if (!ideaId || !author || !ideaMetadata) return null;
+  if (!ideaId || !ideaMetadata) return null;
 
-  const changes = userFormStatePerIdea[ideaId];
   const defaultUserFormValues = getUserFormDefaultValues(author, ideaMetadata);
+  const changes = userFormStatePerIdea[ideaId];
 
   return {
     ...defaultUserFormValues,
@@ -35,13 +35,26 @@ export const getUserFormValues = (
 };
 
 const getUserFormDefaultValues = (
-  author: IUser,
+  author: IUser | undefined,
   ideaMetadata: ImportedIdeaMetadataResponse
 ): UserFormData => {
+  const consent = ideaMetadata.data.attributes.user_consent;
+
+  if (!author) {
+    return {
+      consent,
+      newUser: undefined,
+      email: undefined,
+      first_name: undefined,
+      last_name: undefined,
+    };
+  }
+
   const { email, first_name, last_name } = author.data.attributes;
 
   return {
-    newUser: ideaMetadata?.data.attributes.user_created === true,
+    consent,
+    newUser: ideaMetadata.data.attributes.user_created === true,
     email,
     first_name: first_name ?? undefined,
     last_name: last_name ?? undefined,

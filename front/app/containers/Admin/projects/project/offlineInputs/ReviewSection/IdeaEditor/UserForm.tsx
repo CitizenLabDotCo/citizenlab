@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
 
 // components
-import { Box, Input, Icon, Success } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Input,
+  Icon,
+  Success,
+  Checkbox,
+} from '@citizenlab/cl2-component-library';
 import AuthorSelect from './AuthorSelect';
 
 // styling
@@ -52,6 +58,11 @@ const UserForm = ({ userFormData, setUserFormData }: Props) => {
     setExistingUserId(selectedAuthor.id);
   };
 
+  const handleSearch = (searchTerm: string) => {
+    setExistingUserId(undefined);
+    updateUserFormData({ email: searchTerm, newUser: true });
+  };
+
   return (
     <Box
       w="90%"
@@ -59,68 +70,82 @@ const UserForm = ({ userFormData, setUserFormData }: Props) => {
       mb="24px"
       pb="24px"
     >
-      <Box>
-        <AuthorSelect
-          selectedAuthor={
-            userFormData.newUser === true
-              ? { newUser: true, email: userFormData.email }
-              : {
-                  newUser: false,
-                  email: userFormData.email,
-                  id: exitingUserId ?? undefined,
+      {userFormData.consent ? (
+        <Box>
+          <Box>
+            <AuthorSelect
+              selectedAuthor={
+                userFormData.newUser === true
+                  ? { newUser: true, email: userFormData.email }
+                  : {
+                      newUser: false,
+                      email: userFormData.email,
+                      id: exitingUserId ?? undefined,
+                    }
+              }
+              onSelect={handleSelect}
+              onSearch={handleSearch}
+            />
+          </Box>
+          {!userFormData.newUser && (
+            <Box display="flex" alignItems="center" mt="12px">
+              <Icon
+                width="40px"
+                height="40px"
+                name="check-circle"
+                fill={colors.success}
+              />
+              <Success
+                text={
+                  'There is already an account associated with this email. This input will be added to it.'
                 }
+              />
+            </Box>
+          )}
+          {userFormData.newUser && (
+            <>
+              <Box display="flex" alignItems="center" mt="12px">
+                <Icon
+                  width="40px"
+                  height="40px"
+                  name="plus-circle"
+                  fill={colors.success}
+                />
+                <Success
+                  text={
+                    'A new account will be created with this email. This input will be added to it.'
+                  }
+                />
+              </Box>
+              <Box mt="20px">
+                <Input
+                  type="text"
+                  value={userFormData.first_name}
+                  label={<BlackLabel text="First name" />}
+                  onChange={(first_name) => updateUserFormData({ first_name })}
+                />
+              </Box>
+              <Box mt="20px">
+                <Input
+                  type="text"
+                  value={userFormData.last_name}
+                  label={<BlackLabel text="Last name" />}
+                  onChange={(last_name) => updateUserFormData({ last_name })}
+                />
+              </Box>
+            </>
+          )}
+        </Box>
+      ) : null}
+      <Box mt="20px">
+        <Checkbox
+          checked={userFormData.consent}
+          onChange={() =>
+            updateUserFormData({ consent: !userFormData.consent })
           }
-          onSelect={handleSelect}
+          label="User consent"
         />
       </Box>
-      {!userFormData.newUser && (
-        <Box display="flex" alignItems="center" mt="12px">
-          <Icon
-            width="40px"
-            height="40px"
-            name="check-circle"
-            fill={colors.success}
-          />
-          <Success
-            text={
-              'There is already an account associated with this email. This input will be added to it.'
-            }
-          />
-        </Box>
-      )}
-      {userFormData.newUser && (
-        <>
-          <Box display="flex" alignItems="center" mt="12px">
-            <Icon
-              width="40px"
-              height="40px"
-              name="plus-circle"
-              fill={colors.success}
-            />
-            <Success
-              text={
-                'A new account will be created with this email. This input will be added to it.'
-              }
-            />
-          </Box>
-          <Box mt="20px">
-            <Input
-              type="text"
-              value={userFormData.first_name}
-              label={<BlackLabel text="First name" />}
-              onChange={(first_name) => updateUserFormData({ first_name })}
-            />
-          </Box>
-          <Box mt="20px">
-            <Input
-              type="text"
-              value={userFormData.last_name}
-              label={<BlackLabel text="Last name" />}
-              onChange={(last_name) => updateUserFormData({ last_name })}
-            />
-          </Box>
-        </>
-      )}
     </Box>
   );
 };

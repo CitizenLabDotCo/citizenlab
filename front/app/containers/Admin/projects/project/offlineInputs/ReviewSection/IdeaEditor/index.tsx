@@ -119,7 +119,7 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
     }));
   };
 
-  const formDataValid = isValidData(
+  const ideaFormDataValid = isValidData(
     schema,
     uiSchema,
     ideaFormData,
@@ -128,7 +128,7 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
   );
 
   const onApproveIdea = async () => {
-    if (!ideaId || !ideaFormData || !formDataValid || !ideas) return;
+    if (!ideaId || !ideaFormData || !ideaFormDataValid || !ideas) return;
 
     const {
       location_description,
@@ -155,10 +155,15 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
         },
       });
 
+      setUserFormStatePerIdea((userFormState) => {
+        const clone = { ...userFormState };
+        delete clone[ideaId];
+        return clone;
+      });
+
       setIdeaFormStatePerIdea((ideaFormState) => {
         const clone = { ...ideaFormState };
         delete clone[ideaId];
-
         return clone;
       });
 
@@ -175,7 +180,7 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
 
   const locale = ideaMetadata?.data.attributes.locale;
 
-  const disabledReason = formDataValid ? null : (
+  const disabledReason = ideaFormDataValid ? null : (
     <FormattedMessage {...messages.formDataNotValid} />
   );
 
@@ -233,7 +238,7 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
                 icon="check"
                 w="100%"
                 processing={loadingApproveIdea}
-                disabled={!formDataValid}
+                disabled={!ideaFormDataValid}
                 onClick={onApproveIdea}
               >
                 <FormattedMessage {...messages.approve} />

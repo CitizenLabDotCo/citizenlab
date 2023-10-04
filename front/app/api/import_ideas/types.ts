@@ -19,14 +19,15 @@ export interface ImportedIdeaMetadata {
   type: 'idea_import';
   attributes: {
     created_at: string;
-    updated_at: string;
-    import_type: 'pdf' | 'xlsx';
-    page_range: string[];
-    user_created: boolean;
-    locale: Locale;
     file: {
       url: string;
     };
+    import_type: 'pdf' | 'xlsx';
+    locale: Locale;
+    updated_at: string;
+    page_range: string[];
+    user_consent: boolean;
+    user_created: boolean;
   };
 }
 
