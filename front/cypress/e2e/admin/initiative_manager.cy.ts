@@ -1,6 +1,6 @@
 import { randomString, randomEmail } from '../../support/commands';
 
-describe.skip('Initaitve manager', () => {
+describe('Initaitve manager', () => {
   beforeEach(() => {
     cy.setAdminLoginCookie();
   });
@@ -96,45 +96,57 @@ describe.skip('Initaitve manager', () => {
     });
   });
 
-  // // TODO: Need feedback toggle test (i3)
+  // TODO: Re-enable this test once the BE bug is fixed
+  // https://citizenlab.atlassian.net/browse/CL-4140
+  describe.skip('Need feedback toggle', () => {
+    before(() => {
+      cy.getAuthUser().then((user) => {
+        const userId = user.body.data.id;
 
-  // // describe('Need feedback toggle', () => {
-  // //   before(() => {
-  // //     cy.getAuthUser().then((user) => {
-  // //       const userId = user.body.data.id;
+        const initiativeTitle1 = randomString();
+        const initiativeContent1 = randomString();
+        const initiativeTitle2 = randomString();
+        const initiativeContent2 = randomString();
 
-  // //       const initiativeTitle1 = randomString();
-  // //       const initiativeContent1 = randomString();
-  // //       const initiativeTitle2 = randomString();
-  // //       const initiativeContent2 = randomString();
+        // create initiative with signed-in admin/user as default assignee and give feedback
+        cy.apiCreateInitiative({
+          initiativeTitle: initiativeTitle1,
+          initiativeContent: initiativeContent1,
+          assigneeId: userId,
+        }).then((initiative) => {
+          const initiativeId = initiative.body.data.id;
+          const officialFeedbackContent = randomString();
+          const officialFeedbackAuthor = randomString();
+          cy.apiCreateOfficialFeedbackForInitiative(
+            initiativeId,
+            officialFeedbackContent,
+            officialFeedbackAuthor
+          );
+        });
 
-  // //       // create initiative with signed-in admin/user as default assignee and give feedback
-  // //       cy.apiCreateInitiative(initiativeTitle1, initiativeContent1, userId).then(initiative => {
-  // //         const initiativeId = initiative.body.data.id;
-  // //         const officialFeedbackContent = randomString();
-  // //         const officialFeedbackAuthor = randomString();
-  // //         cy.apiCreateOfficialFeedbackForInitiative(initiativeId, officialFeedbackContent, officialFeedbackAuthor);
-  // //       });
+        // create second initiative with same assignee but no feedback (so feedback is still needed)
+        cy.apiCreateInitiative({
+          initiativeTitle: initiativeTitle2,
+          initiativeContent: initiativeContent2,
+          assigneeId: userId,
+        });
+      });
+    });
 
-  // //       // create second initiative with same assignee but no feedback (so feedback is still needed)
-  // //       cy.apiCreateInitiative(initiativeTitle2, initiativeContent2, userId);
-  // //     });
-  // //   });
+    it('Filters on initiatives that need feedback', () => {
+      cy.visit('/admin/initiatives');
 
-  // //   it('Filters on ideas that need feedback', () => {
-  // //     cy.visit('/admin/initiatives');
+      // grab and open assignee filter menu
+      cy.get('#e2e-select-assignee-filter').click();
+      // click on Assigned to me filter
+      cy.get('#e2e-assignee-filter-assigned-to-user').click();
+      // cy.visit('/admin/initiatives');
 
-  // //     // grab and open assignee filter menu
-  // //     cy.get('#e2e-select-assignee-filter').click();
-  // //     // click on Assigned to me filter
-  // //     cy.get('#e2e-assignee-filter-assigned-to-user').click();
-  // //     cy.visit('/admin/initiatives');
-
-  // //     // Turn the 'need feedback' toggle on and check whether it only shows the idea assigned to user without official feedback
-  // //     cy.get('#e2e-feedback_needed_filter_toggle').click();
-  // //     cy.get('.e2e-initiative-row').should('have.length', 1);
-  // //   });
-  // // });
+      // Turn the 'need feedback' toggle on and check whether it only shows the initiative assigned to user without official feedback
+      cy.get('#e2e-feedback_needed_filter_toggle').click();
+      cy.get('.e2e-initiative-row').should('have.length', 1);
+    });
+  });
 
   describe('Initiative preview ', () => {
     it('Opens when you click an initiative title and closes again when you click the X (close button)', () => {
@@ -168,6 +180,8 @@ describe.skip('Initaitve manager', () => {
     const initiativeTitle = randomString();
     const initiativeContent = randomString();
     let initiativeId: string;
+    let newAdminFirstName: string;
+    let newAdminLastName: string;
 
     before(() => {
       cy.apiCreateInitiative({ initiativeTitle, initiativeContent }).then(
@@ -175,38 +189,42 @@ describe.skip('Initaitve manager', () => {
           initiativeId = initiative.body.data.id;
         }
       );
-    });
 
-    it('Assigns a user to an idea', () => {
       cy.apiCreateAdmin(firstName, lastName, email, password).then(
         (newAdmin) => {
-          const newAdminFirstName = newAdmin.body.data.attributes.first_name;
-          const newAdminLastName = newAdmin.body.data.attributes.last_name;
-
-          // Refresh page to make sure new admin is picked up
-          cy.visit('/admin/initiatives/');
-          // grab and open assignee filter menu
-          cy.get('#e2e-select-assignee-filter').click();
-          // click on All initiatives filter
-          cy.get('#e2e-assignee-filter-all-posts').click();
-          cy.wait(500);
-          cy.get('.e2e-initiative-row')
-            .first()
-            .find('#post-row-select-assignee')
-            .click()
-            .contains(`${newAdminFirstName} ${newAdminLastName}`)
-            .click();
-          // Select this user in the assignee filter
-          cy.get('#e2e-select-assignee-filter')
-            .click()
-            .find('.e2e-assignee-filter-other-user')
-            .contains(`Assigned to ${newAdminFirstName} ${newAdminLastName}`)
-            .click();
-          cy.wait(500);
-          // Check if initiative is there
-          cy.get('.e2e-initiative-row').should('have.length', 1);
+          newAdminFirstName = newAdmin.body.data.attributes.first_name;
+          newAdminLastName = newAdmin.body.data.attributes.last_name;
+          cy.apiConfirmUser(email, password);
         }
       );
+      cy.logout();
+      cy.setAdminLoginCookie();
+    });
+
+    it('Assigns a user to an initiative', () => {
+      // Refresh page to make sure new admin is picked up
+      cy.visit('/admin/initiatives/');
+      // grab and open assignee filter menu
+      cy.get('#e2e-select-assignee-filter').click();
+      // click on All initiatives filter
+      cy.get('#e2e-assignee-filter-all-posts').click();
+      cy.wait(500);
+      cy.get('.e2e-initiative-row')
+        .first()
+        .find('#post-row-select-assignee')
+        .click()
+        .contains(`${newAdminFirstName} ${newAdminLastName}`)
+        .click({ force: true });
+
+      // Select this user in the assignee filter
+      cy.get('#e2e-select-assignee-filter')
+        .click()
+        .find('.e2e-assignee-filter-other-user')
+        .contains(`Assigned to ${newAdminFirstName} ${newAdminLastName}`)
+        .click();
+      cy.wait(500);
+      // Check if initiative is there
+      cy.get('.e2e-initiative-row').should('have.length', 1);
     });
 
     after(() => {
