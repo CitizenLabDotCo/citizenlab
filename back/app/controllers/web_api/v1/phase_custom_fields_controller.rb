@@ -17,7 +17,7 @@ class WebApi::V1::PhaseCustomFieldsController < ApplicationController
     locale = params[:locale] || current_user.locale
     personal_data_enabled = params[:personal_data] == 'true'
     if phase
-      pdf = PrintCustomFieldsService.new(
+      pdf = BulkImportIdeas::PrintCustomFieldsService.new(
         phase,
         custom_fields,
         locale,

@@ -11,10 +11,18 @@ BulkImportIdeas::Engine.routes.draw do
         post 'import_ideas/bulk_create', on: :member, to: 'import_ideas#bulk_create'
         get 'import_ideas/example_xlsx', on: :member, to: 'import_ideas#example_xlsx'
         get 'import_ideas/draft_ideas', on: :member, to: 'import_ideas#draft_ideas'
+        # resources :custom_fields, controller: 'phase_custom_fields', only: %i[] do
+        #   get 'to_pdf', on: :collection
+        # end
       end
       resources :phases do
         get 'import_ideas/example_xlsx', on: :member, to: 'import_ideas#example_xlsx'
         get 'import_ideas/draft_ideas', on: :member, to: 'import_ideas#draft_ideas'
+
+        # resources :custom_fields, controller: 'phase_custom_fields', only: %i[] do
+        #   get 'to_pdf', on: :collection
+        # end
+
       end
       resources :idea_imports, on: :member, to: 'import_ideas#show_idea_import'
       resources :idea_import_files, on: :member, to: 'import_ideas#show_idea_import_file'
