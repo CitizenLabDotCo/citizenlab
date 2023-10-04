@@ -5,11 +5,16 @@ import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import { Input, Box } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 import errorMessages from 'components/UI/Error/messages';
-import { StyledWarning } from '.';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
+import styled from 'styled-components';
+import Warning from 'components/UI/Warning';
+
+const StyledWarning = styled(Warning)`
+  margin-bottom: 7px;
+`;
 
 interface Props {
   numberOfVotesThreshold: number;

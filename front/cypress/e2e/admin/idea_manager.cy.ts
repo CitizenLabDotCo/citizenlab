@@ -53,7 +53,7 @@ describe('Idea manager', () => {
     });
   });
 
-  describe.skip('Need feedback toggle', () => {
+  describe('Need feedback toggle', () => {
     it('Filters on ideas that need feedback', () => {
       cy.getAuthUser().then((user) => {
         const projectTitle = randomString();
@@ -94,7 +94,9 @@ describe('Idea manager', () => {
               cy.visit('/admin/ideas/');
 
               // Select the newly create project as a filter and check if it just shows our two created ideas
-              cy.get('.e2e-idea-manager-project-filter-item').first().click();
+              cy.get('.e2e-idea-manager-project-filter-item')
+                .contains(projectTitle)
+                .click();
               cy.get('.e2e-idea-manager-idea-row').should('have.length', 2);
 
               // Turn the 'need feedback' toggle on and check whether it only shows the idea without official feedback
@@ -132,46 +134,49 @@ describe('Idea manager', () => {
     });
   });
 
-  // I don't know how this is supposed to work, but I think we should
-  // just create a new idea and make it unassigned before we do this check,
-  // because it's now failing because there are no unassigned ideas.
-  describe.skip('Assignee select', () => {
-    it('Assigns a user to an idea', () => {
-      const firstName = randomString(5);
-      const lastName = randomString(5);
-      const email = randomEmail();
-      const password = randomString();
+  describe('Assignee select', () => {
+    const firstName = randomString(5);
+    const lastName = randomString(5);
+    const email = randomEmail();
+    const password = randomString();
+    let newAdminFirstName: string;
+    let newAdminLastName: string;
 
+    before(() => {
       cy.apiCreateAdmin(firstName, lastName, email, password).then(
         (newAdmin) => {
-          const newAdminFirstName = newAdmin.body.data.attributes.first_name;
-          const newAdminLastName = newAdmin.body.data.attributes.last_name;
-
-          // Refresh page to make sure new admin is picked up
-          cy.visit('/admin/ideas/');
-
-          // Select unassigned in assignee filter
-          cy.get('#e2e-select-assignee-filter').click();
-          cy.get('#e2e-assignee-filter-unassigned').click();
-          // Pick first idea in idea table and assign it to our user
-          cy.wait(500);
-          cy.get('.e2e-idea-manager-idea-row')
-            .first()
-            .find('.e2e-post-manager-post-row-assignee-select')
-            .scrollIntoView({ offset: { top: 100, left: 0 } })
-            .click()
-            .contains(`${newAdminFirstName} ${newAdminLastName}`)
-            .click();
-          // Select this user in the assignee filter
-          cy.get('#e2e-select-assignee-filter')
-            .click()
-            .find('.e2e-assignee-filter-other-user')
-            .contains(`Assigned to ${newAdminFirstName} ${newAdminLastName}`)
-            .click();
-          // Check if idea is there
-          cy.get('.e2e-idea-manager-idea-row').should('have.length', 1);
+          newAdminFirstName = newAdmin.body.data.attributes.first_name;
+          newAdminLastName = newAdmin.body.data.attributes.last_name;
+          cy.apiConfirmUser(email, password);
         }
       );
+      cy.logout();
+      cy.setAdminLoginCookie();
+    });
+
+    it('Assigns a user to an idea', () => {
+      cy.visit('/admin/ideas/');
+
+      // Select unassigned in assignee filter
+      cy.get('#e2e-select-assignee-filter').click();
+      cy.get('#e2e-assignee-filter-unassigned').click();
+      // Pick first idea in idea table and assign it to our user
+      cy.wait(500);
+      cy.get('.e2e-idea-manager-idea-row')
+        .first()
+        .find('.e2e-post-manager-post-row-assignee-select')
+        .scrollIntoView({ offset: { top: 100, left: 0 } })
+        .click()
+        .contains(`${newAdminFirstName} ${newAdminLastName}`)
+        .click({ force: true });
+      // Select this user in the assignee filter
+      cy.get('#e2e-select-assignee-filter')
+        .click()
+        .find('.e2e-assignee-filter-other-user')
+        .contains(`Assigned to ${newAdminFirstName} ${newAdminLastName}`)
+        .click({ force: true });
+      // Check if idea is there
+      cy.get('.e2e-idea-manager-idea-row').should('have.length', 1);
     });
   });
 });

@@ -7,7 +7,7 @@ export default function useInitiativeReviewRequired() {
   });
   const { data: appConfig } = useAppConfiguration();
   const reviewRequired =
-    appConfig?.data.attributes.settings.initiatives?.require_review;
+    appConfig?.data.attributes.settings.initiatives.require_review;
 
   if (initiativeReviewEnabled) {
     return typeof reviewRequired === 'boolean' ? reviewRequired : false;

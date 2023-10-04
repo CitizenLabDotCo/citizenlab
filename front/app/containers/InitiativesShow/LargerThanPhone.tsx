@@ -34,6 +34,9 @@ import {
   columnsGapTablet,
   rightColumnWidthDesktop,
   pageContentMaxWidth,
+  contentFadeInDelay,
+  contentFadeInDuration,
+  contentFadeInEasing,
 } from './styleConstants';
 
 // hooks
@@ -46,11 +49,6 @@ import useLocale from 'hooks/useLocale';
 import useAuthUser from 'api/me/useAuthUser';
 import useInitiativeImages from 'api/initiative_images/useInitiativeImages';
 import { usePermission } from 'utils/permissions';
-import {
-  contentFadeInDelay,
-  contentFadeInDuration,
-  contentFadeInEasing,
-} from '.';
 import useInitiativeOfficialFeedback from 'api/initiative_official_feedback/useInitiativeOfficialFeedback';
 import useShowCosponsorshipReminder from 'containers/InitiativesShow/hooks/useShowCosponsorshipReminder';
 import CosponsorShipReminder from './CosponsorShipReminder';

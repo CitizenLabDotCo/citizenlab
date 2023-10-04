@@ -29,11 +29,11 @@ const InitiativeModals = ({
   });
   const initiativeReviewRequired = useInitiativeReviewRequired();
   const { formatMessage } = useIntl();
+
+  if (!appConfiguration) return null;
+
   const initiativeSettings =
-    appConfiguration?.data.attributes.settings.initiatives;
-
-  if (!initiativeSettings) return null;
-
+    appConfiguration.data.attributes.settings.initiatives;
   const reactingThreshold = initiativeSettings.reacting_threshold;
   const daysLimit = initiativeSettings.days_limit.toString();
 

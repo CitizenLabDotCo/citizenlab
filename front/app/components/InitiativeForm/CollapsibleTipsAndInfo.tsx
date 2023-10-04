@@ -23,7 +23,7 @@ const CollapsibleTipsAndInfo = ({ className }: Props) => {
   const localize = useLocalize();
 
   const postingTips = localize(
-    appConfiguration?.data.attributes.settings.initiatives?.posting_tips
+    appConfiguration?.data.attributes.settings.initiatives.posting_tips
   );
 
   if (postingTips.length === 0) return null;
