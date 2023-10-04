@@ -14,7 +14,6 @@ import useUpdateAppConfiguration from 'api/app_configuration/useUpdateAppConfigu
 
 // components
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
-import Warning from 'components/UI/Warning';
 import ProposalsFeatureToggle from './ProposalsFeatureToggle';
 import Thresholds from './Thresholds';
 import ThresholdReachedMessage from './ThresholdReachedMessage';
@@ -37,10 +36,6 @@ import { colors } from 'utils/styleUtils';
 
 // typings
 import { Multiloc } from 'typings';
-
-export const StyledWarning = styled(Warning)`
-  margin-bottom: 7px;
-`;
 
 const StyledSectionTitle = styled(SectionTitle)`
   margin-bottom: 10px;
@@ -75,10 +70,7 @@ const InitiativesSettingsPage = () => {
   const { data: proposalsPage } = useCustomPageBySlug('initiatives');
 
   const remoteProposalsSettings = useMemo(() => {
-    if (
-      isNilOrError(appConfiguration) ||
-      !appConfiguration.data.attributes.settings.initiatives
-    ) {
+    if (isNilOrError(appConfiguration)) {
       return null;
     }
 

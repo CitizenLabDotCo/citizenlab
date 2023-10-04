@@ -57,7 +57,7 @@ const RequestToCosponsor = ({ initiativeId }: Props) => {
     initiative.data.relationships.author.data?.id === authUserId;
   const authorName = initiative.data.attributes.author_name;
   const requiredNumberOfCosponsors =
-    appConfiguration.data.attributes.settings.initiatives?.cosponsors_number;
+    appConfiguration.data.attributes.settings.initiatives.cosponsors_number;
 
   if (
     !authUserIsAuthor &&

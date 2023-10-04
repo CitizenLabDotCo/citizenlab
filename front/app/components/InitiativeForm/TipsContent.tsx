@@ -32,7 +32,7 @@ const TipsContent = () => {
       <QuillEditedContent textColor={theme.colors.tenantText}>
         <div
           dangerouslySetInnerHTML={{
-            __html: localize(initiativeSettings?.posting_tips),
+            __html: localize(initiativeSettings.posting_tips),
           }}
         />
       </QuillEditedContent>

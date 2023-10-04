@@ -23,7 +23,7 @@ function useShowCosponsorshipReminder(initiativeId: string) {
   const signedInUserIsAuthor =
     typeof authorId === 'string' ? authorId === authUser.data.id : false;
   const requiredNumberOfCosponsors =
-    appConfiguration.data.attributes.settings.initiatives?.cosponsors_number;
+    appConfiguration.data.attributes.settings.initiatives.cosponsors_number;
   const acceptedCosponsorships =
     initiative.data.attributes.cosponsorships.filter(
       (c) => c.status === 'accepted'
