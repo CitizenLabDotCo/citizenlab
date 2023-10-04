@@ -448,13 +448,13 @@ export function getProjectById(projectId: string) {
   });
 }
 
-export function getTopics() {
+export function getTopics({ excludeCode }: { excludeCode?: string }) {
   return cy.request({
     headers: {
       'Content-Type': 'application/json',
     },
     method: 'GET',
-    url: 'web_api/v1/topics',
+    url: `web_api/v1/topics?exclude_code=${excludeCode}`,
   });
 }
 

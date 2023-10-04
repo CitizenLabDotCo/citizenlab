@@ -6,7 +6,7 @@ describe('InitiativeCards without filter sidebar component', () => {
   let initiativeId: string;
 
   before(() => {
-    cy.getTopics()
+    cy.getTopics({ excludeCode: 'custom' })
       .then((topics) => {
         const topicIds = [topics.body.data[0].id];
         return cy.apiCreateInitiative({
@@ -30,7 +30,7 @@ describe('InitiativeCards without filter sidebar component', () => {
     cy.get('.e2e-search-input input').type(initiativeTitle);
     cy.wait(1000);
     cy.get('.e2e-search-input input').should('have.value', initiativeTitle);
-    cy.get('#e2e-initiatives-list');
+    cy.get('#e2e-initiatives-list').should('exist');
     cy.get('#e2e-initiatives-list')
       .find('.e2e-initiative-card')
       .should('have.length', 1)
@@ -42,24 +42,22 @@ describe('InitiativeCards without filter sidebar component', () => {
     cy.get('#e2e-initiatives-sort-dropdown').click();
     cy.get('.e2e-sort-items').find('.e2e-sort-item-new').click();
     cy.wait(1000);
-    cy.get('#e2e-initiatives-list');
+    cy.get('#e2e-initiatives-list').should('exist');
     cy.get('.e2e-initiative-card').first().contains(initiativeTitle);
 
     // sort by oldest first
     cy.get('#e2e-initiatives-sort-dropdown').click();
     cy.get('.e2e-sort-items').find('.e2e-sort-item-old').click();
     cy.wait(1000);
-    cy.get('#e2e-initiatives-list');
+    cy.get('#e2e-initiatives-list').should('exist');
     cy.get('.e2e-initiative-card').first().contains('Planting flowers');
   });
 
-  it.skip('lets you filter the initiatives by topic', () => {
+  it('lets you filter the initiatives by topic', () => {
     cy.get('.e2e-topic').first().click();
     cy.wait(3000);
-    cy.get('#e2e-initiatives-list');
-    cy.get('.e2e-initiative-card')
-      .should('have.length', 1)
-      .contains(initiativeTitle);
+    cy.get('#e2e-initiatives-list').should('exist');
+    cy.get('.e2e-initiative-card').contains(initiativeTitle);
   });
 
   it('lets you filter the initiatives by status', () => {
@@ -74,7 +72,7 @@ describe('InitiativeCards without filter sidebar component', () => {
       .contains('Proposed')
       .click();
     cy.wait(1000);
-    cy.get('#e2e-initiatives-list');
+    cy.get('#e2e-initiatives-list').should('exist');
     cy.get('.e2e-initiative-card').first().contains(initiativeTitle);
 
     // should be empty when the 'Threshold reached' status is selected
