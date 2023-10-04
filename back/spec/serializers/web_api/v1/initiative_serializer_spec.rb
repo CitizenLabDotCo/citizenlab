@@ -36,6 +36,67 @@ describe WebApi::V1::InitiativeSerializer do
     end
   end
 
+  context 'when current_user has reacted to initiative' do
+    let(:initiative) { create(:initiative) }
+    let(:user) { create(:user) }
+    let!(:reaction) { create(:reaction, user: user, reactable: initiative) }
+
+    it 'should include details of reaction' do
+      reaction_id = described_class
+        .new(initiative, params: { current_user: user })
+        .serializable_hash
+        .dig(:data, :relationships, :user_reaction, :data, :id)
+      expect(reaction_id).to eq reaction.id
+    end
+  end
+
+  context 'when current_user has not reacted to initiative' do
+    let(:initiative) { create(:initiative) }
+    let(:user) { create(:user) }
+
+    context 'when current_user has verification associated with initiative reaction' do
+      let(:verification) { create(:verification, user: user) }
+      let!(:reaction) { create(:reaction, user: user, reactable: initiative) }
+      let!(:reactions_verifications_hashed_uid) do
+        create(
+          :reactions_verifications_hashed_uid,
+          reaction: reaction,
+          verification_hashed_uid: verification.hashed_uid
+        )
+      end
+
+      it 'should include details of associated reaction' do
+        reaction_id = described_class
+          .new(initiative, params: { current_user: user })
+          .serializable_hash
+          .dig(:data, :relationships, :user_reaction, :data, :id)
+        expect(reaction_id).to eq reaction.id
+      end
+    end
+
+    context 'when current_user has no verification associated with initiative reaction' do
+      # Create a reaction that is associated with a different user's verification, to be sure.
+      let(:other_user) { create(:user) }
+      let(:verification) { create(:verification, user: other_user) }
+      let!(:reaction) { create(:reaction, user: other_user, reactable: initiative) }
+      let!(:reactions_verifications_hashed_uid) do
+        create(
+          :reactions_verifications_hashed_uid,
+          reaction: reaction,
+          verification_hashed_uid: verification.hashed_uid
+        )
+      end
+
+      it 'should not include details of any reaction' do
+        user_reaction_data = described_class
+          .new(initiative, params: { current_user: user })
+          .serializable_hash
+          .dig(:data, :relationships, :user_reaction, :data)
+        expect(user_reaction_data).to be_nil
+      end
+    end
+  end
+
   context 'when serializing internal comments count of initiative' do
     let(:initiative) { create(:initiative) }
 
