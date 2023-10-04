@@ -38,6 +38,7 @@
   "app.components.AuthProviders.logIn2": "Inloggen",
   "app.components.AuthProviders.logInWithEmail": "Log in met e-mail",
   "app.components.AuthProviders.logInWithPhoneOrEmail": "Aanmelden met telefoon of e-mail",
+  "app.components.AuthProviders.nemlogInUnderMinimumAgeVerificationFailed": "Je moet de opgegeven minimumleeftijd of hoger hebben om geverifieerd te worden.",
   "app.components.AuthProviders.signUp2": "Registreren",
   "app.components.AuthProviders.signUpButtonAltText": "Registreer met {loginMechanismName}",
   "app.components.AuthProviders.signUpWithEmail": "Registreren met e-mail",
