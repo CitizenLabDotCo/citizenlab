@@ -121,8 +121,8 @@ describe IdNemlogIn::NemlogInOmniauth do
     expect(response).to redirect_to('/whatever-page?verification_error=true&error=no_token_passed')
   end
 
-  context 'when verification method is used by Copenhagen' do
-    it 'does not verify an under 15-year-old' do
+  context "when validating user's age" do
+    it 'does not verify a user under specified age limit' do
       saml_auth_response.extra.raw_info['https://data.gov.dk/model/core/eid/age'] = ['14']
 
       get "/auth/nemlog_in?token=#{token}&pathname=/some-page"
@@ -134,7 +134,7 @@ describe IdNemlogIn::NemlogInOmniauth do
       })
     end
 
-    it 'verifies 15-year-old' do
+    it 'verifies a user over specified age limit' do
       saml_auth_response.extra.raw_info['https://data.gov.dk/model/core/eid/age'] = ['15']
 
       get "/auth/nemlog_in?token=#{token}&random-passthrough-param=somevalue&pathname=/some-page"
