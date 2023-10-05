@@ -60,7 +60,7 @@ const AuthorInput = ({ selectedAuthor, onSelect }: Props) => {
           style={{
             all: 'unset',
             position: 'absolute',
-            right: '6px',
+            right: '8px',
             marginTop: '-2px',
           }}
           onClick={handleClear}

@@ -24,7 +24,7 @@ interface Props {
   options: Option[];
   components?: { Option: FC };
   getOptionLabel: (option: Option) => JSX.Element;
-  onMenuOpen: () => void;
+  onMenuOpen?: () => void;
   onInputChange: (searchTerm: string) => void;
   onMenuScrollToBottom: () => void;
   onChange: (option?: Option) => void;

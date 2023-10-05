@@ -82,7 +82,6 @@ const AuthorSelect = ({ selectedAuthor, onSelect }: Props) => {
       onInputChange={setSearchValue}
       onMenuScrollToBottom={() => fetchNextPage()}
       onChange={handleSelectExistingUser}
-      onMenuOpen={onSelect}
     />
   );
 };
