@@ -1440,6 +1440,8 @@
   "app.containers.SignUp.emptyLastNameError": "Geben Sie Ihren Familienname ein",
   "app.containers.SignUp.firstNamesLabel": "Vorname",
   "app.containers.SignUp.goToLogIn": "Sie haben bereits ein Konto? {goToOtherFlowLink}",
+  "app.containers.SignUp.iHaveReadAndAgreeToPrivacy": "Ich stimme {link} zu.",
+  "app.containers.SignUp.iHaveReadAndAgreeToTerms": "Ich stimme {link} zu.",
   "app.containers.SignUp.iHaveReadAndAgreeToVienna": "Ich stimme zu, dass diese Daten für meine Anmeldung auf mitgestalten.wien.gv.at übernommen werden. Weitere Informationen finden Sie in {link}.",
   "app.containers.SignUp.invitationErrorText": "Ihre Einladung ist abgelaufen oder wurde bereits verwendet. Wenn Sie den Einladungslink bereits verwendet haben, um ein Konto zu erstellen, versuchen Sie sich anzumelden. Andernfalls registrieren Sie sich, um ein neues Konto zu erstellen.",
   "app.containers.SignUp.lastNameLabel": "Familienname",
