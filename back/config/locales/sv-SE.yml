@@ -226,9 +226,13 @@ sv:
       title: 'Undersökningens slut'
       description: "Skicka in dina svar genom att klicka på Skicka undersökning nedan."
     pdf_export:
+      personal_data: 'Personuppgifter'
+      personal_data_explanation_ideation: "Vi kommer att skicka in ditt bidrag till %{organizationName}:s onlineplattform för deltagande. Om du vill att ditt namn ska visas som författare till detta bidrag och få uppdateringar som är relevanta för ditt bidrag via e-post, fyll i följande fält på denna sida så skapar vi ett konto åt dig. Din e-postadress kommer inte att vara offentlig och kommer endast att användas av %{organizationName}. Om du vill vara anonym eller inte samtycker till att vi använder dina personuppgifter på detta sätt kan du lämna dem tomma."
+      personal_data_explanation_native_survey: "Vi kommer att skicka din input till %{organizationName}:s onlineplattform för deltagande. Om du vill få uppdateringar som är relevanta för ditt bidrag via e-post, vänligen fyll i följande fält på denna sida så skapar vi ett konto åt dig. Dina uppgifter kommer inte att vara offentliga och kommer endast att användas av %{organizationName}. Om du inte samtycker till att vi använder dina personuppgifter på detta sätt kan du lämna dem tomma."
       first_name: 'Förnamn'
       last_name: 'Efternamn'
       email_address: 'E-postadress'
+      by_checking_this_box: "Genom att markera den här rutan samtycker jag till att mina uppgifter används för att skapa ett konto på %{organizationName}:s deltagarplattform."
       optional: 'valfri'
       permission: 'Tillstånd'
       choose_as_many: 'Välj så många du vill'
