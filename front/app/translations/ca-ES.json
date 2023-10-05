@@ -1383,6 +1383,7 @@
   "app.containers.ProjectsIndexPage.pageTitle": "Projectes",
   "app.containers.ProjectsShowPage.VolunteeringSection.becomeVolunteerButton": "Vull ser voluntari",
   "app.containers.ProjectsShowPage.VolunteeringSection.notLoggedIn": "Si us plau, primer {signInLink} o {signUpLink} per tal de ser voluntari per a aquesta activitat",
+  "app.containers.ProjectsShowPage.VolunteeringSection.notOpenParticipation": "Actualment no està oberta la participació per a aquesta activitat.",
   "app.containers.ProjectsShowPage.VolunteeringSection.signInLinkText": "iniciar Sessió",
   "app.containers.ProjectsShowPage.VolunteeringSection.signUpLinkText": "Registreu-vos",
   "app.containers.ProjectsShowPage.VolunteeringSection.withdrawVolunteerButton": "Retiro la meva oferta de voluntariat",
