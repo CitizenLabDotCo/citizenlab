@@ -50,7 +50,7 @@ const PoliciesMarkup = () => {
           label={
             <ConsentText>
               <FormattedMessage
-                {...authProvidersMessages.iHaveReadAndAgreeTo}
+                {...authProvidersMessages.iHaveReadAndAgreeToTerms}
                 values={{
                   link: (
                     <Link target="_blank" to="/pages/terms-and-conditions">
@@ -71,7 +71,7 @@ const PoliciesMarkup = () => {
           label={
             <ConsentText>
               <FormattedMessage
-                {...authProvidersMessages.iHaveReadAndAgreeTo}
+                {...authProvidersMessages.iHaveReadAndAgreeToPrivacy}
                 values={{
                   link: (
                     <Link target="_blank" to="/pages/privacy-policy">
