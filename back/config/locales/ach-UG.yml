@@ -226,9 +226,13 @@ ach:
       title: 'crwdns1060439:0crwdne1060439:0'
       description: "crwdns1060441:0crwdne1060441:0"
     pdf_export:
+      personal_data: 'crwdns1159592:0crwdne1159592:0'
+      personal_data_explanation_ideation: "crwdns1159594:0%{organizationName}crwdnd1159594:0%{organizationName}crwdne1159594:0"
+      personal_data_explanation_native_survey: "crwdns1159596:0%{organizationName}crwdnd1159596:0%{organizationName}crwdne1159596:0"
       first_name: 'crwdns1081758:0crwdne1081758:0'
       last_name: 'crwdns1081760:0crwdne1081760:0'
       email_address: 'crwdns1060445:0crwdne1060445:0'
+      by_checking_this_box: "crwdns1159598:0%{organizationName}crwdne1159598:0"
       optional: 'crwdns1060447:0crwdne1060447:0'
       permission: 'crwdns1060449:0crwdne1060449:0'
       choose_as_many: 'crwdns1060451:0crwdne1060451:0'
