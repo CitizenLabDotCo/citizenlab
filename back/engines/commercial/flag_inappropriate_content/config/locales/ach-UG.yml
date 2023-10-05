@@ -1,15 +1,8 @@
 ach:
   email_campaigns:
     campaign_type_description:
-      "inappropriate_content_flagged": crwdns208022:0crwdne208022:0
-    admin_campaign_type_description:
-      "inappropriate_content_flagged": crwdns208024:0crwdne208024:0
-    inappropriate_content_flagged:
-      subject: 'crwdns208026:0crwdne208026:0'
-      header_title: 'crwdns208028:0crwdne208028:0'
-      comment_author: 'crwdns208030:0%{authorName}crwdne208030:0'
-      idea_author: 'crwdns208032:0%{authorName}crwdne208032:0'
-      initiative_author: 'crwdns208034:0%{authorName}crwdne208034:0'
-      this_post_was_flagged: >
-        crwdns208036:0crwdne208036:0
-      cta_review_post: 'crwdns208038:0crwdne208038:0'
+      ""inappropriate_content_flagged"":
+        Inappropriate content flagged admin_campaign_type_description:
+          ""inappropriate_content_flagged"":
+            Inappropriate content flagged - admins inappropriate_content_flagged:
+              subject: 'crwdns1149988:0%{authorName}crwdnd1149988:0%{authorName}crwdnd1149988:0%{authorName}crwdne1149988:0'
