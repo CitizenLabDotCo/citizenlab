@@ -120,3 +120,19 @@ export const getUserFormDataAction = (
 
   return 'do-nothing';
 };
+
+export const getUserChanges = (
+  { email, first_name, last_name }: UserFormData,
+  author: IUser,
+  ideaMetadata: ImportedIdeaMetadataResponse
+) => {
+  const initialFormData = getInitialUserFormValues(author, ideaMetadata);
+
+  const userChanges = {
+    ...(email === initialFormData.email ? {} : { email }),
+    ...(first_name === initialFormData.first_name ? {} : { first_name }),
+    ...(last_name === initialFormData.last_name ? {} : { last_name }),
+  };
+
+  return userChanges;
+};

@@ -12,6 +12,7 @@ import useImportedIdeaMetadata from 'api/import_ideas/useImportedIdeaMetadata';
 import usePhase from 'api/phases/usePhase';
 import useImportedIdeas from 'api/import_ideas/useImportedIdeas';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
+import useUpdateUser from 'api/users/useUpdateUser';
 
 // components
 import { Box, Button } from '@citizenlab/cl2-component-library';
@@ -36,6 +37,7 @@ import {
   getUserFormValues,
   isUserFormDataValid,
   getUserFormDataAction,
+  getUserChanges,
 } from './utils';
 
 // typings
@@ -77,9 +79,6 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
     false
   );
   const { data: ideas } = useImportedIdeas({ projectId, phaseId });
-  const { mutateAsync: updateIdea, isLoading: loadingApproveIdea } =
-    useUpdateIdea();
-
   const { data: ideaMetadata } = useImportedIdeaMetadata({
     id: idea?.data.relationships.idea_import?.data?.id,
   });
@@ -87,6 +86,10 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
   const selectedPhaseId =
     phaseId ?? idea?.data.relationships.phases.data[0]?.id;
   const { data: phase } = usePhase(selectedPhaseId);
+
+  const { mutateAsync: updateIdea, isLoading: loadingApproveIdea } =
+    useUpdateIdea();
+  const { mutate: updateUser } = useUpdateUser();
 
   if (!schema || !uiSchema) return null;
 
@@ -152,7 +155,12 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
       ideaMetadata
     );
 
-    console.log(userFormDataAction); // TODO
+    if (userFormDataAction === 'update-created-user' && author) {
+      updateUser({
+        userId: author.data.id,
+        ...getUserChanges(userFormData, author, ideaMetadata),
+      });
+    }
 
     const {
       location_description,
