@@ -6,7 +6,7 @@ class WebApi::V1::ResetPasswordController < ApplicationController
 
   # Creates a password reset token and sends an email to the user with instructions.
   def reset_password_email
-    user = User.not_invited.find_by_cimail! params[:user][:email]
+    user = User.not_invited.find_by_cimail params[:user][:email]
     if user
       reset_password_service = ResetPasswordService.new
       token = reset_password_service.generate_reset_password_token user
