@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 // components
 import {
@@ -30,8 +30,6 @@ const BlackLabel = ({ text }: { text: string }) => (
 );
 
 const UserForm = ({ userFormData, setUserFormData }: Props) => {
-  const [existingUserId, setExistingUserId] = useState<string>();
-
   const updateUserFormData = (newData: Partial<UserFormData>) => {
     setUserFormData((oldData) => ({
       ...oldData,
@@ -41,8 +39,12 @@ const UserForm = ({ userFormData, setUserFormData }: Props) => {
 
   const handleSelect = (selectedAuthor: SelectedAuthor) => {
     if (selectedAuthor.userState === 'no-user') {
-      updateUserFormData({ userState: 'no-user', email: selectedAuthor.email });
-      setExistingUserId(undefined);
+      updateUserFormData({
+        userState: 'no-user',
+        email: selectedAuthor.email,
+        user_id: undefined,
+      });
+
       return;
     }
 
@@ -50,16 +52,16 @@ const UserForm = ({ userFormData, setUserFormData }: Props) => {
       updateUserFormData({
         userState: 'new-user',
         email: selectedAuthor.email,
+        user_id: undefined,
       });
-      setExistingUserId(undefined);
       return;
     }
 
     updateUserFormData({
       userState: 'existing-user',
       email: selectedAuthor.email,
+      user_id: selectedAuthor.id,
     });
-    setExistingUserId(selectedAuthor.id);
   };
 
   return (
@@ -76,7 +78,7 @@ const UserForm = ({ userFormData, setUserFormData }: Props) => {
               selectedAuthor={{
                 userState: userFormData.userState,
                 email: userFormData.email,
-                id: existingUserId,
+                id: userFormData.user_id,
               }}
               onSelect={handleSelect}
             />
