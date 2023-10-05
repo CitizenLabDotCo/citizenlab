@@ -87,6 +87,7 @@ describe InitiativeReactionPolicy do
       end
 
       it { is_expected.to permit(:destroy) }
+      it { is_expected.not_to permit(:create) }
 
       # What about indexing?
     end
@@ -102,6 +103,7 @@ describe InitiativeReactionPolicy do
       end
 
       it { is_expected.not_to permit(:destroy) }
+      it { is_expected.not_to permit(:create) }
 
       # What about indexing?
     end

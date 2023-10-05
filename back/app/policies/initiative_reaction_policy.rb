@@ -25,6 +25,11 @@ class InitiativeReactionPolicy < ApplicationPolicy
 
     reason = reacting_denied_reason user
     reason ? raise_not_authorized(reason) : true
+
+    # If verification required to vote
+    #   && user.verifications_hashed_uids.any?
+    #   && record has a vote associated with user verification
+    #     raise_not_authorized 'a reaction associated with user's verification already exists'
   end
 
   def destroy?

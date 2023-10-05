@@ -88,6 +88,16 @@ resource 'Reactions' do
         expect(reactions_verifications_hashed_uids.map(&:verification_hashed_uid))
           .to match_array [verification1.hashed_uid, verification3.hashed_uid]
       end
+
+      example "[ERROR] Create reaction when existing reaction is associated with user's verification", document: false do
+        reaction = create(:reaction, user: nil, reactable: @initiative)
+        create(:reactions_verifications_hashed_uid, reaction: reaction, verification_hashed_uid: verification1.hashed_uid)
+
+        do_request
+        assert_status 422
+        json_response = json_parse response_body
+        expect(json_response).to include_response_error(:base, 'reaction associated with user validation exists')
+      end
     end
 
     example 'Reaching the voting threshold immediately triggers status change', document: false do
