@@ -1383,6 +1383,7 @@
   "app.containers.ProjectsIndexPage.pageTitle": "Projekter",
   "app.containers.ProjectsShowPage.VolunteeringSection.becomeVolunteerButton": "Jeg vil være frivillig ",
   "app.containers.ProjectsShowPage.VolunteeringSection.notLoggedIn": "Venligst {signInLink} eller {signUpLink} først for at være frivillig til denne aktivitet ",
+  "app.containers.ProjectsShowPage.VolunteeringSection.notOpenParticipation": "Der er ikke åbent for deltagelse i denne aktivitet i øjeblikket.",
   "app.containers.ProjectsShowPage.VolunteeringSection.signInLinkText": "log ind ",
   "app.containers.ProjectsShowPage.VolunteeringSection.signUpLinkText": "tilmeld dig ",
   "app.containers.ProjectsShowPage.VolunteeringSection.withdrawVolunteerButton": "Jeg fortryder mit tilbud om at være frivillig ",
