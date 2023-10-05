@@ -1383,6 +1383,7 @@
   "app.containers.ProjectsIndexPage.pageTitle": "Progetti",
   "app.containers.ProjectsShowPage.VolunteeringSection.becomeVolunteerButton": "Voglio fare volontariato",
   "app.containers.ProjectsShowPage.VolunteeringSection.notLoggedIn": "Si prega di {signInLink} o {signUpLink} prima per fare volontariato per questa attività",
+  "app.containers.ProjectsShowPage.VolunteeringSection.notOpenParticipation": "La partecipazione a questa attività non è attualmente aperta.",
   "app.containers.ProjectsShowPage.VolunteeringSection.signInLinkText": "accedi",
   "app.containers.ProjectsShowPage.VolunteeringSection.signUpLinkText": "iscriversi",
   "app.containers.ProjectsShowPage.VolunteeringSection.withdrawVolunteerButton": "Ritiro la mia offerta di volontariato",
