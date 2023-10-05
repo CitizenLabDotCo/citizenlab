@@ -101,14 +101,6 @@ class User < ApplicationRecord
       where('lower(email) = lower(?)', email).first
     end
 
-    # Returns the user record from the database which matches the specified
-    # email address (case-insensitive) or raises `ActiveRecord::RecordNotFound`.
-    # @param email [String] The email of the user
-    # @return [User] The user record
-    def find_by_cimail!(email)
-      find_by_cimail(email) || raise(ActiveRecord::RecordNotFound)
-    end
-
     # This method is used by knock to get the user.
     # Default is by email, but we want to compare
     # case insensitively and forbid login for
