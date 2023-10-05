@@ -47,11 +47,17 @@ const ReviewSection = () => {
     return <EmptyState />;
   }
 
-  const onDeleteIdea = (idToBeDeleted: string) => {
+  const handleSelectIdea = (ideaId: string) => {
+    setCurrentPageIndex(0);
+    setIdeaId(ideaId);
+  };
+
+  const handleDeleteIdea = (idToBeDeleted: string) => {
     deleteIdea(idToBeDeleted, {
       onSuccess: () => {
         if (ideaId === idToBeDeleted) {
           setIdeaId(null);
+          setCurrentPageIndex(0);
         }
       },
     });
@@ -119,8 +125,8 @@ const ReviewSection = () => {
           <IdeaList
             ideaId={ideaId}
             ideas={ideas}
-            onSelectIdea={setIdeaId}
-            onDeleteIdea={onDeleteIdea}
+            onSelectIdea={handleSelectIdea}
+            onDeleteIdea={handleDeleteIdea}
           />
         </Box>
         <Box
