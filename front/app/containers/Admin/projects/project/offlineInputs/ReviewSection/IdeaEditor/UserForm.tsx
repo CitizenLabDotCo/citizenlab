@@ -39,9 +39,9 @@ const UserForm = ({ userFormData, setUserFormData }: Props) => {
     }));
   };
 
-  const handleSelect = (selectedAuthor?: SelectedAuthor) => {
-    if (!selectedAuthor) {
-      updateUserFormData({ userState: 'no-user' });
+  const handleSelect = (selectedAuthor: SelectedAuthor) => {
+    if (selectedAuthor.userState === 'no-user') {
+      updateUserFormData({ userState: 'no-user', email: selectedAuthor.email });
       setExistingUserId(undefined);
       return;
     }
