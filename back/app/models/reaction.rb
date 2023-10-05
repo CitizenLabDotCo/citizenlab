@@ -68,15 +68,14 @@ class Reaction < ApplicationRecord
 
   def no_dup_verified_reaction
     # TO DO: Only check if verification required for initiative reaction?
+    return unless reactable_type == 'Initiative' && user
 
-    return unless reactable_type == 'Initiative' && user_id
-
-    user_validations_hashed_uids = User.find(user_id).verifications_hashed_uids
+    user_validations_hashed_uids = user.verifications_hashed_uids
     return unless user_validations_hashed_uids&.any?
 
     reactions_hashed_uids =
       Verification::ReactionsVerificationsHashedUid
-        .where(reaction_id: [Reaction.where(reactable: reactable)])
+        .where(reaction_id: [reactable.reactions])
         .pluck(:verification_hashed_uid)
         .uniq
     return unless reactions_hashed_uids&.any? { |uid| user_validations_hashed_uids.include?(uid) }
