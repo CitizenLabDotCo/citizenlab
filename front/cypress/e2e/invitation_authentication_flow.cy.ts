@@ -47,13 +47,14 @@ function deleteInvites() {
 
 describe('Invitation authentication flow', () => {
   before(() => {
+    cy.intercept('POST', '**/invites/bulk_create_xlsx').as('sendXlsxInvites');
     cy.setAdminLoginCookie();
     cy.visit('/admin/users/invitations');
 
     cy.get('input[type=file]').selectFile('cypress/fixtures/invites.xlsx');
-    cy.contains('Send out invitations').should('be.enabled');
-    cy.contains('Send out invitations').click();
-    cy.get('p.success').should('be.visible');
+    cy.get('.e2e-submit-wrapper-button').click();
+    cy.wait('@sendXlsxInvites');
+    cy.get('.e2e-submit-wrapper-button').contains('Success');
     cy.logout();
   });
 
