@@ -62,6 +62,8 @@ class CustomField < ApplicationRecord
   validates :required, inclusion: { in: [true, false] }
   validates :enabled, inclusion: { in: [true, false] }
   validates :hidden, inclusion: { in: [true, false] }
+  validates :other_option, inclusion: { in: [true, false] }, if: :support_options?
+  validates :other_option, inclusion: { in: [false] }, unless: :support_options?
   validates :code, inclusion: { in: CODES }, uniqueness: { scope: %i[resource_type resource_id] }, allow_nil: true
   validates :answer_visible_to, presence: true, inclusion: { in: [VISIBLE_TO_PUBLIC, VISIBLE_TO_ADMINS] }
 

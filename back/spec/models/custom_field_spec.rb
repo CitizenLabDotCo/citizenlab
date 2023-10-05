@@ -444,4 +444,18 @@ RSpec.describe CustomField do
       end
     end
   end
+
+  describe 'other_option' do
+    it 'can be enabled for a single select field' do
+      expect(build(:custom_field_select, other_option: true)).to be_valid
+    end
+
+    it 'can be enabled for a multi select field' do
+      expect(build(:custom_field_multiselect, other_option: true)).to be_valid
+    end
+
+    it 'cannot be enabled for a number field' do
+      expect(build(:custom_field_number, other_option: true)).to be_invalid
+    end
+  end
 end
