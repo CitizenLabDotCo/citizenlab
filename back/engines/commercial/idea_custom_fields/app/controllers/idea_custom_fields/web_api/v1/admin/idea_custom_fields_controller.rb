@@ -216,7 +216,7 @@ module IdeaCustomFields
       if field.options.pluck(:key).exclude?(CustomFieldOption::OTHER_OPTION_KEY)
         option = field.options.create!(
           key: CustomFieldOption::OTHER_OPTION_KEY,
-          title_multiloc: { 'en' => 'Other' } # TODO: get translations
+          title_multiloc: MultilocService.new.i18n_to_multiloc('symbols.other')
         )
         option.move_to_bottom
       end

@@ -1,6 +1,7 @@
 en:
   symbols:
     outside: somewhere else
+    other: Other
   nav_bar_items:
     home:
       title: Home

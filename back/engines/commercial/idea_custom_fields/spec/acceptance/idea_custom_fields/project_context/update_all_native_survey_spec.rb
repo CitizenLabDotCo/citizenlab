@@ -2240,7 +2240,7 @@ resource 'Idea Custom Fields' do
           type: 'custom_field_option',
           attributes: {
             key: CustomFieldOption::OTHER_OPTION_KEY,
-            title_multiloc: { en: 'Other' }, # TODO: add to fixtures
+            title_multiloc: { en: 'Other', 'fr-FR': 'Autre', 'nl-NL': 'Anders' },
             ordering: 2,
             created_at: an_instance_of(String),
             updated_at: an_instance_of(String)
