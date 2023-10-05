@@ -1383,6 +1383,7 @@
   "app.containers.ProjectsIndexPage.pageTitle": "المشاريع",
   "app.containers.ProjectsShowPage.VolunteeringSection.becomeVolunteerButton": "أنا أرغب في التطوع",
   "app.containers.ProjectsShowPage.VolunteeringSection.notLoggedIn": "يُرجى {signInLink} أو {signUpLink} أولًا للتطوع في هذا النشاط",
+  "app.containers.ProjectsShowPage.VolunteeringSection.notOpenParticipation": "المشاركة غير مفتوحة حاليا لهذا النشاط.",
   "app.containers.ProjectsShowPage.VolunteeringSection.signInLinkText": "تسجيل الدخول",
   "app.containers.ProjectsShowPage.VolunteeringSection.signUpLinkText": "التسجيل",
   "app.containers.ProjectsShowPage.VolunteeringSection.withdrawVolunteerButton": "أنا أسحب عرضي للتطوع",
