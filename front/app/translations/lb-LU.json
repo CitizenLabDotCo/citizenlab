@@ -1440,7 +1440,6 @@
   "app.containers.SignUp.emptyLastNameError": "Gitt Äre Familljennumm an",
   "app.containers.SignUp.firstNamesLabel": "Virnumm",
   "app.containers.SignUp.goToLogIn": "Hutt Dir schonn e Kont? {goToOtherFlowLink}",
-  "app.containers.SignUp.iHaveReadAndAgreeTo": "Gelies an averstanen {link}.",
   "app.containers.SignUp.iHaveReadAndAgreeToVienna": "Ech akzeptéieren, datt d'Donéeën ob mitgestalten.wien.gv.at verwennt ginn. Weider Informatioune fannt Dir {link}.",
   "app.containers.SignUp.invitationErrorText": "Är Invitatioun ass ofgelaf oder gouf scho benotzt. Wann Dir schonn den Invitatiounslink benotzt hutt fir e Kont ze kreéieren, probéiert Iech umellen. Soss, registréiert Iech fir en neie Kont ze kreéieren.",
   "app.containers.SignUp.lastNameLabel": "Familljennumm",

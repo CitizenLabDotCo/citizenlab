@@ -1440,7 +1440,6 @@
   "app.containers.SignUp.emptyLastNameError": "Vul je achternaam in",
   "app.containers.SignUp.firstNamesLabel": "Voornaam",
   "app.containers.SignUp.goToLogIn": "Heb je al een account? {goToOtherFlowLink}",
-  "app.containers.SignUp.iHaveReadAndAgreeTo": "{tenantName, select, veere {Ik heb het {link} gelezen en ik ga akkoord met het verwerken van mijn persoonsgegevens} other {Ik heb {link} gelezen en ga ermee akkoord.}}",
   "app.containers.SignUp.iHaveReadAndAgreeToVienna": "Ik ga ermee akkoord dat de gegevens worden gebruikt op mitgestalten.wien.gv.at. Meer informatie vindt u op {link}.",
   "app.containers.SignUp.invitationErrorText": "Je uitnodiging is verlopen of al gebruikt. Als je de uitnodigingslink al hebt gebruikt om een account aan te maken, probeer dan in te loggen. Registreer je anders om een nieuw account aan te maken.",
   "app.containers.SignUp.lastNameLabel": "Achternaam",

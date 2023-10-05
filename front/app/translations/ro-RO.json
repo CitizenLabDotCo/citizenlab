@@ -1112,7 +1112,6 @@
   "app.containers.SignUp.emptyLastNameError": "Introduceți numele dvs. de familie",
   "app.containers.SignUp.firstNamesLabel": "Prenume",
   "app.containers.SignUp.goToLogIn": "Ai deja un cont? {goToOtherFlowLink}",
-  "app.containers.SignUp.iHaveReadAndAgreeTo": "Am citit și sunt de acord cu {link}.",
   "app.containers.SignUp.iHaveReadAndAgreeToVienna": "Accept ca datele să fie utilizate pe mitgestalten.wien.gv.at. Informații suplimentare pot fi găsite {link}.",
   "app.containers.SignUp.lastNameLabel": "Numele de familie",
   "app.containers.SignUp.privacyPolicyNotAcceptedError": "Acceptați politica noastră de confidențialitate pentru a continua",
