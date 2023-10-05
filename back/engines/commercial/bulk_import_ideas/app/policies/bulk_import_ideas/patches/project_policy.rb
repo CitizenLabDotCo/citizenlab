@@ -18,6 +18,10 @@ module BulkImportIdeas
       def show_idea_import_file?
         active_moderator?
       end
+
+      def create_user?
+        active_moderator?
+      end
     end
   end
 end
