@@ -1440,6 +1440,8 @@
   "app.containers.SignUp.emptyLastNameError": "Digite o seu sobrenome",
   "app.containers.SignUp.firstNamesLabel": "Primeiro nome",
   "app.containers.SignUp.goToLogIn": "Já tem uma conta? {goToOtherFlowLink}",
+  "app.containers.SignUp.iHaveReadAndAgreeToPrivacy": "Eu li e concordo com {link}.",
+  "app.containers.SignUp.iHaveReadAndAgreeToTerms": "Eu li e concordo com {link}.",
   "app.containers.SignUp.iHaveReadAndAgreeToVienna": "Aceito que os dados serão utilizados em mitgestalten.wien.gv.at. Mais informações podem ser encontradas em {link}.",
   "app.containers.SignUp.invitationErrorText": "O seu convite expirou ou já foi utilizado. Se já utilizou a ligação de convite para criar uma conta, tente iniciar sessão. Caso contrário, inscreva-se para criar uma nova conta.",
   "app.containers.SignUp.lastNameLabel": "Sobrenome",
