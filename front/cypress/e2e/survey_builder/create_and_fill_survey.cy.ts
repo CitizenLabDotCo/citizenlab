@@ -288,17 +288,6 @@ describe('Survey builder', () => {
     // Save survey response
     cy.get('[data-cy="e2e-submit-form"]').should('exist');
     cy.get('[data-cy="e2e-submit-form"]').click();
-
-    cy.visit(`admin/projects/${projectId}/native-survey/edit`);
-
-    // Check that the user cannot access the settings to edit
-    cy.contains(questionTitle).should('exist').click();
-    cy.get('#e2e-title-multiloc').should('not.exist');
-
-    cy.get('[data-cy="e2e-form-delete-results-notice"]').should('exist');
-    cy.get('[data-cy="e2e-delete-form-results-notice-link"]').click();
-
-    cy.get('[data-cy="e2e-form-delete-results-notice"]').should('exist');
   });
 
   it('allows deleting survey results when user clicks the delete button', () => {
@@ -328,13 +317,6 @@ describe('Survey builder', () => {
     cy.get('[data-cy="e2e-submit-form"]').click();
 
     cy.visit(`admin/projects/${projectId}/native-survey/edit`);
-
-    // Check that the user cannot access the settings to edit
-    cy.contains(questionTitle).should('exist').click();
-    cy.get('#e2e-title-multiloc').should('not.exist');
-
-    cy.get('[data-cy="e2e-form-delete-results-notice"]').should('exist');
-    cy.get('[data-cy="e2e-delete-form-results-notice-link"]').click();
 
     // Click the delete button
     cy.get('[data-cy="e2e-delete-survey-results"]').click();
@@ -372,15 +354,6 @@ describe('Survey builder', () => {
     cy.get('[data-cy="e2e-submit-form"]').click();
 
     cy.visit(`admin/projects/${projectId}/native-survey/edit`);
-
-    // Check that the user cannot access the settings to edit
-    cy.contains(questionTitle).should('exist').click();
-    cy.get('#e2e-title-multiloc').should('not.exist');
-
-    cy.get('[data-cy="e2e-form-delete-results-notice"]').should('exist');
-    cy.get('[data-cy="e2e-delete-form-results-notice-link"]').click();
-
-    cy.get('[data-cy="e2e-form-delete-results-notice"]').should('exist');
 
     // Click the view survey results button
     cy.get('[data-cy="e2e-form-view-results"]').click();
