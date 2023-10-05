@@ -1383,6 +1383,7 @@
   "app.containers.ProjectsIndexPage.pageTitle": "Projeten",
   "app.containers.ProjectsShowPage.VolunteeringSection.becomeVolunteerButton": "Ech well  hëllefen",
   "app.containers.ProjectsShowPage.VolunteeringSection.notLoggedIn": "Wgl. {signInLink} oder {signUpLink} fir d’éischt fir deelzehuelen",
+  "app.containers.ProjectsShowPage.VolunteeringSection.notOpenParticipation": "D'Participatioun ass momentan net op fir dës Aktivitéit.",
   "app.containers.ProjectsShowPage.VolunteeringSection.signInLinkText": "Umellen",
   "app.containers.ProjectsShowPage.VolunteeringSection.signUpLinkText": "aschreiwen",
   "app.containers.ProjectsShowPage.VolunteeringSection.withdrawVolunteerButton": "Ech ka net méi hëllefen",
