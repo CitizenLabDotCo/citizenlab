@@ -36,7 +36,7 @@ import { saveSurveyAsPDF } from '../saveSurveyAsPDF';
 import { saveAs } from 'file-saver';
 
 // utils
-import { requestBlob } from 'utils/request';
+import { requestBlob } from 'utils/requestBlob';
 import { isNilOrError } from 'utils/helperUtils';
 
 type FormActionsProps = {

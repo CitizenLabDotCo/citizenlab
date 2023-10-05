@@ -22,7 +22,7 @@ import messages from './messages';
 // utils
 import { API_PATH } from 'containers/App/constants';
 import { saveAs } from 'file-saver';
-import { requestBlob } from 'utils/request';
+import { requestBlob } from 'utils/requestBlob';
 import { isCLErrorsWrapper } from 'utils/errorUtils';
 
 // typings

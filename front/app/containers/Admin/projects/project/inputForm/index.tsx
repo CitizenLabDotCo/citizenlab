@@ -25,8 +25,8 @@ import { isNilOrError } from 'utils/helperUtils';
 // typings
 import { IPhaseData } from 'api/phases/types';
 import { ParticipationMethod } from 'utils/participationContexts';
-import { requestBlob } from 'utils/request';
-import { API_PATH } from '../../../../App/constants';
+import { requestBlob } from 'utils/requestBlob';
+import { API_PATH } from 'containers/App/constants';
 import { saveAs } from 'file-saver';
 
 export const IdeaForm = () => {

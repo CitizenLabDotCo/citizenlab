@@ -1,5 +1,5 @@
 // utils
-import { requestBlob } from 'utils/request';
+import { requestBlob } from 'utils/requestBlob';
 import { saveAs } from 'file-saver';
 import { reportError } from 'utils/loggingUtils';
 

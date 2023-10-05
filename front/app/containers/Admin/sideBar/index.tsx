@@ -34,7 +34,7 @@ import { useLocation } from 'react-router-dom';
 import useAuthUser from 'api/me/useAuthUser';
 import useIdeasCount from 'api/idea_count/useIdeasCount';
 import useInitiativesCount from 'api/initiative_counts/useInitiativesCount';
-import { isAdmin } from 'services/permissions/roles';
+import { isAdmin } from 'utils/permissions/roles';
 
 const Menu = styled.div`
   z-index: 10;
