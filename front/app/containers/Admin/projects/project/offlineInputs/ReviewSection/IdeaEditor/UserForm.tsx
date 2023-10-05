@@ -130,7 +130,7 @@ const UserForm = ({ userFormData, setUserFormData }: Props) => {
                   onChange={(first_name) => updateUserFormData({ first_name })}
                 />
               </Box>
-              <Box mt="20px">
+              <Box mt="20px" mb="20px">
                 <Input
                   type="text"
                   value={userFormData.last_name}
@@ -142,7 +142,7 @@ const UserForm = ({ userFormData, setUserFormData }: Props) => {
           )}
         </Box>
       ) : null}
-      <Box mt="20px">
+      <Box mt="8px">
         <Checkbox
           checked={userFormData.consent}
           onChange={() =>
