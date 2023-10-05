@@ -1,83 +1,19 @@
 hr:
   email_campaigns:
     campaign_type_description:
-      "manual": Službene poruke
-      "admin_rights_received": Dodjela administratorskih prava
-      "comment_deleted_by_admin": Brisanje mog komentara
-      "comment_marked_as_spam": Izvješće o neželjenim komentarima
-      "comment_on_your_comment": Odgovor na moj komentar
-      "comment_on_idea_you_follow": Komentar na ideju koju slijedite
-      "comment_on_initiative_you_follow": Komentar na prijedlog koji slijedite
-      "cosponsor_of_your_initiative": Korisnik prihvaća moj poziv da susponzorira moj prijedlog
-      "event_registration_confirmation": Potvrda prijave za događaj
-      "first_idea_published": Objava moje prve ideje
-      "idea_marked_as_spam": Izvješće o neželjenoj ideji
-      "idea_published": Objava moje ideje
-      "initiative_assigned_to_you": Dodijeljen mi je prijedlog
-      "initiative_marked_as_spam": Izvješće o neželjenom prijedlogu
-      "initiative_published": Objava mog prijedloga
-      "invitation_to_cosponsor_initiative": Poziv za susponzoriranje prijedloga
-      "initiative_resubmitted_for_review": Prijedlog ponovno poslan na pregled
-      "invite_received": Pozivnica
-      "invite_reminder": Podsjetnik o pozivnici
-      "internal_comment_on_idea_assigned_to_you": Interni komentar na unos koji mi je dodijeljen
-      "internal_comment_on_idea_you_commented_internally_on": Interni komentar na unos koji sam interno komentirao
-      "internal_comment_on_idea_you_moderate": Interni komentar na unos u projektu ili mapi kojom upravljam
-      "internal_comment_on_initiative_assigned_to_you": Interni komentar na prijedlog koji mi je dodijeljen
-      "internal_comment_on_initiative_you_commented_internally_on": Interni komentar na prijedlog Ja sam interno komentirao
-      "internal_comment_on_unassigned_initiative": Interni komentar na nedodijeljeni prijedlog
-      "internal_comment_on_unassigned_unmoderated_idea": Interni komentar na nedodijeljeni unos u neupravljanom projektu
-      "internal_comment_on_your_internal_comment": Interni komentar na moj interni komentar
-      "mention_in_official_feedback": Spominjanje u objavi
-      "mention_in_internal_comment": Spomenuti u internom komentaru
-      "new_comment_for_admin": Novi komentar u projektu kojim upravljam
-      "new_idea_for_admin": Nova ideja u projektu kojim upravljam
-      "new_initiative_for_admin": Novi prijedlog
-      "official_feedback_on_idea_you_follow": Ažuriranje ideje koju slijedite
-      "official_feedback_on_initiative_you_follow": Ažuriranje prijedloga koji slijedite
-      "password_reset": Ponovno postavljanje lozinke
-      "project_moderation_rights_received": Dodjela prava za moderiranje projekta
-      "project_folder_moderation_rights_received": Primljena prava upravitelja mape
-      "project_phase_started": Nova faza projekta
-      "project_phase_upcoming": Nadolazeća nova faza projekta
-      "project_published": Projekt objavljen
-      "status_change_on_idea_you_follow": Promjena statusa ideje koju slijedite
-      "status_change_on_initiative_you_follow": Promjena statusa ponude koju pratite
-      "threshold_reached_for_admin": Prijedlog je dosegao prag glasovanja
-      "welcome": Nakon registracije
-      "admin_digest": Tjedni pregled za administratore
-      "moderator_digest": Tjedni pregled za voditelja projekata
-      "assignee_digest": Tjedni pregled dodijeljenih ideja
-      "user_digest": Tjedni pregled
-      "voting_basket_submitted": Potvrda glasovanja
-      "voting_basket_not_submitted": Glasovi nisu poslani
-      "voting_last_chance": Zadnja prilika za glasanje
-      "voting_results": Rezultati glasovanja
-      "your_proposed_initiatives_digest": Tjedni pregled vaših prijedloga
-    general:
-      by_author: 'od %{authorName}'
-      author_wrote: '%{authorName} je napisao:'
-      cta_goto_idea: 'Idi na ovu ideju'
-      cta_goto_proposal: 'Idi na ovaj prijedlog'
-      cta_goto_project: 'Idi na ovaj projekt'
-    schedules:
-      weekly:
-        "0": "Tjedno, nedjeljom u %{hourOfDay}"
-        "1": "Tjedno, ponedjeljkom u %{hourOfDay}"
-        "2": "Tjedno utorkom %{hourOfDay}"
-        "3": "Tjedno, srijedom u %{hourOfDay}"
-        "4": "Tjedno, četvrtkom u %{hourOfDay}"
-        "5": "Tjedno, petkom u %{hourOfDay}"
-        "6": "Tjedno, subotom u %{hourOfDay}"
+      "1": "Tjedno, ponedjeljkom u %{hourOfDay}"
+      "2": "Tjedno utorkom %{hourOfDay}"
+      "3": "Tjedno, srijedom u %{hourOfDay}"
+      "4": "Tjedno, četvrtkom u %{hourOfDay}"
+      "5": "Tjedno, petkom u %{hourOfDay}"
+      "6": "Tjedno, subotom u %{hourOfDay}"
     footer:
-      "link_privacy_policy": "Pravila o privatnosti"
       "link_terms_conditions": "Uvjeti korištenja"
       "link_unsubscribe": "Odjavi se"
       "powered_by": "Omogućava"
       "statement": "Ovaj e-mail Vam je poslao CitizenLab u ime %{organizationName}, jer ste registrirani korisnik na platformi %{organizationLink}. Možete da %{unsubscribeLink} ako ubuduće ne želite primati ove e-poruke."
       "unsubscribe_text": "odjavi se"
-    follow:
-      "unfollow_here": "Primili ste ovu obavijest zbog stavke koju pratite. <a href=\"%{unfollow_url}\">Ovdje ga možete prestati pratiti.</a>"
+    follow: "unfollow_here\": \"Primili ste ovu obavijest zbog stavke koju pratite. <a href=\"%{unfollow_url}\">Ovdje ga možete prestati pratiti.</a>"
     comment_deleted_by_admin:
       reason: 'Razlog zašto je vaš komentar izbrisan:'
       cta_view: 'Pogledajte ovu objavu'
