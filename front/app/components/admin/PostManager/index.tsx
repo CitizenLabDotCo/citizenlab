@@ -237,6 +237,7 @@ const PostManager = ({
   };
 
   const closePreview = () => {
+    setPreviewPostId(null);
     setPreviewMode('view');
   };
   // End Modal Preview

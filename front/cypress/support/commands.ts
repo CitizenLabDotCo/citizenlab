@@ -23,6 +23,7 @@ declare global {
       setLoginCookie: typeof setLoginCookie;
       apiSignup: typeof apiSignup;
       apiCreateAdmin: typeof apiCreateAdmin;
+      apiConfirmUser: typeof apiConfirmUser;
       apiUpdateCurrentUser: typeof apiUpdateCurrentUser;
       apiRemoveUser: typeof apiRemoveUser;
       apiGetUsersCount: typeof apiGetUsersCount;
@@ -249,11 +250,20 @@ export function apiSignup(
   });
 }
 
+export function apiConfirmUser(email: string, password: string) {
+  return cy.apiLogin(email, password).then((response) => {
+    const jwt = response.body.jwt;
+
+    return emailConfirmation(jwt);
+  });
+}
+
 export function apiCreateAdmin(
   firstName: string,
   lastName: string,
   email: string,
-  password: string
+  password: string,
+  registration_completed_at?: string
 ) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -448,13 +458,13 @@ export function getProjectById(projectId: string) {
   });
 }
 
-export function getTopics() {
+export function getTopics({ excludeCode }: { excludeCode?: string }) {
   return cy.request({
     headers: {
       'Content-Type': 'application/json',
     },
     method: 'GET',
-    url: 'web_api/v1/topics',
+    url: `web_api/v1/topics?exclude_code=${excludeCode}`,
   });
 }
 
@@ -1535,6 +1545,7 @@ Cypress.Commands.add('signUp', signUp);
 Cypress.Commands.add('apiLogin', apiLogin);
 Cypress.Commands.add('apiSignup', apiSignup);
 Cypress.Commands.add('apiCreateAdmin', apiCreateAdmin);
+Cypress.Commands.add('apiConfirmUser', apiConfirmUser);
 Cypress.Commands.add('apiUpdateCurrentUser', apiUpdateCurrentUser);
 Cypress.Commands.add('apiRemoveUser', apiRemoveUser);
 Cypress.Commands.add('apiGetUsersCount', apiGetUsersCount);

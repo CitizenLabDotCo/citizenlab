@@ -69,4 +69,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.projects.project.analysis.supportArticle',
     defaultMessage: 'Support Article',
   },
+  supportArticleLink: {
+    id: 'app.containers.AdminPage.projects.project.analysis.supportArticleLink',
+    defaultMessage:
+      'https://support.citizenlab.co/en/articles/8316692-ai-analysis',
+  },
 });
