@@ -1,15 +1,8 @@
 tr:
   email_campaigns:
     campaign_type_description:
-      "inappropriate_content_flagged": Uygunsuz içerik işaretlendi
-    admin_campaign_type_description:
-      "inappropriate_content_flagged": Uygunsuz içerik işaretlendi - yöneticiler
-    inappropriate_content_flagged:
-      subject: 'Platformunuzdaki bir yayın, incelenmek üzere işaretlendi'
-      header_title: 'Platformunuzdaki bir yayın, incelenmek üzere işaretlendi'
-      comment_author: '%{authorName} yorum yaptı:'
-      idea_author: '%{authorName} bir yayın gönderdi:'
-      initiative_author: '%{authorName} bir teklif gönderdi:'
-      this_post_was_flagged: >
-        <p>Bu yayının uygunsuz içerik içeriyor olabileceği otomatik olarak algılandı. Bu bildirimi size, yayını kendi moderasyon yönergelerinize uygun olarak inceleyebilmeniz için gönderiyoruz.</p><p>Yayında uygunsuz içerik yoksa uyarıyı platformunuzdaki yönetici panelinde bulunan Etkinlik sekmesinden kaldırabilirsiniz.</p>
-      cta_review_post: 'Yayını inceleyin'
+      ""inappropriate_content_flagged"":
+        Inappropriate content flagged admin_campaign_type_description:
+          ""inappropriate_content_flagged"":
+            Inappropriate content flagged - admins inappropriate_content_flagged:
+              subject: 'Platformunuzdaki bir gönderi incelenmek üzere işaretlendi'' header_title: ''Platformunuzdaki bir gönderi incelenmek üzere işaretlendi'' comment_author: ''%{authorName} yorum yaptı:'' idea_author: ''%{authorName} bir gönderi gönderdi:'' initiative_author: ''%{authorName} bir teklif sundu:'' this_post_was_flagged: > <p>Bu gönderi otomatik olarak potansiyel olarak uygunsuz içerik içeriyor olarak algılandı. Gönderiyi kendi moderasyon yönergelerinize uygun olarak inceleyebilmeniz için size bu bildirimi gönderiyoruz.</p><p>Gönderi uygunsuz içerik içermiyorsa, uyarıyı yönetici panelindeki Etkinlik sekmesindeki platformunuz aracılığıyla kaldırabilirsiniz.</p> cta_review_post: ''Gönderiyi gözden geçir'
