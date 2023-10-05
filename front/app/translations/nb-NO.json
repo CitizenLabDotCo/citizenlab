@@ -1440,6 +1440,8 @@
   "app.containers.SignUp.emptyLastNameError": "Oppgi ditt etternavn",
   "app.containers.SignUp.firstNamesLabel": "Fornavn",
   "app.containers.SignUp.goToLogIn": "Har du en konto allerede? {goToOtherFlowLink}",
+  "app.containers.SignUp.iHaveReadAndAgreeToPrivacy": "Jeg har lest og godtar {link}.",
+  "app.containers.SignUp.iHaveReadAndAgreeToTerms": "Jeg har lest og godtar {link}.",
   "app.containers.SignUp.iHaveReadAndAgreeToVienna": "Jeg godtar at opplysningene blir brukt på mitgestalten.wien.gv.at. Du finner mer informasjon {link}.",
   "app.containers.SignUp.invitationErrorText": "Invitasjonen din er utløpt eller har allerede blitt brukt. Hvis du allerede har brukt invitasjonslenken til å opprette en konto, kan du prøve å logge på. Ellers kan du registrere deg for å opprette en ny konto.",
   "app.containers.SignUp.lastNameLabel": "Etternavn",
