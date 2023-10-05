@@ -146,9 +146,13 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
       return;
     }
 
-    const action = getUserFormDataAction(userFormData, author, ideaMetadata);
+    const userFormDataAction = getUserFormDataAction(
+      userFormData,
+      author,
+      ideaMetadata
+    );
 
-    console.log(action); // TODO
+    console.log(userFormDataAction); // TODO
 
     const {
       location_description,
@@ -172,6 +176,13 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
           ...supportedFormData,
           ...(location_description ? { location_description } : {}),
           ...(location_point_geojson ? { location_point_geojson } : {}),
+          ...(userFormDataAction === 'remove-assigned-user'
+            ? { author_id: null }
+            : {}),
+          ...(userFormDataAction === 'assign-existing-user-to-idea' &&
+          userFormData.user_id
+            ? { author_id: userFormData.user_id }
+            : {}),
         },
       });
 
