@@ -45,10 +45,10 @@ interface Props {
 }
 
 const AuthorInput = ({ selectedAuthor, onSelect }: Props) => {
-  if (['new-user', 'existing-user'].includes(selectedAuthor.userState)) {
+  if (selectedAuthor.userState !== 'invalid-email') {
     const handleClear = () => {
       onSelect({
-        userState: 'no-user',
+        userState: 'invalid-email',
         email: undefined,
       });
     };

@@ -38,9 +38,9 @@ const UserForm = ({ userFormData, setUserFormData }: Props) => {
   };
 
   const handleSelect = (selectedAuthor: SelectedAuthor) => {
-    if (selectedAuthor.userState === 'no-user') {
+    if (selectedAuthor.userState === 'invalid-email') {
       updateUserFormData({
-        userState: 'no-user',
+        userState: 'invalid-email',
         email: selectedAuthor.email,
         user_id: undefined,
       });

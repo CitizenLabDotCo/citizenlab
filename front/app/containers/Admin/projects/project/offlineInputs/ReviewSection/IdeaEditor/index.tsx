@@ -31,7 +31,7 @@ import { isValidData } from 'components/Form/utils';
 import { customAjv } from 'components/Form';
 import { getFormValues as getIdeaFormValues } from 'containers/IdeasEditPage/utils';
 import { geocode } from 'utils/locationTools';
-import { getNextIdeaId, getUserFormValues } from './utils';
+import { getNextIdeaId, getUserFormValues, isUserFormDataValid } from './utils';
 
 // typings
 import { FormData } from 'components/Form/typings';
@@ -118,6 +118,8 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
       [ideaId]: ideaFormData,
     }));
   };
+
+  const userFormDataValid = isUserFormDataValid(userFormData);
 
   const ideaFormDataValid = isValidData(
     schema,
@@ -238,7 +240,7 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
                 icon="check"
                 w="100%"
                 processing={loadingApproveIdea}
-                disabled={!ideaFormDataValid}
+                disabled={!userFormDataValid || !ideaFormDataValid}
                 onClick={onApproveIdea}
               >
                 <FormattedMessage {...messages.approve} />

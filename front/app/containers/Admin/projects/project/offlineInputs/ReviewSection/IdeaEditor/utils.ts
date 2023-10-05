@@ -43,7 +43,7 @@ const getUserFormDefaultValues = (
 
   if (!author) {
     return {
-      userState: 'no-user',
+      userState: 'invalid-email',
       first_name: undefined,
       last_name: undefined,
       email: undefined,
@@ -66,4 +66,20 @@ const getUserFormDefaultValues = (
     email,
     consent,
   };
+};
+
+export const isUserFormDataValid = (userFormData: UserFormData | null) => {
+  if (!userFormData) return false;
+  if (!userFormData.consent) return true;
+
+  if (['no-user', 'invalid-email'].includes(userFormData.userState)) {
+    return false;
+  }
+
+  const { email } = userFormData;
+  const validEmail = email ? isValidEmail(email) : false;
+
+  if (!validEmail) return false;
+
+  return true;
 };
