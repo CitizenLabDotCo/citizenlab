@@ -87,7 +87,7 @@ const MultiSelectCheckboxControl = ({
         subtextSupportsHtml
       />
       <Box display="block" id="e2e-multiselect-control">
-        <Text mt="4px" mb={answerNotPublic ? '4px' : 'auto'} fontSize="s">
+        <Text mt="4px" mb={answerNotPublic ? '4px' : '8px'} fontSize="s">
           {getInstructionMessage()}
         </Text>
         {answerNotPublic && (
@@ -101,6 +101,11 @@ const MultiSelectCheckboxControl = ({
             mb="12px"
             key={option.value}
             borderRadius="3px"
+            onBlur={() => {
+              setTimeout(() => {
+                setDidBlur(true);
+              }, 300);
+            }}
           >
             <Checkbox
               size="20px"
@@ -120,7 +125,6 @@ const MultiSelectCheckboxControl = ({
                 } else {
                   handleChange(path, [...dataArray, option.value]);
                 }
-                setDidBlur(true);
               }}
             />
           </StyledBox>
