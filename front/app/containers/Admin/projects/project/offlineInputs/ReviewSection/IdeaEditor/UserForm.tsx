@@ -146,7 +146,7 @@ const UserForm = ({ userFormData, setUserFormData }: Props) => {
           onChange={() =>
             updateUserFormData({ consent: !userFormData.consent })
           }
-          label="User consent"
+          label="User consent (create user account)"
         />
       </Box>
     </Box>

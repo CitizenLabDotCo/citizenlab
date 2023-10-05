@@ -65,14 +65,7 @@ const AuthorInput = ({ selectedAuthor, onSelect }: Props) => {
           }}
           onClick={handleClear}
         >
-          <StyledIcon
-            name="close"
-            // position="absolute"
-            width="20px"
-            height="20px"
-            // right="6px"
-            // mt="-1px"
-          />
+          <StyledIcon name="close" width="20px" height="20px" />
         </button>
       </FakeInput>
     );

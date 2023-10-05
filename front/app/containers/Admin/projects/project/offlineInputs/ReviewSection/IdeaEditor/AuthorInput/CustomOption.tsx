@@ -76,7 +76,7 @@ const CustomOption = ({ children, innerProps, data, options }: Props) => {
     return (
       <NewUserButton {...innerProps} disabled={invalidEmail}>
         {invalidEmail ? (
-          <b>Invalid email</b>
+          <b>Enter a valid email to create a new account</b>
         ) : (
           <>
             <Icon
