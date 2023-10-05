@@ -46,25 +46,19 @@ function deleteInvites() {
 }
 
 describe('Invitation authentication flow', () => {
-  before(() => {
+  it('has correct invitations', () => {
     cy.intercept('POST', '**/invites/bulk_create_xlsx').as('sendXlsxInvites');
     cy.setAdminLoginCookie();
     cy.visit('/admin/users/invitations');
-
     cy.get('input[type=file]').selectFile('cypress/fixtures/invites.xlsx');
     cy.get('.e2e-submit-wrapper-button').click();
     cy.wait('@sendXlsxInvites');
     cy.get('.e2e-submit-wrapper-button').contains('Success');
-    cy.logout();
-  });
 
-  it('has correct invitations', () => {
-    cy.goToLandingPage();
-    cy.setAdminLoginCookie();
     cy.visit('/admin/users/invitations/all');
-
     cy.contains('jack@johnson.com');
     cy.contains('Jack Johnson');
+    cy.contains('john@jackson.com');
     cy.contains('John Jackson');
 
     cy.logout();
