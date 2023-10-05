@@ -13,6 +13,7 @@ sv:
       "powered_by": "Drivs av"
       "statement": "Det här e-postmeddelandet har skickats till dig från CitizenLab på uppdrag av %{organizationName}, eftersom du är en registrerad användare av %{organizationLink}. Du kan %{unsubscribeLink} om du inte vill fortsätta få dessa e-postmeddelanden."
       "unsubscribe_text": "avsluta prenumeration"
+    follow: "unfollow_here\": \"Du har fått detta meddelande på grund av ett objekt som du följer. <a href=\"%{unfollow_url}\">Du kan avfölja det här.</a>"
     comment_deleted_by_admin:
       reason: 'Anledningen till att din kommentar togs bort:'
       cta_view: 'Se den här idén'
@@ -67,13 +68,6 @@ sv:
       today: I dag
       wrong_content: 'Kommentaren är inte relevant.'
       yesterday: I går
-    comment_on_your_initiative:
-      commented: '%{authorFirstName} skrev:'
-      cta_reply_to: 'Svar till %{commentAuthor}'
-      event_description: '%{authorNameFull} lämnade en reaktion för ditt initiativ %{initiativeTitle}. Klicka på knappen nedan för att fortsätta konversationen med %{authorName}.'
-      main_header: '%{commentAuthor} kommenterade ditt initiativ'
-      subject: 'Du har fått en kommentar på %{organizationName}s plattform'
-      preheader: '%{authorName} lämnade en kommentar för ditt initiativ för %{organizationName}'
     cosponsor_of_your_initiative:
       cta_reply_to: 'Visa ditt förslag'
       event_description_initiative: 'Grattis! %{cosponsorName} har accepterat din inbjudan att vara med och sponsra ditt förslag.'
@@ -96,7 +90,6 @@ sv:
       title_initiatives_past_week: 'Nya förslag som tilldelats dig'
       title_successful_initiatives_past_week: 'Förslag som tilldelats dig som nådde tröskeln'
     idea_marked_as_spam:
-      by_author: 'av %{authorName}'
       cta_review_idea: 'Granska idé'
       report_inappropriate_offensive_content: 'Jag tycker att det här innehållet är olämpligt eller stötande.'
       report_not_an_idea: 'Det här innehållet är inte en idé och hör inte hemma här.'
@@ -105,7 +98,6 @@ sv:
       reported_this_because: '%{reporterFirstName} rapporterade det här eftersom:'
       title_spam_report: '%{firstName} %{lastName} rapporterade skräppost'
     initiative_marked_as_spam:
-      by_author: 'av %{authorName}'
       cta_review_initiative: 'Granska förslag'
       report_inappropriate_offensive_content: 'Jag tycker att det här innehållet är olämpligt eller stötande.'
       report_not_an_initiative: 'Det här innehållet är inte ett förslag och hör inte hemma här.'
@@ -114,7 +106,6 @@ sv:
       reported_this_because: '%{reporterFirstName} rapporterade det här eftersom:'
       title_spam_report: '%{firstName} %{lastName} rapporterade skräppost'
     initiative_assigned_to_you:
-      by_author: 'av %{authorName}'
       cta_reply_to: 'Ge återkoppling till %{authorName}'
       event_description_initiative: 'Ett förslag har tilldelats dig. Ge återkoppling genom att skriva en officiell uppdatering eller genom att ändra statusen.'
       main_header: '%{firstName}, du har ett nytt uppdrag'
@@ -157,7 +148,6 @@ sv:
       action_share_fb: 'Låt dina vänner veta på %{fbLink}'
       action_share_link: 'Dela den via valfri kanal genom att kopiera %{link}'
       action_share_twitter: 'Informera dina följare på %{twitterLink}'
-      cta_view_initiative: 'Gå till ditt förslag'
       link: länk
       main_header: 'Du har publicerat ett förslag! Nu samlar vi stöd för det.'
       message_next_steps: '%{userFirstName}, ditt förslag har publicerats på plattformen för deltagande för %{organizationName}. Du kommer att meddelas när andra personer interagerar med ditt förslag. Ta reda på vilka steg du kan utföra nu nedan.'
@@ -165,24 +155,7 @@ sv:
       preheader: 'Tack för att du delar ditt förslag %{initiativeTitle} för %{organizationName}. Nästa steg är att få stöd för ditt förslag genom att dela det i ditt nätverk.'
       send_email: e-post
       subject: 'Ditt förslag publicerades på plattformen för %{organizationName}'
-    mention_in_official_feedback:
-      by_author: 'av %{authorName}'
-      commented: '%{organizationName} skrev:'
-      cta_reply_to: 'Svara till %{organizationName}'
-      event_description: '%{organizationName} nämnde dig i sin återkoppling för idén %{post}. Klicka på länken nedan för att gå in i konversationen med %{organizationName}'
-      main_header: 'Du har nämnts'
-      subject: '%{organizationName} nämnde dig i sin återkoppling'
-      preheader: '%{commentAuthor} nämnde dig i återkoppling'
-    new_comment_on_commented_idea:
-      commented: '%{commentAuthor} skrev:'
-      cta_reply_to: 'Svar till %{commentAuthor}'
-      event_description: '%{commentAuthorFull} skrev också en kommentar för idén %{ideaTitle} på plattformen för deltagande för %{organizationName}. Klicka på knappen nedan för att starta konversationen med %{commentAuthor}.'
-      main_header: '%{commentAuthor} skrev en kommentar för samma idé'
-      subject: 'Det finns en annan kommentar för idén du kommenterat'
-      preheader: '%{commentAuthor} lämnade också en kommentar för en idé för %{organizationName}'
     mention_in_comment:
-      by_author: 'av %{authorName}'
-      commented: '%{commentAuthor} skrev:'
       cta_reply_to: 'Svar till %{commentAuthor}'
       event_description: '%{commentAuthorFull} har nämnt dig i sin kommentar för idén %{post}. Klicka på länken nedan för att gå in i konversationen med %{commentAuthor}'
       main_header: 'Personer pratar om dig'
@@ -208,15 +181,7 @@ sv:
       yesterday_by_author: 'Igår av %{author}'
       today_by_author: 'Idag av %{author}'
       x_days_ago_by_author: '%{x} dagar sedan av %{author}'
-    new_comment_on_commented_initiative:
-      commented: '%{commentAuthor} skrev:'
-      cta_reply_to: 'Svar till %{commentAuthor}'
-      event_description: '%{commentAuthorFull} skrev också en kommentar för förslaget %{initiativeTitle} på plattformen för deltagande för %{organizationName}. Klicka på knappen nedan för att starta konversationen med %{commentAuthor}.'
-      main_header: '%{commentAuthor} skrev en kommentar för samma förslag'
-      subject: 'Det finns en annan kommentar för förslaget du kommenterat'
-      preheader: '%{commentAuthor} lämnade också en kommentar för ett förslag för %{organizationName}'
     new_comment_for_admin:
-      by_author: 'av %{authorName}'
       commented: '%{authorFirstName} kommenterade:'
       cta_reply_to: 'Visa %{commentAuthor}s kommentar'
       days_ago: '%{numberOfDays} dagar sedan'
@@ -226,41 +191,25 @@ sv:
       preheader: '%{authorName} lämnade en kommentar'
       today: I dag
       yesterday: I går
-    comment_on_your_idea:
-      by_author: 'av %{authorName}'
-      commented: '%{authorFirstName} skrev:'
-      cta_reply_to: 'Svar till %{commentAuthor}'
-      event_description: '%{authorNameFull} lämnade en reaktion för din idé %{ideaTitle}. Klicka på knappen nedan för att fortsätta konversationen med %{authorName}.'
-      main_header: '%{authorName} kommenterade din idé'
-      subject: 'Du har fått en kommentar på %{organizationName}s plattform'
-      preheader: '%{authorName} lämnade en kommentar för din idé för %{organizationName}'
-    new_comment_on_reacted_initiative:
-      commented: '%{commentAuthor} skrev:'
-      cta_reply_to: 'Se detta förslag'
-      event_description: '%{commentAuthor} har kommenterat förslaget ''%{initiativeTitle}'' som du har röstat på. Delta i diskussionen om plattformen för %{organizationName}!'
-      main_header: '%{firstName}, det finns en ny kommentar till det förslag du har röstat på'
-      subject: 'Det finns en ny kommentar till det förslag du har röstat på'
-      preheader: '%{commentAuthor} lämnat en kommentar till det förslag som du har röstat om på plattformen %{organizationName}'
-    new_comment_on_reacted_idea:
-      commented: '%{commentAuthor} kommenterade:'
+    comment_on_idea_you_follow:
       cta_reply_to: 'Svara på %{commentAuthor}'
-      days_ago: '%{numberOfDays} dagar sedan'
-      event_description: '%{commentAuthor} har kommenterat idén ''%{ideaTitle}'' som du har reagerat på. Delta i diskussionen på plattformen %{organizationName}!'
-      main_header: '%{firstName}, det finns en ny kommentar till den idé du har reagerat på'
-      subject: 'Det finns en ny kommentar till den idé du har reagerat på'
-      preheader: '%{commentAuthor} lämnat en kommentar om den idé du har reagerat på på plattformen för %{organizationName}'
-      today: Idag
-      yesterday: Igår
+      event_description: '%{authorNameFull} placerade en reaktion på idén ''%{ideaTitle}''. Klicka på knappen nedan för att fortsätta konversationen med %{authorName}.'
+      main_header: '%{authorName} kommenterat en idé som du följer'
+      subject: 'Det finns en ny kommentar till en idé du följer'
+      preheader: '%{authorName} lämnade en kommentar till en idé för %{organizationName}'
+    comment_on_initiative_you_follow:
+      cta_reply_to: 'Svara på %{commentAuthor}'
+      event_description: '%{authorNameFull} placerade en reaktion på initiativet ''%{initiativeTitle}''. Klicka på knappen nedan för att fortsätta samtalet med %{authorName}.'
+      main_header: '%{commentAuthor} kommenterat ett initiativ som du följer'
+      subject: 'Det finns en ny kommentar till det förslag du följer'
+      preheader: '%{authorName} lämnade en kommentar om ett initiativ för %{organizationName}'
     new_initiative_for_admin:
-      by_author: 'av %{authorName}'
-      commented: '%{authorFirstName} skrev:'
       cta_reply_to: 'Ge återkoppling till %{authorName}'
       event_description: '%{authorName} har publicerat ett nytt förslag på din plattform. Upptäck det nu, ge lite återkoppling eller ändra dess status!'
       main_header: '%{firstName}, ett nytt förslag har publicerats på din plattform'
       subject: 'Någon publicerade ett nytt förslag på plattformen för %{organizationName}'
       preheader: '%{authorName} publicerade ett nytt förslag på din plattform'
     new_idea_for_admin:
-      by_author: 'av %{authorName}'
       commented: '%{authorFirstName} kommenterade:'
       cta_reply_to: 'Ge återkoppling till %{authorName}'
       days_ago: '%{numberOfDays} dagar sedan'
@@ -325,53 +274,22 @@ sv:
       subject: '''%{post}'' har en ny intern kommentar'
       main_header: '''%{post}'' har en ny intern kommentar'
       preheader: '''%{post}'' har en ny intern kommentar'
-    official_feedback_on_commented_initiative:
-      by_author: 'av %{authorName}'
-      updated: '%{officialName} skrev:'
-      cta_view: 'Gå till det här förslaget'
-      event_description: '%{officialName} gav en uppdatering för förslaget %{initiativeTitle}. Klicka på knappen nedan för att gå in i konversationen med %{organizationName}.'
-      main_header: 'Det finns en uppdatering för ett förslag som du kommenterat'
-      subject: 'Ett förslag som du kommenterat har fått en officiell uppdatering på plattformen för %{organizationName}'
-      preheader: '%{officialName} lämnade en officiell uppdatering för ett förslag som du kommenterat'
-    official_feedback_on_reacted_idea:
-      by_author: 'av %{authorName}'
-      updated: '%{officialName} skrev:'
-      cta_view: 'Gå till denna idé'
-      event_description: '%{officialName} gav en uppdatering om idén ''%{ideaTitle}''. Klicka på knappen nedan för att delta i samtalet med %{officialName}.'
-      subject: 'En idé som du reagerade på har fått en uppdatering på plattformen %{organizationName}'
-      preheader: '%{officialName} lämnade en uppdatering om en idé som du reagerade på'
-      main_header: ""
-    official_feedback_on_commented_idea:
-      by_author: 'av %{authorName}'
-      updated: '%{officialName} skrev:'
-      cta_view: 'Gå till den här idén'
-      event_description: '%{officialName} gav en uppdatering för idén %{ideaTitle}. Klicka på knappen nedan för att gå in i konversationen med %{officialName}.'
-      main_header: 'Det finns en uppdatering för en idé du kommenterat'
-      subject: 'En idé du kommenterat har fått en officiell uppdatering på plattformen för %{organizationName}'
-      preheader: '%{officialName} lämnade en officiell uppdatering för en idé du kommenterat'
-    official_feedback_on_your_idea:
-      by_author: 'av %{authorName}'
-      updated: '%{officialName} skrev:'
-      cta_view: 'Gå till din idé'
-      event_description: '%{officialName} gav en uppdatering för din idé %{ideaTitle}. Klicka på knappen nedan för att gå in i konversationen med %{officialName}.'
-      main_header: 'Du har fått en uppdatering från %{organizationName}'
-      subject: 'Du har fått en uppdatering från %{organizationName}'
-      preheader: '%{officialName} lämnade en officiell uppdatering för din idé'
-    official_feedback_on_reacted_initiative:
-      by_author: 'av %{authorName}'
-      updated: '%{officialName} skrev:'
-      cta_view: 'Gå till detta förslag'
-      event_description: '%{officialName} gav en uppdatering om förslaget ''%{initiativeTitle}''. Klicka på knappen nedan för att fortsätta samtalet med %{organizationName}.'
-      main_header: 'Det finns en uppdatering om ett förslag som du röstade om'
-      subject: 'Ett förslag som du röstade på har fått en officiell uppdatering på plattformen %{organizationName}'
-      preheader: '%{officialName} lämnat en officiell uppdatering om ett förslag som du röstade om'
-    official_feedback_on_your_initiative:
-      updated: '%{officialName} skrev:'
-      cta_view: 'Gå till ditt förslag'
-      event_description: '%{officialName} gav en uppdatering för ditt förslag %{initiativeTitle}. Klicka på knappen nedan för att gå in i konversationen med %{organizationName}.'
-      main_header: 'Du har fått en uppdatering från %{officialName}'
-      subject: 'Du har fått en officiell uppdatering på plattformen för %{organizationName}'
-      preheader: '%{officialName} lämnade en officiell uppdatering för ditt förslag'
+    official_feedback_on_idea_you_follow:
+      header_message: '%{officialName} gav en uppdatering om idén ''%{ideaTitle}''. Klicka på knappen nedan för att delta i konversationen med %{officialName}.'
+      header_title: 'Det finns en uppdatering av en idé som du följer'
+      subject: 'En idé som du följer har fått en officiell uppdatering på plattformen %{organizationName}'
+      preheader: 'Det finns en uppdatering av en idé som du följer'
+    official_feedback_on_initiative_you_follow:
+      header_message: '%{officialName} gav en uppdatering om förslaget ''%{initiativeTitle}''. Klicka på knappen nedan för att fortsätta samtalet med %{organizationName}.'
+      header_title: 'Det finns en uppdatering om ett förslag som du följer'
+      subject: 'Ett förslag som du följer har fått en officiell uppdatering på plattformen %{organizationName}'
+      preheader: 'Det finns en uppdatering om ett förslag som du följer'
+    mention_in_official_feedback:
+      cta_reply_to: 'Svara till %{organizationName}'
+      event_description: '%{organizationName} nämnde dig i sin återkoppling för idén %{post}. Klicka på länken nedan för att gå in i konversationen med %{organizationName}'
+      main_header: 'Du har nämnts'
+      subject: '%{organizationName} nämnde dig i sin återkoppling'
+      preheader: '%{commentAuthor} nämnde dig i återkoppling'
     project_moderation_rights_received:
       cta_manage_project: 'Hantera det här projektet'
       message_you_became_moderator: 'En administratör för plattformen för deltagande för %{organizationName} har precis gjort dig till projektledare för följande projekt:'
@@ -418,48 +336,23 @@ sv:
       new_phase: 'Projektet går in i fasen %{phaseTitle}'
       subject: 'Få allt konfigurerat för den nya fasen av %{projectName}'
       preheader: 'En ny fas startar snart för %{projectName}'
-    status_change_of_commented_idea:
-      status_change: 'Den nya statusen för den här idén är %{ideaStatus}'
-      cta_view_idea: 'Gå till den här idén'
-      event_description: '%{organizationName} uppdaterade statusen för idén %{ideaTitle} på sin digitala plattform för deltagande.'
-      main_header: 'En idé du kommenterat har en ny status'
-      subject: 'Statusen för en idé du kommenterat har ändrats'
-      preheader: '%{organizationName} ändrade statusen för en idé du kommenterat'
-    status_change_of_your_idea:
-      status_change: 'Den nya statusen för din idé är %{ideaStatus}'
-      cta_view_idea: 'Gå till din idé'
-      event_description: '%{organizationName} uppdaterade statusen för din idé %{ideaTitle} på sin digitala plattform för deltagande.'
-      main_header: 'Din idé har fått en ny status'
-      subject: 'Statusen för din idé har ändrats'
-      preheader: '%{organizationName} ändrade statusen för din idé'
-    status_change_of_reacted_idea:
+    project_published:
+      subject: 'Ett nytt projekt publicerades på plattformen %{organizationName}'
+      header_title: 'Ett nytt projekt publicerades'
+      header_message: 'Deltagarplattformen %{organizationName} har just publicerat följande projekt:'
+      preheader: 'Ett nytt projekt publicerades'
+    status_change_on_idea_you_follow:
       status_change: 'Den nya statusen för denna idé är ''%{ideaStatus}'''
-      cta_view_idea: 'Gå till denna idé'
-      event_description: '%{organizationName} uppdaterade statusen för idén ''%{ideaTitle}'' på sin digitala deltagarplattform.'
-      main_header: 'En idé som du reagerade på har fått en ny status'
-      subject: 'Statusen för en idé som du reagerade på har ändrats'
-      preheader: '%{organizationName} ändrat status för en idé som du reagerade på'
-    status_change_of_reacted_initiative:
+      header_message: '%{organizationName} uppdaterade statusen för idén ''%{ideaTitle}'' på sin digitala deltagarplattform.'
+      header_title: 'En idé som du följer har fått en ny status'
+      subject: 'Statusen för en idé du följer har ändrats'
+      preheader: 'En idé som du följer har fått en ny status'
+    status_change_on_initiative_you_follow:
       status_change: 'Den nya statusen för detta förslag är ''%{initiativeStatus}'''
-      cta_view_initiative: 'Gå till detta förslag'
-      event_description: 'Status för förslaget ''%{initiativeTitle}'' har uppdaterats på den digitala deltagandeplattformen för %{organizationName}.'
-      main_header: 'Ett förslag som du röstade om har fått en ny status'
-      subject: 'Statusen för ett förslag som du röstade om har ändrats'
-      preheader: 'Status för ett förslag som du röstade om ändrades'
-    status_change_of_commented_initiative:
-      status_change: 'Den nya statusen för det här förslaget är %{initiativeStatus}'
-      cta_view_initiative: 'Gå till det här förslaget'
-      event_description: 'Statusen för förslaget %{initiativeTitle} har uppdaterats på %{organizationName}s digitala plattform för deltagande.'
-      main_header: 'Ett förslag som du kommenterat har en ny status'
-      subject: 'Statusen för ett förslag som du kommenterat har ändrats'
-      preheader: 'Statusen för ett förslag som du kommenterat har ändrats'
-    status_change_of_your_initiative:
-      status_change: 'Den nya statusen för ditt förslag är %{initiativeStatus}'
-      cta_view_initiative: 'Gå till ditt förslag'
-      event_description: 'Statusen för förslaget %{initiativeTitle} har uppdaterats på %{organizationName}s digitala plattform för deltagande.'
-      main_header: 'Ditt förslag har en ny status'
-      subject: 'Statusen för ditt förslag har ändrats'
-      preheader: 'Statusen för ditt förslag har ändrats'
+      header_message: 'Status för förslaget ''%{initiativeTitle}'' har uppdaterats på den digitala deltagandeplattformen för %{organizationName}.'
+      header_title: 'Ett förslag som du följer har fått en ny status'
+      subject: 'Statusen för ett förslag som du följer har ändrats'
+      preheader: 'Ett förslag som du följer har fått en ny status'
     user_digest:
       subject: "Din aktivitet på plattformen för deltagande för %{organizationName}"
       commented: "%{authorFirstName} kommenterade:"
@@ -483,7 +376,6 @@ sv:
       no_unread_notifications: "Du har inga olästa aviseringar. Besök plattformen för att bidra med dina indata och generera nya aviseringar!"
       unread_notifications: "Du har olästa aviseringar. Besök plattformen för att upptäcka vad som händer!"
     threshold_reached_for_admin:
-      by_author: 'av %{authorName}'
       cta_process_initiative: 'Ta det här initiativet till nästa steg'
       event_description: 'Ett initiativ nådde rösttröskeln på din plattform. Klicka på knappen nedan för att ta det till nästa steg!'
       main_header: 'Ett initiativ nådde rösttröskeln!'
@@ -616,9 +508,10 @@ sv:
         user_who_published_the_input: 'Användare som publicerade inmatningen'
         user_who_registers: 'Användare som registrerar sig'
         user_who_was_invited: 'Användare som bjöds in'
-        users_who_engaged_with_the_input: 'Användare som engagerade sig i inmatningen'
         users_who_engaged_with_the_project: 'Användare som engagerade sig i projektet'
-        users_who_engaged_with_the_proposal: 'Användare som engagerade sig i förslaget'
+        users_who_follow_the_proposal: 'Användare som följer förslaget'
+        users_who_follow_the_input: 'Användare som följer inmatningen'
+        users_who_follow_the_project: 'Användare som följer projektet'
         user_who_voted: 'Användare som röstade'
         user_with_unsubmitted_votes: 'Användare som inte har lämnat sina röster'
         users_who_engaged_but_not_voted: 'Användare som engagerat sig i projektet men inte röstat'
@@ -657,6 +550,7 @@ sv:
         new_input_is_published: 'Ny input publiceras'
         new_proposal_is_posted: 'Ett nytt förslag har lagts fram.'
         project_phase_changes: 'Förändringar i projektfas'
+        project_published: 'Projekt publicerat'
         proposal_gets_reported_as_spam: 'Förslaget rapporteras som skräppost'
         proposal_is_assigned_to_admin: 'Förslaget har tilldelats admin'
         proposal_is_updated: 'Förslaget uppdateras.'
