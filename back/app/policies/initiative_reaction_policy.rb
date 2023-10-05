@@ -25,11 +25,6 @@ class InitiativeReactionPolicy < ApplicationPolicy
 
     reason = reacting_denied_reason user
     reason ? raise_not_authorized(reason) : true
-
-    # If verification required to vote
-    #   && user.verifications_hashed_uids.any?
-    #   && record has a vote associated with user verification
-    #     raise_not_authorized 'a reaction associated with user's verification already exists'
   end
 
   def destroy?
@@ -39,25 +34,18 @@ class InitiativeReactionPolicy < ApplicationPolicy
     raise_not_authorized(reason) if reason
 
     # TO DO:
-    # Improve
     # Wrap elsif in conditional: Is verification required to react?
     # Should this be a patch from verification module?
-    if record.user_id == user.id
-      true
+    if owner?
+      return true
     elsif record.user_id.nil?
       user_verifications_hashed_uids = user.verifications_hashed_uids
-      return false unless user_verifications_hashed_uids&.any?
-
       reaction_verifications_hashed_uids =
         record.verification_reactions_verifications_hashed_uids.pluck(:verification_hashed_uid)
-      return false unless reaction_verifications_hashed_uids&.any?
-
-      return true if reaction_verifications_hashed_uids.any? { |uid| user_verifications_hashed_uids.include?(uid) }
-
-      false
-    else # record.user_id.present && record.user_id != user.id
-      false
+      return true if reaction_verifications_hashed_uids&.any? { |uid| user_verifications_hashed_uids.include?(uid) }
     end
+
+    false
   end
 
   def up?
