@@ -1383,6 +1383,7 @@
   "app.containers.ProjectsIndexPage.pageTitle": "Пројекти",
   "app.containers.ProjectsShowPage.VolunteeringSection.becomeVolunteerButton": "Желим да волонтирам",
   "app.containers.ProjectsShowPage.VolunteeringSection.notLoggedIn": "Молимо прво {signInLink} или {signUpLink} да бисте волонтирали за ову активност",
+  "app.containers.ProjectsShowPage.VolunteeringSection.notOpenParticipation": "Учешће тренутно није отворено за ову активност.",
   "app.containers.ProjectsShowPage.VolunteeringSection.signInLinkText": "Пријавите се",
   "app.containers.ProjectsShowPage.VolunteeringSection.signUpLinkText": "пријави се",
   "app.containers.ProjectsShowPage.VolunteeringSection.withdrawVolunteerButton": "Повлачим своју понуду за волонтирање",
