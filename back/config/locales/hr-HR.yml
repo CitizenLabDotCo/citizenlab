@@ -226,9 +226,13 @@ hr:
       title: 'Završetak upitnika'
       description: "Pošaljite svoje odgovore tako da odaberete „Pošalji anketu“ u nastavku."
     pdf_export:
+      personal_data: 'Osobni podaci'
+      personal_data_explanation_ideation: "Poslat ćemo vaš unos na online platformu za sudjelovanje %{organizationName}. Ako želite da se vaše ime prikazuje kao autor ovog unosa i da putem e-pošte primate ažuriranja relevantna za vaš unos, ispunite sljedeća polja na ovoj stranici i mi ćemo za vas stvoriti račun. Vaša e-pošta neće biti javna i koristit će je samo %{organizationName}. Ukoliko želite ostati anonimni ili ne pristajete na korištenje Vaših osobnih podataka na ovaj način, možete ih ostaviti prazne."
+      personal_data_explanation_native_survey: "Poslat ćemo vaš unos na online platformu za sudjelovanje %{organizationName}. Ako želite primati ažuriranja relevantna za vaš unos putem e-pošte, ispunite sljedeća polja na ovoj stranici i mi ćemo za vas kreirati račun. Vaši podaci neće biti javni i koristit će ih samo %{organizationName}. Ukoliko se ne slažete da Vaše osobne podatke koristimo na ovaj način, možete ih ostaviti prazne."
       first_name: 'Ime'
       last_name: 'Prezime'
       email_address: 'Email adresa'
+      by_checking_this_box: "Označavanjem ovog okvira pristajem da se moji podaci koriste za izradu računa na platformi za sudjelovanje %{organizationName}."
       optional: 'neobavezan'
       permission: 'Dopuštenje'
       choose_as_many: 'Odaberite koliko god želite'
