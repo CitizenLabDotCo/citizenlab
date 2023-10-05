@@ -44,13 +44,13 @@ class InitiativeReactionPolicy < ApplicationPolicy
       return false unless user_verifications_hashed_uids&.any?
 
       reaction_verifications_hashed_uids =
-        Verification::ReactionsVerificationsHashedUid.where(reaction: record).pluck(:verification_hashed_uid)
+        record.verification_reactions_verifications_hashed_uids.pluck(:verification_hashed_uid)
       return false unless reaction_verifications_hashed_uids&.any?
 
       return true if reaction_verifications_hashed_uids.any? { |uid| user_verifications_hashed_uids.include?(uid) }
 
       false
-    else
+    else # record.user_id.present && record.user_id != user.id
       false
     end
   end
