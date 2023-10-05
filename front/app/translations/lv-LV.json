@@ -1383,6 +1383,7 @@
   "app.containers.ProjectsIndexPage.pageTitle": "Projekti",
   "app.containers.ProjectsShowPage.VolunteeringSection.becomeVolunteerButton": "Es vēlos kļūt par brīvprātīgo",
   "app.containers.ProjectsShowPage.VolunteeringSection.notLoggedIn": "Lai pieteiktos brīvprātīgajam darbam šajā aktivitātē, lūdzu, vispirms {signInLink} vai {signUpLink}.",
+  "app.containers.ProjectsShowPage.VolunteeringSection.notOpenParticipation": "Pašlaik šajā aktivitātē nav iespējams piedalīties.",
   "app.containers.ProjectsShowPage.VolunteeringSection.signInLinkText": "pierakstīties",
   "app.containers.ProjectsShowPage.VolunteeringSection.signUpLinkText": "reģistrēties",
   "app.containers.ProjectsShowPage.VolunteeringSection.withdrawVolunteerButton": "Es atsaucu savu brīvprātīgā darba piedāvājumu",
