@@ -41,7 +41,7 @@ module IdBogus
         end
 
         {
-          uid: '123',
+          uid: SecureRandom.alphanumeric(24),
           attributes: {
             last_name: 'BOGUS'
           },

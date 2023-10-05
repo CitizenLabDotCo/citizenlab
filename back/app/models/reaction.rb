@@ -40,7 +40,7 @@ class Reaction < ApplicationRecord
   validates :reactable, :mode, presence: true
   validates :mode, inclusion: { in: MODES }
   validates :user_id, uniqueness: { scope: %i[reactable_id reactable_type mode], allow_nil: true }
-  validate :no_dup_verified_reaction 
+  validate :no_dup_verified_reaction
 
   after_create :create_verification_reactions_verifications_hashed_uids
 
