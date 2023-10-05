@@ -1383,6 +1383,7 @@
   "app.containers.ProjectsIndexPage.pageTitle": "Projeler",
   "app.containers.ProjectsShowPage.VolunteeringSection.becomeVolunteerButton": "Gönüllü olmak istiyorum",
   "app.containers.ProjectsShowPage.VolunteeringSection.notLoggedIn": "Bu etkinlikte gönüllü olmak için lütfen önce {signInLink} veya {signUpLink}",
+  "app.containers.ProjectsShowPage.VolunteeringSection.notOpenParticipation": "Bu faaliyet için katılım şu anda açık değildir.",
   "app.containers.ProjectsShowPage.VolunteeringSection.signInLinkText": "oturum açın",
   "app.containers.ProjectsShowPage.VolunteeringSection.signUpLinkText": "kaydolun",
   "app.containers.ProjectsShowPage.VolunteeringSection.withdrawVolunteerButton": "Gönüllülük teklifimi geri alıyorum",
