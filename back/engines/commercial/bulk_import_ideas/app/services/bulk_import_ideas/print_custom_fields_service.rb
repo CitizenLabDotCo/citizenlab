@@ -3,7 +3,7 @@
 require 'prawn'
 require 'prawn/measurement_extensions'
 
-class PrintCustomFieldsService
+class BulkImportIdeas::PrintCustomFieldsService
   attr_reader :participation_context, :custom_fields, :params, :previous_cursor
 
   # We are still hiding linear scales for now because they are not supported
