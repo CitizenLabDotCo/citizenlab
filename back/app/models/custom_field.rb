@@ -23,6 +23,7 @@
 #  maximum_label_multiloc :jsonb            not null
 #  logic                  :jsonb            not null
 #  answer_visible_to      :string
+#  other_option           :boolean          default(FALSE), not null
 #
 # Indexes
 #
