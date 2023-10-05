@@ -88,11 +88,14 @@ module BulkImportIdeas
 
     def process_upload(pdf_file_content)
       # Set up the DocumentAI processor.
-      # TODO: Invalid location: 'eu' must match the server deployment 'us' even when the processor is set to eu?
-      client = Google::Cloud::DocumentAI.document_processor_service
+      location = ENV.fetch('GOOGLE_DOCUMENT_AI_LOCATION')
+      client = Google::Cloud::DocumentAI.document_processor_service do |config|
+        config.endpoint = "#{location}-documentai.googleapis.com"
+      end
+
       name = client.processor_path(
+        location: location,
         project: ENV.fetch('GOOGLE_DOCUMENT_AI_PROJECT'),
-        location: ENV.fetch('GOOGLE_DOCUMENT_AI_LOCATION'),
         processor: ENV.fetch('GOOGLE_DOCUMENT_AI_PROCESSOR')
       )
 
