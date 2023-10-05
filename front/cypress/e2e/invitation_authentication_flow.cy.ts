@@ -52,8 +52,8 @@ describe('Invitation authentication flow', () => {
 
     cy.get('input[type=file]').selectFile('cypress/fixtures/invites.xlsx');
     cy.contains('Send out invitations').should('be.enabled');
-    cy.contains('Send out invitations').click({ force: true });
-    cy.get('p.success').should('exist');
+    cy.contains('Send out invitations').click();
+    cy.get('p.success').should('be.visible');
     cy.logout();
   });
 
