@@ -1383,6 +1383,7 @@
   "app.containers.ProjectsIndexPage.pageTitle": "Projekti",
   "app.containers.ProjectsShowPage.VolunteeringSection.becomeVolunteerButton": "Želim volontirati",
   "app.containers.ProjectsShowPage.VolunteeringSection.notLoggedIn": "Molimo vas da se prijavite {signInLink} ili registrirate {signUpLink} kako biste se dobrovoljno javili",
+  "app.containers.ProjectsShowPage.VolunteeringSection.notOpenParticipation": "Sudjelovanje trenutno nije otvoreno za ovu aktivnost.",
   "app.containers.ProjectsShowPage.VolunteeringSection.signInLinkText": "prijava",
   "app.containers.ProjectsShowPage.VolunteeringSection.signUpLinkText": "registracija",
   "app.containers.ProjectsShowPage.VolunteeringSection.withdrawVolunteerButton": "Povlačim svoju ponudu za volontiranje",
