@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_27_135924) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_05_134645) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -346,6 +346,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_27_135924) do
     t.integer "ordering"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
+    t.boolean "other_option", default: false, null: false
     t.index ["custom_field_id", "key"], name: "index_custom_field_options_on_custom_field_id_and_key", unique: true
     t.index ["custom_field_id"], name: "index_custom_field_options_on_custom_field_id"
   end
