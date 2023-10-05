@@ -3,6 +3,10 @@ import React, { useMemo } from 'react';
 // components
 import { Box, Icon } from '@citizenlab/cl2-component-library';
 
+// i18n
+import messages from './messages';
+import { useIntl } from 'utils/cl-intl';
+
 // styling
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
@@ -48,6 +52,8 @@ interface Props {
 }
 
 const CustomOption = ({ children, innerProps, data, options }: Props) => {
+  const { formatMessage } = useIntl();
+
   const emailAddresses = useMemo(() => {
     if (optionIsUser(data) || data.value !== 'newUser') {
       return null;
@@ -76,7 +82,7 @@ const CustomOption = ({ children, innerProps, data, options }: Props) => {
     return (
       <NewUserButton {...innerProps} disabled={invalidEmail}>
         {invalidEmail ? (
-          <b>Enter a valid email to create a new account</b>
+          <b>{formatMessage(messages.enterAValidEmail)}</b>
         ) : (
           <>
             <Icon
@@ -88,7 +94,7 @@ const CustomOption = ({ children, innerProps, data, options }: Props) => {
               mr="4px"
               transform="translate(0,-1)"
             />
-            Add new user
+            {formatMessage(messages.addANewUser)}
           </>
         )}
       </NewUserButton>

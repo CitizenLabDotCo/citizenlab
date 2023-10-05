@@ -11,6 +11,10 @@ import {
 } from '@citizenlab/cl2-component-library';
 import AuthorInput from './AuthorInput';
 
+// i18n
+import { useIntl } from 'utils/cl-intl';
+import messages from './messages';
+
 // styling
 import { colors } from 'utils/styleUtils';
 
@@ -30,6 +34,8 @@ const BlackLabel = ({ text }: { text: string }) => (
 );
 
 const UserForm = ({ userFormData, setUserFormData }: Props) => {
+  const { formatMessage } = useIntl();
+
   const updateUserFormData = (newData: Partial<UserFormData>) => {
     setUserFormData((oldData) => ({
       ...oldData,
@@ -91,11 +97,7 @@ const UserForm = ({ userFormData, setUserFormData }: Props) => {
                 name="check-circle"
                 fill={colors.success}
               />
-              <Success
-                text={
-                  'There is already an account associated with this email. This input will be added to it.'
-                }
-              />
+              <Success text={formatMessage(messages.thereIsAlreadyAnAccount)} />
             </Box>
           )}
           {['new-user', 'invalid-email'].includes(userFormData.user_state) && (
@@ -109,16 +111,14 @@ const UserForm = ({ userFormData, setUserFormData }: Props) => {
                     fill={colors.success}
                   />
                   <Success
-                    text={
-                      'A new account will be created with this email. This input will be added to it.'
-                    }
+                    text={formatMessage(messages.aNewAccountWillBeCreated)}
                   />
                 </Box>
               )}
               {userFormData.user_state === 'invalid-email' && (
                 <Box display="flex" alignItems="center" mt="12px">
                   <Text color="orange" mb="15px">
-                    Please enter a valid email address.
+                    {formatMessage(messages.pleaseEnterValidEmail)}
                   </Text>
                 </Box>
               )}
@@ -126,7 +126,9 @@ const UserForm = ({ userFormData, setUserFormData }: Props) => {
                 <Input
                   type="text"
                   value={userFormData.first_name}
-                  label={<BlackLabel text="First name" />}
+                  label={
+                    <BlackLabel text={formatMessage(messages.firstName)} />
+                  }
                   onChange={(first_name) => updateUserFormData({ first_name })}
                 />
               </Box>
@@ -134,7 +136,7 @@ const UserForm = ({ userFormData, setUserFormData }: Props) => {
                 <Input
                   type="text"
                   value={userFormData.last_name}
-                  label={<BlackLabel text="Last name" />}
+                  label={<BlackLabel text={formatMessage(messages.lastName)} />}
                   onChange={(last_name) => updateUserFormData({ last_name })}
                 />
               </Box>
@@ -148,7 +150,7 @@ const UserForm = ({ userFormData, setUserFormData }: Props) => {
           onChange={() =>
             updateUserFormData({ consent: !userFormData.consent })
           }
-          label="User consent (create user account)"
+          label={formatMessage(messages.userConsent)}
         />
       </Box>
     </Box>
