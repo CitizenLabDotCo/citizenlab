@@ -1383,6 +1383,7 @@
   "app.containers.ProjectsIndexPage.pageTitle": "Έργα",
   "app.containers.ProjectsShowPage.VolunteeringSection.becomeVolunteerButton": "Θέλω να γίνω εθελοντής",
   "app.containers.ProjectsShowPage.VolunteeringSection.notLoggedIn": "Παρακαλούμε {signInLink} ή {signUpLink} πρώτα για να συμμετάσχετε εθελοντικά σε αυτή τη δραστηριότητα",
+  "app.containers.ProjectsShowPage.VolunteeringSection.notOpenParticipation": "Η συμμετοχή δεν είναι προς το παρόν ανοικτή για αυτή τη δραστηριότητα.",
   "app.containers.ProjectsShowPage.VolunteeringSection.signInLinkText": "σύνδεση",
   "app.containers.ProjectsShowPage.VolunteeringSection.signUpLinkText": "εγγραφείτε",
   "app.containers.ProjectsShowPage.VolunteeringSection.withdrawVolunteerButton": "Αποσύρω την προσφορά μου ως εθελοντής",
