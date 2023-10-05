@@ -103,7 +103,7 @@ export const Poll = ({ pollQuestions, projectId, phaseId, type }: Props) => {
             questions={pollQuestions}
             id={type === 'project' ? projectId : phaseId}
             type={type}
-            disabled={false}
+            disabled={!enabled}
             disabledMessage={message}
             actionDisabledAndNotFixable={actionDisabledAndNotFixable}
           />

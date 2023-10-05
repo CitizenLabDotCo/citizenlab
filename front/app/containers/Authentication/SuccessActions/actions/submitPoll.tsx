@@ -9,11 +9,13 @@ export interface SubmitPollParams {
   type: IParticipationContextType;
   answers: string[];
   projectId: string;
+  setIsSubmitting: (isSubmitting: boolean) => void;
 }
 
 export const submitPoll =
-  ({ id, type, answers, projectId }: SubmitPollParams) =>
+  ({ id, type, answers, projectId, setIsSubmitting }: SubmitPollParams) =>
   async () => {
+    setIsSubmitting(true);
     await addPollResponse({
       participationContextId: id,
       participationContextType: type,
@@ -28,9 +30,8 @@ export const submitPoll =
         participationContextType: type,
       }),
     });
-    if (type === 'project') {
-      queryClient.invalidateQueries({
-        queryKey: projectsKeys.item({ id }),
-      });
-    }
+    queryClient.invalidateQueries({
+      queryKey: projectsKeys.item({ id: projectId }),
+    });
+    setIsSubmitting(false);
   };

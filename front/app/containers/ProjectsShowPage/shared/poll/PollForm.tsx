@@ -99,6 +99,7 @@ const PollForm = ({
   const changeAnswerSingle = (questionId: string, optionId: string) => () => {
     setAnswers({ ...answers, [questionId]: [optionId] });
   };
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const changeAnswerMultiple = (questionId: string, optionId: string) => () => {
     const oldAnswer = answers[questionId] || [];
@@ -110,7 +111,7 @@ const PollForm = ({
 
   const sendAnswer = () => {
     if (id) {
-      if (!authUser || !actionDisabledAndNotFixable) {
+      if (!authUser || (disabled && !actionDisabledAndNotFixable)) {
         const pcType = phaseId ? 'phase' : 'project';
         const pcId = phaseId ? phaseId : projectId;
         if (!pcId || !pcType) return;
@@ -129,6 +130,7 @@ const PollForm = ({
               type,
               answers: Object.values(answers).flat(),
               projectId,
+              setIsSubmitting,
             },
           },
         });
@@ -146,7 +148,6 @@ const PollForm = ({
   const validate = () => {
     // you can submit the form...
     return (
-      !disabled && // when it's not disabled and...
       // each question has at least one answer, and this answer is a string (representing the option) and...
       questions.every(
         (question) => typeof (answers[question.id] || [])[0] === 'string'
@@ -213,6 +214,7 @@ const PollForm = ({
               fullWidth={true}
               disabled={!isValid || actionDisabledAndNotFixable}
               className="e2e-send-poll"
+              processing={isSubmitting}
             >
               <FormattedMessage {...messages.sendAnswer} />
             </Button>
