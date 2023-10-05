@@ -1383,6 +1383,7 @@
   "app.containers.ProjectsIndexPage.pageTitle": "Projekte",
   "app.containers.ProjectsShowPage.VolunteeringSection.becomeVolunteerButton": "Ich nehme teil",
   "app.containers.ProjectsShowPage.VolunteeringSection.notLoggedIn": "Bitte {signInLink} oder {signUpLink} zuerst, um teilzunehmen.",
+  "app.containers.ProjectsShowPage.VolunteeringSection.notOpenParticipation": "Für diese Aktivität ist derzeit keine Teilnahme möglich.",
   "app.containers.ProjectsShowPage.VolunteeringSection.signInLinkText": "melden Sie sich an",
   "app.containers.ProjectsShowPage.VolunteeringSection.signUpLinkText": "registrieren Sie sich",
   "app.containers.ProjectsShowPage.VolunteeringSection.withdrawVolunteerButton": "Ich ziehe meine Teilnahme zurück",
