@@ -1369,7 +1369,6 @@
   "app.containers.SignUp.emptyLastNameError": "Kinguliat allaguk",
   "app.containers.SignUp.firstNamesLabel": "Ateq",
   "app.containers.SignUp.goToLogIn": "Already have an account? {goToOtherFlowLink}",
-  "app.containers.SignUp.iHaveReadAndAgreeTo": "I have read and agree to {link}.",
   "app.containers.SignUp.iHaveReadAndAgreeToVienna": "I accept that the data will be used on mitgestalten.wien.gv.at. Further information can befound {link}.",
   "app.containers.SignUp.lastNameLabel": "Kinguliaqut",
   "app.containers.SignUp.privacyPolicyNotAcceptedError": "Ingerlaqqinnissannut inuttut inuuneq pillugu politikkerput akueriuk",

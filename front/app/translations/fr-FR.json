@@ -1440,7 +1440,6 @@
   "app.containers.SignUp.emptyLastNameError": "Entrez votre nom",
   "app.containers.SignUp.firstNamesLabel": "Prénom",
   "app.containers.SignUp.goToLogIn": "Vous avez déjà un compte ? {goToOtherFlowLink}",
-  "app.containers.SignUp.iHaveReadAndAgreeTo": "J'ai lu et j'approuve {link}.",
   "app.containers.SignUp.iHaveReadAndAgreeToVienna": "J'accepte que les données soient utilisées sur mitgestalten.wien.gv.at. De plus amples informations peuvent être trouvées {link}.",
   "app.containers.SignUp.invitationErrorText": "Votre invitation a expiré ou a déjà été utilisée. Si vous avez déjà cliqué sur le lien d'invitation pour créer un compte, veuillez vous connecter. Sinon, inscrivez-vous pour créer un nouveau compte.",
   "app.containers.SignUp.lastNameLabel": "Nom",

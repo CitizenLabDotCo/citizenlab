@@ -920,7 +920,6 @@
   "app.containers.SignUp.emptyLastNameError": "Enter your last name",
   "app.containers.SignUp.firstNamesLabel": "First name",
   "app.containers.SignUp.goToLogIn": "Already have an account? {goToOtherFlowLink}",
-  "app.containers.SignUp.iHaveReadAndAgreeTo": "I have read and agree to {link}.",
   "app.containers.SignUp.lastNameLabel": "Last name",
   "app.containers.SignUp.privacyPolicyNotAcceptedError": "Accept our privacy policy to proceed",
   "app.containers.SignUp.signUp2": "Sign up",
