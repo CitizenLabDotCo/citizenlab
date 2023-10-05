@@ -46,7 +46,6 @@ declare global {
       apiLikeInitiative: typeof apiLikeInitiative;
       apiDislikeIdea: typeof apiDislikeIdea;
       apiCreateOfficialFeedbackForIdea: typeof apiCreateOfficialFeedbackForIdea;
-      apiCreateOfficialFeedbackForInitiative: typeof apiCreateOfficialFeedbackForInitiative;
       apiAddComment: typeof apiAddComment;
       apiRemoveComment: typeof apiRemoveComment;
       apiCreateProject: typeof apiCreateProject;
@@ -726,37 +725,6 @@ export function apiCreateOfficialFeedbackForIdea(
   });
 }
 
-export function apiCreateOfficialFeedbackForInitiative(
-  initiativeId: string,
-  officialFeedbackContent: string,
-  officialFeedbackAuthor: string
-) {
-  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
-    const adminJwt = response.body.jwt;
-
-    return cy.request({
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
-      },
-      method: 'POST',
-      url: `web_api/v1/initiatives/${initiativeId}/official_feedback`,
-      body: {
-        official_feedback: {
-          body_multiloc: {
-            en: officialFeedbackContent,
-            'nl-BE': officialFeedbackContent,
-          },
-          author_multiloc: {
-            en: officialFeedbackAuthor,
-            'nl-BE': officialFeedbackAuthor,
-          },
-        },
-      },
-    });
-  });
-}
-
 export function apiAddComment(
   postId: string,
   postType: 'idea' | 'initiative',
@@ -1413,9 +1381,7 @@ export function apiUpdateAppConfiguration(
       method: 'PATCH',
       url: `web_api/v1/app_configuration/`,
       body: {
-        app_configuration: {
-          updatedAttributes,
-        },
+        app_configuration: updatedAttributes,
       },
     });
   });
@@ -1551,6 +1517,7 @@ Cypress.Commands.add('apiRemoveUser', apiRemoveUser);
 Cypress.Commands.add('apiGetUsersCount', apiGetUsersCount);
 Cypress.Commands.add('apiGetSeats', apiGetSeats);
 Cypress.Commands.add('apiGetAppConfiguration', apiGetAppConfiguration);
+Cypress.Commands.add('apiUpdateAppConfiguration', apiUpdateAppConfiguration);
 Cypress.Commands.add('logout', logout);
 Cypress.Commands.add('acceptCookies', acceptCookies);
 Cypress.Commands.add('getIdeaById', getIdeaById);
@@ -1569,10 +1536,6 @@ Cypress.Commands.add('apiDislikeIdea', apiDislikeIdea);
 Cypress.Commands.add(
   'apiCreateOfficialFeedbackForIdea',
   apiCreateOfficialFeedbackForIdea
-);
-Cypress.Commands.add(
-  'apiCreateOfficialFeedbackForInitiative',
-  apiCreateOfficialFeedbackForInitiative
 );
 Cypress.Commands.add('apiAddComment', apiAddComment);
 Cypress.Commands.add('apiRemoveComment', apiRemoveComment);
@@ -1615,3 +1578,4 @@ Cypress.Commands.add('apiUpdateHomepageSettings', apiUpdateHomepageSettings);
 Cypress.Commands.add('apiRemoveCustomPage', apiRemoveCustomPage);
 Cypress.Commands.add('apiCreateCustomPage', apiCreateCustomPage);
 Cypress.Commands.add('clickLocaleSwitcherAndType', clickLocaleSwitcherAndType);
+Cypress.Commands.add('apiLikeInitiative', apiLikeInitiative);
