@@ -4,13 +4,7 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 require './engines/commercial/public_api/spec/acceptance/v2/support/shared'
 
-resource 'Idea topics' do
-  explanation <<~DESC.squish
-    Idea topics represent associations between ideas and topics. This is a
-    many-to-many relationship: Ideas can have multiple topics, and topics can
-    be associated with multiple ideas.
-  DESC
-
+resource 'Topics' do
   include_context 'common_auth'
 
   parameter(
@@ -30,6 +24,13 @@ resource 'Idea topics' do
   )
 
   get '/api/v2/idea_topics' do
+    route_summary 'List relations between ideas and topics'
+    route_description <<~DESC.squish
+      Idea topics represent associations between ideas and topics. This is a
+      many-to-many relationship: Ideas can have multiple topics, and topics can
+      be associated with multiple ideas.
+    DESC
+
     let_it_be(:idea_topics) do
       2.times do |index|
         create(:idea_with_topics, topics_count: index + 1)

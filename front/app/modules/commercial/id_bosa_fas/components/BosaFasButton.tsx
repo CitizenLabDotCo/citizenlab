@@ -1,6 +1,6 @@
 import React from 'react';
 import { AUTH_PATH } from 'containers/App/constants';
-import { removeUrlLocale } from 'services/locale';
+import { removeUrlLocale } from 'utils/locale';
 import { getJwt } from 'utils/auth/jwt';
 
 // typings

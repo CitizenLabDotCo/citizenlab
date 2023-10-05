@@ -15,7 +15,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import useExceedsSeats from 'hooks/useExceedsSeats';
 
 // Utils
-import { isRegularUser, isAdmin } from 'services/permissions/roles';
+import { isRegularUser, isAdmin } from 'utils/permissions/roles';
 
 import { IUserData } from 'api/users/types';
 import BillingWarning from 'components/admin/SeatBasedBilling/SeatInfo/BillingWarning';

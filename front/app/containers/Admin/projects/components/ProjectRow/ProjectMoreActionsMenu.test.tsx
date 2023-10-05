@@ -28,6 +28,7 @@ const mockUserData: IUserData = {
     unread_notifications: 0,
     invite_status: null,
     confirmation_required: false,
+    followings_count: 2,
   },
 };
 

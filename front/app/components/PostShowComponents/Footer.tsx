@@ -64,7 +64,7 @@ const Footer = memo<Props>(({ postId, postType, className }) => {
             allowAnonymousParticipation={
               postType === 'initiative'
                 ? appConfiguration?.data.attributes.settings.initiatives
-                    ?.allow_anonymous_participation
+                    .allow_anonymous_participation
                 : undefined
             }
             postId={postId}

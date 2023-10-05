@@ -34,6 +34,9 @@ import {
   columnsGapTablet,
   rightColumnWidthDesktop,
   pageContentMaxWidth,
+  contentFadeInDelay,
+  contentFadeInDuration,
+  contentFadeInEasing,
 } from './styleConstants';
 
 // hooks
@@ -45,12 +48,7 @@ import useInitiativeReviewRequired from './hooks/useInitiativeReviewRequired';
 import useLocale from 'hooks/useLocale';
 import useAuthUser from 'api/me/useAuthUser';
 import useInitiativeImages from 'api/initiative_images/useInitiativeImages';
-import { usePermission } from 'services/permissions';
-import {
-  contentFadeInDelay,
-  contentFadeInDuration,
-  contentFadeInEasing,
-} from '.';
+import { usePermission } from 'utils/permissions';
 import useInitiativeOfficialFeedback from 'api/initiative_official_feedback/useInitiativeOfficialFeedback';
 import useShowCosponsorshipReminder from 'containers/InitiativesShow/hooks/useShowCosponsorshipReminder';
 import CosponsorShipReminder from './CosponsorShipReminder';
@@ -137,6 +135,7 @@ const MetaContent = styled.div`
 const SharingWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
 `;
 
 const StyledOfficialFeedback = styled(OfficialFeedback)`

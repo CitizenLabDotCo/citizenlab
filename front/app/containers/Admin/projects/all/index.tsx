@@ -9,8 +9,8 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // utils
-import { isAdmin } from 'services/permissions/roles';
-import { isProjectFolderModerator } from 'services/permissions/rules/projectFolderPermissions';
+import { isAdmin } from 'utils/permissions/roles';
+import { isProjectFolderModerator } from 'utils/permissions/rules/projectFolderPermissions';
 
 // components
 import CreateProject from './CreateProject';

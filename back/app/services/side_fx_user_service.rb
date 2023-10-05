@@ -3,9 +3,8 @@
 class SideFxUserService
   include SideFxHelper
 
-  def before_create(user, current_user); end
-
   def after_create(user, current_user)
+    create_followers user
     TrackUserJob.perform_later(user)
     GenerateUserAvatarJob.perform_later(user)
     LogActivityJob.set(wait: 10.seconds).perform_later(user, 'created', user, user.created_at.to_i)
@@ -18,9 +17,8 @@ class SideFxUserService
     AdditionalSeatsIncrementer.increment_if_necessary(user, current_user) if user.roles_previously_changed?
   end
 
-  def before_update(user, current_user); end
-
   def after_update(user, current_user)
+    create_followers user
     TrackUserJob.perform_later(user)
     LogActivityJob.perform_later(user, 'changed', current_user, user.updated_at.to_i)
     if user.registration_completed_at_previously_changed?
@@ -114,6 +112,11 @@ class SideFxUserService
     return if UserRoleService.new.can_moderate_initiatives?(user)
 
     user.assigned_initiatives.update_all(assignee_id: nil)
+  end
+
+  def create_followers(user)
+    area = Area.where(id: user.domicile).first
+    Follower.find_or_create_by(followable: area, user: user) if area
   end
 end
 

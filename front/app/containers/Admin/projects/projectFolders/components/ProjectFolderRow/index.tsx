@@ -24,7 +24,7 @@ import messages from './messages';
 import useAuthUser from 'api/me/useAuthUser';
 
 // services
-import { userModeratesFolder } from 'services/permissions/rules/projectFolderPermissions';
+import { userModeratesFolder } from 'utils/permissions/rules/projectFolderPermissions';
 import { IAdminPublicationData } from 'api/admin_publications/types';
 
 const FolderIcon = styled(Icon)`

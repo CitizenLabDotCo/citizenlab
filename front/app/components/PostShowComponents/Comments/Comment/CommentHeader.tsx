@@ -7,7 +7,7 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import { IPresentComment } from 'api/comments/types';
 import useUserById from 'api/users/useUserById';
-import { canModerateProject } from 'services/permissions/rules/projectPermissions';
+import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 const Container = styled.div`
   display: flex;

@@ -50,6 +50,12 @@ const EventCard = memo<Props>((props) => {
         id={id}
         role="button"
         onClick={navigateToEventPage}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            navigateToEventPage();
+          }
+        }}
+        tabIndex={0}
       >
         <EventInformation event={event} {...otherProps} />
       </Container>

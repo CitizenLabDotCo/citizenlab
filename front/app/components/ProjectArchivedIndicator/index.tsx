@@ -28,7 +28,9 @@ const ProjectArchivedIndicator = memo<Props>(({ projectId, className }) => {
   if (project?.data.attributes.publication_status === 'archived') {
     return (
       <Container className={className || ''}>
-        <Warning text={<FormattedMessage {...messages.archivedProject} />} />
+        <Warning>
+          <FormattedMessage {...messages.archivedProject} />
+        </Warning>
       </Container>
     );
   }

@@ -2,7 +2,7 @@ import { ProcessType, IProjectData } from '../types';
 import {
   ParticipationMethod,
   TSurveyService,
-} from 'services/participationContexts';
+} from 'utils/participationContexts';
 
 export function getProject(
   id: string,

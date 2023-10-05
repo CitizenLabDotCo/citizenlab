@@ -207,23 +207,6 @@ resource 'Permissions' do
       header_token_for @user
     end
 
-    get 'web_api/v1/projects/:project_id/permissions/:action/participation_conditions' do
-      before do
-        @rule = { 'ruleType' => 'email', 'predicate' => 'ends_on', 'value' => 'test.com' }
-        @groups = [create(:group), create(:smart_group, rules: [@rule])]
-        @permission = @project.permissions.first
-        @permission.update!(permitted_by: 'groups', groups: @groups)
-      end
-
-      let(:action) { @permission.action }
-
-      example_request 'Get the participation conditions of a user' do
-        assert_status 200
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :attributes, :participation_conditions)).to eq [[SmartGroups::RulesService.new.parse_json_rule(@rule).description_multiloc.symbolize_keys]]
-      end
-    end
-
     get 'web_api/v1/projects/:project_id/permissions/:action/requirements' do
       before do
         @permission = @project.permissions.first
@@ -244,6 +227,7 @@ resource 'Permissions' do
               email: 'satisfied'
             },
             custom_fields: {},
+            onboarding: { topics_and_areas: 'dont_ask' },
             special: {
               password: 'satisfied',
               confirmation: 'satisfied',
@@ -288,6 +272,7 @@ resource 'Permissions' do
               email: 'satisfied'
             },
             custom_fields: {},
+            onboarding: { topics_and_areas: 'dont_ask' },
             special: {
               password: 'dont_ask',
               confirmation: 'require',
@@ -319,6 +304,7 @@ resource 'Permissions' do
               email: 'satisfied'
             },
             custom_fields: {},
+            onboarding: { topics_and_areas: 'dont_ask' },
             special: {
               password: 'satisfied',
               confirmation: 'satisfied',
@@ -344,6 +330,8 @@ resource 'Permissions' do
           password_digest: nil,
           custom_field_values: { 'gender' => 'male' }
         )
+
+        create(:topic, include_in_onboarding: true)
       end
 
       let(:action) { 'visiting' }
@@ -364,6 +352,7 @@ resource 'Permissions' do
               gender: 'satisfied',
               extra_field: 'require'
             },
+            onboarding: { topics_and_areas: 'ask' },
             special: {
               password: 'require',
               confirmation: 'satisfied',
@@ -379,6 +368,8 @@ resource 'Permissions' do
       before do
         @permission = @project.permissions.first
         @permission.update!(permitted_by: 'users')
+
+        create(:topic, include_in_onboarding: true)
       end
 
       let(:action) { @permission.action }
@@ -397,6 +388,7 @@ resource 'Permissions' do
               email: 'satisfied'
             },
             custom_fields: {},
+            onboarding: { topics_and_areas: 'ask' },
             special: {
               password: 'satisfied',
               confirmation: 'satisfied',

@@ -12,7 +12,7 @@ import useAuthUser from 'api/me/useAuthUser';
 // services
 import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
 import { IPhaseData } from 'api/phases/types';
-import { getIdeaPostingRules } from 'services/actionTakingRules';
+import { getIdeaPostingRules } from 'utils/actionTakingRules';
 
 // utils
 import { scrollToElement } from 'utils/scroll';

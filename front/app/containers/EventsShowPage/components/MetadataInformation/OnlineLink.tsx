@@ -28,7 +28,6 @@ const OnlineLink = ({ link }: Props) => {
               window.open(link, '_blank');
             }}
             pl="0px"
-            fontWeight="bold"
             fontSize="m"
             style={{
               textDecoration: 'underline',

@@ -15,6 +15,7 @@ import EmailAndPassword from './steps/EmailAndPassword';
 import EmailConfirmation from './steps/EmailConfirmation';
 import Verification from './steps/Verification';
 import CustomFields from './steps/CustomFields';
+import Onboarding from './steps/Onboarding';
 import Invitation from './steps/Invitation';
 import ChangeEmail from './steps/ChangeEmail';
 import LightFlowStart from './steps/LightFlowStart';
@@ -61,6 +62,7 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   'sign-up:change-email': messages.signUp,
   'sign-up:verification': messages.verifyYourIdentity,
   'sign-up:custom-fields': messages.completeYourProfile,
+  'sign-up:onboarding': messages.whatAreYouInterestedIn,
   'sign-up:invite': messages.signUp,
   'clave-unica:email': messages.signUp,
   'clave-unica:email-confirmation': messages.confirmYourEmail,
@@ -81,6 +83,7 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   'missing-data:change-email': messages.confirmYourEmail,
   'missing-data:verification': messages.verifyYourIdentity,
   'missing-data:custom-fields': messages.completeYourProfile,
+  'missing-data:onboarding': messages.whatAreYouInterestedIn,
 
   // verification only
   'verification-only': messages.verifyYourIdentity,
@@ -120,6 +123,8 @@ export const ERROR_CODE_MESSAGES: Record<ErrorCode, MessageDescriptor> = {
   invitation_error: messages.invitationErrorText,
   franceconnect_merging_failed: messages.franceConnectMergingFailed,
   email_taken_and_user_can_be_verified: messages.emailTakenAndUserCanBeVerified,
+  not_entitled_under_minimum_age:
+    messages.nemlogInUnderMinimumAgeVerificationFailed,
 };
 
 type HelperTextKey = 'signup_helper_text' | 'custom_fields_signup_helper_text';
@@ -305,6 +310,14 @@ const AuthModal = ({ setModalOpen }: Props) => {
             setError={setError}
             onGoBack={transition(currentStep, 'GO_BACK')}
             onChangeEmail={transition(currentStep, 'RESEND_CODE')}
+          />
+        )}
+
+        {currentStep === 'sign-up:onboarding' && (
+          <Onboarding
+            authenticationData={authenticationData}
+            onSubmit={transition(currentStep, 'SUBMIT')}
+            onSkip={transition(currentStep, 'SKIP')}
           />
         )}
 

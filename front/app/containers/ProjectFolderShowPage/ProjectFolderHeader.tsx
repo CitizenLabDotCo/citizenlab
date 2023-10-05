@@ -6,7 +6,6 @@ import {
   HeaderImage,
   HeaderImageContainer,
 } from 'components/ProjectableHeader';
-import FollowUnfollow from 'components/FollowUnfollow';
 
 // hooks
 import { useWindowSize, Box } from '@citizenlab/cl2-component-library';
@@ -53,17 +52,6 @@ const ProjectFolderHeader = memo<Props>(({ projectFolder, className }) => {
           display="flex"
           justifyContent="center"
         >
-          <Box mr="8px">
-            <FollowUnfollow
-              followableType="project_folders"
-              followableId={projectFolder.id}
-              followersCount={projectFolder.attributes.followers_count}
-              followerId={projectFolder.relationships.user_follower?.data?.id}
-              followableSlug={projectFolder.attributes.slug}
-              padding="6px 13px"
-              buttonStyle="white"
-            />
-          </Box>
           <StyledProjectFolderShareButton
             projectFolder={projectFolder}
             buttonStyle="white"

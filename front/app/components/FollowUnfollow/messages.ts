@@ -9,4 +9,8 @@ export default defineMessages({
     id: 'app.components.followUnfollow.unFollow',
     defaultMessage: 'Unfollow',
   },
+  followADiscussion: {
+    id: 'app.components.followUnfollow.followADiscussion',
+    defaultMessage: 'Follow the discussion',
+  },
 });

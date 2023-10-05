@@ -5,8 +5,8 @@ module SmartGroups::Rules
     include ActiveModel::Validations
     include DescribableRule
 
-    PREDICATE_VALUES = %w[something nothing is_one_of_projects is_not_project is_one_of_folders is_not_folder is_one_of_ideas is_not_idea is_one_of_initiatives is_not_initiative]
-    MULTIVALUE_PREDICATES = %w[is_one_of_projects is_one_of_folders is_one_of_ideas is_one_of_initiatives]
+    PREDICATE_VALUES = %w[something nothing is_one_of_projects is_not_project is_one_of_folders is_not_folder is_one_of_ideas is_not_idea is_one_of_initiatives is_not_initiative is_one_of_topics is_not_topic is_one_of_areas is_not_area]
+    MULTIVALUE_PREDICATES = %w[is_one_of_projects is_one_of_folders is_one_of_ideas is_one_of_initiatives is_one_of_topics is_one_of_areas]
     VALUELESS_PREDICATES = %w[something nothing]
 
     attr_accessor :predicate, :value
@@ -111,10 +111,10 @@ module SmartGroups::Rules
         users_scope.from_follows(Follower.all) # where.associated returns duplicates and does not seem very well supported: https://github.com/rails/rails/issues/40719
       when 'nothing'
         users_scope.where.missing(:follows)
-      when 'is_one_of_projects', 'is_one_of_folders', 'is_one_of_ideas', 'is_one_of_initiatives'
+      when 'is_one_of_projects', 'is_one_of_folders', 'is_one_of_ideas', 'is_one_of_initiatives', 'is_one_of_topics', 'is_one_of_areas'
         followers = Follower.where(followable_id: value)
         users_scope.from_follows(followers)
-      when 'is_not_project', 'is_not_folder', 'is_not_idea', 'is_not_initiative'
+      when 'is_not_project', 'is_not_folder', 'is_not_idea', 'is_not_initiative', 'is_not_topic', 'is_not_area'
         followers = Follower.where(followable_id: value, followable_type: followable_type.name)
         users_scope.where.not(id: users_scope.from_follows(followers))
       else
@@ -156,6 +156,10 @@ module SmartGroups::Rules
         Idea
       when 'is_one_of_initiatives', 'is_not_initiative'
         Initiative
+      when 'is_one_of_topics', 'is_not_topic'
+        Topic
+      when 'is_one_of_areas', 'is_not_area'
+        Area
       else
         raise "Unsupported predicate #{predicate}"
       end

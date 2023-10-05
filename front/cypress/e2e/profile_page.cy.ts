@@ -91,34 +91,32 @@ describe('Profile Page', () => {
     cy.get('.e2e-profile-comments').contains(commentContent);
   });
 
-  // TODO: Re-enable attendance tests once smart group implemented
+  it('shows the events the user is attending', () => {
+    cy.clearCookies();
+    // Confirm that the user event tab is not visible to other users
+    cy.visit(`/profile/${newUserName}-${newUserSurname}`);
+    cy.get('#e2e-usersshowpage');
+    cy.get('.e2e-events-nav').should('not.exist');
 
-  // it('shows the events the user is attending', () => {
-  //   cy.clearCookies();
-  //   // Confirm that the user event tab is not visible to other users
-  //   cy.visit(`/profile/${newUserName}-${newUserSurname}`);
-  //   cy.get('#e2e-usersshowpage');
-  //   cy.get('.e2e-events-nav').should('not.exist');
+    // Log in as the user
+    cy.setLoginCookie(newUserEmail, newUserPassword);
 
-  //   // Log in as the user
-  //   cy.setLoginCookie(newUserEmail, newUserPassword);
+    // Go to event
+    cy.visit(`/events/${eventId}`);
 
-  //   // Go to event
-  //   cy.visit(`/events/${eventId}`);
+    // RSVP to event
+    cy.get('#e2e-event-attendance-button').should('exist');
+    cy.get('#e2e-event-attendance-button').click();
 
-  //   // RSVP to event
-  //   cy.get('#e2e-event-attendance-button').should('exist');
-  //   cy.get('#e2e-event-attendance-button').click();
+    // Go to profile
+    cy.visit(`/profile/${newUserName}-${newUserSurname}`);
+    cy.get('#e2e-usersshowpage');
 
-  //   // Go to profile
-  //   cy.visit(`/profile/${newUserName}-${newUserSurname}`);
-  //   cy.get('#e2e-usersshowpage');
-
-  //   // Confirm the event is in the list
-  //   cy.get('.e2e-events-nav').click();
-  //   cy.get('.e2e-profile-events').should('exist');
-  //   cy.get('#e2e-event-attendance-button').should('exist');
-  // });
+    // Confirm the event is in the list
+    cy.get('.e2e-events-nav').click();
+    cy.get('.e2e-profile-events').should('exist');
+    cy.get('#e2e-event-attendance-button').should('exist');
+  });
 
   after(() => {
     cy.apiRemoveComment(commentId);

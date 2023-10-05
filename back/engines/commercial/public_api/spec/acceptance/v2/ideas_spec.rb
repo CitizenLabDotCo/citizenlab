@@ -13,8 +13,9 @@ resource 'Posts' do
 
   include_context 'common_auth'
 
+  # 3 Ideas
   let!(:ideas) do
-    create_list(:idea, 5, created_at: '2020-01-01').tap do |ideas|
+    create_list(:idea, 3, created_at: '2020-01-01').tap do |ideas|
       ideas.each do |idea|
         idea.update!(custom_field_values: {
           'audience_size' => rand(101...4000),
@@ -22,6 +23,18 @@ resource 'Posts' do
         })
       end
     end
+  end
+
+  # 2 surveys
+  let!(:survey_continuous) { create(:native_survey_response, created_at: '2020-01-01') }
+  let!(:survey_timeline) do
+    timeline_project = create(:project_with_active_native_survey_phase)
+    create(
+      :native_survey_response,
+      created_at: '2020-01-01',
+      project: timeline_project,
+      creation_phase: timeline_project.phases.first
+    )
   end
 
   # TODO: How do we get the format etc of response fields out into the spec? This doesn't seem to work
@@ -61,6 +74,15 @@ resource 'Posts' do
       in: :query
     )
 
+    parameter(
+      :type,
+      'Filter by type of idea - idea or survey - returns both by default',
+      required: false,
+      type: :string,
+      enum: %w[idea survey],
+      in: :query
+    )
+
     context 'when the page size is smaller than the total number of ideas' do
       let(:page_size) { 2 }
 
@@ -68,7 +90,7 @@ resource 'Posts' do
         assert_status 200
         expect(json_response_body[:ideas].size).to eq(page_size)
 
-        total_pages = (ideas.size.to_f / page_size).ceil
+        total_pages = (Idea.count.to_f / page_size).ceil
         expect(json_response_body[:meta]).to eq({ total_pages: total_pages, current_page: 1 })
       end
     end
@@ -90,6 +112,28 @@ resource 'Posts' do
         assert_status 200
         expect(json_response_body[:ideas].size).to eq(1)
         expect(json_response_body[:ideas].first[:project_id]).to eq(project_id)
+      end
+    end
+
+    context 'when filtering by type' do
+      context 'surveys' do
+        let(:type) { 'survey' }
+
+        example_request 'List only surveys' do
+          assert_status 200
+          expect(json_response_body[:ideas].size).to eq(2)
+          expect(json_response_body[:ideas].pluck(:type)).to all eq 'survey'
+        end
+      end
+
+      context 'ideas' do
+        let(:type) { 'idea' }
+
+        example_request 'List only ideas' do
+          assert_status 200
+          expect(json_response_body[:ideas].size).to eq(3)
+          expect(json_response_body[:ideas].pluck(:type)).to all eq 'idea'
+        end
       end
     end
 

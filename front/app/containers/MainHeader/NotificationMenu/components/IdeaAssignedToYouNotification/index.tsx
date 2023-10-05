@@ -7,7 +7,7 @@ import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // permissions
-import { isAdmin, isProjectModerator } from 'services/permissions/roles';
+import { isAdmin, isProjectModerator } from 'utils/permissions/roles';
 
 // components
 import NotificationWrapper from '../NotificationWrapper';

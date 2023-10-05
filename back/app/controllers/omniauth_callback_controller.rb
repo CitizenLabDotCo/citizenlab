@@ -7,8 +7,10 @@ class OmniauthCallbackController < ApplicationController
 
   def create
     auth_provider = request.env.dig('omniauth.auth', 'provider')
-    auth_method = AuthenticationService.new.method_by_provider(auth_provider)
+    auth_method = authentication_service.method_by_provider(auth_provider)
     verification_method = get_verification_method(auth_provider)
+
+    return if (auth_method || verification_method).redirect_callback_to_get_cookies(self)
 
     if auth_method && verification_method
       auth_or_verification_callback(verify: verification_method, authver_method: auth_method)
@@ -29,7 +31,7 @@ class OmniauthCallbackController < ApplicationController
     provider = params[:provider]
     user_id = params[:user_id]
     user = User.find(user_id)
-    auth_service = AuthenticationService.new
+    auth_service = authentication_service
 
     url = auth_service.logout_url(provider, user)
 
@@ -43,7 +45,7 @@ class OmniauthCallbackController < ApplicationController
   # Only methods that support both verification and authentication use it.
   def auth_or_verification_callback(verify:, authver_method:)
     # If token is present, the user is already logged in, which means they try to verify not authenticate.
-    if verify.fetch_token(request).present? && authver_method.verification_prioritized?
+    if request.env['omniauth.params']['token'].present? && authver_method.verification_prioritized?
       # We need it only for providers that support both auth and ver except FC.
       # For FC, we never verify, only authenticate (even when user clicks "verify").
       verification_callback(verify)
@@ -65,23 +67,23 @@ class OmniauthCallbackController < ApplicationController
     @identity = Identity.find_or_build_with_omniauth(auth, authver_method)
 
     @user = @identity.user
+    @user = User.find_by_cimail(user_attrs.fetch(:email)) if @user.nil? && user_attrs.key?(:email) # some providers (ClaveUnica) don't return email
 
-    if @user.nil? && user_attrs.key?(:email) # some providers (ClaveUnica) don't return email
-      @user = User.find_by_cimail(user_attrs.fetch(:email))
-      # https://github.com/CitizenLabDotCo/citizenlab/pull/3055#discussion_r1019061643
-      if @user && !authver_method.can_merge?(@user, user_attrs, params[:sso_verification])
-        # `sso_flow: 'signin'` - even if user signs up, we propose to sign in due to the content of the error message
-        #
-        # `sso_pathname: '/'` - when sso_pathname is `/en/sign-in`, it's not redirected to /en/sign-in and the error message is not shown
-        # On the FE, this hack can be tested accessing this URL
-        # http://localhost:3000/authentication-error?sso_response=true&sso_flow=signin&sso_pathname=%2F&error_code=franceconnect_merging_failed
-        # Note, that the modal is not shown with this URL
-        # http://localhost:3000/authentication-error?sso_response=true&sso_flow=signin&sso_pathname=%2Fen%2Fsign-in&error_code=franceconnect_merging_failed
-        #
-        # Probaby, it would be possible to fix both issues on the FE, but it seems to be much more complicated.
-        failure_redirect(error_code: authver_method.merging_error_code, sso_flow: 'signin', sso_pathname: '/')
-        return
-      end
+    @user = authentication_service.prevent_user_account_hijacking @user
+
+    # https://github.com/CitizenLabDotCo/citizenlab/pull/3055#discussion_r1019061643
+    if @user && !authver_method.can_merge?(@user, user_attrs, params[:sso_verification])
+      # `sso_flow: 'signin'` - even if user signs up, we propose to sign in due to the content of the error message
+      #
+      # `sso_pathname: '/'` - when sso_pathname is `/en/sign-in`, it's not redirected to /en/sign-in and the error message is not shown
+      # On the FE, this hack can be tested accessing this URL
+      # http://localhost:3000/authentication-error?sso_response=true&sso_flow=signin&sso_pathname=%2F&error_code=franceconnect_merging_failed
+      # Note, that the modal is not shown with this URL
+      # http://localhost:3000/authentication-error?sso_response=true&sso_flow=signin&sso_pathname=%2Fen%2Fsign-in&error_code=franceconnect_merging_failed
+      #
+      # Probaby, it would be possible to fix both issues on the FE, but it seems to be much more complicated.
+      failure_redirect(error_code: authver_method.merging_error_code, sso_flow: 'signin', sso_pathname: '/')
+      return
     end
 
     if @user
@@ -122,8 +124,6 @@ class OmniauthCallbackController < ApplicationController
     else # New user
       @user = User.new(user_attrs)
       @user.locale = selected_locale(omniauth_params) if selected_locale(omniauth_params)
-
-      SideFxUserService.new.before_create(@user, nil)
 
       @user.identities << @identity
       begin
@@ -174,7 +174,7 @@ class OmniauthCallbackController < ApplicationController
 
     AuthToken::AuthToken.new payload: payload.merge({
       provider: provider,
-      logout_supported: AuthenticationService.new.supports_logout?(provider)
+      logout_supported: authentication_service.supports_logout?(provider)
     })
   end
 
@@ -227,6 +227,10 @@ class OmniauthCallbackController < ApplicationController
 
   def verification_callback(_verification_method)
     # overridden
+  end
+
+  def authentication_service
+    @authentication_service ||= AuthenticationService.new
   end
 end
 

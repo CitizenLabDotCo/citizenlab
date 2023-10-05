@@ -27,7 +27,6 @@ interface Props {
 
 const InformationColumnDesktop = ({ event, className }: Props) => {
   const isPastEvent = moment().isAfter(moment(event.attributes.end_at));
-  const tempShowAttendance = false;
 
   return (
     <Box
@@ -56,18 +55,14 @@ const InformationColumnDesktop = ({ event, className }: Props) => {
             >
               <EventDateStylized event={event} />
               <>
-                {tempShowAttendance &&
-                  !isPastEvent && ( // TODO: Replace once event attendance smart group added
-                    <Box mt="12px">
-                      <EventAttendanceButton event={event} />
-                    </Box>
-                  )}
-                {tempShowAttendance &&
-                  event.attributes.attendees_count > 0 && ( // TODO: Replace once event attendance smart group added
-                    <ParticipantsCount
-                      count={event.attributes.attendees_count}
-                    />
-                  )}
+                {!isPastEvent && (
+                  <Box mt="12px">
+                    <EventAttendanceButton event={event} />
+                  </Box>
+                )}
+                {event.attributes.attendees_count > 0 && (
+                  <ParticipantsCount count={event.attributes.attendees_count} />
+                )}
                 <Box borderBottom={`solid 1px ${colors.divider}`} />
               </>
 

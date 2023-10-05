@@ -29,10 +29,6 @@ class PermissionPolicy < ApplicationPolicy
     user&.active? && UserRoleService.new.can_moderate?(record, user)
   end
 
-  def participation_conditions?
-    true
-  end
-
   def requirements?
     true
   end

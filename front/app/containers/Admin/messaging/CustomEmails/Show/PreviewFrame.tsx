@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import { API_PATH } from 'containers/App/constants';
 import Frame from 'react-frame-component';
-import request from 'utils/request';
+import { API_PATH } from 'containers/App/constants';
+import { getJwt } from 'utils/auth/jwt';
 
 const StyledFrame = styled(Frame)`
   border-radius: ${(props) => props.theme.borderRadius};
@@ -31,14 +31,19 @@ class PreviewFrame extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    request<{ html: string }>(
-      `${API_PATH}/campaigns/${this.props.campaignId}/preview`,
-      null,
-      null,
-      null
-    ).then((json) => {
-      this.setState({ previewHtml: json.html });
-    });
+    // TODO: Replace with fetcher when the backend is updated
+    const jwt = getJwt();
+    fetch(`${API_PATH}/campaigns/${this.props.campaignId}/preview`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${jwt}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        this.setState({ previewHtml: data.html });
+      });
   }
 
   render() {

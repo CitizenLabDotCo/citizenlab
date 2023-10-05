@@ -10,7 +10,7 @@ import Button from 'components/UI/Button';
 import useAuthUser from 'api/me/useAuthUser';
 import messages from '../../messages';
 import { ManagerType } from '../..';
-import { isAdmin } from 'services/permissions/roles';
+import { isAdmin } from 'utils/permissions/roles';
 
 interface Props {
   type: ManagerType;

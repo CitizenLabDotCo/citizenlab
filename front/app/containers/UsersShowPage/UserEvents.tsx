@@ -14,6 +14,8 @@ import messages from './messages';
 
 // hooks
 import useEventsByUserId from 'api/events/useEventsByUserId';
+import { useParams } from 'react-router-dom';
+import useUserBySlug from 'api/users/useUserBySlug';
 
 // utils
 import { ScreenReaderOnly } from 'utils/a11y';
@@ -26,12 +28,10 @@ const Container = styled.div`
   max-width: 1200px;
 `;
 
-interface Props {
-  userId: string;
-}
-
-export const UserEvents = ({ userId }: Props) => {
-  const { data: events } = useEventsByUserId(userId);
+export const UserEvents = () => {
+  const { userSlug } = useParams() as { userSlug: string };
+  const { data: user } = useUserBySlug(userSlug);
+  const { data: events } = useEventsByUserId(user?.data.id);
   const isMobileOrSmaller = useBreakpoint('phone');
   const eventsCount = events?.data.length;
 
@@ -52,8 +52,8 @@ export const UserEvents = ({ userId }: Props) => {
           {...messages.invisibleTitleUserComments}
         />
       </ScreenReaderOnly>
-      <CurrentAndUpcomingEvents attendeeId={userId} />
-      <PastEvents attendeeId={userId} />
+      <CurrentAndUpcomingEvents attendeeId={user?.data.id} />
+      <PastEvents attendeeId={user?.data.id} />
     </Container>
   );
 };

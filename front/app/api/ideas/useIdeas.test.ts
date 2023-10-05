@@ -107,6 +107,9 @@ export const data: IIdeaData[] = [
           type: 'idea_status',
         },
       },
+      ideas_phases: {
+        data: [],
+      },
       user_reaction: {
         data: null,
       },

@@ -12,11 +12,27 @@ module Analysis
           insights = @analysis.insights
             .order(created_at: :desc)
             .includes(insightable: :background_task)
+
+          if params[:bookmarked].present?
+            insights = insights.where(bookmarked: true)
+          end
+
           render json: WebApi::V1::InsightSerializer.new(
             insights,
             params: jsonapi_serializer_params,
             include: %i[insightable insightable.background_task]
           ).serializable_hash
+        end
+
+        def toggle_bookmark
+          insight = @analysis.insights.find(params[:id])
+          # toggle the bookmarked attribute
+          insight.bookmarked = !insight.bookmarked
+          if insight.save
+            head :ok
+          else
+            render json: { errors: insight.errors.details }, status: :unprocessable_entity
+          end
         end
 
         def destroy

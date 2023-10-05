@@ -24,8 +24,8 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // typings
 import { IPhaseData } from 'api/phases/types';
-import { ParticipationMethod } from 'services/participationContexts';
-import { requestBlob } from '../../../../../utils/request';
+import { ParticipationMethod } from 'utils/participationContexts';
+import { requestBlob } from 'utils/request';
 import { API_PATH } from '../../../../App/constants';
 import { saveAs } from 'file-saver';
 

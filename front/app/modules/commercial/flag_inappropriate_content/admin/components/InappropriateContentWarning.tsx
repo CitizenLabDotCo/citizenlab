@@ -6,7 +6,7 @@ import { colors, IconTooltip } from '@citizenlab/cl2-component-library';
 import { getFlagType } from '../../utils';
 
 // hooks
-import useInappropriateContentFlag from '../../api/inappropriate_content_flags/useInappropriateContentFlag';
+import useInappropriateContentFlag from 'api/inappropriate_content_flags/useInappropriateContentFlag';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';

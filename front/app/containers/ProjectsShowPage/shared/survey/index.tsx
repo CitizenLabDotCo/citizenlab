@@ -1,6 +1,6 @@
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { TSurveyService } from 'services/participationContexts';
+import { TSurveyService } from 'utils/participationContexts';
 
 // components
 import TypeformSurvey from './TypeformSurvey';

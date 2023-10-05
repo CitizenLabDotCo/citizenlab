@@ -5,36 +5,46 @@ class WebApi::V1::TopicsController < ApplicationController
   skip_before_action :authenticate_user, only: %i[index show]
 
   def index
-    @topics = policy_scope(Topic)
-    @topics = TopicsFilteringService.new.filter(@topics, params: params, current_user: current_user)
+    topics = policy_scope(Topic)
+    topics = TopicsFilteringService.new.filter(topics, params: params, current_user: current_user)
 
-    @topics =
+    topics =
       case params[:sort]
       when 'custom', nil
-        @topics.order(:ordering)
+        topics.order(:ordering)
       when 'new'
-        @topics.order_new
+        topics.order_new
       when '-new'
-        @topics.order_new(:asc)
+        topics.order_new(:asc)
+      when 'projects_count'
+        topics.order_projects_count
+      when '-projects_count'
+        topics.order_projects_count(:asc)
       else
         raise 'Unsupported sort method'
       end
 
-    @topics = paginate @topics
+    topics = paginate topics
 
     include_static_pages = params[:include]&.split(',')&.include?('static_pages')
+    user_followers = current_user&.follows
+      &.where(followable_type: 'Topic')
+      &.group_by do |follower|
+        [follower.followable_id, follower.followable_type]
+      end
+    user_followers ||= {}
 
     if include_static_pages
       render json: linked_json(
-        @topics.includes(:static_pages),
+        topics.includes(:static_pages),
         WebApi::V1::TopicSerializer,
         include: [:static_pages],
-        params: jsonapi_serializer_params(include_static_pages: true)
+        params: jsonapi_serializer_params(include_static_pages: true, user_followers: user_followers)
       )
       return
     end
 
-    render json: linked_json(@topics, WebApi::V1::TopicSerializer, params: jsonapi_serializer_params)
+    render json: linked_json(topics, WebApi::V1::TopicSerializer, params: jsonapi_serializer_params)
   end
 
   def show

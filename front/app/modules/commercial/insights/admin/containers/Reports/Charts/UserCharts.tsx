@@ -11,7 +11,7 @@ import CustomFieldGraph from './CustomFieldGraph';
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 
 // typings
-import { ParticipationMethod } from 'services/participationContexts';
+import { ParticipationMethod } from 'utils/participationContexts';
 import { IProjectData } from 'api/projects/types';
 import {
   IUserCustomFieldData,

@@ -20,7 +20,7 @@
             numberOfDays: @diff_days.to_s
           }) %>
         <% end %>
-        <%= format_message('by_author', values: {authorName: event.post_author_name }) %>
+        <%= format_message('by_author', component: 'general', values: {authorName: event.post_author_name }) %>
       </p>
     </mj-text>
   </mj-column>

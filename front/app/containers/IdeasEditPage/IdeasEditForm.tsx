@@ -10,7 +10,7 @@ import GoBackToIdeaPage from 'containers/IdeasEditPage/GoBackToIdeaPage';
 import IdeasEditMeta from './IdeasEditMeta';
 
 // services
-import { usePermission } from 'services/permissions';
+import { usePermission } from 'utils/permissions';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
 import useDeleteIdeaImage from 'api/idea_images/useDeleteIdeaImage';
 

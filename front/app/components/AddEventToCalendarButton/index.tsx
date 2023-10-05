@@ -8,7 +8,7 @@ import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 
 // util
-import { requestBlob } from 'utils/request';
+import { requestBlob } from 'utils/requestBlob';
 import { API_PATH } from 'containers/App/constants';
 import saveAs from 'file-saver';
 import { useTheme } from 'styled-components';

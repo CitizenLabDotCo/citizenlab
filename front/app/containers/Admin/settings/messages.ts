@@ -157,4 +157,14 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.urlPatternError',
     defaultMessage: 'Enter a valid URL.',
   },
+  selectOnboardingTopics: {
+    id: 'app.containers.AdminPage.SettingsPage.selectOnboardingTopics',
+    defaultMessage:
+      'Select the topics that will be shown to users to follow after registration',
+  },
+  selectOnboardingAreas: {
+    id: 'app.containers.AdminPage.SettingsPage.selectOnboardingAreas',
+    defaultMessage:
+      'Select the areas that will be shown to users to follow after registration',
+  },
 });

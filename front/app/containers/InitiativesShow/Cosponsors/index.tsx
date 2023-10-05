@@ -6,7 +6,7 @@ import BorderContainer from '../BorderContainer';
 import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import useAuthUser from 'api/me/useAuthUser';
-import { isAdmin } from 'services/permissions/roles';
+import { isAdmin } from 'utils/permissions/roles';
 
 interface Props {
   initiativeId: string;

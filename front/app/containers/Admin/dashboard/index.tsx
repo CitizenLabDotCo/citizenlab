@@ -11,7 +11,7 @@ import Outlet from 'components/Outlet';
 import useAuthUser from 'api/me/useAuthUser';
 
 // permissions
-import { isAdmin, isProjectModerator } from 'services/permissions/roles';
+import { isAdmin, isProjectModerator } from 'utils/permissions/roles';
 
 // i18n
 import messages from './messages';

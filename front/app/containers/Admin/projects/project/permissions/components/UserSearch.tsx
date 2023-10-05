@@ -1,7 +1,7 @@
 import React, { Suspense, memo, useState, lazy } from 'react';
 
 // Services
-import { isRegularUser } from 'services/permissions/roles';
+import { isRegularUser } from 'utils/permissions/roles';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';

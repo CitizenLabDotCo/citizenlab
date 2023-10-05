@@ -34,6 +34,10 @@ export default defineMessages({
     id: 'app.containers.NewAuthModal.completeYourProfile',
     defaultMessage: 'Complete your profile',
   },
+  whatAreYouInterestedIn: {
+    id: 'app.containers.NewAuthModal.whatAreYouInterestedIn',
+    defaultMessage: 'What are you interested in?',
+  },
   unknownError: {
     id: 'app.containers.SignUp.unknownError',
     defaultMessage: 'Something went wrong. Please try again later.',
@@ -51,5 +55,10 @@ export default defineMessages({
     id: 'app.components.AuthProviders.franceConnectMergingFailed',
     defaultMessage:
       'An account already exists with this email address.{br}{br}You cannot access the platform using FranceConnect as the personal details do not match. To log in using FranceConnect, you will have to first change your first name or last name on this platform to match your official details.{br}{br}You can log in as you normally do below.',
+  },
+  nemlogInUnderMinimumAgeVerificationFailed: {
+    id: 'app.components.AuthProviders.nemlogInUnderMinimumAgeVerificationFailed',
+    defaultMessage:
+      'You must be the specified minimum age or above to be verified.',
   },
 });

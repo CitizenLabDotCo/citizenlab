@@ -1,9 +1,9 @@
 import React from 'react';
 import {
   Button,
-  BoxPaddingProps,
   ButtonStyles,
   BoxWidthProps,
+  BoxPaddingProps,
 } from '@citizenlab/cl2-component-library';
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
@@ -14,12 +14,18 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 import useAuthUser from 'api/me/useAuthUser';
+import useABTest from 'api/experiments/useABTest';
+import useLocale from 'hooks/useLocale';
+import tracks from './tracks';
+import { trackEventByName } from 'utils/analytics';
+import { useLocation } from 'react-router-dom';
 
-interface Props extends BoxPaddingProps, BoxWidthProps {
+interface Props extends BoxWidthProps, BoxPaddingProps {
   followableType: FollowableType;
-  followableId: string; // id of the project, folder, idea or proposal
+  followableId: string; // id of the project, folder, idea, proposal or anything to be followed
   followersCount?: number;
   followerId?: string; // id of the follower object
+  iconSize?: string;
   followableSlug?: string;
   buttonStyle?: ButtonStyles;
 }
@@ -30,25 +36,37 @@ const FollowUnfollow = ({
   followersCount,
   followerId,
   followableSlug,
-  buttonStyle = 'primary-outlined',
+  iconSize = '24px',
+  buttonStyle = 'primary',
   ...otherButtonProps
 }: Props) => {
   const isFollowingEnabled = useFeatureFlag({
     name: 'follow',
   });
+  const locale = useLocale();
   const { formatMessage } = useIntl();
   const { data: authUser } = useAuthUser();
+  const { pathname } = useLocation();
   const { mutate: addFollower, isLoading: isAddingFollower } = useAddFollower();
   const { mutate: deleteFollower, isLoading: isDeletingFollower } =
     useDeleteFollower();
+  const { treatment, send } = useABTest({
+    experiment: `Following an idea text(${locale})`,
+    treatments: [
+      formatMessage(messages.followADiscussion),
+      formatMessage(messages.follow),
+    ],
+  });
 
   if (!isFollowingEnabled) return null;
 
   // If the follower id is present, then the user is following
+  const followText =
+    followableType === 'ideas' ? treatment : formatMessage(messages.follow);
   const isFollowing = !!followerId;
   const followUnfollowText = isFollowing
     ? formatMessage(messages.unFollow)
-    : formatMessage(messages.follow);
+    : followText;
   const isLoading = isAddingFollower || isDeletingFollower;
 
   const followOrUnfollow = () => {
@@ -59,11 +77,25 @@ const FollowUnfollow = ({
         followableType,
         followableSlug,
       });
+      trackEventByName(tracks.unfollow, {
+        followableType,
+        id: followableId,
+        urlPathName: pathname,
+      });
     } else {
       addFollower({
         followableType,
         followableId,
         followableSlug,
+      });
+
+      if (followableType === 'ideas') {
+        send?.('Follow Button clicked');
+      }
+      trackEventByName(tracks.follow, {
+        followableType,
+        id: followableId,
+        urlPathName: pathname,
       });
     }
   };
@@ -84,6 +116,10 @@ const FollowUnfollow = ({
       context,
       successAction,
     });
+    trackEventByName(tracks.startLightUserRegThroughFollow, {
+      followableType,
+      id: followableId,
+    });
   };
 
   const handleButtonClick = () => {
@@ -98,8 +134,11 @@ const FollowUnfollow = ({
       buttonStyle={buttonStyle}
       icon="notification"
       onClick={handleButtonClick}
+      iconSize={iconSize}
+      px="12px"
       processing={isLoading}
       {...otherButtonProps}
+      data-cy={isFollowing ? 'e2e-unfollow-button' : 'e2e-follow-button'}
     >
       {followersCount
         ? `${followUnfollowText} (${followersCount})`

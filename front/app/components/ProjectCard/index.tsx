@@ -16,8 +16,8 @@ import FollowUnfollow from 'components/FollowUnfollow';
 
 // services
 import { getProjectUrl } from 'api/projects/utils';
-import { getInputTerm } from 'services/participationContexts';
-import { getIdeaPostingRules } from 'services/actionTakingRules';
+import { getInputTerm } from 'utils/participationContexts';
+import { getIdeaPostingRules } from 'utils/actionTakingRules';
 
 // resources
 import useProjectById from 'api/projects/useProjectById';
@@ -789,7 +789,7 @@ const ProjectCard = memo<InputProps>(
               </Box>
             )}
             {showFollowButton && (
-              <Box display="flex" justifyContent="flex-end">
+              <Box display="flex" justifyContent="flex-end" mt="24px">
                 <FollowUnfollow
                   followableType="projects"
                   followableId={project.data.id}
@@ -797,7 +797,7 @@ const ProjectCard = memo<InputProps>(
                   followerId={
                     project.data.relationships.user_follower?.data?.id
                   }
-                  py="2px"
+                  w="100%"
                 />
               </Box>
             )}

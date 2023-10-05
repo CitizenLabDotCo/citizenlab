@@ -5,7 +5,7 @@ import { adopt } from 'react-adopt';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // Services
-import { isAdmin } from 'services/permissions/roles';
+import { isAdmin } from 'utils/permissions/roles';
 
 // Utils
 import { isNilOrError } from 'utils/helperUtils';

@@ -26,6 +26,7 @@ import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/c
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import { showOnboarding } from 'containers/Authentication/useSteps/stepConfig/utils';
 
 const DropdownListItem = styled(Button)``;
 
@@ -47,6 +48,15 @@ const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
 
   const isConfirmedUser =
     !isNilOrError(authUser) && !authUser.data.attributes.confirmation_required;
+
+  const showCompleteProfile = isConfirmedUser && !isRegisteredUser;
+  const shouldShowOnboarding =
+    authenticationRequirementsResponse && !showCompleteProfile
+      ? showOnboarding(
+          authenticationRequirementsResponse.data.attributes.requirements
+            .requirements.onboarding
+        )
+      : false;
 
   const handleToggleDropdown = (event: MouseEvent | KeyboardEvent) => {
     event.preventDefault();
@@ -141,7 +151,7 @@ const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
             </DropdownListItem>
           )}
 
-          {isConfirmedUser && !isRegisteredUser && (
+          {showCompleteProfile && (
             <DropdownListItem
               id="e2e-complete-registration-link"
               onClick={() => {
@@ -156,6 +166,23 @@ const UserMenuDropdown = ({ toggleDropdown, closeDropdown, opened }: Props) => {
               justify="space-between"
             >
               <FormattedMessage {...messages.completeProfile} />
+            </DropdownListItem>
+          )}
+
+          {isConfirmedUser && shouldShowOnboarding && (
+            <DropdownListItem
+              onClick={() => {
+                triggerAuthenticationFlow();
+              }}
+              buttonStyle="text"
+              bgHoverColor={colors.grey300}
+              icon="basket-checkmark"
+              iconPos="right"
+              iconSize="20px"
+              padding="11px 11px"
+              justify="space-between"
+            >
+              <FormattedMessage {...messages.completeOnboarding} />
             </DropdownListItem>
           )}
 

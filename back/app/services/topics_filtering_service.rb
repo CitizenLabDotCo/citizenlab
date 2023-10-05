@@ -11,6 +11,15 @@ class TopicsFilteringService
     Topic.where(id: ProjectsTopic.where(project: projects_for_filter).select(:topic_id))
   end
 
+  add_filter('for_onboarding') do |scope, params:, **_options|
+    if params[:for_onboarding]
+      include_in_onboarding = ActiveModel::Type::Boolean.new.cast(params[:for_onboarding])
+      scope.where(include_in_onboarding: include_in_onboarding)
+    else
+      scope
+    end
+  end
+
   add_filter('by_codes') do |scope, params:, **_options|
     result = scope
     result = result.where(code: params[:code]) if params[:code].present?

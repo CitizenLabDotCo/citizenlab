@@ -20,8 +20,8 @@ import useProjectFolders from 'api/project_folders/useProjectFolders';
 import {
   userModeratesFolder,
   isProjectFolderModerator,
-} from 'services/permissions/rules/projectFolderPermissions';
-import { isAdmin } from 'services/permissions/roles';
+} from 'utils/permissions/rules/projectFolderPermissions';
+import { isAdmin } from 'utils/permissions/roles';
 import useLocalize from 'hooks/useLocalize';
 
 // components

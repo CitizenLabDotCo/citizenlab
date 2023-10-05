@@ -14,7 +14,7 @@ import {
 import { darken } from 'polished';
 import Error from 'components/UI/Error';
 import { saveAs } from 'file-saver';
-import { requestBlob } from 'utils/request';
+import { requestBlob } from 'utils/requestBlob';
 import { API_PATH } from 'containers/App/constants';
 
 const StyledSectionTitle = styled(SectionTitle)`

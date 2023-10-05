@@ -176,26 +176,24 @@ export default ({
               onChange={handleColorPickerOnChange(colorName)}
             />
             {contrastRatioWarningOfColor && contrastRatioOfColor && (
-              <ContrastWarning
-                text={
-                  <FormattedMessage
-                    {...messages.contrastRatioTooLow}
-                    values={{
-                      wcagLink: (
-                        <a
-                          href="https://www.w3.org/TR/WCAG21/"
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          WCAG 2.1 AA
-                        </a>
-                      ),
-                      lineBreak: <br />,
-                      contrastRatio: contrastRatioOfColor.toFixed(2),
-                    }}
-                  />
-                }
-              />
+              <ContrastWarning>
+                <FormattedMessage
+                  {...messages.contrastRatioTooLow}
+                  values={{
+                    wcagLink: (
+                      <a
+                        href="https://www.w3.org/TR/WCAG21/"
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        WCAG 2.1 AA
+                      </a>
+                    ),
+                    lineBreak: <br />,
+                    contrastRatio: contrastRatioOfColor.toFixed(2),
+                  }}
+                />
+              </ContrastWarning>
             )}
           </SectionField>
         );

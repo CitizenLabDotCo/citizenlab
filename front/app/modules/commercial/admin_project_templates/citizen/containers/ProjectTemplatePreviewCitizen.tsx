@@ -9,7 +9,7 @@ import { Icon } from '@citizenlab/cl2-component-library';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { isAdmin } from 'services/permissions/roles';
+import { isAdmin } from 'utils/permissions/roles';
 
 // resources
 import useAuthUser from 'api/me/useAuthUser';

@@ -1,5 +1,20 @@
 import { AuthenticationRequirements } from 'api/authentication/authentication_requirements/types';
 
+export const showOnboarding = (
+  onboardingRequirements: AuthenticationRequirements['requirements']['onboarding']
+) => {
+  for (const fieldName in onboardingRequirements) {
+    if (
+      onboardingRequirements[fieldName] === 'ask' ||
+      onboardingRequirements[fieldName] === 'require'
+    ) {
+      return true;
+    }
+  }
+
+  return false;
+};
+
 export const askCustomFields = (
   customFieldRequirements: AuthenticationRequirements['requirements']['custom_fields']
 ) => {

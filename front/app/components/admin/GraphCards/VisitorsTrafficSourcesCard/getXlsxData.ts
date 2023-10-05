@@ -9,7 +9,7 @@ import { getTranslations as getReferrerTranslations } from './useVisitorReferrer
 // utils
 import { getProjectFilter, getDateFilter } from '../_utils/query';
 import { reportError } from 'utils/loggingUtils';
-import { sanitizeQueryParameters } from 'utils/streams/utils';
+
 import { roundPercentages } from 'utils/math';
 
 // typings
@@ -18,8 +18,41 @@ import { ReferrerListResponse } from './useVisitorReferrers/typings';
 import { XlsxData } from 'components/admin/ReportExportMenu';
 import { FormatMessage } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
+import {
+  cloneDeep,
+  forOwn,
+  isUndefined,
+  isEmpty,
+  isObject,
+  isString,
+  isArray,
+} from 'lodash-es';
 
 type QueryParameters = ProjectId & Dates;
+
+export const sanitizeQueryParameters = (
+  queryParameters: Record<string, any> | null,
+  skipSanitizationFor?: string[]
+) => {
+  const sanitizedQueryParameters = cloneDeep(queryParameters);
+
+  forOwn(queryParameters, (value, key) => {
+    if (
+      !skipSanitizationFor?.includes(key) &&
+      (isUndefined(value) ||
+        (isString(value) && isEmpty(value)) ||
+        (isArray(value) && isEmpty(value)) ||
+        (isObject(value) && isEmpty(value)))
+    ) {
+      delete (sanitizedQueryParameters as Record<string, any>)[key];
+    }
+  });
+
+  return isObject(sanitizedQueryParameters) &&
+    !isEmpty(sanitizedQueryParameters)
+    ? sanitizedQueryParameters
+    : null;
+};
 
 const query = ({
   projectId,

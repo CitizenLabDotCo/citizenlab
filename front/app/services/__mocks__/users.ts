@@ -31,6 +31,7 @@ export const makeUser = (attributes = {}, id?: string): IUser => {
           politician: 'retired_politician',
         },
         unread_notifications: 0,
+        followings_count: 2,
         ...attributes,
       },
     },

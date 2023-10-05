@@ -18,9 +18,9 @@ class SideFxProjectService
     project.update!(description_multiloc: TextImageService.new.swap_data_images(project, :description_multiloc))
 
     LogActivityJob.perform_later(project, 'created', user, project.created_at.to_i)
-    log_publication_status_change(project, user, change: [nil, project.admin_publication.publication_status])
 
     @sfx_pc.after_create project, user if project.participation_context?
+    after_publish project, user if project.admin_publication.published?
   end
 
   def after_copy(source_project, copied_project, user, start_time)
@@ -38,6 +38,7 @@ class SideFxProjectService
   end
 
   def before_update(project, user)
+    @publication_status_was = project.admin_publication.publication_status
     @folder_id_was = project.admin_publication.parent_id_was
     project.description_multiloc = TextImageService.new.swap_data_images(project, :description_multiloc)
     @sfx_pc.before_update project, user if project.participation_context?
@@ -45,10 +46,11 @@ class SideFxProjectService
 
   def after_update(project, user)
     LogActivityJob.perform_later project, 'changed', user, project.updated_at.to_i
-    log_publication_status_change(project, user)
 
     after_folder_changed project, user if @folder_id_was != project.folder_id
     @sfx_pc.after_update project, user if project.participation_context?
+    # We don't want to send out the "project published" campaign when e.g. changing from "archived" to "published"
+    after_publish project, user if project.admin_publication.published? && @publication_status_was == 'draft'
   end
 
   def before_destroy(project, user)
@@ -73,16 +75,8 @@ class SideFxProjectService
 
   private
 
-  # @param [Project] project
-  # @param [User] user
-  # @param [Array<String>,nil] change
-  def log_publication_status_change(project, user, change: nil)
-    change ||= project.admin_publication.publication_status_previous_change
-    return unless change
-
-    LogActivityJob
-      .set(wait: 20.seconds)
-      .perform_later(project, change.last, user, Time.now.to_i, payload: change)
+  def after_publish(project, user)
+    LogActivityJob.perform_later project, 'published', user, project.updated_at.to_i
   end
 
   def after_folder_changed(project, current_user)

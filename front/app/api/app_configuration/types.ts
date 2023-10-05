@@ -51,6 +51,7 @@ export type IAppConfigurationSettingsCore = {
   maximum_moderators_number: TSeatNumber;
   additional_admins_number: TSeatNumber;
   additional_moderators_number: TSeatNumber;
+  onboarding?: boolean;
 };
 
 export type TSeatNumber = number | null | undefined;
@@ -133,7 +134,7 @@ export interface IAppConfigurationSettings {
   project_reports?: AppConfigurationFeature;
   private_projects?: AppConfigurationFeature;
   maps?: AppConfigurationMapSettings;
-  initiatives?: ProposalsSettings;
+  initiatives: ProposalsSettings;
   initiative_review?: AppConfigurationFeature;
   initiative_cosponsors?: AppConfigurationFeature;
   fragments?: {

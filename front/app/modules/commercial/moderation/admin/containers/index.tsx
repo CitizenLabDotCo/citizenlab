@@ -29,7 +29,7 @@ import Outlet from 'components/Outlet';
 // hooks
 import useModerations from 'api/moderations/useModerations';
 import useModerationsCount from 'api/moderation_count/useModerationsCount';
-import useRemoveInappropriateContentFlag from 'modules/commercial/flag_inappropriate_content/api/inappropriate_content_flags/useRemoveInappropriateContentFlag';
+import useRemoveInappropriateContentFlag from 'api/inappropriate_content_flags/useRemoveInappropriateContentFlag';
 import useUpdateModerationStatus from 'api/moderations/useUpdateModerationStatus';
 
 // i18n

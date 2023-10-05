@@ -11,6 +11,7 @@ import InitiativeValueSelector from './ValueSelector/InitiativeValueSelector';
 import ProjectFolderValueSelector from './ValueSelector/ProjectFolderValueSelector';
 import ProjectFolderValuesSelector from './ValueSelector/ProjectFolderValuesSelector';
 import NumberValueSelector from './ValueSelector/NumberValueSelector';
+import EventValuesSelector from './ValueSelector/EventValuesSelector';
 
 import CustomFieldOptionValueSelector from './ValueSelector/CustomFieldOptionValueSelector';
 import CustomFieldOptionValuesSelector from './ValueSelector/CustomFieldOptionValuesSelector';
@@ -39,6 +40,7 @@ export type TRuleType = TStaticRuleType | TCustomRuleType;
 
 export type TStaticRuleType =
   | 'email'
+  | 'event_attendances'
   | 'follow'
   | 'lives_in'
   | 'registration_completed_at'
@@ -60,6 +62,7 @@ export type TPredicate = TStaticPredicate | TCustomPredicate;
 type TStaticPredicate =
   | TRolePredicate
   | TEmailPredicate
+  | TEventAttendancePredicate
   | TResidencePredicate
   | TRegistrationCompletedPredicate
   | TParticipatedInProjectPredicate
@@ -78,7 +81,9 @@ type TFollowPredicate =
   | 'is_one_of_projects'
   | 'is_one_of_folders'
   | 'is_one_of_ideas'
-  | 'is_one_of_initiatives';
+  | 'is_one_of_initiatives'
+  | 'is_one_of_topics'
+  | 'is_one_of_areas';
 
 type TRolePredicate =
   | 'is_admin'
@@ -97,6 +102,12 @@ type TEmailPredicate =
   | 'not_begins_with'
   | 'ends_on'
   | 'not_ends_on';
+
+type TEventAttendancePredicate =
+  | 'attends_something'
+  | 'attends_nothing'
+  | 'attends_some_of'
+  | 'attends_none_of';
 
 type TResidencePredicate =
   | 'has_value'
@@ -337,6 +348,16 @@ export type TRule =
       value?: string;
     }
   | {
+      ruleType?: 'event_attendances';
+      predicate?: 'attends_something' | 'attends_nothing';
+      value?: undefined;
+    }
+  | {
+      ruleType?: 'event_attendances';
+      predicate?: 'attends_some_of' | 'attends_none_of';
+      value?: string[];
+    }
+  | {
       ruleType?: 'lives_in';
       predicate?: 'has_value' | 'not_has_value';
       /**
@@ -466,7 +487,9 @@ export type TRule =
         | 'is_one_of_projects'
         | 'is_one_of_folders'
         | 'is_one_of_ideas'
-        | 'is_one_of_initiatives';
+        | 'is_one_of_initiatives'
+        | 'is_one_of_topics'
+        | 'is_one_of_areas';
       value?: string | string[];
     }
   | {
@@ -526,6 +549,12 @@ export const ruleTypeConstraints = {
     ends_on: TextValueSelector,
     not_ends_on: TextValueSelector,
   },
+  event_attendances: {
+    attends_something: null,
+    attends_nothing: null,
+    attends_some_of: EventValuesSelector,
+    attends_none_of: EventValuesSelector,
+  },
   follow: {
     is_one_of_projects: ProjectValuesSelector,
     is_not_project: ProjectValueSelector,
@@ -535,6 +564,10 @@ export const ruleTypeConstraints = {
     is_not_idea: IdeaValueSelector,
     is_one_of_initiatives: InitiativeValuesSelector,
     is_not_initiative: InitiativeValueSelector,
+    is_one_of_topics: TopicValuesSelector,
+    is_not_topic: TopicValueSelector,
+    is_one_of_areas: AreaValuesSelector,
+    is_not_area: AreaValueSelector,
     something: null,
     nothing: null,
   },

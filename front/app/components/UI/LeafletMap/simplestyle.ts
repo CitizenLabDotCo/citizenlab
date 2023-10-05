@@ -142,3 +142,5 @@
 
   L.GeoJSON.addInitHook('_useSimpleStyle');
 });
+
+export {};

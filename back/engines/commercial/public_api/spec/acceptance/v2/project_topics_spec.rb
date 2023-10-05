@@ -4,13 +4,7 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 require './engines/commercial/public_api/spec/acceptance/v2/support/shared'
 
-resource 'Project topics' do
-  explanation <<~DESC.squish
-    Project topics represent associations between projects and topics. This is a
-    many-to-many relationship: Projects can have multiple topics, and topics can
-    be associated with multiple projects.
-  DESC
-
+resource 'Topics' do
   include_context 'common_auth'
 
   parameter(
@@ -30,6 +24,13 @@ resource 'Project topics' do
   )
 
   get '/api/v2/project_topics' do
+    route_summary 'List associations between topics and projects'
+    route_description <<~DESC.squish
+      Project topics represent associations between projects and topics. This is a
+      many-to-many relationship: Projects can have multiple topics, and topics can
+      be associated with multiple projects.
+    DESC
+
     let_it_be(:project_topics) do
       create_list(:project, 2).each_with_index do |project, index|
         project.topics << create_list(:topic, index + 1)

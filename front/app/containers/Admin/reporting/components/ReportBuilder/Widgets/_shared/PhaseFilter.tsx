@@ -12,7 +12,7 @@ import useLocalize from 'hooks/useLocalize';
 // typings
 import { IOption } from 'typings';
 import { IPhaseData } from 'api/phases/types';
-import { ParticipationMethod } from 'services/participationContexts';
+import { ParticipationMethod } from 'utils/participationContexts';
 
 interface Props {
   label: string;

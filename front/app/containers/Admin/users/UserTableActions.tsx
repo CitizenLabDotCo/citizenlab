@@ -17,7 +17,7 @@ import useAddMembership from 'api/group_memberships/useAddMembership';
 import useGroups from 'api/groups/useGroups';
 
 // Utils
-import { requestBlob } from 'utils/request';
+import { requestBlob } from 'utils/requestBlob';
 import { API_PATH } from 'containers/App/constants';
 
 // Events

@@ -1,0 +1,32 @@
+<!-- Project preview -->
+<mj-section
+  padding="20px 25px 0"
+  border-radius="5px"
+  text-align="left">
+  <mj-column
+    padding="25px"
+    background-color="#F2F6F8"
+    border-radius="5px">
+    <mj-text>
+      <h2 style="font-size: 18px; margin-top: 10px; margin-bottom: 10px;">
+        <%= localize_for_recipient(event.project_title_multiloc) %>
+      </h2>
+    </mj-text>
+  </mj-column>
+</mj-section>
+
+<mj-section padding="0 0 10px">
+  <mj-column>
+    <mj-button
+      href="<%= event.project_url %>"
+      border-radius="5px"
+      background-color="#044D6C"
+      color="#fff"
+      width="100%"
+      padding="0 25px"><%= format_message('cta_goto_project', component: 'general') %></mj-button>
+  </mj-column>
+</mj-section>
+
+<% if AppConfiguration.instance.feature_activated?('follow') %>
+  <%= render 'email_campaigns/follow/card' %>
+<% end %>

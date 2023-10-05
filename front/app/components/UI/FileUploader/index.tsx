@@ -52,7 +52,11 @@ const FileUploader = ({
   const fileNames = files ? files.map((file) => file.name).join(', ') : '';
 
   return (
-    <Container className={className} key={id}>
+    <Container
+      className={className}
+      key={id}
+      data-cy="e2e-file-uploader-container"
+    >
       <FileInput onAdd={handleFileOnAdd} id={id} />
       <Error fieldName="file" apiErrors={apiErrors?.file} />
 

@@ -34,7 +34,7 @@ import {
   Step,
   AuthenticationData,
 } from '../typings';
-import { SSOParams } from 'services/singleSignOn';
+import { SSOParams } from 'api/authentication/singleSignOn';
 import useUpdateUser from 'api/users/useUpdateUser';
 import { isNil, isNilOrError } from 'utils/helperUtils';
 
@@ -243,6 +243,14 @@ export default function useSteps() {
     const urlSearchParams = parse(search, {
       ignoreQueryPrefix: true,
     }) as any;
+
+    if (urlSearchParams.verification_error === 'true') {
+      transition(
+        currentStep,
+        'TRIGGER_VERIFICATION_ERROR'
+      )(urlSearchParams.error);
+      return;
+    }
 
     // detect whether we're entering from a redirect of a 3rd party
     // authentication method through an URL param, and launch the corresponding

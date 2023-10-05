@@ -5,6 +5,7 @@ export type InsightsKeys = Keys<typeof insightsKeys>;
 
 export interface IInsightsParams {
   analysisId: string;
+  bookmarked?: boolean;
 }
 
 export interface IInsightData {

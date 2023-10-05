@@ -20,6 +20,7 @@ RSpec.describe User do
     it { is_expected.to have_many(:official_feedbacks).dependent(:nullify) }
     it { is_expected.to have_many(:reactions).dependent(:nullify) }
     it { is_expected.to have_many(:event_attendances).class_name('Events::Attendance').dependent(:destroy) }
+    it { is_expected.to have_many(:attended_events).through(:event_attendances).source(:event) }
   end
 
   describe '.destroy_all_async' do
@@ -816,6 +817,28 @@ RSpec.describe User do
     end
   end
 
+  describe 'onboarding' do
+    it 'is valid when empty' do
+      u = build(:user, onboarding: {})
+      expect(u).to be_valid
+    end
+
+    it 'is valid when topics are satisfied' do
+      u = build(:user, onboarding: { topics_and_areas: 'satisfied' })
+      expect(u).to be_valid
+    end
+
+    it 'is invalid when the key is not valid' do
+      u = build(:user, onboarding: { bananas: 'satisfied' })
+      expect(u).to be_invalid
+    end
+
+    it 'is invalid when the value is not valid' do
+      u = build(:user, onboarding: { topics_and_areas: 'bananas' })
+      expect(u).to be_invalid
+    end
+  end
+
   describe 'custom_field_values' do
     # TODO: Allow light users without required fields
     # it 'validates when custom_field_values have changed' do
@@ -983,20 +1006,6 @@ RSpec.describe User do
 
     it 'returns nil if no user record with that email was found' do
       expect(described_class.find_by_cimail('doesnotexist@example.com')).to be_nil
-    end
-  end
-
-  describe '.find_by_cimail!' do
-    it 'finds a user with the same email but different caps' do
-      some_user = create(:user, email: 'SeBi@citizenlab.co')
-      same_user = described_class.find_by_cimail!('sEbI@citizenlab.co')
-
-      expect(some_user.id).to eq(same_user.id)
-    end
-
-    it 'raises if no user record with that email was found' do
-      expect { described_class.find_by_cimail!('doesnotexist@example.com') }
-        .to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 

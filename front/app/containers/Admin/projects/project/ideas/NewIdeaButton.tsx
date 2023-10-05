@@ -1,7 +1,7 @@
 import React from 'react';
 
 // services
-import { InputTerm } from 'services/participationContexts';
+import { InputTerm } from 'utils/participationContexts';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';

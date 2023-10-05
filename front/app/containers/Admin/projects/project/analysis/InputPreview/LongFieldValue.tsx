@@ -232,7 +232,7 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
                 <T value={customField.data.attributes.title_multiloc} />
               </Title>
               <Text>
-                {(rawValue as string[]).map((optionKey) => (
+                {(rawValue as string[] | undefined)?.map((optionKey) => (
                   <Box
                     key={optionKey}
                     display="flex"

@@ -54,16 +54,6 @@ export default defineMessages({
     id: 'app.components.IdeasShow.deletePost',
     defaultMessage: 'Delete',
   },
-  deleteInputConfirmation: {
-    id: 'app.components.IdeasShow.deleteInputConfirmation',
-    defaultMessage:
-      'Are you sure you want to delete this input? This action cannot be undone.',
-  },
-  deleteInputInTimelineConfirmation: {
-    id: 'app.components.IdeasShow.deleteInputInTimelineConfirmation',
-    defaultMessage:
-      'Are you sure you want to delete this input? The input will be deleted from all project phases and cannot be recovered.',
-  },
   goBack: {
     id: 'app.components.IdeasShow.goBack',
     defaultMessage: 'Go back',

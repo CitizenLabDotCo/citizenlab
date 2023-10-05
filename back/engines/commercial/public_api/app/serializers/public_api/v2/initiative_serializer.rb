@@ -12,20 +12,19 @@ class PublicApi::V2::InitiativeSerializer < PublicApi::V2::BaseSerializer
     :publication_status,
     :created_at,
     :updated_at,
+    :threshold_reached_at,
     :location_point, # TODO: Should we format this to just lat,long?
     :location_description,
     :slug,
     :official_feedbacks_count,
     :assignee_id,
     :assigned_at,
-    :href,
-    def title
-      multiloc_service.t(object.title_multiloc)
-    end
+    :href
 
-  def body
-    multiloc_service.t(object.body_multiloc)
-  end
+  multiloc_attributes(
+    :title_multiloc,
+    :body_multiloc
+  )
 
   def href
     Frontend::UrlService.new.model_to_url object

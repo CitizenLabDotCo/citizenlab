@@ -20,7 +20,7 @@ import messages from './messages';
 import styled from 'styled-components';
 
 // typings
-import { SSOProvider } from 'services/singleSignOn';
+import { SSOProvider } from 'api/authentication/singleSignOn';
 import { ErrorCode } from 'containers/Authentication/typings';
 
 // utils

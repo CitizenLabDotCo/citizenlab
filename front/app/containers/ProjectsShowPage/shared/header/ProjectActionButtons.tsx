@@ -14,7 +14,7 @@ import { SuccessAction } from 'containers/Authentication/SuccessActions/actions'
 // services
 import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
 import { IPhaseData } from 'api/phases/types';
-import { getInputTerm } from 'services/participationContexts';
+import { getInputTerm } from 'utils/participationContexts';
 
 // components
 import Button from 'components/UI/Button';

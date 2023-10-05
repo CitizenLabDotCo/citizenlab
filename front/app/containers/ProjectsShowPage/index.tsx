@@ -28,6 +28,7 @@ import usePhases from 'api/phases/usePhases';
 import useEvents from 'api/events/useEvents';
 import useAuthUser from 'api/me/useAuthUser';
 import { useIntl } from 'utils/cl-intl';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 // context
 import { VotingContext } from 'api/baskets_ideas/useVoting';
@@ -204,8 +205,6 @@ const ProjectsShowPage = ({ project }: Props) => {
 };
 
 const ProjectsShowPageWrapper = () => {
-  const [userWasLoggedIn, setUserWasLoggedIn] = useState(false);
-
   const { pathname } = useLocation();
   const { slug, phaseNumber } = useParams();
   const {
@@ -225,12 +224,20 @@ const ProjectsShowPageWrapper = () => {
     .filter((segment) => segment !== '');
   const pending =
     isInitialProjectLoading || isUserLoading || isInitialPhasesLoading;
+  const [search] = useSearchParams();
+  const hasAccess = search.get('hasAccess');
 
   useEffect(() => {
     if (pending) return;
     if (isError(user)) return;
 
-    if (user) setUserWasLoggedIn(true);
+    if (user) {
+      /* Using the search params to pass the hasAccess flag here. Something is not very clear
+       * with how the component tree is being rendered on login/logout. This is a temporary
+       * solution until we can find a better way to track the previous value of the user.
+       */
+      updateSearchParams({ hasAccess: true });
+    }
   }, [pending, user]);
 
   if (pending) {
@@ -241,7 +248,7 @@ const ProjectsShowPageWrapper = () => {
     );
   }
 
-  const userJustLoggedOut = userWasLoggedIn && user === null;
+  const userJustLoggedOut = hasAccess === 'true' && user === null;
   const unauthorized = statusProject === 'error' && isUnauthorizedRQ(error);
 
   if (userJustLoggedOut && unauthorized) {

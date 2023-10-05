@@ -22,13 +22,13 @@ const AdminContainer = lazy(() => import('containers/Admin'));
 const AdminFavicon = lazy(() => import('containers/Admin/favicon'));
 
 // hooks
-import { usePermission } from 'services/permissions';
+import { usePermission } from 'utils/permissions';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';
 import { IUserData } from 'api/users/types';
 
 // utils
-import { isRegularUser } from 'services/permissions/roles';
+import { isRegularUser } from 'utils/permissions/roles';
 import { isNilOrError, isUUID } from 'utils/helperUtils';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 

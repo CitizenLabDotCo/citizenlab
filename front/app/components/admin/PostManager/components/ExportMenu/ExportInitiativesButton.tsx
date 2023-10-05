@@ -7,7 +7,7 @@ import messages from '../../messages';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { exportType } from '../ExportMenu';
 import { isString } from 'utils/helperUtils';
-import { requestBlob } from 'utils/request';
+import { requestBlob } from 'utils/requestBlob';
 import { API_PATH } from 'containers/App/constants';
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../../tracks';

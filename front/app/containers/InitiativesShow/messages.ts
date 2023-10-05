@@ -72,10 +72,6 @@ export default defineMessages({
     id: 'app.components.InitiativesShow.deleteInitiative',
     defaultMessage: 'Delete initiative',
   },
-  deleteInitiativeConfirmation: {
-    id: 'app.components.InitiativesShow.deleteInitiativeConfirmation',
-    defaultMessage: 'Are you sure you want to delete this initiative?',
-  },
   reportAsSpamModalTitle: {
     id: 'app.containers.InitiativesShow.reportAsSpamModalTitle',
     defaultMessage: 'Why do you want to report this as spam?',

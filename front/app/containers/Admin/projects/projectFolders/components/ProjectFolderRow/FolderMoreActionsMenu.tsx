@@ -13,7 +13,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // api
 import useDeleteProjectFolder from 'api/project_folders/useDeleteProjectFolder';
-import { isAdmin } from 'services/permissions/roles';
+import { isAdmin } from 'utils/permissions/roles';
 import useAuthUser from 'api/me/useAuthUser';
 
 export interface Props {

@@ -21,6 +21,7 @@ const mockAuthUserData: IUserData = {
     invite_status: null,
     confirmation_required: false,
     email: 'test@mail.com',
+    followings_count: 2,
   },
 };
 

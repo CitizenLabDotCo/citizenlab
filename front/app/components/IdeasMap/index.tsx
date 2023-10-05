@@ -46,7 +46,7 @@ import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 import { media, viewportWidths, colors, fontSizes } from 'utils/styleUtils';
 
 // utils
-import { isAdmin, isProjectModerator } from 'services/permissions/roles';
+import { isAdmin, isProjectModerator } from 'utils/permissions/roles';
 
 // typings
 import { IIdeaMarkerData } from 'api/idea_markers/types';

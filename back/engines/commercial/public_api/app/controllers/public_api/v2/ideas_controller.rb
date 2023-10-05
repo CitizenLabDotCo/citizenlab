@@ -10,8 +10,6 @@ module PublicApi
         **finder_params
       ).execute
 
-      # TODO: Only return ideas, separate endpoint for survey responses
-
       list_items(ideas, V2::IdeaSerializer)
     end
 
@@ -23,7 +21,7 @@ module PublicApi
 
     def finder_params
       params
-        .permit(:author_id, :project_id, topic_ids: [])
+        .permit(:author_id, :project_id, :type, topic_ids: [])
         .to_h
         .symbolize_keys
     end

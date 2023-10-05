@@ -210,10 +210,6 @@ RSpec/NamedSubject:
     - 'spec/lib/omniauth_methods/google_spec.rb'
     - 'spec/models/area_spec.rb'
     - 'spec/models/idea_status_spec.rb'
-    - 'spec/models/notifications/official_feedback_on_commented_idea_spec.rb'
-    - 'spec/models/notifications/official_feedback_on_commented_initiative_spec.rb'
-    - 'spec/models/notifications/official_feedback_on_reacted_idea_spec.rb'
-    - 'spec/models/notifications/official_feedback_on_reacted_initiative_spec.rb'
 
 # Offense count: 248
 # Configuration parameters: AllowedGroups.

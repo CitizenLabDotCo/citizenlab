@@ -9,10 +9,10 @@ import useIdeaById from 'api/ideas/useIdeaById';
 import { Box } from '@citizenlab/cl2-component-library';
 import MetaInformation from '../MetaInformation';
 import ReactionControl from 'components/ReactionControl';
-import Buttons from 'containers/IdeasShow/components/CTABox/Buttons';
 import IdeaSharingButton from '../Buttons/IdeaSharingButton';
 import SharingButtonComponent from '../Buttons/SharingButtonComponent';
 import FollowUnfollow from 'components/FollowUnfollow';
+import GoToCommentsButton from '../Buttons/GoToCommentsButton';
 
 // styling
 import styled from 'styled-components';
@@ -77,8 +77,6 @@ const RightColumnDesktop = ({
   const commentingEnabled =
     !!idea?.data.attributes.action_descriptor.commenting_idea.enabled;
 
-  const showGreyBox = ideaIsInParticipationContext || commentingEnabled;
-
   return (
     <Box
       flex={`0 0 ${rightColumnWidthDesktop}px`}
@@ -95,7 +93,7 @@ const RightColumnDesktop = ({
           background={colors.background}
           mb="12px"
         >
-          {showGreyBox && (
+          {(ideaIsInParticipationContext || commentingEnabled) && (
             <>
               <StyledReactionControl
                 styleType="shadow"
@@ -111,7 +109,11 @@ const RightColumnDesktop = ({
                     compact: false,
                   })}
               </Box>
-              {commentingEnabled && <Buttons />}
+              {commentingEnabled && (
+                <Box mb="10px">
+                  <GoToCommentsButton />
+                </Box>
+              )}
             </>
           )}
           <FollowUnfollow

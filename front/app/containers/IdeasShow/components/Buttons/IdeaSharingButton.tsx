@@ -1,6 +1,6 @@
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { getInputTerm } from 'services/participationContexts';
+import { getInputTerm } from 'utils/participationContexts';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';

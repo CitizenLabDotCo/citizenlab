@@ -77,11 +77,10 @@ describe SideFxInitiativeService do
   end
 
   describe '#after_accept_cosponsorship_invite' do
-    let(:cosponsors_initiative) { create(:cosponsors_initiative) }
+    let(:initiative) { create(:initiative) }
+    let(:cosponsors_initiative) { create(:cosponsors_initiative, status: 'accepted', user: user, initiative: initiative) }
 
     it 'logs a cosponsorship_accepted activity job' do
-      cosponsors_initiative.update!(status: 'accepted')
-
       expect { service.after_accept_cosponsorship_invite(cosponsors_initiative, user) }
         .to enqueue_job(LogActivityJob)
         .with(
@@ -92,6 +91,14 @@ describe SideFxInitiativeService do
           payload: { change: %w[pending accepted] }
         )
         .exactly(1).times
+    end
+
+    it 'creates a follower' do
+      expect do
+        service.after_accept_cosponsorship_invite cosponsors_initiative, user
+      end.to change(Follower, :count).from(0).to(1)
+
+      expect(user.follows.pluck(:followable_id)).to contain_exactly initiative.id
     end
   end
 

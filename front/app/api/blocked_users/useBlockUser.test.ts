@@ -2,7 +2,7 @@ import { renderHook, act } from '@testing-library/react-hooks';
 
 import useBlockUser from './useBlockUser';
 import { IUser } from 'api/users/types';
-import { makeUser } from 'services/__mocks__/users';
+import { makeUser } from 'api/users/__mocks__/useUsers';
 
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';

@@ -25,10 +25,7 @@ import messages from '../../../../messages';
 
 // typings
 import { ApiErrors } from '../../..';
-import {
-  IdeaDefaultSortMethod,
-  InputTerm,
-} from 'services/participationContexts';
+import { IdeaDefaultSortMethod, InputTerm } from 'utils/participationContexts';
 import AnonymousPostingToggle from 'components/admin/AnonymousPostingToggle/AnonymousPostingToggle';
 
 interface Props {

@@ -3,13 +3,13 @@ import useFollowers from './useFollowers';
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-import { followersData } from './__mocks__/useFollowers';
+import { followersData, links } from './__mocks__/useFollowers';
 
 const apiPath = '*followers';
 
 const server = setupServer(
   rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: followersData }));
+    return res(ctx.status(200), ctx.json({ data: followersData, links }));
   })
 );
 
@@ -27,7 +27,7 @@ describe('useFollowers', () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
     expect(result.current.isLoading).toBe(false);
-    expect(result.current.data?.data).toEqual(followersData);
+    expect(result.current.data?.pages[0].data).toEqual(followersData);
   });
 
   it('returns error correctly', async () => {

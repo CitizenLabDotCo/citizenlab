@@ -17,9 +17,5 @@ module EmailCampaigns
     def header_message
       format_message('message_you_became_moderator', values: { organizationName: organization_name })
     end
-
-    def preheader
-      format_message('preheader', values: { organizationName: organization_name })
-    end
   end
 end

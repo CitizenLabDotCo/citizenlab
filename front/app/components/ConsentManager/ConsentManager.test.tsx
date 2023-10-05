@@ -7,7 +7,7 @@ import eventEmitter from 'utils/eventEmitter';
 
 // utils
 import { registerDestination } from './destinations';
-import { isAdmin, isRegularUser } from 'services/permissions/roles';
+import { isAdmin, isRegularUser } from 'utils/permissions/roles';
 
 // typings
 import { IUserData } from 'api/users/types';

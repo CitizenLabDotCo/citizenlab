@@ -13,6 +13,7 @@ module SmartGroups
       SmartGroups::Rules::CustomFieldNumber,
       SmartGroups::Rules::Role,
       SmartGroups::Rules::Email,
+      SmartGroups::Rules::EventAttendance,
       SmartGroups::Rules::Follow,
       SmartGroups::Rules::LivesIn,
       SmartGroups::Rules::RegistrationCompletedAt,

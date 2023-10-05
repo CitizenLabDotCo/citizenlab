@@ -72,7 +72,7 @@ const Footer = ({
         p="0px 40px 32px 40px"
         data-testid="representativeness-items-hidden-warning"
       >
-        <Warning icon="info-outline">
+        <Warning>
           <FormattedMessage
             {...messages.dataHiddenWarning}
             values={{

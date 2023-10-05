@@ -20,7 +20,7 @@ import { colors } from 'utils/styleUtils';
 import { MessageDescriptor, WrappedComponentProps } from 'react-intl';
 
 // services
-import { ParticipationMethod } from 'services/participationContexts';
+import { ParticipationMethod } from 'utils/participationContexts';
 
 // components
 import { SectionTitle, PageTitle } from 'components/admin/Section';

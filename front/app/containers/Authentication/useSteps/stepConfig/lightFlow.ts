@@ -3,11 +3,10 @@ import createEmailOnlyAccount from 'api/authentication/sign_up/createEmailOnlyAc
 import signIn from 'api/authentication/sign_in_out/signIn';
 import signOut from 'api/authentication/sign_in_out/signOut';
 import confirmEmail from 'api/authentication/confirm_email/confirmEmail';
-import { handleOnSSOClick } from 'services/singleSignOn';
+import { handleOnSSOClick } from 'api/authentication/singleSignOn';
 import checkUser from 'api/users/checkUser';
 
 // cache
-import streams from 'utils/streams';
 import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
 
 // tracks
@@ -26,7 +25,7 @@ import {
 } from '../../typings';
 import { Step } from './typings';
 import { Locale } from 'typings';
-import { askCustomFields, requiredCustomFields } from './utils';
+import { askCustomFields, requiredCustomFields, showOnboarding } from './utils';
 
 export const lightFlow = (
   getAuthenticationData: () => AuthenticationData,
@@ -174,6 +173,11 @@ export const lightFlow = (
           return;
         }
 
+        if (showOnboarding(requirements.onboarding)) {
+          setCurrentStep('sign-up:onboarding');
+          return;
+        }
+
         if (requirements.special.group_membership === 'require') {
           setCurrentStep('closed');
           return;
@@ -205,7 +209,12 @@ export const lightFlow = (
           return;
         }
 
-        await Promise.all([streams.reset(), invalidateQueryCache()]);
+        if (showOnboarding(requirements.onboarding)) {
+          setCurrentStep('missing-data:onboarding');
+          return;
+        }
+
+        invalidateQueryCache();
         setCurrentStep('closed');
 
         trackEventByName(tracks.signUpFlowCompleted);

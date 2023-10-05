@@ -1,5 +1,5 @@
 import { first } from 'rxjs/operators';
-import { localeStream } from 'services/locale';
+import { localeStream } from 'utils/locale';
 import updateLocationDescriptor from 'utils/cl-router/updateLocationDescriptor';
 // tslint:disable-next-line:no-vanilla-routing
 

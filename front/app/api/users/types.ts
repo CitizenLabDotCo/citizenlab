@@ -1,4 +1,5 @@
-import { TRole } from 'services/permissions/roles';
+import { TRole } from 'utils/permissions/roles';
+import { OnboardingType } from 'api/authentication/authentication_requirements/types';
 import { ImageSizes, Locale, Multiloc } from 'typings';
 
 import { Keys } from 'utils/cl-react-query/types';
@@ -40,6 +41,7 @@ export interface IUserAttributes {
   invite_status: 'pending' | 'accepted' | null;
   confirmation_required: boolean;
   custom_field_values?: Record<string, any>;
+  onboarding?: OnboardingType;
   avatar?: ImageSizes;
   roles?: TRole[];
   email?: string;
@@ -50,6 +52,7 @@ export interface IUserAttributes {
   verified?: boolean;
   no_name?: boolean;
   no_password?: boolean;
+  followings_count: number;
 }
 
 export interface IUserData {
@@ -87,6 +90,7 @@ export interface IUserUpdate {
   roles?: TRole[];
   bio_multiloc?: Multiloc;
   custom_field_values?: Record<string, any>;
+  onboarding?: OnboardingType;
 }
 
 export interface IChangePassword {

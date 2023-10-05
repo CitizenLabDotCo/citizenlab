@@ -4,7 +4,6 @@ import { parse } from 'qs';
 import getUserDataFromToken from 'api/authentication/getUserDataFromToken';
 
 // cache
-import streams from 'utils/streams';
 import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
 
 // tracks
@@ -19,6 +18,7 @@ import {
   requiredCustomFields,
   requiredBuiltInFields,
   askCustomFields,
+  showOnboarding,
 } from './utils';
 
 // typings
@@ -28,6 +28,7 @@ import {
   UpdateState,
   AuthenticationData,
   SignUpInError,
+  VerificationError,
 } from '../../typings';
 import { Step } from './typings';
 
@@ -88,6 +89,11 @@ export const sharedSteps = (
             return;
           }
 
+          if (showOnboarding(requirements.onboarding)) {
+            setCurrentStep('sign-up:onboarding');
+            return;
+          }
+
           setCurrentStep('success');
         }
 
@@ -99,6 +105,11 @@ export const sharedSteps = (
 
           if (requiredCustomFields(requirements.custom_fields)) {
             setCurrentStep('missing-data:custom-fields');
+            return;
+          }
+
+          if (showOnboarding(requirements.onboarding)) {
+            setCurrentStep('missing-data:onboarding');
             return;
           }
         }
@@ -151,6 +162,11 @@ export const sharedSteps = (
             return;
           }
 
+          if (showOnboarding(requirements.onboarding)) {
+            setCurrentStep('missing-data:onboarding');
+            return;
+          }
+
           return;
         }
 
@@ -179,6 +195,16 @@ export const sharedSteps = (
         setCurrentStep('clave-unica:email');
       },
 
+      TRIGGER_VERIFICATION_ERROR: (error_code?: VerificationError) => {
+        if (error_code === 'not_entitled_under_minimum_age') {
+          setCurrentStep('missing-data:verification');
+          setError('not_entitled_under_minimum_age');
+        } else {
+          setCurrentStep('sign-up:auth-providers');
+          setError('unknown');
+        }
+      },
+
       TRIGGER_AUTH_ERROR: (error_code?: SignUpInError) => {
         if (error_code === 'franceconnect_merging_failed') {
           setCurrentStep('sign-up:auth-providers');
@@ -192,7 +218,7 @@ export const sharedSteps = (
 
     success: {
       CONTINUE: async () => {
-        await Promise.all([streams.reset(), invalidateQueryCache()]);
+        invalidateQueryCache();
         setCurrentStep('closed');
 
         trackEventByName(tracks.signUpFlowCompleted);

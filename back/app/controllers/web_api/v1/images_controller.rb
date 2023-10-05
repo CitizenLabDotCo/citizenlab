@@ -9,6 +9,13 @@ class WebApi::V1::ImagesController < ApplicationController
       image_relationship: :idea_images,
       container_id: :idea_id
     },
+    'Event' => {
+      container_class: Event,
+      image_class: EventImage,
+      policy_scope_class: EventImagePolicy::Scope,
+      image_relationship: :event_images,
+      container_id: :event_id
+    },
     'Initiative' => {
       container_class: Initiative,
       image_class: InitiativeImage,

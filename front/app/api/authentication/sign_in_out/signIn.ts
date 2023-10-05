@@ -1,11 +1,8 @@
-import { setJwt } from 'utils/auth/jwt';
-import streams from 'utils/streams';
+import { getJwt, setJwt } from 'utils/auth/jwt';
 import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
 import signOut from './signOut';
-import { API_PATH } from 'containers/App/constants';
-import request from 'utils/request';
-import { IHttpMethod } from 'typings';
 import getAuthUser from '../auth_user/getAuthUser';
+import { API_PATH } from 'containers/App/constants';
 
 interface Parameters {
   email: string;
@@ -14,17 +11,12 @@ interface Parameters {
   tokenLifetime?: number;
 }
 
-interface IUserToken {
-  jwt: string;
-}
-
 export default async function signIn(parameters: Parameters) {
   try {
     await getAndSetToken(parameters);
 
     const authUser = await getAuthUserAsync();
 
-    await streams.reset();
     invalidateQueryCache();
 
     return authUser;
@@ -41,17 +33,21 @@ export async function getAndSetToken({
   tokenLifetime,
 }: Parameters) {
   const bodyData = { auth: { email, password, remember_me: rememberMe } };
-  const httpMethod: IHttpMethod = { method: 'POST' };
 
-  // TODO: Replace request with fetcher after BE request data format updated
-  const { jwt } = await request<IUserToken>(
-    `${API_PATH}/user_token`,
-    bodyData,
-    httpMethod,
-    null
-  );
-
-  setJwt(jwt, rememberMe, tokenLifetime);
+  // TODO: Replace with fetcher after the backend is updated
+  const jwt = getJwt();
+  return await fetch(`${API_PATH}/user_token`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${jwt}`,
+    },
+    body: JSON.stringify(bodyData),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      setJwt(data.jwt, rememberMe, tokenLifetime);
+    });
 }
 
 async function getAuthUserAsync() {

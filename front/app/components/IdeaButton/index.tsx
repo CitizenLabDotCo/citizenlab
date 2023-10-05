@@ -10,11 +10,8 @@ import { IParticipationContextType } from 'typings';
 import {
   getIdeaPostingRules,
   IIdeaPostingDisabledReason,
-} from 'services/actionTakingRules';
-import {
-  getInputTerm,
-  ParticipationMethod,
-} from 'services/participationContexts';
+} from 'utils/actionTakingRules';
+import { getInputTerm, ParticipationMethod } from 'utils/participationContexts';
 
 // components
 import Button, { Props as ButtonProps } from 'components/UI/Button';

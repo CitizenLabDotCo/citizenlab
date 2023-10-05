@@ -1,6 +1,6 @@
 // authentication
 import signIn from 'api/authentication/sign_in_out/signIn';
-import { handleOnSSOClick } from 'services/singleSignOn';
+import { handleOnSSOClick } from 'api/authentication/singleSignOn';
 
 // events
 import { triggerSuccessAction } from 'containers/Authentication/SuccessActions';
@@ -10,7 +10,7 @@ import tracks from '../../tracks';
 import { trackEventByName } from 'utils/analytics';
 
 // utils
-import { requiredCustomFields } from './utils';
+import { requiredCustomFields, showOnboarding } from './utils';
 
 // typings
 import {
@@ -89,6 +89,11 @@ export const signInFlow = (
 
           if (requiredCustomFields(requirements.custom_fields)) {
             setCurrentStep('missing-data:custom-fields');
+            return;
+          }
+
+          if (showOnboarding(requirements.onboarding)) {
+            setCurrentStep('missing-data:onboarding');
             return;
           }
 

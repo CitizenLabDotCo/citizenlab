@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { IInitiativeActionDescriptorName } from 'api/initiative_action_descriptors/types';
 import useInitativeActionDescriptors from 'api/initiative_action_descriptors/useInitiativeActionDescriptors';
-import { ActionPermission } from 'services/actionTakingRules';
+import { ActionPermission } from 'utils/actionTakingRules';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';
 

@@ -110,10 +110,14 @@ Rails.application.routes.draw do
 
       resources :topics do
         patch 'reorder', on: :member
+
+        resources :followers, only: [:create], defaults: { followable: 'Topic' }
       end
 
       resources :areas do
         patch 'reorder', on: :member
+
+        resources :followers, only: [:create], defaults: { followable: 'Area' }
       end
 
       resources :followers, except: %i[create update]
@@ -137,6 +141,7 @@ Rails.application.routes.draw do
 
       resources :events, only: %i[index show edit update destroy] do
         resources :files, defaults: { container_type: 'Event' }, shallow: false
+        resources :images, defaults: { container_type: 'Event' }
         resources :attendances, module: 'events', only: %i[create index]
       end
       resources :event_attendances, only: %i[destroy], controller: 'events/attendances'
@@ -279,6 +284,8 @@ Rails.application.routes.draw do
       put 'baskets/ideas/:idea_id', to: 'baskets_ideas#upsert'
 
       resources :avatars, only: %i[index show]
+
+      resources :ideas_phases, only: %i[show]
     end
   end
 

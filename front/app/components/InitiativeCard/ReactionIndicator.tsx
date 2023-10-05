@@ -121,8 +121,8 @@ const ReactionIndicator = ({ initiativeId }: Props) => {
   const statusCode = initiativeStatus.data.attributes.code;
   const reactionCount = initiative?.data.attributes.likes_count || 0;
   const reactionLimit: number =
-    appConfiguration?.data?.attributes?.settings.initiatives
-      ?.reacting_threshold || 1;
+    appConfiguration?.data.attributes.settings.initiatives.reacting_threshold ||
+    1;
 
   return (
     <Container className="e2e-initiative-card-reaction-indicator">
