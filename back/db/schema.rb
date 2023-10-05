@@ -500,10 +500,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_03_095622) do
     t.geography "location_point", limit: {:srid=>4326, :type=>"st_point", :geographic=>true}
     t.string "address_1"
     t.integer "attendees_count", default: 0, null: false
-    t.jsonb "address_2_multiloc", default: {}, null: false
-    t.string "using_url"
-    t.jsonb "attend_button_multiloc", default: {}, null: false
     t.string "online_link"
+    t.jsonb "address_2_multiloc", default: {}, null: false
+    t.jsonb "attend_button_multiloc", default: {}, null: false
+    t.string "using_url"
     t.index ["location_point"], name: "index_events_on_location_point", using: :gist
     t.index ["project_id"], name: "index_events_on_project_id"
   end
@@ -515,9 +515,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_03_095622) do
     t.datetime "updated_at", null: false
     t.index ["attendee_id", "event_id"], name: "index_events_attendances_on_attendee_id_and_event_id", unique: true
     t.index ["attendee_id"], name: "index_events_attendances_on_attendee_id"
-    t.index ["created_at"], name: "index_events_attendances_on_created_at"
     t.index ["event_id"], name: "index_events_attendances_on_event_id"
-    t.index ["updated_at"], name: "index_events_attendances_on_updated_at"
   end
 
   create_table "experiments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1581,8 +1579,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_03_095622) do
     t.datetime "block_end_at", precision: nil
     t.string "new_email"
     t.integer "followings_count", default: 0, null: false
-    t.jsonb "onboarding", default: {}, null: false
     t.string "unique_code"
+    t.jsonb "onboarding", default: {}, null: false
     t.index "lower((email)::text)", name: "users_unique_lower_email_idx", unique: true
     t.index ["email"], name: "index_users_on_email"
     t.index ["registration_completed_at"], name: "index_users_on_registration_completed_at"
