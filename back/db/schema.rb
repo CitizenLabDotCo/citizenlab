@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_13_121819) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_03_095622) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -489,6 +489,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_13_121819) do
     t.integer "attendees_count", default: 0, null: false
     t.string "online_link"
     t.jsonb "address_2_multiloc", default: {}, null: false
+    t.jsonb "attend_button_multiloc", default: {}, null: false
+    t.string "using_url"
     t.index ["location_point"], name: "index_events_on_location_point", using: :gist
     t.index ["project_id"], name: "index_events_on_project_id"
   end
@@ -630,13 +632,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_13_121819) do
     t.uuid "import_user_id"
     t.uuid "file_id"
     t.boolean "user_created", default: false
-    t.boolean "required", default: false
     t.datetime "approved_at", precision: nil
     t.text "page_range", default: [], array: true
     t.string "locale"
-    t.string "string"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "user_consent", default: false, null: false
+    t.jsonb "content_changes", default: {}
     t.index ["file_id"], name: "index_idea_imports_on_file_id"
     t.index ["idea_id"], name: "index_idea_imports_on_idea_id"
     t.index ["import_user_id"], name: "index_idea_imports_on_import_user_id"

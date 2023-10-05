@@ -1,7 +1,9 @@
 import React, { useState, lazy } from 'react';
 
 // components
-import PDFExportModal from 'containers/Admin/projects/components/PDFExportModal';
+import PDFExportModal, {
+  FormValues,
+} from 'containers/Admin/projects/components/PDFExportModal';
 
 // router
 import { useParams } from 'react-router-dom';
@@ -38,15 +40,9 @@ const SurveyFormBuilder = () => {
 
   const handleDownloadPDF = () => setExportModalOpen(true);
 
-  const handleExportPDF = async ({
-    name,
-    email,
-  }: {
-    name: boolean;
-    email: boolean;
-  }) => {
+  const handleExportPDF = async ({ personal_data }: FormValues) => {
     if (isNilOrError(locale)) return;
-    await saveSurveyAsPDF({ downloadPdfLink, locale, name, email });
+    await saveSurveyAsPDF({ downloadPdfLink, locale, personal_data });
   };
 
   return (

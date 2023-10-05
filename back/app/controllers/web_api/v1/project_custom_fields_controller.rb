@@ -13,22 +13,6 @@ class WebApi::V1::ProjectCustomFieldsController < ApplicationController
     end
   end
 
-  def to_pdf
-    phase_id = params[:phase_id]
-
-    pdf = PrintCustomFieldsService.new(
-      phase_id ? Phase.find(phase_id) : participation_context,
-      custom_fields,
-      params
-    ).create_pdf
-
-    send_data(
-      pdf.render,
-      type: 'application/pdf',
-      filename: 'survey.pdf'
-    )
-  end
-
   private
 
   def project

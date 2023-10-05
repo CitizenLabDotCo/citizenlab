@@ -30,6 +30,7 @@ describe('useAddOfflineIdeas', () => {
         project_id: 'project1',
         pdf: 'data:application/pdf;base64,abc123',
         locale: 'en',
+        personal_data: false,
       });
     });
 

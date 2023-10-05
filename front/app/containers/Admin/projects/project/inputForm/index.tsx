@@ -4,7 +4,9 @@ import React, { useState } from 'react';
 import Button from 'components/UI/Button';
 import { Box } from '@citizenlab/cl2-component-library';
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
-import PDFExportModal from 'containers/Admin/projects/components/PDFExportModal';
+import PDFExportModal, {
+  FormValues,
+} from 'containers/Admin/projects/components/PDFExportModal';
 
 // i18n
 import messages from './messages';
@@ -44,17 +46,9 @@ export const IdeaForm = () => {
 
   const handleDownloadPDF = () => setExportModalOpen(true);
 
-  const handleExportPDF = async ({
-    name,
-    email,
-    phase_id,
-  }: {
-    name: boolean;
-    email: boolean;
-    phase_id?: string;
-  }) => {
+  const handleExportPDF = async ({ personal_data, phase_id }: FormValues) => {
     if (isNilOrError(locale)) return;
-    await saveIdeaFormAsPDF({ projectId, locale, name, email, phase_id });
+    await saveIdeaFormAsPDF({ projectId, locale, personal_data, phase_id });
   };
 
   const downloadExampleFile = async () => {

@@ -24,26 +24,32 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { object, boolean, string } from 'yup';
 import { handleCLErrorWrapper } from 'utils/errorUtils';
 
+export interface FormValues {
+  personal_data: boolean;
+  phase_id?: string;
+}
+
 const DEFAULT_VALUES = {
-  name: false,
-  email: false,
+  personal_data: false,
   phase_id: undefined,
-} as const;
+} satisfies FormValues;
 
 interface Props {
   open: boolean;
   formType: 'idea_form' | 'survey';
   onClose: () => void;
-  onExport: (params: {
-    name: boolean;
-    email: boolean;
-    phase_id?: string;
-  }) => Promise<void>;
+  onExport: (params: FormValues) => Promise<void>;
 }
 
-// For now we are hiding the option to add email and name fields to
-// the printed form, since this flow needs a bit more work
-const ALLOW_EMAIL_AND_NAME = false;
+const CLICK_EXPORT_MESSAGES = {
+  idea_form: messages.clickExportToPDFIdeaForm,
+  survey: messages.clickExportToPDFSurvey,
+} as const;
+
+const IT_IS_POSSIBLE_MESSAGES = {
+  idea_form: messages.itIsAlsoPossibleIdeation,
+  survey: messages.itIsAlsoPossibleSurvey,
+};
 
 const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
   const { formatMessage } = useIntl();
@@ -59,8 +65,7 @@ const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
     project?.data.attributes.process_type === 'timeline';
 
   const schema = object({
-    name: boolean(),
-    email: boolean(),
+    personal_data: boolean(),
     phase_id:
       isTimelineProject && formType === 'idea_form'
         ? string().required(formatMessage(messages.selectIdeationPhase))
@@ -73,19 +78,11 @@ const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
     resolver: yupResolver(schema),
   });
 
-  const handleExport = async ({
-    name,
-    email,
-    phase_id,
-  }: {
-    name: boolean;
-    email: boolean;
-    phase_id?: string;
-  }) => {
+  const handleExport = async (formValues: FormValues) => {
     setLoading(true);
 
     try {
-      await onExport({ name, email, phase_id });
+      await onExport(formValues);
       setLoading(false);
       onClose();
     } catch (e) {
@@ -113,45 +110,28 @@ const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
           <Feedback />
           <Box p="24px" w="100%">
             <Text mb="20px" mt="0px" w="500px">
-              {formType === 'idea_form' && (
-                <FormattedMessage {...messages.clickExportToPDFIdeaForm} />
-              )}
-              {formType === 'survey' && (
-                <FormattedMessage {...messages.clickExportToPDFSurvey} />
-              )}
+              <FormattedMessage {...CLICK_EXPORT_MESSAGES[formType]} />
             </Text>
-            {formType === 'idea_form' && importPrintedFormsEnabled && (
+            {importPrintedFormsEnabled && (
               <>
                 <Text mb="24px">
-                  <FormattedMessage {...messages.itIsAlsoPossible} />
+                  <FormattedMessage {...IT_IS_POSSIBLE_MESSAGES[formType]} />
                 </Text>
-                {ALLOW_EMAIL_AND_NAME && (
-                  <>
-                    <Text mb="24px">
-                      <FormattedMessage {...messages.nameAndEmailExplanation} />
-                    </Text>
-                    <Box mb="12px">
-                      <Checkbox
-                        name="name"
-                        label={
-                          <Text m="0">
-                            <FormattedMessage {...messages.includeFullName} />
-                          </Text>
-                        }
-                      />
-                    </Box>
-                    <Box mb="24px">
-                      <Checkbox
-                        name="email"
-                        label={
-                          <Text m="0">
-                            <FormattedMessage {...messages.includeEmail} />
-                          </Text>
-                        }
-                      />
-                    </Box>
-                  </>
-                )}
+                <>
+                  <Text mb="24px">
+                    <FormattedMessage {...messages.personalDataExplanation} />
+                  </Text>
+                  <Box mb="24px">
+                    <Checkbox
+                      name="personal_data"
+                      label={
+                        <Text m="0">
+                          <FormattedMessage {...messages.askPersonalData} />
+                        </Text>
+                      }
+                    />
+                  </Box>
+                </>
               </>
             )}
             {isTimelineProject && formType === 'idea_form' && (

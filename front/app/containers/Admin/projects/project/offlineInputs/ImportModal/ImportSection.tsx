@@ -45,20 +45,17 @@ interface Props extends OuterProps {
   project: IProject;
   phases?: IPhases;
   locale: Locale;
-  isSurveyImporter: boolean;
 }
 
-interface FormData {
+interface FormValues {
   phase_id?: string;
   locale: Locale;
   file?: UploadFile;
+  personal_data: boolean;
   google_consent: false;
 }
 
-const getInitialPhaseId = (phases: IPhases, phaseId: string) => {
-  if (phaseId) {
-    return phaseId;
-  }
+const getInitialPhaseId = (phases: IPhases) => {
   const currentPhase = getCurrentPhase(phases.data);
   const phasesThatCanContainIdeas = phases.data
     .filter(canContainIdeas)
@@ -77,28 +74,39 @@ const getInitialPhaseId = (phases: IPhases, phaseId: string) => {
   return;
 };
 
-const ImportSection = ({
-  onFinishImport,
-  locale,
-  project,
-  phases,
-  isSurveyImporter,
-}: Props) => {
+const ImportSection = ({ onFinishImport, locale, project, phases }: Props) => {
   const { formatMessage } = useIntl();
   const { mutateAsync: addOfflineIdeas, isLoading } = useAddOfflineIdeas();
-  const { phaseId } = useParams() as {
-    phaseId: string;
-  };
+  const { phaseId } = useParams();
+
   const isTimelineProject = !!phases;
 
-  const initialPhaseId = isTimelineProject
-    ? getInitialPhaseId(phases, phaseId)
-    : undefined;
+  // We need to know if the user wants to import ideas in a timeline
+  // project, because in this case we need to show the PhaseSelector.
+  // For survey timeline imports we don't need to do this because we
+  // already know in to which survey phase the user wants to import
+  // because of the phaseId URL parameter.
+  // So, if we know we are in a timeline project, and we don't detect
+  // this phase parameter, we know that the user is trying to import
+  // ideas to a timeline project.
+  // Is this confusing? Yup. Should be made more clear in the future.
+  const isSurveyImporter = !!phaseId;
+  const isTimelineIdeaImporter = isTimelineProject && !isSurveyImporter;
 
-  const defaultValues: FormData = {
+  const initialPhaseId = isTimelineProject
+    ? isTimelineIdeaImporter
+      ? getInitialPhaseId(phases) // for timeline ideation projects we
+      : // initialize this field with the first phase that can contain
+        // ideas
+        phaseId // for timeline survey projects we can just use the
+    : // phase found in the URL
+      undefined; // for continuous projects there is no phase obviously
+
+  const defaultValues: FormValues = {
     phase_id: initialPhaseId,
     locale,
     file: undefined,
+    personal_data: false,
     google_consent: false,
   };
 
@@ -108,6 +116,7 @@ const ImportSection = ({
       : {}),
     locale: string().required(),
     file: mixed().required(formatMessage(messages.pleaseUploadFile)),
+    personal_data: boolean(),
     google_consent: boolean().test(
       '',
       formatMessage(messages.consentNeeded),
@@ -129,7 +138,11 @@ const ImportSection = ({
 
   const projectId = project.data.id;
 
-  const submitFile = async ({ file, google_consent: _, ...rest }: FormData) => {
+  const submitFile = async ({
+    file,
+    google_consent: _,
+    ...rest
+  }: FormValues) => {
     if (!file) return;
 
     try {
@@ -169,10 +182,17 @@ const ImportSection = ({
           </Box>
 
           <LocalePicker />
-          {isTimelineProject && !isSurveyImporter && <PhaseSelector />}
+          {isTimelineIdeaImporter && <PhaseSelector />}
 
           <Box>
             <SingleFileUploader name="file" />
+          </Box>
+
+          <Box mt="24px">
+            <Checkbox
+              name="personal_data"
+              label={<FormattedMessage {...messages.formHasPersonalData} />}
+            />
           </Box>
 
           {methods.watch('file')?.extension === 'application/pdf' && (
@@ -196,9 +216,8 @@ const ImportSection = ({
 };
 
 const ImportSectionWrapper = (props: OuterProps) => {
-  const { projectId, phaseId } = useParams() as {
+  const { projectId } = useParams() as {
     projectId: string;
-    phaseId?: string;
   };
 
   const locale = useLocale();
@@ -207,16 +226,6 @@ const ImportSectionWrapper = (props: OuterProps) => {
 
   if (!project || isNilOrError(locale)) return null;
 
-  // This is because the idea importer has only one global
-  // idea form, so the idea importer is always active in the context
-  // of the whole project. The survey importer, on the other hand,
-  // can be active in the context of a phase because every phase
-  // can have its own survey.
-  // This is not a very clean solution and we should make this more
-  // clear in the future, e.g. by putting the idea and survey
-  // importers on different routes.
-  const isSurveyImporter = !!phaseId;
-
   if (project.data.attributes.process_type === 'timeline' && phases) {
     return (
       <ImportSection
@@ -224,20 +233,12 @@ const ImportSectionWrapper = (props: OuterProps) => {
         locale={locale}
         project={project}
         phases={phases}
-        isSurveyImporter={isSurveyImporter}
       />
     );
   }
 
   if (project.data.attributes.process_type === 'continuous') {
-    return (
-      <ImportSection
-        {...props}
-        locale={locale}
-        project={project}
-        isSurveyImporter={isSurveyImporter}
-      />
-    );
+    return <ImportSection {...props} locale={locale} project={project} />;
   }
 
   return null;

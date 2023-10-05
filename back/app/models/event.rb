@@ -4,20 +4,22 @@
 #
 # Table name: events
 #
-#  id                   :uuid             not null, primary key
-#  project_id           :uuid
-#  title_multiloc       :jsonb
-#  description_multiloc :jsonb
-#  location_multiloc    :jsonb
-#  start_at             :datetime
-#  end_at               :datetime
-#  created_at           :datetime         not null
-#  updated_at           :datetime         not null
-#  location_point       :geography        point, 4326
-#  address_1            :string
-#  attendees_count      :integer          default(0), not null
-#  online_link          :string
-#  address_2_multiloc   :jsonb            not null
+#  id                     :uuid             not null, primary key
+#  project_id             :uuid
+#  title_multiloc         :jsonb
+#  description_multiloc   :jsonb
+#  location_multiloc      :jsonb
+#  start_at               :datetime
+#  end_at                 :datetime
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
+#  location_point         :geography        point, 4326
+#  address_1              :string
+#  attendees_count        :integer          default(0), not null
+#  online_link            :string
+#  address_2_multiloc     :jsonb            not null
+#  attend_button_multiloc :jsonb            not null
+#  using_url              :string
 #
 # Indexes
 #

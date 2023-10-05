@@ -12,6 +12,7 @@ export const ideaImport: ImportedIdeaMetadata = {
     locale: 'en',
     page_range: ['1', '2'],
     updated_at: '2023-09-14T17:40:05.892Z',
+    user_consent: true,
     user_created: true,
   },
 };

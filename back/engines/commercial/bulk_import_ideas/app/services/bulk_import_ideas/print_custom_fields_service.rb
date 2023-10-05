@@ -3,7 +3,7 @@
 require 'prawn'
 require 'prawn/measurement_extensions'
 
-class PrintCustomFieldsService
+class BulkImportIdeas::PrintCustomFieldsService
   attr_reader :participation_context, :custom_fields, :params, :previous_cursor
 
   # We are still hiding linear scales for now because they are not supported
@@ -11,11 +11,14 @@ class PrintCustomFieldsService
   QUESTION_TYPES = %w[select multiselect text text_multiloc multiline_text html_multiloc number]
   FORBIDDEN_HTML_TAGS_REGEX = %r{</?(div|span|ul|ol|li|img|a){1}[^>]*/?>}
 
-  def initialize(participation_context, custom_fields, params)
+  def initialize(participation_context, custom_fields, locale, personal_data_enabled)
     @participation_context = participation_context
     @custom_fields = custom_fields
-    @params = params
+    @locale = locale
+    @personal_data_enabled = personal_data_enabled
     @previous_cursor = nil
+    @app_configuration = AppConfiguration.instance
+    @importer_fields = []
   end
 
   def create_pdf
@@ -27,18 +30,8 @@ class PrintCustomFieldsService
     write_form_title pdf
     write_instructions pdf
 
-    if params[:name] == 'true'
-      render_text_field_with_name(
-        pdf,
-        I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.full_name') }
-      )
-    end
-
-    if params[:email] == 'true'
-      render_text_field_with_name(
-        pdf,
-        I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.email_address') }
-      )
+    if @personal_data_enabled
+      render_personal_data_section pdf
     end
 
     custom_fields.each_with_index do |custom_field, i|
@@ -60,7 +53,7 @@ class PrintCustomFieldsService
     end
 
     # Add page numbers
-    page_copy = I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.page') }
+    page_copy = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.page') }
     page_number_format = "#{page_copy} <page>"
     page_number_options = {
       at: [pdf.bounds.right - 150, 0],
@@ -72,6 +65,13 @@ class PrintCustomFieldsService
     pdf.number_pages page_number_format, page_number_options
 
     pdf
+  end
+
+  def importer_data
+    {
+      page_count: create_pdf.page_count,
+      fields: @importer_fields
+    }
   end
 
   private
@@ -90,7 +90,7 @@ class PrintCustomFieldsService
   end
 
   def render_tenant_logo(pdf)
-    logo = AppConfiguration.instance.logo&.medium
+    logo = @app_configuration.logo&.medium
     return if logo.blank?
 
     pdf.image open logo.to_s
@@ -98,7 +98,7 @@ class PrintCustomFieldsService
   end
 
   def write_form_title(pdf)
-    pc_title = @participation_context.title_multiloc[locale]
+    pc_title = @participation_context.title_multiloc[@locale]
 
     if @participation_context.instance_of? Project
       pdf.text(
@@ -108,7 +108,7 @@ class PrintCustomFieldsService
       )
     else
       project = @participation_context.project
-      project_title = project.title_multiloc[locale]
+      project_title = project.title_multiloc[@locale]
 
       pdf.text(
         "<b>#{project_title} - #{pc_title}</b>",
@@ -122,7 +122,7 @@ class PrintCustomFieldsService
 
   def write_instructions(pdf)
     pdf.text(
-      "<b>#{I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.instructions') }}</b>",
+      "<b>#{I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.instructions') }}</b>",
       size: 16,
       inline_format: true
     )
@@ -143,7 +143,7 @@ class PrintCustomFieldsService
 
       pdf.indent(10.mm) do
         pdf.text(
-          (I18n.with_locale(locale) { I18n.t("form_builder.pdf_export.#{key}") }).to_s,
+          (I18n.with_locale(@locale) { I18n.t("form_builder.pdf_export.#{key}") }).to_s,
           size: 12,
           inline_format: true
         )
@@ -153,9 +153,59 @@ class PrintCustomFieldsService
     pdf.move_down 8.mm
   end
 
+  def render_personal_data_section(pdf)
+    # Personal data header
+    pdf.text(
+      "<b>#{I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.personal_data') }}</b>",
+      size: 16,
+      inline_format: true
+    )
+
+    pdf.move_down 4.mm
+
+    # Personal data explanation
+    participation_method = @participation_context.participation_method
+    personal_data_explanation_key = "form_builder.pdf_export.personal_data_explanation_#{participation_method}"
+    pdf.text I18n.with_locale(@locale) {
+      I18n.t(
+        personal_data_explanation_key,
+        { organizationName: organization_name }
+      )
+    }
+
+    pdf.move_down 8.mm
+
+    # Fields
+    %w[first_name last_name email_address].each do |key|
+      render_text_field_with_name(
+        pdf,
+        I18n.with_locale(@locale) { I18n.t("form_builder.pdf_export.#{key}") }
+      )
+    end
+
+    # Checkbox
+    pdf.stroke do
+      pdf.stroke_color '000000'
+      pdf.rectangle([1.5.mm, pdf.cursor + 1.5.mm], 10, 10)
+    end
+
+    pdf.move_up 2.8.mm
+
+    pdf.indent(7.mm) do
+      pdf.text I18n.with_locale(@locale) {
+        I18n.t(
+          'form_builder.pdf_export.by_checking_this_box',
+          { organizationName: organization_name }
+        )
+      }
+    end
+
+    pdf.start_new_page(size: 'A4')
+  end
+
   def render_text_field_with_name(pdf, name)
     title_multiloc = {}
-    title_multiloc[locale] = name
+    title_multiloc[@locale] = name
 
     text_field = CustomField.new({
       input_type: 'text',
@@ -172,6 +222,9 @@ class PrintCustomFieldsService
     # inside of it will be on a new page if there
     # is not enough space on the current page
     pdf.group do |pdf_group|
+      # Add field to array to use in import
+      add_to_importer_fields(custom_field, 'field', pdf.page_number, pdf.y)
+
       # Write title
       write_title(pdf_group, custom_field)
 
@@ -204,17 +257,17 @@ class PrintCustomFieldsService
   end
 
   def write_title(pdf, custom_field)
-    optional = I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.optional') }
+    optional = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.optional') }
 
     pdf.text(
-      "<b>#{custom_field.title_multiloc[locale]}</b>#{custom_field.required? ? '' : " (#{optional})"}",
+      "<b>#{custom_field.title_multiloc[@locale]}</b>#{custom_field.required? ? '' : " (#{optional})"}",
       size: 16,
       inline_format: true
     )
   end
 
   def write_description(pdf, custom_field)
-    description = custom_field.description_multiloc[locale]
+    description = custom_field.description_multiloc[@locale]
     if description.present?
       pdf.move_down 3.mm
       paragraphs = parse_html_tags(description)
@@ -237,14 +290,14 @@ class PrintCustomFieldsService
 
       if show_multiselect_instructions
         pdf.text(
-          "*#{I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.choose_as_many') }}",
+          "*#{I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.choose_as_many') }}",
           size: 10
         )
       end
 
       if show_visibility_disclaimer
         pdf.text(
-          "*#{I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.this_answer') }}",
+          "*#{I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.this_answer') }}",
           size: 10
         )
       end
@@ -253,13 +306,16 @@ class PrintCustomFieldsService
 
   def render_single_choice(pdf, custom_field)
     custom_field.options.each do |option|
+      # Add option to array to use in import
+      add_to_importer_fields(option, 'option', pdf.page_number, pdf.y)
+
       pdf.stroke_color '000000'
       pdf.stroke_circle [3.mm, pdf.cursor], 5
 
       pdf.move_up 3.mm
 
       pdf.indent(7.mm) do
-        pdf.text option.title_multiloc[locale]
+        pdf.text option.title_multiloc[@locale]
       end
 
       pdf.move_down 5.mm
@@ -268,6 +324,9 @@ class PrintCustomFieldsService
 
   def render_multiple_choice(pdf, custom_field)
     custom_field.options.each do |option|
+      # Add option to array to use in import
+      add_to_importer_fields(option, 'option', pdf.page_number, pdf.y)
+
       pdf.stroke do
         pdf.stroke_color '000000'
         pdf.rectangle([1.5.mm, pdf.cursor + 1.5.mm], 10, 10)
@@ -276,7 +335,7 @@ class PrintCustomFieldsService
       pdf.move_up 2.8.mm
 
       pdf.indent(7.mm) do
-        pdf.text option.title_multiloc[locale]
+        pdf.text option.title_multiloc[@locale]
       end
 
       pdf.move_down 5.mm
@@ -332,13 +391,13 @@ class PrintCustomFieldsService
     save_cursor pdf
 
     pdf.indent(1.8.mm) do
-      pdf.text custom_field.minimum_label_multiloc[locale]
+      pdf.text custom_field.minimum_label_multiloc[@locale]
     end
 
     reset_cursor pdf
 
     pdf.indent(width + 1.mm) do
-      pdf.text custom_field.maximum_label_multiloc[locale]
+      pdf.text custom_field.maximum_label_multiloc[@locale]
     end
   end
 
@@ -359,7 +418,27 @@ class PrintCustomFieldsService
     pdf.move_down pdf.cursor - previous_cursor
   end
 
-  def locale
-    params[:locale]
+  def organization_name
+    @app_configuration.settings('core', 'organization_name')[@locale]
+  end
+
+  def add_to_importer_fields(field, type, page, position)
+    position = (810 - position) / 8.1 # Convert the position into equivalent of what form parser returns
+    key = field[:key]
+    parent_key = type == 'option' ? field.custom_field.key : nil
+
+    # Because of the way pdf group works we delete if value is already there and always use the last value for the field
+    @importer_fields.delete_if { |f| f[:key] == key && f[:parent_key] == parent_key }
+
+    @importer_fields << {
+      name: field[:title_multiloc][@locale],
+      type: type,
+      input_type: field[:input_type],
+      code: field[:code],
+      key: key,
+      parent_key: parent_key,
+      page: page,
+      position: position.to_i
+    }
   end
 end
