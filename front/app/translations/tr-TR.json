@@ -1440,6 +1440,8 @@
   "app.containers.SignUp.emptyLastNameError": "Soyadınızı girin",
   "app.containers.SignUp.firstNamesLabel": "Ad",
   "app.containers.SignUp.goToLogIn": "Hesabınız var mı? {goToOtherFlowLink}",
+  "app.containers.SignUp.iHaveReadAndAgreeToPrivacy": "{link}adresini okudum ve kabul ediyorum.",
+  "app.containers.SignUp.iHaveReadAndAgreeToTerms": "{link}adresini okudum ve kabul ediyorum.",
   "app.containers.SignUp.iHaveReadAndAgreeToVienna": "Verilerin mitgestalten.wien.gv.at adresinde kullanılacağını kabul ediyorum. Daha fazla bilgi {link}adresinde bulunabilir.",
   "app.containers.SignUp.invitationErrorText": "Davetiyenizin süresi doldu veya zaten kullanıldı. Bir hesap oluşturmak için davet bağlantısını zaten kullandıysanız, oturum açmayı deneyin. Aksi takdirde, yeni bir hesap oluşturmak için kaydolun.",
   "app.containers.SignUp.lastNameLabel": "Soyadı",
