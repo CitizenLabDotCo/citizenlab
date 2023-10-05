@@ -50,7 +50,7 @@ const AuthorSelect = ({ selectedAuthor, onSelect }: Props) => {
 
     if (optionIsUser(option)) {
       onSelect({
-        userState: 'existing-user',
+        user_state: 'existing-user',
         email: option.attributes.email,
         id: option.id,
       });
@@ -59,7 +59,7 @@ const AuthorSelect = ({ selectedAuthor, onSelect }: Props) => {
 
     if (option.value === 'newUser') {
       onSelect({
-        userState: 'new-user',
+        user_state: 'new-user',
         email: option.payload,
       });
     }

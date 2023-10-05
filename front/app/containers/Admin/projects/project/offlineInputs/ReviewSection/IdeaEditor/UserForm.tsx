@@ -38,9 +38,9 @@ const UserForm = ({ userFormData, setUserFormData }: Props) => {
   };
 
   const handleSelect = (selectedAuthor: SelectedAuthor) => {
-    if (selectedAuthor.userState === 'invalid-email') {
+    if (selectedAuthor.user_state === 'invalid-email') {
       updateUserFormData({
-        userState: 'invalid-email',
+        user_state: 'invalid-email',
         email: selectedAuthor.email,
         user_id: undefined,
       });
@@ -48,9 +48,9 @@ const UserForm = ({ userFormData, setUserFormData }: Props) => {
       return;
     }
 
-    if (selectedAuthor.userState === 'new-user') {
+    if (selectedAuthor.user_state === 'new-user') {
       updateUserFormData({
-        userState: 'new-user',
+        user_state: 'new-user',
         email: selectedAuthor.email,
         user_id: undefined,
       });
@@ -58,7 +58,7 @@ const UserForm = ({ userFormData, setUserFormData }: Props) => {
     }
 
     updateUserFormData({
-      userState: 'existing-user',
+      user_state: 'existing-user',
       email: selectedAuthor.email,
       user_id: selectedAuthor.id,
     });
@@ -76,14 +76,14 @@ const UserForm = ({ userFormData, setUserFormData }: Props) => {
           <Box>
             <AuthorInput
               selectedAuthor={{
-                userState: userFormData.userState,
+                user_state: userFormData.user_state,
                 email: userFormData.email,
                 id: userFormData.user_id,
               }}
               onSelect={handleSelect}
             />
           </Box>
-          {userFormData.userState === 'existing-user' && (
+          {userFormData.user_state === 'existing-user' && (
             <Box display="flex" alignItems="center" mt="12px">
               <Icon
                 width="40px"
@@ -98,9 +98,9 @@ const UserForm = ({ userFormData, setUserFormData }: Props) => {
               />
             </Box>
           )}
-          {['new-user', 'invalid-email'].includes(userFormData.userState) && (
+          {['new-user', 'invalid-email'].includes(userFormData.user_state) && (
             <>
-              {userFormData.userState === 'new-user' && (
+              {userFormData.user_state === 'new-user' && (
                 <Box display="flex" alignItems="center" mt="12px">
                   <Icon
                     width="40px"
@@ -115,7 +115,7 @@ const UserForm = ({ userFormData, setUserFormData }: Props) => {
                   />
                 </Box>
               )}
-              {userFormData.userState === 'invalid-email' && (
+              {userFormData.user_state === 'invalid-email' && (
                 <Box display="flex" alignItems="center" mt="12px">
                   <Text color="orange" mb="15px">
                     Please enter a valid email address.

@@ -45,10 +45,10 @@ interface Props {
 }
 
 const AuthorInput = ({ selectedAuthor, onSelect }: Props) => {
-  if (selectedAuthor.userState !== 'invalid-email') {
+  if (selectedAuthor.user_state !== 'invalid-email') {
     const handleClear = () => {
       onSelect({
-        userState: 'invalid-email',
+        user_state: 'invalid-email',
         email: undefined,
       });
     };

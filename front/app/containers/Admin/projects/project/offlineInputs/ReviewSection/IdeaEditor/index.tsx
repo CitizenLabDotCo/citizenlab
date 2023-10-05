@@ -31,7 +31,12 @@ import { isValidData } from 'components/Form/utils';
 import { customAjv } from 'components/Form';
 import { getFormValues as getIdeaFormValues } from 'containers/IdeasEditPage/utils';
 import { geocode } from 'utils/locationTools';
-import { getNextIdeaId, getUserFormValues, isUserFormDataValid } from './utils';
+import {
+  getNextIdeaId,
+  getUserFormValues,
+  isUserFormDataValid,
+  getUserFormDataAction,
+} from './utils';
 
 // typings
 import { FormData } from 'components/Form/typings';
@@ -130,7 +135,20 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
   );
 
   const onApproveIdea = async () => {
-    if (!ideaId || !ideaFormData || !ideaFormDataValid || !ideas) return;
+    if (
+      !ideaId ||
+      !ideaFormData ||
+      !ideaFormDataValid ||
+      !ideas ||
+      !userFormData ||
+      !ideaMetadata
+    ) {
+      return;
+    }
+
+    const action = getUserFormDataAction(userFormData, author, ideaMetadata);
+
+    console.log(action); // TODO
 
     const {
       location_description,
