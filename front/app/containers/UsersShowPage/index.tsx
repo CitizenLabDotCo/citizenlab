@@ -194,6 +194,8 @@ const UsersShowPageOuter = ({ className }: Props) => {
   const { formatMessage } = useIntl();
   const { data: user } = useUserBySlug(userSlug);
   const previousPathName = useContext(PreviousPathnameContext);
+  console.log(user);
+
   if (!user) return null;
 
   if (isError(user)) {
