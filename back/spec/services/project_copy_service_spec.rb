@@ -124,6 +124,27 @@ describe ProjectCopyService do
       expect(template['models']['idea'].first['custom_field_values']).to match expected_custom_field_values
     end
 
+    it 'includes volunteers' do
+      cause = create(:cause)
+      cause.update!(volunteers [create(:user)])
+
+      template = service.export cause.participation_context.project
+
+      expect(template['models']['custom_field'].size).to eq 1
+      expect(template['models']['custom_field'].first).to match hash_including(
+        'key' => field.key,
+        'input_type' => field.input_type,
+        'title_multiloc' => field.title_multiloc,
+        'description_multiloc' => field.description_multiloc,
+        'text_images_attributes' => [
+          hash_including(
+            'imageable_field' => 'description_multiloc',
+            'remote_image_url' => match(%r{/uploads/#{uuid_regex}/text_image/image/#{uuid_regex}/#{uuid_regex}.gif})
+          )
+        ]
+      )
+    end
+
     describe 'when copying records for models that use acts_as_list gem' do
       it 'copies exact :ordering values' do
         project = create(:continuous_project)

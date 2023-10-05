@@ -29,6 +29,7 @@ class ProjectCopyService < TemplateService
     timeline_start_at: nil,
     new_publication_status: nil
   )
+    include_ideas = true ### debugging
     @local_copy = local_copy
     @project = project
     @template = { 'models' => {} }
