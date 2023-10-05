@@ -1440,6 +1440,8 @@
   "app.containers.SignUp.emptyLastNameError": "Εισάγετε το επώνυμό σας",
   "app.containers.SignUp.firstNamesLabel": "Μικρό όνομα",
   "app.containers.SignUp.goToLogIn": "Έχετε ήδη λογαριασμό; {goToOtherFlowLink}",
+  "app.containers.SignUp.iHaveReadAndAgreeToPrivacy": "Έχω διαβάσει και συμφωνώ με το {link}.",
+  "app.containers.SignUp.iHaveReadAndAgreeToTerms": "Έχω διαβάσει και συμφωνώ με το {link}.",
   "app.containers.SignUp.iHaveReadAndAgreeToVienna": "Αποδέχομαι ότι τα δεδομένα θα χρησιμοποιηθούν στο mitgestalten.wien.gv.at. Περαιτέρω πληροφορίες μπορείτε να βρείτε {link}.",
   "app.containers.SignUp.invitationErrorText": "Η πρόσκλησή σας έχει λήξει ή έχει ήδη χρησιμοποιηθεί. Εάν έχετε ήδη χρησιμοποιήσει τον σύνδεσμο πρόσκλησης για τη δημιουργία λογαριασμού, προσπαθήστε να συνδεθείτε. Διαφορετικά, εγγραφείτε για να δημιουργήσετε έναν νέο λογαριασμό.",
   "app.containers.SignUp.lastNameLabel": "Επώνυμο",
