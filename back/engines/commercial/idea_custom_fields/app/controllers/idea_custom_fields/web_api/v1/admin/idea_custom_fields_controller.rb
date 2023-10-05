@@ -175,6 +175,7 @@ module IdeaCustomFields
           end
           option.move_to_bottom
         end
+        add_other_option field if field.other_option
       end
     end
 
@@ -211,6 +212,16 @@ module IdeaCustomFields
       option
     end
 
+    def add_other_option(field)
+      if field.options.pluck(:key).exclude?(CustomFieldOption::OTHER_OPTION_KEY)
+        option = field.options.create!(
+          key: CustomFieldOption::OTHER_OPTION_KEY,
+          title_multiloc: { 'en' => 'Other' } # TODO: get translations
+        )
+        option.move_to_bottom
+      end
+    end
+
     def update_logic!(page_temp_ids_to_ids_mapping, option_temp_ids_to_ids_mapping, errors)
       fields = IdeaCustomFieldsService.new(@custom_form).all_fields
       form_logic = FormLogicService.new fields
@@ -238,6 +249,7 @@ module IdeaCustomFields
         :required,
         :enabled,
         :maximum,
+        :other_option,
         { title_multiloc: CL2_SUPPORTED_LOCALES,
           description_multiloc: CL2_SUPPORTED_LOCALES,
           minimum_label_multiloc: CL2_SUPPORTED_LOCALES,

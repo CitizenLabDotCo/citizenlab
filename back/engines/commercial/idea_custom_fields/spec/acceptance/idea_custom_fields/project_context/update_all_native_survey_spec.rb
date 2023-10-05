@@ -2143,6 +2143,7 @@ resource 'Idea Custom Fields' do
               description_multiloc: {},
               required: true,
               enabled: true,
+              other_option: true,
               options: [
                 {
                   title_multiloc: { en: 'Option 1' }
@@ -2173,6 +2174,7 @@ resource 'Idea Custom Fields' do
             required: true,
             title_multiloc: { en: 'Changed field' },
             updated_at: an_instance_of(String),
+            other_option: true,
             logic: {},
             constraints: {}
           },
@@ -2181,6 +2183,10 @@ resource 'Idea Custom Fields' do
           relationships: {
             options: {
               data: [
+                {
+                  id: an_instance_of(String),
+                  type: 'custom_field_option'
+                },
                 {
                   id: an_instance_of(String),
                   type: 'custom_field_option'
@@ -2197,12 +2203,15 @@ resource 'Idea Custom Fields' do
         included_json_options = json_response[:included].select do |json_option|
           json_option[:type] == 'custom_field_option'
         end
-        expect(included_json_options.size).to eq 2
+        expect(included_json_options.size).to eq 3
         json_option1 = included_json_options.find do |json_option|
-          json_option[:id] != change_option.id
+          json_option[:id] != change_option.id && json_option.dig(:attributes, :key) != CustomFieldOption::OTHER_OPTION_KEY
         end
         json_option2 = included_json_options.find do |json_option|
           json_option[:id] == change_option.id
+        end
+        json_option3 = included_json_options.find do |json_option|
+          json_option.dig(:attributes, :key) == CustomFieldOption::OTHER_OPTION_KEY
         end
         expect(json_option1).to match({
           id: an_instance_of(String),
@@ -2222,6 +2231,17 @@ resource 'Idea Custom Fields' do
             key: an_instance_of(String),
             title_multiloc: { en: 'Changed option' },
             ordering: 1,
+            created_at: an_instance_of(String),
+            updated_at: an_instance_of(String)
+          }
+        })
+        expect(json_option3).to match({
+          id: an_instance_of(String),
+          type: 'custom_field_option',
+          attributes: {
+            key: CustomFieldOption::OTHER_OPTION_KEY,
+            title_multiloc: { en: 'Other' }, # TODO: add to fixtures
+            ordering: 2,
             created_at: an_instance_of(String),
             updated_at: an_instance_of(String)
           }
