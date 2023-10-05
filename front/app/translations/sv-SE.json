@@ -1383,6 +1383,7 @@
   "app.containers.ProjectsIndexPage.pageTitle": "Projekt",
   "app.containers.ProjectsShowPage.VolunteeringSection.becomeVolunteerButton": "Jag vill anmäla mig frivilligt",
   "app.containers.ProjectsShowPage.VolunteeringSection.notLoggedIn": "{signInLink} eller {signUpLink} först för att anmäla dig frivilligt för den här aktiviteten",
+  "app.containers.ProjectsShowPage.VolunteeringSection.notOpenParticipation": "Deltagande är för närvarande inte öppet för denna aktivitet.",
   "app.containers.ProjectsShowPage.VolunteeringSection.signInLinkText": "logga in",
   "app.containers.ProjectsShowPage.VolunteeringSection.signUpLinkText": "registrera dig",
   "app.containers.ProjectsShowPage.VolunteeringSection.withdrawVolunteerButton": "Jag drar tillbaka mitt erbjudande om att anmäla mig frivilligt",
