@@ -1440,6 +1440,8 @@
   "app.containers.SignUp.emptyLastNameError": "Унесите своје презиме",
   "app.containers.SignUp.firstNamesLabel": "Име",
   "app.containers.SignUp.goToLogIn": "Већ имате налог? {goToOtherFlowLink}",
+  "app.containers.SignUp.iHaveReadAndAgreeToPrivacy": "Прочитао сам и слажем се са {link}.",
+  "app.containers.SignUp.iHaveReadAndAgreeToTerms": "Прочитао сам и слажем се са {link}.",
   "app.containers.SignUp.iHaveReadAndAgreeToVienna": "Прихватам да ће се подаци користити на митгесталтен.виен.гв.ат. Додатне информације можете пронаћи {link}.",
   "app.containers.SignUp.invitationErrorText": "Ваша позивница је истекла или је већ искоришћена. Ако сте већ користили везу са позивницом за креирање налога, покушајте да се пријавите. У супротном, пријавите се да бисте креирали нови налог.",
   "app.containers.SignUp.lastNameLabel": "Презиме",
