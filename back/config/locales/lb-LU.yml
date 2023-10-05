@@ -226,9 +226,13 @@ lb:
       title: 'Enn vun der Ëmfro'
       description: "Wgl. wielt ‘Ëmfro areechen’ hei ënnendrënner aus, fir Är Äntwert anzereechen."
     pdf_export:
+      personal_data: 'Perséinlech Daten'
+      personal_data_explanation_ideation: "Mir wäerten Ären Input op d' %{organizationName}online Participatiounsplattform ofginn. Wann Dir wëllt datt Ären Numm als Auteur vun dësem Input ugewise gëtt an Updates per E-Mail relevant fir Ären Input kritt, fëllt w.e.g. déi folgend Felder op dëser Säit aus a mir kreéieren e Kont fir Iech. Är E-Mail wäert net ëffentlech sinn a gëtt nëmme vum %{organizationName}benotzt. Wann Dir anonym wëllt bleiwen, oder net averstane sidd datt mir Är perséinlech Donnéeën op dës Manéier benotzen, kënnt Dir se eidel loossen."
+      personal_data_explanation_native_survey: "Mir wäerten Ären Input op d' %{organizationName}online Participatiounsplattform ofginn. Wann Dir Aktualiséierunge relevant fir Ären Input per E-Mail wëllt kréien, fëllt w.e.g. déi folgend Felder op dëser Säit aus a mir erstellen e Kont fir Iech. Är Donnéeë sinn net ëffentlech a ginn nëmme vum %{organizationName}benotzt. Wann Dir net averstane sidd datt mir Är perséinlech Donnéeën op dës Manéier benotzen, kënnt Dir se eidel loossen."
       first_name: 'Virnumm'
       last_name: 'Familljennumm'
       email_address: 'E-Mailadress'
+      by_checking_this_box: "Andeems ech dës Këscht auschecken, stëmmen ech derzou datt meng Donnéeën benotzt gi fir e Kont op der Participatiounsplattform vun %{organizationName}ze kreéieren."
       optional: 'fakultativ'
       permission: 'Erlaabnis'
       choose_as_many: 'Wielt esou vill wéi Dir wëllt'
