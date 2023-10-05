@@ -1383,6 +1383,7 @@
   "app.containers.ProjectsIndexPage.pageTitle": "Projecten",
   "app.containers.ProjectsShowPage.VolunteeringSection.becomeVolunteerButton": "{tenantName, select, Almere {Ik schrijf me in voor dit Stadsgesprek} other {Ik geef me op}}",
   "app.containers.ProjectsShowPage.VolunteeringSection.notLoggedIn": "{tenantName, select, Almere {Graag eerst {signInLink} of {signUpLink} om je in te schrijven voor het Stadsgesprek} other {Graag eerst {signInLink} of {signUpLink} om je aan te melden}}",
+  "app.containers.ProjectsShowPage.VolunteeringSection.notOpenParticipation": "Deelname is momenteel niet mogelijk voor deze activiteit.",
   "app.containers.ProjectsShowPage.VolunteeringSection.signInLinkText": "in te loggen",
   "app.containers.ProjectsShowPage.VolunteeringSection.signUpLinkText": "aan te melden",
   "app.containers.ProjectsShowPage.VolunteeringSection.withdrawVolunteerButton": "{tenantName, select, Almere {Ik wil me uitschrijven} other {Ik wil mijn aanmelding intrekken}}",
