@@ -30,7 +30,6 @@ class ProjectCopyService < TemplateService
     new_publication_status: nil
   )
     include_ideas = false if local_copy
-    include_ideas = true ### debugging
     @local_copy = local_copy
     @project = project
     @template = { 'models' => {} }
