@@ -1080,7 +1080,6 @@
   "app.containers.ProjectsIndexPage.metaTitle": "Proiecte • {orgName}",
   "app.containers.ProjectsIndexPage.pageTitle": "Proiecte",
   "app.containers.ProjectsShowPage.VolunteeringSection.becomeVolunteerButton": "Vreau să fiu voluntar",
-  "app.containers.ProjectsShowPage.VolunteeringSection.notLoggedIn": "Vă rugăm să {signInLink} sau {signUpLink} mai întâi, pentru a vă putea oferi voluntar la această activitate",
   "app.containers.ProjectsShowPage.VolunteeringSection.signInLinkText": "autentifică-te",
   "app.containers.ProjectsShowPage.VolunteeringSection.signUpLinkText": "Înscrie-te",
   "app.containers.ProjectsShowPage.VolunteeringSection.withdrawVolunteerButton": "Îmi retrag oferta de a fi voluntar",
