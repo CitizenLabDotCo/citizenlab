@@ -1028,6 +1028,8 @@
   "app.containers.IdeasShow.ideaTwitterMessage": "Support this idea: {postTitle}",
   "app.containers.IdeasShow.ideaWhatsAppMessage": "Support this idea: {postTitle}",
   "app.containers.IdeasShow.ideasWhatsAppMessage": "Support this comment: {postTitle}",
+  "app.containers.IdeasShow.imported": "Imported",
+  "app.containers.IdeasShow.importedTooltip": "This {inputTerm} was collected offline and automatically uploaded to the platform.",
   "app.containers.IdeasShow.issueEmailSharingBody": "Support this comment '{postTitle}' at {postUrl}!",
   "app.containers.IdeasShow.issueEmailSharingSubject": "Support this comment: {postTitle}",
   "app.containers.IdeasShow.issueFacebookMessage": "Support this issue: {postTitle}",
