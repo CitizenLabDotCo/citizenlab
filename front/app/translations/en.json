@@ -655,6 +655,8 @@
   "app.components.formBuilder.multipleChoice": "Multiple choice",
   "app.components.formBuilder.multiselect.maximum": "Maximum",
   "app.components.formBuilder.multiselect.minimum": "Minimum",
+  "app.components.formBuilder.multiselect.otherOptionToggle": "\"Other\" option",
+  "app.components.formBuilder.multiselect.otherOptionTooltip": "When turned on, respondents can add their own answer to the question when selecting the \"other\" option.",
   "app.components.formBuilder.newField": "New field",
   "app.components.formBuilder.nextPageLabel": "Next:",
   "app.components.formBuilder.number": "Number",
