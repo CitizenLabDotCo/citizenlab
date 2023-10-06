@@ -1,6 +1,5 @@
 import { CLErrors, CLErrorsWrapper } from 'typings';
 import messages from './messages';
-import { isArray } from 'lodash-es';
 import { isObject } from './helperUtils';
 import clHistory from 'utils/cl-router/history';
 
@@ -31,13 +30,13 @@ const genericErrors = [
   'even',
 ] as const;
 
-export type GenericErrorKey = (typeof genericErrors)[number];
+type GenericErrorKey = (typeof genericErrors)[number];
 // Here are all custom validations I could find in the back-end and that could make some sense to the end user
 
 // NB : (sometimes it'd be clearly better the user doesn't see that error,
 // it's probably our system that's at fault. Decided to add them either way, they can contact us with a bit more info in that case)
 
-export type CustomErrorKey = 'includes_banned_words';
+type CustomErrorKey = 'includes_banned_words';
 // | 'already_liked'
 // | 'already_disliked'
 // | 'children_not_allowed'
@@ -131,7 +130,7 @@ export const isCLErrorsWrapper = (value: unknown): value is CLErrorsWrapper => {
   return isObject(value) && isObject(value.errors);
 };
 
-export const handleCLErrorWrapper = (
+const handleCLErrorWrapper = (
   error: CLErrorsWrapper,
   handleError: (error: string, options: Record<string, any>) => void,
   fieldArrayKey?: string
@@ -141,13 +140,19 @@ export const handleCLErrorWrapper = (
         if (fieldArrayKey) {
           Object.keys(error.errors[key]).forEach((errorKey) => {
             const errorValue = error.errors[key][errorKey][0];
+            // handleError is (nearly) always methods.setError from what I can see. The format of error (2nd argument)
+            // we pass doesn't match setError's types but it works somehow.
             handleError(
               `${fieldArrayKey}.${key}.${errorKey}`,
-              errorValue === 'string' ? { error: errorValue } : errorValue
+              typeof errorValue === 'string'
+                ? { error: errorValue }
+                : errorValue
             );
           });
         } else {
           const errorValue = error.errors[key][0];
+          // handleError is (nearly) always methods.setError from what I can see. The format of error (2nd argument)
+          // we pass doesn't match setError's types but it works somehow.
           handleError(
             key,
             typeof errorValue === 'string' ? { error: errorValue } : errorValue
@@ -179,7 +184,7 @@ export const handleBlockedUserError = (status: number, data: CLErrors) => {
     isObject(data) &&
     isObject(data.errors) &&
     'base' in data.errors &&
-    isArray(data.errors.base) &&
+    Array.isArray(data.errors.base) &&
     data.errors.base.length >= 0 &&
     'error' in data.errors.base[0] &&
     data.errors.base[0].error === 'blocked' &&
@@ -196,7 +201,7 @@ export const isUnauthorizedRQ = (obj: unknown): obj is CLErrors => {
     isObject(obj) &&
     'errors' in obj &&
     'base' in obj.errors &&
-    isArray(obj.errors.base) &&
+    Array.isArray(obj.errors.base) &&
     obj.errors.base.length >= 0 &&
     'error' in obj.errors.base[0] &&
     obj.errors.base[0].error === 'Unauthorized!'
