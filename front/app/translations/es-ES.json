@@ -1028,6 +1028,8 @@
   "app.containers.IdeasShow.ideaTwitterMessage": "Apoya esta idea: {postTitle}",
   "app.containers.IdeasShow.ideaWhatsAppMessage": "Apoya esta idea: {postTitle}",
   "app.containers.IdeasShow.ideasWhatsAppMessage": "Apoya este tema: {postTitle}",
+  "app.containers.IdeasShow.imported": "Importado",
+  "app.containers.IdeasShow.importedTooltip": "Este {inputTerm} se recogió fuera de línea y se subió automáticamente a la plataforma.",
   "app.containers.IdeasShow.issueEmailSharingBody": "¡Apoye este tema  '{postTitle}' en {postUrl}!",
   "app.containers.IdeasShow.issueEmailSharingSubject": "Apoya este tema: {postTitle}",
   "app.containers.IdeasShow.issueFacebookMessage": "Apoye esta cuestión: {postTitle}",
