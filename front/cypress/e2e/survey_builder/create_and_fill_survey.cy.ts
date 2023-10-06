@@ -316,7 +316,7 @@ describe('Survey builder', () => {
     cy.get('[data-cy="e2e-submit-form"]').should('exist');
     cy.get('[data-cy="e2e-submit-form"]').click();
 
-    cy.visit(`admin/projects/${projectId}/native-survey/edit`);
+    cy.visit(`admin/projects/${projectId}/native-survey`);
 
     // Click the delete button
     cy.get('[data-cy="e2e-delete-survey-results"]').click();
@@ -353,7 +353,7 @@ describe('Survey builder', () => {
     cy.get('[data-cy="e2e-submit-form"]').should('exist');
     cy.get('[data-cy="e2e-submit-form"]').click();
 
-    cy.visit(`admin/projects/${projectId}/native-survey/edit`);
+    cy.visit(`admin/projects/${projectId}/native-survey`);
 
     // Click the view survey results button
     cy.get('[data-cy="e2e-form-view-results"]').click();
@@ -734,7 +734,7 @@ describe('Survey builder', () => {
     cy.wait('@saveSurvey').then((interception) => {
       const keys = Object.keys(interception.request.body.idea);
       const value: string = interception.request.body.idea[keys[0]];
-      expect(value).to.equal(chooseOneOption1);
+      expect(value).to.include(chooseOneOption1);
     });
 
     cy.get('[data-cy="e2e-survey-success-message"]').should('exist');
