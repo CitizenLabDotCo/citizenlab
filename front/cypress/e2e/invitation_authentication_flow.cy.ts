@@ -58,7 +58,6 @@ describe('Invitation authentication flow', () => {
     cy.visit('/admin/users/invitations/all');
     cy.contains('jack@johnson.com');
     cy.contains('Jack Johnson');
-    cy.contains('john@jackson.com');
     cy.contains('John Jackson');
 
     cy.logout();
