@@ -1028,6 +1028,8 @@
   "app.containers.IdeasShow.ideaTwitterMessage": "Unterstützen Sie diese Idee: {postTitle}\n",
   "app.containers.IdeasShow.ideaWhatsAppMessage": "Unterstützen Sie diese Idee: {postTitle}\n",
   "app.containers.IdeasShow.ideasWhatsAppMessage": "Unterstützen Sie dieses Thema: {postTitle}\n",
+  "app.containers.IdeasShow.imported": "Importiert",
+  "app.containers.IdeasShow.importedTooltip": "Diese {inputTerm} wurde offline gesammelt und automatisch auf die Plattform hochgeladen.",
   "app.containers.IdeasShow.issueEmailSharingBody": "Unterstützen Sie dieses Anliegen„{postTitle}“ unter {postUrl}!",
   "app.containers.IdeasShow.issueEmailSharingSubject": "Unterstützen Sie dieses Anliegen: {postTitle}\n",
   "app.containers.IdeasShow.issueFacebookMessage": "Unterstützen Sie dieses Problem: {postTitle}",
