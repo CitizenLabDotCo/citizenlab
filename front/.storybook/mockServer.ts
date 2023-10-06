@@ -18,6 +18,9 @@ import projectsEndpoints from '../app/api/projects/__mocks__/_mockServer';
 // phases mock data
 import phasesEndpoints from '../app/api/phases/__mocks__/_mockServer';
 
+// baskets mock data
+import basketsEndpoints from '../app/api/baskets/__mocks__/_mockServer';
+
 const endpoints = {
   ...appConfigurationEndpoints,
   ...usersMeEndpoints,
@@ -28,7 +31,8 @@ const endpoints = {
   ...ideasEndpoints,
   ...ideaImagesEndpoints,
   ...projectsEndpoints,
-  ...phasesEndpoints
+  ...phasesEndpoints,
+  ...basketsEndpoints
 }
 
 export default endpoints;
