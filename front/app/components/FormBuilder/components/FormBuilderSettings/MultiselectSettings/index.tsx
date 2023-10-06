@@ -21,6 +21,7 @@ type Props = {
   minimumSelectCountName: string;
   maximumSelectCountName: string;
   selectCountToggleName: string;
+  otherOptionToggleName: string;
   selectOptionsName: string;
 };
 
@@ -28,6 +29,7 @@ const MultiselectSettings = ({
   minimumSelectCountName,
   maximumSelectCountName,
   selectCountToggleName,
+  otherOptionToggleName,
   selectOptionsName,
 }: Props) => {
   const { formatMessage } = useIntl();
@@ -35,6 +37,22 @@ const MultiselectSettings = ({
 
   return (
     <Box mb="24px">
+      <Box mb="16px">
+        <Toggle
+          name={otherOptionToggleName}
+          label={
+            <Box display="flex">
+              {formatMessage(messages.otherOptionToggle)}
+              <Box pl="4px">
+                <IconTooltip
+                  placement="top-start"
+                  content={formatMessage(messages.otherOptionTooltip)}
+                />
+              </Box>
+            </Box>
+          }
+        />
+      </Box>
       <Box mb="16px">
         <Toggle
           name={selectCountToggleName}
@@ -51,7 +69,6 @@ const MultiselectSettings = ({
           }
         />
       </Box>
-
       {watch(selectCountToggleName) && (
         <Box ml="16px">
           <Box mb="8px" display="flex">

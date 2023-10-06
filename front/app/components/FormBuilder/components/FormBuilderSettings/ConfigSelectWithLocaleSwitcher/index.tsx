@@ -13,6 +13,7 @@ import {
   LocaleSwitcher,
   Icon,
   Input,
+  colors,
 } from '@citizenlab/cl2-component-library';
 import { SectionField } from 'components/admin/Section';
 import { List, SortableRow } from 'components/admin/ResourceList';
@@ -37,6 +38,7 @@ interface Props {
   locales: Locale[];
   allowDeletingAllOptions?: boolean;
   platformLocale: Locale;
+  otherOptionToggleName;
 }
 
 const ConfigSelectWithLocaleSwitcher = ({
@@ -46,6 +48,7 @@ const ConfigSelectWithLocaleSwitcher = ({
   intl: { formatMessage },
   allowDeletingAllOptions = false,
   platformLocale,
+  otherOptionToggleName,
 }: Props & WrappedComponentProps) => {
   const {
     control,
@@ -92,6 +95,7 @@ const ConfigSelectWithLocaleSwitcher = ({
     setValue(name, newValues);
   };
 
+  const { watch } = useFormContext();
   const defaultOptionValues = [{}];
   const errors = get(formContextErrors, name) as RHFErrors;
   const apiError = errors?.error && ([errors] as CLError[]);
@@ -200,8 +204,21 @@ const ConfigSelectWithLocaleSwitcher = ({
                           </Box>
                         );
                       })}
+                      {watch(otherOptionToggleName) === true && (
+                        <Box borderTop={`1px solid ${colors.divider}`}>
+                          <Box width="272px" my="16px" ml="34px">
+                            <Input
+                              value={formatMessage(messages.addAnswer)}
+                              disabled={true}
+                              size="small"
+                              type="text"
+                            />
+                          </Box>
+                        </Box>
+                      )}
                     </List>
                   </DndProvider>
+
                   <Button
                     icon="plus-circle"
                     buttonStyle="secondary"

@@ -42,12 +42,14 @@ export function getAdditionalSettings(
             name={`customFields.${field.index}.options`}
             locales={locales}
             platformLocale={platformLocale}
+            otherOptionToggleName={`customFields.${field.index}.other_option_enabled`}
           />
           <MultiselectSettings
             selectOptionsName={`customFields.${field.index}.options`}
             minimumSelectCountName={`customFields.${field.index}.minimum_select_count`}
             maximumSelectCountName={`customFields.${field.index}.maximum_select_count`}
             selectCountToggleName={`customFields.${field.index}.select_count_enabled`}
+            otherOptionToggleName={`customFields.${field.index}.other_option_enabled`}
           />
         </>
       );
@@ -57,6 +59,7 @@ export function getAdditionalSettings(
           name={`customFields.${field.index}.options`}
           locales={locales}
           platformLocale={platformLocale}
+          otherOptionToggleName={`customFields.${field.index}.other_option_enabled`}
         />
       );
     case 'page':
