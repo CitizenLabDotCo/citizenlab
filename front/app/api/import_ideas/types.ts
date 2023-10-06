@@ -34,3 +34,11 @@ export interface ImportedIdeaMetadata {
 export interface ImportedIdeaMetadataResponse {
   data: ImportedIdeaMetadata;
 }
+
+export interface CreateOfflineIdeasParams {
+  projectId: string;
+  email: string;
+  locale: Locale;
+  first_name?: string;
+  last_name?: string;
+}
