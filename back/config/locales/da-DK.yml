@@ -227,12 +227,12 @@ da:
       description: "Indsend dine svar ved at vælge \"Indsend undersøgelse\" nedenfor."
     pdf_export:
       personal_data: 'Personlige data'
-      personal_data_explanation_ideation: "Vi sender dit input til %{organizationName}'s online deltagelsesplatform. Hvis du ønsker, at dit navn skal vises som forfatter til dette input og modtage opdateringer, der er relevante for dit input, via e-mail, bedes du udfylde følgende felter på denne side, så opretter vi en konto til dig. Din e-mail vil ikke være offentlig og vil kun blive brugt af %{organizationName}. Hvis du ønsker at forblive anonym eller ikke accepterer, at vi bruger dine personlige data på denne måde, kan du lade dem være tomme."
+      personal_data_explanation_ideation: "Vi sender dit input til %{organizationName}'s online borgerinddragelsesplatform. Hvis du ønsker, at dit navn skal vises som forfatter til dette input og modtage opdateringer, der er relevante for dit input via e-mail, bedes du udfylde følgende felter på denne side, så opretter vi en konto til dig. Din e-mail vil ikke være offentlig og vil kun blive brugt af %{organizationName}. Hvis du ønsker at forblive anonym eller ikke accepterer, at vi bruger dine personlige data på denne måde, kan du lade dem være tomme."
       personal_data_explanation_native_survey: "Vi sender dit input til %{organizationName}'s online deltagelsesplatform. Hvis du ønsker at modtage opdateringer, der er relevante for dit input, via e-mail, bedes du udfylde følgende felter på denne side, så opretter vi en konto til dig. Dine data vil ikke være offentlige og vil kun blive brugt af %{organizationName}. Hvis du ikke accepterer, at vi bruger dine personlige data på denne måde, kan du lade dem stå tomme."
       first_name: 'Fornavn'
       last_name: 'Efternavn'
       email_address: 'E-mail adresse'
-      by_checking_this_box: "Ved at markere dette felt accepterer jeg, at mine data bliver brugt til at oprette en konto på %{organizationName}'s deltagelsesplatform."
+      by_checking_this_box: "Ved at markere dette felt accepterer jeg, at mine data bliver brugt til at oprette en konto på %{organizationName}'s borgerinddragelsesplatform."
       optional: 'valgfrit'
       permission: 'Tilladelse'
       choose_as_many: 'Vælg så mange som du vil'
