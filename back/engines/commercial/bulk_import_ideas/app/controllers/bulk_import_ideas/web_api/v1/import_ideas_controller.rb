@@ -8,7 +8,8 @@ module BulkImportIdeas
     def bulk_create
       file = bulk_create_params[:pdf] || bulk_create_params[:xlsx]
       ideas = import_ideas_service.import_file file
-      sidefx.after_success current_user
+      users = import_ideas_service.imported_users
+      sidefx.after_success current_user, @project, ideas, users
 
       render json: ::WebApi::V1::IdeaSerializer.new(
         ideas,
@@ -16,7 +17,7 @@ module BulkImportIdeas
         include: %i[author idea_import]
       ).serializable_hash, status: :created
     rescue BulkImportIdeas::Error => e
-      sidefx.after_failure current_user
+      sidefx.after_failure current_user, @project
       render json: { errors: { file: [{ error: e.key, **e.params }] } }, status: :unprocessable_entity
     end
 
@@ -70,13 +71,11 @@ module BulkImportIdeas
       locale = params[:import_ideas] ? bulk_create_params[:locale] : current_user.locale
       personal_data_enabled = params[:import_ideas] ? bulk_create_params[:personal_data] || false : false
       @import_ideas_service ||= if import_scope == :project
-        project_id = params[:id]
         phase_id = params[:import_ideas] ? bulk_create_params[:phase_id] : nil
-        ImportProjectIdeasService.new(current_user, project_id, locale, phase_id, personal_data_enabled)
+        ImportProjectIdeasService.new(current_user, @project.id, locale, phase_id, personal_data_enabled)
       elsif import_scope == :phase
         phase_id = params[:id]
-        project_id = Phase.find(phase_id).project.id
-        ImportProjectIdeasService.new(current_user, project_id, locale, phase_id, personal_data_enabled)
+        ImportProjectIdeasService.new(current_user, @project.id, locale, phase_id, personal_data_enabled)
       else
         ImportGlobalIdeasService.new(current_user)
       end
@@ -90,14 +89,14 @@ module BulkImportIdeas
     end
 
     def authorize_bulk_import_ideas
-      project = nil
+      @project = nil
       if import_scope == :project
-        project = Project.find(params[:id])
+        @project = Project.find(params[:id])
       elsif import_scope == :phase
-        project = Phase.find(params[:id]).project
+        @project = Phase.find(params[:id]).project
       end
 
-      authorize project || :'bulk_import_ideas/import_ideas'
+      authorize @project || :'bulk_import_ideas/import_ideas'
     end
 
     def sidefx

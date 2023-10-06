@@ -18,7 +18,7 @@ describe BulkImportIdeas::GoogleFormParserService do
 
       expect(pages).not_to be_nil
       expect(pages).to be_an_instance_of(Array)
-      # expect(pages[0]).to be_an_instance_of(String)
+      expect(pages[0]).to be_an_instance_of(String)
     end
 
     # it 'parses the pdf using the form parser' do

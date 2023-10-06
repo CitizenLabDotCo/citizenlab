@@ -25,6 +25,8 @@ module BulkImportIdeas
       @imported_users = []
     end
 
+    attr_reader :imported_users
+
     def import_file(file_content)
       files = create_files file_content
 
