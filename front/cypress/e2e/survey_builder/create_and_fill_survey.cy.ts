@@ -65,7 +65,7 @@ describe('Survey builder', () => {
       `/en/projects/${projectSlug}/ideas/new`
     );
 
-    cy.get(`#properties${questionTitle}`).type(answer, { force: true });
+    cy.get(`*[id^="properties${questionTitle}"]`).type(answer, { force: true });
 
     // Go to the next page
     cy.get('[data-cy="e2e-next-page"]').click();
@@ -281,7 +281,7 @@ describe('Survey builder', () => {
     cy.acceptCookies();
     cy.contains(questionTitle).should('exist');
 
-    cy.get(`#properties${questionTitle}`).type(answer, { force: true });
+    cy.get(`*[id^="properties${questionTitle}"]`).type(answer, { force: true });
 
     cy.get('[data-cy="e2e-next-page"]').click();
 
@@ -309,7 +309,7 @@ describe('Survey builder', () => {
     cy.acceptCookies();
     cy.contains(questionTitle).should('exist');
 
-    cy.get(`#properties${questionTitle}`).type(answer, { force: true });
+    cy.get(`*[id^="properties${questionTitle}"]`).type(answer, { force: true });
 
     cy.get('[data-cy="e2e-next-page"]').click();
     // Save survey response
@@ -346,7 +346,7 @@ describe('Survey builder', () => {
     cy.acceptCookies();
     cy.contains(questionTitle).should('exist');
 
-    cy.get(`#properties${questionTitle}`).type(answer, { force: true });
+    cy.get(`*[id^="properties${questionTitle}"]`).type(answer, { force: true });
 
     cy.get('[data-cy="e2e-next-page"]').click();
     // Save survey response
@@ -559,7 +559,7 @@ describe('Survey builder', () => {
     cy.get('#e2e-project-sidebar-surveys-count').should('exist');
     cy.get('#e2e-cta-button').find('button').click({ force: true });
     cy.contains(questionTitle).should('exist');
-    cy.get(`#properties${questionTitle}`).type(answer, { force: true });
+    cy.get(`*[id^="properties${questionTitle}"]`).type(answer, { force: true });
 
     // Save survey response
     cy.get('[data-cy="e2e-next-page"]').click();
