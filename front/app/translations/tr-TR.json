@@ -1028,6 +1028,8 @@
   "app.containers.IdeasShow.ideaTwitterMessage": "Bu fikre destek olun: {postTitle}",
   "app.containers.IdeasShow.ideaWhatsAppMessage": "Bu fikre destek olun: {postTitle}",
   "app.containers.IdeasShow.ideasWhatsAppMessage": "Bu yoruma destek olun: {postTitle}",
+  "app.containers.IdeasShow.imported": "İthal",
+  "app.containers.IdeasShow.importedTooltip": "Bu {inputTerm} çevrimdışı olarak toplanmış ve otomatik olarak platforma yüklenmiştir.",
   "app.containers.IdeasShow.issueEmailSharingBody": "{postUrl} üzerinden '{postTitle}' adlı bu yoruma destek olun!",
   "app.containers.IdeasShow.issueEmailSharingSubject": "Bu yoruma destek olun: {postTitle}",
   "app.containers.IdeasShow.issueFacebookMessage": "Bu soruna destek olun: {postTitle}",
