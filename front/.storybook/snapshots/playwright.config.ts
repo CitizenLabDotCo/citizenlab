@@ -14,7 +14,7 @@ const config: PlaywrightTestConfig = {
       size: { width: 800, height: 800 },
     },
     baseURL: baseUrl,
-    trace: 'on',
+    trace: 'off',
     launchOptions: {
       // slowMo: 1 * 1000,
     },
