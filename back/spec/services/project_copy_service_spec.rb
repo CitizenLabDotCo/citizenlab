@@ -129,7 +129,7 @@ describe ProjectCopyService do
       volunteer = create(:user)
       cause.volunteers.create!(user: volunteer)
 
-      template = service.export cause.participation_context.project, anonymize_users: false
+      template = service.export cause.participation_context.project, anonymize_users: false, include_ideas: true
 
       expect(template['models']['volunteering/volunteer'].size).to eq 1
       expect(template['models']['volunteering/volunteer'].first).to match({
@@ -153,7 +153,7 @@ describe ProjectCopyService do
       attendee = create(:user)
       event.attendances.create!(attendee: attendee)
 
-      template = service.export event.project, anonymize_users: false
+      template = service.export event.project, anonymize_users: false, include_ideas: true
 
       expected_event = {
         'title_multiloc' => event.title_multiloc,
