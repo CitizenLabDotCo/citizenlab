@@ -123,7 +123,7 @@ const Consent = memo(
               label={
                 <ConsentText>
                   <FormattedMessage
-                    {...messages.iHaveReadAndAgreeTo}
+                    {...messages.iHaveReadAndAgreeToTerms}
                     values={{
                       link: (
                         <Link target="_blank" to="/pages/terms-and-conditions">
@@ -155,7 +155,7 @@ const Consent = memo(
               label={
                 <ConsentText>
                   <FormattedMessage
-                    {...messages.iHaveReadAndAgreeTo}
+                    {...messages.iHaveReadAndAgreeToPrivacy}
                     values={{
                       link: (
                         <Link target="_blank" to="/pages/privacy-policy">

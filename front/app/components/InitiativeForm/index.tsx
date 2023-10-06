@@ -241,22 +241,6 @@ const InitiativeForm = ({
                     maxCharCount={72}
                   />
                 </FormLabel>
-                {/* {titleProfanityError && (
-              <Error
-                text={
-                  <FormattedMessage
-                    {...messages.profanityError}
-                    values={{
-                      guidelinesLink: (
-                        <Link to="/pages/faq" target="_blank">
-                          {formatMessage(messages.guidelinesLinkText)}
-                        </Link>
-                      ),
-                    }}
-                  />
-                }
-              />
-            )} */}
               </SectionField>
 
               <SectionField id="e2e-initiative-form-description-section">
@@ -271,22 +255,6 @@ const InitiativeForm = ({
                   noVideos
                   noAlign
                 />
-                {/* {descriptionProfanityError && (
-                  <Error
-                    text={
-                      <FormattedMessage
-                        {...messages.profanityError}
-                        values={{
-                          guidelinesLink: (
-                            <Link to="/pages/faq" target="_blank">
-                              {formatMessage(messages.guidelinesLinkText)}
-                            </Link>
-                          ),
-                        }}
-                      />
-                    }
-                  />
-                )} */}
               </SectionField>
               <Warning>
                 <>

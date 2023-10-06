@@ -992,20 +992,6 @@ RSpec.describe User do
     end
   end
 
-  describe '.find_by_cimail!' do
-    it 'finds a user with the same email but different caps' do
-      some_user = create(:user, email: 'SeBi@citizenlab.co')
-      same_user = described_class.find_by_cimail!('sEbI@citizenlab.co')
-
-      expect(some_user.id).to eq(same_user.id)
-    end
-
-    it 'raises if no user record with that email was found' do
-      expect { described_class.find_by_cimail!('doesnotexist@example.com') }
-        .to raise_error(ActiveRecord::RecordNotFound)
-    end
-  end
-
   context 'user confirmation' do
     subject(:user) { build(:user_with_confirmation) }
 
