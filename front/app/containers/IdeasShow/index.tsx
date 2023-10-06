@@ -13,7 +13,7 @@ import Body from 'components/PostShowComponents/Body';
 import Image from 'components/PostShowComponents/Image';
 import TranslateButton from './components/TranslateButton';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Badge } from '@citizenlab/cl2-component-library';
 const LazyComments = lazy(
   () => import('components/PostShowComponents/Comments')
 );
@@ -23,6 +23,7 @@ import MobileSharingButtonComponent from './components/Buttons/MobileSharingButt
 import RightColumnDesktop from './components/RightColumnDesktop';
 import ErrorToast from 'components/ErrorToast';
 import FollowUnfollow from 'components/FollowUnfollow';
+import Tippy from '@tippyjs/react';
 
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
@@ -32,6 +33,8 @@ import GetPermission, {
 
 // i18n
 import useLocalize from 'hooks/useLocalize';
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 // style
 import styled from 'styled-components';
@@ -53,6 +56,7 @@ import {
   getCurrentParticipationContext,
   isIdeaInParticipationContext,
 } from 'api/phases/utils';
+import { getInputTerm } from 'utils/participationContexts';
 
 const StyledRightColumnDesktop = styled(RightColumnDesktop)`
   margin-left: ${columnsGapDesktop}px;
@@ -151,6 +155,14 @@ const Content = ({
     ? isIdeaInParticipationContext(idea, participationContext)
     : undefined;
 
+  const inputTerm = getInputTerm(
+    project.attributes.process_type,
+    project,
+    phases?.data
+  );
+
+  const wasImported = !!idea.data.relationships.idea_import?.data;
+
   return (
     <>
       <IdeaMeta ideaId={ideaId} />
@@ -159,6 +171,28 @@ const Content = ({
 
       <Box display="flex" id="e2e-idea-show-page-content">
         <Box flex="1 1 100%">
+          {wasImported && (
+            <Box display="flex">
+              <Tippy
+                interactive={true}
+                theme={'dark'}
+                content={
+                  <Box>
+                    <FormattedMessage
+                      {...messages.importedTooltip}
+                      values={{ inputTerm }}
+                    />
+                  </Box>
+                }
+              >
+                <Box mb="12px">
+                  <Badge className="inverse">
+                    <FormattedMessage {...messages.imported} />
+                  </Badge>
+                </Box>
+              </Tippy>
+            </Box>
+          )}
           <IdeaTitle
             idea={idea}
             projectId={project.id}
