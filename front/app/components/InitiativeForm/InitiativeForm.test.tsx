@@ -5,6 +5,8 @@ import InitiativeForm, { Props } from '.';
 // Needed for language selector of org name multiloc input
 jest.mock('hooks/useAppConfigurationLocales', () => jest.fn(() => ['en']));
 jest.mock('api/topics/useTopics');
+jest.mock('api/app_configuration/useAppConfiguration');
+
 const submitButtonName = 'Publish your initiative';
 
 describe('InitiativeForm', () => {

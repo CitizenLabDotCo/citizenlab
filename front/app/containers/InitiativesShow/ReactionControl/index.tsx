@@ -121,11 +121,7 @@ const ReactionControl = ({
   const { mutate: addReaction } = useAddInitiativeReaction();
   const { mutate: deleteReaction } = useDeleteInitiativeReaction();
 
-  if (
-    !initiative ||
-    !initiativeStatus ||
-    !appConfiguration?.data.attributes.settings.initiatives
-  ) {
+  if (!initiative || !initiativeStatus || !appConfiguration) {
     return null;
   }
 

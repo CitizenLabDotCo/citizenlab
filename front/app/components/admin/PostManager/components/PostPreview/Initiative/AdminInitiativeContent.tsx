@@ -211,7 +211,7 @@ const AdminInitiativeContent = ({
               <CommentsSection
                 allowAnonymousParticipation={
                   appConfiguration?.data.attributes.settings.initiatives
-                    ?.allow_anonymous_participation
+                    .allow_anonymous_participation
                 }
                 postId={initiativeId}
                 postType="initiative"

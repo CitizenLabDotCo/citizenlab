@@ -2,7 +2,7 @@ import React from 'react';
 
 // components
 import PostManager, { TFilterMenu } from 'components/admin/PostManager';
-import { Box, Title, colors } from '@citizenlab/cl2-component-library';
+import { Box, Title, colors, Spinner } from '@citizenlab/cl2-component-library';
 import { SectionDescription } from 'components/admin/Section';
 
 // resources
@@ -19,35 +19,36 @@ const IdeasTab = () => {
     'topics',
     'statuses',
   ];
-  const { data: projects } = useProjects({
+  const { data: projects, isLoading } = useProjects({
     pageSize: 250,
     sort: 'new',
     publicationStatuses,
     canModerate: true,
   });
 
-  if (projects) {
-    return (
-      <>
-        <Title color="primary">
-          <FormattedMessage {...messages.inputManagerPageTitle} />
-        </Title>
-        <SectionDescription>
-          <FormattedMessage {...messages.inputManagerPageSubtitle} />
-        </SectionDescription>
-        <Box background={colors.white} p="40px">
-          <PostManager
-            type="AllIdeas"
-            defaultFilterMenu={defaultFilterMenu}
-            visibleFilterMenus={visibleFilterMenus}
-            projects={projects.data}
-          />
-        </Box>
-      </>
-    );
-  }
-
-  return null;
+  return (
+    <>
+      <Title color="primary">
+        <FormattedMessage {...messages.inputManagerPageTitle} />
+      </Title>
+      <SectionDescription>
+        <FormattedMessage {...messages.inputManagerPageSubtitle} />
+      </SectionDescription>
+      <Box background={colors.white} p="40px">
+        {isLoading && (
+          <Box mb="28px">
+            <Spinner />
+          </Box>
+        )}
+        <PostManager
+          type="AllIdeas"
+          defaultFilterMenu={defaultFilterMenu}
+          visibleFilterMenus={visibleFilterMenus}
+          projects={projects?.data}
+        />
+      </Box>
+    </>
+  );
 };
 
 const publicationStatuses: PublicationStatus[] = [
