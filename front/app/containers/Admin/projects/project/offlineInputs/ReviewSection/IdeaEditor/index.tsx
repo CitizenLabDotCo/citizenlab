@@ -13,11 +13,13 @@ import usePhase from 'api/phases/usePhase';
 import useImportedIdeas from 'api/import_ideas/useImportedIdeas';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
 import useUpdateUser from 'api/users/useUpdateUser';
+import useCreateOfflineUser from 'api/import_ideas/useCreateOfflineUser';
 
 // components
 import { Box, Button } from '@citizenlab/cl2-component-library';
 import MetaBox from './MetaBox';
 import IdeaForm from './IdeaForm';
+import UserForm from './UserForm';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -44,7 +46,7 @@ import {
 import { FormData } from 'components/Form/typings';
 import { CLErrors } from 'typings';
 import { UserFormData } from './typings';
-import UserForm from './UserForm';
+import { IUser } from 'api/users/types';
 
 interface Props {
   ideaId: string | null;
@@ -83,6 +85,8 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
     id: idea?.data.relationships.idea_import?.data?.id,
   });
 
+  const locale = ideaMetadata?.data.attributes.locale;
+
   const selectedPhaseId =
     phaseId ?? idea?.data.relationships.phases.data[0]?.id;
   const { data: phase } = usePhase(selectedPhaseId);
@@ -90,6 +94,7 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
   const { mutateAsync: updateIdea, isLoading: loadingApproveIdea } =
     useUpdateIdea();
   const { mutate: updateUser } = useUpdateUser();
+  const { mutateAsync: createOfflineUser } = useCreateOfflineUser();
 
   if (!schema || !uiSchema) return null;
 
@@ -162,6 +167,22 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
       });
     }
 
+    let newUser: IUser | undefined;
+
+    if (
+      userFormDataAction === 'create-new-user-and-assign-to-idea' &&
+      userFormData.email &&
+      locale
+    ) {
+      newUser = await createOfflineUser({
+        projectId,
+        email: userFormData.email,
+        locale,
+        first_name: userFormData.first_name,
+        last_name: userFormData.last_name,
+      });
+    }
+
     const {
       location_description,
       idea_files_attributes: _idea_files_attributes,
@@ -192,6 +213,10 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
           userFormData.user_id
             ? { author_id: userFormData.user_id }
             : {}),
+          ...(userFormDataAction === 'create-new-user-and-assign-to-idea' &&
+          newUser
+            ? { author_id: newUser.data.id }
+            : {}),
         },
       });
 
@@ -217,8 +242,6 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
   const phaseName = phase
     ? localize(phase.data.attributes.title_multiloc)
     : undefined;
-
-  const locale = ideaMetadata?.data.attributes.locale;
 
   const disabledReason = ideaFormDataValid ? null : (
     <FormattedMessage {...messages.formDataNotValid} />
