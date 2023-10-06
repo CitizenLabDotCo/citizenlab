@@ -5,11 +5,12 @@ import usersMocks from '../app/api/users/__mocks__/_mockServer';
 
 // initiatives mock data
 import initiativesEndpoints from '../app/api/initiatives/__mocks__/_mockServer';
-import initiativeStatusEndpoints from '../app/api/initiative_statuses/__mocks__/_mockServer';
+import initiativeStatusesEndpoints from '../app/api/initiative_statuses/__mocks__/_mockServer';
 import initiativeImagesEndpoints from '../app/api/initiative_images/__mocks__/_mockServer';
 
 // ideas mock data
 import ideasEndpoints from '../app/api/ideas/__mocks__/_mockServer';
+import ideaStatusesEndpoints from '../app/api/idea_statuses/__mocks__/_mockServer';
 import ideaImagesEndpoints from '../app/api/idea_images/__mocks__/_mockServer'
 
 // projects mock data
@@ -26,9 +27,10 @@ const endpoints = {
   ...usersMeEndpoints,
   ...usersMocks,
   ...initiativesEndpoints,
-  ...initiativeStatusEndpoints,
+  ...initiativeStatusesEndpoints,
   ...initiativeImagesEndpoints,
   ...ideasEndpoints,
+  ...ideaStatusesEndpoints,
   ...ideaImagesEndpoints,
   ...projectsEndpoints,
   ...phasesEndpoints,
