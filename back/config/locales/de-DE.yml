@@ -227,12 +227,12 @@ de:
       description: "Bitte übermitteln Sie Ihre Antworten, indem Sie unten auf \"Umfrage abschicken\" klicken."
     pdf_export:
       personal_data: 'Persönliche Daten'
-      personal_data_explanation_ideation: "Wir werden Ihren Beitrag an die Online-Beteiligungsplattform von %{organizationName}weiterleiten. Wenn Sie möchten, dass Ihr Name als Autor dieses Beitrags angezeigt wird und Sie Aktualisierungen zu Ihrem Beitrag per E-Mail erhalten, füllen Sie bitte die folgenden Felder auf dieser Seite aus und wir erstellen ein Konto für Sie. Ihre E-Mail ist nicht öffentlich und wird nur von %{organizationName}verwendet. Wenn Sie anonym bleiben möchten oder nicht damit einverstanden sind, dass wir Ihre persönlichen Daten auf diese Weise verwenden, können Sie die Felder leer lassen."
+      personal_data_explanation_ideation: "Wir werden Ihren Beitrag an die Online-Beteiligungsplattform von %{organizationName} weiterleiten. Wenn Sie möchten, dass Ihr Name als Autor*in dieses Beitrags angezeigt wird und Sie Aktualisierungen zu Ihrem Beitrag per E-Mail erhalten, füllen Sie bitte die folgenden Felder auf dieser Seite aus und wir erstellen ein Konto für Sie. Ihre E-Mail ist nicht öffentlich und wird nur von %{organizationName} verwendet. Wenn Sie anonym bleiben möchten oder nicht damit einverstanden sind, dass wir Ihre persönlichen Daten auf diese Weise verwenden, können Sie die Felder leer lassen."
       personal_data_explanation_native_survey: "Wir werden Ihren Beitrag an die Online-Beteiligungsplattform von %{organizationName}weiterleiten. Wenn Sie Aktualisierungen, die für Ihren Beitrag relevant sind, per E-Mail erhalten möchten, füllen Sie bitte die folgenden Felder auf dieser Seite aus und wir werden ein Konto für Sie anlegen. Ihre Daten sind nicht öffentlich und werden nur von %{organizationName}verwendet. Wenn Sie nicht damit einverstanden sind, dass wir Ihre persönlichen Daten auf diese Weise verwenden, können Sie die Felder leer lassen."
       first_name: 'Vorname'
       last_name: 'Nachname'
       email_address: 'E-Mail-Adresse'
-      by_checking_this_box: "Durch Ankreuzen dieses Kästchens erkläre ich mich damit einverstanden, dass meine Daten verwendet werden, um ein Konto auf der Teilnahmeplattform %{organizationName}zu erstellen."
+      by_checking_this_box: "Durch Ankreuzen dieses Kästchens erkläre ich mich damit einverstanden, dass meine Daten verwendet werden, um ein Konto auf der Beteiligungsplattform %{organizationName} zu erstellen."
       optional: 'optional'
       permission: 'Berechtigung'
       choose_as_many: 'Beliebig viele auswählen'
