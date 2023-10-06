@@ -1162,7 +1162,7 @@
   "app.containers.NewAuthModal.steps.EmailAndPassword.emailOrPhoneNumberError": "Voer een e-mailadres of telefoonnummer in het juiste formaat in",
   "app.containers.NewAuthModal.steps.EmailAndPassword.goBackToLoginOptions": "Ga terug naar de inlogopties",
   "app.containers.NewAuthModal.steps.EmailAndPassword.goToSignUp": "Heb je geen account? {goToOtherFlowLink}",
-  "app.containers.NewAuthModal.steps.EmailAndPassword.signUp": "Aanmelden",
+  "app.containers.NewAuthModal.steps.EmailAndPassword.signUp": "Registreren",
   "app.containers.NewAuthModal.steps.EmailConfirmation.codeMustHaveFourDigits": "De code moet uit 4 cijfers bestaan.",
   "app.containers.NewAuthModal.steps.EmailSignUp.SSOButtons.continueWithFranceConnect": "Doorgaan met FranceConnect",
   "app.containers.NewAuthModal.steps.EmailSignUp.SSOButtons.noAuthenticationMethodsEnabled": "Op dit platform zijn geen authenticatiemethoden ingeschakeld.",
