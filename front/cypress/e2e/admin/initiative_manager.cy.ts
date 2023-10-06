@@ -1,3 +1,4 @@
+import { ProposalsSettings } from '../../../app/api/app_configuration/types';
 import { randomString, randomEmail } from '../../support/commands';
 
 describe('Initaitve manager', () => {
@@ -96,9 +97,33 @@ describe('Initaitve manager', () => {
     });
   });
 
-  // TODO: Re-enable this test once the BE bug is fixed
-  // https://citizenlab.atlassian.net/browse/CL-4140
-  describe.skip('Need feedback toggle', () => {
+  describe('Need feedback toggle', () => {
+    let initiativeId1: string;
+    let initiativeId2: string;
+    let initialInitiativeSettings: ProposalsSettings;
+
+    const moveInitiativeToThresholdReached = (initiativeId: string) => {
+      cy.apiGetAppConfiguration().then((appConfig) => {
+        initialInitiativeSettings =
+          appConfig.body.data.attributes.settings.initiatives;
+      });
+      cy.apiUpdateAppConfiguration({
+        settings: {
+          initiatives: {
+            ...initialInitiativeSettings,
+            reacting_threshold: 2,
+          },
+        },
+      });
+      cy.apiLikeInitiative(
+        // Only admin accounts are confirmed by default (see User#set_confirmation_required),
+        // and so allowed to react to initiatives.
+        'hello@citizenlab.co',
+        'democrazy',
+        initiativeId1
+      );
+    };
+
     before(() => {
       cy.getAuthUser().then((user) => {
         const userId = user.body.data.id;
@@ -114,14 +139,10 @@ describe('Initaitve manager', () => {
           initiativeContent: initiativeContent1,
           assigneeId: userId,
         }).then((initiative) => {
-          const initiativeId = initiative.body.data.id;
+          initiativeId1 = initiative.body.data.id;
           const officialFeedbackContent = randomString();
           const officialFeedbackAuthor = randomString();
-          cy.apiCreateOfficialFeedbackForInitiative(
-            initiativeId,
-            officialFeedbackContent,
-            officialFeedbackAuthor
-          );
+          moveInitiativeToThresholdReached(initiativeId1);
         });
 
         // create second initiative with same assignee but no feedback (so feedback is still needed)
@@ -129,6 +150,8 @@ describe('Initaitve manager', () => {
           initiativeTitle: initiativeTitle2,
           initiativeContent: initiativeContent2,
           assigneeId: userId,
+        }).then((initiative) => {
+          initiativeId2 = initiative.body.data.id;
         });
       });
     });
@@ -144,6 +167,15 @@ describe('Initaitve manager', () => {
       // Turn the 'need feedback' toggle on and check whether it only shows the initiative assigned to user without official feedback
       cy.get('#e2e-feedback_needed_filter_toggle').click();
       cy.get('.e2e-initiative-row').should('have.length', 1);
+    });
+    after(() => {
+      cy.apiRemoveInitiative(initiativeId1);
+      cy.apiRemoveInitiative(initiativeId2);
+      cy.apiUpdateAppConfiguration({
+        settings: {
+          initiatives: initialInitiativeSettings,
+        },
+      });
     });
   });
 
