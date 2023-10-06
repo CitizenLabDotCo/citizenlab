@@ -47,10 +47,12 @@ function deleteInvites() {
 
 describe('Invitation authentication flow', () => {
   beforeEach(() => {
+    cy.intercept('POST', '**/invites/*').as('postInvitesRequest');
     cy.setAdminLoginCookie();
     cy.visit('/admin/users/invitations');
     cy.get('input[type=file]').selectFile('cypress/fixtures/invites.xlsx');
     cy.get('.e2e-submit-wrapper-button button').click();
+    cy.wait('@postInvitesRequest');
     cy.get('.e2e-submit-wrapper-button button').contains('Success');
     cy.logout();
   });
