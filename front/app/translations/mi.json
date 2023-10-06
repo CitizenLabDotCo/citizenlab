@@ -889,7 +889,6 @@
   "app.containers.ProjectsIndexPage.metaTitle": "Projects • {orgName}",
   "app.containers.ProjectsIndexPage.pageTitle": "Kaupapa",
   "app.containers.ProjectsShowPage.VolunteeringSection.becomeVolunteerButton": "I want to volunteer",
-  "app.containers.ProjectsShowPage.VolunteeringSection.notLoggedIn": "Please {signInLink} or {signUpLink} first in order to volunteer for this activity",
   "app.containers.ProjectsShowPage.VolunteeringSection.signInLinkText": "takiuru",
   "app.containers.ProjectsShowPage.VolunteeringSection.signUpLinkText": "waitohu",
   "app.containers.ProjectsShowPage.VolunteeringSection.withdrawVolunteerButton": "I withdraw my offer to volunteer",

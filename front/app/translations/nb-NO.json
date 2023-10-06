@@ -1391,7 +1391,6 @@
   "app.containers.ProjectsIndexPage.metaTitle": "Prosjekt • {orgName}",
   "app.containers.ProjectsIndexPage.pageTitle": "Prosjekter",
   "app.containers.ProjectsShowPage.VolunteeringSection.becomeVolunteerButton": "Jeg vil være frivillig",
-  "app.containers.ProjectsShowPage.VolunteeringSection.notLoggedIn": "Vennligst {signInLink} eller {signUpLink} for å melde deg som frivillig på denne aktiviteten",
   "app.containers.ProjectsShowPage.VolunteeringSection.signInLinkText": "logg inn",
   "app.containers.ProjectsShowPage.VolunteeringSection.signUpLinkText": "registrer deg",
   "app.containers.ProjectsShowPage.VolunteeringSection.withdrawVolunteerButton": "Jeg trekker tilbake mitt tilbud om å være frivillig",
