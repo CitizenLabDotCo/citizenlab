@@ -1028,6 +1028,8 @@
   "app.containers.IdeasShow.ideaTwitterMessage": "Υποστηρίξτε αυτή την ιδέα: {postTitle}",
   "app.containers.IdeasShow.ideaWhatsAppMessage": "Υποστηρίξτε αυτή την ιδέα: {postTitle}",
   "app.containers.IdeasShow.ideasWhatsAppMessage": "Υποστηρίξτε αυτό το σχόλιο: {postTitle}",
+  "app.containers.IdeasShow.imported": "Εισαγόμενο",
+  "app.containers.IdeasShow.importedTooltip": "Το εν λόγω {inputTerm} συλλέχθηκε εκτός σύνδεσης και μεταφορτώθηκε αυτόματα στην πλατφόρμα.",
   "app.containers.IdeasShow.issueEmailSharingBody": "Υποστηρίξτε αυτό το σχόλιο '{postTitle}' στο {postUrl}!",
   "app.containers.IdeasShow.issueEmailSharingSubject": "Υποστηρίξτε αυτό το σχόλιο: {postTitle}",
   "app.containers.IdeasShow.issueFacebookMessage": "Υποστηρίξτε αυτό το θέμα: {postTitle}",
