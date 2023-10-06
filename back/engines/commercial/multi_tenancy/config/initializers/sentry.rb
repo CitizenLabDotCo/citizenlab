@@ -17,6 +17,10 @@ Sentry.init do |config|
   # the user and it's harder to find bugs there.
   Que::Job # make sure it will raise error if we change background processing library
   config.excluded_exceptions = [] if $PROGRAM_NAME.include?('que')
+  # Client reports are supported by Sentry 21.9.0 and above.
+  # At the moment, we use 21.6.3, so we disable it to avoid confusion and logs pollution.
+  # https://develop.sentry.dev/sdk/client-reports/
+  config.send_client_reports = false
 end
 
 Sentry.set_tags(cluster: CL2_CLUSTER)
