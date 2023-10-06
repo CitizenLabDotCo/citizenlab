@@ -55,7 +55,7 @@ const getInitialUserFormValues = (
     };
   }
 
-  const { email, first_name, last_name } = author.data.attributes;
+  const { email, first_name, last_name, no_name } = author.data.attributes;
 
   const validEmail = email ? isValidEmail(email) : false;
 
@@ -65,8 +65,8 @@ const getInitialUserFormValues = (
       : ideaMetadata.data.attributes.user_created === true
       ? 'new-user'
       : 'existing-user',
-    first_name: first_name ?? undefined,
-    last_name: last_name ?? undefined,
+    first_name: no_name ? undefined : first_name ?? undefined,
+    last_name: no_name ? undefined : last_name ?? undefined,
     email,
     consent,
   };
