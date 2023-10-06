@@ -64,6 +64,7 @@ describe('Invitation authentication flow', () => {
     cy.logout();
   });
 
+  // TODO: remove user after this test
   it('is possible to create an account with invite route + token in url', () => {
     getInvites().then((response) => {
       const invites = response.body.data;
@@ -87,6 +88,7 @@ describe('Invitation authentication flow', () => {
     });
   });
 
+  // TODO: remove user after this test
   it('is possible to create an account if invitee does not have email', () => {
     getInvites().then((response) => {
       const invites = response.body.data;
@@ -117,6 +119,7 @@ describe('Invitation authentication flow', () => {
   });
 
   afterEach(() => {
+    cy.logout();
     deleteInvites();
   });
 });
