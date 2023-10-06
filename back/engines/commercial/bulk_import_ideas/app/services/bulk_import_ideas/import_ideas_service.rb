@@ -22,6 +22,7 @@ module BulkImportIdeas
       @import_user = current_user
       @project = nil
       @uploaded_file = nil
+      @imported_users = []
     end
 
     def import_file(file_content)
@@ -151,8 +152,6 @@ module BulkImportIdeas
 
     def add_author(idea_row, idea_attributes)
       author = nil
-      user_created = false
-
       if idea_row[:user_email].present? || idea_row[:user_first_name].present?
         author = idea_row[:user_email].present? ? User.find_by_cimail(idea_row[:user_email]) : nil
         unless author
@@ -167,8 +166,10 @@ module BulkImportIdeas
             author.unique_code = SecureRandom.uuid
           end
 
+          # TODO: Return user created if the user was at any point created by the importer and has no password or sso? confirmation?
+
           if author.save
-            user_created = true
+            @imported_users << author
           else
             author = nil
           end
@@ -176,7 +177,7 @@ module BulkImportIdeas
       end
 
       idea_attributes[:author] = author
-      user_created
+      @imported_users.include? author # Was the user created in this import
     end
 
     def add_published_at(idea_row, idea_attributes)

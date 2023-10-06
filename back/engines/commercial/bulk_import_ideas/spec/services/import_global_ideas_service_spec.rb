@@ -236,7 +236,7 @@ describe BulkImportIdeas::ImportGlobalIdeasService do
       expect(idea3.title_multiloc).to eq({ 'en' => 'My idea title 3' })
       expect(idea3.body_multiloc).to eq({ 'en' => 'My idea description 3' })
       expect(idea3.author).to eq idea1.author
-      expect(idea3.idea_import.user_created).to be false
+      expect(idea3.idea_import.user_created).to be true
       expect(idea3.idea_import.user_consent).to be true
     end
 

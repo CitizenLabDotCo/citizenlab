@@ -8,7 +8,7 @@ resource 'Project level Custom Fields' do
   end
 
   get 'web_api/v1/projects/:project_id/custom_fields/to_pdf' do
-    parameter(:phase_id, 'ID of the phase.')
+    parameter(:project_id, 'ID of the project.')
     parameter(:locale, 'Locale of the downloaded form.')
 
     let(:locale) { 'en' }
