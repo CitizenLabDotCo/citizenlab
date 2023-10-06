@@ -85,6 +85,7 @@ const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
       await onExport(formValues);
       setLoading(false);
       onClose();
+      methods.reset();
     } catch (e) {
       setLoading(false);
 
@@ -107,7 +108,7 @@ const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
     >
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(handleExport)}>
-          <Feedback />
+          <Feedback onlyShowErrors />
           <Box p="24px" w="100%">
             <Text mb="20px" mt="0px" w="500px">
               <FormattedMessage {...CLICK_EXPORT_MESSAGES[formType]} />

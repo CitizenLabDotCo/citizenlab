@@ -153,6 +153,7 @@ const ImportSection = ({ onFinishImport, locale, project, phases }: Props) => {
       });
 
       onFinishImport();
+      methods.reset();
     } catch (e) {
       handleCLErrorWrapper(e, methods.setError);
     }
@@ -162,7 +163,7 @@ const ImportSection = ({ onFinishImport, locale, project, phases }: Props) => {
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(submitFile)}>
         <Box w="100%" p="24px">
-          <Feedback />
+          <Feedback onlyShowErrors />
           <Box mb="28px">
             <Text>
               <FormattedMessage
