@@ -211,4 +211,13 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.commentCTA',
     defaultMessage: 'Add a comment',
   },
+  imported: {
+    id: 'app.containers.IdeasShow.imported',
+    defaultMessage: 'Imported',
+  },
+  importedTooltip: {
+    id: 'app.containers.IdeasShow.importedTooltip',
+    defaultMessage:
+      'This {inputTerm} was collected offline and automatically uploaded to the platform.',
+  },
 });
