@@ -1028,6 +1028,8 @@
   "app.containers.IdeasShow.ideaTwitterMessage": "Støtt denne ideen: {postTitle}",
   "app.containers.IdeasShow.ideaWhatsAppMessage": "Støtt denne ideen: {postTitle}",
   "app.containers.IdeasShow.ideasWhatsAppMessage": "Støtt dette emnet: {postTitle}",
+  "app.containers.IdeasShow.imported": "Importert",
+  "app.containers.IdeasShow.importedTooltip": "Denne {inputTerm} ble samlet inn offline og automatisk lastet opp til plattformen.",
   "app.containers.IdeasShow.issueEmailSharingBody": "Støtt dette emnet '{postTitle}' på {postUrl}!",
   "app.containers.IdeasShow.issueEmailSharingSubject": "Støtt dette emnet: {postTitle}",
   "app.containers.IdeasShow.issueFacebookMessage": "Støtt denne saken: {postTitle}",
