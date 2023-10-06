@@ -1028,6 +1028,8 @@
   "app.containers.IdeasShow.ideaTwitterMessage": "Stöd den här idén: {postTitle}",
   "app.containers.IdeasShow.ideaWhatsAppMessage": "Stöd den här idén: {postTitle}",
   "app.containers.IdeasShow.ideasWhatsAppMessage": "Stöd den här kommentaren: {postTitle}",
+  "app.containers.IdeasShow.imported": "Importerad",
+  "app.containers.IdeasShow.importedTooltip": "Denna {inputTerm} samlades in offline och laddades automatiskt upp till plattformen.",
   "app.containers.IdeasShow.issueEmailSharingBody": "Stöd den här kommentaren {postTitle} på {postUrl}!",
   "app.containers.IdeasShow.issueEmailSharingSubject": "Stöd den här kommentaren: {postTitle}",
   "app.containers.IdeasShow.issueFacebookMessage": "Stöd det här problemet: {postTitle}",
