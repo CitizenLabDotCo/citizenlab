@@ -1028,6 +1028,8 @@
   "app.containers.IdeasShow.ideaTwitterMessage": "Ënnerstëtzt dës Iddi: {postTitle}",
   "app.containers.IdeasShow.ideaWhatsAppMessage": "Ënnerstëtzt dës Iddi: {postTitle}",
   "app.containers.IdeasShow.ideasWhatsAppMessage": "Ënnerstëtzt dëse Kommentar: {postTitle}",
+  "app.containers.IdeasShow.imported": "Importéiert",
+  "app.containers.IdeasShow.importedTooltip": "Dës {inputTerm} gouf offline gesammelt an automatesch op d'Plattform eropgelueden.",
   "app.containers.IdeasShow.issueEmailSharingBody": "Ënnerstëtzt dëse Kommentar '{postTitle}' ënner {postUrl}!",
   "app.containers.IdeasShow.issueEmailSharingSubject": "Ënnerstëtzt dëse Kommentar '{postTitle}'",
   "app.containers.IdeasShow.issueFacebookMessage": "Dëse Sujet ënnerstëtzen: {postTitle}",
