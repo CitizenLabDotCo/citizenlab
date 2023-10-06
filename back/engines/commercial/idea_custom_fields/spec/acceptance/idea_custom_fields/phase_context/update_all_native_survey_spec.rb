@@ -266,8 +266,8 @@ resource 'Idea Custom Fields' do
 
         assert_status 200
         expect(json_response_body).to eq({
-          :data => [],
-          :included => []
+          data: [],
+          included: []
         })
       end
 
