@@ -1028,6 +1028,8 @@
   "app.containers.IdeasShow.ideaTwitterMessage": "Appoggia questa idea: {postTitle}",
   "app.containers.IdeasShow.ideaWhatsAppMessage": "Appoggia questa idea: {postTitle}",
   "app.containers.IdeasShow.ideasWhatsAppMessage": "Sostieni questo contributo: {postTitle}",
+  "app.containers.IdeasShow.imported": "Importato",
+  "app.containers.IdeasShow.importedTooltip": "Questo {inputTerm} è stato raccolto offline e caricato automaticamente sulla piattaforma.",
   "app.containers.IdeasShow.issueEmailSharingBody": "Sostenete questo numero '{postTitle}' a {postUrl}!",
   "app.containers.IdeasShow.issueEmailSharingSubject": "Supporta questo problema: {postTitle}",
   "app.containers.IdeasShow.issueFacebookMessage": "Supporta questo problema: {postTitle}",
