@@ -129,7 +129,12 @@ class Area < ApplicationRecord
     def recreate_custom_field_options
       return unless (domicile_field = CustomField.find_by(key: 'domicile'))
 
-      options = Area.all.map(&:recreate_custom_field_option)
+      # Caution: Custom fields must created in the correct order (that is according to
+      # the ordering column), otherwise it could result in inconsistent ordering between
+      # areas and their option. For example, if the option with ordering 1 is created
+      # after the option with ordering 3, the latter will be adjusted (by acts_as_list)
+      # to ordering 4.
+      options = Area.order(:ordering).map(&:recreate_custom_field_option)
       domicile_field.options.where.not(id: options).destroy_all
       options << create_somewhere_else_option
     end
