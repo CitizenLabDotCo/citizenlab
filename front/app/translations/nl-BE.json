@@ -1028,6 +1028,8 @@
   "app.containers.IdeasShow.ideaTwitterMessage": "Steun dit idee: {postTitle}",
   "app.containers.IdeasShow.ideaWhatsAppMessage": "Steun dit idee: {postTitle}",
   "app.containers.IdeasShow.ideasWhatsAppMessage": "'{postTitle}': {postUrl}",
+  "app.containers.IdeasShow.imported": "Geïmporteerd",
+  "app.containers.IdeasShow.importedTooltip": "Deze {inputTerm} werd offline verzameld en automatisch geüpload naar het platform.",
   "app.containers.IdeasShow.issueEmailSharingBody": "'{postTitle}': {postUrl}",
   "app.containers.IdeasShow.issueEmailSharingSubject": "'{postTitle}': {postUrl}",
   "app.containers.IdeasShow.issueFacebookMessage": "Ondersteun deze kwestie: {postTitle}",
