@@ -90,7 +90,6 @@ export default defineMessages({
     id: 'app.utils.errors.default.api_error_even',
     defaultMessage: 'Must be even',
   },
-
   ajv_error_minItems: {
     id: 'app.utils.errors.default.ajv_error_minItems',
     defaultMessage:

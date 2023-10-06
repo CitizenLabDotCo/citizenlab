@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
 import {
-  Icon,
-  colors,
   Text,
   Button,
   Title,
@@ -10,12 +8,11 @@ import {
   Checkbox,
 } from '@citizenlab/cl2-component-library';
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 import { useParams, useSearchParams } from 'react-router-dom';
 
 import useAddAnalysis from 'api/analyses/useAddAnalysis';
 import useFormCustomFields from 'api/custom_fields/useCustomFields';
-import Modal from 'components/UI/Modal';
 import { isNilOrError } from 'utils/helperUtils';
 import useLocalize from 'hooks/useLocalize';
 import clHistory from 'utils/cl-router/history';
@@ -23,67 +20,6 @@ import Divider from 'components/admin/Divider';
 
 import tracks from 'containers/Admin/projects/project/analysis/tracks';
 import { trackEventByName } from 'utils/analytics';
-import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-
-const ConsentModal = ({
-  onClose,
-  onAccept,
-}: {
-  onClose: () => void;
-  onAccept: () => void;
-}) => {
-  const [checked, setChecked] = useState(false);
-  const { formatMessage } = useIntl();
-
-  return (
-    <Box p="24px">
-      <Box display="flex" gap="16px" alignItems="center">
-        <Icon
-          name="alert-circle"
-          fill={colors.red500}
-          width="40px"
-          height="40px"
-        />
-        <Title>{formatMessage(messages.consentModalTitle)}</Title>
-      </Box>
-
-      <Text>{formatMessage(messages.consentModalText1)}</Text>
-      <Text>{formatMessage(messages.consentModalText2)}</Text>
-      <Text>{formatMessage(messages.consentModalText3)}</Text>
-      <Text>
-        <FormattedMessage
-          {...messages.consentModalText4}
-          values={{
-            link: (
-              <a
-                href={formatMessage(messages.consentModalText4Link)}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {formatMessage(messages.consentModalText4LinkText)}
-              </a>
-            ),
-          }}
-        />
-      </Text>
-      <Divider />
-      <Checkbox
-        checked={checked}
-        onChange={(e) => setChecked(e.target.checked)}
-        label={formatMessage(messages.consentModalCheckbox)}
-      />
-
-      <Box display="flex" justifyContent="flex-end" gap="16px" mt="48px">
-        <Button buttonStyle="secondary" onClick={onClose}>
-          {formatMessage(messages.consentModalCancel)}
-        </Button>
-        <Button buttonStyle="primary" onClick={onAccept} disabled={!checked}>
-          {formatMessage(messages.consentModalButton)}
-        </Button>
-      </Box>
-    </Box>
-  );
-};
 
 const CreateAnalysisModal = ({ onClose }: { onClose: () => void }) => {
   const [search] = useSearchParams();
@@ -216,47 +152,4 @@ const CreateAnalysisModal = ({ onClose }: { onClose: () => void }) => {
   );
 };
 
-const AnalysisLaunchButton = ({ customFieldId }: { customFieldId: string }) => {
-  const [consentModalIsOpened, setConsentModalIsOpened] = useState(false);
-  const [isCreateAnalysisModalOpened, setIsCreateAnalysisModalOpened] =
-    useState(false);
-
-  const { formatMessage } = useIntl();
-
-  const closeCreateAnalysisModal = () => {
-    setIsCreateAnalysisModalOpened(false);
-  };
-
-  const closeConsentModal = () => {
-    setConsentModalIsOpened(false);
-  };
-
-  const openConsentModal = () => {
-    setConsentModalIsOpened(true);
-    updateSearchParams({ customFieldId });
-  };
-
-  const onAcceptConsent = () => {
-    setConsentModalIsOpened(false);
-    setIsCreateAnalysisModalOpened(true);
-  };
-
-  return (
-    <Box my="16px">
-      <Button buttonStyle="admin-dark" onClick={openConsentModal} icon="flash">
-        {formatMessage(messages.launchAnalysis)}
-      </Button>
-      <Modal
-        opened={isCreateAnalysisModalOpened}
-        close={closeCreateAnalysisModal}
-      >
-        <CreateAnalysisModal onClose={closeCreateAnalysisModal} />
-      </Modal>
-      <Modal opened={consentModalIsOpened} close={closeConsentModal}>
-        <ConsentModal onClose={closeConsentModal} onAccept={onAcceptConsent} />
-      </Modal>
-    </Box>
-  );
-};
-
-export default AnalysisLaunchButton;
+export default CreateAnalysisModal;

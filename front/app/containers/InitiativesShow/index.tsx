@@ -18,10 +18,6 @@ import LargerThanPhone from './LargerThanPhone';
 import Footer from 'components/PostShowComponents/Footer';
 import LoadingComments from 'components/PostShowComponents/Comments/LoadingComments';
 
-export const contentFadeInDuration = 250;
-export const contentFadeInEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
-export const contentFadeInDelay = 150;
-
 interface Props {
   initiativeId: string;
   className?: string;

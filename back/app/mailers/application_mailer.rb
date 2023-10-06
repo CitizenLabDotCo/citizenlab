@@ -172,7 +172,7 @@ class ApplicationMailer < ActionMailer::Base
 
   def logo_url
     @logo_url ||= app_configuration.logo.versions.then do |versions|
-      versions[:large].url || versions[:medium].url || versions[:small].url || ''
+      versions[:medium].url || versions[:small].url || versions[:large].url || ''
     end
   end
 

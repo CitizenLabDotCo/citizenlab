@@ -65,4 +65,5 @@ const ImageCropper = ({
   );
 };
 
-export { ImageCropper as default, ImageCropperProps };
+export { ImageCropper as default };
+export type { ImageCropperProps };

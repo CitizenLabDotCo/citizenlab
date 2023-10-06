@@ -28,6 +28,7 @@ import {
   UpdateState,
   AuthenticationData,
   SignUpInError,
+  VerificationError,
 } from '../../typings';
 import { Step } from './typings';
 
@@ -192,6 +193,16 @@ export const sharedSteps = (
 
       REOPEN_CLAVE_UNICA: () => {
         setCurrentStep('clave-unica:email');
+      },
+
+      TRIGGER_VERIFICATION_ERROR: (error_code?: VerificationError) => {
+        if (error_code === 'not_entitled_under_minimum_age') {
+          setCurrentStep('missing-data:verification');
+          setError('not_entitled_under_minimum_age');
+        } else {
+          setCurrentStep('sign-up:auth-providers');
+          setError('unknown');
+        }
       },
 
       TRIGGER_AUTH_ERROR: (error_code?: SignUpInError) => {
