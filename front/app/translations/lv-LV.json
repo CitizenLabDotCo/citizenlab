@@ -1028,6 +1028,8 @@
   "app.containers.IdeasShow.ideaTwitterMessage": "Atbalstīt šo ideju: {postTitle}",
   "app.containers.IdeasShow.ideaWhatsAppMessage": "Atbalstīt šo ideju: {postTitle}",
   "app.containers.IdeasShow.ideasWhatsAppMessage": "Atbalstīt šo komentāru: {postTitle}",
+  "app.containers.IdeasShow.imported": "Importēts",
+  "app.containers.IdeasShow.importedTooltip": "Šis {inputTerm} tika apkopots bezsaistē un automātiski augšupielādēts platformā.",
   "app.containers.IdeasShow.issueEmailSharingBody": "Atbalstīt šo komentāru '{postTitle}' {postUrl}!",
   "app.containers.IdeasShow.issueEmailSharingSubject": "Atbalstīt šo komentāru: {postTitle}",
   "app.containers.IdeasShow.issueFacebookMessage": "Atbalstīt šo problēmu: {postTitle}",
