@@ -85,6 +85,7 @@ export interface ParticipationContext {
   voting_max_votes_per_idea?: number | null;
   baskets_count?: number | null;
   votes_count?: number | null;
+  causes_count: number; // causes_count?: number | null;
 }
 
 export function getInputTerm(

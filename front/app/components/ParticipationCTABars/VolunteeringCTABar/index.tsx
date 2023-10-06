@@ -34,10 +34,9 @@ export const VolunteeringCTABar = ({ phases, project }: CTABarProps) => {
   const { enabled, disabled_reason } =
     project.attributes.action_descriptor.volunteering;
 
-  // TODO: add causes to PC serializer
   const showVolunteer =
     (enabled || isFixableByAuthentication(disabled_reason)) &&
-    pc.relationships.causes.size > 0;
+    project.attributes.causes_count > 0; // TODO use context
 
   const handleVolunteerClick = (event: FormEvent) => {
     event.preventDefault();
