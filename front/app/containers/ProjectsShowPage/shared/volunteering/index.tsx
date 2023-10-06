@@ -77,6 +77,7 @@ const Volunteering = memo<Props>(
             <CauseCard
               key={cause.id}
               cause={cause}
+              project={project}
               disabled={disabledPhase || disabledProject}
             />
           ))}

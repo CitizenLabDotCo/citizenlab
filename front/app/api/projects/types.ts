@@ -83,7 +83,7 @@ export interface IProjectAttributes extends ParticipationContext {
     taking_survey: ActionDescriptor<SurveyDisabledReason>;
     taking_poll: ActionDescriptor<PollDisabledReason>;
     annotating_document: ActionDescriptor<DocumentAnnotationDisabledReason>;
-    volunteering: ActionDescriptor<VolunteeringDisabledReason>; // TODO: add VolunteeringDisabledReason
+    volunteering: ActionDescriptor<VolunteeringDisabledReason>;
   };
   uses_content_builder: boolean;
 }
@@ -164,6 +164,9 @@ export type DocumentAnnotationDisabledReason =
   | 'project_inactive'
   | 'not_document_annotation'
   | PermissionsDisabledReason;
+
+export type VolunteeringDisabledReason = // is "export" needed?
+  'project_inactive' | 'not_volunteereing' | PermissionsDisabledReason;
 
 interface ProjectHeaderBgImageSizes {
   large: string | null;
