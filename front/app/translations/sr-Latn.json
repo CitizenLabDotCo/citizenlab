@@ -1028,6 +1028,8 @@
   "app.containers.IdeasShow.ideaTwitterMessage": "Podržite ovu ideju: {postTitle} ",
   "app.containers.IdeasShow.ideaWhatsAppMessage": "Podržite ovu ideju: {postTitle} ",
   "app.containers.IdeasShow.ideasWhatsAppMessage": "Podržite ovaj problem: {postTitle} ",
+  "app.containers.IdeasShow.imported": "Imported",
+  "app.containers.IdeasShow.importedTooltip": "This {inputTerm} was collected offline and automatically uploaded to the platform.",
   "app.containers.IdeasShow.issueEmailSharingBody": "Podržite problem '{postTitle}' na {postUrl}!",
   "app.containers.IdeasShow.issueEmailSharingSubject": "Podržite ovaj problem: {postTitle} ",
   "app.containers.IdeasShow.issueFacebookMessage": "Podržite ovu temu: {postTitle}",
