@@ -12,7 +12,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 import { getJwt } from 'utils/auth/jwt';
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  'pdfjs-dist/build/pdf.worker.min.js',
+  'npm:pdfjs-dist/build/pdf.worker.min.js',
   import.meta.url
 ).toString();
 
