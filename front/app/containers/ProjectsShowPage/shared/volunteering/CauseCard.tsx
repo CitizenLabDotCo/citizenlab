@@ -290,15 +290,18 @@ const CauseCard = ({ cause, project, className, disabled }: Props) => {
         </Content>
 
         <ActionWrapper>
-          {!authUser ? ( // TODO: and must be compatible with disabled_reason?
+          {!enabled ? ( // TODO: deal with all disabled reasons
             <Warning>
-              <FormattedMessage
-                {...messages.notLoggedIn}
-                values={{ signUpLink, signInLink }}
-              />
+              {disabled_reason === 'not_signed_in' ? (
+                <FormattedMessage
+                  {...messages.disabledMaybeNotPermitted}
+                  values={{ signUpLink, signInLink }}
+                />
+              ) : (
+                <FormattedMessage {...messages.disabledNotPermitted} />
+              )}
             </Warning>
           ) : (
-            // TODO: hide button (show warning) if not permitted (not enabled)
             <Button
               onClick={handleOnVolunteerButtonClick}
               icon={!isVolunteer ? 'volunteer' : 'volunteer-off'}
