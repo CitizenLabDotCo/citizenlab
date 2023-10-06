@@ -10,7 +10,7 @@ function getInvites() {
         Authorization: `Bearer ${adminJwt}`,
       },
       method: 'GET',
-      url: 'web_api/v1/invites?page%5Bnumber%5D=1&page%5Bsize%5D=20&sort=-created_at',
+      url: 'web_api/v1/invites',
     });
   });
 }
@@ -26,7 +26,7 @@ function deleteInvites() {
           Authorization: `Bearer ${adminJwt}`,
         },
         method: 'GET',
-        url: 'web_api/v1/invites?page%5Bnumber%5D=1&page%5Bsize%5D=20&sort=-created_at',
+        url: 'web_api/v1/invites',
       })
       .then((response) => {
         const invites = response.body.data;
@@ -67,7 +67,7 @@ describe('Invitation authentication flow', () => {
   it('is possible to create an account with invite route + token in url', () => {
     getInvites().then((response) => {
       const invites = response.body.data;
-      const inviteWithEmail = invites[0];
+      const inviteWithEmail = invites[1];
 
       cy.visit(`/invite?token=${inviteWithEmail.attributes.token}`);
 
@@ -90,7 +90,7 @@ describe('Invitation authentication flow', () => {
   it('is possible to create an account if invitee does not have email', () => {
     getInvites().then((response) => {
       const invites = response.body.data;
-      const inviteWithoutEmail = invites[1];
+      const inviteWithoutEmail = invites[0];
 
       cy.visit('/invite');
 
