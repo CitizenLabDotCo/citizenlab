@@ -1028,6 +1028,8 @@
   "app.containers.IdeasShow.ideaTwitterMessage": "Poprzyj ten pomysł: {postTitle}",
   "app.containers.IdeasShow.ideaWhatsAppMessage": "Poprzyj ten pomysł: {postTitle}",
   "app.containers.IdeasShow.ideasWhatsAppMessage": "Poprzyj tę sprawę: {postTitle}",
+  "app.containers.IdeasShow.imported": "Importowane",
+  "app.containers.IdeasShow.importedTooltip": "Ta strona {inputTerm} została zebrana offline i automatycznie przesłana na platformę.",
   "app.containers.IdeasShow.issueEmailSharingBody": "Poprzyj tę sprawę '{postTitle}' w {postUrl}!",
   "app.containers.IdeasShow.issueEmailSharingSubject": "Poprzyj tę sprawę: {postTitle}",
   "app.containers.IdeasShow.issueFacebookMessage": "Obsłuż ten problem: {postTitle}",
