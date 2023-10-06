@@ -1028,6 +1028,8 @@
   "app.containers.IdeasShow.ideaTwitterMessage": "ادعم هذه الفكرة: {postTitle}",
   "app.containers.IdeasShow.ideaWhatsAppMessage": "ادعم هذه الفكرة: {postTitle}",
   "app.containers.IdeasShow.ideasWhatsAppMessage": "ادعم هذه المشكلة: {postTitle}",
+  "app.containers.IdeasShow.imported": "مستورد",
+  "app.containers.IdeasShow.importedTooltip": "تم جمع هذا {inputTerm} دون اتصال بالإنترنت وتم تحميله تلقائيًا على النظام الأساسي.",
   "app.containers.IdeasShow.issueEmailSharingBody": "ادعم هذه المشكلة '{postTitle}' على {postUrl}!",
   "app.containers.IdeasShow.issueEmailSharingSubject": "ادعم هذه المشكلة: {postTitle}",
   "app.containers.IdeasShow.issueFacebookMessage": "ادعم هذه المسألة: {postTitle}",
