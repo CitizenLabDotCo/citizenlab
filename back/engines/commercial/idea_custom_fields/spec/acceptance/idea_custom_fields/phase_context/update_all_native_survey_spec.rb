@@ -265,7 +265,10 @@ resource 'Idea Custom Fields' do
         do_request(custom_fields: [])
 
         assert_status 200
-        expect(json_response_body).to eq({:data=>[], :included=>[]})
+        expect(json_response_body).to eq({
+          :data => [],
+          :included => []
+        })
       end
 
       example 'Updating custom fields in a native survey phase when there are no responses' do

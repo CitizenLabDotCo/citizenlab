@@ -2235,7 +2235,10 @@ resource 'Idea Custom Fields' do
         do_request(custom_fields: [])
 
         assert_status 200
-        expect(json_response_body).to eq({:data=>[], :included=>[]})
+        expect(json_response_body).to eq({
+          :data => [],
+          :included => []
+        })
       end
 
       example 'Adding and updating a field with text images' do
