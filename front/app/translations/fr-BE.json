@@ -1383,7 +1383,7 @@
   "app.containers.ProjectsIndexPage.pageTitle": "{tenantName, select, frw {Communes} other {Projets}}",
   "app.containers.ProjectsShowPage.VolunteeringSection.becomeVolunteerButton": "Je veux aider",
   "app.containers.ProjectsShowPage.VolunteeringSection.notLoggedIn": "Veuillez d'abord {signInLink} ou {signUpLink} afin de vous porter volontaire",
-  "app.containers.ProjectsShowPage.VolunteeringSection.notOpenParticipation": "La participation n'est pas encore ouverte pour cette activité.",
+  "app.containers.ProjectsShowPage.VolunteeringSection.notOpenParticipation": "L'inscription à cette activité n'est pas ouverte pour le moment.",
   "app.containers.ProjectsShowPage.VolunteeringSection.signInLinkText": "se connecter",
   "app.containers.ProjectsShowPage.VolunteeringSection.signUpLinkText": "s'inscrire",
   "app.containers.ProjectsShowPage.VolunteeringSection.withdrawVolunteerButton": "Je retire ma proposition d'aide",
