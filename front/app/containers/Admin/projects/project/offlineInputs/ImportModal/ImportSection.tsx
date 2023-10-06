@@ -153,6 +153,7 @@ const ImportSection = ({ onFinishImport, locale, project, phases }: Props) => {
       });
 
       onFinishImport();
+      methods.reset();
     } catch (e) {
       handleCLErrorWrapper(e, methods.setError);
     }
@@ -162,7 +163,7 @@ const ImportSection = ({ onFinishImport, locale, project, phases }: Props) => {
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(submitFile)}>
         <Box w="100%" p="24px">
-          <Feedback />
+          <Feedback onlyShowErrors />
           <Box mb="28px">
             <Text>
               <FormattedMessage
@@ -188,20 +189,21 @@ const ImportSection = ({ onFinishImport, locale, project, phases }: Props) => {
             <SingleFileUploader name="file" />
           </Box>
 
-          <Box mt="24px">
-            <Checkbox
-              name="personal_data"
-              label={<FormattedMessage {...messages.formHasPersonalData} />}
-            />
-          </Box>
-
           {methods.watch('file')?.extension === 'application/pdf' && (
-            <Box mt="24px">
-              <Checkbox
-                name="google_consent"
-                label={<FormattedMessage {...messages.googleConsent} />}
-              />
-            </Box>
+            <>
+              <Box mt="24px">
+                <Checkbox
+                  name="personal_data"
+                  label={<FormattedMessage {...messages.formHasPersonalData} />}
+                />
+              </Box>
+              <Box mt="24px">
+                <Checkbox
+                  name="google_consent"
+                  label={<FormattedMessage {...messages.googleConsent} />}
+                />
+              </Box>
+            </>
           )}
 
           <Box w="100%" display="flex" mt="32px">
