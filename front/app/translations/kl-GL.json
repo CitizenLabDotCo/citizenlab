@@ -1028,6 +1028,8 @@
   "app.containers.IdeasShow.ideaTwitterMessage": "Isumassarsiaq una taperseruk: {postTitle}",
   "app.containers.IdeasShow.ideaWhatsAppMessage": "Isumassarsiaq una taperseruk: {postTitle}",
   "app.containers.IdeasShow.ideasWhatsAppMessage": "Ajornartorsiut una taperseruk: {postTitle}",
+  "app.containers.IdeasShow.imported": "Imported",
+  "app.containers.IdeasShow.importedTooltip": "This {inputTerm} was collected offline and automatically uploaded to the platform.",
   "app.containers.IdeasShow.issueEmailSharingBody": "Ajornartorsiut una '{postTitle}' {postUrl}-imi taperseruk!",
   "app.containers.IdeasShow.issueEmailSharingSubject": "Ajornartorsiut una taperseruk: {postTitle}",
   "app.containers.IdeasShow.issueFacebookMessage": "Manna naapertorneqassaaq: {postTitle}",
