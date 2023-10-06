@@ -13,6 +13,7 @@ import {
   useBreakpoint,
   Text,
   IconTooltip,
+  Box,
 } from '@citizenlab/cl2-component-library';
 import OldAnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal/OldAnonymousParticipationConfirmationModal';
 
@@ -45,10 +46,6 @@ import useLocale from 'hooks/useLocale';
 import useAuthUser from 'api/me/useAuthUser';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { useLocation } from 'react-router-dom';
-
-const Container = styled.div`
-  display: flex;
-`;
 
 const StyledAvatar = styled(Avatar)`
   margin-left: -4px;
@@ -102,10 +99,6 @@ const ButtonWrapper = styled.div`
   &.visible {
     display: flex;
   }
-`;
-
-const CancelButton = styled(Button)`
-  margin-right: 8px;
 `;
 
 interface Props {
@@ -350,7 +343,7 @@ const ParentCommentForm = ({
   const placeholder = formatMessage(placeholderMessage);
 
   return (
-    <Container className={className || ''}>
+    <Box display="flex" className={className || ''} my="12px">
       <StyledAvatar
         userId={authUser.data.id}
         size={30}
@@ -415,14 +408,16 @@ const ParentCommentForm = ({
                   onChange={() => setPostAnonymously(!postAnonymously)}
                 />
               )}
-              <CancelButton
-                disabled={processing}
-                onClick={close}
-                buttonStyle="secondary"
-                padding={smallerThanTablet ? '6px 12px' : undefined}
-              >
-                <FormattedMessage {...messages.cancel} />
-              </CancelButton>
+              <Box mr="8px">
+                <Button
+                  disabled={processing}
+                  onClick={close}
+                  buttonStyle="secondary"
+                  padding={smallerThanTablet ? '6px 12px' : undefined}
+                >
+                  <FormattedMessage {...messages.cancel} />
+                </Button>
+              </Box>
               <Button
                 className="e2e-submit-parentcomment"
                 processing={processing}
@@ -448,7 +443,7 @@ const ParentCommentForm = ({
           }}
         />
       )}
-    </Container>
+    </Box>
   );
 };
 
