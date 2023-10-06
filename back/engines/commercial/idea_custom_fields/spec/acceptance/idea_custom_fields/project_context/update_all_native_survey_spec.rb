@@ -2228,6 +2228,16 @@ resource 'Idea Custom Fields' do
         })
       end
 
+      example 'Updating custom fields when there are responses' do
+        IdeaStatus.create_defaults
+        create(:idea, project: context)
+
+        do_request(custom_fields: [])
+
+        assert_status 200
+        expect(json_response_body).to eq({:data=>[], :included=>[]})
+      end
+
       example 'Adding and updating a field with text images' do
         field_to_update = create(:custom_field, resource: custom_form, title_multiloc: { 'en' => 'Some field' })
         request = {
