@@ -10,6 +10,7 @@ import initiativeImagesEndpoints from '../app/api/initiative_images/__mocks__/_m
 
 // ideas mock data
 import ideasEndpoints from '../app/api/ideas/__mocks__/_mockServer';
+import ideaImagesEndpoints from '../app/api/idea_images/__mocks__/_mockServer'
 
 // projects mock data
 import projectsEndpoints from '../app/api/projects/__mocks__/_mockServer';
@@ -25,6 +26,7 @@ const endpoints = {
   ...initiativeStatusEndpoints,
   ...initiativeImagesEndpoints,
   ...ideasEndpoints,
+  ...ideaImagesEndpoints,
   ...projectsEndpoints,
   ...phasesEndpoints
 }

@@ -1,7 +1,7 @@
+import { IIdeaImageData } from '../types';
 import { rest } from 'msw';
-import { IInitiativeImageData } from '../types';
 
-export const initiativeImagesData: IInitiativeImageData[] = [
+export const ideaImagesData: IIdeaImageData[] = [
   {
     id: '30c1b604-71fd-4ac4-9cd7-3e5601d9cb0f',
     type: 'image',
@@ -34,15 +34,19 @@ export const initiativeImagesData: IInitiativeImageData[] = [
   },
 ];
 
-export const apiPath = '*initiatives/:initiativeId/images/:imageId';
+export const apiPathImage = '/web_api/v1/ideas/:ideaId/images/:imageId';
+export const apiPathImages = '/web_api/v1/ideas/:ideaId/images';
 
 const endpoints = {
-  'GET initiatives/:initiativeId/images/:imageId': rest.get(
-    apiPath,
+  'GET ideas/:ideaId/images/:imageId': rest.get(
+    apiPathImage,
     (_req, res, ctx) => {
-      return res(ctx.status(200), ctx.json({ data: initiativeImagesData[0] }));
+      return res(ctx.status(200), ctx.json({ data: ideaImagesData[0] }));
     }
   ),
+  'GET ideas/:ideaId/images': rest.get(apiPathImages, (_req, res, ctx) => {
+    return res(ctx.status(200), ctx.json({ data: ideaImagesData }));
+  }),
 };
 
 export default endpoints;
