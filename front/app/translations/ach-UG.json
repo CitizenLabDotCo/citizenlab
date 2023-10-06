@@ -1028,6 +1028,8 @@
   "app.containers.IdeasShow.ideaTwitterMessage": "crwdns1053885:0{postTitle}crwdne1053885:0",
   "app.containers.IdeasShow.ideaWhatsAppMessage": "crwdns1053887:0{postTitle}crwdne1053887:0",
   "app.containers.IdeasShow.ideasWhatsAppMessage": "crwdns1053889:0{postTitle}crwdne1053889:0",
+  "app.containers.IdeasShow.imported": "crwdns1159884:0crwdne1159884:0",
+  "app.containers.IdeasShow.importedTooltip": "crwdns1159886:0{inputTerm}crwdne1159886:0",
   "app.containers.IdeasShow.issueEmailSharingBody": "crwdns1053891:0{postTitle}crwdnd1053891:0{postUrl}crwdne1053891:0",
   "app.containers.IdeasShow.issueEmailSharingSubject": "crwdns1053893:0{postTitle}crwdne1053893:0",
   "app.containers.IdeasShow.issueFacebookMessage": "crwdns1053895:0{postTitle}crwdne1053895:0",
