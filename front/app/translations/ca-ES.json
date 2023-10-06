@@ -1028,6 +1028,8 @@
   "app.containers.IdeasShow.ideaTwitterMessage": "Doneu suport a aquesta idea: {postTitle}",
   "app.containers.IdeasShow.ideaWhatsAppMessage": "Doneu suport a aquesta idea: {postTitle}",
   "app.containers.IdeasShow.ideasWhatsAppMessage": "Doneu suport a aquest comentari: {postTitle}",
+  "app.containers.IdeasShow.imported": "Importat",
+  "app.containers.IdeasShow.importedTooltip": "Aquest {inputTerm} es va recollir fora de línia i es va penjar automàticament a la plataforma.",
   "app.containers.IdeasShow.issueEmailSharingBody": "Doneu suport a aquest comentari \"{postTitle}\" a {postUrl}!",
   "app.containers.IdeasShow.issueEmailSharingSubject": "Doneu suport a aquest comentari: {postTitle}",
   "app.containers.IdeasShow.issueFacebookMessage": "Doneu suport a aquest problema: {postTitle}",
