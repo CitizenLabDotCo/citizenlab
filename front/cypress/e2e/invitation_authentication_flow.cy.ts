@@ -46,24 +46,25 @@ function deleteInvites() {
 }
 
 describe('Invitation authentication flow', () => {
-  it('has correct invitations', () => {
-    cy.intercept('POST', '**/invites/bulk_create_xlsx').as('sendXlsxInvites');
+  beforeEach(() => {
     cy.setAdminLoginCookie();
     cy.visit('/admin/users/invitations');
     cy.get('input[type=file]').selectFile('cypress/fixtures/invites.xlsx');
     cy.get('.e2e-submit-wrapper-button').click();
-    cy.wait('@sendXlsxInvites');
     cy.get('.e2e-submit-wrapper-button').contains('Success');
+    cy.logout();
+  });
 
+  it('has correct invitations', () => {
+    cy.setAdminLoginCookie();
     cy.visit('/admin/users/invitations/all');
     cy.contains('jack@johnson.com');
     cy.contains('Jack Johnson');
     cy.contains('John Jackson');
-
     cy.logout();
   });
 
-  it('is possible to create account with invite route + token in url', () => {
+  it('is possible to create an account with invite route + token in url', () => {
     getInvites().then((response) => {
       const invites = response.body.data;
       const inviteWithEmail = invites[0];
@@ -83,7 +84,6 @@ describe('Invitation authentication flow', () => {
       cy.get('#e2e-signup-password-submit-button').click();
 
       cy.get('#e2e-success-continue-button').click();
-      cy.logout();
     });
   });
 
@@ -113,11 +113,10 @@ describe('Invitation authentication flow', () => {
       cy.get('#e2e-signup-password-submit-button').click();
 
       cy.get('#e2e-success-continue-button').click();
-      cy.logout();
     });
   });
 
-  after(() => {
+  afterEach(() => {
     deleteInvites();
   });
 });
