@@ -275,7 +275,7 @@ RSpec.describe CustomField do
 
     it 'generates a key appended with a random 3 character value' do
       cf = create(:custom_field, key: nil, title_multiloc: { 'ar-SA': 'abbaالرئيسية' })
-      expect(cf.key[-4..-1]).to match(/[0-9a-z]{3}/)
+      expect(cf.key[-4..]).to match(/[0-9a-z]{3}/)
     end
 
     it 'generates a present key from non-Latin title' do
