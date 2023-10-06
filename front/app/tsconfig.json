@@ -22,7 +22,8 @@
       {
         "name": "typescript-styled-plugin"
       }
-    ]
+    ],
+    "isolatedModules": true
   },
   "files": ["custom.d.ts"],
   "include": ["**/*"],

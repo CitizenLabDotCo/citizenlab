@@ -120,7 +120,7 @@ const InitiativeForm = ({
       .min(1, formatMessage(messages.topicEmptyError)),
     ...(cosponsorsRequired &&
       typeof appConfiguration?.data.attributes.settings.initiatives
-        ?.cosponsors_number === 'number' && {
+        .cosponsors_number === 'number' && {
         cosponsor_ids: array()
           .required(formatMessage(messages.cosponsorsEmptyError))
           .min(
@@ -241,22 +241,6 @@ const InitiativeForm = ({
                     maxCharCount={72}
                   />
                 </FormLabel>
-                {/* {titleProfanityError && (
-              <Error
-                text={
-                  <FormattedMessage
-                    {...messages.profanityError}
-                    values={{
-                      guidelinesLink: (
-                        <Link to="/pages/faq" target="_blank">
-                          {formatMessage(messages.guidelinesLinkText)}
-                        </Link>
-                      ),
-                    }}
-                  />
-                }
-              />
-            )} */}
               </SectionField>
 
               <SectionField id="e2e-initiative-form-description-section">
@@ -271,22 +255,6 @@ const InitiativeForm = ({
                   noVideos
                   noAlign
                 />
-                {/* {descriptionProfanityError && (
-                  <Error
-                    text={
-                      <FormattedMessage
-                        {...messages.profanityError}
-                        values={{
-                          guidelinesLink: (
-                            <Link to="/pages/faq" target="_blank">
-                              {formatMessage(messages.guidelinesLinkText)}
-                            </Link>
-                          ),
-                        }}
-                      />
-                    }
-                  />
-                )} */}
               </SectionField>
               <Warning>
                 <>

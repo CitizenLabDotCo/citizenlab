@@ -13,7 +13,7 @@ const CosponsorShipReminder = ({ initiativeId }: Props) => {
   const { formatMessage } = useIntl();
   const { data: appConfiguration } = useAppConfiguration();
   const requiredNumberOfCosponsors =
-    appConfiguration?.data.attributes.settings.initiatives?.cosponsors_number;
+    appConfiguration?.data.attributes.settings.initiatives.cosponsors_number;
 
   if (typeof requiredNumberOfCosponsors !== 'number') return null;
 

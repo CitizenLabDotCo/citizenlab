@@ -134,7 +134,7 @@ export interface IAppConfigurationSettings {
   project_reports?: AppConfigurationFeature;
   private_projects?: AppConfigurationFeature;
   maps?: AppConfigurationMapSettings;
-  initiatives?: ProposalsSettings;
+  initiatives: ProposalsSettings;
   initiative_review?: AppConfigurationFeature;
   initiative_cosponsors?: AppConfigurationFeature;
   fragments?: {

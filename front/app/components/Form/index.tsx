@@ -29,7 +29,7 @@ import ButtonBar from './Components/ButtonBar';
 
 import useObserveEvent from 'hooks/useObserveEvent';
 
-import { CLErrors, Message } from 'typings';
+import { CLErrors } from 'typings';
 import { getDefaultAjvErrorMessage } from 'utils/errorUtils';
 import { useIntl, MessageDescriptor } from 'utils/cl-intl';
 import { ErrorObject } from 'ajv';
@@ -68,12 +68,12 @@ const customAjv = createAjv({ useDefaults: 'empty', removeAdditional: true });
 export type AjvErrorGetter = (
   error: ErrorObject,
   uischema?: UISchemaElement
-) => Message | undefined;
+) => MessageDescriptor | undefined;
 
 export type ApiErrorGetter = (
   errorKey: string,
   fieldName: string
-) => Message | undefined;
+) => MessageDescriptor | undefined;
 
 interface Props {
   schema: JsonSchema7;

@@ -207,23 +207,6 @@ resource 'Permissions' do
       header_token_for @user
     end
 
-    get 'web_api/v1/projects/:project_id/permissions/:action/participation_conditions' do
-      before do
-        @rule = { 'ruleType' => 'email', 'predicate' => 'ends_on', 'value' => 'test.com' }
-        @groups = [create(:group), create(:smart_group, rules: [@rule])]
-        @permission = @project.permissions.first
-        @permission.update!(permitted_by: 'groups', groups: @groups)
-      end
-
-      let(:action) { @permission.action }
-
-      example_request 'Get the participation conditions of a user' do
-        assert_status 200
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :attributes, :participation_conditions)).to eq [[SmartGroups::RulesService.new.parse_json_rule(@rule).description_multiloc.symbolize_keys]]
-      end
-    end
-
     get 'web_api/v1/projects/:project_id/permissions/:action/requirements' do
       before do
         @permission = @project.permissions.first

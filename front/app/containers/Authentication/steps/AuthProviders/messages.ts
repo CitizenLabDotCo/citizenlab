@@ -96,8 +96,12 @@ export default defineMessages({
     defaultMessage:
       'I accept that the data will be used on mitgestalten.wien.gv.at. Further information can befound {link}.',
   },
-  iHaveReadAndAgreeTo: {
-    id: 'app.containers.SignUp.iHaveReadAndAgreeTo',
+  iHaveReadAndAgreeToTerms: {
+    id: 'app.containers.SignUp.iHaveReadAndAgreeToTerms',
+    defaultMessage: 'I have read and agree to {link}.',
+  },
+  iHaveReadAndAgreeToPrivacy: {
+    id: 'app.containers.SignUp.iHaveReadAndAgreeToPrivacy',
     defaultMessage: 'I have read and agree to {link}.',
   },
   theTermsAndConditions: {

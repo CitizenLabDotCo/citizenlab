@@ -75,7 +75,10 @@ const MessagingDashboard = ({
     }
 
     if (pathname.match(/\/admin\/messaging$/) && !isEmpty(tabs)) {
-      clHistory.push(tabs[0].url);
+      clHistory.replace({
+        pathname: tabs[0].url,
+        search: window.location.search,
+      });
     }
 
     return tabs;

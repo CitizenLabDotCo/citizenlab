@@ -60,6 +60,20 @@ resource 'Insights' do
     end
   end
 
+  post 'web_api/v1/analyses/:analysis_id/insights/:id/toggle_bookmark' do
+    let!(:summary) { create(:summary) }
+    let(:analysis_id) { summary.analysis.id }
+    let(:id) { summary.insight_id }
+
+    example 'Toggle bookmarked attribute on an insight' do
+      expect { do_request }.to change { Analysis::Insight.find(id).bookmarked }.from(false).to(true)
+      expect(response_status).to eq 200
+
+      expect { do_request }.to change { Analysis::Insight.find(id).bookmarked }.from(true).to(false)
+      expect(response_status).to eq 200
+    end
+  end
+
   post 'web_api/v1/analyses/:analysis_id/insights/:id/rate' do
     parameter :rating, 'The rating value, can be vote-up or vote-down'
 
