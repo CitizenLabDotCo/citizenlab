@@ -20,8 +20,12 @@ import { List, SortableRow } from 'components/admin/ResourceList';
 import Error, { TFieldName } from 'components/UI/Error';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import {
+  IntlProvider,
+  WrappedComponentProps,
+  defineMessages,
+} from 'react-intl';
 import messages from './messages';
 
 // Typings
@@ -208,7 +212,7 @@ const ConfigSelectWithLocaleSwitcher = ({
                         <Box borderTop={`1px solid ${colors.divider}`}>
                           <Box width="272px" my="16px" ml="34px">
                             <Input
-                              value={formatMessage(messages.addAnswer)}
+                              value={formatMessage(messages.other)}
                               disabled={true}
                               size="small"
                               type="text"

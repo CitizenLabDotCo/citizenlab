@@ -1,0 +1,66 @@
+import { withJsonFormsControlProps } from '@jsonforms/react';
+import { Box, Input } from '@citizenlab/cl2-component-library';
+import { ControlProps, RankedTester, rankWith } from '@jsonforms/core';
+import React, { useCallback, useState } from 'react';
+import ErrorDisplay from '../ErrorDisplay';
+import {
+  sanitizeForClassname,
+  getFieldNameFromPath,
+} from 'utils/JSONFormUtils';
+import { isString } from 'utils/helperUtils';
+import VerificationIcon from '../VerificationIcon';
+
+export const OtherOptionControl = ({
+  data,
+  handleChange,
+  path,
+  errors,
+  schema,
+  id,
+  uischema,
+}: ControlProps) => {
+  const [didBlur, setDidBlur] = useState(false);
+
+  const onChange = useCallback(
+    (value: string) => {
+      handleChange(
+        path,
+        schema.type === 'number' && value ? parseInt(value, 10) : value
+      );
+    },
+    [schema.type, handleChange, path]
+  );
+
+  return (
+    <Box mt="-40px">
+      <Box display="flex" flexDirection="row">
+        <Input
+          id={sanitizeForClassname(id)}
+          type={'text'}
+          value={data}
+          onChange={onChange}
+          maxCharCount={schema?.maxLength}
+          onBlur={() => {
+            uischema?.options?.transform === 'trim_on_blur' &&
+              isString(data) &&
+              onChange(data.trim());
+            setDidBlur(true);
+          }}
+          disabled={uischema?.options?.readonly}
+        />
+        <VerificationIcon show={uischema?.options?.verificationLocked} />
+      </Box>
+      <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={didBlur} />
+    </Box>
+  );
+};
+
+export default withJsonFormsControlProps(OtherOptionControl);
+
+export const otherOptionControlTester: RankedTester = rankWith(
+  1000,
+  (uischema) =>
+    (uischema as any)?.scope
+      ? getFieldNameFromPath((uischema as any)?.scope) === '_other_text'
+      : false
+);
