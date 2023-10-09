@@ -198,6 +198,7 @@ module BulkImportIdeas
 
     # Match all fields in the forms field with values returned by parser / xlsx sheet
     def process_custom_form_fields(idea, idea_row)
+      # TODO: This is still not working - getting confused on the second idea for some reason - page nums etc
       # Merge the form fields with the import values into a single array
       merged_idea = []
       form_fields = @input_form_data[:fields]
@@ -209,7 +210,6 @@ module BulkImportIdeas
               new_field[:value] = idea_field[:value]
               new_field = process_field_value(new_field, form_fields)
               merged_idea << new_field
-              # TODO: Delete field from both?
               idea.delete_if { |f| f == idea_field }
               break
             elsif idea_field[:value] == 'filled_checkbox' && form_field[:page] == idea_field[:page]
@@ -244,6 +244,8 @@ module BulkImportIdeas
       end
       idea_row[:custom_field_values] = custom_fields
 
+      binding.pry
+
       idea_row
     end
 
@@ -267,13 +269,13 @@ module BulkImportIdeas
       locale_optional_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.optional') }
       idea = extract_permission_checkbox(idea)
       idea.map do |name, value|
-        option = name.match(/(.*)_(\d).(\d{2})/) # Is this an option (checkbox)?
+        option = name.match(/(.*)_(\d)_(\d).(\d{2})/) # Is this an option (checkbox)?
         {
           name: option ? option[1] : name.gsub("(#{locale_optional_label})", '').squish,
           value: value,
           type: value.to_s.include?('checkbox') ? 'option' : 'field',
           page: option ? option[2].to_i : nil,
-          position: option ? option[3].to_i : nil
+          position: option ? option[4].to_i : nil
         }
       end
     end
