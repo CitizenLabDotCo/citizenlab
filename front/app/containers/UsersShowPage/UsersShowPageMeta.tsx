@@ -10,7 +10,6 @@ import { useIntl } from 'utils/cl-intl';
 import { IUserData } from 'api/users/types';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
 import useLocalize from 'hooks/useLocalize';
