@@ -10,7 +10,7 @@
     "npm": ">=8"
   },
   "workspaces": [
-    "cl2-component-library"
+    "../../cl2-component-library"
   ],
   "author": "CitizenLab",
   "scripts": {
