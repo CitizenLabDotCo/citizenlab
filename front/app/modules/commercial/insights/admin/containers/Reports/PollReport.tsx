@@ -1,9 +1,5 @@
-import React, { memo } from 'react';
-import { adopt } from 'react-adopt';
+import React from 'react';
 import { WrappedComponentProps } from 'react-intl';
-import GetPollQuestions, {
-  GetPollQuestionsChildProps,
-} from 'resources/GetPollQuestions';
 import { isNilOrError } from 'utils/helperUtils';
 import {
   GraphCard,
@@ -13,85 +9,62 @@ import {
 } from 'components/admin/GraphWrappers';
 import QuestionReport from './QuestionReport';
 import { SubSectionTitle } from 'components/admin/Section';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import usePollQuestions from 'api/poll_questions/usePollQuestions';
 
-interface InputProps {
+interface Props {
   participationContextId: string;
   participationContextType: 'phase' | 'project';
   participationContextTitle: string;
 }
-interface DataProps {
-  pollQuestions: GetPollQuestionsChildProps;
-}
 
-interface Props extends InputProps, DataProps {}
-
-const PollReport = memo(
-  ({
+const PollReport = ({
+  participationContextId,
+  participationContextType,
+  participationContextTitle,
+}: Props & WrappedComponentProps) => {
+  const { data: pollQuestions } = usePollQuestions({
     participationContextId,
     participationContextType,
-    pollQuestions,
-    participationContextTitle,
-  }: Props & WrappedComponentProps) => {
-    return (
-      <div>
-        {!isNilOrError(participationContextTitle) &&
-          participationContextType === 'phase' && (
-            <SubSectionTitle>{participationContextTitle}</SubSectionTitle>
-          )}
-        <GraphsContainer>
-          {!isNilOrError(pollQuestions) && pollQuestions.length > 0 ? (
-            pollQuestions.map((question) => (
-              <GraphCard
-                className={`dynamicHeight ${
-                  pollQuestions.length === 1 ? 'fullWidth' : ''
-                }`}
-                key={question.id}
-              >
-                <GraphCardInner>
-                  <QuestionReport
-                    question={question}
-                    participationContextId={participationContextId}
-                    participationContextType={participationContextType}
-                  />
-                </GraphCardInner>
-              </GraphCard>
-            ))
-          ) : (
-            <GraphCard className="dynamicHeight fullWidth">
+  });
+
+  return (
+    <div>
+      {!isNilOrError(participationContextTitle) &&
+        participationContextType === 'phase' && (
+          <SubSectionTitle>{participationContextTitle}</SubSectionTitle>
+        )}
+      <GraphsContainer>
+        {!isNilOrError(pollQuestions) && pollQuestions.data.length > 0 ? (
+          pollQuestions.data.map((question) => (
+            <GraphCard
+              className={`dynamicHeight ${
+                pollQuestions.data.length === 1 ? 'fullWidth' : ''
+              }`}
+              key={question.id}
+            >
               <GraphCardInner>
-                <NoDataContainer>
-                  <FormattedMessage {...messages.noData} />
-                </NoDataContainer>
+                <QuestionReport
+                  question={question}
+                  participationContextId={participationContextId}
+                  participationContextType={participationContextType}
+                />
               </GraphCardInner>
             </GraphCard>
-          )}
-        </GraphsContainer>
-      </div>
-    );
-  }
-);
+          ))
+        ) : (
+          <GraphCard className="dynamicHeight fullWidth">
+            <GraphCardInner>
+              <NoDataContainer>
+                <FormattedMessage {...messages.noData} />
+              </NoDataContainer>
+            </GraphCardInner>
+          </GraphCard>
+        )}
+      </GraphsContainer>
+    </div>
+  );
+};
 
-const Data = adopt<DataProps, InputProps>({
-  pollQuestions: ({
-    participationContextId,
-    participationContextType,
-    render,
-  }) => (
-    <GetPollQuestions
-      participationContextId={participationContextId}
-      participationContextType={participationContextType}
-    >
-      {render}
-    </GetPollQuestions>
-  ),
-});
-
-const PollReportWithHoc = injectIntl(PollReport);
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <PollReportWithHoc {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default PollReport;
