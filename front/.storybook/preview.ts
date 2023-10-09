@@ -1,4 +1,5 @@
 import contexts from './contexts';
+import { reactIntl } from './reactIntl';
 import { withRouter } from 'storybook-addon-react-router-v6';
 import { initialize, mswDecorator } from 'msw-storybook-addon';
 import mockServer from './mockServer'
@@ -11,6 +12,10 @@ export const decorators = [
   contexts
 ];
 
+export const globals = {
+  locale: reactIntl.defaultLocale
+}
+
 export const parameters = {
   options: {
     storySort: {
@@ -19,5 +24,6 @@ export const parameters = {
       locales: '',
     },
   },
-  msw: Object.values(mockServer)
+  msw: Object.values(mockServer),
+  reactIntl
 };
