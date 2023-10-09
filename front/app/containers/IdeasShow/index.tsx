@@ -1,6 +1,7 @@
 import React, { lazy, Suspense, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
+import useProjectById from 'api/projects/useProjectById';
 
 // components
 import Container from './components/Container';
@@ -77,13 +78,13 @@ export const IdeasShow = ({
   className,
   postOfficialFeedbackPermission,
   projectId,
-  project,
   compact,
   ideaId,
   setRef,
 }: Props) => {
   const { data: ideaImages } = useIdeaImages(ideaId);
   const { data: idea } = useIdeaById(ideaId);
+  const { data: project } = useProjectById(projectId);
 
   const isLoaded = !!(idea && ideaImages && project);
 
@@ -102,7 +103,7 @@ export const IdeasShow = ({
         <Content
           postOfficialFeedbackPermission={postOfficialFeedbackPermission}
           idea={idea}
-          project={project}
+          project={project.data}
           ideaImages={ideaImages}
           compact={compact}
         />
