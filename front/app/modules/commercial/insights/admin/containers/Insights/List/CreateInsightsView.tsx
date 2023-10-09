@@ -24,8 +24,6 @@ import CheckboxWithPartialCheck from 'components/UI/CheckboxWithPartialCheck';
 import { CSSTransition } from 'react-transition-group';
 
 // resources
-import { adopt } from 'react-adopt';
-import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 import { PublicationStatus } from 'api/projects/types';
 // hooks
 import useLocalize from 'hooks/useLocalize';
@@ -36,6 +34,7 @@ import useCreateView from 'modules/commercial/insights/api/views/useCreateView';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import useProjects from 'api/projects/useProjects';
 
 // typings
 
@@ -49,10 +48,6 @@ const Description = styled.p`
   padding-top: 10px;
   font-size: ${fontSizes.base}px;
 `;
-
-interface DataProps {
-  projects: GetProjectsChildProps;
-}
 
 interface InputProps {
   closeCreateModal: () => void;
@@ -128,13 +123,11 @@ const StyledCheckboxWithPartialCheck = styled(CheckboxWithPartialCheck)`
   }
 `;
 
-export const CreateInsightsView = ({
-  projects,
-  closeCreateModal,
-}: DataProps & InputProps) => {
+export const CreateInsightsView = ({ closeCreateModal }: InputProps) => {
   const { mutate, reset, error, isLoading } = useCreateView();
   const localize = useLocalize();
   const { data: projectFolders } = useProjectFolders({});
+  const { data: projects } = useProjects({ publicationStatuses });
 
   const [name, setName] = useState<string | null>();
 
@@ -142,7 +135,8 @@ export const CreateInsightsView = ({
   const [expandedFoldersIds, setExpandedFoldersIds] = useState<string[]>([]);
 
   const ideationProjects = useMemo(
-    () => projects?.filter((project) => project.attributes.ideas_count > 0),
+    () =>
+      projects?.data.filter((project) => project.attributes.ideas_count > 0),
     [projects]
   );
 
@@ -388,16 +382,4 @@ const publicationStatuses: PublicationStatus[] = [
   'draft',
 ];
 
-const Data = adopt<DataProps>({
-  projects: (
-    <GetProjects publicationStatuses={publicationStatuses} canModerate={true} />
-  ),
-});
-
-export default (inputProps: InputProps) => (
-  <Data>
-    {(dataProps: DataProps) => (
-      <CreateInsightsView {...dataProps} {...inputProps} />
-    )}
-  </Data>
-);
+export default CreateInsightsView;
