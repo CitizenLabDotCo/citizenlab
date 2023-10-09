@@ -1,4 +1,4 @@
-import React, { useMemo, FC } from 'react';
+import React, { useMemo, FC, useEffect } from 'react';
 import ReactSelect from 'react-select';
 
 // components
@@ -25,6 +25,7 @@ interface Props {
   components?: { Option: FC };
   getOptionLabel: (option: Option) => JSX.Element;
   onMenuOpen?: () => void;
+  /* onInputChange should be a stable reference! */
   onInputChange: (searchTerm: string) => void;
   onMenuScrollToBottom: () => void;
   onChange: (option?: Option) => void;
@@ -49,6 +50,12 @@ const BaseUserSelect = ({
       onInputChange(searchTerm);
     }, 500);
   }, [onInputChange]);
+
+  useEffect(() => {
+    return () => {
+      handleInputChange.cancel();
+    };
+  }, [handleInputChange]);
 
   const handleChange = (
     option: Option,
