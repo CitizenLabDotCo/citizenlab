@@ -1,58 +1,56 @@
-import { Point } from 'geojson';
 import { isNumber } from 'lodash-es';
 
-const geocode = (address: string | null | undefined) => {
-  return new Promise((resolve: (value: GeoJSON.Point | null) => void) => {
-    if (address && window?.google?.maps?.Geocoder) {
-      const geocoder = new google.maps.Geocoder();
-      geocoder.geocode({ address }, (results, status) => {
-        let response: GeoJSON.Point | null = null;
-
-        if (status === google.maps.GeocoderStatus.OK) {
-          const lat = results?.[0]?.geometry?.location?.lat();
-          const lng = results?.[0]?.geometry?.location?.lng();
-
-          if (isNumber(lat) && isNumber(lng)) {
-            response = {
-              type: 'Point',
-              coordinates: [lng, lat],
-            };
-          }
-        }
-
-        resolve(response);
-      });
-    } else {
-      resolve(null);
-    }
-  });
+type Point = {
+  type: 'Point';
+  coordinates: [number, number];
 };
 
-const reverseGeocode = (lat: number, lng: number) => {
-  return new Promise((resolve: (value: string | undefined) => void) => {
-    if (window?.google?.maps?.Geocoder) {
-      const geocoder = new google.maps.Geocoder();
-      geocoder.geocode(
-        {
-          location: {
-            lat,
-            lng,
-          },
-        },
-        (results, status) => {
-          let response: string | undefined = undefined;
-          const formattedAddress = results?.[0]?.formatted_address;
+const requestOptions = {
+  method: 'GET',
+};
 
-          if (status === google.maps.GeocoderStatus.OK && formattedAddress) {
-            response = formattedAddress;
-          }
-          resolve(response);
-        }
-      );
-    } else {
-      resolve(undefined);
+const key = process.env.GOOGLE_MAPS_API_KEY;
+
+const geocode = async (address: string | null | undefined) => {
+  try {
+    const response = await fetch(
+      `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${key}`,
+      requestOptions
+    );
+    const result = await response.json();
+
+    const lat = result?.results?.[0]?.geometry?.location?.lat;
+    const lng = result?.results?.[0]?.geometry?.location?.lng;
+
+    if (isNumber(lat) && isNumber(lng)) {
+      return {
+        type: 'Point',
+        coordinates: [lng, lat],
+      } as Point;
     }
-  });
+    return null;
+  } catch {
+    return null;
+  }
+};
+
+const reverseGeocode = async (lat: number, lng: number) => {
+  try {
+    const response = await fetch(
+      `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${key}`,
+      requestOptions
+    );
+    const result = await response.json();
+
+    const formattedAddress = result?.results?.[0]?.formatted_address;
+
+    if (formattedAddress) {
+      return formattedAddress;
+    }
+    return undefined;
+  } catch {
+    return undefined;
+  }
 };
 
 const parsePosition = async (position?: string) => {
