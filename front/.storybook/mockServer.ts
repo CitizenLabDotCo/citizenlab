@@ -1,7 +1,8 @@
 // mock data
 import appConfigurationEndpoints from '../app/api/app_configuration/__mocks__/_mockServer';
 import usersMeEndpoints from '../app/api/me/__mocks__/_mockServer';
-import usersMocks from '../app/api/users/__mocks__/_mockServer';
+import usersEndpoints from '../app/api/users/__mocks__/_mockServer';
+import authenticationRequirementsEndpoints from '../app/api/authentication/authentication_requirements/__mocks__/_mockServer';
 
 // initiatives mock data
 import initiativesEndpoints from '../app/api/initiatives/__mocks__/_mockServer';
@@ -25,15 +26,21 @@ import basketsEndpoints from '../app/api/baskets/__mocks__/_mockServer';
 const endpoints = {
   ...appConfigurationEndpoints,
   ...usersMeEndpoints,
-  ...usersMocks,
+  ...usersEndpoints,
+  ...authenticationRequirementsEndpoints,
+
   ...initiativesEndpoints,
   ...initiativeStatusesEndpoints,
   ...initiativeImagesEndpoints,
+
   ...ideasEndpoints,
   ...ideaStatusesEndpoints,
   ...ideaImagesEndpoints,
+
   ...projectsEndpoints,
+
   ...phasesEndpoints,
+  
   ...basketsEndpoints,
 }
 

@@ -1,5 +1,7 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
+import mockEndpoints from 'utils/storybook/mockEndpoints';
+import { loggedOutHandler } from 'api/me/__mocks__/_mockServer';
 
 import Authentication from '.';
 import { triggerAuthenticationFlow } from './events';
@@ -39,5 +41,10 @@ type Story = StoryObj<typeof meta>;
 
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
 export const SignUp: Story = {
-  play: () => {},
+  parameters: {
+    msw: mockEndpoints({
+      'GET users/me': loggedOutHandler,
+    }),
+  },
+  // play: () => {},
 };
