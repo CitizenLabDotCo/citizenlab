@@ -1,5 +1,4 @@
 import React from 'react';
-import { WrappedComponentProps } from 'react-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import {
   GraphCard,
@@ -23,7 +22,7 @@ const PollReport = ({
   participationContextId,
   participationContextType,
   participationContextTitle,
-}: Props & WrappedComponentProps) => {
+}: Props) => {
   const { data: pollQuestions } = usePollQuestions({
     participationContextId,
     participationContextType,
