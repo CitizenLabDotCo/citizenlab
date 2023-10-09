@@ -1,4 +1,5 @@
 import { rest } from 'msw';
+import { API_PATH } from 'containers/App/constants';
 import { IUserData } from '../types';
 
 export const usersData: IUserData[] = [
@@ -63,11 +64,17 @@ export const usersData: IUserData[] = [
   },
 ];
 
-export const apiPath = `/web_api/v1/users/:id`;
+export const apiPath = `${API_PATH}/users/:id`;
 
 const endpoints = {
   'GET users/:id': rest.get(apiPath, (_req, res, ctx) => {
     return res(ctx.status(200), ctx.json({ data: usersData[0] }));
+  }),
+  'POST users': rest.post(`${API_PATH}/users`, (_req, res, ctx) => {
+    return res(ctx.status(201), ctx.json({ data: usersData[0] }));
+  }),
+  'POST user_token': rest.post(`${API_PATH}/user_token`, (_req, res, ctx) => {
+    return res(ctx.status(201), ctx.json({ jwt: 'abc123' }));
   }),
 };
 

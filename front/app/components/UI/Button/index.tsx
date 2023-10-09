@@ -62,7 +62,9 @@ const ButtonWrapper = ({
       : undefined;
 
   if (!isNilOrError(locale)) {
-    return <Button as={link} disabled={disabled} {...rest} />;
+    return (
+      <Button as={link} disabled={disabled} {...rest} icon="alert-circle" />
+    );
   }
 
   return null;

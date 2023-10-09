@@ -6,11 +6,20 @@ import ThemeContext from './ThemeContext';
 
 const EMPTY_OBJ = {};
 
+const Portals = () => (
+  <>
+    <div id="modal-portal" />
+    <div id="topbar-portal" />
+    <div id="mobile-nav-portal" />
+  </>
+)
+
 export default (Story) => {
   return (
     <QueryClientProvider client={queryClient}>
       <OutletsContext.Provider value={EMPTY_OBJ}>
         <ThemeContext>
+          <Portals />
           <Story />
         </ThemeContext>
       </OutletsContext.Provider>
