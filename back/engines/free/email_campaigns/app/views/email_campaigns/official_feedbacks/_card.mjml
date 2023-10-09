@@ -26,7 +26,7 @@
     <mj-text font-size="14px">
       <%= format_message('author_wrote', component: 'general', values: { authorName: author_name }) %>
       <p style="margin: 15px 0 0;">
-        <%= localize_for_recipient(event.official_feedback_body_multiloc).first(140) %>
+        <%= localize_for_recipient(event.official_feedback_body_multiloc) %>
       </p>
     </mj-text>
   </mj-column>
