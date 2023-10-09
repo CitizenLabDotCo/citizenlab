@@ -40,7 +40,6 @@ const config: StorybookConfig = {
       }
     }
 
-
     config.plugins = [
       ...(config?.plugins?.constructor === Array ? config.plugins : []),
       new webpack.ProvidePlugin({

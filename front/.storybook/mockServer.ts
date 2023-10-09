@@ -34,7 +34,7 @@ const endpoints = {
   ...ideaImagesEndpoints,
   ...projectsEndpoints,
   ...phasesEndpoints,
-  ...basketsEndpoints
+  ...basketsEndpoints,
 }
 
 export default endpoints;

@@ -209,6 +209,31 @@ async function getResponse(event, client, requestId) {
     // are immutable.
     delete headers['x-msw-bypass']
 
+    // some weird hack I (Luuc) needed to add to get hot reload to work...
+    if (clonedRequest.url.startsWith('http://localhost:6006/en')) {      
+      const newRequest = new Request(
+        clonedRequest.url.replace('http://localhost:6006/en', 'http://localhost:6006'),
+        {
+          body: clonedRequest.body,
+          cache: clonedRequest.cache,
+          credentials: clonedRequest.credentials,
+          destination: clonedRequest.destination,
+          headers: clonedRequest.headers,
+          integrity: clonedRequest.integrity,
+          isHistoryNavigation: clonedRequest.isHistoryNavigation,
+          keepalive: clonedRequest.keepalive,
+          method: clonedRequest.method,
+          mode: clonedRequest.mode,
+          redirect: clonedRequest.redirect,
+          referrer: clonedRequest.referrer,
+          referrerPolicy: clonedRequest.referrerPolicy,
+          signal: clonedRequest.signal
+        }
+      )
+
+      return fetch(newRequest, { headers })
+    }
+
     return fetch(clonedRequest, { headers })
   }
 

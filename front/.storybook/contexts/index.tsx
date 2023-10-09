@@ -6,12 +6,14 @@ import ThemeContext from './ThemeContext';
 
 const EMPTY_OBJ = {};
 
-export default (Story) => (
-  <QueryClientProvider client={queryClient}>
-    <OutletsContext.Provider value={EMPTY_OBJ}>
-      <ThemeContext>
-        <Story />
-      </ThemeContext>
-    </OutletsContext.Provider>
-  </QueryClientProvider>
-)
+export default (Story) => {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <OutletsContext.Provider value={EMPTY_OBJ}>
+        <ThemeContext>
+          <Story />
+        </ThemeContext>
+      </OutletsContext.Provider>
+    </QueryClientProvider>
+  )
+}
