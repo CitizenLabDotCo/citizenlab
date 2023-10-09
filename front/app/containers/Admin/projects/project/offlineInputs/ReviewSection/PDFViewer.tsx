@@ -11,10 +11,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 // utils
 import { getJwt } from 'utils/auth/jwt';
 
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  'npm:pdfjs-dist/build/pdf.worker.min.js',
-  import.meta.url
-).toString();
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
 
 interface Props {
   currentPageIndex: number;
