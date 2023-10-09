@@ -1,7 +1,7 @@
 import { IProjects, IProjectData } from '../types';
 
 export const project1: IProjectData = {
-  id: 'be3f645b-3e1d-4afc-b91b-d68c4dc0100b',
+  id: '1aa8a788-3aee-4ada-a581-6d934e49784b',
   type: 'project',
   attributes: {
     allow_anonymous_participation: false,
@@ -150,7 +150,7 @@ export const project1: IProjectData = {
 };
 
 export const project2: IProjectData = {
-  id: '4bf7531c-1d1e-45a5-adb2-cabfccadd358',
+  id: '4b429681-1744-456f-8550-e89a2c2c74b2',
   type: 'project',
   attributes: {
     allow_anonymous_participation: false,
