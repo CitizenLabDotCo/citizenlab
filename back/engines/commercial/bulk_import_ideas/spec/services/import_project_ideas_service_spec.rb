@@ -210,26 +210,6 @@ describe BulkImportIdeas::ImportProjectIdeasService do
         expect(rows[0][:user_last_name]).to eq 'Rambo'
       end
 
-      it 'can parse select fields from option values with page locations' do
-        expect_any_instance_of(described_class).to receive(:import_form_data).and_return(pdf_form_data)
-        ideas = [{
-          pdf_pages: [1, 2],
-          fields: {
-            'Title' => 'Free donuts for all',
-            'Description' => 'Give them all donuts',
-            'Yes_2.50' => 'filled_checkbox',
-            'This_2.70' => 'filled_checkbox',
-            'That_2.73' => 'filled_checkbox'
-          }
-        }]
-        rows = service.send(:ideas_to_idea_rows, ideas)
-
-        expect(rows[0][:title_multiloc]).to eq({ en: 'Free donuts for all' })
-        expect(rows[0][:body_multiloc]).to eq({ en: 'Give them all donuts' })
-        expect(rows[0][:custom_field_values][:select_field]).to eq 'yes'
-        expect(rows[0][:custom_field_values][:multiselect_field]).to match_array %w[this that]
-      end
-
       it 'can accept select fields as arrays as well as delimited strings' do
         pdf_ideas[0][:fields]['Multi select field'] = 'This;That'
         pdf_ideas[1][:fields]['Multi select field'] = %w[This That]
@@ -430,12 +410,16 @@ describe BulkImportIdeas::ImportProjectIdeasService do
       it 'converts the fields for mapping to custom fields' do
         idea = {
           'Title (optional)' => 'This fine title',
-          'Yes_1.23' => 'filled_checkbox'
+          'Yes_1.3.23' => 'filled_checkbox',
+          'No_3.12.46' => 'filled_checkbox',
+          'No_12.24.35' => 'unfilled_checkbox'
         }
         cleaned_idea = service.send(:clean_field_names, idea)
         expect(cleaned_idea).to match_array([
           { name: 'Title', value: 'This fine title', type: 'field', page: nil, position: nil },
-          { name: 'Yes', value: 'filled_checkbox', type: 'option', page: 1, position: 23 }
+          { name: 'Yes', value: 'filled_checkbox', type: 'option', page: 1, position: 23 },
+          { name: 'No', value: 'filled_checkbox', type: 'option', page: 3, position: 46 },
+          { name: 'No', value: 'unfilled_checkbox', type: 'option', page: 12, position: 35 }
         ])
       end
     end
@@ -541,10 +525,9 @@ describe BulkImportIdeas::ImportProjectIdeasService do
           }
         end
 
-        it 'converts multiselect fields - test case 1' do
+        it 'converts multiselect fields - independently for each idea' do
           expect_any_instance_of(described_class).to receive(:import_form_data).and_return(pdf_form_data)
-          idea = [
-            # Idea 1
+          idea1 = [
             { name: 'Monkeys', value: 'filled_checkbox', type: 'option', page: 2, position: 68 },
             { name: 'Cows', value: 'filled_checkbox', type: 'option', page: 2, position: 70 },
             { name: 'Sparrows', value: 'filled_checkbox', type: 'option', page: 2, position: 73 },
@@ -555,18 +538,7 @@ describe BulkImportIdeas::ImportProjectIdeasService do
             { name: 'Cows', value: 'filled_checkbox', type: 'option', page: 3, position: 31 },
             { name: 'Sparrows', value: 'unfilled_checkbox', type: 'option', page: 3, position: 33 }
           ]
-          idea_row = service.send(:process_custom_form_fields, idea, {})
-          expect(idea_row[:custom_field_values]).to include({
-            multi_one: %w[monkeys cows sparrows],
-            another_multi: %w[cows sparrows],
-            last_multi: %w[cows]
-          })
-        end
-
-        it 'converts multiselect fields - test case 2' do
-          expect_any_instance_of(described_class).to receive(:import_form_data).and_return(pdf_form_data)
-          idea = [
-            # Idea 2
+          idea2 = [
             { name: 'Monkeys', value: 'filled_checkbox', type: 'option', page: 2, position: 68 },
             { name: 'Cows', value: 'unfilled_checkbox', type: 'option', page: 2, position: 71 },
             { name: 'Sparrows', value: 'unfilled_checkbox', type: 'option', page: 2, position: 74 },
@@ -577,14 +549,20 @@ describe BulkImportIdeas::ImportProjectIdeasService do
             { name: 'Cows', value: 'filled_checkbox', type: 'option', page: 3, position: 32 },
             { name: 'Sparrows', value: 'filled_checkbox', type: 'option', page: 3, position: 34 }
           ]
-          idea_row = service.send(:process_custom_form_fields, idea, {})
-          expect(idea_row[:custom_field_values]).to include({
+          idea_row1 = service.send(:process_custom_form_fields, idea1, {})
+          expect(idea_row1[:custom_field_values]).to include({
+            multi_one: %w[monkeys cows sparrows],
+            another_multi: %w[cows sparrows],
+            last_multi: %w[cows]
+          })
+
+          idea_row2 = service.send(:process_custom_form_fields, idea2, {})
+          expect(idea_row2[:custom_field_values]).to include({
             multi_one: %w[monkeys],
             another_multi: %w[monkeys cows],
             last_multi: %w[cows sparrows]
           })
         end
-
       end
     end
   end

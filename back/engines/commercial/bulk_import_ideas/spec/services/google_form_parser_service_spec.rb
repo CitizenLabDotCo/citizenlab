@@ -22,12 +22,11 @@ describe BulkImportIdeas::GoogleFormParserService do
     end
 
     # it 'parses the pdf using the form parser' do
-    #   file_content = Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/personal_data.pdf').binread
+    #   file_content = Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/survey-personal.pdf').binread
     #   service = described_class.new
-    #   pages = service.parse_pdf file_content, 2
+    #   pages = service.parse_pdf file_content, 3
     #
     #   binding.pry
-    #
     #   expect(pages).not_to be_nil
     # end
   end

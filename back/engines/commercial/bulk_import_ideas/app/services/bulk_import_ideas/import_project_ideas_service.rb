@@ -198,7 +198,6 @@ module BulkImportIdeas
 
     # Match all fields in the forms field with values returned by parser / xlsx sheet
     def process_custom_form_fields(idea, idea_row)
-      # TODO: This is still not working - getting confused on the second idea for some reason - page nums etc
       # Merge the form fields with the import values into a single array
       merged_idea = []
       form_fields = @input_form_data[:fields]
@@ -215,7 +214,7 @@ module BulkImportIdeas
             elsif idea_field[:value] == 'filled_checkbox' && form_field[:page] == idea_field[:page]
               # Check that the value is near to the position on the page it should be
               if idea_field[:position].between?(form_field[:position].to_i - POSITION_TOLERANCE, form_field[:position].to_i + POSITION_TOLERANCE)
-                select_field = merged_idea.find { |f| f[:key] == form_field[:parent_key] } || form_fields.find { |f| f[:key] == form_field[:parent_key] }
+                select_field = merged_idea.find { |f| f[:key] == form_field[:parent_key] } || form_fields.find { |f| f[:key] == form_field[:parent_key] }.clone
                 select_field[:value] = select_field[:value] ? select_field[:value] << form_field[:key] : [form_field[:key]]
                 merged_idea << select_field
                 idea.delete_if { |f| f == idea_field }
@@ -244,8 +243,6 @@ module BulkImportIdeas
       end
       idea_row[:custom_field_values] = custom_fields
 
-      binding.pry
-
       idea_row
     end
 
@@ -269,7 +266,7 @@ module BulkImportIdeas
       locale_optional_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.optional') }
       idea = extract_permission_checkbox(idea)
       idea.map do |name, value|
-        option = name.match(/(.*)_(\d)_(\d).(\d{2})/) # Is this an option (checkbox)?
+        option = name.match(/(.*)_(\d*).(\d*).(\d{2})/) # Is this an option (checkbox)?
         {
           name: option ? option[1] : name.gsub("(#{locale_optional_label})", '').squish,
           value: value,
@@ -313,7 +310,7 @@ module BulkImportIdeas
 
     # Return the fields and page count to import data to
     def import_form_data(personal_data_enabled)
-      # TODO: If this is an xlsx import then it just needs the fields direct from custom fields
+      # NOTE: It calls this form an xlsx import too - one side effect currently - proposed budget does not import
       PrintCustomFieldsService.new(@phase || @project, @form_fields, @locale, personal_data_enabled).importer_data
     end
   end

@@ -75,7 +75,7 @@ module BulkImportIdeas
         end
 
         # Include field y, position in doc + position in form values in name to allow checkbox values to be used multiple times
-        position = "#{page_count + 1}_#{field[:position]}"
+        position = "#{page_count + 1}.#{field[:position]}"
         field_name = field[:type].include?('checkbox') ? "#{field[:name]}_#{position}" : field[:name].to_s
         idea[:fields][field_name] = field[:type].include?('checkbox') ? field[:type] : field[:value]
         idea[:pdf_pages] << field[:page] unless idea[:pdf_pages].include? field[:page]
