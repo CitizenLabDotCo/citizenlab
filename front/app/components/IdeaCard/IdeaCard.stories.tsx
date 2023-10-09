@@ -6,7 +6,7 @@ import IdeaCard from '.';
 const meta = {
   title: 'Example/IdeaCard',
   render: (props) => (
-    <div style={{ maxWidth: '500px' }}>
+    <div style={{ maxWidth: '700px' }}>
       <IdeaCard {...props} />
     </div>
   ),
