@@ -123,9 +123,9 @@ namespace :setup_and_support do
 
   desc 'Adds an ordered list of custom field options to the specified custom field'
   task :add_custom_field_options, %i[host url id locale] => [:environment] do |_t, args|
-    locale = args[:locale] || Tenant.find_by(host: args[:host]).settings.dig('core', 'locales').first
     options = open(args[:url]).readlines.map(&:strip)
     Apartment::Tenant.switch(args[:host].tr('.', '_')) do
+      locale = args[:locale] || AppConfiguration.instance.settings.dig('core', 'locales').first
       cf = CustomField.find args[:id]
       options.each do |option|
         cfo = cf.options.create!(title_multiloc: { locale => option })
@@ -235,9 +235,9 @@ namespace :setup_and_support do
 
   desc 'Create a new manual group, given a list of user emails'
   task :create_group_from_email_list, %i[host url title] => [:environment] do |_t, args|
-    locale = Tenant.find_by(host: args[:host]).settings.dig('core', 'locales').first
     emails = open(args[:url]).readlines.map(&:strip)
     Apartment::Tenant.switch(args[:host].tr('.', '_')) do
+      locale = AppConfiguration.instance.settings.dig('core', 'locales').first
       users = User.where(email: emails)
       Group.create!(title_multiloc: { locale => args[:title] }, membership_type: 'manual', members: users)
     end
@@ -245,9 +245,9 @@ namespace :setup_and_support do
 
   desc 'Create a new manual group, given a list of user IDs'
   task :create_group_from_user_id_list, %i[host url title] => [:environment] do |_t, args|
-    locale = Tenant.find_by(host: args[:host]).settings.dig('core', 'locales').first
     ids = open(args[:url]).readlines.map(&:strip)
     Apartment::Tenant.switch(args[:host].tr('.', '_')) do
+      locale = AppConfiguration.instance.settings.dig('core', 'locales').first
       users = User.where(id: ids)
       Group.create!(title_multiloc: { locale => args[:title] }, membership_type: 'manual', members: users)
     end
