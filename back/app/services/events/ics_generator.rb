@@ -29,9 +29,25 @@ module Events
     end
 
     def add_event_to_calendar(cal, event, preferred_locale)
+      start_time = event.start_at.in_time_zone(timezone)
+      end_time = event.end_at.in_time_zone(timezone)
+
+      # Since we don't include the timezone definition (VTIMEZONE) in the calendar, we
+      # should normally use global timezone identifiers that can be looked up by the
+      # calendar app in the timezone registry. According to the ICS specification,
+      # global identifiers use `/` as a prefix, for example, `/America/New_York` for
+      # `America/New_York`. However, both Apple Calendar and Outlook Calendar do not
+      # recognize the timezone when it is prefixed with `/`. On the other hand, all the
+      # calendar apps we tested (Apple Calendar, Outlook, Google Calendar, and Proton
+      # Calendar) seem to work fine with the timezone identifier without the `/` prefix.
+      # Therefore, we have decided to use the timezone identifier without the `/` prefix,
+      # even though it deviates from the ICS specification.
+      tzid = timezone.tzinfo.identifier
+
       cal.event do |e|
-        e.dtstart = Icalendar::Values::DateTime.new(event.start_at)
-        e.dtend = Icalendar::Values::DateTime.new(event.end_at)
+        e.dtstart = Icalendar::Values::DateTime.new(start_time, tzid: tzid)
+        e.dtend = Icalendar::Values::DateTime.new(end_time, tzid: tzid)
+
         e.summary = multiloc_service.t(event.title_multiloc, preferred_locale)
         e.description = multiloc_service.t(event.description_multiloc, preferred_locale)
         e.location = full_address(event, preferred_locale)
@@ -55,6 +71,13 @@ module Events
 
     def multiloc_service
       @multiloc_service ||= MultilocService.new
+    end
+
+    def timezone
+      @timezone ||= begin
+        timezone_name = AppConfiguration.instance.settings.dig('core', 'timezone')
+        ActiveSupport::TimeZone[timezone_name] || (raise KeyError, timezone_name)
+      end
     end
   end
 end

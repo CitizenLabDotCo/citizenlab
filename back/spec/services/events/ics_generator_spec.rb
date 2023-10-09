@@ -6,6 +6,13 @@ RSpec.describe Events::IcsGenerator do
   subject(:ics_generator) { described_class.new }
 
   describe '.generate_ics' do
+    before do
+      app_config = AppConfiguration.instance
+      settings = app_config.settings
+      settings['core']['timezone'] = 'America/New_York'
+      app_config.update!(settings: settings)
+    end
+
     # This test serves as a regression test. The generated ICS file was verified and
     # manually tested with a calendar app. If this test were to become too brittle,
     # we can instead check for the presence of specific chosen substrings. For example:
@@ -23,8 +30,8 @@ RSpec.describe Events::IcsGenerator do
         BEGIN:VEVENT
         DTSTAMP:%DTSTAMP_PLACEHOLDER%
         UID:%UID_PLACEHOLDER%
-        DTSTART:20170501T200000
-        DTEND:20170501T220000
+        DTSTART;TZID=America/New_York:20170501T160000
+        DTEND;TZID=America/New_York:20170501T180000
         DESCRIPTION:<p>Be there and learn everything about our future!</p>
         GEO:50.8465574798584;4.351710319519043
         LOCATION:Atomiumsquare 1\\, 1020 Brussels\\, Belgium\\n(Sphere 1)
