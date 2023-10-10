@@ -15,7 +15,7 @@ interface Props {
 const TimelineProject = ({ project }: Props) => {
   const { data: phases } = usePhases(project.id);
 
-  if (!phases || phases?.data.length === 0) {
+  if (!phases || phases.data.length === 0) {
     return null;
   }
 
