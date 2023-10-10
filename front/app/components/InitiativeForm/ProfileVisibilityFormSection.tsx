@@ -27,7 +27,7 @@ const ProfileVisibilityFormSection = ({ triggerModal }: Props) => {
   const isEditingInitiative = typeof initiativeId === 'string';
   const allowAnonymousParticipation =
     appConfiguration.data.attributes.settings.initiatives
-      ?.allow_anonymous_participation;
+      .allow_anonymous_participation;
 
   const onHandleSideEffects = () => {
     triggerModal();

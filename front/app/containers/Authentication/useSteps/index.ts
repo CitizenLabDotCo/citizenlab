@@ -244,6 +244,14 @@ export default function useSteps() {
       ignoreQueryPrefix: true,
     }) as any;
 
+    if (urlSearchParams.verification_error === 'true') {
+      transition(
+        currentStep,
+        'TRIGGER_VERIFICATION_ERROR'
+      )(urlSearchParams.error);
+      return;
+    }
+
     // detect whether we're entering from a redirect of a 3rd party
     // authentication method through an URL param, and launch the corresponding
     // flow
