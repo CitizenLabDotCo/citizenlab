@@ -64,16 +64,13 @@ module MultiTenancy
 
         # @return [Array<::AppConfiguration>]
         def from_tenants(tenants)
-          sql_query = sql_from_tenants(tenants)
-          app_configuration = ActiveRecord::Base.connection.execute(sql_query)
-          app_configuration.map { |record| instantiate(record) }
-        end
-
-        def sql_from_tenants(tenants)
           colnames = column_names.join(', ')
-          tenants.map(&:schema_name)
+          sql_query = tenants.map(&:schema_name)
             .map { |schema| "SELECT #{colnames} FROM \"#{schema}\".app_configurations" }
             .join(' UNION ')
+
+          app_configuration = ActiveRecord::Base.connection.execute(sql_query)
+          app_configuration.map { |record| instantiate(record) }
         end
       end
     end
