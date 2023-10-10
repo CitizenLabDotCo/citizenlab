@@ -1,7 +1,7 @@
 import React, { memo, useState } from 'react';
 import { isEmpty, isNumber, round } from 'lodash-es';
 import moment from 'moment';
-import Observer from '@researchgate/react-intersection-observer';
+import { useInView } from 'react-intersection-observer';
 import bowser from 'bowser';
 import { TLayout } from 'components/ProjectAndFolderCards';
 
@@ -424,6 +424,13 @@ const ProjectCard = memo<InputProps>(
     className,
     showFollowButton,
   }) => {
+    const { ref: progressBarRef } = useInView({
+      onChange: (inView) => {
+        if (inView) {
+          setVisible(true);
+        }
+      },
+    });
     const { formatMessage } = useIntl();
     const { data: project } = useProjectById(projectId);
     const { data: authUser } = useAuthUser();
@@ -435,16 +442,6 @@ const ProjectCard = memo<InputProps>(
     const theme = useTheme();
 
     const [visible, setVisible] = useState(false);
-
-    const handleIntersection = (
-      event: IntersectionObserverEntry,
-      unobserve: () => void
-    ) => {
-      if (event.isIntersecting) {
-        setVisible(true);
-        unobserve();
-      }
-    };
 
     const handleProjectCardOnClick = (projectId: string) => () => {
       trackEventByName(tracks.clickOnProjectCard, { extra: { projectId } });
@@ -549,14 +546,12 @@ const ProjectCard = memo<InputProps>(
                   values={{ timeRemaining }}
                 />
               </TimeRemaining>
-              <Observer onChange={handleIntersection}>
-                <ProgressBar aria-hidden>
-                  <ProgressBarOverlay
-                    progress={progress}
-                    className={visible ? 'visible' : ''}
-                  />
-                </ProgressBar>
-              </Observer>
+              <ProgressBar ref={progressBarRef} aria-hidden>
+                <ProgressBarOverlay
+                  progress={progress}
+                  className={visible ? 'visible' : ''}
+                />
+              </ProgressBar>
             </Box>
           ) : null;
       }
