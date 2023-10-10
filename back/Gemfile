@@ -154,7 +154,7 @@ gem 'intercom', '~> 4.2'
 # mjml-rails cannot find the MJML parser when installed
 # through the emails engine and is therefore specified
 # in the main app.
-gem 'mjml-rails', '~> 4.9'
+gem 'mjml-rails', '~> 4.9', require: false
 gem 'cloudfront-rails', '~> 0.4'
 
 free_engines = %w[

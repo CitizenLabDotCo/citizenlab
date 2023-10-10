@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'mjml-rails'
+
 module EmailCampaigns
   class ApplicationMailer < ApplicationMailer
     layout 'campaign_mailer'
