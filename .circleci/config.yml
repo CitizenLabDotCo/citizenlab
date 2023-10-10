@@ -135,6 +135,12 @@ jobs:
           keys:
             - v2-npm-cache-{{ checksum "package-lock.json" }}
       - run:
+          name: Install jq
+          command: |
+            # Install jq using apt-get (for Debian-based images)
+            apt-get update
+            apt-get install -y jq
+      - run:
           name: Update package.json with CL2 version
           command: |
             CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
