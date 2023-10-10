@@ -71,6 +71,10 @@ const config = {
       '/admin_templates_api': `http://${GRAPHQL_HOST}:${GRAPHQL_PORT}`,
       '/uploads': `http://${API_HOST}:${API_PORT}`,
       '/workshops': `http://${DEV_WORKSHOPS_HOST}:${DEV_WORKSHOPS_PORT}`,
+      '/json': {
+        target: 'https://maps.googleapis.com/maps/api/place/textsearch',
+        changeOrigin: true,
+      },
     },
     client: {
       overlay: false,
