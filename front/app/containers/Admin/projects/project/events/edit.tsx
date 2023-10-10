@@ -15,11 +15,11 @@ import {
   IconTooltip,
   Input,
   Label,
-  LocationInput,
   Spinner,
   Title,
   Toggle,
 } from '@citizenlab/cl2-component-library';
+import LocationInput, { Option } from 'components/UI/LocationInput';
 import Map from './components/map';
 import { leafletMapClicked$ } from 'components/UI/LeafletMap/events';
 import Modal from 'components/UI/Modal';
@@ -596,9 +596,12 @@ const AdminProjectEventEdit = () => {
               <LocationInput
                 id="event-location-picker"
                 className="e2e-event-location-input"
-                value={eventAttrs.address_1 || ''}
-                onChange={(value) => {
-                  handleAddress1OnChange(value);
+                value={{
+                  value: eventAttrs.address_1 || '',
+                  label: eventAttrs.address_1 || '',
+                }}
+                onChange={(option: Option) => {
+                  handleAddress1OnChange(option.value);
                 }}
                 placeholder={formatMessage(messages.searchForLocation)}
               />
