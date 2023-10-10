@@ -19,6 +19,7 @@ const PowerBITemplates = () => {
   const isPowerBIEnabled = useFeatureFlag({ name: 'power_bi' });
   const { formatMessage } = useIntl();
 
+  // TODO: Need to get this working
   const saveFile = (filename: string, mimeType: string) => {
     const file = `${API_PATH}web_api/v1/power_bi_templates/${filename}`;
     try {
@@ -45,16 +46,14 @@ const PowerBITemplates = () => {
   return (
     <>
       <Title variant="h1">{formatMessage(messages.title)}</Title>
-
+      // TODO: Finish text and move to messages
       <Text>
         Note: To use either of these Power BI, you must first{' '}
         <a href="public-api-tokens">
           create a set of credentials for our public API
         </a>
       </Text>
-
       <Title variant="h2">Report template</Title>
-
       <Box display="flex" justifyContent={'space-between'} mb="12px">
         <Text>
           This will create set up all the data connections to your CitizenLab
@@ -70,9 +69,7 @@ const PowerBITemplates = () => {
           Download reporting template (.pbit)
         </Button>
       </Box>
-
       <Title variant="h2">Dataflow template</Title>
-
       <Box display="flex" justifyContent={'space-between'} mb="12px">
         <Text>
           If you intend to use your CitizenLab data within a Power BI dataflow,
