@@ -16,7 +16,6 @@ FactoryBot.define do
     end
     required { false }
     input_type { 'text' }
-
     trait :for_custom_form do
       association :resource, factory: :custom_form
     end
