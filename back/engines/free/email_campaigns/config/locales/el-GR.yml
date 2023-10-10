@@ -1,83 +1,19 @@
 el:
   email_campaigns:
     campaign_type_description:
-      "manual": Επίσημα μηνύματα
-      "admin_rights_received": Δικαιώματα διαχειριστή
-      "comment_deleted_by_admin": Διαγράψτε το σχόλιό μου
-      "comment_marked_as_spam": Σχόλιο spam αναφορά
-      "comment_on_your_comment": Μια απάντηση στο σχόλιό μου
-      "comment_on_idea_you_follow": Ένα σχόλιο για μια ιδέα που ακολουθείτε
-      "comment_on_initiative_you_follow": Ένα σχόλιο σχετικά με μια πρόταση που ακολουθείτε
-      "cosponsor_of_your_initiative": Ένας χρήστης αποδέχεται την πρόσκλησή μου να συνυπογράψει την πρότασή μου
-      "event_registration_confirmation": Επιβεβαίωση εγγραφής στην εκδήλωση
-      "first_idea_published": Δημοσίευση της πρώτης μου ιδέας
-      "idea_marked_as_spam": Αναφορά spam ιδεών
-      "idea_published": Δημοσίευση της ιδέας μου
-      "initiative_assigned_to_you": Ανάθεση πρότασης σε μένα
-      "initiative_marked_as_spam": Έκθεση για την ανεπιθύμητη αλληλογραφία της πρότασης
-      "initiative_published": Δημοσίευση της πρότασής μου
-      "invitation_to_cosponsor_initiative": Πρόσκληση για συν-χορηγία πρότασης
-      "initiative_resubmitted_for_review": Η πρόταση υποβάλλεται εκ νέου για επανεξέταση
-      "invite_received": Προσκλήσεις
-      "invite_reminder": Υπενθύμιση πρόσκλησης
-      "internal_comment_on_idea_assigned_to_you": Εσωτερικό σχόλιο σχετικά με τις εισροές που μου έχουν ανατεθεί
-      "internal_comment_on_idea_you_commented_internally_on": Εσωτερικό σχόλιο για εισροή σχολίασα εσωτερικά για
-      "internal_comment_on_idea_you_moderate": Εσωτερικό σχόλιο σχετικά με την είσοδο σε έργο ή φάκελο που διαχειρίζομαι
-      "internal_comment_on_initiative_assigned_to_you": Εσωτερικό σχόλιο σχετικά με πρόταση που μου έχει ανατεθεί
-      "internal_comment_on_initiative_you_commented_internally_on": Εσωτερικό σχόλιο σχετικά με την πρόταση Σχολίασα εσωτερικά
-      "internal_comment_on_unassigned_initiative": Εσωτερικό σχόλιο σχετικά με μη ανατεθείσα πρόταση
-      "internal_comment_on_unassigned_unmoderated_idea": Εσωτερικό σχόλιο σχετικά με μη καθορισμένη είσοδο σε μη διαχειριζόμενο έργο
-      "internal_comment_on_your_internal_comment": Εσωτερικό σχόλιο για το εσωτερικό μου σχόλιο
-      "mention_in_official_feedback": Αναφορά σε μια ενημέρωση
-      "mention_in_internal_comment": Αναφορά σε εσωτερικό σχόλιο
-      "new_comment_for_admin": Νέο σχόλιο σε ένα έργο που συντονίζω
-      "new_idea_for_admin": Νέα ιδέα σε ένα έργο που συντονίζω
-      "new_initiative_for_admin": Νέα πρόταση
-      "official_feedback_on_idea_you_follow": Ενημέρωση για μια ιδέα που ακολουθείτε
-      "official_feedback_on_initiative_you_follow": Ενημέρωση σχετικά με μια πρόταση που ακολουθείτε
-      "password_reset": Επαναφορά κωδικού πρόσβασης
-      "project_moderation_rights_received": Δικαιώματα συντονισμού έργου που ελήφθησαν
-      "project_folder_moderation_rights_received": Δικαιώματα διαχειριστή φακέλων
-      "project_phase_started": Νέα φάση του έργου
-      "project_phase_upcoming": Επόμενη νέα φάση έργου
-      "project_published": Δημοσιευμένο έργο
-      "status_change_on_idea_you_follow": Αλλαγή κατάστασης μιας ιδέας που ακολουθείτε
-      "status_change_on_initiative_you_follow": Αλλαγή κατάστασης μιας πρότασης που ακολουθείτε
-      "threshold_reached_for_admin": Η πρόταση έφθασε το κατώτατο όριο ψήφου
-      "welcome": Μετά την εγγραφή
-      "admin_digest": Εβδομαδιαία επισκόπηση για τους διαχειριστές
-      "moderator_digest": Εβδομαδιαία επισκόπηση για τους διαχειριστές έργων
-      "assignee_digest": Εβδομαδιαία επισκόπηση των ιδεών που έχουν ανατεθεί
-      "user_digest": Εβδομαδιαία επισκόπηση
-      "voting_basket_submitted": Επιβεβαίωση της ψηφοφορίας
-      "voting_basket_not_submitted": Ψήφοι που δεν υποβλήθηκαν
-      "voting_last_chance": Τελευταία ευκαιρία να ψηφίσετε
-      "voting_results": Αποτελέσματα ψηφοφορίας
-      "your_proposed_initiatives_digest": Εβδομαδιαία επισκόπηση των προτάσεών σας
-    general:
-      by_author: 'από %{authorName}'
-      author_wrote: '%{authorName} έγραψε:'
-      cta_goto_idea: 'Πηγαίνετε σε αυτή την ιδέα'
-      cta_goto_proposal: 'Μεταβείτε στην παρούσα πρόταση'
-      cta_goto_project: 'Πηγαίνετε σε αυτό το έργο'
-    schedules:
-      weekly:
-        "0": "Εβδομαδιαία, τις Κυριακές στο %{hourOfDay}"
-        "1": "Εβδομαδιαία, κάθε Δευτέρα %{hourOfDay}"
-        "2": "Εβδομαδιαία, κάθε Τρίτη %{hourOfDay}"
-        "3": "Εβδομαδιαία, κάθε Τετάρτη %{hourOfDay}"
-        "4": "Εβδομαδιαία, κάθε Πέμπτη %{hourOfDay}"
-        "5": "Εβδομαδιαία, κάθε Παρασκευή %{hourOfDay}"
-        "6": "Εβδομαδιαίως, τα Σάββατα %{hourOfDay}"
+      "1": "Εβδομαδιαία, κάθε Δευτέρα %{hourOfDay}"
+      "2": "Εβδομαδιαία, κάθε Τρίτη %{hourOfDay}"
+      "3": "Εβδομαδιαία, κάθε Τετάρτη στο %{hourOfDay}"
+      "4": "Εβδομαδιαία, κάθε Πέμπτη στο %{hourOfDay}"
+      "5": "Εβδομαδιαία, κάθε Παρασκευή στο %{hourOfDay}"
+      "6": "Εβδομαδιαία, τα Σάββατα στο %{hourOfDay}"
     footer:
-      "link_privacy_policy": "Πολιτική απορρήτου"
       "link_terms_conditions": "Όροι & Προϋποθέσεις"
       "link_unsubscribe": "Διαγραφή"
       "powered_by": "Υποστηρίζεται από"
       "statement": "Αυτό το μήνυμα ηλεκτρονικού ταχυδρομείου σας εστάλη από το CitizenLab για λογαριασμό του %{organizationName}, επειδή είστε εγγεγραμμένος χρήστης του %{organizationLink}. Μπορείτε να %{unsubscribeLink} αν δεν θέλετε να λαμβάνετε αυτά τα μηνύματα στο μέλλον."
       "unsubscribe_text": "διαγραφή"
-    follow:
-      "unfollow_here": "Λάβατε αυτή την ειδοποίηση εξαιτίας ενός στοιχείου που ακολουθείτε. <a href=\"%{unfollow_url}\">Μπορείτε να το ακυρώσετε εδώ.</a>"
+    follow: "unfollow_here\": \"Λάβατε αυτή την ειδοποίηση λόγω ενός στοιχείου που ακολουθείτε. <a href=\"%{unfollow_url}\">Μπορείτε να το ακυρώσετε εδώ.</a>"
     comment_deleted_by_admin:
       reason: 'Ο λόγος για τον οποίο διαγράφηκε το σχόλιό σας:'
       cta_view: 'Δείτε αυτή την ιδέα'
