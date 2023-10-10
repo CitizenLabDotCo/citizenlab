@@ -169,7 +169,8 @@
 - - :approve
   - bundler-audit
   - :who:
-    :why: Despite bundler-audit being a GPL utility, we're not linking against it,
+    :why:
+      Despite bundler-audit being a GPL utility, we're not linking against it,
       but merely executing it in its distributed form as a rake task.
     :versions: []
     :when: 2022-06-17 14:33:30.806575129 Z
@@ -179,3 +180,9 @@
     :why:
     :versions: []
     :when: 2023-09-18 09:39:49.287752000 Z
+- - :permit
+  - Nonstandard
+  - :who:
+    :why:
+    :versions: []
+    :when: 2023-10-10 08:49:02.451518778 Z
