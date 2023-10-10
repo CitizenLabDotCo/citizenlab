@@ -53,8 +53,8 @@ Rails.application.configure do
   # Raises error for missing translations.
   # config.i18n.raise_on_missing_translations = true
 
-  config.log_level = :debug
-  config.active_record.verbose_query_logs = true
+  config.log_level = :error
+  config.active_record.verbose_query_logs = false
 
   # Raise exceptions for disallowed deprecations.
   config.active_support.disallowed_deprecation = :raise
