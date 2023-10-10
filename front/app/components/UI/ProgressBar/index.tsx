@@ -53,7 +53,6 @@ const ProgressBar = ({
 
   return (
     <Container className={className} aria-hidden>
-      {/* <Observer onChange={handleIntersection}> */}
       <ProgressBarOuter
         ref={progressBarRef}
         background={bgShaded === true ? `url("${warningPattern}")` : bgColor}
@@ -64,7 +63,6 @@ const ProgressBar = ({
           color={color}
         />
       </ProgressBarOuter>
-      {/* </Observer> */}
     </Container>
   );
 };
