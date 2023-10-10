@@ -210,26 +210,6 @@ describe BulkImportIdeas::ImportProjectIdeasService do
         expect(rows[0][:user_last_name]).to eq 'Rambo'
       end
 
-      it 'can parse select fields from option values with page locations' do
-        expect_any_instance_of(described_class).to receive(:import_form_data).and_return(pdf_form_data)
-        ideas = [{
-          pdf_pages: [1, 2],
-          fields: {
-            'Title' => 'Free donuts for all',
-            'Description' => 'Give them all donuts',
-            'Yes_2.50' => 'filled_checkbox',
-            'This_2.70' => 'filled_checkbox',
-            'That_2.73' => 'filled_checkbox'
-          }
-        }]
-        rows = service.send(:ideas_to_idea_rows, ideas)
-
-        expect(rows[0][:title_multiloc]).to eq({ en: 'Free donuts for all' })
-        expect(rows[0][:body_multiloc]).to eq({ en: 'Give them all donuts' })
-        expect(rows[0][:custom_field_values][:select_field]).to eq 'yes'
-        expect(rows[0][:custom_field_values][:multiselect_field]).to match_array %w[this that]
-      end
-
       it 'can accept select fields as arrays as well as delimited strings' do
         pdf_ideas[0][:fields]['Multi select field'] = 'This;That'
         pdf_ideas[1][:fields]['Multi select field'] = %w[This That]
@@ -430,18 +410,53 @@ describe BulkImportIdeas::ImportProjectIdeasService do
       it 'converts the fields for mapping to custom fields' do
         idea = {
           'Title (optional)' => 'This fine title',
-          'Yes_1.23' => 'filled_checkbox'
+          'Yes_1.3.23' => 'filled_checkbox',
+          'No_3.12.46' => 'filled_checkbox',
+          'No_12.24.35' => 'unfilled_checkbox'
         }
         cleaned_idea = service.send(:clean_field_names, idea)
         expect(cleaned_idea).to match_array([
           { name: 'Title', value: 'This fine title', type: 'field', page: nil, position: nil },
-          { name: 'Yes', value: 'filled_checkbox', type: 'option', page: 1, position: 23 }
+          { name: 'Yes', value: 'filled_checkbox', type: 'option', page: 1, position: 23 },
+          { name: 'No', value: 'filled_checkbox', type: 'option', page: 3, position: 46 },
+          { name: 'No', value: 'unfilled_checkbox', type: 'option', page: 12, position: 35 }
         ])
       end
     end
 
     describe 'process_custom_form_fields' do
       context 'maps parsed values onto actual form fields' do
+        let(:pdf_form_data) do
+          {
+            page_count: 3,
+            fields: [
+              { name: 'Title', type: 'field', input_type: 'text_multiloc', code: 'title_multiloc', key: 'title_multiloc', parent_key: nil, page: 1, position: 17 },
+              { name: 'Description', type: 'field', input_type: 'html_multiloc', code: 'body_multiloc', key: 'body_multiloc', parent_key: nil, page: 1, position: 30 },
+              { name: 'Location', type: 'field', input_type: 'text', code: 'location_description', key: 'location_description', parent_key: nil, page: 1, position: 74 },
+              { name: 'A text field', type: 'field', input_type: 'text', code: nil, key: 'a_text_field', parent_key: nil, page: 2, position: 0 },
+              { name: 'Number field', type: 'field', input_type: 'number', code: nil, key: 'number_field', parent_key: nil, page: 2, position: 19 },
+              { name: 'Select field', type: 'field', input_type: 'select', code: nil, key: 'select_field', parent_key: nil, page: 2, position: 38 },
+              { name: 'Yes', type: 'option', input_type: nil, code: nil, key: 'yes', parent_key: 'select_field', page: 2, position: 50 },
+              { name: 'No', type: 'option', input_type: nil, code: nil, key: 'no', parent_key: 'select_field', page: 2, position: 52 },
+              { name: 'Multi select field', type: 'field', input_type: 'multiselect', code: nil, key: 'multiselect_field', parent_key: nil, page: 2, position: 57 },
+              { name: 'This', type: 'option', input_type: nil, code: nil, key: 'this', parent_key: 'multiselect_field', page: 2, position: 70 },
+              { name: 'That', type: 'option', input_type: nil, code: nil, key: 'that', parent_key: 'multiselect_field', page: 2, position: 73 },
+              { name: 'Another select field', type: 'field', input_type: 'select', code: nil, key: 'another_select_field', parent_key: nil, page: 2, position: 78 },
+              { name: 'Yes', type: 'option', input_type: nil, code: nil, key: 'yes', parent_key: 'another_select_field', page: 2, position: 90 },
+              { name: 'No', type: 'option', input_type: nil, code: nil, key: 'no', parent_key: 'another_select_field', page: 2, position: 92 },
+              { name: 'Select field 3', type: 'field', input_type: 'select', code: nil, key: 'select_field3', parent_key: nil, page: 3, position: 10 },
+              { name: 'Yes', type: 'option', input_type: nil, code: nil, key: 'yes', parent_key: 'select_field3', page: 3, position: 22 },
+              { name: 'No', type: 'option', input_type: nil, code: nil, key: 'no', parent_key: 'select_field3', page: 3, position: 25 },
+              { name: 'Select field 4', type: 'field', input_type: 'select', code: nil, key: 'select_field4', parent_key: nil, page: 3, position: 30 },
+              { name: 'Yes', type: 'option', input_type: nil, code: nil, key: 'yes', parent_key: 'select_field4', page: 3, position: 42 },
+              { name: 'No', type: 'option', input_type: nil, code: nil, key: 'no', parent_key: 'select_field4', page: 3, position: 45 },
+              { name: 'Select field 5', type: 'field', input_type: 'select', code: nil, key: 'select_field5', parent_key: nil, page: 3, position: 50 },
+              { name: 'Yes', type: 'option', input_type: nil, code: nil, key: 'yes', parent_key: 'select_field5', page: 3, position: 62 },
+              { name: 'No', type: 'option', input_type: nil, code: nil, key: 'no', parent_key: 'select_field5', page: 3, position: 65 }
+            ]
+          }
+        end
+
         let(:idea) do
           [
             { name: 'Title', value: 'This fine title', type: 'field', page: nil, position: nil },
@@ -488,37 +503,67 @@ describe BulkImportIdeas::ImportProjectIdeasService do
           })
         end
       end
-    end
-  end
 
-  def pdf_form_data
-    {
-      page_count: 3,
-      fields: [
-        { name: 'Title', type: 'field', input_type: 'text_multiloc', code: 'title_multiloc', key: 'title_multiloc', parent_key: nil, page: 1, position: 17 },
-        { name: 'Description', type: 'field', input_type: 'html_multiloc', code: 'body_multiloc', key: 'body_multiloc', parent_key: nil, page: 1, position: 30 },
-        { name: 'Location', type: 'field', input_type: 'text', code: 'location_description', key: 'location_description', parent_key: nil, page: 1, position: 74 },
-        { name: 'A text field', type: 'field', input_type: 'text', code: nil, key: 'a_text_field', parent_key: nil, page: 2, position: 0 },
-        { name: 'Number field', type: 'field', input_type: 'number', code: nil, key: 'number_field', parent_key: nil, page: 2, position: 19 },
-        { name: 'Select field', type: 'field', input_type: 'select', code: nil, key: 'select_field', parent_key: nil, page: 2, position: 38 },
-        { name: 'Yes', type: 'option', input_type: nil, code: nil, key: 'yes', parent_key: 'select_field', page: 2, position: 50 },
-        { name: 'No', type: 'option', input_type: nil, code: nil, key: 'no', parent_key: 'select_field', page: 2, position: 52 },
-        { name: 'Multi select field', type: 'field', input_type: 'multiselect', code: nil, key: 'multiselect_field', parent_key: nil, page: 2, position: 57 },
-        { name: 'This', type: 'option', input_type: nil, code: nil, key: 'this', parent_key: 'multiselect_field', page: 2, position: 70 },
-        { name: 'That', type: 'option', input_type: nil, code: nil, key: 'that', parent_key: 'multiselect_field', page: 2, position: 73 },
-        { name: 'Another select field', type: 'field', input_type: 'select', code: nil, key: 'another_select_field', parent_key: nil, page: 2, position: 78 },
-        { name: 'Yes', type: 'option', input_type: nil, code: nil, key: 'yes', parent_key: 'another_select_field', page: 2, position: 90 },
-        { name: 'No', type: 'option', input_type: nil, code: nil, key: 'no', parent_key: 'another_select_field', page: 2, position: 92 },
-        { name: 'Select field 3', type: 'field', input_type: 'select', code: nil, key: 'select_field3', parent_key: nil, page: 3, position: 10 },
-        { name: 'Yes', type: 'option', input_type: nil, code: nil, key: 'yes', parent_key: 'select_field3', page: 3, position: 22 },
-        { name: 'No', type: 'option', input_type: nil, code: nil, key: 'no', parent_key: 'select_field3', page: 3, position: 25 },
-        { name: 'Select field 4', type: 'field', input_type: 'select', code: nil, key: 'select_field4', parent_key: nil, page: 3, position: 30 },
-        { name: 'Yes', type: 'option', input_type: nil, code: nil, key: 'yes', parent_key: 'select_field4', page: 3, position: 42 },
-        { name: 'No', type: 'option', input_type: nil, code: nil, key: 'no', parent_key: 'select_field4', page: 3, position: 45 },
-        { name: 'Select field 5', type: 'field', input_type: 'select', code: nil, key: 'select_field5', parent_key: nil, page: 3, position: 50 },
-        { name: 'Yes', type: 'option', input_type: nil, code: nil, key: 'yes', parent_key: 'select_field5', page: 3, position: 62 },
-        { name: 'No', type: 'option', input_type: nil, code: nil, key: 'no', parent_key: 'select_field5', page: 3, position: 65 }
-      ]
-    }
+      context 'maps multiselect values correctly' do
+        let(:pdf_form_data) do
+          {
+            page_count: 3,
+            fields: [
+              { name: 'Multi one', type: 'field', input_type: 'multiselect', code: nil, key: 'multi_one', parent_key: nil, page: 2, position: 63 },
+              { name: 'Monkeys', type: 'option', input_type: nil, code: nil, key: 'monkeys', parent_key: 'multi_one', page: 2, position: 72 },
+              { name: 'Cows', type: 'option', input_type: nil, code: nil, key: 'cows', parent_key: 'multi_one', page: 2, position: 74 },
+              { name: 'Sparrows', type: 'option', input_type: nil, code: nil, key: 'sparrows', parent_key: 'multi_one', page: 2, position: 77 },
+              { name: 'Another multi', type: 'field', input_type: 'multiselect', code: nil, key: 'another_multi', parent_key: nil, page: 3, position: 0 },
+              { name: 'Monkeys', type: 'option', input_type: nil, code: nil, key: 'monkeys', parent_key: 'another_multi', page: 3, position: 9 },
+              { name: 'Cows', type: 'option', input_type: nil, code: nil, key: 'cows', parent_key: 'another_multi', page: 3, position: 11 },
+              { name: 'Sparrows', type: 'option', input_type: nil, code: nil, key: 'sparrows', parent_key: 'another_multi', page: 3, position: 14 },
+              { name: 'Last multi', type: 'field', input_type: 'multiselect', code: nil, key: 'last_multi', parent_key: nil, page: 3, position: 19 },
+              { name: 'Monkeys', type: 'option', input_type: nil, code: nil, key: 'monkeys', parent_key: 'last_multi', page: 3, position: 28 },
+              { name: 'Cows', type: 'option', input_type: nil, code: nil, key: 'cows', parent_key: 'last_multi', page: 3, position: 30 },
+              { name: 'Sparrows', type: 'option', input_type: nil, code: nil, key: 'sparrows', parent_key: 'last_multi', page: 3, position: 33 }
+            ]
+          }
+        end
+
+        it 'converts multiselect fields - independently for each idea' do
+          expect_any_instance_of(described_class).to receive(:import_form_data).and_return(pdf_form_data)
+          idea1 = [
+            { name: 'Monkeys', value: 'filled_checkbox', type: 'option', page: 2, position: 68 },
+            { name: 'Cows', value: 'filled_checkbox', type: 'option', page: 2, position: 70 },
+            { name: 'Sparrows', value: 'filled_checkbox', type: 'option', page: 2, position: 73 },
+            { name: 'Monkeys', value: 'unfilled_checkbox', type: 'option', page: 3, position: 11 },
+            { name: 'Cows', value: 'filled_checkbox', type: 'option', page: 3, position: 13 },
+            { name: 'Sparrows', value: 'filled_checkbox', type: 'option', page: 3, position: 16 },
+            { name: 'Monkeys', value: 'unfilled_checkbox', type: 'option', page: 3, position: 28 },
+            { name: 'Cows', value: 'filled_checkbox', type: 'option', page: 3, position: 31 },
+            { name: 'Sparrows', value: 'unfilled_checkbox', type: 'option', page: 3, position: 33 }
+          ]
+          idea2 = [
+            { name: 'Monkeys', value: 'filled_checkbox', type: 'option', page: 2, position: 68 },
+            { name: 'Cows', value: 'unfilled_checkbox', type: 'option', page: 2, position: 71 },
+            { name: 'Sparrows', value: 'unfilled_checkbox', type: 'option', page: 2, position: 74 },
+            { name: 'Monkeys', value: 'filled_checkbox', type: 'option', page: 3, position: 11 },
+            { name: 'Cows', value: 'filled_checkbox', type: 'option', page: 3, position: 14 },
+            { name: 'Sparrows', value: 'unfilled_checkbox', type: 'option', page: 3, position: 17 },
+            { name: 'Monkeys', value: 'unfilled_checkbox', type: 'option', page: 3, position: 29 },
+            { name: 'Cows', value: 'filled_checkbox', type: 'option', page: 3, position: 32 },
+            { name: 'Sparrows', value: 'filled_checkbox', type: 'option', page: 3, position: 34 }
+          ]
+          idea_row1 = service.send(:process_custom_form_fields, idea1, {})
+          expect(idea_row1[:custom_field_values]).to include({
+            multi_one: %w[monkeys cows sparrows],
+            another_multi: %w[cows sparrows],
+            last_multi: %w[cows]
+          })
+
+          idea_row2 = service.send(:process_custom_form_fields, idea2, {})
+          expect(idea_row2[:custom_field_values]).to include({
+            multi_one: %w[monkeys],
+            another_multi: %w[monkeys cows],
+            last_multi: %w[cows sparrows]
+          })
+        end
+      end
+    end
   end
 end

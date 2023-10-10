@@ -50,7 +50,8 @@ module BulkImportIdeas
             type: field.value_type,
             page: page.page_number,
             x: field.field_name.bounding_poly.normalized_vertices[0].x.round(2),
-            y: page.page_number + field.field_name.bounding_poly.normalized_vertices[0].y.round(2)
+            y: page.page_number + field.field_name.bounding_poly.normalized_vertices[0].y.round(2),
+            position: (page.page_number + field.field_name.bounding_poly.normalized_vertices[0].y).to_s[0..3]
           }
           fields << f
         end
@@ -73,8 +74,9 @@ module BulkImportIdeas
           page_count = 0
         end
 
-        # Include field y value in name to allow checkbox values to be used multiple times
-        field_name = field[:type].include?('checkbox') ? "#{field[:name]}_#{field[:y].to_s[0..3]}" : field[:name].to_s
+        # Include field y, position in doc + position in form values in name to allow checkbox values to be used multiple times
+        position = "#{page_count + 1}.#{field[:position]}"
+        field_name = field[:type].include?('checkbox') ? "#{field[:name]}_#{position}" : field[:name].to_s
         idea[:fields][field_name] = field[:type].include?('checkbox') ? field[:type] : field[:value]
         idea[:pdf_pages] << field[:page] unless idea[:pdf_pages].include? field[:page]
         idea[:form_pages] << (page_count + 1) unless idea[:form_pages].include?(page_count + 1)
