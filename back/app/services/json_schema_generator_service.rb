@@ -83,7 +83,8 @@ class JsonSchemaGeneratorService < FieldVisitorService
     {
       type: 'array',
       uniqueItems: true,
-      minItems: field.enabled? && field.required? ? 1 : 0,
+      minItems: field.enabled? && field.required? && !field.minimum_select_count? ? 1 : field.minimum_select_count || 0,
+      maxItems: field.maximum_select_count || field.options.size,
       items: {
         type: 'string'
       }.tap do |items|

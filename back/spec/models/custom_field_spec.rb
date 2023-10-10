@@ -444,4 +444,22 @@ RSpec.describe CustomField do
       end
     end
   end
+
+  describe 'maximum_select_count' do
+    let(:field) { create(:custom_field_multiselect, :with_options) }
+
+    it 'cannot be less than 0' do
+      field.maximum_select_count = -1
+      expect(field.valid?).to be false
+    end
+  end
+
+  describe 'minimum_select_count' do
+    let(:field) { create(:custom_field_multiselect, :with_options) }
+
+    it 'cannot be less than 0' do
+      field.minimum_select_count = -1
+      expect(field.valid?).to be false
+    end
+  end
 end

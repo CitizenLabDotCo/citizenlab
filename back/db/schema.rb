@@ -369,6 +369,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_03_095622) do
     t.jsonb "maximum_label_multiloc", default: {}, null: false
     t.jsonb "logic", default: {}, null: false
     t.string "answer_visible_to"
+    t.boolean "select_count_enabled", default: false, null: false
+    t.integer "maximum_select_count"
+    t.integer "minimum_select_count"
     t.index ["resource_type", "resource_id"], name: "index_custom_fields_on_resource_type_and_resource_id"
   end
 
