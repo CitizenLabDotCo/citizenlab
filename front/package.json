@@ -10,7 +10,7 @@
     "npm": ">=8"
   },
   "workspaces": [
-    "../../cl2-component-library"
+    "../workspaces/*"
   ],
   "author": "CitizenLab",
   "scripts": {
@@ -71,6 +71,7 @@
     "bowser": "1.x",
     "canvas-to-blob": "^1.0.0",
     "canvg": "^4.0.1",
+    "cl2-component-library": "*",
     "clipboard-polyfill": "3.0.3",
     "compression": "1.7.4",
     "cross-env": "7.0.3",

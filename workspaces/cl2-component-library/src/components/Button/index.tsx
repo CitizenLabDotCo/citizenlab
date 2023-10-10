@@ -713,7 +713,7 @@ class Button extends PureComponent<Props> {
         >
           {childContent}
         </StyledButton>
-        TEST 2
+        TEST!
       </Container>
     );
   }
