@@ -78,12 +78,6 @@ const StyledSpinner = styled(Spinner)`
   width: auto;
 `;
 
-const StyledCreatable = styled(Creatable)<{ opitons: OptionProps[] }>`
-  #react-select-2-option-${({ options }) => options.length} {
-    background-color: ${colors.successLight};
-  }
-`;
-
 const PlusIcon = styled(Icon)``;
 
 const StyledOptionLabel = styled(Box)`
@@ -111,8 +105,7 @@ const InputDetails = ({
   isMoveUpDisabled,
   isMoveDownDisabled,
 }: InputDetailsProps) => {
-  const selectRef =
-    useRef<Creatable<{ label: string; value: string }, false>>(null);
+  const selectRef = useRef<any>(null);
   const [selectedOption, setSelectedOption] = useState<null | OptionProps>();
   const [isSelectFocused, setIsSelectFocused] = useState(false);
 
@@ -244,7 +237,7 @@ const InputDetails = ({
             <Label htmlFor="categorySelect">
               {formatMessage(messages.addCategoryLabel)}
             </Label>
-            <StyledCreatable
+            <Creatable
               inputId="categorySelect"
               styles={selectStyles}
               placeholder={formatMessage(messages.addCategoryPlaceholder)}

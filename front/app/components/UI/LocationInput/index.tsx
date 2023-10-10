@@ -1,5 +1,5 @@
 import React from 'react';
-import AsyncSelect, { AsyncProps } from 'react-select/async';
+import AsyncSelect from 'react-select/async';
 import selectStyles from 'components/UI/MultipleSelect/styles';
 
 export interface Option {
@@ -9,7 +9,7 @@ export interface Option {
 
 const key = process.env.GOOGLE_MAPS_API_KEY;
 
-const LocationInput = (props: AsyncProps) => {
+const LocationInput = (props: React.ComponentProps<typeof AsyncSelect>) => {
   const promiseOptions = async (inputValue: string) => {
     try {
       const response = await fetch(

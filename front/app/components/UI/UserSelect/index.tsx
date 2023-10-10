@@ -1,7 +1,7 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
 import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
-import ReactSelect, { OptionTypeBase } from 'react-select';
+import ReactSelect from 'react-select';
 import selectStyles from 'components/UI/MultipleSelect/styles';
 import { Box } from '@citizenlab/cl2-component-library';
 import { debounce } from 'lodash-es';
@@ -12,6 +12,10 @@ import useUserById from 'api/users/useUserById';
 
 interface DataProps {
   users: GetUsersChildProps;
+}
+
+export interface OptionTypeBase {
+  [key: string]: any;
 }
 
 export interface UserOptionTypeBase extends OptionTypeBase, IUserData {
@@ -81,7 +85,7 @@ const UserSelect = ({
     onChange();
   };
 
-  const getOptionLabel = (option: UserOptionTypeBase) => {
+  const getOptionLabel = (option: UserOptionTypeBase): any => {
     if (option.value === 'loadMore' && canLoadMore) {
       return (
         <Button
@@ -121,7 +125,9 @@ const UserSelect = ({
         value={(selectedUserId && selectedUser?.data) || null}
         placeholder={placeholder}
         options={
-          canLoadMore ? [...usersList, { value: 'loadMore' }] : usersList
+          canLoadMore
+            ? ([...usersList, { value: 'loadMore' }] as any)
+            : usersList
         }
         getOptionValue={getOptionId}
         getOptionLabel={getOptionLabel}
