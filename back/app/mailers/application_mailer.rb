@@ -15,9 +15,8 @@ class ApplicationMailer < ActionMailer::Base
     :show_header?, :preheader, :subject, :user, :recipient, :locale, :count_from, :days_since_publishing,
     :text_direction
 
-  helper_method :organization_name, :recipient_name,
-    :url_service, :multiloc_service, :organization_name,
-    :loc, :localize_for_recipient, :recipient_first_name
+  helper_method :organization_name, :recipient_name, :url_service, :multiloc_service, :organization_name,
+    :loc, :localize_for_recipient, :localize_for_recipient_and_truncate, :recipient_first_name
 
   helper_method :unsubscribe_url, :terms_conditions_url, :privacy_policy_url, :home_url, :logo_url,
     :show_unsubscribe_link?, :show_terms_link?, :show_privacy_policy_link?, :format_message,
@@ -69,6 +68,18 @@ class ApplicationMailer < ActionMailer::Base
     end
 
     multiloc_service.t(multiloc, recipient.locale).html_safe if multiloc
+  end
+
+  # Truncates localized multiloc string, avoiding cutting string in the middle of HTML link and breaking the mail view.
+  def localize_for_recipient_and_truncate(multiloc_or_struct, length)
+    string = localize_for_recipient(multiloc_or_struct)
+
+    service = SanitizationService.new
+    sanitized = service.sanitize string, %i[default] # replace HTML links with text version of URL
+    truncated = sanitized.truncate(length, separator: ' ')
+    linkified = service.linkify truncated # turn any remaining URLs back into HTML links
+
+    linkified.html_safe
   end
 
   def count_from(value)
