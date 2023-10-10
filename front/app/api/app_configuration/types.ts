@@ -236,6 +236,7 @@ export interface IAppConfigurationSettings {
   follow?: AppConfigurationFeature;
   konveio_document_annotation?: AppConfigurationFeature;
   public_api_tokens?: AppConfigurationFeature;
+  power_bi?: AppConfigurationFeature;
   analysis?: AppConfigurationFeature;
 }
 
