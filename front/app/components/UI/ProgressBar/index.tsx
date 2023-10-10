@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { clamp } from 'lodash-es';
-import Observer from '@researchgate/react-intersection-observer';
 import warningPattern from './warning_pattern.svg';
+import { useInView } from 'react-intersection-observer';
 
 const Container = styled.div``;
 
@@ -44,30 +43,28 @@ const ProgressBar = ({
   bgShaded,
 }: Props) => {
   const [visible, setVisible] = useState(false);
-
-  const handleIntersection = (
-    event: IntersectionObserverEntry,
-    unobserve: () => void
-  ) => {
-    if (event.isIntersecting) {
-      setVisible(true);
-      unobserve();
-    }
-  };
+  const { ref: progressBarRef } = useInView({
+    onChange: (inView) => {
+      if (inView) {
+        setVisible(true);
+      }
+    },
+  });
 
   return (
     <Container className={className} aria-hidden>
-      <Observer onChange={handleIntersection}>
-        <ProgressBarOuter
-          background={bgShaded === true ? `url("${warningPattern}")` : bgColor}
-        >
-          <ProgressBarInner
-            progress={clamp(progress, 0, 1)}
-            className={visible ? 'visible' : ''}
-            color={color}
-          />
-        </ProgressBarOuter>
-      </Observer>
+      {/* <Observer onChange={handleIntersection}> */}
+      <ProgressBarOuter
+        ref={progressBarRef}
+        background={bgShaded === true ? `url("${warningPattern}")` : bgColor}
+      >
+        <ProgressBarInner
+          progress={progress}
+          className={visible ? 'visible' : ''}
+          color={color}
+        />
+      </ProgressBarOuter>
+      {/* </Observer> */}
     </Container>
   );
 };
