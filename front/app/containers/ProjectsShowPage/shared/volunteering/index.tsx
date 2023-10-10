@@ -45,9 +45,8 @@ const Volunteering = memo<Props>(
           phase.data.attributes.start_at,
           phase.data.attributes.end_at,
         ]) !== 'present';
-
       const disabledProject =
-        project?.data.attributes.publication_status !== 'published';
+        project && project.data.attributes.publication_status !== 'published';
 
       return (
         <Container className={className} id="volunteering">
