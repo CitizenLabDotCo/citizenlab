@@ -1,15 +1,15 @@
 import { UISchemaElement } from '@jsonforms/core';
 import { ErrorObject } from 'ajv';
-import { Message } from 'typings';
+import { MessageDescriptor } from 'utils/cl-intl';
 
 export type AjvErrorGetter = (
   error: ErrorObject,
   uischema?: UISchemaElement
-) => Message | undefined;
+) => MessageDescriptor | undefined;
 
 export type ApiErrorGetter = (
   errorKey: string,
   fieldName: string
-) => Message | undefined;
+) => MessageDescriptor | undefined;
 
 export type FormData = Record<string, any> | null | undefined;

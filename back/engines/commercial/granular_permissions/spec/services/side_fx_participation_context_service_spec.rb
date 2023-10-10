@@ -8,7 +8,7 @@ describe SideFxParticipationContextService do
   end
 
   let(:permissions_service) { instance_double(PermissionsService) }
-  let(:user) { build(:user) }
+  let(:user) { create(:user) }
   let(:pc) { create(:continuous_project) }
 
   describe 'after_create' do
