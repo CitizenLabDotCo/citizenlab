@@ -1,0 +1,6 @@
+{
+  "author": "CitizenLab",
+  "scripts": {
+    "start": "cd cl2-component-library && npm run storybook"
+  }
+}
