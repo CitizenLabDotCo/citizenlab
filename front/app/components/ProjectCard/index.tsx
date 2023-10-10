@@ -1,5 +1,5 @@
 import React, { memo, useState } from 'react';
-import { isEmpty, isNumber, round } from 'lodash-es';
+import { isEmpty, round } from 'lodash-es';
 import moment from 'moment';
 import { useInView } from 'react-intersection-observer';
 import bowser from 'bowser';
@@ -526,34 +526,31 @@ const ProjectCard = memo<InputProps>(
           </ContentHeaderLabel>
         );
       } else if (timeRemaining) {
-        const totalDays = timeRemaining
-          ? moment.duration(moment(endAt).diff(moment(startAt))).asDays()
-          : null;
-        const pastDays = timeRemaining
-          ? moment.duration(moment(moment()).diff(moment(startAt))).asDays()
-          : null;
+        const totalDays = moment
+          .duration(moment(endAt).diff(moment(startAt)))
+          .asDays();
+        const pastDays = moment
+          .duration(moment(moment()).diff(moment(startAt)))
+          .asDays();
         const progress =
-          timeRemaining && isNumber(pastDays) && isNumber(totalDays)
-            ? round((pastDays / totalDays) * 100, 1)
-            : null;
-
-        countdown =
-          typeof progress === 'number' ? (
-            <Box mt="4px" className="e2e-project-card-time-remaining">
-              <TimeRemaining className={size}>
-                <FormattedMessage
-                  {...messages.remaining}
-                  values={{ timeRemaining }}
-                />
-              </TimeRemaining>
-              <ProgressBar ref={progressBarRef} aria-hidden>
-                <ProgressBarOverlay
-                  progress={progress}
-                  className={visible ? 'visible' : ''}
-                />
-              </ProgressBar>
-            </Box>
-          ) : null;
+          // number between 0 and 100
+          round((pastDays / totalDays) * 100, 1);
+        countdown = (
+          <Box mt="4px" className="e2e-project-card-time-remaining">
+            <TimeRemaining className={size}>
+              <FormattedMessage
+                {...messages.remaining}
+                values={{ timeRemaining }}
+              />
+            </TimeRemaining>
+            <ProgressBar ref={progressBarRef} aria-hidden>
+              <ProgressBarOverlay
+                progress={progress}
+                className={visible ? 'visible' : ''}
+              />
+            </ProgressBar>
+          </Box>
+        );
       }
 
       if (participationMethod === 'voting' && votingMethod === 'budgeting') {
