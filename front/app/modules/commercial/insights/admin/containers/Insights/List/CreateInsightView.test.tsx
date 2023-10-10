@@ -23,7 +23,7 @@ describe('CreateInsightsView', () => {
   });
   it('filters out projects with no ideas', () => {
     render(<CreateInsightsView closeCreateModal={closeModal} />);
-    expect(screen.getAllByRole('checkbox')).toHaveLength(1);
+    expect(screen.getAllByRole('checkbox')).toHaveLength(2);
   });
   it('creates a view with correct viewName and projectId', () => {
     const viewName = 'New name';
@@ -60,13 +60,17 @@ describe('CreateInsightsView', () => {
       },
     });
     screen.getAllByRole('checkbox')[0].click();
+    screen.getAllByRole('checkbox')[1].click();
     fireEvent.click(screen.getByText('Create my insights'));
 
     expect(mockMutate).toHaveBeenCalledWith(
       {
         view: {
           name: viewName,
-          data_sources: [{ origin_id: project1.id }],
+          data_sources: [
+            { origin_id: project1.id },
+            { origin_id: project2.id },
+          ],
         },
       },
       { onSuccess: expect.any(Function) }

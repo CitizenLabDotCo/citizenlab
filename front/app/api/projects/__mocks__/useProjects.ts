@@ -45,7 +45,7 @@ export const project1: IProjectData = {
     visible_to: 'public',
     created_at: '2019-05-11T17:04:13.090Z',
     updated_at: '2023-03-22T08:36:22.662Z',
-    folder_id: 'b34da4ec-94ce-4af4-8811-46225c46fada',
+    folder_id: null,
     publication_status: 'published',
     description_multiloc: {
       en: '<p>You can propose anywhere you like, but we will only accept Koekenbakstraat</p>',
