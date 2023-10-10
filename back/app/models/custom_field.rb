@@ -25,6 +25,7 @@
 #  answer_visible_to      :string
 #  select_count_enabled   :boolean          default(FALSE), not null
 #  maximum_select_count   :integer
+#  minimum_select_count   :integer
 #
 # Indexes
 #
