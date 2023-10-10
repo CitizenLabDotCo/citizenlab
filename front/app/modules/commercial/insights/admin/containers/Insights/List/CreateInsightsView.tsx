@@ -28,13 +28,13 @@ import { PublicationStatus } from 'api/projects/types';
 // hooks
 import useLocalize from 'hooks/useLocalize';
 import useProjectFolders from 'api/project_folders/useProjectFolders';
+import useProjects from 'api/projects/useProjects';
 
 // services
 import useCreateView from 'modules/commercial/insights/api/views/useCreateView';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import useProjects from 'api/projects/useProjects';
 
 // typings
 
@@ -127,7 +127,10 @@ export const CreateInsightsView = ({ closeCreateModal }: InputProps) => {
   const { mutate, reset, error, isLoading } = useCreateView();
   const localize = useLocalize();
   const { data: projectFolders } = useProjectFolders({});
-  const { data: projects } = useProjects({ publicationStatuses });
+  const { data: projects } = useProjects({
+    publicationStatuses,
+    canModerate: true,
+  });
 
   const [name, setName] = useState<string | null>();
 
