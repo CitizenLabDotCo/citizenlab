@@ -76,7 +76,7 @@ class ApplicationMailer < ActionMailer::Base
 
     service = SanitizationService.new
     sanitized = service.sanitize string, %i[default] # replace HTML links with text version of URL
-    truncated = sanitized.truncate(length, separator: ' ') # truncate the string
+    truncated = sanitized.truncate(length, separator: ' ') # truncate the string without cutting the middle of a word.
     linkified = service.linkify truncated # turn any remaining URLs back into HTML links
 
     linkified.html_safe
