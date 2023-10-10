@@ -28,9 +28,15 @@ module Volunteering
     end
 
     def create?
-      user&.active? &&
-        (record.user_id == user.id) &&
-        ProjectPolicy.new(user, record.cause.participation_context.project).show?
+      return false if !user&.active?
+      return false if record.user_id != user.id
+
+      project = record.cause.participation_context.project
+      return false if !ProjectPolicy.new(user, project).show?
+
+      reason = ParticipationContextService.new.volunteering_disabled_reason_for_project project, user
+      raise_not_authorized reason if reason
+      true
     end
 
     def destroy?

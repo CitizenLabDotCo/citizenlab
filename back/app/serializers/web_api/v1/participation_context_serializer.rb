@@ -49,4 +49,8 @@ class WebApi::V1::ParticipationContextSerializer < WebApi::V1::BaseSerializer
       || TimelineService.new.phase_is_complete?(context)
     )
   }
+
+  attribute :causes_count do |context|
+    context.causes.size
+  end
 end

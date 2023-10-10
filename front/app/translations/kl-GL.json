@@ -1320,7 +1320,6 @@
   "app.containers.ProjectsIndexPage.metaTitle": "Suliniutit • {orgName}",
   "app.containers.ProjectsIndexPage.pageTitle": "Suliniutit ",
   "app.containers.ProjectsShowPage.VolunteeringSection.becomeVolunteerButton": "Nammineq kajumissutsinnik sulerusuppunga",
-  "app.containers.ProjectsShowPage.VolunteeringSection.notLoggedIn": "Uunga sammisamut nammineq kajumissutsinnik suleqataarusukkuit inussiarnersumik iserit{signInLink} imaluunniit nalunaarit {signUpLink} ",
   "app.containers.ProjectsShowPage.VolunteeringSection.signInLinkText": "Iserneq",
   "app.containers.ProjectsShowPage.VolunteeringSection.signUpLinkText": "nalunaarsorit",
   "app.containers.ProjectsShowPage.VolunteeringSection.withdrawVolunteerButton": "Nammeq kajumissutsinnik suleqataarusunnera atorunnaarsinniarpara",

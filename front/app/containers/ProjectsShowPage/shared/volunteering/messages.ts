@@ -14,10 +14,27 @@ export default defineMessages({
     id: 'app.containers.ProjectsShowPage.VolunteeringSection.withdrawVolunteerButton',
     defaultMessage: 'I withdraw my offer to volunteer',
   },
-  notLoggedIn: {
-    id: 'app.containers.ProjectsShowPage.VolunteeringSection.notLoggedIn',
+  disabledMaybeNotPermitted: {
+    id: 'app.containers.ProjectsShowPage.VolunteeringSection.disabledMaybeNotPermitted',
     defaultMessage:
-      'Please {signInLink} or {signUpLink} first in order to volunteer for this activity',
+      'To know if you can volunteer, please {signInLink} or {signUpLink} to the platform first.',
+  },
+  disabledInactive: {
+    id: 'app.containers.ProjectsShowPage.VolunteeringSection.disabledInactive',
+    defaultMessage: 'Volunteering is only possible when this phase is active.',
+  },
+  disabledNotActiveUser: {
+    id: 'app.containers.ProjectsShowPage.VolunteeringSection.disabledNotActiveUser',
+    defaultMessage: 'Please {completeRegistrationLink} to volunteer.',
+  },
+  disabledNotPermitted: {
+    id: 'app.containers.ProjectsShowPage.VolunteeringSection.disabledNotPermitted',
+    defaultMessage: "You don't have permission to volunteer.",
+  },
+  disabledNotVerified: {
+    id: 'app.containers.ProjectsShowPage.VolunteeringSection.disabledNotVerified',
+    defaultMessage:
+      'Volunteering requires verification of your identity. {verificationLink}',
   },
   signInLinkText: {
     id: 'app.containers.ProjectsShowPage.VolunteeringSection.signInLinkText',

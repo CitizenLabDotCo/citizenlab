@@ -43,6 +43,7 @@ import useDeleteVolunteer from 'api/causes/useDeleteVolunteer';
 
 // typings
 import { ICauseData } from 'api/causes/types';
+import { IProjectData } from 'api/projects/types';
 
 const Container = styled.div`
   padding: 20px;
@@ -176,11 +177,12 @@ const ActionWrapper = styled.div`
 
 interface Props {
   cause: ICauseData;
+  project: IProjectData;
   className?: string;
   disabled?: boolean;
 }
 
-const CauseCard = ({ cause, className, disabled }: Props) => {
+const CauseCard = ({ cause, project, className, disabled }: Props) => {
   const { mutate: addVolunteer } = useAddVolunteer();
   const { mutate: deleteVolunteer } = useDeleteVolunteer();
   const theme = useTheme();
@@ -202,6 +204,9 @@ const CauseCard = ({ cause, className, disabled }: Props) => {
     name: 'volunteer',
     params: { cause },
   } as const;
+
+  const { enabled, disabled_reason } =
+    project.attributes.action_descriptor.volunteering;
 
   const handleOnVolunteerButtonClick = async () => {
     const response = await getAuthenticationRequirements(GLOBAL_CONTEXT);
@@ -285,12 +290,16 @@ const CauseCard = ({ cause, className, disabled }: Props) => {
         </Content>
 
         <ActionWrapper>
-          {!authUser ? (
+          {!enabled ? ( // TODO: deal with all disabled reasons
             <Warning>
-              <FormattedMessage
-                {...messages.notLoggedIn}
-                values={{ signUpLink, signInLink }}
-              />
+              {disabled_reason === 'not_signed_in' ? (
+                <FormattedMessage
+                  {...messages.disabledMaybeNotPermitted}
+                  values={{ signUpLink, signInLink }}
+                />
+              ) : (
+                <FormattedMessage {...messages.disabledNotPermitted} />
+              )}
             </Warning>
           ) : (
             <Button
