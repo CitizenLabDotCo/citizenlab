@@ -10,17 +10,34 @@ import {
 import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import { requestBlob } from 'utils/requestBlob';
+import { saveAs } from 'file-saver';
+import { reportError } from 'utils/loggingUtils';
+import { API_PATH } from 'containers/App/constants';
 
 const PowerBITemplates = () => {
   const isPowerBIEnabled = useFeatureFlag({ name: 'power_bi' });
   const { formatMessage } = useIntl();
 
+  const saveFile = (filename: string, mimeType: string) => {
+    const file = `${API_PATH}web_api/v1/power_bi_templates/${filename}`;
+    try {
+      const blob = await requestBlob(file, mimeType as any);
+      saveAs(blob, filename);
+    } catch (error) {
+      reportError(error);
+      throw error;
+    }
+  };
+
   const downloadReportingTemplate = () => {
     console.log('downloading reporting template');
+    saveFile('reporting.pbit', 'application/pbit');
   };
 
   const downloadDataFlowTemplate = () => {
     console.log('downloading reporting template');
+    saveFile('dataflow.json', 'application/json');
   };
 
   if (!isPowerBIEnabled) return null;
