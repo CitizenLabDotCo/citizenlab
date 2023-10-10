@@ -56,6 +56,12 @@ RSpec.describe Events::IcsGenerator do
       expect(ics_string.scan('BEGIN:VEVENT').count).to eq(2)
     end
 
+    it 'includes the online link in the ics file if present' do
+      event = create(:event, :with_online_link)
+      ics_string = ics_generator.generate_ics(event, 'en')
+      expect(ics_string).to include("URL;VALUE=URI:#{event.online_link}")
+    end
+
     it 'falls back to another locale if the preferred locale is not available' do
       event = create(
         :event,

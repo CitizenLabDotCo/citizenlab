@@ -51,7 +51,11 @@ module Events
         e.summary = multiloc_service.t(event.title_multiloc, preferred_locale)
         e.description = multiloc_service.t(event.description_multiloc, preferred_locale)
         e.location = full_address(event, preferred_locale)
-        # TODO: e.url = event.online_link
+
+        # The interpretation of the URL property seems to differ widely depending on its
+        # value and the calendar app. Most of them will just ignore the property if they
+        # don't recognize a well-known video conferencing service in the URL.
+        e.url = event.online_link
 
         e.geo = [event.location_point.y, event.location_point.x] if event.location_point
       end
