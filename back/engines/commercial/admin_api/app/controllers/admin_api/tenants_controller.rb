@@ -6,9 +6,7 @@ module AdminApi
     skip_around_action :switch_tenant
 
     def index
-      tenants = Tenant.not_deleted.order(name: :asc)
-      # Call #to_json explicitly, otherwise 'data' is added as root.
-      render json: serialize_tenants(tenants).to_json
+      render json: AdminApi::TenantsFinder.new.tenants_json
     end
 
     def show
@@ -58,22 +56,6 @@ module AdminApi
     end
 
     private
-
-    # Helper function to serialize an enumeration of tenants efficiently.
-    # It works by batch loading app configurations to avoid n+1 queries.
-    # It could be move to a dedicated service if it keeps growing, but
-    # keeping things simple for now.
-    #
-    # @param [Enumerable<Tenant>] tenants
-    def serialize_tenants(tenants = nil)
-      tenants ||= Tenant.not_deleted
-      tenants = tenants.sort_by(&:host)
-      configs = AppConfiguration.from_tenants(tenants).sort_by(&:host)
-
-      tenants.zip(configs).map do |tenant, config|
-        AdminApi::TenantSerializer.new(tenant, app_configuration: config)
-      end
-    end
 
     def update_tenant(attributes)
       success, tenant, config = tenant_service.update_tenant @tenant, attributes
