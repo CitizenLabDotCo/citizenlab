@@ -26,7 +26,7 @@ import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { object, string, mixed, boolean } from 'yup';
-import { handleCLErrorWrapper } from 'utils/errorUtils';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 // utils
 import { canContainIdeas, getCurrentPhase } from 'api/phases/utils';
@@ -155,7 +155,7 @@ const ImportSection = ({ onFinishImport, locale, project, phases }: Props) => {
       onFinishImport();
       methods.reset();
     } catch (e) {
-      handleCLErrorWrapper(e, methods.setError);
+      handleHookFormSubmissionError(e, methods.setError);
     }
   };
 

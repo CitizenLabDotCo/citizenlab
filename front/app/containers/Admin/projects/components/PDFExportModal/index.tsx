@@ -22,7 +22,7 @@ import Checkbox from 'components/HookForm/Checkbox';
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { object, boolean, string } from 'yup';
-import { handleCLErrorWrapper } from 'utils/errorUtils';
+import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 export interface FormValues {
   personal_data: boolean;
@@ -89,7 +89,7 @@ const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
     } catch (e) {
       setLoading(false);
 
-      handleCLErrorWrapper(e, methods.setError);
+      handleHookFormSubmissionError(e, methods.setError);
     }
   };
 
