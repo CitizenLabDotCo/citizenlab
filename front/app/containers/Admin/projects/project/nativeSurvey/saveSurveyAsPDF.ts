@@ -19,7 +19,7 @@ export async function saveSurveyAsPDF({
   personal_data,
 }: Params) {
   try {
-    const blob = await requestBlob(downloadPdfLink, 'application/pdf', {
+    const blob = await requestBlob(downloadPdfLink, 'application/pdf' as any, {
       locale,
       personal_data,
     });
