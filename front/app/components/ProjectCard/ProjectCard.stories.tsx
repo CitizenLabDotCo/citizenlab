@@ -22,12 +22,6 @@ export const Large: Story = {
   args: {
     projectId: '1',
     size: 'large',
-  },
-  argTypes: {
-    layout: {
-      control: 'text',
-      description: '"dynamic" or "threecolumns"',
-      defaultValue: 'dynamic',
-    },
+    layout: 'dynamic',
   },
 };

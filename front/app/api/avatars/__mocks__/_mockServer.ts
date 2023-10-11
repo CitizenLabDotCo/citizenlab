@@ -8,12 +8,9 @@ export const avatarsData: IAvatarData[] = [
     type: 'avatar',
     attributes: {
       avatar: {
-        small:
-          'https://s3.eu-central-1.amazonaws.com/com-citizenlab-backoffice/avatars/small/missing.png',
-        medium:
-          'https://s3.eu-central-1.amazonaws.com/com-citizenlab-backoffice/avatars/medium/missing.png',
-        large:
-          'https://s3.eu-central-1.amazonaws.com/com-citizenlab-backoffice/avatars/large/missing.png',
+        small: 'http://localhost:6006/images/female_avatar_5.jpg',
+        medium: 'http://localhost:6006/images/female_avatar_5.jpg',
+        large: 'http://localhost:6006/images/female_avatar_5.jpg',
       },
     },
   },
