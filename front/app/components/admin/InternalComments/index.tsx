@@ -1,6 +1,5 @@
 // libraries
 import React, { useState, useCallback } from 'react';
-import Observer from '@researchgate/react-intersection-observer';
 
 // components
 import InternalParentCommentForm from './InternalParentCommentForm';
@@ -25,6 +24,7 @@ import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useInternalComments from 'api/internal_comments/useInternalComments';
 import { InternalCommentSort } from 'api/internal_comments/types';
+import { useInView } from 'react-intersection-observer';
 
 const Header = styled(Box)`
   ${isRtl`
@@ -54,6 +54,16 @@ export interface Props {
 }
 
 const InternalCommentsSection = ({ postId, postType, className }: Props) => {
+  const { ref } = useInView({
+    rootMargin: '3000px',
+    onChange: (inView) => {
+      if (inView) {
+        if (hasNextPage) {
+          fetchNextPage();
+        }
+      }
+    },
+  });
   const initiativeId = postType === 'initiative' ? postId : undefined;
   const ideaId = postType === 'idea' ? postId : undefined;
   const { data: initiative } = useInitiativeById(initiativeId);
@@ -135,11 +145,7 @@ const InternalCommentsSection = ({ postId, postType, className }: Props) => {
         loading={isLoading}
       />
 
-      {hasNextPage && !isFetchingNextPage && (
-        <Observer onChange={handleIntersection} rootMargin="3000px">
-          <Box w="100%" />
-        </Observer>
-      )}
+      {hasNextPage && !isFetchingNextPage && <Box ref={ref} w="100%" />}
 
       {isFetchingNextPage && !posting && (
         <Box
