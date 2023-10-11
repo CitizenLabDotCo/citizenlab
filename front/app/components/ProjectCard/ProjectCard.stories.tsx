@@ -20,7 +20,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Large: Story = {
   args: {
-    projectId: '2',
+    projectId: '1',
     size: 'large',
     layout: 'dynamic',
   },
