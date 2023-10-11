@@ -140,41 +140,12 @@ jobs:
             # Install jq using apt-get (for Debian-based images)
             apt-get update
             apt-get install -y jq
-
-      - run:
-          name: Debugging
-          command: |
-            # List files in the directory
-            ls -l
-
-            # Print the current working directory
-            pwd
-
-            # Output the content of the cl2-component-library directory
-            ls -l ../cl2-component-library
-
-            # Output the content of cl2-component-library's package.json
-            cat ../cl2-component-library/package.json
-
-            # Set the CL2_VERSION variable
-            CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
-
-            # Verify CL2_VERSION
-            echo "CL2_VERSION: ${CL2_VERSION}"
-
-            echo npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
-
-            echo "npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}"
-
-            # Test
-            echo test
-      - run: echo npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
       - run:
           name: Install Dependencies
           command: |
+            CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
             npm ci
             npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
-
       - save_cache:
           paths:
             - /root/.npm
@@ -455,16 +426,11 @@ jobs:
             apt-get update
             apt-get install -y jq
       - run:
-          name: Set CL2_VERSION
+          name: Install Dependencies
           command: |
-            export CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
-      - run:
-          name: Verify CL2_VERSION
-          command: |
-            echo ${CL2_VERSION}
-      - run: echo test
-      - run: npm ci
-      - run: npm i --save @citizenlab/cl2-component-library@0.11.19
+            CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
+            npm ci
+            npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
       - save_cache:
           paths:
             - /root/.npm
@@ -488,16 +454,11 @@ jobs:
             apt-get update
             apt-get install -y jq
       - run:
-          name: Set CL2_VERSION
+          name: Install Dependencies
           command: |
-            export CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
-      - run:
-          name: Verify CL2_VERSION
-          command: |
-            echo ${CL2_VERSION}
-      - run: echo test
-      - run: npm ci
-      - run: npm i --save @citizenlab/cl2-component-library@0.11.19
+            CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
+            npm ci
+            npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
       - save_cache:
           paths:
             - /root/.npm
@@ -521,16 +482,11 @@ jobs:
             apt-get update
             apt-get install -y jq
       - run:
-          name: Set CL2_VERSION
+          name: Install Dependencies
           command: |
-            export CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
-      - run:
-          name: Verify CL2_VERSION
-          command: |
-            echo ${CL2_VERSION}
-      - run: echo test
-      - run: npm ci
-      - run: npm i --save @citizenlab/cl2-component-library@0.11.19
+            CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
+            npm ci
+            npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
       - save_cache:
           paths:
             - /root/.npm
@@ -547,27 +503,7 @@ jobs:
       - restore_cache:
           keys:
             - v2-npm-cache-{{ checksum "package-lock.json" }}
-      - run:
-          name: Install jq
-          command: |
-            # Install jq using apt-get (for Debian-based images)
-            apt-get update
-            apt-get install -y jq
-      - run:
-          name: Set CL2_VERSION
-          command: |
-            export CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
-      - run:
-          name: Verify CL2_VERSION
-          command: |
-            echo ${CL2_VERSION}
-      - run: echo test
       - run: npm ci
-      - run: npm i --save @citizenlab/cl2-component-library@0.11.19
-      - save_cache:
-          paths:
-            - /root/.npm
-          key: v2-npm-cache-{{ checksum "package-lock.json" }}
       - run: /bin/bash -lc "cd ~/citizenlab/front && license_finder"
 
   front-build:
@@ -588,16 +524,11 @@ jobs:
             apt-get update
             apt-get install -y jq
       - run:
-          name: Set CL2_VERSION
+          name: Install Dependencies
           command: |
-            export CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
-      - run:
-          name: Verify CL2_VERSION
-          command: |
-            echo ${CL2_VERSION}
-      - run: echo test
-      - run: npm ci
-      - run: npm i --save @citizenlab/cl2-component-library@0.11.19
+            CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
+            npm ci
+            npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
       - save_cache:
           paths:
             - /root/.npm
@@ -623,16 +554,11 @@ jobs:
             apt-get update
             apt-get install -y jq
       - run:
-          name: Set CL2_VERSION
+          name: Install Dependencies
           command: |
-            export CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
-      - run:
-          name: Verify CL2_VERSION
-          command: |
-            echo ${CL2_VERSION}
-      - run: echo test
-      - run: npm ci
-      - run: npm i --save @citizenlab/cl2-component-library@0.11.19
+            CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
+            npm ci
+            npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
       - save_cache:
           paths:
             - /root/.npm
@@ -678,16 +604,12 @@ jobs:
             apt-get update
             apt-get install -y jq
       - run:
-          name: Set CL2_VERSION
+          name: Install Dependencies
           command: |
-            export CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
-      - run:
-          name: Verify CL2_VERSION
-          command: |
-            echo ${CL2_VERSION}
-      - run: echo test
-      - run: npm ci
-      - run: npm i --save @citizenlab/cl2-component-library@0.11.19
+            cd citizenlab/front
+            CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
+            npm ci
+            npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
       - save_cache:
           paths:
             - /root/.npm
@@ -745,16 +667,11 @@ jobs:
             apt-get update
             apt-get install -y jq
       - run:
-          name: Set CL2_VERSION
+          name: Install Dependencies
           command: |
-            export CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
-      - run:
-          name: Verify CL2_VERSION
-          command: |
-            echo ${CL2_VERSION}
-      - run: echo test
-      - run: npm ci
-      - run: npm i --save @citizenlab/cl2-component-library@0.11.19
+            CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
+            npm ci
+            npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
       - save_cache:
           paths:
             - /root/.npm
@@ -787,16 +704,11 @@ jobs:
             apt-get update
             apt-get install -y jq
       - run:
-          name: Set CL2_VERSION
+          name: Install Dependencies
           command: |
-            export CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
-      - run:
-          name: Verify CL2_VERSION
-          command: |
-            echo ${CL2_VERSION}
-      - run: echo test
-      - run: npm ci
-      - run: npm i --save @citizenlab/cl2-component-library@0.11.19
+            CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
+            npm ci
+            npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
       - save_cache:
           paths:
             - /root/.npm
