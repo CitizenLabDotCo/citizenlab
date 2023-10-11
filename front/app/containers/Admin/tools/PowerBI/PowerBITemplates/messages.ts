@@ -28,7 +28,7 @@ export default defineMessages({
   },
   reportTemplateDownload: {
     id: 'app.containers.Admin.tools.powerBITemplates.reportTemplateDownload',
-    defaultMessage: 'Download reporting template',
+    defaultMessage: 'Download report template',
   },
   dataflowTemplateTitle: {
     id: 'app.containers.Admin.tools.powerBITemplates.dataflowTemplateTitle',

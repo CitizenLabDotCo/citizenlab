@@ -12,25 +12,25 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import { isNilOrError } from 'utils/helperUtils';
 import { saveTemplateFile } from './saveTemplateFile';
-import GoBackButton from '../../../../../components/UI/GoBackButton';
-import clHistory from '../../../../../utils/cl-router/history';
-import Link from '../../../../../utils/cl-router/Link';
+import GoBackButton from 'components/UI/GoBackButton';
+import clHistory from 'utils/cl-router/history';
+import Link from 'utils/cl-router/Link';
 
 const PowerBITemplates = () => {
   const isPowerBIEnabled = useFeatureFlag({ name: 'power_bi' });
   const { formatMessage } = useIntl();
 
-  const handleDownloadTemplate = async (fileName, mimeType) => {
+  const handleDownloadTemplate = async (fileName, fileExtension) => {
     if (isNilOrError(fileName)) return;
-    await saveTemplateFile({ fileName, mimeType });
+    await saveTemplateFile({ fileName, fileExtension });
   };
 
   const downloadReportingTemplate = () => {
-    handleDownloadTemplate('reporting.pbit', 'application/pbit');
+    handleDownloadTemplate('report', 'pbit');
   };
 
   const downloadDataFlowTemplate = () => {
-    handleDownloadTemplate('dataflow.json', 'application/json');
+    handleDownloadTemplate('dataflow', 'json');
   };
 
   if (!isPowerBIEnabled) return null;
