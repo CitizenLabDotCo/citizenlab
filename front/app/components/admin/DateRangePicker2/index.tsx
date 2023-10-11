@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import DatePicker from 'react-datepicker';
 import moment, { Moment } from 'moment';
 import styled from 'styled-components';
@@ -34,26 +34,32 @@ const StylingWrapper = styled.div`
 `;
 
 interface Props {
-  startDate: Moment | null | undefined;
+  startDate: Moment | null;
   endDate: Moment | null;
-  onChangeStartDate: (
-    date: Date | null,
-    event: React.SyntheticEvent<any, Event> | undefined
-  ) => void;
-  onChangeEndDate: (
-    date: Date | null,
-    event: React.SyntheticEvent<any, Event> | undefined
-  ) => void;
+  onDatesChange: ({
+    startDate,
+    endDate,
+  }: {
+    startDate: Moment | null;
+    endDate: Moment | null;
+  }) => void;
 }
 
-const DateRangePicker2 = ({
-  startDate,
-  endDate,
-  onChangeStartDate,
-  onChangeEndDate,
-}: Props) => {
-  const handleOnChangeStartDate = () => {};
-  const handleOnChangeEndDate = () => {};
+const DateRangePicker = ({ startDate, endDate, onDatesChange }: Props) => {
+  const handleOnChangeStartDate = (newStartDate: Date | null) => {
+    onDatesChange({
+      startDate: moment(newStartDate),
+      endDate,
+    });
+  };
+
+  const handleOnChangeEndDate = (newEndDate: Date | null) => {
+    onDatesChange({
+      startDate,
+      endDate: moment(newEndDate),
+    });
+  };
+
   const convertedStartDate = moment(startDate).toDate();
   const convertedEndDate = moment(endDate).toDate();
 
@@ -81,4 +87,4 @@ const DateRangePicker2 = ({
   );
 };
 
-export default DateRangePicker2;
+export default DateRangePicker;
