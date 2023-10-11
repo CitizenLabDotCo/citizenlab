@@ -50,7 +50,7 @@ module Surveys
     def response_to_surveys_response(tf_response, field_id_to_title, form_id)
       Response.new(
         **parse_root(tf_response, form_id),
-        answers: parse_answers(tf_response['answers'], field_id_to_title)
+        answers: parse_answers(tf_response, field_id_to_title)
       )
     end
 
@@ -64,8 +64,8 @@ module Surveys
       }
     end
 
-    def parse_answers(tf_answers, field_id_to_title)
-      (tf_answers || []).map do |answer|
+    def parse_answers(tf_response, field_id_to_title)
+      answers = (tf_response['answers'] || []).map do |answer|
         question_id = answer.dig('field', 'id')
         {
           question_id: question_id,
@@ -73,6 +73,17 @@ module Surveys
           value: extract_value_from_answer(answer.with_indifferent_access)
         }
       end
+
+      # get hidden fields, if any, and add to answers hash
+      (tf_response['hidden'] || []).map do |hidden|
+        answers << {
+          question_id: "#{hidden[0]}_hidden_field",
+          question_text: "#{hidden[0]} (hidden field)",
+          value: hidden[1]
+        }
+      end
+
+      answers
     end
   end
 end
