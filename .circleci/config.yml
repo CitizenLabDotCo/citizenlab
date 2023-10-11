@@ -150,7 +150,7 @@ jobs:
             echo ${CL2_VERSION}
       - run: echo test
       - run: npm ci
-      - run: npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
+      - run: npm i --save @citizenlab/cl2-component-library@0.11.19
       - save_cache:
           paths:
             - /root/.npm
@@ -439,7 +439,7 @@ jobs:
             echo ${CL2_VERSION}
       - run: echo test
       - run: npm ci
-      - run: npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
+      - run: npm i --save @citizenlab/cl2-component-library@0.11.19
       - save_cache:
           paths:
             - /root/.npm
@@ -472,7 +472,7 @@ jobs:
             echo ${CL2_VERSION}
       - run: echo test
       - run: npm ci
-      - run: npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
+      - run: npm i --save @citizenlab/cl2-component-library@0.11.19
       - save_cache:
           paths:
             - /root/.npm
@@ -505,7 +505,7 @@ jobs:
             echo ${CL2_VERSION}
       - run: echo test
       - run: npm ci
-      - run: npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
+      - run: npm i --save @citizenlab/cl2-component-library@0.11.19
       - save_cache:
           paths:
             - /root/.npm
@@ -538,7 +538,7 @@ jobs:
             echo ${CL2_VERSION}
       - run: echo test
       - run: npm ci
-      - run: npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
+      - run: npm i --save @citizenlab/cl2-component-library@0.11.19
       - save_cache:
           paths:
             - /root/.npm
@@ -572,7 +572,7 @@ jobs:
             echo ${CL2_VERSION}
       - run: echo test
       - run: npm ci
-      - run: npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
+      - run: npm i --save @citizenlab/cl2-component-library@0.11.19
       - save_cache:
           paths:
             - /root/.npm
@@ -607,7 +607,7 @@ jobs:
             echo ${CL2_VERSION}
       - run: echo test
       - run: npm ci
-      - run: npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
+      - run: npm i --save @citizenlab/cl2-component-library@0.11.19
       - save_cache:
           paths:
             - /root/.npm
@@ -662,7 +662,7 @@ jobs:
             echo ${CL2_VERSION}
       - run: echo test
       - run: npm ci
-      - run: npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
+      - run: npm i --save @citizenlab/cl2-component-library@0.11.19
       - save_cache:
           paths:
             - /root/.npm
@@ -729,7 +729,7 @@ jobs:
             echo ${CL2_VERSION}
       - run: echo test
       - run: npm ci
-      - run: npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
+      - run: npm i --save @citizenlab/cl2-component-library@0.11.19
       - save_cache:
           paths:
             - /root/.npm
@@ -771,7 +771,7 @@ jobs:
             echo ${CL2_VERSION}
       - run: echo test
       - run: npm ci
-      - run: npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
+      - run: npm i --save @citizenlab/cl2-component-library@0.11.19
       - save_cache:
           paths:
             - /root/.npm
