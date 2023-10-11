@@ -293,7 +293,7 @@ Rails.application.routes.draw do
   post '/auth/:provider/callback', to: 'omniauth_callback#create'
   get '/auth/failure', to: 'omniauth_callback#failure'
   post '/auth/failure', to: 'omniauth_callback#failure'
-  get '/auth/:provider/logout', to: 'omniauth_callback#logout'
+  get '/auth/:provider/logout_data', to: 'omniauth_callback#logout_data'
 
   if Rails.env.development?
     require 'que/web'
