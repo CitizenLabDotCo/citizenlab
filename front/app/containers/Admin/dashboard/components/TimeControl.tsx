@@ -4,7 +4,6 @@ import moment, { Moment } from 'moment';
 // components
 import Button from 'components/UI/Button';
 import { Icon, Dropdown } from '@citizenlab/cl2-component-library';
-import DateRangePicker from 'components/admin/DateRangePicker';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -13,6 +12,7 @@ import messages from '../messages';
 // styling
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
+import DateRangePicker from 'components/admin/DateRangePicker';
 
 const Container = styled.div`
   display: flex;
@@ -110,10 +110,6 @@ const TimeControl = ({
     setDropdownOpened((dropdownOpened) => !dropdownOpened);
   };
 
-  const isOutsideRange = (date: Moment) => {
-    return minDate ? date.isBefore(minDate, 'day') : false;
-  };
-
   const handleDatesChange = ({
     startDate,
     endDate,
@@ -199,13 +195,10 @@ const TimeControl = ({
         />
       </DropdownContainer>
       <DateRangePicker
-        startDateId={'startAt'}
-        endDateId={'endAt'}
         startDate={startAtMoment === undefined ? null : startAtMoment}
         endDate={endAtMoment}
         onDatesChange={handleDatesChange}
         minDate={minDate}
-        isOutsideRange={isOutsideRange}
       />
     </Container>
   );

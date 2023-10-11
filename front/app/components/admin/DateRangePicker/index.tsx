@@ -1,40 +1,29 @@
-import React, { useState } from 'react';
-import { Omit } from 'typings';
-
-import 'react-dates/initialize';
-import 'react-dates/lib/css/_datepicker.css';
-import { DateRangePicker, DateRangePickerShape } from 'react-dates';
-
-// styles
+import React from 'react';
+import DatePicker from 'react-datepicker';
+import moment, { Moment } from 'moment';
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
-
-// i18n
-import messages from './messages';
-import { useIntl } from 'utils/cl-intl';
-import { omit } from 'lodash-es';
-import { Moment } from 'moment';
-
-interface Props
-  extends Omit<
-    DateRangePickerShape,
-    'focusedInput' | 'onFocusChange' | 'renderMonthText'
-  > {
-  isOutsideRange?: ((day: Moment) => boolean) | undefined;
-  className?: string;
-}
+import {
+  Box,
+  Icon,
+  colors,
+  fontSizes,
+} from '@citizenlab/cl2-component-library';
 
 const StylingWrapper = styled.div`
-  .DateRangePickerInput {
+  display: flex;
+  align-items: center;
+
+  .react-datepicker-wrapper {
     border-radius: ${(props) => props.theme.borderRadius};
     border: solid 1px ${colors.borderDark};
+    background: white;
+    padding: 10px 8px;
 
     &:hover {
       border-color: ${colors.black};
     }
 
-    .DateInput,
-    .DateInput_input {
+    input[type='text'] {
       color: ${colors.textPrimary};
       font-size: ${fontSizes.base}px;
       line-height: normal;
@@ -44,38 +33,65 @@ const StylingWrapper = styled.div`
   }
 `;
 
-/** Light wrapper around react-dates DateRangePicker that autonomously deals with focusing and styling */
-const OurDateRangePicker = (props: Props) => {
-  const { formatMessage } = useIntl();
-  const [focusedInput, setFocusedInput] = useState<
-    'startDate' | 'endDate' | null
-  >(null);
+interface Props {
+  startDate: Moment | null;
+  endDate: Moment | null;
+  onDatesChange: ({
+    startDate,
+    endDate,
+  }: {
+    startDate: Moment | null;
+    endDate: Moment | null;
+  }) => void;
+  minDate?: Moment;
+}
 
-  const handleFocusChange = (focusedInput: 'startDate' | 'endDate' | null) => {
-    setFocusedInput(focusedInput);
+const DateRangePicker = ({
+  startDate,
+  endDate,
+  onDatesChange,
+  minDate,
+}: Props) => {
+  const handleOnChangeStartDate = (newStartDate: Date | null) => {
+    onDatesChange({
+      startDate: moment(newStartDate),
+      endDate,
+    });
   };
 
-  const handleIsOutsideRange = (day: Moment) => {
-    if (props.isOutsideRange) {
-      return props.isOutsideRange(day);
-    }
-    return false;
+  const handleOnChangeEndDate = (newEndDate: Date | null) => {
+    onDatesChange({
+      startDate,
+      endDate: moment(newEndDate),
+    });
   };
+
+  const convertedStartDate = moment(startDate).toDate();
+  const convertedEndDate = moment(endDate).toDate();
+  const convertedMinDate = minDate ? moment(minDate).toDate() : null;
 
   return (
-    <StylingWrapper className={props.className}>
-      <DateRangePicker
-        {...omit(props, 'intl')}
-        startDateId="startAt"
-        endDateId="endAt"
-        focusedInput={focusedInput}
-        onFocusChange={handleFocusChange}
-        startDatePlaceholderText={formatMessage(messages.startDatePlaceholder)}
-        endDatePlaceholderText={formatMessage(messages.endDatePlaceholder)}
-        isOutsideRange={handleIsOutsideRange}
+    <StylingWrapper>
+      <DatePicker
+        selected={convertedStartDate}
+        onChange={handleOnChangeStartDate}
+        selectsStart
+        startDate={convertedStartDate}
+        endDate={convertedEndDate}
+        minDate={convertedMinDate}
+      />
+      <Box mx="8px">
+        <Icon name="arrow-right" fill={colors.grey700} />
+      </Box>
+      <DatePicker
+        selected={convertedEndDate}
+        onChange={handleOnChangeEndDate}
+        selectsEnd
+        startDate={convertedStartDate}
+        endDate={convertedEndDate}
       />
     </StylingWrapper>
   );
 };
 
-export default OurDateRangePicker;
+export default DateRangePicker;
