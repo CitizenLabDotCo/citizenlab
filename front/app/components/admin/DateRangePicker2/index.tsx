@@ -43,9 +43,15 @@ interface Props {
     startDate: Moment | null;
     endDate: Moment | null;
   }) => void;
+  minDate?: Moment;
 }
 
-const DateRangePicker = ({ startDate, endDate, onDatesChange }: Props) => {
+const DateRangePicker = ({
+  startDate,
+  endDate,
+  onDatesChange,
+  minDate,
+}: Props) => {
   const handleOnChangeStartDate = (newStartDate: Date | null) => {
     onDatesChange({
       startDate: moment(newStartDate),
@@ -62,6 +68,7 @@ const DateRangePicker = ({ startDate, endDate, onDatesChange }: Props) => {
 
   const convertedStartDate = moment(startDate).toDate();
   const convertedEndDate = moment(endDate).toDate();
+  const convertedMinDate = minDate ? moment(minDate).toDate() : null;
 
   return (
     <StylingWrapper>
@@ -71,6 +78,7 @@ const DateRangePicker = ({ startDate, endDate, onDatesChange }: Props) => {
         selectsStart
         startDate={convertedStartDate}
         endDate={convertedEndDate}
+        minDate={convertedMinDate}
       />
       <Box mx="8px">
         <Icon name="arrow-right" fill={colors.grey700} />
@@ -81,7 +89,6 @@ const DateRangePicker = ({ startDate, endDate, onDatesChange }: Props) => {
         selectsEnd
         startDate={convertedStartDate}
         endDate={convertedEndDate}
-        minDate={convertedStartDate}
       />
     </StylingWrapper>
   );
