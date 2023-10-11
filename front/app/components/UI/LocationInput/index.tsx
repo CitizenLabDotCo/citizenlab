@@ -1,30 +1,43 @@
 import React from 'react';
 import AsyncSelect from 'react-select/async';
 import selectStyles from 'components/UI/MultipleSelect/styles';
+import fetcher from 'utils/cl-react-query/fetcher';
 
 export interface Option {
   label: string;
   value: string;
 }
 
-const key = process.env.GOOGLE_MAPS_API_KEY;
+type TextSearchResponse = {
+  data: {
+    type: string;
+    attributes: {
+      results:
+        | {
+            formatted_address: string;
+          }[]
+        | undefined;
+    };
+  };
+};
 
 const LocationInput = (props: React.ComponentProps<typeof AsyncSelect>) => {
   const promiseOptions = async (inputValue: string) => {
     try {
-      const response = await fetch(
-        `/json?query=${
-          inputValue || props.value
-        }&key=${key}&radius=100000000000`,
-        {
-          method: 'GET',
-        }
+      const response = await fetcher<TextSearchResponse>({
+        path: '/location/textsearch',
+        action: 'get',
+        queryParams: {
+          query: inputValue || props.value,
+        },
+      });
+
+      return (
+        response.data.attributes.results?.map((item) => ({
+          label: item,
+          value: item,
+        })) || []
       );
-      const result = await response.json();
-      return result.results.map((item) => ({
-        label: item.formatted_address,
-        value: item.formatted_address,
-      }));
     } catch (error) {
       return [];
     }

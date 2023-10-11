@@ -1,26 +1,32 @@
 import { isNumber } from 'lodash-es';
+import fetcher from './cl-react-query/fetcher';
 
 type Point = {
   type: 'Point';
   coordinates: [number, number];
 };
 
-const requestOptions = {
-  method: 'GET',
+type GeocodeResponse = {
+  data: {
+    type: 'geocode';
+    attributes: {
+      location: { lat: number; lng: number };
+    };
+  };
 };
-
-const key = process.env.GOOGLE_MAPS_API_KEY;
 
 const geocode = async (address: string | null | undefined) => {
   try {
-    const response = await fetch(
-      `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${key}`,
-      requestOptions
-    );
-    const result = await response.json();
+    const result = await fetcher<GeocodeResponse>({
+      path: '/location/geocode',
+      action: 'get',
+      queryParams: {
+        address,
+      },
+    });
 
-    const lat = result?.results?.[0]?.geometry?.location?.lat;
-    const lng = result?.results?.[0]?.geometry?.location?.lng;
+    const lat = result?.data.attributes.location.lat;
+    const lng = result?.data.attributes.location.lng;
 
     if (isNumber(lat) && isNumber(lng)) {
       return {
@@ -34,15 +40,26 @@ const geocode = async (address: string | null | undefined) => {
   }
 };
 
+type ReverseGeocodeResponse = {
+  data: {
+    type: 'reverse_geocode';
+    attributes: {
+      formatted_address: string;
+    };
+  };
+};
+
 const reverseGeocode = async (lat: number, lng: number) => {
   try {
-    const response = await fetch(
-      `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${key}`,
-      requestOptions
-    );
-    const result = await response.json();
-
-    const formattedAddress = result?.results?.[0]?.formatted_address;
+    const result = await fetcher<ReverseGeocodeResponse>({
+      path: '/location/reverse_geocode',
+      action: 'get',
+      queryParams: {
+        lat,
+        lng,
+      },
+    });
+    const formattedAddress = result.data.attributes.formatted_address;
 
     if (formattedAddress) {
       return formattedAddress;

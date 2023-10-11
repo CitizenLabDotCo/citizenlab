@@ -12,7 +12,7 @@ resource 'Location' do
 
   get 'web_api/v1/location/textsearch' do
     parameter :query, 'Search query', required: true
-    
+
     let(:query) { 'New York' }
     
     before do
@@ -21,7 +21,7 @@ resource 'Location' do
     
     example_request 'Textsearch' do
       expect(status).to eq(200)
-      expect(response_data[:attributes]).to match_array(['New York, NY, USA'])
+      expect(response_data[:attributes][:results]).to match_array(['New York, NY, USA'])
     end
   end
 
@@ -36,7 +36,7 @@ resource 'Location' do
 
     example_request 'Geocode' do
       expect(status).to eq(200)
-      expect(response_data[:attributes]).to eq({ lat: 40.7127753, lng: -74.0059728 })
+      expect(response_data[:attributes][:location]).to eq({ lat: 40.7127753, lng: -74.0059728 })
     end
   end
 
@@ -53,7 +53,7 @@ resource 'Location' do
 
     example_request 'Reverse geocode' do
       expect(status).to eq(200)
-      expect(response_data[:attributes]).to eq('277 Bedford Ave, Brooklyn, NY 11211, USA')
+      expect(response_data[:attributes][:formatted_address]).to eq('277 Bedford Ave, Brooklyn, NY 11211, USA')
     end
   end
 end
