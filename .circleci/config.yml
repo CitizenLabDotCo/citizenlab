@@ -157,7 +157,7 @@ jobs:
             cat ../cl2-component-library/package.json
 
             # Set the CL2_VERSION variable
-            export CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
+            CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
 
             # Verify CL2_VERSION
             echo "CL2_VERSION: ${CL2_VERSION}"
