@@ -95,5 +95,5 @@ volumes:
   bundle_path:
 
 networks:
-  default:
+  citizenlab:
     name: citizenlab

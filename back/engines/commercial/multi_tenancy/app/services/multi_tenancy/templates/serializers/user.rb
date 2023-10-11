@@ -17,6 +17,7 @@ module MultiTenancy
           locale
           password_digest
           verified
+          unique_code
         ]
 
         attribute(:block_start_at) { |user| serialize_timestamp(user.block_start_at) }

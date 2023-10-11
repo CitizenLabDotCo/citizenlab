@@ -9,6 +9,7 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import ideasKeys from './keys';
 import { IIdea, IIdeaUpdate } from './types';
 import analyticsKeys from 'api/analytics/keys';
+import { importedIdeasKeys } from 'api/import_ideas/keys';
 
 type IUpdateIdeaObject = {
   id: string;
@@ -43,6 +44,10 @@ const useUpdateIdea = () => {
       if (projectId) {
         queryClient.invalidateQueries({
           queryKey: projectsKeys.item({ id: projectId }),
+        });
+
+        queryClient.invalidateQueries({
+          queryKey: importedIdeasKeys.list({ projectId }),
         });
       }
       queryClient.invalidateQueries({

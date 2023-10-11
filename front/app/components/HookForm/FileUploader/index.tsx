@@ -22,6 +22,7 @@ const FileUploader = ({ name, remoteFiles, ...rest }: Props) => {
     setValue,
     formState: { errors },
     control,
+    trigger,
   } = useFormContext();
 
   useEffect(() => {
@@ -49,16 +50,18 @@ const FileUploader = ({ name, remoteFiles, ...rest }: Props) => {
                 setValue(name, field.value ? [...field.value, file] : [file], {
                   shouldDirty: true,
                 });
+                trigger(name);
               }}
-              onFileRemove={(fileToRemove) =>
+              onFileRemove={(fileToRemove) => {
                 setValue(
                   name,
                   field.value.filter(
                     (file: UploadFile) => file.base64 !== fileToRemove.base64
                   ),
                   { shouldDirty: true }
-                )
-              }
+                );
+                trigger(name);
+              }}
             />
           );
         }}

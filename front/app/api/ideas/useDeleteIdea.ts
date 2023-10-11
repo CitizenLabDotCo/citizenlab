@@ -8,6 +8,7 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import ideasKeys from './keys';
 import projectsKeys from 'api/projects/keys';
 import analyticsKeys from 'api/analytics/keys';
+import { importedIdeasKeys } from 'api/import_ideas/keys';
 
 const deleteIdea = (id: string) =>
   fetcher({
@@ -37,6 +38,9 @@ const useDeleteIdea = () => {
       queryClient.invalidateQueries({ queryKey: projectsKeys.lists() });
       queryClient.invalidateQueries({
         queryKey: analyticsKeys.all(),
+      });
+      queryClient.invalidateQueries({
+        queryKey: importedIdeasKeys.all(),
       });
     },
   });
