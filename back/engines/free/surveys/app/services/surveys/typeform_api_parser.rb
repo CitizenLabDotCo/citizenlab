@@ -80,11 +80,11 @@ module Surveys
     end
 
     def parse_hidden_fields(tf_response)
-      (tf_response['hidden'] || []).map do |hidden_field|
+      (tf_response['hidden'] || []).map do |k, v|
         {
-          question_id: "#{hidden_field[0]}_hidden_field",
-          question_text: "#{hidden_field[0]} (hidden field)",
-          value: hidden_field[1]
+          question_id: "#{k}_hidden_field",
+          question_text: "#{k} (hidden field)",
+          value: v
         }
       end
     end
