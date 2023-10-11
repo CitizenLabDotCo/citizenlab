@@ -151,11 +151,19 @@ const InputDetails = ({
 
   const handleChange = (option: OptionProps) => {
     setSelectedOption(option);
-    addInputCategories({
-      viewId,
-      inputId: previewedInput.data.id,
-      categories: [{ id: option.value, type: 'category' }],
-    });
+    addInputCategories(
+      {
+        viewId,
+        inputId: previewedInput.data.id,
+        categories: [{ id: option.value, type: 'category' }],
+      },
+      {
+        onSuccess: () => {
+          setSelectedOption(null);
+          selectRef.current?.blur();
+        },
+      }
+    );
     trackEventByName(tracks.addCategoryFromInput);
   };
 
