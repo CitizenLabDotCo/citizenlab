@@ -14,4 +14,17 @@ export default defineMessages({
     defaultMessage:
       '*This answer will only be shared with moderators, and not to the public.',
   },
+  selectBetween: {
+    id: 'app.components.form.controls.selectBetween',
+    defaultMessage: '*Select between { minItems } and { maxItems } options',
+  },
+  selectExactly: {
+    id: 'app.components.form.controls.selectExactly2',
+    defaultMessage:
+      '*Select exactly {selectExactly, plural, one {# option} other {# options}}',
+  },
+  selectAsManyAsYouLike: {
+    id: 'app.components.form.controls.selectAsManyAsYouLike',
+    defaultMessage: '*Select as many as you like',
+  },
 });

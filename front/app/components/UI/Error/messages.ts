@@ -356,4 +356,14 @@ export default defineMessages({
     defaultMessage:
       'Enter a valid link. Make sure the link starts with https://',
   },
+  title_multiloc_includes_banned_words: {
+    id: 'app.errors.title_multiloc_includes_banned_words',
+    defaultMessage:
+      'The title contains words that are considered inappropriate.',
+  },
+  body_multiloc_includes_banned_words: {
+    id: 'app.errors.body_multiloc_includes_banned_words',
+    defaultMessage:
+      'The description contains words that are considered inappropriate.',
+  },
 });

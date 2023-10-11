@@ -27,7 +27,12 @@ import useLocalize from 'hooks/useLocalize';
 // style
 import styled from 'styled-components';
 import { ScreenReaderOnly } from 'utils/a11y';
-import { pageContentMaxWidth } from './styleConstants';
+import {
+  pageContentMaxWidth,
+  contentFadeInDelay,
+  contentFadeInDuration,
+  contentFadeInEasing,
+} from './styleConstants';
 
 // hooks
 import useInitiativeFiles from 'api/initiative_files/useInitiativeFiles';
@@ -39,11 +44,6 @@ import useLocale from 'hooks/useLocale';
 import useAuthUser from 'api/me/useAuthUser';
 import useInitiativeImages from 'api/initiative_images/useInitiativeImages';
 import { usePermission } from 'utils/permissions';
-import {
-  contentFadeInDelay,
-  contentFadeInDuration,
-  contentFadeInEasing,
-} from '.';
 import useInitiativeOfficialFeedback from 'api/initiative_official_feedback/useInitiativeOfficialFeedback';
 import RequestToCosponsor from './RequestToCosponsor';
 import Cosponsors from './Cosponsors';

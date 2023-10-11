@@ -47,7 +47,6 @@ export default defineMessages({
     defaultMessage:
       '{percentage}% ({choiceCount, plural, no {# choices} one {# choice} other {# choices}})',
   },
-  // DeleteFormResultsNotice
   openForResponses2: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.openForResponses2',
     defaultMessage: 'Open for responses',
@@ -67,6 +66,11 @@ export default defineMessages({
   viewSurveyText2: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.viewSurveyText2',
     defaultMessage: 'View survey',
+  },
+  existingSubmissionsWarning: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.existingSubmissionsWarning',
+    defaultMessage:
+      'Submissions to this survey have started to come in. Changes to the survey may result in data loss and incomplete data in the exported files.',
   },
   deleteResultsConfirmationQuestion2: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResultsConfirmation2',

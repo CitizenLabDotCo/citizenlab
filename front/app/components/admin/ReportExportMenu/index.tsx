@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { findDOMNode } from 'react-dom';
 import { trackEventByName } from 'utils/analytics';
 import { Canvg } from 'canvg';
-import XLSX from 'xlsx';
+import * as XLSX from 'xlsx';
 
 // styling
 import styled from 'styled-components';

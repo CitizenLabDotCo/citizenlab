@@ -6,7 +6,7 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useLocale from 'hooks/useLocale';
 
 // components
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import { Box, Text, Label } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import TextButton from '../_components/TextButton';
 import PoliciesMarkup from '../Policies/PoliciesMarkup';
@@ -23,6 +23,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { DEFAULT_VALUES, getSchema, FormValues } from './form';
 import Input from 'components/HookForm/Input';
 import PasswordInput from 'components/HookForm/PasswordInput';
+import { StyledPasswordIconTooltip } from 'components/smallForm';
 
 // errors
 import {
@@ -152,10 +153,19 @@ const EmailAndPasswordSignUp = ({
             />
           </Box>
           <Box id="e2e-password-container" mt="16px">
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              <Label>
+                <span>{formatMessage(sharedMessages.password)}</span>
+              </Label>
+              <StyledPasswordIconTooltip />
+            </Box>
             <PasswordInput
               name="password"
               id="password"
-              label={formatMessage(sharedMessages.password)}
               autocomplete="current-password"
             />
           </Box>

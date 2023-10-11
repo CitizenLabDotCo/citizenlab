@@ -48,7 +48,8 @@ describe IdNemlogIn::NemlogInOmniauth do
         name: 'nemlog_in',
         environment: 'pre_production_integration',
         issuer: 'https://example.com',
-        private_key: "-----BEGIN PRIVATE KEY-----\n123123\n-----END PRIVATE KEY-----"
+        private_key: "-----BEGIN PRIVATE KEY-----\n123123\n-----END PRIVATE KEY-----",
+        minimum_age: 15
       }]
     }
     configuration.save!
@@ -118,5 +119,31 @@ describe IdNemlogIn::NemlogInOmniauth do
     follow_redirect!
 
     expect(response).to redirect_to('/whatever-page?verification_error=true&error=no_token_passed')
+  end
+
+  context "when validating user's age" do
+    it 'does not verify a user under specified age limit' do
+      saml_auth_response.extra.raw_info['https://data.gov.dk/model/core/eid/age'] = ['14']
+
+      get "/auth/nemlog_in?token=#{token}&pathname=/some-page"
+      follow_redirect!
+
+      expect(response).to redirect_to('/some-page?verification_error=true&error=not_entitled_under_minimum_age')
+      expect(user.reload).to have_attributes({
+        verified: false
+      })
+    end
+
+    it 'verifies a user over specified age limit' do
+      saml_auth_response.extra.raw_info['https://data.gov.dk/model/core/eid/age'] = ['15']
+
+      get "/auth/nemlog_in?token=#{token}&random-passthrough-param=somevalue&pathname=/some-page"
+      follow_redirect!
+
+      expect(response).to redirect_to('/en/some-page?random-passthrough-param=somevalue&verification_success=true')
+      expect(user.reload).to have_attributes({
+        verified: true
+      })
+    end
   end
 end

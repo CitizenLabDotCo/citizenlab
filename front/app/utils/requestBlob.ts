@@ -2,7 +2,13 @@ import { stringify } from 'qs';
 import { getJwt } from 'utils/auth/jwt';
 
 // we use xhr rather than fetch API, to enforce response type
-export function requestBlob(url, type, queryParametersObject?): Promise<Blob> {
+export function requestBlob(
+  url: string,
+  type:
+    | 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    | 'text/calendar',
+  queryParametersObject?
+): Promise<Blob> {
   const urlParams = stringify(queryParametersObject, {
     arrayFormat: 'brackets',
     addQueryPrefix: true,

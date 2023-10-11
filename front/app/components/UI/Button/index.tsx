@@ -70,4 +70,4 @@ const ButtonWrapper = ({
 
 export default ButtonWrapper;
 
-export { Props, ButtonContainerProps, ButtonStyles, ButtonProps };
+export type { Props, ButtonContainerProps, ButtonStyles, ButtonProps };

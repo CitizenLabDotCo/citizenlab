@@ -201,6 +201,12 @@ class WebApi::V1::InitiativesController < ApplicationController
 
   private
 
+  # renders errors in the new HookForm format
+  def render_profanity_blocked(exception)
+    errors = exception.violating_attributes.index_with { [{ error: :includes_banned_words }] }
+    render json: { errors: errors }, status: :unprocessable_entity
+  end
+
   def set_initiative
     @initiative = Initiative.find params[:id]
     authorize @initiative
