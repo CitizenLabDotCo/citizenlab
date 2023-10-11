@@ -418,7 +418,18 @@ jobs:
       - restore_cache:
           keys:
             - v2-npm-cache-{{ checksum "package-lock.json" }}
+      - run:
+          name: Install jq
+          command: |
+            # Install jq using apt-get (for Debian-based images)
+            apt-get update
+            apt-get install -y jq
+      - run:
+          name: Update package.json with CL2 version
+          command: |
+            CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
       - run: npm ci
+      - run: npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
       - save_cache:
           paths:
             - /root/.npm
@@ -435,7 +446,18 @@ jobs:
       - restore_cache:
           keys:
             - v2-npm-cache-{{ checksum "package-lock.json" }}
+      - run:
+          name: Install jq
+          command: |
+            # Install jq using apt-get (for Debian-based images)
+            apt-get update
+            apt-get install -y jq
+      - run:
+          name: Update package.json with CL2 version
+          command: |
+            CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
       - run: npm ci
+      - run: npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
       - save_cache:
           paths:
             - /root/.npm
@@ -452,7 +474,18 @@ jobs:
       - restore_cache:
           keys:
             - v2-npm-cache-{{ checksum "package-lock.json" }}
+      - run:
+          name: Install jq
+          command: |
+            # Install jq using apt-get (for Debian-based images)
+            apt-get update
+            apt-get install -y jq
+      - run:
+          name: Update package.json with CL2 version
+          command: |
+            CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
       - run: npm ci
+      - run: npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
       - save_cache:
           paths:
             - /root/.npm
@@ -469,7 +502,22 @@ jobs:
       - restore_cache:
           keys:
             - v2-npm-cache-{{ checksum "package-lock.json" }}
+      - run:
+          name: Install jq
+          command: |
+            # Install jq using apt-get (for Debian-based images)
+            apt-get update
+            apt-get install -y jq
+      - run:
+          name: Update package.json with CL2 version
+          command: |
+            CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
       - run: npm ci
+      - run: npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
+      - save_cache:
+          paths:
+            - /root/.npm
+          key: v2-npm-cache-{{ checksum "package-lock.json" }}
       - run: /bin/bash -lc "cd ~/citizenlab/front && license_finder"
 
   front-build:
@@ -483,7 +531,18 @@ jobs:
       - restore_cache:
           keys:
             - v2-npm-cache-{{ checksum "package-lock.json" }}
+      - run:
+          name: Install jq
+          command: |
+            # Install jq using apt-get (for Debian-based images)
+            apt-get update
+            apt-get install -y jq
+      - run:
+          name: Update package.json with CL2 version
+          command: |
+            CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
       - run: npm ci
+      - run: npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
       - save_cache:
           paths:
             - /root/.npm
@@ -502,7 +561,18 @@ jobs:
       - restore_cache:
           keys:
             - v2-npm-cache-{{ checksum "package-lock.json" }}
+      - run:
+          name: Install jq
+          command: |
+            # Install jq using apt-get (for Debian-based images)
+            apt-get update
+            apt-get install -y jq
+      - run:
+          name: Update package.json with CL2 version
+          command: |
+            CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
       - run: npm ci
+      - run: npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
       - save_cache:
           paths:
             - /root/.npm
@@ -540,12 +610,23 @@ jobs:
       - shallow-clone
       - restore_cache:
           keys:
-            - v2-npm-cache-{{ checksum "citizenlab/front/package-lock.json" }}
-      - run: cd citizenlab/front && npm ci
+            - v2-npm-cache-{{ checksum "package-lock.json" }}
+      - run:
+          name: Install jq
+          command: |
+            # Install jq using apt-get (for Debian-based images)
+            apt-get update
+            apt-get install -y jq
+      - run:
+          name: Update package.json with CL2 version
+          command: |
+            CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
+      - run: npm ci
+      - run: npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
       - save_cache:
           paths:
             - /root/.npm
-          key: v2-npm-cache-{{ checksum "citizenlab/front/package-lock.json" }}
+          key: v2-npm-cache-{{ checksum "package-lock.json" }}
       - run:
           name: Run tests with JUnit as reporter
           command: |
@@ -592,7 +673,18 @@ jobs:
       - restore_cache:
           keys:
             - v2-npm-cache-{{ checksum "package-lock.json" }}
+      - run:
+          name: Install jq
+          command: |
+            # Install jq using apt-get (for Debian-based images)
+            apt-get update
+            apt-get install -y jq
+      - run:
+          name: Update package.json with CL2 version
+          command: |
+            CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
       - run: npm ci
+      - run: npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
       - save_cache:
           paths:
             - /root/.npm
@@ -618,7 +710,18 @@ jobs:
       - restore_cache:
           keys:
             - v2-npm-cache-{{ checksum "package-lock.json" }}
+      - run:
+          name: Install jq
+          command: |
+            # Install jq using apt-get (for Debian-based images)
+            apt-get update
+            apt-get install -y jq
+      - run:
+          name: Update package.json with CL2 version
+          command: |
+            CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
       - run: npm ci
+      - run: npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
       - save_cache:
           paths:
             - /root/.npm
