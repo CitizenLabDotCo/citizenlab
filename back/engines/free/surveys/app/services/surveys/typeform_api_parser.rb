@@ -74,16 +74,19 @@ module Surveys
         }
       end
 
-      # get hidden fields, if any, and add to answers hash
-      (tf_response['hidden'] || []).map do |hidden|
-        answers << {
-          question_id: "#{hidden[0]}_hidden_field",
-          question_text: "#{hidden[0]} (hidden field)",
-          value: hidden[1]
-        }
-      end
+      answers += parse_hidden_fields(tf_response)
 
       answers
+    end
+
+    def parse_hidden_fields(tf_response)
+      (tf_response['hidden'] || []).map do |hidden_field|
+        {
+          question_id: "#{hidden_field[0]}_hidden_field",
+          question_text: "#{hidden_field[0]} (hidden field)",
+          value: hidden_field[1]
+        }
+      end
     end
   end
 end
