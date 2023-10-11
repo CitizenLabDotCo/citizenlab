@@ -144,6 +144,7 @@ jobs:
           name: Update package.json with CL2 version
           command: |
             CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
+      - run: echo ${CL2_VERSION}
       - run: npm ci
       - run: npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
       - save_cache:
@@ -428,6 +429,7 @@ jobs:
           name: Update package.json with CL2 version
           command: |
             CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
+      - run: echo ${CL2_VERSION}
       - run: npm ci
       - run: npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
       - save_cache:
@@ -456,6 +458,7 @@ jobs:
           name: Update package.json with CL2 version
           command: |
             CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
+      - run: echo ${CL2_VERSION}
       - run: npm ci
       - run: npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
       - save_cache:
@@ -484,6 +487,7 @@ jobs:
           name: Update package.json with CL2 version
           command: |
             CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
+      - run: echo ${CL2_VERSION}
       - run: npm ci
       - run: npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
       - save_cache:
@@ -512,6 +516,7 @@ jobs:
           name: Update package.json with CL2 version
           command: |
             CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
+      - run: echo ${CL2_VERSION}
       - run: npm ci
       - run: npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
       - save_cache:
@@ -541,6 +546,7 @@ jobs:
           name: Update package.json with CL2 version
           command: |
             CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
+      - run: echo ${CL2_VERSION}
       - run: npm ci
       - run: npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
       - save_cache:
@@ -571,6 +577,7 @@ jobs:
           name: Update package.json with CL2 version
           command: |
             CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
+      - run: echo ${CL2_VERSION}
       - run: npm ci
       - run: npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
       - save_cache:
@@ -621,6 +628,7 @@ jobs:
           name: Update package.json with CL2 version
           command: |
             CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
+      - run: echo ${CL2_VERSION}
       - run: npm ci
       - run: npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
       - save_cache:
@@ -683,6 +691,7 @@ jobs:
           name: Update package.json with CL2 version
           command: |
             CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
+      - run: echo ${CL2_VERSION}
       - run: npm ci
       - run: npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
       - save_cache:
@@ -720,6 +729,7 @@ jobs:
           name: Update package.json with CL2 version
           command: |
             CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
+      - run: echo ${CL2_VERSION}
       - run: npm ci
       - run: npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
       - save_cache:
