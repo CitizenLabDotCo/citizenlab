@@ -1,9 +1,10 @@
-import React, { PureComponent } from 'react';
+import React, { useState } from 'react';
 import { Omit } from 'typings';
 
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 import { DateRangePicker, DateRangePickerShape } from 'react-dates';
+// import DatePicker from 'react-datepicker';
 
 // styles
 import styled from 'styled-components';
@@ -11,8 +12,7 @@ import { fontSizes, colors } from 'utils/styleUtils';
 
 // i18n
 import messages from './messages';
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { useIntl } from 'utils/cl-intl';
 import { omit } from 'lodash-es';
 import { Moment } from 'moment';
 
@@ -23,10 +23,6 @@ interface Props
   > {
   isOutsideRange?: ((day: Moment) => boolean) | undefined;
   className?: string;
-}
-
-interface State {
-  focusedInput: 'startDate' | 'endDate' | null;
 }
 
 const StylingWrapper = styled.div`
@@ -50,48 +46,37 @@ const StylingWrapper = styled.div`
 `;
 
 /** Light wrapper around react-dates DateRangePicker that autonomously deals with focusing and styling */
-class OurDateRangePicker extends PureComponent<
-  Props & WrappedComponentProps,
-  State
-> {
-  constructor(props: Props & WrappedComponentProps) {
-    super(props);
-    this.state = {
-      focusedInput: null,
-    };
-  }
+const OurDateRangePicker = (props: Props) => {
+  const { formatMessage } = useIntl();
+  const [focusedInput, setFocusedInput] = useState<
+    'startDate' | 'endDate' | null
+  >(null);
 
-  handleFocusChange = (focusedInput: 'startDate' | 'endDate' | null) => {
-    this.setState({ focusedInput });
+  const handleFocusChange = (focusedInput: 'startDate' | 'endDate' | null) => {
+    setFocusedInput(focusedInput);
   };
 
-  handleIsOutsideRange = (day: Moment) => {
-    if (this.props.isOutsideRange) {
-      return this.props.isOutsideRange(day);
+  const handleIsOutsideRange = (day: Moment) => {
+    if (props.isOutsideRange) {
+      return props.isOutsideRange(day);
     }
     return false;
   };
 
-  render() {
-    return (
-      <StylingWrapper className={this.props.className}>
-        <DateRangePicker
-          {...omit(this.props, 'intl')}
-          startDateId="startAt"
-          endDateId="endAt"
-          focusedInput={this.state.focusedInput}
-          onFocusChange={this.handleFocusChange}
-          startDatePlaceholderText={this.props.intl.formatMessage(
-            messages.startDatePlaceholder
-          )}
-          endDatePlaceholderText={this.props.intl.formatMessage(
-            messages.endDatePlaceholder
-          )}
-          isOutsideRange={this.handleIsOutsideRange}
-        />
-      </StylingWrapper>
-    );
-  }
-}
+  return (
+    <StylingWrapper className={props.className}>
+      <DateRangePicker
+        {...omit(props, 'intl')}
+        startDateId="startAt"
+        endDateId="endAt"
+        focusedInput={focusedInput}
+        onFocusChange={handleFocusChange}
+        startDatePlaceholderText={formatMessage(messages.startDatePlaceholder)}
+        endDatePlaceholderText={formatMessage(messages.endDatePlaceholder)}
+        isOutsideRange={handleIsOutsideRange}
+      />
+    </StylingWrapper>
+  );
+};
 
-export default injectIntl(OurDateRangePicker);
+export default OurDateRangePicker;
