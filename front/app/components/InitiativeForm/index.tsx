@@ -50,6 +50,8 @@ import useInitiativeReviewRequired from 'containers/InitiativesShow/hooks/useIni
 import { stripHtmlTags } from 'utils/helperUtils';
 import useInitiativeCosponsorsRequired from 'containers/InitiativesShow/hooks/useInitiativeCosponsorsRequired';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { useSearchParams } from 'react-router-dom';
+import { reverseGeocode } from 'utils/locationTools';
 
 declare module 'components/UI/Error' {
   interface TFieldNameMap {
@@ -85,7 +87,7 @@ const InitiativeForm = ({
   initiativeImage,
   initiativeFiles,
 }: Props) => {
-  const mapsLoaded = window.googleMaps;
+  const [search] = useSearchParams();
   const { formatMessage } = useIntl();
   const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
     useState(false);
@@ -174,6 +176,21 @@ const InitiativeForm = ({
       });
     }
   }, [methods, initiativeImage]);
+
+  // get lat and lnt from router and geocode address
+
+  useEffect(() => {
+    const lat = search.get('lat');
+    const lng = search.get('lng');
+
+    if (lat && lng) {
+      const latNumber = Number(lat);
+      const lngNumber = Number(lng);
+      reverseGeocode(latNumber, lngNumber).then((result) => {
+        methods.setValue('position', result);
+      });
+    }
+  }, [methods, search]);
 
   useEffect(() => {
     const bannerUrl = initiative?.attributes.header_bg.large;
@@ -276,22 +293,21 @@ const InitiativeForm = ({
                 />
                 <TopicsPicker name="topic_ids" availableTopics={topics.data} />
               </SectionField>
-              {mapsLoaded && (
-                <SectionField>
-                  <FormLabel
-                    labelMessage={messages.locationLabel}
-                    subtextMessage={messages.locationLabelSubtext}
-                    htmlFor="position"
-                    optional
-                  >
-                    <LocationInput
-                      name="position"
-                      className="e2e-initiative-location-input"
-                      placeholder={formatMessage(messages.locationPlaceholder)}
-                    />
-                  </FormLabel>
-                </SectionField>
-              )}
+
+              <SectionField>
+                <FormLabel
+                  labelMessage={messages.locationLabel}
+                  subtextMessage={messages.locationLabelSubtext}
+                  htmlFor="position"
+                  optional
+                >
+                  <LocationInput
+                    name="position"
+                    className="e2e-initiative-location-input"
+                    placeholder={formatMessage(messages.locationPlaceholder)}
+                  />
+                </FormLabel>
+              </SectionField>
             </FormSection>
             <Suspense fallback={null}>
               <CosponsorsFormSection
