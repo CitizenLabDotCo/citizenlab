@@ -142,11 +142,6 @@ const FormActions = ({
               }}
             />
           </Box>
-          {haveSubmissionsComeIn && (
-            <Box width="100%" mb="36px">
-              <DeleteFormResultsNotice projectId={projectId} />
-            </Box>
-          )}
           <Box
             display="flex"
             alignItems="center"
