@@ -1,13 +1,8 @@
 da:
   email_campaigns:
     campaign_type_description:
-      "idea_assigned_to_you": Tildeling af en idé til mig
-    admin_campaign_type_description:
-      "idea_assigned_to_you": Tildeling af en idé - administratorer og projektledere
-    idea_assigned_to_you:
-      by_author: 'af %{authorName}'
-      cta_reply_to: 'Giv feedback til %{authorName}'
-      event_description_idea: 'Du er blevet tildelt en idé. Giv feedback ved at skrive en officiel opdatering eller ved at ændre idéens status.'
-      main_header: '%{firstName}, du har en ny tildeling'
-      subject: 'Du har en tildeling på platformen for %{organizationName}'
-      preheader_idea: 'Du er blevet tildelt %{authorName}s idé'
+      ""idea_assigned_to_you"":
+        Assignment of an idea to me admin_campaign_type_description:
+          ""idea_assigned_to_you"":
+            Assignment of an idea - admins and project managers idea_assigned_to_you:
+              by_author: 'af %{authorName}'' cta_reply_to: ''Giv feedback til %{authorName}'' event_description_idea: ''Du har fået tildelt en idé. Giv feedback ved at skrive en officiel opdatering eller ved at ændre dens status.'' main_header: ''%{firstName}, du har en ny opgave'' subject: ''Du har en opgave på platformen %{organizationName}'' preheader_idea: ''Idéen fra %{authorName} er blevet tildelt til dig'
