@@ -10,6 +10,7 @@ import messages from '../messages';
 import ConfigSelectWithLocaleSwitcher from './ConfigSelectWithLocaleSwitcher';
 import LinearScaleSettings from './LinearScaleSettings';
 import FieldGroupSettings from './FieldGroupSettings';
+import MultiselectSettings from './MultiselectSettings';
 
 // utils
 import { uuid4 } from '@sentry/utils';
@@ -35,6 +36,21 @@ export function getAdditionalSettings(
 
   switch (field.input_type) {
     case 'multiselect':
+      return (
+        <>
+          <ConfigSelectWithLocaleSwitcher
+            name={`customFields.${field.index}.options`}
+            locales={locales}
+            platformLocale={platformLocale}
+          />
+          <MultiselectSettings
+            selectOptionsName={`customFields.${field.index}.options`}
+            minimumSelectCountName={`customFields.${field.index}.minimum_select_count`}
+            maximumSelectCountName={`customFields.${field.index}.maximum_select_count`}
+            selectCountToggleName={`customFields.${field.index}.select_count_enabled`}
+          />
+        </>
+      );
     case 'select':
       return (
         <ConfigSelectWithLocaleSwitcher

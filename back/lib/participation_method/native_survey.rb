@@ -73,7 +73,7 @@ module ParticipationMethod
     end
 
     def edit_custom_form_allowed?
-      participation_context.ideas_count.zero?
+      true
     end
 
     def delete_inputs_on_pc_deletion?

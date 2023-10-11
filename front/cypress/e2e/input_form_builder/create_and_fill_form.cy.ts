@@ -163,7 +163,7 @@ describe('Input form builder', () => {
 
     // Fill in required custom field
     cy.contains(questionTitle).should('exist');
-    cy.get(`#properties${questionTitle}`).type(answer, { force: true });
+    cy.get(`*[id^="properties${questionTitle}"]`).type(answer, { force: true });
 
     // verify that image and file upload components are present
     cy.get('#e2e-idea-image-upload').should('exist');

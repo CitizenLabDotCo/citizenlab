@@ -81,6 +81,7 @@ const Tag = ({ name, tagType, tagginsConfig }: TagProps) => {
       style={{
         cursor: tagginsConfig ? 'pointer' : undefined,
       }}
+      data-cy="e2e-analysis-tag"
     >
       <Box color={TagTypeColorMap[tagType]?.text}>{name}</Box>
       {tagginsConfig?.isSelectedAsTagging === true && (
