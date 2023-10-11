@@ -1,5 +1,5 @@
 // libraries
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
 // components
@@ -104,16 +104,6 @@ const PublicComments = ({
   const { data: project } = useProjectById(projectId);
 
   const [posting, setPosting] = useState(false);
-
-  const handleIntersection = useCallback(
-    (event: IntersectionObserverEntry, unobserve: () => void) => {
-      if (event.isIntersecting && hasNextPage) {
-        fetchNextPage();
-        unobserve();
-      }
-    },
-    [fetchNextPage, hasNextPage]
-  );
 
   if (!post || !commentsList) return null;
 

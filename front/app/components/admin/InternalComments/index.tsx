@@ -1,5 +1,5 @@
 // libraries
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 
 // components
 import InternalParentCommentForm from './InternalParentCommentForm';
@@ -85,16 +85,6 @@ const InternalCommentsSection = ({ postId, postType, className }: Props) => {
 
   const commentsList = comments?.pages.flatMap((page) => page.data);
   const post = initiative || idea;
-
-  const handleIntersection = useCallback(
-    (event: IntersectionObserverEntry, unobserve: () => void) => {
-      if (event.isIntersecting && hasNextPage) {
-        fetchNextPage();
-        unobserve();
-      }
-    },
-    [fetchNextPage, hasNextPage]
-  );
 
   if (!post || !commentsList) return null;
 
