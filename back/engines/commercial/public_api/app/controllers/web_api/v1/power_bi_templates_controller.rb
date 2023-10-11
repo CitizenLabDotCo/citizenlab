@@ -12,7 +12,7 @@ module PublicApi
         file_text = open(template).read
         replaced = file_text.gsub(/##BASE_URL##/, 'https://TEST.citizenlab.co/api/v2/')
 
-        binding.pry
+        # TODO: We need the actual host in here
 
         send_data replaced, type: 'application/octet-stream'
       elsif params[:id] == 'report'
