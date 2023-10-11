@@ -184,9 +184,9 @@ RSpec.describe ParticipationMethod::NativeSurvey do
         create(:idea, project: context)
       end
 
-      it 'returns false' do
+      it 'returns true' do
         context.reload
-        expect(participation_method.edit_custom_form_allowed?).to be false
+        expect(participation_method.edit_custom_form_allowed?).to be true
       end
     end
   end

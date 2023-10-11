@@ -28,7 +28,6 @@ export type FormBuilderConfig = {
   displayBuiltInFields: boolean;
   showStatusBadge: boolean;
   isLogicEnabled: boolean;
-  isEditPermittedAfterSubmissions: boolean;
   alwaysShowCustomFields: boolean;
   isFormPhaseSpecific: boolean;
 
