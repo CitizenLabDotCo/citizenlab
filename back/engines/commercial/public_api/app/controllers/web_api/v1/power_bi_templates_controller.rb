@@ -8,12 +8,10 @@ module PublicApi
 
       if params[:id] == 'dataflow'
         template = Rails.root.join('engines/commercial/public_api/config/power_bi/dataflow.json')
-        # Search and replace host name
+        # Search and replace API base URL
         file_text = open(template).read
-        replaced = file_text.gsub(/##BASE_URL##/, 'https://TEST.citizenlab.co/api/v2/')
-
-        # TODO: We need the actual host in here
-
+        host = AppConfiguration.instance.base_backend_uri
+        replaced = file_text.gsub(/##BASE_URL##/, "#{host}/api/v2/")
         send_data replaced, type: 'application/octet-stream'
       elsif params[:id] == 'report'
         template = Rails.root.join('engines/commercial/public_api/config/power_bi/report.pbit')
