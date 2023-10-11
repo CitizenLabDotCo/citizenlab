@@ -168,8 +168,6 @@ module BulkImportIdeas
             author.unique_code = SecureRandom.uuid
           end
 
-          # TODO: Return user created if the user was at any point created by the importer and has no password or sso? confirmation?
-
           if author.save
             @imported_users << author
           else

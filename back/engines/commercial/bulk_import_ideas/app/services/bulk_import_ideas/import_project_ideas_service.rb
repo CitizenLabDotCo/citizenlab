@@ -87,9 +87,7 @@ module BulkImportIdeas
             (current_page_num == pdf.pages.count)
 
           if save_to_file
-            # TODO: Would be better to send the new_pdf directly to IdeaImportFile, but doesn't seem possible
-            # Is all this file opening going to cause issues on S3?
-            # Create an io object here?
+            # Temporarily save to a file
             new_pdf_count += 1
             file = Rails.root.join('tmp', "import_#{source_file.id}_#{new_pdf_count}.pdf")
             new_pdf.save file.to_s
@@ -290,6 +288,15 @@ module BulkImportIdeas
       locale_permission_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.permission') }
       permission = doc.find { |f| f[:name] == locale_permission_label }
       idea_row[:user_consent] = permission && permission[:value].present?
+
+      # Remove consent if any email does not validate
+      if idea_row[:user_consent]
+        locale_email_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.email_address') }
+        email = doc.find { |f| f[:name] == locale_email_label }
+        email_value = email ? email[:value].gsub(/\s+/, '') : nil # Remove any spaces
+        idea_row[:user_consent] = email_value.match(User::EMAIL_REGEX)
+      end
+
       if idea_row[:user_consent]
         locale_first_name_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.first_name') }
         first_name = doc.find { |f| f[:name] == locale_first_name_label }
@@ -299,10 +306,7 @@ module BulkImportIdeas
         last_name = doc.find { |f| f[:name] == locale_last_name_label }
         idea_row[:user_last_name] = last_name[:value] if last_name
 
-        # Ignore any emails that don't validate
-        locale_email_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.email_address') }
-        email = doc.find { |f| f[:name] == locale_email_label }
-        idea_row[:user_email] = email[:value] if email && email[:value].match(User::EMAIL_REGEX)
+        idea_row[:user_email] = email_value
       end
 
       idea_row
