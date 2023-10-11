@@ -69,8 +69,8 @@ type FormEditProps = {
   };
   projectId: string;
   phaseId?: string;
-  totalSubmissions: number;
   builderConfig: FormBuilderConfig;
+  totalSubmissions: number;
 } & WrappedComponentProps;
 
 export const FormEdit = ({
@@ -78,22 +78,15 @@ export const FormEdit = ({
   defaultValues,
   phaseId,
   projectId,
-  totalSubmissions,
   builderConfig,
+  totalSubmissions,
 }: FormEditProps) => {
   const [selectedField, setSelectedField] = useState<
     IFlatCustomFieldWithIndex | undefined
   >(undefined);
+  const { groupingType, formSavedSuccessMessage, isFormPhaseSpecific } =
+    builderConfig;
   const { mutateAsync: updateFormCustomFields } = useUpdateCustomField();
-  const {
-    groupingType,
-    isEditPermittedAfterSubmissions,
-    formSavedSuccessMessage,
-    isFormPhaseSpecific,
-  } = builderConfig;
-
-  const isEditingDisabled =
-    totalSubmissions > 0 && !isEditPermittedAfterSubmissions;
   const showWarningNotice = totalSubmissions > 0;
 
   const schema = object().shape({
@@ -259,13 +252,11 @@ export const FormEdit = ({
             <form onSubmit={handleSubmit(onFormSubmit)}>
               <FormBuilderTopBar
                 isSubmitting={isSubmitting}
-                isEditingDisabled={isEditingDisabled}
                 builderConfig={builderConfig}
               />
               <Box mt={`${stylingConsts.menuHeight}px`} display="flex">
                 <FormBuilderToolbox
                   onAddField={onAddField}
-                  isEditingDisabled={isEditingDisabled}
                   builderConfig={builderConfig}
                   move={move}
                 />
@@ -284,9 +275,6 @@ export const FormEdit = ({
                     <Feedback
                       successMessage={formatMessage(formSavedSuccessMessage)}
                     />
-                    {isEditingDisabled &&
-                      builderConfig.getDeletionNotice &&
-                      builderConfig.getDeletionNotice(projectId)}
                     {showWarningNotice &&
                       builderConfig.getWarningNotice &&
                       builderConfig.getWarningNotice()}
@@ -299,7 +287,6 @@ export const FormEdit = ({
                       <FormFields
                         onEditField={setSelectedField}
                         selectedFieldId={selectedField?.id}
-                        isEditingDisabled={isEditingDisabled}
                         handleDragEnd={reorderFields}
                         builderConfig={builderConfig}
                       />
@@ -356,8 +343,8 @@ const FormBuilderPage = ({ builderConfig }: FormBuilderPageProps) => {
           defaultValues={{ customFields: formCustomFields }}
           phaseId={phaseId}
           projectId={projectId}
-          totalSubmissions={submissionCount.data.attributes.totalSubmissions}
           builderConfig={builderConfig}
+          totalSubmissions={submissionCount.data.attributes.totalSubmissions}
         />,
         modalPortalElement
       )

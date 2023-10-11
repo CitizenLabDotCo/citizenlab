@@ -152,10 +152,10 @@ gem 'rinku', '~> 2'
 gem 'jsonapi-serializer'
 gem 'rack-attack', '~> 6'
 
+gem 'intercom', '~> 4.2'
 # mjml-rails cannot find the MJML parser when installed
 # through the emails engine and is therefore specified
 # in the main app.
-gem 'intercom', '~> 4.2'
 gem 'mjml-rails', '~> 4.9'
 gem 'cloudfront-rails', '~> 0.4'
 gem 'google-cloud-document_ai'

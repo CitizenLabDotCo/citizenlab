@@ -13,11 +13,13 @@ import { API_PATH } from 'containers/App/constants';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import DeleteFormResultsNotice from './DeleteFormResultsNotice';
 import { FormBuilderConfig } from 'components/FormBuilder/utils';
+import { Box } from '@citizenlab/cl2-component-library';
+import Warning from 'components/UI/Warning';
 
 // intl
 import messages from './messages';
+import { FormattedMessage } from 'utils/cl-intl';
 
 export const nativeSurveyConfig: FormBuilderConfig = {
   formBuilderTitle: messages.survey2,
@@ -35,17 +37,16 @@ export const nativeSurveyConfig: FormBuilderConfig = {
   displayBuiltInFields: false,
   showStatusBadge: true,
   isLogicEnabled: true,
-  isEditPermittedAfterSubmissions: false,
   alwaysShowCustomFields: true,
   isFormPhaseSpecific: true,
-
   groupingType: 'page',
-  getDeletionNotice: (projectId: string) => {
+  getWarningNotice: () => {
     return (
-      <DeleteFormResultsNotice
-        projectId={projectId}
-        redirectToSurveyPage={true}
-      />
+      <Box id="e2e-warning-notice" mb="20px">
+        <Warning>
+          <FormattedMessage {...messages.existingSubmissionsWarning} />
+        </Warning>
+      </Box>
     );
   },
 };

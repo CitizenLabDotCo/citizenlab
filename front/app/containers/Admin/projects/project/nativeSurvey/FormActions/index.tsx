@@ -7,7 +7,6 @@ import { Toggle, Box, Title, Text } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import T from 'components/T';
 import Modal from 'components/UI/Modal';
-import DeleteFormResultsNotice from '../DeleteFormResultsNotice';
 import PDFExportModal, {
   FormValues,
 } from 'containers/Admin/projects/components/PDFExportModal';
@@ -50,6 +49,7 @@ type FormActionsProps = {
   postingEnabled: boolean;
   heading?: Multiloc;
   togglePostingEnabled: () => void;
+  setShowEditWarningModal: (show: boolean) => void;
 };
 
 const FormActions = ({
@@ -63,6 +63,7 @@ const FormActions = ({
   heading,
   postingEnabled,
   togglePostingEnabled,
+  setShowEditWarningModal,
 }: FormActionsProps) => {
   const { formatMessage } = useIntl();
 
@@ -173,9 +174,10 @@ const FormActions = ({
               buttonStyle="cl-blue"
               width="auto"
               minWidth="312px"
-              disabled={haveSubmissionsComeIn}
               onClick={() => {
-                clHistory.push(editFormLink);
+                haveSubmissionsComeIn
+                  ? setShowEditWarningModal(true)
+                  : clHistory.push(editFormLink);
               }}
               data-cy="e2e-edit-survey-content"
             >
@@ -231,7 +233,6 @@ const FormActions = ({
               )}
             </Box>
           )}
-
           {haveSubmissionsComeIn && (
             <Box
               display="flex"

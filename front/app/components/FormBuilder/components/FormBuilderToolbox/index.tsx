@@ -36,14 +36,12 @@ import { FormBuilderConfig } from 'components/FormBuilder/utils';
 
 interface FormBuilderToolboxProps {
   onAddField: (field: IFlatCreateCustomField) => void;
-  isEditingDisabled: boolean;
   builderConfig: FormBuilderConfig;
   move: (indexA: number, indexB: number) => void;
 }
 
 const FormBuilderToolbox = ({
   onAddField,
-  isEditingDisabled,
   builderConfig,
   move,
 }: FormBuilderToolboxProps) => {
@@ -64,10 +62,6 @@ const FormBuilderToolbox = ({
   if (isNilOrError(locale)) return null;
 
   const addField = (inputType: ICustomFieldInputType) => {
-    if (isEditingDisabled) {
-      return;
-    }
-
     onAddField({
       id: `${Math.floor(Date.now() * Math.random())}`,
       temp_id: generateTempId(),
@@ -110,9 +104,7 @@ const FormBuilderToolbox = ({
     >
       <Box overflowY="auto" w="100%" display="inline">
         <LayoutFields addField={addField} builderConfig={builderConfig} />
-        {builderConfig.displayBuiltInFields && (
-          <BuiltInFields isEditingDisabled={isEditingDisabled} move={move} />
-        )}
+        {builderConfig.displayBuiltInFields && <BuiltInFields move={move} />}
         <Box display="flex">
           <Title
             fontWeight="normal"

@@ -47,7 +47,7 @@ RUN apt-get update                                           \
 
 WORKDIR /cl2_back
 
-RUN gem install bundler:2.3.20
+RUN gem install bundler:2.4.20
 
 COPY --from=dependency_files /app .
 
