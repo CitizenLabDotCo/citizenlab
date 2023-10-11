@@ -12,6 +12,7 @@ resource 'Location' do
 
   get 'web_api/v1/location/textsearch' do
     parameter :query, 'Search query', required: true
+    parameter :language, 'Language', required: false
 
     let(:query) { 'New York' }
     
@@ -27,6 +28,7 @@ resource 'Location' do
 
   get 'web_api/v1/location/geocode' do
     parameter :address, 'Address', required: true
+    parameter :language, 'Language', required: false
 
     let(:address) { 'New York' }
 
@@ -43,6 +45,7 @@ resource 'Location' do
   get 'web_api/v1/location/reverse_geocode' do
     parameter :lat, 'Latitude', required: true
     parameter :lng, 'Longitude', required: true
+    parameter :language, 'Language', required: false
 
     let(:lat) { 40.714224 }
     let(:lng) { -73.961452 }
