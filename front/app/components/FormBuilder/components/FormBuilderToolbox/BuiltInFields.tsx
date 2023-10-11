@@ -16,11 +16,10 @@ import { IFlatCustomField } from 'api/custom_fields/types';
 import { builtInFieldKeys, BuiltInKeyType } from 'components/FormBuilder/utils';
 
 interface BuiltInFieldsProps {
-  isEditingDisabled: boolean;
   move: (indexA: number, indexB: number) => void;
 }
 
-const BuiltInFields = ({ isEditingDisabled, move }: BuiltInFieldsProps) => {
+const BuiltInFields = ({ move }: BuiltInFieldsProps) => {
   const { watch, trigger, setValue } = useFormContext();
   const { formatMessage } = useIntl();
 
@@ -34,7 +33,7 @@ const BuiltInFields = ({ isEditingDisabled, move }: BuiltInFieldsProps) => {
     });
 
   const enableField = (key: BuiltInKeyType) => {
-    if (isEditingDisabled || !enabledBuiltInFieldKeys.includes(key)) {
+    if (!enabledBuiltInFieldKeys.includes(key)) {
       return;
     }
 

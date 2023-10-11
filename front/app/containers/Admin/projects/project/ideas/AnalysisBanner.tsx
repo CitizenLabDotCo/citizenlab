@@ -83,6 +83,7 @@ const ConsentModal = ({ onClose }: { onClose: () => void }) => {
         checked={checked}
         onChange={(e) => setChecked(e.target.checked)}
         label={formatMessage(messages.consentModalCheckbox)}
+        id="e2e-analysis-consent-checkbox"
       />
       <Divider />
       <Box display="flex" justifyContent="flex-end" gap="16px" mt="16px">
@@ -94,6 +95,7 @@ const ConsentModal = ({ onClose }: { onClose: () => void }) => {
           onClick={handleCreateAnalysis}
           processing={isLoading}
           disabled={!checked}
+          id="e2e-analysis-consent-button"
         >
           {formatMessage(messages.consentModalButton)}
         </Button>
@@ -152,6 +154,7 @@ const AnalysisBanner = () => {
         fontWeight="bold"
         icon="flash"
         iconColor={colors.orange}
+        id="e2e-analysis-banner-button"
       >
         {formatMessage(messages.analysisButton)}
       </Button>
