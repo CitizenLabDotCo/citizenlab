@@ -141,10 +141,14 @@ jobs:
             apt-get update
             apt-get install -y jq
       - run:
-          name: Update package.json with CL2 version
+          name: Set CL2_VERSION
           command: |
-            CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
-      - run: echo ${CL2_VERSION}
+            export CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
+      - run:
+          name: Verify CL2_VERSION
+          command: |
+            echo ${CL2_VERSION}
+      - run: echo test
       - run: npm ci
       - run: npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
       - save_cache:
@@ -426,10 +430,14 @@ jobs:
             apt-get update
             apt-get install -y jq
       - run:
-          name: Update package.json with CL2 version
+          name: Set CL2_VERSION
           command: |
-            CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
-      - run: echo ${CL2_VERSION}
+            export CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
+      - run:
+          name: Verify CL2_VERSION
+          command: |
+            echo ${CL2_VERSION}
+      - run: echo test
       - run: npm ci
       - run: npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
       - save_cache:
@@ -455,10 +463,14 @@ jobs:
             apt-get update
             apt-get install -y jq
       - run:
-          name: Update package.json with CL2 version
+          name: Set CL2_VERSION
           command: |
-            CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
-      - run: echo ${CL2_VERSION}
+            export CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
+      - run:
+          name: Verify CL2_VERSION
+          command: |
+            echo ${CL2_VERSION}
+      - run: echo test
       - run: npm ci
       - run: npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
       - save_cache:
@@ -484,10 +496,14 @@ jobs:
             apt-get update
             apt-get install -y jq
       - run:
-          name: Update package.json with CL2 version
+          name: Set CL2_VERSION
           command: |
-            CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
-      - run: echo ${CL2_VERSION}
+            export CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
+      - run:
+          name: Verify CL2_VERSION
+          command: |
+            echo ${CL2_VERSION}
+      - run: echo test
       - run: npm ci
       - run: npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
       - save_cache:
@@ -513,10 +529,14 @@ jobs:
             apt-get update
             apt-get install -y jq
       - run:
-          name: Update package.json with CL2 version
+          name: Set CL2_VERSION
           command: |
-            CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
-      - run: echo ${CL2_VERSION}
+            export CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
+      - run:
+          name: Verify CL2_VERSION
+          command: |
+            echo ${CL2_VERSION}
+      - run: echo test
       - run: npm ci
       - run: npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
       - save_cache:
@@ -543,10 +563,13 @@ jobs:
             apt-get update
             apt-get install -y jq
       - run:
-          name: Update package.json with CL2 version
+          name: Set CL2_VERSION
           command: |
-            CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
-      - run: echo ${CL2_VERSION}
+            export CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
+      - run:
+          name: Verify CL2_VERSION
+          command: |
+            echo ${CL2_VERSION}
       - run: echo test
       - run: npm ci
       - run: npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
@@ -575,10 +598,14 @@ jobs:
             apt-get update
             apt-get install -y jq
       - run:
-          name: Update package.json with CL2 version
+          name: Set CL2_VERSION
           command: |
-            CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
-      - run: echo ${CL2_VERSION}
+            export CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
+      - run:
+          name: Verify CL2_VERSION
+          command: |
+            echo ${CL2_VERSION}
+      - run: echo test
       - run: npm ci
       - run: npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
       - save_cache:
@@ -626,10 +653,14 @@ jobs:
             apt-get update
             apt-get install -y jq
       - run:
-          name: Update package.json with CL2 version
+          name: Set CL2_VERSION
           command: |
-            CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
-      - run: echo ${CL2_VERSION}
+            export CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
+      - run:
+          name: Verify CL2_VERSION
+          command: |
+            echo ${CL2_VERSION}
+      - run: echo test
       - run: npm ci
       - run: npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
       - save_cache:
@@ -689,10 +720,14 @@ jobs:
             apt-get update
             apt-get install -y jq
       - run:
-          name: Update package.json with CL2 version
+          name: Set CL2_VERSION
           command: |
-            CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
-      - run: echo ${CL2_VERSION}
+            export CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
+      - run:
+          name: Verify CL2_VERSION
+          command: |
+            echo ${CL2_VERSION}
+      - run: echo test
       - run: npm ci
       - run: npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
       - save_cache:
@@ -727,10 +762,14 @@ jobs:
             apt-get update
             apt-get install -y jq
       - run:
-          name: Update package.json with CL2 version
+          name: Set CL2_VERSION
           command: |
-            CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
-      - run: echo ${CL2_VERSION}
+            export CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
+      - run:
+          name: Verify CL2_VERSION
+          command: |
+            echo ${CL2_VERSION}
+      - run: echo test
       - run: npm ci
       - run: npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
       - save_cache:
