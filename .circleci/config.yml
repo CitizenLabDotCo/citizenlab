@@ -510,6 +510,16 @@ jobs:
             apt-get update
             apt-get install -y jq
       - run:
+          name: Install nvm
+          command: |
+            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+            source ~/.nvm/nvm.sh
+      - run:
+          name: Use Node.js 16.15.0
+          command: |
+            nvm install 16.15.0
+            nvm use 16.15.0
+      - run:
           name: Install Dependencies
           command: |
             CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
