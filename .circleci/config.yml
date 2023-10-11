@@ -162,6 +162,10 @@ jobs:
             # Verify CL2_VERSION
             echo "CL2_VERSION: ${CL2_VERSION}"
 
+            echo npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
+
+            echo "npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}"
+
             # Test
             echo test
       - run: echo npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
