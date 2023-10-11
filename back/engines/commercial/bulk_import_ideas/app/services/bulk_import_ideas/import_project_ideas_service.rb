@@ -235,7 +235,8 @@ module BulkImportIdeas
         else
           # Custom fields
           value = field[:value]
-          value = field[:value].first if field[:input_type] == 'select'
+          value = value.compact if field[:input_type] == 'multiselect'
+          value = value.compact.first if field[:input_type] == 'select'
           custom_fields[field[:key].to_sym] = value if value.present?
         end
       end
