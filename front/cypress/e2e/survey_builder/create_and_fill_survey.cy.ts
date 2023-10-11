@@ -65,7 +65,7 @@ describe('Survey builder', () => {
       `/en/projects/${projectSlug}/ideas/new`
     );
 
-    cy.get(`#properties${questionTitle}`).type(answer, { force: true });
+    cy.get(`*[id^="properties${questionTitle}"]`).type(answer, { force: true });
 
     // Go to the next page
     cy.get('[data-cy="e2e-next-page"]').click();
@@ -234,6 +234,13 @@ describe('Survey builder', () => {
       `[data-cy="e2e-${snakeCase(multipleChoiceChooseManyTitle)}"]`
     ).should('exist');
     cy.get(`[data-cy="e2e-${snakeCase(linearScaleTitle)}"]`).should('exist');
+
+    // Verify that when trying to edit the survey, a warning modal is now shown
+    cy.visit(`admin/projects/${projectId}/native-survey`);
+    cy.get(`[data-cy="e2e-edit-survey-content"]`).click();
+    cy.get(`[data-cy="e2e-edit-warning-modal"]`).should('exist');
+    cy.get(`[data-cy="e2e-edit-warning-modal-continue"]`).click();
+    cy.url().should('include', `/native-survey/edit`);
   });
 
   it('navigates to live project in a new tab when view project button in content builder is clicked', () => {
@@ -274,24 +281,13 @@ describe('Survey builder', () => {
     cy.acceptCookies();
     cy.contains(questionTitle).should('exist');
 
-    cy.get(`#properties${questionTitle}`).type(answer, { force: true });
+    cy.get(`*[id^="properties${questionTitle}"]`).type(answer, { force: true });
 
     cy.get('[data-cy="e2e-next-page"]').click();
 
     // Save survey response
     cy.get('[data-cy="e2e-submit-form"]').should('exist');
     cy.get('[data-cy="e2e-submit-form"]').click();
-
-    cy.visit(`admin/projects/${projectId}/native-survey/edit`);
-
-    // Check that the user cannot access the settings to edit
-    cy.contains(questionTitle).should('exist').click();
-    cy.get('#e2e-title-multiloc').should('not.exist');
-
-    cy.get('[data-cy="e2e-form-delete-results-notice"]').should('exist');
-    cy.get('[data-cy="e2e-delete-form-results-notice-link"]').click();
-
-    cy.get('[data-cy="e2e-form-delete-results-notice"]').should('exist');
   });
 
   it('allows deleting survey results when user clicks the delete button', () => {
@@ -313,21 +309,14 @@ describe('Survey builder', () => {
     cy.acceptCookies();
     cy.contains(questionTitle).should('exist');
 
-    cy.get(`#properties${questionTitle}`).type(answer, { force: true });
+    cy.get(`*[id^="properties${questionTitle}"]`).type(answer, { force: true });
 
     cy.get('[data-cy="e2e-next-page"]').click();
     // Save survey response
     cy.get('[data-cy="e2e-submit-form"]').should('exist');
     cy.get('[data-cy="e2e-submit-form"]').click();
 
-    cy.visit(`admin/projects/${projectId}/native-survey/edit`);
-
-    // Check that the user cannot access the settings to edit
-    cy.contains(questionTitle).should('exist').click();
-    cy.get('#e2e-title-multiloc').should('not.exist');
-
-    cy.get('[data-cy="e2e-form-delete-results-notice"]').should('exist');
-    cy.get('[data-cy="e2e-delete-form-results-notice-link"]').click();
+    cy.visit(`admin/projects/${projectId}/native-survey`);
 
     // Click the delete button
     cy.get('[data-cy="e2e-delete-survey-results"]').click();
@@ -357,23 +346,14 @@ describe('Survey builder', () => {
     cy.acceptCookies();
     cy.contains(questionTitle).should('exist');
 
-    cy.get(`#properties${questionTitle}`).type(answer, { force: true });
+    cy.get(`*[id^="properties${questionTitle}"]`).type(answer, { force: true });
 
     cy.get('[data-cy="e2e-next-page"]').click();
     // Save survey response
     cy.get('[data-cy="e2e-submit-form"]').should('exist');
     cy.get('[data-cy="e2e-submit-form"]').click();
 
-    cy.visit(`admin/projects/${projectId}/native-survey/edit`);
-
-    // Check that the user cannot access the settings to edit
-    cy.contains(questionTitle).should('exist').click();
-    cy.get('#e2e-title-multiloc').should('not.exist');
-
-    cy.get('[data-cy="e2e-form-delete-results-notice"]').should('exist');
-    cy.get('[data-cy="e2e-delete-form-results-notice-link"]').click();
-
-    cy.get('[data-cy="e2e-form-delete-results-notice"]').should('exist');
+    cy.visit(`admin/projects/${projectId}/native-survey`);
 
     // Click the view survey results button
     cy.get('[data-cy="e2e-form-view-results"]').click();
@@ -579,7 +559,7 @@ describe('Survey builder', () => {
     cy.get('#e2e-project-sidebar-surveys-count').should('exist');
     cy.get('#e2e-cta-button').find('button').click({ force: true });
     cy.contains(questionTitle).should('exist');
-    cy.get(`#properties${questionTitle}`).type(answer, { force: true });
+    cy.get(`*[id^="properties${questionTitle}"]`).type(answer, { force: true });
 
     // Save survey response
     cy.get('[data-cy="e2e-next-page"]').click();
@@ -754,7 +734,7 @@ describe('Survey builder', () => {
     cy.wait('@saveSurvey').then((interception) => {
       const keys = Object.keys(interception.request.body.idea);
       const value: string = interception.request.body.idea[keys[0]];
-      expect(value).to.equal(chooseOneOption1);
+      expect(value).to.include(chooseOneOption1);
     });
 
     cy.get('[data-cy="e2e-survey-success-message"]').should('exist');
