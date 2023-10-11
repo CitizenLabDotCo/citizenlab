@@ -4,7 +4,6 @@ import { Omit } from 'typings';
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 import { DateRangePicker, DateRangePickerShape } from 'react-dates';
-// import DatePicker from 'react-datepicker';
 
 // styles
 import styled from 'styled-components';
