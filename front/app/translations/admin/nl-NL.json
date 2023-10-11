@@ -70,8 +70,6 @@
   "app.components.UserSearch.noOptions": "Geen opties",
   "app.components.UserSearch.searchUsers": "Zoek gebruikers",
   "app.components.admin.ContentBuilder.Widgets.Title.title": "Titel",
-  "app.components.admin.DateRangePicker.endDatePlaceholder": "Einddatum",
-  "app.components.admin.DateRangePicker.startDatePlaceholder": "Begint op",
   "app.components.admin.Graphs": "Geen gegevens beschikbaar met de huidige filters.",
   "app.components.admin.Graphs.noDataShort": "Geen gegevens beschikbaar.",
   "app.components.admin.GraphsCards.CommentsByTime.hooks.useCommentsByTime.timeSeries": "Opmerkingen in de tijd",

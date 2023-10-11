@@ -70,8 +70,6 @@
   "app.components.UserSearch.noOptions": "Nessuna opzione",
   "app.components.UserSearch.searchUsers": "Digita per cercare gli utenti...",
   "app.components.admin.ContentBuilder.Widgets.Title.title": "Title",
-  "app.components.admin.DateRangePicker.endDatePlaceholder": "Data di fine",
-  "app.components.admin.DateRangePicker.startDatePlaceholder": "Data di inizio",
   "app.components.admin.Graphs": "No data available with the current filters.",
   "app.components.admin.Graphs.noDataShort": "Nessun dato disponibile.",
   "app.components.admin.GraphsCards.CommentsByTime.hooks.useCommentsByTime.timeSeries": "Comments over time",

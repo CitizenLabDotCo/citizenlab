@@ -70,8 +70,6 @@
   "app.components.UserSearch.noOptions": "Ingen muligheder",
   "app.components.UserSearch.searchUsers": "Skriv for at søge brugere...",
   "app.components.admin.ContentBuilder.Widgets.Title.title": "Titel",
-  "app.components.admin.DateRangePicker.endDatePlaceholder": "Slutdato",
-  "app.components.admin.DateRangePicker.startDatePlaceholder": "Start date",
   "app.components.admin.Graphs": "Ingen data tilgængelige med de nuværende filtre.",
   "app.components.admin.Graphs.noDataShort": "Ingen data tilgængelige.",
   "app.components.admin.GraphsCards.CommentsByTime.hooks.useCommentsByTime.timeSeries": "Kommentarer over tid",
