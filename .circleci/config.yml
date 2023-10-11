@@ -504,6 +504,11 @@ jobs:
           keys:
             - v2-npm-cache-{{ checksum "package-lock.json" }}
       - run:
+          name: Install jq
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y jq
+      - run:
           name: Install Dependencies
           command: |
             CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
