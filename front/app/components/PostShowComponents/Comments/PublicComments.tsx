@@ -92,7 +92,6 @@ const PublicComments = ({
     initiativeId: postType === 'initiative' ? postId : undefined,
     ideaId: postType === 'idea' ? postId : undefined,
     sort: sortOrder,
-    pageSize: 2,
   });
   const commentingPermissionInitiative = useInitiativesPermissions(
     'commenting_initiative'
