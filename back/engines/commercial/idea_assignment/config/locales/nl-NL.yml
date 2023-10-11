@@ -1,13 +1,8 @@
 nl:
   email_campaigns:
     campaign_type_description:
-      "idea_assigned_to_you": Toewijzing van een idee aan mij
-    admin_campaign_type_description:
-      "idea_assigned_to_you": Toewijzing van een idee - beheerders
-    idea_assigned_to_you:
-      by_author: 'door %{authorName}'
-      cta_reply_to: 'Geef %{authorName} feedback'
-      event_description_idea: 'Je kreeg een idee toegewezen. Geef feedback door het schrijven van een officiële update of door het wijzigen van de status van het idee.'
-      main_header: '%{firstName}, je hebt een nieuwe toewijzing'
-      subject: 'Je hebt een toewijzing op het platform van %{organizationName}'
-      preheader_idea: 'Je kreeg het idee van %{authorName} toegewezen'
+      ""idea_assigned_to_you"":
+        Assignment of an idea to me admin_campaign_type_description:
+          ""idea_assigned_to_you"":
+            Assignment of an idea - admins and project managers idea_assigned_to_you:
+              by_author: 'door %{authorName}'' cta_reply_to: ''Geef feedback aan %{authorName}'' event_description_idea: ''Er is een idee aan je toegewezen. Geef feedback door een officiële update te schrijven of door de status aan te passen.'' main_header: ''%{firstName}, je hebt een nieuwe toewijzing'' subject: ''Je hebt een toewijzing op het platform van %{organizationName}'' preheader_idea: ''Het idee van %{authorName} is aan jou toegewezen.'
