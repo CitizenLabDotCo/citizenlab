@@ -70,13 +70,14 @@ RSpec.configure do |config|
   # config.filter_gems_from_backtrace("gem name")
 
   config.include ActiveSupport::Testing::TimeHelpers
-  config.include GeneralHelper
-  config.include ApiHelper
   config.include ApiAuthenticationHelper
-  config.include Base64Helper
-  config.include RakeHelper
-  config.include XlsxHelper
+  config.include ApiHelper
   config.include AppConfigurationHelper
+  config.include Base64Helper
+  config.include GeneralHelper
+  config.include RakeHelper
+  config.include StubEnvHelper
+  config.include XlsxHelper
 
   # If we do not include the following module, the controller tests do not reset the
   # `CurrentAttributes` before and after each test.

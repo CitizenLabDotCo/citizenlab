@@ -55,7 +55,7 @@ describe 'db/seeds.rb' do
   end
 
   it 'generates an empty_localhost tenant with a few records' do
-    stub_const('ENV', ENV.to_hash.merge('SEED_EMPTY_TENANT' => 'TRUE'))
+    stub_env('SEED_EMPTY_TENANT', 'TRUE')
     load Rails.root.join('db/seeds.rb')
 
     Apartment::Tenant.switch('empty_localhost') do
