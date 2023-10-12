@@ -17,10 +17,10 @@ resource 'Location' do
     let(:input) { 'New York' }
 
     before do
-      allow(HTTParty).to receive(:get).and_return({ 'suggestions' => [{ 'description' => 'New York, NY, USA' }] })
+      allow(HTTParty).to receive(:get).and_return({ 'predictions' => [{ 'description' => 'New York, NY, USA' }] })
     end
 
-    example_request 'Textsearch' do
+    example_request 'Autocomplete' do
       expect(status).to eq(200)
       expect(response_data[:attributes][:results]).to match_array(['New York, NY, USA'])
     end
