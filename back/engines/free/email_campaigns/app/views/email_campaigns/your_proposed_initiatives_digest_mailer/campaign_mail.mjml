@@ -43,7 +43,7 @@
 
         <tr style="border:1px solid #ecedee; background-color: #FFFFFF">
           <td style="width: 70px;">
-            <span style="font-size: 14px; font-weight: 700; color: rgb(111, 119, 125);"><%= initiatives.upvotes_count %></span>
+            <span style="font-size: 14px; font-weight: 700; color: rgb(111, 119, 125);"><%= initiatives.likes_count %></span>
           </td>
           <td style="width: 70px;">
             <span style="font-size: 14px; font-weight: 700; color: rgb(111, 119, 125);"><%= initiatives.votes_this_week %></span>
