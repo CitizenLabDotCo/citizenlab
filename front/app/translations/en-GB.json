@@ -252,6 +252,7 @@
   "app.components.InitiativesShow.shareTitle": "{tenantName, select, stirlingcouncil {Congratulations, your petition was successfully posted!} other {Congratulations, your proposal was successfully posted!}}",
   "app.components.InitiativesShow.skipSharing": "Skip it, I'll do it later",
   "app.components.InitiativesShowPage.goBack": "Go back",
+  "app.components.LocationInput.noOptions": "No options",
   "app.components.Modal.closeModal": "Close the modal",
   "app.components.NewAuthModal.steps.ChangeEmail.enterNewEmail": "Enter a new email address",
   "app.components.PageNotFound.goBackToHomePage": "Back to the homepage",
