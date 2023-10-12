@@ -252,6 +252,7 @@
   "app.components.InitiativesShow.shareTitle": "Gratulerer, forslaget ditt er nå publisert!",
   "app.components.InitiativesShow.skipSharing": "Hopp over, jeg gjør det senere",
   "app.components.InitiativesShowPage.goBack": "Gå tilbake",
+  "app.components.LocationInput.noOptions": "Ingen alternativer",
   "app.components.Modal.closeModal": "Lukk denne modulen",
   "app.components.NewAuthModal.steps.ChangeEmail.enterNewEmail": "Skriv inn en ny e-postadresse",
   "app.components.PageNotFound.goBackToHomePage": "Tilbake til startsiden",
