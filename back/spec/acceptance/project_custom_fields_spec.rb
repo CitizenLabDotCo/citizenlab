@@ -179,7 +179,7 @@ resource 'Project level Custom Fields' do
 
     get 'web_api/v1/projects/:project_id/custom_fields/json_forms_schema' do
       example_request 'Get the jsonforms.io json schema and ui schema for the custom fields' do
-        assert_status 404
+        assert_status 200
         expect(response_body).to be_empty
       end
     end
