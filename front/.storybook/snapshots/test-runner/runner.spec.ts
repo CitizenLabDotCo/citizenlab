@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import stories from '../snapshot-tests.json';
 
-test.describe('Button', () => {
+test.describe('Snapshots', () => {
   for (const story of stories) {
     test(`snapshot test: ${story}`, async ({ page }) => {
       await page.goto(`http://localhost:6006/?path=/story/${story}`);

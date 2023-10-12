@@ -31,6 +31,7 @@ cypress/screenshots/
 
 # Storybook generated output
 dist/
+storybook-static/*
 
 #Local VsCode config
 .vscode/*

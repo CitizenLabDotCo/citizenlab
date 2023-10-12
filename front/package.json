@@ -35,10 +35,11 @@
     "detect-deadcode": "ts-prune -p app/tsconfig.json -i '(node_modules|utils/testUtils/rtl.tsx|utils/permissions|i18n|/*/*/__mocks__)' | (! grep -v 'used in module')",
     "dependency-cruiser": "depcruise app  --validate",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build",
-    "prepare-snapshot-tests": "node internals/scripts/prepare-snapshot-tests.js",
-    "snapshots": "npm run prepare-snapshot-tests && npx playwright test runner -c .storybook/snapshots/playwright.config.ts",
-    "snapshots:update": "npm run prepare-snapshot-tests && npx playwright test -c .storybook/snapshots/playwright.config.ts runner --update-snapshots"
+    "storybook:build": "storybook build",
+    "storybook:serve": "npx http-server -p 6006 ./storybook-static",
+    "snapshots:prepare": "node internals/scripts/prepare-snapshot-tests.js",
+    "snapshots": "npm run prepare-snapshots && npx playwright test runner -c .storybook/snapshots/playwright.config.ts",
+    "snapshots:update": "npm run prepare-snapshots && npx playwright test -c .storybook/snapshots/playwright.config.ts runner --update-snapshots"
   },
   "jest-junit": {
     "addFileAttribute": "true"
