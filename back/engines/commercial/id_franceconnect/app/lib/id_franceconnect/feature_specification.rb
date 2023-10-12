@@ -46,5 +46,18 @@ module IdFranceconnect
       type: 'string',
       private: true
     }
+
+    add_setting 'scope', required: true, schema: {
+      title: 'Scope',
+      description: 'The data that will be requested from FranceConnect. See https://partenaires.franceconnect.gouv.fr/fcp/fournisseur-service#identite-pivot. Fields that can be saved: email, given_name, family_name, birthdate, gender.',
+      type: 'array',
+      items: {
+        type: 'string',
+        enum: %w[email given_name family_name birthdate gender idp_birthdate birthplace birthcountry preferred_username profile birth identite_pivot]
+      },
+      uniqueItems: true,
+      default: %w[email given_name family_name],
+      private: true
+    }
   end
 end
