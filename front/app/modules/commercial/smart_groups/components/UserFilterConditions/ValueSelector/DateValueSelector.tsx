@@ -1,27 +1,11 @@
 import React from 'react';
 import moment from 'moment';
-import DatePicker from 'react-datepicker';
-import styled from 'styled-components';
-import { colors, fontSizes } from '@citizenlab/cl2-component-library';
+import DateSinglePicker from 'components/admin/DateSinglePicker';
 
 type Props = {
   value?: string;
   onChange: (dateStr: string) => void;
 };
-
-const Container = styled.div`
-  display: flex;
-  align-items: center;
-  border-radius: ${(props) => props.theme.borderRadius};
-  border: solid 1px ${colors.borderDark};
-
-  input {
-    width: 100%;
-    color: ${colors.grey800};
-    font-size: ${fontSizes.base}px;
-    padding: 12px;
-  }
-`;
 
 const DateValueSelector = ({ value, onChange }: Props) => {
   const handleOnChange = (date: Date | null) => {
@@ -31,12 +15,10 @@ const DateValueSelector = ({ value, onChange }: Props) => {
   };
 
   return (
-    <Container>
-      <DatePicker
-        selected={typeof value === 'string' ? new Date(value) : null}
-        onChange={handleOnChange}
-      />
-    </Container>
+    <DateSinglePicker
+      selectedDate={typeof value === 'string' ? new Date(value) : null}
+      onChange={handleOnChange}
+    />
   );
 };
 
