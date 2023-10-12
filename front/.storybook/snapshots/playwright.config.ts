@@ -22,7 +22,7 @@ const config: PlaywrightTestConfig = {
     navigationTimeout: 30 * 1000,
   },
   retries: 1,
-  maxFailures: process.env.CI === 'true' ? 20 : undefined,
+  // maxFailures: process.env.CI === 'true' ? 20 : undefined,
   updateSnapshots: 'none',
   expect: {
     toMatchSnapshot: {

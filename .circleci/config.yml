@@ -536,6 +536,37 @@ jobs:
       - store_artifacts:
           path: /root/.npm/_logs/
 
+  front-snapshot-tests:
+    docker:
+      - image: citizenlabdotco/cl2-devops-front-buildenv
+    resource_class: medium+
+    working_directory: ~/
+    parallelism: 4
+    steps:
+      - shallow-clone
+      - restore_cache:
+          keys:
+            - v2-npm-cache-{{ checksum "citizenlab/front/package-lock.json" }}
+      - run: cd citizenlab/front && npm ci
+      - save_cache:
+          paths:
+            - /root/.npm
+          key: v2-npm-cache-{{ checksum "citizenlab/front/package-lock.json" }}
+      - run:
+          name: Run 
+          command: |
+            cd citizenlab/front
+            npm run storybook:build
+            npm run storybook:serve
+            npm run snapshots
+          # environment:
+            # JEST_JUNIT_OUTPUT_DIR: ./reports/
+            # TODO
+      - store_test_results:
+          path: ./citizenlab/front/.storybook/snapshots/test-results
+      - store_artifacts:
+          path: ./citizenlab/front/.storybook/snapshots/test-report
+
   front-trigger-deploy:
     resource_class: small
     docker:
