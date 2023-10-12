@@ -79,7 +79,7 @@ Rails.application.routes.draw do
       resources :initiative_statuses, only: %i[index show]
 
       resources :location, only: [] do
-        get :textsearch, on: :collection
+        get :autocomplete, on: :collection
         get :geocode, on: :collection
         get :reverse_geocode, on: :collection
       end

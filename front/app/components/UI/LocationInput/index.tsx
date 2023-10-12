@@ -2,6 +2,7 @@ import React from 'react';
 import AsyncSelect from 'react-select/async';
 import selectStyles from 'components/UI/MultipleSelect/styles';
 import fetcher from 'utils/cl-react-query/fetcher';
+import useLocale from 'hooks/useLocale';
 
 export interface Option {
   label: string;
@@ -22,13 +23,15 @@ type TextSearchResponse = {
 };
 
 const LocationInput = (props: React.ComponentProps<typeof AsyncSelect>) => {
+  const locale = useLocale();
   const promiseOptions = async (inputValue: string) => {
     try {
       const response = await fetcher<TextSearchResponse>({
-        path: '/location/textsearch',
+        path: '/location/autocomplete',
         action: 'get',
         queryParams: {
-          query: inputValue || props.value,
+          input: inputValue || props.value,
+          language: locale,
         },
       });
 

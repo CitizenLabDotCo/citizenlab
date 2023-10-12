@@ -22,6 +22,7 @@ import {
 import messages from './messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import useLocale from 'hooks/useLocale';
 
 // Components
 import SubmitButtonBar from './SubmitButtonBar';
@@ -47,7 +48,7 @@ import { IInitiativeData } from 'api/initiatives/types';
 import { IInitiativeImageData } from 'api/initiative_images/types';
 import { IInitiativeFileData } from 'api/initiative_files/types';
 import useInitiativeReviewRequired from 'containers/InitiativesShow/hooks/useInitiativeReviewRequired';
-import { stripHtmlTags } from 'utils/helperUtils';
+import { stripHtmlTags, isNilOrError } from 'utils/helperUtils';
 import useInitiativeCosponsorsRequired from 'containers/InitiativesShow/hooks/useInitiativeCosponsorsRequired';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { useSearchParams } from 'react-router-dom';
@@ -87,6 +88,7 @@ const InitiativeForm = ({
   initiativeImage,
   initiativeFiles,
 }: Props) => {
+  const locale = useLocale();
   const [search] = useSearchParams();
   const { formatMessage } = useIntl();
   const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
@@ -183,14 +185,14 @@ const InitiativeForm = ({
     const lat = search.get('lat');
     const lng = search.get('lng');
 
-    if (lat && lng) {
+    if (lat && lng && !isNilOrError(locale)) {
       const latNumber = Number(lat);
       const lngNumber = Number(lng);
-      reverseGeocode(latNumber, lngNumber).then((result) => {
+      reverseGeocode(latNumber, lngNumber, locale).then((result) => {
         methods.setValue('position', result);
       });
     }
-  }, [methods, search]);
+  }, [methods, search, locale]);
 
   useEffect(() => {
     const bannerUrl = initiative?.attributes.header_bg.large;

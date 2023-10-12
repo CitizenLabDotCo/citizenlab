@@ -10,16 +10,16 @@ resource 'Location' do
     header 'Content-Type', 'application/json'
   end
 
-  get 'web_api/v1/location/textsearch' do
-    parameter :query, 'Search query', required: true
+  get 'web_api/v1/location/autocomplete' do
+    parameter :input, 'Search input', required: true
     parameter :language, 'Language', required: false
 
-    let(:query) { 'New York' }
-    
+    let(:input) { 'New York' }
+
     before do
-      allow(HTTParty).to receive(:get).and_return({ 'results' => [{ 'formatted_address' => 'New York, NY, USA' }] })
+      allow(HTTParty).to receive(:get).and_return({ 'suggestions' => [{ 'description' => 'New York, NY, USA' }] })
     end
-    
+
     example_request 'Textsearch' do
       expect(status).to eq(200)
       expect(response_data[:attributes][:results]).to match_array(['New York, NY, USA'])

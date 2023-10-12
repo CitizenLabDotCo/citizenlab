@@ -34,8 +34,6 @@ const Category = ({
   } = useDeleteInputCategory();
   const { data: category } = useCategory(viewId, id);
 
-  console.log(category);
-
   if (category?.data?.attributes?.name === undefined) {
     return null;
   }

@@ -3,9 +3,9 @@
 class WebApi::V1::LocationController < ApplicationController
   skip_before_action :authenticate_user
   skip_after_action :verify_authorized
-  
-  def textsearch
-    render json: raw_json(Location::Service.new.textsearch(params[:query], params[:language]))
+
+  def autocomplete
+    render json: raw_json(Location::Service.new.autocomplete(params[:input], params[:language]))
   end
 
   def geocode

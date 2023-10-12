@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 class Location::Service
-  def textsearch(query, language = 'en')
-    response = HTTParty.get("https://maps.googleapis.com/maps/api/place/textsearch/json?query=#{query}&key=#{api_key}&radius=100000000000&language=#{language}")
-    {results: response['results'].map { |item| item['formatted_address'] } }
+  def autocomplete(input, language = 'en')
+    response = HTTParty.get("https://maps.googleapis.com/maps/api/place/autocomplete/json?input=#{input}&key=#{api_key}&language=#{language}")
+    { results: response['predictions'].pluck('description') }
   end
 
   def geocode(address, language = 'en')
@@ -17,6 +19,6 @@ class Location::Service
   private
 
   def api_key
-    ENV['GOOGLE_MAPS_API_KEY']
+    ENV.fetch('GOOGLE_MAPS_API_KEY', nil)
   end
 end

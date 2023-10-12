@@ -49,7 +49,7 @@ type ReverseGeocodeResponse = {
   };
 };
 
-const reverseGeocode = async (lat: number, lng: number) => {
+const reverseGeocode = async (lat: number, lng: number, language: string) => {
   try {
     const result = await fetcher<ReverseGeocodeResponse>({
       path: '/location/reverse_geocode',
@@ -57,6 +57,7 @@ const reverseGeocode = async (lat: number, lng: number) => {
       queryParams: {
         lat,
         lng,
+        language,
       },
     });
     const formattedAddress = result.data.attributes.formatted_address;
