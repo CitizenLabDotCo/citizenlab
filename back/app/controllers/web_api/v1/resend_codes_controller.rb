@@ -5,7 +5,11 @@ class WebApi::V1::ResendCodesController < ApplicationController
 
   def create
     RequestConfirmationCodeJob.perform_now(current_user, new_email: resend_code_params[:new_email])
-    head :ok
+    if current_user.valid?
+      head :ok
+    else
+      render json: { errors: current_user.errors.details }, status: :unprocessable_entity
+    end
   end
 
   private

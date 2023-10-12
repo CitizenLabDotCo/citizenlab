@@ -5,19 +5,21 @@ class RequestConfirmationCodeJob < ApplicationJob
 
   def run(user, new_email: nil)
     # TODO: add user reader attr
+    raise 'User confirmation is disabled.' if !AppConfiguration.instance.feature_activated?('user_confirmation')
     raise 'Confirmation is currently working for emails only.' if !user.registered_with_email?
 
     # TODO: log activity
-    old_email = user.email
-    begin
-      user.reset_email! new_email if new_email
+    if new_email
+      user.new_email = new_email
+      user.email_confirmation_code_reset_count = 0 # TODO: Why does this need to be set to 0?
+    end
+    return if !user.valid?
+
+    ActiveRecord::Base.transaction do
+      user.save!
       reset_user_confirmation_code user
       deliver_confirmation_code user
       schedule_code_expiration user
-    rescue StandardError => e
-      user.update!(email: old_email) if new_email && old_email # TODO: use transaction instead?
-      ErrorReporter.report e
-      raise e
     end
   end
 

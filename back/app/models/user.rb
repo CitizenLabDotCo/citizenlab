@@ -538,14 +538,6 @@ class User < ApplicationRecord
     save!
   end
 
-  def reset_email!(new_email)
-    if user_confirmation_enabled? && active?
-      update!(new_email: new_email, email_confirmation_code_reset_count: 0)
-    else
-      update!(email: new_email, email_confirmation_code_reset_count: 0)
-    end
-  end
-
   def confirm_new_email
     return unless new_email
 
