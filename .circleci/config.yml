@@ -429,7 +429,7 @@ jobs:
       - restore_cache:
           keys:
             - v2-npm-cache-{{ checksum "package-lock.json" }}
-      <<: *install-npm-dependencies
+      - *install-npm-dependencies
       - save_cache:
           paths:
             - /root/.npm
