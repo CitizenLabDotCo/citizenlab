@@ -91,7 +91,7 @@ class BulkImportIdeas::PrintCustomFieldsService
 
   def render_tenant_logo(pdf)
     logo = @app_configuration.logo&.medium
-    return if logo.blank?
+    return if logo.blank? || logo.url&.include?('.gif')
 
     pdf.image open logo.to_s
     pdf.move_down 10.mm
