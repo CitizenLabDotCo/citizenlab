@@ -37,5 +37,17 @@ resource 'Project level Custom Fields' do
         assert_status 200
       end
     end
+
+    context 'in a timeline project without a current phase' do
+      let(:project) { create(:project_with_two_past_ideation_phases) }
+      let(:custom_form) { create(:custom_form, participation_context: project.phases.first) }
+
+      let(:project_id) { project.id }
+
+      example 'Get a pdf version of the idea form', document: false do
+        do_request
+        assert_status 200
+      end
+    end
   end
 end
