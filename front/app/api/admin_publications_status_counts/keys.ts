@@ -14,5 +14,3 @@ const adminPublicationsStatusCountsKeys = {
 } satisfies QueryKeys;
 
 export default adminPublicationsStatusCountsKeys;
-
-//
