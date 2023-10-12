@@ -27,7 +27,7 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@3.6.2
         with:
           GITHUB_TOKEN: ${{ secrets.GB_TOKEN }}
-          BRANCH: master # The branch the action should deploy to.
+          BRANCH: main # The branch the action should deploy to.
           FOLDER: cl2-component-library/docs-build # The folder that the build-storybook script generates files.
           CLEAN: true # Automatically remove deleted files from the deploy branch
           TARGET_FOLDER: cl2-component-library/docs # The folder that we serve our Storybook files from
