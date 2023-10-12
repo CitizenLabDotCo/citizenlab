@@ -18,6 +18,33 @@ slack-fail-post-step-inconsistent-data: &slack-fail-post-step-inconsistent-data
         mentions: ":boom: FAILURE: Some data is likely invalid."
         template: basic_fail_1
 
+front-common-steps: &front-common-steps
+  docker:
+    - image: citizenlabdotco/cl2-devops-front-buildenv
+  working_directory: ~/citizenlab/front
+  steps:
+    - shallow-clone
+    # Download and cache dependencies
+    - restore_cache:
+        keys:
+          - v2-npm-cache-{{ checksum "package-lock.json" }}
+    - run:
+        name: Install jq
+        command: |
+          # Install jq using apt-get (for Debian-based images)
+          apt-get update
+          apt-get install -y jq
+    - run:
+        name: Install Dependencies
+        command: |
+          CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
+          npm ci
+          npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
+    - save_cache:
+        paths:
+          - /root/.npm
+        key: v2-npm-cache-{{ checksum "package-lock.json" }}
+
 parameters:
   # This parameter is used to trigger the main workflow
   trigger:
@@ -410,87 +437,18 @@ jobs:
           no_output_timeout: 60m
 
   front-detect-deadcode:
-    docker:
-      - image: citizenlabdotco/cl2-devops-front-buildenv
-    working_directory: ~/citizenlab/front
+    <<: *front-common-steps
     steps:
-      - shallow-clone
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-            - v2-npm-cache-{{ checksum "package-lock.json" }}
-      - run:
-          name: Install jq
-          command: |
-            # Install jq using apt-get (for Debian-based images)
-            apt-get update
-            apt-get install -y jq
-      - run:
-          name: Install Dependencies
-          command: |
-            CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
-            npm ci
-            npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
-      - save_cache:
-          paths:
-            - /root/.npm
-          key: v2-npm-cache-{{ checksum "package-lock.json" }}
       - run: npm run detect-deadcode
 
   front-dependency-cruiser:
-    docker:
-      - image: citizenlabdotco/cl2-devops-front-buildenv
-    working_directory: ~/citizenlab/front
+    <<: *front-common-steps
     steps:
-      - shallow-clone
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-            - v2-npm-cache-{{ checksum "package-lock.json" }}
-      - run:
-          name: Install jq
-          command: |
-            # Install jq using apt-get (for Debian-based images)
-            apt-get update
-            apt-get install -y jq
-      - run:
-          name: Install Dependencies
-          command: |
-            CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
-            npm ci
-            npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
-      - save_cache:
-          paths:
-            - /root/.npm
-          key: v2-npm-cache-{{ checksum "package-lock.json" }}
       - run: npm run dependency-cruiser
 
   front-lint:
-    docker:
-      - image: citizenlabdotco/cl2-devops-front-buildenv
-    working_directory: ~/citizenlab/front
+    <<: *front-common-steps
     steps:
-      - shallow-clone
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-            - v2-npm-cache-{{ checksum "package-lock.json" }}
-      - run:
-          name: Install jq
-          command: |
-            # Install jq using apt-get (for Debian-based images)
-            apt-get update
-            apt-get install -y jq
-      - run:
-          name: Install Dependencies
-          command: |
-            CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
-            npm ci
-            npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
-      - save_cache:
-          paths:
-            - /root/.npm
-          key: v2-npm-cache-{{ checksum "package-lock.json" }}
       - run: npm run lint
 
   front-license-check:
@@ -510,15 +468,13 @@ jobs:
             apt-get update
             apt-get install -y jq
       - run:
-          name: Install node and dependencies
+          name: Install node, dependencies and run license_finder
           command: |
             curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
             source ~/.nvm/nvm.sh
             nvm install 16.15.0
             nvm use 16.15.0
             CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
-            pwd
-            echo "CL2_VERSION: $CL2_VERSION"
             npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
             npm ci
             /bin/bash -lc "cd ~/citizenlab/front && license_finder"
@@ -526,7 +482,6 @@ jobs:
           paths:
             - /root/.npm
           key: v2-npm-cache-{{ checksum "package-lock.json" }}
-      # - run: /bin/bash -lc "cd ~/citizenlab/front && license_finder"
 
   front-build:
     docker:
