@@ -252,6 +252,7 @@
   "app.components.InitiativesShow.shareTitle": "Čestitamo, vaš predlog je objavljen!",
   "app.components.InitiativesShow.skipSharing": "Preskačem korak, učiniću ovo kasnije",
   "app.components.InitiativesShowPage.goBack": "Povratak nazad",
+  "app.components.LocationInput.noOptions": "No options",
   "app.components.Modal.closeModal": "Zatvorite prozor",
   "app.components.NewAuthModal.steps.ChangeEmail.enterNewEmail": "Унесите нову адресу е-поште",
   "app.components.PageNotFound.goBackToHomePage": "Nazad na matičnu stranicu",
