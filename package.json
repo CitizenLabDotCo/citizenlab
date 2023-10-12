@@ -1,0 +1,10 @@
+{
+    "author": "CitizenLab",
+    "scripts": {
+        "start:cl-linked": "concurrently \"cd cl2-component-library && npm run start\" \"cd front && npm run start\"",
+        "start:front": "cd cl2-component-library && npm run build && cd .. && cd front && npm start"
+    },
+    "devDependencies": {
+        "concurrently": "^8.2.1"
+    }
+}
