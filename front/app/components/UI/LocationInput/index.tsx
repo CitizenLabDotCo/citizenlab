@@ -3,6 +3,8 @@ import AsyncSelect from 'react-select/async';
 import selectStyles from 'components/UI/MultipleSelect/styles';
 import fetcher from 'utils/cl-react-query/fetcher';
 import useLocale from 'hooks/useLocale';
+import { useIntl } from 'utils/cl-intl';
+import messages from './messages';
 
 export interface Option {
   label: string;
@@ -23,6 +25,7 @@ type TextSearchResponse = {
 };
 
 const LocationInput = (props: React.ComponentProps<typeof AsyncSelect>) => {
+  const { formatMessage } = useIntl();
   const locale = useLocale();
   const promiseOptions = async (inputValue: string) => {
     try {
@@ -52,6 +55,7 @@ const LocationInput = (props: React.ComponentProps<typeof AsyncSelect>) => {
       defaultOptions
       loadOptions={promiseOptions}
       styles={selectStyles}
+      noOptionsMessage={() => formatMessage(messages.noOptions)}
       {...props}
     />
   );
