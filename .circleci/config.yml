@@ -438,17 +438,14 @@ jobs:
 
   front-detect-deadcode:
     <<: *front-common-steps
-    steps:
       - run: npm run detect-deadcode
 
   front-dependency-cruiser:
     <<: *front-common-steps
-    steps:
       - run: npm run dependency-cruiser
 
   front-lint:
     <<: *front-common-steps
-    steps:
       - run: npm run lint
 
   front-license-check:
