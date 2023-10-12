@@ -20,7 +20,7 @@ class WebApi::V1::ProjectCustomFieldsController < ApplicationController
   end
 
   def participation_context
-    @participation_context ||= ParticipationContextService.new.get_participation_context project
+    @participation_context ||= ParticipationContextService.new.get_participation_context(project) || project
   end
 
   def input_term
