@@ -936,6 +936,7 @@ workflows:
             equal: ["production", << pipeline.git.branch >>]
     jobs:
       - front-test
+      - front-snapshot-tests
       - front-lint:
           context: citizenlab-ee-environment
           filters:
