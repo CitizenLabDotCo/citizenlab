@@ -22,7 +22,10 @@ const AdminProjectsSurvey = lazy(() => import('./project/nativeSurvey'));
 
 const AdminProjectDescription = lazy(() => import('./project/description'));
 const AdminProjectIdeaForm = lazy(() => import('./project/inputForm'));
+
 const AdminProjectIdeas = lazy(() => import('./project/ideas'));
+const OfflineInputImporter = lazy(() => import('./project/offlineInputs'));
+
 const AdminProjectVolunteering = lazy(() => import('./project/volunteering'));
 const AdminProjectVolunteeringNew = lazy(
   () => import('./project/volunteering/NewCause')
@@ -253,6 +256,22 @@ const createAdminProjectsRoutes = () => {
             element: (
               <PageLoading>
                 <AdminProjectAnalysis />
+              </PageLoading>
+            ),
+          },
+          {
+            path: 'offline-inputs',
+            element: (
+              <PageLoading>
+                <OfflineInputImporter />
+              </PageLoading>
+            ),
+          },
+          {
+            path: 'phases/:phaseId/offline-inputs',
+            element: (
+              <PageLoading>
+                <OfflineInputImporter />
               </PageLoading>
             ),
           },

@@ -34,12 +34,14 @@
 #  new_email                           :string
 #  followings_count                    :integer          default(0), not null
 #  onboarding                          :jsonb            not null
+#  unique_code                         :string
 #
 # Indexes
 #
 #  index_users_on_email                      (email)
 #  index_users_on_registration_completed_at  (registration_completed_at)
 #  index_users_on_slug                       (slug) UNIQUE
+#  index_users_on_unique_code                (unique_code) UNIQUE
 #  users_unique_lower_email_idx              (lower((email)::text)) UNIQUE
 #
 class User < ApplicationRecord
@@ -187,7 +189,7 @@ class User < ApplicationRecord
   store_accessor :custom_field_values, :gender, :birthyear, :domicile, :education
   store_accessor :onboarding, :topics_and_areas
 
-  validates :email, presence: true, unless: -> { invite_pending? || (sso? && identities.none?(&:email_always_present?)) }
+  validates :email, presence: true, if: :requires_email?
   validates :locale, presence: true, unless: :invite_pending?
   validates :email, uniqueness: true, allow_nil: true
   validates :slug, uniqueness: true, presence: true, unless: :invite_pending?
@@ -362,7 +364,8 @@ class User < ApplicationRecord
 
   def anon_last_name
     # Generate a numeric last name based on email in the format of '123456'
-    (email.sum**2).to_s[0, 6]
+    name_key = email || unique_code
+    (name_key.sum**2).to_s[0, 6]
   end
 
   def highest_role
@@ -692,6 +695,10 @@ class User < ApplicationRecord
 
   def destroy_baskets
     baskets.each(&:destroy_or_keep!)
+  end
+
+  def requires_email?
+    !invite_pending? && unique_code.blank? && !(sso? && identities.none?(&:email_always_present?))
   end
 end
 

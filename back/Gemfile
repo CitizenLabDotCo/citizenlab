@@ -136,6 +136,8 @@ gem 'faker'
 gem 'order_as_specified'
 gem 'scenic'
 gem 'ice_cube', '~> 0.16'
+gem 'prawn', '~> 2.4'
+gem 'prawn-grouping', '~> 0.2.0'
 
 # Also required here to be able to initialize Mailgun in
 # e.g. production.rb, which would otherwise result in an
@@ -156,6 +158,8 @@ gem 'intercom', '~> 4.2'
 # in the main app.
 gem 'mjml-rails', '~> 4.9'
 gem 'cloudfront-rails', '~> 0.4'
+gem 'google-cloud-document_ai'
+gem 'combine_pdf'
 
 free_engines = %w[
   document_annotation

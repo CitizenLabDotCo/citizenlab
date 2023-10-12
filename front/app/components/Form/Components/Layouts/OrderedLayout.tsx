@@ -8,19 +8,21 @@ const CLCategoryLayout = memo(
   ({ schema, uischema, path, renderers, cells, enabled }: any) => {
     return (
       <Box margin-bottom="30px" width="100%">
-        {uischema.elements.map((e, index) => (
-          <SectionField marginBottom="30px" key={index}>
-            <JsonFormsDispatch
-              key={index}
-              renderers={renderers}
-              cells={cells}
-              uischema={e}
-              schema={schema}
-              path={path}
-              enabled={enabled}
-            />
-          </SectionField>
-        ))}
+        {uischema.elements.map((e, index) => {
+          return (
+            <SectionField marginBottom="30px" key={index}>
+              <JsonFormsDispatch
+                key={index}
+                renderers={renderers}
+                cells={cells}
+                uischema={e}
+                schema={schema}
+                path={path}
+                enabled={enabled}
+              />
+            </SectionField>
+          );
+        })}
       </Box>
     );
   }

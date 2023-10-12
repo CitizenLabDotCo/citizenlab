@@ -88,6 +88,10 @@ module ParticipationMethod
       false
     end
 
+    def supports_survey_form?
+      true
+    end
+
     def include_data_in_email?
       false
     end
