@@ -532,7 +532,7 @@ const AdminProjectEventEdit = () => {
           >
             {formatMessage(messages.eventDates)}
           </Title>
-          <Box display="flex" gap="32px">
+          <Box display="flex" flexDirection="column">
             <SectionField style={{ width: 'auto' }}>
               <Label>
                 <FormattedMessage {...messages.dateStartLabel} />
