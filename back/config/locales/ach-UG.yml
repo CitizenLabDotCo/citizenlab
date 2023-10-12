@@ -215,6 +215,7 @@ ach:
       status: 'crwdns1168650:0crwdne1168650:0'
       assignee_fullname: 'crwdns1168652:0crwdne1168652:0'
       assignee_email: 'crwdns1168654:0crwdne1168654:0'
+      image_url: 'crwdns1169896:0crwdne1169896:0'
     anonymous: 'crwdns1168656:0crwdne1168656:0'
   form_builder:
     default_select_field:
@@ -224,6 +225,23 @@ ach:
     survey_end_page:
       title: 'crwdns1168664:0crwdne1168664:0'
       description: "crwdns1168666:0crwdne1168666:0"
+    pdf_export:
+      personal_data: 'crwdns1169898:0crwdne1169898:0'
+      personal_data_explanation_ideation: "crwdns1169900:0%{organizationName}crwdnd1169900:0%{organizationName}crwdne1169900:0"
+      personal_data_explanation_native_survey: "crwdns1169902:0%{organizationName}crwdnd1169902:0%{organizationName}crwdne1169902:0"
+      first_name: 'crwdns1169904:0crwdne1169904:0'
+      last_name: 'crwdns1169906:0crwdne1169906:0'
+      email_address: 'crwdns1169908:0crwdne1169908:0'
+      by_checking_this_box: "crwdns1169910:0%{organizationName}crwdne1169910:0"
+      optional: 'crwdns1169912:0crwdne1169912:0'
+      permission: 'crwdns1169914:0crwdne1169914:0'
+      choose_as_many: 'crwdns1169916:0crwdne1169916:0'
+      this_answer: 'crwdns1169918:0crwdne1169918:0'
+      page: 'crwdns1169920:0crwdne1169920:0'
+      date_published: 'crwdns1169922:0crwdne1169922:0'
+      instructions: 'crwdns1169924:0crwdne1169924:0'
+      write_as_clearly: 'crwdns1169926:0crwdne1169926:0'
+      write_in_language: 'crwdns1169928:0crwdne1169928:0'
   project_copy:
     title_suffix: 'crwdns1168668:0crwdne1168668:0'
   confirmations_mailer:
