@@ -443,6 +443,10 @@ module MultiTenancy
             public_api_tokens: {
               enabled: true,
               allowed: true
+            },
+            power_bi: {
+              enabled: true,
+              allowed: true
             }
           })
         )
