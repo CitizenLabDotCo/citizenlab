@@ -55,7 +55,6 @@ const DateTimePicker = ({ value, onChange }: Props) => {
   return (
     <Container>
       <Icon name="calendar" fill={colors.blue500} />
-
       <DatePicker
         selected={value ? new Date(value) : null}
         onChange={handleDateChange}

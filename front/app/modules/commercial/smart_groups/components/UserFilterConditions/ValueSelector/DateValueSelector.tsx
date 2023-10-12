@@ -1,33 +1,42 @@
-import 'react-dates/initialize';
-import 'react-dates/lib/css/_datepicker.css';
-
-import React, { useEffect } from 'react';
-import moment, { Moment } from 'moment';
-
-import { DateInput } from '@citizenlab/cl2-component-library';
+import React from 'react';
+import moment from 'moment';
+import DatePicker from 'react-datepicker';
+import styled from 'styled-components';
+import { colors, fontSizes } from '@citizenlab/cl2-component-library';
 
 type Props = {
-  value: string;
-  onChange: (string: string) => void;
+  value?: string;
+  onChange: (dateStr: string) => void;
 };
 
-const DateValueSelector = ({ value, onChange }: Props) => {
-  useEffect(() => {
-    if (!value) {
-      onChange(moment().format('YYYY-MM-DD'));
-    }
-  }, [onChange, value]);
+const Container = styled.div`
+  display: flex;
+  align-items: center;
+  border-radius: ${(props) => props.theme.borderRadius};
+  border: solid 1px ${colors.borderDark};
 
-  const handleOnChange = (moment: Moment) => {
-    onChange(moment.format('YYYY-MM-DD'));
+  input {
+    width: 100%;
+    color: ${colors.grey800};
+    font-size: ${fontSizes.base}px;
+    padding: 12px;
+  }
+`;
+
+const DateValueSelector = ({ value, onChange }: Props) => {
+  const handleOnChange = (date: Date | null) => {
+    if (date) {
+      onChange(moment(date).format('YYYY-MM-DD'));
+    }
   };
 
   return (
-    <DateInput
-      value={value ? moment(value) : null}
-      onChange={handleOnChange}
-      openOnLeft={true}
-    />
+    <Container>
+      <DatePicker
+        selected={typeof value === 'string' ? new Date(value) : null}
+        onChange={handleOnChange}
+      />
+    </Container>
   );
 };
 
