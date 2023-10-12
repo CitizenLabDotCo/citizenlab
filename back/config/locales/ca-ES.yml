@@ -215,6 +215,7 @@ ca:
       status: 'Estat'
       assignee_fullname: 'Cesionari'
       assignee_email: 'Correu electrònic del cessionari'
+      image_url: 'URL de la imatge'
     anonymous: 'Anònim'
   form_builder:
     default_select_field:
@@ -224,6 +225,23 @@ ca:
     survey_end_page:
       title: 'Final de l''enquesta'
       description: "Envieu les vostres respostes seleccionant \"Envia l'enquesta\" a continuació."
+    pdf_export:
+      personal_data: 'Dades personals'
+      personal_data_explanation_ideation: "Enviarem la teva aportació a la plataforma de participació en línia de %{organizationName}. Si voleu que el vostre nom es mostri com a autor d'aquesta entrada i rebre actualitzacions rellevants per a la vostra entrada per correu electrònic, ompliu els camps següents d'aquesta pàgina i us crearem un compte. El vostre correu electrònic no serà públic i només el farà servir %{organizationName}. Si vols mantenir l'anonimat, o no acceptes que utilitzem les teves dades personals d'aquesta manera, pots deixar-les buides."
+      personal_data_explanation_native_survey: "Enviarem la teva aportació a la plataforma de participació en línia de %{organizationName}. Si voleu rebre actualitzacions rellevants per a les vostres aportacions per correu electrònic, ompliu els camps següents d'aquesta pàgina i us crearem un compte. Les teves dades no seran públiques i només seran utilitzades per %{organizationName}. Si no acceptes que utilitzem les teves dades personals d'aquesta manera, pots deixar-les buides."
+      first_name: 'Nom'
+      last_name: 'Cognom'
+      email_address: 'Correu electrònic'
+      by_checking_this_box: "En marcar aquesta casella, accepto que les meves dades s'utilitzin per crear un compte a la plataforma de participació de %{organizationName}."
+      optional: 'opcional'
+      permission: 'Permís'
+      choose_as_many: 'Trieu-ne tantes com vulgueu'
+      this_answer: 'Aquesta resposta només es compartirà amb els moderadors, i no amb el públic.'
+      page: 'Pàgina'
+      date_published: 'Data de publicació (dd-mm-aaaa)'
+      instructions: 'Instruccions'
+      write_as_clearly: 'Escriu <b>amb claredat</b> com puguis; aquests formularis es poden escanejar'
+      write_in_language: 'Escriu les teves respostes en el mateix idioma que aquest formulari'
   project_copy:
     title_suffix: 'Còpia'
   confirmations_mailer:

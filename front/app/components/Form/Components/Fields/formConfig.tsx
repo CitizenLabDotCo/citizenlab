@@ -75,30 +75,26 @@ const commonRenderers = [
 ];
 
 export const selectRenderers = (formType: 'default' | 'input' | 'survey') => {
-  switch (formType) {
-    case 'default':
-      return commonRenderers;
-    case 'survey':
-    case 'input':
-      return [
-        { tester: linearScaleControlTester, renderer: LinearScaleControl },
-        {
-          tester: multiSelectCheckboxControlTester,
-          renderer: MultiSelectCheckboxControl,
-        },
-        {
-          tester: singleSelectRadioControlTester,
-          renderer: SingleSelectRadioControl,
-        },
-        {
-          tester: singleSelectRadioEnumControlTester,
-          renderer: SingleSelectRadioEnumControl,
-        },
-        {
-          tester: singleAttachmentControlTester,
-          renderer: SingleAttachmentControl,
-        },
-        ...commonRenderers,
-      ];
-  }
+  if (formType === 'default') return commonRenderers;
+
+  return [
+    { tester: linearScaleControlTester, renderer: LinearScaleControl },
+    {
+      tester: multiSelectCheckboxControlTester,
+      renderer: MultiSelectCheckboxControl,
+    },
+    {
+      tester: singleSelectRadioControlTester,
+      renderer: SingleSelectRadioControl,
+    },
+    {
+      tester: singleSelectRadioEnumControlTester,
+      renderer: SingleSelectRadioEnumControl,
+    },
+    {
+      tester: singleAttachmentControlTester,
+      renderer: SingleAttachmentControl,
+    },
+    ...commonRenderers,
+  ];
 };

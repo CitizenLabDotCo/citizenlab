@@ -55,4 +55,8 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.ideas.consentModalCancel',
     defaultMessage: 'Cancel',
   },
+  addOfflineInputs: {
+    id: 'app.containers.Admin.projects.project.ideas.addOfflineInputs',
+    defaultMessage: 'Add offline inputs',
+  },
 });

@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.name        = 'document_annotation'
   s.version     = DocumentAnnotation::VERSION
   s.authors     = ['CitizenLab']
-  s.licenses    = ['CitizenLab Commercial License V2']
+  s.licenses    = [Gem::Licenses::NONSTANDARD] # ['CitizenLab Commercial License V2']
   s.summary     = 'Contains everything to support document annotation as a participation method'
 
   s.files = Dir['{app,config,db,lib}/**/*', 'Rakefile', 'README.md']
