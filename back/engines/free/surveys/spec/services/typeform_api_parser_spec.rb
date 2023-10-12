@@ -281,8 +281,7 @@ describe Surveys::TypeformApiParser do
   describe 'parse_answers' do
     it 'encodes hidden fields and their values as answers' do
       response = all_responses_return_value[0]
-      response['hidden'] = { 'email' => 'testemail@g.com' }
-      response['hidden']['user_id'] = '1234'
+      response['hidden'] = { 'email' => 'testemail@g.com', 'user_id' => '1234' }
 
       class_instance = described_class.new
 
