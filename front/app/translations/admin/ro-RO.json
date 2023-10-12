@@ -38,8 +38,6 @@
   "app.components.UserSearch.noOptions": "Fără opțiuni",
   "app.components.UserSearch.searchUsers": "Căutați utilizatori",
   "app.components.admin.ContentBuilder.Widgets.Title.title": "Title",
-  "app.components.admin.DateRangePicker.endDatePlaceholder": "Data de încheiere",
-  "app.components.admin.DateRangePicker.startDatePlaceholder": "Data de începere",
   "app.components.admin.Graphs": "No data available with the current filters.",
   "app.components.admin.Graphs.noDataShort": "Nu există date disponibile.",
   "app.components.admin.InputManager.onePost": "1 input",
