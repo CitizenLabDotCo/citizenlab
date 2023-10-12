@@ -18,9 +18,9 @@ slack-fail-post-step-inconsistent-data: &slack-fail-post-step-inconsistent-data
         mentions: ":boom: FAILURE: Some data is likely invalid."
         template: basic_fail_1
 
-install-npm-dependencies: &install-npm-dependencies
+install_front_dependencies: &install_front_dependencies
   - run:
-      name: Install npm dependencies
+      name: Install front dependencies
       command: |
         # Install jq using apt-get (for Debian-based images)
         apt-get update
@@ -28,6 +28,7 @@ install-npm-dependencies: &install-npm-dependencies
         CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
         npm ci
         npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
+
 
 parameters:
   # This parameter is used to trigger the main workflow
@@ -429,7 +430,7 @@ jobs:
       - restore_cache:
           keys:
             - v2-npm-cache-{{ checksum "package-lock.json" }}
-      - *install-npm-dependencies
+      - <<: *install_front_dependencies
       - save_cache:
           paths:
             - /root/.npm
