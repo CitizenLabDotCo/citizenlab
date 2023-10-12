@@ -2,7 +2,7 @@
 /* tslint:disable */
 
 /**
- * Mock Service Worker (1.0.1).
+ * Mock Service Worker (1.3.2).
  * @see https://github.com/mswjs/msw
  * - Please do NOT modify this file.
  * - Please do NOT serve this file on production.
@@ -85,7 +85,7 @@ self.addEventListener('message', async function (event) {
 })
 
 self.addEventListener('fetch', function (event) {
-  const { request } = event;
+  const { request } = event
   const accept = request.headers.get('accept') || ''
 
   // Bypass server-sent events.
@@ -208,31 +208,6 @@ async function getResponse(event, client, requestId) {
     // Operate with the headers as an object because request "Headers"
     // are immutable.
     delete headers['x-msw-bypass']
-
-    // some weird hack I (Luuc) needed to add to get hot reload to work...
-    if (clonedRequest.url.startsWith('http://localhost:6006/en')) {      
-      const newRequest = new Request(
-        clonedRequest.url.replace('http://localhost:6006/en', 'http://localhost:6006'),
-        {
-          body: clonedRequest.body,
-          cache: clonedRequest.cache,
-          credentials: clonedRequest.credentials,
-          destination: clonedRequest.destination,
-          headers: clonedRequest.headers,
-          integrity: clonedRequest.integrity,
-          isHistoryNavigation: clonedRequest.isHistoryNavigation,
-          keepalive: clonedRequest.keepalive,
-          method: clonedRequest.method,
-          mode: clonedRequest.mode,
-          redirect: clonedRequest.redirect,
-          referrer: clonedRequest.referrer,
-          referrerPolicy: clonedRequest.referrerPolicy,
-          signal: clonedRequest.signal
-        }
-      )
-
-      return fetch(newRequest, { headers })
-    }
 
     return fetch(clonedRequest, { headers })
   }
