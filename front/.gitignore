@@ -29,6 +29,9 @@ app/tsconfig.tsbuildinfo
 cypress/videos/
 cypress/screenshots/
 
+.storybook/snapshots/test-report
+.storybook/snapshots/test-results
+
 # Storybook generated output
 dist/
 storybook-static/*
