@@ -136,22 +136,6 @@ jobs:
           name: Trigger workflows
           command: chmod +x .circleci/monorepo.sh && .circleci/monorepo.sh
 
-  install-front-dependencies:
-    docker:
-      - image: citizenlabdotco/cl2-devops-front-buildenv
-    working_directory: ~/citizenlab/front
-    steps:
-      - shallow-clone
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-            - v2-npm-cache-{{ checksum "package-lock.json" }}
-      - <<: *install_front_dependencies
-      - save_cache:
-          paths:
-            - /root/.npm
-          key: v2-npm-cache-{{ checksum "package-lock.json" }}
-
   danger-check:
     resource_class: small
     docker:
@@ -560,12 +544,12 @@ jobs:
       - shallow-clone
       - restore_cache:
           keys:
-            - v2-npm-cache-{{ checksum "package-lock.json" }}
+            - v2-npm-cache-{{ checksum "citizenlab/front/package-lock.json" }}
       - <<: *install_front_dependencies
       - save_cache:
           paths:
             - /root/.npm
-          key: v2-npm-cache-{{ checksum "package-lock.json" }}
+          key: v2-npm-cache-{{ checksum "citizenlab/front/package-lock.json" }}
       - run:
           name: Run tests with JUnit as reporter
           command: |
@@ -950,11 +934,8 @@ workflows:
         - not:
             equal: ["production", << pipeline.git.branch >>]
     jobs:
-      - install-front-dependencies
       - front-test
       - front-lint:
-          requires:
-            - install-front-dependencies
           context: citizenlab-ee-environment
           filters:
             branches:
@@ -962,8 +943,6 @@ workflows:
                 - crowdin_master
                 - /l10n_.*/
       - front-detect-deadcode:
-          requires:
-            - install-front-dependencies
           context: citizenlab-ee-environment
           filters:
             branches:
@@ -971,8 +950,6 @@ workflows:
                 - crowdin_master
                 - /l10n_.*/
       - front-dependency-cruiser:
-          requires:
-            - install-front-dependencies
           context: citizenlab-ee-environment
           filters:
             branches:
@@ -980,8 +957,6 @@ workflows:
                 - crowdin_master
                 - /l10n_.*/
       - front-license-check:
-          requires:
-            - install-front-dependencies
           context: citizenlab-ee-environment
           filters:
             branches:
@@ -989,8 +964,6 @@ workflows:
                 - crowdin_master
                 - /l10n_.*/
       - front-build:
-          requires:
-            - install-front-dependencies
           context: citizenlab-ee-environment
           filters:
             branches:
@@ -998,8 +971,6 @@ workflows:
                 - crowdin_master
                 - /l10n_.*/
       - front-extract-intl:
-          requires:
-            - install-front-dependencies
           context: citizenlab-ee-environment
           filters:
             branches:
