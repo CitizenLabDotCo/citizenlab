@@ -18,6 +18,8 @@ import styled from 'styled-components';
 
 // typings
 import { IParticipationContextType } from 'typings';
+
+// utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
 
 const Container = styled.div`

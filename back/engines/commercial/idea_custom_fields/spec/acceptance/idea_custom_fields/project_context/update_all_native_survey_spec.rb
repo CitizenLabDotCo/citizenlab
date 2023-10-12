@@ -2228,14 +2228,17 @@ resource 'Idea Custom Fields' do
         })
       end
 
-      example '[error] Updating custom fields when there are responses' do
+      example 'Updating custom fields when there are responses' do
         IdeaStatus.create_defaults
         create(:idea, project: context)
 
         do_request(custom_fields: [])
 
-        assert_status 401
-        expect(json_response_body).to eq({ error: 'updating_form_with_input' })
+        assert_status 200
+        expect(json_response_body).to eq({
+          data: [],
+          included: []
+        })
       end
 
       example 'Adding and updating a field with text images' do
