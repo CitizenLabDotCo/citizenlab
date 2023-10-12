@@ -18,14 +18,35 @@ const Container = styled.div`
 `;
 
 type Props = {
+  id?: string;
   selectedDate: Date | null;
   onChange: (date: Date | null) => void;
+  disabled?: boolean;
 };
 
-const DateSinglePicker = ({ selectedDate, onChange }: Props) => {
+const DateSinglePicker = ({
+  id,
+  selectedDate,
+  onChange,
+  disabled = false,
+}: Props) => {
   return (
     <Container>
-      <DatePicker selected={selectedDate} onChange={onChange} />
+      <DatePicker
+        id={id}
+        selected={selectedDate}
+        onChange={onChange}
+        disabled={disabled}
+        popperModifiers={[
+          {
+            name: 'preventOverflow',
+            options: {
+              rootBoundary: 'viewport',
+              altAxis: true,
+            },
+          },
+        ]}
+      />
     </Container>
   );
 };
