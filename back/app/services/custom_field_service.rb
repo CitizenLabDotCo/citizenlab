@@ -76,19 +76,16 @@ class CustomFieldService
   end
 
   def generate_key(_record, title)
-    key = keyify(title)
-    indexed_key = nil
-    i = 0
-    # while record.class.find_by(key: indexed_key || key)
-    while yield(indexed_key || key)
-      i += 1
-      indexed_key = [key, '_', i].join
-    end
-    indexed_key || key
+    keyify(title)
   end
 
   def keyify(str)
-    str.parameterize.tr('-', '_').presence || '_'
+    key = str.parameterize.tr('-', '_').presence || '_'
+    generate_token(key)
+  end
+
+  def generate_token(str)
+    str.dup.concat('_', [*('a'..'z'), *('0'..'9')].sample(3).join)
   end
 
   def cleanup_custom_field_values!(custom_field_values)
@@ -124,6 +121,8 @@ class CustomFieldService
 
   # NOTE: Needs refactor. This is called by idea serializer so will have an n+1 issue
   def self.remove_not_visible_fields(idea, current_user)
+    return idea.custom_field_values if idea.draft?
+
     custom_form = CustomForm.find_or_initialize_by participation_context: idea.project
     fields = IdeaCustomFieldsService.new(custom_form).enabled_public_fields
     if can_see_admin_answers?(idea, current_user)

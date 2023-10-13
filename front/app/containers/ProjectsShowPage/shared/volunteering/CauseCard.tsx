@@ -6,9 +6,6 @@ import getAuthenticationRequirements from 'api/authentication/authentication_req
 // constants
 import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/constants';
 
-// hooks
-import useAuthUser from 'api/me/useAuthUser';
-
 // events
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
@@ -17,14 +14,13 @@ import Image from 'components/UI/Image';
 import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
-import Warning from 'components/UI/Warning';
 
 // utils
 import { isEmptyMultiloc } from 'utils/helperUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import T from 'components/T';
 import messages from './messages';
 
@@ -43,6 +39,7 @@ import useDeleteVolunteer from 'api/causes/useDeleteVolunteer';
 
 // typings
 import { ICauseData } from 'api/causes/types';
+import Tippy from '@tippyjs/react';
 
 const Container = styled.div`
   padding: 20px;
@@ -184,7 +181,7 @@ const CauseCard = ({ cause, className, disabled }: Props) => {
   const { mutate: addVolunteer } = useAddVolunteer();
   const { mutate: deleteVolunteer } = useDeleteVolunteer();
   const theme = useTheme();
-  const { data: authUser } = useAuthUser();
+  const { formatMessage } = useIntl();
   const { windowWidth } = useWindowSize();
 
   const volunteer = useCallback(() => {
@@ -214,23 +211,8 @@ const CauseCard = ({ cause, className, disabled }: Props) => {
     }
   };
 
-  const signIn = () =>
-    triggerAuthenticationFlow({ flow: 'signin', successAction });
-  const signUp = () =>
-    triggerAuthenticationFlow({ flow: 'signup', successAction });
-
   const isVolunteer = !!cause.relationships?.user_volunteer?.data;
   const smallerThanSmallTablet = windowWidth <= viewportWidths.tablet;
-  const signUpLink = (
-    <button onClick={signUp}>
-      <FormattedMessage {...messages.signUpLinkText} />
-    </button>
-  );
-  const signInLink = (
-    <button onClick={signIn}>
-      <FormattedMessage {...messages.signInLinkText} />
-    </button>
-  );
 
   return (
     <Container className={className}>
@@ -285,28 +267,28 @@ const CauseCard = ({ cause, className, disabled }: Props) => {
         </Content>
 
         <ActionWrapper>
-          {!authUser ? (
-            <Warning>
-              <FormattedMessage
-                {...messages.notLoggedIn}
-                values={{ signUpLink, signInLink }}
-              />
-            </Warning>
-          ) : (
-            <Button
-              onClick={handleOnVolunteerButtonClick}
-              icon={!isVolunteer ? 'volunteer' : 'volunteer-off'}
-              disabled={!authUser || disabled}
-              buttonStyle={!isVolunteer ? 'primary' : 'secondary'}
-              fullWidth={smallerThanSmallTablet}
-            >
-              {isVolunteer ? (
-                <FormattedMessage {...messages.withdrawVolunteerButton} />
-              ) : (
-                <FormattedMessage {...messages.becomeVolunteerButton} />
-              )}
-            </Button>
-          )}
+          <Tippy
+            disabled={!disabled}
+            interactive={true}
+            placement="bottom"
+            content={formatMessage(messages.notOpenParticipation)}
+          >
+            <div>
+              <Button
+                onClick={handleOnVolunteerButtonClick}
+                icon={!isVolunteer ? 'volunteer' : 'volunteer-off'}
+                buttonStyle={!isVolunteer ? 'primary' : 'secondary'}
+                fullWidth={smallerThanSmallTablet}
+                disabled={disabled}
+              >
+                {isVolunteer ? (
+                  <FormattedMessage {...messages.withdrawVolunteerButton} />
+                ) : (
+                  <FormattedMessage {...messages.becomeVolunteerButton} />
+                )}
+              </Button>
+            </div>
+          </Tippy>
         </ActionWrapper>
       </Right>
     </Container>

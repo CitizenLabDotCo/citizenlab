@@ -270,7 +270,12 @@ RSpec.describe CustomField do
 
     it 'generates a key made of non-Latin letters of title' do
       cf = create(:custom_field, key: nil, title_multiloc: { 'ar-SA': 'abbaالرئيسية' })
-      expect(cf.key).to eq('abba')
+      expect(cf.key[0..-5]).to eq('abba')
+    end
+
+    it 'generates a key appended with a random 3 character value' do
+      cf = create(:custom_field, key: nil, title_multiloc: { 'ar-SA': 'abbaالرئيسية' })
+      expect(cf.key[-4..]).to match(/[0-9a-z]{3}/)
     end
 
     it 'generates a present key from non-Latin title' do
@@ -442,6 +447,24 @@ RSpec.describe CustomField do
         field.validate!
         expect(field.answer_visible_to).to eq 'admins'
       end
+    end
+  end
+
+  describe 'maximum_select_count' do
+    let(:field) { create(:custom_field_multiselect, :with_options) }
+
+    it 'cannot be less than 0' do
+      field.maximum_select_count = -1
+      expect(field.valid?).to be false
+    end
+  end
+
+  describe 'minimum_select_count' do
+    let(:field) { create(:custom_field_multiselect, :with_options) }
+
+    it 'cannot be less than 0' do
+      field.minimum_select_count = -1
+      expect(field.valid?).to be false
     end
   end
 end

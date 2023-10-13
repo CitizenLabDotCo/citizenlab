@@ -62,13 +62,13 @@ describe('Form builder number field', () => {
     );
 
     // Try entering text that isn't a number
-    cy.get(`#properties${questionTitle}`)
+    cy.get(`*[id^="properties${questionTitle}"]`)
       .clear()
       .type('Test text', { force: true });
     cy.get('.e2e-error-message');
 
     // Enter a number
-    cy.get(`#properties${questionTitle}`).type('45', { force: true });
+    cy.get(`*[id^="properties${questionTitle}"]`).type('45', { force: true });
     cy.get('.e2e-error-message').should('have.length', 0);
 
     cy.get('[data-cy="e2e-next-page"]').click();

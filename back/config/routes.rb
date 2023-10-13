@@ -164,11 +164,9 @@ Rails.application.routes.draw do
         resources :images, defaults: { container_type: 'Project' }
         resources :files, defaults: { container_type: 'Project' }
         resources :groups_projects, shallow: true, except: [:update]
-
         resources :custom_fields, controller: 'project_custom_fields', only: %i[] do
           get 'json_forms_schema', on: :collection
         end
-
         resources :moderators, controller: 'project_moderators', except: [:update] do
           get :users_search, on: :collection
         end
@@ -225,6 +223,8 @@ Rails.application.routes.draw do
       resource :home_page, only: %i[show update]
 
       resources :experiments, only: %i[index create]
+
+      resources :handwritten_ideas, only: %i[create]
 
       scope 'stats' do
         route_params = { controller: 'stats_users' }
@@ -293,7 +293,7 @@ Rails.application.routes.draw do
   post '/auth/:provider/callback', to: 'omniauth_callback#create'
   get '/auth/failure', to: 'omniauth_callback#failure'
   post '/auth/failure', to: 'omniauth_callback#failure'
-  get '/auth/:provider/logout', to: 'omniauth_callback#logout'
+  get '/auth/:provider/logout_data', to: 'omniauth_callback#logout_data'
 
   if Rails.env.development?
     require 'que/web'

@@ -16,6 +16,7 @@ import messages from './messages';
 
 // hooks
 import useIdeaById from 'api/ideas/useIdeaById';
+import useUserById from 'api/users/useUserById';
 
 // style
 import styled from 'styled-components';
@@ -56,16 +57,19 @@ const PostedBy = memo<Props>(
   ({ authorId, ideaId, compact, className, anonymous }) => {
     const { formatMessage } = useIntl();
     const { data: idea } = useIdeaById(ideaId);
+    const { data: user } = useUserById(authorId);
 
     if (!isNilOrError(idea)) {
       const ideaPublishedAtDate = idea.data.attributes.published_at;
       const authorHash = idea.data.attributes.author_hash;
+      const isLinkToProfile =
+        user?.data.attributes.registration_completed_at !== null;
 
       const userName = (
         <UserName
           userId={authorId}
-          isLinkToProfile={true}
-          underline={true}
+          isLinkToProfile={isLinkToProfile}
+          underline={isLinkToProfile}
           color={colors.textSecondary}
           fontSize={fontSizes.s}
           anonymous={anonymous}
@@ -87,7 +91,7 @@ const PostedBy = memo<Props>(
             <StyledAvatar
               userId={authorId}
               size={30}
-              isLinkToProfile={!!authorId}
+              isLinkToProfile={isLinkToProfile}
               authorHash={authorHash}
             />
             <FormattedMessage

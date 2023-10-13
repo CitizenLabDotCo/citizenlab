@@ -237,6 +237,7 @@ export interface IAppConfigurationSettings {
   konveio_document_annotation?: AppConfigurationFeature;
   public_api_tokens?: AppConfigurationFeature;
   analysis?: AppConfigurationFeature;
+  import_printed_forms?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

@@ -47,7 +47,7 @@ const FooterWithReactionControl = ({
   className,
   showCommentCount,
 }: Props) => {
-  const ideaStatusId = idea.relationships.idea_status.data.id;
+  const ideaStatusId = idea.relationships.idea_status.data?.id;
 
   return (
     <Container className={className || ''}>
@@ -63,7 +63,7 @@ const FooterWithReactionControl = ({
           <CommentCount commentCount={idea.attributes.comments_count} />
         )}
       </Left>
-      {!hideIdeaStatus && (
+      {!hideIdeaStatus && ideaStatusId && (
         <Right>
           <StyledStatusBadge statusId={ideaStatusId} />
         </Right>
