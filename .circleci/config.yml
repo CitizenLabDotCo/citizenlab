@@ -570,7 +570,7 @@ jobs:
       - run:
           command: |
             cd citizenlab/front
-            npx playwright install
+            npx playwright install --with-deps
             npm run storybook:build
       - run:
           command: |
