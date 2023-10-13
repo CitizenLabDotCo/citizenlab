@@ -131,6 +131,8 @@ commands:
           rm -rf ~/$(echo $CIRCLE_REPOSITORY_URL | cut -d '/' -f 2 | cut -d '.' -f 1)
           git clone -b "$CIRCLE_BRANCH" "$CIRCLE_REPOSITORY_URL" --depth 1
           cd citizenlab && git lfs pull
+          ls -a /root/citizenlab/front/.storybook/snapshots/test-runner/runner.spec.ts-snapshots
+          file /root/citizenlab/front/.storybook/snapshots/test-runner/runner.spec.ts-snapshots/example-button--primary-iPhone-13-Pro-linux.png
 
 jobs:
   trigger-workflows:
