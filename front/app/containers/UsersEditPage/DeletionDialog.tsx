@@ -94,6 +94,9 @@ const DeletionDialog = ({
         </Styledh2>
         <ul>
           <li>
+            <FormattedMessage {...messages.activeProposalVotesWillBeDeleted} />
+          </li>
+          <li>
             <FormattedMessage {...messages.tooManyEmails} />
           </li>
           <li>
