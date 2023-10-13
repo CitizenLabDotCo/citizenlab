@@ -46,7 +46,11 @@ interface Props {
   onChange: (arg: moment.Moment) => void;
 }
 
-const DateTimePicker = ({ value, setCurrentTimeAsDefault, onChange }: Props) => {
+const DateTimePicker = ({
+  value,
+  setCurrentTimeAsDefault = false,
+  onChange,
+}: Props) => {
   const locale = useLocale();
 
   if (isNilOrError(locale)) return null;
