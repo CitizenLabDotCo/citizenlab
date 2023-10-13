@@ -1,15 +1,8 @@
 lv:
   email_campaigns:
     campaign_type_description:
-      "inappropriate_content_flagged": Nepiemērots saturs atzīmēts ar karodziņu
-    admin_campaign_type_description:
-      "inappropriate_content_flagged": Nepiemērots saturs atzīmēts ar karodziņu - administratori
-    inappropriate_content_flagged:
-      subject: 'Ieraksts jūsu platformā ir atzīmēts pārskatīšanai'
-      header_title: 'Ieraksts jūsu platformā ir atzīmēts pārskatīšanai'
-      comment_author: '%{authorName} komentēja:'
-      idea_author: '%{authorName} iesniedza ziņu:'
-      initiative_author: '%{authorName} iesniedza priekšlikumu:'
-      this_post_was_flagged: >
-        <p>Šī ziņa automātiski tika noteikta kā tāda, kas, iespējams, satur nepiemērotu saturu. Mēs nosūtām jums šo paziņojumu, lai jūs varētu pārskatīt šo ziņu saskaņā ar savām moderēšanas vadlīnijām.</p><p>Ja ziņa nesatur nepiemērotu saturu, jūs varat atcelt brīdinājumu, izmantojot savu platformu administratora paneļa cilnē Aktivitātes.</p>
-      cta_review_post: 'Pārskatīt ziņu'
+      ""inappropriate_content_flagged"":
+        Inappropriate content flagged admin_campaign_type_description:
+          ""inappropriate_content_flagged"":
+            Inappropriate content flagged - admins inappropriate_content_flagged:
+              subject: 'Ieraksts jūsu platformā ir atzīmēts pārskatīšanai" header_title: "Ieraksts jūsu platformā ir atzīmēts pārskatīšanai" comment_author: ''%{authorName} komentēja:'' idea_author: ''%{authorName} iesniedza ziņu:'' initiative_author: ''%{authorName} iesniedza priekšlikumu:'' this_post_was_flagged: > <p>Šis amats tika automātiski identificēts kā tāds, kas, iespējams, satur nepiemērotu saturu. Mēs sūtām jums šo paziņojumu, lai jūs varētu pārskatīt šo ziņu saskaņā ar savām moderēšanas vadlīnijām.</p><p>Ja ieraksts nesatur nepiemērotu saturu, varat atcelt brīdinājumu, izmantojot savu platformu administratora paneļa cilnē Aktivitātes.</p> cta_review_post: ''Pārskatīt ierakstu'
