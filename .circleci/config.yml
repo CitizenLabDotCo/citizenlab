@@ -553,11 +553,19 @@ jobs:
             - /root/.npm
           key: v2-npm-cache-{{ checksum "citizenlab/front/package-lock.json" }}
       - run:
-          name: Run 
           command: |
             cd citizenlab/front
             npm run storybook:build
+      - run:
+          command: |
+            cd citizenlab/front
             npm run storybook:serve
+          background: true
+      - run:
+          name: Run
+          command: |
+            sleep 10 # wait for storybook:serve to be ready
+            cd citizenlab/front
             npm run snapshots
       - store_test_results:
           path: ./citizenlab/front/.storybook/snapshots/test-results
