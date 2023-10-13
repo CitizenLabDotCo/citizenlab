@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback, lazy, Suspense } from 'react';
 
 // api
-import { isRegularUser } from 'utils/permissions/roles';
+import { isAdmin, isProjectModerator } from 'utils/permissions/roles';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import useAuthUser from 'api/me/useAuthUser';
@@ -17,7 +17,7 @@ import messages from '../messages';
 import { useIntl } from 'utils/cl-intl';
 
 // components
-import Form, { AjvErrorGetter, ApiErrorGetter } from 'components/Form';
+import Form from 'components/Form';
 import IdeasNewMeta from '../IdeasNewMeta';
 import PageContainer from 'components/UI/PageContainer';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
@@ -40,6 +40,7 @@ import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 import { Multiloc } from 'typings';
 import { IPhases, IPhaseData } from 'api/phases/types';
 import { IProject } from 'api/projects/types';
+import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
 
 const getConfig = (
   phaseFromUrl: IPhaseData | undefined,
@@ -151,7 +152,8 @@ const IdeasNewPageWithJSONForm = () => {
       phase_ids:
         phaseId &&
         !isNilOrError(authUser) &&
-        !isRegularUser({ data: authUser.data })
+        (isAdmin({ data: authUser.data }) ||
+          isProjectModerator({ data: authUser.data }, project.data.id))
           ? [phaseId]
           : null,
       anonymous: postAnonymously ? true : undefined,

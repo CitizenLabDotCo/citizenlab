@@ -11,9 +11,10 @@ import { RHFErrors } from 'typings';
 
 type FeedbackProps = {
   successMessage?: string;
+  onlyShowErrors?: boolean;
 };
 
-const Feedback = ({ successMessage }: FeedbackProps) => {
+const Feedback = ({ successMessage, onlyShowErrors }: FeedbackProps) => {
   const { formatMessage } = useIntl();
   const [successMessageIsVisible, setSuccessMessageIsVisible] = useState(true);
   const {
@@ -79,7 +80,7 @@ const Feedback = ({ successMessage }: FeedbackProps) => {
     <>
       {isSubmitted && (
         <Box id="feedback" data-testid="feedback" key={submitCount}>
-          {successMessageIsShown && (
+          {successMessageIsShown && onlyShowErrors !== true && (
             <SuccessFeedback
               successMessage={
                 successMessage || formatMessage(messages.successMessage)

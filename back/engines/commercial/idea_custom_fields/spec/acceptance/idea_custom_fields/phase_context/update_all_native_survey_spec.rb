@@ -64,7 +64,7 @@ resource 'Idea Custom Fields' do
             description_multiloc: {},
             enabled: false,
             input_type: 'text',
-            key: 'inserted_field',
+            key: Regexp.new('inserted_field'),
             ordering: 1,
             required: false,
             title_multiloc: { en: 'Inserted field' },
@@ -145,9 +145,12 @@ resource 'Idea Custom Fields' do
             description_multiloc: {},
             enabled: true,
             input_type: 'multiselect',
-            key: 'inserted_field',
+            key: Regexp.new('inserted_field'),
             ordering: 1,
             required: false,
+            select_count_enabled: false,
+            maximum_select_count: nil,
+            minimum_select_count: nil,
             title_multiloc: { en: 'Inserted field' },
             updated_at: an_instance_of(String),
             logic: {},
@@ -258,14 +261,17 @@ resource 'Idea Custom Fields' do
         })
       end
 
-      example '[error] Updating custom fields in a native survey phase when there are responses' do
+      example 'Updating custom fields in a native survey phase when there are responses' do
         IdeaStatus.create_defaults
         create(:idea, project: context.project, creation_phase: context, phases: [context])
 
         do_request(custom_fields: [])
 
-        assert_status 401
-        expect(json_response_body).to eq({ error: 'updating_form_with_input' })
+        assert_status 200
+        expect(json_response_body).to eq({
+          data: [],
+          included: []
+        })
       end
 
       example 'Updating custom fields in a native survey phase when there are no responses' do

@@ -63,7 +63,7 @@ const FeedbackSettings = ({ ideaId, className, prospectAssignees }: Props) => {
 
   const getIdeaStatusOption = (idea: IIdea, statuses: IIdeaStatuses) => {
     const ideaStatus = statuses.data.find(
-      (status) => status.id === idea.data.relationships.idea_status.data.id
+      (status) => status.id === idea.data.relationships.idea_status.data?.id
     );
 
     if (ideaStatus) {

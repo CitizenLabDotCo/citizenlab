@@ -31,7 +31,6 @@ const FormFieldsContainer = styled(Box)`
 
 type Props = {
   field: IFlatCustomField;
-  isEditingDisabled: boolean;
   onEditField: (field: IFlatCustomFieldWithIndex) => void;
   selectedFieldId?: string;
   builderConfig: FormBuilderConfig;
@@ -40,7 +39,6 @@ type Props = {
 
 export const FormField = ({
   field,
-  isEditingDisabled,
   onEditField,
   selectedFieldId,
   builderConfig,
@@ -73,7 +71,7 @@ export const FormField = ({
       key={field.id}
       background={getFieldBackgroundColor(selectedFieldId, field, hasErrors)}
       onClick={() => {
-        isEditingDisabled ? undefined : editFieldAndValidate();
+        editFieldAndValidate();
       }}
       data-cy="e2e-field-row"
     >

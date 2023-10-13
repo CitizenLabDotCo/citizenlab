@@ -10,6 +10,8 @@ import styled from 'styled-components';
 
 // typings
 import { IParticipationContextType } from 'typings';
+
+// utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import usePhase from 'api/phases/usePhase';
 

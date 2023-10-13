@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { CLErrors } from 'typings';
+import { CLErrorsWrapper } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import analysesKeys from './keys';
 import { ITag, ITagUpdate } from './types';
@@ -13,7 +13,7 @@ const updateTag = ({ id, analysisId, name }: ITagUpdate) =>
 
 const useUpdateAnalysisTag = () => {
   const queryClient = useQueryClient();
-  return useMutation<ITag, CLErrors, ITagUpdate>({
+  return useMutation<ITag, CLErrorsWrapper, ITagUpdate>({
     mutationFn: updateTag,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: analysesKeys.lists() });

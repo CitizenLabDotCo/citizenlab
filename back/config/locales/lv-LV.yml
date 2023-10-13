@@ -215,6 +215,7 @@ lv:
       status: 'Statuss'
       assignee_fullname: 'Izpildītājs'
       assignee_email: 'Izpildītāja e-pasts'
+      image_url: 'Attēla URL'
     anonymous: 'Anonīms'
   form_builder:
     default_select_field:
@@ -224,6 +225,23 @@ lv:
     survey_end_page:
       title: 'Aptaujas beigas'
       description: "Lūdzu, iesniedziet savas atbildes, izvēloties \"Iesniegt aptauju\"."
+    pdf_export:
+      personal_data: 'Personas dati'
+      personal_data_explanation_ideation: "Mēs iesniegsim jūsu viedokli tiešsaistes līdzdalības platformā %{organizationName}. Ja vēlaties, lai jūsu vārds un uzvārds būtu redzams kā šī ieguldījuma autors un jūs saņemtu jauninājumus, kas saistīti ar jūsu ieguldījumu, pa e-pastu, lūdzu, aizpildiet turpmāk norādītos laukus šajā lapā, un mēs izveidosim jums kontu. Jūsu e-pasts nebūs publiski pieejams, un to izmantos tikai %{organizationName}. Ja vēlaties palikt anonīms vai nepiekrītat, ka mēs šādā veidā izmantojam jūsu personas datus, varat tos atstāt tukšus."
+      personal_data_explanation_native_survey: "Mēs iesniegsim jūsu viedokli tiešsaistes līdzdalības platformā %{organizationName}. Ja vēlaties saņemt jaunumus, kas saistīti ar jūsu ieguldījumu, pa e-pastu, lūdzu, aizpildiet turpmāk norādītos laukus šajā lapā, un mēs izveidosim jums kontu. Jūsu dati nebūs publiski pieejami, un tos izmantos tikai %{organizationName}. Ja nepiekrītat, ka mēs šādā veidā izmantojam jūsu personas datus, varat tos atstāt tukšus."
+      first_name: 'Vārds'
+      last_name: 'Uzvārds'
+      email_address: 'E-pasta adrese'
+      by_checking_this_box: "Atzīmējot šo lodziņu, es piekrītu, ka mani dati tiek izmantoti, lai izveidotu kontu %{organizationName}'līdzdalības platformā."
+      optional: 'izvēles'
+      permission: 'Atļauja'
+      choose_as_many: 'Izvēlieties tik daudz, cik vēlaties'
+      this_answer: 'Šī atbilde tiks izpausta tikai moderatoriem, bet ne sabiedrībai.'
+      page: 'Lapa'
+      date_published: 'Publicēšanas datums (dd-mm-gggg)'
+      instructions: 'Instrukcijas'
+      write_as_clearly: 'Rakstiet pēc iespējas skaidrāk <b>skaidri</b> - šīs veidlapas var tikt skenētas.'
+      write_in_language: 'Atbildes rakstiet tajā pašā valodā, kurā ir šī veidlapa.'
   project_copy:
     title_suffix: 'Kopija'
   confirmations_mailer:
