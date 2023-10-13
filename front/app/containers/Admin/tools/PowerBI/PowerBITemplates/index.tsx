@@ -56,7 +56,7 @@ const PowerBITemplates = () => {
           }}
         />
       </Text>
-      <Box background="white" px="20px" mb="20px">
+      <Box background="white" px="20px" pb="10px" mb="20px">
         <Title variant="h2" mb="0">
           {formatMessage(messages.reportTemplateTitle)}
         </Title>
@@ -73,7 +73,7 @@ const PowerBITemplates = () => {
           </Button>
         </Box>
       </Box>
-      <Box background="white" px="20px" mb="20px">
+      <Box background="white" px="20px" pb="10px" mb="20px">
         <Title variant="h2" mb="0">
           {formatMessage(messages.dataflowTemplateTitle)}
         </Title>
