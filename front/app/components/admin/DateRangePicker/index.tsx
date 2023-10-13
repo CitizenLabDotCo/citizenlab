@@ -66,6 +66,8 @@ const DateRangePicker = ({
         startDate: moment(newStartDate),
         endDate:
           endDate && endDate < moment(newStartDate)
+            // if the new start date is after the currently selected end date,
+            // we set the end date to the new start date
             ? moment(newStartDate)
             : endDate,
       });
@@ -77,6 +79,8 @@ const DateRangePicker = ({
     // (forcing users to pick a date if changes need to persist)
     if (newEndDate) {
       onDatesChange({
+        // we don’t need a check here as we do in handleOnChangeStartDate
+        // because of the minDate prop in the end date DatePicker
         startDate,
         endDate: moment(newEndDate),
       });
