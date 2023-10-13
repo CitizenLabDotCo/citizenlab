@@ -114,6 +114,21 @@ commands:
           cd ~
           rm -rf ~/$(echo $CIRCLE_REPOSITORY_URL | cut -d '/' -f 2 | cut -d '.' -f 1)
           git clone -b "$CIRCLE_BRANCH" "$CIRCLE_REPOSITORY_URL" --depth 1
+  shallow-clone-lfs:
+    steps:
+      - run: curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash
+      - run: sudo apt-get install git-lfs
+      - run: mkdir -p ~/.ssh
+      - run: ssh-keyscan github.com >> ~/.ssh/known_hosts
+      # Git clone can fail when the repository directory exists and is not empty. This
+      # can happen when e.g. setting the working_directory to ~/citizenlab/front because
+      # CircleCI will create those directories in this case. The solution is to remove
+      # the created directories before cloning. The name of the directory to remove is
+      # inferred from the repository URL (the part between the "/" and "." characters).
+      - run: |
+          cd ~
+          rm -rf ~/$(echo $CIRCLE_REPOSITORY_URL | cut -d '/' -f 2 | cut -d '.' -f 1)
+          git clone -b "$CIRCLE_BRANCH" "$CIRCLE_REPOSITORY_URL" --depth 1
 
 jobs:
   trigger-workflows:
@@ -543,7 +558,7 @@ jobs:
     working_directory: ~/
     parallelism: 4
     steps:
-      - shallow-clone
+      - shallow-clone-lfs
       - restore_cache:
           keys:
             - v2-npm-cache-{{ checksum "citizenlab/front/package-lock.json" }}
