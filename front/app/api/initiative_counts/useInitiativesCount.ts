@@ -15,7 +15,7 @@ const fetchInitiativesCount = (queryParams: IQueryParameters) =>
     queryParams,
   });
 
-const useInitiativesCount = (queryParams: IQueryParameters) => {
+const useInitiativesCount = (queryParams: IQueryParameters, enabled = true) => {
   return useQuery<
     IInitiativesCount,
     CLErrors,
@@ -24,6 +24,7 @@ const useInitiativesCount = (queryParams: IQueryParameters) => {
   >({
     queryKey: initiativesCountKeys.item(queryParams),
     queryFn: () => fetchInitiativesCount(queryParams),
+    enabled,
   });
 };
 

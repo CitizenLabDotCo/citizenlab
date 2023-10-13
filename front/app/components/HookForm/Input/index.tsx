@@ -11,9 +11,10 @@ import { get } from 'lodash-es';
 
 interface Props extends InputProps {
   name: string;
+  fieldName?: TFieldName;
 }
 
-const Input = ({ name, type = 'text', ...rest }: Props) => {
+const Input = ({ name, fieldName, type = 'text', ...rest }: Props) => {
   const {
     formState: { errors: formContextErrors },
     control,
@@ -44,7 +45,7 @@ const Input = ({ name, type = 'text', ...rest }: Props) => {
       )}
       {apiError && (
         <Error
-          fieldName={name as TFieldName}
+          fieldName={fieldName || (name as TFieldName)}
           apiErrors={apiError}
           marginTop="8px"
           marginBottom="8px"

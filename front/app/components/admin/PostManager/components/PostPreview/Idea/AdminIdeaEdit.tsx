@@ -7,7 +7,7 @@ import {
 } from 'components/admin/PostManager/components/PostPreview';
 import { Box, Button, Spinner } from '@citizenlab/cl2-component-library';
 import ideaFormMessages from 'containers/IdeasNewPage/messages';
-import Form, { AjvErrorGetter, ApiErrorGetter } from 'components/Form';
+import Form from 'components/Form';
 
 // services
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
@@ -30,6 +30,9 @@ import { omit } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 import { useTheme } from 'styled-components';
+
+// typings
+import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
 
 const AdminIdeaEdit = ({
   ideaId,

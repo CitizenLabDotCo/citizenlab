@@ -135,7 +135,7 @@ export interface IIdeaData {
       data: IRelationship[] | null;
     };
     idea_status: {
-      data: IRelationship;
+      data: IRelationship | null;
     };
     ideas_phases: {
       data: {
@@ -156,6 +156,9 @@ export interface IIdeaData {
       data: IRelationship | null;
     };
     user_reaction?: {
+      data: IRelationship | null;
+    };
+    idea_import?: {
       data: IRelationship | null;
     };
   };

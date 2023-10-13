@@ -159,7 +159,7 @@ resource 'Idea Custom Fields' do
             hash_including(
               attributes: hash_including(
                 code: nil,
-                key: 'select_field_title',
+                key: Regexp.new('select_field_title'),
                 input_type: 'select',
                 ordering: 11,
                 title_multiloc: { en: 'Select field title' },
