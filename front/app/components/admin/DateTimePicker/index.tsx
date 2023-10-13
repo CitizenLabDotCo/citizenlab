@@ -8,6 +8,8 @@ import { fontSizes } from 'utils/styleUtils';
 import { Icon, colors } from '@citizenlab/cl2-component-library';
 import useLocale from 'hooks/useLocale';
 import { isNilOrError } from 'utils/helperUtils';
+import { useIntl } from 'utils/cl-intl';
+import messages from './messages';
 
 const Container = styled.div`
   display: flex;
@@ -51,6 +53,7 @@ const DateTimePicker = ({
   setCurrentTimeAsDefault = false,
   onChange,
 }: Props) => {
+  const { formatMessage } = useIntl();
   const locale = useLocale();
 
   if (isNilOrError(locale)) return null;
@@ -83,6 +86,7 @@ const DateTimePicker = ({
         // This makes sure we adjust date + time based on the passed locale.
         dateFormat="Pp"
         locale={locale}
+        timeCaption={formatMessage(messages.time)}
       />
     </Container>
   );
