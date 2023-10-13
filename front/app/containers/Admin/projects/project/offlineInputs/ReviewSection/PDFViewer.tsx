@@ -47,5 +47,3 @@ const PDFViewer = ({ currentPageIndex, file, pages }: Props) => {
 };
 
 export default PDFViewer;
-
-//

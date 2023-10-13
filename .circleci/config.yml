@@ -552,16 +552,15 @@ jobs:
           paths:
             - /root/.npm
           key: v2-npm-cache-{{ checksum "citizenlab/front/package-lock.json" }}
+      - run: |
+        cd citizenlab/front
+        npm run storybook:build
+        npm run storybook:serve
       - run:
           name: Run 
           command: |
             cd citizenlab/front
-            npm run storybook:build
-            npm run storybook:serve
             npm run snapshots
-          # environment:
-            # JEST_JUNIT_OUTPUT_DIR: ./reports/
-            # TODO
       - store_test_results:
           path: ./citizenlab/front/.storybook/snapshots/test-results
       - store_artifacts:
