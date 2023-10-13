@@ -19,7 +19,7 @@ export default defineMessages({
     defaultMessage: 'Report template',
   },
   reportTemplateDescription: {
-    id: 'app.containers.Admin.tools.powerBITemplates.reportTemplateDescription',
+    id: 'app.containers.Admin.tools.powerBITemplates.reportTemplateDescription2',
     defaultMessage:
       'This template will create a Power BI report based on your CitizenLab data. ' +
       'It will set up all the data connections to your CitizenLab ' +
