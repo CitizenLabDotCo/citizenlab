@@ -1,83 +1,19 @@
 pl:
   email_campaigns:
     campaign_type_description:
-      "manual": Oficjalne wiadomości
-      "admin_rights_received": Przyznanie uprawnień administratora
-      "comment_deleted_by_admin": Usunięcie mojego komentarza
-      "comment_marked_as_spam": Raport dot. komentarzy oznaczonych jako spam
-      "comment_on_your_comment": Odpowiedź na mój komentarz
-      "comment_on_idea_you_follow": Komentarz do pomysłu, za którym podążasz
-      "comment_on_initiative_you_follow": Komentarz do propozycji, którą śledzisz
-      "cosponsor_of_your_initiative": Użytkownik akceptuje moje zaproszenie do współsponsorowania mojej propozycji.
-      "event_registration_confirmation": Potwierdzenie rejestracji na wydarzenie
-      "first_idea_published": Publikacja mojego pierwszego pomysłu
-      "idea_marked_as_spam": Raport dot. pomysłów oznaczonych jako spam
-      "idea_published": Publikacja mojego pomysłu
-      "initiative_assigned_to_you": Przydzielenie mi propozycji
-      "initiative_marked_as_spam": Raport dot. propozycji oznaczonych jako spam
-      "initiative_published": Publikacja mojej propozycji
-      "invitation_to_cosponsor_initiative": Zaproszenie do współsponsorowania wniosku
-      "initiative_resubmitted_for_review": Wniosek ponownie przesłany do przeglądu
-      "invite_received": Zaproszenie
-      "invite_reminder": Przypomnienie o zaproszeniu
-      "internal_comment_on_idea_assigned_to_you": Wewnętrzny komentarz dotyczący przydzielonych mi danych wejściowych
-      "internal_comment_on_idea_you_commented_internally_on": Wewnętrzny komentarz do danych wejściowych, które skomentowałem wewnętrznie
-      "internal_comment_on_idea_you_moderate": Wewnętrzny komentarz do danych wejściowych w zarządzanym przeze mnie projekcie lub folderze
-      "internal_comment_on_initiative_assigned_to_you": Wewnętrzny komentarz do przydzielonej mi propozycji
-      "internal_comment_on_initiative_you_commented_internally_on": Wewnętrzny komentarz do propozycji, którą skomentowałem wewnętrznie
-      "internal_comment_on_unassigned_initiative": Uwaga wewnętrzna dotycząca nieprzypisanej propozycji
-      "internal_comment_on_unassigned_unmoderated_idea": Wewnętrzny komentarz do nieprzypisanych danych wejściowych w niezarządzanym projekcie
-      "internal_comment_on_your_internal_comment": Wewnętrzny komentarz do mojego wewnętrznego komentarza
-      "mention_in_official_feedback": Wzmianka w aktualizacji
-      "mention_in_internal_comment": Wzmianka w komentarzu wewnętrznym
-      "new_comment_for_admin": Nowy komentarz w projekcie, który moderuję
-      "new_idea_for_admin": Nowy pomysł w projekcie, który moderuję
-      "new_initiative_for_admin": Nowa propozycja
-      "official_feedback_on_idea_you_follow": Zaktualizuj pomysł, który śledzisz
-      "official_feedback_on_initiative_you_follow": Zaktualizuj propozycję, którą śledzisz
-      "password_reset": Zmiana hasła
-      "project_moderation_rights_received": Przyznanie prawa do moderacji projektu
-      "project_folder_moderation_rights_received": Przydzielono uprawnienia menedżera folderów
-      "project_phase_started": Nowy etap projektu
-      "project_phase_upcoming": Nadchodzący nowy etap projektu
-      "project_published": Projekt opublikowany
-      "status_change_on_idea_you_follow": Zmiana statusu pomysłu, za którym podążasz
-      "status_change_on_initiative_you_follow": Zmiana statusu propozycji, którą śledzisz
-      "threshold_reached_for_admin": Propozycja osiągnęła próg poparcia w głosowaniu
-      "welcome": Po rejestracji
-      "admin_digest": Tygodniowy przegląd dla administratorów
-      "moderator_digest": Tygodniowy przegląd dla menadżerów projektu
-      "assignee_digest": Tygodniowy przegląd przydzielonych pomysłów
-      "user_digest": Tygodniowy przegląd
-      "voting_basket_submitted": Potwierdzenie głosowania
-      "voting_basket_not_submitted": Nieoddane głosy
-      "voting_last_chance": Ostatnia szansa na oddanie głosu
-      "voting_results": Wyniki głosowania
-      "your_proposed_initiatives_digest": Tygodniowy przegląd Twoich propozycji
-    general:
-      by_author: 'przez %{authorName}'
-      author_wrote: '%{authorName} napisał:'
-      cta_goto_idea: 'Przejdź do tego pomysłu'
-      cta_goto_proposal: 'Przejdź do tej propozycji'
-      cta_goto_project: 'Przejdź do tego projektu'
-    schedules:
-      weekly:
-        "0": "Co tydzień, w niedziele, na stronie %{hourOfDay}."
-        "1": "Co tydzień, w poniedziałki %{hourOfDay}"
-        "2": "Co tydzień, we wtorki %{hourOfDay}"
-        "3": "Co tydzień, w środy %{hourOfDay}"
-        "4": "Co tydzień, w czwartki %{hourOfDay}"
-        "5": "Co tydzień, w piątki %{hourOfDay}"
-        "6": "Co tydzień, w soboty %{hourOfDay}"
+      "1": "Co tydzień, w poniedziałki %{hourOfDay}"
+      "2": "Co tydzień, we wtorki %{hourOfDay}"
+      "3": "Co tydzień, w środy na stronie %{hourOfDay}"
+      "4": "Co tydzień, w czwartki na stronie %{hourOfDay}"
+      "5": "Co tydzień, w piątki na stronie %{hourOfDay}"
+      "6": "Co tydzień, w soboty na stronie %{hourOfDay}"
     footer:
-      "link_privacy_policy": "Polityka prywatności"
       "link_terms_conditions": "Regulamin"
       "link_unsubscribe": "Wypisz mnie z subskrypcji"
       "powered_by": "Wspierane przez"
       "statement": "Ten e-mail został wysłany do Ciebie przez CitizenLab w imieniu %{organizationName}, ponieważ jesteś zarejestrowanym użytkownikiem %{organizationLink}. Możesz %{unsubscribeLink} jeśli nie chcesz otrzymywać tych e-maili w przyszłości."
       "unsubscribe_text": "zrezygnować z subskrybcji"
-    follow:
-      "unfollow_here": "Otrzymałeś to powiadomienie z powodu elementu, który obserwujesz. <a href=\"%{unfollow_url}\">Możesz przestać go obserwować tutaj.</a>"
+    follow: "unfollow_here\": \"Otrzymałeś to powiadomienie z powodu elementu, który śledzisz. <a href=\"%{unfollow_url}\">Możesz przestać go obserwować tutaj.</a>"
     comment_deleted_by_admin:
       reason: 'Powód, dla którego twój komentarz został usunięty:'
       cta_view: 'Zobacz ten pomysł'
