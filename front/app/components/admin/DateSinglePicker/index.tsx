@@ -36,6 +36,7 @@ const DateSinglePicker = ({
 
   if (isNilOrError(locale)) return null;
 
+  //
   return (
     <Container>
       <DatePicker
@@ -44,6 +45,10 @@ const DateSinglePicker = ({
         onChange={onChange}
         disabled={disabled}
         popperModifiers={[
+          // This makes sure the calendar pop-out is visible in case we have
+          // a tiny form (e.g. registration form in modal that only has 1 question).
+          // You can try by creating a required
+          // registration question that has a date as the answer.
           {
             name: 'preventOverflow',
             options: {
