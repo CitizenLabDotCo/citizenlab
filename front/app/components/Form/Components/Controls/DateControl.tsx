@@ -12,14 +12,9 @@ import {
 import { FormLabel } from 'components/UI/FormComponents';
 import ErrorDisplay from '../ErrorDisplay';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
-import styled from 'styled-components';
 import VerificationIcon from '../VerificationIcon';
 import { getSubtextElement } from './controlUtils';
 import DateSinglePicker from 'components/admin/DateSinglePicker';
-
-const StyledDateSinglePicker = styled(DateSinglePicker)`
-  flex-grow: 1;
-`;
 
 const DateControl = ({
   uischema,
@@ -47,8 +42,8 @@ const DateControl = ({
         subtextValue={getSubtextElement(uischema.options?.description)}
         subtextSupportsHtml
       />
-      <Box display="flex" flexDirection="row">
-        <StyledDateSinglePicker
+      <Box display="flex">
+        <DateSinglePicker
           id={sanitizeForClassname(id)}
           selectedDate={data ? new Date(data) : null}
           onChange={(value) => {

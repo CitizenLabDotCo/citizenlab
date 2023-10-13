@@ -7,6 +7,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 const Container = styled.div`
   display: flex;
+  flex-grow: 1;
   align-items: center;
   border-radius: ${(props) => props.theme.borderRadius};
   border: solid 1px ${colors.borderDark};
