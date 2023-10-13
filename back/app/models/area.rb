@@ -23,6 +23,7 @@
 #
 #  fk_rails_...  (custom_field_option_id => custom_field_options.id)
 #
+
 class Area < ApplicationRecord
   acts_as_list column: :ordering, top_of_list: 0
 
@@ -98,8 +99,8 @@ class Area < ApplicationRecord
     return unless ordering_previously_changed? || title_multiloc_previously_changed?
 
     custom_field_option.update!(
-      title_multiloc: title_multiloc,
-      ordering: ordering
+      title_multiloc:,
+      ordering:
     )
   end
 
@@ -111,8 +112,8 @@ class Area < ApplicationRecord
 
     {
       custom_field_id: domicile_field.id,
-      title_multiloc: title_multiloc,
-      ordering: ordering
+      title_multiloc:,
+      ordering:
     }
   end
 
@@ -143,11 +144,11 @@ class Area < ApplicationRecord
 
     def create_somewhere_else_option
       title_multiloc = CL2_SUPPORTED_LOCALES.index_with do |locale|
-        I18n.t('custom_field_options.domicile.outside', locale: locale)
+        I18n.t('custom_field_options.domicile.outside', locale:)
       end
 
       domicile_field = CustomField.find_by(key: 'domicile')
-      domicile_field.options.create!(title_multiloc: title_multiloc)
+      domicile_field.options.create!(title_multiloc:)
     end
   end
 end

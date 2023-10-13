@@ -29,4 +29,8 @@ class EmailSnippet < ApplicationRecord
   def sanitize_body
     self.body = @@sanitizer.sanitize(body, tags: %w[p b u i em strong a], attributes: %w[href])
   end
+
+  def something
+    sanitize_body
+  end
 end

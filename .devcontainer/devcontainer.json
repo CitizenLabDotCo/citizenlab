@@ -1,0 +1,11 @@
+{
+  "name": "CitizenLab (commercial)",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "web",
+  "workspaceFolder": "/cl2_back",
+  "customizations": {
+    "vscode": {
+      "extensions": ["Shopify.ruby-lsp"]
+    }
+  }
+}
