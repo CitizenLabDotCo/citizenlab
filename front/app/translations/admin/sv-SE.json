@@ -70,6 +70,7 @@
   "app.components.UserSearch.noOptions": "Inga alternativ",
   "app.components.UserSearch.searchUsers": "Skriv för att söka efter användare...",
   "app.components.admin.ContentBuilder.Widgets.Title.title": "Titel",
+  "app.components.admin.DateTimePicker": "Tid",
   "app.components.admin.Graphs": "Inga data är tillgängliga med de aktuella filtren.",
   "app.components.admin.Graphs.noDataShort": "Inga data tillgängliga.",
   "app.components.admin.GraphsCards.CommentsByTime.hooks.useCommentsByTime.timeSeries": "Kommentarer över tid",
