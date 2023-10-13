@@ -1,83 +1,19 @@
 de:
   email_campaigns:
     campaign_type_description:
-      "manual": Offizielle Mitteilungen
-      "admin_rights_received": Admin-Rechte erhalten
-      "comment_deleted_by_admin": Löschung eines Kommentars
-      "comment_marked_as_spam": Kommentar wird als Spam markiert
-      "comment_on_your_comment": Antwort auf einen Kommentar
-      "comment_on_idea_you_follow": Ein Kommentar zu einer Idee, der Sie folgen
-      "comment_on_initiative_you_follow": Ein Kommentar zu einem Vorschlag, dem Sie folgen
-      "cosponsor_of_your_initiative": Nutzer*in nimmt meine Einladung an, meinen Vorschlag zu unterstützen
-      "event_registration_confirmation": Anmeldebestätigung für die Veranstaltung
-      "first_idea_published": Veröffentlichung des ersten Beitrags
-      "idea_marked_as_spam": Beitrag wird als Spam gekennzeichnet
-      "idea_published": Veröffentlichung des Beitrags
-      "initiative_assigned_to_you": Zuweisung eines Vorschlags an mich
-      "initiative_marked_as_spam": Vorschlag wird als Spam markiert
-      "initiative_published": Veröffentlichung eines Vorschlags
-      "invitation_to_cosponsor_initiative": Einladung zur Unterstützung eines Vorschlags
-      "initiative_resubmitted_for_review": Vorschlag erneut zur Prüfung eingereicht
-      "invite_received": Einladung
-      "invite_reminder": Einladungserinnerung
-      "internal_comment_on_idea_assigned_to_you": Interner Kommentar zu einem mir zugewiesenen Beitrag
-      "internal_comment_on_idea_you_commented_internally_on": Interner Kommentar zu einem Beitrag, den ich intern kommentiert habe
-      "internal_comment_on_idea_you_moderate": Interner Kommentar zu einem Beitrag in einem von mir verwalteten Projekt oder Ordner
-      "internal_comment_on_initiative_assigned_to_you": Interner Kommentar zu einem mir zugewiesenen Vorschlag
-      "internal_comment_on_initiative_you_commented_internally_on": Interner Kommentar zu einem Vorschlag, den ich intern kommentiert habe
-      "internal_comment_on_unassigned_initiative": Interner Kommentar zu einem nicht zugewiesenen Vorschlag
-      "internal_comment_on_unassigned_unmoderated_idea": Interner Kommentar zu nicht zugewiesenem Beitrag in nicht verwaltetem Projekt
-      "internal_comment_on_your_internal_comment": Interner Kommentar zu meinem internen Kommentar
-      "mention_in_official_feedback": Erwähnung in einem offiziellen Update
-      "mention_in_internal_comment": Erwähnung in einem internen Kommentar
-      "new_comment_for_admin": Neuer Kommentar zu einem Projekt, das ich moderiere
-      "new_idea_for_admin": Neuer Beitrag zu einem Projekt, das moderiert wird
-      "new_initiative_for_admin": Neuer Vorschlag
-      "official_feedback_on_idea_you_follow": Offizielles Update zu einer Idee, der Sie folgen
-      "official_feedback_on_initiative_you_follow": Offizielles Update zu einem Vorschlag, dem Sie folgen
-      "password_reset": Zurücksetzen des Passworts
-      "project_moderation_rights_received": Projektmanagementrechte erhalten
-      "project_folder_moderation_rights_received": Ordnermanagementrechte erhalten
-      "project_phase_started": Neue Projektphase
-      "project_phase_upcoming": Bevorstehende neue Projektphase
-      "project_published": Projekt veröffentlicht
-      "status_change_on_idea_you_follow": Statusänderung einer Idee, der Sie folgen
-      "status_change_on_initiative_you_follow": Statusänderung eines Vorschlags, dem Sie folgen
-      "threshold_reached_for_admin": Vorschlag hat die Abstimmungsschwelle erreicht
-      "welcome": Nach der Registrierung
-      "admin_digest": Wöchentliche Übersicht für Admins
-      "moderator_digest": Wöchentliche Übersicht für Ordner- und Projektmanager*innen
-      "assignee_digest": Wöchentliche Übersicht über die zugewiesenen Beiträge
-      "user_digest": Wöchentliche Übersicht
-      "voting_basket_submitted": Bestätigung der Abstimmung
-      "voting_basket_not_submitted": Nicht abgegebene Stimmen
-      "voting_last_chance": Letzte Chance zur Abstimmung
-      "voting_results": Abstimmungsergebnisse
-      "your_proposed_initiatives_digest": Wöchentliche Übersicht eigener Vorschläge
-    general:
-      by_author: 'von %{authorName}'
-      author_wrote: '%{authorName} schrieb:'
-      cta_goto_idea: 'Zum Beitrag'
-      cta_goto_proposal: 'Zum Vorschlag'
-      cta_goto_project: 'Zum Projekt'
-    schedules:
-      weekly:
-        "0": "Wöchentlich, sonntags um %{hourOfDay}"
-        "1": "Wöchentlich, montags um %{hourOfDay}"
-        "2": "Wöchentlich, dienstags um %{hourOfDay}"
-        "3": "Wöchentlich, mittwochs um %{hourOfDay}"
-        "4": "Wöchentlich, donnerstags um %{hourOfDay}"
-        "5": "Wöchentlich, freitags um %{hourOfDay}"
-        "6": "Wöchentlich, samstags um %{hourOfDay}"
+      "1": "Wöchentlich, montags um %{hourOfDay}"
+      "2": "Wöchentlich, dienstags um %{hourOfDay}"
+      "3": "Wöchentlich, mittwochs um %{hourOfDay}"
+      "4": "Wöchentlich, donnerstags um %{hourOfDay}"
+      "5": "Wöchentlich, freitags um %{hourOfDay}"
+      "6": "Wöchentlich, samstags um %{hourOfDay}"
     footer:
-      "link_privacy_policy": "Impressum & Datenschutz"
       "link_terms_conditions": "Nutzungsbedingungen"
       "link_unsubscribe": "Abbestellen"
       "powered_by": "Ermöglicht durch"
       "statement": "Diese E-Mail wurde Ihnen von CitizenLab im Namen von %{organizationName} zugesandt, da Sie ein*e registrierte*r Nutzer*in von %{organizationLink} sind. Hier können Sie diese und andere E-Mails %{unsubscribeLink}, wenn Sie in Zukunft keine Benachrichtigungen mehr erhalten möchten."
       "unsubscribe_text": "abbestellen"
-    follow:
-      "unfollow_here": "Sie haben diese Benachrichtigung wegen eines Elementes erhalten, dem Sie folgen. <a href=\"%{unfollow_url}\">Sie können hier aufhören diesem zu folgen.</a>"
+    follow: "unfollow_here\": \"Sie haben diese Benachrichtigung wegen eines Elements erhalten, dem Sie folgen. <a href=\"%{unfollow_url}\">Klicken Sie hier, um diesem Element nicht mehr zu folgen.</a>"
     comment_deleted_by_admin:
       reason: 'Der Grund, warum Ihr Kommentar gelöscht wurde:'
       cta_view: 'Zur Plattform'
