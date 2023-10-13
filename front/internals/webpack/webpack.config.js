@@ -16,6 +16,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const SentryCliPlugin = require('@sentry/webpack-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const CopyPlugin = require('copy-webpack-plugin');
 
 const dotenv = require('dotenv');
 dotenv.config({
@@ -184,6 +185,12 @@ const config = {
         include: path.join(process.cwd(), 'build'),
         release: process.env.CIRCLE_BUILD_NUM,
       }),
+
+    new CopyPlugin({
+      patterns: [
+        { from: "./security.txt", to: ".well-known/security.txt" }
+      ],
+    })
   ].filter(Boolean),
 
   resolve: {

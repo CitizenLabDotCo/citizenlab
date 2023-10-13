@@ -64,13 +64,13 @@
             <span style="font-size: 24px; font-weight: 700; color: rgb(111, 119, 125);">
               <img width="18px" src="https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/icons/icon_thumb_up.png" alt="Thumbs up">
             </span>
-            <span style="font-size: 14px; font-weight: 700;"><%= idea.upvotes_count %></span>
+            <span style="font-size: 14px; font-weight: 700;"><%= idea.likes_count %></span>
           </td>
           <td style="width: 40px">
             <span style="font-size: 24px; font-weight: 700; color: rgb(111, 119, 125);">
               <img width="18px" src="https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/icons/icon_thumb_down.png" alt="Thumbs down">
             </span>
-            <span style="font-size: 14px; font-weight: 700;"><%= idea.downvotes_count %></span>
+            <span style="font-size: 14px; font-weight: 700;"><%= idea.dislikes_count %></span>
 
           </td>
           <td style="width: 40px">
@@ -136,7 +136,7 @@
               <span style="font-size: 24px; font-weight: 700; color: rgb(111, 119, 125);">
                 <img width="18px" src="https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/icons/icon_thumb_up.png" alt="Thumbs up">
               </span>
-              <span style="font-size: 14px; font-weight: 700;"><%= assigned_initiative.upvotes_count %></span>
+              <span style="font-size: 14px; font-weight: 700;"><%= assigned_initiative.likes_count %></span>
             </td>
             <td style="width: 40px">
               <span style="font-size: 16px; font-weight: 700; color: rgb(111, 119, 125);">
@@ -189,7 +189,7 @@
               <span style="font-size: 24px; font-weight: 700; color: rgb(111, 119, 125);">
                 <img width="18px" src="https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/icons/icon_thumb_up.png" alt="Thumbs up">
               </span>
-              <span style="font-size: 14px; font-weight: 700;"><%= succesful_assigned_initiative.upvotes_count %></span>
+              <span style="font-size: 14px; font-weight: 700;"><%= succesful_assigned_initiative.likes_count %></span>
             </td>
             <td style="width: 40px">
               <span style="font-size: 16px; font-weight: 700; color: rgb(111, 119, 125);">
