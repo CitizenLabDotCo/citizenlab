@@ -33,6 +33,9 @@ import { media, defaultOutline, defaultCardStyle } from 'utils/styleUtils';
 // typings
 import { LatLngTuple, Map as ILeafletMap } from 'leaflet';
 
+require('leaflet');
+import esri from 'esri-leaflet';
+
 export interface Point extends GeoJSON.Point {
   data?: any;
   id: string;
@@ -143,6 +146,7 @@ const Map = memo<IMapProps & IMapConfigProps>(
   }) => {
     const { data: appConfig, isLoading } = useAppConfiguration();
     const customMapsEnabled = useFeatureFlag({ name: 'custom_maps' });
+    const [map, setMap] = useState<ILeafletMap | null>(null);
 
     const [additionalLeafletConfig, setAdditionalLeafletConfig] =
       useState<ILeafletMapConfig | null>(null);
@@ -212,10 +216,21 @@ const Map = memo<IMapProps & IMapConfigProps>(
     };
 
     const handleOnInit = (map: L.Map) => {
+      // esri
+      //   .featureLayer({
+      //     url: 'https://sampleserver6.arcgisonline.com/arcgis/rest/services/Earthquakes_Since1970/MapServer/0',
+      //   })
+      //   .addTo(map);
+      setMap(map);
       onInit?.(map);
+      map.setView([37.837, -122.479], 8);
     };
 
     if (!leafletConfig) return null;
+
+    // if (map) {
+    //   esri.basemapLayer('Imagery').addTo(map);
+    // }
 
     return (
       <Container className={className || ''}>

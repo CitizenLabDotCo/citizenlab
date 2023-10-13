@@ -29,6 +29,7 @@ const MapComponent = memo<Props>(
     const center = position.coordinates;
     const centerLatLng = [center[1], center[0]] as LatLngTuple;
 
+    
     return (
       <StyledMap
         points={[{ ...position, id: 'markerPosition' }]}
