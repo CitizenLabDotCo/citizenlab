@@ -96,6 +96,7 @@ const DateRangePicker = ({
   return (
     <StylingWrapper>
       <DatePicker
+        id="e2e-start-date-input"
         selected={convertedStartDate}
         onChange={handleOnChangeStartDate}
         selectsStart
@@ -105,11 +106,13 @@ const DateRangePicker = ({
         locale={locale}
         // This makes sure we adjust date based on the passed locale.
         dateFormat="P"
+        popperClassName="e2e-start-date-popper"
       />
       <Box mx="8px">
         <Icon name="arrow-right" fill={colors.grey700} />
       </Box>
       <DatePicker
+        id="e2e-end-date-input"
         selected={convertedEndDate}
         onChange={handleOnChangeEndDate}
         selectsEnd
@@ -119,6 +122,7 @@ const DateRangePicker = ({
         locale={locale}
         // This makes sure we adjust date based on the passed locale.
         dateFormat="P"
+        popperClassName="e2e-end-date-popper"
       />
     </StylingWrapper>
   );

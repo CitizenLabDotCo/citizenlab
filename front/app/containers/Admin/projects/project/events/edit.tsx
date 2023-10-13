@@ -540,7 +540,7 @@ const AdminProjectEventEdit = () => {
               <DateTimePicker
                 value={eventAttrs.start_at}
                 onChange={handleDateTimePickerOnChange('start_at')}
-                setCurrentTimeAsDefault={true}
+                setCurrentTimeAsDefault
               />
               <ErrorComponent apiErrors={get(errors, 'start_at')} />
             </SectionField>
@@ -552,7 +552,7 @@ const AdminProjectEventEdit = () => {
               <DateTimePicker
                 value={eventAttrs.end_at}
                 onChange={handleDateTimePickerOnChange('end_at')}
-                setCurrentTimeAsDefault={true}
+                setCurrentTimeAsDefault
               />
               <ErrorComponent apiErrors={get(errors, 'end_at')} />
             </SectionField>
