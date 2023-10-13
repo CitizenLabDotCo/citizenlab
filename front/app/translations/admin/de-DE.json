@@ -1489,7 +1489,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.cancelQuitButtonText": "Abbrechen",
   "app.containers.AdminPage.ProjectEdit.survey.choiceCount2": "{percentage}% ({choiceCount, plural, no {# Antworten} one {# Antwort} other {# Antworten}})",
   "app.containers.AdminPage.ProjectEdit.survey.confirmDeleteButtonText2": "Ja, Umfrageergebnisse löschen",
-  "app.containers.AdminPage.ProjectEdit.survey.confirmQuitButtonText1": "Abbrechen",
+  "app.containers.AdminPage.ProjectEdit.survey.confirmQuitButtonText1": "Ja, zurück ohne zu speichern",
   "app.containers.AdminPage.ProjectEdit.survey.deleteResultsInfo2": "Dies kann nicht rückgängig gemacht werden",
   "app.containers.AdminPage.ProjectEdit.survey.deleteResultsLink2": "Löschen Sie die Ergebnisse, wenn Sie Änderungen vornehmen müssen.",
   "app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResults2": "Umfrageergebnisse löschen",
