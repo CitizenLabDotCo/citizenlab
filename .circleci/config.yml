@@ -118,6 +118,7 @@ commands:
     steps:
       - run: curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash
       - run: apt-get install git-lfs
+      - run: git lfs install
       - run: mkdir -p ~/.ssh
       - run: ssh-keyscan github.com >> ~/.ssh/known_hosts
       # Git clone can fail when the repository directory exists and is not empty. This
@@ -128,7 +129,9 @@ commands:
       - run: |
           cd ~
           rm -rf ~/$(echo $CIRCLE_REPOSITORY_URL | cut -d '/' -f 2 | cut -d '.' -f 1)
-          git clone -b "$CIRCLE_BRANCH" "$CIRCLE_REPOSITORY_URL" --depth 1
+          # git clone -b "$CIRCLE_BRANCH" "$CIRCLE_REPOSITORY_URL" --depth 1
+          git clone "$C"
+          git lfs pull
 
 jobs:
   trigger-workflows:
