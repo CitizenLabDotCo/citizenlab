@@ -58,6 +58,7 @@ const DateSinglePicker = ({
           },
         ]}
         locale={locale}
+        // This makes sure we adjust date based on the passed locale.
         dateFormat="P"
       />
     </Container>

@@ -66,6 +66,7 @@ const DateTimePicker = ({ value, onChange }: Props) => {
         onChange={handleDateChange}
         showTimeSelect
         timeIntervals={15}
+        // This makes sure we adjust date + time based on the passed locale.
         dateFormat="Pp"
         locale={locale}
       />

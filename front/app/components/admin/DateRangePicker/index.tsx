@@ -96,6 +96,7 @@ const DateRangePicker = ({
         endDate={convertedEndDate}
         minDate={convertedMinDate}
         locale={locale}
+        // This makes sure we adjust date based on the passed locale.
         dateFormat="P"
       />
       <Box mx="8px">
@@ -108,6 +109,7 @@ const DateRangePicker = ({
         startDate={convertedStartDate}
         endDate={convertedEndDate}
         locale={locale}
+        // This makes sure we adjust date based on the passed locale.
         dateFormat="P"
       />
     </StylingWrapper>
