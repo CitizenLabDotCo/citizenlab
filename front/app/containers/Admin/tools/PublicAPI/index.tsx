@@ -11,8 +11,6 @@ export const PublicAPI = () => {
   const isPublicAPIEnabled = useFeatureFlag({ name: 'public_api_tokens' });
   const { formatMessage } = useIntl();
 
-  if (!isPublicAPIEnabled) return null;
-
   return (
     <Box background={colors.white} display="flex" p="20px">
       <img
