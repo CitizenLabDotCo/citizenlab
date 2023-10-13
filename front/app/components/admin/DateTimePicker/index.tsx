@@ -42,15 +42,10 @@ const Container = styled.div`
 
 interface Props {
   value: string | undefined;
-  setCurrentTimeAsDefault?: boolean;
   onChange: (arg: moment.Moment) => void;
 }
 
-const DateTimePicker = ({
-  value,
-  setCurrentTimeAsDefault = false,
-  onChange,
-}: Props) => {
+const DateTimePicker = ({ value, onChange }: Props) => {
   const locale = useLocale();
 
   if (isNilOrError(locale)) return null;
@@ -63,20 +58,11 @@ const DateTimePicker = ({
     }
   };
 
-  const getDateValue = (value: string | undefined) => {
-    if (value) {
-      return new Date(value);
-    } else if (setCurrentTimeAsDefault) {
-      return new Date();
-    }
-    return null;
-  };
-
   return (
     <Container>
       <Icon name="calendar" fill={colors.blue500} />
       <DatePicker
-        selected={getDateValue(value)}
+        selected={value ? new Date(value) : new Date()}
         onChange={handleDateChange}
         showTimeSelect
         timeIntervals={15}
