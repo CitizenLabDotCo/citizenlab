@@ -8,6 +8,8 @@ import {
   colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
+import useLocale from 'hooks/useLocale';
+import { isNilOrError } from 'utils/helperUtils';
 
 const StylingWrapper = styled.div`
   display: flex;
@@ -52,6 +54,10 @@ const DateRangePicker = ({
   onDatesChange,
   minDate,
 }: Props) => {
+  const locale = useLocale();
+
+  if (isNilOrError(locale)) return null;
+
   const handleOnChangeStartDate = (newStartDate: Date | null) => {
     onDatesChange({
       startDate: moment(newStartDate),
@@ -79,6 +85,7 @@ const DateRangePicker = ({
         startDate={convertedStartDate}
         endDate={convertedEndDate}
         minDate={convertedMinDate}
+        locale={locale}
       />
       <Box mx="8px">
         <Icon name="arrow-right" fill={colors.grey700} />
@@ -89,6 +96,7 @@ const DateRangePicker = ({
         selectsEnd
         startDate={convertedStartDate}
         endDate={convertedEndDate}
+        locale={locale}
       />
     </StylingWrapper>
   );

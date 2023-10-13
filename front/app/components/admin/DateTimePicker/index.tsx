@@ -6,6 +6,8 @@ import DatePicker from 'react-datepicker';
 import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 import { Icon, colors } from '@citizenlab/cl2-component-library';
+import useLocale from 'hooks/useLocale';
+import { isNilOrError } from 'utils/helperUtils';
 
 const Container = styled.div`
   display: flex;
@@ -44,6 +46,10 @@ interface Props {
 }
 
 const DateTimePicker = ({ value, onChange }: Props) => {
+  const locale = useLocale();
+
+  if (isNilOrError(locale)) return null;
+
   const handleDateChange = (date: Date | null) => {
     const momentDate = date ? moment(date) : null;
 
@@ -61,6 +67,7 @@ const DateTimePicker = ({ value, onChange }: Props) => {
         showTimeSelect
         timeIntervals={15}
         dateFormat="MMMM d, yyyy h:mm aa"
+        locale={locale}
       />
     </Container>
   );
