@@ -64,7 +64,10 @@ const DateRangePicker = ({
     if (newStartDate) {
       onDatesChange({
         startDate: moment(newStartDate),
-        endDate,
+        endDate:
+          endDate && endDate < moment(newStartDate)
+            ? moment(newStartDate)
+            : endDate,
       });
     }
   };
@@ -108,6 +111,7 @@ const DateRangePicker = ({
         selectsEnd
         startDate={convertedStartDate}
         endDate={convertedEndDate}
+        minDate={convertedStartDate}
         locale={locale}
         // This makes sure we adjust date based on the passed locale.
         dateFormat="P"
