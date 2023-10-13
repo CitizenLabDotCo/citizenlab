@@ -1,5 +1,7 @@
 name: CI
-on: [push]
+on:
+  push:
+    paths: ['cl2-component-library/src/**']# Trigger the action only when files change in the folders defined here
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -16,27 +18,27 @@ jobs:
       - name: Use cached node_modules
         uses: actions/cache@v3
         with:
-          path: node_modules
+          path: cl2-component-library/node_modules
           key: nodeModules-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             nodeModules-
 
       - name: Install dependencies
-        run: npm ci
+        run: cd cl2-component-library && npm ci
         env:
           CI: true
 
       - name: Lint
-        run: npm run lint
+        run: cd cl2-component-library && npm run lint
         env:
           CI: true
 
       - name: Test
-        run: npm run test --ci --coverage --maxWorkers=2
+        run: cd cl2-component-library && npm run test --ci --coverage --maxWorkers=2
         env:
           CI: true
 
       - name: Build
-        run: npm run build
+        run: cd cl2-component-library && npm run build
         env:
           CI: true
