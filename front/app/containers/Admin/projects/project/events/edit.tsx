@@ -532,7 +532,7 @@ const AdminProjectEventEdit = () => {
           >
             {formatMessage(messages.eventDates)}
           </Title>
-          <Box display="flex" flexDirection="column">
+          <Box display="flex" flexDirection="column" maxWidth="400px">
             <SectionField style={{ width: 'auto' }}>
               <Label>
                 <FormattedMessage {...messages.dateStartLabel} />
@@ -540,6 +540,7 @@ const AdminProjectEventEdit = () => {
               <DateTimePicker
                 value={eventAttrs.start_at}
                 onChange={handleDateTimePickerOnChange('start_at')}
+                setCurrentTimeAsDefault={true}
               />
               <ErrorComponent apiErrors={get(errors, 'start_at')} />
             </SectionField>
@@ -551,6 +552,7 @@ const AdminProjectEventEdit = () => {
               <DateTimePicker
                 value={eventAttrs.end_at}
                 onChange={handleDateTimePickerOnChange('end_at')}
+                setCurrentTimeAsDefault={true}
               />
               <ErrorComponent apiErrors={get(errors, 'end_at')} />
             </SectionField>
