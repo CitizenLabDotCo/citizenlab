@@ -3,12 +3,14 @@
 class RequestConfirmationCodeJob < ApplicationJob
   self.priority = 30 # More important than default (50)
 
+  attr_reader :user
+
   def run(user, new_email: nil)
-    # TODO: add user reader attr
+    @user = user
     raise 'User confirmation is disabled.' if !AppConfiguration.instance.feature_activated?('user_confirmation')
     raise 'Confirmation is currently working for emails only.' if !user.registered_with_email?
 
-    # TODO: log activity
+    LogActivityJob.perform_later(user, 'requested_confirmation_code', user, Time.now.to_i)
     if new_email
       user.new_email = new_email
       user.email_confirmation_code_reset_count = 0 # TODO: Why does this need to be set to 0?
@@ -20,6 +22,7 @@ class RequestConfirmationCodeJob < ApplicationJob
       reset_user_confirmation_code user
       deliver_confirmation_code user
       schedule_code_expiration user
+      LogActivityJob.perform_later(user, 'received_confirmation_code', user, Time.now.to_i)
     end
   end
 
