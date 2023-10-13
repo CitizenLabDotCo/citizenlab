@@ -130,7 +130,7 @@ commands:
           cd ~
           rm -rf ~/$(echo $CIRCLE_REPOSITORY_URL | cut -d '/' -f 2 | cut -d '.' -f 1)
           git clone -b "$CIRCLE_BRANCH" "$CIRCLE_REPOSITORY_URL" --depth 1
-          git lfs pull
+          cd citizenlab && git lfs pull
 
 jobs:
   trigger-workflows:
