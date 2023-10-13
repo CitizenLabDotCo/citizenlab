@@ -1,4 +1,5 @@
 name: Build and Deploy Storybook
+on: [push]
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
