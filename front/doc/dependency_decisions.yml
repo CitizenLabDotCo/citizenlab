@@ -124,19 +124,71 @@
   - BSD-3-Clause
   - :who:
     :why:
-    :versions: [^0.14, ^15.0.0, ^16.0.0-alpha]
+    :versions:
+      - '^0.14'
+      - '^15.0.0'
+      - '^16.0.0-alpha'
+      - '^17.0.0'
     :when: 2021-09-29 08:40:43.025406500 Z
 - - :license
   - react-dom
   - BSD-3-Clause
   - :who:
     :why:
-    :versions: [^0.14, ^15, ^16]
-    :when: 2021-09-29 08:40:43.025406500
+    :versions:
+      - '^0.14'
+      - '^15'
+      - '^16'
+      - '^16.14.0'
+      - '^17.0.0'
+    :when: 2021-09-29 11:40:43.025406500 +03:00
 - - :license
   - react-with-direction
   - MIT
   - :who:
     :why:
-    :versions: [^1.3.1]
-    :when: 2021-10-07 09:40:43.025406500
+    :versions:
+      - '^1.3.1'
+    :when: 2021-10-07 12:40:43.025406500 +03:00
+- - :license
+  - '@tanstack/react-virtual'
+  - MIT
+  - :who:
+    :why:
+    :versions: []
+    :when: 2023-10-13 13:17:04.668892000 Z
+- - :license
+  - react-beautiful-dnd
+  - Apache 2.0
+  - :who:
+    :why:
+    :versions: []
+    :when: 2023-10-13 13:19:03.693010000 Z
+- - :license
+  - react-select
+  - MIT
+  - :who:
+    :why:
+    :versions: []
+    :when: 2023-10-13 13:24:18.907017000 Z
+- - :license
+  - react-force-graph-2d
+  - MIT
+  - :who:
+    :why:
+    :versions: []
+    :when: 2023-10-13 13:24:52.339352000 Z
+- - :license
+  - intersection-observer
+  - Apache 2.0
+  - :who:
+    :why:
+    :versions: []
+    :when: 2023-10-13 13:25:32.411071000 Z
+- - :license
+  - react
+  - MIT
+  - :who:
+    :why:
+    :versions: []
+    :when: 2023-10-13 13:30:53.088969000 Z
