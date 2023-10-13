@@ -111,7 +111,9 @@ const UserTableRow = ({
   };
 
   const handleDeleteClick = () => {
-    const deleteMessage = formatMessage(messages.userDeletionConfirmation);
+    const deleteMessage =
+      `${formatMessage(messages.userDeletionConfirmation)}\n\n` +
+      `${formatMessage(messages.userDeletionProposalVotes)}`;
 
     if (window.confirm(deleteMessage)) {
       if (userInRowIsCurrentUser) {
