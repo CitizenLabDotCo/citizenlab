@@ -553,7 +553,7 @@ jobs:
 
   front-snapshot-tests:
     docker:
-      - image: citizenlabdotco/cl2-devops-front-buildenv
+      - image: mcr.microsoft.com/playwright:v1.39.0-jammy
     resource_class: medium+
     working_directory: ~/
     parallelism: 4
