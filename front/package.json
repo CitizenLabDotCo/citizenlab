@@ -244,6 +244,9 @@
     "whatwg-fetch": "3.6.2",
     "yargs": "17.7.2"
   },
+  "resolutions": {
+    "react-test-renderer": "16.14.0"
+  },
   "optionalDependencies": {
     "fsevents": "^2"
   }
