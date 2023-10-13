@@ -71,8 +71,8 @@ module MultiTenancy
               allowed: true,
               enabled: false,
               environment: 'test',
-              client_id: ENV.fetch('DEFAULT_HOPLR_CLIENT_ID'),
-              client_secret: ENV.fetch('DEFAULT_HOPLR_CLIENT_SECRET')
+              client_id: ENV.fetch('DEFAULT_HOPLR_CLIENT_ID', 'fake id'),
+              client_secret: ENV.fetch('DEFAULT_HOPLR_CLIENT_SECRET', 'fake secret')
             },
             vienna_citizen_login: {
               allowed: true,
