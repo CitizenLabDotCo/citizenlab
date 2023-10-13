@@ -53,6 +53,7 @@ const DateSinglePicker = ({
           },
         ]}
         locale={locale}
+        dateFormat="P"
       />
     </Container>
   );

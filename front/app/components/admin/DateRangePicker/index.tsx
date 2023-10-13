@@ -86,6 +86,7 @@ const DateRangePicker = ({
         endDate={convertedEndDate}
         minDate={convertedMinDate}
         locale={locale}
+        dateFormat="P"
       />
       <Box mx="8px">
         <Icon name="arrow-right" fill={colors.grey700} />
@@ -97,6 +98,7 @@ const DateRangePicker = ({
         startDate={convertedStartDate}
         endDate={convertedEndDate}
         locale={locale}
+        dateFormat="P"
       />
     </StylingWrapper>
   );

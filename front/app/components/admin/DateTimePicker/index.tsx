@@ -66,7 +66,7 @@ const DateTimePicker = ({ value, onChange }: Props) => {
         onChange={handleDateChange}
         showTimeSelect
         timeIntervals={15}
-        dateFormat="MMMM d, yyyy h:mm aa"
+        dateFormat="Pp"
         locale={locale}
       />
     </Container>
