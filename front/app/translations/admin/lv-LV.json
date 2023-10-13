@@ -70,6 +70,7 @@
   "app.components.UserSearch.noOptions": "Iespēju nav",
   "app.components.UserSearch.searchUsers": "Ierakstiet, lai meklētu lietotājus...",
   "app.components.admin.ContentBuilder.Widgets.Title.title": "Nosaukums",
+  "app.components.admin.DateTimePicker": "Laiks",
   "app.components.admin.Graphs": "Ar pašreizējiem filtriem dati nav pieejami.",
   "app.components.admin.Graphs.noDataShort": "Nav pieejami nekādi dati.",
   "app.components.admin.GraphsCards.CommentsByTime.hooks.useCommentsByTime.timeSeries": "Piezīmes laika gaitā",
