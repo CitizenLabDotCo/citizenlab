@@ -59,21 +59,31 @@ const DateRangePicker = ({
   if (isNilOrError(locale)) return null;
 
   const handleOnChangeStartDate = (newStartDate: Date | null) => {
-    onDatesChange({
-      startDate: moment(newStartDate),
-      endDate,
-    });
+    // with this check, we don't allow removing a date
+    // (forcing users to pick a date if changes need to persist)
+    if (newStartDate) {
+      onDatesChange({
+        startDate: moment(newStartDate),
+        endDate,
+      });
+    }
   };
 
   const handleOnChangeEndDate = (newEndDate: Date | null) => {
-    onDatesChange({
-      startDate,
-      endDate: moment(newEndDate),
-    });
+    // with this check, we don't allow removing a date
+    // (forcing users to pick a date if changes need to persist)
+    if (newEndDate) {
+      onDatesChange({
+        startDate,
+        endDate: moment(newEndDate),
+      });
+    }
   };
 
-  const convertedStartDate = moment(startDate).toDate();
-  const convertedEndDate = moment(endDate).toDate();
+  // Passing null to moment() crashes this component. Calling toDate on this returns "Invalid date",
+  // which crashes DatePicker.
+  const convertedStartDate = startDate ? moment(startDate).toDate() : null;
+  const convertedEndDate = endDate ? moment(endDate).toDate() : null;
   const convertedMinDate = minDate ? moment(minDate).toDate() : null;
 
   return (
