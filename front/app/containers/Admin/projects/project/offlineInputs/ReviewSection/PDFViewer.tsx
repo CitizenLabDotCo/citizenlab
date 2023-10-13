@@ -21,6 +21,7 @@ interface Props {
 
 const PDFViewer = ({ currentPageIndex, file, pages }: Props) => {
   const [pagesInDocument, setPagesInDocument] = useState<number | null>(null);
+  console.log('!');
 
   const handleLoadSuccess = ({ numPages }: { numPages: number }) => {
     setPagesInDocument(numPages);
