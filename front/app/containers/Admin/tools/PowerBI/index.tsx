@@ -1,13 +1,22 @@
 import React from 'react';
+
+// components
 import { Box, Text, colors } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
+
+// intl
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
-import powerBIImage from './power-bi.png';
-import Tippy from '@tippyjs/react';
+
+// hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-export const PowerBI = () => {
+// utils
+import Tippy from '@tippyjs/react';
+
+import powerBIImage from './power-bi.png';
+
+const PowerBI = () => {
   const isPowerBIEnabled = useFeatureFlag({ name: 'power_bi' });
   const { formatMessage } = useIntl();
 

@@ -1,5 +1,6 @@
 import React from 'react';
 
+// components
 import {
   Box,
   Button,
@@ -7,14 +8,21 @@ import {
   Text,
   Title,
 } from '@citizenlab/cl2-component-library';
-import messages from './messages';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import { isNilOrError } from 'utils/helperUtils';
-import { saveTemplateFile } from './saveTemplateFile';
 import GoBackButton from 'components/UI/GoBackButton';
+
+// intl
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import messages from './messages';
+
+// hooks
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+// utils
+import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
+
+import { saveTemplateFile } from './saveTemplateFile';
 
 const PowerBITemplates = () => {
   const isPowerBIEnabled = useFeatureFlag({ name: 'power_bi' });
