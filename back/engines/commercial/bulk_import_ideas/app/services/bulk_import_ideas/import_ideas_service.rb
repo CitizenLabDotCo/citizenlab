@@ -15,94 +15,95 @@ module BulkImportIdeas
     DEFAULT_MAX_IDEAS = 500
     DATE_FORMAT_REGEX = /^(0[1-9]|[1|2][0-9]|3[0|1])-(0[1-9]|1[0-2])-([0-9]{4})$/ # After https://stackoverflow.com/a/47218282/3585671
 
-    def initialize
+    def initialize(current_user)
+      @locale = AppConfiguration.instance.settings('core', 'locales').first # Default locale for any new users created
       @all_projects = Project.all
       @all_topics = Topic.all
+      @import_user = current_user
+      @project = nil
+      @uploaded_file = nil
+      @imported_users = []
     end
 
-    def import_ideas(idea_rows, max_ideas: DEFAULT_MAX_IDEAS)
-      raise Error.new 'bulk_import_ideas_maximum_ideas_exceeded', value: max_ideas if idea_rows.size > max_ideas
+    attr_reader :imported_users
 
+    def import_file(file_content)
+      files = create_files file_content
+
+      ideas = []
+      files.each do |file|
+        idea_rows = parse_idea_rows file
+        ideas += import_ideas(idea_rows, file)
+      end
+      ideas
+    end
+
+    def create_files(file_content)
+      [upload_source_file(file_content)]
+    end
+
+    def import_ideas(idea_rows, file = nil)
+      raise Error.new 'bulk_import_ideas_maximum_ideas_exceeded', value: DEFAULT_MAX_IDEAS if idea_rows.size > DEFAULT_MAX_IDEAS
+
+      ideas = []
       ActiveRecord::Base.transaction do
-        idea_rows.each do |idea_row|
-          idea = import_idea idea_row
+        ideas = idea_rows.map do |idea_row|
+          idea = import_idea idea_row, file
           Rails.logger.info { "Created #{idea.id}" }
+          idea
         end
       end
 
+      # To ensure the latest ideas are available in NLP stack
       DumpTenantJob.perform_later Tenant.current
+      ideas
+    end
+
+    def parse_idea_rows(_file)
+      []
     end
 
     def generate_example_xlsx
-      XlsxService.new.hash_array_to_xlsx [
-        {
-          'ID' => '1',
-          'Title_nl-BE' => 'Mijn idee titel',
-          'Title_fr-BE' => 'Mon idée titre',
-          'Body_nl-BE' => 'Mijn idee inhoud',
-          'Body_fr-BE' => 'Mon idée contenu',
-          'Email' => 'moderator@citizenlab.co',
-          'Project' => 'Project 1',
-          'Phase' => 1,
-          'Image URL' => 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_in_meeting_graphic.png',
-          'Date (dd-mm-yyyy)' => '18-07-2022',
-          'Topics' => 'Mobility; Health and welfare',
-          'Latitude' => 50.5035,
-          'Longitude' => 6.0944,
-          'Location Description' => 'Panorama sur les Hautes Fagnes / Hohes Venn'
-        }
-      ]
+      nil
     end
 
-    def xlsx_to_idea_rows(xlsx)
-      xlsx.map do |xlsx_row|
-        idea_row = {}
-
-        title_multiloc = {}
-        body_multiloc  = {}
-        xlsx_row.each do |key, value|
-          next unless key.include? '_'
-
-          field, locale = key.split '_'
-          case field
-          when 'Title'
-            title_multiloc[locale] = value
-          when 'Body'
-            body_multiloc[locale] = value
-          end
-        end
-
-        idea_row[:title_multiloc]       = title_multiloc
-        idea_row[:body_multiloc]        = body_multiloc
-        idea_row[:topic_titles]         = (xlsx_row['Topics'] || '').split(';').map(&:strip).select(&:present?)
-        idea_row[:project_title]        = xlsx_row['Project']
-        idea_row[:user_email]           = xlsx_row['Email']
-        idea_row[:image_url]            = xlsx_row['Image URL']
-        idea_row[:phase_rank]           = xlsx_row['Phase']
-        idea_row[:published_at]         = xlsx_row['Date (dd-mm-yyyy)']
-        idea_row[:latitude]             = xlsx_row['Latitude']
-        idea_row[:longitude]            = xlsx_row['Longitude']
-        idea_row[:location_description] = xlsx_row['Location Description']
-        idea_row[:id]                   = xlsx_row['ID']
-        idea_row
-      end
+    def import_as_draft?
+      true
     end
 
     private
 
     attr_reader :all_projects, :all_topics
 
-    def import_idea(idea_row)
+    def upload_source_file(file_content)
+      file_type = file_content.index('application/pdf') ? 'pdf' : 'xlsx'
+      IdeaImportFile.create!(
+        import_type: file_type,
+        project: @project,
+        file_by_content: {
+          name: "import.#{file_type}",
+          content: file_content # base64
+        }
+      )
+    end
+
+    def parse_xlsx_ideas(file)
+      xlsx_file = open(file.file_content_url)
+      XlsxService.new.xlsx_to_hash_array xlsx_file
+    end
+
+    def import_idea(idea_row, file)
       idea_attributes = {}
       add_title_multiloc idea_row, idea_attributes
       add_body_multiloc idea_row, idea_attributes
       add_project idea_row, idea_attributes
-      add_author idea_row, idea_attributes
       add_published_at idea_row, idea_attributes
       add_publication_status idea_row, idea_attributes
       add_location idea_row, idea_attributes
       add_phase idea_row, idea_attributes
       add_topics idea_row, idea_attributes
+      add_custom_fields idea_row, idea_attributes
+      user_created = add_author idea_row, idea_attributes
 
       idea = Idea.new idea_attributes
       raise Error.new 'bulk_import_ideas_idea_not_valid', value: idea.errors.messages unless idea.valid?
@@ -110,32 +111,39 @@ module BulkImportIdeas
       idea.save!
 
       create_idea_image idea_row, idea
+      create_idea_import idea, user_created, idea_row[:user_consent], idea_row[:pdf_pages], file
 
       idea
     end
 
     def add_title_multiloc(idea_row, idea_attributes)
-      raise Error.new 'bulk_import_ideas_blank_title', row: idea_row[:id] if idea_row[:title_multiloc].blank?
+      raise Error.new 'bulk_import_ideas_blank_title', row: idea_row[:id] if idea_row[:title_multiloc].blank? && !import_as_draft?
 
-      idea_attributes[:title_multiloc] = idea_row[:title_multiloc]
+      title = idea_row[:title_multiloc] || {}
+      idea_attributes[:title_multiloc] = title
     end
 
     def add_body_multiloc(idea_row, idea_attributes)
-      raise Error.new 'bulk_import_ideas_blank_body', row: idea_row[:id] if idea_row[:body_multiloc].blank?
+      raise Error.new 'bulk_import_ideas_blank_body', row: idea_row[:id] if idea_row[:body_multiloc].blank? && !import_as_draft?
 
-      idea_attributes[:body_multiloc] = idea_row[:body_multiloc]
+      body = idea_row[:body_multiloc] || {}
+      idea_attributes[:body_multiloc] = body
     end
 
     def add_project(idea_row, idea_attributes)
-      raise Error.new 'bulk_import_ideas_blank_project', row: idea_row[:id] if idea_row[:project_title].blank?
+      raise Error.new 'bulk_import_ideas_blank_project', row: idea_row[:id] if idea_row[:project_title].blank? && idea_row[:project_id].blank?
 
-      project_title = idea_row[:project_title].downcase.strip
-      project = all_projects.find do |find_project|
-        find_project
-          .title_multiloc
-          .values
-          .map { |title| title.downcase.strip }
-          .include? project_title
+      if idea_row[:project_id]
+        project = Project.find(idea_row[:project_id])
+      else
+        project_title = idea_row[:project_title].downcase.strip
+        project = all_projects.find do |find_project|
+          find_project
+            .title_multiloc
+            .values
+            .map { |title| title.downcase.strip }
+            .include? project_title
+        end
       end
       unless project
         raise Error.new 'bulk_import_ideas_project_not_found', value: idea_row[:project_title], row: idea_row[:id]
@@ -145,12 +153,31 @@ module BulkImportIdeas
     end
 
     def add_author(idea_row, idea_attributes)
-      raise Error.new 'bulk_import_ideas_blank_email', row: idea_row[:id] if idea_row[:user_email].blank?
+      author = nil
+      if idea_row[:user_email].present? || idea_row[:user_first_name].present?
+        author = idea_row[:user_email].present? ? User.find_by_cimail(idea_row[:user_email]) : nil
+        unless author
+          author = User.new(
+            locale: @locale,
+            first_name: idea_row[:user_first_name],
+            last_name: idea_row[:user_last_name]
+          )
+          if idea_row[:user_email].present?
+            author.email = idea_row[:user_email]
+          else
+            author.unique_code = SecureRandom.uuid
+          end
 
-      author = User.find_by_cimail idea_row[:user_email]
-      raise Error.new 'bulk_import_ideas_email_not_found', value: idea_row[:user_email], row: idea_row[:id] unless author
+          if author.save
+            @imported_users << author
+          else
+            author = nil
+          end
+        end
+      end
 
       idea_attributes[:author] = author
+      @imported_users.include? author # Was the user created in this import
     end
 
     def add_published_at(idea_row, idea_attributes)
@@ -161,7 +188,6 @@ module BulkImportIdeas
         return
       end
 
-      published_at = nil
       invalid_date_error = Error.new(
         'bulk_import_ideas_publication_date_invalid_format',
         value: idea_row[:published_at],
@@ -179,7 +205,7 @@ module BulkImportIdeas
     end
 
     def add_publication_status(_idea_row, idea_attributes)
-      idea_attributes[:publication_status] = 'published'
+      idea_attributes[:publication_status] = import_as_draft? ? 'draft' : 'published'
     end
 
     def add_location(idea_row, idea_attributes)
@@ -191,8 +217,6 @@ module BulkImportIdeas
         raise Error.new 'bulk_import_ideas_location_point_blank_coordinate', value: "(#{idea_row[:latitude]}, #{idea_row[:longitude]})", row: idea_row[:id]
       end
 
-      lat = nil
-      lon = nil
       begin
         lat = Float idea_row[:latitude]
         lon = Float idea_row[:longitude]
@@ -208,22 +232,27 @@ module BulkImportIdeas
     end
 
     def add_phase(idea_row, idea_attributes)
-      return if idea_row[:phase_rank].blank?
+      if idea_row[:phase_id]
+        phase = Phase.find(idea_row[:phase_id])
+        participation_method = Factory.instance.participation_method_for phase
+        idea_attributes[:creation_phase_id] = phase.id if participation_method.supports_survey_form?
+      else
+        return if idea_row[:phase_rank].blank?
 
-      phase_rank = nil
-      begin
-        phase_rank = Integer idea_row[:phase_rank]
-      rescue ArgumentError => _e
-        raise Error.new 'bulk_import_ideas_non_numeric_phase_rank', value: idea_row[:phase_rank], row: idea_row[:id]
+        begin
+          phase_rank = Integer idea_row[:phase_rank]
+        rescue ArgumentError => _e
+          raise Error.new 'bulk_import_ideas_non_numeric_phase_rank', value: idea_row[:phase_rank], row: idea_row[:id]
+        end
+
+        project_phases = Phase.where(project: idea_attributes[:project])
+        if phase_rank > project_phases.size
+          raise Error.new 'bulk_import_ideas_maximum_phase_rank_exceeded', value: phase_rank, row: idea_row[:id]
+        end
+
+        phase = project_phases.order(:start_at).all[phase_rank - 1]
+        raise Error.new 'bulk_import_ideas_project_phase_not_found', value: phase_rank, row: idea_row[:id] unless phase
       end
-
-      project_phases = Phase.where(project: idea_attributes[:project])
-      if phase_rank > project_phases.size
-        raise Error.new 'bulk_import_ideas_maximum_phase_rank_exceeded', value: phase_rank, row: idea_row[:id]
-      end
-
-      phase = project_phases.order(:start_at).all[phase_rank - 1]
-      raise Error.new 'bulk_import_ideas_project_phase_not_found', value: phase_rank, row: idea_row[:id] unless phase
 
       idea_attributes[:phases] = [phase]
     end
@@ -244,6 +273,10 @@ module BulkImportIdeas
       idea_attributes[:topic_ids] = topics_ids
     end
 
+    def add_custom_fields(idea_row, idea_attributes)
+      idea_attributes[:custom_field_values] = idea_row[:custom_field_values] || {}
+    end
+
     def create_idea_image(idea_row, idea)
       return if idea_row[:image_url].blank?
 
@@ -252,6 +285,27 @@ module BulkImportIdeas
       rescue StandardError => _e
         raise Error.new 'bulk_import_ideas_image_url_not_valid', value: idea_row[:image_url], row: idea_row[:id]
       end
+    end
+
+    def idea_blank?(idea)
+      idea.each do |_field, value|
+        return false if value.present?
+      end
+      true
+    end
+
+    def create_idea_import(idea, user_created, user_consent, page_range, file)
+      # Add import metadata
+      idea_import = IdeaImport.new(
+        idea: idea,
+        page_range: page_range,
+        import_user: @import_user,
+        user_created: user_created,
+        user_consent: user_consent || false,
+        file: file,
+        locale: @locale
+      )
+      idea_import.save!
     end
   end
 end

@@ -447,6 +447,10 @@ module MultiTenancy
             power_bi: {
               enabled: true,
               allowed: true
+            },
+            import_printed_forms: {
+              enabled: true,
+              allowed: true
             }
           })
         )

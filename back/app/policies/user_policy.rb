@@ -127,3 +127,4 @@ class UserPolicy < ApplicationPolicy
 end
 
 UserPolicy.prepend(Verification::Patches::UserPolicy)
+UserPolicy.prepend(BulkImportIdeas::Patches::UserPolicy)

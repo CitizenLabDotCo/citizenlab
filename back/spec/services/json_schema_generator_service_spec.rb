@@ -171,6 +171,7 @@ RSpec.describe JsonSchemaGeneratorService do
         expect(generator.visit_multiselect(field)).to eq({
           type: 'array',
           uniqueItems: true,
+          maxItems: 0,
           minItems: 0,
           items: {
             type: 'string'
@@ -186,6 +187,7 @@ RSpec.describe JsonSchemaGeneratorService do
         expect(generator.visit_multiselect(field)).to eq({
           type: 'array',
           uniqueItems: true,
+          maxItems: 2,
           minItems: 0,
           items: {
             type: 'string',
@@ -211,6 +213,7 @@ RSpec.describe JsonSchemaGeneratorService do
         expect(generator.visit_multiselect(field)).to eq({
           type: 'array',
           uniqueItems: true,
+          maxItems: 2,
           minItems: 1,
           items: {
             type: 'string',

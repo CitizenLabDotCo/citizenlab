@@ -1,54 +1,72 @@
-// Libraries
 import React from 'react';
-import styled from 'styled-components';
-import messages from '../messages';
+
+// routing
 import { useParams } from 'react-router-dom';
 
-// Utils
+// i18n
+import messages from '../messages';
+import ownMessages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-// Components
-import { SectionTitle, SectionDescription } from 'components/admin/Section';
+// components
+import { Box, Title, Text } from '@citizenlab/cl2-component-library';
+import Button from 'components/UI/Button';
 import PostManager, { TFilterMenu } from 'components/admin/PostManager';
-
-// resources
-import useProjectById from 'api/projects/useProjectById';
-import usePhases from 'api/phases/usePhases';
 import AnalysisBanner from './AnalysisBanner';
 
-const StyledDiv = styled.div`
-  margin-bottom: 30px;
-`;
+// hooks
+import useProjectById from 'api/projects/useProjectById';
+import usePhases from 'api/phases/usePhases';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+// styling
+import { colors } from 'utils/styleUtils';
+
+const defaultTimelineProjectVisibleFilterMenu = 'phases';
+const defaultContinuousProjectVisibleFilterMenu = 'statuses';
+const timelineProjectVisibleFilterMenus: TFilterMenu[] = [
+  defaultTimelineProjectVisibleFilterMenu,
+  'statuses',
+  'topics',
+];
+const continuousProjectVisibleFilterMenus: TFilterMenu[] = [
+  defaultContinuousProjectVisibleFilterMenu,
+  'topics',
+];
 
 const AdminProjectIdeas = () => {
+  const importPrintedFormsEnabled = useFeatureFlag({
+    name: 'import_printed_forms',
+  });
   const { projectId } = useParams() as { projectId: string };
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
 
-  const defaultTimelineProjectVisibleFilterMenu = 'phases';
-  const defaultContinuousProjectVisibleFilterMenu = 'statuses';
-  const timelineProjectVisibleFilterMenus: TFilterMenu[] = [
-    defaultTimelineProjectVisibleFilterMenu,
-    'statuses',
-    'topics',
-  ];
-  const continuousProjectVisibleFilterMenus: TFilterMenu[] = [
-    defaultContinuousProjectVisibleFilterMenu,
-    'topics',
-  ];
-
   return (
     <>
-      <StyledDiv>
-        <SectionTitle>
-          <FormattedMessage {...messages.titleInputManager} />
-        </SectionTitle>
-        <SectionDescription>
+      <Box mb="30px">
+        <Box display="flex" flexDirection="row" justifyContent="space-between">
+          <Title variant="h2" color="primary" fontWeight="normal" mt="16px">
+            <FormattedMessage {...messages.titleInputManager} />
+          </Title>
+          {importPrintedFormsEnabled && (
+            <Button
+              width="auto"
+              bgColor={colors.primary}
+              linkTo={`/admin/projects/${projectId}/offline-inputs`}
+              icon="page"
+            >
+              <FormattedMessage {...ownMessages.addOfflineInputs} />
+            </Button>
+          )}
+        </Box>
+        <Text color="textSecondary">
           <FormattedMessage {...messages.subtitleInputManager} />
-        </SectionDescription>
-      </StyledDiv>
+        </Text>
+      </Box>
 
       <AnalysisBanner />
+
       {project && (
         <PostManager
           type="ProjectIdeas"

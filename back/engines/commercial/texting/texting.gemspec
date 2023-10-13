@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.version     = Texting::VERSION
   s.summary     = 'Texting users via SMS'
   s.authors     = ['CitizenLab']
-  s.licenses    = ['CitizenLab Commercial License V2']
+  s.licenses    = [Gem::Licenses::NONSTANDARD] # ['CitizenLab Commercial License V2']
   s.files = Dir['{app,config,db,lib}/**/*']
 
   s.add_dependency 'rails', '~> 7.0'

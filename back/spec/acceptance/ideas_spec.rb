@@ -1187,6 +1187,44 @@ resource 'Ideas' do
             end
           end
 
+          describe 'draft ideas' do
+            before { @idea.update! publication_status: 'draft' }
+
+            context 'Editing an idea' do
+              let(:title_multiloc) { { 'en' => 'Changed the title' } }
+
+              example_request 'Can edit a draft idea (as an admin)' do
+                assert_status 200
+                expect(response_data[:attributes][:publication_status]).to eq 'draft'
+                expect(response_data[:attributes][:title_multiloc][:en]).to eq 'Changed the title'
+              end
+            end
+
+            context 'Publishing an idea' do
+              let(:publication_status) { 'published' }
+
+              example_request 'Can change an idea from draft to published (as an admin)' do
+                assert_status 200
+                expect(response_data[:attributes][:publication_status]).to eq 'published'
+              end
+            end
+
+            context 'Publishing an imported native survey response' do
+              let(:project) { create(:continuous_native_survey_project) }
+              let(:idea) { create(:native_survey_response, project: project, publication_status: 'draft') }
+
+              let(:id) { idea.id }
+              let(:publication_status) { 'published' }
+
+              before { idea.update! idea_import: create(:idea_import, idea: idea) }
+
+              example_request 'Can change an idea from draft to published (as an admin)' do
+                assert_status 200
+                expect(response_data[:attributes][:publication_status]).to eq 'published'
+              end
+            end
+          end
+
           describe 'phase_ids' do
             let(:phase) { @project.phases.first }
 

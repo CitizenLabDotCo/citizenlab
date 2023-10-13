@@ -24,10 +24,19 @@ module IdFranceconnect
       {
         first_name: auth.info['first_name'],
         email: auth.info['email'],
-        last_name: auth.info['last_name'].titleize, # FC returns last names in ALL CAPITALS
+        last_name: auth.info['last_name']&.titleize, # FC returns last names in ALL CAPITALS
         locale: AppConfiguration.instance.closest_locale_to('fr-FR'),
         remote_avatar_url: auth.info['image']
-      }
+      }.tap do |attrs|
+        custom_fields = CustomField.with_resource_type('User').enabled.pluck(:code)
+        if custom_fields.include?('birthyear')
+          birthdate = auth.extra.raw_info.birthdate
+          attrs[:birthyear] = Date.parse(birthdate).year if birthdate.present?
+        end
+        if custom_fields.include?('gender')
+          attrs[:gender] = auth.extra.raw_info.gender
+        end
+      end
     end
 
     # @param [AppConfiguration] configuration
@@ -35,7 +44,7 @@ module IdFranceconnect
       return unless configuration.feature_activated?('franceconnect_login')
 
       env['omniauth.strategy'].options.merge!(
-        scope: %i[openid given_name family_name email],
+        scope: %w[openid] + configuration.settings('franceconnect_login', 'scope'),
         response_type: :code,
         state: true, # required by France connect
         nonce: true, # required by France connect
@@ -87,7 +96,7 @@ module IdFranceconnect
     end
 
     def updateable_user_attrs
-      %i[first_name last_name birthyear remote_avatar_url]
+      %i[first_name last_name birthyear gender remote_avatar_url]
     end
 
     # To make this method return false and so to reproduce merging error, you need:
@@ -95,10 +104,11 @@ module IdFranceconnect
     #    https://github.com/france-connect/identity-provider-example/blob/master/database.csv
     #    (in FranceConnect window you can choose "Demonstration eIDAS substantiel").
     # 2. Change user's name and remove all connections with FranceConnect like that
-    #    user = User.find_by(email: 'wossewodda-3728@yopmail.com'); user.update!(first_name: 'A', last_name: 'B', password: 'democracy2.0', verified: false); user.identities.destroy_all; user.verifications.destroy_all
+    #    User.find_by(email: 'wossewodda-3728@yopmail.com').update!(first_name: 'A', last_name: 'B', password: 'democracy2.0', verified: false, identities: [], verifications: [])
     # 3. If you try to verify or sign in or sign up with FranceConnect again, you'll see the merging error.
     #
     def can_merge?(user, user_attrs, sso_verification_param_value)
+      # We always merge during verification (not authentication) regardless of other attributes.
       return true if sso_verification_param_value == SSO_VERIFICATION_PARAM_VALUE
 
       matcher = IdFranceconnect::AttributesMatcher

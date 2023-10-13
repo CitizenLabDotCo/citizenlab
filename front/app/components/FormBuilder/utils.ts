@@ -28,7 +28,6 @@ export type FormBuilderConfig = {
   displayBuiltInFields: boolean;
   showStatusBadge: boolean;
   isLogicEnabled: boolean;
-  isEditPermittedAfterSubmissions: boolean;
   alwaysShowCustomFields: boolean;
   isFormPhaseSpecific: boolean;
 
@@ -39,16 +38,8 @@ export type FormBuilderConfig = {
 
   goBackUrl?: string;
   groupingType: 'page' | 'section';
-};
 
-export const getUpdatedConfiguration = (
-  config: FormBuilderConfig,
-  formCustomFields?: IFlatCustomField[] | undefined | Error,
-  goBackUrl?: string | undefined
-) => {
-  config.goBackUrl = goBackUrl;
-  config.formCustomFields = formCustomFields;
-  return config;
+  onDownloadPDF?: () => void;
 };
 
 export const getIsPostingEnabled = (

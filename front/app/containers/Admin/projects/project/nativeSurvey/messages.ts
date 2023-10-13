@@ -29,6 +29,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.downloadResults2',
     defaultMessage: 'Download survey results',
   },
+  downloadSurvey: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.downloadSurvey',
+    defaultMessage: 'Download survey as pdf',
+  },
   informationText2: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.informationText2',
     defaultMessage:
@@ -47,7 +51,6 @@ export default defineMessages({
     defaultMessage:
       '{percentage}% ({choiceCount, plural, no {# choices} one {# choice} other {# choices}})',
   },
-  // DeleteFormResultsNotice
   openForResponses2: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.openForResponses2',
     defaultMessage: 'Open for responses',
@@ -67,6 +70,11 @@ export default defineMessages({
   viewSurveyText2: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.viewSurveyText2',
     defaultMessage: 'View survey',
+  },
+  existingSubmissionsWarning: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.existingSubmissionsWarning',
+    defaultMessage:
+      'Submissions to this survey have started to come in. Changes to the survey may result in data loss and incomplete data in the exported files.',
   },
   deleteResultsConfirmationQuestion2: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResultsConfirmation2',
@@ -143,5 +151,9 @@ export default defineMessages({
   text2: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.text2',
     defaultMessage: 'Short answer',
+  },
+  downloadExcelTemplate: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate',
+    defaultMessage: 'Download an Excel template',
   },
 });
