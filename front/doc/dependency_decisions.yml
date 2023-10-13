@@ -131,18 +131,6 @@
       - '^17.0.0'
     :when: 2021-09-29 08:40:43.025406500 Z
 - - :license
-  - react-dom
-  - BSD-3-Clause
-  - :who:
-    :why:
-    :versions:
-      - '^0.14'
-      - '^15'
-      - '^16'
-      - '^16.14.0'
-      - '^17.0.0'
-    :when: 2021-09-29 11:40:43.025406500 +03:00
-- - :license
   - react-with-direction
   - MIT
   - :who:
@@ -192,3 +180,10 @@
     :why:
     :versions: []
     :when: 2023-10-13 13:30:53.088969000 Z
+- - :license
+  - react-dom
+  - MIT
+  - :who:
+    :why:
+    :versions: []
+    :when: 2023-10-13 14:01:10.806750000 Z
