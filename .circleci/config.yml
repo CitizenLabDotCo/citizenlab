@@ -555,6 +555,7 @@ jobs:
       - run:
           command: |
             cd citizenlab/front
+            npx playwright install
             npm run storybook:build
       - run:
           command: |
