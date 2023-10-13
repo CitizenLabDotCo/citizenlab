@@ -553,7 +553,7 @@ jobs:
 
   front-snapshot-tests:
     docker:
-      - image: mcr.microsoft.com/playwright:v1.39.0-jammy
+      - image: node:16.15.0-bullseye
     resource_class: medium+
     working_directory: ~/
     parallelism: 4
