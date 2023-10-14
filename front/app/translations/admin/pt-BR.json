@@ -70,7 +70,7 @@
   "app.components.UserSearch.noOptions": "Sem opções",
   "app.components.UserSearch.searchUsers": "Buscar usuários",
   "app.components.admin.ContentBuilder.Widgets.Title.title": "Assunto",
-  "app.components.admin.DateTimePicker": "Tempo",
+  "app.components.admin.DateTimePicker.time": "Tempo",
   "app.components.admin.Graphs": "Não há dados disponíveis com os filtros atuais.",
   "app.components.admin.Graphs.noDataShort": "Não há dados disponíveis.",
   "app.components.admin.GraphsCards.CommentsByTime.hooks.useCommentsByTime.timeSeries": "Comentários ao longo do tempo",
