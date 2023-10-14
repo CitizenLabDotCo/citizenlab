@@ -70,7 +70,7 @@
   "app.components.UserSearch.noOptions": "Sense opcions",
   "app.components.UserSearch.searchUsers": "Escriviu per cercar usuaris...",
   "app.components.admin.ContentBuilder.Widgets.Title.title": "Title",
-  "app.components.admin.DateTimePicker": "Temps",
+  "app.components.admin.DateTimePicker.time": "Temps",
   "app.components.admin.Graphs": "No hi ha dades disponibles amb els filtres actuals.",
   "app.components.admin.Graphs.noDataShort": "No hi ha dades disponibles.",
   "app.components.admin.GraphsCards.CommentsByTime.hooks.useCommentsByTime.timeSeries": "Comments over time",
