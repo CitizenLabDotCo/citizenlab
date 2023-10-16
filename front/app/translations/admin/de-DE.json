@@ -675,7 +675,7 @@
   "app.containers.Admin.Users.userBlockModal.unblockActionConfirmation": "Ja, ich möchte diese*n Nutzer*in entsperren",
   "app.containers.Admin.Users.userDeletionConfirmation": "Diesen User dauerhaft entfernen?",
   "app.containers.Admin.Users.userDeletionFailed": "Beim Löschen des Users ist ein Fehler aufgetreten, bitte versuchen Sie es erneut.",
-  "app.containers.Admin.Users.userDeletionProposalVotes": "Dadurch werden auch alle Stimmen dieses Benutzers zu Vorschlägen, die noch zur Abstimmung stehen, gelöscht.",
+  "app.containers.Admin.Users.userDeletionProposalVotes": "Dadurch werden auch alle Stimmen dieses Nutzers oder dieser Nutzerin zu Vorschlägen, die noch zur Abstimmung stehen, gelöscht.",
   "app.containers.Admin.Users.userExportFileName": "user_export",
   "app.containers.Admin.Users.userInsights": "Nutzer*innen-Einblicke",
   "app.containers.Admin.Users.youCantDeleteYourself": "Sie können Ihr eigenes Konto nicht über die Benutzerverwaltungsseite löschen",
