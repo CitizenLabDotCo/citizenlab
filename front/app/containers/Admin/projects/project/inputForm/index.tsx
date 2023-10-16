@@ -16,6 +16,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { useParams } from 'react-router-dom';
 import usePhases from 'api/phases/usePhases';
 import useLocale from 'hooks/useLocale';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // utils
 import { getCurrentPhase } from 'api/phases/utils';
@@ -28,7 +29,6 @@ import { ParticipationMethod } from 'utils/participationContexts';
 import { requestBlob } from 'utils/requestBlob';
 import { API_PATH } from 'containers/App/constants';
 import { saveAs } from 'file-saver';
-import useFeatureFlag from '../../../../../hooks/useFeatureFlag';
 
 export const IdeaForm = () => {
   const printedFormsEnabled = useFeatureFlag({

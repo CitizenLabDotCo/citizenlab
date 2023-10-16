@@ -4,6 +4,7 @@ import React from 'react';
 import useProjectById from 'api/projects/useProjectById';
 import useLocalize from 'hooks/useLocalize';
 import usePhase from 'api/phases/usePhase';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // components
 import GoBackButton from 'components/UI/GoBackButton';
@@ -34,7 +35,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 // routing
 import clHistory from 'utils/cl-router/history';
 import { useParams } from 'react-router-dom';
-import useFeatureFlag from '../../../../hooks/useFeatureFlag';
 
 const StyledStatusLabel = styled(StatusLabel)`
   height: 20px;
