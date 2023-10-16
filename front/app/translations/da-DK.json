@@ -1481,6 +1481,7 @@
   "app.containers.SpamReport.otherReasonPlaceholder": "Beskrivelse",
   "app.containers.SpamReport.wrong_content": "Dette hører ikke hjemme her",
   "app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle": "Fjern profilbillede",
+  "app.containers.UsersEditPage.activeProposalVotesWillBeDeleted": "Dine stemmer på forslag, der stadig er åbne for afstemning, vil blive slettet. Stemmer på forslag, hvor afstemningsperioden er afsluttet, vil ikke blive slettet.",
   "app.containers.UsersEditPage.addPassword": "Tilføj adgangskode",
   "app.containers.UsersEditPage.becomeVerifiedSubtitle": "For at deltage i projekter for verificerede borgere.",
   "app.containers.UsersEditPage.becomeVerifiedTitle": "Bliv en verificeret borger",
