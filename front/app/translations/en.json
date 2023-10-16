@@ -1698,6 +1698,7 @@
   "app.errors.password_blank": "This cannot be empty",
   "app.errors.password_invalid": "Please check your current password again.",
   "app.errors.password_too_short": "The password must be at least 8 characters long",
+  "app.errors.resending_code_failed": "Something went wrong while sending out the confirmation code.",
   "app.errors.slug_taken": "This project URL already exists. Please change the project slug to something else.",
   "app.errors.tag_name_taken": "A tag with this name already exists",
   "app.errors.title_multiloc_blank": "The title cannot be empty.",
