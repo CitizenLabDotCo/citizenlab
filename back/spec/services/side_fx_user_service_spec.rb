@@ -51,23 +51,29 @@ describe SideFxUserService do
 
   describe 'before_destroy' do
     before do
-      @proposed_status = create(:initiative_status_proposed)
-      @threshold_reached_status = create(:initiative_status_threshold_reached)
-      @expired_status = create(:initiative_status_expired)
+      @status_review_pending = create(:initiative_status_review_pending)
+      @status_changes_requested = create(:initiative_status_changes_requested)
+      @status_proposed = create(:initiative_status_proposed)
+      @status_threshold_reached = create(:initiative_status_threshold_reached)
+      @status_expired = create(:initiative_status_expired)
     end
 
-    it "destroys the user's reactions to initiatives in proposed status" do
+    it "destroys the user's reactions to initiatives in a voteable status" do
       user = create(:user)
-      initiative1 = create(:initiative, initiative_status: @proposed_status)
-      initiative2 = create(:initiative, initiative_status: @threshold_reached_status)
-      initiative3 = create(:initiative, initiative_status: @expired_status)
+      initiative1 = create(:initiative, initiative_status: @status_review_pending)
+      initiative2 = create(:initiative, initiative_status: @status_changes_requested)
+      initiative3 = create(:initiative, initiative_status: @status_proposed)
+      initiative4 = create(:initiative, initiative_status: @status_threshold_reached)
+      initiative5 = create(:initiative, initiative_status: @status_expired)
       _reaction1 = create(:reaction, user: user, reactable: initiative1)
-      reaction2 = create(:reaction, user: user, reactable: initiative2)
-      reaction3 = create(:reaction, user: user, reactable: initiative3)
+      _reaction2 = create(:reaction, user: user, reactable: initiative2)
+      _reaction3 = create(:reaction, user: user, reactable: initiative3)
+      reaction4 = create(:reaction, user: user, reactable: initiative4)
+      reaction5 = create(:reaction, user: user, reactable: initiative5)
 
       service.before_destroy(user, user)
 
-      expect(user.reactions.pluck(:id)).to match_array [reaction2.id, reaction3.id]
+      expect(user.reactions.pluck(:id)).to match_array [reaction4.id, reaction5.id]
     end
   end
 end
