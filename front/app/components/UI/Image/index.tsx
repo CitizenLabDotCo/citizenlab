@@ -1,9 +1,6 @@
 // Libraries
 import React, { PureComponent } from 'react';
 
-// Lazy Images observer
-import Observer from '@researchgate/react-intersection-observer';
-
 // Stylings
 import styled, { css } from 'styled-components';
 import { colors } from 'utils/styleUtils';
@@ -30,13 +27,6 @@ const ImageElement = styled.img<{
       transition: opacity ${props.fadeInDuration || 130}ms ease-out;
       opacity: ${props.loaded ? 1 : 0};
     `};
-`;
-
-const Fallback = styled.div<{ src: string | undefined }>`
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
-  background-image: url(${({ src }) => src});
 `;
 
 interface Props {
@@ -73,16 +63,6 @@ export default class Image extends PureComponent<Props, State> {
     };
   }
 
-  handleIntersection = (
-    event: IntersectionObserverEntry,
-    unobserve: () => void
-  ) => {
-    if (event.isIntersecting) {
-      this.setState({ visible: true });
-      unobserve();
-    }
-  };
-
   handleImageLoaded = () => {
     this.setState({ loaded: true });
   };
@@ -102,7 +82,7 @@ export default class Image extends PureComponent<Props, State> {
     const { isLazy } = this.props;
     const { visible, loaded } = this.state;
 
-    let image = (
+    return (
       <ImageElement
         src={visible ? src : undefined}
         alt={alt}
@@ -115,21 +95,8 @@ export default class Image extends PureComponent<Props, State> {
         onLoad={this.handleImageLoaded}
         id={id}
         className={className || ''}
+        loading={isLazy ? 'lazy' : 'eager'}
       />
     );
-
-    if (cover) {
-      image = <Fallback src={src} className={className} />;
-    }
-
-    if (isLazy) {
-      return (
-        <Observer rootMargin="200px" onChange={this.handleIntersection}>
-          {image}
-        </Observer>
-      );
-    }
-
-    return image;
   }
 }
