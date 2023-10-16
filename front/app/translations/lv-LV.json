@@ -1481,6 +1481,7 @@
   "app.containers.SpamReport.otherReasonPlaceholder": "Apraksts",
   "app.containers.SpamReport.wrong_content": "Tas nav saistīts",
   "app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle": "Noņemt profila attēlu",
+  "app.containers.UsersEditPage.activeProposalVotesWillBeDeleted": "Jūsu balsis par priekšlikumiem, par kuriem vēl ir iespējams balsot, tiks dzēstas. Balsis par priekšlikumiem, par kuriem balsošanas periods ir beidzies, netiks dzēstas.",
   "app.containers.UsersEditPage.addPassword": "Pievienot paroli",
   "app.containers.UsersEditPage.becomeVerifiedSubtitle": "Piedalīties projektos, kam nepieciešama verifikācija.",
   "app.containers.UsersEditPage.becomeVerifiedTitle": "Pārbaudiet savu identitāti",
