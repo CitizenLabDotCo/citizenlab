@@ -29,6 +29,7 @@ class ProjectCopyService < TemplateService
     timeline_start_at: nil,
     new_publication_status: nil
   )
+    include_ideas = false if local_copy
     @local_copy = local_copy
     @project = project
     @template = { 'models' => {} }
@@ -56,6 +57,7 @@ class ProjectCopyService < TemplateService
     unless local_copy
       @template['models']['event']      = yml_events shift_timestamps: shift_timestamps
       @template['models']['event_file'] = yml_event_files shift_timestamps: shift_timestamps
+      @template['models']['event_image'] = yml_event_images shift_timestamps: shift_timestamps
     end
 
     if include_ideas
@@ -69,7 +71,9 @@ class ProjectCopyService < TemplateService
       @template['models']['comment']             = yml_comments shift_timestamps: shift_timestamps
       @template['models']['official_feedback']   = yml_official_feedback shift_timestamps: shift_timestamps
       @template['models']['reaction'] = yml_reactions shift_timestamps: shift_timestamps
-      @template['models']['followers'] = yml_followers shift_timestamps: shift_timestamps
+      @template['models']['follower'] = yml_followers shift_timestamps: shift_timestamps
+      @template['models']['volunteering/volunteer'] = yml_volunteers shift_timestamps: shift_timestamps
+      @template['models']['events/attendance'] = yml_attendances shift_timestamps: shift_timestamps
     end
 
     @template
@@ -442,19 +446,21 @@ class ProjectCopyService < TemplateService
     user_ids += Basket.where(participation_context_id: participation_context_ids).pluck(:user_id)
     user_ids += OfficialFeedback.where(post_id: idea_ids, post_type: 'Idea').pluck(:user_id)
     user_ids += Follower.where(followable_id: ([@project.id] + idea_ids)).pluck(:user_id)
+    user_ids += Volunteering::Volunteer.where(cause: Volunteering::Cause.where(participation_context_id: participation_context_ids)).pluck :user_id
+    user_ids += Events::Attendance.where(event: @project.events).pluck :attendee_id
 
     User.where(id: user_ids.uniq).map do |user|
       yml_user = if anonymize_users
         service.anonymized_attributes AppConfiguration.instance.settings('core', 'locales'), user: user
       else
-        yml_user_from user
+        yml_user_from user, shift_timestamps
       end
       store_ref yml_user, user.id, :user
       yml_user
     end
   end
 
-  def yml_user_from(user)
+  def yml_user_from(user, shift_timestamps)
     {
       'email' => user.email,
       'password_digest' => user.password_digest,
@@ -471,7 +477,8 @@ class ProjectCopyService < TemplateService
       'verified' => user.verified,
       'block_start_at' => user.block_start_at,
       'block_end_at' => user.block_end_at,
-      'block_reason' => user.block_reason
+      'block_reason' => user.block_reason,
+      'unique_code' => user.unique_code
     }.tap do |yml_user|
       unless yml_user['password_digest']
         yml_user['password'] = SecureRandom.urlsafe_base64 32
@@ -501,9 +508,14 @@ class ProjectCopyService < TemplateService
         'title_multiloc' => event.title_multiloc,
         'description_multiloc' => event.description_multiloc,
         'location_multiloc' => event.location_multiloc,
+        'location_point' => event.location_point_geojson,
         'online_link' => event.online_link,
         'start_at' => shift_timestamp(event.start_at, shift_timestamps)&.iso8601,
         'end_at' => shift_timestamp(event.end_at, shift_timestamps)&.iso8601,
+        'address_1' => event.address_1,
+        'address_2_multiloc' => event.address_2_multiloc,
+        'using_url' => event.using_url,
+        'attend_button_multiloc' => event.attend_button_multiloc,
         'created_at' => shift_timestamp(event.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(event.updated_at, shift_timestamps)&.iso8601,
         'text_images_attributes' => event.text_images.map do |text_image|
@@ -530,6 +542,18 @@ class ProjectCopyService < TemplateService
         'remote_file_url' => e.file_url,
         'created_at' => shift_timestamp(e.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(e.updated_at, shift_timestamps)&.iso8601
+      }
+    end
+  end
+
+  def yml_event_images(shift_timestamps: 0)
+    @project.events.flat_map(&:event_images).map do |image|
+      {
+        'event_ref' => lookup_ref(image.event_id, :event),
+        'remote_image_url' => image.image_url,
+        'ordering' => image.ordering,
+        'created_at' => shift_timestamp(image.created_at, shift_timestamps)&.iso8601,
+        'updated_at' => shift_timestamp(image.updated_at, shift_timestamps)&.iso8601
       }
     end
   end
@@ -695,6 +719,29 @@ class ProjectCopyService < TemplateService
         'user_ref' => lookup_ref(follower.user_id, :user),
         'created_at' => shift_timestamp(follower.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(follower.updated_at, shift_timestamps)&.iso8601
+      }
+    end
+  end
+
+  def yml_volunteers(shift_timestamps: 0)
+    participation_context_ids = [@project.id] + @project.phases.ids
+    Volunteering::Volunteer.where(cause: Volunteering::Cause.where(participation_context_id: participation_context_ids)).map do |volunteer|
+      {
+        'cause_ref' => lookup_ref(volunteer.cause_id, :volunteering_cause),
+        'user_ref' => lookup_ref(volunteer.user_id, :user),
+        'created_at' => shift_timestamp(volunteer.created_at, shift_timestamps)&.iso8601,
+        'updated_at' => shift_timestamp(volunteer.updated_at, shift_timestamps)&.iso8601
+      }
+    end
+  end
+
+  def yml_attendances(shift_timestamps: 0)
+    @project.events.flat_map(&:attendances).map do |attendance|
+      {
+        'event_ref' => lookup_ref(attendance.event_id, :event),
+        'attendee_ref' => lookup_ref(attendance.attendee_id, :user),
+        'created_at' => shift_timestamp(attendance.created_at, shift_timestamps)&.iso8601,
+        'updated_at' => shift_timestamp(attendance.updated_at, shift_timestamps)&.iso8601
       }
     end
   end

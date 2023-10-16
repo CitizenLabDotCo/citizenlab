@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_27_135924) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_03_095622) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -503,10 +503,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_27_135924) do
     t.geography "location_point", limit: {:srid=>4326, :type=>"st_point", :geographic=>true}
     t.string "address_1"
     t.integer "attendees_count", default: 0, null: false
-    t.jsonb "address_2_multiloc", default: {}, null: false
-    t.string "using_url"
-    t.jsonb "attend_button_multiloc", default: {}, null: false
     t.string "online_link"
+    t.jsonb "address_2_multiloc", default: {}, null: false
+    t.jsonb "attend_button_multiloc", default: {}, null: false
+    t.string "using_url"
     t.index ["location_point"], name: "index_events_on_location_point", using: :gist
     t.index ["project_id"], name: "index_events_on_project_id"
   end
@@ -518,9 +518,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_27_135924) do
     t.datetime "updated_at", null: false
     t.index ["attendee_id", "event_id"], name: "index_events_attendances_on_attendee_id_and_event_id", unique: true
     t.index ["attendee_id"], name: "index_events_attendances_on_attendee_id"
-    t.index ["created_at"], name: "index_events_attendances_on_created_at"
     t.index ["event_id"], name: "index_events_attendances_on_event_id"
-    t.index ["updated_at"], name: "index_events_attendances_on_updated_at"
   end
 
   create_table "experiments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -630,6 +628,36 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_27_135924) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.index ["idea_id"], name: "index_idea_images_on_idea_id"
+  end
+
+  create_table "idea_import_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "project_id"
+    t.string "file"
+    t.string "name"
+    t.string "import_type"
+    t.integer "num_pages", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.uuid "parent_id"
+    t.index ["parent_id"], name: "index_idea_import_files_on_parent_id"
+    t.index ["project_id"], name: "index_idea_import_files_on_project_id"
+  end
+
+  create_table "idea_imports", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "idea_id"
+    t.uuid "import_user_id"
+    t.uuid "file_id"
+    t.boolean "user_created", default: false
+    t.datetime "approved_at", precision: nil
+    t.text "page_range", default: [], array: true
+    t.string "locale"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "user_consent", default: false, null: false
+    t.jsonb "content_changes", default: {}
+    t.index ["file_id"], name: "index_idea_imports_on_file_id"
+    t.index ["idea_id"], name: "index_idea_imports_on_idea_id"
+    t.index ["import_user_id"], name: "index_idea_imports_on_import_user_id"
   end
 
   create_table "idea_statuses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1554,11 +1582,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_27_135924) do
     t.datetime "block_end_at", precision: nil
     t.string "new_email"
     t.integer "followings_count", default: 0, null: false
+    t.string "unique_code"
     t.jsonb "onboarding", default: {}, null: false
     t.index "lower((email)::text)", name: "users_unique_lower_email_idx", unique: true
     t.index ["email"], name: "index_users_on_email"
     t.index ["registration_completed_at"], name: "index_users_on_registration_completed_at"
     t.index ["slug"], name: "index_users_on_slug", unique: true
+    t.index ["unique_code"], name: "index_users_on_unique_code", unique: true
   end
 
   create_table "verification_verifications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1646,6 +1676,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_27_135924) do
   add_foreign_key "groups_projects", "projects"
   add_foreign_key "idea_files", "ideas"
   add_foreign_key "idea_images", "ideas"
+  add_foreign_key "idea_import_files", "idea_import_files", column: "parent_id"
+  add_foreign_key "idea_import_files", "projects"
+  add_foreign_key "idea_imports", "idea_import_files", column: "file_id"
+  add_foreign_key "idea_imports", "ideas"
+  add_foreign_key "idea_imports", "users", column: "import_user_id"
   add_foreign_key "ideas", "idea_statuses"
   add_foreign_key "ideas", "phases", column: "creation_phase_id"
   add_foreign_key "ideas", "projects"

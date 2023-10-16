@@ -122,6 +122,14 @@ module ParticipationMethod
       true
     end
 
+    def supports_idea_form?
+      false
+    end
+
+    def supports_survey_form?
+      false
+    end
+
     def include_data_in_email?
       true
     end

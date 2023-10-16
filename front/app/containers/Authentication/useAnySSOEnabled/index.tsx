@@ -15,13 +15,18 @@ export default function useAnySSOEnabled() {
     name: 'clave_unica_login',
   });
 
+  const hoplrLoginEnabled = useFeatureFlag({
+    name: 'hoplr_login',
+  });
+
   const anySSOEnabled =
     googleLoginEnabled ||
     facebookLoginEnabled ||
     azureAdLoginEnabled ||
     franceconnectLoginEnabled ||
     viennaCitizenLoginEnabled ||
-    claveUnicaLoginEnabled;
+    claveUnicaLoginEnabled ||
+    hoplrLoginEnabled;
 
   return anySSOEnabled;
 }
