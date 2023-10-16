@@ -56,6 +56,8 @@ describe SideFxUserService do
       @status_proposed = create(:initiative_status_proposed)
       @status_threshold_reached = create(:initiative_status_threshold_reached)
       @status_expired = create(:initiative_status_expired)
+      @status_answered = create(:initiative_status_answered)
+      @status_ineligible = create(:initiative_status_ineligible)
     end
 
     it "destroys the user's reactions to initiatives in a voteable status" do
@@ -65,15 +67,19 @@ describe SideFxUserService do
       initiative3 = create(:initiative, initiative_status: @status_proposed)
       initiative4 = create(:initiative, initiative_status: @status_threshold_reached)
       initiative5 = create(:initiative, initiative_status: @status_expired)
+      initiative6 = create(:initiative, initiative_status: @status_answered)
+      initiative7 = create(:initiative, initiative_status: @status_ineligible)
       _reaction1 = create(:reaction, user: user, reactable: initiative1)
       _reaction2 = create(:reaction, user: user, reactable: initiative2)
       _reaction3 = create(:reaction, user: user, reactable: initiative3)
       reaction4 = create(:reaction, user: user, reactable: initiative4)
       reaction5 = create(:reaction, user: user, reactable: initiative5)
+      reaction6 = create(:reaction, user: user, reactable: initiative6)
+      reaction7 = create(:reaction, user: user, reactable: initiative7)
 
       service.before_destroy(user, user)
 
-      expect(user.reactions.pluck(:id)).to match_array [reaction4.id, reaction5.id]
+      expect(user.reactions.pluck(:id)).to match_array [reaction4.id, reaction5.id, reaction6.id, reaction7.id]
     end
   end
 end
