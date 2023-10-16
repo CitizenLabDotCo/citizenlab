@@ -14,7 +14,7 @@ Build storybook (if you haven't already):
 npm run storybook:build
 ```
 
-Pull image from docker hub (if you haven't already):
+Pull latest image from docker hub (if you haven't already):
 
 ```sh
 docker pull citizenlabdotco/cl2-devops-front-test
@@ -38,10 +38,10 @@ Go into the `cl2_front` folder (mounted volume of `./front`):
 cd cl2_front
 ```
 
-Serve storybook by running command and waiting a bit:
+Serve storybook by running the following command and wait a few seconds until the server is running:
 
 ```sh
-npm run storybook:serve &
+http-server -p 6006 ./storybook-static &
 ```
 
 Run snapshot tests:

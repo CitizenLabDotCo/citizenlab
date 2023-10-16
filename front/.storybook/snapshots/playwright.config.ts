@@ -5,7 +5,8 @@ const baseUrl = 'http://localhost:6006';
 const config: PlaywrightTestConfig = {
   testDir: './test-runner',
   outputDir: './test-results',
-  workers: process.env.CI === 'true' ? 1 : undefined,
+  // workers: process.env.CI === 'true' ? 1 : undefined,
+  workers: 1,
   timeout: 60 * 1000,
   use: {
     ignoreHTTPSErrors: true,
