@@ -1,3 +1,4 @@
+# TODO explain where this container is stored for the CI
 FROM node:16.15.0-bullseye
 LABEL maintainer="Luuc van der Zee" version="0.1.0"
 

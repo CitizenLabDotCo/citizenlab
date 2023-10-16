@@ -2,6 +2,8 @@ version: "3.8"
 
 services:
   snapshots:
-    container_name: snapshots
+    build:
+      context: .
+      dockerfile: ./Dockerfile
     volumes:
       - "./:/cl2_front"
