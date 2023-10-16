@@ -114,25 +114,6 @@ commands:
           cd ~
           rm -rf ~/$(echo $CIRCLE_REPOSITORY_URL | cut -d '/' -f 2 | cut -d '.' -f 1)
           git clone -b "$CIRCLE_BRANCH" "$CIRCLE_REPOSITORY_URL" --depth 1
-  shallow-clone-lfs:
-    steps:
-      - run: curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash
-      - run: apt-get install git-lfs
-      - run: git lfs install
-      - run: mkdir -p ~/.ssh
-      - run: ssh-keyscan github.com >> ~/.ssh/known_hosts
-      # Git clone can fail when the repository directory exists and is not empty. This
-      # can happen when e.g. setting the working_directory to ~/citizenlab/front because
-      # CircleCI will create those directories in this case. The solution is to remove
-      # the created directories before cloning. The name of the directory to remove is
-      # inferred from the repository URL (the part between the "/" and "." characters).
-      - run: |
-          cd ~
-          rm -rf ~/$(echo $CIRCLE_REPOSITORY_URL | cut -d '/' -f 2 | cut -d '.' -f 1)
-          git clone -b "$CIRCLE_BRANCH" "$CIRCLE_REPOSITORY_URL" --depth 1
-          cd citizenlab && git lfs pull
-          ls -a /root/citizenlab/front/.storybook/snapshots/test-runner/runner.spec.ts-snapshots
-          file /root/citizenlab/front/.storybook/snapshots/test-runner/runner.spec.ts-snapshots/example-button--primary-iPhone-13-Pro-linux.png
 
 jobs:
   trigger-workflows:
@@ -199,6 +180,21 @@ jobs:
       - run: bundle exec license_finder
 
   back-build-docker-image:
+    working_directory: ~/
+    docker:
+      - image: cimg/base:2021.03
+    steps:
+      - echo_pipeline_parameters
+      - shallow-clone
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run: |
+          docker build -t citizenlabdotco/back-ee:$CIRCLE_SHA1 --build-arg BUNDLE_JOBS=4 -f citizenlab/back/Dockerfile citizenlab/.
+      - run: |
+          docker login -u $DOCKER_USER -p $DOCKER_PASS
+          docker push citizenlabdotco/back-ee:$CIRCLE_SHA1
+
+  front-snapshots-build-docker-image:
     working_directory: ~/
     docker:
       - image: cimg/base:2021.03
@@ -557,12 +553,12 @@ jobs:
 
   front-snapshot-tests:
     docker:
-      - image: node:16.15.0-bullseye
+      - image: citizenlabdotco/cl2-devops-front-test
     resource_class: medium+
     working_directory: ~/
     parallelism: 4
     steps:
-      - shallow-clone-lfs
+      - shallow-clone
       - restore_cache:
           keys:
             - v2-npm-cache-{{ checksum "citizenlab/front/package-lock.json" }}
@@ -574,8 +570,7 @@ jobs:
       - run:
           command: |
             cd citizenlab/front
-            npx playwright install --with-deps
-            npm run storybook:build
+            storybook build
       - run:
           command: |
             cd citizenlab/front

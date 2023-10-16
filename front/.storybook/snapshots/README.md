@@ -2,56 +2,50 @@
 
 NOTE: all these commands should be run from the `./front` folder.
 
-## Running tests locally (hot reload)
+## Run tests automatically
 
-Run storybook:
+TODO
 
-```
-npm run storybook
-```
+## Run tests manually in the container (debugging)
 
-In a new tab, run the tests:
+Build storybook (if you haven't already):
 
-```
-npm run snapshots
-```
-
-## Running tests locally (storybook build)
-
-Build storybook:
-
-```
+```sh
 npm run storybook:build
 ```
 
-Serve storybook build:
+Pull image from docker hub (if you haven't already):
 
-```
-npm run storybook:serve
+```sh
+docker pull citizenlabdotco/cl2-devops-front-test
 ```
 
-In a new tab, run the tests:
+Run image:
 
+```sh
+docker compose -f .storybook/snapshots/docker-compose.yml up
 ```
+
+On another tab, enter container:
+
+```sh
+docker exec -it snapshots-snapshots-1 /bin/sh
+```
+
+Go into the `cl2_front` folder (mounted volume of `./front`):
+
+```sh
+cd cl2_front
+```
+
+Serve storybook by running command and waiting a bit:
+
+```sh
+npm run storybook:serve &
+```
+
+Run snapshot tests:
+
+```sh
 npm run snapshots
-```
-
-## Running tests locally (inside of container, for debugging purposes)
-
-Build the snapshot container:
-
-```
-docker build -t snapshots - < .storybook/snapshots/Dockerfile
-```
-
-Build storybook:
-
-```
-npm run storybook:build
-```
-
-Run the container:
-
-```
-# TODO can't figure out how to enter /bin/sh or whatever
 ```

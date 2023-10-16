@@ -20,6 +20,7 @@ const config: PlaywrightTestConfig = {
     },
     actionTimeout: 10 * 1000,
     navigationTimeout: 30 * 1000,
+    headless: true
   },
   retries: 1,
   // maxFailures: process.env.CI === 'true' ? 20 : undefined,
