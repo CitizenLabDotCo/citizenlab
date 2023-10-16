@@ -48,10 +48,6 @@ parameters:
     type: boolean
     default: false
 
-  update_snapshots:
-    type: boolean
-    default: false
-
 executors:
   cl2-back:
     parameters:
@@ -576,39 +572,6 @@ jobs:
           path: ./citizenlab/front/.storybook/snapshots/test-results
       - store_artifacts:
           path: ./citizenlab/front/.storybook/snapshots/test-report
-
-  front-snapshot-tests-update:
-    docker:
-      - image: citizenlabdotco/cl2-devops-front-test
-    resource_class: medium+
-    working_directory: ~/
-    parallelism: 4
-    steps:
-      - shallow-clone
-      - run: cd citizenlab && git lfs pull
-      - restore_cache:
-          keys:
-            - v2-npm-cache-{{ checksum "citizenlab/front/package-lock.json" }}
-      - run: cd citizenlab/front && npm ci
-      - save_cache:
-          paths:
-            - /root/.npm
-          key: v2-npm-cache-{{ checksum "citizenlab/front/package-lock.json" }}
-      - run:
-          command: |
-            cd citizenlab/front
-            npm run storybook:build
-      - run:
-          command: |
-            cd citizenlab/front
-            http-server -p 6006 ./storybook-static
-          background: true
-      - run:
-          name: Run tests
-          command: |
-            sleep 10 # wait for http-server to be ready
-            cd citizenlab/front
-            npm run snapshots:update
 
   front-trigger-deploy:
     resource_class: small
@@ -1320,8 +1283,3 @@ workflows:
             - "Canada"
             - "US West"
       #     - "UK"
-
-  update-snapshots:
-    when: << pipeline.parameters.update_snapshots >>
-    jobs:
-      - front-snapshot-tests-update   
