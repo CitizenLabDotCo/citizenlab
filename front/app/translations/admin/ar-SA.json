@@ -70,6 +70,7 @@
   "app.components.UserSearch.noOptions": "لا توجد خيارات",
   "app.components.UserSearch.searchUsers": "ابحث في المستخدمين",
   "app.components.admin.ContentBuilder.Widgets.Title.title": "العنوان",
+  "app.components.admin.DateTimePicker.time": "وقت",
   "app.components.admin.Graphs": "لا تتوفر أي بيانات باستخدام عوامل التصفية الحالية.",
   "app.components.admin.Graphs.noDataShort": "لا تتوفر أي بيانات.",
   "app.components.admin.GraphsCards.CommentsByTime.hooks.useCommentsByTime.timeSeries": "التعليقات بمرور الوقت",
