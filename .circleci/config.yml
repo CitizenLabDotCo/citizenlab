@@ -691,7 +691,6 @@ jobs:
           # we cannot access localhost:3000, so we call it from the container
           # https://discuss.circleci.com/t/cannot-communicate-with-docker-container/27253/2
           docker-compose run front curl --retry 2 --retry-delay 5 --retry-connrefused -v http://e2e.front:3000
-      - <<: *install-front-dependencies
       - run: |
           cd front
           TESTFILES=$(circleci tests glob "cypress/e2e/**/*.cy.ts" | circleci tests split  --split-by=timings)
