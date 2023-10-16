@@ -34,11 +34,11 @@ class SideFxUserService
 
   def before_destroy(user, _current_user)
     # Remove all reactions by the user on initiatives that are in the active voting phase.
+    # We do this before the user is destroyed, as we nullify user_id in reactions when a user is destroyed.
     # We use Initiative.voteable_status, as we include 'review_pending' and 'changes_requested' (as well as 'proposed')
     # in the voting phase, because the author's vote will be automatically added to proposals in these statuses.
     # Ensures 1 reaction per verified user per initiative, if verification (by a single method) is required to react,
     # since it should not be possible to create more than one account (concurrently) for the same verification.
-    # We do this before the user is destroyed, as we nullify user_id in reactions when a user is destroyed.
     proposed_initiatives_reactions = user.reactions.where(reactable_id: [Initiative.voteable_status])
     proposed_initiatives_reactions.destroy_all
   end
