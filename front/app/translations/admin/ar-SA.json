@@ -675,6 +675,7 @@
   "app.containers.Admin.Users.userBlockModal.unblockActionConfirmation": "نعم ، أريد إلغاء حظر هذا المستخدم",
   "app.containers.Admin.Users.userDeletionConfirmation": "أتود إزالة هذا المستخدم نهائيًا؟",
   "app.containers.Admin.Users.userDeletionFailed": "حدث خطأ أثناء حذف هذا المستخدم، يُرجى المحاولة مجددًا.",
+  "app.containers.Admin.Users.userDeletionProposalVotes": "سيؤدي هذا أيضًا إلى حذف أي تصويتات أجراها هذا المستخدم على المقترحات التي لا تزال مفتوحة للتصويت.",
   "app.containers.Admin.Users.userExportFileName": "user_export",
   "app.containers.Admin.Users.userInsights": "رؤى المستخدم",
   "app.containers.Admin.Users.youCantDeleteYourself": "لا يمكنك حذف حسابك الخاص عبر صفحة المسؤول للمستخدمين",
