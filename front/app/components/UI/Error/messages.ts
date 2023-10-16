@@ -58,6 +58,11 @@ export default defineMessages({
     defaultMessage:
       "You've resent the confirmation code too many times. Please contact us to receive an invitation code instead.",
   },
+  resending_code_failed: {
+    id: 'app.errors.resending_code_failed',
+    defaultMessage:
+      'Something went wrong while sending out the confirmation code.',
+  },
   after_end_at: {
     id: 'app.errors.after_end_at',
     defaultMessage: 'The start date occurs after the end date',

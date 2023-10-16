@@ -104,8 +104,8 @@ class UserPolicy < ApplicationPolicy
   end
 
   def permitted_attributes
-    shared = [:first_name, :last_name, :password, :avatar, :locale, { onboarding: [:topics_and_areas], custom_field_values: allowed_custom_field_keys, bio_multiloc: CL2_SUPPORTED_LOCALES }]
-    shared.push :email if !AppConfiguration.instance.feature_activated?('user_confirmation')
+    shared = [:first_name, :last_name, :email, :password, :avatar, :locale, { onboarding: [:topics_and_areas], custom_field_values: allowed_custom_field_keys, bio_multiloc: CL2_SUPPORTED_LOCALES }]
+    # shared.push :email if !AppConfiguration.instance.feature_activated?('user_confirmation') && post_request?
     admin? ? shared + role_permitted_params : shared
   end
 
