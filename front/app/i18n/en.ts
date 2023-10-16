@@ -1,7 +1,8 @@
 import { formatTranslationMessages } from './';
+import { registerLocale } from 'react-datepicker';
+import enUS from 'date-fns/locale/en-US';
 
-// no need to call addLocaleData(enLocaleData) here because it happens by default in index.ts
-
+registerLocale('en', enUS);
 const enTranslationMessages = require('translations/en.json');
 const enAdminTranslationMessages = require('translations/admin/en.json');
 const translationMessages = formatTranslationMessages('en', {

@@ -145,8 +145,8 @@ const AdminProjectTimelineEdit = () => {
     startDate,
     endDate,
   }: {
-    startDate: Moment;
-    endDate: Moment;
+    startDate: Moment | null;
+    endDate: Moment | null;
   }) => {
     setSubmitState('enabled');
     setAttributeDiff({
@@ -392,12 +392,9 @@ const AdminProjectTimelineEdit = () => {
               <FormattedMessage {...messages.datesLabel} />
             </SubSectionTitle>
             <DateRangePicker
-              startDateId={'startDate'}
-              endDateId={'endDate'}
               startDate={startDate}
               endDate={endDate}
               onDatesChange={handleDateUpdate}
-              minimumNights={0}
             />
             <Error apiErrors={errors && errors.start_at} />
             <Error apiErrors={errors && errors.end_at} />
