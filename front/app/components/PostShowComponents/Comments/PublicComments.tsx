@@ -1,6 +1,5 @@
 // libraries
-import React, { useState, useCallback } from 'react';
-import Observer from '@researchgate/react-intersection-observer';
+import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
 // components
@@ -35,6 +34,7 @@ import CommentingIdeaDisabled from './CommentingIdeaDisabled';
 // utils
 import { isPage } from 'utils/helperUtils';
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
+import { useInView } from 'react-intersection-observer';
 
 const Header = styled(Box)`
   ${isRtl`
@@ -65,6 +65,16 @@ const PublicComments = ({
   className,
   allowAnonymousParticipation,
 }: Props) => {
+  const { ref } = useInView({
+    rootMargin: '3000px',
+    onChange: (inView) => {
+      if (inView) {
+        if (hasNextPage) {
+          fetchNextPage();
+        }
+      }
+    },
+  });
   const isSmallerThanPhone = useBreakpoint('phone');
   const initiativeId = postType === 'initiative' ? postId : undefined;
   const ideaId = postType === 'idea' ? postId : undefined;
@@ -94,16 +104,6 @@ const PublicComments = ({
   const { data: project } = useProjectById(projectId);
 
   const [posting, setPosting] = useState(false);
-
-  const handleIntersection = useCallback(
-    (event: IntersectionObserverEntry, unobserve: () => void) => {
-      if (event.isIntersecting && hasNextPage) {
-        fetchNextPage();
-        unobserve();
-      }
-    },
-    [fetchNextPage, hasNextPage]
-  );
 
   if (!post || !commentsList) return null;
 
@@ -183,11 +183,7 @@ const PublicComments = ({
         allowAnonymousParticipation={allowAnonymousParticipation}
       />
 
-      {hasNextPage && !isFetchingNextPage && (
-        <Observer onChange={handleIntersection} rootMargin="3000px">
-          <Box w="100%" />
-        </Observer>
-      )}
+      {hasNextPage && !isFetchingNextPage && <Box ref={ref} w="100%" />}
 
       {isFetchingNextPage && !posting && (
         <Box

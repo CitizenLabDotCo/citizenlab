@@ -1,6 +1,4 @@
 import React from 'react';
-import { adopt } from 'react-adopt';
-import { isString } from 'lodash-es';
 import styled from 'styled-components';
 
 // typings
@@ -8,9 +6,6 @@ import { IOption } from 'typings';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-
-// resources
-import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
 
 // components
 import { Select } from '@citizenlab/cl2-component-library';
@@ -22,28 +17,24 @@ import { useIntl } from 'utils/cl-intl';
 import useUpdateProject from 'api/projects/useUpdateProject';
 import useProjectById from 'api/projects/useProjectById';
 import { getFullName } from 'utils/textUtils';
+import useUsers from 'api/users/useUsers';
 
 const StyledSelect = styled(Select)`
   width: 300px;
 `;
 
-interface InputProps {
+interface Props {
   projectId: string;
 }
 
-interface DataProps {
-  adminsAndMods: GetUsersChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
-const IdeaAssignment = ({ adminsAndMods, projectId }: Props) => {
+const IdeaAssignment = ({ projectId }: Props) => {
   const { formatMessage } = useIntl();
   const { data: project } = useProjectById(projectId);
+  const { data: adminsAndMods } = useUsers({ can_moderate_project: projectId });
   const { mutate: updateProject } = useUpdateProject();
 
   const getOptions = () => {
-    const prospectAssignees = adminsAndMods.usersList;
+    const prospectAssignees = adminsAndMods?.data;
     let projectAssigneeOptions: IOption[] = [];
 
     if (!isNilOrError(prospectAssignees)) {
@@ -79,9 +70,8 @@ const IdeaAssignment = ({ adminsAndMods, projectId }: Props) => {
     const defaultAssigneeId =
       project.data.relationships?.default_assignee?.data?.id;
     // If defaultAssigneeValue is not a string, it's null, so we convert it to a string (see getoptions)
-    const defaultAssigneeValue = isString(defaultAssigneeId)
-      ? defaultAssigneeId
-      : 'unassigned';
+    const defaultAssigneeValue =
+      typeof defaultAssigneeId === 'string' ? defaultAssigneeId : 'unassigned';
 
     return (
       <StyledSelect
@@ -95,14 +85,4 @@ const IdeaAssignment = ({ adminsAndMods, projectId }: Props) => {
   return null;
 };
 
-const Data = adopt<DataProps, InputProps>({
-  adminsAndMods: ({ projectId, render }) => (
-    <GetUsers can_moderate_project={projectId}>{render}</GetUsers>
-  ),
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataprops) => <IdeaAssignment {...inputProps} {...dataprops} />}
-  </Data>
-);
+export default IdeaAssignment;

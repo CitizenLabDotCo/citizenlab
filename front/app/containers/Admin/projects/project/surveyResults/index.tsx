@@ -1,14 +1,8 @@
 // Libraries
 import React, { Fragment } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import { adopt } from 'react-adopt';
 import styled from 'styled-components';
-
-// Services / Data loading
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetFeatureFlag from 'resources/GetFeatureFlag';
-import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
+import useProjectById from 'api/projects/useProjectById';
 
 // Components
 import ExportSurveyButton from './ExportSurveyButton';
@@ -18,6 +12,9 @@ import { SectionTitle, SectionDescription } from 'components/admin/Section';
 // i18n
 import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import { useParams } from 'react-router-dom';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import usePhases from 'api/phases/usePhases';
 
 const Container = styled.div`
   display: flex;
@@ -25,34 +22,28 @@ const Container = styled.div`
   max-width: 500px;
 `;
 
-interface InputProps {}
+const SurveyResults = () => {
+  const { projectId } = useParams() as { projectId: string };
+  const surveys_enabled = useFeatureFlag({ name: 'surveys' });
+  const typeform_enabled = useFeatureFlag({ name: 'typeform_surveys' });
+  const { data: project } = useProjectById(projectId);
+  const { data: phases } = usePhases(projectId);
 
-interface DataProps {
-  project: GetProjectChildProps;
-  surveys_enabled: boolean | null;
-  typeform_enabled: boolean | null;
-  phases: GetPhasesChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
-class SurveyResults extends React.PureComponent<Props> {
-  renderButtons = () => {
-    const { project, surveys_enabled, typeform_enabled, phases } = this.props;
-    if (!isNilOrError(project) && surveys_enabled && typeform_enabled) {
+  const renderButtons = () => {
+    if (project && surveys_enabled && typeform_enabled) {
       if (
-        project.attributes.process_type === 'continuous' &&
-        project.attributes.participation_method === 'survey' &&
-        project.attributes.survey_service === 'typeform'
+        project.data.attributes.process_type === 'continuous' &&
+        project.data.attributes.participation_method === 'survey' &&
+        project.data.attributes.survey_service === 'typeform'
       ) {
-        return <ExportSurveyButton type="project" id={project.id} />;
+        return <ExportSurveyButton type="project" id={project.data.id} />;
       }
 
       if (
-        project.attributes.process_type === 'timeline' &&
+        project.data.attributes.process_type === 'timeline' &&
         !isNilOrError(phases)
       ) {
-        return phases
+        return phases.data
           .filter(
             (phase) =>
               phase.attributes.participation_method === 'survey' &&
@@ -69,39 +60,21 @@ class SurveyResults extends React.PureComponent<Props> {
             );
           });
       }
-      return null;
     }
     return null;
   };
 
-  render() {
-    return (
-      <>
-        <SectionTitle>
-          <FormattedMessage {...messages.titleSurveyResults} />
-        </SectionTitle>
-        <SectionDescription>
-          <FormattedMessage {...messages.subtitleSurveyResults} />
-        </SectionDescription>
-        <Container>{this.renderButtons()}</Container>
-      </>
-    );
-  }
-}
+  return (
+    <>
+      <SectionTitle>
+        <FormattedMessage {...messages.titleSurveyResults} />
+      </SectionTitle>
+      <SectionDescription>
+        <FormattedMessage {...messages.subtitleSurveyResults} />
+      </SectionDescription>
+      <Container>{renderButtons()}</Container>
+    </>
+  );
+};
 
-const Data = adopt<DataProps, InputProps & WithRouterProps>({
-  surveys_enabled: <GetFeatureFlag name="surveys" />,
-  typeform_enabled: <GetFeatureFlag name="typeform_surveys" />,
-  phases: ({ params, render }) => (
-    <GetPhases projectId={params.projectId}>{render}</GetPhases>
-  ),
-  project: ({ params, render }) => (
-    <GetProject projectId={params.projectId}>{render}</GetProject>
-  ),
-});
-
-export default withRouter((inputProps: InputProps & WithRouterProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <SurveyResults {...inputProps} {...dataProps} />}
-  </Data>
-));
+export default SurveyResults;
