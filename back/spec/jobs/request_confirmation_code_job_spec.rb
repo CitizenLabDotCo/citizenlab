@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe RequestConfirmationCodeJob do
+RSpec.describe RequestConfirmationCodeJob do # TODO: log activities, return validation error when invalid new email
   subject(:job) { described_class.new }
 
   describe '#perform' do
@@ -19,8 +19,26 @@ RSpec.describe RequestConfirmationCodeJob do
     describe 'when confirmation is turned on' do
       before { SettingsService.new.activate_feature! 'user_confirmation' }
 
-      it 'works' do
-        job.perform(user)
+      context 'when the user signs up with a phone number' do
+        before { enable_phone_login }
+
+        let(:user) { create(:user_with_confirmation, email: '398234234234') }
+
+        it 'raises and error, since phones are not confirmable' do
+          expect { job.perform(user) }.to raise_error(RuntimeError)
+        end
+      end
+
+      context 'when the user signs up with an email' do
+        let(:user) { create(:user_with_confirmation, email: 'some_email@email.com') }
+
+        it 'changes the email confirmation code delivery timestamp' do
+          expect { job.perform(user) }.to change(user, :email_confirmation_code_sent_at)
+        end
+
+        it 'sends the confirmation email' do
+          expect { job.perform(user) }.to change { ActionMailer::Base.deliveries.count }.by(1)
+        end
       end
     end
 

@@ -9,6 +9,7 @@ class WebApi::V1::ConfirmationsController < ApplicationController
     if result.success?
       head :ok
     else
+      byebug
       render json: { errors: result.errors.details }, status: :unprocessable_entity
     end
   end

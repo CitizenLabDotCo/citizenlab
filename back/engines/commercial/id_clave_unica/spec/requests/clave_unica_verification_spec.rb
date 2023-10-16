@@ -248,7 +248,7 @@ describe 'clave_unica verification' do
         headers = { 'Authorization' => "Bearer #{token}" }
         post '/web_api/v1/user/resend_code', params: { new_email: 'newcoolemail@example.org' }, headers: headers
         expect(response).to have_http_status(:ok)
-        expect(user.reload).to have_attributes({ email: 'newcoolemail@example.org' })
+        expect(user.reload).to have_attributes({ new_email: 'newcoolemail@example.org' })
         expect(user.confirmation_required?).to be(true)
 
         post '/web_api/v1/user/confirm', params: { confirmation: { code: user.email_confirmation_code } }, headers: headers
