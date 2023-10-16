@@ -43,7 +43,6 @@ interface Props {
 }
 
 interface State {
-  visible: boolean;
   loaded: boolean;
 }
 
@@ -58,7 +57,6 @@ export default class Image extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      visible: props.isLazy ? false : true,
       loaded: false,
     };
   }
@@ -80,11 +78,11 @@ export default class Image extends PureComponent<Props, State> {
       className,
     } = this.props;
     const { isLazy } = this.props;
-    const { visible, loaded } = this.state;
+    const { loaded } = this.state;
 
     return (
       <ImageElement
-        src={visible ? src : undefined}
+        src={src}
         alt={alt}
         role={role}
         cover={!!cover}
