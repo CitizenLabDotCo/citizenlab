@@ -675,6 +675,7 @@
   "app.containers.Admin.Users.userBlockModal.unblockActionConfirmation": "Да, желим да деблокирам овог корисника",
   "app.containers.Admin.Users.userDeletionConfirmation": "Желите ли да трајно уклоните овог корисника?",
   "app.containers.Admin.Users.userDeletionFailed": "Дошло је до грешке приликом брисања овог корисника, покушајте поново.",
+  "app.containers.Admin.Users.userDeletionProposalVotes": "Ово ће такође избрисати све гласове овог корисника о предлозима који су још отворени за гласање.",
   "app.containers.Admin.Users.userExportFileName": "усер_екпорт",
   "app.containers.Admin.Users.userInsights": "Увиди корисника",
   "app.containers.Admin.Users.youCantDeleteYourself": "Не можете избрисати сопствени налог преко корисничке администраторске странице",
