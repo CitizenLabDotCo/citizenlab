@@ -675,6 +675,7 @@
   "app.containers.Admin.Users.userBlockModal.unblockActionConfirmation": "Jā, es vēlos atbloķēt šo lietotāju",
   "app.containers.Admin.Users.userDeletionConfirmation": "Pastāvīgi dzēst šo lietotāju?",
   "app.containers.Admin.Users.userDeletionFailed": "Dzēšot šo lietotāju, notika kļūda, lūdzu, mēģiniet vēlreiz.",
+  "app.containers.Admin.Users.userDeletionProposalVotes": "Tādējādi tiks dzēsti arī visi šā lietotāja balsojumi par priekšlikumiem, par kuriem vēl ir iespējams balsot.",
   "app.containers.Admin.Users.userExportFileName": "user_export",
   "app.containers.Admin.Users.userInsights": "Lietotāju ieskats",
   "app.containers.Admin.Users.youCantDeleteYourself": "Savu kontu jūs nevarat dzēst, izmantojot lietotāja administratora lapu.",
