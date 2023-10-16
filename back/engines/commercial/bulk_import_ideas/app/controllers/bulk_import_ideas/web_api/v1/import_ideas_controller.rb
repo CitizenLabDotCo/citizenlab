@@ -56,7 +56,7 @@ module BulkImportIdeas
       idea_import_file = IdeaImportFile.find(params[:id])
       authorize idea_import_file.project || :'bulk_import_ideas/import_ideas'
 
-      send_data open(idea_import_file.file_content_url).read, type: 'application/octet-stream'
+      send_data URI.open(idea_import_file.file_content_url).read, type: 'application/octet-stream'
     end
 
     private
