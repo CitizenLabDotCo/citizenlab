@@ -124,6 +124,63 @@ describe ProjectCopyService do
       expect(template['models']['idea'].first['custom_field_values']).to match expected_custom_field_values
     end
 
+    it 'includes volunteers' do
+      cause = create(:cause)
+      volunteer = create(:user)
+      cause.volunteers.create!(user: volunteer)
+
+      template = service.export cause.participation_context.project, anonymize_users: false, include_ideas: true
+
+      expect(template['models']['volunteering/volunteer'].size).to eq 1
+      expect(template['models']['volunteering/volunteer'].first).to match({
+        'created_at' => an_instance_of(String),
+        'updated_at' => an_instance_of(String),
+        'cause_ref' => hash_including(
+          'title_multiloc' => cause.title_multiloc,
+          'description_multiloc' => cause.description_multiloc,
+          'ordering' => cause.ordering
+        ),
+        'user_ref' => hash_including(
+          'first_name' => volunteer.first_name,
+          'last_name' => volunteer.last_name,
+          'email' => volunteer.email
+        )
+      })
+    end
+
+    it 'includes events' do
+      event = create(:event)
+      attendee = create(:user)
+      event.attendances.create!(attendee: attendee)
+
+      template = service.export event.project, anonymize_users: false, include_ideas: true
+
+      expected_event = {
+        'title_multiloc' => event.title_multiloc,
+        'description_multiloc' => event.description_multiloc,
+        'location_multiloc' => event.location_multiloc,
+        'location_point' => event.location_point_geojson,
+        'online_link' => event.online_link,
+        'address_1' => event.address_1,
+        'address_2_multiloc' => event.address_2_multiloc,
+        'using_url' => event.using_url,
+        'attend_button_multiloc' => event.attend_button_multiloc
+      }
+      expect(template['models']['event'].size).to eq 1
+      expect(template['models']['event'].first).to match(hash_including(expected_event))
+      expect(template['models']['events/attendance'].size).to eq 1
+      expect(template['models']['events/attendance'].first).to match({
+        'created_at' => an_instance_of(String),
+        'updated_at' => an_instance_of(String),
+        'event_ref' => hash_including(expected_event),
+        'attendee_ref' => hash_including(
+          'first_name' => attendee.first_name,
+          'last_name' => attendee.last_name,
+          'email' => attendee.email
+        )
+      })
+    end
+
     describe 'when copying records for models that use acts_as_list gem' do
       it 'copies exact :ordering values' do
         project = create(:continuous_project)
