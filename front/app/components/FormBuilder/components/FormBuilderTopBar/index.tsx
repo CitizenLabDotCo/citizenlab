@@ -34,6 +34,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 // routing
 import clHistory from 'utils/cl-router/history';
 import { useParams } from 'react-router-dom';
+import useFeatureFlag from '../../../../hooks/useFeatureFlag';
 
 const StyledStatusLabel = styled(StatusLabel)`
   height: 20px;
@@ -49,6 +50,10 @@ const FormBuilderTopBar = ({
   isSubmitting,
   builderConfig,
 }: FormBuilderTopBarProps) => {
+  const printedFormsEnabled =
+    useFeatureFlag({
+      name: 'import_printed_forms',
+    }) && builderConfig.onDownloadPDF;
   const localize = useLocalize();
   const { projectId, phaseId } = useParams() as {
     projectId: string;
@@ -126,7 +131,7 @@ const FormBuilderTopBar = ({
             )}
           </Box>
         </Box>
-        {builderConfig.onDownloadPDF && (
+        {printedFormsEnabled && (
           <Button
             buttonStyle="secondary"
             icon="download"

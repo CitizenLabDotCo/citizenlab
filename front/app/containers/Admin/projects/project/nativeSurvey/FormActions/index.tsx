@@ -189,7 +189,7 @@ const FormActions = ({
               {formatMessage(messages.viewSurveyText2)}
             </Button>
           </Box>
-          {uiSchema && (
+          {uiSchema && importPrintedFormsEnabled && (
             <Box
               mt="12px"
               w="100%"
@@ -215,17 +215,15 @@ const FormActions = ({
               >
                 {formatMessage(messages.downloadExcelTemplate)}
               </Button>
-              {importPrintedFormsEnabled && (
-                <Button
-                  width="auto"
-                  minWidth="312px"
-                  buttonStyle="cl-blue"
-                  linkTo={offlineInputsLink}
-                  icon="page"
-                >
-                  <FormattedMessage {...ownMessages.addOfflineInputs} />
-                </Button>
-              )}
+              <Button
+                width="auto"
+                minWidth="312px"
+                buttonStyle="cl-blue"
+                linkTo={offlineInputsLink}
+                icon="page"
+              >
+                <FormattedMessage {...ownMessages.addOfflineInputs} />
+              </Button>
             </Box>
           )}
           {haveSubmissionsComeIn && (
