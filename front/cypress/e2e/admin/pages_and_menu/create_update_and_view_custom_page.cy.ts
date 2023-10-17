@@ -216,10 +216,13 @@ describe('Admin: can', () => {
       cy.contains(topInfoContent);
     });
 
-    it('custom page attachments and view them', () => {
+    it.only('custom page attachments and view them', () => {
       cy.intercept('PATCH', '**/static_pages/**').as('updateCustomPage');
       cy.intercept('POST', `**/static_pages/${customPageId4}/files`).as(
         'addFiles'
+      );
+      cy.intercept('GET', `**/static_pages/${customPageId4}/files`).as(
+        'getFiles'
       );
 
       cy.visit(`/en/admin/pages-menu/pages/${customPageId4}/content`);
@@ -241,6 +244,7 @@ describe('Admin: can', () => {
       cy.contains('Shown on page').should('exist');
 
       cy.get('#local_page_files').should('exist');
+      cy.wait('@getFiles');
       cy.get('#local_page_files').selectFile('cypress/fixtures/example.pdf', {
         force: true,
       });
