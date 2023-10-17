@@ -199,35 +199,39 @@ const CustomFieldsGraph = ({
   if (!customField.attributes.code) {
     if (customField.attributes.input_type === 'checkbox') {
       return (
-        <Box width="2000px">
-          <PieChartByCategory
-            key={customField.id}
-            startAt={startAt}
-            endAt={endAt}
-            currentGroupFilter={undefined}
-            currentGroupFilterLabel={undefined}
-            graphTitleString={localize(customField.attributes.title_multiloc)}
-            graphUnit="users"
-            customId={customField.id}
-            xlsxEndpoint={usersByCustomFieldXlsxEndpoint(customField.id)}
-            id={customField.id}
-          />
+        <Box width="50%">
+          <Box width="1340px">
+            <PieChartByCategory
+              key={customField.id}
+              startAt={startAt}
+              endAt={endAt}
+              currentGroupFilter={undefined}
+              currentGroupFilterLabel={undefined}
+              graphTitleString={localize(customField.attributes.title_multiloc)}
+              graphUnit="users"
+              customId={customField.id}
+              xlsxEndpoint={usersByCustomFieldXlsxEndpoint(customField.id)}
+              id={customField.id}
+            />
+          </Box>
         </Box>
       );
     } else {
       return (
-        <Box width="2000px">
-          <BarChartByCategory
-            startAt={startAt}
-            endAt={endAt}
-            graphTitleString={localize(customField.attributes.title_multiloc)}
-            graphUnit="users"
-            customId={customField.id}
-            xlsxEndpoint={xlsxEndpoint}
-            id={customField.id}
-            currentGroupFilter={undefined}
-            currentGroupFilterLabel={undefined}
-          />
+        <Box width="50%">
+          <Box width="1340px">
+            <BarChartByCategory
+              startAt={startAt}
+              endAt={endAt}
+              graphTitleString={localize(customField.attributes.title_multiloc)}
+              graphUnit="users"
+              customId={customField.id}
+              xlsxEndpoint={xlsxEndpoint}
+              id={customField.id}
+              currentGroupFilter={undefined}
+              currentGroupFilterLabel={undefined}
+            />
+          </Box>
         </Box>
       );
     }
