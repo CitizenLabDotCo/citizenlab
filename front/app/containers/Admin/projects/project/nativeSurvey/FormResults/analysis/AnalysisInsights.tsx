@@ -11,6 +11,7 @@ import useAnalysisSummary from 'api/analysis_summaries/useAnalysisSummary';
 import React, { useState } from 'react';
 import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
+import { removeRefs } from '../../../analysis/Insights/util';
 
 type AnalysisInsight = {
   analysisId: string;
@@ -28,9 +29,14 @@ const Summary = ({
   analysisId: string;
 }) => {
   const { data } = useAnalysisSummary({ analysisId, id: summaryId });
+
+  const summary = data?.data.attributes.summary;
+  if (!summary) {
+    return null;
+  }
   return (
     <Text fontSize="s" mt="0px">
-      {data?.data.attributes.summary}
+      {removeRefs(summary)}
     </Text>
   );
 };
@@ -43,9 +49,13 @@ const Question = ({
   analysisId: string;
 }) => {
   const { data } = useAnalysisQuestion({ analysisId, id: summaryId });
+  const question = data?.data.attributes.question;
+  if (!question) {
+    return null;
+  }
   return (
     <Text fontSize="s" mt="0px">
-      {data?.data.attributes.answer}
+      {removeRefs(question)}
     </Text>
   );
 };
