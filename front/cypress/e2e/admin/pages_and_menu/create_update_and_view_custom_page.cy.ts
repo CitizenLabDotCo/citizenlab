@@ -221,6 +221,9 @@ describe('Admin: can', () => {
       cy.intercept('POST', `**/static_pages/${customPageId4}/files`).as(
         'addFiles'
       );
+      cy.intercept('GET', `**/static_pages/${customPageId4}/files`).as(
+        'getFiles'
+      );
 
       cy.visit(`/en/admin/pages-menu/pages/${customPageId4}/content`);
 
@@ -241,6 +244,7 @@ describe('Admin: can', () => {
       cy.contains('Shown on page').should('exist');
 
       cy.get('#local_page_files').should('exist');
+      cy.wait('@getFiles');
       cy.get('#local_page_files').selectFile('cypress/fixtures/example.pdf', {
         force: true,
       });
