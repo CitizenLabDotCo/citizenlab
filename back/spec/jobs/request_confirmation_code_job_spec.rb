@@ -32,6 +32,10 @@ RSpec.describe RequestConfirmationCodeJob do # TODO: log activities, return vali
       context 'when the user signs up with an email' do
         let(:user) { create(:user_with_confirmation, email: 'some_email@email.com') }
 
+        it 'enqueues a "requested_confirmation_code" activity job' do
+          expect { job.perform(user) }.to enqueue_job(LogActivityJob).with(user, 'requested_confirmation_code', user, anything)
+        end
+
         it 'changes the email confirmation code delivery timestamp' do
           expect { job.perform(user) }.to change(user, :email_confirmation_code_sent_at)
         end
@@ -42,6 +46,10 @@ RSpec.describe RequestConfirmationCodeJob do # TODO: log activities, return vali
 
         it 'enqueues a code expiration job' do
           expect { job.perform(user) }.to enqueue_job(ExpireConfirmationCodeOrDeleteJob)
+        end
+
+        it 'enqueues a "received_confirmation_code" activity job' do
+          expect { job.perform(user) }.to enqueue_job(LogActivityJob).with(user, 'received_confirmation_code', user, anything)
         end
       end
 
@@ -62,18 +70,5 @@ RSpec.describe RequestConfirmationCodeJob do # TODO: log activities, return vali
         end
       end
     end
-
-    # it 'logs an activity with a GlobalID' do
-    #   idea = create(:idea)
-    #   user = create(:user)
-    #   expect { job.perform(idea, 'created', user, Time.now) }.to change(Activity, :count).from(0).to(1)
-    # end
-
-    # it "logs a notification activity with the notification's subclass item_type" do
-    #   notification = create(:comment_on_your_comment)
-    #   user = create(:user)
-    #   job.perform(notification, 'created', user, Time.now)
-    #   expect(Activity.last.item_type).to eq notification.class.name
-    # end
   end
 end
