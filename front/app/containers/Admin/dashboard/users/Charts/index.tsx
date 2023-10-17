@@ -10,7 +10,7 @@ import useLocalize from 'hooks/useLocalize';
 
 // components
 import BarChartByCategory from 'components/admin/Graphs/BarChartByCategory';
-import PieChartByCategory from './PieChartByCategory';
+import PieChartByCategory from 'components/admin/Graphs/PieChartByCategory';
 import AreaChart from './AreaChart';
 import GenderChart from './GenderChart';
 import AgeChart from './AgeChart';

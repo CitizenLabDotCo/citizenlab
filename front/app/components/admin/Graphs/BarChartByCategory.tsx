@@ -42,7 +42,7 @@ interface Props {
   id: string;
 }
 
-export type GraphOption = {
+type GraphOption = {
   value: number;
   name: string;
   code: string;

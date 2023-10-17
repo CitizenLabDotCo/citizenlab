@@ -26,6 +26,7 @@ import { Tooltip } from 'recharts';
 import BarChart from 'components/admin/Graphs/BarChart';
 import { Box, colors } from '@citizenlab/cl2-component-library';
 import BarChartByCategory from 'components/admin/Graphs/BarChartByCategory';
+import PieChartByCategory from 'components/admin/Graphs/PieChartByCategory';
 
 // typings
 import { IUserCustomFieldData } from 'api/user_custom_fields/types';
@@ -194,22 +195,42 @@ const CustomFieldsGraph = ({
       ? customFieldEndpoints[code as TAllowedCode].xlsxEndpoint
       : usersByCustomFieldXlsxEndpoint(customField.id);
 
+  // If there is no code, this is not a built-in field
   if (!customField.attributes.code) {
-    return (
-      <Box width="2000px">
-        <BarChartByCategory
-          startAt={startAt}
-          endAt={endAt}
-          graphTitleString={localize(customField.attributes.title_multiloc)}
-          graphUnit="users"
-          customId={customField.id}
-          xlsxEndpoint={xlsxEndpoint}
-          id={customField.id}
-          currentGroupFilter={undefined}
-          currentGroupFilterLabel={undefined}
-        />
-      </Box>
-    );
+    if (customField.attributes.input_type === 'checkbox') {
+      return (
+        <Box width="2000px">
+          <PieChartByCategory
+            key={customField.id}
+            startAt={startAt}
+            endAt={endAt}
+            currentGroupFilter={undefined}
+            currentGroupFilterLabel={undefined}
+            graphTitleString={localize(customField.attributes.title_multiloc)}
+            graphUnit="users"
+            customId={customField.id}
+            xlsxEndpoint={usersByCustomFieldXlsxEndpoint(customField.id)}
+            id={customField.id}
+          />
+        </Box>
+      );
+    } else {
+      return (
+        <Box width="2000px">
+          <BarChartByCategory
+            startAt={startAt}
+            endAt={endAt}
+            graphTitleString={localize(customField.attributes.title_multiloc)}
+            graphUnit="users"
+            customId={customField.id}
+            xlsxEndpoint={xlsxEndpoint}
+            id={customField.id}
+            currentGroupFilter={undefined}
+            currentGroupFilterLabel={undefined}
+          />
+        </Box>
+      );
+    }
   }
 
   return (
@@ -232,40 +253,40 @@ const CustomFieldsGraph = ({
             />
           )}
         </GraphCardHeader>
-          <BarChart
-            height={serie && serie.length > 1 ? serie.length * 50 : 100}
-            data={serie}
-            mapping={{
-              category: 'name',
-              length: 'participants',
-            }}
-            bars={{
-              name: formatMessage(messages.participants),
-              size: sizes.bar,
-            }}
-            layout="horizontal"
-            innerRef={currentChartRef}
-            margin={{
-              ...DEFAULT_BAR_CHART_MARGIN,
-              left: 20,
-            }}
-            yaxis={{ width: 150, tickLine: false }}
-            labels
-            tooltip={() => (
-              <>
-                <Tooltip
-                  content={({ active, payload, label }: TooltipProps) => (
-                    <CustomTooltip
-                      label={label}
-                      active={active}
-                      payload={payload}
-                      totalLabel={formatMessage(messages.totalUsers)}
-                    />
-                  )}
-                />
-              </>
-            )}
-          />
+        <BarChart
+          height={serie && serie.length > 1 ? serie.length * 50 : 100}
+          data={serie}
+          mapping={{
+            category: 'name',
+            length: 'participants',
+          }}
+          bars={{
+            name: formatMessage(messages.participants),
+            size: sizes.bar,
+          }}
+          layout="horizontal"
+          innerRef={currentChartRef}
+          margin={{
+            ...DEFAULT_BAR_CHART_MARGIN,
+            left: 20,
+          }}
+          yaxis={{ width: 150, tickLine: false }}
+          labels
+          tooltip={() => (
+            <>
+              <Tooltip
+                content={({ active, payload, label }: TooltipProps) => (
+                  <CustomTooltip
+                    label={label}
+                    active={active}
+                    payload={payload}
+                    totalLabel={formatMessage(messages.totalUsers)}
+                  />
+                )}
+              />
+            </>
+          )}
+        />
       </GraphCardInner>
     </GraphCard>
   );
