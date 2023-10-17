@@ -42,6 +42,7 @@ import { usersByBirthyearXlsxEndpoint } from 'api/users_by_birthyear/util';
 import { usersByDomicileXlsxEndpoint } from 'api/users_by_domicile/util';
 import useUsersByDomicile from 'api/users_by_domicile/useUsersByDomicile';
 import { usersByCustomFieldXlsxEndpoint } from 'api/users_by_custom_field/util';
+import BarChartByCategory from 'containers/Admin/dashboard/users/Charts/BarChartByCategory';
 
 interface ICustomFieldEndpoint {
   xlsxEndpoint: string;
@@ -193,6 +194,24 @@ const CustomFieldsGraph = ({
       ? customFieldEndpoints[code as TAllowedCode].xlsxEndpoint
       : usersByCustomFieldXlsxEndpoint(customField.id);
 
+  if (!customField.attributes.code) {
+    return (
+      <Box width="2000px">
+        <BarChartByCategory
+          startAt={startAt}
+          endAt={endAt}
+          graphTitleString={localize(customField.attributes.title_multiloc)}
+          graphUnit="users"
+          customId={customField.id}
+          xlsxEndpoint={xlsxEndpoint}
+          id={customField.id}
+          currentGroupFilter={undefined}
+          currentGroupFilterLabel={undefined}
+        />
+      </Box>
+    );
+  }
+
   return (
     <GraphCard className={`dynamicHeight ${className}`}>
       <GraphCardInner>
@@ -213,37 +232,40 @@ const CustomFieldsGraph = ({
             />
           )}
         </GraphCardHeader>
-        <BarChart
-          height={serie && serie.length > 1 ? serie.length * 50 : 100}
-          data={serie}
-          mapping={{
-            category: 'name',
-            length: 'participants',
-          }}
-          bars={{ name: formatMessage(messages.participants), size: sizes.bar }}
-          layout="horizontal"
-          innerRef={currentChartRef}
-          margin={{
-            ...DEFAULT_BAR_CHART_MARGIN,
-            left: 20,
-          }}
-          yaxis={{ width: 150, tickLine: false }}
-          labels
-          tooltip={() => (
-            <>
-              <Tooltip
-                content={({ active, payload, label }: TooltipProps) => (
-                  <CustomTooltip
-                    label={label}
-                    active={active}
-                    payload={payload}
-                    totalLabel={formatMessage(messages.totalUsers)}
-                  />
-                )}
-              />
-            </>
-          )}
-        />
+          <BarChart
+            height={serie && serie.length > 1 ? serie.length * 50 : 100}
+            data={serie}
+            mapping={{
+              category: 'name',
+              length: 'participants',
+            }}
+            bars={{
+              name: formatMessage(messages.participants),
+              size: sizes.bar,
+            }}
+            layout="horizontal"
+            innerRef={currentChartRef}
+            margin={{
+              ...DEFAULT_BAR_CHART_MARGIN,
+              left: 20,
+            }}
+            yaxis={{ width: 150, tickLine: false }}
+            labels
+            tooltip={() => (
+              <>
+                <Tooltip
+                  content={({ active, payload, label }: TooltipProps) => (
+                    <CustomTooltip
+                      label={label}
+                      active={active}
+                      payload={payload}
+                      totalLabel={formatMessage(messages.totalUsers)}
+                    />
+                  )}
+                />
+              </>
+            )}
+          />
       </GraphCardInner>
     </GraphCard>
   );
