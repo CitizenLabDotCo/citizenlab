@@ -11,8 +11,8 @@ RUN apt-get update && apt-get install -y jq
 # Change the working directory to /front
 WORKDIR /front
 
-ADD front/package.json front/package-lock.json ./
-ADD front/internals internals
+ADD /front/package.json front/package-lock.json ./
+ADD /front/internals internals
 
 # Install CL2 Component Library and dependencies
 RUN CL2_VERSION=$(cat cl2-component-library-package.json | jq -r .version) \
