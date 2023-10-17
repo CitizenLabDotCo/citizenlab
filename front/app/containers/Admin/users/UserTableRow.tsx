@@ -113,10 +113,15 @@ const UserTableRow = ({
   const isProposalsEnabled = useFeatureFlag({ name: 'initiatives' });
 
   const handleDeleteClick = () => {
+    const baseDeleteMessage = `${formatMessage(
+      messages.userDeletionConfirmation
+    )}`;
+
     const deleteMessage = isProposalsEnabled
-      ? `${formatMessage(messages.userDeletionConfirmation)}\n\n` +
-        `${formatMessage(messages.userDeletionProposalVotes)}`
-      : `${formatMessage(messages.userDeletionConfirmation)}`;
+      ? `${baseDeleteMessage}\n\n${formatMessage(
+          messages.userDeletionProposalVotes
+        )}`
+      : baseDeleteMessage;
 
     if (window.confirm(deleteMessage)) {
       if (userInRowIsCurrentUser) {
