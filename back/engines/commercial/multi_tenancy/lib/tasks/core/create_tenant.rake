@@ -338,7 +338,7 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
           duration: 90
         },
         seat_based_billing: {
-          enabled: false,
+          enabled: true,
           allowed: true
         },
         public_api_tokens: {
