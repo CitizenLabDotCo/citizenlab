@@ -38,6 +38,8 @@ services:
     build:
       context: ..
       dockerfile: front/Dockerfile
+      args:
+        - CL2_PACKAGE_JSON=../cl2-component-library/package.json
     # To easily test locally. For unknow reason it doesn't work on CI
     # volumes:
     #   - "../front:/front"
