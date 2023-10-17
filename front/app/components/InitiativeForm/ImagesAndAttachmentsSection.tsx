@@ -16,7 +16,7 @@ const ImageAndAttachmentsSection = () => {
     <FormSection>
       <Box display="flex" gap="8px">
         <FormSectionTitle message={messages.formAttachmentsSectionTitle} />
-        <Box mt='22px'>
+        <Box mt='20px'>
         <ContentUploadDisclaimerTooltip />
         </Box>
       </Box>

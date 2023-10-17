@@ -41,7 +41,8 @@ const DescriptionControl = ({
             {getLabel(uischema, schema, path)}
             <ContentUploadDisclaimerTooltip />
           </Box>
-        }        optional={!required}
+        }
+        optional={!required}
         subtextValue={getSubtextElement(uischema.options?.description)}
         subtextSupportsHtml
       />
