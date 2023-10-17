@@ -635,7 +635,7 @@ nl-BE:
         voting_2_days_before_phase_closes: '2 dagen voordat de stemmingsfase sluit'
         voting_1_day_after_last_votes: '1 dag nadat gebruiker voor het laatst heeft gestemd'
         voting_phase_ended: 'Stemmingsfase beëindigd'
-        voting_basket_submitted: 'Stemmen zijn ingediend'
+        voting_basket_submitted: 'Stemmen zijn verzonden'
         7_days_after_invite_is_sent: '7 dagen na verzending van de uitnodiging'
         7_days_before_the_project_changes_phase: '7 dagen voor het project van fase verandert'
         registration_to_event: 'Registratie voor een evenement'
