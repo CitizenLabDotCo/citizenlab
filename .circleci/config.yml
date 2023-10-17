@@ -693,13 +693,6 @@ jobs:
           docker-compose run front curl --retry 2 --retry-delay 5 --retry-connrefused -v http://e2e.front:3000
       - run: |
           cd front
-          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
-          source ~/.nvm/nvm.sh
-          nvm install 16.15.0
-          nvm use 16.15.0
-          CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version)
-          npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
-          npm ci
           TESTFILES=$(circleci tests glob "cypress/e2e/**/*.cy.ts" | circleci tests split  --split-by=timings)
           COMMA_SEPARATED_TESTFILES=$(echo $TESTFILES | sed 's/ /,/g')
           echo $COMMA_SEPARATED_TESTFILES

@@ -5,7 +5,10 @@ WORKDIR /front
 ADD front/package.json front/package-lock.json ./
 ADD front/internals internals
 
-RUN npm install
+# Install CL2 Component Library and dependencies
+RUN CL2_VERSION=$(cat ../cl2-component-library/package.json | jq -r .version) \
+    && npm i --save @citizenlab/cl2-component-library@${CL2_VERSION} \
+    && npm ci
 
 ADD front/. .
 
