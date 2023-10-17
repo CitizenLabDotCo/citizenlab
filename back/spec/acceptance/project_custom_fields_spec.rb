@@ -173,14 +173,13 @@ resource 'Project level Custom Fields' do
     end
   end
 
-  describe 'outside a phase' do
+  describe 'when there is no current phase' do
     let(:project) { create(:project_with_past_phases) }
     let(:project_id) { project.id }
 
     get 'web_api/v1/projects/:project_id/custom_fields/json_forms_schema' do
       example_request 'Get the jsonforms.io json schema and ui schema for the custom fields' do
-        assert_status 404
-        expect(response_body).to be_empty
+        assert_status 200
       end
     end
   end

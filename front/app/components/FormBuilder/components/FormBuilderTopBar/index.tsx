@@ -4,6 +4,7 @@ import React from 'react';
 import useProjectById from 'api/projects/useProjectById';
 import useLocalize from 'hooks/useLocalize';
 import usePhase from 'api/phases/usePhase';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // components
 import GoBackButton from 'components/UI/GoBackButton';
@@ -49,6 +50,10 @@ const FormBuilderTopBar = ({
   isSubmitting,
   builderConfig,
 }: FormBuilderTopBarProps) => {
+  const printedFormsEnabled =
+    useFeatureFlag({
+      name: 'import_printed_forms',
+    }) && builderConfig.onDownloadPDF;
   const localize = useLocalize();
   const { projectId, phaseId } = useParams() as {
     projectId: string;
@@ -126,7 +131,7 @@ const FormBuilderTopBar = ({
             )}
           </Box>
         </Box>
-        {builderConfig.onDownloadPDF && (
+        {printedFormsEnabled && (
           <Button
             buttonStyle="secondary"
             icon="download"
