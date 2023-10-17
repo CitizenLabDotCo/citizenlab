@@ -123,8 +123,8 @@ const ProjectReport = () => {
 
     if (isTimelineProject) {
       if (!isNilOrError(phases) && phases.data.length > 0) {
-        const startAt = phases[0].attributes.start_at;
-        const endAt = phases[phases.data.length - 1].attributes.end_at;
+        const startAt = phases.data[0].attributes.start_at;
+        const endAt = phases.data[phases.data.length - 1].attributes.end_at;
         setStartAt(startAt);
         setEndAt(endAt);
 

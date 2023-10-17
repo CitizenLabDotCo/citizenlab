@@ -140,7 +140,7 @@ describe('Admin: can', () => {
       cy.get('#buttonConfigInput').type('https://www.coolwebsite.biz');
 
       // submit form
-      cy.get('.e2e-submit-wrapper-button').click();
+      cy.get('.e2e-submit-wrapper-button button').click();
 
       cy.visit(`/en/pages/${page2}`);
 

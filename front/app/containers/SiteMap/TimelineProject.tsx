@@ -21,9 +21,9 @@ const TimelineProject = ({ project }: Props) => {
 
   if (phases.data.length === 1) {
     return (
-      <li key={phases[0].id}>
+      <li key={phases.data[0].id}>
         <Link to={{ pathname: `/projects/${project.attributes.slug}/1` }}>
-          <T value={phases[0].attributes.title_multiloc} />
+          <T value={phases.data[0].attributes.title_multiloc} />
         </Link>
       </li>
     );
