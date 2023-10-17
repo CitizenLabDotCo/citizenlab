@@ -304,16 +304,17 @@ class WebApi::V1::UsersController < ApplicationController
 
   def user_params_for_create
     permitted_params = user_permitted_params
+    params.require(:user).permit(user_permitted_params)
+  end
+
+  def user_params_for_update
+    permitted_params = user_permitted_params
     permitted_params.push :email if !AppConfiguration.instance.feature_activated?('user_confirmation')
     params.require(:user).permit(permitted_params)
   end
 
-  def user_params_for_update
-    params.require(:user).permit(user_permitted_params)
-  end
-
   def user_permitted_params
-    shared = [:first_name, :last_name, :email, :password, :avatar, :locale, { onboarding: [:topics_and_areas], custom_field_values: allowed_custom_field_keys, bio_multiloc: CL2_SUPPORTED_LOCALES }]
+    shared = [:first_name, :last_name, :password, :avatar, :locale, { onboarding: [:topics_and_areas], custom_field_values: allowed_custom_field_keys, bio_multiloc: CL2_SUPPORTED_LOCALES }]
     current_user&.admin? ? shared + [roles: %i[type project_id project_folder_id]] : shared
   end
 

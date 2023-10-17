@@ -39,6 +39,27 @@ RSpec.describe RequestConfirmationCodeJob do # TODO: log activities, return vali
         it 'sends the confirmation email' do
           expect { job.perform(user) }.to change { ActionMailer::Base.deliveries.count }.by(1)
         end
+
+        it 'enqueues a code expiration job' do
+          expect { job.perform(user) }.to enqueue_job(ExpireConfirmationCodeOrDeleteJob)
+        end
+      end
+
+      context 'when the user has made too many reset requests' do
+        let(:user) do
+          create(:user_with_confirmation).tap do |user|
+            5.times do
+              user.increment_confirmation_code_reset_count
+            end
+            user.save!
+          end
+        end
+
+        it 'returns a too many resets on code error' do
+          job.perform(user)
+          expect(user).to be_invalid
+          expect(user.errors.details).to eq({ email_confirmation_code_reset_count: [{ error: :less_than_or_equal_to, value: 6, count: 5 }] })
+        end
       end
     end
 

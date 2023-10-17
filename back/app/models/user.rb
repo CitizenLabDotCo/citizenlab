@@ -492,7 +492,6 @@ class User < ApplicationRecord
 
   def confirm!
     return if !confirmation_required?
-    # return if !registered_with_email? || new_email.blank?
 
     confirm_new_email if new_email.present?
     confirm
@@ -529,9 +528,8 @@ class User < ApplicationRecord
     self.email_confirmation_code = use_fake_code? ? '1234' : rand.to_s[2..5]
   end
 
-  def increment_confirmation_code_reset_count!
+  def increment_confirmation_code_reset_count
     self.email_confirmation_code_reset_count += 1
-    save!
   end
 
   def increment_confirmation_retry_count!
