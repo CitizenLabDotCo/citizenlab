@@ -1,14 +1,19 @@
 import React, { useState } from 'react';
+
+// components
 import {
   IconTooltip,
   Text,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
 import Modal from 'components/UI/Modal';
 
+// intl
+import { useIntl } from 'utils/cl-intl';
+import messages from './messages';
+
 const ContentUploadDisclaimerTooltip = () => {
+
   const { formatMessage } = useIntl();
   const isMobileOrSmaller = useBreakpoint('phone');
   const [showFullDisclaimer, setShowFullDisclaimer] = useState(false);
@@ -46,7 +51,7 @@ const ContentUploadDisclaimerTooltip = () => {
         close={() => {
           setShowFullDisclaimer(false);
         }}
-        closeOnClickOutside={false}
+        closeOnClickOutside={true}
         header={formatMessage(messages.contentDisclaimerModalHeader)}
       >
         <Text m="32px">
