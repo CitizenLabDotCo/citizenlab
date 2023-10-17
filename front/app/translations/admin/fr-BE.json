@@ -675,7 +675,7 @@
   "app.containers.Admin.Users.userBlockModal.unblockActionConfirmation": "Oui, je veux débloquer cet utilisateur",
   "app.containers.Admin.Users.userDeletionConfirmation": "Supprimer définitivement cet utilisateur ?",
   "app.containers.Admin.Users.userDeletionFailed": "Une erreur s'est produite lors de la suppression de cet utilisateur, veuillez réesssayer.",
-  "app.containers.Admin.Users.userDeletionProposalVotes": "Cela supprimera également tous les votes de cet utilisateur sur les propositions qui sont encore ouvertes au vote.",
+  "app.containers.Admin.Users.userDeletionProposalVotes": "Cela supprimera également les votes de cet utilisateur sur les propositions qui sont encore ouvertes au vote.",
   "app.containers.Admin.Users.userExportFileName": "utilisateur_export",
   "app.containers.Admin.Users.userInsights": "Statistiques utilisateurs",
   "app.containers.Admin.Users.youCantDeleteYourself": "Vous ne pouvez pas supprimer votre propre compte via le panneau administrateur",
