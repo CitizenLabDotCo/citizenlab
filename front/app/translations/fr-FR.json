@@ -1481,7 +1481,7 @@
   "app.containers.SpamReport.otherReasonPlaceholder": "Description",
   "app.containers.SpamReport.wrong_content": "Cela n'appartient pas ici",
   "app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle": "Supprimer l'image du profil",
-  "app.containers.UsersEditPage.activeProposalVotesWillBeDeleted": "Vos votes sur des propositions encore ouvertes au vote seront supprimés. Les votes sur des propositions pour lesquelles la période de vote est terminée ne seront pas supprimés.",
+  "app.containers.UsersEditPage.activeProposalVotesWillBeDeleted": "Vos votes sur les propositions encore ouvertes au vote seront supprimés. En revanche, les votes sur les propositions dont la période de vote est terminée ne seront pas effacés.",
   "app.containers.UsersEditPage.addPassword": "Ajouter un mot de passe",
   "app.containers.UsersEditPage.becomeVerifiedSubtitle": "Pour participer à des projets pour les citoyens vérifiés.",
   "app.containers.UsersEditPage.becomeVerifiedTitle": "Vérifiez votre identité",
