@@ -8,11 +8,18 @@ import {
 } from 'components/UI/FormComponents';
 import messages from './messages';
 import { SectionField } from 'components/admin/Section';
+import { Box } from '@citizenlab/cl2-component-library';
+import ContentUploadDisclaimerTooltip from 'components/ContentUploadDisclaimer';
 
 const ImageAndAttachmentsSection = () => {
   return (
     <FormSection>
-      <FormSectionTitle message={messages.formAttachmentsSectionTitle} />
+      <Box display="flex" gap="8px">
+        <FormSectionTitle message={messages.formAttachmentsSectionTitle} />
+        <Box mt='22px'>
+        <ContentUploadDisclaimerTooltip />
+        </Box>
+      </Box>
       <SectionField id="e2e-iniatiative-banner-dropzone">
         <FormLabel
           labelMessage={messages.bannerUploadLabel}

@@ -50,6 +50,7 @@ import useInitiativeReviewRequired from 'containers/InitiativesShow/hooks/useIni
 import { stripHtmlTags } from 'utils/helperUtils';
 import useInitiativeCosponsorsRequired from 'containers/InitiativesShow/hooks/useInitiativeCosponsorsRequired';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import ContentUploadDisclaimerTooltip from 'components/ContentUploadDisclaimer';
 
 declare module 'components/UI/Error' {
   interface TFieldNameMap {
@@ -247,7 +248,12 @@ const InitiativeForm = ({
                 <FormLabel
                   id="description-label-id"
                   htmlFor="body_multiloc"
-                  labelMessage={messages.descriptionLabel}
+                  labelValue={
+                    <Box display='flex' gap="4px">
+                      {formatMessage(messages.descriptionLabel)}
+                      <ContentUploadDisclaimerTooltip />
+                    </Box>
+                  }
                   subtextMessage={messages.descriptionLabelSubtext}
                 />
                 <QuillMultilocWithLocaleSwitcher

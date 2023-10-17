@@ -1,11 +1,12 @@
 import React from 'react';
-import { Label } from '@citizenlab/cl2-component-library';
+import { Box, Label } from '@citizenlab/cl2-component-library';
 import ImagesDropzoneComponent, {
   Props as ImagesDropzoneComponentProps,
 } from 'components/UI/ImagesDropzone';
 
 import Error from 'components/UI/Error';
 import { Controller, useFormContext } from 'react-hook-form';
+import ContentUploadDisclaimerTooltip from 'components/ContentUploadDisclaimer';
 
 interface Props
   extends Omit<
@@ -14,9 +15,15 @@ interface Props
   > {
   name: string;
   inputLabel?: string;
+  showDiscalimer?: boolean;
 }
 
-const ImagesDropzone = ({ name, inputLabel, ...rest }: Props) => {
+const ImagesDropzone = ({
+  name,
+  inputLabel,
+  showDiscalimer,
+  ...rest
+}: Props) => {
   const {
     setValue,
     formState: { errors },
@@ -27,7 +34,16 @@ const ImagesDropzone = ({ name, inputLabel, ...rest }: Props) => {
 
   return (
     <>
-      {inputLabel && <Label htmlFor={name}>{inputLabel}</Label>}
+      {inputLabel && (
+        <Box display="flex" gap="8px">
+          <Label htmlFor={name}>{inputLabel}</Label>
+          {showDiscalimer && (
+            <Box m='0px'>
+              <ContentUploadDisclaimerTooltip />
+            </Box>
+          )}
+        </Box>
+      )}
       <Controller
         name={name}
         control={control}
