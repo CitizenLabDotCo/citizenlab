@@ -3,7 +3,6 @@ import { randomString } from '../../../support/commands';
 describe('Admin: update text content and sections', () => {
   before(() => {
     cy.setAdminLoginCookie();
-    cy.acceptCookies();
     cy.apiUpdateHomepageSettings({
       top_info_section_enabled: false,
       bottom_info_section_enabled: false,
