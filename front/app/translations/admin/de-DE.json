@@ -887,7 +887,7 @@
   "app.containers.Admin.projects.project.survey.deleteAnalysisConfirmation": "Sind Sie sicher, dass Sie diese Analyse löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
   "app.containers.Admin.projects.project.survey.newAnalysis": "Neue Analyse",
   "app.containers.Admin.projects.project.survey.nextInsight": "Nächster Einblick",
-  "app.containers.Admin.projects.project.survey.openAnalysis": "Open AI Analyse",
+  "app.containers.Admin.projects.project.survey.openAnalysis": "Zur KI-Analyse",
   "app.containers.Admin.projects.project.survey.previousInsight": "Vorheriger Einblick",
   "app.containers.Admin.projects.project.survey.viewAnalysis": "Vorschau",
   "app.containers.Admin.reporting.chartsSection": "CHARTS",
