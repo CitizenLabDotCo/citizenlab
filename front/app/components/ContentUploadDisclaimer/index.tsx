@@ -38,6 +38,7 @@ const ContentUploadDisclaimerTooltip = () => {
               textDecoration="underline"
               role="button"
               style={{ cursor: 'pointer' }}
+              tabIndex={0}
             >
               {formatMessage(messages.readFullDisclaimer)}
             </Text>
