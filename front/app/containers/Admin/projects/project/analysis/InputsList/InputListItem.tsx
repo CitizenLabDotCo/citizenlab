@@ -16,7 +16,7 @@ import useAnalysis from 'api/analyses/useAnalysis';
 import InputShortFieldValue from './FieldValue';
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../tracks';
-import translations from './translations';
+import messages from './messages';
 
 interface Props {
   input: IInputsData;
@@ -66,7 +66,7 @@ const InputListItem = memo(({ input, onSelect, selected }: Props) => {
             ))}
           {!title_multiloc ||
             (isEmpty(title_multiloc) && !author && (
-              <Text m="0px">{formatMessage(translations.anonymous)}</Text>
+              <Text m="0px">{formatMessage(messages.anonymous)}</Text>
             ))}
           {title_multiloc && (
             <Text m="0px">
