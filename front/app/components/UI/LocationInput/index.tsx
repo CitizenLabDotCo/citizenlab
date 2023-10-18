@@ -52,7 +52,9 @@ const LocationInput = (
       }
     };
 
-    fetchDefaultOptions();
+    if (props.value?.value) {
+      fetchDefaultOptions();
+    }
   }, [locale, props.value?.value]);
 
   const promiseOptions = async (inputValue: string) => {
@@ -83,6 +85,10 @@ const LocationInput = (
       loadOptions={promiseOptions}
       styles={selectStyles}
       noOptionsMessage={() => formatMessage(messages.noOptions)}
+      blurInputOnSelect
+      menuShouldScrollIntoView={false}
+      isClearable
+      openMenuOnClick={false}
       {...props}
     />
   );

@@ -40,15 +40,16 @@ const LocationControl = ({
       />
 
       <LocationInput
-        value={{
-          value: data || '',
-          label: data || '',
-        }}
+        value={
+          data
+            ? {
+                value: data,
+                label: data,
+              }
+            : null
+        }
         onChange={(location: Option) => {
-          handleChange(
-            path,
-            location.value === '' ? undefined : location.value
-          );
+          handleChange(path, location?.value ? location.value : undefined);
         }}
         placeholder={''}
         onBlur={() => setDidBlur(true)}
