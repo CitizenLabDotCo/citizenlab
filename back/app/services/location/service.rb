@@ -2,12 +2,12 @@
 
 class Location::Service
   def autocomplete(input, language)
-    response = HTTParty.get("https://maps.googleapis.com/maps/api/place/autocomplete/json?input=#{input}&key=#{api_key}&language=#{language}")
+    response = HTTParty.get("https://maps.googleapis.com/maps/api/place/autocomplete/json?input=#{URI.escape(input)}&key=#{api_key}&language=#{language}")
     { results: response['predictions'].pluck('description') }
   end
 
   def geocode(address, language)
-    response = HTTParty.get("https://maps.googleapis.com/maps/api/geocode/json?address=#{address}&key=#{api_key}&language=#{language}")
+    response = HTTParty.get("https://maps.googleapis.com/maps/api/geocode/json?address=#{URI.escape(address)}&key=#{api_key}&language=#{language}")
     { location: response['results'].first['geometry']['location'] }
   end
 
