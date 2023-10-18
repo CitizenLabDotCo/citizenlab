@@ -47,7 +47,7 @@ const LocationInput = ({ name, ...rest }: Props) => {
                   : null
               }
               onChange={(newOption: Option | null) => {
-                setValue(name, newOption?.value);
+                setValue(name, newOption?.value || null);
               }}
             />
           );

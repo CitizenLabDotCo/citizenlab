@@ -74,22 +74,23 @@ const reverseGeocode = async (lat: number, lng: number, language: string) => {
 const parsePosition = async (position?: string) => {
   let location_point_geojson: Point | null | undefined;
   let location_description: string | null | undefined;
+  if (position) {
+    switch (position) {
+      case '':
+        location_point_geojson = null;
+        location_description = null;
+        break;
 
-  switch (position) {
-    case '':
-      location_point_geojson = null;
-      location_description = null;
-      break;
+      case undefined:
+        location_point_geojson = undefined;
+        location_description = undefined;
+        break;
 
-    case undefined:
-      location_point_geojson = undefined;
-      location_description = undefined;
-      break;
-
-    default:
-      location_point_geojson = await geocode(position);
-      location_description = position;
-      break;
+      default:
+        location_point_geojson = await geocode(position);
+        location_description = position;
+        break;
+    }
   }
   return { location_point_geojson, location_description };
 };
