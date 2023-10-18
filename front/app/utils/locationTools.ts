@@ -1,58 +1,74 @@
-import { Point } from 'geojson';
 import { isNumber } from 'lodash-es';
+import fetcher from './cl-react-query/fetcher';
 
-const geocode = (address: string | null | undefined) => {
-  return new Promise((resolve: (value: GeoJSON.Point | null) => void) => {
-    if (address && window?.google?.maps?.Geocoder) {
-      const geocoder = new google.maps.Geocoder();
-      geocoder.geocode({ address }, (results, status) => {
-        let response: GeoJSON.Point | null = null;
-
-        if (status === google.maps.GeocoderStatus.OK) {
-          const lat = results?.[0]?.geometry?.location?.lat();
-          const lng = results?.[0]?.geometry?.location?.lng();
-
-          if (isNumber(lat) && isNumber(lng)) {
-            response = {
-              type: 'Point',
-              coordinates: [lng, lat],
-            };
-          }
-        }
-
-        resolve(response);
-      });
-    } else {
-      resolve(null);
-    }
-  });
+type Point = {
+  type: 'Point';
+  coordinates: [number, number];
 };
 
-const reverseGeocode = (lat: number, lng: number) => {
-  return new Promise((resolve: (value: string | undefined) => void) => {
-    if (window?.google?.maps?.Geocoder) {
-      const geocoder = new google.maps.Geocoder();
-      geocoder.geocode(
-        {
-          location: {
-            lat,
-            lng,
-          },
-        },
-        (results, status) => {
-          let response: string | undefined = undefined;
-          const formattedAddress = results?.[0]?.formatted_address;
+type GeocodeResponse = {
+  data: {
+    type: 'geocode';
+    attributes: {
+      location: { lat: number; lng: number };
+    };
+  };
+};
 
-          if (status === google.maps.GeocoderStatus.OK && formattedAddress) {
-            response = formattedAddress;
-          }
-          resolve(response);
-        }
-      );
-    } else {
-      resolve(undefined);
+const geocode = async (address: string | null | undefined) => {
+  try {
+    const result = await fetcher<GeocodeResponse>({
+      path: '/location/geocode',
+      action: 'get',
+      queryParams: {
+        address,
+      },
+    });
+
+    const lat = result?.data.attributes.location.lat;
+    const lng = result?.data.attributes.location.lng;
+
+    if (isNumber(lat) && isNumber(lng)) {
+      return {
+        type: 'Point',
+        coordinates: [lng, lat],
+      } as Point;
     }
-  });
+    return null;
+  } catch {
+    return null;
+  }
+};
+
+type ReverseGeocodeResponse = {
+  data: {
+    type: 'reverse_geocode';
+    attributes: {
+      formatted_address: string;
+    };
+  };
+};
+
+const reverseGeocode = async (lat: number, lng: number, language: string) => {
+  try {
+    const result = await fetcher<ReverseGeocodeResponse>({
+      path: '/location/reverse_geocode',
+      action: 'get',
+      queryParams: {
+        lat,
+        lng,
+        language,
+      },
+    });
+    const formattedAddress = result.data.attributes.formatted_address;
+
+    if (formattedAddress) {
+      return formattedAddress;
+    }
+    return undefined;
+  } catch {
+    return undefined;
+  }
 };
 
 const parsePosition = async (position?: string) => {
