@@ -253,6 +253,7 @@
   "app.components.InitiativesShow.shareTitle": "Felicitatioun, Är Propositioun gouf erfollegräich gepost!",
   "app.components.InitiativesShow.skipSharing": "Iwwersprangen, ech maachen et méi spéit",
   "app.components.InitiativesShowPage.goBack": "Zeréck",
+  "app.components.LocationInput.noOptions": "Keng Optiounen",
   "app.components.Modal.closeModal": "De Popup-Bildschierm zoumaachen",
   "app.components.NewAuthModal.steps.ChangeEmail.enterNewEmail": "Gitt eng nei E-Mailadress un",
   "app.components.PageNotFound.goBackToHomePage": "Zeréck op d’Homepage",
