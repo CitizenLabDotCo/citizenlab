@@ -569,9 +569,9 @@ jobs:
             cd citizenlab/front
             npm run snapshots
       - store_test_results:
-          path: ./citizenlab/front/.storybook/snapshots/test-results
+          path: ./citizenlab/front/.storybook/snapshots/test-report/report.xml
       - store_artifacts:
-          path: ./citizenlab/front/.storybook/snapshots/test-report
+          path: ./citizenlab/front/.storybook/snapshots/test-report/index.html
 
   front-trigger-deploy:
     resource_class: small
