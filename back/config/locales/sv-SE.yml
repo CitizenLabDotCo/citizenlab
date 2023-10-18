@@ -215,6 +215,7 @@ sv:
       status: 'Status'
       assignee_fullname: 'Tilldelad person'
       assignee_email: 'Mottagarens e-postadress'
+      image_url: 'URL för bild'
     anonymous: 'Anonymt'
   form_builder:
     default_select_field:
@@ -224,6 +225,23 @@ sv:
     survey_end_page:
       title: 'Undersökningens slut'
       description: "Skicka in dina svar genom att klicka på Skicka undersökning nedan."
+    pdf_export:
+      personal_data: 'Personuppgifter'
+      personal_data_explanation_ideation: "Vi kommer att skicka in ditt bidrag till %{organizationName}:s onlineplattform för deltagande. Om du vill att ditt namn ska visas som författare till detta bidrag och få uppdateringar som är relevanta för ditt bidrag via e-post, fyll i följande fält på denna sida så skapar vi ett konto åt dig. Din e-postadress kommer inte att vara offentlig och kommer endast att användas av %{organizationName}. Om du vill vara anonym eller inte samtycker till att vi använder dina personuppgifter på detta sätt kan du lämna dem tomma."
+      personal_data_explanation_native_survey: "Vi kommer att skicka din input till %{organizationName}:s onlineplattform för deltagande. Om du vill få uppdateringar som är relevanta för ditt bidrag via e-post, vänligen fyll i följande fält på denna sida så skapar vi ett konto åt dig. Dina uppgifter kommer inte att vara offentliga och kommer endast att användas av %{organizationName}. Om du inte samtycker till att vi använder dina personuppgifter på detta sätt kan du lämna dem tomma."
+      first_name: 'Förnamn'
+      last_name: 'Efternamn'
+      email_address: 'E-postadress'
+      by_checking_this_box: "Genom att markera den här rutan samtycker jag till att mina uppgifter används för att skapa ett konto på %{organizationName}:s deltagarplattform."
+      optional: 'valfri'
+      permission: 'Tillstånd'
+      choose_as_many: 'Välj så många du vill'
+      this_answer: 'Detta svar kommer endast att delas med moderatorer och inte med allmänheten.'
+      page: 'Sida'
+      date_published: 'Datum för publicering (dd-mm-åååå)'
+      instructions: 'Instruktioner'
+      write_as_clearly: 'Skriv så <b>tydligt</b> som möjligt - dessa formulär kan komma att skannas'
+      write_in_language: 'Skriv dina svar på samma språk som detta formulär'
   project_copy:
     title_suffix: 'Kopia'
   confirmations_mailer:
