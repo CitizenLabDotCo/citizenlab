@@ -116,7 +116,14 @@ class Phase < ApplicationRecord
   end
 
   def last_phase?
-    project.phases.blank? || start_at >= project.phases.maximum(:start_at)
+    # TODO: Figure out why we need to check if max is nil
+    return true if project.phases.blank? || project.phases.maximum(:start_at).nil?
+
+    start_at.present? && start_at >= project.phases.maximum(:start_at)
+  end
+
+  def previous_phase_end_at_updated?
+    @previous_phase_end_at_updated || false
   end
 
   private
@@ -145,6 +152,7 @@ class Phase < ApplicationRecord
         errors.add(:start_at, message: 'must be 2 days after the start of the last phase')
       else
         previous_phase.update!(end_at: (start_at - 1.day))
+        @previous_phase_end_at_updated = true
       end
     end
   end

@@ -322,8 +322,9 @@ RSpec.describe Phase do
         expect(project.phases.count).to eq 5
 
         new_phase_start = old_last_phase.start_at + 5.days
-        create(:phase, project: project, start_at: new_phase_start, end_at: nil)
+        new_phase = create(:phase, project: project, start_at: new_phase_start, end_at: nil)
         expect(old_last_phase.reload.end_at).to eq(new_phase_start - 1.day)
+        expect(new_phase.previous_phase_end_at_updated?).to be true
         expect(project.phases.count).to eq 6
       end
 
@@ -341,8 +342,9 @@ RSpec.describe Phase do
         expect(project.phases.count).to eq 5
 
         new_phase_start = old_last_phase.start_at + 5.days
-        create(:phase, project: project, start_at: new_phase_start, end_at: new_phase_start + 5.days)
+        new_phase = create(:phase, project: project, start_at: new_phase_start, end_at: new_phase_start + 5.days)
         expect(old_last_phase.reload.end_at).to eq(new_phase_start - 1.day)
+        expect(new_phase.previous_phase_end_at_updated?).to be true
         expect(project.phases.count).to eq 6
       end
 

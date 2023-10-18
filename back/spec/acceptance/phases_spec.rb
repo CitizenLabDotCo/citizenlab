@@ -12,7 +12,8 @@ resource 'Phases' do
     header 'Content-Type', 'application/json'
     create(:idea_status_proposed)
     @project = create(:project)
-    @phases = create_list(:phase_sequence, 2, project: @project)
+    @project.phases = create_list(:phase_sequence, 2, project: @project)
+    @phases = @project.phases
   end
 
   get 'web_api/v1/projects/:project_id/phases' do
@@ -150,7 +151,24 @@ resource 'Phases' do
         expect(json_response.dig(:data, :attributes, :reacting_like_limited_max)).to eq 10
         expect(json_response.dig(:data, :attributes, :start_at)).to eq start_at.to_s
         expect(json_response.dig(:data, :attributes, :end_at)).to eq end_at.to_s
+        expect(json_response.dig(:data, :attributes, :previous_phase_end_at_updated)).to be false
         expect(json_response.dig(:data, :relationships, :project, :data, :id)).to eq project_id
+      end
+
+      context 'Blank phase end dates' do
+        let(:start_at) { @project.phases.last.start_at + 5.days }
+        let(:end_at) { @project.phases.last.start_at + 10.days }
+
+        before { @project.phases.last.update!(end_at: nil) }
+
+        example_request 'Create a phase for a project where the last phase has an open end date' do
+
+          do_request
+
+          # binding.pry
+          assert_status 201
+          expect(json_response.dig(:data, :attributes, :previous_phase_end_at_updated)).to be true
+        end
       end
 
       describe 'voting phases' do
@@ -274,7 +292,7 @@ resource 'Phases' do
       describe do
         before do
           @project.phases.each(&:destroy!)
-          create(:phase, project: @project, start_at: Time.now - 2.days, end_at: Time.now + 2.days)
+          @project.phases << create(:phase, project: @project, start_at: Time.now - 2.days, end_at: Time.now + 2.days)
         end
 
         let(:start_at) { Time.now }
