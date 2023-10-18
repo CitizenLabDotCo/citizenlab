@@ -674,6 +674,7 @@
   "app.containers.Admin.Users.userBlockModal.unblockActionConfirmation": "Evet, bu kullanıcının engelini kaldırmak istiyorum",
   "app.containers.Admin.Users.userDeletionConfirmation": "Bu kullanıcı kalıcı olarak kaldırılsın mı?",
   "app.containers.Admin.Users.userDeletionFailed": "Bu kullanıcı silinirken bir hata oluştu, lütfen tekrar deneyin.",
+  "app.containers.Admin.Users.userDeletionProposalVotes": "Bu işlem aynı zamanda bu kullanıcının hala oylamaya açık olan teklifler üzerindeki tüm oylarını da silecektir.",
   "app.containers.Admin.Users.userExportFileName": "user_export",
   "app.containers.Admin.Users.userInsights": "Kullanıcı içgörüleri",
   "app.containers.Admin.Users.youCantDeleteYourself": "Kullanıcı yönetici sayfası üzerinden kendi hesabınızı silemezsiniz",
