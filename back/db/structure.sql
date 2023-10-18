@@ -491,6 +491,7 @@ ALTER TABLE IF EXISTS ONLY public.idea_imports DROP CONSTRAINT IF EXISTS idea_im
 ALTER TABLE IF EXISTS ONLY public.idea_import_files DROP CONSTRAINT IF EXISTS idea_import_files_pkey;
 ALTER TABLE IF EXISTS ONLY public.idea_images DROP CONSTRAINT IF EXISTS idea_images_pkey;
 ALTER TABLE IF EXISTS ONLY public.idea_files DROP CONSTRAINT IF EXISTS idea_files_pkey;
+ALTER TABLE IF EXISTS ONLY public.homepage_contents DROP CONSTRAINT IF EXISTS homepage_contents_pkey;
 ALTER TABLE IF EXISTS ONLY public.home_pages DROP CONSTRAINT IF EXISTS home_pages_pkey;
 ALTER TABLE IF EXISTS ONLY public.groups_projects DROP CONSTRAINT IF EXISTS groups_projects_pkey;
 ALTER TABLE IF EXISTS ONLY public.groups DROP CONSTRAINT IF EXISTS groups_pkey;
@@ -612,6 +613,7 @@ DROP TABLE IF EXISTS public.idea_import_files;
 DROP TABLE IF EXISTS public.idea_images;
 DROP TABLE IF EXISTS public.idea_files;
 DROP TABLE IF EXISTS public.id_id_card_lookup_id_cards;
+DROP TABLE IF EXISTS public.homepage_contents;
 DROP TABLE IF EXISTS public.home_pages;
 DROP TABLE IF EXISTS public.groups_projects;
 DROP TABLE IF EXISTS public.groups_permissions;
@@ -2436,6 +2438,18 @@ CREATE TABLE public.home_pages (
 
 
 --
+-- Name: homepage_contents; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.homepage_contents (
+    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
+    craftjs_json jsonb DEFAULT '{}'::jsonb NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: id_id_card_lookup_id_cards; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -3986,6 +4000,14 @@ ALTER TABLE ONLY public.groups_projects
 
 ALTER TABLE ONLY public.home_pages
     ADD CONSTRAINT home_pages_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: homepage_contents homepage_contents_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.homepage_contents
+    ADD CONSTRAINT homepage_contents_pkey PRIMARY KEY (id);
 
 
 --
@@ -7958,6 +7980,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230913121819'),
 ('20230915391649'),
 ('20230927135924'),
-('20231003095622');
+('20231003095622'),
+('20231018083110');
 
 
