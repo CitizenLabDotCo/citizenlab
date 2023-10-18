@@ -1481,6 +1481,7 @@
   "app.containers.SpamReport.otherReasonPlaceholder": "Descripció",
   "app.containers.SpamReport.wrong_content": "Això no és rellevant",
   "app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle": "Elimina la foto de perfil",
+  "app.containers.UsersEditPage.activeProposalVotesWillBeDeleted": "Se suprimiran els vostres vots sobre les propostes que encara estiguin obertes a la votació. No s'eliminaran els vots de les propostes en què s'hagi tancat el període de votació.",
   "app.containers.UsersEditPage.addPassword": "Afegeix la contrasenya",
   "app.containers.UsersEditPage.becomeVerifiedSubtitle": "Per participar en projectes que requereixin verificació.",
   "app.containers.UsersEditPage.becomeVerifiedTitle": "Verificar la vostra identitat",

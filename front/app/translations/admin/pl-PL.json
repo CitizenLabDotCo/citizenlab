@@ -674,6 +674,7 @@
   "app.containers.Admin.Users.userBlockModal.unblockActionConfirmation": "Tak, chcę odblokować tego użytkownika",
   "app.containers.Admin.Users.userDeletionConfirmation": "Usunąć tego użytkownika na stałe?",
   "app.containers.Admin.Users.userDeletionFailed": "Podczas usuwania tego użytkownika wystąpił błąd, proszę spróbuj ponownie.",
+  "app.containers.Admin.Users.userDeletionProposalVotes": "Spowoduje to również usunięcie wszystkich głosów oddanych przez tego użytkownika na propozycje, które są nadal otwarte do głosowania.",
   "app.containers.Admin.Users.userExportFileName": "uzytkownicy_eksport",
   "app.containers.Admin.Users.userInsights": "Spostrzeżenia użytkowników",
   "app.containers.Admin.Users.youCantDeleteYourself": "Nie możesz usunąć własnego konta z panelu administratora",

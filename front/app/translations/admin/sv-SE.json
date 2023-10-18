@@ -674,6 +674,7 @@
   "app.containers.Admin.Users.userBlockModal.unblockActionConfirmation": "Ja, jag vill avblockera den här användaren",
   "app.containers.Admin.Users.userDeletionConfirmation": "Vill du ta bort den här användaren permanent?",
   "app.containers.Admin.Users.userDeletionFailed": "Ett fel uppstod när den här användaren skulle tas bort, försök igen.",
+  "app.containers.Admin.Users.userDeletionProposalVotes": "Detta kommer också att radera alla röster från denna användare på förslag som fortfarande är öppna för omröstning.",
   "app.containers.Admin.Users.userExportFileName": "user_export",
   "app.containers.Admin.Users.userInsights": "Användarinsikter",
   "app.containers.Admin.Users.youCantDeleteYourself": "Du kan inte ta bort ditt eget konto via användaradminsidan",

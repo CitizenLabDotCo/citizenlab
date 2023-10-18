@@ -1481,6 +1481,7 @@
   "app.containers.SpamReport.otherReasonPlaceholder": "Descrição",
   "app.containers.SpamReport.wrong_content": "Isto não pertence aqui.",
   "app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle": "Remover imagem de perfil",
+  "app.containers.UsersEditPage.activeProposalVotesWillBeDeleted": "Seus votos em propostas que ainda estão abertas para votação serão excluídos. Os votos em propostas cujo período de votação tenha sido encerrado não serão excluídos.",
   "app.containers.UsersEditPage.addPassword": "Adicionar palavra-passe",
   "app.containers.UsersEditPage.becomeVerifiedSubtitle": "Participar em projetos para usuários verificados.",
   "app.containers.UsersEditPage.becomeVerifiedTitle": "Verifique o seu usuário",

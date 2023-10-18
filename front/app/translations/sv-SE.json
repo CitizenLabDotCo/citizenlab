@@ -1481,6 +1481,7 @@
   "app.containers.SpamReport.otherReasonPlaceholder": "Beskrivning",
   "app.containers.SpamReport.wrong_content": "Det här är inte relevant",
   "app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle": "Ta bort profilbild",
+  "app.containers.UsersEditPage.activeProposalVotesWillBeDeleted": "Dina röster på förslag som fortfarande är öppna för omröstning kommer att raderas. Röster på förslag där omröstningsperioden har avslutats kommer inte att raderas.",
   "app.containers.UsersEditPage.addPassword": "Lägg till lösenord",
   "app.containers.UsersEditPage.becomeVerifiedSubtitle": "Att delta i projekt som kräver verifiering.",
   "app.containers.UsersEditPage.becomeVerifiedTitle": "Verifiera din identitet",

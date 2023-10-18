@@ -674,6 +674,7 @@
   "app.containers.Admin.Users.userBlockModal.unblockActionConfirmation": "Sí, quiero desbloquear a este usuario",
   "app.containers.Admin.Users.userDeletionConfirmation": "¿Eliminar permanentemente este usuario?",
   "app.containers.Admin.Users.userDeletionFailed": "Error al borrar este usuario, por favor, inténtelo de nuevo.",
+  "app.containers.Admin.Users.userDeletionProposalVotes": "Esto también borrará cualquier voto de este usuario en propuestas que aún estén abiertas a votación.",
   "app.containers.Admin.Users.userExportFileName": "usuarios_export",
   "app.containers.Admin.Users.userInsights": "Conocimiento del usuario",
   "app.containers.Admin.Users.youCantDeleteYourself": "No puedes eliminar tu propia cuenta a través de la página de administración de usuario",
