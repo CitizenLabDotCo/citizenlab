@@ -1481,6 +1481,7 @@
   "app.containers.SpamReport.otherReasonPlaceholder": "Opis",
   "app.containers.SpamReport.wrong_content": "Nije relevantno",
   "app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle": "Ukloni profilnu sliku",
+  "app.containers.UsersEditPage.activeProposalVotesWillBeDeleted": "Vaši glasovi za prijedloge koji su još otvoreni za glasovanje bit će izbrisani. Glasovi o prijedlozima za koje je zatvoreno razdoblje glasovanja neće biti izbrisani.",
   "app.containers.UsersEditPage.addPassword": "Dodaj lozinku",
   "app.containers.UsersEditPage.becomeVerifiedSubtitle": "Za sudjelovanje u projektima koji zahtijevaju potvrdu.",
   "app.containers.UsersEditPage.becomeVerifiedTitle": "Potvrdite vaš identitet",
