@@ -43,7 +43,7 @@ module IdHoplr
     def host
       case AppConfiguration.instance.settings('hoplr_login', 'environment')
       when 'test'       then 'test.hoplr.com'
-      when 'production' then 'hoplr.com'
+      when 'production' then 'www.hoplr.com'
       end
     end
 

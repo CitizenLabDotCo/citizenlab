@@ -1,12 +1,11 @@
-import React, { memo, useState, useEffect } from 'react';
-import { adopt } from 'react-adopt';
+import React, { useState, useEffect } from 'react';
 import useLocalize from 'hooks/useLocalize';
 import { isEqual } from 'lodash-es';
 
 // resources
 import { isNilOrError } from 'utils/helperUtils';
 import moment from 'moment';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import styled from 'styled-components';
 import messages from './messages';
 import ResolutionControl, {
@@ -14,10 +13,8 @@ import ResolutionControl, {
 } from 'components/admin/ResolutionControl';
 import { GraphsContainer, Column } from 'components/admin/GraphWrappers';
 
-import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
-import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import { colors } from 'utils/styleUtils';
-import { MessageDescriptor, WrappedComponentProps } from 'react-intl';
+import { MessageDescriptor } from 'react-intl';
 
 // services
 import { ParticipationMethod } from 'utils/participationContexts';
@@ -36,9 +33,11 @@ import PostByTimeCard from 'components/admin/GraphCards/PostsByTimeCard';
 import ReactionsByTimeCard from 'components/admin/GraphCards/ReactionsByTimeCard';
 import CommentsByTimeCard from 'components/admin/GraphCards/CommentsByTimeCard';
 
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { activeUsersByTimeCumulativeXlsxEndpoint } from 'api/active_users_by_time/util';
+import usePhases from 'api/phases/usePhases';
+import { useParams } from 'react-router-dom';
+import useProjectById from 'api/projects/useProjectById';
+import useIdeas from 'api/ideas/useIdeas';
 
 const Section = styled.div`
   margin-bottom: 20px;
@@ -73,12 +72,6 @@ const TimelineSection = styled.div`
   }
 `;
 
-interface Props {
-  phases: GetPhasesChildProps;
-  mostReactedIdeas: GetIdeasChildProps;
-  project: GetProjectChildProps;
-}
-
 const PARTICIPATION_METHOD_MESSAGES: Record<
   ParticipationMethod,
   MessageDescriptor
@@ -104,261 +97,236 @@ const getResolution = (start: moment.Moment, end: moment.Moment) => {
     : 'month';
 };
 
-const ProjectReport = memo(
-  ({
-    project,
-    phases,
-    mostReactedIdeas,
-    intl: { formatMessage, formatDate },
-  }: Props & WrappedComponentProps & WithRouterProps) => {
-    const localize = useLocalize();
+const ProjectReport = () => {
+  const { formatMessage, formatDate } = useIntl();
+  const localize = useLocalize();
+  const { projectId } = useParams() as { projectId: string };
+  const { data: project } = useProjectById(projectId);
+  const { data: phases } = usePhases(projectId);
+  const { data: mostReactedIdeas } = useIdeas({
+    'page[size]': 5,
+    sort: 'popular',
+    projects: [projectId],
+  });
 
-    // set time boundaries
-    const [resolution, setResolution] = useState<IResolution>('month');
-    const [startAt, setStartAt] = useState<string | null | undefined>(null);
-    const [endAt, setEndAt] = useState<string | null>(null);
+  // set time boundaries
+  const [resolution, setResolution] = useState<IResolution>('month');
+  const [startAt, setStartAt] = useState<string | null | undefined>(null);
+  const [endAt, setEndAt] = useState<string | null>(null);
 
-    const isTimelineProject = isNilOrError(project)
-      ? null
-      : project.attributes.process_type === 'timeline';
+  const isTimelineProject = isNilOrError(project)
+    ? null
+    : project.data.attributes.process_type === 'timeline';
 
-    useEffect(() => {
-      if (isNilOrError(project)) return;
+  useEffect(() => {
+    if (isNilOrError(project)) return;
 
-      if (isTimelineProject) {
-        if (!isNilOrError(phases) && phases.length > 0) {
-          const startAt = phases[0].attributes.start_at;
-          const endAt = phases[phases.length - 1].attributes.end_at;
-          setStartAt(startAt);
-          setEndAt(endAt);
-
-          const resolution = getResolution(moment(startAt), moment(endAt));
-          setResolution(resolution);
-        }
-      } else {
-        const startAt = project.attributes.created_at;
+    if (isTimelineProject) {
+      if (!isNilOrError(phases) && phases.data.length > 0) {
+        const startAt = phases.data[0].attributes.start_at;
+        const endAt = phases.data[phases.data.length - 1].attributes.end_at;
         setStartAt(startAt);
-        setEndAt(moment().toISOString());
+        setEndAt(endAt);
 
-        const resolution = getResolution(moment(startAt), moment());
+        const resolution = getResolution(moment(startAt), moment(endAt));
         setResolution(resolution);
       }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [project, phases]);
+    } else {
+      const startAt = project.data.attributes.created_at;
+      setStartAt(startAt);
+      setEndAt(moment().toISOString());
 
-    if (isNilOrError(project)) return null;
+      const resolution = getResolution(moment(startAt), moment());
+      setResolution(resolution);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [project, phases]);
 
-    const formatDateLabel = (date: string) =>
-      formatDate(date, {
-        day: resolution === 'month' ? undefined : '2-digit',
-        month: 'short',
-      });
+  if (isNilOrError(project)) return null;
 
-    const mostReactedIdeasSerie = mostReactedIdeas?.list?.map((idea) => ({
-      code: idea.id,
-      value: idea.attributes.likes_count + idea.attributes.dislikes_count,
-      up: idea.attributes.likes_count,
-      down: idea.attributes.dislikes_count,
-      name: localize(idea.attributes.title_multiloc),
-      slug: idea.attributes.slug,
-    }));
+  const formatDateLabel = (date: string) =>
+    formatDate(date, {
+      day: resolution === 'month' ? undefined : '2-digit',
+      month: 'short',
+    });
 
-    // deduplicated non-null participations methods in this project
-    const participationMethods = (
-      isTimelineProject
-        ? isNilOrError(phases)
-          ? []
-          : phases.map((phase) => phase.attributes.participation_method)
-        : [project.attributes.participation_method]
-    ).filter((el, i, arr) => el && arr.indexOf(el) === i);
+  const mostReactedIdeasSerie = mostReactedIdeas?.data.map((idea) => ({
+    code: idea.id,
+    value: idea.attributes.likes_count + idea.attributes.dislikes_count,
+    up: idea.attributes.likes_count,
+    down: idea.attributes.dislikes_count,
+    name: localize(idea.attributes.title_multiloc),
+    slug: idea.attributes.slug,
+  }));
 
-    const projectTitle = localize(project.attributes.title_multiloc);
+  // deduplicated non-null participations methods in this project
+  const participationMethods = (
+    isTimelineProject
+      ? isNilOrError(phases)
+        ? []
+        : phases.data.map((phase) => phase.attributes.participation_method)
+      : [project.data.attributes.participation_method]
+  ).filter((el, i, arr) => el && arr.indexOf(el) === i);
 
-    const timeBoundariesSet = !!(startAt && endAt);
+  const projectTitle = localize(project.data.attributes.title_multiloc);
 
-    return (
-      <>
-        <RowSection>
-          <PageTitle>
-            <T value={project.attributes.title_multiloc} />
-          </PageTitle>
-          <ResolutionControl value={resolution} onChange={setResolution} />
-        </RowSection>
-        {isTimelineProject && (
-          <Section>
-            <TimelineSection>
-              {!isNilOrError(phases) && phases.length > 0 ? (
-                phases.map((phase, index) => {
-                  return (
-                    <Phase
-                      key={index}
-                      isCurrentPhase={
-                        phase.id ===
-                        project?.relationships?.current_phase?.data?.id
-                      }
-                    >
-                      <p>
-                        <FormattedMessage
-                          {...messages.fromTo}
-                          values={{
-                            from: formatDateLabel(phase.attributes.start_at),
-                            to: formatDateLabel(phase.attributes.end_at),
-                          }}
-                        />
-                      </p>
-                      <FormattedMessage
-                        {...PARTICIPATION_METHOD_MESSAGES[
-                          phase.attributes.participation_method
-                        ]}
-                      />
-                      <div>{localize(phase.attributes.title_multiloc)}</div>
-                    </Phase>
-                  );
-                })
-              ) : (
-                <FormattedMessage {...messages.noPhase} />
-              )}
-            </TimelineSection>
-          </Section>
-        )}
+  const timeBoundariesSet = !!(startAt && endAt);
 
-        {!isEqual(participationMethods, ['information']) &&
-          timeBoundariesSet && (
-            <Section>
-              <SectionTitle>
-                <FormattedMessage {...messages.sectionWho} />
-              </SectionTitle>
-              <GraphsContainer>
-                <BarChartActiveUsersByTime
-                  startAt={startAt}
-                  endAt={endAt}
-                  resolution={resolution}
-                  graphUnit="users"
-                  graphUnitMessageKey="users"
-                  graphTitle={formatMessage(messages.participantsOverTimeTitle)}
-                  xlsxEndpoint={activeUsersByTimeCumulativeXlsxEndpoint}
-                  currentProjectFilter={project.id}
-                  currentProjectFilterLabel={projectTitle}
-                />
-                <UserCharts
-                  startAt={startAt}
-                  endAt={endAt}
-                  participationMethods={participationMethods}
-                  project={project}
-                />
-              </GraphsContainer>
-            </Section>
-          )}
-
+  return (
+    <>
+      <RowSection>
+        <PageTitle>
+          <T value={project.data.attributes.title_multiloc} />
+        </PageTitle>
+        <ResolutionControl value={resolution} onChange={setResolution} />
+      </RowSection>
+      {isTimelineProject && (
         <Section>
-          {((participationMethods.includes('ideation') && timeBoundariesSet) ||
-            participationMethods.includes('poll')) && (
-            <SectionTitle>
-              <FormattedMessage {...messages.sectionWhatInput} />
-            </SectionTitle>
-          )}
-          {participationMethods.includes('ideation') && timeBoundariesSet && (
-            <GraphsContainer>
-              <Column>
-                <PostByTimeCard
-                  projectId={project.id}
-                  startAtMoment={moment(startAt)}
-                  endAtMoment={moment(endAt)}
-                  resolution={resolution}
-                />
-                <ReactionsByTimeCard
-                  projectId={project.id}
-                  startAtMoment={moment(startAt)}
-                  endAtMoment={moment(endAt)}
-                  resolution={resolution}
-                />
-                <HorizontalBarChartWithoutStream
-                  serie={mostReactedIdeasSerie}
-                  graphTitleString={formatMessage(
-                    messages.fiveInputsWithMostReactions
-                  )}
-                  graphUnit="reactions"
-                  className="dynamicHeight fullWidth"
-                />
-              </Column>
-              <Column>
-                <CommentsByTimeCard
-                  projectId={project.id}
-                  startAtMoment={moment(startAt)}
-                  endAtMoment={moment(endAt)}
-                  resolution={resolution}
-                />
-                <IdeasByStatusChart
-                  className="dynamicHeight fullWidth"
-                  startAt={startAt}
-                  endAt={endAt}
-                  currentProjectFilter={project.id}
-                />
-                <ParticipationPerTopic
-                  startAt={startAt}
-                  endAt={endAt}
-                  projectId={project.id}
-                  className="dynamicHeight fullWidth"
-                />
-              </Column>
-            </GraphsContainer>
-          )}
-          {participationMethods.includes('poll') ? (
-            isTimelineProject ? (
-              !isNilOrError(phases) &&
-              phases.map(
-                (phase) =>
-                  phase.attributes.participation_method === 'poll' && (
-                    <PollReport
-                      key={phase.id}
-                      participationContextType="phase"
-                      participationContextId={phase.id}
-                      participationContextTitle={localize(
-                        phase.attributes.title_multiloc
-                      )}
+          <TimelineSection>
+            {!isNilOrError(phases) && phases.data.length > 0 ? (
+              phases.data.map((phase, index) => {
+                return (
+                  <Phase
+                    key={index}
+                    isCurrentPhase={
+                      phase.id ===
+                      project?.data.relationships?.current_phase?.data?.id
+                    }
+                  >
+                    <p>
+                      <FormattedMessage
+                        {...messages.fromTo}
+                        values={{
+                          from: formatDateLabel(phase.attributes.start_at),
+                          to: formatDateLabel(phase.attributes.end_at),
+                        }}
+                      />
+                    </p>
+                    <FormattedMessage
+                      {...PARTICIPATION_METHOD_MESSAGES[
+                        phase.attributes.participation_method
+                      ]}
                     />
-                  )
-              )
+                    <div>{localize(phase.attributes.title_multiloc)}</div>
+                  </Phase>
+                );
+              })
             ) : (
-              <PollReport
-                participationContextType="project"
-                participationContextId={project.id}
-                participationContextTitle={localize(
-                  project.attributes.title_multiloc
-                )}
-              />
-            )
-          ) : null}
+              <FormattedMessage {...messages.noPhase} />
+            )}
+          </TimelineSection>
         </Section>
-      </>
-    );
-  }
-);
+      )}
 
-const ProjectReportWithHoc = injectIntl(ProjectReport);
+      {!isEqual(participationMethods, ['information']) && timeBoundariesSet && (
+        <Section>
+          <SectionTitle>
+            <FormattedMessage {...messages.sectionWho} />
+          </SectionTitle>
+          <GraphsContainer>
+            <BarChartActiveUsersByTime
+              startAt={startAt}
+              endAt={endAt}
+              resolution={resolution}
+              graphUnit="users"
+              graphUnitMessageKey="users"
+              graphTitle={formatMessage(messages.participantsOverTimeTitle)}
+              xlsxEndpoint={activeUsersByTimeCumulativeXlsxEndpoint}
+              currentProjectFilter={project.data.id}
+              currentProjectFilterLabel={projectTitle}
+            />
+            <UserCharts
+              startAt={startAt}
+              endAt={endAt}
+              participationMethods={participationMethods}
+              project={project.data}
+            />
+          </GraphsContainer>
+        </Section>
+      )}
 
-const Data = adopt<Props, WithRouterProps>({
-  phases: ({ params, render }) => (
-    <GetPhases projectId={params.projectId}>{render}</GetPhases>
-  ),
-  mostReactedIdeas: ({ params, render }) => (
-    <GetIdeas
-      {...{
-        'page[size]': 5,
-        sort: 'popular',
-        projects: [params.projectId],
-      }}
-    >
-      {render}
-    </GetIdeas>
-  ),
-  project: ({ params, render }) => (
-    <GetProject projectId={params.projectId}>{render}</GetProject>
-  ),
-});
+      <Section>
+        {((participationMethods.includes('ideation') && timeBoundariesSet) ||
+          participationMethods.includes('poll')) && (
+          <SectionTitle>
+            <FormattedMessage {...messages.sectionWhatInput} />
+          </SectionTitle>
+        )}
+        {participationMethods.includes('ideation') && timeBoundariesSet && (
+          <GraphsContainer>
+            <Column>
+              <PostByTimeCard
+                projectId={projectId}
+                startAtMoment={moment(startAt)}
+                endAtMoment={moment(endAt)}
+                resolution={resolution}
+              />
+              <ReactionsByTimeCard
+                projectId={projectId}
+                startAtMoment={moment(startAt)}
+                endAtMoment={moment(endAt)}
+                resolution={resolution}
+              />
+              <HorizontalBarChartWithoutStream
+                serie={mostReactedIdeasSerie}
+                graphTitleString={formatMessage(
+                  messages.fiveInputsWithMostReactions
+                )}
+                graphUnit="reactions"
+                className="dynamicHeight fullWidth"
+              />
+            </Column>
+            <Column>
+              <CommentsByTimeCard
+                projectId={projectId}
+                startAtMoment={moment(startAt)}
+                endAtMoment={moment(endAt)}
+                resolution={resolution}
+              />
+              <IdeasByStatusChart
+                className="dynamicHeight fullWidth"
+                startAt={startAt}
+                endAt={endAt}
+                currentProjectFilter={projectId}
+              />
+              <ParticipationPerTopic
+                startAt={startAt}
+                endAt={endAt}
+                projectId={projectId}
+                className="dynamicHeight fullWidth"
+              />
+            </Column>
+          </GraphsContainer>
+        )}
+        {participationMethods.includes('poll') ? (
+          isTimelineProject ? (
+            !isNilOrError(phases) &&
+            phases.data.map(
+              (phase) =>
+                phase.attributes.participation_method === 'poll' && (
+                  <PollReport
+                    key={phase.id}
+                    participationContextType="phase"
+                    participationContextId={phase.id}
+                    participationContextTitle={localize(
+                      phase.attributes.title_multiloc
+                    )}
+                  />
+                )
+            )
+          ) : (
+            <PollReport
+              participationContextType="project"
+              participationContextId={projectId}
+              participationContextTitle={localize(
+                project.data.attributes.title_multiloc
+              )}
+            />
+          )
+        ) : null}
+      </Section>
+    </>
+  );
+};
 
-export default withRouter((inputProps: WithRouterProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <ProjectReportWithHoc {...inputProps} {...dataProps} />}
-  </Data>
-));
+export default ProjectReport;

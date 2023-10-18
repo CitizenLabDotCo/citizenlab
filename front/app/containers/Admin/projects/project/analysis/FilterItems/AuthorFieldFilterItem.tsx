@@ -11,7 +11,7 @@ import T from 'components/T';
 import ShortUserFieldValue from '../components/ShortUserFieldValue';
 import ElipsisFilterValue from './EllipsisFilterValue';
 import { useIntl } from 'utils/cl-intl';
-import translations from './translations';
+import messages from './messages';
 
 type Props = {
   customFieldId: string;
@@ -81,7 +81,7 @@ const AuthorFieldFilterItem = ({
           onClick={() => {
             removeSearchParams([filterKey]);
           }}
-          a11y_buttonActionMessage={formatMessage(translations.removeFilter)}
+          a11y_buttonActionMessage={formatMessage(messages.removeFilter)}
         />
       )}
     </Box>

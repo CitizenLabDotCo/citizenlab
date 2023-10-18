@@ -50,7 +50,7 @@ describe('Project description builder toggle', () => {
     cy.wait(4000);
 
     // Submit project
-    cy.get('.e2e-submit-wrapper-button').click();
+    cy.get('.e2e-submit-wrapper-button button').click();
     cy.wait('@saveProject');
     cy.wait('@saveProjectFiles');
     cy.contains('Your form has been saved!').should('be.visible');
@@ -89,7 +89,7 @@ describe('Project description builder toggle', () => {
     cy.wait(4000);
 
     // Submit project
-    cy.get('.e2e-submit-wrapper-button').click();
+    cy.get('.e2e-submit-wrapper-button button').click();
     cy.wait('@saveProject');
     cy.wait('@saveProjectFiles');
     cy.contains('Your form has been saved!').should('be.visible');

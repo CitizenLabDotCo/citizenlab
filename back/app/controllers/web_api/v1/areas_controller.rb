@@ -16,7 +16,7 @@ class WebApi::V1::AreasController < ApplicationController
       when '-projects_count'
         @areas.order_projects_count(:asc)
       else
-        @areas.order(created_at: :desc)
+        @areas.order(:ordering)
       end
     @areas = paginate @areas
 

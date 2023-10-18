@@ -81,8 +81,6 @@ const ChartWidgetSettings = () => {
           {formatMessage(messages.analyticsChartDateRange)}
         </Text>
         <DateRangePicker
-          startDateId={'startAt'}
-          endDateId={'endAt'}
           startDate={startAtMoment}
           endDate={endAtMoment}
           onDatesChange={handleChangeTimeRange}
