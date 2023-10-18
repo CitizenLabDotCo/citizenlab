@@ -478,8 +478,6 @@ const AdminProjectEventEdit = () => {
     return <Spinner />;
   }
 
-  console.log(eventAttrs);
-
   return (
     <>
       <SectionTitle>
