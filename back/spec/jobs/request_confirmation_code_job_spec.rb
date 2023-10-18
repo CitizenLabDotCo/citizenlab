@@ -14,6 +14,17 @@ RSpec.describe RequestConfirmationCodeJob do # TODO: log activities, return vali
       it 'raises an error' do
         expect { job.perform(user) }.to raise_error(RuntimeError)
       end
+
+      # context 'when passing a new email' do
+      #   before do
+      #     context[:user] = create(:user_with_confirmation)
+      #     context[:new_email] = 'new@email.com'
+      #   end
+  
+      #   it 'sets the user email straight to the email column' do
+      #     expect { result }.to change(context[:user], :email).from(context[:user].email).to(context[:new_email])
+      #   end
+      # end
     end
 
     describe 'when confirmation is turned on' do
@@ -50,6 +61,86 @@ RSpec.describe RequestConfirmationCodeJob do # TODO: log activities, return vali
 
         it 'enqueues a "received_confirmation_code" activity job' do
           expect { job.perform(user) }.to enqueue_job(LogActivityJob).with(user, 'received_confirmation_code', user, anything)
+        end
+
+        it 'does not set the new_email field' do
+          expect { job.perform(user) }.not_to change(user, :new_email)
+        end
+
+        context 'when setting a new email' do
+          let(:new_email) { 'new@email.com' }
+
+          it 'sets the user email temporarily in new_email' do
+            job.perform(user, new_email: new_email)
+            expect(user.new_email).to eq new_email
+            expect(user.email).to eq 'some_email@email.com'
+          end
+
+          it 'returns a validation error if the new email does not have a valid format' do
+            job.perform(user, new_email: 'invalid@email-com')
+            expect(user).to be_invalid
+            expect(user.errors.details).to eq({ email: [{ error: :invalid, value: 'invalid@email-com' }] })
+            expect(user.reload.new_email).to be_nil
+          end
+
+          it 'returns a validation error if a user with the new email already exists' do
+            create(:user, email: new_email)
+            job.perform(user, new_email: new_email)
+            expect(user).to be_invalid
+            expect(user.errors.details).to eq({ email: [{ error: :taken, value: new_email }] })
+            expect(user.reload.new_email).to be_nil
+          end
+
+          context 'when the user is passwordless' do
+            let(:user) { create(:user_no_password, email: 'some_email@email.com') }
+
+            it 'sets the user email temporarily in new_email' do
+              job.perform(user, new_email: new_email)
+              expect(user.new_email).to eq new_email
+              expect(user.email).to eq 'some_email@email.com'
+            end
+          end
+
+          # context 'when a user is passwordless' do
+          #   before do
+          #     context[:user] = create(:user_no_password)
+          #     context[:new_email] = 'new@email.com'
+          #   end
+      
+          #   context 'and user is not active' do
+          #     it 'returns email errors' do
+          #       expect(result.errors[:email]).not_to be_empty
+          #       expect(context[:user].reload.new_email).to be_nil
+          #     end
+          #   end
+      
+          #   context 'and user is active' do
+          #     before do
+          #       context[:user].confirm!
+          #     end
+      
+          #     it 'sets the user email in new email field' do
+          #       expect(result.errors).to be_nil
+          #       expect(context[:user].reload.new_email).to eq context[:new_email]
+          #     end
+          #   end
+          # end
+
+          # context 'user is not yet active' do
+          #   it 'sets the user email direct to the email field' do
+          #     expect { result }.to change(context[:user], :email).from(context[:user].email).to(context[:new_email])
+          #   end
+          # end
+    
+          # context 'user is active' do
+          #   before do
+          #     context[:user].confirm!
+          #   end
+    
+          #   it 'sets the user email temporarily in new_email' do
+          #     expect { result }.to change(context[:user], :new_email).from(nil).to(context[:new_email])
+          #   end
+          # end
         end
       end
 

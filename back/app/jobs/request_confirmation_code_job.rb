@@ -15,7 +15,7 @@ class RequestConfirmationCodeJob < ApplicationJob
     LogActivityJob.perform_later(user, 'requested_confirmation_code', user, Time.now.to_i)
     if new_email
       user.new_email = new_email
-      user.email_confirmation_code_reset_count = 0 # TODO: Why does this need to be set to 0?
+      user.email_confirmation_code_reset_count = 0
     end
     reset_user_confirmation_code user
     return if !user.valid?
