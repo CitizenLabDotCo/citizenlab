@@ -44,7 +44,6 @@ class WebApi::V1::HomePagesController < ApplicationController
       :banner_cta_signed_out_type,
       :banner_cta_signed_out_url,
       :header_bg,
-      :craftjs_json,
       top_info_section_multiloc: CL2_SUPPORTED_LOCALES,
       projects_header_multiloc: CL2_SUPPORTED_LOCALES,
       banner_signed_in_header_multiloc: CL2_SUPPORTED_LOCALES,
@@ -53,7 +52,8 @@ class WebApi::V1::HomePagesController < ApplicationController
       banner_signed_out_subheader_multiloc: CL2_SUPPORTED_LOCALES,
       banner_cta_signed_out_text_multiloc: CL2_SUPPORTED_LOCALES,
       bottom_info_section_multiloc: CL2_SUPPORTED_LOCALES,
-      pinned_admin_publication_ids: []
+      pinned_admin_publication_ids: [],
+      craftjs_json: {}
     )
   end
 end
