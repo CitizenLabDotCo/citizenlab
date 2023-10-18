@@ -14,7 +14,7 @@ export default defineMessages({
     defaultMessage: 'By uploading content, you declare that this content does not violate any regulations or rights of third parties.'
   },
   readFullDisclaimer: {
-    id: 'app.components.ContentUploadDisclaimer.readFullDisclaimer',
-    defaultMessage: 'Read full disclaimer here.',
+    id: 'app.components.ContentUploadDisclaimer.readFullDisclaimer2',
+    defaultMessage: 'Read full disclaimer',
   },
 });

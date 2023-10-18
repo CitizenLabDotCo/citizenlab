@@ -13,7 +13,6 @@ import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 const ContentUploadDisclaimerTooltip = () => {
-
   const { formatMessage } = useIntl();
   const isMobileOrSmaller = useBreakpoint('phone');
   const [showFullDisclaimer, setShowFullDisclaimer] = useState(false);
@@ -35,12 +34,14 @@ const ContentUploadDisclaimerTooltip = () => {
               fontSize="s"
               m="0px"
               mt="8px"
-              textDecoration="underline"
               role="button"
               style={{ cursor: 'pointer' }}
               tabIndex={0}
             >
-              {formatMessage(messages.readFullDisclaimer)}
+              <span style={{ textDecoration: 'underline' }}>
+                {formatMessage(messages.readFullDisclaimer)}
+              </span>
+              .
             </Text>
           </>
         }

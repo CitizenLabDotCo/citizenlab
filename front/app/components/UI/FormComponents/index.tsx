@@ -30,6 +30,7 @@ import {
   IconNames,
 } from '@citizenlab/cl2-component-library';
 import { omit } from 'lodash-es';
+import ContentUploadDisclaimerTooltip from 'components/ContentUploadDisclaimer';
 
 export const FormSection = styled.div`
   max-width: 620px;
@@ -62,7 +63,7 @@ const FormSectionDescriptionStyled = styled.p`
 `;
 
 const StyledSpan = styled.span`
-  margin-right: 8px;
+  margin-right: 4px;
   font-weight: 600;
 `;
 
@@ -167,6 +168,7 @@ interface FormLabelGenericProps {
   subtextMessageValues?: FormattedMessageProps['values'];
   subtextValue?: JSX.Element | string;
   subtextSupportsHtml?: boolean;
+  showContentUploadDisclaimer?: boolean;
 }
 
 interface FormLabelPropsMessages extends FormLabelGenericProps {
@@ -215,6 +217,7 @@ export const FormLabel = memo<
     subtextMessageValues,
     subtextSupportsHtml,
     subtextValue,
+    showContentUploadDisclaimer,
     ...remainingProps
   } = props;
 
@@ -243,6 +246,11 @@ export const FormLabel = memo<
             />
           )}
         </StyledSpan>
+        {showContentUploadDisclaimer && (
+          <Box mr='4px'>
+            <ContentUploadDisclaimerTooltip />
+          </Box>
+        )}
         {optional && (
           <OptionalText>
             {'('}
