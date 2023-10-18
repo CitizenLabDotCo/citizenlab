@@ -91,16 +91,6 @@ RSpec.describe RequestConfirmationCodeJob do # TODO: log activities, return vali
             expect(user.reload.new_email).to be_nil
           end
 
-          context 'when the user is passwordless' do
-            let(:user) { create(:user_no_password, email: 'some_email@email.com') }
-
-            it 'sets the user email temporarily in new_email' do
-              job.perform(user, new_email: new_email)
-              expect(user.new_email).to eq new_email
-              expect(user.email).to eq 'some_email@email.com'
-            end
-          end
-
           # context 'when a user is passwordless' do
           #   before do
           #     context[:user] = create(:user_no_password)
@@ -141,6 +131,20 @@ RSpec.describe RequestConfirmationCodeJob do # TODO: log activities, return vali
           #     expect { result }.to change(context[:user], :new_email).from(nil).to(context[:new_email])
           #   end
           # end
+        end
+      end
+
+      context 'when the user is passwordless' do
+        let(:user) { create(:user_no_password, email: 'some_email@email.com') }
+
+        context 'when setting a new email' do
+          let(:new_email) { 'new@email.com' }
+
+          it 'sets the user email temporarily in new_email' do
+            job.perform(user, new_email: new_email)
+            expect(user.new_email).to eq new_email
+            expect(user.email).to eq 'some_email@email.com'
+          end
         end
       end
 

@@ -303,8 +303,7 @@ class WebApi::V1::UsersController < ApplicationController
   end
 
   def user_params_for_create
-    permitted_params = user_permitted_params
-    params.require(:user).permit(user_permitted_params)
+    params.require(:user).permit([:email] + user_permitted_params)
   end
 
   def user_params_for_update
