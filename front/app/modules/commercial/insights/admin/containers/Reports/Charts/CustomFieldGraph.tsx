@@ -212,6 +212,7 @@ const CustomFieldsGraph = ({
               customId={customField.id}
               xlsxEndpoint={usersByCustomFieldXlsxEndpoint(customField.id)}
               id={customField.id}
+              project={currentProject}
             />
           </Box>
         </Box>
@@ -230,6 +231,7 @@ const CustomFieldsGraph = ({
               id={customField.id}
               currentGroupFilter={undefined}
               currentGroupFilterLabel={undefined}
+              project={currentProject}
             />
           </Box>
         </Box>
