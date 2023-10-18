@@ -102,6 +102,35 @@ class UserPolicy < ApplicationPolicy
     end
     !!((user && (instance&.id == user.id || user.admin?)) || instance&.invite_pending?)
   end
+
+  def permitted_attributes_for_create
+    [:email] + shared_permitted_attributes
+  end
+
+  def permitted_attributes_for_update
+    shared_permitted_attributes.tap do |attrs|
+      attrs.push :email if !AppConfiguration.instance.feature_activated?('user_confirmation')
+    end
+  end
+
+  private
+
+  def shared_permitted_attributes
+    shared = [:first_name, :last_name, :password, :avatar, :locale, { onboarding: [:topics_and_areas], custom_field_values: allowed_custom_field_keys, bio_multiloc: CL2_SUPPORTED_LOCALES }]
+    admin? ? shared + [roles: %i[type project_id project_folder_id]] : shared
+  end
+
+  def allowed_custom_field_keys
+    allowed_fields = allowed_custom_fields
+    simple_keys = allowed_fields.support_single_value.pluck(:key).map(&:to_sym)
+    array_keys = allowed_fields.support_multiple_values.pluck(:key).map(&:to_sym)
+    [*simple_keys, array_keys.index_with { |_k| [] }]
+  end
+
+  def allowed_custom_fields
+    CustomField.with_resource_type('User').not_hidden
+  end
 end
 
+UserPolicy.prepend(Verification::Patches::UserPolicy)
 UserPolicy.prepend(BulkImportIdeas::Patches::UserPolicy)

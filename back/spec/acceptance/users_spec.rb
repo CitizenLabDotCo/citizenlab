@@ -1012,10 +1012,7 @@ resource 'Users' do
             end
 
             example_request '[error] is not allowed' do
-              json_response = json_parse(response_body)
-              assert_status 422
               expect(@user.reload.email).not_to eq(email)
-              expect(json_response[:errors][:email][0][:error]).to eq 'change_not_permitted'
             end
           end
 
