@@ -600,8 +600,8 @@ const AdminProjectEventEdit = () => {
                   value: eventAttrs.address_1 || '',
                   label: eventAttrs.address_1 || '',
                 }}
-                onChange={(option: Option) => {
-                  handleAddress1OnChange(option.value);
+                onChange={(option: Option | null) => {
+                  handleAddress1OnChange(option?.value ? option.value : '');
                 }}
                 placeholder={formatMessage(messages.searchForLocation)}
               />
