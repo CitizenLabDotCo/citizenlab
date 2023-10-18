@@ -1481,6 +1481,7 @@
   "app.containers.SpamReport.otherReasonPlaceholder": "crwdns215530:0crwdne215530:0",
   "app.containers.SpamReport.wrong_content": "crwdns215532:0crwdne215532:0",
   "app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle": "crwdns215534:0crwdne215534:0",
+  "app.containers.UsersEditPage.activeProposalVotesWillBeDeleted": "crwdns1199810:0crwdne1199810:0",
   "app.containers.UsersEditPage.addPassword": "crwdns523095:0crwdne523095:0",
   "app.containers.UsersEditPage.becomeVerifiedSubtitle": "crwdns215536:0crwdne215536:0",
   "app.containers.UsersEditPage.becomeVerifiedTitle": "crwdns215538:0crwdne215538:0",

@@ -1481,6 +1481,7 @@
   "app.containers.SpamReport.otherReasonPlaceholder": "Açıklama",
   "app.containers.SpamReport.wrong_content": "Alakasız",
   "app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle": "Profil resmini kaldır",
+  "app.containers.UsersEditPage.activeProposalVotesWillBeDeleted": "Hala oylamaya açık olan tekliflere verdiğiniz oylar silinecektir. Oylama süresi sona eren tekliflere verilen oylar silinmeyecektir.",
   "app.containers.UsersEditPage.addPassword": "Parola ekle",
   "app.containers.UsersEditPage.becomeVerifiedSubtitle": "Doğrulama gerektiren projelere katılmak.",
   "app.containers.UsersEditPage.becomeVerifiedTitle": "Kimliğinizi doğrulayın",

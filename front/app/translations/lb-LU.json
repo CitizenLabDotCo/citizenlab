@@ -1481,6 +1481,7 @@
   "app.containers.SpamReport.otherReasonPlaceholder": "Beschreiwung",
   "app.containers.SpamReport.wrong_content": "Dat hei gehéiert net hei hin",
   "app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle": "Profilbild ewechhuelen",
+  "app.containers.UsersEditPage.activeProposalVotesWillBeDeleted": "Är Stëmmen iwwer Propositiounen déi nach op fir ofstëmmen sinn, ginn geläscht. D'Stëmmen iwwer Propositiounen, wou d'Wahlzäit ofgeschloss ass, ginn net geläscht.",
   "app.containers.UsersEditPage.addPassword": "Passwuert dobäisetzen",
   "app.containers.UsersEditPage.becomeVerifiedSubtitle": "U Projeten deelhuelen, déi fir iwwerpréifte Benotzer bestëmmt sinn. ",
   "app.containers.UsersEditPage.becomeVerifiedTitle": "Iwwerpréift Är Identitéit",

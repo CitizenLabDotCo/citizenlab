@@ -12,6 +12,9 @@ require 'apartment/elevators/generic'
 # Apartment Configuration
 #
 Apartment.configure do |config|
+  # Use pg_dump instead of schema.rb to create schemas for new Tenants.
+  config.use_sql = true
+
   # Add any models that you do not want to be multi-tenanted, but remain in the global (public) namespace.
   # A typical example would be a Customer or Tenant model that stores each Tenant's information.
   config.excluded_models += ['Tenant']

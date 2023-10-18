@@ -674,6 +674,7 @@
   "app.containers.Admin.Users.userBlockModal.unblockActionConfirmation": "Ja, jeg vil oppheve blokkeringen av denne brukeren",
   "app.containers.Admin.Users.userDeletionConfirmation": "Vil du fjerne denne brukeren permanent?",
   "app.containers.Admin.Users.userDeletionFailed": "Det oppstod en feil ved sletting av denne brukeren, prøv på nytt.",
+  "app.containers.Admin.Users.userDeletionProposalVotes": "Dette vil også slette eventuelle stemmer fra denne brukeren på forslag som fortsatt er åpne for avstemning.",
   "app.containers.Admin.Users.userExportFileName": "user_export",
   "app.containers.Admin.Users.userInsights": "Brukerinnsikt",
   "app.containers.Admin.Users.youCantDeleteYourself": "Du kan ikke slette din egen konto gjennom brukeradministratorsiden",
