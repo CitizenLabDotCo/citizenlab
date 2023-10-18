@@ -9,6 +9,7 @@ import CommentOnYourCommentNotification from '../CommentOnYourCommentNotificatio
 import CommentOnIdeaYouFollowNotification from '../CommentOnIdeaYouFollowNotification';
 import CommentOnInitiativeYouFollowNotification from '../CommentOnInitiativeYouFollowNotification';
 import CosponsorOfYourInitiativeNotification from '../CosponsorOfYourInitiativeNotification';
+import EventUpcomingNotification from '../EventUpcomingNotification';
 import IdeaAssignedToYouNotification from '../IdeaAssignedToYouNotification';
 import IdeaMarkedAsSpamNotification from '../IdeaMarkedAsSpamNotification';
 import InitiativeAssignedToYouNotification from '../InitiativeAssignedToYouNotification';
@@ -43,6 +44,7 @@ import {
   ICommentOnIdeaYouFollowNotificationData,
   ICommentOnInitiativeYouFollowNotificationData,
   ICosponsorOfYourInitiativeNotificationData,
+  IEventUpcomingNotificationData,
   IIdeaAssignedToYouNotificationData,
   IIdeaMarkedAsSpamNotificationData,
   IInitiativeAssignedToYouNotificationData,
@@ -127,6 +129,12 @@ const Notification = ({ notification }: Props) => {
           notification={
             notification as ICosponsorOfYourInitiativeNotificationData
           }
+        />
+      );
+    case 'event_upcoming':
+      return (
+        <EventUpcomingNotification
+          notification={notification as IEventUpcomingNotificationData}
         />
       );
     case 'idea_assigned_to_you':

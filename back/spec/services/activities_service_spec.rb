@@ -64,6 +64,39 @@ describe ActivitiesService do
       end
     end
 
+    describe '#create_event_upcoming_activities' do
+      it 'logs event upcoming activity when a new event starts in 24h±30min' do
+        now = Time.now
+        start_at = now + 23.hours + 50.minutes
+        event = create(:event, start_at: start_at, end_at: (start_at + 5.hours))
+
+        expect { service.create_periodic_activities(now: now) }
+          .to have_enqueued_job(LogActivityJob)
+          .with(event, 'upcoming', nil, now.to_i, project_id: event.project_id)
+      end
+
+      it "doesn't log event upcoming activity when the event upcoming activity was already logged" do
+        now = Time.now
+        start_at = now + 23.hours + 50.minutes
+        event = create(:event, start_at: start_at, end_at: (start_at + 5.hours))
+        create(:activity, item: event, action: 'upcoming')
+
+        expect { service.create_periodic_activities(now: now) }
+          .not_to have_enqueued_job(LogActivityJob)
+          .with(event, 'upcoming', nil, now.to_i, project_id: event.project_id)
+      end
+
+      it "doesn't log event upcoming activity when no new event starts in 24h (in the application timezone)" do
+        now = Time.now
+        start_at = now + 25.hours
+        event = create(:event, start_at: start_at, end_at: (start_at + 5.hours))
+
+        expect { service.create_periodic_activities(now: now) }
+          .not_to have_enqueued_job(LogActivityJob)
+          .with(event, 'upcoming', nil, now.to_i, project_id: event.project_id)
+      end
+    end
+
     describe '#create_invite_not_accepted_since_3_days_activities' do
       it 'logs invite not accepted since 3 days activity when an invite was not accepted since (in the application timezone)' do
         created_at = Time.parse '2019-03-22 10:50:00 +0000'

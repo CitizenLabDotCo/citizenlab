@@ -168,6 +168,7 @@ RSpec.describe LogActivityJob do
         Notifications::CommentOnYourComment,
         Notifications::CommentOnIdeaYouFollow,
         Notifications::CommentOnInitiativeYouFollow,
+        Notifications::EventUpcoming,
         Notifications::IdeaMarkedAsSpam,
         Notifications::InitiativeAssignedToYou,
         Notifications::InitiativeMarkedAsSpam,
