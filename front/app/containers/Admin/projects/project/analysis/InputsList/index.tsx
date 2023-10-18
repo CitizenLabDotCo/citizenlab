@@ -13,7 +13,7 @@ import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 import useKeyPress from 'hooks/useKeyPress';
 import { useSelectedInputContext } from '../SelectedInputContext';
 import InputListItem from './InputListItem';
-import translations from './translations';
+import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import Demographics from '../Demographics';
@@ -151,7 +151,7 @@ const InputsList = () => {
       {emptyList ? (
         <Box display="flex" justifyContent="center">
           <Text px="24px" color="grey600">
-            {formatMessage(translations.noInputs)}
+            {formatMessage(messages.noInputs)}
           </Text>
         </Box>
       ) : (

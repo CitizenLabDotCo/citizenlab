@@ -9,7 +9,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 
 import { useIntl } from 'utils/cl-intl';
-import translations from './translations';
+import messages from './messages';
 
 type LaunchModalProps = {
   onClose: () => void;
@@ -27,23 +27,26 @@ const LaunchModal = ({ onClose }: LaunchModalProps) => {
     >
       <Box display="flex" gap="16px" alignItems="center">
         <Icon name="flash" fill={colors.orange} width="40px" height="40px" />
-        <Title>{formatMessage(translations.title)}</Title>
+        <Title>{formatMessage(messages.title)}</Title>
       </Box>
       <Box>
-        <Text>{formatMessage(translations.subtitle)}</Text>
+        <Text>{formatMessage(messages.subtitle)}</Text>
         <Text>
-          <b>{formatMessage(translations.limitation1Title)}</b>{' '}
-          {formatMessage(translations.limitation1Text)}
+          <b>{formatMessage(messages.limitation1Title)}</b>{' '}
+          {formatMessage(messages.limitation1Text)}
         </Text>
         <Text>
-          <b>{formatMessage(translations.limitation2Title)}</b>{' '}
-          {formatMessage(translations.limitation2Text)}
+          <b>{formatMessage(messages.limitation2Title)}</b>{' '}
+          {formatMessage(messages.limitation2Text)}
         </Text>
-        <Text>{formatMessage(translations.description1)}</Text>
-        <Text>{formatMessage(translations.description2)}</Text>
+        <Text>
+          <b>{formatMessage(messages.limitation3Title)}</b>{' '}
+          {formatMessage(messages.limitation3Text)}
+        </Text>
+        <Text>{formatMessage(messages.description)}</Text>
       </Box>
-      <Button onClick={onClose} id="e2e-analysis-launch-modal-agree-button">
-        {formatMessage(translations.agreeButton)}
+      <Button id="e2e-analysis-launch-modal-agree-button" onClick={onClose}>
+        {formatMessage(messages.agreeButton)}
       </Button>
     </Box>
   );

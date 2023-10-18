@@ -13,7 +13,7 @@ import EllipsisFilterValue from './EllipsisFilterValue';
 import { useParams } from 'react-router-dom';
 import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
 import Tag from '../Tags/Tag';
-import translations from './translations';
+import messages from './messages';
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 const clauseToPredicate = (clause?: string): '>' | '<' | '=' => {
@@ -36,39 +36,39 @@ const translationKeys: Record<
   { translationKey: MessageDescriptor; predicate: '>' | '<' | '=' }
 > = {
   search: {
-    translationKey: translations.search,
+    translationKey: messages.search,
     predicate: '=',
   },
   published_at_from: {
-    translationKey: translations.start,
+    translationKey: messages.start,
     predicate: '>',
   },
   published_at_to: {
-    translationKey: translations.end,
+    translationKey: messages.end,
     predicate: '<',
   },
   reactions_from: {
-    translationKey: translations.reactions,
+    translationKey: messages.reactions,
     predicate: '>',
   },
   reactions_to: {
-    translationKey: translations.reactions,
+    translationKey: messages.reactions,
     predicate: '<',
   },
   votes_from: {
-    translationKey: translations.votes,
+    translationKey: messages.votes,
     predicate: '>',
   },
   votes_to: {
-    translationKey: translations.votes,
+    translationKey: messages.votes,
     predicate: '<',
   },
   comments_from: {
-    translationKey: translations.comments,
+    translationKey: messages.comments,
     predicate: '>',
   },
   comments_to: {
-    translationKey: translations.comments,
+    translationKey: messages.comments,
     predicate: '<',
   },
 };
@@ -114,7 +114,7 @@ const FilterItems = ({ filters, isEditable }: FilterItemsProps) => {
           return (
             <Tag
               key={null}
-              name={formatMessage(translations.inputsWIthoutTags)}
+              name={formatMessage(messages.inputsWIthoutTags)}
               tagType={'custom'}
             />
           );
@@ -160,7 +160,7 @@ const FilterItems = ({ filters, isEditable }: FilterItemsProps) => {
                     removeSearchParams([key]);
                   }}
                   a11y_buttonActionMessage={formatMessage(
-                    translations.removeFilter
+                    messages.removeFilter
                   )}
                 />
               )}
