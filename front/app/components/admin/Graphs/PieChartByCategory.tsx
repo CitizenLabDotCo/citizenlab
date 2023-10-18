@@ -3,10 +3,10 @@ import React, { useRef } from 'react';
 
 // intl
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from '../../messages';
+import messages from 'containers/Admin/dashboard/messages';
 
 // utils
-import renderTooltip from './renderPieChartByCategoryTooltip';
+import renderTooltip from 'containers/Admin/dashboard/users/Charts/renderPieChartByCategoryTooltip';
 import { roundPercentages } from 'utils/math';
 
 // styling

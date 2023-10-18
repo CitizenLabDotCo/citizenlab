@@ -4,7 +4,7 @@ import { isEmpty } from 'lodash-es';
 
 // intl
 import { useIntl } from 'utils/cl-intl';
-import messages from '../../messages';
+import messages from '../../../containers/Admin/dashboard/messages';
 
 // components
 import ReportExportMenu from 'components/admin/ReportExportMenu';
