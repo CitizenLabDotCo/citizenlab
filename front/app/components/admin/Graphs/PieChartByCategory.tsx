@@ -48,6 +48,7 @@ interface Props {
   customId: string;
   xlsxEndpoint: string;
   id: string;
+  project?: string;
 }
 
 const PieChartByCategory = ({
@@ -58,6 +59,7 @@ const PieChartByCategory = ({
   xlsxEndpoint,
   currentGroupFilter,
   currentGroupFilterLabel,
+  project,
   id,
 }: Props) => {
   const { formatMessage } = useIntl();
@@ -66,6 +68,7 @@ const PieChartByCategory = ({
     start_at: startAt,
     end_at: endAt,
     group: currentGroupFilter,
+    project,
     id,
     enabled: true,
   });
