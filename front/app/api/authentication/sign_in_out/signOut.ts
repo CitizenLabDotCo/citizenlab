@@ -1,4 +1,3 @@
-import { AUTH_PATH } from 'containers/App/constants';
 import { getJwt, removeJwt, decode } from 'utils/auth/jwt';
 import { endsWith } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
@@ -7,6 +6,7 @@ import {
   invalidateQueryCache,
   resetMeQuery,
 } from 'utils/cl-react-query/resetQueryCache';
+import logoutUrl from './logoutUrl';
 
 export default async function signOut() {
   const jwt = getJwt();
@@ -17,8 +17,7 @@ export default async function signOut() {
     removeJwt();
 
     if (decodedJwt.logout_supported) {
-      const { provider, sub } = decodedJwt;
-      const url = `${AUTH_PATH}/${provider}/logout?user_id=${sub}`;
+      const url = await logoutUrl(decodedJwt);
       window.location.href = url;
     } else {
       await resetMeQuery();

@@ -10,7 +10,7 @@ import { IOption } from 'typings';
 import { Moment } from 'moment';
 
 interface Props {
-  startAtMoment?: Moment | null | undefined;
+  startAtMoment: Moment | null | undefined;
   endAtMoment: Moment | null;
   currentGroupFilter?: string;
   onChangeTimeRange: (

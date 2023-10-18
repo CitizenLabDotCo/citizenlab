@@ -97,7 +97,7 @@ const TagActions = ({ tag }: { tag: ITagData }) => {
   };
 
   return (
-    <div>
+    <div data-cy="e2e-analysis-tag-action">
       <IconButton
         iconName="dots-horizontal"
         iconColor={colors.textSecondary}
@@ -149,6 +149,7 @@ const TagActions = ({ tag }: { tag: ITagData }) => {
                 e.stopPropagation();
                 handleTagDelete();
               }}
+              id="e2e-analysis-delete-tag-button"
             >
               <Text textAlign="left" m="0px">
                 <Box display="flex" gap="8px">

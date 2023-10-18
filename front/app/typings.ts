@@ -108,11 +108,6 @@ export function isIOption(
   return maybeOption !== null;
 }
 
-export interface Message {
-  id: string;
-  defaultMessage: string;
-}
-
 export type Locale = keyof typeof appLocalePairs;
 
 export type GraphqlLocale = keyof typeof appGraphqlLocalePairs;
@@ -150,7 +145,7 @@ export type CLErrorsWrapper = {
 };
 
 export type RHFErrors =
-  | { message?: string; error?: string; type?: string }
+  | { error: string; message?: string; type?: string; value?: string }
   | undefined;
 
 export interface ImageSizes {

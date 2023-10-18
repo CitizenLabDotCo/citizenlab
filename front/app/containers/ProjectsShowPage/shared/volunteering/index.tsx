@@ -1,14 +1,6 @@
 import React, { memo } from 'react';
-import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
-
-// resource hooks
+import useProjectById from 'api/projects/useProjectById';
 import useCauses from 'api/causes/useCauses';
-
-// resource components
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 
 // components
 import CauseCard from './CauseCard';
@@ -18,58 +10,45 @@ import styled from 'styled-components';
 
 // typings
 import { IParticipationContextType } from 'typings';
+
+// utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
+import usePhase from 'api/phases/usePhase';
 
 const Container = styled.div`
   color: ${({ theme }) => theme.colors.tenantText};
 `;
 
-interface InputProps {
+interface Props {
   type: IParticipationContextType;
   phaseId: string | null;
   projectId: string;
   className?: string;
 }
 
-interface DataProps {
-  authUser: GetAuthUserChildProps;
-  project: GetProjectChildProps;
-  phase: GetPhaseChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
 const Volunteering = memo<Props>(
-  ({
-    projectId,
-    phaseId,
-    project,
-    phase,
-    type: participationContextType,
-    className,
-  }) => {
+  ({ projectId, phaseId, type: participationContextType, className }) => {
     const participationContextId =
       participationContextType === 'project' ? projectId : phaseId;
     const { data: causes } = useCauses({
       participationContextType,
       participationContextId,
     });
+    const { data: project } = useProjectById(projectId);
+    const { data: phase } = usePhase(phaseId);
 
     if (
-      !isNilOrError(causes) &&
-      (!isNilOrError(project) ||
-        (participationContextType === 'phase' && !isNilOrError(phase)))
+      causes &&
+      (project || (participationContextType === 'phase' && phase))
     ) {
       const disabledPhase =
         phase &&
         pastPresentOrFuture([
-          phase.attributes.start_at,
-          phase.attributes.end_at,
+          phase.data.attributes.start_at,
+          phase.data.attributes.end_at,
         ]) !== 'present';
-
       const disabledProject =
-        !isNilOrError(project) &&
-        project.attributes.publication_status !== 'published';
+        project && project.data.attributes.publication_status !== 'published';
 
       return (
         <Container className={className} id="volunteering">
@@ -88,16 +67,4 @@ const Volunteering = memo<Props>(
   }
 );
 
-const Data = adopt<DataProps, InputProps>({
-  authUser: <GetAuthUser />,
-  project: ({ projectId, render }) => (
-    <GetProject projectId={projectId}>{render}</GetProject>
-  ),
-  phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>,
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <Volunteering {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default Volunteering;

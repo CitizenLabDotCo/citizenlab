@@ -9,7 +9,7 @@
             authorName: "<span style=\"font-weight:bold; color: #000;\">#{ event.comment_author_name }</span>"
           }, escape_html: false) %>
           <p style="margin: 15px 0 0; color: #000;">
-            <%= strip_tags(localize_for_recipient(event.comment_body_multiloc)).first(140) %>
+            <%= strip_tags(localize_for_recipient_and_truncate(event.comment_body_multiloc, 140)) %>
           </p>
         </mj-text>
       </mj-column>

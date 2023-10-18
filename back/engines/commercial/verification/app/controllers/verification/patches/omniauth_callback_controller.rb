@@ -32,8 +32,9 @@ module Verification
               redirect_to url
             rescue VerificationService::VerificationTakenError
               fail_verification('taken')
-            rescue VerificationService::NotEntitledError
-              fail_verification('not_entitled')
+            rescue VerificationService::NotEntitledError => e
+              message = e.why ? "not_entitled_#{e.why}" : 'not_entitled'
+              fail_verification(message)
             end
           end
         rescue ActiveRecord::RecordNotFound
@@ -43,6 +44,7 @@ module Verification
 
       def fail_verification(error)
         omniauth_params = request.env['omniauth.params'].except('token', 'pathname')
+
         url = add_uri_params(
           Frontend::UrlService.new.verification_failure_url(pathname: request.env['omniauth.params']['pathname']),
           omniauth_params.merge(verification_error: true, error: error)

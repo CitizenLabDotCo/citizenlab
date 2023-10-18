@@ -146,7 +146,8 @@ export const getIdeaPostingRules = ({
 
     if (
       signedIn &&
-      (isAdmin({ data: authUser }) || isProjectModerator({ data: authUser }))
+      (isAdmin({ data: authUser }) ||
+        isProjectModerator({ data: authUser }, project?.id))
     ) {
       return {
         show: true,

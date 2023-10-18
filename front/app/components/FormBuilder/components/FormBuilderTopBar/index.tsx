@@ -4,6 +4,7 @@ import React from 'react';
 import useProjectById from 'api/projects/useProjectById';
 import useLocalize from 'hooks/useLocalize';
 import usePhase from 'api/phases/usePhase';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // components
 import GoBackButton from 'components/UI/GoBackButton';
@@ -28,6 +29,7 @@ import {
 
 // i18n
 import messages from '../messages';
+import ownMessages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // routing
@@ -41,15 +43,17 @@ const StyledStatusLabel = styled(StatusLabel)`
 
 type FormBuilderTopBarProps = {
   isSubmitting: boolean;
-  isEditingDisabled: boolean;
   builderConfig: FormBuilderConfig;
 };
 
 const FormBuilderTopBar = ({
   isSubmitting,
-  isEditingDisabled,
   builderConfig,
 }: FormBuilderTopBarProps) => {
+  const printedFormsEnabled =
+    useFeatureFlag({
+      name: 'import_printed_forms',
+    }) && builderConfig.onDownloadPDF;
   const localize = useLocalize();
   const { projectId, phaseId } = useParams() as {
     projectId: string;
@@ -127,11 +131,20 @@ const FormBuilderTopBar = ({
             )}
           </Box>
         </Box>
-        <Box ml="24px" />
+        {printedFormsEnabled && (
+          <Button
+            buttonStyle="secondary"
+            icon="download"
+            mr="20px"
+            onClick={builderConfig.onDownloadPDF}
+          >
+            <FormattedMessage {...ownMessages.downloadPDF} />
+          </Button>
+        )}
         <Button
           buttonStyle="secondary"
           icon="eye"
-          mx="20px"
+          mr="20px"
           disabled={!project}
           linkTo={viewFormLink}
           openLinkInNewTab
@@ -141,7 +154,6 @@ const FormBuilderTopBar = ({
         </Button>
         <Button
           buttonStyle="admin-dark"
-          disabled={isEditingDisabled}
           processing={isSubmitting}
           type="submit"
         >

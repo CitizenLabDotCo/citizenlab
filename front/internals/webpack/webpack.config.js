@@ -2,21 +2,21 @@ const path = require('path');
 
 const isDev = process.env.NODE_ENV === 'development';
 const isProd = process.env.NODE_ENV === 'production';
-// const isTestBuild = process.env.TEST_BUILD === 'true';
-// const sourceMapToSentry = !isDev && !isTestBuild && process.env.CI;
+const isTestBuild = process.env.TEST_BUILD === 'true';
+const sourceMapToSentry = !isDev && !isTestBuild && process.env.CI;
 
 const webpack = require('webpack');
 
+const { EsbuildPlugin } = require('esbuild-loader');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 const MomentTimezoneDataPlugin = require('moment-timezone-data-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const SentryCliPlugin = require('@sentry/webpack-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const CopyPlugin = require('copy-webpack-plugin');
 
 const dotenv = require('dotenv');
 dotenv.config({
@@ -42,7 +42,6 @@ const currentYear = new Date().getFullYear();
 
 const config = {
   entry: path.join(process.cwd(), 'app/root'),
-
   output: {
     path: path.join(process.cwd(), 'build'),
     pathinfo: false,
@@ -57,9 +56,9 @@ const config = {
 
   devtool: isDev
     ? 'eval-cheap-module-source-map'
-    : // : !isTestBuild
-      // ? 'hidden-source-map'
-      false,
+    : !isTestBuild
+    ? 'hidden-source-map'
+    : false,
 
   devServer: {
     port: 3000,
@@ -84,41 +83,28 @@ const config = {
     optimization: {
       runtimeChunk: 'single',
       minimize: true,
-      minimizer: ['...', new CssMinimizerPlugin()],
+      minimizer: [new EsbuildPlugin()],
     },
   }),
 
   module: {
     rules: [
       {
-        test: /\.(tsx?)|(js)$/,
+        test: /\.[tj]sx?$/,
         include: path.join(process.cwd(), 'app'),
-        use: {
-          loader: 'babel-loader',
-          options: {
-            cacheDirectory: true,
-          },
-        },
+        loader: 'esbuild-loader',
       },
       {
-        test: /\.[jt]sx?$/,
-        exclude: /node_modules/,
+        test: /\.css$/i,
         use: [
+          'style-loader',
+          'css-loader',
           {
-            loader: require.resolve('babel-loader'),
+            loader: 'esbuild-loader',
             options: {
-              plugins: [isDev && require.resolve('react-refresh/babel')].filter(
-                Boolean
-              ),
+              minify: true,
             },
           },
-        ],
-      },
-      {
-        test: /\.css$/,
-        use: [
-          { loader: isDev ? 'style-loader' : MiniCssExtractPlugin.loader },
-          { loader: 'css-loader' },
         ],
       },
       {
@@ -194,17 +180,17 @@ const config = {
         endYear: currentYear + 8,
       }),
 
-    !isDev &&
-      new MiniCssExtractPlugin({
-        filename: '[name].[contenthash].min.css',
-        chunkFilename: '[name].[contenthash].chunk.min.css',
+    sourceMapToSentry &&
+      new SentryCliPlugin({
+        include: path.join(process.cwd(), 'build'),
+        release: process.env.CIRCLE_BUILD_NUM,
       }),
 
-    // sourceMapToSentry &&
-    //   new SentryCliPlugin({
-    //     include: path.join(process.cwd(), 'build'),
-    //     release: process.env.CIRCLE_BUILD_NUM,
-    //   }),
+    new CopyPlugin({
+      patterns: [
+        { from: "./security.txt", to: ".well-known/security.txt" }
+      ],
+    })
   ].filter(Boolean),
 
   resolve: {

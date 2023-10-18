@@ -19,8 +19,8 @@ apt-get update
 apt-get --no-install-recommends -yqq install \
   build-essential=12.8ubuntu1.1 \
   cmake=3.16.3-1ubuntu1.20.04.1 \
-  libcurl4=7.68.0-1ubuntu2.19 \
-  libcurl4-openssl-dev=7.68.0-1ubuntu2.19 \
+  libcurl4=7.68.0-1ubuntu2.20 \
+  libcurl4-openssl-dev=7.68.0-1ubuntu2.20 \
   libssl-dev=1.1.1f-1ubuntu2.19 \
   libxml2=2.9.10+dfsg-5ubuntu0.20.04.6 \
   libxml2-dev=2.9.10+dfsg-5ubuntu0.20.04.6 \

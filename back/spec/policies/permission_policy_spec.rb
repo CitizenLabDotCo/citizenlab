@@ -13,7 +13,6 @@ describe PermissionPolicy do
 
     it { is_expected.not_to permit(:show)         }
     it { is_expected.not_to permit(:update)       }
-    it { is_expected.to permit(:participation_conditions) }
     it { is_expected.to permit(:requirements) }
     it { is_expected.to permit(:schema) }
 
@@ -28,7 +27,6 @@ describe PermissionPolicy do
 
     it { is_expected.not_to permit(:show)         }
     it { is_expected.not_to permit(:update)       }
-    it { is_expected.to permit(:participation_conditions) }
     it { is_expected.to permit(:requirements) }
     it { is_expected.to permit(:schema) }
 
@@ -48,7 +46,6 @@ describe PermissionPolicy do
 
     it { is_expected.not_to permit(:show)         }
     it { is_expected.not_to permit(:update)       }
-    it { is_expected.to permit(:participation_conditions) }
     it { is_expected.to permit(:requirements) }
     it { is_expected.to permit(:schema) }
 
@@ -63,7 +60,6 @@ describe PermissionPolicy do
 
     it { is_expected.to permit(:show)             }
     it { is_expected.to permit(:update)           }
-    it { is_expected.to permit(:participation_conditions) }
     it { is_expected.to permit(:requirements) }
     it { is_expected.to permit(:schema) }
 

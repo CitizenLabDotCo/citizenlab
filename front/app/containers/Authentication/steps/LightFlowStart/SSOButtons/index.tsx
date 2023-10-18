@@ -26,16 +26,24 @@ const SSOButtons = (props: Props) => {
   const passwordLoginEnabled = useFeatureFlag({ name: 'password_login' });
   const googleLoginEnabled = useFeatureFlag({ name: 'google_login' });
   const facebookLoginEnabled = useFeatureFlag({ name: 'facebook_login' });
+  const azureAdLoginEnabled = useFeatureFlag({ name: 'azure_ad_login' });
   const franceconnectLoginEnabled = useFeatureFlag({
     name: 'franceconnect_login',
   });
-  const azureAdLoginEnabled = useFeatureFlag({ name: 'azure_ad_login' });
+  const claveUnicaLoginEnabled = useFeatureFlag({
+    name: 'clave_unica_login',
+  });
+  const hoplrLoginEnabled = useFeatureFlag({
+    name: 'hoplr_login',
+  });
 
   if (
     !googleLoginEnabled &&
     !facebookLoginEnabled &&
+    !azureAdLoginEnabled &&
     !franceconnectLoginEnabled &&
-    !azureAdLoginEnabled
+    !claveUnicaLoginEnabled &&
+    !hoplrLoginEnabled
   ) {
     if (passwordLoginEnabled) {
       return null;

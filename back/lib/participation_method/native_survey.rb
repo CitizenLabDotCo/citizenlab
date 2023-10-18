@@ -73,7 +73,7 @@ module ParticipationMethod
     end
 
     def edit_custom_form_allowed?
-      participation_context.ideas_count.zero?
+      true
     end
 
     def delete_inputs_on_pc_deletion?
@@ -86,6 +86,10 @@ module ParticipationMethod
 
     def supports_toxicity_detection?
       false
+    end
+
+    def supports_survey_form?
+      true
     end
 
     def include_data_in_email?

@@ -1,11 +1,12 @@
-import { Button, Box } from '@citizenlab/cl2-component-library';
-import React from 'react';
+import React, { useState } from 'react';
 
 // components
+import Button from 'components/UI/Button';
+import { Box } from '@citizenlab/cl2-component-library';
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
-
-// router
-import clHistory from 'utils/cl-router/history';
+import PDFExportModal, {
+  FormValues,
+} from 'containers/Admin/projects/components/PDFExportModal';
 
 // i18n
 import messages from './messages';
@@ -14,48 +15,105 @@ import { FormattedMessage } from 'utils/cl-intl';
 // hooks
 import { useParams } from 'react-router-dom';
 import usePhases from 'api/phases/usePhases';
+import useLocale from 'hooks/useLocale';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+// utils
 import { getCurrentPhase } from 'api/phases/utils';
+import { saveIdeaFormAsPDF } from './saveIdeaFormAsPDF';
+import { isNilOrError } from 'utils/helperUtils';
+
+// typings
 import { IPhaseData } from 'api/phases/types';
 import { ParticipationMethod } from 'utils/participationContexts';
+import { requestBlob } from 'utils/requestBlob';
+import { API_PATH } from 'containers/App/constants';
+import { saveAs } from 'file-saver';
 
 export const IdeaForm = () => {
+  const printedFormsEnabled = useFeatureFlag({
+    name: 'import_printed_forms',
+  });
+
+  const [exportModalOpen, setExportModalOpen] = useState(false);
   const { projectId } = useParams() as {
     projectId: string;
   };
 
+  const locale = useLocale();
   const { data: phases } = usePhases(projectId);
-  let phaseToUse;
-  if (phases) {
-    phaseToUse = getCurrentOrLastIdeationPhase(phases.data);
-  }
+
+  const phaseToUse = phases ? getCurrentOrLastIdeationPhase(phases.data) : null;
+
+  const ideaFormLink = phaseToUse
+    ? `/admin/projects/${projectId}/phases/${phaseToUse.id}/ideaform/edit`
+    : `/admin/projects/${projectId}/ideaform/edit`;
+
+  const handleDownloadPDF = () => setExportModalOpen(true);
+
+  const handleExportPDF = async ({ personal_data, phase_id }: FormValues) => {
+    if (isNilOrError(locale)) return;
+    await saveIdeaFormAsPDF({ projectId, locale, personal_data, phase_id });
+  };
+
+  const downloadExampleFile = async () => {
+    const blob = await requestBlob(
+      `${API_PATH}/projects/${projectId}/import_ideas/example_xlsx`,
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    );
+    saveAs(blob, 'example.xlsx');
+  };
 
   return (
-    <Box gap="0px" flexWrap="wrap" width="100%" display="flex">
-      <Box width="100%">
-        <SectionTitle>
-          <FormattedMessage {...messages.inputForm} />
-        </SectionTitle>
-        <SectionDescription style={{ marginRight: '600px' }}>
-          <FormattedMessage {...messages.inputFormDescription} />
-        </SectionDescription>
+    <>
+      <Box gap="0px" flexWrap="wrap" width="100%" display="flex">
+        <Box width="100%">
+          <SectionTitle>
+            <FormattedMessage {...messages.inputForm} />
+          </SectionTitle>
+          <SectionDescription style={{ maxWidth: '700px' }}>
+            <FormattedMessage {...messages.inputFormDescription} />
+          </SectionDescription>
+        </Box>
+        <Box display="flex" flexDirection="row">
+          <Button
+            linkTo={ideaFormLink}
+            width="auto"
+            icon="edit"
+            data-cy="e2e-edit-input-form"
+          >
+            <FormattedMessage {...messages.editInputForm} />
+          </Button>
+          {printedFormsEnabled && (
+            <>
+              <Box m="8px">
+                <Button
+                  onClick={handleDownloadPDF}
+                  width="auto"
+                  icon="download"
+                  data-cy="e2e-save-input-form-pdf"
+                >
+                  <FormattedMessage {...messages.downloadInputForm} />
+                </Button>
+              </Box>
+              <Button
+                buttonStyle="secondary"
+                icon="download"
+                onClick={downloadExampleFile}
+              >
+                <FormattedMessage {...messages.downloadExcelTemplate} />
+              </Button>
+            </>
+          )}
+        </Box>
       </Box>
-      <Box>
-        <Button
-          onClick={() => {
-            phaseToUse
-              ? clHistory.push(
-                  `/admin/projects/${projectId}/phases/${phaseToUse.id}/ideaform/edit`
-                )
-              : clHistory.push(`/admin/projects/${projectId}/ideaform/edit`);
-          }}
-          width="auto"
-          icon="edit"
-          data-cy="e2e-edit-input-form"
-        >
-          <FormattedMessage {...messages.editInputForm} />
-        </Button>
-      </Box>
-    </Box>
+      <PDFExportModal
+        open={exportModalOpen}
+        formType="idea_form"
+        onClose={() => setExportModalOpen(false)}
+        onExport={handleExportPDF}
+      />
+    </>
   );
 };
 

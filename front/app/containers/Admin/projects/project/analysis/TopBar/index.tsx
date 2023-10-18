@@ -4,11 +4,10 @@ import {
   stylingConsts,
   colors,
   Title,
-  Button,
   Badge,
   Text,
-  IconButton,
 } from '@citizenlab/cl2-component-library';
+import Button from 'components/UI/Button';
 import GoBackButton from 'components/UI/GoBackButton';
 import clHistory from 'utils/cl-router/history';
 import useProjectById from 'api/projects/useProjectById';
@@ -161,17 +160,13 @@ const TopBar = () => {
           />
         </Box>
         <Tasks />
-        {window.Intercom && (
-          <IconButton
-            iconName="info-solid"
-            a11y_buttonActionMessage={formatMessage(messages.supportArticle)}
-            onClick={() => {
-              window.Intercom('showArticle', 8316692);
-            }}
-            iconColor={colors.grey800}
-            iconColorOnHover={colors.black}
-          />
-        )}
+        <Button
+          icon="info-solid"
+          buttonStyle="text"
+          openLinkInNewTab
+          linkTo={formatMessage(messages.supportArticle)}
+          iconColor={colors.grey800}
+        />
         {isFiltersOpen && <Filters onClose={() => setIsFiltersOpen(false)} />}
         <Modal opened={showLaunchModal} close={closeLaunchModal}>
           <LaunchModal onClose={closeLaunchModal} />

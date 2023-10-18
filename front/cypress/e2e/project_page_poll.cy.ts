@@ -228,8 +228,11 @@ describe('poll submission for non-active users', () => {
   it("doesn't let non-active users submit a poll response", () => {
     cy.setLoginCookie(email, password);
     cy.visit('/projects/the-big-poll');
-    cy.get('#e2e-complete-registration-link').should('exist');
-    cy.get('#e2e-complete-registration-link').click();
+    cy.get('.e2e-continuous-project-poll-container')
+      .get('.e2e-poll-question')
+      .each((question) => question.find('.e2e-poll-option').first().click());
+    cy.wait(500);
+    cy.get('.e2e-send-poll').click();
     cy.get('#e2e-authentication-modal').should('exist');
   });
 

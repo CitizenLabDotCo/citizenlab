@@ -89,9 +89,9 @@ describe('Admin: update Hero Banner content', () => {
     );
     // Should exist before saving
     cy.get('[data-cy="e2e-overlay-toggle"]').should('exist');
-    cy.get('.e2e-submit-wrapper-button').click({ force: true });
+    cy.get('.e2e-submit-wrapper-button button').click({ force: true });
     cy.wait('@saveHomePage');
-    cy.get('.e2e-submit-wrapper-button').contains('Success');
+    cy.get('.e2e-submit-wrapper-button button').contains('Success');
     // Should exist after saving
     cy.get('[data-cy="e2e-overlay-toggle"]').should('exist');
   });
@@ -110,9 +110,9 @@ describe('Admin: update Hero Banner content', () => {
     cy.get('[data-cy="e2e-image-cropper"]').should('not.exist');
     // Should not exist before saving
     cy.get('[data-cy="e2e-overlay-toggle"]').should('not.exist');
-    cy.get('.e2e-submit-wrapper-button').click({ force: true });
+    cy.get('.e2e-submit-wrapper-button button').click({ force: true });
     cy.wait('@saveHomePage');
-    cy.get('.e2e-submit-wrapper-button').contains('Success');
+    cy.get('.e2e-submit-wrapper-button button').contains('Success');
 
     // Should not exist after saving
     cy.get('[data-cy="e2e-overlay-toggle"]').should('not.exist');
@@ -138,7 +138,7 @@ describe('Admin: update Hero Banner content', () => {
     cy.get('[data-cy="e2e-image-cropper"]').should('exist');
     // The toggle should not exist when the image is not saved.
     cy.get('[data-cy="e2e-overlay-toggle"]').should('not.exist');
-    cy.get('.e2e-submit-wrapper-button').click();
+    cy.get('.e2e-submit-wrapper-button button').click();
     cy.wait('@saveHomePage').then((interception) => {
       const img = new Image();
       console.log(interception.request.body);
@@ -148,7 +148,7 @@ describe('Admin: update Hero Banner content', () => {
         expect(img.width / img.height).to.eq(3);
       });
     });
-    cy.get('.e2e-submit-wrapper-button').contains('Success');
+    cy.get('.e2e-submit-wrapper-button button').contains('Success');
     // // Image cropper should not exist after saving the image
     cy.get('[data-cy="e2e-image-cropper"]').should('not.exist');
     // The toggle should only be there when the image is saved.
@@ -238,9 +238,9 @@ describe('Admin: update Hero Banner content', () => {
       .type(updatedSignedInCTAURL);
 
     // save form
-    cy.get('.e2e-submit-wrapper-button').click();
+    cy.get('.e2e-submit-wrapper-button button').click();
     cy.wait('@saveHomePage');
-    cy.get('.e2e-submit-wrapper-button').contains('Success');
+    cy.get('.e2e-submit-wrapper-button button').contains('Success');
 
     // reload page
     cy.reload();
