@@ -674,6 +674,7 @@
   "app.containers.Admin.Users.userBlockModal.unblockActionConfirmation": "crwdns417942:0crwdne417942:0",
   "app.containers.Admin.Users.userDeletionConfirmation": "crwdns210158:0crwdne210158:0",
   "app.containers.Admin.Users.userDeletionFailed": "crwdns210160:0crwdne210160:0",
+  "app.containers.Admin.Users.userDeletionProposalVotes": "crwdns1199812:0crwdne1199812:0",
   "app.containers.Admin.Users.userExportFileName": "crwdns210162:0crwdne210162:0",
   "app.containers.Admin.Users.userInsights": "crwdns667349:0crwdne667349:0",
   "app.containers.Admin.Users.youCantDeleteYourself": "crwdns210164:0crwdne210164:0",
