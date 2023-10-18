@@ -59,11 +59,17 @@ class TimelineService
   end
 
   def overlaps?(phase1, phase2)
+    return false unless phase1.end_at.present? && phase2.end_at.present?
+
     !((phase1.end_at.to_date < phase2.start_at.to_date) || (phase2.end_at.to_date < phase1.start_at.to_date))
   end
 
   def other_project_phases(phase)
     Phase.where(project_id: phase.project_id).all.reject { |p| p.id == phase.id }
+  end
+
+  def previous_phase(phase)
+    Phase.where(project_id: phase.project_id).where.not(id: phase.id).order(start_at: :desc).take
   end
 
   def timeline_active(project)
