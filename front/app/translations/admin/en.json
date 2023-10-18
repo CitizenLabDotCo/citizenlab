@@ -2105,6 +2105,7 @@
   "app.containers.AdminPage.projects.project.analysis.search": "Search",
   "app.containers.AdminPage.projects.project.analysis.start": "Start",
   "app.containers.AdminPage.projects.project.analysis.supportArticle": "Support Article",
+  "app.containers.AdminPage.projects.project.analysis.supportArticleLink": "https://support.citizenlab.co/en/articles/8316692-ai-analysis",
   "app.containers.AdminPage.projects.project.analysis.unknown": "Unknown",
   "app.containers.AdminPage.projects.project.analysis.votes": "Votes",
   "app.containers.AdminPage.widgets.copied": "Copied to clipboard",
