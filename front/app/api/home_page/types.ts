@@ -1,6 +1,7 @@
 import { ImageSizes, Multiloc } from 'typings';
 import { Keys } from 'utils/cl-react-query/types';
 import homepageSettingsKeys from './keys';
+import { SerializedNode } from '@craftjs/core';
 
 export type HomepageSettingsKeys = Keys<typeof homepageSettingsKeys>;
 
@@ -59,6 +60,8 @@ export interface IHomepageSettingsAttributes extends IHomepageEnabledSettings {
   banner_cta_signed_out_text_multiloc: Multiloc;
   banner_cta_signed_out_type: CTASignedOutType;
   banner_cta_signed_out_url: string | null;
+  // content builder
+  craftjs_json: Record<string, SerializedNode>;
 }
 
 export interface IHomepageEnabledSettings {

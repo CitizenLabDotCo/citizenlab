@@ -14,8 +14,10 @@ import messages from './messages';
 
 // hooks
 import { useTheme } from 'styled-components';
-import { Multiloc } from 'typings';
-import useLocalize from 'hooks/useLocalize';
+import { Multiloc, Locale } from 'typings';
+import { getLocalizedWithFallback } from 'utils/i18n';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import { useIntl } from 'utils/cl-intl';
 
 interface Props {
   text: Multiloc;
@@ -23,12 +25,15 @@ interface Props {
 
 const TextMultiloc = ({ text }: Props) => {
   const theme = useTheme();
-  const localize = useLocalize();
+  const { locale } = useIntl() as { locale: Locale };
+  const tenantLocales = useAppConfigurationLocales();
+
+  const value = getLocalizedWithFallback(text, locale, tenantLocales);
 
   return (
     <PageBreakBox id="e2e-text-box" minHeight="26px">
       <QuillEditedContent textColor={theme.colors.tenantText}>
-        <div dangerouslySetInnerHTML={{ __html: localize(text) }} />
+        <div dangerouslySetInnerHTML={{ __html: value }} />
       </QuillEditedContent>
     </PageBreakBox>
   );

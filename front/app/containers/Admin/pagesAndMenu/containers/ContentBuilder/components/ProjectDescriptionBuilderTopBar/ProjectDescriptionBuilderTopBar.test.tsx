@@ -134,7 +134,6 @@ describe('ProjectDescriptionBuilderTopBar', () => {
           onSelectLocale={() => {}}
           previewEnabled={false}
           setPreviewEnabled={() => {}}
-          draftEditorData={{ en: {} }}
         />
       </Editor>
     );

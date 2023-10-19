@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 
 // hooks
-import useLocalize from 'hooks/useLocalize';
 import { useEditor, SerializedNodes } from '@craftjs/core';
-import useAddProjectDescriptionBuilderLayout from 'modules/commercial/project_description_builder/api/useAddProjectDescriptionBuilderLayout';
+import useUpdateHomepageSettings from 'api/home_page/useUpdateHomepageSettings';
 
 // components
 import Container from 'components/admin/ContentBuilder/TopBar/Container';
@@ -28,7 +27,6 @@ type ProjectDescriptionBuilderTopBarProps = {
   previewEnabled: boolean;
   setPreviewEnabled: React.Dispatch<React.SetStateAction<boolean>>;
   selectedLocale: Locale | undefined;
-  draftEditorData?: Record<string, SerializedNodes>;
   onSelectLocale: (args: {
     locale: Locale;
     editorData: SerializedNodes;
@@ -40,15 +38,12 @@ const ProjectDescriptionBuilderTopBar = ({
   setPreviewEnabled,
   selectedLocale,
   onSelectLocale,
-  draftEditorData,
   localesWithError,
   hasPendingState,
 }: ProjectDescriptionBuilderTopBarProps) => {
   const [loading, setLoading] = useState(false);
   const { query } = useEditor();
-  const localize = useLocalize();
-  const { mutateAsync: addProjectDescriptionBuilderLayout } =
-    useAddProjectDescriptionBuilderLayout();
+  const { mutateAsync: updateHomepage } = useUpdateHomepageSettings();
 
   const disableSave = localesWithError.length > 0;
 
@@ -60,13 +55,9 @@ const ProjectDescriptionBuilderTopBar = ({
     if (selectedLocale) {
       try {
         setLoading(true);
-        // await addProjectDescriptionBuilderLayout({
-        //   projectId,
-        //   craftjs_jsonmultiloc: {
-        //     ...draftEditorData,
-        //     [selectedLocale]: query.getSerializedNodes(),
-        //   },
-        // });
+        await updateHomepage({
+          craftjs_json: query.getSerializedNodes(),
+        });
       } catch {
         // Do nothing
       }

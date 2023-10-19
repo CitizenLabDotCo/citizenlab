@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useParams, useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 // styles
 import { stylingConsts } from 'utils/styleUtils';
@@ -22,8 +22,7 @@ import ContentBuilderSettings from 'components/admin/ContentBuilder/Settings';
 
 // hooks
 import useLocale from 'hooks/useLocale';
-import useProjectDescriptionBuilderLayout from 'modules/commercial/project_description_builder/api/useProjectDescriptionBuilderLayout';
-import useFeatureFlag from 'hooks/useFeatureFlag';
+import useHomepageSettings from 'api/home_page/useHomepageSettings';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 // utils
@@ -33,23 +32,19 @@ import { isNilOrError } from 'utils/helperUtils';
 import { SerializedNodes } from '@craftjs/core';
 import { Locale } from 'typings';
 import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
+import { isEmpty } from 'lodash-es';
+import ContentBuilderLanguageProvider from './ContentBuilderLanguageProvider';
 
 const ProjectDescriptionBuilderPage = () => {
   const [previewEnabled, setPreviewEnabled] = useState(false);
   const [selectedLocale, setSelectedLocale] = useState<Locale | undefined>();
-  const [draftData, setDraftData] = useState<Record<string, SerializedNodes>>();
-  const { pathname } = useLocation();
   const { projectId } = useParams() as { projectId: string };
 
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
 
-  const featureEnabled = useFeatureFlag({
-    name: 'project_description_builder',
-  });
   const locale = useLocale();
   const locales = useAppConfigurationLocales();
-  const { data: projectDescriptionBuilderLayout } =
-    useProjectDescriptionBuilderLayout(projectId);
+  const { data: homepageSettings } = useHomepageSettings();
 
   useEffect(() => {
     if (!isNilOrError(locale)) {
@@ -62,10 +57,7 @@ const ProjectDescriptionBuilderPage = () => {
 
   const [imageUploading, setImageUploading] = useState(false);
 
-  const projectDescriptionBuilderVisible =
-    featureEnabled && pathname.includes('admin/project-description-builder');
-
-  if (isNilOrError(locales) && projectDescriptionBuilderVisible) {
+  if (isNilOrError(locales)) {
     return null;
   }
 
@@ -88,13 +80,14 @@ const ProjectDescriptionBuilderPage = () => {
   };
 
   const getEditorData = () => {
-    if (projectDescriptionBuilderLayout && selectedLocale) {
-      if (draftData && draftData[selectedLocale]) {
-        return draftData[selectedLocale];
-      }
-      return projectDescriptionBuilderLayout.data.attributes
-        .craftjs_jsonmultiloc[selectedLocale];
-    } else return undefined;
+    if (
+      homepageSettings &&
+      !isEmpty(homepageSettings.data.attributes.craftjs_json)
+    ) {
+      return homepageSettings.data.attributes.craftjs_json;
+    } else {
+      return undefined;
+    }
   };
 
   const handleEditorChange = (nodes: SerializedNodes) => {
@@ -105,21 +98,16 @@ const ProjectDescriptionBuilderPage = () => {
 
   const handleSelectedLocaleChange = ({
     locale,
-    editorData,
   }: {
     locale: Locale;
     editorData: SerializedNodes;
   }) => {
-    if (selectedLocale && selectedLocale !== locale) {
-      setDraftData({ ...draftData, [selectedLocale]: editorData });
-    }
-
-    iframeRef.current &&
-      iframeRef.current.contentWindow &&
-      iframeRef.current.contentWindow.postMessage(
-        { selectedLocale: locale },
-        window.location.href
-      );
+    // iframeRef.current &&
+    //   iframeRef.current.contentWindow &&
+    //   iframeRef.current.contentWindow.postMessage(
+    //     { selectedLocale: locale },
+    //     window.location.href
+    //   );
 
     setSelectedLocale(locale);
   };
@@ -130,11 +118,7 @@ const ProjectDescriptionBuilderPage = () => {
       onDeleteElement={handleDeleteElement}
       onUploadImage={setImageUploading}
     >
-      <Editor
-        isPreview={false}
-        onNodesChange={handleEditorChange}
-        key={selectedLocale}
-      >
+      <Editor isPreview={false} onNodesChange={handleEditorChange}>
         <ProjectDescriptionBuilderTopBar
           localesWithError={localesWithError}
           hasPendingState={imageUploading}
@@ -142,7 +126,6 @@ const ProjectDescriptionBuilderPage = () => {
           setPreviewEnabled={setPreviewEnabled}
           selectedLocale={selectedLocale}
           onSelectLocale={handleSelectedLocaleChange}
-          draftEditorData={draftData}
         />
         <Box
           mt={`${stylingConsts.menuHeight}px`}
@@ -152,10 +135,15 @@ const ProjectDescriptionBuilderPage = () => {
             <ProjectDescriptionBuilderToolbox selectedLocale={selectedLocale} />
           )}
           <StyledRightColumn>
-            <Box width="1000px">
-              <ErrorMessage localesWithError={localesWithError} />
-              <ContentBuilderFrame editorData={getEditorData()} />
-            </Box>
+            <ContentBuilderLanguageProvider
+              contentBuilderLocale={selectedLocale}
+              platformLocale={locale}
+            >
+              <Box width="1000px">
+                <ErrorMessage localesWithError={localesWithError} />
+                <ContentBuilderFrame editorData={getEditorData()} />
+              </Box>
+            </ContentBuilderLanguageProvider>
           </StyledRightColumn>
           <ContentBuilderSettings />
         </Box>
