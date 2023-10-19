@@ -125,7 +125,7 @@ describe TimelineService do
 
     it 'returns the current ideation phase of the project if the end_date is blank' do
       create(:phase, project: project, participation_method: 'ideation', start_at: Time.now.to_date - 10.days, end_at: Time.now.to_date - 2.days)
-      open_current_ideation_phase = create(:phase, project: project, participation_method: 'ideation', start_at: Time.now.to_date - 1.days, end_at: nil)
+      open_current_ideation_phase = create(:phase, project: project, participation_method: 'ideation', start_at: Time.now.to_date - 1.day, end_at: nil)
       expect(service.current_or_last_can_contain_ideas_phase(project)&.id).to eq(open_current_ideation_phase.id)
     end
 
