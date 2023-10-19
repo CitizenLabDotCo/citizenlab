@@ -62,7 +62,10 @@ class OmniauthCallbackController < ApplicationController
     @identity = Identity.find_or_build_with_omniauth(auth, authver_method)
 
     @user = @identity.user
-    @user = User.find_by_cimail(user_attrs.fetch(:email)) if @user.nil? && user_attrs.key?(:email) # some providers (ClaveUnica) don't return email
+    if @user.nil? && user_attrs.key?(:email) # some providers (ClaveUnica) don't return email
+      @user = User.find_by_cimail(user_attrs.fetch(:email))
+      @user.set_confirmation_required unless authver_method.email_confirmed?(auth)
+    end
 
     @user = authentication_service.prevent_user_account_hijacking @user
 
