@@ -46,7 +46,11 @@ function deleteInvites() {
 }
 
 describe('Invitation authentication flow', () => {
-  beforeEach(() => {
+  before(() => {
+    deleteInvites();
+  });
+
+  it('has correct invitations', () => {
     cy.intercept('POST', '**/invites/*').as('postInvitesRequest');
     cy.setAdminLoginCookie();
     cy.visit('/admin/users/invitations');
@@ -54,15 +58,11 @@ describe('Invitation authentication flow', () => {
     cy.get('.e2e-submit-wrapper-button button').click();
     cy.wait('@postInvitesRequest');
     cy.get('.e2e-submit-wrapper-button button').contains('Success');
-    cy.logout();
-  });
-
-  it('has correct invitations', () => {
-    cy.setAdminLoginCookie();
     cy.visit('/admin/users/invitations/all');
     cy.contains('jack@johnson.com');
     cy.contains('Jack Johnson');
     cy.contains('John Jackson');
+    cy.logout();
   });
 
   // TODO: remove user after this test
@@ -117,10 +117,5 @@ describe('Invitation authentication flow', () => {
 
       cy.get('#e2e-success-continue-button').click();
     });
-  });
-
-  afterEach(() => {
-    cy.logout();
-    deleteInvites();
   });
 });
