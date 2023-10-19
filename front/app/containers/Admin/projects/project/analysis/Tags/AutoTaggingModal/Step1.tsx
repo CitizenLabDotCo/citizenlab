@@ -19,7 +19,7 @@ import { AutoTaggingMethod } from 'api/analysis_background_tasks/types';
 import FilterItems from '../../FilterItems';
 import { IInputsFilterParams } from 'api/analysis_inputs/types';
 import { isEmpty } from 'lodash-es';
-import translations from '../translations';
+import messages from '../messages';
 import { useIntl } from 'utils/cl-intl';
 import { useParams } from 'react-router-dom';
 import useAnalysis from 'api/analyses/useAnalysis';
@@ -127,11 +127,11 @@ const Step1 = ({
     <>
       <Title mb="32px">
         <Icon name="flash" height="32px" width="32px" />{' '}
-        {formatMessage(translations.autoTagTitle)}
+        {formatMessage(messages.autoTagTitle)}
       </Title>
-      <Text mb="32px">{formatMessage(translations.autoTagDescription)}</Text>
+      <Text mb="32px">{formatMessage(messages.autoTagDescription)}</Text>
 
-      <Title variant="h4">{formatMessage(translations.whatToTag)}</Title>
+      <Title variant="h4">{formatMessage(messages.whatToTag)}</Title>
 
       <Box display="flex" gap="16px">
         <AutoTagTargetContainer
@@ -144,7 +144,7 @@ const Step1 = ({
               name="auto_tagging_target"
               value="all"
             />
-            <Label>{formatMessage(translations.allInput)}</Label>
+            <Label>{formatMessage(messages.allInput)}</Label>
           </Box>
         </AutoTagTargetContainer>
         <AutoTagTargetContainer
@@ -163,10 +163,10 @@ const Step1 = ({
               disabled={isEmpty(filters)}
             />
             <Box>
-              <Label>{formatMessage(translations.useCurrentFilters)}</Label>
+              <Label>{formatMessage(messages.useCurrentFilters)}</Label>
               {isEmpty(filters) && (
                 <Text fontSize="s" m="0">
-                  {formatMessage(translations.noActiveFilters)}
+                  {formatMessage(messages.noActiveFilters)}
                 </Text>
               )}
             </Box>
@@ -175,7 +175,7 @@ const Step1 = ({
         </AutoTagTargetContainer>
       </Box>
 
-      <Title variant="h4">{formatMessage(translations.howToTag)}</Title>
+      <Title variant="h4">{formatMessage(messages.howToTag)}</Title>
 
       <Box
         display="flex"
@@ -185,79 +185,79 @@ const Step1 = ({
       >
         <AutoTagOption
           tagType="nlp_topic"
-          title={formatMessage(translations.fullyAutomatedTitle)}
+          title={formatMessage(messages.fullyAutomatedTitle)}
           onSelect={() => onSelectMethod('nlp_topic')}
           disabled={isLoading}
           isLoading={isLoading && loadingMethod === 'nlp_topic'}
-          tooltip={formatMessage(translations.fullyAutomatedTooltip)}
+          tooltip={formatMessage(messages.fullyAutomatedTooltip)}
         >
-          {formatMessage(translations.fullyAutomatedDescription)}
+          {formatMessage(messages.fullyAutomatedDescription)}
         </AutoTagOption>
 
         <AutoTagOption
           tagType="custom"
-          title={formatMessage(translations.classificationByLabelTitle)}
+          title={formatMessage(messages.classificationByLabelTitle)}
           onSelect={() => onSelectMethod('label_classification')}
           disabled={isLoading}
           isLoading={isLoading && loadingMethod === 'label_classification'}
-          tooltip={formatMessage(translations.classificationByLabelTooltip)}
+          tooltip={formatMessage(messages.classificationByLabelTooltip)}
         >
-          {formatMessage(translations.classificationByLabelDescription)}
+          {formatMessage(messages.classificationByLabelDescription)}
         </AutoTagOption>
 
         <AutoTagOption
           tagType="custom"
-          title={formatMessage(translations.classificationByExampleTitle)}
+          title={formatMessage(messages.classificationByExampleTitle)}
           onSelect={() => onSelectMethod('few_shot_classification')}
           disabled={isLoading}
           isLoading={isLoading && loadingMethod === 'few_shot_classification'}
-          tooltip={formatMessage(translations.classificationByExampleTooltip)}
+          tooltip={formatMessage(messages.classificationByExampleTooltip)}
         >
-          {formatMessage(translations.classificationByExampleDescription)}
+          {formatMessage(messages.classificationByExampleDescription)}
         </AutoTagOption>
 
         {analysis?.data.attributes.participation_method === 'ideation' && (
           <AutoTagOption
             tagType="platform_topic"
-            title={formatMessage(translations.platformTagsTitle)}
+            title={formatMessage(messages.platformTagsTitle)}
             onSelect={() => onSelectMethod('platform_topic')}
             disabled={isLoading}
             isLoading={isLoading && loadingMethod === 'platform_topic'}
           >
-            {formatMessage(translations.platformTagsDescription)}
+            {formatMessage(messages.platformTagsDescription)}
           </AutoTagOption>
         )}
 
         <AutoTagOption
           tagType="sentiment"
-          title={formatMessage(translations.sentimentTagTitle)}
+          title={formatMessage(messages.sentimentTagTitle)}
           onSelect={() => onSelectMethod('sentiment')}
           disabled={isLoading}
           isLoading={isLoading && loadingMethod === 'sentiment'}
         >
-          {formatMessage(translations.sentimentTagDescription)}
+          {formatMessage(messages.sentimentTagDescription)}
         </AutoTagOption>
 
         {analysis?.data.attributes.participation_method === 'ideation' && (
           <AutoTagOption
             tagType="controversial"
-            title={formatMessage(translations.controversialTagTitle)}
+            title={formatMessage(messages.controversialTagTitle)}
             onSelect={() => onSelectMethod('controversial')}
             disabled={isLoading}
             isLoading={isLoading && loadingMethod === 'controversial'}
           >
-            {formatMessage(translations.controversialTagDescription)}
+            {formatMessage(messages.controversialTagDescription)}
           </AutoTagOption>
         )}
 
         <AutoTagOption
           tagType="language"
-          title={formatMessage(translations.languageTagTitle)}
+          title={formatMessage(messages.languageTagTitle)}
           onSelect={() => onSelectMethod('language')}
           disabled={isLoading}
           isLoading={isLoading && loadingMethod === 'language'}
         >
-          {formatMessage(translations.languageTagDescription)}
+          {formatMessage(messages.languageTagDescription)}
         </AutoTagOption>
       </Box>
     </>

@@ -38,8 +38,6 @@
   "app.components.UserSearch.noOptions": "لا توجد خيارات",
   "app.components.UserSearch.searchUsers": "ابحث في المستخدمين",
   "app.components.admin.ContentBuilder.Widgets.Title.title": "العنوان",
-  "app.components.admin.DateRangePicker.endDatePlaceholder": "تاريخ الانتهاء",
-  "app.components.admin.DateRangePicker.startDatePlaceholder": "تاريخ البدء",
   "app.components.admin.Graphs": "لا تتوفر أي بيانات باستخدام عوامل التصفية الحالية.",
   "app.components.admin.Graphs.noDataShort": "لا تتوفر أي بيانات.",
   "app.components.admin.InputManager.onePost": "مُدخل 1 ",

@@ -13,7 +13,7 @@ import Tag from '../Tag';
 import AddTag from '../AddTag';
 
 import { useIntl } from 'utils/cl-intl';
-import translations from '../translations';
+import messages from '../messages';
 
 type Props = {
   onLaunch: (tagsIds: string[]) => void;
@@ -36,9 +36,9 @@ const Step2LabelClassification = ({ onLaunch }: Props) => {
 
   return (
     <Box>
-      <Title>{formatMessage(translations.byLabelTitle)}</Title>
-      <Text>{formatMessage(translations.byLabelSubtitle1)}</Text>
-      <Text>{formatMessage(translations.byLabelSubtitle2)}</Text>
+      <Title>{formatMessage(messages.byLabelTitle)}</Title>
+      <Text>{formatMessage(messages.byLabelSubtitle1)}</Text>
+      <Text>{formatMessage(messages.byLabelSubtitle2)}</Text>
       <Box>
         {customTags?.map((tag) => (
           <Box key={tag.id} display="flex" justifyContent="flex-start" mb="8px">
@@ -66,7 +66,7 @@ const Step2LabelClassification = ({ onLaunch }: Props) => {
           disabled={selectedTagIds.length === 0}
           onClick={() => onLaunch(selectedTagIds)}
         >
-          {formatMessage(translations.launch)}
+          {formatMessage(messages.launch)}
         </Button>
       </Box>
     </Box>

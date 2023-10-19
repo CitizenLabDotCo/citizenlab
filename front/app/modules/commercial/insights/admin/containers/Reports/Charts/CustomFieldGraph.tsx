@@ -25,6 +25,8 @@ import {
 import { Tooltip } from 'recharts';
 import BarChart from 'components/admin/Graphs/BarChart';
 import { Box, colors } from '@citizenlab/cl2-component-library';
+import BarChartByCategory from 'components/admin/Graphs/BarChartByCategory';
+import PieChartByCategory from 'components/admin/Graphs/PieChartByCategory';
 
 // typings
 import { IUserCustomFieldData } from 'api/user_custom_fields/types';
@@ -193,6 +195,50 @@ const CustomFieldsGraph = ({
       ? customFieldEndpoints[code as TAllowedCode].xlsxEndpoint
       : usersByCustomFieldXlsxEndpoint(customField.id);
 
+  // If there is no code, this is not a built-in field
+  if (!customField.attributes.code) {
+    if (customField.attributes.input_type === 'checkbox') {
+      return (
+        <Box width="50%">
+          <Box width="1340px">
+            <PieChartByCategory
+              key={customField.id}
+              startAt={startAt}
+              endAt={endAt}
+              currentGroupFilter={undefined}
+              currentGroupFilterLabel={undefined}
+              graphTitleString={localize(customField.attributes.title_multiloc)}
+              graphUnit="users"
+              customId={customField.id}
+              xlsxEndpoint={usersByCustomFieldXlsxEndpoint(customField.id)}
+              id={customField.id}
+              project={currentProject}
+            />
+          </Box>
+        </Box>
+      );
+    } else {
+      return (
+        <Box width="50%">
+          <Box width="1340px">
+            <BarChartByCategory
+              startAt={startAt}
+              endAt={endAt}
+              graphTitleString={localize(customField.attributes.title_multiloc)}
+              graphUnit="users"
+              customId={customField.id}
+              xlsxEndpoint={usersByCustomFieldXlsxEndpoint(customField.id)}
+              id={customField.id}
+              currentGroupFilter={undefined}
+              currentGroupFilterLabel={undefined}
+              project={currentProject}
+            />
+          </Box>
+        </Box>
+      );
+    }
+  }
+
   return (
     <GraphCard className={`dynamicHeight ${className}`}>
       <GraphCardInner>
@@ -220,7 +266,10 @@ const CustomFieldsGraph = ({
             category: 'name',
             length: 'participants',
           }}
-          bars={{ name: formatMessage(messages.participants), size: sizes.bar }}
+          bars={{
+            name: formatMessage(messages.participants),
+            size: sizes.bar,
+          }}
           layout="horizontal"
           innerRef={currentChartRef}
           margin={{

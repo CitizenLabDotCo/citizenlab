@@ -2,12 +2,12 @@ import { randomString } from '../../../support/commands';
 
 describe('Admin: update text content and sections', () => {
   before(() => {
+    cy.setAdminLoginCookie();
     cy.apiUpdateHomepageSettings({
       top_info_section_enabled: false,
       bottom_info_section_enabled: false,
       events_widget_enabled: false,
     });
-    cy.setLoginCookie('admin@citizenlab.co', 'democracy2.0');
   });
 
   after(() => {
@@ -28,7 +28,6 @@ describe('Admin: update text content and sections', () => {
 
     // go to admin page
     cy.visit('/admin/pages-menu/');
-    cy.acceptCookies();
 
     cy.wait('@getPages');
     cy.wait('@getHomePage');

@@ -1,11 +1,8 @@
-import 'react-dates/initialize';
-import 'react-dates/lib/css/_datepicker.css';
-
 import React, { useState } from 'react';
 import moment from 'moment';
 
 import { withJsonFormsControlProps } from '@jsonforms/react';
-import { Box, DateInput } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import {
   ControlProps,
   RankedTester,
@@ -15,13 +12,9 @@ import {
 import { FormLabel } from 'components/UI/FormComponents';
 import ErrorDisplay from '../ErrorDisplay';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
-import styled from 'styled-components';
 import VerificationIcon from '../VerificationIcon';
 import { getSubtextElement } from './controlUtils';
-
-const StyledDateInput = styled(DateInput)`
-  flex-grow: 1;
-`;
+import DateSinglePicker from 'components/admin/DateSinglePicker';
 
 const DateControl = ({
   uischema,
@@ -49,12 +42,15 @@ const DateControl = ({
         subtextValue={getSubtextElement(uischema.options?.description)}
         subtextSupportsHtml
       />
-      <Box display="flex" flexDirection="row">
-        <StyledDateInput
+      <Box display="flex">
+        <DateSinglePicker
           id={sanitizeForClassname(id)}
-          value={data ? moment(data, 'YYYY-MM-DD') : null}
+          selectedDate={data ? new Date(data) : null}
           onChange={(value) => {
-            handleChange(path, value ? value.format('YYYY-MM-DD') : null);
+            handleChange(
+              path,
+              value ? moment(value).format('YYYY-MM-DD') : null
+            );
             setDidBlur(true);
           }}
           disabled={uischema?.options?.readonly}

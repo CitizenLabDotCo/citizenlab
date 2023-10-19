@@ -23,7 +23,7 @@ interface Props {
   placeholder: string;
   options: Option[];
   components?: { Option: FC };
-  getOptionLabel: (option: Option) => JSX.Element;
+  getOptionLabel: (option: Option) => any;
   onMenuOpen?: () => void;
   /* onInputChange should be a stable reference! */
   onInputChange: (searchTerm: string) => void;
@@ -92,7 +92,7 @@ const BaseUserSelect = ({
         onMenuOpen={onMenuOpen}
         onInputChange={handleInputChange}
         onMenuScrollToBottom={onMenuScrollToBottom}
-        onChange={handleChange}
+        onChange={handleChange as any}
       />
     </Box>
   );
