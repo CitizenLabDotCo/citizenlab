@@ -40,6 +40,7 @@ interface Props {
   xlsxEndpoint: string;
   showExportMenu?: boolean;
   id: string;
+  project?: string;
 }
 
 type GraphOption = {
@@ -59,6 +60,7 @@ const BarChartByCategory = ({
   graphUnit,
   showExportMenu = true,
   id,
+  project,
 }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
@@ -97,6 +99,7 @@ const BarChartByCategory = ({
     group: currentGroupFilter,
     id,
     enabled: true,
+    project,
   });
 
   const serie = usersByCustomField && convertToGraphFormat(usersByCustomField);

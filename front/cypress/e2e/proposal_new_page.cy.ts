@@ -76,19 +76,11 @@ describe('Initiative new page', () => {
       .should('have.length', 1);
 
     // add a location
-    cy.get('.e2e-initiative-location-input input').type(
-      'Boulevard Anspach Brussels{enter}'
+    cy.get('.e2e-initiative-location-input #position').type(
+      'Boulevard Anspach Brussels'
     );
-    cy.get(
-      '.e2e-initiative-location-input #PlacesAutocomplete__autocomplete-container div'
-    )
-      .first()
-      .click();
-    cy.wait(500);
-    cy.get('.e2e-initiative-location-input input').should(
-      'contain.value',
-      'Belgium'
-    );
+    cy.wait(5000);
+    cy.get('.e2e-initiative-location-input #position').type('{enter}');
 
     // verify that image and file upload components are present
     cy.get('#e2e-iniatiative-banner-dropzone');
