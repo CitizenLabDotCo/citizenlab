@@ -48,11 +48,11 @@ function deleteInvites() {
 describe('Invitation authentication flow', () => {
   before(() => {
     deleteInvites();
-    cy.setAdminLoginCookie();
   });
 
   it('has correct invitations', () => {
     cy.intercept('POST', '**/invites/*').as('postInvitesRequest');
+    cy.setAdminLoginCookie();
     cy.visit('/admin/users/invitations');
     cy.get('input[type=file]').selectFile('cypress/fixtures/invites.xlsx');
     cy.get('.e2e-submit-wrapper-button button').click();
@@ -62,6 +62,7 @@ describe('Invitation authentication flow', () => {
     cy.contains('jack@johnson.com');
     cy.contains('Jack Johnson');
     cy.contains('John Jackson');
+    cy.logout();
   });
 
   // TODO: remove user after this test
