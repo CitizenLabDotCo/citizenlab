@@ -95,7 +95,3 @@ export const StyledFileUploader = styled(FileUploader)`
 export const StyledMultipleSelect = styled(MultipleSelect)`
   width: 500px;
 `;
-
-export const StyledWarning = styled(Warning)`
-  margin-bottom: 15px;
-`;
