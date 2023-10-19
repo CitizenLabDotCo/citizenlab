@@ -2106,7 +2106,7 @@
   "app.containers.AdminPage.projects.project.analysis.search": "Zoeken",
   "app.containers.AdminPage.projects.project.analysis.start": "Start",
   "app.containers.AdminPage.projects.project.analysis.supportArticle": "Supportartikel",
-  "app.containers.AdminPage.projects.project.analysis.supportArticleLink": "https://support.citizenlab.co/en/articles/8316692-ai-analysis",
+  "app.containers.AdminPage.projects.project.analysis.supportArticleLink": "https://support.citizenlab.co/nl/articles/8316692-ai-analyse",
   "app.containers.AdminPage.projects.project.analysis.unknown": "Onbekend",
   "app.containers.AdminPage.projects.project.analysis.votes": "Stemmen",
   "app.containers.AdminPage.widgets.copied": "Gekopieerd",
