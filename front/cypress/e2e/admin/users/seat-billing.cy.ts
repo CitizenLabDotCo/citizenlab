@@ -5,30 +5,6 @@ describe('Seat based billing', () => {
   let createdUserIds: string[] = [];
   let adminAndmoderatorsCount: number;
 
-  before(() => {
-    cy.apiUpdateAppConfiguration({
-      settings: {
-        seat_based_billing: {
-          allowed: true,
-          enabled: true,
-        },
-      },
-    });
-  });
-
-  // This is important to make sure it doesn't clash with other E2E tests.
-  // E.g. unexpectedly showing the seats modal in the invitation flow E2E tests.
-  after(() => {
-    cy.apiUpdateAppConfiguration({
-      settings: {
-        seat_based_billing: {
-          allowed: true,
-          enabled: false,
-        },
-      },
-    });
-  });
-
   type CreateUserType = {
     firstName: string;
     lastName: string;
