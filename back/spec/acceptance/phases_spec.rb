@@ -13,7 +13,6 @@ resource 'Phases' do
     create(:idea_status_proposed)
     @project = create(:project)
     @project.phases = create_list(:phase_sequence, 2, project: @project)
-    @phases = @project.phases
   end
 
   get 'web_api/v1/projects/:project_id/phases' do
@@ -33,15 +32,15 @@ resource 'Phases' do
   end
 
   get 'web_api/v1/phases/:id' do
-    let(:id) { @phases.first.id }
+    let(:id) { @project.phases.first.id }
 
     example 'Get one phase by id' do
-      create_list(:idea, 2, project: @project, phases: @phases)
+      create_list(:idea, 2, project: @project, phases: @project.phases)
       PermissionsService.new.update_all_permissions
       do_request
       assert_status 200
 
-      expect(json_response.dig(:data, :id)).to eq @phases.first.id
+      expect(json_response.dig(:data, :id)).to eq @project.phases.first.id
       expect(json_response.dig(:data, :type)).to eq 'phase'
       expect(json_response.dig(:data, :attributes)).to include(
         reacting_like_method: 'unlimited',
@@ -49,11 +48,11 @@ resource 'Phases' do
       )
 
       expect(json_response.dig(:data, :relationships, :project)).to match({
-        data: { id: @phases.first.project_id, type: 'project' }
+        data: { id: @project.phases.first.project_id, type: 'project' }
       })
 
       expect(json_response.dig(:data, :relationships, :permissions, :data).size)
-        .to eq(Permission.available_actions(@phases.first).length)
+        .to eq(Permission.available_actions(@project.phases.first).length)
 
       expect(json_response[:included].pluck(:type)).to include 'permission'
     end
@@ -156,18 +155,30 @@ resource 'Phases' do
       end
 
       context 'Blank phase end dates' do
-        let(:start_at) { @project.phases.last.start_at + 5.days }
-        let(:end_at) { @project.phases.last.start_at + 10.days }
+        let(:start_at) { @project.phases.last.end_at + 5.days }
+        let(:end_at) { nil }
 
-        before { @project.phases.last.update!(end_at: nil) }
+        example_request 'Create a phase for a project with an open end date' do
+          assert_status 201
+          expect(json_response.dig(:data, :attributes, :end_at)).to be_nil
+        end
+      end
 
-        example_request 'Create a phase for a project where the last phase has an open end date' do
+      context 'Creating a new phase when a previous phase exists with no end date' do
+        let(:start_at) { @new_phase_start }
+        let(:end_at) { @new_phase_start + 5.days }
 
+        before do
+          @new_phase_start = @project.phases.last.end_at + 1.day
+          @project.phases.last.update!(end_at: nil)
+        end
+
+        example 'Create a phase on a project with an open ended last phase' do
           do_request
 
-          # binding.pry
           assert_status 201
           expect(json_response.dig(:data, :attributes, :previous_phase_end_at_updated)).to be true
+          expect(@project.phases.last.reload.end_at).not_to be_nil
         end
       end
 

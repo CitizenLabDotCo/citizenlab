@@ -116,7 +116,7 @@ class Phase < ApplicationRecord
   end
 
   def last_phase?
-    phases = Phase.where(project: project)
+    phases = Phase.where(project_id: project_id)
     # phases = project.phases # TODO: Lots of tests fail with this as 'project.phases << phase' not called
 
     return true if phases.blank?
@@ -141,7 +141,7 @@ class Phase < ApplicationRecord
   end
 
   def validate_end_at
-    return if last_phase? || end_at.present?
+    return if end_at.present? || last_phase?
 
     errors.add(:end_at, message: 'cannot be blank unless it is the last phase')
   end
@@ -184,10 +184,8 @@ class Phase < ApplicationRecord
 
   def validate_no_other_overlapping_phases
     ts = TimelineService.new
-    other_phases = ts.other_project_phases(self)
-    # pp other_phases.pluck(:end_at)
-    other_phases.each do |other_phase|
-      next unless start_at.present? && end_at.present? && ts.overlaps?(self, other_phase)
+    ts.other_project_phases(self).each do |other_phase|
+      next unless ts.overlaps?(self, other_phase)
 
       errors.add(:base, :has_other_overlapping_phases,
         message: 'has other phases which overlap in start and end date')

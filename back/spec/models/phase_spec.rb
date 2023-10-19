@@ -310,6 +310,28 @@ RSpec.describe Phase do
     end
   end
 
+  describe '#validate_no_other_overlapping_phases' do
+    let(:project) { create(:project) }
+
+    before do
+      project.phases << create(:phase, project: project, start_at: '2022-10-01', end_at: '2022-10-08')
+    end
+
+    it 'validates when phases do not overlap' do
+      phase = create(:phase, project: project, start_at: '2022-10-09', end_at: '2022-10-15')
+      expect(phase).to be_valid
+    end
+
+    it 'is not valid when phases overlap' do
+      expect { create(:phase, project: project, start_at: '2022-10-07', end_at: '2022-10-10') }.to raise_error ActiveRecord::RecordInvalid
+    end
+
+    it 'is valid when there is no end date for the last phase' do
+      phase = create(:phase, project: project, start_at: '2022-10-09', end_at: nil)
+      expect(phase).to be_valid
+    end
+  end
+
   describe '#validate_previous_blank_end_at' do
     let(:project) { create(:project_with_phases) }
     let(:old_last_phase) { project.phases.last }

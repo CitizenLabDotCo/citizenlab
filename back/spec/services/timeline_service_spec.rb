@@ -172,6 +172,19 @@ describe TimelineService do
     end
   end
 
+  describe 'previous_phase' do
+    it 'returns the previous phase' do
+      project = create(:project)
+      first_phase = create(:phase, project: project, start_at: (Time.zone.today - 25.days), end_at: (Time.zone.today - 20.days))
+      second_phase = create(:phase, project: project, start_at: (Time.zone.today - 15.days), end_at: (Time.zone.today - 10.days))
+      third_phase = create(:phase, project: project, start_at: (Time.zone.today - 2.days), end_at: (Time.zone.today + 3.days))
+
+      expect(service.previous_phase(first_phase)).to be_nil
+      expect(service.previous_phase(second_phase)).to eq first_phase
+      expect(service.previous_phase(third_phase)).to eq second_phase
+    end
+  end
+
   def create_active_phase(project, factory: :phase)
     now = Time.now.in_time_zone(AppConfiguration.instance.settings('core', 'timezone')).to_date
     create(factory, project: project, start_at: now - 2.weeks, end_at: now)
