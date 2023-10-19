@@ -1036,7 +1036,7 @@
   "app.containers.IdeasShow.ideaWhatsAppMessage": "Apoie esta ideia: {postTitle}",
   "app.containers.IdeasShow.ideasWhatsAppMessage": "Apoie este problema: {postTitle}",
   "app.containers.IdeasShow.imported": "Importado",
-  "app.containers.IdeasShow.importedTooltip": "O site {inputTerm} foi coletado off-line e carregado automaticamente na plataforma.",
+  "app.containers.IdeasShow.importedTooltip": "Este {inputTerm} foi coletado offline e carregado automaticamente na plataforma.",
   "app.containers.IdeasShow.issueEmailSharingBody": "Apoie este problema '{postTitle}' em {postUrl}!",
   "app.containers.IdeasShow.issueEmailSharingSubject": "Apoie este problema: {postTitle}",
   "app.containers.IdeasShow.issueFacebookMessage": "Apoie este problema: {postTitle}",
