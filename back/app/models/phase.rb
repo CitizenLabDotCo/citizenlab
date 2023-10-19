@@ -74,7 +74,6 @@ class Phase < ApplicationRecord
   validates :description_multiloc, multiloc: { presence: false, html: true }
   validates :campaigns_settings, presence: true
   validates :start_at, presence: true
-
   validate :validate_end_at
   validate :validate_previous_blank_end_at
   validate :validate_start_at_before_end_at
@@ -117,8 +116,6 @@ class Phase < ApplicationRecord
 
   def last_phase?
     phases = Phase.where(project_id: project_id)
-    # phases = project.phases # TODO: Lots of tests fail with this as 'project.phases << phase' not called
-
     return true if phases.blank?
 
     start_at.present? && start_at >= phases.maximum(:start_at)
