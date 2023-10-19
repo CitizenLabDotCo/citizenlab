@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe RequestConfirmationCodeJob do # TODO: log activities, return validation error when invalid new email
+RSpec.describe RequestConfirmationCodeJob do
   subject(:job) { described_class.new }
 
   describe '#perform' do
@@ -14,17 +14,6 @@ RSpec.describe RequestConfirmationCodeJob do # TODO: log activities, return vali
       it 'raises an error' do
         expect { job.perform(user) }.to raise_error(RuntimeError)
       end
-
-      # context 'when passing a new email' do
-      #   before do
-      #     context[:user] = create(:user_with_confirmation)
-      #     context[:new_email] = 'new@email.com'
-      #   end
-  
-      #   it 'sets the user email straight to the email column' do
-      #     expect { result }.to change(context[:user], :email).from(context[:user].email).to(context[:new_email])
-      #   end
-      # end
     end
 
     describe 'when confirmation is turned on' do
@@ -90,47 +79,6 @@ RSpec.describe RequestConfirmationCodeJob do # TODO: log activities, return vali
             expect(user.errors.details).to eq({ email: [{ error: :taken, value: new_email }] })
             expect(user.reload.new_email).to be_nil
           end
-
-          # context 'when a user is passwordless' do
-          #   before do
-          #     context[:user] = create(:user_no_password)
-          #     context[:new_email] = 'new@email.com'
-          #   end
-      
-          #   context 'and user is not active' do
-          #     it 'returns email errors' do
-          #       expect(result.errors[:email]).not_to be_empty
-          #       expect(context[:user].reload.new_email).to be_nil
-          #     end
-          #   end
-      
-          #   context 'and user is active' do
-          #     before do
-          #       context[:user].confirm!
-          #     end
-      
-          #     it 'sets the user email in new email field' do
-          #       expect(result.errors).to be_nil
-          #       expect(context[:user].reload.new_email).to eq context[:new_email]
-          #     end
-          #   end
-          # end
-
-          # context 'user is not yet active' do
-          #   it 'sets the user email direct to the email field' do
-          #     expect { result }.to change(context[:user], :email).from(context[:user].email).to(context[:new_email])
-          #   end
-          # end
-    
-          # context 'user is active' do
-          #   before do
-          #     context[:user].confirm!
-          #   end
-    
-          #   it 'sets the user email temporarily in new_email' do
-          #     expect { result }.to change(context[:user], :new_email).from(nil).to(context[:new_email])
-          #   end
-          # end
         end
       end
 
