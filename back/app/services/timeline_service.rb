@@ -11,7 +11,7 @@ class TimelineService
   def past_phases(project, time = Time.now)
     date = time.in_time_zone(AppConfiguration.instance.settings('core', 'timezone')).to_date
     project.phases.select do |phase|
-      phase.end_at < date
+      phase.end_at.present? && phase.end_at < date
     end
   end
 
@@ -20,7 +20,7 @@ class TimelineService
     return unless project.timeline?
 
     project.phases.find do |phase|
-      phase.start_at <= date && phase.end_at >= date
+      phase.start_at <= date && (phase.end_at.nil? || phase.end_at >= date)
     end
   end
 
@@ -28,7 +28,7 @@ class TimelineService
     return false unless participation_context.phase?
 
     date = time.in_time_zone(AppConfiguration.instance.settings('core', 'timezone')).to_date
-    participation_context.end_at <= date
+    participation_context.end_at.present? && participation_context.end_at <= date
   end
 
   def current_or_last_can_contain_ideas_phase(project, time = Time.now)
@@ -41,7 +41,7 @@ class TimelineService
     ideation_phases = phases.select(&:can_contain_ideas?)
     return if ideation_phases.blank?
 
-    current_phase = ideation_phases.find { |phase| phase.start_at <= date && date <= phase.end_at }
+    current_phase = ideation_phases.find { |phase| phase.start_at <= date && (phase.end_at.nil? || date <= phase.end_at) }
     current_phase || ideation_phases.last
   end
 
@@ -50,7 +50,7 @@ class TimelineService
     return unless project.timeline?
 
     project.phases.select do |phase|
-      phase.end_at >= date
+      phase.end_at.nil? || phase.end_at >= date
     end
   end
 
@@ -74,6 +74,12 @@ class TimelineService
     today = Time.now.in_time_zone(AppConfiguration.instance.settings('core', 'timezone')).to_date
     if project.continuous? || project.phases.blank?
       nil
+    elsif project.phases.last.end_at.nil?
+      if today > project.phases.minimum(:start_at)
+        :present
+      else
+        :future
+      end
     elsif today > project.phases.maximum(:end_at)
       :past
     elsif today < project.phases.minimum(:start_at)
@@ -87,9 +93,19 @@ class TimelineService
     today = Time.now.in_time_zone(AppConfiguration.instance.settings('core', 'timezone')).to_date
     starts = Phase.where(project: projects).group(:project_id).minimum(:start_at)
     ends = Phase.where(project: projects).group(:project_id).maximum(:end_at)
+
+    # For any projects open end dates?
+    open_end_starts = Phase.where(project: projects, end_at: nil).group(:project_id).maximum(:start_at)
+
     projects.to_h do |project|
       active = if project.continuous? || project.phases.blank?
         nil
+      elsif open_end_starts[project.id]
+        if today > open_end_starts[project.id] || today > starts[project.id]
+          :present
+        else
+          :future
+        end
       elsif today > ends[project.id]
         :past
       elsif today < starts[project.id]
