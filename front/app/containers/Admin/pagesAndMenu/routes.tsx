@@ -26,7 +26,9 @@ const CustomPageBottomInfoSection = lazy(
   () => import('./containers/CustomPages/Edit/Content/BottomInfoSection')
 );
 const HomepageHeroBannerForm = lazy(() => import('./EditHomepage/HeroBanner'));
-
+const ContentBuilder = lazy(
+  () => import('./containers/ContentBuilder/containers')
+);
 // custom pages
 const NewCustomPageIndex = lazy(() => import('./containers/CustomPages/New'));
 const EditCustomPageIndex = lazy(() => import('./containers/CustomPages/Edit'));
@@ -82,6 +84,14 @@ export default () => ({
       element: (
         <PageLoading>
           <EditHomepage />
+        </PageLoading>
+      ),
+    },
+    {
+      path: `${HOMEPAGE_PATH}/content-builder`, // /homepage/content-builder
+      element: (
+        <PageLoading>
+          <ContentBuilder />
         </PageLoading>
       ),
     },
