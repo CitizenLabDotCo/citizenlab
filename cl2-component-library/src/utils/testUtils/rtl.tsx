@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { render, RenderOptions } from '@testing-library/react';
 import { ThemeProvider } from 'styled-components';
-import { getTheme } from '../styleUtils';
+import { getTheme } from '../../utils/styleUtils';
 import GlobalStyle from '../../global-styles';
 
 const AllTheProviders: FC = ({ children }) => {

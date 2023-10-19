@@ -2,7 +2,7 @@ import React, { memo, useState, useCallback, useEffect } from 'react';
 import { isNilOrError } from '../../utils/helperUtils';
 
 // components
-import Input, { InputProps } from '.';
+import Input, { InputProps } from './';
 import IconTooltip from '../IconTooltip';
 import LocaleSwitcher from '../LocaleSwitcher';
 import Label from '../Label';
@@ -119,14 +119,14 @@ const InputMultilocWithLocaleSwitcher = memo<Props>((props) => {
             ) : (
               <Spacer />
             )}
-              <StyledLocaleSwitcher
-                onSelectedLocaleChange={handleOnSelectedLocaleChange}
-                locales={!isNilOrError(locales) ? locales : []}
-                selectedLocale={selectedLocale}
-                values={{
-                  input_field: valueMultiloc as Multiloc,
-                }}
-              />
+            <StyledLocaleSwitcher
+              onSelectedLocaleChange={handleOnSelectedLocaleChange}
+              locales={!isNilOrError(locales) ? locales : []}
+              selectedLocale={selectedLocale}
+              values={{
+                input_field: valueMultiloc as Multiloc,
+              }}
+            />
           </LabelContainer>
         </Box>
         <Input

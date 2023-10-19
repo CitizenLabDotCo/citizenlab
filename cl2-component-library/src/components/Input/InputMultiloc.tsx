@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 
 // components
-import Input, { InputProps } from '.';
+import Input, { InputProps } from './';
 import IconTooltip from '../IconTooltip';
 import Label from '../Label';
 

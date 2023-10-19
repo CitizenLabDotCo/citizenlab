@@ -1,5 +1,5 @@
 {
-  "version": "0.11.19",
+  "version": "0.11.20",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -60,7 +60,6 @@
     "@types/lodash": "^4.14.197",
     "@types/react": "^17.0.2",
     "@types/react-color": "3.0.7",
-    "@types/react-dates": "21.8.3",
     "@types/react-dom": "^17.0.13",
     "@types/react-places-autocomplete": "6.x",
     "@types/react-transition-group": "4.4.6",
@@ -110,7 +109,6 @@
     "lodash-es": "4.17.21",
     "polished": "^4.2.2",
     "react-color": "2.19.3",
-    "react-dates": "21.8.0",
     "react-places-autocomplete": "6.x",
     "react-transition-group": "4.4.5",
     "styled-components": "^5.3.6",

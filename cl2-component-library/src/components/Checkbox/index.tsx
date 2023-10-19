@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Color, defaultOutline } from '../../utils/styleUtils';
 import testEnv from '../../utils/testUtils/testEnv';
-import Icon from '../Icon';
+import Icon from '../../components/Icon';
 import { hideVisually } from 'polished';
 import IconTooltip from '../IconTooltip';
 import Box, { BoxMarginProps, BoxPaddingProps } from '../Box';

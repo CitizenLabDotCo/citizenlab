@@ -23,7 +23,6 @@ import LocaleSwitcher from './components/LocaleSwitcher';
 import ColorPickerInput, {
   Props as ColorPickerInputProps,
 } from './components/ColorPickerInput';
-import DateInput from './components/DateInput';
 import Badge from './components/Badge';
 import Accordion from './components/Accordion';
 import CardButton from './components/CardButton';
@@ -125,7 +124,6 @@ export {
   LocaleSwitcher,
   ColorPickerInput,
   ColorPickerInputProps,
-  DateInput,
   Badge,
   Accordion,
   CardButton,

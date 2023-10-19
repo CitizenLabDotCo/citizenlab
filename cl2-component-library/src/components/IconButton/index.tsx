@@ -1,5 +1,5 @@
 import React, { MouseEvent, KeyboardEvent } from 'react';
-import Icon, { IconNames } from '../Icon';
+import Icon, { IconNames } from '../../components/Icon';
 import styled from 'styled-components';
 import Box, {
   BoxPositionProps,
