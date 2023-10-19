@@ -254,6 +254,8 @@ describe 'clave_unica verification' do
         post '/web_api/v1/user/confirm', params: { confirmation: { code: user.email_confirmation_code } }, headers: headers
         expect(response).to have_http_status(:ok)
         expect(user.reload.confirmation_required?).to be(false)
+        expect(user).to have_attributes({ email: 'newcoolemail@example.org' })
+        expect(user.new_email).to be_nil
       end
     end
 
