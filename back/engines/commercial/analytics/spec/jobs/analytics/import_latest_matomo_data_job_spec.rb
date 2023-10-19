@@ -14,12 +14,11 @@ RSpec.describe Analytics::ImportLatestMatomoDataJob do
     }
     AppConfiguration.instance.update(settings: settings)
 
-    # Configure Matomo environment variables
-    stub_const('ENV', ENV.to_h.merge(
+    stub_env({
       'MATOMO_HOST' => 'https://fake.matomo.citizenlab.co',
       'MATOMO_AUTHORIZATION_TOKEN' => 'matomo-token',
-      'DEFAULT_MATOMO_TENANT_SITE_ID' => 1
-    ))
+      'DEFAULT_MATOMO_TENANT_SITE_ID' => '1'
+    })
   end
 
   describe '.perform_for_all_tenants' do

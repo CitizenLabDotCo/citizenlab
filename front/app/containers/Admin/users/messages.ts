@@ -74,6 +74,11 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.userDeletionConfirmation',
     defaultMessage: 'Permanently remove this user?',
   },
+  userDeletionProposalVotes: {
+    id: 'app.containers.Admin.Users.userDeletionProposalVotes',
+    defaultMessage:
+      'This will also delete any votes by this user on proposals which are still open for voting.',
+  },
   userDeletionFailed: {
     id: 'app.containers.Admin.Users.userDeletionFailed',
     defaultMessage:

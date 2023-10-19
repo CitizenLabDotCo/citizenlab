@@ -10,7 +10,7 @@ import {
   Text,
 } from '@citizenlab/cl2-component-library';
 import CloseIconButton from 'components/UI/CloseIconButton';
-import translations from './translations';
+import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 type Props = {
@@ -22,7 +22,7 @@ const Step1 = ({ onSetStep }) => {
   return (
     <Box>
       <Title variant="h3">
-        <FormattedMessage {...translations.autoAssignQuestion} />
+        <FormattedMessage {...messages.autoAssignQuestion} />
       </Title>
 
       <Box display="flex" gap="24px" mt="24px">
@@ -30,13 +30,13 @@ const Step1 = ({ onSetStep }) => {
           buttonStyle="primary-outlined"
           onClick={() => onSetStep('step2-auto')}
         >
-          <FormattedMessage {...translations.autoAssignYes} />
+          <FormattedMessage {...messages.autoAssignYes} />
         </Button>
         <Button
           buttonStyle="primary-outlined"
           onClick={() => onSetStep('step2-manual')}
         >
-          <FormattedMessage {...translations.autoAssignNo} />
+          <FormattedMessage {...messages.autoAssignNo} />
         </Button>
       </Box>
     </Box>
@@ -53,7 +53,7 @@ const Step2Auto = () => {
               <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
             ),
           }}
-          {...translations.autoAssignStep2AutoText1}
+          {...messages.autoAssignStep2AutoText1}
         />
       </Text>
       <Text>
@@ -63,7 +63,7 @@ const Step2Auto = () => {
               <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
             ),
           }}
-          {...translations.autoAssignStep2AutoText2}
+          {...messages.autoAssignStep2AutoText2}
         />
       </Text>
     </Box>
@@ -74,7 +74,7 @@ const Step2Manual = () => {
   return (
     <Box>
       <Text>
-        <FormattedMessage {...translations.autoAssignStep2ManualText1} />
+        <FormattedMessage {...messages.autoAssignStep2ManualText1} />
       </Text>
     </Box>
   );
@@ -136,7 +136,7 @@ const FirstTagAssistance = ({ tagId, onHide }: Props) => {
                   setDontShowAgainCheckbox(!dontShowAgainCheckbox)
                 }
               />
-              <FormattedMessage {...translations.dontShowAgain} />
+              <FormattedMessage {...messages.dontShowAgain} />
             </Label>
           </Box>
         </Box>

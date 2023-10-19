@@ -10,7 +10,7 @@ function getInvites() {
         Authorization: `Bearer ${adminJwt}`,
       },
       method: 'GET',
-      url: 'web_api/v1/invites?page%5Bnumber%5D=1&page%5Bsize%5D=20&sort=-created_at',
+      url: 'web_api/v1/invites',
     });
   });
 }
@@ -26,7 +26,7 @@ function deleteInvites() {
           Authorization: `Bearer ${adminJwt}`,
         },
         method: 'GET',
-        url: 'web_api/v1/invites?page%5Bnumber%5D=1&page%5Bsize%5D=20&sort=-created_at',
+        url: 'web_api/v1/invites',
       })
       .then((response) => {
         const invites = response.body.data;
@@ -46,33 +46,30 @@ function deleteInvites() {
 }
 
 describe('Invitation authentication flow', () => {
-  before(() => {
+  beforeEach(() => {
+    cy.intercept('POST', '**/invites/*').as('postInvitesRequest');
     cy.setAdminLoginCookie();
     cy.visit('/admin/users/invitations');
-
     cy.get('input[type=file]').selectFile('cypress/fixtures/invites.xlsx');
-    cy.contains('Send out invitations').should('be.enabled');
-    cy.contains('Send out invitations').click({ force: true });
-    cy.get('p.success').should('exist');
+    cy.get('.e2e-submit-wrapper-button button').click();
+    cy.wait('@postInvitesRequest');
+    cy.get('.e2e-submit-wrapper-button button').contains('Success');
     cy.logout();
   });
 
   it('has correct invitations', () => {
-    cy.goToLandingPage();
     cy.setAdminLoginCookie();
     cy.visit('/admin/users/invitations/all');
-
     cy.contains('jack@johnson.com');
     cy.contains('Jack Johnson');
     cy.contains('John Jackson');
-
-    cy.logout();
   });
 
-  it('is possible to create account with invite route + token in url', () => {
+  // TODO: remove user after this test
+  it('is possible to create an account with invite route + token in url', () => {
     getInvites().then((response) => {
       const invites = response.body.data;
-      const inviteWithEmail = invites[0];
+      const inviteWithEmail = invites[1];
 
       cy.visit(`/invite?token=${inviteWithEmail.attributes.token}`);
 
@@ -89,14 +86,14 @@ describe('Invitation authentication flow', () => {
       cy.get('#e2e-signup-password-submit-button').click();
 
       cy.get('#e2e-success-continue-button').click();
-      cy.logout();
     });
   });
 
+  // TODO: remove user after this test
   it('is possible to create an account if invitee does not have email', () => {
     getInvites().then((response) => {
       const invites = response.body.data;
-      const inviteWithoutEmail = invites[1];
+      const inviteWithoutEmail = invites[0];
 
       cy.visit('/invite');
 
@@ -119,11 +116,11 @@ describe('Invitation authentication flow', () => {
       cy.get('#e2e-signup-password-submit-button').click();
 
       cy.get('#e2e-success-continue-button').click();
-      cy.logout();
     });
   });
 
-  after(() => {
+  afterEach(() => {
+    cy.logout();
     deleteInvites();
   });
 });

@@ -19,10 +19,5 @@ module BulkImportIdeas
         filename: 'survey.pdf'
       )
     end
-
-    # To enable printable PDFs where there is no current phase
-    def participation_context
-      @participation_context = super || @project
-    end
   end
 end

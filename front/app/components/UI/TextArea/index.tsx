@@ -3,7 +3,8 @@ import { isEmpty } from 'lodash-es';
 
 // components
 import Error from 'components/UI/Error';
-import TextareaAutosize from 'react-autosize-textarea';
+import TextareaAutosize from 'react-textarea-autosize';
+
 import { IconTooltip, Label } from '@citizenlab/cl2-component-library';
 
 // style

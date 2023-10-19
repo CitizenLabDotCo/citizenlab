@@ -96,19 +96,5 @@
         <div class="app-loading-spinner"></div>
       </div>
     </div>
-
-    <% if(htmlWebpackPlugin.options.templateParameters.GOOGLE_MAPS_API_KEY) { %>
-    <script>
-      window.myCallbackFunc = function () {
-        window.googleMaps = true;
-      };
-    </script>
-
-    <script
-      async
-      defer
-      src="https://maps.googleapis.com/maps/api/js?key=<%= htmlWebpackPlugin.options.templateParameters.GOOGLE_MAPS_API_KEY %>&libraries=places&callback=myCallbackFunc"
-    ></script>
-    <% } %>
   </body>
 </html>

@@ -24,4 +24,16 @@ namespace :db do
       Rake::Task['db:migrate'].invoke
     end
   end
+
+  desc 'Postprocess db/structure.sql after db:schema:dump.'
+  task postprocess_structure_sql: :environment do
+    structure_file = 'db/structure.sql'
+    schema = File.read(structure_file)
+    processed_schema = CitizenLab::Database::SchemaPostprocessor.new(schema).process
+    File.write(structure_file, processed_schema)
+  end
+
+  Rake::Task['db:schema:dump'].enhance do
+    Rake::Task['db:postprocess_structure_sql'].invoke
+  end
 end

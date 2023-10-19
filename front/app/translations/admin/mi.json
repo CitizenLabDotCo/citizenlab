@@ -33,8 +33,6 @@
   "app.components.UserSearch.addModerators": "Add",
   "app.components.UserSearch.noOptions": "No options",
   "app.components.UserSearch.searchUsers": "Type to search users...",
-  "app.components.admin.DateRangePicker.endDatePlaceholder": "End Date",
-  "app.components.admin.DateRangePicker.startDatePlaceholder": "Start Date",
   "app.components.admin.InputManager.onePost": "1 input",
   "app.components.admin.PostManager.PostPreview.assignee": "Assignee",
   "app.components.admin.PostManager.PostPreview.cancelEdit": "Cancel edit",
