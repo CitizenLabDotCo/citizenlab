@@ -119,6 +119,11 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.reasonsToStayListTitle',
     defaultMessage: 'Before you go...',
   },
+  activeProposalVotesWillBeDeleted: {
+    id: 'app.containers.UsersEditPage.activeProposalVotesWillBeDeleted',
+    defaultMessage:
+      'Your votes on proposals that are still open for voting will be deleted. Votes on proposals where the voting period has closed will not be deleted.',
+  },
   tooManyEmails: {
     id: 'app.containers.UsersEditPage.tooManyEmails',
     defaultMessage:

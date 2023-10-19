@@ -18,7 +18,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
-import translations from './translations';
+import messages from './messages';
 import styled from 'styled-components';
 import { useSelectedInputContext } from '../SelectedInputContext';
 import useAnalysisSummary from 'api/analysis_summaries/useAnalysisSummary';
@@ -70,7 +70,7 @@ const Summary = ({ insight }: Props) => {
     backgroundTask?.data.attributes.state === 'queued';
 
   const handleSummaryDelete = (id: string) => {
-    if (window.confirm(formatMessage(translations.deleteSummaryConfirmation))) {
+    if (window.confirm(formatMessage(messages.deleteSummaryConfirmation))) {
       deleteSummary(
         {
           analysisId,
@@ -171,7 +171,7 @@ const Summary = ({ insight }: Props) => {
         >
           {hasFilters && (
             <>
-              <Text m="0px">{formatMessage(translations.summaryFor)}</Text>
+              <Text m="0px">{formatMessage(messages.summaryFor)}</Text>
               <FilterItems
                 filters={summary.data.attributes.filters}
                 isEditable={false}
@@ -181,9 +181,7 @@ const Summary = ({ insight }: Props) => {
 
           {!hasFilters && (
             <>
-              <Text m="0px">
-                {formatMessage(translations.summaryForAllInputs)}
-              </Text>
+              <Text m="0px">{formatMessage(messages.summaryForAllInputs)}</Text>
             </>
           )}
         </Box>
@@ -204,10 +202,10 @@ const Summary = ({ insight }: Props) => {
         {summary.data.attributes.accuracy && (
           <Box color={colors.teal700} my="16px">
             <FormattedMessage
-              {...translations.accuracy}
+              {...messages.accuracy}
               values={{
                 accuracy: summary.data.attributes.accuracy * 100,
-                percentage: formatMessage(translations.percentage),
+                percentage: formatMessage(messages.percentage),
               }}
             />
           </Box>
@@ -222,7 +220,7 @@ const Summary = ({ insight }: Props) => {
         mt="16px"
       >
         <Button buttonStyle="white" onClick={handleRestoreFilters} p="4px 12px">
-          {formatMessage(translations.restoreFilters)}
+          {formatMessage(messages.restoreFilters)}
         </Button>
         <Box display="flex">
           <IconButton
@@ -230,7 +228,7 @@ const Summary = ({ insight }: Props) => {
             onClick={() => handleSummaryDelete(insight.id)}
             iconColor={colors.teal400}
             iconColorOnHover={colors.teal700}
-            a11y_buttonActionMessage={formatMessage(translations.deleteSummary)}
+            a11y_buttonActionMessage={formatMessage(messages.deleteSummary)}
           />
           <IconTooltip
             icon="flag"
@@ -248,7 +246,7 @@ const Summary = ({ insight }: Props) => {
             }
             iconColor={colors.teal400}
             iconColorOnHover={colors.teal700}
-            a11y_buttonActionMessage={formatMessage(translations.deleteSummary)}
+            a11y_buttonActionMessage={formatMessage(messages.deleteSummary)}
             onClick={() => toggleBookmark({ analysisId, id: insight.id })}
           />
         </Box>

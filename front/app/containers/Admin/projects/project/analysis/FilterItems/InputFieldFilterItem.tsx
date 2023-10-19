@@ -11,7 +11,7 @@ import { useParams } from 'react-router-dom';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import ShortFieldValue from '../components/ShortInputFieldValue';
 import EllipsisFilterValue from './EllipsisFilterValue';
-import translations from './translations';
+import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 
 type Props = {
@@ -90,7 +90,7 @@ const InputFieldFilterItem = ({
           onClick={() => {
             removeSearchParams([filterKey]);
           }}
-          a11y_buttonActionMessage={formatMessage(translations.removeFilter)}
+          a11y_buttonActionMessage={formatMessage(messages.removeFilter)}
         />
       )}
     </Box>

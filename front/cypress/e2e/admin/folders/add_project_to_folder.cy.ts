@@ -67,7 +67,7 @@ describe.skip('Admin: add projects to folder', async () => {
           });
 
         // Submit project
-        cy.get('.e2e-submit-wrapper-button').click();
+        cy.get('.e2e-submit-wrapper-button button').click();
 
         // Wait for folder page to load
         cy.get('.e2e-resource-header').contains(folderTitle);

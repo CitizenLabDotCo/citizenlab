@@ -1,5 +1,4 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
 import useCategory from 'modules/commercial/insights/api/categories/useCategory';
 import Tag, {
@@ -35,7 +34,7 @@ const Category = ({
   } = useDeleteInputCategory();
   const { data: category } = useCategory(viewId, id);
 
-  if (isNilOrError(category)) {
+  if (category?.data?.attributes?.name === undefined) {
     return null;
   }
   const handleCategoryAction = () => {
@@ -53,7 +52,7 @@ const Category = ({
   return (
     <Tag
       variant={variant === 'suggested' ? 'default' : 'primary'}
-      label={category.data.attributes.name}
+      label={category.data.attributes?.name}
       onIconClick={withAction ? handleCategoryAction : undefined}
       loading={addInputCategoriesIsLoading || deleteInputCategoriesIsLoading}
       size={size}

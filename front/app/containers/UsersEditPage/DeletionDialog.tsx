@@ -22,6 +22,7 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import eventEmitter from 'utils/eventEmitter';
 import useLocalize from 'hooks/useLocalize';
 import { WrappedComponentProps } from 'react-intl';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const Container = styled.div`
   padding: 0px 10px;
@@ -74,6 +75,8 @@ const DeletionDialog = ({
     closeDialog();
   };
 
+  const isProposalsEnabled = useFeatureFlag({ name: 'initiatives' });
+
   if (!isNilOrError(appConfiguration)) {
     const logo = appConfiguration.data.attributes.logo?.medium;
     // just the org's name works fine as alt text for a11y purposes
@@ -93,6 +96,13 @@ const DeletionDialog = ({
           <FormattedMessage {...messages.reasonsToStayListTitle} />
         </Styledh2>
         <ul>
+          {isProposalsEnabled && (
+            <li>
+              <FormattedMessage
+                {...messages.activeProposalVotesWillBeDeleted}
+              />
+            </li>
+          )}
           <li>
             <FormattedMessage {...messages.tooManyEmails} />
           </li>

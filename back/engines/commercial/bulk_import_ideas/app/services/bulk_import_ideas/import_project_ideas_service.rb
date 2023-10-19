@@ -71,7 +71,7 @@ module BulkImportIdeas
         # Get number of pages in a form from the download
         pages_per_idea = @input_form_data[:page_count]
 
-        pdf = ::CombinePDF.parse open(source_file.file_content_url).read
+        pdf = ::CombinePDF.parse URI.open(source_file.file_content_url).read
         source_file.update!(num_pages: pdf.pages.count)
         raise Error.new 'bulk_import_ideas_maximum_pdf_pages_exceeded', value: pdf.pages.count if pdf.pages.count > MAX_TOTAL_PAGES
 
@@ -171,7 +171,7 @@ module BulkImportIdeas
     end
 
     def parse_pdf_ideas(file)
-      pdf_file = open(file.file_content_url, &:read)
+      pdf_file = URI.open(file.file_content_url).read
       @google_forms_service ||= GoogleFormParserService.new
 
       # NOTE: We return both parsed values so we can later merge the best values from both

@@ -110,8 +110,18 @@ const UserTableRow = ({
     setShowChangeSeatModal(false);
   };
 
+  const isProposalsEnabled = useFeatureFlag({ name: 'initiatives' });
+
   const handleDeleteClick = () => {
-    const deleteMessage = formatMessage(messages.userDeletionConfirmation);
+    const baseDeleteMessage = `${formatMessage(
+      messages.userDeletionConfirmation
+    )}`;
+
+    const deleteMessage = isProposalsEnabled
+      ? `${baseDeleteMessage}\n\n${formatMessage(
+          messages.userDeletionProposalVotes
+        )}`
+      : baseDeleteMessage;
 
     if (window.confirm(deleteMessage)) {
       if (userInRowIsCurrentUser) {
@@ -246,6 +256,7 @@ const UserTableRow = ({
 
           https://citizenlab.atlassian.net/browse/CL-2255
         */}
+
         {userInRowHasRegistered ? (
           moment(userInRow.attributes.registration_completed_at).format('LL')
         ) : (

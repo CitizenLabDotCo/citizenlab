@@ -78,6 +78,12 @@ Rails.application.routes.draw do
       resources :idea_statuses, only: %i[index show]
       resources :initiative_statuses, only: %i[index show]
 
+      resources :location, only: [] do
+        get :autocomplete, on: :collection
+        get :geocode, on: :collection
+        get :reverse_geocode, on: :collection
+      end
+
       # auth
       post 'user_token' => 'user_token#create'
 
