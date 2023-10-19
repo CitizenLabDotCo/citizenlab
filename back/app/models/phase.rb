@@ -116,10 +116,13 @@ class Phase < ApplicationRecord
   end
 
   def last_phase?
-    # TODO: Figure out why we need to check if max is nil
-    return true if project.phases.blank? || project.phases.maximum(:start_at).nil?
+    phases = Phase.where(project: project)
+    # phases = project.phases # TODO: Lots of tests fail with this as 'project.phases << phase' not called
 
-    start_at.present? && start_at >= project.phases.maximum(:start_at)
+    # TODO: Figure out why we need to check if max is nil
+    return true if phases.blank? || project.phases.maximum(:start_at).nil?
+
+    start_at.present? && start_at >= phases.maximum(:start_at)
   end
 
   def previous_phase_end_at_updated?
