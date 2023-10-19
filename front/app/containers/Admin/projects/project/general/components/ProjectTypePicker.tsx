@@ -3,7 +3,7 @@ import React from 'react';
 // components
 import { IconTooltip, Radio } from '@citizenlab/cl2-component-library';
 import { SubSectionTitle } from 'components/admin/Section';
-import { StyledWarning } from './styling';
+import Warning from 'components/UI/Warning';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -22,9 +22,6 @@ export default ({ projectType, handleProjectTypeOnChange }: Props) => (
         content={<FormattedMessage {...messages.projectTypeTooltip} />}
       />
     </SubSectionTitle>
-    <StyledWarning>
-      <FormattedMessage {...messages.projectTypeWarning} />
-    </StyledWarning>
     <Radio
       className="e2e-project-type-timeline"
       onChange={handleProjectTypeOnChange}
@@ -38,10 +35,14 @@ export default ({ projectType, handleProjectTypeOnChange }: Props) => (
       className="e2e-project-type-continuous"
       onChange={handleProjectTypeOnChange}
       currentValue={projectType}
+      disabled
       value="continuous"
       name="projecttype"
       id="projectype-continuous"
       label={<FormattedMessage {...messages.continuous} />}
     />
+    <Warning>
+      <FormattedMessage {...messages.continousProjectDeprecationMessage} />
+    </Warning>
   </>
 );
