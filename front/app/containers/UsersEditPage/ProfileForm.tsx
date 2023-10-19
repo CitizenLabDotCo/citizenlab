@@ -197,7 +197,7 @@ const ProfileForm = () => {
                 messages.a11y_imageDropzoneRemoveIconAriaTitle
               )}
               borderRadius="50%"
-              showDiscalimer={true}
+              showDisclaimer={true}
             />
           </SectionField>
 

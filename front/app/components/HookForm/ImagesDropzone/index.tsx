@@ -15,13 +15,13 @@ interface Props
   > {
   name: string;
   inputLabel?: string;
-  showDiscalimer?: boolean;
+  showDisclaimer?: boolean;
 }
 
 const ImagesDropzone = ({
   name,
   inputLabel,
-  showDiscalimer,
+  showDisclaimer,
   ...rest
 }: Props) => {
   const {
@@ -37,7 +37,7 @@ const ImagesDropzone = ({
       {inputLabel && (
         <Box display="flex" gap="8px">
           <Label htmlFor={name}>{inputLabel}</Label>
-          {showDiscalimer && (
+          {showDisclaimer && (
             <Box m='0px'>
               <ContentUploadDisclaimerTooltip />
             </Box>
