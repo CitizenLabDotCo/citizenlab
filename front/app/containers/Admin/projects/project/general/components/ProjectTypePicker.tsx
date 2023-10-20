@@ -11,10 +11,9 @@ import messages from '../messages';
 
 interface Props {
   projectType: 'continuous' | 'timeline';
-  handleProjectTypeOnChange: (projectType: 'continuous' | 'timeline') => void;
 }
 
-export default ({ projectType, handleProjectTypeOnChange }: Props) => (
+export default ({ projectType }: Props) => (
   <>
     <SubSectionTitle>
       <FormattedMessage {...messages.projectTypeTitle} />
@@ -24,7 +23,6 @@ export default ({ projectType, handleProjectTypeOnChange }: Props) => (
     </SubSectionTitle>
     <Radio
       className="e2e-project-type-timeline"
-      onChange={handleProjectTypeOnChange}
       currentValue={projectType}
       value="timeline"
       name="projecttype"
@@ -33,7 +31,6 @@ export default ({ projectType, handleProjectTypeOnChange }: Props) => (
     />
     <Radio
       className="e2e-project-type-continuous"
-      onChange={handleProjectTypeOnChange}
       currentValue={projectType}
       disabled
       value="continuous"
