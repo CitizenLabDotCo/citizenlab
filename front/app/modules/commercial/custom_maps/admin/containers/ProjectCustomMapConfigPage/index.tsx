@@ -54,7 +54,7 @@ const MapWrapper = styled.div`
 
 const GoToDefaultViewportButtonWrapper = styled.div`
   position: absolute;
-  top: 80px;
+  top: 150px;
   left: 11px;
   z-index: 1000;
   background: #fff;
@@ -63,7 +63,7 @@ const GoToDefaultViewportButtonWrapper = styled.div`
 
 const SetAsDefaultViewportButtonWrapper = styled.div`
   position: absolute;
-  top: 122px;
+  top: 200px;
   left: 11px;
   z-index: 1000;
   background: #fff;

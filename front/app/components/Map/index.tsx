@@ -9,7 +9,7 @@ import React, {
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Icon, Box, Select } from '@citizenlab/cl2-component-library';
 import Outlet from 'components/Outlet';
 const LeafletMap = lazy(() => import('components/UI/LeafletMap'));
 
@@ -31,7 +31,9 @@ import styled from 'styled-components';
 import { media, defaultOutline, defaultCardStyle } from 'utils/styleUtils';
 
 // typings
-import { LatLngTuple, Map as ILeafletMap } from 'leaflet';
+import L, { LatLngTuple, Map as ILeafletMap, Projection } from 'leaflet';
+import { FeatureCollection } from 'geojson';
+import { VectorBasemapLayer, vectorBasemapLayer } from 'esri-leaflet-vector';
 
 export interface Point extends GeoJSON.Point {
   data?: any;
@@ -141,8 +143,13 @@ const Map = memo<IMapProps & IMapConfigProps>(
     hideLegend,
     singleClickEnabled,
   }) => {
+    const esri = require('esri-leaflet');
     const { data: appConfig, isLoading } = useAppConfiguration();
     const customMapsEnabled = useFeatureFlag({ name: 'custom_maps' });
+    const [map, setMap] = useState<ILeafletMap | null>(null);
+    const [selectedBasemap, setSelectedBasemap] =
+      useState<string>('ArcGIS:LightGray');
+    const [currentBasemapLayer, setCurrentBasemapLayer] = useState<any | null>(null);
 
     const [additionalLeafletConfig, setAdditionalLeafletConfig] =
       useState<ILeafletMapConfig | null>(null);
@@ -212,52 +219,158 @@ const Map = memo<IMapProps & IMapConfigProps>(
     };
 
     const handleOnInit = (map: L.Map) => {
+      setMap(map);
+
+      const apiKey =
+        'AAPK14d9ce6201374c03b1cf299a89233d1dmUlplQEZ0n3VGjtMKyjPB4hxo38eEXXaNz5ENsj_Nn1LMuVklAiuGvbBBWf1edlo';
+
+      const basemapEnum = 'ArcGIS:LightGray';
+      const testBasemap = vectorBasemapLayer(basemapEnum, {
+        apiKey,
+      });
+      map.addLayer(testBasemap);
+      setCurrentBasemapLayer(testBasemap);
+
       onInit?.(map);
+
+      // esri.get(
+      //   'https://www.arcgis.com/sharing/content/items/62914b2820c24d4e95710ebae77937cb/data',
+      //   {},
+      //   function (error, response) {
+      //     if (error) {
+      //       return;
+      //     }
+
+      //     const arcGISFeatures =
+      //       response.operationalLayers[0].featureCollection.layers[0].featureSet
+      //         .features;
+      //     const idField =
+      //       response.operationalLayers[0].featureCollection.layers[0]
+      //         .layerDefinition.objectIdField;
+
+      //     // empty geojson feature collection
+      //     const geoJSONFeatureCollection = {
+      //       type: 'FeatureCollection',
+      //       features: [],
+      //     } as FeatureCollection;
+
+      //     for (let i = arcGISFeatures.length - 1; i >= 0; i--) {
+      //       // convert ArcGIS Feature to GeoJSON Feature
+      //       const geoJSONFeature = esri.Util.arcgisToGeoJSON(
+      //         arcGISFeatures[i],
+      //         idField
+      //       );
+
+      //       // unproject the web mercator coordinates to lat/lng
+      //       const latlng = Projection.Mercator.unproject(
+      //         L.point(geoJSONFeature.geometry.coordinates)
+      //       );
+      //       geoJSONFeature.geometry.coordinates = [latlng.lng, latlng.lat];
+
+      //       geoJSONFeatureCollection.features.push(geoJSONFeature);
+
+      //       const geojsonLayer = L.geoJSON(geoJSONFeatureCollection).addTo(map);
+      //       map.addLayer(geojsonLayer);
+
+      // const basemapLayers = {
+
+      //   "ArcGIS:Streets": getBasemap("ArcGIS:Streets").addTo(map),
+
+      //   "ArcGIS:Navigation": getBasemap("ArcGIS:Navigation"),
+      //   "ArcGIS:Topographic": getBasemap("ArcGIS:Topographic"),
+      //   "ArcGIS:LightGray": getBasemap("ArcGIS:LightGray"),
+      //   "ArcGIS:DarkGray": getBasemap("ArcGIS:DarkGray"),
+      //   "ArcGIS:StreetsRelief": getBasemap("ArcGIS:StreetsRelief"),
+      //   "ArcGIS:Imagery": getBasemap("ArcGIS:Imagery"),
+      //   "ArcGIS:ChartedTerritory": getBasemap("ArcGIS:ChartedTerritory"),
+      //   "ArcGIS:ColoredPencil": getBasemap("ArcGIS:ColoredPencil"),
+      //   "ArcGIS:Nova": getBasemap("ArcGIS:Nova"),
+      //   "ArcGIS:Midcentury": getBasemap("ArcGIS:Midcentury"),
+      //   "OSM:Standard": getBasemap("OSM:Standard"),
+      //   "OSM:Streets": getBasemap("OSM:Streets")
+      // };
+      // }
+      // }
+      // );
     };
 
     if (!leafletConfig) return null;
 
+    const handleBasemapChange = (basemapEnum: string) => {
+      setSelectedBasemap(basemapEnum);
+      const apiKey =
+        'AAPK14d9ce6201374c03b1cf299a89233d1dmUlplQEZ0n3VGjtMKyjPB4hxo38eEXXaNz5ENsj_Nn1LMuVklAiuGvbBBWf1edlo';
+      const testBasemap = vectorBasemapLayer(basemapEnum, {
+        apiKey,
+      });
+      if (map) {
+        map.removeLayer(currentBasemapLayer);
+        setCurrentBasemapLayer(testBasemap);
+        map.addLayer(testBasemap);
+      }
+    };
+
+    const basemapOptions = [
+      { value: 'ArcGIS:Streets', label: 'Streets' },
+      { value: 'ArcGIS:Navigation', label: 'Navigation' },
+      { value: 'ArcGIS:Topographic', label: 'Topographic' },
+      { value: 'ArcGIS:LightGray', label: 'Light Gray' },
+      { value: 'ArcGIS:DarkGray', label: 'Dark Gray' },
+      { value: 'ArcGIS:Nova', label: 'Nova' },
+    ];
+
     return (
-      <Container className={className || ''}>
-        <MapWrapper>
-          {!isNilOrError(boxContent) && (
-            <BoxContainer>
-              <CloseButton onClick={handleBoxOnClose}>
-                <CloseIcon name="close" />
-              </CloseButton>
-
-              {boxContent}
-            </BoxContainer>
-          )}
-
-          {customMapsEnabled && additionalLeafletConfig === null ? null : (
-            <Suspense fallback={false}>
-              <LeafletMap
-                id="mapid"
-                className="e2e-leafletmap"
-                mapHeight={mapHeight}
-                onInit={handleOnInit}
-                {...leafletConfig}
-              />
-            </Suspense>
-          )}
-          <Outlet
-            id="app.components.Map.leafletConfig"
-            projectId={projectId ?? undefined}
-            onLeafletConfigChange={handleLeafletConfigChange}
-            centerLatLng={centerLatLng}
-            zoomLevel={zoomLevel}
-            points={points}
+      <>
+        <Box mb="24px">
+          <Select
+            id="idea-preview-select-assignee"
+            options={basemapOptions}
+            onChange={(value) => {
+              handleBasemapChange(value.value);
+            }}
+            value={selectedBasemap}
           />
-        </MapWrapper>
+        </Box>
+        <Container className={className || ''}>
+          <MapWrapper>
+            {!isNilOrError(boxContent) && (
+              <BoxContainer>
+                <CloseButton onClick={handleBoxOnClose}>
+                  <CloseIcon name="close" />
+                </CloseButton>
 
-        {!hideLegend && (
-          <Outlet
-            id="app.components.Map.Legend"
-            projectId={projectId ?? undefined}
-          />
-        )}
-      </Container>
+                {boxContent}
+              </BoxContainer>
+            )}
+
+            {customMapsEnabled && additionalLeafletConfig === null ? null : (
+              <Suspense fallback={false}>
+                <LeafletMap
+                  id="mapid"
+                  className="e2e-leafletmap"
+                  mapHeight={mapHeight}
+                  onInit={handleOnInit}
+                  {...leafletConfig}
+                />
+              </Suspense>
+            )}
+            <Outlet
+              id="app.components.Map.leafletConfig"
+              projectId={projectId ?? undefined}
+              onLeafletConfigChange={handleLeafletConfigChange}
+              centerLatLng={centerLatLng}
+              zoomLevel={zoomLevel}
+              points={points}
+            />
+          </MapWrapper>
+          {!hideLegend && (
+            <Outlet
+              id="app.components.Map.Legend"
+              projectId={projectId ?? undefined}
+            />
+          )}
+        </Container>
+      </>
     );
   }
 );
