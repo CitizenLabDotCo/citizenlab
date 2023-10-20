@@ -65,4 +65,31 @@ export default defineMessages({
     id: 'app.containers.Admin.tools.publicAPIImage',
     defaultMessage: 'Public API image',
   },
+  publicAPIDisabled: {
+    id: 'app.containers.Admin.tools.publicAPIDisabled',
+    defaultMessage:
+      'The public API is a Premium-only feature. Contact your GovSuccess Manager if you want more info on this.',
+  },
+  powerBITitle: {
+    id: 'app.containers.Admin.tools.powerBITitle',
+    defaultMessage: 'Power BI',
+  },
+  powerBIDescription: {
+    id: 'app.containers.Admin.tools.powerBIDescription',
+    defaultMessage:
+      'Use our plug & play Power BI Templates to access Citizenlab data in your Microsoft Power BI Workspace.',
+  },
+  powerBIDownloadTemplates: {
+    id: 'app.containers.Admin.tools.powerBIDownloadTemplates',
+    defaultMessage: 'Download templates',
+  },
+  powerBIImage: {
+    id: 'app.containers.Admin.tools.powerBIAPIImage',
+    defaultMessage: 'Power BI image',
+  },
+  powerBIDisabled: {
+    id: 'app.containers.Admin.tools.powerBIDisabled',
+    defaultMessage:
+      'Power BI is a Premium-only feature. Contact your GovSuccess Manager if you want more info on this.',
+  },
 });
