@@ -107,21 +107,26 @@ describe('Insights Input Details', () => {
 
     fireEvent.click(screen.getByText(mockCategoriesData[0].attributes.name));
 
-    expect(mockAddInputCategories).toHaveBeenCalledWith({
-      viewId,
-      inputId: defaultProps.previewedInputId,
-      categories: [{ id: mockCategoriesData[0].id, type: 'category' }],
-    });
+    expect(mockAddInputCategories).toHaveBeenCalledWith(
+      {
+        viewId,
+        inputId: defaultProps.previewedInputId,
+        categories: [{ id: mockCategoriesData[0].id, type: 'category' }],
+      },
+      {
+        onSuccess: expect.any(Function),
+      }
+    );
   });
   it('adds new category to category list correctly', async () => {
     render(<InputDetails {...defaultProps} />);
     const newCategoryLabel = 'New category';
-    fireEvent.change(screen.getByRole('textbox'), {
+    fireEvent.change(screen.getByRole('combobox'), {
       target: {
         value: newCategoryLabel,
       },
     });
-    expect(screen.getByText(newCategoryLabel)).toBeInTheDocument();
+    expect(screen.getByText(`"${newCategoryLabel}"`)).toBeInTheDocument();
 
     await act(async () => {
       fireEvent.click(screen.getByTestId('insightsCreateCategoryOption'));

@@ -115,6 +115,7 @@ class Initiative < ApplicationRecord
   scope :feedback_needed, -> { with_status_code('threshold_reached') }
   scope :no_feedback_needed, -> { with_status_code(InitiativeStatus::CODES - ['threshold_reached']) }
   scope :proposed, -> { with_status_code('proposed') }
+  scope :voteable_status, -> { with_status_code(InitiativeStatus::REVIEW_CODES + ['proposed']) }
 
   scope :proposed_before, (proc do |time|
     with_proposed_status_changes.where('initiative_status_changes.created_at < ?', time)

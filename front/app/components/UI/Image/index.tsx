@@ -5,6 +5,13 @@ import React, { PureComponent } from 'react';
 import styled, { css } from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
+const Fallback = styled.div<{ src: string | undefined }>`
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  background-image: url(${({ src }) => src});
+`;
+
 const ImageElement = styled.img<{
   cover: boolean;
   fadeIn: boolean;
@@ -43,7 +50,6 @@ interface Props {
 }
 
 interface State {
-  visible: boolean;
   loaded: boolean;
 }
 
@@ -58,7 +64,6 @@ export default class Image extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      visible: props.isLazy ? false : true,
       loaded: false,
     };
   }
@@ -80,11 +85,11 @@ export default class Image extends PureComponent<Props, State> {
       className,
     } = this.props;
     const { isLazy } = this.props;
-    const { visible, loaded } = this.state;
+    const { loaded } = this.state;
 
-    return (
+    let image = (
       <ImageElement
-        src={visible ? src : undefined}
+        src={src}
         alt={alt}
         role={role}
         cover={!!cover}
@@ -98,5 +103,11 @@ export default class Image extends PureComponent<Props, State> {
         loading={isLazy ? 'lazy' : 'eager'}
       />
     );
+
+    if (cover) {
+      image = <Fallback src={src} className={className} />;
+    }
+
+    return image;
   }
 }

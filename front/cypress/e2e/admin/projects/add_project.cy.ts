@@ -29,7 +29,7 @@ describe('Admin: add project', () => {
         cy.get('#project-title').type(projectTitleFRBE);
 
         // Submit project
-        cy.get('.e2e-submit-wrapper-button').click();
+        cy.get('.e2e-submit-wrapper-button button').click();
 
         cy.wait(2000);
 
@@ -64,7 +64,7 @@ describe('Admin: add project', () => {
         cy.get('#project-title').type(projectTitleFRBE);
 
         // Submit project
-        cy.get('.e2e-submit-wrapper-button').click();
+        cy.get('.e2e-submit-wrapper-button button').click();
 
         cy.wait(2000);
 
@@ -99,7 +99,7 @@ describe('Admin: add project', () => {
         cy.get('#project-title').type(projectTitleFRBE);
 
         // Submit project
-        cy.get('.e2e-submit-wrapper-button').click();
+        cy.get('.e2e-submit-wrapper-button button').click();
 
         cy.wait(2000);
 
@@ -130,7 +130,7 @@ describe('Admin: add project', () => {
         cy.get('#project-title').type(projectTitleFRBE);
 
         // Submit project
-        cy.get('.e2e-submit-wrapper-button').click();
+        cy.get('.e2e-submit-wrapper-button button').click();
         cy.wait(2000);
 
         // Project should appear on top of the projects list
@@ -178,7 +178,7 @@ describe('Admin: add project', () => {
           .trigger('keydown', { keyCode: 13, which: 13 });
 
         // Submit project
-        cy.get('.e2e-submit-wrapper-button').click();
+        cy.get('.e2e-submit-wrapper-button button').click();
 
         cy.wait(2000);
 

@@ -28,7 +28,7 @@ import Rate from './Rate';
 
 import tracks from 'containers/Admin/projects/project/analysis/tracks';
 import { trackEventByName } from 'utils/analytics';
-import translations from './translations';
+import messages from './messages';
 import { deleteTrailingIncompleteIDs, refRegex, removeRefs } from './util';
 import useToggleInsightBookmark from 'api/analysis_insights/useBookmarkAnalysisInsight';
 
@@ -69,9 +69,7 @@ const Question = ({ insight }: Props) => {
     backgroundTask?.data.attributes.state === 'queued';
 
   const handleQuestionDelete = (id: string) => {
-    if (
-      window.confirm(formatMessage(translations.deleteQuestionConfirmation))
-    ) {
+    if (window.confirm(formatMessage(messages.deleteQuestionConfirmation))) {
       deleteQuestion(
         {
           analysisId,
@@ -173,7 +171,7 @@ const Question = ({ insight }: Props) => {
         >
           {hasFilters && (
             <>
-              <Text m="0px"> {formatMessage(translations.questionFor)}</Text>
+              <Text m="0px"> {formatMessage(messages.questionFor)}</Text>
               <FilterItems
                 filters={question.data.attributes.filters}
                 isEditable={false}
@@ -182,9 +180,7 @@ const Question = ({ insight }: Props) => {
           )}
 
           {!hasFilters && (
-            <Text m="0px">
-              {formatMessage(translations.questionForAllInputs)}
-            </Text>
+            <Text m="0px">{formatMessage(messages.questionForAllInputs)}</Text>
           )}
         </Box>
 
@@ -204,10 +200,10 @@ const Question = ({ insight }: Props) => {
         {question.data.attributes.accuracy && (
           <Box color={colors.teal700} my="16px">
             <FormattedMessage
-              {...translations.accuracy}
+              {...messages.accuracy}
               values={{
                 accuracy: question.data.attributes.accuracy * 100,
-                percentage: formatMessage(translations.percentage),
+                percentage: formatMessage(messages.percentage),
               }}
             />
           </Box>
@@ -221,7 +217,7 @@ const Question = ({ insight }: Props) => {
         mt="16px"
       >
         <Button buttonStyle="white" onClick={handleRestoreFilters} p="4px 12px">
-          {formatMessage(translations.restoreFilters)}
+          {formatMessage(messages.restoreFilters)}
         </Button>
 
         <Box display="flex">
@@ -230,7 +226,7 @@ const Question = ({ insight }: Props) => {
             onClick={() => handleQuestionDelete(insight.id)}
             iconColor={colors.teal400}
             iconColorOnHover={colors.teal700}
-            a11y_buttonActionMessage={formatMessage(translations.deleteSummary)}
+            a11y_buttonActionMessage={formatMessage(messages.deleteSummary)}
           />
           <IconTooltip
             icon="flag"
@@ -248,7 +244,7 @@ const Question = ({ insight }: Props) => {
             }
             iconColor={colors.teal400}
             iconColorOnHover={colors.teal700}
-            a11y_buttonActionMessage={formatMessage(translations.deleteSummary)}
+            a11y_buttonActionMessage={formatMessage(messages.deleteSummary)}
             onClick={() => toggleBookmark({ analysisId, id: insight.id })}
           />
         </Box>
