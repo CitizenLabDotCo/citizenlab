@@ -43,7 +43,8 @@ class MultiTenancy::Rake::ContinuousProjectMigrationService
       # 8. Add phase_id to creation_phase_id of any native_surveys
       update_native_survey_creation_phase(project, phase)
 
-      # 7. Activities - Do we need to update any of the historic logs? If so we should run this as a separate task - could be huge
+      # 9. Activities - Do we need to update any of the historic logs? If so we should run this as a separate task - could be huge
+
       @stats[:success] = @stats[:success] + 1
     end
   end
@@ -52,7 +53,7 @@ class MultiTenancy::Rake::ContinuousProjectMigrationService
 
   def create_phase(project)
     phase = Phase.new(
-      title_multiloc: { en: 'default' }, # TODO: Set this to the participation method name
+      title_multiloc: { en: 'default' }, # TODO: Set this to the participation method name - need the translations in the codebase for this
       project: project,
       created_at: project.created_at,
       start_at: project.created_at,
@@ -113,9 +114,15 @@ class MultiTenancy::Rake::ContinuousProjectMigrationService
     Idea.where(project: project).update!(phase_ids: [phase.id])
   end
 
-  def update_counts(project); end
+  def update_counts(phase)
+    Basket.update_counts(phase, 'Phase')
+  end
 
-  def update_native_survey_creation_phase(project, phase); end
+  def update_native_survey_creation_phase(project, phase)
+    if phase.participation_method == 'native_survey'
+      Idea.where(project: project).update!(creation_phase: phase)
+    end
+  end
 
   def error_handler(error)
     Rails.logger.error "ERROR: #{error}"
