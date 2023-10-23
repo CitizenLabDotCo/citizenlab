@@ -32,10 +32,11 @@ import ParticipationContext, {
   IParticipationContextConfig,
 } from '../participationContext';
 import FileUploader from 'components/UI/FileUploader';
-import { Text } from '@citizenlab/cl2-component-library';
+import { Text, Checkbox } from '@citizenlab/cl2-component-library';
+import Warning from 'components/UI/Warning';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // Typings
@@ -104,6 +105,12 @@ const AdminProjectTimelineEdit = () => {
     {}
   );
   const localize = useLocalize();
+  const { formatMessage } = useIntl();
+  const [hasEndDate, setHasEndDate] = useState<boolean>(false);
+
+  useEffect(() => {
+    setHasEndDate(phase?.data.attributes.end_at ? true : false);
+  }, [phase]);
 
   useEffect(() => {
     if (phaseFiles) {
@@ -154,6 +161,7 @@ const AdminProjectTimelineEdit = () => {
       start_at: startDate ? startDate.locale('en').format('YYYY-MM-DD') : '',
       end_at: endDate ? endDate.locale('en').format('YYYY-MM-DD') : '',
     });
+    setHasEndDate(!!endDate);
   };
 
   const handlePhaseFileOnAdd = (newFile: UploadFile) => {
@@ -322,8 +330,8 @@ const AdminProjectTimelineEdit = () => {
         startDate = moment(phaseAttrs.start_at);
       } else if (!previousPhaseEndDate && previousPhaseStartDate) {
         // If there is no previous end date, then the previous phase is open ended
-        // Set the default start date to the previous start date + 1 day
-        startDate = previousPhaseStartDate.add(1, 'day');
+        // Set the default start date to the previous start date + 2 days to account for single day phases
+        startDate = previousPhaseStartDate.add(2, 'day');
       }
       // Otherwise, there is no date yet and it should remain 'null'
 
@@ -352,6 +360,17 @@ const AdminProjectTimelineEdit = () => {
         [campaignKey]: !phaseAttrs.campaigns_settings[campaignKey],
       },
     });
+  };
+
+  const setNoEndDate = () => {
+    if (endDate) {
+      setSubmitState('enabled');
+      setAttributeDiff({
+        ...attributeDiff,
+        end_at: '',
+      });
+    }
+    setHasEndDate((prevValue) => !prevValue);
   };
 
   return (
@@ -404,9 +423,34 @@ const AdminProjectTimelineEdit = () => {
               startDate={startDate}
               endDate={endDate}
               onDatesChange={handleDateUpdate}
+              startDatePlaceholderText={formatMessage(messages.startDate)}
+              endDatePlaceholderText={formatMessage(messages.endDate)}
             />
             <Error apiErrors={errors && errors.start_at} />
             <Error apiErrors={errors && errors.end_at} />
+            <Checkbox
+              checked={!hasEndDate}
+              onChange={setNoEndDate}
+              size="21px"
+              label={
+                <Text>
+                  <FormattedMessage {...messages.noEndDateCheckbox} />
+                </Text>
+              }
+            />
+            <Warning>
+              <>
+                <FormattedMessage {...messages.noEndDateWarningTitle} />
+                <ul>
+                  <li>
+                    <FormattedMessage {...messages.noEndDateWarningBullet1} />
+                  </li>
+                  <li>
+                    <FormattedMessage {...messages.noEndDateWarningBullet2} />
+                  </li>
+                </ul>
+              </>
+            </Warning>
           </SectionField>
 
           <SectionField className="fullWidth">
