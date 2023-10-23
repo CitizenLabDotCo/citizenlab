@@ -13,7 +13,7 @@ export interface Props {
 }
 
 const EventValuesSelector = ({ value, onChange }: Props) => {
-  const { data: events } = useEvents({ sort: '-start_at' });
+  const { data: events } = useEvents({ sort: '-start_at', pageSize: 1000 });
   const localize = useLocalize();
 
   const handleOnChange = (options: IOption[]) => {
