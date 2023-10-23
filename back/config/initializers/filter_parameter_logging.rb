@@ -6,5 +6,5 @@
 # sensitive information. See the ActiveSupport::ParameterFilter documentation for supported
 # notations and behaviors.
 Rails.application.config.filter_parameters += %i[
-  password current_password passw secret token _key crypt salt certificate otp ssn import_ideas.pdf import_ideas.xlsx
+  image password current_password passw secret token _key crypt salt certificate otp ssn import_ideas.pdf import_ideas.xlsx
 ]
