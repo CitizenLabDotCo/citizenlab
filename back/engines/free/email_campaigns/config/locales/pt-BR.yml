@@ -13,7 +13,7 @@ pt:
       "powered_by": "Criado por"
       "statement": "Este e-mail foi enviado pelo CitizenLab em nome de %{organizationName}, porque você é um usuário registrado de %{organizationLink}. Você pode %{unsubscribeLink} se você não quiser receber estes e-mails no futuro."
       "unsubscribe_text": "Cancelar a inscrição"
-    follow: "unfollow_here\": \"Recebeu esta notificação devido a um item que está a seguir. <a href=\"%{unfollow_url}\">Pode deixar de o seguir aqui.</a>"
+    follow: "unfollow_here\": \"Você recebeu esta notificação por causa de um item que você segue. <a href=\"%{unfollow_url}\">Você pode parar de segui-lo aqui.</a>"
     comment_deleted_by_admin:
       reason: 'A razão pela qual o seu comentário foi excluido:'
       cta_view: 'Veja essa idéia'
