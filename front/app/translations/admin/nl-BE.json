@@ -1984,6 +1984,7 @@
   "app.containers.AdminPage.projects.project.analysis.Insights.appliesTo": "Geldt voor de huidig geselecteerde bijdragen",
   "app.containers.AdminPage.projects.project.analysis.Insights.ask": "Vraag",
   "app.containers.AdminPage.projects.project.analysis.Insights.askQuestion": "Stel een vraag",
+  "app.containers.AdminPage.projects.project.analysis.Insights.bookmarkSummary": "Overzicht bladwijzers",
   "app.containers.AdminPage.projects.project.analysis.Insights.deleteQuestion": "Verwijder vraag",
   "app.containers.AdminPage.projects.project.analysis.Insights.deleteQuestionConfirmation": "Weet je zeker dat je deze vraag wilt verwijderen?",
   "app.containers.AdminPage.projects.project.analysis.Insights.deleteSummary": "Verwijder samenvatting",
