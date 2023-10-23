@@ -1984,6 +1984,7 @@
   "app.containers.AdminPage.projects.project.analysis.Insights.appliesTo": "Gjelder for gjeldende valgte innganger",
   "app.containers.AdminPage.projects.project.analysis.Insights.ask": "Spørre",
   "app.containers.AdminPage.projects.project.analysis.Insights.askQuestion": "Spør et spørsmål",
+  "app.containers.AdminPage.projects.project.analysis.Insights.bookmarkSummary": "Bokmerke sammendrag",
   "app.containers.AdminPage.projects.project.analysis.Insights.deleteQuestion": "Slett spørsmålet",
   "app.containers.AdminPage.projects.project.analysis.Insights.deleteQuestionConfirmation": "Er du sikker på at du vil slette dette spørsmålet?",
   "app.containers.AdminPage.projects.project.analysis.Insights.deleteSummary": "Slett sammendraget",
