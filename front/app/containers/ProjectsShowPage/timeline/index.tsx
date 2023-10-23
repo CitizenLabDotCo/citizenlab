@@ -100,8 +100,9 @@ const ProjectTimelineContainer = memo<Props>(({ projectId, className }) => {
   if (project && selectedPhase) {
     const selectedPhaseId = selectedPhase.id;
     const participationMethod = selectedPhase.attributes.participation_method;
-    const isPastPhase =
-      pastPresentOrFuture(selectedPhase.attributes.end_at) === 'past';
+    const isPastPhase = selectedPhase.attributes.end_at
+      ? pastPresentOrFuture(selectedPhase.attributes.end_at) === 'past'
+      : false;
 
     const isVotingPhase = participationMethod === 'voting';
 

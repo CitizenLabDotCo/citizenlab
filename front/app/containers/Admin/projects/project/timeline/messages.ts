@@ -107,6 +107,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectTimeline.automatedEmails',
     defaultMessage: 'Automated emails',
   },
+  noEndDate: {
+    id: 'app.containers.AdminPage.ProjectTimeline.noEndDate',
+    defaultMessage: 'No end date',
+  },
   automatedEmailsDescription: {
     id: 'app.containers.AdminPage.ProjectTimeline.automatedEmailsDescription',
     defaultMessage: 'You can configure emails triggered on a phase level',

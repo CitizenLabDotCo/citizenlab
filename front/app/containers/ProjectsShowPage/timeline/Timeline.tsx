@@ -294,7 +294,6 @@ const Timeline = ({
       .reduce((accumulator, numberOfDays) => {
         return accumulator + numberOfDays;
       });
-    console.log('totalNumberOfDays', totalNumberOfDays);
 
     const phasesBreakpoint = phases.data.length * MIN_PHASE_WIDTH_PX;
 

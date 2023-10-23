@@ -159,7 +159,7 @@ const budgetingConfig: VotingMethodConfig = {
       );
     }
     if (submissionState === 'hasSubmitted') {
-      if (phase) {
+      if (phase && phase.attributes.end_at) {
         return (
           <FormattedMessage
             values={{
@@ -169,6 +169,17 @@ const budgetingConfig: VotingMethodConfig = {
               endDate: phase && toFullMonth(phase.attributes.end_at, 'day'),
             }}
             {...messages.budgetingSubmittedInstructions}
+          />
+        );
+      } else if (phase && !phase.attributes.end_at) {
+        return (
+          <FormattedMessage
+            values={{
+              b: (chunks) => (
+                <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
+              ),
+            }}
+            {...messages.budgetingSubmittedInstructionsNoEndDate}
           />
         );
       }
@@ -189,7 +200,10 @@ const budgetingConfig: VotingMethodConfig = {
             b: (chunks) => (
               <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
             ),
-            endDate: phase && toFullMonth(phase.attributes.end_at, 'day'),
+            endDate:
+              phase &&
+              phase.attributes.end_at &&
+              toFullMonth(phase.attributes.end_at, 'day'),
             maxBudget:
               phase && phase.attributes.voting_max_total?.toLocaleString(),
             currency,
@@ -317,7 +331,7 @@ const multipleVotingConfig: VotingMethodConfig = {
       );
     }
     if (submissionState === 'hasSubmitted') {
-      if (phase) {
+      if (phase && phase.attributes.end_at) {
         return (
           <FormattedMessage
             values={{
@@ -327,6 +341,17 @@ const multipleVotingConfig: VotingMethodConfig = {
               endDate: phase && toFullMonth(phase.attributes.end_at, 'day'),
             }}
             {...messages.votingSubmittedInstructions}
+          />
+        );
+      } else if (phase) {
+        return (
+          <FormattedMessage
+            values={{
+              b: (chunks) => (
+                <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
+              ),
+            }}
+            {...messages.votingSubmittedInstructionsNoEndDate}
           />
         );
       }
@@ -340,7 +365,11 @@ const multipleVotingConfig: VotingMethodConfig = {
           {...messages.votingSubmittedInstructionsContinuous}
         />
       );
-    } else if (submissionState === 'submissionEnded') {
+    } else if (
+      submissionState === 'submissionEnded' &&
+      phase &&
+      phase.attributes.end_at
+    ) {
       return (
         <FormattedMessage
           values={{
@@ -465,7 +494,7 @@ const singleVotingConfig: VotingMethodConfig = {
       );
     }
     if (submissionState === 'hasSubmitted') {
-      if (phase) {
+      if (phase && phase.attributes.end_at) {
         return (
           <FormattedMessage
             values={{
@@ -475,6 +504,17 @@ const singleVotingConfig: VotingMethodConfig = {
               endDate: phase && toFullMonth(phase.attributes.end_at, 'day'),
             }}
             {...messages.votingSubmittedInstructions}
+          />
+        );
+      } else if (phase && !phase.attributes.end_at) {
+        return (
+          <FormattedMessage
+            values={{
+              b: (chunks) => (
+                <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
+              ),
+            }}
+            {...messages.votingSubmittedInstructionsNoEndDate}
           />
         );
       }
@@ -491,7 +531,7 @@ const singleVotingConfig: VotingMethodConfig = {
     } else if (submissionState === 'submissionEnded') {
       const votingMax = phase?.attributes?.voting_max_total;
       if (votingMax) {
-        if (votingMax > 1) {
+        if (votingMax > 1 && phase && phase.attributes.end_at) {
           return (
             <FormattedMessage
               values={{
@@ -505,7 +545,7 @@ const singleVotingConfig: VotingMethodConfig = {
               {...messages.singleVotingEnded}
             />
           );
-        } else {
+        } else if (phase && phase.attributes.end_at) {
           return (
             <FormattedMessage
               values={{
@@ -519,8 +559,10 @@ const singleVotingConfig: VotingMethodConfig = {
               {...messages.singleVotingOneVoteEnded}
             />
           );
+        } else {
+          return null;
         }
-      } else {
+      } else if (phase && phase.attributes.end_at) {
         return (
           <FormattedMessage
             values={{
@@ -532,6 +574,8 @@ const singleVotingConfig: VotingMethodConfig = {
             {...messages.singleVotingUnlimitedEnded}
           />
         );
+      } else {
+        return null;
       }
     }
     return null;

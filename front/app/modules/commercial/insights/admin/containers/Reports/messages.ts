@@ -33,6 +33,10 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.Reports.fromTo',
     defaultMessage: 'from {from} to {to}',
   },
+  fromOnwards: {
+    id: 'app.containers.Admin.Insights.Reports.fromOnwards',
+    defaultMessage: 'from {from} onwards',
+  },
   noPhase: {
     id: 'app.containers.Admin.Insights.Reports.noPhase',
     defaultMessage: 'No phase created for this project',
