@@ -303,9 +303,14 @@ const AdminProjectTimelineEdit = () => {
     if (!phase) {
       const previousPhase =
         !isNilOrError(phases) && phases.data[phases.data.length - 1];
-      const previousPhaseEndDate = previousPhase
-        ? moment(previousPhase.attributes.end_at)
-        : null;
+      const previousPhaseEndDate =
+        previousPhase && previousPhase.attributes.end_at
+          ? moment(previousPhase.attributes.end_at)
+          : null;
+      const previousPhaseStartDate =
+        previousPhase && previousPhase.attributes.start_at
+          ? moment(previousPhase.attributes.start_at)
+          : null;
 
       // And there's a previous phase (end date) and the phase hasn't been picked/changed
       if (previousPhaseEndDate && !phaseAttrs.start_at) {
@@ -315,6 +320,10 @@ const AdminProjectTimelineEdit = () => {
       } else if (phaseAttrs.start_at) {
         // Take this date as the start date
         startDate = moment(phaseAttrs.start_at);
+      } else if (!previousPhaseEndDate && previousPhaseStartDate) {
+        // If there is no previous end date, then the previous phase is open ended
+        // Set the default start date to the previous start date + 1 day
+        startDate = previousPhaseStartDate.add(1, 'day');
       }
       // Otherwise, there is no date yet and it should remain 'null'
 
