@@ -394,27 +394,7 @@ const AdminProjectTimelineEdit = () => {
             />
             <Error apiErrors={errors && errors.title_multiloc} />
           </SectionField>
-          {/* TODO: After ParticipationContext refactor, it doesn't refetch phase service anymore
-            This caused a bug where phase data was not being used after fetching. This is a temporary fix.
-            ParticipationContext needs to be refactored to functional component. */}
-          {phase && (
-            <ParticipationContext
-              phase={phase}
-              onSubmit={handleParticipationContextOnSubmit}
-              onChange={handleParticipationContextOnChange}
-              apiErrors={errors}
-              appConfig={appConfig}
-            />
-          )}
-          {!phase && (
-            <ParticipationContext
-              phase={undefined}
-              onSubmit={handleParticipationContextOnSubmit}
-              onChange={handleParticipationContextOnChange}
-              apiErrors={errors}
-              appConfig={appConfig}
-            />
-          )}
+
           <SectionField>
             <SubSectionTitle>
               <FormattedMessage {...messages.datesLabel} />
@@ -452,6 +432,28 @@ const AdminProjectTimelineEdit = () => {
               </>
             </Warning>
           </SectionField>
+
+          {/* TODO: After ParticipationContext refactor, it doesn't refetch phase service anymore
+            This caused a bug where phase data was not being used after fetching. This is a temporary fix.
+            ParticipationContext needs to be refactored to functional component. */}
+          {phase && (
+            <ParticipationContext
+              phase={phase}
+              onSubmit={handleParticipationContextOnSubmit}
+              onChange={handleParticipationContextOnChange}
+              apiErrors={errors}
+              appConfig={appConfig}
+            />
+          )}
+          {!phase && (
+            <ParticipationContext
+              phase={undefined}
+              onSubmit={handleParticipationContextOnSubmit}
+              onChange={handleParticipationContextOnChange}
+              apiErrors={errors}
+              appConfig={appConfig}
+            />
+          )}
 
           <SectionField className="fullWidth">
             <SubSectionTitle>{quillMultilocLabel}</SubSectionTitle>
