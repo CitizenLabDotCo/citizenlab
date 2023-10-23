@@ -51,7 +51,9 @@ const HomePage = () => {
           <SignedInHeader />
         ) : (
           <Fragment name="signed-out-header">
-            <SignedOutHeader />
+            <SignedOutHeader
+              homepageSettings={homepageSettings.data.attributes}
+            />
           </Fragment>
         )}
 

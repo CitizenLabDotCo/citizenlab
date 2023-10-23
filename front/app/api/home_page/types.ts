@@ -43,7 +43,7 @@ export type THomepageEnabledSetting = keyof IHomepageEnabledSettings;
 export interface IHomepageSettingsAttributes extends IHomepageEnabledSettings {
   top_info_section_multiloc: Multiloc;
   bottom_info_section_multiloc: Multiloc;
-  projects_header_multiloc: Multiloc;
+  projects_header_multiloc?: Multiloc;
   banner_layout: THomepageBannerLayout;
   banner_signed_in_header_multiloc: Multiloc;
   banner_signed_out_header_multiloc: Multiloc;
@@ -61,7 +61,7 @@ export interface IHomepageSettingsAttributes extends IHomepageEnabledSettings {
   banner_cta_signed_out_type: CTASignedOutType;
   banner_cta_signed_out_url: string | null;
   // content builder
-  craftjs_json: Record<string, SerializedNode>;
+  craftjs_json?: Record<string, SerializedNode>;
 }
 
 export interface IHomepageEnabledSettings {

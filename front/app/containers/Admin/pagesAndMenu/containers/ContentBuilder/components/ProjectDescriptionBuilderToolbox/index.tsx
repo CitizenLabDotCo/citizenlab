@@ -28,6 +28,7 @@ import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
 
 // types
 import { Locale } from 'typings';
+import HomepageBanner from '../CraftSections/HomepageBanner';
 
 type ProjectDescriptionBuilderToolboxProps = {
   selectedLocale: Locale;
@@ -52,6 +53,46 @@ const ProjectDescriptionBuilderToolbox = ({
       <DraggableElement
         id="e2e-draggable-info-accordions"
         component={<InfoWithAccordions />}
+        icon="section-info-accordion"
+        label={formatMessage(messages.infoWithAccordions)}
+      />
+      <DraggableElement
+        id="e2e-draggable-info-accordions"
+        component={
+          <HomepageBanner
+            homepageSettings={{
+              top_info_section_enabled: false,
+              top_info_section_multiloc: {},
+              bottom_info_section_enabled: false,
+              bottom_info_section_multiloc: {},
+              events_widget_enabled: false,
+              projects_enabled: true,
+              projects_header_multiloc: {},
+              banner_avatars_enabled: false,
+              banner_layout: 'full_width_banner_layout',
+              banner_signed_in_header_multiloc: {},
+              banner_cta_signed_in_text_multiloc: {},
+              banner_cta_signed_in_type: 'no_button',
+              banner_cta_signed_in_url: null,
+              banner_signed_out_header_multiloc: {},
+              banner_signed_out_subheader_multiloc: {},
+              banner_signed_out_header_overlay_color: '#0A5159',
+              banner_signed_out_header_overlay_opacity: 90,
+              banner_cta_signed_out_text_multiloc: {},
+              banner_cta_signed_out_type: 'sign_up_button',
+              banner_cta_signed_out_url: null,
+              pinned_admin_publication_ids: [],
+              header_bg: {
+                large:
+                  'http://localhost:4000/uploads/c72c5211-8e03-470b-9564-04ec0a8c322b/home_page/header_bg/5bda79bf-dc89-4a27-95c5-6d1982b15693/large_c20073fe-056e-432c-a614-6b92892caf86.jpg',
+                medium:
+                  'http://localhost:4000/uploads/c72c5211-8e03-470b-9564-04ec0a8c322b/home_page/header_bg/5bda79bf-dc89-4a27-95c5-6d1982b15693/medium_c20073fe-056e-432c-a614-6b92892caf86.jpg',
+                small:
+                  'http://localhost:4000/uploads/c72c5211-8e03-470b-9564-04ec0a8c322b/home_page/header_bg/5bda79bf-dc89-4a27-95c5-6d1982b15693/small_c20073fe-056e-432c-a614-6b92892caf86.jpg',
+              },
+            }}
+          />
+        }
         icon="section-info-accordion"
         label={formatMessage(messages.infoWithAccordions)}
       />

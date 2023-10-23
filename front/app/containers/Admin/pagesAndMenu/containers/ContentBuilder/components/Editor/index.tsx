@@ -20,6 +20,7 @@ import InfoWithAccordions from '../CraftSections/InfoWithAccordions';
 import ImageTextCards from '../CraftSections/ImageTextCards';
 import Button from 'components/admin/ContentBuilder/Widgets/Button';
 import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
+import HomepageBanner from '../CraftSections/HomepageBanner';
 
 type EditorProps = {
   children?: React.ReactNode;
@@ -48,6 +49,7 @@ const Editor: React.FC<EditorProps> = ({
         InfoWithAccordions,
         ImageTextCards,
         Button,
+        HomepageBanner,
       }}
       isPreview={isPreview}
       onNodesChange={onNodesChange}
