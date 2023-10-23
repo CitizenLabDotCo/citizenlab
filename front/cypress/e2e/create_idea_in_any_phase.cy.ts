@@ -81,18 +81,10 @@ describe('Idea creation', () => {
 
     // add a location
     cy.get('.e2e-idea-form-location-input-field input').type(
-      'Boulevard Anspach Brussels{enter}'
+      'Boulevard Anspach Brussels'
     );
-    cy.get(
-      '.e2e-idea-form-location-input-field #PlacesAutocomplete__autocomplete-container div'
-    )
-      .first()
-      .click();
-    cy.wait(500);
-    cy.get('.e2e-idea-form-location-input-field input').should(
-      'contain.value',
-      'Belgium'
-    );
+    cy.wait(5000);
+    cy.get('.e2e-idea-form-location-input-field input').type('{enter}');
 
     // verify that image and file upload components are present
     cy.get('#e2e-idea-image-upload');

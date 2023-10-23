@@ -45,6 +45,14 @@ RUN apt-get update                                           \
    && apt-get clean                                            \
    && rm -rf /var/lib/apt/lists/*
 
+# Install Postgres client:
+# Import the PostgreSQL repository signing key, add the repository, and install the package.
+RUN curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --yes --dearmor -o /usr/share/keyrings/postgresql-archive-keyring.gpg \
+    && echo "deb [signed-by=/usr/share/keyrings/postgresql-archive-keyring.gpg] https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list \
+    # Make sure the version of `postgresql-client` matches the version used by the
+    # `postgres` service in `docker-compose.yml`.
+    && apt-get update && apt-get install -y postgresql-client-12
+
 WORKDIR /cl2_back
 
 RUN gem install bundler:2.4.20

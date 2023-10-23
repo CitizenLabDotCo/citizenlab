@@ -22,6 +22,7 @@ import {
 import messages from './messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import useLocale from 'hooks/useLocale';
 
 // Components
 import SubmitButtonBar from './SubmitButtonBar';
@@ -47,9 +48,11 @@ import { IInitiativeData } from 'api/initiatives/types';
 import { IInitiativeImageData } from 'api/initiative_images/types';
 import { IInitiativeFileData } from 'api/initiative_files/types';
 import useInitiativeReviewRequired from 'containers/InitiativesShow/hooks/useInitiativeReviewRequired';
-import { stripHtmlTags } from 'utils/helperUtils';
+import { stripHtmlTags, isNilOrError } from 'utils/helperUtils';
 import useInitiativeCosponsorsRequired from 'containers/InitiativesShow/hooks/useInitiativeCosponsorsRequired';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { useSearchParams } from 'react-router-dom';
+import { reverseGeocode } from 'utils/locationTools';
 
 declare module 'components/UI/Error' {
   interface TFieldNameMap {
@@ -85,7 +88,8 @@ const InitiativeForm = ({
   initiativeImage,
   initiativeFiles,
 }: Props) => {
-  const mapsLoaded = window.googleMaps;
+  const locale = useLocale();
+  const [search] = useSearchParams();
   const { formatMessage } = useIntl();
   const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
     useState(false);
@@ -174,6 +178,21 @@ const InitiativeForm = ({
       });
     }
   }, [methods, initiativeImage]);
+
+  // get lat and lnt from router and geocode address
+
+  useEffect(() => {
+    const lat = search.get('lat');
+    const lng = search.get('lng');
+
+    if (lat && lng && !isNilOrError(locale)) {
+      const latNumber = Number(lat);
+      const lngNumber = Number(lng);
+      reverseGeocode(latNumber, lngNumber, locale).then((result) => {
+        methods.setValue('position', result);
+      });
+    }
+  }, [methods, search, locale]);
 
   useEffect(() => {
     const bannerUrl = initiative?.attributes.header_bg.large;
@@ -276,22 +295,21 @@ const InitiativeForm = ({
                 />
                 <TopicsPicker name="topic_ids" availableTopics={topics.data} />
               </SectionField>
-              {mapsLoaded && (
-                <SectionField>
-                  <FormLabel
-                    labelMessage={messages.locationLabel}
-                    subtextMessage={messages.locationLabelSubtext}
-                    htmlFor="position"
-                    optional
-                  >
-                    <LocationInput
-                      name="position"
-                      className="e2e-initiative-location-input"
-                      placeholder={formatMessage(messages.locationPlaceholder)}
-                    />
-                  </FormLabel>
-                </SectionField>
-              )}
+
+              <SectionField>
+                <FormLabel
+                  labelMessage={messages.locationLabel}
+                  subtextMessage={messages.locationLabelSubtext}
+                  htmlFor="position"
+                  optional
+                >
+                  <LocationInput
+                    name="position"
+                    className="e2e-initiative-location-input"
+                    placeholder={formatMessage(messages.locationPlaceholder)}
+                  />
+                </FormLabel>
+              </SectionField>
             </FormSection>
             <Suspense fallback={null}>
               <CosponsorsFormSection
