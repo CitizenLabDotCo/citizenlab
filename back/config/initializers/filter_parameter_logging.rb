@@ -9,14 +9,14 @@ Rails.application.config.filter_parameters += %i[
   password current_password passw secret token _key crypt salt certificate otp ssn import_ideas.pdf import_ideas.xlsx
 ]
 
-# Filtering out base64 image encoding. -------------------------------------------------------------------------
+# Filtering out base64 encoding. -------------------------------------------------------------------------
 #
 # Filter only exact matches of specified parameter keys. This avoids filtering false positives.
 # E.g. `image` will filter both `image` and `imageUrl`, whereas `^image$` will only filter `image`.
-Rails.application.config.filter_parameters += [/^avatar$/, /^header_bg$/, /^image$/, /^layout_image$/, /^logo$/]
+Rails.application.config.filter_parameters += [/^avatar$/, /^file$/, /^header_bg$/, /^image$/, /^layout_image$/, /^logo$/]
 
-# Custom filter to remove base64 image encoding from multiloc values,
-# as our WYSIWIG editors enable the addition of (multiple) images in the string value(s) of a mutliloc.
+# Custom filter to remove base64 image encoding from multiloc values, as our WYSIWIG editors enable the addition
+# of (multiple) images in the string value(s) of a mutliloc, which the FE encodes as base64.
 Rails.application.config.filter_parameters << lambda do |param, value|
   if CL2_SUPPORTED_LOCALES.include?(param.to_sym) && JSON.generate(value).include?(';base64,')
     value.gsub!(/;base64,[^ ]*/) { ';base64,[FILTERED]' }
