@@ -137,7 +137,9 @@ const presentOrFuture = new Set(['present', 'future']);
 
 export const isCurrentPhase = (phase: IPhaseData) => {
   const phaseStartPeriod = pastPresentOrFuture(phase.attributes.start_at);
-  const phaseEndPeriod = pastPresentOrFuture(phase.attributes.end_at);
+  const phaseEndPeriod = phase.attributes.end_at
+    ? pastPresentOrFuture(phase.attributes.end_at)
+    : 'future';
 
   if (
     pastOrPresent.has(phaseStartPeriod) &&
