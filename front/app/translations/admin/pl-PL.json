@@ -1984,6 +1984,7 @@
   "app.containers.AdminPage.projects.project.analysis.Insights.appliesTo": "Dotyczy aktualnie wybranych wejść",
   "app.containers.AdminPage.projects.project.analysis.Insights.ask": "Zapytaj",
   "app.containers.AdminPage.projects.project.analysis.Insights.askQuestion": "Zadaj pytanie",
+  "app.containers.AdminPage.projects.project.analysis.Insights.bookmarkSummary": "Podsumowanie zakładki",
   "app.containers.AdminPage.projects.project.analysis.Insights.deleteQuestion": "Usuń pytanie",
   "app.containers.AdminPage.projects.project.analysis.Insights.deleteQuestionConfirmation": "Czy na pewno chcesz usunąć to pytanie?",
   "app.containers.AdminPage.projects.project.analysis.Insights.deleteSummary": "Usuń podsumowanie",

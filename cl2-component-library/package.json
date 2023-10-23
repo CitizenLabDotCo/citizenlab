@@ -59,7 +59,7 @@
     "@types/jest": "^28.1.6",
     "@types/lodash": "^4.14.197",
     "@types/react": "^17.0.2",
-    "@types/react-color": "3.0.7",
+    "@types/react-color": "3.0.9",
     "@types/react-dom": "^17.0.13",
     "@types/react-places-autocomplete": "6.x",
     "@types/react-transition-group": "4.4.6",

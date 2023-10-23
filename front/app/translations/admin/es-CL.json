@@ -1984,6 +1984,7 @@
   "app.containers.AdminPage.projects.project.analysis.Insights.appliesTo": "Se aplica a las entradas seleccionadas actualmente",
   "app.containers.AdminPage.projects.project.analysis.Insights.ask": "Pregunta a",
   "app.containers.AdminPage.projects.project.analysis.Insights.askQuestion": "Haz una pregunta",
+  "app.containers.AdminPage.projects.project.analysis.Insights.bookmarkSummary": "Resumen de marcapáginas",
   "app.containers.AdminPage.projects.project.analysis.Insights.deleteQuestion": "Borrar pregunta",
   "app.containers.AdminPage.projects.project.analysis.Insights.deleteQuestionConfirmation": "¿Estás seguro de que quieres borrar esta pregunta?",
   "app.containers.AdminPage.projects.project.analysis.Insights.deleteSummary": "Borrar resumen",
