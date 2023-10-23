@@ -111,7 +111,7 @@ class WebApi::V1::UsersController < ApplicationController
   # To validate an email without creating a user and return which action to go to next
   def check
     skip_authorization
-    if User::EMAIL_REGEX.match?(params[:email])
+    if URI::MailTo::EMAIL_REGEXP.match?(params[:email])
       @user = User.find_by email: params[:email]
       if @user&.invite_pending?
         render json: { errors: { email: [{ error: 'taken_by_invite', value: params[:email], inviter_email: @user.invitee_invite&.inviter&.email }] } }, status: :unprocessable_entity
