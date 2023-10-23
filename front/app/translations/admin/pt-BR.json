@@ -1984,6 +1984,7 @@
   "app.containers.AdminPage.projects.project.analysis.Insights.appliesTo": "Aplica-se às entradas atualmente selecionadas",
   "app.containers.AdminPage.projects.project.analysis.Insights.ask": "Perguntar",
   "app.containers.AdminPage.projects.project.analysis.Insights.askQuestion": "Faça uma pergunta",
+  "app.containers.AdminPage.projects.project.analysis.Insights.bookmarkSummary": "Resumo do marcador",
   "app.containers.AdminPage.projects.project.analysis.Insights.deleteQuestion": "Excluir pergunta",
   "app.containers.AdminPage.projects.project.analysis.Insights.deleteQuestionConfirmation": "Tem certeza de que deseja excluir esta pergunta?",
   "app.containers.AdminPage.projects.project.analysis.Insights.deleteSummary": "Excluir resumo",
