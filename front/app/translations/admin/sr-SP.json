@@ -1984,6 +1984,7 @@
   "app.containers.AdminPage.projects.project.analysis.Insights.appliesTo": "Примењује се на тренутно изабране улазе",
   "app.containers.AdminPage.projects.project.analysis.Insights.ask": "Питати",
   "app.containers.AdminPage.projects.project.analysis.Insights.askQuestion": "Поставите питање",
+  "app.containers.AdminPage.projects.project.analysis.Insights.bookmarkSummary": "Резиме обележивача",
   "app.containers.AdminPage.projects.project.analysis.Insights.deleteQuestion": "Избриши питање",
   "app.containers.AdminPage.projects.project.analysis.Insights.deleteQuestionConfirmation": "Да ли сте сигурни да желите да избришете ово питање?",
   "app.containers.AdminPage.projects.project.analysis.Insights.deleteSummary": "Избриши резиме",
