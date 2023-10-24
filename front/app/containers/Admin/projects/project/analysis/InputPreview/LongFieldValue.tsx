@@ -22,7 +22,7 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from '../tracks';
 
 import { useIntl } from 'utils/cl-intl';
-import translations from '../translations';
+import messages from '../messages';
 
 type Props = {
   customFieldId: string;
@@ -78,8 +78,8 @@ const FilterToggleButton = ({ customFieldId, value }) => {
         content={
           <Box minWidth="150px">
             {isFilterSet
-              ? formatMessage(translations.removeFilter)
-              : formatMessage(translations.filter)}
+              ? formatMessage(messages.removeFilter)
+              : formatMessage(messages.filter)}
           </Box>
         }
       />
@@ -153,7 +153,7 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
               <Text m="0">
                 {input.attributes.custom_field_values[
                   customField.data.attributes.key
-                ] || formatMessage(translations.noAnswer)}
+                ] || formatMessage(messages.noAnswer)}
               </Text>
             </Box>
           );
@@ -172,7 +172,7 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
                 <Text m="0">
                   {input.attributes.custom_field_values[
                     customField.data.attributes.key
-                  ] || formatMessage(translations.noAnswer)}
+                  ] || formatMessage(messages.noAnswer)}
                 </Text>
                 <Box ml="8px">
                   <FilterToggleButton
@@ -193,7 +193,7 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
               <Text whiteSpace="pre-line">
                 {input.attributes.custom_field_values[
                   customField.data.attributes.key
-                ] || formatMessage(translations.noAnswer)}
+                ] || formatMessage(messages.noAnswer)}
               </Text>
             </Box>
           );
@@ -265,7 +265,7 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
                 {rawValue === true || rawValue === false ? (
                   <Checkbox disabled checked={rawValue} onChange={() => {}} />
                 ) : (
-                  formatMessage(translations.noAnswer)
+                  formatMessage(messages.noAnswer)
                 )}
               </Text>
             </Box>
@@ -281,7 +281,7 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
                 {rawValue ? (
                   <FormattedDate value={rawValue} />
                 ) : (
-                  formatMessage(translations.noAnswer)
+                  formatMessage(messages.noAnswer)
                 )}
               </Text>
             </Box>

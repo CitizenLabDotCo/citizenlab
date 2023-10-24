@@ -141,10 +141,12 @@ describe('Idea manager', () => {
     const password = randomString();
     let newAdminFirstName: string;
     let newAdminLastName: string;
+    let adminUserId: string;
 
     before(() => {
       cy.apiCreateAdmin(firstName, lastName, email, password).then(
         (newAdmin) => {
+          adminUserId = newAdmin.body.data.id;
           newAdminFirstName = newAdmin.body.data.attributes.first_name;
           newAdminLastName = newAdmin.body.data.attributes.last_name;
           cy.apiConfirmUser(email, password);
@@ -152,6 +154,10 @@ describe('Idea manager', () => {
       );
       cy.logout();
       cy.setAdminLoginCookie();
+    });
+
+    after(() => {
+      cy.apiRemoveUser(adminUserId);
     });
 
     it('Assigns a user to an idea', () => {

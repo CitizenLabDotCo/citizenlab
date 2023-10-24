@@ -19,7 +19,7 @@ import useLocale from 'hooks/useLocale';
 import { isNilOrError } from 'utils/helperUtils';
 
 import { useIntl } from 'utils/cl-intl';
-import translations from './translations';
+import messages from './messages';
 import {
   AutoTaggingMethod,
   IBackgroundTaskData,
@@ -59,29 +59,29 @@ const Tasks = () => {
     IBackgroundTaskData['attributes']['type'],
     string
   > = {
-    auto_tagging_task: formatMessage(translations.autotaggingTask),
-    summarization_task: formatMessage(translations.summarizationTask),
+    auto_tagging_task: formatMessage(messages.autotaggingTask),
+    summarization_task: formatMessage(messages.summarizationTask),
   };
 
   const taggingMethodTranslationMap: Record<AutoTaggingMethod, string> = {
-    custom: formatMessage(translations.custom),
-    language: formatMessage(translations.language),
-    platform_topic: formatMessage(translations.platformTopic),
-    nlp_topic: formatMessage(translations.nlpTopic),
-    sentiment: formatMessage(translations.sentiment),
-    controversial: formatMessage(translations.controversial),
-    label_classification: formatMessage(translations.labelClassification),
-    few_shot_classification: formatMessage(translations.fewShotClassification),
+    custom: formatMessage(messages.custom),
+    language: formatMessage(messages.language),
+    platform_topic: formatMessage(messages.platformTopic),
+    nlp_topic: formatMessage(messages.nlpTopic),
+    sentiment: formatMessage(messages.sentiment),
+    controversial: formatMessage(messages.controversial),
+    label_classification: formatMessage(messages.labelClassification),
+    few_shot_classification: formatMessage(messages.fewShotClassification),
   };
 
   const stateTranslationMap: Record<
     IBackgroundTaskData['attributes']['state'],
     string
   > = {
-    queued: formatMessage(translations.queued),
-    in_progress: formatMessage(translations.inProgress),
-    succeeded: formatMessage(translations.succeeded),
-    failed: formatMessage(translations.failed),
+    queued: formatMessage(messages.queued),
+    in_progress: formatMessage(messages.inProgress),
+    succeeded: formatMessage(messages.succeeded),
+    failed: formatMessage(messages.failed),
   };
 
   return (
@@ -91,7 +91,7 @@ const Tasks = () => {
           buttonStyle="text"
           width="24px"
           height="24px"
-          aria-label={formatMessage(translations.backgroundJobs)}
+          aria-label={formatMessage(messages.backgroundJobs)}
           onClick={() => setIsDropdownOpened(!isDropdownOpened)}
         >
           <Spinner />
@@ -99,7 +99,7 @@ const Tasks = () => {
       ) : (
         <IconButton
           iconName="list"
-          a11y_buttonActionMessage={formatMessage(translations.backgroundJobs)}
+          a11y_buttonActionMessage={formatMessage(messages.backgroundJobs)}
           iconColor={colors.grey800}
           iconColorOnHover={colors.black}
           onClick={() => setIsDropdownOpened(!isDropdownOpened)}
@@ -117,7 +117,7 @@ const Tasks = () => {
         content={
           <Box p="12px">
             {tasks?.data.length === 0 && (
-              <Text>{formatMessage(translations.noJobs)}</Text>
+              <Text>{formatMessage(messages.noJobs)}</Text>
             )}
             {tasks?.data.map((task) => {
               return (
@@ -187,20 +187,20 @@ const Tasks = () => {
                     {stateTranslationMap[task.attributes.state]}
                   </Box>
                   <Box display="flex" justifyContent="space-between">
-                    <span>{formatMessage(translations.triggeredAt)} </span>
+                    <span>{formatMessage(messages.triggeredAt)} </span>
                     <span>
                       {timeAgo(Date.parse(task.attributes.created_at), locale)}
                     </span>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
-                    <span>{formatMessage(translations.startedAt)} </span>
+                    <span>{formatMessage(messages.startedAt)} </span>
                     <span>
                       {task.attributes.started_at &&
                         timeAgo(Date.parse(task.attributes.started_at), locale)}
                     </span>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
-                    <span>{formatMessage(translations.endedAt)} </span>
+                    <span>{formatMessage(messages.endedAt)} </span>
                     <span>
                       {task.attributes.ended_at &&
                         timeAgo(Date.parse(task.attributes.ended_at), locale)}

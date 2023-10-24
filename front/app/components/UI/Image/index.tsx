@@ -1,12 +1,16 @@
 // Libraries
 import React, { PureComponent } from 'react';
 
-// Lazy Images observer
-import Observer from '@researchgate/react-intersection-observer';
-
 // Stylings
 import styled, { css } from 'styled-components';
 import { colors } from 'utils/styleUtils';
+
+const Fallback = styled.div<{ src: string | undefined }>`
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  background-image: url(${({ src }) => src});
+`;
 
 const ImageElement = styled.img<{
   cover: boolean;
@@ -32,13 +36,6 @@ const ImageElement = styled.img<{
     `};
 `;
 
-const Fallback = styled.div<{ src: string | undefined }>`
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
-  background-image: url(${({ src }) => src});
-`;
-
 interface Props {
   id?: string;
   src: HTMLImageElement['src'];
@@ -53,7 +50,6 @@ interface Props {
 }
 
 interface State {
-  visible: boolean;
   loaded: boolean;
 }
 
@@ -68,20 +64,9 @@ export default class Image extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      visible: props.isLazy ? false : true,
       loaded: false,
     };
   }
-
-  handleIntersection = (
-    event: IntersectionObserverEntry,
-    unobserve: () => void
-  ) => {
-    if (event.isIntersecting) {
-      this.setState({ visible: true });
-      unobserve();
-    }
-  };
 
   handleImageLoaded = () => {
     this.setState({ loaded: true });
@@ -100,11 +85,11 @@ export default class Image extends PureComponent<Props, State> {
       className,
     } = this.props;
     const { isLazy } = this.props;
-    const { visible, loaded } = this.state;
+    const { loaded } = this.state;
 
     let image = (
       <ImageElement
-        src={visible ? src : undefined}
+        src={src}
         alt={alt}
         role={role}
         cover={!!cover}
@@ -115,19 +100,12 @@ export default class Image extends PureComponent<Props, State> {
         onLoad={this.handleImageLoaded}
         id={id}
         className={className || ''}
+        loading={isLazy ? 'lazy' : 'eager'}
       />
     );
 
     if (cover) {
       image = <Fallback src={src} className={className} />;
-    }
-
-    if (isLazy) {
-      return (
-        <Observer rootMargin="200px" onChange={this.handleIntersection}>
-          {image}
-        </Observer>
-      );
     }
 
     return image;

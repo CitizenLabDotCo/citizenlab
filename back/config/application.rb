@@ -71,6 +71,16 @@ module Cl2Back
     # deprecated.
     config.active_record.legacy_connection_handling = false
 
+    # Dump the database schema as SQL (`structure.sql`) instead of Ruby (`schema.rb`).
+    config.active_record.schema_format = :sql
+    # Extra flags to pass to `pg_dump` when dumping the database schema. With these
+    # flags, the resulting `structure.sql` file will contain commands to drop the
+    # database objects before creating them. This fixes the error:
+    #   ERROR: schema "public" already exists
+    # (The public schema is already created because it is part of the search path
+    # defined in `config/database.yml`.)
+    ActiveRecord::Tasks::DatabaseTasks.structure_dump_flags = %w[--clean --if-exists]
+
     case ENV.fetch('ACTION_MAILER_DELIVERY_METHOD')
     when 'mailgun'
       config.action_mailer.delivery_method = :mailgun

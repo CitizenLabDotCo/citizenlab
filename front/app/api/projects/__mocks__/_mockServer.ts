@@ -2,7 +2,7 @@ import { rest } from 'msw';
 import { IProjects, IProjectData } from '../types';
 
 export const project1: IProjectData = {
-  id: 'be3f645b-3e1d-4afc-b91b-d68c4dc0100b',
+  id: '1aa8a788-3aee-4ada-a581-6d934e49784b',
   type: 'project',
   attributes: {
     allow_anonymous_participation: false,
@@ -46,7 +46,7 @@ export const project1: IProjectData = {
     visible_to: 'public',
     created_at: '2019-05-11T17:04:13.090Z',
     updated_at: '2023-03-22T08:36:22.662Z',
-    folder_id: 'b34da4ec-94ce-4af4-8811-46225c46fada',
+    folder_id: null,
     publication_status: 'published',
     description_multiloc: {
       en: '<p>You can propose anywhere you like, but we will only accept Koekenbakstraat</p>',
@@ -151,7 +151,7 @@ export const project1: IProjectData = {
 };
 
 export const project2: IProjectData = {
-  id: '4bf7531c-1d1e-45a5-adb2-cabfccadd358',
+  id: '4b429681-1744-456f-8550-e89a2c2c74b2',
   type: 'project',
   attributes: {
     allow_anonymous_participation: false,

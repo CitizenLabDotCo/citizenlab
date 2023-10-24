@@ -6,7 +6,7 @@ import { FormattedDate } from 'react-intl';
 import { isNil } from 'lodash-es';
 import { IUserCustomField } from 'api/user_custom_fields/types';
 import { useIntl } from 'utils/cl-intl';
-import translations from '../translations';
+import messages from '../messages';
 
 type Props = {
   customField: IUserCustomField;
@@ -35,7 +35,7 @@ const SelectOptionText = ({
 const ShortUserFieldValue = ({ customField, rawValue }: Props) => {
   const { formatMessage } = useIntl();
   if (isNil(rawValue)) {
-    return <>{formatMessage(translations.noAnswer)}</>;
+    return <>{formatMessage(messages.noAnswer)}</>;
   }
 
   switch (customField.data.attributes.input_type) {
@@ -48,7 +48,7 @@ const ShortUserFieldValue = ({ customField, rawValue }: Props) => {
         typeof rawValue === undefined ||
         rawValue === ''
       ) {
-        return <>{formatMessage(translations.noAnswer)}</>;
+        return <>{formatMessage(messages.noAnswer)}</>;
       } else {
         return <>{rawValue}</>;
       }

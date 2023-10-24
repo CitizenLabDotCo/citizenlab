@@ -1,16 +1,16 @@
 import React from 'react';
-import {
-  LocationInput as LocationInputComponent,
-  LocationInputProps,
-  Box,
-} from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import Error, { TFieldName } from 'components/UI/Error';
 import { Controller, useFormContext } from 'react-hook-form';
 import { CLError, RHFErrors } from 'typings';
 import { get } from 'lodash-es';
+import LocationInputComponent, { Option } from 'components/UI/LocationInput';
 
 interface Props
-  extends Omit<LocationInputProps, 'onChange' | 'onBlur' | 'value' | 'id'> {
+  extends Omit<
+    React.ComponentProps<typeof LocationInputComponent>,
+    'onChange' | 'onBlur' | 'value' | 'id'
+  > {
   name: TFieldName;
 }
 
@@ -18,6 +18,7 @@ const LocationInput = ({ name, ...rest }: Props) => {
   const {
     formState: { errors: formContextErrors },
     control,
+    setValue,
   } = useFormContext();
 
   const errors = get(formContextErrors, name) as RHFErrors;
@@ -32,7 +33,24 @@ const LocationInput = ({ name, ...rest }: Props) => {
         name={name}
         control={control}
         render={({ field: { ref: _ref, ...field } }) => {
-          return <LocationInputComponent id={name} {...field} {...rest} />;
+          return (
+            <LocationInputComponent
+              {...field}
+              {...rest}
+              inputId={name}
+              value={
+                field.value
+                  ? {
+                      label: field.value,
+                      value: field.value,
+                    }
+                  : null
+              }
+              onChange={(newOption: Option | null) => {
+                setValue(name, newOption?.value || null);
+              }}
+            />
+          );
         }}
       />
       {validationError && (
