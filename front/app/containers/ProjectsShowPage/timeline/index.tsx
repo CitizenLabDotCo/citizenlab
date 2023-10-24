@@ -25,6 +25,7 @@ import { useParams } from 'react-router-dom';
 // hooks
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
+import useLocale from 'hooks/useLocale';
 
 // i18n
 import messages from 'containers/ProjectsShowPage/messages';
@@ -37,6 +38,7 @@ import { colors, isRtl } from 'utils/styleUtils';
 // utils
 import { getLatestRelevantPhase } from 'api/phases/utils';
 import { isValidPhase } from '../phaseParam';
+import { isNilOrError } from 'utils/helperUtils';
 
 // typings
 import { IPhaseData } from 'api/phases/types';
@@ -76,6 +78,7 @@ const ProjectTimelineContainer = memo<Props>(({ projectId, className }) => {
   const { phaseNumber } = useParams();
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
+  const currentLocale = useLocale();
 
   const selectedPhase = useMemo(() => {
     if (!phases) return;
@@ -95,27 +98,32 @@ const ProjectTimelineContainer = memo<Props>(({ projectId, className }) => {
     setPhaseURL(phase.id, phases.data, project.data);
   };
 
-  const hasOnePhase = phases?.data?.length === 1;
-  const hasEmptyPhaseDescription =
-    hasOnePhase &&
-    Object.keys(phases.data[0].attributes.description_multiloc).length === 0;
-  const hasNoEndDate = hasOnePhase && phases.data[0].attributes.end_at === null;
-  // We don't show the timeline and header if there is only one phase and it has no description and no end date
-  const hideTimelineAndHeader = !(hasEmptyPhaseDescription && hasNoEndDate);
-
-  if (project && selectedPhase) {
+  if (project && selectedPhase && !isNilOrError(currentLocale)) {
     const selectedPhaseId = selectedPhase.id;
     const participationMethod = selectedPhase.attributes.participation_method;
     const isPastPhase = selectedPhase.attributes.end_at
       ? pastPresentOrFuture(selectedPhase.attributes.end_at) === 'past'
       : false;
-
     const isVotingPhase = participationMethod === 'voting';
-
     const showIdeas =
       participationMethod === 'ideation' || (isVotingPhase && !isPastPhase);
-
     const showVotingResults = isVotingPhase && isPastPhase;
+    const hasOnePhase = phases?.data?.length === 1;
+    const phaseDescription = hasOnePhase
+      ? phases.data[0].attributes.description_multiloc
+      : {};
+    const hasEmptyPhaseDescription =
+      hasOnePhase &&
+      (!Object.prototype.hasOwnProperty.call(phaseDescription, currentLocale) ||
+        (Object.prototype.hasOwnProperty.call(
+          phaseDescription,
+          currentLocale
+        ) &&
+          phaseDescription[currentLocale] === ''));
+    const hasNoEndDate =
+      hasOnePhase && phases.data[0].attributes.end_at === null;
+    // We don't show the timeline and header if there is only one phase and it has no description and no end date
+    const hideTimelineAndHeader = !(hasEmptyPhaseDescription && hasNoEndDate);
 
     return (
       <Container className={`${className || ''} e2e-project-process-page`}>
