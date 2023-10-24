@@ -16,6 +16,7 @@ import SectionContainer from 'components/SectionContainer';
 import PhaseDocumentAnnotation from './document_annotation';
 import StatusModule from 'components/StatusModule';
 import VotingResults from './VotingResults';
+import { Box } from '@citizenlab/cl2-component-library';
 
 // router
 import setPhaseURL from './setPhaseURL';
@@ -66,9 +67,6 @@ const StyledProjectPageSectionTitle = styled(ProjectPageSectionTitle)`
   padding: 0px;
 `;
 
-const StyledTimeline = styled(Timeline)`
-  margin-bottom: 22px;
-`;
 interface Props {
   projectId: string;
   className?: string;
@@ -97,6 +95,14 @@ const ProjectTimelineContainer = memo<Props>(({ projectId, className }) => {
     setPhaseURL(phase.id, phases.data, project.data);
   };
 
+  const hasOnePhase = phases?.data?.length === 1;
+  const hasEmptyPhaseDescription =
+    hasOnePhase &&
+    Object.keys(phases.data[0].attributes.description_multiloc).length === 0;
+  const hasNoEndDate = hasOnePhase && phases.data[0].attributes.end_at === null;
+  // We don't show the timeline and header if there is only one phase and it has no description and no end date
+  const hideTimelineAndHeader = !(hasEmptyPhaseDescription && hasNoEndDate);
+
   if (project && selectedPhase) {
     const selectedPhaseId = selectedPhase.id;
     const participationMethod = selectedPhase.attributes.participation_method;
@@ -116,17 +122,26 @@ const ProjectTimelineContainer = memo<Props>(({ projectId, className }) => {
         <StyledSectionContainer>
           <div>
             <ContentContainer maxWidth={maxPageWidth}>
-              <Header>
-                <StyledProjectPageSectionTitle>
-                  <FormattedMessage {...messages.phases} />
-                </StyledProjectPageSectionTitle>
-                <PhaseNavigation projectId={projectId} buttonStyle="white" />
-              </Header>
-              <StyledTimeline
-                projectId={projectId}
-                selectedPhase={selectedPhase}
-                setSelectedPhase={selectPhase}
-              />
+              {hideTimelineAndHeader && (
+                <>
+                  <Header>
+                    <StyledProjectPageSectionTitle>
+                      <FormattedMessage {...messages.phases} />
+                    </StyledProjectPageSectionTitle>
+                    <PhaseNavigation
+                      projectId={projectId}
+                      buttonStyle="white"
+                    />
+                  </Header>
+                  <Box mb="22px">
+                    <Timeline
+                      projectId={projectId}
+                      selectedPhase={selectedPhase}
+                      setSelectedPhase={selectPhase}
+                    />
+                  </Box>
+                </>
+              )}
               {isVotingPhase && (
                 <>
                   <StatusModule
