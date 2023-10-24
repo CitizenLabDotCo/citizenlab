@@ -20,3 +20,13 @@ updates:
       - "adessy"
     reviewers:
       - "adessy"
+  - package-ecosystem: npm
+    directory: '/cl2-component-library'
+    schedule:
+      interval: monthly
+      time: '04:00'
+    open-pull-requests-limit: 10
+    assignees:
+      - 'IvaKop'
+    reviewers:
+      - 'IvaKop'

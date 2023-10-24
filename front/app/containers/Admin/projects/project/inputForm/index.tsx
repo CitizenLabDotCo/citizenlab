@@ -16,6 +16,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { useParams } from 'react-router-dom';
 import usePhases from 'api/phases/usePhases';
 import useLocale from 'hooks/useLocale';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // utils
 import { getCurrentPhase } from 'api/phases/utils';
@@ -30,6 +31,10 @@ import { API_PATH } from 'containers/App/constants';
 import { saveAs } from 'file-saver';
 
 export const IdeaForm = () => {
+  const printedFormsEnabled = useFeatureFlag({
+    name: 'import_printed_forms',
+  });
+
   const [exportModalOpen, setExportModalOpen] = useState(false);
   const { projectId } = useParams() as {
     projectId: string;
@@ -79,23 +84,27 @@ export const IdeaForm = () => {
           >
             <FormattedMessage {...messages.editInputForm} />
           </Button>
-          <Box m="8px">
-            <Button
-              onClick={handleDownloadPDF}
-              width="auto"
-              icon="download"
-              data-cy="e2e-save-input-form-pdf"
-            >
-              <FormattedMessage {...messages.downloadInputForm} />
-            </Button>
-          </Box>
-          <Button
-            buttonStyle="secondary"
-            icon="download"
-            onClick={downloadExampleFile}
-          >
-            <FormattedMessage {...messages.downloadExcelTemplate} />
-          </Button>
+          {printedFormsEnabled && (
+            <>
+              <Box m="8px">
+                <Button
+                  onClick={handleDownloadPDF}
+                  width="auto"
+                  icon="download"
+                  data-cy="e2e-save-input-form-pdf"
+                >
+                  <FormattedMessage {...messages.downloadInputForm} />
+                </Button>
+              </Box>
+              <Button
+                buttonStyle="secondary"
+                icon="download"
+                onClick={downloadExampleFile}
+              >
+                <FormattedMessage {...messages.downloadExcelTemplate} />
+              </Button>
+            </>
+          )}
         </Box>
       </Box>
       <PDFExportModal

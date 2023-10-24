@@ -40,6 +40,7 @@ import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 import { Multiloc } from 'typings';
 import { IPhases, IPhaseData } from 'api/phases/types';
 import { IProject } from 'api/projects/types';
+import useLocale from 'hooks/useLocale';
 import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
 
 const getConfig = (
@@ -71,6 +72,7 @@ interface FormValues {
 }
 
 const IdeasNewPageWithJSONForm = () => {
+  const locale = useLocale();
   const { mutateAsync: addIdea } = useAddIdea();
   const { formatMessage } = useIntl();
   const params = useParams<{ slug: string }>();
@@ -111,9 +113,13 @@ const IdeasNewPageWithJSONForm = () => {
       },
     }) as { [key: string]: string | number };
 
-    if (typeof lat === 'number' && typeof lng === 'number') {
+    if (
+      typeof lat === 'number' &&
+      typeof lng === 'number' &&
+      !isNilOrError(locale)
+    ) {
       setProcessingLocation(true);
-      reverseGeocode(lat, lng).then((address) => {
+      reverseGeocode(lat, lng, locale).then((address) => {
         setInitialFormData((initialFormData) => ({
           ...initialFormData,
           location_description: address,
@@ -125,7 +131,7 @@ const IdeasNewPageWithJSONForm = () => {
         setProcessingLocation(false);
       });
     }
-  }, [search]);
+  }, [search, locale]);
 
   // get participation method config
   const { data: phaseFromUrl } = usePhase(phaseId);
