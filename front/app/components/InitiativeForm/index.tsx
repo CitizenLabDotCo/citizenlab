@@ -28,6 +28,7 @@ import useLocale from 'hooks/useLocale';
 import SubmitButtonBar from './SubmitButtonBar';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
+
 const ProfileVisibilityFormSection = lazy(
   () => import('./ProfileVisibilityFormSection')
 );
@@ -37,9 +38,7 @@ const AnonymousParticipationConfirmationModal = lazy(
 );
 import LocationInput from 'components/HookForm/LocationInput';
 import { Box } from '@citizenlab/cl2-component-library';
-const ImageAndAttachmentsSection = lazy(
-  () => import('./ImagesAndAttachmentsSection')
-);
+import ImageAndAttachmentsSection from './ImagesAndAttachmentsSection';
 import Warning from 'components/UI/Warning';
 
 // Hooks
@@ -51,6 +50,7 @@ import useInitiativeReviewRequired from 'containers/InitiativesShow/hooks/useIni
 import { stripHtmlTags, isNilOrError } from 'utils/helperUtils';
 import useInitiativeCosponsorsRequired from 'containers/InitiativesShow/hooks/useInitiativeCosponsorsRequired';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
 import { useSearchParams } from 'react-router-dom';
 import { reverseGeocode } from 'utils/locationTools';
 
@@ -91,6 +91,7 @@ const InitiativeForm = ({
   const locale = useLocale();
   const [search] = useSearchParams();
   const { formatMessage } = useIntl();
+  const [isDisclaimerOpened, setIsDisclaimerOpened] = useState(false);
   const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
     useState(false);
   const cosponsorsRequired = useInitiativeCosponsorsRequired();
@@ -237,13 +238,34 @@ const InitiativeForm = ({
     }
   };
 
+  const handleDisclaimer = () => {
+    const disclamerNeeded =
+      methods.getValues('images')?.[0] ||
+      methods.getValues('header_bg')?.[0] ||
+      methods.getValues('local_initiative_files')?.length > 0 ||
+      Object.values(methods.getValues('body_multiloc')).some((value) =>
+        value.includes('<img')
+      );
+    if (disclamerNeeded) {
+      setIsDisclaimerOpened(true);
+    } else {
+      methods.handleSubmit(onFormSubmit)();
+    }
+  };
+
+  const onAcceptDisclaimer = () => {
+    methods.handleSubmit(onFormSubmit)();
+    setIsDisclaimerOpened(false);
+  };
+
+  const onCancelDisclaimer = () => {
+    setIsDisclaimerOpened(false);
+  };
+
   return (
     <>
       <FormProvider {...methods}>
-        <form
-          onSubmit={methods.handleSubmit(onFormSubmit)}
-          data-testid="initiativeForm"
-        >
+        <form data-testid="initiativeForm">
           <Box pb="92px">
             <Feedback />
             <FormSection>
@@ -329,7 +351,15 @@ const InitiativeForm = ({
               />
             </Suspense>
           </Box>
-          <SubmitButtonBar processing={methods.formState.isSubmitting} />
+          <SubmitButtonBar
+            processing={methods.formState.isSubmitting}
+            onClick={handleDisclaimer}
+          />
+          <ContentUploadDisclaimer
+            isDisclaimerOpened={isDisclaimerOpened}
+            onAcceptDisclaimer={onAcceptDisclaimer}
+            onCancelDisclaimer={onCancelDisclaimer}
+          />
         </form>
       </FormProvider>
       <Suspense fallback={null}>

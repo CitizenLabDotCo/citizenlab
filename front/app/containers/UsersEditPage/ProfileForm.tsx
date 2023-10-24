@@ -44,6 +44,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import onboardingCampaignsKeys from 'api/onboarding_campaigns/keys';
 import { queryClient } from 'utils/cl-react-query/queryClient';
+import { isEmpty } from 'lodash-es';
 
 const StyledIconTooltip = styled(IconTooltip)`
   margin-left: 5px;
@@ -130,7 +131,11 @@ const ProfileForm = () => {
   }));
 
   const handleDisclaimer = () => {
-    if (methods.formState.dirtyFields.avatar && methods.getValues('avatar')) {
+    if (
+      methods.formState.dirtyFields.avatar &&
+      methods.getValues('avatar') &&
+      isEmpty(methods.formState.errors)
+    ) {
       setIsDisclaimerOpened(true);
     } else {
       methods.handleSubmit(onFormSubmit)();
