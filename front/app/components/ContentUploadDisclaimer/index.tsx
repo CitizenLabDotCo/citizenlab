@@ -34,7 +34,7 @@ const ContentUploadDisclaimer = ({
           <Button onClick={onCancelDisclaimer} buttonStyle="secondary">
             {formatMessage(messages.onCancel)}
           </Button>
-          <Button onClick={onAcceptDisclaimer}>
+          <Button onClick={onAcceptDisclaimer} id="e2e-accept-disclaimer">
             {formatMessage(messages.onAccept)}
           </Button>
         </Box>
