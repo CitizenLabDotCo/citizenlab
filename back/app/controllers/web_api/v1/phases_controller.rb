@@ -6,7 +6,7 @@ class WebApi::V1::PhasesController < ApplicationController
 
   def index
     @phases = policy_scope(Phase)
-      .includes(:permissions)
+      .includes(:permissions, :report)
       .where(project_id: params[:project_id])
       .order(:start_at)
     @phases = paginate @phases
