@@ -14,7 +14,7 @@ import tracks from 'containers/Admin/projects/project/analysis/tracks';
 import { trackEventByName } from 'utils/analytics';
 
 import { useIntl } from 'utils/cl-intl';
-import translations from './translations';
+import messages from './messages';
 
 const QuestionInput = ({ onClose }: { onClose: () => void }) => {
   const [question, setQuestion] = useState('');
@@ -66,7 +66,7 @@ const QuestionInput = ({ onClose }: { onClose: () => void }) => {
           disabled={!question}
           type="submit"
         >
-          {formatMessage(translations.ask)}
+          {formatMessage(messages.ask)}
         </Button>
       </Box>
     </Box>

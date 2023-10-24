@@ -32,6 +32,17 @@ class SideFxUserService
     SendConfirmationCode.call(user: user) if user.should_send_confirmation_email?
   end
 
+  def before_destroy(user, _current_user)
+    # Remove all reactions by the user on initiatives that are in the active voting phase.
+    # We do this before the user is destroyed, as we nullify user_id in reactions when a user is destroyed.
+    # We use Initiative.voteable_status, as we include 'review_pending' and 'changes_requested' (as well as 'proposed')
+    # in the voting phase, because the author's vote will be automatically added to proposals in these statuses.
+    # Ensures 1 reaction per verified user per initiative, if verification (by a single method) is required to react,
+    # since it should not be possible to create more than one account (concurrently) for the same verification.
+    proposed_initiatives_reactions = user.reactions.where(reactable_id: [Initiative.voteable_status])
+    proposed_initiatives_reactions.destroy_all
+  end
+
   def after_destroy(frozen_user, current_user)
     LogActivityJob.perform_later(encode_frozen_resource(frozen_user), 'deleted', current_user, Time.now.to_i)
     UpdateMemberCountJob.perform_later

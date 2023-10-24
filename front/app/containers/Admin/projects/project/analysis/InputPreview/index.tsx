@@ -14,7 +14,7 @@ import useAnalysisUserById from 'api/analysis_users/useAnalysisUserById';
 import { getFullName } from 'utils/textUtils';
 import { useSelectedInputContext } from '../SelectedInputContext';
 import { useIntl } from 'utils/cl-intl';
-import translations from './translations';
+import messages from './messages';
 
 const InputListItem = () => {
   const { formatMessage } = useIntl();
@@ -47,7 +47,7 @@ const InputListItem = () => {
             size="s"
             padding="4px 8px"
           >
-            {formatMessage(translations.manageIdea)}
+            {formatMessage(messages.manageIdea)}
           </Button>
         </Box>
       )}

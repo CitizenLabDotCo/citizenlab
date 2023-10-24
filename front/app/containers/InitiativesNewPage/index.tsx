@@ -28,11 +28,13 @@ import { ILocationInfo } from 'typings';
 import GetInitiativesPermissions, {
   GetInitiativesPermissionsChildProps,
 } from 'resources/GetInitiativesPermissions';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 interface DataProps {
   authUser: GetAuthUserChildProps;
   previousPathName: string | null;
   postingPermission: GetInitiativesPermissionsChildProps;
+  locale: GetLocaleChildProps;
 }
 
 interface Props extends DataProps {}
@@ -53,7 +55,7 @@ export class InitiativesNewPage extends React.PureComponent<
   }
 
   componentDidMount() {
-    const { location } = this.props;
+    const { location, locale } = this.props;
     const { lat, lng } = parse(location.search, {
       ignoreQueryPrefix: true,
       decoder: (str, _defaultEncoder, _charset, type) => {
@@ -63,11 +65,11 @@ export class InitiativesNewPage extends React.PureComponent<
 
     this.redirectIfNotPermittedOnPage();
 
-    if (isNumber(lat) && isNumber(lng)) {
+    if (isNumber(lat) && isNumber(lng) && !isNilOrError(locale)) {
       // When an idea is posted through the map, we Google Maps gets an approximate address,
       // but we also keep the exact coordinates from the click so the location indicator keeps its initial position on the map
       // and doesn't readjust together with the address correction/approximation
-      reverseGeocode(lat, lng).then((address) => {
+      reverseGeocode(lat, lng, locale).then((address) => {
         this.setState({
           locationInfo: {
             location_description: address,
@@ -115,6 +117,7 @@ export class InitiativesNewPage extends React.PureComponent<
 }
 
 const Data = adopt<DataProps>({
+  locale: <GetLocale />,
   authUser: <GetAuthUser />,
   previousPathName: ({ render }) => (
     <PreviousPathnameContext.Consumer>

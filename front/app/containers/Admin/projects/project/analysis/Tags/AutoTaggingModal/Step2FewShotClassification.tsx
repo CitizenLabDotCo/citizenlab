@@ -12,7 +12,7 @@ import { xor } from 'lodash-es';
 import Tag from '../Tag';
 import { ITagData } from 'api/analysis_tags/types';
 import { useIntl } from 'utils/cl-intl';
-import translations from '../translations';
+import messages from '../messages';
 
 type Props = {
   onLaunch: (tagsIds: string[]) => void;
@@ -40,9 +40,9 @@ const Step2LabelClassification = ({ onLaunch }: Props) => {
 
   return (
     <Box>
-      <Title>{formatMessage(translations.fewShotTitle)}</Title>
-      <Text>{formatMessage(translations.fewShotSubtitle)}</Text>
-      <Text>{formatMessage(translations.fewShotSubtitle2)}</Text>
+      <Title>{formatMessage(messages.fewShotTitle)}</Title>
+      <Text>{formatMessage(messages.fewShotSubtitle)}</Text>
+      <Text>{formatMessage(messages.fewShotSubtitle2)}</Text>
       <Box>
         {customTags?.map((tag) => (
           <Box key={tag.id} display="flex" justifyContent="flex-start" mb="8px">
@@ -73,7 +73,7 @@ const Step2LabelClassification = ({ onLaunch }: Props) => {
           disabled={selectedTagIds.length === 0}
           onClick={() => onLaunch(selectedTagIds)}
         >
-          {formatMessage(translations.launch)}
+          {formatMessage(messages.launch)}
         </Button>
       </Box>
     </Box>
