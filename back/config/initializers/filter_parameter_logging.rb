@@ -25,7 +25,9 @@ Rails.application.config.filter_parameters += [
 #      of (multiple) images in the string value(s) of mutlilocs, which the FE encodes as base64.
 #   2. Removes base64 encoding from the `file` parameter value, leaving other information intact (e.g. filename).
 Rails.application.config.filter_parameters << lambda do |param, value|
-  if param == 'file' || (CL2_SUPPORTED_LOCALES.include?(param.to_sym) && value.include?(';base64,'))
+  if param == 'file' || (
+      CL2_SUPPORTED_LOCALES.include?(param.to_sym) && value.respond_to?(:include?) && value.include?(';base64,')
+    )
     value.gsub!(/;base64,[^ ]*/) { ';base64,[FILTERED]' }
   end
 end
