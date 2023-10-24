@@ -66,7 +66,7 @@
     "@types/styled-components": "^5.1.26",
     "@typescript-eslint/eslint-plugin": "^6.7.3",
     "@typescript-eslint/parser": "^6.7.3",
-    "babel-jest": "^29.5.0",
+    "babel-jest": "^29.7.0",
     "babel-plugin-dynamic-import-node": "^2.3.3",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
     "css-mediaquery": "^0.1.2",
