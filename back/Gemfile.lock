@@ -1189,7 +1189,7 @@ GEM
     validate_url (1.0.15)
       activemodel (>= 3.0.0)
       public_suffix
-    vcr (6.1.0)
+    vcr (6.2.0)
     wasabi (3.8.0)
       addressable
       httpi (~> 3.0)
@@ -1369,7 +1369,7 @@ DEPENDENCIES
   test-prof (~> 1.3)
   texting!
   user_custom_fields!
-  vcr (~> 6.1)
+  vcr (~> 6.2)
   verification!
   volunteering!
   webmock (~> 3.18)
