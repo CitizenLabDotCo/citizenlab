@@ -2,7 +2,7 @@ import React from 'react';
 import GenderWidget from '.';
 import { render } from 'utils/testUtils/rtl';
 
-jest.mock('containers/Admin/reporting/hooks/useNarrow', () => () => true);
+jest.mock('containers/Admin/reporting/hooks/useLayout', () => () => 'narrow');
 
 let mockGenderSerie: any = null;
 jest.mock(

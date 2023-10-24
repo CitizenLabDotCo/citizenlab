@@ -1,6 +1,12 @@
 import { useNode, useEditor } from '@craftjs/core';
 
-export default function useNarrow() {
+export default function useLayout() {
+  const narrowLayout = useNarrowLayout();
+
+  return narrowLayout ? 'narrow' : 'normal';
+}
+
+function useNarrowLayout() {
   const { id } = useNode();
   const {
     parentId,

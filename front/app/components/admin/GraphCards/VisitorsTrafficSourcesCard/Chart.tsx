@@ -13,10 +13,10 @@ interface Props {
   pieData: PieRow[];
   pieConfig?: Pie;
   innerRef?: React.RefObject<any>;
-  narrow?: boolean;
+  layout?: 'narrow' | 'normal';
 }
 
-const Chart = ({ pieData, pieConfig, innerRef, narrow = false }: Props) => {
+const Chart = ({ pieData, pieConfig, innerRef, layout = 'normal' }: Props) => {
   const [hoverIndex, setHoverIndex] = useState<number | undefined>();
 
   const onMouseOver = ({ rowIndex }) => {
@@ -52,7 +52,7 @@ const Chart = ({ pieData, pieConfig, innerRef, narrow = false }: Props) => {
       tooltip={renderTooltip()}
       legend={{
         items: legend,
-        marginLeft: narrow ? 10 : 50,
+        marginLeft: layout === 'narrow' ? 10 : 50,
         maintainGraphSize: true,
         position: 'right-center',
       }}

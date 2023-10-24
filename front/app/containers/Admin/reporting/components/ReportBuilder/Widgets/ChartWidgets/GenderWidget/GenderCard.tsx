@@ -2,7 +2,7 @@ import React from 'react';
 
 // hooks
 import useGenderSerie from 'containers/Admin/dashboard/users/Charts/GenderChart/useGenderSerie';
-import useNarrow from 'containers/Admin/reporting/hooks/useNarrow';
+import useLayout from 'containers/Admin/reporting/hooks/useLayout';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -29,7 +29,7 @@ const GenderCard = ({ startAt, endAt, projectId }: Props) => {
     projectId,
   });
 
-  const narrow = useNarrow();
+  const layout = useLayout();
 
   if (isNilOrError(genderSerie) || !serieHasValues(genderSerie)) {
     return <NoData message={messages.noData} />;
@@ -38,7 +38,7 @@ const GenderCard = ({ startAt, endAt, projectId }: Props) => {
   return (
     <Box width="100%" height="220px" mt="20px" pb="10px">
       <Box height="200px">
-        <Chart data={genderSerie} narrow={narrow} />
+        <Chart data={genderSerie} layout={layout} />
       </Box>
     </Box>
   );

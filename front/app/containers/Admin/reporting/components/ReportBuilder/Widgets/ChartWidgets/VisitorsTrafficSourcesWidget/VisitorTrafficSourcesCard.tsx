@@ -2,7 +2,7 @@ import React from 'react';
 
 // hooks
 import useVisitorReferrerTypes from 'components/admin/GraphCards/VisitorsTrafficSourcesCard/useVisitorReferrerTypes';
-import useNarrow from 'containers/Admin/reporting/hooks/useNarrow';
+import useLayout from 'containers/Admin/reporting/hooks/useLayout';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -30,7 +30,7 @@ const VisitorsTrafficSourcesCard = ({
     startAtMoment,
     endAtMoment,
   });
-  const narrow = useNarrow();
+  const layout = useLayout();
 
   if (isNilOrError(pieData)) {
     return <NoData message={messages.noData} />;
@@ -46,7 +46,7 @@ const VisitorsTrafficSourcesCard = ({
             endAngle: 360,
             outerRadius: 60,
           }}
-          narrow={narrow}
+          layout={layout}
         />
       </Box>
     </Box>
