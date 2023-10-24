@@ -173,6 +173,7 @@ DROP INDEX IF EXISTS public.index_spam_reports_on_user_id;
 DROP INDEX IF EXISTS public.index_spam_reports_on_reported_at;
 DROP INDEX IF EXISTS public.index_single_processed_flags;
 DROP INDEX IF EXISTS public.index_single_category_assignment;
+DROP INDEX IF EXISTS public.index_report_builder_reports_on_participation_context;
 DROP INDEX IF EXISTS public.index_report_builder_reports_on_owner_id;
 DROP INDEX IF EXISTS public.index_report_builder_reports_on_name;
 DROP INDEX IF EXISTS public.index_reactions_on_user_id;
@@ -3321,7 +3322,9 @@ CREATE TABLE public.report_builder_reports (
     name character varying NOT NULL,
     owner_id uuid NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    participation_context_type character varying,
+    participation_context_id uuid
 );
 
 
@@ -6293,6 +6296,13 @@ CREATE INDEX index_report_builder_reports_on_owner_id ON public.report_builder_r
 
 
 --
+-- Name: index_report_builder_reports_on_participation_context; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_report_builder_reports_on_participation_context ON public.report_builder_reports USING btree (participation_context_type, participation_context_id);
+
+
+--
 -- Name: index_single_category_assignment; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -7958,6 +7968,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230913121819'),
 ('20230915391649'),
 ('20230927135924'),
-('20231003095622');
+('20231003095622'),
+('20231024082513');
 
 

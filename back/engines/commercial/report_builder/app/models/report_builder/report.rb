@@ -4,16 +4,19 @@
 #
 # Table name: report_builder_reports
 #
-#  id         :uuid             not null, primary key
-#  name       :string           not null
-#  owner_id   :uuid             not null
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id                         :uuid             not null, primary key
+#  name                       :string           not null
+#  owner_id                   :uuid             not null
+#  created_at                 :datetime         not null
+#  updated_at                 :datetime         not null
+#  participation_context_type :string
+#  participation_context_id   :uuid
 #
 # Indexes
 #
-#  index_report_builder_reports_on_name      (name) UNIQUE
-#  index_report_builder_reports_on_owner_id  (owner_id)
+#  index_report_builder_reports_on_name                   (name) UNIQUE
+#  index_report_builder_reports_on_owner_id               (owner_id)
+#  index_report_builder_reports_on_participation_context  (participation_context_type,participation_context_id)
 #
 # Foreign Keys
 #
