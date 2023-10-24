@@ -1,7 +1,7 @@
 import { IPhase, IPhases } from 'api/phases/types';
 import moment from 'moment';
 
-const getPreviousPhase = (
+export const getPreviousPhase = (
   phases: IPhases | undefined,
   currentPhase: IPhase | undefined
 ) => {
