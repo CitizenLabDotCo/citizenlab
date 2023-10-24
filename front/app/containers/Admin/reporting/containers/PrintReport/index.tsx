@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
+// context
+import { ReportContext } from '../../context/ReportContext';
+
 // components
 import { Text, Spinner, Box } from '@citizenlab/cl2-component-library';
 import FullScreenReport from '../FullScreenReport';
@@ -73,7 +76,9 @@ const PrintReport = () => {
           </Text>
         </PreparingBox>
       )}
-      <FullScreenReport />
+      <ReportContext.Provider value="pdf">
+        <FullScreenReport />
+      </ReportContext.Provider>
     </>
   );
 };

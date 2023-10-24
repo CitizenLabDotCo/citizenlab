@@ -4,6 +4,9 @@ import styled from 'styled-components';
 // services
 import { LocaleSubject } from 'utils/locale';
 
+// context
+import { ReportContext } from '../../context/ReportContext';
+
 // hooks
 import useReportLayout from 'api/report_layout/useReportLayout';
 import { useParams } from 'react-router-dom';
@@ -70,14 +73,16 @@ const FullScreenReport = ({ reportId }: Props) => {
       reportLocale={reportLocale}
       platformLocale={platformLocale}
     >
-      <FullScreenWrapper onUpdateDraftData={setDraftData}>
-        {isLoadingLayout && <Spinner />}
-        {!isLoadingLayout && (
-          <Centerer>
-            <Content editorData={editorData} />
-          </Centerer>
-        )}
-      </FullScreenWrapper>
+      <ReportContext.Provider value="pdf">
+        <FullScreenWrapper onUpdateDraftData={setDraftData}>
+          {isLoadingLayout && <Spinner />}
+          {!isLoadingLayout && (
+            <Centerer>
+              <Content editorData={editorData} />
+            </Centerer>
+          )}
+        </FullScreenWrapper>
+      </ReportContext.Provider>
     </ReportLanguageProvider>
   );
 };
