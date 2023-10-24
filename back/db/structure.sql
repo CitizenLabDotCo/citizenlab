@@ -1401,7 +1401,9 @@ CREATE TABLE public.users (
 CREATE VIEW public.analytics_dimension_users AS
  SELECT users.id,
     COALESCE(((users.roles -> 0) ->> 'type'::text), 'citizen'::text) AS role,
-    users.invite_status
+    users.invite_status,
+    (users.custom_field_values ->> 'gender'::text) AS gender,
+    (users.custom_field_values ->> 'birthyear'::text) AS birthyear
    FROM public.users;
 
 
@@ -7969,6 +7971,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230915391649'),
 ('20230927135924'),
 ('20231003095622'),
-('20231024082513');
+('20231024082513'),
+('20231024154935');
 
 
