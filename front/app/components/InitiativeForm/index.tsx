@@ -28,7 +28,6 @@ import useLocale from 'hooks/useLocale';
 import SubmitButtonBar from './SubmitButtonBar';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
-
 const ProfileVisibilityFormSection = lazy(
   () => import('./ProfileVisibilityFormSection')
 );
@@ -38,7 +37,9 @@ const AnonymousParticipationConfirmationModal = lazy(
 );
 import LocationInput from 'components/HookForm/LocationInput';
 import { Box } from '@citizenlab/cl2-component-library';
-import ImageAndAttachmentsSection from './ImagesAndAttachmentsSection';
+const ImageAndAttachmentsSection = lazy(
+  () => import('./ImagesAndAttachmentsSection')
+);
 import Warning from 'components/UI/Warning';
 import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
 

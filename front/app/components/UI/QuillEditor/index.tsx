@@ -539,7 +539,6 @@ const QuillEditor = memo<Props>(
         }
       };
       const debouncedTextChangeHandler = debounce(textChangeHandler, 100);
-
       if (editor) {
         editor.on('text-change', debouncedTextChangeHandler);
         editor.on('selection-change', selectionChangeHandler);

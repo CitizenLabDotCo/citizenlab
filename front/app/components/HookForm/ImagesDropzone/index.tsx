@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Label } from '@citizenlab/cl2-component-library';
+import { Label } from '@citizenlab/cl2-component-library';
 import ImagesDropzoneComponent, {
   Props as ImagesDropzoneComponentProps,
 } from 'components/UI/ImagesDropzone';
@@ -27,11 +27,7 @@ const ImagesDropzone = ({ name, inputLabel, ...rest }: Props) => {
 
   return (
     <>
-      {inputLabel && (
-        <Box display="flex" gap="8px">
-          <Label htmlFor={name}>{inputLabel}</Label>
-        </Box>
-      )}
+      {inputLabel && <Label htmlFor={name}>{inputLabel}</Label>}
       <Controller
         name={name}
         control={control}

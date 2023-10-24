@@ -62,7 +62,7 @@ const FormSectionDescriptionStyled = styled.p`
 `;
 
 const StyledSpan = styled.span`
-  margin-right: 4px;
+  margin-right: 8px;
   font-weight: 600;
 `;
 
@@ -243,7 +243,6 @@ export const FormLabel = memo<
             />
           )}
         </StyledSpan>
-
         {optional && (
           <OptionalText>
             {'('}
