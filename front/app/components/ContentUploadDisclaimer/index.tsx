@@ -1,67 +1,46 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 // components
-import {
-  IconTooltip,
-  Text,
-  useBreakpoint,
-} from '@citizenlab/cl2-component-library';
+import { Text, Box, Button } from '@citizenlab/cl2-component-library';
 import Modal from 'components/UI/Modal';
 
 // intl
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
-const ContentUploadDisclaimerTooltip = () => {
+const ContentUploadDisclaimer = ({
+  isDisclaimerOpened,
+  onAcceptDisclaimer,
+  onCancelDisclaimer,
+}: {
+  isDisclaimerOpened: boolean;
+  onAcceptDisclaimer: () => void;
+  onCancelDisclaimer: () => void;
+}) => {
   const { formatMessage } = useIntl();
-  const isMobileOrSmaller = useBreakpoint('phone');
-  const [showFullDisclaimer, setShowFullDisclaimer] = useState(false);
 
   return (
-    <>
-      <IconTooltip
-        content={
-          <>
-            <Text m="0px" color="white" fontSize="s">
-              {formatMessage(messages.contentUploadDisclaimerTooltip)}
-            </Text>
-            <Text
-              onClick={(e) => {
-                e.preventDefault();
-                setShowFullDisclaimer(true);
-              }}
-              color="white"
-              fontSize="s"
-              m="0px"
-              mt="8px"
-              role="button"
-              style={{ cursor: 'pointer' }}
-              tabIndex={0}
-            >
-              <span style={{ textDecoration: 'underline' }}>
-                {formatMessage(messages.readFullDisclaimer)}
-              </span>
-              .
-            </Text>
-          </>
-        }
-        maxTooltipWidth={400}
-        placement={isMobileOrSmaller ? 'top' : 'auto'}
-      />
-      <Modal
-        opened={showFullDisclaimer}
-        close={() => {
-          setShowFullDisclaimer(false);
-        }}
-        closeOnClickOutside={true}
-        header={formatMessage(messages.contentDisclaimerModalHeader)}
-      >
-        <Text m="32px">
+    <Modal
+      opened={isDisclaimerOpened}
+      close={onCancelDisclaimer}
+      closeOnClickOutside={true}
+      header={formatMessage(messages.contentDisclaimerModalHeader)}
+    >
+      <Box m="32px">
+        <Text mb="32px">
           {formatMessage(messages.contentUploadDisclaimerFull)}
         </Text>
-      </Modal>
-    </>
+        <Box display="flex" justifyContent="flex-end" gap="16px">
+          <Button onClick={onCancelDisclaimer} buttonStyle="secondary">
+            {formatMessage(messages.onCancel)}
+          </Button>
+          <Button onClick={onAcceptDisclaimer}>
+            {formatMessage(messages.onAccept)}
+          </Button>
+        </Box>
+      </Box>
+    </Modal>
   );
 };
 
-export default ContentUploadDisclaimerTooltip;
+export default ContentUploadDisclaimer;

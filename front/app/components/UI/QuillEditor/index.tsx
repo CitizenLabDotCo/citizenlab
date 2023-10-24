@@ -8,8 +8,7 @@ import BlotFormatter from 'quill-blot-formatter';
 import 'quill/dist/quill.snow.css';
 
 // components
-import { Label, IconTooltip, Button } from '@citizenlab/cl2-component-library';
-import Modal from 'components/UI/Modal';
+import { Label, IconTooltip } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -408,7 +407,6 @@ const QuillEditor = memo<Props>(
     const contentRef = useRef<string>(value || '');
     const prevEditor = usePrevious(editor);
     const [focussed, setFocussed] = useState(false);
-    const [showDisclaimer, setShowDisclaimer] = useState(false);
     const prevFocussed = usePrevious(focussed);
     const editorRef = useRef<HTMLDivElement>(null);
     const [isButtonsMenuVisible, setIsButtonsMenuVisible] = useState(false);
@@ -421,35 +419,6 @@ const QuillEditor = memo<Props>(
       () => setIsButtonsMenuVisible(false),
       []
     );
-
-    const customImageHandler = () => {
-      console.log('Entered custom image handler');
-      console.log({editor})
-      // setShowDisclaimer(true);
-
-      // let fileInput = document.querySelector('ql-image[type=file]');
-      // console.log({fileInput});
-
-
-      // Trying to add a function based on Quill's default function here:
-      // https://github.com/quilljs/quill/blob/4692129a9812d2b25d8f971fcbe5e4d5cd7086db/themes/base.ts#L192
-
-
-      // if (fileInput == null) {
-      //   if (editor) {
-      //      fileInput = document.createElement('input') as HTMLInputElement;
-      //     fileInput.setAttribute('type', 'file');
-      //     fileInput.setAttribute('accept', 'png');
-      //     fileInput.classList.add('ql-image');
-      //     fileInput.addEventListener('change', () => {
-      //       const range = editor.getSelection(true);
-      //       (editor as any).uploader.upload(range, fileInput.files);
-      //       fileInput.value = '';
-      //     });
-      //     editorRef.current && editorRef.current.appendChild(fileInput);
-      //   }
-
-    };
 
     // initialize quill
     useEffect(() => {
@@ -472,14 +441,7 @@ const QuillEditor = memo<Props>(
           modules: {
             altTextToImages: true,
             blotFormatter: !noImages || !noVideos ? true : false,
-            toolbar: toolbarId
-              ? {
-                  container: `#${toolbarId}`,
-                  handlers: {
-                    image: customImageHandler, // Here I add in a custom handler function for the image button
-                  },
-                }
-              : false,
+            toolbar: toolbarId ? `#${toolbarId}` : false,
             keyboard: {
               bindings: {
                 // overwrite default tab behavior
@@ -570,8 +532,6 @@ const QuillEditor = memo<Props>(
         oldRange: RangeStatic,
         _source: Sources
       ) => {
-        console.log('Entered selection changed handler...');
-
         if (range === null && oldRange !== null) {
           setFocussed(false);
         } else if (range !== null && oldRange === null) {
@@ -580,7 +540,6 @@ const QuillEditor = memo<Props>(
       };
       const debouncedTextChangeHandler = debounce(textChangeHandler, 100);
 
-      // Amanda: Maybe we should be adding the custom image handler here somewhere instead though?
       if (editor) {
         editor.on('text-change', debouncedTextChangeHandler);
         editor.on('selection-change', selectionChangeHandler);
@@ -903,15 +862,6 @@ const QuillEditor = memo<Props>(
           </div>
         )}
         <div ref={editorRef}>{children}</div>
-        <Modal
-          opened={showDisclaimer}
-          close={() => {
-            setShowDisclaimer(false);
-          }}
-        >
-          Add in the discalimer copy here...
-          <Button>I understand</Button>
-        </Modal>
       </Container>
     );
   }

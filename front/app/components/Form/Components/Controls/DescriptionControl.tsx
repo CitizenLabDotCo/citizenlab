@@ -13,7 +13,6 @@ import {
 } from 'utils/JSONFormUtils';
 import { Box } from '@citizenlab/cl2-component-library';
 import { getSubtextElement } from './controlUtils';
-import ContentUploadDisclaimerTooltip from 'components/ContentUploadDisclaimer';
 
 const DescriptionControl = ({
   data,
@@ -36,12 +35,7 @@ const DescriptionControl = ({
     <Box id="e2e-idea-description-input">
       <FormLabel
         htmlFor={sanitizeForClassname(id)}
-        labelValue={
-          <Box display="flex" gap="4px">
-            {getLabel(uischema, schema, path)}
-            <ContentUploadDisclaimerTooltip />
-          </Box>
-        }
+        labelValue={getLabel(uischema, schema, path)}
         optional={!required}
         subtextValue={getSubtextElement(uischema.options?.description)}
         subtextSupportsHtml

@@ -19,7 +19,6 @@ const ImageAndAttachmentsSection = () => {
           subtextMessage={messages.bannerUploadLabelSubtext}
           htmlFor="header_bg"
           optional
-          showContentUploadDisclaimer={true}
         />
         <ImagesDropzone
           name="header_bg"
@@ -35,7 +34,6 @@ const ImageAndAttachmentsSection = () => {
           subtextMessage={messages.imageUploadLabelSubtext}
           htmlFor="images"
           optional
-          showContentUploadDisclaimer={true}
         />
         <ImagesDropzone
           name="images"

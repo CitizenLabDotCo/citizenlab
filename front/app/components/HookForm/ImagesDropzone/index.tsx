@@ -6,7 +6,6 @@ import ImagesDropzoneComponent, {
 
 import Error from 'components/UI/Error';
 import { Controller, useFormContext } from 'react-hook-form';
-import ContentUploadDisclaimerTooltip from 'components/ContentUploadDisclaimer';
 
 interface Props
   extends Omit<
@@ -15,15 +14,9 @@ interface Props
   > {
   name: string;
   inputLabel?: string;
-  showDisclaimer?: boolean;
 }
 
-const ImagesDropzone = ({
-  name,
-  inputLabel,
-  showDisclaimer,
-  ...rest
-}: Props) => {
+const ImagesDropzone = ({ name, inputLabel, ...rest }: Props) => {
   const {
     setValue,
     formState: { errors },
@@ -37,11 +30,6 @@ const ImagesDropzone = ({
       {inputLabel && (
         <Box display="flex" gap="8px">
           <Label htmlFor={name}>{inputLabel}</Label>
-          {showDisclaimer && (
-            <Box m='0px'>
-              <ContentUploadDisclaimerTooltip />
-            </Box>
-          )}
         </Box>
       )}
       <Controller

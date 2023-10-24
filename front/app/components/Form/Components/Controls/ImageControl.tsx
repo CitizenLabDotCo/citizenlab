@@ -16,7 +16,6 @@ import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { FormContext } from '../../contexts';
 import { Box } from '@citizenlab/cl2-component-library';
 import { getSubtextElement } from './controlUtils';
-import ContentUploadDisclaimerTooltip from 'components/ContentUploadDisclaimer';
 
 const ImageControl = ({
   uischema,
@@ -70,12 +69,7 @@ const ImageControl = ({
     <Box id="e2e-idea-image-upload">
       <FormLabel
         htmlFor={sanitizeForClassname(id)}
-        labelValue={
-          <Box display="flex" gap="4px">
-            {getLabel(uischema, schema, path)}
-            <ContentUploadDisclaimerTooltip />
-          </Box>
-        }
+        labelValue={getLabel(uischema, schema, path)}
         optional={!required}
         subtextValue={getSubtextElement(uischema.options?.description)}
         subtextSupportsHtml
