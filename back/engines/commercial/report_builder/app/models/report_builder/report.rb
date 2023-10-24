@@ -32,6 +32,8 @@ module ReportBuilder
     )
     accepts_nested_attributes_for :layout
 
+    scope :with_platform_context, -> { where(participation_context_type: nil) }
+
     validates :name, uniqueness: true, if: :present?
   end
 end

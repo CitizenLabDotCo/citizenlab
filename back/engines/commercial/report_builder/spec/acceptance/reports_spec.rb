@@ -73,7 +73,7 @@ resource 'Reports' do
   end
 
   post 'web_api/v1/reports' do
-    parameter :name, name_param_desc, scope: :report, required: true
+    parameter :name, name_param_desc, scope: :report, required: false
     parameter :craftjs_jsonmultiloc, craftjs_jsonmultiloc_param_desc, scope: %i[report layout]
 
     let(:name) { 'my-report' }
@@ -153,7 +153,9 @@ resource 'Reports' do
         end
 
         example 'only runs the before_create hook when the report creation fails' do
-          do_request(report: { name: nil })
+          name = 'Report 1'
+          create(:report, name: name)
+          do_request(report: { name: name })
 
           expect(side_fx_service).to have_received(:before_create)
           expect(side_fx_service).not_to have_received(:after_create)
@@ -238,7 +240,9 @@ resource 'Reports' do
         end
 
         example 'only runs the before_update hook when the report update fails' do
-          do_request(report: { name: nil })
+          name = 'Report 1'
+          create(:report, name: name)
+          do_request(report: { name: name })
 
           expect(side_fx_service).to have_received(:before_update)
           expect(side_fx_service).not_to have_received(:after_update)
