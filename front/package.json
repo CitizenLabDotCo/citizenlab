@@ -269,8 +269,5 @@
   },
   "optionalDependencies": {
     "fsevents": "^2"
-  },
-  "msw": {
-    "workerDirectory": ".storybook/public"
   }
 }
