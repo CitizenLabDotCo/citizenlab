@@ -10,7 +10,7 @@ jest.mock('modules/commercial/insights/api/views/useCreateView', () =>
 );
 
 import { CreateInsightsView } from './CreateInsightsView';
-import { project1, project2 } from 'api/projects/__mocks__/useProjects';
+import { project1, project2 } from 'api/projects/__mocks__/_mockServer';
 
 const closeModal = jest.fn();
 
