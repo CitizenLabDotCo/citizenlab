@@ -3319,7 +3319,7 @@ WITH (fillfactor='90');
 
 CREATE TABLE public.report_builder_reports (
     id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    name character varying NOT NULL,
+    name character varying,
     owner_id uuid NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,

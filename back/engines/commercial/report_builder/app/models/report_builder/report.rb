@@ -5,7 +5,7 @@
 # Table name: report_builder_reports
 #
 #  id                         :uuid             not null, primary key
-#  name                       :string           not null
+#  name                       :string
 #  owner_id                   :uuid             not null
 #  created_at                 :datetime         not null
 #  updated_at                 :datetime         not null
@@ -32,6 +32,6 @@ module ReportBuilder
     )
     accepts_nested_attributes_for :layout
 
-    validates :name, presence: true, uniqueness: true
+    validates :name, uniqueness: true, if: :present?
   end
 end

@@ -117,10 +117,22 @@ resource 'Reports' do
         expect(report.owner_id).to eq(user.id)
       end
 
-      example '[error] Create a report without name' do
-        do_request(report: { name: '' })
-        assert_status 422
-        expect(json_response_body).to eq({ errors: { name: [{ error: 'blank' }] } })
+      context 'when the report belongs to a context' do
+        parameter :participation_context_type, 'The type of the participation context the report belongs to.', required: false, scope: :report
+        parameter :participation_context_id, 'The id of the participation context the report belongs to.', required: false, scope: :report
+
+        before { @phase = create(:phase) }
+
+        let(:participation_context_type) { 'Phase' }
+        let(:participation_context_id) { @phase.id }
+
+        example_request 'Create a phase report' do
+          assert_status 201
+
+          report = ReportBuilder::Report.find(response_data[:id])
+          expect(report.participation_context_type).to eq(@phase.class.name)
+          expect(report.participation_context_id).to eq(@phase.id)
+        end
       end
 
       describe 'side effects', document: false do

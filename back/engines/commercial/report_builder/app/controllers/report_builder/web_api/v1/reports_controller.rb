@@ -61,14 +61,16 @@ module ReportBuilder
         end
 
         def create_params
-          @create_params ||= {
+          context_params = params.require(:report).permit(:participation_context_type, :participation_context_id)
+          {
             'owner' => current_user,
             'layout_attributes' => {
               'craftjs_jsonmultiloc' => {},
               'enabled' => true,
               'code' => 'report'
             }
-          }.deep_merge(shared_params)
+          }.deep_merge(context_params)
+            .deep_merge(shared_params)
         end
 
         def update_params
@@ -87,6 +89,8 @@ module ReportBuilder
             .require(:report)
             .permit(
               :name,
+              :participation_context_type,
+              :participation_context_id,
               layout: [craftjs_jsonmultiloc: CL2_SUPPORTED_LOCALES.map { |locale| { locale => {} } }]
             )
 
