@@ -68,7 +68,7 @@
     "bowser": "1.x",
     "canvas-to-blob": "^1.0.0",
     "canvg": "^4.0.1",
-    "clipboard-polyfill": "3.0.3",
+    "clipboard-polyfill": "4.0.1",
     "compression": "1.7.4",
     "cross-env": "7.0.3",
     "d3-force": "^3.0.0",
