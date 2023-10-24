@@ -58,6 +58,8 @@ class MultiTenancy::Rake::ContinuousProjectMigrationService
       created_at: project.created_at,
       start_at: project.created_at,
       end_at: nil,
+
+      # TODO: Double check that these are all the setting that are the same + remove some from the project?
       participation_method: project.participation_method,
       posting_enabled: project.posting_enabled,
       posting_method: project.posting_method,
@@ -115,6 +117,7 @@ class MultiTenancy::Rake::ContinuousProjectMigrationService
   end
 
   def update_counts(phase)
+    # TODO: How do we update idea counts?
     Basket.update_counts(phase, 'Phase')
   end
 
