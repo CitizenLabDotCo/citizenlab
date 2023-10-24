@@ -421,19 +421,21 @@ const AdminProjectTimelineEdit = () => {
                 </Text>
               }
             />
-            <Warning>
-              <>
-                <FormattedMessage {...messages.noEndDateWarningTitle} />
-                <ul>
-                  <li>
-                    <FormattedMessage {...messages.noEndDateWarningBullet1} />
-                  </li>
-                  <li>
-                    <FormattedMessage {...messages.noEndDateWarningBullet2} />
-                  </li>
-                </ul>
-              </>
-            </Warning>
+            {!hasEndDate && (
+              <Warning>
+                <>
+                  <FormattedMessage {...messages.noEndDateWarningTitle} />
+                  <ul>
+                    <li>
+                      <FormattedMessage {...messages.noEndDateWarningBullet1} />
+                    </li>
+                    <li>
+                      <FormattedMessage {...messages.noEndDateWarningBullet2} />
+                    </li>
+                  </ul>
+                </>
+              </Warning>
+            )}
           </SectionField>
 
           {/* TODO: After ParticipationContext refactor, it doesn't refetch phase service anymore
