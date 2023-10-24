@@ -40,6 +40,7 @@ import LocationInput from 'components/HookForm/LocationInput';
 import { Box } from '@citizenlab/cl2-component-library';
 import ImageAndAttachmentsSection from './ImagesAndAttachmentsSection';
 import Warning from 'components/UI/Warning';
+import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
 
 // Hooks
 import useTopics from 'api/topics/useTopics';
@@ -50,7 +51,6 @@ import useInitiativeReviewRequired from 'containers/InitiativesShow/hooks/useIni
 import { stripHtmlTags, isNilOrError } from 'utils/helperUtils';
 import useInitiativeCosponsorsRequired from 'containers/InitiativesShow/hooks/useInitiativeCosponsorsRequired';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
 import { useSearchParams } from 'react-router-dom';
 import { reverseGeocode } from 'utils/locationTools';
 

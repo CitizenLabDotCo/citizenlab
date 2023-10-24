@@ -14,7 +14,7 @@ const ContentUploadDisclaimer = ({
   onCancelDisclaimer,
 }: {
   isDisclaimerOpened: boolean;
-  onAcceptDisclaimer: () => void;
+  onAcceptDisclaimer: (data?: Record<string, any>) => void;
   onCancelDisclaimer: () => void;
 }) => {
   const { formatMessage } = useIntl();
