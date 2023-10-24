@@ -255,7 +255,7 @@ const IdeasNewPageWithJSONForm = () => {
           <Form
             schema={schema}
             uiSchema={uiSchema}
-            onSubmit={handleDisclaimer}
+            onSubmit={isSurvey ? onSubmit : handleDisclaimer}
             initialFormData={initialFormData}
             getAjvErrorMessage={getAjvErrorMessage}
             getApiErrorMessage={getApiErrorMessage}
