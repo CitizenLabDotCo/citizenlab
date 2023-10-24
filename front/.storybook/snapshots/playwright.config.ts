@@ -31,7 +31,7 @@ const config: PlaywrightTestConfig = {
       maxDiffPixels: 5,
     },
   },
-  snapshotPathTemplate: 'specs/{testFilePath}/{arg}{projectName}{ext}',
+  snapshotPathTemplate: './specs/{testFilePath}/{arg}{projectName}{ext}',
   projects: [
     {
       name: 'chrome',

@@ -92,6 +92,7 @@ AUTHORS text
 *.woff binary
 *.pyc binary
 *.pdf binary
+.storybook/snapshots/specs/** filter=lfs diff=lfs merge=lfs -text
 .storybook/snapshots/test-report/report.xml filter=lfs diff=lfs merge=lfs -text
 .storybook/snapshots/test-report/data filter=lfs diff=lfs merge=lfs -text
 .storybook/snapshots/test-report/index.html filter=lfs diff=lfs merge=lfs -text
