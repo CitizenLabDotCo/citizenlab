@@ -1700,6 +1700,7 @@
   "app.errors.password_blank": "crwdns215928:0crwdne215928:0",
   "app.errors.password_invalid": "crwdns215930:0crwdne215930:0",
   "app.errors.password_too_short": "crwdns215932:0crwdne215932:0",
+  "app.errors.resending_code_failed": "crwdns1211600:0crwdne1211600:0",
   "app.errors.slug_taken": "crwdns215934:0crwdne215934:0",
   "app.errors.tag_name_taken": "crwdns787433:0crwdne787433:0",
   "app.errors.title_multiloc_blank": "crwdns215936:0crwdne215936:0",
