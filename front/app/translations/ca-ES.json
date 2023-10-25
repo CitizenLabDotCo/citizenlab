@@ -1697,6 +1697,7 @@
   "app.errors.malformed_groups_value": "El grup {value} que es troba a la fila {row} no és un grup vàlid",
   "app.errors.max_invites_limit_exceeded1": "El nombre d'invitacions supera el límit de 1000.",
   "app.errors.no_invites_specified": "No s'ha pogut trobar cap adreça de correu electrònic.",
+  "app.errors.no_recipients": "La campanya no es pot enviar perquè no hi ha destinataris. El grup al qual esteu enviant correus electrònics està buit o ningú no ha consentit rebre correus electrònics.",
   "app.errors.password_blank": "Això no pot estar buit",
   "app.errors.password_invalid": "Si us plau, torneu a comprovar la vostra contrasenya actual.",
   "app.errors.password_too_short": "La contrasenya ha de tenir almenys 8 caràcters",
