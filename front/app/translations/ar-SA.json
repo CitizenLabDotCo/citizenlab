@@ -1697,6 +1697,7 @@
   "app.errors.malformed_groups_value": "المجموعة {value} التي تم العثور عليها في الصف {row} ليست مجموعة صالحة",
   "app.errors.max_invites_limit_exceeded1": "يتجاوز عدد الدعوات حد 1000.",
   "app.errors.no_invites_specified": "تعذّر العثور على أي عنوان بريد إلكتروني.",
+  "app.errors.no_recipients": "لا يمكن إرسال الحملة لأنه لا يوجد مستلمون. المجموعة التي ترسل إليها إما فارغة، أو لم يوافق أحد على تلقي رسائل البريد الإلكتروني.",
   "app.errors.password_blank": "لا يمكن أن يكون هذا فارغًا",
   "app.errors.password_invalid": "يرجى التحقق من كلمة مرورك الحالية مجددًا.",
   "app.errors.password_too_short": "يجب ألّا يقل طول كلمة المرور عن 8 حروف",
