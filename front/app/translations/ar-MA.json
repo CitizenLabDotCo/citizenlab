@@ -1700,6 +1700,7 @@
   "app.errors.password_blank": "لا يمكن أن يكون هذا فارغًا",
   "app.errors.password_invalid": "يرجى التحقق من كلمة المرور الحالية مرة أخرى.",
   "app.errors.password_too_short": "يجب ألّا يقل طول كلمة المرور عن 8 حروف",
+  "app.errors.resending_code_failed": "حدث خطأ ما أثناء إرسال رمز التأكيد.",
   "app.errors.slug_taken": "عنوان URL للمشروع هذا موجود فعلاً. يرجى تغيير معرِّف صفحة المشروع إلى شيء آخر.",
   "app.errors.tag_name_taken": "توجد بالفعل علامة بهذا الاسم",
   "app.errors.title_multiloc_blank": "لا يمكن أن يكون العنوان فارغًا.",
