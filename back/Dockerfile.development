@@ -17,19 +17,25 @@ RUN apt-get update && apt-get install -qq -y --no-install-recommends \
       less                 \
       clang
 
-RUN curl -sL https://deb.nodesource.com/setup_18.x  | bash -
-RUN apt-get -y install nodejs
-
 # Install MJML parser required by email engine.
-RUN npm install -g mjml@4.4.1
+RUN apt-get update && apt-get install -qq -y --no-install-recommends gnupg2 \
+    && curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --yes --dearmor -o /usr/share/keyrings/nodesource.gpg \
+    && echo "deb [signed-by=/usr/share/keyrings/nodesource.gpg] https://deb.nodesource.com/node_20.x nodistro main" > /etc/apt/sources.list.d/nodesource.list \
+    && apt-get update && apt-get install -qq -y --no-install-recommends nodejs \
+    && npm install -g mjml@4.4.1 \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 # Install Postgres client:
 # Import the PostgreSQL repository signing key, add the repository, and install the package.
-RUN curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --yes --dearmor -o /usr/share/keyrings/postgresql-archive-keyring.gpg \
+RUN apt-get update && apt-get install -qq -y --no-install-recommends gnupg2 lsb-release \
+    && curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --yes --dearmor -o /usr/share/keyrings/postgresql-archive-keyring.gpg \
     && echo "deb [signed-by=/usr/share/keyrings/postgresql-archive-keyring.gpg] https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list \
     # Make sure the version of `postgresql-client` matches the version used by the
     # `postgres` service in `docker-compose.yml`.
-    && apt-get update && apt-get install -y postgresql-client-12
+    && apt-get update && apt-get install -y postgresql-client-12 \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 ENV INSTALL_PATH /cl2_back
 RUN mkdir -p $INSTALL_PATH

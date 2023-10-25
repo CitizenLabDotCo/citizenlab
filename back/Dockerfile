@@ -17,8 +17,8 @@ RUN find engines -type f -not -name "*.gemspec" -not -name "version.rb" -print0 
 FROM ruby:2.7.6-slim
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
-RUN apt-get update                                           \
-   && apt-get install -qq -y --no-install-recommends           \
+RUN apt-get update                                        \
+   && apt-get install -qq -y --no-install-recommends      \
    build-essential                                        \
    curl                                                   \
    # Required to install git dependencies in Gemfile and by bundle-audit
@@ -35,23 +35,30 @@ RUN apt-get update                                           \
    imagemagick                                            \
    jpegoptim                                              \
    optipng                                                \
-   pngquant                                              \
-   # tiktoken_ruby
-   clang                                               \
-   && curl -sL https://deb.nodesource.com/setup_18.x  | bash - \
-   && apt-get -y --no-install-recommends install nodejs        \
-   # Install MJML parser required by email engine.
-   && npm install -g mjml@4.4.1                                \
-   && apt-get clean                                            \
+   pngquant                                               \
+   clang                                                  \
+   && apt-get clean                                       \
    && rm -rf /var/lib/apt/lists/*
+
+# Install MJML parser required by email engine.
+RUN apt-get update && apt-get install -qq -y --no-install-recommends gnupg2 \
+    && curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --yes --dearmor -o /usr/share/keyrings/nodesource.gpg \
+    && echo "deb [signed-by=/usr/share/keyrings/nodesource.gpg] https://deb.nodesource.com/node_20.x nodistro main" > /etc/apt/sources.list.d/nodesource.list \
+    && apt-get update && apt-get install -qq -y --no-install-recommends nodejs \
+    && npm install -g mjml@4.4.1 \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 # Install Postgres client:
 # Import the PostgreSQL repository signing key, add the repository, and install the package.
-RUN curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --yes --dearmor -o /usr/share/keyrings/postgresql-archive-keyring.gpg \
+RUN apt-get update && apt-get install -qq -y --no-install-recommends gnupg2 lsb-release \
+    && curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --yes --dearmor -o /usr/share/keyrings/postgresql-archive-keyring.gpg \
     && echo "deb [signed-by=/usr/share/keyrings/postgresql-archive-keyring.gpg] https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list \
     # Make sure the version of `postgresql-client` matches the version used by the
     # `postgres` service in `docker-compose.yml`.
-    && apt-get update && apt-get install -y postgresql-client-12
+    && apt-get update && apt-get install -y postgresql-client-12 \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /cl2_back
 
