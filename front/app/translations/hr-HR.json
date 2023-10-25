@@ -1700,6 +1700,7 @@
   "app.errors.password_blank": "Ovo ne može biti prazno",
   "app.errors.password_invalid": "Ponovno provjerite svoju trenutačnu lozinku.",
   "app.errors.password_too_short": "Lozinka mora sadržati najmanje 8 znakova",
+  "app.errors.resending_code_failed": "Nešto nije u redu prilikom slanja potvrdnog koda.",
   "app.errors.slug_taken": "Ovaj URL projekta već postoji. Molimo vas izmijenite „puž“ projekta.",
   "app.errors.tag_name_taken": "Oznaka s ovim nazivom već postoji",
   "app.errors.title_multiloc_blank": "Naziv ne može biti prazan.",
