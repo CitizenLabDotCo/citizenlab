@@ -1697,6 +1697,7 @@
   "app.errors.malformed_groups_value": "Gruppen {value} fundet i række {row} er ikke en gyldig gruppe",
   "app.errors.max_invites_limit_exceeded1": "Antallet af invitationer overskrider grænsen på 1000.",
   "app.errors.no_invites_specified": "Kunne ikke finde nogen e-mailadresse.",
+  "app.errors.no_recipients": "Kampagnen kan ikke sendes ud, fordi der ikke er nogen modtagere. Den gruppe, du sender til, er enten tom, eller ingen har givet samtykke til at modtage e-mails.",
   "app.errors.password_blank": "Dette kan ikke være tomt",
   "app.errors.password_invalid": "Kontroller venligst din nuværende adgangskode igen.",
   "app.errors.password_too_short": "Adgangskoden skal være på mindst 8 tegn",
