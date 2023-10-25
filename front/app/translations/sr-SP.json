@@ -1697,6 +1697,7 @@
   "app.errors.malformed_groups_value": "Група {value} која се налази у реду {row} није важећа група",
   "app.errors.max_invites_limit_exceeded1": "Број позивница прелази границу од 1000.",
   "app.errors.no_invites_specified": "Није могуће пронаћи ниједну адресу е-поште.",
+  "app.errors.no_recipients": "Кампања се не може послати јер нема прималаца. Група којој шаљете је празна или нико није пристао да прима е-поруке.",
   "app.errors.password_blank": "Ово не може бити празно",
   "app.errors.password_invalid": "Поново проверите своју тренутну лозинку.",
   "app.errors.password_too_short": "Лозинка мора имати најмање 8 знакова",
