@@ -1700,6 +1700,7 @@
   "app.errors.password_blank": "Questo non può essere vuoto",
   "app.errors.password_invalid": "Si prega di ricontrollare la password attuale.",
   "app.errors.password_too_short": "La password deve essere lunga almeno 8 caratteri",
+  "app.errors.resending_code_failed": "Qualcosa è andato storto durante l'invio del codice di conferma.",
   "app.errors.slug_taken": "Questo URL di progetto esiste già. Per favore cambia lo slug del progetto con qualcos'altro.",
   "app.errors.tag_name_taken": "Un tag con questo nome esiste già",
   "app.errors.title_multiloc_blank": "Il titolo non può essere vuoto.",
