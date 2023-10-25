@@ -1697,6 +1697,7 @@
   "app.errors.malformed_groups_value": "O grupo {value} encontrado na linha {row} não é um grupo válido",
   "app.errors.max_invites_limit_exceeded1": "O número de convites excede o limite de 1000.",
   "app.errors.no_invites_specified": "Não foi encontrado nenhum endereço de e-mail.",
+  "app.errors.no_recipients": "A campanha não pode ser enviada porque não há destinatários. O grupo para o qual você está enviando está vazio ou ninguém consentiu em receber e-mails.",
   "app.errors.password_blank": "Não pode estar vazio",
   "app.errors.password_invalid": "Verifique novamente a sua senha atual.",
   "app.errors.password_too_short": "A sua senha deve conter pelo menos 8 caracteres",
