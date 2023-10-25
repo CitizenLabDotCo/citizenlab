@@ -371,4 +371,9 @@ export default defineMessages({
     defaultMessage:
       'The description contains words that are considered inappropriate.',
   },
+  no_recipients: {
+    id: 'app.errors.no_recipients',
+    defaultMessage:
+      "The campaign can't be sent out because there are no recipients. The group you're sending to is either empty, or nobody has consented to receiving emails.",
+  },
 });
