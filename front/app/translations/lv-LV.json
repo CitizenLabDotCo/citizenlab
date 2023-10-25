@@ -1700,6 +1700,7 @@
   "app.errors.password_blank": "Tas nevar būt tukšs",
   "app.errors.password_invalid": "Lūdzu, vēlreiz pārbaudiet savu pašreizējo paroli.",
   "app.errors.password_too_short": "Parolei jābūt vismaz 8 rakstu zīmju garai",
+  "app.errors.resending_code_failed": "Kaut kas nepareizi notika, nosūtot apstiprinājuma kodu.",
   "app.errors.slug_taken": "Šis projekta URL jau eksistē. Lūdzu, nomainiet projekta aprakstošo daļu uz citu.",
   "app.errors.tag_name_taken": "Tags ar šo nosaukumu jau pastāv",
   "app.errors.title_multiloc_blank": "Nosaukuma lauks nedrīkst būt tukšs.",
