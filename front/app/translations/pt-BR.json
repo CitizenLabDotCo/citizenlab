@@ -1700,6 +1700,7 @@
   "app.errors.password_blank": "Não pode estar vazio",
   "app.errors.password_invalid": "Verifique novamente a sua senha atual.",
   "app.errors.password_too_short": "A sua senha deve conter pelo menos 8 caracteres",
+  "app.errors.resending_code_failed": "Algo deu errado ao enviar o código de confirmação.",
   "app.errors.slug_taken": "Este URL de projeto já existe. Altere o slug do projeto para outra coisa.",
   "app.errors.tag_name_taken": "Já existe uma tag com este nome",
   "app.errors.title_multiloc_blank": "O título não pode ficar vazio.",
