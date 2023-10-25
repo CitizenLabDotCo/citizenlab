@@ -24,7 +24,7 @@ const AgeWidget = ({ title, projectId, startAt, endAt }: ChartWidgetProps) => {
 AgeWidget.craft = {
   props: {
     title: '',
-    projectFilter: undefined,
+    projectId: undefined,
     startAt: undefined,
     endAt: null,
   },

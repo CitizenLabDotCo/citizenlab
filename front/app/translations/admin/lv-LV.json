@@ -1984,6 +1984,7 @@
   "app.containers.AdminPage.projects.project.analysis.Insights.appliesTo": "Attiecas uz pašreiz izvēlētajiem ievades datiem",
   "app.containers.AdminPage.projects.project.analysis.Insights.ask": "Jautājiet",
   "app.containers.AdminPage.projects.project.analysis.Insights.askQuestion": "Uzdot jautājumu",
+  "app.containers.AdminPage.projects.project.analysis.Insights.bookmarkSummary": "Grāmatzīmes kopsavilkums",
   "app.containers.AdminPage.projects.project.analysis.Insights.deleteQuestion": "Dzēst jautājumu",
   "app.containers.AdminPage.projects.project.analysis.Insights.deleteQuestionConfirmation": "Vai esat pārliecināts, ka vēlaties dzēst šo jautājumu?",
   "app.containers.AdminPage.projects.project.analysis.Insights.deleteSummary": "Dzēst kopsavilkumu",

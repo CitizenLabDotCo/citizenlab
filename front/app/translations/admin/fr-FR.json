@@ -1984,6 +1984,7 @@
   "app.containers.AdminPage.projects.project.analysis.Insights.appliesTo": "S'applique uniquement aux contributions sélectionnées",
   "app.containers.AdminPage.projects.project.analysis.Insights.ask": "Soumettre",
   "app.containers.AdminPage.projects.project.analysis.Insights.askQuestion": "Posez une question",
+  "app.containers.AdminPage.projects.project.analysis.Insights.bookmarkSummary": "Résumé des signets",
   "app.containers.AdminPage.projects.project.analysis.Insights.deleteQuestion": "Supprimer la question",
   "app.containers.AdminPage.projects.project.analysis.Insights.deleteQuestionConfirmation": "Êtes-vous sûr de vouloir supprimer cette question ?",
   "app.containers.AdminPage.projects.project.analysis.Insights.deleteSummary": "Supprimer le résumé",

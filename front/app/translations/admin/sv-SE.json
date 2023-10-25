@@ -1984,6 +1984,7 @@
   "app.containers.AdminPage.projects.project.analysis.Insights.appliesTo": "Gäller för för tillfället valda ingångar",
   "app.containers.AdminPage.projects.project.analysis.Insights.ask": "Fråga",
   "app.containers.AdminPage.projects.project.analysis.Insights.askQuestion": "Ställ en fråga",
+  "app.containers.AdminPage.projects.project.analysis.Insights.bookmarkSummary": "Sammanfattning av bokmärken",
   "app.containers.AdminPage.projects.project.analysis.Insights.deleteQuestion": "Radera fråga",
   "app.containers.AdminPage.projects.project.analysis.Insights.deleteQuestionConfirmation": "Är du säker på att du vill ta bort den här frågan?",
   "app.containers.AdminPage.projects.project.analysis.Insights.deleteSummary": "Radera sammanfattning",
