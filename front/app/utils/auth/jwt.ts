@@ -28,6 +28,9 @@ export function setJwt(
     attrs.expires = tokenLifetime; // If omitted, the cookie becomes a session cookie. Fore more info, check https://stackoverflow.com/a/36421888
   }
   set(COOKIE_NAME, jwt, attrs);
+  console.log(COOKIE_NAME);
+  console.log(jwt);
+  console.log(attrs);
 }
 
 export function removeJwt() {
