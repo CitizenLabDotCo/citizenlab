@@ -1697,6 +1697,7 @@
   "app.errors.malformed_groups_value": "crwdns215922:0{value}crwdnd215922:0{row}crwdne215922:0",
   "app.errors.max_invites_limit_exceeded1": "crwdns478777:0crwdne478777:0",
   "app.errors.no_invites_specified": "crwdns215926:0crwdne215926:0",
+  "app.errors.no_recipients": "crwdns1211668:0crwdne1211668:0",
   "app.errors.password_blank": "crwdns215928:0crwdne215928:0",
   "app.errors.password_invalid": "crwdns215930:0crwdne215930:0",
   "app.errors.password_too_short": "crwdns215932:0crwdne215932:0",
