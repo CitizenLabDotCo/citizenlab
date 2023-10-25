@@ -12,7 +12,7 @@ class RequestConfirmationCodeJob < ApplicationJob
       raise 'Confirmation is currently working for emails only.'
     end
 
-    LogActivityJob.perform_later(user, 'requested_confirmation_code', user, Time.now.to_i)
+    LogActivityJob.perform_later(user, 'requested_confirmation_code', user, Time.now.to_i, payload: { new_email: new_email })
     if new_email
       user.new_email = new_email
       user.email_confirmation_code_reset_count = 0
@@ -24,7 +24,7 @@ class RequestConfirmationCodeJob < ApplicationJob
       user.save!
       deliver_confirmation_code! user
       schedule_code_expiration! user
-      LogActivityJob.perform_later(user, 'received_confirmation_code', user, Time.now.to_i)
+      LogActivityJob.perform_later(user, 'received_confirmation_code', user, Time.now.to_i, payload: { new_email: new_email })
     end
   end
 

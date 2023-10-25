@@ -33,7 +33,7 @@ RSpec.describe RequestConfirmationCodeJob do
         let(:user) { create(:user_with_confirmation, email: 'some_email@email.com') }
 
         it 'enqueues a "requested_confirmation_code" activity job' do
-          expect { job.perform(user) }.to enqueue_job(LogActivityJob).with(user, 'requested_confirmation_code', user, anything)
+          expect { job.perform(user) }.to enqueue_job(LogActivityJob).with(user, 'requested_confirmation_code', user, anything, payload: { new_email: nil })
         end
 
         it 'changes the email confirmation code delivery timestamp' do
@@ -49,7 +49,7 @@ RSpec.describe RequestConfirmationCodeJob do
         end
 
         it 'enqueues a "received_confirmation_code" activity job' do
-          expect { job.perform(user) }.to enqueue_job(LogActivityJob).with(user, 'received_confirmation_code', user, anything)
+          expect { job.perform(user) }.to enqueue_job(LogActivityJob).with(user, 'received_confirmation_code', user, anything, payload: { new_email: nil })
         end
 
         it 'does not set the new_email field' do
@@ -59,10 +59,18 @@ RSpec.describe RequestConfirmationCodeJob do
         context 'when setting a new email' do
           let(:new_email) { 'new@email.com' }
 
+          it 'enqueues a "requested_confirmation_code" activity job with the new email' do
+            expect { job.perform(user, new_email: new_email) }.to enqueue_job(LogActivityJob).with(user, 'requested_confirmation_code', user, anything, payload: { new_email: new_email })
+          end
+
           it 'sets the user email temporarily in new_email' do
             job.perform(user, new_email: new_email)
             expect(user.new_email).to eq new_email
             expect(user.email).to eq 'some_email@email.com'
+          end
+
+          it 'enqueues a "received_confirmation_code" activity job with the new email' do
+            expect { job.perform(user, new_email: new_email) }.to enqueue_job(LogActivityJob).with(user, 'received_confirmation_code', user, anything, payload: { new_email: new_email })
           end
 
           it 'returns a validation error if the new email does not have a valid format' do
