@@ -67,7 +67,6 @@ describe('Initiative form page', () => {
 
     // save the form
     cy.get('#e2e-initiative-publish-button').click();
-    cy.get('#e2e-accept-disclaimer').click();
 
     cy.wait('@initiativePatchRequest');
 
@@ -89,6 +88,7 @@ describe('Initiative form page', () => {
     cy.get('#header_bg').attachFile('icon.png');
     // save the form
     cy.get('#e2e-initiative-publish-button').click();
+    cy.get('#e2e-accept-disclaimer').click();
 
     // // verify redirect to the initiative page
     cy.location('pathname').should('eq', `/en/initiatives/${initiativeTitle}`);
