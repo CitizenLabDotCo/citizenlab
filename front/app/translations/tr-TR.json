@@ -1697,6 +1697,7 @@
   "app.errors.malformed_groups_value": "{row} satırında bulunan {value} grubu geçerli bir grup değildir",
   "app.errors.max_invites_limit_exceeded1": "Davetiye sayısı 1000 sınırını aşıyor.",
   "app.errors.no_invites_specified": "Herhangi bir e-posta adresi bulunamadı.",
+  "app.errors.no_recipients": "Alıcı olmadığı için kampanya gönderilemiyor. Gönderdiğiniz grup ya boştur ya da hiç kimse e-posta almaya onay vermemiştir.",
   "app.errors.password_blank": "Bu boş olamaz",
   "app.errors.password_invalid": "Lütfen mevcut şifrenizi tekrar kontrol edin.",
   "app.errors.password_too_short": "Parola en az 8 karakter uzunluğunda olmalıdır",
