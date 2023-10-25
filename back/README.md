@@ -232,8 +232,3 @@ If the license is unknown to rubygems, you can directly approve a gem.
 docker-compose run web license_finder approvals add some_awesome_new_gem
 ```
 Only approve a license or gem if you're sure there are no compatibility issues. License_finder stores its information in `doc/dependency_decisions.yml`
-
-## Connect to a production database using SSH tunneling
-1. Run `ssh -L 5433:cl2-back-production-benelux.kindofsecret.eu-central-1.rds.amazonaws.com:5432 ubuntu@18.kind.of.secret.253`  (replace occurrences of "kindofsecret" by correct values, the last value is the IP address of the third benelux server).
-2. Open another tab (there might be an alternative way using -f in the previous command).
-3. Connect as usual but replacing the port and host. For example: `psql -h localhost -p 5433 -U kindofsecret -d cl2_back_production`.
