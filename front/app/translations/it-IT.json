@@ -1697,6 +1697,7 @@
   "app.errors.malformed_groups_value": "Il gruppo {value} trovato nella riga {row} non è un gruppo valido",
   "app.errors.max_invites_limit_exceeded1": "Il numero di inviti supera il limite di 1000.",
   "app.errors.no_invites_specified": "Non è stato possibile trovare alcun indirizzo e-mail.",
+  "app.errors.no_recipients": "La campagna non può essere inviata perché non ci sono destinatari. Il gruppo a cui stai inviando la campagna è vuoto oppure nessuno ha acconsentito a ricevere le email.",
   "app.errors.password_blank": "Questo non può essere vuoto",
   "app.errors.password_invalid": "Si prega di ricontrollare la password attuale.",
   "app.errors.password_too_short": "La password deve essere lunga almeno 8 caratteri",
