@@ -269,9 +269,24 @@ const AdminProjectTimelineEdit = () => {
     if (!isEmpty(attributeDiff) && !processing) {
       setProcessing(true);
       if (!isEmpty(attributeDiff)) {
+        const start = getStartDate();
+        const end = phaseAttrs.end_at ? moment(phaseAttrs.end_at) : null;
+
+        // If the start date was automatically calculated, we need to update the dates in submit if even if the user didn't change them
+        const updatedAttr = {
+          ...attributeDiff,
+          ...(!attributeDiff.start_at &&
+            start && {
+              start_at: start.locale('en').format('YYYY-MM-DD'),
+              end_at:
+                attributeDiff.end_at ||
+                (end ? end.locale('en').format('YYYY-MM-DD') : ''),
+            }),
+        };
+
         if (phase) {
           updatePhase(
-            { phaseId: phase.id, ...attributeDiff },
+            { phaseId: phase.id, ...updatedAttr },
             {
               onSuccess: (response) => {
                 handleSaveResponse(response, false);
@@ -284,7 +299,7 @@ const AdminProjectTimelineEdit = () => {
             {
               projectId,
               campaigns_settings: initialCampaignsSettings,
-              ...attributeDiff,
+              ...updatedAttr,
             },
             {
               onSuccess: (response) => {
