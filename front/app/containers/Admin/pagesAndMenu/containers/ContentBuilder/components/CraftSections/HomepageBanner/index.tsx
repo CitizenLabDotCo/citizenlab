@@ -2,7 +2,7 @@ import React from 'react';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
-import InputMultilocWithLocaleSwitcherWrapper from 'components/UI/InputMultilocWithLocaleSwitcher';
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
 // craft
 import { useNode } from '@craftjs/core';
@@ -40,7 +40,6 @@ type Props = {
 //   }
 
 const HomepageBanner = ({ homepageSettings }: Props) => {
-  console.log(homepageSettings);
   return <SignedOutHeader homepageSettings={homepageSettings} />;
 };
 
@@ -52,18 +51,39 @@ const HomepageBannerSettings = () => {
     homepageSettings: {
       banner_signed_out_header_multiloc:
         node.data.props.homepageSettings.banner_signed_out_header_multiloc,
+      banner_signed_out_subheader_multiloc:
+        node.data.props.homepageSettings.banner_signed_out_subheader_multiloc,
     },
   }));
 
   return (
-    <Box background="#ffffff" marginBottom="20px">
-      <InputMultilocWithLocaleSwitcherWrapper
+    <Box
+      background="#ffffff"
+      my="40px"
+      display="flex"
+      flexDirection="column"
+      gap="16px"
+    >
+      <InputMultilocWithLocaleSwitcher
+        label={'Header'}
         type="text"
         valueMultiloc={homepageSettings.banner_signed_out_header_multiloc}
         onChange={(value) => {
           setProp(
             (props: Props) =>
               (props.homepageSettings.banner_signed_out_header_multiloc = value)
+          );
+        }}
+      />
+      <InputMultilocWithLocaleSwitcher
+        label={'Subheader'}
+        type="text"
+        valueMultiloc={homepageSettings.banner_signed_out_subheader_multiloc}
+        onChange={(value) => {
+          setProp(
+            (props: Props) =>
+              (props.homepageSettings.banner_signed_out_subheader_multiloc =
+                value)
           );
         }}
       />

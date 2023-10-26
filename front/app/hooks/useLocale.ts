@@ -1,19 +1,6 @@
-import { useState, useEffect } from 'react';
-import { Locale } from 'typings';
-import { localeStream } from 'utils/locale';
+import { useIntl } from 'utils/cl-intl';
 
 export default function useLocale() {
-  const [locale, setLocale] = useState<Locale | undefined | null | Error>(
-    undefined
-  );
-
-  useEffect(() => {
-    const subscription = localeStream().observable.subscribe((locale) => {
-      setLocale(locale);
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
-
+  const { locale } = useIntl();
   return locale;
 }
