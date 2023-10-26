@@ -181,6 +181,16 @@ describe ProjectCopyService do
       })
     end
 
+    it 'includes phases with no end date' do
+      project = create(:project_with_active_ideation_phase)
+      project.phases.last.update!(end_at: nil)
+
+      template = service.export project, anonymize_users: false, include_ideas: true
+
+      expect(template['models']['phase'].size).to eq 1
+      expect(template['models']['phase'].last[:end_at]).to be_nil
+    end
+
     describe 'when copying records for models that use acts_as_list gem' do
       it 'copies exact :ordering values' do
         project = create(:continuous_project)
