@@ -30,8 +30,8 @@ de:
     ineligible: untauglich
     ineligible_description: untauglich
   topics:
-    nature: Natur und biologische Vielfalt
-    nature_description: Natur und biologische Vielfalt
+    nature: Natur und Artenvielfalt
+    nature_description: Natur und Artenvielfalt
     waste: Sauberkeit und Abfall
     waste_description: Sauberkeit und Abfall
     sustainability: Nachhaltige Entwicklung
@@ -45,7 +45,7 @@ de:
     housing: Wohnen
     housing_description: Wohnen
     public_space: Öffentlicher Raum
-    public_space_description: Öffentliche Räume und Gebäude
+    public_space_description: Öffentlicher Raum
     safety: Sicherheit
     safety_description: Sicherheit
     education: Bildung und Jugend
@@ -57,11 +57,11 @@ de:
     inclusion: Gemeinschaftlicher Zusammenhalt
     inclusion_description: Soziale Inklusion
     community: Aufbau und Entwicklung einer Community
-    community_description: Entwicklung der Gemeinschaft
+    community_description: Quartiersentwicklung
     services: Öffentliche Dienstleistungen
-    services_description: Öffentliche Dienste
-    other: Andere
-    other_description: Andere
+    services_description: Öffentliche Dienstleistungen
+    other: Sonstiges
+    other_description: Sonstiges
   static_pages:
     terms_and_conditions_title: Nutzungsbedingungen
     terms_and_conditions_body: >
