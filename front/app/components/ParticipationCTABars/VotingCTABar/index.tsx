@@ -21,11 +21,7 @@ import {
   CTABarProps,
   hasProjectEndedOrIsArchived,
 } from 'components/ParticipationCTABars/utils';
-import {
-  getCurrentPhase,
-  getLastPhase,
-  treatTimelineProjectAsContinuous,
-} from 'api/phases/utils';
+import { getCurrentPhase, getLastPhase, hidePhases } from 'api/phases/utils';
 import { getVotesCounter } from './utils';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -67,10 +63,7 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
 
   const submittedAt = basket?.data.attributes.submitted_at || null;
   const hasUserParticipated = !!submittedAt;
-  const treatAsContinuous = treatTimelineProjectAsContinuous(
-    phases,
-    currentLocale
-  );
+  const treatAsContinuous = hidePhases(phases, currentLocale);
 
   return (
     <>
