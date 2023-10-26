@@ -152,8 +152,8 @@ export const isCurrentPhase = (phase: IPhaseData) => {
   return false;
 };
 
-// If a timeline project has no description, no end date and only one phase, we treat it as a continuous project
-export const treatTimelineProjectAsContinuous = (
+// If a timeline project has no description, no end date and only one phase, we don't the multiple phase ui such as the timeline
+export const hidePhases = (
   phasesData: IPhaseData[] | undefined,
   currentLocale: Locale
 ) => {
