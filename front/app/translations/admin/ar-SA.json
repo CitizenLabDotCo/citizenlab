@@ -1984,6 +1984,7 @@
   "app.containers.AdminPage.projects.project.analysis.Insights.appliesTo": "ينطبق على المدخلات المحددة حاليا",
   "app.containers.AdminPage.projects.project.analysis.Insights.ask": "بسأل",
   "app.containers.AdminPage.projects.project.analysis.Insights.askQuestion": "طرح سؤال",
+  "app.containers.AdminPage.projects.project.analysis.Insights.bookmarkSummary": "ملخص المرجعية",
   "app.containers.AdminPage.projects.project.analysis.Insights.deleteQuestion": "حذف السؤال",
   "app.containers.AdminPage.projects.project.analysis.Insights.deleteQuestionConfirmation": "هل أنت متأكد أنك تريد حذف هذا السؤال؟",
   "app.containers.AdminPage.projects.project.analysis.Insights.deleteSummary": "حذف الملخص",

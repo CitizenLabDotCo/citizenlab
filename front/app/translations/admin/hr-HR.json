@@ -1984,6 +1984,7 @@
   "app.containers.AdminPage.projects.project.analysis.Insights.appliesTo": "Primjenjuje se na trenutno odabrane ulaze",
   "app.containers.AdminPage.projects.project.analysis.Insights.ask": "Pitajte",
   "app.containers.AdminPage.projects.project.analysis.Insights.askQuestion": "Pitati pitanje",
+  "app.containers.AdminPage.projects.project.analysis.Insights.bookmarkSummary": "Označite sažetak",
   "app.containers.AdminPage.projects.project.analysis.Insights.deleteQuestion": "Izbriši pitanje",
   "app.containers.AdminPage.projects.project.analysis.Insights.deleteQuestionConfirmation": "Jeste li sigurni da želite izbrisati ovo pitanje?",
   "app.containers.AdminPage.projects.project.analysis.Insights.deleteSummary": "Izbriši sažetak",
