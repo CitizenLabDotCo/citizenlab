@@ -201,8 +201,7 @@ const budgetingConfig: VotingMethodConfig = {
               <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
             ),
             endDate:
-              phase &&
-              phase.attributes.end_at &&
+              phase?.attributes.end_at &&
               toFullMonth(phase.attributes.end_at, 'day'),
             maxBudget:
               phase && phase.attributes.voting_max_total?.toLocaleString(),
