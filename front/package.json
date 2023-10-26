@@ -162,6 +162,7 @@
     "@types/d3-force": "^3.0.6",
     "@types/file-saver": "2.0.5",
     "@types/formatcoords": "^1.1.0",
+    "@types/geojson": "7946.0.10",
     "@types/jest": "^29.4.0",
     "@types/js-cookie": "2.2.7",
     "@types/json-stable-stringify": "^1.0.34",
