@@ -1,5 +1,3 @@
-import { Multiloc, Locale } from './typings';
-
 const locales = [
   'Cy-az-AZ',
   'Cy-sr-SP',
