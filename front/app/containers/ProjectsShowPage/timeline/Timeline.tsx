@@ -394,6 +394,9 @@ function getNumberOfDays(phase: IPhaseData) {
   // we can ignore user timezone to compare start/end dates,
   // since all we care about is the amount of time between the two
   const startIsoDate = getIsoDateUtc(phase.attributes.start_at);
+
+  if (phase.attributes.end_at === null) return 1000; // default to 1000 days if there is no end date
+
   const endIsoDate = getIsoDateUtc(phase.attributes.end_at);
   const startMoment = moment(startIsoDate, 'YYYY-MM-DD');
   const endMoment = moment(endIsoDate, 'YYYY-MM-DD');

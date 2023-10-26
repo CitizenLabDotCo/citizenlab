@@ -4,6 +4,7 @@ import { first, last, sortBy } from 'lodash-es';
 import { IPhaseData } from './types';
 import { IProjectData } from 'api/projects/types';
 import { IIdea } from 'api/ideas/types';
+import { Locale } from 'typings';
 
 export function canContainIdeas(phase: IPhaseData) {
   const pm = phase.attributes.participation_method;
@@ -137,7 +138,9 @@ const presentOrFuture = new Set(['present', 'future']);
 
 export const isCurrentPhase = (phase: IPhaseData) => {
   const phaseStartPeriod = pastPresentOrFuture(phase.attributes.start_at);
-  const phaseEndPeriod = pastPresentOrFuture(phase.attributes.end_at);
+  const phaseEndPeriod = phase.attributes.end_at
+    ? pastPresentOrFuture(phase.attributes.end_at)
+    : 'future';
 
   if (
     pastOrPresent.has(phaseStartPeriod) &&
@@ -147,4 +150,22 @@ export const isCurrentPhase = (phase: IPhaseData) => {
   }
 
   return false;
+};
+
+// If a timeline project has no description, no end date and only one phase, we treat it as a continuous project
+export const treatTimelineProjectAsContinuous = (
+  phasesData: IPhaseData[] | undefined,
+  currentLocale: Locale
+) => {
+  const hasOnePhase = phasesData?.length === 1;
+  const phaseDescription = hasOnePhase
+    ? phasesData[0].attributes.description_multiloc
+    : {};
+  const hasEmptyPhaseDescription =
+    hasOnePhase &&
+    (!Object.prototype.hasOwnProperty.call(phaseDescription, currentLocale) ||
+      (Object.prototype.hasOwnProperty.call(phaseDescription, currentLocale) &&
+        phaseDescription[currentLocale] === ''));
+  const hasNoEndDate = hasOnePhase && phasesData[0].attributes.end_at === null;
+  return hasEmptyPhaseDescription && hasNoEndDate;
 };

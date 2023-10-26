@@ -91,6 +91,7 @@ const IdeaCard = memo<IdeaCardProps>(
 
     const participationContextEnded =
       participationContext?.type === 'phase' &&
+      participationContext.attributes.end_at &&
       pastPresentOrFuture(participationContext?.attributes?.end_at) === 'past';
     const { data: basket } = useBasket(
       participationContext?.relationships?.user_basket?.data?.id
