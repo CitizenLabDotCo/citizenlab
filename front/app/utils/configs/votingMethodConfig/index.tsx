@@ -159,14 +159,14 @@ const budgetingConfig: VotingMethodConfig = {
       );
     }
     if (submissionState === 'hasSubmitted') {
-      if (phase && phase.attributes.end_at) {
+      if (phase?.attributes.end_at) {
         return (
           <FormattedMessage
             values={{
               b: (chunks) => (
                 <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
               ),
-              endDate: phase && toFullMonth(phase.attributes.end_at, 'day'),
+              endDate: toFullMonth(phase.attributes.end_at, 'day'),
             }}
             {...messages.budgetingSubmittedInstructions}
           />
@@ -203,10 +203,9 @@ const budgetingConfig: VotingMethodConfig = {
             endDate:
               phase?.attributes.end_at &&
               toFullMonth(phase.attributes.end_at, 'day'),
-            maxBudget:
-              phase && phase.attributes.voting_max_total?.toLocaleString(),
+            maxBudget: phase?.attributes.voting_max_total?.toLocaleString(),
             currency,
-            optionCount: phase && phase.attributes.ideas_count,
+            optionCount: phase?.attributes.ideas_count,
           }}
           {...messages.budgetParticipationEnded}
         />
@@ -330,14 +329,14 @@ const multipleVotingConfig: VotingMethodConfig = {
       );
     }
     if (submissionState === 'hasSubmitted') {
-      if (phase && phase.attributes.end_at) {
+      if (phase?.attributes.end_at) {
         return (
           <FormattedMessage
             values={{
               b: (chunks) => (
                 <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
               ),
-              endDate: phase && toFullMonth(phase.attributes.end_at, 'day'),
+              endDate: toFullMonth(phase.attributes.end_at, 'day'),
             }}
             {...messages.votingSubmittedInstructions}
           />
@@ -366,8 +365,7 @@ const multipleVotingConfig: VotingMethodConfig = {
       );
     } else if (
       submissionState === 'submissionEnded' &&
-      phase &&
-      phase.attributes.end_at
+      phase?.attributes.end_at
     ) {
       return (
         <FormattedMessage
@@ -375,11 +373,10 @@ const multipleVotingConfig: VotingMethodConfig = {
             b: (chunks) => (
               <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
             ),
-            endDate: phase && toFullMonth(phase.attributes.end_at, 'day'),
-            maxVotes:
-              phase && phase.attributes.voting_max_total?.toLocaleString(),
+            endDate: toFullMonth(phase.attributes.end_at, 'day'),
+            maxVotes: phase?.attributes.voting_max_total?.toLocaleString(),
             voteTerm,
-            optionCount: phase && phase.attributes.ideas_count,
+            optionCount: phase.attributes.ideas_count,
           }}
           {...messages.multipleVotingEnded}
         />
@@ -493,14 +490,14 @@ const singleVotingConfig: VotingMethodConfig = {
       );
     }
     if (submissionState === 'hasSubmitted') {
-      if (phase && phase.attributes.end_at) {
+      if (phase?.attributes.end_at) {
         return (
           <FormattedMessage
             values={{
               b: (chunks) => (
                 <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
               ),
-              endDate: phase && toFullMonth(phase.attributes.end_at, 'day'),
+              endDate: toFullMonth(phase.attributes.end_at, 'day'),
             }}
             {...messages.votingSubmittedInstructions}
           />
@@ -530,30 +527,30 @@ const singleVotingConfig: VotingMethodConfig = {
     } else if (submissionState === 'submissionEnded') {
       const votingMax = phase?.attributes?.voting_max_total;
       if (votingMax) {
-        if (votingMax > 1 && phase && phase.attributes.end_at) {
+        if (votingMax > 1 && phase.attributes.end_at) {
           return (
             <FormattedMessage
               values={{
                 b: (chunks) => (
                   <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
                 ),
-                endDate: phase && toFullMonth(phase.attributes.end_at, 'day'),
+                endDate: toFullMonth(phase.attributes.end_at, 'day'),
                 maxVotes: votingMax?.toLocaleString(),
-                optionCount: phase && phase.attributes.ideas_count,
+                optionCount: phase.attributes.ideas_count,
               }}
               {...messages.singleVotingEnded}
             />
           );
-        } else if (phase && phase.attributes.end_at) {
+        } else if (phase.attributes.end_at) {
           return (
             <FormattedMessage
               values={{
                 b: (chunks) => (
                   <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
                 ),
-                endDate: phase && toFullMonth(phase.attributes.end_at, 'day'),
+                endDate: toFullMonth(phase.attributes.end_at, 'day'),
                 maxVotes: votingMax?.toLocaleString(),
-                optionCount: phase && phase.attributes.ideas_count,
+                optionCount: phase.attributes.ideas_count,
               }}
               {...messages.singleVotingOneVoteEnded}
             />
@@ -561,14 +558,14 @@ const singleVotingConfig: VotingMethodConfig = {
         } else {
           return null;
         }
-      } else if (phase && phase.attributes.end_at) {
+      } else if (phase?.attributes.end_at) {
         return (
           <FormattedMessage
             values={{
               b: (chunks) => (
                 <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
               ),
-              endDate: phase && toFullMonth(phase.attributes.end_at, 'day'),
+              endDate: toFullMonth(phase.attributes.end_at, 'day'),
             }}
             {...messages.singleVotingUnlimitedEnded}
           />
