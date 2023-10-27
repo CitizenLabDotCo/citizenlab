@@ -125,6 +125,7 @@ export const ERROR_CODE_MESSAGES: Record<ErrorCode, MessageDescriptor> = {
   email_taken_and_user_can_be_verified: messages.emailTakenAndUserCanBeVerified,
   not_entitled_under_minimum_age:
     messages.nemlogInUnderMinimumAgeVerificationFailed,
+  resending_code_failed: errorMessages.resending_code_failed,
 };
 
 type HelperTextKey = 'signup_helper_text' | 'custom_fields_signup_helper_text';

@@ -1,9 +1,0 @@
-version: "3.8"
-
-services:
-  snapshots:
-    image: citizenlabdotco/cl2-devops-front-test
-    volumes:
-      - "../../.:/cl2_front"
-    stdin_open: true # docker run -i
-    tty: true        # docker run -t

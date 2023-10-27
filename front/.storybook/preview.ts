@@ -1,29 +1,25 @@
-import contexts from './contexts';
-import { reactIntl } from './reactIntl';
-import { withRouter } from 'storybook-addon-react-router-v6';
+import type { Preview } from '@storybook/react';
 import { initialize, mswDecorator } from 'msw-storybook-addon';
 import mockServer from './mockServer'
 
 initialize();
 
-export const decorators = [
-  mswDecorator,
-  withRouter,
-  contexts
-];
-
-export const globals = {
-  locale: reactIntl.defaultLocale
-}
-
-export const parameters = {
-  options: {
-    storySort: {
-      method: 'alphabetical',
-      // order: ['Design', 'Components'],
-      locales: '',
+const preview: Preview = {
+  parameters: {
+    actions: { argTypesRegex: '^on[A-Z].*' },
+    controls: {
+      matchers: {
+        color: /(background|color)$/i,
+        date: /Date$/i,
+      },
     },
+
+    msw: Object.values(mockServer),
   },
-  msw: Object.values(mockServer),
-  reactIntl
+
+  decorators: [
+    mswDecorator
+  ]
 };
+
+export default preview;
