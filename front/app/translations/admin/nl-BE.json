@@ -1663,7 +1663,7 @@
   "app.containers.AdminPage.ProjectTimeline.saveLabel": "Opslaan",
   "app.containers.AdminPage.ProjectTimeline.saveSuccessLabel": "Opgeslagen!",
   "app.containers.AdminPage.ProjectTimeline.saveSuccessMessage": "Je wijzigingen zijn met succes opgeslagen.",
-  "app.containers.AdminPage.ProjectTimeline.startDate": "Begint op",
+  "app.containers.AdminPage.ProjectTimeline.startDate": "Startdatum",
   "app.containers.AdminPage.ProjectTimeline.startDatePlaceholder": "Begint op",
   "app.containers.AdminPage.ProjectTimeline.subtitleTimeline": "Definieer de verschillende tijdlijnfases voor je project en beschrijf waar elke fase over gaat. Bij elke fase kun je een andere participatiemethode kiezen: ideeën verzamelen, enquêtes, informatie, stemmen, reacties geven of burgerbegroting.",
   "app.containers.AdminPage.ProjectTimeline.titleLabel": "Fasenaam",
