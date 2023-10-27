@@ -73,7 +73,7 @@ const FullScreenReport = ({ reportId }: Props) => {
       reportLocale={reportLocale}
       platformLocale={platformLocale}
     >
-      <ReportContext.Provider value="pdf">
+      <ReportContext.Provider value="phase">
         <FullScreenWrapper onUpdateDraftData={setDraftData}>
           {isLoadingLayout && <Spinner />}
           {!isLoadingLayout && (
