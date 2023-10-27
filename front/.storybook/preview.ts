@@ -1,4 +1,5 @@
 import type { Preview } from '@storybook/react';
+import contexts from './contexts';
 import { initialize, mswDecorator } from 'msw-storybook-addon';
 import mockServer from './mockServer'
 import { reactIntl } from './reactIntl';
@@ -22,7 +23,8 @@ const preview: Preview = {
 
   decorators: [
     mswDecorator,
-    withRouter
+    withRouter,
+    contexts
   ],
 
   globals: {
