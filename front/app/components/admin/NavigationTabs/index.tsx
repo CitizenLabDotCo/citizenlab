@@ -10,7 +10,7 @@ import TabsPageLayout from './TabsPageLayout';
 const NavigationTabs = styled.nav`
   ${({ theme }) => css`
     position: fixed;
-    width: 100%;
+    width: calc(100% - 210px);
     // TODO : set bg color in component library
     background: #fbfbfb;
     z-index: 1000;
