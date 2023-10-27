@@ -517,7 +517,7 @@ class User < ApplicationRecord
   end
 
   def should_send_confirmation_email?
-    confirmation_required? && email_confirmation_code_sent_at.nil?
+    confirmation_required? && email_confirmation_code_sent_at.nil? && (PhoneService.new.encoded_phone_or_email?(email) == :email)
   end
 
   def email_confirmation_code_expiration_at
