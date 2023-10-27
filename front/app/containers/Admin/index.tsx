@@ -109,6 +109,9 @@ const AdminPage = memo<Props & WithRouterProps>(
     if (!userCanViewPath) {
       return null;
     }
+    const isProjectPage = pathname.match(
+      /admin\/projects\/[a-f0-9-]+(\/[\w-]+)*/
+    );
 
     const noPadding =
       pathname.includes('admin/dashboard') ||
@@ -116,7 +119,8 @@ const AdminPage = memo<Props & WithRouterProps>(
       pathname.includes('admin/messaging') ||
       pathname.includes('admin/settings') ||
       pathname.includes('admin/ideas') ||
-      pathname.includes('admin/reporting');
+      pathname.includes('admin/reporting') ||
+      isProjectPage;
 
     const fullWidth =
       pathname.includes('admin/dashboard') ||
@@ -124,7 +128,8 @@ const AdminPage = memo<Props & WithRouterProps>(
       pathname.includes('admin/messaging') ||
       pathname.includes('admin/settings') ||
       pathname.includes('admin/ideas') ||
-      pathname.includes('admin/reporting');
+      pathname.includes('admin/reporting') ||
+      isProjectPage;
 
     return (
       <HasPermission
