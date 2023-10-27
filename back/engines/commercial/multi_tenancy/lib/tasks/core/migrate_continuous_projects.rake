@@ -9,7 +9,9 @@ namespace :fix_existing_tenants do
     specify_host = args[:specify_host]
     Rails.logger.info 'DRY RUN: Changes will not be persisted' unless persist_changes
     stats = {}
-    Tenant.creation_finalized.each do |tenant|
+
+    # TODO: Test that it continues if there are errors
+    Tenant.creation_finalized.prioritized.each do |tenant|
       next unless tenant.host == specify_host || specify_host.blank?
 
       Rails.logger.info "PROCESSING TENANT: #{tenant.host}..."
