@@ -763,12 +763,12 @@ resource 'Stats - Users' do
           let(:expected_worksheet_name) { 'users_by_age' }
           let(:expected_worksheet_values) do
             [
-              %w[age user_count expected_user_count total_population],
-              ['0-24', 2, 1.3, 190],
-              ['25-49', 4, 2.0, 279],
-              ['50-74', 1, 2.2, 308],
-              ['75+', 0, 1.5, 213],
-              ['unknown', 1, '', '']
+              %w[age user_count total_population],
+              ['0-24', 2, 190],
+              ['25-49', 4, 279],
+              ['50-74', 1, 308],
+              ['75+', 0, 213],
+              ['unknown', 1, '']
             ]
           end
         end
