@@ -94,15 +94,16 @@ RSpec.describe MultiTenancy::Rake::ContinuousProjectMigrationService do
         expect(idea.phases.first).to eq phase
       end
       expect(phase.ideas_count).to be > 0
-      expect(phase.ideas_count).to eq phase.ideas_count
+      expect(phase.ideas_count).to eq project.ideas_count
     end
   end
 
   shared_examples 'permissions' do
     it 'moves permissions from project to the phase' do
-      # TODO: Should it remove the permissions from the project too? Probably - but check what happens when creating timelines
-      # binding.pry
-      expect(project).not_to be_nil
+      phase = project.phases.first
+      expect(permission.reload.permission_scope_id).to eq phase.id
+      expect(permission.reload.permission_scope_type).to eq 'Phase'
+      expect(Permission.where(permission_scope_type: 'Project')).to eq []
     end
   end
 
@@ -129,6 +130,7 @@ RSpec.describe MultiTenancy::Rake::ContinuousProjectMigrationService do
       context 'ideation projects' do
         let_it_be(:project) { create(:continuous_project) }
         let_it_be(:ideas) { create_list(:idea, 3, project: project) }
+        let_it_be(:permission) { create(:permission, :by_users, action: 'commenting_idea', permission_scope: project) }
 
         include_examples 'project_settings'
         include_examples 'ideas'
@@ -138,13 +140,17 @@ RSpec.describe MultiTenancy::Rake::ContinuousProjectMigrationService do
       context 'voting' do
         let_it_be(:project) { create(:continuous_budgeting_project) }
         let_it_be(:ideas) { create_list(:idea, 2, project: project) }
+        let_it_be(:permission) { create(:permission, :by_everyone_confirmed_email, action: 'voting', permission_scope: project) }
 
         include_examples 'project_settings'
+        include_examples 'ideas'
         include_examples 'permissions'
       end
 
       context 'poll' do
         let_it_be(:project) { create(:continuous_poll_project) }
+        let_it_be(:permission) { create(:permission, :by_admins_moderators, action: 'taking_poll', permission_scope: project) }
+
         include_examples 'project_settings'
         include_examples 'permissions'
       end
@@ -152,6 +158,7 @@ RSpec.describe MultiTenancy::Rake::ContinuousProjectMigrationService do
       context 'native survey' do
         let_it_be(:project) { create(:continuous_native_survey_project) }
         let_it_be(:ideas) { create_list(:native_survey_response, 2, project: project) }
+        let_it_be(:permission) { create(:permission, :by_everyone, action: 'posting_idea', permission_scope: project) }
 
         include_examples 'project_settings'
         include_examples 'ideas'
@@ -167,12 +174,16 @@ RSpec.describe MultiTenancy::Rake::ContinuousProjectMigrationService do
 
       context 'survey' do
         let_it_be(:project) { create(:continuous_survey_project) }
+        let_it_be(:permission) { create(:permission, :by_users, action: 'taking_survey', permission_scope: project) }
+
         include_examples 'project_settings'
         include_examples 'permissions'
       end
 
       context 'document_annotation' do
         let_it_be(:project) { create(:continuous_document_annotation_project) }
+        let_it_be(:permission) { create(:permission, :by_users, action: 'annotating_document', permission_scope: project) }
+
         include_examples 'project_settings'
         include_examples 'permissions'
       end
