@@ -7,7 +7,7 @@ import { Box, useBreakpoint, Spinner } from '@citizenlab/cl2-component-library';
 import Unauthorized from 'components/Unauthorized';
 import PageNotFound from 'components/PageNotFound';
 import VerticalCenterer from 'components/VerticalCenterer';
-
+import SurveySubmittedNotice from './components/SurveySubmittedNotice';
 import IdeasNewForm from './IdeasNewForm';
 
 // style
@@ -21,12 +21,16 @@ import { getParticipationMethod } from 'utils/configs/participationMethodConfig'
 // utils
 import { isUnauthorizedRQ } from 'utils/errorUtils';
 import { useParams } from 'react-router-dom';
+import { getIdeaPostingRules } from 'utils/actionTakingRules';
+import useAuthUser from 'api/me/useAuthUser';
+import { getCurrentPhase } from 'api/phases/utils';
 
 const NewIdeaPage = () => {
   const { slug } = useParams();
 
   const isSmallerThanPhone = useBreakpoint('phone');
   const { data: project, status, error } = useProjectBySlug(slug);
+  const { data: authUser } = useAuthUser();
   const { data: phases } = usePhases(project?.data.id);
   const { phase_id } = parse(location.search, {
     ignoreQueryPrefix: true,
@@ -55,6 +59,16 @@ const NewIdeaPage = () => {
   );
   const portalElement = document?.getElementById('modal-portal');
   const isSurvey = participationMethod === 'native_survey';
+
+  const { disabledReason } = getIdeaPostingRules({
+    project: project?.data,
+    phase: getCurrentPhase(phases?.data),
+    authUser: authUser?.data,
+  });
+
+  if (project && isSurvey && disabledReason === 'postingLimitedMaxReached') {
+    return <SurveySubmittedNotice project={project.data} />;
+  }
 
   if (isSurvey && portalElement && isSmallerThanPhone) {
     return createPortal(
