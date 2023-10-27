@@ -1881,7 +1881,7 @@
   "app.utils.votingMethodUtils.votingPreSubmissionWarning": "<b>Je stemmen worden niet geteld</b> totdat je op \"Verzenden\" klikt",
   "app.utils.votingMethodUtils.votingSubmittedInstructions": "<b>Gefeliciteerd, je stem is uitgebracht!</b> Je kunt je stem hieronder op elk moment controleren of wijzigen voor <b>{endDate}</b>.",
   "app.utils.votingMethodUtils.votingSubmittedInstructionsContinuous": "<b>Gefeliciteerd, je stem is uitgebracht!</b> Je kunt je stemmen hieronder op elk moment controleren of wijzigen.",
-  "app.utils.votingMethodUtils.votingSubmittedInstructionsNoEndDate": "<b>Gefeliciteerd, je stem is uitgebracht!</b> Je kunt je stemmen hieronder op elk moment controleren of wijzigen.",
+  "app.utils.votingMethodUtils.votingSubmittedInstructionsNoEndDate": "<b>Gefeliciteerd, je stem is uitgebracht!</b> Je kunt je stemmen hieronder op elk moment bekijken of wijzigen.",
   "containers.SiteMap.allProjects": "Alle projecten",
   "containers.SiteMap.customPageSection": "Aangepaste pagina's",
   "containers.SiteMap.folderInfo": "Meer informatie",
