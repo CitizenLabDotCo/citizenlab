@@ -11,9 +11,8 @@ import GoBackButton from 'components/UI/GoBackButton';
 import Button from 'components/UI/Button';
 import TabbedResource from 'components/admin/TabbedResource';
 import Outlet from 'components/Outlet';
-import { Box } from '@citizenlab/cl2-component-library';
-import NewIdeaButton from './ideas/NewIdeaButton';
-import NewIdeaButtonDropdown from './ideas/NewIdeaButtonDropdown';
+import { Box, Title } from '@citizenlab/cl2-component-library';
+import NavigationTabs from 'components/admin/NavigationTabs';
 
 // resources
 import GetFeatureFlag, {
@@ -25,7 +24,7 @@ import { PreviousPathnameContext } from 'context';
 
 // i18n
 import { WrappedComponentProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import messages from './messages';
 
@@ -33,12 +32,8 @@ import messages from './messages';
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
-// style
-import styled from 'styled-components';
-
 // typings
 import { InsertConfigurationOptions, ITab } from 'typings';
-import { getInputTerm } from 'utils/participationContexts';
 import { IProjectData } from 'api/projects/types';
 
 // utils
@@ -48,23 +43,6 @@ import {
   getMethodConfig,
   showInputManager,
 } from 'utils/configs/participationMethodConfig';
-
-const TopContainer = styled.div`
-  width: 100%;
-  margin-top: -5px;
-  margin-bottom: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: relative;
-`;
-
-const ActionsContainer = styled.div`
-  display: flex;
-  & > *:not(:last-child) {
-    margin-right: 15px;
-  }
-`;
 
 export interface InputProps {}
 
@@ -375,108 +353,68 @@ export class AdminProjectsProjectIndex extends PureComponent<
       phases,
       intl: { formatMessage },
       localize,
-      location: { pathname },
     } = this.props;
 
     const tabbedProps = {
       resource: {
-        title: !isNilOrError(project)
-          ? localize(project.attributes.title_multiloc)
-          : formatMessage(messages.newProject),
+        title: '',
       },
       tabs: !isNilOrError(project) ? this.getTabs(project.id, project) : [],
     };
 
-    let numberIdeationPhases = 0;
-    let ideationPhase;
-
     if (!isNilOrError(project) && phases !== undefined) {
-      const inputTerm = getInputTerm(
-        project?.attributes.process_type,
-        project,
-        phases
-      );
-
-      if (phases) {
-        phases.map((phase) => {
-          if (
-            getMethodConfig(phase.attributes.participation_method)
-              .showInputManager
-          ) {
-            numberIdeationPhases++;
-            ideationPhase = phase;
-          }
-        });
-      }
-
-      const showDropdownButton =
-        project.attributes.process_type === 'timeline' &&
-        numberIdeationPhases > 1;
-      const hasIdeasTab = tabbedProps.tabs.some((tab) => tab.name === 'ideas');
-
       return (
         <>
+          <NavigationTabs>
+            <Box
+              display="flex"
+              height="58px"
+              alignItems="center"
+              justifyContent="space-between"
+              width="100%"
+              pr="24px"
+            >
+              <Box display="flex">
+                <GoBackButton onClick={this.goBack} showGoBackText={false} />
+                <Title color="blue500" variant="h3" my="0px" ml="8px">
+                  {localize(project.attributes.title_multiloc)}
+                </Title>
+              </Box>
+              <Box display="flex">
+                <Button
+                  linkTo=""
+                  buttonStyle="primary-inverse"
+                  icon="eye"
+                  size="s"
+                  padding="4px 8px"
+                  mr="12px"
+                >
+                  {formatMessage(messages.view)}
+                </Button>
+                <Button
+                  linkTo=""
+                  buttonStyle="secondary"
+                  icon="settings"
+                  size="s"
+                  padding="4px 8px"
+                >
+                  {formatMessage(messages.settings)}
+                </Button>
+              </Box>
+            </Box>
+          </NavigationTabs>
+
           <Outlet
             id="app.containers.Admin.projects.edit"
             onData={this.handleData}
             project={project}
             phases={phases}
           />
-
-          <TopContainer>
-            <GoBackButton onClick={this.goBack} />
-            <ActionsContainer>
-              {hasIdeasTab && (
-                <>
-                  <Box
-                    onClick={this.onNewIdea(pathname)}
-                    onMouseOver={() => {
-                      if (showDropdownButton) {
-                        this.setState({ showIdeaDropdown: true });
-                      }
-                    }}
-                    onMouseLeave={() => {
-                      if (showDropdownButton) {
-                        this.setState({ showIdeaDropdown: false });
-                      }
-                    }}
-                  >
-                    {project.attributes.process_type === 'continuous' && (
-                      <NewIdeaButton
-                        inputTerm={inputTerm}
-                        linkTo={`/projects/${project.attributes.slug}/ideas/new`}
-                      />
-                    )}
-                    {project.attributes.process_type === 'timeline' &&
-                      numberIdeationPhases === 1 && (
-                        <NewIdeaButton
-                          inputTerm={ideationPhase.attributes.input_term}
-                          linkTo={`/projects/${project.attributes.slug}/ideas/new?phase_id=${ideationPhase.id}`}
-                        />
-                      )}
-                    {showDropdownButton && (
-                      <NewIdeaButtonDropdown
-                        phases={phases}
-                        project={project}
-                        showDropdown={this.state.showIdeaDropdown}
-                      />
-                    )}
-                  </Box>
-                </>
-              )}
-              <Button
-                buttonStyle="cl-blue"
-                icon="eye"
-                id="to-project"
-                linkTo={`/projects/${project.attributes.slug}`}
-              >
-                <FormattedMessage {...messages.viewPublicProject} />
-              </Button>
-            </ActionsContainer>
-          </TopContainer>
-          <TabbedResource {...tabbedProps}>
-            <RouterOutlet />
-          </TabbedResource>
+          <Box p="40px">
+            <TabbedResource {...tabbedProps}>
+              <RouterOutlet />
+            </TabbedResource>
+          </Box>
         </>
       );
     }
