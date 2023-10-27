@@ -46,6 +46,8 @@ interface Props {
     endDate: Moment | null;
   }) => void;
   minDate?: Moment;
+  startDatePlaceholderText?: string;
+  endDatePlaceholderText?: string;
 }
 
 const DateRangePicker = ({
@@ -53,6 +55,8 @@ const DateRangePicker = ({
   endDate,
   onDatesChange,
   minDate,
+  startDatePlaceholderText,
+  endDatePlaceholderText,
 }: Props) => {
   const locale = useLocale();
 
@@ -104,6 +108,7 @@ const DateRangePicker = ({
         endDate={convertedEndDate}
         minDate={convertedMinDate}
         locale={locale}
+        placeholderText={startDatePlaceholderText}
         // This makes sure we adjust date based on the passed locale.
         dateFormat="P"
         popperClassName="e2e-start-date-popper"
@@ -122,6 +127,7 @@ const DateRangePicker = ({
         locale={locale}
         // This makes sure we adjust date based on the passed locale.
         dateFormat="P"
+        placeholderText={endDatePlaceholderText}
         popperClassName="e2e-end-date-popper"
       />
     </StylingWrapper>
