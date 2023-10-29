@@ -41,21 +41,6 @@ const ProjectDescriptionBuilderToolbox = ({
 
   return (
     <Container>
-      <SectionTitle>
-        <FormattedMessage {...messages.sections} />
-      </SectionTitle>
-      <DraggableElement
-        id="e2e-draggable-image-text-cards"
-        component={<ImageTextCards />}
-        icon="section-image-text"
-        label={formatMessage(messages.imageTextCards)}
-      />
-      <DraggableElement
-        id="e2e-draggable-info-accordions"
-        component={<InfoWithAccordions />}
-        icon="section-info-accordion"
-        label={formatMessage(messages.infoWithAccordions)}
-      />
       <DraggableElement
         id="e2e-draggable-info-accordions"
         component={
@@ -94,8 +79,24 @@ const ProjectDescriptionBuilderToolbox = ({
           />
         }
         icon="section-info-accordion"
+        label={'Homepage Banner'}
+      />
+      <SectionTitle>
+        <FormattedMessage {...messages.sections} />
+      </SectionTitle>
+      <DraggableElement
+        id="e2e-draggable-image-text-cards"
+        component={<ImageTextCards />}
+        icon="section-image-text"
+        label={formatMessage(messages.imageTextCards)}
+      />
+      <DraggableElement
+        id="e2e-draggable-info-accordions"
+        component={<InfoWithAccordions />}
+        icon="section-info-accordion"
         label={formatMessage(messages.infoWithAccordions)}
       />
+
       <SectionTitle>
         <FormattedMessage {...contentBuilderMessages.layout} />
       </SectionTitle>

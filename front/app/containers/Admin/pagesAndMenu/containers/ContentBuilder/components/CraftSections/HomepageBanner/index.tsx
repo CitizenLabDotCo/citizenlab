@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -16,18 +16,16 @@ type Props = {
 };
 
 // export interface IHomepageSettingsAttributes extends IHomepageEnabledSettings {
-//     banner_signed_out_header_multiloc: Multiloc;
-//     bottom_info_section_multiloc: Multiloc;
-//     projects_header_multiloc: Multiloc;
+//     bottom_info_section_multiloc: Multiloc; // covered by content builder
+//     projects_header_multiloc: Multiloc; // covered by content builder
 //     banner_layout: THomepageBannerLayout;
-//     banner_signed_in_header_multiloc: Multiloc;
-//     banner_signed_out_header_multiloc: Multiloc;
-//     banner_signed_out_subheader_multiloc: Multiloc;
+
 //     banner_signed_out_header_overlay_color: string | null;
 //     // Number between 0 and 100, inclusive
 //     banner_signed_out_header_overlay_opacity: number | null;
 //     header_bg: ImageSizes | null;
-//     pinned_admin_publication_ids: string[];
+
+//     banner_signed_in_header_multiloc: Multiloc;
 //     banner_cta_signed_in_text_multiloc: Multiloc;
 //     banner_cta_signed_in_type: CTASignedInType;
 //     banner_cta_signed_in_url: string | null;
@@ -53,8 +51,14 @@ const HomepageBannerSettings = () => {
         node.data.props.homepageSettings.banner_signed_out_header_multiloc,
       banner_signed_out_subheader_multiloc:
         node.data.props.homepageSettings.banner_signed_out_subheader_multiloc,
+      banner_signed_out_header_overlay_color:
+        node.data.props.homepageSettings.banner_signed_out_header_overlay_color,
     },
   }));
+
+  const [overlayEnabled, setOverlayEnabled] = useState(
+    typeof homepageSettings.banner_signed_out_header_overlay_color === 'number'
+  );
 
   return (
     <Box
@@ -87,6 +91,45 @@ const HomepageBannerSettings = () => {
           );
         }}
       />
+      {/* <>
+      <Box>
+        <Toggle
+          id="overlay-toggle"
+          onChange={handleOverlayEnabling}
+          checked={overlayEnabled}
+          label={
+            <Text as="span" color="blue500">
+              {formatMessage(messages.overlayToggleLabel)}
+            </Text>
+          }
+        />
+      </Box>
+      {overlayEnabled &&
+        typeof bannerOverlayOpacity === 'number' &&
+        bannerOverlayColor && (
+        
+            <Box mb="36px">
+              <ColorPickerInput
+                id="image-overlay-color"
+                label={formatMessage(messages.imageOverlayColor)}
+                type="text"
+                value={bannerOverlayColor}
+                onChange={handleOverlayColorOnChange}
+              />
+            </Box>
+            <Label>
+              <FormattedMessage {...messages.imageOverlayOpacity} />
+            </Label>
+            <RangeInput
+              step={1}
+              min={0}
+              max={100}
+              value={bannerOverlayOpacity}
+              onChange={debouncedHandleOverlayOpacityOnChange}
+            />
+  
+        )}
+    </> */}
     </Box>
   );
 };
