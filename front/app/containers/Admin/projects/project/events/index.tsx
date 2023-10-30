@@ -70,7 +70,7 @@ const AdminProjectEventsIndex = ({
         <AddButton
           buttonStyle="cl-blue"
           icon="plus-circle"
-          linkTo={`/admin/projects/${projectId}/events/new`}
+          linkTo={`/admin/projects/${projectId}/settings/events/new`}
         >
           <FormattedMessage {...messages.addEventButton} />
         </AddButton>
