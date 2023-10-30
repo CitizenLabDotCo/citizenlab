@@ -1,20 +1,14 @@
 import { renderHook } from '@testing-library/react-hooks';
 
 import useReport from './useReport';
-import { reportsData } from './__mocks__/useReports';
+import endpoints, { reportsData, apiPathReport } from './__mocks__/_mockServer';
 
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
-const apiPath = '*reports/:id';
-
-const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: reportsData[0] }));
-  })
-);
+const server = setupServer(endpoints['GET reports/:id']);
 
 describe('useReport', () => {
   beforeAll(() => server.listen());
@@ -35,7 +29,7 @@ describe('useReport', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
+      rest.get(apiPathReport, (_req, res, ctx) => {
         return res(ctx.status(500));
       })
     );

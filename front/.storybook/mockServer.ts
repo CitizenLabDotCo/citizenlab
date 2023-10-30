@@ -27,6 +27,10 @@ import basketsEndpoints from '../app/api/baskets/__mocks__/_mockServer';
 // avatars mock data
 import avatarsEndpoints from '../app/api/avatars/__mocks__/_mockServer';
 
+// reports mock data
+import reportsEndpoints from '../app/api/reports/__mocks__/_mockServer';
+import reportLayoutEndpoints from '../app/api/report_layout/__mocks__/_mockServer';
+
 const endpoints = {
   ...appConfigurationEndpoints,
   ...usersMeEndpoints,
@@ -48,7 +52,10 @@ const endpoints = {
   
   ...basketsEndpoints,
 
-  ...avatarsEndpoints
+  ...avatarsEndpoints,
+
+  ...reportsEndpoints,
+  ...reportLayoutEndpoints
 }
 
 export default endpoints;
