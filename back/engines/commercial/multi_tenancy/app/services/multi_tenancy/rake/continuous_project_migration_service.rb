@@ -29,9 +29,11 @@ class MultiTenancy::Rake::ContinuousProjectMigrationService
       # TODO: Check that projects now has just one phase before continuing
 
       # 3. Update participation_context in models - from project_id to new phase_id
+      # TODO: Test
       update_participation_contexts(project, phase)
 
       # 4. Add phase_id to the following models:
+      # TODO: Test
       add_phase_ids(project, phase)
 
       # 5. Update permission_scope in permissions from project_id to phase_id
@@ -44,12 +46,17 @@ class MultiTenancy::Rake::ContinuousProjectMigrationService
       add_ideas_to_phase(project, phase)
 
       # 8. Run function to update basket/votes count on ideas_phases
+      # TODO: Test
       update_counts(project)
-
-      # 9. Activities - Do we need to update any of the historic logs? If so we should run this as a separate task - could be huge
 
       @stats[:success] = @stats[:success] + 1
     end
+  end
+
+  def migrate_activities(persist_changes)
+    # TODO: Separate function to migrate the activities separately
+    # TODO: How can we make a universal rake structure that can be reused??
+    # 9. Activities - Do we need to update any of the historic logs? If so we should run this as a separate task - could be huge
   end
 
   private
