@@ -25,7 +25,8 @@
     "test:coverage": "jest --coverage"
   },
   "peerDependencies": {
-    "react": ">=16"
+    "react": ">=16",
+    "styled-components": "5.3.9"
   },
   "husky": {
     "hooks": {
@@ -98,6 +99,7 @@
     "rollup-plugin-terser": "^7.0.2",
     "storybook": "^7.5.1",
     "storybook-addon-designs": "^6.3.1",
+    "styled-components": "5.3.9",
     "ts-jest": "^28.0.8",
     "typescript": "^4.9.5"
   },
@@ -109,7 +111,6 @@
     "polished": "^4.2.2",
     "react-color": "2.19.3",
     "react-transition-group": "4.4.5",
-    "styled-components": "^5.3.6",
     "tippy.js": "6.3.7"
   }
 }
