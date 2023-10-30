@@ -595,6 +595,7 @@
   "app.containers.Admin.PagesAndMenu.containers.CustomPages.pageContentTab": "Page content",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.automatedEmailsLinkText": "automatiséiert E-Mailen",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.editProject": "Edit",
+  "app.containers.Admin.PagesAndMenu.containers.ProjectsList.emptyDescriptionWarning1": "Fir eenzel Phase Projeten, wann den Enndatum eidel ass an d'Beschreiwung net ausgefëllt ass, gëtt eng Timeline net op der Projet Säit ugewisen.",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.noAvailableProjects": "Keng verfügbar Projete baséierend op Ärem {pageSettingsLink}.",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.noFilter": "Dëse Projet huet keen Tag oder Regiounefilter, dowéinst gi keng Projeten ugewisen.",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.pageMetaTitle": "Projetslëscht | {orgName}",
