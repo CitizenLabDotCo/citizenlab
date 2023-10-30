@@ -595,6 +595,7 @@
   "app.containers.Admin.PagesAndMenu.containers.CustomPages.pageContentTab": "Page content",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.automatedEmailsLinkText": "αυτοματοποιημένα μηνύματα ηλεκτρονικού ταχυδρομείου",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.editProject": "Edit",
+  "app.containers.Admin.PagesAndMenu.containers.ProjectsList.emptyDescriptionWarning1": "Για έργα μίας φάσης, εάν η ημερομηνία λήξης είναι κενή και η περιγραφή δεν έχει συμπληρωθεί, δεν θα εμφανιστεί χρονοδιάγραμμα στη σελίδα του έργου.",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.noAvailableProjects": "Δεν υπάρχουν διαθέσιμα έργα με βάση τις ρυθμίσεις σας {pageSettingsLink}.",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.noFilter": "Αυτό το έργο δεν διαθέτει φίλτρο ετικέτας ή περιοχής, επομένως δεν θα προβληθεί κανένα έργο.",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.pageMetaTitle": "Λίστα έργων | {orgName}",
