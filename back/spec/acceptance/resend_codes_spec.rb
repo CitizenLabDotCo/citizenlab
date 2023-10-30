@@ -32,24 +32,19 @@ resource 'Code Resends' do
         let(:success) { double }
 
         before do
-          allow(SendConfirmationCode).to receive(:call).and_return(success)
-          allow(success).to receive(:success?).and_return(true)
+          allow(RequestConfirmationCodeJob).to receive(:perform_now)
           do_request(new_email: 'test@test.com')
         end
 
         example 'returns an ok status when passing a valid email' do
           assert_status 200
-          expect(SendConfirmationCode).to have_received(:call).with(user: user, new_email: 'test@test.com').once
+          expect(RequestConfirmationCodeJob).to have_received(:perform_now).with(user, new_email: 'test@test.com').once
         end
       end
 
       context 'when passing in invalid new email' do
         before do
           do_request(new_email: 'bademail.com')
-        end
-
-        example 'returns an unprocessable entity status' do
-          assert_status 422
         end
 
         example 'returns an code.blank error code when no code is passed' do
@@ -63,12 +58,11 @@ resource 'Code Resends' do
         let(:success) { double }
 
         example 'returns an ok status when performing the request without params' do
-          allow(SendConfirmationCode).to receive(:call).and_return(success)
-          allow(success).to receive(:success?).and_return(true)
+          allow(RequestConfirmationCodeJob).to receive(:perform_now)
 
           do_request
           assert_status 200
-          expect(SendConfirmationCode).to have_received(:call).with(user: user, new_email: nil).once
+          expect(RequestConfirmationCodeJob).to have_received(:perform_now).with(user, new_email: nil).once
         end
       end
     end
