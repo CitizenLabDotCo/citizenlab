@@ -595,6 +595,7 @@
   "app.containers.Admin.PagesAndMenu.containers.CustomPages.pageContentTab": "Lapas saturs",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.automatedEmailsLinkText": "automatizēti e-pasti",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.editProject": "Rediģēt",
+  "app.containers.Admin.PagesAndMenu.containers.ProjectsList.emptyDescriptionWarning1": "Viena posma projektiem, ja beigu datums ir tukšs un apraksts nav aizpildīts, projekta lapā netiks parādīta laika grafiks.",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.noAvailableProjects": "Nav pieejamu projektu, pamatojoties uz jūsu {pageSettingsLink}.",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.noFilter": "Šim projektam nav birkas vai apgabala filtra, tāpēc netiks rādīti nekādi projekti.",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.pageMetaTitle": "Projektu saraksts | {orgName}",
