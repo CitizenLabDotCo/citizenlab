@@ -155,11 +155,8 @@ resource 'Users' do
         end
 
         context 'when the user_confirmation module is active' do
-          let(:success) { double }
-
           before do
-            allow(SendConfirmationCode).to receive(:call).and_return(success)
-            allow(success).to receive(:success?).and_return(true)
+            allow(RequestConfirmationCodeJob).to receive(:perform_now)
             SettingsService.new.activate_feature! 'user_confirmation'
           end
 
@@ -173,7 +170,7 @@ resource 'Users' do
             assert_status 201
             json_response = json_parse(response_body)
             user = User.order(:created_at).last
-            expect(SendConfirmationCode).to have_received(:call).with(user: user).once
+            expect(RequestConfirmationCodeJob).to have_received(:perform_now).with(user).once
             expect(json_response.dig(:data, :attributes, :confirmation_required)).to be true # when no custom fields
           end
         end
@@ -293,11 +290,9 @@ resource 'Users' do
       context 'light registration without a password' do
         let(:email) { Faker::Internet.email }
         let(:locale) { 'en' }
-        let(:success) { double }
 
         before do
-          allow(SendConfirmationCode).to receive(:call).and_return(success)
-          allow(success).to receive(:success?).and_return(true)
+          allow(RequestConfirmationCodeJob).to receive(:perform_now)
           SettingsService.new.activate_feature! 'user_confirmation'
         end
 
@@ -305,7 +300,7 @@ resource 'Users' do
           example_request 'User successfully created and requires confirmation' do
             assert_status 201
             user = User.order(:created_at).last
-            expect(SendConfirmationCode).to have_received(:call).with(user: user).once
+            expect(RequestConfirmationCodeJob).to have_received(:perform_now).with(user).once
             expect(response_data.dig(:attributes, :confirmation_required)).to be(true)
           end
 
@@ -324,7 +319,7 @@ resource 'Users' do
               do_request
               assert_status 200
               expect(response_data.dig(:attributes, :confirmation_required)).to be(true)
-              expect(SendConfirmationCode).to have_received(:call).with(user: existing_user).once
+              expect(RequestConfirmationCodeJob).to have_received(:perform_now).with(existing_user).once
             end
 
             context 'when the request tries to pass additional changed attributes', document: false do
@@ -755,11 +750,11 @@ resource 'Users' do
         end
       end
 
-      put 'web_api/v1/users/:id' do
+      patch 'web_api/v1/users/:id' do
         with_options scope: 'user' do
           parameter :first_name, 'User full name'
           parameter :last_name, 'User full name'
-          parameter :email, 'E-mail address'
+          parameter :email, 'E-mail address. Can only be changed directly when user confirmation is turned off.'
           parameter :password, 'Password'
           parameter :locale, 'Locale. Should be one of the tenants locales'
           parameter :avatar, 'Base64 encoded avatar image'
@@ -791,7 +786,7 @@ resource 'Users' do
           end
 
           context 'on a resident' do
-            let(:resident) { create(:user) }
+            let(:resident) { create(:user, email: 'original@email.com') }
             let(:id) { resident.id }
             let(:roles) { [type: 'admin'] }
 
@@ -814,15 +809,36 @@ resource 'Users' do
               context 'when limit is reached' do
                 before { create(:admin) } # to reach limit of 2
 
-                example_request 'Increments additional seats', document: false do
+                example 'Increments additional seats', document: false do
+                  do_request
                   assert_status 200
                   expect(AppConfiguration.instance.settings['core']['additional_admins_number']).to eq(1)
                 end
               end
 
-              example_request 'Does not increment additional seats if limit is not reached', document: false do
+              example 'Does not increment additional seats if limit is not reached', document: false do
+                do_request
                 assert_status 200
                 expect(AppConfiguration.instance.settings['core']['additional_admins_number']).to eq(0)
+              end
+            end
+
+            describe 'when confirmation is turned off' do
+              before { SettingsService.new.deactivate_feature! 'user_confirmation' }
+
+              example 'Email can be changed', document: false do
+                do_request(user: { email: 'changed@email.com' })
+                assert_status 200
+                expect(resident.reload.email).to eq 'changed@email.com'
+              end
+            end
+
+            describe 'when confirmation is turned on' do
+              before { SettingsService.new.activate_feature! 'user_confirmation' }
+
+              example 'Email cannot be changed', document: false do
+                do_request(user: { email: 'changed@email.com' })
+                expect(resident.reload.email).to eq 'original@email.com'
               end
             end
           end
@@ -996,10 +1012,7 @@ resource 'Users' do
             end
 
             example_request '[error] is not allowed' do
-              json_response = json_parse(response_body)
-              assert_status 422
               expect(@user.reload.email).not_to eq(email)
-              expect(json_response[:errors][:email][0][:error]).to eq 'change_not_permitted'
             end
           end
 
