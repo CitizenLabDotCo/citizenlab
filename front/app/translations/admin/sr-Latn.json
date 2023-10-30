@@ -595,6 +595,7 @@
   "app.containers.Admin.PagesAndMenu.containers.CustomPages.pageContentTab": "Sadržaj stranice",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.automatedEmailsLinkText": "automated emails",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.editProject": "Izmenite",
+  "app.containers.Admin.PagesAndMenu.containers.ProjectsList.emptyDescriptionWarning1": "For single phase projects, if the end date is empty and the description is not filled in, a timeline will not be displayed on the project page.",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.noAvailableProjects": "Nema dostupnih projekata na osnovu vašeg {pageSettingsLink}.",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.noFilter": "Ovaj projekat nema filter za oznake ili oblasti, tako da neće biti prikazan nijedan projekat.",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.pageMetaTitle": "Lista projekata | {orgName}",
