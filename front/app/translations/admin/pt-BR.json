@@ -595,6 +595,7 @@
   "app.containers.Admin.PagesAndMenu.containers.CustomPages.pageContentTab": "Conteúdo da página",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.automatedEmailsLinkText": "e-mails automáticos",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.editProject": "Editar",
+  "app.containers.Admin.PagesAndMenu.containers.ProjectsList.emptyDescriptionWarning1": "Para projetos de fase única, se a data final estiver vazia e a descrição não estiver preenchida, não será exibida uma linha do tempo na página do projeto.",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.noAvailableProjects": "Não há projetos disponíveis baseados no seu {pageSettingsLink}.",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.noFilter": "Este projeto não tem tag ou filtro de área, então nenhum projeto será exibido.",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.pageMetaTitle": "Lista de projetos | {orgName}",
