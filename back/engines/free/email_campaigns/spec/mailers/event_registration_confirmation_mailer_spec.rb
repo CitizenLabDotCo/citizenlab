@@ -96,7 +96,7 @@ RSpec.describe EmailCampaigns::EventRegistrationConfirmationMailer do
         )
       end
 
-      it 'contains time details in the local timezone' do
+      it 'contains time details in the platform timezone' do
         # Check for presence of:
         # <div> Date </div>
         # <div style="font-weight: 400;"> 01 May 20:00 – 01 May 22:00 </div>
