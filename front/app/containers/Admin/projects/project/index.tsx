@@ -43,6 +43,7 @@ import {
   getMethodConfig,
   showInputManager,
 } from 'utils/configs/participationMethodConfig';
+import Timeline from 'containers/ProjectsShowPage/timeline/Timeline';
 
 export interface InputProps {}
 
@@ -403,6 +404,14 @@ export class AdminProjectsProjectIndex extends PureComponent<
               </Box>
             </Box>
           </NavigationTabs>
+          <Box mt="78px" px="40px">
+            <Timeline
+              projectId={project.id}
+              selectedPhase={phases[0]}
+              setSelectedPhase={() => {}}
+              showPhaseDescriptions={false}
+            />
+          </Box>
 
           <Outlet
             id="app.containers.Admin.projects.edit"

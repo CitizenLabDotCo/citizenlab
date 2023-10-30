@@ -226,6 +226,7 @@ interface Props {
   className?: string;
   selectedPhase: IPhaseData;
   setSelectedPhase: (phase: IPhaseData) => void;
+  showPhaseDescriptions?: boolean;
 }
 
 const Timeline = ({
@@ -233,6 +234,7 @@ const Timeline = ({
   className,
   selectedPhase,
   setSelectedPhase,
+  showPhaseDescriptions = true,
 }: Props) => {
   const { data: phases } = usePhases(projectId);
   const { data: project } = useProjectById(projectId);
@@ -360,10 +362,12 @@ const Timeline = ({
                 );
               })}
             </RtlBox>
-            <PhaseDescriptions
-              projectId={projectId}
-              selectedPhaseId={selectedPhaseId}
-            />
+            {showPhaseDescriptions && (
+              <PhaseDescriptions
+                projectId={projectId}
+                selectedPhaseId={selectedPhaseId}
+              />
+            )}
           </Phases>
         </ContainerInner>
       </Container>
