@@ -595,6 +595,7 @@
   "app.containers.Admin.PagesAndMenu.containers.CustomPages.pageContentTab": "Zawartość strony",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.automatedEmailsLinkText": "automatyczne wiadomości e-mail",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.editProject": "Edycja",
+  "app.containers.Admin.PagesAndMenu.containers.ProjectsList.emptyDescriptionWarning1": "W przypadku projektów jednoetapowych, jeśli data zakończenia jest pusta, a opis nie jest wypełniony, oś czasu nie będzie wyświetlana na stronie projektu.",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.noAvailableProjects": "Brak dostępnych projektów na podstawie Twojej {pageSettingsLink}.",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.noFilter": "Ten projekt nie ma filtra tagów ani obszaru, więc żadne projekty nie zostaną wyświetlone.",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.pageMetaTitle": "Lista projektów | {orgName}",
