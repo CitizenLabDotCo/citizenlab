@@ -6,7 +6,7 @@ import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-import { usersData } from './__mocks__/useUsers';
+import { usersData } from './__mocks__/_mockServer';
 
 const apiPath = '*users/update_password';
 
