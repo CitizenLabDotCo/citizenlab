@@ -84,16 +84,16 @@ export class AdminProjectsProjectIndex extends PureComponent<
     this.state = {
       showIdeaDropdown: false,
       tabs: [
-        {
-          label: formatMessage(messages.generalTab),
-          url: '',
-          name: 'general',
-        },
-        {
-          label: formatMessage(messages.descriptionTab),
-          url: 'description',
-          name: 'description',
-        },
+        // {
+        //   label: formatMessage(messages.generalTab),
+        //   url: '',
+        //   name: 'general',
+        // },
+        // {
+        //   label: formatMessage(messages.descriptionTab),
+        //   url: 'description',
+        //   name: 'description',
+        // },
         {
           label: formatMessage(messages.inputManagerTab),
           url: 'ideas',
@@ -123,11 +123,11 @@ export class AdminProjectsProjectIndex extends PureComponent<
           url: 'survey-results',
           name: 'survey-results',
         },
-        {
-          label: formatMessage(messages.allowedInputTopicsTab),
-          name: 'topics',
-          url: 'allowed-input-topics',
-        },
+        // {
+        //   label: formatMessage(messages.allowedInputTopicsTab),
+        //   name: 'topics',
+        //   url: 'allowed-input-topics',
+        // },
         {
           label: formatMessage(messages.phasesTab),
           url: 'timeline',
@@ -139,17 +139,17 @@ export class AdminProjectsProjectIndex extends PureComponent<
           feature: 'volunteering',
           name: 'volunteering',
         },
-        {
-          label: formatMessage(messages.eventsTab),
-          url: 'events',
-          name: 'events',
-        },
-        {
-          label: formatMessage(messages.permissionsTab),
-          url: `permissions`,
-          feature: 'private_projects',
-          name: 'permissions',
-        },
+        // {
+        //   label: formatMessage(messages.eventsTab),
+        //   url: 'events',
+        //   name: 'events',
+        // },
+        // {
+        //   label: formatMessage(messages.permissionsTab),
+        //   url: `permissions`,
+        //   feature: 'private_projects',
+        //   name: 'permissions',
+        // },
       ],
       tabHideConditions: {
         general: function isGeneralTabHidden() {
@@ -393,7 +393,7 @@ export class AdminProjectsProjectIndex extends PureComponent<
                   {formatMessage(messages.view)}
                 </Button>
                 <Button
-                  linkTo=""
+                  linkTo={`/admin/projects/${project.id}/settings`}
                   buttonStyle="secondary"
                   icon="settings"
                   size="s"
