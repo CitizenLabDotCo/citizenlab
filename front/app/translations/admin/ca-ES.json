@@ -595,6 +595,7 @@
   "app.containers.Admin.PagesAndMenu.containers.CustomPages.pageContentTab": "Page content",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.automatedEmailsLinkText": "correus electrònics automatitzats",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.editProject": "Edit",
+  "app.containers.Admin.PagesAndMenu.containers.ProjectsList.emptyDescriptionWarning1": "Per als projectes d'una sola fase, si la data de finalització està buida i la descripció no s'omple, no es mostrarà una línia de temps a la pàgina del projecte.",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.noAvailableProjects": "No hi ha cap projecte disponible basat en la vostra {pageSettingsLink}.",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.noFilter": "Aquest projecte no té cap etiqueta ni filtre de zona, de manera que no es mostrarà cap projecte.",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.pageMetaTitle": "Llista de projectes | {orgName}",
