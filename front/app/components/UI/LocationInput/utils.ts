@@ -1,14 +1,14 @@
-export function isValidCoordinate(coordStr) {
-  // Regular expression to match a valid coordinate pattern
+export function isValidCoordinate(coordStr: string) {
+  const cleanedCoordStr = coordStr.replace(/\s/g, '');
   const coordinatePattern = /^[-+]?\d+(\.\d+)?,\s*[-+]?\d+(\.\d+)?$/;
 
   // Check if the string matches the valid pattern
-  if (!coordinatePattern.test(coordStr)) {
+  if (!coordinatePattern.test(cleanedCoordStr)) {
     return false;
   }
 
   // Split the string into latitude and longitude parts
-  const [latitude, longitude] = coordStr.split(',').map(parseFloat);
+  const [latitude, longitude] = cleanedCoordStr.split(',').map(parseFloat);
 
   // Check if latitude and longitude are within valid ranges
   if (
