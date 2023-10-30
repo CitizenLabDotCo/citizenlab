@@ -1,13 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import FullscreenReport from '.';
+import { FullScreenReport } from '.';
 
 const meta = {
-  title: 'Example/FullscreenReport',
-  component: FullscreenReport,
+  title: 'Example/FullScreenReport',
+  component: FullScreenReport,
   parameters: {
     layout: 'centered',
   },
-} satisfies Meta<typeof FullscreenReport>;
+} satisfies Meta<typeof FullScreenReport>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

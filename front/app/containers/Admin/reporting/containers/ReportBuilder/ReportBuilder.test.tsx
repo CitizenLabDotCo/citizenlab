@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from 'utils/testUtils/rtl';
 import ReportBuilder from '.';
-import { reportsData } from 'api/reports/__mocks__/useReports';
+import { reportsData } from 'api/reports/__mocks__/_mockServer';
 
 // service mocks
 

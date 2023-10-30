@@ -40,11 +40,11 @@ const Centerer = styled.div`
   }
 `;
 
-interface Props {
+export interface Props {
   reportId: string;
 }
 
-const FullScreenReport = ({ reportId }: Props) => {
+export const FullScreenReport = ({ reportId }: Props) => {
   const [draftData, setDraftData] = useState<SerializedNodes | undefined>();
   const { data: reportLayout } = useReportLayout(reportId);
   const reportLocale = useReportLocale(reportLayout?.data);
