@@ -52,7 +52,7 @@ const configuration: ModuleConfiguration = {
     'app.containers.Admin.initiatives.tabs': (props) => (
       <InitiativeSettingsTab {...props} />
     ),
-    'app.containers.Admin.projects.edit': (props) => {
+    'app.containers.Admin.projects.edit.settings': (props) => {
       return (
         <RenderOnTabHideCondition>
           <ProjectSettingsTab {...props} />

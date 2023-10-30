@@ -15,7 +15,7 @@ const Tab: FC<Props & WrappedComponentProps> = ({
   useEffect(() => {
     onData({
       configuration: {
-        label: formatMessage(messages.projectPermissionsTab),
+        label: 'formatMessage(messages.projectPermissionsTab)',
         url: `permissions`,
         feature: 'private_projects',
         name: 'permissions',
