@@ -8,6 +8,7 @@ import AdminProjectIdeaPreviewIndex from './AdminProjectIdeaPreviewIndex';
 const AdminProjectsAndFolders = lazy(() => import('.'));
 const AdminProjectsList = lazy(() => import('./all'));
 const AdminProjectsProjectIndex = lazy(() => import('./project'));
+const AdminProjectsProjectSettings = lazy(() => import('./project/settings'));
 const AdminProjectsProjectGeneral = lazy(() => import('./project/general'));
 const AdminProjectTimeline = lazy(() => import('./project/timeline'));
 const AdminProjectTimelineNewAndEdit = lazy(
@@ -71,13 +72,12 @@ const createAdminProjectsRoutes = () => {
         ),
       },
       {
-        path: ':projectId',
+        path: ':projectId/settings',
         element: (
           <PageLoading>
-            <AdminProjectsProjectIndex />
+            <AdminProjectsProjectSettings />
           </PageLoading>
         ),
-        // all routes under /admin/projects/:projectId
         children: [
           {
             index: true,
@@ -87,6 +87,69 @@ const createAdminProjectsRoutes = () => {
               </PageLoading>
             ),
           },
+          {
+            path: 'description',
+            element: (
+              <PageLoading>
+                <AdminProjectDescription />
+              </PageLoading>
+            ),
+          },
+          {
+            path: 'events',
+            element: (
+              <PageLoading>
+                <AdminProjectEvents />
+              </PageLoading>
+            ),
+          },
+          {
+            path: 'events/new',
+            element: (
+              <PageLoading>
+                <AdminProjectEventsEdit />
+              </PageLoading>
+            ),
+          },
+          {
+            path: 'events/:id',
+            element: (
+              <PageLoading>
+                <AdminProjectEventsEdit />
+              </PageLoading>
+            ),
+          },
+          {
+            path: 'tags',
+            element: <AdminAllowedTopicsComponent />,
+          },
+          {
+            path: 'access-rights',
+            element: (
+              <PageLoading>
+                <AdminProjectPermissions />
+              </PageLoading>
+            ),
+          },
+        ],
+      },
+      {
+        path: ':projectId',
+        element: (
+          <PageLoading>
+            <AdminProjectsProjectIndex />
+          </PageLoading>
+        ),
+        // all routes under /admin/projects/:projectId
+        children: [
+          // {
+          //   index: true,
+          //   element: (
+          //     <PageLoading>
+          //       <AdminProjectsProjectGeneral />
+          //     </PageLoading>
+          //   ),
+          // },
           {
             path: 'timeline',
             element: (
@@ -119,38 +182,38 @@ const createAdminProjectsRoutes = () => {
               </PageLoading>
             ),
           },
-          {
-            path: 'events',
-            element: (
-              <PageLoading>
-                <AdminProjectEvents />
-              </PageLoading>
-            ),
-          },
-          {
-            path: 'events/new',
-            element: (
-              <PageLoading>
-                <AdminProjectEventsEdit />
-              </PageLoading>
-            ),
-          },
-          {
-            path: 'events/:id',
-            element: (
-              <PageLoading>
-                <AdminProjectEventsEdit />
-              </PageLoading>
-            ),
-          },
-          {
-            path: 'permissions',
-            element: (
-              <PageLoading>
-                <AdminProjectPermissions />
-              </PageLoading>
-            ),
-          },
+          // {
+          //   path: 'events',
+          //   element: (
+          //     <PageLoading>
+          //       <AdminProjectEvents />
+          //     </PageLoading>
+          //   ),
+          // },
+          // {
+          //   path: 'events/new',
+          //   element: (
+          //     <PageLoading>
+          //       <AdminProjectEventsEdit />
+          //     </PageLoading>
+          //   ),
+          // },
+          // {
+          //   path: 'events/:id',
+          //   element: (
+          //     <PageLoading>
+          //       <AdminProjectEventsEdit />
+          //     </PageLoading>
+          //   ),
+          // },
+          // {
+          //   path: 'permissions',
+          //   element: (
+          //     <PageLoading>
+          //       <AdminProjectPermissions />
+          //     </PageLoading>
+          //   ),
+          // },
           {
             path: 'survey-results',
             element: (
@@ -167,14 +230,14 @@ const createAdminProjectsRoutes = () => {
               </PageLoading>
             ),
           },
-          {
-            path: 'description',
-            element: (
-              <PageLoading>
-                <AdminProjectDescription />
-              </PageLoading>
-            ),
-          },
+          // {
+          //   path: 'description',
+          //   element: (
+          //     <PageLoading>
+          //       <AdminProjectDescription />
+          //     </PageLoading>
+          //   ),
+          // },
           {
             path: 'ideas',
             element: (
@@ -247,10 +310,10 @@ const createAdminProjectsRoutes = () => {
               </PageLoading>
             ),
           },
-          {
-            path: 'allowed-input-topics',
-            element: <AdminAllowedTopicsComponent />,
-          },
+          // {
+          //   path: 'allowed-input-topics',
+          //   element: <AdminAllowedTopicsComponent />,
+          // },
           {
             path: 'analysis/:analysisId',
             element: (
