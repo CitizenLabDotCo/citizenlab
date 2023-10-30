@@ -32,7 +32,12 @@ import ParticipationContext, {
   IParticipationContextConfig,
 } from '../participationContext';
 import FileUploader from 'components/UI/FileUploader';
-import { Text, Checkbox } from '@citizenlab/cl2-component-library';
+import {
+  Text,
+  Checkbox,
+  Box,
+  IconTooltip,
+} from '@citizenlab/cl2-component-library';
 import Warning from 'components/UI/Warning';
 
 // i18n
@@ -119,7 +124,7 @@ const AdminProjectTimelineEdit = () => {
     }
   }, [phaseFiles]);
 
-  if (!campaigns) {
+  if (!campaigns || !phases) {
     return null;
   }
 
@@ -313,10 +318,6 @@ const AdminProjectTimelineEdit = () => {
     }
   };
 
-  const quillMultilocLabel = (
-    <FormattedMessage {...messages.descriptionLabel} />
-  );
-
   const getStartDate = () => {
     const phaseAttrs = phase
       ? { ...phase.data.attributes, ...attributeDiff }
@@ -476,7 +477,18 @@ const AdminProjectTimelineEdit = () => {
           )}
 
           <SectionField className="fullWidth">
-            <SubSectionTitle>{quillMultilocLabel}</SubSectionTitle>
+            <Box display="flex">
+              <SubSectionTitle>
+                <FormattedMessage {...messages.descriptionLabel} />
+              </SubSectionTitle>
+              {phases.data.length < 2 && (
+                <IconTooltip
+                  content={
+                    <FormattedMessage {...messages.emptyDescriptionWarning} />
+                  }
+                />
+              )}
+            </Box>
             <QuillMultilocWithLocaleSwitcher
               id="description"
               valueMultiloc={phaseAttrs.description_multiloc}
