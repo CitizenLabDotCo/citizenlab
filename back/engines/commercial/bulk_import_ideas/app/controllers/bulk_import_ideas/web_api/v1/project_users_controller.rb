@@ -9,7 +9,7 @@ module BulkImportIdeas
 
     def create_user
       user = User.new
-      user.assign_attributes(permitted_attributes(user))
+      user.assign_attributes user_params(user)
       if user.email.blank?
         user.unique_code = SecureRandom.uuid
       end
@@ -27,6 +27,12 @@ module BulkImportIdeas
     def authorize_project
       project = Project.find(params[:id])
       authorize project
+    end
+
+    private
+
+    def user_params(user)
+      params.require(:user).permit(UserPolicy.new(current_user, user).permitted_attributes_for_create)
     end
   end
 end
