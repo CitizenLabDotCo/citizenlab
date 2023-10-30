@@ -595,6 +595,7 @@
   "app.containers.Admin.PagesAndMenu.containers.CustomPages.pageContentTab": "محتوى الصفحة",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.automatedEmailsLinkText": "رسائل البريد الإلكتروني الآلية",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.editProject": "تعديل",
+  "app.containers.Admin.PagesAndMenu.containers.ProjectsList.emptyDescriptionWarning1": "بالنسبة لمشاريع المرحلة الواحدة، إذا كان تاريخ الانتهاء فارغًا ولم يتم ملء الوصف، فلن يتم عرض المخطط الزمني على صفحة المشروع.",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.noAvailableProjects": "لا تتوفر مشاريع مستندة إلى {pageSettingsLink}.",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.noFilter": "لا يتضمن هذا المشروع أي عامل تصفية حسب الوسم أو المنطقة؛ لذا، لن يتم عرض أي مشاريع.",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.pageMetaTitle": "قائمة المشاريع | {orgName}",
