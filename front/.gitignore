@@ -29,11 +29,11 @@ app/tsconfig.tsbuildinfo
 cypress/videos/
 cypress/screenshots/
 
+# Snapshot tests
 .storybook/snapshots/test-report
 .storybook/snapshots/test-results
 
 # Storybook generated output
-dist/
 storybook-static/*
 
 #Local VsCode config
