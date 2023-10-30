@@ -595,6 +595,7 @@
   "app.containers.Admin.PagesAndMenu.containers.CustomPages.pageContentTab": "Seiteninhalt",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.automatedEmailsLinkText": "automatisierte E-Mails",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.editProject": "Bearbeiten",
+  "app.containers.Admin.PagesAndMenu.containers.ProjectsList.emptyDescriptionWarning1": "Wenn bei einphasigen Projekten das Enddatum leer ist und die Beschreibung nicht ausgefüllt ist, wird auf der Projektseite keine Zeitleiste angezeigt.",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.noAvailableProjects": "Keine verfügbaren Projekte auf der Grundlage Ihrer {pageSettingsLink}.",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.noFilter": "Dieses Projekt hat keinen Themen- oder Gebietsfilter, daher werden keine Projekte angezeigt.",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.pageMetaTitle": "Liste der Projekte | {orgName}",
