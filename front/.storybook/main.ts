@@ -5,7 +5,7 @@ import mockModules from './mockModules';
 
 const config: StorybookConfig = {
   stories: [
-    '../app/**/*.mdx', 
+    '../app/**/*.mdx',
     '../app/**/*.stories.@(js|jsx|mjs|ts|tsx)'
   ],
   addons: [
@@ -36,6 +36,13 @@ const config: StorybookConfig = {
       ],
       alias: {
         ...mockModules,
+        polished: path.resolve('./node_modules/polished'),
+        moment: path.resolve('./node_modules/moment'),
+        react: path.resolve('./node_modules/react'),
+        'styled-components': path.resolve('./node_modules/styled-components'),
+        'react-transition-group': path.resolve(
+          './node_modules/react-transition-group'
+        ),
         ...(config?.resolve?.alias ?? {})
       }
     }
@@ -46,7 +53,7 @@ const config: StorybookConfig = {
         process: 'process/browser',
       }),
     ]
-    
+
     return config;
   },
   staticDirs: ['./public', './static']
