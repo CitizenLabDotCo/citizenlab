@@ -595,6 +595,7 @@
   "app.containers.Admin.PagesAndMenu.containers.CustomPages.pageContentTab": "Page content",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.automatedEmailsLinkText": "email automatizzate",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.editProject": "Edit",
+  "app.containers.Admin.PagesAndMenu.containers.ProjectsList.emptyDescriptionWarning1": "Per i progetti monofase, se la data di fine è vuota e la descrizione non è compilata, non verrà visualizzata una timeline nella pagina del progetto.",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.noAvailableProjects": "Nessun progetto disponibile basato sul tuo {pageSettingsLink}.",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.noFilter": "Questo progetto non ha alcun filtro di tag o area, quindi non verranno visualizzati progetti.",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.pageMetaTitle": "Elenco progetti | {orgName}",
