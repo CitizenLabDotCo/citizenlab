@@ -23,9 +23,9 @@ export const submitSurvey =
       anonymous: postAnonymously ? true : undefined,
     });
 
-    const ideaId = idea.data.id;
-    config?.onFormSubmission({ project, ideaId, idea });
-
     // Invalidate cache
     invalidateIdeaQueries(idea, queryClient);
+
+    const ideaId = idea.data.id;
+    config?.onFormSubmission({ project, ideaId, idea });
   };

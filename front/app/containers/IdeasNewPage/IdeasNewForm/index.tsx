@@ -141,7 +141,7 @@ const IdeasNewPageWithJSONForm = () => {
   // get participation method config
   const { data: phaseFromUrl } = usePhase(phaseId);
   const config = getConfig(phaseFromUrl?.data, phases, project);
-
+  const currentPhase = getCurrentPhase(phases?.data);
   const onSubmit = async (data: FormValues) => {
     if (!project) {
       return;
@@ -164,10 +164,13 @@ const IdeasNewPageWithJSONForm = () => {
         ? [phaseId]
         : null;
 
+    const { disabled_reason } =
+      project.data.attributes.action_descriptor.posting_idea;
+
     // Add authentication handling
-    if (!authUser && isSurvey && !isAnonymousSurvey) {
-      const pcId = getCurrentPhase(phases?.data)?.id || project.data.id;
-      const pcType = phases ? 'phase' : 'project';
+    if (disabled_reason && isSurvey && !isAnonymousSurvey) {
+      const pcId = currentPhase?.id || project.data.id;
+      const pcType = currentPhase ? 'phase' : 'project';
 
       const context =
         pcId && pcType
