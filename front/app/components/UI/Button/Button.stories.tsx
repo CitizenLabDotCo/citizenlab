@@ -11,7 +11,7 @@ const meta = {
   },
   // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
   argTypes: {
-    // bgColor: { control: 'color' },
+    bgColor: { control: 'color' },
   },
   args: {
     children: 'Button text',

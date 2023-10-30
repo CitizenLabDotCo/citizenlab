@@ -9,7 +9,14 @@ const mockModules = {
   'utils/cl-router/Link': rel('utils', 'cl-router', '__mocks__', 'Link'),
   '@researchgate/react-intersection-observer': path.join(
     process.cwd(), '__mocks__', 'react-intersection-observer'
-  )
+  ),
+  polished: path.resolve('./node_modules/polished'),
+  moment: path.resolve('./node_modules/moment'),
+  react: path.resolve('./node_modules/react'),
+  'styled-components': path.resolve('./node_modules/styled-components'),
+  'react-transition-group': path.resolve(
+    './node_modules/react-transition-group'
+  ),
 }
 
 export default mockModules;
