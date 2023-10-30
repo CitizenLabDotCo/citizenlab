@@ -595,6 +595,7 @@
   "app.containers.Admin.PagesAndMenu.containers.CustomPages.pageContentTab": "Садржај странице",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.automatedEmailsLinkText": "аутоматизоване е-поруке",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.editProject": "Уредити",
+  "app.containers.Admin.PagesAndMenu.containers.ProjectsList.emptyDescriptionWarning1": "За једнофазне пројекте, ако је крајњи датум празан и опис није попуњен, временска линија неће бити приказана на страници пројекта.",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.noAvailableProjects": "Нема доступних пројеката на основу вашег {pageSettingsLink}.",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.noFilter": "Овај пројекат нема ознаку или филтер подручја, тако да ниједан пројекат неће бити приказан.",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.pageMetaTitle": "Листа пројеката | {orgName}",
