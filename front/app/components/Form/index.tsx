@@ -1,4 +1,4 @@
-import React, { memo, ReactElement, useState } from 'react';
+import React, { memo, ReactElement, useEffect, useState } from 'react';
 
 // jsonforms
 import {
@@ -120,10 +120,21 @@ const Form = memo(
 
     const [apiErrors, setApiErrors] = useState<CLErrors | undefined>();
     const [loading, setLoading] = useState(false);
+    const [scrollToError, setScrollToError] = useState(false);
     const [showAllErrors, setShowAllErrors] = useState(false);
 
     const isSurvey = config === 'survey';
     const showSubmitButton = !isSurvey;
+
+    useEffect(() => {
+      if (scrollToError) {
+        // Scroll to the first field with an error
+        document
+          ?.getElementById(`error-display]`)?.[0]
+          .scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setScrollToError(false);
+      }
+    }, [scrollToError]);
 
     const layoutType = layout
       ? layout
@@ -146,14 +157,17 @@ const Form = memo(
       setShowAllErrors(true);
 
       if (isValidData(schema, uiSchema, submissionData, customAjv, isSurvey)) {
+        setScrollToError(false);
         setLoading(true);
         try {
           await onSubmit(submissionData);
         } catch (e) {
+          setScrollToError(true);
           setApiErrors(e.errors);
         }
         setLoading(false);
       }
+      setScrollToError(true);
     };
 
     useObserveEvent(submitOnEvent, handleSubmit);
