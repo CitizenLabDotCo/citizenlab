@@ -595,6 +595,7 @@
   "app.containers.Admin.PagesAndMenu.containers.CustomPages.pageContentTab": "Sidinnehåll",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.automatedEmailsLinkText": "automatiserade e-postmeddelanden",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.editProject": "Redigera",
+  "app.containers.Admin.PagesAndMenu.containers.ProjectsList.emptyDescriptionWarning1": "För enfasprojekt visas ingen tidslinje på projektsidan om slutdatumet är tomt och beskrivningen inte är ifylld.",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.noAvailableProjects": "Inga tillgängliga projekt baserat på din {pageSettingsLink}.",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.noFilter": "Det här projektet har inget filter för ämnen eller områden – därför kommer inga projekt att visas.",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.pageMetaTitle": "Projektlista | {orgName}",
