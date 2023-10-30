@@ -595,6 +595,7 @@
   "app.containers.Admin.PagesAndMenu.containers.CustomPages.pageContentTab": "crwdns1216678:0crwdne1216678:0",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.automatedEmailsLinkText": "crwdns1216680:0crwdne1216680:0",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.editProject": "crwdns1216682:0crwdne1216682:0",
+  "app.containers.Admin.PagesAndMenu.containers.ProjectsList.emptyDescriptionWarning1": "crwdns1221956:0crwdne1221956:0",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.noAvailableProjects": "crwdns1216684:0{pageSettingsLink}crwdne1216684:0",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.noFilter": "crwdns1216686:0crwdne1216686:0",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.pageMetaTitle": "crwdns1216688:0{orgName}crwdne1216688:0",
