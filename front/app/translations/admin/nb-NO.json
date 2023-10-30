@@ -595,6 +595,7 @@
   "app.containers.Admin.PagesAndMenu.containers.CustomPages.pageContentTab": "Sideinnhold",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.automatedEmailsLinkText": "automatiserte e-poster",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.editProject": "Rediger",
+  "app.containers.Admin.PagesAndMenu.containers.ProjectsList.emptyDescriptionWarning1": "For enkeltfaseprosjekter, hvis sluttdatoen er tom og beskrivelsen ikke er fylt ut, vil det ikke vises en tidslinje på prosjektsiden.",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.noAvailableProjects": "Ingen tilgjengelige prosjekter basert på dine {pageSettingsLink}.",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.noFilter": "Dette prosjektet har ingen tagg- eller områdefilter, så ingen prosjekter vil bli vist.",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.pageMetaTitle": "Prosjektliste | {orgName}",
