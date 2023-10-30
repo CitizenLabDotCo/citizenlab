@@ -137,6 +137,11 @@ export interface OutletsPropertyMap {
     project: IProjectData;
     phases: IPhaseData[] | null;
   };
+  'app.containers.Admin.projects.edit.settings': {
+    onData: (data: InsertConfigurationOptions<ITab>) => void;
+    project: IProjectData;
+    phases: IPhaseData[] | null;
+  };
   'app.containers.Admin.settings.tabs': {
     onData: (data: InsertConfigurationOptions<ITab>) => void;
   };
