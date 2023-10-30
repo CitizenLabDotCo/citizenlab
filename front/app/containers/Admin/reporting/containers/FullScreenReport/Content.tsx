@@ -21,12 +21,9 @@ const Content = ({ editorData }: Props) => {
      look nice and centered */
   return (
     <Box
-      // width={A4_WIDTH}
-      maxWidth={A4_WIDTH}
-      width="100%"
-      // pl="5mm"
-      // pr="10mm"
-      p="5px"
+      width={A4_WIDTH}
+      pl="5mm"
+      pr="10mm"
       position="absolute"
       background="white"
     >
