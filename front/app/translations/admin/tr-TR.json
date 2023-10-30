@@ -595,6 +595,7 @@
   "app.containers.Admin.PagesAndMenu.containers.CustomPages.pageContentTab": "Sayfa içeriği",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.automatedEmailsLinkText": "otomatik e-postalar",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.editProject": "Düzenle",
+  "app.containers.Admin.PagesAndMenu.containers.ProjectsList.emptyDescriptionWarning1": "Tek aşamalı projeler için, bitiş tarihi boşsa ve açıklama doldurulmamışsa, proje sayfasında bir zaman çizelgesi görüntülenmeyecektir.",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.noAvailableProjects": "{pageSettingsLink}adresinize göre mevcut proje yok.",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.noFilter": "Bu projenin etiket veya alan filtresi yoktur, bu nedenle hiçbir proje görüntülenmeyecektir.",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.pageMetaTitle": "Projeler listesi | {orgName}",
