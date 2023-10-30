@@ -31,6 +31,9 @@ import avatarsEndpoints from '../app/api/avatars/__mocks__/_mockServer';
 import reportsEndpoints from '../app/api/reports/__mocks__/_mockServer';
 import reportLayoutEndpoints from '../app/api/report_layout/__mocks__/_mockServer';
 
+// analytics mock data
+import analyticsEndpoints from '../app/api/analytics/__mocks__/_mockServer';
+
 const endpoints = {
   ...appConfigurationEndpoints,
   ...usersMeEndpoints,
@@ -55,7 +58,9 @@ const endpoints = {
   ...avatarsEndpoints,
 
   ...reportsEndpoints,
-  ...reportLayoutEndpoints
+  ...reportLayoutEndpoints,
+
+  ...analyticsEndpoints
 }
 
 export default endpoints;
