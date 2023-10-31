@@ -17,6 +17,7 @@ module Analytics
   class FactParticipation < Analytics::ApplicationRecordView
     self.primary_key = :id
     belongs_to :dimension_user, class_name: 'Analytics::DimensionUser'
+    belongs_to :dimension_user_custom_fields, class_name: 'Analytics::DimensionUserCustomField', foreign_key: :dimension_user_id
     belongs_to :dimension_type, class_name: 'Analytics::DimensionType'
     belongs_to :dimension_date_created, class_name: 'Analytics::DimensionDate', primary_key: 'date'
     belongs_to :dimension_project, class_name: 'Analytics::DimensionProject', optional: true

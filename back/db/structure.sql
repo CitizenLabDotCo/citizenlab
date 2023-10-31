@@ -668,6 +668,7 @@ DROP VIEW IF EXISTS public.analytics_fact_email_deliveries;
 DROP TABLE IF EXISTS public.email_campaigns_deliveries;
 DROP TABLE IF EXISTS public.email_campaigns_campaigns;
 DROP VIEW IF EXISTS public.analytics_dimension_users;
+DROP VIEW IF EXISTS public.analytics_dimension_user_custom_fields;
 DROP TABLE IF EXISTS public.users;
 DROP TABLE IF EXISTS public.analytics_dimension_types;
 DROP VIEW IF EXISTS public.analytics_dimension_statuses;
@@ -1392,6 +1393,18 @@ CREATE TABLE public.users (
     onboarding jsonb DEFAULT '{}'::jsonb NOT NULL,
     unique_code character varying
 );
+
+
+--
+-- Name: analytics_dimension_user_custom_fields; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.analytics_dimension_user_custom_fields AS
+ SELECT users.id,
+    custom_field_values.key,
+    custom_field_values.value
+   FROM (public.users
+     JOIN LATERAL jsonb_each_text(users.custom_field_values) custom_field_values(key, value) ON (true));
 
 
 --
@@ -7972,6 +7985,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230927135924'),
 ('20231003095622'),
 ('20231024082513'),
-('20231024154935');
+('20231024154935'),
+('20231031175023');
 
 

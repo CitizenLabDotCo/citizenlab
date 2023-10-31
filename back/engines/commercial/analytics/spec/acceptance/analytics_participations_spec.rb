@@ -78,17 +78,22 @@ resource 'Analytics - FactParticipations' do
       do_request({
         query: {
           fact: 'participation',
-          groups: 'dimension_user.gender',
+          groups: 'dimension_user_custom_fields.value',
+          filters: {
+            'dimension_user_custom_fields.key': 'gender'
+          },
           aggregations: {
             all: 'count'
           }
         }
       })
-      assert_status 200
+      expect(json_response_body).to have_key(:data)
       expect(response_data[:attributes]).to match_array([
-        { 'dimension_user.gender': 'female',      count: 2 },
-        { 'dimension_user.gender': 'unspecified', count: 1 },
-        { 'dimension_user.gender': 'male',        count: 1 }])
+        { 'dimension_user_custom_fields.value': 'female',      count: 2 },
+        { 'dimension_user_custom_fields.value': 'unspecified', count: 1 },
+        { 'dimension_user_custom_fields.value': 'male',        count: 1 }
+      ])
+      assert_status 200
     end
 
     example 'filter participations by project' do
