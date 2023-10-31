@@ -23,9 +23,6 @@ export interface IUsersByCustomField {
         reference_population: {
           [key: string]: number;
         } | null;
-        expected_users: {
-          [key: string]: number;
-        } | null;
       };
       options: {
         [key: string]: {
