@@ -1,6 +1,7 @@
 import { useIntl } from 'utils/cl-intl';
+import { Locale } from 'typings';
 
 export default function useLocale() {
   const { locale } = useIntl();
-  return locale;
+  return locale as Locale;
 }

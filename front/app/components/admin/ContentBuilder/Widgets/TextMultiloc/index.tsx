@@ -14,10 +14,8 @@ import messages from './messages';
 
 // hooks
 import { useTheme } from 'styled-components';
-import { Multiloc, Locale } from 'typings';
-import { getLocalizedWithFallback } from 'utils/i18n';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import { useIntl } from 'utils/cl-intl';
+import { Multiloc } from 'typings';
+import useLocalize from 'hooks/useLocalize';
 
 interface Props {
   text: Multiloc;
@@ -25,10 +23,9 @@ interface Props {
 
 const TextMultiloc = ({ text }: Props) => {
   const theme = useTheme();
-  const { locale } = useIntl() as { locale: Locale };
-  const tenantLocales = useAppConfigurationLocales();
+  const localize = useLocalize();
 
-  const value = getLocalizedWithFallback(text, locale, tenantLocales);
+  const value = localize(text);
 
   return (
     <PageBreakBox id="e2e-text-box" minHeight="26px">
