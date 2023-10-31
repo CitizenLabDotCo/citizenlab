@@ -607,6 +607,7 @@
   "app.components.form.controls.selectBetween": "*Seleziona tra le opzioni {minItems} e {maxItems}",
   "app.components.form.controls.selectExactly2": "*Seleziona esattamente {selectExactly, plural, one {# opzione} other {# opzioni}}",
   "app.components.form.controls.selectMany": "*Scegli quanti ne vuoi",
+  "app.components.form.controls.validCordinatesTooltip": "Se la posizione non viene visualizzata tra le opzioni durante la digitazione, puoi aggiungere delle coordinate valide nel formato \"latitudine, longitudine\" per specificare una posizione precisa.",
   "app.components.form.error": "Errore",
   "app.components.form.locationGoogleUnavailable": "Impossibile caricare il campo posizione fornito da google maps.",
   "app.components.form.submit": "Invia",
