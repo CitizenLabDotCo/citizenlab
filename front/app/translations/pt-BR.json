@@ -1321,7 +1321,7 @@
   "app.containers.Projects.navPoll": "Pesquisa",
   "app.containers.Projects.navSurvey": "Pesquisa",
   "app.containers.Projects.nextPhase": "Próxima fase",
-  "app.containers.Projects.noEndDate": "Sem data de término",
+  "app.containers.Projects.noEndDate": "Sem data final",
   "app.containers.Projects.noItems": "Você ainda não selecionou nenhum item",
   "app.containers.Projects.noPastEvents": "Nenhum evento passado a exibir",
   "app.containers.Projects.noPhaseSelected": "Nenhuma fase selecionada",
