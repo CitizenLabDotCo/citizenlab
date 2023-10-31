@@ -13,7 +13,7 @@ import Text from 'components/admin/ContentBuilder/Widgets/Text';
 import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
 import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
-import Iframe from 'components/admin/ContentBuilder/Widgets/Iframe';
+import IframeMultiloc from 'components/admin/ContentBuilder/Widgets/IframeMultiloc';
 import AccordionMultiloc from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import ImageTextCards from '../CraftSections/ImageTextCards';
@@ -41,7 +41,7 @@ const Editor: React.FC<EditorProps> = ({
         ThreeColumn,
         Text,
         ImageMultiloc,
-        Iframe,
+        IframeMultiloc,
         TextMultiloc,
         AccordionMultiloc,
         WhiteSpace,

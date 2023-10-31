@@ -17,7 +17,7 @@ import Text from 'components/admin/ContentBuilder/Widgets/Text';
 import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
 import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
-import Iframe from 'components/admin/ContentBuilder/Widgets/Iframe';
+import IframeMultiloc from 'components/admin/ContentBuilder/Widgets/IframeMultiloc';
 import AccordionMultiloc from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import ButtonMultiloc from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
@@ -141,7 +141,7 @@ const ProjectDescriptionBuilderToolbox = ({
       <DraggableElement
         id="e2e-draggable-iframe"
         component={
-          <Iframe
+          <IframeMultiloc
             url=""
             height={500}
             hasError={false}
@@ -149,7 +149,7 @@ const ProjectDescriptionBuilderToolbox = ({
           />
         }
         icon="code"
-        label={formatMessage(Iframe.craft.custom.title)}
+        label={formatMessage(IframeMultiloc.craft.custom.title)}
       />
       <DraggableElement
         id="e2e-draggable-accordion"
