@@ -11,7 +11,7 @@ const config: StorybookConfig = {
   addons: [
     '@storybook/addon-links',
     '@storybook/addon-essentials',
-    'storybook-addon-react-router-v6',
+    // 'storybook-addon-react-router-v6',
     'storybook-react-intl',
   ],
   framework: {
