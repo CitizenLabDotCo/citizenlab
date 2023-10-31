@@ -12,7 +12,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Standard: Story = {
+export const Ideation: Story = {
   args: {
     reportId: '1',
   },

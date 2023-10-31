@@ -1,4 +1,5 @@
 import { rest } from 'msw';
+import { API_PATH } from 'containers/App/constants';
 import { IIdeaData } from '../types';
 
 export const ideaData: IIdeaData[] = [
@@ -217,10 +218,14 @@ export const ideaData: IIdeaData[] = [
   },
 ];
 
-export const apiPathById = '/web_api/v1/ideas/:ideaId';
-export const apiPathBySlug = '/web_api/v1/ideas/by_slug/:slug';
+export const apiPathIdeas = `${API_PATH}/ideas`;
+export const apiPathById = `${API_PATH}/ideas/:ideaId`;
+export const apiPathBySlug = `${API_PATH}/ideas/by_slug/:slug`;
 
 const endpoints = {
+  'GET ideas': rest.get(apiPathIdeas, (_req, res, ctx) => {
+    return res(ctx.status(200), ctx.json({ data: ideaData }));
+  }),
   'GET ideas/:id': rest.get(apiPathById, (_req, res, ctx) => {
     return res(ctx.status(200), ctx.json({ data: ideaData[0] }));
   }),
