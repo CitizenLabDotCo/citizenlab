@@ -607,6 +607,7 @@
   "app.components.form.controls.selectBetween": "*Odaberite između {minItems} i {maxItems} opcije",
   "app.components.form.controls.selectExactly2": "*Odaberi točno {selectExactly, plural, one {#opcija} other {# opcija}}",
   "app.components.form.controls.selectMany": "*Odaberite koliko god želite",
+  "app.components.form.controls.validCordinatesTooltip": "Ako lokacija nije prikazana među opcijama dok upisujete, možete dodati važeće koordinate u formatu 'geografska širina, dužina' kako biste odredili točnu lokaciju.",
   "app.components.form.error": "Pogreška",
   "app.components.form.locationGoogleUnavailable": "Učitavanje polja s lokacijom s Google Mapa nije uspjelo.",
   "app.components.form.submit": "Pošalji",
