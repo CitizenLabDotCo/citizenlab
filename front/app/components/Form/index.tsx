@@ -157,7 +157,6 @@ const Form = memo(
       setShowAllErrors(true);
 
       if (isValidData(schema, uiSchema, submissionData, customAjv, isSurvey)) {
-        setScrollToError(false);
         setLoading(true);
         try {
           await onSubmit(submissionData);
