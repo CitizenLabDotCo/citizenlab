@@ -186,29 +186,29 @@ export const reportLayout: ReportLayoutResponse = {
             displayName: 'Text',
             linkedNodes: {},
           },
-          // G6IhcWWI4Z: {
-          //   type: {
-          //     resolvedName: 'VisitorsWidget',
-          //   },
-          //   nodes: [],
-          //   props: {
-          //     endAt: '2023-10-30',
-          //     title: 'Visitor timeline',
-          //     projectId: 'f229c7e1-cf50-45fe-a231-dd52cd1e7037',
-          //   },
-          //   custom: {
-          //     title: {
-          //       id: 'app.containers.admin.ReportBuilder.charts.visitorTimeline',
-          //       defaultMessage: 'Visitor timeline',
-          //     },
-          //     noPointerEvents: true,
-          //   },
-          //   hidden: false,
-          //   parent: 'X_opigwx8m',
-          //   isCanvas: false,
-          //   displayName: 'VisitorsWidget',
-          //   linkedNodes: {},
-          // },
+          G6IhcWWI4Z: {
+            type: {
+              resolvedName: 'VisitorsWidget',
+            },
+            nodes: [],
+            props: {
+              endAt: '2023-10-30',
+              title: 'Visitor timeline',
+              projectId: 'f229c7e1-cf50-45fe-a231-dd52cd1e7037',
+            },
+            custom: {
+              title: {
+                id: 'app.containers.admin.ReportBuilder.charts.visitorTimeline',
+                defaultMessage: 'Visitor timeline',
+              },
+              noPointerEvents: true,
+            },
+            hidden: false,
+            parent: 'X_opigwx8m',
+            isCanvas: false,
+            displayName: 'VisitorsWidget',
+            linkedNodes: {},
+          },
           GWFxift8X4: {
             type: {
               resolvedName: 'Container',
@@ -329,7 +329,7 @@ export const reportLayout: ReportLayoutResponse = {
               'PeS1X8smYx',
               'zZqC-iR-hj',
               '4V3_Kba9lq',
-              // 'G6IhcWWI4Z',
+              'G6IhcWWI4Z',
             ],
             props: {},
             custom: {},
