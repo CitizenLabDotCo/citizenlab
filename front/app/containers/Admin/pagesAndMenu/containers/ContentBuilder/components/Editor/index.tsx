@@ -16,7 +16,6 @@ import Image from 'components/admin/ContentBuilder/Widgets/Image';
 import Iframe from 'components/admin/ContentBuilder/Widgets/Iframe';
 import AccordionMultiloc from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
-import InfoWithAccordions from '../CraftSections/InfoWithAccordions';
 import ImageTextCards from '../CraftSections/ImageTextCards';
 import Button from 'components/admin/ContentBuilder/Widgets/Button';
 import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
@@ -46,7 +45,6 @@ const Editor: React.FC<EditorProps> = ({
         TextMultiloc,
         AccordionMultiloc,
         WhiteSpace,
-        InfoWithAccordions,
         ImageTextCards,
         Button,
         HomepageBanner,

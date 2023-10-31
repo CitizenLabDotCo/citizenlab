@@ -68,7 +68,7 @@ TextMultiloc.craft = {
     settings: TextMultilocSettings,
   },
   custom: {
-    title: messages.text,
+    title: messages.textMultiloc,
   },
 };
 

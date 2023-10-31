@@ -72,12 +72,12 @@ const AccordionSettings = () => {
             setProp((props: AccordionProps) => (props.title = value));
           }}
           valueMultiloc={title}
-          label={formatMessage(messages.accordionTitleLabel)}
+          label={formatMessage(messages.accordionMultilocTitleLabel)}
         />
       </Box>
       <Box flex="0 1 100%" background="#ffffff">
         <QuillMutilocWithLocaleSwitcher
-          label={formatMessage(messages.accordionTextLabel)}
+          label={formatMessage(messages.accordionMultilocTextLabel)}
           maxHeight="225px"
           noImages
           noVideos
@@ -97,7 +97,7 @@ const AccordionSettings = () => {
               (props: AccordionProps) => (props.openByDefault = !openByDefault)
             );
           }}
-          label={formatMessage(messages.accordionDefaultOpenLabel)}
+          label={formatMessage(messages.accordionMultilocDefaultOpenLabel)}
         />
       </Box>
     </Box>
@@ -113,7 +113,7 @@ Accordion.craft = {
     settings: AccordionSettings,
   },
   custom: {
-    title: messages.accordion,
+    title: messages.accordionMultiloc,
   },
 };
 

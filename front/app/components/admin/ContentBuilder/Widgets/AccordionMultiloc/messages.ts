@@ -1,29 +1,29 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  accordion: {
-    id: 'app.containers.admin.ContentBuilder.accordion',
+  accordionMultiloc: {
+    id: 'app.containers.admin.ContentBuilder.accordionMultiloc',
     defaultMessage: 'Accordion',
   },
-  accordionTitleValue: {
-    id: 'app.containers.admin.ContentBuilder.accordionTitleValue',
+  accordionMultilocTitleValue: {
+    id: 'app.containers.admin.ContentBuilder.accordionMultilocTitleValue',
     defaultMessage: 'Accordion title',
   },
-  accordionTitleLabel: {
-    id: 'app.containers.admin.ContentBuilder.accordionTitleLabel',
+  accordionMultilocTitleLabel: {
+    id: 'app.containers.admin.ContentBuilder.accordionMultilocTitleLabel',
     defaultMessage: 'Title',
   },
-  accordionTextLabel: {
-    id: 'app.containers.admin.ContentBuilder.accordionTextLabel',
+  accordionMultilocTextLabel: {
+    id: 'app.containers.admin.ContentBuilder.accordionMultilocTextLabel',
     defaultMessage: 'Text',
   },
-  accordionTextValue: {
-    id: 'app.containers.admin.ContentBuilder.accordionTextValue',
+  accordionMultilocTextValue: {
+    id: 'app.containers.admin.ContentBuilder.accordionMultilocTextValue',
     defaultMessage:
       'This is expandable accordion content. You can edit and format it by using the editor in the panel on the right.',
   },
-  accordionDefaultOpenLabel: {
-    id: 'app.containers.admin.ContentBuilder.accordionDefaultOpenLabel',
+  accordionMultilocDefaultOpenLabel: {
+    id: 'app.containers.admin.ContentBuilder.accordionMultilocDefaultOpenLabel',
     defaultMessage: 'Open by default',
   },
 });

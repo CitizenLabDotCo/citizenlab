@@ -10,17 +10,10 @@ import { UserComponent, Element } from '@craftjs/core';
 import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import Container from 'components/admin/ContentBuilder/Widgets/Container';
 import Image from 'components/admin/ContentBuilder/Widgets/Image';
-import Text from 'components/admin/ContentBuilder/Widgets/Text';
+import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 
-// intl
-import textMessages from 'components/admin/ContentBuilder/Widgets/Text/messages';
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-
-const ImageTextCards: UserComponent = ({
-  intl: { formatMessage },
-}: WrappedComponentProps) => {
+const ImageTextCards: UserComponent = () => {
   return (
     <Element id="image-text-cards" is={Box} canvas>
       <TwoColumn columnLayout="1-2">
@@ -28,7 +21,7 @@ const ImageTextCards: UserComponent = ({
           <Image alt="" />
         </Element>
         <Element id="right" is={Container} canvas>
-          <Text text={formatMessage(textMessages.textValue)} />
+          <TextMultiloc text={{}} />
         </Element>
       </TwoColumn>
       <WhiteSpace size="small" />
@@ -37,7 +30,7 @@ const ImageTextCards: UserComponent = ({
           <Image alt="" />
         </Element>
         <Element id="right" is={Container} canvas>
-          <Text text={formatMessage(textMessages.textValue)} />
+          <TextMultiloc text={{}} />
         </Element>
       </TwoColumn>
       <WhiteSpace size="small" />
@@ -46,11 +39,11 @@ const ImageTextCards: UserComponent = ({
           <Image alt="" />
         </Element>
         <Element id="right" is={Container} canvas>
-          <Text text={formatMessage(textMessages.textValue)} />
+          <TextMultiloc text={{}} />
         </Element>
       </TwoColumn>
     </Element>
   );
 };
 
-export default injectIntl(ImageTextCards);
+export default ImageTextCards;

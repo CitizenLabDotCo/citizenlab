@@ -21,7 +21,6 @@ import Iframe from 'components/admin/ContentBuilder/Widgets/Iframe';
 import AccordionMultiloc from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import Button from 'components/admin/ContentBuilder/Widgets/Button';
-import InfoWithAccordions from '../CraftSections/InfoWithAccordions';
 import ImageTextCards from '../CraftSections/ImageTextCards';
 import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
 
@@ -88,12 +87,6 @@ const ProjectDescriptionBuilderToolbox = ({
         component={<ImageTextCards />}
         icon="section-image-text"
         label={formatMessage(messages.imageTextCards)}
-      />
-      <DraggableElement
-        id="e2e-draggable-info-accordions"
-        component={<InfoWithAccordions />}
-        icon="section-info-accordion"
-        label={formatMessage(messages.infoWithAccordions)}
       />
 
       <SectionTitle>
