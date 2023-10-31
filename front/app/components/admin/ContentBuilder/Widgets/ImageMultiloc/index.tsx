@@ -6,6 +6,8 @@ import {
   Image as ImageComponent,
   colors,
   Icon,
+  Label,
+  IconTooltip,
 } from '@citizenlab/cl2-component-library';
 import PageBreakBox from '../PageBreakBox';
 
@@ -151,13 +153,17 @@ const ImageSettings = injectIntl(({ intl: { formatMessage } }) => {
       />
       <Box mb="12px" display={imageFiles.length > 0 ? 'block' : 'none'} />
       <Box mt="16px">
+        <Label htmlFor="imageAltTextInput">
+          {formatMessage(messages.imageMultilocAltTextLabel)}
+          <IconTooltip
+            content={formatMessage(messages.imageMultilocAltTextTooltip)}
+          />
+        </Label>
         <InputMultilocWithLocaleSwitcher
           type="text"
           id="imageAltTextInput"
           onChange={handleChange}
           valueMultiloc={alt}
-          labelTooltipText={formatMessage(messages.imageMultilocAltTextTooltip)}
-          label={formatMessage(messages.imageMultilocAltTextLabel)}
         />
       </Box>
     </Box>

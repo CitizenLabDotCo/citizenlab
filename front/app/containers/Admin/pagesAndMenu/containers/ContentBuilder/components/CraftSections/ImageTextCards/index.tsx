@@ -9,7 +9,7 @@ import { UserComponent, Element } from '@craftjs/core';
 // widgets
 import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import Container from 'components/admin/ContentBuilder/Widgets/Container';
-import Image from 'components/admin/ContentBuilder/Widgets/Image';
+import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
 import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 
@@ -18,7 +18,7 @@ const ImageTextCards: UserComponent = () => {
     <Element id="image-text-cards" is={Box} canvas>
       <TwoColumn columnLayout="1-2">
         <Element id="left" is={Container} canvas>
-          <Image alt="" />
+          <ImageMultiloc alt={{}} />
         </Element>
         <Element id="right" is={Container} canvas>
           <TextMultiloc text={{}} />
@@ -27,7 +27,7 @@ const ImageTextCards: UserComponent = () => {
       <WhiteSpace size="small" />
       <TwoColumn columnLayout="1-2">
         <Element id="left" is={Container} canvas>
-          <Image alt="" />
+          <ImageMultiloc alt={{}} />
         </Element>
         <Element id="right" is={Container} canvas>
           <TextMultiloc text={{}} />
@@ -36,7 +36,7 @@ const ImageTextCards: UserComponent = () => {
       <WhiteSpace size="small" />
       <TwoColumn columnLayout="1-2">
         <Element id="left" is={Container} canvas>
-          <Image alt="" />
+          <ImageMultiloc alt={{}} />
         </Element>
         <Element id="right" is={Container} canvas>
           <TextMultiloc text={{}} />

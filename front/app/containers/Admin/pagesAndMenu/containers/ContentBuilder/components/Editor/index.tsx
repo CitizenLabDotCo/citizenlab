@@ -12,12 +12,12 @@ import Container from 'components/admin/ContentBuilder/Widgets/Container';
 import Text from 'components/admin/ContentBuilder/Widgets/Text';
 import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
-import Image from 'components/admin/ContentBuilder/Widgets/Image';
+import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
 import Iframe from 'components/admin/ContentBuilder/Widgets/Iframe';
 import AccordionMultiloc from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import ImageTextCards from '../CraftSections/ImageTextCards';
-import Button from 'components/admin/ContentBuilder/Widgets/Button';
+import ButtonMultiloc from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
 import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
 import HomepageBanner from '../CraftSections/HomepageBanner';
 
@@ -40,13 +40,13 @@ const Editor: React.FC<EditorProps> = ({
         TwoColumn,
         ThreeColumn,
         Text,
-        Image,
+        ImageMultiloc,
         Iframe,
         TextMultiloc,
         AccordionMultiloc,
         WhiteSpace,
         ImageTextCards,
-        Button,
+        ButtonMultiloc,
         HomepageBanner,
       }}
       isPreview={isPreview}

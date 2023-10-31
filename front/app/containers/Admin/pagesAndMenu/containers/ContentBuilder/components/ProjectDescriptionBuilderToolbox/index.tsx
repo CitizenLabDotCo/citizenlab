@@ -16,11 +16,11 @@ import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableE
 import Text from 'components/admin/ContentBuilder/Widgets/Text';
 import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
-import Image from 'components/admin/ContentBuilder/Widgets/Image';
+import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
 import Iframe from 'components/admin/ContentBuilder/Widgets/Iframe';
 import AccordionMultiloc from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
-import Button from 'components/admin/ContentBuilder/Widgets/Button';
+import ButtonMultiloc from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
 import ImageTextCards from '../CraftSections/ImageTextCards';
 import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
 
@@ -122,21 +122,21 @@ const ProjectDescriptionBuilderToolbox = ({
       <DraggableElement
         id="e2e-draggable-button"
         component={
-          <Button
-            text={formatMessage(Button.craft.custom.title)}
+          <ButtonMultiloc
+            text={{}}
             url={''}
             type={'primary'}
             alignment={'left'}
           />
         }
         icon="button"
-        label={formatMessage(Button.craft.custom.title)}
+        label={formatMessage(ButtonMultiloc.craft.custom.title)}
       />
       <DraggableElement
         id="e2e-draggable-image"
-        component={<Image alt="" />}
+        component={<ImageMultiloc alt={{}} />}
         icon="image"
-        label={formatMessage(Image.craft.custom.title)}
+        label={formatMessage(ImageMultiloc.craft.custom.title)}
       />
       <DraggableElement
         id="e2e-draggable-iframe"

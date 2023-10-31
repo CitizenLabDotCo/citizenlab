@@ -6,11 +6,11 @@ export default defineMessages({
     defaultMessage: 'Image',
   },
   imageMultilocAltTextLabel: {
-    id: 'app.containers.admin.ContentBuilder.imageMultilocAltTextLabel',
-    defaultMessage: 'Short description of the imageMultiloc',
+    id: 'app.containers.admin.ContentBuilder.imageMultilocAltLabel',
+    defaultMessage: 'Short description of the image',
   },
   imageMultilocAltTextTooltip: {
-    id: 'app.containers.admin.ContentBuilder.imageMultilocAltTextTooltip',
+    id: 'app.containers.admin.ContentBuilder.imageMultilocAltTooltip',
     defaultMessage:
       'Adding "alt text" for images is important to make your platform accessible for users using screen readers.',
   },
