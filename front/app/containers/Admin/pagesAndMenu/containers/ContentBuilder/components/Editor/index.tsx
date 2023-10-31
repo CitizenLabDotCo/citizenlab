@@ -14,7 +14,7 @@ import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
 import Image from 'components/admin/ContentBuilder/Widgets/Image';
 import Iframe from 'components/admin/ContentBuilder/Widgets/Iframe';
-import Accordion from 'components/admin/ContentBuilder/Widgets/Accordion';
+import AccordionMultiloc from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import InfoWithAccordions from '../CraftSections/InfoWithAccordions';
 import ImageTextCards from '../CraftSections/ImageTextCards';
@@ -44,7 +44,7 @@ const Editor: React.FC<EditorProps> = ({
         Image,
         Iframe,
         TextMultiloc,
-        Accordion,
+        AccordionMultiloc,
         WhiteSpace,
         InfoWithAccordions,
         ImageTextCards,

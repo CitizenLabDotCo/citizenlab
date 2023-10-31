@@ -5,7 +5,6 @@ import React from 'react';
 // i18n
 import contentBuilderMessages from 'components/admin/ContentBuilder/messages';
 import messages from '../../messages';
-import accordionMessages from 'components/admin/ContentBuilder/Widgets/Accordion/messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 // components
@@ -19,7 +18,7 @@ import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
 import Image from 'components/admin/ContentBuilder/Widgets/Image';
 import Iframe from 'components/admin/ContentBuilder/Widgets/Iframe';
-import Accordion from 'components/admin/ContentBuilder/Widgets/Accordion';
+import AccordionMultiloc from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import Button from 'components/admin/ContentBuilder/Widgets/Button';
 import InfoWithAccordions from '../CraftSections/InfoWithAccordions';
@@ -161,14 +160,9 @@ const ProjectDescriptionBuilderToolbox = ({
       />
       <DraggableElement
         id="e2e-draggable-accordion"
-        component={
-          <Accordion
-            title={formatMessage(accordionMessages.accordionTitleValue)}
-            text={formatMessage(accordionMessages.accordionTextValue)}
-          />
-        }
+        component={<AccordionMultiloc title={{}} text={{}} />}
         icon="accordion"
-        label={formatMessage(Accordion.craft.custom.title)}
+        label={formatMessage(AccordionMultiloc.craft.custom.title)}
       />
     </Container>
   );
