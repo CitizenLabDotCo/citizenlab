@@ -607,6 +607,7 @@
   "app.components.form.controls.selectBetween": "* Wielt tëscht {minItems} an {maxItems} Optiounen",
   "app.components.form.controls.selectExactly2": "* Wielt genau {selectExactly, plural, one {#Optioun} other {# Optiounen}}",
   "app.components.form.controls.selectMany": "*Wielt esouvill, wéi Dir wëllt",
+  "app.components.form.controls.validCordinatesTooltip": "Wann de Standort net ënnert den Optiounen ugewise gëtt wéi Dir tippt, kënnt Dir gëlteg Koordinaten am Format 'Breet, Längt' addéieren fir eng präzis Plaz ze spezifizéieren.",
   "app.components.form.error": "Feeler",
   "app.components.form.locationGoogleUnavailable": "Konnt d’Standuertfeld, dat vu Google Maps zur Verfügung gestallt gouf, net lueden.",
   "app.components.form.submit": "Schécken",
