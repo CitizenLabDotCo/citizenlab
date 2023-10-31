@@ -29,11 +29,15 @@ resource 'Analytics - FactParticipations' do
         create(:dimension_type, name: type[:name], parent: type[:parent])
       end
 
+      male = create(:user, gender: 'male')
+      female = create(:user, gender: 'female')
+      unspecified = create(:user, gender: 'unspecified')
+
       # Create participations (3 by citizens, 1 by admin)
-      idea = create(:idea, created_at: dates[0])
-      create(:comment, created_at: dates[2], post: idea)
-      create(:reaction, created_at: dates[3], user: create(:admin), reactable: idea)
-      create(:initiative, created_at: dates[1])
+      idea = create(:idea, created_at: dates[0], author: male)
+      create(:comment, created_at: dates[2], post: idea, author: female)
+      create(:reaction, created_at: dates[3], user: create(:admin, gender: 'female'), reactable: idea)
+      create(:initiative, created_at: dates[1], author: unspecified)
     end
 
     example 'group participations by month' do
