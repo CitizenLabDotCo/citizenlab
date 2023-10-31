@@ -19,7 +19,6 @@ const data: IUsersByCustomField = {
           unspecified: 1,
           _blank: 3,
         },
-        expected_users: null,
         reference_population: null,
       },
       options: {
