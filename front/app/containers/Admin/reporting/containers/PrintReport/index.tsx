@@ -35,10 +35,16 @@ const EVENTS = [
   'mouseout',
 ];
 
-const PrintReport = () => {
+interface Props {
+  _print?: boolean; // only used to disable printing during testing
+}
+
+const PrintReport = ({ _print = true }: Props) => {
   const [isPrintReady, setIsPrintReady] = useState(false);
 
   useEffect(() => {
+    if (!_print) return;
+
     if (isPrintReady) {
       window.print();
     } else {
