@@ -607,6 +607,7 @@
   "app.components.form.controls.selectBetween": "*Välj mellan alternativen {minItems} och {maxItems}",
   "app.components.form.controls.selectExactly2": "* Välj exakt {selectExactly, plural, one {# alternativ} other {# alternativ}}",
   "app.components.form.controls.selectMany": "*Välj hur många du vill",
+  "app.components.form.controls.validCordinatesTooltip": "Om platsen inte visas bland alternativen när du skriver kan du lägga till giltiga koordinater i formatet \"latitud, longitud\" för att ange en exakt plats.",
   "app.components.form.error": "Fel",
   "app.components.form.locationGoogleUnavailable": "Det gick inte att läsa in platsfältet från Google Maps.",
   "app.components.form.submit": "Skicka",
