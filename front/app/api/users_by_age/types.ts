@@ -11,7 +11,6 @@ export interface IUsersByAge {
       unknown_age_count: number;
       series: {
         user_counts: number[];
-        expected_user_counts: number[];
         reference_population: number[];
         bins: (number | null)[];
       };
