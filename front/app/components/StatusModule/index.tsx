@@ -35,6 +35,9 @@ import { fontSizes } from 'utils/styleUtils';
 import messages from './messages';
 import useLocalize from 'hooks/useLocalize';
 
+import tracks from './tracks';
+import { trackEventByName } from 'utils/analytics';
+
 type StatusModuleProps = {
   votingMethod?: VotingMethod | null;
   phase?: IPhaseData;
@@ -162,6 +165,9 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
               mt="16px"
               id="e2e-modify-votes"
               onClick={() => {
+                trackEventByName(tracks.modifyVote, {
+                  basketId: basket?.data.id,
+                });
                 unsubmitBasket(
                   basket?.data.id,
                   updateBasket,

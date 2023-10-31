@@ -35,6 +35,9 @@ import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import eventEmitter from 'utils/eventEmitter';
 import { IMAGES_LOADED_EVENT } from 'components/admin/ContentBuilder/constants';
 
+import tracks from './tracks';
+import { trackEventByName } from 'utils/analytics';
+
 interface Props {
   ideaId: string;
   phaseId?: string | null;
@@ -123,6 +126,9 @@ const IdeaCard = memo<IdeaCardProps>(
     const params = goBackMode === 'browserGoBackButton' ? '?go_back=true' : '';
 
     const handleClick = (e: React.MouseEvent) => {
+      trackEventByName(tracks.ideaCardClick, {
+        ideaId: idea.data.id,
+      });
       e.preventDefault();
       updateSearchParams({ scroll_to_card: idea.data.id });
       clHistory.push(`/ideas/${slug}${params}`);
