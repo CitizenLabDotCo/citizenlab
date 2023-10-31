@@ -4,7 +4,6 @@ import contexts from './contexts';
 import { initialize, mswDecorator } from 'msw-storybook-addon';
 import mockServer from './mockServer'
 import { reactIntl } from './reactIntl';
-// import { withRouter } from 'storybook-addon-react-router-v6';
 import { MemoryRouter } from 'react-router-dom';
 
 initialize();
