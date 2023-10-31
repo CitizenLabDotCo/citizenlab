@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
 
 // routing
 import { useParams } from 'react-router-dom';
@@ -12,9 +13,10 @@ import { ReportContext } from '../../context/ReportContext';
 // components
 import { Text, Spinner, Box } from '@citizenlab/cl2-component-library';
 import { FullScreenReport } from '../FullScreenReport';
-import styled from 'styled-components';
+
+// i18n
 import messages from '../../messages';
-import { FormattedMessage } from '../../../../../utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 
 const PreparingBox = styled(Box)`
   position: fixed;
