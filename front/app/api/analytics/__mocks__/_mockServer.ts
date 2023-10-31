@@ -32,8 +32,11 @@ const participantsGraphData = {
 
 const endpoints = {
   'GET analytics': rest.get(apiPath, (req, res, ctx) => {
-    console.log(req.params);
-    return res(ctx.status(200), ctx.json({ data: participantsGraphData }));
+    const url = new URL(req.url.toString());
+    return res(
+      ctx.status(200),
+      ctx.json({ data: participantsGraphData, __TEST: url.search })
+    );
   }),
 };
 
