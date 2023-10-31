@@ -607,6 +607,7 @@
   "app.components.form.controls.selectBetween": "*Vælg mellem {minItems} og {maxItems} muligheder",
   "app.components.form.controls.selectExactly2": "*Vælg nøjagtigt {selectExactly, plural, one {# mulighed} other {# muligheder}}",
   "app.components.form.controls.selectMany": "*Vælg så mange som du vil",
+  "app.components.form.controls.validCordinatesTooltip": "Hvis placeringen ikke vises blandt mulighederne, mens du skriver, kan du tilføje gyldige koordinater i formatet 'breddegrad, længdegrad' for at angive en præcis placering.",
   "app.components.form.error": "Fejl",
   "app.components.form.locationGoogleUnavailable": "Kunne ikke indlæse feltet for placering leveret af Google Maps.",
   "app.components.form.submit": "Indsend",
