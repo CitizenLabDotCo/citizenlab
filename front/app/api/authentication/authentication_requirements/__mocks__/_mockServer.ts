@@ -1,4 +1,6 @@
+import { rest } from 'msw';
 import { AuthenticationRequirementsResponse } from '../types';
+import { API_PATH } from 'containers/App/constants';
 
 export const initiativeResponse: AuthenticationRequirementsResponse = {
   data: {
@@ -103,3 +105,44 @@ export const ideaResponse: AuthenticationRequirementsResponse = {
     },
   },
 };
+
+const globalPath = `${API_PATH}/permissions/visiting/requirements`;
+export const initiativesPath = `${API_PATH}/permissions/posting_initiative/requirements`;
+export const projectPath = `${API_PATH}/projects/123/permissions/posting_idea/requirements`;
+export const phasePath = `${API_PATH}/phases/456/permissions/posting_idea/requirements`;
+export const ideaPath = `${API_PATH}/ideas/789/permissions/commenting_idea/requirements`;
+
+const endpoints = {
+  'GET permissions/visiting/requirements': rest.get(
+    globalPath,
+    (_req, res, ctx) => {
+      return res(ctx.status(200), ctx.json(initiativeResponse));
+    }
+  ),
+  'GET permissions/posting_initiative/requirements': rest.get(
+    initiativesPath,
+    (_req, res, ctx) => {
+      return res(ctx.status(200), ctx.json(initiativeResponse));
+    }
+  ),
+  'GET projects/:projectId/permissions/posting_idea/requirements': rest.get(
+    projectPath,
+    (_req, res, ctx) => {
+      return res(ctx.status(200), ctx.json(projectResponse));
+    }
+  ),
+  'GET phases/:phaseId/permissions/posting_idea/requirements': rest.get(
+    phasePath,
+    (_req, res, ctx) => {
+      return res(ctx.status(200), ctx.json(phaseResponse));
+    }
+  ),
+  'GET ideas/:ideaId/permissions/commenting_idea/requirements': rest.get(
+    ideaPath,
+    (_req, res, ctx) => {
+      return res(ctx.status(200), ctx.json(ideaResponse));
+    }
+  ),
+};
+
+export default endpoints;
