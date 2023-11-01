@@ -21,6 +21,10 @@ export default defineMessages({
     id: 'app.containers.admin.ContentBuilder.homepage.homepageBanner',
     defaultMessage: 'Homepage banner',
   },
+  proposalsTitle: {
+    id: 'app.containers.admin.ContentBuilder.homepage.proposalsTitle',
+    defaultMessage: 'Proposals',
+  },
   default: {
     id: 'app.containers.admin.ContentBuilder.homepage.default',
     defaultMessage: 'default',

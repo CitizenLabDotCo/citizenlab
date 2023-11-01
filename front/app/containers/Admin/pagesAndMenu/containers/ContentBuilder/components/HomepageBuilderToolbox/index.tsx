@@ -23,6 +23,7 @@ import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import ButtonMultiloc from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
 import ImageTextCards from '../CraftSections/ImageTextCards';
 import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
+import Proposals from '../CraftSections/Proposals';
 
 // types
 import { Locale } from 'typings';
@@ -81,13 +82,19 @@ const HomepageBuilderToolbox = ({
           />
         }
         icon="section-info-accordion"
-        label={'Homepage Banner'}
+        label={formatMessage(messages.homepageBannerTitle)}
       />
       <DraggableElement
         id="e2e-draggable-projects"
         component={<Projects />}
         icon="section-info-accordion"
-        label={'Projects'}
+        label={formatMessage(messages.projectsTitle)}
+      />
+      <DraggableElement
+        id="e2e-draggable-projects"
+        component={<Proposals />}
+        icon="section-info-accordion"
+        label={formatMessage(messages.proposalsTitle)}
       />
       <DraggableElement
         id="e2e-draggable-image-text-cards"
