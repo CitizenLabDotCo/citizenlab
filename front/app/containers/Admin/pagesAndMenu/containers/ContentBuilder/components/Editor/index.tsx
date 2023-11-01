@@ -20,6 +20,7 @@ import ImageTextCards from '../CraftSections/ImageTextCards';
 import ButtonMultiloc from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
 import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
 import HomepageBanner from '../CraftSections/HomepageBanner';
+import Projects from '../CraftSections/Projects';
 
 type EditorProps = {
   children?: React.ReactNode;
@@ -48,6 +49,7 @@ const Editor: React.FC<EditorProps> = ({
         ImageTextCards,
         ButtonMultiloc,
         HomepageBanner,
+        Projects,
       }}
       isPreview={isPreview}
       onNodesChange={onNodesChange}

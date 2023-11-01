@@ -21,6 +21,14 @@ export default defineMessages({
     id: 'app.containers.admin.ContentBuilder.infoWithAccordions',
     defaultMessage: 'Info & accordions',
   },
+  projectsTitle: {
+    id: 'app.containers.admin.ContentBuilder.projectsTitle',
+    defaultMessage: 'Projects title',
+  },
+  homepageBannerTitle: {
+    id: 'app.containers.admin.ContentBuilder.homepageBanner',
+    defaultMessage: 'Homepage banner',
+  },
   default: {
     id: 'app.containers.admin.ContentBuilder.default',
     defaultMessage: 'default',

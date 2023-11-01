@@ -11,6 +11,8 @@ import { useNode } from '@craftjs/core';
 import SignedOutHeader from 'containers/HomePage/SignedOutHeader';
 import { IHomepageSettingsAttributes } from 'api/home_page/types';
 
+import messages from '../../../messages';
+
 type Props = {
   homepageSettings: IHomepageSettingsAttributes;
 };
@@ -140,6 +142,10 @@ HomepageBanner.craft = {
   },
   related: {
     settings: HomepageBannerSettings,
+  },
+  custom: {
+    title: messages.homepageBannerTitle,
+    noPointerEvents: true,
   },
 };
 

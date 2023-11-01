@@ -27,6 +27,7 @@ import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
 // types
 import { Locale } from 'typings';
 import HomepageBanner from '../CraftSections/HomepageBanner';
+import Projects from '../CraftSections/Projects';
 
 type ProjectDescriptionBuilderToolboxProps = {
   selectedLocale: Locale;
@@ -39,6 +40,9 @@ const ProjectDescriptionBuilderToolbox = ({
 
   return (
     <Container>
+      <SectionTitle>
+        <FormattedMessage {...messages.sections} />
+      </SectionTitle>
       <DraggableElement
         id="e2e-draggable-info-accordions"
         component={
@@ -79,9 +83,12 @@ const ProjectDescriptionBuilderToolbox = ({
         icon="section-info-accordion"
         label={'Homepage Banner'}
       />
-      <SectionTitle>
-        <FormattedMessage {...messages.sections} />
-      </SectionTitle>
+      <DraggableElement
+        id="e2e-draggable-projects"
+        component={<Projects />}
+        icon="section-info-accordion"
+        label={'Projects'}
+      />
       <DraggableElement
         id="e2e-draggable-image-text-cards"
         component={<ImageTextCards />}
