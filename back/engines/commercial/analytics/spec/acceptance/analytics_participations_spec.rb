@@ -74,7 +74,33 @@ resource 'Analytics - FactParticipations' do
       expect(response_data[:attributes]).to match_array([{ count: 1 }])
     end
 
-    example 'group by gender' do
+    example 'filter participants by gender and group by month' do
+      do_request({
+        query: {
+          fact: 'participation',
+          groups: 'dimension_date_created.month',
+          filters: {
+            'dimension_user.role': ['citizen', 'admin', nil],
+            'dimension_user_custom_fields.key': 'gender',
+            'dimension_user_custom_fields.value': 'female'
+          },
+          aggregations: {
+            dimension_user_id: 'count', # we count participants, not participations
+            'dimension_date_created.date': 'first'
+          }
+        }
+      })
+      assert_status 200
+      expect(response_data[:attributes]).to match_array([
+        {
+          count_dimension_user_id: 2,
+          'dimension_date_created.month': '2022-10',
+          first_dimension_date_created_date: '2022-10-01'
+        }
+      ])
+    end
+
+    example 'group participations by gender' do
       do_request({
         query: {
           fact: 'participation',
