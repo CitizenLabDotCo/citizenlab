@@ -87,7 +87,7 @@ class Group < ApplicationRecord
   def generate_slug
     self.slug ||= SlugService.new.generate_slug(
       self,
-      title_multiloc.find { |_, text| text.present? }&.last
+      title_multiloc.find { |_key, value| value.present? }&.last
     )
   end
 
