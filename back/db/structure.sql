@@ -1400,7 +1400,7 @@ CREATE TABLE public.users (
 --
 
 CREATE VIEW public.analytics_dimension_user_custom_fields AS
- SELECT users.id,
+ SELECT users.id AS user_id,
     custom_field_values.key,
     custom_field_values.value
    FROM (public.users
