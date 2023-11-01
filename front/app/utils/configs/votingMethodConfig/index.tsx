@@ -15,7 +15,7 @@ import { MessageDescriptor } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
-import { toFullMonth } from 'utils/dateUtils';
+import {getLocalisedDateString} from 'utils/dateUtils';
 
 // types
 import { IPhaseData } from 'api/phases/types';
@@ -25,7 +25,7 @@ import { VotingMethod } from 'utils/participationContexts';
 import { FormatMessage } from 'typings';
 /*
   Configuration Specifications
-  
+
   StatusModule:
   - getStatusHeader: Returns header which appears directly above status module
   - getStatusTitle: Returns title for the status module
@@ -166,7 +166,7 @@ const budgetingConfig: VotingMethodConfig = {
               b: (chunks) => (
                 <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
               ),
-              endDate: phase && toFullMonth(phase.attributes.end_at, 'day'),
+              endDate: getLocalisedDateString(phase?.attributes.end_at),
             }}
             {...messages.budgetingSubmittedInstructions}
           />
@@ -189,7 +189,7 @@ const budgetingConfig: VotingMethodConfig = {
             b: (chunks) => (
               <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
             ),
-            endDate: phase && toFullMonth(phase.attributes.end_at, 'day'),
+            endDate: getLocalisedDateString(phase?.attributes.end_at),
             maxBudget:
               phase && phase.attributes.voting_max_total?.toLocaleString(),
             currency,
@@ -324,7 +324,7 @@ const multipleVotingConfig: VotingMethodConfig = {
               b: (chunks) => (
                 <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
               ),
-              endDate: phase && toFullMonth(phase.attributes.end_at, 'day'),
+              endDate: getLocalisedDateString(phase?.attributes.end_at),
             }}
             {...messages.votingSubmittedInstructions}
           />
@@ -347,7 +347,7 @@ const multipleVotingConfig: VotingMethodConfig = {
             b: (chunks) => (
               <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
             ),
-            endDate: phase && toFullMonth(phase.attributes.end_at, 'day'),
+            endDate: getLocalisedDateString(phase?.attributes.end_at),
             maxVotes:
               phase && phase.attributes.voting_max_total?.toLocaleString(),
             voteTerm,
@@ -472,7 +472,7 @@ const singleVotingConfig: VotingMethodConfig = {
               b: (chunks) => (
                 <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
               ),
-              endDate: phase && toFullMonth(phase.attributes.end_at, 'day'),
+              endDate: getLocalisedDateString(phase?.attributes.end_at),
             }}
             {...messages.votingSubmittedInstructions}
           />
@@ -498,7 +498,7 @@ const singleVotingConfig: VotingMethodConfig = {
                 b: (chunks) => (
                   <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
                 ),
-                endDate: phase && toFullMonth(phase.attributes.end_at, 'day'),
+                endDate: getLocalisedDateString(phase?.attributes.end_at),
                 maxVotes: votingMax?.toLocaleString(),
                 optionCount: phase && phase.attributes.ideas_count,
               }}
@@ -512,7 +512,7 @@ const singleVotingConfig: VotingMethodConfig = {
                 b: (chunks) => (
                   <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
                 ),
-                endDate: phase && toFullMonth(phase.attributes.end_at, 'day'),
+                endDate: getLocalisedDateString(phase?.attributes.end_at),
                 maxVotes: votingMax?.toLocaleString(),
                 optionCount: phase && phase.attributes.ideas_count,
               }}
@@ -527,7 +527,7 @@ const singleVotingConfig: VotingMethodConfig = {
               b: (chunks) => (
                 <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
               ),
-              endDate: phase && toFullMonth(phase.attributes.end_at, 'day'),
+              endDate: getLocalisedDateString(phase?.attributes.end_at),
             }}
             {...messages.singleVotingUnlimitedEnded}
           />

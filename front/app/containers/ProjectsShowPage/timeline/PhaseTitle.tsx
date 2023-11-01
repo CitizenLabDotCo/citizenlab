@@ -1,5 +1,4 @@
 import React from 'react';
-import moment from 'moment';
 
 // hooks
 import usePhase from 'api/phases/usePhase';
@@ -11,7 +10,7 @@ import messages from 'containers/ProjectsShowPage/messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
-import { pastPresentOrFuture } from 'utils/dateUtils';
+import {getLocalisedDateString, pastPresentOrFuture} from 'utils/dateUtils';
 
 // style
 import styled from 'styled-components';
@@ -167,10 +166,8 @@ const PhaseTitle = ({
 export default PhaseTitle;
 
 function getPhaseDates(phase: IPhaseData) {
-  const startMoment = moment(phase?.attributes.start_at, 'YYYY-MM-DD');
-  const endMoment = moment(phase?.attributes.end_at, 'YYYY-MM-DD');
-  const startDate = startMoment.format('LL');
-  const endDate = endMoment.format('LL');
+  const startDate = getLocalisedDateString(phase?.attributes.start_at);
+  const endDate = getLocalisedDateString(phase?.attributes.end_at);
 
   return { startDate, endDate };
 }
