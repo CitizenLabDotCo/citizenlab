@@ -158,9 +158,6 @@ export const lightFlow = (
     'light-flow:email-confirmation': {
       CLOSE: () => setCurrentStep('closed'),
       CHANGE_EMAIL: async () => {
-        await signOut();
-
-        updateState({ email: null });
         setCurrentStep('light-flow:email');
       },
       SUBMIT_CODE: async (code: string) => {
