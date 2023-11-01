@@ -7,12 +7,10 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 // types
 import { SerializedNodes } from '@craftjs/core';
-import { Locale } from 'typings';
 import styled from 'styled-components';
 
 interface Props {
   onUpdateDraftData: (serializedNodes: SerializedNodes | undefined) => void;
-  onUpdateLocale?: (locale: Locale) => void;
   children: React.ReactNode;
 }
 
@@ -32,7 +30,6 @@ export const StyledPreviewBox = styled(Box)`
 
 export const FullScreenPreviewWrapper = ({
   onUpdateDraftData,
-  onUpdateLocale,
   children,
 }: Props) => {
   useEffect(() => {
@@ -41,19 +38,12 @@ export const FullScreenPreviewWrapper = ({
       if (e.origin === window.location.origin && e.data.ROOT) {
         onUpdateDraftData(e.data);
       }
-      if (
-        onUpdateLocale &&
-        e.origin === window.location.origin &&
-        e.data.selectedLocale
-      ) {
-        onUpdateLocale(e.data.selectedLocale);
-      }
     };
     window.addEventListener('message', handleMessage);
     return () => {
       window.removeEventListener('message', handleMessage);
     };
-  }, [onUpdateDraftData, onUpdateLocale]);
+  }, [onUpdateDraftData]);
 
   return (
     <FocusOn>

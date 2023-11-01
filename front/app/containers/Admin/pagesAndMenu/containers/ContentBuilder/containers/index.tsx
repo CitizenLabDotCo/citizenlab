@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 
 // styles
 import { stylingConsts } from 'utils/styleUtils';
@@ -38,7 +37,6 @@ import ContentBuilderLanguageProvider from './ContentBuilderLanguageProvider';
 const ProjectDescriptionBuilderPage = () => {
   const [previewEnabled, setPreviewEnabled] = useState(false);
   const [selectedLocale, setSelectedLocale] = useState<Locale | undefined>();
-  const { projectId } = useParams() as { projectId: string };
 
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
 
@@ -149,10 +147,7 @@ const ProjectDescriptionBuilderPage = () => {
         </Box>
       </Editor>
       <Box justifyContent="center" display={previewEnabled ? 'flex' : 'none'}>
-        <ProjectDescriptionBuilderEditModePreview
-          projectId={projectId}
-          ref={iframeRef}
-        />
+        <ProjectDescriptionBuilderEditModePreview ref={iframeRef} />
       </Box>
     </FullscreenContentBuilder>
   );

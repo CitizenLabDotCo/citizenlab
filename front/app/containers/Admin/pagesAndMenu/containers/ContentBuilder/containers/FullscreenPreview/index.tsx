@@ -1,57 +1,39 @@
 import React, { useState } from 'react';
 
 // hooks
-import useProjectDescriptionBuilderLayout from 'modules/commercial/project_description_builder/api/useProjectDescriptionBuilderLayout';
 import useLocale from 'hooks/useLocale';
-import useProjectById from 'api/projects/useProjectById';
-import { useParams } from 'react-router-dom';
 
 // components
 import FullScreenWrapper from 'components/admin/ContentBuilder/FullscreenPreview/Wrapper';
 import Editor from '../../components/Editor';
 import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
-import { Box, Spinner, Title } from '@citizenlab/cl2-component-library';
+import { Box, Spinner } from '@citizenlab/cl2-component-library';
 import { isNilOrError } from 'utils/helperUtils';
 
 // types
 import { SerializedNodes } from '@craftjs/core';
+import useHomepageSettings from 'api/home_page/useHomepageSettings';
 
 export const FullScreenPreview = () => {
   const [draftData, setDraftData] = useState<SerializedNodes | undefined>();
-  const [selectedLocale, setSelectedLocale] = useState<string | undefined>();
-  const { projectId } = useParams() as { projectId: string };
+
   const platformLocale = useLocale();
-  const { data: project } = useProjectById(projectId);
+  const { data: homepage, isLoading } = useHomepageSettings();
 
-  const { data: projectDescriptionBuilderLayout } =
-    useProjectDescriptionBuilderLayout(projectId);
-
-  if (isNilOrError(platformLocale) || !project) {
+  if (isNilOrError(platformLocale)) {
     return null;
   }
 
-  const locale = selectedLocale || platformLocale;
-  const isLoadingProjectDescriptionBuilderLayout =
-    projectDescriptionBuilderLayout === undefined;
-
-  const savedEditorData = !isNilOrError(projectDescriptionBuilderLayout)
-    ? projectDescriptionBuilderLayout.data.attributes.craftjs_jsonmultiloc[
-        locale
-      ]
+  const savedEditorData = homepage?.data.attributes.craftjs_json
+    ? homepage?.data.attributes.craftjs_json
     : undefined;
 
   const editorData = draftData || savedEditorData;
 
   return (
-    <FullScreenWrapper
-      onUpdateDraftData={setDraftData}
-      onUpdateLocale={setSelectedLocale}
-    >
-      <Title color="tenantText" variant="h1">
-        {project.data.attributes.title_multiloc[locale]}
-      </Title>
-      {isLoadingProjectDescriptionBuilderLayout && <Spinner />}
-      {!isLoadingProjectDescriptionBuilderLayout && editorData && (
+    <FullScreenWrapper onUpdateDraftData={setDraftData}>
+      {isLoading && <Spinner />}
+      {!isLoading && editorData && (
         <Box>
           <Editor isPreview={true}>
             <ContentBuilderFrame editorData={editorData} />

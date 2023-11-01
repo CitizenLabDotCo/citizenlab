@@ -6,22 +6,16 @@ import EditModePreview from 'components/admin/ContentBuilder/EditModePreview';
 // hooks
 import useLocale from 'hooks/useLocale';
 
-type ProjectDescriptionBuilderPreviewProps = {
-  projectId: string;
-};
+const ProjectDescriptionBuilderEditModePreview =
+  React.forwardRef<HTMLIFrameElement>((_, ref) => {
+    const locale = useLocale();
 
-const ProjectDescriptionBuilderEditModePreview = React.forwardRef<
-  HTMLIFrameElement,
-  ProjectDescriptionBuilderPreviewProps
->(({ projectId }, ref) => {
-  const locale = useLocale();
-
-  return (
-    <EditModePreview
-      iframeSrc={`/${locale}/admin/project-description-builder/projects/${projectId}/preview`}
-      ref={ref}
-    />
-  );
-});
+    return (
+      <EditModePreview
+        iframeSrc={`/${locale}/admin/pages-menu/homepage/content-builder/preview`}
+        ref={ref}
+      />
+    );
+  });
 
 export default memo(ProjectDescriptionBuilderEditModePreview);

@@ -20,12 +20,10 @@ jest.mock('api/projects/useProjectById', () => {
 
 describe('ProjectDescriptionBuilderEditModePreview', () => {
   it('renders iframe with the correct src', () => {
-    const { container } = render(
-      <ProjectDescriptionBuilderEditModePreview projectId="id" />
-    );
+    const { container } = render(<ProjectDescriptionBuilderEditModePreview />);
     expect(container.querySelector('iframe')).toHaveAttribute(
       'src',
-      '/en/admin/project-description-builder/projects/id/preview'
+      '/en/admin/pages-menu/homepage/content-builder/preview'
     );
   });
 });

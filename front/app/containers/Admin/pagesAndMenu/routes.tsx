@@ -1,6 +1,7 @@
 import PageLoading from 'components/UI/PageLoading';
 import React, { lazy } from 'react';
 import { Navigate } from 'react-router-dom';
+import FullScreenPreview from './containers/ContentBuilder/containers/FullscreenPreview';
 
 const CustomPagesIndex = lazy(() => import('./containers/CustomPages'));
 const PagesAndMenuIndex = lazy(() => import('containers/Admin/pagesAndMenu'));
@@ -92,6 +93,14 @@ export default () => ({
       element: (
         <PageLoading>
           <ContentBuilder />
+        </PageLoading>
+      ),
+    },
+    {
+      path: `${HOMEPAGE_PATH}/content-builder/preview`, // /homepage/content-builder/preview
+      element: (
+        <PageLoading>
+          <FullScreenPreview />
         </PageLoading>
       ),
     },
