@@ -6,6 +6,10 @@ import {
 import { SSOProvider } from 'api/authentication/singleSignOn';
 import { SuccessAction } from './SuccessActions/actions';
 
+export interface ModalProps {
+  setModalOpen?: (bool: boolean) => void;
+}
+
 export type ErrorCode =
   | 'account_creation_failed'
   | 'wrong_confirmation_code'
@@ -15,7 +19,8 @@ export type ErrorCode =
   | 'unknown'
   | 'franceconnect_merging_failed'
   | 'email_taken_and_user_can_be_verified'
-  | 'not_entitled_under_minimum_age';
+  | 'not_entitled_under_minimum_age'
+  | 'resending_code_failed';
 
 export interface State {
   email: string | null;

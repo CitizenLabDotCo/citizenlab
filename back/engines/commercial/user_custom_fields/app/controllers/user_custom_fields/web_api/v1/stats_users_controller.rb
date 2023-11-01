@@ -15,7 +15,6 @@ module UserCustomFields
             unknown_age_count: age_stats.unknown_age_count,
             series: {
               user_counts: age_stats.binned_counts,
-              expected_user_counts: age_stats.expected_binned_counts,
               reference_population: age_stats.population_counts,
               bins: age_stats.bins
             }
@@ -31,7 +30,6 @@ module UserCustomFields
         def users_by_custom_field
           json_response = { series: {
             users: user_counts,
-            expected_users: expected_user_counts,
             reference_population: reference_population
           } }
 
@@ -124,23 +122,6 @@ module UserCustomFields
           UsersFinder.new(users, finder_params).execute
         end
 
-        def expected_user_counts
-          @expected_user_counts ||= calculate_expected_user_counts
-        end
-
-        def calculate_expected_user_counts
-          return if custom_field.key == 'birthyear'
-          return if (ref_distribution = custom_field.current_ref_distribution).blank?
-
-          # user counts for toggled off options are not used to calculate expected user counts
-          toggled_on_option_keys = ref_distribution.distribution_by_option_key.keys
-          nb_users_to_redistribute = user_counts.slice(*toggled_on_option_keys).values.sum
-          expected_counts = ref_distribution.expected_counts(nb_users_to_redistribute)
-
-          option_id_to_key = custom_field.options.to_h { |option| [option.id, option.key] }
-          expected_counts.transform_keys { |option_id| option_id_to_key.fetch(option_id) }
-        end
-
         def reference_population
           @reference_population ||= calculate_reference_population
         end
@@ -161,7 +142,6 @@ module UserCustomFields
               }.tap do |cols|
                 option_ids = cols[:option_id]
                 cols[:users] = user_counts.fetch_values(*option_ids) { 0 }
-                cols[:expected_users] = expected_user_counts.fetch_values(*option_ids) { nil } if expected_user_counts.present?
                 cols[:reference_population] = reference_population.fetch_values(*option_ids) { nil } if reference_population.present?
               end
             else

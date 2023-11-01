@@ -1,7 +1,7 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 
 import useUpdateUser from './useUpdateUser';
-import { usersData } from './__mocks__/useUsers';
+import { usersData } from './__mocks__/_mockServer';
 
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
