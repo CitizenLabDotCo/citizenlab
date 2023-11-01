@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -56,9 +56,9 @@ const HomepageBannerSettings = () => {
     },
   }));
 
-  const [overlayEnabled, setOverlayEnabled] = useState(
-    typeof homepageSettings.banner_signed_out_header_overlay_color === 'number'
-  );
+  // const [overlayEnabled, setOverlayEnabled] = useState(
+  //   typeof homepageSettings.banner_signed_out_header_overlay_color === 'number'
+  // );
 
   return (
     <Box
