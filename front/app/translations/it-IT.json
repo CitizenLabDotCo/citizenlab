@@ -21,6 +21,7 @@
   "app.components.AssignMultipleVotesControl.votesSubmitted": "Hai già inviato i tuoi voti. Clicca su \"Modifica il tuo voto\" per modificare i tuoi voti.",
   "app.components.AssignMultipleVotesControl.votesSubmittedIdeaPage": "Hai già inviato i tuoi voti. Per modificare i tuoi voti, torna alla pagina del progetto e clicca su \"Modifica il tuo voto\".",
   "app.components.AssignMultipleVotesControl.xVotes2": "{votes, plural, one {{singular}} other {{plural}}}",
+  "app.components.AssignVoteControl.maxVotesReached": "Hai raggiunto il numero massimo di voti che puoi inviare.",
   "app.components.AssignVoteControl.vote": "Vota",
   "app.components.AssignVoteControl.voteForAtLeastOne": "Vota per almeno 1 opzione",
   "app.components.AssignVoteControl.voted": "Votato",
