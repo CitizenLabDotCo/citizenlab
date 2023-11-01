@@ -10,19 +10,19 @@ export default defineMessages({
     defaultMessage: 'Button type',
   },
   alignmentFullWidth: {
-    id: 'app.containers.AdminPage.ProjectDescription.alignmentFullWidth',
+    id: 'app.containers.AdminPage.ProjectDescription.buttonMultilocAlignmentFullWidth',
     defaultMessage: 'Full width',
   },
   alignmentLeft: {
-    id: 'app.containers.AdminPage.ProjectDescription.alignmentLeft',
+    id: 'app.containers.AdminPage.ProjectDescription.buttonMultilocAlignmentLeft',
     defaultMessage: 'Left',
   },
   alignmentRight: {
-    id: 'app.containers.AdminPage.ProjectDescription.alignmentRight',
+    id: 'app.containers.AdminPage.ProjectDescription.buttonMultilocAlignmentRight',
     defaultMessage: 'Right',
   },
   alignmentCenter: {
-    id: 'app.containers.AdminPage.ProjectDescription.alignmentCenter',
+    id: 'app.containers.AdminPage.ProjectDescription.buttonMultilocAlignmentCenter',
     defaultMessage: 'Center',
   },
   buttonMultilocTypePrimaryLabel: {
