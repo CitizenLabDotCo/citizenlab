@@ -23,7 +23,7 @@ export default defineMessages({
   },
   projectsTitle: {
     id: 'app.containers.admin.ContentBuilder.projectsTitle',
-    defaultMessage: 'Projects title',
+    defaultMessage: 'Projects',
   },
   homepageBannerTitle: {
     id: 'app.containers.admin.ContentBuilder.homepageBanner',
