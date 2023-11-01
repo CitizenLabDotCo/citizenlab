@@ -17,7 +17,10 @@ RUN apt-get update && apt-get install -qq -y --no-install-recommends \
       less                 \
       clang
 
-# Install necessary packages for downloading and verifying new repository information See https://github.com/nodesource/distributions/wiki/How-to-migrate-to-the-new-repository
+# Using the new repository for installing Node.js 18.x
+# Update local package index
+RUN apt-get update
+# Install necessary packages for downloading and verifying new repository information
 RUN apt-get install -y ca-certificates curl gnupg
 # Create a directory for the new repository's keyring, if it doesn't exist
 RUN mkdir -p /etc/apt/keyrings
