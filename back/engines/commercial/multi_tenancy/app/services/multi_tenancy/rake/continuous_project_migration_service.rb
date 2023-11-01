@@ -2,7 +2,7 @@
 
 class MultiTenancy::Rake::ContinuousProjectMigrationService
   def initialize
-    @stats = { projects: 0, success: 0, errors: [] }
+    @stats = { projects: 0, success: 0, records_updated: 0, errors: [] }
   end
 
   attr_reader :stats
@@ -29,11 +29,9 @@ class MultiTenancy::Rake::ContinuousProjectMigrationService
       # TODO: Check that projects now has just one phase before continuing
 
       # 3. Update participation_context in models - from project_id to new phase_id
-      # TODO: Test
       update_participation_contexts(project, phase)
 
       # 4. Add phase_id to the following models:
-      # TODO: Test
       add_phase_ids(project, phase)
 
       # 5. Update permission_scope in permissions from project_id to phase_id
@@ -46,7 +44,6 @@ class MultiTenancy::Rake::ContinuousProjectMigrationService
       add_ideas_to_phase(project, phase)
 
       # 8. Run function to update basket/votes count on ideas_phases
-      # TODO: Test
       update_counts(project)
 
       @stats[:success] = @stats[:success] + 1
@@ -134,39 +131,56 @@ class MultiTenancy::Rake::ContinuousProjectMigrationService
       voting_term_singular_multiloc: {},
       voting_term_plural_multiloc: {}
     )
+    @stats[:records_updated] += 1
   end
 
   def update_participation_contexts(project, phase)
-    # TODO: does this set the correct type as well?
     %w[Basket Polls::Question Polls::Response Surveys::Response Volunteering::Cause].each do |model|
-      model.constantize.where(participation_context: project).update!(participation_context: phase)
+      @stats[:records_updated] += model.constantize.where(participation_context: project).update!(participation_context: phase).count
     end
   end
 
   def add_phase_ids(project, phase)
     %w[Notification Analysis::Analysis].each do |model|
-      model.constantize.where(project: project).update!(phase: phase)
+      @stats[:records_updated] += model.constantize.where(project: project).update!(phase: phase).count
     end
+
+    # Do these - they have phase in them
+    #
+    # VotingResultsPublished
+    # VotingLastChance
+    # VotingBasketSubmitted
+    # VotingBasketNotSubmitted
+    # TODO: Complete this list by looking at all the notification models
+
+    # Ignore these? There are others too
+    # IdeaAssignment::Notifications::IdeaAssignedToYou
+    # Notifications::CommentOnIdeaYouFollow
+    # Notifications::ProjectModerationRightsReceived
+    # Notifications::VotingBasketSubmitted
+    # Notifications::IdeaMarkedAsSpam
+    # Notifications::MentionInComment
+    # Notifications::StatusChangeOnIdeaYouFollow
+    # Notifications::CommentMarkedAsSpam
+    # Notifications::CommentOnYourComment
+    # Notifications::CommentDeletedByAdmin
   end
 
   def update_permission_scope(project, phase)
-    # TODO: does this set the correct type as well?
-    Permission.where(permission_scope: project).update!(permission_scope: phase)
+    @stats[:records_updated] += Permission.where(permission_scope: project).update!(permission_scope: phase).count
   end
 
   def add_ideas_to_phase(project, phase)
-    # TODO: Add the number of objects updated into the stats
-    Idea.where(project: project).update!(phase_ids: [phase.id])
+    @stats[:records_updated] += Idea.where(project: project).update!(phase_ids: [phase.id]).count
   end
 
   def update_counts(phase)
-    # TODO: How do we update idea counts?
     Basket.update_counts(phase, 'Phase')
   end
 
   def update_native_survey_creation_phase(project, phase)
     if phase.participation_method == 'native_survey'
-      Idea.where(project: project).update!(creation_phase: phase)
+      @stats[:records_updated] += Idea.where(project: project).update!(creation_phase: phase).count
     end
   end
 

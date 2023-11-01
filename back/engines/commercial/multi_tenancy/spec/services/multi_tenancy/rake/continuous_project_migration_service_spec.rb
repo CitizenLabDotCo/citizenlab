@@ -8,8 +8,11 @@ RSpec.describe MultiTenancy::Rake::ContinuousProjectMigrationService do
   shared_examples 'project_settings' do
     let_it_be(:continuous_project_attributes) { project.attributes.symbolize_keys.clone }
 
-    it 'should list number of projects & successful migrations' do
-      expect(service.stats).to eq({ projects: 1, success: 1, errors: [] })
+    it 'should return valid stats' do
+      expect(service.stats[:projects]).to eq 1
+      expect(service.stats[:success]).to eq 1
+      expect(service.stats[:errors]).to eq []
+      expect(service.stats[:records_updated]).to be > 0
     end
 
     it 'changes the project type' do
@@ -107,6 +110,20 @@ RSpec.describe MultiTenancy::Rake::ContinuousProjectMigrationService do
     end
   end
 
+  shared_examples 'notifications' do
+    # Notification
+    it 'adds a phase to each notification' do
+      # TODO
+    end
+  end
+
+  shared_examples 'analysis' do
+    # Analysis::Analysis
+    it 'adds a phase to each analysis' do
+      # TODO
+    end
+  end
+
   describe '#migrate' do
     context 'without persistence' do
       let_it_be(:project) { create(:continuous_project) }
@@ -114,7 +131,7 @@ RSpec.describe MultiTenancy::Rake::ContinuousProjectMigrationService do
       before { service.migrate(false) }
 
       it 'should list number of projects with no success' do
-        expect(service.stats).to eq({ projects: 1, success: 0, errors: [] })
+        expect(service.stats).to eq({ projects: 1, success: 0, records_updated: 0, errors: [] })
       end
 
       it 'should not change the project type' do
@@ -139,20 +156,61 @@ RSpec.describe MultiTenancy::Rake::ContinuousProjectMigrationService do
 
       context 'voting' do
         let_it_be(:project) { create(:continuous_budgeting_project) }
-        let_it_be(:ideas) { create_list(:idea, 2, project: project) }
+        let_it_be(:ideas) { create_list(:idea, 2, project: project, budget: 400) }
         let_it_be(:permission) { create(:permission, :by_everyone_confirmed_email, action: 'voting', permission_scope: project) }
+        let_it_be(:baskets) { create_list(:basket, 3, participation_context: project) }
+        let_it_be(:baskets_idea1) { create(:baskets_idea, idea: ideas.first, basket: baskets.first) }
+        let_it_be(:baskets_idea2) { create(:baskets_idea, idea: ideas.last, basket: baskets.last) }
 
         include_examples 'project_settings'
         include_examples 'ideas'
         include_examples 'permissions'
+
+        it 'changes the participation context of a basket' do
+          phase = project.phases.first
+          baskets.each do |basket|
+            expect(basket.reload.participation_context_id).to eq phase.id
+            expect(basket.reload.participation_context_type).to eq 'Phase'
+            expect(Basket.where(participation_context_type: 'Project')).to eq []
+          end
+        end
+
+        it 'updates the basket count on the phase, project & ideas phase' do
+          expect(project.reload.baskets_count).to eq 3
+          expect(project.reload.votes_count).to eq 800
+          expect(project.phases.first.baskets_count).to eq 3
+          expect(project.phases.first.votes_count).to eq 800
+          expect(IdeasPhase.all.pluck(:baskets_count)).to match [1, 1]
+          expect(IdeasPhase.all.pluck(:votes_count)).to match [400, 400]
+        end
       end
 
       context 'poll' do
         let_it_be(:project) { create(:continuous_poll_project) }
         let_it_be(:permission) { create(:permission, :by_admins_moderators, action: 'taking_poll', permission_scope: project) }
+        let_it_be(:poll_questions) { create_list(:poll_question, 2, participation_context: project) }
+        let_it_be(:poll_responses) { create_list(:poll_response, 3, participation_context: project) }
 
         include_examples 'project_settings'
         include_examples 'permissions'
+
+        it 'changes the participation context of a poll question' do
+          phase = project.phases.first
+          poll_questions.each do |poll_question|
+            expect(poll_question.reload.participation_context_id).to eq phase.id
+            expect(poll_question.reload.participation_context_type).to eq 'Phase'
+            expect(Polls::Question.where(participation_context_type: 'Project')).to eq []
+          end
+        end
+
+        it 'changes the participation context of a poll response' do
+          phase = project.phases.first
+          poll_responses.each do |poll_response|
+            expect(poll_response.reload.participation_context_id).to eq phase.id
+            expect(poll_response.reload.participation_context_type).to eq 'Phase'
+            expect(Polls::Response.where(participation_context_type: 'Project')).to eq []
+          end
+        end
       end
 
       context 'native survey' do
@@ -175,9 +233,19 @@ RSpec.describe MultiTenancy::Rake::ContinuousProjectMigrationService do
       context 'survey' do
         let_it_be(:project) { create(:continuous_survey_project) }
         let_it_be(:permission) { create(:permission, :by_users, action: 'taking_survey', permission_scope: project) }
+        let_it_be(:survey_responses) { create_list(:survey_response, 3, participation_context: project) }
 
         include_examples 'project_settings'
         include_examples 'permissions'
+
+        it 'changes the participation context of a survey response' do
+          phase = project.phases.first
+          survey_responses.each do |survey_response|
+            expect(survey_response.reload.participation_context_id).to eq phase.id
+            expect(survey_response.reload.participation_context_type).to eq 'Phase'
+            expect(Surveys::Response.where(participation_context_type: 'Project')).to eq []
+          end
+        end
       end
 
       context 'document_annotation' do
@@ -190,7 +258,18 @@ RSpec.describe MultiTenancy::Rake::ContinuousProjectMigrationService do
 
       context 'volunteering' do
         let_it_be(:project) { create(:continuous_volunteering_project) }
+        let_it_be(:volunteering_causes) { create_list(:cause, 3, participation_context: project) }
+
         include_examples 'project_settings'
+
+        it 'changes the participation context of a volunteering cause' do
+          phase = project.phases.first
+          volunteering_causes.each do |volunteering_cause|
+            expect(volunteering_cause.reload.participation_context_id).to eq phase.id
+            expect(volunteering_cause.reload.participation_context_type).to eq 'Phase'
+            expect(Volunteering::Cause.where(participation_context_type: 'Project')).to eq []
+          end
+        end
       end
 
       context 'information' do
