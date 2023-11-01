@@ -29,13 +29,13 @@ import { Locale } from 'typings';
 import HomepageBanner from '../CraftSections/HomepageBanner';
 import Projects from '../CraftSections/Projects';
 
-type ProjectDescriptionBuilderToolboxProps = {
+type HomepageBuilderToolboxProps = {
   selectedLocale: Locale;
 };
 
-const ProjectDescriptionBuilderToolbox = ({
+const HomepageBuilderToolbox = ({
   selectedLocale,
-}: ProjectDescriptionBuilderToolboxProps) => {
+}: HomepageBuilderToolboxProps) => {
   const { formatMessage } = useIntl();
 
   return (
@@ -168,4 +168,4 @@ const ProjectDescriptionBuilderToolbox = ({
   );
 };
 
-export default ProjectDescriptionBuilderToolbox;
+export default HomepageBuilderToolbox;

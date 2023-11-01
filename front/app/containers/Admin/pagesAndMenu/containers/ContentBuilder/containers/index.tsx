@@ -5,13 +5,13 @@ import { stylingConsts } from 'utils/styleUtils';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
-import ProjectDescriptionBuilderEditModePreview from '../components/ProjectDescriptionBuilderEditModePreview';
+import HomepageBuilderEditModePreview from '../components/HomepageBuilderEditModePreview';
 
 // craft
 import FullscreenContentBuilder from 'components/admin/ContentBuilder/FullscreenContentBuilder';
 import Editor from '../components/Editor';
-import ProjectDescriptionBuilderToolbox from '../components/ProjectDescriptionBuilderToolbox';
-import ProjectDescriptionBuilderTopBar from '../components/ProjectDescriptionBuilderTopBar';
+import HomepageBuilderToolbox from '../components/HomepageBuilderToolbox';
+import HomepageBuilderTopBar from '../components/HomepageBuilderTopBar';
 import {
   StyledRightColumn,
   ErrorMessage,
@@ -34,7 +34,7 @@ import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
 import { isEmpty } from 'lodash-es';
 import ContentBuilderLanguageProvider from './ContentBuilderLanguageProvider';
 
-const ProjectDescriptionBuilderPage = () => {
+const HomepageBuilderPage = () => {
   const [previewEnabled, setPreviewEnabled] = useState(false);
   const [selectedLocale, setSelectedLocale] = useState<Locale | undefined>();
 
@@ -100,13 +100,6 @@ const ProjectDescriptionBuilderPage = () => {
     locale: Locale;
     editorData: SerializedNodes;
   }) => {
-    // iframeRef.current &&
-    //   iframeRef.current.contentWindow &&
-    //   iframeRef.current.contentWindow.postMessage(
-    //     { selectedLocale: locale },
-    //     window.location.href
-    //   );
-
     setSelectedLocale(locale);
   };
 
@@ -117,7 +110,7 @@ const ProjectDescriptionBuilderPage = () => {
       onUploadImage={setImageUploading}
     >
       <Editor isPreview={false} onNodesChange={handleEditorChange}>
-        <ProjectDescriptionBuilderTopBar
+        <HomepageBuilderTopBar
           localesWithError={localesWithError}
           hasPendingState={imageUploading}
           previewEnabled={previewEnabled}
@@ -130,7 +123,7 @@ const ProjectDescriptionBuilderPage = () => {
           display={previewEnabled ? 'none' : 'flex'}
         >
           {selectedLocale && (
-            <ProjectDescriptionBuilderToolbox selectedLocale={selectedLocale} />
+            <HomepageBuilderToolbox selectedLocale={selectedLocale} />
           )}
           <StyledRightColumn>
             <ContentBuilderLanguageProvider
@@ -147,10 +140,10 @@ const ProjectDescriptionBuilderPage = () => {
         </Box>
       </Editor>
       <Box justifyContent="center" display={previewEnabled ? 'flex' : 'none'}>
-        <ProjectDescriptionBuilderEditModePreview ref={iframeRef} />
+        <HomepageBuilderEditModePreview ref={iframeRef} />
       </Box>
     </FullscreenContentBuilder>
   );
 };
 
-export default ProjectDescriptionBuilderPage;
+export default HomepageBuilderPage;
