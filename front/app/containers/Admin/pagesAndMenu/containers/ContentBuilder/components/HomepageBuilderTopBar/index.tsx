@@ -18,6 +18,8 @@ import clHistory from 'utils/cl-router/history';
 
 // types
 import { Locale } from 'typings';
+import { useIntl } from 'utils/cl-intl';
+import messages from './messages';
 
 type BuilderTopBarProps = {
   hasPendingState?: boolean;
@@ -42,7 +44,7 @@ const BuilderTopBar = ({
   const [loading, setLoading] = useState(false);
   const { query } = useEditor();
   const { mutateAsync: updateHomepage } = useUpdateHomepageSettings();
-
+  const { formatMessage } = useIntl();
   const disableSave = localesWithError.length > 0;
 
   const goBack = () => {
@@ -77,7 +79,7 @@ const BuilderTopBar = ({
       <GoBackButton onClick={goBack} />
       <Box display="flex" p="15px" flexGrow={1} alignItems="center">
         <Box flexGrow={2}>
-          <Title>Homepage</Title>
+          <Title>{formatMessage(messages.homepage)}</Title>
         </Box>
         <LocaleSwitcher
           selectedLocale={selectedLocale}
@@ -97,7 +99,7 @@ const BuilderTopBar = ({
           linkTo={`/`}
           openLinkInNewTab
         >
-          View homepage
+          {formatMessage(messages.viewHomepage)}
         </Button>
         <SaveButton
           disabled={!!(disableSave || hasPendingState)}
