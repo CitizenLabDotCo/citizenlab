@@ -668,7 +668,7 @@ DROP VIEW IF EXISTS public.analytics_fact_email_deliveries;
 DROP TABLE IF EXISTS public.email_campaigns_deliveries;
 DROP TABLE IF EXISTS public.email_campaigns_campaigns;
 DROP VIEW IF EXISTS public.analytics_dimension_users;
-DROP VIEW IF EXISTS public.analytics_dimension_user_custom_fields;
+DROP VIEW IF EXISTS public.analytics_dimension_user_custom_field_values;
 DROP TABLE IF EXISTS public.users;
 DROP TABLE IF EXISTS public.analytics_dimension_types;
 DROP VIEW IF EXISTS public.analytics_dimension_statuses;
@@ -1396,10 +1396,10 @@ CREATE TABLE public.users (
 
 
 --
--- Name: analytics_dimension_user_custom_fields; Type: VIEW; Schema: public; Owner: -
+-- Name: analytics_dimension_user_custom_field_values; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW public.analytics_dimension_user_custom_fields AS
+CREATE VIEW public.analytics_dimension_user_custom_field_values AS
  SELECT users.id AS user_id,
     custom_field_values.key,
     custom_field_values.value

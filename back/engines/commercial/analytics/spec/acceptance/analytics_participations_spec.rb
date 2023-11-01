@@ -81,8 +81,8 @@ resource 'Analytics - FactParticipations' do
           groups: 'dimension_date_created.month',
           filters: {
             'dimension_user.role': ['citizen', 'admin', nil],
-            'dimension_user_custom_fields.key': 'gender',
-            'dimension_user_custom_fields.value': 'female'
+            'dimension_user_custom_field_values.key': 'gender',
+            'dimension_user_custom_field_values.value': 'female'
           },
           aggregations: {
             dimension_user_id: 'count', # we count participants, not participations
@@ -104,9 +104,9 @@ resource 'Analytics - FactParticipations' do
       do_request({
         query: {
           fact: 'participation',
-          groups: 'dimension_user_custom_fields.value',
+          groups: 'dimension_user_custom_field_values.value',
           filters: {
-            'dimension_user_custom_fields.key': 'gender'
+            'dimension_user_custom_field_values.key': 'gender'
           },
           aggregations: {
             all: 'count'
@@ -115,9 +115,9 @@ resource 'Analytics - FactParticipations' do
       })
       expect(json_response_body).to have_key(:data)
       expect(response_data[:attributes]).to match_array([
-        { 'dimension_user_custom_fields.value': 'female',      count: 2 },
-        { 'dimension_user_custom_fields.value': 'unspecified', count: 1 },
-        { 'dimension_user_custom_fields.value': 'male',        count: 1 }
+        { 'dimension_user_custom_field_values.value': 'female',      count: 2 },
+        { 'dimension_user_custom_field_values.value': 'unspecified', count: 1 },
+        { 'dimension_user_custom_field_values.value': 'male',        count: 1 }
       ])
       assert_status 200
     end

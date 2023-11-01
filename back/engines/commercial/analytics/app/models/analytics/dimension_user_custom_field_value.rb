@@ -2,13 +2,13 @@
 
 # == Schema Information
 #
-# Table name: analytics_dimension_user_custom_fields
+# Table name: analytics_dimension_user_custom_field_values
 #
 #  user_id :uuid
 #  key     :text
 #  value   :text
 #
 module Analytics
-  class DimensionUserCustomField < Analytics::ApplicationRecordView
+  class DimensionUserCustomFieldValue < Analytics::ApplicationRecordView
   end
 end
