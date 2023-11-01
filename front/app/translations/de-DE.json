@@ -679,7 +679,7 @@
   "app.components.formBuilder.range": "Bereich",
   "app.components.formBuilder.removeAnswer": "Antwort entfernen",
   "app.components.formBuilder.required": "Erforderlich",
-  "app.components.formBuilder.requiredToggleLabel": "Machen Sie die Beantwortung dieser Frage erforderlich",
+  "app.components.formBuilder.requiredToggleLabel": "Beantwortung dieser Frage erforderlich machen",
   "app.components.formBuilder.ruleForAnswerLabel": "Wenn die Antwort lautet:",
   "app.components.formBuilder.save": "Speichern",
   "app.components.formBuilder.section": "Abschnitt",
