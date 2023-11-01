@@ -19,10 +19,7 @@ import useIdeaById from 'api/ideas/useIdeaById';
 
 // utils
 import { isFieldEnabled } from 'utils/projectUtils';
-import {
-  getCurrentParticipationContext,
-  isIdeaInParticipationContext,
-} from 'api/phases/utils';
+import { getCurrentParticipationContext } from 'api/phases/utils';
 
 const Container = styled.div`
   width: 100%;
@@ -63,15 +60,10 @@ const MetaInformation = ({
     phases?.data
   );
 
-  if (
-    !isNilOrError(locale) &&
-    ideaCustomFieldsSchema &&
-    idea &&
-    participationContext
-  ) {
+  if (!isNilOrError(locale) && ideaCustomFieldsSchema && idea) {
     const { anonymous } = idea.data.attributes;
-    const isVoting =
-      participationContext.attributes.participation_method === 'voting';
+    const hideAuthor =
+      participationContext?.attributes.participation_method === 'voting';
 
     const topicsEnabled = isFieldEnabled(
       'topic_ids',
@@ -90,13 +82,6 @@ const MetaInformation = ({
       ideaCustomFieldsSchema.data.attributes,
       locale
     );
-
-    const ideaIsInParticipationContext = isIdeaInParticipationContext(
-      idea,
-      participationContext
-    );
-
-    const hideAuthor = isVoting && ideaIsInParticipationContext;
 
     return (
       <Container className={`${className || ''} ${compact ? 'compact' : ''}`}>
