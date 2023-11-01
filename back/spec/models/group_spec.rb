@@ -70,7 +70,7 @@ RSpec.describe Group do
     end
   end
 
-  describe 'generate_slug!' do
+  describe 'generate_slug' do
     it 'generates a slug based on the first non-empty locale' do
       group = described_class.new
       group.title_multiloc = { en: '', 'nl-BE': 'title', 'fr-BE': 'titlefrançais' }
