@@ -630,7 +630,6 @@ DROP TABLE IF EXISTS public.email_campaigns_consents;
 DROP TABLE IF EXISTS public.email_campaigns_campaigns_groups;
 DROP TABLE IF EXISTS public.email_campaigns_campaign_email_commands;
 DROP TABLE IF EXISTS public.custom_forms;
-DROP TABLE IF EXISTS public.custom_fields;
 DROP TABLE IF EXISTS public.custom_field_options;
 DROP TABLE IF EXISTS public.cosponsors_initiatives;
 DROP TABLE IF EXISTS public.content_builder_layouts;
@@ -670,6 +669,7 @@ DROP TABLE IF EXISTS public.email_campaigns_campaigns;
 DROP VIEW IF EXISTS public.analytics_dimension_users;
 DROP VIEW IF EXISTS public.analytics_dimension_user_custom_field_values;
 DROP TABLE IF EXISTS public.users;
+DROP TABLE IF EXISTS public.custom_fields;
 DROP TABLE IF EXISTS public.analytics_dimension_types;
 DROP VIEW IF EXISTS public.analytics_dimension_statuses;
 DROP TABLE IF EXISTS public.initiative_statuses;
@@ -1357,6 +1357,36 @@ CREATE TABLE public.analytics_dimension_types (
 
 
 --
+-- Name: custom_fields; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.custom_fields (
+    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
+    resource_type character varying,
+    key character varying,
+    input_type character varying,
+    title_multiloc jsonb DEFAULT '{}'::jsonb,
+    description_multiloc jsonb DEFAULT '{}'::jsonb,
+    required boolean DEFAULT false,
+    ordering integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    enabled boolean DEFAULT true NOT NULL,
+    code character varying,
+    resource_id uuid,
+    hidden boolean DEFAULT false NOT NULL,
+    maximum integer,
+    minimum_label_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    maximum_label_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    logic jsonb DEFAULT '{}'::jsonb NOT NULL,
+    answer_visible_to character varying,
+    select_count_enabled boolean DEFAULT false NOT NULL,
+    maximum_select_count integer,
+    minimum_select_count integer
+);
+
+
+--
 -- Name: users; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1400,11 +1430,15 @@ CREATE TABLE public.users (
 --
 
 CREATE VIEW public.analytics_dimension_user_custom_field_values AS
- SELECT users.id AS user_id,
-    custom_field_values.key,
-    custom_field_values.value
-   FROM (public.users
-     JOIN LATERAL jsonb_each_text(users.custom_field_values) custom_field_values(key, value) ON (true));
+ SELECT DISTINCT u.id AS dimension_user_id,
+    cf.key,
+    cf.value
+   FROM ((public.users u
+     LEFT JOIN LATERAL ( SELECT custom_fields.key,
+            (u.custom_field_values ->> (custom_fields.key)::text) AS value
+           FROM public.custom_fields
+          WHERE ((custom_fields.resource_type)::text = 'User'::text)) cf ON (true))
+     LEFT JOIN LATERAL ( SELECT jsonb_object_keys(u.custom_field_values) AS key) cfv ON (true));
 
 
 --
@@ -2160,36 +2194,6 @@ CREATE TABLE public.custom_field_options (
     ordering integer,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: custom_fields; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.custom_fields (
-    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    resource_type character varying,
-    key character varying,
-    input_type character varying,
-    title_multiloc jsonb DEFAULT '{}'::jsonb,
-    description_multiloc jsonb DEFAULT '{}'::jsonb,
-    required boolean DEFAULT false,
-    ordering integer,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    enabled boolean DEFAULT true NOT NULL,
-    code character varying,
-    resource_id uuid,
-    hidden boolean DEFAULT false NOT NULL,
-    maximum integer,
-    minimum_label_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
-    maximum_label_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
-    logic jsonb DEFAULT '{}'::jsonb NOT NULL,
-    answer_visible_to character varying,
-    select_count_enabled boolean DEFAULT false NOT NULL,
-    maximum_select_count integer,
-    minimum_select_count integer
 );
 
 

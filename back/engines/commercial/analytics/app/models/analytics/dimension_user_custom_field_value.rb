@@ -4,9 +4,9 @@
 #
 # Table name: analytics_dimension_user_custom_field_values
 #
-#  user_id :uuid
-#  key     :text
-#  value   :text
+#  dimension_user_id :uuid
+#  key               :string
+#  value             :text
 #
 module Analytics
   class DimensionUserCustomFieldValue < Analytics::ApplicationRecordView
