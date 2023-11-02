@@ -48,7 +48,7 @@ const HomePage = () => {
     return (
       <Container id="e2e-landing-page">
         {!isNilOrError(authUser) ? (
-          <SignedInHeader />
+          <SignedInHeader homepageSettings={homepageSettings.data.attributes} />
         ) : (
           <Fragment name="signed-out-header">
             <SignedOutHeader
