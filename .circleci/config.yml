@@ -30,7 +30,6 @@ install-front-dependencies: &install-front-dependencies
         npm ci
         npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
 
-
 parameters:
   # This parameter is used to trigger the main workflow
   trigger:
@@ -839,8 +838,8 @@ workflows:
                 - master
           ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_STAGING
           compose_file: docker-compose-staging.yml
-          stack_name: cl2-back-stg
-          env_file: ".env-staging"
+          stack_name: "cl2"
+          env_file: ".env-web"
 
   back-deploy-production:
     when: << pipeline.parameters.back >>
