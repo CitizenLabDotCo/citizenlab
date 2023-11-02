@@ -5,18 +5,24 @@ import EditModePreview from 'components/admin/ContentBuilder/EditModePreview';
 
 // hooks
 import useLocale from 'hooks/useLocale';
+import { Locale } from 'typings';
 
-const HomapageBuilderEditModePreview = React.forwardRef<HTMLIFrameElement>(
-  (_, ref) => {
-    const locale = useLocale();
-
-    return (
-      <EditModePreview
-        iframeSrc={`/${locale}/admin/pages-menu/homepage/content-builder/preview`}
-        ref={ref}
-      />
-    );
+const HomapageBuilderEditModePreview = React.forwardRef<
+  HTMLIFrameElement,
+  {
+    selectedLocale?: Locale | null;
   }
-);
+>(({ selectedLocale }, ref) => {
+  const platformLocale = useLocale();
+  const locale = selectedLocale || platformLocale;
+  console.log({ platformLocale });
+  console.log({ locale });
+  return (
+    <EditModePreview
+      iframeSrc={`/${platformLocale}/admin/pages-menu/homepage/content-builder/preview?selected_locale=${locale}`}
+      ref={ref}
+    />
+  );
+});
 
 export default memo(HomapageBuilderEditModePreview);

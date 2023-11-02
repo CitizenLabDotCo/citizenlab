@@ -13,10 +13,15 @@ import { isNilOrError } from 'utils/helperUtils';
 // types
 import { SerializedNodes } from '@craftjs/core';
 import useHomepageSettings from 'api/home_page/useHomepageSettings';
+import { useSearchParams } from 'react-router-dom';
+import ContentBuilderLanguageProvider from '../ContentBuilderLanguageProvider';
+import { Locale } from 'typings';
 
 export const FullScreenPreview = () => {
+  const [search] = useSearchParams();
+  const selectedLocale = (search.get('selected_locale') as Locale) || undefined;
   const [draftData, setDraftData] = useState<SerializedNodes | undefined>();
-
+  console.log(selectedLocale);
   const platformLocale = useLocale();
   const { data: homepage, isLoading } = useHomepageSettings();
 
@@ -31,16 +36,21 @@ export const FullScreenPreview = () => {
   const editorData = draftData || savedEditorData;
 
   return (
-    <FullScreenWrapper onUpdateDraftData={setDraftData}>
-      {isLoading && <Spinner />}
-      {!isLoading && editorData && (
-        <Box>
-          <Editor isPreview={true}>
-            <ContentBuilderFrame editorData={editorData} />
-          </Editor>
-        </Box>
-      )}
-    </FullScreenWrapper>
+    <ContentBuilderLanguageProvider
+      platformLocale={platformLocale}
+      contentBuilderLocale={selectedLocale}
+    >
+      <FullScreenWrapper onUpdateDraftData={setDraftData}>
+        {isLoading && <Spinner />}
+        {!isLoading && editorData && (
+          <Box>
+            <Editor isPreview={true}>
+              <ContentBuilderFrame editorData={editorData} />
+            </Editor>
+          </Box>
+        )}
+      </FullScreenWrapper>
+    </ContentBuilderLanguageProvider>
   );
 };
 

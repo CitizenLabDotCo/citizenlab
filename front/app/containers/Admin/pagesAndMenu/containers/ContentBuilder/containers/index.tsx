@@ -140,7 +140,10 @@ const HomepageBuilderPage = () => {
         </Box>
       </Editor>
       <Box justifyContent="center" display={previewEnabled ? 'flex' : 'none'}>
-        <HomepageBuilderEditModePreview ref={iframeRef} />
+        <HomepageBuilderEditModePreview
+          ref={iframeRef}
+          selectedLocale={selectedLocale}
+        />
       </Box>
     </FullscreenContentBuilder>
   );
