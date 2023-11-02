@@ -25,6 +25,10 @@ export default defineMessages({
     id: 'app.containers.admin.ContentBuilder.homepage.proposalsTitle',
     defaultMessage: 'Proposals',
   },
+  eventsTitle: {
+    id: 'app.containers.admin.ContentBuilder.homepage.eventsTitle',
+    defaultMessage: 'Events',
+  },
   default: {
     id: 'app.containers.admin.ContentBuilder.homepage.default',
     defaultMessage: 'default',

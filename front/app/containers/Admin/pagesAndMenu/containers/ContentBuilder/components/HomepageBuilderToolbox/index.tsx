@@ -29,6 +29,7 @@ import Proposals from '../CraftSections/Proposals';
 import { Locale } from 'typings';
 import HomepageBanner from '../CraftSections/HomepageBanner';
 import Projects from '../CraftSections/Projects';
+import Events from '../CraftSections/Events';
 
 type HomepageBuilderToolboxProps = {
   selectedLocale: Locale;
@@ -95,6 +96,12 @@ const HomepageBuilderToolbox = ({
         component={<Proposals />}
         icon="section-info-accordion"
         label={formatMessage(messages.proposalsTitle)}
+      />
+      <DraggableElement
+        id="e2e-draggable-projects"
+        component={<Events />}
+        icon="section-info-accordion"
+        label={formatMessage(messages.eventsTitle)}
       />
       <DraggableElement
         id="e2e-draggable-image-text-cards"

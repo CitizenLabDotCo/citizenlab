@@ -22,6 +22,7 @@ import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
 import HomepageBanner from '../CraftSections/HomepageBanner';
 import Projects from '../CraftSections/Projects';
 import Proposals from '../CraftSections/Proposals';
+import Events from '../CraftSections/Events';
 
 type EditorProps = {
   children?: React.ReactNode;
@@ -52,6 +53,7 @@ const Editor: React.FC<EditorProps> = ({
         HomepageBanner,
         Projects,
         Proposals,
+        Events,
       }}
       isPreview={isPreview}
       onNodesChange={onNodesChange}
