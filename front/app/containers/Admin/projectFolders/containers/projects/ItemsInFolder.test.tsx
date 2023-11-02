@@ -2,7 +2,7 @@ import React from 'react';
 import ItemsInFolder, { Props } from './ItemsInFolder';
 import { render, screen } from 'utils/testUtils/rtl';
 import { mockFolderChildAdminPublicationsList } from 'api/admin_publications/__mocks__/useAdminPublications';
-import { mockAuthUserData } from 'api/me/__mocks__/useAuthUser';
+import { mockAuthUserData } from 'api/me/__mocks__/_mockServer';
 import dragAndDrop from 'utils/testUtils/dragAndDrop';
 
 jest.mock('api/me/useAuthUser', () => () => ({

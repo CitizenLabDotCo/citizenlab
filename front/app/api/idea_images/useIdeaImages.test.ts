@@ -6,15 +6,12 @@ import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-import { ideaImagesData } from './__mocks__/ideaImages';
+import endpoints, {
+  apiPathImages,
+  ideaImagesData,
+} from './__mocks__/_mockServer';
 
-const apiPath = '*ideas/:ideaId/images';
-
-const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: ideaImagesData }));
-  })
-);
+const server = setupServer(endpoints['GET ideas/:ideaId/images']);
 
 describe('useIdeaImages', () => {
   beforeAll(() => server.listen());
@@ -35,7 +32,7 @@ describe('useIdeaImages', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
+      rest.get(apiPathImages, (_req, res, ctx) => {
         return res(ctx.status(500));
       })
     );

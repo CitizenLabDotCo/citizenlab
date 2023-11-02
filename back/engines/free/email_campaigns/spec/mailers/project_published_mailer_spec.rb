@@ -34,6 +34,7 @@ RSpec.describe EmailCampaigns::ProjectPublishedMailer do
     it 'assigns cta url' do
       project_url = command.dig(:event_payload, :project_url)
       expect(project_url).to be_present
+      expect(project_url).to match('http://example.org')
       expect(mail.body.encoded).to match(project_url)
     end
 

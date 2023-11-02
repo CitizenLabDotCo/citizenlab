@@ -1,20 +1,14 @@
 import { renderHook } from '@testing-library/react-hooks';
 
 import useIdeaBySlug from './useIdeaBySlug';
-import { ideaData } from './__mocks__/useIdeaBySlug';
+import endpoints, { ideaData, apiPathBySlug } from './__mocks__/_mockServer';
 
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
-const apiPath = '*ideas/by_slug/:slug';
-
-const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: ideaData[0] }));
-  })
-);
+const server = setupServer(endpoints['GET ideas/by_slug/:slug']);
 
 describe('useIdeaBySlug', () => {
   beforeAll(() => server.listen());
@@ -35,7 +29,7 @@ describe('useIdeaBySlug', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
+      rest.get(apiPathBySlug, (_req, res, ctx) => {
         return res(ctx.status(500));
       })
     );

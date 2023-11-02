@@ -4,17 +4,10 @@ import { renderHook } from '@testing-library/react-hooks';
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-import { project1 } from './__mocks__/useProjects';
+import endpoints, { apiPathById, project1 } from './__mocks__/_mockServer';
 
 const projectId = 'be3f645b-3e1d-4afc-b91b-d68c4dc0100b';
-
-const apiPath = `*projects/${projectId}`;
-
-const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: project1 }));
-  })
-);
+const server = setupServer(endpoints['GET projects/:id']);
 
 describe('useProjectById', () => {
   beforeAll(() => server.listen());
@@ -35,7 +28,7 @@ describe('useProjectById', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
+      rest.get(apiPathById, (_req, res, ctx) => {
         return res(ctx.status(500));
       })
     );

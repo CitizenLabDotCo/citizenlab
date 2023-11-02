@@ -6,15 +6,12 @@ import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-import { initiativeStatusesData } from './__mocks__/useInitiativeStatuses';
+import endpoints, {
+  apiPath,
+  initiativeStatusesData,
+} from './__mocks__/_mockServer';
 
-const apiPath = '*initiative_statuses';
-
-const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: initiativeStatusesData }));
-  })
-);
+const server = setupServer(endpoints['GET initiative_statuses']);
 
 describe('useInitiativeStatuses', () => {
   beforeAll(() => server.listen());
