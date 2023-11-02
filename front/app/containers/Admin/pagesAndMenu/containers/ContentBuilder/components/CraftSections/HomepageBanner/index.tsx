@@ -19,27 +19,6 @@ type Props = {
   variant: 'signedOut' | 'signedIn';
 };
 
-// export interface IHomepageSettingsAttributes extends IHomepageEnabledSettings {
-//     bottom_info_section_multiloc: Multiloc; // covered by content builder
-//     projects_header_multiloc: Multiloc; // covered by content builder
-
-//     banner_layout: THomepageBannerLayout;
-//     banner_signed_out_header_overlay_color: string | null;
-//     // Number between 0 and 100, inclusive
-//     banner_signed_out_header_overlay_opacity: number | null;
-//     header_bg: ImageSizes | null;
-
-//     banner_signed_in_header_multiloc: Multiloc;
-//     banner_cta_signed_in_text_multiloc: Multiloc;
-//     banner_cta_signed_in_type: CTASignedInType;
-//     banner_cta_signed_in_url: string | null;
-//     // cta_signed_out
-//     banner_cta_signed_out_text_multiloc: Multiloc;
-//     banner_cta_signed_out_type: CTASignedOutType;
-//     banner_cta_signed_out_url: string | null;
-
-//   }
-
 const HomepageBanner = ({ homepageSettings, variant }: Props) => {
   return variant === 'signedIn' ? (
     <SignedInHeader homepageSettings={homepageSettings} />
