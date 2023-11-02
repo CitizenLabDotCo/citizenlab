@@ -46,7 +46,7 @@ const HomepageBuilderToolbox = ({
         <FormattedMessage {...messages.sections} />
       </SectionTitle>
       <DraggableElement
-        id="e2e-draggable-info-accordions"
+        id="e2e-draggable-homepage"
         component={
           <HomepageBanner
             variant="signedOut"
@@ -83,25 +83,25 @@ const HomepageBuilderToolbox = ({
             }}
           />
         }
-        icon="section-info-accordion"
+        icon="home"
         label={formatMessage(messages.homepageBannerTitle)}
       />
       <DraggableElement
         id="e2e-draggable-projects"
         component={<Projects />}
-        icon="section-info-accordion"
+        icon="categories"
         label={formatMessage(messages.projectsTitle)}
       />
       <DraggableElement
-        id="e2e-draggable-projects"
+        id="e2e-draggable-proposals"
         component={<Proposals />}
-        icon="section-info-accordion"
+        icon="proposals"
         label={formatMessage(messages.proposalsTitle)}
       />
       <DraggableElement
-        id="e2e-draggable-projects"
+        id="e2e-draggable-events"
         component={<Events />}
-        icon="section-info-accordion"
+        icon="calendar"
         label={formatMessage(messages.eventsTitle)}
       />
       <DraggableElement
