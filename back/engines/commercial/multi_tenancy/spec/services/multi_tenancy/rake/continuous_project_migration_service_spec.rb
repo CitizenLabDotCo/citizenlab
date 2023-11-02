@@ -2,6 +2,12 @@
 
 require 'rails_helper'
 
+RSpec.configure do |config|
+  config.before(:suite) do
+    I18n.load_path += Dir[Rails.root.join('engines/commercial/multi_tenancy/spec/fixtures/locales/*.yml')]
+  end
+end
+
 RSpec.describe MultiTenancy::Rake::ContinuousProjectMigrationService do
   subject(:service) { described_class.new }
 
@@ -87,6 +93,16 @@ RSpec.describe MultiTenancy::Rake::ContinuousProjectMigrationService do
         voting_term_plural_multiloc: {}
       })
     end
+
+    it "logs a 'created' action for the newly created phase" do
+      expect(LogActivityJob).to have_been_enqueued.with(
+        project.phases.first,
+        'created',
+        nil,
+        project.phases.first.created_at.to_i,
+        { payload: { migrated_from_continuous: true }, project_id: project.id }
+      )
+    end
   end
 
   shared_examples 'ideas' do
@@ -141,6 +157,7 @@ RSpec.describe MultiTenancy::Rake::ContinuousProjectMigrationService do
 
     context 'with persistence' do
       before do
+        ActiveJob::Base.queue_adapter.enqueued_jobs.clear
         service.migrate(true)
       end
 
@@ -152,6 +169,10 @@ RSpec.describe MultiTenancy::Rake::ContinuousProjectMigrationService do
         include_examples 'project_settings'
         include_examples 'ideas'
         include_examples 'permissions'
+
+        it 'creates an ideation phase title for all locales' do
+          expect(project.phases.first.title_multiloc).to eq({ 'en' => 'Collect input', 'fr-FR' => 'Collect input - FR', 'nl-NL' => 'Collect input - NL' })
+        end
       end
 
       context 'voting' do
@@ -165,6 +186,10 @@ RSpec.describe MultiTenancy::Rake::ContinuousProjectMigrationService do
         include_examples 'project_settings'
         include_examples 'ideas'
         include_examples 'permissions'
+
+        it 'creates a voting phase title for all locales' do
+          expect(project.phases.first.title_multiloc).to eq({ 'en' => 'Voting', 'fr-FR' => 'Voting - FR', 'nl-NL' => 'Voting - NL' })
+        end
 
         it 'changes the participation context of a basket' do
           phase = project.phases.first
@@ -194,6 +219,10 @@ RSpec.describe MultiTenancy::Rake::ContinuousProjectMigrationService do
         include_examples 'project_settings'
         include_examples 'permissions'
 
+        it 'creates a poll phase title for all locales' do
+          expect(project.phases.first.title_multiloc).to eq({ 'en' => 'Poll', 'fr-FR' => 'Poll - FR', 'nl-NL' => 'Poll - NL' })
+        end
+
         it 'changes the participation context of a poll question' do
           phase = project.phases.first
           poll_questions.each do |poll_question|
@@ -222,6 +251,10 @@ RSpec.describe MultiTenancy::Rake::ContinuousProjectMigrationService do
         include_examples 'ideas'
         include_examples 'permissions'
 
+        it 'creates a survey phase title for all locales' do
+          expect(project.phases.first.title_multiloc).to eq({ 'en' => 'Survey', 'fr-FR' => 'Survey - FR', 'nl-NL' => 'Survey - NL' })
+        end
+
         it 'add the creation phase to each idea' do
           phase = project.phases.first
           project.ideas.each do |idea|
@@ -238,6 +271,10 @@ RSpec.describe MultiTenancy::Rake::ContinuousProjectMigrationService do
         include_examples 'project_settings'
         include_examples 'permissions'
 
+        it 'creates a survey phase title for all locales' do
+          expect(project.phases.first.title_multiloc).to eq({ 'en' => 'Survey', 'fr-FR' => 'Survey - FR', 'nl-NL' => 'Survey - NL' })
+        end
+
         it 'changes the participation context of a survey response' do
           phase = project.phases.first
           survey_responses.each do |survey_response|
@@ -252,6 +289,10 @@ RSpec.describe MultiTenancy::Rake::ContinuousProjectMigrationService do
         let_it_be(:project) { create(:continuous_document_annotation_project) }
         let_it_be(:permission) { create(:permission, :by_users, action: 'annotating_document', permission_scope: project) }
 
+        it 'creates a document_anotation phase title for all locales' do
+          expect(project.phases.first.title_multiloc).to eq({ 'en' => 'Document feedback', 'fr-FR' => 'Document feedback - FR', 'nl-NL' => 'Document feedback - NL' })
+        end
+
         include_examples 'project_settings'
         include_examples 'permissions'
       end
@@ -261,6 +302,10 @@ RSpec.describe MultiTenancy::Rake::ContinuousProjectMigrationService do
         let_it_be(:volunteering_causes) { create_list(:cause, 3, participation_context: project) }
 
         include_examples 'project_settings'
+
+        it 'creates a volunteering title for all locales' do
+          expect(project.phases.first.title_multiloc).to eq({ 'en' => 'Find volunteers', 'fr-FR' => 'Find volunteers - FR', 'nl-NL' => 'Find volunteers - NL' })
+        end
 
         it 'changes the participation context of a volunteering cause' do
           phase = project.phases.first
@@ -275,6 +320,10 @@ RSpec.describe MultiTenancy::Rake::ContinuousProjectMigrationService do
       context 'information' do
         let_it_be(:project) { create(:continuous_project, participation_method: 'information') }
         include_examples 'project_settings'
+
+        it 'creates an information title for all locales' do
+          expect(project.phases.first.title_multiloc).to eq({ 'en' => 'Information', 'fr-FR' => 'Information - FR', 'nl-NL' => 'Information - NL' })
+        end
       end
     end
   end

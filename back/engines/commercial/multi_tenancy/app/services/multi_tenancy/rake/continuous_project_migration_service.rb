@@ -46,14 +46,11 @@ class MultiTenancy::Rake::ContinuousProjectMigrationService
       # 8. Run function to update basket/votes count on ideas_phases
       update_counts(project)
 
+      # 9. Add a creation activity for each phase - don't think there are any other activities that need updating
+      add_phase_creation_activity(phase)
+
       @stats[:success] = @stats[:success] + 1
     end
-  end
-
-  def migrate_activities(persist_changes)
-    # TODO: Separate function to migrate the activities separately
-    # TODO: How can we make a universal rake structure that can be reused??
-    # 9. Activities - Do we need to update any of the historic logs? If so we should run this as a separate task - could be huge
   end
 
   private
@@ -140,6 +137,8 @@ class MultiTenancy::Rake::ContinuousProjectMigrationService
     end
   end
 
+  # TODO: Is there any impact on the updated date changing?
+  # TODO: Do we need to update all notifications or only those that are recent?
   def add_phase_ids(project, phase)
     %w[Notification Analysis::Analysis].each do |model|
       @stats[:records_updated] += model.constantize.where(project: project).update!(phase: phase).count
@@ -153,17 +152,23 @@ class MultiTenancy::Rake::ContinuousProjectMigrationService
     # VotingBasketNotSubmitted
     # TODO: Complete this list by looking at all the notification models
 
-    # Ignore these? There are others too
+    # Ignore these - They have no phase
+    #
     # IdeaAssignment::Notifications::IdeaAssignedToYou
-    # Notifications::CommentOnIdeaYouFollow
-    # Notifications::ProjectModerationRightsReceived
-    # Notifications::VotingBasketSubmitted
-    # Notifications::IdeaMarkedAsSpam
-    # Notifications::MentionInComment
-    # Notifications::StatusChangeOnIdeaYouFollow
-    # Notifications::CommentMarkedAsSpam
-    # Notifications::CommentOnYourComment
     # Notifications::CommentDeletedByAdmin
+    # Notifications::CommentMarkedAsSpam
+    # Notifications::CommentOnIdeaYouFollow
+    # Notifications::CommentOnYourComment
+    # Notifications::IdeaMarkedAsSpam
+    # Notifications::InternalComments::InternalCommentOnIdeaAssignedToYou
+    # Notifications::InternalComments::InternalCommentOnIdeaYouCommentedInternallyOn
+    # Notifications::InternalComments::InternalCommentOnUnassignedUnmoderatedIdea
+    # Notifications::MentionInComment
+    # Notifications::MentionInOfficialFeedback
+    # Notifications::OfficialFeedbackOnIdeaYouFollow
+    # Notifications::ProjectModerationRightsReceived
+    # Notifications::ProjectPublished
+    # Notifications::StatusChangeOnIdeaYouFollow
   end
 
   def update_permission_scope(project, phase)
@@ -184,12 +189,17 @@ class MultiTenancy::Rake::ContinuousProjectMigrationService
     end
   end
 
-  def create_phase_title(_project)
-    # TODO: Set this to the participation method name - need the translations in the codebase for this
-    # app_locales = AppConfiguration.instance.settings('core', 'locales')
-    # I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.first_name') }
-    # binding.pry
-    { en: 'default' }
+  def add_phase_creation_activity(phase)
+    LogActivityJob.perform_later(phase, 'created', nil, phase.created_at.to_i, { payload: { migrated_from_continuous: true } })
+  end
+
+  def create_phase_title(project)
+    title_multiloc = {}
+    AppConfiguration.instance.settings('core', 'locales').each do |locale|
+      value = I18n.with_locale(locale) { I18n.t("default_phase_title.#{project.participation_method}") }
+      title_multiloc[locale] = value
+    end
+    title_multiloc
   end
 
   def error_handler(error)
