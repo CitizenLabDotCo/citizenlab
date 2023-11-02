@@ -144,6 +144,7 @@ const EventsViewer = ({
     pastOnly: eventsTime === 'past',
     sort: eventsTime === 'past' ? 'start_at' : '-start_at',
     pageNumber: currentPage,
+    pageSize: 15,
     attendeeId,
     ongoing_during: ongoingDuringDates,
   });
