@@ -2222,6 +2222,7 @@
   "app.containers.admin.ContentBuilder.error": "error",
   "app.containers.admin.ContentBuilder.errorMessage": "There is an error on {locale} content, please fix the issue to be able to save your changes",
   "app.containers.admin.ContentBuilder.homepage.default": "default",
+  "app.containers.admin.ContentBuilder.homepage.eventsTitle": "Events",
   "app.containers.admin.ContentBuilder.homepage.homepageBanner": "Homepage banner",
   "app.containers.admin.ContentBuilder.homepage.imageTextCards": "Image & text cards",
   "app.containers.admin.ContentBuilder.homepage.oneColumnLayout": "1 column",
