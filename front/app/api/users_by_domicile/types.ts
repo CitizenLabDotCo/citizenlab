@@ -15,9 +15,6 @@ export interface IUsersByDomicile {
         // reference_population: {
         //   [key: string]: number;
         // }
-        // expected_users: {
-        //   [key: string]: number;
-        // };
       };
       areas: {
         [key: string]: {
