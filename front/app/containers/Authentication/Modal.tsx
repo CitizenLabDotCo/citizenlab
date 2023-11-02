@@ -37,7 +37,7 @@ import messages from './messages';
 import errorMessages from 'components/UI/Error/messages';
 
 // typings
-import { ErrorCode } from './typings';
+import { ModalProps, ErrorCode } from './typings';
 import VerificationSuccess from './steps/VerificationSuccess';
 import T from 'components/T';
 import { IInitiativeAction } from 'api/initiative_action_descriptors/types';
@@ -137,11 +137,7 @@ const HELPER_TEXT_KEYS: Partial<Record<Step, HelperTextKey>> = {
   'missing-data:custom-fields': 'custom_fields_signup_helper_text',
 };
 
-interface Props {
-  setModalOpen: (bool: boolean) => void;
-}
-
-const AuthModal = ({ setModalOpen }: Props) => {
+const AuthModal = ({ setModalOpen }: ModalProps) => {
   const {
     currentStep,
     state,
@@ -156,7 +152,7 @@ const AuthModal = ({ setModalOpen }: Props) => {
   const theme = useTheme();
 
   useEffect(() => {
-    setModalOpen(currentStep !== 'closed');
+    setModalOpen?.(currentStep !== 'closed');
   }, [currentStep, setModalOpen]);
 
   const smallerThanPhone = useBreakpoint('phone');

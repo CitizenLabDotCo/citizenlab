@@ -4,17 +4,11 @@ import { renderHook } from '@testing-library/react-hooks';
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-import { project2 } from './__mocks__/useProjects';
+import endpoints, { apiPathBySlug, project2 } from './__mocks__/_mockServer';
 
 const projectSlug = 'permissions-test';
 
-const apiPath = `*projects/by_slug/${projectSlug}`;
-
-const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: project2 }));
-  })
-);
+const server = setupServer(endpoints['GET projects/by_slug/:slug']);
 
 describe('useProjectBySlug', () => {
   beforeAll(() => server.listen());
@@ -38,7 +32,7 @@ describe('useProjectBySlug', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
+      rest.get(apiPathBySlug, (_req, res, ctx) => {
         return res(ctx.status(500));
       })
     );
