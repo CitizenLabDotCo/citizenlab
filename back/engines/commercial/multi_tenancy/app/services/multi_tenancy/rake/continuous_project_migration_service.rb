@@ -142,16 +142,19 @@ class MultiTenancy::Rake::ContinuousProjectMigrationService
 
   # TODO: Is there any impact on the updated date changing?
   def add_notification_phase_ids(project, phase)
-    %w[Notifications::VotingBasketNotSubmitted].each do |_model|
-      @stats[:records_updated] += Notification.where(project: project).update!(phase: phase).count
+    %w[
+      Notifications::VotingBasketNotSubmitted
+      Notifications::VotingBasketSubmitted
+    ].each do |model|
+      @stats[:records_updated] += model.constantize.where(project: project).update!(phase: phase).count
     end
 
     # Do these - they have phase in them
     #
-    # VotingResultsPublished
-    # VotingLastChance
-    # VotingBasketSubmitted
-    # VotingBasketNotSubmitted
+    # VotingResultsPublished - No needs phase
+    # VotingLastChance - No needs phase
+    # VotingBasketSubmitted - Yes
+    # VotingBasketNotSubmitted - Yes
     # TODO: Complete this list by looking at all the notification models
 
     # Ignore these - They have no phase
