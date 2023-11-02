@@ -31,8 +31,8 @@ class MultiTenancy::Rake::ContinuousProjectMigrationService
       # 3. Update participation_context in models - from project_id to new phase_id
       update_participation_contexts(project, phase)
 
-      # 4. Add phase_id to the following models:
-      add_phase_ids(project, phase)
+      # 4. Add phase to notifications where needed
+      add_notification_phase_ids(project, phase)
 
       # 5. Update permission_scope in permissions from project_id to phase_id
       update_permission_scope(project, phase)
@@ -46,7 +46,10 @@ class MultiTenancy::Rake::ContinuousProjectMigrationService
       # 8. Run function to update basket/votes count on ideas_phases
       update_counts(project)
 
-      # 9. Add a creation activity for each phase - don't think there are any other activities that need updating
+      # 9. Move any native survey analysis from project to phase
+      update_native_survey_analyses(project, phase)
+
+      # 10. Add a creation activity for each phase - don't think there are any other activities that need updating
       add_phase_creation_activity(phase)
 
       @stats[:success] = @stats[:success] + 1
@@ -138,10 +141,9 @@ class MultiTenancy::Rake::ContinuousProjectMigrationService
   end
 
   # TODO: Is there any impact on the updated date changing?
-  # TODO: Do we need to update all notifications or only those that are recent?
-  def add_phase_ids(project, phase)
-    %w[Notification Analysis::Analysis].each do |model|
-      @stats[:records_updated] += model.constantize.where(project: project).update!(phase: phase).count
+  def add_notification_phase_ids(project, phase)
+    %w[Notifications::VotingBasketNotSubmitted].each do |_model|
+      @stats[:records_updated] += Notification.where(project: project).update!(phase: phase).count
     end
 
     # Do these - they have phase in them
@@ -186,6 +188,12 @@ class MultiTenancy::Rake::ContinuousProjectMigrationService
   def update_native_survey_creation_phase(project, phase)
     if phase.participation_method == 'native_survey'
       @stats[:records_updated] += Idea.where(project: project).update!(creation_phase: phase).count
+    end
+  end
+
+  def update_native_survey_analyses(project, phase)
+    if phase.participation_method == 'native_survey'
+      @stats[:records_updated] += Analysis::Analysis.where(project: project).update!(phase: phase, project: nil).count
     end
   end
 

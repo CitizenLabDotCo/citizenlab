@@ -165,6 +165,7 @@ RSpec.describe MultiTenancy::Rake::ContinuousProjectMigrationService do
         let_it_be(:project) { create(:continuous_project) }
         let_it_be(:ideas) { create_list(:idea, 3, project: project) }
         let_it_be(:permission) { create(:permission, :by_users, action: 'commenting_idea', permission_scope: project) }
+        let_it_be(:analysis) { create(:analysis, project: project) }
 
         include_examples 'project_settings'
         include_examples 'ideas'
@@ -172,6 +173,11 @@ RSpec.describe MultiTenancy::Rake::ContinuousProjectMigrationService do
 
         it 'creates an ideation phase title for all locales' do
           expect(project.phases.first.title_multiloc).to eq({ 'en' => 'Collect input', 'fr-FR' => 'Collect input - FR', 'nl-NL' => 'Collect input - NL' })
+        end
+
+        it 'does not move any analyses from the phase to the project' do
+          expect(analysis.reload.project).to eq project
+          expect(analysis.reload.phase).to be_nil
         end
       end
 
@@ -246,6 +252,7 @@ RSpec.describe MultiTenancy::Rake::ContinuousProjectMigrationService do
         let_it_be(:project) { create(:continuous_native_survey_project) }
         let_it_be(:ideas) { create_list(:native_survey_response, 2, project: project) }
         let_it_be(:permission) { create(:permission, :by_everyone, action: 'posting_idea', permission_scope: project) }
+        let_it_be(:analysis) { create(:analysis, project: project) }
 
         include_examples 'project_settings'
         include_examples 'ideas'
@@ -260,6 +267,11 @@ RSpec.describe MultiTenancy::Rake::ContinuousProjectMigrationService do
           project.ideas.each do |idea|
             expect(idea.reload.creation_phase).to eq phase
           end
+        end
+
+        it 'moves any analyses from the phase to the project' do
+          expect(analysis.reload.project).to be_nil
+          expect(analysis.reload.phase).to eq project.phases.first
         end
       end
 
