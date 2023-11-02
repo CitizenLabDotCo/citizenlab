@@ -1,7 +1,7 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 
 import useUpdateIdea from './useUpdateIdea';
-import { ideaData } from './__mocks__/useIdeaById';
+import { ideaData } from './__mocks__/_mockServer';
 
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
