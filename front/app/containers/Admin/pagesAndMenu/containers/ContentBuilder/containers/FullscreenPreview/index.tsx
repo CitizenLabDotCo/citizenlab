@@ -21,7 +21,6 @@ export const FullScreenPreview = () => {
   const [search] = useSearchParams();
   const selectedLocale = (search.get('selected_locale') as Locale) || undefined;
   const [draftData, setDraftData] = useState<SerializedNodes | undefined>();
-  console.log(selectedLocale);
   const platformLocale = useLocale();
   const { data: homepage, isLoading } = useHomepageSettings();
 

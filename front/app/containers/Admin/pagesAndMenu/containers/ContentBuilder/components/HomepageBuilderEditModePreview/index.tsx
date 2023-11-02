@@ -15,8 +15,7 @@ const HomapageBuilderEditModePreview = React.forwardRef<
 >(({ selectedLocale }, ref) => {
   const platformLocale = useLocale();
   const locale = selectedLocale || platformLocale;
-  console.log({ platformLocale });
-  console.log({ locale });
+
   return (
     <EditModePreview
       iframeSrc={`/${platformLocale}/admin/pages-menu/homepage/content-builder/preview?selected_locale=${locale}`}
