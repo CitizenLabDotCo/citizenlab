@@ -24,7 +24,7 @@ namespace :fix_existing_tenants do
 
     # Output all the stats
     stats.each do |host, tenant_stats|
-      Rails.logger.info "STATS: #{host} - projects: #{tenant_stats[:projects]}, success: #{tenant_stats[:success]}"
+      Rails.logger.info "STATS: #{host} - projects: #{tenant_stats[:projects]}, successful: #{tenant_stats[:success]}, records_updated: #{tenant_stats[:records_updated]}"
       tenant_stats[:errors].each do |error|
         Rails.logger.info "ERROR: #{error}"
       end
