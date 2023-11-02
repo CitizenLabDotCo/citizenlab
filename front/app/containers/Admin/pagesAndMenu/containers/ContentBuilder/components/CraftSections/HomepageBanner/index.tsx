@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Toggle } from '@citizenlab/cl2-component-library';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
 // craft
@@ -20,6 +20,7 @@ type Props = {
 // export interface IHomepageSettingsAttributes extends IHomepageEnabledSettings {
 //     bottom_info_section_multiloc: Multiloc; // covered by content builder
 //     projects_header_multiloc: Multiloc; // covered by content builder
+
 //     banner_layout: THomepageBannerLayout;
 
 //     banner_signed_out_header_overlay_color: string | null;
@@ -35,8 +36,7 @@ type Props = {
 //     banner_cta_signed_out_text_multiloc: Multiloc;
 //     banner_cta_signed_out_type: CTASignedOutType;
 //     banner_cta_signed_out_url: string | null;
-//     // content builder
-//     craftjs_json: Record<string, SerializedNode>;
+
 //   }
 
 const HomepageBanner = ({ homepageSettings }: Props) => {
@@ -55,6 +55,8 @@ const HomepageBannerSettings = () => {
         node.data.props.homepageSettings.banner_signed_out_subheader_multiloc,
       banner_signed_out_header_overlay_color:
         node.data.props.homepageSettings.banner_signed_out_header_overlay_color,
+      banner_avatars_enabled:
+        node.data.props.homepageSettings.banner_avatars_enabled,
     },
   }));
 
@@ -90,6 +92,17 @@ const HomepageBannerSettings = () => {
             (props: Props) =>
               (props.homepageSettings.banner_signed_out_subheader_multiloc =
                 value)
+          );
+        }}
+      />
+      <Toggle
+        label="Show avatars"
+        checked={homepageSettings.banner_avatars_enabled}
+        onChange={() => {
+          setProp(
+            (props: Props) =>
+              (props.homepageSettings.banner_avatars_enabled =
+                !homepageSettings.banner_avatars_enabled)
           );
         }}
       />
@@ -138,7 +151,11 @@ const HomepageBannerSettings = () => {
 
 HomepageBanner.craft = {
   props: {
-    homepageSettings: { banner_signed_out_header_multiloc: {} },
+    homepageSettings: {
+      banner_signed_out_header_multiloc: {},
+      banner_signed_out_subheader_multiloc: {},
+      banner_avatars_enabled: true,
+    },
   },
   related: {
     settings: HomepageBannerSettings,

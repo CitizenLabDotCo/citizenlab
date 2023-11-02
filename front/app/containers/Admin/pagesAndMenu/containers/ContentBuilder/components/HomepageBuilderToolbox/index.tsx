@@ -56,7 +56,7 @@ const HomepageBuilderToolbox = ({
               events_widget_enabled: false,
               projects_enabled: true,
               projects_header_multiloc: {},
-              banner_avatars_enabled: false,
+              banner_avatars_enabled: true,
               banner_layout: 'full_width_banner_layout',
               banner_signed_in_header_multiloc: {},
               banner_cta_signed_in_text_multiloc: {},
