@@ -1228,7 +1228,7 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.layerColor": "Farbe der Ebene",
   "app.containers.AdminPage.ProjectEdit.MapTab.layerColorTooltip": "Alle Features in der Ebene werden mit dieser Farbe hervorgehoben. Diese Farbe überschreibt auch ein eventuell vorhandenes Styling in Ihrer GeoJSON-Datei.",
   "app.containers.AdminPage.ProjectEdit.MapTab.layerIconName": "Markierungssymbol",
-  "app.containers.AdminPage.ProjectEdit.MapTab.layerIconNameTooltip": "Wählen Sie optional ein Symbol aus, das in den Markern angezeigt wird. Klicken Sie auf {url} , um die Liste der Symbole anzuzeigen, die Sie auswählen können.",
+  "app.containers.AdminPage.ProjectEdit.MapTab.layerIconNameTooltip": "Wählen Sie optional ein Symbol aus, das in den Markern angezeigt wird. Klicken Sie {url}, um die Liste der Symbole zu sehen, die Sie auswählen können.",
   "app.containers.AdminPage.ProjectEdit.MapTab.layerName": "Layer-Name",
   "app.containers.AdminPage.ProjectEdit.MapTab.layerNameTooltip": "Dieser Ebenen-Name wird in der Kartenlegende angezeigt",
   "app.containers.AdminPage.ProjectEdit.MapTab.layerTooltip": "Layer-Tooltip",
