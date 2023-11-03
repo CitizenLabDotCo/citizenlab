@@ -104,3 +104,5 @@ export const Report = ({ reportId }: Props) => {
     </ReportLanguageProvider>
   );
 };
+
+export default Report;

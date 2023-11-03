@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
 
 // services
 import { LocaleSubject } from 'utils/locale';
@@ -18,27 +17,14 @@ import ReportLanguageProvider from '../ReportLanguageProvider';
 // components
 import FullScreenWrapper from 'components/admin/ContentBuilder/FullscreenPreview/Wrapper';
 import { Spinner } from '@citizenlab/cl2-component-library';
+import Editor from '../../components/ReportBuilder/Editor';
+import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
+
+// utils
 import { isNilOrError } from 'utils/helperUtils';
-import Content from './Content';
 
 // types
 import { SerializedNodes } from '@craftjs/core';
-
-const Centerer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  @media print {
-    margin-top: -20px;
-    display: block;
-    position: absolute;
-    @page {
-      size: auto;
-      margin: 30px 0;
-    }
-  }
-`;
 
 export interface Props {
   reportId: string;
@@ -73,13 +59,13 @@ export const FullScreenReport = ({ reportId }: Props) => {
       reportLocale={reportLocale}
       platformLocale={platformLocale}
     >
-      <ReportContext.Provider value="pdf">
+      <ReportContext.Provider value="phase">
         <FullScreenWrapper onUpdateDraftData={setDraftData}>
           {isLoadingLayout && <Spinner />}
           {!isLoadingLayout && (
-            <Centerer>
-              <Content editorData={editorData} />
-            </Centerer>
+            <Editor isPreview={true}>
+              {editorData && <ContentBuilderFrame editorData={editorData} />}
+            </Editor>
           )}
         </FullScreenWrapper>
       </ReportContext.Provider>

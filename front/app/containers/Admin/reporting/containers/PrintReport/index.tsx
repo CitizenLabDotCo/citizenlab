@@ -12,7 +12,7 @@ import { ReportContext } from '../../context/ReportContext';
 
 // components
 import { Text, Spinner, Box } from '@citizenlab/cl2-component-library';
-import { FullScreenReport } from '../FullScreenReport';
+import Report from './Report';
 
 // i18n
 import messages from '../../messages';
@@ -92,7 +92,7 @@ export const PrintReport = ({ reportId, _print = true }: Props) => {
         </PreparingBox>
       )}
       <ReportContext.Provider value="pdf">
-        <FullScreenReport reportId={reportId} />
+        <Report reportId={reportId} />
       </ReportContext.Provider>
     </>
   );

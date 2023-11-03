@@ -4,7 +4,7 @@ import { API_PATH } from 'containers/App/constants';
 const apiPath = `${API_PATH}/analytics`;
 
 const participantsGraphParams =
-  '?query%5B%5D%5Bfact%5D=participation&query%5B%5D%5Bfilters%5D%5Bdimension_user.role%5D%5B%5D=citizen&query%5B%5D%5Bfilters%5D%5Bdimension_user.role%5D%5B%5D=&query%5B%5D%5Bfilters%5D%5Bdimension_project.id%5D=f229c7e1-cf50-45fe-a231-dd52cd1e7037&query%5B%5D%5Bgroups%5D=dimension_date_created.month&query%5B%5D%5Baggregations%5D%5Bdimension_user_id%5D=count&query%5B%5D%5Baggregations%5D%5Bdimension_date_created.date%5D=first&query%5B%5D%5Bfact%5D=participation&query%5B%5D%5Bfilters%5D%5Bdimension_user.role%5D%5B%5D=citizen&query%5B%5D%5Bfilters%5D%5Bdimension_user.role%5D%5B%5D=&query%5B%5D%5Bfilters%5D%5Bdimension_project.id%5D=f229c7e1-cf50-45fe-a231-dd52cd1e7037&query%5B%5D%5Baggregations%5D%5Bdimension_user_id%5D=count&query%5B%5D%5Bfact%5D=participation&query%5B%5D%5Bfilters%5D%5Bdimension_user.role%5D%5B%5D=citizen&query%5B%5D%5Bfilters%5D%5Bdimension_user.role%5D%5B%5D=&query%5B%5D%5Bfilters%5D%5Bdimension_project.id%5D=f229c7e1-cf50-45fe-a231-dd52cd1e7037&query%5B%5D%5Bfilters%5D%5Bdimension_date_created.date%5D%5Bfrom%5D=2023-10-01&query%5B%5D%5Bfilters%5D%5Bdimension_date_created.date%5D%5Bto%5D=2023-10-31&query%5B%5D%5Baggregations%5D%5Bdimension_user_id%5D=count&query%5B%5D%5Bfact%5D=visit&query%5B%5D%5Bfilters%5D%5Bdimension_user.role%5D%5B%5D=citizen&query%5B%5D%5Bfilters%5D%5Bdimension_user.role%5D%5B%5D=&query%5B%5D%5Bfilters%5D%5Bdimension_projects.id%5D=f229c7e1-cf50-45fe-a231-dd52cd1e7037&query%5B%5D%5Baggregations%5D%5Bvisitor_id%5D=count&query%5B%5D%5Bfact%5D=visit&query%5B%5D%5Bfilters%5D%5Bdimension_user.role%5D%5B%5D=citizen&query%5B%5D%5Bfilters%5D%5Bdimension_user.role%5D%5B%5D=&query%5B%5D%5Bfilters%5D%5Bdimension_projects.id%5D=f229c7e1-cf50-45fe-a231-dd52cd1e7037&query%5B%5D%5Bfilters%5D%5Bdimension_date_first_action.date%5D%5Bfrom%5D=2023-10-01&query%5B%5D%5Bfilters%5D%5Bdimension_date_first_action.date%5D%5Bto%5D=2023-10-31&query%5B%5D%5Baggregations%5D%5Bvisitor_id%5D=count';
+  '?query%5B%5D%5Bfact%5D=participation&query%5B%5D%5Bfilters%5D%5Bdimension_user.role%5D%5B%5D=citizen';
 const participantsGraphData = {
   type: 'analytics',
   attributes: [
@@ -33,7 +33,7 @@ const participantsGraphData = {
 };
 
 const visitorsTimelineParams =
-  '?query%5B%5D%5Bfact%5D=visit&query%5B%5D%5Bfilters%5D%5Bdimension_user.role%5D%5B%5D=citizen&query%5B%5D%5Bfilters%5D%5Bdimension_user.role%5D%5B%5D=&query%5B%5D%5Bfilters%5D%5Bdimension_projects.id%5D=f229c7e1-cf50-45fe-a231-dd52cd1e7037&query%5B%5D%5Baggregations%5D%5Ball%5D=count&query%5B%5D%5Baggregations%5D%5Bvisitor_id%5D=count&query%5B%5D%5Baggregations%5D%5Bduration%5D=avg&query%5B%5D%5Baggregations%5D%5Bpages_visited%5D=avg&query%5B%5D%5Bfact%5D=visit&query%5B%5D%5Bfilters%5D%5Bdimension_user.role%5D%5B%5D=citizen&query%5B%5D%5Bfilters%5D%5Bdimension_user.role%5D%5B%5D=&query%5B%5D%5Bfilters%5D%5Bdimension_projects.id%5D=f229c7e1-cf50-45fe-a231-dd52cd1e7037&query%5B%5D%5Bfilters%5D%5Bdimension_date_first_action.date%5D%5Bfrom%5D=2023-10-01&query%5B%5D%5Bfilters%5D%5Bdimension_date_first_action.date%5D%5Bto%5D=2023-10-31&query%5B%5D%5Baggregations%5D%5Ball%5D=count&query%5B%5D%5Baggregations%5D%5Bvisitor_id%5D=count&query%5B%5D%5Baggregations%5D%5Bduration%5D=avg&query%5B%5D%5Baggregations%5D%5Bpages_visited%5D=avg&query%5B%5D%5Bfact%5D=visit&query%5B%5D%5Bfilters%5D%5Bdimension_user.role%5D%5B%5D=citizen&query%5B%5D%5Bfilters%5D%5Bdimension_user.role%5D%5B%5D=&query%5B%5D%5Bfilters%5D%5Bdimension_projects.id%5D=f229c7e1-cf50-45fe-a231-dd52cd1e7037&query%5B%5D%5Bgroups%5D=dimension_date_first_action.month&query%5B%5D%5Baggregations%5D%5Ball%5D=count&query%5B%5D%5Baggregations%5D%5Bvisitor_id%5D=count&query%5B%5D%5Baggregations%5D%5Bdimension_date_first_action.date%5D=first';
+  '?query%5B%5D%5Bfact%5D=visit&query%5B%5D%5Bfilters%5D%5Bdimension_user.role%5D%5B%5D=citizen';
 const visitorsTimelineData = {
   type: 'analytics',
   attributes: [
@@ -81,10 +81,20 @@ const responses = {
   [visitorsTimelineParams]: visitorsTimelineData,
 };
 
+const findResponse = (params: string) => {
+  for (const partialParams in responses) {
+    if (params.startsWith(partialParams)) {
+      return responses[partialParams];
+    }
+  }
+
+  return responses;
+};
+
 const endpoints = {
   'GET analytics': rest.get(apiPath, (req, res, ctx) => {
     const params = new URL(req.url.toString()).search;
-    const response = responses[params];
+    const response = findResponse(params);
 
     if (!response) {
       return res(ctx.status(404));
