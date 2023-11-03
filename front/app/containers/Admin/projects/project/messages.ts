@@ -14,6 +14,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.inputManagerTab',
     defaultMessage: 'Input manager',
   },
+  setup: {
+    id: 'app.containers.AdminPage.ProjectEdit.setup',
+    defaultMessage: 'Setup',
+  },
   inputFormTab: {
     id: 'app.containers.AdminPage.ProjectEdit.inputFormTab',
     defaultMessage: 'Input form',
