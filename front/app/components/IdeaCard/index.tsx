@@ -35,7 +35,7 @@ import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import eventEmitter from 'utils/eventEmitter';
 import { IMAGES_LOADED_EVENT } from 'components/admin/ContentBuilder/constants';
 
-interface Props {
+export interface Props {
   ideaId: string;
   phaseId?: string | null;
   className?: string;
