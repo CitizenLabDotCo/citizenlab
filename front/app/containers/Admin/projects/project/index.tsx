@@ -60,7 +60,7 @@ type TabHideConditions = {
   ) => boolean;
 };
 
-const AdminProjectsProjectIndex2 = ({
+const AdminProjectsProjectIndex = ({
   project,
   phases,
   typeform_enabled,
@@ -384,7 +384,7 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
 export default withRouter((inputProps: InputProps & WithRouterProps) => (
   <Data {...inputProps}>
     {(dataProps) => (
-      <AdminProjectsProjectIndex2 {...inputProps} {...dataProps} />
+      <AdminProjectsProjectIndex {...inputProps} {...dataProps} />
     )}
   </Data>
 ));
