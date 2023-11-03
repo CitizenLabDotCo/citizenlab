@@ -36,11 +36,15 @@ const StyledBox = styled(Box)<{
 }>`
   min-height: 40px;
   width: 100%;
-  display: grid;
-  grid-gap: 8px;
 
-  grid-template-columns: ${(props) =>
-    props.layout === 'narrow' ? '1fr' : COLUMN_LAYOUTS[props.columnLayout]};
+  ${({ layout, columnLayout }) =>
+    layout === 'narrow'
+      ? ''
+      : `
+    display: grid;
+    grid-gap: 8px;
+    grid-template-columns: ${COLUMN_LAYOUTS[columnLayout]};
+  `}
 `;
 
 export const TwoColumn = ({ columnLayout, children }: TwoColumnProps) => {
