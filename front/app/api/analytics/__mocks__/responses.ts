@@ -276,7 +276,7 @@ const participantsOverTime = {
 
 const visitors = {
   params:
-    '?query%5B%5D%5Bfact%5D=visit&query%5B%5D%5Bfilters%5D%5Bdimension_user.role%5D%5B%5D=citizen&query%5B%5D%5Bfilters%5D%5Bdimension_user.role%5D%5B%5D=&query%5B%5D%5Baggregations%5D%5Ball%5D=count&query%5B%5D%5Baggregations%5D%5Bvisitor_id%5D=count&query%5B%5D%5Baggregations%5D%5Bduration%5D=avg&query%5B%5D%5Baggregations%5D%5Bpages_visited%5D=avg&query%5B%5D%5Bfact%5D=visit&query%5B%5D%5Bfilters%5D%5Bdimension_user.role%5D%5B%5D=citizen&query%5B%5D%5Bfilters%5D%5Bdimension_user.role%5D%5B%5D=&query%5B%5D%5Bfilters%5D%5Bdimension_date_first_action.date%5D%5Bfrom%5D=2023-10-04&query%5B%5D%5Bfilters%5D%5Bdimension_date_first_action.date%5D%5Bto%5D=2023-11-03&query%5B%5D%5Baggregations%5D%5Ball%5D=count&query%5B%5D%5Baggregations%5D%5Bvisitor_id%5D=count&query%5B%5D%5Baggregations%5D%5Bduration%5D=avg&query%5B%5D%5Baggregations%5D%5Bpages_visited%5D=avg&query%5B%5D%5Bfact%5D=visit&query%5B%5D%5Bfilters%5D%5Bdimension_user.role%5D%5B%5D=citizen&query%5B%5D%5Bfilters%5D%5Bdimension_user.role%5D%5B%5D=&query%5B%5D%5Bgroups%5D=dimension_date_first_action.month&query%5B%5D%5Baggregations%5D%5Ball%5D=count&query%5B%5D%5Baggregations%5D%5Bvisitor_id%5D=count&query%5B%5D%5Baggregations%5D%5Bdimension_date_first_action.date%5D=first',
+    '?query%5B%5D%5Bfact%5D=visit&query%5B%5D%5Bfilters%5D%5Bdimension_user.role%5D%5B%5D=citizen&query%5B%5D%5Bfilters%5D%5Bdimension_user.role%5D%5B%5D=&query%5B%5D%5Bfilters%5D%5Bdimension_projects.id%5D=8f1dffb8-0fb6-4f00-af70-55c757f78f14&query%5B%5D%5Bfilters%5D%5Bdimension_date_first_action.date%5D%5Bto%5D=2023-11-03&query%5B%5D%5Baggregations%5D%5Ball%5D=count&query%5B%5D%5Baggregations%5D%5Bvisitor_id%5D=count&query%5B%5D%5Baggregations%5D%5Bduration%5D=avg&query%5B%5D%5Baggregations%5D%5Bpages_visited%5D=avg&query%5B%5D%5Bfact%5D=visit&query%5B%5D%5Bfilters%5D%5Bdimension_user.role%5D%5B%5D=citizen&query%5B%5D%5Bfilters%5D%5Bdimension_user.role%5D%5B%5D=&query%5B%5D%5Bfilters%5D%5Bdimension_projects.id%5D=8f1dffb8-0fb6-4f00-af70-55c757f78f14&query%5B%5D%5Bfilters%5D%5Bdimension_date_first_action.date%5D%5Bto%5D=2023-11-03&query%5B%5D%5Bgroups%5D=dimension_date_first_action.month&query%5B%5D%5Baggregations%5D%5Ball%5D=count&query%5B%5D%5Baggregations%5D%5Bvisitor_id%5D=count&query%5B%5D%5Baggregations%5D%5Bdimension_date_first_action.date%5D=first',
   response: {
     data: {
       type: 'analytics',
@@ -290,38 +290,6 @@ const visitors = {
           },
         ],
         [
-          {
-            count: 28,
-            count_visitor_id: 9,
-            avg_duration: '132.3571428571428571',
-            avg_pages_visited: '3.6428571428571429',
-          },
-        ],
-        [
-          {
-            'dimension_date_first_action.month': '2022-09',
-            count: 9,
-            count_visitor_id: 2,
-            first_dimension_date_first_action_date: '2022-09-27',
-          },
-          {
-            'dimension_date_first_action.month': '2022-10',
-            count: 27,
-            count_visitor_id: 15,
-            first_dimension_date_first_action_date: '2022-10-07',
-          },
-          {
-            'dimension_date_first_action.month': '2022-11',
-            count: 74,
-            count_visitor_id: 31,
-            first_dimension_date_first_action_date: '2022-11-28',
-          },
-          {
-            'dimension_date_first_action.month': '2022-12',
-            count: 43,
-            count_visitor_id: 10,
-            first_dimension_date_first_action_date: '2022-12-07',
-          },
           {
             'dimension_date_first_action.month': '2023-01',
             count: 23,
