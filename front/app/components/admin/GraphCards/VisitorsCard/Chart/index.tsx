@@ -17,14 +17,16 @@ import { toThreeLetterMonth } from 'utils/dateUtils';
 import { generateEmptyData } from './generateEmptyData';
 
 // typings
-import { Dates, Resolution } from '../../typings';
+import { Dates, Layout, Resolution } from '../../typings';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 import { TimeSeries } from '../useVisitors/typings';
+import { MARGINS } from '../../_utils/style';
 
 type Props = Dates &
   Resolution & {
     timeSeries: TimeSeries | NilOrError;
     innerRef: React.RefObject<any>;
+    layout?: Layout;
   };
 
 const emptyLineConfig = { strokeWidths: [0, 0] };
@@ -39,6 +41,7 @@ const Chart = ({
   endAtMoment,
   resolution,
   innerRef,
+  layout = 'wide',
 }: Props) => {
   const { formatMessage } = useIntl();
 
@@ -80,6 +83,7 @@ const Chart = ({
         x: 'date',
         y: ['visitors', 'visits'],
       }}
+      margin={layout === 'narrow' ? MARGINS[layout] : undefined}
       lines={noData ? emptyLineConfig : lineConfig}
       grid={{ vertical: true }}
       xaxis={{ tickFormatter: formatTick }}
