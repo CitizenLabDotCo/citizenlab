@@ -13,15 +13,16 @@ const Tab: FC<Props & WrappedComponentProps> = ({
   intl: { formatMessage },
 }) => {
   useEffect(() => {
-    onData({
-      configuration: {
-        label: 'formatMessage(messages.permissionsTab) k',
-        url: `permissions`,
-        feature: 'private_projects',
-        name: 'permissions',
-      },
-      insertAfterName: 'events',
-    });
+    // onData({
+    //   configuration: {
+    //     label: formatMessage(messages.permissionsTab),
+    //     // label: 'formatMessage(messages.permissionsTab) k',
+    //     url: `permissions`,
+    //     feature: 'private_projects',
+    //     name: 'permissions',
+    //   },
+    //   insertAfterName: 'events',
+    // });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
