@@ -15,18 +15,27 @@ export default endpoints;
 
 export const reportLayout: ReportLayoutResponse = {
   data: {
-    id: '838a988f-bbcc-4095-bb30-cc8e653704db',
+    id: 'b5382874-fcd7-49c8-afe8-d07eeb637acb',
     type: 'content_builder_layout',
     attributes: {
       enabled: true,
       code: 'report',
-      created_at: '2023-10-30T17:22:58.237Z',
-      updated_at: '2023-10-30T17:23:04.352Z',
+      created_at: '2023-11-03T16:06:55.423Z',
+      updated_at: '2023-11-03T16:14:32.103Z',
       craftjs_jsonmultiloc: {
         en: {
           ROOT: {
             type: 'div',
-            nodes: ['piK-v5NK_d'],
+            nodes: [
+              'iHhZ4s3csd',
+              'TA7RQNyDgR',
+              'pwV7EeAqeK',
+              'gl7jsKs3NF',
+              'cVSVPkQLRZ',
+              'jan173bJuF',
+              'iKDVaI9FjR',
+              'iigouUt9Cl',
+            ],
             props: {
               id: 'e2e-content-builder-frame',
             },
@@ -35,9 +44,9 @@ export const reportLayout: ReportLayoutResponse = {
             isCanvas: true,
             displayName: 'div',
             linkedNodes: {},
-            parent: undefined as any, // craft-js types are not correct and always require parent
+            parent: undefined as any, // craft-js' own types are incorrect
           },
-          '-2sId3IRbf': {
+          '-_lfpFVS5R': {
             type: {
               resolvedName: 'Title',
             },
@@ -52,183 +61,16 @@ export const reportLayout: ReportLayoutResponse = {
               },
             },
             hidden: false,
-            parent: 'X_opigwx8m',
+            parent: 'Je74-RvLh3',
             isCanvas: false,
-            displayName: 'Title',
+            displayName: 'v',
             linkedNodes: {},
           },
-          '-oAKHSbNtS': {
-            type: {
-              resolvedName: 'GenderWidget',
-            },
-            nodes: [],
-            props: {
-              endAt: '2023-10-30',
-              title: 'Users by gender',
-              projectId: 'f229c7e1-cf50-45fe-a231-dd52cd1e7037',
-            },
-            custom: {
-              title: {
-                id: 'app.containers.admin.ReportBuilder.charts.usersByGender',
-                defaultMessage: 'Users by gender',
-              },
-              noPointerEvents: true,
-            },
-            hidden: false,
-            parent: 'qr2e7aGpiJ',
-            isCanvas: false,
-            displayName: 'GenderWidget',
-            linkedNodes: {},
-          },
-          '1D235zXOpI': {
-            type: {
-              resolvedName: 'AgeWidget',
-            },
-            nodes: [],
-            props: {
-              endAt: '2023-10-30',
-              title: 'Users by age',
-              projectId: 'f229c7e1-cf50-45fe-a231-dd52cd1e7037',
-            },
-            custom: {
-              title: {
-                id: 'app.containers.admin.ReportBuilder.charts.usersByAge',
-                defaultMessage: 'Users by age',
-              },
-              noPointerEvents: true,
-            },
-            hidden: false,
-            parent: 'GWFxift8X4',
-            isCanvas: false,
-            displayName: 'AgeWidget',
-            linkedNodes: {},
-          },
-          '2YLP_cLZjn': {
-            type: {
-              resolvedName: 'ActiveUsersWidget',
-            },
-            nodes: [],
-            props: {
-              endAt: '2023-10-30',
-              title: 'Participants timeline',
-              projectId: 'f229c7e1-cf50-45fe-a231-dd52cd1e7037',
-            },
-            custom: {
-              title: {
-                id: 'app.containers.admin.ReportBuilder.charts.activeUsersTimeline',
-                defaultMessage: 'Participants timeline',
-              },
-              noPointerEvents: true,
-            },
-            hidden: false,
-            parent: 'X_opigwx8m',
-            isCanvas: false,
-            displayName: 'ActiveUsersWidget',
-            linkedNodes: {},
-          },
-          '4V3_Kba9lq': {
-            type: {
-              resolvedName: 'Text',
-            },
-            nodes: [],
-            props: {
-              text: 'This is some text. You can edit and format it by using the editor in the panel on the right.',
-            },
-            custom: {
-              title: {
-                id: 'app.containers.admin.ContentBuilder.text',
-                defaultMessage: 'Text',
-              },
-            },
-            hidden: false,
-            parent: 'X_opigwx8m',
-            isCanvas: false,
-            displayName: 'Text',
-            linkedNodes: {},
-          },
-          '7giFesTRse': {
-            type: {
-              resolvedName: 'Text',
-            },
-            nodes: [],
-            props: {
-              text: 'This is some text. You can edit and format it by using the editor in the panel on the right.',
-            },
-            custom: {
-              title: {
-                id: 'app.containers.admin.ContentBuilder.text',
-                defaultMessage: 'Text',
-              },
-            },
-            hidden: false,
-            parent: 'X_opigwx8m',
-            isCanvas: false,
-            displayName: 'Text',
-            linkedNodes: {},
-          },
-          EtGenGqsas: {
-            type: {
-              resolvedName: 'Text',
-            },
-            nodes: [],
-            props: {
-              text: 'This is some text. You can edit and format it by using the editor in the panel on the right.',
-            },
-            custom: {
-              title: {
-                id: 'app.containers.admin.ContentBuilder.text',
-                defaultMessage: 'Text',
-              },
-            },
-            hidden: false,
-            parent: 'X_opigwx8m',
-            isCanvas: false,
-            displayName: 'Text',
-            linkedNodes: {},
-          },
-          G6IhcWWI4Z: {
-            type: {
-              resolvedName: 'VisitorsWidget',
-            },
-            nodes: [],
-            props: {
-              endAt: '2023-10-30',
-              title: 'Visitor timeline',
-              projectId: 'f229c7e1-cf50-45fe-a231-dd52cd1e7037',
-            },
-            custom: {
-              title: {
-                id: 'app.containers.admin.ReportBuilder.charts.visitorTimeline',
-                defaultMessage: 'Visitor timeline',
-              },
-              noPointerEvents: true,
-            },
-            hidden: false,
-            parent: 'X_opigwx8m',
-            isCanvas: false,
-            displayName: 'VisitorsWidget',
-            linkedNodes: {},
-          },
-          GWFxift8X4: {
-            type: {
-              resolvedName: 'Container',
-            },
-            nodes: ['1D235zXOpI'],
-            props: {
-              id: 'right',
-            },
-            custom: {},
-            hidden: false,
-            parent: 'PeS1X8smYx',
-            isCanvas: true,
-            displayName: 'Container',
-            linkedNodes: {},
-          },
-          PeS1X8smYx: {
+          '0OlQ1ADHUY': {
             type: {
               resolvedName: 'TwoColumn',
             },
-            nodes: ['qr2e7aGpiJ', 'GWFxift8X4'],
+            nodes: ['RKo-EQrxjW', 'kzWzR65st6'],
             props: {
               columnLayout: '1-1',
             },
@@ -240,182 +82,25 @@ export const reportLayout: ReportLayoutResponse = {
               hasChildren: true,
             },
             hidden: false,
-            parent: 'X_opigwx8m',
+            parent: 'Je74-RvLh3',
             isCanvas: false,
-            displayName: 'TwoColumn',
+            displayName: 'g',
             linkedNodes: {},
           },
-          QVtiPlQhLK: {
-            type: {
-              resolvedName: 'AboutReportWidget',
-            },
-            nodes: [],
-            props: {
-              endAt: '2023-10-30',
-              reportId: '37f6271b-2b24-4229-9154-48b4e2c1c653',
-              projectId: 'f229c7e1-cf50-45fe-a231-dd52cd1e7037',
-            },
-            custom: {
-              title: {
-                id: 'app.containers.admin.ReportBuilder.aboutThisReport',
-                defaultMessage: 'About this report',
-              },
-            },
-            hidden: false,
-            parent: 'X_opigwx8m',
-            isCanvas: false,
-            displayName: 'AboutReportWidget',
-            linkedNodes: {
-              'about-text': 'rR70ZdvoTR',
-              'about-title': 'cKixr3f4cL',
-            },
-          },
-          SbVIyccQVZ: {
-            type: {
-              resolvedName: 'Text',
-            },
-            nodes: [],
-            props: {
-              text: '\n              \u003ch2\u003eTest report\u003c/h2\u003e\n            ',
-            },
-            custom: {
-              title: {
-                id: 'app.containers.admin.ContentBuilder.text',
-                defaultMessage: 'Text',
-              },
-            },
-            hidden: false,
-            parent: 'cKixr3f4cL',
-            isCanvas: false,
-            displayName: 'Text',
-            linkedNodes: {},
-          },
-          SvASzuRKfw: {
-            type: {
-              resolvedName: 'WhiteSpace',
-            },
-            nodes: [],
-            props: {
-              size: '',
-            },
-            custom: {
-              title: {
-                id: 'app.containers.AdminPage.ProjectDescription.whiteSpace',
-                defaultMessage: 'White space',
-              },
-            },
-            hidden: false,
-            parent: 'X_opigwx8m',
-            isCanvas: false,
-            displayName: 'WhiteSpace',
-            linkedNodes: {},
-          },
-          X_opigwx8m: {
-            type: {
-              resolvedName: 'Box',
-            },
-            nodes: [
-              'QVtiPlQhLK',
-              'sCPUmtwqiE',
-              'dOyCnbltiC',
-              'Y5s9AHSlIZ',
-              '-2sId3IRbf',
-              'EtGenGqsas',
-              '2YLP_cLZjn',
-              'dFCkEUcCHN',
-              'SvASzuRKfw',
-              'iRENg1BU6G',
-              '7giFesTRse',
-              'PeS1X8smYx',
-              'zZqC-iR-hj',
-              '4V3_Kba9lq',
-              'G6IhcWWI4Z',
-            ],
-            props: {},
-            custom: {},
-            hidden: false,
-            parent: 'piK-v5NK_d',
-            isCanvas: true,
-            displayName: 'Box',
-            linkedNodes: {},
-          },
-          Y5s9AHSlIZ: {
-            type: {
-              resolvedName: 'WhiteSpace',
-            },
-            nodes: [],
-            props: {
-              size: '',
-            },
-            custom: {
-              title: {
-                id: 'app.containers.AdminPage.ProjectDescription.whiteSpace',
-                defaultMessage: 'White space',
-              },
-            },
-            hidden: false,
-            parent: 'X_opigwx8m',
-            isCanvas: false,
-            displayName: 'WhiteSpace',
-            linkedNodes: {},
-          },
-          cKixr3f4cL: {
+          '0yvpRXrriy': {
             type: {
               resolvedName: 'Container',
             },
-            nodes: ['SbVIyccQVZ'],
+            nodes: ['btFtT0qots'],
             props: {},
             custom: {},
             hidden: false,
-            parent: 'QVtiPlQhLK',
+            parent: 'iigouUt9Cl',
             isCanvas: true,
-            displayName: 'Container',
+            displayName: 'v',
             linkedNodes: {},
           },
-          dFCkEUcCHN: {
-            type: {
-              resolvedName: 'MostReactedIdeasWidget',
-            },
-            nodes: [],
-            props: {
-              title: 'Most reacted ideas',
-              projectId: 'f229c7e1-cf50-45fe-a231-dd52cd1e7037',
-              numberOfIdeas: 5,
-              collapseLongText: false,
-            },
-            custom: {
-              title: {
-                id: 'app.containers.admin.ReportBuilder.MostReactedIdeasWidget.mostReactedIdeas',
-                defaultMessage: 'Most reacted ideas',
-              },
-            },
-            hidden: false,
-            parent: 'X_opigwx8m',
-            isCanvas: false,
-            displayName: 'MostReactedIdeasWidget',
-            linkedNodes: {},
-          },
-          dOyCnbltiC: {
-            type: {
-              resolvedName: 'Text',
-            },
-            nodes: [],
-            props: {
-              text: 'Add the goal of the project, participation methods used, and the outcome',
-            },
-            custom: {
-              title: {
-                id: 'app.containers.admin.ContentBuilder.text',
-                defaultMessage: 'Text',
-              },
-            },
-            hidden: false,
-            parent: 'X_opigwx8m',
-            isCanvas: false,
-            displayName: 'Text',
-            linkedNodes: {},
-          },
-          iRENg1BU6G: {
+          '5RY2UMnRce': {
             type: {
               resolvedName: 'Title',
             },
@@ -430,18 +115,18 @@ export const reportLayout: ReportLayoutResponse = {
               },
             },
             hidden: false,
-            parent: 'X_opigwx8m',
+            parent: 'Je74-RvLh3',
             isCanvas: false,
-            displayName: 'Title',
+            displayName: 'v',
             linkedNodes: {},
           },
-          pX9khaAR36: {
+          '61RJLY_E22': {
             type: {
               resolvedName: 'Text',
             },
             nodes: [],
             props: {
-              text: '\n            \u003cul\u003e\n              \u003cli\u003eProject: \u003c/li\u003e\n              \u003cli\u003ePeriod: \u003c/li\u003e\n              \u003cli\u003eProject manager: Julienne Thuram\u003c/li\u003e\n            \u003c/ul\u003e\n          ',
+              text: 'This is some text. You can edit and format it by using the editor in the panel on the right.',
             },
             custom: {
               title: {
@@ -450,58 +135,158 @@ export const reportLayout: ReportLayoutResponse = {
               },
             },
             hidden: false,
-            parent: 'rR70ZdvoTR',
+            parent: 'Je74-RvLh3',
             isCanvas: false,
-            displayName: 'Text',
+            displayName: 'u',
             linkedNodes: {},
           },
-          'piK-v5NK_d': {
+          '69HnH-jOI5': {
             type: {
-              resolvedName: 'ProjectTemplate',
+              resolvedName: 'Text',
             },
             nodes: [],
             props: {
-              reportId: '37f6271b-2b24-4229-9154-48b4e2c1c653',
-              projectId: 'f229c7e1-cf50-45fe-a231-dd52cd1e7037',
+              text: '\n              \u003ch2\u003ejferpjbit vijrpeb\u003c/h2\u003e\n            ',
             },
-            custom: {},
+            custom: {
+              title: {
+                id: 'app.containers.admin.ContentBuilder.text',
+                defaultMessage: 'Text',
+              },
+            },
             hidden: false,
-            parent: 'ROOT',
+            parent: 'CooYP0mxiw',
             isCanvas: false,
-            displayName: 'ProjectTemplate',
-            linkedNodes: {
-              'project-report-template': 'X_opigwx8m',
-            },
-          },
-          qr2e7aGpiJ: {
-            type: {
-              resolvedName: 'Container',
-            },
-            nodes: ['-oAKHSbNtS'],
-            props: {
-              id: 'left',
-            },
-            custom: {},
-            hidden: false,
-            parent: 'PeS1X8smYx',
-            isCanvas: true,
-            displayName: 'Container',
+            displayName: 'u',
             linkedNodes: {},
           },
-          rR70ZdvoTR: {
+          '8O2xLP2UE2': {
+            type: {
+              resolvedName: 'Text',
+            },
+            nodes: [],
+            props: {
+              text: 'Add the goal of the project, participation methods used, and the outcome',
+            },
+            custom: {
+              title: {
+                id: 'app.containers.admin.ContentBuilder.text',
+                defaultMessage: 'Text',
+              },
+            },
+            hidden: false,
+            parent: 'Je74-RvLh3',
+            isCanvas: false,
+            displayName: 'u',
+            linkedNodes: {},
+          },
+          '9rTDErWFO4': {
+            type: {
+              resolvedName: 'ReactionsByTimeWidget',
+            },
+            nodes: [],
+            props: {
+              endAt: '2023-11-03T17:09:30.3030',
+              title: 'Reactions',
+            },
+            custom: {
+              title: {
+                id: 'app.containers.AdminPage.DashboardPage.reactions',
+                defaultMessage: 'Reactions',
+              },
+              noPointerEvents: true,
+            },
+            hidden: false,
+            parent: 'XIKqXhig20',
+            isCanvas: false,
+            displayName: 'j',
+            linkedNodes: {},
+          },
+          BizJ0vo9nC: {
+            type: {
+              resolvedName: 'CommentsByTimeWidget',
+            },
+            nodes: [],
+            props: {
+              endAt: '2023-11-03T17:09:24.2424',
+              title: 'Comments',
+            },
+            custom: {
+              title: {
+                id: 'app.containers.AdminPage.DashboardPage.comments',
+                defaultMessage: 'Comments',
+              },
+              noPointerEvents: true,
+            },
+            hidden: false,
+            parent: 'jJTPMjrP7-',
+            isCanvas: false,
+            displayName: 'j',
+            linkedNodes: {},
+          },
+          CooYP0mxiw: {
             type: {
               resolvedName: 'Container',
             },
-            nodes: ['pX9khaAR36'],
+            nodes: ['69HnH-jOI5'],
             props: {},
             custom: {},
             hidden: false,
-            parent: 'QVtiPlQhLK',
+            parent: 'vrC7wx2MAV',
             isCanvas: true,
-            displayName: 'Container',
+            displayName: 'v',
             linkedNodes: {},
           },
-          sCPUmtwqiE: {
+          HaCzL9x7TD: {
+            type: {
+              resolvedName: 'WhiteSpace',
+            },
+            nodes: [],
+            props: {
+              size: '',
+            },
+            custom: {
+              title: {
+                id: 'app.containers.AdminPage.ProjectDescription.whiteSpace',
+                defaultMessage: 'White space',
+              },
+            },
+            hidden: false,
+            parent: 'Je74-RvLh3',
+            isCanvas: false,
+            displayName: 'i',
+            linkedNodes: {},
+          },
+          'Je74-RvLh3': {
+            type: {
+              resolvedName: 'Box',
+            },
+            nodes: [
+              'vrC7wx2MAV',
+              'MHSmpLr931',
+              '8O2xLP2UE2',
+              'iHeIkulvfz',
+              '-_lfpFVS5R',
+              'p_hKsMB8rA',
+              'Vc7ehPuX7Y',
+              'sDEh4sHy6H',
+              'HaCzL9x7TD',
+              '5RY2UMnRce',
+              'aX1Hf8Lh9U',
+              '0OlQ1ADHUY',
+              'a-QkcQr35J',
+              '61RJLY_E22',
+              'Xtjeu1oRkU',
+            ],
+            props: {},
+            custom: {},
+            hidden: false,
+            parent: 'iHhZ4s3csd',
+            isCanvas: true,
+            displayName: 'Box',
+            linkedNodes: {},
+          },
+          MHSmpLr931: {
             type: {
               resolvedName: 'Title',
             },
@@ -516,12 +301,143 @@ export const reportLayout: ReportLayoutResponse = {
               },
             },
             hidden: false,
-            parent: 'X_opigwx8m',
+            parent: 'Je74-RvLh3',
             isCanvas: false,
-            displayName: 'Title',
+            displayName: 'v',
             linkedNodes: {},
           },
-          'zZqC-iR-hj': {
+          'RKo-EQrxjW': {
+            type: {
+              resolvedName: 'Container',
+            },
+            nodes: ['lFUl_1QVMb'],
+            props: {
+              id: 'left',
+            },
+            custom: {},
+            hidden: false,
+            parent: '0OlQ1ADHUY',
+            isCanvas: true,
+            displayName: 'v',
+            linkedNodes: {},
+          },
+          TA7RQNyDgR: {
+            type: {
+              resolvedName: 'VisitorsTrafficSourcesWidget',
+            },
+            nodes: [],
+            props: {
+              endAt: '2023-11-03T17:06:58.5858',
+              title: 'Traffic sources',
+            },
+            custom: {
+              title: {
+                id: 'app.containers.admin.ReportBuilder.charts.trafficSources',
+                defaultMessage: 'Traffic sources',
+              },
+              noPointerEvents: true,
+            },
+            hidden: false,
+            parent: 'ROOT',
+            isCanvas: false,
+            displayName: 'j',
+            linkedNodes: {},
+          },
+          Vc7ehPuX7Y: {
+            type: {
+              resolvedName: 'ActiveUsersWidget',
+            },
+            nodes: [],
+            props: {
+              endAt: '2023-11-03',
+              title: 'Participants timeline',
+              projectId: '8f1dffb8-0fb6-4f00-af70-55c757f78f14',
+            },
+            custom: {
+              title: {
+                id: 'app.containers.admin.ReportBuilder.charts.activeUsersTimeline',
+                defaultMessage: 'Participants timeline',
+              },
+              noPointerEvents: true,
+            },
+            hidden: false,
+            parent: 'Je74-RvLh3',
+            isCanvas: false,
+            displayName: 'T',
+            linkedNodes: {},
+          },
+          XIKqXhig20: {
+            type: {
+              resolvedName: 'Container',
+            },
+            nodes: ['9rTDErWFO4'],
+            props: {},
+            custom: {},
+            hidden: false,
+            parent: 'iKDVaI9FjR',
+            isCanvas: true,
+            displayName: 'v',
+            linkedNodes: {},
+          },
+          Xtjeu1oRkU: {
+            type: {
+              resolvedName: 'VisitorsWidget',
+            },
+            nodes: [],
+            props: {
+              endAt: '2023-11-03',
+              title: 'Visitor timeline',
+              projectId: '8f1dffb8-0fb6-4f00-af70-55c757f78f14',
+            },
+            custom: {
+              title: {
+                id: 'app.containers.admin.ReportBuilder.charts.visitorTimeline',
+                defaultMessage: 'Visitor timeline',
+              },
+              noPointerEvents: true,
+            },
+            hidden: false,
+            parent: 'Je74-RvLh3',
+            isCanvas: false,
+            displayName: 'C',
+            linkedNodes: {},
+          },
+          YBGtLjj4vT: {
+            type: {
+              resolvedName: 'Container',
+            },
+            nodes: [],
+            props: {},
+            custom: {},
+            hidden: false,
+            parent: 'iigouUt9Cl',
+            isCanvas: true,
+            displayName: 'v',
+            linkedNodes: {},
+          },
+          ZAL0LPHIfR: {
+            type: {
+              resolvedName: 'PostsByTimeWidget',
+            },
+            nodes: [],
+            props: {
+              endAt: '2023-11-03T17:08:43.4343',
+              title: 'Posts',
+            },
+            custom: {
+              title: {
+                id: 'app.containers.AdminPage.DashboardPage.inputs',
+                defaultMessage: 'Inputs',
+              },
+              noPointerEvents: true,
+            },
+            hidden: false,
+            parent: 'lYvZ8t36LA',
+            isCanvas: false,
+            displayName: 'j',
+            linkedNodes: {},
+          },
+          'a-QkcQr35J': {
             type: {
               resolvedName: 'Title',
             },
@@ -536,10 +452,452 @@ export const reportLayout: ReportLayoutResponse = {
               },
             },
             hidden: false,
-            parent: 'X_opigwx8m',
+            parent: 'Je74-RvLh3',
             isCanvas: false,
-            displayName: 'Title',
+            displayName: 'v',
             linkedNodes: {},
+          },
+          aX1Hf8Lh9U: {
+            type: {
+              resolvedName: 'Text',
+            },
+            nodes: [],
+            props: {
+              text: 'This is some text. You can edit and format it by using the editor in the panel on the right.',
+            },
+            custom: {
+              title: {
+                id: 'app.containers.admin.ContentBuilder.text',
+                defaultMessage: 'Text',
+              },
+            },
+            hidden: false,
+            parent: 'Je74-RvLh3',
+            isCanvas: false,
+            displayName: 'u',
+            linkedNodes: {},
+          },
+          btFtT0qots: {
+            type: {
+              resolvedName: 'VisitorsWidget',
+            },
+            nodes: [],
+            props: {
+              endAt: '2023-11-03T17:13:34.3434',
+              title: 'Visitor timeline',
+            },
+            custom: {
+              title: {
+                id: 'app.containers.admin.ReportBuilder.charts.visitorTimeline',
+                defaultMessage: 'Visitor timeline',
+              },
+              noPointerEvents: true,
+            },
+            hidden: false,
+            parent: '0yvpRXrriy',
+            isCanvas: false,
+            displayName: 'C',
+            linkedNodes: {},
+          },
+          cVSVPkQLRZ: {
+            type: {
+              resolvedName: 'ReactionsByTimeWidget',
+            },
+            nodes: [],
+            props: {
+              endAt: '2023-11-03T17:08:17.1717',
+              title: 'Reactions',
+            },
+            custom: {
+              title: {
+                id: 'app.containers.AdminPage.DashboardPage.reactions',
+                defaultMessage: 'Reactions',
+              },
+              noPointerEvents: true,
+            },
+            hidden: false,
+            parent: 'ROOT',
+            isCanvas: false,
+            displayName: 'j',
+            linkedNodes: {},
+          },
+          fMz_GuhflM: {
+            type: {
+              resolvedName: 'AgeWidget',
+            },
+            nodes: [],
+            props: {
+              endAt: '2023-11-03',
+              title: 'Users by age',
+              projectId: '8f1dffb8-0fb6-4f00-af70-55c757f78f14',
+            },
+            custom: {
+              title: {
+                id: 'app.containers.admin.ReportBuilder.charts.usersByAge',
+                defaultMessage: 'Users by age',
+              },
+              noPointerEvents: true,
+            },
+            hidden: false,
+            parent: 'kzWzR65st6',
+            isCanvas: false,
+            displayName: 'a',
+            linkedNodes: {},
+          },
+          gOyitlirlL: {
+            type: {
+              resolvedName: 'ActiveUsersWidget',
+            },
+            nodes: [],
+            props: {
+              endAt: '2023-11-03T17:08:39.3939',
+              title: 'Participants timeline',
+            },
+            custom: {
+              title: {
+                id: 'app.containers.admin.ReportBuilder.charts.activeUsersTimeline',
+                defaultMessage: 'Participants timeline',
+              },
+              noPointerEvents: true,
+            },
+            hidden: false,
+            parent: 'uIJa-uJ9Gp',
+            isCanvas: false,
+            displayName: 'T',
+            linkedNodes: {},
+          },
+          gl7jsKs3NF: {
+            type: {
+              resolvedName: 'CommentsByTimeWidget',
+            },
+            nodes: [],
+            props: {
+              endAt: '2023-11-03T17:08:11.1111',
+              title: 'Comments',
+            },
+            custom: {
+              title: {
+                id: 'app.containers.AdminPage.DashboardPage.comments',
+                defaultMessage: 'Comments',
+              },
+              noPointerEvents: true,
+            },
+            hidden: false,
+            parent: 'ROOT',
+            isCanvas: false,
+            displayName: 'j',
+            linkedNodes: {},
+          },
+          gnAzU2g3qe: {
+            type: {
+              resolvedName: 'Text',
+            },
+            nodes: [],
+            props: {
+              text: '\n            \u003cul\u003e\n              \u003cli\u003eProject: \u003c/li\u003e\n              \u003cli\u003ePeriod: \u003c/li\u003e\n              \u003cli\u003eProject manager: Citizenlab Hermansen\u003c/li\u003e\n            \u003c/ul\u003e\n          ',
+            },
+            custom: {
+              title: {
+                id: 'app.containers.admin.ContentBuilder.text',
+                defaultMessage: 'Text',
+              },
+            },
+            hidden: false,
+            parent: 'jdfXI8jwoJ',
+            isCanvas: false,
+            displayName: 'u',
+            linkedNodes: {},
+          },
+          iHeIkulvfz: {
+            type: {
+              resolvedName: 'WhiteSpace',
+            },
+            nodes: [],
+            props: {
+              size: '',
+            },
+            custom: {
+              title: {
+                id: 'app.containers.AdminPage.ProjectDescription.whiteSpace',
+                defaultMessage: 'White space',
+              },
+            },
+            hidden: false,
+            parent: 'Je74-RvLh3',
+            isCanvas: false,
+            displayName: 'i',
+            linkedNodes: {},
+          },
+          iHhZ4s3csd: {
+            type: {
+              resolvedName: 'ProjectTemplate',
+            },
+            nodes: [],
+            props: {
+              reportId: 'da8a2cef-c520-45b9-9ea7-c5be71a36aa4',
+              projectId: '8f1dffb8-0fb6-4f00-af70-55c757f78f14',
+            },
+            custom: {},
+            hidden: false,
+            parent: 'ROOT',
+            isCanvas: false,
+            displayName: 'tt',
+            linkedNodes: {
+              'project-report-template': 'Je74-RvLh3',
+            },
+          },
+          iKDVaI9FjR: {
+            type: {
+              resolvedName: 'TwoColumn',
+            },
+            nodes: [],
+            props: {
+              columnLayout: '1-1',
+            },
+            custom: {
+              title: {
+                id: 'app.containers.admin.ContentBuilder.twoColumnLayout',
+                defaultMessage: '2 column',
+              },
+              hasChildren: true,
+            },
+            hidden: false,
+            parent: 'ROOT',
+            isCanvas: false,
+            displayName: 'g',
+            linkedNodes: {
+              left: 'jJTPMjrP7-',
+              right: 'XIKqXhig20',
+            },
+          },
+          iigouUt9Cl: {
+            type: {
+              resolvedName: 'TwoColumn',
+            },
+            nodes: [],
+            props: {
+              columnLayout: '1-1',
+            },
+            custom: {
+              title: {
+                id: 'app.containers.admin.ContentBuilder.twoColumnLayout',
+                defaultMessage: '2 column',
+              },
+              hasChildren: true,
+            },
+            hidden: false,
+            parent: 'ROOT',
+            isCanvas: false,
+            displayName: 'g',
+            linkedNodes: {
+              left: '0yvpRXrriy',
+              right: 'YBGtLjj4vT',
+            },
+          },
+          'jJTPMjrP7-': {
+            type: {
+              resolvedName: 'Container',
+            },
+            nodes: ['BizJ0vo9nC'],
+            props: {},
+            custom: {},
+            hidden: false,
+            parent: 'iKDVaI9FjR',
+            isCanvas: true,
+            displayName: 'v',
+            linkedNodes: {},
+          },
+          jan173bJuF: {
+            type: {
+              resolvedName: 'TwoColumn',
+            },
+            nodes: [],
+            props: {
+              columnLayout: '1-1',
+            },
+            custom: {
+              title: {
+                id: 'app.containers.admin.ContentBuilder.twoColumnLayout',
+                defaultMessage: '2 column',
+              },
+              hasChildren: true,
+            },
+            hidden: false,
+            parent: 'ROOT',
+            isCanvas: false,
+            displayName: 'g',
+            linkedNodes: {
+              left: 'uIJa-uJ9Gp',
+              right: 'lYvZ8t36LA',
+            },
+          },
+          jdfXI8jwoJ: {
+            type: {
+              resolvedName: 'Container',
+            },
+            nodes: ['gnAzU2g3qe'],
+            props: {},
+            custom: {},
+            hidden: false,
+            parent: 'vrC7wx2MAV',
+            isCanvas: true,
+            displayName: 'v',
+            linkedNodes: {},
+          },
+          kzWzR65st6: {
+            type: {
+              resolvedName: 'Container',
+            },
+            nodes: ['fMz_GuhflM'],
+            props: {
+              id: 'right',
+            },
+            custom: {},
+            hidden: false,
+            parent: '0OlQ1ADHUY',
+            isCanvas: true,
+            displayName: 'v',
+            linkedNodes: {},
+          },
+          lFUl_1QVMb: {
+            type: {
+              resolvedName: 'GenderWidget',
+            },
+            nodes: [],
+            props: {
+              endAt: '2023-11-03',
+              title: 'Users by gender',
+              projectId: '8f1dffb8-0fb6-4f00-af70-55c757f78f14',
+            },
+            custom: {
+              title: {
+                id: 'app.containers.admin.ReportBuilder.charts.usersByGender',
+                defaultMessage: 'Users by gender',
+              },
+              noPointerEvents: true,
+            },
+            hidden: false,
+            parent: 'RKo-EQrxjW',
+            isCanvas: false,
+            displayName: 'r',
+            linkedNodes: {},
+          },
+          lYvZ8t36LA: {
+            type: {
+              resolvedName: 'Container',
+            },
+            nodes: ['ZAL0LPHIfR'],
+            props: {},
+            custom: {},
+            hidden: false,
+            parent: 'jan173bJuF',
+            isCanvas: true,
+            displayName: 'v',
+            linkedNodes: {},
+          },
+          p_hKsMB8rA: {
+            type: {
+              resolvedName: 'Text',
+            },
+            nodes: [],
+            props: {
+              text: 'This is some text. You can edit and format it by using the editor in the panel on the right.',
+            },
+            custom: {
+              title: {
+                id: 'app.containers.admin.ContentBuilder.text',
+                defaultMessage: 'Text',
+              },
+            },
+            hidden: false,
+            parent: 'Je74-RvLh3',
+            isCanvas: false,
+            displayName: 'u',
+            linkedNodes: {},
+          },
+          pwV7EeAqeK: {
+            type: {
+              resolvedName: 'PostsByTimeWidget',
+            },
+            nodes: [],
+            props: {
+              endAt: '2023-11-03T17:08:02.022',
+              title: 'Posts',
+            },
+            custom: {
+              title: {
+                id: 'app.containers.AdminPage.DashboardPage.inputs',
+                defaultMessage: 'Inputs',
+              },
+              noPointerEvents: true,
+            },
+            hidden: false,
+            parent: 'ROOT',
+            isCanvas: false,
+            displayName: 'j',
+            linkedNodes: {},
+          },
+          sDEh4sHy6H: {
+            type: {
+              resolvedName: 'MostReactedIdeasWidget',
+            },
+            nodes: [],
+            props: {
+              title: 'Most reacted ideas',
+              phaseId: 'b9cea8fc-0429-4bca-939d-f0e0ec5b3ad4',
+              projectId: '8f1dffb8-0fb6-4f00-af70-55c757f78f14',
+              numberOfIdeas: 5,
+              collapseLongText: false,
+            },
+            custom: {
+              title: {
+                id: 'app.containers.admin.ReportBuilder.MostReactedIdeasWidget.mostReactedIdeas',
+                defaultMessage: 'Most reacted ideas',
+              },
+            },
+            hidden: false,
+            parent: 'Je74-RvLh3',
+            isCanvas: false,
+            displayName: 'et',
+            linkedNodes: {},
+          },
+          'uIJa-uJ9Gp': {
+            type: {
+              resolvedName: 'Container',
+            },
+            nodes: ['gOyitlirlL'],
+            props: {},
+            custom: {},
+            hidden: false,
+            parent: 'jan173bJuF',
+            isCanvas: true,
+            displayName: 'v',
+            linkedNodes: {},
+          },
+          vrC7wx2MAV: {
+            type: {
+              resolvedName: 'AboutReportWidget',
+            },
+            nodes: [],
+            props: {
+              endAt: '2023-11-03',
+              reportId: 'da8a2cef-c520-45b9-9ea7-c5be71a36aa4',
+              projectId: '8f1dffb8-0fb6-4f00-af70-55c757f78f14',
+            },
+            custom: {
+              title: {
+                id: 'app.containers.admin.ReportBuilder.aboutThisReport',
+                defaultMessage: 'About this report',
+              },
+            },
+            hidden: false,
+            parent: 'Je74-RvLh3',
+            isCanvas: false,
+            displayName: 'U',
+            linkedNodes: {
+              'about-text': 'jdfXI8jwoJ',
+              'about-title': 'CooYP0mxiw',
+            },
           },
         },
       },
