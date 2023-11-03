@@ -10,10 +10,11 @@ import { categoricalColorScheme } from 'components/admin/Graphs/styling';
 // typings
 import { GenderSerie } from './typings';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
+import { Layout } from 'components/admin/GraphCards/typings';
 
 interface Props {
   innerRef?: React.RefObject<any>;
-  layout?: 'narrow' | 'normal';
+  layout?: Layout;
   data: GenderSerie;
 }
 
@@ -23,7 +24,7 @@ const makeLegendItem = (row: GenderSerie[number], i: number): LegendItem => ({
   label: `${row.name} (${row.percentage}%)`,
 });
 
-const Chart = ({ innerRef, layout = 'normal', data }: Props) => {
+const Chart = ({ innerRef, layout = 'wide', data }: Props) => {
   const [hoverIndex, setHoverIndex] = useState<number | undefined>();
 
   const onMouseOver = ({ rowIndex }) => setHoverIndex(rowIndex);

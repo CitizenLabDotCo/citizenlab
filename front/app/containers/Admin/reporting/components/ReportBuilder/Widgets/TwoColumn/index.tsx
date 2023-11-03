@@ -17,6 +17,7 @@ import messages from 'components/admin/ContentBuilder/Widgets/TwoColumn/messages
 
 // typings
 import { ColumnLayout } from 'components/admin/ContentBuilder/typings';
+import { Layout } from 'components/admin/GraphCards/typings';
 
 type TwoColumnProps = {
   columnLayout: ColumnLayout;
@@ -31,7 +32,7 @@ const COLUMN_LAYOUTS: Record<ColumnLayout, string> = {
 
 const StyledBox = styled(Box)<{
   columnLayout: ColumnLayout;
-  layout: 'narrow' | 'normal';
+  layout: Layout;
 }>`
   min-height: 40px;
   width: 100%;

@@ -2,6 +2,7 @@ import React from 'react';
 
 // hooks
 import useActiveUsers from 'components/admin/GraphCards/ActiveUsersCard/useActiveUsers';
+import useLayout from 'containers/Admin/reporting/hooks/useLayout';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -40,14 +41,31 @@ const ActiveUsers = ({
     resolution,
   });
 
+  const layout = useLayout();
+
   if (isNilOrError(stats) || stats.activeUsers.value === '0') {
     return <NoData message={messages.noData} />;
   }
 
   return (
-    <Box width="100%" height="260px" mt="20px" pb="8px" px="16px">
-      <Box height="100%" display="flex" flexDirection="row">
-        <Box display="flex" flexDirection="row">
+    <Box
+      width="100%"
+      height="260px"
+      mt="20px"
+      pb="8px"
+      px={layout === 'wide' ? '16px' : '0px'}
+    >
+      <Box
+        height="100%"
+        display="flex"
+        flexDirection={layout === 'wide' ? 'row' : 'column'}
+      >
+        <Box
+          display="flex"
+          flexDirection="row"
+          ml={layout === 'wide' ? undefined : '16px'}
+          mb={layout === 'wide' ? undefined : '8px'}
+        >
           <Box>
             <Statistic
               name={formatMessage(messages.totalParticipants)}
@@ -57,12 +75,17 @@ const ActiveUsers = ({
         </Box>
 
         <Box flexGrow={1} display="flex" justifyContent="flex-end">
-          <Box pt="8px" width="95%" maxWidth="800px">
+          <Box
+            pt="8px"
+            width={layout === 'wide' ? '95%' : '100%'}
+            maxWidth="800px"
+          >
             <Chart
               timeSeries={timeSeries}
               startAtMoment={startAtMoment}
               endAtMoment={endAtMoment}
               resolution={currentResolution}
+              layout={layout}
             />
           </Box>
         </Box>

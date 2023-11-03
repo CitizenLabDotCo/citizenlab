@@ -1,4 +1,4 @@
-import { rest } from 'msw';
+import { PathParams, RestRequest, rest } from 'msw';
 import { API_PATH } from 'containers/App/constants';
 
 const apiPath = `${API_PATH}/analytics`;
@@ -81,7 +81,9 @@ const responses = {
   [visitorsTimelineParams]: visitorsTimelineData,
 };
 
-const findResponse = (params: string) => {
+const findResponse = (req: RestRequest<never, PathParams<string>>) => {
+  const params = new URL(req.url.toString()).search;
+
   for (const partialParams in responses) {
     if (params.startsWith(partialParams)) {
       return responses[partialParams];
@@ -93,8 +95,7 @@ const findResponse = (params: string) => {
 
 const endpoints = {
   'GET analytics': rest.get(apiPath, (req, res, ctx) => {
-    const params = new URL(req.url.toString()).search;
-    const response = findResponse(params);
+    const response = findResponse(req);
 
     if (!response) {
       return res(ctx.status(404));

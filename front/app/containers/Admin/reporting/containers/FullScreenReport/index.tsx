@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from 'react';
 
-// services
-import { LocaleSubject } from 'utils/locale';
-
 // context
 import { ReportContext } from '../../context/ReportContext';
 
@@ -16,15 +13,17 @@ import ReportLanguageProvider from '../ReportLanguageProvider';
 
 // components
 import FullScreenWrapper from 'components/admin/ContentBuilder/FullscreenPreview/Wrapper';
-import { Spinner } from '@citizenlab/cl2-component-library';
+import { Box, Spinner } from '@citizenlab/cl2-component-library';
 import Editor from '../../components/ReportBuilder/Editor';
 import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
+import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
 // types
 import { SerializedNodes } from '@craftjs/core';
+import { LocaleSubject } from 'utils/locale';
 
 export interface Props {
   reportId: string;
@@ -63,9 +62,11 @@ export const FullScreenReport = ({ reportId }: Props) => {
         <FullScreenWrapper onUpdateDraftData={setDraftData}>
           {isLoadingLayout && <Spinner />}
           {!isLoadingLayout && (
-            <Editor isPreview={true}>
-              {editorData && <ContentBuilderFrame editorData={editorData} />}
-            </Editor>
+            <Box maxWidth={`${maxPageWidth}px`}>
+              <Editor isPreview={true}>
+                {editorData && <ContentBuilderFrame editorData={editorData} />}
+              </Editor>
+            </Box>
           )}
         </FullScreenWrapper>
       </ReportContext.Provider>
