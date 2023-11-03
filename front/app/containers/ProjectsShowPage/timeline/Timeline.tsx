@@ -226,7 +226,7 @@ interface Props {
   className?: string;
   selectedPhase: IPhaseData;
   setSelectedPhase: (phase: IPhaseData) => void;
-  showPhaseDescriptions?: boolean;
+  isBackoffice?: boolean;
 }
 
 const Timeline = ({
@@ -234,7 +234,7 @@ const Timeline = ({
   className,
   selectedPhase,
   setSelectedPhase,
-  showPhaseDescriptions = true,
+  isBackoffice = false,
 }: Props) => {
   const { data: phases } = usePhases(projectId);
   const { data: project } = useProjectById(projectId);
@@ -247,10 +247,10 @@ const Timeline = ({
       event.preventDefault();
 
       if (phase && phases && project) {
-        setPhaseURL(phase.id, phases.data, project.data);
+        setPhaseURL(phase.id, phases.data, project.data, isBackoffice);
       }
     },
-    [phases, project]
+    [isBackoffice, phases, project]
   );
 
   const handleTabListOnKeyDown = (e: KeyboardEvent) => {
@@ -362,7 +362,7 @@ const Timeline = ({
                 );
               })}
             </RtlBox>
-            {showPhaseDescriptions && (
+            {!isBackoffice && (
               <PhaseDescriptions
                 projectId={projectId}
                 selectedPhaseId={selectedPhaseId}

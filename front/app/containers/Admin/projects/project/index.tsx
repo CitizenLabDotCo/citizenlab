@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { some } from 'lodash-es';
 import clHistory from 'utils/cl-router/history';
 import { adopt } from 'react-adopt';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import { Outlet as RouterOutlet } from 'react-router-dom';
+import { Outlet as RouterOutlet, useParams } from 'react-router-dom';
 
 // components
 import GoBackButton from 'components/UI/GoBackButton';
@@ -40,6 +40,8 @@ import Timeline from 'containers/ProjectsShowPage/timeline/Timeline';
 
 // hooks
 import useLocalize from 'hooks/useLocalize';
+import { IPhaseData } from 'api/phases/types';
+import { getCurrentPhase } from 'api/phases/utils';
 
 export interface InputProps {}
 
@@ -66,6 +68,24 @@ const AdminProjectsProjectIndex2 = ({
 }: DataProps) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
+  const { id: phaseId } = useParams() as {
+    id: string;
+  };
+  const [selectedPhase, setSelectedPhase] = useState<IPhaseData | undefined>(
+    undefined
+  );
+
+  useEffect(() => {
+    if (phases && project) {
+      const phase = phases.find((phase) => phase.id === phaseId);
+      const phaseShown =
+        phase || getCurrentPhase(phases) || phases.length
+          ? phases[0]
+          : undefined;
+      setSelectedPhase(phaseShown);
+    }
+  }, [phaseId, phases, project]);
+
   const [tabs, setTabs] = useState<ITab[]>([
     {
       label: formatMessage(messages.setup),
@@ -249,11 +269,11 @@ const AdminProjectsProjectIndex2 = ({
     },
   };
 
-  if (!project || !phases) {
+  if (!project || !phases || !selectedPhase) {
     return null;
   }
 
-  const getTabs = (projectId) => {
+  const getTabs = (projectId: string) => {
     const baseTabsUrl = `/admin/projects/${projectId}`;
     const cleanedTabs = tabs.filter((tab) => {
       if (tabHideConditions[tab.name]) {
@@ -319,9 +339,9 @@ const AdminProjectsProjectIndex2 = ({
       <Box mt="78px" px="40px">
         <Timeline
           projectId={project.id}
-          selectedPhase={phases[0]}
-          setSelectedPhase={() => {}}
-          showPhaseDescriptions={false}
+          selectedPhase={selectedPhase}
+          setSelectedPhase={setSelectedPhase}
+          isBackoffice
         />
       </Box>
 

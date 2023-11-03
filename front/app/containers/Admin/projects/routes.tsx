@@ -4,6 +4,7 @@ import PageLoading from 'components/UI/PageLoading';
 import IdeaFormBuilder from './project/inputForm/IdeaFormBuilder';
 import SurveyFormBuilder from './project/nativeSurvey/SurveyFormBuilder';
 import AdminProjectIdeaPreviewIndex from './AdminProjectIdeaPreviewIndex';
+import { Navigate } from 'react-router-dom';
 
 const AdminProjectsAndFolders = lazy(() => import('.'));
 const AdminProjectsList = lazy(() => import('./all'));
@@ -142,14 +143,26 @@ const createAdminProjectsRoutes = () => {
         ),
         // all routes under /admin/projects/:projectId
         children: [
-          // {
-          //   index: true,
-          //   element: (
-          //     <PageLoading>
-          //       <AdminProjectsProjectGeneral />
-          //     </PageLoading>
-          //   ),
-          // },
+          {
+            path: '',
+            element: <Navigate to="setup" replace />,
+          },
+          {
+            path: 'setup',
+            element: (
+              <PageLoading>
+                <AdminProjectTimelineNewAndEdit />
+              </PageLoading>
+            ),
+          },
+          {
+            path: 'setup/:id',
+            element: (
+              <PageLoading>
+                <AdminProjectTimelineNewAndEdit />
+              </PageLoading>
+            ),
+          },
           {
             path: 'timeline',
             element: (
@@ -182,38 +195,6 @@ const createAdminProjectsRoutes = () => {
               </PageLoading>
             ),
           },
-          // {
-          //   path: 'events',
-          //   element: (
-          //     <PageLoading>
-          //       <AdminProjectEvents />
-          //     </PageLoading>
-          //   ),
-          // },
-          // {
-          //   path: 'events/new',
-          //   element: (
-          //     <PageLoading>
-          //       <AdminProjectEventsEdit />
-          //     </PageLoading>
-          //   ),
-          // },
-          // {
-          //   path: 'events/:id',
-          //   element: (
-          //     <PageLoading>
-          //       <AdminProjectEventsEdit />
-          //     </PageLoading>
-          //   ),
-          // },
-          // {
-          //   path: 'permissions',
-          //   element: (
-          //     <PageLoading>
-          //       <AdminProjectPermissions />
-          //     </PageLoading>
-          //   ),
-          // },
           {
             path: 'survey-results',
             element: (
@@ -230,14 +211,6 @@ const createAdminProjectsRoutes = () => {
               </PageLoading>
             ),
           },
-          // {
-          //   path: 'description',
-          //   element: (
-          //     <PageLoading>
-          //       <AdminProjectDescription />
-          //     </PageLoading>
-          //   ),
-          // },
           {
             path: 'ideas',
             element: (
