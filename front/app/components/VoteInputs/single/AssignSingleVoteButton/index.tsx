@@ -128,19 +128,21 @@ const AssignSingleVoteButton = ({
     return undefined;
   };
 
+  const disabledButtonExplanation = getButtonDisabledExplanation();
+
   return (
     <Tippy
-      disabled={!getButtonDisabledExplanation()}
+      disabled={!disabledButtonExplanation}
       interactive={true}
       placement="bottom"
-      content={getButtonDisabledExplanation()}
+      content={disabledButtonExplanation}
     >
       <div>
         <Button
           buttonStyle={ideaInBasket ? 'primary' : buttonStyle}
           bgColor={ideaInBasket ? colors.success : undefined}
           borderColor={ideaInBasket ? colors.success : undefined}
-          disabled={!!getButtonDisabledExplanation()}
+          disabled={!!disabledButtonExplanation}
           processing={isProcessing}
           icon={ideaInBasket ? 'check' : 'vote-ballot'}
           className="e2e-single-vote-button"
