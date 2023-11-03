@@ -6,6 +6,14 @@ module ReportBuilder
       class ReportsController < ::ApplicationController
         skip_before_action :authenticate_user
 
+        def publish
+          report.craftjs_jsonmultiloc.each_graph do
+            method = ReportBuilder::QueryRepository::MAPPING[graph[:resolvedName]]
+            snapshotted_data = method.call
+            PublishedDataUnit.create!(data: snapshotted_data, graph_id, report.id)
+          end
+        end
+
         def index
           reports = policy_scope(ReportBuilder::Report.with_platform_context)
           reports = paginate(reports)

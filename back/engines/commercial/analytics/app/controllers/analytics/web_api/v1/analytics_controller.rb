@@ -8,11 +8,11 @@ module Analytics
       skip_after_action :verify_policy_scoped, only: :index
       after_action :verify_authorized, only: :index
       def index
-        handle_request
+        handle_request(params[:query])
       end
 
       def create
-        handle_request
+        handle_request(params[:query])
       end
 
       def schema
@@ -27,12 +27,12 @@ module Analytics
 
       private
 
-      def handle_request
+      def handle_request(query)
         authorize :analytics, policy_class: AnalyticsPolicy
 
-        results, errors, paginations = handle_multiple(Array.wrap(params[:query]))
+        results, errors, paginations = handle_multiple(Array.wrap(query))
 
-        unless params[:query].instance_of?(Array)
+        unless query.instance_of?(Array)
           results = results.empty? ? results : results[0]
           paginations = paginations.empty? ? paginations : paginations[0]
           errors = errors.key?(0) ? errors[0] : errors
