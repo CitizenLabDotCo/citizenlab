@@ -89,7 +89,7 @@ const ideasOverTime = {
   },
 };
 
-const participationOverTime = {
+const xOverTime = {
   params:
     '?query%5B%5D%5Bfact%5D=participation&query%5B%5D%5Bfilters%5D%5Bdimension_date_created.date%5D%5Bfrom%5D=2017-01-01&query%5B%5D%5Bfilters%5D%5Bdimension_date_created.date%5D%5Bto%5D=2023-11-03&query%5B%5D%5Bfilters%5D%5Bdimension_type.name%5D=comment&query%5B%5D%5Bfilters%5D%5Bdimension_type.parent%5D%5B%5D=idea&query%5B%5D%5Bfilters%5D%5Bdimension_type.parent%5D%5B%5D=initiative&query%5B%5D%5Bgroups%5D=dimension_date_created.month&query%5B%5D%5Baggregations%5D%5Ball%5D=count&query%5B%5D%5Baggregations%5D%5Bdimension_date_created.date%5D=first&query%5B%5D%5Bfact%5D=participation&query%5B%5D%5Bfilters%5D%5Bdimension_type.name%5D=comment&query%5B%5D%5Bfilters%5D%5Bdimension_type.parent%5D%5B%5D=idea&query%5B%5D%5Bfilters%5D%5Bdimension_type.parent%5D%5B%5D=initiative&query%5B%5D%5Baggregations%5D%5Ball%5D=count',
   response: {
@@ -215,9 +215,9 @@ const reactionsOverTime = {
   },
 };
 
-const somethingOverTime = {
+const participantsOverTime = {
   params:
-    '?query%5B%5D%5Bfact%5D=participation&query%5B%5D%5Bfilters%5D%5Bdimension_user.role%5D%5B%5D=citizen&query%5B%5D%5Bfilters%5D%5Bdimension_user.role%5D%5B%5D=&query%5B%5D%5Bgroups%5D=dimension_date_created.month&query%5B%5D%5Baggregations%5D%5Bdimension_user_id%5D=count&query%5B%5D%5Baggregations%5D%5Bdimension_date_created.date%5D=first&query%5B%5D%5Bfact%5D=participation&query%5B%5D%5Bfilters%5D%5Bdimension_user.role%5D%5B%5D=citizen&query%5B%5D%5Bfilters%5D%5Bdimension_user.role%5D%5B%5D=&query%5B%5D%5Baggregations%5D%5Bdimension_user_id%5D=count&query%5B%5D%5Bfact%5D=participation&query%5B%5D%5Bfilters%5D%5Bdimension_user.role%5D%5B%5D=citizen&query%5B%5D%5Bfilters%5D%5Bdimension_user.role%5D%5B%5D=&query%5B%5D%5Bfilters%5D%5Bdimension_date_created.date%5D%5Bfrom%5D=2023-10-04&query%5B%5D%5Bfilters%5D%5Bdimension_date_created.date%5D%5Bto%5D=2023-11-03&query%5B%5D%5Baggregations%5D%5Bdimension_user_id%5D=count&query%5B%5D%5Bfact%5D=visit&query%5B%5D%5Bfilters%5D%5Bdimension_user.role%5D%5B%5D=citizen&query%5B%5D%5Bfilters%5D%5Bdimension_user.role%5D%5B%5D=&query%5B%5D%5Baggregations%5D%5Bvisitor_id%5D=count&query%5B%5D%5Bfact%5D=visit&query%5B%5D%5Bfilters%5D%5Bdimension_user.role%5D%5B%5D=citizen&query%5B%5D%5Bfilters%5D%5Bdimension_user.role%5D%5B%5D=&query%5B%5D%5Bfilters%5D%5Bdimension_date_first_action.date%5D%5Bfrom%5D=2023-10-04&query%5B%5D%5Bfilters%5D%5Bdimension_date_first_action.date%5D%5Bto%5D=2023-11-03&query%5B%5D%5Baggregations%5D%5Bvisitor_id%5D=count',
+    '?query%5B%5D%5Bfact%5D=participation&query%5B%5D%5Bfilters%5D%5Bdimension_user.role%5D%5B%5D=citizen&query%5B%5D%5Bfilters%5D%5Bdimension_user.role%5D%5B%5D=&query%5B%5D%5Bfilters%5D%5Bdimension_project.id%5D=8f1dffb8-0fb6-4f00-af70-55c757f78f14&query%5B%5D%5Bfilters%5D%5Bdimension_date_created.date%5D%5Bto%5D=2023-11-03&query%5B%5D%5Bgroups%5D=dimension_date_created.month&query%5B%5D%5Baggregations%5D%5Bdimension_user_id%5D=count&query%5B%5D%5Baggregations%5D%5Bdimension_date_created.date%5D=first&query%5B%5D%5Bfact%5D=participation&query%5B%5D%5Bfilters%5D%5Bdimension_user.role%5D%5B%5D=citizen&query%5B%5D%5Bfilters%5D%5Bdimension_user.role%5D%5B%5D=&query%5B%5D%5Bfilters%5D%5Bdimension_project.id%5D=8f1dffb8-0fb6-4f00-af70-55c757f78f14&query%5B%5D%5Bfilters%5D%5Bdimension_date_created.date%5D%5Bto%5D=2023-11-03&query%5B%5D%5Baggregations%5D%5Bdimension_user_id%5D=count',
   response: {
     data: {
       type: 'analytics',
@@ -267,21 +267,6 @@ const somethingOverTime = {
         [
           {
             count_dimension_user_id: 501,
-          },
-        ],
-        [
-          {
-            count_dimension_user_id: 10,
-          },
-        ],
-        [
-          {
-            count_visitor_id: 110,
-          },
-        ],
-        [
-          {
-            count_visitor_id: 9,
           },
         ],
       ],
@@ -441,9 +426,9 @@ const whatever = {
 const responses = {
   [visitorReferrers.params]: visitorReferrers.response,
   [ideasOverTime.params]: ideasOverTime.response,
-  [participationOverTime.params]: participationOverTime.response,
+  [xOverTime.params]: xOverTime.response,
   [reactionsOverTime.params]: reactionsOverTime.response,
-  [somethingOverTime.params]: somethingOverTime.response,
+  [participantsOverTime.params]: participantsOverTime.response,
   [visitors.params]: visitors.response,
   [whatever.params]: whatever.response,
 };

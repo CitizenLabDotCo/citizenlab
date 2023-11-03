@@ -1,7 +1,7 @@
 import React from 'react';
 
 // hooks
-import useActiveUsers from 'components/admin/GraphCards/ActiveUsersCard/useActiveUsers';
+import useActiveUsers from './useActiveUsers';
 import useLayout from 'containers/Admin/reporting/hooks/useLayout';
 
 // components

@@ -1,12 +1,8 @@
-// i18n
-import { useIntl } from 'utils/cl-intl';
-import { getTranslations } from './translations';
-
 // query
 import { query } from './query';
 
 // parse
-import { parseTimeSeries, parseStats, parseExcelData } from './parse';
+import { parseTimeSeries, parseStats } from './parse';
 
 // typings
 import { QueryParameters, Response } from './typings';
@@ -19,7 +15,6 @@ export default function useActiveUsers({
   endAtMoment,
   resolution,
 }: QueryParameters) {
-  const { formatMessage } = useIntl();
   const [currentResolution, setCurrentResolution] = useState(resolution);
 
   const { data: analytics } = useAnalytics<Response>(
@@ -47,18 +42,5 @@ export default function useActiveUsers({
     [analytics?.data, startAtMoment, endAtMoment, currentResolution]
   );
 
-  const xlsxData = useMemo(
-    () =>
-      analytics?.data && stats
-        ? parseExcelData(
-            stats,
-            timeSeries,
-            currentResolution,
-            getTranslations(formatMessage)
-          )
-        : null,
-    [analytics?.data, stats, timeSeries, currentResolution, formatMessage]
-  );
-
-  return { timeSeries, stats, xlsxData, currentResolution };
+  return { timeSeries, stats, currentResolution };
 }

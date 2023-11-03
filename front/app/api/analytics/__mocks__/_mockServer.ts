@@ -18,7 +18,7 @@ const endpoints = {
       return res(ctx.status(404));
     }
 
-    return res(ctx.status(200), ctx.json({ data: response }));
+    return res(ctx.status(200), ctx.json(response));
   }),
 };
 
