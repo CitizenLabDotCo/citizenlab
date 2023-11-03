@@ -67,19 +67,11 @@ describe('parseStats', () => {
         },
       ],
       [{ count_dimension_user_id: 4 }],
-      [{ count_dimension_user_id: 4 }],
-      [{ count_visitor_id: 2 }],
-      [{ count_visitor_id: 0 }],
     ];
 
     const expectedOutput = {
       activeUsers: {
         value: '4',
-        lastPeriod: '4',
-      },
-      participationRate: {
-        value: '100%',
-        lastPeriod: '0%',
       },
     };
 
@@ -95,19 +87,11 @@ describe('parseStats', () => {
         },
       ],
       [{ count_dimension_user_id: 3 }],
-      [{ count_dimension_user_id: 3 }],
-      [{ count_visitor_id: 1 }],
-      [],
     ];
 
     const expectedOutput = {
       activeUsers: {
         value: '3',
-        lastPeriod: '3',
-      },
-      participationRate: {
-        value: '100%',
-        lastPeriod: '0%',
       },
     };
 
