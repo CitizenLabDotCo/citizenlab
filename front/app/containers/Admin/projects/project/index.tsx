@@ -3,15 +3,24 @@ import { some } from 'lodash-es';
 import clHistory from 'utils/cl-router/history';
 import { adopt } from 'react-adopt';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import { Outlet as RouterOutlet, useParams } from 'react-router-dom';
+import {
+  Outlet as RouterOutlet,
+  useParams,
+  useLocation,
+} from 'react-router-dom';
 
 // components
 import GoBackButton from 'components/UI/GoBackButton';
 import Button from 'components/UI/Button';
-import TabbedResource from 'components/admin/TabbedResource';
 import Outlet from 'components/Outlet';
-import { Box, Title } from '@citizenlab/cl2-component-library';
-import NavigationTabs from 'components/admin/NavigationTabs';
+import {
+  Box,
+  Title,
+  defaultCardStyle,
+  colors,
+} from '@citizenlab/cl2-component-library';
+import NavigationTabs, { Tab } from 'components/admin/NavigationTabs';
+import Link from 'utils/cl-router/Link';
 
 // resources
 import GetFeatureFlag, {
@@ -43,6 +52,16 @@ import useLocalize from 'hooks/useLocalize';
 import { IPhaseData } from 'api/phases/types';
 import { getCurrentPhase } from 'api/phases/utils';
 
+// styles
+import styled from 'styled-components';
+import { isTopBarNavActive } from 'utils/helperUtils';
+
+const Container = styled(Box)`
+  padding: 24px 40px 0px 40px;
+  margin-bottom: 8px;
+  ${defaultCardStyle};
+`;
+
 export interface InputProps {}
 
 interface DataProps {
@@ -68,22 +87,30 @@ const AdminProjectsProjectIndex = ({
 }: DataProps) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
+  const { pathname } = useLocation();
   const { id: phaseId } = useParams() as {
-    id: string;
+    id?: string;
   };
   const [selectedPhase, setSelectedPhase] = useState<IPhaseData | undefined>(
     undefined
   );
 
   useEffect(() => {
-    if (phases && project) {
-      const phase = phases.find((phase) => phase.id === phaseId);
-      const phaseShown =
-        phase || getCurrentPhase(phases) || phases.length
-          ? phases[0]
-          : undefined;
-      setSelectedPhase(phaseShown);
+    if (!phases || !project) return;
+
+    const phase = phaseId
+      ? phases.find((phase) => phase.id === phaseId)
+      : undefined;
+    let phaseShown: IPhaseData | undefined = phase;
+    if (!phase) {
+      const currentPhase = getCurrentPhase(phases);
+      if (currentPhase) {
+        phaseShown = currentPhase;
+      } else {
+        phaseShown = phases.length ? phases[0] : undefined;
+      }
     }
+    setSelectedPhase(phaseShown);
   }, [phaseId, phases, project]);
 
   const [tabs, setTabs] = useState<ITab[]>([
@@ -352,14 +379,27 @@ const AdminProjectsProjectIndex = ({
         phases={phases}
       />
       <Box p="40px">
-        <TabbedResource
-          resource={{
-            title: '',
-          }}
-          tabs={getTabs(project.id)}
-        >
+        <Container>
+          <Title my="0px" variant="h3" color="blue500">
+            {localize(selectedPhase.attributes.title_multiloc)}
+          </Title>
+          <Box display="flex">
+            {getTabs(project.id).map(({ url, label }) => (
+              <Tab
+                label={label}
+                url={url}
+                key={url}
+                active={isTopBarNavActive('/admin/ideas', pathname, url)}
+              >
+                <Link to={url}>{label}</Link>
+              </Tab>
+            ))}
+          </Box>
+        </Container>
+
+        <Box p="40px" background={colors.white}>
           <RouterOutlet />
-        </TabbedResource>
+        </Box>
       </Box>
     </>
   );
