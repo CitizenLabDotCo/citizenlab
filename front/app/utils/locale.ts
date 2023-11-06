@@ -259,11 +259,11 @@ export function localeStream() {
 }
 
 export function hasTextInSpecifiedLocale(
-  multilocl: Multiloc,
-  local: Locale
+  multiloc: Multiloc,
+  locale: Locale
 ): boolean {
   return (
-    Object.prototype.hasOwnProperty.call(multilocl, local) &&
-    multilocl[local] !== ''
+    Object.prototype.hasOwnProperty.call(multiloc, locale) &&
+    multiloc[locale] !== ''
   );
 }

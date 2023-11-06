@@ -48,6 +48,7 @@ interface Props {
   minDate?: Moment;
   startDatePlaceholderText?: string;
   endDatePlaceholderText?: string;
+  excludeDates?: Moment[];
 }
 
 const DateRangePicker = ({
@@ -57,6 +58,7 @@ const DateRangePicker = ({
   minDate,
   startDatePlaceholderText,
   endDatePlaceholderText,
+  excludeDates,
 }: Props) => {
   const locale = useLocale();
 
@@ -96,6 +98,8 @@ const DateRangePicker = ({
   const convertedStartDate = startDate ? moment(startDate).toDate() : null;
   const convertedEndDate = endDate ? moment(endDate).toDate() : null;
   const convertedMinDate = minDate ? moment(minDate).toDate() : null;
+  const convertedExcludeDates =
+    excludeDates?.map((date) => moment(date).toDate()) || [];
 
   return (
     <StylingWrapper>
@@ -108,6 +112,7 @@ const DateRangePicker = ({
         endDate={convertedEndDate}
         minDate={convertedMinDate}
         locale={locale}
+        excludeDates={convertedExcludeDates}
         placeholderText={startDatePlaceholderText}
         // This makes sure we adjust date based on the passed locale.
         dateFormat="P"
@@ -124,6 +129,7 @@ const DateRangePicker = ({
         startDate={convertedStartDate}
         endDate={convertedEndDate}
         minDate={convertedStartDate}
+        excludeDates={convertedExcludeDates}
         locale={locale}
         // This makes sure we adjust date based on the passed locale.
         dateFormat="P"

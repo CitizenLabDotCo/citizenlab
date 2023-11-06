@@ -150,4 +150,9 @@ export default defineMessages({
     id: 'app.containers.Admin.PagesAndMenu.containers.ProjectsList.automatedEmailsLinkText',
     defaultMessage: 'automated emails',
   },
+  emptyDescriptionWarning: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.ProjectsList.emptyDescriptionWarning1',
+    defaultMessage:
+      'For single phase projects, if the end date is empty and the description is not filled in, a timeline will not be displayed on the project page.',
+  },
 });

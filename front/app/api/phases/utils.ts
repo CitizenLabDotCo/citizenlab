@@ -134,25 +134,6 @@ export const isIdeaInParticipationContext = (
   );
 };
 
-const pastOrPresent = new Set(['past', 'present']);
-const presentOrFuture = new Set(['present', 'future']);
-
-export const isCurrentPhase = (phase: IPhaseData) => {
-  const phaseStartPeriod = pastPresentOrFuture(phase.attributes.start_at);
-  const phaseEndPeriod = phase.attributes.end_at
-    ? pastPresentOrFuture(phase.attributes.end_at)
-    : 'future';
-
-  if (
-    pastOrPresent.has(phaseStartPeriod) &&
-    presentOrFuture.has(phaseEndPeriod)
-  ) {
-    return true;
-  }
-
-  return false;
-};
-
 // If a timeline project has no description, no end date and only one phase, we don't the multiple phase ui such as the timeline
 export const hidePhases = (
   phasesData: IPhaseData[] | undefined,
