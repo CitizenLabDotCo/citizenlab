@@ -2,7 +2,6 @@ import { QueryKeys } from 'utils/cl-react-query/types';
 
 const baseKey = {
   type: 'reaction',
-  variant: 'idea',
 };
 
 const ideaReactionsKeys = {
