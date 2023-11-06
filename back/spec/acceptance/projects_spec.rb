@@ -733,6 +733,13 @@ resource 'Projects' do
           expect(@project.reload.header_bg_url).to be_nil
         end
       end
+
+      example 'Logs `published` activity when going from draft to published', document: false do
+        @project.admin_publication.update!(publication_status: 'draft')
+        expect { do_request project: { admin_publication_attributes: { publication_status: 'published' } } }
+          .to have_enqueued_job(LogActivityJob)
+          .with(@project, 'published', anything, anything, anything)
+      end
     end
 
     delete 'web_api/v1/projects/:id' do
