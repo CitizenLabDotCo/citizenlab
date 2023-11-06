@@ -14,7 +14,7 @@ import HeaderContent from './HeaderContent';
 import { IHomepageSettingsAttributes } from 'api/home_page/types';
 
 interface Props {
-  homepageSettings: IHomepageSettingsAttributes;
+  homepageSettings: Partial<IHomepageSettingsAttributes>;
 }
 
 const FixedRatioLayout = ({ homepageSettings }: Props) => {

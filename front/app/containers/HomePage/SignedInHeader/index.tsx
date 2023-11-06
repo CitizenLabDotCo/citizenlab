@@ -146,7 +146,7 @@ const SignedInHeader = ({
   homepageSettings,
   isContentBuilderPreview,
 }: {
-  homepageSettings: IHomepageSettingsAttributes;
+  homepageSettings: Partial<IHomepageSettingsAttributes>;
   isContentBuilderPreview?: boolean;
 }) => {
   const { data: currentOnboardingCampaign } = useCurrentOnboardingCampaign();

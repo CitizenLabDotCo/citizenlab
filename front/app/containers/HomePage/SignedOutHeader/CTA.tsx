@@ -10,7 +10,7 @@ import { IHomepageSettingsAttributes } from 'api/home_page/types';
 interface Props {
   buttonStyle: BannerButtonStyle;
   signUpIn: (event: MouseEvent | KeyboardEvent) => void;
-  homepageSettings: IHomepageSettingsAttributes;
+  homepageSettings: Partial<IHomepageSettingsAttributes>;
 }
 
 const CTA = ({ buttonStyle, signUpIn, homepageSettings }: Props) => {

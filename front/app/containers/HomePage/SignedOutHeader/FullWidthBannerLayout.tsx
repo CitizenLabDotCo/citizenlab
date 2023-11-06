@@ -11,7 +11,7 @@ import { IHomepageSettingsAttributes } from 'api/home_page/types';
 
 interface Props {
   className?: string;
-  homepageSettings: IHomepageSettingsAttributes;
+  homepageSettings: Partial<IHomepageSettingsAttributes>;
 }
 
 const FullWidthBannerLayout = ({ className, homepageSettings }: Props) => {

@@ -8,7 +8,7 @@ import { IHomepageSettingsAttributes } from 'api/home_page/types';
 
 interface Props {
   buttonStyle: BannerButtonStyle;
-  homepageSettings: IHomepageSettingsAttributes;
+  homepageSettings: Partial<IHomepageSettingsAttributes>;
 }
 
 const CTA = ({ buttonStyle, homepageSettings }: Props) => {

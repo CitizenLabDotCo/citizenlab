@@ -9,7 +9,7 @@ import { IHomepageSettingsAttributes } from 'api/home_page/types';
 import { Box } from '@citizenlab/cl2-component-library';
 
 interface Props {
-  homepageSettings: IHomepageSettingsAttributes;
+  homepageSettings: Partial<IHomepageSettingsAttributes>;
 }
 
 const TwoRowLayout = ({ homepageSettings }: Props) => {

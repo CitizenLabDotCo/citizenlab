@@ -50,13 +50,6 @@ const HomepageBuilderToolbox = ({
         component={
           <HomepageBanner
             homepageSettings={{
-              top_info_section_enabled: false,
-              top_info_section_multiloc: {},
-              bottom_info_section_enabled: false,
-              bottom_info_section_multiloc: {},
-              events_widget_enabled: false,
-              projects_enabled: true,
-              projects_header_multiloc: {},
               banner_avatars_enabled: true,
               banner_layout: 'full_width_banner_layout',
               banner_signed_in_header_multiloc: {},
@@ -70,7 +63,6 @@ const HomepageBuilderToolbox = ({
               banner_cta_signed_out_text_multiloc: {},
               banner_cta_signed_out_type: 'sign_up_button',
               banner_cta_signed_out_url: null,
-              pinned_admin_publication_ids: [],
               header_bg: {
                 large:
                   'http://localhost:4000/uploads/c72c5211-8e03-470b-9564-04ec0a8c322b/home_page/header_bg/5bda79bf-dc89-4a27-95c5-6d1982b15693/large_c20073fe-056e-432c-a614-6b92892caf86.jpg',

@@ -33,7 +33,7 @@ const StyledAvatarBubbles = styled(AvatarBubbles)`
 interface Props {
   fontColors: 'light' | 'dark';
   align?: TAlign;
-  homepageSettings: IHomepageSettingsAttributes;
+  homepageSettings: Partial<IHomepageSettingsAttributes>;
 }
 
 export const getButtonStyle = (fontColors: 'light' | 'dark') => {
@@ -64,16 +64,16 @@ const HeaderContent = ({
   const buttonStyle = getButtonStyle(fontColors);
 
   if (!isNilOrError(homepageSettings)) {
-    const headerTitle = !isEmptyMultiloc(
-      homepageSettings.banner_signed_out_header_multiloc
-    )
-      ? localize(homepageSettings.banner_signed_out_header_multiloc)
-      : formatMessage(messages.titleCity);
-    const headerSubtitle = !isEmptyMultiloc(
-      homepageSettings.banner_signed_out_subheader_multiloc
-    )
-      ? localize(homepageSettings.banner_signed_out_subheader_multiloc)
-      : formatMessage(messages.subtitleCity);
+    const headerTitle =
+      homepageSettings.banner_signed_out_header_multiloc &&
+      !isEmptyMultiloc(homepageSettings.banner_signed_out_header_multiloc)
+        ? localize(homepageSettings.banner_signed_out_header_multiloc)
+        : formatMessage(messages.titleCity);
+    const headerSubtitle =
+      homepageSettings.banner_signed_out_subheader_multiloc &&
+      !isEmptyMultiloc(homepageSettings.banner_signed_out_subheader_multiloc)
+        ? localize(homepageSettings.banner_signed_out_subheader_multiloc)
+        : formatMessage(messages.subtitleCity);
     const headerImage = homepageSettings.header_bg
       ? homepageSettings.header_bg.large
       : null;

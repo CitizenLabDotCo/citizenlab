@@ -9,11 +9,35 @@ import { useNode } from '@craftjs/core';
 
 // hooks
 import SignedOutHeader from 'containers/HomePage/SignedOutHeader';
-import { IHomepageSettingsAttributes } from 'api/home_page/types';
 
 import messages from '../../../messages';
 import SignedInHeader from 'containers/HomePage/SignedInHeader';
 import { useSearchParams } from 'react-router-dom';
+import {
+  CTASignedInType,
+  CTASignedOutType,
+  THomepageBannerLayout,
+} from 'api/home_page/types';
+import { ImageSizes, Multiloc } from 'typings';
+
+export interface IHomepageSettingsAttributes {
+  banner_layout: THomepageBannerLayout;
+  banner_signed_in_header_multiloc: Multiloc;
+  banner_signed_out_header_multiloc: Multiloc;
+  banner_signed_out_subheader_multiloc: Multiloc;
+  banner_signed_out_header_overlay_color: string | null;
+  // Number between 0 and 100, inclusive
+  banner_signed_out_header_overlay_opacity: number | null;
+  header_bg: ImageSizes | null;
+  banner_cta_signed_in_text_multiloc: Multiloc;
+  banner_cta_signed_in_type: CTASignedInType;
+  banner_cta_signed_in_url: string | null;
+  // cta_signed_out
+  banner_cta_signed_out_text_multiloc: Multiloc;
+  banner_cta_signed_out_type: CTASignedOutType;
+  banner_cta_signed_out_url: string | null;
+  banner_avatars_enabled: boolean;
+}
 
 type Props = {
   homepageSettings: IHomepageSettingsAttributes;

@@ -8,7 +8,7 @@ import { IHomepageSettingsAttributes } from 'api/home_page/types';
 const SignedOutHeaderIndex = ({
   homepageSettings,
 }: {
-  homepageSettings: IHomepageSettingsAttributes;
+  homepageSettings: Partial<IHomepageSettingsAttributes>;
 }) => {
   const layoutSetting = homepageSettings.banner_layout;
 

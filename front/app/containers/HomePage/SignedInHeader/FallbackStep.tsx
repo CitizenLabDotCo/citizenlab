@@ -51,7 +51,7 @@ const HeaderContent = styled.div`
 
 interface Props {
   currentOnboardingCampaignName: OnboardingCampaignName;
-  homepageSettings: IHomepageSettingsAttributes;
+  homepageSettings: Partial<IHomepageSettingsAttributes>;
 }
 
 const FallbackStep = ({

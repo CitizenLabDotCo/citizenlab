@@ -40,7 +40,7 @@ const StyledImage = styled(Image)`
 const HeaderImage = ({
   homepageSettings,
 }: {
-  homepageSettings: IHomepageSettingsAttributes;
+  homepageSettings: Partial<IHomepageSettingsAttributes>;
 }) => {
   const theme = useTheme();
 
