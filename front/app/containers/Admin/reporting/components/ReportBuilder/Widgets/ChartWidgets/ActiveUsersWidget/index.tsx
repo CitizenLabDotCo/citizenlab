@@ -22,6 +22,7 @@ const ActiveUsersWidget = ({
   endAt,
 }: ChartWidgetProps) => {
   const resolution: IResolution = 'month';
+
   const analyticsChartProps = {
     startAtMoment: startAt ? moment(startAt) : null,
     endAtMoment: endAt ? moment(endAt) : null,

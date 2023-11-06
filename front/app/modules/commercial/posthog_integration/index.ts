@@ -34,11 +34,15 @@ const lazyLoadedPosthog = async () => {
   return ph.default;
 };
 
+const DISABLE_POSTHOG = true;
+
 const initializePosthog = async (
   token: string,
   user: IUser,
   appConfig: IAppConfiguration
 ) => {
+  if (DISABLE_POSTHOG) return;
+
   const posthog = await lazyLoadedPosthog();
 
   posthog.init(token, {

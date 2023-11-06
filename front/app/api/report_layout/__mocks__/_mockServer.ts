@@ -186,7 +186,7 @@ export const reportLayout: ReportLayoutResponse = {
             },
             nodes: [],
             props: {
-              endAt: '2023-11-03T17:09:30.3030',
+              endAt: '2023-11-03',
               title: 'Reactions',
             },
             custom: {
@@ -208,7 +208,7 @@ export const reportLayout: ReportLayoutResponse = {
             },
             nodes: [],
             props: {
-              endAt: '2023-11-03T17:09:24.2424',
+              endAt: '2023-11-03',
               title: 'Comments',
             },
             custom: {
@@ -327,7 +327,7 @@ export const reportLayout: ReportLayoutResponse = {
             },
             nodes: [],
             props: {
-              endAt: '2023-11-03T17:06:58.5858',
+              endAt: '2023-11-03',
               title: 'Traffic sources',
             },
             custom: {
@@ -421,7 +421,7 @@ export const reportLayout: ReportLayoutResponse = {
             },
             nodes: [],
             props: {
-              endAt: '2023-11-03T17:08:43.4343',
+              endAt: '2023-11-03',
               title: 'Posts',
             },
             custom: {
@@ -506,7 +506,7 @@ export const reportLayout: ReportLayoutResponse = {
             },
             nodes: [],
             props: {
-              endAt: '2023-11-03T17:08:17.1717',
+              endAt: '2023-11-03',
               title: 'Reactions',
             },
             custom: {
@@ -574,7 +574,7 @@ export const reportLayout: ReportLayoutResponse = {
             },
             nodes: [],
             props: {
-              endAt: '2023-11-03T17:08:11.1111',
+              endAt: '2023-11-03',
               title: 'Comments',
             },
             custom: {
@@ -823,7 +823,7 @@ export const reportLayout: ReportLayoutResponse = {
             },
             nodes: [],
             props: {
-              endAt: '2023-11-03T17:08:02.022',
+              endAt: '2023-11-03',
               title: 'Posts',
             },
             custom: {
