@@ -99,7 +99,7 @@ const DateRangePicker = ({
   const convertedEndDate = endDate ? moment(endDate).toDate() : null;
   const convertedMinDate = minDate ? moment(minDate).toDate() : null;
   const convertedExcludeDates =
-    excludeDates?.map((d) => moment(d).toDate()) || [];
+    excludeDates?.map((date) => moment(date).toDate()) || [];
 
   return (
     <StylingWrapper>
