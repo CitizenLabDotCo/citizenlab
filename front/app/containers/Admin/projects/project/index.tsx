@@ -79,7 +79,7 @@ type TabHideConditions = {
   ) => boolean;
 };
 
-const AdminProjectsProjectIndex = ({
+export const AdminProjectsProjectIndex = ({
   project,
   phases,
   typeform_enabled,
