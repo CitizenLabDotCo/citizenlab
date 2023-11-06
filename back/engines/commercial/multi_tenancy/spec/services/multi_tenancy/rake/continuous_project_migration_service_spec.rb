@@ -28,8 +28,7 @@ RSpec.describe MultiTenancy::Rake::ContinuousProjectMigrationService do
     it 'creates a single open ended phase for the project' do
       expect(project.phases.count).to eq 1
       expect(project.phases.first.end_at).to be_nil
-
-      # TODO: Check title with all locales is created here
+      expect(project.phases.first.start_at).to eq project.admin_publication.updated_at.to_date
     end
 
     it 'copies all project settings to the phase' do
@@ -126,20 +125,6 @@ RSpec.describe MultiTenancy::Rake::ContinuousProjectMigrationService do
     end
   end
 
-  shared_examples 'notifications' do
-    # Notification
-    it 'adds a phase to each notification' do
-      # TODO
-    end
-  end
-
-  shared_examples 'analysis' do
-    # Analysis::Analysis
-    it 'adds a phase to each analysis' do
-      # TODO
-    end
-  end
-
   describe '#migrate' do
     context 'without persistence' do
       let_it_be(:project) { create(:continuous_project) }
@@ -188,6 +173,8 @@ RSpec.describe MultiTenancy::Rake::ContinuousProjectMigrationService do
         let_it_be(:baskets) { create_list(:basket, 3, participation_context: project) }
         let_it_be(:baskets_idea1) { create(:baskets_idea, idea: ideas.first, basket: baskets.first) }
         let_it_be(:baskets_idea2) { create(:baskets_idea, idea: ideas.last, basket: baskets.last) }
+        let_it_be(:basket_submitted_notification) { create(:notification, type: 'Notifications::VotingBasketSubmitted', project: project, basket: baskets.first) }
+        let_it_be(:basket_not_submitted_notification) { create(:notification, type: 'Notifications::VotingBasketNotSubmitted', project: project, basket: baskets.first) }
 
         include_examples 'project_settings'
         include_examples 'ideas'
@@ -213,6 +200,11 @@ RSpec.describe MultiTenancy::Rake::ContinuousProjectMigrationService do
           expect(project.phases.first.votes_count).to eq 800
           expect(IdeasPhase.all.pluck(:baskets_count)).to match [1, 1]
           expect(IdeasPhase.all.pluck(:votes_count)).to match [400, 400]
+        end
+
+        it 'updates basket notifications with the phase' do
+          expect(basket_submitted_notification.reload.phase).to eq project.phases.first
+          expect(basket_not_submitted_notification.reload.phase).to eq project.phases.first
         end
       end
 

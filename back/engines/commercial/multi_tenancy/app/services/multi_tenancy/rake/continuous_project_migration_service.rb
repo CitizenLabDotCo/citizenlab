@@ -15,7 +15,8 @@ class MultiTenancy::Rake::ContinuousProjectMigrationService
     @stats[:projects] = projects.count
     return unless persist_changes
 
-    # TODO: Fail for the whole tenant if one thing fails
+    # TODO: Fail for the whole tenant if one thing fails?
+    # TODO: Is there any impact on the updated_at dates changing?
     # TODO: Should we wrap each project in a transaction is that possible?
     projects.each do |project|
       # 1. Change the process_type
@@ -25,8 +26,6 @@ class MultiTenancy::Rake::ContinuousProjectMigrationService
       phase = create_phase(project)
       project.phases << phase
       reset_project_defaults(project)
-
-      # TODO: Check that projects now has just one phase before continuing
 
       # 3. Update participation_context in models - from project_id to new phase_id
       update_participation_contexts(project, phase)
@@ -59,10 +58,12 @@ class MultiTenancy::Rake::ContinuousProjectMigrationService
   private
 
   def create_phase(project)
+    # If the project is published - use the date published as phase start date
+    phase_start_at = project&.admin_publication&.published? ? project&.admin_publication&.updated_at : project.created_at
     phase = Phase.new(
       title_multiloc: create_phase_title(project),
       project: project,
-      created_at: project.created_at, # TODO: Use project publication date if available
+      created_at: phase_start_at,
       start_at: project.created_at,
       end_at: nil,
 
@@ -140,7 +141,7 @@ class MultiTenancy::Rake::ContinuousProjectMigrationService
     end
   end
 
-  # TODO: Is there any impact on the updated date changing?
+  # Only two notification types need phase adding
   def add_notification_phase_ids(project, phase)
     %w[
       Notifications::VotingBasketNotSubmitted
@@ -148,32 +149,6 @@ class MultiTenancy::Rake::ContinuousProjectMigrationService
     ].each do |model|
       @stats[:records_updated] += model.constantize.where(project: project).update!(phase: phase).count
     end
-
-    # Do these - they have phase in them
-    #
-    # VotingResultsPublished - No needs phase
-    # VotingLastChance - No needs phase
-    # VotingBasketSubmitted - Yes
-    # VotingBasketNotSubmitted - Yes
-    # TODO: Complete this list by looking at all the notification models
-
-    # Ignore these - They have no phase
-    #
-    # IdeaAssignment::Notifications::IdeaAssignedToYou
-    # Notifications::CommentDeletedByAdmin
-    # Notifications::CommentMarkedAsSpam
-    # Notifications::CommentOnIdeaYouFollow
-    # Notifications::CommentOnYourComment
-    # Notifications::IdeaMarkedAsSpam
-    # Notifications::InternalComments::InternalCommentOnIdeaAssignedToYou
-    # Notifications::InternalComments::InternalCommentOnIdeaYouCommentedInternallyOn
-    # Notifications::InternalComments::InternalCommentOnUnassignedUnmoderatedIdea
-    # Notifications::MentionInComment
-    # Notifications::MentionInOfficialFeedback
-    # Notifications::OfficialFeedbackOnIdeaYouFollow
-    # Notifications::ProjectModerationRightsReceived
-    # Notifications::ProjectPublished
-    # Notifications::StatusChangeOnIdeaYouFollow
   end
 
   def update_permission_scope(project, phase)
