@@ -12,6 +12,7 @@ const NotificationsDropdown = ({ onClickOutside, dropdownOpened }: Props) => {
     <Box data-testid="notifications-dropdown">
       <Dropdown
         id="notifications-dropdown"
+        width="300px"
         mobileWidth="220px"
         top="42px"
         right="-12px"
