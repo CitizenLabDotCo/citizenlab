@@ -113,6 +113,7 @@ const AdminProjectTimelineEdit = () => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const [hasEndDate, setHasEndDate] = useState<boolean>(false);
+  const [disableNoEndDate, setDisableNoEndDate] = useState<boolean>(false);
 
   useEffect(() => {
     setHasEndDate(phase?.data.attributes.end_at ? true : false);
@@ -168,6 +169,21 @@ const AdminProjectTimelineEdit = () => {
       end_at: endDate ? endDate.locale('en').format('YYYY-MM-DD') : '',
     });
     setHasEndDate(!!endDate);
+
+    if (startDate) {
+      const hasPhaseWithLaterStartDate = phases.data.some((iteratedPhase) => {
+        const iteratedPhaseStartDate = moment(
+          iteratedPhase.attributes.start_at
+        );
+        return iteratedPhaseStartDate.isAfter(startDate);
+      });
+
+      setDisableNoEndDate(hasPhaseWithLaterStartDate);
+
+      if (hasPhaseWithLaterStartDate) {
+        setHasEndDate(true);
+      }
+    }
   };
 
   const handlePhaseFileOnAdd = (newFile: UploadFile) => {
@@ -433,6 +449,7 @@ const AdminProjectTimelineEdit = () => {
             <Checkbox
               checked={!hasEndDate}
               onChange={setNoEndDate}
+              disabled={disableNoEndDate}
               size="21px"
               label={
                 <Text>
