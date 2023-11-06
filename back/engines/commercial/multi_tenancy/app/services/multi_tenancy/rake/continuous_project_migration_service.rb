@@ -8,7 +8,7 @@ class MultiTenancy::Rake::ContinuousProjectMigrationService
   attr_reader :stats
 
   def migrate(persist_changes)
-    Rails.logger.info 'Migrating continuous forms.'
+    Rails.logger.info 'Migrating continuous projects.'
     Rails.logger.info "Persist: #{persist_changes}"
 
     projects = Project.where(process_type: 'continuous')
@@ -19,6 +19,13 @@ class MultiTenancy::Rake::ContinuousProjectMigrationService
     # TODO: Is there any impact on the updated_at dates changing?
     # TODO: Should we wrap each project in a transaction is that possible?
     projects.each do |project|
+      Rails.logger.info "MIGRATING PROJECT: #{project.slug}."
+
+      if !project.admin_publication
+        error_handler("#{project.slug} admin publication is blank.")
+        next
+      end
+
       # 1. Change the process_type
       project.update!(process_type: 'timeline')
 
