@@ -64,8 +64,11 @@ describe SideFxProjectService do
 
     it "logs a 'published' action when a draft project is published" do
       project.admin_publication.update!(publication_status: 'draft')
+
+      project.assign_attributes(admin_publication_attributes: { publication_status: 'published' })
       service.before_update project, user
-      project.admin_publication.update!(publication_status: 'published')
+
+      project.save!
 
       expect { service.after_update(project, user) }
         .to have_enqueued_job(LogActivityJob)
@@ -74,8 +77,9 @@ describe SideFxProjectService do
 
     it "does not log a 'published' action when a archived project is republished" do
       project.admin_publication.update!(publication_status: 'archived')
+
+      project.assign_attributes(admin_publication_attributes: { publication_status: 'published' })
       service.before_update project, user
-      project.admin_publication.update!(publication_status: 'published')
 
       expect { service.after_update(project, user) }
         .not_to have_enqueued_job(LogActivityJob)

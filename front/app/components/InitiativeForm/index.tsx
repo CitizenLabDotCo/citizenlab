@@ -41,6 +41,7 @@ const ImageAndAttachmentsSection = lazy(
   () => import('./ImagesAndAttachmentsSection')
 );
 import Warning from 'components/UI/Warning';
+import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
 
 // Hooks
 import useTopics from 'api/topics/useTopics';
@@ -91,6 +92,7 @@ const InitiativeForm = ({
   const locale = useLocale();
   const [search] = useSearchParams();
   const { formatMessage } = useIntl();
+  const [isDisclaimerOpened, setIsDisclaimerOpened] = useState(false);
   const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
     useState(false);
   const cosponsorsRequired = useInitiativeCosponsorsRequired();
@@ -237,13 +239,34 @@ const InitiativeForm = ({
     }
   };
 
+  const handleDisclaimer = () => {
+    const disclamerNeeded =
+      methods.getValues('images')?.[0] ||
+      methods.getValues('header_bg')?.[0] ||
+      methods.getValues('local_initiative_files')?.length > 0 ||
+      Object.values(methods.getValues('body_multiloc')).some((value) =>
+        value.includes('<img')
+      );
+    if (disclamerNeeded) {
+      setIsDisclaimerOpened(true);
+    } else {
+      methods.handleSubmit(onFormSubmit)();
+    }
+  };
+
+  const onAcceptDisclaimer = () => {
+    methods.handleSubmit(onFormSubmit)();
+    setIsDisclaimerOpened(false);
+  };
+
+  const onCancelDisclaimer = () => {
+    setIsDisclaimerOpened(false);
+  };
+
   return (
     <>
       <FormProvider {...methods}>
-        <form
-          onSubmit={methods.handleSubmit(onFormSubmit)}
-          data-testid="initiativeForm"
-        >
+        <form data-testid="initiativeForm">
           <Box pb="92px">
             <Feedback />
             <FormSection>
@@ -266,7 +289,7 @@ const InitiativeForm = ({
                 <FormLabel
                   id="description-label-id"
                   htmlFor="body_multiloc"
-                  labelMessage={messages.descriptionLabel}
+                  labelValue={formatMessage(messages.descriptionLabel)}
                   subtextMessage={messages.descriptionLabelSubtext}
                 />
                 <QuillMultilocWithLocaleSwitcher
@@ -329,7 +352,15 @@ const InitiativeForm = ({
               />
             </Suspense>
           </Box>
-          <SubmitButtonBar processing={methods.formState.isSubmitting} />
+          <SubmitButtonBar
+            processing={methods.formState.isSubmitting}
+            onClick={handleDisclaimer}
+          />
+          <ContentUploadDisclaimer
+            isDisclaimerOpened={isDisclaimerOpened}
+            onAcceptDisclaimer={onAcceptDisclaimer}
+            onCancelDisclaimer={onCancelDisclaimer}
+          />
         </form>
       </FormProvider>
       <Suspense fallback={null}>
