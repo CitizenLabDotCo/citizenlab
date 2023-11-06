@@ -1,31 +1,31 @@
 import { FC, useEffect } from 'react';
 import { WrappedComponentProps } from 'react-intl';
 import { InsertConfigurationOptions, ITab } from 'typings';
-import { injectIntl } from 'utils/cl-intl';
+import { useParams } from 'react-router-dom';
+import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 type Props = {
   onData: (data: InsertConfigurationOptions<ITab>) => void;
 };
 
-const Tab: FC<Props & WrappedComponentProps> = ({
-  onData,
-  intl: { formatMessage },
-}) => {
+const Tab: FC<Props & WrappedComponentProps> = ({ onData }) => {
+  const { formatMessage } = useIntl();
+  const { projectId } = useParams() as { projectId: string };
   useEffect(() => {
-    // onData({
-    //   configuration: {
-    //     label: 'formatMessage(messages.projectPermissionsTab)',
-    //     url: `permissions`,
-    //     feature: 'private_projects',
-    //     name: 'permissions',
-    //   },
-    //   insertAfterName: 'events',
-    // });
+    onData({
+      configuration: {
+        label: formatMessage(messages.projectPermissionsTab),
+        url: `/admin/projects/${projectId}/settings/access-rights`,
+        feature: 'private_projects',
+        name: 'permissions',
+      },
+      insertAfterName: 'events',
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return null;
 };
 
-export default injectIntl(Tab);
+export default Tab;

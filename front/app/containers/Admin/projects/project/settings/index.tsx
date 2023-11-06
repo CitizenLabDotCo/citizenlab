@@ -36,27 +36,28 @@ const Settings = () => {
   const [tabs, setTabs] = useState<ITab[]>([
     {
       label: formatMessage(messages.general),
-      name: 'manage',
+      name: 'general',
       url: `/admin/projects/${projectId}/settings`,
     },
     {
       label: formatMessage(messages.description),
-      name: 'manage',
+      name: 'description',
       url: `/admin/projects/${projectId}/settings/description`,
     },
     {
       label: formatMessage(messages.projectTags),
-      name: 'manage',
+      name: 'tags',
       url: `/admin/projects/${projectId}/settings/tags`,
     },
     {
       label: formatMessage(messages.accessRights),
-      name: 'manage',
+      name: 'permissions',
+      feature: 'private_projects',
       url: `/admin/projects/${projectId}/settings/access-rights`,
     },
     {
       label: formatMessage(messages.events),
-      name: 'manage',
+      name: 'events',
       url: `/admin/projects/${projectId}/settings/events`,
     },
   ]);
