@@ -15,9 +15,7 @@ class MultiTenancy::Rake::ContinuousProjectMigrationService
     @stats[:projects] = projects.count
     return unless persist_changes
 
-    # TODO: Fail for the whole tenant if one thing fails?
     # TODO: Is there any impact on the updated_at dates changing?
-    # TODO: Should we wrap each project in a transaction is that possible?
     projects.each do |project|
       Rails.logger.info "MIGRATING PROJECT: #{project.slug}."
 
