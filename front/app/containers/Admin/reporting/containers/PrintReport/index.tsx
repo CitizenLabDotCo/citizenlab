@@ -64,6 +64,8 @@ export const PrintReport = ({ reportId, _print = true }: Props) => {
   }, [_print, isPrintReady]);
 
   useEffect(() => {
+    if (!_print) return;
+
     const blockEvent = (e: MouseEvent) => {
       e.stopPropagation();
       e.stopImmediatePropagation();
@@ -79,7 +81,7 @@ export const PrintReport = ({ reportId, _print = true }: Props) => {
         document.removeEventListener(event, blockEvent);
       });
     };
-  }, []);
+  }, [_print]);
 
   return (
     <>
