@@ -1,5 +1,4 @@
-import { FC, useEffect } from 'react';
-import { WrappedComponentProps } from 'react-intl';
+import { useEffect } from 'react';
 import { InsertConfigurationOptions, ITab } from 'typings';
 import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
@@ -9,7 +8,7 @@ type Props = {
   onData: (data: InsertConfigurationOptions<ITab>) => void;
 };
 
-const Tab: FC<Props & WrappedComponentProps> = ({ onData }) => {
+const Tab = ({ onData }: Props) => {
   const { formatMessage } = useIntl();
   const { projectId } = useParams() as { projectId: string };
   useEffect(() => {
