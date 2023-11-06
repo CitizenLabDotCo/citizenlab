@@ -28,13 +28,13 @@ export const reportLayout: ReportLayoutResponse = {
             type: 'div',
             nodes: [
               'iHhZ4s3csd',
-              // "TA7RQNyDgR",
-              // "pwV7EeAqeK",
-              // "gl7jsKs3NF",
-              // "cVSVPkQLRZ",
-              // "jan173bJuF",
-              // "iKDVaI9FjR",
-              // "iigouUt9Cl"
+              'TA7RQNyDgR',
+              'pwV7EeAqeK',
+              'gl7jsKs3NF',
+              'cVSVPkQLRZ',
+              'jan173bJuF',
+              'iKDVaI9FjR',
+              'iigouUt9Cl',
             ],
             props: {
               id: 'e2e-content-builder-frame',
@@ -483,8 +483,9 @@ export const reportLayout: ReportLayoutResponse = {
             },
             nodes: [],
             props: {
-              endAt: '2023-11-03T17:13:34.3434',
+              endAt: '2023-11-03',
               title: 'Visitor timeline',
+              projectId: '8f1dffb8-0fb6-4f00-af70-55c757f78f14',
             },
             custom: {
               title: {
@@ -550,8 +551,9 @@ export const reportLayout: ReportLayoutResponse = {
             },
             nodes: [],
             props: {
-              endAt: '2023-11-03T17:08:39.3939',
+              endAt: '2023-11-03',
               title: 'Participants timeline',
+              projectId: '8f1dffb8-0fb6-4f00-af70-55c757f78f14',
             },
             custom: {
               title: {

@@ -1,6 +1,6 @@
 const visitorReferrers = {
   params:
-    '?query%5Bfact%5D=visit&query%5Bfilters%5D%5Bdimension_user.role%5D%5B%5D=citizen&query%5Bfilters%5D%5Bdimension_user.role%5D%5B%5D=&query%5Bgroups%5D=dimension_referrer_type.id&query%5Baggregations%5D%5Ball%5D=count&query%5Baggregations%5D%5Bdimension_referrer_type.name%5D=first',
+    '?query%5Bfact%5D=visit&query%5Bfilters%5D%5Bdimension_user.role%5D%5B%5D=citizen&query%5Bfilters%5D%5Bdimension_user.role%5D%5B%5D=&query%5Bfilters%5D%5Bdimension_date_first_action.date%5D%5Bto%5D=2023-11-03&query%5Bgroups%5D=dimension_referrer_type.id&query%5Baggregations%5D%5Ball%5D=count&query%5Baggregations%5D%5Bdimension_referrer_type.name%5D=first',
   response: {
     data: {
       type: 'analytics',
@@ -25,9 +25,9 @@ const visitorReferrers = {
   },
 };
 
-const ideasOverTime = {
+const postsOverTime = {
   params:
-    '?query%5B%5D%5Bfact%5D=post&query%5B%5D%5Bfilters%5D%5Bdimension_date_created.date%5D%5Bfrom%5D=2017-01-01&query%5B%5D%5Bfilters%5D%5Bdimension_date_created.date%5D%5Bto%5D=2023-11-03&query%5B%5D%5Bfilters%5D%5Bdimension_type.name%5D=idea&query%5B%5D%5Bfilters%5D%5Bpublication_status%5D=published&query%5B%5D%5Bgroups%5D=dimension_date_created.month&query%5B%5D%5Baggregations%5D%5Ball%5D=count&query%5B%5D%5Baggregations%5D%5Bdimension_date_created.date%5D=first&query%5B%5D%5Bfact%5D=post&query%5B%5D%5Bfilters%5D%5Bdimension_type.name%5D=idea&query%5B%5D%5Bfilters%5D%5Bpublication_status%5D=published&query%5B%5D%5Baggregations%5D%5Ball%5D=count',
+    '?query%5B%5D%5Bfact%5D=post&query%5B%5D%5Bfilters%5D%5Bdimension_date_created.date%5D%5Bfrom%5D=2017-01-01&query%5B%5D%5Bfilters%5D%5Bdimension_date_created.date%5D%5Bto%5D=2023-11-03&query%5B%5D%5Bfilters%5D%5Bdimension_type.name%5D=idea&query%5B%5D%5Bfilters%5D%5Bpublication_status%5D=published&query%5B%5D%5Bgroups%5D=dimension_date_created.month&query%5B%5D%5Baggregations%5D%5Ball%5D=count&query%5B%5D%5Baggregations%5D%5Bdimension_date_created.date%5D=first&query%5B%5D%5Bfact%5D=post&query%5B%5D%5Bfilters%5D%5Bdimension_date_created.date%5D%5Bto%5D=2023-11-03&query%5B%5D%5Bfilters%5D%5Bdimension_type.name%5D=idea&query%5B%5D%5Bfilters%5D%5Bpublication_status%5D=published&query%5B%5D%5Baggregations%5D%5Ball%5D=count',
   response: {
     data: {
       type: 'analytics',
@@ -89,9 +89,9 @@ const ideasOverTime = {
   },
 };
 
-const xOverTime = {
+const commentsOverTime = {
   params:
-    '?query%5B%5D%5Bfact%5D=participation&query%5B%5D%5Bfilters%5D%5Bdimension_date_created.date%5D%5Bfrom%5D=2017-01-01&query%5B%5D%5Bfilters%5D%5Bdimension_date_created.date%5D%5Bto%5D=2023-11-03&query%5B%5D%5Bfilters%5D%5Bdimension_type.name%5D=comment&query%5B%5D%5Bfilters%5D%5Bdimension_type.parent%5D%5B%5D=idea&query%5B%5D%5Bfilters%5D%5Bdimension_type.parent%5D%5B%5D=initiative&query%5B%5D%5Bgroups%5D=dimension_date_created.month&query%5B%5D%5Baggregations%5D%5Ball%5D=count&query%5B%5D%5Baggregations%5D%5Bdimension_date_created.date%5D=first&query%5B%5D%5Bfact%5D=participation&query%5B%5D%5Bfilters%5D%5Bdimension_type.name%5D=comment&query%5B%5D%5Bfilters%5D%5Bdimension_type.parent%5D%5B%5D=idea&query%5B%5D%5Bfilters%5D%5Bdimension_type.parent%5D%5B%5D=initiative&query%5B%5D%5Baggregations%5D%5Ball%5D=count',
+    '?query%5B%5D%5Bfact%5D=participation&query%5B%5D%5Bfilters%5D%5Bdimension_date_created.date%5D%5Bfrom%5D=2017-01-01&query%5B%5D%5Bfilters%5D%5Bdimension_date_created.date%5D%5Bto%5D=2023-11-03&query%5B%5D%5Bfilters%5D%5Bdimension_type.name%5D=comment&query%5B%5D%5Bfilters%5D%5Bdimension_type.parent%5D%5B%5D=idea&query%5B%5D%5Bfilters%5D%5Bdimension_type.parent%5D%5B%5D=initiative&query%5B%5D%5Bgroups%5D=dimension_date_created.month&query%5B%5D%5Baggregations%5D%5Ball%5D=count&query%5B%5D%5Baggregations%5D%5Bdimension_date_created.date%5D=first&query%5B%5D%5Bfact%5D=participation&query%5B%5D%5Bfilters%5D%5Bdimension_date_created.date%5D%5Bto%5D=2023-11-03&query%5B%5D%5Bfilters%5D%5Bdimension_type.name%5D=comment&query%5B%5D%5Bfilters%5D%5Bdimension_type.parent%5D%5B%5D=idea&query%5B%5D%5Bfilters%5D%5Bdimension_type.parent%5D%5B%5D=initiative&query%5B%5D%5Baggregations%5D%5Ball%5D=count',
   response: {
     data: {
       type: 'analytics',
@@ -150,7 +150,7 @@ const xOverTime = {
 
 const reactionsOverTime = {
   params:
-    '?query%5B%5D%5Bfact%5D=participation&query%5B%5D%5Bfilters%5D%5Bdimension_date_created.date%5D%5Bfrom%5D=2017-01-01&query%5B%5D%5Bfilters%5D%5Bdimension_date_created.date%5D%5Bto%5D=2023-11-03&query%5B%5D%5Bfilters%5D%5Bdimension_type.name%5D=reaction&query%5B%5D%5Bfilters%5D%5Bdimension_type.parent%5D=idea&query%5B%5D%5Bgroups%5D=dimension_date_created.month&query%5B%5D%5Baggregations%5D%5Bdimension_date_created.date%5D=first&query%5B%5D%5Baggregations%5D%5Blikes_count%5D=sum&query%5B%5D%5Baggregations%5D%5Bdislikes_count%5D=sum&query%5B%5D%5Bfact%5D=participation&query%5B%5D%5Bfilters%5D%5Bdimension_type.name%5D=reaction&query%5B%5D%5Bfilters%5D%5Bdimension_type.parent%5D=idea&query%5B%5D%5Baggregations%5D%5Breactions_count%5D=sum',
+    '?query%5B%5D%5Bfact%5D=participation&query%5B%5D%5Bfilters%5D%5Bdimension_date_created.date%5D%5Bfrom%5D=2017-01-01&query%5B%5D%5Bfilters%5D%5Bdimension_date_created.date%5D%5Bto%5D=2023-11-03&query%5B%5D%5Bfilters%5D%5Bdimension_type.name%5D=reaction&query%5B%5D%5Bfilters%5D%5Bdimension_type.parent%5D=idea&query%5B%5D%5Bgroups%5D=dimension_date_created.month&query%5B%5D%5Baggregations%5D%5Bdimension_date_created.date%5D=first&query%5B%5D%5Baggregations%5D%5Blikes_count%5D=sum&query%5B%5D%5Baggregations%5D%5Bdislikes_count%5D=sum&query%5B%5D%5Bfact%5D=participation&query%5B%5D%5Bfilters%5D%5Bdimension_date_created.date%5D%5Bto%5D=2023-11-03&query%5B%5D%5Bfilters%5D%5Bdimension_type.name%5D=reaction&query%5B%5D%5Bfilters%5D%5Bdimension_type.parent%5D=idea&query%5B%5D%5Baggregations%5D%5Breactions_count%5D=sum',
   response: {
     data: {
       type: 'analytics',
@@ -356,49 +356,13 @@ const visitors = {
   },
 };
 
-const whatever = {
-  params:
-    '?query%5B%5D%5Bfact%5D=visit&query%5B%5D%5Bfilters%5D%5Bdimension_user.role%5D%5B%5D=citizen&query%5B%5D%5Bfilters%5D%5Bdimension_user.role%5D%5B%5D=&query%5B%5D%5Bfilters%5D%5Bdimension_projects.id%5D=8f1dffb8-0fb6-4f00-af70-55c757f78f14&query%5B%5D%5Baggregations%5D%5Ball%5D=count&query%5B%5D%5Baggregations%5D%5Bvisitor_id%5D=count&query%5B%5D%5Baggregations%5D%5Bduration%5D=avg&query%5B%5D%5Baggregations%5D%5Bpages_visited%5D=avg&query%5B%5D%5Bfact%5D=visit&query%5B%5D%5Bfilters%5D%5Bdimension_user.role%5D%5B%5D=citizen&query%5B%5D%5Bfilters%5D%5Bdimension_user.role%5D%5B%5D=&query%5B%5D%5Bfilters%5D%5Bdimension_projects.id%5D=8f1dffb8-0fb6-4f00-af70-55c757f78f14&query%5B%5D%5Bfilters%5D%5Bdimension_date_first_action.date%5D%5Bfrom%5D=2023-10-04&query%5B%5D%5Bfilters%5D%5Bdimension_date_first_action.date%5D%5Bto%5D=2023-11-03&query%5B%5D%5Baggregations%5D%5Ball%5D=count&query%5B%5D%5Baggregations%5D%5Bvisitor_id%5D=count&query%5B%5D%5Baggregations%5D%5Bduration%5D=avg&query%5B%5D%5Baggregations%5D%5Bpages_visited%5D=avg&query%5B%5D%5Bfact%5D=visit&query%5B%5D%5Bfilters%5D%5Bdimension_user.role%5D%5B%5D=citizen&query%5B%5D%5Bfilters%5D%5Bdimension_user.role%5D%5B%5D=&query%5B%5D%5Bfilters%5D%5Bdimension_projects.id%5D=8f1dffb8-0fb6-4f00-af70-55c757f78f14&query%5B%5D%5Bgroups%5D=dimension_date_first_action.month&query%5B%5D%5Baggregations%5D%5Ball%5D=count&query%5B%5D%5Baggregations%5D%5Bvisitor_id%5D=count&query%5B%5D%5Baggregations%5D%5Bdimension_date_first_action.date%5D=first',
-  response: {
-    data: {
-      type: 'analytics',
-      attributes: [
-        [
-          {
-            count: 6,
-            count_visitor_id: 4,
-            avg_duration: '951.6666666666666667',
-            avg_pages_visited: '14.8333333333333333',
-          },
-        ],
-        [],
-        [
-          {
-            'dimension_date_first_action.month': '2023-06',
-            count: 1,
-            count_visitor_id: 1,
-            first_dimension_date_first_action_date: '2023-06-01',
-          },
-          {
-            'dimension_date_first_action.month': '2023-09',
-            count: 2,
-            count_visitor_id: 2,
-            first_dimension_date_first_action_date: '2023-09-26',
-          },
-        ],
-      ],
-    },
-  },
-};
-
 const responses = {
   [visitorReferrers.params]: visitorReferrers.response,
-  [ideasOverTime.params]: ideasOverTime.response,
-  [xOverTime.params]: xOverTime.response,
+  [postsOverTime.params]: postsOverTime.response,
+  [commentsOverTime.params]: commentsOverTime.response,
   [reactionsOverTime.params]: reactionsOverTime.response,
   [participantsOverTime.params]: participantsOverTime.response,
   [visitors.params]: visitors.response,
-  [whatever.params]: whatever.response,
 };
 
 export default responses;
