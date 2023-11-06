@@ -54,6 +54,11 @@ const ProjectFolderSelect = ({
     action: 'create_project_in_folder_only',
   });
 
+  const userCanCreateProjectAtTopLevel = usePermission({
+    item: 'project',
+    action: 'create',
+  });
+
   const localize = useLocalize();
   // Initially null, the value is set in the useEffect below based on user permissions and folder_id
   const [radioFolderSelect, setRadioFolderSelect] = useState<boolean | null>(
@@ -166,7 +171,7 @@ const ProjectFolderSelect = ({
           name="folderSelect"
           id="folderSelect-no"
           label={<FormattedMessage {...messages.optionNo} />}
-          disabled={userCanCreateProjectInFolderOnly}
+          disabled={!userCanCreateProjectAtTopLevel}
         />
         <Radio
           onChange={onRadioFolderSelectChange}
@@ -175,7 +180,7 @@ const ProjectFolderSelect = ({
           name="folderSelect"
           id="folderSelect-yes"
           label={<FormattedMessage {...messages.optionYes} />}
-          disabled={userCanCreateProjectInFolderOnly}
+          disabled={!userCanCreateProjectAtTopLevel}
         />
         {radioFolderSelect && (
           <Select
