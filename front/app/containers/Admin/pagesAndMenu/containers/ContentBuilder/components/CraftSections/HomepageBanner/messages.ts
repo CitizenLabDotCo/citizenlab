@@ -25,4 +25,8 @@ export default defineMessages({
     id: 'app.containers.admin.ContentBuilder.homepage.homepageBanner',
     defaultMessage: 'Homepage banner',
   },
+  invalidUrl: {
+    id: 'app.containers.AdminPage.SettingsPage.invalidUrl',
+    defaultMessage: 'Invalid URL',
+  },
 });

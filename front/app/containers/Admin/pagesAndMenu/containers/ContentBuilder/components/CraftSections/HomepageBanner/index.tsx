@@ -12,6 +12,7 @@ import {
   Text,
 } from '@citizenlab/cl2-component-library';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
+import Error from 'components/UI/Error';
 
 // craft
 import { useNode } from '@craftjs/core';
@@ -28,7 +29,10 @@ import {
   THomepageBannerLayout,
 } from 'api/home_page/types';
 import { ImageSizes, Multiloc } from 'typings';
-import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
+import { isValidUrl } from 'utils/validate';
+import { CONTENT_BUILDER_ERROR_EVENT } from 'components/admin/ContentBuilder/constants';
+import eventEmitter from 'utils/eventEmitter';
 
 const CTA_SIGNED_OUT_TYPES: CTASignedOutType[] = [
   'sign_up_button',
@@ -43,25 +47,31 @@ const CTA_SIGNED_IN_TYPES: CTASignedInType[] = [
 
 export interface IHomepageSettingsAttributes {
   banner_layout: THomepageBannerLayout;
-  banner_signed_in_header_multiloc: Multiloc;
-  banner_signed_out_header_multiloc: Multiloc;
-  banner_signed_out_subheader_multiloc: Multiloc;
-  banner_signed_out_header_overlay_color: string | null;
   // Number between 0 and 100, inclusive
   banner_signed_out_header_overlay_opacity: number | null;
   header_bg: ImageSizes | null;
-  banner_cta_signed_in_text_multiloc: Multiloc;
-  banner_cta_signed_in_type: CTASignedInType;
-  banner_cta_signed_in_url: string | null;
+
+  // signed_out
+  banner_signed_out_header_multiloc: Multiloc;
+  banner_signed_out_subheader_multiloc: Multiloc;
+  banner_signed_out_header_overlay_color: string | null;
+  banner_avatars_enabled: boolean;
   // cta_signed_out
   banner_cta_signed_out_text_multiloc: Multiloc;
   banner_cta_signed_out_type: CTASignedOutType;
   banner_cta_signed_out_url: string | null;
-  banner_avatars_enabled: boolean;
+  // signed_in
+  banner_signed_in_header_multiloc: Multiloc;
+  // cta_signed_in
+  banner_cta_signed_in_text_multiloc: Multiloc;
+  banner_cta_signed_in_type: CTASignedInType;
+  banner_cta_signed_in_url: string | null;
 }
 
 type Props = {
   homepageSettings: IHomepageSettingsAttributes;
+  hasError?: boolean;
+  errorTypes?: string[];
 };
 
 const HomepageBanner = ({ homepageSettings }: Props) => {
@@ -78,8 +88,13 @@ const HomepageBannerSettings = () => {
   const {
     actions: { setProp },
     homepageSettings,
+    id,
+    hasError,
+    errorTypes,
   } = useNode((node) => ({
-    variant: node.data.props.variant,
+    id: node.id,
+    hasError: node.data.props.hasError,
+    errorTypes: node.data.props.errorTypes,
     homepageSettings: {
       banner_signed_out_header_multiloc:
         node.data.props.homepageSettings.banner_signed_out_header_multiloc,
@@ -107,6 +122,14 @@ const HomepageBannerSettings = () => {
   }));
 
   const [search, setSearchParams] = useSearchParams();
+  const { formatMessage } = useIntl();
+
+  const labelMessages: Record<CTASignedOutType, MessageDescriptor> = {
+    customized_button: messages.customized_button,
+    no_button: messages.no_button,
+    sign_up_button: messages.sign_up_button,
+  };
+
   return (
     <Box
       background="#ffffff"
@@ -188,11 +211,6 @@ const HomepageBannerSettings = () => {
           />
           <Text>Button</Text>
           {CTA_SIGNED_OUT_TYPES.map((option: CTASignedOutType) => {
-            const labelMessages: Record<CTASignedOutType, MessageDescriptor> = {
-              customized_button: messages.customized_button,
-              no_button: messages.no_button,
-              sign_up_button: messages.sign_up_button,
-            };
             const labelMessage = labelMessages[option];
             return (
               <div key={option}>
@@ -204,6 +222,18 @@ const HomepageBannerSettings = () => {
                         (props.homepageSettings.banner_cta_signed_out_type =
                           value)
                     );
+                    setProp(
+                      (props: Props) =>
+                        (props.homepageSettings.banner_cta_signed_out_url = '')
+                    );
+
+                    setProp((props: Props) => (props.hasError = false));
+
+                    eventEmitter.emit(CONTENT_BUILDER_ERROR_EVENT, {
+                      [id]: {
+                        hasError: false,
+                      },
+                    });
                   }}
                   currentValue={homepageSettings.banner_cta_signed_out_type}
                   value={option}
@@ -235,11 +265,6 @@ const HomepageBannerSettings = () => {
                             )
                           }
                         />
-                        {/* 
-                        <Error
-                          fieldName={buttonTextMultilocFieldName}
-                          apiErrors={apiErrors?.[buttonTextMultilocFieldName]}
-                        /> */}
                       </Box>
                       <Label htmlFor="buttonConfigInput">
                         <FormattedMessage
@@ -248,22 +273,46 @@ const HomepageBannerSettings = () => {
                       </Label>
                       <Input
                         id="buttonConfigInput"
-                        data-testid="buttonConfigInput"
                         type="text"
                         placeholder="https://..."
-                        onChange={(value) =>
+                        onChange={(value) => {
+                          const validation = isValidUrl(value);
                           setProp(
                             (props: Props) =>
                               (props.homepageSettings.banner_cta_signed_out_url =
                                 value)
-                          )
-                        }
+                          );
+                          setProp(
+                            (props: Props) => (props.hasError = !validation)
+                          );
+                          if (!validation) {
+                            setProp(
+                              (props: Props) =>
+                                (props.errorTypes = props.errorTypes?.includes(
+                                  'bannerCTASignedInUrl'
+                                )
+                                  ? [...props.errorTypes]
+                                  : [
+                                      ...(props.errorTypes || []),
+                                      'bannerCTASignedInUrl',
+                                    ])
+                            );
+                          }
+                          eventEmitter.emit(CONTENT_BUILDER_ERROR_EVENT, {
+                            [id]: {
+                              hasError: !validation,
+                            },
+                          });
+                        }}
                         value={homepageSettings.banner_cta_signed_out_url || ''}
                       />
-                      {/* <Error
-                        fieldName={buttonUrlFieldName}
-                        apiErrors={apiErrors?.[buttonUrlFieldName]}
-                      /> */}
+                      {hasError &&
+                        errorTypes.includes('bannerCTASignedOutUrl') && (
+                          <Error
+                            marginTop="8px"
+                            text={formatMessage(messages.invalidUrl)}
+                          />
+                        )}
                     </Box>
                   )}
               </div>
@@ -288,10 +337,6 @@ const HomepageBannerSettings = () => {
           />
           <Text>Button</Text>
           {CTA_SIGNED_IN_TYPES.map((option: CTASignedInType) => {
-            const labelMessages: Record<CTASignedInType, MessageDescriptor> = {
-              customized_button: messages.customized_button,
-              no_button: messages.no_button,
-            };
             const labelMessage = labelMessages[option];
             return (
               <div key={option}>
@@ -326,19 +371,14 @@ const HomepageBannerSettings = () => {
                               {...messages.customized_button_text_label}
                             />
                           }
-                          onChange={(value) =>
+                          onChange={(value) => {
                             setProp(
                               (props: Props) =>
                                 (props.homepageSettings.banner_cta_signed_in_text_multiloc =
                                   value)
-                            )
-                          }
+                            );
+                          }}
                         />
-                        {/* 
-                        <Error
-                          fieldName={buttonTextMultilocFieldName}
-                          apiErrors={apiErrors?.[buttonTextMultilocFieldName]}
-                        /> */}
                       </Box>
                       <Label htmlFor="buttonConfigInput">
                         <FormattedMessage
@@ -350,19 +390,45 @@ const HomepageBannerSettings = () => {
                         data-testid="buttonConfigInput"
                         type="text"
                         placeholder="https://..."
-                        onChange={(value) =>
+                        onChange={(value) => {
+                          const validation = isValidUrl(value);
                           setProp(
                             (props: Props) =>
                               (props.homepageSettings.banner_cta_signed_in_url =
                                 value)
-                          )
-                        }
+                          );
+                          setProp(
+                            (props: Props) => (props.hasError = !validation)
+                          );
+                          if (!validation) {
+                            setProp(
+                              (props: Props) =>
+                                (props.errorTypes = props.errorTypes?.includes(
+                                  'bannerCTASignedInUrl'
+                                )
+                                  ? [...props.errorTypes]
+                                  : [
+                                      ...(props.errorTypes || []),
+                                      'bannerCTASignedInUrl',
+                                    ])
+                            );
+                          }
+                          eventEmitter.emit(CONTENT_BUILDER_ERROR_EVENT, {
+                            [id]: {
+                              hasError: !validation,
+                            },
+                          });
+                        }}
                         value={homepageSettings.banner_cta_signed_in_url || ''}
                       />
-                      {/* <Error
-                        fieldName={buttonUrlFieldName}
-                        apiErrors={apiErrors?.[buttonUrlFieldName]}
-                      /> */}
+
+                      {hasError &&
+                        errorTypes.includes('bannerCTASignedInUrl') && (
+                          <Error
+                            marginTop="8px"
+                            text={formatMessage(messages.invalidUrl)}
+                          />
+                        )}
                     </Box>
                   )}
               </div>
