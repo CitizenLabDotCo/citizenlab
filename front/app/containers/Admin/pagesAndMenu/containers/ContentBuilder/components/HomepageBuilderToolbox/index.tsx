@@ -49,7 +49,6 @@ const HomepageBuilderToolbox = ({
         id="e2e-draggable-homepage"
         component={
           <HomepageBanner
-            variant="signedOut"
             homepageSettings={{
               top_info_section_enabled: false,
               top_info_section_multiloc: {},

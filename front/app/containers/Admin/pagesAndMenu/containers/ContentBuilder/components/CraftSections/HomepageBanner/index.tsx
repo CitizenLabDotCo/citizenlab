@@ -13,14 +13,16 @@ import { IHomepageSettingsAttributes } from 'api/home_page/types';
 
 import messages from '../../../messages';
 import SignedInHeader from 'containers/HomePage/SignedInHeader';
+import { useSearchParams } from 'react-router-dom';
 
 type Props = {
   homepageSettings: IHomepageSettingsAttributes;
-  variant: 'signedOut' | 'signedIn';
 };
 
-const HomepageBanner = ({ homepageSettings, variant }: Props) => {
-  return variant === 'signedIn' ? (
+const HomepageBanner = ({ homepageSettings }: Props) => {
+  const [search] = useSearchParams();
+
+  return search.get('variant') === 'signedIn' ? (
     <SignedInHeader homepageSettings={homepageSettings} />
   ) : (
     <SignedOutHeader homepageSettings={homepageSettings} />
@@ -31,7 +33,6 @@ const HomepageBannerSettings = () => {
   const {
     actions: { setProp },
     homepageSettings,
-    variant = 'signedOut',
   } = useNode((node) => ({
     variant: node.data.props.variant,
     homepageSettings: {
@@ -48,6 +49,7 @@ const HomepageBannerSettings = () => {
     },
   }));
 
+  const [search, setSearchParams] = useSearchParams();
   return (
     <Box
       background="#ffffff"
@@ -76,9 +78,11 @@ const HomepageBannerSettings = () => {
         <Box flex="1">
           <Button
             onClick={() => {
-              setProp((props: Props) => (props.variant = 'signedOut'));
+              setSearchParams({ variant: 'signedOut' });
             }}
-            buttonStyle={variant === 'signedOut' ? 'white' : 'text'}
+            buttonStyle={
+              search.get('variant') !== 'signedIn' ? 'white' : 'text'
+            }
           >
             Signed out
           </Button>
@@ -86,15 +90,17 @@ const HomepageBannerSettings = () => {
         <Box flex="1">
           <Button
             onClick={() => {
-              setProp((props: Props) => (props.variant = 'signedIn'));
+              setSearchParams({ variant: 'signedIn' });
             }}
-            buttonStyle={variant === 'signedIn' ? 'white' : 'text'}
+            buttonStyle={
+              search.get('variant') === 'signedIn' ? 'white' : 'text'
+            }
           >
             Signed in
           </Button>
         </Box>
       </Box>
-      {variant === 'signedOut' && (
+      {search.get('variant') !== 'signedIn' && (
         <>
           <InputMultilocWithLocaleSwitcher
             label={'Header'}
@@ -124,7 +130,7 @@ const HomepageBannerSettings = () => {
           />
         </>
       )}
-      {variant === 'signedIn' && (
+      {search.get('variant') === 'signedIn' && (
         <InputMultilocWithLocaleSwitcher
           label={'Header'}
           type="text"
