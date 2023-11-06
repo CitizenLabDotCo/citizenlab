@@ -1,7 +1,7 @@
-import { IPhase, IPhases } from 'api/phases/types';
+import { IPhase, IPhaseData, IPhases } from 'api/phases/types';
 import moment from 'moment';
 import 'moment-timezone';
-import { getPreviousPhase, getMinAllowedPhaseDate } from './utils';
+import { getPreviousPhase, getExcludedDates } from './utils';
 
 export const phasesDataMockDataWithoutId = {
   type: 'phase',
@@ -42,8 +42,6 @@ export const phasesDataMockDataWithoutId = {
     },
   },
 };
-
-const testDateStr = '2020-06-15T01:00:00Z';
 
 describe('getPreviousPhase', () => {
   it('should return the last phase when currentPhase is undefined', () => {
@@ -88,63 +86,78 @@ describe('getPreviousPhase', () => {
   });
 });
 
-describe('getMinAllowedPhaseDate', () => {
-  beforeAll(() => {
-    jest.useFakeTimers();
-    jest.setSystemTime(new Date(testDateStr));
-    moment.tz.setDefault('America/Santiago');
+describe('getExcludedDates function', () => {
+  it('should block dates between start and end dates of a phase', () => {
+    const phases = [
+      {
+        attributes: {
+          start_at: '2023-11-01',
+          end_at: '2023-11-03',
+        },
+      },
+    ] as IPhaseData[];
+
+    const blockedDates = getExcludedDates(phases);
+
+    const expectedDates = [
+      moment('2023-11-01'),
+      moment('2023-11-02'),
+      moment('2023-11-03'),
+    ];
+
+    blockedDates.forEach((date, index) => {
+      expect(date.isSame(expectedDates[index])).toEqual(true);
+    });
   });
 
-  afterAll(() => {
-    jest.useRealTimers();
+  it('should block only the start date of a phase with no end date', () => {
+    const phases = [
+      {
+        attributes: {
+          start_at: '2023-11-01',
+          end_at: null,
+        },
+      },
+    ] as IPhaseData[];
+
+    const blockedDates = getExcludedDates(phases);
+
+    const expectedDates = [moment('2023-11-01')];
+
+    blockedDates.forEach((date, index) => {
+      expect(date.isSame(expectedDates[index])).toEqual(true);
+    });
   });
 
-  it('should return undefined when previousPhase is undefined', () => {
-    const phases = {
-      data: [
-        { id: '1', ...phasesDataMockDataWithoutId },
-        { id: '2', ...phasesDataMockDataWithoutId },
-      ],
-    } as IPhases;
-    const currentPhase = {
-      data: { id: '3', ...phasesDataMockDataWithoutId },
-    } as IPhase;
-    const result = getMinAllowedPhaseDate(phases, currentPhase);
-    expect(result).toBeUndefined();
-  });
+  it('should handle multiple phases with different start and end dates', () => {
+    const phases: IPhaseData[] = [
+      {
+        attributes: {
+          start_at: '2023-11-01',
+          end_at: '2023-11-03',
+        },
+      },
+      {
+        attributes: {
+          start_at: '2023-11-05',
+          end_at: '2023-11-07',
+        },
+      },
+    ] as IPhaseData[];
 
-  it('should calculate the date with 2 days added when previousPhase has a start date but no end date', () => {
-    const phases = {
-      data: [
-        { id: '1', ...phasesDataMockDataWithoutId },
-        { id: '2', ...phasesDataMockDataWithoutId },
-      ],
-    } as IPhases;
-    phases.data[0].attributes.start_at = '2023-10-20';
-    phases.data[0].attributes.end_at = null;
-    const currentPhase = {
-      data: { id: '2', ...phasesDataMockDataWithoutId },
-    } as IPhase;
-    const result = getMinAllowedPhaseDate(phases, currentPhase);
-    expect(moment('2023-10-22').isSame(result)).toEqual(true);
-  });
+    const blockedDates = getExcludedDates(phases);
 
-  it('should calculate the date with 1 day added when previousPhase has an end date', () => {
-    const phases = {
-      data: [
-        { id: '1', ...phasesDataMockDataWithoutId },
-        { id: '2', ...phasesDataMockDataWithoutId },
-      ],
-    } as IPhases;
-    phases.data[0].attributes.start_at = '2023-10-20';
-    phases.data[0].attributes.end_at = '2023-10-22';
-    phases.data[1].attributes.start_at = '2023-10-24';
-    phases.data[1].attributes.start_at = '2023-10-25';
+    const expectedDates = [
+      moment('2023-11-01'),
+      moment('2023-11-02'),
+      moment('2023-11-03'),
+      moment('2023-11-05'),
+      moment('2023-11-06'),
+      moment('2023-11-07'),
+    ];
 
-    const currentPhase = {
-      data: { id: '2', ...phasesDataMockDataWithoutId },
-    } as IPhase;
-    const result = getMinAllowedPhaseDate(phases, currentPhase);
-    expect(moment('2023-10-23').isSame(result)).toEqual(true);
+    blockedDates.forEach((date, index) => {
+      expect(date.isSame(expectedDates[index])).toEqual(true);
+    });
   });
 });

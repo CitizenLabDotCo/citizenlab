@@ -1,4 +1,4 @@
-import { IPhase, IPhases } from 'api/phases/types';
+import { IPhase, IPhaseData, IPhases } from 'api/phases/types';
 import moment from 'moment';
 
 export const getPreviousPhase = (
@@ -23,26 +23,26 @@ export const getPreviousPhase = (
     : undefined;
 };
 
-export const getMinAllowedPhaseDate = (
-  phases: IPhases | undefined,
-  currentPhase: IPhase | undefined
-) => {
-  const previousPhase = getPreviousPhase(phases, currentPhase);
+export function getExcludedDates(phases: IPhaseData[]): moment.Moment[] {
+  const excludedDates: moment.Moment[] = [];
 
-  if (!previousPhase) return undefined;
+  phases.forEach((phase) => {
+    const startDate = moment(phase.attributes.start_at);
 
-  const previousPhaseEndDate =
-    previousPhase && previousPhase.attributes.end_at
-      ? moment(previousPhase.attributes.end_at)
-      : null;
-  const previousPhaseStartDate =
-    previousPhase && previousPhase.attributes.start_at
-      ? moment(previousPhase.attributes.start_at)
-      : null;
+    if (phase.attributes.end_at) {
+      // If the phase has both start and end dates, block the range between them
+      const endDate = moment(phase.attributes.end_at);
+      const numberOfDays = endDate.diff(startDate, 'days');
 
-  if (!previousPhaseEndDate && previousPhaseStartDate) {
-    return previousPhaseStartDate.add(2, 'day');
-  }
+      for (let i = 0; i <= numberOfDays; i++) {
+        const excludedDate = startDate.clone().add(i, 'days');
+        excludedDates.push(excludedDate);
+      }
+    } else {
+      // If the phase has no end date, block only the start date
+      excludedDates.push(startDate.clone());
+    }
+  });
 
-  return previousPhaseEndDate ? previousPhaseEndDate.add(1, 'day') : undefined;
-};
+  return excludedDates;
+}
