@@ -215,19 +215,8 @@ module MultiTenancy
       end
 
       def serialize_admin_publications(scope)
-        publications = serialize_records(scope)
-
-        # The parent publications must be listed before their children since the
-        # children publications reference their parent.
-        child_to_parent = publications.transform_values do |attributes|
-          Array.wrap(attributes[:parent_ref]&.id)
-        end
-
-        each_node = ->(&block) { child_to_parent.each_key(&block) }
-        each_child = ->(node, &block) { child_to_parent[node].each(&block) }
-        ordered_ids = TSort.tsort(each_node, each_child)
-
-        publications.slice(*ordered_ids)
+        # This code will stop working when folders can contain folders
+        serialize_records(scope.order(parent_id: :desc, ordering: :asc))
       end
 
       def serialize_comments(*post_scopes)

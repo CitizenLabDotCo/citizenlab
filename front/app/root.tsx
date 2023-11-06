@@ -63,7 +63,7 @@ const Root = () => {
     <QueryClientProvider client={queryClient}>
       <OutletsProvider>
         <LanguageProvider>
-          <HistoryRouter history={history}>
+          <HistoryRouter history={history as any}>
             <App>
               <Routes />
             </App>

@@ -1,4 +1,4 @@
-import { initiativesData, links } from './__mocks__/useInitiatives';
+import { initiativesData, links } from './__mocks__/_mockServer';
 
 import { renderHook } from '@testing-library/react-hooks';
 
