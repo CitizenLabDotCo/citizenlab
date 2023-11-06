@@ -144,8 +144,10 @@ export const Icons = styled.div`
 
 const SignedInHeader = ({
   homepageSettings,
+  isContentBuilderPreview,
 }: {
   homepageSettings: IHomepageSettingsAttributes;
+  isContentBuilderPreview?: boolean;
 }) => {
   const { data: currentOnboardingCampaign } = useCurrentOnboardingCampaign();
   const { mutate: dismissOnboardingCampaign } = useDismissOnboardingCampaign();
@@ -158,8 +160,9 @@ const SignedInHeader = ({
   };
 
   if (!isNilOrError(currentOnboardingCampaign)) {
-    const onboardingCampaignName =
-      currentOnboardingCampaign.data.attributes.name;
+    const onboardingCampaignName = isContentBuilderPreview
+      ? 'default'
+      : currentOnboardingCampaign.data.attributes.name;
 
     return (
       <Header className={`e2e-signed-in-header`} id="hook-header">
