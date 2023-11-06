@@ -427,7 +427,7 @@ module MultiTenancy
               allowed: true
             },
             posthog_integration: {
-              enabled: true,
+              enabled: false,
               allowed: true
             },
             user_blocking: {
