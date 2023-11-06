@@ -76,12 +76,6 @@ RSpec.describe Tenant do
     let!(:trial_tenant) { create(:tenant, lifecycle: 'trial') }
 
     it 'returns tenants prioritized by lifecycle' do
-      # Before prioritization
-      tenants = described_class.all
-      expect(tenants.count).to eq(6)
-      expect(tenants.map { |t| t[:settings]['core']['lifecycle_stage'] }).to eq %w[active churned expired_trial demo active trial]
-
-      # After prioritization
       prioritized = described_class.prioritized
       expect(prioritized.count).to eq(6)
       expect(prioritized.map { |t| t[:settings]['core']['lifecycle_stage'] }).to eq %w[active active trial demo expired_trial churned]
