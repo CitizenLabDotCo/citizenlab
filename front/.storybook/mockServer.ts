@@ -36,6 +36,9 @@ import analyticsEndpoints from '../app/api/analytics/__mocks__/_mockServer';
 import usersByGenderEndpoints from '../app/api/users_by_gender/__mocks__/_mockServer';
 import usersByBirthyearEndpoints from '../app/api/users_by_birthyear/__mocks__/_mockServer';
 
+// survey results mock data
+import surveyResultsEndpoints from '../app/api/survey_results/__mocks__/_mockServer';
+
 const endpoints = {
   ...appConfigurationEndpoints,
   ...usersMeEndpoints,
@@ -64,7 +67,9 @@ const endpoints = {
 
   ...analyticsEndpoints,
   ...usersByGenderEndpoints,
-  ...usersByBirthyearEndpoints
+  ...usersByBirthyearEndpoints,
+
+  ...surveyResultsEndpoints
 }
 
 export default endpoints;

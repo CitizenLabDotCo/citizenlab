@@ -18,7 +18,7 @@ export interface Result {
   inputType: string;
   question: Multiloc;
   totalResponses: number;
-  answers: Answer[];
+  answers?: Answer[];
   required: boolean;
   customFieldId: string;
 }

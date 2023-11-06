@@ -5,23 +5,14 @@ import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-import { SurveyResultsType } from './types';
+import endpoints, {
+  phaseApiPath,
+  surveyResultsResponse,
+} from './__mocks__/_mockServer';
 
-let apiPath = '*projects/:projectId/survey_results';
-
-const resultsData: SurveyResultsType = {
-  data: {
-    type: 'survey_results',
-    attributes: {
-      results: [],
-      totalSubmissions: 5,
-    },
-  },
-};
 const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: resultsData }));
-  })
+  endpoints['GET projects/:id/survey_results'],
+  endpoints['GET phases/:id/survey_results']
 );
 
 describe('useSurveyResults', () => {
@@ -41,17 +32,10 @@ describe('useSurveyResults', () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
     expect(result.current.isLoading).toBe(false);
-    expect(result.current.data?.data).toEqual(resultsData);
+    expect(result.current.data?.data).toEqual(surveyResultsResponse.data);
   });
 
   it('returns data correctly for phase', async () => {
-    apiPath = '*phases/:phaseId/survey_results';
-    server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(200), ctx.json({ data: resultsData }));
-      })
-    );
-
     const { result, waitFor } = renderHook(
       () => useSurveyResults({ projectId: 'projectId', phaseId: 'phaseId' }),
       {
@@ -64,12 +48,11 @@ describe('useSurveyResults', () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
     expect(result.current.isLoading).toBe(false);
-    expect(result.current.data?.data).toEqual(resultsData);
+    expect(result.current.data?.data).toEqual(surveyResultsResponse.data);
   });
   it('returns error correctly', async () => {
-    apiPath = '*phases/:phaseId/survey_results';
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
+      rest.get(phaseApiPath, (_req, res, ctx) => {
         return res(ctx.status(500));
       })
     );
