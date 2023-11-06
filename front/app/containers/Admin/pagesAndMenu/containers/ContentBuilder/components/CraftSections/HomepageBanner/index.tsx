@@ -130,6 +130,31 @@ const HomepageBannerSettings = () => {
     sign_up_button: messages.sign_up_button,
   };
 
+  const handleUrlChange = (
+    value: string,
+    field: 'bannerCTASignedInUrl' | 'bannerCTASignedOutUrl'
+  ) => {
+    const validation = isValidUrl(value);
+    setProp(
+      (props: Props) =>
+        (props.homepageSettings.banner_cta_signed_out_url = value)
+    );
+    setProp((props: Props) => (props.hasError = !validation));
+    if (!validation) {
+      setProp(
+        (props: Props) =>
+          (props.errorTypes = props.errorTypes?.includes(field)
+            ? [...props.errorTypes]
+            : [...(props.errorTypes || []), field])
+      );
+    }
+    eventEmitter.emit(CONTENT_BUILDER_ERROR_EVENT, {
+      [id]: {
+        hasError: !validation,
+      },
+    });
+  };
+
   return (
     <Box
       background="#ffffff"
@@ -275,35 +300,9 @@ const HomepageBannerSettings = () => {
                         id="buttonConfigInput"
                         type="text"
                         placeholder="https://..."
-                        onChange={(value) => {
-                          const validation = isValidUrl(value);
-                          setProp(
-                            (props: Props) =>
-                              (props.homepageSettings.banner_cta_signed_out_url =
-                                value)
-                          );
-                          setProp(
-                            (props: Props) => (props.hasError = !validation)
-                          );
-                          if (!validation) {
-                            setProp(
-                              (props: Props) =>
-                                (props.errorTypes = props.errorTypes?.includes(
-                                  'bannerCTASignedInUrl'
-                                )
-                                  ? [...props.errorTypes]
-                                  : [
-                                      ...(props.errorTypes || []),
-                                      'bannerCTASignedInUrl',
-                                    ])
-                            );
-                          }
-                          eventEmitter.emit(CONTENT_BUILDER_ERROR_EVENT, {
-                            [id]: {
-                              hasError: !validation,
-                            },
-                          });
-                        }}
+                        onChange={(value) =>
+                          handleUrlChange(value, 'bannerCTASignedOutUrl')
+                        }
                         value={homepageSettings.banner_cta_signed_out_url || ''}
                       />
                       {hasError &&
@@ -390,35 +389,9 @@ const HomepageBannerSettings = () => {
                         data-testid="buttonConfigInput"
                         type="text"
                         placeholder="https://..."
-                        onChange={(value) => {
-                          const validation = isValidUrl(value);
-                          setProp(
-                            (props: Props) =>
-                              (props.homepageSettings.banner_cta_signed_in_url =
-                                value)
-                          );
-                          setProp(
-                            (props: Props) => (props.hasError = !validation)
-                          );
-                          if (!validation) {
-                            setProp(
-                              (props: Props) =>
-                                (props.errorTypes = props.errorTypes?.includes(
-                                  'bannerCTASignedInUrl'
-                                )
-                                  ? [...props.errorTypes]
-                                  : [
-                                      ...(props.errorTypes || []),
-                                      'bannerCTASignedInUrl',
-                                    ])
-                            );
-                          }
-                          eventEmitter.emit(CONTENT_BUILDER_ERROR_EVENT, {
-                            [id]: {
-                              hasError: !validation,
-                            },
-                          });
-                        }}
+                        onChange={(value) =>
+                          handleUrlChange(value, 'bannerCTASignedInUrl')
+                        }
                         value={homepageSettings.banner_cta_signed_in_url || ''}
                       />
 
