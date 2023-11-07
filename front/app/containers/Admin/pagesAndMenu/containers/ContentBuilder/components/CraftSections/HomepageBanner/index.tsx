@@ -213,7 +213,16 @@ const HomepageBannerSettings = () => {
       gap="16px"
     >
       <Toggle
-        label="Show avatars"
+        label={
+          <Box>
+            <Text m={'0px'} fontWeight="bold">
+              {formatMessage(messages.showAvatars)}
+            </Text>
+            <Text m={'0px'} color="textSecondary" fontSize="s">
+              {formatMessage(messages.showAvatarsDescription)}
+            </Text>
+          </Box>
+        }
         checked={homepageSettings.banner_avatars_enabled}
         onChange={() => {
           setProp(
@@ -237,8 +246,9 @@ const HomepageBannerSettings = () => {
             buttonStyle={
               search.get('variant') !== 'signedIn' ? 'white' : 'text'
             }
+            fontSize="14px"
           >
-            Signed out
+            {formatMessage(messages.nonRegistedredUsersView)}
           </Button>
         </Box>
         <Box flex="1">
@@ -249,8 +259,9 @@ const HomepageBannerSettings = () => {
             buttonStyle={
               search.get('variant') === 'signedIn' ? 'white' : 'text'
             }
+            fontSize="14px"
           >
-            Signed in
+            {formatMessage(messages.registeredUsersView)}
           </Button>
         </Box>
       </Box>
@@ -258,7 +269,7 @@ const HomepageBannerSettings = () => {
       {search.get('variant') !== 'signedIn' && (
         <>
           <InputMultilocWithLocaleSwitcher
-            label={'Header'}
+            label={formatMessage(messages.bannerText)}
             type="text"
             valueMultiloc={homepageSettings.banner_signed_out_header_multiloc}
             onChange={(value) => {
@@ -270,7 +281,7 @@ const HomepageBannerSettings = () => {
             }}
           />
           <InputMultilocWithLocaleSwitcher
-            label={'Subheader'}
+            label={formatMessage(messages.bannerSubtext)}
             type="text"
             valueMultiloc={
               homepageSettings.banner_signed_out_subheader_multiloc
@@ -283,7 +294,7 @@ const HomepageBannerSettings = () => {
               );
             }}
           />
-          <Text>Button</Text>
+          <Text m={'0px'}>{formatMessage(messages.button)}</Text>
           {CTA_SIGNED_OUT_TYPES.map((option: CTASignedOutType) => {
             const labelMessage = labelMessages[option];
             return (
@@ -378,7 +389,7 @@ const HomepageBannerSettings = () => {
               });
             }}
           />
-          <Text>Button</Text>
+          <Text m="0px">{formatMessage(messages.button)}</Text>
           {CTA_SIGNED_IN_TYPES.map((option: CTASignedInType) => {
             const labelMessage = labelMessages[option];
             return (
