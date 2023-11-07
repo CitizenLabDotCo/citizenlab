@@ -1176,6 +1176,7 @@
   "app.containers.AdminPage.FoldersEdit.statusLabel": "Status publikacije",
   "app.containers.AdminPage.FoldersEdit.subtitleNewFolder": "Objasnite kako su projekti međusobno povezani, definirajte vizualni identitet i podijelite informacije.",
   "app.containers.AdminPage.FoldersEdit.subtitleSettingsTab": "Objasnite kako su projekti međusobno povezani, definirajte vizualni identitet i podijelite informacije.",
+  "app.containers.AdminPage.FoldersEdit.textFieldsError": "Sva tekstualna polja moraju biti popunjena.",
   "app.containers.AdminPage.FoldersEdit.titleInputLabel": "Naslov",
   "app.containers.AdminPage.FoldersEdit.titleNewFolder": "Kreirajte novu mapu",
   "app.containers.AdminPage.FoldersEdit.titleSettingsTab": "Postavke",
