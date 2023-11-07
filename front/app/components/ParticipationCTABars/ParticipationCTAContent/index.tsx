@@ -109,30 +109,22 @@ export const ParticipationCTAContent = ({
     return (
       <Box
         display="flex"
-        alignItems="center"
-        justifyContent="space-between"
-        width="100%"
+        flexDirection="column"
         bgColor={theme.colors.tenantPrimary}
-        px="20px"
-        py="8px"
+        p="20px"
       >
-        <Box display="flex" flexWrap="wrap" alignItems="center">
-          {!useProjectClosedStyle && (
-            <BlickingIcon
-              name={hasUserParticipated ? 'check-circle' : 'dot'}
-              width="16px"
-              height="16px"
-              fill={colors.white}
-              mr="8px"
-              showAnimation={!hasUserParticipated}
-            />
-          )}
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            flexDirection="column"
-          >
+        <Box display="flex" alignItems="center" mb="20px">
+          <Box display="flex" alignItems="center">
+            {!useProjectClosedStyle && (
+              <BlickingIcon
+                name={hasUserParticipated ? 'check-circle' : 'dot'}
+                width="16px"
+                height="16px"
+                fill={colors.white}
+                mr="8px"
+                showAnimation={!hasUserParticipated}
+              />
+            )}
             <Text color="white" m="0px" fontSize="s">
               <span
                 style={{
@@ -147,33 +139,30 @@ export const ParticipationCTAContent = ({
                   timeLeftTranslated?.toUpperCase()}
               </span>
             </Text>
-            {timeLeft !== undefined && timeLeftPosition === 'right' && (
-              <Text
-                color="white"
-                style={{ textTransform: 'uppercase' }}
-                m="0px"
-                width="100%"
-                fontSize="xs"
-                my="0px"
-              >
-                <FormattedMessage
-                  {...timeLeftMessage}
-                  values={{
-                    timeLeft,
-                  }}
-                />
-              </Text>
-            )}
           </Box>
+          {timeLeft !== undefined && timeLeftPosition === 'right' && (
+            <Text
+              color="white"
+              style={{ textTransform: 'uppercase' }}
+              fontSize="xs"
+              m="0px"
+              ml="auto"
+            >
+              <FormattedMessage
+                {...timeLeftMessage}
+                values={{
+                  timeLeft,
+                }}
+              />
+            </Text>
+          )}
           {participationState && (
             <Box display="flex" alignItems="center" width="100%">
               {participationState}
             </Box>
           )}
         </Box>
-        <Box display="flex" alignItems="center">
-          {CTAButton}
-        </Box>
+        <Box display="flex">{CTAButton}</Box>
       </Box>
     );
   }
