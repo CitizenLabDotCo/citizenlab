@@ -1176,6 +1176,7 @@
   "app.containers.AdminPage.FoldersEdit.statusLabel": "Status publikacji",
   "app.containers.AdminPage.FoldersEdit.subtitleNewFolder": "Wyjaśnij, dlaczego projekty są połączone, określ stronę wizualną i poinformuj.",
   "app.containers.AdminPage.FoldersEdit.subtitleSettingsTab": "Wyjaśnij, dlaczego projekty są połączone, określ stronę wizualną i poinformuj.",
+  "app.containers.AdminPage.FoldersEdit.textFieldsError": "Wszystkie pola tekstowe muszą zostać wypełnione.",
   "app.containers.AdminPage.FoldersEdit.titleInputLabel": "Tytuł",
   "app.containers.AdminPage.FoldersEdit.titleNewFolder": "Utwórz nowy folder",
   "app.containers.AdminPage.FoldersEdit.titleSettingsTab": "Ustawienia",
