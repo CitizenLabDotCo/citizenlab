@@ -1176,6 +1176,7 @@
   "app.containers.AdminPage.FoldersEdit.statusLabel": "Status publikacije",
   "app.containers.AdminPage.FoldersEdit.subtitleNewFolder": "Objasnite kako su projekti međusobno povezani, definišite vizuelni identitet i podelite informacije.",
   "app.containers.AdminPage.FoldersEdit.subtitleSettingsTab": "Objasnite kako su projekti međusobno povezani, definišite vizuelni identitet i podelite informacije.",
+  "app.containers.AdminPage.FoldersEdit.textFieldsError": "All text fields must be filled in.",
   "app.containers.AdminPage.FoldersEdit.titleInputLabel": "Naziv",
   "app.containers.AdminPage.FoldersEdit.titleNewFolder": "Kreirajte novi folder",
   "app.containers.AdminPage.FoldersEdit.titleSettingsTab": "Podešavanja",
