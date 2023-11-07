@@ -6,6 +6,7 @@ import {
   Text,
   Button,
   Dropdown,
+  Icon,
   DropdownListItem,
   defaultCardStyle,
   colors,
@@ -111,7 +112,12 @@ export const PhaseHeader = ({ phase, tabs }: Props) => {
               right="70px"
               content={
                 <DropdownListItem onClick={() => handleOpenModal()}>
-                  {formatMessage(messages.deletePhase)}
+                  <Box display="flex" gap="4px" alignItems="center">
+                    <Icon name="delete" fill={colors.red600} />
+                    <Text color="red600" my="0px">
+                      {formatMessage(messages.deletePhase)}
+                    </Text>
+                  </Box>
                 </DropdownListItem>
               }
             />
