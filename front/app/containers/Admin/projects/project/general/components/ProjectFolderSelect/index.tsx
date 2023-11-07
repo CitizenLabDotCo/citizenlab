@@ -39,11 +39,13 @@ const StyledSectionField = styled(SectionField)`
 interface Props {
   projectAttrs: IUpdatedProjectProperties;
   onProjectAttributesDiffChange: TOnProjectAttributesDiffChangeFunction;
+  isNewProject: boolean;
 }
 
 const ProjectFolderSelect = ({
   projectAttrs: { folder_id },
   onProjectAttributesDiffChange,
+  isNewProject,
   intl: { formatMessage },
 }: Props & WrappedComponentProps) => {
   const { data: projectFolders } = useProjectFolders({});
@@ -71,14 +73,14 @@ const ProjectFolderSelect = ({
       userCanCreateProjectInFolderOnly: boolean,
       folder_id?: string | null
     ) {
-      if (userCanCreateProjectInFolderOnly) {
-        // folder moderators always need to pick a folder
-        // when they create a project
-        return true;
-      } else if (folder_id) {
+      if (folder_id) {
         // when we already have a folder_id for our project,
         // the project folder select should be turned on
         // so we can see our selected folder.
+        return true;
+      } else if (isNewProject && userCanCreateProjectInFolderOnly) {
+        // folder moderators need to pick a folder
+        // only when they create a project
         return true;
       } else {
         return false;
@@ -94,6 +96,7 @@ const ProjectFolderSelect = ({
     userCanCreateProjectInFolderOnly,
     folder_id,
     authUser,
+    isNewProject,
   ]);
 
   if (isNilOrError(authUser)) {
