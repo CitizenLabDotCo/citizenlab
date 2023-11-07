@@ -326,7 +326,7 @@ export const AdminProjectsProjectIndex = ({
           </Box>
           <Box display="flex">
             <Button
-              linkTo=""
+              linkTo={`/projects/${project.attributes.slug}`}
               buttonStyle="primary-inverse"
               icon="eye"
               size="s"
