@@ -1176,6 +1176,7 @@
   "app.containers.AdminPage.FoldersEdit.statusLabel": "Estado de la carpeta",
   "app.containers.AdminPage.FoldersEdit.subtitleNewFolder": "Explica por qué los proyectos están unidos, define una identidad visual y comparte información.",
   "app.containers.AdminPage.FoldersEdit.subtitleSettingsTab": "Explica por qué los proyectos están unidos, define una identidad visual y comparte información.",
+  "app.containers.AdminPage.FoldersEdit.textFieldsError": "Debes rellenar todos los campos de texto.",
   "app.containers.AdminPage.FoldersEdit.titleInputLabel": "Título",
   "app.containers.AdminPage.FoldersEdit.titleNewFolder": "Crear una nueva carpeta",
   "app.containers.AdminPage.FoldersEdit.titleSettingsTab": "Configuración",
