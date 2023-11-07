@@ -80,23 +80,22 @@ describe('ProjectFolderSelect', () => {
       container.querySelector('label[for="folderSelect-no"]')
     ).not.toHaveClass('disabled');
   });
-  it('should render as disabled with "yes" option selected when userCanCreateProjectInFolderOnly is true', () => {
-    mockPermission = true;
+  it('should render as disabled with "no" option selected when isNewProject is false', () => {
     const { container } = render(
       <ProjectFolderSelect
         projectAttrs={{}}
         onProjectAttributesDiffChange={jest.fn()}
-        isNewProject={true}
+        isNewProject={false}
       />
     );
     expect(container.querySelector('#folderSelect-no')).toHaveAttribute(
       'aria-checked',
-      'false'
+      'true'
     );
 
     expect(container.querySelector('#folderSelect-yes')).toHaveAttribute(
       'aria-checked',
-      'true'
+      'false'
     );
 
     expect(container.querySelector('label[for="folderSelect-no"]')).toHaveClass(
