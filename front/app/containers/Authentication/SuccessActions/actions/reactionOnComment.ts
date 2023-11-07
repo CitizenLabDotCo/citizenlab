@@ -4,7 +4,7 @@ import { deleteCommentReaction } from 'api/comment_reactions/useDeleteCommentRea
 import {
   trackLike,
   trackCancelLike,
-} from 'components/PostShowComponents/Comments/Comment/CommentReaction/trackReaction';
+} from 'components/PostShowComponents/Comments/CommentsSection/PublicComments/Comments/Comment/CommentReaction/trackReaction';
 import commentsKeys from 'api/comments/keys';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 

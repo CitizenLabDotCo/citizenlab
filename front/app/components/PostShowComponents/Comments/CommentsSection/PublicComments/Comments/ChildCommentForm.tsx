@@ -23,14 +23,14 @@ import {
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
+import tracks from '../../../tracks';
 
 // i18n
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../../../messages';
 
 // events
-import { commentReplyButtonClicked$, commentAdded } from './events';
+import { commentReplyButtonClicked$, commentAdded } from '../../../events';
 
 // style
 import styled from 'styled-components';

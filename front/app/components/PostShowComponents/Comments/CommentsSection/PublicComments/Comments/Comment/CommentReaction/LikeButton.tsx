@@ -6,7 +6,7 @@ import { ScreenReaderOnly } from 'utils/a11y';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
-import messages from '../../messages';
+import messages from '../../../../../messages';
 
 // styling
 import styled from 'styled-components';

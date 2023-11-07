@@ -19,11 +19,11 @@ import OldAnonymousParticipationConfirmationModal from 'components/AnonymousPart
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
+import tracks from '../../tracks';
 
 // i18n
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../../messages';
 
 // services
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
@@ -31,7 +31,7 @@ import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 // resources
 
 // events
-import { commentAdded } from './events';
+import { commentAdded } from '../../events';
 
 // style
 import styled from 'styled-components';

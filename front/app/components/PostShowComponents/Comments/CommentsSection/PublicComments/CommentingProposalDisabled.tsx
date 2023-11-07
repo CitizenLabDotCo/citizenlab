@@ -9,7 +9,7 @@ import useAuthUser from 'api/me/useAuthUser';
 import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
 
 // i18n
-import messages from './messages';
+import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // events
