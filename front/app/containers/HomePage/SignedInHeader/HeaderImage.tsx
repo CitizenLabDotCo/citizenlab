@@ -2,7 +2,7 @@ import React from 'react';
 import styled, { useTheme } from 'styled-components';
 import { Image, Box } from '@citizenlab/cl2-component-library';
 import { media, isRtl } from 'utils/styleUtils';
-import useHomepageSettings from 'api/home_page/useHomepageSettings';
+import { IHomepageSettingsAttributes } from 'api/home_page/types';
 
 const HeaderImageContainer = styled.div`
   position: absolute;
@@ -37,16 +37,19 @@ const StyledImage = styled(Image)`
   `}
 `;
 
-const HeaderImage = () => {
-  const { data: homepageSettings } = useHomepageSettings();
+const HeaderImage = ({
+  homepageSettings,
+}: {
+  homepageSettings: Partial<IHomepageSettingsAttributes>;
+}) => {
   const theme = useTheme();
 
   if (homepageSettings) {
-    const tenantHeaderImage = homepageSettings.data.attributes.header_bg
-      ? homepageSettings.data.attributes.header_bg.large
+    const tenantHeaderImage = homepageSettings.header_bg
+      ? homepageSettings.header_bg.large
       : null;
     const isFixedBannerLayout =
-      homepageSettings.data.attributes.banner_layout === 'fixed_ratio_layout';
+      homepageSettings.banner_layout === 'fixed_ratio_layout';
 
     return (
       <HeaderImageContainer>
