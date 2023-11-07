@@ -23,6 +23,7 @@ import { media, fontSizes, isRtl } from 'utils/styleUtils';
 import useCurrentOnboardingCampaign from 'api/onboarding_campaigns/useCurrentOnboardingCampaign';
 import useDismissOnboardingCampaign from 'api/onboarding_campaigns/useDismissOnboardingCampaign';
 import { OnboardingCampaignName } from 'api/onboarding_campaigns/types';
+import { IHomepageSettingsAttributes } from 'api/home_page/types';
 
 const Header = styled.div`
   width: 100%;
@@ -141,7 +142,13 @@ export const Icons = styled.div`
   `}
 `;
 
-const SignedInHeader = () => {
+const SignedInHeader = ({
+  homepageSettings,
+  isContentBuilderPreview,
+}: {
+  homepageSettings: Partial<IHomepageSettingsAttributes>;
+  isContentBuilderPreview?: boolean;
+}) => {
   const { data: currentOnboardingCampaign } = useCurrentOnboardingCampaign();
   const { mutate: dismissOnboardingCampaign } = useDismissOnboardingCampaign();
 
@@ -153,12 +160,13 @@ const SignedInHeader = () => {
   };
 
   if (!isNilOrError(currentOnboardingCampaign)) {
-    const onboardingCampaignName =
-      currentOnboardingCampaign.data.attributes.name;
+    const onboardingCampaignName = isContentBuilderPreview
+      ? 'default'
+      : currentOnboardingCampaign.data.attributes.name;
 
     return (
       <Header className={`e2e-signed-in-header`} id="hook-header">
-        <HeaderImage />
+        <HeaderImage homepageSettings={homepageSettings} />
         <Suspense fallback={null}>
           <VerificationOnboardingStep
             currentOnboardingCampaignName={onboardingCampaignName}
@@ -178,6 +186,7 @@ const SignedInHeader = () => {
           />
           <FallbackStep
             currentOnboardingCampaignName={onboardingCampaignName}
+            homepageSettings={homepageSettings}
           />
         </Suspense>
       </Header>

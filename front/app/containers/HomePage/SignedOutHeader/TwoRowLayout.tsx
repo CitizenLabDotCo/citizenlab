@@ -5,15 +5,15 @@ import {
 } from 'components/LandingPages/citizen/TwoRowLayout';
 import HeaderContent from 'containers/HomePage/SignedOutHeader/HeaderContent';
 import React from 'react';
-import { IHomepageSettingsData } from 'api/home_page/types';
+import { IHomepageSettingsAttributes } from 'api/home_page/types';
 import { Box } from '@citizenlab/cl2-component-library';
 
 interface Props {
-  homepageSettings: IHomepageSettingsData;
+  homepageSettings: Partial<IHomepageSettingsAttributes>;
 }
 
 const TwoRowLayout = ({ homepageSettings }: Props) => {
-  const headerImage = homepageSettings.attributes.header_bg?.large;
+  const headerImage = homepageSettings.header_bg?.large;
 
   return (
     <Box data-testid="two-row-layout" width="100%" background="white">
@@ -31,7 +31,10 @@ const TwoRowLayout = ({ homepageSettings }: Props) => {
       )}
       <ContentContainer mode="page">
         <Container>
-          <HeaderContent fontColors="dark" />
+          <HeaderContent
+            fontColors="dark"
+            homepageSettings={homepageSettings}
+          />
         </Container>
       </ContentContainer>
     </Box>
