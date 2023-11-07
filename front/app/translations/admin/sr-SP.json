@@ -1176,6 +1176,7 @@
   "app.containers.AdminPage.FoldersEdit.statusLabel": "Статус публикације",
   "app.containers.AdminPage.FoldersEdit.subtitleNewFolder": "Објасните зашто пројекти припадају заједно, дефинишите визуелни идентитет и поделите информације.",
   "app.containers.AdminPage.FoldersEdit.subtitleSettingsTab": "Објасните зашто пројекти припадају заједно, дефинишите визуелни идентитет и поделите информације.",
+  "app.containers.AdminPage.FoldersEdit.textFieldsError": "Сва текстуална поља морају бити попуњена.",
   "app.containers.AdminPage.FoldersEdit.titleInputLabel": "Наслов",
   "app.containers.AdminPage.FoldersEdit.titleNewFolder": "Креирате нову фасциклу",
   "app.containers.AdminPage.FoldersEdit.titleSettingsTab": "Подешавања",
