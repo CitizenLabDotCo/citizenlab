@@ -1176,6 +1176,7 @@
   "app.containers.AdminPage.FoldersEdit.statusLabel": "Veröffentlichungsstatus",
   "app.containers.AdminPage.FoldersEdit.subtitleNewFolder": "Erklären Sie, warum die Projekte zusammengehören, definieren Sie eine visuelle Identität und teilen Sie Informationen.",
   "app.containers.AdminPage.FoldersEdit.subtitleSettingsTab": "Erklären Sie, warum die Projekte zusammengehören, definieren Sie eine visuelle Identität und teilen Sie Informationen.",
+  "app.containers.AdminPage.FoldersEdit.textFieldsError": "Alle Textfelder müssen ausgefüllt werden.",
   "app.containers.AdminPage.FoldersEdit.titleInputLabel": "Titel",
   "app.containers.AdminPage.FoldersEdit.titleNewFolder": "Einen neuen Ordner erstellen",
   "app.containers.AdminPage.FoldersEdit.titleSettingsTab": "Einstellungen",
