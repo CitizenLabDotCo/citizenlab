@@ -1176,6 +1176,7 @@
   "app.containers.AdminPage.FoldersEdit.statusLabel": "Status de publicação",
   "app.containers.AdminPage.FoldersEdit.subtitleNewFolder": "Explique por que os projetos estão juntos, defina uma identidade visual e compartilhe informações.",
   "app.containers.AdminPage.FoldersEdit.subtitleSettingsTab": "Explique por que os projetos estão juntos, defina uma identidade visual e compartilhe informações.",
+  "app.containers.AdminPage.FoldersEdit.textFieldsError": "Todos os campos de texto devem ser preenchidos.",
   "app.containers.AdminPage.FoldersEdit.titleInputLabel": "Assunto",
   "app.containers.AdminPage.FoldersEdit.titleNewFolder": "Criar uma nova pasta",
   "app.containers.AdminPage.FoldersEdit.titleSettingsTab": "Minhas configurações",
