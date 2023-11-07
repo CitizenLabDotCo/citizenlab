@@ -18,7 +18,7 @@ export default defineMessages({
     defaultMessage: 'Projects',
   },
   homepageBannerTitle: {
-    id: 'app.containers.admin.ContentBuilder.homepage.homepageBanner',
+    id: 'app.containers.admin.ContentBuilder.homepage.homepageBannerTitle',
     defaultMessage: 'Homepage banner',
   },
   proposalsTitle: {
