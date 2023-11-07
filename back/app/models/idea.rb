@@ -242,7 +242,7 @@ class Idea < ApplicationRecord
     IdeasPhase.counter_culture_fix_counts only: %i[phase]
     phases.select { |p| p.participation_method == 'voting' }.each do |phase|
       # NOTE: this does not get called when removing a phase - but phase counts are not actually used
-      Basket.update_counts(phase, 'Phase')
+      Basket.update_counts(phase)
     end
   end
 

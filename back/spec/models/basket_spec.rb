@@ -28,9 +28,10 @@ RSpec.describe Basket do
 
   context 'when a basket has more than the maximum votes' do
     before do
-      project = create(:continuous_budgeting_project, voting_max_total: 1000)
+      project = create(:continuous_budgeting_project)
+      project.phases.first.update!(voting_max_total: 1000)
       ideas = create_list(:idea, 11, budget: 100, project: project)
-      @basket = create(:basket, ideas: ideas, participation_context: project)
+      @basket = create(:basket, ideas: ideas, participation_context: project.phases.first)
       @basket.baskets_ideas.update_all(votes: 100)
     end
 
@@ -48,8 +49,12 @@ RSpec.describe Basket do
   end
 
   context 'when a basket has less than the minimum votes' do
-    let(:basket) { create(:basket, ideas: [idea], participation_context: project, submitted_at: Time.now) }
-    let(:project) { create(:continuous_budgeting_project, voting_min_total: 5) }
+    let(:project) do
+      project = create(:continuous_budgeting_project)
+      project.phases.first.update!(voting_min_total: 5)
+      project
+    end
+    let(:basket) { create(:basket, ideas: [idea], participation_context: project.phases.first, submitted_at: Time.now) }
     let(:idea) { create(:idea, budget: 1, project: project) }
 
     it 'is valid in normal context' do
@@ -85,8 +90,8 @@ RSpec.describe Basket do
   end
 
   context "when the basket's project is updated to non-budgeting participation method" do
-    let!(:basket) { create(:basket, ideas: [idea], participation_context: project, submitted_at: Time.now) }
     let(:project) { create(:continuous_budgeting_project, voting_min_total: 200) }
+    let!(:basket) { create(:basket, ideas: [idea], participation_context: project.phases.first, submitted_at: Time.now) }
     let(:idea) { create(:idea, budget: 100, project: project) }
 
     # Check the basket remains valid and thus won't fail data consistency checks, as would be the case,
@@ -101,7 +106,7 @@ RSpec.describe Basket do
   context 'budgeting' do
     let(:project) { create(:continuous_budgeting_project) }
     let(:idea) { create(:idea, project: project, budget: 5) }
-    let(:basket) { create(:basket, participation_context: project, ideas: (create_list(:idea, 2, project: project, budget: 10) + [idea])) }
+    let(:basket) { create(:basket, participation_context: project.phases.first, ideas: (create_list(:idea, 2, project: project, budget: 10) + [idea])) }
 
     context 'when deleting an idea with budget' do
       it 'the idea is removed from all baskets and the total votes is changed' do
@@ -132,12 +137,6 @@ RSpec.describe Basket do
     context 'when a basket has been submitted' do
       before { basket.update!(submitted_at: Time.now) }
 
-      it 'deletes the basket if the project is continuous' do
-        basket.update!(participation_context: create(:continuous_budgeting_project))
-        user.destroy!
-        expect { basket.reload }.to raise_error(ActiveRecord::RecordNotFound)
-      end
-
       it 'deletes the basket if the voting phase is not finished' do
         basket.update!(participation_context: create(:budgeting_phase, end_at: Time.now + 7.days))
         user.destroy!
@@ -154,12 +153,6 @@ RSpec.describe Basket do
 
     context 'when a basket is not submitted' do
       before { basket.update!(submitted_at: nil) }
-
-      it 'deletes the basket if the project is continuous' do
-        basket.update!(participation_context: create(:continuous_budgeting_project))
-        user.destroy!
-        expect { basket.reload }.to raise_error(ActiveRecord::RecordNotFound)
-      end
 
       it 'deletes the basket if the voting phase is not finished' do
         basket.update!(participation_context: create(:budgeting_phase, end_at: Time.now + 7.days))
@@ -242,91 +235,45 @@ RSpec.describe Basket do
       end
     end
 
-    context 'existing basket on continuous project' do
-      let(:project) { create(:continuous_project) }
-      let(:basket) { create(:basket, participation_context: project, submitted_at: nil) }
-      let(:ideas) { create_list(:idea, 2, project: project) }
+    context 'new basket on open ended project' do
+      let(:project) { create(:continuous_budgeting_project) }
+      let(:ideas) { create_list(:idea, 2, project: project, phases: project.phases) }
+      let(:current_phase) { TimelineService.new.current_phase(project) }
 
       context 'ideas in submitted baskets' do
-        before do
-          basket.baskets_ideas.update_all(votes: 5)
-        end
-
-        it "updates 'baskets_count' and 'votes_count' for the idea and project" do
-          basket.update!(ideas: ideas, submitted_at: Time.zone.now)
-          basket.baskets_ideas.update_all(votes: 5)
-          basket.update_counts!
-          expect(ideas[0].reload.baskets_count).to eq 1
-          expect(ideas[1].reload.baskets_count).to eq 1
-          expect(ideas[0].reload.votes_count).to eq 5
-          expect(ideas[1].reload.votes_count).to eq 5
-          expect(project.reload.baskets_count).to eq 1
-          expect(project.reload.votes_count).to eq 10
-        end
-
-        it "reduces 'baskets_count' and 'votes_count' when the basket is unsubmitted" do
-          basket.update!(ideas: ideas, submitted_at: Time.zone.now)
-          basket.baskets_ideas.update_all(votes: 3)
-          basket.update_counts!
-          expect(ideas[0].reload.baskets_count).to eq 1
-          expect(ideas[1].reload.baskets_count).to eq 1
-          expect(ideas[0].reload.votes_count).to eq 3
-          expect(ideas[1].reload.votes_count).to eq 3
-          expect(project.reload.baskets_count).to eq 1
-          expect(project.reload.votes_count).to eq 6
-
-          basket.update!(ideas: ideas, submitted_at: nil)
-          basket.update_counts!
-          expect(ideas[0].reload.baskets_count).to eq 0
-          expect(ideas[1].reload.baskets_count).to eq 0
-          expect(ideas[0].reload.votes_count).to eq 0
-          expect(ideas[1].reload.votes_count).to eq 0
-          expect(project.reload.baskets_count).to eq 0
-          expect(project.reload.votes_count).to eq 0
-        end
-      end
-
-      context 'ideas in unsubmitted baskets' do
-        it "does not update 'baskets_count' or 'votes_count' for the idea and project" do
-          basket.update!(ideas: ideas)
-          basket.baskets_ideas.update_all(votes: 3)
-          basket.update_counts!
-          expect(ideas[0].reload.baskets_count).to eq 0
-          expect(ideas[1].reload.baskets_count).to eq 0
-          expect(ideas[0].reload.votes_count).to eq 0
-          expect(ideas[1].reload.votes_count).to eq 0
-          expect(project.reload.baskets_count).to eq 0
-          expect(project.reload.votes_count).to eq 0
-        end
-      end
-    end
-
-    context 'new basket on continuous project' do
-      let(:project) { create(:continuous_project) }
-      let(:ideas) { create_list(:idea, 2, project: project) }
-
-      context 'ideas in submitted baskets' do
-        it "updates 'baskets_count' and 'votes_count' for the idea and project" do
-          basket = create(:basket, participation_context: project, ideas: ideas, submitted_at: Time.zone.now)
+        it "updates 'baskets_count' and 'votes_count' for the idea, idea_phase, current_phase and project" do
+          basket = create(:basket, participation_context: project.phases.first, ideas: ideas, submitted_at: Time.zone.now)
           basket.baskets_ideas.update_all(votes: 4)
           basket.update_counts!
           expect(ideas[0].reload.baskets_count).to eq 1
           expect(ideas[1].reload.baskets_count).to eq 1
           expect(ideas[0].reload.votes_count).to eq 4
           expect(ideas[1].reload.votes_count).to eq 4
+          expect(ideas[0].ideas_phases[0].reload.baskets_count).to eq 1
+          expect(ideas[1].ideas_phases[0].reload.baskets_count).to eq 1
+          expect(ideas[0].ideas_phases[0].reload.votes_count).to eq 4
+          expect(ideas[1].ideas_phases[0].reload.votes_count).to eq 4
+          expect(current_phase.reload.baskets_count).to eq 1
+          expect(current_phase.reload.votes_count).to eq 8
           expect(project.reload.baskets_count).to eq 1
           expect(project.reload.votes_count).to eq 8
         end
       end
 
       context 'ideas in unsubmitted baskets' do
-        it "does not update 'baskets_count' or 'votes_count' for the idea and project" do
-          basket = create(:basket, participation_context: project, ideas: ideas, submitted_at: nil)
+        it "does not update 'baskets_count' or 'votes_count' for the idea, idea_phase, current_phase and project" do
+          basket = create(:basket, participation_context: project.phases.first, ideas: ideas, submitted_at: nil)
           basket.update_counts!
           expect(ideas[0].reload.baskets_count).to eq 0
           expect(ideas[1].reload.baskets_count).to eq 0
           expect(ideas[0].reload.votes_count).to eq 0
           expect(ideas[1].reload.votes_count).to eq 0
+          expect(ideas[0].ideas_phases[0].reload.baskets_count).to eq 0
+          expect(ideas[1].ideas_phases[0].reload.baskets_count).to eq 0
+          expect(ideas[0].ideas_phases[0].reload.votes_count).to eq 0
+          expect(ideas[1].ideas_phases[0].reload.votes_count).to eq 0
+          expect(current_phase.reload.baskets_count).to eq 0
+          expect(current_phase.reload.votes_count).to eq 0
           expect(project.reload.baskets_count).to eq 0
           expect(project.reload.votes_count).to eq 0
         end
