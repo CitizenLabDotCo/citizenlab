@@ -1176,6 +1176,7 @@
   "app.containers.AdminPage.FoldersEdit.statusLabel": "Publiseringsstatus",
   "app.containers.AdminPage.FoldersEdit.subtitleNewFolder": "Forklar hvorfor prosjektene hører sammen, definer en visuell identitet og del informasjon.",
   "app.containers.AdminPage.FoldersEdit.subtitleSettingsTab": "Forklar hvorfor prosjektene hører sammen, definer en visuell identitet og del informasjon.",
+  "app.containers.AdminPage.FoldersEdit.textFieldsError": "Alle tekstfelt må fylles ut.",
   "app.containers.AdminPage.FoldersEdit.titleInputLabel": "Tittel",
   "app.containers.AdminPage.FoldersEdit.titleNewFolder": "Opprett en ny mappe",
   "app.containers.AdminPage.FoldersEdit.titleSettingsTab": "Innstillinger",
