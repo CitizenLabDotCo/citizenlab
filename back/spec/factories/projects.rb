@@ -434,7 +434,6 @@ FactoryBot.define do
           :phase,
           project: project,
           participation_method: 'ideation',
-          reacting_like_method: 'unlimited',
           reacting_like_limited_max: 7,
           start_at: Faker::Date.between(from: 6.months.ago, to: Time.zone.now),
           end_at: nil
@@ -445,9 +444,8 @@ FactoryBot.define do
     factory :continuous_native_survey_project do
       after(:create) do |project, _evaluator|
         project.phases << create(
-          :phase,
+          :native_survey_phase,
           project: project,
-          participation_method: 'native_survey',
           start_at: Faker::Date.between(from: 6.months.ago, to: Time.zone.now),
           end_at: nil
         )
@@ -457,11 +455,8 @@ FactoryBot.define do
     factory :continuous_survey_project do
       after(:create) do |project, _evaluator|
         project.phases << create(
-          :phase,
+          :typeform_survey_phase,
           project: project,
-          participation_method: 'survey',
-          survey_service: 'typeform',
-          survey_embed_url: 'https://citizenlabco.typeform.com/to/HKGaPV?source=xxxxx',
           start_at: Faker::Date.between(from: 6.months.ago, to: Time.zone.now),
           end_at: nil
         )
@@ -471,9 +466,8 @@ FactoryBot.define do
     factory :continuous_google_survey_project do
       after(:create) do |project, _evaluator|
         project.phases << create(
-          :phase,
+          :typeform_survey_phase,
           project: project,
-          participation_method: 'survey',
           survey_service: 'google_forms',
           survey_embed_url: 'https://docs.google.com/forms/d/e/fake/viewform?embedded=true',
           start_at: Faker::Date.between(from: 6.months.ago, to: Time.zone.now),
@@ -498,11 +492,8 @@ FactoryBot.define do
     factory :continuous_budgeting_project do
       after(:create) do |project, _evaluator|
         project.phases << create(
-          :phase,
+          :budgeting_phase,
           project: project,
-          participation_method: 'voting',
-          voting_method: 'budgeting',
-          voting_max_total: 10_000,
           start_at: Faker::Date.between(from: 6.months.ago, to: Time.zone.now),
           end_at: nil
         )
@@ -512,11 +503,9 @@ FactoryBot.define do
     factory :continuous_multiple_voting_project do
       after(:create) do |project, _evaluator|
         project.phases << create(
-          :phase,
+          :multiple_voting_phase,
           project: project,
-          participation_method: 'voting',
           voting_method: 'multiple_voting',
-          voting_max_total: 10,
           start_at: Faker::Date.between(from: 6.months.ago, to: Time.zone.now),
           end_at: nil
         )
@@ -526,11 +515,8 @@ FactoryBot.define do
     factory :continuous_single_voting_project do
       after(:create) do |project, _evaluator|
         project.phases << create(
-          :phase,
+          :single_voting_phase,
           project: project,
-          participation_method: 'voting',
-          voting_method: 'single_voting',
-          voting_max_total: 10,
           start_at: Faker::Date.between(from: 6.months.ago, to: Time.zone.now),
           end_at: nil
         )
@@ -540,9 +526,8 @@ FactoryBot.define do
     factory :continuous_poll_project do
       after(:create) do |project, _evaluator|
         project.phases << create(
-          :phase,
+          :poll_phase,
           project: project,
-          participation_method: 'poll',
           start_at: Faker::Date.between(from: 6.months.ago, to: Time.zone.now),
           end_at: nil
         )
@@ -552,9 +537,8 @@ FactoryBot.define do
     factory :continuous_volunteering_project do
       after(:create) do |project, _evaluator|
         project.phases << create(
-          :phase,
+          :volunteering_phase,
           project: project,
-          participation_method: 'volunteering',
           start_at: Faker::Date.between(from: 6.months.ago, to: Time.zone.now),
           end_at: nil
         )

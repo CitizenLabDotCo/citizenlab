@@ -896,9 +896,9 @@ resource 'Projects' do
             end_at: (Time.zone.today - 11.days)
           )
         end
-        let(:voting_phase) do
+        let(:single_voting_phase) do
           create(
-            :voting_phase,
+            :single_voting_phase,
             project: project,
             title_multiloc: { 'en' => 'Phase 4: Voting' },
             start_at: (Time.zone.today - 10.days),

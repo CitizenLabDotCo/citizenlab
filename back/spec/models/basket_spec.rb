@@ -68,7 +68,7 @@ RSpec.describe Basket do
   context 'when an idea has more than the maximum votes per idea' do
     let(:basket) { create(:basket, participation_context: phase, submitted_at: Time.now) }
     let!(:basekts_idea) { create(:baskets_idea, basket: basket, idea: idea, votes: 4) }
-    let(:phase) { create(:voting_phase, voting_method: 'multiple_voting', voting_max_votes_per_idea: 3) }
+    let(:phase) { create(:multiple_voting_phase, voting_max_votes_per_idea: 3) }
     let(:idea) { create(:idea, project: phase.project, phases: [phase]) }
 
     it 'is valid in normal context' do

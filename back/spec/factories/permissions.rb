@@ -5,7 +5,7 @@ FactoryBot.define do
     action { 'posting_idea' }
     permitted_by { 'groups' }
     global_custom_fields { false }
-    permission_scope { create(:continuous_project, participation_method: 'ideation') }
+    permission_scope { create(:continuous_project).phases.first }
     groups { [] }
 
     trait :by_everyone do

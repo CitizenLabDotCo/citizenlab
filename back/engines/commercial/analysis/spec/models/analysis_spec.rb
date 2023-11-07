@@ -52,7 +52,7 @@ RSpec.describe Analysis::Analysis do
     end
 
     it 'is not valid for a voting phase' do
-      phase = build(:voting_phase)
+      phase = build(:single_voting_phase)
       analysis = build(:analysis, phase: phase, project: nil)
       expect(analysis).to be_invalid
     end

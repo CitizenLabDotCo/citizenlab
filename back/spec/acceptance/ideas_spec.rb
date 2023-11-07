@@ -299,7 +299,7 @@ resource 'Ideas' do
           SideFxBasketService.new.after_update basket2, user
 
           # Different phase (should be ignored in the counts)
-          phase2 = create(:voting_phase, project: pr)
+          phase2 = create(:single_voting_phase, project: pr)
           basket3 = create(:basket, participation_context: phase2, submitted_at: nil)
           basket3.update!(ideas: ideas, submitted_at: Time.zone.now)
           SideFxBasketService.new.after_update basket3, user
