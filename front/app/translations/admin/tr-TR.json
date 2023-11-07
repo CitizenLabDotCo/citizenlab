@@ -1176,6 +1176,7 @@
   "app.containers.AdminPage.FoldersEdit.statusLabel": "Yayımlanma durumu",
   "app.containers.AdminPage.FoldersEdit.subtitleNewFolder": "Projelerin neden bir araya gelebileceğini açıklayın, görsel bir kimlik tanımlayın ve bilgi paylaşın.",
   "app.containers.AdminPage.FoldersEdit.subtitleSettingsTab": "Projelerin neden bir araya gelebileceğini açıklayın, görsel bir kimlik tanımlayın ve bilgi paylaşın.",
+  "app.containers.AdminPage.FoldersEdit.textFieldsError": "Tüm metin alanları doldurulmalıdır.",
   "app.containers.AdminPage.FoldersEdit.titleInputLabel": "Başlık",
   "app.containers.AdminPage.FoldersEdit.titleNewFolder": "Yeni bir klasör oluşturun",
   "app.containers.AdminPage.FoldersEdit.titleSettingsTab": "Ayarlar",
