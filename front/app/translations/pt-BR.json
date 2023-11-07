@@ -1335,6 +1335,7 @@
   "app.containers.Projects.oneSurvey": "1 pesquisa",
   "app.containers.Projects.oneSurveyInCurrentPhase": "1 pesquisa na fase atual",
   "app.containers.Projects.options": "Opções",
+  "app.containers.Projects.participantsTooltip3": "Esse número também reflete os envios anônimos de pesquisas. Os envios anônimos de pesquisas são possíveis se as pesquisas estiverem abertas a todos (consulte a guia \"Direitos de acesso\" deste projeto).",
   "app.containers.Projects.pastEvents": "Eventos passados",
   "app.containers.Projects.phases": "Fases",
   "app.containers.Projects.poll": "1 pesquisa",
