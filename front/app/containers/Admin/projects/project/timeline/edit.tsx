@@ -60,7 +60,7 @@ import useLocalize from 'hooks/useLocalize';
 import { stringifyCampaignFields } from 'containers/Admin/messaging/AutomatedEmails/utils';
 import { CampaignData } from 'containers/Admin/messaging/AutomatedEmails/types';
 import { CampaignName } from 'api/campaigns/types';
-import { getMinAllowedPhaseDate } from './utils';
+import { getExcludedDates } from './utils';
 
 type SubmitStateType = 'disabled' | 'enabled' | 'error' | 'success';
 
@@ -113,6 +113,7 @@ const AdminProjectTimelineEdit = () => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const [hasEndDate, setHasEndDate] = useState<boolean>(false);
+  const [disableNoEndDate, setDisableNoEndDate] = useState<boolean>(false);
 
   useEffect(() => {
     setHasEndDate(phase?.data.attributes.end_at ? true : false);
@@ -168,6 +169,21 @@ const AdminProjectTimelineEdit = () => {
       end_at: endDate ? endDate.locale('en').format('YYYY-MM-DD') : '',
     });
     setHasEndDate(!!endDate);
+
+    if (startDate) {
+      const hasPhaseWithLaterStartDate = phases.data.some((iteratedPhase) => {
+        const iteratedPhaseStartDate = moment(
+          iteratedPhase.attributes.start_at
+        );
+        return iteratedPhaseStartDate.isAfter(startDate);
+      });
+
+      setDisableNoEndDate(hasPhaseWithLaterStartDate);
+
+      if (hasPhaseWithLaterStartDate) {
+        setHasEndDate(true);
+      }
+    }
   };
 
   const handlePhaseFileOnAdd = (newFile: UploadFile) => {
@@ -365,7 +381,10 @@ const AdminProjectTimelineEdit = () => {
 
   const startDate = getStartDate();
   const endDate = phaseAttrs.end_at ? moment(phaseAttrs.end_at) : null;
-  const minDate = getMinAllowedPhaseDate(phases, phase);
+  const phasesWithOutCurrentPhase = phases.data.filter(
+    (iteratedPhase) => iteratedPhase.id !== phase?.data.id
+  );
+  const excludeDates = getExcludedDates(phasesWithOutCurrentPhase);
 
   const handleCampaignEnabledOnChange = (campaign: CampaignData) => {
     setSubmitState('enabled');
@@ -423,13 +442,14 @@ const AdminProjectTimelineEdit = () => {
               onDatesChange={handleDateUpdate}
               startDatePlaceholderText={formatMessage(messages.startDate)}
               endDatePlaceholderText={formatMessage(messages.endDate)}
-              minDate={minDate}
+              excludeDates={excludeDates}
             />
             <Error apiErrors={errors && errors.start_at} />
             <Error apiErrors={errors && errors.end_at} />
             <Checkbox
               checked={!hasEndDate}
               onChange={setNoEndDate}
+              disabled={disableNoEndDate}
               size="21px"
               label={
                 <Text>

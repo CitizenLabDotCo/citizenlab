@@ -155,7 +155,7 @@ export default ({ fieldPath, ajvErrors, didBlur }: Props) => {
       enter={true}
       exit={true}
     >
-      <Container role="alert" className="e2e-error-message">
+      <Container role="alert" className="e2e-error-message" id="error-display">
         <ContainerInner>
           <ErrorIcon name="alert-circle" fill={colors.error} />
 
