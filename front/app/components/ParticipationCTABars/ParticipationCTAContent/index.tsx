@@ -111,30 +111,22 @@ export const ParticipationCTAContent = ({
         display="flex"
         alignItems="center"
         justifyContent="space-between"
-        flexDirection="row"
         width="100%"
         bgColor={theme.colors.tenantPrimary}
         px="20px"
         py="8px"
       >
-        <Box
-          display="flex"
-          flexWrap="wrap"
-          flexDirection="row"
-          alignItems="center"
-        >
-          <Box>
-            {!useProjectClosedStyle && (
-              <BlickingIcon
-                name={hasUserParticipated ? 'check-circle' : 'dot'}
-                width="16px"
-                height="16px"
-                fill={colors.white}
-                mr="8px"
-                showAnimation={!hasUserParticipated}
-              />
-            )}
-          </Box>
+        <Box display="flex" flexWrap="wrap" alignItems="center">
+          {!useProjectClosedStyle && (
+            <BlickingIcon
+              name={hasUserParticipated ? 'check-circle' : 'dot'}
+              width="16px"
+              height="16px"
+              fill={colors.white}
+              mr="8px"
+              showAnimation={!hasUserParticipated}
+            />
+          )}
           <Box
             display="flex"
             justifyContent="center"
@@ -173,9 +165,11 @@ export const ParticipationCTAContent = ({
               </Text>
             )}
           </Box>
-          <Box display="flex" alignItems="center" width="100%">
-            {participationState && participationState}
-          </Box>
+          {participationState && (
+            <Box display="flex" alignItems="center" width="100%">
+              {participationState}
+            </Box>
+          )}
         </Box>
         <Box display="flex" alignItems="center">
           {CTAButton}
@@ -189,7 +183,6 @@ export const ParticipationCTAContent = ({
       display="flex"
       alignItems="center"
       justifyContent="space-around"
-      flexDirection="row"
       width="100%"
       bgColor={theme.colors.tenantPrimary}
       height="64px"
@@ -199,7 +192,6 @@ export const ParticipationCTAContent = ({
         display="flex"
         alignItems="center"
         justifyContent="space-between"
-        flexDirection="row"
         width="100%"
         maxWidth={`${maxPageWidth}px`}
       >
