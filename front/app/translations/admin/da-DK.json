@@ -1176,6 +1176,7 @@
   "app.containers.AdminPage.FoldersEdit.statusLabel": "Status for offentliggørelse",
   "app.containers.AdminPage.FoldersEdit.subtitleNewFolder": "Forklar, hvorfor projekterne hører sammen, definer en visuel identitet og deler information.",
   "app.containers.AdminPage.FoldersEdit.subtitleSettingsTab": "Forklar, hvorfor projekterne hører sammen, definer en visuel identitet og deler information.",
+  "app.containers.AdminPage.FoldersEdit.textFieldsError": "Alle tekstfelter skal udfyldes.",
   "app.containers.AdminPage.FoldersEdit.titleInputLabel": "Titel",
   "app.containers.AdminPage.FoldersEdit.titleNewFolder": "Opret en ny mappe",
   "app.containers.AdminPage.FoldersEdit.titleSettingsTab": "Indstillinger",
