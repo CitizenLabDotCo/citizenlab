@@ -22,11 +22,11 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class Basket < ApplicationRecord
-  # TODO: TEMP until participation_context name changed in db
+  # TODO: participation_context
   alias_attribute :phase, :participation_context
+  belongs_to :participation_context, polymorphic: true
 
   belongs_to :user, optional: true
-  belongs_to :participation_context, polymorphic: true
 
   has_many :baskets_ideas, -> { order(:created_at) }, dependent: :destroy, inverse_of: :basket
   has_many :ideas, through: :baskets_ideas
