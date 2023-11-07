@@ -60,6 +60,7 @@ describe('ProjectFolderSelect', () => {
     );
   });
   it('should render as enabled with "yes" option selected when folder id is provided', () => {
+    mockPermission = true;
     const { container } = render(
       <ProjectFolderSelect
         projectAttrs={{ folder_id: 'folder1' }}
@@ -103,6 +104,7 @@ describe('ProjectFolderSelect', () => {
     );
   });
   it('should set folder_id to null when "no" option is selected', () => {
+    mockPermission = true;
     const onProjectAttributesDiffChange = jest.fn();
     const { container } = render(
       <ProjectFolderSelect
