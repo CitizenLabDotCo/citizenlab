@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { some } from 'lodash-es';
+import React, { useState, useEffect, useMemo } from 'react';
 import clHistory from 'utils/cl-router/history';
 import { adopt } from 'react-adopt';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
@@ -35,17 +34,14 @@ import { IProjectData } from 'api/projects/types';
 
 // utils
 import { insertConfiguration } from 'utils/moduleUtils';
-import {
-  getAllParticipationMethods,
-  getMethodConfig,
-  showInputManager,
-} from 'utils/configs/participationMethodConfig';
+import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import Timeline from 'containers/ProjectsShowPage/timeline/Timeline';
 
 // hooks
 import useLocalize from 'hooks/useLocalize';
 import { IPhaseData } from 'api/phases/types';
 import { getCurrentPhase } from 'api/phases/utils';
+import { getIntialTabs } from './tabs';
 
 export interface InputProps {}
 
@@ -71,8 +67,11 @@ export const AdminProjectsProjectIndex = ({
   surveys_enabled,
 }: DataProps) => {
   const { formatMessage } = useIntl();
+
   const localize = useLocalize();
   const { pathname } = useLocation();
+  const initialTabs: ITab[] = getIntialTabs(formatMessage);
+  const [tabs, setTabs] = useState<ITab[]>(initialTabs);
   const { projectId, id: phaseId } = useParams() as {
     projectId: string;
     id?: string;
@@ -85,7 +84,7 @@ export const AdminProjectsProjectIndex = ({
   );
 
   useEffect(() => {
-    if (!phases || !project) return;
+    if (!phases) return;
 
     const phase = phaseId
       ? phases.find((phase) => phase.id === phaseId)
@@ -99,50 +98,18 @@ export const AdminProjectsProjectIndex = ({
         phaseShown = phases.length ? phases[0] : undefined;
       }
     }
-    setSelectedPhase(phaseShown);
-  }, [phaseId, phases, project]);
 
-  const [tabs, setTabs] = useState<ITab[]>([
-    {
-      label: formatMessage(messages.setup),
-      url: 'setup',
-      name: 'setup',
-    },
-    {
-      label: formatMessage(messages.inputManagerTab),
-      url: 'ideas',
-      name: 'ideas',
-    },
-    {
-      label: formatMessage(messages.inputFormTab),
-      url: 'ideaform',
-      name: 'ideaform',
-    },
-    {
-      label: formatMessage(messages.pollTab),
-      url: 'poll',
-      feature: 'polls',
-      name: 'poll',
-    },
-    {
-      label: formatMessage(messages.surveyTab),
-      url: 'native-survey',
-      name: 'survey',
-      active: (url: string) =>
-        url.endsWith('native-survey') || url.endsWith('native-survey/results'),
-    },
-    {
-      label: formatMessage(messages.surveyResultsTab),
-      url: 'survey-results',
-      name: 'survey-results',
-    },
-    {
-      label: formatMessage(messages.volunteeringTab),
-      url: 'volunteering',
-      feature: 'volunteering',
-      name: 'volunteering',
-    },
-  ]);
+    // Reset tabs such that tabs that were added onData are removed and will be readded if needed
+    // TODO: Fix maps tab condition to display when navigating from voting to ideation
+    setTabs(initialTabs);
+    setSelectedPhase(phaseShown);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [phaseId, phases]);
+
+  if (!selectedPhase) {
+    return null;
+  }
+
   const tabHideConditions: TabHideConditions = {
     general: function isGeneralTabHidden() {
       return false;
@@ -150,130 +117,33 @@ export const AdminProjectsProjectIndex = ({
     description: function isDescriptionTabHidden() {
       return false;
     },
-    ideas: function isIdeaTabHidden(project, phases) {
-      return !showInputManager(project, phases);
+    ideas: function isIdeaTabHidden() {
+      return !getMethodConfig(selectedPhase.attributes.participation_method)
+        .showInputManager;
     },
-    ideaform: function isIdeaFormTabHidden(project, phases) {
-      const allParticipationMethods = getAllParticipationMethods(
-        project,
-        phases || null
-      );
-      return !some(
-        allParticipationMethods,
-        (method) => getMethodConfig(method).formEditor === 'simpleFormEditor'
+    ideaform: function isIdeaFormTabHidden() {
+      return (
+        getMethodConfig(selectedPhase.attributes.participation_method)
+          .formEditor !== 'simpleFormEditor'
       );
     },
-    poll: function isPollTabHidden(project, phases) {
-      const processType = project?.attributes.process_type;
-      const participationMethod = project.attributes.participation_method;
-
-      if (
-        (processType === 'continuous' && participationMethod !== 'poll') ||
-        (processType === 'timeline' &&
-          phases &&
-          phases.filter((phase) => {
-            return phase.attributes.participation_method === 'poll';
-          }).length === 0)
-      ) {
-        return true;
-      }
-
-      return false;
+    poll: function isPollTabHidden() {
+      return selectedPhase.attributes.participation_method !== 'poll';
     },
-    survey: function isSurveyTabHidden(project, phases) {
-      const processType = project.attributes.process_type;
-      const participationMethod = project.attributes.participation_method;
-      const noNativeSurveyInTimeline =
-        phases &&
-        !phases.some(
-          (phase) => phase.attributes.participation_method === 'native_survey'
-        );
-
-      // Hide tab when participation method is not native survey in timeline and continuous process types
-      const hideTab =
-        (processType === 'continuous' &&
-          participationMethod !== 'native_survey') ||
-        (processType === 'timeline' && phases && noNativeSurveyInTimeline);
-
-      if (hideTab) {
-        return true;
-      }
-      return false;
+    survey: function isSurveyTabHidden() {
+      return selectedPhase.attributes.participation_method !== 'native_survey';
     },
-    'survey-results': function surveyResultsTabHidden(project, phases) {
-      const processType = project?.attributes.process_type;
-      const participationMethod = project.attributes.participation_method;
-
-      if (
-        (participationMethod !== 'survey' && processType === 'continuous') ||
+    'survey-results': function surveyResultsTabHidden() {
+      return (
         !surveys_enabled ||
         !typeform_enabled ||
         (surveys_enabled &&
-          typeform_enabled &&
-          processType === 'continuous' &&
-          participationMethod === 'survey' &&
-          project.attributes.survey_service !== 'typeform') ||
-        (processType === 'timeline' &&
-          phases &&
-          phases.filter((phase) => {
-            return (
-              phase.attributes.participation_method === 'survey' &&
-              phase.attributes.survey_service === 'typeform'
-            );
-          }).length === 0)
-      ) {
-        return true;
-      }
-
-      return false;
+          selectedPhase.attributes.participation_method !== 'survey' &&
+          selectedPhase.attributes.survey_service !== 'typeform')
+      );
     },
-    topics: function topicsTabHidden(project, phases) {
-      const processType = project.attributes.process_type;
-      const participationMethod = project.attributes.participation_method;
-      const hideTab =
-        (processType === 'continuous' &&
-          participationMethod !== 'ideation' &&
-          participationMethod !== 'voting') ||
-        (processType === 'timeline' &&
-          phases &&
-          phases.filter((phase) => {
-            return (
-              phase.attributes.participation_method === 'ideation' ||
-              phase.attributes.participation_method === 'voting'
-            );
-          }).length === 0);
-
-      if (hideTab) {
-        return true;
-      }
-      return false;
-    },
-    phases: function isPhasesTabHidden(project) {
-      const processType = project?.attributes.process_type;
-
-      if (processType !== 'timeline') {
-        return true;
-      }
-
-      return false;
-    },
-    volunteering: function isVolunteeringTabHidden(project, phases) {
-      const processType = project?.attributes.process_type;
-      const participationMethod = project.attributes.participation_method;
-
-      if (
-        (processType === 'continuous' &&
-          participationMethod !== 'volunteering') ||
-        (processType === 'timeline' &&
-          phases &&
-          phases.filter((phase) => {
-            return phase.attributes.participation_method === 'volunteering';
-          }).length === 0)
-      ) {
-        return true;
-      }
-
-      return false;
+    volunteering: function isVolunteeringTabHidden() {
+      return selectedPhase?.attributes.participation_method !== 'volunteering';
     },
     events: function isEventsTabHidden() {
       return false;
@@ -361,6 +231,7 @@ export const AdminProjectsProjectIndex = ({
         onData={handleData}
         project={project}
         phases={phases}
+        selectedPhase={selectedPhase}
       />
       <Box p="40px">
         {!isNewPhaseLink && (
