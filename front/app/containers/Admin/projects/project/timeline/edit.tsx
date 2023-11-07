@@ -24,7 +24,6 @@ import DateRangePicker from 'components/admin/DateRangePicker';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import {
   Section,
-  SectionTitle,
   SectionField,
   SubSectionTitle,
 } from 'components/admin/Section';

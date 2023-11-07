@@ -8,21 +8,14 @@ import {
   useParams,
   useLocation,
 } from 'react-router-dom';
-import moment from 'moment';
 
 // components
 import GoBackButton from 'components/UI/GoBackButton';
 import Button from 'components/UI/Button';
 import Outlet from 'components/Outlet';
-import {
-  Box,
-  Title,
-  Text,
-  defaultCardStyle,
-  colors,
-} from '@citizenlab/cl2-component-library';
-import NavigationTabs, { Tab } from 'components/admin/NavigationTabs';
-import Link from 'utils/cl-router/Link';
+import { Box, Title, colors } from '@citizenlab/cl2-component-library';
+import NavigationTabs from 'components/admin/NavigationTabs';
+import { PhaseHeader } from './phase/PhaseHeader';
 
 // resources
 import GetFeatureFlag, {
@@ -53,16 +46,6 @@ import Timeline from 'containers/ProjectsShowPage/timeline/Timeline';
 import useLocalize from 'hooks/useLocalize';
 import { IPhaseData } from 'api/phases/types';
 import { getCurrentPhase } from 'api/phases/utils';
-
-// styles
-import styled from 'styled-components';
-import { isTopBarNavActive } from 'utils/helperUtils';
-
-const Container = styled(Box)`
-  padding: 24px 40px 0px 40px;
-  margin-bottom: 8px;
-  ${defaultCardStyle};
-`;
 
 export interface InputProps {}
 
@@ -329,11 +312,6 @@ export const AdminProjectsProjectIndex = ({
     setTabs((tabs) => insertConfiguration(data)(tabs));
   };
 
-  const startAt = moment(selectedPhase.attributes.start_at).format('LL');
-  const endAt = selectedPhase.attributes.end_at
-    ? moment(selectedPhase.attributes.end_at).format('LL')
-    : formatMessage(messages.noEndDate);
-
   return (
     <>
       <NavigationTabs>
@@ -391,26 +369,7 @@ export const AdminProjectsProjectIndex = ({
       />
       <Box p="40px">
         {!isNewPhaseLink && (
-          <Container>
-            <Title my="0px" variant="h3" color="blue500">
-              {localize(selectedPhase.attributes.title_multiloc)}
-            </Title>
-            <Text color="coolGrey600">
-              {startAt} → {endAt}
-            </Text>
-            <Box display="flex">
-              {getTabs(project.id).map(({ url, label }) => (
-                <Tab
-                  label={label}
-                  url={url}
-                  key={url}
-                  active={isTopBarNavActive('/admin/ideas', pathname, url)}
-                >
-                  <Link to={url}>{label}</Link>
-                </Tab>
-              ))}
-            </Box>
-          </Container>
+          <PhaseHeader phase={selectedPhase} tabs={getTabs(project.id)} />
         )}
 
         <Box p="40px" background={colors.white}>
