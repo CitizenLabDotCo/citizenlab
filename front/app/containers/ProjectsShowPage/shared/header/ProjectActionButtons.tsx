@@ -200,22 +200,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
 
   return (
     <Container className={className || ''}>
-      {showEventsCTAButton &&
-        !showSeeIdeasButton && ( // Only show events button when there is no other secondary CTA present
-          <Button
-            id="e2e-project-see-events-button"
-            buttonStyle="secondary"
-            onClick={() => {
-              scrollToElement({ id: 'project-events' });
-            }}
-            fontWeight="500"
-            mb="8px"
-          >
-            <FormattedMessage {...messages.seeUpcomingEvents} />
-          </Button>
-        )}
-
-      {showSeeIdeasButton && (
+      {showSeeIdeasButton ? (
         <SeeIdeasButton
           id="e2e-project-see-ideas-button"
           buttonStyle="secondary"
@@ -235,7 +220,19 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
             })}
           />
         </SeeIdeasButton>
-      )}
+      ) : showEventsCTAButton ? (
+        <Button
+          id="e2e-project-see-events-button"
+          buttonStyle="secondary"
+          onClick={() => {
+            scrollToElement({ id: 'project-events' });
+          }}
+          fontWeight="500"
+          mb="8px"
+        >
+          <FormattedMessage {...messages.seeUpcomingEvents} />
+        </Button>
+      ) : null}
       {showPostIdeaButton && !hasCurrentPhaseEnded && (
         <IdeaButton
           id="project-ideabutton"
