@@ -37,6 +37,7 @@ describe('ProjectFolderSelect', () => {
       <ProjectFolderSelect
         projectAttrs={{ folder_id: 'folderId' }}
         onProjectAttributesDiffChange={jest.fn()}
+        isNewProject={true}
       />
     );
     expect(screen.getByTestId('projectFolderSelect')).toBeInTheDocument();
@@ -47,6 +48,7 @@ describe('ProjectFolderSelect', () => {
       <ProjectFolderSelect
         projectAttrs={{}}
         onProjectAttributesDiffChange={jest.fn()}
+        isNewProject={true}
       />
     );
     expect(container.querySelector('#folderSelect-no')).toHaveAttribute(
@@ -62,6 +64,7 @@ describe('ProjectFolderSelect', () => {
       <ProjectFolderSelect
         projectAttrs={{ folder_id: 'folder1' }}
         onProjectAttributesDiffChange={jest.fn()}
+        isNewProject={true}
       />
     );
     expect(container.querySelector('#folderSelect-no')).toHaveAttribute(
@@ -82,6 +85,7 @@ describe('ProjectFolderSelect', () => {
       <ProjectFolderSelect
         projectAttrs={{}}
         onProjectAttributesDiffChange={jest.fn()}
+        isNewProject={true}
       />
     );
     expect(container.querySelector('#folderSelect-no')).toHaveAttribute(
@@ -104,6 +108,7 @@ describe('ProjectFolderSelect', () => {
       <ProjectFolderSelect
         projectAttrs={{ folder_id: 'folder1' }}
         onProjectAttributesDiffChange={onProjectAttributesDiffChange}
+        isNewProject={true}
       />
     );
 
