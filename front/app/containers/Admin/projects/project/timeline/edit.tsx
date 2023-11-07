@@ -277,7 +277,7 @@ const AdminPhaseEdit = () => {
         setAttributeDiff({});
 
         if (redirectAfterSave) {
-          clHistory.push(`/admin/projects/${projectId}/timeline/`);
+          clHistory.push(`/admin/projects/${projectId}/setup/${phaseId}`);
         }
       }
     );
@@ -413,11 +413,6 @@ const AdminPhaseEdit = () => {
 
   return (
     <>
-      <SectionTitle>
-        {phase && <FormattedMessage {...messages.editPhaseTitle} />}
-        {!phase && <FormattedMessage {...messages.newPhaseTitle} />}
-      </SectionTitle>
-
       <form onSubmit={handleOnSubmit}>
         <Section>
           <SectionField>
