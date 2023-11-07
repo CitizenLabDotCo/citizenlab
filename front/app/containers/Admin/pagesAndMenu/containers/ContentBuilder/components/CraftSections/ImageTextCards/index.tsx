@@ -18,28 +18,28 @@ const ImageTextCards: UserComponent = () => {
     <Element id="image-text-cards" is={Box} canvas>
       <TwoColumn columnLayout="1-2">
         <Element id="left" is={Container} canvas>
-          <ImageMultiloc alt={{}} />
+          <ImageMultiloc />
         </Element>
         <Element id="right" is={Container} canvas>
-          <TextMultiloc text={{}} />
+          <TextMultiloc />
         </Element>
       </TwoColumn>
       <WhiteSpace size="small" />
       <TwoColumn columnLayout="1-2">
         <Element id="left" is={Container} canvas>
-          <ImageMultiloc alt={{}} />
+          <ImageMultiloc />
         </Element>
         <Element id="right" is={Container} canvas>
-          <TextMultiloc text={{}} />
+          <TextMultiloc />
         </Element>
       </TwoColumn>
       <WhiteSpace size="small" />
       <TwoColumn columnLayout="1-2">
         <Element id="left" is={Container} canvas>
-          <ImageMultiloc alt={{}} />
+          <ImageMultiloc />
         </Element>
         <Element id="right" is={Container} canvas>
-          <TextMultiloc text={{}} />
+          <TextMultiloc />
         </Element>
       </TwoColumn>
     </Element>

@@ -37,7 +37,7 @@ import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLoca
 
 interface Props {
   imageUrl?: string;
-  alt: Multiloc;
+  alt?: Multiloc;
   dataCode?: string;
 }
 
