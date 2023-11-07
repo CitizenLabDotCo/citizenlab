@@ -2,7 +2,7 @@ import React from 'react';
 import { isNil, isNilOrError } from 'utils/helperUtils';
 
 // components
-import Comment from './Comment';
+import Comment from '../../../Comment';
 import ChildCommentForm from './ChildCommentForm';
 import { Spinner } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';

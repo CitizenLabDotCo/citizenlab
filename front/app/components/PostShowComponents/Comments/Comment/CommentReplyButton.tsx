@@ -2,15 +2,15 @@ import React from 'react';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../../../messages';
+import messages from '../messages';
 
 // events
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-import { commentReplyButtonClicked } from '../../../../events';
+import { commentReplyButtonClicked } from '../events';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
-import tracks from '../../../../tracks';
+import tracks from '../tracks';
 
 // style
 import styled from 'styled-components';

@@ -4,7 +4,7 @@ import { lighten } from 'polished';
 import styled from 'styled-components';
 import { media, colors, fontSizes, isRtl } from 'utils/styleUtils';
 import { useIntl } from 'utils/cl-intl';
-import messages from '../../../../messages';
+import messages from '../messages';
 import { IPresentComment } from 'api/comments/types';
 import useUserById from 'api/users/useUserById';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';

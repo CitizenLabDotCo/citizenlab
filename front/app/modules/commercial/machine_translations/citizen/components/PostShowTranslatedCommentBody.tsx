@@ -1,7 +1,7 @@
 import React from 'react';
 import { Locale } from 'typings';
 import useMachineTranslationByCommentId from 'modules/commercial/machine_translations/api/useMachineTranslationByCommentId';
-import { CommentText } from 'components/PostShowComponents/Comments/CommentsSection/PublicComments/Comments/Comment/CommentBody';
+import { CommentText } from 'components/PostShowComponents/Comments/Comment/CommentBody';
 
 interface Props {
   translateButtonClicked: boolean;

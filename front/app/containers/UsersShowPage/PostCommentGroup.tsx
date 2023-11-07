@@ -13,8 +13,8 @@ import { darken } from 'polished';
 // Components
 import { Icon } from '@citizenlab/cl2-component-library';
 import Link from 'utils/cl-router/Link';
-import CommentHeader from 'components/PostShowComponents/Comments/CommentsSection/PublicComments/Comments/Comment/CommentHeader';
-import CommentBody from 'components/PostShowComponents/Comments/CommentsSection/PublicComments/Comments/Comment/CommentBody';
+import CommentHeader from 'components/PostShowComponents/Comments/Comment/CommentHeader';
+import CommentBody from 'components/PostShowComponents/Comments/Comment/CommentBody';
 
 // intl
 import messages from './messages';

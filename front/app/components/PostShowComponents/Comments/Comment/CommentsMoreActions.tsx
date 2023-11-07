@@ -3,7 +3,7 @@ import React, { FormEvent, useState } from 'react';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../../../messages';
+import messages from '../messages';
 
 // Components
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
@@ -14,7 +14,7 @@ import CommentsAdminDeletionModal from './CommentsAdminDeletionModal';
 import { usePermission } from 'utils/permissions';
 
 // events
-import { deleteCommentModalClosed } from '../../../../events';
+import { deleteCommentModalClosed } from '../events';
 
 // Styling
 import styled from 'styled-components';

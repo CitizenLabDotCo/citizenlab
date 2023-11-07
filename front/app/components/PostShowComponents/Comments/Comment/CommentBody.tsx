@@ -8,7 +8,7 @@ import { IUpdatedComment } from 'api/comments/types';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../../../messages';
+import messages from '../messages';
 
 // Components
 import MentionsTextArea from 'components/UI/MentionsTextArea';
@@ -26,7 +26,7 @@ import useComment from 'api/comments/useComment';
 import useLocale from 'hooks/useLocale';
 import { filter } from 'rxjs/operators';
 import { Button } from '@citizenlab/cl2-component-library';
-import { commentTranslateButtonClicked$ } from '../../../../events';
+import { commentTranslateButtonClicked$ } from '../events';
 import useLocalize from 'hooks/useLocalize';
 
 // utils
