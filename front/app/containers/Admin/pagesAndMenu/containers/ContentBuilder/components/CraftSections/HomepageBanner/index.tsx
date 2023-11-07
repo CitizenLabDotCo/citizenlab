@@ -132,27 +132,76 @@ const HomepageBannerSettings = () => {
 
   const handleUrlChange = (
     value: string,
-    field: 'bannerCTASignedInUrl' | 'bannerCTASignedOutUrl'
+    field: 'banner_cta_signed_out_url' | 'banner_cta_signed_in_url'
   ) => {
     const validation = isValidUrl(value);
+    setProp((props: Props) => (props.homepageSettings[field] = value));
+
+    if (!validation) {
+      setProp((props: Props) => {
+        const newErrorTypes = props.errorTypes?.includes(field)
+          ? [...props.errorTypes]
+          : [...(props.errorTypes || []), field];
+
+        props.errorTypes = newErrorTypes;
+        props.hasError = true;
+        eventEmitter.emit(CONTENT_BUILDER_ERROR_EVENT, {
+          [id]: {
+            hasError: true,
+          },
+        });
+      });
+    } else {
+      setProp((props: Props) => {
+        const newErrorTypes = props.errorTypes?.filter(
+          (errorType) => errorType !== field
+        );
+        props.errorTypes = newErrorTypes || [];
+        if (newErrorTypes && newErrorTypes.length === 0) {
+          props.hasError = false;
+          eventEmitter.emit(CONTENT_BUILDER_ERROR_EVENT, {
+            [id]: {
+              hasError: false,
+            },
+          });
+        }
+      });
+    }
+  };
+
+  const handleCtaTypeChange = (
+    value: CTASignedOutType | CTASignedInType,
+    field: 'banner_cta_signed_out_type' | 'banner_cta_signed_in_type'
+  ) => {
     setProp(
       (props: Props) =>
-        (props.homepageSettings.banner_cta_signed_out_url = value)
+        (props.homepageSettings[field] = value as CTASignedInType)
     );
-    setProp((props: Props) => (props.hasError = !validation));
-    if (!validation) {
-      setProp(
-        (props: Props) =>
-          (props.errorTypes = props.errorTypes?.includes(field)
-            ? [...props.errorTypes]
-            : [...(props.errorTypes || []), field])
-      );
+    if (value !== 'customized_button') {
+      setProp((props: Props) => {
+        props.homepageSettings[
+          field === 'banner_cta_signed_out_type'
+            ? 'banner_cta_signed_out_url'
+            : 'banner_cta_signed_in_url'
+        ] = '';
+        const newErrorTypes = props.errorTypes?.filter(
+          (errorType) =>
+            errorType !==
+            (field === 'banner_cta_signed_out_type'
+              ? 'banner_cta_signed_out_url'
+              : 'banner_cta_signed_in_url')
+        );
+        props.errorTypes = newErrorTypes || [];
+        if (newErrorTypes && newErrorTypes.length === 0) {
+          props.hasError = false;
+          eventEmitter.emit(CONTENT_BUILDER_ERROR_EVENT, {
+            [id]: {
+              hasError: false,
+            },
+          });
+        }
+      });
     }
-    eventEmitter.emit(CONTENT_BUILDER_ERROR_EVENT, {
-      [id]: {
-        hasError: !validation,
-      },
-    });
   };
 
   return (
@@ -241,30 +290,14 @@ const HomepageBannerSettings = () => {
               <div key={option}>
                 <Radio
                   key={`cta-type-${option}`}
-                  onChange={(value) => {
-                    setProp(
-                      (props: Props) =>
-                        (props.homepageSettings.banner_cta_signed_out_type =
-                          value)
-                    );
-                    setProp(
-                      (props: Props) =>
-                        (props.homepageSettings.banner_cta_signed_out_url = '')
-                    );
-
-                    setProp((props: Props) => (props.hasError = false));
-
-                    eventEmitter.emit(CONTENT_BUILDER_ERROR_EVENT, {
-                      [id]: {
-                        hasError: false,
-                      },
-                    });
-                  }}
+                  onChange={(value) =>
+                    handleCtaTypeChange(value, 'banner_cta_signed_out_type')
+                  }
                   currentValue={homepageSettings.banner_cta_signed_out_type}
                   value={option}
                   label={<FormattedMessage {...labelMessage} />}
-                  name={'cta_${identifier}_type'}
                   id={`cta-type-${option}`}
+                  name={`cta-type-${option}`}
                 />
                 {option === 'customized_button' &&
                   homepageSettings.banner_cta_signed_out_type ===
@@ -301,12 +334,12 @@ const HomepageBannerSettings = () => {
                         type="text"
                         placeholder="https://..."
                         onChange={(value) =>
-                          handleUrlChange(value, 'bannerCTASignedOutUrl')
+                          handleUrlChange(value, 'banner_cta_signed_out_url')
                         }
                         value={homepageSettings.banner_cta_signed_out_url || ''}
                       />
                       {hasError &&
-                        errorTypes.includes('bannerCTASignedOutUrl') && (
+                        errorTypes.includes('banner_cta_signed_out_url') && (
                           <Error
                             marginTop="8px"
                             text={formatMessage(messages.invalidUrl)}
@@ -327,11 +360,22 @@ const HomepageBannerSettings = () => {
             type="text"
             valueMultiloc={homepageSettings.banner_signed_in_header_multiloc}
             onChange={(value) => {
-              setProp(
-                (props: Props) =>
-                  (props.homepageSettings.banner_signed_in_header_multiloc =
-                    value)
-              );
+              setProp((props: Props) => {
+                props.homepageSettings.banner_signed_in_header_multiloc = value;
+                props.homepageSettings.banner_cta_signed_in_url = '';
+                const newErrorTypes = props.errorTypes?.filter(
+                  (errorType) => errorType !== 'banner_cta_signed_in_url'
+                );
+                props.errorTypes = newErrorTypes || [];
+                if (newErrorTypes && newErrorTypes.length === 0) {
+                  props.hasError = false;
+                  eventEmitter.emit(CONTENT_BUILDER_ERROR_EVENT, {
+                    [id]: {
+                      hasError: false,
+                    },
+                  });
+                }
+              });
             }}
           />
           <Text>Button</Text>
@@ -341,13 +385,9 @@ const HomepageBannerSettings = () => {
               <div key={option}>
                 <Radio
                   key={`cta-type-${option}`}
-                  onChange={(value) => {
-                    setProp(
-                      (props: Props) =>
-                        (props.homepageSettings.banner_cta_signed_in_type =
-                          value)
-                    );
-                  }}
+                  onChange={(value) =>
+                    handleCtaTypeChange(value, 'banner_cta_signed_in_type')
+                  }
                   currentValue={homepageSettings.banner_cta_signed_in_type}
                   value={option}
                   label={<FormattedMessage {...labelMessage} />}
@@ -390,13 +430,13 @@ const HomepageBannerSettings = () => {
                         type="text"
                         placeholder="https://..."
                         onChange={(value) =>
-                          handleUrlChange(value, 'bannerCTASignedInUrl')
+                          handleUrlChange(value, 'banner_cta_signed_in_url')
                         }
                         value={homepageSettings.banner_cta_signed_in_url || ''}
                       />
 
                       {hasError &&
-                        errorTypes.includes('bannerCTASignedInUrl') && (
+                        errorTypes.includes('banner_cta_signed_in_url') && (
                           <Error
                             marginTop="8px"
                             text={formatMessage(messages.invalidUrl)}
