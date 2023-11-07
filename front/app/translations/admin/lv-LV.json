@@ -1176,6 +1176,7 @@
   "app.containers.AdminPage.FoldersEdit.statusLabel": "Publikācijas statuss",
   "app.containers.AdminPage.FoldersEdit.subtitleNewFolder": "Paskaidrot saistību starp projektiem, definēt vizuālo identitāti un dalīties ar informāciju.",
   "app.containers.AdminPage.FoldersEdit.subtitleSettingsTab": "Paskaidrot saistību starp projektiem, definēt vizuālo identitāti un dalīties ar informāciju.",
+  "app.containers.AdminPage.FoldersEdit.textFieldsError": "Jāaizpilda visi teksta lauki.",
   "app.containers.AdminPage.FoldersEdit.titleInputLabel": "Nosaukums",
   "app.containers.AdminPage.FoldersEdit.titleNewFolder": "Izveidot jaunu mapi",
   "app.containers.AdminPage.FoldersEdit.titleSettingsTab": "Iestatījumi",
