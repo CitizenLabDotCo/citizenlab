@@ -9,7 +9,6 @@ import BaseEditor from 'components/admin/ContentBuilder/Editor';
 import Container from 'components/admin/ContentBuilder/Widgets/Container';
 
 // widgets
-import Text from 'components/admin/ContentBuilder/Widgets/Text';
 import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
 import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
@@ -42,7 +41,6 @@ const Editor: React.FC<EditorProps> = ({
         Container,
         TwoColumn,
         ThreeColumn,
-        Text,
         ImageMultiloc,
         IframeMultiloc,
         TextMultiloc,

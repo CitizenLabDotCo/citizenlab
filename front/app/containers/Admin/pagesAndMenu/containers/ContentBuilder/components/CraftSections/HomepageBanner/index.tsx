@@ -69,10 +69,12 @@ export interface IHomepageSettingsAttributes {
   banner_cta_signed_in_url: string | null;
 }
 
+type ErrorType = 'banner_cta_signed_out_url' | 'banner_cta_signed_in_url';
+
 type Props = {
   homepageSettings: IHomepageSettingsAttributes;
   hasError?: boolean;
-  errorTypes?: string[];
+  errors?: ErrorType[];
 };
 
 const HomepageBanner = ({ homepageSettings }: Props) => {
@@ -91,11 +93,11 @@ const HomepageBannerSettings = () => {
     homepageSettings,
     id,
     hasError,
-    errorTypes,
+    errors,
   } = useNode((node) => ({
     id: node.id,
     hasError: node.data.props.hasError,
-    errorTypes: node.data.props.errorTypes,
+    errors: node.data.props.errors,
     homepageSettings: {
       banner_signed_out_header_multiloc:
         node.data.props.homepageSettings.banner_signed_out_header_multiloc,
@@ -141,11 +143,11 @@ const HomepageBannerSettings = () => {
 
     if (!validation) {
       setProp((props: Props) => {
-        const newErrorTypes = props.errorTypes?.includes(field)
-          ? [...props.errorTypes]
-          : [...(props.errorTypes || []), field];
+        const newErrorTypes = props.errors?.includes(field)
+          ? [...props.errors]
+          : [...(props.errors || []), field];
 
-        props.errorTypes = newErrorTypes;
+        props.errors = newErrorTypes;
         props.hasError = true;
         eventEmitter.emit(CONTENT_BUILDER_ERROR_EVENT, {
           [id]: {
@@ -155,10 +157,10 @@ const HomepageBannerSettings = () => {
       });
     } else {
       setProp((props: Props) => {
-        const newErrorTypes = props.errorTypes?.filter(
+        const newErrorTypes = props.errors?.filter(
           (errorType) => errorType !== field
         );
-        props.errorTypes = newErrorTypes || [];
+        props.errors = newErrorTypes || [];
         if (newErrorTypes && newErrorTypes.length === 0) {
           props.hasError = false;
           eventEmitter.emit(CONTENT_BUILDER_ERROR_EVENT, {
@@ -175,10 +177,13 @@ const HomepageBannerSettings = () => {
     value: CTASignedOutType | CTASignedInType,
     field: 'banner_cta_signed_out_type' | 'banner_cta_signed_in_type'
   ) => {
-    setProp(
-      (props: Props) =>
-        (props.homepageSettings[field] = value as CTASignedInType)
-    );
+    setProp((props: Props) => {
+      if (field === 'banner_cta_signed_out_type') {
+        props.homepageSettings[field] = value;
+      } else {
+        props.homepageSettings[field] = value as CTASignedInType;
+      }
+    });
     if (value !== 'customized_button') {
       setProp((props: Props) => {
         props.homepageSettings[
@@ -186,14 +191,14 @@ const HomepageBannerSettings = () => {
             ? 'banner_cta_signed_out_url'
             : 'banner_cta_signed_in_url'
         ] = '';
-        const newErrorTypes = props.errorTypes?.filter(
+        const newErrorTypes = props.errors?.filter(
           (errorType) =>
             errorType !==
             (field === 'banner_cta_signed_out_type'
               ? 'banner_cta_signed_out_url'
               : 'banner_cta_signed_in_url')
         );
-        props.errorTypes = newErrorTypes || [];
+        props.errors = newErrorTypes || [];
         if (newErrorTypes && newErrorTypes.length === 0) {
           props.hasError = false;
           eventEmitter.emit(CONTENT_BUILDER_ERROR_EVENT, {
@@ -362,7 +367,7 @@ const HomepageBannerSettings = () => {
                         value={homepageSettings.banner_cta_signed_out_url || ''}
                       />
                       {hasError &&
-                        errorTypes.includes('banner_cta_signed_out_url') && (
+                        errors.includes('banner_cta_signed_out_url') && (
                           <Error
                             marginTop="8px"
                             text={formatMessage(messages.invalidUrl)}
@@ -386,10 +391,10 @@ const HomepageBannerSettings = () => {
               setProp((props: Props) => {
                 props.homepageSettings.banner_signed_in_header_multiloc = value;
                 props.homepageSettings.banner_cta_signed_in_url = '';
-                const newErrorTypes = props.errorTypes?.filter(
+                const newErrorTypes = props.errors?.filter(
                   (errorType) => errorType !== 'banner_cta_signed_in_url'
                 );
-                props.errorTypes = newErrorTypes || [];
+                props.errors = newErrorTypes || [];
                 if (newErrorTypes && newErrorTypes.length === 0) {
                   props.hasError = false;
                   eventEmitter.emit(CONTENT_BUILDER_ERROR_EVENT, {
@@ -459,7 +464,7 @@ const HomepageBannerSettings = () => {
                       />
 
                       {hasError &&
-                        errorTypes.includes('banner_cta_signed_in_url') && (
+                        errors.includes('banner_cta_signed_in_url') && (
                           <Error
                             marginTop="8px"
                             text={formatMessage(messages.invalidUrl)}

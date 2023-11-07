@@ -18,7 +18,7 @@ import { Multiloc } from 'typings';
 import useLocalize from 'hooks/useLocalize';
 
 interface Props {
-  text: Multiloc;
+  text?: Multiloc;
 }
 
 const TextMultiloc = ({ text }: Props) => {
