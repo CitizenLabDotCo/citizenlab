@@ -137,11 +137,6 @@ export const AdminProjectsProjectIndex = ({
       name: 'survey-results',
     },
     {
-      label: formatMessage(messages.phasesTab),
-      url: 'timeline',
-      name: 'phases',
-    },
-    {
       label: formatMessage(messages.volunteeringTab),
       url: 'volunteering',
       feature: 'volunteering',

@@ -11,7 +11,6 @@ const AdminProjectsList = lazy(() => import('./all'));
 const AdminProjectsProjectIndex = lazy(() => import('./project'));
 const AdminProjectsProjectSettings = lazy(() => import('./project/settings'));
 const AdminProjectsProjectGeneral = lazy(() => import('./project/general'));
-const AdminProjectTimeline = lazy(() => import('./project/timeline'));
 const AdminPhaseNewAndEdit = lazy(() => import('./project/timeline/edit'));
 const AdminProjectEvents = lazy(() => import('./project/events'));
 const AdminProjectEventsEdit = lazy(() => import('./project/events/edit'));
@@ -158,14 +157,6 @@ const createAdminProjectsRoutes = () => {
             element: (
               <PageLoading>
                 <AdminPhaseNewAndEdit />
-              </PageLoading>
-            ),
-          },
-          {
-            path: 'timeline',
-            element: (
-              <PageLoading>
-                <AdminProjectTimeline />
               </PageLoading>
             ),
           },

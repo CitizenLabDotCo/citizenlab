@@ -30,10 +30,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.pollTab',
     defaultMessage: 'Poll',
   },
-  phasesTab: {
-    id: 'app.containers.AdminPage.ProjectEdit.phasesTab',
-    defaultMessage: 'Timeline',
-  },
   allowedInputTopicsTab: {
     id: 'app.containers.AdminPage.ProjectEdit.allowedInputTopicsTab',
     defaultMessage: 'Allowed input tags',
