@@ -33,6 +33,7 @@ import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { isValidUrl } from 'utils/validate';
 import { CONTENT_BUILDER_ERROR_EVENT } from 'components/admin/ContentBuilder/constants';
 import eventEmitter from 'utils/eventEmitter';
+import LayoutSettingField from './LayoutSettingField';
 
 const CTA_SIGNED_OUT_TYPES: CTASignedOutType[] = [
   'sign_up_button',
@@ -118,6 +119,7 @@ const HomepageBannerSettings = () => {
         node.data.props.homepageSettings.banner_cta_signed_out_type,
       banner_cta_signed_out_url:
         node.data.props.homepageSettings.banner_cta_signed_out_url,
+      banner_layout: node.data.props.homepageSettings.banner_layout,
     },
   }));
 
@@ -212,6 +214,16 @@ const HomepageBannerSettings = () => {
       flexDirection="column"
       gap="16px"
     >
+      <LayoutSettingField
+        bannerLayout={homepageSettings.banner_layout}
+        onChange={(value) => {
+          setProp(
+            (props: Props) =>
+              (props.homepageSettings.banner_layout =
+                value as THomepageBannerLayout)
+          );
+        }}
+      />
       <Toggle
         label={
           <Box>
