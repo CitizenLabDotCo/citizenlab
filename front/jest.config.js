@@ -32,6 +32,7 @@ module.exports = {
     '\\.(jpg|jpeg|png|gif|svg)$': '<rootDir>/app/utils/testUtils/fileMock.js',
     '^react-scroll-to-component$': 'identity-obj-proxy',
   },
+  modulePathIgnorePatterns: ['.*__mocks__.*'],
   testEnvironmentOptions: {
     url: 'https://demo.stg.citizenlab.co/en/',
   },
