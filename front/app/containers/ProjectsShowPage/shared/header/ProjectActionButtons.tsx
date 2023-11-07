@@ -36,6 +36,7 @@ import styled from 'styled-components';
 
 // router
 import { useLocation } from 'react-router-dom';
+import { useBreakpoint } from '@citizenlab/cl2-component-library';
 
 const Container = styled.div``;
 
@@ -51,6 +52,7 @@ interface Props {
 const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
+  const isSmallerThanTablet = useBreakpoint('tablet');
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
   const { pathname, hash: divId } = useLocation();
   const { data: events } = useEvents({
@@ -155,7 +157,6 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
 
   const { process_type, publication_status } = project.data.attributes;
 
-  const isProjectArchived = publication_status === 'archived';
   const isProcessTypeContinuous = process_type === 'continuous';
   const participationMethod = isProcessTypeContinuous
     ? project.data.attributes.participation_method
@@ -171,40 +172,30 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
       ]) === 'past'
     : false;
   const inputTerm = getInputTerm(process_type, project.data, phases?.data);
-  const isParticipationMethodNativeSurvey =
-    participationMethod === 'native_survey';
-  const isParticipationMethodIdeation = participationMethod === 'ideation';
-  const isParticipationMethodDocumentAnnotation =
-    participationMethod === 'document_annotation';
 
+  // Show button conditions
+  const generalShowCTAButtonCondition =
+    !isSmallerThanTablet && publication_status !== 'archived';
   const showSeeIdeasButton =
-    isParticipationMethodIdeation && isNumber(ideas_count) && ideas_count > 0;
-
+    participationMethod === 'ideation' &&
+    isNumber(ideas_count) &&
+    ideas_count > 0;
   const showPostIdeaButton =
-    !isProjectArchived && isParticipationMethodIdeation;
-
+    generalShowCTAButtonCondition && participationMethod === 'ideation';
   const showTakeNativeSurveyButton =
-    !isProjectArchived && isParticipationMethodNativeSurvey;
-
+    generalShowCTAButtonCondition && participationMethod === 'native_survey';
   const showTakeSurveyButton =
-    !isProjectArchived &&
+    !generalShowCTAButtonCondition &&
     participationMethod === 'survey' &&
     !hasCurrentPhaseEnded;
-
   const showTakePollButton =
-    // TODO: hide if project is archived?
-    participationMethod === 'poll' && !hasCurrentPhaseEnded;
-  const isPhaseIdeation =
-    currentPhase?.attributes.participation_method === 'ideation';
-
-  const isPhaseNativeSurvey =
-    currentPhase?.attributes.participation_method === 'native_survey';
-
-  const showDocumentAnnotationCTAButton =
-    !isProjectArchived &&
-    isParticipationMethodDocumentAnnotation &&
+    generalShowCTAButtonCondition &&
+    participationMethod === 'poll' &&
     !hasCurrentPhaseEnded;
-
+  const showDocumentAnnotationCTAButton =
+    generalShowCTAButtonCondition &&
+    participationMethod === 'document_annotation' &&
+    !hasCurrentPhaseEnded;
   const showEventsCTAButton = !!events?.data?.length;
 
   return (
@@ -249,7 +240,11 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
         <IdeaButton
           id="project-ideabutton"
           projectId={project.data.id}
-          participationContextType={isPhaseIdeation ? 'phase' : 'project'}
+          participationContextType={
+            currentPhase?.attributes.participation_method === 'ideation'
+              ? 'phase'
+              : 'project'
+          }
           fontWeight="500"
           phase={currentPhase}
           participationMethod="ideation"
@@ -260,7 +255,11 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
           id="project-survey-button"
           data-testid="e2e-project-survey-button"
           projectId={project.data.id}
-          participationContextType={isPhaseNativeSurvey ? 'phase' : 'project'}
+          participationContextType={
+            currentPhase?.attributes.participation_method === 'native_survey'
+              ? 'phase'
+              : 'project'
+          }
           fontWeight="500"
           phase={currentPhase}
           participationMethod="native_survey"
