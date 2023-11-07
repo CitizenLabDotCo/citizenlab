@@ -1176,6 +1176,7 @@
   "app.containers.AdminPage.FoldersEdit.statusLabel": "Publication status",
   "app.containers.AdminPage.FoldersEdit.subtitleNewFolder": "Explain why the projects belong together, define a visual identity and share information.",
   "app.containers.AdminPage.FoldersEdit.subtitleSettingsTab": "Explain why the projects belong together, define a visual identity and share information.",
+  "app.containers.AdminPage.FoldersEdit.textFieldsError": "All text fields must be filled in.",
   "app.containers.AdminPage.FoldersEdit.titleInputLabel": "Title",
   "app.containers.AdminPage.FoldersEdit.titleNewFolder": "Create a new folder",
   "app.containers.AdminPage.FoldersEdit.titleSettingsTab": "Settings",
