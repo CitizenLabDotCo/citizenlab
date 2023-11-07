@@ -98,7 +98,7 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
           </Warning>
         </Box>
       )}
-      <Title variant="h2" style={{ fontWeight: 600 }}>
+      <Title variant="h2" style={{ fontWeight: 500 }}>
         {config?.getStatusTitle &&
           formatMessage(config.getStatusHeader(basketStatus))}
       </Title>
