@@ -1,17 +1,14 @@
-import { FC, useEffect } from 'react';
-import { WrappedComponentProps } from 'react-intl';
+import { useEffect } from 'react';
 import { InsertConfigurationOptions, ITab } from 'typings';
-import { injectIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 type Props = {
   onData: (data: InsertConfigurationOptions<ITab>) => void;
 };
 
-const Tab: FC<Props & WrappedComponentProps> = ({
-  onData,
-  intl: { formatMessage },
-}) => {
+const Tab = ({ onData }: Props) => {
+  const { formatMessage } = useIntl();
   useEffect(() => {
     const tabName = 'map';
     onData({
@@ -21,7 +18,7 @@ const Tab: FC<Props & WrappedComponentProps> = ({
         url: 'map',
         feature: 'custom_maps',
       },
-      insertBeforeName: 'phases',
+      insertAfterName: 'ideaform',
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -29,4 +26,4 @@ const Tab: FC<Props & WrappedComponentProps> = ({
   return null;
 };
 
-export default injectIntl(Tab);
+export default Tab;
