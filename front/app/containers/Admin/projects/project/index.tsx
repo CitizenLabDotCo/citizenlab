@@ -8,6 +8,7 @@ import {
   useParams,
   useLocation,
 } from 'react-router-dom';
+import moment from 'moment';
 
 // components
 import GoBackButton from 'components/UI/GoBackButton';
@@ -16,6 +17,7 @@ import Outlet from 'components/Outlet';
 import {
   Box,
   Title,
+  Text,
   defaultCardStyle,
   colors,
 } from '@citizenlab/cl2-component-library';
@@ -327,6 +329,11 @@ export const AdminProjectsProjectIndex = ({
     setTabs((tabs) => insertConfiguration(data)(tabs));
   };
 
+  const startAt = moment(selectedPhase.attributes.start_at).format('LL');
+  const endAt = selectedPhase.attributes.end_at
+    ? moment(selectedPhase.attributes.end_at).format('LL')
+    : formatMessage(messages.noEndDate);
+
   return (
     <>
       <NavigationTabs>
@@ -388,6 +395,9 @@ export const AdminProjectsProjectIndex = ({
             <Title my="0px" variant="h3" color="blue500">
               {localize(selectedPhase.attributes.title_multiloc)}
             </Title>
+            <Text color="coolGrey600">
+              {startAt} → {endAt}
+            </Text>
             <Box display="flex">
               {getTabs(project.id).map(({ url, label }) => (
                 <Tab

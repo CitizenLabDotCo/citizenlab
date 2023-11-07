@@ -587,4 +587,8 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.view',
     defaultMessage: 'View',
   },
+  noEndDate: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.noEndDate',
+    defaultMessage: 'No end date',
+  },
 });
