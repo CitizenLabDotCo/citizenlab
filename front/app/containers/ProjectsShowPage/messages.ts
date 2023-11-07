@@ -438,4 +438,8 @@ export default defineMessages({
     id: 'app.containers.Projects.noEndDate',
     defaultMessage: 'No end date',
   },
+  newPhase: {
+    id: 'app.containers.Projects.newPhase',
+    defaultMessage: 'New phase',
+  },
 });

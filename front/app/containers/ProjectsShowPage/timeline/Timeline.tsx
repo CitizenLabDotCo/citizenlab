@@ -6,7 +6,7 @@ import tracks from './tracks';
 import { trackEventByName } from 'utils/analytics';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Icon } from '@citizenlab/cl2-component-library';
 import PhaseDescriptions from './PhaseDescriptions';
 
 // hooks
@@ -24,6 +24,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
 import setPhaseURL from './setPhaseURL';
+import clHistory from 'utils/cl-router/history';
 
 // style
 import styled, { css } from 'styled-components';
@@ -31,7 +32,7 @@ import { media, colors, fontSizes, isRtl } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { darken, rgba } from 'polished';
 
-const MIN_PHASE_WIDTH_PX = 110;
+const MIN_PHASE_WIDTH_PX = 44;
 const CONTAINER_PADDING_PX = 20;
 
 const grey = colors.textSecondary;
@@ -171,12 +172,14 @@ const currentSelectedPhaseBar = css`
 `;
 
 const PhaseContainer = styled.div<{
-  width: number;
+  width?: number;
   breakpoint: number;
   last: boolean;
+  isBackoffice?: boolean;
 }>`
-  width: ${(props) => props.width}%;
-  min-width: ${MIN_PHASE_WIDTH_PX}px;
+  width: ${(props) => (props.width ? `${props.width}%` : '100%')};
+  min-width: ${(props) =>
+    props.isBackoffice ? '44px' : `${MIN_PHASE_WIDTH_PX}px`};
   display: flex;
   flex-direction: column;
   position: relative;
@@ -307,7 +310,8 @@ const Timeline = ({
                 const phaseNumber = phaseIndex + 1;
                 const phaseTitle = localize(phase.attributes.title_multiloc);
                 const isFirst = phaseIndex === 0;
-                const isLast = phaseIndex === phases.data.length - 1;
+                const isLast =
+                  !isBackoffice && phaseIndex === phases.data.length - 1;
                 const isCurrentPhase = phase.id === currentPhaseId;
                 const isSelectedPhase = phase.id === selectedPhaseId;
                 const classNames = [
@@ -361,6 +365,39 @@ const Timeline = ({
                   </PhaseContainer>
                 );
               })}
+              {isBackoffice && (
+                <Box width="44px">
+                  <PhaseContainer
+                    className="first"
+                    key="new-phase"
+                    breakpoint={phasesBreakpoint}
+                    last
+                  >
+                    <PhaseBar
+                      onMouseDown={removeFocusAfterMouseClick}
+                      onKeyDown={handleTabListOnKeyDown}
+                      onClick={() => {
+                        clHistory.push(
+                          `/admin/projects/${projectId}/phases/new`
+                        );
+                      }}
+                      role="tab"
+                      id="new-phase"
+                    >
+                      <span aria-hidden>
+                        <Icon
+                          name="plus"
+                          fill={colors.coolGrey700}
+                          height="16px"
+                        />
+                      </span>
+                      <ScreenReaderOnly>
+                        <FormattedMessage {...messages.newPhase} />
+                      </ScreenReaderOnly>
+                    </PhaseBar>
+                  </PhaseContainer>
+                </Box>
+              )}
             </RtlBox>
             {!isBackoffice && (
               <PhaseDescriptions

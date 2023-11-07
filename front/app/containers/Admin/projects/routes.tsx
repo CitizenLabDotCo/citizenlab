@@ -12,9 +12,7 @@ const AdminProjectsProjectIndex = lazy(() => import('./project'));
 const AdminProjectsProjectSettings = lazy(() => import('./project/settings'));
 const AdminProjectsProjectGeneral = lazy(() => import('./project/general'));
 const AdminProjectTimeline = lazy(() => import('./project/timeline'));
-const AdminProjectTimelineNewAndEdit = lazy(
-  () => import('./project/timeline/edit')
-);
+const AdminPhaseNewAndEdit = lazy(() => import('./project/timeline/edit'));
 const AdminProjectEvents = lazy(() => import('./project/events'));
 const AdminProjectEventsEdit = lazy(() => import('./project/events/edit'));
 const AdminProjectPermissions = lazy(() => import('./project/permissions'));
@@ -151,7 +149,7 @@ const createAdminProjectsRoutes = () => {
             path: 'setup',
             element: (
               <PageLoading>
-                <AdminProjectTimelineNewAndEdit />
+                <AdminPhaseNewAndEdit />
               </PageLoading>
             ),
           },
@@ -159,7 +157,7 @@ const createAdminProjectsRoutes = () => {
             path: 'setup/:id',
             element: (
               <PageLoading>
-                <AdminProjectTimelineNewAndEdit />
+                <AdminPhaseNewAndEdit />
               </PageLoading>
             ),
           },
@@ -172,26 +170,27 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           {
-            path: 'timeline/new',
+            path: 'phases/new',
             element: (
               <PageLoading>
-                <AdminProjectTimelineNewAndEdit />
+                <AdminPhaseNewAndEdit />
               </PageLoading>
             ),
           },
+          // TODO: Hook up input manager on phase
+          // {
+          //   path: 'timeline/:id/ideas',
+          //   element: (
+          //     <PageLoading>
+          //       <AdminProjectIdeas />
+          //     </PageLoading>
+          //   ),
+          // },
           {
-            path: 'timeline/:id/ideas',
+            path: 'phases/:id',
             element: (
               <PageLoading>
-                <AdminProjectIdeas />
-              </PageLoading>
-            ),
-          },
-          {
-            path: 'timeline/:id',
-            element: (
-              <PageLoading>
-                <AdminProjectTimelineNewAndEdit />
+                <AdminPhaseNewAndEdit />
               </PageLoading>
             ),
           },

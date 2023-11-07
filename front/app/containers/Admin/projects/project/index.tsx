@@ -88,11 +88,15 @@ export const AdminProjectsProjectIndex = ({
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const { pathname } = useLocation();
-  const { id: phaseId } = useParams() as {
+  const { projectId, id: phaseId } = useParams() as {
+    projectId: string;
     id?: string;
   };
   const [selectedPhase, setSelectedPhase] = useState<IPhaseData | undefined>(
     undefined
+  );
+  const isNewPhaseLink = pathname.endsWith(
+    `admin/projects/${projectId}/phases/new`
   );
 
   useEffect(() => {
@@ -379,23 +383,25 @@ export const AdminProjectsProjectIndex = ({
         phases={phases}
       />
       <Box p="40px">
-        <Container>
-          <Title my="0px" variant="h3" color="blue500">
-            {localize(selectedPhase.attributes.title_multiloc)}
-          </Title>
-          <Box display="flex">
-            {getTabs(project.id).map(({ url, label }) => (
-              <Tab
-                label={label}
-                url={url}
-                key={url}
-                active={isTopBarNavActive('/admin/ideas', pathname, url)}
-              >
-                <Link to={url}>{label}</Link>
-              </Tab>
-            ))}
-          </Box>
-        </Container>
+        {!isNewPhaseLink && (
+          <Container>
+            <Title my="0px" variant="h3" color="blue500">
+              {localize(selectedPhase.attributes.title_multiloc)}
+            </Title>
+            <Box display="flex">
+              {getTabs(project.id).map(({ url, label }) => (
+                <Tab
+                  label={label}
+                  url={url}
+                  key={url}
+                  active={isTopBarNavActive('/admin/ideas', pathname, url)}
+                >
+                  <Link to={url}>{label}</Link>
+                </Tab>
+              ))}
+            </Box>
+          </Container>
+        )}
 
         <Box p="40px" background={colors.white}>
           <RouterOutlet />

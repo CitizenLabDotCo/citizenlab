@@ -83,16 +83,17 @@ const convertToFileType = (phaseFiles: IPhaseFiles | undefined) => {
 
 const CONFIGURABLE_CAMPAIGN_NAMES: CampaignName[] = ['project_phase_started'];
 
-const AdminProjectTimelineEdit = () => {
+const AdminPhaseEdit = () => {
   const { data: appConfig } = useAppConfiguration();
   const { mutateAsync: addPhaseFile } = useAddPhaseFile();
   const { mutateAsync: deletePhaseFile } = useDeletePhaseFile();
   const { projectId, id: phaseId } = useParams() as {
     projectId: string;
-    id: string;
+    id?: string;
   };
-  const { data: phaseFiles } = usePhaseFiles(phaseId);
-  const { data: phase } = usePhase(phaseId || null);
+  const { data: phaseFiles } = usePhaseFiles(phaseId || null);
+  const { data: phaseData } = usePhase(phaseId || null);
+  const phase = phaseId ? phaseData : undefined;
   const { data: phases } = usePhases(projectId);
   const { data: campaigns } = useCampaigns({
     campaignNames: CONFIGURABLE_CAMPAIGN_NAMES,
@@ -581,4 +582,4 @@ const AdminProjectTimelineEdit = () => {
   );
 };
 
-export default AdminProjectTimelineEdit;
+export default AdminPhaseEdit;

@@ -124,7 +124,7 @@ const AdminProjectTimelineIndex = ({
       <AddButton
         icon="plus-circle"
         buttonStyle="cl-blue"
-        linkTo={`/admin/projects/${projectId}/timeline/new`}
+        linkTo={`/admin/projects/${projectId}/phases/new`}
       >
         <FormattedMessage {...messages.addPhaseButton} />
       </AddButton>
