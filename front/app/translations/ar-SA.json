@@ -1335,6 +1335,7 @@
   "app.containers.Projects.oneSurvey": "مسح واحد",
   "app.containers.Projects.oneSurveyInCurrentPhase": "1 مسح في المرحلة الحالية",
   "app.containers.Projects.options": "الخيارات",
+  "app.containers.Projects.participantsTooltip3": "يعكس هذا الرقم أيضًا عمليات إرسال الاستطلاع المجهولة. من الممكن تقديم استطلاعات مجهولة المصدر إذا كانت الاستطلاعات مفتوحة للجميع (راجع علامة التبويب \"حقوق الوصول\" لهذا المشروع).",
   "app.containers.Projects.pastEvents": "أحداث سابقة",
   "app.containers.Projects.phases": "مراحل",
   "app.containers.Projects.poll": "1 استطلاع",
