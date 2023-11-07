@@ -44,7 +44,7 @@ RSpec.describe Idea do
 
       it 'returns the project' do
         # TODO: JS this is going to impact custom forms?
-        expect(idea.participation_method_on_creation).to eq project
+        expect(idea.participation_method_on_creation).to be_an_instance_of ParticipationMethod::Ideation
       end
     end
   end
