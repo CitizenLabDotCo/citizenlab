@@ -1176,6 +1176,7 @@
   "app.containers.AdminPage.FoldersEdit.statusLabel": "Statut du dossier",
   "app.containers.AdminPage.FoldersEdit.subtitleNewFolder": "Expliquer pourquoi ces projets sont communs, définir une identité visuelle et partager des informations.",
   "app.containers.AdminPage.FoldersEdit.subtitleSettingsTab": "Expliquer pourquoi ces projets sont communs, définir une identité visuelle et partager des informations.",
+  "app.containers.AdminPage.FoldersEdit.textFieldsError": "Tous les champs de texte doivent être remplis.",
   "app.containers.AdminPage.FoldersEdit.titleInputLabel": "Titre",
   "app.containers.AdminPage.FoldersEdit.titleNewFolder": "Créer un nouveau dossier",
   "app.containers.AdminPage.FoldersEdit.titleSettingsTab": "Paramètres",
