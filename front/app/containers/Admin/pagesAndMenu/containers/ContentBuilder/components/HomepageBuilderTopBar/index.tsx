@@ -83,7 +83,6 @@ const BuilderTopBar = ({
         </Box>
         <LocaleSwitcher
           selectedLocale={selectedLocale}
-          localesWithError={[]}
           onSelectLocale={handleSelectLocale}
         />
         <Box ml="24px" />
