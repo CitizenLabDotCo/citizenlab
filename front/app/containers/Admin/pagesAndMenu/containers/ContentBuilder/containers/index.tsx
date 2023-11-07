@@ -12,10 +12,7 @@ import FullscreenContentBuilder from 'components/admin/ContentBuilder/Fullscreen
 import Editor from '../components/Editor';
 import HomepageBuilderToolbox from '../components/HomepageBuilderToolbox';
 import HomepageBuilderTopBar from '../components/HomepageBuilderTopBar';
-import {
-  StyledRightColumn,
-  ErrorMessage,
-} from 'components/admin/ContentBuilder/Frame/FrameWrapper';
+import { StyledRightColumn } from 'components/admin/ContentBuilder/Frame/FrameWrapper';
 import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
 import ContentBuilderSettings from 'components/admin/ContentBuilder/Settings';
 
@@ -59,9 +56,9 @@ const HomepageBuilderPage = () => {
     return null;
   }
 
-  const localesWithError = Object.values(contentBuilderErrors)
-    .filter((node) => node.hasError)
-    .map((node) => node.selectedLocale);
+  const hasError =
+    Object.values(contentBuilderErrors).filter((node) => node.hasError).length >
+    0;
 
   const handleErrors = (newErrors: ContentBuilderErrors) => {
     setContentBuilderErrors((contentBuilderErrors) => ({
@@ -111,7 +108,7 @@ const HomepageBuilderPage = () => {
     >
       <Editor isPreview={false} onNodesChange={handleEditorChange}>
         <HomepageBuilderTopBar
-          localesWithError={localesWithError}
+          hasError={hasError}
           hasPendingState={imageUploading}
           previewEnabled={previewEnabled}
           setPreviewEnabled={setPreviewEnabled}
@@ -131,7 +128,6 @@ const HomepageBuilderPage = () => {
               platformLocale={locale}
             >
               <Box width="1000px">
-                <ErrorMessage localesWithError={localesWithError} />
                 <ContentBuilderFrame editorData={getEditorData()} />
               </Box>
             </ContentBuilderLanguageProvider>
