@@ -114,7 +114,7 @@ const CTAButton = ({ participationContext }: Props) => {
       placement="bottom"
       content={disabledExplanation}
     >
-      <div>
+      <Box width="100%">
         <Button
           icon="vote-ballot"
           buttonStyle="secondary"
@@ -132,7 +132,7 @@ const CTAButton = ({ participationContext }: Props) => {
         >
           <FormattedMessage {...messages.submit} />
         </Button>
-      </div>
+      </Box>
     </Tippy>
   );
 };

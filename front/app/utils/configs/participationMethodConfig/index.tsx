@@ -26,7 +26,6 @@ import { CTABarProps } from 'components/ParticipationCTABars/utils';
 import { isNilOrError, NilOrError } from '../../helperUtils';
 import clHistory from 'utils/cl-router/history';
 import { IIdea } from 'api/ideas/types';
-import { EventsCTABar } from 'components/ParticipationCTABars/EventsCTABar';
 
 export const defaultSortingOptions = [
   { text: <FormattedMessage {...messages.trending} />, value: 'trending' },
@@ -57,7 +56,7 @@ type FormTitleMethodProps = {
 
 type PostSortingOptionType = { text: JSX.Element; value: string };
 
-/* 
+/*
 Configuration Description
 ---------------------------------
 formEditor: We currently have 2 UIs for admins to edit the form definition. This defines which UI, if any, the method uses.
@@ -226,9 +225,7 @@ const informationConfig: ParticipationMethodConfig = {
   postType: 'defaultInput',
   showInputManager: false,
   isMethodLocked: false,
-  renderCTABar: (props: CTABarProps) => {
-    return <EventsCTABar project={props.project} phases={props.phases} />;
-  },
+  renderCTABar: () => null,
 };
 
 const surveyConfig: ParticipationMethodConfig = {

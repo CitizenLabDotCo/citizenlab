@@ -101,6 +101,7 @@ export const EmbeddedSurveyCTABar = ({ phases, project }: CTABarProps) => {
             textHoverColor={theme.colors.black}
             padding="6px 12px"
             fontSize="14px"
+            width="100%"
           >
             <FormattedMessage {...messages.takeTheSurvey} />
           </Button>

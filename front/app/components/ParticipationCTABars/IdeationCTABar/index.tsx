@@ -62,7 +62,7 @@ export const IdeationCTABar = ({ phases, project }: CTABarProps) => {
     CTAButton = null;
   } else {
     CTAButton = enabled ? (
-      <Box display="flex" justifyContent="flex-end">
+      <Box width="100%">
         <IdeaButton
           id="e2e-ideation-cta-button"
           projectId={project.id}

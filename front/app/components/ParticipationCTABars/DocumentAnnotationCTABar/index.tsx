@@ -91,6 +91,7 @@ export const DocumentAnnotationCTABar = ({ phases, project }: CTABarProps) => {
             textHoverColor={theme.colors.black}
             padding="6px 12px"
             fontSize="14px"
+            width="100%"
           >
             <FormattedMessage {...messages.reviewDocument} />
           </Button>
