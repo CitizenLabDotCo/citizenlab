@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 // components
 import { Button } from '@citizenlab/cl2-component-library';
-import { ParticipationCTAContent } from 'components/ParticipationCTABars/ParticipationCTAContent';
+import ParticipationCTAContent from 'components/ParticipationCTABars/ParticipationCTAContent';
 
 // hooks
 import { useTheme } from 'styled-components';

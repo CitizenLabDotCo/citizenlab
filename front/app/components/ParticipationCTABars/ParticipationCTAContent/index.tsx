@@ -58,7 +58,7 @@ type Props = {
   project: IProjectData;
 };
 
-export const ParticipationCTAContent = ({
+const ParticipationCTAContent = ({
   currentPhase,
   CTAButton,
   hasUserParticipated = false,
@@ -231,3 +231,5 @@ export const ParticipationCTAContent = ({
     </Box>
   );
 };
+
+export default ParticipationCTAContent;

@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 
 // components
 import { Text } from '@citizenlab/cl2-component-library';
-import { ParticipationCTAContent } from 'components/ParticipationCTABars/ParticipationCTAContent';
+import ParticipationCTAContent from 'components/ParticipationCTABars/ParticipationCTAContent';
 import ErrorToast from 'components/ErrorToast';
 import CTAButton from './CTAButton';
 
@@ -71,8 +71,7 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
               color="white"
               m="0px"
               fontSize="s"
-              my="0px"
-              textAlign="left"
+              // textAlign="left"
               aria-live="polite"
             >
               {votesCounter}

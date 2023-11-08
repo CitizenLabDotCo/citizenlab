@@ -3,7 +3,7 @@ import React, { useEffect, useState, FormEvent } from 'react';
 // Components
 import { Box, Button, useBreakpoint } from '@citizenlab/cl2-component-library';
 import IdeaButton from 'components/IdeaButton';
-import { ParticipationCTAContent } from 'components/ParticipationCTABars/ParticipationCTAContent';
+import ParticipationCTAContent from 'components/ParticipationCTABars/ParticipationCTAContent';
 
 // hooks
 import { useTheme } from 'styled-components';
