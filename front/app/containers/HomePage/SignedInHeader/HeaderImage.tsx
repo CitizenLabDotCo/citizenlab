@@ -51,7 +51,6 @@ const HeaderImage = ({
       : null;
     const isFixedBannerLayout =
       homepageSettings.banner_layout === 'fixed_ratio_layout';
-    console.log(homepageSettings.banner_signed_in_header_overlay_opacity);
     return (
       <HeaderImageContainer>
         <HeaderImageContainerInner data-cy="e2e-signed-in-header-image-parent">
