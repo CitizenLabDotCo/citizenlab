@@ -1,8 +1,8 @@
 import React, { memo, useEffect } from 'react';
 
 // components
-import Card from './Card';
-import { useBreakpoint, Box } from '@citizenlab/cl2-component-library';
+import { useBreakpoint, Box, Title } from '@citizenlab/cl2-component-library';
+import Image from 'components/UI/Image';
 import Body from './Body';
 import ImagePlaceholder from './ImagePlaceholder';
 import Footer from './Footer';
@@ -14,9 +14,18 @@ import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import clHistory from 'utils/cl-router/history';
 import { useSearchParams } from 'react-router-dom';
+import Link from 'utils/cl-router/Link';
 
 // types
 import { IIdea } from 'api/ideas/types';
+
+// styling
+import styled from 'styled-components';
+import {
+  defaultCardStyle,
+  defaultCardHoverStyle,
+  media,
+} from 'utils/styleUtils';
 
 // hooks
 import useIdeaById from 'api/ideas/useIdeaById';
@@ -46,6 +55,43 @@ export interface Props {
   showFollowButton?: boolean;
 }
 
+const Container = styled(Link)`
+  display: block;
+  ${defaultCardStyle};
+  cursor: pointer;
+  ${defaultCardHoverStyle};
+  width: 100%;
+  display: flex;
+  padding: 17px;
+
+  ${media.tablet`
+    flex-direction: column;
+  `}
+`;
+
+const IdeaCardImageWrapper = styled.div<{ $cardInnerHeight: string }>`
+  flex: 0 0 ${(props) => props.$cardInnerHeight};
+  width: ${(props) => props.$cardInnerHeight};
+  height: ${(props) => props.$cardInnerHeight};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 18px;
+  overflow: hidden;
+  border-radius: ${(props) => props.theme.borderRadius};
+
+  ${media.tablet`
+    width: 100%;
+    margin-bottom: 18px;
+  `}
+`;
+
+const IdeaCardImage = styled(Image)`
+  width: 100%;
+  height: 100%;
+  flex: 1;
+`;
+
 const IdeaLoading = (props: Props) => {
   const { data: idea } = useIdeaById(props.ideaId);
 
@@ -73,6 +119,7 @@ const IdeaCard = memo<IdeaCardProps>(
   }) => {
     const isGeneralIdeasPage = window.location.pathname.endsWith('/ideas');
     const smallerThanPhone = useBreakpoint('phone');
+    const smallerThanTablet = useBreakpoint('tablet');
     const localize = useLocalize();
     const { data: project } = useProjectById(
       idea.data.relationships.project.data.id
@@ -135,34 +182,51 @@ const IdeaCard = memo<IdeaCardProps>(
         ? true
         : false;
 
+    const image = ideaImage?.data.attributes.versions.medium;
+    const showImage = !!image && !hideImage;
+    const innerHeight = showFollowButton ? '192px' : '162px';
+
     return (
-      <Card
+      <Container
+        className={`e2e-card e2e-idea-card ${className ?? ''}`.trim()}
         id={idea.data.id}
-        className={`${className ?? ''} e2e-idea-card`.trim()}
         to={`/ideas/${slug}${params}`}
         onClick={handleClick}
-        title={ideaTitle}
-        image={hideImage ? null : ideaImage?.data.attributes.versions.medium}
-        imagePlaceholder={
-          hideImagePlaceholder ? undefined : (
+      >
+        {showImage && (
+          <IdeaCardImageWrapper $cardInnerHeight={innerHeight}>
+            <IdeaCardImage src={image} cover={true} alt="" />
+          </IdeaCardImageWrapper>
+        )}
+
+        {!showImage && !hideImagePlaceholder && (
+          <IdeaCardImageWrapper $cardInnerHeight={innerHeight}>
             <ImagePlaceholder
               participationMethod={participationMethod}
               votingMethod={votingMethod}
             />
-          )
-        }
-        innerHeight={showFollowButton ? '192px' : undefined}
-        body={hideBody ? undefined : <Body idea={idea} />}
-        interactions={
-          hideInteractions ? null : (
-            <Interactions
-              idea={idea}
-              participationContext={participationContext}
-            />
-          )
-        }
-        footer={
-          <>
+          </IdeaCardImageWrapper>
+        )}
+
+        <Box
+          ml="12px"
+          display="flex"
+          flexDirection="column"
+          justifyContent="space-between"
+        >
+          <Box mb={smallerThanTablet ? '24px' : undefined}>
+            <Title variant="h3" mt="4px" mb="16px">
+              {ideaTitle}
+            </Title>
+            {!hideBody && <Body idea={idea} />}
+          </Box>
+          <Box>
+            {!hideInteractions && (
+              <Interactions
+                idea={idea}
+                participationContext={participationContext}
+              />
+            )}
             <Footer
               project={project}
               idea={idea.data}
@@ -180,9 +244,9 @@ const IdeaCard = memo<IdeaCardProps>(
                 />
               </Box>
             )}
-          </>
-        }
-      />
+          </Box>
+        </Box>
+      </Container>
     );
   }
 );
