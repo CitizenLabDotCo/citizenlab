@@ -210,7 +210,7 @@ export const AdminProjectsProjectIndex = ({
           </Box>
         </Box>
       </NavigationTabs>
-      <Box mt="78px" px="40px">
+      <Box mt="16px" px="40px">
         <Timeline
           projectId={project.id}
           selectedPhase={selectedPhase}
