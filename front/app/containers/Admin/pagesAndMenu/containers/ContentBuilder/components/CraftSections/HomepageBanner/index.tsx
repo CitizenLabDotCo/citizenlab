@@ -34,6 +34,7 @@ import { isValidUrl } from 'utils/validate';
 import { CONTENT_BUILDER_ERROR_EVENT } from 'components/admin/ContentBuilder/constants';
 import eventEmitter from 'utils/eventEmitter';
 import LayoutSettingField from './LayoutSettingField';
+import OverlayControls from './OverlayControls';
 
 const CTA_SIGNED_OUT_TYPES: CTASignedOutType[] = [
   'sign_up_button',
@@ -122,6 +123,9 @@ const HomepageBannerSettings = () => {
       banner_cta_signed_out_url:
         node.data.props.homepageSettings.banner_cta_signed_out_url,
       banner_layout: node.data.props.homepageSettings.banner_layout,
+      banner_signed_out_header_overlay_opacity:
+        node.data.props.homepageSettings
+          .banner_signed_out_header_overlay_opacity,
     },
   }));
 
@@ -285,6 +289,22 @@ const HomepageBannerSettings = () => {
 
       {search.get('variant') !== 'signedIn' && (
         <>
+          <OverlayControls
+            bannerOverlayColor={
+              homepageSettings.banner_signed_out_header_overlay_color
+            }
+            bannerOverlayOpacity={
+              homepageSettings.banner_signed_out_header_overlay_opacity
+            }
+            onOverlayChange={(opacity, color) => {
+              setProp((props: Props) => {
+                props.homepageSettings.banner_signed_out_header_overlay_color =
+                  color;
+                props.homepageSettings.banner_signed_out_header_overlay_opacity =
+                  opacity;
+              });
+            }}
+          />
           <InputMultilocWithLocaleSwitcher
             label={formatMessage(messages.bannerText)}
             type="text"
