@@ -10,55 +10,60 @@ class ContentImageService
     attr_reader :parse_errors
   end
 
-  def swap_data_images(imageable, field)
-    multiloc = imageable.send field
+  def swap_data_images_multiloc(multiloc, imageable: nil, field: nil)
     multiloc.each_with_object({}) do |(locale, encoded_content), output|
-      content = begin
-        decode_content encoded_content
-      rescue DecodingError => e
-        log_decoding_error e
-        output[locale] = encoded_content
-        next
-      end
-
-      image_elements(content).each do |img_elt|
-        next unless attribute? img_elt, image_attribute_for_element
-
-        unless attribute? img_elt, code_attribute_for_element
-          content_image = content_image_class.create! image_attributes(img_elt, imageable, field)
-          set_attribute! img_elt, code_attribute_for_element, content_image[code_attribute_for_model]
-        end
-        remove_attribute! img_elt, image_attribute_for_element
-      end
-
-      output[locale] = encode_content content
+      output[locale] = swap_data_images encoded_content, imageable: imageable, field: field
     end
   end
 
-  def render_data_images(imageable, field)
-    multiloc = imageable.send field
+  def swap_data_images(encoded_content, imageable: nil, field: nil)
+    content = begin
+      decode_content encoded_content
+    rescue DecodingError => e
+      log_decoding_error e
+      return encoded_content
+    end
 
-    return multiloc if multiloc.nil?
-    return multiloc unless multiloc.values.any? { |encoded_content| could_include_images?(encoded_content) }
+    image_elements(content).each do |img_elt|
+      next unless attribute? img_elt, image_attribute_for_element
 
-    precompute_for_rendering multiloc, imageable, field
+      unless attribute? img_elt, code_attribute_for_element
+        content_image = content_image_class.create! image_attributes(img_elt, imageable, field)
+        set_attribute! img_elt, code_attribute_for_element, content_image[code_attribute_for_model]
+      end
+      remove_attribute! img_elt, image_attribute_for_element
+    end
+
+    encode_content content
+  end
+
+  def render_data_images_multiloc(multiloc, imageable: nil, field: nil)
+    return multiloc if multiloc.blank?
+    return multiloc if !multiloc.values.any? { |encoded_content| could_include_images?(encoded_content) }
+
+    precompute_for_rendering_multiloc multiloc, imageable, field
 
     multiloc.each_with_object({}) do |(locale, encoded_content), output|
-      content = decode_content encoded_content
-
-      image_elements(content).each do |img_elt|
-        next unless attribute? img_elt, code_attribute_for_element
-
-        code = get_attribute img_elt, code_attribute_for_element
-        content_image = fetch_content_image code
-        if content_image.present?
-          set_attribute! img_elt, image_attribute_for_element, content_image_url(content_image)
-        else
-          log_content_image_not_found code, imageable, field
-        end
-      end
-      output[locale] = encode_content content
+      output[locale] = render_data_images encoded_content, imageable: imageable, field: field
     end
+  end
+
+  def render_data_images(encoded_content, imageable: nil, field: nil)
+    content = decode_content encoded_content
+    # precompute_for_rendering content, imageable, field
+
+    image_elements(content).each do |img_elt|
+      next unless attribute? img_elt, code_attribute_for_element
+
+      code = get_attribute img_elt, code_attribute_for_element
+      content_image = fetch_content_image code
+      if content_image.present?
+        set_attribute! img_elt, image_attribute_for_element, content_image_url(content_image)
+      else
+        log_content_image_not_found code, imageable, field
+      end
+    end
+    encode_content content
   end
 
   protected
@@ -121,7 +126,7 @@ class ContentImageService
     true
   end
 
-  def precompute_for_rendering(_multiloc, _imageable, _field); end
+  def precompute_for_rendering_multiloc(_multiloc, _imageable, _field); end
 
   def fetch_content_image(code)
     content_image_class.find_by code_attribute_for_model => code
