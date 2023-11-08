@@ -25,6 +25,7 @@ import { getIdeaPostingRules } from 'utils/actionTakingRules';
 import useAuthUser from 'api/me/useAuthUser';
 import { getCurrentPhase } from 'api/phases/utils';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+import { isFixableByAuthentication } from 'utils/actionDescriptors';
 
 const NewIdeaPage = () => {
   const { slug } = useParams();
@@ -86,7 +87,9 @@ const NewIdeaPage = () => {
 
     return (
       <Unauthorized
-        informationRequired={true}
+        fixableByAuthentication={
+          (disabledReason && isFixableByAuthentication(disabledReason)) || false
+        }
         triggerAuthFlow={triggerAuthFlow}
       />
     );

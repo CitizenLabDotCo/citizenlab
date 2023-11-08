@@ -20,12 +20,12 @@ import messages from './messages';
 import pageNotFoundMessages from '../PageNotFound/messages';
 
 type UnauthorizedProps = {
-  informationRequired?: boolean;
+  fixableByAuthentication?: boolean;
   triggerAuthFlow?: () => void;
 };
 
 const Unauthorized = ({
-  informationRequired = false,
+  fixableByAuthentication = false,
   triggerAuthFlow,
 }: UnauthorizedProps) => {
   const theme = useTheme();
@@ -50,7 +50,7 @@ const Unauthorized = ({
 
   const userIsNotLoggedIn = authUser === null;
 
-  if (informationRequired && authUser) {
+  if (fixableByAuthentication && authUser) {
     return (
       <Box
         height={`calc(100vh - ${theme.menuHeight + theme.footerHeight})`}
