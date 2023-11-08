@@ -35,6 +35,14 @@ FactoryBot.define do
         end
       end
     end
+    factory :idea_with_phase do
+      transient do
+        phase { project.phases.first }
+      end
+      after(:create) do |idea, evaluator|
+        idea.phases << evaluator.phase
+      end
+    end
   end
 
   factory :native_survey_response, class: 'Idea' do

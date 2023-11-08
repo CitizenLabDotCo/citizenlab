@@ -7,11 +7,8 @@ describe CommentReactionPolicy do
 
   let(:scope) { CommentReactionPolicy::Scope.new(user, Reaction) }
   let(:project) { create(:continuous_project) }
-  let(:idea) do
-    idea = create(:idea, project: project)
-    idea.phases << project.phases.first
-    idea
-  end
+  let(:idea) { create(:idea_with_phase, project: project) }
+
   let(:comment) { create(:comment, post: idea) }
 
   context 'for a visitor' do
@@ -81,7 +78,7 @@ describe CommentReactionPolicy do
     end
   end
 
-  # TODO: JS Bug - previously worked because it was a timeline project with no phase so returned 'project_inactive' as no current context
+  # TODO: JS Bug - previously worked because it was a timeline project with no phase so returned 'project_inactive' as it had no current context
   # context 'for a mortal user who owns the reaction on a private project' do
   #   let(:project) { create(:private_admins_project) }
   #   let!(:reaction) { create(:reaction, reactable: comment) }
