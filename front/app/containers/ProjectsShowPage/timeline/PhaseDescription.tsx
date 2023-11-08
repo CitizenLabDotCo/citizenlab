@@ -29,11 +29,12 @@ const Container = styled.div<{ hasBottomMargin: boolean }>`
   padding-bottom: 35px;
   ${defaultCardStyle};
 
+  margin-bottom: ${(props) => (props.hasBottomMargin ? '50px' : '0px')};
+
   ${media.phone`
     padding: 20px;
+    margin-bottom: ${(props) => (props.hasBottomMargin ? '20px' : '0px')};
   `}
-
-  margin-bottom: ${(props) => (props.hasBottomMargin ? '50px' : '0px')};
 `;
 
 const StyledFileAttachments = styled(FileAttachments)`
