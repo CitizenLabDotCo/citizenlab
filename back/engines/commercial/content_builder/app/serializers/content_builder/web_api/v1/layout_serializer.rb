@@ -8,6 +8,7 @@ module ContentBuilder
         attributes :enabled, :code, :created_at, :updated_at
 
         attribute :craftjs_jsonmultiloc do |layout|
+          # TODO: keep using multiloc for report builder
           LayoutImageService.new.render_data_images layout, :craftjs_jsonmultiloc
         end
       end
