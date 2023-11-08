@@ -7,7 +7,11 @@ describe CommentReactionPolicy do
 
   let(:scope) { CommentReactionPolicy::Scope.new(user, Reaction) }
   let(:project) { create(:continuous_project) }
-  let(:idea) { create(:idea, project: project) }
+  let(:idea) do
+    idea = create(:idea, project: project)
+    idea.phases << project.phases.first
+    idea
+  end
   let(:comment) { create(:comment, post: idea) }
 
   context 'for a visitor' do
@@ -94,7 +98,11 @@ describe CommentReactionPolicy do
   end
 
   context 'for a mortal user who owns the reaction on a project where commenting is disabled' do
-    let(:project) { create(:project, commenting_enabled: false) }
+    let(:project) do
+      project = create(:continuous_project)
+      project.phases.first.update!(commenting_enabled: false)
+      project
+    end
     let!(:reaction) { create(:reaction, reactable: comment) }
     let(:user) { reaction.user }
 
