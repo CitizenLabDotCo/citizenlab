@@ -20,8 +20,7 @@ class WebApi::V1::HomePageSerializer < WebApi::V1::BaseSerializer
     :banner_cta_signed_out_text_multiloc,
     :banner_cta_signed_out_type,
     :banner_cta_signed_out_url,
-    :pinned_admin_publication_ids,
-    :craftjs_json
+    :pinned_admin_publication_ids
 
   attribute :header_bg do |object|
     object.header_bg && object.header_bg.versions.to_h { |k, v| [k.to_s, v.url] }
@@ -37,6 +36,10 @@ class WebApi::V1::HomePageSerializer < WebApi::V1::BaseSerializer
     object.bottom_info_section_multiloc.present?
   } do |object|
     TextImageService.new.render_data_images object, :bottom_info_section_multiloc
+  end
+
+  attribute :craftjs_json do |homepage|
+    HomepageLayoutService.new.render_data_images homepage, :craftjs_json
   end
 
   has_many :pinned_admin_publications, serializer: :admin_publication
