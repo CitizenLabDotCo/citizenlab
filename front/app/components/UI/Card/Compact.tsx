@@ -79,9 +79,11 @@ const ContentWrapper = styled(Box)<{ $cardInnerHeight: string }>`
   flex: 0 1 100%;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   align-items: stretch;
   padding-top: 0px;
   padding-bottom: 2px;
+  height: 100%;
 
   @media (max-width: 1220px) and (min-width: 1023px) {
     height: ${cardInnerHeightExtended};
@@ -183,17 +185,22 @@ export const Card = memo<Props>(
         )}
 
         <ContentWrapper $cardInnerHeight={innerHeight}>
-          <Header className="e2e-card-title">
-            {typeof title === 'string' ? (
-              <Title title={title}>{title}</Title>
-            ) : (
-              title
-            )}
-          </Header>
+          <Box>
+            <Header className="e2e-card-title">
+              {typeof title === 'string' ? (
+                <Title title={title}>{title}</Title>
+              ) : (
+                title
+              )}
+            </Header>
 
-          {body && <Body>{body}</Body>}
-          <Box mt="auto">{interactions}</Box>
-          {footer}
+            {body && <Body>{body}</Body>}
+          </Box>
+
+          <Box>
+            <Box mt="auto">{interactions}</Box>
+            {footer}
+          </Box>
         </ContentWrapper>
       </Container>
     );
