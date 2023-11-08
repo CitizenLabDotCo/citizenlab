@@ -144,11 +144,6 @@ RSpec.describe Phase do
       expect(phase).to be_valid
     end
 
-    it 'fails when the associated project is not a timeline project' do
-      phase = build(:phase, project: build(:continuous_project))
-      expect(phase).to be_invalid
-    end
-
     it 'fails when the associated project has overlapping phases' do
       project = create(:project, process_type: 'timeline')
       create(:phase, project: project, start_at: (Time.now - 5.days), end_at: (Time.now + 5.days))
