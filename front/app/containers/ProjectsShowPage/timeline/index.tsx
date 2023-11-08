@@ -137,16 +137,14 @@ const ProjectTimelineContainer = memo<Props>(({ projectId, className }) => {
                 </>
               )}
               {isVotingPhase && (
-                <>
-                  <StatusModule
-                    phase={selectedPhase}
-                    project={project.data}
-                    votingMethod={
-                      selectedPhase?.attributes.voting_method ||
-                      project?.data.attributes.voting_method
-                    }
-                  />
-                </>
+                <StatusModule
+                  phase={selectedPhase}
+                  project={project.data}
+                  votingMethod={
+                    selectedPhase?.attributes.voting_method ||
+                    project?.data.attributes.voting_method
+                  }
+                />
               )}
               <PhaseSurvey project={project.data} phaseId={selectedPhaseId} />
               {participationMethod === 'document_annotation' && (
