@@ -171,8 +171,8 @@ class Idea < ApplicationRecord
   def input_term
     return creation_phase.input_term if participation_method_on_creation.creation_phase?
 
-    phase = TimelineService.new.current_phase project
-    return phase.input_term if phase&.can_contain_ideas?
+    current_phase = TimelineService.new.current_phase project
+    return current_phase.input_term if current_phase&.can_contain_ideas?
 
     case phases.size
     when 0
