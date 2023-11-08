@@ -125,7 +125,7 @@ const IdeaCard = memo<IdeaCardProps>(
     const handleClick = (e: React.MouseEvent) => {
       e.preventDefault();
       updateSearchParams({ scroll_to_card: idea.data.id });
-      clHistory.push(`/ideas/${slug}${params}`);
+      clHistory.push(`/ideas/${slug}${params}?go_back=true`);
     };
 
     const hideInteractions =

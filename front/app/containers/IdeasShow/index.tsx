@@ -58,6 +58,7 @@ import {
   isIdeaInParticipationContext,
 } from 'api/phases/utils';
 import { getInputTerm } from 'utils/participationContexts';
+import ProjectLink from 'containers/EventsShowPage/components/ProjectLink';
 
 const StyledRightColumnDesktop = styled(RightColumnDesktop)`
   margin-left: ${columnsGapDesktop}px;
@@ -142,6 +143,7 @@ const Content = ({
     ideaImages?.data[0]?.attributes?.versions?.large || null;
   const ideaId = idea.data.id;
   const ideaBody = localize(idea.data.attributes?.body_multiloc);
+  const projectTitle = localize(project?.attributes.title_multiloc);
 
   const participationContext = getCurrentParticipationContext(
     project,
@@ -200,6 +202,12 @@ const Content = ({
             translateButtonClicked={translateButtonIsClicked}
             showActions={compact}
           />
+          {projectTitle && project?.attributes.slug && (
+            <ProjectLink
+              projectTitleLocalized={projectTitle}
+              projectSlug={project?.attributes.slug}
+            />
+          )}
 
           {ideaImageLarge && (
             <Image src={ideaImageLarge} alt="" id="e2e-idea-image" />

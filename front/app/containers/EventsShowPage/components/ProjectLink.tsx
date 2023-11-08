@@ -1,7 +1,13 @@
 import React from 'react';
 
 // components
-import { Box, Text, Icon, colors } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Text,
+  Icon,
+  colors,
+  useBreakpoint,
+} from '@citizenlab/cl2-component-library';
 
 // intl
 import { useIntl } from 'utils/cl-intl';
@@ -20,10 +26,17 @@ const ProjectLink = ({
   projectSlug,
 }: ProjectLinkProps) => {
   const { formatMessage } = useIntl();
+  const isMobileOrSmaller = useBreakpoint('phone');
 
   return (
-    <Box display="flex" my="24px" gap="8px">
-      <Box h="40px" w="40px" background={colors.grey200} borderRadius="90px">
+    <Box display="flex" my={isMobileOrSmaller ? '12px' : '24px'} gap="8px">
+      <Box
+        h="40px"
+        w="40px"
+        background={colors.grey200}
+        borderRadius="90px"
+        flexShrink={1}
+      >
         <Icon
           name="calendar"
           fill={colors.primary}
@@ -34,15 +47,15 @@ const ProjectLink = ({
           p="8px"
         />
       </Box>
-      <Box>
-        <Text p="0px" m="0px">
+      <Box flexShrink={2}>
+        <Text p="0px" m="0px" fontSize={isMobileOrSmaller ? 's' : 'base'}>
           {formatMessage(messages.eventFrom, {
-            eventTitle: projectTitleLocalized,
+            projectTitle: projectTitleLocalized,
           })}
         </Text>
         <Link to={`/projects/${projectSlug}`}>
           <Text
-            fontSize="s"
+            fontSize={isMobileOrSmaller ? 'xs' : 's'}
             p="0px"
             m="0px"
             color="coolGrey600"

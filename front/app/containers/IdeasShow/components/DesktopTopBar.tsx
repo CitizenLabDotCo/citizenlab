@@ -10,9 +10,6 @@ import { useSearchParams } from 'react-router-dom';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import clHistory from 'utils/cl-router/history';
 
-// i18n
-import useLocalize from 'hooks/useLocalize';
-
 // styling
 import styled from 'styled-components';
 import { isRtl } from 'utils/styleUtils';
@@ -20,6 +17,8 @@ import { isRtl } from 'utils/styleUtils';
 // typings
 import { IProjectData } from 'api/projects/types';
 import { IIdeaData } from 'api/ideas/types';
+import { useIntl } from 'utils/cl-intl';
+import messages from '../messages';
 
 const Bar = styled.div`
   display: flex;
@@ -37,11 +36,10 @@ interface Props {
 }
 
 const TopBar = ({ project, idea }: Props) => {
-  const localize = useLocalize();
-
   const [searchParams] = useSearchParams();
   const goBackParameter = searchParams.get('go_back');
   const [goBack] = useState(goBackParameter === 'true');
+  const { formatMessage } = useIntl();
 
   useEffect(() => {
     removeSearchParams(['go_back']);
@@ -61,7 +59,7 @@ const TopBar = ({ project, idea }: Props) => {
     <Bar>
       <Box mb="40px">
         <GoBackButtonSolid
-          text={localize(project.attributes.title_multiloc)}
+          text={formatMessage(messages.goBack)}
           onClick={handleGoBack}
         />
       </Box>
