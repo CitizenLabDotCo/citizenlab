@@ -226,7 +226,7 @@ const HomepageBannerSettings = () => {
   return (
     <Box
       background="#ffffff"
-      my="40px"
+      mb="40px"
       display="flex"
       flexDirection="column"
       gap="16px"
@@ -536,9 +536,14 @@ HomepageBanner.craft = {
   related: {
     settings: HomepageBannerSettings,
   },
+  rules: {
+    canDrag: () => false,
+  },
+
   custom: {
     title: messages.homepageBannerTitle,
     noPointerEvents: true,
+    noDelete: true,
   },
 };
 
