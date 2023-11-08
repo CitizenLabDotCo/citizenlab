@@ -593,6 +593,7 @@ const AdminProjectsProjectGeneral = () => {
           <ProjectFolderSelect
             projectAttrs={projectAttrs}
             onProjectAttributesDiffChange={handleProjectAttributeDiffOnChange}
+            isNewProject={!projectId}
           />
         )}
 
