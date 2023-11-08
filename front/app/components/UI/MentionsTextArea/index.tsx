@@ -131,6 +131,7 @@ const MentionsTextArea = ({
     paddingRight: '1px',
     borderRadius: '3px',
     backgroundColor: transparentize(0.85, theme.colors.tenantText),
+    marginRight: '2px',
   };
 
   const getStyle = () => {
@@ -191,7 +192,12 @@ const MentionsTextArea = ({
   };
 
   const mentionDisplayTransform = (_id, display) => {
-    return `${trigger}${display}`;
+    // If `allowSpaceInQuery` is not used, `appendSpaceOnAdd` adds a space after a mention and then
+    // the space is preserved when a new mention is added.
+    // But if `allowSpaceInQuery` is used, a space is added after adding a mention, but then
+    // removed when a new mention is added.
+    // So, we need a space before a mention to separate words, and `marginRight` to separate mention grey boxes.
+    return ` ${trigger}${display}`;
   };
 
   const handleOnChange = (event) => {
@@ -271,6 +277,7 @@ const MentionsTextArea = ({
           ref={setMentionsInputRef}
           inputRef={textareaElement}
           autoFocus={false}
+          allowSpaceInQuery={true}
         >
           <Mention
             trigger={trigger}
