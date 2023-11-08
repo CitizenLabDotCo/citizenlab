@@ -3,7 +3,7 @@ import React, { memo, MouseEvent } from 'react';
 // components
 import Image from 'components/UI/Image';
 import Link from 'utils/cl-router/Link';
-import { Box, Title } from '@citizenlab/cl2-component-library';
+import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // styling
 import styled from 'styled-components';
@@ -83,6 +83,8 @@ export const Card = memo<Props>(
     onClick,
     innerHeight = '162px',
   }) => {
+    const smallerThanTablet = useBreakpoint('tablet');
+
     return (
       <Container
         className={`e2e-card ${className}`}
@@ -108,7 +110,7 @@ export const Card = memo<Props>(
           flexDirection="column"
           justifyContent="space-between"
         >
-          <Box>
+          <Box mb={smallerThanTablet ? '24px' : undefined}>
             <Title variant="h3" mt="4px" mb="16px">
               {title}
             </Title>
