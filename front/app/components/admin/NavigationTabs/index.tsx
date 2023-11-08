@@ -2,15 +2,18 @@
 import styled, { css } from 'styled-components';
 import { colors, defaultStyles } from 'utils/styleUtils';
 import { tabBorderSize } from './tabsStyleConstants';
+import { BoxPositionProps } from '@citizenlab/cl2-component-library';
 
 // components
 import Tab from './Tab';
 import TabsPageLayout from './TabsPageLayout';
 
-const NavigationTabs = styled.nav`
-  ${({ theme }) => css`
-    position: fixed;
-    width: calc(100% - 210px);
+const NavigationTabs = styled.nav<{
+  position?: BoxPositionProps['position'];
+}>`
+  ${({ theme, position }) => css`
+    position: ${position || 'fixed'};
+    width: 100%;
     // TODO : set bg color in component library
     background: #fbfbfb;
     z-index: 1000;
