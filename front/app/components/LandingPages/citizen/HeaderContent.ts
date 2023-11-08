@@ -65,7 +65,7 @@ export const HeaderSubtitle = styled.h2<{
   hasHeader: boolean;
   fontColors: 'light' | 'dark';
   align: 'center' | 'left';
-  displayHeaderAvatars: boolean;
+  displayHeaderAvatars?: boolean;
 }>`
   width: 100%;
   color: ${({ hasHeader, fontColors, theme }) =>

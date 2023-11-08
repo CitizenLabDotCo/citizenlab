@@ -16,7 +16,6 @@ const data: IUsersByAge = {
       unknown_age_count: 10,
       series: {
         user_counts: [20, 30, 40],
-        expected_user_counts: [20, 30, 40],
         reference_population: [10, 20, 30, 40],
         bins: [10, 20, 30, 40],
       },

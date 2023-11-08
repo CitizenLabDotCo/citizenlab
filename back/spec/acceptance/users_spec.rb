@@ -156,7 +156,7 @@ resource 'Users' do
 
         context 'when the user_confirmation module is active' do
           before do
-            allow(RequestConfirmationCodeJob).to receive(:perform_later)
+            allow(RequestConfirmationCodeJob).to receive(:perform_now)
             SettingsService.new.activate_feature! 'user_confirmation'
           end
 
@@ -170,7 +170,7 @@ resource 'Users' do
             assert_status 201
             json_response = json_parse(response_body)
             user = User.order(:created_at).last
-            expect(RequestConfirmationCodeJob).to have_received(:perform_later).with(user).once
+            expect(RequestConfirmationCodeJob).to have_received(:perform_now).with(user).once
             expect(json_response.dig(:data, :attributes, :confirmation_required)).to be true # when no custom fields
           end
         end
@@ -292,7 +292,7 @@ resource 'Users' do
         let(:locale) { 'en' }
 
         before do
-          allow(RequestConfirmationCodeJob).to receive(:perform_later)
+          allow(RequestConfirmationCodeJob).to receive(:perform_now)
           SettingsService.new.activate_feature! 'user_confirmation'
         end
 
@@ -300,7 +300,7 @@ resource 'Users' do
           example_request 'User successfully created and requires confirmation' do
             assert_status 201
             user = User.order(:created_at).last
-            expect(RequestConfirmationCodeJob).to have_received(:perform_later).with(user).once
+            expect(RequestConfirmationCodeJob).to have_received(:perform_now).with(user).once
             expect(response_data.dig(:attributes, :confirmation_required)).to be(true)
           end
 
@@ -319,7 +319,7 @@ resource 'Users' do
               do_request
               assert_status 200
               expect(response_data.dig(:attributes, :confirmation_required)).to be(true)
-              expect(RequestConfirmationCodeJob).to have_received(:perform_later).with(existing_user).once
+              expect(RequestConfirmationCodeJob).to have_received(:perform_now).with(existing_user).once
             end
 
             context 'when the request tries to pass additional changed attributes', document: false do
