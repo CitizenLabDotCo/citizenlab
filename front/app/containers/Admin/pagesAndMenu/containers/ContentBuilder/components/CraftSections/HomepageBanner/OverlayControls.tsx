@@ -45,12 +45,16 @@ interface Props {
   bannerOverlayOpacity: number | null;
   bannerOverlayColor: string | null;
   onOverlayChange: (opacity: number | null, color: string | null) => void;
+  variant: 'signedIn' | 'signedOut';
+  noOpacitySlider?: boolean;
 }
 
 const OverlayControls = ({
   bannerOverlayOpacity,
   bannerOverlayColor,
   onOverlayChange,
+  variant,
+  noOpacitySlider,
 }: Props) => {
   const [overlayEnabled, setOverlayEnabled] = useState(
     typeof bannerOverlayOpacity === 'number'
@@ -63,7 +67,10 @@ const OverlayControls = ({
       onOverlayChange(0, null);
     } else {
       onOverlayChange(
-        bannerOverlayOpacity || theme.signedOutHeaderOverlayOpacity,
+        bannerOverlayOpacity ||
+          (variant === 'signedOut'
+            ? theme.signedOutHeaderOverlayOpacity
+            : theme.signedInHeaderOverlayOpacity),
         bannerOverlayColor || theme.colors.tenantPrimary
       );
     }
@@ -79,7 +86,10 @@ const OverlayControls = ({
 
   const handleOverlayColorOnChange = (color: Props['bannerOverlayColor']) => {
     onOverlayChange(
-      bannerOverlayOpacity || theme.signedOutHeaderOverlayOpacity,
+      bannerOverlayOpacity ||
+        (variant === 'signedOut'
+          ? theme.signedOutHeaderOverlayOpacity
+          : theme.signedInHeaderOverlayOpacity),
       color
     );
   };
@@ -126,16 +136,20 @@ const OverlayControls = ({
                 onChange={handleOverlayColorOnChange}
               />
             </Box>
-            <Label>
-              <FormattedMessage {...messages.imageOverlayOpacity} />
-            </Label>
-            <RangeInput
-              step={1}
-              min={0}
-              max={100}
-              value={bannerOverlayOpacity}
-              onChange={debouncedHandleOverlayOpacityOnChange}
-            />
+            {!noOpacitySlider && (
+              <>
+                <Label>
+                  <FormattedMessage {...messages.imageOverlayOpacity} />
+                </Label>
+                <RangeInput
+                  step={1}
+                  min={0}
+                  max={100}
+                  value={bannerOverlayOpacity}
+                  onChange={debouncedHandleOverlayOpacityOnChange}
+                />
+              </>
+            )}
           </StyledBox>
         )}
     </>

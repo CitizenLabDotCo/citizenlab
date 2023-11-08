@@ -298,6 +298,7 @@ const HomepageBannerSettings = () => {
       {search.get('variant') !== 'signedIn' && (
         <>
           <OverlayControls
+            variant="signedOut"
             bannerOverlayColor={
               homepageSettings.banner_signed_out_header_overlay_color
             }
@@ -412,6 +413,10 @@ const HomepageBannerSettings = () => {
       {search.get('variant') === 'signedIn' && (
         <>
           <OverlayControls
+            variant="signedIn"
+            noOpacitySlider={
+              homepageSettings.banner_layout === 'fixed_ratio_layout'
+            }
             bannerOverlayColor={
               homepageSettings.banner_signed_in_header_overlay_color
             }
@@ -539,7 +544,6 @@ HomepageBanner.craft = {
   rules: {
     canDrag: () => false,
   },
-
   custom: {
     title: messages.homepageBannerTitle,
     noPointerEvents: true,
