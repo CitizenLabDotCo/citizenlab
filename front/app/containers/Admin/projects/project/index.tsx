@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import clHistory from 'utils/cl-router/history';
 import { adopt } from 'react-adopt';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
@@ -179,7 +179,7 @@ export const AdminProjectsProjectIndex = ({
 
   return (
     <>
-      <NavigationTabs>
+      <NavigationTabs position="static">
         <Box
           display="flex"
           height="58px"
