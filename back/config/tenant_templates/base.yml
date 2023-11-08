@@ -350,22 +350,7 @@ models:
       ordering: 15
   phase:
     - &open_idea_project_current
-      title_multiloc:
-        en: Current phase
-        nl-BE: Current phase
-      description_multiloc:
-        en: "<p>Qui quidem sed inventore in nobis reprehenderit odit. Reiciendis quo
-        dolorem. Non incidunt soluta ut quae possimus. Libero sunt ullam.</p><p>Sit
-        aut iusto at numquam. Aut sit ut voluptate quia qui. Placeat velit dicta.
-        Ut porro sed excepturi voluptatem iure eos. Amet qui officiis et dolorum consequuntur
-        assumenda.</p><p>Sed quia quidem molestiae omnis libero et soluta. Vitae debitis
-        quae qui. Aut omnis qui autem.</p>"
-        nl-BE: "<p>Id adipisci officiis. Dolores autem voluptates sunt excepturi voluptatibus
-        tenetur nihil. Et et consectetur voluptates.</p><p>Neque eligendi iusto hic
-        aperiam magni voluptatem asperiores. Et aut sint aut ad maiores. Sint dolorum
-        eveniet aperiam dolore.</p><p>Quia iusto veritatis aut velit. Quae tempora
-        rerum. Autem deleniti exercitationem non qui eligendi et. Similique iste dolorem
-        labore. Corporis nisi voluptatem doloribus laborum.</p>"
+      title_multiloc: phases.open_idea_phase_title
       project_ref: *open_idea_project
       start_at_timediff: -1440
       end_at: null
