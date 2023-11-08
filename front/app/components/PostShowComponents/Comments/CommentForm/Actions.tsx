@@ -15,7 +15,7 @@ import {
 
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from '../../../messages';
+import messages from '../messages';
 
 // utils
 import { isPage } from 'utils/helperUtils';
@@ -25,9 +25,11 @@ interface Props {
   focused: boolean;
   postAnonymously: boolean;
   allowAnonymousParticipation?: boolean;
-  hasEmptyError: boolean;
+  submitButtonDisabled: boolean;
+  submitButtonClassName: string;
   togglePostAnonymously: (postAnonymously: boolean) => void;
   onSubmit: () => void;
+  onCancel: () => void;
 }
 
 const Actions = ({
@@ -35,9 +37,11 @@ const Actions = ({
   focused,
   postAnonymously,
   allowAnonymousParticipation,
-  hasEmptyError,
+  submitButtonDisabled,
+  submitButtonClassName,
   togglePostAnonymously,
   onSubmit,
+  onCancel,
 }: Props) => {
   const { formatMessage } = useIntl();
   const smallerThanTablet = useBreakpoint('tablet');
@@ -83,20 +87,20 @@ const Actions = ({
     <Box display="flex">
       <Button
         disabled={processing}
-        onClick={close}
         buttonStyle="secondary"
         padding={smallerThanTablet ? '6px 12px' : undefined}
         mr="8px"
+        onClick={onCancel}
       >
         <FormattedMessage {...messages.cancel} />
       </Button>
       <Button
-        className="e2e-submit-parentcomment"
+        className={submitButtonClassName}
         processing={processing}
-        onClick={onSubmit}
-        disabled={hasEmptyError}
+        disabled={submitButtonDisabled}
         padding={smallerThanTablet ? '6px 12px' : undefined}
         icon={isAdminPage ? 'users' : undefined}
+        onClick={onSubmit}
       >
         <FormattedMessage {...buttonText} />
       </Button>

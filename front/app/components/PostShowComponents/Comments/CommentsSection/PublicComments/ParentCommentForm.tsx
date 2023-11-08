@@ -3,21 +3,21 @@ import { isString, trim } from 'lodash-es';
 import { isNilOrError, isPage } from 'utils/helperUtils';
 
 // components
-import MentionsTextArea from 'components/UI/MentionsTextArea';
+import TextArea from 'components/PostShowComponents/Comments/CommentForm/TextArea';
+import ErrorMessage from 'components/PostShowComponents/Comments/CommentForm/ErrorMessage';
 import Avatar from 'components/Avatar';
 import clickOutside from 'utils/containers/clickOutside';
-import Link from 'utils/cl-router/Link';
 import { Box } from '@citizenlab/cl2-component-library';
-import Actions from './Actions';
+import Actions from '../../CommentForm/Actions';
 import OldAnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal/OldAnonymousParticipationConfirmationModal';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
-import tracks from '../../../tracks';
+import tracks from '../../tracks';
 
 // i18n
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
-import messages from '../../../messages';
+import messages from '../../messages';
 
 // services
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
@@ -25,7 +25,7 @@ import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 // resources
 
 // events
-import { commentAdded } from '../../../events';
+import { commentAdded } from '../../events';
 
 // style
 import styled from 'styled-components';
@@ -288,32 +288,6 @@ const ParentCommentForm = ({
     textareaElement.current = element;
   };
 
-  const getErrorMessage = () => {
-    if (hasApiError) {
-      // Profanity error is the only error we're checking specifically
-      // at the moment to provide a specific error message.
-      // All other api errors are generalized to 1 error message
-      if (profanityApiError) {
-        return (
-          <FormattedMessage
-            {...messages.profanityError}
-            values={{
-              guidelinesLink: (
-                <Link to="/pages/faq" target="_blank">
-                  {formatMessage(messages.guidelinesLinkText)}
-                </Link>
-              ),
-            }}
-          />
-        );
-      }
-
-      return <FormattedMessage {...messages.addCommentError} />;
-    }
-
-    return null;
-  };
-
   const isModerator = canModerateProject(projectId, authUser);
 
   const placeholderMessage: MessageDescriptor = isAdminPage
@@ -341,33 +315,33 @@ const ParentCommentForm = ({
               <FormattedMessage {...messages.yourComment} />
             </HiddenLabel>
           </label>
-          <MentionsTextArea
+          <TextArea
             id="submit-comment"
             className="e2e-parent-comment-form"
-            name="comment"
             placeholder={placeholder}
             rows={focused || processing ? 4 : 1}
             postId={ideaId || initiativeId}
             postType={postType}
             value={inputValue}
-            error={getErrorMessage()}
+            error={
+              hasApiError ? (
+                <ErrorMessage profanityApiError={profanityApiError} />
+              ) : undefined
+            }
             onChange={onChange}
             onFocus={onFocus}
-            fontWeight="300"
-            padding="10px"
-            borderRadius="none"
-            border="none"
-            boxShadow="none"
-            getTextareaRef={setRef}
+            getTextAreaRef={setRef}
           />
           <Actions
             processing={processing}
             focused={focused}
             postAnonymously={postAnonymously}
             allowAnonymousParticipation={allowAnonymousParticipation}
-            hasEmptyError={hasEmptyError}
+            submitButtonDisabled={hasEmptyError}
+            submitButtonClassName="e2e-submit-parentcomment"
             togglePostAnonymously={setPostAnonymously}
             onSubmit={onSubmit}
+            onCancel={close}
           />
         </Form>
       </FormContainer>
