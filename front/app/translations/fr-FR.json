@@ -1852,7 +1852,7 @@
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsTotalBudget": "Vous disposez d'un total de <b>{maxBudget} {currency} à répartir entre {optionCount} options</b>.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructions2": "<b>Félicitations ! Votre budget a été soumis avec succès !</b> Vous pouvez vérifier vos choix ci-dessous. Vous avez la possibilité de les modifier jusqu'au <b>{endDate}</b>.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsContinuous": "<b>Félicitations, votre budget a été soumis avec succès !</b> Vous pouvez vérifier et modifier vos choix ci-dessous.",
-  "app.utils.votingMethodUtils.budgetingSubmittedInstructionsNoEndDate": "<b>Félicitations, votre budget a été soumis !</b> Vous pouvez à tout moment vérifier vos options ci-dessous.",
+  "app.utils.votingMethodUtils.budgetingSubmittedInstructionsNoEndDate": "<b>Félicitations, votre budget a été soumis avec succès !</b> Vous pouvez vérifier vos choix ci-dessous.",
   "app.utils.votingMethodUtils.budgets": "Budgets",
   "app.utils.votingMethodUtils.castYourVote": "Participez au vote",
   "app.utils.votingMethodUtils.cumulativeVotingInstructionsMaxVotesPerIdea": "Vous pouvez accorder jusqu'à {maxVotes} votes par option.",
