@@ -21,6 +21,7 @@ type Story = StoryObj<typeof meta>;
 export const Standard: Story = {
   args: {
     ideaId: '1',
+    showFollowButton: false,
   },
   parameters: {},
 };
