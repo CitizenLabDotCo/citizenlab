@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import {
   // eslint-disable-next-line no-restricted-imports
   useIntl as useOriginalUseIntl,
@@ -6,11 +6,22 @@ import {
 } from 'react-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useLocalize from 'hooks/useLocalize';
+import { localeStream } from 'utils/locale';
+import { getLocalizedWithFallback } from 'utils/i18n';
+import { Locale } from 'typings';
 
 const useIntl = () => {
   const intl = useOriginalUseIntl();
-  const localize = useLocalize();
+  const [locale, setLocale] = useState<Locale | undefined>(undefined);
+
+  useEffect(() => {
+    const subscription = localeStream().observable.subscribe((locale) => {
+      setLocale(locale);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
   const { data: appConfig } = useAppConfiguration();
 
   const formatMessageReplacement = useCallback(
@@ -23,7 +34,11 @@ const useIntl = () => {
           ? appConfig.data.attributes.name
           : undefined,
         orgName: !isNilOrError(appConfig)
-          ? localize(appConfig.data.attributes.settings.core.organization_name)
+          ? getLocalizedWithFallback(
+              appConfig.data.attributes.settings.core.organization_name,
+              locale,
+              appConfig.data.attributes.settings.core.locales
+            )
           : undefined,
         orgType: !isNilOrError(appConfig)
           ? appConfig.data.attributes.settings.core.organization_type
@@ -31,7 +46,7 @@ const useIntl = () => {
         ...(values || {}),
       });
     },
-    [intl, localize, appConfig]
+    [intl, appConfig, locale]
   );
 
   return { ...intl, formatMessage: formatMessageReplacement };
