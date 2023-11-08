@@ -60,7 +60,7 @@ const OverlayControls = ({
 
   const handleOverlayEnabling = () => {
     if (overlayEnabled) {
-      onOverlayChange(null, null);
+      onOverlayChange(0, null);
     } else {
       onOverlayChange(
         bannerOverlayOpacity || theme.signedOutHeaderOverlayOpacity,
@@ -94,7 +94,6 @@ const OverlayControls = ({
     [debounceHandleOverlayOpacityOnChange]
   );
 
-  console.log(overlayEnabled);
   return (
     <>
       <Box mb={overlayEnabled ? '20px' : '0'} data-cy="e2e-overlay-toggle">

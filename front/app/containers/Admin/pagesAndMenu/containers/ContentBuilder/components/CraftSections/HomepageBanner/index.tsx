@@ -49,14 +49,14 @@ const CTA_SIGNED_IN_TYPES: CTASignedInType[] = [
 
 export interface IHomepageSettingsAttributes {
   banner_layout: THomepageBannerLayout;
-  // Number between 0 and 100, inclusive
-  banner_signed_out_header_overlay_opacity: number | null;
   header_bg: ImageSizes | null;
 
   // signed_out
   banner_signed_out_header_multiloc: Multiloc;
   banner_signed_out_subheader_multiloc: Multiloc;
   banner_signed_out_header_overlay_color: string | null;
+  // Number between 0 and 100, inclusive
+  banner_signed_out_header_overlay_opacity: number | null;
   banner_avatars_enabled: boolean;
   // cta_signed_out
   banner_cta_signed_out_text_multiloc: Multiloc;
@@ -64,6 +64,9 @@ export interface IHomepageSettingsAttributes {
   banner_cta_signed_out_url: string | null;
   // signed_in
   banner_signed_in_header_multiloc: Multiloc;
+  banner_signed_in_header_overlay_color?: string | null;
+  // Number between 0 and 100, inclusive
+  banner_signed_in_header_overlay_opacity?: number | null;
   // cta_signed_in
   banner_cta_signed_in_text_multiloc: Multiloc;
   banner_cta_signed_in_type: CTASignedInType;
@@ -126,6 +129,11 @@ const HomepageBannerSettings = () => {
       banner_signed_out_header_overlay_opacity:
         node.data.props.homepageSettings
           .banner_signed_out_header_overlay_opacity,
+      banner_signed_in_header_overlay_opacity:
+        node.data.props.homepageSettings
+          .banner_signed_in_header_overlay_opacity,
+      banner_signed_in_header_overlay_color:
+        node.data.props.homepageSettings.banner_signed_in_header_overlay_color,
     },
   }));
 
@@ -403,6 +411,22 @@ const HomepageBannerSettings = () => {
 
       {search.get('variant') === 'signedIn' && (
         <>
+          <OverlayControls
+            bannerOverlayColor={
+              homepageSettings.banner_signed_in_header_overlay_color
+            }
+            bannerOverlayOpacity={
+              homepageSettings.banner_signed_in_header_overlay_opacity
+            }
+            onOverlayChange={(opacity, color) => {
+              setProp((props: Props) => {
+                props.homepageSettings.banner_signed_in_header_overlay_color =
+                  color;
+                props.homepageSettings.banner_signed_in_header_overlay_opacity =
+                  opacity;
+              });
+            }}
+          />
           <InputMultilocWithLocaleSwitcher
             label={'Header'}
             type="text"
