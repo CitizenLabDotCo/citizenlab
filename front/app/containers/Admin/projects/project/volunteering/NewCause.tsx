@@ -42,7 +42,9 @@ const NewCause = () => {
         },
         {
           onSuccess: () => {
-            clHistory.push(`/admin/projects/${projectId}/volunteering`);
+            clHistory.push(
+              `/admin/projects/${projectId}/volunteering/${phaseId}`
+            );
           },
         }
       );

@@ -68,11 +68,10 @@ export const AdminProjectsProjectIndex = ({
 
   const localize = useLocalize();
   const { pathname } = useLocation();
-  const initialTabs: ITab[] = getIntialTabs(formatMessage);
-  const [tabs, setTabs] = useState<ITab[]>(initialTabs);
-  const { projectId, id: phaseId } = useParams() as {
+  const [tabs, setTabs] = useState<ITab[]>([]);
+  const { projectId, phaseId } = useParams() as {
     projectId: string;
-    id?: string;
+    phaseId?: string;
   };
   const [selectedPhase, setSelectedPhase] = useState<IPhaseData | undefined>(
     undefined
@@ -96,6 +95,8 @@ export const AdminProjectsProjectIndex = ({
         phaseShown = phases.length ? phases[0] : undefined;
       }
     }
+
+    const initialTabs: ITab[] = getIntialTabs(formatMessage, phaseShown?.id);
 
     // Reset tabs such that tabs that were added onData are removed and will be readded if needed
     // TODO: Fix maps tab condition to display when navigating from voting to ideation

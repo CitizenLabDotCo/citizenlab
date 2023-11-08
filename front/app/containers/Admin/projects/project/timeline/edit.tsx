@@ -86,9 +86,9 @@ const AdminPhaseEdit = () => {
   const { data: appConfig } = useAppConfiguration();
   const { mutateAsync: addPhaseFile } = useAddPhaseFile();
   const { mutateAsync: deletePhaseFile } = useDeletePhaseFile();
-  const { projectId, id: phaseId } = useParams() as {
+  const { projectId, phaseId } = useParams() as {
     projectId: string;
-    id?: string;
+    phaseId?: string;
   };
   const { data: phaseFiles } = usePhaseFiles(phaseId || null);
   const { data: phaseData } = usePhase(phaseId || null);

@@ -153,7 +153,7 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           {
-            path: 'setup/:id',
+            path: 'setup/:phaseId',
             element: (
               <PageLoading>
                 <AdminPhaseNewAndEdit />
@@ -178,7 +178,7 @@ const createAdminProjectsRoutes = () => {
           //   ),
           // },
           {
-            path: 'phases/:id',
+            path: 'phases/:phaseId',
             element: (
               <PageLoading>
                 <AdminPhaseNewAndEdit />
@@ -186,7 +186,7 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           {
-            path: 'survey-results',
+            path: 'survey-results/:phaseId',
             element: (
               <PageLoading>
                 <AdminProjectSurveyResults />
@@ -194,7 +194,7 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           {
-            path: 'poll',
+            path: 'poll/:phaseId',
             element: (
               <PageLoading>
                 <AdminProjectPoll />
@@ -202,7 +202,7 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           {
-            path: 'ideas',
+            path: 'ideas/:phaseId',
             element: (
               <PageLoading>
                 <AdminProjectIdeas />
@@ -210,7 +210,7 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           {
-            path: 'ideaform',
+            path: 'ideaform/:phaseId',
             element: (
               <PageLoading>
                 <AdminProjectIdeaForm />
@@ -218,7 +218,7 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           {
-            path: 'volunteering',
+            path: 'volunteering/:phaseId',
             element: (
               <PageLoading>
                 <AdminProjectVolunteering />
@@ -226,7 +226,7 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           {
-            path: 'volunteering/causes/new',
+            path: 'volunteering/:phaseId/causes/new',
             element: (
               <PageLoading>
                 <AdminProjectVolunteeringNew />
@@ -234,15 +234,15 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           {
-            path: 'native-survey',
+            path: 'native-survey/:phaseId',
             element: <AdminProjectsSurvey />,
           },
           {
-            path: 'native-survey/results',
+            path: 'native-survey/:phaseId/results',
             element: <AdminProjectsSurvey />,
           },
           {
-            path: 'volunteering/phases/:phaseId/causes/new',
+            path: 'volunteering/:phaseId/causes/new',
             element: (
               <PageLoading>
                 <AdminProjectVolunteeringNew />
@@ -266,7 +266,7 @@ const createAdminProjectsRoutes = () => {
             element: <SurveyFormBuilder />,
           },
           {
-            path: 'volunteering/causes/:causeId',
+            path: 'volunteering/:phaseId/causes/:causeId',
             element: (
               <PageLoading>
                 <AdminProjectVolunteeringEdit />
