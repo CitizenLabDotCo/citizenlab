@@ -1,7 +1,7 @@
 import React, { memo, useEffect } from 'react';
 
 // components
-import Card from 'components/UI/Card/Compact';
+import Card from './Card';
 import { useBreakpoint, Box } from '@citizenlab/cl2-component-library';
 import Body from './Body';
 import ImagePlaceholder from './ImagePlaceholder';
