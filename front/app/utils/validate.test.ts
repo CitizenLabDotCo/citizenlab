@@ -1,4 +1,4 @@
-import { isValidUrl } from './utils';
+import { isValidUrl } from './validate';
 
 describe('isValidUrl', () => {
   it('tests valid URLs', () => {

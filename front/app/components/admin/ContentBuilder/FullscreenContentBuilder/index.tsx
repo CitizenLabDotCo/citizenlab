@@ -19,7 +19,7 @@ import {
 
 type ContentBuilderErrors = Record<
   string,
-  { hasError: boolean; selectedLocale: Locale }
+  { hasError: boolean; selectedLocale?: Locale }
 >;
 
 interface Props {
