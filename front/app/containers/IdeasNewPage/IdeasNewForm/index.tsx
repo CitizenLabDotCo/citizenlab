@@ -32,10 +32,7 @@ import { geocode, reverseGeocode } from 'utils/locationTools';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import { getLocationGeojson } from '../utils';
 import { isError, isNilOrError } from 'utils/helperUtils';
-import {
-  getCurrentParticipationContext,
-  getCurrentPhase,
-} from 'api/phases/utils';
+import { getCurrentParticipationContext } from 'api/phases/utils';
 import { parse } from 'qs';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 
@@ -45,8 +42,6 @@ import { IPhases, IPhaseData } from 'api/phases/types';
 import { IProject } from 'api/projects/types';
 import useLocale from 'hooks/useLocale';
 import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
-import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 const getConfig = (
   phaseFromUrl: IPhaseData | undefined,
@@ -141,7 +136,6 @@ const IdeasNewPageWithJSONForm = () => {
   // get participation method config
   const { data: phaseFromUrl } = usePhase(phaseId);
   const config = getConfig(phaseFromUrl?.data, phases, project);
-  const currentPhase = getCurrentPhase(phases?.data);
   const onSubmit = async (data: FormValues) => {
     if (!project) {
       return;
@@ -164,54 +158,17 @@ const IdeasNewPageWithJSONForm = () => {
         ? [phaseId]
         : null;
 
-    const { disabled_reason } =
-      project.data.attributes.action_descriptor.posting_idea;
+    const idea = await addIdea({
+      ...data,
+      location_point_geojson,
+      project_id: project.data.id,
+      publication_status: 'published',
+      phase_ids,
+      anonymous: postAnonymously ? true : undefined,
+    });
 
-    // Add authentication handling
-    if (disabled_reason && isSurvey && !isAnonymousSurvey) {
-      const pcId = currentPhase?.id || project.data.id;
-      const pcType = currentPhase ? 'phase' : 'project';
-
-      const context =
-        pcId && pcType
-          ? ({
-              action: 'posting_idea',
-              id: pcId,
-              type: pcType,
-            } as const)
-          : null;
-
-      const successAction: SuccessAction = {
-        name: 'submitSurvey',
-        params: {
-          project: project?.data,
-          data,
-          phase_ids,
-          postAnonymously,
-          config,
-        },
-      };
-
-      if (context) {
-        triggerAuthenticationFlow({
-          flow: 'signup',
-          context,
-          successAction,
-        });
-      }
-    } else {
-      const idea = await addIdea({
-        ...data,
-        location_point_geojson,
-        project_id: project.data.id,
-        publication_status: 'published',
-        phase_ids,
-        anonymous: postAnonymously ? true : undefined,
-      });
-
-      const ideaId = idea.data.id;
-      config?.onFormSubmission({ project: project.data, ideaId, idea });
-    }
+    const ideaId = idea.data.id;
+    config?.onFormSubmission({ project: project.data, ideaId, idea });
   };
 
   const getApiErrorMessage: ApiErrorGetter = useCallback(

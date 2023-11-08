@@ -24,6 +24,7 @@ import { useParams } from 'react-router-dom';
 import { getIdeaPostingRules } from 'utils/actionTakingRules';
 import useAuthUser from 'api/me/useAuthUser';
 import { getCurrentPhase } from 'api/phases/utils';
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 const NewIdeaPage = () => {
   const { slug } = useParams();
@@ -60,14 +61,35 @@ const NewIdeaPage = () => {
   const portalElement = document?.getElementById('modal-portal');
   const isSurvey = participationMethod === 'native_survey';
 
-  const { disabledReason } = getIdeaPostingRules({
-    project: project?.data,
-    phase: getCurrentPhase(phases?.data),
-    authUser: authUser?.data,
-  });
+  const { enabled, disabledReason, authenticationRequirements } =
+    getIdeaPostingRules({
+      project: project?.data,
+      phase: getCurrentPhase(phases?.data),
+      authUser: authUser?.data,
+    });
 
   if (project && isSurvey && disabledReason === 'postingLimitedMaxReached') {
     return <SurveySubmittedNotice project={project.data} />;
+  }
+
+  if ((enabled === 'maybe' && authenticationRequirements) || disabledReason) {
+    const triggerAuthFlow = () => {
+      triggerAuthenticationFlow({
+        flow: 'signup',
+        context: {
+          type: phases ? 'phase' : 'project',
+          action: 'posting_idea',
+          id: phase_id || getCurrentPhase(phases?.data)?.id || project?.data.id,
+        },
+      });
+    };
+
+    return (
+      <Unauthorized
+        informationRequired={true}
+        triggerAuthFlow={triggerAuthFlow}
+      />
+    );
   }
 
   if (isSurvey && portalElement && isSmallerThanPhone) {

@@ -19,7 +19,15 @@ import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 import pageNotFoundMessages from '../PageNotFound/messages';
 
-const Unauthorized = () => {
+type UnauthorizedProps = {
+  informationRequired?: boolean;
+  triggerAuthFlow?: () => void;
+};
+
+const Unauthorized = ({
+  informationRequired = false,
+  triggerAuthFlow,
+}: UnauthorizedProps) => {
   const theme = useTheme();
   const { formatMessage } = useIntl();
   const { data: authUser } = useAuthUser();
@@ -42,6 +50,34 @@ const Unauthorized = () => {
 
   const userIsNotLoggedIn = authUser === null;
 
+  if (informationRequired && authUser) {
+    return (
+      <Box
+        height={`calc(100vh - ${theme.menuHeight + theme.footerHeight})`}
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        padding="4rem"
+        id="e2e-not-authorized"
+      >
+        <Title mb="0">{formatMessage(messages.completeProfileTitle)}</Title>
+        <>
+          <Text fontSize="l" color="textSecondary" mb="20px">
+            {formatMessage(messages.additionalInformationRequired)}
+          </Text>
+          <Box mb="16px">
+            <Button
+              onClick={() => {
+                triggerAuthFlow && triggerAuthFlow();
+              }}
+              text={formatMessage(messages.completeProfile)}
+            />
+          </Box>
+        </>
+      </Box>
+    );
+  }
+
   return (
     <Box
       height={`calc(100vh - ${theme.menuHeight + theme.footerHeight})`}
@@ -58,7 +94,12 @@ const Unauthorized = () => {
             {formatMessage(messages.sorryNoAccess)}
           </Text>
           <Box mb="16px">
-            <Button onClick={signIn} text={formatMessage(messages.signIn)} />
+            <Button
+              onClick={() => {
+                (triggerAuthFlow && triggerAuthFlow()) || signIn;
+              }}
+              text={formatMessage(messages.signIn)}
+            />
           </Box>
         </>
       ) : (

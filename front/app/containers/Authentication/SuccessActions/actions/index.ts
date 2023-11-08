@@ -21,7 +21,6 @@ import {
   ReactionOnInitiativeParams,
 } from './reactionOnInitiative';
 import { submitPoll, SubmitPollParams } from './submitPoll';
-import { submitSurvey, SubmitSurveyParams } from './submitSurvey';
 
 interface RedirectToIdeaFormAction {
   name: 'redirectToIdeaForm';
@@ -78,11 +77,6 @@ interface SubmitPollAction {
   params: SubmitPollParams;
 }
 
-interface SubmitSurveyAction {
-  name: 'submitSurvey';
-  params: SubmitSurveyParams;
-}
-
 export type SuccessAction =
   | RedirectToIdeaFormAction
   | RedirectToInitiativeFormAction
@@ -94,8 +88,7 @@ export type SuccessAction =
   | ReactionOnIdeaAction
   | ReactionOnInitiativeAction
   | FollowAction
-  | SubmitPollAction
-  | SubmitSurveyAction;
+  | SubmitPollAction;
 
 export const getAction = ({ name, params }: SuccessAction) => {
   if (name === 'redirectToIdeaForm') return redirectToIdeaForm(params);
@@ -111,7 +104,6 @@ export const getAction = ({ name, params }: SuccessAction) => {
   if (name === 'vote') return vote(params);
   if (name === 'reactionOnComment') return reactionOnComment(params);
   if (name === 'reactionOnIdea') return reactionOnIdea(params);
-  if (name === 'submitSurvey') return submitSurvey(params);
   if (name === 'submit_poll') return submitPoll(params);
   return reactionOnInitiative(params);
 };
