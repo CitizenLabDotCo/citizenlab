@@ -41,6 +41,7 @@ import FormattedBudget from 'utils/currency/FormattedBudget';
 // style
 import styled from 'styled-components';
 import { fontSizes, colors, isRtl, media } from 'utils/styleUtils';
+import Link from 'utils/cl-router/Link';
 
 const Container = styled.div``;
 
@@ -257,7 +258,22 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                           placement="top-start"
                           maxTooltipWidth={200}
                           iconColor={colors.coolGrey300}
-                          content={formatMessage(messages.participantsTooltip)}
+                          content={
+                            <FormattedMessage
+                              {...messages.participantsTooltip}
+                              values={{
+                                accessRightsLink: (
+                                  <Link
+                                    to={`/admin/projects/${projectId}/permissions`}
+                                  >
+                                    <FormattedMessage
+                                      {...messages.accessRights}
+                                    />
+                                  </Link>
+                                ),
+                              }}
+                            />
+                          }
                         />
                       </Box>
                     )}
