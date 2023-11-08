@@ -96,7 +96,7 @@ const Unauthorized = ({
           <Box mb="16px">
             <Button
               onClick={() => {
-                (triggerAuthFlow && triggerAuthFlow()) || signIn;
+                triggerAuthFlow ? triggerAuthFlow() : signIn();
               }}
               text={formatMessage(messages.signIn)}
             />
