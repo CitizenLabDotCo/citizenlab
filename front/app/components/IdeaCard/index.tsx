@@ -163,12 +163,15 @@ const IdeaCard = memo<IdeaCardProps>(
         }
         footer={
           <>
-            <Footer
-              project={project}
-              idea={idea.data}
-              hideIdeaStatus={hideIdeaStatus}
-              participationMethod={participationMethod}
-            />
+            <Box mt="8px">
+              <Footer
+                project={project}
+                idea={idea.data}
+                hideIdeaStatus={hideIdeaStatus}
+                participationMethod={participationMethod}
+              />
+            </Box>
+
             {showFollowButton && (
               <Box mt="16px" display="flex" justifyContent="flex-end">
                 <FollowUnfollow
