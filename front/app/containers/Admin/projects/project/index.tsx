@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import clHistory from 'utils/cl-router/history';
 import { adopt } from 'react-adopt';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import {
@@ -9,7 +8,6 @@ import {
 } from 'react-router-dom';
 
 // components
-import GoBackButton from 'components/UI/GoBackButton';
 import Button from 'components/UI/Button';
 import Outlet from 'components/Outlet';
 import { Box, Title, colors } from '@citizenlab/cl2-component-library';
@@ -169,10 +167,6 @@ export const AdminProjectsProjectIndex = ({
     }));
   };
 
-  const goBack = () => {
-    clHistory.push(`/admin/projects/`);
-  };
-
   const handleData = (data: InsertConfigurationOptions<ITab>) => {
     setTabs((tabs) => insertConfiguration(data)(tabs));
   };
@@ -189,7 +183,6 @@ export const AdminProjectsProjectIndex = ({
           pr="24px"
         >
           <Box display="flex">
-            <GoBackButton onClick={goBack} showGoBackText={false} />
             <Title color="blue500" variant="h3" my="0px" ml="8px">
               {localize(project.attributes.title_multiloc)}
             </Title>
