@@ -2,9 +2,8 @@ import React, { memo, useEffect } from 'react';
 
 // components
 import { useBreakpoint, Box, Title } from '@citizenlab/cl2-component-library';
-import Image from 'components/UI/Image';
+import CardImage from './CardImage';
 import Body from './Body';
-import ImagePlaceholder from './ImagePlaceholder';
 import Footer from './Footer';
 import Interactions from './Interactions';
 import FollowUnfollow from 'components/FollowUnfollow';
@@ -29,7 +28,6 @@ import {
 
 // hooks
 import useIdeaById from 'api/ideas/useIdeaById';
-import useIdeaImage from 'api/idea_images/useIdeaImage';
 import useProjectById from 'api/projects/useProjectById';
 import useLocalize from 'hooks/useLocalize';
 import usePhase from 'api/phases/usePhase';
@@ -69,29 +67,6 @@ const Container = styled(Link)`
   `}
 `;
 
-const IdeaCardImageWrapper = styled.div<{ $cardInnerHeight: string }>`
-  flex: 0 0 ${(props) => props.$cardInnerHeight};
-  width: ${(props) => props.$cardInnerHeight};
-  height: ${(props) => props.$cardInnerHeight};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 18px;
-  overflow: hidden;
-  border-radius: ${(props) => props.theme.borderRadius};
-
-  ${media.tablet`
-    width: 100%;
-    margin-bottom: 18px;
-  `}
-`;
-
-const IdeaCardImage = styled(Image)`
-  width: 100%;
-  height: 100%;
-  flex: 1;
-`;
-
 const IdeaLoading = (props: Props) => {
   const { data: idea } = useIdeaById(props.ideaId);
 
@@ -125,10 +100,6 @@ const IdeaCard = memo<IdeaCardProps>(
       idea.data.relationships.project.data.id
     );
     const { data: phase } = usePhase(phaseId);
-    const { data: ideaImage } = useIdeaImage(
-      idea.data.id,
-      idea.data.relationships.idea_images.data?.[0]?.id
-    );
 
     const participationContext = phase?.data || project?.data;
     const participationMethod =
@@ -146,7 +117,6 @@ const IdeaCard = memo<IdeaCardProps>(
     const ideaTitle = localize(idea.data.attributes.title_multiloc);
     const [searchParams] = useSearchParams();
     const scrollToCardParam = searchParams.get('scroll_to_card');
-    const votingMethod = participationContext?.attributes.voting_method;
 
     useEffect(() => {
       if (scrollToCardParam && idea.data.id === scrollToCardParam) {
@@ -182,8 +152,6 @@ const IdeaCard = memo<IdeaCardProps>(
         ? true
         : false;
 
-    const image = ideaImage?.data.attributes.versions.medium;
-    const showImage = !!image && !hideImage;
     const innerHeight = showFollowButton ? '192px' : '162px';
 
     return (
@@ -193,20 +161,13 @@ const IdeaCard = memo<IdeaCardProps>(
         to={`/ideas/${slug}${params}`}
         onClick={handleClick}
       >
-        {showImage && (
-          <IdeaCardImageWrapper $cardInnerHeight={innerHeight}>
-            <IdeaCardImage src={image} cover={true} alt="" />
-          </IdeaCardImageWrapper>
-        )}
-
-        {!showImage && !hideImagePlaceholder && (
-          <IdeaCardImageWrapper $cardInnerHeight={innerHeight}>
-            <ImagePlaceholder
-              participationMethod={participationMethod}
-              votingMethod={votingMethod}
-            />
-          </IdeaCardImageWrapper>
-        )}
+        <CardImage
+          idea={idea}
+          participationContext={participationContext}
+          hideImage={hideImage}
+          hideImagePlaceholder={hideImagePlaceholder}
+          innerHeight={innerHeight}
+        />
 
         <Box
           ml="12px"
