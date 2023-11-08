@@ -244,7 +244,7 @@ const HomepageBannerSettings = () => {
       <Toggle
         label={
           <Box>
-            <Text m={'0px'} fontWeight="bold">
+            <Text m={'0px'} color="primary">
               {formatMessage(messages.showAvatars)}
             </Text>
             <Text m={'0px'} color="textSecondary" fontSize="s">

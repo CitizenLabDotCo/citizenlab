@@ -6,8 +6,9 @@ import {
   fontSizes,
   Radio,
   IconTooltip,
+  Text,
 } from '@citizenlab/cl2-component-library';
-import { SectionField, SubSectionTitle } from 'components/admin/Section';
+import { SectionField } from 'components/admin/Section';
 
 import FullWidthBannerLayoutActive from './layout_previews/full_width_banner_layout_active.jpg';
 import FullWidthBannerLayoutInactive from './layout_previews/full_width_banner_layout_inactive.jpg';
@@ -62,9 +63,9 @@ const LayoutSettingField = ({ bannerLayout, onChange }: Props) => {
   const { formatMessage } = useIntl();
   return (
     <SectionField key="layout">
-      <SubSectionTitle>
+      <Text color="primary">
         <FormattedMessage {...messages.chooseLayout} />
-      </SubSectionTitle>
+      </Text>
       <Box display="flex" flexDirection="column" gap="16px">
         <LayoutOption data-cy="e2e-full-width-banner-layout-option">
           <LayoutOptionTop>
