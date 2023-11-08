@@ -1,6 +1,7 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
 
-const baseKey = { type: 'image' };
+const itemKey = { type: 'image' };
+const baseKey = { type: 'image', variant: 'idea' };
 
 const ideaImagesKeys = {
   all: () => [baseKey],
@@ -11,7 +12,7 @@ const ideaImagesKeys = {
   items: () => [{ ...baseKey, operation: 'item' }],
   item: ({ id }: { id?: string }) => [
     {
-      ...baseKey,
+      ...itemKey,
       operation: 'item',
       parameters: { id },
     },
