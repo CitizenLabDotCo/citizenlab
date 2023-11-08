@@ -13,6 +13,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import Error from 'components/UI/Error';
+import homepageMessages from 'containers/HomePage/messages';
 
 // craft
 import { useNode } from '@craftjs/core';
@@ -316,6 +317,7 @@ const HomepageBannerSettings = () => {
           />
           <InputMultilocWithLocaleSwitcher
             label={formatMessage(messages.bannerText)}
+            placeholder={formatMessage(homepageMessages.titleCity)}
             type="text"
             valueMultiloc={homepageSettings.banner_signed_out_header_multiloc}
             onChange={(value) => {
@@ -328,6 +330,7 @@ const HomepageBannerSettings = () => {
           />
           <InputMultilocWithLocaleSwitcher
             label={formatMessage(messages.bannerSubtext)}
+            placeholder={formatMessage(homepageMessages.subtitleCity)}
             type="text"
             valueMultiloc={
               homepageSettings.banner_signed_out_subheader_multiloc
@@ -435,6 +438,7 @@ const HomepageBannerSettings = () => {
           <InputMultilocWithLocaleSwitcher
             label={'Header'}
             type="text"
+            placeholder={formatMessage(homepageMessages.defaultSignedInMessage)}
             valueMultiloc={homepageSettings.banner_signed_in_header_multiloc}
             onChange={(value) => {
               setProp((props: Props) => {
