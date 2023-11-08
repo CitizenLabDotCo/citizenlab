@@ -322,6 +322,7 @@ const Timeline = ({
                 ]
                   .filter((className) => className)
                   .join(' ');
+                const showArrow = !(phaseIndex === phases.data.length - 1);
 
                 return (
                   <PhaseContainer
@@ -354,7 +355,7 @@ const Timeline = ({
                           }}
                         />
                       </ScreenReaderOnly>
-                      {!isLast && <PhaseArrow />}
+                      {showArrow && <PhaseArrow />}
                     </PhaseBar>
                     <PhaseText
                       current={isCurrentPhase}
@@ -366,7 +367,7 @@ const Timeline = ({
                 );
               })}
               {isBackoffice && (
-                <Box width="44px">
+                <Box width="44px" ml="8px">
                   <PhaseContainer
                     className="first"
                     key="new-phase"
