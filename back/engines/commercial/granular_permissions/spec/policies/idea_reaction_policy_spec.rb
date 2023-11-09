@@ -15,8 +15,8 @@ describe IdeaReactionPolicy do
     let!(:idea) { create(:idea, project: project) }
     let!(:reaction) { create(:reaction, reactable: idea, user: user) }
     let!(:project) do
-      create(:continuous_project, with_permissions: true).tap do |project|
-        project.permissions.find_by(action: 'reacting_idea')
+      create(:continuous_project, phase_attrs: { with_permissions: true }).tap do |project|
+        project.phases.first.permissions.find_by(action: 'reacting_idea')
           .update!(permitted_by: 'admins_moderators')
       end
     end

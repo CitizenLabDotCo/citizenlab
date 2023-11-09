@@ -11,8 +11,8 @@ describe BasketPolicy do
     let!(:user) { create(:user) }
     let!(:basket) { create(:basket, user: user, participation_context: project) }
     let!(:project) do
-      create(:continuous_budgeting_project, with_permissions: true).tap do |project|
-        project.permissions.find_by(action: 'voting')
+      create(:continuous_budgeting_project, phase_attrs: { with_permissions: true }).tap do |project|
+        project.phases.first.permissions.find_by(action: 'voting')
           .update!(permitted_by: 'admins_moderators')
       end
     end

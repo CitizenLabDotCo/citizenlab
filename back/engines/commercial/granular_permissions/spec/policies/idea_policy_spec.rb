@@ -7,7 +7,13 @@ describe IdeaPolicy do
 
   before do
     IdeaStatus.create_defaults
-    @idea = create(:idea, project: project, author: author)
+    phase = project.phases.first
+    @idea = create(
+      :idea,
+      project: project,
+      author: author,
+      creation_phase: phase.native_survey? ? phase : nil
+    )
   end
 
   let(:scope) { IdeaPolicy::Scope.new(user, project.ideas) }
@@ -16,8 +22,8 @@ describe IdeaPolicy do
   let(:participation_method) { 'ideation' }
   let(:posting_enabled) { true }
   let(:project) do
-    create(:continuous_project, with_permissions: true, posting_enabled: posting_enabled, participation_method: participation_method).tap do |project|
-      project.permissions.find_by(action: 'posting_idea')
+    create(:continuous_project, phase_attrs: { with_permissions: true, posting_enabled: posting_enabled, participation_method: participation_method }).tap do |project|
+      project.phases.first.permissions.find_by(action: 'posting_idea')
         .update!(permitted_by: permitted_by)
     end
   end

@@ -13,8 +13,8 @@ describe Polls::ResponsePolicy do
     let!(:user) { create(:user) }
     let!(:response) { create(:poll_response, participation_context: project, user: user) }
     let!(:project) do
-      create(:continuous_poll_project, with_permissions: true).tap do |project|
-        project.permissions.find_by(action: 'taking_poll')
+      create(:continuous_poll_project, phase_attrs: { with_permissions: true }).tap do |project|
+        project.phases.first.permissions.find_by(action: 'taking_poll')
           .update!(permitted_by: 'admins_moderators')
       end
     end
