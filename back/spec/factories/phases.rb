@@ -66,6 +66,12 @@ FactoryBot.define do
       survey_embed_url { 'https://docs.google.com/forms/d/e/fake/viewform?embedded=true' }
     end
 
+    factory :enalyzer_survey_phase do
+      participation_method { 'survey' }
+      survey_service { 'enalyzer' }
+      survey_embed_url { 'https://surveys.enalyzer.com?pid=HKGaPV' }
+    end
+
     factory :volunteering_phase do
       participation_method { 'volunteering' }
     end
