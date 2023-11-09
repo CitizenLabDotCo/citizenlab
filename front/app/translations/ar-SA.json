@@ -611,6 +611,7 @@
   "app.components.form.controls.selectBetween": "* اختر بين {minItems} و {maxItems} الخيارات",
   "app.components.form.controls.selectExactly2": "*اختر بالضبط {selectExactly, plural, one {# خيار} other {# خيارات}}",
   "app.components.form.controls.selectMany": "*اختر أكبر عدد تريده",
+  "app.components.form.controls.validCordinatesTooltip": "إذا لم يتم عرض الموقع بين الخيارات أثناء الكتابة، فيمكنك إضافة إحداثيات صالحة بتنسيق \"خط العرض، خط الطول\" لتحديد موقع دقيق.",
   "app.components.form.error": "خطأ",
   "app.components.form.locationGoogleUnavailable": "تعذر تعبئة حقل الموقع المتوفر من خرائط google.",
   "app.components.form.submit": "إرسال",
