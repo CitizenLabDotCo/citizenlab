@@ -49,7 +49,7 @@ const TopBar = ({ onClickPDFImport }: Props) => {
 
   const backPath = isSurvey
     ? `/admin/projects/${projectId}/native-survey/${phaseId}`
-    : `/admin/projects/${projectId}/ideas`;
+    : `/admin/projects/${projectId}/ideas/${phaseId}`;
 
   return (
     <Box

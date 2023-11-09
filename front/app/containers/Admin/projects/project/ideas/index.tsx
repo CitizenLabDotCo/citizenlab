@@ -38,7 +38,10 @@ const AdminProjectIdeas = () => {
   const importPrintedFormsEnabled = useFeatureFlag({
     name: 'import_printed_forms',
   });
-  const { projectId } = useParams() as { projectId: string };
+  const { projectId, phaseId } = useParams() as {
+    projectId: string;
+    phaseId: string;
+  };
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
 
@@ -53,7 +56,7 @@ const AdminProjectIdeas = () => {
             <Button
               width="auto"
               bgColor={colors.primary}
-              linkTo={`/admin/projects/${projectId}/offline-inputs`}
+              linkTo={`/admin/projects/${projectId}/offline-inputs/${phaseId}`}
               icon="page"
             >
               <FormattedMessage {...ownMessages.addOfflineInputs} />

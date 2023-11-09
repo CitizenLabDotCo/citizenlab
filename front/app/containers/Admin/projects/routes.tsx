@@ -62,7 +62,7 @@ const createAdminProjectsRoutes = () => {
       ...moduleConfiguration.routes['admin.project_templates'],
       ...moduleConfiguration.routes['admin.projects'],
       {
-        path: ':projectId/ideas/:ideaId',
+        path: ':projectId/ideas/:phaseId/:ideaId',
         element: (
           <PageLoading>
             <AdminProjectIdeaPreviewIndex />
@@ -286,7 +286,7 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           {
-            path: 'offline-inputs',
+            path: 'offline-inputs/:phaseId',
             element: (
               <PageLoading>
                 <OfflineInputImporter />
