@@ -21,6 +21,7 @@
   "app.components.AssignMultipleVotesControl.votesSubmitted": "Jūs jau esat balsojis. Lai mainītu savu balsojumu, noklikšķiniet uz \"Mainīt savu balsojumu\".",
   "app.components.AssignMultipleVotesControl.votesSubmittedIdeaPage": "Jūs jau esat balsojis. Lai mainītu savu balsojumu, atgriezieties projekta lapā un noklikšķiniet uz \"Mainīt savu balsojumu\".",
   "app.components.AssignMultipleVotesControl.xVotes2": "{votes, plural, one {{singular}} other {{plural}}}",
+  "app.components.AssignVoteControl.maxVotesReached": "Jūs esat sasniedzis maksimālo balsu skaitu, ko varat iesniegt.",
   "app.components.AssignVoteControl.vote": "Balsojums",
   "app.components.AssignVoteControl.voteForAtLeastOne": "Balsot par vismaz 1 iespēju",
   "app.components.AssignVoteControl.voted": "Balsots",
