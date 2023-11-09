@@ -88,7 +88,7 @@ export const PhaseHeader = ({ phase, tabs }: Props) => {
     <>
       <Container>
         <Box display="flex" justifyContent="space-between">
-          <Title my="0px" variant="h3" color="blue500">
+          <Title my="0px" variant="h4" color="primary">
             {localize(phase.attributes.title_multiloc)}
           </Title>
 

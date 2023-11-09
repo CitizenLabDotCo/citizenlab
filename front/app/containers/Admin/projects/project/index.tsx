@@ -184,7 +184,7 @@ export const AdminProjectsProjectIndex = ({
           pr="24px"
         >
           <Box display="flex">
-            <Title color="blue500" variant="h3" my="0px" ml="8px">
+            <Title color="primary" variant="h4" my="0px">
               {localize(project.attributes.title_multiloc)}
             </Title>
           </Box>

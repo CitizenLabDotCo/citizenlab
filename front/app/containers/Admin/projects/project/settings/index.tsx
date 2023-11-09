@@ -85,7 +85,7 @@ const Settings = () => {
           >
             <Box display="flex">
               <GoBackButton onClick={goBack} showGoBackText={false} />
-              <Title color="blue500" variant="h3" my="0px" ml="8px">
+              <Title color="primary" variant="h4" my="0px" ml="8px">
                 {formatMessage(messages.projectSettings)}
               </Title>
             </Box>
