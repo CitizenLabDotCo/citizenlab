@@ -53,6 +53,7 @@ resource 'Ideas' do
 
     before do
       @user = user
+      IdeaStatus.create_defaults
       create(:idea_status_proposed)
       header_token_for user
     end
@@ -682,8 +683,6 @@ resource 'Ideas' do
       ValidationErrorHelper.new.error_fields(self, Idea)
       response_field :ideas_phases, "Array containing objects with signature { error: 'invalid' }", scope: :errors
       response_field :base, "Array containing objects with signature { error: #{ParticipationContextService::POSTING_DISABLED_REASONS.values.join(' | ')} }", scope: :errors
-
-      before { IdeaStatus.create_defaults }
 
       let(:idea) { build(:idea) }
       let(:with_permissions) { false }
