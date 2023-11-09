@@ -567,6 +567,18 @@ FactoryBot.define do
           )
         end
       end
+
+      factory :continuous_information_project do
+        after(:create) do |project, evaluator|
+          project.phases << create(
+            :information_phase,
+            project: project,
+            start_at: Faker::Date.between(from: 6.months.ago, to: Time.zone.now),
+            end_at: nil,
+            **evaluator.phase_attrs
+          )
+        end
+      end
     end
   end
 end

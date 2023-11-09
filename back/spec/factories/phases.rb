@@ -91,5 +91,9 @@ FactoryBot.define do
       voting_method { 'budgeting' }
       voting_max_total { 1000 }
     end
+
+    factory :information_phase do
+      participation_method { 'information' }
+    end
   end
 end
