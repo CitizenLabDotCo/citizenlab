@@ -74,7 +74,7 @@ export const project1: IProjectData = {
         },
         down: {
           enabled: false,
-          disabled_reason: 'disliking_disabled',
+          disabled_reason: 'reacting_dislike_disabled',
         },
       },
       // MISMATCH: this attribute doesn't exist on our type
