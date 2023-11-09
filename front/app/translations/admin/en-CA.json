@@ -2216,7 +2216,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeEmbedVisitLinkMessage": "Visit our support page",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeHeightPlaceholder": "300",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeInvalidWhitelistUrlErrorMessage": "Sorry, this content could not be embedded. {visitLinkMessage} to learn more.",
-  "app.containers.admin.ContentBuilder.IframeMultiloc.iframeSupportLink": "https://support.citizenlab.co/en/articles/6354058-embedding-elements-in-the-content-builder-to-enrich-project-descriptions",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.iframeSupportLink": "https://support.citizenlab.co/en/articles/7025826-customizing-project-descriptions-with-the-content-builder",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeUrlErrorMessage": "Enter a valid web address, for example https://example.com",
   "app.containers.admin.ContentBuilder.IframeMultiloc.url": "Embed",
   "app.containers.admin.ContentBuilder.aboutBox": "About box",
