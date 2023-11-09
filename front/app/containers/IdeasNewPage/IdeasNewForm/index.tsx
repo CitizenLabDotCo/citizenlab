@@ -58,7 +58,7 @@ const getConfig = (
   return getMethodConfig(participationMethod);
 };
 
-export interface FormValues {
+interface FormValues {
   title_multiloc: Multiloc;
   body_multiloc: Multiloc;
   author_id?: string;
