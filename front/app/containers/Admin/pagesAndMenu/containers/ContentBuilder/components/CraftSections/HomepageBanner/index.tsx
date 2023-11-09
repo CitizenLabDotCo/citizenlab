@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 // components
 import {
@@ -29,13 +29,19 @@ import {
   CTASignedOutType,
   THomepageBannerLayout,
 } from 'api/home_page/types';
-import { ImageSizes, Multiloc } from 'typings';
+import { ImageSizes, Multiloc, UploadFile } from 'typings';
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { isValidUrl } from 'utils/validate';
-import { CONTENT_BUILDER_ERROR_EVENT } from 'components/admin/ContentBuilder/constants';
+import {
+  CONTENT_BUILDER_ERROR_EVENT,
+  IMAGE_UPLOADING_EVENT,
+} from 'components/admin/ContentBuilder/constants';
 import eventEmitter from 'utils/eventEmitter';
 import LayoutSettingField from './LayoutSettingField';
 import OverlayControls from './OverlayControls';
+import ImagesDropzone from 'components/UI/ImagesDropzone';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
+import useAddContentBuilderImage from 'api/content_builder_images/useAddContentBuilderImage';
 
 const CTA_SIGNED_OUT_TYPES: CTASignedOutType[] = [
   'sign_up_button',
@@ -135,11 +141,60 @@ const HomepageBannerSettings = () => {
           .banner_signed_in_header_overlay_opacity,
       banner_signed_in_header_overlay_color:
         node.data.props.homepageSettings.banner_signed_in_header_overlay_color,
+      header_bg: node.data.props.homepageSettings.header_bg,
     },
   }));
 
   const [search, setSearchParams] = useSearchParams();
   const { formatMessage } = useIntl();
+
+  const [imageFiles, setImageFiles] = useState<UploadFile[]>([]);
+  const { mutateAsync: addContentBuilderImage } = useAddContentBuilderImage();
+
+  useEffect(() => {
+    if (homepageSettings.header_bg) {
+      (async () => {
+        eventEmitter.emit(IMAGE_UPLOADING_EVENT, true);
+        const imageFile = await convertUrlToUploadFile(
+          homepageSettings.header_bg.large
+        );
+        if (imageFile) {
+          setImageFiles([imageFile]);
+        }
+        eventEmitter.emit(IMAGE_UPLOADING_EVENT, false);
+      })();
+    }
+  }, [homepageSettings.header_bg]);
+
+  const handleOnAdd = async (imageFiles: UploadFile[]) => {
+    setImageFiles(imageFiles);
+
+    try {
+      const response = await addContentBuilderImage(imageFiles[0].base64);
+      setProp((props: Props) => {
+        //  props.dataCode = response.data.attributes.code;
+        props.homepageSettings.header_bg = {
+          large: response.data.attributes.image_url,
+          medium: response.data.attributes.image_url,
+          small: response.data.attributes.image_url,
+        };
+      });
+    } catch {
+      // Do nothing
+    }
+  };
+
+  const handleOnRemove = () => {
+    setProp((props: Props) => {
+      props.homepageSettings.header_bg = {
+        large: null,
+        medium: null,
+        small: null,
+      };
+      // props.dataCode = undefined;
+    });
+    setImageFiles([]);
+  };
 
   const labelMessages: Record<CTASignedOutType, MessageDescriptor> = {
     customized_button: messages.customized_button,
@@ -242,6 +297,19 @@ const HomepageBannerSettings = () => {
           );
         }}
       />
+      <ImagesDropzone
+        label="Banner image"
+        images={imageFiles}
+        imagePreviewRatio={1 / 2}
+        maxImagePreviewWidth="360px"
+        objectFit="contain"
+        acceptedFileTypes={{
+          'image/*': ['.jpg', '.jpeg', '.png'],
+        }}
+        onAdd={handleOnAdd}
+        onRemove={handleOnRemove}
+      />
+
       <Toggle
         label={
           <Box>
