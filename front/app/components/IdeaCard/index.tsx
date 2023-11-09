@@ -157,6 +157,7 @@ const IdeaCard = memo<IdeaCardProps>(
           display="flex"
           flexDirection="column"
           justifyContent="space-between"
+          w="100%"
         >
           <Box mb={smallerThanTablet ? '24px' : undefined}>
             <Title variant="h3" mt="4px" mb="16px">

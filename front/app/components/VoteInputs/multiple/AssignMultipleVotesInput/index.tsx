@@ -77,7 +77,7 @@ const AssignMultipleVotesInput = ({
 
   // action descriptors
   const actionDescriptor = idea?.data.attributes.action_descriptor.voting;
-  const budgetingDisabledReason = actionDescriptor?.disabled_reason;
+  const votingDisabledReason = actionDescriptor?.disabled_reason;
 
   const onAdd = async (event) => {
     event.stopPropagation();
@@ -127,7 +127,7 @@ const AssignMultipleVotesInput = ({
 
   if (
     !actionDescriptor ||
-    budgetingDisabledReason === 'idea_not_in_current_phase' ||
+    votingDisabledReason === 'idea_not_in_current_phase' ||
     votes === undefined ||
     votes === null ||
     userHasVotesLeft === undefined

@@ -119,6 +119,9 @@ export interface IProjectData {
     user_follower: {
       data: IRelationship | null;
     };
+    permissions?: {
+      data: IRelationship[];
+    };
   };
 }
 

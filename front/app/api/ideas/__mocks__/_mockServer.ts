@@ -217,6 +217,123 @@ export const ideaData: IIdeaData[] = [
   },
 ];
 
+const votingIdea = {
+  data: {
+    id: 'aadd62ad-646c-4351-bafd-3e0f72e68499',
+    type: 'idea',
+    attributes: {
+      title_multiloc: {
+        en: 'Option #1 Voting',
+      },
+      body_multiloc: {
+        en: '\u003cp\u003eOption #1 VotingOption #1 VotingOption #1 VotingOption #1 VotingOption #1 VotingOption #1 VotingOption #1 VotingOption #1 VotingOption #1 VotingOption #1 VotingOption #1 Voting\u003c/p\u003e',
+      },
+      slug: 'option-1-voting',
+      publication_status: 'published',
+      likes_count: 0,
+      dislikes_count: 0,
+      comments_count: 0,
+      internal_comments_count: 0,
+      official_feedbacks_count: 0,
+      followers_count: 1,
+      location_point_geojson: null,
+      location_description: null,
+      created_at: '2023-08-11T15:03:47.581Z',
+      updated_at: '2023-08-11T15:03:47.581Z',
+      published_at: '2023-08-11T15:03:47.581Z',
+      budget: null,
+      proposed_budget: null,
+      baskets_count: 1,
+      votes_count: 1,
+      anonymous: false,
+      author_hash: '5d78eb7936e_d99f2f3b7518aeddde3d45d78eb7936ed99f2f3b75',
+      author_name: 'Citizenlab Hermansen',
+      action_descriptor: {
+        commenting_idea: {
+          enabled: true,
+          disabled_reason: null,
+          future_enabled: null,
+        },
+        reacting_idea: {
+          enabled: false,
+          disabled_reason: 'not_ideation',
+          cancelling_enabled: false,
+          up: {
+            enabled: false,
+            disabled_reason: 'not_ideation',
+            future_enabled: null,
+          },
+          down: {
+            enabled: false,
+            disabled_reason: 'not_ideation',
+            future_enabled: null,
+          },
+        },
+        comment_reacting_idea: {
+          enabled: true,
+          disabled_reason: null,
+          future_enabled: null,
+        },
+        voting: {
+          enabled: true,
+          disabled_reason: null,
+          future_enabled: null,
+        },
+      },
+    },
+    relationships: {
+      topics: {
+        data: [],
+      },
+      idea_images: {
+        data: [],
+      },
+      phases: {
+        data: [],
+      },
+      ideas_phases: {
+        data: [],
+      },
+      author: {
+        data: {
+          id: '3d78a40f-91a6-4e80-835e-bca778704c9f',
+          type: 'user',
+        },
+      },
+      project: {
+        data: {
+          id: '276fc6c4-5780-45ff-90a0-e6655b67bc23',
+          type: 'project',
+        },
+      },
+      idea_status: {
+        data: {
+          id: 'fcea429f-f61d-49b3-9985-83f6d3fcd769',
+          type: 'idea_status',
+        },
+      },
+      user_reaction: {
+        data: null,
+      },
+      user_follower: {
+        data: {
+          id: 'd849bb47-b7d1-493e-959c-8e2fd287e9f4',
+          type: 'follower',
+        },
+      },
+      assignee: {
+        data: {
+          id: '1b359a67-8bad-42dc-b9f5-7d5e3eb537b6',
+          type: 'user',
+        },
+      },
+      idea_import: {
+        data: null,
+      },
+    },
+  },
+};
+
 export const apiPathById = '/web_api/v1/ideas/:ideaId';
 export const apiPathBySlug = '/web_api/v1/ideas/by_slug/:slug';
 
@@ -228,5 +345,9 @@ const endpoints = {
     return res(ctx.status(200), ctx.json({ data: ideaData[0] }));
   }),
 };
+
+export const votingIdeaHandler = rest.get(apiPathById, (_req, res, ctx) => {
+  return res(ctx.status(200), ctx.json(votingIdea));
+});
 
 export default endpoints;
