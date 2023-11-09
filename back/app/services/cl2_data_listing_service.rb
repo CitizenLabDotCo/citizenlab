@@ -25,13 +25,14 @@ class Cl2DataListingService
     views = ActiveRecord::Base.connection.execute(
       "SELECT table_name FROM information_schema.tables WHERE table_type = 'VIEW'"
     ).pluck('table_name')
-    ActiveRecord::Base.descendants.select do |claz|
-      [
-        *ActiveRecord::Base.subclasses.map(&:name),
-        Tenant.name
-      ].exclude? claz.name
-    end.select do |claz|
-      views.exclude? claz.table_name
+    subclasses = [
+      *ActiveRecord::Base.subclasses.map(&:name),
+      Tenant.name
+    ]
+    ActiveRecord::Base.descendants.reject do |claz|
+      subclasses.include?(claz.name) ||
+        views.include?(claz.table_name) ||
+        claz.abstract_class
     end
   end
 
