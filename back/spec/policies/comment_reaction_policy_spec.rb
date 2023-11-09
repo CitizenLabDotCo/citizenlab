@@ -7,7 +7,7 @@ describe CommentReactionPolicy do
 
   let(:scope) { CommentReactionPolicy::Scope.new(user, Reaction) }
   let(:project) { create(:continuous_project) }
-  let(:idea) { create(:idea_with_phase, project: project) }
+  let(:idea) { create(:idea, project: project, phases: project.phases) }
 
   let(:comment) { create(:comment, post: idea) }
 
