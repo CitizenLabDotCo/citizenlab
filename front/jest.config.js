@@ -31,6 +31,7 @@ module.exports = {
     '\\.(css)$': 'identity-obj-proxy',
     '\\.(jpg|jpeg|png|gif|svg)$': '<rootDir>/app/utils/testUtils/fileMock.js',
     '^react-scroll-to-component$': 'identity-obj-proxy',
+    'styled-components': '<rootDir>/node_modules/styled-components',
   },
   modulePathIgnorePatterns: ['.*__mocks__.*'],
   testEnvironmentOptions: {
