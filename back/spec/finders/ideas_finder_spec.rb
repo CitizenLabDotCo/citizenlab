@@ -287,7 +287,7 @@ describe IdeasFinder do
     survey_phase = create(:phase, project: timeline_project, participation_method: 'native_survey', start_at: (Time.zone.today + 2.days), end_at: (Time.zone.today + 1.month))
     ideation_project = create(:continuous_project, participation_method: 'ideation')
     budgeting_project = create(:continuous_budgeting_project)
-    survey_project = create(:continuous_project, participation_method: 'native_survey')
+    survey_project = create(:continuous_native_survey_project)
 
     create(:idea, project: timeline_project, creation_phase: survey_phase)
     create(:idea, project: survey_project)

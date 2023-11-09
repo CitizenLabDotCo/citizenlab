@@ -84,15 +84,6 @@ RSpec.describe Project do
       p.presentation_mode = nil
       expect(p.save).to be true
     end
-
-    it 'can be changed from a transitive method to another one' do
-      project = create(:continuous_project, participation_method: 'ideation', voting_max_total: 17)
-      project.participation_method = 'voting'
-      project.voting_method = 'budgeting'
-      project.voting_max_total = 1000
-      project.ideas_order = 'random'
-      expect(project.save).to be true
-    end
   end
 
   describe '#can_contain_input?' do

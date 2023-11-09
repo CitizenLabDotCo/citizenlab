@@ -686,7 +686,7 @@ resource 'Ideas' do
 
         let(:idea) { build(:idea) }
         let(:with_permissions) { false }
-        let(:project) { create(:continuous_project, with_permissions: with_permissions) }
+        let(:project) { create(:continuous_project, phase_attrs: { with_permissions: with_permissions }) }
         let(:project_id) { project.id }
         let(:publication_status) { 'published' }
         let(:title_multiloc) { idea.title_multiloc }

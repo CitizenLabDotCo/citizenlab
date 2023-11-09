@@ -90,9 +90,9 @@ RSpec.describe Basket do
   end
 
   context "when the basket's project is updated to non-budgeting participation method" do
-    let(:project) { create(:continuous_budgeting_project, voting_min_total: 200) }
+    let(:project) { create(:continuous_budgeting_project, phase_attrs: { voting_min_total: 200 }) }
     let!(:basket) { create(:basket, ideas: [idea], participation_context: project.phases.first, submitted_at: Time.now) }
-    let(:idea) { create(:idea, budget: 100, project: project) }
+    let(:idea) { create(:idea, budget: 100, project: project, phases: project.phases) }
 
     # Check the basket remains valid and thus won't fail data consistency checks, as would be the case,
     # for example, if we enforce validation that the participation_context is budgeting.

@@ -86,7 +86,7 @@ describe ParticipationContextService do
 
     it 'returns nil if the posting limit was not reached' do
       user = create(:user)
-      project = create(:continuous_project, posting_enabled: true, posting_method: 'limited', posting_limited_max: 1)
+      project = create(:continuous_project, phase_attrs: { posting_enabled: true, posting_method: 'limited', posting_limited_max: 1 })
       create(:idea, project: project)
 
       expect(service.posting_idea_disabled_reason_for_project(project, user)).to be_nil
