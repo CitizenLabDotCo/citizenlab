@@ -25,13 +25,15 @@ class ContentImageService
     end
 
     image_elements(content).each do |img_elt|
-      next unless attribute? img_elt, image_attribute_for_element
+      next if image_attributes_for_element.none? { |elt_atr| attribute? img_elt, elt_atr }
 
-      unless attribute? img_elt, code_attribute_for_element
+      if !attribute? img_elt, code_attribute_for_element
         content_image = content_image_class.create! image_attributes(img_elt, imageable, field)
         set_attribute! img_elt, code_attribute_for_element, content_image[code_attribute_for_model]
       end
-      remove_attribute! img_elt, image_attribute_for_element
+      image_attributes_for_element.each do |elt_atr|
+        remove_attribute! img_elt, elt_atr
+      end
     end
 
     encode_content content
@@ -50,15 +52,15 @@ class ContentImageService
 
   def render_data_images(encoded_content, imageable: nil, field: nil)
     content = decode_content encoded_content
-    # precompute_for_rendering content, imageable, field
+    precompute_for_rendering content, imageable, field
 
     image_elements(content).each do |img_elt|
-      next unless attribute? img_elt, code_attribute_for_element
+      next if !attribute? img_elt, code_attribute_for_element
 
       code = get_attribute img_elt, code_attribute_for_element
       content_image = fetch_content_image code
       if content_image.present?
-        set_attribute! img_elt, image_attribute_for_element, content_image_url(content_image)
+        set_image_attributes! img_elt, content_image
       else
         log_content_image_not_found code, imageable, field
       end
@@ -100,6 +102,10 @@ class ContentImageService
     img_elt[image_attribute]
   end
 
+  def set_image_attributes!(img_elt, content_image)
+    set_attribute! img_elt, image_attribute_for_element, content_image_url(content_image)
+  end
+
   def set_attribute!(img_elt, attribute, value)
     # Hash representation by default.
     img_elt[attribute] = value
@@ -127,6 +133,8 @@ class ContentImageService
   end
 
   def precompute_for_rendering_multiloc(_multiloc, _imageable, _field); end
+
+  def precompute_for_rendering(content, imageable, field); end
 
   def fetch_content_image(code)
     content_image_class.find_by code_attribute_for_model => code

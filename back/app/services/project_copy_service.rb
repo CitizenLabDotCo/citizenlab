@@ -96,6 +96,7 @@ class ProjectCopyService < TemplateService
     layouts = ContentBuilder::Layout.where(content_buildable_id: @project.id).map do |layout|
       craftjs = layout.craftjs_jsonmultiloc
 
+      # TODO: something...
       craftjs.each_key do |locale|
         craftjs[locale].each_value do |node|
           next unless ContentBuilder::LayoutService.new.craftjs_element_of_type?(node, 'Image')
