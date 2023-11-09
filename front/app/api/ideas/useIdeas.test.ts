@@ -60,7 +60,7 @@ export const data: IIdeaData[] = [
           },
           down: {
             enabled: false,
-            disabled_reason: 'disliking_disabled',
+            disabled_reason: 'reacting_dislike_disabled',
             future_enabled: null,
           },
         },
