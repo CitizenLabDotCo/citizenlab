@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 
 // components
 import {
@@ -42,6 +42,7 @@ import OverlayControls from './OverlayControls';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import useAddContentBuilderImage from 'api/content_builder_images/useAddContentBuilderImage';
+import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 
 const CTA_SIGNED_OUT_TYPES: CTASignedOutType[] = [
   'sign_up_button',
@@ -150,9 +151,10 @@ const HomepageBannerSettings = () => {
 
   const [imageFiles, setImageFiles] = useState<UploadFile[]>([]);
   const { mutateAsync: addContentBuilderImage } = useAddContentBuilderImage();
+  const [initialRender, setInitialRender] = useState(true);
 
   useEffect(() => {
-    if (homepageSettings.header_bg) {
+    if (homepageSettings.header_bg.large && initialRender) {
       (async () => {
         eventEmitter.emit(IMAGE_UPLOADING_EVENT, true);
         const imageFile = await convertUrlToUploadFile(
@@ -162,27 +164,29 @@ const HomepageBannerSettings = () => {
           setImageFiles([imageFile]);
         }
         eventEmitter.emit(IMAGE_UPLOADING_EVENT, false);
+        setInitialRender(false);
       })();
     }
-  }, [homepageSettings.header_bg]);
+  }, [homepageSettings.header_bg.large, initialRender]);
 
-  const handleOnAdd = async (imageFiles: UploadFile[]) => {
-    setImageFiles(imageFiles);
-
-    try {
-      const response = await addContentBuilderImage(imageFiles[0].base64);
-      setProp((props: Props) => {
-        //  props.dataCode = response.data.attributes.code;
-        props.homepageSettings.header_bg = {
-          large: response.data.attributes.image_url,
-          medium: response.data.attributes.image_url,
-          small: response.data.attributes.image_url,
-        };
-      });
-    } catch {
-      // Do nothing
-    }
-  };
+  const handleOnAdd = useCallback(
+    async (base64: string) => {
+      try {
+        const response = await addContentBuilderImage(base64);
+        setProp((props: Props) => {
+          //  props.dataCode = response.data.attributes.code;
+          props.homepageSettings.header_bg = {
+            large: response.data.attributes.image_url,
+            medium: response.data.attributes.image_url,
+            small: response.data.attributes.image_url,
+          };
+        });
+      } catch {
+        // Do nothing
+      }
+    },
+    [addContentBuilderImage, setProp]
+  );
 
   const handleOnRemove = () => {
     setProp((props: Props) => {
@@ -320,18 +324,32 @@ const HomepageBannerSettings = () => {
       />
 
       <Label htmlFor="bannerImage">{formatMessage(messages.bannerImage)}</Label>
-      <ImagesDropzone
-        id="bannerImage"
-        images={imageFiles}
-        imagePreviewRatio={1 / 2}
-        maxImagePreviewWidth="360px"
-        objectFit="contain"
-        acceptedFileTypes={{
-          'image/*': ['.jpg', '.jpeg', '.png'],
-        }}
-        onAdd={handleOnAdd}
-        onRemove={handleOnRemove}
-      />
+      {homepageSettings.banner_layout === 'fixed_ratio_layout' &&
+      imageFiles.length > 0 ? (
+        <ImageCropperContainer
+          image={imageFiles[0] || null}
+          onComplete={handleOnAdd}
+          aspectRatioWidth={3}
+          aspectRatioHeight={1}
+          onRemove={handleOnRemove}
+        />
+      ) : (
+        <ImagesDropzone
+          id="bannerImage"
+          images={imageFiles}
+          imagePreviewRatio={1 / 2}
+          maxImagePreviewWidth="360px"
+          objectFit="contain"
+          acceptedFileTypes={{
+            'image/*': ['.jpg', '.jpeg', '.png'],
+          }}
+          onAdd={(images) => {
+            setImageFiles(images);
+            handleOnAdd(images[0].base64);
+          }}
+          onRemove={handleOnRemove}
+        />
+      )}
 
       <Box
         display="flex"
