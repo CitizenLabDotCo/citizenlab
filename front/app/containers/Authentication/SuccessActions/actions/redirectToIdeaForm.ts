@@ -27,7 +27,10 @@ export interface RedirectToIdeaFormParams {
 export const redirectToIdeaForm =
   ({ projectSlug, latLng, phaseId }: RedirectToIdeaFormParams) =>
   async (authUser: IUserData) => {
-    // Fetch latest project data to check if posting is enabled for new authUser
+    // TODO: Remove this temporary handling of postingLimitedMaxReached
+    // Note: Our Requirements endpoint doesn't handle permissions/disabled reasons yet,
+    // and the effort to add them in is too large at this time. So we're temporarily
+    // handling this case here.
     const { data: project } = await fetchProjectBySlug({ slug: projectSlug });
     const { data: phase } = await fetchPhase({ phaseId });
 
