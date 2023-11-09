@@ -611,6 +611,7 @@
   "app.components.form.controls.selectBetween": "*Επιλογή μεταξύ των επιλογών {minItems} και {maxItems}",
   "app.components.form.controls.selectExactly2": "*Επιλέξτε ακριβώς {selectExactly, plural, one {# option} other {# options}}",
   "app.components.form.controls.selectMany": "*Επιλέξτε όσα θέλετε",
+  "app.components.form.controls.validCordinatesTooltip": "Εάν η τοποθεσία δεν εμφανίζεται μεταξύ των επιλογών καθώς πληκτρολογείτε, μπορείτε να προσθέσετε έγκυρες συντεταγμένες με τη μορφή \"γεωγραφικό πλάτος, γεωγραφικό μήκος\" για να καθορίσετε μια ακριβή τοποθεσία.",
   "app.components.form.error": "Σφάλμα",
   "app.components.form.locationGoogleUnavailable": "Δεν ήταν δυνατή η φόρτωση του πεδίου τοποθεσίας που παρέχεται από τους χάρτες Google.",
   "app.components.form.submit": "Υποβολή",
