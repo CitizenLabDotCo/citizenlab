@@ -18,7 +18,6 @@ const ReadMoreButton = ({ slug }: Props) => {
       size="s"
       textColor={colors.coolGrey700}
       mr="8px"
-      ml="auto"
       m="0px"
       p="0px"
       buttonStyle="text"

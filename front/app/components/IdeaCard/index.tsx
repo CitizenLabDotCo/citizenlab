@@ -153,7 +153,6 @@ const IdeaCard = memo<IdeaCardProps>(
         />
 
         <Box
-          ml="12px"
           display="flex"
           flexDirection="column"
           justifyContent="space-between"
