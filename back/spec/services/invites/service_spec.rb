@@ -8,7 +8,7 @@ describe Invites::Service do
 
   before do
     settings = AppConfiguration.instance.settings
-    settings['core']['locales'] = %w[fr en nl]
+    settings['core']['locales'] = %w[fr-BE en nl-BE]
     AppConfiguration.instance.update(settings: settings)
   end
 

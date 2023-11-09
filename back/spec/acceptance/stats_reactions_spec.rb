@@ -28,13 +28,12 @@ end
 resource 'Stats - Reactions' do
   explanation 'The various stats endpoints can be used to show how certain properties of reactions.'
 
-  let!(:now) { Time.now.in_time_zone(@timezone) }
+  let!(:now) { AppConfiguration.timezone.now }
 
   before do
     admin_header_token
     header 'Content-Type', 'application/json'
     AppConfiguration.instance.update!(created_at: now - 3.months)
-    @timezone = AppConfiguration.instance.settings('core', 'timezone')
     @idea_status = create(:idea_status)
   end
 
@@ -63,8 +62,8 @@ resource 'Stats - Reactions' do
     group_filter_parameter self
 
     describe 'with time filtering only' do
-      let(:start_at) { now.in_time_zone(@timezone).beginning_of_week }
-      let(:end_at) { now.in_time_zone(@timezone).end_of_week }
+      let(:start_at) { now.beginning_of_week }
+      let(:end_at) { now.end_of_week }
 
       let!(:topic1) { create(:topic) }
       let!(:topic2) { create(:topic) }
@@ -100,8 +99,8 @@ resource 'Stats - Reactions' do
         create(:reaction, reactable: create(:idea_with_topics, idea_status: @idea_status))
       end
 
-      let(:start_at) { now.in_time_zone(@timezone).beginning_of_month }
-      let(:end_at) { now.in_time_zone(@timezone).end_of_month }
+      let(:start_at) { now.beginning_of_month }
+      let(:end_at) { now.end_of_month }
       let(:project) { @project.id }
 
       example_request 'Reactions by topic filtered by project' do
@@ -121,8 +120,8 @@ resource 'Stats - Reactions' do
         create(:reaction, reactable: create(:idea_with_topics, idea_status: @idea_status))
       end
 
-      let(:start_at) { now.in_time_zone(@timezone).beginning_of_month }
-      let(:end_at) { now.in_time_zone(@timezone).end_of_month }
+      let(:start_at) { now.beginning_of_month }
+      let(:end_at) { now.end_of_month }
       let(:group) { @group.id }
 
       example_request 'Reactions by topic filtered by group' do
@@ -141,8 +140,8 @@ resource 'Stats - Reactions' do
     group_filter_parameter self
 
     describe 'with time filtering only' do
-      let(:start_at) { now.in_time_zone(@timezone).beginning_of_week }
-      let(:end_at) { now.in_time_zone(@timezone).end_of_week }
+      let(:start_at) { now.beginning_of_week }
+      let(:end_at) { now.end_of_week }
 
       let!(:topic1) { create(:topic) }
       let!(:topic2) { create(:topic) }
@@ -180,8 +179,8 @@ resource 'Stats - Reactions' do
         create(:reaction, reactable: create(:idea_with_topics, idea_status: @idea_status))
       end
 
-      let(:start_at) { now.in_time_zone(@timezone).beginning_of_month }
-      let(:end_at) { now.in_time_zone(@timezone).end_of_month }
+      let(:start_at) { now.beginning_of_month }
+      let(:end_at) { now.end_of_month }
       let(:project) { @project.id }
 
       example_request 'Reactions by topic filtered by project' do
@@ -203,8 +202,8 @@ resource 'Stats - Reactions' do
         create(:reaction, reactable: create(:idea_with_topics, idea_status: @idea_status))
       end
 
-      let(:start_at) { now.in_time_zone(@timezone).beginning_of_month }
-      let(:end_at) { now.in_time_zone(@timezone).end_of_month }
+      let(:start_at) { now.beginning_of_month }
+      let(:end_at) { now.end_of_month }
       let(:group) { @group.id }
 
       example_request 'Reactions by topic filtered by group' do
@@ -225,8 +224,8 @@ resource 'Stats - Reactions' do
     group_filter_parameter self
 
     describe 'with time filtering only' do
-      let(:start_at) { now.in_time_zone(@timezone).beginning_of_month }
-      let(:end_at) { now.in_time_zone(@timezone).end_of_month }
+      let(:start_at) { now.beginning_of_month }
+      let(:end_at) { now.end_of_month }
 
       let!(:project1) { create(:project) }
       let!(:project2) { create(:project) }
@@ -262,8 +261,8 @@ resource 'Stats - Reactions' do
         create(:reaction, reactable: idea2)
       end
 
-      let(:start_at) { now.in_time_zone(@timezone).beginning_of_month }
-      let(:end_at) { now.in_time_zone(@timezone).end_of_month }
+      let(:start_at) { now.beginning_of_month }
+      let(:end_at) { now.end_of_month }
       let(:topic) { @topic.id }
 
       example_request 'Reactions by project filtered by topic' do
@@ -284,8 +283,8 @@ resource 'Stats - Reactions' do
         create(:reaction, reactable: idea)
       end
 
-      let(:start_at) { now.in_time_zone(@timezone).beginning_of_month }
-      let(:end_at) { now.in_time_zone(@timezone).end_of_month }
+      let(:start_at) { now.beginning_of_month }
+      let(:end_at) { now.end_of_month }
       let(:group) { @group.id }
 
       example_request 'Reactions by project filtered by group' do
@@ -304,8 +303,8 @@ resource 'Stats - Reactions' do
     group_filter_parameter self
 
     describe 'with time filtering only' do
-      let(:start_at) { now.in_time_zone(@timezone).beginning_of_month }
-      let(:end_at) { now.in_time_zone(@timezone).end_of_month }
+      let(:start_at) { now.beginning_of_month }
+      let(:end_at) { now.end_of_month }
 
       let!(:project1) { create(:project) }
       let!(:project2) { create(:project) }
@@ -343,8 +342,8 @@ resource 'Stats - Reactions' do
         create(:reaction, reactable: idea2)
       end
 
-      let(:start_at) { now.in_time_zone(@timezone).beginning_of_month }
-      let(:end_at) { now.in_time_zone(@timezone).end_of_month }
+      let(:start_at) { now.beginning_of_month }
+      let(:end_at) { now.end_of_month }
       let(:topic) { @topic.id }
 
       example_request 'Reactions by project filtered by topic' do
@@ -367,8 +366,8 @@ resource 'Stats - Reactions' do
         create(:reaction, reactable: idea)
       end
 
-      let(:start_at) { now.in_time_zone(@timezone).beginning_of_month }
-      let(:end_at) { now.in_time_zone(@timezone).end_of_month }
+      let(:start_at) { now.beginning_of_month }
+      let(:end_at) { now.end_of_month }
       let(:group) { @group.id }
 
       example_request 'Reactions by project filtered by group' do

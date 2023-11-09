@@ -41,7 +41,8 @@ module EmailCampaigns
     N_TOP_IDEAS = 12
 
     def self.default_schedule
-      IceCube::Schedule.new(Time.find_zone(AppConfiguration.instance.settings('core', 'timezone')).local(2019)) do |s|
+      start_time = AppConfiguration.timezone.local(2019)
+      IceCube::Schedule.new(start_time) do |s|
         s.add_recurrence_rule(
           IceCube::Rule.weekly(1).day(:tuesday).hour_of_day(8)
         )

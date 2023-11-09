@@ -123,7 +123,7 @@ module MultiTenancy
       end
 
       def restore_template_attributes(attributes, obj_to_id_and_class, app_settings, model_class: nil)
-        start_of_day = Time.now.in_time_zone(app_settings.dig('core', 'timezone')).beginning_of_day
+        start_of_day = AppConfiguration.timezone.now.beginning_of_day
         locales = USER_INPUT_CLASSES.include?(model_class) ? app_settings.dig('core', 'locales') : all_supported_locales
 
         new_attributes = {}

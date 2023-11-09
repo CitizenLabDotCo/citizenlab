@@ -25,26 +25,25 @@ resource 'Stats - Users' do
   explanation 'The various stats endpoints can be used to show how certain properties of users.'
 
   let(:multiloc_service) { MultilocService.new }
-  let!(:now) { Time.now.in_time_zone(@timezone) }
+  let!(:now) { AppConfiguration.timezone.now }
 
   before do
     admin_header_token
     header 'Content-Type', 'application/json'
     AppConfiguration.instance.update!(created_at: now - 2.years)
-    @timezone = AppConfiguration.instance.settings('core', 'timezone')
 
-    travel_to((now - 1.month).in_time_zone(@timezone).beginning_of_month - 1.day) do
+    travel_to((now - 1.month).beginning_of_month - 1.day) do
       create(:user)
     end
 
-    travel_to((now - 1.month).in_time_zone(@timezone).beginning_of_month + 10.days) do
+    travel_to((now - 1.month).beginning_of_month + 10.days) do
       create(:user)
       create(:user)
       create(:admin)
       create(:user)
       create(:invited_user)
     end
-    travel_to((now - 1.month).in_time_zone(@timezone).beginning_of_month + 25.days) do
+    travel_to((now - 1.month).beginning_of_month + 25.days) do
       create_list(:user, 4)
     end
   end
@@ -89,8 +88,8 @@ resource 'Stats - Users' do
     end
 
     describe 'with time filters only' do
-      let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
-      let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
+      let(:start_at) { (now - 1.month).beginning_of_month }
+      let(:end_at) { (now - 1.month).end_of_month }
       let(:interval) { 'day' }
 
       example_request 'Users by time' do
@@ -102,9 +101,9 @@ resource 'Stats - Users' do
     end
 
     describe 'with project filter' do
-      let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
+      let(:start_at) { (now - 1.month).beginning_of_month }
       let(:project) { @project.id }
-      let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
+      let(:end_at) { (now - 1.month).end_of_month }
       let(:interval) { 'day' }
 
       before do
@@ -123,9 +122,9 @@ resource 'Stats - Users' do
     end
 
     describe 'with group filter' do
-      let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
+      let(:start_at) { (now - 1.month).beginning_of_month }
       let(:group) { @group1.id }
-      let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
+      let(:end_at) { (now - 1.month).end_of_month }
       let(:interval) { 'day' }
 
       before do
@@ -146,9 +145,9 @@ resource 'Stats - Users' do
     end
 
     describe 'with topic filter' do
-      let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
+      let(:start_at) { (now - 1.month).beginning_of_month }
       let(:topic) { @topic1.id }
-      let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
+      let(:end_at) { (now - 1.month).end_of_month }
       let(:interval) { 'day' }
 
       before do
@@ -209,8 +208,8 @@ resource 'Stats - Users' do
     end
 
     describe 'with time filters only' do
-      let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
-      let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
+      let(:start_at) { (now - 1.month).beginning_of_month }
+      let(:end_at) { (now - 1.month).end_of_month }
       let(:interval) { 'day' }
 
       example_request 'Users by time' do
@@ -225,9 +224,9 @@ resource 'Stats - Users' do
     end
 
     describe 'with project filter' do
-      let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
+      let(:start_at) { (now - 1.month).beginning_of_month }
       let(:project) { @project.id }
-      let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
+      let(:end_at) { (now - 1.month).end_of_month }
       let(:interval) { 'day' }
 
       before do
@@ -249,9 +248,9 @@ resource 'Stats - Users' do
     end
 
     describe 'with group filter' do
-      let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
+      let(:start_at) { (now - 1.month).beginning_of_month }
       let(:group) { @group1.id }
-      let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
+      let(:end_at) { (now - 1.month).end_of_month }
       let(:interval) { 'day' }
 
       before do
@@ -275,9 +274,9 @@ resource 'Stats - Users' do
     end
 
     describe 'with topic filter' do
-      let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
+      let(:start_at) { (now - 1.month).beginning_of_month }
       let(:topic) { @topic1.id }
-      let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
+      let(:end_at) { (now - 1.month).end_of_month }
       let(:interval) { 'day' }
 
       before do
@@ -315,8 +314,8 @@ resource 'Stats - Users' do
     parameter :project, 'Project ID. Only return users that can access the given project.', required: false
 
     describe 'with time filters only' do
-      let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
-      let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
+      let(:start_at) { (now - 1.month).beginning_of_month }
+      let(:end_at) { (now - 1.month).end_of_month }
       let(:interval) { 'day' }
 
       example_request 'Users by time (cumulative)' do
@@ -330,9 +329,9 @@ resource 'Stats - Users' do
     end
 
     describe 'with project filter' do
-      let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
+      let(:start_at) { (now - 1.month).beginning_of_month }
       let(:project) { @project.id }
-      let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
+      let(:end_at) { (now - 1.month).end_of_month }
       let(:interval) { 'day' }
 
       before do
@@ -353,9 +352,9 @@ resource 'Stats - Users' do
     end
 
     describe 'with group filter' do
-      let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
+      let(:start_at) { (now - 1.month).beginning_of_month }
       let(:group) { @group1.id }
-      let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
+      let(:end_at) { (now - 1.month).end_of_month }
       let(:interval) { 'day' }
 
       before do
@@ -378,9 +377,9 @@ resource 'Stats - Users' do
     end
 
     describe 'with topic filter' do
-      let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
+      let(:start_at) { (now - 1.month).beginning_of_month }
       let(:topic) { @topic1.id }
-      let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
+      let(:end_at) { (now - 1.month).end_of_month }
       let(:interval) { 'day' }
 
       before do
@@ -417,8 +416,8 @@ resource 'Stats - Users' do
     parameter :project, 'Project ID. Only return users that can access the given project.', required: false
 
     describe 'with time filters only' do
-      let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
-      let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
+      let(:start_at) { (now - 1.month).beginning_of_month }
+      let(:end_at) { (now - 1.month).end_of_month }
       let(:interval) { 'day' }
 
       example_request 'Users by time (cumulative) as xlsx' do
@@ -435,9 +434,9 @@ resource 'Stats - Users' do
     end
 
     describe 'with project filter' do
-      let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
+      let(:start_at) { (now - 1.month).beginning_of_month }
       let(:project) { @project.id }
-      let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
+      let(:end_at) { (now - 1.month).end_of_month }
       let(:interval) { 'day' }
 
       before do
@@ -461,9 +460,9 @@ resource 'Stats - Users' do
     end
 
     describe 'with group filter' do
-      let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
+      let(:start_at) { (now - 1.month).beginning_of_month }
       let(:group) { @group1.id }
-      let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
+      let(:end_at) { (now - 1.month).end_of_month }
       let(:interval) { 'day' }
 
       before do
@@ -489,9 +488,9 @@ resource 'Stats - Users' do
     end
 
     describe 'with topic filter' do
-      let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
+      let(:start_at) { (now - 1.month).beginning_of_month }
       let(:topic) { @topic1.id }
-      let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
+      let(:end_at) { (now - 1.month).end_of_month }
       let(:interval) { 'day' }
 
       before do
@@ -531,8 +530,8 @@ resource 'Stats - Users' do
     parameter :project, 'Project ID. Only return users that have participated in the given project.', required: false
 
     describe 'with time filters only' do
-      let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
-      let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
+      let(:start_at) { (now - 1.month).beginning_of_month }
+      let(:end_at) { (now - 1.month).end_of_month }
       let(:interval) { 'day' }
 
       before do
@@ -557,9 +556,9 @@ resource 'Stats - Users' do
     end
 
     describe 'with project filter' do
-      let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
+      let(:start_at) { (now - 1.month).beginning_of_month }
       let(:project) { @project.id }
-      let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
+      let(:end_at) { (now - 1.month).end_of_month }
       let(:interval) { 'day' }
 
       before do
@@ -581,9 +580,9 @@ resource 'Stats - Users' do
     end
 
     describe 'with group filter' do
-      let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
+      let(:start_at) { (now - 1.month).beginning_of_month }
       let(:group) { @group1.id }
-      let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
+      let(:end_at) { (now - 1.month).end_of_month }
       let(:interval) { 'day' }
 
       before do
@@ -608,9 +607,9 @@ resource 'Stats - Users' do
     end
 
     describe 'with topic filter' do
-      let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
+      let(:start_at) { (now - 1.month).beginning_of_month }
       let(:topic) { @topic1.id }
-      let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
+      let(:end_at) { (now - 1.month).end_of_month }
       let(:interval) { 'day' }
 
       before do
@@ -648,8 +647,8 @@ resource 'Stats - Users' do
     parameter :project, 'Project ID. Only return users that have participated in the given project.', required: false
 
     describe 'with time filters only' do
-      let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
-      let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
+      let(:start_at) { (now - 1.month).beginning_of_month }
+      let(:end_at) { (now - 1.month).end_of_month }
       let(:interval) { 'day' }
 
       before do
@@ -684,8 +683,8 @@ resource 'Stats - Users' do
     parameter :project, 'Project ID. Only return users that have participated in the given project.', required: false
 
     describe 'with time filters only' do
-      let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
-      let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
+      let(:start_at) { (now - 1.month).beginning_of_month }
+      let(:end_at) { (now - 1.month).end_of_month }
       let(:interval) { 'day' }
 
       before do
@@ -710,9 +709,9 @@ resource 'Stats - Users' do
     end
 
     describe 'with project filter' do
-      let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
+      let(:start_at) { (now - 1.month).beginning_of_month }
       let(:project) { @project.id }
-      let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
+      let(:end_at) { (now - 1.month).end_of_month }
       let(:interval) { 'day' }
 
       before do
@@ -734,9 +733,9 @@ resource 'Stats - Users' do
     end
 
     describe 'with group filter' do
-      let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
+      let(:start_at) { (now - 1.month).beginning_of_month }
       let(:group) { @group1.id }
-      let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
+      let(:end_at) { (now - 1.month).end_of_month }
       let(:interval) { 'day' }
 
       before do
@@ -761,9 +760,9 @@ resource 'Stats - Users' do
     end
 
     describe 'with topic filter' do
-      let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
+      let(:start_at) { (now - 1.month).beginning_of_month }
       let(:topic) { @topic1.id }
-      let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
+      let(:end_at) { (now - 1.month).end_of_month }
       let(:interval) { 'day' }
 
       before do

@@ -52,20 +52,19 @@ resource 'Stats - Comments' do
 
   explanation 'The various stats endpoints can be used to show certain properties of comments.'
 
-  let!(:now) { Time.now.in_time_zone(@timezone) }
+  let!(:now) { AppConfiguration.timezone.now }
 
   before do
-    @timezone = AppConfiguration.instance.settings('core', 'timezone')
     AppConfiguration.instance.update!(created_at: now - 3.months)
     create(:comment, publication_status: 'deleted')
   end
 
   get 'web_api/v1/stats/comments_count' do
     before do
-      travel_to((now - 1.month).in_time_zone(@timezone).beginning_of_month - 1.day) do
+      travel_to((now - 1.month).beginning_of_month - 1.day) do
         create_list(:comment, 2)
       end
-      travel_to((now - 5.months).in_time_zone(@timezone).beginning_of_month + 1.day) do
+      travel_to((now - 5.months).beginning_of_month + 1.day) do
         create(:comment)
       end
     end
@@ -115,8 +114,8 @@ resource 'Stats - Comments' do
       end
 
       describe 'with time filtering only' do
-        let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
-        let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
+        let(:start_at) { (now - 1.month).beginning_of_month }
+        let(:end_at) { (now - 1.month).end_of_month }
 
         before do
           travel_to start_at + 1.day do
@@ -159,8 +158,8 @@ resource 'Stats - Comments' do
           end
         end
 
-        let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
-        let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
+        let(:start_at) { (now - 1.month).beginning_of_month }
+        let(:end_at) { (now - 1.month).end_of_month }
         let(:project) { @project.id }
 
         example_request 'Comments by topic filtered by project' do
@@ -173,9 +172,9 @@ resource 'Stats - Comments' do
       end
 
       describe 'filtered by group' do
-        let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
+        let(:start_at) { (now - 1.month).beginning_of_month }
         let(:group) { @group.id }
-        let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
+        let(:end_at) { (now - 1.month).end_of_month }
 
         before do
           travel_to start_at + 3.days do
@@ -215,8 +214,8 @@ resource 'Stats - Comments' do
       end
 
       describe 'with time filtering only' do
-        let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
-        let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
+        let(:start_at) { (now - 1.month).beginning_of_month }
+        let(:end_at) { (now - 1.month).end_of_month }
 
         before do
           travel_to start_at + 1.day do
@@ -261,8 +260,8 @@ resource 'Stats - Comments' do
           end
         end
 
-        let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
-        let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
+        let(:start_at) { (now - 1.month).beginning_of_month }
+        let(:end_at) { (now - 1.month).end_of_month }
         let(:project) { @project.id }
 
         example_request 'Comments by topic filtered by project' do
@@ -277,9 +276,9 @@ resource 'Stats - Comments' do
       end
 
       describe 'filtered by group' do
-        let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
+        let(:start_at) { (now - 1.month).beginning_of_month }
         let(:group) { @group.id }
-        let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
+        let(:end_at) { (now - 1.month).end_of_month }
 
         before do
           travel_to start_at + 3.days do
@@ -314,8 +313,8 @@ resource 'Stats - Comments' do
       before { admin_header_token }
 
       describe 'with time filtering only' do
-        let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
-        let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
+        let(:start_at) { (now - 1.month).beginning_of_month }
+        let(:end_at) { (now - 1.month).end_of_month }
 
         before do
           travel_to start_at + 14.days do
@@ -345,9 +344,9 @@ resource 'Stats - Comments' do
       end
 
       describe 'filtered by topic' do
-        let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
+        let(:start_at) { (now - 1.month).beginning_of_month }
         let(:topic) { @topic.id }
-        let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
+        let(:end_at) { (now - 1.month).end_of_month }
 
         before do
           travel_to start_at + 17.days do
@@ -370,9 +369,9 @@ resource 'Stats - Comments' do
       end
 
       describe 'filtered by group' do
-        let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
+        let(:start_at) { (now - 1.month).beginning_of_month }
         let(:group) { @group.id }
-        let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
+        let(:end_at) { (now - 1.month).end_of_month }
 
         before do
           travel_to start_at + 12.days do
@@ -406,8 +405,8 @@ resource 'Stats - Comments' do
       before { admin_header_token }
 
       describe 'with time filtering only' do
-        let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
-        let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
+        let(:start_at) { (now - 1.month).beginning_of_month }
+        let(:end_at) { (now - 1.month).end_of_month }
 
         before do
           travel_to start_at + 14.days do
@@ -443,9 +442,9 @@ resource 'Stats - Comments' do
       end
 
       describe 'filtered by topic' do
-        let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
+        let(:start_at) { (now - 1.month).beginning_of_month }
         let(:topic) { @topic.id }
-        let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
+        let(:end_at) { (now - 1.month).end_of_month }
 
         before do
           travel_to start_at + 17.days do
@@ -470,9 +469,9 @@ resource 'Stats - Comments' do
       end
 
       describe 'filtered by group' do
-        let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
+        let(:start_at) { (now - 1.month).beginning_of_month }
         let(:group) { @group.id }
-        let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
+        let(:end_at) { (now - 1.month).end_of_month }
 
         before do
           travel_to start_at + 12.days do

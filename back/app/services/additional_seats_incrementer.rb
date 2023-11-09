@@ -45,7 +45,7 @@ class AdditionalSeatsIncrementer
         end
 
       ActiveRecord::Base.uncached do # to make it less likely that we'll use stale data for increment
-        config = AppConfiguration.first!
+        config = AppConfiguration.instance.reload
         config.settings['core'][field] ||= 0
         config.settings['core'][field] += 1
         config.save!
