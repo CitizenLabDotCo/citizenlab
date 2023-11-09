@@ -158,7 +158,7 @@ const IdeaCard = memo<IdeaCardProps>(
           justifyContent="space-between"
           w="100%"
         >
-          <Box mb={smallerThanTablet ? '24px' : undefined}>
+          <Box mb={smallerThanTablet ? '24px' : '38px'}>
             <Title variant="h3" mt="4px" mb="16px">
               {ideaTitle}
             </Title>

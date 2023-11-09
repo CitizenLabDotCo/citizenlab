@@ -26,6 +26,8 @@ export const Standard: Story = {
   args: {
     ideaId: '1',
     showFollowButton: false,
+    hideImage: false,
+    hideImagePlaceholder: false,
   },
   parameters: {},
 };
@@ -40,6 +42,8 @@ export const Voting: Story = {
   ),
   args: {
     ideaId: '1',
+    hideImage: false,
+    hideImagePlaceholder: false,
   },
   parameters: {
     msw: mockEndpoints({
