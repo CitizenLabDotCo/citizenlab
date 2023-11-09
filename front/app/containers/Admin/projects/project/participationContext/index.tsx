@@ -240,6 +240,23 @@ class ParticipationContext extends PureComponent<
     }
   }
 
+  // TOD0: This fixes the issue where the participation_method is not updated when the phase
+  // prop changes but we should convert this component to a functional one and simplify it
+  static getDerivedStateFromProps(nextProps: Props, prevState: State) {
+    const { phase: _prevPhase } = nextProps;
+    const { participation_method: participationMethod } = prevState;
+    if (
+      _prevPhase &&
+      _prevPhase.data.attributes.participation_method !== participationMethod
+    ) {
+      return {
+        ...prevState,
+        participation_method: _prevPhase.data.attributes.participation_method,
+      };
+    }
+    return null;
+  }
+
   componentWillUnmount() {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
