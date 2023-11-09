@@ -9,7 +9,7 @@ resource 'Permissions' do
   before do
     header 'Content-Type', 'application/json'
     @project = create(:continuous_project)
-    @phase = ParticipationContextService.new.get_participation_context(create(:project_with_current_phase))
+    @phase = ParticipationContextService.new.get_participation_context(@project)
     PermissionsService.new.update_all_permissions
   end
 
@@ -460,7 +460,7 @@ resource 'Permissions' do
 
     get 'web_api/v1/ideas/:idea_id/permissions/:action/schema' do
       before do
-        @permission = @project.permissions.first
+        @permission = @project.phases.first.permissions.first
         @permission.update!(global_custom_fields: false)
         @field1 = create(:custom_field, required: true)
         @field2 = create(:custom_field, required: false)
@@ -469,7 +469,7 @@ resource 'Permissions' do
       end
 
       let(:action) { @permission.action }
-      let(:idea) { create(:idea, project: @project) }
+      let(:idea) { create(:idea, project: @project, phases: @project.phases) }
       let(:idea_id) { idea.id }
 
       example_request 'Get the json and ui schema for an idea permission' do
