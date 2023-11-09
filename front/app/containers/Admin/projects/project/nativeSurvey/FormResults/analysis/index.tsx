@@ -18,7 +18,7 @@ import ConsentModal from './ConsentModal';
 import CreateAnalysisModal from './CreateAnalysisModal';
 import useAnalyses from 'api/analyses/useAnalyses';
 import useDeleteAnalysis from 'api/analyses/useDeleteAnalysis';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import Button from 'components/UI/Button';
 import useFormCustomFields from 'api/custom_fields/useCustomFields';
@@ -32,10 +32,10 @@ import AnalysisInsights from './AnalysisInsights';
 const Analysis = ({ customFieldId }: { customFieldId: string }) => {
   const [dropdownIsOpened, setDropdownIsOpened] = useState(false);
   const { formatMessage } = useIntl();
-
-  const { projectId } = useParams() as { projectId: string };
-  const [urlParams] = useSearchParams();
-  const phaseId = urlParams.get('phase_id') || undefined;
+  const { projectId, phaseId } = useParams() as {
+    projectId: string;
+    phaseId: string;
+  };
 
   const { mutate: deleteAnalysis } = useDeleteAnalysis();
   const { data: analyses } = useAnalyses({

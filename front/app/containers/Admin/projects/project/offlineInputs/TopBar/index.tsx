@@ -48,7 +48,7 @@ const TopBar = ({ onClickPDFImport }: Props) => {
     project?.data.attributes.participation_method === 'native_survey';
 
   const backPath = isSurvey
-    ? `/admin/projects/${projectId}/native-survey`
+    ? `/admin/projects/${projectId}/native-survey/${phaseId}`
     : `/admin/projects/${projectId}/ideas`;
 
   return (

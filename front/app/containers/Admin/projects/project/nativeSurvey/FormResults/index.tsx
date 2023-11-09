@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { WrappedComponentProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useIntl } from 'utils/cl-intl';
+import { useParams } from 'react-router-dom';
 
 // Hooks
 import useLocale from 'hooks/useLocale';
@@ -31,14 +30,14 @@ import usePhase from 'api/phases/usePhase';
 import { downloadSurveyResults } from 'api/survey_results/utils';
 import FormResultsQuestion from './FormResultsQuestion';
 
-const FormResults = ({ intl: { formatMessage } }: WrappedComponentProps) => {
-  const { projectId } = useParams() as {
+const FormResults = () => {
+  const { projectId, phaseId } = useParams() as {
     projectId: string;
+    phaseId: string;
   };
+  const { formatMessage } = useIntl();
   const [isDownloading, setIsDownloading] = useState(false);
   const locale = useLocale();
-  const [urlParams] = useSearchParams();
-  const phaseId = urlParams.get('phase_id');
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
   const { data: formResults } = useFormResults({
@@ -151,4 +150,4 @@ const FormResults = ({ intl: { formatMessage } }: WrappedComponentProps) => {
   );
 };
 
-export default injectIntl(FormResults);
+export default FormResults;

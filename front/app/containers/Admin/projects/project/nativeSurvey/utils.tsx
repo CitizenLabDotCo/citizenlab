@@ -102,7 +102,7 @@ export const getFormActionsConfig = (
     phaseId: phase.id,
     editFormLink: `/admin/projects/${project.id}/phases/${phase.id}/native-survey/edit`,
     viewFormLink: `/projects/${project.attributes.slug}/ideas/new?phase_id=${phase.id}`,
-    viewFormResults: `/admin/projects/${project.id}/native-survey/results?phase_id=${phase.id}`,
+    viewFormResults: `/admin/projects/${project.id}/native-survey/${phase.id}/results`,
     offlineInputsLink: `/admin/projects/${project.id}/phases/${phase.id}/offline-inputs`,
     downloadExcelLink: `${API_PATH}/phases/${phase.id}/import_ideas/example_xlsx`,
     downloadPdfLink: `${API_PATH}/phases/${phase.id}/custom_fields/to_pdf`,

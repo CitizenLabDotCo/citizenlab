@@ -83,7 +83,7 @@ const TopBar = () => {
   const goBack = () => {
     if (analysis?.data.attributes.participation_method === 'native_survey') {
       clHistory.push(
-        `/admin/projects/${projectId}/native-survey/results${
+        `/admin/projects/${projectId}/native-survey/${phaseId}/results${
           phaseId ? `?phase_id=${phaseId}` : ''
         }`
       );

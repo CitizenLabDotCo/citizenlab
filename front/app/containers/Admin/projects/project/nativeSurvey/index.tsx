@@ -30,7 +30,10 @@ import { downloadSurveyResults } from 'api/survey_results/utils';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
 
 const Forms = ({ intl: { formatMessage } }: WrappedComponentProps) => {
-  const { projectId } = useParams() as { projectId: string };
+  const { projectId, phaseId } = useParams() as {
+    projectId: string;
+    phaseId: string;
+  };
   const [isDownloading, setIsDownloading] = useState(false);
   const [showEditWarningModal, setShowEditWarningModal] = useState(false);
   const { data: project } = useProjectById(projectId);
@@ -44,7 +47,7 @@ const Forms = ({ intl: { formatMessage } }: WrappedComponentProps) => {
   }
 
   const showResults = pathname.includes(
-    `/admin/projects/${project.data.id}/native-survey/results`
+    `/admin/projects/${project.data.id}/native-survey/${phaseId}/results`
   );
 
   const formActionsConfigs = getFormActionsConfig(
