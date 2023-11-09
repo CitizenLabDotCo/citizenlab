@@ -8,7 +8,7 @@ import Body from 'components/PostShowComponents/Body';
 import IdeaProposedBudget from 'containers/IdeasShow/components/ProposedBudget/IdeaProposedBudget';
 import DropdownMap from 'components/PostShowComponents/DropdownMap';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
-import CommentsSection from 'components/PostShowComponents/Comments';
+import CommentsSection from 'components/PostShowComponents/Comments/CommentsSection';
 import FileAttachments from 'components/UI/FileAttachments';
 import FeedbackSettings from './FeedbackSettings';
 import ReactionPreview from './ReactionPreview';

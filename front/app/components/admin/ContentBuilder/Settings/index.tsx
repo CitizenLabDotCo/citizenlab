@@ -75,8 +75,9 @@ const ContentBuilderSettings = () => {
       zIndex="99999"
       p="20px"
       w="400px"
-      h="100%"
+      h={`calc(100vh - ${stylingConsts.menuHeight}px)`}
       background="#ffffff"
+      overflowY="auto"
     >
       <StyledCloseIconButton
         className="e2eBuilderSettingsClose"

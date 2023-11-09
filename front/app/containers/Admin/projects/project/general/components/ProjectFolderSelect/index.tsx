@@ -39,11 +39,13 @@ const StyledSectionField = styled(SectionField)`
 interface Props {
   projectAttrs: IUpdatedProjectProperties;
   onProjectAttributesDiffChange: TOnProjectAttributesDiffChangeFunction;
+  isNewProject: boolean;
 }
 
 const ProjectFolderSelect = ({
   projectAttrs: { folder_id },
   onProjectAttributesDiffChange,
+  isNewProject,
   intl: { formatMessage },
 }: Props & WrappedComponentProps) => {
   const { data: projectFolders } = useProjectFolders({});
@@ -52,6 +54,11 @@ const ProjectFolderSelect = ({
   const userCanCreateProjectInFolderOnly = usePermission({
     item: 'project_folder',
     action: 'create_project_in_folder_only',
+  });
+
+  const userCanCreateProjectAtTopLevel = usePermission({
+    item: 'project',
+    action: 'create',
   });
 
   const localize = useLocalize();
@@ -66,14 +73,14 @@ const ProjectFolderSelect = ({
       userCanCreateProjectInFolderOnly: boolean,
       folder_id?: string | null
     ) {
-      if (userCanCreateProjectInFolderOnly) {
-        // folder moderators always need to pick a folder
-        // when they create a project
-        return true;
-      } else if (folder_id) {
+      if (folder_id) {
         // when we already have a folder_id for our project,
         // the project folder select should be turned on
         // so we can see our selected folder.
+        return true;
+      } else if (isNewProject && userCanCreateProjectInFolderOnly) {
+        // folder moderators need to pick a folder
+        // only when they create a project
         return true;
       } else {
         return false;
@@ -89,6 +96,7 @@ const ProjectFolderSelect = ({
     userCanCreateProjectInFolderOnly,
     folder_id,
     authUser,
+    isNewProject,
   ]);
 
   if (isNilOrError(authUser)) {
@@ -166,7 +174,7 @@ const ProjectFolderSelect = ({
           name="folderSelect"
           id="folderSelect-no"
           label={<FormattedMessage {...messages.optionNo} />}
-          disabled={userCanCreateProjectInFolderOnly}
+          disabled={!userCanCreateProjectAtTopLevel}
         />
         <Radio
           onChange={onRadioFolderSelectChange}
@@ -175,7 +183,7 @@ const ProjectFolderSelect = ({
           name="folderSelect"
           id="folderSelect-yes"
           label={<FormattedMessage {...messages.optionYes} />}
-          disabled={userCanCreateProjectInFolderOnly}
+          disabled={!userCanCreateProjectAtTopLevel}
         />
         {radioFolderSelect && (
           <Select

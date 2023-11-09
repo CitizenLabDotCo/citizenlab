@@ -30,15 +30,26 @@ resource 'Location' do
     parameter :address, 'Address', required: true
     parameter :language, 'Language', required: false
 
-    let(:address) { 'New York' }
+    context 'an address' do
+      let(:address) { 'New York' }
 
-    before do
-      allow(HTTParty).to receive(:get).and_return({ 'results' => [{ 'geometry' => { 'location' => { lat: 40.7127753, lng: -74.0059728 } } }] })
+      before do
+        allow(HTTParty).to receive(:get).and_return({ 'results' => [{ 'geometry' => { 'location' => { lat: 40.7127753, lng: -74.0059728 } } }] })
+      end
+
+      example_request 'Address Geocoded' do
+        expect(status).to eq(200)
+        expect(response_data[:attributes][:location]).to eq({ lat: 40.7127753, lng: -74.0059728 })
+      end
     end
 
-    example_request 'Geocode' do
-      expect(status).to eq(200)
-      expect(response_data[:attributes][:location]).to eq({ lat: 40.7127753, lng: -74.0059728 })
+    context 'co-ordinates' do
+      let(:address) { '48.32895308112715,16.04415893554688' }
+
+      example_request 'Exact co-ordinates returned unaltered' do
+        expect(status).to eq(200)
+        expect(response_data[:attributes][:location]).to eq({ lat: 48.32895308112715, lng: 16.04415893554688 })
+      end
     end
   end
 
