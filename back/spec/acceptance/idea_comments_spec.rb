@@ -9,7 +9,7 @@ resource 'Comments' do
   before do
     header 'Content-Type', 'application/json'
     @project = create(:continuous_project)
-    @idea = create(:idea, project: @project)
+    @idea = create(:idea, project: @project, phases: @project.phases)
   end
 
   get 'web_api/v1/ideas/:idea_id/comments' do
@@ -19,7 +19,7 @@ resource 'Comments' do
     end
     parameter :sort, 'Either new, -new, likes_count or -likes_count. Defaults to -new. Only applies to the top-level comments, children are always returned chronologically.'
 
-    describe do
+    describe 'default sorting' do
       before do
         @c1 = create(:comment, post: @idea)
         @c2 = create(:comment, post: @idea)
@@ -62,7 +62,7 @@ resource 'Comments' do
       end
     end
 
-    describe do
+    describe 'sorted by likes count' do
       let(:idea_id) { @idea.id }
       let(:sort) { '-likes_count' }
 
@@ -137,7 +137,7 @@ resource 'Comments' do
       expect(status).to eq 200
     end
 
-    describe do
+    describe 'by project' do
       before do
         @project = create(:project)
         @comments = Array.new(3) do |_i|
@@ -155,7 +155,7 @@ resource 'Comments' do
       end
     end
 
-    describe do
+    describe 'by idea' do
       before do
         @comments = create_list(:comment, 4)
       end
@@ -314,7 +314,7 @@ resource 'Comments' do
         expect(@idea.reload.comments_count).to eq 1
       end
 
-      describe do
+      describe 'comments on comments' do
         let(:parent_id) { create(:comment, post: @idea).id }
 
         example_request 'Create a comment on a comment' do
@@ -328,7 +328,7 @@ resource 'Comments' do
         end
       end
 
-      describe do
+      describe 'invalid comments' do
         let(:body_multiloc) { { 'fr-FR' => '' } }
 
         example_request '[error] Create an invalid comment' do
@@ -338,11 +338,10 @@ resource 'Comments' do
         end
       end
 
-      describe do
+      describe 'project inactive' do
         before do
           project = create(:project_with_past_phases)
-          @idea.project = project
-          @idea.save!
+          @idea.update!(project: project, phases: project.phases)
         end
 
         example_request '[error] Create a comment on an idea in an inactive project' do
@@ -350,11 +349,10 @@ resource 'Comments' do
         end
       end
 
-      describe do
+      describe 'commenting enabled on voting projects' do
         before do
           project = create(:continuous_budgeting_project)
-          @idea.project = project
-          @idea.save!
+          @idea.update!(project: project, phases: project.phases)
         end
 
         example 'Commenting should be enabled by default in a voting project', document: false do
@@ -363,7 +361,7 @@ resource 'Comments' do
         end
       end
 
-      describe do
+      describe 'profanity blocking' do
         before { SettingsService.new.activate_feature! 'blocking_profanity' }
 
         let(:body_multiloc) { { 'en' => 'fucking cocksucker' } }
@@ -381,7 +379,7 @@ resource 'Comments' do
         let(:allow_anonymous_participation) { true }
         let(:anonymous) { true }
 
-        before { @idea.project.update! allow_anonymous_participation: allow_anonymous_participation }
+        before { @idea.project.phases.first.update! allow_anonymous_participation: allow_anonymous_participation }
 
         example_request 'Create an anonymous comment on an idea' do
           assert_status 201
@@ -457,7 +455,7 @@ resource 'Comments' do
         let(:allow_anonymous_participation) { true }
         let(:anonymous) { true }
 
-        before { @idea.project.update! allow_anonymous_participation: allow_anonymous_participation }
+        before { @idea.project.phases.first.update! allow_anonymous_participation: allow_anonymous_participation }
 
         example_request 'Change an comment on an idea to anonymous' do
           assert_status 200
