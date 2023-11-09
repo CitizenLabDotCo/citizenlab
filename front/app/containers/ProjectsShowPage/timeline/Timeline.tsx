@@ -8,7 +8,7 @@ import { trackEventByName } from 'utils/analytics';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
-import PhaseDescriptions from './PhaseDescriptions';
+import PhaseDescription from './PhaseDescription';
 
 // hooks
 import usePhases from 'api/phases/usePhases';
@@ -375,7 +375,7 @@ const Timeline = ({
                 );
               })}
             </RtlBox>
-            <PhaseDescriptions
+            <PhaseDescription
               projectId={projectId}
               selectedPhaseId={selectedPhaseId}
             />

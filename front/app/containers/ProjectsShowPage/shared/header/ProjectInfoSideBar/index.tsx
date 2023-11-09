@@ -15,8 +15,6 @@ import usePhases from 'api/phases/usePhases';
 import useEvents from 'api/events/useEvents';
 import useAuthUser from 'api/me/useAuthUser';
 import useFormSubmissionCount from 'api/submission_count/useSubmissionCount';
-import usePhasesPermissions from 'api/phase_permissions/usePhasesPermissions';
-import useProjectPermissions from 'api/project_permissions/useProjectPermissions';
 import { isAdmin } from 'utils/permissions/roles';
 
 // services
@@ -31,7 +29,7 @@ import { Box, Icon, IconTooltip } from '@citizenlab/cl2-component-library';
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { scrollToElement } from 'utils/scroll';
-import { hasEmbeddedSurvey, hasSurveyWithAnyonePermissions } from '../utils';
+import { hasEmbeddedSurvey, hasNativeSurvey } from '../utils';
 import setPhaseUrl from 'containers/ProjectsShowPage/timeline/setPhaseURL';
 
 // i18n
@@ -43,6 +41,7 @@ import FormattedBudget from 'utils/currency/FormattedBudget';
 // style
 import styled from 'styled-components';
 import { fontSizes, colors, isRtl, media } from 'utils/styleUtils';
+import Link from 'utils/cl-router/Link';
 
 const Container = styled.div``;
 
@@ -131,10 +130,6 @@ interface Props {
 const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
-  const { data: projectPermissions } = useProjectPermissions({ projectId });
-  const phasesPermissions = usePhasesPermissions(
-    phases?.data.map((phase) => phase.id)
-  );
   const { data: events } = useEvents({
     projectIds: [projectId],
     sort: '-start_at',
@@ -256,24 +251,32 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                     {...messages.xParticipants}
                     values={{ participantsCount: projectParticipantsCount }}
                   />
-                  {
-                    <Box mb="4px" ml="4px">
-                      {hasSurveyWithAnyonePermissions(
-                        projectPermissions,
-                        phasesPermissions
-                      ) &&
-                        isAdminUser && (
-                          <IconTooltip
-                            placement="top-start"
-                            maxTooltipWidth={200}
-                            iconColor={colors.coolGrey300}
-                            content={formatMessage(
-                              messages.participantsTooltip
-                            )}
-                          />
-                        )}
-                    </Box>
-                  }
+                  {hasNativeSurvey(project.data, phases?.data) &&
+                    isAdminUser && (
+                      <Box mb="4px" ml="4px">
+                        <IconTooltip
+                          placement="top-start"
+                          maxTooltipWidth={200}
+                          iconColor={colors.coolGrey300}
+                          content={
+                            <FormattedMessage
+                              {...messages.participantsTooltip}
+                              values={{
+                                accessRightsLink: (
+                                  <Link
+                                    to={`/admin/projects/${projectId}/permissions`}
+                                  >
+                                    <FormattedMessage
+                                      {...messages.accessRights}
+                                    />
+                                  </Link>
+                                ),
+                              }}
+                            />
+                          }
+                        />
+                      </Box>
+                    )}
                 </ListItem>
               )}
             {projectType === 'timeline' && phases && phases.data.length > 1 && (
