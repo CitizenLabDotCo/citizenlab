@@ -41,5 +41,6 @@ FactoryBot.define do
     publication_status { 'published' }
     association :idea_status, factory: :idea_status_proposed
     association :project, factory: :continuous_native_survey_project
+    creation_phase { project.phases.first }
   end
 end
