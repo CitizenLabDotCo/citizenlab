@@ -101,10 +101,6 @@ const ParticipationCTAContent = ({
     return messages.projectOpenForSubmission;
   };
 
-  const timeLeftTranslated = timeLeft
-    ? formatMessage(timeLeftMessage, { timeLeft })
-    : null;
-
   if (isSmallerThanPhone) {
     return (
       <Box
@@ -136,7 +132,8 @@ const ParticipationCTAContent = ({
                 )}
                 {hideDefaultParticipationMessage &&
                   timeLeftPosition === 'left' &&
-                  timeLeftTranslated?.toUpperCase()}
+                  timeLeft &&
+                  formatMessage(timeLeftMessage, { timeLeft }).toUpperCase()}
               </span>
             </Text>
           </Box>
@@ -148,12 +145,7 @@ const ParticipationCTAContent = ({
               m="0px"
               ml="auto"
             >
-              <FormattedMessage
-                {...timeLeftMessage}
-                values={{
-                  timeLeft,
-                }}
-              />
+              {formatMessage(timeLeftMessage, { timeLeft })}
             </Text>
           )}
           {participationState && (
@@ -199,13 +191,10 @@ const ParticipationCTAContent = ({
             {!hideDefaultParticipationMessage && (
               <FormattedMessage {...getUserParticipationMessage()} />
             )}{' '}
-            {timeLeftPosition === 'left' && timeLeftTranslated?.toUpperCase()}{' '}
+            {timeLeftPosition === 'left' &&
+              timeLeft &&
+              formatMessage(timeLeftMessage, { timeLeft }).toUpperCase()}{' '}
           </Text>
-          {participationState && (
-            <Box display="flex" width="100%">
-              {participationState}
-            </Box>
-          )}
         </Box>
         <Box display="flex" alignItems="center">
           {timeLeft !== undefined && timeLeftPosition === 'right' && (
@@ -217,12 +206,7 @@ const ParticipationCTAContent = ({
               fontSize="xs"
               fontWeight="bold"
             >
-              <FormattedMessage
-                {...timeLeftMessage}
-                values={{
-                  timeLeft,
-                }}
-              />
+              {formatMessage(timeLeftMessage, { timeLeft })}
             </Text>
           )}
           {CTAButton}
