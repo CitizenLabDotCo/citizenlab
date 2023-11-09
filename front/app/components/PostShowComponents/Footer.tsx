@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 
 // components
-import Comments from 'components/PostShowComponents/Comments';
+import CommentsSection from 'components/PostShowComponents/Comments/CommentsSection';
 // styling
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
@@ -60,7 +60,7 @@ const Footer = memo<Props>(({ postId, postType, className }) => {
     <Container className={className || ''}>
       <Content>
         <ContentInner>
-          <Comments
+          <CommentsSection
             allowAnonymousParticipation={
               postType === 'initiative'
                 ? appConfiguration?.data.attributes.settings.initiatives

@@ -9,14 +9,14 @@ import Centerer from 'components/UI/Centerer';
 import { ICommentData } from 'api/comments/types';
 
 // events
-import { commentAdded$, commentDeleted$ } from './events';
+import { commentAdded$, commentDeleted$ } from '../../../events';
 
 // style
 import styled from 'styled-components';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../../../messages';
 
 // a11y
 import { ScreenReaderOnly } from 'utils/a11y';

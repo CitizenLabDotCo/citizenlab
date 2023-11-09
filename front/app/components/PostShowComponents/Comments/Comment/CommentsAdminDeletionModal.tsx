@@ -22,7 +22,7 @@ import Radio from 'components/HookForm/RadioGroup/Radio';
 // i18n
 import { MessageDescriptor } from 'react-intl';
 import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 
 // animation
 import CSSTransition from 'react-transition-group/CSSTransition';

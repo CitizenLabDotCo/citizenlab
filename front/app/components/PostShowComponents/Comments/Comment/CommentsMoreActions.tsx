@@ -10,7 +10,7 @@ import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 import Modal from 'components/UI/Modal';
 import SpamReportForm from 'containers/SpamReport';
 import Button from 'components/UI/Button';
-import CommentsAdminDeletionModal from '../CommentsAdminDeletionModal';
+import CommentsAdminDeletionModal from './CommentsAdminDeletionModal';
 import { usePermission } from 'utils/permissions';
 
 // events
