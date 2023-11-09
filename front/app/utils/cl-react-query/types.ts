@@ -2,6 +2,11 @@ export type Keys<KeysObject extends Record<string, any>> = ReturnType<
   KeysObject[keyof KeysObject]
 >;
 
+interface ItemKeyDefinition {
+  type: string;
+  variant?: never;
+}
+
 interface BaseKeyDefinition {
   type: string;
   variant?: string;
@@ -19,6 +24,6 @@ export interface QueryKeys {
   item?: (
     parameters: Record<string, any>
   ) => [
-    BaseKeyDefinition & { operation: 'item'; parameters: Record<string, any> }
+    ItemKeyDefinition & { operation: 'item'; parameters: Record<string, any> }
   ];
 }
