@@ -111,7 +111,7 @@ resource 'Baskets' do
         context 'when budgeting' do
           before do
             @project = create(:continuous_budgeting_project)
-            @basket.update!(participation_context: @project)
+            @basket.update!(participation_context: @project.phases.first)
           end
 
           example 'Submitting a basket when the budget of an idea changed uses the new budget', document: false do
@@ -147,7 +147,7 @@ resource 'Baskets' do
           end
 
           example '[error] Submitting a basket when the budget of an idea changed and exceeds the limit uses the new budget', document: false do
-            @project.update!(voting_max_total: 10)
+            @project.phases.first.update!(voting_max_total: 10)
             @ideas.first.update!(budget: 7)
 
             do_request
