@@ -1,8 +1,5 @@
 import React from 'react';
 
-// api
-import useIdeaImage from 'api/idea_images/useIdeaImage';
-
 // components
 import Image from 'components/UI/Image';
 import ImagePlaceholder from './ImagePlaceholder';
@@ -12,7 +9,6 @@ import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
 // typings
-import { IIdea } from 'api/ideas/types';
 import { IProjectData } from 'api/projects/types';
 import { IPhaseData } from 'api/phases/types';
 
@@ -40,28 +36,18 @@ const IdeaCardImage = styled(Image)`
 `;
 
 interface Props {
-  idea: IIdea;
   participationContext?: IProjectData | IPhaseData;
-  hideImage: boolean;
+  image: string | null;
   hideImagePlaceholder: boolean;
   innerHeight: string;
 }
 
 const CardImage = ({
-  idea,
   participationContext,
-  hideImage,
+  image,
   hideImagePlaceholder,
   innerHeight,
 }: Props) => {
-  const { data: ideaImage } = useIdeaImage(
-    idea.data.id,
-    idea.data.relationships.idea_images.data?.[0]?.id
-  );
-
-  const image = ideaImage?.data.attributes.versions.medium;
-  const showImage = !!image && !hideImage;
-
   const participationMethod =
     participationContext?.attributes.participation_method;
 
@@ -69,13 +55,13 @@ const CardImage = ({
 
   return (
     <>
-      {showImage && (
+      {image && (
         <IdeaCardImageWrapper $cardInnerHeight={innerHeight}>
           <IdeaCardImage src={image} cover={true} alt="" />
         </IdeaCardImageWrapper>
       )}
 
-      {!showImage && !hideImagePlaceholder && (
+      {!image && !hideImagePlaceholder && (
         <IdeaCardImageWrapper $cardInnerHeight={innerHeight}>
           <ImagePlaceholder
             participationMethod={participationMethod}

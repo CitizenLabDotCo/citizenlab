@@ -31,6 +31,7 @@ import useIdeaById from 'api/ideas/useIdeaById';
 import useProjectById from 'api/projects/useProjectById';
 import useLocalize from 'hooks/useLocalize';
 import usePhase from 'api/phases/usePhase';
+import useIdeaImage from 'api/idea_images/useIdeaImage';
 
 // utils
 import { scrollToElement } from 'utils/scroll';
@@ -90,6 +91,16 @@ const IdeaCard = memo<IdeaCardProps>(
     goBackMode = 'browserGoBackButton',
     showFollowButton,
   }) => {
+    const { data: ideaImage } = useIdeaImage(
+      idea.data.id,
+      idea.data.relationships.idea_images.data?.[0]?.id
+    );
+
+    const image =
+      !hideImage && ideaImage
+        ? ideaImage.data.attributes.versions.medium
+        : null;
+
     const smallerThanPhone = useBreakpoint('phone');
     const smallerThanTablet = useBreakpoint('tablet');
     const localize = useLocalize();
@@ -145,9 +156,8 @@ const IdeaCard = memo<IdeaCardProps>(
         onClick={handleClick}
       >
         <CardImage
-          idea={idea}
           participationContext={participationContext}
-          hideImage={hideImage}
+          image={image}
           hideImagePlaceholder={hideImagePlaceholder}
           innerHeight={innerHeight}
         />
@@ -158,7 +168,15 @@ const IdeaCard = memo<IdeaCardProps>(
           justifyContent="space-between"
           w="100%"
         >
-          <Box mb={smallerThanTablet ? '24px' : '38px'}>
+          <Box
+            mb={
+              smallerThanTablet
+                ? '24px'
+                : !image && hideImagePlaceholder
+                ? '36px'
+                : '8px'
+            }
+          >
             <Title variant="h3" mt="4px" mb="16px">
               {ideaTitle}
             </Title>
