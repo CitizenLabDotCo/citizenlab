@@ -1,5 +1,5 @@
 import React, { memo, ReactChild, FC } from 'react';
-import Tippy from '@tippyjs/react';
+// import Tippy from '@tippyjs/react';
 import styled from 'styled-components';
 import { darken } from 'polished';
 import Icon, { IconNames } from '../Icon';
@@ -90,6 +90,8 @@ export type Props = {
   BoxVisibilityProps &
   BoxDisplayProps &
   BoxZIndexProps;
+
+const Tippy = (props: any) => <>{props.children}</>;
 
 const IconTooltip: FC<Props> = memo<Props>(
   ({
