@@ -105,11 +105,7 @@ export const AdminProjectsProjectIndex = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [phaseId, phases]);
 
-  if (!selectedPhase) {
-    return null;
-  }
-
-  const tabHideConditions: TabHideConditions = {
+  const getTabHideConditions = (phase: IPhaseData): TabHideConditions => ({
     general: function isGeneralTabHidden() {
       return false;
     },
@@ -117,43 +113,47 @@ export const AdminProjectsProjectIndex = ({
       return false;
     },
     ideas: function isIdeaTabHidden() {
-      return !getMethodConfig(selectedPhase.attributes.participation_method)
+      return !getMethodConfig(phase.attributes.participation_method)
         .showInputManager;
     },
     ideaform: function isIdeaFormTabHidden() {
       return (
-        getMethodConfig(selectedPhase.attributes.participation_method)
-          .formEditor !== 'simpleFormEditor'
+        getMethodConfig(phase.attributes.participation_method).formEditor !==
+        'simpleFormEditor'
       );
     },
     poll: function isPollTabHidden() {
-      return selectedPhase.attributes.participation_method !== 'poll';
+      return phase.attributes.participation_method !== 'poll';
     },
     survey: function isSurveyTabHidden() {
-      return selectedPhase.attributes.participation_method !== 'native_survey';
+      return phase.attributes.participation_method !== 'native_survey';
     },
     'survey-results': function surveyResultsTabHidden() {
       return (
         !surveys_enabled ||
         !typeform_enabled ||
         (surveys_enabled &&
-          selectedPhase.attributes.participation_method !== 'survey' &&
-          selectedPhase.attributes.survey_service !== 'typeform')
+          phase.attributes.participation_method !== 'survey' &&
+          phase.attributes.survey_service !== 'typeform')
       );
     },
     volunteering: function isVolunteeringTabHidden() {
-      return selectedPhase?.attributes.participation_method !== 'volunteering';
+      return phase?.attributes.participation_method !== 'volunteering';
     },
     events: function isEventsTabHidden() {
       return false;
     },
-  };
+  });
 
-  if (!project || !phases || !selectedPhase) {
+  if (!project || !phases) {
     return null;
   }
 
   const getTabs = (projectId: string) => {
+    if (!selectedPhase) {
+      return [];
+    }
+    const tabHideConditions = getTabHideConditions(selectedPhase);
     const baseTabsUrl = `/admin/projects/${projectId}`;
     const cleanedTabs = tabs.filter((tab) => {
       if (tabHideConditions[tab.name]) {
@@ -211,14 +211,16 @@ export const AdminProjectsProjectIndex = ({
           </Box>
         </Box>
       </NavigationTabs>
-      <Box mt="16px" px="40px">
-        <Timeline
-          projectId={project.id}
-          selectedPhase={selectedPhase}
-          setSelectedPhase={setSelectedPhase}
-          isBackoffice
-        />
-      </Box>
+      {selectedPhase && (
+        <Box mt="16px" px="40px">
+          <Timeline
+            projectId={project.id}
+            selectedPhase={selectedPhase}
+            setSelectedPhase={setSelectedPhase}
+            isBackoffice
+          />
+        </Box>
+      )}
 
       <Outlet
         id="app.containers.Admin.projects.edit"

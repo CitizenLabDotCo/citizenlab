@@ -18,7 +18,7 @@ type RenderOnHideTabConditionProps = {
   onData: (data: InsertConfigurationOptions<ITab>) => void;
   project: IProjectData;
   phases: IPhaseData[] | null;
-  selectedPhase: IPhaseData;
+  selectedPhase?: IPhaseData;
 };
 
 const RenderOnHideTabCondition = (props: RenderOnHideTabConditionProps) => {

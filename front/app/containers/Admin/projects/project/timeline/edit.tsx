@@ -125,7 +125,7 @@ const AdminPhaseEdit = () => {
     }
   }, [phaseFiles]);
 
-  if (!campaigns || !phases) {
+  if (!campaigns) {
     return null;
   }
 
@@ -170,7 +170,7 @@ const AdminPhaseEdit = () => {
     });
     setHasEndDate(!!endDate);
 
-    if (startDate) {
+    if (startDate && phases) {
       const hasPhaseWithLaterStartDate = phases.data.some((iteratedPhase) => {
         const iteratedPhaseStartDate = moment(
           iteratedPhase.attributes.start_at
@@ -381,9 +381,9 @@ const AdminPhaseEdit = () => {
 
   const startDate = getStartDate();
   const endDate = phaseAttrs.end_at ? moment(phaseAttrs.end_at) : null;
-  const phasesWithOutCurrentPhase = phases.data.filter(
-    (iteratedPhase) => iteratedPhase.id !== phase?.data.id
-  );
+  const phasesWithOutCurrentPhase = phases
+    ? phases.data.filter((iteratedPhase) => iteratedPhase.id !== phase?.data.id)
+    : [];
   const excludeDates = getExcludedDates(phasesWithOutCurrentPhase);
 
   const handleCampaignEnabledOnChange = (campaign: CampaignData) => {
@@ -496,7 +496,7 @@ const AdminPhaseEdit = () => {
               <SubSectionTitle>
                 <FormattedMessage {...messages.descriptionLabel} />
               </SubSectionTitle>
-              {phases.data.length < 2 && (
+              {phases && phases.data.length < 2 && (
                 <IconTooltip
                   content={
                     <FormattedMessage {...messages.emptyDescriptionWarning} />
