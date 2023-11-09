@@ -149,7 +149,7 @@ const ParticipationCTAContent = ({
             </Text>
           )}
           {participationState && (
-            <Box display="flex" alignItems="center" width="100%">
+            <Box display="flex" alignItems="center" ml="auto">
               {participationState}
             </Box>
           )}
@@ -169,14 +169,8 @@ const ParticipationCTAContent = ({
       height="64px"
       p="20px"
     >
-      <Box
-        display="flex"
-        alignItems="center"
-        justifyContent="space-between"
-        width="100%"
-        maxWidth={`${maxPageWidth}px`}
-      >
-        <Box display="flex" flexWrap="wrap" alignItems="center">
+      <Box display="flex" width="100%" maxWidth={`${maxPageWidth}px`}>
+        <Box display="flex" alignItems="center">
           {!useProjectClosedStyle && (
             <BlickingIcon
               name={hasUserParticipated ? 'check-circle' : 'dot'}
@@ -196,7 +190,7 @@ const ParticipationCTAContent = ({
               formatMessage(timeLeftMessage, { timeLeft }).toUpperCase()}{' '}
           </Text>
         </Box>
-        <Box display="flex" alignItems="center">
+        <Box display="flex" ml="auto">
           {timeLeft !== undefined && timeLeftPosition === 'right' && (
             <Text
               color="white"
@@ -209,6 +203,7 @@ const ParticipationCTAContent = ({
               {formatMessage(timeLeftMessage, { timeLeft })}
             </Text>
           )}
+          {participationState}
           {CTAButton}
         </Box>
       </Box>
