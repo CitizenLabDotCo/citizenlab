@@ -16,8 +16,8 @@ module ContentBuilder
       { remote_image_url: img_elt[image_attribute_for_element] }
     end
 
-    def image_attributes_for_element
-      ['imageUrl']
+    def image_attribute_for_element
+      'imageUrl'
     end
 
     def code_attribute_for_element

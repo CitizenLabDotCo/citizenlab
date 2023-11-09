@@ -124,6 +124,10 @@ class ContentImageService
     'src'
   end
 
+  def image_attributes_for_element
+    [image_attribute_for_element]
+  end
+
   def code_attribute_for_model
     'code'
   end

@@ -4,7 +4,7 @@ module ContentBuilder
   class LayoutService
     def select_craftjs_elements_for_types(craftjs, types)
       craftjs.select do |key, elt|
-        key != 'ROOT' && craftjs_element_of_type?(elt, types)
+        key != 'ROOT' && craftjs_element_of_types?(elt, types)
       end.values
     end
 
