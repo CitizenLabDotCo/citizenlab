@@ -611,6 +611,7 @@
   "app.components.form.controls.selectBetween": "*Wybierz pomiędzy opcjami {minItems} i {maxItems} .",
   "app.components.form.controls.selectExactly2": "*Wybierz dokładnie {selectExactly, plural, one {# option} other {# opcje}}",
   "app.components.form.controls.selectMany": "*Wybierz, ile chcesz",
+  "app.components.form.controls.validCordinatesTooltip": "Jeśli lokalizacja nie jest wyświetlana wśród opcji podczas wpisywania, możesz dodać prawidłowe współrzędne w formacie \"szerokość, długość geograficzna\", aby określić dokładną lokalizację.",
   "app.components.form.error": "Błąd",
   "app.components.form.locationGoogleUnavailable": "Nie można załadować pola lokalizacji dostarczonego przez mapy google.",
   "app.components.form.submit": "Prześlij",
