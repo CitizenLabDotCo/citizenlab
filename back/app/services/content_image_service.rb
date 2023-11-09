@@ -155,9 +155,9 @@ class ContentImageService
       Exception.new('No content image found with code'),
       extra: {
         code: code,
-        imageable_type: imageable.class,
-        imageable_id: imageable.id,
-        imageable_created_at: imageable.created_at,
+        imageable_type: imageable&.class,
+        imageable_id: imageable&.id,
+        imageable_created_at: imageable&.created_at,
         imageable_field: field
       }
     )
