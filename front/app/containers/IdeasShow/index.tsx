@@ -19,6 +19,7 @@ const LazyComments = lazy(
   () => import('components/PostShowComponents/Comments')
 );
 import LoadingComments from 'components/PostShowComponents/Comments/LoadingComments';
+import MetaInformation from './components/MetaInformation';
 import MobileSharingButtonComponent from './components/Buttons/MobileSharingButtonComponent';
 import RightColumnDesktop from './components/RightColumnDesktop';
 import ErrorToast from 'components/ErrorToast';
@@ -216,6 +217,21 @@ const Content = ({
               translateButtonClicked={translateButtonIsClicked}
             />
           </Box>
+          {compact &&
+            participationContext?.attributes.participation_method !==
+              'voting' &&
+            statusId && (
+              <Box my="24px">
+                {' '}
+                <MetaInformation
+                  ideaId={ideaId}
+                  projectId={project.id}
+                  statusId={statusId}
+                  authorId={authorId}
+                  compact={compact}
+                />
+              </Box>
+            )}
           <Box my={compact ? '24px' : '80px'}>
             <OfficialFeedback
               postId={ideaId}
