@@ -611,6 +611,7 @@
   "app.components.form.controls.selectBetween": "* {minItems} ve {maxItems} seçenekleri arasından seçim yapın",
   "app.components.form.controls.selectExactly2": "*Tam olarak seçin {selectExactly, plural, one {# seçenek} other {# options}}",
   "app.components.form.controls.selectMany": "*İstediğiniz kadar seçin",
+  "app.components.form.controls.validCordinatesTooltip": "Yazarken seçenekler arasında konum görüntülenmezse, kesin bir konum belirtmek için 'enlem, boylam' biçiminde geçerli koordinatlar ekleyebilirsiniz.",
   "app.components.form.error": "Hata",
   "app.components.form.locationGoogleUnavailable": "Google Maps tarafından sağlanan konum alanı yüklenemedi.",
   "app.components.form.submit": "Gönder",
