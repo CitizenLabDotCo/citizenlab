@@ -45,11 +45,6 @@ const LayoutOption = styled.label`
   cursor: pointer;
 `;
 
-const LayoutOptionTop = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
 export interface Props {
   bannerLayout:
     | ICustomPageAttributes['banner_layout']
@@ -68,7 +63,7 @@ const LayoutSettingField = ({ bannerLayout, onChange }: Props) => {
       </Text>
       <Box display="flex" flexDirection="column" gap="16px">
         <LayoutOption data-cy="e2e-full-width-banner-layout-option">
-          <LayoutOptionTop>
+          <Box display="flex" alignItems="center">
             <Radio
               onChange={onChange}
               currentValue={bannerLayout}
@@ -102,7 +97,7 @@ const LayoutSettingField = ({ bannerLayout, onChange }: Props) => {
                 </Box>
               }
             />
-          </LayoutOptionTop>
+          </Box>
           <LayoutPreview
             src={
               bannerLayout === 'full_width_banner_layout'
@@ -114,7 +109,7 @@ const LayoutSettingField = ({ bannerLayout, onChange }: Props) => {
 
         {bannerLayout === 'two_column_layout' && (
           <LayoutOption>
-            <LayoutOptionTop>
+            <Box display="flex" alignItems="center">
               <Radio
                 onChange={onChange}
                 currentValue={bannerLayout}
@@ -123,7 +118,7 @@ const LayoutSettingField = ({ bannerLayout, onChange }: Props) => {
                 id="banner-two-column-layout"
                 label={formatMessage(messages.TwoColumnLayout)}
               />
-            </LayoutOptionTop>
+            </Box>
             <LayoutPreview
               src={
                 bannerLayout === 'two_column_layout'
@@ -135,7 +130,7 @@ const LayoutSettingField = ({ bannerLayout, onChange }: Props) => {
         )}
 
         <LayoutOption>
-          <LayoutOptionTop data-cy="e2e-two-row-layout-option">
+          <Box data-cy="e2e-two-row-layout-option">
             <Radio
               onChange={onChange}
               currentValue={bannerLayout}
@@ -169,7 +164,7 @@ const LayoutSettingField = ({ bannerLayout, onChange }: Props) => {
                 </Box>
               }
             />
-          </LayoutOptionTop>
+          </Box>
           <LayoutPreview
             src={
               bannerLayout === 'two_row_layout'
@@ -179,7 +174,7 @@ const LayoutSettingField = ({ bannerLayout, onChange }: Props) => {
           />
         </LayoutOption>
         <LayoutOption>
-          <LayoutOptionTop data-cy="e2e-fixed-ratio-layout-option">
+          <Box data-cy="e2e-fixed-ratio-layout-option">
             <Radio
               onChange={onChange}
               currentValue={bannerLayout}
@@ -213,7 +208,7 @@ const LayoutSettingField = ({ bannerLayout, onChange }: Props) => {
                 </Box>
               }
             />
-          </LayoutOptionTop>
+          </Box>
           <LayoutPreview
             src={
               bannerLayout === 'fixed_ratio_layout'
