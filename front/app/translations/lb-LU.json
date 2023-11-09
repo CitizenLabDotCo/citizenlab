@@ -21,6 +21,7 @@
   "app.components.AssignMultipleVotesControl.votesSubmitted": "Dir hutt schonn Är Stëmmen ofginn. Klickt op \"Ännere Vote änneren\" fir Är Stëmmen z'änneren.",
   "app.components.AssignMultipleVotesControl.votesSubmittedIdeaPage": "Dir hutt schonn Är Stëmmen ofginn. Fir Är Stëmmen z'änneren, gitt zréck op d'Projetsäit a klickt op \"Ännere Vote änneren\".",
   "app.components.AssignMultipleVotesControl.xVotes2": "{votes, plural, one {{singular}} other {{plural}}}",
+  "app.components.AssignVoteControl.maxVotesReached": "Dir hutt déi maximal Unzuel u Stëmmen erreecht déi Dir kënnt ofginn.",
   "app.components.AssignVoteControl.vote": "Stëmmen",
   "app.components.AssignVoteControl.voteForAtLeastOne": "Wielt op d'mannst 1 Optioun",
   "app.components.AssignVoteControl.voted": "gestëmmt",
