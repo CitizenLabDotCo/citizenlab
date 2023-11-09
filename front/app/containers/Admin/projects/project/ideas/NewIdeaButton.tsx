@@ -4,7 +4,7 @@ import React from 'react';
 import { InputTerm } from 'utils/participationContexts';
 
 // intl
-import { injectIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import messages from './../messages';
 import { WrappedComponentProps } from 'react-intl';
 
@@ -20,8 +20,8 @@ interface Props {
 const NewIdeaButton = ({
   linkTo,
   inputTerm,
-  intl: { formatMessage },
 }: Props & WrappedComponentProps) => {
+  const { formatMessage } = useIntl();
   return (
     <Button
       id="e2e-new-idea"
@@ -42,4 +42,4 @@ const NewIdeaButton = ({
   );
 };
 
-export default injectIntl(NewIdeaButton);
+export default NewIdeaButton;
