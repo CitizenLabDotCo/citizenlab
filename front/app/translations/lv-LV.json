@@ -611,6 +611,7 @@
   "app.components.form.controls.selectBetween": "*Izvēlieties starp {minItems} un {maxItems} iespējām",
   "app.components.form.controls.selectExactly2": "*Izvēlēties tieši {selectExactly, plural, one {# opcija} other {# opcijas}}",
   "app.components.form.controls.selectMany": "*Izvēlieties, cik vēlaties",
+  "app.components.form.controls.validCordinatesTooltip": "Ja ievadīšanas laikā atrašanās vieta nav redzama starp opcijām, varat pievienot derīgas koordinātas formātā \"platums, garums\", lai norādītu precīzu atrašanās vietu.",
   "app.components.form.error": "Kļūda",
   "app.components.form.locationGoogleUnavailable": "Nevarēja ielādēt google maps norādīto atrašanās vietas lauku.",
   "app.components.form.submit": "Iesniegt",
