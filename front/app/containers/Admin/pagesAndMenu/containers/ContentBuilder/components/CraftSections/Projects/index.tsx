@@ -36,6 +36,7 @@ Projects.craft = {
   custom: {
     title: messages.projectsTitle,
     noPointerEvents: true,
+    noDelete: true,
   },
 };
 

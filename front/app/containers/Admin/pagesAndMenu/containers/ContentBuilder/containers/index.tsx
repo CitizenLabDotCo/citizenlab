@@ -12,10 +12,7 @@ import FullscreenContentBuilder from 'components/admin/ContentBuilder/Fullscreen
 import Editor from '../components/Editor';
 import HomepageBuilderToolbox from '../components/HomepageBuilderToolbox';
 import HomepageBuilderTopBar from '../components/HomepageBuilderTopBar';
-import {
-  StyledRightColumn,
-  ErrorMessage,
-} from 'components/admin/ContentBuilder/Frame/FrameWrapper';
+import { StyledRightColumn } from 'components/admin/ContentBuilder/Frame/FrameWrapper';
 import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
 import ContentBuilderSettings from 'components/admin/ContentBuilder/Settings';
 
@@ -33,6 +30,8 @@ import { Locale } from 'typings';
 import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
 import { isEmpty } from 'lodash-es';
 import ContentBuilderLanguageProvider from './ContentBuilderLanguageProvider';
+import HomepageBanner from '../components/CraftSections/HomepageBanner';
+import Projects from '../components/CraftSections/Projects';
 
 const HomepageBuilderPage = () => {
   const [previewEnabled, setPreviewEnabled] = useState(false);
@@ -59,9 +58,9 @@ const HomepageBuilderPage = () => {
     return null;
   }
 
-  const localesWithError = Object.values(contentBuilderErrors)
-    .filter((node) => node.hasError)
-    .map((node) => node.selectedLocale);
+  const hasError =
+    Object.values(contentBuilderErrors).filter((node) => node.hasError).length >
+    0;
 
   const handleErrors = (newErrors: ContentBuilderErrors) => {
     setContentBuilderErrors((contentBuilderErrors) => ({
@@ -111,7 +110,7 @@ const HomepageBuilderPage = () => {
     >
       <Editor isPreview={false} onNodesChange={handleEditorChange}>
         <HomepageBuilderTopBar
-          localesWithError={localesWithError}
+          hasError={hasError}
           hasPendingState={imageUploading}
           previewEnabled={previewEnabled}
           setPreviewEnabled={setPreviewEnabled}
@@ -131,8 +130,34 @@ const HomepageBuilderPage = () => {
               platformLocale={locale}
             >
               <Box width="1000px">
-                <ErrorMessage localesWithError={localesWithError} />
-                <ContentBuilderFrame editorData={getEditorData()} />
+                <ContentBuilderFrame editorData={getEditorData()}>
+                  <HomepageBanner
+                    homepageSettings={{
+                      banner_avatars_enabled: true,
+                      banner_layout: 'full_width_banner_layout',
+                      banner_signed_in_header_multiloc: {},
+                      banner_cta_signed_in_text_multiloc: {},
+                      banner_cta_signed_in_type: 'no_button',
+                      banner_cta_signed_in_url: null,
+                      banner_signed_out_header_multiloc: {},
+                      banner_signed_out_subheader_multiloc: {},
+                      banner_signed_out_header_overlay_color: '#0A5159',
+                      banner_signed_out_header_overlay_opacity: 90,
+                      banner_cta_signed_out_text_multiloc: {},
+                      banner_cta_signed_out_type: 'sign_up_button',
+                      banner_cta_signed_out_url: null,
+                      header_bg: {
+                        large:
+                          'http://localhost:4000/uploads/c72c5211-8e03-470b-9564-04ec0a8c322b/home_page/header_bg/5bda79bf-dc89-4a27-95c5-6d1982b15693/large_c20073fe-056e-432c-a614-6b92892caf86.jpg',
+                        medium:
+                          'http://localhost:4000/uploads/c72c5211-8e03-470b-9564-04ec0a8c322b/home_page/header_bg/5bda79bf-dc89-4a27-95c5-6d1982b15693/medium_c20073fe-056e-432c-a614-6b92892caf86.jpg',
+                        small:
+                          'http://localhost:4000/uploads/c72c5211-8e03-470b-9564-04ec0a8c322b/home_page/header_bg/5bda79bf-dc89-4a27-95c5-6d1982b15693/small_c20073fe-056e-432c-a614-6b92892caf86.jpg',
+                      },
+                    }}
+                  />
+                  <Projects />
+                </ContentBuilderFrame>
               </Box>
             </ContentBuilderLanguageProvider>
           </StyledRightColumn>

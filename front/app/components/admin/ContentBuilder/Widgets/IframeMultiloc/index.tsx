@@ -25,7 +25,7 @@ import { CONTENT_BUILDER_ERROR_EVENT } from 'components/admin/ContentBuilder/con
 // types
 import { Locale, Multiloc } from 'typings';
 
-import { isValidUrl } from './utils';
+import { isValidUrl } from 'utils/validate';
 import useLocalize from 'hooks/useLocalize';
 import InputMultilocWithLocaleSwitcherWrapper from 'components/UI/InputMultilocWithLocaleSwitcher';
 

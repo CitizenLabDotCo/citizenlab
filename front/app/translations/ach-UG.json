@@ -611,6 +611,7 @@
   "app.components.form.controls.selectBetween": "crwdns1159900:0{minItems}crwdnd1159900:0{maxItems}crwdne1159900:0",
   "app.components.form.controls.selectExactly2": "crwdns1159902:0selectExactly={selectExactly}crwdne1159902:0",
   "app.components.form.controls.selectMany": "crwdns213918:0crwdne213918:0",
+  "app.components.form.controls.validCordinatesTooltip": "crwdns1263198:0crwdne1263198:0",
   "app.components.form.error": "crwdns213920:0crwdne213920:0",
   "app.components.form.locationGoogleUnavailable": "crwdns213922:0crwdne213922:0",
   "app.components.form.submit": "crwdns213924:0crwdne213924:0",
