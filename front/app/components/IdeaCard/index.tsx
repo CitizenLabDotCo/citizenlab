@@ -31,11 +31,9 @@ import useIdeaById from 'api/ideas/useIdeaById';
 import useProjectById from 'api/projects/useProjectById';
 import useLocalize from 'hooks/useLocalize';
 import usePhase from 'api/phases/usePhase';
-import useBasket from 'api/baskets/useBasket';
 
 // utils
 import { scrollToElement } from 'utils/scroll';
-import { pastPresentOrFuture } from 'utils/dateUtils';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 
 // events
@@ -92,7 +90,6 @@ const IdeaCard = memo<IdeaCardProps>(
     goBackMode = 'browserGoBackButton',
     showFollowButton,
   }) => {
-    const isGeneralIdeasPage = window.location.pathname.endsWith('/ideas');
     const smallerThanPhone = useBreakpoint('phone');
     const smallerThanTablet = useBreakpoint('tablet');
     const localize = useLocalize();
@@ -106,13 +103,6 @@ const IdeaCard = memo<IdeaCardProps>(
       participationContext?.attributes.participation_method;
     const config = participationMethod && getMethodConfig(participationMethod);
     const hideBody = config?.hideAuthorOnIdeas;
-
-    const participationContextEnded =
-      participationContext?.type === 'phase' &&
-      pastPresentOrFuture(participationContext?.attributes?.end_at) === 'past';
-    const { data: basket } = useBasket(
-      participationContext?.relationships?.user_basket?.data?.id
-    );
 
     const ideaTitle = localize(idea.data.attributes.title_multiloc);
     const [searchParams] = useSearchParams();
@@ -145,13 +135,6 @@ const IdeaCard = memo<IdeaCardProps>(
       clHistory.push(`/ideas/${slug}${params}`);
     };
 
-    const hideInteractions =
-      isGeneralIdeasPage ||
-      (participationContextEnded &&
-        basket?.data.attributes.submitted_at === null)
-        ? true
-        : false;
-
     const innerHeight = showFollowButton ? '192px' : '162px';
 
     return (
@@ -182,12 +165,10 @@ const IdeaCard = memo<IdeaCardProps>(
             {!hideBody && <Body idea={idea} />}
           </Box>
           <Box>
-            {!hideInteractions && (
-              <Interactions
-                idea={idea}
-                participationContext={participationContext}
-              />
-            )}
+            <Interactions
+              idea={idea}
+              participationContext={participationContext}
+            />
             <Footer
               project={project}
               idea={idea.data}
