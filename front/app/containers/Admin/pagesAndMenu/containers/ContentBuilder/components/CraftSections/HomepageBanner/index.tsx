@@ -297,18 +297,6 @@ const HomepageBannerSettings = () => {
           );
         }}
       />
-      <ImagesDropzone
-        label="Banner image"
-        images={imageFiles}
-        imagePreviewRatio={1 / 2}
-        maxImagePreviewWidth="360px"
-        objectFit="contain"
-        acceptedFileTypes={{
-          'image/*': ['.jpg', '.jpeg', '.png'],
-        }}
-        onAdd={handleOnAdd}
-        onRemove={handleOnRemove}
-      />
 
       <Toggle
         label={
@@ -330,6 +318,21 @@ const HomepageBannerSettings = () => {
           );
         }}
       />
+
+      <Label htmlFor="bannerImage">{formatMessage(messages.bannerImage)}</Label>
+      <ImagesDropzone
+        id="bannerImage"
+        images={imageFiles}
+        imagePreviewRatio={1 / 2}
+        maxImagePreviewWidth="360px"
+        objectFit="contain"
+        acceptedFileTypes={{
+          'image/*': ['.jpg', '.jpeg', '.png'],
+        }}
+        onAdd={handleOnAdd}
+        onRemove={handleOnRemove}
+      />
+
       <Box
         display="flex"
         borderRadius="3px"
@@ -366,23 +369,25 @@ const HomepageBannerSettings = () => {
 
       {search.get('variant') !== 'signedIn' && (
         <>
-          <OverlayControls
-            variant="signedOut"
-            bannerOverlayColor={
-              homepageSettings.banner_signed_out_header_overlay_color
-            }
-            bannerOverlayOpacity={
-              homepageSettings.banner_signed_out_header_overlay_opacity
-            }
-            onOverlayChange={(opacity, color) => {
-              setProp((props: Props) => {
-                props.homepageSettings.banner_signed_out_header_overlay_color =
-                  color;
-                props.homepageSettings.banner_signed_out_header_overlay_opacity =
-                  opacity;
-              });
-            }}
-          />
+          {homepageSettings.banner_layout !== 'two_row_layout' && (
+            <OverlayControls
+              variant="signedOut"
+              bannerOverlayColor={
+                homepageSettings.banner_signed_out_header_overlay_color
+              }
+              bannerOverlayOpacity={
+                homepageSettings.banner_signed_out_header_overlay_opacity
+              }
+              onOverlayChange={(opacity, color) => {
+                setProp((props: Props) => {
+                  props.homepageSettings.banner_signed_out_header_overlay_color =
+                    color;
+                  props.homepageSettings.banner_signed_out_header_overlay_opacity =
+                    opacity;
+                });
+              }}
+            />
+          )}
           <InputMultilocWithLocaleSwitcher
             label={formatMessage(messages.bannerText)}
             placeholder={formatMessage(homepageMessages.titleCity)}
