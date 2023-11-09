@@ -28,8 +28,8 @@ resource 'Idea Custom Fields' do
     context 'when admin' do
       before { admin_header_token }
 
-      let(:context) { create(:continuous_project, participation_method: 'native_survey') }
-      let(:custom_form) { create(:custom_form, participation_context: context) }
+      let(:context) { create(:continuous_native_survey_project) }
+      let(:custom_form) { create(:custom_form, participation_context: context.phases.first) }
       let(:project_id) { context.id }
 
       context 'when CustomForm custom field has same key as User custom_field' do

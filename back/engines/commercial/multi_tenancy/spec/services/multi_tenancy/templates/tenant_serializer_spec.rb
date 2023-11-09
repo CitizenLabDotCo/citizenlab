@@ -117,18 +117,14 @@ describe MultiTenancy::Templates::TenantSerializer do
     it 'successfully copies over native surveys and responses' do
       IdeaStatus.create_defaults
 
-      continuous_project = create(:continuous_native_survey_project)
       timeline_project = create(:project_with_future_native_survey_phase)
       survey_phase = timeline_project.phases.last
       ideation_phase = create(:phase, participation_method: 'ideation', project: timeline_project)
-      form1 = create(:custom_form, participation_context: continuous_project)
-      field1 = create(:custom_field_linear_scale, :for_custom_form, resource: form1)
-      form2 = create(:custom_form, participation_context: survey_phase)
-      field2 = create(:custom_field, :for_custom_form, resource: form2)
+      form = create(:custom_form, participation_context: survey_phase)
+      field = create(:custom_field, :for_custom_form, resource: form)
 
-      create(:idea, project: continuous_project, custom_field_values: { field1.key => 1 })
       create(:idea, project: timeline_project, phases: [ideation_phase])
-      create(:idea, project: timeline_project, phases: [survey_phase], creation_phase: survey_phase, custom_field_values: { field2.key => 'My value' })
+      create(:idea, project: timeline_project, phases: [survey_phase], creation_phase: survey_phase, custom_field_values: { field.key => 'My value' })
 
       template = tenant_serializer.run(deserializer_format: true)
 
@@ -139,21 +135,16 @@ describe MultiTenancy::Templates::TenantSerializer do
 
         MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
 
-        expect(Project.count).to eq 2
-        expect(Idea.count).to eq 3
-        new_continuous_project = Project.where(process_type: 'continuous').first
-        expect(new_continuous_project.custom_form.custom_fields.pluck(:input_type)).to eq ['linear_scale']
-        new_field1 = new_continuous_project.custom_form.custom_fields.first
-        expect(new_continuous_project.ideas_count).to eq 1
-        expect(new_continuous_project.ideas.first.custom_field_values[new_field1.key]).to eq 1
+        expect(Project.count).to eq 1
+        expect(Idea.count).to eq 2
 
         new_timeline_project = Project.where(process_type: 'timeline').first
         new_survey_phase = new_timeline_project.phases.order(:start_at).last
         expect(new_timeline_project.ideas.map(&:creation_phase_id)).to match_array [nil, new_survey_phase.id]
         expect(new_survey_phase.custom_form.custom_fields.pluck(:input_type)).to eq ['text']
-        new_field2 = new_survey_phase.custom_form.custom_fields.first
+        new_field = new_survey_phase.custom_form.custom_fields.first
         expect(new_survey_phase.ideas_count).to eq 1
-        expect(new_survey_phase.ideas.first.custom_field_values[new_field2.key]).to eq 'My value'
+        expect(new_survey_phase.ideas.first.custom_field_values[new_field.key]).to eq 'My value'
       end
     end
 
@@ -177,7 +168,7 @@ describe MultiTenancy::Templates::TenantSerializer do
 
     it 'skips custom field values with ID references' do
       project = create(:continuous_native_survey_project)
-      custom_form = create(:custom_form, participation_context: project)
+      custom_form = create(:custom_form, participation_context: project.phases.first)
       supported_fields = %i[custom_field_number custom_field_linear_scale custom_field_checkbox].map do |factory|
         create(factory, :for_custom_form, resource: custom_form)
       end
