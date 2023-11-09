@@ -11,7 +11,6 @@ import { LatLng } from 'leaflet';
 import { IUser, IUserData } from 'api/users/types';
 
 // api
-import { fetchPhase } from 'api/phases/usePhase';
 import { fetchProjectBySlug } from 'api/projects/useProjectBySlug';
 
 // utils
@@ -20,23 +19,21 @@ import { getIdeaPostingRules } from 'utils/actionTakingRules';
 export interface RedirectToIdeaFormParams {
   projectSlug: string;
   latLng?: LatLng | null;
-  phaseId?: string;
   authUser?: IUser;
 }
 
 export const redirectToIdeaForm =
-  ({ projectSlug, latLng, phaseId }: RedirectToIdeaFormParams) =>
+  ({ projectSlug, latLng }: RedirectToIdeaFormParams) =>
   async (authUser: IUserData) => {
     // TODO: Remove this temporary handling of postingLimitedMaxReached
     // Note: Our Requirements endpoint doesn't handle permissions/disabled reasons yet,
     // and the effort to add them in is too large at this time. So we're temporarily
     // handling this case here.
     const { data: project } = await fetchProjectBySlug({ slug: projectSlug });
-    const { data: phase } = await fetchPhase({ phaseId });
 
     const { disabledReason } = getIdeaPostingRules({
       project,
-      phase,
+      phase: undefined,
       authUser,
     });
     if (disabledReason !== 'postingLimitedMaxReached') {
@@ -47,7 +44,6 @@ export const redirectToIdeaForm =
         search: stringify(
           {
             ...positionParams,
-            phase_id: phaseId,
           },
           { addQueryPrefix: true }
         ),
