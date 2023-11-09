@@ -78,10 +78,8 @@ context 'criipto verification' do
               house_number: '001',
               floor: '03',
               apartment_code: ' tv'
-            }
-          }
-        }
-      }
+            } } }
+    }
   end
 
   before do
