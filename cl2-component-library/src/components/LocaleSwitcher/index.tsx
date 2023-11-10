@@ -1,5 +1,5 @@
 import React, { PureComponent, MouseEvent } from 'react';
-import { isEmpty, get } from 'lodash';
+import { isEmpty, get } from 'lodash-es';
 import styled from 'styled-components';
 import { rgba } from 'polished';
 import { colors, fontSizes, isRtl } from '../../utils/styleUtils';
@@ -21,8 +21,7 @@ const StyledButton = styled.button`
   white-space: nowrap;
   padding: 7px 8px;
   margin-right: 6px;
-  border-radius: ${(props) =>
-    props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   background: ${colors.grey200};
   cursor: pointer;
   transition: all 80ms ease-out;
@@ -64,13 +63,19 @@ const Dot = styled.div`
   }
 `;
 
-const isSingleMultilocObjectFilled = (locale: Locale, values?: MultilocFormValues) => {
+const isSingleMultilocObjectFilled = (
+  locale: Locale,
+  values?: MultilocFormValues
+) => {
   return Object.getOwnPropertyNames(values).every(
     (key) => !isEmpty(get(values, `[${key}][${locale}]`))
   );
-}
+};
 
-export const isValueForLocaleFilled = (locale: Locale, values?: MultilocFormValues | MultilocFormValues[]) => {
+export const isValueForLocaleFilled = (
+  locale: Locale,
+  values?: MultilocFormValues | MultilocFormValues[]
+) => {
   if (Array.isArray(values)) {
     return values.every((value) => isSingleMultilocObjectFilled(locale, value));
   }
@@ -87,7 +92,6 @@ interface Props {
 }
 
 class LocaleSwitcher extends PureComponent<Props> {
-
   removeFocus = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
   };

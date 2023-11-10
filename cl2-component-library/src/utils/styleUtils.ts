@@ -1,7 +1,7 @@
 import 'focus-visible';
 import { css } from 'styled-components';
 import { darken, transparentize } from 'polished';
-import { get, isNil } from 'lodash';
+import { get, isNil } from 'lodash-es';
 import { isNilOrError } from './helperUtils';
 import { InputSize } from './typings';
 
@@ -13,7 +13,7 @@ export const isRtl = (style: any, ...args: any[]) => css`
 export const viewportWidths = {
   phone: 769,
   tablet: 1200,
-  smallDesktop: 1366
+  smallDesktop: 1366,
 };
 
 export const media = {
@@ -119,7 +119,6 @@ export const semanticColors = {
   facebook: '#3b5998',
   facebookMessenger: '#0084ff',
 };
-
 
 export const colors = {
   ...semanticColors,
@@ -252,16 +251,16 @@ export const stylingConsts = {
 };
 
 type StylingConstsType = {
-  menuHeight: number,
-  mobileMenuHeight: number,
-  mobileTopBarHeight: number,
-  footerHeight: number,
-  maxPageWidth: number,
-  bannerWidth: number,
-  pageWidth: number,
-  textWidth: number,
-  borderRadius: string,
-}
+  menuHeight: number;
+  mobileMenuHeight: number;
+  mobileTopBarHeight: number;
+  footerHeight: number;
+  maxPageWidth: number;
+  bannerWidth: number;
+  pageWidth: number;
+  textWidth: number;
+  borderRadius: string;
+};
 
 // Reusable text styling
 export function quillEditedContent(
@@ -429,7 +428,7 @@ export interface MainThemeProps extends StylingConstsType {
   fontFamily: string;
   fontSizes: {
     [key in FontSizesType]: string;
-  }
+  };
   signedOutHeaderOverlayOpacity: number;
   signedInHeaderOverlayOpacity: number;
   isRtl: boolean;

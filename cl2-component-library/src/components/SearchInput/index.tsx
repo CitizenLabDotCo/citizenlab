@@ -1,5 +1,11 @@
-import React, { useState, useCallback, MouseEvent, useMemo, KeyboardEvent } from 'react';
-import { isEmpty } from 'lodash';
+import React, {
+  useState,
+  useCallback,
+  MouseEvent,
+  useMemo,
+  KeyboardEvent,
+} from 'react';
+import { isEmpty } from 'lodash-es';
 import debounceFn from 'lodash/debounce';
 
 // components
@@ -72,18 +78,27 @@ const SearchInput = ({
   size,
   setInputRef,
 }: Props) => {
-  const [internalSearchTerm, setInternalSearchTerm] = useState(defaultValue ?? null);
+  const [internalSearchTerm, setInternalSearchTerm] = useState(
+    defaultValue ?? null
+  );
 
-  const debouncedOnChange = useMemo(() => debounceFn((value: string | null) => {
-    onChange(value);
-  }, debounce), [onChange, debounce]);
+  const debouncedOnChange = useMemo(
+    () =>
+      debounceFn((value: string | null) => {
+        onChange(value);
+      }, debounce),
+    [onChange, debounce]
+  );
 
-  const handleOnChange = useCallback((value: string) => {
-    const newValue = !isEmpty(value) ? value : null;
+  const handleOnChange = useCallback(
+    (value: string) => {
+      const newValue = !isEmpty(value) ? value : null;
 
-    setInternalSearchTerm(newValue);
-    debouncedOnChange(newValue);
-  }, [debouncedOnChange])
+      setInternalSearchTerm(newValue);
+      debouncedOnChange(newValue);
+    },
+    [debouncedOnChange]
+  );
 
   const handleOnReset = (event?: MouseEvent | KeyboardEvent) => {
     event?.preventDefault();
