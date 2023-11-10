@@ -9,7 +9,7 @@ import CommentSorting from './CommentSorting';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../../messages';
 
 // style
 import styled from 'styled-components';
@@ -22,7 +22,7 @@ import CommentingProposalDisabled from './CommentingProposalDisabled';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
+import tracks from '../../tracks';
 
 // hooks
 import useInitiativeById from 'api/initiatives/useInitiativeById';

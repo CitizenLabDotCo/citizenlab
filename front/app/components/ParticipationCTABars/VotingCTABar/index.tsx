@@ -62,6 +62,7 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
     <>
       <ParticipationCTAContent
         project={project}
+        phases={phases}
         currentPhase={currentPhase}
         CTAButton={<CTAButton participationContext={participationContext} />}
         hasUserParticipated={hasUserParticipated}

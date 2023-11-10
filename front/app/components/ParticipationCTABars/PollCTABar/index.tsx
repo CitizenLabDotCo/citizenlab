@@ -58,6 +58,7 @@ export const PollCTABar = ({ phases, project }: CTABarProps) => {
         </Button>
       }
       project={project}
+      phases={phases}
     />
   );
 };

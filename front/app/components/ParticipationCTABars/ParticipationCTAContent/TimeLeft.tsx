@@ -14,13 +14,16 @@ const TimeLeft = ({ currentPhase }: Props) => {
 
   if (currentPhase === undefined) return null;
 
-  let timeLeft = getPeriodRemainingUntil(
-    currentPhase.attributes.end_at,
-    'weeks'
-  );
+  let timeLeft = currentPhase.attributes.end_at
+    ? getPeriodRemainingUntil(currentPhase.attributes.end_at, 'weeks')
+    : undefined;
   let timeLeftMessage = messages.xWeeksLeft;
 
-  if (timeLeft < 2) {
+  if (
+    timeLeft !== undefined &&
+    timeLeft < 2 &&
+    currentPhase.attributes.end_at
+  ) {
     timeLeft = getPeriodRemainingUntil(currentPhase.attributes.end_at, 'days');
     timeLeftMessage = messages.xDayLeft;
   }

@@ -21,6 +21,8 @@ import { useTheme } from 'styled-components';
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 import BlinkingDot from './BlinkingDot';
 import TimeLeft from './TimeLeft';
+import { hidePhases } from 'api/phases/utils';
+import useLocale from 'hooks/useLocale';
 
 type Props = {
   hasUserParticipated?: boolean;
@@ -28,6 +30,7 @@ type Props = {
   currentPhase: IPhaseData | undefined;
   participationState?: JSX.Element; // Optional element which displays on bottom left
   project: IProjectData;
+  phases: IPhaseData[] | undefined;
 };
 
 const ParticipationCTAContent = ({
@@ -36,9 +39,13 @@ const ParticipationCTAContent = ({
   hasUserParticipated = false,
   participationState,
   project,
+  phases,
 }: Props) => {
   const theme = useTheme();
+  const currentLocale = useLocale();
+
   const isSmallerThanPhone = useBreakpoint('phone');
+
   const config = getMethodConfig(
     currentPhase?.attributes.participation_method ||
       project.attributes.participation_method
@@ -46,8 +53,10 @@ const ParticipationCTAContent = ({
   const useProjectClosedStyle =
     config?.useProjectClosedCTABarStyle &&
     config.useProjectClosedCTABarStyle(currentPhase || project);
+  const treatAsContinuous = hidePhases(phases, currentLocale);
 
-  const hideDefaultParticipationMessage = currentPhase ? true : false;
+  const hideDefaultParticipationMessage =
+    currentPhase && !treatAsContinuous ? true : false;
 
   const getUserParticipationMessage = () => {
     if (useProjectClosedStyle) {

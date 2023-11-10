@@ -81,6 +81,7 @@ export const DocumentAnnotationCTABar = ({ phases, project }: CTABarProps) => {
     <ParticipationCTAContent
       currentPhase={currentPhase}
       project={project}
+      phases={phases}
       CTAButton={
         showSignIn ? (
           <Button

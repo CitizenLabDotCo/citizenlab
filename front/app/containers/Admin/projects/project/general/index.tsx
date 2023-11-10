@@ -213,17 +213,6 @@ const AdminProjectsProjectGeneral = () => {
     }));
   };
 
-  const handleProjectTypeOnChange = (
-    projectType: 'continuous' | 'timeline'
-  ) => {
-    setProjectAttributesDiff((projectAttributesDiff) => ({
-      ...projectAttributesDiff,
-      process_type: projectType,
-    }));
-    setSubmitState('enabled');
-    setProjectType(projectType);
-  };
-
   const handleHeaderBgChange = (newImageBase64: string | null) => {
     setProjectAttributesDiff((projectAttributesDiff) => ({
       ...projectAttributesDiff,
@@ -531,10 +520,7 @@ const AdminProjectsProjectGeneral = () => {
 
         <StyledSectionField>
           {!project ? (
-            <ProjectTypePicker
-              projectType={projectType}
-              handleProjectTypeOnChange={handleProjectTypeOnChange}
-            />
+            <ProjectTypePicker projectType={projectType} />
           ) : (
             <>
               <SubSectionTitle>
@@ -593,6 +579,7 @@ const AdminProjectsProjectGeneral = () => {
           <ProjectFolderSelect
             projectAttrs={projectAttrs}
             onProjectAttributesDiffChange={handleProjectAttributeDiffOnChange}
+            isNewProject={!projectId}
           />
         )}
 

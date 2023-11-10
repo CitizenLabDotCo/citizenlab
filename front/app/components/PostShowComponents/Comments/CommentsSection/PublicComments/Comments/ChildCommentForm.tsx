@@ -2,35 +2,29 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Subscription } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
-import { isNilOrError, isPage } from 'utils/helperUtils';
-import { useLocation } from 'react-router-dom';
+import { isNilOrError } from 'utils/helperUtils';
 
 // services
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 // components
-import Button from 'components/UI/Button';
-import MentionsTextArea from 'components/UI/MentionsTextArea';
+import TextArea from 'components/PostShowComponents/Comments/CommentForm/TextArea';
+import ErrorMessage from 'components/PostShowComponents/Comments/CommentForm/ErrorMessage';
+import Actions from 'components/PostShowComponents/Comments/CommentForm/Actions';
 import Avatar from 'components/Avatar';
 import clickOutside from 'utils/containers/clickOutside';
-import Link from 'utils/cl-router/Link';
-import {
-  Checkbox,
-  IconTooltip,
-  Text,
-  useBreakpoint,
-} from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
+import tracks from '../../../tracks';
 
 // i18n
-import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
-import messages from './messages';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import messages from '../../../messages';
 
 // events
-import { commentReplyButtonClicked$, commentAdded } from './events';
+import { commentReplyButtonClicked$, commentAdded } from '../../../events';
 
 // style
 import styled from 'styled-components';
@@ -42,10 +36,6 @@ import useAuthUser from 'api/me/useAuthUser';
 import useAddCommentToIdea from 'api/comments/useAddCommentToIdea';
 import useAddCommentToInitiative from 'api/comments/useAddCommentToInitiative';
 import OldAnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal/OldAnonymousParticipationConfirmationModal';
-
-const Container = styled.div`
-  display: flex;
-`;
 
 const StyledAvatar = styled(Avatar)`
   margin-left: -4px;
@@ -80,18 +70,6 @@ const HiddenLabel = styled.span`
   ${hideVisually()}
 `;
 
-const ButtonWrapper = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 14px;
-  margin-bottom: 10px;
-  margin-right: 10px;
-`;
-
-const CancelButton = styled(Button)`
-  margin-right: 8px;
-`;
-
 interface Props {
   ideaId: string | undefined;
   initiativeId: string | undefined;
@@ -115,9 +93,6 @@ const ChildCommentForm = ({
   const locale = useLocale();
   const { data: appConfiguration } = useAppConfiguration();
   const { data: authUser } = useAuthUser();
-  const smallerThanTablet = useBreakpoint('tablet');
-  const { pathname } = useLocation();
-  const isAdminPage = isPage('admin', pathname);
 
   const {
     mutate: addCommentToIdeaComment,
@@ -340,40 +315,14 @@ const ChildCommentForm = ({
     }
   };
 
-  const getErrorMessage = () => {
-    if (hasApiError) {
-      // Profanity error is the only error we're checking specifically
-      // at the moment to provide a specific error message.
-      // All other api errors are generalized to 1 error message
-      if (profanityApiError) {
-        return (
-          <FormattedMessage
-            {...messages.profanityError}
-            values={{
-              guidelinesLink: (
-                <Link to="/pages/faq" target="_blank">
-                  {formatMessage(messages.guidelinesLinkText)}
-                </Link>
-              ),
-            }}
-          />
-        );
-      }
-
-      return <FormattedMessage {...messages.addCommentError} />;
-    }
-
-    return null;
-  };
-
   if (focused) {
     const isModerator = canModerateProject(projectId, authUser);
-    const postButtonText: MessageDescriptor = isAdminPage
-      ? messages.postPublicComment
-      : messages.publishComment;
 
     return (
-      <Container className={`${className || ''} e2e-childcomment-form`}>
+      <Box
+        display="flex"
+        className={`${className || ''} e2e-childcomment-form`}
+      >
         <StyledAvatar
           userId={authUser?.data.id}
           size={30}
@@ -389,73 +338,34 @@ const ChildCommentForm = ({
               <HiddenLabel>
                 <FormattedMessage {...messages.replyToComment} />
               </HiddenLabel>
-              <MentionsTextArea
-                className={`childcommentform-${parentId}`}
-                name="comment"
-                placeholder={formatMessage(
-                  messages.childCommentBodyPlaceholder
-                )}
-                rows={3}
-                postId={ideaId || initiativeId}
-                postType={postType}
-                value={inputValue}
-                error={getErrorMessage()}
-                onChange={onChange}
-                onFocus={onFocus}
-                fontWeight="300"
-                padding="10px"
-                borderRadius="none"
-                border="none"
-                boxShadow="none"
-                getTextareaRef={setRef}
-              />
-              <ButtonWrapper>
-                {allowAnonymousParticipation && (
-                  <Checkbox
-                    ml="8px"
-                    checked={postAnonymously}
-                    label={
-                      <Text mb="12px" fontSize="s" color="coolGrey600">
-                        {formatMessage(messages.postAnonymously)}
-                        <IconTooltip
-                          content={
-                            <Text color="white" fontSize="s" m="0">
-                              {formatMessage(
-                                messages.inputsAssociatedWithProfile
-                              )}
-                            </Text>
-                          }
-                          iconSize="16px"
-                          placement="top-start"
-                          display="inline"
-                          ml="4px"
-                          transform="translate(0,-1)"
-                        />
-                      </Text>
-                    }
-                    onChange={() => setPostAnonymously(!postAnonymously)}
-                  />
-                )}
-                <CancelButton
-                  disabled={processing}
-                  onClick={onCancel}
-                  buttonStyle="secondary"
-                  padding={smallerThanTablet ? '6px 12px' : undefined}
-                >
-                  <FormattedMessage {...messages.cancel} />
-                </CancelButton>
-                <Button
-                  className="e2e-submit-childcomment"
-                  processing={processing}
-                  onClick={onSubmit}
-                  disabled={!canSubmit}
-                  padding={smallerThanTablet ? '6px 12px' : undefined}
-                  icon={isAdminPage ? 'users' : undefined}
-                >
-                  <FormattedMessage {...postButtonText} />
-                </Button>
-              </ButtonWrapper>
             </label>
+            <TextArea
+              className={`childcommentform-${parentId}`}
+              placeholder={formatMessage(messages.childCommentBodyPlaceholder)}
+              rows={3}
+              postId={ideaId || initiativeId}
+              postType={postType}
+              value={inputValue}
+              error={
+                hasApiError ? (
+                  <ErrorMessage profanityApiError={profanityApiError} />
+                ) : undefined
+              }
+              onChange={onChange}
+              onFocus={onFocus}
+              getTextAreaRef={setRef}
+            />
+            <Actions
+              processing={processing}
+              focused={focused}
+              postAnonymously={postAnonymously}
+              allowAnonymousParticipation={allowAnonymousParticipation}
+              submitButtonDisabled={!canSubmit}
+              submitButtonClassName="e2e-submit-childcomment"
+              togglePostAnonymously={setPostAnonymously}
+              onSubmit={onSubmit}
+              onCancel={onCancel}
+            />
           </Form>
         </FormContainer>
         {showAnonymousConfirmationModal && (
@@ -469,7 +379,7 @@ const ChildCommentForm = ({
             }}
           />
         )}
-      </Container>
+      </Box>
     );
   }
 

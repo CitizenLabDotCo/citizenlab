@@ -90,6 +90,7 @@ export const EmbeddedSurveyCTABar = ({ phases, project }: CTABarProps) => {
     <ParticipationCTAContent
       currentPhase={currentPhase}
       project={project}
+      phases={phases}
       CTAButton={
         showSignIn ? (
           <Button
