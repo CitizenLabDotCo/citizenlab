@@ -227,7 +227,7 @@ export const ParticipationCTAContent = ({
             {timeLeftPosition === 'left' && timeLeftTranslated?.toUpperCase()}{' '}
           </Text>
           {participationState && (
-            <Box display="flex" width={timeLeftTranslated ? '100%' : undefined}>
+            <Box display="flex" width="100%">
               {participationState}
             </Box>
           )}
