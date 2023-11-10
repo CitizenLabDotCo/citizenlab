@@ -120,6 +120,11 @@ e2e-ci-env-db-restore:
 	docker compose exec postgres psql -U postgres -d cl2_back_development -c "CREATE SCHEMA public" && \
 	cat dump.sql | docker compose exec -T postgres psql --quiet -U postgres 1> /dev/null 2> /dev/null
 
+e2e-ci-env-reproduce-flaky-test:
+	for i in {1..10}; do \
+		make e2e-ci-env-db-restore && make e2e-ci-env-run-test spec="${spec}"; \
+	done
+
 # =================
 # CircleCI
 # =================
