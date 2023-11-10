@@ -22,14 +22,13 @@ const Interactions = ({ participationContext, idea }: InteractionsProps) => {
 
   if (!config || !participationContext) return null;
 
-  const isCurrentPhase =
+  if (
     participationContext.type === 'phase' &&
     pastPresentOrFuture([
       participationContext.attributes.start_at,
       participationContext.attributes.end_at,
-    ]) === 'present';
-
-  if (!isCurrentPhase) {
+    ]) !== 'present'
+  ) {
     return null;
   }
 
