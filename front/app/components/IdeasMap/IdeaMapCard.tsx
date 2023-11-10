@@ -222,13 +222,12 @@ const IdeaMapCard = memo<Props>(
         project.data.attributes.action_descriptor.commenting_idea.enabled;
       const projectHasComments = project.data.attributes.comments_count > 0;
       const showCommentCount = commentingEnabled || projectHasComments;
-      const phaseButNotCurrentPhase = !(
+      const phaseButNotCurrentPhase =
         participationContext?.type === 'phase' &&
         pastPresentOrFuture([
           participationContext.attributes.start_at,
           participationContext.attributes.end_at,
-        ]) === 'present'
-      );
+        ]) !== 'present';
       const showVoteInput =
         votingMethodConfig && participationContext && !phaseButNotCurrentPhase;
 
