@@ -4,7 +4,7 @@ import React from 'react';
 import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
 
 // utils
-import { isCurrentPhase } from 'api/phases/utils';
+import { pastPresentOrFuture } from 'utils/dateUtils';
 
 // types
 import { IIdea } from 'api/ideas/types';
@@ -24,7 +24,10 @@ const Interactions = ({ participationContext, idea }: InteractionsProps) => {
 
   if (
     participationContext.type === 'phase' &&
-    !isCurrentPhase(participationContext)
+    pastPresentOrFuture([
+      participationContext.attributes.start_at,
+      participationContext.attributes.end_at,
+    ]) !== 'present'
   ) {
     return null;
   }

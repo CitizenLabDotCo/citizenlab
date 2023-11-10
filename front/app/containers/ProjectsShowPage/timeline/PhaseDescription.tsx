@@ -19,7 +19,7 @@ import { defaultCardStyle, media } from 'utils/styleUtils';
 import usePhaseFiles from 'api/phase_files/usePhaseFiles';
 
 // utils
-import { isCurrentPhase } from 'api/phases/utils';
+import { pastPresentOrFuture } from 'utils/dateUtils';
 
 // typings
 import { IPhases } from 'api/phases/types';
@@ -61,7 +61,13 @@ const PhaseDescription = ({ projectId, selectedPhaseId }: Props) => {
   const { data: phase } = usePhase(selectedPhaseId);
   const { data: phaseFiles } = usePhaseFiles(selectedPhaseId);
 
-  const isActivePhase = phase?.data && isCurrentPhase(phase?.data);
+  const isActivePhase =
+    phase?.data &&
+    pastPresentOrFuture([
+      phase.data.attributes.start_at,
+      phase.data.attributes.end_at,
+    ]) === 'present';
+
   const phaseNumber = phases ? getPhaseNumber(phases, selectedPhaseId) : null;
 
   if (!phaseNumber || !phase) {
