@@ -78,7 +78,6 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
             </Text>
           )
         }
-        hideDefaultParticipationMessage={currentPhase ? true : false}
       />
       <ErrorToast />
     </>

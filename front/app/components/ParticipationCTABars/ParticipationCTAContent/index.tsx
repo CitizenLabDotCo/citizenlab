@@ -26,7 +26,6 @@ type Props = {
   hasUserParticipated?: boolean;
   CTAButton?: React.ReactNode;
   currentPhase: IPhaseData | undefined;
-  hideDefaultParticipationMessage?: boolean;
   participationState?: JSX.Element; // Optional element which displays on bottom left
   project: IProjectData;
 };
@@ -35,7 +34,6 @@ const ParticipationCTAContent = ({
   currentPhase,
   CTAButton,
   hasUserParticipated = false,
-  hideDefaultParticipationMessage = false,
   participationState,
   project,
 }: Props) => {
@@ -48,6 +46,8 @@ const ParticipationCTAContent = ({
   const useProjectClosedStyle =
     config?.useProjectClosedCTABarStyle &&
     config.useProjectClosedCTABarStyle(currentPhase || project);
+
+  const hideDefaultParticipationMessage = currentPhase ? true : false;
 
   const getUserParticipationMessage = () => {
     if (useProjectClosedStyle) {
