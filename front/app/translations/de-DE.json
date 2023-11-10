@@ -1338,7 +1338,7 @@
   "app.containers.Projects.oneSurvey": "1 Umfrage",
   "app.containers.Projects.oneSurveyInCurrentPhase": "1 Umfrage in der aktuellen Phase",
   "app.containers.Projects.options": "Optionen",
-  "app.containers.Projects.participantsTooltip4": "Diese Zahl spiegelt auch die anonymen Umfragen wider, die eingereicht wurden. Anonyme Umfragen sind möglich, wenn die Umfragen für jedermann zugänglich sind (siehe die Registerkarte {accessRightsLink} für dieses Projekt).",
+  "app.containers.Projects.participantsTooltip4": "Diese Zahl spiegelt auch anonyme Umfragen wider. Anonyme Umfragen sind möglich, wenn die Umfragen für alle zugänglich sind (siehe {accessRightsLink} für dieses Projekt).",
   "app.containers.Projects.pastEvents": "Vergangene Veranstaltungen",
   "app.containers.Projects.phases": "Phasen",
   "app.containers.Projects.poll": "1 Abstimmung",
