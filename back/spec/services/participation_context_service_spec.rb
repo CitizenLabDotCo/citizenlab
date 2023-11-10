@@ -73,13 +73,12 @@ describe ParticipationContextService do
       expect(service.posting_idea_disabled_reason_for_project(project, user)).to eq 'posting_limited_max_reached'
     end
 
-    # TODO: JS - failing test
     it 'returns `posting_limited_max_reached` if the author posted a survey anonymously and the limit was reached' do
       user = create(:user)
       project = create(:continuous_native_survey_project, phase_attrs: {
         posting_enabled: true, posting_method: 'limited', posting_limited_max: 1, allow_anonymous_participation: true
       })
-      create(:native_survey_response, project: project, author: user, anonymous: true, creation_phase: project.phases.first)
+      create(:native_survey_response, project: project, author: user, anonymous: true, phases: project.phases, creation_phase: project.phases.first)
 
       expect(service.posting_idea_disabled_reason_for_project(project, user)).to eq 'posting_limited_max_reached'
     end
