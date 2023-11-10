@@ -139,7 +139,6 @@ const Content = ({
     ideaImages?.data[0]?.attributes?.versions?.large || null;
   const ideaId = idea.data.id;
   const ideaBody = localize(idea.data.attributes?.body_multiloc);
-  const projectTitle = localize(project?.attributes.title_multiloc);
 
   const participationContext = getCurrentParticipationContext(
     project,
@@ -190,12 +189,7 @@ const Content = ({
             translateButtonClicked={translateButtonIsClicked}
             showActions={compact}
           />
-          {projectTitle && project?.attributes.slug && (
-            <ProjectLink
-              projectTitleLocalized={projectTitle}
-              projectSlug={project?.attributes.slug}
-            />
-          )}
+          <ProjectLink project={project} />
 
           {ideaImageLarge && (
             <Image src={ideaImageLarge} alt="" id="e2e-idea-image" />

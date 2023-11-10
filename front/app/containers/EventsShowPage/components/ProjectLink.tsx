@@ -15,18 +15,23 @@ import messages from '../messages';
 
 // router
 import Link from 'utils/cl-router/Link';
+import useLocalize from 'hooks/useLocalize';
+import { IProjectData } from 'api/projects/types';
 
 type ProjectLinkProps = {
-  projectTitleLocalized: string;
-  projectSlug: string;
+  project: IProjectData | undefined;
 };
 
-const ProjectLink = ({
-  projectTitleLocalized,
-  projectSlug,
-}: ProjectLinkProps) => {
+const ProjectLink = ({ project }: ProjectLinkProps) => {
   const { formatMessage } = useIntl();
+  const localize = useLocalize();
   const isMobileOrSmaller = useBreakpoint('phone');
+  const projectTitleLocalized = localize(project?.attributes.title_multiloc);
+  const projectSlug = project?.attributes.slug;
+
+  if (!project) {
+    return null;
+  }
 
   return (
     <Box display="flex" my={isMobileOrSmaller ? '12px' : '24px'} gap="8px">

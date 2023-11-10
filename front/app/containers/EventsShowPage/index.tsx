@@ -80,11 +80,6 @@ const EventsShowPage = () => {
   const { data: eventImage } = useEventImage(event?.data);
   const largeImage = eventImage?.data.attributes?.versions?.large;
 
-  const projectTitleLocalized = localize(
-    project?.data.attributes.title_multiloc
-  );
-  const projectSlug = project?.data.attributes.slug;
-
   if (status === 'loading') {
     return (
       <VerticalCenterer>
@@ -120,12 +115,7 @@ const EventsShowPage = () => {
               <Title id="e2e-event-title" variant="h1">
                 {localize(event?.data.attributes.title_multiloc)}
               </Title>
-              {projectTitleLocalized && projectSlug && (
-                <ProjectLink
-                  projectTitleLocalized={projectTitleLocalized}
-                  projectSlug={projectSlug}
-                />
-              )}
+              <ProjectLink project={project?.data} />
               {largeImage && (
                 <Box aria-hidden="true">
                   <EventImage src={largeImage} alt="" />

@@ -301,7 +301,6 @@ const IdeaCards = ({ ideaQueryParameters, onUpdateQuery }: Props) => {
                   smallerThanPhone
                 }
                 view="card"
-                goBackMode="goToProject"
               />
             </ContentLeft>
 

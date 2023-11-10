@@ -42,7 +42,6 @@ export interface Props {
   hideImage?: boolean;
   hideImagePlaceholder?: boolean;
   hideIdeaStatus?: boolean;
-  goBackMode?: 'browserGoBackButton' | 'goToProject';
   showFollowButton?: boolean;
 }
 
@@ -68,7 +67,6 @@ const IdeaCard = memo<IdeaCardProps>(
     hideImage = false,
     hideImagePlaceholder = false,
     hideIdeaStatus = false,
-    goBackMode = 'browserGoBackButton',
     showFollowButton,
   }) => {
     const isGeneralIdeasPage = window.location.pathname.endsWith('/ideas');
@@ -120,12 +118,11 @@ const IdeaCard = memo<IdeaCardProps>(
     }, [scrollToCardParam, idea, smallerThanPhone]);
 
     const { slug } = idea.data.attributes;
-    const params = goBackMode === 'browserGoBackButton' ? '?go_back=true' : '';
 
     const handleClick = (e: React.MouseEvent) => {
       e.preventDefault();
       updateSearchParams({ scroll_to_card: idea.data.id });
-      clHistory.push(`/ideas/${slug}${params}?go_back=true`);
+      clHistory.push(`/ideas/${slug}?go_back=true`);
     };
 
     const hideInteractions =
@@ -139,7 +136,7 @@ const IdeaCard = memo<IdeaCardProps>(
       <Card
         id={idea.data.id}
         className={`${className ?? ''} e2e-idea-card`.trim()}
-        to={`/ideas/${slug}${params}`}
+        to={`/ideas/${slug}?go_back=true`}
         onClick={handleClick}
         title={ideaTitle}
         image={hideImage ? null : ideaImage?.data.attributes.versions.medium}

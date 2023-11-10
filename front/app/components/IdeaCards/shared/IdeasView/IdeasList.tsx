@@ -61,7 +61,6 @@ interface Props {
   hideImage?: boolean;
   hideImagePlaceholder?: boolean;
   hideIdeaStatus?: boolean;
-  goBackMode?: 'browserGoBackButton' | 'goToProject';
   phaseId?: string;
 }
 
@@ -78,7 +77,6 @@ const IdeasList = ({
   hideImage = false,
   hideImagePlaceholder = false,
   hideIdeaStatus = false,
-  goBackMode,
   phaseId,
 }: Props) => {
   const theme = useTheme();
@@ -112,7 +110,6 @@ const IdeasList = ({
                     hideImage={hideImage}
                     hideImagePlaceholder={hideImagePlaceholder}
                     hideIdeaStatus={hideIdeaStatus}
-                    goBackMode={goBackMode}
                   />
                 );
               })}

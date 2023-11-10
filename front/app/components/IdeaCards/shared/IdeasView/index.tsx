@@ -17,7 +17,6 @@ interface Props {
   hasMore: boolean;
   loadingMore: boolean;
   onLoadMore(): void;
-  goBackMode?: 'browserGoBackButton' | 'goToProject';
 }
 
 const IdeasView = ({
@@ -32,7 +31,6 @@ const IdeasView = ({
   hasMore,
   loadingMore,
   onLoadMore,
-  goBackMode,
 }: Props) => {
   return (
     <>
@@ -50,7 +48,6 @@ const IdeasView = ({
           hideImage={hideImage}
           hideImagePlaceholder={hideImagePlaceholder}
           hideIdeaStatus={hideIdeaStatus}
-          goBackMode={goBackMode}
           phaseId={phaseId}
         />
       )}
