@@ -242,7 +242,6 @@ const IdeaMapCard = memo<Props>(
           tabIndex={0}
           id="e2e-idea-map-card"
         >
-          djskdjksjdsjkd
           {tablet && (
             <StyledCloseIconButton
               iconWidth={'12px'}
