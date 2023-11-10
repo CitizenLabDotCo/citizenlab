@@ -20,6 +20,7 @@ module.exports = {
     '!**/node_modules/**',
     '!**/vendor/**',
     '!.storybook/**',
+    'internals/jest/cl2-component-library/**',
   ],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json'],
   transformIgnorePatterns: [
