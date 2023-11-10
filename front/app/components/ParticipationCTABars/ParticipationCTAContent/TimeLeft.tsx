@@ -12,18 +12,19 @@ interface Props {
 const TimeLeft = ({ currentPhase }: Props) => {
   const { formatMessage } = useIntl();
 
-  if (currentPhase === undefined) return null;
+  if (currentPhase === undefined || currentPhase.attributes.end_at === null) {
+    return null;
+  }
 
-  let timeLeft = currentPhase.attributes.end_at
-    ? getPeriodRemainingUntil(currentPhase.attributes.end_at, 'weeks')
-    : undefined;
+  let timeLeft = getPeriodRemainingUntil(
+    currentPhase.attributes.end_at,
+    'weeks'
+  );
   let timeLeftMessage = messages.xWeeksLeft;
 
-  if (
-    timeLeft !== undefined &&
-    timeLeft < 2 &&
-    currentPhase.attributes.end_at
-  ) {
+  // If less than 2 weeks left
+  if (timeLeft < 2) {
+    // Get timeLeft in days
     timeLeft = getPeriodRemainingUntil(currentPhase.attributes.end_at, 'days');
     timeLeftMessage = messages.xDayLeft;
   }
