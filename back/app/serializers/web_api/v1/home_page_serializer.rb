@@ -39,7 +39,7 @@ class WebApi::V1::HomePageSerializer < WebApi::V1::BaseSerializer
   end
 
   attribute :craftjs_json do |homepage|
-    HomepageLayoutService.new.render_data_images homepage, :craftjs_json
+    LayoutImageService.new.render_data_images homepage.craftjs_json
   end
 
   has_many :pinned_admin_publications, serializer: :admin_publication

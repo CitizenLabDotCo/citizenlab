@@ -2,7 +2,7 @@
 
 class SideFxHomePageService
   def before_create(home_page, _user)
-    home_page.craftjs_json = HomepageLayoutService.new.swap_data_images home_page, :craftjs_json
+    home_page.craftjs_json = LayoutImageService.new.swap_data_images home_page.craftjs_json
   end
 
   def before_update(home_page, _ = nil)
@@ -14,6 +14,6 @@ class SideFxHomePageService
       home_page.bottom_info_section_multiloc = TextImageService.new.swap_data_images_multiloc home_page.bottom_info_section_multiloc, :bottom_info_section_multiloc
     end
 
-    home_page.craftjs_json = HomepageLayoutService.new.swap_data_images home_page, :craftjs_json
+    home_page.craftjs_json = LayoutImageService.new.swap_data_images home_page.craftjs_json
   end
 end

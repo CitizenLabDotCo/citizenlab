@@ -9,10 +9,7 @@ describe SideFxHomePageService do
 
   describe 'before_create' do
     it 'swaps data images' do
-      expect_any_instance_of(HomepageLayoutService).to receive(:swap_data_images).with(
-        page,
-        :craftjs_json
-      )
+      expect_any_instance_of(LayoutImageService).to receive(:swap_data_images).with(page.craftjs_json)
       service.before_create(page, user)
     end
   end
@@ -27,10 +24,7 @@ describe SideFxHomePageService do
     end
 
     it 'swaps data images' do
-      expect_any_instance_of(HomepageLayoutService).to receive(:swap_data_images).with(
-        page,
-        :craftjs_json
-      )
+      expect_any_instance_of(LayoutImageService).to receive(:swap_data_images).with(page.craftjs_json)
       service.before_update(page, user)
     end
   end
