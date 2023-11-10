@@ -58,9 +58,10 @@ export function timeAgo(dateInput: number, locale: Locale) {
 // this function is exclusively used to compare phase start/ends,
 // which are created and stored with the YYYY-MM-DD format (no time of day)
 type SingleDate = string;
-type BeginAndEndDate = [string, string];
+type BeginAndEndDate = [string, string | null];
 export function pastPresentOrFuture(input: SingleDate | BeginAndEndDate) {
   const currentIsoDate = getIsoDateForToday();
+  const momentCurrentDate = moment(currentIsoDate, 'YYYY-MM-DD');
 
   // if input is a string representing one date
   if (isString(input)) {
@@ -68,7 +69,7 @@ export function pastPresentOrFuture(input: SingleDate | BeginAndEndDate) {
 
     if (isoDate === currentIsoDate) {
       return 'present';
-    } else if (moment(currentIsoDate, 'YYYY-MM-DD').isAfter(isoDate)) {
+    } else if (momentCurrentDate.isAfter(isoDate)) {
       return 'past';
     }
 
@@ -77,18 +78,18 @@ export function pastPresentOrFuture(input: SingleDate | BeginAndEndDate) {
 
   // if input is an array with start and end dates
   const startIsoDate = getIsoDateUtc(input[0]);
+
+  if (input[1] === null) {
+    const isPresent =
+      momentCurrentDate.isAfter(startIsoDate) ||
+      momentCurrentDate.isSame(startIsoDate);
+    return isPresent ? 'present' : 'future';
+  }
   const endIsoDate = getIsoDateUtc(input[1]);
 
-  if (
-    moment(currentIsoDate, 'YYYY-MM-DD').isBetween(
-      startIsoDate,
-      endIsoDate,
-      'days',
-      '[]'
-    )
-  ) {
+  if (momentCurrentDate.isBetween(startIsoDate, endIsoDate, 'days', '[]')) {
     return 'present';
-  } else if (moment(currentIsoDate, 'YYYY-MM-DD').isAfter(endIsoDate)) {
+  } else if (momentCurrentDate.isAfter(endIsoDate)) {
     return 'past';
   }
 
