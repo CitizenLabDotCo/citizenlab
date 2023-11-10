@@ -13,8 +13,7 @@ module.exports = {
     '<rootDir>/internals/jest/setup.js',
     '@testing-library/jest-dom/extend-expect',
   ],
-  testMatch: ['**/?(*.)+(test).(js|jsx|ts|tsx)'],
-  testPathIgnorePatterns: ['internals/jest/cl2-component-library/**'],
+  testMatch: ['**/?(*.)+(test).(js|jsx|ts|tsx)', '!internals/jest/**'],
   moduleDirectories: ['node_modules', 'app'],
   collectCoverageFrom: [
     'app/**/*.{js,jsx,ts,tsx}',
