@@ -517,10 +517,8 @@ FactoryBot.define do
       factory :continuous_document_annotation_project do
         after(:create) do |project, evaluator|
           project.phases << create(
-            :phase,
+            :document_annotation_phase,
             project: project,
-            participation_method: 'document_annotation',
-            document_annotation_embed_url: 'https://citizenlab.konveio.com/document-title',
             start_at: Faker::Date.between(from: 6.months.ago, to: Time.zone.now),
             end_at: nil,
             **evaluator.phase_attrs

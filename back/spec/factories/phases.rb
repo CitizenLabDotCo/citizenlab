@@ -101,5 +101,10 @@ FactoryBot.define do
     factory :information_phase do
       participation_method { 'information' }
     end
+
+    factory :document_annotation_phase do
+      participation_method { 'document_annotation' }
+      document_annotation_embed_url { 'https://citizenlab.konveio.com/document-title' }
+    end
   end
 end
