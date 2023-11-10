@@ -32,15 +32,16 @@ describe ProjectCopyService do
       IdeaStatus.create_defaults
 
       open_ended_project = create(:continuous_native_survey_project)
+      form1 = create(:custom_form, participation_context: open_ended_project.phases.first)
+      field1 = create(:custom_field_linear_scale, :for_custom_form, resource: form1)
+      create(:idea, project: open_ended_project, custom_field_values: { field1.key => 1 }, phases: open_ended_project.phases, creation_phase: open_ended_project.phases.first)
+
       two_phase_project = create(:project_with_future_native_survey_phase)
       survey_phase = two_phase_project.phases.last
       ideation_phase = create(:phase, participation_method: 'ideation', project: two_phase_project)
-      form1 = create(:custom_form, participation_context: open_ended_project.phases.first)
-      field1 = create(:custom_field_linear_scale, :for_custom_form, resource: form1)
+      two_phase_project.phases << ideation_phase
       form2 = create(:custom_form, participation_context: survey_phase)
       field2 = create(:custom_field, :for_custom_form, resource: form2)
-
-      create(:idea, project: open_ended_project, custom_field_values: { field1.key => 1 }, phases: open_ended_project.phases, creation_phase: open_ended_project.phases.first)
       create(:idea, project: two_phase_project, phases: [ideation_phase])
       create(:idea, project: two_phase_project, phases: [survey_phase], creation_phase: survey_phase, custom_field_values: { field2.key => 'My value' })
 
