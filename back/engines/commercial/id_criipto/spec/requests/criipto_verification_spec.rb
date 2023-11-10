@@ -123,8 +123,10 @@ context 'criipto verification' do
       method_name: 'criipto',
       user_id: user.id,
       active: true,
-      hashed_uid: Verification::VerificationService.new.send(:hashed_uid, '{29d14ea0-6e16-4732-86ac-5de87a941784}', 'criipto')
     })
+    hash_value = Verification::VerificationService.new.send(:hashed_uid, '{29d14ea0-6e16-4732-86ac-5de87a941784}', 'criipto')
+    expect(user.verifications.first.hashed_uid).to eq(hash_value)
+    expect(user.verifications.first.hashed_uid).to eq('d006d4bf453dcd6abf792b0a18f330796a715bdf19315c2c1db8714371bcb025')
   end
 
   it 'successfully verifies another user with another MitID account' do
