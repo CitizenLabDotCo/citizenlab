@@ -7,23 +7,22 @@ import { Box, Text, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { IPhaseData } from 'api/phases/types';
 
 // utils
-import { getPeriodRemainingUntil } from 'utils/dateUtils';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 
 // types
 import { IProjectData } from 'api/projects/types';
 
 // i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 // styling
 import { useTheme } from 'styled-components';
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 import BlinkingDot from './BlinkingDot';
+import TimeLeft from './TimeLeft';
 
 type Props = {
-  timeLeft?: string;
   hasUserParticipated?: boolean;
   CTAButton?: React.ReactNode;
   currentPhase: IPhaseData | undefined;
@@ -41,7 +40,6 @@ const ParticipationCTAContent = ({
   project,
 }: Props) => {
   const theme = useTheme();
-  const { formatMessage } = useIntl();
   const isSmallerThanPhone = useBreakpoint('phone');
   const config = getMethodConfig(
     currentPhase?.attributes.participation_method ||
@@ -50,16 +48,6 @@ const ParticipationCTAContent = ({
   const useProjectClosedStyle =
     config?.useProjectClosedCTABarStyle &&
     config.useProjectClosedCTABarStyle(currentPhase || project);
-
-  let timeLeft = currentPhase
-    ? getPeriodRemainingUntil(currentPhase.attributes.end_at, 'weeks')
-    : undefined;
-  let timeLeftMessage = messages.xWeeksLeft;
-
-  if (timeLeft !== undefined && timeLeft < 2 && currentPhase) {
-    timeLeft = getPeriodRemainingUntil(currentPhase.attributes.end_at, 'days');
-    timeLeftMessage = messages.xDayLeft;
-  }
 
   const getUserParticipationMessage = () => {
     if (useProjectClosedStyle) {
@@ -96,17 +84,10 @@ const ParticipationCTAContent = ({
                 {!hideDefaultParticipationMessage && (
                   <FormattedMessage {...getUserParticipationMessage()} />
                 )}
-                {hideDefaultParticipationMessage && timeLeft !== undefined && (
-                  <Text
-                    color="white"
-                    style={{ textTransform: 'uppercase' }}
-                    fontSize="xs"
-                    m="0px"
-                    ml="auto"
-                    fontWeight="bold"
-                  >
-                    {formatMessage(timeLeftMessage, { timeLeft })}
-                  </Text>
+                {hideDefaultParticipationMessage && (
+                  <Box m="0px" ml="auto">
+                    <TimeLeft currentPhase={currentPhase} />
+                  </Box>
                 )}
               </span>
             </Text>
@@ -138,18 +119,9 @@ const ParticipationCTAContent = ({
               <FormattedMessage {...getUserParticipationMessage()} />
             )}
           </Text>
-          {timeLeft !== undefined && (
-            <Text
-              color="white"
-              style={{ textTransform: 'uppercase' }}
-              mr="24px"
-              my="0px"
-              fontSize="xs"
-              fontWeight="bold"
-            >
-              {formatMessage(timeLeftMessage, { timeLeft })}
-            </Text>
-          )}
+          <Box mr="24px" my="0px">
+            <TimeLeft currentPhase={currentPhase} />
+          </Box>
         </Box>
         <Box display="flex" ml="auto">
           {participationState}
