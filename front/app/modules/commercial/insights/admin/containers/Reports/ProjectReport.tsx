@@ -193,15 +193,26 @@ const ProjectReport = () => {
                       project?.data.relationships?.current_phase?.data?.id
                     }
                   >
-                    <p>
-                      <FormattedMessage
-                        {...messages.fromTo}
-                        values={{
-                          from: formatDateLabel(phase.attributes.start_at),
-                          to: formatDateLabel(phase.attributes.end_at),
-                        }}
-                      />
-                    </p>
+                    {phase.attributes.end_at ? (
+                      <p>
+                        <FormattedMessage
+                          {...messages.fromTo}
+                          values={{
+                            from: formatDateLabel(phase.attributes.start_at),
+                            to: formatDateLabel(phase.attributes.end_at),
+                          }}
+                        />
+                      </p>
+                    ) : (
+                      <p>
+                        <FormattedMessage
+                          {...messages.fromOnwards}
+                          values={{
+                            from: formatDateLabel(phase.attributes.start_at),
+                          }}
+                        />
+                      </p>
+                    )}
                     <FormattedMessage
                       {...PARTICIPATION_METHOD_MESSAGES[
                         phase.attributes.participation_method
