@@ -135,6 +135,7 @@ const ParticipationCTAContent = ({
                     fontSize="xs"
                     m="0px"
                     ml="auto"
+                    fontWeight="bold"
                   >
                     {formatMessage(timeLeftMessage, { timeLeft })}
                   </Text>
@@ -142,13 +143,9 @@ const ParticipationCTAContent = ({
               </span>
             </Text>
           </Box>
-          {participationState && (
-            <Box display="flex" alignItems="center" ml="auto">
-              {participationState}
-            </Box>
-          )}
+          <Box ml="auto">{participationState}</Box>
         </Box>
-        <Box display="flex">{CTAButton}</Box>
+        {CTAButton}
       </Box>
     );
   }
