@@ -36,3 +36,6 @@ storybook-static/*
 .vscode/*
 
 cypress.env
+
+# Component library build for unit tests
+internals/jest/cl2-component-library.esm.js
