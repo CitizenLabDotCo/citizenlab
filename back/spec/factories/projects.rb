@@ -170,6 +170,27 @@ FactoryBot.define do
       end
     end
 
+    factory :project_with_past_ideation_and_current_native_survey_phase do
+      after(:create) do |project, _evaluator|
+        past_phase = create(
+          :phase,
+          project: project,
+          participation_method: 'ideation',
+          start_at: 60.days.ago,
+          end_at: 30.days.ago
+        )
+        current_phase = create(
+          :phase,
+          project: project,
+          participation_method: 'native_survey',
+          start_at: 10.days.ago,
+          end_at: 60.days.from_now
+        )
+        project.phases << past_phase
+        project.phases << current_phase
+      end
+    end
+
     factory :project_with_past_ideation_and_future_ideation_phase do
       after(:create) do |project, _evaluator|
         past_phase = create(
