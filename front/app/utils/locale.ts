@@ -36,7 +36,7 @@ import { includes, get } from 'lodash-es';
 import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
 import authUserStream from 'api/me/authUserStream';
 import { updateUser } from 'api/users/useUpdateUser';
-import { Locale } from 'typings';
+import { Locale, Multiloc } from 'typings';
 import { locales } from 'containers/App/constants';
 import { setCookieLocale, getCookieLocale } from 'utils/localeCookie';
 import clHistory from 'utils/cl-router/history';
@@ -256,4 +256,14 @@ export function localeStream() {
   return {
     observable: $locale,
   };
+}
+
+export function hasTextInSpecifiedLocale(
+  multiloc: Multiloc,
+  locale: Locale
+): boolean {
+  return (
+    Object.prototype.hasOwnProperty.call(multiloc, locale) &&
+    multiloc[locale] !== ''
+  );
 }
