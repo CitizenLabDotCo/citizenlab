@@ -60,6 +60,11 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.continuous',
     defaultMessage: 'Continuous',
   },
+  continousProjectDeprecationMessage: {
+    id: 'app.containers.AdminPage.ProjectEdit.continousProjectDeprecationMessage',
+    defaultMessage:
+      'Projects without a timeline have been deprecated. Instead, you can now decide not to add an end date to a phase if you want to keep it open indefinitely.',
+  },
   timeline: {
     id: 'app.containers.AdminPage.ProjectEdit.timeline',
     defaultMessage: 'Timeline',

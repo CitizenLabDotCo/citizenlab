@@ -7,7 +7,6 @@ import useBasket from 'api/baskets/useBasket';
 import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
 
 // utils
-import { isCurrentPhase } from 'api/phases/utils';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 
 // types
@@ -32,14 +31,18 @@ const Interactions = ({ participationContext, idea }: Props) => {
 
   if (
     participationContext.type === 'phase' &&
-    !isCurrentPhase(participationContext)
+    pastPresentOrFuture([
+      participationContext.attributes.start_at,
+      participationContext.attributes.end_at,
+    ]) !== 'present'
   ) {
     return null;
   }
 
   const participationContextEnded =
-    participationContext.type === 'phase' &&
-    pastPresentOrFuture(participationContext.attributes.end_at) === 'past';
+    participationContext?.type === 'phase' &&
+    participationContext.attributes.end_at &&
+    pastPresentOrFuture(participationContext?.attributes?.end_at) === 'past';
 
   const hideInteractions =
     isGeneralIdeasPage ||

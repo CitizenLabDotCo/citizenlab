@@ -369,6 +369,14 @@ module MultiTenancy
                   environment: 'pre_production_integration',
                   issuer: ENV.fetch('DEFAULT_NEMLOG_IN_ISSUER', 'fake issuer'),
                   private_key: ENV.fetch('DEFAULT_NEMLOG_IN_PRIVATE_KEY', 'fake key')
+                },
+                {
+                  name: 'criipto',
+                  domain: 'cl-test.criipto.id',
+                  client_id: ENV.fetch('DEFAULT_CRIIPTO_CLIENT_ID', 'fake id'),
+                  client_secret: ENV.fetch('DEFAULT_CRIIPTO_CLIENT_SECRET', 'fake secret'),
+                  identity_source: 'DK MitID',
+                  method_name_multiloc: { en: 'MitID (Criipto)' }
                 }
               ]
             },

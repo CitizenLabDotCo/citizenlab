@@ -40,7 +40,7 @@ import {
 import { darken } from 'polished';
 
 // utils
-import { isCurrentPhase } from 'api/phases/utils';
+import { pastPresentOrFuture } from 'utils/dateUtils';
 
 // typings
 import { IIdeaMarkerData } from 'api/idea_markers/types';
@@ -215,14 +215,14 @@ const IdeaMapCard = memo<Props>(
 
       const commentingEnabled =
         project.data.attributes.action_descriptor.commenting_idea.enabled;
-
       const projectHasComments = project.data.attributes.comments_count > 0;
-
       const showCommentCount = commentingEnabled || projectHasComments;
-
       const phaseButNotCurrentPhase =
         participationContext?.type === 'phase' &&
-        !isCurrentPhase(participationContext);
+        pastPresentOrFuture([
+          participationContext.attributes.start_at,
+          participationContext.attributes.end_at,
+        ]) !== 'present';
       const showVoteInput =
         votingMethodConfig && participationContext && !phaseButNotCurrentPhase;
 
