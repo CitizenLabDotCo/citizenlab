@@ -32,7 +32,7 @@ module.exports = {
     '\\.(jpg|jpeg|png|gif|svg)$': '<rootDir>/app/utils/testUtils/fileMock.js',
     '^react-scroll-to-component$': 'identity-obj-proxy',
     '@citizenlab/cl2-component-library':
-      '<rootDir>/internals/jest/cl2-component-library.esm.js',
+      '<rootDir>/internals/jest/cl2-component-library/src/index.tsx',
   },
   modulePathIgnorePatterns: ['.*__mocks__.*'],
   testEnvironmentOptions: {
