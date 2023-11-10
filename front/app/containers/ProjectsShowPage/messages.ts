@@ -439,4 +439,8 @@ export default defineMessages({
     id: 'app.containers.Projects.surveySubmissions',
     defaultMessage: 'survey submissions',
   },
+  noEndDate: {
+    id: 'app.containers.Projects.noEndDate',
+    defaultMessage: 'No end date',
+  },
 });
