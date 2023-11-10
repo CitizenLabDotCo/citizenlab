@@ -115,10 +115,10 @@ e2e-ci-env-db-dump:
 
 e2e-ci-env-db-restore:
 	cd e2e && \
-	docker compose exec postgres psql -U postgres -d cl2_back_development -c "DROP SCHEMA IF EXISTS e2e_front,public CASCADE;" && \
-	docker compose exec postgres psql -U postgres -d cl2_back_development -c "CREATE SCHEMA public;" && \
-	cat dump.sql | docker compose exec -T postgres psql --quiet -U postgres && \
-	echo "\033[0;32mDatabase restored successfully!\033[0m"
+	docker compose exec postgres psql -U postgres -d cl2_back_development -c "SELECT 1" 1> /dev/null && \
+	docker compose exec postgres psql -U postgres -d cl2_back_development -c "DROP SCHEMA IF EXISTS e2e_front,public CASCADE" 1> /dev/null 2> /dev/null && \
+	docker compose exec postgres psql -U postgres -d cl2_back_development -c "CREATE SCHEMA public" && \
+	cat dump.sql | docker compose exec -T postgres psql --quiet -U postgres 1> /dev/null 2> /dev/null
 
 # =================
 # CircleCI
