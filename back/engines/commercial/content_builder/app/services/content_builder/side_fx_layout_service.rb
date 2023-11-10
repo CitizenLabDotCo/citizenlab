@@ -5,8 +5,12 @@ module ContentBuilder
     include SideFxHelper
 
     def before_create(layout, _user)
-      # TODO: keep using multiloc for report builder
-      layout.craftjs_jsonmultiloc = LayoutImageService.new.swap_data_images layout, :craftjs_jsonmultiloc
+      # TODO: clean up after fully migrated
+      layout.craftjs_jsonmultiloc = if layout.content_buildable_type == 'ReportBuilder::Report'
+        OldLayoutImageService.new.swap_data_images_multiloc layout.craftjs_jsonmultiloc
+      else
+        LayoutImageService.new.swap_data_images layout.craftjs_json
+      end
     end
 
     def after_create(layout, user)
@@ -14,8 +18,12 @@ module ContentBuilder
     end
 
     def before_update(layout, _user)
-      # TODO: keep using multiloc for report builder
-      layout.craftjs_jsonmultiloc = LayoutImageService.new.swap_data_images layout, :craftjs_jsonmultiloc
+      # TODO: clean up after fully migrated
+      layout.craftjs_jsonmultiloc = if layout.content_buildable_type == 'ReportBuilder::Report'
+        OldLayoutImageService.new.swap_data_images_multiloc layout.craftjs_jsonmultiloc
+      else
+        LayoutImageService.new.swap_data_images layout.craftjs_json
+      end
     end
 
     def after_update(layout, user)

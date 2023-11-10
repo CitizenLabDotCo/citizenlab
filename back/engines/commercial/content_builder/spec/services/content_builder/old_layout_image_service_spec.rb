@@ -115,7 +115,7 @@ describe ContentBuilder::OldLayoutImageService do
       }
 
       imageable = build(:layout, craftjs_jsonmultiloc: { 'nl-BE' => input })
-      output = service.swap_data_images_multiloc imageable.craftjs_jsonmultiloc, field: :craftjs_jsonmultiloc
+      output = service.swap_data_images_multiloc imageable.craftjs_jsonmultiloc
       expect(output).to eq({ 'nl-BE' => expected_json })
     end
   end
@@ -230,7 +230,7 @@ describe ContentBuilder::OldLayoutImageService do
       }
 
       imageable = build(:layout, craftjs_jsonmultiloc: { 'fr-BE' => input })
-      output = service.render_data_images_multiloc imageable.craftjs_jsonmultiloc, field: :craftjs_jsonmultiloc
+      output = service.render_data_images_multiloc imageable.craftjs_jsonmultiloc
       expect(output).to eq({ 'fr-BE' => expected_json })
     end
   end

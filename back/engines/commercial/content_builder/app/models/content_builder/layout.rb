@@ -12,6 +12,7 @@
 #  enabled                :boolean          default(FALSE), not null
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
+#  craftjs_json           :jsonb            not null
 #
 # Indexes
 #
@@ -24,7 +25,10 @@ module ContentBuilder
     before_validation :sanitize_craftjs_jsonmultiloc
 
     validates :content_buildable, :code, presence: true
-    validates :craftjs_jsonmultiloc, multiloc: { presence: false, value_type: Hash }
+    validates :craftjs_jsonmultiloc, multiloc: { presence: false, value_type: Hash }, if: lambda { |layout|
+    # TODO: clean up after fully migrated
+    layout.content_buildable_type == 'ReportBuilder::Report'
+  }
     validates :craftjs_jsonmultiloc, length: { maximum: 1 }, if: lambda { |layout|
       layout.content_buildable_type == 'ReportBuilder::Report' # mvp of report builder only allows 1 locale
     }
@@ -43,18 +47,33 @@ module ContentBuilder
     def validate_iframe_urls
       url_starts = %w[http:// https://]
 
-      craftjs_jsonmultiloc.each do |locale, json|
-        LayoutService.new.select_craftjs_elements_for_type(json, 'Iframe').each do |elt|
+      # TODO: clean up after fully migrated
+      if layout.content_buildable_type == 'ReportBuilder::Report'
+        craftjs_jsonmultiloc.each do |locale, json|
+          LayoutService.new.select_craftjs_elements_for_type(json, 'Iframe').each do |elt|
+            url = elt.dig 'props', 'url'
+            if url && url_starts.none? { |url_start| url.starts_with?(url_start) }
+              errors.add :craftjs_jsonmultiloc, :iframe_url_invalid, locale: locale, url: url
+            end
+          end
+        end
+      else
+        LayoutService.new.select_craftjs_elements_for_type(craftjs_json, 'IframeMultiloc').each do |elt|
           url = elt.dig 'props', 'url'
           if url && url_starts.none? { |url_start| url.starts_with?(url_start) }
-            errors.add :craftjs_jsonmultiloc, :iframe_url_invalid, locale: locale, url: url
+            errors.add :craftjs_json, :iframe_url_invalid, locale: locale, url: url
           end
         end
       end
     end
 
     def sanitize_craftjs_jsonmultiloc
-      self.craftjs_jsonmultiloc = LayoutSanitizationService.new.sanitize_multiloc craftjs_jsonmultiloc
+      # TODO: clean up after fully migrated
+      self.craftjs_jsonmultiloc = if layout.content_buildable_type == 'ReportBuilder::Report'
+        LayoutSanitizationService.new.sanitize_multiloc craftjs_jsonmultiloc
+      else
+        LayoutSanitizationService.new.sanitize craftjs_json
+      end
     end
   end
 end

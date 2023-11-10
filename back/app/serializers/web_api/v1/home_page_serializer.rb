@@ -39,6 +39,7 @@ class WebApi::V1::HomePageSerializer < WebApi::V1::BaseSerializer
   end
 
   attribute :craftjs_json do |homepage|
+    # TODO: move to layout
     LayoutImageService.new.render_data_images homepage.craftjs_json
   end
 

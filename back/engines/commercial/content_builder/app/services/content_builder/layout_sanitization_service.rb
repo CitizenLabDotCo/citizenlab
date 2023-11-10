@@ -15,6 +15,7 @@ module ContentBuilder
     private
 
     def sanitize_html_in_text_elements(craftjson, features)
+      # TODO: deal with multiloc props and elements
       LayoutService.new.select_craftjs_elements_for_type(craftjson, 'Text').each do |elt|
         text = elt.dig 'props', 'text'
         elt['props']['text'] = html_sanitizer.sanitize text, features if text
