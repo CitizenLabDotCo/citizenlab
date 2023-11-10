@@ -150,7 +150,7 @@ const IdeaShowPageTopBar = ({
         <Right>
           {/* Only visible if not voting */}
           {participationContext?.attributes.participation_method !==
-            'voting' && (
+            'voting' && ( // To reduce bias we want to hide the reactions during voting methods
             <ReactionControl
               size="1"
               styleType="border"

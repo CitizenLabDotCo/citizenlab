@@ -213,7 +213,7 @@ const Content = ({
           </Box>
           {compact &&
             participationContext?.attributes.participation_method !==
-              'voting' &&
+              'voting' && // To reduce bias we want to hide the author data during voting methods
             statusId && (
               <Box my="24px">
                 {' '}
