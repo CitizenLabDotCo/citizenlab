@@ -15,6 +15,7 @@ import { fetchProjectBySlug } from 'api/projects/useProjectBySlug';
 
 // utils
 import { getIdeaPostingRules } from 'utils/actionTakingRules';
+import { fetchPhase } from 'api/phases/usePhase';
 
 export interface RedirectToIdeaFormParams {
   projectSlug: string;
@@ -31,9 +32,13 @@ export const redirectToIdeaForm =
     // and the effort to add them in is too large at this time. So we're temporarily
     // handling this case here.
     const { data: project } = await fetchProjectBySlug({ slug: projectSlug });
+    const { data: phase } = phaseId
+      ? await fetchPhase({ phaseId })
+      : { data: undefined };
+
     const { disabledReason } = getIdeaPostingRules({
       project,
-      phase: undefined,
+      phase: phase || undefined,
       authUser,
     });
 

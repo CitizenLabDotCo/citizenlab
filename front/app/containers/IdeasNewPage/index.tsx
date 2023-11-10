@@ -26,6 +26,7 @@ import useAuthUser from 'api/me/useAuthUser';
 import { getCurrentPhase } from 'api/phases/utils';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
+import { isNilOrError } from 'utils/helperUtils';
 
 const NewIdeaPage = () => {
   const { slug } = useParams();
@@ -88,7 +89,9 @@ const NewIdeaPage = () => {
     return (
       <Unauthorized
         fixableByAuthentication={
-          (disabledReason && isFixableByAuthentication(disabledReason)) || false
+          !isNilOrError(authenticationRequirements) ||
+          (disabledReason && isFixableByAuthentication(disabledReason)) ||
+          false
         }
         triggerAuthFlow={triggerAuthFlow}
       />
