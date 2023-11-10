@@ -75,16 +75,15 @@ const ParticipationCTAContent = ({
             {!useProjectClosedStyle && (
               <BlinkingDot hasUserParticipated={hasUserParticipated} />
             )}
-            <Text color="white" m="0px" fontSize="s">
-              {!hideDefaultParticipationMessage && (
+            {hideDefaultParticipationMessage ? (
+              <Box ml="auto">
+                <TimeLeft currentPhase={currentPhase} />
+              </Box>
+            ) : (
+              <Text color="white" m="0px" fontSize="s">
                 <FormattedMessage {...getUserParticipationMessage()} />
-              )}
-              {hideDefaultParticipationMessage && (
-                <Box ml="auto">
-                  <TimeLeft currentPhase={currentPhase} />
-                </Box>
-              )}
-            </Text>
+              </Text>
+            )}
           </Box>
           <Box ml="auto">{participationState}</Box>
         </Box>
@@ -108,14 +107,15 @@ const ParticipationCTAContent = ({
           {!useProjectClosedStyle && (
             <BlinkingDot hasUserParticipated={hasUserParticipated} />
           )}
-          <Text color="white" fontSize="s" my="0px">
-            {!hideDefaultParticipationMessage && (
+          {hideDefaultParticipationMessage ? (
+            <Box mr="24px" my="0px">
+              <TimeLeft currentPhase={currentPhase} />
+            </Box>
+          ) : (
+            <Text color="white" fontSize="s" my="0px">
               <FormattedMessage {...getUserParticipationMessage()} />
-            )}
-          </Text>
-          <Box mr="24px" my="0px">
-            <TimeLeft currentPhase={currentPhase} />
-          </Box>
+            </Text>
+          )}
         </Box>
         <Box display="flex" ml="auto">
           {participationState}
