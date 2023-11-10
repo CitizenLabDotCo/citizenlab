@@ -1,14 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Icon, Box } from '@citizenlab/cl2-component-library';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { rgba } from 'polished';
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
-
-const Container = styled.div`
-  display: flex;
-  justify-content: flex-end;
-`;
 
 const ContainerInner = styled.div`
   display: flex;
@@ -170,7 +165,12 @@ const Pagination = ({
 
   if (totalPages > 1) {
     return (
-      <Container className={className} data-testid="pagination">
+      <Box
+        display="flex"
+        justifyContent="flex-end"
+        className={className}
+        data-testid="pagination"
+      >
         <ContainerInner>
           <Back
             onMouseDown={removeFocusAfterMouseClick}
@@ -207,7 +207,7 @@ const Pagination = ({
             <ChevronIcon name="chevron-right" />
           </Next>
         </ContainerInner>
-      </Container>
+      </Box>
     );
   }
 
