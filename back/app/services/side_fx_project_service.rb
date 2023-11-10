@@ -19,6 +19,7 @@ class SideFxProjectService
 
     LogActivityJob.perform_later(project, 'created', user, project.created_at.to_i)
 
+    # TODO: - JS - remove
     @sfx_pc.after_create project, user if project.participation_context?
     after_publish project, user if project.admin_publication.published?
   end

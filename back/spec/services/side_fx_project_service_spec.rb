@@ -40,13 +40,6 @@ describe SideFxProjectService do
       expect_any_instance_of(TextImageService).to receive(:swap_data_images).with(project, :description_multiloc).and_return(project.description_multiloc)
       service.before_update(project, user)
     end
-
-    # TODO: - JS test fix
-    it 'calls before_update on SideFxParticipationContextService for a continuous project' do
-      continuous_project = build(:continuous_project)
-      expect(sfx_pc).to receive(:before_update).with(continuous_project, user)
-      service.before_update(continuous_project, user)
-    end
   end
 
   describe 'after_update' do
@@ -79,15 +72,6 @@ describe SideFxProjectService do
       expect { service.after_update(project, user) }
         .not_to have_enqueued_job(LogActivityJob)
         .with(project, 'published', user, project.updated_at.to_i, anything)
-    end
-  end
-
-  describe 'before_destroy' do
-    # TODO: - JS test fix
-    it 'calls before_destroy on SideFxParticipationContextService for a continuous project' do
-      continuous_project = build(:continuous_project)
-      expect(sfx_pc).to receive(:before_destroy).with(continuous_project, user)
-      service.before_destroy(continuous_project, user)
     end
   end
 

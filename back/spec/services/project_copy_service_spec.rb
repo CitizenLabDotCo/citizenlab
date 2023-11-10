@@ -65,11 +65,7 @@ describe ProjectCopyService do
 
         new_two_phase_project = Project.order(:created_at).last
         new_survey_phase = new_two_phase_project.phases.order(:start_at).last
-
-        binding.pry
-
         expect(new_two_phase_project.ideas.map(&:creation_phase_id)).to match_array [nil, new_survey_phase.id]
-
         expect(new_survey_phase.custom_form.custom_fields.pluck(:input_type)).to eq ['text']
         new_field2 = new_survey_phase.custom_form.custom_fields.first
         expect(new_survey_phase.ideas_count).to eq 1
