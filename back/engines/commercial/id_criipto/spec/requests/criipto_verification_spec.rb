@@ -122,7 +122,7 @@ context 'criipto verification' do
     expect(user.verifications.first).to have_attributes({
       method_name: 'criipto',
       user_id: user.id,
-      active: true,
+      active: true
     })
     hash_value = Verification::VerificationService.new.send(:hashed_uid, '{29d14ea0-6e16-4732-86ac-5de87a941784}', 'criipto')
     expect(user.verifications.first.hashed_uid).to eq(hash_value)
