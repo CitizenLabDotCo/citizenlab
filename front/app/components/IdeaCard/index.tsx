@@ -35,7 +35,7 @@ import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import eventEmitter from 'utils/eventEmitter';
 import { IMAGES_LOADED_EVENT } from 'components/admin/ContentBuilder/constants';
 
-interface Props {
+export interface Props {
   ideaId: string;
   phaseId?: string | null;
   className?: string;
@@ -91,6 +91,7 @@ const IdeaCard = memo<IdeaCardProps>(
 
     const participationContextEnded =
       participationContext?.type === 'phase' &&
+      participationContext.attributes.end_at &&
       pastPresentOrFuture(participationContext?.attributes?.end_at) === 'past';
     const { data: basket } = useBasket(
       participationContext?.relationships?.user_basket?.data?.id

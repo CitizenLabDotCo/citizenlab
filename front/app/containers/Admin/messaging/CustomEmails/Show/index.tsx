@@ -39,6 +39,7 @@ import useLocalize from 'hooks/useLocalize';
 import useSendCampaign from 'api/campaigns/useSendCampaign';
 import useSendCampaignPreview from 'api/campaigns/useSendCampaignPreview';
 import { getFullName } from 'utils/textUtils';
+import Error from 'components/UI/Error';
 
 const PageHeader = styled.div`
   display: flex;
@@ -131,8 +132,11 @@ const Show = () => {
   const { data: tenant } = useAppConfiguration();
   const { data: campaign } = useCampaign(campaignId);
 
-  const { mutate: sendCampaign, isLoading: isSendingCampaign } =
-    useSendCampaign();
+  const {
+    mutate: sendCampaign,
+    isLoading: isSendingCampaign,
+    error: apiSendErrors,
+  } = useSendCampaign();
   const { mutate: sendCampaignPreview, isLoading: isSenndingCampaignPreview } =
     useSendCampaignPreview();
 
@@ -250,6 +254,11 @@ const Show = () => {
             </Buttons>
           )}
         </PageHeader>
+        {apiSendErrors && (
+          <Box mb="8px">
+            <Error apiErrors={apiSendErrors.errors['base']} />
+          </Box>
+        )}
         <CampaignHeader>
           <StampIcon />
           <FromTo>

@@ -3,7 +3,6 @@ import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLoca
 import MultipleSelect from 'components/UI/MultipleSelect';
 import FileUploader from 'components/UI/FileUploader';
 import { SectionField } from 'components/admin/Section';
-import Warning from 'components/UI/Warning';
 
 // styling
 import styled from 'styled-components';
@@ -94,8 +93,4 @@ export const StyledFileUploader = styled(FileUploader)`
 
 export const StyledMultipleSelect = styled(MultipleSelect)`
   width: 500px;
-`;
-
-export const StyledWarning = styled(Warning)`
-  margin-bottom: 15px;
 `;

@@ -261,9 +261,12 @@ export function apiCreateAdmin(
   firstName: string,
   lastName: string,
   email: string,
-  password: string,
-  registration_completed_at?: string
+  password: string
 ) {
+  /*
+  IMPORTANT: at the time of writing, this does not increase additional_admins_number in appConfig correctly,
+  so it's important to remove admins after creating them in order to not influence other tests.
+  */
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 

@@ -13,6 +13,9 @@ import ErrorDisplay from '../ErrorDisplay';
 import { WrappedComponentProps } from 'react-intl';
 import { getLabel } from 'utils/JSONFormUtils';
 import { getSubtextElement } from './controlUtils';
+import { Box, Text, IconTooltip } from '@citizenlab/cl2-component-library';
+import messages from './messages';
+import { useIntl } from 'utils/cl-intl';
 
 const LocationControl = ({
   uischema,
@@ -24,6 +27,7 @@ const LocationControl = ({
   required,
   visible,
 }: ControlProps & WrappedComponentProps) => {
+  const { formatMessage } = useIntl();
   const [didBlur, setDidBlur] = useState(false);
 
   if (!visible) {
@@ -32,23 +36,36 @@ const LocationControl = ({
 
   return (
     <>
-      <FormLabel
-        labelValue={getLabel(uischema, schema, path)}
-        optional={!required}
-        subtextValue={getSubtextElement(uischema.options?.description)}
-        subtextSupportsHtml
-      />
-
+      <Box display="flex">
+        <FormLabel
+          labelValue={
+            <Box display="flex">
+              <Box mr="8px">{getLabel(uischema, schema, path)}</Box>
+              <IconTooltip
+                content={
+                  <Text m="0px" fontSize="s" color="white">
+                    {formatMessage(messages.validCordinatesTooltip)}
+                  </Text>
+                }
+              />
+            </Box>
+          }
+          optional={!required}
+          subtextValue={getSubtextElement(uischema.options?.description)}
+          subtextSupportsHtml
+        />
+      </Box>
       <LocationInput
-        value={{
-          value: data || '',
-          label: data || '',
-        }}
+        value={
+          data
+            ? {
+                value: data,
+                label: data,
+              }
+            : null
+        }
         onChange={(location: Option) => {
-          handleChange(
-            path,
-            location.value === '' ? undefined : location.value
-          );
+          handleChange(path, location?.value ? location.value : undefined);
         }}
         placeholder={''}
         onBlur={() => setDidBlur(true)}

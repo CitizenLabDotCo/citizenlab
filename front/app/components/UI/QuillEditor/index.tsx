@@ -80,6 +80,7 @@ const Container = styled.div<{
   remove: string;
   maxHeight?: string;
   minHeight?: string;
+  scrollTop: number;
 }>`
   .ql-snow.ql-toolbar button:hover .ql-stroke,
   .ql-snow .ql-toolbar button:hover .ql-stroke,
@@ -165,6 +166,12 @@ const Container = styled.div<{
   .ql-snow.ql-toolbar .ql-picker-item:focus,
   .ql-snow .ql-toolbar .ql-picker-item.ql-selected {
     color: ${colors.teal};
+  }
+
+  .ql-tooltip {
+    top: ${(props) => props.scrollTop + 20}px !important;
+    left: 50% !important;
+    transform: translate(-50%);
   }
 
   .ql-tooltip[data-mode='link']::before {
@@ -404,12 +411,26 @@ const QuillEditor = memo<Props>(
     const toolbarId = !noToolbar ? `ql-editor-toolbar-${id}` : null;
     const { formatMessage } = useIntl();
     const [editor, setEditor] = useState<Quill | null>(null);
+    const [scrollTop, setScrollTop] = useState<number>(0);
     const contentRef = useRef<string>(value || '');
     const prevEditor = usePrevious(editor);
     const [focussed, setFocussed] = useState(false);
     const prevFocussed = usePrevious(focussed);
     const editorRef = useRef<HTMLDivElement>(null);
     const [isButtonsMenuVisible, setIsButtonsMenuVisible] = useState(false);
+
+    useEffect(() => {
+      const eventListenerHandler = debounce(() => {
+        setScrollTop(editorRef.current?.scrollTop || 0);
+      }, 100);
+      const scrollContainer = editorRef.current;
+      if (scrollContainer) {
+        scrollContainer.addEventListener('scroll', eventListenerHandler);
+      }
+      return () => {
+        scrollContainer?.removeEventListener('scroll', eventListenerHandler);
+      };
+    }, []);
 
     const toggleButtonsMenu = useCallback(
       () => setIsButtonsMenuVisible((value) => !value),
@@ -538,9 +559,7 @@ const QuillEditor = memo<Props>(
           setFocussed(true);
         }
       };
-
       const debouncedTextChangeHandler = debounce(textChangeHandler, 100);
-
       if (editor) {
         editor.on('text-change', debouncedTextChangeHandler);
         editor.on('selection-change', selectionChangeHandler);
@@ -697,6 +716,7 @@ const QuillEditor = memo<Props>(
         save={formatMessage(messages.save)}
         edit={formatMessage(messages.edit)}
         remove={formatMessage(messages.remove)}
+        scrollTop={scrollTop}
       >
         {label && (
           <Label htmlFor={id} onClick={handleLabelOnClick}>

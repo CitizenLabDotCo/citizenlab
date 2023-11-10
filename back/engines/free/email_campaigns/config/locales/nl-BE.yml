@@ -582,7 +582,7 @@ nl-BE:
       content_type:
         comments: 'Reacties'
         content_moderation: 'Inhoudelijke moderatie'
-        events: 'Evenementen'
+        events: 'Activiteiten'
         general: 'Algemeen'
         inputs: 'Bijdragen'
         internal_comments: 'Interne reacties'
@@ -638,4 +638,4 @@ nl-BE:
         voting_basket_submitted: 'Stemmen zijn verzonden'
         7_days_after_invite_is_sent: '7 dagen na verzending van de uitnodiging'
         7_days_before_the_project_changes_phase: '7 dagen voor het project van fase verandert'
-        registration_to_event: 'Registratie voor een evenement'
+        registration_to_event: 'Registratie voor een activiteit'

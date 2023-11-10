@@ -8,6 +8,7 @@ const UserMenuDropdown = lazy(() => import('./UserMenuDropdown'));
 // style
 import styled from 'styled-components';
 import useAuthUser from 'api/me/useAuthUser';
+import { useBreakpoint } from '@citizenlab/cl2-component-library';
 
 const Container = styled.div`
   height: 100%;
@@ -28,6 +29,7 @@ const DropdownButton = styled.button`
 const UserMenu = () => {
   const [opened, setOpened] = useState(false);
   const { data: authUser } = useAuthUser();
+  const isMobileOrSmaller = useBreakpoint('phone');
 
   const toggleDropdown = () => {
     setOpened((opened) => !opened);
@@ -56,7 +58,10 @@ const UserMenu = () => {
           className="intercom-user-menu-button"
           id="e2e-user-menu-dropdown-button"
         >
-          <User userId={userId} />
+          <User
+            userId={userId}
+            showVerificationBadge={isMobileOrSmaller ? false : true}
+          />
         </DropdownButton>
 
         <Suspense fallback={null}>

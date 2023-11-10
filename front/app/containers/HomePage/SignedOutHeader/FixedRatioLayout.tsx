@@ -11,18 +11,18 @@ import {
 } from 'components/LandingPages/citizen/FixedRatioLayout';
 import HeaderContent from './HeaderContent';
 
-import { IHomepageSettingsData } from 'api/home_page/types';
+import { IHomepageSettingsAttributes } from 'api/home_page/types';
 
 interface Props {
-  homepageSettings: IHomepageSettingsData;
+  homepageSettings: Partial<IHomepageSettingsAttributes>;
 }
 
 const FixedRatioLayout = ({ homepageSettings }: Props) => {
-  const headerImage = homepageSettings.attributes.header_bg?.large;
+  const headerImage = homepageSettings.header_bg?.large;
   const homepageSettingColor =
-    homepageSettings.attributes.banner_signed_out_header_overlay_color;
+    homepageSettings.banner_signed_out_header_overlay_color;
   const homepageSettingOpacity =
-    homepageSettings.attributes.banner_signed_out_header_overlay_opacity;
+    homepageSettings.banner_signed_out_header_overlay_opacity;
 
   return (
     <Container data-testid="fixed-ratio-layout">
@@ -41,7 +41,7 @@ const FixedRatioLayout = ({ homepageSettings }: Props) => {
             )}
         </HeaderImage>
 
-        <HeaderContent fontColors="light" />
+        <HeaderContent fontColors="light" homepageSettings={homepageSettings} />
       </Header>
     </Container>
   );

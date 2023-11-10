@@ -15,19 +15,13 @@ import useAddCampaign from 'api/campaigns/useAddCampaign';
 
 const New = () => {
   const { data: authUser } = useAuthUser();
-  const { mutate: createCampaign, isLoading } = useAddCampaign();
-  const handleSubmit = (values: FormValues) => {
-    createCampaign(
-      {
-        campaign_name: 'manual',
-        ...values,
-      },
-      {
-        onSuccess: (response) => {
-          clHistory.push(`/admin/messaging/emails/custom/${response.data.id}`);
-        },
-      }
-    );
+  const { isLoading, mutateAsync: createCampaign } = useAddCampaign();
+  const handleSubmit = async (values: FormValues) => {
+    const response = await createCampaign({
+      campaign_name: 'manual',
+      ...values,
+    });
+    clHistory.push(`/admin/messaging/emails/custom/${response.data.id}`);
   };
 
   const goBack = () => {

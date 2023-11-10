@@ -88,7 +88,6 @@ resource 'Stats - Users' do
           expect(json_response_body.dig(:data, :attributes)).to include(
             series: {
               users: { female: 2, unspecified: 1, male: 0, _blank: 0 },
-              expected_users: nil,
               reference_population: nil
             }
           )
@@ -105,11 +104,6 @@ resource 'Stats - Users' do
           expect(json_response_body.dig(:data, :attributes)).to include(
             series: {
               users: { female: 2, unspecified: 1, male: 0, _blank: 0 },
-              expected_users: {
-                male: kind_of(Numeric),
-                female: kind_of(Numeric),
-                unspecified: kind_of(Numeric)
-              },
               reference_population: ref_distribution.distribution_by_option_key.symbolize_keys
             }
           )
@@ -189,7 +183,6 @@ resource 'Stats - Users' do
           expect(json_response_body.dig(:data, :attributes)).to match({
             series: {
               users: { '1980': 2, '1976': 1, _blank: 0 },
-              expected_users: nil,
               reference_population: nil
             }
           })
@@ -338,7 +331,6 @@ resource 'Stats - Users' do
                   @option3.key => 0,
                   _blank: 1
                 },
-                expected_users: nil,
                 reference_population: nil
               }
             }.deep_symbolize_keys)
@@ -348,11 +340,14 @@ resource 'Stats - Users' do
         context 'when the custom field has a reference distribution' do
           before { create(:categorical_distribution, custom_field: @custom_field) }
 
-          example_request 'Users by custom field (select) including expected nb of users' do
+          example_request 'Users by custom field (select) including reference population' do
             expect(response_status).to eq 200
-            expect(json_response_body.dig(:data, :attributes)).to include(series: hash_including(
-              expected_users: @custom_field.options.to_h { |option| [option.key.to_sym, kind_of(Numeric)] }
-            ))
+            reference_population = json_response_body.dig(:data, :attributes, :series, :reference_population)
+            expect(reference_population).to match({
+              @option1.key => 450,
+              @option2.key => 550,
+              @option3.key => 450
+            }.deep_symbolize_keys)
           end
         end
       end
@@ -396,7 +391,6 @@ resource 'Stats - Users' do
                 @option3.key => 0,
                 _blank: 1
               },
-              expected_users: nil,
               reference_population: nil
             }
           }.deep_symbolize_keys)
@@ -436,7 +430,6 @@ resource 'Stats - Users' do
                 # rubocop:enable Lint/BooleanSymbol
                 _blank: 1
               },
-              expected_users: nil,
               reference_population: nil
             }
           })
@@ -476,7 +469,6 @@ resource 'Stats - Users' do
                 # rubocop:enable Lint/BooleanSymbol
                 _blank: 0
               },
-              expected_users: nil,
               reference_population: nil
             }
           })
@@ -497,7 +489,6 @@ resource 'Stats - Users' do
                 # rubocop:enable Lint/BooleanSymbol
                 _blank: 0
               },
-              expected_users: nil,
               reference_population: nil
             }
           })
@@ -566,11 +557,11 @@ resource 'Stats - Users' do
             let(:expected_worksheet_name) { 'users_by_select_field' }
             let(:expected_worksheet_values) do
               [
-                %w[option option_id users expected_users reference_population],
-                ['youth council', @option1.key, 1, 0.8, 80],
-                ['youth council', @option2.key, 1, '', ''],
-                ['youth council', @option3.key, 0, 0.2, 20],
-                ['_blank', '_blank', 1, '', '']
+                %w[option option_id users reference_population],
+                ['youth council', @option1.key, 1, 80],
+                ['youth council', @option2.key, 1, ''],
+                ['youth council', @option3.key, 0, 20],
+                ['_blank', '_blank', 1, '']
               ]
             end
           end
@@ -688,7 +679,6 @@ resource 'Stats - Users' do
             unknown_age_count: 1,
             series: {
               user_counts: [0, 2, 2, 1, 1, 1, 0, 0, 0, 0],
-              expected_user_counts: nil,
               reference_population: nil,
               bins: UserCustomFields::AgeCounter::DEFAULT_BINS
             }
@@ -714,7 +704,6 @@ resource 'Stats - Users' do
             unknown_age_count: 1,
             series: {
               user_counts: [2, 4, 1, 0],
-              expected_user_counts: ref_distribution.expected_counts(7),
               reference_population: ref_distribution.counts,
               bins: ref_distribution.bin_boundaries
             }
@@ -763,12 +752,12 @@ resource 'Stats - Users' do
           let(:expected_worksheet_name) { 'users_by_age' }
           let(:expected_worksheet_values) do
             [
-              %w[age user_count expected_user_count total_population],
-              ['0-24', 2, 1.3, 190],
-              ['25-49', 4, 2.0, 279],
-              ['50-74', 1, 2.2, 308],
-              ['75+', 0, 1.5, 213],
-              ['unknown', 1, '', '']
+              %w[age user_count total_population],
+              ['0-24', 2, 190],
+              ['25-49', 4, 279],
+              ['50-74', 1, 308],
+              ['75+', 0, 213],
+              ['unknown', 1, '']
             ]
           end
         end

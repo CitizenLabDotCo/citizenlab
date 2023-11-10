@@ -73,6 +73,7 @@ const CLPageLayout = memo(
       .elements as PageType[];
     const [uiPages, setUiPages] = useState<PageType[]>(pageTypeElements);
     const [userPagePath] = useState<PageType[]>([]);
+    const [scrollToError, setScrollToError] = useState(false);
     const theme = useTheme();
     const formState = useJsonForms();
     const isSmallerThanPhone = useBreakpoint('phone');
@@ -99,6 +100,16 @@ const CLPageLayout = memo(
       });
       setUiPages(visiblePages);
     }, [formState.core?.data, uischema]);
+
+    useEffect(() => {
+      if (scrollToError) {
+        // Scroll to the first field with an error
+        document
+          .getElementById('error-display')
+          ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setScrollToError(false);
+      }
+    }, [scrollToError]);
 
     const scrollToTop = () => {
       if (useTopAnchor) {
@@ -134,6 +145,7 @@ const CLPageLayout = memo(
         setIsLoading(false);
       } else {
         setShowAllErrors?.(true);
+        setScrollToError(true);
       }
     };
 

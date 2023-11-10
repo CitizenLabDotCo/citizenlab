@@ -60,7 +60,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
 
   return (
     <Container>
-      <Box height="100%" overflowX="scroll" pb="100px">
+      <Box>
         <Accordion
           isOpenByDefault={true}
           title={

@@ -18,7 +18,7 @@ import { defaultCardStyle, media } from 'utils/styleUtils';
 import usePhaseFiles from 'api/phase_files/usePhaseFiles';
 
 // utils
-import { isCurrentPhase } from 'api/phases/utils';
+import { pastPresentOrFuture } from 'utils/dateUtils';
 
 const Container = styled.div`
   padding: 30px;
@@ -52,7 +52,12 @@ const PhaseDescription = ({
   const localize = useLocalize();
   const { data: phase } = usePhase(phaseId);
   const { data: phaseFiles } = usePhaseFiles(phaseId);
-  const isActivePhase = phase?.data && isCurrentPhase(phase?.data);
+  const isActivePhase =
+    phase?.data &&
+    pastPresentOrFuture([
+      phase.data.attributes.start_at,
+      phase.data.attributes.end_at,
+    ]) === 'present';
 
   const content = phase
     ? localize(phase.data.attributes.description_multiloc)

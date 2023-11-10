@@ -62,6 +62,7 @@ resource 'Phases' do
     include_examples 'filtering_by_date', :phase, :created_at
     include_examples 'filtering_by_date', :phase, :updated_at
     include_examples 'filtering_by_date', :phase, :start_at
+    include_examples 'filtering_by_date', :phase, :end_at
   end
 
   get '/api/v2/projects/:project_id/phases' do

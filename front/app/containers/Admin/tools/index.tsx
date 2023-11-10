@@ -8,6 +8,7 @@ import messages from './messages';
 import Workshops from './Workshops';
 import Widget from './Widget';
 import PublicAPI from './PublicAPI';
+import PowerBI from './PowerBI';
 
 export const Tools = () => {
   const { formatMessage } = useIntl();
@@ -24,6 +25,7 @@ export const Tools = () => {
         <Workshops />
         {isUserAdmin && <Widget />}
         {isUserAdmin && <PublicAPI />}
+        {isUserAdmin && <PowerBI />}
       </Box>
     </Box>
   );

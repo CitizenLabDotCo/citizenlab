@@ -26,6 +26,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 const ProfileVisiblity = lazy(() => import('./ProfileVisibility'));
 import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
 import Warning from 'components/UI/Warning';
+import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
 
 // utils
 import { geocode, reverseGeocode } from 'utils/locationTools';
@@ -73,6 +74,8 @@ interface FormValues {
 
 const IdeasNewPageWithJSONForm = () => {
   const locale = useLocale();
+  const [isDisclaimerOpened, setIsDisclaimerOpened] = useState(false);
+  const [formData, setFormData] = useState<FormValues | null>(null);
   const { mutateAsync: addIdea } = useAddIdea();
   const { formatMessage } = useIntl();
   const params = useParams<{ slug: string }>();
@@ -136,6 +139,30 @@ const IdeasNewPageWithJSONForm = () => {
   // get participation method config
   const { data: phaseFromUrl } = usePhase(phaseId);
   const config = getConfig(phaseFromUrl?.data, phases, project);
+
+  const handleDisclaimer = (data: FormValues) => {
+    const disclamerNeeded =
+      data.idea_files_attributes ||
+      data.idea_images_attributes ||
+      Object.values(data.body_multiloc).some((value) => value.includes('<img'));
+
+    setFormData(data);
+    if (disclamerNeeded) {
+      return setIsDisclaimerOpened(true);
+    } else {
+      return onSubmit(data);
+    }
+  };
+
+  const onAcceptDisclaimer = (data: FormValues | null) => {
+    if (!data) return;
+    onSubmit(data);
+    setIsDisclaimerOpened(false);
+  };
+
+  const onCancelDisclaimer = () => {
+    setIsDisclaimerOpened(false);
+  };
 
   const onSubmit = async (data: FormValues) => {
     if (!project) {
@@ -228,7 +255,7 @@ const IdeasNewPageWithJSONForm = () => {
           <Form
             schema={schema}
             uiSchema={uiSchema}
-            onSubmit={onSubmit}
+            onSubmit={isSurvey ? onSubmit : handleDisclaimer}
             initialFormData={initialFormData}
             getAjvErrorMessage={getAjvErrorMessage}
             getApiErrorMessage={getApiErrorMessage}
@@ -284,6 +311,11 @@ const IdeasNewPageWithJSONForm = () => {
           }}
         />
       )}
+      <ContentUploadDisclaimer
+        isDisclaimerOpened={isDisclaimerOpened}
+        onAcceptDisclaimer={() => onAcceptDisclaimer(formData)}
+        onCancelDisclaimer={onCancelDisclaimer}
+      />
     </PageContainer>
   );
 };

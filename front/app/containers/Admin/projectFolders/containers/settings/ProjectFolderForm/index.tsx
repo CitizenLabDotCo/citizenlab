@@ -634,7 +634,9 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             messageError:
               submitState === 'apiError'
                 ? messages.saveErrorMessage
-                : messages.multilocError,
+                : tenantLocales && tenantLocales.length > 1
+                ? messages.multilocError
+                : messages.textFieldsError,
             messageSuccess: messages.saveSuccessMessage,
           }}
         />

@@ -58,6 +58,11 @@ export default defineMessages({
     defaultMessage:
       "You've resent the confirmation code too many times. Please contact us to receive an invitation code instead.",
   },
+  resending_code_failed: {
+    id: 'app.errors.resending_code_failed',
+    defaultMessage:
+      'Something went wrong while sending out the confirmation code.',
+  },
   after_end_at: {
     id: 'app.errors.after_end_at',
     defaultMessage: 'The start date occurs after the end date',
@@ -365,5 +370,10 @@ export default defineMessages({
     id: 'app.errors.body_multiloc_includes_banned_words',
     defaultMessage:
       'The description contains words that are considered inappropriate.',
+  },
+  no_recipients: {
+    id: 'app.errors.no_recipients',
+    defaultMessage:
+      "The campaign can't be sent out because there are no recipients. The group you're sending to is either empty, or nobody has consented to receiving emails.",
   },
 });

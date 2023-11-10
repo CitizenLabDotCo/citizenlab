@@ -109,6 +109,7 @@ describe('Idea edit page', () => {
 
     // save the form
     cy.get('.e2e-submit-idea-form').click();
+    cy.get('#e2e-accept-disclaimer').click();
     cy.intercept(`**/ideas/${ideaId}`).as('ideaPostRequest');
     cy.wait('@ideaPostRequest');
 

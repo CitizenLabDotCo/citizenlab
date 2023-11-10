@@ -259,4 +259,24 @@ namespace :inconsistent_data do
       end
     end
   end
+
+  task fix_missing_analysis_columns: :environment do
+    Tenant.all.each do |tenant|
+      Apartment::Tenant.switch(tenant.schema_name) do
+        connection = ActiveRecord::Base.connection
+
+        created_at_exists = connection.column_exists?(:analysis_taggings, :created_at)
+        updated_at_exists = connection.column_exists?(:analysis_taggings, :updated_at)
+
+        next if created_at_exists && updated_at_exists
+
+        if !created_at_exists && !updated_at_exists
+          puts "Columns missing for #{Tenant.name}, adding them now"
+          connection.add_timestamps(:analysis_taggings, null: false, default: Time.now)
+        else
+          raise "#{Tenant.name} is inconsistent: created_at #{created_at_exists}, updated at #{updated_at_exists}"
+        end
+      end
+    end
+  end
 end

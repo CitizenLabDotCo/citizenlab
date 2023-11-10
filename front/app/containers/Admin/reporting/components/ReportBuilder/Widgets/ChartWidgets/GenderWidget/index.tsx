@@ -33,7 +33,7 @@ const GenderWidget = ({
 GenderWidget.craft = {
   props: {
     title: '',
-    projectFilter: undefined,
+    projectId: undefined,
     startAt: undefined,
     endAt: null,
   },

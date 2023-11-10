@@ -6,7 +6,7 @@ import categories from 'modules/commercial/insights/fixtures/categories';
 import selectEvent from 'react-select-event';
 import InputDetails from './';
 import { IInsightsInput } from 'modules/commercial/insights/api/inputs/types';
-import { ideaData as mockIdeaData } from 'api/ideas/__mocks__/useIdeaById';
+import { ideaData as mockIdeaData } from 'api/ideas/__mocks__/_mockServer';
 
 jest.mock('api/ideas/useIdeaById', () => {
   return jest.fn(() => ({ data: { data: mockIdeaData[0] } }));

@@ -1,16 +1,15 @@
 import React from 'react';
 import { Box, Text, colors } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
-import { useIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import apiImage from './api.png';
+import Tippy from '@tippyjs/react';
 
 export const PublicAPI = () => {
   const isPublicAPIEnabled = useFeatureFlag({ name: 'public_api_tokens' });
   const { formatMessage } = useIntl();
-
-  if (!isPublicAPIEnabled) return null;
 
   return (
     <Box background={colors.white} display="flex" p="20px">
@@ -28,16 +27,27 @@ export const PublicAPI = () => {
         <Text color="coolGrey700">
           {formatMessage(messages.publicAPIDescription)}
         </Text>
-        <Button
-          height="45px"
-          icon="arrow-right"
-          iconColor={colors.white}
-          iconPos="right"
-          width="fit-content"
-          linkTo="/admin/tools/public-api-tokens"
+        <Tippy
+          content={<FormattedMessage {...messages.publicAPIDisabled} />}
+          disabled={isPublicAPIEnabled}
+          placement="top"
+          theme="dark"
         >
-          {formatMessage(messages.managePublicAPIKeys)}
-        </Button>
+          <div>
+            <Button
+              disabled={!isPublicAPIEnabled}
+              height="45px"
+              icon={isPublicAPIEnabled ? 'arrow-right' : 'lock'}
+              iconColor={colors.white}
+              iconPos="right"
+              width="fit-content"
+              linkTo="/admin/tools/public-api-tokens"
+              textColor="white"
+            >
+              {formatMessage(messages.managePublicAPIKeys)}
+            </Button>
+          </div>
+        </Tippy>
       </Box>
     </Box>
   );

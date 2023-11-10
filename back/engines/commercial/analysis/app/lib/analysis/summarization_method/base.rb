@@ -11,6 +11,7 @@ module Analysis
     LLMS = [
       LLM::GPT48k.new,
       LLM::GPT432k.new,
+      LLM::GPT4Turbo.new,
       LLM::GPT3516k.new
     ]
 

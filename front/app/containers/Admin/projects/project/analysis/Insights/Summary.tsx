@@ -246,7 +246,7 @@ const Summary = ({ insight }: Props) => {
             }
             iconColor={colors.teal400}
             iconColorOnHover={colors.teal700}
-            a11y_buttonActionMessage={formatMessage(messages.deleteSummary)}
+            a11y_buttonActionMessage={formatMessage(messages.bookmarkSummary)}
             onClick={() => toggleBookmark({ analysisId, id: insight.id })}
           />
         </Box>

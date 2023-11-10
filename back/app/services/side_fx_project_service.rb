@@ -38,7 +38,7 @@ class SideFxProjectService
   end
 
   def before_update(project, user)
-    @publication_status_was = project.admin_publication.publication_status
+    @publication_status_was = project.admin_publication.publication_status_was
     @folder_id_was = project.admin_publication.parent_id_was
     project.description_multiloc = TextImageService.new.swap_data_images(project, :description_multiloc)
     @sfx_pc.before_update project, user if project.participation_context?

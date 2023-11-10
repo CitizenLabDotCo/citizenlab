@@ -6,6 +6,7 @@ import { Outlet as RouterOutlet } from 'react-router-dom';
 import HelmetIntl from 'components/HelmetIntl';
 import Tools from './';
 import PublicAPITokens from './PublicAPI/PublicAPITokens';
+import PowerBITemplates from './PowerBI/PowerBITemplates';
 
 const toolsRoutes = () => {
   return {
@@ -30,6 +31,14 @@ const toolsRoutes = () => {
         element: (
           <PageLoading>
             <PublicAPITokens />
+          </PageLoading>
+        ),
+      },
+      {
+        path: 'power-bi',
+        element: (
+          <PageLoading>
+            <PowerBITemplates />
           </PageLoading>
         ),
       },

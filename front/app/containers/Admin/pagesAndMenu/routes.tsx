@@ -1,6 +1,7 @@
 import PageLoading from 'components/UI/PageLoading';
 import React, { lazy } from 'react';
 import { Navigate } from 'react-router-dom';
+import FullScreenPreview from './containers/ContentBuilder/containers/FullscreenPreview';
 
 const CustomPagesIndex = lazy(() => import('./containers/CustomPages'));
 const PagesAndMenuIndex = lazy(() => import('containers/Admin/pagesAndMenu'));
@@ -26,7 +27,9 @@ const CustomPageBottomInfoSection = lazy(
   () => import('./containers/CustomPages/Edit/Content/BottomInfoSection')
 );
 const HomepageHeroBannerForm = lazy(() => import('./EditHomepage/HeroBanner'));
-
+const ContentBuilder = lazy(
+  () => import('./containers/ContentBuilder/containers')
+);
 // custom pages
 const NewCustomPageIndex = lazy(() => import('./containers/CustomPages/New'));
 const EditCustomPageIndex = lazy(() => import('./containers/CustomPages/Edit'));
@@ -82,6 +85,22 @@ export default () => ({
       element: (
         <PageLoading>
           <EditHomepage />
+        </PageLoading>
+      ),
+    },
+    {
+      path: `${HOMEPAGE_PATH}/content-builder`, // /homepage/content-builder
+      element: (
+        <PageLoading>
+          <ContentBuilder />
+        </PageLoading>
+      ),
+    },
+    {
+      path: `${HOMEPAGE_PATH}/content-builder/preview`, // /homepage/content-builder/preview
+      element: (
+        <PageLoading>
+          <FullScreenPreview />
         </PageLoading>
       ),
     },

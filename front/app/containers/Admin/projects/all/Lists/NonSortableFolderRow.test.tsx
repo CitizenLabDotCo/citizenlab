@@ -4,7 +4,7 @@ import { render, screen } from 'utils/testUtils/rtl';
 
 import { IAdminPublicationData } from 'api/admin_publications/types';
 import { mockFolderChildAdminPublicationsList } from 'api/admin_publications/__mocks__/useAdminPublications';
-import { mockAuthUserData } from 'api/me/__mocks__/useAuthUser';
+import { mockAuthUserData } from 'api/me/__mocks__/_mockServer';
 const folderId = 'folderId';
 const folderPublication: IAdminPublicationData = {
   id: '1',

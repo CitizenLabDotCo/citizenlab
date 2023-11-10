@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from 'utils/testUtils/rtl';
 import useIdeaById from 'api/ideas/useIdeaById';
-import { ideaData as mockIdeaData } from 'api/ideas/__mocks__/useIdeaById';
+import { ideaData as mockIdeaData } from 'api/ideas/__mocks__/_mockServer';
 import Idea from './';
 
 const viewId = '1';

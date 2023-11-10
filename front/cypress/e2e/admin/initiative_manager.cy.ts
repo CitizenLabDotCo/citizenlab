@@ -1,7 +1,7 @@
 import { ProposalsSettings } from '../../../app/api/app_configuration/types';
 import { randomString, randomEmail } from '../../support/commands';
 
-describe('Initaitve manager', () => {
+describe('Initiative manager', () => {
   beforeEach(() => {
     cy.setAdminLoginCookie();
   });
@@ -25,17 +25,19 @@ describe('Initaitve manager', () => {
     let initiativeId1: string;
     let initiativeId2: string;
     let initiativeId3: string;
+    let adminUserId1: string;
+    let adminUserId2: string;
 
     before(() => {
       // create two extra initiatives, with different assignees
       // so we can check with greater certainty that all initiatives are being show in the tests
       cy.apiCreateAdmin(firstName1, lastName1, email1, password1).then(
         (user) => {
-          const userId = user.body.data.id;
+          adminUserId1 = user.body.data.id;
           cy.apiCreateInitiative({
             initiativeTitle: initiativeTitle1,
             initiativeContent: initiativeContent1,
-            assigneeId: userId,
+            assigneeId: adminUserId1,
           }).then((initiative) => {
             initiativeId1 = initiative.body.data.id;
           });
@@ -44,11 +46,11 @@ describe('Initaitve manager', () => {
 
       cy.apiCreateAdmin(firstName2, lastName2, email2, password2).then(
         (user) => {
-          const userId = user.body.data.id;
+          adminUserId2 = user.body.data.id;
           cy.apiCreateInitiative({
             initiativeTitle: initiativeTitle2,
             initiativeContent: initiativeContent2,
-            assigneeId: userId,
+            assigneeId: adminUserId2,
           }).then((initiative) => {
             initiativeId2 = initiative.body.data.id;
           });
@@ -67,6 +69,14 @@ describe('Initaitve manager', () => {
           cy.wait(500);
         });
       });
+    });
+
+    after(() => {
+      cy.apiRemoveInitiative(initiativeId1);
+      cy.apiRemoveInitiative(initiativeId2);
+      cy.apiRemoveInitiative(initiativeId3);
+      cy.apiRemoveUser(adminUserId1);
+      cy.apiRemoveUser(adminUserId2);
     });
 
     it('Filters on All initiatives', () => {
@@ -89,11 +99,6 @@ describe('Initaitve manager', () => {
       cy.get('#e2e-assignee-filter-assigned-to-user').click();
       // Check whether the newly created idea is assigned to the user
       cy.get('.e2e-initiative-row').should('have.length', 1);
-    });
-    after(() => {
-      cy.apiRemoveInitiative(initiativeId1);
-      cy.apiRemoveInitiative(initiativeId2);
-      cy.apiRemoveInitiative(initiativeId3);
     });
   });
 
@@ -140,8 +145,6 @@ describe('Initaitve manager', () => {
           assigneeId: userId,
         }).then((initiative) => {
           initiativeId1 = initiative.body.data.id;
-          const officialFeedbackContent = randomString();
-          const officialFeedbackAuthor = randomString();
           moveInitiativeToThresholdReached(initiativeId1);
         });
 
@@ -213,6 +216,7 @@ describe('Initaitve manager', () => {
     let initiativeId: string;
     let newAdminFirstName: string;
     let newAdminLastName: string;
+    let adminUserId1: string;
 
     before(() => {
       cy.apiCreateInitiative({ initiativeTitle, initiativeContent }).then(
@@ -223,6 +227,7 @@ describe('Initaitve manager', () => {
 
       cy.apiCreateAdmin(firstName, lastName, email, password).then(
         (newAdmin) => {
+          adminUserId1 = newAdmin.body.data.id;
           newAdminFirstName = newAdmin.body.data.attributes.first_name;
           newAdminLastName = newAdmin.body.data.attributes.last_name;
           cy.apiConfirmUser(email, password);
@@ -230,6 +235,11 @@ describe('Initaitve manager', () => {
       );
       cy.logout();
       cy.setAdminLoginCookie();
+    });
+
+    after(() => {
+      cy.apiRemoveInitiative(initiativeId);
+      cy.apiRemoveUser(adminUserId1);
     });
 
     it('Assigns a user to an initiative', () => {
@@ -255,10 +265,6 @@ describe('Initaitve manager', () => {
       cy.wait(500);
       // Check if initiative is there
       cy.get('.e2e-initiative-row').should('have.length', 1);
-    });
-
-    after(() => {
-      cy.apiRemoveInitiative(initiativeId);
     });
   });
 });

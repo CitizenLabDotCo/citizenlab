@@ -37,6 +37,7 @@ describe('ProjectFolderSelect', () => {
       <ProjectFolderSelect
         projectAttrs={{ folder_id: 'folderId' }}
         onProjectAttributesDiffChange={jest.fn()}
+        isNewProject={true}
       />
     );
     expect(screen.getByTestId('projectFolderSelect')).toBeInTheDocument();
@@ -47,6 +48,7 @@ describe('ProjectFolderSelect', () => {
       <ProjectFolderSelect
         projectAttrs={{}}
         onProjectAttributesDiffChange={jest.fn()}
+        isNewProject={true}
       />
     );
     expect(container.querySelector('#folderSelect-no')).toHaveAttribute(
@@ -58,10 +60,12 @@ describe('ProjectFolderSelect', () => {
     );
   });
   it('should render as enabled with "yes" option selected when folder id is provided', () => {
+    mockPermission = true;
     const { container } = render(
       <ProjectFolderSelect
         projectAttrs={{ folder_id: 'folder1' }}
         onProjectAttributesDiffChange={jest.fn()}
+        isNewProject={true}
       />
     );
     expect(container.querySelector('#folderSelect-no')).toHaveAttribute(
@@ -76,22 +80,22 @@ describe('ProjectFolderSelect', () => {
       container.querySelector('label[for="folderSelect-no"]')
     ).not.toHaveClass('disabled');
   });
-  it('should render as disabled with "yes" option selected when userCanCreateProjectInFolderOnly is true', () => {
-    mockPermission = true;
+  it('should render as disabled with "no" option selected when isNewProject is false', () => {
     const { container } = render(
       <ProjectFolderSelect
         projectAttrs={{}}
         onProjectAttributesDiffChange={jest.fn()}
+        isNewProject={false}
       />
     );
     expect(container.querySelector('#folderSelect-no')).toHaveAttribute(
       'aria-checked',
-      'false'
+      'true'
     );
 
     expect(container.querySelector('#folderSelect-yes')).toHaveAttribute(
       'aria-checked',
-      'true'
+      'false'
     );
 
     expect(container.querySelector('label[for="folderSelect-no"]')).toHaveClass(
@@ -99,11 +103,13 @@ describe('ProjectFolderSelect', () => {
     );
   });
   it('should set folder_id to null when "no" option is selected', () => {
+    mockPermission = true;
     const onProjectAttributesDiffChange = jest.fn();
     const { container } = render(
       <ProjectFolderSelect
         projectAttrs={{ folder_id: 'folder1' }}
         onProjectAttributesDiffChange={onProjectAttributesDiffChange}
+        isNewProject={true}
       />
     );
 

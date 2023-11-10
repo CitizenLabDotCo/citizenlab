@@ -33,7 +33,7 @@ export interface IPhaseData {
 
 export interface IPhaseAttributes extends ParticipationContext {
   start_at: string;
-  end_at: string;
+  end_at: string | null;
   campaigns_settings: { [key in CampaignName]?: boolean };
 }
 

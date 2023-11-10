@@ -10,6 +10,7 @@ import CTAButton from './CTAButton';
 import useBasket from 'api/baskets/useBasket';
 import useVoting from 'api/baskets_ideas/useVoting';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useLocale from 'hooks/useLocale';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -20,14 +21,16 @@ import {
   CTABarProps,
   hasProjectEndedOrIsArchived,
 } from 'components/ParticipationCTABars/utils';
-import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
+import { getCurrentPhase, getLastPhase, hidePhases } from 'api/phases/utils';
 import { getVotesCounter } from './utils';
+import { isNilOrError } from 'utils/helperUtils';
 
 export const VotingCTABar = ({ phases, project }: CTABarProps) => {
   const { numberOfVotesCast } = useVoting();
   const { data: appConfig } = useAppConfiguration();
   const { formatMessage } = useIntl();
   const localize = useLocalize();
+  const currentLocale = useLocale();
 
   const currentPhase = useMemo(() => {
     return getCurrentPhase(phases) || getLastPhase(phases);
@@ -38,7 +41,10 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
 
   const { data: basket } = useBasket(basketId);
 
-  if (hasProjectEndedOrIsArchived(project, currentPhase)) {
+  if (
+    hasProjectEndedOrIsArchived(project, currentPhase) ||
+    isNilOrError(currentLocale)
+  ) {
     return null;
   }
 
@@ -57,6 +63,7 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
 
   const submittedAt = basket?.data.attributes.submitted_at || null;
   const hasUserParticipated = !!submittedAt;
+  const treatAsContinuous = hidePhases(phases, currentLocale);
 
   return (
     <>
@@ -79,7 +86,9 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
             </Text>
           )
         }
-        hideDefaultParticipationMessage={currentPhase ? true : false}
+        hideDefaultParticipationMessage={
+          currentPhase && !treatAsContinuous ? true : false
+        }
         timeLeftPosition="left"
       />
       <ErrorToast />

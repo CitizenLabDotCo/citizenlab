@@ -106,13 +106,15 @@ const EventsViewer = ({
   showDateFilter = true,
 }: Props) => {
   const [searchParams] = useSearchParams();
-  const [currentPage, setCurrentPage] = useState(1);
 
   // Get any URL params
   const projectIdsParam = searchParams.get(
     eventsTime === 'past'
       ? 'past_events_project_ids'
       : 'ongoing_events_project_ids'
+  );
+  const pageNumberParam = searchParams.get(
+    eventsTime === 'past' ? 'past_page' : 'ongoing_page'
   );
   const dateParam =
     eventsTime === 'currentAndFuture' ? searchParams.get('time_period') : null;
@@ -122,6 +124,9 @@ const EventsViewer = ({
   const dateFilterFromUrl: dateFilterKey[] = dateParam
     ? JSON.parse(dateParam)
     : null;
+  const pageNumberFromUrl: number | null = pageNumberParam
+    ? JSON.parse(pageNumberParam)
+    : null;
 
   // Set state based on URL params
   const [projectIdList, setProjectIdList] = useState<string[] | undefined>(
@@ -130,6 +135,8 @@ const EventsViewer = ({
   const [dateFilter, setDateFilter] = useState<dateFilterKey[] | undefined>(
     dateFilterFromUrl || []
   );
+
+  const [currentPage, setCurrentPage] = useState(pageNumberFromUrl || 1);
 
   const ongoingDuringDates = getDatesFromKey(dateFilter);
 
@@ -144,6 +151,7 @@ const EventsViewer = ({
     pastOnly: eventsTime === 'past',
     sort: eventsTime === 'past' ? 'start_at' : '-start_at',
     pageNumber: currentPage,
+    pageSize: 15,
     attendeeId,
     ongoing_during: ongoingDuringDates,
   });
@@ -167,6 +175,14 @@ const EventsViewer = ({
       });
     }
   }, [eventsTime, projectIdList]);
+
+  // Update pageNumber URL param based on state, events time will not change after initial render
+  useEffect(() => {
+    const eventParam = eventsTime === 'past' ? 'past_page' : 'ongoing_page';
+    updateSearchParams({
+      [eventParam]: currentPage > 1 ? currentPage : null,
+    });
+  }, [eventsTime, currentPage]);
 
   // Update date filter URL params based on state, events time will not change after initial render
   useEffect(() => {

@@ -1,20 +1,14 @@
 import { renderHook } from '@testing-library/react-hooks';
 
 import useBasket from './useBasket';
-import { basketData } from './__mocks__/useBasket';
+import endpoints, { apiPath, basketData } from './__mocks__/_mockServer';
 
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
-const apiPath = '*baskets/:id';
-
-const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: basketData }));
-  })
-);
+const server = setupServer(endpoints['GET baskets/:id']);
 
 describe('useBasket', () => {
   beforeAll(() => server.listen());

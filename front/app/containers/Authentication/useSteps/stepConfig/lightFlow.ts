@@ -1,7 +1,6 @@
 // authentication
 import createEmailOnlyAccount from 'api/authentication/sign_up/createEmailOnlyAccount';
 import signIn from 'api/authentication/sign_in_out/signIn';
-import signOut from 'api/authentication/sign_in_out/signOut';
 import confirmEmail from 'api/authentication/confirm_email/confirmEmail';
 import { handleOnSSOClick } from 'api/authentication/singleSignOn';
 import checkUser from 'api/users/checkUser';
@@ -158,9 +157,6 @@ export const lightFlow = (
     'light-flow:email-confirmation': {
       CLOSE: () => setCurrentStep('closed'),
       CHANGE_EMAIL: async () => {
-        await signOut();
-
-        updateState({ email: null });
         setCurrentStep('light-flow:email');
       },
       SUBMIT_CODE: async (code: string) => {

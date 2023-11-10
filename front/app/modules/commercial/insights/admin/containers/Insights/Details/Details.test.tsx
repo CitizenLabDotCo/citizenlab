@@ -5,7 +5,7 @@ import { render, fireEvent, screen } from 'utils/testUtils/rtl';
 import inputs from 'modules/commercial/insights/fixtures/inputs';
 import clHistory from 'utils/cl-router/history';
 import useInfiniteInputs from 'modules/commercial/insights/api/inputs/useInfiniteInputs';
-import { ideaData as mockIdeaData } from 'api/ideas/__mocks__/useIdeaById';
+import { ideaData as mockIdeaData } from 'api/ideas/__mocks__/_mockServer';
 
 const viewId = '1';
 let mockLocationData = { pathname: '', query: {} };

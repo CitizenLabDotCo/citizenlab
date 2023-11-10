@@ -85,7 +85,10 @@ class Group < ApplicationRecord
   private
 
   def generate_slug
-    self.slug ||= SlugService.new.generate_slug self, title_multiloc.values.first
+    self.slug ||= SlugService.new.generate_slug(
+      self,
+      title_multiloc.find { |_key, value| value.present? }&.last
+    )
   end
 
   def set_membership_type

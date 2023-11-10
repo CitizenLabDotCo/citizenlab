@@ -6,7 +6,7 @@ import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-import { project1 } from './__mocks__/useProjects';
+import { project1 } from './__mocks__/_mockServer';
 
 const apiPath = '*projects/:projectId';
 const server = setupServer(

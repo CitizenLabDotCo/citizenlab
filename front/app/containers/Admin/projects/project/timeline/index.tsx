@@ -144,7 +144,9 @@ const AdminProjectTimelineIndex = ({
             <>
               {phases.map((phase, index) => {
                 const startAt = moment(phase.attributes.start_at).format('LL');
-                const endAt = moment(phase.attributes.end_at).format('LL');
+                const endAt = phase.attributes.end_at
+                  ? moment(phase.attributes.end_at).format('LL')
+                  : formatMessage(messages.noEndDate);
 
                 return (
                   <Row data-testid={`e2e-phase-${phase.id}`} key={phase.id}>

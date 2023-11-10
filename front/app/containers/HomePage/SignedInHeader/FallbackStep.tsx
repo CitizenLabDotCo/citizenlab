@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import { OnboardingCampaignName } from 'api/onboarding_campaigns/types';
 import { Left, Right } from './';
-import useHomepageSettings from 'api/home_page/useHomepageSettings';
 import { isEmptyMultiloc, isNilOrError } from 'utils/helperUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
@@ -11,6 +10,7 @@ import useAuthUser from 'api/me/useAuthUser';
 import { media, isRtl, fontSizes } from 'utils/styleUtils';
 import OnboardingStep from './OnboardingStep';
 import CTA from './CTA';
+import { IHomepageSettingsAttributes } from 'api/home_page/types';
 
 const HeaderContent = styled.div`
   position: absolute;
@@ -51,15 +51,17 @@ const HeaderContent = styled.div`
 
 interface Props {
   currentOnboardingCampaignName: OnboardingCampaignName;
+  homepageSettings: Partial<IHomepageSettingsAttributes>;
 }
 
-const FallbackStep = ({ currentOnboardingCampaignName }: Props) => {
-  const { data: homepageSettings } = useHomepageSettings();
+const FallbackStep = ({
+  currentOnboardingCampaignName,
+  homepageSettings,
+}: Props) => {
   const { data: authUser } = useAuthUser();
 
   if (!isNilOrError(homepageSettings) && !isNilOrError(authUser)) {
-    const defaultMessage =
-      homepageSettings.data.attributes.banner_signed_in_header_multiloc;
+    const defaultMessage = homepageSettings.banner_signed_in_header_multiloc;
 
     return (
       <OnboardingStep
@@ -78,7 +80,10 @@ const FallbackStep = ({ currentOnboardingCampaignName }: Props) => {
             )}
           </Left>
           <Right>
-            <CTA buttonStyle="primary-inverse" />
+            <CTA
+              buttonStyle="primary-inverse"
+              homepageSettings={homepageSettings}
+            />
           </Right>
         </HeaderContent>
       </OnboardingStep>

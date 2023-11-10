@@ -427,7 +427,7 @@ module MultiTenancy
               allowed: true
             },
             posthog_integration: {
-              enabled: true,
+              enabled: false,
               allowed: true
             },
             user_blocking: {
@@ -448,6 +448,10 @@ module MultiTenancy
               allowed: true
             },
             public_api_tokens: {
+              enabled: true,
+              allowed: true
+            },
+            power_bi: {
               enabled: true,
               allowed: true
             },

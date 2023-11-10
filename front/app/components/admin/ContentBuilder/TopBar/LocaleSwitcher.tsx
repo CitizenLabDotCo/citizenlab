@@ -20,7 +20,7 @@ import { Locale } from 'typings';
 
 interface Props {
   selectedLocale: Locale | undefined;
-  localesWithError: Locale[];
+  localesWithError?: Locale[];
   onSelectLocale: (locale: Locale) => void;
 }
 
@@ -38,7 +38,7 @@ const LocaleSwitcher = ({
   const localesValues = locales.reduce((acc, locale) => {
     return {
       ...acc,
-      [locale]: localesWithError.includes(locale) ? '' : 'NON-EMPTY-VALUE',
+      [locale]: localesWithError?.includes(locale) ? '' : 'NON-EMPTY-VALUE',
     };
   }, {});
 

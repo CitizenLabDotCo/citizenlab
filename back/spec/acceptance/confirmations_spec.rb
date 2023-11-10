@@ -27,8 +27,8 @@ resource 'Confirmations' do
       let(:user) { create(:user_with_confirmation) }
 
       before do
-        header_token_for(user)
-        SendConfirmationCode.call(user: user)
+        header_token_for user
+        RequestConfirmationCodeJob.perform_now user
       end
 
       example 'returns an ok status passing the right code' do

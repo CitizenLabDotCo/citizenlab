@@ -29,6 +29,7 @@
 #  created_at                               :datetime         not null
 #  updated_at                               :datetime         not null
 #  header_bg                                :string
+#  craftjs_json                             :jsonb            not null
 #
 class HomePage < ApplicationRecord
   has_many :pins, as: :page, inverse_of: :page, dependent: :destroy

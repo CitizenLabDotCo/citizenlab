@@ -189,7 +189,7 @@ const CreateProject = memo<Props & WrappedComponentProps>(
           if (projectId) {
             setTimeout(() => {
               clHistory.push({
-                pathname: adminProjectsProjectPath(projectId),
+                pathname: `${adminProjectsProjectPath(projectId)}/timeline`,
               });
             }, 1000);
           }

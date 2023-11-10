@@ -1286,6 +1286,18 @@
         }
       },
 
+      "power_bi": {
+        "type": "object",
+        "title": "Power BI",
+        "description": "Allows downloading of pre-configured templates for PowerBI.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "import_printed_forms": {
         "type": "object",
         "title": "Import printed forms",
@@ -1321,7 +1333,8 @@
     "id_oostende_rrn": ["verification"],
     "id_id_card_lookup": ["verification"],
 
-    "permission_option_email_confirmation": ["user_confirmation"]
+    "permission_option_email_confirmation": ["user_confirmation"],
+    "power_bi": ["public_api_tokens"]
   },
   "definitions": {
     "multiloc_string": {

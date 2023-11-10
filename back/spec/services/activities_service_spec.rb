@@ -121,6 +121,12 @@ describe ActivitiesService do
         expect { service.create_periodic_activities(now: now) }
           .not_to have_enqueued_job(LogActivityJob)
       end
+
+      it 'does not log a phase ending_soon activity when the phase has no end date' do
+        create(:budgeting_phase, start_at: now - 10.days, end_at: nil)
+        expect { service.create_periodic_activities(now: now) }
+          .not_to have_enqueued_job(LogActivityJob)
+      end
     end
 
     describe '#create_basket_not_submitted_activities' do

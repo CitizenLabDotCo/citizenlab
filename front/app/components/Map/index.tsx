@@ -31,9 +31,15 @@ import styled from 'styled-components';
 import { media, defaultOutline, defaultCardStyle } from 'utils/styleUtils';
 
 // typings
-import L, { LatLngTuple, Map as ILeafletMap, Projection } from 'leaflet';
-import { FeatureCollection } from 'geojson';
-import { VectorBasemapLayer, vectorBasemapLayer } from 'esri-leaflet-vector';
+import L, {
+  LatLngTuple,
+  Map as ILeafletMap,
+  LatLngBoundsLiteral,
+} from 'leaflet';
+import { vectorBasemapLayer } from 'esri-leaflet-vector';
+import Legend from '@arcgis/core/widgets/Legend.js';
+import MapView from '@arcgis/core/views/MapView.js';
+import EsriMap from '@arcgis/core/Map.js';
 
 export interface Point extends GeoJSON.Point {
   data?: any;
@@ -149,7 +155,9 @@ const Map = memo<IMapProps & IMapConfigProps>(
     const [map, setMap] = useState<ILeafletMap | null>(null);
     const [selectedBasemap, setSelectedBasemap] =
       useState<string>('ArcGIS:LightGray');
-    const [currentBasemapLayer, setCurrentBasemapLayer] = useState<any | null>(null);
+    const [currentBasemapLayer, setCurrentBasemapLayer] = useState<any | null>(
+      null
+    );
 
     const [additionalLeafletConfig, setAdditionalLeafletConfig] =
       useState<ILeafletMapConfig | null>(null);
@@ -307,6 +315,26 @@ const Map = memo<IMapProps & IMapConfigProps>(
         map.removeLayer(currentBasemapLayer);
         setCurrentBasemapLayer(testBasemap);
         map.addLayer(testBasemap);
+
+        // ---------------------------------------------------------------------------------------------------------
+        // Try and retrieve a feature layer
+        // Legend ? -- https://services3.arcgis.com/GVgbJbqm8hXASVYi/arcgis/rest/services/Trailheads_Styled/FeatureServer/0?f=pjson
+        const trailheads = esri.featureLayer({
+          url: 'https://services3.arcgis.com/GVgbJbqm8hXASVYi/arcgis/rest/services/Trailheads_Styled/FeatureServer/0',
+        });
+        const trails = esri.featureLayer({
+          url: 'https://services3.arcgis.com/GVgbJbqm8hXASVYi/arcgis/rest/services/Trails_Styled/FeatureServer/0',
+        });
+        const parks = esri.featureLayer({
+          url: 'https://services3.arcgis.com/GVgbJbqm8hXASVYi/arcgis/rest/services/Parks_and_Open_Space_Styled/FeatureServer/0',
+        });
+
+        // Add to map
+        map.addLayer(trailheads);
+        map.addLayer(trails);
+        map.addLayer(parks);
+
+        map.setView([34.02, -118.805], 13);
       }
     };
 

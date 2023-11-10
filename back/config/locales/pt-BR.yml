@@ -215,7 +215,7 @@ pt:
       status: 'Status'
       assignee_fullname: 'Atribuído'
       assignee_email: 'E-mail do assinante'
-      image_url: 'URL da imagem'
+      image_url: 'imagem URL'
     anonymous: 'Anônimo'
   form_builder:
     default_select_field:
@@ -227,21 +227,21 @@ pt:
       description: "Por favor, submeta as suas respostas, selecionando abaixo 'Submeter pesquisa'."
     pdf_export:
       personal_data: 'Dados pessoais'
-      personal_data_explanation_ideation: "Enviaremos sua contribuição para a plataforma de participação on-line do %{organizationName}. Se você quiser que seu nome seja exibido como autor desta contribuição e receber atualizações relevantes à sua contribuição por e-mail, preencha os campos a seguir nesta página e criaremos uma conta para você. Seu e-mail não será público e será usado apenas por %{organizationName}. Se quiser permanecer anônimo ou não concordar com o uso de seus dados pessoais dessa forma, você pode deixá-los em branco."
-      personal_data_explanation_native_survey: "Enviaremos sua contribuição para a plataforma de participação on-line do %{organizationName}. Se você quiser receber atualizações relevantes à sua contribuição por e-mail, preencha os campos a seguir nesta página e nós criaremos uma conta para você. Seus dados não serão públicos e serão usados somente por %{organizationName}. Se não concordar com o uso de seus dados pessoais dessa forma, você pode deixá-los em branco."
-      first_name: 'Nome próprio'
-      last_name: 'Apelido'
-      email_address: 'Endereço de correio eletrónico'
+      personal_data_explanation_ideation: "Enviaremos sua entrada para a plataforma de participação on-line da %{organizationName}. Se você deseja que seu nome seja exibido como autor desta contribuição e receba atualizações relevantes à sua contribuição por e-mail, preencha os seguintes campos nesta página e criaremos uma conta para você. Seu e-mail não será público e será usado apenas por %{organizationName}. Se quiser permanecer anônimo ou não concordar que utilizemos seus dados pessoais desta forma, você pode deixá-los em branco."
+      personal_data_explanation_native_survey: "Enviaremos sua entrada para a plataforma de participação on-line da %{organizationName}. Se você deseja receber atualizações relevantes sobre sua opinião por e-mail, preencha os seguintes campos nesta página e criaremos uma conta para você. Os seus dados não serão públicos e serão utilizados apenas pela %{organizationName}. Se não concordar que utilizemos os seus dados pessoais desta forma, pode deixá-los vazios."
+      first_name: 'Primeiro(s) nome'
+      last_name: 'Sobrenome'
+      email_address: 'Endereço de email'
       by_checking_this_box: "Ao marcar esta caixa, concordo que meus dados sejam usados para criar uma conta na plataforma de participação do %{organizationName}."
-      optional: 'facultativo'
-      permission: 'Autorização'
-      choose_as_many: 'Escolha tantos quantos quiser'
+      optional: 'opcional'
+      permission: 'Permissão'
+      choose_as_many: 'Escolha quantos quiser'
       this_answer: 'Esta resposta só será partilhada com os moderadores e não com o público.'
       page: 'Página'
       date_published: 'Data de publicação (dd-mm-aaaa)'
       instructions: 'Instruções'
-      write_as_clearly: 'Escreva o mais claramente possível <b></b> - estes formulários podem ser digitalizados'
-      write_in_language: 'Escreva as suas respostas na mesma língua que o presente formulário'
+      write_as_clearly: 'Escreva <b>com a</b> clareza possível - esses formulários podem ser digitalizados'
+      write_in_language: 'Escreva suas respostas no mesmo idioma deste formulário'
   project_copy:
     title_suffix: 'Cópia'
   confirmations_mailer:

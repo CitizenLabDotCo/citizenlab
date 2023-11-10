@@ -37,6 +37,13 @@ RSpec.describe EmailCampaigns::RecipientConfigurable do
       expect(campaign.apply_recipient_filters).not_to include(u1)
     end
 
+    it 'sends to no one when set to an empty group' do
+      g1 = create(:group)
+      campaign.update!(groups: [g1])
+      create(:user)
+      expect(campaign.apply_recipient_filters.all).to be_empty
+    end
+
     it 'only returns active users, even when the inactive are in the associated group' do
       g1 = create(:group)
       create(:invited_user, manual_groups: [g1])

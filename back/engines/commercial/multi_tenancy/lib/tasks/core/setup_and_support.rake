@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-namespace :setup_and_support do
+namespace :setup_and_support do # rubocop:disable Metrics/BlockLength
   desc 'Mass official feedback'
   task :mass_official_feedback, %i[url host locale] => [:environment] do |_t, args|
     # ID, Feedback, Feedback Author Name, Feedback Email, New Status
@@ -139,13 +139,15 @@ namespace :setup_and_support do
     Apartment::Tenant.switch(args[:host].tr('.', '_')) do
       translator = MachineTranslations::MachineTranslationService.new
       data_listing = Cl2DataListingService.new
-      data_listing.cl2_schema_leaf_models.each do |claz|
-        claz.find_each do |object|
+      data_listing.cl2_schema_models.each do |claz|
+        puts "Processing class #{claz.name}"
+        claz.all.each do |object|
           changes = {}
           data_listing.multiloc_attributes(claz).each do |ml|
             value = object.send ml
             next unless value.present? && value[args[:locale_from]].present? && value[args[:locale_to]].blank?
 
+            puts "Translating #{object.class.name} #{object.id}"
             changes[ml] = value.clone
             changes[ml][args[:locale_to]] =
               translator.translate value[args[:locale_from]], args[:locale_from], args[:locale_to],
@@ -154,6 +156,7 @@ namespace :setup_and_support do
           object.update_columns changes if changes.present?
         end
       end
+      puts 'Successfully processed everything'
     end
   end
 

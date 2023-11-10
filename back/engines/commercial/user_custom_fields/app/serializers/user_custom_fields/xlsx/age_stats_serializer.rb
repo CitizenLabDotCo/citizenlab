@@ -18,7 +18,6 @@ module UserCustomFields
         columns = {
           'age' => age_ranges_column(age_stats.bins),
           'user_count' => age_stats.binned_counts,
-          'expected_user_count' => age_stats.expected_binned_counts,
           'total_population' => age_stats.population_counts
         }.compact
 

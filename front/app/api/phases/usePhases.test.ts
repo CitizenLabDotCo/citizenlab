@@ -6,15 +6,9 @@ import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-import { phasesData } from './__mocks__/usePhases';
+import endpoints, { apiPathPhases, phasesData } from './__mocks__/_mockServer';
 
-const apiPath = '*projects/:projectId/phases';
-
-const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: phasesData }));
-  })
-);
+const server = setupServer(endpoints['GET projects/:projectId/phases']);
 
 describe('usePhases', () => {
   beforeAll(() => server.listen());
@@ -35,7 +29,7 @@ describe('usePhases', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
+      rest.get(apiPathPhases, (_req, res, ctx) => {
         return res(ctx.status(500));
       })
     );

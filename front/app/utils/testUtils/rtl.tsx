@@ -21,7 +21,7 @@ Element.prototype.scrollIntoView = jest.fn();
 
 const AllTheProviders = ({ children }: { children: ReactNode }) => {
   return (
-    <HistoryRouter history={history}>
+    <HistoryRouter history={history as any}>
       <QueryClientProvider client={queryClient}>
         <ThemeProvider theme={getTheme(null)}>
           <GlobalStyle />

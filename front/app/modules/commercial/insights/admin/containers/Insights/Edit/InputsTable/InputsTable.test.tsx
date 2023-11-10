@@ -12,7 +12,7 @@ import useInputs from 'modules/commercial/insights/api/inputs/useInputs';
 import clHistory from 'utils/cl-router/history';
 import categories from 'modules/commercial/insights/fixtures/categories';
 import links from 'modules/commercial/insights/fixtures/links';
-import { ideaData as mockIdeaData } from 'api/ideas/__mocks__/useIdeaById';
+import { ideaData as mockIdeaData } from 'api/ideas/__mocks__/_mockServer';
 
 jest.mock('api/ideas/useIdeaById', () => {
   return jest.fn(() => ({ data: { data: mockIdeaData[0] } }));

@@ -47,6 +47,9 @@ Style/NumericPredicate:
   # are not the same if `something` is not a number.
   Enabled: false
 
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
 Layout/FirstArgumentIndentation:
   EnforcedStyle: consistent
 
