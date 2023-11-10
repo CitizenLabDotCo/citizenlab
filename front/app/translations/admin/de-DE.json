@@ -1561,7 +1561,7 @@
   "app.containers.AdminPage.ProjectEvents.attend": "Teilnehmen",
   "app.containers.AdminPage.ProjectEvents.attendanceButton": "Teilnahme-Button",
   "app.containers.AdminPage.ProjectEvents.attendanceSupportArticleLink": "https://support.citizenlab.co/de/articles/5481527-hinzufugen-von-ereignissen-zu-ihrer-plattform",
-  "app.containers.AdminPage.ProjectEvents.attendanceSupportArticleLinkText": "Siehe den Support-Artikel",
+  "app.containers.AdminPage.ProjectEvents.attendanceSupportArticleLinkText": "Support-Artikel ansehen",
   "app.containers.AdminPage.ProjectEvents.customButtonLink": "Externer Link",
   "app.containers.AdminPage.ProjectEvents.customButtonLinkTooltip2": "Fügen Sie einen Link zu einer externen URL hinzu (z.B. Veranstaltungsservice oder Ticketing-Website). Wenn Sie dies einstellen, wird das Standardverhalten der Teilnahme-Schaltfläche außer Kraft gesetzt.",
   "app.containers.AdminPage.ProjectEvents.customButtonText": "Benutzerdefinierter Schaltflächentext",
