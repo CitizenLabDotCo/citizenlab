@@ -14,6 +14,7 @@ module.exports = {
     '@testing-library/jest-dom/extend-expect',
   ],
   testMatch: ['**/?(*.)+(test).(js|jsx|ts|tsx)'],
+  testPathIgnorePatterns: ['internals/jest/cl2-component-library/**'],
   moduleDirectories: ['node_modules', 'app'],
   collectCoverageFrom: [
     'app/**/*.{js,jsx,ts,tsx}',
