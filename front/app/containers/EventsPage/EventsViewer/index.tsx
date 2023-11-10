@@ -124,7 +124,7 @@ const EventsViewer = ({
   const dateFilterFromUrl: dateFilterKey[] = dateParam
     ? JSON.parse(dateParam)
     : null;
-  const pageNumberFromUrl: number = pageNumberParam
+  const pageNumberFromUrl: number | null = pageNumberParam
     ? JSON.parse(pageNumberParam)
     : null;
 
