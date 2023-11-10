@@ -15,8 +15,8 @@ import Image from 'components/PostShowComponents/Image';
 import TranslateButton from './components/TranslateButton';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
 import { Box, Badge } from '@citizenlab/cl2-component-library';
-const LazyComments = lazy(
-  () => import('components/PostShowComponents/Comments')
+const LazyCommentsSection = lazy(
+  () => import('components/PostShowComponents/Comments/CommentsSection')
 );
 import LoadingComments from 'components/PostShowComponents/Comments/LoadingComments';
 import MetaInformation from './components/MetaInformation';
@@ -235,7 +235,7 @@ const Content = ({
           </Box>
           <Box mb={compact ? '32px' : '100px'}>
             <Suspense fallback={<LoadingComments />}>
-              <LazyComments
+              <LazyCommentsSection
                 allowAnonymousParticipation={
                   participationContext?.attributes.allow_anonymous_participation
                 }
