@@ -76,7 +76,7 @@ class ProjectPolicy < ApplicationPolicy
     show?
   end
 
-  # TODO: JS remove when refactoring project
+  # TODO: JS remove when refactoring project - was only available to continuous projects
   def delete_inputs?
     false
   end
