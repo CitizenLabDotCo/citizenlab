@@ -36,7 +36,7 @@
     "dependency-cruiser": "depcruise app  --validate",
     "storybook": "storybook dev -p 6006",
     "storybook:build": "storybook build",
-    "postinstall": "node ./internals/scripts/copy-comp-lib-build.js"
+    "postinstall": "node ./internals/scripts/copy-comp-lib-src.js"
   },
   "jest-junit": {
     "addFileAttribute": "true"

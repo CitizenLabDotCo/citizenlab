@@ -37,5 +37,5 @@ storybook-static/*
 
 cypress.env
 
-# Component library build for unit tests
+# Component library src copy for unit tests
 internals/jest/cl2-component-library/*
