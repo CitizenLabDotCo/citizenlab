@@ -16,11 +16,11 @@ const CurrentAndUpcomingEvents = ({
   intl: { formatMessage },
   attendeeId,
 }: Props & WrappedComponentProps) => {
-  const isMobileOrSmaller = useBreakpoint('phone');
+  const isPhoneOrSmaller = useBreakpoint('phone');
 
   return (
     <Box id="e2e-current-and-upcoming-events">
-      <Box mb={isMobileOrSmaller ? '80px' : '135px'}>
+      <Box mb={isPhoneOrSmaller ? '80px' : '135px'}>
         <EventsViewer
           showProjectFilter={true}
           title={formatMessage(messages.upcomingAndOngoingEvents)}

@@ -41,13 +41,13 @@ const TopBar = memo<Props>(
   }) => {
     const { formatMessage } = useIntl();
     const theme = useTheme();
-    const isMobileOrSmaller = useBreakpoint('phone');
+    const isPhoneOrSmaller = useBreakpoint('phone');
 
-    const mobileLeft = isMobileOrSmaller && !theme.isRtl ? '-70px' : 'auto';
+    const mobileLeft = isPhoneOrSmaller && !theme.isRtl ? '-70px' : 'auto';
 
     return (
       <Box
-        display={isMobileOrSmaller ? 'block' : 'flex'}
+        display={isPhoneOrSmaller ? 'block' : 'flex'}
         justifyContent="space-between"
         pb="14px"
         borderBottom="solid 1px #ccc"
@@ -61,14 +61,14 @@ const TopBar = memo<Props>(
           <Box
             display="flex"
             flexWrap="wrap"
-            flexDirection={isMobileOrSmaller ? 'row-reverse' : 'row'}
+            flexDirection={isPhoneOrSmaller ? 'row-reverse' : 'row'}
             gap="8px"
             mt="8px"
             ml="auto"
           >
             {showDateFilter && (
               <Box
-                width={isMobileOrSmaller ? '100%' : 'auto'}
+                width={isPhoneOrSmaller ? '100%' : 'auto'}
                 flexShrink={0}
                 style={{ textAlign: 'right' }}
               >
@@ -76,7 +76,7 @@ const TopBar = memo<Props>(
                   onChange={setDateFilter}
                   textColor={theme.colors.tenantText}
                   listTop="44px"
-                  mobileLeft={isMobileOrSmaller ? '-70px' : mobileLeft}
+                  mobileLeft={isPhoneOrSmaller ? '-70px' : mobileLeft}
                 />
               </Box>
             )}
@@ -87,9 +87,7 @@ const TopBar = memo<Props>(
                 textColor={theme.colors.tenantText}
                 filterSelectorStyle="button"
                 listTop="44px"
-                mobileLeft={
-                  isMobileOrSmaller && !theme.isRtl ? '-70px' : 'auto'
-                }
+                mobileLeft={isPhoneOrSmaller && !theme.isRtl ? '-70px' : 'auto'}
                 eventsTime={eventsTime}
               />
             )}

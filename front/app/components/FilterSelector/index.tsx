@@ -124,7 +124,7 @@ const FilterSelector = ({
 }: Props) => {
   const baseID = `filter-${Math.floor(Math.random() * 10000000)}`;
   const [opened, setOpened] = useState(false);
-  const isMobileOrSmaller = useBreakpoint('phone');
+  const isPhoneOrSmaller = useBreakpoint('phone');
 
   const getTitle = (
     selection: string[],
@@ -206,7 +206,7 @@ const FilterSelector = ({
     >
       {filterSelectorStyle === 'button' ? (
         <Button
-          height={isMobileOrSmaller ? '32px' : '36px'}
+          height={isPhoneOrSmaller ? '32px' : '36px'}
           borderRadius="24px"
           onClick={toggleExpanded}
           minWidth={minWidth ? minWidth : undefined}
