@@ -1389,7 +1389,7 @@
   "app.containers.AdminPage.ProjectEdit.conductVotingOrPrioritizationDescriptionText2": "Kies een stemmethode en laat gebruikers prioriteiten stellen tussen een paar verschillende opties.",
   "app.containers.AdminPage.ProjectEdit.conductVotingOrPrioritizationText": "Stemmen of prioriteiten stellen",
   "app.containers.AdminPage.ProjectEdit.continousProjectDeprecationMessage": "Projecten zonder tijdlijn zijn afgeschaft. In plaats daarvan kun je nu besluiten om geen einddatum aan een fase toe te voegen als je deze voor onbepaalde tijd open wilt houden.",
-  "app.containers.AdminPage.ProjectEdit.continuous": "Zonder een tijdslijn",
+  "app.containers.AdminPage.ProjectEdit.continuous": "Zonder tijdslijn",
   "app.containers.AdminPage.ProjectEdit.createAProject": "Maak een project aan",
   "app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate": "Maak een project aan met een sjabloon",
   "app.containers.AdminPage.ProjectEdit.createExternalSurveyText": "Een externe enquête embedden",
