@@ -31,6 +31,7 @@ const TimeLeft = ({ currentPhase }: Props) => {
       style={{ textTransform: 'uppercase' }}
       fontSize="xs"
       fontWeight="bold"
+      m="0"
     >
       {formatMessage(timeLeftMessage, { timeLeft })}
     </Text>

@@ -70,26 +70,20 @@ const ParticipationCTAContent = ({
         bgColor={theme.colors.tenantPrimary}
         p="20px"
       >
-        <Box display="flex" alignItems="center" mb="20px">
+        <Box display="flex" alignItems="center" mb="16px">
           <Box display="flex" alignItems="center">
             {!useProjectClosedStyle && (
               <BlinkingDot hasUserParticipated={hasUserParticipated} />
             )}
             <Text color="white" m="0px" fontSize="s">
-              <span
-                style={{
-                  ...(isSmallerThanPhone ? { fontWeight: '600' } : {}),
-                }}
-              >
-                {!hideDefaultParticipationMessage && (
-                  <FormattedMessage {...getUserParticipationMessage()} />
-                )}
-                {hideDefaultParticipationMessage && (
-                  <Box m="0px" ml="auto">
-                    <TimeLeft currentPhase={currentPhase} />
-                  </Box>
-                )}
-              </span>
+              {!hideDefaultParticipationMessage && (
+                <FormattedMessage {...getUserParticipationMessage()} />
+              )}
+              {hideDefaultParticipationMessage && (
+                <Box ml="auto">
+                  <TimeLeft currentPhase={currentPhase} />
+                </Box>
+              )}
             </Text>
           </Box>
           <Box ml="auto">{participationState}</Box>
