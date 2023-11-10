@@ -31,7 +31,6 @@ const CookiePolicy = memo((props: WrappedComponentProps) => {
           content={formatMessage(messages.pageDescription)}
         />
       </Helmet>
-
       <PageContent>
         <StyledContentContainer>
           <Fragment name="pages/accessibility-statement">
