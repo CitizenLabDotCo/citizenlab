@@ -1,13 +1,7 @@
 import React from 'react';
 
 // Components
-import {
-  Box,
-  Text,
-  Icon,
-  colors,
-  useBreakpoint,
-} from '@citizenlab/cl2-component-library';
+import { Box, Text, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // services
 import { IPhaseData } from 'api/phases/types';
@@ -24,28 +18,9 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 // styling
-import styled, { useTheme } from 'styled-components';
+import { useTheme } from 'styled-components';
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
-
-const BlickingIcon = styled(Icon)<{ showAnimation: boolean }>`
-  animation-name: blink-animation;
-  animation-duration: ${({ showAnimation }) => (showAnimation ? '1.8s' : '0s')};
-  animation-delay: 1s;
-  animation-timing-function: ease-in-out;
-  animation-iteration-count: infinite;
-
-  @keyframes blink-animation {
-    0% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
-`;
+import BlinkingDot from './BlinkingDot';
 
 type Props = {
   timeLeft?: string;
@@ -110,14 +85,7 @@ const ParticipationCTAContent = ({
         <Box display="flex" alignItems="center" mb="20px">
           <Box display="flex" alignItems="center">
             {!useProjectClosedStyle && (
-              <BlickingIcon
-                name={hasUserParticipated ? 'check-circle' : 'dot'}
-                width="16px"
-                height="16px"
-                fill={colors.white}
-                mr="8px"
-                showAnimation={!hasUserParticipated}
-              />
+              <BlinkingDot hasUserParticipated={hasUserParticipated} />
             )}
             <Text color="white" m="0px" fontSize="s">
               <span
@@ -163,14 +131,7 @@ const ParticipationCTAContent = ({
       <Box display="flex" width="100%" maxWidth={`${maxPageWidth}px`}>
         <Box display="flex" alignItems="center">
           {!useProjectClosedStyle && (
-            <BlickingIcon
-              name={hasUserParticipated ? 'check-circle' : 'dot'}
-              width="16px"
-              height="16px"
-              fill={colors.white}
-              mr="8px"
-              showAnimation={!hasUserParticipated}
-            />
+            <BlinkingDot hasUserParticipated={hasUserParticipated} />
           )}
           <Text color="white" fontSize="s" my="0px">
             {!hideDefaultParticipationMessage && (

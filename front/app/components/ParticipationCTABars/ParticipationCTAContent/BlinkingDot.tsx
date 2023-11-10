@@ -1,0 +1,42 @@
+import React from 'react';
+import { Icon, colors } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
+const DotIcon = styled(Icon)<{ showAnimation: boolean }>`
+  animation-name: blink-animation;
+  animation-duration: ${({ showAnimation }) => (showAnimation ? '1.8s' : '0s')};
+  animation-delay: 1s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+
+  @keyframes blink-animation {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+`;
+
+interface Props {
+  hasUserParticipated: boolean;
+}
+
+const BlinkingDot = ({ hasUserParticipated }: Props) => {
+  return (
+    <DotIcon
+      name={hasUserParticipated ? 'check-circle' : 'dot'}
+      width="16px"
+      height="16px"
+      fill={colors.white}
+      mr="8px"
+      showAnimation={!hasUserParticipated}
+    />
+  );
+};
+
+export default BlinkingDot;
