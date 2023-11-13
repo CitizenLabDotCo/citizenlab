@@ -26,5 +26,6 @@ module.exports = {
     '\\.(css)$': 'identity-obj-proxy',
     '\\.(jpg|jpeg|png|gif|svg)$': '<rootDir>/src/utils/testUtils/fileMock.js',
     '^react-scroll-to-component$': 'identity-obj-proxy',
+    '^lodash-es$': 'lodash',
   },
 };
