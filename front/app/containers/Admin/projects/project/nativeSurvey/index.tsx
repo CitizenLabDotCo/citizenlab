@@ -168,8 +168,8 @@ const Forms = () => {
           <Title variant="h3" color="primary">
             {formatMessage(messages.surveyResponses)}
           </Title>
-          <Box display="flex" justifyContent="center">
-            <Box width="100%">
+          <Box display="flex" justifyContent="center" alignItems="center">
+            <Box mr="16px">
               <Toggle
                 checked={postingEnabled}
                 label={formatMessage(messages.openForResponses2)}
