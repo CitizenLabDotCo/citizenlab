@@ -3,29 +3,20 @@ import { Text } from '@citizenlab/cl2-component-library';
 import { getPeriodRemainingUntil } from 'utils/dateUtils';
 import { useIntl } from 'utils/cl-intl';
 import messages from '../../messages';
-import { IPhaseData } from 'api/phases/types';
 
 interface Props {
-  currentPhase: IPhaseData | undefined;
+  currentPhaseEndsAt: string;
 }
 
-const TimeLeft = ({ currentPhase }: Props) => {
+const TimeLeft = ({ currentPhaseEndsAt }: Props) => {
   const { formatMessage } = useIntl();
-
-  if (currentPhase === undefined || currentPhase.attributes.end_at === null) {
-    return null;
-  }
-
-  let timeLeft = getPeriodRemainingUntil(
-    currentPhase.attributes.end_at,
-    'weeks'
-  );
+  let timeLeft = getPeriodRemainingUntil(currentPhaseEndsAt, 'weeks');
   let timeLeftMessage = messages.xWeeksLeft;
 
   // If less than 2 weeks left
   if (timeLeft < 2) {
     // Get timeLeft in days
-    timeLeft = getPeriodRemainingUntil(currentPhase.attributes.end_at, 'days');
+    timeLeft = getPeriodRemainingUntil(currentPhaseEndsAt, 'days');
     timeLeftMessage = messages.xDayLeft;
   }
 

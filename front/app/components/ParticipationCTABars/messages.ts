@@ -9,10 +9,6 @@ export default defineMessages({
     id: 'app.components.ParticipationCTABars.reviewDocument',
     defaultMessage: 'Review the document',
   },
-  projectOpenForSubmission: {
-    id: 'app.components.ParticipationCTABars.projectOpenForSubmission',
-    defaultMessage: 'This project is currently open for participation.',
-  },
   mobileProjectOpenForSubmission: {
     id: 'app.components.ParticipationCTABars.mobileProjectOpenForSubmission',
     defaultMessage: 'Open for participation',
