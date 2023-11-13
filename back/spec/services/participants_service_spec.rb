@@ -272,6 +272,16 @@ describe ParticipantsService do
         ]
     end
 
+    it 'does not filter out publishing an idea' do
+      idea_published_activity = create(:idea_published_activity)
+      expect(service.filter_engaging_activities(Activity.all)).to eq [idea_published_activity]
+    end
+
+    it 'does not filter out publishing an initiative' do
+      initiative_published_activity = create(:initiative_published_activity)
+      expect(service.filter_engaging_activities(Activity.all)).to eq [initiative_published_activity]
+    end
+
     it 'filters out an idea changed title activity' do
       create(:changed_title_activity)
       expect(service.filter_engaging_activities(Activity.all)).to be_empty

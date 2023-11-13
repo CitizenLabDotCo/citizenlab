@@ -6,6 +6,7 @@ class ParticipantsService
     { item_type: 'Idea', action: 'published', score: 5 },
     { item_type: 'Reaction', action: 'idea_liked', score: 1 },
     { item_type: 'Reaction', action: 'idea_disliked', score: 1 },
+    { item_type: 'Initiative', action: 'published', score: 5 },
     { item_type: 'Reaction', action: 'initiative_liked', score: 1 },
     { item_type: 'Reaction', action: 'initiative_disliked', score: 1 },
     { item_type: 'Reaction', action: 'comment_liked', score: 1 },
