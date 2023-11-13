@@ -177,7 +177,12 @@ const IdeaCard = memo<IdeaCardProps>(
                 : '8px'
             }
           >
-            <Title variant="h3" mt="4px" mb="16px">
+            <Title
+              variant="h3"
+              mt="4px"
+              mb="16px"
+              className="e2e-idea-card-title"
+            >
               {ideaTitle}
             </Title>
             {!hideBody && <Body idea={idea} />}
