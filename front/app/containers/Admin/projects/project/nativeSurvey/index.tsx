@@ -182,6 +182,7 @@ const Forms = () => {
               linkTo={viewFormLink}
               buttonStyle="secondary"
               icon="eye"
+              iconSize="20px"
               openLinkInNewTab
               width="auto"
               mx="8px"
@@ -190,6 +191,7 @@ const Forms = () => {
             </Button>
             <Button
               icon="edit"
+              iconSize="20px"
               buttonStyle="cl-blue"
               width="auto"
               onClick={() => {
@@ -217,6 +219,7 @@ const Forms = () => {
                 opened={isDropdownOpened}
                 onClickOutside={closeDropdown}
                 className="dropdown"
+                width="100%"
                 right="70px"
                 content={
                   <>
@@ -246,7 +249,7 @@ const Forms = () => {
                           <Box display="flex" gap="4px" alignItems="center">
                             <Icon name="download" />
                             <Text my="0px">
-                              {formatMessage(messages.downloadExcelTemplate)}
+                              {formatMessage(messages.downloadExcelTemplate1)}
                             </Text>
                           </Box>
                         </DropdownListItem>
