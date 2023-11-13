@@ -338,9 +338,11 @@ class ParticipationContextService
     context.reacting_dislike_limited? && user.reactions.down.where(reactable: context.ideas).size >= context.reacting_dislike_limited_max
   end
 
-  def permission_denied_reason(user, _action, _context)
-    'not_signed_in' unless user
+  def permission_denied_reason(user, action, context)
+    permissions_service.denied_reason_for_resource user, action, context
+  end
+
+  def permissions_service
+    @permissions_service ||= ::PermissionsService.new
   end
 end
-
-ParticipationContextService.prepend(GranularPermissions::Patches::ParticipationContextService)
