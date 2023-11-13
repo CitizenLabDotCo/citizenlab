@@ -40,7 +40,7 @@ import {
 import { darken } from 'polished';
 
 // utils
-import { isCurrentPhase } from 'api/phases/utils';
+import { pastPresentOrFuture } from 'utils/dateUtils';
 
 // typings
 import { IIdeaMarkerData } from 'api/idea_markers/types';
@@ -93,11 +93,6 @@ const Title = styled.h3<{ height: string }>`
   word-break: break-word;
 `;
 
-const Footer = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
 const FooterItem = styled.div`
   display: flex;
   align-items: center;
@@ -112,18 +107,18 @@ const MoneybagIcon = styled(Icon)`
 const DislikeIcon = styled(Icon)`
   fill: ${colors.textSecondary};
   margin-right: 6px;
+  transform: translate(0, 2px);
 `;
 
 const LikeIcon = styled(Icon)`
   fill: ${colors.textSecondary};
   margin-right: 6px;
-  margin-top: 5px;
 `;
 
 const CommentIcon = styled(Icon)`
   fill: ${colors.textSecondary};
   margin-right: 6px;
-  margin-left: 2px;
+  transform: translate(0, 2px);
 `;
 
 const FooterValue = styled.div`
@@ -216,18 +211,18 @@ const IdeaMapCard = memo<Props>(
         reactingActionDescriptor.down.enabled === true ||
         (reactingActionDescriptor.down.enabled === false &&
           reactingActionDescriptor.down.disabled_reason !==
-            'disliking_disabled');
+            'reacting_dislike_disabled');
 
       const commentingEnabled =
         project.data.attributes.action_descriptor.commenting_idea.enabled;
-
       const projectHasComments = project.data.attributes.comments_count > 0;
-
       const showCommentCount = commentingEnabled || projectHasComments;
-
       const phaseButNotCurrentPhase =
         participationContext?.type === 'phase' &&
-        !isCurrentPhase(participationContext);
+        pastPresentOrFuture([
+          participationContext.attributes.start_at,
+          participationContext.attributes.end_at,
+        ]) !== 'present';
       const showVoteInput =
         votingMethodConfig && participationContext && !phaseButNotCurrentPhase;
 
@@ -263,7 +258,7 @@ const IdeaMapCard = memo<Props>(
               })}
             </Box>
           )}
-          <Footer>
+          <Box display="flex" alignItems="center">
             {isParticipatoryBudgetContext &&
               tenantCurrency &&
               ideaBudget &&
@@ -304,7 +299,7 @@ const IdeaMapCard = memo<Props>(
                 </FooterValue>
               </FooterItem>
             )}
-          </Footer>
+          </Box>
         </Container>
       );
     }

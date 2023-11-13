@@ -189,10 +189,18 @@ describe('in America/Santiago time zone', () => {
         );
       });
 
+      it('should accurately report a present date if the end date is null', () => {
+        expect(pastPresentOrFuture(['2020-06-10', null])).toEqual('present');
+      });
+
       it('should accurately report a future date', () => {
         expect(pastPresentOrFuture(['2020-06-15', '2020-06-20'])).toEqual(
           'future'
         );
+      });
+
+      it('should accurately report a future date if the end date is null', () => {
+        expect(pastPresentOrFuture(['2020-06-15', null])).toEqual('future');
       });
     });
   });

@@ -95,6 +95,20 @@ RSpec.describe Analytics::FactProjectStatus do
       end
     end
 
+    context 'and its last phase has an open end date' do
+      let(:end_date) { nil }
+
+      it 'the project is not finished', :aggregate_failures do
+        expect(described_class.count).to eq(1)
+
+        project_status = described_class.first
+        expect(project_status.dimension_project_id).to eq(project.id)
+        expect(project_status.timestamp.floor).to eq(project.admin_publication.updated_at.floor)
+        expect(project_status.status).to eq('published')
+        expect(project_status.finished).to be(false)
+      end
+    end
+
     include_examples 'shared examples'
   end
 end

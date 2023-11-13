@@ -45,10 +45,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-
-  @media (max-width: 1279px) {
-    max-width: 1000px;
-  }
 `;
 
 const InitialLoading = styled.div`
