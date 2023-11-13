@@ -89,6 +89,7 @@ const AdminProjectIdeas = () => {
           type="ProjectIdeas"
           projectId={project.data.id}
           phases={phases?.data}
+          phaseId={phaseId}
           visibleFilterMenus={
             project.data.attributes.process_type === 'timeline'
               ? timelineProjectVisibleFilterMenus

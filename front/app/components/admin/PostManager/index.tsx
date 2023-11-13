@@ -104,6 +104,8 @@ interface InputProps {
   // When the PostManager is used in admin/projects, we pass down the current project id as a prop
   projectId?: string | null;
 
+  phaseId?: string | null;
+
   // filters settings
   // the filters needed for this view, in the order they'll be shown, first one active by default
   visibleFilterMenus: TFilterMenu[]; // cannot be empty.
@@ -415,7 +417,7 @@ const PostManager = ({
 };
 
 const Data = adopt<DataProps, InputProps>({
-  posts: ({ type, projectId, render }) => {
+  posts: ({ type, projectId, phaseId, render }) => {
     if (type === 'Initiatives') {
       return (
         <GetInitiatives pageSize={10} sort="new">
@@ -431,7 +433,11 @@ const Data = adopt<DataProps, InputProps>({
 
     if (type === 'ProjectIdeas') {
       return (
-        <GetIdeas {...props} projects={projectId ? [projectId] : undefined}>
+        <GetIdeas
+          {...props}
+          projects={projectId ? [projectId] : undefined}
+          phase={phaseId}
+        >
           {render}
         </GetIdeas>
       );
