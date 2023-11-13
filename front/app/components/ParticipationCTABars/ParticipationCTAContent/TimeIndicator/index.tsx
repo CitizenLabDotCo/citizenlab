@@ -35,8 +35,7 @@ const TimeIndicator = ({
     config.useProjectClosedCTABarStyle(currentPhase || project);
   const treatAsContinuous = hidePhases(phases, locale);
 
-  const hideDefaultParticipationMessage =
-    currentPhase && !treatAsContinuous ? true : false;
+  const showTimeLeft = currentPhase && !treatAsContinuous ? true : false;
 
   const getUserParticipationMessage = () => {
     if (useProjectClosedStyle) {
@@ -56,7 +55,7 @@ const TimeIndicator = ({
       {!useProjectClosedStyle && (
         <BlinkingDot hasUserParticipated={hasUserParticipated} />
       )}
-      {hideDefaultParticipationMessage ? (
+      {showTimeLeft ? (
         <Box>
           <TimeLeft currentPhase={currentPhase} />
         </Box>
