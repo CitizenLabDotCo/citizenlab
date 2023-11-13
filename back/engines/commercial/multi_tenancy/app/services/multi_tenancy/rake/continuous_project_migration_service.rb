@@ -27,7 +27,8 @@ class MultiTenancy::Rake::ContinuousProjectMigrationService
 
       # 2. Create a single phase with the same settings as the project
       phase = create_phase(project)
-      project.phases << phase
+      next unless phase
+
       reset_project_defaults(project)
 
       # 3. Update participation_context in models - from project_id to new phase_id
@@ -100,8 +101,14 @@ class MultiTenancy::Rake::ContinuousProjectMigrationService
       baskets_count: project.baskets_count,
       votes_count: project.votes_count
     )
-    phase.save!
-    phase
+    if phase.save
+      project.phases << phase
+      @stats[:records_updated] += 1
+      phase
+    else
+      error_handler("#{project.slug} #{phase.errors.details}")
+      false
+    end
   end
 
   def reset_project_defaults(project)
