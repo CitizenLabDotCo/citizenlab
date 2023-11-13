@@ -19,13 +19,11 @@ class MultiTenancy::Rake::ContinuousProjectMigrationService
     projects.each do |project|
       Rails.logger.info "MIGRATING PROJECT: #{project.slug}."
 
-      if !project.admin_publication
-        error_handler("#{project.slug} admin publication is blank.")
+      # 1. Change the project process_type
+      unless project.update(process_type: 'timeline')
+        error_handler("#{project.slug} #{project.errors.details}")
         next
       end
-
-      # 1. Change the process_type
-      project.update!(process_type: 'timeline')
 
       # 2. Create a single phase with the same settings as the project
       phase = create_phase(project)
@@ -63,12 +61,10 @@ class MultiTenancy::Rake::ContinuousProjectMigrationService
   private
 
   def create_phase(project)
-    # If the project is published - use the date published as phase start date
-    phase_start_at = project&.admin_publication&.published? ? project&.admin_publication&.updated_at : project.created_at
     phase = Phase.new(
-      title_multiloc: create_phase_title(project),
+      title_multiloc: MultilocService.new.i18n_to_multiloc("default_phase_title.#{project.participation_method}"),
       project: project,
-      created_at: phase_start_at,
+      created_at: project.created_at,
       start_at: project.created_at,
       end_at: nil,
 
@@ -182,15 +178,6 @@ class MultiTenancy::Rake::ContinuousProjectMigrationService
 
   def add_phase_creation_activity(phase)
     LogActivityJob.perform_later(phase, 'created', nil, phase.created_at.to_i, { payload: { migrated_from_continuous: true } })
-  end
-
-  def create_phase_title(project)
-    title_multiloc = {}
-    AppConfiguration.instance.settings('core', 'locales').each do |locale|
-      value = I18n.with_locale(locale) { I18n.t("default_phase_title.#{project.participation_method}") }
-      title_multiloc[locale] = value
-    end
-    title_multiloc
   end
 
   def error_handler(error)
