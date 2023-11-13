@@ -117,21 +117,18 @@ resource 'Reports' do
         expect(report.owner_id).to eq(user.id)
       end
 
-      context 'when the report belongs to a context' do
-        parameter :participation_context_type, 'The type of the participation context the report belongs to.', required: false, scope: :report
-        parameter :participation_context_id, 'The id of the participation context the report belongs to.', required: false, scope: :report
+      context 'when the report belongs to a phase' do
+        parameter :phase_id, 'The id of the phase the report belongs to.', required: false, scope: :report
 
         before { @phase = create(:phase) }
 
-        let(:participation_context_type) { 'Phase' }
-        let(:participation_context_id) { @phase.id }
+        let(:phase_id) { @phase.id }
 
         example_request 'Create a phase report' do
           assert_status 201
 
           report = ReportBuilder::Report.find(response_data[:id])
-          expect(report.participation_context_type).to eq(@phase.class.name)
-          expect(report.participation_context_id).to eq(@phase.id)
+          expect(report.phase_id).to eq(@phase.id)
         end
       end
 

@@ -69,13 +69,15 @@ class Phase < ApplicationRecord
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, dependent: :nullify
 
-  has_one :report, class_name: 'ReportBuilder::Report', as: :participation_context, dependent: :destroy
+  has_one :report, class_name: 'ReportBuilder::Report', dependent: :destroy
 
   validates :project, presence: true
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :description_multiloc, multiloc: { presence: false, html: true }
   validates :campaigns_settings, presence: true
-  validates :start_at, :end_at, presence: true
+  validates :start_at, presence: true
+  validate :validate_end_at
+  validate :validate_previous_blank_end_at
   validate :validate_start_at_before_end_at
   validate :validate_belongs_to_timeline_project
   validate :validate_no_other_overlapping_phases
@@ -114,6 +116,17 @@ class Phase < ApplicationRecord
     self
   end
 
+  def last_phase?
+    phases = Phase.where(project_id: project_id)
+    return true if phases.blank?
+
+    start_at.present? && start_at >= phases.maximum(:start_at)
+  end
+
+  def previous_phase_end_at_updated?
+    @previous_phase_end_at_updated || false
+  end
+
   private
 
   def sanitize_description_multiloc
@@ -124,6 +137,25 @@ class Phase < ApplicationRecord
     )
     self.description_multiloc = service.remove_multiloc_empty_trailing_tags(description_multiloc)
     self.description_multiloc = service.linkify_multiloc(description_multiloc)
+  end
+
+  def validate_end_at
+    return if end_at.present? || last_phase?
+
+    errors.add(:end_at, message: 'cannot be blank unless it is the last phase')
+  end
+
+  # If a previous phase has a blank end_at, update it and validate that the end date is 2 days after
+  def validate_previous_blank_end_at
+    previous_phase = TimelineService.new.previous_phase(self)
+    if previous_phase && previous_phase.end_at.blank?
+      if start_at < (previous_phase.start_at + 2.days)
+        errors.add(:start_at, message: 'must be 2 days after the start of the last phase')
+      else
+        previous_phase.update!(end_at: (start_at - 1.day))
+        @previous_phase_end_at_updated = true
+      end
+    end
   end
 
   def validate_campaigns_settings_keys_and_values
@@ -152,7 +184,7 @@ class Phase < ApplicationRecord
   def validate_no_other_overlapping_phases
     ts = TimelineService.new
     ts.other_project_phases(self).each do |other_phase|
-      next unless start_at.present? && end_at.present? && ts.overlaps?(self, other_phase)
+      next unless ts.overlaps?(self, other_phase)
 
       errors.add(:base, :has_other_overlapping_phases,
         message: 'has other phases which overlap in start and end date')

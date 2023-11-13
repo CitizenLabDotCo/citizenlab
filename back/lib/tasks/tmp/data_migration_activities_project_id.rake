@@ -52,15 +52,19 @@ namespace :data_migration do
     It processes all item types that are not covered by `add_project_id_to_activities_sql`,
     but it is pretty aggressive on the DB.
   DESC
-  task :add_project_id_to_activities_rails, [:tenant_id] => [:environment] do |_task, args|
+  task :add_project_id_to_activities_rails, %i[tenant_id model_class] => [:environment] do |_task, args|
     Rails.application.eager_load!
 
     # Models without `project_id` column that support the `project_id` method.
-    model_classes = ActiveRecord::Base.descendants.select do |klass|
-      klass.new.respond_to?(:project_id) && klass.column_names.exclude?('project_id')
-    rescue Exception # rubocop:disable Lint/RescueException
-      puts({ message: 'skipping model', model: klass.name })
-      false
+    model_classes = if args[:model_class]
+      [args[:model_class].constantize]
+    else
+      ActiveRecord::Base.descendants.select do |klass|
+        klass.new.respond_to?(:project_id) && klass.column_names.exclude?('project_id')
+      rescue Exception # rubocop:disable Lint/RescueException
+        puts({ message: 'skipping model', model: klass.name })
+        false
+      end
     end
 
     tenant_id = args[:tenant_id]

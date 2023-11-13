@@ -15,7 +15,6 @@ import FollowUnfollow from 'components/FollowUnfollow';
 import GoToCommentsButton from '../Buttons/GoToCommentsButton';
 
 // styling
-import styled from 'styled-components';
 import { rightColumnWidthDesktop } from '../../styleConstants';
 import { colors } from 'utils/styleUtils';
 
@@ -25,20 +24,6 @@ import {
   getCurrentParticipationContext,
   isIdeaInParticipationContext,
 } from 'api/phases/utils';
-
-const InnerContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const StyledReactionControl = styled(ReactionControl)`
-  padding-bottom: 23px;
-  margin-bottom: 23px;
-`;
-
-const StyledMetaInformation = styled(MetaInformation)`
-  margin-bottom: 40px;
-`;
 
 interface Props {
   ideaId: string;
@@ -86,7 +71,7 @@ const RightColumnDesktop = ({
       alignSelf="flex-start"
       className={className}
     >
-      <InnerContainer>
+      <Box display="flex" flexDirection="column">
         <Box
           padding="20px"
           borderRadius="3px"
@@ -95,11 +80,9 @@ const RightColumnDesktop = ({
         >
           {(ideaIsInParticipationContext || commentingEnabled) && (
             <>
-              <StyledReactionControl
-                styleType="shadow"
-                ideaId={ideaId}
-                size="4"
-              />
+              <Box pb="23px" mb="23px">
+                <ReactionControl styleType="shadow" ideaId={ideaId} size="4" />
+              </Box>
               <Box pb="23px" mb="23px" borderBottom="solid 1px #ccc">
                 {participationContext &&
                   ideaIsInParticipationContext &&
@@ -129,13 +112,15 @@ const RightColumnDesktop = ({
             buttonComponent={<SharingButtonComponent />}
           />
         </Box>
-        <StyledMetaInformation
-          ideaId={ideaId}
-          projectId={projectId}
-          statusId={statusId}
-          authorId={authorId}
-        />
-      </InnerContainer>
+        <Box mb="40px">
+          <MetaInformation
+            ideaId={ideaId}
+            projectId={projectId}
+            statusId={statusId}
+            authorId={authorId}
+          />
+        </Box>
+      </Box>
     </Box>
   );
 };

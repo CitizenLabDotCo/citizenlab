@@ -31,9 +31,10 @@ const StyledUserName = styled(UserName)`
 
 interface Props {
   userId: string;
+  showVerificationBadge?: boolean;
 }
 
-const User = ({ userId }: Props) => {
+const User = ({ userId, showVerificationBadge = true }: Props) => {
   const theme = useTheme();
   const { data: authUser } = useAuthUser();
 
@@ -54,7 +55,7 @@ const User = ({ userId }: Props) => {
           userId={userId}
           hideLastName
         />
-        <VerificationBadge isVerified={isVerified} />
+        {showVerificationBadge && <VerificationBadge isVerified={isVerified} />}
       </UserNameContainer>
 
       <Avatar

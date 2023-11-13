@@ -24,7 +24,7 @@ import { CONTENT_BUILDER_ERROR_EVENT } from 'components/admin/ContentBuilder/con
 // types
 import { Locale } from 'typings';
 
-import { isValidUrl } from './utils';
+import { isValidUrl } from 'utils/validate';
 
 interface Props {
   url: string;

@@ -30,7 +30,6 @@ install-front-dependencies: &install-front-dependencies
         npm ci
         npm i --save @citizenlab/cl2-component-library@${CL2_VERSION}
 
-
 parameters:
   # This parameter is used to trigger the main workflow
   trigger:
@@ -328,6 +327,8 @@ jobs:
     parameters:
       ssh_host:
         type: string
+      cluster_name:
+        type: string
       ssh_user:
         type: string
         default: ubuntu
@@ -344,7 +345,7 @@ jobs:
       - run:
           command: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "docker pull citizenlabdotco/back-ee:$CIRCLE_BRANCH && docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/back-ee:$CIRCLE_BRANCH bin/rake db:migrate_if_pending cl2back:clean_tenant_settings email_campaigns:assure_campaign_records fix_existing_tenants:update_permissions cl2back:clear_cache_store email_campaigns:remove_deprecated"
       - deploy:
-          command: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "cd cl2-deployment && docker stack deploy --compose-file << parameters.compose_file >> << parameters.stack_name >> --with-registry-auth"
+          command: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "cd cl2-deployment && CL_CLUSTER_NAME=<<parameters.cluster_name>> docker stack deploy --compose-file << parameters.compose_file >> << parameters.stack_name >> --with-registry-auth"
 
   back-generate-tenant-templates:
     resource_class: small
@@ -839,8 +840,9 @@ workflows:
                 - master
           ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_STAGING
           compose_file: docker-compose-staging.yml
-          stack_name: cl2-back-stg
-          env_file: ".env-staging"
+          stack_name: "cl2"
+          env_file: ".env-web"
+          cluster_name: "stg"
 
   back-deploy-production:
     when: << pipeline.parameters.back >>
@@ -878,6 +880,7 @@ workflows:
           compose_file: docker-compose-production-benelux.yml
           stack_name: cl2-prd-bnlx-stack
           env_file: ".env-production-benelux"
+          cluster_name: "eu"
       - back-deploy-to-swarm:
           name: Deploy to Canada
           requires:
@@ -890,6 +893,7 @@ workflows:
           compose_file: docker-compose-production.yml
           env_file: ".env-web"
           stack_name: "cl2"
+          cluster_name: "can"
       - back-deploy-to-swarm:
           name: Deploy to South-America
           requires:
@@ -902,6 +906,7 @@ workflows:
           compose_file: docker-compose-production.yml
           env_file: ".env-web"
           stack_name: "cl2"
+          cluster_name: "sam"
       - back-deploy-to-swarm:
           name: Deploy to US-West
           requires:
@@ -914,6 +919,7 @@ workflows:
           compose_file: docker-compose-production.yml
           env_file: ".env-web"
           stack_name: "cl2"
+          cluster_name: "usw"
       - back-deploy-to-swarm:
           name: Deploy to UK
           requires:
@@ -926,6 +932,7 @@ workflows:
           compose_file: docker-compose-production.yml
           env_file: ".env-web"
           stack_name: "cl2"
+          cluster_name: "uk"
 
   # FRONT-END
   front:

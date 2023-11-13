@@ -73,7 +73,8 @@ const ProjectDescriptionBuilderPage = () => {
 
   const localesWithError = Object.values(contentBuilderErrors)
     .filter((node) => node.hasError)
-    .map((node) => node.selectedLocale);
+    .filter((node) => node.selectedLocale)
+    .map((node) => node.selectedLocale as Locale);
 
   const handleErrors = (newErrors: ContentBuilderErrors) => {
     setContentBuilderErrors((contentBuilderErrors) => ({

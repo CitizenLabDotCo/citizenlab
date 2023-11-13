@@ -12,8 +12,7 @@ module EmailCampaigns
     end
 
     def filter_users_in_groups(users_scope, activity: nil, time: nil)
-      user_ids = groups.flat_map(&:member_ids).uniq
-      if user_ids.any?
+      if groups.any?
         users_scope
           .active
           .where(id: groups.flat_map(&:members).uniq)

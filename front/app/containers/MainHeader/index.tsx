@@ -172,14 +172,14 @@ const RightItem = styled.div`
   }
 
   ${media.phone`
-    margin-left: 30px;
+    margin-left: 12px;
   `}
 
   ${isRtl`
     margin-right: 40px;
     margin-left: 0;
     ${media.phone`
-        margin-right: 30px;
+        margin-right: 12px;
     `}
     &.noLeftMargin {
         margin-left: 0;

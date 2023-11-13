@@ -41,6 +41,8 @@ module EmailCampaigns
 
     before_validation :set_enabled, on: :create
 
+    validate :validate_recipients, on: :send
+
     scope :manual, -> { where type: 'EmailCampaigns::Campaigns::Manual' }
 
     def self.before_send(action_symbol)
@@ -127,6 +129,14 @@ module EmailCampaigns
         serializer: serializer,
         adapter: :json
       }).serializable_hash
+    end
+
+    private
+
+    def validate_recipients
+      return if apply_recipient_filters.any?
+
+      errors.add(:base, :no_recipients, message: "Can't send a campaign without recipients")
     end
   end
 end

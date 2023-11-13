@@ -3,7 +3,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
 import useLocale from 'hooks/useLocale';
-import { useBreakpoint } from '@citizenlab/cl2-component-library';
+import { Spinner, useBreakpoint } from '@citizenlab/cl2-component-library';
 import useProjectById from 'api/projects/useProjectById';
 import useIdeaCustomFieldsSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
 import useInfiniteIdeas from 'api/ideas/useInfiniteIdeas';
@@ -239,6 +239,8 @@ const IdeasWithoutFiltersSidebar = ({
       )
     : false;
   const showViewButtons = !!(locationEnabled && showViewToggle);
+
+  if (isLoading) return <Spinner />;
 
   if (list) {
     return (

@@ -108,6 +108,7 @@ const EmailConfirmation = ({
         setCodeResent(true);
       })
       .catch((_errors) => {
+        setError('resending_code_failed');
         setResendingCode(false);
       });
   };

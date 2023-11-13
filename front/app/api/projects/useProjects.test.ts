@@ -4,15 +4,9 @@ import { renderHook } from '@testing-library/react-hooks';
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-import { projects } from './__mocks__/useProjects';
+import endpoints, { projects, apiPathAll } from './__mocks__/_mockServer';
 
-const apiPath = '*projects';
-
-const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(projects));
-  })
-);
+const server = setupServer(endpoints['GET projects']);
 
 describe('useProjects', () => {
   beforeAll(() => server.listen());
@@ -36,7 +30,7 @@ describe('useProjects', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
+      rest.get(apiPathAll, (_req, res, ctx) => {
         return res(ctx.status(500));
       })
     );

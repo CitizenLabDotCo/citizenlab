@@ -491,7 +491,7 @@ class User < ApplicationRecord
   end
 
   def confirm!
-    return unless registered_with_email? && (confirmation_required? || new_email.present?)
+    return if !confirmation_required? && !new_email
 
     confirm_new_email if new_email.present?
     confirm
@@ -517,7 +517,7 @@ class User < ApplicationRecord
   end
 
   def should_send_confirmation_email?
-    confirmation_required? && email_confirmation_code_sent_at.nil?
+    confirmation_required? && email_confirmation_code_sent_at.nil? && (PhoneService.new.encoded_phone_or_email?(email) == :email)
   end
 
   def email_confirmation_code_expiration_at
@@ -528,22 +528,13 @@ class User < ApplicationRecord
     self.email_confirmation_code = use_fake_code? ? '1234' : rand.to_s[2..5]
   end
 
-  def increment_confirmation_code_reset_count!
+  def increment_confirmation_code_reset_count
     self.email_confirmation_code_reset_count += 1
-    save!
   end
 
   def increment_confirmation_retry_count!
     self.email_confirmation_retry_count += 1
     save!
-  end
-
-  def reset_email!(new_email)
-    if user_confirmation_enabled? && active?
-      update!(new_email: new_email, email_confirmation_code_reset_count: 0)
-    else
-      update!(email: new_email, email_confirmation_code_reset_count: 0)
-    end
   end
 
   def confirm_new_email

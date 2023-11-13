@@ -26,7 +26,7 @@ import { getFullName } from 'utils/textUtils';
 
 type Props = {
   startAt?: string;
-  endAt?: string;
+  endAt?: string | null;
   reportId: string;
   projectId?: string;
 };

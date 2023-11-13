@@ -1,5 +1,5 @@
 // Libraries
-import React from 'react';
+import React, { useState } from 'react';
 
 // typings
 import { IParticipationContextType } from 'typings';
@@ -10,7 +10,9 @@ import Button from 'components/UI/Button';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+
 import { exportVolunteers } from 'api/causes/util';
+import useCauses from 'api/causes/useCauses';
 
 interface Props {
   participationContextType: IParticipationContextType;
@@ -18,43 +20,37 @@ interface Props {
   className?: string;
 }
 
-interface State {
-  exporting: boolean;
-}
+const ExportVolunteersButton = ({
+  participationContextType,
+  participationContextId,
+  className,
+}: Props) => {
+  const { data: causes } = useCauses({
+    participationContextType,
+    participationContextId,
+  });
+  const [exporting, setExporting] = useState(false);
 
-export default class ExportVolunteersButton extends React.PureComponent<
-  Props,
-  State
-> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      exporting: false,
-    };
-  }
+  const noCauses = causes?.data.length === 0;
 
-  handleExportVolunteers = async () => {
-    this.setState({ exporting: true });
-    await exportVolunteers(
-      this.props.participationContextId,
-      this.props.participationContextType
-    );
-    this.setState({ exporting: false });
+  const handleExportVolunteers = async () => {
+    setExporting(true);
+    await exportVolunteers(participationContextId, participationContextType);
+    setExporting(false);
   };
 
-  render() {
-    const { className } = this.props;
-    const { exporting } = this.state;
-    return (
-      <Button
-        buttonStyle="secondary"
-        icon="download"
-        onClick={this.handleExportVolunteers}
-        processing={exporting}
-        className={className}
-      >
-        <FormattedMessage {...messages.exportVolunteers} />
-      </Button>
-    );
-  }
-}
+  return (
+    <Button
+      buttonStyle="secondary"
+      icon="download"
+      onClick={handleExportVolunteers}
+      disabled={noCauses}
+      processing={exporting}
+      className={className}
+    >
+      <FormattedMessage {...messages.exportVolunteers} />
+    </Button>
+  );
+};
+
+export default ExportVolunteersButton;

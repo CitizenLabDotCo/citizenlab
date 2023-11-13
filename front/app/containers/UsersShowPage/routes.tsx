@@ -17,7 +17,7 @@ export default () => ({
   children: [
     {
       path: '',
-      element: <Navigate to="submissions" />,
+      element: <Navigate to="submissions" replace />,
     },
     {
       path: 'submissions',

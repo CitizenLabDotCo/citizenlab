@@ -4,23 +4,23 @@
 #
 # Table name: report_builder_reports
 #
-#  id                         :uuid             not null, primary key
-#  name                       :string
-#  owner_id                   :uuid             not null
-#  created_at                 :datetime         not null
-#  updated_at                 :datetime         not null
-#  participation_context_type :string
-#  participation_context_id   :uuid
+#  id         :uuid             not null, primary key
+#  name       :string
+#  owner_id   :uuid             not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  phase_id   :uuid
 #
 # Indexes
 #
-#  index_report_builder_reports_on_name                   (name) UNIQUE
-#  index_report_builder_reports_on_owner_id               (owner_id)
-#  index_report_builder_reports_on_participation_context  (participation_context_type,participation_context_id)
+#  index_report_builder_reports_on_name      (name) UNIQUE
+#  index_report_builder_reports_on_owner_id  (owner_id)
+#  index_report_builder_reports_on_phase_id  (phase_id)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (owner_id => users.id)
+#  fk_rails_...  (phase_id => phases.id)
 #
 module ReportBuilder
   class Report < ::ApplicationRecord
@@ -32,7 +32,7 @@ module ReportBuilder
     )
     accepts_nested_attributes_for :layout
 
-    scope :with_platform_context, -> { where(participation_context_type: nil) }
+    scope :with_platform_context, -> { where(phase_id: nil) }
 
     validates :name, uniqueness: true, if: :present?
   end
