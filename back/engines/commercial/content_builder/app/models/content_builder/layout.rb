@@ -25,10 +25,7 @@ module ContentBuilder
     before_validation :sanitize_craftjs_json
 
     validates :content_buildable, :code, presence: true
-    validates :craftjs_jsonmultiloc, multiloc: { presence: false, value_type: Hash }, if: lambda { |layout|
-      # TODO: clean up after fully migrated
-      layout.content_buildable_type == 'ReportBuilder::Report'
-    }
+    validates :craftjs_jsonmultiloc, multiloc: { presence: false, value_type: Hash }
     validates :craftjs_jsonmultiloc, length: { maximum: 1 }, if: lambda { |layout|
       layout.content_buildable_type == 'ReportBuilder::Report' # mvp of report builder only allows 1 locale
     }
@@ -47,22 +44,18 @@ module ContentBuilder
     def validate_iframe_urls
       url_starts = %w[http:// https://]
 
-      # TODO: clean up after fully migrated
-      if content_buildable_type == 'ReportBuilder::Report'
-        craftjs_jsonmultiloc.each do |locale, json|
-          LayoutService.new.select_craftjs_elements_for_types(json, ['Iframe']).each do |elt|
-            url = elt.dig 'props', 'url'
-            if url && url_starts.none? { |url_start| url.starts_with?(url_start) }
-              errors.add :craftjs_jsonmultiloc, :iframe_url_invalid, locale: locale, url: url
-            end
-          end
-        end
-      else
-        LayoutService.new.select_craftjs_elements_for_types(craftjs_json, ['IframeMultiloc']).each do |elt|
+      craftjs_jsonmultiloc.each do |locale, json|
+        LayoutService.new.select_craftjs_elements_for_types(json, ['Iframe']).each do |elt|
           url = elt.dig 'props', 'url'
           if url && url_starts.none? { |url_start| url.starts_with?(url_start) }
-            errors.add :craftjs_json, :iframe_url_invalid, url: url
+            errors.add :craftjs_jsonmultiloc, :iframe_url_invalid, locale: locale, url: url
           end
+        end
+      end
+      LayoutService.new.select_craftjs_elements_for_types(craftjs_json, ['IframeMultiloc']).each do |elt|
+        url = elt.dig 'props', 'url'
+        if url && url_starts.none? { |url_start| url.starts_with?(url_start) }
+          errors.add :craftjs_json, :iframe_url_invalid, url: url
         end
       end
     end

@@ -96,10 +96,8 @@ class ProjectCopyService < TemplateService
     layouts = ContentBuilder::Layout.where(content_buildable_id: @project.id).map do |layout|
       craftjs = layout.craftjs_jsonmultiloc
 
-      # TODO: something...
       craftjs.each_key do |locale|
         craftjs[locale].each_value do |node|
-          # TODO: Deal with new image multiloc elements
           next unless ContentBuilder::LayoutService.new.craftjs_element_of_types?(node, ['Image'])
 
           source_image_code = node['props']['dataCode']
@@ -115,7 +113,7 @@ class ProjectCopyService < TemplateService
         'code' => layout.code,
         'enabled' => layout.enabled,
         'craftjs_jsonmultiloc' => craftjs,
-        'craftjs_json' => layout.craftjs_json, # TODO: something?
+        'craftjs_json' => layout.craftjs_json, # TODO: Add layout images to the mapping
         'created_at' => shift_timestamp(layout.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(layout.updated_at, shift_timestamps)&.iso8601
       }
