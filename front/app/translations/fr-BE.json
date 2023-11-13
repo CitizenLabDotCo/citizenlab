@@ -1338,7 +1338,6 @@
   "app.containers.Projects.oneSurvey": "1 enquête",
   "app.containers.Projects.oneSurveyInCurrentPhase": "1 enquête dans la phase actuelle",
   "app.containers.Projects.options": "Questions",
-  "app.containers.Projects.participantsTooltip2": "Ce nombre inclut également les réponses anonymes au sondage.",
   "app.containers.Projects.pastEvents": "Evénements passés",
   "app.containers.Projects.phases": "Phases",
   "app.containers.Projects.poll": "{tenantName, select, vitrysurseine {1 enquête} other {1 sondage}}",

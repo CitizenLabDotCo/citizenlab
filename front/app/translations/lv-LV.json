@@ -1338,7 +1338,6 @@
   "app.containers.Projects.oneSurvey": "1 aptauja",
   "app.containers.Projects.oneSurveyInCurrentPhase": "1 apsekojums pašreizējā posmā",
   "app.containers.Projects.options": "Iespējas",
-  "app.containers.Projects.participantsTooltip2": "Šis skaitlis atspoguļo arī anonīmās aptaujas iesniegumus.",
   "app.containers.Projects.pastEvents": "Pagātnes notikumi",
   "app.containers.Projects.phases": "Posmi",
   "app.containers.Projects.poll": "1 aptauja",

@@ -1338,7 +1338,6 @@
   "app.containers.Projects.oneSurvey": "1 encuesta",
   "app.containers.Projects.oneSurveyInCurrentPhase": "1 encuesta en la fase actual",
   "app.containers.Projects.options": "Opciones",
-  "app.containers.Projects.participantsTooltip2": "Esta cifra también refleja los aportes anónimos de encuestas.",
   "app.containers.Projects.pastEvents": "Eventos anteriores",
   "app.containers.Projects.phases": "Fases",
   "app.containers.Projects.poll": "1 consulta ciudadana",

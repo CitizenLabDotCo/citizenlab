@@ -1338,7 +1338,6 @@
   "app.containers.Projects.oneSurvey": "1 vragenlijst",
   "app.containers.Projects.oneSurveyInCurrentPhase": "1 vragenlijst in de huidige fase",
   "app.containers.Projects.options": "Opties",
-  "app.containers.Projects.participantsTooltip2": "Dit aantal bevat ook de anoniem ingediende vragenlijsten.",
   "app.containers.Projects.pastEvents": "Afgelopen activiteiten",
   "app.containers.Projects.phases": "Fases",
   "app.containers.Projects.poll": "1 peiling",
