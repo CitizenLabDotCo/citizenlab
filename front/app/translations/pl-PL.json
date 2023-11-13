@@ -21,6 +21,7 @@
   "app.components.AssignMultipleVotesControl.votesSubmitted": "Oddałeś już swój głos. Kliknij \"Modyfikuj swój głos\", aby zmienić swoje głosy.",
   "app.components.AssignMultipleVotesControl.votesSubmittedIdeaPage": "Oddałeś już swój głos. Aby zmienić swoje głosy, wróć do strony projektu i kliknij \"Zmień swój głos\".",
   "app.components.AssignMultipleVotesControl.xVotes2": "{votes, plural, one {{singular}} other {{plural}}}",
+  "app.components.AssignVoteControl.maxVotesReached": "Osiągnąłeś maksymalną liczbę głosów, które możesz oddać.",
   "app.components.AssignVoteControl.vote": "Głosuj",
   "app.components.AssignVoteControl.voteForAtLeastOne": "Zagłosuj na co najmniej 1 opcję",
   "app.components.AssignVoteControl.voted": "Zagłosowano",
