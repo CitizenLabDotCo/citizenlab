@@ -26,9 +26,9 @@ import useLocale from 'hooks/useLocale';
 
 type Props = {
   hasUserParticipated?: boolean;
-  CTAButton?: React.ReactNode;
+  CTAButton: React.ReactNode;
   currentPhase: IPhaseData | undefined;
-  participationState?: JSX.Element; // Optional element which displays on bottom left
+  participationState?: JSX.Element;
   project: IProjectData;
   phases: IPhaseData[] | undefined;
 };
@@ -42,7 +42,7 @@ const ParticipationCTAContent = ({
   phases,
 }: Props) => {
   const theme = useTheme();
-  const currentLocale = useLocale();
+  const locale = useLocale();
 
   const isSmallerThanPhone = useBreakpoint('phone');
 
@@ -53,7 +53,7 @@ const ParticipationCTAContent = ({
   const useProjectClosedStyle =
     config?.useProjectClosedCTABarStyle &&
     config.useProjectClosedCTABarStyle(currentPhase || project);
-  const treatAsContinuous = hidePhases(phases, currentLocale);
+  const treatAsContinuous = hidePhases(phases, locale);
 
   const hideDefaultParticipationMessage =
     currentPhase && !treatAsContinuous ? true : false;
