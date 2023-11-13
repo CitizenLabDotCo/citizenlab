@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useIntl } from 'utils/cl-intl';
 import { useParams } from 'react-router-dom';
 
@@ -6,14 +6,7 @@ import { useParams } from 'react-router-dom';
 import useLocale from 'hooks/useLocale';
 
 // components
-import {
-  Box,
-  Title,
-  Text,
-  Icon,
-  colors,
-} from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
+import { Box, Text, Icon, colors } from '@citizenlab/cl2-component-library';
 
 // i18n
 import messages from '../messages';
@@ -24,10 +17,8 @@ import { isNilOrError } from 'utils/helperUtils';
 // hooks
 import useFormResults from 'api/survey_results/useSurveyResults';
 import useProjectById from 'api/projects/useProjectById';
-import usePhase from 'api/phases/usePhase';
 
 // Services
-import { downloadSurveyResults } from 'api/survey_results/utils';
 import FormResultsQuestion from './FormResultsQuestion';
 
 const FormResults = () => {
@@ -36,10 +27,8 @@ const FormResults = () => {
     phaseId: string;
   };
   const { formatMessage } = useIntl();
-  const [isDownloading, setIsDownloading] = useState(false);
   const locale = useLocale();
   const { data: project } = useProjectById(projectId);
-  const { data: phase } = usePhase(phaseId);
   const { data: formResults } = useFormResults({
     projectId,
     phaseId,
@@ -51,17 +40,6 @@ const FormResults = () => {
 
   const { totalSubmissions, results } = formResults.data.attributes;
 
-  const handleDownloadResults = async () => {
-    try {
-      setIsDownloading(true);
-      await downloadSurveyResults(project.data, locale, phase?.data);
-    } catch (error) {
-      // Not handling errors for now
-    } finally {
-      setIsDownloading(false);
-    }
-  };
-
   const surveyResponseMessage =
     totalSubmissions > 0
       ? formatMessage(messages.totalSurveyResponses2, {
@@ -71,26 +49,10 @@ const FormResults = () => {
 
   return (
     <Box width="100%">
-      <Box width="100%" display="flex" alignItems="center">
-        <Box width="100%">
-          <Title variant="h2">{formatMessage(messages.surveyResults2)}</Title>
-          <Text variant="bodyM" color="textSecondary">
-            {surveyResponseMessage}
-          </Text>
-        </Box>
-        <Box>
-          <Button
-            icon="download"
-            data-cy="e2e-download-survey-results"
-            buttonStyle="secondary"
-            width="auto"
-            minWidth="312px"
-            onClick={handleDownloadResults}
-            processing={isDownloading}
-          >
-            {formatMessage(messages.downloadResults2)}
-          </Button>
-        </Box>
+      <Box width="100%">
+        <Text variant="bodyM" color="textSecondary">
+          {surveyResponseMessage}
+        </Text>
       </Box>
 
       <Box
