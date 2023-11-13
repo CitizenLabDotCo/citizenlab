@@ -14,6 +14,7 @@ import tracks from './tracks';
 import { PublicationStatus } from 'api/projects/types';
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
 import getStatusCounts from 'api/admin_publications_status_counts/util/getAdminPublicationsStatusCount';
+import { Multiloc } from 'typings';
 
 export type PublicationTab = PublicationStatus | 'all';
 
@@ -24,6 +25,7 @@ export interface Props {
   layout: TLayout;
   publicationStatusFilter: PublicationStatus[];
   showSearch?: boolean;
+  currentlyWorkingOnText?: Multiloc;
 }
 
 const ProjectAndFolderCards = ({

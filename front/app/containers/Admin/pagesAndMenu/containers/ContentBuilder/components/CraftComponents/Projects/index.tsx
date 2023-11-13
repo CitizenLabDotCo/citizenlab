@@ -5,8 +5,12 @@ import { Box, colors, media } from '@citizenlab/cl2-component-library';
 
 // hooks
 import ProjectAndFolderCards from 'components/ProjectAndFolderCards';
-import messages from '../../../messages';
+import messages from './messages';
 import styled from 'styled-components';
+import { Multiloc } from 'typings';
+import { useNode } from '@craftjs/core';
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
+import { useIntl } from 'utils/cl-intl';
 
 const ProjectSection = styled.div`
   width: 100%;
@@ -20,7 +24,11 @@ const ProjectSection = styled.div`
   `}
 `;
 
-const Projects = () => {
+const Projects = ({
+  currentlyWorkingOnText,
+}: {
+  currentlyWorkingOnText?: Multiloc;
+}) => {
   return (
     <Box bg={colors.background}>
       <Box maxWidth="1150px" margin="0 auto">
@@ -29,6 +37,7 @@ const Projects = () => {
             publicationStatusFilter={['published', 'archived']}
             showTitle={true}
             layout="dynamic"
+            currentlyWorkingOnText={currentlyWorkingOnText}
           />
         </ProjectSection>
       </Box>
@@ -37,6 +46,13 @@ const Projects = () => {
 };
 
 const ProjectsSettings = () => {
+  const { formatMessage } = useIntl();
+  const {
+    actions: { setProp },
+    currentlyWorkingOnText,
+  } = useNode((node) => ({
+    currentlyWorkingOnText: node.data.props.currentlyWorkingOnText,
+  }));
   return (
     <Box
       background="#ffffff"
@@ -44,7 +60,19 @@ const ProjectsSettings = () => {
       display="flex"
       flexDirection="column"
       gap="16px"
-    />
+    >
+      <InputMultilocWithLocaleSwitcher
+        id="project_title"
+        type="text"
+        label={formatMessage(messages.projectTitleLabel)}
+        name="project_title"
+        valueMultiloc={currentlyWorkingOnText}
+        placeholder={formatMessage(messages.projectsTitlePlaceholder)}
+        onChange={(valueMultiloc) =>
+          setProp((props) => (props.currentlyWorkingOnText = valueMultiloc))
+        }
+      />
+    </Box>
   );
 };
 
