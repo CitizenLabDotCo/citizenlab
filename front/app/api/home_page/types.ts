@@ -60,6 +60,10 @@ export interface IHomepageSettingsAttributes extends IHomepageEnabledSettings {
   banner_cta_signed_out_text_multiloc: Multiloc;
   banner_cta_signed_out_type: CTASignedOutType;
   banner_cta_signed_out_url: string | null;
+
+  banner_signed_in_header_overlay_color?: string | null;
+  // Number between 0 and 100, inclusive
+  banner_signed_in_header_overlay_opacity?: number | null;
   // content builder
   craftjs_json?: Record<string, SerializedNode>;
 }

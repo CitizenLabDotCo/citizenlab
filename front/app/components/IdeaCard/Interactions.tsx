@@ -1,5 +1,8 @@
 import React from 'react';
 
+// api
+import useBasket from 'api/baskets/useBasket';
+
 // config
 import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
 
@@ -11,25 +14,43 @@ import { IIdea } from 'api/ideas/types';
 import { IProjectData } from 'api/projects/types';
 import { IPhaseData } from 'api/phases/types';
 
-type InteractionsProps = {
+type Props = {
   idea: IIdea;
   participationContext?: IPhaseData | IProjectData | null;
 };
 
-const Interactions = ({ participationContext, idea }: InteractionsProps) => {
+const Interactions = ({ participationContext, idea }: Props) => {
+  const isGeneralIdeasPage = window.location.pathname.endsWith('/ideas');
   const votingMethod = participationContext?.attributes.voting_method;
   const config = getVotingMethodConfig(votingMethod);
+  const { data: basket } = useBasket(
+    participationContext?.relationships?.user_basket?.data?.id
+  );
 
   if (!config || !participationContext) return null;
 
-  const isCurrentPhase =
+  if (
     participationContext.type === 'phase' &&
     pastPresentOrFuture([
       participationContext.attributes.start_at,
       participationContext.attributes.end_at,
-    ]) === 'present';
+    ]) !== 'present'
+  ) {
+    return null;
+  }
 
-  if (!isCurrentPhase) {
+  const participationContextEnded =
+    participationContext?.type === 'phase' &&
+    participationContext.attributes.end_at &&
+    pastPresentOrFuture(participationContext?.attributes?.end_at) === 'past';
+
+  const hideInteractions =
+    isGeneralIdeasPage ||
+    (participationContextEnded && basket?.data.attributes.submitted_at === null)
+      ? true
+      : false;
+
+  if (hideInteractions) {
     return null;
   }
 

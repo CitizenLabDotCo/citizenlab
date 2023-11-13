@@ -109,6 +109,23 @@ e2e-ci-env-run-test:
 	cd e2e && \
 	docker-compose run --rm --name cypress_run front npm run cypress:run -- --config baseUrl=http://e2e.front:3000 --spec ${spec}
 
+e2e-ci-env-db-dump:
+	cd e2e && \
+	docker compose exec postgres pg_dumpall -c -U postgres > dump.sql
+
+e2e-ci-env-db-restore:
+	cd e2e && \
+	docker compose exec postgres psql -U postgres -d cl2_back_development -c "SELECT 1" 1> /dev/null && \
+	docker compose exec postgres psql -U postgres -d cl2_back_development -c "DROP SCHEMA IF EXISTS e2e_front,public CASCADE" 1> /dev/null 2> /dev/null && \
+	docker compose exec postgres psql -U postgres -d cl2_back_development -c "CREATE SCHEMA public" && \
+	cat dump.sql | docker compose exec -T postgres psql --quiet -U postgres 1> /dev/null 2> /dev/null
+
+e2e-ci-env-reproduce-flaky-test:
+	for i in $(shell seq 1 10); do \
+		make e2e-ci-env-db-restore && \
+		make e2e-ci-env-run-test spec="${spec}"; \
+	done
+
 # =================
 # CircleCI
 # =================

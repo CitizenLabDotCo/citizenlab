@@ -1,5 +1,5 @@
 import React, { PureComponent, MouseEvent, ButtonHTMLAttributes } from 'react';
-import { isNil, get } from 'lodash';
+import { isNil, get } from 'lodash-es';
 import styled from 'styled-components';
 import { darken, lighten, transparentize, opacify, rgba } from 'polished';
 import {
@@ -8,7 +8,7 @@ import {
   fontSizes,
   defaultStyles,
   isRtl,
-  MainThemeProps
+  MainThemeProps,
 } from '../../utils/styleUtils';
 import Spinner from '../Spinner';
 import Icon, { IconProps } from '../Icon';
@@ -87,7 +87,9 @@ function getPadding(props: ButtonContainerProps & { theme: MainThemeProps }) {
   }
 }
 
-function getLineHeight(props: ButtonContainerProps & { theme: MainThemeProps }) {
+function getLineHeight(
+  props: ButtonContainerProps & { theme: MainThemeProps }
+) {
   if (props.lineHeight) {
     return props.lineHeight;
   } else {
@@ -100,7 +102,9 @@ function getLineHeight(props: ButtonContainerProps & { theme: MainThemeProps }) 
   }
 }
 
-function getButtonStyle(props: ButtonContainerProps & { theme: MainThemeProps }) {
+function getButtonStyle(
+  props: ButtonContainerProps & { theme: MainThemeProps }
+) {
   const defaultStyleValues: DefaultStyleValues = {
     primary: {
       bgColor: get(props.theme.colors, 'tenantPrimary'),

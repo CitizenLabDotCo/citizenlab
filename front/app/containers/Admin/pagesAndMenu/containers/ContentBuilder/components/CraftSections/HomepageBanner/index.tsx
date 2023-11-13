@@ -13,6 +13,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import Error from 'components/UI/Error';
+import homepageMessages from 'containers/HomePage/messages';
 
 // craft
 import { useNode } from '@craftjs/core';
@@ -33,6 +34,8 @@ import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { isValidUrl } from 'utils/validate';
 import { CONTENT_BUILDER_ERROR_EVENT } from 'components/admin/ContentBuilder/constants';
 import eventEmitter from 'utils/eventEmitter';
+import LayoutSettingField from './LayoutSettingField';
+import OverlayControls from './OverlayControls';
 
 const CTA_SIGNED_OUT_TYPES: CTASignedOutType[] = [
   'sign_up_button',
@@ -47,14 +50,14 @@ const CTA_SIGNED_IN_TYPES: CTASignedInType[] = [
 
 export interface IHomepageSettingsAttributes {
   banner_layout: THomepageBannerLayout;
-  // Number between 0 and 100, inclusive
-  banner_signed_out_header_overlay_opacity: number | null;
   header_bg: ImageSizes | null;
 
   // signed_out
   banner_signed_out_header_multiloc: Multiloc;
   banner_signed_out_subheader_multiloc: Multiloc;
   banner_signed_out_header_overlay_color: string | null;
+  // Number between 0 and 100, inclusive
+  banner_signed_out_header_overlay_opacity: number | null;
   banner_avatars_enabled: boolean;
   // cta_signed_out
   banner_cta_signed_out_text_multiloc: Multiloc;
@@ -62,6 +65,9 @@ export interface IHomepageSettingsAttributes {
   banner_cta_signed_out_url: string | null;
   // signed_in
   banner_signed_in_header_multiloc: Multiloc;
+  banner_signed_in_header_overlay_color?: string | null;
+  // Number between 0 and 100, inclusive
+  banner_signed_in_header_overlay_opacity?: number | null;
   // cta_signed_in
   banner_cta_signed_in_text_multiloc: Multiloc;
   banner_cta_signed_in_type: CTASignedInType;
@@ -120,6 +126,15 @@ const HomepageBannerSettings = () => {
         node.data.props.homepageSettings.banner_cta_signed_out_type,
       banner_cta_signed_out_url:
         node.data.props.homepageSettings.banner_cta_signed_out_url,
+      banner_layout: node.data.props.homepageSettings.banner_layout,
+      banner_signed_out_header_overlay_opacity:
+        node.data.props.homepageSettings
+          .banner_signed_out_header_overlay_opacity,
+      banner_signed_in_header_overlay_opacity:
+        node.data.props.homepageSettings
+          .banner_signed_in_header_overlay_opacity,
+      banner_signed_in_header_overlay_color:
+        node.data.props.homepageSettings.banner_signed_in_header_overlay_color,
     },
   }));
 
@@ -212,15 +227,25 @@ const HomepageBannerSettings = () => {
   return (
     <Box
       background="#ffffff"
-      my="40px"
+      mb="40px"
       display="flex"
       flexDirection="column"
       gap="16px"
     >
+      <LayoutSettingField
+        bannerLayout={homepageSettings.banner_layout}
+        onChange={(value) => {
+          setProp(
+            (props: Props) =>
+              (props.homepageSettings.banner_layout =
+                value as THomepageBannerLayout)
+          );
+        }}
+      />
       <Toggle
         label={
           <Box>
-            <Text m={'0px'} fontWeight="bold">
+            <Text m={'0px'} color="primary">
               {formatMessage(messages.showAvatars)}
             </Text>
             <Text m={'0px'} color="textSecondary" fontSize="s">
@@ -273,8 +298,26 @@ const HomepageBannerSettings = () => {
 
       {search.get('variant') !== 'signedIn' && (
         <>
+          <OverlayControls
+            variant="signedOut"
+            bannerOverlayColor={
+              homepageSettings.banner_signed_out_header_overlay_color
+            }
+            bannerOverlayOpacity={
+              homepageSettings.banner_signed_out_header_overlay_opacity
+            }
+            onOverlayChange={(opacity, color) => {
+              setProp((props: Props) => {
+                props.homepageSettings.banner_signed_out_header_overlay_color =
+                  color;
+                props.homepageSettings.banner_signed_out_header_overlay_opacity =
+                  opacity;
+              });
+            }}
+          />
           <InputMultilocWithLocaleSwitcher
             label={formatMessage(messages.bannerText)}
+            placeholder={formatMessage(homepageMessages.titleCity)}
             type="text"
             valueMultiloc={homepageSettings.banner_signed_out_header_multiloc}
             onChange={(value) => {
@@ -287,6 +330,7 @@ const HomepageBannerSettings = () => {
           />
           <InputMultilocWithLocaleSwitcher
             label={formatMessage(messages.bannerSubtext)}
+            placeholder={formatMessage(homepageMessages.subtitleCity)}
             type="text"
             valueMultiloc={
               homepageSettings.banner_signed_out_subheader_multiloc
@@ -371,9 +415,30 @@ const HomepageBannerSettings = () => {
 
       {search.get('variant') === 'signedIn' && (
         <>
+          <OverlayControls
+            variant="signedIn"
+            noOpacitySlider={
+              homepageSettings.banner_layout === 'fixed_ratio_layout'
+            }
+            bannerOverlayColor={
+              homepageSettings.banner_signed_in_header_overlay_color
+            }
+            bannerOverlayOpacity={
+              homepageSettings.banner_signed_in_header_overlay_opacity
+            }
+            onOverlayChange={(opacity, color) => {
+              setProp((props: Props) => {
+                props.homepageSettings.banner_signed_in_header_overlay_color =
+                  color;
+                props.homepageSettings.banner_signed_in_header_overlay_opacity =
+                  opacity;
+              });
+            }}
+          />
           <InputMultilocWithLocaleSwitcher
             label={'Header'}
             type="text"
+            placeholder={formatMessage(homepageMessages.defaultSignedInMessage)}
             valueMultiloc={homepageSettings.banner_signed_in_header_multiloc}
             onChange={(value) => {
               setProp((props: Props) => {
@@ -480,9 +545,13 @@ HomepageBanner.craft = {
   related: {
     settings: HomepageBannerSettings,
   },
+  rules: {
+    canDrag: () => false,
+  },
   custom: {
     title: messages.homepageBannerTitle,
     noPointerEvents: true,
+    noDelete: true,
   },
 };
 

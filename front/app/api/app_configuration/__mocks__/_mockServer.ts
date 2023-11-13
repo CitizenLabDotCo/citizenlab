@@ -58,6 +58,10 @@ export const getAppConfigurationData = (
         tenant_site_id: '13',
         product_site_id: '14',
       },
+      follow: {
+        allowed: true,
+        enabled: true,
+      },
     },
     logo: {
       small: 'http://zah.cy/wof.jpg',
