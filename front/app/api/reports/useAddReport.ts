@@ -4,9 +4,15 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import areaKeys from './keys';
 import { ReportResponse } from './types';
 
-type AddReport = {
-  name: string;
-};
+type AddReport =
+  | {
+      name: string;
+      phase_id?: never;
+    }
+  | {
+      name?: never;
+      phase_id: string;
+    };
 
 const addReport = async (requestBody: AddReport) =>
   fetcher<ReportResponse>({
