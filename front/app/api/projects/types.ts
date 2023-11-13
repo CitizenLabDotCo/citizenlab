@@ -145,6 +145,8 @@ export type PostingDisabledReason =
   | 'project_inactive'
   | 'not_ideation'
   | 'posting_disabled'
+  // Only applicable to taking surveys at the moment.
+  // Not configurable via admin UI, determined in BE
   | 'posting_limited_max_reached'
   | PermissionsDisabledReason;
 

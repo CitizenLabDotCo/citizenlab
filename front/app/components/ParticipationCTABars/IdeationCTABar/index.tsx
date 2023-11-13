@@ -42,13 +42,11 @@ export const IdeationCTABar = ({ phases, project }: CTABarProps) => {
     return null;
   }
 
-  const { enabled, disabledReason } = getIdeaPostingRules({
+  const { enabled } = getIdeaPostingRules({
     project,
     phase: currentPhase,
     authUser: authUser?.data,
   });
-
-  const hasUserParticipated = disabledReason === 'postingLimitedMaxReached';
 
   const scrollToIdeas = (event: FormEvent) => {
     event.preventDefault();
@@ -56,54 +54,47 @@ export const IdeationCTABar = ({ phases, project }: CTABarProps) => {
     scrollToElement({ id: 'project-ideas', shouldFocus: true });
   };
 
-  let CTAButton: React.ReactNode | null = null;
-
-  if (hasUserParticipated) {
-    CTAButton = null;
-  } else {
-    CTAButton = enabled ? (
-      <Box width="100%">
-        <IdeaButton
-          id="e2e-ideation-cta-button"
-          projectId={project.id}
-          participationContextType={isPhaseIdeation ? 'phase' : 'project'}
-          fontWeight="500"
-          bgColor={theme.colors.white}
-          textColor={theme.colors.tenantText}
-          textHoverColor={theme.colors.black}
-          icon={!isSmallerThanPhone ? 'arrow-right' : undefined}
-          iconPos="right"
-          iconColor={theme.colors.tenantText}
-          iconHoverColor={theme.colors.black}
-          phase={currentPhase}
-          iconSize="20px"
-          padding="6px 12px"
-          fontSize="14px"
-          participationMethod="ideation"
-        />
-      </Box>
-    ) : (
-      <Button
-        id="e2e-ideation-see-ideas-button"
-        buttonStyle="secondary"
-        onClick={scrollToIdeas}
-        fontWeight="500"
-        bgColor={theme.colors.white}
-        textColor={theme.colors.tenantText}
-        textHoverColor={theme.colors.black}
-        padding="6px 12px"
-        fontSize="14px"
-      >
-        <FormattedMessage {...messages.seeIdeas} />
-      </Button>
-    );
-  }
-
   return (
     <ParticipationCTAContent
       currentPhase={currentPhase}
-      CTAButton={CTAButton}
-      hasUserParticipated={hasUserParticipated}
+      CTAButton={
+        enabled ? (
+          <Box width="100%">
+            <IdeaButton
+              id="e2e-ideation-cta-button"
+              projectId={project.id}
+              participationContextType={isPhaseIdeation ? 'phase' : 'project'}
+              fontWeight="500"
+              bgColor={theme.colors.white}
+              textColor={theme.colors.tenantText}
+              textHoverColor={theme.colors.black}
+              icon={!isSmallerThanPhone ? 'arrow-right' : undefined}
+              iconPos="right"
+              iconColor={theme.colors.tenantText}
+              iconHoverColor={theme.colors.black}
+              phase={currentPhase}
+              iconSize="20px"
+              padding="6px 12px"
+              fontSize="14px"
+              participationMethod="ideation"
+            />
+          </Box>
+        ) : (
+          <Button
+            id="e2e-ideation-see-ideas-button"
+            buttonStyle="secondary"
+            onClick={scrollToIdeas}
+            fontWeight="500"
+            bgColor={theme.colors.white}
+            textColor={theme.colors.tenantText}
+            textHoverColor={theme.colors.black}
+            padding="6px 12px"
+            fontSize="14px"
+          >
+            <FormattedMessage {...messages.seeIdeas} />
+          </Button>
+        )
+      }
     />
   );
 };
