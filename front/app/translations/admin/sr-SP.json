@@ -1810,7 +1810,7 @@
   "app.containers.AdminPage.SettingsPage.selectOnboardingAreas": "Изаберите области које ће бити приказане корисницима да прате након регистрације",
   "app.containers.AdminPage.SettingsPage.selectOnboardingTopics": "Изаберите теме које ће бити приказане корисницима да прате након регистрације",
   "app.containers.AdminPage.SettingsPage.settingsSavingError": "Није могуће сачувати. Покушајте поново да промените поставку.",
-  "app.containers.AdminPage.SettingsPage.sign_up_button": "\"Пријави се\"",
+  "app.containers.AdminPage.SettingsPage.sign_up_button": "\"Региструјте се\"",
   "app.containers.AdminPage.SettingsPage.signed_in": "Дугме за регистроване посетиоце",
   "app.containers.AdminPage.SettingsPage.signed_out": "Дугме за нерегистроване посетиоце",
   "app.containers.AdminPage.SettingsPage.signupFormText": "Помоћни текст за регистрацију",
