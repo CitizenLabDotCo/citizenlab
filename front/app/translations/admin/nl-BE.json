@@ -1504,7 +1504,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResultsConfirmation2": "Weet u zeker dat u alle enquêteresultaten wilt verwijderen?",
   "app.containers.AdminPage.ProjectEdit.survey.disabledSurveyMessage2": "De inhoud van de enquête kan niet worden bewerkt nu de enquêteresultaten binnenkomen.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadAllResults2": "Download alle enquêteresultaten",
-  "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate": "Download een Excel-sjabloon",
   "app.containers.AdminPage.ProjectEdit.survey.downloadResults2": "Download de resultaten van de enquête",
   "app.containers.AdminPage.ProjectEdit.survey.downloadSurvey": "Download vragenlijst als pdf",
   "app.containers.AdminPage.ProjectEdit.survey.editSurveyContent2": "Inhoud van de enquête bewerken",

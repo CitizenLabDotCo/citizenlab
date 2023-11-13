@@ -1504,7 +1504,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResultsConfirmation2": "Vai esat pārliecināts, ka vēlaties dzēst visus aptaujas rezultātus?",
   "app.containers.AdminPage.ProjectEdit.survey.disabledSurveyMessage2": "Aptaujas saturu nevar rediģēt, jo ir sākusies apsekojumu rezultātu saņemšana.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadAllResults2": "Lejupielādēt visus apsekojuma rezultātus",
-  "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate": "Lejupielādēt Excel veidni",
   "app.containers.AdminPage.ProjectEdit.survey.downloadResults2": "Aptaujas rezultātu lejupielāde",
   "app.containers.AdminPage.ProjectEdit.survey.downloadSurvey": "Lejupielādēt apsekojumu pdf formātā",
   "app.containers.AdminPage.ProjectEdit.survey.editSurveyContent2": "Aptaujas satura rediģēšana",

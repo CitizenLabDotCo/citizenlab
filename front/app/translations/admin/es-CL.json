@@ -1504,7 +1504,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResultsConfirmation2": "¿Está seguro de que desea eliminar todos los resultados de la encuesta?",
   "app.containers.AdminPage.ProjectEdit.survey.disabledSurveyMessage2": "El contenido de la encuesta no puede editarse, ya que los resultados han empezado a llegar.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadAllResults2": "Descargar todos los resultados de la encuesta",
-  "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate": "Descargar una plantilla Excel",
   "app.containers.AdminPage.ProjectEdit.survey.downloadResults2": "Descargar los resultados de la encuesta",
   "app.containers.AdminPage.ProjectEdit.survey.downloadSurvey": "Descargar encuesta como pdf",
   "app.containers.AdminPage.ProjectEdit.survey.editSurveyContent2": "Editar el contenido de la encuesta",

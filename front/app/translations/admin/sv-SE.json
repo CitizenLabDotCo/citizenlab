@@ -1504,7 +1504,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResultsConfirmation2": "Är du säker på att du vill ta bort alla undersökningsresultat?",
   "app.containers.AdminPage.ProjectEdit.survey.disabledSurveyMessage2": "Undersökningsinnehållet kan inte redigeras när undersökningsresultat har börjat komma in.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadAllResults2": "Ladda ner alla undersökningsresultat",
-  "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate": "Ladda ner en Excel-mall",
   "app.containers.AdminPage.ProjectEdit.survey.downloadResults2": "Ladda ner undersökningsresultat",
   "app.containers.AdminPage.ProjectEdit.survey.downloadSurvey": "Ladda ner undersökningen som pdf",
   "app.containers.AdminPage.ProjectEdit.survey.editSurveyContent2": "Redigera innehåll i undersökningen",

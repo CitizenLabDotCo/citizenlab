@@ -1504,7 +1504,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResultsConfirmation2": "Да ли сте сигурни да желите да избришете све резултате анкете?",
   "app.containers.AdminPage.ProjectEdit.survey.disabledSurveyMessage2": "Садржај анкете се не може уређивати јер су почели да пристижу резултати анкете.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadAllResults2": "Преузмите све резултате анкете",
-  "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate": "Преузмите Екцел шаблон",
   "app.containers.AdminPage.ProjectEdit.survey.downloadResults2": "Преузмите резултате анкете",
   "app.containers.AdminPage.ProjectEdit.survey.downloadSurvey": "Преузмите анкету у пдф формату",
   "app.containers.AdminPage.ProjectEdit.survey.editSurveyContent2": "Уредите садржај анкете",

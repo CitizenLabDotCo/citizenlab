@@ -1504,7 +1504,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResultsConfirmation2": "Er du sikker på at du vil slette alle resultater av spørreundersøkelsen?",
   "app.containers.AdminPage.ProjectEdit.survey.disabledSurveyMessage2": "Spørreundersøkelsesinnholdet kan ikke redigeres, da det har begynt å komme inn resultater i spørreundersøkelsen.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadAllResults2": "Last ned alle spørreundersøkelsesresultater",
-  "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate": "Last ned en Excel-mal",
   "app.containers.AdminPage.ProjectEdit.survey.downloadResults2": "Last ned spørreundersøkelsesresultater",
   "app.containers.AdminPage.ProjectEdit.survey.downloadSurvey": "Last ned undersøkelsen som pdf",
   "app.containers.AdminPage.ProjectEdit.survey.editSurveyContent2": "Rediger spørreundersøkelsesinnhold",

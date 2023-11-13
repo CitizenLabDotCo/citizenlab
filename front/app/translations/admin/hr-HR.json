@@ -1504,7 +1504,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResultsConfirmation2": "Jeste li sigurni da želite izbrisati sve rezultate upitnika?",
   "app.containers.AdminPage.ProjectEdit.survey.disabledSurveyMessage2": "Sadržaj upitnika nije moguće uređivati jer su rezultati upitnika počeli pristizati.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadAllResults2": "Preuzmi sve rezultate upitnika",
-  "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate": "Preuzmite Excel predložak",
   "app.containers.AdminPage.ProjectEdit.survey.downloadResults2": "Preuzmi rezultate upitnika",
   "app.containers.AdminPage.ProjectEdit.survey.downloadSurvey": "Preuzmite anketu kao pdf",
   "app.containers.AdminPage.ProjectEdit.survey.editSurveyContent2": "Uredi sadržaj upitnika",

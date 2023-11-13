@@ -1504,7 +1504,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResultsConfirmation2": "Tem a certeza de que quer apagar todos os resultados da pesquisa?",
   "app.containers.AdminPage.ProjectEdit.survey.disabledSurveyMessage2": "O conteúdo da pesquisa não pode ser editado, uma vez que os resultados da pesquisa já começaram a chegar.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadAllResults2": "Descarregar todos os resultados da pesquisa",
-  "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate": "Baixe um modelo Excel",
   "app.containers.AdminPage.ProjectEdit.survey.downloadResults2": "Descarregar resultados da pesquisa",
   "app.containers.AdminPage.ProjectEdit.survey.downloadSurvey": "Baixe a pesquisa em PDF",
   "app.containers.AdminPage.ProjectEdit.survey.editSurveyContent2": "Editar o conteúdo da pesquisa",

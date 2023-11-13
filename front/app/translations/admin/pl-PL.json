@@ -1504,7 +1504,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResultsConfirmation2": "Czy na pewno chcesz usunąć wszystkie wyniki ankiety?",
   "app.containers.AdminPage.ProjectEdit.survey.disabledSurveyMessage2": "Treść ankiety nie może być edytowana, ponieważ zaczęły napływać wyniki ankiet.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadAllResults2": "Pobierz wszystkie wyniki badań",
-  "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate": "Pobierz szablon Excel",
   "app.containers.AdminPage.ProjectEdit.survey.downloadResults2": "Pobierz wyniki badania",
   "app.containers.AdminPage.ProjectEdit.survey.downloadSurvey": "Pobierz ankietę w formacie pdf",
   "app.containers.AdminPage.ProjectEdit.survey.editSurveyContent2": "Edycja treści ankiety",
