@@ -86,25 +86,39 @@ export const ProjectHeader = ({ project, phases }: Props) => {
             {localize(project.attributes.title_multiloc)}
           </Title>
           <Box display="flex" gap="8px">
-            <Box display="flex" alignItems="center">
-              <Icon
-                name={publicationStatusIcon}
-                fill={publicationStatusIconColor}
-                width="16px"
-              />
-              <Text color="coolGrey600" fontSize="s" my="0px">
-                {formatMessage(statusMessage)}
-              </Text>
-            </Box>
-            <Box display="flex" alignItems="center">
-              <Icon name="lock" fill={colors.coolGrey600} width="16px" />
-              <Text color="coolGrey600" fontSize="s" my="0px">
-                {formatMessage(visibilityMessage)}
-              </Text>
-            </Box>
+            <Button
+              linkTo={`/admin/projects/${project.id}/settings`}
+              buttonStyle="text"
+              size="s"
+              padding="0px"
+            >
+              <Box display="flex" alignItems="center">
+                <Icon
+                  name={publicationStatusIcon}
+                  fill={publicationStatusIconColor}
+                  width="16px"
+                />
+                <Text color="coolGrey600" fontSize="s" m="0px">
+                  {formatMessage(statusMessage)}
+                </Text>
+              </Box>
+            </Button>
+            <Button
+              linkTo={`/admin/projects/${project.id}/settings/access-rights`}
+              buttonStyle="text"
+              size="s"
+              padding="0px"
+            >
+              <Box display="flex" alignItems="center">
+                <Icon name="lock" fill={colors.coolGrey600} width="16px" />
+                <Text color="coolGrey600" fontSize="s" m="0px">
+                  {formatMessage(visibilityMessage)}
+                </Text>
+              </Box>
+            </Button>
             <Box display="flex" alignItems="center">
               <Icon name="user" fill={colors.coolGrey600} width="16px" />
-              <Text color="coolGrey600" fontSize="s" my="0px">
+              <Text color="coolGrey600" fontSize="s" m="0px">
                 {formatMessage(messages.participants, {
                   participantsCount: project.attributes.participants_count,
                 })}
