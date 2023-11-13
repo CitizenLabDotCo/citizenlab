@@ -46,32 +46,28 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.newProject',
     defaultMessage: 'New Project',
   },
-  addNewIdea: {
-    id: 'app.containers.AdminPage.ProjectEdit.addNewIdea',
-    defaultMessage: 'Add an idea',
+  newIdea: {
+    id: 'app.containers.AdminPage.ProjectEdit.newIdea',
+    defaultMessage: 'New idea',
   },
   addNewInput: {
     id: 'app.containers.AdminPage.ProjectEdit.addNewInput',
     defaultMessage: 'Add an input',
   },
-  addNewProject: {
-    id: 'app.containers.AdminPage.ProjectEdit.addNewProject',
-    defaultMessage: 'Add a project',
-  },
-  addNewIssue: {
-    id: 'app.containers.AdminPage.ProjectEdit.addNewIssue',
+  newIssue: {
+    id: 'app.containers.AdminPage.ProjectEdit.newIssue',
     defaultMessage: 'Add an issue',
   },
-  addNewQuestion: {
-    id: 'app.containers.AdminPage.ProjectEdit.addNewQuestion',
+  newQuestion: {
+    id: 'app.containers.AdminPage.ProjectEdit.newQuestion',
     defaultMessage: 'Add a question',
   },
-  addNewOption: {
-    id: 'app.containers.AdminPage.ProjectEdit.addNewOption',
+  newOption: {
+    id: 'app.containers.AdminPage.ProjectEdit.newOption',
     defaultMessage: 'Add an option',
   },
-  addNewContribution: {
-    id: 'app.containers.AdminPage.ProjectEdit.addNewContribution',
+  newContribution: {
+    id: 'app.containers.AdminPage.ProjectEdit.newContribution',
     defaultMessage: 'Add a contribution',
   },
   viewPublicProject: {

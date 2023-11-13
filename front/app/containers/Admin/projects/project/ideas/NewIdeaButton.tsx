@@ -6,7 +6,6 @@ import { InputTerm } from 'utils/participationContexts';
 // intl
 import { useIntl } from 'utils/cl-intl';
 import messages from './../messages';
-import { WrappedComponentProps } from 'react-intl';
 
 // components
 import Button from 'components/UI/Button';
@@ -17,25 +16,22 @@ interface Props {
   inputTerm: InputTerm;
 }
 
-const NewIdeaButton = ({
-  linkTo,
-  inputTerm,
-}: Props & WrappedComponentProps) => {
+const NewIdeaButton = ({ linkTo, inputTerm }: Props) => {
   const { formatMessage } = useIntl();
   return (
     <Button
       id="e2e-new-idea"
       buttonStyle="cl-blue"
-      icon="idea"
+      icon="plus"
       linkTo={linkTo}
       text={formatMessage(
         getInputTermMessage(inputTerm, {
-          idea: messages.addNewIdea,
-          option: messages.addNewOption,
-          project: messages.addNewProject,
-          question: messages.addNewQuestion,
-          issue: messages.addNewIssue,
-          contribution: messages.addNewContribution,
+          idea: messages.newIdea,
+          option: messages.newOption,
+          project: messages.newProject,
+          question: messages.newQuestion,
+          issue: messages.newIssue,
+          contribution: messages.newContribution,
         })
       )}
     />
