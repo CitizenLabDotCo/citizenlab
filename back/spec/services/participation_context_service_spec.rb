@@ -91,7 +91,7 @@ describe ParticipationContextService do
       expect(service.posting_idea_disabled_reason_for_project(project, user)).to be_nil
     end
 
-    context 'granular permissions' do
+    context 'with phase permissions' do
       let(:project) { create(:project_with_current_phase, current_phase_attrs: { with_permissions: true }) }
       let(:permission) do
         service
@@ -182,7 +182,7 @@ describe ParticipationContextService do
       expect(service.commenting_disabled_reason_for_idea(idea, user)).to eq 'idea_not_in_current_phase'
     end
 
-    context 'granular permissions' do
+    context 'with phase permissions' do
       let(:project) { create(:project_with_current_phase, current_phase_attrs: { with_permissions: true }) }
       let(:permission) do
         service
@@ -470,7 +470,7 @@ describe ParticipationContextService do
       end
     end
 
-    describe 'granular permissions' do
+    describe 'with phase permissions' do
       let(:reasons) { ParticipationContextService::REACTING_DISABLED_REASONS }
 
       let(:project) { create(:project_with_current_phase, current_phase_attrs: { with_permissions: true }) }
@@ -541,7 +541,7 @@ describe ParticipationContextService do
       expect(service.cancelling_reacting_disabled_reason_for_idea(idea, idea.author)).to eq reasons[:project_inactive]
     end
 
-    describe 'granular permissions' do
+    describe 'with phase permissions' do
       let(:project) do
         create(:project_with_current_phase, current_phase_attrs: { with_permissions: true, permissions_config: { reacting_idea: false } })
       end

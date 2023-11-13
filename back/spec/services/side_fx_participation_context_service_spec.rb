@@ -45,8 +45,7 @@ describe SideFxParticipationContextService do
     it { expect { service.before_destroy(pc, user) }.to have_enqueued_job(Surveys::WebhookManagerJob) }
   end
 
-  # TODO: JS - rewrite these tests to combine with above
-  context 'granular permissions' do
+  context 'with phase permissions' do
     subject(:service) do
       described_class.new.tap { |s| s.permissions_service = permissions_service }
     end
