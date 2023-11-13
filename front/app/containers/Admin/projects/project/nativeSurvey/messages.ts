@@ -156,9 +156,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.text2',
     defaultMessage: 'Short answer',
   },
-  downloadExcelTemplate: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate',
-    defaultMessage: 'Download an Excel template',
+  downloadExcelTemplate1: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate1',
+    defaultMessage: 'Download an excel template',
   },
   addOfflineInputs: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.addOfflineInputs',
