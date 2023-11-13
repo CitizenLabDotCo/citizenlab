@@ -342,10 +342,10 @@ class ProjectCopyService < TemplateService
   end
 
   def yml_poll_questions(shift_timestamps: 0)
-    participation_context_ids = [@project.id] + @project.phases.ids
-    Polls::Question.where(participation_context_id: participation_context_ids).map do |q|
+    phase_ids = @project.phases.ids
+    Polls::Question.where(participation_context_id: phase_ids).map do |q|
       yml_question = {
-        'participation_context_ref' => lookup_ref(q.participation_context_id, %i[project phase]),
+        'participation_context_ref' => lookup_ref(q.participation_context_id, %i[phase]),
         'title_multiloc' => q.title_multiloc,
         'ordering' => q.ordering,
         'created_at' => shift_timestamp(q.created_at, shift_timestamps)&.iso8601,
@@ -359,8 +359,8 @@ class ProjectCopyService < TemplateService
   end
 
   def yml_poll_options(shift_timestamps: 0)
-    participation_context_ids = [@project.id] + @project.phases.ids
-    Polls::Option.left_outer_joins(:question).where(polls_questions: { participation_context_id: participation_context_ids }).map do |o|
+    phase_ids = @project.phases.ids
+    Polls::Option.left_outer_joins(:question).where(polls_questions: { participation_context_id: phase_ids }).map do |o|
       yml_option = {
         'question_ref' => lookup_ref(o.question_id, :poll_question),
         'title_multiloc' => o.title_multiloc,
@@ -374,10 +374,10 @@ class ProjectCopyService < TemplateService
   end
 
   def yml_volunteering_causes(shift_timestamps: 0)
-    participation_context_ids = [@project.id] + @project.phases.ids
-    Volunteering::Cause.where(participation_context_id: participation_context_ids).map do |c|
+    phase_ids = @project.phases.ids
+    Volunteering::Cause.where(participation_context_id: phase_ids).map do |c|
       yml_cause = {
-        'participation_context_ref' => lookup_ref(c.participation_context_id, %i[project phase]),
+        'participation_context_ref' => lookup_ref(c.participation_context_id, %i[phase]),
         'title_multiloc' => c.title_multiloc,
         'description_multiloc' => c.description_multiloc,
         'remote_image_url' => c.image_url,
@@ -442,11 +442,11 @@ class ProjectCopyService < TemplateService
     user_ids += Comment.where(id: comment_ids).pluck(:author_id)
     reaction_ids = Reaction.where(reactable_id: [idea_ids + comment_ids]).ids
     user_ids += Reaction.where(id: reaction_ids).pluck(:user_id)
-    participation_context_ids = [@project.id] + @project.phases.ids
-    user_ids += Basket.where(participation_context_id: participation_context_ids).pluck(:user_id)
+    phase_ids = @project.phases.ids
+    user_ids += Basket.where(participation_context_id: phase_ids).pluck(:user_id)
     user_ids += OfficialFeedback.where(post_id: idea_ids, post_type: 'Idea').pluck(:user_id)
     user_ids += Follower.where(followable_id: ([@project.id] + idea_ids)).pluck(:user_id)
-    user_ids += Volunteering::Volunteer.where(cause: Volunteering::Cause.where(participation_context_id: participation_context_ids)).pluck :user_id
+    user_ids += Volunteering::Volunteer.where(cause: Volunteering::Cause.where(participation_context_id: phase_ids)).pluck :user_id
     user_ids += Events::Attendance.where(event: @project.events).pluck :attendee_id
 
     User.where(id: user_ids.uniq).map do |user|
@@ -487,12 +487,12 @@ class ProjectCopyService < TemplateService
   end
 
   def yml_baskets(shift_timestamps: 0)
-    participation_context_ids = [@project.id] + @project.phases.ids
-    Basket.where(participation_context_id: participation_context_ids).map do |b|
+    phase_ids = @project.phases.ids
+    Basket.where(participation_context_id: phase_ids).map do |b|
       yml_basket = {
         'submitted_at' => shift_timestamp(b.submitted_at, shift_timestamps)&.iso8601,
         'user_ref' => lookup_ref(b.user_id, :user),
-        'participation_context_ref' => lookup_ref(b.participation_context_id, %i[project phase]),
+        'participation_context_ref' => lookup_ref(b.participation_context_id, %i[phase]),
         'created_at' => shift_timestamp(b.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(b.updated_at, shift_timestamps)&.iso8601
       }
@@ -724,8 +724,8 @@ class ProjectCopyService < TemplateService
   end
 
   def yml_volunteers(shift_timestamps: 0)
-    participation_context_ids = [@project.id] + @project.phases.ids
-    Volunteering::Volunteer.where(cause: Volunteering::Cause.where(participation_context_id: participation_context_ids)).map do |volunteer|
+    phase_ids = @project.phases.ids
+    Volunteering::Volunteer.where(cause: Volunteering::Cause.where(participation_context_id: phase_ids)).map do |volunteer|
       {
         'cause_ref' => lookup_ref(volunteer.cause_id, :volunteering_cause),
         'user_ref' => lookup_ref(volunteer.user_id, :user),
