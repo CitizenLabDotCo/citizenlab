@@ -22,7 +22,7 @@ describe SideFxProjectService do
     end
 
     it 'runs the description through the text image service' do
-      expect_any_instance_of(TextImageService).to receive(:swap_data_images).with(project, :description_multiloc).and_return(project.description_multiloc)
+      expect_any_instance_of(TextImageService).to receive(:swap_data_images_multiloc).with(project.description_multiloc, field: :description_multiloc, imageable: project).and_return(project.description_multiloc)
       service.after_create(project, user)
     end
 
@@ -43,7 +43,7 @@ describe SideFxProjectService do
 
   describe 'before_update' do
     it 'runs the description through the text image service' do
-      expect_any_instance_of(TextImageService).to receive(:swap_data_images).with(project, :description_multiloc).and_return(project.description_multiloc)
+      expect_any_instance_of(TextImageService).to receive(:swap_data_images_multiloc).with(project.description_multiloc, field: :description_multiloc, imageable: project).and_return(project.description_multiloc)
       service.before_update(project, user)
     end
 
