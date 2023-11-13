@@ -21,8 +21,8 @@ class ContentImageService
       decode_content encoded_content
     rescue DecodingError => e
       log_decoding_error e
-      return encoded_content
     end
+    return encoded_content if !content
 
     image_elements(content).each do |img_elt|
       next if image_attributes_for_element.none? { |elt_atr| attribute? img_elt, elt_atr }
