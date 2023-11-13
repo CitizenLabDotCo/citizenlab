@@ -142,8 +142,6 @@ const ProjectTimelineContainer = memo<Props>(({ projectId, className }) => {
               project={project.data}
             />
           )}
-        </ContentContainer>
-        <ContentContainer maxWidth={maxPageWidth}>
           <PhasePoll projectId={projectId} phaseId={selectedPhaseId} />
           <PhaseVolunteering projectId={projectId} phaseId={selectedPhaseId} />
           {showIdeas && (
