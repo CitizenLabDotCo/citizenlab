@@ -29,6 +29,7 @@ import { ColumnLayout } from '../../typings';
 type TwoColumnProps = {
   columnLayout: ColumnLayout;
   children?: React.ReactNode;
+  isHomepage?: boolean;
 };
 
 const StyledBox = styled(Box)`
@@ -51,7 +52,11 @@ const StyledBox = styled(Box)`
       : '1fr 2fr'};
 `;
 
-export const TwoColumn = ({ columnLayout, children }: TwoColumnProps) => {
+export const TwoColumn = ({
+  columnLayout,
+  children,
+  isHomepage,
+}: TwoColumnProps) => {
   const isSmallerThanTablet = useBreakpoint('tablet');
   const { parent } = useNode((node) => ({
     parent: node.data.parent,
@@ -61,7 +66,11 @@ export const TwoColumn = ({ columnLayout, children }: TwoColumnProps) => {
     <StyledBox
       id="e2e-two-column"
       columnLayout={columnLayout}
-      px={isSmallerThanTablet && parent === ROOT_NODE ? '20px' : '0px'}
+      px={
+        isHomepage && isSmallerThanTablet && parent === ROOT_NODE
+          ? '20px'
+          : '0px'
+      }
     >
       {children || (
         <>

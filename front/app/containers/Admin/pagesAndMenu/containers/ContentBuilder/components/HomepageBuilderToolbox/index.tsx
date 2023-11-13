@@ -68,13 +68,13 @@ const HomepageBuilderToolbox = ({
       </SectionTitle>
       <DraggableElement
         id="e2e-draggable-two-column"
-        component={<TwoColumn columnLayout="1-1" />}
+        component={<TwoColumn columnLayout="1-1" isHomepage={true} />}
         icon="layout-2column-1"
         label={formatMessage(TwoColumn.craft.custom.title)}
       />
       <DraggableElement
         id="e2e-draggable-three-column"
-        component={<ThreeColumn />}
+        component={<ThreeColumn isHomepage={true} />}
         icon="layout-3column"
         label={formatMessage(ThreeColumn.craft.custom.title)}
       />

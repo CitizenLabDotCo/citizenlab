@@ -39,7 +39,7 @@ export const FullScreenPreview = () => {
       platformLocale={platformLocale}
       contentBuilderLocale={selectedLocale}
     >
-      <FullScreenWrapper onUpdateDraftData={setDraftData}>
+      <FullScreenWrapper onUpdateDraftData={setDraftData} padding="0px">
         {isLoading && <Spinner />}
         {!isLoading && editorData && (
           <Box>

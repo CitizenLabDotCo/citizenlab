@@ -10,7 +10,7 @@ import Container from '../Container';
 // i18n
 import messages from './messages';
 
-const ThreeColumn = () => {
+const ThreeColumn = ({ isHomepage }: { isHomepage?: boolean }) => {
   const isSmallerThanTablet = useBreakpoint('tablet');
   const { parent } = useNode((node) => ({
     parent: node.data.parent,
@@ -26,7 +26,11 @@ const ThreeColumn = () => {
       gap="24px"
       maxWidth="1150px"
       margin="0 auto"
-      px={isSmallerThanTablet && parent === ROOT_NODE ? '20px' : '0px'}
+      px={
+        isHomepage && isSmallerThanTablet && parent === ROOT_NODE
+          ? '20px'
+          : '0px'
+      }
     >
       <Box flex="1">
         <Element id="column1" is={Container} canvas />
