@@ -231,7 +231,7 @@ const Forms = () => {
                           }}
                         >
                           <Box display="flex" gap="4px" alignItems="center">
-                            <Icon name="plus" />
+                            <Icon name="plus" fill={colors.coolGrey600} />
                             <Text my="0px">
                               {formatMessage(messages.addOfflineInputs)}
                             </Text>
@@ -239,7 +239,7 @@ const Forms = () => {
                         </DropdownListItem>
                         <DropdownListItem onClick={handleDownloadPDF}>
                           <Box display="flex" gap="4px" alignItems="center">
-                            <Icon name="download" />
+                            <Icon name="download" fill={colors.coolGrey600} />
                             <Text my="0px">
                               {formatMessage(messages.downloadSurvey)}
                             </Text>
@@ -247,7 +247,7 @@ const Forms = () => {
                         </DropdownListItem>
                         <DropdownListItem onClick={downloadExampleFile}>
                           <Box display="flex" gap="4px" alignItems="center">
-                            <Icon name="download" />
+                            <Icon name="download" fill={colors.coolGrey600} />
                             <Text my="0px">
                               {formatMessage(messages.downloadExcelTemplate1)}
                             </Text>
@@ -262,7 +262,7 @@ const Forms = () => {
                         alignItems="center"
                         data-cy="e2e-download-survey-results"
                       >
-                        <Icon name="download" />
+                        <Icon name="download" fill={colors.coolGrey600} />
                         <Text my="0px">
                           {formatMessage(messages.downloadResults2)}
                         </Text>
