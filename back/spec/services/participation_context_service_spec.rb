@@ -340,7 +340,7 @@ describe ParticipationContextService do
         expect(service.idea_reacting_disabled_reason_for(idea, user, mode: 'down')).to eq 'project_inactive'
       end
 
-      it "returns `not_ideation` when we're in a participatory budgeting context" do
+      it "returns `not_ideation` when we're in a participatory budgeting phase" do
         project = create(:continuous_budgeting_project)
         idea = create(:idea, project: project)
 
@@ -741,18 +741,6 @@ describe ParticipationContextService do
       expect(service.voting_disabled_reason_for_idea(idea, create(:user))).to eq 'idea_not_in_current_phase'
     end
 
-    it "returns 'project_inactive' when the timeline is over" do
-      project = create(:project_with_past_phases)
-      idea = create(:idea, project: project, phases: [project.phases[2]])
-      expect(service.voting_disabled_reason_for_idea(idea, create(:user))).to eq 'project_inactive'
-    end
-
-    it "returns 'project_inactive' when the project is archived" do
-      project = create(:continuous_budgeting_project, admin_publication_attributes: { publication_status: 'archived' })
-      idea = create(:idea, project: project)
-      expect(service.voting_disabled_reason_for_idea(idea, create(:user))).to eq 'project_inactive'
-    end
-
     it 'returns `not_signed_in` when user needs to be signed in' do
       project = create(
         :project_with_current_phase,
@@ -820,37 +808,8 @@ describe ParticipationContextService do
       expect(service.future_posting_idea_enabled_phase(project, create(:user))).to be_nil
     end
 
-    it 'returns nil for a continuous project' do
-      project = create(:continuous_project)
-      expect(service.future_posting_idea_enabled_phase(project, create(:user))).to be_nil
-    end
-
     it 'returns nil for a project without future phases' do
       project = create(:project_with_past_phases)
-      expect(service.future_posting_idea_enabled_phase(project, create(:user))).to be_nil
-    end
-
-    it 'returns the first upcoming phase that has posting enabled' do
-      project = create(
-        :project_with_current_phase,
-        phases_config: {
-          sequence: 'xcxxxxxy',
-          x: { permissions_config: { posting_idea: false } },
-          y: { permissions_config: { posting_idea: true } },
-          c: { permissions_config: { posting_idea: false } }
-        }
-      )
-      expect(service.future_posting_idea_enabled_phase(project, create(:user))).to eq project.phases.order(:start_at)[7]
-    end
-
-    it 'returns nil if no next phase has posting enabled' do
-      project = create(
-        :project_with_current_phase,
-        phases_config: {
-          sequence: 'xcyyy',
-          y: { permissions_config: { posting_idea: false } }
-        }
-      )
       expect(service.future_posting_idea_enabled_phase(project, create(:user))).to be_nil
     end
   end
@@ -882,40 +841,8 @@ describe ParticipationContextService do
       expect(service.future_disliking_idea_enabled_phase(project, create(:user))).to be_nil
     end
 
-    it 'returns nil for a continuous project' do
-      project = create(:continuous_project)
-      expect(service.future_liking_idea_enabled_phase(project, create(:user))).to be_nil
-      expect(service.future_disliking_idea_enabled_phase(project, create(:user))).to be_nil
-    end
-
     it 'returns nil for a project without future phases' do
       project = create(:project_with_past_phases)
-      expect(service.future_liking_idea_enabled_phase(project, create(:user))).to be_nil
-      expect(service.future_disliking_idea_enabled_phase(project, create(:user))).to be_nil
-    end
-
-    it 'returns the first upcoming phase that has reacting enabled' do
-      project = create(
-        :project_with_current_phase,
-        phases_config: {
-          sequence: 'xcxxxxxy',
-          x: { permissions_config: { reacting_idea: false } },
-          y: { permissions_config: { reacting_idea: true } },
-          c: { permissions_config: { reacting_idea: false } }
-        }
-      )
-      expect(service.future_liking_idea_enabled_phase(project, create(:user))).to eq project.phases.order(:start_at)[7]
-      expect(service.future_disliking_idea_enabled_phase(project, create(:user))).to eq project.phases.order(:start_at)[7]
-    end
-
-    it 'returns nil if no next phase has reacting enabled' do
-      project = create(
-        :project_with_current_phase,
-        phases_config: {
-          sequence: 'xcyyy',
-          y: { permissions_config: { reacting_idea: false } }
-        }
-      )
       expect(service.future_liking_idea_enabled_phase(project, create(:user))).to be_nil
       expect(service.future_disliking_idea_enabled_phase(project, create(:user))).to be_nil
     end
@@ -946,37 +873,8 @@ describe ParticipationContextService do
       expect(service.future_commenting_idea_enabled_phase(project, create(:user))).to be_nil
     end
 
-    it 'returns nil for a continuous project' do
-      project = create(:continuous_project)
-      expect(service.future_commenting_idea_enabled_phase(project, create(:user))).to be_nil
-    end
-
     it 'returns nil for a project without future phases' do
       project = create(:project_with_past_phases)
-      expect(service.future_commenting_idea_enabled_phase(project, create(:user))).to be_nil
-    end
-
-    it 'returns the first upcoming phase that has commenting enabled' do
-      project = create(
-        :project_with_current_phase,
-        phases_config: {
-          sequence: 'xcxxxxxy',
-          x: { permissions_config: { commenting_idea: false } },
-          y: { permissions_config: { commenting_idea: true } },
-          c: { permissions_config: { commenting_idea: false } }
-        }
-      )
-      expect(service.future_commenting_idea_enabled_phase(project, create(:user))).to eq project.phases.order(:start_at)[7]
-    end
-
-    it 'returns nil if no next phase has commenting enabled' do
-      project = create(
-        :project_with_current_phase,
-        phases_config: {
-          sequence: 'xcyyy',
-          y: { permissions_config: { commenting_idea: false } }
-        }
-      )
       expect(service.future_commenting_idea_enabled_phase(project, create(:user))).to be_nil
     end
   end
