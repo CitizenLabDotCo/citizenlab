@@ -36,7 +36,7 @@ import styled from 'styled-components';
 import { colors, isRtl } from 'utils/styleUtils';
 
 // utils
-import { getLatestRelevantPhase, hidePhases } from 'api/phases/utils';
+import { getLatestRelevantPhase, hideTimelineUI } from 'api/phases/utils';
 import { isValidPhase } from '../phaseParam';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -109,7 +109,7 @@ const ProjectTimelineContainer = memo<Props>(({ projectId, className }) => {
       participationMethod === 'ideation' || (isVotingPhase && !isPastPhase);
     const showVotingResults = isVotingPhase && isPastPhase;
     // We don't show the timeline and header if there is only one phase and it has no description and no end date
-    const hideTimelineAndHeader = !hidePhases(phases?.data, currentLocale);
+    const hideTimelineAndHeader = !hideTimelineUI(phases?.data, currentLocale);
 
     return (
       <Container className={`${className || ''} e2e-project-process-page`}>
