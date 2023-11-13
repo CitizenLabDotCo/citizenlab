@@ -226,6 +226,7 @@ describe('Survey builder', () => {
     cy.get('[data-cy="e2e-submit-form"]').click();
     cy.wait(1000);
 
+    // TODO: Fix e2e test. Route was changed with project setup tandem
     cy.visit(`admin/projects/${projectId}/native-survey/results`);
     cy.get(`[data-cy="e2e-${snakeCase(multipleChoiceChooseOneTitle)}"]`).should(
       'exist'

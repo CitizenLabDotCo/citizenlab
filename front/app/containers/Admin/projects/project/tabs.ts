@@ -34,8 +34,7 @@ export const getIntialTabs = (
       label: formatMessage(messages.surveyTab),
       url: `native-survey/${phaseId}`,
       name: 'survey',
-      active: (url: string) =>
-        url.endsWith('native-survey') || url.endsWith('native-survey/results'),
+      active: (url: string) => url.endsWith('native-survey'),
     },
     {
       label: formatMessage(messages.surveyResultsTab),

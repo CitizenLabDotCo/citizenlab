@@ -238,10 +238,6 @@ const createAdminProjectsRoutes = () => {
             element: <AdminProjectsSurvey />,
           },
           {
-            path: 'native-survey/:phaseId/results',
-            element: <AdminProjectsSurvey />,
-          },
-          {
             path: 'volunteering/:phaseId/causes/new',
             element: (
               <PageLoading>
