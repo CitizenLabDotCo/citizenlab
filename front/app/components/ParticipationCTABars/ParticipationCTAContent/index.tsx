@@ -1,28 +1,18 @@
 import React from 'react';
 
 // Components
-import { Box, Text, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // services
 import { IPhaseData } from 'api/phases/types';
 
-// utils
-import { getMethodConfig } from 'utils/configs/participationMethodConfig';
-
 // types
 import { IProjectData } from 'api/projects/types';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
 
 // styling
 import { useTheme } from 'styled-components';
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
-import BlinkingDot from './BlinkingDot';
-import TimeLeft from './TimeLeft';
-import { hidePhases } from 'api/phases/utils';
-import useLocale from 'hooks/useLocale';
+import TimeIndicator from './TimeIndicator';
 
 type Props = {
   hasUserParticipated?: boolean;
@@ -42,34 +32,8 @@ const ParticipationCTAContent = ({
   phases,
 }: Props) => {
   const theme = useTheme();
-  const locale = useLocale();
 
   const isSmallerThanPhone = useBreakpoint('phone');
-
-  const config = getMethodConfig(
-    currentPhase?.attributes.participation_method ||
-      project.attributes.participation_method
-  );
-  const useProjectClosedStyle =
-    config?.useProjectClosedCTABarStyle &&
-    config.useProjectClosedCTABarStyle(currentPhase || project);
-  const treatAsContinuous = hidePhases(phases, locale);
-
-  const hideDefaultParticipationMessage =
-    currentPhase && !treatAsContinuous ? true : false;
-
-  const getUserParticipationMessage = () => {
-    if (useProjectClosedStyle) {
-      return messages.projectClosedForSubmission;
-    }
-    if (hasUserParticipated) {
-      return messages.userHasParticipated;
-    }
-    if (isSmallerThanPhone && !hasUserParticipated) {
-      return messages.mobileProjectOpenForSubmission;
-    }
-    return messages.projectOpenForSubmission;
-  };
 
   if (isSmallerThanPhone) {
     return (
@@ -81,18 +45,12 @@ const ParticipationCTAContent = ({
       >
         <Box display="flex" alignItems="center" mb="16px">
           <Box display="flex" alignItems="center">
-            {!useProjectClosedStyle && (
-              <BlinkingDot hasUserParticipated={hasUserParticipated} />
-            )}
-            {hideDefaultParticipationMessage ? (
-              <Box ml="auto">
-                <TimeLeft currentPhase={currentPhase} />
-              </Box>
-            ) : (
-              <Text color="white" m="0px" fontSize="s">
-                <FormattedMessage {...getUserParticipationMessage()} />
-              </Text>
-            )}
+            <TimeIndicator
+              hasUserParticipated={hasUserParticipated}
+              currentPhase={currentPhase}
+              project={project}
+              phases={phases}
+            />
           </Box>
           <Box ml="auto">{participationState}</Box>
         </Box>
@@ -113,18 +71,12 @@ const ParticipationCTAContent = ({
     >
       <Box display="flex" width="100%" maxWidth={`${maxPageWidth}px`}>
         <Box display="flex" alignItems="center">
-          {!useProjectClosedStyle && (
-            <BlinkingDot hasUserParticipated={hasUserParticipated} />
-          )}
-          {hideDefaultParticipationMessage ? (
-            <Box mr="24px" my="0px">
-              <TimeLeft currentPhase={currentPhase} />
-            </Box>
-          ) : (
-            <Text color="white" fontSize="s" my="0px">
-              <FormattedMessage {...getUserParticipationMessage()} />
-            </Text>
-          )}
+          <TimeIndicator
+            hasUserParticipated={hasUserParticipated}
+            currentPhase={currentPhase}
+            project={project}
+            phases={phases}
+          />
         </Box>
         <Box display="flex" ml="auto">
           {participationState}
