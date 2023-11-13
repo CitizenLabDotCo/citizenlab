@@ -57,8 +57,6 @@ export const PollCTABar = ({ phases, project }: CTABarProps) => {
           <FormattedMessage {...messages.poll} />
         </Button>
       }
-      project={project}
-      phases={phases}
     />
   );
 };

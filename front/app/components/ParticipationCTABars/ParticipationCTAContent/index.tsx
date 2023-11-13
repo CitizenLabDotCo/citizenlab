@@ -6,9 +6,6 @@ import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 // services
 import { IPhaseData } from 'api/phases/types';
 
-// types
-import { IProjectData } from 'api/projects/types';
-
 // styling
 import { useTheme } from 'styled-components';
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
@@ -19,8 +16,6 @@ type Props = {
   CTAButton: React.ReactNode;
   currentPhase: IPhaseData | undefined;
   participationState?: JSX.Element;
-  project: IProjectData;
-  phases: IPhaseData[] | undefined;
 };
 
 const ParticipationCTAContent = ({
@@ -28,8 +23,6 @@ const ParticipationCTAContent = ({
   CTAButton,
   hasUserParticipated = false,
   participationState,
-  project,
-  phases,
 }: Props) => {
   const theme = useTheme();
 
@@ -48,8 +41,6 @@ const ParticipationCTAContent = ({
             <TimeIndicator
               hasUserParticipated={hasUserParticipated}
               currentPhase={currentPhase}
-              project={project}
-              phases={phases}
             />
           </Box>
           <Box ml="auto">{participationState}</Box>
@@ -74,8 +65,6 @@ const ParticipationCTAContent = ({
           <TimeIndicator
             hasUserParticipated={hasUserParticipated}
             currentPhase={currentPhase}
-            project={project}
-            phases={phases}
           />
         </Box>
         <Box display="flex" ml="auto">

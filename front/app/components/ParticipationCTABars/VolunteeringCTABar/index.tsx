@@ -57,8 +57,6 @@ export const VolunteeringCTABar = ({ phases, project }: CTABarProps) => {
           <FormattedMessage {...messages.volunteer} />
         </Button>
       }
-      project={project}
-      phases={phases}
     />
   );
 };

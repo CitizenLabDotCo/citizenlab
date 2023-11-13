@@ -102,8 +102,6 @@ export const IdeationCTABar = ({ phases, project }: CTABarProps) => {
   return (
     <ParticipationCTAContent
       currentPhase={currentPhase}
-      project={project}
-      phases={phases}
       CTAButton={CTAButton}
       hasUserParticipated={hasUserParticipated}
     />
