@@ -67,13 +67,38 @@ import { randomString, randomEmail } from '../support/commands';
 //   });
 // });
 
-describe('idoes not redirect user to idea form upon authentication if they are not permitted to post', () => {
+describe('idea posting that requires smart group', () => {
   const projectTitle = randomString(15);
   let projectId = '';
   let projectSlug = '';
+  let permittedUserId = '';
+  let permittedUserEmail = `${randomString(5)}@citizenlab.co`;
+  let permittedUserPassword = randomString(8);
+  let nonPermittedUserId = '';
+  let nonPermittedUserEmail = randomEmail();
+  let nonPermittedUserPassword = randomString(8);
 
   // Create project with smart group access posting rights
   before(() => {
+    // Create two accounts to test with
+    cy.apiSignup(
+      randomString(),
+      randomString(),
+      permittedUserEmail,
+      permittedUserPassword
+    ).then((response) => {
+      permittedUserId = response.body.data.id;
+    });
+    cy.apiSignup(
+      randomString(),
+      randomString(),
+      nonPermittedUserEmail,
+      nonPermittedUserPassword
+    ).then((response) => {
+      nonPermittedUserId = response.body.data.id;
+    });
+
+    // Create project with smart group posting permission
     cy.setAdminLoginCookie();
     cy.getAuthUser()
       .then((user) => {
@@ -106,7 +131,6 @@ describe('idoes not redirect user to idea form upon authentication if they are n
           phaseId: phase?.body.data.id,
           action: 'posting_idea',
         }).then((response) => {
-          console.log({ response });
           cy.apiSetProjectPermission({
             projectId,
             phaseId: phase?.body.data.id,
@@ -125,12 +149,50 @@ describe('idoes not redirect user to idea form upon authentication if they are n
       });
   });
 
-  it('tests', () => {
+  it("doesn't redirect users after authentication to form page if they are not permitted", () => {
+    cy.visit(`projects/${projectSlug}`);
+    cy.get('#e2e-idea-button').should('exist');
+    cy.get('#e2e-idea-button').first().click();
+    cy.get('e2e-authentication-modal');
+    cy.get('#e2e-goto-signup').click();
+    cy.get('#e2e-sign-up-email-password-container');
+    cy.get('#email').type(nonPermittedUserEmail);
+    cy.get('#password').type(nonPermittedUserPassword);
+    cy.get('#e2e-signin-password-submit-button').click();
+    cy.url().should('not.include', `/ideas/new`);
+    cy.clearCookies();
+  });
+
+  it('redirects users after authentication to form page if they are permitted', () => {
+    cy.visit(`projects/${projectSlug}`);
+    cy.get('#e2e-idea-button').should('exist');
+    cy.get('#e2e-idea-button').first().click();
+    cy.get('e2e-authentication-modal');
+    cy.get('#e2e-goto-signup').click();
+    cy.get('#e2e-sign-up-email-password-container');
+    cy.get('#email').type(permittedUserEmail);
+    cy.get('#password').type(permittedUserPassword);
+    cy.get('#e2e-signin-password-submit-button').click();
+    cy.url().should('include', `/ideas/new`);
+    cy.clearCookies();
+  });
+
+  it('shows prompt for authentication on form page if logged out user visits', () => {
+    console.log('test');
+  });
+
+  it('shows complete profile prompt on form page if user visits who might be permitted after more information', () => {
+    console.log('test');
+  });
+
+  it('shows not permitted message on form page if user visits who is not permitted', () => {
     console.log('test');
   });
 
   after(() => {
     cy.apiRemoveProject(projectId);
+    cy.apiRemoveUser(permittedUserId);
+    cy.apiRemoveUser(nonPermittedUserId);
   });
 
   // Click "new idea" button and sign up with user who is not part of the smart group
