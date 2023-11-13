@@ -4,7 +4,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import BlinkingDot from '../BlinkingDot';
 import TimeLeft from './TimeLeft';
 import messages from '../../messages';
-import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 import useLocale from 'hooks/useLocale';
@@ -18,29 +17,16 @@ interface Props {
 }
 
 const TimeIndicator = ({
-  project,
   currentPhase,
   hasUserParticipated,
   phases,
 }: Props) => {
   const isSmallerThanPhone = useBreakpoint('phone');
   const locale = useLocale();
-
-  const config = getMethodConfig(
-    currentPhase?.attributes.participation_method ||
-      project.attributes.participation_method
-  );
-  const useProjectClosedStyle =
-    config?.useProjectClosedCTABarStyle &&
-    config.useProjectClosedCTABarStyle(currentPhase || project);
   const treatAsContinuous = hidePhases(phases, locale);
-
   const showTimeLeft = currentPhase && !treatAsContinuous ? true : false;
 
   const getUserParticipationMessage = () => {
-    if (useProjectClosedStyle) {
-      return messages.projectClosedForSubmission;
-    }
     if (hasUserParticipated) {
       return messages.userHasParticipated;
     }
@@ -52,9 +38,7 @@ const TimeIndicator = ({
 
   return (
     <Box display="flex" alignItems="center">
-      {!useProjectClosedStyle && (
-        <BlinkingDot hasUserParticipated={hasUserParticipated} />
-      )}
+      <BlinkingDot hasUserParticipated={hasUserParticipated} />
       {showTimeLeft ? (
         <Box>
           <TimeLeft currentPhase={currentPhase} />

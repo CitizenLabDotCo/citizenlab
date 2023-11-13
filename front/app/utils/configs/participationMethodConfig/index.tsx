@@ -70,7 +70,6 @@ postType: Returns the type of input that is being posted.
 renderCTABar: Returns whether the CTA bar should be rendered.
 postSortingOptions?: Returns the sorting options for posts.
 showInputCount: Returns the input count to be used on project cards.
-useProjectClosedCTABarStyle?: Used to determine if the CTA bar should display "closed" styling.
 inputsPageSize?: Returns the page size the ideas endpoint should use.
 */
 
@@ -91,9 +90,6 @@ export type ParticipationMethodConfig = {
   showInputCount: boolean;
   hideAuthorOnIdeas?: boolean; // Hides the author on the idea pages/cards
   showIdeaFilters?: boolean; // Shows filters on the idea list
-  useProjectClosedCTABarStyle?: (
-    participationContext: IPhaseData | IProjectData
-  ) => boolean;
   inputsPageSize?: number;
 };
 
@@ -160,12 +156,6 @@ const ideationConfig: ParticipationMethodConfig = {
   },
   postSortingOptions: defaultSortingOptions,
   hideAuthorOnIdeas: false,
-  useProjectClosedCTABarStyle: (participationContext) => {
-    const { commenting_enabled, reacting_enabled, posting_enabled } =
-      participationContext.attributes;
-
-    return !commenting_enabled && !reacting_enabled && !posting_enabled;
-  },
 };
 
 const nativeSurveyConfig: ParticipationMethodConfig = {
@@ -201,12 +191,6 @@ const nativeSurveyConfig: ParticipationMethodConfig = {
   isMethodLocked: true,
   renderCTABar: (props: CTABarProps) => {
     return <NativeSurveyCTABar project={props.project} phases={props.phases} />;
-  },
-  useProjectClosedCTABarStyle: (participationContext) => {
-    if (!participationContext.attributes.posting_enabled) {
-      return true;
-    }
-    return false;
   },
 };
 
@@ -412,7 +396,8 @@ export function getAllParticipationMethods(
 /** Given the project and its phases, it returns the participation method
  * used in the project, or current phase if phases are provided and phaseId is not provided.
  * If the phaseId is provided, then it returns the participation method of the phase whose
- * phaseId is the same as the provided phaseId
+ * phaseId is the same as the provided phaseId.
+ * Returns undefined when the last phase has an end date in the past
  */
 export const getParticipationMethod = (
   project: IProjectData | null | undefined,
