@@ -25,6 +25,7 @@ resource 'Ideas' do
         parameter :budget, 'The budget needed to realize the idea, as determined by the city'
         parameter :idea_images_attributes, 'an array of base64 images to create'
         parameter :idea_files_attributes, 'an array of base64 files to create'
+        parameter :custom_field_name1, 'A value for one custom field'
       end
       ValidationErrorHelper.new.error_fields self, Idea
       response_field :ideas_phases, "Array containing objects with signature { error: 'invalid' }", scope: :errors
@@ -37,12 +38,37 @@ resource 'Ideas' do
       let(:title_multiloc) { idea.title_multiloc }
       let(:body_multiloc) { idea.body_multiloc }
 
-      describe do
+      describe 'default permissions' do
         let(:author_id) { nil }
 
         example '[error] Create an idea without author', document: false do
           do_request
           assert_status 401
+        end
+      end
+
+      describe "native survey response when permission is 'everyone'" do
+        before { IdeaStatus.create_defaults }
+
+        let(:project) do
+          create(:continuous_native_survey_project, phase_attrs: { with_permissions: true }).tap do |project|
+            project.phases.first.permissions.find_by(action: 'posting_idea').update! permitted_by: 'everyone'
+          end
+        end
+        let(:project_id) { project.id }
+        let(:extra_field_name) { 'custom_field_name1' }
+        let(:form) { create(:custom_form, participation_context: project.phases.first) }
+        let!(:text_field) { create(:custom_field_extra_custom_form, key: extra_field_name, required: true, resource: form) }
+        let(:custom_field_name1) { 'test value' }
+
+        example_request 'Create a native survey response without author' do
+          assert_status 201
+          json_response = json_parse response_body
+          idea_from_db = Idea.find(json_response[:data][:id])
+          expect(idea_from_db.author_id).to be_nil
+          expect(idea_from_db.custom_field_values.to_h).to eq({
+            extra_field_name => 'test value'
+          })
         end
       end
     end
