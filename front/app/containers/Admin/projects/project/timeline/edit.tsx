@@ -32,10 +32,16 @@ import ParticipationContext, {
   IParticipationContextConfig,
 } from '../participationContext';
 import FileUploader from 'components/UI/FileUploader';
-import { Text } from '@citizenlab/cl2-component-library';
+import {
+  Text,
+  Checkbox,
+  Box,
+  IconTooltip,
+} from '@citizenlab/cl2-component-library';
+import Warning from 'components/UI/Warning';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // Typings
@@ -54,6 +60,7 @@ import useLocalize from 'hooks/useLocalize';
 import { stringifyCampaignFields } from 'containers/Admin/messaging/AutomatedEmails/utils';
 import { CampaignData } from 'containers/Admin/messaging/AutomatedEmails/types';
 import { CampaignName } from 'api/campaigns/types';
+import { getExcludedDates } from './utils';
 
 type SubmitStateType = 'disabled' | 'enabled' | 'error' | 'success';
 
@@ -104,6 +111,13 @@ const AdminProjectTimelineEdit = () => {
     {}
   );
   const localize = useLocalize();
+  const { formatMessage } = useIntl();
+  const [hasEndDate, setHasEndDate] = useState<boolean>(false);
+  const [disableNoEndDate, setDisableNoEndDate] = useState<boolean>(false);
+
+  useEffect(() => {
+    setHasEndDate(phase?.data.attributes.end_at ? true : false);
+  }, [phase]);
 
   useEffect(() => {
     if (phaseFiles) {
@@ -111,7 +125,7 @@ const AdminProjectTimelineEdit = () => {
     }
   }, [phaseFiles]);
 
-  if (!campaigns) {
+  if (!campaigns || !phases) {
     return null;
   }
 
@@ -154,6 +168,22 @@ const AdminProjectTimelineEdit = () => {
       start_at: startDate ? startDate.locale('en').format('YYYY-MM-DD') : '',
       end_at: endDate ? endDate.locale('en').format('YYYY-MM-DD') : '',
     });
+    setHasEndDate(!!endDate);
+
+    if (startDate) {
+      const hasPhaseWithLaterStartDate = phases.data.some((iteratedPhase) => {
+        const iteratedPhaseStartDate = moment(
+          iteratedPhase.attributes.start_at
+        );
+        return iteratedPhaseStartDate.isAfter(startDate);
+      });
+
+      setDisableNoEndDate(hasPhaseWithLaterStartDate);
+
+      if (hasPhaseWithLaterStartDate) {
+        setHasEndDate(true);
+      }
+    }
   };
 
   const handlePhaseFileOnAdd = (newFile: UploadFile) => {
@@ -260,9 +290,24 @@ const AdminProjectTimelineEdit = () => {
     if (!isEmpty(attributeDiff) && !processing) {
       setProcessing(true);
       if (!isEmpty(attributeDiff)) {
+        const start = getStartDate();
+        const end = phaseAttrs.end_at ? moment(phaseAttrs.end_at) : null;
+
+        // If the start date was automatically calculated, we need to update the dates in submit if even if the user didn't change them
+        const updatedAttr = {
+          ...attributeDiff,
+          ...(!attributeDiff.start_at &&
+            start && {
+              start_at: start.locale('en').format('YYYY-MM-DD'),
+              end_at:
+                attributeDiff.end_at ||
+                (end ? end.locale('en').format('YYYY-MM-DD') : ''),
+            }),
+        };
+
         if (phase) {
           updatePhase(
-            { phaseId: phase.id, ...attributeDiff },
+            { phaseId: phase.id, ...updatedAttr },
             {
               onSuccess: (response) => {
                 handleSaveResponse(response, false);
@@ -275,7 +320,7 @@ const AdminProjectTimelineEdit = () => {
             {
               projectId,
               campaigns_settings: initialCampaignsSettings,
-              ...attributeDiff,
+              ...updatedAttr,
             },
             {
               onSuccess: (response) => {
@@ -289,10 +334,6 @@ const AdminProjectTimelineEdit = () => {
     }
   };
 
-  const quillMultilocLabel = (
-    <FormattedMessage {...messages.descriptionLabel} />
-  );
-
   const getStartDate = () => {
     const phaseAttrs = phase
       ? { ...phase.data.attributes, ...attributeDiff }
@@ -303,9 +344,14 @@ const AdminProjectTimelineEdit = () => {
     if (!phase) {
       const previousPhase =
         !isNilOrError(phases) && phases.data[phases.data.length - 1];
-      const previousPhaseEndDate = previousPhase
-        ? moment(previousPhase.attributes.end_at)
-        : null;
+      const previousPhaseEndDate =
+        previousPhase && previousPhase.attributes.end_at
+          ? moment(previousPhase.attributes.end_at)
+          : null;
+      const previousPhaseStartDate =
+        previousPhase && previousPhase.attributes.start_at
+          ? moment(previousPhase.attributes.start_at)
+          : null;
 
       // And there's a previous phase (end date) and the phase hasn't been picked/changed
       if (previousPhaseEndDate && !phaseAttrs.start_at) {
@@ -315,6 +361,10 @@ const AdminProjectTimelineEdit = () => {
       } else if (phaseAttrs.start_at) {
         // Take this date as the start date
         startDate = moment(phaseAttrs.start_at);
+      } else if (!previousPhaseEndDate && previousPhaseStartDate) {
+        // If there is no previous end date, then the previous phase is open ended
+        // Set the default start date to the previous start date + 2 days to account for single day phases
+        startDate = previousPhaseStartDate.add(2, 'day');
       }
       // Otherwise, there is no date yet and it should remain 'null'
 
@@ -331,6 +381,10 @@ const AdminProjectTimelineEdit = () => {
 
   const startDate = getStartDate();
   const endDate = phaseAttrs.end_at ? moment(phaseAttrs.end_at) : null;
+  const phasesWithOutCurrentPhase = phases.data.filter(
+    (iteratedPhase) => iteratedPhase.id !== phase?.data.id
+  );
+  const excludeDates = getExcludedDates(phasesWithOutCurrentPhase);
 
   const handleCampaignEnabledOnChange = (campaign: CampaignData) => {
     setSubmitState('enabled');
@@ -343,6 +397,17 @@ const AdminProjectTimelineEdit = () => {
         [campaignKey]: !phaseAttrs.campaigns_settings[campaignKey],
       },
     });
+  };
+
+  const setNoEndDate = () => {
+    if (endDate) {
+      setSubmitState('enabled');
+      setAttributeDiff({
+        ...attributeDiff,
+        end_at: '',
+      });
+    }
+    setHasEndDate((prevValue) => !prevValue);
   };
 
   return (
@@ -366,6 +431,49 @@ const AdminProjectTimelineEdit = () => {
             />
             <Error apiErrors={errors && errors.title_multiloc} />
           </SectionField>
+
+          <SectionField>
+            <SubSectionTitle>
+              <FormattedMessage {...messages.datesLabel} />
+            </SubSectionTitle>
+            <DateRangePicker
+              startDate={startDate}
+              endDate={endDate}
+              onDatesChange={handleDateUpdate}
+              startDatePlaceholderText={formatMessage(messages.startDate)}
+              endDatePlaceholderText={formatMessage(messages.endDate)}
+              excludeDates={excludeDates}
+            />
+            <Error apiErrors={errors && errors.start_at} />
+            <Error apiErrors={errors && errors.end_at} />
+            <Checkbox
+              checked={!hasEndDate}
+              onChange={setNoEndDate}
+              disabled={disableNoEndDate}
+              size="21px"
+              label={
+                <Text>
+                  <FormattedMessage {...messages.noEndDateCheckbox} />
+                </Text>
+              }
+            />
+            {!hasEndDate && (
+              <Warning>
+                <>
+                  <FormattedMessage {...messages.noEndDateWarningTitle} />
+                  <ul>
+                    <li>
+                      <FormattedMessage {...messages.noEndDateWarningBullet1} />
+                    </li>
+                    <li>
+                      <FormattedMessage {...messages.noEndDateWarningBullet2} />
+                    </li>
+                  </ul>
+                </>
+              </Warning>
+            )}
+          </SectionField>
+
           {/* TODO: After ParticipationContext refactor, it doesn't refetch phase service anymore
             This caused a bug where phase data was not being used after fetching. This is a temporary fix.
             ParticipationContext needs to be refactored to functional component. */}
@@ -387,21 +495,20 @@ const AdminProjectTimelineEdit = () => {
               appConfig={appConfig}
             />
           )}
-          <SectionField>
-            <SubSectionTitle>
-              <FormattedMessage {...messages.datesLabel} />
-            </SubSectionTitle>
-            <DateRangePicker
-              startDate={startDate}
-              endDate={endDate}
-              onDatesChange={handleDateUpdate}
-            />
-            <Error apiErrors={errors && errors.start_at} />
-            <Error apiErrors={errors && errors.end_at} />
-          </SectionField>
 
           <SectionField className="fullWidth">
-            <SubSectionTitle>{quillMultilocLabel}</SubSectionTitle>
+            <Box display="flex">
+              <SubSectionTitle>
+                <FormattedMessage {...messages.descriptionLabel} />
+              </SubSectionTitle>
+              {phases.data.length < 2 && (
+                <IconTooltip
+                  content={
+                    <FormattedMessage {...messages.emptyDescriptionWarning} />
+                  }
+                />
+              )}
+            </Box>
             <QuillMultilocWithLocaleSwitcher
               id="description"
               valueMultiloc={phaseAttrs.description_multiloc}

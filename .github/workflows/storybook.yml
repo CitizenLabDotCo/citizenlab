@@ -3,7 +3,7 @@ on:
   push:
     branches:
       - master
-    paths: ['cl2-component-library/src/**'] # Trigger the action only when files change in the folders defined here
+    paths: ['cl2-component-library/**'] # Trigger the action when files change in the folder defined here
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest

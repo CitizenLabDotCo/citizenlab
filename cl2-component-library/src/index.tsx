@@ -13,9 +13,6 @@ import InputMultiloc, {
 import InputMultilocWithLocaleSwitcher, {
   Props as InputMultilocWithLocaleSwitcherProps,
 } from './components/Input/InputMultilocWithLocaleSwitcher';
-import LocationInput, {
-  Props as LocationInputProps,
-} from './components/LocationInput';
 import SearchInput, {
   Props as SearchInputProps,
 } from './components/SearchInput';
@@ -117,8 +114,6 @@ export {
   InputProps,
   Select,
   SelectProps,
-  LocationInput,
-  LocationInputProps,
   SearchInput,
   SearchInputProps,
   LocaleSwitcher,

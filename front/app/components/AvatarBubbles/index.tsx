@@ -4,8 +4,6 @@ import { isNumber } from 'lodash-es';
 // services
 import { IAvatarData } from 'api/avatars/types';
 
-// resources
-
 // i18n
 import messages from './messages';
 

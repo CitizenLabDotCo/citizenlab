@@ -33,7 +33,7 @@ const ProjectModerationRightsReceivedNotification = memo<Props>((props) => {
         values={{
           projectLink: (
             <Link
-              to={`admin/projects/${notification.attributes.project_id}/ideas`}
+              to={adminProjectsProjectPath(notification.attributes.project_id)}
               onClick={stopPropagation}
             >
               <T value={notification.attributes.project_title_multiloc} />

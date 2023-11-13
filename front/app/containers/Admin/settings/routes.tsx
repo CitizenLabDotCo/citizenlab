@@ -34,7 +34,7 @@ export default () => ({
   children: [
     {
       path: '',
-      element: <Navigate to="general" />,
+      element: <Navigate to="general" replace />,
     },
     {
       path: 'general',

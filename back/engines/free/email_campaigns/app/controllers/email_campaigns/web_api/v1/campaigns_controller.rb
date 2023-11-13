@@ -84,7 +84,7 @@ module EmailCampaigns
     end
 
     def do_send
-      if @campaign.valid?
+      if @campaign.valid?(:send)
         SideFxCampaignService.new.before_send(@campaign, current_user)
         EmailCampaigns::DeliveryService.new.send_now(@campaign)
         SideFxCampaignService.new.after_send(@campaign, current_user)

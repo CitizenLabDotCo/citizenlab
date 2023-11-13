@@ -19,16 +19,10 @@ interface Props {
 }
 
 const Edit = ({ campaign }: Props) => {
-  const { mutate: updateCampaign, isLoading } = useUpdateCampaign();
+  const { mutateAsync: updateCampaign, isLoading } = useUpdateCampaign();
   const handleSubmit = async (values: FormValues) => {
-    updateCampaign(
-      { id: campaign.id, campaign: values },
-      {
-        onSuccess: () => {
-          clHistory.push(`/admin/messaging/emails/custom/${campaign.id}`);
-        },
-      }
-    );
+    await updateCampaign({ id: campaign.id, campaign: values });
+    clHistory.push(`/admin/messaging/emails/custom/${campaign.id}`);
   };
 
   const goBack = () => {

@@ -39,7 +39,7 @@ const ReactionsByTimeWidget = ({
 ReactionsByTimeWidget.craft = {
   props: {
     title: '',
-    projectFilter: undefined,
+    projectId: undefined,
     startAt: undefined,
     endAt: null,
   },

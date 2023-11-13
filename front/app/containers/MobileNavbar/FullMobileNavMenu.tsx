@@ -53,8 +53,6 @@ const Container = styled.div`
 `;
 
 const ContentContainer = styled.nav`
-  border-top-left-radius: 30px;
-  border-top-right-radius: 30px;
   background: #fff;
   padding: 40px;
   display: flex;
@@ -64,13 +62,9 @@ const ContentContainer = styled.nav`
   overflow-x: hidden;
   position: absolute;
   bottom: 0;
+  top: 0;
+  min-height: 100vh;
   width: 100%;
-
-  ${({ theme: { mobileMenuHeight } }) => {
-    return `
-        height: calc(100% - ${mobileMenuHeight}px);
-      `;
-  }}
 `;
 
 const StyledCloseIconButton = styled(CloseIconButton)`

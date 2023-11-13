@@ -9,6 +9,7 @@ import { IconTooltip, Box, Button } from '@citizenlab/cl2-component-library';
 import { SectionField } from 'components/admin/Section';
 import { FormSection, FormSectionTitle } from 'components/UI/FormComponents';
 import UserCustomFieldsForm from 'components/UserCustomFieldsForm';
+import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
 
 // form
 import { useForm, FormProvider } from 'react-hook-form';
@@ -43,6 +44,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import onboardingCampaignsKeys from 'api/onboarding_campaigns/keys';
 import { queryClient } from 'utils/cl-react-query/queryClient';
+import { isEmpty } from 'lodash-es';
 
 const StyledIconTooltip = styled(IconTooltip)`
   margin-left: 5px;
@@ -67,6 +69,7 @@ type FormValues = {
 const ProfileForm = () => {
   const tenantLocales = useAppConfigurationLocales();
   const disableBio = useFeatureFlag({ name: 'disable_user_bios' });
+  const [isDisclaimerOpened, setIsDisclaimerOpened] = useState(false);
   const { mutateAsync: updateUser } = useUpdateUser();
   const { data: authUser } = useAuthUser();
   const { data: lockedAttributes } = useUserLockedAttributes();
@@ -126,6 +129,27 @@ const ProfileForm = () => {
     value: locale,
     label: appLocalePairs[locale],
   }));
+
+  const handleDisclaimer = () => {
+    if (
+      methods.formState.dirtyFields.avatar &&
+      methods.getValues('avatar') &&
+      isEmpty(methods.formState.errors)
+    ) {
+      setIsDisclaimerOpened(true);
+    } else {
+      methods.handleSubmit(onFormSubmit)();
+    }
+  };
+
+  const onAcceptDisclaimer = () => {
+    methods.handleSubmit(onFormSubmit)();
+    setIsDisclaimerOpened(false);
+  };
+
+  const onCancelDisclaimer = () => {
+    setIsDisclaimerOpened(false);
+  };
 
   const onFormSubmit = async (formValues: FormValues) => {
     const avatar = formValues.avatar ? formValues.avatar[0].base64 : null;
@@ -264,12 +288,17 @@ const ProfileForm = () => {
           <Button
             type="submit"
             processing={methods.formState.isSubmitting}
-            onClick={methods.handleSubmit(onFormSubmit)}
+            onClick={handleDisclaimer}
           >
             {formatMessage(messages.submit)}
           </Button>
         </Box>
       </FormProvider>
+      <ContentUploadDisclaimer
+        isDisclaimerOpened={isDisclaimerOpened}
+        onAcceptDisclaimer={onAcceptDisclaimer}
+        onCancelDisclaimer={onCancelDisclaimer}
+      />
     </FormSection>
   );
 };

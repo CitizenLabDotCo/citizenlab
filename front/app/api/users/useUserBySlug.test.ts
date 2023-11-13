@@ -4,7 +4,7 @@ import { renderHook } from '@testing-library/react-hooks';
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-import { usersData } from './__mocks__/useUsers';
+import { usersData } from './__mocks__/_mockServer';
 
 const userSlug = 'slug';
 

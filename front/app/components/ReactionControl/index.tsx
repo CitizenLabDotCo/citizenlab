@@ -256,7 +256,8 @@ const ReactionControl = ({
     const showDislike =
       reactingActionDescriptor.down.enabled === true ||
       (reactingActionDescriptor.down.enabled === false &&
-        reactingActionDescriptor.down.disabled_reason !== 'disliking_disabled');
+        reactingActionDescriptor.down.disabled_reason !==
+          'reacting_dislike_disabled');
 
     return (
       <>

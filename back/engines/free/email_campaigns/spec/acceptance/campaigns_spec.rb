@@ -203,8 +203,20 @@ resource 'Campaigns' do
       campaign.update_columns(author_id: nil, sender: 'author')
       do_request
       assert_status 422
-      json_response = json_parse response_body
-      expect(json_response).to include_response_error(:author, 'blank')
+      expect(json_response_body).to include_response_error(:author, 'blank')
+    end
+
+    example '[error] Send out a campaign without recipients' do
+      group = create(:group)
+      create(:campaigns_group, campaign: campaign, group: group)
+      # Add one recipient to the group that doensn't consent to this campaign
+      recipient = create(:user)
+      create(:membership, group: group, user: recipient)
+      create(:consent, user: recipient, consented: false)
+
+      do_request
+      assert_status 422
+      expect(json_response_body).to include_response_error(:base, 'no_recipients')
     end
   end
 

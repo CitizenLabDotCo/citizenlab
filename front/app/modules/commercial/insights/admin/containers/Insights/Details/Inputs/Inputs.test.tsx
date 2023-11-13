@@ -4,7 +4,7 @@ import Inputs from './';
 import { render, screen } from 'utils/testUtils/rtl';
 import inputs from 'modules/commercial/insights/fixtures/inputs';
 import categories from 'modules/commercial/insights/fixtures/categories';
-import { ideaData as mockIdeaData } from 'api/ideas/__mocks__/useIdeaById';
+import { ideaData as mockIdeaData } from 'api/ideas/__mocks__/_mockServer';
 
 jest.mock('api/ideas/useIdeaById', () => {
   return jest.fn(() => ({ data: { data: mockIdeaData[0] } }));
