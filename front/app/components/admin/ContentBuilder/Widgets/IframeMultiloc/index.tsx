@@ -41,7 +41,12 @@ interface Props {
 const Iframe = ({ url, height, hasError, title }: Props) => {
   const localize = useLocalize();
   return (
-    <Box id="e2e-content-builder-iframe-component" minHeight="26px">
+    <Box
+      id="e2e-content-builder-iframe-component"
+      minHeight="26px"
+      maxWidth="1150px"
+      margin="0 auto"
+    >
       {!hasError && url && (
         <iframe
           src={url}

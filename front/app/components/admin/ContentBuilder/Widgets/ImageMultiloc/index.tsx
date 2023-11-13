@@ -61,6 +61,8 @@ const Image = ({ imageUrl, alt = {}, dataCode }: Props) => {
       id="e2e-image"
       style={{ pointerEvents: 'none' }}
       minHeight="26px"
+      maxWidth="1150px"
+      margin="0 auto"
     >
       {imageUrl && (
         <ImageComponent

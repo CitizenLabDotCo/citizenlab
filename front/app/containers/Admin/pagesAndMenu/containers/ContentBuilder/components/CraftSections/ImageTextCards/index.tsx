@@ -15,7 +15,15 @@ import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 
 const ImageTextCards: UserComponent = () => {
   return (
-    <Element id="image-text-cards" is={Box} canvas>
+    <Element
+      id="image-text-cards"
+      is={Box}
+      canvas
+      style={{
+        maxWidth: '1150px',
+        margin: '0 auto',
+      }}
+    >
       <TwoColumn columnLayout="1-2">
         <Element id="left" is={Container} canvas>
           <ImageMultiloc />

@@ -21,6 +21,8 @@ const ThreeColumn = () => {
       display="flex"
       w="100%"
       gap="24px"
+      maxWidth="1150px"
+      margin="0 auto"
     >
       <Box flex="1">
         <Element id="column1" is={Container} canvas />

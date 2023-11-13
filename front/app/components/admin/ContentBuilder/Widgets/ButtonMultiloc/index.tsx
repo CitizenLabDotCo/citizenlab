@@ -58,6 +58,8 @@ const Button = ({ text, url, type, alignment }: ButtonProps) => {
           ? 'flex-start'
           : 'flex-end'
       }
+      maxWidth="1150px"
+      margin="0 auto"
     >
       {/* In edit view, show the button regardless if URL is set. The button should
           not be shown though in the live view if the URL is not set. */}

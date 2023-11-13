@@ -33,6 +33,8 @@ const Accordion = ({ text, title, openByDefault = false }: AccordionProps) => {
 
   return (
     <AccordionComponent
+      maxWidth="1150px"
+      margin="0 auto"
       isOpenByDefault={openByDefault}
       title={
         <Box id="e2e-accordion" display="flex">

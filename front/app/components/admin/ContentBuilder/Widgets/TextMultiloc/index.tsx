@@ -28,7 +28,12 @@ const TextMultiloc = ({ text }: Props) => {
   const value = localize(text);
 
   return (
-    <PageBreakBox id="e2e-text-box" minHeight="26px">
+    <PageBreakBox
+      id="e2e-text-box"
+      minHeight="26px"
+      maxWidth="1150px"
+      margin="0 auto"
+    >
       <QuillEditedContent textColor={theme.colors.tenantText}>
         <div dangerouslySetInnerHTML={{ __html: value }} />
       </QuillEditedContent>

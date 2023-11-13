@@ -1,12 +1,18 @@
 import React from 'react';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import messages from '../../../messages';
 import InitiativesCTABox from 'containers/HomePage/InitiativesCTABox';
 
 const Proposals = () => {
-  return <InitiativesCTABox />;
+  return (
+    <Box bg={colors.background}>
+      <Box maxWidth="1150px" margin="0 auto">
+        <InitiativesCTABox />
+      </Box>
+    </Box>
+  );
 };
 
 const ProposalsSettings = () => {
