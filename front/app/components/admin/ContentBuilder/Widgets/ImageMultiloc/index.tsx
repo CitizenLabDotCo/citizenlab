@@ -8,6 +8,7 @@ import {
   Icon,
   Label,
   IconTooltip,
+  useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 import PageBreakBox from '../PageBreakBox';
 
@@ -17,7 +18,7 @@ import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { Multiloc, UploadFile } from 'typings';
 
 // craft
-import { useEditor, useNode } from '@craftjs/core';
+import { ROOT_NODE, useEditor, useNode } from '@craftjs/core';
 
 // i18n
 import messages from './messages';
@@ -42,6 +43,10 @@ interface Props {
 }
 
 const Image = ({ imageUrl, alt = {}, dataCode }: Props) => {
+  const isSmallerThanTablet = useBreakpoint('tablet');
+  const { parent } = useNode((node) => ({
+    parent: node.data.parent,
+  }));
   const localize = useLocalize();
   const { enabled } = useEditor((state) => {
     return {
@@ -63,6 +68,7 @@ const Image = ({ imageUrl, alt = {}, dataCode }: Props) => {
       minHeight="26px"
       maxWidth="1150px"
       margin="0 auto"
+      px={isSmallerThanTablet && parent === ROOT_NODE ? '20px' : '0px'}
     >
       {imageUrl && (
         <ImageComponent

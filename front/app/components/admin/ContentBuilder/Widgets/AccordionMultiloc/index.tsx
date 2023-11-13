@@ -4,12 +4,13 @@ import React from 'react';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 // craft
-import { useNode } from '@craftjs/core';
+import { ROOT_NODE, useNode } from '@craftjs/core';
 import {
   Box,
   Accordion as AccordionComponent,
   Title,
   Toggle,
+  useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
@@ -30,11 +31,16 @@ interface AccordionProps {
 const Accordion = ({ text, title, openByDefault = false }: AccordionProps) => {
   const theme = useTheme();
   const localize = useLocalize();
+  const isSmallerThanTablet = useBreakpoint('tablet');
+  const { parent } = useNode((node) => ({
+    parent: node.data.parent,
+  }));
 
   return (
     <AccordionComponent
       maxWidth="1150px"
       margin="0 auto"
+      px={isSmallerThanTablet && parent === ROOT_NODE ? '20px' : '0px'}
       isOpenByDefault={openByDefault}
       title={
         <Box id="e2e-accordion" display="flex">

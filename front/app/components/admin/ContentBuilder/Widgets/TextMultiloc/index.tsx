@@ -4,10 +4,10 @@ import React from 'react';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import QuillMutilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import PageBreakBox from '../PageBreakBox';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // craft
-import { useNode } from '@craftjs/core';
+import { useNode, ROOT_NODE } from '@craftjs/core';
 
 // i18n
 import messages from './messages';
@@ -22,6 +22,10 @@ interface Props {
 }
 
 const TextMultiloc = ({ text }: Props) => {
+  const isSmallerThanTablet = useBreakpoint('tablet');
+  const { parent } = useNode((node) => ({
+    parent: node.data.parent,
+  }));
   const theme = useTheme();
   const localize = useLocalize();
 
@@ -33,6 +37,7 @@ const TextMultiloc = ({ text }: Props) => {
       minHeight="26px"
       maxWidth="1150px"
       margin="0 auto"
+      px={isSmallerThanTablet && parent === ROOT_NODE ? '20px' : '0px'}
     >
       <QuillEditedContent textColor={theme.colors.tenantText}>
         <div dangerouslySetInnerHTML={{ __html: value }} />

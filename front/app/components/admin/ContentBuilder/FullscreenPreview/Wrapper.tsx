@@ -58,7 +58,7 @@ export const FullScreenPreviewWrapper = ({
   return (
     <FocusOn>
       <StyledPreviewBox data-testid="contentBuilderEditModePreviewContent">
-        <Box p="20px">{children}</Box>
+        <Box>{children}</Box>
       </StyledPreviewBox>
     </FocusOn>
   );
