@@ -397,7 +397,7 @@ export function getAllParticipationMethods(
  * used in the project, or current phase if phases are provided and phaseId is not provided.
  * If the phaseId is provided, then it returns the participation method of the phase whose
  * phaseId is the same as the provided phaseId.
- * Returns undefined when the last phase has an end date in the past
+ * Returns undefined when there is no currently active phase.
  */
 export const getParticipationMethod = (
   project: IProjectData | null | undefined,
