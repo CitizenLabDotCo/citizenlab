@@ -63,6 +63,16 @@ FactoryBot.define do
       action { 'idea_disliked' }
     end
 
+    factory :initiative_liked_activity do
+      association :item, factory: :reaction
+      action { 'initiative_liked' }
+    end
+
+    factory :initiative_disliked_activity do
+      association :item, factory: :dislike
+      action { 'initiative_disliked' }
+    end
+
     factory :comment_liked_activity do
       association :item, factory: :comment_reaction
       action { 'comment_liked' }

@@ -257,9 +257,19 @@ describe ParticipantsService do
   end
 
   describe 'filter_engaging_activities' do
-    it 'does not filter out a like' do
-      activity = create(:published_activity)
-      expect(service.filter_engaging_activities(Activity.all)).to eq [activity]
+    it 'does not filter out likes or dislikes' do
+      idea_liked_activity = create(:idea_liked_activity)
+      idea_disliked_activity = create(:idea_disliked_activity)
+      initiative_liked_activity = create(:initiative_liked_activity)
+      initiative_disliked_activity = create(:initiative_disliked_activity)
+
+      expect(service.filter_engaging_activities(Activity.all))
+        .to match_array [
+          idea_liked_activity,
+          idea_disliked_activity,
+          initiative_liked_activity,
+          initiative_disliked_activity
+        ]
     end
 
     it 'filters out an idea changed title activity' do
