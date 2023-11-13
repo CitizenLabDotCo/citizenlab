@@ -11,7 +11,7 @@ import useAuthUser from 'api/me/useAuthUser';
 import { IIdea, IdeaCommentingDisabledReason } from 'api/ideas/types';
 
 // i18n
-import messages from './messages';
+import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import globalMessages from 'utils/messages';
 
