@@ -67,4 +67,30 @@ describe PermissionPolicy do
       expect(scope.resolve.size).to eq 1
     end
   end
+
+  context 'when user is moderator of the corresponding project' do
+    let(:project) { create(:continuous_project, phase_attrs: { with_permissions: true }) }
+    let(:user) { create(:project_moderator, projects: [project]) }
+    let(:permission) { project.phases.first.permissions.first }
+
+    it { is_expected.to permit(:show)             }
+    it { is_expected.to permit(:update)           }
+
+    it 'indexes the permission' do
+      expect(scope.resolve.size).to be > 0
+    end
+  end
+
+  context 'when user is moderator of another project' do
+    let(:phase) { create(:phase, with_permissions: true) }
+    let(:permission) { phase.permissions.first }
+    let(:user) { create(:project_moderator, projects: [create(:project)]) }
+
+    it { is_expected.not_to permit(:show)         }
+    it { is_expected.not_to permit(:update)       }
+
+    it 'does not index the permission' do
+      expect(scope.resolve.size).to eq 0
+    end
+  end
 end

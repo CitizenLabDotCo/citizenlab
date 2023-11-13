@@ -94,4 +94,21 @@ describe Polls::ResponsePolicy do
 
     it_behaves_like 'policy for blocked user', show: false
   end
+
+  context 'for a resident who owns the response in a project where taking a poll is not permitted' do
+    let!(:user) { create(:user) }
+    let!(:response) { create(:poll_response, participation_context: phase, user: user) }
+    let!(:phase) do
+      create(:poll_phase, with_permissions: true).tap do |phase|
+        phase.permissions.find_by(action: 'taking_poll').update!(permitted_by: 'admins_moderators')
+      end
+    end
+
+    it { is_expected.not_to permit(:create) }
+
+    it 'does not index the response' do
+      response.save!
+      expect(scope.resolve.size).to eq 0
+    end
+  end
 end

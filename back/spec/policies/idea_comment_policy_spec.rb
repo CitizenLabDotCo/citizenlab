@@ -125,4 +125,23 @@ describe IdeaCommentPolicy do
       expect(scope.resolve.size).to eq 1
     end
   end
+
+  context 'for a mortal user who owns the comment in a project where commenting is not permitted' do
+    let!(:comment) { create(:comment, post: idea, author: user) }
+    let!(:project) do
+      create(:continuous_budgeting_project, phase_attrs: { with_permissions: true }).tap do |project|
+        project.phases.first.permissions.find_by(action: 'commenting_idea')
+          .update!(permitted_by: 'admins_moderators')
+      end
+    end
+
+    it { is_expected.to     permit(:show) }
+    it { is_expected.not_to permit(:create) }
+    it { is_expected.not_to permit(:update) }
+    it { is_expected.not_to permit(:destroy) }
+
+    it 'indexes the comment' do
+      expect(scope.resolve.size).to eq 1
+    end
+  end
 end

@@ -5,7 +5,7 @@ require 'rails_helper'
 describe BasketPolicy do
   subject { described_class.new(user, basket) }
 
-  let(:context) { create(:continuous_budgeting_project).phases.first }
+  let(:context) { create(:continuous_budgeting_project, phase_attrs: { with_permissions: true }).phases.first }
   let(:basket) { create(:basket, participation_context: context) }
 
   context 'for a visitor' do
@@ -98,6 +98,19 @@ describe BasketPolicy do
     it { is_expected.not_to permit(:show) }
     it { is_expected.not_to permit(:create)  }
     it { is_expected.not_to permit(:update)  }
+    it { is_expected.not_to permit(:destroy) }
+  end
+
+  context 'for a mortal user who owns the basket in a project phase where voting is not permitted' do
+    let!(:user) { basket.user }
+
+    before do
+      context.permissions.find_by(action: 'voting').update!(permitted_by: 'admins_moderators')
+    end
+
+    it { is_expected.to permit(:show) }
+    it { is_expected.not_to permit(:create) }
+    it { is_expected.not_to permit(:update) }
     it { is_expected.not_to permit(:destroy) }
   end
 end
