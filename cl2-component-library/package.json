@@ -82,6 +82,7 @@
     "jest-environment-jsdom": "^29.6.4",
     "jest-junit": "^16.0.0",
     "jest-styled-components": "^7.1.1",
+    "lodash": "4.17.21",
     "moment": "2.29.4",
     "postcss": "^8.4.31",
     "prettier": "^3.0.3",
@@ -104,12 +105,11 @@
   "dependencies": {
     "@tippyjs/react": "4.2.6",
     "focus-visible": "5.2.0",
-    "lodash": "4.17.21",
     "lodash-es": "4.17.21",
-    "polished": "^4.2.2",
+    "polished": "4.2.2",
     "react-color": "2.19.3",
     "react-transition-group": "4.4.5",
-    "styled-components": "^5.3.9",
+    "styled-components": "5.3.9",
     "tippy.js": "6.3.7"
   }
 }

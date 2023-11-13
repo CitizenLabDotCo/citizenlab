@@ -19,4 +19,9 @@ export default defineMessages({
     defaultMessage:
       'You have already submitted your {votes, plural, one {vote} other {votes}}. To change your {votes, plural, one {vote} other {votes}}, go back to the project page and click "Modify your vote".',
   },
+  maxVotesReached: {
+    id: 'app.components.AssignVoteControl.maxVotesReached',
+    defaultMessage:
+      'You have reached the maximum number of votes you can submit.',
+  },
 });
