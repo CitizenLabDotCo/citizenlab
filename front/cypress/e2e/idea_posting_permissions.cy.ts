@@ -68,11 +68,11 @@ import { randomString, randomEmail } from '../support/commands';
 // });
 
 describe('idea posting that requires smart group', () => {
-  const projectTitle = randomString(15);
+  const projectTitle = randomString(10);
   let projectId = '';
   let projectSlug = '';
   let permittedUserId = '';
-  let permittedUserEmail = `${randomString(5)}@citizenlab.co`;
+  let permittedUserEmail = `${randomString(5)}@charlie.co`;
   let permittedUserPassword = randomString(8);
   let nonPermittedUserId = '';
   let nonPermittedUserEmail = randomEmail();
@@ -125,68 +125,65 @@ describe('idea posting that requires smart group', () => {
           canReact: true,
         });
       })
-      .then((phase) => {
-        cy.apiGetProjectPermission({
-          projectId,
-          phaseId: phase?.body.data.id,
-          action: 'posting_idea',
-        }).then((response) => {
-          cy.apiSetProjectPermission({
-            projectId,
-            phaseId: phase?.body.data.id,
-            action: 'posting_idea',
-            permissionBody: {
-              // Group for the Citizenlab Heroes smart group in the test environment
-              permissionId: response?.body.data.id,
-              permission: {
-                permitted_by: 'groups',
-                group_ids: ['472b0bfc-444a-4ad4-b7e8-342b37eb78a2'],
-                global_custom_fields: true,
-              },
-            },
-          });
-        });
+      .then(() => {
+        cy.visit(`admin/projects/${projectId}/permissions`);
+        cy.get('#accordion-title').click();
+        cy.get('#e2e-permission-user-groups').click();
+        cy.get('#e2e-select-user-group').click().type('Charlie{enter}');
       });
   });
 
   it("doesn't redirect users after authentication to form page if they are not permitted", () => {
+    cy.clearCookies();
     cy.visit(`projects/${projectSlug}`);
     cy.get('#e2e-idea-button').should('exist');
     cy.get('#e2e-idea-button').first().click();
-    cy.get('e2e-authentication-modal');
     cy.get('#e2e-goto-signup').click();
-    cy.get('#e2e-sign-up-email-password-container');
     cy.get('#email').type(nonPermittedUserEmail);
     cy.get('#password').type(nonPermittedUserPassword);
     cy.get('#e2e-signin-password-submit-button').click();
     cy.url().should('not.include', `/ideas/new`);
-    cy.clearCookies();
   });
 
   it('redirects users after authentication to form page if they are permitted', () => {
+    cy.clearCookies();
     cy.visit(`projects/${projectSlug}`);
     cy.get('#e2e-idea-button').should('exist');
+    cy.wait(2000);
     cy.get('#e2e-idea-button').first().click();
-    cy.get('e2e-authentication-modal');
+    cy.wait(2000);
     cy.get('#e2e-goto-signup').click();
-    cy.get('#e2e-sign-up-email-password-container');
+    cy.wait(2000);
     cy.get('#email').type(permittedUserEmail);
     cy.get('#password').type(permittedUserPassword);
     cy.get('#e2e-signin-password-submit-button').click();
     cy.url().should('include', `/ideas/new`);
+  });
+
+  it('shows prompt for authentication on form page if logged out user visits and shows form when authenticated', () => {
     cy.clearCookies();
+    cy.visit(`projects/${projectSlug}/ideas/new`);
+    cy.get('#e2e-not-authorized').should('exist');
+    cy.get('[data-cy="e2e-unauthorized-must-sign-in"]').should('exist');
+    cy.get('[data-cy="e2e-trigger-authentication"]').click();
+    cy.get('#e2e-goto-signup').click();
+    cy.get('#email').type(permittedUserEmail);
+    cy.get('#password').type(permittedUserPassword);
+    cy.get('#e2e-signin-password-submit-button').click();
+    cy.get('#idea-form').should('exist');
   });
 
-  it('shows prompt for authentication on form page if logged out user visits', () => {
-    console.log('test');
-  });
-
-  it('shows complete profile prompt on form page if user visits who might be permitted after more information', () => {
-    console.log('test');
-  });
-
-  it('shows not permitted message on form page if user visits who is not permitted', () => {
-    console.log('test');
+  it('shows prompt for authentication on form page if logged out user visits and does not show form when not permitted', () => {
+    cy.clearCookies();
+    cy.visit(`projects/${projectSlug}/ideas/new`);
+    cy.get('#e2e-not-authorized').should('exist');
+    cy.get('[data-cy="e2e-unauthorized-must-sign-in"]').should('exist');
+    cy.get('[data-cy="e2e-trigger-authentication"]').click();
+    cy.get('#e2e-goto-signup').click();
+    cy.get('#email').type(nonPermittedUserEmail);
+    cy.get('#password').type(nonPermittedUserPassword);
+    cy.get('#e2e-signin-password-submit-button').click();
+    cy.get('#idea-form').should('not.exist');
   });
 
   after(() => {

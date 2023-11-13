@@ -71,6 +71,7 @@ const Unauthorized = ({
                 triggerAuthFlow && triggerAuthFlow();
               }}
               text={formatMessage(messages.completeProfile)}
+              data-cy="e2e-trigger-authentication"
             />
           </Box>
         </>
@@ -93,12 +94,13 @@ const Unauthorized = ({
           <Text fontSize="l" color="textSecondary" mb="20px">
             {formatMessage(messages.sorryNoAccess)}
           </Text>
-          <Box mb="16px">
+          <Box mb="16px" data-cy="e2e-unauthorized-must-sign-in">
             <Button
               onClick={() => {
                 triggerAuthFlow ? triggerAuthFlow() : signIn();
               }}
               text={formatMessage(messages.signIn)}
+              data-cy="e2e-trigger-authentication"
             />
           </Box>
         </>
