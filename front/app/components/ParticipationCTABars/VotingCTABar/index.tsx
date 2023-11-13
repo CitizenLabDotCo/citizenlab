@@ -68,13 +68,7 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
         hasUserParticipated={hasUserParticipated}
         participationState={
           hasUserParticipated ? undefined : (
-            <Text
-              color="white"
-              m="0px"
-              fontSize="s"
-              // textAlign="left"
-              aria-live="polite"
-            >
+            <Text color="white" m="0px" fontSize="s" aria-live="polite">
               {votesCounter}
             </Text>
           )
