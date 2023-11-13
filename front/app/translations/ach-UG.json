@@ -21,6 +21,7 @@
   "app.components.AssignMultipleVotesControl.votesSubmitted": "crwdns1273630:0crwdne1273630:0",
   "app.components.AssignMultipleVotesControl.votesSubmittedIdeaPage": "crwdns1273632:0crwdne1273632:0",
   "app.components.AssignMultipleVotesControl.xVotes2": "crwdns1273634:0votes={votes}crwdnd1273634:0singular={singular}crwdnd1273634:0plural={plural}crwdne1273634:0",
+  "app.components.AssignVoteControl.maxVotesReached": "crwdns1294726:0crwdne1294726:0",
   "app.components.AssignVoteControl.vote": "crwdns1273636:0crwdne1273636:0",
   "app.components.AssignVoteControl.voteForAtLeastOne": "crwdns1273638:0crwdne1273638:0",
   "app.components.AssignVoteControl.voted": "crwdns1273640:0crwdne1273640:0",
