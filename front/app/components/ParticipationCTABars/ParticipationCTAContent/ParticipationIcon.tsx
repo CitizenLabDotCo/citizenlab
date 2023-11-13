@@ -2,7 +2,7 @@ import React from 'react';
 import { Icon, colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-const DotIcon = styled(Icon)<{ showAnimation: boolean }>`
+const StyledIcon = styled(Icon)<{ showAnimation: boolean }>`
   animation-name: blink-animation;
   animation-duration: ${({ showAnimation }) => (showAnimation ? '1.8s' : '0s')};
   animation-delay: 1s;
@@ -26,17 +26,16 @@ interface Props {
   hasUserParticipated: boolean;
 }
 
-const BlinkingDot = ({ hasUserParticipated }: Props) => {
+const ParticipationIcon = ({ hasUserParticipated }: Props) => {
   return (
-    <DotIcon
+    <StyledIcon
       name={hasUserParticipated ? 'check-circle' : 'dot'}
       width="16px"
       height="16px"
       fill={colors.white}
-      mr="8px"
       showAnimation={!hasUserParticipated}
     />
   );
 };
 
-export default BlinkingDot;
+export default ParticipationIcon;
