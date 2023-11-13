@@ -9,8 +9,8 @@ import BaseEditor from 'components/admin/ContentBuilder/Editor';
 import Container from 'components/admin/ContentBuilder/Widgets/Container';
 
 // widgets
-import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
-import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
+import TwoColumn from '../CraftSections/TwoColumn';
+import ThreeColumn from '../CraftSections/ThreeColumn';
 import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
 import IframeMultiloc from 'components/admin/ContentBuilder/Widgets/IframeMultiloc';
 import AccordionMultiloc from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
