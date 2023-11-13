@@ -8,11 +8,10 @@ import {
 } from 'react-router-dom';
 
 // components
-import Button from 'components/UI/Button';
 import Outlet from 'components/Outlet';
-import { Box, Title, colors } from '@citizenlab/cl2-component-library';
-import NavigationTabs from 'components/admin/NavigationTabs';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import { PhaseHeader } from './phase/PhaseHeader';
+import { ProjectHeader } from './projectHeader';
 
 // resources
 import GetFeatureFlag, {
@@ -24,7 +23,6 @@ import { PreviousPathnameContext } from 'context';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
 
 // typings
 import { InsertConfigurationOptions, ITab } from 'typings';
@@ -36,7 +34,6 @@ import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import Timeline from 'containers/ProjectsShowPage/timeline/Timeline';
 
 // hooks
-import useLocalize from 'hooks/useLocalize';
 import { IPhaseData } from 'api/phases/types';
 import { getCurrentPhase } from 'api/phases/utils';
 import { getIntialTabs } from './tabs';
@@ -65,8 +62,6 @@ export const AdminProjectsProjectIndex = ({
   surveys_enabled,
 }: DataProps) => {
   const { formatMessage } = useIntl();
-
-  const localize = useLocalize();
   const { pathname } = useLocation();
   const [tabs, setTabs] = useState<ITab[]>([]);
   const { projectId, phaseId } = useParams() as {
@@ -174,43 +169,7 @@ export const AdminProjectsProjectIndex = ({
 
   return (
     <>
-      <NavigationTabs position="static">
-        <Box
-          display="flex"
-          height="58px"
-          alignItems="center"
-          justifyContent="space-between"
-          width="100%"
-          pr="24px"
-        >
-          <Box display="flex">
-            <Title color="primary" variant="h4" my="0px">
-              {localize(project.attributes.title_multiloc)}
-            </Title>
-          </Box>
-          <Box display="flex">
-            <Button
-              linkTo={`/projects/${project.attributes.slug}`}
-              buttonStyle="primary-inverse"
-              icon="eye"
-              size="s"
-              padding="4px 8px"
-              mr="12px"
-            >
-              {formatMessage(messages.view)}
-            </Button>
-            <Button
-              linkTo={`/admin/projects/${project.id}/settings`}
-              buttonStyle="secondary"
-              icon="settings"
-              size="s"
-              padding="4px 8px"
-            >
-              {formatMessage(messages.settings)}
-            </Button>
-          </Box>
-        </Box>
-      </NavigationTabs>
+      <ProjectHeader project={project} phases={phases} />
       {selectedPhase && (
         <Box mt="16px" px="40px">
           <Timeline

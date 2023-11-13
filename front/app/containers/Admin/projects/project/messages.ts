@@ -575,12 +575,4 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.optionsPageText2',
     defaultMessage: 'Input Manager tab',
   },
-  settings: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.settings',
-    defaultMessage: 'Settings',
-  },
-  view: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.view',
-    defaultMessage: 'View',
-  },
 });
