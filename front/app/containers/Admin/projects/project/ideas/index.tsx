@@ -47,6 +47,7 @@ const AdminProjectIdeas = () => {
 
   return (
     <>
+      <AnalysisBanner />
       <Box mb="30px">
         <Box display="flex" flexDirection="row" justifyContent="space-between">
           <Title variant="h2" color="primary" fontWeight="normal" mt="16px">
@@ -67,8 +68,6 @@ const AdminProjectIdeas = () => {
           <FormattedMessage {...messages.subtitleInputManager} />
         </Text>
       </Box>
-
-      <AnalysisBanner />
 
       {project && (
         <PostManager
