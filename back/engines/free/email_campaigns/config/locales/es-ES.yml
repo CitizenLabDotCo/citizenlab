@@ -52,6 +52,7 @@ es:
       "voting_basket_submitted": Confirmación de voto
       "voting_basket_not_submitted": Votos no presentados
       "voting_last_chance": Última oportunidad para votar
+      "voting_phase_started": Nueva fase del proyecto con votación
       "voting_results": Resultados de la votación
       "your_proposed_initiatives_digest": Resumen semanal de tus propuestas
     general:
