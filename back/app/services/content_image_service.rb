@@ -11,8 +11,8 @@ class ContentImageService
   end
 
   def swap_data_images_multiloc(multiloc, imageable: nil, field: nil)
-    multiloc.each_with_object({}) do |(locale, encoded_content), output|
-      output[locale] = swap_data_images encoded_content, imageable: imageable, field: field
+    multiloc.transform_values do |encoded_content|
+      swap_data_images encoded_content, imageable: imageable, field: field
     end
   end
 
@@ -41,12 +41,12 @@ class ContentImageService
 
   def render_data_images_multiloc(multiloc, imageable: nil, field: nil)
     return multiloc if multiloc.blank?
-    return multiloc if !multiloc.values.any? { |encoded_content| could_include_images?(encoded_content) }
+    return multiloc if multiloc.values.none? { |encoded_content| could_include_images?(encoded_content) }
 
     precompute_for_rendering_multiloc multiloc, imageable, field
 
-    multiloc.each_with_object({}) do |(locale, encoded_content), output|
-      output[locale] = render_data_images encoded_content, imageable: imageable, field: field
+    multiloc.transform_values do |encoded_content|
+      render_data_images encoded_content, imageable: imageable, field: field
     end
   end
 

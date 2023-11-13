@@ -13,7 +13,7 @@ describe ContentBuilder::LayoutService do
         'elt3' => { 'type' => 'div', 'props' => 'elt3-props' },
         'elt4' => { 'type' => { 'resolvedName' => 'Image' }, 'props' => 'elt4-props' }
       }
-      images = service.select_craftjs_elements_for_types content, ['Image', 'ImageMultiloc']
+      images = service.select_craftjs_elements_for_types content, %w[Image ImageMultiloc]
       expect(images).to eq [
         { 'type' => { 'resolvedName' => 'ImageMultiloc' }, 'props' => 'elt2-props' },
         { 'type' => { 'resolvedName' => 'Image' }, 'props' => 'elt4-props' }

@@ -303,7 +303,7 @@ resource 'ContentBuilderLayouts' do
                     id: layout.id,
                     type: 'content_builder_layout',
                     attributes: {
-                      craftjs_json: {  ROOT: {} },
+                      craftjs_json: { ROOT: {} },
                       craftjs_jsonmultiloc: {},
                       enabled: false,
                       code: code,

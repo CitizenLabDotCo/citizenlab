@@ -13,7 +13,7 @@ describe SideFxHomePageService do
       service.before_create(page, user)
     end
   end
-  
+
   describe 'before_update' do
     it 'runs runs both info sections through the text image service' do
       obj = instance_double(TextImageService)
