@@ -6,11 +6,8 @@ module ContentBuilder
 
     def before_create(layout, _user)
       # TODO: clean up after fully migrated
-      layout.craftjs_jsonmultiloc = if layout.content_buildable_type == 'ReportBuilder::Report'
-        OldLayoutImageService.new.swap_data_images_multiloc layout.craftjs_jsonmultiloc
-      else
-        LayoutImageService.new.swap_data_images layout.craftjs_json
-      end
+      layout.craftjs_jsonmultiloc = OldLayoutImageService.new.swap_data_images_multiloc layout.craftjs_jsonmultiloc
+      layout.craftjs_json = LayoutImageService.new.swap_data_images layout.craftjs_json
     end
 
     def after_create(layout, user)
@@ -19,11 +16,8 @@ module ContentBuilder
 
     def before_update(layout, _user)
       # TODO: clean up after fully migrated
-      layout.craftjs_jsonmultiloc = if layout.content_buildable_type == 'ReportBuilder::Report'
-        OldLayoutImageService.new.swap_data_images_multiloc layout.craftjs_jsonmultiloc
-      else
-        LayoutImageService.new.swap_data_images layout.craftjs_json
-      end
+      layout.craftjs_jsonmultiloc = OldLayoutImageService.new.swap_data_images_multiloc layout.craftjs_jsonmultiloc
+      layout.craftjs_json = LayoutImageService.new.swap_data_images layout.craftjs_json
     end
 
     def after_update(layout, user)

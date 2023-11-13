@@ -99,7 +99,8 @@ class ProjectCopyService < TemplateService
       # TODO: something...
       craftjs.each_key do |locale|
         craftjs[locale].each_value do |node|
-          next unless ContentBuilder::LayoutService.new.craftjs_element_of_type?(node, 'Image')
+          # TODO: Deal with new image multiloc elements
+          next unless ContentBuilder::LayoutService.new.craftjs_element_of_types?(node, ['Image'])
 
           source_image_code = node['props']['dataCode']
           new_image_code = ContentBuilder::LayoutImage.generate_code
@@ -114,6 +115,7 @@ class ProjectCopyService < TemplateService
         'code' => layout.code,
         'enabled' => layout.enabled,
         'craftjs_jsonmultiloc' => craftjs,
+        'craftjs_json' => layout.craftjs_json, # TODO: something?
         'created_at' => shift_timestamp(layout.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(layout.updated_at, shift_timestamps)&.iso8601
       }

@@ -22,7 +22,7 @@ module ContentBuilder
   class Layout < ApplicationRecord
     belongs_to :content_buildable, polymorphic: true
 
-    before_validation :sanitize_craftjs_jsonmultiloc
+    before_validation :sanitize_craftjs_json
 
     validates :content_buildable, :code, presence: true
     validates :craftjs_jsonmultiloc, multiloc: { presence: false, value_type: Hash }, if: lambda { |layout|
@@ -67,13 +67,10 @@ module ContentBuilder
       end
     end
 
-    def sanitize_craftjs_jsonmultiloc
+    def sanitize_craftjs_json
       # TODO: clean up after fully migrated
-      self.craftjs_jsonmultiloc = if content_buildable_type == 'ReportBuilder::Report'
-        LayoutSanitizationService.new.sanitize_multiloc craftjs_jsonmultiloc
-      else
-        LayoutSanitizationService.new.sanitize craftjs_json
-      end
+      self.craftjs_jsonmultiloc = LayoutSanitizationService.new.sanitize_multiloc craftjs_jsonmultiloc
+      self.craftjs_json = LayoutSanitizationService.new.sanitize craftjs_json
     end
   end
 end

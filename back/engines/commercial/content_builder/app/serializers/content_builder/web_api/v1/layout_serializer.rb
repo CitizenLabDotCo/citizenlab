@@ -7,13 +7,13 @@ module ContentBuilder
         set_type :content_builder_layout
         attributes :enabled, :code, :created_at, :updated_at
 
+        # TODO: clean up after fully migrated
         attribute :craftjs_jsonmultiloc do |layout|
-          # TODO: clean up after fully migrated
-          if layout.content_buildable_type == 'ReportBuilder::Report'
-            OldLayoutImageService.new.render_data_images_multiloc layout.craftjs_jsonmultiloc
-          else
-            LayoutImageService.new.render_data_images layout.craftjs_json
-          end
+          OldLayoutImageService.new.render_data_images_multiloc layout.craftjs_jsonmultiloc
+        end
+
+        attribute :craftjs_json do |layout|
+          LayoutImageService.new.render_data_images layout.craftjs_json
         end
       end
     end

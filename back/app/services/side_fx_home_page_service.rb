@@ -3,7 +3,7 @@
 class SideFxHomePageService
   def before_create(home_page, _user)
     # TODO: move to layout
-    home_page.craftjs_json = LayoutImageService.new.swap_data_images home_page.craftjs_json
+    home_page.craftjs_json = ContentBuilder::LayoutImageService.new.swap_data_images home_page.craftjs_json
   end
 
   def before_update(home_page, _ = nil)
@@ -16,6 +16,6 @@ class SideFxHomePageService
     end
 
     # TODO: move to layout
-    home_page.craftjs_json = LayoutImageService.new.swap_data_images home_page.craftjs_json
+    home_page.craftjs_json = ContentBuilder::LayoutImageService.new.swap_data_images home_page.craftjs_json
   end
 end

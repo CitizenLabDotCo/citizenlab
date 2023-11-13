@@ -90,6 +90,8 @@ module ContentBuilder
           ).permit(
             :enabled,
             {
+              # TODO: clean up after fully migrated
+              craftjs_json: {},
               craftjs_jsonmultiloc: CL2_SUPPORTED_LOCALES.map { |locale| { locale => {} } }
             }
           )
@@ -103,6 +105,7 @@ module ContentBuilder
             code: params[:code]
           }
           attributes[:enabled] = to_boolean(layout_params[:enabled]) if layout_params.key? :enabled
+          attributes[:craftjs_json] = layout_params[:craftjs_json] if layout_params.key? :craftjs_json
           if layout_params.key? :craftjs_jsonmultiloc
             attributes[:craftjs_jsonmultiloc] = clean(layout_params[:craftjs_jsonmultiloc])
           end
@@ -113,6 +116,7 @@ module ContentBuilder
           layout_params = params_for_upsert
           attributes = {}
           attributes[:enabled] = to_boolean(layout_params[:enabled]) if layout_params.key? :enabled
+          attributes[:craftjs_json] = layout_params[:craftjs_json] if layout_params.key? :craftjs_json
           return attributes unless layout_params.key? :craftjs_jsonmultiloc
 
           attributes[:craftjs_jsonmultiloc] = (

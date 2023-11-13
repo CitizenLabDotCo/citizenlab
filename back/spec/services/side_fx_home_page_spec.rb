@@ -9,7 +9,7 @@ describe SideFxHomePageService do
 
   describe 'before_create' do
     it 'swaps data images' do
-      expect_any_instance_of(LayoutImageService).to receive(:swap_data_images).with(page.craftjs_json)
+      expect_any_instance_of(ContentBuilder::LayoutImageService).to receive(:swap_data_images).with(page.craftjs_json)
       service.before_create(page, user)
     end
   end
@@ -18,13 +18,13 @@ describe SideFxHomePageService do
     it 'runs runs both info sections through the text image service' do
       obj = instance_double(TextImageService)
       allow(TextImageService).to receive(:new).and_return(obj)
-      expect(obj).to receive(:swap_data_images).with(page, :top_info_section_multiloc).and_return(page.top_info_section_multiloc)
-      expect(obj).to receive(:swap_data_images).with(page, :bottom_info_section_multiloc).and_return(page.bottom_info_section_multiloc)
+      expect(obj).to receive(:swap_data_images_multiloc).with(page.top_info_section_multiloc, field: :top_info_section_multiloc, imageable: page).and_return(page.top_info_section_multiloc)
+      expect(obj).to receive(:swap_data_images_multiloc).with(page.bottom_info_section_multiloc, field: :bottom_info_section_multiloc, imageable: page).and_return(page.bottom_info_section_multiloc)
       service.before_update(page, user)
     end
 
     it 'swaps data images' do
-      expect_any_instance_of(LayoutImageService).to receive(:swap_data_images).with(page.craftjs_json)
+      expect_any_instance_of(ContentBuilder::LayoutImageService).to receive(:swap_data_images).with(page.craftjs_json)
       service.before_update(page, user)
     end
   end
