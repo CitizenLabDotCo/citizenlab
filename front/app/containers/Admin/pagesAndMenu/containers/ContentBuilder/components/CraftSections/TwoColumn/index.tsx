@@ -1,7 +1,13 @@
 import React from 'react';
 
 // components
-import { Box, Radio, Icon, Label } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Radio,
+  Icon,
+  Label,
+  useBreakpoint,
+} from '@citizenlab/cl2-component-library';
 
 // styles
 import styled from 'styled-components';
@@ -10,19 +16,20 @@ import styled from 'styled-components';
 import { colors, media } from 'utils/styleUtils';
 
 // craft
-import { useNode, Element } from '@craftjs/core';
-import Container from '../Container';
+import { useNode, Element, ROOT_NODE } from '@craftjs/core';
+import Container from 'components/admin/ContentBuilder/Widgets/Container';
 
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // typings
-import { ColumnLayout } from '../../typings';
+import { ColumnLayout } from 'components/admin/ContentBuilder/typings';
 
 type TwoColumnProps = {
   columnLayout: ColumnLayout;
   children?: React.ReactNode;
+  isHomepage?: boolean;
 };
 
 const StyledBox = styled(Box)`
@@ -45,9 +52,26 @@ const StyledBox = styled(Box)`
       : '1fr 2fr'};
 `;
 
-export const TwoColumn = ({ columnLayout, children }: TwoColumnProps) => {
+export const TwoColumn = ({
+  columnLayout,
+  children,
+  isHomepage,
+}: TwoColumnProps) => {
+  const isSmallerThanTablet = useBreakpoint('tablet');
+  const { parent } = useNode((node) => ({
+    parent: node.data.parent,
+  }));
+
   return (
-    <StyledBox id="e2e-two-column" columnLayout={columnLayout}>
+    <StyledBox
+      id="e2e-two-column"
+      columnLayout={columnLayout}
+      px={
+        isHomepage && isSmallerThanTablet && parent === ROOT_NODE
+          ? '20px'
+          : '0px'
+      }
+    >
       {children || (
         <>
           <Element id={'left'} is={Container} canvas />
