@@ -88,18 +88,14 @@ export const AdminProjectsProjectIndex = ({
     },
     'survey-results': function surveyResultsTabHidden() {
       return (
+        phase.attributes.participation_method !== 'survey' ||
         !surveys_enabled ||
         !typeform_enabled ||
-        (surveys_enabled &&
-          phase.attributes.participation_method !== 'survey' &&
-          phase.attributes.survey_service !== 'typeform')
+        (surveys_enabled && phase.attributes.survey_service !== 'typeform')
       );
     },
     volunteering: function isVolunteeringTabHidden() {
       return phase?.attributes.participation_method !== 'volunteering';
-    },
-    events: function isEventsTabHidden() {
-      return false;
     },
   });
 
