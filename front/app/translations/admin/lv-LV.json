@@ -2194,6 +2194,7 @@
   "app.containers.ContentBuilder.homepage.PageTitle": "Mājas lapa",
   "app.containers.ContentBuilder.homepage.TwoColumnLayout": "Divas kolonnas",
   "app.containers.ContentBuilder.homepage.ViewHomepage": "Skatīt mājaslapu",
+  "app.containers.ContentBuilder.homepage.bannerImage": "Bannera attēls",
   "app.containers.ContentBuilder.homepage.bannerSubtext": "Bannera zemteksts",
   "app.containers.ContentBuilder.homepage.bannerText": "Bannera teksts",
   "app.containers.ContentBuilder.homepage.button": "Poga",
