@@ -53,7 +53,6 @@ resource 'Ideas' do
 
     before do
       @user = user
-      IdeaStatus.create_defaults
       create(:idea_status_proposed)
       header_token_for user
     end
@@ -698,22 +697,21 @@ resource 'Ideas' do
       describe 'creating an idea' do
         example_request 'Create an idea' do
           assert_status 201
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:data, :relationships, :project, :data, :id)).to eq project_id
-          expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
-          expect(json_response.dig(:data, :attributes, :location_point_geojson)).to eq location_point_geojson
-          expect(json_response.dig(:data, :attributes, :location_description)).to eq location_description
+          expect(response_data.dig(:relationships, :project, :data, :id)).to eq project_id
+          expect(response_data.dig(:relationships, :topics, :data).pluck(:id)).to match_array topic_ids
+          expect(response_data.dig(:attributes, :location_point_geojson)).to eq location_point_geojson
+          expect(response_data.dig(:attributes, :location_description)).to eq location_description
           expect(project.reload.ideas_count).to eq 1
         end
 
         example 'Check for the automatic creation of a like by the author when an idea is created', document: false do
           do_request
-          json_response = json_parse(response_body)
-          new_idea = Idea.find(json_response.dig(:data, :id))
+          assert_status 201
+          new_idea = Idea.find(response_data[:id])
           expect(new_idea.reactions.size).to eq 1
           expect(new_idea.reactions[0].mode).to eq 'up'
           expect(new_idea.reactions[0].user.id).to eq @user.id
-          expect(json_response[:data][:attributes][:likes_count]).to eq 1
+          expect(response_data[:attributes][:likes_count]).to eq 1
         end
 
         describe 'Values for disabled fields are ignored' do
@@ -721,14 +719,13 @@ resource 'Ideas' do
 
           example 'Create an idea with values for disabled fields', document: false do
             do_request
-            expect(status).to be 201
-            json_response = json_parse(response_body)
-            expect(json_response.dig(:data, :attributes, :title_multiloc, :en)).to eq 'Plant more trees'
+            assert_status 201
+            expect(response_data.dig(:attributes, :title_multiloc, :en)).to eq 'Plant more trees'
             # proposed_budget is disabled, so its given value was ignored.
-            expect(json_response.dig(:data, :attributes, :proposed_budget)).to be_nil
-            expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
-            expect(json_response.dig(:data, :attributes, :location_point_geojson)).to eq location_point_geojson
-            expect(json_response.dig(:data, :attributes, :location_description)).to eq location_description
+            expect(response_data.dig(:attributes, :proposed_budget)).to be_nil
+            expect(response_data.dig(:relationships, :topics, :data).pluck(:id)).to match_array topic_ids
+            expect(response_data.dig(:attributes, :location_point_geojson)).to eq location_point_geojson
+            expect(response_data.dig(:attributes, :location_description)).to eq location_description
           end
         end
       end
@@ -757,8 +754,7 @@ resource 'Ideas' do
           do_request
 
           assert_status 201
-          json_response = json_parse response_body
-          idea = Idea.find(json_response.dig(:data, :id))
+          idea = Idea.find(response_data[:id])
           expect(idea.proposed_budget).to eq 1234
         end
       end
@@ -1060,7 +1056,7 @@ resource 'Ideas' do
 
         describe do
           example_request 'Update an idea' do
-            expect(status).to be 200
+            assert_status 200
             json_response = json_parse(response_body)
             expect(json_response.dig(:data, :attributes, :title_multiloc, :en)).to eq 'Changed title'
             expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
@@ -1104,7 +1100,7 @@ resource 'Ideas' do
 
           example 'Update an idea with values for disabled fields', document: false do
             do_request
-            expect(status).to be 200
+            assert_status 200
             json_response = json_parse(response_body)
             expect(json_response.dig(:data, :attributes, :title_multiloc, :en)).to eq 'Changed title'
             # proposed_budget is disabled, so its given value was ignored.
@@ -1121,7 +1117,7 @@ resource 'Ideas' do
           example 'Remove the topics', document: false do
             @idea.topics = create_list :topic, 2
             do_request
-            expect(status).to be 200
+            assert_status 200
             json_response = json_parse response_body
             expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
           end
@@ -1132,7 +1128,7 @@ resource 'Ideas' do
 
           example 'Change the idea status as a non-admin does not work', document: false do
             do_request
-            expect(status).to be 200
+            assert_status 200
             json_response = json_parse response_body
             expect(json_response.dig(:data, :relationships, :idea_status, :data, :id)).to eq @idea.idea_status_id
           end
@@ -1144,7 +1140,7 @@ resource 'Ideas' do
           example 'Change the participatory budget as a non-admin does not work', document: false do
             previous_value = @idea.budget
             do_request
-            expect(status).to be 200
+            assert_status 200
             json_response = json_parse response_body
             expect(json_response.dig(:data, :attributes, :budget)).to eq previous_value
           end
@@ -1182,7 +1178,7 @@ resource 'Ideas' do
             let(:idea_status_id) { create(:idea_status).id }
 
             example_request 'Change the idea status (as an admin)' do
-              expect(status).to be 200
+              assert_status 200
               json_response = json_parse response_body
               expect(json_response.dig(:data, :relationships, :idea_status, :data, :id)).to eq idea_status_id
             end
@@ -1240,7 +1236,7 @@ resource 'Ideas' do
               let(:phase_ids) { [phase].map(&:id) }
 
               example 'returns a 200 status' do
-                expect(status).to be 200
+                assert_status 200
               end
 
               example 'Change the idea phases (as an admin or moderator)' do
@@ -1318,7 +1314,7 @@ resource 'Ideas' do
               let(:phase_ids) { [] }
 
               example 'returns a 200 status' do
-                expect(status).to be 200
+                assert_status 200
               end
 
               example 'Change the idea phases (as an admin or moderator)' do
@@ -1336,7 +1332,7 @@ resource 'Ideas' do
             let(:budget) { 1800 }
 
             example_request 'Change the participatory budget (as an admin)' do
-              expect(status).to be 200
+              assert_status 200
               json_response = json_parse response_body
               expect(json_response.dig(:data, :attributes, :budget)).to eq budget
             end
@@ -1360,7 +1356,7 @@ resource 'Ideas' do
             let(:project_id) { @project2.id }
 
             example_request 'As an admin' do
-              expect(status).to be 200
+              assert_status 200
               json_response = json_parse response_body
               expect(json_response.dig(:data, :relationships, :project, :data, :id)).to eq project_id
 

@@ -34,12 +34,11 @@ class Permission < ApplicationRecord
   }
   SCOPE_TYPES = [nil, 'Project', 'Phase'].freeze
 
-  scope :filter_enabled_actions, ->(phase) { where(action: enabled_actions(phase)) }
-  scope :order_by_action, lambda { |phase|
-    order(Arel.sql(order_by_action_sql(phase)))
+  scope :filter_enabled_actions, ->(permission_scope) { where(action: enabled_actions(permission_scope)) }
+  scope :order_by_action, lambda { |permission_scope|
+    order(Arel.sql(order_by_action_sql(permission_scope)))
   }
 
-  # TODO: JS permission_scope refactor to phase
   belongs_to :permission_scope, polymorphic: true, optional: true
   has_many :groups_permissions, dependent: :destroy
   has_many :groups, through: :groups_permissions
@@ -59,23 +58,23 @@ class Permission < ApplicationRecord
   end
 
   # Remove any actions that are not enabled on the project
-  def self.enabled_actions(phase)
-    participation_method = Factory.instance.participation_method_for(phase)
-    return available_actions(phase) if participation_method&.return_disabled_actions?
+  def self.enabled_actions(permission_scope)
+    participation_method = Factory.instance.participation_method_for(permission_scope)
+    return available_actions(permission_scope) if participation_method&.return_disabled_actions?
 
-    available_actions(phase).filter_map do |action|
+    available_actions(permission_scope).filter_map do |action|
       next if
-        (action == 'posting_idea' && !phase&.posting_enabled?) ||
-        (action == 'reacting_idea' && !phase&.reacting_enabled?) ||
-        (action == 'commenting_idea' && !phase&.commenting_enabled?)
+        (action == 'posting_idea' && !permission_scope&.posting_enabled?) ||
+        (action == 'reacting_idea' && !permission_scope&.reacting_enabled?) ||
+        (action == 'commenting_idea' && !permission_scope&.commenting_enabled?)
 
       action
     end
   end
 
-  def self.order_by_action_sql(phase)
+  def self.order_by_action_sql(permission_scope)
     sql = 'CASE action '
-    actions = enabled_actions(phase)
+    actions = enabled_actions(permission_scope)
     actions.each_with_index { |action, order| sql += "WHEN '#{action}' THEN #{order} " }
     sql += "ELSE #{actions.size} END"
     sql
