@@ -7,9 +7,15 @@ interface Props {
 
 const ReportSection = ({ phaseId }: Props) => {
   const { data: phase } = usePhase(phaseId);
-  console.log(phase);
+  if (phase === undefined) return null;
 
-  return <></>;
+  const hasReport = !!phase.data.relationships.report?.data;
+
+  if (hasReport) {
+    return <>Has report...</>;
+  }
+
+  return <>Has no report yet</>;
 };
 
 export default ReportSection;
