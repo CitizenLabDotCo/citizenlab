@@ -9,7 +9,7 @@ describe IdeaPolicy do
 
   context 'on an idea in a public project' do
     let(:project) { create(:continuous_project) }
-    let!(:idea) { create(:idea, project: project) }
+    let!(:idea) { create(:idea, project: project, phases: project.phases) }
 
     context 'for a visitor' do
       let(:user) { nil }

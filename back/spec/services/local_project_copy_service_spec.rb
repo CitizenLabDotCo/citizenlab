@@ -19,7 +19,7 @@ describe LocalProjectCopyService do
     let!(:continuous_project) do
       create(
         :continuous_project,
-        with_permissions: with_permissions,
+        phase_attrs: { with_permissions: with_permissions },
         admin_publication_attributes: { publication_status: 'published' },
         title_multiloc: { en: 'Copy me' },
         slug: 'copy-me',
@@ -42,7 +42,7 @@ describe LocalProjectCopyService do
         ideas_count: 0,
         include_all_areas: false,
         internal_role: nil,
-        process_type: 'continuous',
+        process_type: 'timeline',
         visible_to: 'public',
         folder_id: nil
       )
@@ -219,8 +219,7 @@ describe LocalProjectCopyService do
       let(:with_permissions) { true }
       let(:groups) { create_list(:group, 2) }
       let(:permission) do
-        ParticipationContextService.new
-          .get_participation_context(continuous_project).permissions
+        continuous_project.phases.first.permissions
           .find_by(action: 'commenting_idea')
       end
 
@@ -228,7 +227,7 @@ describe LocalProjectCopyService do
         permission.update!(permitted_by: 'groups', groups: groups)
 
         copied_project = service.copy(continuous_project)
-        expect(copied_project.permissions.find_by(action: 'commenting_idea').groups).to match_array(groups)
+        expect(copied_project.phases.first.permissions.find_by(action: 'commenting_idea').groups).to match_array(groups)
       end
     end
 

@@ -7,7 +7,7 @@ describe IdeaReactionPolicy do
 
   let(:scope) { IdeaReactionPolicy::Scope.new(user, Reaction) }
   let(:project) { create(:continuous_project) }
-  let(:reactable) { create(:idea, project: project) }
+  let(:reactable) { create(:idea, project: project, phases: project.phases) }
   let!(:reaction) { create(:reaction, reactable: reactable) }
 
   context 'for a visitor' do

@@ -12,6 +12,7 @@ resource 'Poll Responses' do
     header_token_for @user
   end
 
+  # TODO: JS - Are these poll responses end points on projects needed - or should these be tests for the phase version?
   get 'web_api/v1/projects/:participation_context_id/poll_responses/as_xlsx' do
     context 'non-anonymous poll' do
       before do
@@ -96,30 +97,6 @@ resource 'Poll Responses' do
 
         expect(json_response[:data][:attributes][:series][:options][@q1.options.first.id.to_sym]).to eq 1
       end
-    end
-  end
-
-  post 'web_api/v1/projects/:participation_context_id/poll_responses' do
-    parameter :response_options_attributes, 'Array with response option objects', required: true, scope: :response
-    parameter :option_id, 'The id of the option the user selected', required: true, scope: %i[response response_options_attributes]
-
-    ValidationErrorHelper.new.error_fields(self, Polls::Response)
-    ValidationErrorHelper.new.error_fields(self, Polls::ResponseOption)
-    response_field :base, "Array containing objects with signature {error: 'not_all_questions_one_option'}", scope: :errors
-
-    let(:pc) { create(:continuous_poll_project) }
-    let(:participation_context_id) { pc.id }
-    let(:q1) { create(:poll_question, :with_options, participation_context: pc) }
-    let(:q2) { create(:poll_question_multiple_options, :with_options, participation_context: pc) }
-    let(:response_options_attributes) do
-      [
-        { option_id: q1.options.first.id },
-        { option_id: q2.options.last.id }
-      ]
-    end
-
-    example_request 'Create a poll response in a project' do
-      expect(response_status).to eq 201
     end
   end
 

@@ -163,17 +163,16 @@ class Idea < ApplicationRecord
   end
 
   def custom_form
+    # TODO: JS participation_context
     participation_context = creation_phase || project
     participation_context.custom_form || CustomForm.new(participation_context: participation_context)
   end
 
   def input_term
-    return project.input_term if project.continuous?
-
     return creation_phase.input_term if participation_method_on_creation.creation_phase?
 
-    participation_context = ParticipationContextService.new.get_participation_context(project)
-    return participation_context.input_term if participation_context&.can_contain_ideas?
+    current_phase = TimelineService.new.current_phase project
+    return current_phase.input_term if current_phase&.can_contain_ideas?
 
     case phases.size
     when 0
@@ -193,14 +192,12 @@ class Idea < ApplicationRecord
   end
 
   def participation_method_on_creation
-    Factory.instance.participation_method_for participation_context_on_creation
+    # TODO: JS This will cause issue if project does not have a participation method any more
+    # Need to wrap this up in the custom form changes - should it use current phase instead?
+    Factory.instance.participation_method_for creation_phase || project
   end
 
   private
-
-  def participation_context_on_creation
-    creation_phase || project
-  end
 
   def schema_for_validation
     fields = participation_method_on_creation.custom_form.custom_fields
@@ -242,21 +239,12 @@ class Idea < ApplicationRecord
     IdeasPhase.counter_culture_fix_counts only: %i[phase]
     phases.select { |p| p.participation_method == 'voting' }.each do |phase|
       # NOTE: this does not get called when removing a phase - but phase counts are not actually used
-      Basket.update_counts(phase, 'Phase')
+      Basket.update_counts(phase)
     end
   end
 
   def validate_creation_phase
     return unless creation_phase
-
-    if project.continuous?
-      errors.add(
-        :creation_phase,
-        :not_in_timeline_project,
-        message: 'The creation phase cannot be set for inputs in a continuous project'
-      )
-      return
-    end
 
     if creation_phase.project_id != project_id
       errors.add(

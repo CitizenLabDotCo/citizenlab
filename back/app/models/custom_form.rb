@@ -15,6 +15,7 @@
 #  index_custom_forms_on_participation_context  (participation_context_id,participation_context_type) UNIQUE
 #
 class CustomForm < ApplicationRecord
+  # TODO: JS participation_context
   belongs_to :participation_context, polymorphic: true
   has_many :custom_fields, -> { order(:ordering) }, as: :resource, dependent: :destroy, inverse_of: :resource
 

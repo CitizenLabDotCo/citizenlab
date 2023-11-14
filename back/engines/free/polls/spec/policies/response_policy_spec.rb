@@ -6,8 +6,8 @@ describe Polls::ResponsePolicy do
   subject { described_class.new(user, response) }
 
   let(:scope) { Polls::ResponsePolicy::Scope.new(user, Polls::Response) }
-  let(:pc) { create(:continuous_poll_project) }
-  let!(:response) { build(:poll_response, participation_context: pc) }
+  let(:phase) { create(:poll_phase) }
+  let!(:response) { build(:poll_response, participation_context: phase) }
 
   context 'for a visitor' do
     let(:user) { nil }
@@ -67,7 +67,7 @@ describe Polls::ResponsePolicy do
   end
 
   context "for a moderator of the response's project that doesn't own the response" do
-    let(:user) { create(:project_moderator, projects: [pc]) }
+    let(:user) { create(:project_moderator, projects: [phase.project]) }
 
     it { is_expected.not_to permit(:create) }
 
@@ -79,7 +79,7 @@ describe Polls::ResponsePolicy do
 
   context 'for a moderator of another project that owns the response' do
     let(:user) { create(:project_moderator) }
-    let!(:response) { build(:poll_response, user: user, participation_context: pc) }
+    let!(:response) { build(:poll_response, user: user, participation_context: phase) }
 
     it { is_expected.to permit(:create) }
 

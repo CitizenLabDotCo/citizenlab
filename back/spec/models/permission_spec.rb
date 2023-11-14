@@ -38,10 +38,10 @@ RSpec.describe Permission do
   end
 
   describe 'scopes' do
-    let(:project) { create(:project) }
-    let!(:permission_commenting) { create(:permission, action: 'commenting_idea', permission_scope: project) }
-    let!(:permission_posting) { create(:permission, action: 'posting_idea', permission_scope: project) }
-    let!(:permission_reacting) { create(:permission, action: 'reacting_idea', permission_scope: project) }
+    let(:project) { create(:continuous_project) }
+    let!(:permission_commenting) { create(:permission, action: 'commenting_idea', permission_scope: project.phases.first) }
+    let!(:permission_posting) { create(:permission, action: 'posting_idea', permission_scope: project.phases.first) }
+    let!(:permission_reacting) { create(:permission, action: 'reacting_idea', permission_scope: project.phases.first) }
 
     it 'Returns permissions in the correct order' do
       permissions = described_class.order_by_action(project)

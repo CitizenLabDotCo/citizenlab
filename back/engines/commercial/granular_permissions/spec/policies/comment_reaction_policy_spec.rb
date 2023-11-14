@@ -6,7 +6,7 @@ describe CommentReactionPolicy do
   subject(:policy) { described_class.new(user, reaction) }
 
   let(:scope) { CommentReactionPolicy::Scope.new(user, Reaction) }
-  let(:project) { create(:continuous_project, with_permissions: true) }
+  let(:project) { create(:continuous_project, phase_attrs: { with_permissions: true }) }
   let(:comment) { create(:comment, post: create(:idea, project: project)) }
 
   context 'for a mortal user who owns the reaction on a project where commenting is only allowed by admins' do
@@ -14,7 +14,7 @@ describe CommentReactionPolicy do
     let(:user) { reaction.user }
 
     before do
-      project.permissions
+      project.phases.first.permissions
         .find_by(action: 'commenting_idea')
         .update!(permitted_by: 'admins_moderators')
     end

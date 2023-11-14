@@ -6,7 +6,7 @@ RSpec.describe ParticipationMethod::Information do
   subject(:participation_method) { described_class.new project }
 
   let(:input) { create(:idea) }
-  let(:project) { create(:continuous_project, participation_method: 'information') }
+  let(:project) { create(:continuous_information_project) }
 
   describe '#assign_defaults_for_participation_context' do
     let(:project) { build(:continuous_project) }

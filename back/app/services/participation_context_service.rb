@@ -323,7 +323,7 @@ class ParticipationContextService
     return true if context.posting_limited? && context.ideas.where(author: user).size >= context.posting_limited_max
 
     if context.posting_limited? && context.allow_anonymous_participation?
-      author_hash = Idea.create_author_hash user.id, context.id, true
+      author_hash = Idea.create_author_hash user.id, context.project.id, true
       return context.ideas.where(author_hash: author_hash).or(context.ideas.where(author: user)).size >= context.posting_limited_max
     end
 

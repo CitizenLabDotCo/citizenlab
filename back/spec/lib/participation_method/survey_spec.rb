@@ -98,7 +98,7 @@ RSpec.describe ParticipationMethod::Survey do
   describe '#custom_form' do
     let(:project) { context.project }
     let(:project_form) { create(:custom_form, participation_context: context.project) }
-    let(:context) { create(:survey_phase) }
+    let(:context) { create(:typeform_survey_phase) }
 
     it 'returns the custom form of the project' do
       expect(participation_method.custom_form.participation_context_id).to eq project.id

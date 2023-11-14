@@ -21,16 +21,17 @@ resource 'Ideas' do
 
       let(:idea) { build(:idea) }
       let(:project) do
-        create(:continuous_native_survey_project, with_permissions: true).tap do |project|
-          project.permissions.find_by(action: 'posting_idea').update! permitted_by: 'everyone'
+        create(:continuous_native_survey_project, phase_attrs: { with_permissions: true }).tap do |project|
+          project.phases.first.permissions.find_by(action: 'posting_idea').update! permitted_by: 'everyone'
         end
       end
       let(:project_id) { project.id }
       let(:extra_field_name) { 'custom_field_name1' }
-      let(:form) { create(:custom_form, participation_context: project) }
+      let(:form) { create(:custom_form, participation_context: project.phases.first) }
       let!(:text_field) { create(:custom_field_extra_custom_form, key: extra_field_name, required: true, resource: form) }
       let(:custom_field_name1) { 'test value' }
 
+      # TODO: - JS - failing test
       post 'web_api/v1/ideas' do
         example_request 'Create a native survey response without author' do
           assert_status 201

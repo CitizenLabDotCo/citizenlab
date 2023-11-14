@@ -8,9 +8,9 @@ describe PermissionPolicy do
   let(:scope) { PermissionPolicy::Scope.new(user, Permission) }
 
   context 'when user is moderator of the corresponding project' do
-    let(:project) { create(:continuous_project, with_permissions: true, participation_method: 'ideation') }
+    let(:project) { create(:continuous_project, phase_attrs: { with_permissions: true, participation_method: 'ideation' }) }
     let(:user) { create(:project_moderator, projects: [project]) }
-    let(:permission) { project.permissions.first }
+    let(:permission) { project.phases.first.permissions.first }
 
     it { is_expected.to permit(:show)             }
     it { is_expected.to permit(:update)           }
@@ -21,8 +21,8 @@ describe PermissionPolicy do
   end
 
   context 'when user is moderator of another project' do
-    let(:project) { create(:continuous_project, with_permissions: true, participation_method: 'ideation') }
-    let(:permission) { project.permissions.first }
+    let(:project) { create(:continuous_project, phase_attrs: { with_permissions: true, participation_method: 'ideation' }) }
+    let(:permission) { project.phases.first.permissions.first }
     let(:user) { create(:project_moderator, projects: [create(:project)]) }
 
     it { is_expected.not_to permit(:show)         }

@@ -19,7 +19,7 @@ RSpec.describe InputUiSchemaGeneratorService do
       let(:ui_schema) { generator.generate_for IdeaCustomFieldsService.new(custom_form).enabled_fields }
 
       context 'for a continuous ideation project with a changed built-in field and an extra section and field' do
-        let(:project) { create(:continuous_project, input_term: input_term) }
+        let(:project) { create(:continuous_project, phase_attrs: { input_term: input_term }) }
         let!(:custom_form) do
           create(:custom_form, :with_default_fields, participation_context: project).tap do |form|
             form.custom_fields.find_by(code: 'title_multiloc').update!(
@@ -554,7 +554,7 @@ RSpec.describe InputUiSchemaGeneratorService do
       end
 
       context 'for a continuous ideation project with an empty custom section' do
-        let(:project) { create(:continuous_project, input_term: input_term) }
+        let(:project) { create(:continuous_project, phase_attrs: { input_term: input_term }) }
         let!(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
         let!(:extra_section) do
           create(
@@ -585,7 +585,7 @@ RSpec.describe InputUiSchemaGeneratorService do
 
       context 'for a continuous ideation project with the default form' do
         let(:input_term) { 'option' }
-        let(:project) { create(:continuous_project, input_term: input_term) }
+        let(:project) { create(:continuous_project, phase_attrs: { input_term: input_term }) }
         let(:custom_form) { create(:custom_form, participation_context: project) }
 
         it 'returns the schema for the default fields' do

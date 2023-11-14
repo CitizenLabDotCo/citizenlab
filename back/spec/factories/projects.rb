@@ -170,6 +170,27 @@ FactoryBot.define do
       end
     end
 
+    factory :project_with_past_ideation_and_current_native_survey_phase do
+      after(:create) do |project, _evaluator|
+        past_phase = create(
+          :phase,
+          project: project,
+          participation_method: 'ideation',
+          start_at: 60.days.ago,
+          end_at: 30.days.ago
+        )
+        current_phase = create(
+          :phase,
+          project: project,
+          participation_method: 'native_survey',
+          start_at: 10.days.ago,
+          end_at: 60.days.from_now
+        )
+        project.phases << past_phase
+        project.phases << current_phase
+      end
+    end
+
     factory :project_with_past_ideation_and_future_ideation_phase do
       after(:create) do |project, _evaluator|
         past_phase = create(
@@ -383,6 +404,16 @@ FactoryBot.define do
 
     factory :private_admins_project do
       visible_to { :admins }
+      # TODO: JS this needed?
+      # after(:create) do |project, _evaluator|
+      #   project.phases << create(
+      #     :phase,
+      #     project: project,
+      #     participation_method: 'ideation',
+      #     start_at: Faker::Date.between(from: 6.months.ago, to: Time.zone.now),
+      #     end_at: nil
+      #   )
+      # end
     end
 
     factory :private_groups_project do
@@ -400,75 +431,173 @@ FactoryBot.define do
       end
 
       factory :private_groups_continuous_project do
-        process_type { 'continuous' }
-        factory :private_groups_continuous_budgeting_project do
-          participation_method { 'voting' }
-          voting_method { 'budgeting' }
-          voting_max_total { 10_000 }
+        after(:create) do |project, _evaluator|
+          project.phases << create(
+            :phase,
+            project: project,
+            participation_method: 'ideation',
+            start_at: Faker::Date.between(from: 6.months.ago, to: Time.zone.now),
+            end_at: nil
+          )
+        end
+      end
+
+      factory :private_groups_continuous_budgeting_project do
+        after(:create) do |project, _evaluator|
+          project.phases << create(
+            :phase,
+            project: project,
+            participation_method: 'voting',
+            voting_method: 'budgeting',
+            voting_max_total: 10_000,
+            start_at: Faker::Date.between(from: 6.months.ago, to: Time.zone.now),
+            end_at: nil
+          )
         end
       end
     end
 
-    factory :continuous_project do
-      process_type { 'continuous' }
-      participation_method { 'ideation' }
-      reacting_like_method { 'unlimited' }
-      reacting_like_limited_max { 7 }
-    end
+    # Old continuous projects
+    factory :open_ended_base_project do
+      transient do
+        phase_attrs { {} }
+      end
 
-    factory :continuous_native_survey_project do
-      process_type { 'continuous' }
-      participation_method { 'native_survey' }
-    end
+      factory :continuous_project do
+        after(:create) do |project, evaluator|
+          project.phases << create(
+            :phase,
+            project: project,
+            participation_method: 'ideation',
+            start_at: Faker::Date.between(from: 6.months.ago, to: Time.zone.now),
+            end_at: nil,
+            **evaluator.phase_attrs
+          )
+        end
+      end
 
-    factory :continuous_survey_project do
-      process_type { 'continuous' }
-      participation_method { 'survey' }
-      survey_service { 'typeform' }
-      survey_embed_url { 'https://citizenlabco.typeform.com/to/HKGaPV?source=xxxxx' }
-    end
+      factory :continuous_native_survey_project do
+        after(:create) do |project, evaluator|
+          project.phases << create(
+            :native_survey_phase,
+            project: project,
+            start_at: Faker::Date.between(from: 6.months.ago, to: Time.zone.now),
+            end_at: nil,
+            **evaluator.phase_attrs
+          )
+        end
+      end
 
-    factory :continuous_google_survey_project do
-      process_type { 'continuous' }
-      participation_method { 'survey' }
-      survey_service { 'google_forms' }
-      survey_embed_url { 'https://docs.google.com/forms/d/e/fake/viewform?embedded=true' }
-    end
+      factory :continuous_survey_project do
+        after(:create) do |project, evaluator|
+          project.phases << create(
+            :typeform_survey_phase,
+            project: project,
+            start_at: Faker::Date.between(from: 6.months.ago, to: Time.zone.now),
+            end_at: nil,
+            **evaluator.phase_attrs
+          )
+        end
+      end
 
-    factory :continuous_document_annotation_project do
-      process_type { 'continuous' }
-      participation_method { 'document_annotation' }
-      document_annotation_embed_url { 'https://citizenlab.konveio.com/document-title' }
-    end
+      factory :continuous_google_survey_project do
+        after(:create) do |project, evaluator|
+          project.phases << create(
+            :typeform_survey_phase,
+            project: project,
+            survey_service: 'google_forms',
+            survey_embed_url: 'https://docs.google.com/forms/d/e/fake/viewform?embedded=true',
+            start_at: Faker::Date.between(from: 6.months.ago, to: Time.zone.now),
+            end_at: nil,
+            **evaluator.phase_attrs
+          )
+        end
+      end
 
-    factory :continuous_budgeting_project do
-      process_type { 'continuous' }
-      participation_method { 'voting' }
-      voting_method { 'budgeting' }
-      voting_max_total { 10_000 }
-    end
+      factory :continuous_document_annotation_project do
+        after(:create) do |project, evaluator|
+          project.phases << create(
+            :document_annotation_phase,
+            project: project,
+            start_at: Faker::Date.between(from: 6.months.ago, to: Time.zone.now),
+            end_at: nil,
+            **evaluator.phase_attrs
+          )
+        end
+      end
 
-    factory :continuous_multiple_voting_project do
-      process_type { 'continuous' }
-      participation_method { 'voting' }
-      voting_method { 'multiple_voting' }
-      voting_max_total { 10 }
-    end
+      factory :continuous_budgeting_project do
+        after(:create) do |project, evaluator|
+          project.phases << create(
+            :budgeting_phase,
+            project: project,
+            start_at: Faker::Date.between(from: 6.months.ago, to: Time.zone.now),
+            end_at: nil,
+            **evaluator.phase_attrs
+          )
+        end
+      end
 
-    factory :continuous_single_voting_project do
-      process_type { 'continuous' }
-      participation_method { 'voting' }
-      voting_method { 'single_voting' }
-    end
+      factory :continuous_multiple_voting_project do
+        after(:create) do |project, evaluator|
+          project.phases << create(
+            :multiple_voting_phase,
+            project: project,
+            voting_method: 'multiple_voting',
+            start_at: Faker::Date.between(from: 6.months.ago, to: Time.zone.now),
+            end_at: nil,
+            **evaluator.phase_attrs
+          )
+        end
+      end
 
-    factory :continuous_poll_project do
-      process_type { 'continuous' }
-      participation_method { 'poll' }
-    end
+      factory :continuous_single_voting_project do
+        after(:create) do |project, evaluator|
+          project.phases << create(
+            :single_voting_phase,
+            project: project,
+            start_at: Faker::Date.between(from: 6.months.ago, to: Time.zone.now),
+            end_at: nil,
+            **evaluator.phase_attrs
+          )
+        end
+      end
 
-    factory :continuous_volunteering_project do
-      process_type { 'continuous' }
-      participation_method { 'volunteering' }
+      factory :continuous_poll_project do
+        after(:create) do |project, evaluator|
+          project.phases << create(
+            :poll_phase,
+            project: project,
+            start_at: Faker::Date.between(from: 6.months.ago, to: Time.zone.now),
+            end_at: nil,
+            **evaluator.phase_attrs
+          )
+        end
+      end
+
+      factory :continuous_volunteering_project do
+        after(:create) do |project, evaluator|
+          project.phases << create(
+            :volunteering_phase,
+            project: project,
+            start_at: Faker::Date.between(from: 6.months.ago, to: Time.zone.now),
+            end_at: nil,
+            **evaluator.phase_attrs
+          )
+        end
+      end
+
+      factory :continuous_information_project do
+        after(:create) do |project, evaluator|
+          project.phases << create(
+            :information_phase,
+            project: project,
+            start_at: Faker::Date.between(from: 6.months.ago, to: Time.zone.now),
+            end_at: nil,
+            **evaluator.phase_attrs
+          )
+        end
+      end
     end
   end
 end
