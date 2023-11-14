@@ -78,12 +78,18 @@ export const ParticipationCTAContent = ({
     config?.useProjectClosedCTABarStyle &&
     config.useProjectClosedCTABarStyle(currentPhase || project);
 
-  let timeLeft = currentPhase
-    ? getPeriodRemainingUntil(currentPhase.attributes.end_at, 'weeks')
-    : undefined;
+  let timeLeft =
+    currentPhase && currentPhase.attributes.end_at
+      ? getPeriodRemainingUntil(currentPhase.attributes.end_at, 'weeks')
+      : undefined;
   let timeLeftMessage = messages.xWeeksLeft;
 
-  if (timeLeft !== undefined && timeLeft < 2 && currentPhase) {
+  if (
+    timeLeft !== undefined &&
+    timeLeft < 2 &&
+    currentPhase &&
+    currentPhase.attributes.end_at
+  ) {
     timeLeft = getPeriodRemainingUntil(currentPhase.attributes.end_at, 'days');
     timeLeftMessage = messages.xDayLeft;
   }

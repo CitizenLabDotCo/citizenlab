@@ -7,6 +7,10 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::ParticipationContextSerializer
     TextImageService.new.render_data_images object, :description_multiloc
   end
 
+  attribute :previous_phase_end_at_updated do |object|
+    object.previous_phase_end_at_updated?
+  end
+
   belongs_to :project
 
   has_one :user_basket, if: proc { |object, params|

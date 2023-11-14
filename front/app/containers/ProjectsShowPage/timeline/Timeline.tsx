@@ -1,6 +1,5 @@
 import React, { useCallback, FormEvent, KeyboardEvent, useRef } from 'react';
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
-import moment from 'moment';
 
 // tracking
 import tracks from './tracks';
@@ -8,7 +7,7 @@ import { trackEventByName } from 'utils/analytics';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
-import PhaseDescriptions from './PhaseDescriptions';
+import PhaseDescription from './PhaseDescription';
 
 // hooks
 import usePhases from 'api/phases/usePhases';
@@ -24,7 +23,6 @@ import messages from 'containers/ProjectsShowPage/messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
-import { getIsoDateUtc } from 'utils/dateUtils';
 import setPhaseURL from './setPhaseURL';
 
 // style
@@ -288,14 +286,8 @@ const Timeline = ({
     const currentPhase = getCurrentPhase(phases.data);
     const currentPhaseId = currentPhase ? currentPhase.id : null;
     const selectedPhaseId = selectedPhase.id;
-
-    const totalNumberOfDays = phases.data
-      .map(getNumberOfDays)
-      .reduce((accumulator, numberOfDays) => {
-        return accumulator + numberOfDays;
-      });
-
     const phasesBreakpoint = phases.data.length * MIN_PHASE_WIDTH_PX;
+    const phaseSectionWidth = (1 / phases.data.length) * 100;
 
     return (
       <Container
@@ -316,13 +308,6 @@ const Timeline = ({
                 const isLast = phaseIndex === phases.data.length - 1;
                 const isCurrentPhase = phase.id === currentPhaseId;
                 const isSelectedPhase = phase.id === selectedPhaseId;
-
-                const numberOfDays = getNumberOfDays(phase);
-
-                const width = Math.round(
-                  (numberOfDays / totalNumberOfDays) * 100
-                );
-
                 const classNames = [
                   isFirst ? 'first' : null,
                   isLast ? 'last' : null,
@@ -336,7 +321,7 @@ const Timeline = ({
                   <PhaseContainer
                     className={classNames}
                     key={phaseIndex}
-                    width={width}
+                    width={phaseSectionWidth}
                     breakpoint={phasesBreakpoint}
                     last={isLast}
                   >
@@ -375,7 +360,7 @@ const Timeline = ({
                 );
               })}
             </RtlBox>
-            <PhaseDescriptions
+            <PhaseDescription
               projectId={projectId}
               selectedPhaseId={selectedPhaseId}
             />
@@ -389,14 +374,3 @@ const Timeline = ({
 };
 
 export default Timeline;
-
-function getNumberOfDays(phase: IPhaseData) {
-  // we can ignore user timezone to compare start/end dates,
-  // since all we care about is the amount of time between the two
-  const startIsoDate = getIsoDateUtc(phase.attributes.start_at);
-  const endIsoDate = getIsoDateUtc(phase.attributes.end_at);
-  const startMoment = moment(startIsoDate, 'YYYY-MM-DD');
-  const endMoment = moment(endIsoDate, 'YYYY-MM-DD');
-  const numberOfDays = Math.abs(startMoment.diff(endMoment, 'days')) + 1;
-  return numberOfDays;
-}
