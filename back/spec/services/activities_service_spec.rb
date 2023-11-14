@@ -5,15 +5,20 @@ require 'rails_helper'
 describe ActivitiesService do
   let(:service) { described_class.new }
 
+  def set_timezone(timezone) # rubocop:disable Naming/AccessorMethodName
+    settings = AppConfiguration.instance.settings
+    settings['core']['timezone'] = timezone
+    AppConfiguration.instance.update!(settings: settings)
+  end
+
   describe '#create_periodic_activities' do
     describe '#create_phase_started_activities' do
+      let_it_be(:timezone) { 'Asia/Kamchatka' }
+      before_all { set_timezone(timezone) }
+
       it 'logs phase started activity when a new phase starts (in the application timezone)' do
-        start_at = Date.parse '2019-03-20'
-        timezone = 'Asia/Kamchatka'
-        phase = create(:phase, start_at: start_at, end_at: (start_at + 1.week))
-        settings = AppConfiguration.instance.settings
-        settings['core']['timezone'] = timezone
-        AppConfiguration.instance.update!(settings: settings)
+        start_at = Date.new(2019, 3, 20)
+        phase = create(:phase, start_at: start_at)
         now = Time.find_zone(timezone).local(2019, 3, 20).localtime + 1.minute
 
         expect { service.create_periodic_activities(now: now) }
@@ -22,12 +27,8 @@ describe ActivitiesService do
       end
 
       it "doesn't log phase started activity when no new phase starts (in the application timezone)" do
-        start_at = Date.parse '2019-03-20'
-        timezone = 'Asia/Kamchatka'
-        phase = create(:phase, start_at: start_at, end_at: (start_at + 1.week))
-        settings = AppConfiguration.instance.settings
-        settings['core']['timezone'] = timezone
-        AppConfiguration.instance.update!(settings: settings)
+        start_at = Date.new(2019, 3, 20)
+        phase = create(:phase, start_at: start_at)
         now = start_at.to_time + 1.minute
 
         expect { service.create_periodic_activities(now: now) }
@@ -36,15 +37,8 @@ describe ActivitiesService do
 
       it "doesn't log a new activity if there's already one with the same acted_at timestamp" do
         start_at = Date.new(2019, 3, 20)
-        timezone = 'Asia/Kamchatka'
-        phase = create(:phase, start_at: start_at, end_at: (start_at + 1.week))
-
-        settings = AppConfiguration.instance.settings
-        settings['core']['timezone'] = timezone
-        AppConfiguration.instance.update!(settings: settings)
-
+        phase = create(:phase, start_at: start_at)
         now = Time.find_zone(timezone).local(2019, 3, 20).localtime + 1.minute
-        start_at.to_time
 
         Activity.create(item: phase, action: 'started', acted_at: start_at)
 
@@ -54,13 +48,12 @@ describe ActivitiesService do
     end
 
     describe '#create_phase_upcoming_activities' do
+      let_it_be(:timezone) { 'Asia/Kamchatka' }
+      before_all { set_timezone(timezone) }
+
       it 'logs phase upcoming activity when a new phase starts in a week (in the application timezone)' do
         start_at = Date.parse '2019-03-20'
-        timezone = 'Asia/Kamchatka'
         phase = create(:phase, start_at: start_at, end_at: (start_at + 1.week))
-        settings = AppConfiguration.instance.settings
-        settings['core']['timezone'] = timezone
-        AppConfiguration.instance.update!(settings: settings)
         now = Time.find_zone(timezone).local(2019, 3, 13).localtime + 1.minute
 
         expect { service.create_periodic_activities(now: now) }
@@ -70,11 +63,7 @@ describe ActivitiesService do
 
       it "doesn't log phase upcoming activity when no new phase starts in a week (in the application timezone)" do
         start_at = Date.parse '2019-03-20'
-        timezone = 'Asia/Kamchatka'
         phase = create(:phase, start_at: start_at, end_at: (start_at + 1.week))
-        settings = AppConfiguration.instance.settings
-        settings['core']['timezone'] = timezone
-        AppConfiguration.instance.update!(settings: settings)
         now = (start_at - 1.week).to_time + 1.minute
 
         expect { service.create_periodic_activities(now: now) }
@@ -83,13 +72,12 @@ describe ActivitiesService do
     end
 
     describe '#create_invite_not_accepted_since_3_days_activities' do
+      let_it_be(:timezone) { 'Asia/Kamchatka' }
+      before_all { set_timezone(timezone) }
+
       it 'logs invite not accepted since 3 days activity when an invite was not accepted since (in the application timezone)' do
         created_at = Time.parse '2019-03-22 10:50:00 +0000'
-        timezone = 'Asia/Kamchatka'
         invite = create(:invite, created_at: created_at)
-        settings = AppConfiguration.instance.settings
-        settings['core']['timezone'] = timezone
-        AppConfiguration.instance.update!(settings: settings)
         now = created_at + 3.days
 
         expect { service.create_periodic_activities(now: now) }
@@ -98,11 +86,7 @@ describe ActivitiesService do
 
       it "doesn't log accepted since 3 days activity when no invite wasn't accepted since (in the application timezone)" do
         created_at = Time.parse '2019-03-22 10:50:00 +0000'
-        timezone = 'Asia/Kamchatka'
         invite = create(:invite, created_at: created_at)
-        settings = AppConfiguration.instance.settings
-        settings['core']['timezone'] = timezone
-        AppConfiguration.instance.update!(settings: settings)
         now = Time.parse '2019-03-25 10:50:00 +1200'
 
         expect { service.create_periodic_activities(now: now) }
