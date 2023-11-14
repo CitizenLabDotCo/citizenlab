@@ -29,7 +29,7 @@ import {
   CTASignedOutType,
   THomepageBannerLayout,
 } from 'api/home_page/types';
-import { ImageSizes, Multiloc, UploadFile } from 'typings';
+import { Multiloc, UploadFile } from 'typings';
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { isValidUrl } from 'utils/validate';
 import {
@@ -57,7 +57,6 @@ const CTA_SIGNED_IN_TYPES: CTASignedInType[] = [
 
 export interface IHomepageSettingsAttributes {
   banner_layout: THomepageBannerLayout;
-  header_bg: ImageSizes | null;
 
   // signed_out
   banner_signed_out_header_multiloc: Multiloc;
@@ -85,17 +84,39 @@ type ErrorType = 'banner_cta_signed_out_url' | 'banner_cta_signed_in_url';
 
 type Props = {
   homepageSettings: IHomepageSettingsAttributes;
+  image?: {
+    dataCode?: string;
+    imageUrl?: string;
+  };
   hasError?: boolean;
   errors?: ErrorType[];
 };
 
-const HomepageBanner = ({ homepageSettings }: Props) => {
+const HomepageBanner = ({ homepageSettings, image }: Props) => {
   const [search] = useSearchParams();
 
   return search.get('variant') === 'signedIn' ? (
-    <SignedInHeader homepageSettings={homepageSettings} />
+    <SignedInHeader
+      homepageSettings={{
+        ...homepageSettings,
+        header_bg: {
+          large: image?.imageUrl || null,
+          medium: image?.imageUrl || null,
+          small: image?.imageUrl || null,
+        },
+      }}
+    />
   ) : (
-    <SignedOutHeader homepageSettings={homepageSettings} />
+    <SignedOutHeader
+      homepageSettings={{
+        ...homepageSettings,
+        header_bg: {
+          large: image?.imageUrl || null,
+          medium: image?.imageUrl || null,
+          small: image?.imageUrl || null,
+        },
+      }}
+    />
   );
 };
 
@@ -106,10 +127,12 @@ const HomepageBannerSettings = () => {
     id,
     hasError,
     errors,
+    image,
   } = useNode((node) => ({
     id: node.id,
     hasError: node.data.props.hasError,
     errors: node.data.props.errors,
+    image: node.data.props.image,
     homepageSettings: {
       banner_signed_out_header_multiloc:
         node.data.props.homepageSettings.banner_signed_out_header_multiloc,
@@ -142,7 +165,6 @@ const HomepageBannerSettings = () => {
           .banner_signed_in_header_overlay_opacity,
       banner_signed_in_header_overlay_color:
         node.data.props.homepageSettings.banner_signed_in_header_overlay_color,
-      header_bg: node.data.props.homepageSettings.header_bg,
     },
   }));
 
@@ -154,12 +176,10 @@ const HomepageBannerSettings = () => {
   const [initialRender, setInitialRender] = useState(true);
 
   useEffect(() => {
-    if (homepageSettings.header_bg.large && initialRender) {
+    if (image?.imageUrl && initialRender) {
       (async () => {
         eventEmitter.emit(IMAGE_UPLOADING_EVENT, true);
-        const imageFile = await convertUrlToUploadFile(
-          homepageSettings.header_bg.large
-        );
+        const imageFile = await convertUrlToUploadFile(image?.imageUrl);
         if (imageFile) {
           setImageFiles([imageFile]);
         }
@@ -167,17 +187,16 @@ const HomepageBannerSettings = () => {
         setInitialRender(false);
       })();
     }
-  }, [homepageSettings.header_bg.large, initialRender]);
+  }, [image?.imageUrl, initialRender]);
 
   const handleOnAdd = useCallback(
     async (base64: string) => {
       try {
         const response = await addContentBuilderImage(base64);
         setProp((props: Props) => {
-          props.homepageSettings.header_bg = {
-            large: response.data.attributes.image_url,
-            medium: response.data.attributes.image_url,
-            small: response.data.attributes.image_url,
+          props.image = {
+            dataCode: response.data.attributes.code,
+            imageUrl: response.data.attributes.image_url,
           };
         });
       } catch {
@@ -189,10 +208,9 @@ const HomepageBannerSettings = () => {
 
   const handleOnRemove = () => {
     setProp((props: Props) => {
-      props.homepageSettings.header_bg = {
-        large: null,
-        medium: null,
-        small: null,
+      props.image = {
+        dataCode: undefined,
+        imageUrl: '',
       };
     });
     setImageFiles([]);

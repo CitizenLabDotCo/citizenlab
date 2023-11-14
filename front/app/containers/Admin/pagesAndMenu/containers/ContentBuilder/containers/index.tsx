@@ -146,14 +146,6 @@ const HomepageBuilderPage = () => {
                       banner_cta_signed_out_text_multiloc: {},
                       banner_cta_signed_out_type: 'sign_up_button',
                       banner_cta_signed_out_url: null,
-                      header_bg: {
-                        large:
-                          'http://localhost:4000/uploads/c72c5211-8e03-470b-9564-04ec0a8c322b/home_page/header_bg/5bda79bf-dc89-4a27-95c5-6d1982b15693/large_c20073fe-056e-432c-a614-6b92892caf86.jpg',
-                        medium:
-                          'http://localhost:4000/uploads/c72c5211-8e03-470b-9564-04ec0a8c322b/home_page/header_bg/5bda79bf-dc89-4a27-95c5-6d1982b15693/medium_c20073fe-056e-432c-a614-6b92892caf86.jpg',
-                        small:
-                          'http://localhost:4000/uploads/c72c5211-8e03-470b-9564-04ec0a8c322b/home_page/header_bg/5bda79bf-dc89-4a27-95c5-6d1982b15693/small_c20073fe-056e-432c-a614-6b92892caf86.jpg',
-                      },
                     }}
                   />
                   <Projects />
