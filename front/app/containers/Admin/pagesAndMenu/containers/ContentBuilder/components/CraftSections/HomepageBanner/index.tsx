@@ -174,7 +174,6 @@ const HomepageBannerSettings = () => {
       try {
         const response = await addContentBuilderImage(base64);
         setProp((props: Props) => {
-          //  props.dataCode = response.data.attributes.code;
           props.homepageSettings.header_bg = {
             large: response.data.attributes.image_url,
             medium: response.data.attributes.image_url,
@@ -195,7 +194,6 @@ const HomepageBannerSettings = () => {
         medium: null,
         small: null,
       };
-      // props.dataCode = undefined;
     });
     setImageFiles([]);
   };
