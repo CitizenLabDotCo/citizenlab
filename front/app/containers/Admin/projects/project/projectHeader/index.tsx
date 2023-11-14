@@ -34,9 +34,11 @@ export const ProjectHeader = ({ project, phases }: Props) => {
   if (!project) return null;
 
   let visibilityMessage: MessageDescriptor = messages.everyone;
+  let visibilityIcon: IconNames = 'lock';
   switch (project.attributes.visible_to) {
     case 'public':
       visibilityMessage = messages.everyone;
+      visibilityIcon = 'unlock';
       break;
     case 'groups':
       visibilityMessage = messages.groups;
@@ -110,7 +112,11 @@ export const ProjectHeader = ({ project, phases }: Props) => {
               padding="0px"
             >
               <Box display="flex" alignItems="center">
-                <Icon name="lock" fill={colors.coolGrey600} width="16px" />
+                <Icon
+                  name={visibilityIcon}
+                  fill={colors.coolGrey600}
+                  width="16px"
+                />
                 <Text color="coolGrey600" fontSize="s" m="0px">
                   {formatMessage(visibilityMessage)}
                 </Text>
