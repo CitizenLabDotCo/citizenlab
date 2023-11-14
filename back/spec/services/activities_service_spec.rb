@@ -33,6 +33,24 @@ describe ActivitiesService do
         expect { service.create_periodic_activities(now: now) }
           .not_to have_enqueued_job(LogActivityJob).with(phase, 'started', nil, start_at.to_time.to_i)
       end
+
+      it "doesn't log a new activity if there's already one with the same acted_at timestamp" do
+        start_at = Date.new(2019, 3, 20)
+        timezone = 'Asia/Kamchatka'
+        phase = create(:phase, start_at: start_at, end_at: (start_at + 1.week))
+
+        settings = AppConfiguration.instance.settings
+        settings['core']['timezone'] = timezone
+        AppConfiguration.instance.update!(settings: settings)
+
+        now = Time.find_zone(timezone).local(2019, 3, 20).localtime + 1.minute
+        start_at.to_time
+
+        Activity.create(item: phase, action: 'started', acted_at: start_at)
+
+        expect { service.create_periodic_activities(now: now) }
+          .not_to have_enqueued_job(LogActivityJob)
+      end
     end
 
     describe '#create_phase_upcoming_activities' do

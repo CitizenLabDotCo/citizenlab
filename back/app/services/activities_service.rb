@@ -19,13 +19,24 @@ class ActivitiesService
   def create_phase_started_activities(now, last_time)
     return unless now.to_date != last_time.to_date
 
-    Phase.published.starting_on(now.to_date).each do |phase|
+    start_date = now.to_date
+    starting_phases = Phase.published.starting_on(start_date)
+
+    # Phases that already have a started activity for *this starting date* are excluded
+    # to avoid creating duplicate activities (and, consequently, duplicate
+    # notifications). We still allow the creation of new activities when the start date
+    # is different (which can occur if the phase is edited).
+    excluded_phases = Activity
+      .where(item_id: starting_phases, action: 'started', acted_at: start_date)
+      .select(:item_id)
+
+    starting_phases.where.not(id: excluded_phases).each do |phase|
       if phase.ends_before?(now + 1.day)
         raise "Invalid phase started event would have been generated for phase\
                #{phase.id} with now=#{now} and last_time=#{last_time}"
       end
 
-      LogActivityJob.perform_later(phase, 'started', nil, phase.start_at.to_time.to_i)
+      LogActivityJob.perform_later(phase, 'started', nil, start_date.to_time)
     end
   end
 
@@ -44,7 +55,7 @@ class ActivitiesService
 
   def create_invite_not_accepted_since_3_days_activities(now, last_time)
     Invite.where(accepted_at: nil)
-      .where(created_at: (last_time - 3.days)..(now - 3.days)).each do |invite|
+          .where(created_at: (last_time - 3.days)..(now - 3.days)).each do |invite|
       LogActivityJob.perform_later(invite, 'not_accepted_since_3_days', nil, now.to_i)
     end
   end
