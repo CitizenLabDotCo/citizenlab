@@ -423,8 +423,13 @@ export default defineMessages({
     defaultMessage: 'Document',
   },
   participantsTooltip: {
-    id: 'app.containers.Projects.participantsTooltip2',
-    defaultMessage: 'This number also reflects anonymous survey submissions.',
+    id: 'app.containers.Projects.participantsTooltip4',
+    defaultMessage:
+      'This number also reflects anonymous survey submissions. Anonymous survey submissions are possible if surveys are open to everyone (see the {accessRightsLink} tab for this project).',
+  },
+  accessRights: {
+    id: 'app.containers.Projects.accessRights',
+    defaultMessage: 'Access rights',
   },
   surveySubmissionsTooltip: {
     id: 'app.containers.Projects.surveySubmissionsTooltip3',

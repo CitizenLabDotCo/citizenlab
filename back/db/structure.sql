@@ -2431,7 +2431,8 @@ CREATE TABLE public.home_pages (
     banner_cta_signed_out_url character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    header_bg character varying
+    header_bg character varying,
+    craftjs_json jsonb DEFAULT '{}'::jsonb NOT NULL
 );
 
 
@@ -7958,6 +7959,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230913121819'),
 ('20230915391649'),
 ('20230927135924'),
-('20231003095622');
+('20231003095622'),
+('20231018083110'),
+('20231109101517');
 
 
