@@ -1,5 +1,6 @@
 import React from 'react';
 import moment from 'moment';
+import styled from 'styled-components';
 import Button from 'components/UI/Button';
 import {
   Box,
@@ -15,6 +16,13 @@ import { GetProjectChildProps } from 'resources/GetProject';
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 import useLocalize from 'hooks/useLocalize';
+
+const StyledTitle = styled(Title)`
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+`;
 
 interface Props {
   phases: GetPhasesChildProps;
@@ -77,81 +85,80 @@ export const ProjectHeader = ({ project, phases }: Props) => {
     <NavigationTabs position="static" paddingLeft="24px">
       <Box
         display="flex"
-        height="58px"
-        alignItems="center"
-        justifyContent="space-between"
+        flexDirection="column"
         width="100%"
         pr="24px"
+        py="16px"
       >
-        <Box display="flex" flexDirection="column">
-          <Title color="primary" variant="h4" my="0px">
+        <Box display="flex" justifyContent="space-between" alignItems="center">
+          <StyledTitle color="primary" variant="h4" my="0px">
             {localize(project.attributes.title_multiloc)}
-          </Title>
-          <Box display="flex" gap="8px">
+          </StyledTitle>
+          <Box display="flex">
+            <Button
+              linkTo={`/projects/${project.attributes.slug}`}
+              buttonStyle="primary-inverse"
+              icon="eye"
+              size="s"
+              padding="4px 8px"
+              mr="12px"
+            >
+              {formatMessage(messages.view)}
+            </Button>
             <Button
               linkTo={`/admin/projects/${project.id}/settings`}
-              buttonStyle="text"
+              buttonStyle="secondary"
+              icon="settings"
               size="s"
-              padding="0px"
+              padding="4px 8px"
             >
-              <Box display="flex" alignItems="center">
-                <Icon
-                  name={publicationStatusIcon}
-                  fill={publicationStatusIconColor}
-                  width="16px"
-                />
-                <Text color="coolGrey600" fontSize="s" m="0px">
-                  {formatMessage(statusMessage)}
-                </Text>
-              </Box>
+              {formatMessage(messages.settings)}
             </Button>
-            <Button
-              linkTo={`/admin/projects/${project.id}/settings/access-rights`}
-              buttonStyle="text"
-              size="s"
-              padding="0px"
-            >
-              <Box display="flex" alignItems="center">
-                <Icon
-                  name={visibilityIcon}
-                  fill={colors.coolGrey600}
-                  width="16px"
-                />
-                <Text color="coolGrey600" fontSize="s" m="0px">
-                  {formatMessage(visibilityMessage)}
-                </Text>
-              </Box>
-            </Button>
-            <Box display="flex" alignItems="center">
-              <Icon name="user" fill={colors.coolGrey600} width="16px" />
-              <Text color="coolGrey600" fontSize="s" m="0px">
-                {formatMessage(messages.participants, {
-                  participantsCount: project.attributes.participants_count,
-                })}
-              </Text>
-            </Box>
           </Box>
         </Box>
-        <Box display="flex">
-          <Button
-            linkTo={`/projects/${project.attributes.slug}`}
-            buttonStyle="primary-inverse"
-            icon="eye"
-            size="s"
-            padding="4px 8px"
-            mr="12px"
-          >
-            {formatMessage(messages.view)}
-          </Button>
+        <Box display="flex" gap="8px">
           <Button
             linkTo={`/admin/projects/${project.id}/settings`}
-            buttonStyle="secondary"
-            icon="settings"
+            buttonStyle="text"
             size="s"
-            padding="4px 8px"
+            padding="0px"
           >
-            {formatMessage(messages.settings)}
+            <Box display="flex" alignItems="center">
+              <Icon
+                name={publicationStatusIcon}
+                fill={publicationStatusIconColor}
+                width="16px"
+              />
+              <Text color="coolGrey600" fontSize="s" m="0px">
+                {formatMessage(statusMessage)}
+              </Text>
+            </Box>
           </Button>
+          <Button
+            linkTo={`/admin/projects/${project.id}/settings/access-rights`}
+            buttonStyle="text"
+            size="s"
+            padding="0px"
+          >
+            <Box display="flex" alignItems="center">
+              <Icon
+                name={visibilityIcon}
+                fill={colors.coolGrey600}
+                width="16px"
+              />
+              <Text color="coolGrey600" fontSize="s" m="0px">
+                {formatMessage(visibilityMessage)}
+              </Text>
+            </Box>
+          </Button>
+          <Box display="flex" alignItems="center">
+            <Icon name="user" fill={colors.coolGrey600} width="16px" />
+            <Text color="coolGrey600" fontSize="s" m="0px">
+              {formatMessage(messages.participants, {
+                participantsCount: project.attributes.participants_count,
+              })}
+            </Text>
+          </Box>
         </Box>
       </Box>
     </NavigationTabs>
