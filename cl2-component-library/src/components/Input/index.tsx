@@ -1,5 +1,5 @@
 import React, { PureComponent, FormEvent } from 'react';
-import { isNil, isEmpty, size as lodashSize, isBoolean } from 'lodash';
+import { isNil, isEmpty, size as lodashSize, isBoolean } from 'lodash-es';
 
 // components
 import Error from '../Error';

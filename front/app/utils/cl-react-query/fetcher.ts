@@ -165,7 +165,7 @@ async function fetcher({
             }
           });
         }
-      } else if (action === 'post' || action === 'patch') {
+      } else if (action === 'get' || action === 'post' || action === 'patch') {
         if (data.data.id) {
           queryClient.setQueryData(
             [

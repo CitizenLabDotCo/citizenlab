@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 
 // components
 import {
@@ -29,13 +29,20 @@ import {
   CTASignedOutType,
   THomepageBannerLayout,
 } from 'api/home_page/types';
-import { ImageSizes, Multiloc } from 'typings';
+import { ImageSizes, Multiloc, UploadFile } from 'typings';
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { isValidUrl } from 'utils/validate';
-import { CONTENT_BUILDER_ERROR_EVENT } from 'components/admin/ContentBuilder/constants';
+import {
+  CONTENT_BUILDER_ERROR_EVENT,
+  IMAGE_UPLOADING_EVENT,
+} from 'components/admin/ContentBuilder/constants';
 import eventEmitter from 'utils/eventEmitter';
 import LayoutSettingField from './LayoutSettingField';
 import OverlayControls from './OverlayControls';
+import ImagesDropzone from 'components/UI/ImagesDropzone';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
+import useAddContentBuilderImage from 'api/content_builder_images/useAddContentBuilderImage';
+import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 
 const CTA_SIGNED_OUT_TYPES: CTASignedOutType[] = [
   'sign_up_button',
@@ -135,11 +142,61 @@ const HomepageBannerSettings = () => {
           .banner_signed_in_header_overlay_opacity,
       banner_signed_in_header_overlay_color:
         node.data.props.homepageSettings.banner_signed_in_header_overlay_color,
+      header_bg: node.data.props.homepageSettings.header_bg,
     },
   }));
 
   const [search, setSearchParams] = useSearchParams();
   const { formatMessage } = useIntl();
+
+  const [imageFiles, setImageFiles] = useState<UploadFile[]>([]);
+  const { mutateAsync: addContentBuilderImage } = useAddContentBuilderImage();
+  const [initialRender, setInitialRender] = useState(true);
+
+  useEffect(() => {
+    if (homepageSettings.header_bg.large && initialRender) {
+      (async () => {
+        eventEmitter.emit(IMAGE_UPLOADING_EVENT, true);
+        const imageFile = await convertUrlToUploadFile(
+          homepageSettings.header_bg.large
+        );
+        if (imageFile) {
+          setImageFiles([imageFile]);
+        }
+        eventEmitter.emit(IMAGE_UPLOADING_EVENT, false);
+        setInitialRender(false);
+      })();
+    }
+  }, [homepageSettings.header_bg.large, initialRender]);
+
+  const handleOnAdd = useCallback(
+    async (base64: string) => {
+      try {
+        const response = await addContentBuilderImage(base64);
+        setProp((props: Props) => {
+          props.homepageSettings.header_bg = {
+            large: response.data.attributes.image_url,
+            medium: response.data.attributes.image_url,
+            small: response.data.attributes.image_url,
+          };
+        });
+      } catch {
+        // Do nothing
+      }
+    },
+    [addContentBuilderImage, setProp]
+  );
+
+  const handleOnRemove = () => {
+    setProp((props: Props) => {
+      props.homepageSettings.header_bg = {
+        large: null,
+        medium: null,
+        small: null,
+      };
+    });
+    setImageFiles([]);
+  };
 
   const labelMessages: Record<CTASignedOutType, MessageDescriptor> = {
     customized_button: messages.customized_button,
@@ -242,6 +299,7 @@ const HomepageBannerSettings = () => {
           );
         }}
       />
+
       <Toggle
         label={
           <Box>
@@ -262,6 +320,35 @@ const HomepageBannerSettings = () => {
           );
         }}
       />
+
+      <Label htmlFor="bannerImage">{formatMessage(messages.bannerImage)}</Label>
+      {homepageSettings.banner_layout === 'fixed_ratio_layout' &&
+      imageFiles.length > 0 ? (
+        <ImageCropperContainer
+          image={imageFiles[0] || null}
+          onComplete={handleOnAdd}
+          aspectRatioWidth={3}
+          aspectRatioHeight={1}
+          onRemove={handleOnRemove}
+        />
+      ) : (
+        <ImagesDropzone
+          id="bannerImage"
+          images={imageFiles}
+          imagePreviewRatio={1 / 2}
+          maxImagePreviewWidth="360px"
+          objectFit="contain"
+          acceptedFileTypes={{
+            'image/*': ['.jpg', '.jpeg', '.png'],
+          }}
+          onAdd={(images) => {
+            setImageFiles(images);
+            handleOnAdd(images[0].base64);
+          }}
+          onRemove={handleOnRemove}
+        />
+      )}
+
       <Box
         display="flex"
         borderRadius="3px"
@@ -298,23 +385,25 @@ const HomepageBannerSettings = () => {
 
       {search.get('variant') !== 'signedIn' && (
         <>
-          <OverlayControls
-            variant="signedOut"
-            bannerOverlayColor={
-              homepageSettings.banner_signed_out_header_overlay_color
-            }
-            bannerOverlayOpacity={
-              homepageSettings.banner_signed_out_header_overlay_opacity
-            }
-            onOverlayChange={(opacity, color) => {
-              setProp((props: Props) => {
-                props.homepageSettings.banner_signed_out_header_overlay_color =
-                  color;
-                props.homepageSettings.banner_signed_out_header_overlay_opacity =
-                  opacity;
-              });
-            }}
-          />
+          {homepageSettings.banner_layout !== 'two_row_layout' && (
+            <OverlayControls
+              variant="signedOut"
+              bannerOverlayColor={
+                homepageSettings.banner_signed_out_header_overlay_color
+              }
+              bannerOverlayOpacity={
+                homepageSettings.banner_signed_out_header_overlay_opacity
+              }
+              onOverlayChange={(opacity, color) => {
+                setProp((props: Props) => {
+                  props.homepageSettings.banner_signed_out_header_overlay_color =
+                    color;
+                  props.homepageSettings.banner_signed_out_header_overlay_opacity =
+                    opacity;
+                });
+              }}
+            />
+          )}
           <InputMultilocWithLocaleSwitcher
             label={formatMessage(messages.bannerText)}
             placeholder={formatMessage(homepageMessages.titleCity)}

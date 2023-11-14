@@ -14,6 +14,7 @@ module.exports = {
     '@testing-library/jest-dom/extend-expect',
   ],
   testMatch: ['**/?(*.)+(test).(js|jsx|ts|tsx)'],
+  testPathIgnorePatterns: ['<rootDir>/internals/'],
   moduleDirectories: ['node_modules', 'app'],
   collectCoverageFrom: [
     'app/**/*.{js,jsx,ts,tsx}',
@@ -31,7 +32,10 @@ module.exports = {
     '\\.(css)$': 'identity-obj-proxy',
     '\\.(jpg|jpeg|png|gif|svg)$': '<rootDir>/app/utils/testUtils/fileMock.js',
     '^react-scroll-to-component$': 'identity-obj-proxy',
+    '@citizenlab/cl2-component-library':
+      '<rootDir>/internals/jest/cl2-component-library/src/index.tsx',
   },
+  modulePathIgnorePatterns: ['.*__mocks__.*'],
   testEnvironmentOptions: {
     url: 'https://demo.stg.citizenlab.co/en/',
   },
