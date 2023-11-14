@@ -134,6 +134,9 @@ export const ProjectHeader = ({ project, phases }: Props) => {
               </Text>
             </Box>
           </Button>
+          <Text color="coolGrey600" fontSize="s" my="0px">
+            ·
+          </Text>
           <Button
             linkTo={`/admin/projects/${project.id}/settings/access-rights`}
             buttonStyle="text"
@@ -151,6 +154,9 @@ export const ProjectHeader = ({ project, phases }: Props) => {
               </Text>
             </Box>
           </Button>
+          <Text color="coolGrey600" fontSize="s" my="0px">
+            ·
+          </Text>
           <Box display="flex" alignItems="center">
             <Icon name="user" fill={colors.coolGrey600} width="16px" />
             <Text color="coolGrey600" fontSize="s" m="0px">
