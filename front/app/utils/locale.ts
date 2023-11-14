@@ -257,3 +257,13 @@ export function localeStream() {
     observable: $locale,
   };
 }
+
+export function hasTextInSpecifiedLocale(
+  multiloc: Multiloc,
+  locale: Locale
+): boolean {
+  return (
+    Object.prototype.hasOwnProperty.call(multiloc, locale) &&
+    multiloc[locale] !== ''
+  );
+}

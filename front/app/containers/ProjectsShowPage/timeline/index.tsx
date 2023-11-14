@@ -1,4 +1,4 @@
-import React, { memo, useMemo } from 'react';
+import React, { useMemo } from 'react';
 
 // components
 import Timeline from './Timeline';
@@ -36,9 +36,8 @@ import styled from 'styled-components';
 import { colors, isRtl } from 'utils/styleUtils';
 
 // utils
-import { getLatestRelevantPhase } from 'api/phases/utils';
+import { getLatestRelevantPhase, hideTimelineUI } from 'api/phases/utils';
 import { isValidPhase } from '../phaseParam';
-import { isNilOrError } from 'utils/helperUtils';
 
 // typings
 import { IPhaseData } from 'api/phases/types';
@@ -72,7 +71,7 @@ interface Props {
   className?: string;
 }
 
-const ProjectTimelineContainer = memo<Props>(({ projectId, className }) => {
+const ProjectTimelineContainer = ({ projectId, className }: Props) => {
   const { phaseNumber } = useParams();
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
@@ -91,12 +90,14 @@ const ProjectTimelineContainer = memo<Props>(({ projectId, className }) => {
     return getLatestRelevantPhase(phases.data);
   }, [phaseNumber, phases]);
 
+  if (!project) return null;
+
   const selectPhase = (phase: IPhaseData) => {
-    if (!phases || !project) return;
+    if (!phases) return;
     setPhaseURL(phase.id, phases.data, project.data);
   };
 
-  if (project && selectedPhase && !isNilOrError(currentLocale)) {
+  if (selectedPhase) {
     const selectedPhaseId = selectedPhase.id;
     const participationMethod = selectedPhase.attributes.participation_method;
     const isPastPhase =
@@ -112,19 +113,23 @@ const ProjectTimelineContainer = memo<Props>(({ projectId, className }) => {
         className={`${className || ''} e2e-project-process-page`}
       >
         <ContentContainer maxWidth={maxPageWidth}>
-          <Header>
-            <StyledProjectPageSectionTitle>
-              <FormattedMessage {...messages.phases} />
-            </StyledProjectPageSectionTitle>
-            <PhaseNavigation projectId={projectId} buttonStyle="white" />
-          </Header>
-          <Box mb="22px">
-            <Timeline
-              projectId={projectId}
-              selectedPhase={selectedPhase}
-              setSelectedPhase={selectPhase}
-            />
-          </Box>
+          {!hideTimelineUI(phases?.data, currentLocale) && (
+            <>
+              <Header>
+                <StyledProjectPageSectionTitle>
+                  <FormattedMessage {...messages.phases} />
+                </StyledProjectPageSectionTitle>
+                <PhaseNavigation projectId={projectId} buttonStyle="white" />
+              </Header>
+              <Box mb="22px">
+                <Timeline
+                  projectId={projectId}
+                  selectedPhase={selectedPhase}
+                  setSelectedPhase={selectPhase}
+                />
+              </Box>
+            </>
+          )}
           {isVotingPhase && (
             <StatusModule
               phase={selectedPhase}
@@ -154,6 +159,6 @@ const ProjectTimelineContainer = memo<Props>(({ projectId, className }) => {
   }
 
   return null;
-});
+};
 
 export default ProjectTimelineContainer;

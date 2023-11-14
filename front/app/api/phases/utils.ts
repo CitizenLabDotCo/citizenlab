@@ -4,6 +4,8 @@ import { first, last, sortBy } from 'lodash-es';
 import { IPhaseData } from './types';
 import { IProjectData } from 'api/projects/types';
 import { IIdea } from 'api/ideas/types';
+import { Locale } from 'typings';
+import { hasTextInSpecifiedLocale } from 'utils/locale';
 
 export function canContainIdeas(phase: IPhaseData) {
   const pm = phase.attributes.participation_method;
@@ -130,4 +132,20 @@ export const isIdeaInParticipationContext = (
   return idea.data.relationships.phases.data.some(
     (phase) => participationContext.id === phase.id
   );
+};
+
+// If a timeline project has no description,
+// no end date and only one phase, we don't show the multiple phase ui (timeline)
+export const hideTimelineUI = (
+  phasesData: IPhaseData[] | undefined,
+  currentLocale: Locale
+) => {
+  const hasOnePhase = phasesData?.length === 1;
+  const phaseDescription = hasOnePhase
+    ? phasesData[0].attributes.description_multiloc
+    : {};
+  const hasEmptyPhaseDescription =
+    hasOnePhase && !hasTextInSpecifiedLocale(phaseDescription, currentLocale);
+  const hasNoEndDate = hasOnePhase && phasesData[0].attributes.end_at === null;
+  return hasEmptyPhaseDescription && hasNoEndDate;
 };
