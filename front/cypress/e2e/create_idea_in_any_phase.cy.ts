@@ -101,6 +101,6 @@ describe('Idea creation', () => {
     cy.get('.e2e-previous-phase').click();
 
     // the card should contain the title
-    cy.get('.e2e-card-title').contains(newIdeaTitle);
+    cy.get('.e2e-idea-card-title').contains(newIdeaTitle);
   });
 });
