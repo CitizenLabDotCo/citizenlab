@@ -2194,6 +2194,7 @@
   "app.containers.ContentBuilder.homepage.PageTitle": "Strona główna",
   "app.containers.ContentBuilder.homepage.TwoColumnLayout": "Dwie kolumny",
   "app.containers.ContentBuilder.homepage.ViewHomepage": "Zobacz stronę główną",
+  "app.containers.ContentBuilder.homepage.bannerImage": "Obraz baneru",
   "app.containers.ContentBuilder.homepage.bannerSubtext": "Podtekst banera",
   "app.containers.ContentBuilder.homepage.bannerText": "Tekst banera",
   "app.containers.ContentBuilder.homepage.button": "Przycisk",
