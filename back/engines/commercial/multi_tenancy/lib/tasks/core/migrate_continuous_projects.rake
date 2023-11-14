@@ -11,7 +11,7 @@ namespace :fix_existing_tenants do
     stats = {}
 
     # TODO: Test that it continues if there are errors
-    Tenant.creation_finalized.prioritized.each do |tenant|
+    Tenant.prioritize(Tenant.creation_finalized).each do |tenant|
       next unless tenant.host == specify_host || specify_host.blank?
 
       Rails.logger.info "PROCESSING TENANT: #{tenant.host}..."

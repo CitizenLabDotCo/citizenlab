@@ -1,0 +1,225 @@
+import React from 'react';
+
+// components
+import {
+  Box,
+  fontSizes,
+  Radio,
+  IconTooltip,
+  Text,
+} from '@citizenlab/cl2-component-library';
+import { SectionField } from 'components/admin/Section';
+
+import FullWidthBannerLayoutActive from './layout_previews/full_width_banner_layout_active.jpg';
+import FullWidthBannerLayoutInactive from './layout_previews/full_width_banner_layout_inactive.jpg';
+import TwoColumnLayoutActive from './layout_previews/two_column_layout_active.jpg';
+import TwoColumnLayoutInactive from './layout_previews/two_column_layout_inactive.jpg';
+import TwoRowLayoutActive from './layout_previews/two_row_layout_active.jpg';
+import TwoRowLayoutInactive from './layout_previews/two_row_layout_inactive.jpg';
+
+// style
+import styled from 'styled-components';
+// i18n
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import messages from '../messages';
+
+import {
+  ICustomPageAttributes,
+  TCustomPageBannerLayout,
+} from 'api/custom_pages/types';
+import {
+  IHomepageSettingsAttributes,
+  THomepageBannerLayout,
+} from 'api/home_page/types';
+
+const LayoutPreview = styled.img`
+  width: 100%;
+`;
+
+const LayoutOption = styled.label`
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  margin-right: 20px;
+  font-size: ${fontSizes.base}px;
+  cursor: pointer;
+`;
+
+export interface Props {
+  bannerLayout:
+    | ICustomPageAttributes['banner_layout']
+    | IHomepageSettingsAttributes['banner_layout'];
+  onChange: (
+    bannerLayout: THomepageBannerLayout | TCustomPageBannerLayout
+  ) => void;
+}
+
+const LayoutSettingField = ({ bannerLayout, onChange }: Props) => {
+  const { formatMessage } = useIntl();
+  return (
+    <SectionField key="layout">
+      <Text color="primary">
+        <FormattedMessage {...messages.chooseLayout} />
+      </Text>
+      <Box display="flex" flexDirection="column" gap="16px">
+        <LayoutOption data-cy="e2e-full-width-banner-layout-option">
+          <Box display="flex" alignItems="center">
+            <Radio
+              onChange={onChange}
+              currentValue={bannerLayout}
+              value="full_width_banner_layout"
+              name="banner-layout"
+              id="banner-full-width-banner-layout"
+              label={
+                <Box display="flex" gap="8px">
+                  {formatMessage(messages.fullWidthBannerLayout)}
+                  <IconTooltip
+                    placement="bottom-start"
+                    content={
+                      <FormattedMessage
+                        {...messages.fullWidthBannerTooltip}
+                        values={{
+                          link: (
+                            <a
+                              href={formatMessage(messages.imageSupportPageURL)}
+                              target="_blank"
+                              rel="noreferrer"
+                            >
+                              <FormattedMessage
+                                {...messages.fullWidthBannerTooltipLink}
+                              />
+                            </a>
+                          ),
+                        }}
+                      />
+                    }
+                  />
+                </Box>
+              }
+            />
+          </Box>
+          <LayoutPreview
+            src={
+              bannerLayout === 'full_width_banner_layout'
+                ? FullWidthBannerLayoutActive
+                : FullWidthBannerLayoutInactive
+            }
+          />
+        </LayoutOption>
+
+        {bannerLayout === 'two_column_layout' && (
+          <LayoutOption>
+            <Box display="flex" alignItems="center">
+              <Radio
+                onChange={onChange}
+                currentValue={bannerLayout}
+                value="two_column_layout"
+                name="banner-layout"
+                id="banner-two-column-layout"
+                label={formatMessage(messages.TwoColumnLayout)}
+              />
+            </Box>
+            <LayoutPreview
+              src={
+                bannerLayout === 'two_column_layout'
+                  ? TwoColumnLayoutActive
+                  : TwoColumnLayoutInactive
+              }
+            />
+          </LayoutOption>
+        )}
+
+        <LayoutOption>
+          <Box data-cy="e2e-two-row-layout-option">
+            <Radio
+              onChange={onChange}
+              currentValue={bannerLayout}
+              value="two_row_layout"
+              name="banner-layout"
+              id="banner-two-row-layout"
+              label={
+                <Box display="flex" gap="8px">
+                  {formatMessage(messages.twoRowLayout)}
+                  <IconTooltip
+                    placement="bottom-start"
+                    content={
+                      <FormattedMessage
+                        {...messages.twoRowBannerTooltip}
+                        values={{
+                          link: (
+                            <a
+                              href={formatMessage(messages.imageSupportPageURL)}
+                              target="_blank"
+                              rel="noreferrer"
+                            >
+                              <FormattedMessage
+                                {...messages.twoRowBannerTooltipLink}
+                              />
+                            </a>
+                          ),
+                        }}
+                      />
+                    }
+                  />
+                </Box>
+              }
+            />
+          </Box>
+          <LayoutPreview
+            src={
+              bannerLayout === 'two_row_layout'
+                ? TwoRowLayoutActive
+                : TwoRowLayoutInactive
+            }
+          />
+        </LayoutOption>
+        <LayoutOption>
+          <Box data-cy="e2e-fixed-ratio-layout-option">
+            <Radio
+              onChange={onChange}
+              currentValue={bannerLayout}
+              value="fixed_ratio_layout"
+              name="banner-layout"
+              id="banner_fixed_ratio_layout"
+              label={
+                <Box display="flex" gap="8px">
+                  {formatMessage(messages.fixedRatioLayout)}
+                  <IconTooltip
+                    placement="bottom-start"
+                    content={
+                      <FormattedMessage
+                        {...messages.fixedRatioBannerTooltip}
+                        values={{
+                          link: (
+                            <a
+                              href={formatMessage(messages.imageSupportPageURL)}
+                              target="_blank"
+                              rel="noreferrer"
+                            >
+                              <FormattedMessage
+                                {...messages.fixedRatioBannerTooltipLink}
+                              />
+                            </a>
+                          ),
+                        }}
+                      />
+                    }
+                  />
+                </Box>
+              }
+            />
+          </Box>
+          <LayoutPreview
+            src={
+              bannerLayout === 'fixed_ratio_layout'
+                ? FullWidthBannerLayoutActive
+                : FullWidthBannerLayoutInactive
+            }
+          />
+        </LayoutOption>
+      </Box>
+    </SectionField>
+  );
+};
+
+export default LayoutSettingField;

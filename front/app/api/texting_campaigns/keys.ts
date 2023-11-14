@@ -1,5 +1,6 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
 
+const itemKey = { type: 'campaign' };
 const baseKey = {
   type: 'campaign',
   variant: 'texting',
@@ -11,7 +12,7 @@ const textingCampaignsKeys = {
   items: () => [{ ...baseKey, operation: 'item' }],
   item: ({ id }: { id: string }) => [
     {
-      ...baseKey,
+      ...itemKey,
       operation: 'item',
       parameters: { id },
     },

@@ -880,7 +880,7 @@ workflows:
           compose_file: docker-compose-production-benelux.yml
           stack_name: cl2-prd-bnlx-stack
           env_file: ".env-production-benelux"
-          cluster_name: "prd"
+          cluster_name: "eu"
       - back-deploy-to-swarm:
           name: Deploy to Canada
           requires:

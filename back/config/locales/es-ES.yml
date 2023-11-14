@@ -167,9 +167,9 @@ es:
         title: Información adicional
   custom_field_options:
     gender:
-      male: Hombre
-      female: Mujer
-      unspecified: No especificado
+      male: Masculino
+      female: Feminino
+      unspecified: Otro
     domicile:
       outside: En algun otro lugar
     education:

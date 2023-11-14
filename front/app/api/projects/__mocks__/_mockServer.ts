@@ -1,5 +1,5 @@
 import { rest } from 'msw';
-import { IProjects, IProjectData } from '../types';
+import { IProjects, IProjectData, IProject } from '../types';
 
 export const project1: IProjectData = {
   id: '1aa8a788-3aee-4ada-a581-6d934e49784b',
@@ -74,7 +74,7 @@ export const project1: IProjectData = {
         },
         down: {
           enabled: false,
-          disabled_reason: 'disliking_disabled',
+          disabled_reason: 'reacting_dislike_disabled',
         },
       },
       // MISMATCH: this attribute doesn't exist on our type
@@ -303,6 +303,173 @@ export const projects: IProjects = {
   },
 };
 
+const votingProject: IProject = {
+  data: {
+    id: '276fc6c4-5780-45ff-90a0-e6655b67bc23',
+    type: 'project',
+    attributes: {
+      document_annotation_embed_url: null,
+      poll_anonymous: false,
+      survey_embed_url: null,
+      survey_service: null,
+      participation_method: 'voting',
+      posting_enabled: true,
+      // MISMATCH
+      // posting_method: "unlimited",
+      // posting_limited_max: 1,
+      commenting_enabled: true,
+      reacting_enabled: true,
+      reacting_like_method: 'unlimited',
+      reacting_like_limited_max: 10,
+      reacting_dislike_enabled: true,
+      reacting_dislike_method: 'unlimited',
+      reacting_dislike_limited_max: 10,
+      allow_anonymous_participation: false,
+      presentation_mode: 'card',
+      ideas_order: 'random',
+      input_term: 'idea',
+      voting_method: 'multiple_voting',
+      voting_max_total: 10,
+      voting_min_total: 0,
+      voting_max_votes_per_idea: 1,
+      baskets_count: 2,
+      voting_term_singular_multiloc: {
+        en: 'pick',
+      },
+      voting_term_plural_multiloc: {
+        en: 'picks',
+      },
+      votes_count: 2,
+      description_preview_multiloc: {},
+      title_multiloc: {
+        en: 'Luuc voting test',
+      },
+      comments_count: 0,
+      ideas_count: 1,
+      followers_count: 2,
+      include_all_areas: false,
+      internal_role: null,
+      process_type: 'continuous',
+      slug: 'luuc-voting-test',
+      visible_to: 'groups',
+      created_at: '2023-08-09T09:57:44.129Z',
+      updated_at: '2023-10-19T10:25:13.230Z',
+      folder_id: null,
+      publication_status: 'published',
+      description_multiloc: {},
+      header_bg: {
+        large: null,
+      },
+      action_descriptor: {
+        posting_idea: {
+          enabled: false,
+          disabled_reason: 'not_ideation',
+          future_enabled: null,
+        },
+        commenting_idea: {
+          enabled: true,
+          disabled_reason: null,
+        },
+        reacting_idea: {
+          enabled: false,
+          disabled_reason: 'not_ideation',
+          up: {
+            enabled: false,
+            disabled_reason: 'not_ideation',
+          },
+          down: {
+            enabled: false,
+            disabled_reason: 'not_ideation',
+          },
+        },
+        // MISMATCH
+        // comment_reacting_idea: {
+        //   enabled: true,
+        //   disabled_reason: null
+        // },
+        annotating_document: {
+          enabled: false,
+          disabled_reason: 'not_document_annotation',
+        },
+        taking_survey: {
+          enabled: false,
+          disabled_reason: 'not_survey',
+        },
+        taking_poll: {
+          enabled: false,
+          disabled_reason: 'not_poll',
+        },
+        // MISMATCH
+        // voting: {
+        //   enabled: true,
+        //   disabled_reason: null
+        // }
+      },
+      avatars_count: 2,
+      participants_count: 2,
+      // MISMATCH
+      // allocated_budget: 0,
+      uses_content_builder: true,
+    },
+    relationships: {
+      admin_publication: {
+        data: {
+          id: '8efd352a-e4c9-478f-a108-1fbdd7e5747a',
+          type: 'admin_publication',
+        },
+      },
+      project_images: {
+        data: [],
+      },
+      areas: {
+        data: [],
+      },
+      topics: {
+        data: [],
+      },
+      avatars: {
+        data: [
+          {
+            id: 'a5167d4e-9f3a-4430-b973-8717ccb94dad',
+            type: 'avatar',
+          },
+          {
+            id: '3d78a40f-91a6-4e80-835e-bca778704c9f',
+            type: 'avatar',
+          },
+        ],
+      },
+      permissions: {
+        data: [
+          {
+            id: 'd73b7647-ea39-4bab-8391-d9da0a4c11cb',
+            type: 'permission',
+          },
+          {
+            id: '1d12f7ff-6a86-478a-9314-26ebfdf90cca',
+            type: 'permission',
+          },
+        ],
+      },
+      user_basket: {
+        data: null,
+      },
+      user_follower: {
+        data: {
+          id: '678ee006-231f-4d1f-a666-9c65a7b588af',
+          type: 'follower',
+        },
+      },
+      default_assignee: {
+        data: {
+          id: '1b359a67-8bad-42dc-b9f5-7d5e3eb537b6',
+          type: 'assignee',
+        },
+      },
+    },
+  },
+};
+
 export const apiPathById = '/web_api/v1/projects/:id';
 export const apiPathBySlug = '/web_api/v1/projects/by_slug/:slug';
 export const apiPathAll = '/web_api/v1/projects';
@@ -318,5 +485,9 @@ const endpoints = {
     return res(ctx.status(200), ctx.json(projects));
   }),
 };
+
+export const votingProjectHandler = rest.get(apiPathById, (_req, res, ctx) => {
+  return res(ctx.status(200), ctx.json(votingProject));
+});
 
 export default endpoints;

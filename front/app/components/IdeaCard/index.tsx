@@ -1,10 +1,9 @@
-import React, { memo, useEffect } from 'react';
+import React, { useEffect } from 'react';
 
 // components
-import Card from 'components/UI/Card/Compact';
-import { useBreakpoint, Box } from '@citizenlab/cl2-component-library';
+import { useBreakpoint, Box, Title } from '@citizenlab/cl2-component-library';
+import CardImage from './CardImage';
 import Body from './Body';
-import ImagePlaceholder from './ImagePlaceholder';
 import Footer from './Footer';
 import Interactions from './Interactions';
 import FollowUnfollow from 'components/FollowUnfollow';
@@ -14,21 +13,28 @@ import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import clHistory from 'utils/cl-router/history';
 import { useSearchParams } from 'react-router-dom';
+import Link from 'utils/cl-router/Link';
 
 // types
 import { IIdea } from 'api/ideas/types';
 
+// styling
+import styled from 'styled-components';
+import {
+  defaultCardStyle,
+  defaultCardHoverStyle,
+  media,
+} from 'utils/styleUtils';
+
 // hooks
 import useIdeaById from 'api/ideas/useIdeaById';
-import useIdeaImage from 'api/idea_images/useIdeaImage';
 import useProjectById from 'api/projects/useProjectById';
 import useLocalize from 'hooks/useLocalize';
 import usePhase from 'api/phases/usePhase';
-import useBasket from 'api/baskets/useBasket';
+import useIdeaImage from 'api/idea_images/useIdeaImage';
 
 // utils
 import { scrollToElement } from 'utils/scroll';
-import { pastPresentOrFuture } from 'utils/dateUtils';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 
 // events
@@ -46,6 +52,20 @@ export interface Props {
   showFollowButton?: boolean;
 }
 
+const Container = styled(Link)`
+  display: block;
+  ${defaultCardStyle};
+  cursor: pointer;
+  ${defaultCardHoverStyle};
+  width: 100%;
+  display: flex;
+  padding: 17px;
+
+  ${media.tablet`
+    flex-direction: column;
+  `}
+`;
+
 const IdeaLoading = (props: Props) => {
   const { data: idea } = useIdeaById(props.ideaId);
 
@@ -60,132 +80,138 @@ interface IdeaCardProps extends Props {
   idea: IIdea;
 }
 
-const IdeaCard = memo<IdeaCardProps>(
-  ({
-    idea,
-    phaseId,
-    className,
-    hideImage = false,
-    hideImagePlaceholder = false,
-    hideIdeaStatus = false,
-    goBackMode = 'browserGoBackButton',
-    showFollowButton,
-  }) => {
-    const isGeneralIdeasPage = window.location.pathname.endsWith('/ideas');
-    const smallerThanPhone = useBreakpoint('phone');
-    const localize = useLocalize();
-    const { data: project } = useProjectById(
-      idea.data.relationships.project.data.id
-    );
-    const { data: phase } = usePhase(phaseId);
-    const { data: ideaImage } = useIdeaImage(
-      idea.data.id,
-      idea.data.relationships.idea_images.data?.[0]?.id
-    );
+const IdeaCard = ({
+  idea,
+  phaseId,
+  className,
+  hideImage = false,
+  hideImagePlaceholder = false,
+  hideIdeaStatus = false,
+  goBackMode = 'browserGoBackButton',
+  showFollowButton,
+}: IdeaCardProps) => {
+  const { data: ideaImage } = useIdeaImage(
+    idea.data.id,
+    idea.data.relationships.idea_images.data?.[0]?.id
+  );
 
-    const participationContext = phase?.data || project?.data;
-    const participationMethod =
-      participationContext?.attributes.participation_method;
-    const config = participationMethod && getMethodConfig(participationMethod);
-    const hideBody = config?.hideAuthorOnIdeas;
+  const image =
+    !hideImage && ideaImage ? ideaImage.data.attributes.versions.medium : null;
 
-    const participationContextEnded =
-      participationContext?.type === 'phase' &&
-      participationContext.attributes.end_at &&
-      pastPresentOrFuture(participationContext?.attributes?.end_at) === 'past';
-    const { data: basket } = useBasket(
-      participationContext?.relationships?.user_basket?.data?.id
-    );
+  const smallerThanPhone = useBreakpoint('phone');
+  const smallerThanTablet = useBreakpoint('tablet');
 
-    const ideaTitle = localize(idea.data.attributes.title_multiloc);
-    const [searchParams] = useSearchParams();
-    const scrollToCardParam = searchParams.get('scroll_to_card');
-    const votingMethod = participationContext?.attributes.voting_method;
+  const localize = useLocalize();
+  const { data: project } = useProjectById(
+    idea.data.relationships.project.data.id
+  );
+  const { data: phase } = usePhase(phaseId);
 
-    useEffect(() => {
-      if (scrollToCardParam && idea.data.id === scrollToCardParam) {
-        const subscription = eventEmitter
-          .observeEvent(IMAGES_LOADED_EVENT)
-          .subscribe(() => {
-            scrollToElement({
-              id: scrollToCardParam,
-              behavior: 'auto',
-              offset: smallerThanPhone ? 150 : 300,
-            });
+  const participationContext = phase?.data || project?.data;
+  const participationMethod =
+    participationContext?.attributes.participation_method;
+  const config = participationMethod && getMethodConfig(participationMethod);
+  const hideBody = config?.hideAuthorOnIdeas;
 
-            subscription.unsubscribe();
+  const ideaTitle = localize(idea.data.attributes.title_multiloc);
+  const [searchParams] = useSearchParams();
+  const scrollToCardParam = searchParams.get('scroll_to_card');
+
+  useEffect(() => {
+    if (scrollToCardParam && idea.data.id === scrollToCardParam) {
+      const subscription = eventEmitter
+        .observeEvent(IMAGES_LOADED_EVENT)
+        .subscribe(() => {
+          scrollToElement({
+            id: scrollToCardParam,
+            behavior: 'auto',
+            offset: smallerThanPhone ? 150 : 300,
           });
-      }
 
-      removeSearchParams(['scroll_to_card']);
-    }, [scrollToCardParam, idea, smallerThanPhone]);
+          subscription.unsubscribe();
+        });
+    }
 
-    const { slug } = idea.data.attributes;
-    const params = goBackMode === 'browserGoBackButton' ? '?go_back=true' : '';
+    removeSearchParams(['scroll_to_card']);
+  }, [scrollToCardParam, idea, smallerThanPhone]);
 
-    const handleClick = (e: React.MouseEvent) => {
-      e.preventDefault();
-      updateSearchParams({ scroll_to_card: idea.data.id });
-      clHistory.push(`/ideas/${slug}${params}`);
-    };
+  const { slug } = idea.data.attributes;
+  const params = goBackMode === 'browserGoBackButton' ? '?go_back=true' : '';
 
-    const hideInteractions =
-      isGeneralIdeasPage ||
-      (participationContextEnded &&
-        basket?.data.attributes.submitted_at === null)
-        ? true
-        : false;
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    updateSearchParams({ scroll_to_card: idea.data.id });
+    clHistory.push(`/ideas/${slug}${params}`);
+  };
 
-    return (
-      <Card
-        id={idea.data.id}
-        className={`${className ?? ''} e2e-idea-card`.trim()}
-        to={`/ideas/${slug}${params}`}
-        onClick={handleClick}
-        title={ideaTitle}
-        image={hideImage ? null : ideaImage?.data.attributes.versions.medium}
-        imagePlaceholder={
-          hideImagePlaceholder ? undefined : (
-            <ImagePlaceholder
-              participationMethod={participationMethod}
-              votingMethod={votingMethod}
-            />
-          )
-        }
-        innerHeight={showFollowButton ? '192px' : undefined}
-        body={hideBody ? undefined : <Body idea={idea} />}
-        interactions={
-          hideInteractions ? null : (
-            <Interactions
-              idea={idea}
-              participationContext={participationContext}
-            />
-          )
-        }
-        footer={
-          <>
-            <Footer
-              project={project}
-              idea={idea.data}
-              hideIdeaStatus={hideIdeaStatus}
-              participationMethod={participationMethod}
-            />
-            {showFollowButton && (
-              <Box mt="16px" display="flex" justifyContent="flex-end">
-                <FollowUnfollow
-                  followableType="ideas"
-                  followableId={idea.data.id}
-                  followersCount={idea.data.attributes.followers_count}
-                  followerId={idea.data.relationships.user_follower?.data?.id}
-                  w="auto"
-                />
-              </Box>
-            )}
-          </>
-        }
+  const innerHeight = showFollowButton ? '192px' : '162px';
+
+  return (
+    <Container
+      className={`e2e-card e2e-idea-card ${className ?? ''}`.trim()}
+      id={idea.data.id}
+      to={`/ideas/${slug}${params}`}
+      onClick={handleClick}
+    >
+      <CardImage
+        participationContext={participationContext}
+        image={image}
+        hideImagePlaceholder={hideImagePlaceholder}
+        innerHeight={innerHeight}
       />
-    );
-  }
-);
+
+      <Box
+        display="flex"
+        flexDirection="column"
+        justifyContent="space-between"
+        w="100%"
+        overflowX="hidden"
+      >
+        <Box
+          mb={
+            smallerThanTablet
+              ? '24px'
+              : !image && hideImagePlaceholder
+              ? '36px'
+              : '8px'
+          }
+        >
+          <Title
+            variant="h3"
+            mt="4px"
+            mb="16px"
+            className="e2e-idea-card-title"
+          >
+            {ideaTitle}
+          </Title>
+          {!hideBody && <Body idea={idea} />}
+        </Box>
+        <Box>
+          <Interactions
+            idea={idea}
+            participationContext={participationContext}
+          />
+          <Footer
+            project={project}
+            idea={idea.data}
+            hideIdeaStatus={hideIdeaStatus}
+            participationMethod={participationMethod}
+          />
+          {showFollowButton && (
+            <Box mt="16px" display="flex" justifyContent="flex-end">
+              <FollowUnfollow
+                followableType="ideas"
+                followableId={idea.data.id}
+                followersCount={idea.data.attributes.followers_count}
+                followerId={idea.data.relationships.user_follower?.data?.id}
+                w="auto"
+              />
+            </Box>
+          )}
+        </Box>
+      </Box>
+    </Container>
+  );
+};
 
 export default IdeaLoading;

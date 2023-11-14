@@ -68,7 +68,7 @@ RSpec.describe Tenant do
     specify { expect(described_class.churned.count).to eq(1) }
   end
 
-  describe 'prioritized scope' do
+  describe 'tenants prioritized by lifecycle importance' do
     let!(:churned_tenant) { create(:tenant, lifecycle: 'churned') }
     let!(:expired_trial_tenant) { create(:tenant, lifecycle: 'expired_trial') }
     let!(:demo_tenant) { create(:tenant, lifecycle: 'demo') }
@@ -76,7 +76,7 @@ RSpec.describe Tenant do
     let!(:trial_tenant) { create(:tenant, lifecycle: 'trial') }
 
     it 'returns tenants prioritized by lifecycle' do
-      prioritized = described_class.prioritized
+      prioritized = described_class.prioritize(described_class.all)
       expect(prioritized.count).to eq(6)
       expect(prioritized.map { |t| t[:settings]['core']['lifecycle_stage'] }).to eq %w[active active trial demo expired_trial churned]
     end

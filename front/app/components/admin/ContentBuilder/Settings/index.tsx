@@ -35,6 +35,9 @@ interface Selected {
   title: MessageDescriptor | undefined;
   settings: React.ElementType<any> | undefined;
   isDeletable: boolean;
+  custom?: {
+    noDelete?: boolean;
+  };
 }
 
 const ContentBuilderSettings = () => {
@@ -51,6 +54,7 @@ const ContentBuilderSettings = () => {
           | undefined,
         settings: state.nodes[currentNodeId].related?.settings,
         isDeletable: query.node(currentNodeId).isDeletable(),
+        custom: state.nodes[currentNodeId].data.custom,
       };
     }
 
@@ -92,7 +96,7 @@ const ContentBuilderSettings = () => {
         </Title>
       )}
       {selected.settings && React.createElement(selected.settings)}
-      {selected.isDeletable ? (
+      {selected.isDeletable && !selected.custom?.noDelete ? (
         <Box display="flex">
           <Button
             id="e2e-delete-button"

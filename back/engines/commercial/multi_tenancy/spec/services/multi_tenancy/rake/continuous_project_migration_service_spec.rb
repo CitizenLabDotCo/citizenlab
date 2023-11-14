@@ -28,7 +28,7 @@ RSpec.describe MultiTenancy::Rake::ContinuousProjectMigrationService do
     it 'creates a single open ended phase for the project' do
       expect(project.phases.count).to eq 1
       expect(project.phases.first.end_at).to be_nil
-      expect(project.phases.first.start_at).to eq project.admin_publication.updated_at.to_date
+      expect(project.phases.first.start_at).to eq project.created_at.to_date
     end
 
     it 'copies all project settings to the phase' do
