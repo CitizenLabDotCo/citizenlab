@@ -141,7 +141,7 @@ export const AdminProjectsProjectIndex = ({
     <>
       <ProjectHeader project={project} phases={phases} />
       {selectedPhase && (
-        <Box mt="16px" px="40px">
+        <Box mt="16px" px="24px">
           <Timeline
             projectId={project.id}
             selectedPhase={selectedPhase}
@@ -159,7 +159,7 @@ export const AdminProjectsProjectIndex = ({
         phases={phases}
         selectedPhase={selectedPhase}
       />
-      <Box p="40px">
+      <Box p="24px">
         {!isNewPhaseLink && (
           <PhaseHeader phase={selectedPhase} tabs={getTabs(project.id)} />
         )}

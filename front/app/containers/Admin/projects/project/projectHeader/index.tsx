@@ -72,7 +72,7 @@ export const ProjectHeader = ({ project, phases }: Props) => {
   }
 
   return (
-    <NavigationTabs position="static">
+    <NavigationTabs position="static" paddingLeft="24px">
       <Box
         display="flex"
         height="58px"
