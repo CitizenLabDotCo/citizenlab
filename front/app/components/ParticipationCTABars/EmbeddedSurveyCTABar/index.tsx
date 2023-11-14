@@ -30,7 +30,7 @@ import { useLocation } from 'react-router-dom';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 import { scrollTo } from 'containers/Authentication/SuccessActions/actions/scrollTo';
 
-export const EmbeddedSurveyCTABar = ({ phases, project }: CTABarProps) => {
+const EmbeddedSurveyCTABar = ({ phases, project }: CTABarProps) => {
   const theme = useTheme();
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
   const { pathname, hash: divId } = useLocation();
@@ -109,3 +109,5 @@ export const EmbeddedSurveyCTABar = ({ phases, project }: CTABarProps) => {
     />
   );
 };
+
+export default EmbeddedSurveyCTABar;

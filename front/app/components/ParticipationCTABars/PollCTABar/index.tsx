@@ -22,7 +22,7 @@ import { scrollToElement } from 'utils/scroll';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
-export const PollCTABar = ({ phases, project }: CTABarProps) => {
+const PollCTABar = ({ phases, project }: CTABarProps) => {
   const theme = useTheme();
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
 
@@ -60,3 +60,5 @@ export const PollCTABar = ({ phases, project }: CTABarProps) => {
     />
   );
 };
+
+export default PollCTABar;

@@ -25,7 +25,7 @@ import {
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
-export const IdeationCTABar = ({ phases, project }: CTABarProps) => {
+const IdeationCTABar = ({ phases, project }: CTABarProps) => {
   const theme = useTheme();
   const { data: authUser } = useAuthUser();
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
@@ -98,3 +98,5 @@ export const IdeationCTABar = ({ phases, project }: CTABarProps) => {
     />
   );
 };
+
+export default IdeationCTABar;

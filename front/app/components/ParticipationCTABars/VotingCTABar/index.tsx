@@ -23,7 +23,7 @@ import {
 import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
 import { getVotesCounter } from './utils';
 
-export const VotingCTABar = ({ phases, project }: CTABarProps) => {
+const VotingCTABar = ({ phases, project }: CTABarProps) => {
   const { numberOfVotesCast } = useVoting();
   const { data: appConfig } = useAppConfiguration();
   const { formatMessage } = useIntl();
@@ -76,3 +76,5 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
     </>
   );
 };
+
+export default VotingCTABar;

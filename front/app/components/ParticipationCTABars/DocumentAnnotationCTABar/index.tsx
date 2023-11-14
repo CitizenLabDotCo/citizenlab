@@ -30,7 +30,7 @@ import { scrollTo } from 'containers/Authentication/SuccessActions/actions/scrol
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
-export const DocumentAnnotationCTABar = ({ phases, project }: CTABarProps) => {
+const DocumentAnnotationCTABar = ({ phases, project }: CTABarProps) => {
   const theme = useTheme();
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
   const { pathname } = useLocation();
@@ -99,3 +99,5 @@ export const DocumentAnnotationCTABar = ({ phases, project }: CTABarProps) => {
     />
   );
 };
+
+export default DocumentAnnotationCTABar;

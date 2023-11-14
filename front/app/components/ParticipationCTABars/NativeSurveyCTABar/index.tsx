@@ -21,7 +21,7 @@ import {
 } from 'components/ParticipationCTABars/utils';
 import usePhases from 'api/phases/usePhases';
 
-export const NativeSurveyCTABar = ({ project }: CTABarProps) => {
+const NativeSurveyCTABar = ({ project }: CTABarProps) => {
   const theme = useTheme();
   const { data: authUser } = useAuthUser();
   const { data: phases } = usePhases(project.id);
@@ -81,3 +81,5 @@ export const NativeSurveyCTABar = ({ project }: CTABarProps) => {
     />
   );
 };
+
+export default NativeSurveyCTABar;

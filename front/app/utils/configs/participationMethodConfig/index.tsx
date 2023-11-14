@@ -12,14 +12,14 @@ import { IPhaseData } from 'api/phases/types';
 
 // components
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
-import { IdeationCTABar } from 'components/ParticipationCTABars/IdeationCTABar';
-import { NativeSurveyCTABar } from 'components/ParticipationCTABars/NativeSurveyCTABar';
-import { EmbeddedSurveyCTABar } from 'components/ParticipationCTABars/EmbeddedSurveyCTABar';
-import { VotingCTABar } from 'components/ParticipationCTABars/VotingCTABar';
-import { VolunteeringCTABar } from 'components/ParticipationCTABars/VolunteeringCTABar';
-import { PollCTABar } from 'components/ParticipationCTABars/PollCTABar';
-import { DocumentAnnotationCTABar } from 'components/ParticipationCTABars/DocumentAnnotationCTABar';
-
+import IdeationCTABar from 'components/ParticipationCTABars/IdeationCTABar';
+import NativeSurveyCTABar from 'components/ParticipationCTABars/NativeSurveyCTABar';
+import EmbeddedSurveyCTABar from 'components/ParticipationCTABars/EmbeddedSurveyCTABar';
+import VotingCTABar from 'components/ParticipationCTABars/VotingCTABar';
+import VolunteeringCTABar from 'components/ParticipationCTABars/VolunteeringCTABar';
+import PollCTABar from 'components/ParticipationCTABars/PollCTABar';
+import DocumentAnnotationCTABar from 'components/ParticipationCTABars/DocumentAnnotationCTABar';
+import EventsCTABar from 'components/ParticipationCTABars/EventsCTABar';
 import { CTABarProps } from 'components/ParticipationCTABars/utils';
 
 // utils
@@ -209,7 +209,9 @@ const informationConfig: ParticipationMethodConfig = {
   postType: 'defaultInput',
   showInputManager: false,
   isMethodLocked: false,
-  renderCTABar: () => null,
+  renderCTABar: (props: CTABarProps) => (
+    <EventsCTABar project={props.project} phases={props.phases} />
+  ),
 };
 
 const surveyConfig: ParticipationMethodConfig = {
