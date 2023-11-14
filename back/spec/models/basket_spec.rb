@@ -28,8 +28,7 @@ RSpec.describe Basket do
 
   context 'when a basket has more than the maximum votes' do
     before do
-      project = create(:continuous_budgeting_project)
-      project.phases.first.update!(voting_max_total: 1000)
+      project = create(:continuous_budgeting_project, phase_attrs: { voting_max_total: 1000 })
       ideas = create_list(:idea, 11, budget: 100, project: project)
       @basket = create(:basket, ideas: ideas, participation_context: project.phases.first)
       @basket.baskets_ideas.update_all(votes: 100)
@@ -49,11 +48,7 @@ RSpec.describe Basket do
   end
 
   context 'when a basket has less than the minimum votes' do
-    let(:project) do
-      project = create(:continuous_budgeting_project)
-      project.phases.first.update!(voting_min_total: 5)
-      project
-    end
+    let(:project) { create(:continuous_budgeting_project, phase_attrs: { voting_min_total: 5 }) }
     let(:basket) { create(:basket, ideas: [idea], participation_context: project.phases.first, submitted_at: Time.now) }
     let(:idea) { create(:idea, budget: 1, project: project) }
 
@@ -72,7 +67,7 @@ RSpec.describe Basket do
 
   context 'when an idea has more than the maximum votes per idea' do
     let(:basket) { create(:basket, participation_context: phase, submitted_at: Time.now) }
-    let!(:basekts_idea) { create(:baskets_idea, basket: basket, idea: idea, votes: 4) }
+    let!(:baskets_idea) { create(:baskets_idea, basket: basket, idea: idea, votes: 4) }
     let(:phase) { create(:multiple_voting_phase, voting_max_votes_per_idea: 3) }
     let(:idea) { create(:idea, project: phase.project, phases: [phase]) }
 
@@ -97,7 +92,7 @@ RSpec.describe Basket do
     # Check the basket remains valid and thus won't fail data consistency checks, as would be the case,
     # for example, if we enforce validation that the participation_context is budgeting.
     it 'the basket remains valid' do
-      project.update!(participation_method: 'ideation')
+      project.phases.first.update!(participation_method: 'ideation')
       basket.reload
       expect(basket).to be_valid
     end
