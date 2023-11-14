@@ -6,7 +6,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 // craft
 import BaseEditor from 'components/admin/ContentBuilder/Editor';
-import Container from 'components/admin/ContentBuilder/Widgets/Container';
+import Container from '../CraftComponents/Container';
 
 // widgets
 import TwoColumn from '../CraftComponents/TwoColumn';

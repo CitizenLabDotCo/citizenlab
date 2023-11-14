@@ -8,7 +8,7 @@ import { Element, ROOT_NODE, useNode } from '@craftjs/core';
 
 // i18n
 import messages from './messages';
-import Container from 'components/admin/ContentBuilder/Widgets/Container';
+import Container from '../Container';
 
 const ThreeColumn = () => {
   const isSmallerThanTablet = useBreakpoint('tablet');

@@ -17,7 +17,7 @@ import { colors, media } from 'utils/styleUtils';
 
 // craft
 import { useNode, Element, ROOT_NODE } from '@craftjs/core';
-import Container from 'components/admin/ContentBuilder/Widgets/Container';
+import Container from '../Container';
 
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
