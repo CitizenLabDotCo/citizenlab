@@ -227,7 +227,7 @@ const PhaseContainer = styled.div<{
 interface Props {
   projectId: string;
   className?: string;
-  selectedPhase: IPhaseData;
+  selectedPhase?: IPhaseData;
   setSelectedPhase: (phase: IPhaseData) => void;
   isBackoffice?: boolean;
 }
@@ -261,7 +261,9 @@ const Timeline = ({
     const arrowRightPressed = e.key === 'ArrowRight';
 
     if ((arrowLeftPressed || arrowRightPressed) && phases) {
-      const currentPhaseIndex = phases.data.indexOf(selectedPhase);
+      const currentPhaseIndex = selectedPhase
+        ? phases.data.indexOf(selectedPhase)
+        : 0;
 
       if (arrowRightPressed) {
         // if we're at the end of the timeline, go to start (index 0),
@@ -290,7 +292,7 @@ const Timeline = ({
   if (phases && phases.data.length > 0) {
     const currentPhase = getCurrentPhase(phases.data);
     const currentPhaseId = currentPhase ? currentPhase.id : null;
-    const selectedPhaseId = selectedPhase.id;
+    const selectedPhaseId = selectedPhase?.id;
     const phasesBreakpoint = phases.data.length * MIN_PHASE_WIDTH_PX;
     const phaseSectionWidth = (1 / phases.data.length) * 100;
 
@@ -400,7 +402,7 @@ const Timeline = ({
                 </Box>
               )}
             </RtlBox>
-            {!isBackoffice && (
+            {!isBackoffice && selectedPhaseId && (
               <PhaseDescription
                 projectId={projectId}
                 selectedPhaseId={selectedPhaseId}

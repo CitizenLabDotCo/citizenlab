@@ -137,16 +137,14 @@ export const AdminProjectsProjectIndex = ({
   return (
     <>
       <ProjectHeader project={project} phases={phases} />
-      {selectedPhase && (
-        <Box mt="16px" px="24px">
-          <Timeline
-            projectId={project.id}
-            selectedPhase={selectedPhase}
-            setSelectedPhase={setSelectedPhase}
-            isBackoffice
-          />
-        </Box>
-      )}
+      <Box mt="16px" px="24px">
+        <Timeline
+          projectId={project.id}
+          selectedPhase={selectedPhase}
+          setSelectedPhase={setSelectedPhase}
+          isBackoffice
+        />
+      </Box>
 
       <Outlet
         id="app.containers.Admin.projects.edit"
@@ -174,9 +172,13 @@ export default () => {
     projectId: string;
     phaseId?: string;
   };
-  const { data: project, isLoading: isProjectLoading } =
+  const { data: project, isLoading: isLoadingProject } =
     useProjectById(projectId);
-  const { data: phases, isLoading: isPhasesLoading } = usePhases(projectId);
+  const {
+    data: phases,
+    isLoading: isLoadingPhases,
+    isFetching: isFetchingPhases,
+  } = usePhases(projectId);
   const [selectedPhase, setSelectedPhase] = useState<IPhaseData | undefined>(
     undefined
   );
@@ -189,7 +191,7 @@ export default () => {
       ? phases.data.find((phase) => phase.id === phaseId)
       : undefined;
     let phaseShown: IPhaseData | undefined = phase;
-    if (!phase) {
+    if (!phase && !pathname.endsWith('/phases/new')) {
       const currentPhase = getCurrentPhase(phases.data);
       if (currentPhase) {
         phaseShown = currentPhase;
@@ -198,14 +200,16 @@ export default () => {
       }
     }
 
-    if (phaseShown && pathname.endsWith('/setup')) {
+    if (phases.data.length === 0 && !isLoadingPhases && !isFetchingPhases) {
+      clHistory.replace(`/admin/projects/${projectId}/phases/new`);
+    } else if (phaseShown && pathname.endsWith('/setup')) {
       clHistory.replace(`/admin/projects/${projectId}/setup/${phaseShown.id}`);
     }
 
     setSelectedPhase(phaseShown);
-  }, [phaseId, phases, projectId, pathname]);
+  }, [phaseId, phases, projectId, pathname, isLoadingPhases, isFetchingPhases]);
 
-  if (isProjectLoading || isPhasesLoading) {
+  if (isLoadingProject || isLoadingPhases) {
     return (
       <Box
         width="100%"
