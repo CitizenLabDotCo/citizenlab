@@ -2194,6 +2194,7 @@
   "app.containers.ContentBuilder.homepage.PageTitle": "Anasayfa",
   "app.containers.ContentBuilder.homepage.TwoColumnLayout": "İki sütun",
   "app.containers.ContentBuilder.homepage.ViewHomepage": "Ana Sayfayı Görüntüle",
+  "app.containers.ContentBuilder.homepage.bannerImage": "Banner görseli",
   "app.containers.ContentBuilder.homepage.bannerSubtext": "Banner alt metni",
   "app.containers.ContentBuilder.homepage.bannerText": "Afiş metni",
   "app.containers.ContentBuilder.homepage.button": "Düğme",
