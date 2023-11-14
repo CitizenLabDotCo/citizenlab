@@ -31,14 +31,7 @@ const ReportSection = ({ phaseId }: Props) => {
   if (phase === undefined || !phaseReportsEnabled) return null;
 
   const handleCreateReport = () => {
-    createReport(
-      { phase_id: phaseId },
-      {
-        onError: () => {
-          // TODO handle error
-        },
-      }
-    );
+    createReport({ phase_id: phaseId });
   };
 
   return (
