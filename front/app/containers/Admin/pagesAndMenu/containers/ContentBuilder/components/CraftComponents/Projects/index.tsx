@@ -1,7 +1,12 @@
 import React from 'react';
 
 // components
-import { Box, colors, media } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  colors,
+  media,
+  useBreakpoint,
+} from '@citizenlab/cl2-component-library';
 
 // hooks
 import ProjectAndFolderCards from 'components/ProjectAndFolderCards';
@@ -29,9 +34,14 @@ const Projects = ({
 }: {
   currentlyWorkingOnText?: Multiloc;
 }) => {
+  const isSmallerThanTablet = useBreakpoint('tablet');
   return (
     <Box bg={colors.background}>
-      <Box maxWidth="1150px" margin="0 auto">
+      <Box
+        maxWidth="1150px"
+        margin="0 auto"
+        px={isSmallerThanTablet ? '20px' : '0px'}
+      >
         <ProjectSection>
           <ProjectAndFolderCards
             publicationStatusFilter={['published', 'archived']}
