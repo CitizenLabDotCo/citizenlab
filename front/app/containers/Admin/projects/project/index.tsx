@@ -60,14 +60,8 @@ export const AdminProjectsProjectIndex = ({
   const isNewPhaseLink = pathname.endsWith(
     `admin/projects/${project.id}/phases/new`
   );
-  const initialTabs: ITab[] = getIntialTabs(formatMessage, selectedPhase?.id);
+  const initialTabs: ITab[] = getIntialTabs(formatMessage);
   const [tabs, setTabs] = useState<ITab[]>(initialTabs);
-
-  useEffect(() => {
-    if (!tabs.length && selectedPhase) {
-      setTabs(getIntialTabs(formatMessage, selectedPhase.id));
-    }
-  }, [formatMessage, selectedPhase, tabs.length]);
 
   const getTabHideConditions = (phase: IPhaseData): TabHideConditions => ({
     general: function isGeneralTabHidden() {
@@ -124,7 +118,10 @@ export const AdminProjectsProjectIndex = ({
 
     return cleanedTabs.map((tab) => ({
       ...tab,
-      url: tab.url === '' ? `${baseTabsUrl}` : `${baseTabsUrl}/${tab.url}`,
+      url:
+        tab.url === ''
+          ? `${baseTabsUrl}`
+          : `${baseTabsUrl}/${tab.url}/${selectedPhase.id}`,
     }));
   };
 
@@ -160,7 +157,7 @@ export const AdminProjectsProjectIndex = ({
         selectedPhase={selectedPhase}
       />
       <Box p="8px 24px 24px 24px">
-        {!isNewPhaseLink && (
+        {!isNewPhaseLink && selectedPhase && (
           <PhaseHeader phase={selectedPhase} tabs={getTabs(project.id)} />
         )}
 

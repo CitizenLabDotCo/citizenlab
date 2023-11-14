@@ -45,7 +45,7 @@ const participationMethodMessage: Record<
 };
 
 interface Props {
-  phase: IPhaseData | undefined;
+  phase: IPhaseData;
   tabs: ITab[];
 }
 

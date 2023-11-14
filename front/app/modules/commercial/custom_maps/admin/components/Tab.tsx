@@ -20,7 +20,7 @@ const Tab = ({ onData, onRemove }: Props) => {
       configuration: {
         label: formatMessage(messages.mapTab),
         name: tabName,
-        url: `map/${phaseId}`,
+        url: 'map',
         feature: 'custom_maps',
       },
       insertAfterName: 'ideaform',
