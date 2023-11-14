@@ -5,7 +5,6 @@ import useProjectById from 'api/projects/useProjectById';
 
 // components
 import Container from './components/Container';
-import IdeaSharingButton from './components/Buttons/IdeaSharingButton';
 import IdeaMeta from './components/IdeaMeta';
 import DesktopTopBar from './components/DesktopTopBar';
 import IdeaTitle from './components/IdeaTitle';
@@ -20,7 +19,6 @@ const LazyCommentsSection = lazy(
 );
 import LoadingComments from 'components/PostShowComponents/Comments/LoadingComments';
 import MetaInformation from './components/MetaInformation';
-import MobileSharingButtonComponent from './components/Buttons/MobileSharingButtonComponent';
 import RightColumnDesktop from './components/RightColumnDesktop';
 import ErrorToast from 'components/ErrorToast';
 import FollowUnfollow from 'components/FollowUnfollow';
@@ -244,12 +242,6 @@ const Content = ({
               />
             </Suspense>
           </Box>
-          {compact && (
-            <IdeaSharingButton
-              ideaId={ideaId}
-              buttonComponent={<MobileSharingButtonComponent />}
-            />
-          )}
           {compact && (
             <Box my="24px">
               <FollowUnfollow
