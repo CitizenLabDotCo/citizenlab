@@ -1,7 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
-import areaKeys from './keys';
+import reportsKeys from './keys';
+// import phasesKeys from 'api/phases/keys';
 import { ReportResponse } from './types';
 
 type AddReport =
@@ -25,8 +26,10 @@ const useAddReport = () => {
   const queryClient = useQueryClient();
   return useMutation<ReportResponse, CLErrors, AddReport>({
     mutationFn: addReport,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: areaKeys.lists() });
+    onSuccess: (_data) => {
+      queryClient.invalidateQueries({ queryKey: reportsKeys.lists() });
+      // TOOD figure out what report response looks like and invalidate correct phase
+      // console.log(data.data.relationships.)
     },
   });
 };
