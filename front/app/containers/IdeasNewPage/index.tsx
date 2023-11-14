@@ -79,7 +79,10 @@ const NewIdeaPage = () => {
       triggerAuthenticationFlow({
         flow: 'signup',
         context: {
-          type: phases?.data ? 'phase' : 'project',
+          type:
+            project?.data.attributes.process_type === 'timeline'
+              ? 'phase'
+              : 'project',
           action: 'posting_idea',
           id: phase_id || getCurrentPhase(phases?.data)?.id || project?.data.id,
         },
