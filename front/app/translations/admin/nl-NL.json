@@ -1671,7 +1671,7 @@
   "app.containers.AdminPage.ProjectTimeline.noEndDateDescription": "Deze fase heeft geen vooraf vastgestelde einddatum.",
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningBullet1": "Bij sommige methoden wordt het delen van resultaten (zoals stemresultaten) pas geactiveerd als er een einddatum is geselecteerd.",
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningBullet2": "Zodra je een fase na deze fase toevoegt, wordt er een einddatum aan deze fase toegevoegd.",
-  "app.containers.AdminPage.ProjectTimeline.noEndDateWarningTitle": "Als je hiervoor geen einddatum selecteert, betekent dit dat:",
+  "app.containers.AdminPage.ProjectTimeline.noEndDateWarningTitle": "Als je hiervoor geen einddatum selecteert, betekent dat het volgende:",
   "app.containers.AdminPage.ProjectTimeline.orderColumnTitle": "Rangorde",
   "app.containers.AdminPage.ProjectTimeline.saveErrorMessage": "Er is een fout opgetreden bij het verzenden, probeer het a.j.b. opnieuw.",
   "app.containers.AdminPage.ProjectTimeline.saveLabel": "Opslaan",
