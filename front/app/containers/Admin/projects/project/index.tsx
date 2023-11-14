@@ -192,7 +192,7 @@ export default () => {
       if (currentPhase) {
         phaseShown = currentPhase;
       } else {
-        phaseShown = phases.data.length ? phases[0] : undefined;
+        phaseShown = phases.data.length ? phases.data[0] : undefined;
       }
     }
 
