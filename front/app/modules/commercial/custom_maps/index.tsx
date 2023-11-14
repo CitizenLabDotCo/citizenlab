@@ -16,6 +16,7 @@ const CustomMapConfigComponent = React.lazy(
 
 type RenderOnHideTabConditionProps = {
   onData: (data: InsertConfigurationOptions<ITab>) => void;
+  onRemove: (name: string) => void;
   project: IProjectData;
   phases: IPhaseData[] | null;
   selectedPhase?: IPhaseData;

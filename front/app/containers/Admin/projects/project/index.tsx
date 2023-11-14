@@ -1,25 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { adopt } from 'react-adopt';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import {
   Outlet as RouterOutlet,
   useParams,
   useLocation,
 } from 'react-router-dom';
+import clHistory from 'utils/cl-router/history';
 
 // components
 import Outlet from 'components/Outlet';
-import { Box, colors } from '@citizenlab/cl2-component-library';
+import { Box, colors, Spinner } from '@citizenlab/cl2-component-library';
 import { PhaseHeader } from './phase/PhaseHeader';
 import { ProjectHeader } from './projectHeader';
-
-// resources
-import GetFeatureFlag, {
-  GetFeatureFlagChildProps,
-} from 'resources/GetFeatureFlag';
-import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import { PreviousPathnameContext } from 'context';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -37,68 +28,46 @@ import Timeline from 'containers/ProjectsShowPage/timeline/Timeline';
 import { IPhaseData } from 'api/phases/types';
 import { getCurrentPhase } from 'api/phases/utils';
 import { getIntialTabs } from './tabs';
-
-export interface InputProps {}
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import useProjectById from 'api/projects/useProjectById';
+import usePhases from 'api/phases/usePhases';
 
 interface DataProps {
-  surveys_enabled: GetFeatureFlagChildProps;
-  typeform_enabled: GetFeatureFlagChildProps;
-  phases: GetPhasesChildProps;
-  project: GetProjectChildProps;
-  previousPathName: string | null;
+  phases: IPhaseData[];
+  project: IProjectData;
+  selectedPhase?: IPhaseData;
+  setSelectedPhase: (phase: IPhaseData) => void;
 }
 
 type TabHideConditions = {
-  [tabName: string]: (
-    project: IProjectData,
-    phases: GetPhasesChildProps
-  ) => boolean;
+  [tabName: string]: (project: IProjectData, phases: IPhaseData[]) => boolean;
 };
 
 export const AdminProjectsProjectIndex = ({
   project,
   phases,
-  typeform_enabled,
-  surveys_enabled,
+  selectedPhase,
+  setSelectedPhase,
 }: DataProps) => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
-  const [tabs, setTabs] = useState<ITab[]>([]);
-  const { projectId, phaseId } = useParams() as {
-    projectId: string;
-    phaseId?: string;
-  };
-  const [selectedPhase, setSelectedPhase] = useState<IPhaseData | undefined>(
-    undefined
-  );
+  const typeform_enabled = useFeatureFlag({
+    name: 'typeform_surveys',
+  });
+  const surveys_enabled = useFeatureFlag({
+    name: 'surveys',
+  });
   const isNewPhaseLink = pathname.endsWith(
-    `admin/projects/${projectId}/phases/new`
+    `admin/projects/${project.id}/phases/new`
   );
+  const initialTabs: ITab[] = getIntialTabs(formatMessage, selectedPhase?.id);
+  const [tabs, setTabs] = useState<ITab[]>(initialTabs);
 
   useEffect(() => {
-    if (!phases) return;
-
-    const phase = phaseId
-      ? phases.find((phase) => phase.id === phaseId)
-      : undefined;
-    let phaseShown: IPhaseData | undefined = phase;
-    if (!phase) {
-      const currentPhase = getCurrentPhase(phases);
-      if (currentPhase) {
-        phaseShown = currentPhase;
-      } else {
-        phaseShown = phases.length ? phases[0] : undefined;
-      }
+    if (!tabs.length && selectedPhase) {
+      setTabs(getIntialTabs(formatMessage, selectedPhase.id));
     }
-
-    const initialTabs: ITab[] = getIntialTabs(formatMessage, phaseShown?.id);
-
-    // Reset tabs such that tabs that were added onData are removed and will be readded if needed
-    // TODO: Fix maps tab condition to display when navigating from voting to ideation
-    setTabs(initialTabs);
-    setSelectedPhase(phaseShown);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [phaseId, phases]);
+  }, [formatMessage, selectedPhase, tabs.length]);
 
   const getTabHideConditions = (phase: IPhaseData): TabHideConditions => ({
     general: function isGeneralTabHidden() {
@@ -140,10 +109,6 @@ export const AdminProjectsProjectIndex = ({
     },
   });
 
-  if (!project || !phases) {
-    return null;
-  }
-
   const getTabs = (projectId: string) => {
     if (!selectedPhase) {
       return [];
@@ -167,6 +132,11 @@ export const AdminProjectsProjectIndex = ({
     setTabs((tabs) => insertConfiguration(data)(tabs));
   };
 
+  const onRemove = (name: string) => {
+    const updatedTabs = tabs.filter((tab) => tab.name !== name);
+    setTabs(updatedTabs);
+  };
+
   return (
     <>
       <ProjectHeader project={project} phases={phases} />
@@ -184,6 +154,7 @@ export const AdminProjectsProjectIndex = ({
       <Outlet
         id="app.containers.Admin.projects.edit"
         onData={handleData}
+        onRemove={onRemove}
         project={project}
         phases={phases}
         selectedPhase={selectedPhase}
@@ -201,26 +172,66 @@ export const AdminProjectsProjectIndex = ({
   );
 };
 
-const Data = adopt<DataProps, InputProps & WithRouterProps>({
-  surveys_enabled: <GetFeatureFlag name="surveys" />,
-  typeform_enabled: <GetFeatureFlag name="typeform_surveys" />,
-  phases: ({ params, render }) => (
-    <GetPhases projectId={params.projectId}>{render}</GetPhases>
-  ),
-  project: ({ params, render }) => (
-    <GetProject projectId={params.projectId}>{render}</GetProject>
-  ),
-  previousPathName: ({ render }) => (
-    <PreviousPathnameContext.Consumer>
-      {render as any}
-    </PreviousPathnameContext.Consumer>
-  ),
-});
+export default () => {
+  const { projectId, phaseId } = useParams() as {
+    projectId: string;
+    phaseId?: string;
+  };
+  const { data: project, isLoading: isProjectLoading } =
+    useProjectById(projectId);
+  const { data: phases, isLoading: isPhasesLoading } = usePhases(projectId);
+  const [selectedPhase, setSelectedPhase] = useState<IPhaseData | undefined>(
+    undefined
+  );
+  const { pathname } = useLocation();
 
-export default withRouter((inputProps: InputProps & WithRouterProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => (
-      <AdminProjectsProjectIndex {...inputProps} {...dataProps} />
-    )}
-  </Data>
-));
+  useEffect(() => {
+    if (!phases) return;
+
+    const phase = phaseId
+      ? phases.data.find((phase) => phase.id === phaseId)
+      : undefined;
+    let phaseShown: IPhaseData | undefined = phase;
+    if (!phase) {
+      const currentPhase = getCurrentPhase(phases.data);
+      if (currentPhase) {
+        phaseShown = currentPhase;
+      } else {
+        phaseShown = phases.data.length ? phases[0] : undefined;
+      }
+    }
+
+    if (phaseShown && pathname.endsWith('/setup')) {
+      clHistory.replace(`/admin/projects/${projectId}/setup/${phaseShown.id}`);
+    }
+
+    setSelectedPhase(phaseShown);
+  }, [phaseId, phases, projectId, pathname]);
+
+  if (isProjectLoading || isPhasesLoading) {
+    return (
+      <Box
+        width="100%"
+        height="100%"
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <Spinner />
+      </Box>
+    );
+  }
+
+  if (!project || !phases) {
+    return null;
+  }
+
+  return (
+    <AdminProjectsProjectIndex
+      project={project?.data}
+      phases={phases?.data}
+      selectedPhase={selectedPhase}
+      setSelectedPhase={setSelectedPhase}
+    />
+  );
+};

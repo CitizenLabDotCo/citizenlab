@@ -6,9 +6,10 @@ import messages from './messages';
 
 type Props = {
   onData: (data: InsertConfigurationOptions<ITab>) => void;
+  onRemove: (name: string) => void;
 };
 
-const Tab = ({ onData }: Props) => {
+const Tab = ({ onData, onRemove }: Props) => {
   const { formatMessage } = useIntl();
   const { phaseId } = useParams() as {
     phaseId: string;
@@ -24,8 +25,12 @@ const Tab = ({ onData }: Props) => {
       },
       insertAfterName: 'ideaform',
     });
+
+    return () => {
+      onRemove(tabName);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [phaseId]);
 
   return null;
 };
