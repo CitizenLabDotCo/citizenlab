@@ -935,7 +935,7 @@ resource 'Ideas' do
         end
       end
 
-      example_group 'with granular permissions' do
+      example_group 'with permissions on phase' do
         let(:with_permissions) { true }
         let(:group) { create(:group) }
 
