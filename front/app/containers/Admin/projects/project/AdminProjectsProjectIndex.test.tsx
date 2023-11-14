@@ -33,15 +33,9 @@ jest.mock('components/Outlet', () => 'outlet');
 
 // const children = () => <div />;
 
-const additionalProps = {
-  previousPathName: 'www.gobackurl.com',
-};
-
 // TODO: Rewrite these tests in here
 describe('<AdminProjectEdition />', () => {
   it('renders the correct set of tabs for a continuous information project', async () => {
-    const surveys_enabled = true;
-    const typeform_enabled = true;
     const phases = [];
     const project = getProject(
       'continuousInformation',
@@ -51,13 +45,12 @@ describe('<AdminProjectEdition />', () => {
 
     render(
       <AdminProjectsProjectIndex
-        surveys_enabled={surveys_enabled}
-        typeform_enabled={typeform_enabled}
         phases={phases}
         project={project}
+        selectedPhase={undefined}
+        setSelectedPhase={jest.fn()}
         // {...routerProps}
         // {...localizeProps}
-        {...additionalProps}
       />
     );
 
