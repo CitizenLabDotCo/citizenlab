@@ -51,9 +51,14 @@ const SubmitFooterInner = styled.div`
 interface FormSubmitFooterProps {
   processing: boolean;
   className?: string;
+  onClick?: () => void;
 }
 
-const SubmitButtonBar = ({ className, processing }: FormSubmitFooterProps) => {
+const SubmitButtonBar = ({
+  className,
+  processing,
+  onClick,
+}: FormSubmitFooterProps) => {
   const theme = useTheme();
   const initiativeReviewRequired = useInitiativeReviewRequired();
 
@@ -69,6 +74,7 @@ const SubmitButtonBar = ({ className, processing }: FormSubmitFooterProps) => {
             textColor="#FFF"
             type="submit"
             processing={processing}
+            onClick={onClick}
           >
             <FormattedMessage
               {...(initiativeReviewRequired

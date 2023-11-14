@@ -67,7 +67,7 @@ export const customAjv = createAjv({
 interface Props {
   schema: JsonSchema7;
   uiSchema: Layout;
-  onSubmit: (formData: FormData) => Promise<any>;
+  onSubmit: (formData: FormData) => void | Promise<any>;
   initialFormData: FormData;
   title?: ReactElement;
   /** The event name on which the form should automatically submit, as received from the eventEmitter. If this is set, no submit button is displayed. */

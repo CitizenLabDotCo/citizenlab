@@ -68,6 +68,20 @@ RSpec.describe Tenant do
     specify { expect(described_class.churned.count).to eq(1) }
   end
 
+  describe 'tenants prioritized by lifecycle importance' do
+    let!(:churned_tenant) { create(:tenant, lifecycle: 'churned') }
+    let!(:expired_trial_tenant) { create(:tenant, lifecycle: 'expired_trial') }
+    let!(:demo_tenant) { create(:tenant, lifecycle: 'demo') }
+    let!(:active_tenant) { create(:tenant, lifecycle: 'active') } # 2 active tenants with the test-tenant
+    let!(:trial_tenant) { create(:tenant, lifecycle: 'trial') }
+
+    it 'returns tenants prioritized by lifecycle' do
+      prioritized = described_class.prioritize(described_class.all)
+      expect(prioritized.count).to eq(6)
+      expect(prioritized.map { |t| t[:settings]['core']['lifecycle_stage'] }).to eq %w[active active trial demo expired_trial churned]
+    end
+  end
+
   describe 'Apartment tenant' do
     it 'is created on create' do
       host = 'something-else.com' # a different host than the default test tenant

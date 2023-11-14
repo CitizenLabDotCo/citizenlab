@@ -23,7 +23,7 @@ import messages from './messages';
 
 type BuilderTopBarProps = {
   hasPendingState?: boolean;
-  localesWithError: Locale[];
+  hasError?: boolean;
   previewEnabled: boolean;
   setPreviewEnabled: React.Dispatch<React.SetStateAction<boolean>>;
   selectedLocale: Locale | undefined;
@@ -38,14 +38,14 @@ const BuilderTopBar = ({
   setPreviewEnabled,
   selectedLocale,
   onSelectLocale,
-  localesWithError,
+  hasError,
   hasPendingState,
 }: BuilderTopBarProps) => {
   const [loading, setLoading] = useState(false);
   const { query } = useEditor();
   const { mutateAsync: updateHomepage } = useUpdateHomepageSettings();
   const { formatMessage } = useIntl();
-  const disableSave = localesWithError.length > 0;
+  const disableSave = hasError || hasPendingState;
 
   const goBack = () => {
     clHistory.push(`/admin/pages-menu`);
@@ -83,7 +83,6 @@ const BuilderTopBar = ({
         </Box>
         <LocaleSwitcher
           selectedLocale={selectedLocale}
-          localesWithError={localesWithError}
           onSelectLocale={handleSelectLocale}
         />
         <Box ml="24px" />

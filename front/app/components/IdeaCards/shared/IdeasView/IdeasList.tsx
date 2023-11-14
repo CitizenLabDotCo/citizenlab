@@ -1,22 +1,18 @@
 import React from 'react';
 import styled, { useTheme } from 'styled-components';
-import { Box, media, Button, Spinner } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  media,
+  Button,
+  Spinner,
+  useBreakpoint,
+} from '@citizenlab/cl2-component-library';
 import IdeaCard from 'components/IdeaCard';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 import { rgba } from 'polished';
 import EmptyIdeas from './EmptyIdeas';
 import { IIdeaData } from 'api/ideas/types';
-
-const StyledIdeaCard = styled(IdeaCard)`
-  flex-grow: 0;
-  width: calc(50% - 20px);
-  margin: 10px;
-
-  ${media.phone`
-    width: 100%;
-  `};
-`;
 
 const Footer = styled.div`
   width: 100%;
@@ -82,6 +78,7 @@ const IdeasList = ({
   phaseId,
 }: Props) => {
   const theme = useTheme();
+  const smallerThanPhone = useBreakpoint('phone');
   const loadMoreIdeas = () => {
     onLoadMore();
   };
@@ -105,15 +102,21 @@ const IdeasList = ({
             >
               {list.map((idea) => {
                 return (
-                  <StyledIdeaCard
+                  <Box
                     key={idea.id}
-                    ideaId={idea.id}
-                    phaseId={phaseId}
-                    hideImage={hideImage}
-                    hideImagePlaceholder={hideImagePlaceholder}
-                    hideIdeaStatus={hideIdeaStatus}
-                    goBackMode={goBackMode}
-                  />
+                    flex-grow="0"
+                    margin="10px"
+                    width={smallerThanPhone ? '100%' : 'calc(50% - 20px)'}
+                  >
+                    <IdeaCard
+                      ideaId={idea.id}
+                      phaseId={phaseId}
+                      hideImage={hideImage}
+                      hideImagePlaceholder={hideImagePlaceholder}
+                      hideIdeaStatus={hideIdeaStatus}
+                      goBackMode={goBackMode}
+                    />
+                  </Box>
                 );
               })}
             </Box>
