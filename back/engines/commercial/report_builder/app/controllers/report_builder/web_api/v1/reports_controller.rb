@@ -7,7 +7,7 @@ module ReportBuilder
         skip_before_action :authenticate_user
 
         def index
-          reports = policy_scope(ReportBuilder::Report.with_platform_context)
+          reports = policy_scope(ReportBuilder::Report.global)
           reports = paginate(reports)
 
           render json: linked_json(reports, ReportSerializer, params: jsonapi_serializer_params)

@@ -35,7 +35,7 @@ module ReportBuilder
 
     accepts_nested_attributes_for :layout
 
-    scope :with_platform_context, -> { where(phase_id: nil) }
+    scope :global, -> { where(phase_id: nil) }
 
     validates :name, uniqueness: true, if: :present?
   end

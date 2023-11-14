@@ -12,7 +12,6 @@ module ReportBuilder
           serializer: ContentBuilder::WebApi::V1::LayoutSerializer
         )
 
-        # TODO: Can we use PhaseSerializer here?
         has_one(
           :phase,
           record_type: ::WebApi::V1::PhaseSerializer.record_type,
