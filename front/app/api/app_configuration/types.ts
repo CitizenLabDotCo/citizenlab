@@ -132,6 +132,7 @@ export interface IAppConfigurationSettings {
   admin_project_templates?: AppConfigurationFeature;
   pages?: AppConfigurationFeature;
   project_reports?: AppConfigurationFeature;
+  phase_reports?: AppConfigurationFeature;
   private_projects?: AppConfigurationFeature;
   maps?: AppConfigurationMapSettings;
   initiatives: ProposalsSettings;
