@@ -12,6 +12,7 @@ const useReport = (id?: string) => {
     queryKey: reportsKeys.item({ id }),
     queryFn: () => fetchReport(id),
     enabled: !!id,
+    keepPreviousData: false,
   });
 };
 

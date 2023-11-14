@@ -16,6 +16,7 @@ import SectionContainer from 'components/SectionContainer';
 import PhaseDocumentAnnotation from './document_annotation';
 import StatusModule from 'components/StatusModule';
 import VotingResults from './VotingResults';
+import PhaseReport from './PhaseReport';
 import { Box } from '@citizenlab/cl2-component-library';
 
 // router
@@ -111,6 +112,11 @@ const ProjectTimelineContainer = memo<Props>(({ projectId, className }) => {
     // We don't show the timeline and header if there is only one phase and it has no description and no end date
     const hideTimelineAndHeader = !hidePhases(phases?.data, currentLocale);
 
+    const reportId = selectedPhase.relationships.report?.data?.id;
+    const showReport =
+      selectedPhase.attributes.participation_method === 'information' &&
+      !!reportId;
+
     return (
       <Container className={`${className || ''} e2e-project-process-page`}>
         <StyledSectionContainer>
@@ -166,6 +172,7 @@ const ProjectTimelineContainer = memo<Props>(({ projectId, className }) => {
                 <PhaseIdeas projectId={projectId} phaseId={selectedPhaseId} />
               )}
               {showVotingResults && <VotingResults phaseId={selectedPhaseId} />}
+              {showReport && <PhaseReport reportId={reportId} />}
             </ContentContainer>
           </div>
         </StyledSectionContainer>
