@@ -4,6 +4,7 @@ import React from 'react';
 import usePhase from 'api/phases/usePhase';
 import useAddReport from 'api/reports/useAddReport';
 import useReport from 'api/reports/useReport';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // components
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
@@ -22,11 +23,12 @@ interface Props {
 const ReportSection = ({ phaseId }: Props) => {
   const { data: phase } = usePhase(phaseId);
   const { mutate: createReport, isLoading } = useAddReport();
+  const phaseReportsEnabled = useFeatureFlag({ name: 'phase_reports' });
 
   const reportId = phase?.data.relationships.report?.data?.id;
   const { data: report } = useReport(reportId);
 
-  if (phase === undefined) return null;
+  if (phase === undefined || !phaseReportsEnabled) return null;
 
   const handleCreateReport = () => {
     createReport(
