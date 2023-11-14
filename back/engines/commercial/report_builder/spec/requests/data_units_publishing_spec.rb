@@ -35,12 +35,15 @@ describe ReportBuilder::WebApi::V1::GraphDataUnitsController do
     create(:report, layout: build(:layout, craftjs_jsonmultiloc: craftjs_jsonmultiloc), phase_id: create(:phase).id)
   end
 
+  let(:gender) { 'female' }
+
   # see back/engines/commercial/analytics/spec/acceptance/analytics_participations_spec.rb
   def build_analytics_data
     date = Date.new(2022, 9, 1)
     create(:dimension_date, date: date)
     create(:dimension_type, name: 'idea', parent: 'post')
-    create(:idea, created_at: date)
+    create(:custom_field, key: :gender, resource_type: 'User')
+    create(:idea, created_at: date, author: create(:user, gender: gender))
   end
 
   before do
@@ -51,8 +54,7 @@ describe ReportBuilder::WebApi::V1::GraphDataUnitsController do
   it 'previews live data, publishes it, and returns published data' do
     expected_attrs = [{
       count_dimension_user_custom_field_values_dimension_user_id: 1,
-      'dimension_date_created.month': '2022-09',
-      first_dimension_date_created_date: '2022-09-01'
+      'dimension_user_custom_field_values.value': gender
     }]
 
     get '/web_api/v1/reports/graph_data_units/live',
