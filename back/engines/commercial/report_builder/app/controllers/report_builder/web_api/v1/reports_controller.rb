@@ -97,7 +97,7 @@ module ReportBuilder
         end
 
         def serialize_report(report)
-          options = { params: jsonapi_serializer_params, include: %i[layout report] }
+          options = { params: jsonapi_serializer_params, include: %i[layout phase] }
           ReportSerializer.new(report, options).serializable_hash.to_json
         end
 
