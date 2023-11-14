@@ -41,22 +41,30 @@ class ActivitiesService
   end
 
   def create_phase_upcoming_activities(now, last_time)
-    return unless now.to_date != last_time.to_date
+    today = now.to_date
+    return unless today != last_time.to_date
 
-    Phase.published.starting_on(now.to_date + 1.week).each do |phase|
+    upcoming_phases = Phase.published.starting_on(today..(today + 1.week))
+    # Exclude phases for which an upcoming activity has already been created to avoid
+    # duplicate notifications.
+    excluded_phases = Activity
+      .where(item_id: upcoming_phases, action: 'upcoming')
+      .select(:item_id)
+
+    upcoming_phases.where.not(id: excluded_phases).each do |phase|
       if phase.ends_before?(now + 1.day)
         raise "Invalid phase upcoming event would have been generated for phase\
                #{phase.id} with now=#{now} and last_time=#{last_time}"
       end
 
-      LogActivityJob.perform_later(phase, 'upcoming', nil, now.to_i)
+      LogActivityJob.perform_later(phase, 'upcoming', nil, now)
     end
   end
 
   def create_invite_not_accepted_since_3_days_activities(now, last_time)
     Invite.where(accepted_at: nil)
-          .where(created_at: (last_time - 3.days)..(now - 3.days)).each do |invite|
-      LogActivityJob.perform_later(invite, 'not_accepted_since_3_days', nil, now.to_i)
+      .where(created_at: (last_time - 3.days)..(now - 3.days)).each do |invite|
+      LogActivityJob.perform_later(invite, 'not_accepted_since_3_days', nil, now)
     end
   end
 
@@ -64,7 +72,7 @@ class ActivitiesService
     if now.hour >= 8 && now.hour <= 20 # Only log activities during day time so they emails are more likely to be noticed
       Phase.published.where(end_at: now..now + 2.days).each do |phase|
         if Activity.find_by(item: phase, action: 'ending_soon').nil?
-          LogActivityJob.perform_later(phase, 'ending_soon', nil, now.to_i)
+          LogActivityJob.perform_later(phase, 'ending_soon', nil, now)
         end
       end
     end
@@ -73,7 +81,7 @@ class ActivitiesService
   def create_basket_not_submitted_activities(now)
     Basket.not_submitted.each do |basket|
       if Activity.find_by(item: basket, action: 'not_submitted').nil? && basket.baskets_ideas.present? && basket.baskets_ideas.order(:updated_at).last.updated_at <= now - 1.day
-        LogActivityJob.perform_later(basket, 'not_submitted', nil, now.to_i)
+        LogActivityJob.perform_later(basket, 'not_submitted', nil, now)
       end
     end
   end
@@ -81,7 +89,7 @@ class ActivitiesService
   def create_phase_ended_activities(now)
     Phase.published.where(end_at: ..now).each do |phase|
       if Activity.find_by(item: phase, action: 'ended').nil?
-        LogActivityJob.perform_later(phase, 'ended', nil, now.to_i)
+        LogActivityJob.perform_later(phase, 'ended', nil, now)
       end
     end
   end

@@ -23,7 +23,7 @@ describe ActivitiesService do
 
         expect { service.create_periodic_activities(now: now) }
           .to have_enqueued_job(LogActivityJob)
-          .with(phase, 'started', nil, start_at.to_time.to_i, project_id: phase.project_id)
+          .with(phase, 'started', nil, start_at.to_time, project_id: phase.project_id)
       end
 
       it "doesn't log phase started activity when no new phase starts (in the application timezone)" do
@@ -32,7 +32,7 @@ describe ActivitiesService do
         now = start_at.to_time + 1.minute
 
         expect { service.create_periodic_activities(now: now) }
-          .not_to have_enqueued_job(LogActivityJob).with(phase, 'started', nil, start_at.to_time.to_i)
+          .not_to have_enqueued_job(LogActivityJob).with(phase, 'started', nil, start_at.to_time)
       end
 
       it "doesn't log a new activity if there's already one with the same acted_at timestamp" do
@@ -44,6 +44,7 @@ describe ActivitiesService do
 
         expect { service.create_periodic_activities(now: now) }
           .not_to have_enqueued_job(LogActivityJob)
+          .with(phase, 'started', anything, anything, anything)
       end
     end
 
@@ -58,7 +59,7 @@ describe ActivitiesService do
 
         expect { service.create_periodic_activities(now: now) }
           .to have_enqueued_job(LogActivityJob)
-          .with(phase, 'upcoming', nil, now.to_i, project_id: phase.project_id)
+          .with(phase, 'upcoming', nil, now, project_id: phase.project_id)
       end
 
       it "doesn't log phase upcoming activity when no new phase starts in a week (in the application timezone)" do
@@ -67,7 +68,20 @@ describe ActivitiesService do
         now = (start_at - 1.week).to_time + 1.minute
 
         expect { service.create_periodic_activities(now: now) }
-          .not_to have_enqueued_job(LogActivityJob).with(phase, 'upcoming', nil, now.to_i)
+          .not_to have_enqueued_job(LogActivityJob).with(phase, 'upcoming', nil, now)
+      end
+
+      it "doesn't log a new upcoming-phase activity if there's already one for the same phase" do
+        start_at = Date.new(2019, 3, 20)
+        phase = create(:phase, start_at: start_at, end_at: (start_at + 1.week))
+
+        # acted_at doesn't matter for this test
+        Activity.create(item: phase, action: 'upcoming', acted_at: Time.now)
+
+        now = Time.find_zone(timezone).parse(start_at.to_s) - 1.day
+        expect { service.create_periodic_activities(now: now) }
+          .not_to enqueue_job(LogActivityJob)
+          .with(phase, 'upcoming', anything, anything, anything)
       end
     end
 
@@ -81,7 +95,7 @@ describe ActivitiesService do
         now = created_at + 3.days
 
         expect { service.create_periodic_activities(now: now) }
-          .to have_enqueued_job(LogActivityJob).with(invite, 'not_accepted_since_3_days', nil, now.to_i)
+          .to have_enqueued_job(LogActivityJob).with(invite, 'not_accepted_since_3_days', nil, now)
       end
 
       it "doesn't log accepted since 3 days activity when no invite wasn't accepted since (in the application timezone)" do
@@ -90,7 +104,7 @@ describe ActivitiesService do
         now = Time.parse '2019-03-25 10:50:00 +1200'
 
         expect { service.create_periodic_activities(now: now) }
-          .not_to have_enqueued_job(LogActivityJob).with(invite, 'not_accepted_since_3_days', nil, now.to_i)
+          .not_to have_enqueued_job(LogActivityJob).with(invite, 'not_accepted_since_3_days', nil, now)
       end
     end
 
@@ -101,7 +115,7 @@ describe ActivitiesService do
         phase = create(:budgeting_phase, start_at: now - 10.days, end_at: now + 2.days)
         expect { service.create_periodic_activities(now: now) }
           .to have_enqueued_job(LogActivityJob)
-          .with(phase, 'ending_soon', nil, now.to_i, project_id: phase.project_id)
+          .with(phase, 'ending_soon', nil, now, project_id: phase.project_id)
       end
 
       it 'does not log a phase ending_soon activity when one has already been logged' do
@@ -140,7 +154,7 @@ describe ActivitiesService do
         now = updated_at + 1.day
         expect { service.create_periodic_activities(now: now) }
           .to have_enqueued_job(LogActivityJob)
-          .with(basket, 'not_submitted', nil, now.to_i, project_id: basket.participation_context.project.id)
+          .with(basket, 'not_submitted', nil, now, project_id: basket.participation_context.project.id)
       end
 
       it 'does not log activity when a basket not_submitted activity is already created' do
@@ -172,7 +186,7 @@ describe ActivitiesService do
         phase = create(:budgeting_phase, start_at: now - 10.days, end_at: now - 1.hour)
         expect { service.create_periodic_activities(now: now) }
           .to have_enqueued_job(LogActivityJob)
-          .with(phase, 'ended', nil, now.to_i, project_id: phase.project_id)
+          .with(phase, 'ended', nil, now, project_id: phase.project_id)
       end
 
       it 'does not log a phase ended activity when one has already been logged' do
@@ -180,14 +194,14 @@ describe ActivitiesService do
         create(:activity, item: phase, action: 'ended')
         expect { service.create_periodic_activities(now: now) }
           .not_to have_enqueued_job(LogActivityJob)
-          .with(phase, 'ended', nil, now.to_i, project_id: phase.project_id)
+          .with(phase, 'ended', nil, now, project_id: phase.project_id)
       end
 
       it 'does not log a phase ended activity when the phase has not ended' do
         phase = create(:budgeting_phase, start_at: now - 10.days, end_at: now + 1.day)
         expect { service.create_periodic_activities(now: now) }
           .not_to have_enqueued_job(LogActivityJob)
-          .with(phase, 'ended', nil, now.to_i, project_id: phase.project_id)
+          .with(phase, 'ended', nil, now, project_id: phase.project_id)
       end
     end
   end
