@@ -99,17 +99,15 @@ module ContentBuilder
 
         def params_for_create
           layout_params = params_for_upsert
-          attributes = {
+          {
             content_buildable_type: Project.name,
             content_buildable_id: params[:project_id],
             code: params[:code]
-          }
+          }.tap do |attributes|
           attributes[:enabled] = to_boolean(layout_params[:enabled]) if layout_params.key? :enabled
           attributes[:craftjs_json] = layout_params[:craftjs_json] if layout_params.key? :craftjs_json
-          if layout_params.key? :craftjs_jsonmultiloc
-            attributes[:craftjs_jsonmultiloc] = clean(layout_params[:craftjs_jsonmultiloc])
+          attributes[:craftjs_jsonmultiloc] = clean(layout_params[:craftjs_jsonmultiloc]) if layout_params.key? :craftjs_jsonmultiloc
           end
-          attributes
         end
 
         def params_for_update
