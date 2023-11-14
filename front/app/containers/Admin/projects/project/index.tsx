@@ -159,7 +159,7 @@ export const AdminProjectsProjectIndex = ({
         phases={phases}
         selectedPhase={selectedPhase}
       />
-      <Box p="24px">
+      <Box p="8px 24px 24px 24px">
         {!isNewPhaseLink && (
           <PhaseHeader phase={selectedPhase} tabs={getTabs(project.id)} />
         )}
