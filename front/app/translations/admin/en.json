@@ -1300,6 +1300,7 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.mapCenterAndZoomTooltip": "The default center point and zoom level of the map. Manually adjust the values below, or click on the {button} button in the top right corner of the map to save the current center point and zoom level of the map as the default values.",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapConfigurationDescription": "Customize the map view, including uploading and styling map layers and setting the map center and zoom level.",
   "app.containers.AdminPage.ProjectEdit.MapTab.mapConfigurationTitle": "Map configuration",
+  "app.containers.AdminPage.ProjectEdit.MapTab.mapLocationWarning": "The map configuration is currently shared across phases, you can't create different map configurations per phase.",
   "app.containers.AdminPage.ProjectEdit.MapTab.remove": "Remove layer",
   "app.containers.AdminPage.ProjectEdit.MapTab.save": "Save",
   "app.containers.AdminPage.ProjectEdit.MapTab.supportArticle": "support article",
