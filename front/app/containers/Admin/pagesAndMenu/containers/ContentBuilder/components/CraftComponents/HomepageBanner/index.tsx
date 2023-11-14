@@ -125,13 +125,9 @@ const HomepageBannerSettings = () => {
     actions: { setProp },
     homepageSettings,
     id,
-    hasError,
-    errors,
     image,
   } = useNode((node) => ({
     id: node.id,
-    hasError: node.data.props.hasError,
-    errors: node.data.props.errors,
     image: node.data.props.image,
     homepageSettings: {
       banner_signed_out_header_multiloc:
@@ -168,6 +164,8 @@ const HomepageBannerSettings = () => {
     },
   }));
 
+  const [errors, setErrors] = useState<ErrorType[]>([]);
+  const [hasError, setHasError] = useState(false);
   const [search, setSearchParams] = useSearchParams();
   const { formatMessage } = useIntl();
 
@@ -230,34 +228,29 @@ const HomepageBannerSettings = () => {
     setProp((props: Props) => (props.homepageSettings[field] = value));
 
     if (!validation) {
-      setProp((props: Props) => {
-        const newErrorTypes = props.errors?.includes(field)
-          ? [...props.errors]
-          : [...(props.errors || []), field];
+      const newErrorTypes = errors?.includes(field)
+        ? [...errors]
+        : [...(errors || []), field];
 
-        props.errors = newErrorTypes;
-        props.hasError = true;
-        eventEmitter.emit(CONTENT_BUILDER_ERROR_EVENT, {
-          [id]: {
-            hasError: true,
-          },
-        });
+      setErrors(newErrorTypes);
+      setHasError(true);
+
+      eventEmitter.emit(CONTENT_BUILDER_ERROR_EVENT, {
+        [id]: {
+          hasError: true,
+        },
       });
     } else {
-      setProp((props: Props) => {
-        const newErrorTypes = props.errors?.filter(
-          (errorType) => errorType !== field
-        );
-        props.errors = newErrorTypes || [];
-        if (newErrorTypes && newErrorTypes.length === 0) {
-          props.hasError = false;
-          eventEmitter.emit(CONTENT_BUILDER_ERROR_EVENT, {
-            [id]: {
-              hasError: false,
-            },
-          });
-        }
-      });
+      const newErrorTypes = errors?.filter((errorType) => errorType !== field);
+      setErrors(newErrorTypes || []);
+      if (newErrorTypes && newErrorTypes.length === 0) {
+        setHasError(false);
+        eventEmitter.emit(CONTENT_BUILDER_ERROR_EVENT, {
+          [id]: {
+            hasError: false,
+          },
+        });
+      }
     }
   };
 
@@ -273,28 +266,28 @@ const HomepageBannerSettings = () => {
       }
     });
     if (value !== 'customized_button') {
+      const newErrorTypes = errors?.filter(
+        (errorType) =>
+          errorType !==
+          (field === 'banner_cta_signed_out_type'
+            ? 'banner_cta_signed_out_url'
+            : 'banner_cta_signed_in_url')
+      );
+      setErrors(newErrorTypes || []);
+      if (newErrorTypes && newErrorTypes.length === 0) {
+        setHasError(false);
+        eventEmitter.emit(CONTENT_BUILDER_ERROR_EVENT, {
+          [id]: {
+            hasError: false,
+          },
+        });
+      }
       setProp((props: Props) => {
         props.homepageSettings[
           field === 'banner_cta_signed_out_type'
             ? 'banner_cta_signed_out_url'
             : 'banner_cta_signed_in_url'
         ] = '';
-        const newErrorTypes = props.errors?.filter(
-          (errorType) =>
-            errorType !==
-            (field === 'banner_cta_signed_out_type'
-              ? 'banner_cta_signed_out_url'
-              : 'banner_cta_signed_in_url')
-        );
-        props.errors = newErrorTypes || [];
-        if (newErrorTypes && newErrorTypes.length === 0) {
-          props.hasError = false;
-          eventEmitter.emit(CONTENT_BUILDER_ERROR_EVENT, {
-            [id]: {
-              hasError: false,
-            },
-          });
-        }
       });
     }
   };
