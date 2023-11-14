@@ -13,7 +13,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import useDeletePhase from 'api/phases/useDeletePhase';
 import useLocalize from 'hooks/useLocalize';
-import { useIntl } from 'utils/cl-intl';
+import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import moment from 'moment';
 import { useLocation, useParams } from 'react-router-dom';
 import Link from 'utils/cl-router/Link';
@@ -24,12 +24,25 @@ import { ITab } from 'typings';
 import { Tab } from 'components/admin/NavigationTabs';
 import Modal from 'components/UI/Modal';
 import clHistory from 'utils/cl-router/history';
+import { ParticipationMethod } from 'utils/participationContexts';
 
 const Container = styled(Box)`
-  padding: 24px 40px 0px 40px;
-  margin-bottom: 8px;
   ${defaultCardStyle};
 `;
+
+const participationMethodMessage: Record<
+  ParticipationMethod,
+  MessageDescriptor
+> = {
+  ideation: messages.ideationPhase,
+  information: messages.informationPhase,
+  survey: messages.externalSurveyPhase,
+  voting: messages.votingPhase,
+  poll: messages.pollPhase,
+  volunteering: messages.volunteeringPhase,
+  document_annotation: messages.documentPhase,
+  native_survey: messages.inPlatformSurveyPhase,
+};
 
 interface Props {
   phase: IPhaseData | undefined;
@@ -86,47 +99,70 @@ export const PhaseHeader = ({ phase, tabs }: Props) => {
 
   return (
     <>
-      <Container>
-        <Box display="flex" justifyContent="space-between">
-          <Title my="0px" variant="h4" color="primary">
-            {localize(phase.attributes.title_multiloc)}
-          </Title>
+      <Container mb="8px">
+        <Box p="24px 40px">
+          <Box display="flex" justifyContent="space-between">
+            <Title my="0px" variant="h3" color="primary">
+              {localize(phase.attributes.title_multiloc)}
+            </Title>
 
-          <Box>
-            <Button
-              icon="dots-horizontal"
-              iconColor={colors.textSecondary}
-              iconHoverColor={colors.textSecondary}
-              boxShadow="none"
-              boxShadowHover="none"
-              bgColor="transparent"
-              bgHoverColor="transparent"
-              pr="0"
-              onClick={toggleDropdown}
+            <Box>
+              <Button
+                icon="dots-horizontal"
+                iconColor={colors.textSecondary}
+                iconHoverColor={colors.textSecondary}
+                boxShadow="none"
+                boxShadowHover="none"
+                bgColor="transparent"
+                bgHoverColor="transparent"
+                p="0"
+                onClick={toggleDropdown}
+              />
+              <Dropdown
+                opened={isDropdownOpened}
+                onClickOutside={closeDropdown}
+                className="dropdown"
+                width="200px"
+                right="70px"
+                content={
+                  <DropdownListItem onClick={() => handleOpenModal()}>
+                    <Box display="flex" gap="4px" alignItems="center">
+                      <Icon name="delete" fill={colors.red600} />
+                      <Text color="red600" my="0px">
+                        {formatMessage(messages.deletePhase)}
+                      </Text>
+                    </Box>
+                  </DropdownListItem>
+                }
+              />
+            </Box>
+          </Box>
+          <Box display="flex" alignItems="center">
+            <Text color="coolGrey600" my="0px" variant="bodyS">
+              {formatMessage(
+                participationMethodMessage[
+                  phase.attributes.participation_method
+                ]
+              )}{' '}
+              ·
+            </Text>
+            <Icon
+              name="calendar"
+              width="16px"
+              mx="2px"
+              fill={colors.coolGrey600}
             />
-            <Dropdown
-              opened={isDropdownOpened}
-              onClickOutside={closeDropdown}
-              className="dropdown"
-              width="200px"
-              right="70px"
-              content={
-                <DropdownListItem onClick={() => handleOpenModal()}>
-                  <Box display="flex" gap="4px" alignItems="center">
-                    <Icon name="delete" fill={colors.red600} />
-                    <Text color="red600" my="0px">
-                      {formatMessage(messages.deletePhase)}
-                    </Text>
-                  </Box>
-                </DropdownListItem>
-              }
-            />
+            <Text color="coolGrey600" my="0px" variant="bodyS">
+              {startAt} → {endAt}
+            </Text>
           </Box>
         </Box>
-        <Text color="coolGrey600">
-          {startAt} → {endAt}
-        </Text>
-        <Box display="flex">
+        <Box
+          display="flex"
+          px="44px"
+          boxShadow="0px 2px 4px -1px rgba(0, 0, 0, 0.06)"
+          background="#FBFBFB"
+        >
           {tabs.map(({ url, label }) => (
             <Tab
               label={label}

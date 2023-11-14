@@ -26,4 +26,36 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.cancelDeleteButtonText',
     defaultMessage: 'Cancel',
   },
+  ideationPhase: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.ideationPhase',
+    defaultMessage: 'Ideation phase',
+  },
+  informationPhase: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.informationPhase',
+    defaultMessage: 'Information phase',
+  },
+  externalSurveyPhase: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.externalSurveyPhase',
+    defaultMessage: 'External survey phase',
+  },
+  votingPhase: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.votingPhase',
+    defaultMessage: 'Voting phase',
+  },
+  pollPhase: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.pollPhase',
+    defaultMessage: 'Poll phase',
+  },
+  volunteeringPhase: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.volunteeringPhase',
+    defaultMessage: 'Volunteering phase',
+  },
+  documentPhase: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.documentPhase',
+    defaultMessage: 'Document annotation phase',
+  },
+  inPlatformSurveyPhase: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.inPlatformSurveyPhase',
+    defaultMessage: 'In platform survey phase',
+  },
 });
