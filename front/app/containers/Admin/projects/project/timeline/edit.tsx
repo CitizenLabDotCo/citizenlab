@@ -35,6 +35,7 @@ import {
   Text,
   Checkbox,
   Box,
+  Title,
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
 import Warning from 'components/UI/Warning';
@@ -412,6 +413,10 @@ const AdminPhaseEdit = () => {
 
   return (
     <>
+      <Title variant="h3" color="primary">
+        {phase && <FormattedMessage {...messages.editPhaseTitle} />}
+        {!phase && <FormattedMessage {...messages.newPhaseTitle} />}
+      </Title>
       <form onSubmit={handleOnSubmit}>
         <Section>
           <SectionField>
