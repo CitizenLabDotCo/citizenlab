@@ -21,7 +21,7 @@ const AdminProjectPoll = () => {
   }
 
   if (project.data.attributes.process_type === 'timeline') {
-    return <AdminTimelineProjectPoll projectId={projectId} />;
+    return <AdminTimelineProjectPoll />;
   }
   return null;
 };

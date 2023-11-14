@@ -2,6 +2,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { isError } from 'lodash-es';
+import { useParams } from 'react-router-dom';
 
 // Services / Data loading
 import GetPollQuestions, {
@@ -11,92 +12,66 @@ import GetPollQuestions, {
 // Components
 import ExportPollButton from './ExportPollButton';
 import PollAdminForm from './PollAdminForm';
-import T from 'components/T';
-import { SectionTitle, SectionDescription } from 'components/admin/Section';
+import { SectionDescription } from 'components/admin/Section';
+import { Box, Title } from '@citizenlab/cl2-component-library';
 
 // i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import useLocalize from 'hooks/useLocalize';
-import usePhases from 'api/phases/usePhases';
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
+// hooks
+import usePhase from 'api/phases/usePhase';
+
 const PhaseContainer = styled.div`
   &:not(:last-child) {
     margin-bottom: 50px;
   }
 `;
 
-const HeaderContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding: 0;
-  margin: 0;
-  margin-bottom: 30px;
-`;
-
-const Left = styled.div`
-  margin-right: 80px;
-`;
-
-interface Props {
-  projectId: string;
-}
-
-const AdminTimelineProjectPoll = ({ projectId }: Props) => {
+const AdminTimelineProjectPoll = () => {
+  const { phaseId } = useParams() as {
+    phaseId?: string;
+  };
+  const { data: phase } = usePhase(phaseId);
   const localize = useLocalize();
-  const { data: phases } = usePhases(projectId);
-  const pollPhases = phases
-    ? phases.data.filter(
-        (phase) => phase.attributes.participation_method === 'poll'
-      )
-    : null;
 
-  if (!pollPhases || pollPhases.length === 0) return null;
+  if (!phase || phase.data.attributes.participation_method !== 'poll') {
+    return null;
+  }
 
   return (
-    <Container>
-      <SectionTitle>
-        <FormattedMessage {...messages.titlePollTab} />
-      </SectionTitle>
+    <Box display="flex" flexDirection="column">
+      <Box display="flex" justifyContent="space-between" alignItems="center">
+        <Title variant="h3" color="primary">
+          <FormattedMessage {...messages.titlePollTab} />
+        </Title>
+        <ExportPollButton
+          participationContextId={phase.data.id}
+          participationContextType="phase"
+          participationContextName={localize(
+            phase.data.attributes.title_multiloc
+          )}
+        />
+      </Box>
       <SectionDescription>
         <FormattedMessage {...messages.pollTabSubtitle} />
       </SectionDescription>
-      {pollPhases.map((phase) => (
-        <PhaseContainer key={phase.id}>
-          <HeaderContainer>
-            <Left>
-              <h3>
-                <T value={phase.attributes.title_multiloc} />
-              </h3>
-            </Left>
-            <ExportPollButton
-              participationContextId={phase.id}
+      <PhaseContainer>
+        <GetPollQuestions
+          participationContextId={phase.data.id}
+          participationContextType="phase"
+        >
+          {(pollQuestions: GetPollQuestionsChildProps) => (
+            <PollAdminForm
               participationContextType="phase"
-              participationContextName={localize(
-                phase.attributes.title_multiloc
-              )}
+              participationContextId={phase.data.id}
+              pollQuestions={isError(pollQuestions) ? null : pollQuestions}
             />
-          </HeaderContainer>
-          <GetPollQuestions
-            participationContextId={phase.id}
-            participationContextType="phase"
-          >
-            {(pollQuestions: GetPollQuestionsChildProps) => (
-              <PollAdminForm
-                participationContextType="phase"
-                participationContextId={phase.id}
-                pollQuestions={isError(pollQuestions) ? null : pollQuestions}
-              />
-            )}
-          </GetPollQuestions>
-        </PhaseContainer>
-      ))}
-    </Container>
+          )}
+        </GetPollQuestions>
+      </PhaseContainer>
+    </Box>
   );
 };
 
