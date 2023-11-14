@@ -25,7 +25,7 @@
 module ReportBuilder
   class Report < ::ApplicationRecord
     belongs_to :owner, class_name: 'User'
-    belongs_to :phase, class_name: 'Phase'
+    belongs_to :phase, class_name: 'Phase', optional: true
 
     has_one(
       :layout,
