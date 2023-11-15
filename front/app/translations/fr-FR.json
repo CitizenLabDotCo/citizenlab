@@ -854,7 +854,7 @@
   "app.containers.DisabledAccount.text2": "Votre compte sur la plateforme de participation {orgName} a été temporairement désactivé en raison d'une violation des règles de la communauté. Pour plus d'informations à ce sujet, veuillez vous référer aux {TermsAndConditions}.",
   "app.containers.DisabledAccount.title": "Votre compte a été temporairement désactivé",
   "app.containers.EventsShow.addToCalendar": "Ajouter au calendrier",
-  "app.containers.EventsShow.attending": "inscrit(e)",
+  "app.containers.EventsShow.attending": "participant(s)",
   "app.containers.EventsShow.editEvent": "Modifier l'événement",
   "app.containers.EventsShow.emailSharingBody": "Participez à cet événement : {eventTitle} à {eventLocation}",
   "app.containers.EventsShow.eventFrom": "Événement de \"{eventTitle}\"",
