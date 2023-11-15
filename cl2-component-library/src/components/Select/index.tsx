@@ -1,5 +1,5 @@
 import React, { PureComponent, FocusEvent, ChangeEvent } from 'react';
-import { isString, get, isNumber } from 'lodash';
+import { isString, get, isNumber } from 'lodash-es';
 import Icon from '../Icon';
 import Label from '../Label';
 import IconTooltip from '../IconTooltip';

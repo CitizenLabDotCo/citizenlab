@@ -119,6 +119,9 @@ export interface IProjectData {
     user_follower: {
       data: IRelationship | null;
     };
+    permissions?: {
+      data: IRelationship[];
+    };
   };
 }
 
@@ -136,7 +139,7 @@ type ProjectReactingDisabledReason =
   | 'project_inactive'
   | 'not_ideation'
   | 'reacting_disabled'
-  | 'disliking_disabled'
+  | 'reacting_dislike_disabled'
   | 'reacting_like_limited_max_reached'
   | 'reacting_dislike_limited_max_reached'
   | PermissionsDisabledReason;

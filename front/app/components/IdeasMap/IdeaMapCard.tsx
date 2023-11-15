@@ -93,11 +93,6 @@ const Title = styled.h3<{ height: string }>`
   word-break: break-word;
 `;
 
-const Footer = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
 const FooterItem = styled.div`
   display: flex;
   align-items: center;
@@ -112,18 +107,18 @@ const MoneybagIcon = styled(Icon)`
 const DislikeIcon = styled(Icon)`
   fill: ${colors.textSecondary};
   margin-right: 6px;
+  transform: translate(0, 2px);
 `;
 
 const LikeIcon = styled(Icon)`
   fill: ${colors.textSecondary};
   margin-right: 6px;
-  margin-top: 5px;
 `;
 
 const CommentIcon = styled(Icon)`
   fill: ${colors.textSecondary};
   margin-right: 6px;
-  margin-left: 2px;
+  transform: translate(0, 2px);
 `;
 
 const FooterValue = styled.div`
@@ -216,7 +211,7 @@ const IdeaMapCard = memo<Props>(
         reactingActionDescriptor.down.enabled === true ||
         (reactingActionDescriptor.down.enabled === false &&
           reactingActionDescriptor.down.disabled_reason !==
-            'disliking_disabled');
+            'reacting_dislike_disabled');
 
       const commentingEnabled =
         project.data.attributes.action_descriptor.commenting_idea.enabled;
@@ -263,7 +258,7 @@ const IdeaMapCard = memo<Props>(
               })}
             </Box>
           )}
-          <Footer>
+          <Box display="flex" alignItems="center">
             {isParticipatoryBudgetContext &&
               tenantCurrency &&
               ideaBudget &&
@@ -304,7 +299,7 @@ const IdeaMapCard = memo<Props>(
                 </FooterValue>
               </FooterItem>
             )}
-          </Footer>
+          </Box>
         </Container>
       );
     }

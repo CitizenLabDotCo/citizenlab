@@ -8,7 +8,7 @@ describe ContentBuilder::LayoutImageService do
   describe 'swap_data_images' do
     it 'removes the src attribute from image elements' do
       layout_image = create(:layout_image)
-      input = {
+      craftjs_json = {
         'ROOT' => {
           'type' => 'div',
           'isCanvas' => true,
@@ -28,14 +28,16 @@ describe ContentBuilder::LayoutImageService do
         },
         'nt24xY6COf' => {
           'type' => {
-            'resolvedName' => 'Image'
+            'resolvedName' => 'ImageMultiloc'
           },
           'isCanvas' => false,
           'props' => {
-            'imageUrl' => layout_image.image.url,
-            'id' => 'image',
-            'alt' => '',
-            'dataCode' => layout_image.code
+            'image' => {
+              'imageUrl' => layout_image.image.url,
+              'id' => 'image',
+              'alt' => '',
+              'dataCode' => layout_image.code
+            }
           },
           'displayName' => 'Image',
           'custom' => {},
@@ -81,13 +83,15 @@ describe ContentBuilder::LayoutImageService do
         },
         'nt24xY6COf' => {
           'type' => {
-            'resolvedName' => 'Image'
+            'resolvedName' => 'ImageMultiloc'
           },
           'isCanvas' => false,
           'props' => {
-            'id' => 'image',
-            'alt' => '',
-            'dataCode' => layout_image.code
+            'image' => {
+              'id' => 'image',
+              'alt' => '',
+              'dataCode' => layout_image.code
+            }
           },
           'displayName' => 'Image',
           'custom' => {},
@@ -114,16 +118,16 @@ describe ContentBuilder::LayoutImageService do
         }
       }
 
-      imageable = build(:layout, craftjs_jsonmultiloc: { 'nl-BE' => input })
-      output = service.swap_data_images imageable, :craftjs_jsonmultiloc
-      expect(output).to eq({ 'nl-BE' => expected_json })
+      imageable = build(:home_page, craftjs_json: craftjs_json)
+      output = service.swap_data_images imageable.craftjs_json
+      expect(output).to eq expected_json
     end
   end
 
   describe 'render_data_images' do
     it 'adds the src attribute to the image elements' do
       layout_image = create(:layout_image)
-      input = {
+      craftjs_json = {
         'ROOT' => {
           'type' => 'div',
           'isCanvas' => true,
@@ -143,13 +147,15 @@ describe ContentBuilder::LayoutImageService do
         },
         'nt24xY6COf' => {
           'type' => {
-            'resolvedName' => 'Image'
+            'resolvedName' => 'ImageMultiloc'
           },
           'isCanvas' => false,
           'props' => {
-            'id' => 'image',
-            'alt' => '',
-            'dataCode' => layout_image.code
+            'image' => {
+              'id' => 'image',
+              'alt' => '',
+              'dataCode' => layout_image.code
+            }
           },
           'displayName' => 'Image',
           'custom' => {},
@@ -195,14 +201,16 @@ describe ContentBuilder::LayoutImageService do
         },
         'nt24xY6COf' => {
           'type' => {
-            'resolvedName' => 'Image'
+            'resolvedName' => 'ImageMultiloc'
           },
           'isCanvas' => false,
           'props' => {
-            'id' => 'image',
-            'alt' => '',
-            'dataCode' => layout_image.code,
-            'imageUrl' => layout_image.image.url
+            'image' => {
+              'id' => 'image',
+              'alt' => '',
+              'dataCode' => layout_image.code,
+              'imageUrl' => layout_image.image.url
+            }
           },
           'displayName' => 'Image',
           'custom' => {},
@@ -229,9 +237,9 @@ describe ContentBuilder::LayoutImageService do
         }
       }
 
-      imageable = build(:layout, craftjs_jsonmultiloc: { 'fr-BE' => input })
-      output = service.render_data_images imageable, :craftjs_jsonmultiloc
-      expect(output).to eq({ 'fr-BE' => expected_json })
+      imageable = build(:home_page, craftjs_json: craftjs_json)
+      output = service.render_data_images imageable.craftjs_json
+      expect(output).to eq expected_json
     end
   end
 end
