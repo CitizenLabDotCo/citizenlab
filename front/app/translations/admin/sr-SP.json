@@ -2194,6 +2194,7 @@
   "app.containers.ContentBuilder.homepage.PageTitle": "Почетна страница",
   "app.containers.ContentBuilder.homepage.TwoColumnLayout": "Две колоне",
   "app.containers.ContentBuilder.homepage.ViewHomepage": "Прикажи почетну страницу",
+  "app.containers.ContentBuilder.homepage.bannerImage": "Слика банера",
   "app.containers.ContentBuilder.homepage.bannerSubtext": "Подтекст банера",
   "app.containers.ContentBuilder.homepage.bannerText": "Текст банера",
   "app.containers.ContentBuilder.homepage.button": "Дугме",
