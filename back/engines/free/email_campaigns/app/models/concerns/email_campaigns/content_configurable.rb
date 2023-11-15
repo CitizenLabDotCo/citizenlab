@@ -12,7 +12,7 @@ module EmailCampaigns
     end
 
     def process_body_images
-      processed_body_multiloc = TextImageService.new.swap_data_images self, :body_multiloc
+      processed_body_multiloc = TextImageService.new.swap_data_images_multiloc body_multiloc, field: :body_multiloc, imageable: self
       update_column :body_multiloc, processed_body_multiloc
     end
 

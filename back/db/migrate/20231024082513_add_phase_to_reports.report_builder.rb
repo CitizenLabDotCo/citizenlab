@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class AddParticipationContextToReports < ActiveRecord::Migration[7.0]
+class AddPhaseToReports < ActiveRecord::Migration[7.0]
   def change
     add_reference :report_builder_reports, :phase, type: :uuid, index: true, foreign_key: true
 

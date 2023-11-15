@@ -115,6 +115,10 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
+            phase_reports: {
+              enabled: true,
+              allowed: true
+            },
             blocking_profanity: {
               enabled: true,
               allowed: true
@@ -464,6 +468,10 @@ module MultiTenancy
               allowed: true
             },
             import_printed_forms: {
+              enabled: true,
+              allowed: true
+            },
+            homepage_builder: {
               enabled: true,
               allowed: true
             }

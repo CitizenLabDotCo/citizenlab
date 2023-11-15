@@ -162,7 +162,7 @@ describe MultiTenancy::Templates::TenantSerializer do
         'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />'
       }
       field = create(:custom_field, :for_custom_form, description_multiloc: description_multiloc)
-      field.update! description_multiloc: TextImageService.new.swap_data_images(field, :description_multiloc)
+      field.update! description_multiloc: TextImageService.new.swap_data_images_multiloc(field.description_multiloc, field: :description_multiloc, imageable: field)
 
       template = tenant_serializer.run(deserializer_format: true)
 

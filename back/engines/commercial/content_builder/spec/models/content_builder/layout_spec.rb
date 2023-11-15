@@ -30,19 +30,16 @@ RSpec.describe ContentBuilder::Layout do
 
     it 'returns false for an iframe with an invalid url' do
       url = 'malicious.com/my-video'
-      craftjs_jsonmultiloc = { 'en' => craftjson_with_iframe_url(url) }
-      layout = build(:layout, craftjs_jsonmultiloc: craftjs_jsonmultiloc)
+      layout = build(:layout, craftjs_json: craftjson_with_iframe_url(url))
       expect(layout).to be_invalid
-      expect(layout.errors.details).to eq({ craftjs_jsonmultiloc: [{
+      expect(layout.errors.details).to eq({ craftjs_json: [{
         error: :iframe_url_invalid,
-        locale: 'en',
         url: url
       }] })
     end
 
     it 'returns true otherwise' do
-      craftjs_jsonmultiloc = { 'en' => craftjson_with_iframe_url('https://www.youtube.com/embed/gdfWFDcXut4') }
-      expect(build(:layout, craftjs_jsonmultiloc: craftjs_jsonmultiloc)).to be_valid
+      expect(build(:layout, craftjs_json: craftjson_with_iframe_url('https://www.youtube.com/embed/gdfWFDcXut4'))).to be_valid
     end
   end
 
@@ -107,7 +104,7 @@ RSpec.describe ContentBuilder::Layout do
       },
       'sLvtGHTAha' => {
         'type' => {
-          'resolvedName' => 'Iframe'
+          'resolvedName' => 'IframeMultiloc'
         },
         'isCanvas' => false,
         'props' => {

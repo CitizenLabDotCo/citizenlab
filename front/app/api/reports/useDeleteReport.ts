@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import fetcher from 'utils/cl-react-query/fetcher';
 import reportsKeys from './keys';
+import phasesKeys from 'api/phases/keys';
 
 const deleteReport = (id: string) =>
   fetcher({
@@ -13,9 +14,17 @@ const useDeletereport = () => {
 
   return useMutation({
     mutationFn: deleteReport,
-    onSuccess: () => {
+    onSuccess: async (_data, id) => {
+      await queryClient.invalidateQueries({
+        queryKey: phasesKeys.all(),
+      });
+
       queryClient.invalidateQueries({
         queryKey: reportsKeys.lists(),
+      });
+
+      queryClient.resetQueries({
+        queryKey: reportsKeys.item({ id }),
       });
     },
   });
