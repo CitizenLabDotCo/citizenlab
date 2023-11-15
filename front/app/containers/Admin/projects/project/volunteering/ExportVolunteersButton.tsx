@@ -1,5 +1,5 @@
 // Libraries
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 
 // typings
 import { IParticipationContextType } from 'typings';
@@ -11,9 +11,8 @@ import Button from 'components/UI/Button';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-
 import { exportVolunteers } from 'api/causes/util';
-import useCauses from "api/causes/useCauses";
+import useCauses from 'api/causes/useCauses';
 
 interface Props {
   participationContextType: IParticipationContextType;
@@ -21,7 +20,11 @@ interface Props {
   className?: string;
 }
 
-const ExportVolunteersButton = ({ participationContextType, participationContextId, className }: Props) => {
+const ExportVolunteersButton = ({
+  participationContextType,
+  participationContextId,
+  className,
+}: Props) => {
   const { data: causes } = useCauses({
     participationContextType,
     participationContextId,
@@ -32,10 +35,7 @@ const ExportVolunteersButton = ({ participationContextType, participationContext
 
   const handleExportVolunteers = async () => {
     setExporting(true);
-    await exportVolunteers(
-      participationContextId,
-      participationContextType
-    );
+    await exportVolunteers(participationContextId, participationContextType);
     setExporting(false);
   };
 
@@ -51,6 +51,6 @@ const ExportVolunteersButton = ({ participationContextType, participationContext
       <FormattedMessage {...messages.exportVolunteers} />
     </Button>
   );
-}
+};
 
 export default ExportVolunteersButton;

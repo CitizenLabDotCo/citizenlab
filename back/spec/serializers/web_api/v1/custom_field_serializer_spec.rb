@@ -53,8 +53,8 @@ describe WebApi::V1::CustomFieldSerializer do
   it 'swaps data images' do
     field = create(:custom_field)
     expect_any_instance_of(TextImageService).to(
-      receive(:render_data_images)
-        .with(field, :description_multiloc)
+      receive(:render_data_images_multiloc)
+        .with(field.description_multiloc, field: :description_multiloc, imageable: field)
         .and_return({ 'en' => 'Description with swapped images' })
     )
 

@@ -29,7 +29,7 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
   end
 
   attribute :body_multiloc do |object|
-    TextImageService.new.render_data_images object, :body_multiloc
+    TextImageService.new.render_data_images_multiloc object.body_multiloc, field: :body_multiloc, imageable: object
   end
 
   attribute :internal_comments_count, if: proc { |object, params|

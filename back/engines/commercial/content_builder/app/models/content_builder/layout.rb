@@ -12,6 +12,7 @@
 #  enabled                :boolean          default(FALSE), not null
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
+#  craftjs_json           :jsonb            not null
 #
 # Indexes
 #
@@ -21,7 +22,7 @@ module ContentBuilder
   class Layout < ApplicationRecord
     belongs_to :content_buildable, polymorphic: true
 
-    before_validation :sanitize_craftjs_jsonmultiloc
+    before_validation :sanitize_craftjs_json
 
     validates :content_buildable, :code, presence: true
     validates :craftjs_jsonmultiloc, multiloc: { presence: false, value_type: Hash }
@@ -44,17 +45,25 @@ module ContentBuilder
       url_starts = %w[http:// https://]
 
       craftjs_jsonmultiloc.each do |locale, json|
-        LayoutService.new.select_craftjs_elements_for_type(json, 'Iframe').each do |elt|
+        LayoutService.new.select_craftjs_elements_for_types(json, ['Iframe']).each do |elt|
           url = elt.dig 'props', 'url'
           if url && url_starts.none? { |url_start| url.starts_with?(url_start) }
             errors.add :craftjs_jsonmultiloc, :iframe_url_invalid, locale: locale, url: url
           end
         end
       end
+      LayoutService.new.select_craftjs_elements_for_types(craftjs_json, ['IframeMultiloc']).each do |elt|
+        url = elt.dig 'props', 'url'
+        if url && url_starts.none? { |url_start| url.starts_with?(url_start) }
+          errors.add :craftjs_json, :iframe_url_invalid, url: url
+        end
+      end
     end
 
-    def sanitize_craftjs_jsonmultiloc
+    def sanitize_craftjs_json
+      # TODO: clean up after fully migrated
       self.craftjs_jsonmultiloc = LayoutSanitizationService.new.sanitize_multiloc craftjs_jsonmultiloc
+      self.craftjs_json = LayoutSanitizationService.new.sanitize craftjs_json
     end
   end
 end
