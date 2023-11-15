@@ -323,7 +323,8 @@ module BulkImportIdeas
     # Return the fields and page count to import data to
     def import_form_data(personal_data_enabled)
       # NOTE: It calls this form an xlsx import too - one side effect currently - proposed budget does not import
-      PrintCustomFieldsService.new(@phase || @project, @form_fields, @locale, personal_data_enabled).importer_data
+      printable_fields = IdeaCustomFieldsService.new(@participation_method.custom_form).printable_fields
+      PrintCustomFieldsService.new(@phase || @project, printable_fields, @locale, personal_data_enabled).importer_data
     end
   end
 end
