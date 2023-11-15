@@ -16,7 +16,6 @@ import FullScreenWrapper from 'components/admin/ContentBuilder/FullscreenPreview
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
 import Editor from '../../components/ReportBuilder/Editor';
 import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
-import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -59,10 +58,10 @@ export const FullScreenReport = ({ reportId }: Props) => {
       platformLocale={platformLocale}
     >
       <ReportContext.Provider value="phase">
-        <FullScreenWrapper onUpdateDraftData={setDraftData}>
+        <FullScreenWrapper onUpdateDraftData={setDraftData} padding="0">
           {isLoadingLayout && <Spinner />}
           {!isLoadingLayout && (
-            <Box maxWidth={`${maxPageWidth}px`}>
+            <Box maxWidth="800px">
               <Editor isPreview={true}>
                 {editorData && <ContentBuilderFrame editorData={editorData} />}
               </Editor>

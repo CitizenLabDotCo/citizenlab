@@ -1,9 +1,16 @@
+import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { FullScreenReport } from '.';
 
 const meta = {
   title: 'Example/FullScreenReport',
-  component: FullScreenReport,
+  render: (props) => {
+    return (
+      <div style={{ width: '100%', display: 'flex', alignItems: 'center' }}>
+        <FullScreenReport {...props} />
+      </div>
+    );
+  },
   parameters: {
     layout: 'centered',
   },

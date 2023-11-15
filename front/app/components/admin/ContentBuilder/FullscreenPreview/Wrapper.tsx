@@ -14,6 +14,7 @@ interface Props {
   onUpdateDraftData: (serializedNodes: SerializedNodes | undefined) => void;
   onUpdateLocale?: (locale: Locale) => void;
   children: React.ReactNode;
+  padding?: string;
 }
 
 export const StyledPreviewBox = styled(Box)`
@@ -34,6 +35,7 @@ export const FullScreenPreviewWrapper = ({
   onUpdateDraftData,
   onUpdateLocale,
   children,
+  padding,
 }: Props) => {
   useEffect(() => {
     const handleMessage = (e: MessageEvent) => {
@@ -58,7 +60,7 @@ export const FullScreenPreviewWrapper = ({
   return (
     <FocusOn>
       <StyledPreviewBox data-testid="contentBuilderEditModePreviewContent">
-        <Box p="20px">{children}</Box>
+        <Box p={padding || '20px'}>{children}</Box>
       </StyledPreviewBox>
     </FocusOn>
   );
