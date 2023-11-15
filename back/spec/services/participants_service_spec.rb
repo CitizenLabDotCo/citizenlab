@@ -260,8 +260,10 @@ describe ParticipantsService do
     it 'does not filter out likes or dislikes' do
       idea_liked_activity = create(:idea_liked_activity)
       idea_disliked_activity = create(:idea_disliked_activity)
-      initiative_liked_activity = create(:initiative_liked_activity)
-      initiative_disliked_activity = create(:initiative_disliked_activity)
+      initiative_liked_activity =
+        create(:activity, action: 'initiative_liked', item: create(:reaction2, :for_initiative, :up))
+      initiative_disliked_activity =
+        create(:activity, action: 'initiative_disliked', item: create(:reaction2, :for_initiative, :down))
 
       expect(service.filter_engaging_activities(Activity.all))
         .to match_array [
