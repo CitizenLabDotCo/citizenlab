@@ -6,6 +6,7 @@ import {
   colors,
   media,
   useBreakpoint,
+  Text,
 } from '@citizenlab/cl2-component-library';
 
 // hooks
@@ -15,7 +16,8 @@ import styled from 'styled-components';
 import { Multiloc } from 'typings';
 import { useNode } from '@craftjs/core';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import { useIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
 
 const ProjectSection = styled.div`
   width: 100%;
@@ -66,11 +68,23 @@ const ProjectsSettings = () => {
   return (
     <Box
       background="#ffffff"
-      my="40px"
+      my="20px"
       display="flex"
       flexDirection="column"
       gap="16px"
     >
+      <Text color="textSecondary">
+        <FormattedMessage
+          {...messages.projectsDescription}
+          values={{
+            link: (
+              <Link to="/admin/projects" target="_blank">
+                <FormattedMessage {...messages.projectsDescriptionLink} />
+              </Link>
+            ),
+          }}
+        />
+      </Text>
       <InputMultilocWithLocaleSwitcher
         id="project_title"
         type="text"

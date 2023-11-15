@@ -1,9 +1,15 @@
 import React from 'react';
 
 // components
-import { Box, colors, useBreakpoint } from '@citizenlab/cl2-component-library';
-import messages from '../../../messages';
+import {
+  Box,
+  colors,
+  useBreakpoint,
+  Text,
+} from '@citizenlab/cl2-component-library';
+import messages from './messages';
 import InitiativesCTABox from 'containers/HomePage/InitiativesCTABox';
+import { useIntl } from 'utils/cl-intl';
 
 const Proposals = () => {
   const isSmallerThanTablet = useBreakpoint('tablet');
@@ -23,14 +29,19 @@ const Proposals = () => {
 };
 
 const ProposalsSettings = () => {
+  const { formatMessage } = useIntl();
   return (
     <Box
       background="#ffffff"
-      my="40px"
+      my="20px"
       display="flex"
       flexDirection="column"
       gap="16px"
-    />
+    >
+      <Text color="textSecondary">
+        {formatMessage(messages.proposalsDescription)}
+      </Text>
+    </Box>
   );
 };
 

@@ -396,6 +396,9 @@ const HomepageBannerSettings = () => {
 
       {search.get('variant') !== 'signedIn' && (
         <>
+          <Text m={'0px'} color="textSecondary">
+            {formatMessage(messages.signedOutDescription)}
+          </Text>
           {homepageSettings.banner_layout !== 'two_row_layout' && (
             <OverlayControls
               variant="signedOut"
@@ -443,7 +446,7 @@ const HomepageBannerSettings = () => {
               );
             }}
           />
-          <Text m={'0px'}>{formatMessage(messages.button)}</Text>
+          <Label>{formatMessage(messages.button)}</Label>
           {CTA_SIGNED_OUT_TYPES.map((option: CTASignedOutType) => {
             const labelMessage = labelMessages[option];
             return (
@@ -515,6 +518,9 @@ const HomepageBannerSettings = () => {
 
       {search.get('variant') === 'signedIn' && (
         <>
+          <Text m={'0px'} color="textSecondary">
+            {formatMessage(messages.signedInDescription)}
+          </Text>
           <OverlayControls
             variant="signedIn"
             noOpacitySlider={
@@ -559,7 +565,7 @@ const HomepageBannerSettings = () => {
               });
             }}
           />
-          <Text m="0px">{formatMessage(messages.button)}</Text>
+          <Label>{formatMessage(messages.button)}</Label>
           {CTA_SIGNED_IN_TYPES.map((option: CTASignedInType) => {
             const labelMessage = labelMessages[option];
             return (
