@@ -301,7 +301,7 @@ describe ContentBuilder::LayoutImageService do
             'resolvedName' => 'HomepageBanner'
           },
           'isCanvas' => false,
-          'props' => {},
+          'props' => {}, # Empty props
           'displayName' => 'HomepageBanner',
           'custom' => {},
           'parent' => 'ROOT',
@@ -310,7 +310,7 @@ describe ContentBuilder::LayoutImageService do
           'linkedNodes' => {}
         },
         'XGtvXcaUr3' => {
-          'badtype' => 42,
+          'badtype' => 42, # Bad type format
           'isCanvas' => false,
           'props' => {
             'text' => '<p>This is some text.</p>',
