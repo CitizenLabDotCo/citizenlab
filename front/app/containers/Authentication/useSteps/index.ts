@@ -265,8 +265,13 @@ export default function useSteps() {
         error_code,
       } = urlSearchParams as SSOParams;
 
+      const actionFromLocalStorage = localStorage.getItem('sso_success_action');
+      localStorage.removeItem('sso_success_action');
+
       authenticationDataRef.current = {
         flow: sso_flow,
+        successAction:
+          actionFromLocalStorage && JSON.parse(actionFromLocalStorage),
         context: {
           type: sso_verification_type,
           action: sso_verification_action,
