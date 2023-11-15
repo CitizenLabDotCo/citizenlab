@@ -188,19 +188,21 @@ describe LocalProjectCopyService do
         participation_context_id: source_project.phases.first.id,
         participation_context_type: 'Phase'
       )
+      source_phase = source_project.phases.first
 
       copied_project = service.copy(source_project)
+      copied_phase = copied_project.phases.first
 
-      expect(copied_project.poll_questions.count).to eq 2
-      expect(copied_project.poll_questions.map do |record|
+      expect(copied_phase.poll_questions.count).to eq 2
+      expect(copied_phase.poll_questions.map do |record|
         record.as_json(except: %i[id participation_context_id updated_at created_at])
       end)
-        .to match_array(source_project.poll_questions.map do |record|
+        .to match_array(source_phase.poll_questions.map do |record|
           record.as_json(except: %i[id participation_context_id updated_at created_at])
         end)
 
-      source_question = source_project.poll_questions.last
-      copied_question = copied_project.poll_questions.find_by(title_multiloc: source_question.title_multiloc)
+      source_question = source_phase.poll_questions.last
+      copied_question = copied_phase.poll_questions.find_by(title_multiloc: source_question.title_multiloc)
 
       expect(copied_question.options.map { |record| record.as_json(except: %i[id question_id updated_at created_at]) })
         .to match_array(source_question.options.map do |record|
