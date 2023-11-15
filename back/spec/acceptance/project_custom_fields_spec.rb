@@ -40,7 +40,7 @@ resource 'Project level Custom Fields' do
   describe 'in a timeline project with an active ideation phase with custom fields' do
     let(:project) { create(:project_with_active_ideation_phase) }
     let(:project_id) { project.id }
-    let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
+    let!(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
     let!(:custom_field) { create(:custom_field_extra_custom_form, resource: custom_form) }
     let(:enabled_built_in_field_keys) do
       %i[
@@ -74,7 +74,7 @@ resource 'Project level Custom Fields' do
   end
 
   describe 'in an active ideation phase without custom fields' do
-    let(:project) { create(:project_with_active_ideation_phase, p) }
+    let(:project) { create(:project_with_active_ideation_phase) }
     let(:project_id) { project.id }
 
     before do

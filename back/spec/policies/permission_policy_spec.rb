@@ -35,7 +35,7 @@ describe PermissionPolicy do
     end
   end
 
-  context 'for a member of a group with granular permissions' do
+  context 'for a member of a group with permissions on a phase' do
     let(:user) { create(:user) }
     let(:group) { create(:group) }
     let!(:permission) { create(:permission, permitted_by: 'groups', groups: [group]) }
