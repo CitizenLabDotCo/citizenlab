@@ -177,18 +177,21 @@ const IdeasNewPageWithJSONForm = () => {
       location_point_geojson = await getLocationGeojson(initialFormData, data);
     }
 
+    // If the user is an admin or project moderator, we allow them to post to a specific phase
+    const phase_ids =
+      phaseId &&
+      !isNilOrError(authUser) &&
+      (isAdmin({ data: authUser.data }) ||
+        isProjectModerator({ data: authUser.data }, project.data.id))
+        ? [phaseId]
+        : null;
+
     const idea = await addIdea({
       ...data,
       location_point_geojson,
       project_id: project.data.id,
       publication_status: 'published',
-      phase_ids:
-        phaseId &&
-        !isNilOrError(authUser) &&
-        (isAdmin({ data: authUser.data }) ||
-          isProjectModerator({ data: authUser.data }, project.data.id))
-          ? [phaseId]
-          : null,
+      phase_ids,
       anonymous: postAnonymously ? true : undefined,
     });
 

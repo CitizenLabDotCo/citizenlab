@@ -113,6 +113,7 @@ resource 'ContentBuilderLayouts' do
       with_options scope: :content_builder_layout do
         parameter :enabled, 'Indicates that the layout is enabled.'
         parameter :craftjs_jsonmultiloc, 'The craftjs layout configuration, as a multiloc string.'
+        parameter :craftjs_json, 'The craftjs layout configuration'
       end
 
       context 'when the project does not exist' do
@@ -132,13 +133,11 @@ resource 'ContentBuilderLayouts' do
         let(:project_id) { project.id }
         let(:code) { 'project_description' }
         let(:enabled) { true }
-        let :craftjs_jsonmultiloc do
+        let :craftjs_json do
           {
-            'nl-BE': {
-              ROOT: {
-                type: {
-                  resolvedName: 'Container'
-                }
+            ROOT: {
+              type: {
+                resolvedName: 'Container'
               }
             }
           }
@@ -146,7 +145,7 @@ resource 'ContentBuilderLayouts' do
 
         post 'web_api/v1/projects/:project_id/content_builder_layouts/:code/upsert' do
           example_request 'Create a layout for a project' do
-            expect(status).to eq 201
+            assert_status 201
             json_response = json_parse(response_body)
             expect(json_response).to include(
               {
@@ -154,12 +153,11 @@ resource 'ContentBuilderLayouts' do
                   id: be_a(String),
                   type: 'content_builder_layout',
                   attributes: {
-                    craftjs_jsonmultiloc: {
-                      'nl-BE': {
-                        ROOT: {
-                          type: {
-                            resolvedName: 'Container'
-                          }
+                    craftjs_jsonmultiloc: {},
+                    craftjs_json: {
+                      ROOT: {
+                        type: {
+                          resolvedName: 'Container'
                         }
                       }
                     },
@@ -179,21 +177,18 @@ resource 'ContentBuilderLayouts' do
       end
 
       context 'when the layout exists' do
-        let(:layout) { create(:layout) }
         let(:project_id) { layout.content_buildable_id }
         let(:code) { layout.code }
 
         describe 'updating one locale' do
           let! :layout do
-            create(:layout, craftjs_jsonmultiloc: { 'kl-GL': { ROOT: {} } })
+            create(:layout, craftjs_json: { ROOT: {} })
           end
-          let :craftjs_jsonmultiloc do
+          let :craftjs_json do
             {
-              'da-DK': {
-                ROOT: {
-                  type: {
-                    resolvedName: 'Container'
-                  }
+              ROOT: {
+                type: {
+                  resolvedName: 'Container'
                 }
               }
             }
@@ -201,7 +196,7 @@ resource 'ContentBuilderLayouts' do
 
           post 'web_api/v1/projects/:project_id/content_builder_layouts/:code/upsert' do
             example_request 'Update one locale of a layout of a project' do
-              expect(status).to eq 200
+              assert_status 200
               json_response = json_parse(response_body)
               expect(json_response).to include(
                 {
@@ -209,16 +204,12 @@ resource 'ContentBuilderLayouts' do
                     id: layout.id,
                     type: 'content_builder_layout',
                     attributes: {
-                      craftjs_jsonmultiloc: {
-                        'da-DK': {
-                          ROOT: {
-                            type: {
-                              resolvedName: 'Container'
-                            }
+                      craftjs_jsonmultiloc: {},
+                      craftjs_json: {
+                        ROOT: {
+                          type: {
+                            resolvedName: 'Container'
                           }
-                        },
-                        'kl-GL': {
-                          ROOT: {}
                         }
                       },
                       enabled: true,
@@ -257,7 +248,7 @@ resource 'ContentBuilderLayouts' do
 
           post 'web_api/v1/projects/:project_id/content_builder_layouts/:code/upsert' do
             example_request 'Update multiple locales of a layout of a project' do
-              expect(status).to eq 200
+              assert_status 200
               json_response = json_parse(response_body)
               expect(json_response).to include(
                 {
@@ -277,6 +268,7 @@ resource 'ContentBuilderLayouts' do
                           ROOT: {}
                         }
                       },
+                      craftjs_json: {},
                       enabled: true,
                       code: code,
                       created_at: match(time_regex),
@@ -296,14 +288,14 @@ resource 'ContentBuilderLayouts' do
           let! :layout do
             create(
               :layout,
-              craftjs_jsonmultiloc: { 'kl-GL': { ROOT: {} } }
+              craftjs_json: { ROOT: {} }
             )
           end
           let(:enabled) { false }
 
           post 'web_api/v1/projects/:project_id/content_builder_layouts/:code/upsert' do
             example_request 'Disable a layout of a project' do
-              expect(status).to eq 200
+              assert_status 200
               json_response = json_parse(response_body)
               expect(json_response).to include(
                 {
@@ -311,11 +303,8 @@ resource 'ContentBuilderLayouts' do
                     id: layout.id,
                     type: 'content_builder_layout',
                     attributes: {
-                      craftjs_jsonmultiloc: {
-                        'kl-GL': {
-                          ROOT: {}
-                        }
-                      },
+                      craftjs_json: { ROOT: {} },
+                      craftjs_jsonmultiloc: {},
                       enabled: false,
                       code: code,
                       created_at: match(time_regex),
@@ -336,14 +325,14 @@ resource 'ContentBuilderLayouts' do
             create(
               :layout,
               enabled: false,
-              craftjs_jsonmultiloc: { 'kl-GL': { ROOT: {} } }
+              craftjs_json: { ROOT: {} }
             )
           end
           let(:enabled) { true }
 
           post 'web_api/v1/projects/:project_id/content_builder_layouts/:code/upsert' do
             example_request 'Enable a layout of a project' do
-              expect(status).to eq 200
+              assert_status 200
               json_response = json_parse(response_body)
               expect(json_response).to include(
                 {
@@ -351,11 +340,8 @@ resource 'ContentBuilderLayouts' do
                     id: layout.id,
                     type: 'content_builder_layout',
                     attributes: {
-                      craftjs_jsonmultiloc: {
-                        'kl-GL': {
-                          ROOT: {}
-                        }
-                      },
+                      craftjs_json: { ROOT: {} },
+                      craftjs_jsonmultiloc: {},
                       enabled: true,
                       code: code,
                       created_at: match(time_regex),

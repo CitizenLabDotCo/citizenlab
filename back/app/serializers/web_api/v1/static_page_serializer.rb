@@ -32,13 +32,13 @@ class WebApi::V1::StaticPageSerializer < WebApi::V1::BaseSerializer
   attribute :top_info_section_multiloc, if: proc { |object, _|
     object.top_info_section_multiloc.present?
   } do |object|
-    TextImageService.new.render_data_images object, :top_info_section_multiloc
+    TextImageService.new.render_data_images_multiloc object.top_info_section_multiloc, field: :top_info_section_multiloc, imageable: object
   end
 
   attribute :bottom_info_section_multiloc, if: proc { |object, _|
     object.bottom_info_section_multiloc.present?
   } do |object|
-    TextImageService.new.render_data_images object, :bottom_info_section_multiloc
+    TextImageService.new.render_data_images_multiloc object.bottom_info_section_multiloc, field: :bottom_info_section_multiloc, imageable: object
   end
 
   # This is used to keep supporting default titles for

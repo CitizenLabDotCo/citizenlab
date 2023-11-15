@@ -17,7 +17,7 @@ describe SideFxPhaseService do
     end
 
     it 'runs the description through the necessary steps' do
-      expect_any_instance_of(TextImageService).to receive(:swap_data_images).with(phase, :description_multiloc).and_return(phase.description_multiloc)
+      expect_any_instance_of(TextImageService).to receive(:swap_data_images_multiloc).with(phase.description_multiloc, field: :description_multiloc, imageable: phase).and_return(phase.description_multiloc)
       expect(sfx_pc).to receive(:after_create).with(phase, user)
       service.after_create(phase, user)
     end
@@ -26,7 +26,7 @@ describe SideFxPhaseService do
   describe 'before_update' do
     it 'runs the description through the text image service' do
       expect(sfx_pc).to receive(:before_update).with(phase, user)
-      expect_any_instance_of(TextImageService).to receive(:swap_data_images).with(phase, :description_multiloc).and_return(phase.description_multiloc)
+      expect_any_instance_of(TextImageService).to receive(:swap_data_images_multiloc).with(phase.description_multiloc, field: :description_multiloc, imageable: phase).and_return(phase.description_multiloc)
       service.before_update(phase, user)
     end
   end
