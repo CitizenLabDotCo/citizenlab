@@ -166,6 +166,7 @@ module BulkImportIdeas
 
       form_parsed_ideas.each_with_index.map do |idea, index|
         idea[:custom_field_values] = text_parsed_ideas[index][:custom_field_values].merge(idea[:custom_field_values])
+        idea[:pdf_pages] = complete_page_range(idea[:pdf_pages], text_parsed_ideas[index][:pdf_pages])
         text_parsed_ideas[index].merge(idea)
       end
     end
@@ -311,6 +312,12 @@ module BulkImportIdeas
       end
 
       idea_row
+    end
+
+    def complete_page_range(pages1, pages2)
+      min = [pages1.min, pages2.min].min
+      max = [pages1.max, pages2.max].max
+      (min..max).to_a
     end
 
     # Return the fields and page count to import data to
