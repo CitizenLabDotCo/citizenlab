@@ -49,20 +49,18 @@ const HomepageBuilderToolbox = ({
       <SectionTitle>
         <FormattedMessage {...messages.sections} />
       </SectionTitle>
-
       <DraggableElement
         id="e2e-draggable-proposals"
         component={<Proposals />}
         icon="proposals"
         label={formatMessage(messages.proposalsTitle)}
-        disabled={proposalsEnabled}
+        disabled={!proposalsEnabled}
         tooltipContent={
           proposalsEnabled
             ? formatMessage(messages.proposalsDisabledTooltip)
             : undefined
         }
       />
-
       <DraggableElement
         id="e2e-draggable-events"
         component={<Events />}
