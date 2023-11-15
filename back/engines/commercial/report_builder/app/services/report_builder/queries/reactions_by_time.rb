@@ -1,7 +1,7 @@
 # rubocop:disable Naming/VariableName
 module ReportBuilder
   class Queries::ReactionsByTime < Queries::Base
-    def query(startAt: nil, endAt: nil, projectId: nil, **_other_props)
+    def query(startAt: nil, endAt: nil, projectId: nil, resolution: nil, **_other_props)
       startAt ||= '2017-01-01'
       endAt ||= Time.now
       time_series_query = {

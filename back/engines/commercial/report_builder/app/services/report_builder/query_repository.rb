@@ -7,7 +7,7 @@ module ReportBuilder
   class QueryRepository
     GRAPH_RESOLVED_NAMES_METHODS = {
       'GenderWidget' => Queries::UsersByGender,
-      'ReactionsByTime' => Queries::ReactionsByTime
+      'ReactionsByTimeWidget' => Queries::ReactionsByTime
     }.freeze
 
     def data_by_graph(graph_resolved_name, props)
