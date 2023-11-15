@@ -94,26 +94,13 @@ class ProjectCopyService < TemplateService
     layout_images_mapping = {}
 
     layouts = ContentBuilder::Layout.where(content_buildable_id: @project.id).map do |layout|
-      craftjs = layout.craftjs_jsonmultiloc
-
-      craftjs.each_key do |locale|
-        craftjs[locale].each_value do |node|
-          next unless ContentBuilder::LayoutService.new.craftjs_element_of_types?(node, ['Image'])
-
-          source_image_code = node['props']['dataCode']
-          new_image_code = ContentBuilder::LayoutImage.generate_code
-          node['props']['dataCode'] = new_image_code
-          layout_images_mapping[source_image_code] = new_image_code
-        end
-      end
-
       yml_layout = {
         'content_buildable_ref' => lookup_ref(layout.content_buildable_id, :project),
         'content_buildable_type' => layout.content_buildable_type,
         'code' => layout.code,
         'enabled' => layout.enabled,
-        'craftjs_jsonmultiloc' => craftjs,
-        'craftjs_json' => layout.craftjs_json, # TODO: Add layout images to the mapping
+        'craftjs_jsonmultiloc' => map_old_codes(layout.craftjs_jsonmultiloc, layout_images_mapping), # TODO: clean up after fully migrated
+        'craftjs_json' => map_codes(layout.craftjs_json, layout_images_mapping),
         'created_at' => shift_timestamp(layout.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(layout.updated_at, shift_timestamps)&.iso8601
       }
@@ -751,5 +738,21 @@ class ProjectCopyService < TemplateService
     return if leave_blank
 
     value && (value + shift_timestamps.days)
+  end
+
+  def map_old_codes(craftjs_jsonmultiloc, layout_images_mapping)
+    craftjs_jsonmultiloc.each_value do |craftjs_json|
+      map_codes craftjs_json, layout_images_mapping, ContentBuilder::OldLayoutImageService.new
+    end
+    craftjs_jsonmultiloc
+  end
+
+  def map_codes(craftjs_json, layout_images_mapping, layout_service = ContentBuilder::LayoutImageService.new)
+    layout_service.image_elements(craftjs_json).each do |props|
+      new_image_code = ContentBuilder::LayoutImage.generate_code
+      layout_images_mapping[props['dataCode']] = new_image_code
+      props['dataCode'] = new_image_code
+    end
+    craftjs_json
   end
 end
