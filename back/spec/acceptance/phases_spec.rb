@@ -32,15 +32,18 @@ resource 'Phases' do
   end
 
   get 'web_api/v1/phases/:id' do
-    let(:id) { @project.phases.first.id }
+    before { @phase = @project.phases.first }
+
+    let(:id) { @phase.id }
 
     example 'Get one phase by id' do
       create_list(:idea, 2, project: @project, phases: @project.phases)
       PermissionsService.new.update_all_permissions
+      @phase.update!(report: build(:report))
       do_request
       assert_status 200
 
-      expect(json_response.dig(:data, :id)).to eq @project.phases.first.id
+      expect(json_response.dig(:data, :id)).to eq @phase.id
       expect(json_response.dig(:data, :type)).to eq 'phase'
       expect(json_response.dig(:data, :attributes)).to include(
         reacting_like_method: 'unlimited',
@@ -48,11 +51,15 @@ resource 'Phases' do
       )
 
       expect(json_response.dig(:data, :relationships, :project)).to match({
-        data: { id: @project.phases.first.project_id, type: 'project' }
+        data: { id: @phase.project_id, type: 'project' }
+      })
+
+      expect(json_response.dig(:data, :relationships, :report)).to match({
+        data: { id: @phase.report.id, type: 'report' }
       })
 
       expect(json_response.dig(:data, :relationships, :permissions, :data).size)
-        .to eq(Permission.available_actions(@project.phases.first).length)
+        .to eq(Permission.available_actions(@phase).length)
 
       expect(json_response[:included].pluck(:type)).to include 'permission'
     end
