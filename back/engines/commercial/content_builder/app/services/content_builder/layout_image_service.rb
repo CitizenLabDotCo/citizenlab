@@ -7,7 +7,9 @@ module ContentBuilder
     protected
 
     def image_elements(content)
-      LayoutService.new.select_craftjs_elements_for_types(content, IMAGE_ELEMENT_TYPES).pluck('props').pluck('image')
+      LayoutService.new.select_craftjs_elements_for_types(content, IMAGE_ELEMENT_TYPES).filter_map do |elt|
+        elt.dig('props', 'image')
+      end
     end
 
     def content_image_class
