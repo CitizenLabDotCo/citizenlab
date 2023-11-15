@@ -2220,7 +2220,7 @@
   "app.containers.ContentBuilder.homepage.fullWidthBannerTooltipLink": "base de connaissance",
   "app.containers.ContentBuilder.homepage.imageOverlayColor": "Couleur du filtre de la bannière",
   "app.containers.ContentBuilder.homepage.imageOverlayOpacity": "Opacité du filtre de la bannière",
-  "app.containers.ContentBuilder.homepage.imageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
+  "app.containers.ContentBuilder.homepage.imageSupportPageURL": "https://support.citizenlab.co/fr/articles/1346397-quelles-sont-les-tailles-et-dimensions-recommandees-des-images-sur-la-plate-forme",
   "app.containers.ContentBuilder.homepage.invalidUrl": "URL invalide",
   "app.containers.ContentBuilder.homepage.no_button": "Aucun bouton",
   "app.containers.ContentBuilder.homepage.nonRegistedredUsersView": "Utilisateurs non enregistrés",
