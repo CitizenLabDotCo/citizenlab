@@ -30,8 +30,6 @@ export const TwoColumnWrapper = styled(Box)`
   width: 100%;
   gap: 24px;
   display: grid;
-  max-width: 1150px;
-  margin: 0 auto;
 
   ${media.tablet`
     grid-template-columns: 1fr;
