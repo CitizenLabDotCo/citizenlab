@@ -2,8 +2,8 @@ import React from 'react';
 
 // components
 import { ListItem, Box, Title } from '@citizenlab/cl2-component-library';
-import EditedText from './EditedText';
-import Buttons from './Buttons';
+import ReportRowEditedText from 'containers/Admin/reporting/components/ReportBuilderPage/ReportRow/EditedText';
+import ReportRowButtons from 'containers/Admin/reporting/components/ReportBuilderPage/ReportRow/Buttons';
 
 // i18n
 import messages from './messages';
@@ -24,17 +24,12 @@ const ReportRow = ({ report }: Props) => {
   const { formatMessage } = useIntl();
 
   const handleDeleteReport = async () => {
-    if (
-      window.confirm(
-        formatMessage(messages.confirmDeleteReport, {
-          reportName: report.attributes.name,
-        })
-      )
-    ) {
+    if (window.confirm(formatMessage(messages.areYouSureYouWantToDelete))) {
       deleteReport(report.id);
     }
   };
 
+  // TODO link to correct instance
   const reportPath = `/admin/reporting/report-builder/${report.id}`;
 
   const handleEditReport = () => {
@@ -56,15 +51,15 @@ const ReportRow = ({ report }: Props) => {
       >
         <Box>
           <Title variant="h5" color="primary" mt="0px" mb="0px">
-            {report.attributes.name}
+            {formatMessage(messages.report)}
           </Title>
-          <EditedText
+          <ReportRowEditedText
             createdAt={report.attributes.created_at}
             updatedAt={report.attributes.updated_at}
             userId={report.relationships.owner.data.id}
           />
         </Box>
-        <Buttons
+        <ReportRowButtons
           reportId={report.id}
           isLoading={isLoading}
           onDelete={handleDeleteReport}

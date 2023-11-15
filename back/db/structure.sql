@@ -95,6 +95,7 @@ ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS fk_rails_73040
 ALTER TABLE IF EXISTS ONLY public.email_campaigns_campaigns_groups DROP CONSTRAINT IF EXISTS fk_rails_712f4ad915;
 ALTER TABLE IF EXISTS ONLY public.groups_permissions DROP CONSTRAINT IF EXISTS fk_rails_6fa6389d80;
 ALTER TABLE IF EXISTS ONLY public.initiatives_topics DROP CONSTRAINT IF EXISTS fk_rails_6ee3ffe8e1;
+ALTER TABLE IF EXISTS ONLY public.report_builder_reports DROP CONSTRAINT IF EXISTS fk_rails_6988c9886e;
 ALTER TABLE IF EXISTS ONLY public.idea_imports DROP CONSTRAINT IF EXISTS fk_rails_67f00886f9;
 ALTER TABLE IF EXISTS ONLY public.idea_imports DROP CONSTRAINT IF EXISTS fk_rails_636c77bdd1;
 ALTER TABLE IF EXISTS ONLY public.internal_comments DROP CONSTRAINT IF EXISTS fk_rails_617a7ea994;
@@ -173,6 +174,7 @@ DROP INDEX IF EXISTS public.index_spam_reports_on_user_id;
 DROP INDEX IF EXISTS public.index_spam_reports_on_reported_at;
 DROP INDEX IF EXISTS public.index_single_processed_flags;
 DROP INDEX IF EXISTS public.index_single_category_assignment;
+DROP INDEX IF EXISTS public.index_report_builder_reports_on_phase_id;
 DROP INDEX IF EXISTS public.index_report_builder_reports_on_owner_id;
 DROP INDEX IF EXISTS public.index_report_builder_reports_on_name;
 DROP INDEX IF EXISTS public.index_reactions_on_user_id;
@@ -3320,10 +3322,11 @@ WITH (fillfactor='90');
 
 CREATE TABLE public.report_builder_reports (
     id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    name character varying NOT NULL,
+    name character varying,
     owner_id uuid NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    phase_id uuid
 );
 
 
@@ -6295,6 +6298,13 @@ CREATE INDEX index_report_builder_reports_on_owner_id ON public.report_builder_r
 
 
 --
+-- Name: index_report_builder_reports_on_phase_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_report_builder_reports_on_phase_id ON public.report_builder_reports USING btree (phase_id);
+
+
+--
 -- Name: index_single_category_assignment; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6879,6 +6889,14 @@ ALTER TABLE ONLY public.idea_imports
 
 ALTER TABLE ONLY public.idea_imports
     ADD CONSTRAINT fk_rails_67f00886f9 FOREIGN KEY (idea_id) REFERENCES public.ideas(id);
+
+
+--
+-- Name: report_builder_reports fk_rails_6988c9886e; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.report_builder_reports
+    ADD CONSTRAINT fk_rails_6988c9886e FOREIGN KEY (phase_id) REFERENCES public.phases(id);
 
 
 --
@@ -7962,6 +7980,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230927135924'),
 ('20231003095622'),
 ('20231018083110'),
+('20231024082513'),
 ('20231109101517'),
 ('20231110112415');
 

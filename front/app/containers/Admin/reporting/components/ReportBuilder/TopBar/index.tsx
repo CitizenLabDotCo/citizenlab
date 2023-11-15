@@ -12,7 +12,7 @@ import SaveButton from 'components/admin/ContentBuilder/TopBar/SaveButton';
 import { Box, Text, Title } from '@citizenlab/cl2-component-library';
 import Modal from 'components/UI/Modal';
 import Button from 'components/UI/Button';
-import ShareReportButton from '../../ReportBuilderPage/ReportRow/ShareReportButton';
+import ShareReportButton from '../../ReportBuilderPage/ReportRow/Buttons/ShareReportButton';
 
 // i18n
 import messages from './messages';
