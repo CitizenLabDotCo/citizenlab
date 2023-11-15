@@ -5,6 +5,8 @@ require 'rails_helper'
 describe ProjectCopyService do
   let(:service) { described_class.new }
 
+  before { stub_easy_translate! }
+
   describe 'project copy' do
     it 'works' do
       load Rails.root.join('db/seeds.rb')
@@ -31,12 +33,12 @@ describe ProjectCopyService do
     it 'successfully copies over native surveys and responses' do
       IdeaStatus.create_defaults
 
-      open_ended_project = create(:continuous_native_survey_project)
+      open_ended_project = create(:continuous_native_survey_project, title_multiloc: { en: 'open ended' })
       form1 = create(:custom_form, participation_context: open_ended_project.phases.first)
       field1 = create(:custom_field_linear_scale, :for_custom_form, resource: form1)
       create(:idea, project: open_ended_project, custom_field_values: { field1.key => 1 }, phases: open_ended_project.phases, creation_phase: open_ended_project.phases.first)
 
-      two_phase_project = create(:project_with_future_native_survey_phase)
+      two_phase_project = create(:project_with_future_native_survey_phase, title_multiloc: { en: 'two phase' })
       survey_phase = two_phase_project.phases.last
       ideation_phase = create(:phase, participation_method: 'ideation', project: two_phase_project)
       two_phase_project.phases << ideation_phase
@@ -57,14 +59,16 @@ describe ProjectCopyService do
         service.import template2
 
         expect(Project.count).to eq 2
+        expect(Phase.count).to eq 3
         expect(Idea.count).to eq 3
-        new_open_ended_project = Project.order(:created_at).first
+
+        new_open_ended_project = Project.find_by(title_multiloc: { en: 'open ended' })
         expect(new_open_ended_project.phases.first.custom_form.custom_fields.pluck(:input_type)).to eq ['linear_scale']
         new_field1 = new_open_ended_project.phases.first.custom_form.custom_fields.first
         expect(new_open_ended_project.ideas_count).to eq 1
         expect(new_open_ended_project.ideas.first.custom_field_values[new_field1.key]).to eq 1
 
-        new_two_phase_project = Project.order(:created_at).last
+        new_two_phase_project = Project.find_by(title_multiloc: { en: 'two phase' })
         new_survey_phase = new_two_phase_project.phases.order(:start_at).last
         expect(new_two_phase_project.ideas.map(&:creation_phase_id)).to match_array [nil, new_survey_phase.id]
         expect(new_survey_phase.custom_form.custom_fields.pluck(:input_type)).to eq ['text']
@@ -215,6 +219,19 @@ describe ProjectCopyService do
         expect(copied_project.custom_form.custom_fields.order(:key).pluck(:ordering))
           .to eq(project.custom_form.custom_fields.order(:key).pluck(:ordering))
       end
+    end
+  end
+
+  private
+
+  def stub_easy_translate!
+    allow(EasyTranslate).to receive(:translate) do |_, options|
+      translation = {
+        'en' => '<strong>Health & Wellness</strong>',
+        'fr' => '<strong>Santé &amp; Bien-être</strong>',
+        'nl' => ''
+      }[options[:to]]
+      translation || raise(EasyTranslate::EasyTranslateException, 'Locale not supported!')
     end
   end
 end
