@@ -12,17 +12,16 @@ interface Props {
 
 const Container = ({ children }: Props) => (
   <Box
-    bg="transparent"
-    // position="fixed"
-    // zIndex="99999"
+    position="fixed"
+    zIndex="99999"
     flex="0 0 auto"
     h={`calc(100vh - ${stylingConsts.menuHeight}px)`}
     w="210px"
     display="flex"
     flexDirection="column"
     alignItems="center"
-    // bgColor="#ffffff"
-    // overflowY="auto"
+    bgColor="#ffffff"
+    overflowY="auto"
     borderRight={`1px solid ${colors.grey500}`}
   >
     <Box w="100%" display="inline" pb="20px">
