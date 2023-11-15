@@ -12,33 +12,13 @@ describe('Admin: ideation analysis', () => {
     const projectDescriptionPreview = randomString();
     const projectDescription = randomString();
     cy.apiCreateProject({
-      type: 'continuous',
+      type: 'timeline',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
       publicationStatus: 'published',
     }).then((project) => {
       projectId = project?.body.data.id;
-      const ideaTitle1 = 'My first idea';
-      const ideaTitle2 = 'My second idea';
-      const ideaTitle3 = 'My third idea';
-
-      const ideaContent = randomString();
-      cy.apiCreateIdea({
-        projectId,
-        ideaTitle: ideaTitle1,
-        ideaContent: ideaContent,
-      });
-      cy.apiCreateIdea({
-        projectId,
-        ideaTitle: ideaTitle2,
-        ideaContent: ideaContent,
-      });
-      cy.apiCreateIdea({
-        projectId,
-        ideaTitle: ideaTitle3,
-        ideaContent: ideaContent,
-      });
 
       return cy
         .apiCreatePhase({
@@ -53,6 +33,29 @@ describe('Admin: ideation analysis', () => {
         })
         .then((phase) => {
           phaseId = phase.body.data.id;
+          const ideaTitle1 = 'My first idea';
+          const ideaTitle2 = 'My second idea';
+          const ideaTitle3 = 'My third idea';
+
+          const ideaContent = randomString();
+          cy.apiCreateIdea({
+            projectId,
+            ideaTitle: ideaTitle1,
+            ideaContent: ideaContent,
+            phaseIds: [phaseId],
+          });
+          cy.apiCreateIdea({
+            projectId,
+            ideaTitle: ideaTitle2,
+            ideaContent: ideaContent,
+            phaseIds: [phaseId],
+          });
+          cy.apiCreateIdea({
+            projectId,
+            ideaTitle: ideaTitle3,
+            ideaContent: ideaContent,
+            phaseIds: [phaseId],
+          });
         });
     });
   });
