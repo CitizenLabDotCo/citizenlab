@@ -56,7 +56,7 @@ export const ThreeColumnSettings = () => {
   return <Box />;
 };
 
-ThreeColumn.craft = {
+export const threeColumnCraftConfig = {
   related: {
     settings: ThreeColumnSettings,
   },
@@ -65,5 +65,7 @@ ThreeColumn.craft = {
     hasChildren: true,
   },
 };
+
+ThreeColumn.craft = threeColumnCraftConfig;
 
 export default ThreeColumn;

@@ -7,12 +7,11 @@ import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { Element, ROOT_NODE, useNode } from '@craftjs/core';
 
 // i18n
-import messages from './messages';
 import Container from '../Container';
 
 import {
   ThreeColumnWrapper,
-  ThreeColumnSettings,
+  threeColumnCraftConfig,
 } from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
 
 const ThreeColumn = () => {
@@ -40,14 +39,6 @@ const ThreeColumn = () => {
   );
 };
 
-ThreeColumn.craft = {
-  related: {
-    settings: ThreeColumnSettings,
-  },
-  custom: {
-    title: messages.threeColumn,
-    hasChildren: true,
-  },
-};
+ThreeColumn.craft = threeColumnCraftConfig;
 
 export default ThreeColumn;

@@ -8,11 +8,8 @@ import { useNode, Element, ROOT_NODE } from '@craftjs/core';
 import Container from '../Container';
 import {
   TwoColumnWrapper,
-  TwoColumnSettings,
+  twoColumnCraftConfig,
 } from 'components/admin/ContentBuilder/Widgets/TwoColumn';
-
-// intl
-import messages from './messages';
 
 // typings
 import { ColumnLayout } from 'components/admin/ContentBuilder/typings';
@@ -46,17 +43,6 @@ export const TwoColumn = ({ columnLayout, children }: TwoColumnProps) => {
   );
 };
 
-TwoColumn.craft = {
-  props: {
-    columnLayout: '',
-  },
-  related: {
-    settings: TwoColumnSettings,
-  },
-  custom: {
-    title: messages.twoColumn,
-    hasChildren: true,
-  },
-};
+TwoColumn.craft = twoColumnCraftConfig;
 
 export default TwoColumn;

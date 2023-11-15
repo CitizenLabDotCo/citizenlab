@@ -7,14 +7,13 @@ import styled from 'styled-components';
 
 // craft
 import {
-  TwoColumnSettings,
+  twoColumnCraftConfig,
   TwoColumnWrapper,
 } from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import { Element } from '@craftjs/core';
 import Container from 'components/admin/ContentBuilder/Widgets/Container';
 
 // i18n
-import messages from 'components/admin/ContentBuilder/Widgets/TwoColumn/messages';
 
 // typings
 import { ColumnLayout } from 'components/admin/ContentBuilder/typings';
@@ -41,17 +40,6 @@ export const TwoColumn = ({ columnLayout, children }: TwoColumnProps) => {
   );
 };
 
-TwoColumn.craft = {
-  props: {
-    columnLayout: '',
-  },
-  related: {
-    settings: TwoColumnSettings,
-  },
-  custom: {
-    title: messages.twoColumn,
-    hasChildren: true,
-  },
-};
+TwoColumn.craft = twoColumnCraftConfig;
 
 export default TwoColumn;

@@ -135,7 +135,7 @@ export const TwoColumnSettings = () => {
   );
 };
 
-TwoColumn.craft = {
+export const twoColumnCraftConfig = {
   props: {
     columnLayout: '',
   },
@@ -147,5 +147,7 @@ TwoColumn.craft = {
     hasChildren: true,
   },
 };
+
+TwoColumn.craft = twoColumnCraftConfig;
 
 export default TwoColumn;
