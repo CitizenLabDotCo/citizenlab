@@ -2,6 +2,7 @@ import React from 'react';
 
 // styling
 import { BORDER } from '../constants';
+import { PX } from 'components/admin/ContentBuilder/constants';
 
 // components
 import { Box, Title } from '@citizenlab/cl2-component-library';
@@ -35,7 +36,7 @@ const Container = ({ pagebreak, children, ...rest }: ContainerProps) => {
 const Card = ({ title, children, ...rest }: Props) => (
   <Container {...rest}>
     <Box>
-      <Title variant="h3" color="primary" m="16px" mb="8px">
+      <Title variant="h3" color="primary" m={PX} mb="8px">
         {title}
       </Title>
     </Box>

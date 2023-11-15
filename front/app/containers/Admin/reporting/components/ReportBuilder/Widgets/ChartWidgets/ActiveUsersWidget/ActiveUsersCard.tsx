@@ -23,6 +23,7 @@ import {
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import { PX } from 'components/admin/ContentBuilder/constants';
 
 type Props = ProjectId & Dates & Resolution;
 
@@ -53,7 +54,7 @@ const ActiveUsers = ({
       height="260px"
       mt="20px"
       pb="8px"
-      px={layout === 'wide' ? '16px' : '0px'}
+      px={layout === 'wide' ? PX : '0px'}
     >
       <Box
         height="100%"
@@ -63,7 +64,7 @@ const ActiveUsers = ({
         <Box
           display="flex"
           flexDirection="row"
-          ml={layout === 'wide' ? undefined : '16px'}
+          ml={layout === 'wide' ? undefined : PX}
           mb={layout === 'wide' ? undefined : '8px'}
         >
           <Box>
@@ -77,8 +78,9 @@ const ActiveUsers = ({
         <Box flexGrow={1} display="flex" justifyContent="flex-end">
           <Box
             pt="8px"
-            width={layout === 'wide' ? '95%' : '100%'}
+            width="100%"
             maxWidth="800px"
+            ml={layout === 'wide' ? undefined : '8px'}
           >
             <Chart
               timeSeries={timeSeries}
