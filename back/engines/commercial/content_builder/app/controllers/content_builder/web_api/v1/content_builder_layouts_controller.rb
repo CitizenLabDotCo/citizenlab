@@ -104,9 +104,9 @@ module ContentBuilder
             content_buildable_id: params[:project_id],
             code: params[:code]
           }.tap do |attributes|
-          attributes[:enabled] = to_boolean(layout_params[:enabled]) if layout_params.key? :enabled
-          attributes[:craftjs_json] = layout_params[:craftjs_json] if layout_params.key? :craftjs_json
-          attributes[:craftjs_jsonmultiloc] = clean(layout_params[:craftjs_jsonmultiloc]) if layout_params.key? :craftjs_jsonmultiloc
+            attributes[:enabled] = to_boolean(layout_params[:enabled]) if layout_params.key? :enabled
+            attributes[:craftjs_json] = layout_params[:craftjs_json] if layout_params.key? :craftjs_json
+            attributes[:craftjs_jsonmultiloc] = clean(layout_params[:craftjs_jsonmultiloc]) if layout_params.key? :craftjs_jsonmultiloc
           end
         end
 
