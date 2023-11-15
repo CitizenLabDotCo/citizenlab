@@ -277,8 +277,7 @@ describe ContentBuilder::LayoutImageService do
       expect(output).to eq expected_json
     end
 
-    it 'adds the src attribute to the image elements' do
-      layout_image = create(:layout_image)
+    it 'can deal with craftjs_json in an unexpected format' do
       craftjs_json = {
         'ROOT' => {
           'type' => 'div',

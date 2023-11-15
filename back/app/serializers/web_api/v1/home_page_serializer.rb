@@ -38,7 +38,7 @@ class WebApi::V1::HomePageSerializer < WebApi::V1::BaseSerializer
     TextImageService.new.render_data_images_multiloc object.bottom_info_section_multiloc, field: :bottom_info_section_multiloc, imageable: object
   end
 
-  attribute :craftjs_json, if: proc { |object, params|
+  attribute :craftjs_json, if: proc {
     AppConfiguration.instance.feature_activated? 'homepage_builder'
   } do |homepage|
     # TODO: move to layout
