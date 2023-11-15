@@ -7,8 +7,12 @@ import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { Element, ROOT_NODE, useNode } from '@craftjs/core';
 
 // i18n
-import messages from './messages';
 import Container from '../Container';
+
+import {
+  ThreeColumnWrapper,
+  threeColumnCraftConfig,
+} from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
 
 const ThreeColumn = () => {
   const isSmallerThanTablet = useBreakpoint('tablet');
@@ -17,13 +21,7 @@ const ThreeColumn = () => {
   }));
 
   return (
-    <Box
-      id="e2e-three-column"
-      flexDirection={isSmallerThanTablet ? 'column' : 'row'}
-      minHeight="40px"
-      display="flex"
-      w="100%"
-      gap="24px"
+    <ThreeColumnWrapper
       maxWidth="1150px"
       margin="0 auto"
       px={isSmallerThanTablet && parent === ROOT_NODE ? '20px' : '0px'}
@@ -37,22 +35,10 @@ const ThreeColumn = () => {
       <Box flex="1">
         <Element id="column3" is={Container} canvas />
       </Box>
-    </Box>
+    </ThreeColumnWrapper>
   );
 };
 
-const ThreeColumnSettings = () => {
-  return <Box />;
-};
-
-ThreeColumn.craft = {
-  related: {
-    settings: ThreeColumnSettings,
-  },
-  custom: {
-    title: messages.threeColumn,
-    hasChildren: true,
-  },
-};
+ThreeColumn.craft = threeColumnCraftConfig;
 
 export default ThreeColumn;
