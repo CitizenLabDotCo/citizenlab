@@ -20,7 +20,7 @@ module ReportBuilder
     protected
 
     def run_query(json_query)
-      query = Analytics::Query.new(json_query.with_indifferent_access)
+      query = Analytics::Query.new({ query: json_query }.with_indifferent_access[:query])
       # TODO: it's weird to validate and do not check the result. Fix this.
       query.validate
       query.run
