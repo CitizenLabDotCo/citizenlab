@@ -10,7 +10,10 @@ import { Element, ROOT_NODE, useNode } from '@craftjs/core';
 import messages from './messages';
 import Container from '../Container';
 
-import { ThreeColumnWrapper } from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
+import {
+  ThreeColumnWrapper,
+  ThreeColumnSettings,
+} from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
 
 const ThreeColumn = () => {
   const isSmallerThanTablet = useBreakpoint('tablet');
@@ -35,10 +38,6 @@ const ThreeColumn = () => {
       </Box>
     </ThreeColumnWrapper>
   );
-};
-
-const ThreeColumnSettings = () => {
-  return <Box />;
 };
 
 ThreeColumn.craft = {

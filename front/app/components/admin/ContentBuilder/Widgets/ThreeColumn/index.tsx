@@ -52,7 +52,7 @@ const ThreeColumn = () => {
   );
 };
 
-const ThreeColumnSettings = () => {
+export const ThreeColumnSettings = () => {
   return <Box />;
 };
 
