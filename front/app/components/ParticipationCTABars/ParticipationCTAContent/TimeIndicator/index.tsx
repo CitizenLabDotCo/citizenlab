@@ -14,7 +14,7 @@ interface Props {
 const TimeIndicator = ({ currentPhase, hasUserParticipated }: Props) => {
   return (
     <Box display="flex" alignItems="center">
-      <Box mr="8px" pb="2px">
+      <Box mr="4px" pb="2px">
         <ParticipationIcon hasUserParticipated={hasUserParticipated} />
       </Box>
       {currentPhase && currentPhase.attributes.end_at !== null ? (
