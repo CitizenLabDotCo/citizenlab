@@ -234,7 +234,7 @@ const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
           </Box>
         )}
 
-        <Header className="e2e-card-title">
+        <Header>
           <Title title={ideaTitle}>{ideaTitle}</Title>
         </Header>
 
