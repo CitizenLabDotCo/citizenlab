@@ -59,7 +59,7 @@ module EmailCampaigns
         author: author,
         event_payload: {},
         subject_multiloc: subject_multiloc,
-        body_multiloc: TextImageService.new.render_data_images(self, :body_multiloc),
+        body_multiloc: TextImageService.new.render_data_images_multiloc(body_multiloc, field: :body_multiloc, imageable: self),
         sender: sender,
         reply_to: reply_to
       }]

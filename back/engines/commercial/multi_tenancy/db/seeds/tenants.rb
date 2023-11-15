@@ -466,6 +466,10 @@ module MultiTenancy
             import_printed_forms: {
               enabled: true,
               allowed: true
+            },
+            homepage_builder: {
+              enabled: true,
+              allowed: true
             }
           })
         )
