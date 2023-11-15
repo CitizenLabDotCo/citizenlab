@@ -185,6 +185,28 @@ RSpec.describe Idea do
         end
       end
 
+      context 'when the current ideation phase has no end date' do
+        let(:project) { create(:project_with_two_past_ideation_phases) }
+        let(:phase) { project.phases.last }
+        let(:idea) { build(:idea, project: project, phases: project.phases) }
+
+        it 'returns the input_term of the open ended (current) ideation phase' do
+          phase.update!(input_term: 'issue')
+          expect(idea.input_term).to eq 'issue'
+        end
+      end
+
+      context 'when a future ideation phase has no end date' do
+        let(:project) { create(:project_with_past_ideation_and_future_ideation_phase) }
+        let(:idea) { build(:idea, project: project, phases: project.phases) }
+
+        it 'returns the input_term of the past ideation phase' do
+          project.phases.last.update!(end_at: nil, input_term: 'option')
+          project.phases.first.update!(input_term: 'issue')
+          expect(idea.input_term).to eq 'issue'
+        end
+      end
+
       context 'when there is no active ideation or budgeting phase' do
         context 'when the idea does not belong to any phase' do
           # The project and the phase are given an input_term to describe that they

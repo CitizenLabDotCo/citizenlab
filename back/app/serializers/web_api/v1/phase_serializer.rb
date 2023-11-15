@@ -7,6 +7,10 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::ParticipationContextSerializer
     TextImageService.new.render_data_images object, :description_multiloc
   end
 
+  attribute :previous_phase_end_at_updated do |object|
+    object.previous_phase_end_at_updated?
+  end
+
   belongs_to :project
 
   has_one :user_basket, if: proc { |object, params|
@@ -14,6 +18,8 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::ParticipationContextSerializer
   } do |object, params|
     user_basket object, params
   end
+
+  has_one :report, serializer: ReportBuilder::WebApi::V1::ReportSerializer
 
   def self.user_basket(object, params)
     preloaded_user_basket = params.dig(:user_baskets, object.id)&.first

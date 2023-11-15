@@ -73,7 +73,8 @@ const ReportBuilder = ({ reportId }: Props) => {
   const localesWithError = useMemo(() => {
     return Object.values(contentBuilderErrors)
       .filter((node) => node.hasError)
-      .map((node) => node.selectedLocale);
+      .filter((node) => node.selectedLocale)
+      .map((node) => node.selectedLocale as Locale);
   }, [contentBuilderErrors]);
 
   const handleErrors = useCallback((newErrors: ContentBuilderErrors) => {
