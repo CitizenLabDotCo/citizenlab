@@ -14,18 +14,20 @@ describe('Report builder Reactions By Time widget', () => {
     }).then((project) => {
       const projectId = project.body.data.id;
       cy.wrap(projectId).as('projectId');
-      cy.apiCreateIdea(projectId, randomString(), randomString()).then(
-        (idea) => {
-          const email = randomEmail();
-          const password = randomString();
-          cy.apiSignup(randomString(), randomString(), email, password).then(
-            (user) => {
-              cy.wrap((user as any).body.data.id).as('userId');
-              cy.apiDislikeIdea(email, password, idea.body.data.id);
-            }
-          );
-        }
-      );
+      cy.apiCreateIdea({
+        projectId,
+        ideaTitle: randomString(),
+        ideaContent: randomString(),
+      }).then((idea) => {
+        const email = randomEmail();
+        const password = randomString();
+        cy.apiSignup(randomString(), randomString(), email, password).then(
+          (user) => {
+            cy.wrap((user as any).body.data.id).as('userId');
+            cy.apiDislikeIdea(email, password, idea.body.data.id);
+          }
+        );
+      });
     });
 
     cy.apiCreateReportBuilder().then((report) => {

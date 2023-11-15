@@ -18,12 +18,14 @@ describe('Idea show page actions', () => {
       projectId = project.body.data.id;
       projectSlug = project.body.data.attributes.slug;
 
-      cy.apiCreateIdea(projectId, randomString(20), randomString()).then(
-        (idea) => {
-          ideaId = idea.body.data.id;
-          ideaSlug = idea.body.data.attributes.slug;
-        }
-      );
+      cy.apiCreateIdea({
+        projectId,
+        ideaTitle: randomString(20),
+        ideaContent: randomString(),
+      }).then((idea) => {
+        ideaId = idea.body.data.id;
+        ideaSlug = idea.body.data.attributes.slug;
+      });
     });
   });
 
@@ -160,14 +162,16 @@ describe('Idea show page actions', () => {
         const lastName = randomString();
         cy.apiSignup(firstName, lastName, email, password);
 
-        cy.apiCreateIdea(projectId, randomString(20), randomString()).then(
-          (idea) => {
-            ideaId2 = idea.body.data.id;
-            ideaSlug2 = idea.body.data.attributes.slug;
+        cy.apiCreateIdea({
+          projectId,
+          ideaTitle: randomString(20),
+          ideaContent: randomString(),
+        }).then((idea) => {
+          ideaId2 = idea.body.data.id;
+          ideaSlug2 = idea.body.data.attributes.slug;
 
-            cy.apiAddComment(ideaId2, 'idea', randomString());
-          }
-        );
+          cy.apiAddComment(ideaId2, 'idea', randomString());
+        });
       });
 
       after(() => {

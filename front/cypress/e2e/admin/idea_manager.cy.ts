@@ -38,7 +38,7 @@ describe('Idea manager', () => {
           const ideaTitle = randomString();
           const ideaContent = randomString();
 
-          cy.apiCreateIdea(projectId, ideaTitle, ideaContent);
+          cy.apiCreateIdea({ projectId, ideaTitle, ideaContent });
 
           // do a refresh for the new idea to appear
           cy.visit('/admin/ideas/');
@@ -78,7 +78,11 @@ describe('Idea manager', () => {
           const ideaContent2 = randomString();
 
           // Create one idea with official feedback
-          cy.apiCreateIdea(projectId, ideaTitle1, ideaContent1).then((idea) => {
+          cy.apiCreateIdea({
+            projectId,
+            ideaTitle: ideaTitle1,
+            ideaContent: ideaContent1,
+          }).then((idea) => {
             const ideaId = idea.body.data.id;
             const officialFeedbackContent = randomString();
             const officialFeedbackAuthor = randomString();
@@ -89,7 +93,11 @@ describe('Idea manager', () => {
             );
 
             // Create one idea without official feedback
-            cy.apiCreateIdea(projectId, ideaTitle2, ideaContent2).then(() => {
+            cy.apiCreateIdea({
+              projectId,
+              ideaTitle: ideaTitle2,
+              ideaContent: ideaContent2,
+            }).then(() => {
               cy.wait(500);
               cy.visit('/admin/ideas/');
 

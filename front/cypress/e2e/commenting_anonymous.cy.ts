@@ -30,7 +30,11 @@ describe('Idea with anonymous commenting allowed', () => {
         projectId = project.body.data.id;
         projectSlug = project.body.data.attributes.slug;
         return cy
-          .apiCreateIdea(projectId, ideaTitle, ideaContent)
+          .apiCreateIdea({
+            projectId: project?.body.data.id,
+            ideaTitle,
+            ideaContent,
+          })
           .then((idea) => {
             ideaId = idea.body.data.id;
             ideaSlug = idea.body.data.attributes.slug;

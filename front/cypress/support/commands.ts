@@ -520,16 +520,29 @@ export function getUserBySlug(userSlug: string) {
   });
 }
 
-export function apiCreateIdea(
-  projectId: string,
-  ideaTitle: string,
-  ideaContent: string,
-  locationGeoJSON?: { type: string; coordinates: number[] },
-  locationDescription?: string,
-  jwt?: string,
-  budget?: number,
-  anonymous?: boolean
-) {
+type IdeaType = {
+  projectId: string;
+  ideaTitle: string;
+  ideaContent: string;
+  locationGeoJSON?: { type: string; coordinates: number[] };
+  locationDescription?: string;
+  jwt?: string;
+  budget?: number;
+  anonymous?: boolean;
+  phaseIds?: string[];
+};
+
+export function apiCreateIdea({
+  projectId,
+  ideaTitle,
+  ideaContent,
+  locationGeoJSON,
+  locationDescription,
+  jwt,
+  budget,
+  anonymous,
+  phaseIds,
+}: IdeaType) {
   let headers: { 'Content-Type': string; Authorization: string } | null = null;
 
   if (jwt) {
@@ -565,6 +578,7 @@ export function apiCreateIdea(
           location_description: locationDescription,
           budget,
           anonymous,
+          phase_ids: phaseIds,
         },
       },
     });

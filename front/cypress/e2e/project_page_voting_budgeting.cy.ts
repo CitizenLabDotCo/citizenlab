@@ -38,17 +38,8 @@ describe('Continuous Budgeting project', () => {
         startDate: moment().subtract(1, 'day').toDate(),
         endDate: moment().add(1, 'day').toDate(),
       });
-
       return cy
-        .apiCreateIdea(
-          projectId,
-          ideaTitle,
-          ideaContent,
-          undefined,
-          undefined,
-          undefined,
-          100
-        )
+        .apiCreateIdea({ projectId, ideaTitle, ideaContent, budget: 100 })
         .then((idea) => {
           ideaId = idea.body.data.id;
           ideaSlug = idea.body.data.attributes.slug;

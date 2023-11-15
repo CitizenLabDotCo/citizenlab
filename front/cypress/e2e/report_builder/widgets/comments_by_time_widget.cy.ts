@@ -14,11 +14,14 @@ describe('Report builder Comments By Time widget', () => {
     }).then((project) => {
       const projectId = project.body.data.id;
       cy.wrap(projectId).as('projectId');
-      cy.apiCreateIdea(projectId, randomString(), randomString()).then(
-        (idea) => {
-          cy.apiAddComment(idea.body.data.id, 'idea', randomString());
-        }
-      );
+
+      cy.apiCreateIdea({
+        projectId,
+        ideaTitle: randomString(),
+        ideaContent: randomString(),
+      }).then((idea) => {
+        cy.apiAddComment(idea.body.data.id, 'idea', randomString());
+      });
     });
 
     cy.apiCreateReportBuilder().then((report) => {

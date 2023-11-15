@@ -164,7 +164,7 @@ describe('New timeline project with active ideation phase', () => {
         });
       })
       .then(() => {
-        return cy.apiCreateIdea(projectId, ideaTitle, ideaContent);
+        return cy.apiCreateIdea({ projectId, ideaTitle, ideaContent });
       })
       .then((idea) => {
         ideaId = idea.body.data.id;
@@ -268,7 +268,7 @@ describe('Archived timeline project with ideation phase', () => {
         });
       })
       .then(() => {
-        return cy.apiCreateIdea(projectId, ideaTitle, ideaContent);
+        return cy.apiCreateIdea({ projectId, ideaTitle, ideaContent });
       })
       .then((idea) => {
         ideaId = idea.body.data.id;
@@ -394,7 +394,7 @@ describe('Ideation CTA bar', () => {
             projectSlug = project.body.data.attributes.slug;
           })
           .then(() => {
-            return cy.apiCreateIdea(projectId, ideaTitle, ideaContent);
+            return cy.apiCreateIdea({ projectId, ideaTitle, ideaContent });
           })
           .then((idea) => {
             ideaIdOne = idea.body.data.id;
@@ -417,11 +417,7 @@ describe('Ideation CTA bar', () => {
               restrictedProject.body.data.attributes.slug;
           })
           .then(() => {
-            return cy.apiCreateIdea(
-              postingRestrictedProjectId,
-              ideaTitle,
-              ideaContent
-            );
+            return cy.apiCreateIdea({ projectId, ideaTitle, ideaContent });
           })
           .then((idea) => {
             ideaIdTwo = idea.body.data.id;

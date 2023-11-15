@@ -1,6 +1,8 @@
 import { randomString } from '../../../support/commands';
+import moment = require('moment');
 
 let projectId = '';
+let phaseId: string;
 describe('Admin: ideation analysis', () => {
   beforeEach(() => {
     cy.setAdminLoginCookie();
@@ -22,14 +24,42 @@ describe('Admin: ideation analysis', () => {
       const ideaTitle3 = 'My third idea';
 
       const ideaContent = randomString();
-      cy.apiCreateIdea(project?.body.data.id, ideaTitle1, ideaContent);
-      cy.apiCreateIdea(project?.body.data.id, ideaTitle2, ideaContent);
-      cy.apiCreateIdea(project?.body.data.id, ideaTitle3, ideaContent);
+      cy.apiCreateIdea({
+        projectId,
+        ideaTitle: ideaTitle1,
+        ideaContent: ideaContent,
+      });
+      cy.apiCreateIdea({
+        projectId,
+        ideaTitle: ideaTitle2,
+        ideaContent: ideaContent,
+      });
+      cy.apiCreateIdea({
+        projectId,
+        ideaTitle: ideaTitle3,
+        ideaContent: ideaContent,
+      });
+
+      return cy
+        .apiCreatePhase({
+          projectId,
+          title: 'firstPhaseTitle',
+          startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
+          endAt: moment().subtract(3, 'month').format('DD/MM/YYYY'),
+          participationMethod: 'ideation',
+          canPost: true,
+          canComment: true,
+          canReact: true,
+        })
+        .then((phase) => {
+          phaseId = phase.body.data.id;
+        });
     });
   });
 
   it('creates an analysis from an ideation entry point', () => {
     cy.visit('/admin/projects/' + projectId + '/ideas');
+    cy.visit(`admin/projects/${projectId}/ideas/${phaseId}`);
     cy.get('#e2e-analysis-banner-button').click();
 
     // Consent modal

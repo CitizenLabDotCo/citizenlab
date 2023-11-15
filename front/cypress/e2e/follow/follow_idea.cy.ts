@@ -32,12 +32,20 @@ describe('Follow idea', () => {
       projectId = project.body.data.id;
       projectSlug = project.body.data.attributes.slug;
 
-      cy.apiCreateIdea(projectId, ideaTitle1, ideaContent1).then((idea) => {
+      cy.apiCreateIdea({
+        projectId,
+        ideaTitle: ideaTitle1,
+        ideaContent: ideaContent1,
+      }).then((idea) => {
         ideaId1 = idea.body.data.id;
         ideaSlug1 = idea.body.data.attributes.slug;
       });
 
-      cy.apiCreateIdea(projectId, ideaTitle2, ideaContent2).then((idea) => {
+      cy.apiCreateIdea({
+        projectId,
+        ideaTitle: ideaTitle2,
+        ideaContent: ideaContent2,
+      }).then((idea) => {
         ideaId2 = idea.body.data.id;
         ideaSlug2 = idea.body.data.attributes.slug;
       });

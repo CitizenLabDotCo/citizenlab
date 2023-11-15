@@ -29,17 +29,12 @@ describe('Idea edit page', () => {
   });
 
   beforeEach(() => {
-    cy.apiCreateIdea(
-      projectId,
-      ideaTitle,
-      ideaContent,
-      undefined,
-      undefined,
-      jwt
-    ).then((idea) => {
-      ideaId = idea.body.data.id;
-      ideaSlug = idea.body.data.attributes.slug;
-    });
+    cy.apiCreateIdea({ projectId, ideaTitle, ideaContent, jwt }).then(
+      (idea) => {
+        ideaId = idea.body.data.id;
+        ideaSlug = idea.body.data.attributes.slug;
+      }
+    );
   });
 
   afterEach(() => {

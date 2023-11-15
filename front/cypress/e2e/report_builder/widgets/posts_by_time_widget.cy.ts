@@ -20,7 +20,7 @@ describe('Report builder Posts By Time widget', () => {
     }).then((project) => {
       const projectId = project.body.data.id;
       cy.wrap(projectId).as('projectId');
-      cy.apiCreateIdea(projectId, ideaTitle, ideaContent);
+      cy.apiCreateIdea({ projectId, ideaTitle, ideaContent });
     });
 
     cy.apiCreateReportBuilder().then((report) => {

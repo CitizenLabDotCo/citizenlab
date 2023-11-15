@@ -64,7 +64,7 @@ describe('Idea Page', () => {
       })
         .then((project) => {
           projectId = project.body.data.id;
-          return cy.apiCreateIdea(projectId, ideaTitle, ideaContent);
+          return cy.apiCreateIdea({ projectId, ideaTitle, ideaContent });
         })
         .then((idea) => {
           ideaId = idea.body.data.id;
@@ -105,7 +105,7 @@ describe('Idea Page', () => {
       })
         .then((project) => {
           projectId = project.body.data.id;
-          return cy.apiCreateIdea(projectId, ideaTitle, ideaContent);
+          return cy.apiCreateIdea({ projectId, ideaTitle, ideaContent });
         })
         .then((idea) => {
           ideaId = idea.body.data.id;
@@ -153,13 +153,13 @@ describe('Idea Page', () => {
       })
         .then((project) => {
           projectId = project.body.data.id;
-          return cy.apiCreateIdea(
+          return cy.apiCreateIdea({
             projectId,
             ideaTitle,
             ideaContent,
             locationGeoJSON,
-            locationDescription
-          );
+            locationDescription,
+          });
         })
         .then((idea) => {
           ideaId = idea.body.data.id;
@@ -192,7 +192,7 @@ describe('Idea location', () => {
   const ideaWithLocationPointTitle = randomString();
   const ideaContent = randomString();
   const locationDescription = '43 Dummy Address';
-  const locationGeojson = {
+  const locationGeoJSON = {
     type: 'Point',
     coordinates: [4.436279683196275, 50.87327010998867],
   };
@@ -208,23 +208,22 @@ describe('Idea location', () => {
     })
       .then((project) => {
         projectId = project.body.data.id;
-        return cy.apiCreateIdea(
+        return cy.apiCreateIdea({
           projectId,
-          ideaNoLocationPointTitle,
+          ideaTitle: ideaNoLocationPointTitle,
           ideaContent,
-          undefined,
-          locationDescription
-        );
+          locationDescription,
+        });
       })
       .then((idea) => {
         ideaNoLocationPointId = idea.body.data.id;
-        return cy.apiCreateIdea(
+        return cy.apiCreateIdea({
           projectId,
-          ideaWithLocationPointTitle,
+          ideaTitle: ideaWithLocationPointTitle,
           ideaContent,
-          locationGeojson,
-          locationDescription
-        );
+          locationGeoJSON,
+          locationDescription,
+        });
       })
       .then((idea) => {
         ideaWithLocationPointId = idea.body.data.id;
