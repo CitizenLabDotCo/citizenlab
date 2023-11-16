@@ -15,10 +15,7 @@ describe ContentBuilder::SideFxLayoutService do
     end
 
     it 'swaps data images' do
-      expect_any_instance_of(ContentBuilder::LayoutImageService).to receive(:swap_data_images).with(
-        layout,
-        :craftjs_jsonmultiloc
-      )
+      expect_any_instance_of(ContentBuilder::LayoutImageService).to receive(:swap_data_images).with(layout.craftjs_json)
       service.before_create(layout, user)
     end
   end
@@ -30,10 +27,7 @@ describe ContentBuilder::SideFxLayoutService do
     end
 
     it 'swaps data images' do
-      expect_any_instance_of(ContentBuilder::LayoutImageService).to receive(:swap_data_images).with(
-        layout,
-        :craftjs_jsonmultiloc
-      )
+      expect_any_instance_of(ContentBuilder::LayoutImageService).to receive(:swap_data_images).with(layout.craftjs_json)
       service.before_update(layout, user)
     end
   end

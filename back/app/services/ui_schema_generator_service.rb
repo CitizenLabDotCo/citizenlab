@@ -109,7 +109,7 @@ class UiSchemaGeneratorService < FieldVisitorService
     @descriptions ||= {}
     locale = I18n.locale.to_s
     @descriptions[locale] ||= {}
-    @descriptions[locale][field] ||= multiloc_service.t TextImageService.new.render_data_images(field, :description_multiloc)
+    @descriptions[locale][field] ||= multiloc_service.t TextImageService.new.render_data_images_multiloc(field.description_multiloc, field: :description_multiloc, imageable: field)
   end
 
   private

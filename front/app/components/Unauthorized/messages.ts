@@ -18,4 +18,17 @@ export default defineMessages({
     id: 'app.components.Unauthorized.notAuthorized',
     defaultMessage: "Sorry, you're not authorized to access this page.",
   },
+  completeProfileTitle: {
+    id: 'app.components.Unauthorized.completeProfileTitle',
+    defaultMessage: 'Complete your profile to participate',
+  },
+  additionalInformationRequired: {
+    id: 'app.components.Unauthorized.additionalInformationRequired',
+    defaultMessage:
+      'Additional information is required for you to participate.',
+  },
+  completeProfile: {
+    id: 'app.components.Unauthorized.completeProfile',
+    defaultMessage: 'Complete profile',
+  },
 });

@@ -36,6 +36,7 @@ import clHistory from 'utils/cl-router/history';
 import { PublicationTab } from '../..';
 import { useSearchParams } from 'react-router-dom';
 import { IStatusCountsAll } from 'api/admin_publications_status_counts/types';
+import { Multiloc } from 'typings';
 
 const Title = styled.h2<{ hasPublications: boolean }>`
   color: ${({ theme }) => theme.colors.tenantText};
@@ -136,6 +137,7 @@ interface Props {
   onChangeAreas: (areas: string[]) => void;
   onChangeTab: (tab: PublicationTab) => void;
   onChangeSearch: (search: string | null) => void;
+  currentlyWorkingOnText?: Multiloc;
 }
 
 const Header = ({
@@ -153,6 +155,7 @@ const Header = ({
   onChangeTab,
   onChangeSearch,
   intl: { formatMessage },
+  currentlyWorkingOnText,
 }: Props & WrappedComponentProps) => {
   const { data: appConfiguration } = useAppConfiguration();
   const isSmallerThanPhone = useBreakpoint('phone');
@@ -185,11 +188,11 @@ const Header = ({
 
   if (isNilOrError(appConfiguration)) return null;
 
-  const customCurrentlyWorkingOn = coreSettings(
-    appConfiguration.data
-  ).currently_working_on_text;
+  const customCurrentlyWorkingOn =
+    currentlyWorkingOnText ||
+    coreSettings(appConfiguration.data).currently_working_on_text;
   const fallback = formatMessage(messages.currentlyWorkingOn);
-  const currentlyWorkingOnText = localize(customCurrentlyWorkingOn, {
+  const currentlyWorkingOn = localize(customCurrentlyWorkingOn, {
     fallback,
   });
 
@@ -232,10 +235,10 @@ const Header = ({
           hasPublications={hasPublications}
           data-testid="currently-working-on-text"
         >
-          {currentlyWorkingOnText}
+          {currentlyWorkingOn}
         </Title>
       ) : (
-        <ScreenReaderOnly>{currentlyWorkingOnText}</ScreenReaderOnly>
+        <ScreenReaderOnly>{currentlyWorkingOn}</ScreenReaderOnly>
       )}
 
       {showSearch && (

@@ -765,9 +765,6 @@ const QuillEditor = memo<Props>(
                   visible={isButtonsMenuVisible}
                   onClickOutside={hideButtonsMenu}
                   duration={[200, 0]}
-                  popperOptions={{
-                    strategy: 'fixed',
-                  }}
                   content={
                     <DropdownList>
                       <DropdownListItem
