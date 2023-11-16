@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'query'
+require 'multiple_queries'
 
 module ReportBuilder
   # TODO: rename to sth else
@@ -20,11 +20,14 @@ module ReportBuilder
     protected
 
     def run_query(json_query)
-      query = Analytics::Query.new({ query: json_query }.with_indifferent_access[:query])
+      json_query_with_indifferent_access = { query: json_query }.with_indifferent_access[:query]
+      results, errors, _paginations = Analytics::MultipleQueries.new.run(json_query_with_indifferent_access)
       # TODO: it's weird to validate and do not check the result. Fix this.
-      query.validate
-      query.run
-      query.results
+      if errors.present?
+        raise "Error processing Analytics query: #{errors.to_json}"
+      end
+
+      results
     end
   end
 end
