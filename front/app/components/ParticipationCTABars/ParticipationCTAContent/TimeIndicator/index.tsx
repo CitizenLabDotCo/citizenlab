@@ -17,7 +17,9 @@ const TimeIndicator = ({ currentPhase, hasUserParticipated }: Props) => {
       <Box mr="4px" pb="2px">
         <ParticipationIcon hasUserParticipated={hasUserParticipated} />
       </Box>
-      {currentPhase && currentPhase.attributes.end_at !== null ? (
+      {!hasUserParticipated &&
+      currentPhase &&
+      currentPhase.attributes.end_at !== null ? (
         <TimeLeft currentPhaseEndsAt={currentPhase.attributes.end_at} />
       ) : (
         <Text color="white" m="0px" fontSize="s">
