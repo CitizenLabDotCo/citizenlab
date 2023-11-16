@@ -355,7 +355,7 @@ describe LocalProjectCopyService do
             'parent' => 'ROOT',
             'hidden' => false,
             'nodes' => [],
-            'linkedNodes' => {},
+            'linkedNodes' => {}
           },
           'nt24xY6COf' => {
             'type' => { 'resolvedName' => 'ImageMultiloc' },
@@ -400,7 +400,7 @@ describe LocalProjectCopyService do
             'parent' => 'ROOT',
             'hidden' => false,
             'nodes' => [],
-            'linkedNodes' => {},
+            'linkedNodes' => {}
           },
           'nt24xY6COf' => {
             'type' => { 'resolvedName' => 'ImageMultiloc' },
