@@ -27,6 +27,7 @@ import { injectIntl } from 'utils/cl-intl';
 import { Multiloc } from 'typings';
 import useLocalize from 'hooks/useLocalize';
 import InputMultilocWithLocaleSwitcherWrapper from 'components/UI/InputMultilocWithLocaleSwitcher';
+import { DEFAULT_PADDING } from '../../constants';
 
 type ButtonProps = {
   text: Multiloc;
@@ -70,7 +71,7 @@ const Button = ({ text, url, type, alignment }: ButtonProps) => {
       }
       maxWidth="1150px"
       margin="0 auto"
-      px={isSmallerThanTablet && parent === ROOT_NODE ? '20px' : '0px'}
+      px={isSmallerThanTablet && parent === ROOT_NODE ? DEFAULT_PADDING : '0px'}
     >
       {/* In edit view, show the button regardless if URL is set. The button should
           not be shown though in the live view if the URL is not set. */}

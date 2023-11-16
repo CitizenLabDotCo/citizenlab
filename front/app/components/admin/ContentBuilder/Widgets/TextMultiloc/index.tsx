@@ -16,6 +16,7 @@ import messages from './messages';
 import { useTheme } from 'styled-components';
 import { Multiloc } from 'typings';
 import useLocalize from 'hooks/useLocalize';
+import { DEFAULT_PADDING } from '../../constants';
 
 interface Props {
   text?: Multiloc;
@@ -37,7 +38,7 @@ const TextMultiloc = ({ text }: Props) => {
       minHeight="26px"
       maxWidth="1150px"
       margin="0 auto"
-      px={isSmallerThanTablet && parent === ROOT_NODE ? '20px' : '0px'}
+      px={isSmallerThanTablet && parent === ROOT_NODE ? DEFAULT_PADDING : '0px'}
     >
       <QuillEditedContent textColor={theme.colors.tenantText}>
         <div dangerouslySetInnerHTML={{ __html: value }} />
