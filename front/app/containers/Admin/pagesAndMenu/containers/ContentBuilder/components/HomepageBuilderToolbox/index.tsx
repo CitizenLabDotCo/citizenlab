@@ -13,21 +13,20 @@ import SectionTitle from 'components/admin/ContentBuilder/Toolbox/SectionTitle';
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
 
 // widgets
-import Text from 'components/admin/ContentBuilder/Widgets/Text';
-import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
-import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
+import TwoColumn from '../CraftComponents/TwoColumn';
+import ThreeColumn from '../CraftComponents/ThreeColumn';
 import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
 import IframeMultiloc from 'components/admin/ContentBuilder/Widgets/IframeMultiloc';
 import AccordionMultiloc from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import ButtonMultiloc from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
-import ImageTextCards from '../CraftSections/ImageTextCards';
+import ImageTextCards from '../CraftComponents/ImageTextCards';
 import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
-import Proposals from '../CraftSections/Proposals';
+import Proposals from '../CraftComponents/Proposals';
 
 // types
 import { Locale } from 'typings';
-import Events from '../CraftSections/Events';
+import Events from '../CraftComponents/Events';
 
 type HomepageBuilderToolboxProps = {
   selectedLocale: Locale;
@@ -91,7 +90,7 @@ const HomepageBuilderToolbox = ({
         id="e2e-draggable-text-multiloc"
         component={<TextMultiloc text={{}} />}
         icon="text"
-        label={formatMessage(Text.craft.custom.title)}
+        label={formatMessage(TextMultiloc.craft.custom.title)}
       />
       <DraggableElement
         id="e2e-draggable-button"

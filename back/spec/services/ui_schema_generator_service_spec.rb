@@ -103,8 +103,8 @@ RSpec.describe UiSchemaGeneratorService do
 
     it 'swaps data images' do
       allow_any_instance_of(TextImageService).to(
-        receive(:render_data_images)
-          .with(field1, :description_multiloc)
+        receive(:render_data_images_multiloc)
+          .with(field1.description_multiloc, field: :description_multiloc, imageable: field1)
           .and_return({ 'en' => 'Description with swapped images' })
       )
 

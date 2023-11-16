@@ -16,9 +16,7 @@ import NewIdeaButton from './ideas/NewIdeaButton';
 import NewIdeaButtonDropdown from './ideas/NewIdeaButtonDropdown';
 
 // resources
-import GetFeatureFlag, {
-  GetFeatureFlagChildProps,
-} from 'resources/GetFeatureFlag';
+import GetFeatureFlag from 'resources/GetFeatureFlag';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import { PreviousPathnameContext } from 'context';
@@ -69,8 +67,8 @@ const ActionsContainer = styled.div`
 export interface InputProps {}
 
 interface DataProps {
-  surveys_enabled: GetFeatureFlagChildProps;
-  typeform_enabled: GetFeatureFlagChildProps;
+  surveys_enabled: boolean;
+  typeform_enabled: boolean;
   phases: GetPhasesChildProps;
   project: GetProjectChildProps;
   previousPathName: string | null;

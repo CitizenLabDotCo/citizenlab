@@ -122,4 +122,8 @@ export default defineMessages({
     id: 'app.containers.ContentBuilder.homepage.imageOverlayOpacity',
     defaultMessage: 'Image overlay opacity',
   },
+  bannerImage: {
+    id: 'app.containers.ContentBuilder.homepage.bannerImage',
+    defaultMessage: 'Banner image',
+  },
 });

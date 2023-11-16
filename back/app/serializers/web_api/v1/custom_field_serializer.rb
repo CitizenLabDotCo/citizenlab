@@ -5,7 +5,7 @@ class WebApi::V1::CustomFieldSerializer < WebApi::V1::BaseSerializer
     :enabled, :code, :created_at, :updated_at, :logic
 
   attribute :description_multiloc do |field|
-    TextImageService.new.render_data_images field, :description_multiloc
+    TextImageService.new.render_data_images_multiloc field.description_multiloc, field: :description_multiloc, imageable: field
   end
 
   attribute :answer_visible_to, if: proc { |_object, params|

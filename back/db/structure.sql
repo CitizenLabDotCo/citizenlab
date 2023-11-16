@@ -2165,7 +2165,8 @@ CREATE TABLE public.content_builder_layouts (
     code character varying NOT NULL,
     enabled boolean DEFAULT false NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    craftjs_json jsonb DEFAULT '{}'::jsonb NOT NULL
 );
 
 
@@ -7998,6 +7999,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20231018083110'),
 ('20231024082513'),
 ('20231031175023'),
-('20231109101517');
+('20231109101517'),
+('20231110112415');
 
 

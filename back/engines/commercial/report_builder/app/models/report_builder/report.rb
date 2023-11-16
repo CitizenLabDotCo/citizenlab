@@ -25,14 +25,17 @@
 module ReportBuilder
   class Report < ::ApplicationRecord
     belongs_to :owner, class_name: 'User'
+    belongs_to :phase, class_name: 'Phase', optional: true
+
     has_one(
       :layout,
       class_name: 'ContentBuilder::Layout', as: :content_buildable,
       dependent: :destroy
     )
+
     accepts_nested_attributes_for :layout
 
-    scope :with_platform_context, -> { where(phase_id: nil) }
+    scope :global, -> { where(phase_id: nil) }
 
     validates :name, uniqueness: true, if: :present?
   end
