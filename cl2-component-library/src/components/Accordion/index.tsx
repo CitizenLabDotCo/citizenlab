@@ -7,7 +7,7 @@ import { colors, isRtl } from '../../utils/styleUtils';
 
 // Components
 import ListItem from '../ListItem';
-import Box from '../Box';
+import Box, { BoxMarginProps, BoxPaddingProps, BoxWidthProps } from '../Box';
 import Icon from '../Icon';
 
 type AccordionProps = {
@@ -18,7 +18,9 @@ type AccordionProps = {
   onChange?: (isOpen: boolean) => void;
   timeoutMilliseconds?: number;
   transitionHeightPx?: number;
-};
+} & BoxMarginProps &
+  BoxWidthProps &
+  BoxPaddingProps;
 
 const ChevronIcon = styled(Icon)`
   fill: ${colors.textSecondary};
@@ -52,13 +54,17 @@ const TitleButton = styled(Box)`
   }
 `;
 
-const CollapseContainer = styled(Box)<{ timeout: number, transitionHeight: number }>`
+const CollapseContainer = styled(Box)<{
+  timeout: number;
+  transitionHeight: number;
+}>`
   padding-top: 12px;
   margin-bottom: 24px;
   opacity: 1;
   display: flex;
   flex-wrap: wrap;
-  transition: ${(props) => (`all ${props.timeout}ms cubic-bezier(0.165, 0.84, 0.44, 1)`)};
+  transition: ${(props) =>
+    `all ${props.timeout}ms cubic-bezier(0.165, 0.84, 0.44, 1)`};
   will-change: opacity, height;
 
   ${isRtl`
@@ -73,7 +79,7 @@ const CollapseContainer = styled(Box)<{ timeout: number, transitionHeight: numbe
 
     &.expanded-enter-active {
       opacity: 1;
-      max-height: ${(props) => (`${props.transitionHeight}px`)};
+      max-height: ${(props) => `${props.transitionHeight}px`};
       overflow: hidden;
     }
   }
@@ -85,7 +91,7 @@ const CollapseContainer = styled(Box)<{ timeout: number, transitionHeight: numbe
 
   &.expanded-exit {
     opacity: 1;
-    max-height: ${(props) => (`${props.transitionHeight}px`)};
+    max-height: ${(props) => `${props.transitionHeight}px`};
     overflow: hidden;
 
     &.collapsed-exit-active {
@@ -104,6 +110,7 @@ const Accordion = ({
   children,
   timeoutMilliseconds = 1500,
   transitionHeightPx = 600,
+  ...rest
 }: AccordionProps) => {
   const [isExpanded, setIsExpanded] = useState(isOpenByDefault);
 
@@ -117,7 +124,7 @@ const Accordion = ({
   };
 
   return (
-    <ListItem className={className}>
+    <ListItem className={className} {...rest}>
       <TitleButton
         as="button"
         padding="0"

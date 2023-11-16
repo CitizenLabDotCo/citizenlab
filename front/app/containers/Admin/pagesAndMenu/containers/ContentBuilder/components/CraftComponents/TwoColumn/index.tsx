@@ -1,42 +1,46 @@
 import React from 'react';
 
 // components
-
-// styles
-import styled from 'styled-components';
+import { useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // craft
+import { useNode, Element, ROOT_NODE } from '@craftjs/core';
+import Container from '../Container';
 import {
-  twoColumnCraftConfig,
   TwoColumnWrapper,
+  twoColumnCraftConfig,
 } from 'components/admin/ContentBuilder/Widgets/TwoColumn';
-import { Element } from '@craftjs/core';
-import Container from 'components/admin/ContentBuilder/Widgets/Container';
-
-// i18n
 
 // typings
 import { ColumnLayout } from 'components/admin/ContentBuilder/typings';
+import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
 
 type TwoColumnProps = {
   columnLayout: ColumnLayout;
   children?: React.ReactNode;
 };
 
-const StyledBox = styled(TwoColumnWrapper)`
-  grid-gap: 8px;
-`;
-
 export const TwoColumn = ({ columnLayout, children }: TwoColumnProps) => {
+  const isSmallerThanTablet = useBreakpoint('tablet');
+  const { parent } = useNode((node) => ({
+    parent: node.data.parent,
+  }));
+
   return (
-    <StyledBox id="e2e-two-column" columnLayout={columnLayout}>
+    <TwoColumnWrapper
+      id="e2e-two-column"
+      columnLayout={columnLayout}
+      maxWidth="1150px"
+      margin="0 auto"
+      px={isSmallerThanTablet && parent === ROOT_NODE ? DEFAULT_PADDING : '0px'}
+    >
       {children || (
         <>
           <Element id={'left'} is={Container} canvas />
           <Element id={'right'} is={Container} canvas />
         </>
       )}
-    </StyledBox>
+    </TwoColumnWrapper>
   );
 };
 

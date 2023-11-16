@@ -7,6 +7,7 @@ import {
   Input,
   Text,
   Label,
+  useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 
@@ -16,11 +17,14 @@ import sharedMessages from '../../messages';
 import { injectIntl } from 'utils/cl-intl';
 
 // craft
-import { useNode } from '@craftjs/core';
+import { ROOT_NODE, useNode } from '@craftjs/core';
 
 // events
 import eventEmitter from 'utils/eventEmitter';
-import { CONTENT_BUILDER_ERROR_EVENT } from 'components/admin/ContentBuilder/constants';
+import {
+  CONTENT_BUILDER_ERROR_EVENT,
+  DEFAULT_PADDING,
+} from 'components/admin/ContentBuilder/constants';
 
 // types
 import { Locale, Multiloc } from 'typings';
@@ -40,8 +44,18 @@ interface Props {
 
 const Iframe = ({ url, height, hasError, title }: Props) => {
   const localize = useLocalize();
+  const isSmallerThanTablet = useBreakpoint('tablet');
+  const { parent } = useNode((node) => ({
+    parent: node.data.parent,
+  }));
   return (
-    <Box id="e2e-content-builder-iframe-component" minHeight="26px">
+    <Box
+      id="e2e-content-builder-iframe-component"
+      minHeight="26px"
+      maxWidth="1150px"
+      margin="0 auto"
+      px={isSmallerThanTablet && parent === ROOT_NODE ? DEFAULT_PADDING : '0px'}
+    >
       {!hasError && url && (
         <iframe
           src={url}
