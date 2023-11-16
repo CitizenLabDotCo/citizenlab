@@ -30,8 +30,8 @@ import { Locale } from 'typings';
 import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
 import { isEmpty } from 'lodash-es';
 import ContentBuilderLanguageProvider from './ContentBuilderLanguageProvider';
-import HomepageBanner from '../components/CraftSections/HomepageBanner';
-import Projects from '../components/CraftSections/Projects';
+import HomepageBanner from '../components/CraftComponents/HomepageBanner';
+import Projects from '../components/CraftComponents/Projects';
 
 const HomepageBuilderPage = () => {
   const [previewEnabled, setPreviewEnabled] = useState(false);
