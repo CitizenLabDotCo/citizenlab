@@ -60,22 +60,23 @@ const VotingCTABar = ({ phases, project }: CTABarProps) => {
 
   return (
     <>
-      <ParticipationCTAContent
-        currentPhase={currentPhase}
-        CTAButton={
-          hasUserParticipated ? undefined : (
-            <CTAButton participationContext={participationContext} />
-          )
-        }
-        hasUserParticipated={hasUserParticipated}
-        participationState={
-          hasUserParticipated ? undefined : (
+      {hasUserParticipated ? (
+        <ParticipationCTAContent
+          currentPhase={currentPhase}
+          hasUserParticipated
+        />
+      ) : (
+        <ParticipationCTAContent
+          currentPhase={currentPhase}
+          hasUserParticipated={false}
+          CTAButton={<CTAButton participationContext={participationContext} />}
+          participationState={
             <Text color="white" m="0px" fontSize="s" aria-live="polite">
               {votesCounter}
             </Text>
-          )
-        }
-      />
+          }
+        />
+      )}
       <ErrorToast />
     </>
   );

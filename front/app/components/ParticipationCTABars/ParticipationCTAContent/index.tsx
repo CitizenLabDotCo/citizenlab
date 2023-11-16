@@ -25,36 +25,31 @@ const ParticipationCTAContent = ({
   participationState,
 }: Props) => {
   const theme = useTheme();
-
   const isSmallerThanPhone = useBreakpoint('phone');
 
-  if (isSmallerThanPhone) {
-    return (
+  return isSmallerThanPhone ? (
+    <Box
+      display="flex"
+      flexDirection="column"
+      bgColor={theme.colors.tenantPrimary}
+      p="12px"
+    >
       <Box
         display="flex"
-        flexDirection="column"
-        bgColor={theme.colors.tenantPrimary}
-        p="12px"
+        alignItems="center"
+        mb={CTAButton !== undefined ? '12px' : '0'}
       >
-        <Box
-          display="flex"
-          alignItems="center"
-          mb={CTAButton !== undefined ? '12px' : '0'}
-        >
-          <Box display="flex" alignItems="center">
-            <TimeIndicator
-              hasUserParticipated={hasUserParticipated}
-              currentPhase={currentPhase}
-            />
-          </Box>
-          <Box ml="auto">{participationState}</Box>
+        <Box display="flex" alignItems="center">
+          <TimeIndicator
+            hasUserParticipated={hasUserParticipated}
+            currentPhase={currentPhase}
+          />
         </Box>
-        {CTAButton}
+        <Box ml="auto">{participationState}</Box>
       </Box>
-    );
-  }
-
-  return (
+      {CTAButton}
+    </Box>
+  ) : (
     <Box
       display="flex"
       alignItems="center"

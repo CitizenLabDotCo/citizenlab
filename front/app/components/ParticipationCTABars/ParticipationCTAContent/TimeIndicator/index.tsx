@@ -13,22 +13,25 @@ interface Props {
 }
 
 const TimeIndicator = ({ currentPhase, hasUserParticipated }: Props) => {
-  return (
+  return hasUserParticipated ? (
     <Box display="flex" alignItems="center">
       <Box mr="4px" pb="2px">
-        {hasUserParticipated ? <ParticipationOpenIcon /> : <SuccessIcon />}
+        <ParticipationOpenIcon />
       </Box>
-      {!hasUserParticipated &&
-      currentPhase &&
-      currentPhase.attributes.end_at !== null ? (
+      <Text color="white" m="0px" fontSize="s">
+        <FormattedMessage {...messages.userHasParticipated} />
+      </Text>
+    </Box>
+  ) : (
+    <Box display="flex" alignItems="center">
+      <Box mr="4px" pb="2px">
+        <SuccessIcon />
+      </Box>
+      {currentPhase && currentPhase.attributes.end_at !== null ? (
         <TimeLeft currentPhaseEndsAt={currentPhase.attributes.end_at} />
       ) : (
         <Text color="white" m="0px" fontSize="s">
-          <FormattedMessage
-            {...(hasUserParticipated
-              ? messages.userHasParticipated
-              : messages.mobileProjectOpenForSubmission)}
-          />
+          <FormattedMessage {...messages.mobileProjectOpenForSubmission} />
         </Text>
       )}
     </Box>
