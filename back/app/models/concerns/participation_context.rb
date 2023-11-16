@@ -10,7 +10,6 @@
 # rubocop:disable Metrics/ModuleLength
 module ParticipationContext
   extend ActiveSupport::Concern
-  include DocumentAnnotation::DocumentAnnotationParticipationContext
   include Polls::PollParticipationContext
   include Surveys::SurveyParticipationContext
   include Volunteering::VolunteeringParticipationContext

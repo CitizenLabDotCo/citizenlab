@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module DocumentAnnotation::DocumentAnnotationParticipationContext
+module DocumentAnnotation::DocumentAnnotationPhase
   extend ActiveSupport::Concern
 
   included do
