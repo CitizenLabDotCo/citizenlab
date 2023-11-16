@@ -54,7 +54,7 @@ const ActiveUsers = ({
       height="260px"
       mt="20px"
       pb="8px"
-      px={layout === 'wide' ? PX : '0px'}
+      px={layout === 'wide' ? DEFAULT_PADDING : '0px'}
     >
       <Box
         height="100%"
@@ -64,7 +64,7 @@ const ActiveUsers = ({
         <Box
           display="flex"
           flexDirection="row"
-          ml={layout === 'wide' ? undefined : PX}
+          ml={layout === 'wide' ? undefined : DEFAULT_PADDING}
           mb={layout === 'wide' ? undefined : '8px'}
         >
           <Box>
