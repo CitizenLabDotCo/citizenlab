@@ -51,7 +51,9 @@ const VisibleNavbarItemList = ({
     // redirect to homepage edit page
     if (navbarItem?.attributes?.code && navbarItem.attributes.code === 'home') {
       homepageBuilderEnabled
-        ? clHistory.push(`${ADMIN_PAGES_MENU_PATH}/homepage-builder/`)
+        ? clHistory.push(
+            `${ADMIN_PAGES_MENU_PATH}/homepage-builder/?variant=signedOut`
+          )
         : clHistory.push(`${ADMIN_PAGES_MENU_PATH}/homepage/`);
       return;
     }

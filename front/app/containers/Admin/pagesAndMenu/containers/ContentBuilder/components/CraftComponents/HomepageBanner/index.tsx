@@ -16,7 +16,7 @@ import Error from 'components/UI/Error';
 import homepageMessages from 'containers/HomePage/messages';
 
 // craft
-import { useNode } from '@craftjs/core';
+import { useEditor, useNode } from '@craftjs/core';
 
 // hooks
 import SignedOutHeader from 'containers/HomePage/SignedOutHeader';
@@ -43,6 +43,7 @@ import ImagesDropzone from 'components/UI/ImagesDropzone';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import useAddContentBuilderImage from 'api/content_builder_images/useAddContentBuilderImage';
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
+import useAuthUser from 'api/me/useAuthUser';
 
 const CTA_SIGNED_OUT_TYPES: CTASignedOutType[] = [
   'sign_up_button',
@@ -93,9 +94,15 @@ type Props = {
 };
 
 const HomepageBanner = ({ homepageSettings, image }: Props) => {
+  const { data: authUser } = useAuthUser();
   const [search] = useSearchParams();
-
-  return search.get('variant') === 'signedIn' ? (
+  const editor = useEditor();
+  const isEditorInPreviewMode =
+    (editor.store.getState() as any)?.options.enabled === false;
+  const showSignedInHeader =
+    (isEditorInPreviewMode && authUser?.data !== undefined) ||
+    search.get('variant') === 'signedIn';
+  return showSignedInHeader ? (
     <SignedInHeader
       homepageSettings={{
         ...homepageSettings,
