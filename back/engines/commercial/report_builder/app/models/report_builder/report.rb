@@ -37,6 +37,6 @@ module ReportBuilder
 
     scope :global, -> { where(phase_id: nil) }
 
-    validates :name, uniqueness: true, if: :present?
+    validates :name, uniqueness: true, allow_nil: true
   end
 end

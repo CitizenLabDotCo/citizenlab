@@ -110,6 +110,7 @@ ALTER TABLE IF EXISTS ONLY public.permissions_custom_fields DROP CONSTRAINT IF E
 ALTER TABLE IF EXISTS ONLY public.analytics_dimension_projects_fact_visits DROP CONSTRAINT IF EXISTS fk_rails_4ecebb6e8a;
 ALTER TABLE IF EXISTS ONLY public.initiative_images DROP CONSTRAINT IF EXISTS fk_rails_4df6f76970;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_4aea6afa11;
+ALTER TABLE IF EXISTS ONLY public.report_builder_published_graph_data_units DROP CONSTRAINT IF EXISTS fk_rails_4846b9a405;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_46dd2ccfd1;
 ALTER TABLE IF EXISTS ONLY public.email_campaigns_examples DROP CONSTRAINT IF EXISTS fk_rails_465d6356b2;
 ALTER TABLE IF EXISTS ONLY public.insights_text_network_analysis_tasks_views DROP CONSTRAINT IF EXISTS fk_rails_3e0e58a177;
@@ -141,6 +142,7 @@ DROP TRIGGER IF EXISTS que_state_notify ON public.que_jobs;
 DROP TRIGGER IF EXISTS que_job_notify ON public.que_jobs;
 DROP INDEX IF EXISTS public.users_unique_lower_email_idx;
 DROP INDEX IF EXISTS public.spam_reportable_index;
+DROP INDEX IF EXISTS public.report_builder_published_data_units_report_id_idx;
 DROP INDEX IF EXISTS public.que_poll_idx_with_job_schema_version;
 DROP INDEX IF EXISTS public.que_poll_idx;
 DROP INDEX IF EXISTS public.que_jobs_data_gin_idx;
@@ -431,6 +433,7 @@ ALTER TABLE IF EXISTS ONLY public.static_pages_topics DROP CONSTRAINT IF EXISTS 
 ALTER TABLE IF EXISTS ONLY public.spam_reports DROP CONSTRAINT IF EXISTS spam_reports_pkey;
 ALTER TABLE IF EXISTS ONLY public.schema_migrations DROP CONSTRAINT IF EXISTS schema_migrations_pkey;
 ALTER TABLE IF EXISTS ONLY public.report_builder_reports DROP CONSTRAINT IF EXISTS report_builder_reports_pkey;
+ALTER TABLE IF EXISTS ONLY public.report_builder_published_graph_data_units DROP CONSTRAINT IF EXISTS report_builder_published_graph_data_units_pkey;
 ALTER TABLE IF EXISTS ONLY public.que_values DROP CONSTRAINT IF EXISTS que_values_pkey;
 ALTER TABLE IF EXISTS ONLY public.que_lockers DROP CONSTRAINT IF EXISTS que_lockers_pkey;
 ALTER TABLE IF EXISTS ONLY public.que_jobs DROP CONSTRAINT IF EXISTS que_jobs_pkey;
@@ -560,6 +563,7 @@ DROP TABLE IF EXISTS public.static_page_files;
 DROP TABLE IF EXISTS public.spam_reports;
 DROP TABLE IF EXISTS public.schema_migrations;
 DROP TABLE IF EXISTS public.report_builder_reports;
+DROP TABLE IF EXISTS public.report_builder_published_graph_data_units;
 DROP TABLE IF EXISTS public.que_values;
 DROP TABLE IF EXISTS public.que_lockers;
 DROP SEQUENCE IF EXISTS public.que_jobs_id_seq;
@@ -631,7 +635,6 @@ DROP TABLE IF EXISTS public.email_campaigns_consents;
 DROP TABLE IF EXISTS public.email_campaigns_campaigns_groups;
 DROP TABLE IF EXISTS public.email_campaigns_campaign_email_commands;
 DROP TABLE IF EXISTS public.custom_forms;
-DROP TABLE IF EXISTS public.custom_fields;
 DROP TABLE IF EXISTS public.custom_field_options;
 DROP TABLE IF EXISTS public.cosponsors_initiatives;
 DROP TABLE IF EXISTS public.content_builder_layouts;
@@ -669,7 +672,9 @@ DROP VIEW IF EXISTS public.analytics_fact_email_deliveries;
 DROP TABLE IF EXISTS public.email_campaigns_deliveries;
 DROP TABLE IF EXISTS public.email_campaigns_campaigns;
 DROP VIEW IF EXISTS public.analytics_dimension_users;
+DROP VIEW IF EXISTS public.analytics_dimension_user_custom_field_values;
 DROP TABLE IF EXISTS public.users;
+DROP TABLE IF EXISTS public.custom_fields;
 DROP TABLE IF EXISTS public.analytics_dimension_types;
 DROP VIEW IF EXISTS public.analytics_dimension_statuses;
 DROP TABLE IF EXISTS public.initiative_statuses;
@@ -1357,6 +1362,36 @@ CREATE TABLE public.analytics_dimension_types (
 
 
 --
+-- Name: custom_fields; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.custom_fields (
+    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
+    resource_type character varying,
+    key character varying,
+    input_type character varying,
+    title_multiloc jsonb DEFAULT '{}'::jsonb,
+    description_multiloc jsonb DEFAULT '{}'::jsonb,
+    required boolean DEFAULT false,
+    ordering integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    enabled boolean DEFAULT true NOT NULL,
+    code character varying,
+    resource_id uuid,
+    hidden boolean DEFAULT false NOT NULL,
+    maximum integer,
+    minimum_label_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    maximum_label_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    logic jsonb DEFAULT '{}'::jsonb NOT NULL,
+    answer_visible_to character varying,
+    select_count_enabled boolean DEFAULT false NOT NULL,
+    maximum_select_count integer,
+    minimum_select_count integer
+);
+
+
+--
 -- Name: users; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1393,6 +1428,22 @@ CREATE TABLE public.users (
     onboarding jsonb DEFAULT '{}'::jsonb NOT NULL,
     unique_code character varying
 );
+
+
+--
+-- Name: analytics_dimension_user_custom_field_values; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.analytics_dimension_user_custom_field_values AS
+ SELECT DISTINCT u.id AS dimension_user_id,
+    cf.key,
+    cf.value
+   FROM ((public.users u
+     LEFT JOIN LATERAL ( SELECT custom_fields.key,
+            (u.custom_field_values ->> (custom_fields.key)::text) AS value
+           FROM public.custom_fields
+          WHERE ((custom_fields.resource_type)::text = 'User'::text)) cf ON (true))
+     LEFT JOIN LATERAL ( SELECT jsonb_object_keys(u.custom_field_values) AS key) cfv ON (true));
 
 
 --
@@ -2149,36 +2200,6 @@ CREATE TABLE public.custom_field_options (
     ordering integer,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: custom_fields; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.custom_fields (
-    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    resource_type character varying,
-    key character varying,
-    input_type character varying,
-    title_multiloc jsonb DEFAULT '{}'::jsonb,
-    description_multiloc jsonb DEFAULT '{}'::jsonb,
-    required boolean DEFAULT false,
-    ordering integer,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    enabled boolean DEFAULT true NOT NULL,
-    code character varying,
-    resource_id uuid,
-    hidden boolean DEFAULT false NOT NULL,
-    maximum integer,
-    minimum_label_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
-    maximum_label_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
-    logic jsonb DEFAULT '{}'::jsonb NOT NULL,
-    answer_visible_to character varying,
-    select_count_enabled boolean DEFAULT false NOT NULL,
-    maximum_select_count integer,
-    minimum_select_count integer
 );
 
 
@@ -3314,6 +3335,20 @@ CREATE TABLE public.que_values (
     CONSTRAINT valid_value CHECK ((jsonb_typeof(value) = 'object'::text))
 )
 WITH (fillfactor='90');
+
+
+--
+-- Name: report_builder_published_graph_data_units; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.report_builder_published_graph_data_units (
+    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
+    report_builder_report_id uuid NOT NULL,
+    graph_id character varying NOT NULL,
+    data jsonb NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
 
 
 --
@@ -4487,6 +4522,14 @@ ALTER TABLE ONLY public.que_lockers
 
 ALTER TABLE ONLY public.que_values
     ADD CONSTRAINT que_values_pkey PRIMARY KEY (key);
+
+
+--
+-- Name: report_builder_published_graph_data_units report_builder_published_graph_data_units_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.report_builder_published_graph_data_units
+    ADD CONSTRAINT report_builder_published_graph_data_units_pkey PRIMARY KEY (id);
 
 
 --
@@ -6536,6 +6579,13 @@ CREATE INDEX que_poll_idx_with_job_schema_version ON public.que_jobs USING btree
 
 
 --
+-- Name: report_builder_published_data_units_report_id_idx; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX report_builder_published_data_units_report_id_idx ON public.report_builder_published_graph_data_units USING btree (report_builder_report_id);
+
+
+--
 -- Name: spam_reportable_index; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6777,6 +6827,14 @@ ALTER TABLE ONLY public.email_campaigns_examples
 
 ALTER TABLE ONLY public.notifications
     ADD CONSTRAINT fk_rails_46dd2ccfd1 FOREIGN KEY (phase_id) REFERENCES public.phases(id);
+
+
+--
+-- Name: report_builder_published_graph_data_units fk_rails_4846b9a405; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.report_builder_published_graph_data_units
+    ADD CONSTRAINT fk_rails_4846b9a405 FOREIGN KEY (report_builder_report_id) REFERENCES public.report_builder_reports(id);
 
 
 --
@@ -7981,6 +8039,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20231003095622'),
 ('20231018083110'),
 ('20231024082513'),
+('20231031175023'),
+('20231103094549'),
 ('20231109101517'),
 ('20231110112415');
 

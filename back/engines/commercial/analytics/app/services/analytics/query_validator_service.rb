@@ -45,7 +45,8 @@ module Analytics
     end
 
     def validate_json
-      json_errors = JSON::Validator.fully_validate(self.class.schema, @json_query.to_unsafe_hash)
+      unsafe_hash = @json_query.try(:to_unsafe_hash) || @json_query
+      json_errors = JSON::Validator.fully_validate(self.class.schema, unsafe_hash)
       return true if json_errors.empty?
 
       add_error(json_errors)
