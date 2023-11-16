@@ -47,7 +47,7 @@ RSpec.describe ContentBuilder::Patches::Project do
   end
 
   describe '.search_ids_by_all_including_patches' do
-    def oldcraftjs(props)
+    def oldcraftjs(props) # TODO: clean up after fully migrated
       {
         en: {
           ROOT: {
@@ -105,7 +105,7 @@ RSpec.describe ContentBuilder::Patches::Project do
       create(:project, content_builder_layouts: [build(:layout, craftjs_jsonmultiloc: oldcraftjs(craftjs_jsonmultiloc_props), craftjs_json: craftjs(craftjs_json_props))])
     end
 
-    it 'finds projects by text, title, alt, and url in the old craftjs' do
+    it 'finds projects by text, title, alt, and url in the old craftjs' do # TODO: clean up after fully migrated
       p1 = create_project({ text: 'sometext here' }, {})
       __ = create_project({ text: 'othertext' }, {})
       p2 = create_project({ title: 'sometitle here' }, {})
