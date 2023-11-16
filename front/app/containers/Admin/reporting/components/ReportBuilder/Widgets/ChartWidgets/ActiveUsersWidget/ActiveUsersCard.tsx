@@ -23,7 +23,7 @@ import {
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { PX } from 'components/admin/ContentBuilder/constants';
+import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
 
 type Props = ProjectId & Dates & Resolution;
 

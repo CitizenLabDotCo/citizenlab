@@ -6,4 +6,4 @@ export const CONTENT_BUILDER_ERROR_EVENT = 'contentBuilderError';
 export const CONTENT_BUILDER_DELETE_ELEMENT_EVENT =
   'deleteContentBuilderElement';
 
-export const PX = '20px';
+export const DEFAULT_PADDING = '20px';

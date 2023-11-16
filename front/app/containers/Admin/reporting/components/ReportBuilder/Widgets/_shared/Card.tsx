@@ -2,7 +2,7 @@ import React from 'react';
 
 // styling
 import { BORDER } from '../constants';
-import { PX } from 'components/admin/ContentBuilder/constants';
+import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
 
 // components
 import { Box, Title } from '@citizenlab/cl2-component-library';
