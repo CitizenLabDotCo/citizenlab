@@ -11,6 +11,7 @@ import { Multiloc } from 'typings';
 import { useNode } from '@craftjs/core';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import { useIntl } from 'utils/cl-intl';
+import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
 
 const ProjectSection = styled.div`
   width: 100%;
@@ -19,8 +20,8 @@ const ProjectSection = styled.div`
 
   ${media.phone`
     padding-bottom: 40px;
-    padding-left:20px;
-    padding-right:20px;
+    padding-left: ${DEFAULT_PADDING};
+    padding-right: ${DEFAULT_PADDING};
   `}
 `;
 
