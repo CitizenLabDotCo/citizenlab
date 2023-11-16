@@ -19,23 +19,24 @@ resource 'Permissions' do
   context 'when admin' do
     before { admin_header_token }
 
-    get 'web_api/v1/projects/:project_id/permissions' do
+    get 'web_api/v1/phases/:phase_id/permissions' do
       with_options scope: :page do
         parameter :number, 'Page number'
         parameter :size, 'Number of permissions per page'
       end
 
-      example_request 'List all permissions of a project' do
+      example_request 'List all permissions of a phase' do
         assert_status 200
-        expect(response_data.size).to eq Permission.enabled_actions(@project).size
+        json_response = json_parse response_body
+        expect(json_response[:data].size).to eq Permission.available_actions(@phase).size
       end
 
-      example 'List all permissions of a project when reacting has been disabled' do
-        @project.update!(reacting_enabled: false)
+      example 'List all permissions of a phase when reacting has been disabled' do
+        @phase.update!(reacting_enabled: false)
 
         do_request
         assert_status 200
-        expect(response_data.size).to eq Permission.enabled_actions(@project).size
+        expect(response_data.size).to eq Permission.enabled_actions(@phase).size
       end
 
       example_request 'List all permissions efficiently include custom fields', document: true do
@@ -82,19 +83,6 @@ resource 'Permissions' do
       end
     end
 
-    get 'web_api/v1/phases/:phase_id/permissions' do
-      with_options scope: :page do
-        parameter :number, 'Page number'
-        parameter :size, 'Number of permissions per page'
-      end
-
-      example_request 'List all permissions of a phase' do
-        assert_status 200
-        json_response = json_parse response_body
-        expect(json_response[:data].size).to eq Permission.available_actions(@phase).size
-      end
-    end
-
     get 'web_api/v1/permissions' do
       with_options scope: :page do
         parameter :number, 'Page number'
@@ -105,16 +93,6 @@ resource 'Permissions' do
         assert_status 200
         json_response = json_parse response_body
         expect(json_response[:data].size).to eq Permission.available_actions(nil).size
-      end
-    end
-
-    get 'web_api/v1/projects/:project_id/permissions/:action' do
-      let(:action) { @project.permissions.first.action }
-
-      example_request 'Get one permission by action' do
-        assert_status 200
-        json_response = json_parse response_body
-        expect(json_response.dig(:data, :id)).to eq @project.permissions.first.id
       end
     end
 
@@ -135,28 +113,6 @@ resource 'Permissions' do
         assert_status 200
         json_response = json_parse response_body
         expect(json_response.dig(:data, :id)).to eq Permission.find_by!(permission_scope: nil, action: action).id
-      end
-    end
-
-    patch 'web_api/v1/projects/:project_id/permissions/:action' do
-      with_options scope: :permission do
-        parameter :permitted_by, "Defines who is granted permission, either #{Permission::PERMITTED_BIES.join(',')}.", required: false
-        parameter :global_custom_fields, 'When set to true, the enabled registrations are associated to the permission', required: false
-        parameter :group_ids, "An array of group id's associated to this permission", required: false
-      end
-      ValidationErrorHelper.new.error_fields(self, Permission)
-
-      let(:action) { @project.permissions.first.action }
-      let(:permitted_by) { 'groups' }
-      let(:global_custom_fields) { true }
-      let(:group_ids) { create_list(:group, 3, projects: [@project]).map(&:id) }
-
-      example_request 'Update a permission' do
-        assert_status 200
-        json_response = json_parse response_body
-        expect(json_response.dig(:data, :attributes, :permitted_by)).to eq permitted_by
-        expect(json_response.dig(:data, :attributes, :global_custom_fields)).to eq global_custom_fields
-        expect(json_response.dig(:data, :relationships, :groups, :data).pluck(:id)).to match_array group_ids
       end
     end
 
@@ -422,37 +378,6 @@ resource 'Permissions' do
             @field2.key.to_sym => { type: 'string' }
           },
           required: [@field1.key]
-        })
-        expect(json_attributes[:ui_schema_multiloc]).to be_present
-      end
-    end
-
-    get 'web_api/v1/projects/:project_id/permissions/:action/schema' do
-      before do
-        @permission = @project.permissions.first
-        @permission.update!(global_custom_fields: false)
-        @field1 = create(:custom_field, required: true, enabled: false) # Field should be returned even if not enabled globally
-        @field2 = create(:custom_field, required: false)
-        create(:permissions_custom_field, permission: @permission, custom_field: @field1, required: false)
-        create(:permissions_custom_field, permission: @permission, custom_field: @field2, required: true)
-      end
-
-      let(:action) { @permission.action }
-      let(:project_id) { @project.id }
-
-      example_request 'Get the json and ui schema for a project permission' do
-        assert_status 200
-        json_response = json_parse response_body
-        expect(json_response.dig(:data, :type)).to eq 'schema'
-        json_attributes = json_response.dig(:data, :attributes)
-        expect(json_attributes[:json_schema_multiloc][:en]).to eq({
-          type: 'object',
-          additionalProperties: false,
-          properties: {
-            @field1.key.to_sym => { type: 'string' },
-            @field2.key.to_sym => { type: 'string' }
-          },
-          required: [@field2.key]
         })
         expect(json_attributes[:ui_schema_multiloc]).to be_present
       end

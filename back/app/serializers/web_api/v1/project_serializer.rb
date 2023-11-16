@@ -107,9 +107,7 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::ParticipationContextSerializer
     end
   end
 
-  attribute :timeline_active, if: proc { |object, _params|
-    object.timeline?
-  } do |object, params|
+  attribute :timeline_active do |object, params|
     if params[:timeline_active]
       params.dig(:timeline_active, object.id)
     else

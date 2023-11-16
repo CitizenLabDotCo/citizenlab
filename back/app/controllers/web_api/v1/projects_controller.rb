@@ -137,31 +137,12 @@ class WebApi::V1::ProjectsController < ApplicationController
     end
   end
 
-  def survey_results
-    results = SurveyResultsGeneratorService.new(@project).generate_results
-    render json: raw_json(results)
-  end
-
-  def submission_count
-    count = SurveyResultsGeneratorService.new(@project).generate_submission_count
-    render json: raw_json(count)
-  end
-
   def index_xlsx
     I18n.with_locale(current_user.locale) do
       include_private_attributes = Pundit.policy!(current_user, User).view_private_attributes?
       xlsx = XlsxExport::GeneratorService.new.generate_inputs_for_project @project.id, include_private_attributes
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'inputs.xlsx'
     end
-  end
-
-  def delete_inputs
-    sidefx.before_delete_inputs @project, current_user
-    ActiveRecord::Base.transaction do
-      @project.ideas.each(&:destroy!)
-    end
-    sidefx.after_delete_inputs @project, current_user
-    head :ok
   end
 
   private

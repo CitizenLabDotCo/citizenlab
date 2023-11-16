@@ -113,9 +113,6 @@ class WebApi::V1::IdeasController < ApplicationController
     render_show Idea.find_by!(slug: params[:slug])
   end
 
-  # For continuous projects:
-  #   Providing a phase id yields a bad request.
-  # For timeline projects:
   #   Normal users always post in an active phase. They should never provide a phase id.
   #   Users who can moderate projects post in an active phase if no phase id is given.
   #   Users who can moderate projects post in the given phase if a phase id is given.
@@ -126,7 +123,8 @@ class WebApi::V1::IdeasController < ApplicationController
 
     if phase_ids.any?
       send_error and return unless is_moderator
-      send_error and return if project.continuous? || phase_ids.size != 1
+
+      send_error and return phase_ids.size != 1
     end
 
     participation_context = if is_moderator && phase_ids.any?
@@ -142,10 +140,9 @@ class WebApi::V1::IdeasController < ApplicationController
     params_for_create = idea_params participation_method.custom_form, is_moderator
     params_for_file_upload_fields = extract_params_for_file_upload_fields participation_method.custom_form, params_for_create
     input = Idea.new params_for_create
-    if project.timeline?
-      input.creation_phase = (participation_context if participation_method.creation_phase?)
-      input.phase_ids = [participation_context.id] if phase_ids.empty?
-    end
+    input.creation_phase = (participation_context if participation_method.creation_phase?)
+    input.phase_ids = [participation_context.id] if phase_ids.empty?
+
     # NOTE: Needs refactor allow_anonymous_participation? so anonymous_participation can be allow or force
     if participation_context.native_survey? && participation_context.allow_anonymous_participation?
       input.anonymous = true
