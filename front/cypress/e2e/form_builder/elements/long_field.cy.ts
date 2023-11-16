@@ -10,7 +10,11 @@ describe('Form builder long text field', () => {
   let projectSlug: string;
   let phaseId: string;
 
-  before(() => {
+  beforeEach(() => {
+    if (projectId) {
+      cy.apiRemoveProject(projectId);
+    }
+
     cy.apiCreateProject({
       type: 'timeline',
       title: projectTitle,
@@ -25,7 +29,6 @@ describe('Form builder long text field', () => {
           projectId,
           title: 'firstPhaseTitle',
           startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
-          endAt: moment().subtract(3, 'month').format('DD/MM/YYYY'),
           participationMethod: 'native_survey',
           canPost: true,
           canComment: true,
@@ -35,14 +38,14 @@ describe('Form builder long text field', () => {
       .then((phase) => {
         phaseId = phase.body.data.id;
       });
-  });
 
-  beforeEach(() => {
     cy.setAdminLoginCookie();
   });
 
   after(() => {
-    cy.apiRemoveProject(projectId);
+    if (projectId) {
+      cy.apiRemoveProject(projectId);
+    }
   });
 
   it('adds long text field and user can fill in data in the field', () => {
@@ -74,9 +77,11 @@ describe('Form builder long text field', () => {
     cy.get('[data-cy="e2e-next-page"]').click();
     // verify that an error is shown and that we stay on the page
     cy.get('.e2e-error-message');
-    cy.location('pathname').should(
+    cy.url().should(
       'eq',
-      `/en/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`
+      `${
+        Cypress.config().baseUrl
+      }/en/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`
     );
 
     // Enter text
