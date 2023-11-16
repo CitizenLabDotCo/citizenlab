@@ -8,6 +8,7 @@ module Polls::PollParticipationContext
     has_many :poll_responses, class_name: 'Polls::Response', as: :participation_context, dependent: :destroy
 
     # for timeline projects, the phases are the participation contexts, so nothing applies
+    # TODO: JS - Not sure why?
     with_options unless: :timeline_project? do
       validates :poll_anonymous, inclusion: { in: [true, false] }, if: :poll?
       validate :poll_questions_allowed_in_participation_method
