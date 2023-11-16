@@ -52,6 +52,7 @@ sv:
       "voting_basket_submitted": Bekräftelse av röstning
       "voting_basket_not_submitted": Ej avgivna röster
       "voting_last_chance": Sista chansen att rösta
+      "voting_phase_started": Ny projektfas med omröstning
       "voting_results": Resultat av omröstningen
       "your_proposed_initiatives_digest": Veckoöversikt över dina förslag
     general:
