@@ -9,9 +9,7 @@ import messages from './messages';
 import GetPermission, {
   GetPermissionChildProps,
 } from 'resources/GetPermission';
-import GetFeatureFlag, {
-  GetFeatureFlagChildProps,
-} from 'resources/GetFeatureFlag';
+import GetFeatureFlag from 'resources/GetFeatureFlag';
 import { Outlet as RouterOutlet, useLocation } from 'react-router-dom';
 import NavigationTabs, {
   Tab,
@@ -22,9 +20,9 @@ import { isTopBarNavActive } from 'utils/helperUtils';
 interface DataProps {
   canManageAutomatedCampaigns: GetPermissionChildProps;
   canManageManualCampaigns: GetPermissionChildProps;
-  manualEmailingEnabled: GetFeatureFlagChildProps;
-  automatedEmailingEnabled: GetFeatureFlagChildProps;
-  textingEnabled: GetFeatureFlagChildProps;
+  manualEmailingEnabled: boolean;
+  automatedEmailingEnabled: boolean;
+  textingEnabled: boolean;
 }
 
 interface Props extends DataProps {}

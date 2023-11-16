@@ -28,6 +28,9 @@ export interface IPhaseData {
     user_basket?: {
       data: IRelationship | null;
     };
+    report?: {
+      data: IRelationship | null;
+    };
   };
 }
 

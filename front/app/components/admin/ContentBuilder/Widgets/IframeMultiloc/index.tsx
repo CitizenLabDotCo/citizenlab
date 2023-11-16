@@ -21,7 +21,10 @@ import { ROOT_NODE, useNode } from '@craftjs/core';
 
 // events
 import eventEmitter from 'utils/eventEmitter';
-import { CONTENT_BUILDER_ERROR_EVENT } from 'components/admin/ContentBuilder/constants';
+import {
+  CONTENT_BUILDER_ERROR_EVENT,
+  DEFAULT_PADDING,
+} from 'components/admin/ContentBuilder/constants';
 
 // types
 import { Locale, Multiloc } from 'typings';
@@ -51,7 +54,7 @@ const Iframe = ({ url, height, hasError, title }: Props) => {
       minHeight="26px"
       maxWidth="1150px"
       margin="0 auto"
-      px={isSmallerThanTablet && parent === ROOT_NODE ? '20px' : '0px'}
+      px={isSmallerThanTablet && parent === ROOT_NODE ? DEFAULT_PADDING : '0px'}
     >
       {!hasError && url && (
         <iframe

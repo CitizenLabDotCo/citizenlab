@@ -13,6 +13,7 @@ import {
   ThreeColumnWrapper,
   threeColumnCraftConfig,
 } from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
+import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
 
 const ThreeColumn = () => {
   const isSmallerThanTablet = useBreakpoint('tablet');
@@ -24,7 +25,7 @@ const ThreeColumn = () => {
     <ThreeColumnWrapper
       maxWidth="1150px"
       margin="0 auto"
-      px={isSmallerThanTablet && parent === ROOT_NODE ? '20px' : '0px'}
+      px={isSmallerThanTablet && parent === ROOT_NODE ? DEFAULT_PADDING : '0px'}
     >
       <Box flex="1">
         <Element id="column1" is={Container} canvas />

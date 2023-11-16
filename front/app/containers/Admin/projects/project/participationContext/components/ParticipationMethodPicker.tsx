@@ -9,6 +9,7 @@ import {
   Radio,
   Text,
   Box,
+  Badge,
 } from '@citizenlab/cl2-component-library';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
@@ -20,6 +21,10 @@ import Tippy from '@tippyjs/react';
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../../messages';
+import messages2 from './messages';
+
+// styling
+import { colors } from 'utils/styleUtils';
 
 // utils
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
@@ -66,6 +71,9 @@ const ParticipationMethodPicker = ({
   });
   const volunteeringEnabled = useFeatureFlag({
     name: 'volunteering',
+  });
+  const phaseReportsEnabled = useFeatureFlag({
+    name: 'phase_reports',
   });
 
   const chooseParticipationMethod = () => {
@@ -266,9 +274,30 @@ const ParticipationMethodPicker = ({
             id="participationmethod-information"
             label={
               <LabelHeaderDescription
-                header={<FormattedMessage {...messages.shareInformation} />}
+                header={
+                  phaseReportsEnabled ? (
+                    <>
+                      <FormattedMessage
+                        {...messages2.shareInformationOrResults}
+                      />
+                      <Box display="inline" ml="8px">
+                        <Badge className="inverse" color={colors.primary}>
+                          <FormattedMessage {...messages2.new} />
+                        </Badge>
+                      </Box>
+                    </>
+                  ) : (
+                    <FormattedMessage {...messages.shareInformation} />
+                  )
+                }
                 description={
-                  <FormattedMessage {...messages.shareInformationDescription} />
+                  phaseReportsEnabled ? (
+                    <FormattedMessage {...messages2.provideInformation} />
+                  ) : (
+                    <FormattedMessage
+                      {...messages.shareInformationDescription}
+                    />
+                  )
                 }
               />
             }
