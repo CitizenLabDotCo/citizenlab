@@ -4,13 +4,13 @@ module Polls
   module WebApi
     module V1
       class QuestionsController < PollsController
-        before_action :set_participation_context, only: :index
+        before_action :set_phase, only: :index
         before_action :set_question, only: %i[show update destroy reorder]
         skip_before_action :authenticate_user
 
         def index
           @questions = policy_scope(Question)
-            .where(participation_context: @participation_context)
+            .where(participation_context: @phase)
             .includes(:options)
             .order(:ordering)
           @questions = paginate @questions
@@ -90,11 +90,9 @@ module Polls
 
         private
 
-        def set_participation_context
-          if params[:project_id]
-            @participation_context = Project.find(params[:project_id])
-          elsif params[:phase_id]
-            @participation_context = Phase.find(params[:phase_id])
+        def set_phase
+          if params[:phase_id]
+            @phase = Phase.find(params[:phase_id])
           else
             head :not_found
           end

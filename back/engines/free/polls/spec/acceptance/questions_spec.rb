@@ -107,8 +107,8 @@ resource 'Poll Questions' do
       end
 
       before do
-        @project = create(:continuous_poll_project)
-        @questions = create_list(:poll_question, 3, participation_context: @project)
+        @phase = create(:continuous_poll_project).phases.first
+        @questions = create_list(:poll_question, 3, participation_context: @phase)
       end
 
       let(:id) { @questions.last.id }
