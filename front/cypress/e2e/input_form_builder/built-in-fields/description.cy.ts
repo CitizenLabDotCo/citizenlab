@@ -12,7 +12,7 @@ describe('Input form builder', () => {
     if (projectId) {
       cy.apiRemoveProject(projectId);
     }
-
+    cy.visit(`admin/projects/${projectId}/ideaform`);
     cy.setAdminLoginCookie();
 
     cy.apiCreateProject({
@@ -42,7 +42,6 @@ describe('Input form builder', () => {
   });
 
   it('does not allow the description field to be deleted and provides no way to edit its question title', () => {
-    cy.visit(`admin/projects/${projectId}/ideaform`);
     cy.visit(`admin/projects/${projectId}/ideaform/${phaseId}`);
     cy.get('[data-cy="e2e-edit-input-form"]').click();
 
