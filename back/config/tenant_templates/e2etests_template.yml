@@ -733,19 +733,11 @@ models:
       en: Test group permissions with me Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
     presentation_mode: card
-    participation_method: voting
-    process_type: continuous
+    process_type: timeline
     admin_publication_attributes:
       publication_status: published
     created_at: '2018-03-28 13:35:04'
     updated_at: '2018-03-28 13:35:04'
-    posting_enabled: false
-    commenting_enabled: true
-    reacting_enabled: true
-    reacting_like_method: unlimited
-    reacting_like_limited_max: 10
-    voting_method: budgeting
-    voting_max_total: 100000
   - &charliesPb
     title_multiloc:
       en: Charlie Participatory Budgeting
@@ -760,19 +752,11 @@ models:
       en: Test group permissions with me Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
     presentation_mode: card
-    participation_method: voting
-    process_type: continuous
+    process_type: timeline
     admin_publication_attributes:
       publication_status: published
     created_at: '2018-03-28 13:35:04'
     updated_at: '2018-03-28 13:35:04'
-    posting_enabled: false
-    commenting_enabled: true
-    reacting_enabled: true
-    reacting_like_method: unlimited
-    reacting_like_limited_max: 10
-    voting_method: budgeting
-    voting_max_total: 100000
   - &verifiedPb
     title_multiloc:
       en: Verified Participatory Budgeting
@@ -787,19 +771,11 @@ models:
       en: Test group permissions with me Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
     presentation_mode: card
-    participation_method: voting
-    process_type: continuous
+    process_type: timeline
     admin_publication_attributes:
       publication_status: published
     created_at: '2018-03-28 13:35:04'
     updated_at: '2018-03-28 13:35:04'
-    posting_enabled: false
-    commenting_enabled: true
-    reacting_enabled: true
-    reacting_like_method: unlimited
-    reacting_like_limited_max: 10
-    voting_method: budgeting
-    voting_max_total: 100000
   - &project2
     title_multiloc:
       en: Test project 2 timeline
@@ -832,12 +808,7 @@ models:
     description_preview_multiloc: projects.open_idea_project_description_preview
     internal_role: open_idea_box
     presentation_mode: card
-    process_type: continuous
-    participation_method: ideation
-    posting_enabled: true
-    commenting_enabled: true
-    reacting_enabled: true
-    reacting_like_method: unlimited
+    process_type: timeline
     remote_header_bg_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_with_speech_bubbles.jpeg
     admin_publication_attributes: {}
   - &121
@@ -853,19 +824,13 @@ models:
       en: Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
     presentation_mode: map
-    participation_method: ideation
-    process_type: continuous
+    process_type: timeline
     internal_role:
     admin_publication_attributes:
       publication_status: published
       parent_attributes_ref: *a1
     created_at: '2018-03-28 13:35:06'
     updated_at: '2018-03-28 13:35:06'
-    posting_enabled: true
-    commenting_enabled: true
-    reacting_enabled: true
-    reacting_like_method: unlimited
-    reacting_like_limited_max: 7
   - &charliesVerifiedPPlproject
     title_multiloc:
       en: Verified Charlie poeple project
@@ -879,18 +844,12 @@ models:
       en: Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
     presentation_mode: map
-    participation_method: ideation
-    process_type: continuous
+    process_type: timeline
     internal_role:
     admin_publication_attributes:
       publication_status: published
     created_at: '2018-03-28 13:35:06'
     updated_at: '2018-03-28 13:35:06'
-    posting_enabled: true
-    commenting_enabled: true
-    reacting_enabled: true
-    reacting_like_method: unlimited
-    reacting_like_limited_max: 7
   - &verifiedIdeation
     title_multiloc:
       en: Verified Ideation
@@ -904,16 +863,11 @@ models:
       en: Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
     presentation_mode: card
-    participation_method: ideation
-    process_type: continuous
+    process_type: timeline
     admin_publication_attributes:
       publication_status: published
     created_at: '2018-03-28 13:35:06'
     updated_at: '2018-03-28 13:35:06'
-    posting_enabled: true
-    commenting_enabled: true
-    reacting_enabled: true
-    reacting_like_method: unlimited
   - &charliesIdeation
     title_multiloc:
       en: Charlie Crew Ideation
@@ -927,16 +881,11 @@ models:
       en: Test group permissions with me Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
     presentation_mode: card
-    participation_method: ideation
-    process_type: continuous
+    process_type: timeline
     admin_publication_attributes:
       publication_status: published
     created_at: '2018-03-28 13:35:06'
     updated_at: '2018-03-28 13:35:06'
-    posting_enabled: true
-    commenting_enabled: true
-    reacting_enabled: true
-    reacting_like_method: unlimited
   - &contsurv
     title_multiloc:
       en: Continuous survey
@@ -950,21 +899,13 @@ models:
       en: Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
     presentation_mode: map
-    participation_method: survey
-    process_type: continuous
+    process_type: timeline
     internal_role:
     admin_publication_attributes:
       publication_status: published
       parent_attributes_ref: *a1
     created_at: '2018-03-28 13:35:06'
     updated_at: '2018-03-28 13:35:06'
-    posting_enabled: true
-    commenting_enabled: true
-    reacting_enabled: true
-    reacting_like_method: unlimited
-    reacting_like_limited_max: 7
-    survey_embed_url: https://citizenlabco.typeform.com/to/qRBP2v
-    survey_service: typeform
   - &verifiedSurvey
     title_multiloc:
       en: Verified survey
@@ -978,20 +919,12 @@ models:
       en: Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
     presentation_mode: map
-    participation_method: survey
-    process_type: continuous
+    process_type: timeline
     internal_role:
     admin_publication_attributes:
       publication_status: published
     created_at: '2018-03-28 13:35:06'
     updated_at: '2018-03-28 13:35:06'
-    posting_enabled: true
-    commenting_enabled: true
-    reacting_enabled: true
-    reacting_like_method: unlimited
-    reacting_like_limited_max: 7
-    survey_embed_url: https://citizenlabco.typeform.com/to/qRBP2v
-    survey_service: typeform
   - &polling
     title_multiloc:
       en: The big poll
@@ -1005,8 +938,7 @@ models:
       en: Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
     presentation_mode: map
-    participation_method: poll
-    process_type: continuous
+    process_type: timeline
     admin_publication_attributes:
       publication_status: published
     created_at: '2018-03-28 13:35:06'
@@ -1024,8 +956,7 @@ models:
       en: Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
     presentation_mode: map
-    participation_method: poll
-    process_type: continuous
+    process_type: timeline
     admin_publication_attributes:
       publication_status: published
     created_at: '2018-03-28 13:35:06'
@@ -1043,20 +974,12 @@ models:
       en: Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
     presentation_mode: map
-    participation_method: survey
-    process_type: continuous
+    process_type: timeline
     internal_role:
     admin_publication_attributes:
       publication_status: published
     created_at: '2018-03-28 13:35:06'
     updated_at: '2018-03-28 13:35:06'
-    posting_enabled: true
-    commenting_enabled: true
-    reacting_enabled: true
-    reacting_like_method: unlimited
-    reacting_like_limited_max: 7
-    survey_embed_url: https://citizenlabco.typeform.com/to/qRBP2v
-    survey_service: typeform
   - &charliesPoll
     title_multiloc:
       en: Charlie Crew poll
@@ -1070,17 +993,12 @@ models:
       en: Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
     presentation_mode: map
-    participation_method: poll
-    process_type: continuous
+    process_type: timeline
     internal_role:
     admin_publication_attributes:
       publication_status: published
     created_at: '2018-03-28 13:35:06'
     updated_at: '2018-03-28 13:35:06'
-    posting_enabled: true
-    commenting_enabled: true
-    reacting_enabled: true
-    reacting_like_method: unlimited
   - &90
     title_multiloc:
       en: Timeline ideation map
@@ -1171,14 +1089,9 @@ models:
       nl-BE: Test idea custom fields. Laten we het park op de grens van de stad vernieuwen en er een aangename
         plek van maken, voor jong en oud.
     presentation_mode: card
-    participation_method: native_survey
-    process_type: continuous
+    process_type: timeline
     admin_publication_attributes:
       publication_status: published
-    posting_enabled: true
-    commenting_enabled: true
-    reacting_enabled: true
-    reacting_like_method: unlimited
   project_file:
   - project_ref: *project1
     created_at: 2019-01-14 13:46:54 UTC
@@ -7182,6 +7095,24 @@ models:
   - remote_image_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/brainstorming_graphic.png
     initiative_ref: *initiative1
   phase:
+  - &Pb_phase
+    title_multiloc:
+      en: Current phase
+    participation_method: voting
+    created_at: '2018-03-28 13:35:04'
+    updated_at: '2018-03-28 13:35:04'
+    posting_enabled: false
+    commenting_enabled: true
+    reacting_enabled: true
+    reacting_like_method: unlimited
+    reacting_like_limited_max: 10
+    voting_method: budgeting
+    voting_max_total: 100000
+    campaigns_settings:
+      project_phase_started: true
+    start_at: '2018-03-28'
+    end_at:
+    project_ref: *Pb
   - &project1current
     title_multiloc:
       en: Current phase
