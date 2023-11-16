@@ -50,8 +50,4 @@ export default defineMessages({
     id: 'app.components.ParticipationCTABars.submit',
     defaultMessage: 'Submit',
   },
-  submitted: {
-    id: 'app.components.ParticipationCTABars.submitted',
-    defaultMessage: 'Submitted',
-  },
 });

@@ -13,9 +13,9 @@ import TimeIndicator from './TimeIndicator';
 
 type Props = {
   hasUserParticipated?: boolean;
-  CTAButton: React.ReactNode;
+  CTAButton?: React.ReactNode;
   currentPhase: IPhaseData | undefined;
-  participationState?: JSX.Element;
+  participationState?: React.ReactNode;
 };
 
 const ParticipationCTAContent = ({
@@ -36,7 +36,11 @@ const ParticipationCTAContent = ({
         bgColor={theme.colors.tenantPrimary}
         p="12px"
       >
-        <Box display="flex" alignItems="center" mb="12px">
+        <Box
+          display="flex"
+          alignItems="center"
+          mb={CTAButton !== undefined ? '12px' : '0'}
+        >
           <Box display="flex" alignItems="center">
             <TimeIndicator
               hasUserParticipated={hasUserParticipated}

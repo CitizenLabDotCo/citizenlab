@@ -62,7 +62,11 @@ const VotingCTABar = ({ phases, project }: CTABarProps) => {
     <>
       <ParticipationCTAContent
         currentPhase={currentPhase}
-        CTAButton={<CTAButton participationContext={participationContext} />}
+        CTAButton={
+          hasUserParticipated ? undefined : (
+            <CTAButton participationContext={participationContext} />
+          )
+        }
         hasUserParticipated={hasUserParticipated}
         participationState={
           hasUserParticipated ? undefined : (
