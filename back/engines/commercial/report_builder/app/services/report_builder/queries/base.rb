@@ -13,9 +13,13 @@ class ReportBuilder::Queries::Base
 
   def date_filter(dimension, start_at, end_at)
     # TODO: try to move `compact.presence` to Analytics::Query
-    {
-      "#{dimension}.date" => { from: start_at, to: end_at }.compact.presence
-    }.compact
+    if start_at && end_at
+      {
+        "#{dimension}.date" => { from: start_at.to_s, to: end_at.to_s }
+      }
+    else
+      {}
+    end
   end
 
   def project_filter(dimension, project_id)
