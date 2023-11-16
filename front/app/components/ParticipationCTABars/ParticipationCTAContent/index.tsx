@@ -34,13 +34,9 @@ const ParticipationCTAContent = ({
         display="flex"
         flexDirection="column"
         bgColor={theme.colors.tenantPrimary}
-        p={isSmallerThanPhone ? '12px' : '20px'}
+        p="12px"
       >
-        <Box
-          display="flex"
-          alignItems="center"
-          mb={isSmallerThanPhone ? '12px' : '16px'}
-        >
+        <Box display="flex" alignItems="center" mb="12px">
           <Box display="flex" alignItems="center">
             <TimeIndicator
               hasUserParticipated={hasUserParticipated}
