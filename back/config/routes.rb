@@ -173,8 +173,7 @@ Rails.application.routes.draw do
         end
       end
 
-      # TODO: JS - can projects now be permissionable?
-      resources :projects, concerns: %i[followable permissionable], defaults: { followable: 'Project', parent_param: :project_id } do
+      resources :projects, concerns: %i[followable], defaults: { followable: 'Project', parent_param: :project_id } do
         resources :events, only: %i[new create]
         resources :projects_allowed_input_topics, only: [:index]
         resources :phases, only: %i[index new create]
@@ -190,10 +189,8 @@ Rails.application.routes.draw do
 
         post 'copy', on: :member
         get 'by_slug/:slug', on: :collection, to: 'projects#by_slug'
-        get 'survey_results', on: :member
-        get 'submission_count', on: :member
         get :as_xlsx, on: :member, action: 'index_xlsx'
-        delete 'inputs', on: :member, action: 'delete_inputs'
+        # delete 'inputs', on: :member, action: 'delete_inputs'
       end
 
       resources :projects_allowed_input_topics, only: %i[show create destroy] do

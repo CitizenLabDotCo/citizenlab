@@ -68,19 +68,6 @@ class ProjectPolicy < ApplicationPolicy
     active_moderator?
   end
 
-  def survey_results?
-    active_moderator?
-  end
-
-  def submission_count?
-    show?
-  end
-
-  # TODO: JS remove when refactoring project - was only available to continuous projects
-  def delete_inputs?
-    false
-  end
-
   def create?
     return false unless active?
     return true if admin?

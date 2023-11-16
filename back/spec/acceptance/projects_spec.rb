@@ -755,18 +755,6 @@ resource 'Projects' do
         expect(json_response[:data].size).to eq 0
       end
     end
-
-    delete 'web_api/v1/projects/:id/inputs' do
-      let(:project) { create(:continuous_project) }
-      let(:id) { project.id }
-
-      example '[error] Delete all inputs of a project' do
-        create(:idea, project: project)
-
-        do_request
-        assert_status 401
-      end
-    end
   end
 
   context 'as a project folder moderator' do

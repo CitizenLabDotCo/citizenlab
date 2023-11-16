@@ -20,9 +20,6 @@ describe ProjectPolicy do
       it { is_expected.not_to permit(:reorder) }
       it { is_expected.not_to permit(:destroy) }
       it { is_expected.not_to permit(:index_xlsx) }
-      it { is_expected.not_to permit(:survey_results) }
-      it { is_expected.to     permit(:submission_count) }
-      it { is_expected.not_to permit(:delete_inputs) }
 
       it 'should index the project' do
         expect(scope.resolve.size).to eq 1
@@ -38,9 +35,6 @@ describe ProjectPolicy do
       it { is_expected.not_to permit(:reorder) }
       it { is_expected.not_to permit(:destroy) }
       it { is_expected.not_to permit(:index_xlsx) }
-      it { is_expected.not_to permit(:survey_results) }
-      it { is_expected.to     permit(:submission_count) }
-      it { is_expected.not_to permit(:delete_inputs) }
 
       it 'should index the project' do
         expect(scope.resolve.size).to eq 1
@@ -60,9 +54,6 @@ describe ProjectPolicy do
       it { is_expected.to permit(:reorder) }
       it { is_expected.to permit(:destroy) }
       it { is_expected.to permit(:index_xlsx) }
-      it { is_expected.to permit(:survey_results) }
-      it { is_expected.to permit(:submission_count) }
-      it { is_expected.not_to permit(:delete_inputs) }
 
       it 'should index the project' do
         expect(scope.resolve.size).to eq 1
@@ -81,7 +72,6 @@ describe ProjectPolicy do
       it { is_expected.not_to permit(:update) }
       it { is_expected.not_to permit(:reorder) }
       it { is_expected.not_to permit(:destroy) }
-      it { is_expected.not_to permit(:delete_inputs) }
 
       it 'indexes the project' do
         expect(scope.resolve.size).to eq 2
@@ -105,9 +95,6 @@ describe ProjectPolicy do
       it { is_expected.not_to permit(:reorder) }
       it { is_expected.not_to permit(:destroy) }
       it { is_expected.not_to permit(:index_xlsx) }
-      it { is_expected.not_to permit(:survey_results) }
-      it { is_expected.not_to permit(:submission_count) }
-      it { is_expected.not_to permit(:delete_inputs) }
 
       it 'should not index the project'  do
         expect(scope.resolve.size).to eq 0
@@ -123,9 +110,6 @@ describe ProjectPolicy do
       it { is_expected.not_to permit(:reorder) }
       it { is_expected.not_to permit(:destroy) }
       it { is_expected.not_to permit(:index_xlsx) }
-      it { is_expected.not_to permit(:survey_results) }
-      it { is_expected.not_to permit(:submission_count) }
-      it { is_expected.not_to permit(:delete_inputs) }
 
       it 'should not index the project'  do
         expect(scope.resolve.size).to eq 0
@@ -145,9 +129,6 @@ describe ProjectPolicy do
       it { is_expected.to permit(:reorder) }
       it { is_expected.to permit(:destroy) }
       it { is_expected.to permit(:index_xlsx) }
-      it { is_expected.to permit(:survey_results) }
-      it { is_expected.to permit(:submission_count) }
-      it { is_expected.not_to permit(:delete_inputs) }
 
       it 'should index the project' do
         expect(scope.resolve.size).to eq 1
@@ -169,8 +150,6 @@ describe ProjectPolicy do
     it { is_expected.not_to permit(:reorder) }
     it { is_expected.not_to permit(:destroy) }
     it { is_expected.not_to permit(:index_xlsx) }
-    it { is_expected.not_to permit(:survey_results) }
-    it { is_expected.not_to permit(:submission_count) }
 
     it 'should not index the project'  do
       expect(scope.resolve.size).to eq 0
@@ -187,8 +166,6 @@ describe ProjectPolicy do
     it { is_expected.not_to permit(:reorder) }
     it { is_expected.not_to permit(:destroy) }
     it { is_expected.not_to permit(:index_xlsx) }
-    it { is_expected.not_to permit(:survey_results) }
-    it { is_expected.not_to permit(:submission_count) }
 
     it 'should not index the project'  do
       expect(scope.resolve.size).to eq 0
@@ -209,8 +186,6 @@ describe ProjectPolicy do
     it { is_expected.not_to permit(:reorder) }
     it { is_expected.not_to permit(:destroy) }
     it { is_expected.not_to permit(:index_xlsx) }
-    it { is_expected.not_to permit(:survey_results) }
-    it { is_expected.to     permit(:submission_count) }
 
     it 'should index the project' do
       expect(scope.resolve.size).to eq 1
@@ -231,8 +206,6 @@ describe ProjectPolicy do
     it { is_expected.to permit(:reorder) }
     it { is_expected.to permit(:destroy) }
     it { is_expected.to permit(:index_xlsx) }
-    it { is_expected.to permit(:survey_results) }
-    it { is_expected.to permit(:submission_count) }
 
     it 'should index the project' do
       expect(scope.resolve.size).to eq 1
@@ -255,8 +228,6 @@ describe ProjectPolicy do
       it { is_expected.not_to permit(:reorder) }
       it { is_expected.not_to permit(:destroy) }
       it { is_expected.not_to permit(:index_xlsx) }
-      it { is_expected.not_to permit(:survey_results) }
-      it { is_expected.not_to permit(:submission_count) }
 
       it 'should not index the project'  do
         expect(scope.resolve.size).to eq 0
@@ -272,8 +243,6 @@ describe ProjectPolicy do
       it { is_expected.not_to permit(:reorder) }
       it { is_expected.not_to permit(:destroy) }
       it { is_expected.not_to permit(:index_xlsx) }
-      it { is_expected.not_to permit(:survey_results) }
-      it { is_expected.not_to permit(:submission_count) }
 
       it 'should not index the project'  do
         expect(scope.resolve.size).to eq 0
@@ -293,8 +262,6 @@ describe ProjectPolicy do
       it { is_expected.to permit(:reorder) }
       it { is_expected.to permit(:destroy) }
       it { is_expected.to permit(:index_xlsx) }
-      it { is_expected.to permit(:survey_results) }
-      it { is_expected.to permit(:submission_count) }
 
       it 'should index the project' do
         expect(scope.resolve.size).to eq 1
@@ -345,14 +312,12 @@ describe ProjectPolicy do
       let!(:project) { create(:continuous_project, admin_publication_attributes: { parent_id: project_folder.admin_publication.id }) }
 
       it { is_expected.to permit(:create) }
-      it { is_expected.not_to permit(:delete_inputs) }
     end
 
     context 'for a timeline project not contained within a folder the user moderates' do
       let!(:project) { create(:continuous_project) }
 
       it { is_expected.not_to permit(:create) }
-      it { is_expected.not_to permit(:delete_inputs) }
     end
   end
 end
