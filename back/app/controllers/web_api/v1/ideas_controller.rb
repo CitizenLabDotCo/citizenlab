@@ -124,7 +124,7 @@ class WebApi::V1::IdeasController < ApplicationController
     if phase_ids.any?
       send_error and return unless is_moderator
 
-      send_error and return phase_ids.size != 1
+      send_error and return if phase_ids.size != 1
     end
 
     participation_context = if is_moderator && phase_ids.any?
