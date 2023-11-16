@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Polls::PollParticipationContext do
+describe Polls::PollPhase do
   describe 'poll_questions_allowed_in_participation_method' do
     it 'invalidates the participation context when there are poll questions associated to a non-poll participation_method' do
       question = create(:poll_question)

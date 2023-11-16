@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Polls::PollParticipationContext
+module Polls::PollPhase
   extend ActiveSupport::Concern
 
   included do

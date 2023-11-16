@@ -52,6 +52,7 @@
 #
 class Phase < ApplicationRecord
   include ParticipationContext
+  include Polls::PollPhase
   include DocumentAnnotation::DocumentAnnotationPhase
 
   CAMPAIGNS = [:project_phase_started].freeze
