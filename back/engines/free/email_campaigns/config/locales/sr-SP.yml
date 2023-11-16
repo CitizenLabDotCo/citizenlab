@@ -52,6 +52,7 @@ sr-Cyrl:
       "voting_basket_submitted": Потврда гласања
       "voting_basket_not_submitted": Гласови нису предати
       "voting_last_chance": Последња прилика за гласање
+      "voting_phase_started": Нова фаза пројекта са гласањем
       "voting_results": Резултати гласања
       "your_proposed_initiatives_digest": Недељни преглед ваших предлога
     general:

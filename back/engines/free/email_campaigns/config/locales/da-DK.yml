@@ -52,6 +52,7 @@ da:
       "voting_basket_submitted": Bekræftelse af afstemning
       "voting_basket_not_submitted": Stemmer ikke afgivet
       "voting_last_chance": Sidste chance for at stemme
+      "voting_phase_started": Ny projektfase med afstemning
       "voting_results": Afstemningsresultater
       "your_proposed_initiatives_digest": Ugentlig oversigt over dine forslag
     general:

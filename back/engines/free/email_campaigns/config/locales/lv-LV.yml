@@ -52,6 +52,7 @@ lv:
       "voting_basket_submitted": Balsošanas apstiprināšana
       "voting_basket_not_submitted": Neiesniegtās balsis
       "voting_last_chance": Pēdējā iespēja balsot
+      "voting_phase_started": Jauns projekta posms ar balsošanu
       "voting_results": Balsošanas rezultāti
       "your_proposed_initiatives_digest": Nedēļas pārskats par jūsu priekšlikumiem
     general:

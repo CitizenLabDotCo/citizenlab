@@ -52,6 +52,7 @@ el:
       "voting_basket_submitted": Επιβεβαίωση της ψηφοφορίας
       "voting_basket_not_submitted": Ψήφοι που δεν υποβλήθηκαν
       "voting_last_chance": Τελευταία ευκαιρία να ψηφίσετε
+      "voting_phase_started": Νέα φάση έργου με ψηφοφορία
       "voting_results": Αποτελέσματα ψηφοφορίας
       "your_proposed_initiatives_digest": Εβδομαδιαία επισκόπηση των προτάσεών σας
     general:

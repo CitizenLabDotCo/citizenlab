@@ -52,6 +52,7 @@ nl:
       "voting_basket_submitted": Bevestiging van stemming
       "voting_basket_not_submitted": Niet-ingediende stemmen
       "voting_last_chance": Laatste kans om te stemmen
+      "voting_phase_started": Nieuwe projectfase met stemmen
       "voting_results": Stemresultaten
       "your_proposed_initiatives_digest": Weekoverzicht van je voorstellen
     general:

@@ -25,6 +25,7 @@ import { getAvailableTabs, getCurrentTab } from './utils';
 import { PublicationTab, Props as BaseProps } from '.';
 import { IAdminPublicationData } from 'api/admin_publications/types';
 import { IStatusCountsAll } from 'api/admin_publications_status_counts/types';
+import { Multiloc } from 'typings';
 
 const Container = styled.div`
   display: flex;
@@ -48,6 +49,7 @@ interface Props extends BaseProps {
   loadingInitial?: boolean;
   loadingMore?: boolean;
   hasMore?: boolean;
+  currentlyWorkingOnText?: Multiloc;
 }
 
 const ProjectAndFolderCardsInner = ({
@@ -67,6 +69,7 @@ const ProjectAndFolderCardsInner = ({
   loadingInitial,
   loadingMore,
   hasMore,
+  currentlyWorkingOnText,
 }: Props) => {
   const [currentTab, setCurrentTab] = useState<PublicationTab | null>(null);
 
@@ -143,6 +146,7 @@ const ProjectAndFolderCardsInner = ({
         onChangeAreas={handleChangeAreas}
         onChangeSearch={handleChangeSearch}
         onChangeTab={onChangeTab}
+        currentlyWorkingOnText={currentlyWorkingOnText}
       />
 
       {loadingInitial && <LoadingBox />}
