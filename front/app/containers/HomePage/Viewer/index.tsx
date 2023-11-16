@@ -4,7 +4,7 @@ import React from 'react';
 import useHomepageSettings from 'api/home_page/useHomepageSettings';
 
 // components
-import Editor from '../Editor';
+import Editor from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Editor';
 import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
 import { Box } from '@citizenlab/cl2-component-library';
 
