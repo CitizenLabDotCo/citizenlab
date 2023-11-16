@@ -132,9 +132,9 @@ const PhaseTitle = ({
       phase.data.attributes.start_at,
       phase.data.attributes.end_at,
     ]);
-    const startDate = getPhaseDate(phase.data.attributes.start_at);
+    const startDate = getLocalisedDateString(phase.data.attributes.start_at);
     const endDate = phase.data.attributes.end_at
-      ? getPhaseDate(phase.data.attributes.end_at)
+      ? getLocalisedDateString(phase.data.attributes.end_at)
       : formatMessage(messages.noEndDate);
 
     if (smallerThanSmallTablet && phaseTitle && phaseNumber) {
@@ -167,7 +167,3 @@ const PhaseTitle = ({
 };
 
 export default PhaseTitle;
-
-function getPhaseDate(date: string) {
-  return getLocalisedDateString(date);
-}
