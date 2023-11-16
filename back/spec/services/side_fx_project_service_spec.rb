@@ -22,7 +22,7 @@ describe SideFxProjectService do
     end
 
     it 'runs the description through the text image service' do
-      expect_any_instance_of(TextImageService).to receive(:swap_data_images).with(project, :description_multiloc).and_return(project.description_multiloc)
+      expect_any_instance_of(TextImageService).to receive(:swap_data_images_multiloc).with(project.description_multiloc, field: :description_multiloc, imageable: project).and_return(project.description_multiloc)
       service.after_create(project, user)
     end
 
@@ -43,7 +43,7 @@ describe SideFxProjectService do
 
   describe 'before_update' do
     it 'runs the description through the text image service' do
-      expect_any_instance_of(TextImageService).to receive(:swap_data_images).with(project, :description_multiloc).and_return(project.description_multiloc)
+      expect_any_instance_of(TextImageService).to receive(:swap_data_images_multiloc).with(project.description_multiloc, field: :description_multiloc, imageable: project).and_return(project.description_multiloc)
       service.before_update(project, user)
     end
 
@@ -64,8 +64,11 @@ describe SideFxProjectService do
 
     it "logs a 'published' action when a draft project is published" do
       project.admin_publication.update!(publication_status: 'draft')
+
+      project.assign_attributes(admin_publication_attributes: { publication_status: 'published' })
       service.before_update project, user
-      project.admin_publication.update!(publication_status: 'published')
+
+      project.save!
 
       expect { service.after_update(project, user) }
         .to have_enqueued_job(LogActivityJob)
@@ -74,8 +77,9 @@ describe SideFxProjectService do
 
     it "does not log a 'published' action when a archived project is republished" do
       project.admin_publication.update!(publication_status: 'archived')
+
+      project.assign_attributes(admin_publication_attributes: { publication_status: 'published' })
       service.before_update project, user
-      project.admin_publication.update!(publication_status: 'published')
 
       expect { service.after_update(project, user) }
         .not_to have_enqueued_job(LogActivityJob)

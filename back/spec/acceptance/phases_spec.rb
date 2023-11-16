@@ -12,7 +12,7 @@ resource 'Phases' do
     header 'Content-Type', 'application/json'
     create(:idea_status_proposed)
     @project = create(:project)
-    @phases = create_list(:phase_sequence, 2, project: @project)
+    @project.phases = create_list(:phase_sequence, 2, project: @project)
   end
 
   get 'web_api/v1/projects/:project_id/phases' do
@@ -32,15 +32,18 @@ resource 'Phases' do
   end
 
   get 'web_api/v1/phases/:id' do
-    let(:id) { @phases.first.id }
+    before { @phase = @project.phases.first }
+
+    let(:id) { @phase.id }
 
     example 'Get one phase by id' do
-      create_list(:idea, 2, project: @project, phases: @phases)
+      create_list(:idea, 2, project: @project, phases: @project.phases)
       PermissionsService.new.update_all_permissions
+      @phase.update!(report: build(:report))
       do_request
       assert_status 200
 
-      expect(json_response.dig(:data, :id)).to eq @phases.first.id
+      expect(json_response.dig(:data, :id)).to eq @phase.id
       expect(json_response.dig(:data, :type)).to eq 'phase'
       expect(json_response.dig(:data, :attributes)).to include(
         reacting_like_method: 'unlimited',
@@ -48,11 +51,15 @@ resource 'Phases' do
       )
 
       expect(json_response.dig(:data, :relationships, :project)).to match({
-        data: { id: @phases.first.project_id, type: 'project' }
+        data: { id: @phase.project_id, type: 'project' }
+      })
+
+      expect(json_response.dig(:data, :relationships, :report)).to match({
+        data: { id: @phase.report.id, type: 'report' }
       })
 
       expect(json_response.dig(:data, :relationships, :permissions, :data).size)
-        .to eq(Permission.available_actions(@phases.first).length)
+        .to eq(Permission.available_actions(@phase).length)
 
       expect(json_response[:included].pluck(:type)).to include 'permission'
     end
@@ -150,7 +157,36 @@ resource 'Phases' do
         expect(json_response.dig(:data, :attributes, :reacting_like_limited_max)).to eq 10
         expect(json_response.dig(:data, :attributes, :start_at)).to eq start_at.to_s
         expect(json_response.dig(:data, :attributes, :end_at)).to eq end_at.to_s
+        expect(json_response.dig(:data, :attributes, :previous_phase_end_at_updated)).to be false
         expect(json_response.dig(:data, :relationships, :project, :data, :id)).to eq project_id
+      end
+
+      context 'Blank phase end dates' do
+        let(:start_at) { @project.phases.last.end_at + 5.days }
+        let(:end_at) { nil }
+
+        example_request 'Create a phase for a project with an open end date' do
+          assert_status 201
+          expect(json_response.dig(:data, :attributes, :end_at)).to be_nil
+        end
+      end
+
+      context 'Creating a new phase when a previous phase exists with no end date' do
+        let(:start_at) { @new_phase_start }
+        let(:end_at) { @new_phase_start + 5.days }
+
+        before do
+          @new_phase_start = @project.phases.last.end_at + 1.day
+          @project.phases.last.update!(end_at: nil)
+        end
+
+        example 'Create a phase on a project with an open ended last phase' do
+          do_request
+
+          assert_status 201
+          expect(json_response.dig(:data, :attributes, :previous_phase_end_at_updated)).to be true
+          expect(@project.phases.last.reload.end_at).not_to be_nil
+        end
       end
 
       describe 'voting phases' do
@@ -274,7 +310,7 @@ resource 'Phases' do
       describe do
         before do
           @project.phases.each(&:destroy!)
-          create(:phase, project: @project, start_at: Time.now - 2.days, end_at: Time.now + 2.days)
+          @project.phases << create(:phase, project: @project, start_at: Time.now - 2.days, end_at: Time.now + 2.days)
         end
 
         let(:start_at) { Time.now }

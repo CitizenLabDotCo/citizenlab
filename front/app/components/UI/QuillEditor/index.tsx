@@ -559,9 +559,7 @@ const QuillEditor = memo<Props>(
           setFocussed(true);
         }
       };
-
       const debouncedTextChangeHandler = debounce(textChangeHandler, 100);
-
       if (editor) {
         editor.on('text-change', debouncedTextChangeHandler);
         editor.on('selection-change', selectionChangeHandler);
@@ -767,9 +765,6 @@ const QuillEditor = memo<Props>(
                   visible={isButtonsMenuVisible}
                   onClickOutside={hideButtonsMenu}
                   duration={[200, 0]}
-                  popperOptions={{
-                    strategy: 'fixed',
-                  }}
                   content={
                     <DropdownList>
                       <DropdownListItem

@@ -6,12 +6,10 @@ import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-const apiPath = '*projects/:projectId/images/:imageId';
+import endpoints, { projectImagePath } from './__mocks__/_mockServer';
 
 const server = setupServer(
-  rest.delete(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200));
-  })
+  endpoints['DELETE projects/:projectId/images/:imageId']
 );
 
 describe('useDeleteProjectImage', () => {
@@ -35,7 +33,7 @@ describe('useDeleteProjectImage', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.delete(apiPath, (_req, res, ctx) => {
+      rest.delete(projectImagePath, (_req, res, ctx) => {
         return res(ctx.status(500));
       })
     );

@@ -30,9 +30,12 @@ cypress/videos/
 cypress/screenshots/
 
 # Storybook generated output
-.out/
+storybook-static/*
 
 #Local VsCode config
 .vscode/*
 
 cypress.env
+
+# Component library src copy for unit tests
+internals/jest/cl2-component-library/*

@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
 
 // styling
 import { colors } from 'utils/styleUtils';
@@ -15,7 +15,7 @@ const Container = ({ children }: Props) => (
     position="fixed"
     zIndex="99999"
     flex="0 0 auto"
-    h="100%"
+    h={`calc(100vh - ${stylingConsts.menuHeight}px)`}
     w="210px"
     display="flex"
     flexDirection="column"
@@ -24,7 +24,7 @@ const Container = ({ children }: Props) => (
     overflowY="auto"
     borderRight={`1px solid ${colors.grey500}`}
   >
-    <Box w="100%" display="inline">
+    <Box w="100%" display="inline" pb="20px">
       {children}
     </Box>
   </Box>

@@ -54,6 +54,9 @@ const AssignSingleVoteButton = ({
   const [searchParams] = useSearchParams();
   const isProcessing = searchParams.get('processing_vote') === ideaId;
 
+  const maxVotes = participationContext?.attributes.voting_max_total;
+  const maxVotesReached = maxVotes && numberOfVotesCast === maxVotes;
+
   // permissions
   const actionDescriptor = idea?.data.attributes.action_descriptor.voting;
 
@@ -95,12 +98,11 @@ const AssignSingleVoteButton = ({
   };
 
   const onAdd = async () => {
-    const maxVotes = participationContext?.attributes.voting_max_total;
     if (numberOfVotesCast === undefined) {
       return;
     }
 
-    if (maxVotes && numberOfVotesCast === maxVotes) {
+    if (maxVotesReached) {
       eventEmitter.emit(VOTES_EXCEEDED_ERROR_EVENT);
       return;
     }
@@ -112,26 +114,35 @@ const AssignSingleVoteButton = ({
     setVotes?.(ideaId, 0);
   };
 
-  const buttonDisabledExplanation = basket?.data?.attributes.submitted_at
-    ? formatMessage(
+  const getButtonDisabledExplanation = () => {
+    if (basket?.data?.attributes.submitted_at) {
+      return formatMessage(
         onIdeaPage ? messages.votesSubmittedIdeaPage : messages.votesSubmitted,
         { votes: numberOfVotesCast ?? 0 }
-      )
-    : undefined;
+      );
+    }
+
+    if (maxVotesReached && !ideaInBasket) {
+      return formatMessage(messages.maxVotesReached);
+    }
+    return undefined;
+  };
+
+  const disabledButtonExplanation = getButtonDisabledExplanation();
 
   return (
     <Tippy
-      disabled={!buttonDisabledExplanation}
+      disabled={!disabledButtonExplanation}
       interactive={true}
       placement="bottom"
-      content={buttonDisabledExplanation}
+      content={disabledButtonExplanation}
     >
       <div>
         <Button
           buttonStyle={ideaInBasket ? 'primary' : buttonStyle}
           bgColor={ideaInBasket ? colors.success : undefined}
           borderColor={ideaInBasket ? colors.success : undefined}
-          disabled={!!buttonDisabledExplanation}
+          disabled={!!disabledButtonExplanation}
           processing={isProcessing}
           icon={ideaInBasket ? 'check' : 'vote-ballot'}
           className="e2e-single-vote-button"

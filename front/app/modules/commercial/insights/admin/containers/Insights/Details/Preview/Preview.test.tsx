@@ -5,7 +5,7 @@ import clHistory from 'utils/cl-router/history';
 import Preview from './';
 import useInput from 'modules/commercial/insights/api/inputs/useInput';
 import inputs from 'modules/commercial/insights/fixtures/inputs';
-import { ideaData as mockIdeaData } from 'api/ideas/__mocks__/useIdeaById';
+import { ideaData as mockIdeaData } from 'api/ideas/__mocks__/_mockServer';
 
 jest.mock('api/ideas/useIdeaById', () => {
   return jest.fn(() => ({ data: { data: mockIdeaData[0] } }));

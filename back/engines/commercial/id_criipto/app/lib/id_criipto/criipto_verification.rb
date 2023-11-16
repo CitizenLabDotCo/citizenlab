@@ -69,7 +69,7 @@ module IdCriipto
     def profile_to_uid(auth)
       case config[:identity_source]
       when DK_MIT_ID
-        auth['uuid']
+        auth['uid']
       else
         raise "Unsupported identity source #{config[:identity_source]}"
       end

@@ -25,7 +25,7 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 // utils
 import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
-import { pastPresentOrFuture, toFullMonth } from 'utils/dateUtils';
+import {getLocalisedDateString, pastPresentOrFuture} from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
 // styling
@@ -66,9 +66,10 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
 
   // participation context
   const config = getVotingMethodConfig(votingMethod);
-  const phaseHasEnded = phase?.attributes
-    ? pastPresentOrFuture(phase?.attributes.end_at) === 'past'
-    : false;
+  const phaseHasEnded =
+    phase?.attributes && phase?.attributes.end_at
+      ? pastPresentOrFuture(phase?.attributes.end_at) === 'past'
+      : false;
   const phaseHasNotStartedYet = phase?.attributes
     ? pastPresentOrFuture(phase?.attributes.start_at) === 'future'
     : false;
@@ -98,7 +99,7 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
           </Warning>
         </Box>
       )}
-      <Title variant="h2" style={{ fontWeight: 600 }}>
+      <Title variant="h2" style={{ fontWeight: 500 }}>
         {config?.getStatusTitle &&
           formatMessage(config.getStatusHeader(basketStatus))}
       </Title>
@@ -129,12 +130,12 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
                 formatMessage,
               })}
           </Box>
-          {phase && showDate && (
+          {phase && showDate && phase.attributes.end_at && (
             <Text>
               {config?.getSubmissionTerm &&
                 formatMessage(config.getSubmissionTerm('plural'))}{' '}
               {formatMessage(messages.submittedUntil)}{' '}
-              <b>{toFullMonth(phase.attributes.end_at, 'day')}</b>.
+              <b>{getLocalisedDateString(phase?.attributes.end_at)}</b>.
             </Text>
           )}
         </>

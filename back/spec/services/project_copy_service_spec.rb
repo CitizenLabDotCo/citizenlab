@@ -78,7 +78,7 @@ describe ProjectCopyService do
         'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />'
       }
       field = create(:custom_field, :for_custom_form, description_multiloc: description_multiloc)
-      field.update! description_multiloc: TextImageService.new.swap_data_images(field, :description_multiloc)
+      field.update! description_multiloc: TextImageService.new.swap_data_images_multiloc(field.description_multiloc, field: :description_multiloc, imageable: field)
 
       template = service.export field.resource.participation_context
 
@@ -179,6 +179,16 @@ describe ProjectCopyService do
           'email' => attendee.email
         )
       })
+    end
+
+    it 'includes phases with no end date' do
+      project = create(:project_with_active_ideation_phase)
+      project.phases.last.update!(end_at: nil)
+
+      template = service.export project, anonymize_users: false, include_ideas: true
+
+      expect(template['models']['phase'].size).to eq 1
+      expect(template['models']['phase'].last[:end_at]).to be_nil
     end
 
     describe 'when copying records for models that use acts_as_list gem' do

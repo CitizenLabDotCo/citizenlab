@@ -4,15 +4,15 @@ import {
 } from 'components/LandingPages/citizen/TwoColumnLayout';
 import HeaderContent from 'containers/HomePage/SignedOutHeader/HeaderContent';
 import React from 'react';
-import { IHomepageSettingsData } from 'api/home_page/types';
+import { IHomepageSettingsAttributes } from 'api/home_page/types';
 import { Box } from '@citizenlab/cl2-component-library';
 
 interface Props {
-  homepageSettings: IHomepageSettingsData;
+  homepageSettings: Partial<IHomepageSettingsAttributes>;
 }
 
 const TwoColumnLayout = ({ homepageSettings }: Props) => {
-  const headerImage = homepageSettings.attributes.header_bg?.large;
+  const headerImage = homepageSettings.header_bg?.large;
 
   return (
     <Container
@@ -34,7 +34,11 @@ const TwoColumnLayout = ({ homepageSettings }: Props) => {
           />
         </Box>
       )}
-      <HeaderContent fontColors="dark" align="left" />
+      <HeaderContent
+        fontColors="dark"
+        align="left"
+        homepageSettings={homepageSettings}
+      />
     </Container>
   );
 };
