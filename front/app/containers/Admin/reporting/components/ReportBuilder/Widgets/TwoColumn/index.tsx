@@ -1,15 +1,10 @@
 import React from 'react';
 
-// components
-
 // styles
 import styled from 'styled-components';
 
 // craft
-import {
-  twoColumnCraftConfig,
-  TwoColumnWrapper,
-} from 'components/admin/ContentBuilder/Widgets/TwoColumn';
+import { twoColumnCraftConfig } from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import { Element } from '@craftjs/core';
 import Container from 'components/admin/ContentBuilder/Widgets/Container';
 import useLayout from 'containers/Admin/reporting/hooks/useLayout';
