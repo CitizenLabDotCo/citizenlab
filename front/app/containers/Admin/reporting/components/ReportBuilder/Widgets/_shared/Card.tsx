@@ -36,7 +36,7 @@ const Container = ({ pagebreak, children, ...rest }: ContainerProps) => {
 const Card = ({ title, children, ...rest }: Props) => (
   <Container {...rest}>
     <Box>
-      <Title variant="h3" color="primary" m={PX} mb="8px">
+      <Title variant="h3" color="primary" m={DEFAULT_PADDING} mb="8px">
         {title}
       </Title>
     </Box>
