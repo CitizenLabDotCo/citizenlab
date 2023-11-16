@@ -24,6 +24,12 @@ export interface Report {
         type: 'user';
       };
     };
+    phase?: {
+      data: {
+        id: string;
+        type: 'phase';
+      } | null;
+    };
   };
 }
 

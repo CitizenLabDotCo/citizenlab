@@ -12,6 +12,7 @@ import Container from 'components/admin/ContentBuilder/Widgets/Container';
 import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
 import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
+import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
 
 const ImageTextCards: UserComponent = () => {
   const isSmallerThanTablet = useBreakpoint('tablet');
@@ -27,7 +28,10 @@ const ImageTextCards: UserComponent = () => {
       style={{
         maxWidth: '1150px',
         margin: '0 auto',
-        padding: isSmallerThanTablet && parent === 'ROOT' ? '0px 20px' : '0px',
+        padding:
+          isSmallerThanTablet && parent === 'ROOT'
+            ? `0px ${DEFAULT_PADDING}`
+            : '0px',
       }}
     >
       <TwoColumn columnLayout="1-2">

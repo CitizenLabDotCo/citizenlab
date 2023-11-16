@@ -12,6 +12,7 @@ import {
 import messages from './messages';
 import EventsWidget from 'components/LandingPages/citizen/EventsWidget';
 import { useIntl } from 'utils/cl-intl';
+import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
 
 const Events = () => {
   const isSmallerThanTablet = useBreakpoint('tablet');
@@ -20,9 +21,9 @@ const Events = () => {
       <Box
         maxWidth="1150px"
         margin="0 auto"
-        pt={isSmallerThanTablet ? '20px' : '40px'}
-        pb={isSmallerThanTablet ? '20px' : '40px'}
-        px={isSmallerThanTablet ? '20px' : '0px'}
+        pt={isSmallerThanTablet ? DEFAULT_PADDING : '40px'}
+        pb={isSmallerThanTablet ? DEFAULT_PADDING : '40px'}
+        px={isSmallerThanTablet ? DEFAULT_PADDING : '0px'}
       >
         <EventsWidget />
       </Box>

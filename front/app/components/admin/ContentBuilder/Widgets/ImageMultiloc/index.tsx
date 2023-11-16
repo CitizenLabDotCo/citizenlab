@@ -29,6 +29,7 @@ import eventEmitter from 'utils/eventEmitter';
 import {
   IMAGE_UPLOADING_EVENT,
   IMAGE_LOADED_EVENT,
+  DEFAULT_PADDING,
 } from 'components/admin/ContentBuilder/constants';
 
 // hooks
@@ -70,7 +71,7 @@ const Image = ({ alt = {}, image }: Props) => {
       minHeight="26px"
       maxWidth="1150px"
       margin="0 auto"
-      px={isSmallerThanTablet && parent === ROOT_NODE ? '20px' : '0px'}
+      px={isSmallerThanTablet && parent === ROOT_NODE ? DEFAULT_PADDING : '0px'}
     >
       {image?.imageUrl && (
         <ImageComponent

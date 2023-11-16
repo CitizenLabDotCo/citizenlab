@@ -21,6 +21,7 @@ import { useIntl } from 'utils/cl-intl';
 import { Multiloc } from 'typings';
 import useLocalize from 'hooks/useLocalize';
 import QuillMutilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
+import { DEFAULT_PADDING } from '../../constants';
 
 interface AccordionProps {
   text: Multiloc;
@@ -40,7 +41,7 @@ const Accordion = ({ text, title, openByDefault = false }: AccordionProps) => {
     <AccordionComponent
       maxWidth="1150px"
       margin="0 auto"
-      px={isSmallerThanTablet && parent === ROOT_NODE ? '20px' : '0px'}
+      px={isSmallerThanTablet && parent === ROOT_NODE ? DEFAULT_PADDING : '0px'}
       isOpenByDefault={openByDefault}
       title={
         <Box id="e2e-accordion" display="flex">

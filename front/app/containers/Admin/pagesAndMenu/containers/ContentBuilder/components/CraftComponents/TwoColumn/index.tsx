@@ -13,6 +13,7 @@ import {
 
 // typings
 import { ColumnLayout } from 'components/admin/ContentBuilder/typings';
+import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
 
 type TwoColumnProps = {
   columnLayout: ColumnLayout;
@@ -31,7 +32,7 @@ export const TwoColumn = ({ columnLayout, children }: TwoColumnProps) => {
       columnLayout={columnLayout}
       maxWidth="1150px"
       margin="0 auto"
-      px={isSmallerThanTablet && parent === ROOT_NODE ? '20px' : '0px'}
+      px={isSmallerThanTablet && parent === ROOT_NODE ? DEFAULT_PADDING : '0px'}
     >
       {children || (
         <>
