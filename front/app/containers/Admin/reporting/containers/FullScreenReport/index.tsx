@@ -61,10 +61,14 @@ export const FullScreenReport = ({ reportId }: Props) => {
         <FullScreenWrapper onUpdateDraftData={setDraftData} padding="0">
           {isLoadingLayout && <Spinner />}
           {!isLoadingLayout && (
-            <Box maxWidth="800px">
-              <Editor isPreview={true}>
-                {editorData && <ContentBuilderFrame editorData={editorData} />}
-              </Editor>
+            <Box w="100%" display="flex" justifyContent="center">
+              <Box maxWidth="800px">
+                <Editor isPreview={true}>
+                  {editorData && (
+                    <ContentBuilderFrame editorData={editorData} />
+                  )}
+                </Editor>
+              </Box>
             </Box>
           )}
         </FullScreenWrapper>

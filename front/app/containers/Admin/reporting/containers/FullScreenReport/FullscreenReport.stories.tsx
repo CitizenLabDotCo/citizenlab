@@ -6,7 +6,16 @@ const meta = {
   title: 'Example/FullScreenReport',
   render: (props) => {
     return (
-      <div style={{ width: '100%', display: 'flex', alignItems: 'center' }}>
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+      >
         <FullScreenReport {...props} />
       </div>
     );
