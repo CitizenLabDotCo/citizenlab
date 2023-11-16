@@ -28,7 +28,6 @@ describe('Form builder page element', () => {
           projectId,
           title: 'firstPhaseTitle',
           startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
-          endAt: moment().subtract(3, 'month').format('DD/MM/YYYY'),
           participationMethod: 'native_survey',
           canPost: true,
           canComment: true,
@@ -91,7 +90,9 @@ describe('Form builder page element', () => {
   });
 
   it('does not let the user delete the page if there is only one page', () => {
-    cy.visit(`admin/projects/${projectId}/native-survey/edit`);
+    cy.visit(
+      `admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
+    );
     cy.get('[data-cy="e2e-page"]').click();
     cy.get('#e2e-field-group-title-multiloc').type('Page title', {
       force: true,
