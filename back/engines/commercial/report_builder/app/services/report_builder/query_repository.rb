@@ -20,8 +20,9 @@ module ReportBuilder
     protected
 
     def run_query(json_query)
-      json_query_with_indifferent_access = { query: json_query }.with_indifferent_access[:query]
-      results, errors, _paginations = Analytics::MultipleQueries.new.run(json_query_with_indifferent_access)
+      # TODO: investigate why we need parameters and not HashWithIndifferentAccess
+      json_query_params = ActionController::Parameters.new({ query: json_query }).permit![:query]
+      results, errors, _paginations = Analytics::MultipleQueries.new.run(json_query_params)
       # TODO: it's weird to validate and do not check the result. Fix this.
       if errors.present?
         raise "Error processing Analytics query: #{errors.to_json}"
