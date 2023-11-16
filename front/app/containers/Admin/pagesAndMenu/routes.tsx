@@ -89,7 +89,7 @@ export default () => ({
       ),
     },
     {
-      path: `${HOMEPAGE_PATH}/content-builder`, // /homepage/content-builder
+      path: `homepage-builder`,
       element: (
         <PageLoading>
           <ContentBuilder />
@@ -97,7 +97,7 @@ export default () => ({
       ),
     },
     {
-      path: `${HOMEPAGE_PATH}/content-builder/preview`, // /homepage/content-builder/preview
+      path: `homepage-builder/preview`,
       element: (
         <PageLoading>
           <FullScreenPreview />

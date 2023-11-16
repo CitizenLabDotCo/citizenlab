@@ -29,6 +29,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { Item } from 'components/admin/ResourceList/SortableList';
 import { getNavbarItemSlug } from 'api/navbar/util';
 import useReorderNavbarItem from 'api/navbar/useReorderNavbarItems';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const VisibleNavbarItemList = ({
   intl: { formatMessage },
@@ -38,15 +39,20 @@ const VisibleNavbarItemList = ({
   const { mutate: reorderNavbarItem } = useReorderNavbarItem();
   const { data: navbarItems } = useNavbarItems();
   const pageSlugById = useCustomPageSlugById();
+  const homepageBuilderEnabled = useFeatureFlag({
+    name: 'homepage_builder',
+  });
 
   if (isNilOrError(navbarItems) || isNilOrError(pageSlugById)) {
     return null;
   }
 
   const handleClickEdit = (navbarItem: Item) => () => {
-    // redirect to homepage toggle page
+    // redirect to homepage edit page
     if (navbarItem?.attributes?.code && navbarItem.attributes.code === 'home') {
-      clHistory.push(`${ADMIN_PAGES_MENU_PATH}/homepage/`);
+      homepageBuilderEnabled
+        ? clHistory.push(`${ADMIN_PAGES_MENU_PATH}/homepage-builder/`)
+        : clHistory.push(`${ADMIN_PAGES_MENU_PATH}/homepage/`);
       return;
     }
 
