@@ -1,6 +1,6 @@
 import React, { FormEvent, useState } from 'react';
 import styled from 'styled-components';
-import { get } from 'lodash';
+import { get } from 'lodash-es';
 import { hideVisually } from 'polished';
 import {
   fontSizes,

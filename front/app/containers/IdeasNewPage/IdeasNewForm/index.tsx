@@ -26,6 +26,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 const ProfileVisiblity = lazy(() => import('./ProfileVisibility'));
 import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
 import Warning from 'components/UI/Warning';
+import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
 
 // utils
 import { geocode, reverseGeocode } from 'utils/locationTools';
@@ -73,6 +74,8 @@ interface FormValues {
 
 const IdeasNewPageWithJSONForm = () => {
   const locale = useLocale();
+  const [isDisclaimerOpened, setIsDisclaimerOpened] = useState(false);
+  const [formData, setFormData] = useState<FormValues | null>(null);
   const { mutateAsync: addIdea } = useAddIdea();
   const { formatMessage } = useIntl();
   const params = useParams<{ slug: string }>();
@@ -137,6 +140,30 @@ const IdeasNewPageWithJSONForm = () => {
   const { data: phaseFromUrl } = usePhase(phaseId);
   const config = getConfig(phaseFromUrl?.data, phases, project);
 
+  const handleDisclaimer = (data: FormValues) => {
+    const disclamerNeeded =
+      data.idea_files_attributes ||
+      data.idea_images_attributes ||
+      Object.values(data.body_multiloc).some((value) => value.includes('<img'));
+
+    setFormData(data);
+    if (disclamerNeeded) {
+      return setIsDisclaimerOpened(true);
+    } else {
+      return onSubmit(data);
+    }
+  };
+
+  const onAcceptDisclaimer = (data: FormValues | null) => {
+    if (!data) return;
+    onSubmit(data);
+    setIsDisclaimerOpened(false);
+  };
+
+  const onCancelDisclaimer = () => {
+    setIsDisclaimerOpened(false);
+  };
+
   const onSubmit = async (data: FormValues) => {
     if (!project) {
       return;
@@ -150,18 +177,21 @@ const IdeasNewPageWithJSONForm = () => {
       location_point_geojson = await getLocationGeojson(initialFormData, data);
     }
 
+    // If the user is an admin or project moderator, we allow them to post to a specific phase
+    const phase_ids =
+      phaseId &&
+      !isNilOrError(authUser) &&
+      (isAdmin({ data: authUser.data }) ||
+        isProjectModerator({ data: authUser.data }, project.data.id))
+        ? [phaseId]
+        : null;
+
     const idea = await addIdea({
       ...data,
       location_point_geojson,
       project_id: project.data.id,
       publication_status: 'published',
-      phase_ids:
-        phaseId &&
-        !isNilOrError(authUser) &&
-        (isAdmin({ data: authUser.data }) ||
-          isProjectModerator({ data: authUser.data }, project.data.id))
-          ? [phaseId]
-          : null,
+      phase_ids,
       anonymous: postAnonymously ? true : undefined,
     });
 
@@ -228,7 +258,7 @@ const IdeasNewPageWithJSONForm = () => {
           <Form
             schema={schema}
             uiSchema={uiSchema}
-            onSubmit={onSubmit}
+            onSubmit={isSurvey ? onSubmit : handleDisclaimer}
             initialFormData={initialFormData}
             getAjvErrorMessage={getAjvErrorMessage}
             getApiErrorMessage={getApiErrorMessage}
@@ -284,6 +314,11 @@ const IdeasNewPageWithJSONForm = () => {
           }}
         />
       )}
+      <ContentUploadDisclaimer
+        isDisclaimerOpened={isDisclaimerOpened}
+        onAcceptDisclaimer={() => onAcceptDisclaimer(formData)}
+        onCancelDisclaimer={onCancelDisclaimer}
+      />
     </PageContainer>
   );
 };

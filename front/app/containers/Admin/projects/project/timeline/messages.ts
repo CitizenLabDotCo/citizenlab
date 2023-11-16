@@ -107,6 +107,36 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectTimeline.automatedEmails',
     defaultMessage: 'Automated emails',
   },
+  noEndDate: {
+    id: 'app.containers.AdminPage.ProjectTimeline.noEndDate',
+    defaultMessage: 'No end date',
+  },
+  noEndDateCheckbox: {
+    id: 'app.containers.AdminPage.ProjectTimeline.noEndDateDescription',
+    defaultMessage: "This phase doesn't have a predefined end date.",
+  },
+  noEndDateWarningTitle: {
+    id: 'app.containers.AdminPage.ProjectTimeline.noEndDateWarningTitle',
+    defaultMessage: 'Not selecting an end date for this implies that:',
+  },
+  noEndDateWarningBullet1: {
+    id: 'app.containers.AdminPage.ProjectTimeline.noEndDateWarningBullet1',
+    defaultMessage:
+      "Some methods' results sharing (such as voting results) won't be triggered until an end date is selected.",
+  },
+  noEndDateWarningBullet2: {
+    id: 'app.containers.AdminPage.ProjectTimeline.noEndDateWarningBullet2',
+    defaultMessage:
+      'As soon as you add a phase after this one, it will add an end date to this phase.',
+  },
+  endDate: {
+    id: 'app.containers.AdminPage.ProjectTimeline.endDate',
+    defaultMessage: 'End date',
+  },
+  startDate: {
+    id: 'app.containers.AdminPage.ProjectTimeline.startDate',
+    defaultMessage: 'Start date',
+  },
   automatedEmailsDescription: {
     id: 'app.containers.AdminPage.ProjectTimeline.automatedEmailsDescription',
     defaultMessage: 'You can configure emails triggered on a phase level',
@@ -119,5 +149,10 @@ export default defineMessages({
   automatedEmailsLinkText: {
     id: 'app.containers.Admin.PagesAndMenu.containers.ProjectsList.automatedEmailsLinkText',
     defaultMessage: 'automated emails',
+  },
+  emptyDescriptionWarning: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.ProjectsList.emptyDescriptionWarning1',
+    defaultMessage:
+      'For single phase projects, if the end date is empty and the description is not filled in, a timeline will not be displayed on the project page.',
   },
 });

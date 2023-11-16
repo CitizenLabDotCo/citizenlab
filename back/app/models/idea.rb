@@ -183,7 +183,7 @@ class Idea < ApplicationRecord
     else
       now = Time.zone.now
       phases_with_ideas = phases.select(&:can_contain_ideas?).sort_by(&:start_at)
-      first_past_phase_with_ideas = phases_with_ideas.reverse_each.detect { |phase| phase.end_at <= now }
+      first_past_phase_with_ideas = phases_with_ideas.reverse_each.detect { |phase| phase.end_at&.<= now }
       if first_past_phase_with_ideas
         first_past_phase_with_ideas.input_term
       else # now is before the first phase with ideas

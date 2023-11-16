@@ -7,7 +7,7 @@ import Body from 'components/PostShowComponents/Body';
 import DropdownMap from 'components/PostShowComponents/DropdownMap';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
 import PostedBy from 'containers/InitiativesShow/PostedBy';
-import CommentsSection from 'components/PostShowComponents/Comments';
+import CommentsSection from 'components/PostShowComponents/Comments/CommentsSection';
 import FileAttachments from 'components/UI/FileAttachments';
 import FeedbackSettings from './FeedbackSettings';
 import Button from 'components/UI/Button';

@@ -27,4 +27,9 @@ export default defineMessages({
     id: 'app.components.form.controls.selectAsManyAsYouLike',
     defaultMessage: '*Select as many as you like',
   },
+  validCordinatesTooltip: {
+    id: 'app.components.form.controls.validCordinatesTooltip',
+    defaultMessage:
+      "If the location is not displayed among the options as you type, you can add valid coordinates in the format 'latitude, longitude' to specify a precise location.",
+  },
 });

@@ -61,6 +61,17 @@ class Tenant < ApplicationRecord
     def host_to_schema_name(host)
       host&.tr('.', '_')
     end
+
+    # Reorder tenants by most important tenants (active) first
+    def prioritize(tenants)
+      priority_order = %w[active trial demo expired_trial churned not_applicable]
+      tenant_lifecycles = AppConfiguration.from_tenants(tenants).map do |config|
+        { id: config[:id], lifecycle_stage: config[:settings]['core']['lifecycle_stage'] }
+      end
+      ordered_tenants = tenant_lifecycles.sort_by { |tenant| priority_order.index(tenant[:lifecycle_stage]) }
+      ordered_ids = ordered_tenants.pluck(:id)
+      tenants.sort_by { |tenant| ordered_ids.index(tenant[:id]) }
+    end
   end
 
   def self.current

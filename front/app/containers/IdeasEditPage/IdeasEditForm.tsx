@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 
 // components
 import PageContainer from 'components/UI/PageContainer';
@@ -8,6 +8,7 @@ import ideaFormMessages from 'containers/IdeasNewPage/messages';
 import Form from 'components/Form';
 import GoBackToIdeaPage from 'containers/IdeasEditPage/GoBackToIdeaPage';
 import IdeasEditMeta from './IdeasEditMeta';
+import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
 
 // services
 import { usePermission } from 'utils/permissions';
@@ -56,6 +57,9 @@ interface FormValues {
 
 const IdeasEditForm = ({ params: { ideaId } }: WithRouterProps) => {
   const previousPathName = useContext(PreviousPathnameContext);
+  const [isDisclaimerOpened, setIsDisclaimerOpened] = useState(false);
+  const [formData, setFormData] = useState<FormValues | null>(null);
+
   const { data: authUser } = useAuthUser();
   const { data: idea } = useIdeaById(ideaId);
   const { mutate: deleteIdeaImage } = useDeleteIdeaImage();
@@ -98,6 +102,30 @@ const IdeasEditForm = ({ params: { ideaId } }: WithRouterProps) => {
     initialFormData['location_point_geojson'] =
       idea.data.attributes.location_point_geojson;
   }
+
+  const handleDisclaimer = (data: FormValues) => {
+    const disclamerNeeded =
+      data.idea_files_attributes ||
+      data.idea_images_attributes ||
+      Object.values(data.body_multiloc).some((value) => value.includes('<img'));
+
+    setFormData(data);
+    if (disclamerNeeded) {
+      return setIsDisclaimerOpened(true);
+    } else {
+      return onSubmit(data);
+    }
+  };
+
+  const onAcceptDisclaimer = (data: FormValues | null) => {
+    if (!data) return;
+    onSubmit(data);
+    setIsDisclaimerOpened(false);
+  };
+
+  const onCancelDisclaimer = () => {
+    setIsDisclaimerOpened(false);
+  };
 
   const onSubmit = async (data: FormValues) => {
     const { idea_images_attributes, ...ideaWithoutImages } = data;
@@ -213,7 +241,7 @@ const IdeasEditForm = ({ params: { ideaId } }: WithRouterProps) => {
           <Form
             schema={schema}
             uiSchema={uiSchema}
-            onSubmit={onSubmit}
+            onSubmit={handleDisclaimer}
             initialFormData={initialFormData}
             inputId={idea.data.id}
             getAjvErrorMessage={getAjvErrorMessage}
@@ -225,6 +253,11 @@ const IdeasEditForm = ({ params: { ideaId } }: WithRouterProps) => {
       ) : isError(project) || inputSchemaError ? null : (
         <FullPageSpinner />
       )}
+      <ContentUploadDisclaimer
+        isDisclaimerOpened={isDisclaimerOpened}
+        onAcceptDisclaimer={() => onAcceptDisclaimer(formData)}
+        onCancelDisclaimer={onCancelDisclaimer}
+      />
     </PageContainer>
   );
 };

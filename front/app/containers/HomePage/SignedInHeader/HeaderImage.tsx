@@ -2,7 +2,8 @@ import React from 'react';
 import styled, { useTheme } from 'styled-components';
 import { Image, Box } from '@citizenlab/cl2-component-library';
 import { media, isRtl } from 'utils/styleUtils';
-import useHomepageSettings from 'api/home_page/useHomepageSettings';
+import { IHomepageSettingsAttributes } from 'api/home_page/types';
+import { isNumber } from 'lodash-es';
 
 const HeaderImageContainer = styled.div`
   position: absolute;
@@ -37,17 +38,19 @@ const StyledImage = styled(Image)`
   `}
 `;
 
-const HeaderImage = () => {
-  const { data: homepageSettings } = useHomepageSettings();
+const HeaderImage = ({
+  homepageSettings,
+}: {
+  homepageSettings: Partial<IHomepageSettingsAttributes>;
+}) => {
   const theme = useTheme();
 
   if (homepageSettings) {
-    const tenantHeaderImage = homepageSettings.data.attributes.header_bg
-      ? homepageSettings.data.attributes.header_bg.large
+    const tenantHeaderImage = homepageSettings.header_bg
+      ? homepageSettings.header_bg.large
       : null;
     const isFixedBannerLayout =
-      homepageSettings.data.attributes.banner_layout === 'fixed_ratio_layout';
-
+      homepageSettings.banner_layout === 'fixed_ratio_layout';
     return (
       <HeaderImageContainer>
         <HeaderImageContainerInner data-cy="e2e-signed-in-header-image-parent">
@@ -67,14 +70,22 @@ const HeaderImage = () => {
           <Box
             data-testid="signed-in-header-image-overlay"
             background={
-              theme.signedInHeaderOverlayColor || theme.colors.tenantPrimary
+              homepageSettings.banner_signed_in_header_overlay_color ||
+              theme.signedInHeaderOverlayColor ||
+              theme.colors.tenantPrimary
             }
             // With this fixed ratio layout, we don't have an image (see above),
             // so we set opacity to 1.
             // Ticket: https://citizenlab.atlassian.net/browse/CL-2215
 
             opacity={
-              isFixedBannerLayout ? 1 : theme.signedInHeaderOverlayOpacity / 100
+              isFixedBannerLayout
+                ? 1
+                : isNumber(
+                    homepageSettings.banner_signed_in_header_overlay_opacity
+                  )
+                ? homepageSettings.banner_signed_in_header_overlay_opacity / 100
+                : theme.signedInHeaderOverlayOpacity / 100
             }
             position="absolute"
             top="0"

@@ -269,4 +269,113 @@ RSpec.describe Phase do
       end
     end
   end
+
+  describe '#last_phase?' do
+    let(:project) { create(:project_with_phases) }
+
+    it 'returns true for the last phase in a project' do
+      old_last_phase = project.phases.last
+      expect(old_last_phase.last_phase?).to be true
+
+      new_last_phase = create(:phase, project: project, start_at: (old_last_phase.end_at + 1.day).to_s)
+      expect(new_last_phase.last_phase?).to be true
+      expect(old_last_phase.last_phase?).to be false
+    end
+
+    it 'returns false for any other phase' do
+      expect(project.phases.first.last_phase?).to be false
+    end
+  end
+
+  describe '#validate_end_at' do
+    let(:project) { create(:project_with_phases) }
+
+    it 'allows blank end date for the last phase' do
+      last_phase = project.phases.last
+      last_phase.end_at = nil
+      expect(last_phase).to be_valid
+    end
+
+    it 'does not allow blank end date for any other phase' do
+      first_phase = project.phases.first
+      first_phase.end_at = nil
+      expect(first_phase).not_to be_valid
+    end
+
+    it 'allows a single phase project with a blank end_at' do
+      project = create(:project, process_type: 'timeline')
+      phase = create(:phase, project: project, end_at: nil)
+      expect(phase).to be_valid
+      expect(project.reload.phases.count).to eq 1
+    end
+  end
+
+  describe '#validate_no_other_overlapping_phases' do
+    let(:project) { create(:project) }
+
+    before do
+      project.phases << create(:phase, project: project, start_at: '2022-10-01', end_at: '2022-10-08')
+    end
+
+    it 'validates when phases do not overlap' do
+      phase = create(:phase, project: project, start_at: '2022-10-09', end_at: '2022-10-15')
+      expect(phase).to be_valid
+    end
+
+    it 'is not valid when phases overlap' do
+      expect { create(:phase, project: project, start_at: '2022-10-07', end_at: '2022-10-10') }.to raise_error ActiveRecord::RecordInvalid
+    end
+
+    it 'is valid when there is no end date for the last phase' do
+      phase = create(:phase, project: project, start_at: '2022-10-09', end_at: nil)
+      expect(phase).to be_valid
+    end
+  end
+
+  describe '#validate_previous_blank_end_at' do
+    let(:project) { create(:project_with_phases) }
+    let(:old_last_phase) { project.phases.last }
+
+    before { old_last_phase.update!(end_at: nil) }
+
+    context 'phase with no end_at date is added' do
+      it 'adds an end date to a previous phase with no end date when a later phase is added' do
+        expect(old_last_phase.reload.end_at).to be_nil
+        expect(project.phases.count).to eq 5
+
+        new_phase_start = old_last_phase.start_at + 5.days
+        new_phase = create(:phase, project: project, start_at: new_phase_start, end_at: nil)
+        expect(old_last_phase.reload.end_at).to eq(new_phase_start - 1.day)
+        expect(new_phase.previous_phase_end_at_updated?).to be true
+        expect(project.phases.count).to eq 6
+      end
+
+      it 'returns an error if the new phase start date is too close to the old phase start date' do
+        new_phase_start = old_last_phase.start_at + 1.day
+        expect { create(:phase, project: project, start_at: new_phase_start, end_at: nil) }.to raise_error ActiveRecord::RecordInvalid
+        expect(old_last_phase.reload.end_at).to be_nil
+        expect(project.phases.count).to eq 5
+      end
+    end
+
+    context 'phase with end_at date is added' do
+      it 'adds an end_at date to a previous phase with no end date when a later phase is added' do
+        expect(old_last_phase.reload.end_at).to be_nil
+        expect(project.phases.count).to eq 5
+
+        new_phase_start = old_last_phase.start_at + 5.days
+        new_phase = create(:phase, project: project, start_at: new_phase_start, end_at: new_phase_start + 5.days)
+        expect(old_last_phase.reload.end_at).to eq(new_phase_start - 1.day)
+        expect(new_phase.previous_phase_end_at_updated?).to be true
+        expect(project.phases.count).to eq 6
+      end
+
+      it 'returns an error if the new phase start date is too close to the old phase start date' do
+        new_phase_start = old_last_phase.start_at + 1.day
+        expect { create(:phase, project: project, start_at: new_phase_start, end_at: new_phase_start + 5.days) }.to raise_error ActiveRecord::RecordInvalid
+        expect(old_last_phase.reload.end_at).to be_nil
+        expect(project.phases.count).to eq 5
+      end
+    end
+  end
 end

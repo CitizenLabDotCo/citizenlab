@@ -115,6 +115,10 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
+            phase_reports: {
+              enabled: true,
+              allowed: true
+            },
             blocking_profanity: {
               enabled: true,
               allowed: true
@@ -369,6 +373,14 @@ module MultiTenancy
                   environment: 'pre_production_integration',
                   issuer: ENV.fetch('DEFAULT_NEMLOG_IN_ISSUER', 'fake issuer'),
                   private_key: ENV.fetch('DEFAULT_NEMLOG_IN_PRIVATE_KEY', 'fake key')
+                },
+                {
+                  name: 'criipto',
+                  domain: 'cl-test.criipto.id',
+                  client_id: ENV.fetch('DEFAULT_CRIIPTO_CLIENT_ID', 'fake id'),
+                  client_secret: ENV.fetch('DEFAULT_CRIIPTO_CLIENT_SECRET', 'fake secret'),
+                  identity_source: 'DK MitID',
+                  method_name_multiloc: { en: 'MitID (Criipto)' }
                 }
               ]
             },
@@ -427,7 +439,7 @@ module MultiTenancy
               allowed: true
             },
             posthog_integration: {
-              enabled: true,
+              enabled: false,
               allowed: true
             },
             user_blocking: {
@@ -456,6 +468,10 @@ module MultiTenancy
               allowed: true
             },
             import_printed_forms: {
+              enabled: true,
+              allowed: true
+            },
+            homepage_builder: {
               enabled: true,
               allowed: true
             }

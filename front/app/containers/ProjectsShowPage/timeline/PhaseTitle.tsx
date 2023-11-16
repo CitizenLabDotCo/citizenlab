@@ -7,7 +7,7 @@ import useLocalize from 'hooks/useLocalize';
 
 // i18n
 import messages from 'containers/ProjectsShowPage/messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 // utils
 import {getLocalisedDateString, pastPresentOrFuture} from 'utils/dateUtils';
@@ -21,7 +21,6 @@ import {
   viewportWidths,
   isRtl,
 } from 'utils/styleUtils';
-import { IPhaseData } from 'api/phases/types';
 
 const Container = styled.div<{ descriptionHasContent: boolean }>`
   display: flex;
@@ -125,6 +124,7 @@ const PhaseTitle = ({
   const { windowWidth } = useWindowSize();
   const localize = useLocalize();
   const smallerThanSmallTablet = windowWidth <= viewportWidths.tablet;
+  const { formatMessage } = useIntl();
 
   if (phase) {
     let phaseTitle = localize(phase.data.attributes.title_multiloc);
@@ -132,7 +132,10 @@ const PhaseTitle = ({
       phase.data.attributes.start_at,
       phase.data.attributes.end_at,
     ]);
-    const { startDate, endDate } = getPhaseDates(phase.data);
+    const startDate = getPhaseDate(phase.data.attributes.start_at);
+    const endDate = phase.data.attributes.end_at
+      ? getPhaseDate(phase.data.attributes.end_at)
+      : formatMessage(messages.noEndDate);
 
     if (smallerThanSmallTablet && phaseTitle && phaseNumber) {
       phaseTitle = `${phaseNumber}. ${phaseTitle}`;
@@ -165,9 +168,6 @@ const PhaseTitle = ({
 
 export default PhaseTitle;
 
-function getPhaseDates(phase: IPhaseData) {
-  const startDate = getLocalisedDateString(phase?.attributes.start_at);
-  const endDate = getLocalisedDateString(phase?.attributes.end_at);
-
-  return { startDate, endDate };
+function getPhaseDate(date: string) {
+  return getLocalisedDateString(date);
 }

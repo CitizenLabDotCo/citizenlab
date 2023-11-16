@@ -22,7 +22,11 @@ class PublishActivityToRabbitJob < ApplicationJob
       **service.activity_properties(activity)
     }
 
-    event[:user_id] = activity.user_id if activity.user_id
+    if activity.user_id
+      event[:user_id] = activity.user_id
+      event[:user_email] = activity.user&.email
+    end
+
     event
   end
 
