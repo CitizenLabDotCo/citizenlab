@@ -37,12 +37,26 @@ namespace :migrate_craftjson do
     puts "Good: #{good}"
     puts "Baad: #{bad}"
   end
-end
 
-# Potentially ignore: 
-# {"resolvedName"=>"WhiteSpace"}
-# Containers with no children: {"resolvedName"=>"TwoColumn"}=>[]}, 
-# Trees with no text-related elements
+  desc 'Verify project'
+  task :verify_project, %i[host project_slug] => [:environment] do |_t, args|
+    tenant = Tenant.find_by host: args[:host]
+    Apartment::Tenant.switch(tenant.schema_name) do
+      project = Project.find_by slug: args[:project_slug]
+      craftjs_jsonmultiloc = project.content_builder_layouts.first.craftjs_jsonmultiloc
+      locales = AppConfiguration.instance.settings.dig('core', 'locales')
+      structures = craftjs_jsonmultiloc.values.map do |elts|
+        tree_structure elts
+      end
+
+      if structures.uniq.size > 1
+        puts 'Incompatible structures :('
+      else
+        puts 'Compatible structures :)'
+      end
+    end
+  end
+end
 
 
 def tree_structure(elts, current_node_id = 'ROOT')
