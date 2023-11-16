@@ -1,7 +1,8 @@
 import React from 'react';
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import { FormattedMessage } from 'utils/cl-intl';
-import ParticipationIcon from '../ParticipationIcon';
+import ParticipationOpenIcon from '../ParticipationOpenIcon';
+import SuccessIcon from '../SuccessIcon';
 import TimeLeft from './TimeLeft';
 import messages from '../../messages';
 import { IPhaseData } from 'api/phases/types';
@@ -15,7 +16,7 @@ const TimeIndicator = ({ currentPhase, hasUserParticipated }: Props) => {
   return (
     <Box display="flex" alignItems="center">
       <Box mr="4px" pb="2px">
-        <ParticipationIcon hasUserParticipated={hasUserParticipated} />
+        {hasUserParticipated ? <ParticipationOpenIcon /> : <SuccessIcon />}
       </Box>
       {!hasUserParticipated &&
       currentPhase &&
