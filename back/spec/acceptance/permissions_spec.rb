@@ -40,7 +40,7 @@ resource 'Permissions' do
       end
 
       example_request 'List all permissions efficiently include custom fields', document: true do
-        permission = @project.permissions.first
+        permission = @phase.permissions.first
         field2 = create(:custom_field)
         field1 = create(:custom_field)
         field3 = create(:custom_field)
@@ -163,80 +163,82 @@ resource 'Permissions' do
       header_token_for @user
     end
 
-    get 'web_api/v1/projects/:project_id/permissions/:action/requirements' do
-      before do
-        @permission = @project.permissions.first
-        @permission.update!(permitted_by: 'everyone')
-      end
-
-      let(:action) { @permission.action }
-
-      example_request 'Get the participation requirements of a user in a continuous project' do
-        assert_status 200
-        json_response = json_parse response_body
-        expect(json_response.dig(:data, :attributes, :requirements)).to eq({
-          permitted: true,
-          requirements: {
-            built_in: {
-              first_name: 'satisfied',
-              last_name: 'satisfied',
-              email: 'satisfied'
-            },
-            custom_fields: {},
-            onboarding: { topics_and_areas: 'dont_ask' },
-            special: {
-              password: 'satisfied',
-              confirmation: 'satisfied',
-              verification: 'dont_ask',
-              group_membership: 'dont_ask'
-            }
-          }
-        })
-      end
-    end
-
     get 'web_api/v1/phases/:phase_id/permissions/:action/requirements' do
-      before do
-        SettingsService.new.activate_feature! 'user_confirmation'
-        @permission = @phase.permissions.first
-        @permission.update!(permitted_by: 'everyone_confirmed_email')
-        create(:custom_field_birthyear, required: true)
-        create(:custom_field_gender, required: false)
-        create(:custom_field_checkbox, resource_type: 'User', required: true, key: 'extra_field')
+      context "'everyone' permissions" do
+        before do
+          @permission = @phase.permissions.first
+          @permission.update!(permitted_by: 'everyone')
+        end
 
-        @user.reset_confirmation_and_counts
-        @user.update!(
-          first_name: 'Jack',
-          last_name: nil,
-          password_digest: nil,
-          custom_field_values: { 'gender' => 'male' }
-        )
+        let(:action) { @permission.action }
+
+        example_request 'Get the participation requirements of a user in a continuous project' do
+          assert_status 200
+          json_response = json_parse response_body
+          expect(json_response.dig(:data, :attributes, :requirements)).to eq({
+            permitted: true,
+            requirements: {
+              built_in: {
+                first_name: 'satisfied',
+                last_name: 'satisfied',
+                email: 'satisfied'
+              },
+              custom_fields: {},
+              onboarding: { topics_and_areas: 'dont_ask' },
+              special: {
+                password: 'satisfied',
+                confirmation: 'satisfied',
+                verification: 'dont_ask',
+                group_membership: 'dont_ask'
+              }
+            }
+          })
+        end
       end
 
-      let(:action) { @permission.action }
+      context "'everyone_confirmed_email' permissions" do
+        before do
+          SettingsService.new.activate_feature! 'user_confirmation'
+          @permission = @phase.permissions.first
+          @permission.update!(permitted_by: 'everyone_confirmed_email')
+          create(:custom_field_birthyear, required: true)
+          create(:custom_field_gender, required: false)
+          create(:custom_field_checkbox, resource_type: 'User', required: true, key: 'extra_field')
 
-      # NOTE: Custom fields requirements will be {} as they are set globally - which are not allowed for everyone_confirmed_email
-      example_request 'Get the participation requirements of a passwordless user requiring confirmation in a timeline phase' do
-        assert_status 200
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :attributes, :requirements)).to eq({
-          permitted: false,
-          requirements: {
-            built_in: {
-              first_name: 'satisfied',
-              last_name: 'dont_ask',
-              email: 'satisfied'
-            },
-            custom_fields: {},
-            onboarding: { topics_and_areas: 'dont_ask' },
-            special: {
-              password: 'dont_ask',
-              confirmation: 'require',
-              verification: 'dont_ask',
-              group_membership: 'dont_ask'
+          @user.reset_confirmation_and_counts
+          @user.update!(
+            first_name: 'Jack',
+            last_name: nil,
+            password_digest: nil,
+            custom_field_values: { 'gender' => 'male' }
+          )
+        end
+
+        let(:action) { @permission.action }
+
+        # NOTE: Custom fields requirements will be {} as they are set globally - which are not allowed for everyone_confirmed_email
+        example_request 'Get the participation requirements of a passwordless user requiring confirmation in a timeline phase' do
+          assert_status 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :attributes, :requirements)).to eq({
+            permitted: false,
+            requirements: {
+              built_in: {
+                first_name: 'satisfied',
+                last_name: 'dont_ask',
+                email: 'satisfied'
+              },
+              custom_fields: {},
+              onboarding: { topics_and_areas: 'dont_ask' },
+              special: {
+                password: 'dont_ask',
+                confirmation: 'require',
+                verification: 'dont_ask',
+                group_membership: 'dont_ask'
+              }
             }
-          }
-        })
+          })
+        end
       end
     end
 
