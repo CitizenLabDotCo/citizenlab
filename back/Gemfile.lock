@@ -305,7 +305,6 @@ PATH
   remote: engines/commercial/verification
   specs:
     verification (0.1.0)
-      granular_permissions
       pundit (~> 2.0)
       rails (~> 7.0)
       ros-apartment (>= 2.9.0)
@@ -689,7 +688,6 @@ GEM
       multi_json (~> 1.11)
       os (>= 0.9, < 2.0)
       signet (>= 0.16, < 2.a)
-    granular_permissions (0.0.0)
     graphql (1.8.18)
     groupdate (4.3.0)
       activesupport (>= 5)
