@@ -1160,7 +1160,7 @@ export function apiCreatePhase({
   projectId: string;
   title: string;
   startAt: string;
-  endAt: string;
+  endAt?: string;
   participationMethod: ParticipationMethod;
   canPost: boolean;
   canReact: boolean;
