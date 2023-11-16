@@ -16,6 +16,7 @@ import SectionContainer from 'components/SectionContainer';
 import PhaseDocumentAnnotation from './document_annotation';
 import StatusModule from 'components/StatusModule';
 import VotingResults from './VotingResults';
+import PhaseReport from './PhaseReport';
 import { Box } from '@citizenlab/cl2-component-library';
 
 // router
@@ -108,6 +109,11 @@ const ProjectTimelineContainer = ({ projectId, className }: Props) => {
       participationMethod === 'ideation' || (isVotingPhase && !isPastPhase);
     const showVotingResults = isVotingPhase && isPastPhase;
 
+    const reportId = selectedPhase.relationships.report?.data?.id;
+    const showReport =
+      selectedPhase.attributes.participation_method === 'information' &&
+      !!reportId;
+
     return (
       <StyledSectionContainer
         className={`${className || ''} e2e-project-process-page`}
@@ -153,6 +159,7 @@ const ProjectTimelineContainer = ({ projectId, className }: Props) => {
             <PhaseIdeas projectId={projectId} phaseId={selectedPhaseId} />
           )}
           {showVotingResults && <VotingResults phaseId={selectedPhaseId} />}
+          {showReport && <PhaseReport reportId={reportId} />}
         </ContentContainer>
       </StyledSectionContainer>
     );

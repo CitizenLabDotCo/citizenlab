@@ -10,9 +10,7 @@ import styled from 'styled-components';
 import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
-import GetFeatureFlag, {
-  GetFeatureFlagChildProps,
-} from 'resources/GetFeatureFlag';
+import GetFeatureFlag from 'resources/GetFeatureFlag';
 
 const StyledIframe = styled.iframe`
   border: 0;
@@ -22,7 +20,7 @@ const StyledIframe = styled.iframe`
 
 interface DataProps {
   tenant: GetAppConfigurationChildProps;
-  fragmentsFeatureFlag: GetFeatureFlagChildProps;
+  fragmentsFeatureFlag: boolean;
 }
 
 interface InputProps {
