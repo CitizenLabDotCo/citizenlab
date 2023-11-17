@@ -4,36 +4,53 @@ import moment = require('moment');
 
 describe('Survey builder', () => {
   const projectTitle = randomString();
+  const phaseTitle = randomString();
   const projectDescription = randomString();
   let questionTitle = randomString();
   const answer = randomString();
   const projectDescriptionPreview = randomString(30);
   let projectId: string;
   let projectSlug: string;
+  let phaseId: string;
 
   beforeEach(() => {
     cy.setAdminLoginCookie();
     questionTitle = randomString();
 
     cy.apiCreateProject({
-      type: 'continuous',
+      type: 'timeline',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
       publicationStatus: 'published',
       participationMethod: 'native_survey',
-    }).then((project) => {
-      projectId = project.body.data.id;
-      projectSlug = project.body.data.attributes.slug;
-    });
+    })
+      .then((project) => {
+        projectId = project.body.data.id;
+        projectSlug = project.body.data.attributes.slug;
+        return cy.apiCreatePhase({
+          projectId,
+          title: phaseTitle,
+          startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
+          participationMethod: 'native_survey',
+          canPost: true,
+          canComment: true,
+          canReact: true,
+        });
+      })
+      .then((phase) => {
+        phaseId = phase.body.data.id;
+      });
   });
 
   afterEach(() => {
-    cy.apiRemoveProject(projectId);
+    if (projectId) {
+      cy.apiRemoveProject(projectId);
+    }
   });
 
   it('can create survey, save survey and user can respond to survey', () => {
-    cy.visit(`admin/projects/${projectId}/native-survey`);
+    cy.visit(`admin/projects/${projectId}/native-survey/${phaseId}`);
     cy.get('[data-cy="e2e-edit-survey-content"]').click();
     cy.get('[data-cy="e2e-short-answer"]').click();
 
@@ -60,9 +77,9 @@ describe('Survey builder', () => {
 
     // verify that an error is shown and that we stay on the page
     cy.get('.e2e-error-message');
-    cy.location('pathname').should(
+    cy.url().should(
       'eq',
-      `/en/projects/${projectSlug}/ideas/new`
+      `${Cypress.config().baseUrl}/en/projects/${projectSlug}/ideas/new`
     );
 
     cy.get(`*[id^="properties${questionTitle}"]`).type(answer, { force: true });
@@ -83,7 +100,7 @@ describe('Survey builder', () => {
   });
 
   it('can create survey, save survey and admin can click button in survey page to navigate to the survey builder', () => {
-    cy.visit(`admin/projects/${projectId}/native-survey`);
+    cy.visit(`admin/projects/${projectId}/native-survey/${phaseId}`);
     cy.get('[data-cy="e2e-edit-survey-content"]').click();
     cy.get('[data-cy="e2e-short-answer"]').click();
 
@@ -107,12 +124,14 @@ describe('Survey builder', () => {
     cy.get('[data-cy="e2e-edit-survey-link"]').click();
     cy.location('pathname').should(
       'eq',
-      `/en/admin/projects/${projectId}/native-survey/edit`
+      `/en/admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
     );
   });
 
   it('deletes a field when the delete button is clicked', () => {
-    cy.visit(`admin/projects/${projectId}/native-survey/edit`);
+    cy.visit(
+      `admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
+    );
     cy.get('[data-cy="e2e-short-answer"]').click();
     cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
 
@@ -126,7 +145,9 @@ describe('Survey builder', () => {
     cy.acceptCookies();
     cy.contains(questionTitle).should('exist');
 
-    cy.visit(`admin/projects/${projectId}/native-survey/edit`);
+    cy.visit(
+      `admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
+    );
 
     cy.contains(questionTitle).should('exist').click();
 
@@ -152,7 +173,9 @@ describe('Survey builder', () => {
     const multipleChoiceChooseOneTitle = 'multiplechoicechooseonefield';
     const multipleChoiceChooseManyTitle = 'multiplechoicechoosemultiplefield';
     const linearScaleTitle = 'linearscalefield';
-    cy.visit(`admin/projects/${projectId}/native-survey/edit`);
+    cy.visit(
+      `admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
+    );
 
     // Multiple choice choose one
     cy.get('[data-cy="e2e-single-choice"]').click();
@@ -226,8 +249,7 @@ describe('Survey builder', () => {
     cy.get('[data-cy="e2e-submit-form"]').click();
     cy.wait(1000);
 
-    // TODO: Fix e2e test. Route was changed with project setup tandem
-    cy.visit(`admin/projects/${projectId}/native-survey/results`);
+    cy.visit(`admin/projects/${projectId}/native-survey/${phaseId}`);
     cy.get(`[data-cy="e2e-${snakeCase(multipleChoiceChooseOneTitle)}"]`).should(
       'exist'
     );
@@ -237,7 +259,7 @@ describe('Survey builder', () => {
     cy.get(`[data-cy="e2e-${snakeCase(linearScaleTitle)}"]`).should('exist');
 
     // Verify that when trying to edit the survey, a warning modal is now shown
-    cy.visit(`admin/projects/${projectId}/native-survey`);
+    cy.visit(`admin/projects/${projectId}/native-survey/${phaseId}`);
     cy.get(`[data-cy="e2e-edit-survey-content"]`).click();
     cy.get(`[data-cy="e2e-edit-warning-modal"]`).should('exist');
     cy.get(`[data-cy="e2e-edit-warning-modal-continue"]`).click();
@@ -245,9 +267,9 @@ describe('Survey builder', () => {
   });
 
   it('navigates to live project in a new tab when view project button in content builder is clicked', () => {
-    const projectUrl = `/en/projects/${projectSlug}/ideas/new`;
+    const projectUrl = `/en/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`;
 
-    cy.visit(`admin/projects/${projectId}/native-survey`);
+    cy.visit(`admin/projects/${projectId}/native-survey/${phaseId}`);
     cy.get('[data-cy="e2e-edit-survey-content"]').click();
     cy.get('[data-cy="e2e-short-answer"]').click();
     cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
@@ -260,11 +282,18 @@ describe('Survey builder', () => {
         $a.attr('target', '_self');
       })
       .click();
-    cy.location('pathname').should('equal', projectUrl);
+    cy.url().should(
+      'eq',
+      `${
+        Cypress.config().baseUrl
+      }/en/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`
+    );
   });
 
   it('does not allow editing survey fields in builder when responses have started coming in', () => {
-    cy.visit(`admin/projects/${projectId}/native-survey/edit`);
+    cy.visit(
+      `admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
+    );
     cy.get('[data-cy="e2e-short-answer"]').click();
     cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
 
@@ -292,7 +321,9 @@ describe('Survey builder', () => {
   });
 
   it('allows deleting survey results when user clicks the delete button', () => {
-    cy.visit(`admin/projects/${projectId}/native-survey/edit`);
+    cy.visit(
+      `admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
+    );
     cy.get('[data-cy="e2e-short-answer"]').click();
     cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
 
@@ -317,7 +348,8 @@ describe('Survey builder', () => {
     cy.get('[data-cy="e2e-submit-form"]').should('exist');
     cy.get('[data-cy="e2e-submit-form"]').click();
 
-    cy.visit(`admin/projects/${projectId}/native-survey`);
+    cy.visit(`admin/projects/${projectId}/native-survey/${phaseId}`);
+    cy.get('[data-cy="e2e-more-survey-actions-button"]').click();
 
     // Click the delete button
     cy.get('[data-cy="e2e-delete-survey-results"]').click();
@@ -329,7 +361,9 @@ describe('Survey builder', () => {
   });
 
   it('allows export of survey results', () => {
-    cy.visit(`admin/projects/${projectId}/native-survey/edit`);
+    cy.visit(
+      `admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
+    );
     cy.get('[data-cy="e2e-short-answer"]').click();
     cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
 
@@ -354,15 +388,13 @@ describe('Survey builder', () => {
     cy.get('[data-cy="e2e-submit-form"]').should('exist');
     cy.get('[data-cy="e2e-submit-form"]').click();
 
-    cy.visit(`admin/projects/${projectId}/native-survey`);
-
-    // Click the view survey results button
-    cy.get('[data-cy="e2e-form-view-results"]').click();
+    cy.visit(`admin/projects/${projectId}/native-survey/${phaseId}`);
+    cy.get('[data-cy="e2e-more-survey-actions-button"]').click();
 
     // Click button to export survey results
     cy.get('[data-cy="e2e-download-survey-results"]').click();
 
-    const fileName = `${snakeCase(projectTitle)}_${moment().format(
+    const fileName = `${snakeCase(phaseTitle)}_${moment().format(
       'YYYY-MM-DD'
     )}.xlsx`;
 
@@ -375,12 +407,13 @@ describe('Survey builder', () => {
   });
 
   it('allows admins to fill in surveys as many times as they want when permissions are set to registered users', () => {
-    cy.visit(`admin/projects/${projectId}/permissions`);
+    cy.visit(`admin/projects/${projectId}/settings/access-rights`);
+    cy.get('#e2e-granular-permissions-phase-accordion').click();
     cy.get('#e2e-granular-permissions').within(() => {
       cy.get('#e2e-permission-registered-users').click();
     });
 
-    cy.visit(`admin/projects/${projectId}/native-survey`);
+    cy.visit(`admin/projects/${projectId}/native-survey/${phaseId}`);
     cy.get('[data-cy="e2e-edit-survey-content"]').click();
     cy.get('[data-cy="e2e-short-answer"]').click();
 
@@ -429,7 +462,7 @@ describe('Survey builder', () => {
     const page3Title = randomString();
     const multipleChoiceChooseOneTitle = 'multiplechoicechooseonefield';
 
-    cy.visit(`admin/projects/${projectId}/native-survey`);
+    cy.visit(`admin/projects/${projectId}/native-survey/${phaseId}`);
     cy.get('[data-cy="e2e-edit-survey-content"]').click();
     cy.get('[data-cy="e2e-short-answer"]').click();
 
@@ -524,12 +557,14 @@ describe('Survey builder', () => {
     const email = randomEmail();
     const password = randomString();
 
-    cy.visit(`admin/projects/${projectId}/permissions`);
+    cy.visit(`admin/projects/${projectId}/settings/access-rights`);
+
+    cy.get('#e2e-granular-permissions-phase-accordion').click();
     cy.get('#e2e-granular-permissions').within(() => {
       cy.get('#e2e-permission-registered-users').click();
     });
 
-    cy.visit(`admin/projects/${projectId}/native-survey`);
+    cy.visit(`admin/projects/${projectId}/native-survey/${phaseId}`);
     cy.get('[data-cy="e2e-edit-survey-content"]').click();
     cy.get('[data-cy="e2e-short-answer"]').click();
 
@@ -588,7 +623,7 @@ describe('Survey builder', () => {
     const page3Title = randomString();
     const multipleChoiceChooseOneTitle = 'multiplechoicechooseonefield';
 
-    cy.visit(`admin/projects/${projectId}/native-survey`);
+    cy.visit(`admin/projects/${projectId}/native-survey/${phaseId}`);
     cy.get('[data-cy="e2e-edit-survey-content"]').click();
     cy.get('[data-cy="e2e-short-answer"]').click();
 
@@ -672,7 +707,7 @@ describe('Survey builder', () => {
     const page4Title = randomString();
     const multipleChoiceChooseOneTitle = 'multiplechoicechooseonefield';
 
-    cy.visit(`admin/projects/${projectId}/native-survey`);
+    cy.visit(`admin/projects/${projectId}/native-survey/${phaseId}`);
     cy.get('[data-cy="e2e-edit-survey-content"]').click();
     cy.get('[data-cy="e2e-short-answer"]').click();
 
@@ -756,7 +791,7 @@ describe('Survey builder', () => {
     const page4Title = randomString();
     const multipleChoiceChooseOneTitle = 'multiplechoicechooseonefield';
 
-    cy.visit(`admin/projects/${projectId}/native-survey`);
+    cy.visit(`admin/projects/${projectId}/native-survey/${phaseId}`);
     cy.get('[data-cy="e2e-edit-survey-content"]').click();
     cy.get('[data-cy="e2e-short-answer"]').click();
 

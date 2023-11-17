@@ -213,6 +213,7 @@ const Forms = () => {
                 bgColor="transparent"
                 bgHoverColor="transparent"
                 pr="0"
+                data-cy="e2e-more-survey-actions-button"
                 onClick={toggleDropdown}
               />
               <Dropdown
