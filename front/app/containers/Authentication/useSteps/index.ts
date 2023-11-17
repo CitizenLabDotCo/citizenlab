@@ -255,7 +255,10 @@ export default function useSteps() {
     // detect whether we're entering from a redirect of a 3rd party
     // authentication method through an URL param, and launch the corresponding
     // flow
-    if (urlSearchParams.sso_response === 'true') {
+    if (
+      urlSearchParams.sso_response === 'true' ||
+      urlSearchParams.verification_success === 'true'
+    ) {
       const {
         sso_flow,
         sso_pathname,
@@ -268,15 +271,20 @@ export default function useSteps() {
       const actionFromLocalStorage = localStorage.getItem('sso_success_action');
       localStorage.removeItem('sso_success_action');
 
+      const context =
+        sso_verification_type && sso_verification_action && sso_verification_id
+          ? {
+              type: sso_verification_type,
+              action: sso_verification_action,
+              id: sso_verification_id,
+            }
+          : GLOBAL_CONTEXT;
+
       authenticationDataRef.current = {
-        flow: sso_flow,
+        flow: sso_flow || 'signup',
         successAction:
           actionFromLocalStorage && JSON.parse(actionFromLocalStorage),
-        context: {
-          type: sso_verification_type,
-          action: sso_verification_action,
-          id: sso_verification_id,
-        } as AuthenticationContext,
+        context: context as AuthenticationContext,
       };
 
       if (pathname.endsWith('authentication-error')) {
@@ -299,7 +307,15 @@ export default function useSteps() {
 
       transition(currentStep, 'RESUME_FLOW_AFTER_SSO')(enterClaveUnicaEmail);
     }
-  }, [pathname, search, currentStep, transition, authUser, setError]);
+  }, [
+    pathname,
+    search,
+    currentStep,
+    transition,
+    authUser,
+    setError,
+    getAuthenticationData,
+  ]);
 
   // always show ClaveUnica modal to user
   useEffect(() => {

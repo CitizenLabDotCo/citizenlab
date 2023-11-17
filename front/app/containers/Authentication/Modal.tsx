@@ -184,6 +184,21 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
     ? appConfiguration?.data.attributes.settings.core[helperTextKey]
     : undefined;
 
+  // If the user is verifying their identity, save the successAction in
+  // local storage for when they return.
+  if (
+    currentStep === 'missing-data:verification' ||
+    currentStep === 'verification-only' ||
+    currentStep === 'sign-up:verification'
+  ) {
+    if (authenticationData?.successAction) {
+      localStorage.setItem(
+        'sso_success_action',
+        JSON.stringify(authenticationData.successAction)
+      );
+    }
+  }
+
   return (
     <Modal
       fullScreen={fullscreenModalEnabled}
