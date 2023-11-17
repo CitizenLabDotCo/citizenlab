@@ -78,7 +78,6 @@ export const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
         top="0px"
         zIndex="1000"
         background="#fff"
-        borderBottom="solid 1px #ddd"
       >
         {!isSmallerThanPhone && (
           <Box height="78px">
