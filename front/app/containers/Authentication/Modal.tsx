@@ -184,8 +184,8 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
     ? appConfiguration?.data.attributes.settings.core[helperTextKey]
     : undefined;
 
-  // If the user is verifying their identity, save the successAction in
-  // local storage for when they return.
+  // If the user is verifying their identity, save the successAction and
+  // the current context in local storage for when they return.
   if (
     currentStep === 'missing-data:verification' ||
     currentStep === 'verification-only' ||
