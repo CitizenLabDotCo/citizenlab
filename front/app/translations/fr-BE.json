@@ -867,7 +867,6 @@
   "app.containers.EventsShow.attending": "inscrit(e)",
   "app.containers.EventsShow.editEvent": "Modifier l'événement",
   "app.containers.EventsShow.emailSharingBody": "Participez à cet événement : {eventTitle} à {eventLocation}",
-  "app.containers.EventsShow.eventFrom": "Événement de \"{eventTitle}\"",
   "app.containers.EventsShow.goBack": "Retour",
   "app.containers.EventsShow.goToProject": "Accéder au projet",
   "app.containers.EventsShow.icsError": "Erreur lors du téléchargement du fichier calendrier (ICS)",

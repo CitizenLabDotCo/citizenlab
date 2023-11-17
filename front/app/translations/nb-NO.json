@@ -867,7 +867,6 @@
   "app.containers.EventsShow.attending": "deltar",
   "app.containers.EventsShow.editEvent": "Rediger hendelse",
   "app.containers.EventsShow.emailSharingBody": "Delta på dette arrangementet: {eventTitle} kl. {eventLocation}",
-  "app.containers.EventsShow.eventFrom": "Hendelse fra \"{eventTitle}\"",
   "app.containers.EventsShow.goBack": "Gå tilbake",
   "app.containers.EventsShow.goToProject": "Gå til prosjektet",
   "app.containers.EventsShow.icsError": "Feil ved nedlasting av ICS-filen",

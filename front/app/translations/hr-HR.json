@@ -867,7 +867,6 @@
   "app.containers.EventsShow.attending": "pohađanje",
   "app.containers.EventsShow.editEvent": "Uredi događaj",
   "app.containers.EventsShow.emailSharingBody": "Prisustvujte ovom događaju: {eventTitle} u {eventLocation}",
-  "app.containers.EventsShow.eventFrom": "Događaj iz \"{eventTitle}\"",
   "app.containers.EventsShow.goBack": "Idi natrag",
   "app.containers.EventsShow.goToProject": "Idi na projekt",
   "app.containers.EventsShow.icsError": "Pogreška pri preuzimanju ICS datoteke",

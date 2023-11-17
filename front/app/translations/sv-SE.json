@@ -867,7 +867,6 @@
   "app.containers.EventsShow.attending": "deltagande",
   "app.containers.EventsShow.editEvent": "Redigera händelse",
   "app.containers.EventsShow.emailSharingBody": "Delta i detta evenemang: {eventTitle} på {eventLocation}",
-  "app.containers.EventsShow.eventFrom": "Händelse från \"{eventTitle}\"",
   "app.containers.EventsShow.goBack": "Gå tillbaka",
   "app.containers.EventsShow.goToProject": "Gå till projektet",
   "app.containers.EventsShow.icsError": "Fel vid nedladdning av filen ICS",
