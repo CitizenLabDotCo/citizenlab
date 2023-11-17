@@ -504,7 +504,7 @@ resource 'Projects' do
             phases: [ideation_phase, single_voting_phase]
           )
         end
-        let!(:survey_response) do
+        let!(:typeform_survey_response) do
           create(
             :idea,
             project: project,

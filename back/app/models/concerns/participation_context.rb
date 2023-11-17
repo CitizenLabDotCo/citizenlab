@@ -10,7 +10,6 @@
 # rubocop:disable Metrics/ModuleLength
 module ParticipationContext
   extend ActiveSupport::Concern
-  include Surveys::SurveyParticipationContext
   include Volunteering::VolunteeringParticipationContext
 
   PARTICIPATION_METHODS = %w[information ideation survey voting poll volunteering native_survey document_annotation].freeze

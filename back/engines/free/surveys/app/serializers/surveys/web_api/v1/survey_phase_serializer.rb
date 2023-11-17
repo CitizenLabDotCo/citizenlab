@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Surveys::WebApi::V1::SurveyParticipationContextSerializer
+module Surveys::WebApi::V1::SurveyPhaseSerializer
   extend ActiveSupport::Concern
 
   included do

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Surveys::SurveyParticipationContext
+module Surveys::SurveyPhase
   extend ActiveSupport::Concern
 
   SURVEY_SERVICES = %w[

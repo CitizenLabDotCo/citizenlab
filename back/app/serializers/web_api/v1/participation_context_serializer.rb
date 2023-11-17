@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class WebApi::V1::ParticipationContextSerializer < WebApi::V1::BaseSerializer
-  include Surveys::WebApi::V1::SurveyParticipationContextSerializer
-
   with_options if: proc { |object|
     object.participation_context?
   } do
