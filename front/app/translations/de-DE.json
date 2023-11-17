@@ -867,6 +867,7 @@
   "app.containers.EventsShow.attending": "nehme teil",
   "app.containers.EventsShow.editEvent": "Veranstaltung bearbeiten",
   "app.containers.EventsShow.emailSharingBody": "An Veranstaltung teilnehmen: {eventTitle} in {eventLocation}",
+  "app.containers.EventsShow.eventFrom2": "Von \"{projectTitle}\"",
   "app.containers.EventsShow.goBack": "Zurück",
   "app.containers.EventsShow.goToProject": "Zum Projekt",
   "app.containers.EventsShow.icsError": "Fehler beim Herunterladen der ICS-Datei",
