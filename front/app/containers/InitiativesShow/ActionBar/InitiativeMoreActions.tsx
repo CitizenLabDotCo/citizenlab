@@ -23,7 +23,7 @@ import useDeleteInitiative from 'api/initiatives/useDeleteInitiative';
 import { IInitiativeData } from 'api/initiatives/types';
 
 // utils
-import { ScrollToTop } from 'utils/scroll';
+import { scrollToTop } from 'utils/scroll';
 
 const Container = styled.div``;
 
@@ -62,7 +62,7 @@ const InitiativeMoreActions = ({ initiative, className, color, id }: Props) => {
 
   const onEditInitiative = () => {
     clHistory.push(`/initiatives/edit/${initiative.id}`);
-    ScrollToTop();
+    scrollToTop();
   };
 
   if (!initiative) {

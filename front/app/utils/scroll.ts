@@ -26,9 +26,6 @@ export function scrollToElement({
   }
 }
 
-export const ScrollToTop = () => {
-  // Short timeout is required for some mobile browsers
-  setTimeout(() => {
-    window.scrollTo(0, 0);
-  }, 50);
+export const scrollToTop = () => {
+  window.scrollTo(0, 0);
 };

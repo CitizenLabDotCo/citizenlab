@@ -18,7 +18,7 @@ import { getIdeaPostingRules } from 'utils/actionTakingRules';
 import { fetchPhase } from 'api/phases/usePhase';
 
 // utils
-import { ScrollToTop } from 'utils/scroll';
+import { scrollToTop } from 'utils/scroll';
 
 export interface RedirectToIdeaFormParams {
   projectSlug: string;
@@ -58,6 +58,6 @@ export const redirectToIdeaForm =
           { addQueryPrefix: true }
         ),
       });
-      ScrollToTop();
+      scrollToTop();
     }
   };

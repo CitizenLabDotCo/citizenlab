@@ -34,7 +34,7 @@ import usePhase from 'api/phases/usePhase';
 import useIdeaImage from 'api/idea_images/useIdeaImage';
 
 // utils
-import { ScrollToTop, scrollToElement } from 'utils/scroll';
+import { scrollToTop, scrollToElement } from 'utils/scroll';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 
 // events
@@ -139,7 +139,7 @@ const IdeaCard = ({
     e.preventDefault();
     updateSearchParams({ scroll_to_card: idea.data.id });
     clHistory.push(`/ideas/${slug}?go_back=true`);
-    ScrollToTop();
+    scrollToTop();
   };
 
   const innerHeight = showFollowButton ? '192px' : '162px';

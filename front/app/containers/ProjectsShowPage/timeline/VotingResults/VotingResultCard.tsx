@@ -34,7 +34,7 @@ import Link from 'utils/cl-router/Link';
 
 // utils
 import { roundPercentage } from 'utils/math';
-import { ScrollToTop } from 'utils/scroll';
+import { scrollToTop } from 'utils/scroll';
 
 // typings
 import { IIdeaData } from 'api/ideas/types';
@@ -186,7 +186,7 @@ const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
     updateSearchParams({ scroll_to_card: idea.id });
 
     clHistory.push(`/ideas/${slug}${params}?go_back=true`);
-    ScrollToTop();
+    scrollToTop();
   };
 
   const image = ideaImage?.data.attributes.versions.medium;

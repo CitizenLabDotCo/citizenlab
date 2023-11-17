@@ -47,10 +47,13 @@ import {
   defaultCardHoverStyle,
   isRtl,
 } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/a11y';
 import { rgba, darken } from 'polished';
+
+// utils
 import { getInputTermMessage } from 'utils/i18n';
+import { ScreenReaderOnly } from 'utils/a11y';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
+import { scrollToTop } from 'utils/scroll';
 
 const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
   width: calc(33% - 12px);
@@ -445,6 +448,7 @@ const ProjectCard = memo<InputProps>(
 
     const handleProjectCardOnClick = (projectId: string) => () => {
       trackEventByName(tracks.clickOnProjectCard, { extra: { projectId } });
+      scrollToTop();
     };
 
     const handleCTAOnClick = (projectId: string) => () => {

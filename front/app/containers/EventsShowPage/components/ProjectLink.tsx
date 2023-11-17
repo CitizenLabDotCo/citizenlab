@@ -18,6 +18,9 @@ import Link from 'utils/cl-router/Link';
 import useLocalize from 'hooks/useLocalize';
 import { IProjectData } from 'api/projects/types';
 
+// utils
+import { scrollToTop } from 'utils/scroll';
+
 type ProjectLinkProps = {
   project: IProjectData | undefined;
 };
@@ -58,7 +61,12 @@ const ProjectLink = ({ project }: ProjectLinkProps) => {
             projectTitle: projectTitleLocalized,
           })}
         </Text>
-        <Link to={`/projects/${projectSlug}`}>
+        <Link
+          to={`/projects/${projectSlug}`}
+          onClick={() => {
+            scrollToTop();
+          }}
+        >
           <Text
             fontSize={isMobileOrSmaller ? 'xs' : 's'}
             p="0px"

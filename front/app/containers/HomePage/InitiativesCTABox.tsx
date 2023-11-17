@@ -26,6 +26,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import { scrollToTop } from 'utils/scroll';
 
 const Container = styled.div`
   display: flex;
@@ -171,7 +172,7 @@ const InitiativesCTABox = ({ className }: Props) => {
           fontWeight="500"
           padding="13px 22px"
           linkTo={!isNilOrError(authUser) ? '/initiatives/new' : undefined}
-          onClick={!authUser ? signUp : undefined}
+          onClick={!authUser ? signUp : scrollToTop}
           fullWidth={smallerThanSmallTablet}
           text={<FormattedMessage {...messages.startInitiative} />}
           className="e2e-initiatives-landing-CTA-new"

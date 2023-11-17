@@ -12,6 +12,7 @@ import { injectIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 import useNavbarItems from 'api/navbar/useNavbarItems';
 import { isNilOrError } from 'utils/helperUtils';
+import { scrollToTop } from 'utils/scroll';
 
 const Container = styled.nav`
   height: ${(props) => props.theme.mobileMenuHeight}px;
@@ -121,6 +122,7 @@ const MobileNavigation = ({
         projects: tracks.projectsLinkClicked,
       }[navItem]
     );
+    scrollToTop();
   };
 
   const onShowMore = () => {

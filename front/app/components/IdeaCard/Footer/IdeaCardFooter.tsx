@@ -12,7 +12,7 @@ import ReadMoreButton from './ReadMoreButton';
 
 // utils
 import clHistory from 'utils/cl-router/history';
-import { ScrollToTop } from 'utils/scroll';
+import { scrollToTop } from 'utils/scroll';
 
 interface Props {
   idea: IIdeaData;
@@ -25,7 +25,7 @@ const IdeaCardFooter = ({ idea, showCommentCount }: Props) => {
       <ReadMoreButton
         onClick={() => {
           clHistory.push(`/ideas/${idea?.attributes.slug}?go_back=true`);
-          ScrollToTop();
+          scrollToTop();
         }}
       />
       {showCommentCount && (

@@ -12,6 +12,9 @@ import Link from 'utils/cl-router/Link';
 import T from 'components/T';
 import { Multiloc } from 'typings';
 
+// utils
+import { scrollToTop } from 'utils/scroll';
+
 const NavigationItemBorder = styled.div`
   height: 6px;
   position: absolute;
@@ -81,7 +84,13 @@ const DesktopNavbarItem = ({
   onlyActiveOnIndex,
 }: Props) => (
   <NavigationItem data-testid="desktop-navbar-item">
-    <StyledLink to={linkTo} onlyActiveOnIndex={onlyActiveOnIndex}>
+    <StyledLink
+      to={linkTo}
+      onlyActiveOnIndex={onlyActiveOnIndex}
+      onClick={() => {
+        scrollToTop();
+      }}
+    >
       <NavigationItemBorder />
       <T value={navigationItemTitle} />
     </StyledLink>

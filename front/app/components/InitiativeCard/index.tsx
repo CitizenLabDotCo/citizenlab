@@ -21,6 +21,7 @@ import useUserById from 'api/users/useUserById';
 import useInitiativeImage from 'api/initiative_images/useInitiativeImage';
 import useLocalize from 'hooks/useLocalize';
 import useInitiativeById from 'api/initiatives/useInitiativeById';
+import { scrollToTop } from 'utils/scroll';
 
 const FooterInner = styled.div`
   width: 100%;
@@ -93,6 +94,9 @@ const InitiativeCard = ({
     <Card
       className={cardClassNames}
       to={`/initiatives/${initiative.data.attributes.slug}?go_back=true`}
+      onClick={() => {
+        scrollToTop();
+      }}
       imageUrl={initiativeImageUrl}
       title={initiativeTitle}
       body={

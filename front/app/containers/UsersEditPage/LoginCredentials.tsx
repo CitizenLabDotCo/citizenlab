@@ -10,6 +10,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import { IUserData } from 'api/users/types';
+import { scrollToTop } from 'utils/scroll';
 
 type PasswordChangeProps = {
   user: IUserData;
@@ -31,6 +32,9 @@ const LoginCredentials = ({ user }: PasswordChangeProps) => {
       <Box display="flex" flexWrap="wrap" gap="16px">
         <Button
           linkTo="/profile/change-email"
+          onClick={() => {
+            scrollToTop();
+          }}
           width="auto"
           justifyWrapper="left"
           buttonStyle="secondary"
@@ -40,6 +44,9 @@ const LoginCredentials = ({ user }: PasswordChangeProps) => {
         </Button>
         <Button
           linkTo="/profile/change-password"
+          onClick={() => {
+            scrollToTop();
+          }}
           width="auto"
           justifyWrapper="left"
           buttonStyle="secondary"

@@ -13,7 +13,7 @@ import { defaultCardHoverStyle, defaultCardStyle } from 'utils/styleUtils';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
-import { ScrollToTop } from 'utils/scroll';
+import { scrollToTop } from 'utils/scroll';
 
 const Container = styled.div<{ clickable?: boolean }>`
   ${defaultCardStyle};
@@ -43,7 +43,7 @@ const EventCard = memo<Props>((props) => {
   if (!isNilOrError(event)) {
     const navigateToEventPage = () => {
       clHistory.push(`/events/${event.id}`);
-      ScrollToTop();
+      scrollToTop();
     };
 
     return (

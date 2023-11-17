@@ -35,7 +35,7 @@ import { WithRouterProps } from 'utils/cl-router/withRouter';
 import clHistory from 'utils/cl-router/history';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 import { PreviousPathnameContext } from 'context';
-import { ScrollToTop } from 'utils/scroll';
+import { scrollToTop } from 'utils/scroll';
 
 // typings
 import { IIdeaUpdate } from 'api/ideas/types';
@@ -165,7 +165,7 @@ const IdeasEditForm = ({ params: { ideaId } }: WithRouterProps) => {
     clHistory.push({
       pathname: `/ideas/${idea.data.attributes.slug}`,
     });
-    ScrollToTop();
+    scrollToTop();
   };
 
   const getApiErrorMessage: ApiErrorGetter = useCallback(
