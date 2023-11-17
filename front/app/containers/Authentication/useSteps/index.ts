@@ -269,11 +269,13 @@ export default function useSteps() {
         verification_success,
       } = urlSearchParams as SSOParams;
 
+      // Check if there is a success action in local storage (from SSO or verification)
       const actionFromLocalStorage = localStorage.getItem(
         'auth_success_action'
       );
       localStorage.removeItem('auth_success_action');
 
+      // Check if there is a context in local storage (from verification)
       const contextFromLocalStorage = localStorage.getItem('auth_context');
       localStorage.removeItem('auth_context');
 
