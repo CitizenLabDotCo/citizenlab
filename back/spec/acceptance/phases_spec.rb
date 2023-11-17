@@ -796,7 +796,7 @@ resource 'Phases' do
       let!(:dog_option) do
         create(:custom_field_option, custom_field: multiselect_field, key: 'dog', title_multiloc: { 'en' => 'Dog' })
       end
-      let!(:typeform_survey_response) do
+      let!(:survey_response) do
         create(
           :idea,
           project: project,
