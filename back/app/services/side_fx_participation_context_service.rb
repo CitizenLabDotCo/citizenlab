@@ -3,9 +3,12 @@
 class SideFxParticipationContextService
   include SideFxHelper
 
+  attr_writer :permissions_service
+
   def before_create(context, user); end
 
   def after_create(context, _user)
+    permissions_service.update_permissions_for_scope(context)
     Surveys::WebhookManagerJob.perform_later(
       'participation_context_created',
       context,
@@ -23,6 +26,7 @@ class SideFxParticipationContextService
   end
 
   def after_update(context, user)
+    permissions_service.update_permissions_for_scope(context)
     %i[
       description_multiloc voting_method voting_max_votes_per_idea voting_max_total voting_min_total
       posting_enabled posting_method posting_limited_max commenting_enabled reacting_enabled
@@ -62,6 +66,10 @@ class SideFxParticipationContextService
   end
 
   def after_destroy(frozen_context, user); end
-end
 
-SideFxParticipationContextService.prepend(GranularPermissions::Patches::SideFxParticipationContextService)
+  private
+
+  def permissions_service
+    @permissions_service ||= PermissionsService.new
+  end
+end

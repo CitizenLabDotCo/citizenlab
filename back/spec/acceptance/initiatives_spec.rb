@@ -400,7 +400,7 @@ resource 'Initiatives' do
       end
     end
 
-    example_group 'with granular permissions' do
+    example_group 'with permissions on phase' do
       let(:group) { create(:group) }
 
       before do

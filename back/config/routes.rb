@@ -44,10 +44,20 @@ Rails.application.routes.draw do
       concern :spam_reportable do
         resources :spam_reports, shallow: true
       end
+      concern :permissionable do
+        # We named the param :permission_action, bc :action is already taken (controller action).
+        resources :permissions, param: :permission_action do
+          get 'requirements', on: :member
+          get 'schema', on: :member
+          resources :permissions_custom_fields, shallow: true
+        end
+      end
+
+      concerns :permissionable # for the global permission scope (with parent_param = nil)
 
       resources :ideas,
-        concerns: %i[reactable spam_reportable post followable],
-        defaults: { reactable: 'Idea', spam_reportable: 'Idea', post: 'Idea', followable: 'Idea' } do
+        concerns: %i[reactable spam_reportable post followable permissionable],
+        defaults: { reactable: 'Idea', spam_reportable: 'Idea', post: 'Idea', followable: 'Idea', parent_param: :idea_id } do
         resources :images, defaults: { container_type: 'Idea' }
         resources :files, defaults: { container_type: 'Idea' }
 
@@ -152,7 +162,7 @@ Rails.application.routes.draw do
       end
       resources :event_attendances, only: %i[destroy], controller: 'events/attendances'
 
-      resources :phases, only: %i[show edit update destroy] do
+      resources :phases, only: %i[show edit update destroy], concerns: :permissionable, defaults: { parent_param: :phase_id } do
         resources :files, defaults: { container_type: 'Phase' }, shallow: false
         get 'survey_results', on: :member
         get :as_xlsx, on: :member, action: 'index_xlsx'
@@ -163,7 +173,8 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :projects, concerns: [:followable], defaults: { followable: 'Project' } do
+      # TODO: JS - can projects now be permissionable?
+      resources :projects, concerns: %i[followable permissionable], defaults: { followable: 'Project', parent_param: :project_id } do
         resources :events, only: %i[new create]
         resources :projects_allowed_input_topics, only: [:index]
         resources :phases, only: %i[index new create]

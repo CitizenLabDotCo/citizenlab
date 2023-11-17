@@ -54,8 +54,6 @@ class CommentReactionPolicy < ApplicationPolicy
   private
 
   def denied_for_initiative_reason(user)
-    :not_signed_in unless user
+    PermissionsService.new.denied_reason_for_resource user, 'commenting_initiative'
   end
 end
-
-CommentReactionPolicy.prepend(GranularPermissions::Patches::CommentReactionPolicy)
