@@ -14,7 +14,6 @@ module MultiTenancy
             header_bg: rand(25) == 0 ? nil : Rails.root.join("spec/fixtures/image#{rand(20)}.png").open,
             visible_to: %w[admins groups public public public][rand(5)],
             presentation_mode: %w[card card card map map][rand(5)],
-            process_type: 'timeline',
             areas: Array.new(rand(3)) { rand(Area.count) }.uniq.map { |offset| Area.offset(offset).first },
             allowed_input_topics: Topic.all.shuffle.take(rand(Topic.count) + 1),
             admin_publication_attributes: {
