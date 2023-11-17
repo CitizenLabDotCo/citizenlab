@@ -151,7 +151,6 @@ export interface Props {
   allowProjectsFilter?: boolean;
   showSearchbar: boolean;
   showDropdownFilters: boolean;
-  goBackMode?: 'browserGoBackButton' | 'goToProject';
 }
 
 const IdeasWithoutFiltersSidebar = ({
@@ -166,7 +165,6 @@ const IdeasWithoutFiltersSidebar = ({
   allowProjectsFilter,
   showDropdownFilters,
   showSearchbar,
-  goBackMode,
 }: Props) => {
   const locale = useLocale();
   const [searchParams] = useSearchParams();
@@ -326,7 +324,6 @@ const IdeasWithoutFiltersSidebar = ({
           view={selectedView}
           projectId={projectId}
           phaseId={phaseId}
-          goBackMode={goBackMode}
         />
       </Container>
     );

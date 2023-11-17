@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 // components
 import { Button } from '@citizenlab/cl2-component-library';
-import { ParticipationCTAContent } from 'components/ParticipationCTABars/ParticipationCTAContent';
+import ParticipationCTAContent from 'components/ParticipationCTABars/ParticipationCTAContent';
 
 // hooks
 import { useTheme } from 'styled-components';
@@ -30,7 +30,7 @@ import { useLocation } from 'react-router-dom';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 import { scrollTo } from 'containers/Authentication/SuccessActions/actions/scrollTo';
 
-export const EmbeddedSurveyCTABar = ({ phases, project }: CTABarProps) => {
+const EmbeddedSurveyCTABar = ({ phases, project }: CTABarProps) => {
   const theme = useTheme();
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
   const { pathname, hash: divId } = useLocation();
@@ -89,7 +89,6 @@ export const EmbeddedSurveyCTABar = ({ phases, project }: CTABarProps) => {
   return (
     <ParticipationCTAContent
       currentPhase={currentPhase}
-      project={project}
       CTAButton={
         showSignIn ? (
           <Button
@@ -101,6 +100,7 @@ export const EmbeddedSurveyCTABar = ({ phases, project }: CTABarProps) => {
             textHoverColor={theme.colors.black}
             padding="6px 12px"
             fontSize="14px"
+            width="100%"
           >
             <FormattedMessage {...messages.takeTheSurvey} />
           </Button>
@@ -109,3 +109,5 @@ export const EmbeddedSurveyCTABar = ({ phases, project }: CTABarProps) => {
     />
   );
 };
+
+export default EmbeddedSurveyCTABar;
