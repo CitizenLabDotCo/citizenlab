@@ -59,7 +59,7 @@ const ProjectDescriptionBuilderTopBar = ({
   const disableSave = localesWithError.length > 0;
 
   const goBack = () => {
-    clHistory.push(`/admin/projects/${projectId}/description`);
+    clHistory.push(`/admin/projects/${projectId}/settings/description`);
   };
 
   const handleSave = async () => {
