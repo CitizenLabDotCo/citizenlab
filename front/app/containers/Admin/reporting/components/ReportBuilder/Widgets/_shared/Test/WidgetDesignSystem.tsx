@@ -1,7 +1,9 @@
 import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 import { A4_WIDTH } from 'containers/Admin/reporting/constants';
 import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
+import { media } from 'utils/styleUtils';
 
 export interface Props {
   backgrounds: boolean;
@@ -12,6 +14,8 @@ const WidgetDesignSystem = (props: Props) => {
     <Box maxWidth={A4_WIDTH} width="100%">
       <FullWidthThing {...props} />
       <GraphCard {...props} />
+
+      <TwoColumnWrapper {...props} left={} />
     </Box>
   );
 };
@@ -50,10 +54,25 @@ interface TwoColumnsProps extends Props {
   right: JSX.Element;
 }
 
-const TwoColumns = ({ backgrounds }: TwoColumnsProps) => (
-  <Box w="100%" h="200px" p="10px" bgColor={_if(backgrounds, 'red')}>
-    <Box>T</Box>
-  </Box>
+const TwoColumnWrapper = styled.div<{ bgColor?: string }>`
+  ${({ bgColor }) => (bgColor ? `background-color: ${bgColor};` : '')}
+  height: 200px;
+  width: 100%;
+  gap: 24px;
+  display: grid;
+
+  ${media.tablet`
+  grid-template-columns: 1fr;
+`}
+
+  grid-template-columns: 1fr 1fr;
+`;
+
+const TwoColumns = ({ backgrounds, left, right }: TwoColumnsProps) => (
+  <TwoColumnWrapper bgColor={_if(backgrounds, 'yellow')}>
+    <Box>{left}</Box>
+    <Box>{right}</Box>
+  </TwoColumnWrapper>
 );
 
 export default WidgetDesignSystem;
