@@ -76,7 +76,7 @@ resource 'Poll Responses' do
     end
   end
 
-  get 'web_api/v1/phases/:participation_context_id/poll_responses/responses_count' do
+  get 'web_api/v1/phases/:phase_id/poll_responses/responses_count' do
     context 'non-anonymous poll' do
       before do
         @phase = create(:continuous_poll_project).phases.first
@@ -88,7 +88,7 @@ resource 'Poll Responses' do
         @r2.update!(response_options: [@q1, @q2].map { |q| create(:poll_response_option, response: @r2, option: q.options.last) })
       end
 
-      let(:participation_context_id) { @phase.id }
+      let(:phase_id) { @phase.id }
 
       example_request 'response counts' do
         expect(status).to eq 200
