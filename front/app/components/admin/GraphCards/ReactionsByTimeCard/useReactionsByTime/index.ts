@@ -42,12 +42,7 @@ export default function useReactionsByTime({
   //   resolution,
   // });
 
-  const { data: analytics } = usePublishedReactionsByTime({
-    projectId,
-    startAtMoment,
-    endAtMoment,
-    resolution,
-  });
+  const { data: analytics } = usePublishedReactionsByTime();
 
   const timeSeries = useMemo(
     () =>

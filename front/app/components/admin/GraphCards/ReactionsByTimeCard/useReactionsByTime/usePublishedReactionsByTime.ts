@@ -1,30 +1,45 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
-import { Response, QueryParameters } from './typings';
-import reactionsByTimeKeys from './keys';
+import { Response } from './typings';
+import { useNode } from '@craftjs/core';
+import { useParams } from 'react-router-dom';
+import { QueryKeys } from 'utils/cl-react-query/types';
 
-const fetchReactionsByTime = (props: QueryParameters) =>
+export interface PublishedDataQueryParameters {
+  reportId?: string;
+  graphId: string;
+}
+
+const baseKey = { type: 'report_builder_published_data_units' };
+
+const publishedReactionsByTimeKeys = {
+  all: () => [baseKey],
+  item: (params: PublishedDataQueryParameters) => [
+    { ...baseKey, operation: 'item', parameters: params },
+  ],
+} satisfies QueryKeys;
+
+const fetchReactionsByTime = ({
+  reportId,
+  graphId,
+}: PublishedDataQueryParameters) =>
   fetcher<Response>({
     path: `/reports/graph_data_units/published`,
     action: 'get',
     queryParams: {
-      resolved_name: 'ReactionsByTimeWidget',
-      props: {
-        projectId: props.projectId,
-        resolution: props.resolution,
-        startAt: props.startAtMoment?.format('yyyy-MM-DD'),
-        endAt: props.endAtMoment?.format('yyyy-MM-DD'),
-      },
+      report_id: reportId,
+      graph_id: graphId,
     },
   });
 
-const usePublishedReactionsByTime = ({
-  ...queryParameters
-}: QueryParameters) => {
+const usePublishedReactionsByTime = () => {
+  const { id: graphId } = useNode();
+  const { reportId } = useParams<{ reportId: string }>();
+
   return useQuery<Response, CLErrors, Response, any>({
-    queryKey: reactionsByTimeKeys.item(queryParameters),
-    queryFn: () => fetchReactionsByTime(queryParameters),
+    queryKey: publishedReactionsByTimeKeys.item({ reportId, graphId }),
+    queryFn: () => fetchReactionsByTime({ reportId, graphId }),
   });
 };
 

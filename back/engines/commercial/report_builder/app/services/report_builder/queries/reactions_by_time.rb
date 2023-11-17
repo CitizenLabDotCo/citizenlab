@@ -2,9 +2,11 @@
 module ReportBuilder
   class Queries::ReactionsByTime < Queries::Base
     def query(startAt: nil, endAt: nil, projectId: nil, **_other_props)
-      startAt ||= Date.parse('2017-01-01')
-      endAt ||= Time.zone.today
+      # TODO: do we need these ||=?
+      # startAt ||= Date.parse('2017-01-01')
+      # endAt ||= Time.zone.today
       resolution = RESOLUTION_TO_INTERVAL.fetch('month')
+
       time_series_query = {
         fact: 'participation',
         filters: {
@@ -24,7 +26,7 @@ module ReportBuilder
       posts_by_time_total = {
         fact: 'participation',
         filters: {
-          **date_filter('dimension_date_created', nil, endAt),
+          **date_filter('dimension_date_created', startAt, endAt),
           **project_filter('dimension_project', projectId),
           'dimension_type.name': 'reaction',
           'dimension_type.parent': 'idea'
