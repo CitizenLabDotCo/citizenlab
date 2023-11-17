@@ -1,5 +1,4 @@
 import React from 'react';
-import moment from 'moment';
 
 // hooks
 import usePhase from 'api/phases/usePhase';
@@ -11,7 +10,7 @@ import messages from 'containers/ProjectsShowPage/messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 // utils
-import { pastPresentOrFuture } from 'utils/dateUtils';
+import { getLocalisedDateString, pastPresentOrFuture } from 'utils/dateUtils';
 
 // style
 import styled from 'styled-components';
@@ -133,9 +132,9 @@ const PhaseTitle = ({
       phase.data.attributes.start_at,
       phase.data.attributes.end_at,
     ]);
-    const startDate = getPhaseDate(phase.data.attributes.start_at);
+    const startDate = getLocalisedDateString(phase.data.attributes.start_at);
     const endDate = phase.data.attributes.end_at
-      ? getPhaseDate(phase.data.attributes.end_at)
+      ? getLocalisedDateString(phase.data.attributes.end_at)
       : formatMessage(messages.noEndDate);
 
     if (smallerThanSmallTablet && phaseTitle && phaseNumber) {
@@ -168,9 +167,3 @@ const PhaseTitle = ({
 };
 
 export default PhaseTitle;
-
-function getPhaseDate(date: string) {
-  const momentDate = moment(date, 'YYYY-MM-DD');
-
-  return momentDate.format('LL');
-}

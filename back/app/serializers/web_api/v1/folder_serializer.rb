@@ -16,7 +16,7 @@ class WebApi::V1::FolderSerializer < WebApi::V1::BaseSerializer
   end
 
   attribute :description_multiloc do |object|
-    TextImageService.new.render_data_images object, :description_multiloc
+    TextImageService.new.render_data_images_multiloc object.description_multiloc, field: :description_multiloc, imageable: object
   end
 
   attribute :header_bg do |object|

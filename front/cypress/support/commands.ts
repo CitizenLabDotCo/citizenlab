@@ -65,6 +65,8 @@ declare global {
       apiEnableProjectDescriptionBuilder: typeof apiEnableProjectDescriptionBuilder;
       apiCreateReportBuilder: typeof apiCreateReportBuilder;
       apiRemoveReportBuilder: typeof apiRemoveReportBuilder;
+      apiSetProjectPermission: typeof apiSetProjectPermission;
+      apiGetProjectPermission: typeof apiGetProjectPermission;
       intersectsViewport: typeof intersectsViewport;
       notIntersectsViewport: typeof notIntersectsViewport;
       apiUpdateHomepageSettings: typeof apiUpdateHomepageSettings;
@@ -1370,6 +1372,84 @@ export function apiRemoveReportBuilder(reportId: string) {
   });
 }
 
+export type IParticipationContextPermissionAction =
+  | 'posting_idea'
+  | 'reacting_idea'
+  | 'commenting_idea'
+  | 'taking_survey'
+  | 'taking_poll'
+  | 'voting'
+  | 'annotating_document';
+
+type ApiSetPermissionTypeProps = {
+  projectId: string;
+  phaseId?: string;
+  permissionBody?: any;
+  action: IParticipationContextPermissionAction;
+};
+export function apiSetProjectPermission({
+  projectId,
+  phaseId,
+  permissionBody,
+  action,
+}: ApiSetPermissionTypeProps) {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    if (phaseId) {
+      return cy.request({
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${adminJwt}`,
+        },
+        method: 'PATCH',
+        url: `web_api/v1/phases/${phaseId}/permissions/${action}`,
+        body: permissionBody,
+      });
+    } else {
+      return cy.request({
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${adminJwt}`,
+        },
+        method: 'PATCH',
+        url: `web_api/v1/projects/${projectId}/permissions/${action}`,
+        body: permissionBody,
+      });
+    }
+  });
+}
+
+export function apiGetProjectPermission({
+  projectId,
+  phaseId,
+  action,
+}: ApiSetPermissionTypeProps) {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    if (phaseId) {
+      return cy.request({
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${adminJwt}`,
+        },
+        method: 'GET',
+        url: `web_api/v1/phases/${phaseId}/permissions/${action}`,
+      });
+    } else {
+      return cy.request({
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${adminJwt}`,
+        },
+        method: 'GET',
+        url: `web_api/v1/projects/${projectId}/permissions/${action}`,
+      });
+    }
+  });
+}
+
 export function apiUpdateAppConfiguration(
   updatedAttributes: IUpdatedAppConfigurationProperties
 ) {
@@ -1521,6 +1601,8 @@ Cypress.Commands.add('apiGetUsersCount', apiGetUsersCount);
 Cypress.Commands.add('apiGetSeats', apiGetSeats);
 Cypress.Commands.add('apiGetAppConfiguration', apiGetAppConfiguration);
 Cypress.Commands.add('apiUpdateAppConfiguration', apiUpdateAppConfiguration);
+Cypress.Commands.add('apiGetProjectPermission', apiGetProjectPermission);
+Cypress.Commands.add('apiSetProjectPermission', apiSetProjectPermission);
 Cypress.Commands.add('logout', logout);
 Cypress.Commands.add('acceptCookies', acceptCookies);
 Cypress.Commands.add('getIdeaById', getIdeaById);

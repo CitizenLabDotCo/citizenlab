@@ -112,6 +112,8 @@ export const sharedSteps = (
             setCurrentStep('missing-data:onboarding');
             return;
           }
+
+          setCurrentStep('success');
         }
       },
 
@@ -222,8 +224,8 @@ export const sharedSteps = (
         setCurrentStep('closed');
 
         trackEventByName(tracks.signUpFlowCompleted);
-
         const { successAction } = getAuthenticationData();
+
         if (successAction) {
           triggerSuccessAction(successAction);
         }

@@ -352,6 +352,10 @@ namespace :cl2_back do # rubocop:disable Metrics/BlockLength
         follow: {
           enabled: true,
           allowed: true
+        },
+        homepage_builder: {
+          enabled: true,
+          allowed: true
         }
       }
     )

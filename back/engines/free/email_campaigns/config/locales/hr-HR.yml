@@ -52,6 +52,7 @@ hr:
       "voting_basket_submitted": Potvrda glasovanja
       "voting_basket_not_submitted": Glasovi nisu poslani
       "voting_last_chance": Zadnja prilika za glasanje
+      "voting_phase_started": Nova faza projekta s glasovanjem
       "voting_results": Rezultati glasovanja
       "your_proposed_initiatives_digest": Tjedni pregled vaših prijedloga
     general:

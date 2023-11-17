@@ -59,7 +59,7 @@ module UserCustomFields
         end
 
         def users_by_domicile_as_xlsx
-          res = Area.all.map do |area|
+          res = Area.order(:ordering).map do |area|
             {
               'area_id' => area.id,
               'area' => MultilocService.new.t(area.title_multiloc),

@@ -268,9 +268,9 @@ resource 'Stats - Users' do
         let(:expected_worksheet_values) do
           [
             %w[area area_id users],
-            ['Westside', Area.ids[0], 2],
-            ['Westside', Area.ids[1], 1],
-            ['Westside', Area.ids[2], 0],
+            ['Westside', @area1.id, 2],
+            ['Westside', @area2.id, 1],
+            ['Westside', @area3.id, 0],
             ['unknown', '_blank', 1]
           ]
         end

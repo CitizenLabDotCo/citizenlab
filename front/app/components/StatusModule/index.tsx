@@ -25,7 +25,7 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 // utils
 import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
-import { pastPresentOrFuture, toFullMonth } from 'utils/dateUtils';
+import { getLocalisedDateString, pastPresentOrFuture } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
 // styling
@@ -135,7 +135,7 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
               {config?.getSubmissionTerm &&
                 formatMessage(config.getSubmissionTerm('plural'))}{' '}
               {formatMessage(messages.submittedUntil)}{' '}
-              <b>{toFullMonth(phase.attributes.end_at, 'day')}</b>.
+              <b>{getLocalisedDateString(phase?.attributes.end_at)}</b>.
             </Text>
           )}
         </>
