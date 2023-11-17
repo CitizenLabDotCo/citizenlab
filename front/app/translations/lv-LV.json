@@ -867,7 +867,7 @@
   "app.containers.EventsShow.attending": "apmeklē .",
   "app.containers.EventsShow.editEvent": "Rediģēt notikumu",
   "app.containers.EventsShow.emailSharingBody": "Apmeklējiet šo pasākumu: {eventTitle} vietnē {eventLocation}.",
-  "app.containers.EventsShow.eventFrom": "Notikums no \"{eventTitle}\"",
+  "app.containers.EventsShow.eventFrom2": "No \"{projectTitle}\"",
   "app.containers.EventsShow.goBack": "Atgriezties",
   "app.containers.EventsShow.goToProject": "Dodieties uz projektu",
   "app.containers.EventsShow.icsError": "Kļūda, lejupielādējot ICS failu",
