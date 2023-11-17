@@ -3,7 +3,7 @@ import { useIntl } from 'utils/cl-intl';
 import { getTranslations } from './translations';
 
 // query
-// import { query } from './query';
+import { query } from './query';
 
 // parse
 import { parseTimeSeries, parseExcelData } from './parse';
@@ -12,9 +12,10 @@ import { parseTimeSeries, parseExcelData } from './parse';
 import { getFormattedNumbers } from 'components/admin/GraphCards/_utils/parse';
 
 // typings
-import { QueryParameters } from './typings';
-// import useAnalytics from 'api/analytics/useAnalytics';
-import useWhatever from './useWhatever';
+import { QueryParameters, Response } from './typings';
+import useAnalytics from 'api/analytics/useAnalytics';
+import useLiveReactionsByTime from './useLiveReactionsByTime';
+import usePublishedReactionsByTime from './usePublishedReactionsByTime';
 import { useMemo, useState } from 'react';
 
 export default function useReactionsByTime({
@@ -24,7 +25,7 @@ export default function useReactionsByTime({
   resolution,
 }: QueryParameters) {
   const { formatMessage } = useIntl();
-  const [currentResolution, _setCurrentResolution] = useState(resolution);
+  const [currentResolution, setCurrentResolution] = useState(resolution);
   // const { data: analytics } = useAnalytics<Response>(
   //   query({
   //     projectId,
@@ -34,7 +35,14 @@ export default function useReactionsByTime({
   //   }),
   //   () => setCurrentResolution(resolution)
   // );
-  const { data: analytics } = useWhatever({
+  // const { data: analytics } = useLiveReactionsByTime({
+  //   projectId,
+  //   startAtMoment,
+  //   endAtMoment,
+  //   resolution,
+  // });
+
+  const { data: analytics } = usePublishedReactionsByTime({
     projectId,
     startAtMoment,
     endAtMoment,

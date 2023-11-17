@@ -6,7 +6,7 @@ import reactionsByTimeKeys from './keys';
 
 const fetchReactionsByTime = (props: QueryParameters) =>
   fetcher<Response>({
-    path: `/reports/graph_data_units/live`,
+    path: `/reports/graph_data_units/published`,
     action: 'get',
     queryParams: {
       resolved_name: 'ReactionsByTimeWidget',
@@ -19,11 +19,13 @@ const fetchReactionsByTime = (props: QueryParameters) =>
     },
   });
 
-const useReactionsByTime = ({ ...queryParameters }: QueryParameters) => {
+const usePublishedReactionsByTime = ({
+  ...queryParameters
+}: QueryParameters) => {
   return useQuery<Response, CLErrors, Response, any>({
     queryKey: reactionsByTimeKeys.item(queryParameters),
     queryFn: () => fetchReactionsByTime(queryParameters),
   });
 };
 
-export default useReactionsByTime;
+export default usePublishedReactionsByTime;
