@@ -44,6 +44,7 @@ import { SuccessAction } from 'containers/Authentication/SuccessActions/actions'
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
 import useAuthUser from 'api/me/useAuthUser';
+import { ScrollToTop } from 'utils/scroll';
 
 const Container = styled.div``;
 
@@ -174,6 +175,7 @@ const IdeaButton = memo<Props>(
             { addQueryPrefix: true }
           ),
         });
+        ScrollToTop();
       }
     };
 

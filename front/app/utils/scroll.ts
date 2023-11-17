@@ -25,3 +25,10 @@ export function scrollToElement({
     element.focus();
   }
 }
+
+export const ScrollToTop = () => {
+  // Short timeout is required for some mobile browsers
+  setTimeout(() => {
+    window.scrollTo(0, 0);
+  }, 50);
+};

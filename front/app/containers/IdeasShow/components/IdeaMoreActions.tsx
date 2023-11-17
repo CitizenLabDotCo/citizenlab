@@ -27,6 +27,7 @@ import styled from 'styled-components';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { getCurrentPhase } from 'api/phases/utils';
+import { ScrollToTop } from 'utils/scroll';
 
 // typings
 import { IIdeaData } from 'api/ideas/types';
@@ -69,6 +70,7 @@ const IdeaMoreActions = memo(({ idea, className, projectId }: Props) => {
 
   const onEditIdea = () => {
     clHistory.push(`/ideas/edit/${idea.id}`);
+    ScrollToTop();
   };
 
   if (!idea) return null;

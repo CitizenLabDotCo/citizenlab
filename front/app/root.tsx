@@ -28,7 +28,6 @@ import { wrapUseRoutes } from '@sentry/react';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { queryClient } from 'utils/cl-react-query/queryClient';
-import ScrollToTop from 'components/ScrollToTop';
 
 Sentry.init({
   dsn: process.env.SENTRY_DSN,
@@ -65,7 +64,6 @@ const Root = () => {
       <OutletsProvider>
         <LanguageProvider>
           <HistoryRouter history={history as any}>
-            <ScrollToTop />
             <App>
               <Routes />
             </App>

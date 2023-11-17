@@ -8,6 +8,7 @@ import clHistory from 'utils/cl-router/history';
 import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
 import userCountKeys from 'api/users_count/keys';
 import logoutUrl from 'api/authentication/sign_in_out/logoutUrl';
+import { ScrollToTop } from 'utils/scroll';
 
 const deleteUser = (id?: string) =>
   fetcher({
@@ -35,6 +36,7 @@ const useDeleteSelf = () => {
         invalidateQueryCache();
       }
       clHistory.push('/');
+      ScrollToTop();
 
       queryClient.invalidateQueries({
         queryKey: userCountKeys.items(),

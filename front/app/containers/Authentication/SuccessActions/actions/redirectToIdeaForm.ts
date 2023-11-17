@@ -9,6 +9,9 @@ import { stringify } from 'qs';
 // typings
 import { LatLng } from 'leaflet';
 
+// utils
+import { ScrollToTop } from 'utils/scroll';
+
 export interface RedirectToIdeaFormParams {
   projectSlug: string;
   latLng?: LatLng | null;
@@ -32,4 +35,5 @@ export const redirectToIdeaForm =
         { addQueryPrefix: true }
       ),
     });
+    ScrollToTop();
   };

@@ -31,6 +31,7 @@ import { getEventDateString } from 'utils/dateUtils';
 
 // hooks
 import useEventImage from 'api/event_images/useEventImage';
+import { ScrollToTop } from 'utils/scroll';
 
 const EventInformationContainer = styled.div`
   flex: 1;
@@ -201,6 +202,7 @@ const EventInformation = ({ event, titleFontSize }: Props) => {
           bgColor={theme.colors.tenantPrimary}
           onClick={() => {
             clHistory.push(`/events/${event.id}`);
+            ScrollToTop();
           }}
         >
           {formatMessage(messages.readMore)}

@@ -41,6 +41,7 @@ import { darken } from 'polished';
 
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
+import { ScrollToTop } from 'utils/scroll';
 
 // typings
 import { IIdeaMarkerData } from 'api/idea_markers/types';
@@ -177,6 +178,7 @@ const IdeaMapCard = memo<Props>(
 
       if (tablet) {
         clHistory.push(`/ideas/${ideaMarker.attributes.slug}?go_back=true`);
+        ScrollToTop();
       } else {
         setLeafletMapSelectedMarker(ideaMarker.id);
       }

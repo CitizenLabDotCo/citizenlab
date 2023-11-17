@@ -1,6 +1,7 @@
 import { trackEventByName } from 'utils/analytics';
 import clHistory from 'utils/cl-router/history';
 import { stringify } from 'qs';
+import { ScrollToTop } from 'utils/scroll';
 
 export interface RedirectToInitiativeFormParams {
   lat?: number | null;
@@ -18,4 +19,5 @@ export const redirectToInitiativeForm =
           ? stringify({ lat, lng }, { addQueryPrefix: true })
           : undefined,
     });
+    ScrollToTop();
   };
