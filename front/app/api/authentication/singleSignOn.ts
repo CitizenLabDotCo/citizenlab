@@ -28,6 +28,7 @@ export interface SSOParams {
   sso_verification_id?: string;
   sso_verification_type?: string;
   error_code?: SignUpInError;
+  verification_success?: string;
 }
 
 const setHrefVienna = () => {

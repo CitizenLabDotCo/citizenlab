@@ -193,8 +193,14 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
   ) {
     if (authenticationData?.successAction) {
       localStorage.setItem(
-        'sso_success_action',
+        'auth_success_action',
         JSON.stringify(authenticationData.successAction)
+      );
+    }
+    if (authenticationData?.context) {
+      localStorage.setItem(
+        'auth_context',
+        JSON.stringify(authenticationData.context)
       );
     }
   }

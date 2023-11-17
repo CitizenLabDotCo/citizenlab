@@ -266,22 +266,27 @@ export default function useSteps() {
         sso_verification_id,
         sso_verification_type,
         error_code,
+        verification_success,
       } = urlSearchParams as SSOParams;
 
-      const actionFromLocalStorage = localStorage.getItem('sso_success_action');
-      localStorage.removeItem('sso_success_action');
+      const actionFromLocalStorage = localStorage.getItem(
+        'auth_success_action'
+      );
+      localStorage.removeItem('auth_success_action');
 
-      const context =
-        sso_verification_type && sso_verification_action && sso_verification_id
-          ? {
-              type: sso_verification_type,
-              action: sso_verification_action,
-              id: sso_verification_id,
-            }
-          : GLOBAL_CONTEXT;
+      const contextFromLocalStorage = localStorage.getItem('auth_context');
+      localStorage.removeItem('auth_context');
+
+      const context = contextFromLocalStorage
+        ? JSON.parse(contextFromLocalStorage)
+        : {
+            type: sso_verification_type,
+            action: sso_verification_action,
+            id: sso_verification_id,
+          };
 
       authenticationDataRef.current = {
-        flow: sso_flow || 'signup',
+        flow: sso_flow || 'signin',
         successAction:
           actionFromLocalStorage && JSON.parse(actionFromLocalStorage),
         context: context as AuthenticationContext,
@@ -297,7 +302,7 @@ export default function useSteps() {
 
       if (sso_pathname) {
         clHistory.replace(sso_pathname);
-      } else {
+      } else if (!verification_success) {
         // Remove all parameters from URL as they've already been captured
         window.history.replaceState(null, '', '/');
       }
