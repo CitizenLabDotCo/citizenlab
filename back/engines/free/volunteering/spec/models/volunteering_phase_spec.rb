@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Volunteering::VolunteeringParticipationContext do
+describe Volunteering::VolunteeringPhase do
   describe 'causes_allowed_in_participation_method' do
     it 'invalidates the participation context when there are causes associated to a non-volunteering participation_method' do
       cause = create(:cause)

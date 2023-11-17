@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Volunteering::VolunteeringParticipationContext
+module Volunteering::VolunteeringPhase
   extend ActiveSupport::Concern
 
   included do

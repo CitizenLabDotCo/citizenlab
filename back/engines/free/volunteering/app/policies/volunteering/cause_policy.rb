@@ -11,11 +11,8 @@ module Volunteering
       end
 
       def resolve
-        projects = Pundit.policy_scope(user, Project)
         phases = Pundit.policy_scope(user, Phase)
-        scope
-          .where(participation_context: projects)
-          .or(scope.where(participation_context: phases))
+        scope.where(participation_context: phases)
       end
     end
 

@@ -4,33 +4,13 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'Volunteering Causes' do
-  explanation 'Causes are tasks or events users can volunteer for, linked to a volunteering participation context'
+  explanation 'Causes are tasks or events users can volunteer for, linked to a volunteering phase'
 
   before do
     header 'Content-Type', 'application/json'
   end
 
-  get 'web_api/v1/projects/:participation_context_id/causes' do
-    with_options scope: :page do
-      parameter :number, 'Page number'
-      parameter :size, 'Number of causes per page'
-    end
-
-    before do
-      @project = create(:continuous_volunteering_project)
-      @causes = create_list(:cause, 3, participation_context: @project)
-      create(:cause)
-    end
-
-    let(:participation_context_id) { @project.id }
-    example_request 'List all causes in a volunteering project' do
-      expect(status).to eq(200)
-      json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq 3
-    end
-  end
-
-  get 'web_api/v1/phases/:participation_context_id/causes' do
+  get 'web_api/v1/phases/:phase_id/causes' do
     with_options scope: :page do
       parameter :number, 'Page number'
       parameter :size, 'Number of causes per page'
@@ -42,7 +22,7 @@ resource 'Volunteering Causes' do
       create(:cause)
     end
 
-    let(:participation_context_id) { @phase.id }
+    let(:phase_id) { @phase.id }
     example_request 'List all causes in a volunteering phase' do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
@@ -71,8 +51,8 @@ resource 'Volunteering Causes' do
 
     post 'web_api/v1/causes' do
       with_options scope: :cause do
-        parameter :participation_context_id, 'The id of the phase/project the cause belongs to', required: true
-        parameter :participation_context_type, 'The type of the participation context (Project or Phase)', required: true
+        parameter :participation_context_id, 'The id of the phase the cause belongs to', required: true
+        parameter :participation_context_type, 'The type of the participation context (Phase only)', required: true
         parameter :title_multiloc, 'The cause title, as a multiloc string', required: true
         parameter :description_multiloc, 'The cause description, as a multiloc string. Supports html.', required: false
         parameter :image, 'Base64 encoded image', required: false
