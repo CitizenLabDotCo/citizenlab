@@ -10,7 +10,7 @@ resource 'Phases' do
     header 'Authorization', "Bearer #{token}"
   end
 
-  explanation 'Phases represent the steps in a timeline project. Only timeline projects have phases, continuous projects do not.'
+  explanation 'Phases represent the steps in a timeline project.'
 
   route '/api/v1/projects/:project_id/phases', 'Phases: Listing the phases of a project' do
     let!(:project) { create(:project_with_phases) }
