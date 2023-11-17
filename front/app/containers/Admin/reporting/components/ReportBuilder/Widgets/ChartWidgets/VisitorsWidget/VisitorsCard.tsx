@@ -51,18 +51,11 @@ const VisitorsCard = ({
   }
 
   return (
-    <Box
-      width="100%"
-      height="260px"
-      mt="20px"
-      pb="8px"
-      px={layout === 'wide' ? '16px' : '0px'}
-    >
+    <Box width="100%" height="260px" mt="20px" pb="8px">
       <Box
         height="100%"
         display="flex"
         flexDirection={layout === 'wide' ? 'row' : 'column'}
-        ml="4px"
       >
         <Box display="flex" flexDirection="row">
           <Box

@@ -40,7 +40,7 @@ const Ideas = ({
   }
 
   return (
-    <Box m="16px">
+    <Box>
       {mostReactedIdeas.map(
         (
           {

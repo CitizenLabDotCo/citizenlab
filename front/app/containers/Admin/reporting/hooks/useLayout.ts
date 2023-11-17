@@ -13,6 +13,8 @@ export default function useLayout(): Layout {
     return narrowLayout ? 'narrow' : 'wide';
   }
 
+  if (narrowLayout) return 'narrow';
+
   return smallerThanPhone ? 'narrow' : 'wide';
 }
 

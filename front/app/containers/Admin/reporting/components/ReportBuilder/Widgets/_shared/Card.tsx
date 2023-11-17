@@ -1,9 +1,5 @@
 import React from 'react';
 
-// styling
-import { BORDER } from '../constants';
-import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
-
 // components
 import { Box, Title } from '@citizenlab/cl2-component-library';
 import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
@@ -18,14 +14,7 @@ interface Props extends ContainerProps {
   title?: string;
 }
 
-const Container = ({ pagebreak, children, ...rest }: ContainerProps) => {
-  const props = {
-    border: BORDER,
-    mt: '4px',
-    mb: '4px',
-    ...rest,
-  };
-
+const Container = ({ pagebreak, children, ...props }: ContainerProps) => {
   return pagebreak ? (
     <PageBreakBox {...props}>{children}</PageBreakBox>
   ) : (
@@ -36,7 +25,7 @@ const Container = ({ pagebreak, children, ...rest }: ContainerProps) => {
 const Card = ({ title, children, ...rest }: Props) => (
   <Container {...rest}>
     <Box>
-      <Title variant="h3" color="primary" m={DEFAULT_PADDING} mb="8px">
+      <Title variant="h3" color="primary" mb="8px">
         {title}
       </Title>
     </Box>

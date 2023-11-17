@@ -23,7 +23,6 @@ import {
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
 
 type Props = ProjectId & Dates & Resolution;
 
@@ -49,13 +48,7 @@ const ActiveUsers = ({
   }
 
   return (
-    <Box
-      width="100%"
-      height="260px"
-      mt="20px"
-      pb="8px"
-      px={layout === 'wide' ? DEFAULT_PADDING : '0px'}
-    >
+    <Box width="100%" height="260px" mt="20px" pb="8px">
       <Box
         height="100%"
         display="flex"
@@ -64,7 +57,6 @@ const ActiveUsers = ({
         <Box
           display="flex"
           flexDirection="row"
-          ml={layout === 'wide' ? undefined : DEFAULT_PADDING}
           mb={layout === 'wide' ? undefined : '8px'}
         >
           <Box>
@@ -76,12 +68,7 @@ const ActiveUsers = ({
         </Box>
 
         <Box flexGrow={1} display="flex" justifyContent="flex-end">
-          <Box
-            pt="8px"
-            width="100%"
-            maxWidth="800px"
-            ml={layout === 'wide' ? undefined : '8px'}
-          >
+          <Box pt="8px" width="100%" maxWidth="800px">
             <Chart
               timeSeries={timeSeries}
               startAtMoment={startAtMoment}
