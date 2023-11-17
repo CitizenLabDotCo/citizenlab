@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'query'
-
 module Analytics
   module WebApi::V1
     class AnalyticsController < ::ApplicationController

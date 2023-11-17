@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'query'
-
 module Analytics
   class MultipleQueries
     def initialize(request = nil)
@@ -37,6 +35,7 @@ module Analytics
           end
         end
       end
+      paginations = add_pagination_url(paginations)
 
       unless json_query_input.instance_of?(Array)
         results = results.empty? ? results : results[0]
@@ -44,7 +43,7 @@ module Analytics
         errors = errors.key?(0) ? errors[0] : errors
       end
 
-      [results, errors, add_pagination_url(paginations)]
+      [results, errors, paginations]
     end
 
     def add_pagination_url(paginations)

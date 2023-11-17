@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'multiple_queries'
-
 module ReportBuilder
   # TODO: rename to sth else
   class QueryRepository
