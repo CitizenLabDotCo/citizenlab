@@ -342,8 +342,7 @@ class ProjectCopyService < TemplateService
   end
 
   def yml_poll_questions(shift_timestamps: 0)
-    phase_ids = @project.phases.ids
-    Polls::Question.where(participation_context_id: phase_ids).map do |q|
+    Polls::Question.where(participation_context: Phase.where(project: @project)).map do |q|
       yml_question = {
         'participation_context_ref' => lookup_ref(q.participation_context_id, %i[phase]),
         'title_multiloc' => q.title_multiloc,
@@ -359,8 +358,7 @@ class ProjectCopyService < TemplateService
   end
 
   def yml_poll_options(shift_timestamps: 0)
-    phase_ids = @project.phases.ids
-    Polls::Option.left_outer_joins(:question).where(polls_questions: { participation_context_id: phase_ids }).map do |o|
+    Polls::Option.left_outer_joins(:question).where(polls_questions: { participation_context: Phase.where(project: @project) }).map do |o|
       yml_option = {
         'question_ref' => lookup_ref(o.question_id, :poll_question),
         'title_multiloc' => o.title_multiloc,
@@ -374,8 +372,7 @@ class ProjectCopyService < TemplateService
   end
 
   def yml_volunteering_causes(shift_timestamps: 0)
-    phase_ids = @project.phases.ids
-    Volunteering::Cause.where(participation_context_id: phase_ids).map do |c|
+    Volunteering::Cause.where(participation_context: Phase.where(project: @project)).map do |c|
       yml_cause = {
         'participation_context_ref' => lookup_ref(c.participation_context_id, %i[phase]),
         'title_multiloc' => c.title_multiloc,
@@ -442,11 +439,10 @@ class ProjectCopyService < TemplateService
     user_ids += Comment.where(id: comment_ids).pluck(:author_id)
     reaction_ids = Reaction.where(reactable_id: [idea_ids + comment_ids]).ids
     user_ids += Reaction.where(id: reaction_ids).pluck(:user_id)
-    phase_ids = @project.phases.ids
-    user_ids += Basket.where(participation_context_id: phase_ids).pluck(:user_id)
+    user_ids += Basket.where(participation_context: Phase.where(project: @project)).pluck(:user_id)
     user_ids += OfficialFeedback.where(post_id: idea_ids, post_type: 'Idea').pluck(:user_id)
     user_ids += Follower.where(followable_id: ([@project.id] + idea_ids)).pluck(:user_id)
-    user_ids += Volunteering::Volunteer.where(cause: Volunteering::Cause.where(participation_context_id: phase_ids)).pluck :user_id
+    user_ids += Volunteering::Volunteer.where(cause: Volunteering::Cause.where(participation_context: Phase.where(project: @project))).pluck :user_id
     user_ids += Events::Attendance.where(event: @project.events).pluck :attendee_id
 
     User.where(id: user_ids.uniq).map do |user|
@@ -724,8 +720,7 @@ class ProjectCopyService < TemplateService
   end
 
   def yml_volunteers(shift_timestamps: 0)
-    phase_ids = @project.phases.ids
-    Volunteering::Volunteer.where(cause: Volunteering::Cause.where(participation_context_id: phase_ids)).map do |volunteer|
+    Volunteering::Volunteer.where(cause: Volunteering::Cause.where(participation_context: Phase.where(project: @project))).map do |volunteer|
       {
         'cause_ref' => lookup_ref(volunteer.cause_id, :volunteering_cause),
         'user_ref' => lookup_ref(volunteer.user_id, :user),
