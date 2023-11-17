@@ -15,7 +15,7 @@ class SideFxProjectService
     participation_method = Factory.instance.participation_method_for(project)
     participation_method.create_default_form! if participation_method.auto_create_default_form?
     project.set_default_topics!
-    project.update!(description_multiloc: TextImageService.new.swap_data_images(project, :description_multiloc))
+    project.update!(description_multiloc: TextImageService.new.swap_data_images_multiloc(project.description_multiloc, field: :description_multiloc, imageable: project))
 
     LogActivityJob.perform_later(project, 'created', user, project.created_at.to_i)
 
@@ -40,7 +40,7 @@ class SideFxProjectService
   def before_update(project, user)
     @publication_status_was = project.admin_publication.publication_status_was
     @folder_id_was = project.admin_publication.parent_id_was
-    project.description_multiloc = TextImageService.new.swap_data_images(project, :description_multiloc)
+    project.description_multiloc = TextImageService.new.swap_data_images_multiloc(project.description_multiloc, field: :description_multiloc, imageable: project)
     @sfx_pc.before_update project, user if project.participation_context?
   end
 

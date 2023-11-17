@@ -184,3 +184,8 @@ export function getEventDateString(event: IEventData) {
     )} - ${endMoment.format('LT')}`;
   }
 }
+
+// Get a single date in local format - for example for voting phase end date
+export function getLocalisedDateString(dateString: string | null | undefined) {
+  return dateString && moment(dateString, 'YYYY-MM-DD').format('LL');
+}

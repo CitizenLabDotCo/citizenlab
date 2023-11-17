@@ -22,14 +22,14 @@ RSpec.describe ContentBuilder::WebApi::V1::ContentBuilderLayoutsController do
 
     context 'when saving is successful' do
       it 'triggers before_create and after_create hooks on the side fx service around saving the layout' do
-        swapped_multiloc = { 'en' => { 'swapped_data_images' => {} } }
-        not_swapped_multiloc = { 'en' => { 'not_swapped_data_images' => {} } }
+        swapped = { 'swapped_data_images' => {} }
+        not_swapped = { 'not_swapped_data_images' => {} }
         attributes = {
           content_buildable_type: Project.name,
           content_buildable_id: project_id,
           code: code,
           enabled: true,
-          craftjs_jsonmultiloc: not_swapped_multiloc
+          craftjs_json: not_swapped
         }
         layout = ContentBuilder::Layout.new(attributes)
         expect(ContentBuilder::Layout).to receive(:new).with(attributes).ordered.and_return layout
@@ -45,7 +45,7 @@ RSpec.describe ContentBuilder::WebApi::V1::ContentBuilderLayoutsController do
           user
         ).ordered.and_call_original
         allow_any_instance_of(ContentBuilder::LayoutImageService).to receive(:swap_data_images).and_return(
-          swapped_multiloc
+          swapped
         )
 
         params = {
@@ -53,29 +53,29 @@ RSpec.describe ContentBuilder::WebApi::V1::ContentBuilderLayoutsController do
           code: code,
           content_builder_layout: {
             enabled: true,
-            craftjs_jsonmultiloc: not_swapped_multiloc
+            craftjs_json: not_swapped
           }
         }
         post :upsert, params: params, format: :json
         expect(response).to have_http_status(:created)
         expect(response.content_type).to eq 'application/json; charset=utf-8'
-        expect(layout.reload.craftjs_jsonmultiloc).to eq swapped_multiloc
+        expect(layout.reload.craftjs_json).to eq swapped
       end
 
       it 'sanitizes HTML inside text elements' do
-        expected_multiloc = { 'en' => { 'sanitized_craftjson' => {} } }
-        expect_any_instance_of(ContentBuilder::LayoutSanitizationService).to receive(:sanitize_multiloc).and_return(
-          expected_multiloc
+        expected = { 'sanitized_craftjson' => {} }
+        expect_any_instance_of(ContentBuilder::LayoutSanitizationService).to receive(:sanitize).and_return(
+          expected
         )
 
         params = {
           project_id: project_id,
           code: code,
-          content_builder_layout: { craftjs_jsonmultiloc: { 'en' => { 'unsanitized_craftjson' => {} } } }
+          content_builder_layout: { craftjs_json: { 'unsanitized_craftjson' => {} } }
         }
         post :upsert, params: params, format: :json
         expect(response).to have_http_status :created
-        expect(JSON.parse(response.body).dig('data', 'attributes', 'craftjs_jsonmultiloc')).to eq(expected_multiloc)
+        expect(JSON.parse(response.body).dig('data', 'attributes', 'craftjs_json')).to eq(expected)
       end
     end
 
@@ -134,9 +134,9 @@ RSpec.describe ContentBuilder::WebApi::V1::ContentBuilderLayoutsController do
           layout,
           user
         ).ordered.and_call_original
-        swapped_multiloc = { 'en' => { 'swapped_data_images' => {} } }
+        swapped = { 'swapped_data_images' => {} }
         allow_any_instance_of(ContentBuilder::LayoutImageService).to receive(:swap_data_images).and_return(
-          swapped_multiloc
+          swapped
         )
 
         params = {
@@ -144,30 +144,30 @@ RSpec.describe ContentBuilder::WebApi::V1::ContentBuilderLayoutsController do
           code: code,
           content_builder_layout: {
             enabled: false,
-            craftjs_jsonmultiloc: { 'en' => { 'not_swapped_data_images' => {} } }
+            craftjs_json: { 'not_swapped_data_images' => {} }
           }
         }
         post :upsert, params: params, format: :json
         expect(response).to have_http_status(:ok)
         expect(response.content_type).to eq 'application/json; charset=utf-8'
-        expect(layout.reload.craftjs_jsonmultiloc).to eq swapped_multiloc
+        expect(layout.reload.craftjs_json).to eq swapped
       end
 
       it 'sanitizes HTML inside text elements' do
-        expected_multiloc = { 'en' => { 'sanitized_craftjson' => {} } }
-        layout # also calls sanitize_multiloc (to make the expectation below work)
-        expect_any_instance_of(ContentBuilder::LayoutSanitizationService).to receive(:sanitize_multiloc).and_return(
-          expected_multiloc
+        expected = { 'sanitized_craftjson' => {} }
+        layout # also calls sanitize (to make the expectation below work)
+        expect_any_instance_of(ContentBuilder::LayoutSanitizationService).to receive(:sanitize).and_return(
+          expected
         )
 
         params = {
           project_id: project_id,
           code: code,
-          content_builder_layout: { craftjs_jsonmultiloc: { 'en' => { 'unsanitized_craftjson' => {} } } }
+          content_builder_layout: { craftjs_jso: { 'unsanitized_craftjson' => {} } }
         }
         post :upsert, params: params, format: :json
         expect(response).to have_http_status :ok
-        expect(JSON.parse(response.body).dig('data', 'attributes', 'craftjs_jsonmultiloc')).to eq(expected_multiloc)
+        expect(JSON.parse(response.body).dig('data', 'attributes', 'craftjs_json')).to eq(expected)
       end
     end
 

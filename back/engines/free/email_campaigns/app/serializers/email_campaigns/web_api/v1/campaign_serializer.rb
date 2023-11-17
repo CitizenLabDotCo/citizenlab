@@ -82,7 +82,7 @@ module EmailCampaigns
     attribute :body_multiloc, if: proc { |object|
       content_configurable? object
     } do |object|
-      TextImageService.new.render_data_images object, :body_multiloc
+      TextImageService.new.render_data_images_multiloc object.body_multiloc, field: :body_multiloc, imageable: object
     end
     attribute :deliveries_count, if: proc { |object|
       trackable? object

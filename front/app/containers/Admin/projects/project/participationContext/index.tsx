@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { isEqual } from 'lodash-es';
-import { adopt } from 'react-adopt';
 
 // components
 import ParticipationMethodPicker from './components/ParticipationMethodPicker';
@@ -34,13 +33,11 @@ import {
 } from 'utils/participationContexts';
 import eventEmitter from 'utils/eventEmitter';
 
-// resources
-import GetFeatureFlag, {
-  GetFeatureFlagChildProps,
-} from 'resources/GetFeatureFlag';
+// hooks
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
 import messages from '../messages';
 
@@ -80,17 +77,17 @@ export interface IParticipationContextConfig {
 }
 
 interface DataProps {
-  surveys_enabled: GetFeatureFlagChildProps;
-  typeform_enabled: GetFeatureFlagChildProps;
-  google_forms_enabled: GetFeatureFlagChildProps;
-  enalyzer_enabled: GetFeatureFlagChildProps;
-  survey_xact_enabled: GetFeatureFlagChildProps;
-  qualtrics_enabled: GetFeatureFlagChildProps;
-  smartsurvey_enabled: GetFeatureFlagChildProps;
-  microsoft_forms_enabled: GetFeatureFlagChildProps;
-  survey_monkey_enabled: GetFeatureFlagChildProps;
-  snap_survey_enabled: GetFeatureFlagChildProps;
-  isCustomInputTermEnabled: GetFeatureFlagChildProps;
+  surveys_enabled: boolean;
+  typeform_enabled: boolean;
+  google_forms_enabled: boolean;
+  enalyzer_enabled: boolean;
+  survey_xact_enabled: boolean;
+  qualtrics_enabled: boolean;
+  smartsurvey_enabled: boolean;
+  microsoft_forms_enabled: boolean;
+  survey_monkey_enabled: boolean;
+  snap_survey_enabled: boolean;
+  isCustomInputTermEnabled: boolean;
 }
 
 export type ApiErrors = CLErrors | null | undefined;
@@ -694,26 +691,24 @@ class ParticipationContext extends PureComponent<
   }
 }
 
-const Data = adopt<DataProps>({
-  surveys_enabled: <GetFeatureFlag name="surveys" />,
-  typeform_enabled: <GetFeatureFlag name="typeform_surveys" />,
-  google_forms_enabled: <GetFeatureFlag name="google_forms_surveys" />,
-  survey_monkey_enabled: <GetFeatureFlag name="surveymonkey_surveys" />,
-  enalyzer_enabled: <GetFeatureFlag name="enalyzer_surveys" />,
-  survey_xact_enabled: <GetFeatureFlag name="survey_xact_surveys" />,
-  qualtrics_enabled: <GetFeatureFlag name="qualtrics_surveys" />,
-  smartsurvey_enabled: <GetFeatureFlag name="smart_survey_surveys" />,
-  snap_survey_enabled: <GetFeatureFlag name="snap_survey_surveys" />,
-  microsoft_forms_enabled: <GetFeatureFlag name="microsoft_forms_surveys" />,
-  isCustomInputTermEnabled: <GetFeatureFlag name="idea_custom_copy" />,
-});
+export default (inputProps: InputProps) => {
+  const featureFlags = {
+    surveys_enabled: useFeatureFlag({ name: 'surveys' }),
+    typeform_enabled: useFeatureFlag({ name: 'typeform_surveys' }),
+    google_forms_enabled: useFeatureFlag({ name: 'google_forms_surveys' }),
+    survey_monkey_enabled: useFeatureFlag({ name: 'surveymonkey_surveys' }),
+    enalyzer_enabled: useFeatureFlag({ name: 'enalyzer_surveys' }),
+    survey_xact_enabled: useFeatureFlag({ name: 'survey_xact_surveys' }),
+    qualtrics_enabled: useFeatureFlag({ name: 'qualtrics_surveys' }),
+    smartsurvey_enabled: useFeatureFlag({ name: 'smart_survey_surveys' }),
+    snap_survey_enabled: useFeatureFlag({ name: 'snap_survey_surveys' }),
+    microsoft_forms_enabled: useFeatureFlag({
+      name: 'microsoft_forms_surveys',
+    }),
+    isCustomInputTermEnabled: useFeatureFlag({ name: 'idea_custom_copy' }),
+  };
 
-const ParticipationContextWithIntl = injectIntl(ParticipationContext);
+  const intl = useIntl();
 
-export default (inputProps: InputProps) => (
-  <Data>
-    {(dataProps: DataProps) => (
-      <ParticipationContextWithIntl {...inputProps} {...dataProps} />
-    )}
-  </Data>
-);
+  return <ParticipationContext {...inputProps} {...featureFlags} intl={intl} />;
+};
