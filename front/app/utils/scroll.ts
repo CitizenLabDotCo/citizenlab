@@ -1,5 +1,3 @@
-import { useBreakpoint } from '@citizenlab/cl2-component-library';
-
 interface IScrollToElementParams {
   id: string;
   behavior?: 'smooth' | 'auto';
