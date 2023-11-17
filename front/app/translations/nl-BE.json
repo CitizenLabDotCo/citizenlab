@@ -867,6 +867,7 @@
   "app.containers.EventsShow.attending": "bijwonen",
   "app.containers.EventsShow.editEvent": "Event bewerken",
   "app.containers.EventsShow.emailSharingBody": "Woon dit evenement bij: {eventTitle} in {eventLocation}",
+  "app.containers.EventsShow.eventFrom2": "Van \"{projectTitle}\"",
   "app.containers.EventsShow.goBack": "Ga terug",
   "app.containers.EventsShow.goToProject": "Ga naar het project",
   "app.containers.EventsShow.icsError": "Fout bij het downloaden van het ICS-bestand",
