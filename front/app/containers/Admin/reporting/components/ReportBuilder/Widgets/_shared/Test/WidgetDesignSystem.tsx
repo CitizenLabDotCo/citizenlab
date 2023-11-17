@@ -15,7 +15,11 @@ const WidgetDesignSystem = (props: Props) => {
       <FullWidthThing {...props} />
       <GraphCard {...props} />
 
-      <TwoColumnWrapper {...props} left={} />
+      <TwoColumns
+        {...props}
+        left={<FullWidthThing {...props} />}
+        right={<GraphCard {...props} />}
+      />
     </Box>
   );
 };
