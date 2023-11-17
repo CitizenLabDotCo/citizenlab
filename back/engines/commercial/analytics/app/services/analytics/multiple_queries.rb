@@ -47,7 +47,7 @@ module Analytics
     end
 
     def add_pagination_url(paginations)
-      return if @request.nil?
+      return paginations if @request.nil?
 
       paginations.map do |pagination|
         pagination.transform_values do |params|
