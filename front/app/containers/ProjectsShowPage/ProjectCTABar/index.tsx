@@ -21,7 +21,7 @@ type ProjectCTABarProps = {
 };
 
 export const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
-  const smallerThanTablet = useBreakpoint('tablet');
+  const isSmallerThanTablet = useBreakpoint('tablet');
   const isSmallerThanPhone = useBreakpoint('phone');
   const [isVisible, setIsVisible] = useState(false);
   const portalElement = document?.getElementById('topbar-portal');
@@ -45,7 +45,7 @@ export const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
               actionButtonElement &&
               actionButtonYOffset &&
               window.pageYOffset >
-                actionButtonYOffset - (smallerThanTablet ? 14 : 30)
+                actionButtonYOffset - (isSmallerThanTablet ? 14 : 30)
             )
           );
         }
@@ -55,7 +55,7 @@ export const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
     return () => {
       isMounted = false;
     };
-  }, [projectId, smallerThanTablet]);
+  }, [projectId, isSmallerThanTablet]);
 
   const participationMethod = project
     ? getParticipationMethod(project.data, phases?.data)
