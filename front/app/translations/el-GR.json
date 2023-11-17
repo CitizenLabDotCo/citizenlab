@@ -867,6 +867,7 @@
   "app.containers.EventsShow.attending": "που παρακολουθεί το",
   "app.containers.EventsShow.editEvent": "Επεξεργασία συμβάντος",
   "app.containers.EventsShow.emailSharingBody": "Παρακολουθήστε αυτή την εκδήλωση: {eventTitle} στο {eventLocation}",
+  "app.containers.EventsShow.eventFrom2": "Από το \"{projectTitle}\"",
   "app.containers.EventsShow.goBack": "Πηγαίνετε πίσω",
   "app.containers.EventsShow.goToProject": "Μεταβείτε στο έργο",
   "app.containers.EventsShow.icsError": "Σφάλμα λήψης του αρχείου ICS",
