@@ -39,12 +39,10 @@ const ParticipationCTAContent = ({
         alignItems="center"
         mb={CTAButton !== undefined ? '12px' : '0'}
       >
-        <Box display="flex" alignItems="center">
-          <TimeIndicator
-            hasUserParticipated={hasUserParticipated}
-            currentPhase={currentPhase}
-          />
-        </Box>
+        <TimeIndicator
+          hasUserParticipated={hasUserParticipated}
+          currentPhase={currentPhase}
+        />
         <Box ml="auto">{participationState}</Box>
       </Box>
       {CTAButton}
@@ -60,15 +58,13 @@ const ParticipationCTAContent = ({
       p="20px"
     >
       <Box display="flex" width="100%" maxWidth={`${maxPageWidth}px`}>
-        <Box display="flex" alignItems="center">
-          <TimeIndicator
-            hasUserParticipated={hasUserParticipated}
-            currentPhase={currentPhase}
-          />
-        </Box>
-        <Box display="flex" ml="auto">
+        <TimeIndicator
+          hasUserParticipated={hasUserParticipated}
+          currentPhase={currentPhase}
+        />
+        <Box display="flex" alignItems="center" ml="auto">
           {participationState}
-          {CTAButton}
+          <Box ml={CTAButton !== undefined ? '12px' : '0'}>{CTAButton}</Box>
         </Box>
       </Box>
     </Box>
