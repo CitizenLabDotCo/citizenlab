@@ -10,6 +10,8 @@ hr:
       comment_author: '%{authorName} je komentirao/la:'
       idea_author: '%{authorName} je objavio/la novi unos:'
       initiative_author: '%{authorName} je objavio/la novi prijedlog:'
-      this_post_was_flagged: >
-        <p>Ova je objava automatski otkrivena kao potencijalno neprimjeren sadržaj. Šaljemo vam ovu obavijest kako biste mogli pregledati objavu u skladu s vlastitim smjernicama za moderiranje.</p><p>Ako objava ne sadrži neprimjeren sadržaj, možete ukloniti upozorenje putem svoje platforme na kartici Aktivnost a administratorskoj ploči.</p>
+      automatically_flagged: >
+        Ovaj post je automatski otkriven kao potencijalno neprikladan sadržaj. Šaljemo vam ovu obavijest kako biste mogli pregledati post u skladu s vlastitim smjernicama za moderiranje.
+      how_to_review: >
+        Ako objava ne sadrži neprikladan sadržaj, upozorenje možete ukloniti putem svoje platforme u kartici Aktivnost na administratorskoj ploči.
       cta_review_post: 'Pregledaj objavu'
