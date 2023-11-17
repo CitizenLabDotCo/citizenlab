@@ -269,7 +269,7 @@ describe('Native survey CTA bar', () => {
     cy.acceptCookies();
     cy.setAdminLoginCookie();
 
-    cy.visit(`admin/projects/${projectId}/permissions`);
+    cy.visit(`admin/projects/${projectId}/settings/access-rights`);
     cy.get('#e2e-granular-permissions').within(() => {
       cy.get('#e2e-permission-registered-users').should('exist');
       cy.get('#e2e-permission-registered-users').click();
