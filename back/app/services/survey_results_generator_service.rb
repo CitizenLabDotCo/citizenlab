@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 class SurveyResultsGeneratorService < FieldVisitorService
-  def initialize(participation_context)
+  def initialize(phase)
     super()
-    form = participation_context.custom_form || CustomForm.new(participation_context: participation_context)
+    form = phase.custom_form || CustomForm.new(participation_context: phase)
     @fields = IdeaCustomFieldsService.new(form).enabled_fields # It would be nice if we could use reportable_fields instead
-    @inputs = participation_context.ideas.published
+    @inputs = phase.ideas.published
     @locales = AppConfiguration.instance.settings('core', 'locales')
   end
 
@@ -24,27 +24,15 @@ class SurveyResultsGeneratorService < FieldVisitorService
   end
 
   def visit_select(field)
-    option_keys = field.options.pluck(:key)
     values = inputs
       .select("custom_field_values->'#{field.key}' as value")
       .where("custom_field_values->'#{field.key}' IS NOT NULL")
-    distribution = Idea.select(:value).from(values).group(:value).order(Arel.sql('COUNT(value) DESC')).count.to_a
-    filtered_distribution = distribution.select { |(value, _count)| option_keys.include? value }
-    option_titles = field.options.each_with_object({}) do |option, accu|
-      accu[option.key] = option.title_multiloc
-    end
-    collect_answers(field, filtered_distribution, option_titles)
+    visit_select_base(field, values)
   end
 
   def visit_multiselect(field)
-    option_keys = field.options.pluck(:key)
     flattened_values = inputs.select(:id, "jsonb_array_elements(custom_field_values->'#{field.key}') as value")
-    distribution = Idea.select(:value).from(flattened_values).group(:value).order(Arel.sql('COUNT(value) DESC')).count.to_a
-    filtered_distribution = distribution.select { |(value, _count)| option_keys.include? value }
-    option_titles = field.options.each_with_object({}) do |option, accu|
-      accu[option.key] = option.title_multiloc
-    end
-    collect_answers(field, filtered_distribution, option_titles)
+    visit_select_base(field, flattened_values)
   end
 
   def visit_multiline_text(field)
@@ -103,6 +91,16 @@ class SurveyResultsGeneratorService < FieldVisitorService
   private
 
   attr_reader :fields, :inputs, :locales
+
+  def visit_select_base(field, values)
+    option_keys = field.options.pluck(:key)
+    distribution = Idea.select(:value).from(values).group(:value).order(Arel.sql('COUNT(value) DESC')).count.to_a
+    filtered_distribution = distribution.select { |(value, _count)| option_keys.include? value }
+    option_titles = field.options.each_with_object({}) do |option, accu|
+      accu[option.key] = option.title_multiloc
+    end
+    collect_answers(field, filtered_distribution, option_titles)
+  end
 
   def collect_answers(field, distribution, option_titles)
     answers = distribution.map do |(value, count)|

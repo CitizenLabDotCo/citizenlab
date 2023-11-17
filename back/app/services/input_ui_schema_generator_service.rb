@@ -110,6 +110,7 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
     }
   end
 
+  # TODO: JS - no input term on the project any more if form is from the project
   def generate_pages_for_current_locale(fields)
     participation_context = fields.first.resource.participation_context
     input_term = participation_context.input_term || ParticipationContext::DEFAULT_INPUT_TERM

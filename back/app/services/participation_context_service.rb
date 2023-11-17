@@ -54,9 +54,7 @@ class ParticipationContextService
   def get_participation_context(project)
     if project.admin_publication.archived?
       nil
-    elsif project.continuous?
-      project
-    elsif project.timeline?
+    else
       @timeline_service.current_phase project
     end
   end
@@ -64,11 +62,7 @@ class ParticipationContextService
   def in_current_context?(idea, current_context = nil)
     project = idea.project
     current_context ||= get_participation_context project
-    if project.continuous?
-      true
-    else
-      idea.ideas_phases.find { |ip| ip.phase_id == current_context.id }
-    end
+    idea.ideas_phases.find { |ip| ip.phase_id == current_context.id }
   end
 
   def posting_idea_disabled_reason_for_project(project, user)
@@ -289,7 +283,7 @@ class ParticipationContextService
   private
 
   def future_phases(project, time)
-    project.timeline? ? @timeline_service.future_phases(project, time) : []
+    @timeline_service.future_phases(project, time)
   end
 
   # Common reason regardless of the reaction type.

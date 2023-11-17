@@ -46,7 +46,7 @@ class WebApi::V1::ParticipationContextSerializer < WebApi::V1::BaseSerializer
     && context.voting? \
     && (
       (current_user(params) && UserRoleService.new.can_moderate?(context, current_user(params))) \
-      || TimelineService.new.phase_is_complete?(context)
+      || (context.phase? && TimelineService.new.phase_is_complete?(context))
     )
   }
 end
