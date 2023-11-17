@@ -1,3 +1,5 @@
+import { useBreakpoint } from '@citizenlab/cl2-component-library';
+
 interface IScrollToElementParams {
   id: string;
   behavior?: 'smooth' | 'auto';
@@ -26,6 +28,8 @@ export function scrollToElement({
   }
 }
 
-export const scrollToTop = () => {
-  window.scrollTo(0, 0);
+export const crollToTop = () => {
+  setTimeout(() => {
+    window.scrollTo(0, 0);
+  }, 20);
 };
