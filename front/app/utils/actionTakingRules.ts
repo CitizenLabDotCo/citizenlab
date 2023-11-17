@@ -99,6 +99,8 @@ const ideaPostingDisabledReason = (
         disabledReason: 'postingDisabled',
         authenticationRequirements: null,
       };
+    // Only applicable to taking surveys at the moment.
+    // Not configurable via admin UI, determined in BE
     case 'posting_limited_max_reached':
       return {
         disabledReason: 'postingLimitedMaxReached',

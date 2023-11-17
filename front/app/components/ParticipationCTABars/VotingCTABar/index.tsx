@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 
 // components
 import { Text } from '@citizenlab/cl2-component-library';
-import { ParticipationCTAContent } from 'components/ParticipationCTABars/ParticipationCTAContent';
+import ParticipationCTAContent from 'components/ParticipationCTABars/ParticipationCTAContent';
 import ErrorToast from 'components/ErrorToast';
 import CTAButton from './CTAButton';
 
@@ -10,7 +10,6 @@ import CTAButton from './CTAButton';
 import useBasket from 'api/baskets/useBasket';
 import useVoting from 'api/baskets_ideas/useVoting';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useLocale from 'hooks/useLocale';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -21,16 +20,14 @@ import {
   CTABarProps,
   hasProjectEndedOrIsArchived,
 } from 'components/ParticipationCTABars/utils';
-import { getCurrentPhase, getLastPhase, hidePhases } from 'api/phases/utils';
+import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
 import { getVotesCounter } from './utils';
-import { isNilOrError } from 'utils/helperUtils';
 
-export const VotingCTABar = ({ phases, project }: CTABarProps) => {
+const VotingCTABar = ({ phases, project }: CTABarProps) => {
   const { numberOfVotesCast } = useVoting();
   const { data: appConfig } = useAppConfiguration();
   const { formatMessage } = useIntl();
   const localize = useLocalize();
-  const currentLocale = useLocale();
 
   const currentPhase = useMemo(() => {
     return getCurrentPhase(phases) || getLastPhase(phases);
@@ -41,10 +38,7 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
 
   const { data: basket } = useBasket(basketId);
 
-  if (
-    hasProjectEndedOrIsArchived(project, currentPhase) ||
-    isNilOrError(currentLocale)
-  ) {
+  if (hasProjectEndedOrIsArchived(project, currentPhase)) {
     return null;
   }
 
@@ -63,35 +57,29 @@ export const VotingCTABar = ({ phases, project }: CTABarProps) => {
 
   const submittedAt = basket?.data.attributes.submitted_at || null;
   const hasUserParticipated = !!submittedAt;
-  const treatAsContinuous = hidePhases(phases, currentLocale);
 
   return (
     <>
-      <ParticipationCTAContent
-        project={project}
-        currentPhase={currentPhase}
-        CTAButton={<CTAButton participationContext={participationContext} />}
-        hasUserParticipated={hasUserParticipated}
-        participationState={
-          hasUserParticipated ? undefined : (
-            <Text
-              color="white"
-              m="0px"
-              fontSize="s"
-              my="0px"
-              textAlign="left"
-              aria-live="polite"
-            >
+      {hasUserParticipated ? (
+        <ParticipationCTAContent
+          currentPhase={currentPhase}
+          hasUserParticipated
+        />
+      ) : (
+        <ParticipationCTAContent
+          currentPhase={currentPhase}
+          hasUserParticipated={false}
+          CTAButton={<CTAButton participationContext={participationContext} />}
+          participationState={
+            <Text color="white" m="0px" fontSize="s" aria-live="polite">
               {votesCounter}
             </Text>
-          )
-        }
-        hideDefaultParticipationMessage={
-          currentPhase && !treatAsContinuous ? true : false
-        }
-        timeLeftPosition="left"
-      />
+          }
+        />
+      )}
       <ErrorToast />
     </>
   );
 };
+
+export default VotingCTABar;
