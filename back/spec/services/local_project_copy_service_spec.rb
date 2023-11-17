@@ -42,7 +42,6 @@ describe LocalProjectCopyService do
         ideas_count: 0,
         include_all_areas: false,
         internal_role: nil,
-        process_type: 'timeline',
         visible_to: 'public',
         folder_id: nil
       )
