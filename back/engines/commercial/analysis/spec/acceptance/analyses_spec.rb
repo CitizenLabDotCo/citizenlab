@@ -118,7 +118,7 @@ resource 'Analyses' do
       let!(:custom_form) { create(:custom_form, participation_context: project.phases.first) }
       let(:project_id) { project.id }
 
-      example_request 'Create an analysis (continuous survey project)' do
+      example_request 'Create an analysis (native survey project)' do
         expect(response_status).to eq 201
       end
     end
