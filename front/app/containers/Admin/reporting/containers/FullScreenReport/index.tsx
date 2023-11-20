@@ -28,10 +28,6 @@ export interface Props {
   reportId: string;
 }
 
-// TEST
-const b = '1px dotted black';
-// END TEST
-
 export const FullScreenReport = ({ reportId }: Props) => {
   const [draftData, setDraftData] = useState<SerializedNodes | undefined>();
   const { data: reportLayout } = useReportLayout(reportId);
@@ -66,7 +62,7 @@ export const FullScreenReport = ({ reportId }: Props) => {
           {isLoadingLayout && <Spinner />}
           {!isLoadingLayout && (
             <Box w="100%" display="flex" justifyContent="center">
-              <Box maxWidth="800px" borderLeft={b} borderRight={b}>
+              <Box maxWidth="800px">
                 <Editor isPreview={true}>
                   {editorData && (
                     <ContentBuilderFrame editorData={editorData} />
