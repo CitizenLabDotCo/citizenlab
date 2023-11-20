@@ -24,7 +24,7 @@ namespace :migrate_craftjson do
         layouts = craftjson.values.select do |elts|
           includes_multiloc_elements? elts
         end
-        structure = layouts.map do |elts|
+        structures = layouts.map do |elts|
           tree_structure elts
         end
         if structures.uniq.size > 1
@@ -72,7 +72,7 @@ namespace :migrate_craftjson do
           primary_locale = layout.craftjs_jsonmultiloc[locales.first].present? ? locales.first : layout.craftjs_jsonmultiloc.keys.first
           layout.craftjs_json = migrate_monolingual(layout.craftjs_jsonmultiloc, primary_locale)
           if multilingual?(layout.craftjs_jsonmultiloc, locales)
-            add_multilocs(layout, primary_locale) 
+            add_multilocs(layout, primary_locale)
           end
           if !layout.save
             errors[tenant.host] ||= []
@@ -153,7 +153,7 @@ def add_multilocs(layout, primary_locale)
   mapping = text_mapping(layout.craftjs_jsonmultiloc, primary_locale)
 
   layout.craftjs_json.transform_values do |elt|
-    if MULTILOC_TYPES.values.include? node_type(elt)
+    if MULTILOC_TYPES.value? node_type(elt)
       TEXT_PROPS.each do |text_prop|
         if elt['props'].key? text_prop
           primary_text = elt.dig('props', text_prop, primary_locale)
@@ -179,22 +179,22 @@ def text_mapping(craftjs_jsonmultiloc, primary_locale, current_nodes = nil)
     if primary_elt['props'].key? text_prop
       current_nodes.each do |other_locale, other_elt|
         if primary_locale != other_locale
-          mapping[primary_elt.dig('props',text_prop)] ||= {}
-          mapping[primary_elt.dig('props',text_prop)][other_locale] = other_elt.dig('props',text_prop)
+          mapping[primary_elt.dig('props', text_prop)] ||= {}
+          mapping[primary_elt.dig('props', text_prop)][other_locale] = other_elt.dig('props', text_prop)
         end
       end
     end
   end
 
   # Loop over children
-  children = current_nodes.map do |locale, elt|
-    elt_children = elt['nodes'].map do |child_id|
+  children = current_nodes.to_h do |locale, elt|
+    elt_children = elt['nodes'].filter_map do |child_id|
       child = craftjs_jsonmultiloc[locale][child_id]
       skip_child?(child) ? nil : child
-    end.compact
+    end
     [locale, elt_children]
-  end.to_h
-  for i in 0...children[primary_locale].size do
+  end
+  (0...children[primary_locale].size).each do |i|
     child_nodes = children.transform_values do |elt_children|
       elt_children[i]
     end
