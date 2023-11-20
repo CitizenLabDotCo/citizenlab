@@ -17,7 +17,7 @@ import useReport from 'api/reports/useReport';
 import useUserById from 'api/users/useUserById';
 import useProjectById from 'api/projects/useProjectById';
 import useLocalize from 'hooks/useLocalize';
-import usePx from 'components/admin/ContentBuilder/Widgets/usePx';
+import usePx from 'containers/Admin/reporting/hooks/usePx';
 
 // utils
 import { useIntl } from 'utils/cl-intl';

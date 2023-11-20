@@ -15,7 +15,7 @@ import useLayout from 'containers/Admin/reporting/hooks/useLayout';
 // typings
 import { ColumnLayout } from 'components/admin/ContentBuilder/typings';
 import { Layout } from 'components/admin/GraphCards/typings';
-import usePx from 'components/admin/ContentBuilder/Widgets/usePx';
+import usePx from 'containers/Admin/reporting/hooks/usePx';
 
 type TwoColumnProps = {
   columnLayout: ColumnLayout;

@@ -14,7 +14,7 @@ import messages from 'components/admin/ContentBuilder/Widgets/Text/messages';
 
 // hooks
 import { useTheme } from 'styled-components';
-import usePx from 'components/admin/ContentBuilder/Widgets/usePx';
+import usePx from 'containers/Admin/reporting/hooks/usePx';
 
 interface Props {
   text: string;

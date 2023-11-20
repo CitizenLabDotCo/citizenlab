@@ -1,6 +1,6 @@
-import { useNode, useEditor } from '@craftjs/core';
 import { useContext } from 'react';
 import { ReportContext } from '../context/ReportContext';
+import { useNode, useEditor } from '@craftjs/core';
 import { useBreakpoint } from '@citizenlab/cl2-component-library';
 import { Layout } from 'components/admin/GraphCards/typings';
 

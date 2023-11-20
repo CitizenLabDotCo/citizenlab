@@ -14,7 +14,7 @@ import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 // i18n
 import messages from 'components/admin/ContentBuilder/Widgets/Title/messages';
 import { useIntl } from 'utils/cl-intl';
-import usePx from 'components/admin/ContentBuilder/Widgets/usePx';
+import usePx from 'containers/Admin/reporting/hooks/usePx';
 
 const H3 = styled.h3<{ color: string }>`
   color: ${({ color }) => color};

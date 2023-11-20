@@ -5,7 +5,7 @@ import { Box, Title } from '@citizenlab/cl2-component-library';
 import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 
 // hooks
-import usePx from 'components/admin/ContentBuilder/Widgets/usePx';
+import usePx from 'containers/Admin/reporting/hooks/usePx';
 
 interface SharedProps {
   pagebreak?: boolean;

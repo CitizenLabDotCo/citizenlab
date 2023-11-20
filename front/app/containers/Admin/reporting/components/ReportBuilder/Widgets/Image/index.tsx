@@ -31,7 +31,7 @@ import {
 
 // hooks
 import useAddContentBuilderImage from 'api/content_builder_images/useAddContentBuilderImage';
-import usePx from 'components/admin/ContentBuilder/Widgets/usePx';
+import usePx from 'containers/Admin/reporting/hooks/usePx';
 
 interface Props {
   imageUrl?: string;
