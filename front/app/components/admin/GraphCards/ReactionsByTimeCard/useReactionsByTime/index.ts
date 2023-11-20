@@ -29,7 +29,7 @@ export default function useReactionsByTime({
   const [currentResolution, _setCurrentResolution] = useState(resolution);
 
   const { id: graphId } = useNode();
-  const { reportId } = useParams<{ reportId: string }>();
+  const { reportId } = useParams() as { reportId: string };
   // const { data: analytics } = useAnalytics<Response>(
   //   query({
   //     projectId,
