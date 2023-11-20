@@ -1,5 +1,4 @@
 import React, { memo } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
 import { stringify } from 'qs';
 
@@ -126,6 +125,8 @@ const IdeaButton = memo<Props>(
     const { data: phases } = usePhases(projectId);
     const { data: authUser } = useAuthUser();
 
+    if (!project) return null;
+
     const disabledMessages: {
       [key in IIdeaPostingDisabledReason]: MessageDescriptor;
     } = {
@@ -138,6 +139,7 @@ const IdeaButton = memo<Props>(
       maybeNotPermitted: messages.postingMayNotBePermitted,
       notInGroup: globalMessages.notInGroup,
     };
+
     const { enabled, show, disabledReason, authenticationRequirements } =
       getIdeaPostingRules({
         project: project?.data,
@@ -157,27 +159,21 @@ const IdeaButton = memo<Props>(
       : null;
 
     const redirectToIdeaForm = () => {
-      if (!isNilOrError(project)) {
-        trackEventByName(tracks.redirectedToIdeaFrom);
+      trackEventByName(tracks.redirectedToIdeaFrom);
 
-        const positionParams = latLng
-          ? { lat: latLng.lat, lng: latLng.lng }
-          : {};
+      const positionParams = latLng ? { lat: latLng.lat, lng: latLng.lng } : {};
 
-        clHistory.push({
-          pathname: `/projects/${project.data.attributes.slug}/ideas/new`,
-          search: stringify(
-            {
-              ...positionParams,
-              phase_id: phase?.id,
-            },
-            { addQueryPrefix: true }
-          ),
-        });
-      }
+      clHistory.push({
+        pathname: `/projects/${project.data.attributes.slug}/ideas/new`,
+        search: stringify(
+          {
+            ...positionParams,
+            phase_id: phase?.id,
+          },
+          { addQueryPrefix: true }
+        ),
+      });
     };
-
-    if (isNilOrError(project)) return null;
 
     const onClick = (event: React.MouseEvent) => {
       event.preventDefault();
