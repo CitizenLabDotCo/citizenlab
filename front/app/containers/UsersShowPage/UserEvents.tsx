@@ -32,12 +32,12 @@ export const UserEvents = () => {
   const { userSlug } = useParams() as { userSlug: string };
   const { data: user } = useUserBySlug(userSlug);
   const { data: events } = useEventsByUserId(user?.data.id);
-  const isMobileOrSmaller = useBreakpoint('phone');
+  const isPhoneOrSmaller = useBreakpoint('phone');
   const eventsCount = events?.data.length;
 
   return (
     <Container className="e2e-profile-events">
-      {isMobileOrSmaller && (
+      {isPhoneOrSmaller && (
         <Title mt="0px" variant="h3" as="h1">
           <FormattedMessage
             {...messages.eventsWithCount}

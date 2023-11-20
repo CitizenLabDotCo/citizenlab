@@ -222,6 +222,10 @@ FactoryBot.define do
   factory :voting_phase_started_campaign, class: EmailCampaigns::Campaigns::VotingPhaseStarted do
     enabled { true }
   end
+
+  factory :voting_results_campaign, class: EmailCampaigns::Campaigns::VotingResults do
+    enabled { true }
+  end
 end
 
 def weekly_schedule

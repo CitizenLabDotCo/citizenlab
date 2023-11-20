@@ -52,6 +52,7 @@ ca:
       "voting_basket_submitted": Confirmació de la votació
       "voting_basket_not_submitted": Vots no enviats
       "voting_last_chance": Última oportunitat per votar
+      "voting_phase_started": Nova fase del projecte amb votació
       "voting_results": Resultats de les votacions
       "your_proposed_initiatives_digest": Resum setmanal de les vostres propostes
     general:

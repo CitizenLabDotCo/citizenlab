@@ -148,6 +148,7 @@ const ActionForm = ({
               selected={permittedBy === 'users'}
             />
             <CardButton
+              id="e2e-permission-user-groups"
               iconName="group"
               title={formatMessage(
                 permissionsMessages.permissionsSelectionLabel
@@ -180,6 +181,7 @@ const ActionForm = ({
                 options={groupsOptions()}
                 onChange={handleGroupIdsUpdate}
                 placeholder={<FormattedMessage {...messages.selectGroups} />}
+                id="e2e-select-user-group"
               />
             </Box>
           )}

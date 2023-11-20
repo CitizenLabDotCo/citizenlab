@@ -15,4 +15,17 @@ export default defineMessages({
     defaultMessage:
       "Users will still need to comply with participation requirements under the access 'Access Rights' tab. User profile data will not be available in the survey data export.",
   },
+  shareInformationOrResults: {
+    id: 'app.containers.AdminPage.ProjectEdit.information.shareInformationOrResults',
+    defaultMessage: 'Share information or results',
+  },
+  provideInformation: {
+    id: 'app.containers.AdminPage.ProjectEdit.information.provideInformation',
+    defaultMessage:
+      'Provide information to users, or use the report builder to share results on past phases.',
+  },
+  new: {
+    id: 'app.containers.AdminPage.ProjectEdit.information.new',
+    defaultMessage: 'NEW',
+  },
 });

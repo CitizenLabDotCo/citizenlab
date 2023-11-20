@@ -374,7 +374,7 @@ describe JsonFormsService do
           }
           field = create(:custom_field, :for_custom_form, input_type: 'text', description_multiloc: description_multiloc)
           allow_any_instance_of(TextImageService).to(
-            receive(:render_data_images).with(field, :description_multiloc).and_return({ 'en' => 'Description with text images' })
+            receive(:render_data_images_multiloc).with(field.description_multiloc, field: :description_multiloc, imageable: field).and_return({ 'en' => 'Description with text images' })
           )
 
           ui_schema = service.input_ui_and_json_multiloc_schemas([field], nil, 'option')[:ui_schema_multiloc]
@@ -387,7 +387,7 @@ describe JsonFormsService do
           }
           field = create(:custom_field, :for_custom_form, input_type: 'page', description_multiloc: description_multiloc)
           allow_any_instance_of(TextImageService).to(
-            receive(:render_data_images).with(field, :description_multiloc).and_return({ 'en' => 'Description with text images' })
+            receive(:render_data_images_multiloc).with(field.description_multiloc, field: :description_multiloc, imageable: field).and_return({ 'en' => 'Description with text images' })
           )
 
           ui_schema = service.input_ui_and_json_multiloc_schemas([field], nil, 'question')[:ui_schema_multiloc]

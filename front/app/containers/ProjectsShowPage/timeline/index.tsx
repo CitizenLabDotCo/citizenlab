@@ -1,4 +1,4 @@
-import React, { memo, useMemo } from 'react';
+import React, { useMemo } from 'react';
 
 // components
 import Timeline from './Timeline';
@@ -16,6 +16,7 @@ import SectionContainer from 'components/SectionContainer';
 import PhaseDocumentAnnotation from './document_annotation';
 import StatusModule from 'components/StatusModule';
 import VotingResults from './VotingResults';
+import PhaseReport from './PhaseReport';
 import { Box } from '@citizenlab/cl2-component-library';
 
 // router
@@ -36,15 +37,12 @@ import styled from 'styled-components';
 import { colors, isRtl } from 'utils/styleUtils';
 
 // utils
-import { getLatestRelevantPhase, hidePhases } from 'api/phases/utils';
+import { getLatestRelevantPhase, hideTimelineUI } from 'api/phases/utils';
 import { isValidPhase } from '../phaseParam';
-import { isNilOrError } from 'utils/helperUtils';
 
 // typings
 import { IPhaseData } from 'api/phases/types';
 import { pastPresentOrFuture } from 'utils/dateUtils';
-
-const Container = styled.div``;
 
 const StyledSectionContainer = styled(SectionContainer)`
   display: flex;
@@ -74,7 +72,7 @@ interface Props {
   className?: string;
 }
 
-const ProjectTimelineContainer = memo<Props>(({ projectId, className }) => {
+const ProjectTimelineContainer = ({ projectId, className }: Props) => {
   const { phaseNumber } = useParams();
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
@@ -93,12 +91,14 @@ const ProjectTimelineContainer = memo<Props>(({ projectId, className }) => {
     return getLatestRelevantPhase(phases.data);
   }, [phaseNumber, phases]);
 
+  if (!project) return null;
+
   const selectPhase = (phase: IPhaseData) => {
-    if (!phases || !project) return;
+    if (!phases) return;
     setPhaseURL(phase.id, phases.data, project.data);
   };
 
-  if (project && selectedPhase && !isNilOrError(currentLocale)) {
+  if (selectedPhase) {
     const selectedPhaseId = selectedPhase.id;
     const participationMethod = selectedPhase.attributes.participation_method;
     const isPastPhase =
@@ -108,72 +108,64 @@ const ProjectTimelineContainer = memo<Props>(({ projectId, className }) => {
     const showIdeas =
       participationMethod === 'ideation' || (isVotingPhase && !isPastPhase);
     const showVotingResults = isVotingPhase && isPastPhase;
-    // We don't show the timeline and header if there is only one phase and it has no description and no end date
-    const hideTimelineAndHeader = !hidePhases(phases?.data, currentLocale);
+
+    const reportId = selectedPhase.relationships.report?.data?.id;
+    const showReport =
+      selectedPhase.attributes.participation_method === 'information' &&
+      !!reportId;
 
     return (
-      <Container className={`${className || ''} e2e-project-process-page`}>
-        <StyledSectionContainer>
-          <div>
-            <ContentContainer maxWidth={maxPageWidth}>
-              {hideTimelineAndHeader && (
-                <>
-                  <Header>
-                    <StyledProjectPageSectionTitle>
-                      <FormattedMessage {...messages.phases} />
-                    </StyledProjectPageSectionTitle>
-                    <PhaseNavigation
-                      projectId={projectId}
-                      buttonStyle="white"
-                    />
-                  </Header>
-                  <Box mb="22px">
-                    <Timeline
-                      projectId={projectId}
-                      selectedPhase={selectedPhase}
-                      setSelectedPhase={selectPhase}
-                    />
-                  </Box>
-                </>
-              )}
-              {isVotingPhase && (
-                <StatusModule
-                  phase={selectedPhase}
-                  project={project.data}
-                  votingMethod={
-                    selectedPhase?.attributes.voting_method ||
-                    project?.data.attributes.voting_method
-                  }
+      <StyledSectionContainer
+        className={`${className || ''} e2e-project-process-page`}
+      >
+        <ContentContainer maxWidth={maxPageWidth}>
+          {!hideTimelineUI(phases?.data, currentLocale) && (
+            <>
+              <Header>
+                <StyledProjectPageSectionTitle>
+                  <FormattedMessage {...messages.phases} />
+                </StyledProjectPageSectionTitle>
+                <PhaseNavigation projectId={projectId} buttonStyle="white" />
+              </Header>
+              <Box mb="22px">
+                <Timeline
+                  projectId={projectId}
+                  selectedPhase={selectedPhase}
+                  setSelectedPhase={selectPhase}
                 />
-              )}
-              <PhaseSurvey project={project.data} phaseId={selectedPhaseId} />
-              {participationMethod === 'document_annotation' && (
-                <PhaseDocumentAnnotation
-                  phase={selectedPhase}
-                  project={project.data}
-                />
-              )}
-            </ContentContainer>
-          </div>
-          <div>
-            <ContentContainer maxWidth={maxPageWidth}>
-              <PhasePoll projectId={projectId} phaseId={selectedPhaseId} />
-              <PhaseVolunteering
-                projectId={projectId}
-                phaseId={selectedPhaseId}
-              />
-              {showIdeas && (
-                <PhaseIdeas projectId={projectId} phaseId={selectedPhaseId} />
-              )}
-              {showVotingResults && <VotingResults phaseId={selectedPhaseId} />}
-            </ContentContainer>
-          </div>
-        </StyledSectionContainer>
-      </Container>
+              </Box>
+            </>
+          )}
+          {isVotingPhase && (
+            <StatusModule
+              phase={selectedPhase}
+              project={project.data}
+              votingMethod={
+                selectedPhase?.attributes.voting_method ||
+                project?.data.attributes.voting_method
+              }
+            />
+          )}
+          <PhaseSurvey project={project.data} phaseId={selectedPhaseId} />
+          {participationMethod === 'document_annotation' && (
+            <PhaseDocumentAnnotation
+              phase={selectedPhase}
+              project={project.data}
+            />
+          )}
+          <PhasePoll projectId={projectId} phaseId={selectedPhaseId} />
+          <PhaseVolunteering projectId={projectId} phaseId={selectedPhaseId} />
+          {showIdeas && (
+            <PhaseIdeas projectId={projectId} phaseId={selectedPhaseId} />
+          )}
+          {showVotingResults && <VotingResults phaseId={selectedPhaseId} />}
+          {showReport && <PhaseReport reportId={reportId} />}
+        </ContentContainer>
+      </StyledSectionContainer>
     );
   }
 
   return null;
-});
+};
 
 export default ProjectTimelineContainer;

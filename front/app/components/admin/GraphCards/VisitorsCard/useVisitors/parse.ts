@@ -108,7 +108,7 @@ export const parseExcelData = (
 
 const parsePageViews = (pageViews: string | null | undefined) => {
   if (!pageViews) return '-';
-  return round(+pageViews, 2).toString();
+  return round(+pageViews, 2).toLocaleString();
 };
 
 const parseVisitDuration = (seconds: string | null | undefined) => {

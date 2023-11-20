@@ -6,9 +6,6 @@ import useProjectById from 'api/projects/useProjectById';
 import useAuthUser from 'api/me/useAuthUser';
 import useIdeaById from 'api/ideas/useIdeaById';
 
-// i18n
-import useLocalize from 'hooks/useLocalize';
-
 // components
 import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
 import ReactionControl from 'components/ReactionControl';
@@ -103,8 +100,6 @@ const IdeaShowPageTopBar = ({
     removeSearchParams(['go_back']);
   }, []);
 
-  const localize = useLocalize();
-
   const onDisabledReactClick = (
     disabled_reason: IdeaReactingDisabledReason
   ) => {
@@ -148,9 +143,6 @@ const IdeaShowPageTopBar = ({
       <TopBarInner>
         <Left>
           <GoBackButtonSolid
-            text={
-              project ? localize(project.data.attributes.title_multiloc) : ''
-            }
             iconSize={isSmallerThanTablet ? '42px' : undefined}
             onClick={handleGoBack}
           />
@@ -158,7 +150,7 @@ const IdeaShowPageTopBar = ({
         <Right>
           {/* Only visible if not voting */}
           {participationContext?.attributes.participation_method !==
-            'voting' && (
+            'voting' && ( // To reduce bias we want to hide the reactions during voting methods
             <ReactionControl
               size="1"
               styleType="border"
