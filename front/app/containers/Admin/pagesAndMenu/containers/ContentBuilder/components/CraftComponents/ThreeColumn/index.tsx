@@ -1,10 +1,10 @@
 import React from 'react';
 
 // components
-import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 
 // craft
-import { Element, ROOT_NODE, useNode } from '@craftjs/core';
+import { Element } from '@craftjs/core';
 
 // i18n
 import Container from '../Container';
@@ -13,20 +13,13 @@ import {
   ThreeColumnWrapper,
   threeColumnCraftConfig,
 } from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
-import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
+import usePx from 'components/admin/ContentBuilder/Widgets/usePx';
 
 const ThreeColumn = () => {
-  const isSmallerThanTablet = useBreakpoint('tablet');
-  const { parent } = useNode((node) => ({
-    parent: node.data.parent,
-  }));
+  const px = usePx();
 
   return (
-    <ThreeColumnWrapper
-      maxWidth="1150px"
-      margin="0 auto"
-      px={isSmallerThanTablet && parent === ROOT_NODE ? DEFAULT_PADDING : '0px'}
-    >
+    <ThreeColumnWrapper maxWidth="1150px" margin="0 auto" px={px}>
       <Box flex="1">
         <Element id="column1" is={Container} canvas />
       </Box>

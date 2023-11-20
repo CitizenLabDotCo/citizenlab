@@ -4,10 +4,11 @@ import React from 'react';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import QuillMutilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import PageBreakBox from '../PageBreakBox';
-import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 
 // craft
-import { useNode, ROOT_NODE } from '@craftjs/core';
+import { useNode } from '@craftjs/core';
+import usePx from '../usePx';
 
 // i18n
 import messages from './messages';
@@ -16,17 +17,13 @@ import messages from './messages';
 import { useTheme } from 'styled-components';
 import { Multiloc } from 'typings';
 import useLocalize from 'hooks/useLocalize';
-import { DEFAULT_PADDING } from '../../constants';
 
 interface Props {
   text?: Multiloc;
 }
 
 const TextMultiloc = ({ text }: Props) => {
-  const isSmallerThanTablet = useBreakpoint('tablet');
-  const { parent } = useNode((node) => ({
-    parent: node.data.parent,
-  }));
+  const px = usePx();
   const theme = useTheme();
   const localize = useLocalize();
 
@@ -38,7 +35,7 @@ const TextMultiloc = ({ text }: Props) => {
       minHeight="26px"
       maxWidth="1150px"
       margin="0 auto"
-      px={isSmallerThanTablet && parent === ROOT_NODE ? DEFAULT_PADDING : '0px'}
+      px={px}
     >
       <QuillEditedContent textColor={theme.colors.tenantText}>
         <div dangerouslySetInnerHTML={{ __html: value }} />

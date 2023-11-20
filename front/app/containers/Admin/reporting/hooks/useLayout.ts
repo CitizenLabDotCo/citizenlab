@@ -9,11 +9,8 @@ export default function useLayout(): Layout {
   const reportContext = useContext(ReportContext);
   const smallerThanPhone = useBreakpoint('phone');
 
-  if (reportContext === 'pdf') {
-    return narrowLayout ? 'narrow' : 'wide';
-  }
-
   if (narrowLayout) return 'narrow';
+  if (reportContext === 'pdf') return 'wide';
 
   return smallerThanPhone ? 'narrow' : 'wide';
 }
