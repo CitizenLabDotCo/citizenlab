@@ -90,7 +90,7 @@ describe('Idea creation', () => {
     cy.intercept(
       `**/location/autocomplete?input=Boulevard%20Anspach%20Brussels&language=en`
     ).as('locationSearch');
-    cy.wait('@locationSearch');
+    cy.wait('@locationSearch', { timeout: 10000 });
 
     cy.get('.e2e-idea-form-location-input-field input').type(
       '{downArrow}{enter}'
