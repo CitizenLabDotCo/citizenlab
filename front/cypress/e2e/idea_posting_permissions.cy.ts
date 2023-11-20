@@ -126,7 +126,7 @@ describe('idea posting that requires smart group', () => {
         });
       })
       .then(() => {
-        cy.visit(`admin/projects/${projectId}/permissions`);
+        cy.visit(`admin/projects/${projectId}/settings/access-rights`);
         cy.get('#accordion-title').click();
         cy.get('#e2e-permission-user-groups').click();
         cy.get('#e2e-select-user-group').click().type('Charlie{enter}');
