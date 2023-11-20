@@ -52,6 +52,7 @@ pl:
       "voting_basket_submitted": Potwierdzenie głosowania
       "voting_basket_not_submitted": Nieoddane głosy
       "voting_last_chance": Ostatnia szansa na oddanie głosu
+      "voting_phase_started": Nowa faza projektu z głosowaniem
       "voting_results": Wyniki głosowania
       "your_proposed_initiatives_digest": Tygodniowy przegląd Twoich propozycji
     general:

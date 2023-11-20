@@ -73,7 +73,7 @@ const AssignMultipleVotesInput = ({
   const theme = useTheme();
   const { formatMessage } = useIntl();
   const localize = useLocalize();
-  const isMobileOrSmaller = useBreakpoint('phone');
+  const isPhoneOrSmaller = useBreakpoint('phone');
 
   // action descriptors
   const actionDescriptor = idea?.data.attributes.action_descriptor.voting;
@@ -222,7 +222,7 @@ const AssignMultipleVotesInput = ({
         >
           <Box
             w={`${votes.toString().length * 20}px`}
-            maxWidth={isMobileOrSmaller ? '100px' : '160px'}
+            maxWidth={isPhoneOrSmaller ? '100px' : '160px'}
           >
             <NumberInput
               value={votes}

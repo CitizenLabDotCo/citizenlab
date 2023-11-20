@@ -133,6 +133,8 @@ resource 'User', admin_api: true do
       parameter :remote_avatar_url, 'The user avatar'
       parameter :custom_field_values, 'All custom field values, if given overwrites the existing values'
     end
+    parameter :confirm_email, 'Should the email already be verified?', required: false, default: false
+
     ValidationErrorHelper.new.error_fields(self, User)
 
     let(:id) { user.id }
@@ -147,6 +149,27 @@ resource 'User', admin_api: true do
         json_response = json_parse(response_body)
         expect(json_response[:first_name]).to eq 'Jacqueline'
         expect(json_response[:custom_field_values]).to eq({ favourite_drink: 'wine' })
+      end
+    end
+
+    describe do
+      before do
+        SettingsService.new.activate_feature!('user_confirmation')
+      end
+
+      let(:confirm_email) { true }
+      let(:password) { 'new-password' }
+      let(:roles) { [{ type: 'admin' }] }
+
+      example 'Update a user and confirm email' do
+        expect { do_request }.to change { user.reload.password_digest }
+
+        expect(status).to be 200
+
+        user.reload
+        expect(user.email_confirmed_at).to be_present
+        expect(user.confirmation_required?).to be false
+        expect(user.roles).to eq [{ 'type' => 'admin' }]
       end
     end
   end

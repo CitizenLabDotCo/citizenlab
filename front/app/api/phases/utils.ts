@@ -134,8 +134,9 @@ export const isIdeaInParticipationContext = (
   );
 };
 
-// If a timeline project has no description, no end date and only one phase, we don't the multiple phase ui such as the timeline
-export const hidePhases = (
+// If a timeline project has no description,
+// no end date and only one phase, we don't show the multiple phase ui (timeline)
+export const hideTimelineUI = (
   phasesData: IPhaseData[] | undefined,
   currentLocale: Locale
 ) => {

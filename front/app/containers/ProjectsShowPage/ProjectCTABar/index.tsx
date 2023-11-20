@@ -2,19 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 // Components
-import {
-  Box,
-  useBreakpoint,
-  useWindowSize,
-} from '@citizenlab/cl2-component-library';
+import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import MainHeader from 'containers/MainHeader';
 
 // hooks
 import usePhases from 'api/phases/usePhases';
 import useProjectById from 'api/projects/useProjectById';
-
-// styles
-import { viewportWidths } from 'utils/styleUtils';
 
 // utils
 import {
@@ -28,12 +21,12 @@ type ProjectCTABarProps = {
 };
 
 export const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
-  const { windowWidth } = useWindowSize();
-  const smallerThanLargeTablet = windowWidth <= viewportWidths.tablet;
+  const isSmallerThanTablet = useBreakpoint('tablet');
+  const isSmallerThanPhone = useBreakpoint('phone');
   const [isVisible, setIsVisible] = useState(false);
   const portalElement = document?.getElementById('topbar-portal');
   const { data: phases } = usePhases(projectId);
-  const isSmallerThanPhone = useBreakpoint('phone');
+  const { data: project } = useProjectById(projectId);
 
   useEffect(() => {
     let isMounted = true;
@@ -52,7 +45,7 @@ export const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
               actionButtonElement &&
               actionButtonYOffset &&
               window.pageYOffset >
-                actionButtonYOffset - (smallerThanLargeTablet ? 14 : 30)
+                actionButtonYOffset - (isSmallerThanTablet ? 14 : 30)
             )
           );
         }
@@ -62,9 +55,8 @@ export const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
     return () => {
       isMounted = false;
     };
-  }, [projectId, smallerThanLargeTablet]);
+  }, [projectId, isSmallerThanTablet]);
 
-  const { data: project } = useProjectById(projectId);
   const participationMethod = project
     ? getParticipationMethod(project.data, phases?.data)
     : undefined;
@@ -86,7 +78,6 @@ export const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
         top="0px"
         zIndex="1000"
         background="#fff"
-        borderBottom="solid 1px #ddd"
       >
         {!isSmallerThanPhone && (
           <Box height="78px">

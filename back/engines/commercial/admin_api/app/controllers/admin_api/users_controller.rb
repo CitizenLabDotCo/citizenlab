@@ -39,7 +39,7 @@ module AdminApi
         # The validations and hooks on the user model don't allow us to set
         # confirm before save on creation, they'll get reset. So we're forced to
         # do a 2nd save operation.
-        if [true, 'TRUE', 'true', '1', 1].include?(params[:confirm_email])
+        if confirm_user?
           @user.confirm
           @user.save
         end
@@ -53,6 +53,8 @@ module AdminApi
 
     def update
       @user.assign_attributes user_params
+      @user.confirm if confirm_user?
+
       if @user.save
         SideFxUserService.new.after_update(@user, nil)
         # This uses default model serialization
@@ -82,6 +84,10 @@ module AdminApi
       params
         .require(:user)
         .permit(:first_name, :last_name, :email, :password, :remote_avatar_url, roles: %i[type project_id], custom_field_values: allowed_custom_field_keys)
+    end
+
+    def confirm_user?
+      params[:confirm_email].to_s.downcase.in?(%w[true 1])
     end
   end
 end
