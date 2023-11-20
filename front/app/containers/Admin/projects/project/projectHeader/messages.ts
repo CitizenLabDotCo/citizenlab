@@ -1,9 +1,9 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  settings: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.settings',
-    defaultMessage: 'Settings',
+  projectSettings: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.projectSettings',
+    defaultMessage: 'Project settings',
   },
   view: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.view',
@@ -35,11 +35,11 @@ export default defineMessages({
     defaultMessage: 'Archived',
   },
   publishedActive: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.publishedActive',
-    defaultMessage: 'Published: Active',
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.publishedActive1',
+    defaultMessage: 'Published - Active',
   },
   publishedFinished: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.publishedFinished',
-    defaultMessage: 'Published: Finished',
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.publishedFinished1',
+    defaultMessage: 'Published - Finished',
   },
 });

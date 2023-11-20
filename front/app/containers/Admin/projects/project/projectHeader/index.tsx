@@ -112,7 +112,7 @@ export const ProjectHeader = ({ project, phases }: Props) => {
               size="s"
               padding="4px 8px"
             >
-              {formatMessage(messages.settings)}
+              {formatMessage(messages.projectSettings)}
             </Button>
           </Box>
         </Box>

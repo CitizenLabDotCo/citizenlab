@@ -1,9 +1,9 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  projectSettings: {
-    id: 'app.containers.AdminPage.Project.settings.projectSettings',
-    defaultMessage: 'Project settings',
+  back: {
+    id: 'app.containers.AdminPage.Project.settings.back',
+    defaultMessage: 'Back',
   },
   general: {
     id: 'app.containers.AdminPage.Project.settings.general',
