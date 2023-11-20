@@ -79,16 +79,14 @@ const IdeaButton = memo<Props>(
         authUser: authUser?.data,
       });
 
-    const pcType = participationContextType;
-    const pcId = pcType === 'phase' ? phase?.id : projectId;
+    const pcId =
+      participationContextType === 'phase' && phase ? phase.id : projectId;
 
-    const context = pcId
-      ? ({
-          action: 'posting_idea',
-          id: pcId,
-          type: pcType,
-        } as const)
-      : null;
+    const context = {
+      action: 'posting_idea',
+      id: pcId,
+      type: participationContextType,
+    } as const;
 
     const redirectToIdeaForm = () => {
       trackEventByName(tracks.redirectedToIdeaFrom);
@@ -139,15 +137,13 @@ const IdeaButton = memo<Props>(
           },
         };
 
-        if (context) {
-          trackEventByName(tracks.signUpInModalOpened);
+        trackEventByName(tracks.signUpInModalOpened);
 
-          triggerAuthenticationFlow({
-            flow,
-            context,
-            successAction,
-          });
-        }
+        triggerAuthenticationFlow({
+          flow,
+          context,
+          successAction,
+        });
       };
 
     if (show) {
