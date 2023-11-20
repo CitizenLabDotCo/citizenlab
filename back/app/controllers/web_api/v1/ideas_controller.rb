@@ -25,7 +25,7 @@ class WebApi::V1::IdeasController < ApplicationController
       includes: [
         :idea_images, :idea_trending_info,
         {
-          project: [:phases, :permissions, { custom_form: [:custom_fields] }],
+          project: [:phases, { custom_form: [:custom_fields] }],
           phases: [:permissions],
           author: [:unread_notifications]
         }
