@@ -237,6 +237,14 @@ class Project < ApplicationRecord
     self.folder_changed = false
   end
 
+  # TODO: JS - Is this correct?
+  def can_contain_input?
+    phases.each do |phase|
+      return true if phase.can_contain_input?
+    end
+    false
+  end
+
   private
 
   def admin_publication_must_exist
