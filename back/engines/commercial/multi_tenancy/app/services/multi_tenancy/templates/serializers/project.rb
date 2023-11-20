@@ -3,7 +3,7 @@
 module MultiTenancy
   module Templates
     module Serializers
-      class Project < ParticipationContext
+      class Project < Base
         upload_attribute :header_bg
 
         attributes %i[
