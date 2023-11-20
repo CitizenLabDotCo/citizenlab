@@ -183,10 +183,6 @@ const HomepageBannerSettings = () => {
   const [imageFiles, setImageFiles] = useState<UploadFile[]>([]);
   const { mutateAsync: addContentBuilderImage } = useAddContentBuilderImage();
   const [initialRender, setInitialRender] = useState(true);
-  const [imageResponse, setImageResponse] = useState<{
-    dataCode: string;
-    imageUrl: string;
-  } | null>(null);
 
   useEffect(() => {
     if (image?.imageUrl && initialRender) {
@@ -202,30 +198,21 @@ const HomepageBannerSettings = () => {
     }
   }, [image?.imageUrl, initialRender]);
 
-  useEffect(() => {
-    if (imageResponse?.imageUrl && imageResponse.dataCode) {
-      setProp((props: Props) => {
-        props.image = {
-          dataCode: imageResponse.dataCode,
-          imageUrl: imageResponse.imageUrl,
-        };
-      });
-    }
-  }, [imageResponse?.dataCode, imageResponse?.imageUrl, setProp]);
-
   const handleOnAdd = useCallback(
     async (base64: string) => {
       try {
         const response = await addContentBuilderImage(base64);
-        setImageResponse({
-          dataCode: response.data.attributes.code,
-          imageUrl: response.data.attributes.image_url,
+        setProp((props: Props) => {
+          props.image = {
+            dataCode: response.data.attributes.code,
+            imageUrl: response.data.attributes.image_url,
+          };
         });
       } catch {
         // Do nothing
       }
     },
-    [addContentBuilderImage]
+    [addContentBuilderImage, setProp]
   );
 
   const handleOnRemove = () => {
