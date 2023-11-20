@@ -1,28 +1,10 @@
-import { useQuery } from '@tanstack/react-query';
-import { CLErrors } from 'typings';
-import fetcher from 'utils/cl-react-query/fetcher';
+import useGraphDataUnitsLive from 'api/graph_data_units/useGraphDataUnitsLive';
 import { Response, QueryParameters } from './typings';
-import reactionsByTimeKeys from './keys';
 
-const fetchReactionsByTime = (props: QueryParameters) =>
-  fetcher<Response>({
-    path: `/reports/graph_data_units/live`,
-    action: 'get',
-    queryParams: {
-      resolved_name: 'ReactionsByTimeWidget',
-      props: {
-        projectId: props.projectId,
-        resolution: props.resolution,
-        startAt: props.startAtMoment?.format('yyyy-MM-DD'),
-        endAt: props.endAtMoment?.format('yyyy-MM-DD'),
-      },
-    },
-  });
-
-const useLiveReactionsByTime = ({ ...queryParameters }: QueryParameters) => {
-  return useQuery<Response, CLErrors, Response, any>({
-    queryKey: reactionsByTimeKeys.item(queryParameters),
-    queryFn: () => fetchReactionsByTime(queryParameters),
+const useLiveReactionsByTime = (queryParameters: QueryParameters) => {
+  return useGraphDataUnitsLive<Response>({
+    resolvedName: 'ReactionsByTimeWidget',
+    props: queryParameters,
   });
 };
 

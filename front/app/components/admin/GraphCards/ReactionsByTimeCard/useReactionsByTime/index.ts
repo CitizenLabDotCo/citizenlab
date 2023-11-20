@@ -1,9 +1,14 @@
+import { useMemo, useState } from 'react';
+
+// hooks
+import { useNode } from '@craftjs/core';
+import { useParams } from 'react-router-dom';
+// import useLiveReactionsByTime from './useLiveReactionsByTime';
+import useGraphDataUnitsPublished from 'api/graph_data_units/useGraphDataUnitsPublished';
+
 // i18n
 import { useIntl } from 'utils/cl-intl';
 import { getTranslations } from './translations';
-
-// query
-import { query } from './query';
 
 // parse
 import { parseTimeSeries, parseExcelData } from './parse';
@@ -13,19 +18,18 @@ import { getFormattedNumbers } from 'components/admin/GraphCards/_utils/parse';
 
 // typings
 import { QueryParameters, Response } from './typings';
-import useAnalytics from 'api/analytics/useAnalytics';
-import useLiveReactionsByTime from './useLiveReactionsByTime';
-import usePublishedReactionsByTime from './usePublishedReactionsByTime';
-import { useMemo, useState } from 'react';
 
 export default function useReactionsByTime({
-  projectId,
+  projectId: _projectId,
   startAtMoment,
   endAtMoment,
   resolution,
 }: QueryParameters) {
   const { formatMessage } = useIntl();
-  const [currentResolution, setCurrentResolution] = useState(resolution);
+  const [currentResolution, _setCurrentResolution] = useState(resolution);
+
+  const { id: graphId } = useNode();
+  const { reportId } = useParams<{ reportId: string }>();
   // const { data: analytics } = useAnalytics<Response>(
   //   query({
   //     projectId,
@@ -42,7 +46,10 @@ export default function useReactionsByTime({
   //   resolution,
   // });
 
-  const { data: analytics } = usePublishedReactionsByTime();
+  const { data: analytics } = useGraphDataUnitsPublished<Response>({
+    reportId,
+    graphId,
+  });
 
   const timeSeries = useMemo(
     () =>
