@@ -453,10 +453,12 @@ const ProjectCard = memo<InputProps>(
 
     const handleCTAOnClick = (projectId: string) => () => {
       trackEventByName(tracks.clickOnProjectCardCTA, { extra: { projectId } });
+      scrollToTop();
     };
 
     const handleProjectTitleOnClick = (projectId: string) => () => {
       trackEventByName(tracks.clickOnProjectTitle, { extra: { projectId } });
+      scrollToTop();
     };
 
     if (project) {
