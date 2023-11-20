@@ -451,7 +451,7 @@ const AdminProjectEventEdit = () => {
                 setSubmitState('success');
                 handleEventFiles(data);
                 handleEventImage(data);
-                clHistory.push(`/admin/projects/${projectId}/events`);
+                clHistory.push(`/admin/projects/${projectId}/settings/events`);
               },
               onError: async (errors) => {
                 setErrors(errors.errors);

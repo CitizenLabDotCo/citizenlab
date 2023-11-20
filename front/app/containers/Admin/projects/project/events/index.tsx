@@ -139,7 +139,7 @@ const AdminProjectEventsIndex = ({
                     <Button
                       buttonStyle="secondary"
                       icon="edit"
-                      linkTo={`/admin/projects/${projectId}/events/${event.id}`}
+                      linkTo={`/admin/projects/${projectId}/settings/events/${event.id}`}
                     >
                       <FormattedMessage {...messages.editButtonLabel} />
                     </Button>
