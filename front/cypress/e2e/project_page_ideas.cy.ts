@@ -211,8 +211,14 @@ describe('New timeline project with active ideation phase', () => {
   });
 
   after(() => {
-    cy.apiRemoveIdea(ideaId);
-    cy.apiRemoveProject(projectId);
+    if (ideaId) {
+      cy.apiRemoveIdea(ideaId);
+      ideaId = '';
+    }
+    if (projectId) {
+      cy.apiRemoveProject(projectId);
+      projectId = '';
+    }
   });
 });
 
@@ -298,8 +304,14 @@ describe('Archived timeline project with ideation phase', () => {
   });
 
   after(() => {
-    cy.apiRemoveIdea(ideaId);
-    cy.apiRemoveProject(projectId);
+    if (ideaId) {
+      cy.apiRemoveIdea(ideaId);
+      ideaId = '';
+    }
+    if (projectId) {
+      cy.apiRemoveProject(projectId);
+      projectId = '';
+    }
   });
 });
 
@@ -353,7 +365,10 @@ describe('timeline project with no active ideation phase', () => {
   });
 
   after(() => {
-    cy.apiRemoveProject(projectId);
+    if (projectId) {
+      cy.apiRemoveProject(projectId);
+      projectId = '';
+    }
   });
 });
 
@@ -425,13 +440,6 @@ describe('Ideation CTA bar', () => {
       });
   });
 
-  after(() => {
-    cy.apiRemoveIdea(ideaIdOne);
-    cy.apiRemoveProject(projectId);
-    cy.apiRemoveIdea(ideaIdTwo);
-    cy.apiRemoveProject(postingRestrictedProjectId);
-  });
-
   it('shows the CTA to the user to submit their idea when the user has not yet participated', () => {
     cy.visit(`/en/projects/${projectSlug}`);
     cy.acceptCookies();
@@ -442,5 +450,13 @@ describe('Ideation CTA bar', () => {
     cy.visit(`/en/projects/${postingRestrictedProjectSlug}`);
     cy.acceptCookies();
     cy.get('#e2e-ideation-see-ideas-button').should('exist');
+  });
+
+  after(() => {
+    [projectId, postingRestrictedProjectId].forEach((id) => {
+      if (id) {
+        cy.apiRemoveProject(id);
+      }
+    });
   });
 });
