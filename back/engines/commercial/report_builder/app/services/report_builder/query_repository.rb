@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'query'
-
 module ReportBuilder
   # TODO: rename to sth else
   class QueryRepository
@@ -20,11 +18,15 @@ module ReportBuilder
     protected
 
     def run_query(json_query)
-      query = Analytics::Query.new({ query: json_query }.with_indifferent_access[:query])
+      # TODO: investigate why we need parameters and not HashWithIndifferentAccess
+      json_query_params = ActionController::Parameters.new({ query: json_query }).permit![:query]
+      results, errors, _paginations = Analytics::MultipleQueries.new.run(json_query_params)
       # TODO: it's weird to validate and do not check the result. Fix this.
-      query.validate
-      query.run
-      query.results
+      if errors.present?
+        raise "Error processing Analytics query: #{errors.to_json}"
+      end
+
+      results
     end
   end
 end

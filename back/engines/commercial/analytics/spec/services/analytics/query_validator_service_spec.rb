@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-require 'query'
 
 describe Analytics::QueryValidatorService do
   describe 'validate query object with json schema' do

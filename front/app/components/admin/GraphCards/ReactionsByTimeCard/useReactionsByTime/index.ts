@@ -1,9 +1,14 @@
+import { useMemo, useState } from 'react';
+
+// hooks
+import { useNode } from '@craftjs/core';
+import { useParams } from 'react-router-dom';
+// import useLiveReactionsByTime from './useLiveReactionsByTime';
+import useGraphDataUnitsPublished from 'api/graph_data_units/useGraphDataUnitsPublished';
+
 // i18n
 import { useIntl } from 'utils/cl-intl';
 import { getTranslations } from './translations';
-
-// query
-// import { query } from './query';
 
 // parse
 import { parseTimeSeries, parseExcelData } from './parse';
@@ -12,19 +17,19 @@ import { parseTimeSeries, parseExcelData } from './parse';
 import { getFormattedNumbers } from 'components/admin/GraphCards/_utils/parse';
 
 // typings
-import { QueryParameters } from './typings';
-// import useAnalytics from 'api/analytics/useAnalytics';
-import useWhatever from './useWhatever';
-import { useMemo, useState } from 'react';
+import { QueryParameters, Response } from './typings';
 
 export default function useReactionsByTime({
-  projectId,
+  projectId: _projectId,
   startAtMoment,
   endAtMoment,
   resolution,
 }: QueryParameters) {
   const { formatMessage } = useIntl();
   const [currentResolution, _setCurrentResolution] = useState(resolution);
+
+  const { id: graphId } = useNode();
+  const { reportId } = useParams() as { reportId: string };
   // const { data: analytics } = useAnalytics<Response>(
   //   query({
   //     projectId,
@@ -34,11 +39,16 @@ export default function useReactionsByTime({
   //   }),
   //   () => setCurrentResolution(resolution)
   // );
-  const { data: analytics } = useWhatever({
-    projectId,
-    startAtMoment,
-    endAtMoment,
-    resolution,
+  // const { data: analytics } = useLiveReactionsByTime({
+  //   projectId,
+  //   startAtMoment,
+  //   endAtMoment,
+  //   resolution,
+  // });
+
+  const { data: analytics } = useGraphDataUnitsPublished<Response>({
+    reportId,
+    graphId,
   });
 
   const timeSeries = useMemo(

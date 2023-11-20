@@ -159,6 +159,7 @@ module Analytics
     def pagination_query_params(number)
       return if number.nil?
 
+      # TODO: remove `try` if we continue to use ActionController::Parameters in QueryRepository
       json_query = @json_query.try(:to_unsafe_hash) || @json_query
       if @json_query.key?(:page)
         json_query[:page][:number] = number
