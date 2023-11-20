@@ -51,7 +51,10 @@ const HomePage = () => {
     }
   }, [pressedLetterAKey, userHasAdminAccess]);
 
-  if (isHomepageBuilderEnabled) {
+  if (
+    isHomepageBuilderEnabled &&
+    homepageSettings?.data.attributes.craftjs_json
+  ) {
     return <Viewer />;
   }
 
