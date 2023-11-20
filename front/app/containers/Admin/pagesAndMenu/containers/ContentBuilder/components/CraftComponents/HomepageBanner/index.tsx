@@ -29,7 +29,7 @@ import {
   CTASignedOutType,
   THomepageBannerLayout,
 } from 'api/home_page/types';
-import { ImageSizes, Multiloc, UploadFile } from 'typings';
+import { Multiloc, UploadFile } from 'typings';
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { isValidUrl } from 'utils/validate';
 import {
@@ -57,7 +57,6 @@ const CTA_SIGNED_IN_TYPES: CTASignedInType[] = [
 
 export interface IHomepageSettingsAttributes {
   banner_layout: THomepageBannerLayout;
-  header_bg: ImageSizes | null;
 
   // signed_out
   banner_signed_out_header_multiloc: Multiloc;
@@ -85,17 +84,39 @@ type ErrorType = 'banner_cta_signed_out_url' | 'banner_cta_signed_in_url';
 
 type Props = {
   homepageSettings: IHomepageSettingsAttributes;
+  image?: {
+    dataCode?: string;
+    imageUrl?: string;
+  };
   hasError?: boolean;
   errors?: ErrorType[];
 };
 
-const HomepageBanner = ({ homepageSettings }: Props) => {
+const HomepageBanner = ({ homepageSettings, image }: Props) => {
   const [search] = useSearchParams();
 
   return search.get('variant') === 'signedIn' ? (
-    <SignedInHeader homepageSettings={homepageSettings} />
+    <SignedInHeader
+      homepageSettings={{
+        ...homepageSettings,
+        header_bg: {
+          large: image?.imageUrl || null,
+          medium: image?.imageUrl || null,
+          small: image?.imageUrl || null,
+        },
+      }}
+    />
   ) : (
-    <SignedOutHeader homepageSettings={homepageSettings} />
+    <SignedOutHeader
+      homepageSettings={{
+        ...homepageSettings,
+        header_bg: {
+          large: image?.imageUrl || null,
+          medium: image?.imageUrl || null,
+          small: image?.imageUrl || null,
+        },
+      }}
+    />
   );
 };
 
@@ -104,12 +125,10 @@ const HomepageBannerSettings = () => {
     actions: { setProp },
     homepageSettings,
     id,
-    hasError,
-    errors,
+    image,
   } = useNode((node) => ({
     id: node.id,
-    hasError: node.data.props.hasError,
-    errors: node.data.props.errors,
+    image: node.data.props.image,
     homepageSettings: {
       banner_signed_out_header_multiloc:
         node.data.props.homepageSettings.banner_signed_out_header_multiloc,
@@ -142,10 +161,11 @@ const HomepageBannerSettings = () => {
           .banner_signed_in_header_overlay_opacity,
       banner_signed_in_header_overlay_color:
         node.data.props.homepageSettings.banner_signed_in_header_overlay_color,
-      header_bg: node.data.props.homepageSettings.header_bg,
     },
   }));
 
+  const [errors, setErrors] = useState<ErrorType[]>([]);
+  const [hasError, setHasError] = useState(false);
   const [search, setSearchParams] = useSearchParams();
   const { formatMessage } = useIntl();
 
@@ -154,12 +174,10 @@ const HomepageBannerSettings = () => {
   const [initialRender, setInitialRender] = useState(true);
 
   useEffect(() => {
-    if (homepageSettings.header_bg.large && initialRender) {
+    if (image?.imageUrl && initialRender) {
       (async () => {
         eventEmitter.emit(IMAGE_UPLOADING_EVENT, true);
-        const imageFile = await convertUrlToUploadFile(
-          homepageSettings.header_bg.large
-        );
+        const imageFile = await convertUrlToUploadFile(image?.imageUrl);
         if (imageFile) {
           setImageFiles([imageFile]);
         }
@@ -167,17 +185,16 @@ const HomepageBannerSettings = () => {
         setInitialRender(false);
       })();
     }
-  }, [homepageSettings.header_bg.large, initialRender]);
+  }, [image?.imageUrl, initialRender]);
 
   const handleOnAdd = useCallback(
     async (base64: string) => {
       try {
         const response = await addContentBuilderImage(base64);
         setProp((props: Props) => {
-          props.homepageSettings.header_bg = {
-            large: response.data.attributes.image_url,
-            medium: response.data.attributes.image_url,
-            small: response.data.attributes.image_url,
+          props.image = {
+            dataCode: response.data.attributes.code,
+            imageUrl: response.data.attributes.image_url,
           };
         });
       } catch {
@@ -189,10 +206,9 @@ const HomepageBannerSettings = () => {
 
   const handleOnRemove = () => {
     setProp((props: Props) => {
-      props.homepageSettings.header_bg = {
-        large: null,
-        medium: null,
-        small: null,
+      props.image = {
+        dataCode: undefined,
+        imageUrl: '',
       };
     });
     setImageFiles([]);
@@ -212,34 +228,29 @@ const HomepageBannerSettings = () => {
     setProp((props: Props) => (props.homepageSettings[field] = value));
 
     if (!validation) {
-      setProp((props: Props) => {
-        const newErrorTypes = props.errors?.includes(field)
-          ? [...props.errors]
-          : [...(props.errors || []), field];
+      const newErrorTypes = errors?.includes(field)
+        ? [...errors]
+        : [...(errors || []), field];
 
-        props.errors = newErrorTypes;
-        props.hasError = true;
-        eventEmitter.emit(CONTENT_BUILDER_ERROR_EVENT, {
-          [id]: {
-            hasError: true,
-          },
-        });
+      setErrors(newErrorTypes);
+      setHasError(true);
+
+      eventEmitter.emit(CONTENT_BUILDER_ERROR_EVENT, {
+        [id]: {
+          hasError: true,
+        },
       });
     } else {
-      setProp((props: Props) => {
-        const newErrorTypes = props.errors?.filter(
-          (errorType) => errorType !== field
-        );
-        props.errors = newErrorTypes || [];
-        if (newErrorTypes && newErrorTypes.length === 0) {
-          props.hasError = false;
-          eventEmitter.emit(CONTENT_BUILDER_ERROR_EVENT, {
-            [id]: {
-              hasError: false,
-            },
-          });
-        }
-      });
+      const newErrorTypes = errors?.filter((errorType) => errorType !== field);
+      setErrors(newErrorTypes || []);
+      if (newErrorTypes && newErrorTypes.length === 0) {
+        setHasError(false);
+        eventEmitter.emit(CONTENT_BUILDER_ERROR_EVENT, {
+          [id]: {
+            hasError: false,
+          },
+        });
+      }
     }
   };
 
@@ -255,28 +266,28 @@ const HomepageBannerSettings = () => {
       }
     });
     if (value !== 'customized_button') {
+      const newErrorTypes = errors?.filter(
+        (errorType) =>
+          errorType !==
+          (field === 'banner_cta_signed_out_type'
+            ? 'banner_cta_signed_out_url'
+            : 'banner_cta_signed_in_url')
+      );
+      setErrors(newErrorTypes || []);
+      if (newErrorTypes && newErrorTypes.length === 0) {
+        setHasError(false);
+        eventEmitter.emit(CONTENT_BUILDER_ERROR_EVENT, {
+          [id]: {
+            hasError: false,
+          },
+        });
+      }
       setProp((props: Props) => {
         props.homepageSettings[
           field === 'banner_cta_signed_out_type'
             ? 'banner_cta_signed_out_url'
             : 'banner_cta_signed_in_url'
         ] = '';
-        const newErrorTypes = props.errors?.filter(
-          (errorType) =>
-            errorType !==
-            (field === 'banner_cta_signed_out_type'
-              ? 'banner_cta_signed_out_url'
-              : 'banner_cta_signed_in_url')
-        );
-        props.errors = newErrorTypes || [];
-        if (newErrorTypes && newErrorTypes.length === 0) {
-          props.hasError = false;
-          eventEmitter.emit(CONTENT_BUILDER_ERROR_EVENT, {
-            [id]: {
-              hasError: false,
-            },
-          });
-        }
       });
     }
   };
@@ -385,6 +396,9 @@ const HomepageBannerSettings = () => {
 
       {search.get('variant') !== 'signedIn' && (
         <>
+          <Text m={'0px'} color="textSecondary">
+            {formatMessage(messages.signedOutDescription)}
+          </Text>
           {homepageSettings.banner_layout !== 'two_row_layout' && (
             <OverlayControls
               variant="signedOut"
@@ -432,7 +446,7 @@ const HomepageBannerSettings = () => {
               );
             }}
           />
-          <Text m={'0px'}>{formatMessage(messages.button)}</Text>
+          <Label>{formatMessage(messages.button)}</Label>
           {CTA_SIGNED_OUT_TYPES.map((option: CTASignedOutType) => {
             const labelMessage = labelMessages[option];
             return (
@@ -504,6 +518,9 @@ const HomepageBannerSettings = () => {
 
       {search.get('variant') === 'signedIn' && (
         <>
+          <Text m={'0px'} color="textSecondary">
+            {formatMessage(messages.signedInDescription)}
+          </Text>
           <OverlayControls
             variant="signedIn"
             noOpacitySlider={
@@ -548,7 +565,7 @@ const HomepageBannerSettings = () => {
               });
             }}
           />
-          <Text m="0px">{formatMessage(messages.button)}</Text>
+          <Label>{formatMessage(messages.button)}</Label>
           {CTA_SIGNED_IN_TYPES.map((option: CTASignedInType) => {
             const labelMessage = labelMessages[option];
             return (
