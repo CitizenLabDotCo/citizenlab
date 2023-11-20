@@ -1882,7 +1882,7 @@ CREATE VIEW public.analytics_fact_project_statuses AS
         )
  SELECT ap.publication_id AS dimension_project_id,
     ap.publication_status AS status,
-    ((((p.process_type)::text = 'continuous'::text) AND ((ap.publication_status)::text = 'archived'::text)) OR ((fsftp.project_id IS NOT NULL) AND ((ap.publication_status)::text <> 'draft'::text))) AS finished,
+    (((ap.publication_status)::text = 'archived'::text) OR ((fsftp.project_id IS NOT NULL) AND ((ap.publication_status)::text <> 'draft'::text))) AS finished,
     COALESCE(fsftp."timestamp", ap.updated_at) AS "timestamp",
     COALESCE((fsftp."timestamp")::date, (ap.updated_at)::date) AS dimension_date_id
    FROM ((public.admin_publications ap
@@ -7982,6 +7982,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20231018083110'),
 ('20231024082513'),
 ('20231109101517'),
-('20231110112415');
+('20231110112415'),
+('20231120090516');
 
 
