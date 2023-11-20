@@ -44,6 +44,7 @@ import { convertUrlToUploadFile } from 'utils/fileUtils';
 import useAddContentBuilderImage from 'api/content_builder_images/useAddContentBuilderImage';
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 import useAuthUser from 'api/me/useAuthUser';
+import Fragment from 'components/Fragment';
 
 const CTA_SIGNED_OUT_TYPES: CTASignedOutType[] = [
   'sign_up_button',
@@ -115,16 +116,18 @@ const HomepageBanner = ({ homepageSettings, image }: Props) => {
       isContentBuilderPreview
     />
   ) : (
-    <SignedOutHeader
-      homepageSettings={{
-        ...homepageSettings,
-        header_bg: {
-          large: image?.imageUrl || null,
-          medium: image?.imageUrl || null,
-          small: image?.imageUrl || null,
-        },
-      }}
-    />
+    <Fragment name="signed-out-header">
+      <SignedOutHeader
+        homepageSettings={{
+          ...homepageSettings,
+          header_bg: {
+            large: image?.imageUrl || null,
+            medium: image?.imageUrl || null,
+            small: image?.imageUrl || null,
+          },
+        }}
+      />
+    </Fragment>
   );
 };
 

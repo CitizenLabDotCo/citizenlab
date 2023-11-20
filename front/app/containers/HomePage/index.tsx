@@ -56,7 +56,12 @@ const HomePage = () => {
     isHomepageBuilderEnabled &&
     !isEmpty(homepageSettings?.data.attributes.craftjs_json)
   ) {
-    return <Viewer />;
+    return (
+      <>
+        <Viewer />
+        <Fragment name="pages/homepage_info/content" />
+      </>
+    );
   }
 
   if (!isNilOrError(homepageSettings)) {
