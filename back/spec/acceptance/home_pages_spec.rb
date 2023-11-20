@@ -54,7 +54,10 @@ resource 'Home Page' do
       let(:events_widget_enabled) { true }
       let(:craftjs_json) { { 'test' => 123 } }
 
-      example_request 'Update the current home page' do
+      example 'Update the current home page' do
+        SettingsService.new.activate_feature! 'homepage_builder'
+        do_request
+
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :attributes, :events_widget_enabled)).to be true

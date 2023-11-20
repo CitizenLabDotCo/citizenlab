@@ -168,7 +168,7 @@ es:
   custom_field_options:
     gender:
       male: Masculino
-      female: Feminino
+      female: Femenino
       unspecified: Otro
     domicile:
       outside: En algun otro lugar

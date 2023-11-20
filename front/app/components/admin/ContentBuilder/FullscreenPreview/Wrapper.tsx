@@ -9,11 +9,13 @@ import { Box } from '@citizenlab/cl2-component-library';
 import { SerializedNodes } from '@craftjs/core';
 import { Locale } from 'typings';
 import styled from 'styled-components';
+import { DEFAULT_PADDING } from '../constants';
 
 interface Props {
   onUpdateDraftData: (serializedNodes: SerializedNodes | undefined) => void;
   onUpdateLocale?: (locale: Locale) => void;
   children: React.ReactNode;
+  padding?: string;
 }
 
 export const StyledPreviewBox = styled(Box)`
@@ -34,6 +36,7 @@ export const FullScreenPreviewWrapper = ({
   onUpdateDraftData,
   onUpdateLocale,
   children,
+  padding,
 }: Props) => {
   useEffect(() => {
     const handleMessage = (e: MessageEvent) => {
@@ -58,7 +61,7 @@ export const FullScreenPreviewWrapper = ({
   return (
     <FocusOn>
       <StyledPreviewBox data-testid="contentBuilderEditModePreviewContent">
-        <Box p="20px">{children}</Box>
+        <Box p={padding || DEFAULT_PADDING}>{children}</Box>
       </StyledPreviewBox>
     </FocusOn>
   );

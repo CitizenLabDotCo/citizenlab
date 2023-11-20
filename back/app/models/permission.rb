@@ -53,8 +53,8 @@ class Permission < ApplicationRecord
   before_validation :set_permitted_by_and_global_custom_fields, on: :create
   before_validation :update_global_custom_fields, on: :update
 
-  def self.available_actions(phase)
-    ACTIONS[phase&.participation_method]
+  def self.available_actions(permission_scope)
+    ACTIONS[permission_scope&.participation_method]
   end
 
   # Remove any actions that are not enabled on the project

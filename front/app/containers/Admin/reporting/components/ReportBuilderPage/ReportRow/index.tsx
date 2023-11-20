@@ -3,9 +3,7 @@ import React from 'react';
 // components
 import { ListItem, Box, Title } from '@citizenlab/cl2-component-library';
 import EditedText from './EditedText';
-import Button from 'components/UI/Button';
-
-// styling
+import Buttons from './Buttons';
 
 // i18n
 import messages from './messages';
@@ -13,7 +11,6 @@ import { useIntl } from 'utils/cl-intl';
 
 // utils
 import clHistory from 'utils/cl-router/history';
-import ShareReportButton from './ShareReportButton';
 
 import useDeleteReport from 'api/reports/useDeleteReport';
 import { Report } from 'api/reports/types';
@@ -67,40 +64,13 @@ const ReportRow = ({ report }: Props) => {
             userId={report.relationships.owner.data.id}
           />
         </Box>
-        <Box display="flex">
-          <Button
-            mr="8px"
-            icon="delete"
-            buttonStyle="white"
-            onClick={handleDeleteReport}
-            processing={isLoading}
-            disabled={isLoading}
-            iconSize="18px"
-          >
-            {formatMessage(messages.delete)}
-          </Button>
-          <Button
-            mr="8px"
-            icon="edit"
-            buttonStyle="secondary"
-            onClick={handleEditReport}
-            disabled={isLoading}
-            iconSize="18px"
-          >
-            {formatMessage(messages.edit)}
-          </Button>
-          <Button
-            mr="8px"
-            icon="eye"
-            buttonStyle="secondary"
-            onClick={handleViewReport}
-            disabled={isLoading}
-            iconSize="18px"
-          >
-            {formatMessage(messages.view)}
-          </Button>
-          <ShareReportButton reportId={report.id} buttonStyle="primary" />
-        </Box>
+        <Buttons
+          reportId={report.id}
+          isLoading={isLoading}
+          onDelete={handleDeleteReport}
+          onEdit={handleEditReport}
+          onView={handleViewReport}
+        />
       </Box>
     </ListItem>
   );

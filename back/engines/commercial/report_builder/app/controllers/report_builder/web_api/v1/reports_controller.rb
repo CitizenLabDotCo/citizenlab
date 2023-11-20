@@ -7,7 +7,7 @@ module ReportBuilder
         skip_before_action :authenticate_user
 
         def index
-          reports = policy_scope(ReportBuilder::Report)
+          reports = policy_scope(ReportBuilder::Report.global)
           reports = paginate(reports)
 
           render json: linked_json(reports, ReportSerializer, params: jsonapi_serializer_params)
@@ -61,14 +61,15 @@ module ReportBuilder
         end
 
         def create_params
-          @create_params ||= {
+          {
             'owner' => current_user,
             'layout_attributes' => {
               'craftjs_jsonmultiloc' => {},
               'enabled' => true,
               'code' => 'report'
             }
-          }.deep_merge(shared_params)
+          }.deep_merge(params.require(:report).permit(:phase_id))
+            .deep_merge(shared_params)
         end
 
         def update_params
@@ -87,6 +88,7 @@ module ReportBuilder
             .require(:report)
             .permit(
               :name,
+              :phase_id,
               layout: [craftjs_jsonmultiloc: CL2_SUPPORTED_LOCALES.map { |locale| { locale => {} } }]
             )
 
@@ -95,7 +97,7 @@ module ReportBuilder
         end
 
         def serialize_report(report)
-          options = { params: jsonapi_serializer_params, include: [:layout] }
+          options = { params: jsonapi_serializer_params, include: %i[layout phase] }
           ReportSerializer.new(report, options).serializable_hash.to_json
         end
 

@@ -577,5 +577,19 @@ describe BulkImportIdeas::ImportProjectIdeasService do
         end
       end
     end
+
+    describe 'complete_page_range' do
+      it 'returns the full range of page numbers from two arrays' do
+        array1 = [1, 3, 4]
+        array2 = [2, 6, 7]
+        range = service.send(:complete_page_range, array1, array2)
+        expect(range).to eq [1, 2, 3, 4, 5, 6, 7]
+
+        array3 = [7, 10, 12]
+        array4 = [7, 8, 9]
+        range = service.send(:complete_page_range, array3, array4)
+        expect(range).to eq [7, 8, 9, 10, 11, 12]
+      end
+    end
   end
 end

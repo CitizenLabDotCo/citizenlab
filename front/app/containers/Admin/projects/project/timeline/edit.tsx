@@ -39,6 +39,7 @@ import {
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
 import Warning from 'components/UI/Warning';
+import ReportSection from '../information/ReportSection';
 
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -494,6 +495,10 @@ const AdminProjectTimelineEdit = () => {
               apiErrors={errors}
               appConfig={appConfig}
             />
+          )}
+
+          {phase?.data.attributes.participation_method === 'information' && (
+            <ReportSection phaseId={phase.data.id} />
           )}
 
           <SectionField className="fullWidth">

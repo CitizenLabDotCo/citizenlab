@@ -337,22 +337,21 @@ describe LocalProjectCopyService do
         craftjs_str = ERB.new(File.read('spec/fixtures/craftjs_layout_with_2_images.json.erb'))
           .result_with_hash(code1: images[0].code, code2: images[1].code)
 
-        layout.update(craftjs_jsonmultiloc: JSON.parse(craftjs_str))
+        layout.update!(craftjs_json: JSON.parse(craftjs_str))
         copied_project = service.copy(layout.content_buildable)
 
-        new_image_codes =
-          ContentBuilder::LayoutService.new.images(copied_project.content_builder_layouts.first).pluck(:code)
+        new_image_codes = images.map(&:code)
 
         expect(copied_project.content_builder_layouts.first
           .as_json(only: %i[content_buildable_type code enabled]))
           .to eq(layout.as_json(only: %i[content_buildable_type code enabled]))
 
-        # Expect the copied layout's craftjs_jsonmultiloc to equal the source value, excluding the image codes (UUIDs)
+        # Expect the copied layout's craftjs_json to equal the source value, excluding the image codes (UUIDs)
         expect(
-          copied_project.content_builder_layouts.first.craftjs_jsonmultiloc.to_json
+          copied_project.content_builder_layouts.first.craftjs_json.to_json
           .gsub!(new_image_codes[0], '').gsub!(new_image_codes[1], '')
         ).to eq(
-          layout.content_buildable.content_builder_layouts.first.craftjs_jsonmultiloc.to_json
+          layout.content_buildable.content_builder_layouts.first.craftjs_json.to_json
           .gsub!(images[0].code, '').gsub!(images[1].code, '')
         )
 
