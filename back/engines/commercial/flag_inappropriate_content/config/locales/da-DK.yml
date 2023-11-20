@@ -11,7 +11,7 @@ da:
       idea_author: '%{authorName} har indsendt et indlæg:'
       initiative_author: '%{authorName} har indsendt et forslag:'
       automatically_flagged: >
-        Dette indlæg blev automatisk registreret som potentielt indeholdende upassende indhold. Vi sender dig denne meddelelse, så du kan gennemgå indlægget i overensstemmelse med dine egne moderationsretningslinjer.
+        Dette indlæg blev automatisk registreret som potentielt indeholdende upassende indhold. Vi sender dig denne meddelelse, så du kan gennemgå indlægget i overensstemmelse med jeres egne retningslinjer for moderering.
       how_to_review: >
         Hvis opslaget ikke indeholder upassende indhold, kan du fjerne advarslen via din platform under fanen Aktivitet i administratorpanelet.
       cta_review_post: 'Gennemgå indlæg'
