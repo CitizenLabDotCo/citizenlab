@@ -24,6 +24,7 @@ import {
   getCurrentParticipationContext,
   isIdeaInParticipationContext,
 } from 'api/phases/utils';
+import { isFixableByAuthentication } from 'utils/actionDescriptors';
 
 interface Props {
   ideaId: string;
@@ -62,6 +63,25 @@ const RightColumnDesktop = ({
   const commentingEnabled =
     !!idea?.data.attributes.action_descriptor.commenting_idea.enabled;
 
+  // showReactionControl
+  const reactingActionDescriptor =
+    idea.data.attributes.action_descriptor.reacting_idea;
+  const reactingFutureEnabled = !!(
+    reactingActionDescriptor.up.future_enabled ||
+    reactingActionDescriptor.down.future_enabled
+  );
+  const cancellingEnabled = reactingActionDescriptor.cancelling_enabled;
+  const likesCount = idea.data.attributes.likes_count;
+  const dislikesCount = idea.data.attributes.dislikes_count;
+  const showReactionControl =
+    participationContext?.attributes.participation_method !== 'voting' &&
+    (reactingActionDescriptor.enabled ||
+      isFixableByAuthentication(reactingActionDescriptor.disabled_reason) ||
+      cancellingEnabled ||
+      reactingFutureEnabled ||
+      likesCount > 0 ||
+      dislikesCount > 0);
+
   return (
     <Box
       flex={`0 0 ${rightColumnWidthDesktop}px`}
@@ -80,9 +100,15 @@ const RightColumnDesktop = ({
         >
           {(ideaIsInParticipationContext || commentingEnabled) && (
             <>
-              <Box pb="23px" mb="23px">
-                <ReactionControl styleType="shadow" ideaId={ideaId} size="4" />
-              </Box>
+              {showReactionControl && (
+                <Box pb="23px" mb="23px">
+                  <ReactionControl
+                    styleType="shadow"
+                    ideaId={ideaId}
+                    size="4"
+                  />
+                </Box>
+              )}
               <Box pb="23px" mb="23px" borderBottom="solid 1px #ccc">
                 {participationContext &&
                   ideaIsInParticipationContext &&

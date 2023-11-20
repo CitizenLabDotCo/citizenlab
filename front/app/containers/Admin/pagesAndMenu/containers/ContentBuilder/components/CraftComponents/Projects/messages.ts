@@ -13,4 +13,13 @@ export default defineMessages({
     id: 'app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.Projects.projectsTitlePlaceholder',
     defaultMessage: '{orgName} is currently working on',
   },
+  projectsDescription: {
+    id: 'app.containers.ContentBuilder.homepage.projectsDescription',
+    defaultMessage:
+      'To configure the order in which your projects are displayed, reorder them on the { link }.',
+  },
+  projectsDescriptionLink: {
+    id: 'app.containers.ContentBuilder.homepage.projectsDescriptionLink',
+    defaultMessage: 'Projects page',
+  },
 });
