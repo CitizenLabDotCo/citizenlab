@@ -79,6 +79,8 @@ const IdeaButton = memo<Props>(
         authUser: authUser?.data,
       });
 
+    if (!show) return null;
+
     const pcId =
       participationContextType === 'phase' && phase ? phase.id : projectId;
 
@@ -146,72 +148,69 @@ const IdeaButton = memo<Props>(
         });
       };
 
-    if (show) {
-      const tippyContent =
-        !enabled && !!disabledReason ? (
-          <TippyContent
-            projectId={projectId}
-            inMap={inMap}
-            disabledReason={disabledReason}
-            phase={phase}
-            participationContextType={participationContextType}
-          />
-        ) : null;
+    const tippyContent =
+      !enabled && !!disabledReason ? (
+        <TippyContent
+          projectId={projectId}
+          inMap={inMap}
+          disabledReason={disabledReason}
+          phase={phase}
+          participationContextType={participationContextType}
+        />
+      ) : null;
 
-      if (inMap && !enabled && !!disabledReason) {
-        return (
-          <TippyContent
-            projectId={projectId}
-            inMap={inMap}
-            disabledReason={disabledReason}
-            phase={phase}
-            participationContextType={participationContextType}
-          />
-        );
-      }
-
-      const inputTerm = getInputTerm(
-        project.data.attributes.process_type,
-        project.data,
-        phases?.data
-      );
-
-      const buttonMessage = getButtonMessage(participationMethod, inputTerm);
-
+    if (inMap && !enabled && !!disabledReason) {
       return (
-        <Container id={id} className={className || ''}>
-          <Tippy
-            disabled={!tippyContent}
-            interactive={true}
-            placement="bottom"
-            content={tippyContent || <></>}
-            theme="light"
-            hideOnClick={false}
-          >
-            <ButtonWrapper
-              id="e2e-cta-button"
-              tabIndex={!enabled ? 0 : -1}
-              className={`e2e-idea-button ${!enabled ? 'disabled' : ''} ${
-                disabledReason ? disabledReason : ''
-              }`}
-            >
-              <Button
-                {...buttonContainerProps}
-                aria-describedby="tooltip-content"
-                onClick={onClick}
-                disabled={!enabled}
-                ariaDisabled={false}
-                id="e2e-idea-button"
-              >
-                <FormattedMessage {...buttonMessage} />
-              </Button>
-            </ButtonWrapper>
-          </Tippy>
-        </Container>
+        <TippyContent
+          projectId={projectId}
+          inMap={inMap}
+          disabledReason={disabledReason}
+          phase={phase}
+          participationContextType={participationContextType}
+        />
       );
     }
 
-    return null;
+    return (
+      <Container id={id} className={className || ''}>
+        <Tippy
+          disabled={!tippyContent}
+          interactive={true}
+          placement="bottom"
+          content={tippyContent || <></>}
+          theme="light"
+          hideOnClick={false}
+        >
+          <ButtonWrapper
+            id="e2e-cta-button"
+            tabIndex={!enabled ? 0 : -1}
+            className={`e2e-idea-button ${!enabled ? 'disabled' : ''} ${
+              disabledReason ? disabledReason : ''
+            }`}
+          >
+            <Button
+              {...buttonContainerProps}
+              aria-describedby="tooltip-content"
+              onClick={onClick}
+              disabled={!enabled}
+              ariaDisabled={false}
+              id="e2e-idea-button"
+            >
+              <FormattedMessage
+                {...getButtonMessage(
+                  participationMethod,
+                  getInputTerm(
+                    project.data.attributes.process_type,
+                    project.data,
+                    phases?.data
+                  )
+                )}
+              />
+            </Button>
+          </ButtonWrapper>
+        </Tippy>
+      </Container>
+    );
   }
 );
 
