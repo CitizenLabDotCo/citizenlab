@@ -21,6 +21,8 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::ParticipationContextSerializer
 
   has_one :report, serializer: ReportBuilder::WebApi::V1::ReportSerializer
 
+  has_many :permissions
+
   def self.user_basket(object, params)
     preloaded_user_basket = params.dig(:user_baskets, object.id)&.first
     preloaded_user_basket || current_user(params)&.baskets&.select do |basket|
@@ -28,5 +30,3 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::ParticipationContextSerializer
     end&.first
   end
 end
-
-WebApi::V1::PhaseSerializer.include(GranularPermissions::WebApi::V1::Patches::PhaseSerializer)

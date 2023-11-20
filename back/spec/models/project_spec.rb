@@ -84,44 +84,6 @@ RSpec.describe Project do
       p.presentation_mode = nil
       expect(p.save).to be true
     end
-
-    it 'can be changed from a transitive method to another one' do
-      project = create(:continuous_project, participation_method: 'ideation', voting_max_total: 17)
-      project.participation_method = 'voting'
-      project.voting_method = 'budgeting'
-      project.voting_max_total = 1000
-      project.ideas_order = 'random'
-      expect(project.save).to be true
-    end
-
-    it 'cannot be changed from a transitive method to a non-transitive one' do
-      project = create(:continuous_project, participation_method: 'ideation')
-      project.participation_method = 'native_survey'
-      project.ideas_order = nil
-      expect(project.save).to be false
-      expect(project.errors.details).to eq({ participation_method: [{ error: :change_not_permitted }] })
-    end
-
-    it 'cannot be changed from a non-transitive method to a transitive one' do
-      project = create(:continuous_project, participation_method: 'native_survey', voting_max_total: 63)
-      project.participation_method = 'voting'
-      project.voting_method = 'budgeting'
-      project.voting_max_total = 1000
-      expect(project.save).to be false
-      expect(project.errors.details).to eq({ participation_method: [{ error: :change_not_permitted }] })
-    end
-  end
-
-  describe '#native_survey?' do
-    it 'returns true when the participation method is native_survey' do
-      project = create(:continuous_native_survey_project)
-      expect(project.native_survey?).to be true
-    end
-
-    it 'returns false otherwise' do
-      project = create(:continuous_project)
-      expect(project.native_survey?).to be false
-    end
   end
 
   describe '#can_contain_input?' do

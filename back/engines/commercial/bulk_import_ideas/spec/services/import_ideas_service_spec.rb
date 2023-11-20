@@ -271,7 +271,7 @@ describe BulkImportIdeas::ImportIdeasService do
     context 'surveys' do
       it 'can import surveys with' do
         project = create(:continuous_native_survey_project)
-        create(:custom_form, participation_context: project)
+        create(:custom_form, participation_context: project.phases.first)
 
         idea_rows = [
           {

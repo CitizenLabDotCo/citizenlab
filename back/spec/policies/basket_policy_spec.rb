@@ -5,7 +5,7 @@ require 'rails_helper'
 describe BasketPolicy do
   subject { described_class.new(user, basket) }
 
-  let(:context) { create(:continuous_budgeting_project) }
+  let(:context) { create(:continuous_budgeting_project, phase_attrs: { with_permissions: true }).phases.first }
   let(:basket) { create(:basket, participation_context: context) }
 
   context 'for a visitor' do
@@ -37,7 +37,7 @@ describe BasketPolicy do
 
   context 'for blocked basket owner' do
     let(:user) { create(:user, block_end_at: 5.days.from_now) }
-    let(:basket) { create(:basket, user: user, participation_context: create(:continuous_budgeting_project)) }
+    let(:basket) { create(:basket, user: user, participation_context: create(:continuous_budgeting_project).phases.first) }
 
     it_behaves_like 'policy for blocked user', show: false
   end
@@ -54,7 +54,7 @@ describe BasketPolicy do
   context "for a user on a basket in a private groups project where she's not member of a manual group with access" do
     let!(:user) { create(:user) }
     let!(:project) { create(:private_groups_continuous_budgeting_project) }
-    let!(:basket) { create(:basket, user: user, participation_context: project) }
+    let!(:basket) { create(:basket, user: user, participation_context: project.phases.first) }
 
     it { is_expected.to     permit(:show)    }
     it { is_expected.not_to permit(:create)  }
@@ -65,7 +65,7 @@ describe BasketPolicy do
   context "for a user on a basket in a private groups project where she's a member of a manual group with access" do
     let!(:user) { create(:user) }
     let!(:project) { create(:private_groups_continuous_budgeting_project, user: user) }
-    let!(:basket) { create(:basket, user: user, participation_context: project) }
+    let!(:basket) { create(:basket, user: user, participation_context: project.phases.first) }
 
     it { is_expected.to permit(:show)    }
     it { is_expected.to permit(:create)  }
@@ -98,6 +98,19 @@ describe BasketPolicy do
     it { is_expected.not_to permit(:show) }
     it { is_expected.not_to permit(:create)  }
     it { is_expected.not_to permit(:update)  }
+    it { is_expected.not_to permit(:destroy) }
+  end
+
+  context 'for a mortal user who owns the basket in a project phase where voting is not permitted' do
+    let!(:user) { basket.user }
+
+    before do
+      context.permissions.find_by(action: 'voting').update!(permitted_by: 'admins_moderators')
+    end
+
+    it { is_expected.to permit(:show) }
+    it { is_expected.not_to permit(:create) }
+    it { is_expected.not_to permit(:update) }
     it { is_expected.not_to permit(:destroy) }
   end
 end

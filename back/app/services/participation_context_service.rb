@@ -54,9 +54,7 @@ class ParticipationContextService
   def get_participation_context(project)
     if project.admin_publication.archived?
       nil
-    elsif project.continuous?
-      project
-    elsif project.timeline?
+    else
       @timeline_service.current_phase project
     end
   end
@@ -64,11 +62,7 @@ class ParticipationContextService
   def in_current_context?(idea, current_context = nil)
     project = idea.project
     current_context ||= get_participation_context project
-    if project.continuous?
-      true
-    else
-      idea.ideas_phases.find { |ip| ip.phase_id == current_context.id }
-    end
+    idea.ideas_phases.find { |ip| ip.phase_id == current_context.id }
   end
 
   def posting_idea_disabled_reason_for_project(project, user)
@@ -289,7 +283,7 @@ class ParticipationContextService
   private
 
   def future_phases(project, time)
-    project.timeline? ? @timeline_service.future_phases(project, time) : []
+    @timeline_service.future_phases(project, time)
   end
 
   # Common reason regardless of the reaction type.
@@ -323,7 +317,7 @@ class ParticipationContextService
     return true if context.posting_limited? && context.ideas.where(author: user).size >= context.posting_limited_max
 
     if context.posting_limited? && context.allow_anonymous_participation?
-      author_hash = Idea.create_author_hash user.id, context.id, true
+      author_hash = Idea.create_author_hash user.id, context.project.id, true
       return context.ideas.where(author_hash: author_hash).or(context.ideas.where(author: user)).size >= context.posting_limited_max
     end
 
@@ -338,9 +332,11 @@ class ParticipationContextService
     context.reacting_dislike_limited? && user.reactions.down.where(reactable: context.ideas).size >= context.reacting_dislike_limited_max
   end
 
-  def permission_denied_reason(user, _action, _context)
-    'not_signed_in' unless user
+  def permission_denied_reason(user, action, context)
+    permissions_service.denied_reason_for_resource user, action, context
+  end
+
+  def permissions_service
+    @permissions_service ||= ::PermissionsService.new
   end
 end
-
-ParticipationContextService.prepend(GranularPermissions::Patches::ParticipationContextService)

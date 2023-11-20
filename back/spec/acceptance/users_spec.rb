@@ -1225,7 +1225,8 @@ resource 'Users' do
           create(:idea, author: @user)
           create(:idea)
           create(:idea, author: @user, publication_status: 'draft')
-          create(:idea, author: @user, project: create(:continuous_native_survey_project))
+          survey_project = create(:continuous_native_survey_project)
+          create(:idea, author: @user, project: survey_project, creation_phase: survey_project.phases.first)
           do_request
           expect(status).to eq 200
           json_response = json_parse(response_body)

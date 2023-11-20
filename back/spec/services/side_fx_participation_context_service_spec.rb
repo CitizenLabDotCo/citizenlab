@@ -44,4 +44,26 @@ describe SideFxParticipationContextService do
   describe 'before_destroy' do
     it { expect { service.before_destroy(pc, user) }.to have_enqueued_job(Surveys::WebhookManagerJob) }
   end
+
+  context 'with phase permissions' do
+    subject(:service) do
+      described_class.new.tap { |s| s.permissions_service = permissions_service }
+    end
+
+    let(:permissions_service) { instance_double(PermissionsService) }
+
+    describe 'after_create' do
+      specify do
+        expect(permissions_service).to receive(:update_permissions_for_scope).with(pc)
+        service.after_create(pc, user)
+      end
+    end
+
+    describe 'after_update' do
+      specify do
+        expect(permissions_service).to receive(:update_permissions_for_scope).with(pc)
+        service.after_update(pc, user)
+      end
+    end
+  end
 end

@@ -91,7 +91,7 @@ resource 'Volunteering Causes' do
         expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
         expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
         expect(json_response.dig(:data, :attributes, :ordering)).to eq 0
-        expect(json_response.dig(:data, :relationships, :participation_context, :data, :type)).to eq 'project'
+        expect(json_response.dig(:data, :relationships, :participation_context, :data, :type)).to eq 'phase'
         expect(json_response.dig(:data, :relationships, :participation_context, :data, :id)).to eq participation_context_id
       end
     end
@@ -135,7 +135,7 @@ resource 'Volunteering Causes' do
 
       before do
         @project = create(:continuous_volunteering_project)
-        @causes = create_list(:cause, 3, participation_context: @project)
+        @causes = create_list(:cause, 3, participation_context: @project.phases.first)
       end
 
       let(:id) { @causes.last.id }

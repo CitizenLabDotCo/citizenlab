@@ -80,23 +80,6 @@ resource 'Ideas' do
       end
       let(:custom_field_name1) { 'Cat' }
 
-      context 'in a continuous native survey project' do
-        let(:project) { create(:continuous_native_survey_project) }
-        let(:custom_form) { create(:custom_form, participation_context: project) }
-
-        example_request 'Create an input' do
-          assert_status 201
-          json_response = json_parse response_body
-          expect(json_response.dig(:data, :relationships, :project, :data, :id)).to eq project_id
-          inputs = project.reload.ideas
-          expect(inputs.size).to eq 1
-          input = inputs.first
-          expect(input.phase_ids).to eq []
-          expect(input.custom_field_values).to eq({ 'custom_field_name1' => 'Cat' })
-          expect(input.creation_phase).to be_nil
-        end
-      end
-
       context 'in an active native survey phase' do
         let(:project) { create(:project_with_active_native_survey_phase) }
         let(:active_phase) { project.phases.first }
@@ -140,17 +123,6 @@ resource 'Ideas' do
         )
       end
       let(:custom_field_name1) { 'Cat' }
-
-      context 'in a continuous native survey project' do
-        let(:phase_ids) { ['1234'] }
-        let(:project) { create(:continuous_native_survey_project) }
-        let(:custom_form) { create(:custom_form, participation_context: project) }
-
-        example_request '[error] Trying to create an input' do
-          assert_status 400
-          expect(json_parse(response_body)).to be_nil
-        end
-      end
 
       context 'with an active native survey phase' do
         let(:project) { create(:project_with_active_and_future_native_survey_phase) }
@@ -225,17 +197,6 @@ resource 'Ideas' do
         title_multiloc: { 'en' => 'What is your favourite pet?' },
         description_multiloc: { 'en' => 'Enter one pet.' }
       )
-    end
-
-    context 'in a continuous native survey project' do
-      let(:project) { create(:continuous_native_survey_project) }
-      let(:custom_form) { create(:custom_form, participation_context: project) }
-
-      example_request '[error] Trying to update an input' do
-        assert_status 401
-        json_response = json_parse(response_body)
-        expect(json_response).to eq({ errors: { base: [{ error: 'Unauthorized!' }] } })
-      end
     end
 
     context 'in a native survey phase' do

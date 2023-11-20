@@ -33,10 +33,16 @@ FactoryBot.define do
 
     transient do
       with_permissions { false }
+      permissions_config { {} }
     end
 
     after(:create) do |phase, evaluator|
       PermissionsService.new.update_permissions_for_scope(phase) if evaluator.with_permissions
+      evaluator.permissions_config.each do |action, is_allowed|
+        phase.permissions.find_or_initialize_by(action: action).tap do |permission|
+          permission.permitted_by = is_allowed ? 'everyone' : 'admins_moderators'
+        end.save!
+      end
     end
 
     factory :active_phase do
@@ -61,10 +67,22 @@ FactoryBot.define do
       participation_method { 'poll' }
     end
 
-    factory :survey_phase do
+    factory :typeform_survey_phase do
       participation_method { 'survey' }
       survey_service { 'typeform' }
       survey_embed_url { 'https://citizenlabco.typeform.com/to/HKGaPV?source=xxxxx' }
+    end
+
+    factory :google_survey_phase do
+      participation_method { 'survey' }
+      survey_service { 'google_forms' }
+      survey_embed_url { 'https://docs.google.com/forms/d/e/fake/viewform?embedded=true' }
+    end
+
+    factory :enalyzer_survey_phase do
+      participation_method { 'survey' }
+      survey_service { 'enalyzer' }
+      survey_embed_url { 'https://surveys.enalyzer.com?pid=HKGaPV' }
     end
 
     factory :volunteering_phase do
@@ -75,15 +93,31 @@ FactoryBot.define do
       participation_method { 'native_survey' }
     end
 
-    factory :voting_phase do
+    factory :single_voting_phase do
       participation_method { 'voting' }
       voting_method { 'single_voting' }
+      voting_max_total { 10 }
+    end
+
+    factory :multiple_voting_phase do
+      participation_method { 'voting' }
+      voting_method { 'multiple_voting' }
+      voting_max_total { 10 }
     end
 
     factory :budgeting_phase do
       participation_method { 'voting' }
       voting_method { 'budgeting' }
       voting_max_total { 1000 }
+    end
+
+    factory :information_phase do
+      participation_method { 'information' }
+    end
+
+    factory :document_annotation_phase do
+      participation_method { 'document_annotation' }
+      document_annotation_embed_url { 'https://citizenlab.konveio.com/document-title' }
     end
   end
 end

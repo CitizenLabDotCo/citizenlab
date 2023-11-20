@@ -430,7 +430,7 @@ describe XlsxExport::InputSheetGenerator do
     end
 
     context 'for a voting context' do
-      let(:participation_context) { create(:voting_phase) }
+      let(:participation_context) { create(:single_voting_phase) }
 
       describe 'when there are no inputs' do
         let(:inputs) { [] }
@@ -465,7 +465,7 @@ describe XlsxExport::InputSheetGenerator do
         end
 
         context 'voting method is multiple voting' do
-          let(:participation_context) { create(:voting_phase, voting_method: 'multiple_voting') }
+          let(:participation_context) { create(:multiple_voting_phase) }
 
           it 'Generates an empty sheet with the correct columns' do
             expect(xlsx).to eq([
@@ -497,7 +497,7 @@ describe XlsxExport::InputSheetGenerator do
         end
 
         context 'voting method is budgeting' do
-          let(:participation_context) { create(:voting_phase, voting_method: 'budgeting') }
+          let(:participation_context) { create(:budgeting_phase) }
 
           it 'Generates an empty sheet with the correct columns' do
             expect(xlsx).to eq([
@@ -632,7 +632,7 @@ describe XlsxExport::InputSheetGenerator do
             basket.update_counts!
           end
         end
-        let!(:other_phase) { create(:voting_phase, project: participation_context.project, start_at: (Time.now - 6.months), end_at: (Time.now - 4.months)) }
+        let!(:other_phase) { create(:single_voting_phase, project: participation_context.project, start_at: (Time.now - 6.months), end_at: (Time.now - 4.months)) }
         let!(:other_basket) { create(:basket, participation_context: other_phase, ideas: [ideation_response1]) }
         let(:inputs) { [ideation_response1.reload] }
 

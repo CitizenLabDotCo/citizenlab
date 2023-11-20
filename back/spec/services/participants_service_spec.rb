@@ -75,17 +75,17 @@ describe ParticipantsService do
       idea = nil
       other_idea = nil
       travel_to Time.now - 100.days do
-        idea = create(:idea, project: project, author: pp1)
+        idea = create(:idea, project: project, author: pp1, phases: project.phases)
       end
       travel_to Time.now - 6.days do
         create(:comment, post: idea, author: pp2)
-        other_idea = create(:idea, project: other_project, author: others.first)
+        other_idea = create(:idea, project: other_project, author: others.first, phases: other_project.phases)
       end
       travel_to Time.now - 2.days do
         create(:reaction, reactable: idea, mode: 'up', user: pp3)
         create(:comment, post: idea, author: pp2)
         create(:comment, post: other_idea, author: others.last)
-        create(:basket, ideas: [idea], participation_context: project, user: pp5)
+        create(:basket, ideas: [idea], participation_context: project.phases.first, user: pp5)
       end
       create(:comment, post: idea, author: pp4)
 
@@ -133,17 +133,17 @@ describe ParticipantsService do
 
     it 'returns participants of a poll' do
       poll = create(:continuous_poll_project)
-      responses = create_list(:poll_response, 2, participation_context: poll)
+      responses = create_list(:poll_response, 2, participation_context: poll.phases.first)
       participants = responses.map(&:user)
       create_list(:user, 2)
-      create(:poll_response, participation_context: create(:continuous_poll_project))
+      create(:poll_response, participation_context: create(:poll_phase))
 
       expect(service.projects_participants([poll]).map(&:id)).to match_array participants.map(&:id)
     end
 
     it 'returns volunteering participants' do
       project = create(:continuous_volunteering_project)
-      cause = create(:cause, participation_context: project)
+      cause = create(:cause, participation_context: project.phases.first)
       volunteers = create_list(:volunteer, 2, cause: cause)
       participants = volunteers.map(&:user)
       create(:volunteer)
@@ -185,7 +185,7 @@ describe ParticipantsService do
       i = create(:idea, project: project, author: pp1)
       create(:comment, post: i, author: pp2)
       create(:reaction, reactable: i, user: pp3)
-      create(:basket, ideas: [i], participation_context: project, user: pp4)
+      create(:basket, ideas: [i], participation_context: project.phases.first, user: pp4)
       create(:idea, author: other)
 
       expect(service.projects_participants([project], actions: %i[posting voting]).map(&:id)).to match_array [pp1.id, pp4.id]
@@ -246,10 +246,10 @@ describe ParticipantsService do
       pp1, pp2, pp3, pp4 = participants
       other = create(:user)
 
-      i = create(:idea, project: project, author: pp1)
+      i = create(:idea, project: project, author: pp1, phases: project.phases)
       create(:comment, post: i, author: pp2)
       create(:reaction, reactable: i, user: pp3)
-      create(:basket, ideas: [i], participation_context: project, user: pp4)
+      create(:basket, ideas: [i], participation_context: project.phases.first, user: pp4)
       create(:idea, author: other)
 
       expect(service.projects_participants([project], actions: [:commenting]).map(&:id)).to match_array [pp2.id]

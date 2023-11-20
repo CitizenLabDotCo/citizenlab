@@ -187,10 +187,6 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            granular_permissions: {
-              enabled: true,
-              allowed: true
-            },
             machine_translations: {
               enabled: true,
               allowed: true

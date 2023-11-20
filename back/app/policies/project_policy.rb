@@ -68,18 +68,6 @@ class ProjectPolicy < ApplicationPolicy
     active_moderator?
   end
 
-  def survey_results?
-    active_moderator?
-  end
-
-  def submission_count?
-    show?
-  end
-
-  def delete_inputs?
-    record.continuous? && active_moderator?
-  end
-
   def create?
     return false unless active?
     return true if admin?
