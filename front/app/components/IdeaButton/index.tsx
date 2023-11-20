@@ -6,22 +6,15 @@ import { stringify } from 'qs';
 import { IParticipationContextType } from 'typings';
 
 // services
-import {
-  getIdeaPostingRules,
-  IIdeaPostingDisabledReason,
-} from 'utils/actionTakingRules';
+import { getIdeaPostingRules } from 'utils/actionTakingRules';
 import { getInputTerm, ParticipationMethod } from 'utils/participationContexts';
 
 // components
 import Button, { Props as ButtonProps } from 'components/UI/Button';
 import Tippy from '@tippyjs/react';
-import { Icon } from '@citizenlab/cl2-component-library';
 
 // i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { MessageDescriptor } from 'react-intl';
-import messages from './messages';
-import globalMessages from 'utils/messages';
+import { FormattedMessage } from 'utils/cl-intl';
 
 // events
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
@@ -32,8 +25,6 @@ import tracks from './tracks';
 
 // styling
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
-import { darken } from 'polished';
 
 // typings
 import { LatLng } from 'leaflet';
@@ -43,56 +34,11 @@ import { SuccessAction } from 'containers/Authentication/SuccessActions/actions'
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
 import useAuthUser from 'api/me/useAuthUser';
+import TippyContent from './TippyContent';
 
 const Container = styled.div``;
 
 const ButtonWrapper = styled.div``;
-
-const TooltipContent = styled.div<{ inMap?: boolean }>`
-  display: flex;
-  align-items: center;
-  padding: ${(props) => (props.inMap ? '0px' : '15px')};
-`;
-
-const TooltipContentIcon = styled(Icon)`
-  flex: 0 0 24px;
-  margin-right: 1rem;
-`;
-
-const TooltipContentText = styled.div`
-  flex: 1 1 auto;
-  color: ${({ theme }) => theme.colors.tenantText};
-  font-size: ${fontSizes.base}px;
-  line-height: normal;
-  font-weight: 400;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  word-break: break-word;
-  a,
-  button {
-    color: ${colors.teal};
-    font-size: ${fontSizes.base}px;
-    line-height: normal;
-    font-weight: 400;
-    text-align: left;
-    text-decoration: underline;
-    white-space: normal;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-    word-break: break-all;
-    word-break: break-word;
-    hyphens: auto;
-    display: inline;
-    padding: 0px;
-    margin: 0px;
-    cursor: pointer;
-    transition: all 100ms ease-out;
-    &:hover {
-      color: ${darken(0.15, colors.teal)};
-      text-decoration: underline;
-    }
-  }
-`;
 
 export interface Props extends Omit<ButtonProps, 'onClick'> {
   id?: string;
@@ -113,32 +59,18 @@ const IdeaButton = memo<Props>(
     id,
     participationContextType,
     projectId,
-    inMap,
+    inMap = false,
     className,
     latLng,
     phase,
     participationMethod,
     ...buttonContainerProps
   }) => {
-    const { formatMessage } = useIntl();
     const { data: project } = useProjectById(projectId);
     const { data: phases } = usePhases(projectId);
     const { data: authUser } = useAuthUser();
 
     if (!project) return null;
-
-    const disabledMessages: {
-      [key in IIdeaPostingDisabledReason]: MessageDescriptor;
-    } = {
-      notPermitted: messages.postingNoPermission,
-      postingDisabled: messages.postingDisabled,
-      postingLimitedMaxReached: messages.postingLimitedMaxReached,
-      projectInactive: messages.postingInactive,
-      futureEnabled: messages.postingNotYetPossible,
-      notActivePhase: messages.postingInNonActivePhases,
-      maybeNotPermitted: messages.postingMayNotBePermitted,
-      notInGroup: globalMessages.notInGroup,
-    };
 
     const { enabled, show, disabledReason, authenticationRequirements } =
       getIdeaPostingRules({
@@ -191,10 +123,6 @@ const IdeaButton = memo<Props>(
       }
     };
 
-    const signIn = (event?: React.MouseEvent) => {
-      signUpIn('signin')(event);
-    };
-
     const signUp = (event?: React.MouseEvent) => {
       signUpIn('signup')(event);
     };
@@ -222,53 +150,27 @@ const IdeaButton = memo<Props>(
         }
       };
 
-    const verificationLink = (
-      <button onClick={signUp}>
-        {formatMessage(messages.verificationLinkText)}
-      </button>
-    );
-
-    const signUpLink = (
-      <button onClick={signUp}>{formatMessage(messages.signUpLinkText)}</button>
-    );
-
-    const signInLink = (
-      <button onClick={signIn}>{formatMessage(messages.signInLinkText)}</button>
-    );
-
     if (show) {
       const tippyContent =
         !enabled && !!disabledReason ? (
-          <TooltipContent
-            id="tooltip-content"
-            className="e2e-disabled-tooltip"
+          <TippyContent
+            projectId={projectId}
             inMap={inMap}
-          >
-            <TooltipContentIcon name="lock" ariaHidden />
-            <TooltipContentText>
-              <FormattedMessage
-                {...disabledMessages[disabledReason]}
-                values={{ verificationLink, signUpLink, signInLink }}
-              />
-            </TooltipContentText>
-          </TooltipContent>
+            disabledReason={disabledReason}
+            phase={phase}
+            participationContextType={participationContextType}
+          />
         ) : null;
 
       if (inMap && !enabled && !!disabledReason) {
         return (
-          <TooltipContent
-            id="tooltip-content"
-            className="e2e-disabled-tooltip"
+          <TippyContent
+            projectId={projectId}
             inMap={inMap}
-          >
-            <TooltipContentIcon name="lock" ariaHidden />
-            <TooltipContentText>
-              <FormattedMessage
-                {...disabledMessages[disabledReason]}
-                values={{ verificationLink, signUpLink, signInLink }}
-              />
-            </TooltipContentText>
-          </TooltipContent>
+            disabledReason={disabledReason}
+            phase={phase}
+            participationContextType={participationContextType}
+          />
         );
       }
 
