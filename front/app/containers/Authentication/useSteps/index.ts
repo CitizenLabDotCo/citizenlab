@@ -314,15 +314,7 @@ export default function useSteps() {
 
       transition(currentStep, 'RESUME_FLOW_AFTER_SSO')(enterClaveUnicaEmail);
     }
-  }, [
-    pathname,
-    search,
-    currentStep,
-    transition,
-    authUser,
-    setError,
-    getAuthenticationData,
-  ]);
+  }, [pathname, search, currentStep, transition, authUser, setError]);
 
   // always show ClaveUnica modal to user
   useEffect(() => {
