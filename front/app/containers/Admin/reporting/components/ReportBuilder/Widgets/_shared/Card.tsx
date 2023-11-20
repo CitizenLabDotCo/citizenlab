@@ -4,14 +4,21 @@ import React from 'react';
 import { Box, Title } from '@citizenlab/cl2-component-library';
 import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 
-interface ContainerProps {
+// hooks
+import usePx from 'components/admin/ContentBuilder/Widgets/usePx';
+
+interface SharedProps {
   pagebreak?: boolean;
   'data-testid'?: string;
-  className?: string;
   children: React.ReactNode;
 }
 
-interface Props extends ContainerProps {
+interface ContainerProps extends SharedProps {
+  className?: string;
+  px?: string;
+}
+
+interface Props extends SharedProps {
   title?: string;
 }
 
@@ -23,13 +30,17 @@ const Container = ({ pagebreak, children, ...props }: ContainerProps) => {
   );
 };
 
-const Card = ({ title, children, ...rest }: Props) => (
-  <Container {...rest} className="report-widget-card">
-    <Title variant="h3" color="primary" mb="8px">
-      {title}
-    </Title>
-    <Box>{children}</Box>
-  </Container>
-);
+const Card = ({ title, children, ...rest }: Props) => {
+  const px = usePx();
+
+  return (
+    <Container className="report-widget-card" px={px} {...rest}>
+      <Title variant="h3" color="primary" mb="8px">
+        {title}
+      </Title>
+      <Box>{children}</Box>
+    </Container>
+  );
+};
 
 export default Card;

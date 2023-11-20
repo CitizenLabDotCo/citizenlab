@@ -1,5 +1,8 @@
 import React from 'react';
 
+// components
+import { Box } from '@citizenlab/cl2-component-library';
+
 // styles
 import styled from 'styled-components';
 
@@ -9,11 +12,10 @@ import { Element } from '@craftjs/core';
 import Container from 'components/admin/ContentBuilder/Widgets/Container';
 import useLayout from 'containers/Admin/reporting/hooks/useLayout';
 
-// i18n
-
 // typings
 import { ColumnLayout } from 'components/admin/ContentBuilder/typings';
 import { Layout } from 'components/admin/GraphCards/typings';
+import usePx from 'components/admin/ContentBuilder/Widgets/usePx';
 
 type TwoColumnProps = {
   columnLayout: ColumnLayout;
@@ -26,7 +28,7 @@ const COLUMN_LAYOUTS: Record<ColumnLayout, string> = {
   '1-2': '1fr 2fr',
 };
 
-const StyledBox = styled.div<{
+const StyledBox = styled(Box)<{
   columnLayout: ColumnLayout;
   layout: Layout;
 }>`
@@ -57,9 +59,15 @@ const StyledBox = styled.div<{
 
 export const TwoColumn = ({ columnLayout, children }: TwoColumnProps) => {
   const layout = useLayout();
+  const px = usePx();
 
   return (
-    <StyledBox id="e2e-two-column" columnLayout={columnLayout} layout={layout}>
+    <StyledBox
+      id="e2e-two-column"
+      columnLayout={columnLayout}
+      layout={layout}
+      px={px}
+    >
       {children || (
         <>
           <Element id={'left'} is={Container} canvas />

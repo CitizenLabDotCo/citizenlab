@@ -22,6 +22,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { useIntl } from 'utils/cl-intl';
 import { createResultRows } from './utils';
 import { BORDER } from '../constants';
+import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
 
 type Props = {
   projectId: string;
@@ -70,7 +71,7 @@ const SurveyResults = ({ projectId, phaseId, shownQuestions }: Props) => {
 
   return (
     <>
-      <Box px="20px" width="100%" mb="24px">
+      <Box width="100%" mb="24px">
         <Text variant="bodyM" color="primary" mt="0px" mb="0px">
           {'| '}
           {localize(project.data.attributes.title_multiloc)}
@@ -99,7 +100,7 @@ const SurveyResults = ({ projectId, phaseId, shownQuestions }: Props) => {
         >
           {row.map((result, index) => (
             <Box
-              px="20px"
+              px={DEFAULT_PADDING}
               width="50%"
               key={`${rowIndex}-${index}`}
               borderTop={BORDER}
