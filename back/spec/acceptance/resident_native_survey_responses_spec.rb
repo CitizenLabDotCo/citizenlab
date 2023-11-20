@@ -110,7 +110,7 @@ resource 'Ideas' do
             name: filename2
           }
         end
-        let(:project) { create(:continuous_native_survey_project) }
+        let(:project) { create(:single_phase_native_survey_project) }
         let(:custom_form) { create(:custom_form, participation_context: project.phases.first) }
 
         example_request 'Create an input with a file upload field' do

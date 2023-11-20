@@ -38,7 +38,7 @@ RSpec.describe Permission do
   end
 
   describe 'scopes' do
-    let(:project) { create(:continuous_project) }
+    let(:project) { create(:single_phase_ideation_project) }
     let!(:permission_commenting) { create(:permission, action: 'commenting_idea', permission_scope: project.phases.first) }
     let!(:permission_posting) { create(:permission, action: 'posting_idea', permission_scope: project.phases.first) }
     let!(:permission_reacting) { create(:permission, action: 'reacting_idea', permission_scope: project.phases.first) }

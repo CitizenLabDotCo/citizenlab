@@ -437,7 +437,7 @@ resource 'Projects' do
     end
 
     post 'web_api/v1/projects/:id/copy' do
-      let(:source_project) { create(:continuous_project) }
+      let(:source_project) { create(:single_phase_ideation_project) }
       let(:id) { source_project.id }
 
       example_request 'Copy a continuous project' do
@@ -718,7 +718,7 @@ resource 'Projects' do
       end
 
       post 'web_api/v1/projects/:id/copy' do
-        let(:source_project) { create(:continuous_project) }
+        let(:source_project) { create(:single_phase_ideation_project) }
         let(:id) { source_project.id }
 
         example_request 'Copy a project' do
@@ -730,7 +730,7 @@ resource 'Projects' do
 
   get 'web_api/v1/projects/:id/as_xlsx' do
     describe do
-      let(:id) { create(:continuous_project).id }
+      let(:id) { create(:single_phase_ideation_project).id }
 
       example '[error] Try downloading project inputs' do
         do_request
@@ -764,7 +764,7 @@ resource 'Projects' do
     let(:moderator) { create(:project_folder_moderator, project_folders: [project_folder]) }
     let(:projects) do
       publication_statuses.map do |status|
-        create(:continuous_project, admin_publication_attributes: { publication_status: status })
+        create(:single_phase_ideation_project, admin_publication_attributes: { publication_status: status })
       end
     end
     let!(:projects_outside_of_folder) do
@@ -956,8 +956,8 @@ resource 'Projects' do
     end
 
     post 'web_api/v1/projects/:id/copy' do
-      let!(:project_in_folder_user_moderates) { create(:continuous_project, folder: project_folder) }
-      let!(:project_in_other_folder) { create(:continuous_project, folder: create(:project_folder)) }
+      let!(:project_in_folder_user_moderates) { create(:single_phase_ideation_project, folder: project_folder) }
+      let!(:project_in_other_folder) { create(:single_phase_ideation_project, folder: create(:project_folder)) }
       let!(:other_folder_moderators) { create_list(:project_folder_moderator, 3, project_folders: [project_folder]) }
 
       context 'when passing the id of project in a folder the user moderates' do

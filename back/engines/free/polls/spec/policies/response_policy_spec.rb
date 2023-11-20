@@ -55,7 +55,7 @@ describe Polls::ResponsePolicy do
 
   context "for a resident who owns the response in a private groups project where she's not member of a manual group with access" do
     let!(:user) { create(:user) }
-    let!(:project) { create(:private_groups_continuous_project, phase_attrs: { participation_method: 'poll' }) }
+    let!(:project) { create(:private_groups_single_phase_project, phase_attrs: { participation_method: 'poll' }) }
     let!(:response) { create(:poll_response, participation_context: project.phases.first, user: user) }
 
     it { is_expected.not_to permit(:create) }

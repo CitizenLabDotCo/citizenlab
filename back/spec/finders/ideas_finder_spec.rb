@@ -249,7 +249,7 @@ describe IdeasFinder do
     context 'with current user and can_moderate is true' do
       let(:user) { create(:user) }
       let(:options) { { current_user: user } }
-      let(:moderatable_project) { create(:continuous_project) }
+      let(:moderatable_project) { create(:single_phase_ideation_project) }
       let(:moderatable_projects) { Project.where(id: moderatable_project.id) }
       let!(:idea1) { create(:idea, project: moderatable_project) }
 

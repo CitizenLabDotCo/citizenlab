@@ -6,7 +6,7 @@ describe SideFxParticipationContextService do
   subject(:service) { described_class.new }
 
   let(:user) { create(:user) }
-  let(:pc) { create(:continuous_project) }
+  let(:pc) { create(:single_phase_ideation_project) }
 
   describe 'after_create' do
     it { expect { service.after_create(pc, user) }.to have_enqueued_job(Surveys::WebhookManagerJob) }

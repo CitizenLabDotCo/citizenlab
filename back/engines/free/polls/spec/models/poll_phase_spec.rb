@@ -15,14 +15,14 @@ describe Polls::PollPhase do
 
   describe 'anonymous_immutable_after_responses' do
     it 'allows editing poll_anonymous before the first response comes in' do
-      phase = create(:continuous_poll_project, phase_attrs: { poll_anonymous: true }).phases.first
+      phase = create(:single_phase_poll_project, phase_attrs: { poll_anonymous: true }).phases.first
       create(:poll_question, participation_context: phase)
       phase.poll_anonymous = false
       expect(phase).to be_valid
     end
 
     it "doesn't allow editing poll_anonymous after the first response came in" do
-      phase = create(:continuous_poll_project, phase_attrs: { poll_anonymous: true }).phases.first
+      phase = create(:single_phase_poll_project, phase_attrs: { poll_anonymous: true }).phases.first
       create(:poll_question, participation_context: phase)
       create(:poll_response, participation_context: phase)
       phase.poll_anonymous = false

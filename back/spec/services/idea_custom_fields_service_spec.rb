@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe IdeaCustomFieldsService do
-  let(:project) { create(:continuous_project, participation_method: 'ideation') }
+  let(:project) { create(:single_phase_ideation_project, participation_method: 'ideation') }
   let(:service) { described_class.new custom_form }
   let(:participation_context) { Factory.instance.participation_method_for project }
 
@@ -498,7 +498,7 @@ describe IdeaCustomFieldsService do
     end
 
     describe 'survey form' do
-      let(:survey_project) { create(:continuous_project, participation_method: 'native_survey') }
+      let(:survey_project) { create(:single_phase_ideation_project, participation_method: 'native_survey') }
       let(:custom_form) { create(:custom_form, participation_context: survey_project) }
 
       it 'returns no errors if the form has a page field as the first element' do

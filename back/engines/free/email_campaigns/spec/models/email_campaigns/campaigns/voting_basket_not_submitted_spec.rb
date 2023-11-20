@@ -10,7 +10,7 @@ RSpec.describe EmailCampaigns::Campaigns::VotingBasketNotSubmitted do
   end
 
   describe '#generate_commands' do
-    let(:project) { create(:continuous_budgeting_project) }
+    let(:project) { create(:single_phase_budgeting_project) }
     let!(:basket) { create(:basket, participation_context: project.phases.first, submitted_at: nil) }
     let(:notification) { create(:voting_basket_not_submitted, basket: basket, project: project, phase: project.phases.first) }
     let(:notification_activity) { create(:activity, item: notification, action: 'created') }

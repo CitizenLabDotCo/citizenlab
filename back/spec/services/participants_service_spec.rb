@@ -66,7 +66,7 @@ describe ParticipantsService do
 
   describe 'projects_participants' do
     it 'returns participants of a given project at any time' do
-      project = create(:continuous_budgeting_project)
+      project = create(:single_phase_budgeting_project)
       other_project = create(:project)
       participants = create_list(:user, 5)
       pp1, pp2, pp3, pp4, pp5 = participants
@@ -132,7 +132,7 @@ describe ParticipantsService do
     end
 
     it 'returns participants of a poll' do
-      poll = create(:continuous_poll_project)
+      poll = create(:single_phase_poll_project)
       responses = create_list(:poll_response, 2, participation_context: poll.phases.first)
       participants = responses.map(&:user)
       create_list(:user, 2)
@@ -142,7 +142,7 @@ describe ParticipantsService do
     end
 
     it 'returns volunteering participants' do
-      project = create(:continuous_volunteering_project)
+      project = create(:single_phase_volunteering_project)
       cause = create(:cause, participation_context: project.phases.first)
       volunteers = create_list(:volunteer, 2, cause: cause)
       participants = volunteers.map(&:user)
@@ -176,7 +176,7 @@ describe ParticipantsService do
     end
 
     it 'returns only participants for specific actions' do
-      project = create(:continuous_budgeting_project)
+      project = create(:single_phase_budgeting_project)
       create(:project)
       participants = create_list(:user, 4)
       pp1, pp2, pp3, pp4 = participants
@@ -240,7 +240,7 @@ describe ParticipantsService do
     end
 
     it 'returns only participants for specific actions' do
-      project = create(:continuous_budgeting_project)
+      project = create(:single_phase_budgeting_project)
       create(:project)
       participants = create_list(:user, 4)
       pp1, pp2, pp3, pp4 = participants

@@ -15,7 +15,7 @@ def parse_pages(pages)
 end
 
 describe BulkImportIdeas::IdeaPlaintextParserService do
-  let(:project) { create(:continuous_project) }
+  let(:project) { create(:single_phase_ideation_project) }
   let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
   let(:custom_fields) { IdeaCustomFieldsService.new(Factory.instance.participation_method_for(project).custom_form).importable_fields }
   let(:service) { described_class.new project.phases.first, custom_fields, 'en', 2 }
@@ -384,7 +384,7 @@ describe BulkImportIdeas::IdeaPlaintextParserService do
   end
 
   describe 'form with number input' do
-    let(:project) { create(:continuous_project) }
+    let(:project) { create(:single_phase_ideation_project) }
     let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
 
     before do

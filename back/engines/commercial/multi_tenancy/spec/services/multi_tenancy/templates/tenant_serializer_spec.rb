@@ -167,7 +167,7 @@ describe MultiTenancy::Templates::TenantSerializer do
     end
 
     it 'skips custom field values with ID references' do
-      project = create(:continuous_native_survey_project)
+      project = create(:single_phase_native_survey_project)
       custom_form = create(:custom_form, participation_context: project.phases.first)
       supported_fields = %i[custom_field_number custom_field_linear_scale custom_field_checkbox].map do |factory|
         create(factory, :for_custom_form, resource: custom_form)
@@ -194,7 +194,7 @@ describe MultiTenancy::Templates::TenantSerializer do
     end
 
     it 'copies exact :ordering values of records for models that use acts_as_list gem' do
-      project = create(:continuous_volunteering_project, title_multiloc: { en: 'source project' })
+      project = create(:single_phase_volunteering_project, title_multiloc: { en: 'source project' })
       phase = project.phases.first
       create_list(
         :cause,
@@ -218,7 +218,7 @@ describe MultiTenancy::Templates::TenantSerializer do
     end
 
     it 'can deal with baskets - with or without users' do
-      project = create(:continuous_multiple_voting_project)
+      project = create(:single_phase_multiple_voting_project)
       idea = create(:idea, project: project)
       user = create(:user)
       basket1 = create(:basket, participation_context: project.phases.first, user: user)

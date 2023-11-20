@@ -9,8 +9,8 @@ resource 'Baskets' do
   before do
     header 'Content-Type', 'application/json'
     @user = create(:user)
-    @project = create(:continuous_multiple_voting_project)
-    create_list(:basket, 2, participation_context: create(:continuous_budgeting_project))
+    @project = create(:single_phase_multiple_voting_project)
+    create_list(:basket, 2, participation_context: create(:single_phase_budgeting_project))
     @basket = create(
       :basket,
       user: @user,
@@ -79,7 +79,7 @@ resource 'Baskets' do
       example '[error] Create a basket in a survey', document: false do
         do_request(
           basket: {
-            participation_context_id: create(:continuous_survey_project).id,
+            participation_context_id: create(:single_phase_typeform_survey_project).id,
             participation_context_type: 'Project'
           }
         )
@@ -110,7 +110,7 @@ resource 'Baskets' do
 
         context 'when budgeting' do
           before do
-            @project = create(:continuous_budgeting_project)
+            @project = create(:single_phase_budgeting_project)
             @basket.update!(participation_context: @project.phases.first)
           end
 

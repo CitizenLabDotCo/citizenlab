@@ -114,7 +114,7 @@ resource 'Volunteering Causes' do
       end
 
       before do
-        @project = create(:continuous_volunteering_project)
+        @project = create(:single_phase_volunteering_project)
         @causes = create_list(:cause, 3, participation_context: @project.phases.first)
       end
 

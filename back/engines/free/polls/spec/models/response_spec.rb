@@ -11,7 +11,7 @@ RSpec.describe Polls::Response do
 
   describe 'user already responded' do
     it 'adds an error when the user already responded to the poll' do
-      phase = create(:continuous_poll_project).phases.first
+      phase = create(:single_phase_poll_project).phases.first
       q1 = create(:poll_question, :with_options, participation_context: phase)
       user = create(:user)
       create(:poll_response, user: user, participation_context: phase, response_options_attributes: [{ option_id: q1.options.first.id }])
@@ -24,7 +24,7 @@ RSpec.describe Polls::Response do
 
   describe 'validate_option_count' do
     context 'on a single_option question' do
-      let!(:phase) { create(:continuous_poll_project).phases.first }
+      let!(:phase) { create(:single_phase_poll_project).phases.first }
       let!(:q1) { create(:poll_question, :with_options, participation_context: phase) }
       let!(:q2) { create(:poll_question, :with_options, participation_context: phase) }
 
@@ -68,7 +68,7 @@ RSpec.describe Polls::Response do
     end
 
     context 'on a multiple_options response' do
-      let!(:phase) { create(:continuous_poll_project).phases.first }
+      let!(:phase) { create(:single_phase_poll_project).phases.first }
       let!(:q1) { create(:poll_question_multiple_options, :with_options, participation_context: phase) }
       let!(:q2) { create(:poll_question_multiple_options, :with_options, participation_context: phase) }
 

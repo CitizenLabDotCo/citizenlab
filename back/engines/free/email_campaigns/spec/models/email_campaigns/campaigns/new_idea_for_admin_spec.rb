@@ -65,7 +65,7 @@ RSpec.describe EmailCampaigns::Campaigns::NewIdeaForAdmin do
     describe do
       before { IdeaStatus.create_defaults }
 
-      let(:project) { create(:continuous_native_survey_project) }
+      let(:project) { create(:single_phase_native_survey_project) }
       let(:idea) { create(:idea, author: user, project: project, creation_phase: project.phases.first) }
 
       it "doesn't get triggered for a native survey response" do

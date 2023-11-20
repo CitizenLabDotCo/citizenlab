@@ -18,7 +18,7 @@ describe LocalProjectCopyService do
     let(:with_permissions) { false }
     let!(:open_ended_project) do
       create(
-        :continuous_project,
+        :single_phase_ideation_project,
         phase_attrs: { with_permissions: with_permissions },
         admin_publication_attributes: { publication_status: 'published' },
         title_multiloc: { en: 'Copy me' },
@@ -179,7 +179,7 @@ describe LocalProjectCopyService do
     end
 
     it 'copies associated poll questions & options' do
-      source_project = create(:continuous_poll_project)
+      source_project = create(:single_phase_poll_project)
       create_list(
         :poll_question,
         2,
