@@ -48,14 +48,12 @@ const PostsByTime = ({
       mt="20px"
       pb="8px"
     >
-      <Box pt="8px" width="100%" height="100%" maxWidth="800px">
-        <Chart
-          timeSeries={timeSeries}
-          startAtMoment={startAtMoment}
-          endAtMoment={endAtMoment}
-          resolution={currentResolution}
-        />
-      </Box>
+      <Chart
+        timeSeries={timeSeries}
+        startAtMoment={startAtMoment}
+        endAtMoment={endAtMoment}
+        resolution={currentResolution}
+      />
     </Box>
   );
 };

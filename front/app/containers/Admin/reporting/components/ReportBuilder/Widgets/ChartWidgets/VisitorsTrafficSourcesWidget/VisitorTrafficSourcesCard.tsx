@@ -38,17 +38,15 @@ const VisitorsTrafficSourcesCard = ({
 
   return (
     <Box width="100%" height="220px" mt="20px" pb="10px">
-      <Box height="200px">
-        <Chart
-          pieData={pieData}
-          pieConfig={{
-            startAngle: 0,
-            endAngle: 360,
-            outerRadius: 60,
-          }}
-          layout={layout}
-        />
-      </Box>
+      <Chart
+        pieData={pieData}
+        pieConfig={{
+          startAngle: 0,
+          endAngle: 360,
+          outerRadius: 60,
+        }}
+        layout={layout}
+      />
     </Box>
   );
 };

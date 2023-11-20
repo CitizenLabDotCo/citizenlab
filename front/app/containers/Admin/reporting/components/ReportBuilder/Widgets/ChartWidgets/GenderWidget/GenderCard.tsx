@@ -36,10 +36,8 @@ const GenderCard = ({ startAt, endAt, projectId }: Props) => {
   }
 
   return (
-    <Box width="100%" height="220px" mt="20px" pb="10px">
-      <Box height="200px">
-        <Chart data={genderSerie} layout={layout} />
-      </Box>
+    <Box width="100%" height="220px" mt="20px" pb="8px">
+      <Chart data={genderSerie} layout={layout} />
     </Box>
   );
 };

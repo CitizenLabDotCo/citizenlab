@@ -64,7 +64,6 @@ const VisitorsCard = ({
               : {
                   display: 'flex',
                   flexDirection: 'row',
-                  ml: '16px',
                   mb: '8px',
                 })}
           >
