@@ -7,26 +7,26 @@ RSpec.describe VotingMethod::MultipleVoting do
 
   let(:phase) { create(:multiple_voting_phase) }
 
-  describe '#assign_defaults_for_participation_context' do
+  describe '#assign_defaults_for_phase' do
     let(:phase) { build(:multiple_voting_phase) }
 
     it 'does not change voting_max_votes_per_idea' do
       phase.voting_max_votes_per_idea = 3
-      voting_method.assign_defaults_for_participation_context
+      voting_method.assign_defaults_for_phase
       expect(phase.voting_max_votes_per_idea).to eq 3
     end
   end
 
-  describe '#validate_participation_context' do
+  describe '#validate_phase' do
     it 'sets no errors when voting_max_total is present' do
       phase.voting_max_total = 10
-      voting_method.validate_participation_context
+      voting_method.validate_phase
       expect(phase.errors.details).to be_blank
     end
 
     it 'sets an error when voting_max_total is blank' do
       phase.voting_max_total = nil
-      voting_method.validate_participation_context
+      voting_method.validate_phase
       expect(phase.errors.details).to eq(
         voting_max_total: [error: :blank]
       )

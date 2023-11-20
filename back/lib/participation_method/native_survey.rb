@@ -2,9 +2,9 @@
 
 module ParticipationMethod
   class NativeSurvey < Base
-    def assign_defaults_for_participation_context
-      participation_context.posting_method = 'limited'
-      participation_context.posting_limited_max = 1
+    def assign_defaults_for_phase
+      phase.posting_method = 'limited'
+      phase.posting_limited_max = 1
     end
 
     # Survey responses do not have a fixed field that can be used
@@ -26,7 +26,7 @@ module ParticipationMethod
     end
 
     def create_default_form!
-      form = CustomForm.create(participation_context: participation_context)
+      form = CustomForm.create(participation_context: phase)
       CustomField.create(
         resource: form,
         input_type: 'page',
@@ -47,7 +47,7 @@ module ParticipationMethod
         key: 'option2',
         title_multiloc: MultilocService.new.i18n_to_multiloc('form_builder.default_select_field.option2')
       )
-      participation_context.reload
+      phase.reload
 
       form
     end
@@ -65,11 +65,11 @@ module ParticipationMethod
     end
 
     def creation_phase?
-      participation_context.project.timeline?
+      true
     end
 
     def custom_form
-      participation_context.custom_form || CustomForm.new(participation_context: participation_context)
+      phase.custom_form || CustomForm.new(participation_context: phase)
     end
 
     def edit_custom_form_allowed?

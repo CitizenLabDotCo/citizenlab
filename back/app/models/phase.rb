@@ -97,7 +97,6 @@ class Phase < ApplicationRecord
   validate :validate_end_at
   validate :validate_previous_blank_end_at
   validate :validate_start_at_before_end_at
-  validate :validate_belongs_to_timeline_project
   validate :validate_no_other_overlapping_phases
   validate :validate_campaigns_settings_keys_and_values
 
@@ -301,12 +300,6 @@ class Phase < ApplicationRecord
     errors.add(:start_at, :after_end_at, message: 'is after end_at')
   end
 
-  def validate_belongs_to_timeline_project
-    return unless project.present? && project.process_type != 'timeline'
-
-    errors.add(:project, :is_not_timeline_project, message: 'is not a timeline project')
-  end
-
   def validate_no_other_overlapping_phases
     ts = TimelineService.new
     ts.other_project_phases(self).each do |other_phase|
@@ -336,7 +329,7 @@ class Phase < ApplicationRecord
   end
 
   def set_participation_method_defaults
-    Factory.instance.participation_method_for(self).assign_defaults_for_participation_context
+    Factory.instance.participation_method_for(self).assign_defaults_for_phase
   end
 
   def set_presentation_mode
@@ -356,7 +349,7 @@ class Phase < ApplicationRecord
   end
 
   def validate_voting
-    Factory.instance.voting_method_for(self).validate_participation_context
+    Factory.instance.voting_method_for(self).validate_phase
   end
 end
 
