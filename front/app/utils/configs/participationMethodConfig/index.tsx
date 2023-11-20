@@ -12,21 +12,20 @@ import { IPhaseData } from 'api/phases/types';
 
 // components
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
-import { IdeationCTABar } from 'components/ParticipationCTABars/IdeationCTABar';
-import { NativeSurveyCTABar } from 'components/ParticipationCTABars/NativeSurveyCTABar';
-import { EmbeddedSurveyCTABar } from 'components/ParticipationCTABars/EmbeddedSurveyCTABar';
-import { VotingCTABar } from 'components/ParticipationCTABars/VotingCTABar';
-import { VolunteeringCTABar } from 'components/ParticipationCTABars/VolunteeringCTABar';
-import { PollCTABar } from 'components/ParticipationCTABars/PollCTABar';
-import { DocumentAnnotationCTABar } from 'components/ParticipationCTABars/DocumentAnnotationCTABar';
-
+import IdeationCTABar from 'components/ParticipationCTABars/IdeationCTABar';
+import NativeSurveyCTABar from 'components/ParticipationCTABars/NativeSurveyCTABar';
+import EmbeddedSurveyCTABar from 'components/ParticipationCTABars/EmbeddedSurveyCTABar';
+import VotingCTABar from 'components/ParticipationCTABars/VotingCTABar';
+import VolunteeringCTABar from 'components/ParticipationCTABars/VolunteeringCTABar';
+import PollCTABar from 'components/ParticipationCTABars/PollCTABar';
+import DocumentAnnotationCTABar from 'components/ParticipationCTABars/DocumentAnnotationCTABar';
+import EventsCTABar from 'components/ParticipationCTABars/EventsCTABar';
 import { CTABarProps } from 'components/ParticipationCTABars/utils';
 
 // utils
 import { isNilOrError, NilOrError } from '../../helperUtils';
 import clHistory from 'utils/cl-router/history';
 import { IIdea } from 'api/ideas/types';
-import { EventsCTABar } from 'components/ParticipationCTABars/EventsCTABar';
 
 export const defaultSortingOptions = [
   { text: <FormattedMessage {...messages.trending} />, value: 'trending' },
@@ -57,7 +56,7 @@ type FormTitleMethodProps = {
 
 type PostSortingOptionType = { text: JSX.Element; value: string };
 
-/* 
+/*
 Configuration Description
 ---------------------------------
 formEditor: We currently have 2 UIs for admins to edit the form definition. This defines which UI, if any, the method uses.
@@ -71,7 +70,6 @@ postType: Returns the type of input that is being posted.
 renderCTABar: Returns whether the CTA bar should be rendered.
 postSortingOptions?: Returns the sorting options for posts.
 showInputCount: Returns the input count to be used on project cards.
-useProjectClosedCTABarStyle?: Used to determine if the CTA bar should display "closed" styling.
 inputsPageSize?: Returns the page size the ideas endpoint should use.
 */
 
@@ -92,9 +90,6 @@ export type ParticipationMethodConfig = {
   showInputCount: boolean;
   hideAuthorOnIdeas?: boolean; // Hides the author on the idea pages/cards
   showIdeaFilters?: boolean; // Shows filters on the idea list
-  useProjectClosedCTABarStyle?: (
-    participationContext: IPhaseData | IProjectData
-  ) => boolean;
   inputsPageSize?: number;
 };
 
@@ -161,12 +156,6 @@ const ideationConfig: ParticipationMethodConfig = {
   },
   postSortingOptions: defaultSortingOptions,
   hideAuthorOnIdeas: false,
-  useProjectClosedCTABarStyle: (participationContext) => {
-    const { commenting_enabled, reacting_enabled, posting_enabled } =
-      participationContext.attributes;
-
-    return !commenting_enabled && !reacting_enabled && !posting_enabled;
-  },
 };
 
 const nativeSurveyConfig: ParticipationMethodConfig = {
@@ -203,12 +192,6 @@ const nativeSurveyConfig: ParticipationMethodConfig = {
   renderCTABar: (props: CTABarProps) => {
     return <NativeSurveyCTABar project={props.project} phases={props.phases} />;
   },
-  useProjectClosedCTABarStyle: (participationContext) => {
-    if (!participationContext.attributes.posting_enabled) {
-      return true;
-    }
-    return false;
-  },
 };
 
 const informationConfig: ParticipationMethodConfig = {
@@ -226,9 +209,9 @@ const informationConfig: ParticipationMethodConfig = {
   postType: 'defaultInput',
   showInputManager: false,
   isMethodLocked: false,
-  renderCTABar: (props: CTABarProps) => {
-    return <EventsCTABar project={props.project} phases={props.phases} />;
-  },
+  renderCTABar: (props: CTABarProps) => (
+    <EventsCTABar project={props.project} phases={props.phases} />
+  ),
 };
 
 const surveyConfig: ParticipationMethodConfig = {
@@ -396,7 +379,8 @@ export function getMethodConfig(
 /** Given the project and its phases, it returns the participation method
  * used in the project, or current phase if phases are provided and phaseId is not provided.
  * If the phaseId is provided, then it returns the participation method of the phase whose
- * phaseId is the same as the provided phaseId
+ * phaseId is the same as the provided phaseId.
+ * Returns undefined when there is no currently active phase.
  */
 export const getParticipationMethod = (
   project: IProjectData | null | undefined,

@@ -9,17 +9,9 @@ export default defineMessages({
     id: 'app.components.ParticipationCTABars.reviewDocument',
     defaultMessage: 'Review the document',
   },
-  projectOpenForSubmission: {
-    id: 'app.components.ParticipationCTABars.projectOpenForSubmission',
-    defaultMessage: 'This project is currently open for participation.',
-  },
   mobileProjectOpenForSubmission: {
     id: 'app.components.ParticipationCTABars.mobileProjectOpenForSubmission',
     defaultMessage: 'Open for participation',
-  },
-  projectClosedForSubmission: {
-    id: 'app.components.ParticipationCTABars.projectClosedForSubmission',
-    defaultMessage: 'New submissions are not currently being accepted',
   },
   userHasParticipated: {
     id: 'app.components.ParticipationCTABars.userHasParticipated',
@@ -57,9 +49,5 @@ export default defineMessages({
   submit: {
     id: 'app.components.ParticipationCTABars.submit',
     defaultMessage: 'Submit',
-  },
-  submitted: {
-    id: 'app.components.ParticipationCTABars.submitted',
-    defaultMessage: 'Submitted',
   },
 });
