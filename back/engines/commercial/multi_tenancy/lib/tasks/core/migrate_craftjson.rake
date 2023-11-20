@@ -61,6 +61,7 @@ namespace :migrate_craftjson do
   task :fix_layouts, %i[content_buildable_type] => [:environment] do |_t, args|
     errors = {}
     Tenant.prioritize(Tenant.creation_finalized).each do |tenant|
+      puts tenant.host
       Apartment::Tenant.switch(tenant.schema_name) do
         locales = AppConfiguration.instance.settings.dig('core', 'locales')
         layouts = if args[:content_buildable_type]
@@ -69,6 +70,7 @@ namespace :migrate_craftjson do
           ContentBuilder::Layout.all
         end
         layouts.each do |layout|
+          puts layout.id
           primary_locale = layout.craftjs_jsonmultiloc[locales.first].present? ? locales.first : layout.craftjs_jsonmultiloc.keys.first
           layout.craftjs_json = migrate_monolingual(layout.craftjs_jsonmultiloc, primary_locale)
           if multilingual?(layout.craftjs_jsonmultiloc, locales)
@@ -194,6 +196,8 @@ def text_mapping(craftjs_jsonmultiloc, primary_locale, current_nodes = nil)
     end
     [locale, elt_children]
   end
+  return mapping if children.values.map(&:size).uniq.size > 1 # Incompatible structures
+
   (0...children[primary_locale].size).each do |i|
     child_nodes = children.transform_values do |elt_children|
       elt_children[i]
