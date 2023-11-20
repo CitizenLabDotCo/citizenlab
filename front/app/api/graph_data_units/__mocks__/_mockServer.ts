@@ -1,20 +1,12 @@
 import { rest } from 'msw';
 import { API_PATH } from 'containers/App/constants';
 import { findResponseByQuery } from 'utils/storybook/findResponseByQuery';
-
-const reactionsByTimeLive = {
-  params: '',
-  response: {},
-};
-
-const liveResponses = {
-  [reactionsByTimeLive.params]: reactionsByTimeLive.response,
-};
+import { liveResponses } from './responses';
 
 const apiPath = `${API_PATH}/reports/graph_data_units/live`;
 
 const endpoints = {
-  'GET analytics': rest.get(apiPath, (req, res, ctx) => {
+  'GET graph_data_units/live': rest.get(apiPath, (req, res, ctx) => {
     const response = findResponseByQuery(req, liveResponses);
 
     if (!response) {
