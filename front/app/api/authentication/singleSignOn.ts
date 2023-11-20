@@ -28,7 +28,7 @@ export interface SSOParams {
   sso_verification_id?: string;
   sso_verification_type?: string;
   error_code?: SignUpInError;
-  // TODO: Refactoring + bettre integration of verification into new
+  // TODO: Refactoring + better integration of verification into new
   // registration flow when there is BE support
   verification_success?: string;
 }
