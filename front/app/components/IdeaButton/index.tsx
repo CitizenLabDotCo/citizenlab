@@ -145,16 +145,7 @@ const IdeaButton = memo<Props>(
         });
       };
 
-    const tippyContent =
-      !enabled && !!disabledReason ? (
-        <TippyContent
-          projectId={projectId}
-          inMap={inMap}
-          disabledReason={disabledReason}
-          phase={phase}
-          participationContextType={participationContextType}
-        />
-      ) : null;
+    const tippyEnabled = !enabled && !!disabledReason;
 
     if (inMap && !enabled && !!disabledReason) {
       return (
@@ -171,10 +162,20 @@ const IdeaButton = memo<Props>(
     return (
       <Container id={id} className={className || ''}>
         <Tippy
-          disabled={!tippyContent}
+          disabled={!tippyEnabled}
           interactive={true}
           placement="bottom"
-          content={tippyContent || <></>}
+          content={
+            tippyEnabled ? (
+              <TippyContent
+                projectId={projectId}
+                inMap={inMap}
+                disabledReason={disabledReason}
+                phase={phase}
+                participationContextType={participationContextType}
+              />
+            ) : null
+          }
           theme="light"
           hideOnClick={false}
         >
