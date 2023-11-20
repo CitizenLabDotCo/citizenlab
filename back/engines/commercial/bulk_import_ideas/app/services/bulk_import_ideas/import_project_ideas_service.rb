@@ -10,7 +10,7 @@ module BulkImportIdeas
       super(current_user)
       @project = Project.find(project_id)
       @phase = phase_id ? @project.phases.find(phase_id) : TimelineService.new.current_phase(@project)
-      @participation_method = Factory.instance.participation_method_for(@phase || @project)
+      @participation_method = Factory.instance.participation_method_for(@phase)
       @form_fields = IdeaCustomFieldsService.new(@participation_method.custom_form).importable_fields
       @locale = locale || @locale
       @google_forms_service = nil
