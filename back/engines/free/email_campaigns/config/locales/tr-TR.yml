@@ -52,6 +52,7 @@ tr:
       "voting_basket_submitted": Oylamanın onaylanması
       "voting_basket_not_submitted": Gönderilmeyen oylar
       "voting_last_chance": Oy vermek için son şans
+      "voting_phase_started": Oylama ile yeni proje aşaması
       "voting_results": Oylama sonuçları
       "your_proposed_initiatives_digest": Önerilerinize haftalık genel bakış
     general:

@@ -12,12 +12,12 @@ class SideFxIdeaService
   end
 
   def after_create(idea, user)
-    idea.update!(body_multiloc: TextImageService.new.swap_data_images(idea, :body_multiloc))
+    idea.update!(body_multiloc: TextImageService.new.swap_data_images_multiloc(idea.body_multiloc, field: :body_multiloc, imageable: idea))
     after_publish idea, user if idea.published?
   end
 
   def before_update(idea, user)
-    idea.body_multiloc = TextImageService.new.swap_data_images(idea, :body_multiloc)
+    idea.body_multiloc = TextImageService.new.swap_data_images_multiloc(idea.body_multiloc, field: :body_multiloc, imageable: idea)
     before_publish idea, user if idea.will_be_published?
   end
 

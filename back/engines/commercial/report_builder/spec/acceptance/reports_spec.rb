@@ -52,7 +52,8 @@ resource 'Reports' do
           },
           relationships: {
             layout: { data: { id: layout.id, type: 'content_builder_layout' } },
-            owner: { data: { id: report.owner_id, type: 'user' } }
+            owner: { data: { id: report.owner_id, type: 'user' } },
+            phase: { data: nil }
           }
         )
 
@@ -73,7 +74,7 @@ resource 'Reports' do
   end
 
   post 'web_api/v1/reports' do
-    parameter :name, name_param_desc, scope: :report, required: true
+    parameter :name, name_param_desc, scope: :report, required: false
     parameter :craftjs_jsonmultiloc, craftjs_jsonmultiloc_param_desc, scope: %i[report layout]
 
     let(:name) { 'my-report' }
@@ -104,7 +105,8 @@ resource 'Reports' do
           },
           relationships: {
             layout: { data: { id: be_a(String), type: 'content_builder_layout' } },
-            owner: { data: { id: be_a(String), type: 'user' } }
+            owner: { data: { id: be_a(String), type: 'user' } },
+            phase: { data: nil }
           }
         )
 
@@ -117,10 +119,19 @@ resource 'Reports' do
         expect(report.owner_id).to eq(user.id)
       end
 
-      example '[error] Create a report without name' do
-        do_request(report: { name: '' })
-        assert_status 422
-        expect(json_response_body).to eq({ errors: { name: [{ error: 'blank' }] } })
+      context 'when the report belongs to a phase' do
+        parameter :phase_id, 'The id of the phase the report belongs to.', required: false, scope: :report
+
+        before { @phase = create(:phase) }
+
+        let(:phase_id) { @phase.id }
+
+        example_request 'Create a phase report' do
+          assert_status 201
+
+          report = ReportBuilder::Report.find(response_data[:id])
+          expect(report.phase_id).to eq(@phase.id)
+        end
       end
 
       describe 'side effects', document: false do
@@ -141,7 +152,9 @@ resource 'Reports' do
         end
 
         example 'only runs the before_create hook when the report creation fails' do
-          do_request(report: { name: nil })
+          name = 'Report 1'
+          create(:report, name: name)
+          do_request(report: { name: name })
 
           expect(side_fx_service).to have_received(:before_create)
           expect(side_fx_service).not_to have_received(:after_create)
@@ -226,7 +239,9 @@ resource 'Reports' do
         end
 
         example 'only runs the before_update hook when the report update fails' do
-          do_request(report: { name: nil })
+          name = 'Report 1'
+          create(:report, name: name)
+          do_request(report: { name: name })
 
           expect(side_fx_service).to have_received(:before_update)
           expect(side_fx_service).not_to have_received(:after_update)

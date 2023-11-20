@@ -45,10 +45,11 @@ describe BulkImportIdeas::ImportIdeasService do
 
       expect(project.ideas.count).to eq 2
       expect(project.reload.ideas_count).to eq 0
-      idea1 = project.ideas.first
-      expect(idea1.project_id).to eq project.id
 
-      idea2 = project.ideas.last
+      ideas = project.ideas.order(:created_at)
+      idea1 = ideas.first
+      expect(idea1.project_id).to eq project.id
+      idea2 = ideas.last
       expect(idea2.project_id).to eq project.id
     end
 
@@ -104,7 +105,7 @@ describe BulkImportIdeas::ImportIdeasService do
       ]
       service.import_ideas idea_rows
 
-      ideas = project.reload.ideas
+      ideas = project.reload.ideas.order(:created_at)
       expect(project.ideas.count).to eq 2
       expect(project.reload.ideas_count).to eq 0
       expect(ideas[0].idea_import).not_to be_nil

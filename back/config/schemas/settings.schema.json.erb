@@ -883,6 +883,18 @@
         }
       },
 
+      "phase_reports": {
+        "type": "object",
+        "title": "Phase Reports",
+        "description": "Publish the results of a phase.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
+
       "blocking_profanity": {
         "type": "object",
         "title": "Block Profanity",
@@ -1302,6 +1314,18 @@
         "type": "object",
         "title": "Import printed forms",
         "description": "Enables the importing from handwritten idea and surveys on printed forms.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "homepage_builder": {
+        "type": "object",
+        "title": "Homepage builder",
+        "description": "Experimental! Do not turn this on for now.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {

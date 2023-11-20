@@ -20,8 +20,7 @@ class WebApi::V1::HomePageSerializer < WebApi::V1::BaseSerializer
     :banner_cta_signed_out_text_multiloc,
     :banner_cta_signed_out_type,
     :banner_cta_signed_out_url,
-    :pinned_admin_publication_ids,
-    :craftjs_json
+    :pinned_admin_publication_ids
 
   attribute :header_bg do |object|
     object.header_bg && object.header_bg.versions.to_h { |k, v| [k.to_s, v.url] }
@@ -30,13 +29,20 @@ class WebApi::V1::HomePageSerializer < WebApi::V1::BaseSerializer
   attribute :top_info_section_multiloc, if: proc { |object, _|
     object.top_info_section_multiloc.present?
   } do |object|
-    TextImageService.new.render_data_images object, :top_info_section_multiloc
+    TextImageService.new.render_data_images_multiloc object.top_info_section_multiloc, field: :top_info_section_multiloc, imageable: object
   end
 
   attribute :bottom_info_section_multiloc, if: proc { |object, _|
     object.bottom_info_section_multiloc.present?
   } do |object|
-    TextImageService.new.render_data_images object, :bottom_info_section_multiloc
+    TextImageService.new.render_data_images_multiloc object.bottom_info_section_multiloc, field: :bottom_info_section_multiloc, imageable: object
+  end
+
+  attribute :craftjs_json, if: proc {
+    AppConfiguration.instance.feature_activated? 'homepage_builder'
+  } do |homepage|
+    # TODO: move to layout
+    ContentBuilder::LayoutImageService.new.render_data_images homepage.craftjs_json
   end
 
   has_many :pinned_admin_publications, serializer: :admin_publication

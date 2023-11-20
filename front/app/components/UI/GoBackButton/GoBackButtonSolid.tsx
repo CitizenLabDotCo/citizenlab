@@ -10,7 +10,7 @@ import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 interface Props {
-  text: string;
+  text?: string;
   iconSize?: string;
   onClick?: (event: React.MouseEvent) => void;
   linkTo?: string;

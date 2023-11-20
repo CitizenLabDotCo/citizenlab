@@ -12,6 +12,12 @@ module ReportBuilder
           serializer: ContentBuilder::WebApi::V1::LayoutSerializer
         )
 
+        has_one(
+          :phase,
+          record_type: ::WebApi::V1::PhaseSerializer.record_type,
+          serializer: ::WebApi::V1::PhaseSerializer
+        )
+
         belongs_to(
           :owner,
           record_type: ::WebApi::V1::UserSerializer.record_type,

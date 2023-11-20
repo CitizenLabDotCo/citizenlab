@@ -5,21 +5,28 @@ FactoryBot.define do
     project
     ideas_order { nil }
     input_term { nil }
+    participation_method { 'ideation' }
+
     title_multiloc do
       {
         'en' => 'Idea phase',
         'nl-BE' => 'Ideeën fase'
       }
     end
+
     description_multiloc do
       {
         'en' => "<p>In this phase we gather ideas. Don't be shy, there are no stupid ideas!</p>",
         'nl-BE' => '<p>In deze fase verzamelen we ideeën. Wees niet verlegen, er zijn geen domme ideeën!</p>'
       }
     end
-    participation_method { 'ideation' }
-    start_at { '2017-05-01' }
-    end_at { Date.parse(start_at) + 60.days }
+
+    start_at { Date.new(2017, 5, 1) }
+    end_at do
+      start_date = start_at.is_a?(String) ? Date.parse(start_at) : start_at
+      start_date + 60.days
+    end
+
     voting_min_total { 1 }
     voting_max_total { 10_000 }
     campaigns_settings { { project_phase_started: true } }
