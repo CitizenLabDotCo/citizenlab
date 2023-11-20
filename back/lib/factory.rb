@@ -6,37 +6,37 @@ class Factory
     @instance ||= new
   end
 
-  def participation_method_for(participation_context)
-    case participation_context&.participation_method
+  def participation_method_for(phase)
+    case phase&.participation_method
     when 'information'
-      ::ParticipationMethod::Information.new(participation_context)
+      ::ParticipationMethod::Information.new(phase)
     when 'ideation'
-      ::ParticipationMethod::Ideation.new(participation_context)
+      ::ParticipationMethod::Ideation.new(phase)
     when 'document_annotation'
-      ::ParticipationMethod::DocumentAnnotation.new(participation_context)
+      ::ParticipationMethod::DocumentAnnotation.new(phase)
     when 'survey'
-      ::ParticipationMethod::Survey.new(participation_context)
+      ::ParticipationMethod::Survey.new(phase)
     when 'voting'
-      ::ParticipationMethod::Voting.new(participation_context)
+      ::ParticipationMethod::Voting.new(phase)
     when 'poll'
-      ::ParticipationMethod::Poll.new(participation_context)
+      ::ParticipationMethod::Poll.new(phase)
     when 'volunteering'
-      ::ParticipationMethod::Volunteering.new(participation_context)
+      ::ParticipationMethod::Volunteering.new(phase)
     when 'native_survey'
-      ::ParticipationMethod::NativeSurvey.new(participation_context)
+      ::ParticipationMethod::NativeSurvey.new(phase)
     else
       ::ParticipationMethod::None.new
     end
   end
 
-  def voting_method_for(participation_context)
-    case participation_context&.voting_method
+  def voting_method_for(phase)
+    case phase&.voting_method
     when 'budgeting'
-      ::VotingMethod::Budgeting.new(participation_context)
+      ::VotingMethod::Budgeting.new(phase)
     when 'multiple_voting'
-      ::VotingMethod::MultipleVoting.new(participation_context)
+      ::VotingMethod::MultipleVoting.new(phase)
     when 'single_voting'
-      ::VotingMethod::SingleVoting.new(participation_context)
+      ::VotingMethod::SingleVoting.new(phase)
     else
       ::VotingMethod::None.new
     end

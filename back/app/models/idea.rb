@@ -176,7 +176,7 @@ class Idea < ApplicationRecord
 
     case phases.size
     when 0
-      ParticipationContext::DEFAULT_INPUT_TERM
+      Phase::DEFAULT_INPUT_TERM
     when 1
       phases[0].input_term
     else

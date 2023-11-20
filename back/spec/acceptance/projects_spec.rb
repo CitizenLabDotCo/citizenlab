@@ -32,7 +32,6 @@ resource 'Projects' do
       parameter :publication_statuses, 'Return only projects with the specified publication statuses (i.e. given an array of publication statuses); returns all projects by default', required: false
       parameter :filter_can_moderate, 'Filter out the projects the user is allowed to moderate. False by default', required: false
       parameter :filter_ids, 'Filter out only projects with the given list of IDs', required: false
-
       parameter :folder, 'Filter by folder (project folder id)', required: false
 
       example_request 'List all projects (default behaviour)' do
@@ -162,9 +161,7 @@ resource 'Projects' do
           areas: { data: [] },
           user_basket: { data: nil }
         )
-        expect(json_response.dig(:data, :relationships, :permissions, :data).size)
-          .to eq Permission.available_actions(@projects.first).length
-        expect(json_response[:included].pluck(:type)).to include 'admin_publication', 'permission'
+        expect(json_response[:included].pluck(:type)).to include 'admin_publication'
       end
 
       example 'Get a project with followers', document: false do
