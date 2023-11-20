@@ -324,7 +324,7 @@ resource 'Permissions' do
 
     get 'web_api/v1/ideas/:idea_id/permissions/:action/requirements' do
       before do
-        @permission = @project.permissions.first
+        @permission = @phase.permissions.first
         @permission.update!(permitted_by: 'users')
 
         create(:topic, include_in_onboarding: true)
