@@ -81,12 +81,9 @@ const IdeaButton = memo<Props>(
 
     if (!show) return null;
 
-    const pcId =
-      participationContextType === 'phase' && phase ? phase.id : projectId;
-
     const context = {
       action: 'posting_idea',
-      id: pcId,
+      id: participationContextType === 'phase' && phase ? phase.id : projectId,
       type: participationContextType,
     } as const;
 
