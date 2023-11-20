@@ -39,7 +39,7 @@ class FormLogicService
   end
 
   def remove_select_logic_option_from_custom_fields(frozen_custom_field_option)
-    custom_field = fields.first
+    custom_field = frozen_custom_field_option.custom_field
 
     return unless custom_field&.logic.present? &&
                   custom_field.logic['rules'].pluck('if').include?(frozen_custom_field_option.id)
