@@ -24,6 +24,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import Viewer from './Viewer';
+import { isEmpty } from 'lodash-es';
 export const adminRedirectPath = '/admin';
 
 const HomePage = () => {
@@ -53,7 +54,7 @@ const HomePage = () => {
 
   if (
     isHomepageBuilderEnabled &&
-    homepageSettings?.data.attributes.craftjs_json
+    !isEmpty(homepageSettings?.data.attributes.craftjs_json)
   ) {
     return <Viewer />;
   }
