@@ -29,15 +29,18 @@ export function scrollToElement({
 }
 
 export const scrollToTop = () => {
-  // Cannot use hooks
   const isMobileOrSmaller = window.innerWidth <= viewportWidths.tablet;
+
+  let scrollWithTimeout: NodeJS.Timeout;
 
   // On some mobile browsers, we need a timeout for this to work correctly
   if (isMobileOrSmaller) {
-    setTimeout(() => {
+    scrollWithTimeout = setTimeout(() => {
       window.scrollTo(0, 0);
     }, 100);
   } else {
     window.scrollTo(0, 0);
   }
+
+  return () => scrollWithTimeout && clearTimeout(scrollWithTimeout);
 };

@@ -31,6 +31,7 @@ const Link = ({ to, onlyActiveOnIndex, scrollToTop, ...otherProps }: Props) => {
     if (scrollToTop && hasPageBeenRendered.current === true) {
       scrollTop();
       hasPageBeenRendered.current = false;
+      return;
     }
     hasPageBeenRendered.current = true;
   }, [pathname, scrollToTop]);
