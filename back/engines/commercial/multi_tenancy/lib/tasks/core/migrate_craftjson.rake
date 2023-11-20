@@ -7,6 +7,7 @@ MULTILOC_TYPES = {
   'Iframe' => 'IframeMultiloc',
   'Accordion' => 'AccordionMultiloc'
 }
+TEXT_PROPS = %w[text alt title]
 CONTAINER_TYPES = %w[TwoColumn Container ThreeColumn]
 
 namespace :migrate_craftjson do
@@ -55,6 +56,39 @@ namespace :migrate_craftjson do
       end
     end
   end
+
+  desc 'Fix existing layouts'
+  task :fix_layouts, %i[content_buildable_type] => [:environment] do |_t, args|
+    errors = {}
+    Tenant.prioritize(Tenant.creation_finalized).each do |tenant|
+      Apartment::Tenant.switch(tenant.schema_name) do
+        locales = AppConfiguration.instance.settings.dig('core', 'locales')
+        layouts = if args[:content_buildable_type]
+          ContentBuilder::Layout.where(content_buildable_type: args[:content_buildable_type])
+        else
+          ContentBuilder::Layout.all
+        end
+        layouts.each do |layout|
+          primary_locale = layout.craftjs_jsonmultiloc[locales.first].present? ? locales.first : layout.craftjs_jsonmultiloc.keys.first
+          layout.craftjs_json = migrate_monolingual(layout.craftjs_jsonmultiloc, primary_locale)
+          if multilingual?(layout.craftjs_jsonmultiloc, locales)
+            add_multilocs(layout, primary_locale) 
+          end
+          if !layout.save
+            errors[tenant.host] ||= []
+            errors[tenant.host] += "#{layout.id}: #{layout.errors.details}"
+          end
+        end
+      end
+    end
+
+    if errors.present?
+      puts 'Some errors occurred!'
+      pp errors
+    else
+      puts 'Success!'
+    end
+  end
 end
 
 def tree_structure(elts, current_node_id = 'ROOT')
@@ -78,8 +112,12 @@ end
 
 def includes_multiloc_elements?(elts)
   elts.values.any? do |elt|
-    MULTILOC_TYPES.key? node_type(elt)
+    multiloc_element?(elt)
   end
+end
+
+def multiloc_element?(elt)
+  MULTILOC_TYPES.key? node_type(elt)
 end
 
 def node_type(elt)
@@ -90,4 +128,77 @@ end
 
 def skip_child?(child)
   child['type'] == 'WhiteSpace' || (CONTAINER_TYPES.include?(child['type']) && child['children'].empty?)
+end
+
+def migrate_monolingual(craftjs_jsonmultiloc, primary_locale)
+  return {} if craftjs_jsonmultiloc.blank?
+
+  craftjs_jsonmultiloc[primary_locale].transform_values do |elt|
+    new_elt = elt.deep_dup
+    if multiloc_element?(elt)
+      new_elt['displayName'] = MULTILOC_TYPES[elt['displayName']] if MULTILOC_TYPES.key? elt['displayName']
+      new_elt['type']['resolvedName'] = MULTILOC_TYPES[elt.dig('type', 'resolvedName')] if MULTILOC_TYPES.key? elt.dig('type', 'resolvedName')
+      TEXT_PROPS.each do |text_prop|
+        new_elt['props'][text_prop] = { primary_locale => elt.dig('props', text_prop) } if elt['props'].key? text_prop
+      end
+      new_elt
+    else
+      elt
+    end
+  end
+end
+
+def add_multilocs(layout, primary_locale)
+  other_locales = layout.craftjs_jsonmultiloc.keys - [primary_locale]
+  mapping = text_mapping(layout.craftjs_jsonmultiloc, primary_locale)
+
+  layout.craftjs_json.transform_values do |elt|
+    if MULTILOC_TYPES.values.include? node_type(elt)
+      TEXT_PROPS.each do |text_prop|
+        if elt['props'].key? text_prop
+          primary_text = elt.dig('props', text_prop, primary_locale)
+          other_locales.each do |other_locale|
+            elt['props'][text_prop][other_locale] = mapping.dig(primary_text, other_locale)
+          end
+        end
+      end
+    else
+      elt
+    end
+  end
+end
+
+def text_mapping(craftjs_jsonmultiloc, primary_locale, current_nodes = nil)
+  # Initialize
+  mapping = {}
+  current_nodes ||= craftjs_jsonmultiloc.transform_values { |elts| elts['ROOT'] }
+
+  # Add to mapping for current nodes if text
+  TEXT_PROPS.each do |text_prop|
+    primary_elt = current_nodes[primary_locale]
+    if primary_elt['props'].key? text_prop
+      current_nodes.each do |other_locale, other_elt|
+        if primary_locale != other_locale
+          mapping[primary_elt.dig('props',text_prop)] ||= {}
+          mapping[primary_elt.dig('props',text_prop)][other_locale] = other_elt.dig('props',text_prop)
+        end
+      end
+    end
+  end
+
+  # Loop over children
+  children = current_nodes.map do |locale, elt|
+    elt_children = elt['nodes'].map do |child_id|
+      child = craftjs_jsonmultiloc[locale][child_id]
+      skip_child?(child) ? nil : child
+    end.compact
+    [locale, elt_children]
+  end.to_h
+  for i in 0...children[primary_locale].size do
+    child_nodes = children.transform_values do |elt_children|
+      elt_children[i]
+    end
+    mapping.merge!(text_mapping(craftjs_jsonmultiloc, primary_locale, child_nodes))
+  end
+  mapping
 end
