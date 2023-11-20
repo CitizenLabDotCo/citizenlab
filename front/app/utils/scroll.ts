@@ -1,3 +1,5 @@
+import { viewportWidths } from '@citizenlab/cl2-component-library';
+
 interface IScrollToElementParams {
   id: string;
   behavior?: 'smooth' | 'auto';
@@ -27,7 +29,15 @@ export function scrollToElement({
 }
 
 export const scrollToTop = () => {
-  setTimeout(() => {
+  // Cannot use hooks
+  const isMobileOrSmaller = window.innerWidth <= viewportWidths.tablet;
+
+  // On some mobile browsers, we need a timeout for this to work correctly
+  if (isMobileOrSmaller) {
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 100);
+  } else {
     window.scrollTo(0, 0);
-  }, 20);
+  }
 };
