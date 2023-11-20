@@ -53,7 +53,6 @@ import { rgba, darken } from 'polished';
 import { getInputTermMessage } from 'utils/i18n';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
-import { scrollToTop } from 'utils/scroll';
 
 const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
   width: calc(33% - 12px);
@@ -448,17 +447,14 @@ const ProjectCard = memo<InputProps>(
 
     const handleProjectCardOnClick = (projectId: string) => () => {
       trackEventByName(tracks.clickOnProjectCard, { extra: { projectId } });
-      scrollToTop();
     };
 
     const handleCTAOnClick = (projectId: string) => () => {
       trackEventByName(tracks.clickOnProjectCardCTA, { extra: { projectId } });
-      scrollToTop();
     };
 
     const handleProjectTitleOnClick = (projectId: string) => () => {
       trackEventByName(tracks.clickOnProjectTitle, { extra: { projectId } });
-      scrollToTop();
     };
 
     if (project) {
@@ -671,6 +667,7 @@ const ProjectCard = memo<InputProps>(
             .filter((item) => item)
             .join(' ')}
           to={projectUrl}
+          scrollToTop={true}
           onClick={handleProjectCardOnClick(project.data.id)}
         >
           {screenReaderContent}

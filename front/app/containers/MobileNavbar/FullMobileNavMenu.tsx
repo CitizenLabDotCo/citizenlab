@@ -26,7 +26,6 @@ import mainHeaderMessages from '../MainHeader/messages';
 import { isNilOrError } from 'utils/helperUtils';
 import getNavbarItemPropsArray from '../MainHeader/DesktopNavbar/getNavbarItemPropsArray';
 import CloseIconButton from 'components/UI/CloseIconButton';
-import { scrollToTop } from 'utils/scroll';
 
 const containerBackgroundColorRgb = hexToRgb(colors.textSecondary);
 
@@ -145,7 +144,6 @@ const FullMobileNavMenu = ({
     trackEventByName(tracks.navItemClickedFullMenu, {
       itemClicked,
     });
-    scrollToTop();
   };
 
   if (modalPortalElement) {

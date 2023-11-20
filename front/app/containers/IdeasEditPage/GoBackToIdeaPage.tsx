@@ -11,7 +11,6 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import useLocalize from 'hooks/useLocalize';
 
 import { IIdeaData } from 'api/ideas/types';
-import { scrollToTop } from 'utils/scroll';
 
 interface Props {
   idea: IIdeaData;
@@ -35,9 +34,7 @@ const GoBackToIdeaPage = ({ idea }: Props) => {
       <Button
         icon="arrow-left-circle"
         linkTo={`/ideas/${idea.attributes.slug}`}
-        onClick={() => {
-          scrollToTop();
-        }}
+        scrollToTop={true}
         buttonStyle="text"
         iconSize="24px"
         padding="0"

@@ -44,7 +44,6 @@ import { SuccessAction } from 'containers/Authentication/SuccessActions/actions'
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
 import useAuthUser from 'api/me/useAuthUser';
-import { scrollToTop } from 'utils/scroll';
 
 const Container = styled.div``;
 
@@ -165,17 +164,19 @@ const IdeaButton = memo<Props>(
           ? { lat: latLng.lat, lng: latLng.lng }
           : {};
 
-        clHistory.push({
-          pathname: `/projects/${project.data.attributes.slug}/ideas/new`,
-          search: stringify(
-            {
-              ...positionParams,
-              phase_id: phase?.id,
-            },
-            { addQueryPrefix: true }
-          ),
-        });
-        scrollToTop();
+        clHistory.push(
+          {
+            pathname: `/projects/${project.data.attributes.slug}/ideas/new`,
+            search: stringify(
+              {
+                ...positionParams,
+                phase_id: phase?.id,
+              },
+              { addQueryPrefix: true }
+            ),
+          },
+          true
+        );
       }
     };
 

@@ -36,7 +36,6 @@ import useUserBySlug from 'api/users/useUserBySlug';
 
 // utils
 import { getFullName } from 'utils/textUtils';
-import { scrollToTop } from 'utils/scroll';
 
 const BlockUser = React.lazy(
   () => import('components/admin/UserBlockModals/BlockUser')
@@ -174,9 +173,7 @@ const UserHeader = ({ userSlug }: Props) => {
             icon="edit"
             className="e2e-edit-profile"
             bgHoverColor={colors.background}
-            onClick={() => {
-              scrollToTop();
-            }}
+            scrollToTop={true}
           >
             {formatMessage(messages.editProfile)}
           </Button>

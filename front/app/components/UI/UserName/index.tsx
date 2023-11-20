@@ -20,9 +20,6 @@ import messages from './messages';
 import Tippy from '@tippyjs/react';
 import { Box, Text } from '@citizenlab/cl2-component-library';
 
-// utils
-import { scrollToTop } from 'utils/scroll';
-
 const Name = styled.span<{
   color?: string;
   fontWeight?: number;
@@ -170,9 +167,7 @@ const UserName = ({
         <Link
           to={profileLink}
           className={`e2e-author-link ${className || ''}`}
-          onClick={() => {
-            scrollToTop();
-          }}
+          scrollToTop={true}
         >
           <Name {...sharedNameProps} className={classNames}>
             {name}

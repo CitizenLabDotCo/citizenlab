@@ -17,9 +17,6 @@ import { fetchProjectBySlug } from 'api/projects/useProjectBySlug';
 import { getIdeaPostingRules } from 'utils/actionTakingRules';
 import { fetchPhase } from 'api/phases/usePhase';
 
-// utils
-import { scrollToTop } from 'utils/scroll';
-
 export interface RedirectToIdeaFormParams {
   projectSlug: string;
   latLng?: LatLng | null;
@@ -48,16 +45,18 @@ export const redirectToIdeaForm =
     if (disabledReason !== 'postingLimitedMaxReached') {
       trackEventByName(tracks.redirectedToIdeaFrom);
       const positionParams = latLng ? { lat: latLng.lat, lng: latLng.lng } : {};
-      clHistory.push({
-        pathname: `/projects/${projectSlug}/ideas/new`,
-        search: stringify(
-          {
-            ...positionParams,
-            phase_id: phaseId,
-          },
-          { addQueryPrefix: true }
-        ),
-      });
-      scrollToTop();
+      clHistory.push(
+        {
+          pathname: `/projects/${projectSlug}/ideas/new`,
+          search: stringify(
+            {
+              ...positionParams,
+              phase_id: phaseId,
+            },
+            { addQueryPrefix: true }
+          ),
+        },
+        true
+      );
     }
   };

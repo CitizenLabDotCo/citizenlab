@@ -14,7 +14,6 @@ import messages from './messages';
 import { ButtonStyles } from '@citizenlab/cl2-component-library';
 import { stringify } from 'qs';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
-import { scrollToTop } from 'utils/scroll';
 
 interface Props {
   lat?: number | null;
@@ -28,14 +27,16 @@ const InitiativeButton = ({ lat, lng, location, buttonStyle }: Props) => {
 
   const redirectToInitiativeForm = () => {
     trackEventByName('redirected to initiatives form');
-    clHistory.push({
-      pathname: `/initiatives/new`,
-      search:
-        lat && lng
-          ? stringify({ lat, lng }, { addQueryPrefix: true })
-          : undefined,
-    });
-    scrollToTop();
+    clHistory.push(
+      {
+        pathname: `/initiatives/new`,
+        search:
+          lat && lng
+            ? stringify({ lat, lng }, { addQueryPrefix: true })
+            : undefined,
+      },
+      true
+    );
   };
 
   const onNewInitiativeButtonClick = (event?: React.FormEvent) => {

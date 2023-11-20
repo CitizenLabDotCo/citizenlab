@@ -19,7 +19,6 @@ import { lighten } from 'polished';
 import { colors } from 'utils/styleUtils';
 import BoringAvatar from 'boring-avatars';
 import { isNilOrError } from 'utils/helperUtils';
-import { scrollToTop } from 'utils/scroll';
 
 export const Container = styled.div<{ size: number }>`
   flex: 0 0 ${({ size }) => size}px;
@@ -143,12 +142,7 @@ const Avatar = memo(
 
     if (isLinkToProfile && hasValidProfileLink) {
       return (
-        <Link
-          to={profileLink}
-          onClick={() => {
-            scrollToTop();
-          }}
-        >
+        <Link to={profileLink} scrollToTop={true}>
           <AvatarInner
             userId={userId}
             isLinkToProfile={isLinkToProfile}

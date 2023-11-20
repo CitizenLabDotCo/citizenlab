@@ -26,7 +26,6 @@ import { fontSizes, isRtl } from 'utils/styleUtils';
 
 // typings
 import { Multiloc } from 'typings';
-import { scrollToTop } from 'utils/scroll';
 
 const NavigationDropdown = styled.li`
   display: flex;
@@ -210,9 +209,7 @@ const AdminPublicationsNavbarItem = ({
                   {item.relationships.publication.data.type === 'project' && (
                     <ProjectsListItem
                       to={`${linkTo}/${item.attributes.publication_slug}`}
-                      onClick={() => {
-                        scrollToTop();
-                      }}
+                      scrollToTop={true}
                     >
                       {localize(item.attributes.publication_title_multiloc)}
                     </ProjectsListItem>
@@ -221,9 +218,7 @@ const AdminPublicationsNavbarItem = ({
                     item.relationships.publication.data.type === 'folder' && (
                       <ProjectsListItem
                         to={`/folders/${item.attributes.publication_slug}`}
-                        onClick={() => {
-                          scrollToTop();
-                        }}
+                        scrollToTop={true}
                       >
                         {localize(item.attributes.publication_title_multiloc)}
                       </ProjectsListItem>
@@ -238,9 +233,7 @@ const AdminPublicationsNavbarItem = ({
                 <ProjectsListFooter
                   to={linkTo}
                   id="e2e-all-projects-link"
-                  onClick={() => {
-                    scrollToTop();
-                  }}
+                  scrollToTop={true}
                 >
                   <FormattedMessage {...messages.allProjects} />
                 </ProjectsListFooter>

@@ -17,7 +17,6 @@ import { colors, media, fontSizes } from 'utils/styleUtils';
 
 // hooks
 import useInitiativeById from 'api/initiatives/useInitiativeById';
-import { scrollToTop } from 'utils/scroll';
 
 const Container = styled.div`
   flex: 1;
@@ -171,9 +170,7 @@ const InitiativePreview = ({
       <ViewInitiativeButton
         fullWidth={true}
         linkTo={`/initiatives/${initiative.data.attributes.slug}?go_back=true`}
-        onClick={() => {
-          scrollToTop();
-        }}
+        scrollToTop={true}
       >
         <FormattedMessage {...messages.seeInitiative} />
       </ViewInitiativeButton>

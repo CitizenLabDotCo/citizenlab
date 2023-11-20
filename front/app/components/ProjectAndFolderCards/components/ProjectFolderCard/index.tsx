@@ -43,7 +43,6 @@ import {
 } from 'api/project_folder_images/types';
 import useProjectFolderById from 'api/project_folders/useProjectFolderById';
 import AvatarBubbles from 'components/AvatarBubbles';
-import { scrollToTop } from 'utils/scroll';
 
 const Container = styled(Link)`
   width: calc(33% - 12px);
@@ -378,7 +377,6 @@ const ProjectFolderCard = memo<Props>(
         trackEventByName(tracks.clickOnProjectCard, {
           extra: { projectFolderId },
         });
-        scrollToTop();
       },
       []
     );
@@ -477,6 +475,7 @@ const ProjectFolderCard = memo<Props>(
           !(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'
         } e2e-folder-card e2e-admin-publication-card`}
         to={folderUrl}
+        scrollToTop={true}
         onClick={handleProjectCardOnClick(
           publication.data.relationships.publication.data.id
         )}

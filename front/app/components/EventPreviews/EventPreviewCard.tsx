@@ -19,7 +19,6 @@ import moment from 'moment';
 
 // utils
 import clHistory from 'utils/cl-router/history';
-import { scrollToTop } from 'utils/scroll';
 
 // typing
 import { IEventData } from 'api/events/types';
@@ -85,8 +84,7 @@ const EventPreviewCard = ({ event }: EventPreviewCardProps) => {
       role="button"
       h="58px"
       onClick={() => {
-        clHistory.push(`/events/${event.id}`);
-        scrollToTop();
+        clHistory.push(`/events/${event.id}`, true);
       }}
       py="4px"
       flexShrink={0}

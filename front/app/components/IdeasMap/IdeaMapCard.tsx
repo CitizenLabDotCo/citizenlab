@@ -41,7 +41,6 @@ import { darken } from 'polished';
 
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
-import { scrollToTop } from 'utils/scroll';
 
 // typings
 import { IIdeaMarkerData } from 'api/idea_markers/types';
@@ -177,8 +176,10 @@ const IdeaMapCard = memo<Props>(
       updateSearchParams({ idea_map_id: ideaMarker.id });
 
       if (tablet) {
-        clHistory.push(`/ideas/${ideaMarker.attributes.slug}?go_back=true`);
-        scrollToTop();
+        clHistory.push(
+          `/ideas/${ideaMarker.attributes.slug}?go_back=true`,
+          true
+        );
       } else {
         setLeafletMapSelectedMarker(ideaMarker.id);
       }

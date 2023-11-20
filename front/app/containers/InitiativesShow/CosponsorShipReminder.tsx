@@ -4,7 +4,6 @@ import messages from './messages';
 import Warning from 'components/UI/Warning';
 import Link from 'utils/cl-router/Link';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import { scrollToTop } from 'utils/scroll';
 
 interface Props {
   initiativeId: string;
@@ -25,12 +24,7 @@ const CosponsorShipReminder = ({ initiativeId }: Props) => {
         values={{
           requiredNumberOfCosponsors,
           manageInvitationsLink: (
-            <Link
-              to={`/initiatives/edit/${initiativeId}`}
-              onClick={() => {
-                scrollToTop();
-              }}
-            >
+            <Link to={`/initiatives/edit/${initiativeId}`} scrollToTop={true}>
               {formatMessage(messages.manageInvitationsLinkText)}
             </Link>
           ),

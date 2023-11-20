@@ -9,9 +9,6 @@ import Button from 'components/UI/Button';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-// utils
-import { scrollToTop } from 'utils/scroll';
-
 export default () => (
   <Box
     display="flex"
@@ -34,12 +31,7 @@ export default () => (
     <Title style={{ paddingTop: '26px' }}>
       <FormattedMessage {...messages.passwordChangeSuccessMessage} />
     </Title>
-    <Button
-      linkTo={'/'}
-      onClick={() => {
-        scrollToTop();
-      }}
-    >
+    <Button linkTo={'/'} scrollToTop={true}>
       <FormattedMessage {...messages.goHome} />
     </Button>
   </Box>
