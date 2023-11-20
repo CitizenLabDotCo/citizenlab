@@ -41,6 +41,18 @@ const StyledBox = styled.div<{
     grid-gap: 8px;
     grid-template-columns: ${COLUMN_LAYOUTS[columnLayout]};
   `}
+
+  ${({ layout }) =>
+    layout === 'narrow'
+      ? ''
+      : `
+    div.report-widget-card {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+    }
+  `}
 `;
 
 export const TwoColumn = ({ columnLayout, children }: TwoColumnProps) => {

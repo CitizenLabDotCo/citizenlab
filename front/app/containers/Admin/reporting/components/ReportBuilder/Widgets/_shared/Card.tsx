@@ -7,6 +7,7 @@ import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 interface ContainerProps {
   pagebreak?: boolean;
   'data-testid'?: string;
+  className?: string;
   children: React.ReactNode;
 }
 
@@ -23,13 +24,11 @@ const Container = ({ pagebreak, children, ...props }: ContainerProps) => {
 };
 
 const Card = ({ title, children, ...rest }: Props) => (
-  <Container {...rest}>
-    <Box>
-      <Title variant="h3" color="primary" mb="8px">
-        {title}
-      </Title>
-    </Box>
-    {children}
+  <Container {...rest} className="report-widget-card">
+    <Title variant="h3" color="primary" mb="8px">
+      {title}
+    </Title>
+    <Box>{children}</Box>
   </Container>
 );
 
