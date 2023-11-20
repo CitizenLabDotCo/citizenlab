@@ -801,7 +801,7 @@
   "app.containers.Admin.messaging.newProjectPhaseModal.turnOff": "Ja, zet uit",
   "app.containers.Admin.messaging.newProjectPhaseModal.turnOn": "Ja, zet aan",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.Projects.projectsTitle": "Projecten",
-  "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.Projects.projectsTitleLabel": "Titel project",
+  "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.Projects.projectsTitleLabel": "Projectnaam",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.Projects.projectsTitlePlaceholder": "{orgName} werkt momenteel aan",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.folderCardImageTooltip1": "Deze afbeelding maakt deel uit van de mapkaart; de kaart die de map samenvat en bijvoorbeeld op de homepage wordt getoond. Voor meer informatie over aanbevolen beeldresoluties, {supportPageLink}.",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.headerImageTooltip1": "Deze afbeelding staat bovenaan de mappagina. Voor meer informatie over aanbevolen beeldresoluties, {supportPageLink}.",
