@@ -837,7 +837,7 @@ resource 'Ideas' do
       end
 
       describe 'Creating a native survey response when posting anonymously is not enabled' do
-        let(:project) { create(:single_phase_native_survey_project, allow_anonymous_participation: false) }
+        let(:project) { create(:single_phase_native_survey_project, phase_attrs: { allow_anonymous_participation: false }) }
 
         example_request 'Posting a survey does not set the survey to anonymous' do
           assert_status 201
@@ -848,11 +848,7 @@ resource 'Ideas' do
       end
 
       describe 'For projects without ideas_order' do
-        let(:project) { create(:single_phase_ideation_project) }
-
-        before do
-          project.update_attribute(:ideas_order, nil)
-        end
+        let(:project) { create(:single_phase_ideation_project, phase_attrs: { ideas_order: nil }) }
 
         example 'Creates an idea', document: false do
           do_request

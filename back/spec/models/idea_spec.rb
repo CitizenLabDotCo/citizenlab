@@ -171,8 +171,8 @@ RSpec.describe Idea do
         context 'when the idea does not belong to any phase' do
           # The project and the phase are given an input_term to describe that they
           # do not provide the input_term for the idea without phases.
-          let(:project) { create(:project_with_past_ideation_and_current_information_phase, input_term: 'issue') }
-          let(:phase) { project.phases.first }
+          let(:project) { create(:project_with_past_ideation_and_current_information_phase) }
+          let(:phase) { project.phases.last }
           let(:idea) { build(:idea, project: project, phases: []) }
 
           it 'returns the default input_term' do
@@ -232,11 +232,13 @@ RSpec.describe Idea do
         end
 
         context 'when the idea belongs to an ideation phase, and the current phase is information' do
-          let(:project) { create(:project_with_past_ideation_and_current_information_phase, input_term: 'issue') }
+          let(:project) { create(:project_with_past_ideation_and_current_information_phase) }
           let(:ideation_phase) { project.phases.first }
+          let(:information_phase) { project.phases.last }
           let(:idea) { build(:idea, project: project, phases: [ideation_phase]) }
 
           it 'returns the input_term of the ideation phase' do
+            information_phase.update!(input_term: 'issue')
             ideation_phase.update!(input_term: 'question')
             expect(idea.input_term).to eq 'question'
           end
