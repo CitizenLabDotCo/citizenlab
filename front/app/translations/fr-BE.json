@@ -1048,7 +1048,7 @@
   "app.containers.IdeasShow.ideaWhatsAppMessage": "Soutenez cette idée : {postTitle}",
   "app.containers.IdeasShow.ideasWhatsAppMessage": "Soutenez ce problème : {postTitle}",
   "app.containers.IdeasShow.imported": "Importé",
-  "app.containers.IdeasShow.importedTooltip": "Ce site {inputTerm} a été collecté hors ligne et téléchargé automatiquement sur la plateforme.",
+  "app.containers.IdeasShow.importedTooltip": "Cette contribution a été collectée hors ligne et téléchargée automatiquement sur la plateforme.",
   "app.containers.IdeasShow.issueEmailSharingBody": "Soutenez ce problème « {postTitle} » à {postUrl} !",
   "app.containers.IdeasShow.issueEmailSharingSubject": "Soutenez ce problème : {postTitle}",
   "app.containers.IdeasShow.issueFacebookMessage": "Soutenez cette question : {postTitle}",
