@@ -28,7 +28,10 @@ export function scrollToElement({
   }
 }
 
-export const scrollToTop = () => {
+type scrollToTopProps = {
+  context: 'link' | 'clHistory';
+};
+export const scrollToTop = ({ context }: scrollToTopProps) => {
   const isMobileOrSmaller = window.innerWidth <= viewportWidths.tablet;
 
   let scrollWithTimeout: NodeJS.Timeout;
@@ -39,9 +42,11 @@ export const scrollToTop = () => {
       window.scrollTo(0, 0);
     }, 100);
   } else {
-    scrollWithTimeout = setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 20);
+    context === 'link' // For links, we want to scroll up after the page redirect, so we use a timeout
+      ? (scrollWithTimeout = setTimeout(() => {
+          window.scrollTo(0, 0);
+        }, 20))
+      : window.scrollTo(0, 0);
   }
 
   return () => scrollWithTimeout && clearTimeout(scrollWithTimeout);
