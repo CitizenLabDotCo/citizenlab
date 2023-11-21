@@ -5,7 +5,7 @@ import { Box, Title } from '@citizenlab/cl2-component-library';
 import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 
 // hooks
-import usePx from 'containers/Admin/reporting/hooks/usePx';
+import usePxReport from 'containers/Admin/reporting/hooks/usePxReports';
 
 interface SharedProps {
   pagebreak?: boolean;
@@ -31,7 +31,7 @@ const Container = ({ pagebreak, children, ...props }: ContainerProps) => {
 };
 
 const Card = ({ title, children, ...rest }: Props) => {
-  const px = usePx();
+  const px = usePxReport();
 
   return (
     <Container className="report-widget-card" px={px} {...rest}>

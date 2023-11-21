@@ -31,7 +31,7 @@ import {
 
 // hooks
 import useAddContentBuilderImage from 'api/content_builder_images/useAddContentBuilderImage';
-import usePx from 'containers/Admin/reporting/hooks/usePx';
+import usePxReport from 'containers/Admin/reporting/hooks/usePxReports';
 
 interface Props {
   imageUrl?: string;
@@ -40,6 +40,8 @@ interface Props {
 }
 
 const Image = ({ imageUrl, alt = '', dataCode }: Props) => {
+  const px = usePxReport();
+
   const { enabled } = useEditor((state) => {
     return {
       enabled: state.options.enabled,
@@ -58,6 +60,7 @@ const Image = ({ imageUrl, alt = '', dataCode }: Props) => {
       id="e2e-image"
       style={{ pointerEvents: 'none' }}
       minHeight="26px"
+      px={px}
     >
       {imageUrl && (
         <ImageComponent
@@ -94,7 +97,6 @@ const ImageSettings = injectIntl(({ intl: { formatMessage } }) => {
     imageUrl: node.data.props.imageUrl,
     alt: node.data.props.alt,
   }));
-  const px = usePx();
 
   useEffect(() => {
     if (imageUrl) {
@@ -137,7 +139,7 @@ const ImageSettings = injectIntl(({ intl: { formatMessage } }) => {
   };
 
   return (
-    <Box marginBottom="20px" px={px}>
+    <Box marginBottom="20px">
       <ImagesDropzone
         images={imageFiles}
         imagePreviewRatio={1 / 2}

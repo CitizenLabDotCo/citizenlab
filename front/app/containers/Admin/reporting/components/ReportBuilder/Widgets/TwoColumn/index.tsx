@@ -15,7 +15,7 @@ import useLayout from 'containers/Admin/reporting/hooks/useLayout';
 // typings
 import { ColumnLayout } from 'components/admin/ContentBuilder/typings';
 import { Layout } from 'components/admin/GraphCards/typings';
-import usePx from 'containers/Admin/reporting/hooks/usePx';
+import usePxReport from 'containers/Admin/reporting/hooks/usePxReports';
 
 type TwoColumnProps = {
   columnLayout: ColumnLayout;
@@ -59,7 +59,7 @@ const StyledBox = styled(Box)<{
 
 export const TwoColumn = ({ columnLayout, children }: TwoColumnProps) => {
   const layout = useLayout();
-  const px = usePx();
+  const px = usePxReport();
 
   return (
     <StyledBox

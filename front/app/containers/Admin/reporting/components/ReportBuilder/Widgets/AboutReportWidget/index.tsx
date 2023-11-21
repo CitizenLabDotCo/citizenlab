@@ -17,7 +17,7 @@ import useReport from 'api/reports/useReport';
 import useUserById from 'api/users/useUserById';
 import useProjectById from 'api/projects/useProjectById';
 import useLocalize from 'hooks/useLocalize';
-import usePx from 'containers/Admin/reporting/hooks/usePx';
+import usePxReport from 'containers/Admin/reporting/hooks/usePxReports';
 
 // utils
 import { useIntl } from 'utils/cl-intl';
@@ -43,7 +43,7 @@ const toPeriodString = ({
 const AboutReportWidget = ({ reportId, projectId, startAt, endAt }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
-  const px = usePx();
+  const px = usePxReport();
 
   // Title
   const { data: report } = useReport(reportId);

@@ -4,7 +4,7 @@ import { useBreakpoint } from '@citizenlab/cl2-component-library';
 import { ROOT_NODE, useNode, useEditor } from '@craftjs/core';
 import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
 
-const usePx = () => {
+const usePxReports = () => {
   const isSmallerThanTablet = useBreakpoint('tablet');
   const {
     query: { node },
@@ -34,4 +34,4 @@ const usePx = () => {
   return isSmallerThanTablet && inRoot ? DEFAULT_PADDING : '0px';
 };
 
-export default usePx;
+export default usePxReports;
