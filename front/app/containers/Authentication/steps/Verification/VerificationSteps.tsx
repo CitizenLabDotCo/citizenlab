@@ -56,7 +56,7 @@ const VerificationSteps = memo<Props>(
 
     const onMethodSelected = (selectedMethod: TVerificationMethod) => {
       // Save the successAction and the current context in local
-      // storage for when user returns from verification.
+      // storage for when user returns from verification which leaves platform.
       if (
         verificationTypesLeavingPlatform.includes(
           selectedMethod.attributes.name
