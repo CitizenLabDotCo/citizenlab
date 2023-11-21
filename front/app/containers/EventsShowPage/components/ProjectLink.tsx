@@ -58,7 +58,7 @@ const ProjectLink = ({ project }: ProjectLinkProps) => {
             projectTitle: projectTitleLocalized,
           })}
         </Text>
-        <Link to={`/projects/${projectSlug}`} scrollToTop={true}>
+        <Link to={`/projects/${projectSlug}`}>
           <Text
             fontSize={isMobileOrSmaller ? 'xs' : 's'}
             p="0px"
