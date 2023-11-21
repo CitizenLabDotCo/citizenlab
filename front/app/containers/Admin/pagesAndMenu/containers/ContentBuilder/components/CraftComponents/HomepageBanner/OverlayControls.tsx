@@ -57,7 +57,7 @@ const OverlayControls = ({
   noOpacitySlider,
 }: Props) => {
   const [overlayEnabled, setOverlayEnabled] = useState(
-    typeof bannerOverlayOpacity === 'number'
+    typeof bannerOverlayOpacity === 'number' && bannerOverlayOpacity !== 0
   );
   const theme = useTheme();
   const { formatMessage } = useIntl();
@@ -71,7 +71,11 @@ const OverlayControls = ({
           (variant === 'signedOut'
             ? theme.signedOutHeaderOverlayOpacity
             : theme.signedInHeaderOverlayOpacity),
-        bannerOverlayColor || theme.colors.tenantPrimary
+        bannerOverlayColor ||
+          (variant === 'signedOut'
+            ? theme.colors.tenantPrimary
+            : theme.signedInHeaderOverlayColor) ||
+          null
       );
     }
 

@@ -60,7 +60,6 @@ const Submissions = () => {
           invisibleTitleMessage={messages.invisibleTitlePostsList}
           showSearchbar
           showDropdownFilters
-          goBackMode="goToProject"
         />
       </Box>
     </Box>
