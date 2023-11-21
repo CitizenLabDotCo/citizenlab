@@ -318,6 +318,11 @@ class Project < ApplicationRecord
 
     ::User.project_folder_moderator(folder_was.id)
   end
+
+  # Temp: Make no longer required attributes private
+  def participation_method
+    self[:participation_method]
+  end
 end
 
 Project.include(SmartGroups::Concerns::ValueReferenceable)
