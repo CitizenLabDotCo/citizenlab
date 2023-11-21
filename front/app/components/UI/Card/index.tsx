@@ -1,4 +1,4 @@
-import React, { memo, MouseEvent, useEffect } from 'react';
+import React, { memo, MouseEvent } from 'react';
 
 // components
 import Link from 'utils/cl-router/Link';
@@ -12,8 +12,6 @@ import {
   defaultCardStyle,
   defaultCardHoverStyle,
 } from 'utils/styleUtils';
-import { scrollToTop as scrollTop } from 'utils/scroll';
-import { useLocation } from 'react-router-dom';
 
 const Container = styled(Link)`
   width: 100%;
@@ -114,17 +112,8 @@ export const Card = ({
   body,
   footer,
   className,
-  scrollToTop,
 }: Props) => {
   const smallerThanTablet = useBreakpoint('tablet');
-
-  const { pathname } = useLocation();
-
-  useEffect(() => {
-    if (scrollToTop) {
-      scrollTop();
-    }
-  }, [pathname, scrollToTop]); // Ensure scroll to top is only called on pathname change
 
   return (
     <Container
