@@ -35,11 +35,6 @@ module ReportBuilder
           render json: serialize_report(report), status: :ok
         end
 
-        def publish
-          ReportPublisher.new(report).publish
-          head :ok
-        end
-
         def destroy
           side_fx_service.before_destroy(report, current_user)
           if report.destroy

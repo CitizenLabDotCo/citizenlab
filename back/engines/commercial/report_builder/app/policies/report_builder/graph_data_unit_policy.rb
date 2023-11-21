@@ -7,7 +7,8 @@ module ReportBuilder
     end
 
     def published?
-      PhasePolicy::Scope.new(user, Phase).resolve.exists?(id: record.report.phase_id)
+      record.report.phase.start_at <= Time.zone.now &&
+        PhasePolicy::Scope.new(user, Phase).resolve.exists?(id: record.report.phase_id)
     end
   end
 end

@@ -9,7 +9,13 @@ class ReportBuilder::ReportPublisher
   def publish
     ReportBuilder::PublishedGraphDataUnit.where(report_id: @report.id).destroy_all
 
-    nodes = @report.layout.craftjs_jsonmultiloc['en']
+    # TODO: change when we use multiple locales
+    craftjs_json = @report.layout.craftjs_jsonmultiloc
+    return if craftjs_json.blank?
+
+    nodes = craftjs_json['en']
+    return if nodes.blank?
+
     nodes.each do |node_id, node_obj|
       type = node_obj['type']
       # TODO: is_a? is ugly! fix it
