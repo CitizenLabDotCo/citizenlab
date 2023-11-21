@@ -78,14 +78,6 @@ RSpec.describe Project do
     end
   end
 
-  describe 'participation_method' do
-    it 'can be null for timeline projects' do
-      p = create(:project_with_current_phase)
-      p.presentation_mode = nil
-      expect(p.save).to be true
-    end
-  end
-
   describe 'allowed_input_topics' do
     it 'cannot have duplicate topics' do
       project = create(:project_with_allowed_input_topics)

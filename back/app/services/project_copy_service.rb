@@ -300,20 +300,20 @@ class ProjectCopyService < TemplateService
         'votes_count' => phase.votes_count
       }
       if yml_phase['participation_method'] == 'voting'
-        yml_phase['voting_method'] = pc.voting_method
-        yml_phase['voting_max_total'] = pc.voting_max_total
-        yml_phase['voting_min_total'] = pc.voting_min_total
-        yml_phase['voting_max_votes_per_idea'] = pc.voting_max_votes_per_idea
-        yml_phase['voting_term_singular_multiloc'] = pc.voting_term_singular_multiloc
-        yml_phase['voting_term_plural_multiloc'] = pc.voting_term_plural_multiloc
+        yml_phase['voting_method'] = phase.voting_method
+        yml_phase['voting_max_total'] = phase.voting_max_total
+        yml_phase['voting_min_total'] = phase.voting_min_total
+        yml_phase['voting_max_votes_per_idea'] = phase.voting_max_votes_per_idea
+        yml_phase['voting_term_singular_multiloc'] = phase.voting_term_singular_multiloc
+        yml_phase['voting_term_plural_multiloc'] = phase.voting_term_plural_multiloc
       end
       if yml_phase['participation_method'] == 'survey'
-        yml_phase['survey_embed_url'] = pc.survey_embed_url
-        yml_phase['survey_service'] = pc.survey_service
+        yml_phase['survey_embed_url'] = phase.survey_embed_url
+        yml_phase['survey_service'] = phase.survey_service
       end
 
       if yml_phase['participation_method'] == 'document_annotation'
-        yml_phase['document_annotation_embed_url'] = pc.document_annotation_embed_url
+        yml_phase['document_annotation_embed_url'] = phase.document_annotation_embed_url
       end
 
       store_ref yml_phase, phase.id, :phase
