@@ -12,7 +12,10 @@ import useVerificationMethods from 'api/verification_methods/useVerificationMeth
 import styled from 'styled-components';
 
 // typings
-import { TVerificationMethod } from 'api/verification_methods/types';
+import {
+  TVerificationMethod,
+  verificationTypesLeavingPlatform,
+} from 'api/verification_methods/types';
 import { TVerificationStep } from 'containers/Authentication/steps/Verification/utils';
 import { AuthenticationData } from 'containers/Authentication/typings';
 
@@ -54,18 +57,25 @@ const VerificationSteps = memo<Props>(
     const onMethodSelected = (selectedMethod: TVerificationMethod) => {
       // Save the successAction and the current context in local
       // storage for when user returns from verification.
-      if (authenticationData?.successAction) {
-        localStorage.setItem(
-          'auth_success_action',
-          JSON.stringify(authenticationData.successAction)
-        );
+      if (
+        verificationTypesLeavingPlatform.includes(
+          selectedMethod.attributes.name
+        )
+      ) {
+        if (authenticationData?.successAction) {
+          localStorage.setItem(
+            'auth_success_action',
+            JSON.stringify(authenticationData.successAction)
+          );
+        }
+        if (authenticationData?.context) {
+          localStorage.setItem(
+            'auth_context',
+            JSON.stringify(authenticationData.context)
+          );
+        }
       }
-      if (authenticationData?.context) {
-        localStorage.setItem(
-          'auth_context',
-          JSON.stringify(authenticationData.context)
-        );
-      }
+
       setMethod(selectedMethod);
       setActiveStep('method-step');
     };
