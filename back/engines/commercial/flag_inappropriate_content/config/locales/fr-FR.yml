@@ -11,7 +11,7 @@ fr:
       idea_author: '%{authorName} a publié une contribution :'
       initiative_author: '%{authorName} a publié une proposition :'
       automatically_flagged: >
-        Ce message a été automatiquement détecté comme pouvant contenir un contenu inapproprié. Nous vous envoyons cette notification afin que vous puissiez examiner le message conformément à vos propres règles de modération.
+        Cette publication a été automatiquement détectée comme pouvant contenir du contenu inapproprié. Nous vous notifions afin que vous puissiez l'examiner en fonction de vos propres règles de modération.
       how_to_review: >
-        Si le message ne contient pas de contenu inapproprié, vous pouvez supprimer l'avertissement via votre plateforme dans l'onglet Activité du panneau d'administration.
+        Si la publication ne contient pas de contenu inapproprié, vous pouvez supprimer l'alerte depuis l'interface administrateur de votre plateforme, dans l'onglet 'Activité'.
       cta_review_post: 'Vérifier la publication'
