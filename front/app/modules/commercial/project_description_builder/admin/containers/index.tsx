@@ -34,6 +34,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { SerializedNodes } from '@craftjs/core';
 import { Locale } from 'typings';
 import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
+import { isEmpty } from 'lodash-es';
 
 const ProjectDescriptionBuilderPage = () => {
   const [previewEnabled, setPreviewEnabled] = useState(false);
@@ -91,13 +92,14 @@ const ProjectDescriptionBuilderPage = () => {
   };
 
   const getEditorData = () => {
-    if (projectDescriptionBuilderLayout && selectedLocale) {
-      if (draftData && draftData[selectedLocale]) {
-        return draftData[selectedLocale];
-      }
-      return projectDescriptionBuilderLayout.data.attributes
-        .craftjs_jsonmultiloc[selectedLocale];
-    } else return undefined;
+    if (
+      projectDescriptionBuilderLayout &&
+      !isEmpty(projectDescriptionBuilderLayout.data.attributes.craftjs_json)
+    ) {
+      return projectDescriptionBuilderLayout.data.attributes.craftjs_json;
+    } else {
+      return undefined;
+    }
   };
 
   const handleEditorChange = (nodes: SerializedNodes) => {
@@ -149,7 +151,6 @@ const ProjectDescriptionBuilderPage = () => {
           setPreviewEnabled={setPreviewEnabled}
           selectedLocale={selectedLocale}
           onSelectLocale={handleSelectedLocaleChange}
-          draftEditorData={draftData}
         />
         <Box
           mt={`${stylingConsts.menuHeight}px`}

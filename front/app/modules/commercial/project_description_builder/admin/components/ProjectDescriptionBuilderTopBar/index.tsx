@@ -32,7 +32,6 @@ type ProjectDescriptionBuilderTopBarProps = {
   previewEnabled: boolean;
   setPreviewEnabled: React.Dispatch<React.SetStateAction<boolean>>;
   selectedLocale: Locale | undefined;
-  draftEditorData?: Record<string, SerializedNodes>;
   onSelectLocale: (args: {
     locale: Locale;
     editorData: SerializedNodes;
@@ -44,7 +43,6 @@ const ProjectDescriptionBuilderTopBar = ({
   setPreviewEnabled,
   selectedLocale,
   onSelectLocale,
-  draftEditorData,
   localesWithError,
   hasPendingState,
 }: ProjectDescriptionBuilderTopBarProps) => {
@@ -68,10 +66,7 @@ const ProjectDescriptionBuilderTopBar = ({
         setLoading(true);
         await addProjectDescriptionBuilderLayout({
           projectId,
-          craftjs_jsonmultiloc: {
-            ...draftEditorData,
-            [selectedLocale]: query.getSerializedNodes(),
-          },
+          craftjs_json: query.getSerializedNodes(),
         });
       } catch {
         // Do nothing

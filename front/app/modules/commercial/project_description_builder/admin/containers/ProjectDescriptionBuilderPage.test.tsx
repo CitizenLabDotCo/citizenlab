@@ -14,19 +14,17 @@ const DEFAULT_PROJECT_DESCRIPTION_BUILDER_LAYOUT_DATA = {
     id: '2',
     type: 'content_builder_layout',
     attributes: {
-      craftjs_jsonmultiloc: {
-        en: {
-          nodeId: {
-            custom: {},
-            displayName: 'div',
-            hidden: false,
-            isCanvas: true,
-            linkedNodes: {},
-            nodes: [],
-            type: 'div',
-            props: {},
-            parent: 'ROOT',
-          },
+      craftjs_json: {
+        nodeId: {
+          custom: {},
+          displayName: 'div',
+          hidden: false,
+          isCanvas: true,
+          linkedNodes: {},
+          nodes: [],
+          type: 'div',
+          props: {},
+          parent: 'ROOT',
         },
       },
       code: 'project_description',

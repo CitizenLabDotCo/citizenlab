@@ -34,10 +34,9 @@ export const FullScreenPreview = () => {
   const isLoadingProjectDescriptionBuilderLayout =
     projectDescriptionBuilderLayout === undefined;
 
-  const savedEditorData = !isNilOrError(projectDescriptionBuilderLayout)
-    ? projectDescriptionBuilderLayout.data.attributes.craftjs_jsonmultiloc[
-        locale
-      ]
+  const savedEditorData = projectDescriptionBuilderLayout?.data.attributes
+    .craftjs_json
+    ? projectDescriptionBuilderLayout?.data.attributes.craftjs_json
     : undefined;
 
   const editorData = draftData || savedEditorData;

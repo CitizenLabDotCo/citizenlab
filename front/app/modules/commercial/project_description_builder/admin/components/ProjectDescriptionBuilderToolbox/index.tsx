@@ -7,7 +7,6 @@ import { useParams } from 'react-router-dom';
 import contentBuilderMessages from 'components/admin/ContentBuilder/messages';
 import messages from '../../messages';
 import accordionMessages from 'components/admin/ContentBuilder/Widgets/Accordion/messages';
-import textMessages from 'components/admin/ContentBuilder/Widgets/Text/messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 // components
@@ -16,7 +15,7 @@ import SectionTitle from 'components/admin/ContentBuilder/Toolbox/SectionTitle';
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
 
 // widgets
-import Text from 'components/admin/ContentBuilder/Widgets/Text';
+import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
 import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
 import Image from 'components/admin/ContentBuilder/Widgets/Image';
@@ -84,9 +83,9 @@ const ProjectDescriptionBuilderToolbox = ({
       </SectionTitle>
       <DraggableElement
         id="e2e-draggable-text"
-        component={<Text text={formatMessage(textMessages.textValue)} />}
+        component={<TextMultiloc />}
         icon="text"
-        label={formatMessage(Text.craft.custom.title)}
+        label={formatMessage(TextMultiloc.craft.custom.title)}
       />
       <DraggableElement
         id="e2e-draggable-button"

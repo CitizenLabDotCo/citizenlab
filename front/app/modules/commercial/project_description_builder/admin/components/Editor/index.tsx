@@ -9,7 +9,7 @@ import BaseEditor from 'components/admin/ContentBuilder/Editor';
 import Container from 'components/admin/ContentBuilder/Widgets/Container';
 
 // widgets
-import Text from 'components/admin/ContentBuilder/Widgets/Text';
+import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
 import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
 import Image from 'components/admin/ContentBuilder/Widgets/Image';
@@ -39,7 +39,7 @@ const Editor: React.FC<EditorProps> = ({
         Container,
         TwoColumn,
         ThreeColumn,
-        Text,
+        TextMultiloc,
         Image,
         Iframe,
         AboutBox,
