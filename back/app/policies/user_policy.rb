@@ -108,9 +108,10 @@ class UserPolicy < ApplicationPolicy
   end
 
   def permitted_attributes_for_update
-    shared_permitted_attributes.tap do |attrs|
-      attrs.push :email if !AppConfiguration.instance.feature_activated?('user_confirmation')
-    end
+    # shared_permitted_attributes.tap do |attrs|
+    #   attrs.push :email if !AppConfiguration.instance.feature_activated?('user_confirmation')
+    # end
+    permitted_attributes_for_create
   end
 
   private
