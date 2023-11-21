@@ -205,49 +205,8 @@ class ProjectCopyService < TemplateService
     end
   end
 
-  def yml_participation_context(pc, shift_timestamps: 0)
-    yml_pc = {
-      'presentation_mode' => pc.presentation_mode,
-      'participation_method' => pc.participation_method,
-      'posting_enabled' => pc.posting_enabled,
-      'posting_method' => pc.posting_method,
-      'posting_limited_max' => pc.posting_limited_max,
-      'commenting_enabled' => pc.commenting_enabled,
-      'reacting_enabled' => pc.reacting_enabled,
-      'reacting_like_method' => pc.reacting_like_method,
-      'reacting_like_limited_max' => pc.reacting_like_limited_max,
-      'reacting_dislike_enabled' => pc.reacting_dislike_enabled,
-      'reacting_dislike_method' => pc.reacting_dislike_method,
-      'reacting_dislike_limited_max' => pc.reacting_dislike_limited_max,
-      'poll_anonymous' => pc.poll_anonymous,
-      'ideas_order' => pc.ideas_order,
-      'input_term' => pc.input_term,
-      'baskets_count' => pc.baskets_count,
-      'votes_count' => pc.votes_count
-    }
-    if yml_pc['participation_method'] == 'voting'
-      yml_pc['voting_method'] = pc.voting_method
-      yml_pc['voting_max_total'] = pc.voting_max_total
-      yml_pc['voting_min_total'] = pc.voting_min_total
-      yml_pc['voting_max_votes_per_idea'] = pc.voting_max_votes_per_idea
-      yml_pc['voting_term_singular_multiloc'] = pc.voting_term_singular_multiloc
-      yml_pc['voting_term_plural_multiloc'] = pc.voting_term_plural_multiloc
-    end
-    if yml_pc['participation_method'] == 'survey'
-      yml_pc['survey_embed_url'] = pc.survey_embed_url
-      yml_pc['survey_service'] = pc.survey_service
-    end
-
-    if yml_pc['participation_method'] == 'document_annotation'
-      yml_pc['document_annotation_embed_url'] = pc.document_annotation_embed_url
-    end
-
-    yml_pc
-  end
-
   def yml_projects(shift_timestamps: 0, new_slug: nil, new_title_multiloc: nil, new_publication_status: nil)
-    yml_project = yml_participation_context @project, shift_timestamps: shift_timestamps
-    yml_project.merge!({
+    yml_project = {
       'title_multiloc' => new_title_multiloc || @project.title_multiloc,
       'description_multiloc' => @project.description_multiloc,
       'created_at' => shift_timestamp(@project.created_at, shift_timestamps)&.iso8601,
@@ -267,7 +226,7 @@ class ProjectCopyService < TemplateService
         }
       end,
       'include_all_areas' => @project.include_all_areas
-    })
+    }
     yml_project['slug'] = new_slug if new_slug.present?
     store_ref yml_project, @project.id, :project
     [yml_project]
@@ -304,8 +263,7 @@ class ProjectCopyService < TemplateService
       shift_timestamps = (Date.parse(timeline_start_at) - kickoff_at).to_i
     end
     @project.phases.map do |phase|
-      yml_phase = yml_participation_context phase, shift_timestamps: shift_timestamps
-      yml_phase.merge!({
+      yml_phase = {
         'project_ref' => lookup_ref(phase.project_id, :project),
         'title_multiloc' => phase.title_multiloc,
         'description_multiloc' => phase.description_multiloc,
@@ -315,15 +273,49 @@ class ProjectCopyService < TemplateService
         'created_at' => shift_timestamp(phase.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(phase.updated_at, shift_timestamps)&.iso8601,
         'text_images_attributes' => phase.text_images.map do |ti|
-          {
-            'imageable_field' => ti.imageable_field,
-            'remote_image_url' => ti.image_url,
-            'text_reference' => ti.text_reference,
-            'created_at' => ti.created_at.to_s,
-            'updated_at' => ti.updated_at.to_s
-          }
-        end
-      })
+                                      {
+                                        'imageable_field' => ti.imageable_field,
+                                        'remote_image_url' => ti.image_url,
+                                        'text_reference' => ti.text_reference,
+                                        'created_at' => ti.created_at.to_s,
+                                        'updated_at' => ti.updated_at.to_s
+                                      }
+                                    end,
+        'presentation_mode' => phase.presentation_mode,
+        'participation_method' => phase.participation_method,
+        'posting_enabled' => phase.posting_enabled,
+        'posting_method' => phase.posting_method,
+        'posting_limited_max' => phase.posting_limited_max,
+        'commenting_enabled' => phase.commenting_enabled,
+        'reacting_enabled' => phase.reacting_enabled,
+        'reacting_like_method' => phase.reacting_like_method,
+        'reacting_like_limited_max' => phase.reacting_like_limited_max,
+        'reacting_dislike_enabled' => phase.reacting_dislike_enabled,
+        'reacting_dislike_method' => phase.reacting_dislike_method,
+        'reacting_dislike_limited_max' => phase.reacting_dislike_limited_max,
+        'poll_anonymous' => phase.poll_anonymous,
+        'ideas_order' => phase.ideas_order,
+        'input_term' => phase.input_term,
+        'baskets_count' => phase.baskets_count,
+        'votes_count' => phase.votes_count
+      }
+      if yml_phase['participation_method'] == 'voting'
+        yml_phase['voting_method'] = pc.voting_method
+        yml_phase['voting_max_total'] = pc.voting_max_total
+        yml_phase['voting_min_total'] = pc.voting_min_total
+        yml_phase['voting_max_votes_per_idea'] = pc.voting_max_votes_per_idea
+        yml_phase['voting_term_singular_multiloc'] = pc.voting_term_singular_multiloc
+        yml_phase['voting_term_plural_multiloc'] = pc.voting_term_plural_multiloc
+      end
+      if yml_phase['participation_method'] == 'survey'
+        yml_phase['survey_embed_url'] = pc.survey_embed_url
+        yml_phase['survey_service'] = pc.survey_service
+      end
+
+      if yml_phase['participation_method'] == 'document_annotation'
+        yml_phase['document_annotation_embed_url'] = pc.document_annotation_embed_url
+      end
+
       store_ref yml_phase, phase.id, :phase
       yml_phase
     end

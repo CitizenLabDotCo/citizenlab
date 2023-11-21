@@ -319,6 +319,15 @@ class Project < ApplicationRecord
   end
 
   # TEMP: Make no longer needed attributes private
+
+  def presentation_mode
+    self[:presentation_mode]
+  end
+
+  def presentation_mode(val)
+    self[:presentation_mode] = val
+  end
+
   def participation_method
     self[:participation_method]
   end
