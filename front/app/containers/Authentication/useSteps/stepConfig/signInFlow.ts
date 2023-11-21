@@ -88,6 +88,7 @@ export const signInFlow = (
           }
 
           if (requiredCustomFields(requirements.custom_fields)) {
+            // Waarom is dit enkel bij een email sign-in?
             setCurrentStep('missing-data:custom-fields');
             return;
           }
