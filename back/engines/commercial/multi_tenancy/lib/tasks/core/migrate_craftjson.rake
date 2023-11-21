@@ -74,11 +74,19 @@ namespace :migrate_craftjson do
           primary_locale = layout.craftjs_jsonmultiloc[locales.first].present? ? locales.first : layout.craftjs_jsonmultiloc.keys.first
           layout.craftjs_json = migrate_monolingual(layout.craftjs_jsonmultiloc, primary_locale)
           if multilingual?(layout.craftjs_jsonmultiloc, locales)
-            add_multilocs(layout, primary_locale)
+            structures = layout.craftjs_jsonmultiloc.values.map do |elts|
+              tree_structure elts
+            end
+            if structures.uniq.size > 1
+              errors[tenant.host] ||= []
+              errors[tenant.host] += ["#{layout.id}: Incompatible structures"]
+            else
+              add_multilocs(layout, primary_locale)
+            end
           end
           if !layout.save
             errors[tenant.host] ||= []
-            errors[tenant.host] += "#{layout.id}: #{layout.errors.details}"
+            errors[tenant.host] += ["#{layout.id}: #{layout.errors.details}"]
           end
         end
       end
