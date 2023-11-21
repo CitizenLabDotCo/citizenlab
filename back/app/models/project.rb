@@ -324,8 +324,8 @@ class Project < ApplicationRecord
     self[:presentation_mode]
   end
 
-  def presentation_mode(val)
-    self[:presentation_mode] = val
+  def presentation_mode=(val)
+    write_attribute :presentation_mode, val
   end
 
   def participation_method
