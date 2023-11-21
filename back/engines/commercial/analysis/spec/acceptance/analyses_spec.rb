@@ -62,7 +62,7 @@ resource 'Analyses' do
 
   post 'web_api/v1/analyses' do
     with_options scope: :analysis do
-      parameter :project_id, 'The project to analyze, only in case of ideation or continuous survey. Mandatory to pass either project_id or phase_id.', required: false
+      parameter :project_id, 'The project to analyze, only in case of project with ideation or voting phases. Mandatory to pass either project_id or phase_id.', required: false
       parameter :phase_id, 'The phase to analyze, only in case of survey. Mandatory to pass either project_id or phase_id.', required: false
       parameter :custom_field_ids, 'Custom fields that should be part of the analysis. Must be textual fields. If not passed, all textual fields will be analyzed.', required: false
     end

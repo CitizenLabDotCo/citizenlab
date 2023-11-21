@@ -74,18 +74,18 @@ RSpec.describe ParticipationMethod::Voting do
   end
 
   describe '#budget_in_form?' do
-    it 'returns false for a resident and a continuous budgeting project' do
+    it 'returns false for a resident and a budgeting phase' do
       expect(participation_method.budget_in_form?(create(:user))).to be false
     end
 
-    it 'returns true for a moderator and a continuous budgeting project' do
+    it 'returns true for a moderator and a budgeting phase' do
       expect(participation_method.budget_in_form?(create(:admin))).to be true
     end
 
     describe do
       let(:phase) { create(:budgeting_phase) }
 
-      it 'returns true for a moderator and a continuous budgeting project' do
+      it 'returns true for a moderator and a budgeting phase' do
         expect(participation_method.budget_in_form?(create(:admin))).to be true
       end
     end

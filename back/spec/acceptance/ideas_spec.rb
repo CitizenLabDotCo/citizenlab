@@ -1509,22 +1509,7 @@ resource 'Ideas' do
     end
 
     delete 'web_api/v1/ideas/:id' do
-      context 'when the idea belongs to a continuous project' do
-        before do
-          @project = create(:single_phase_ideation_project)
-          @idea = create(:idea_with_topics, author: @user, publication_status: 'published', project: @project)
-        end
-
-        let(:id) { @idea.id }
-
-        example_request 'Delete an idea' do
-          expect(response_status).to eq 200
-          expect { Idea.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
-          expect(@idea.project.reload.ideas_count).to eq 0
-        end
-      end
-
-      context 'when the idea belongs to a timeline project' do
+      context 'when the idea belongs to a phase' do
         let!(:idea) { create(:idea, author: user, project: project, publication_status: 'published') }
         let(:project) { create(:project_with_phases) }
         let(:phase) { project.phases.first }
@@ -1542,12 +1527,14 @@ resource 'Ideas' do
         example_request 'Delete an idea' do
           expect(response_status).to eq 200
           expect { Idea.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+          expect(project.reload.ideas_count).to eq 0
           expect(phase.reload.ideas_count).to eq 0
         end
       end
 
       context 'when a voting context' do
-        let(:idea) { create(:idea, project: create(:single_phase_budgeting_project)) }
+        let(:project) { create(:single_phase_budgeting_project) }
+        let(:idea) { create(:idea, project: project, phases: project.phases) }
         let(:id) { idea.id }
 
         example_request '[error] Normal resident cannot delete an idea in a voting context', document: false do

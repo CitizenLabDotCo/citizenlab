@@ -105,7 +105,7 @@ class Project < ApplicationRecord
   after_save :reassign_moderators, if: :folder_changed?
   after_commit :clear_folder_changes, if: :folder_changed?
 
-  PROCESS_TYPES = %w[timeline continuous].freeze
+  PROCESS_TYPES = %w[timeline].freeze
   INTERNAL_ROLES = %w[open_idea_box].freeze
 
   validates :title_multiloc, presence: true, multiloc: { presence: true }
@@ -131,14 +131,6 @@ class Project < ApplicationRecord
   scope :with_some_topics, (proc do |topic_ids|
     joins(:projects_topics).where(projects_topics: { topic_id: topic_ids })
   end)
-
-  scope :is_participation_context, lambda {
-    where.not(process_type: 'timeline')
-  }
-
-  scope :is_timeline, lambda {
-    where(process_type: 'timeline')
-  }
 
   scope :ordered, lambda {
     includes(:admin_publication).order('admin_publications.ordering')
@@ -167,20 +159,12 @@ class Project < ApplicationRecord
     end
   end
 
-  def continuous?
-    process_type == 'continuous'
-  end
-
-  def timeline?
-    process_type == 'timeline'
-  end
-
   def project
     self
   end
 
   def permission_scope
-    return TimelineService.new.current_phase(self) if timeline?
+    return TimelineService.new.current_phase(self)
 
     self
   end

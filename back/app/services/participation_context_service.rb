@@ -51,6 +51,7 @@ class ParticipationContextService
     @timeline_service = TimelineService.new
   end
 
+  # TODO: JS - Get active phase?
   def get_participation_context(project)
     if project.admin_publication.archived?
       nil

@@ -42,7 +42,7 @@ module Analysis
       scope = Idea.published
       if phase_id
         scope.where(creation_phase_id: phase_id)
-      elsif project.timeline?
+      elsif project_id
         scope.where(project_id: project_id, creation_phase: nil)
       end
     end
@@ -50,7 +50,7 @@ module Analysis
     def participation_method
       if phase
         phase.participation_method
-      elsif project&.timeline?
+      elsif project
         'ideation'
       end
     end
