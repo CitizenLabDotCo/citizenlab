@@ -8,8 +8,16 @@ import { Box } from '@citizenlab/cl2-component-library';
 import messages from './messages';
 import { useNode } from '@craftjs/core';
 import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
+import { useParams } from 'react-router-dom';
+import useProjectBySlug from 'api/projects/useProjectBySlug';
 
-const AboutBox = ({ projectId }: { projectId: string }) => {
+const AboutBox = () => {
+  const { projectId, slug } = useParams() as {
+    projectId: string;
+    slug: string;
+  };
+  const { data: project } = useProjectBySlug(slug);
+  const projectID = projectId || project?.data.id;
   const { parent } = useNode((node) => ({
     parent: node.data.parent,
   }));
@@ -21,7 +29,7 @@ const AboutBox = ({ projectId }: { projectId: string }) => {
       margin="0 auto"
       px={componentDefaultPadding}
     >
-      <ProjectInfoSideBar projectId={projectId} />
+      {projectID && <ProjectInfoSideBar projectId={projectID} />}
     </Box>
   );
 };

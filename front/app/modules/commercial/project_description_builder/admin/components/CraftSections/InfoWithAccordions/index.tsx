@@ -12,13 +12,7 @@ import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import AccordionMultiloc from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
 import Container from 'components/admin/ContentBuilder/Widgets/Container';
 
-type InfoWithAccordionsProps = {
-  projectId: string;
-};
-
-const InfoWithAccordions: UserComponent = ({
-  projectId,
-}: InfoWithAccordionsProps) => {
+const InfoWithAccordions: UserComponent = () => {
   return (
     <Element id="info-with-accordions" is={Box} canvas>
       <TwoColumn columnLayout="2-1">
@@ -26,7 +20,7 @@ const InfoWithAccordions: UserComponent = ({
           <TextMultiloc text={{}} />
         </Element>
         <Element id="right" is={Container} canvas>
-          <AboutBox projectId={projectId} />
+          <AboutBox />
         </Element>
       </TwoColumn>
       <WhiteSpace size="small" />

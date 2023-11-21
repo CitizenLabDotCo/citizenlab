@@ -1,7 +1,6 @@
 import React from 'react';
 
 // Router
-import { useParams } from 'react-router-dom';
 
 // i18n
 import contentBuilderMessages from 'components/admin/ContentBuilder/messages';
@@ -37,7 +36,6 @@ const ProjectDescriptionBuilderToolbox = ({
   selectedLocale,
 }: ProjectDescriptionBuilderToolboxProps) => {
   const { formatMessage } = useIntl();
-  const { projectId } = useParams() as { projectId: string };
 
   return (
     <Container>
@@ -52,7 +50,7 @@ const ProjectDescriptionBuilderToolbox = ({
       />
       <DraggableElement
         id="e2e-draggable-info-accordions"
-        component={<InfoWithAccordions projectId={projectId} />}
+        component={<InfoWithAccordions />}
         icon="section-info-accordion"
         label={formatMessage(messages.infoWithAccordions)}
       />
@@ -120,7 +118,7 @@ const ProjectDescriptionBuilderToolbox = ({
       />
       <DraggableElement
         id="e2e-draggable-about-box"
-        component={<AboutBox projectId={projectId} />}
+        component={<AboutBox />}
         icon="info-solid"
         label={formatMessage(AboutBox.craft.custom.title)}
       />
