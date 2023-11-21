@@ -24,7 +24,7 @@ import AccordionMultiloc from 'components/admin/ContentBuilder/Widgets/Accordion
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import ButtonMultiloc from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
 import InfoWithAccordions from '../CraftSections/InfoWithAccordions';
-import ImageTextCards from '../CraftSections/ImageTextCards';
+import ImageTextCards from 'components/admin/ContentBuilder/Widgets/ImageTextCards';
 
 // types
 import { Locale } from 'typings';

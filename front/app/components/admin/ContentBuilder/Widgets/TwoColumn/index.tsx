@@ -1,7 +1,13 @@
 import React from 'react';
 
 // components
-import { Box, Radio, Icon, Label } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Radio,
+  Icon,
+  Label,
+  useBreakpoint,
+} from '@citizenlab/cl2-component-library';
 
 // styles
 import styled from 'styled-components';
@@ -10,8 +16,9 @@ import styled from 'styled-components';
 import { colors, media } from 'utils/styleUtils';
 
 // craft
-import { useNode, Element } from '@craftjs/core';
+import { useNode, Element, ROOT_NODE } from '@craftjs/core';
 import Container from '../Container';
+import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
 
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
@@ -44,8 +51,16 @@ export const TwoColumnWrapper = styled(Box)`
 `;
 
 export const TwoColumn = ({ columnLayout, children }: TwoColumnProps) => {
+  const isSmallerThanTablet = useBreakpoint('tablet');
+  const { parent } = useNode((node) => ({
+    parent: node.data.parent,
+  }));
   return (
-    <TwoColumnWrapper id="e2e-two-column" columnLayout={columnLayout}>
+    <TwoColumnWrapper
+      id="e2e-two-column"
+      columnLayout={columnLayout}
+      px={isSmallerThanTablet && parent === ROOT_NODE ? DEFAULT_PADDING : '0px'}
+    >
       {children || (
         <>
           <Element id={'left'} is={Container} canvas />

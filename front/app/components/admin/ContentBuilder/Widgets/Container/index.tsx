@@ -5,6 +5,9 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 // craft
 import { UserComponent } from '@craftjs/core';
+import Events from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/Events';
+import Proposals from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/Proposals';
+import Projects from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/Projects';
 
 const Container: UserComponent = ({ children }) => {
   return (
@@ -12,6 +15,19 @@ const Container: UserComponent = ({ children }) => {
       {children}
     </Box>
   );
+};
+
+Container.craft = {
+  rules: {
+    canMoveIn: (incomingNodes) => {
+      return !incomingNodes.some(
+        (node) =>
+          node.data.type === Events ||
+          node.data.type === Proposals ||
+          node.data.type === Projects
+      );
+    },
+  },
 };
 
 export default Container;
