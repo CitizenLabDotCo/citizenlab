@@ -180,7 +180,7 @@ def add_multilocs(layout, primary_locale)
         if elt['props'].key? text_prop
           primary_text = elt.dig('props', text_prop, primary_locale)
           other_locales.each do |other_locale|
-            elt['props'][text_prop][other_locale] = mapping.dig(primary_text, other_locale)
+            elt['props'][text_prop][other_locale] = mapping.dig(primary_text, other_locale) if mapping.dig(primary_text, other_locale)
           end
         end
       end
