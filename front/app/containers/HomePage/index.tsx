@@ -25,6 +25,7 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import Viewer from './Viewer';
 import { isEmpty } from 'lodash-es';
+import CityLogoSection from 'components/CityLogoSection';
 export const adminRedirectPath = '/admin';
 
 const HomePage = () => {
@@ -59,7 +60,10 @@ const HomePage = () => {
     return (
       <>
         <Viewer />
-        <Fragment name="pages/homepage_info/content" />
+        <Fragment name="pages/homepage_info/content">
+          <div />
+        </Fragment>
+        <CityLogoSection />
       </>
     );
   }

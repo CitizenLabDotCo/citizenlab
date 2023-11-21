@@ -62,6 +62,9 @@ const Iframe = ({ url, height, hasError, title }: Props) => {
           title={localize(title)}
           width="100%"
           height={height}
+          style={{
+            border: '0px',
+          }}
         />
       )}
     </Box>
