@@ -228,6 +228,10 @@ class Phase < ApplicationRecord
     can_contain_ideas? || native_survey?
   end
 
+  def uses_input_form?
+    native_survey?
+  end
+
   def posting_limited?
     posting_method == 'limited'
   end

@@ -237,10 +237,9 @@ class Project < ApplicationRecord
     self.folder_changed = false
   end
 
-  # TODO: JS - Is this correct?
-  def can_contain_input?
+  def uses_input_form?
     phases.each do |phase|
-      return true if phase.can_contain_input?
+      return true if phase.can_contain_ideas?
     end
     false
   end
