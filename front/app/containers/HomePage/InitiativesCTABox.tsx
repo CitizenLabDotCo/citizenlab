@@ -172,7 +172,9 @@ const InitiativesCTABox = ({ className }: Props) => {
           fontWeight="500"
           padding="13px 22px"
           linkTo={!isNilOrError(authUser) ? '/initiatives/new' : undefined}
-          onClick={!authUser ? signUp : scrollToTop}
+          onClick={() => {
+            !authUser ? signUp() : scrollToTop();
+          }}
           fullWidth={smallerThanSmallTablet}
           text={<FormattedMessage {...messages.startInitiative} />}
           className="e2e-initiatives-landing-CTA-new"

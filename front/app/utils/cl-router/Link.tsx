@@ -36,7 +36,7 @@ const Link = ({
       onClick={(event) => {
         onClick && onClick(event);
         if (scrollToTop) {
-          scrollTop();
+          scrollTop('link');
         }
       }}
       {...otherProps}
