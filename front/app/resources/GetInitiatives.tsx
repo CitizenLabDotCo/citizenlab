@@ -51,7 +51,7 @@ export type GetInitiativesChildProps = {
   list: IInitiativeData[] | undefined;
   onResetParams: (paramsToOmit?: (keyof IQueryParameters)[]) => void;
   queryParameters: IQueryParameters;
-  sortAttribute: SortAttribute;
+  sortAttribute: Sort;
   sortDirection: SortDirection;
   currentPage: number;
   lastPage: number;
