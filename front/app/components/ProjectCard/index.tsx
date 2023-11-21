@@ -445,15 +445,15 @@ const ProjectCard = memo<InputProps>(
 
     const [visible, setVisible] = useState(false);
 
-    const handleProjectCardOnClick = (projectId: string) => () => {
+    const handleProjectCardOnClick = (projectId: string) => {
       trackEventByName(tracks.clickOnProjectCard, { extra: { projectId } });
     };
 
-    const handleCTAOnClick = (projectId: string) => () => {
+    const handleCTAOnClick = (projectId: string) => {
       trackEventByName(tracks.clickOnProjectCardCTA, { extra: { projectId } });
     };
 
-    const handleProjectTitleOnClick = (projectId: string) => () => {
+    const handleProjectTitleOnClick = (projectId: string) => {
       trackEventByName(tracks.clickOnProjectTitle, { extra: { projectId } });
     };
 
@@ -628,7 +628,9 @@ const ProjectCard = memo<InputProps>(
               className={`${size} ${countdown ? 'hasProgressBar' : ''}`}
             >
               <ProjectLabel
-                onClick={handleCTAOnClick(project.data.id)}
+                onClick={() => {
+                  handleCTAOnClick(project.data.id);
+                }}
                 className="e2e-project-card-cta"
               >
                 {ctaMessage}
@@ -668,7 +670,9 @@ const ProjectCard = memo<InputProps>(
             .join(' ')}
           to={projectUrl}
           scrollToTop={true}
-          onClick={handleProjectCardOnClick(project.data.id)}
+          onClick={() => {
+            handleProjectCardOnClick(project.data.id);
+          }}
         >
           {screenReaderContent}
           {size !== 'large' && contentHeader}
@@ -700,7 +704,9 @@ const ProjectCard = memo<InputProps>(
             <ContentBody className={size} aria-hidden>
               <ProjectTitle
                 className="e2e-project-card-project-title"
-                onClick={handleProjectTitleOnClick(project.data.id)}
+                onClick={() => {
+                  handleProjectTitleOnClick(project.data.id);
+                }}
               >
                 <T value={project.data.attributes.title_multiloc} />
               </ProjectTitle>

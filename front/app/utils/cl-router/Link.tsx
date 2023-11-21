@@ -1,9 +1,8 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import {
   // eslint-disable-next-line no-restricted-imports
   NavLink as RouterLink,
   NavLinkProps,
-  useLocation,
 } from 'react-router-dom';
 // eslint-disable-next-line no-restricted-imports
 import { Path } from 'history';
@@ -16,30 +15,30 @@ export type Props = {
   to: Path | string | { pathname: string };
   onlyActiveOnIndex?: boolean;
   scrollToTop?: boolean;
-} & NavLinkProps;
+  onClick?: (event: React.MouseEvent) => void;
+} & Omit<NavLinkProps, 'onClick'>;
 
 /*
  * This link override doesn't support url parameters, because updateLocationDescriptor doesn't parse them
  */
-const Link = ({ to, onlyActiveOnIndex, scrollToTop, ...otherProps }: Props) => {
+const Link = ({
+  to,
+  onlyActiveOnIndex,
+  scrollToTop,
+  onClick,
+  ...otherProps
+}: Props) => {
   const locale = useLocale();
-  const { pathname } = useLocation();
-  const hasPageBeenRendered = useRef(false); // Used to prevent scrolling to top on first render
-
-  // Scroll to top of page when pathname changes if scrollToTop is true
-  useEffect(() => {
-    if (scrollToTop && hasPageBeenRendered.current === true) {
-      scrollTop();
-      hasPageBeenRendered.current = false;
-      return;
-    }
-    hasPageBeenRendered.current = true;
-  }, [pathname, scrollToTop]);
-
   return (
     <RouterLink
       end={onlyActiveOnIndex}
       to={!isNilOrError(locale) ? updateLocationDescriptor(to, locale) : '#'}
+      onClick={(event) => {
+        onClick && onClick(event);
+        if (scrollToTop) {
+          scrollTop();
+        }
+      }}
       {...otherProps}
     />
   );

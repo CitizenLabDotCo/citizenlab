@@ -56,8 +56,8 @@ const ButtonWrapper = ({
               to={linkTo}
               target={openLinkInNewTab ? '_blank' : undefined}
               rel="noreferrer"
-              {...rest}
               scrollToTop={scrollToTop}
+              {...rest}
             >
               {children}
             </Link>

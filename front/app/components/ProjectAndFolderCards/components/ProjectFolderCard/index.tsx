@@ -476,9 +476,11 @@ const ProjectFolderCard = memo<Props>(
         } e2e-folder-card e2e-admin-publication-card`}
         to={folderUrl}
         scrollToTop={true}
-        onClick={handleProjectCardOnClick(
-          publication.data.relationships.publication.data.id
-        )}
+        onClick={() => {
+          handleProjectCardOnClick(
+            publication.data.relationships.publication.data.id
+          );
+        }}
       >
         {screenReaderContent}
         {size !== 'large' && contentHeader}

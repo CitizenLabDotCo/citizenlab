@@ -33,13 +33,15 @@ export const scrollToTop = () => {
 
   let scrollWithTimeout: NodeJS.Timeout;
 
-  // On some mobile browsers, we need a timeout for this to work correctly
+  // In some cases & on some mobile browsers, we need a timeout for this to work correctly
   if (isMobileOrSmaller) {
     scrollWithTimeout = setTimeout(() => {
       window.scrollTo(0, 0);
     }, 100);
   } else {
-    window.scrollTo(0, 0);
+    scrollWithTimeout = setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 20);
   }
 
   return () => scrollWithTimeout && clearTimeout(scrollWithTimeout);
