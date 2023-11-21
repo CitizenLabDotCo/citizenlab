@@ -27,23 +27,22 @@ RSpec.describe Idea do
   end
 
   describe '#participation_method_on_creation' do
-    context 'in a timeline project when created in a phase' do
+    context 'in a timeline project when a creation phase is present' do
       let(:project) { create(:project_with_future_native_survey_phase) }
       let(:creation_phase) { project.phases.first }
       let(:idea) { build(:idea, project: project, creation_phase: creation_phase) }
 
-      it 'returns the phase on creation' do
+      it 'returns ParticipationMethod::NativeSurvey' do
         expect(idea.participation_method_on_creation).to be_an_instance_of ParticipationMethod::NativeSurvey
       end
     end
 
-    context 'in a timeline project when created outside a phase' do
+    context 'in a timeline project when creation phase is NOT present' do
       let(:project) { create(:project_with_future_native_survey_phase) }
       let(:phase) { project.phases.first }
       let(:idea) { build(:idea, project: project) }
 
-      it 'returns the project' do
-        # TODO: JS this is going to impact custom forms?
+      it 'returns ParticipationMethod::Ideation' do
         expect(idea.participation_method_on_creation).to be_an_instance_of ParticipationMethod::Ideation
       end
     end
