@@ -46,6 +46,7 @@ interface Props {
     endDate: Moment | null;
   }) => void;
   minDate?: Moment;
+  maxDate?: Moment;
   startDatePlaceholderText?: string;
   endDatePlaceholderText?: string;
   excludeDates?: Moment[];
@@ -56,6 +57,7 @@ const DateRangePicker = ({
   endDate,
   onDatesChange,
   minDate,
+  maxDate,
   startDatePlaceholderText,
   endDatePlaceholderText,
   excludeDates,
@@ -98,6 +100,7 @@ const DateRangePicker = ({
   const convertedStartDate = startDate ? moment(startDate).toDate() : null;
   const convertedEndDate = endDate ? moment(endDate).toDate() : null;
   const convertedMinDate = minDate ? moment(minDate).toDate() : null;
+  const convertedMaxDate = maxDate ? moment(maxDate).toDate() : null;
   const convertedExcludeDates =
     excludeDates?.map((date) => moment(date).toDate()) || [];
 
@@ -129,6 +132,7 @@ const DateRangePicker = ({
         startDate={convertedStartDate}
         endDate={convertedEndDate}
         minDate={convertedStartDate}
+        maxDate={convertedMaxDate}
         excludeDates={convertedExcludeDates}
         locale={locale}
         // This makes sure we adjust date based on the passed locale.

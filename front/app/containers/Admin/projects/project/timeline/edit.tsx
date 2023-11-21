@@ -61,7 +61,7 @@ import useLocalize from 'hooks/useLocalize';
 import { stringifyCampaignFields } from 'containers/Admin/messaging/AutomatedEmails/utils';
 import { CampaignData } from 'containers/Admin/messaging/AutomatedEmails/types';
 import { CampaignName } from 'api/campaigns/types';
-import { getExcludedDates } from './utils';
+import { getExcludedDates, getMaxEndDate } from './utils';
 
 type SubmitStateType = 'disabled' | 'enabled' | 'error' | 'success';
 
@@ -412,6 +412,8 @@ const AdminPhaseEdit = () => {
     setHasEndDate((prevValue) => !prevValue);
   };
 
+  const maxEndDate = getMaxEndDate(phasesWithOutCurrentPhase, startDate, phase);
+
   return (
     <>
       <Title variant="h3" color="primary">
@@ -444,6 +446,7 @@ const AdminPhaseEdit = () => {
               startDatePlaceholderText={formatMessage(messages.startDate)}
               endDatePlaceholderText={formatMessage(messages.endDate)}
               excludeDates={excludeDates}
+              maxDate={maxEndDate}
             />
             <Error apiErrors={errors && errors.start_at} />
             <Error apiErrors={errors && errors.end_at} />
