@@ -190,10 +190,11 @@ class Idea < ApplicationRecord
     end
   end
 
+  # NOTE: if there is no creation_phase, timeline projects used to always return 'Ideation'
+  # as it defaulted to this when the participation_method was available on the project
+  # This mimics what that behaviour now that participation method is not available
   def participation_method_on_creation
-    # TODO: JS This will cause issue if project does not have a participation method any more
-    # Need to wrap this up in the custom form changes - should it use current phase instead?
-    Factory.instance.participation_method_for creation_phase || project
+    creation_phase ? ParticipationMethod::NativeSurvey.new(creation_phase) : ParticipationMethod::Ideation.new(project.phases.first)
   end
 
   private
