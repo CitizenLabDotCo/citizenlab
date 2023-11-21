@@ -72,7 +72,7 @@ resource 'Analyses' do
       let(:project) { create(:project_with_active_ideation_phase) }
       let(:project_id) { project.id }
 
-      example_request 'Create an analysis (ideation phase) when no custom_form exists' do
+      example_request 'Create a project analysis (ideation phase) when no custom_form exists' do
         expect(response_status).to eq 201
         # If no custom_fields are passed, all textual fields must be added automatically
         expect(response_data.dig(:relationships, :custom_fields, :data)).not_to be_empty
@@ -90,7 +90,7 @@ resource 'Analyses' do
       let!(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
       let(:project_id) { project.id }
 
-      example_request 'Create an analysis (ideation phase) when the custom_form already exists' do
+      example_request 'Create a project analysis (ideation phase) when the custom_form already exists' do
         expect(response_status).to eq 201
         # If no custom_fields are passed, all textual fields must be added automatically
         expect(response_data.dig(:relationships, :custom_fields, :data)).not_to be_empty
@@ -106,7 +106,7 @@ resource 'Analyses' do
       let(:custom_field) { create(:custom_field, resource: custom_form) }
       let(:custom_field_ids) { [custom_field.id] }
 
-      example_request 'Create an analysis (survey phase) with specific custom_fields' do
+      example_request 'Create a phase analysis (survey phase) with specific custom_fields' do
         expect(response_status).to eq 201
         expect(response_data.dig(:relationships, :custom_fields, :data).size).to eq 1
         expect(response_data.dig(:relationships, :custom_fields, :data, 0, :id)).to eq custom_field.id
@@ -118,8 +118,8 @@ resource 'Analyses' do
       let!(:custom_form) { create(:custom_form, participation_context: project.phases.first) }
       let(:project_id) { project.id }
 
-      example_request 'Create an analysis (native survey project)' do
-        expect(response_status).to eq 201
+      example_request '[Error] Cannot create a project analysis on project with a single native survey phase' do
+        expect(response_status).to eq 422
       end
     end
   end
