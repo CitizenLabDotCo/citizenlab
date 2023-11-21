@@ -8,7 +8,6 @@ import {
   Icon,
   Label,
   IconTooltip,
-  useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 import PageBreakBox from '../PageBreakBox';
 
@@ -18,7 +17,7 @@ import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { Multiloc, UploadFile } from 'typings';
 
 // craft
-import { ROOT_NODE, useEditor, useNode } from '@craftjs/core';
+import { useEditor, useNode } from '@craftjs/core';
 
 // i18n
 import messages from './messages';
@@ -29,13 +28,13 @@ import eventEmitter from 'utils/eventEmitter';
 import {
   IMAGE_UPLOADING_EVENT,
   IMAGE_LOADED_EVENT,
-  DEFAULT_PADDING,
 } from 'components/admin/ContentBuilder/constants';
 
 // hooks
 import useAddContentBuilderImage from 'api/content_builder_images/useAddContentBuilderImage';
 import useLocalize from 'hooks/useLocalize';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
+import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
 
 interface Props {
   image?: {
@@ -46,10 +45,11 @@ interface Props {
 }
 
 const Image = ({ alt = {}, image }: Props) => {
-  const isSmallerThanTablet = useBreakpoint('tablet');
   const { parent } = useNode((node) => ({
     parent: node.data.parent,
   }));
+  const componentDefaultPadding = useCraftComponentDefaultPadding(parent);
+
   const localize = useLocalize();
   const { enabled } = useEditor((state) => {
     return {
@@ -71,7 +71,7 @@ const Image = ({ alt = {}, image }: Props) => {
       minHeight="26px"
       maxWidth="1150px"
       margin="0 auto"
-      px={isSmallerThanTablet && parent === ROOT_NODE ? DEFAULT_PADDING : '0px'}
+      px={componentDefaultPadding}
     >
       {image?.imageUrl && (
         <ImageComponent

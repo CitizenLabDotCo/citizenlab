@@ -1,16 +1,10 @@
 import React from 'react';
 
 // craft
-import { useNode, useEditor, ROOT_NODE } from '@craftjs/core';
+import { useNode, useEditor } from '@craftjs/core';
 
 // components
-import {
-  Radio,
-  Box,
-  Input,
-  Label,
-  useBreakpoint,
-} from '@citizenlab/cl2-component-library';
+import { Radio, Box, Input, Label } from '@citizenlab/cl2-component-library';
 import ButtonComponent from 'components/UI/Button';
 
 // styles
@@ -27,7 +21,7 @@ import { injectIntl } from 'utils/cl-intl';
 import { Multiloc } from 'typings';
 import useLocalize from 'hooks/useLocalize';
 import InputMultilocWithLocaleSwitcherWrapper from 'components/UI/InputMultilocWithLocaleSwitcher';
-import { DEFAULT_PADDING } from '../../constants';
+import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
 
 type ButtonProps = {
   text: Multiloc;
@@ -37,10 +31,10 @@ type ButtonProps = {
 };
 
 const Button = ({ text, url, type, alignment }: ButtonProps) => {
-  const isSmallerThanTablet = useBreakpoint('tablet');
   const { parent } = useNode((node) => ({
     parent: node.data.parent,
   }));
+  const componentDefaultPadding = useCraftComponentDefaultPadding(parent);
   const localize = useLocalize();
   const { enabled } = useEditor((state) => {
     return {
@@ -71,7 +65,7 @@ const Button = ({ text, url, type, alignment }: ButtonProps) => {
       }
       maxWidth="1150px"
       margin="0 auto"
-      px={isSmallerThanTablet && parent === ROOT_NODE ? DEFAULT_PADDING : '0px'}
+      px={componentDefaultPadding}
     >
       {/* In edit view, show the button regardless if URL is set. The button should
           not be shown though in the live view if the URL is not set. */}

@@ -8,12 +8,12 @@ import {
 } from '@citizenlab/cl2-component-library';
 
 // craft
-import { Element, ROOT_NODE, useNode } from '@craftjs/core';
+import { Element, useNode } from '@craftjs/core';
 import Container from '../Container';
 
 // i18n
 import messages from './messages';
-import { DEFAULT_PADDING } from '../../constants';
+import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
 
 export const ThreeColumnWrapper = ({
   children,
@@ -38,16 +38,16 @@ export const ThreeColumnWrapper = ({
 };
 
 const ThreeColumn = () => {
-  const isSmallerThanTablet = useBreakpoint('tablet');
   const { parent } = useNode((node) => ({
     parent: node.data.parent,
   }));
 
+  const componentDefaultPadding = useCraftComponentDefaultPadding(parent);
   return (
     <ThreeColumnWrapper
       maxWidth="1150px"
       margin="0 auto"
-      px={isSmallerThanTablet && parent === ROOT_NODE ? DEFAULT_PADDING : '0px'}
+      px={componentDefaultPadding}
     >
       <Box flex="1">
         <Element id="column1" is={Container} canvas />
