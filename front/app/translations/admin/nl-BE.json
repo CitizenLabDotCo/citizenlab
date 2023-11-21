@@ -260,7 +260,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participants": "{participantsCount, plural, one {1 deelnemer} other {{participantsCount} deelnemers}}",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.projectSettings": "Projectinstellingen",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.publishedActive1": "Gepubliceerd - Actief",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.publishedFinished1": "Gepubliceerd - Afgewerkt",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.publishedFinished1": "Gepubliceerd - Afgerond",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.view": "Bekijk",
   "app.components.app.containers.AdminPage.ProjectEdit.projectTerm": "Project",
   "app.components.app.containers.AdminPage.ProjectEdit.questionTerm": "Vraag",
