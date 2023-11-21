@@ -126,4 +126,17 @@ export default defineMessages({
     id: 'app.containers.ContentBuilder.homepage.bannerImage',
     defaultMessage: 'Banner image',
   },
+  eventsDescription: {
+    id: 'app.containers.ContentBuilder.homepage.eventsDescription',
+    defaultMessage: 'Displays the next 3 upcoming events on your platform.',
+  },
+  signedOutDescription: {
+    id: 'app.containers.ContentBuilder.homepage.signedOutDescription',
+    defaultMessage:
+      'This is how visitors that are not registered on the platform see the banner.',
+  },
+  signedInDescription: {
+    id: 'app.containers.ContentBuilder.homepage.signedInDescription',
+    defaultMessage: 'This is how registered users see the banner.',
+  },
 });

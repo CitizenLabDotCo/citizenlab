@@ -38,12 +38,14 @@ import useLocalize from 'hooks/useLocalize';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
 interface Props {
-  imageUrl?: string;
+  image?: {
+    dataCode?: string;
+    imageUrl?: string;
+  };
   alt?: Multiloc;
-  dataCode?: string;
 }
 
-const Image = ({ imageUrl, alt = {}, dataCode }: Props) => {
+const Image = ({ alt = {}, image }: Props) => {
   const isSmallerThanTablet = useBreakpoint('tablet');
   const { parent } = useNode((node) => ({
     parent: node.data.parent,
@@ -56,9 +58,9 @@ const Image = ({ imageUrl, alt = {}, dataCode }: Props) => {
   });
 
   const emitImageLoaded = useCallback(() => {
-    if (!imageUrl) return;
-    eventEmitter.emit(IMAGE_LOADED_EVENT, imageUrl);
-  }, [imageUrl]);
+    if (!image?.imageUrl) return;
+    eventEmitter.emit(IMAGE_LOADED_EVENT, image?.imageUrl);
+  }, [image?.imageUrl]);
 
   return (
     <PageBreakBox
@@ -71,17 +73,17 @@ const Image = ({ imageUrl, alt = {}, dataCode }: Props) => {
       margin="0 auto"
       px={isSmallerThanTablet && parent === ROOT_NODE ? DEFAULT_PADDING : '0px'}
     >
-      {imageUrl && (
+      {image?.imageUrl && (
         <ImageComponent
           width="100%"
-          src={imageUrl}
+          src={image?.imageUrl}
           alt={localize(alt) || ''}
-          data-code={dataCode}
+          data-code={image?.dataCode}
           onLoad={emitImageLoaded}
         />
       )}
       {/* In edit view, show an image placeholder if image is not set. */}
-      {!imageUrl && enabled && (
+      {!image?.imageUrl && enabled && (
         <Icon
           margin="auto"
           padding="24px"
@@ -100,25 +102,25 @@ const ImageSettings = injectIntl(({ intl: { formatMessage } }) => {
   const { mutateAsync: addContentBuilderImage } = useAddContentBuilderImage();
   const {
     actions: { setProp },
-    imageUrl,
+    image,
     alt,
   } = useNode((node) => ({
-    imageUrl: node.data.props.imageUrl,
+    image: node.data.props.image,
     alt: node.data.props.alt,
   }));
 
   useEffect(() => {
-    if (imageUrl) {
+    if (image?.imageUrl) {
       (async () => {
         eventEmitter.emit(IMAGE_UPLOADING_EVENT, true);
-        const imageFile = await convertUrlToUploadFile(imageUrl);
+        const imageFile = await convertUrlToUploadFile(image?.imageUrl);
         if (imageFile) {
           setImageFiles([imageFile]);
         }
         eventEmitter.emit(IMAGE_UPLOADING_EVENT, false);
       })();
     }
-  }, [imageUrl]);
+  }, [image?.imageUrl]);
 
   const handleOnAdd = async (imageFiles: UploadFile[]) => {
     setImageFiles(imageFiles);
@@ -126,8 +128,10 @@ const ImageSettings = injectIntl(({ intl: { formatMessage } }) => {
     try {
       const response = await addContentBuilderImage(imageFiles[0].base64);
       setProp((props: Props) => {
-        props.dataCode = response.data.attributes.code;
-        props.imageUrl = response.data.attributes.image_url;
+        props.image = {
+          dataCode: response.data.attributes.code,
+          imageUrl: response.data.attributes.image_url,
+        };
       });
     } catch {
       // Do nothing
@@ -136,8 +140,10 @@ const ImageSettings = injectIntl(({ intl: { formatMessage } }) => {
 
   const handleOnRemove = () => {
     setProp((props: Props) => {
-      props.imageUrl = '';
-      props.dataCode = undefined;
+      props.image = {
+        dataCode: undefined,
+        imageUrl: '',
+      };
       props.alt = {};
     });
     setImageFiles([]);

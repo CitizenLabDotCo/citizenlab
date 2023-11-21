@@ -33,4 +33,9 @@ export default defineMessages({
     id: 'app.containers.admin.ContentBuilder.homepage.default',
     defaultMessage: 'default',
   },
+  proposalsDisabledTooltip: {
+    id: 'app.containers.admin.ContentBuilder.homepage.proposalsDisabledTooltip',
+    defaultMessage:
+      'Enable proposals in the “Proposals” section in the admin panel to unlock them in the homepage',
+  },
 });
