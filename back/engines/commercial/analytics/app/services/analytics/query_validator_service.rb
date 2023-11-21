@@ -69,7 +69,7 @@ module Analytics
           if value.is_a?(ActionController::Parameters)
             if subfield == 'date'
               dates_attrs.each do |date|
-                Date.parse(value[date])
+                Date.parse(value[date]) if value.key?(date)
               rescue ArgumentError
                 add_error("Invalid '#{date}' date for #{field}.#{subfield}.")
               end
