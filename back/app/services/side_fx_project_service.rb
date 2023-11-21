@@ -6,8 +6,6 @@ class SideFxProjectService
   def before_create(project, user); end
 
   def after_create(project, user)
-    participation_method = Factory.instance.participation_method_for(project)
-    participation_method.create_default_form! if participation_method.auto_create_default_form?
     project.set_default_topics!
     project.update!(description_multiloc: TextImageService.new.swap_data_images_multiloc(project.description_multiloc, field: :description_multiloc, imageable: project))
 

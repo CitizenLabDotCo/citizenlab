@@ -190,12 +190,8 @@ class Idea < ApplicationRecord
     end
   end
 
-  # NOTE: if there is no creation_phase, timeline projects used to always return 'Ideation'
-  # as it defaulted to this when the participation_method was available on the project
-  # This mimics what that behaviour now that participation method is not available
-  # TODO: JS - Change to find phase with ideation or voting where created date between start and end date?
   def participation_method_on_creation
-    creation_phase ? ParticipationMethod::NativeSurvey.new(creation_phase) : ParticipationMethod::Ideation.new(project.phases.first)
+    Factory.instance.participation_method_for creation_phase || project
   end
 
   private
