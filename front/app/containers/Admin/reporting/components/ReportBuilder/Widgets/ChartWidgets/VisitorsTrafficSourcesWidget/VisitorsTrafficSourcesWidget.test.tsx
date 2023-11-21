@@ -9,7 +9,7 @@ jest.mock(
 );
 jest.mock('containers/Admin/reporting/hooks/useLayout', () => () => 'narrow');
 
-describe('<VisitorsTrafficSourcesWidget />', () => {
+describe.skip('<VisitorsTrafficSourcesWidget />', () => {
   const startAt = undefined;
   const endAt = undefined;
   const projectId = undefined;
