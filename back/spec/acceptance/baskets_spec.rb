@@ -10,11 +10,11 @@ resource 'Baskets' do
     header 'Content-Type', 'application/json'
     @user = create(:user)
     @project = create(:single_phase_multiple_voting_project)
-    create_list(:basket, 2, participation_context: create(:single_phase_budgeting_project))
+    create_list(:basket, 2, participation_context: create(:single_phase_budgeting_project).phases.first)
     @basket = create(
       :basket,
       user: @user,
-      participation_context: @project
+      participation_context: @project.phases.first
     )
     @ideas = [1, 2, 2].map do |votes|
       create(:idea, project: @project, budget: 2).tap do |idea|
@@ -38,7 +38,7 @@ resource 'Baskets' do
         expect(json_response.dig(:data, :attributes, :total_votes)).to eq 5
         expect(json_response.dig(:data, :relationships)).to include(
           participation_context: {
-            data: { id: @basket.participation_context_id, type: 'project' }
+            data: { id: @basket.participation_context_id, type: 'phase' }
           },
           user: {
             data: { id: @basket.user_id, type: 'user' }
