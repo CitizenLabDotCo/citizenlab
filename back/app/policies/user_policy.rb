@@ -104,11 +104,15 @@ class UserPolicy < ApplicationPolicy
   end
 
   def permitted_attributes
-    shared = [:email, :first_name, :last_name, :password, :avatar, :locale, { onboarding: [:topics_and_areas], custom_field_values: allowed_custom_field_keys, bio_multiloc: CL2_SUPPORTED_LOCALES }]
-    admin? ? shared + [roles: %i[type project_id project_folder_id]] : shared
+    [:email] + shared_permitted_attributes
   end
 
   private
+
+  def shared_permitted_attributes
+    shared = [:email, :first_name, :last_name, :password, :avatar, :locale, { onboarding: [:topics_and_areas], custom_field_values: allowed_custom_field_keys, bio_multiloc: CL2_SUPPORTED_LOCALES }]
+    admin? ? shared + [roles: %i[type project_id project_folder_id]] : shared
+  end
 
   def allowed_custom_field_keys
     allowed_fields = allowed_custom_fields
