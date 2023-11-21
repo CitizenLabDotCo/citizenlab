@@ -130,7 +130,7 @@ class WebApi::V1::IdeasController < ApplicationController
     participation_context = if is_moderator && phase_ids.any?
       Phase.find(phase_ids.first)
     else
-      ParticipationContextService.new.get_participation_context(project)
+      ParticipationContextService.new.get_current_phase(project)
     end
     send_error and return unless participation_context
 
@@ -194,7 +194,7 @@ class WebApi::V1::IdeasController < ApplicationController
   def update
     input = Idea.find params[:id]
     project = input.project
-    participation_context = ParticipationContextService.new.get_participation_context project
+    participation_context = ParticipationContextService.new.get_current_phase project
     authorize input
 
     if invalid_blank_author_for_update? input, params

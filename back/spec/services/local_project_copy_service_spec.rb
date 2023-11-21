@@ -273,7 +273,7 @@ describe LocalProjectCopyService do
       let(:permission) do
         PermissionsService.new.update_all_permissions
         ParticipationContextService.new
-          .get_participation_context(source_project).permissions
+          .get_current_phase(source_project).permissions
           .find_by(action: 'commenting_idea')
       end
 

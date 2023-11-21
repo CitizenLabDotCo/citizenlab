@@ -922,7 +922,7 @@ resource 'Ideas' do
 
         example '[error] Create an idea when there is a posting disabled reason' do
           expect_any_instance_of(ParticipationContextService)
-            .to receive(:posting_idea_disabled_reason_for_context).with(project.phases.first, @user).and_return('i_dont_like_you')
+            .to receive(:posting_idea_disabled_reason_for_phase).with(project.phases.first, @user).and_return('i_dont_like_you')
 
           do_request
 
@@ -1103,7 +1103,7 @@ resource 'Ideas' do
 
           example '[error] Update an idea when there is a posting disabled reason' do
             expect_any_instance_of(ParticipationContextService)
-              .to receive(:posting_idea_disabled_reason_for_context).with(@project.phases.first, @user).and_return('i_dont_like_you')
+              .to receive(:posting_idea_disabled_reason_for_phase).with(@project.phases.first, @user).and_return('i_dont_like_you')
 
             do_request
 

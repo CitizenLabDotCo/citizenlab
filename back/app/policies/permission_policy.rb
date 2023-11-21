@@ -15,8 +15,8 @@ class PermissionPolicy < ApplicationPolicy
       if user.admin?
         scope.all
       else
-        moderating_context_ids = ParticipationContextService.new.moderating_participation_context_ids user
-        scope.where(permission_scope_id: moderating_context_ids)
+        moderating_phase_ids = Phase.where(project_id: user.moderatable_project_ids).pluck(:id)
+        scope.where(permission_scope_id: moderating_phase_ids)
       end
     end
   end
