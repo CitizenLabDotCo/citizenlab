@@ -12,14 +12,14 @@ import Container from 'components/admin/ContentBuilder/Widgets/Container';
 import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
 import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
-import Image from 'components/admin/ContentBuilder/Widgets/Image';
-import Iframe from 'components/admin/ContentBuilder/Widgets/Iframe';
+import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
+import IframeMultiloc from 'components/admin/ContentBuilder/Widgets/IframeMultiloc';
 import AboutBox from 'components/admin/ContentBuilder/Widgets/AboutBox';
-import Accordion from 'components/admin/ContentBuilder/Widgets/Accordion';
+import AccordionMultiloc from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import InfoWithAccordions from '../CraftSections/InfoWithAccordions';
 import ImageTextCards from '../CraftSections/ImageTextCards';
-import Button from 'components/admin/ContentBuilder/Widgets/Button';
+import ButtonMultiloc from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
 
 type EditorProps = {
   children?: React.ReactNode;
@@ -40,14 +40,14 @@ const Editor: React.FC<EditorProps> = ({
         TwoColumn,
         ThreeColumn,
         TextMultiloc,
-        Image,
-        Iframe,
+        ImageMultiloc,
+        IframeMultiloc,
         AboutBox,
-        Accordion,
+        AccordionMultiloc,
         WhiteSpace,
         InfoWithAccordions,
         ImageTextCards,
-        Button,
+        ButtonMultiloc,
       }}
       isPreview={isPreview}
       onNodesChange={onNodesChange}
