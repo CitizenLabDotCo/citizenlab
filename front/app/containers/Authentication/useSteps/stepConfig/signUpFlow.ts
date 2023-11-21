@@ -202,10 +202,10 @@ export const signUpFlow = (
             return;
           }
 
-          if (requirements.special.group_membership === 'require') {
-            setCurrentStep('closed');
-            return;
-          }
+          // if (requirements.special.group_membership === 'require') {
+          //   setCurrentStep('closed');
+          //   return;
+          // }
 
           setCurrentStep('success');
           trackEventByName(tracks.signUpCustomFieldsStepCompleted);
