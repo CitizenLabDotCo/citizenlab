@@ -119,6 +119,7 @@ const AdminPhaseEdit = () => {
 
   useEffect(() => {
     setHasEndDate(phase?.data.attributes.end_at ? true : false);
+    setAttributeDiff({});
   }, [phase]);
 
   useEffect(() => {
