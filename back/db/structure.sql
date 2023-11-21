@@ -14,6 +14,7 @@ ALTER TABLE IF EXISTS ONLY public.ideas_topics DROP CONSTRAINT IF EXISTS fk_rail
 ALTER TABLE IF EXISTS ONLY public.events_attendances DROP CONSTRAINT IF EXISTS fk_rails_fba307ba3b;
 ALTER TABLE IF EXISTS ONLY public.comments DROP CONSTRAINT IF EXISTS fk_rails_f44b1e3c8a;
 ALTER TABLE IF EXISTS ONLY public.insights_text_networks DROP CONSTRAINT IF EXISTS fk_rails_f3e4924881;
+ALTER TABLE IF EXISTS ONLY public.report_builder_published_graph_data_units DROP CONSTRAINT IF EXISTS fk_rails_f21a19c203;
 ALTER TABLE IF EXISTS ONLY public.idea_files DROP CONSTRAINT IF EXISTS fk_rails_efb12f53ad;
 ALTER TABLE IF EXISTS ONLY public.insights_zeroshot_classification_tasks_inputs DROP CONSTRAINT IF EXISTS fk_rails_ee8a3a2c3d;
 ALTER TABLE IF EXISTS ONLY public.static_pages_topics DROP CONSTRAINT IF EXISTS fk_rails_edc8786515;
@@ -110,7 +111,6 @@ ALTER TABLE IF EXISTS ONLY public.permissions_custom_fields DROP CONSTRAINT IF E
 ALTER TABLE IF EXISTS ONLY public.analytics_dimension_projects_fact_visits DROP CONSTRAINT IF EXISTS fk_rails_4ecebb6e8a;
 ALTER TABLE IF EXISTS ONLY public.initiative_images DROP CONSTRAINT IF EXISTS fk_rails_4df6f76970;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_4aea6afa11;
-ALTER TABLE IF EXISTS ONLY public.report_builder_published_graph_data_units DROP CONSTRAINT IF EXISTS fk_rails_4846b9a405;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_46dd2ccfd1;
 ALTER TABLE IF EXISTS ONLY public.email_campaigns_examples DROP CONSTRAINT IF EXISTS fk_rails_465d6356b2;
 ALTER TABLE IF EXISTS ONLY public.insights_text_network_analysis_tasks_views DROP CONSTRAINT IF EXISTS fk_rails_3e0e58a177;
@@ -3343,7 +3343,7 @@ WITH (fillfactor='90');
 
 CREATE TABLE public.report_builder_published_graph_data_units (
     id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    report_builder_report_id uuid NOT NULL,
+    report_id uuid NOT NULL,
     graph_id character varying NOT NULL,
     data jsonb NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
@@ -6582,7 +6582,7 @@ CREATE INDEX que_poll_idx_with_job_schema_version ON public.que_jobs USING btree
 -- Name: report_builder_published_data_units_report_id_idx; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX report_builder_published_data_units_report_id_idx ON public.report_builder_published_graph_data_units USING btree (report_builder_report_id);
+CREATE INDEX report_builder_published_data_units_report_id_idx ON public.report_builder_published_graph_data_units USING btree (report_id);
 
 
 --
@@ -6827,14 +6827,6 @@ ALTER TABLE ONLY public.email_campaigns_examples
 
 ALTER TABLE ONLY public.notifications
     ADD CONSTRAINT fk_rails_46dd2ccfd1 FOREIGN KEY (phase_id) REFERENCES public.phases(id);
-
-
---
--- Name: report_builder_published_graph_data_units fk_rails_4846b9a405; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.report_builder_published_graph_data_units
-    ADD CONSTRAINT fk_rails_4846b9a405 FOREIGN KEY (report_builder_report_id) REFERENCES public.report_builder_reports(id);
 
 
 --
@@ -7603,6 +7595,14 @@ ALTER TABLE ONLY public.insights_zeroshot_classification_tasks_inputs
 
 ALTER TABLE ONLY public.idea_files
     ADD CONSTRAINT fk_rails_efb12f53ad FOREIGN KEY (idea_id) REFERENCES public.ideas(id);
+
+
+--
+-- Name: report_builder_published_graph_data_units fk_rails_f21a19c203; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.report_builder_published_graph_data_units
+    ADD CONSTRAINT fk_rails_f21a19c203 FOREIGN KEY (report_id) REFERENCES public.report_builder_reports(id);
 
 
 --
