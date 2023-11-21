@@ -82,7 +82,7 @@ namespace :migrate_craftjson do
               errors[tenant.host] ||= []
               errors[tenant.host] += ["#{layout.id}: Incompatible structures"]
             else
-              add_multilocs(layout, primary_locale)
+              add_multilocs(layout, primary_locale, other_locales)
             end
           end
           if !layout.save
@@ -123,10 +123,6 @@ def multilingual?(craftjson, locales)
   (craftjson.keys & locales).size > 1
 end
 
-def only_root_compatible?(craftjson)
-  craftjson.values.count { |elts| elts.keys != ['ROOT'] } <= 1
-end
-
 def includes_multiloc_elements?(elts)
   elts.values.any? do |elt|
     multiloc_element?(elt)
@@ -144,7 +140,7 @@ def node_type(elt)
 end
 
 def skip_child?(child)
-  child['type'] == 'WhiteSpace' || (CONTAINER_TYPES.include?(child['type']) && child['children'].empty?)
+  node_type(child) == 'WhiteSpace' || (CONTAINER_TYPES.include?(node_type(child)) && child_ids(child).empty?)
 end
 
 def migrate_monolingual(craftjs_jsonmultiloc, primary_locale, other_locales)
@@ -153,8 +149,8 @@ def migrate_monolingual(craftjs_jsonmultiloc, primary_locale, other_locales)
   craftjs_jsonmultiloc[primary_locale].transform_values do |elt|
     new_elt = elt.deep_dup
     if multiloc_element?(elt)
-      new_elt['displayName'] = MULTILOC_TYPES[elt['displayName']] if MULTILOC_TYPES.key? elt['displayName']
       new_elt['type']['resolvedName'] = MULTILOC_TYPES[elt.dig('type', 'resolvedName')] if MULTILOC_TYPES.key? elt.dig('type', 'resolvedName')
+      new_elt['displayName'] = MULTILOC_TYPES[elt['displayName']] if MULTILOC_TYPES.key? elt['displayName']
       TEXT_PROPS.each do |text_prop|
         if elt['props'].key? text_prop
           new_elt['props'][text_prop] = { primary_locale => elt.dig('props', text_prop) }
@@ -163,15 +159,12 @@ def migrate_monolingual(craftjs_jsonmultiloc, primary_locale, other_locales)
           end
         end
       end
-      new_elt
-    else
-      elt
     end
+    new_elt
   end
 end
 
-def add_multilocs(layout, primary_locale)
-  other_locales = layout.craftjs_jsonmultiloc.keys - [primary_locale]
+def add_multilocs(layout, primary_locale, other_locales)
   mapping = text_mapping(layout.craftjs_jsonmultiloc, primary_locale)
 
   layout.craftjs_json.transform_values do |elt|
@@ -199,11 +192,10 @@ def text_mapping(craftjs_jsonmultiloc, primary_locale, current_nodes = nil)
   TEXT_PROPS.each do |text_prop|
     primary_elt = current_nodes[primary_locale]
     if primary_elt['props'].key? text_prop
+      primary_text = primary_elt.dig('props', text_prop)
+      mapping[primary_text] ||= {}
       current_nodes.each do |other_locale, other_elt|
-        if primary_locale != other_locale
-          mapping[primary_elt.dig('props', text_prop)] ||= {}
-          mapping[primary_elt.dig('props', text_prop)][other_locale] = other_elt.dig('props', text_prop)
-        end
+        mapping[primary_text][other_locale] = other_elt.dig('props', text_prop) if primary_locale != other_locale
       end
     end
   end
