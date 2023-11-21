@@ -43,7 +43,6 @@ class CustomField < ApplicationRecord
   has_many :text_images, as: :imageable, dependent: :destroy
   accepts_nested_attributes_for :text_images
 
-  # TODO: JS participation_context
   belongs_to :resource, polymorphic: true, optional: true
   has_many :permissions_custom_fields, dependent: :destroy
   has_many :permissions, through: :permissions_custom_fields

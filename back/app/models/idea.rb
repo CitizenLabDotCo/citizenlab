@@ -163,7 +163,6 @@ class Idea < ApplicationRecord
   end
 
   def custom_form
-    # TODO: JS participation_context
     participation_context = creation_phase || project
     participation_context.custom_form || CustomForm.new(participation_context: participation_context)
   end
