@@ -1,7 +1,7 @@
 import React from 'react';
 import { Icon, colors } from '@citizenlab/cl2-component-library';
 
-const ParticipationIcon = () => {
+const ParticipationSuccessIcon = () => {
   return (
     <Icon
       name={'check-circle'}
@@ -12,4 +12,4 @@ const ParticipationIcon = () => {
   );
 };
 
-export default ParticipationIcon;
+export default ParticipationSuccessIcon;

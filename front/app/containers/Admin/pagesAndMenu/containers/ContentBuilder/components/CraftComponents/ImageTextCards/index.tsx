@@ -8,8 +8,8 @@ import { UserComponent, Element } from '@craftjs/core';
 import usePx from 'components/admin/ContentBuilder/Widgets/usePx';
 
 // widgets
-import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
-import Container from 'components/admin/ContentBuilder/Widgets/Container';
+import TwoColumn from '../TwoColumn';
+import Container from '../Container';
 import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
 import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';

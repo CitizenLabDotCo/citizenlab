@@ -1,7 +1,23 @@
 SELECT
-  users.id as user_id,
-  custom_field_values.key,
-  custom_field_values.value
+  u.id as dimension_user_id,
+  cf.key,
+  cf.value
 FROM
-  users
-  JOIN jsonb_each_text(users.custom_field_values) custom_field_values ON true;
+  users u
+  LEFT JOIN LATERAL (
+    SELECT
+      key,
+      custom_field_values ->> key AS value
+    FROM
+      custom_fields
+    where
+      custom_fields.resource_type = 'User'
+  ) cf ON true
+  LEFT JOIN LATERAL (
+    SELECT
+      jsonb_object_keys(u.custom_field_values) AS key
+  ) cfv ON true
+GROUP BY
+  dimension_user_id,
+  cf.key,
+  cf.value;

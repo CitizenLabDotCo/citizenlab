@@ -861,6 +861,7 @@
   "app.containers.DisabledAccount.text2": "Ο λογαριασμός σας στην πλατφόρμα συμμετοχής του {orgName} έχει προσωρινά απενεργοποιηθεί για παραβίαση των κατευθυντήριων γραμμών της κοινότητας. Για περισσότερες πληροφορίες σχετικά με αυτό, μπορείτε να συμβουλευτείτε το {TermsAndConditions}.",
   "app.containers.DisabledAccount.title": "Ο λογαριασμός σας έχει απενεργοποιηθεί προσωρινά",
   "app.containers.EventsShow.addToCalendar": "Προσθήκη στο ημερολόγιο",
+  "app.containers.EventsShow.attended": "παρακολούθησε το",
   "app.containers.EventsShow.attending": "που παρακολουθεί το",
   "app.containers.EventsShow.editEvent": "Επεξεργασία συμβάντος",
   "app.containers.EventsShow.emailSharingBody": "Παρακολουθήστε αυτή την εκδήλωση: {eventTitle} στο {eventLocation}",

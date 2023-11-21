@@ -22,12 +22,21 @@ import useKeyPress from 'hooks/useKeyPress';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import Viewer from './Viewer';
+import { isEmpty } from 'lodash-es';
+import CityLogoSection from 'components/CityLogoSection';
 export const adminRedirectPath = '/admin';
 
 const HomePage = () => {
   const { data: homepageSettings } = useHomepageSettings();
   const { data: authUser } = useAuthUser();
   const { data: appConfiguration } = useAppConfiguration();
+
+  const isHomepageBuilderEnabled = useFeatureFlag({
+    name: 'homepage_builder',
+  });
+
   const pressedLetterAKey = useKeyPress('a');
   const userHasAdminAccess =
     !isNilOrError(authUser) && !isNilOrError(appConfiguration)
@@ -43,6 +52,21 @@ const HomePage = () => {
       clHistory.push(adminRedirectPath);
     }
   }, [pressedLetterAKey, userHasAdminAccess]);
+
+  if (
+    isHomepageBuilderEnabled &&
+    !isEmpty(homepageSettings?.data.attributes.craftjs_json)
+  ) {
+    return (
+      <>
+        <Viewer />
+        <Fragment name="pages/homepage_info/content">
+          <div />
+        </Fragment>
+        <CityLogoSection />
+      </>
+    );
+  }
 
   if (!isNilOrError(homepageSettings)) {
     return (

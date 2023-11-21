@@ -1,5 +1,5 @@
 SELECT
-  DISTINCT u.id as dimension_user_id,
+  u.id as dimension_user_id,
   cf.key,
   cf.value
 FROM
@@ -16,4 +16,8 @@ FROM
   LEFT JOIN LATERAL (
     SELECT
       jsonb_object_keys(u.custom_field_values) AS key
-  ) cfv ON true;
+  ) cfv ON true
+GROUP BY
+  dimension_user_id,
+  cf.key,
+  cf.value;

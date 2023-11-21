@@ -145,10 +145,6 @@ const ReactionControl = ({
   const ideaAttributes = idea.data.attributes;
   const reactingActionDescriptor =
     ideaAttributes.action_descriptor.reacting_idea;
-  const reactingFutureEnabled = !!(
-    reactingActionDescriptor.up.future_enabled ||
-    reactingActionDescriptor.down.future_enabled
-  );
   const cancellingEnabled = reactingActionDescriptor.cancelling_enabled;
 
   // participationContext
@@ -169,25 +165,10 @@ const ReactionControl = ({
   const participationContextId = isContinuousProject
     ? project?.data.id || null
     : latestRelevantIdeaPhase?.id || null;
-  const participationContext = isContinuousProject
-    ? project.data || null
-    : latestRelevantIdeaPhase;
-  const isVotingContext =
-    participationContext?.attributes.participation_method === 'voting';
 
   // Reactions count
   const likesCount = ideaAttributes.likes_count;
   const dislikesCount = ideaAttributes.dislikes_count;
-
-  const showReactionControl = !!(
-    !isVotingContext &&
-    (reactingActionDescriptor.enabled ||
-      isFixableByAuthentication(reactingActionDescriptor.disabled_reason) ||
-      cancellingEnabled ||
-      reactingFutureEnabled ||
-      likesCount > 0 ||
-      dislikesCount > 0)
-  );
 
   const onClickLike = (event: MouseEvent | KeyboardEvent) => {
     event.preventDefault();
@@ -250,64 +231,60 @@ const ReactionControl = ({
     return;
   };
 
-  if (idea && showReactionControl) {
-    // Only when disliking is explicitly disabled,
-    // we don't show the dislike button
-    const showDislike =
-      reactingActionDescriptor.down.enabled === true ||
-      (reactingActionDescriptor.down.enabled === false &&
-        reactingActionDescriptor.down.disabled_reason !==
-          'reacting_dislike_disabled');
+  // Only when disliking is explicitly disabled,
+  // we don't show the dislike button
+  const showDislike =
+    reactingActionDescriptor.down.enabled === true ||
+    (reactingActionDescriptor.down.enabled === false &&
+      reactingActionDescriptor.down.disabled_reason !==
+        'reacting_dislike_disabled');
 
-    return (
-      <>
-        <ScreenReaderContent
-          likesCount={likesCount}
-          dislikesCount={dislikesCount}
+  return (
+    <>
+      <ScreenReaderContent
+        likesCount={likesCount}
+        dislikesCount={dislikesCount}
+      />
+      <Container
+        className={[
+          className,
+          'e2e-reaction-controls',
+          myReactionMode === null ? 'neutral' : myReactionMode,
+        ]
+          .filter((item) => item)
+          .join(' ')}
+        aria-hidden={ariaHidden}
+      >
+        <ReactionButton
+          buttonReactionMode="up"
+          userReactionMode={myReactionMode}
+          onClick={onClickLike}
+          className={reactingAnimation === 'up' ? 'reactionClick' : ''}
+          ariaHidden={ariaHidden}
+          styleType={styleType}
+          size={size}
+          iconName="vote-up"
+          reactionsCount={likesCount}
+          ideaId={idea.data.id}
         />
-        <Container
-          className={[
-            className,
-            'e2e-reaction-controls',
-            myReactionMode === null ? 'neutral' : myReactionMode,
-          ]
-            .filter((item) => item)
-            .join(' ')}
-          aria-hidden={ariaHidden}
-        >
+
+        {showDislike && (
           <ReactionButton
-            buttonReactionMode="up"
+            buttonReactionMode="down"
             userReactionMode={myReactionMode}
-            onClick={onClickLike}
-            className={reactingAnimation === 'up' ? 'reactionClick' : ''}
+            onClick={onClickDislike}
+            className={reactingAnimation === 'down' ? 'reactionClick' : ''}
             ariaHidden={ariaHidden}
             styleType={styleType}
             size={size}
-            iconName="vote-up"
-            reactionsCount={likesCount}
+            iconName="vote-down"
+            reactionsCount={dislikesCount}
             ideaId={idea.data.id}
           />
-
-          {showDislike && (
-            <ReactionButton
-              buttonReactionMode="down"
-              userReactionMode={myReactionMode}
-              onClick={onClickDislike}
-              className={reactingAnimation === 'down' ? 'reactionClick' : ''}
-              ariaHidden={ariaHidden}
-              styleType={styleType}
-              size={size}
-              iconName="vote-down"
-              reactionsCount={dislikesCount}
-              ideaId={idea.data.id}
-            />
-          )}
-        </Container>
-      </>
-    );
-  }
-
-  return null;
+        )}
+      </Container>
+    </>
+  );
 };
 
 export default ReactionControl;
