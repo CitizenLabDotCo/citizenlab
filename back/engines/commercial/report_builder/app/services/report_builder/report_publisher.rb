@@ -7,7 +7,7 @@ class ReportBuilder::ReportPublisher
 
   # TODO: move all CraftJS related logic in one class
   def publish
-    ReportBuilder::PublishedGraphDataUnit.where(report_builder_report_id: @report.id).destroy_all
+    ReportBuilder::PublishedGraphDataUnit.where(report_id: @report.id).destroy_all
 
     nodes = @report.layout.craftjs_jsonmultiloc['en']
     nodes.each do |node_id, node_obj|
@@ -19,7 +19,7 @@ class ReportBuilder::ReportPublisher
       next unless data
 
       ReportBuilder::PublishedGraphDataUnit.create!(
-        report_builder_report_id: @report.id,
+        report_id: @report.id,
         graph_id: node_id,
         data: data
       )

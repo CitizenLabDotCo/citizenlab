@@ -66,7 +66,7 @@ describe ReportBuilder::WebApi::V1::GraphDataUnitsController do
     expect(ReportBuilder::PublishedGraphDataUnit.count).to eq(1)
     data_unit = ReportBuilder::PublishedGraphDataUnit.first
     expect(data_unit).to have_attributes(
-      report_builder_report_id: report.id,
+      report_id: report.id,
       graph_id: 'gJxirq8X7m',
       data: expected_attrs.map(&:deep_stringify_keys)
     )

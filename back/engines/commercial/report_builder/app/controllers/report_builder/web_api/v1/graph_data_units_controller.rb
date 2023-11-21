@@ -11,7 +11,7 @@ module ReportBuilder
         end
 
         def published
-          data_unit = PublishedGraphDataUnit.find_by!(report_builder_report_id: params[:report_id], graph_id: params[:graph_id])
+          data_unit = PublishedGraphDataUnit.find_by!(report_id: params[:report_id], graph_id: params[:graph_id])
           authorize data_unit, policy_class: GraphDataUnitPolicy
           render_results(data_unit.data)
         end
