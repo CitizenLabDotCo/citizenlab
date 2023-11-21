@@ -100,7 +100,6 @@ interface Props {
   footer?: JSX.Element | string;
   onClick?: (event: MouseEvent<HTMLAnchorElement>) => void;
   className?: string;
-  scrollToTop?: boolean;
 }
 
 export const Card = ({
