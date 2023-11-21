@@ -6,6 +6,10 @@ module ReportBuilder
       class ReportSerializer < ::WebApi::V1::BaseSerializer
         attributes :name, :created_at, :updated_at
 
+        attribute :published_at do |report|
+          report.published_graph_data_units.minimum(:created_at)
+        end
+
         has_one(
           :layout,
           record_type: ContentBuilder::WebApi::V1::LayoutSerializer.record_type,
