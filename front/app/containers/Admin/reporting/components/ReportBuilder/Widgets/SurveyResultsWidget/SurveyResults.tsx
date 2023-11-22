@@ -22,7 +22,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import { useIntl } from 'utils/cl-intl';
 import { createResultRows } from './utils';
 import { BORDER } from '../constants';
-import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
 
 type Props = {
   projectId: string;
@@ -100,7 +99,9 @@ const SurveyResults = ({ projectId, phaseId, shownQuestions }: Props) => {
         >
           {row.map((result, index) => (
             <Box
-              px={DEFAULT_PADDING}
+              // px={DEFAULT_PADDING}
+              pr={index === 0 ? '10px' : undefined}
+              pl={index === 1 ? '10px' : undefined}
               width="50%"
               key={`${rowIndex}-${index}`}
               borderTop={BORDER}

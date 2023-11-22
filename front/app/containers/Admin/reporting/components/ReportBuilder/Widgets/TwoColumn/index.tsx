@@ -5,6 +5,8 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 // styles
 import styled from 'styled-components';
+import usePxReport from 'containers/Admin/reporting/hooks/usePxReports';
+import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
 
 // craft
 import { twoColumnCraftConfig } from 'components/admin/ContentBuilder/Widgets/TwoColumn';
@@ -15,7 +17,6 @@ import useLayout from 'containers/Admin/reporting/hooks/useLayout';
 // typings
 import { ColumnLayout } from 'components/admin/ContentBuilder/typings';
 import { Layout } from 'components/admin/GraphCards/typings';
-import usePxReport from 'containers/Admin/reporting/hooks/usePxReports';
 
 type TwoColumnProps = {
   columnLayout: ColumnLayout;
@@ -40,7 +41,7 @@ const StyledBox = styled(Box)<{
       ? ''
       : `
     display: grid;
-    grid-gap: 8px;
+    grid-gap: ${DEFAULT_PADDING};
     grid-template-columns: ${COLUMN_LAYOUTS[columnLayout]};
   `}
 
