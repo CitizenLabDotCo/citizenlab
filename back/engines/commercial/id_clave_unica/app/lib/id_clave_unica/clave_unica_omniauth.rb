@@ -83,6 +83,10 @@ module IdClaveUnica
       true
     end
 
+    def email_confirmed?(user)
+      !user.confirmation_required?
+    end
+
     private
 
     def formatted_rut(auth)
