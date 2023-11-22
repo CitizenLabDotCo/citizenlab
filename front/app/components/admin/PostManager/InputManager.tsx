@@ -65,14 +65,20 @@ const PostManager = ({
     filter_can_moderate: projectId ? undefined : true,
   });
   const { data: ideaStatuses } = useIdeaStatuses();
-  const { data: ideaTopics } = useTopics({});
+  const { data: ideaTopics } = useTopics();
   const { data: projectAllowedInputTopics } = useProjectAllowedInputTopics({
-    projectId: typeof projectId === 'string' ? projectId : undefined,
+    projectId:
+      type === 'ProjectIdeas' && typeof projectId === 'string'
+        ? projectId
+        : undefined,
   });
-  const topicIds = getTopicIds(projectAllowedInputTopics?.data);
-  const topicIdsSet = topicIds ? new Set(topicIds) : undefined;
 
   const getTopicsData = () => {
+    const topicIds = getTopicIds(projectAllowedInputTopics?.data);
+    // getTopicIds always returns an array atm, so important to check for length
+    // otherwise the if condition will always pass.
+    const topicIdsSet = topicIds.length > 0 ? new Set(topicIds) : undefined;
+
     if (topicIdsSet) {
       return ideaTopics?.data.filter((topic) => topicIdsSet?.has(topic.id));
     }
