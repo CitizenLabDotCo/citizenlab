@@ -1998,7 +1998,8 @@ models:
     created_at: '2018-02-22 00:00:00'
     updated_at: '2018-03-28 13:35:10'
     budget: 800
-  - title_multiloc:
+  - &charliesPb_idea
+    title_multiloc:
       nl-BE: Iure sit eos placeat labore amet.
     body_multiloc:
       en: "<p>Itaque mollitia voluptatum quos architecto quis ipsa reiciendis. Accusantium
@@ -2017,7 +2018,8 @@ models:
     created_at: '2018-02-22 00:00:00'
     updated_at: '2018-03-28 13:35:10'
     budget: 800
-  - title_multiloc:
+  - &Pb_idea
+    title_multiloc:
       nl-BE: Iure sit eos placeat labore amet.
     body_multiloc:
       en: "<p>Itaque mollitia voluptatum quos architecto quis ipsa reiciendis. Accusantium
@@ -8117,6 +8119,44 @@ models:
     phase_ref: *55
   - idea_ref: *609
     phase_ref: *001
+  - idea_ref: *Pb_idea
+    phase_ref: *Pb_phase
+  - idea_ref: *charliesPb_idea
+    phase_ref: *charliesPb_phase
+  - idea_ref: *206
+    phase_ref: *verifiedPb_phase
+  - idea_ref: *198
+    phase_ref: *verifiedPb_phase
+  - idea_ref: *controversial_idea
+    phase_ref: *76_phase
+  - idea_ref: *oldIdea
+    phase_ref: *76_phase
+  - idea_ref: *newIdea
+    phase_ref: *76_phase
+  - idea_ref: *topic_idea
+    phase_ref: *76_phase
+  - idea_ref: *290
+    phase_ref: *76_phase
+  - idea_ref: *354
+    phase_ref: *76_phase
+  - idea_ref: *328
+    phase_ref: *76_phase
+  - idea_ref: *443
+    phase_ref: *76_phase
+  - idea_ref: *394
+    phase_ref: *76_phase
+  - idea_ref: *1156
+    phase_ref: *76_phase
+  - idea_ref: *854
+    phase_ref: *121_phase
+  - idea_ref: *1259
+    phase_ref: *121_phase
+  - idea_ref: *209
+    phase_ref: *121_phase
+  - idea_ref: *verifiedIdea
+    phase_ref: *verifiedIdeation_phase
+  - idea_ref: *charliesIdea
+    phase_ref: *charliesIdeation_phase
   areas:
     - title_multiloc:
         en: Carrotgem
