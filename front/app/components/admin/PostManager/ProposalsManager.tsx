@@ -120,14 +120,6 @@ const ProposalsManager = ({ defaultFilterMenu, visibleFilterMenus }: Props) => {
   };
   // End Modal Preview
 
-  const getNonSharedParams = () => {
-    return {
-      onChangePhase: undefined,
-      selectedPhaseId: undefined,
-      selectedStatus: filter.initiative_status,
-    };
-  };
-
   const onChangeTopics = (topics: string[]) => {
     setFilters({ ...filter, topics });
   };
@@ -163,8 +155,7 @@ const ProposalsManager = ({ defaultFilterMenu, visibleFilterMenus }: Props) => {
   const selectedTopics = filter.topics;
   const selectedAssignee = filter.assignee;
   const feedbackNeeded = filter.feedback_needed || false;
-
-  const { selectedStatus } = getNonSharedParams();
+  const selectedStatus = filter.initiative_status;
 
   if (initiativeTopics) {
     return (
