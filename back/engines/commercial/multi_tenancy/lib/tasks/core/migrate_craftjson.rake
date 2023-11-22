@@ -151,6 +151,12 @@ def migrate_monolingual(craftjs_jsonmultiloc, primary_locale, other_locales)
     if multiloc_element?(elt)
       new_elt['type']['resolvedName'] = MULTILOC_TYPES[elt.dig('type', 'resolvedName')] if MULTILOC_TYPES.key? elt.dig('type', 'resolvedName')
       new_elt['displayName'] = MULTILOC_TYPES[elt['displayName']] if MULTILOC_TYPES.key? elt['displayName']
+      if new_elt['type']['resolvedName'] == 'ImageMultiloc'
+        image_prop = {}
+        image_prop['dataCode'] = new_elt.dig('props', 'dataCode') if new_elt.dig('props', 'dataCode')
+        new_elt['props']['image'] = image_prop
+        new_elt['props'].delete 'dataCode'
+      end
       TEXT_PROPS.each do |text_prop|
         if elt['props'].key? text_prop
           new_elt['props'][text_prop] = { primary_locale => elt.dig('props', text_prop) }
