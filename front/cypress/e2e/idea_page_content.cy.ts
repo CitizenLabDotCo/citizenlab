@@ -1,4 +1,5 @@
 import { randomString } from '../support/commands';
+import moment = require('moment');
 
 describe('Idea Page', () => {
   describe('Various Idea Page Components', () => {
@@ -52,19 +53,35 @@ describe('Idea Page', () => {
     const projectDescription = randomString();
     const ideaTitle = randomString();
     const ideaContent = randomString();
+    const phaseTitle = randomString();
 
     before(() => {
       cy.apiCreateProject({
-        type: 'continuous',
+        type: 'timeline',
         title: projectTitle,
         descriptionPreview: projectDescriptionPreview,
         description: projectDescription,
         publicationStatus: 'published',
-        participationMethod: 'ideation',
       })
         .then((project) => {
           projectId = project.body.data.id;
-          return cy.apiCreateIdea({ projectId, ideaTitle, ideaContent });
+          return cy.apiCreatePhase({
+            projectId,
+            title: phaseTitle,
+            startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
+            participationMethod: 'ideation',
+            canPost: true,
+            canComment: true,
+            canReact: true,
+          });
+        })
+        .then((phase) => {
+          return cy.apiCreateIdea({
+            projectId,
+            ideaTitle,
+            ideaContent,
+            phaseIds: [phase.body.data.id],
+          });
         })
         .then((idea) => {
           ideaId = idea.body.data.id;
@@ -93,19 +110,35 @@ describe('Idea Page', () => {
     const projectDescription = randomString();
     const ideaTitle = randomString();
     const ideaContent = randomString();
+    const phaseTitle = randomString();
 
     before(() => {
       cy.apiCreateProject({
-        type: 'continuous',
+        type: 'timeline',
         title: projectTitle,
         descriptionPreview: projectDescriptionPreview,
         description: projectDescription,
         publicationStatus: 'published',
-        participationMethod: 'ideation',
       })
         .then((project) => {
           projectId = project.body.data.id;
-          return cy.apiCreateIdea({ projectId, ideaTitle, ideaContent });
+          return cy.apiCreatePhase({
+            projectId,
+            title: phaseTitle,
+            startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
+            participationMethod: 'ideation',
+            canPost: true,
+            canComment: true,
+            canReact: true,
+          });
+        })
+        .then((phase) => {
+          return cy.apiCreateIdea({
+            projectId,
+            ideaTitle,
+            ideaContent,
+            phaseIds: [phase.body.data.id],
+          });
         })
         .then((idea) => {
           ideaId = idea.body.data.id;
@@ -132,6 +165,7 @@ describe('Idea Page', () => {
     let projectId: string;
     const ideaTitle = randomString();
     const ideaContent = randomString();
+    const phaseTitle = randomString();
     const locationGeoJSON = {
       type: 'Point',
       coordinates: [4.351710300000036, 50.8503396],
@@ -144,21 +178,32 @@ describe('Idea Page', () => {
       const projectDescription = randomString();
 
       cy.apiCreateProject({
-        type: 'continuous',
+        type: 'timeline',
         title: projectTitle,
         descriptionPreview: projectDescriptionPreview,
         description: projectDescription,
         publicationStatus: 'published',
-        participationMethod: 'ideation',
       })
         .then((project) => {
           projectId = project.body.data.id;
+          return cy.apiCreatePhase({
+            projectId,
+            title: phaseTitle,
+            startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
+            participationMethod: 'ideation',
+            canPost: true,
+            canComment: true,
+            canReact: true,
+          });
+        })
+        .then((phase) => {
           return cy.apiCreateIdea({
             projectId,
             ideaTitle,
             ideaContent,
             locationGeoJSON,
             locationDescription,
+            phaseIds: [phase.body.data.id],
           });
         })
         .then((idea) => {
@@ -191,6 +236,7 @@ describe('Idea location', () => {
   const ideaNoLocationPointTitle = randomString();
   const ideaWithLocationPointTitle = randomString();
   const ideaContent = randomString();
+  const phaseTitle = randomString();
   const locationDescription = '43 Dummy Address';
   const locationGeoJSON = {
     type: 'Point',
@@ -199,20 +245,31 @@ describe('Idea location', () => {
 
   before(() => {
     cy.apiCreateProject({
-      type: 'continuous',
+      type: 'timeline',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
       publicationStatus: 'published',
-      participationMethod: 'ideation',
     })
       .then((project) => {
         projectId = project.body.data.id;
+        return cy.apiCreatePhase({
+          projectId,
+          title: phaseTitle,
+          startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
+          participationMethod: 'ideation',
+          canPost: true,
+          canComment: true,
+          canReact: true,
+        });
+      })
+      .then((phase) => {
         return cy.apiCreateIdea({
           projectId,
           ideaTitle: ideaNoLocationPointTitle,
           ideaContent,
           locationDescription,
+          phaseIds: [phase.body.data.id],
         });
       })
       .then((idea) => {
