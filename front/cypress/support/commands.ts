@@ -1158,6 +1158,7 @@ export function apiCreatePhase({
   votingMaxTotal,
   allow_anonymous_participation,
   votingMethod,
+  votingMaxVotesPerIdea,
 }: {
   projectId: string;
   title: string;
@@ -1173,6 +1174,7 @@ export function apiCreatePhase({
   votingMaxTotal?: number;
   allow_anonymous_participation?: boolean;
   votingMethod?: VotingMethod;
+  votingMaxVotesPerIdea?: number;
 }) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -1203,6 +1205,7 @@ export function apiCreatePhase({
           voting_max_total: votingMaxTotal,
           allow_anonymous_participation: allow_anonymous_participation,
           campaigns_settings: { project_phase_started: true },
+          voting_max_votes_per_idea: votingMaxVotesPerIdea,
         },
       },
     });
