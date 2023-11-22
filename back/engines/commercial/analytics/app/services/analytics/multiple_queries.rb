@@ -45,6 +45,8 @@ module Analytics
       [results, errors, paginations]
     end
 
+    private
+
     def add_pagination_url(paginations)
       return paginations if @original_url.nil?
 

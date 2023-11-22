@@ -18,9 +18,7 @@ module ReportBuilder
     protected
 
     def run_query(json_query)
-      # TODO: investigate why we need parameters and not HashWithIndifferentAccess
-      json_query_params = ActionController::Parameters.new({ query: json_query }).permit![:query]
-      results, errors, _paginations = Analytics::MultipleQueries.new.run(json_query_params)
+      results, errors, _paginations = Analytics::MultipleQueries.new.run(json_query)
       if errors.present?
         raise "Error processing Analytics query: #{errors.to_json}"
       end
