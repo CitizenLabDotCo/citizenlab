@@ -63,7 +63,7 @@ const Button = ({ text, url, type, alignment }: ButtonProps) => {
           ? 'flex-start'
           : 'flex-end'
       }
-      maxWidth="1150px"
+      maxWidth="1200px"
       margin="0 auto"
       px={componentDefaultPadding}
     >

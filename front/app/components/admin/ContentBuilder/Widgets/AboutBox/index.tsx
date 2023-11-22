@@ -25,7 +25,7 @@ const AboutBox = () => {
   return (
     <Box
       id="e2e-about-box"
-      maxWidth="1150px"
+      maxWidth="1200px"
       margin="0 auto"
       px={componentDefaultPadding}
     >

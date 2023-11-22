@@ -69,7 +69,7 @@ const Image = ({ alt = {}, image }: Props) => {
       id="e2e-image"
       style={{ pointerEvents: 'none' }}
       minHeight="26px"
-      maxWidth="1150px"
+      maxWidth="1200px"
       margin="0 auto"
       px={componentDefaultPadding}
     >

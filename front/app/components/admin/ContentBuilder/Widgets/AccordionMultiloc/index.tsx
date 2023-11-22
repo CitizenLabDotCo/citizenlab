@@ -38,7 +38,7 @@ const Accordion = ({ text, title, openByDefault = false }: AccordionProps) => {
 
   return (
     <AccordionComponent
-      maxWidth="1150px"
+      maxWidth="1200px"
       margin="0 auto"
       px={componentDefaultPadding}
       isOpenByDefault={openByDefault}

@@ -50,7 +50,7 @@ const Iframe = ({ url, height, hasError, title }: Props) => {
     <Box
       id="e2e-content-builder-iframe-component"
       minHeight="26px"
-      maxWidth="1150px"
+      maxWidth="1200px"
       margin="0 auto"
       px={componentDefaultPadding}
     >
