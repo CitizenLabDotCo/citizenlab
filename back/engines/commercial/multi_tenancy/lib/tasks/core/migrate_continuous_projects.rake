@@ -31,3 +31,19 @@ namespace :fix_existing_tenants do
     end
   end
 end
+
+namespace :fix_existing_tenants do
+  desc 'Migrate all continuous projects to timeline projects with a single phase'
+  task :migrate_continuous_forms_fix, %i[specify_host] => [:environment] do |_t, args|
+    specify_host = args[:specify_host]
+    Tenant.prioritize(Tenant.creation_finalized).each do |tenant|
+      next unless tenant.host == specify_host || specify_host.blank?
+
+      Rails.logger.info "PROCESSING TENANT: #{tenant.host}..."
+      Apartment::Tenant.switch(tenant.schema_name) do
+        project_migrator = MultiTenancy::Rake::ContinuousProjectMigrationService.new
+        project_migrator.fix_survey_custom_forms
+      end
+    end
+  end
+end
