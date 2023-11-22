@@ -159,8 +159,8 @@ const ProjectTimelineContainer = ({ projectId, className }: Props) => {
             <PhaseIdeas projectId={projectId} phaseId={selectedPhaseId} />
           )}
           {showVotingResults && <VotingResults phaseId={selectedPhaseId} />}
-          {showReport && <PhaseReport reportId={reportId} />}
         </ContentContainer>
+        {showReport && <PhaseReport reportId={reportId} />}
       </StyledSectionContainer>
     );
   }

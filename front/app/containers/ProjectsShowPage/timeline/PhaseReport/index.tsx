@@ -1,9 +1,20 @@
 import React from 'react';
+
+// hooks
 import useReportLayout from 'api/report_layout/useReportLayout';
 import useReportLocale from 'containers/Admin/reporting/hooks/useReportLocale';
-import { Box } from '@citizenlab/cl2-component-library';
+
+// components
+import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import Editor from 'containers/Admin/reporting/components/ReportBuilder/Editor';
 import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
+
+// context
+import { ReportContext } from 'containers/Admin/reporting/context/ReportContext';
+
+// styling
+import { stylingConsts } from 'utils/styleUtils';
+import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 
 interface Props {
   reportId: string;
@@ -12,17 +23,37 @@ interface Props {
 const PhaseReport = ({ reportId }: Props) => {
   const { data: reportLayout } = useReportLayout(reportId);
   const reportLocale = useReportLocale(reportLayout?.data);
+  const smallerThanTablet = useBreakpoint('tablet');
+  const smallerThanPhone = useBreakpoint('phone');
+
   if (!reportLayout || !reportLocale) return null;
 
   const editorData =
     reportLayout.data.attributes.craftjs_jsonmultiloc[reportLocale];
 
   return (
-    <Box w="100%" display="flex" justifyContent="center">
-      <Box maxWidth="800px">
-        <Editor isPreview={true}>
-          {editorData && <ContentBuilderFrame editorData={editorData} />}
-        </Editor>
+    <Box
+      w="100%"
+      p={smallerThanPhone ? '0px' : '30px'}
+      display="flex"
+      justifyContent="center"
+    >
+      <Box
+        w="100%"
+        maxWidth={`${maxPageWidth}px`}
+        display="flex"
+        bgColor="white"
+        borderRadius={stylingConsts.borderRadius}
+        boxShadow="0px 2px 4px -1px rgba(0,0,0,0.06)"
+        p={smallerThanTablet ? '0px' : '30px'}
+      >
+        <ReportContext.Provider value="phase">
+          <Box maxWidth="800px">
+            <Editor isPreview={true}>
+              {editorData && <ContentBuilderFrame editorData={editorData} />}
+            </Editor>
+          </Box>
+        </ReportContext.Provider>
       </Box>
     </Box>
   );
