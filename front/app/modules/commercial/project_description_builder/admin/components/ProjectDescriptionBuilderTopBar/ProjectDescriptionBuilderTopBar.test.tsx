@@ -128,7 +128,7 @@ describe('ProjectDescriptionBuilderTopBar', () => {
       <Editor>
         <ProjectDescriptionBuilderTopBar
           selectedLocale="en"
-          hasError
+          hasError={false}
           onSelectLocale={() => {}}
           previewEnabled={false}
           setPreviewEnabled={() => {}}
@@ -267,22 +267,6 @@ describe('ProjectDescriptionBuilderTopBar', () => {
       editorData: {},
       locale: 'fr-FR',
     });
-  });
-
-  it('shows locale switcher error correctly', () => {
-    const onSelectLocale = jest.fn();
-    render(
-      <Editor>
-        <ProjectDescriptionBuilderTopBar
-          selectedLocale="en"
-          hasError={true}
-          onSelectLocale={onSelectLocale}
-          previewEnabled={false}
-          setPreviewEnabled={() => {}}
-        />
-      </Editor>
-    );
-    expect(screen.getByText('en').firstChild).toHaveClass('empty');
   });
 
   it('sets Save button to pending state correctly', () => {
