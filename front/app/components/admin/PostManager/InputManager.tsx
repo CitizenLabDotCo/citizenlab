@@ -1,22 +1,15 @@
 import React, { Suspense, lazy, useEffect, useState } from 'react';
-import { isFunction } from 'lodash-es';
-import { adopt } from 'react-adopt';
 import styled from 'styled-components';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 import { isNilOrError } from 'utils/helperUtils';
 
 // api
-import useInitiativeStatuses from 'api/initiative_statuses/useInitiativeStatuses';
 import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
 import useTopics from 'api/topics/useTopics';
 import useProjectAllowedInputTopics from 'api/project_allowed_input_topics/useProjectAllowedInputTopics';
 
 // resources
-import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
-import GetInitiatives, {
-  GetInitiativesChildProps,
-} from 'resources/GetInitiatives';
 import { getTopicIds } from 'api/project_allowed_input_topics/util/getProjectTopicsIds';
 
 // components
@@ -26,24 +19,24 @@ import PostTable from './components/PostTable';
 import InfoSidebar from './components/InfoSidebar';
 import ExportMenu from './components/ExportMenu';
 import IdeasCount from './components/IdeasCount';
-import InitiativesCount from './components/InitiativesCount';
 import { Input } from 'semantic-ui-react';
 import FeedbackToggle from './components/TopLevelFilters/FeedbackToggle';
 const LazyPostPreview = lazy(
   () => import('components/admin/PostManager/components/PostPreview')
 );
 
-import LazyStatusChangeModal from './components/StatusChangeModal/LazyStatusChangeModal';
 import Outlet from 'components/Outlet';
 import { useSearchParams } from 'react-router-dom';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 // typings
 import { IIdeaStatuses } from 'api/idea_statuses/types';
-import { IInitiativeStatuses } from 'api/initiative_statuses/types';
 import { IProjectData } from 'api/projects/types';
 import { ITopics } from 'api/topics/types';
 import { TPhases } from 'api/phases/types';
+import useIdeas from 'api/ideas/useIdeas';
+import { IQueryParameters, Sort } from 'api/ideas/types';
+import { getPageNumberFromUrl, getSortDirection } from 'utils/paginationUtils';
 
 const StyledExportMenu = styled(ExportMenu)`
   margin-left: auto;
@@ -91,19 +84,9 @@ const StyledInput = styled(Input)`
   width: 100%;
 `;
 
-export type ManagerType =
-  | 'AllIdeas' // should come with projectIds a list of projects that the current user can manage.
-  | 'ProjectIdeas' // should come with projectId
-  | 'Initiatives';
-
 interface InputProps {
-  // For all display and behaviour that's conditionned by the place this component is rendered
-  // this prop is used for the test.
-  type: ManagerType;
-
   // When the PostManager is used in admin/projects, we pass down the current project id as a prop
   projectId?: string | null;
-
   // filters settings
   // the filters needed for this view, in the order they'll be shown, first one active by default
   visibleFilterMenus: TFilterMenu[]; // cannot be empty.
@@ -114,12 +97,8 @@ interface InputProps {
   projects?: IProjectData[] | null;
 }
 
-interface DataProps {
-  posts: GetIdeasChildProps | GetInitiativesChildProps;
-}
-
-interface Props extends InputProps, DataProps {
-  postStatuses?: IIdeaStatuses | IInitiativeStatuses;
+interface Props extends InputProps {
+  postStatuses?: IIdeaStatuses;
   topicsData?: ITopics['data'];
 }
 
@@ -129,19 +108,41 @@ export type PreviewMode = 'view' | 'edit';
 const PostManager = ({
   defaultFilterMenu,
   visibleFilterMenus,
-  posts,
-  type,
   projects,
   projectId,
   phases,
-  postStatuses,
-  topicsData,
 }: Props) => {
+  const type = projectId ? 'ProjectIdeas' : 'AllIdeas';
+  const { data: ideas } = useIdeas({
+    'page[size]': 10,
+    sort: 'new',
+    projects: projectId ? [projectId] : undefined,
+    // if we have a projectId, we'll return the correct projects (for which we have moderator rights)
+    // without a project, we need this filter?
+    filter_can_moderate: projectId ? undefined : true,
+  });
+  const { data: ideaStatuses } = useIdeaStatuses();
+  const { data: ideaTopics } = useTopics({});
+  const { data: projectAllowedInputTopics } = useProjectAllowedInputTopics({
+    projectId: typeof projectId === 'string' ? projectId : undefined,
+  });
+  const topicIds = getTopicIds(projectAllowedInputTopics?.data);
+  const topicIdsSet = topicIds ? new Set(topicIds) : undefined;
+
+  const getTopicsData = () => {
+    if (topicIdsSet) {
+      return ideaTopics?.data.filter((topic) => topicIdsSet?.has(topic.id));
+    }
+
+    return ideaTopics?.data;
+  };
+
+  const topicsData = getTopicsData();
   const [search] = useSearchParams();
   const [selection, setSelection] = useState<Set<string>>(new Set());
+  const [queryParameters, setQueryParameters] = useState<IQueryParameters>({});
   const [activeFilterMenu, setActiveFilterMenu] =
     useState<TFilterMenu>(defaultFilterMenu);
-  const [searchTerm, setSearchTerm] = useState<string | undefined>(undefined);
   const [previewPostId, setPreviewPostId] = useState<string | null>(null);
   const [previewMode, setPreviewMode] = useState<PreviewMode>('view');
 
@@ -166,30 +167,18 @@ const PostManager = ({
     });
   }, [visibleFilterMenus]);
 
+  if (!ideas) return null;
+
   // Filtering handlers
   const getSelectedProject = () => {
-    if (type === 'Initiatives') return undefined;
-
-    const { queryParameters } = posts as GetIdeasChildProps;
     return Array.isArray(queryParameters.projects) &&
       queryParameters.projects.length === 1
       ? queryParameters.projects[0]
       : undefined;
   };
 
-  const handleSearchChange = (event) => {
-    const searchTerm = event.target.value;
-    setSearchTerm(searchTerm);
-
-    if (isFunction(posts.onChangeSearchTerm)) {
-      posts.onChangeSearchTerm(searchTerm);
-    }
-  };
-
-  const onChangeProjects = (projectIds: string[] | undefined) => {
+  const handleOnChangeProjects = (projectIds: string[] | undefined) => {
     if (type !== 'AllIdeas') return;
-
-    const { onChangeProjects } = posts as GetIdeasChildProps;
 
     const accessibleProjectsIds = projects
       ? projects.map((project) => project.id)
@@ -242,49 +231,58 @@ const PostManager = ({
   };
   // End Modal Preview
 
-  const getNonSharedParams = () => {
-    if (type === 'Initiatives') {
-      const initiativePosts = posts as GetInitiativesChildProps;
-      return {
-        onChangePhase: undefined,
-        selectedPhaseId: undefined,
-        selectedStatus: initiativePosts.queryParameters.initiative_status,
-      };
-    } else if (type === 'AllIdeas' || type === 'ProjectIdeas') {
-      const ideasPosts = posts as GetIdeasChildProps;
-      return {
-        onChangePhase: ideasPosts.onChangePhase,
-        selectedPhaseId: ideasPosts.queryParameters.phase,
-        selectedStatus: ideasPosts.queryParameters.idea_status,
-      };
-    }
-    return {
-      onChangePhase: () => {},
-      selectedPhaseId: null,
-      selectedStatus: null,
-    };
+  const onChangeTopics = (topics: string[]) => {
+    setQueryParameters({ ...queryParameters, topics });
+  };
+  const onChangeStatus = (ideaStatus: string | null) => {
+    setQueryParameters({ ...queryParameters, idea_status: ideaStatus });
+  };
+  const onChangeAssignee = (assignee: string | undefined) => {
+    setQueryParameters({ ...queryParameters, assignee });
+  };
+  const onChangeFeedbackFilter = (feedbackNeeded: boolean) => {
+    setQueryParameters({ ...queryParameters, feedback_needed: feedbackNeeded });
+  };
+  const onChangePhase = (phase: string) => {
+    setQueryParameters({
+      ...queryParameters,
+      phase,
+    });
   };
 
-  const {
-    list,
-    onChangeTopics,
-    onChangeStatus,
-    queryParameters,
-    onChangeAssignee,
-    onChangeFeedbackFilter,
-    onResetParams,
-  } = posts;
+  const onChangeProjects = (projects: string[]) => {
+    setQueryParameters({
+      ...queryParameters,
+      projects,
+    });
+  };
 
+  const onResetParams = () => {
+    setQueryParameters({});
+  };
+
+  const onChangePage = (pageNumber: number) => {
+    setQueryParameters({ ...queryParameters, 'page[number]': pageNumber });
+  };
+
+  const onChangeSearchTerm = (search: string) => {
+    setQueryParameters({ ...queryParameters, search });
+  };
+
+  const onChangeSorting = (sort: Sort) => {
+    setQueryParameters({ ...queryParameters, sort });
+  };
+
+  const currentPage = getPageNumberFromUrl(ideas.links.self);
+  const lastPage = getPageNumberFromUrl(ideas.links.last);
   const selectedTopics = queryParameters.topics;
   const selectedAssignee = queryParameters.assignee;
   const feedbackNeeded = queryParameters.feedback_needed || false;
-
   const selectedProjectId = getSelectedProject();
+  const selectedPhaseId = queryParameters.phase;
+  const selectedStatus = queryParameters.idea_status;
 
-  const { onChangePhase, selectedPhaseId, selectedStatus } =
-    getNonSharedParams();
-
-  if (list && topicsData) {
+  if (ideas && topicsData) {
     return (
       <>
         <TopActionBar>
@@ -304,7 +302,7 @@ const PostManager = ({
             topics={selectedTopics}
             status={selectedStatus}
             assignee={selectedAssignee}
-            searchTerm={searchTerm}
+            searchTerm={queryParameters.search}
           />
           <StyledExportMenu
             type={type}
@@ -323,28 +321,18 @@ const PostManager = ({
             />
           </LeftColumn>
           <MiddleColumnTop>
-            {type === 'Initiatives' ? (
-              <InitiativesCount
-                feedbackNeeded={feedbackNeeded}
-                topics={selectedTopics}
-                initiativeStatus={selectedStatus}
-                searchTerm={searchTerm}
-                assignee={selectedAssignee}
-              />
-            ) : type === 'AllIdeas' || type === 'ProjectIdeas' ? (
-              <IdeasCount
-                feedbackNeeded={
-                  feedbackNeeded === true ? feedbackNeeded : undefined
-                }
-                project={selectedProjectId}
-                phase={selectedPhaseId ?? undefined}
-                topics={selectedTopics ?? undefined}
-                ideaStatusId={selectedStatus ?? undefined}
-                search={searchTerm}
-                assignee={selectedAssignee ?? undefined}
-              />
-            ) : null}
-            <StyledInput icon="search" onChange={handleSearchChange} />
+            <IdeasCount
+              feedbackNeeded={
+                feedbackNeeded === true ? feedbackNeeded : undefined
+              }
+              project={selectedProjectId}
+              phase={selectedPhaseId ?? undefined}
+              topics={selectedTopics ?? undefined}
+              ideaStatusId={selectedStatus ?? undefined}
+              search={queryParameters.search}
+              assignee={selectedAssignee ?? undefined}
+            />
+            <StyledInput icon="search" onChange={onChangeSearchTerm} />
           </MiddleColumnTop>
         </ThreeColumns>
         <ThreeColumns>
@@ -357,7 +345,7 @@ const PostManager = ({
                 onChangeActiveFilterMenu={handleChangeActiveFilterMenu}
                 phases={!isNilOrError(phases) ? phases : undefined}
                 projects={!isNilOrError(projects) ? projects : undefined}
-                statuses={postStatuses?.data ?? []}
+                statuses={ideaStatuses?.data ?? []}
                 topics={topicsData}
                 selectedPhase={selectedPhaseId}
                 selectedTopics={selectedTopics}
@@ -366,7 +354,7 @@ const PostManager = ({
                 onChangePhaseFilter={onChangePhase}
                 onChangeTopicsFilter={onChangeTopics}
                 onChangeStatusFilter={onChangeStatus}
-                onChangeProjectFilter={onChangeProjects}
+                onChangeProjectFilter={handleOnChangeProjects}
               />
             </Sticky>
           </LeftColumn>
@@ -374,19 +362,27 @@ const PostManager = ({
             <PostTable
               type={type}
               activeFilterMenu={activeFilterMenu}
-              sortAttribute={posts.sortAttribute}
-              sortDirection={posts.sortDirection}
-              onChangeSort={posts.onChangeSorting}
-              posts={list}
+              sortAttribute={queryParameters.sort}
+              sortDirection={
+                queryParameters.sort
+                  ? getSortDirection(queryParameters.sort)
+                  : 'ascending'
+              }
+              onChangeSort={onChangeSorting}
+              posts={ideas.data}
               phases={!isNilOrError(phases) ? phases : undefined}
-              statuses={postStatuses?.data ?? []}
+              statuses={ideaStatuses?.data ?? []}
               selection={selection}
               selectedPhaseId={selectedPhaseId}
               selectedProjectId={selectedProjectId}
               onChangeSelection={setSelection}
-              currentPageNumber={posts.currentPage}
-              lastPageNumber={posts.lastPage}
-              onChangePage={posts.onChangePage}
+              currentPageNumber={
+                typeof currentPage === 'number' ? currentPage : undefined
+              }
+              lastPageNumber={
+                typeof lastPage === 'number' ? lastPage : undefined
+              }
+              onChangePage={onChangePage}
               handleSeeAll={onResetParams}
               openPreview={openPreview}
             />
@@ -402,11 +398,6 @@ const PostManager = ({
             onSwitchPreviewMode={switchPreviewMode}
           />
         </Suspense>
-        {type === 'Initiatives' && (
-          <Suspense fallback={null}>
-            <LazyStatusChangeModal />
-          </Suspense>
-        )}
       </>
     );
   }
@@ -414,95 +405,10 @@ const PostManager = ({
   return null;
 };
 
-const Data = adopt<DataProps, InputProps>({
-  posts: ({ type, projectId, render }) => {
-    if (type === 'Initiatives') {
-      return (
-        <GetInitiatives pageSize={10} sort="new">
-          {render}
-        </GetInitiatives>
-      );
-    }
-
-    const props = {
-      'page[size]': 10,
-      sort: 'new',
-    } as const;
-
-    if (type === 'ProjectIdeas') {
-      return (
-        <GetIdeas {...props} projects={projectId ? [projectId] : undefined}>
-          {render}
-        </GetIdeas>
-      );
-    }
-
-    if (type === 'AllIdeas') {
-      return (
-        <GetIdeas {...props} filter_can_moderate={true}>
-          {render}
-        </GetIdeas>
-      );
-    }
-
-    return null;
-  },
-});
-
 export default (inputProps: InputProps) => {
-  const { type } = inputProps;
-  const projectId = inputProps.projectId ?? undefined;
-
-  const { data: initiativeStatuses } = useInitiativeStatuses({
-    enabled: type === 'Initiatives',
-  });
-  const { data: ideaStatuses } = useIdeaStatuses({
-    enabled: type !== 'Initiatives',
-  });
-
-  const postStatuses = initiativeStatuses || ideaStatuses;
-
-  const { data: initiativeTopics } = useTopics(
-    { excludeCode: 'custom' },
-    { enabled: type === 'Initiatives' }
-  );
-  const { data: ideaTopics } = useTopics(
-    {},
-    { enabled: type !== 'Initiatives' }
-  );
-
-  const { data: projectAllowedInputTopics } = useProjectAllowedInputTopics({
-    projectId: type === 'ProjectIdeas' ? projectId : undefined,
-  });
-  const topicIds = getTopicIds(projectAllowedInputTopics?.data);
-  const topicIdsSet = topicIds ? new Set(topicIds) : undefined;
-
-  const getTopicsData = () => {
-    if (initiativeTopics?.data) return initiativeTopics.data;
-
-    if (topicIdsSet) {
-      return ideaTopics?.data.filter((topic) => topicIdsSet?.has(topic.id));
-    }
-
-    return ideaTopics?.data;
-  };
-
-  const topicsData = getTopicsData();
-
   return (
     <DndProvider backend={HTML5Backend}>
-      <Data {...inputProps}>
-        {(dataProps) => {
-          return (
-            <PostManager
-              {...inputProps}
-              {...dataProps}
-              postStatuses={postStatuses}
-              topicsData={topicsData}
-            />
-          );
-        }}
-      </Data>
+      <PostManager {...inputProps} />
     </DndProvider>
   );
 };

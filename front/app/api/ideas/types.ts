@@ -212,7 +212,7 @@ export interface IIdea {
 }
 
 export interface IQueryParameters {
-  sort: Sort;
+  sort?: Sort;
   'page[number]'?: number;
   'page[size]'?: number;
   projects?: string[] | null;
