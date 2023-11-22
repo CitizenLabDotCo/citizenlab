@@ -11,7 +11,7 @@ module ReportBuilder
         fact: 'participation',
         filters: {
           **date_filter('dimension_date_created', startAt, endAt),
-          **project_filter('dimension_project', projectId),
+          **project_filter('dimension_project_id', projectId),
           'dimension_type.name': 'reaction',
           'dimension_type.parent': 'idea'
         },
@@ -27,7 +27,7 @@ module ReportBuilder
         fact: 'participation',
         filters: {
           **date_filter('dimension_date_created', startAt, endAt),
-          **project_filter('dimension_project', projectId),
+          **project_filter('dimension_project_id', projectId),
           'dimension_type.name': 'reaction',
           'dimension_type.parent': 'idea'
         },
