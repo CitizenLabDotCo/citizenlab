@@ -45,5 +45,9 @@ module OmniauthMethods
     def verification_prioritized?
       raise NotImplementedError
     end
+
+    def email_confirmed?(_user)
+      true
+    end
   end
 end
