@@ -257,6 +257,22 @@ describe 'clave_unica verification' do
         expect(user).to have_attributes({ email: 'newcoolemail@example.org' })
         expect(user.new_email).to be_nil
       end
+
+      it 'prevents bypassing email confirmation by logging in when signup is partially completed' do
+        get '/auth/clave_unica?pathname=/some-page'
+        follow_redirect!
+
+        get '/auth/clave_unica?pathname=/some-page'
+        follow_redirect!
+
+        user = User.order(created_at: :asc).last
+
+        token = AuthToken::AuthToken.new(payload: user.to_token_payload).token
+        headers = { 'Authorization' => "Bearer #{token}" }
+        post '/web_api/v1/user/resend_code', params: { new_email: 'newcoolemail@example.org' }, headers: headers
+
+        expect(user.confirmation_required?).to be(true)
+      end
     end
 
     context 'email confirmation disabled' do

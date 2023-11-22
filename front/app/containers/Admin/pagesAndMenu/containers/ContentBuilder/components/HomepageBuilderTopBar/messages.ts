@@ -6,7 +6,7 @@ export default defineMessages({
     defaultMessage: 'Homepage',
   },
   viewHomepage: {
-    id: 'app.containers.ContentBuilder.homepage.ViewHomepage',
-    defaultMessage: 'View Homepage',
+    id: 'app.containers.ContentBuilder.homepage.View',
+    defaultMessage: 'View',
   },
 });
