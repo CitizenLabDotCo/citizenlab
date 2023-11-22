@@ -21,4 +21,8 @@ export default defineMessages({
     id: 'app.containers.admin.ReportBuilder.continuousProject',
     defaultMessage: 'Continuous project',
   },
+  start: {
+    id: 'app.containers.admin.ReportBuilder.start',
+    defaultMessage: 'Start: {startDate}',
+  },
 });
