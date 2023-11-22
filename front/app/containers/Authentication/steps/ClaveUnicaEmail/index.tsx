@@ -15,7 +15,7 @@ import sharedMessages from '../messages';
 import { isNilOrError } from 'utils/helperUtils';
 import signOut from 'api/authentication/sign_in_out/signOut';
 import TextButton from '../_components/TextButton';
-import useMenuMessages from 'containers/MainHeader/UserMenu/messages';
+import useMenuMessages from 'containers/MainHeader/Components/UserMenu/messages';
 import useAuthUser from 'api/me/useAuthUser';
 
 interface Props {

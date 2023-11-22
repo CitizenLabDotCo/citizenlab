@@ -12,7 +12,7 @@ import useLocale from 'hooks/useLocale';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 // style
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import { colors, fontSizes, isRtl } from 'utils/styleUtils';
 
 // i18n
@@ -108,6 +108,7 @@ const LanguageSelector = ({ className }: Props) => {
   const [dropdownOpened, setDropdownOpened] = useState(false);
   const { data: appConfig } = useAppConfiguration();
   const locale = useLocale();
+  const theme = useTheme();
 
   const toggleDropdown = (event: React.FormEvent) => {
     event.preventDefault();
@@ -138,11 +139,14 @@ const LanguageSelector = ({ className }: Props) => {
           aria-expanded={dropdownOpened}
         >
           <DropdownButtonText>{selectedLocale}</DropdownButtonText>
-          <DropdownButtonIcon name="chevron-down" />
+          <DropdownButtonIcon
+            fill={(theme && theme.navbarTextColor) || theme.colors.tenantText}
+            name="chevron-down"
+          />
         </DropdownButton>
 
         <Dropdown
-          width="180px"
+          width="160px !important"
           top="68px"
           right={!isRtl ? '0px' : undefined}
           mobileRight={!isRtl ? '5px' : undefined}

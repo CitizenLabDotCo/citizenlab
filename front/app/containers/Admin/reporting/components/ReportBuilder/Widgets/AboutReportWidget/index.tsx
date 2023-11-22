@@ -6,11 +6,11 @@ import messages from './messages';
 // components
 import Container from 'components/admin/ContentBuilder/Widgets/Container';
 import Text from 'components/admin/ContentBuilder/Widgets/Text';
-import TenantLogo from 'containers/MobileNavbar/TenantLogo';
 import { NoWidgetSettings } from 'components/admin/ContentBuilder/Widgets/NoWidgetSettings';
 import { Element } from '@craftjs/core';
 import { Box } from '@citizenlab/cl2-component-library';
-import PageBreakBox from '../../../../../../../components/admin/ContentBuilder/Widgets/PageBreakBox';
+import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
+import TenantLogo from 'containers/MainHeader/Components/TenantLogo';
 
 // hooks
 import useReport from 'api/reports/useReport';

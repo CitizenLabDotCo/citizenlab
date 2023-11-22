@@ -1,0 +1,263 @@
+import { media, fontSizes, isRtl } from 'utils/styleUtils';
+import React from 'react';
+import styled, { useTheme } from 'styled-components';
+import LanguageSelector from '../../LanguageSelector';
+import { isDesktop, isNilOrError, isPage } from 'utils/helperUtils';
+import bowser from 'bowser';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import messages from '../../../messages';
+import { darken } from 'polished';
+import useAuthUser from 'api/me/useAuthUser';
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+import { trackEventByName } from 'utils/analytics';
+import tracks from '../../../tracks';
+import UserMenu from '../../UserMenu';
+import useLocale from 'hooks/useLocale';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import {
+  IconButton,
+  colors,
+  useWindowSize,
+} from '@citizenlab/cl2-component-library';
+import clHistory from 'utils/cl-router/history';
+import NotificationMenu from '../../NotificationMenu';
+
+const Right = styled.div`
+  display: flex;
+  align-items: center;
+  height: ${({ theme }) => theme.menuHeight}px;
+  margin-right: 30px;
+
+  &.ie {
+    margin-right: 50px;
+  }
+
+  ${media.desktop`
+    margin-right: 40px;
+  `}
+
+  ${media.phone`
+    margin-right: 20px;
+  `}
+  ${isRtl`
+    flex-direction: row-reverse;
+    margin-left: 30px;
+
+    &.ie {
+      margin-left: 50px;
+    }
+    ${media.desktop`
+        margin-left: 40px;
+    `}
+
+    ${media.phone`
+        margin-left: 20px;
+    `}
+    `}
+`;
+
+const StyledLanguageSelector = styled(LanguageSelector)`
+  padding-left: 20px;
+
+  ${media.phone`
+    padding-left: 15px;
+  `}
+
+  ${isRtl`
+    padding-left: 0px;
+    padding-right: 20px;
+  ${media.phone`
+    padding-right: 15px;
+  `}
+  `}
+`;
+
+const RightItem = styled.div`
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 40px;
+  white-space: nowrap;
+
+  &.noLeftMargin {
+    margin-left: 0px;
+  }
+
+  ${media.phone`
+    margin-left: 12px;
+  `}
+
+  ${isRtl`
+    margin-right: 40px;
+    margin-left: 0;
+    ${media.phone`
+        margin-right: 12px;
+    `}
+    &.noLeftMargin {
+        margin-left: 0;
+        margin-right: 0px;
+    }
+
+  `}
+`;
+
+const LogInButton = styled.button`
+  height: 100%;
+  color: ${({ theme }) => theme.navbarTextColor || theme.colors.tenantText};
+  font-size: ${fontSizes.base}px;
+  line-height: normal;
+  font-weight: 500;
+  padding: 0 30px;
+  border: none;
+  border-radius: 0px;
+  cursor: pointer;
+  transition: all 100ms ease-out;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  ${media.phone`
+    padding: 0 15px;
+  `}
+`;
+
+const NavigationItemBorder = styled.div`
+  height: 6px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: 'transparent';
+`;
+
+const NavigationItemText = styled.span`
+  white-space: nowrap;
+`;
+
+const SignUpMenuItem = styled.button`
+  height: 100%;
+  color: #fff;
+  font-size: ${fontSizes.base}px;
+  line-height: normal;
+  font-weight: 500;
+  padding: 0 30px;
+  cursor: pointer;
+  border: none;
+  border-radius: 0px;
+  background-color: ${({ theme }) =>
+    theme.colors.tenantPrimary || theme.colors.tenantSecondary};
+  transition: all 100ms ease-out;
+
+  &:hover {
+    color: #fff;
+    text-decoration: underline;
+    background-color: ${({ theme }) =>
+      darken(0.12, theme.colors.tenantPrimary || theme.colors.tenantSecondary)};
+  }
+
+  ${media.phone`
+    padding: 0 15px;
+  `}
+
+  ${media.phone`
+    padding: 0 12px;
+  `}
+`;
+
+const DesktopNavbarContent = () => {
+  const { data: appConfiguration } = useAppConfiguration();
+  const { data: authUser } = useAuthUser();
+  const locale = useLocale();
+  const theme = useTheme();
+  const windowSize = useWindowSize();
+  const { formatMessage } = useIntl();
+  const tenantLocales = !isNilOrError(appConfiguration)
+    ? appConfiguration.data.attributes.settings.core.locales
+    : [];
+  const isEmailSettingsPage = isPage('email-settings', location.pathname);
+  const isDesktopUser = isDesktop(windowSize.windowWidth);
+
+  const trackSignUpLinkClick = () => {
+    trackEventByName(tracks.clickSignUpLink.name);
+  };
+
+  const signIn = () => {
+    triggerAuthenticationFlow({ flow: 'signin' });
+  };
+
+  const signUp = () => {
+    triggerAuthenticationFlow({ flow: 'signup' });
+  };
+
+  return (
+    <Right className={bowser.msie ? 'ie' : ''}>
+      {!isEmailSettingsPage && (
+        <>
+          {isDesktopUser && (
+            <RightItem className="projectSearch">
+              <IconButton
+                onClick={() => clHistory.push('/projects?focusSearch=true')}
+                iconName="search"
+                a11y_buttonActionMessage={formatMessage(messages.search)}
+                iconColor={theme.navbarTextColor || colors.textSecondary}
+                iconColorOnHover={
+                  theme.navbarTextColor
+                    ? darken(0.2, theme.navbarTextColor)
+                    : colors.textPrimary
+                }
+                iconWidth={'30px'}
+                iconHeight={'30px'}
+              />
+            </RightItem>
+          )}
+
+          {isNilOrError(authUser) && (
+            <RightItem className="login noLeftMargin">
+              <LogInButton id="e2e-navbar-login-menu-item" onClick={signIn}>
+                <NavigationItemBorder />
+                <NavigationItemText>
+                  <FormattedMessage {...messages.logIn} />
+                </NavigationItemText>
+              </LogInButton>
+            </RightItem>
+          )}
+
+          {isNilOrError(authUser) && (
+            <RightItem
+              onClick={trackSignUpLinkClick}
+              className="signup noLeftMargin"
+            >
+              <SignUpMenuItem id="e2e-navbar-signup-menu-item" onClick={signUp}>
+                <NavigationItemText className="sign-up-span">
+                  <FormattedMessage {...messages.signUp} />
+                </NavigationItemText>
+              </SignUpMenuItem>
+            </RightItem>
+          )}
+
+          {!isNilOrError(authUser) && (
+            <RightItem className="notification">
+              <NotificationMenu />
+            </RightItem>
+          )}
+
+          {!isNilOrError(authUser) && (
+            <RightItem className="usermenu">
+              <UserMenu />
+            </RightItem>
+          )}
+        </>
+      )}
+
+      {tenantLocales.length > 1 && locale && (
+        <RightItem className="noLeftMargin">
+          <StyledLanguageSelector />
+        </RightItem>
+      )}
+    </Right>
+  );
+};
+
+export default DesktopNavbarContent;

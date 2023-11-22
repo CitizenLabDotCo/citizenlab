@@ -17,7 +17,7 @@ import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import messages from '../../messages';
 
 // style
 import styled from 'styled-components';

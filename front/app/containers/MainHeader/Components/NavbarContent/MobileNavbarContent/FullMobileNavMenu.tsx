@@ -1,6 +1,6 @@
 import React from 'react';
 import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
+import tracks from '../../../tracks';
 
 // hooks
 import useNavbarItems from 'api/navbar/useNavbarItems';
@@ -9,39 +9,24 @@ import useLocalize from 'hooks/useLocalize';
 
 // components
 import FullscreenModal from 'components/UI/FullscreenModal';
+import TenantLogo from '../../TenantLogo';
 import FullMobileNavMenuItem from './FullMobileNavMenuItem';
-import TenantLogo from './TenantLogo';
 
 // styles
-import styled, { css } from 'styled-components';
-import { media, colors, hexToRgb } from 'utils/styleUtils';
+import styled from 'styled-components';
+import { media, colors } from 'utils/styleUtils';
 import { darken } from 'polished';
+
 // i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
-import messages from './messages';
-import mainHeaderMessages from '../MainHeader/messages';
+import messages from '../../../messages';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import getNavbarItemPropsArray from '../MainHeader/DesktopNavbar/getNavbarItemPropsArray';
 import CloseIconButton from 'components/UI/CloseIconButton';
-
-const containerBackgroundColorRgb = hexToRgb(colors.textSecondary);
+import getNavbarItemPropsArray from '../../DesktopNavItems/getNavbarItemPropsArray';
+import { useIntl } from 'utils/cl-intl';
 
 const Container = styled.div`
-  ${containerBackgroundColorRgb
-    ? css`
-        background: rgba(
-          ${containerBackgroundColorRgb.r},
-          ${containerBackgroundColorRgb.g},
-          ${containerBackgroundColorRgb.b},
-          0.95
-        );
-      `
-    : css`
-        background: rgba(0, 0, 0, 0.75);
-      `}
   height: 100%;
   width: 100%;
   padding-top: 40px;
@@ -69,7 +54,7 @@ const ContentContainer = styled.nav`
 
 const StyledCloseIconButton = styled(CloseIconButton)`
   position: absolute;
-  top: 30px;
+  top: 12px;
   right: 25px;
   z-index: 2000;
   border-radius: 50%;
@@ -92,7 +77,8 @@ const MenuItems = styled.ul`
 `;
 
 const StyledTenantLogo = styled(TenantLogo)`
-  margin-bottom: 40px;
+  margin-bottom: 0px;
+  padding: 0px;
 `;
 
 const StyledFullscreenModal = styled(FullscreenModal)`
@@ -119,18 +105,18 @@ const FullMobileNavMenu = ({
   mobileNavbarRef,
   onClose,
   isFullMenuOpened,
-  intl: { formatMessage },
-}: Props & WrappedComponentProps) => {
+}: Props) => {
   const { data: navbarItems } = useNavbarItems();
   const pageSlugById = useCustomPageSlugById();
   const localize = useLocalize();
+  const { formatMessage } = useIntl();
 
   if (isNilOrError(navbarItems) || isNilOrError(pageSlugById)) return null;
 
   const navbarItemPropsArray = getNavbarItemPropsArray(
     navbarItems.data,
     pageSlugById
-  ).filter(({ linkTo }) => linkTo !== '/projects'); // /projects is already in the 'outer' fixed menu
+  );
 
   const modalPortalElement = document?.getElementById('mobile-nav-portal');
 
@@ -146,7 +132,7 @@ const FullMobileNavMenu = ({
     });
   };
 
-  if (modalPortalElement) {
+  if (modalPortalElement && isFullMenuOpened) {
     return (
       <StyledFullscreenModal
         opened={isFullMenuOpened}
@@ -158,7 +144,7 @@ const FullMobileNavMenu = ({
           <ContentContainer
             // Screen reader will add "navigation", so this will become
             // "Full mobile navigation"
-            // Needed because there's also a different nav (see MobileNavbar/index)
+            // Needed because there's also a different nav (see MobileNavbarContent/index)
             aria-label={formatMessage(messages.fullMobileNavigation)}
           >
             <StyledTenantLogo />
@@ -166,7 +152,6 @@ const FullMobileNavMenu = ({
               {navbarItemPropsArray.map((navbarItemProps) => {
                 const { linkTo, onlyActiveOnIndex, navigationItemTitle } =
                   navbarItemProps;
-
                 return (
                   <FullMobileNavMenuItem
                     key={linkTo}
@@ -179,7 +164,7 @@ const FullMobileNavMenu = ({
               })}
               <FullMobileNavMenuItem
                 linkTo="/projects?focusSearch=true"
-                navigationItemTitle={formatMessage(mainHeaderMessages.search)}
+                navigationItemTitle={formatMessage(messages.search)}
                 onClick={handleOnMenuItemClick('/projects?focusSearch=true')}
                 iconName="search"
               />
@@ -199,4 +184,4 @@ const FullMobileNavMenu = ({
   return null;
 };
 
-export default injectIntl(FullMobileNavMenu);
+export default FullMobileNavMenu;

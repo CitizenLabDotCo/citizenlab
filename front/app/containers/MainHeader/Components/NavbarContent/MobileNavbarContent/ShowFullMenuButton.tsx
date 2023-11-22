@@ -1,11 +1,39 @@
 import React from 'react';
-import { NavigationItem, NavigationLabel } from './';
-import { Icon } from '@citizenlab/cl2-component-library';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-import { colors } from 'utils/styleUtils';
+import { Icon, fontSizes, media } from '@citizenlab/cl2-component-library';
+import { colors, isRtl } from 'utils/styleUtils';
 import styled from 'styled-components';
 import { darken } from 'polished';
+
+export const NavigationLabel = styled.span`
+  width: 100%;
+  font-size: ${fontSizes.base}px;
+  font-weight: 500;
+
+  ${isRtl`
+    margin-left: 0;
+    margin-right: 6px;
+  `}
+`;
+
+export const NavigationItem = styled.li`
+  display: flex;
+  align-items: stretch;
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+
+  & > * {
+    padding: 0 20px;
+
+    ${media.phone`
+      padding: 0;
+    `}
+  }
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
+`;
 
 interface Props {
   onClick: () => void;
@@ -66,13 +94,7 @@ const ShowFullMenuButton = ({ onClick, isFullMenuOpened }: Props) => {
   return (
     <NavigationItem>
       <StyledButton onClick={onClick} isFullMenuOpened={isFullMenuOpened}>
-        <StyledIcon
-          name="dots-horizontal"
-          isFullMenuOpened={isFullMenuOpened}
-        />
-        <NavigationLabel>
-          <FormattedMessage {...messages.showMore} />
-        </NavigationLabel>
+        <StyledIcon name="menu" isFullMenuOpened={isFullMenuOpened} />
       </StyledButton>
     </NavigationItem>
   );

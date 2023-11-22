@@ -18,7 +18,7 @@ import getNavbarItemPropsArray from './getNavbarItemPropsArray';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
-import messages from '../messages';
+import messages from '../../messages';
 import { WrappedComponentProps } from 'react-intl';
 
 const Container = styled.nav`
@@ -45,7 +45,9 @@ const NavbarItems = styled.ul`
   `};
 `;
 
-const DesktopNavbar = ({ intl: { formatMessage } }: WrappedComponentProps) => {
+const DesktopNavItems = ({
+  intl: { formatMessage },
+}: WrappedComponentProps) => {
   const { data: navbarItems } = useNavbarItems();
   const pageSlugById = useCustomPageSlugById();
 
@@ -87,4 +89,4 @@ const DesktopNavbar = ({ intl: { formatMessage } }: WrappedComponentProps) => {
   );
 };
 
-export default injectIntl(DesktopNavbar);
+export default injectIntl(DesktopNavItems);
