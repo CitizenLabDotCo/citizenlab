@@ -1,5 +1,4 @@
 import React, { Suspense, lazy, useEffect, useState } from 'react';
-import styled from 'styled-components';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 import { IQueryParameters, Sort } from 'api/initiatives/types';
@@ -9,13 +8,21 @@ import useTopics from 'api/topics/useTopics';
 import { getPageNumberFromUrl, getSortDirection } from 'utils/paginationUtils';
 
 // components
+import {
+  LeftColumn,
+  MiddleColumn,
+  MiddleColumnTop,
+  Sticky,
+  StyledExportMenu,
+  StyledInput,
+  ThreeColumns,
+  TopActionBar,
+} from '.';
 import ActionBar from './components/ActionBar';
 import FilterSidebar from './components/FilterSidebar';
 import PostTable from './components/PostTable';
 import InfoSidebar from './components/InfoSidebar';
-import ExportMenu from './components/ExportMenu';
 import InitiativesCount from './components/InitiativesCount';
-import { Input } from 'semantic-ui-react';
 import FeedbackToggle from './components/TopLevelFilters/FeedbackToggle';
 const LazyPostPreview = lazy(
   () => import('components/admin/PostManager/components/PostPreview')
@@ -28,52 +35,6 @@ import Outlet from 'components/Outlet';
 import { IInitiativeStatuses } from 'api/initiative_statuses/types';
 import { ITopics } from 'api/topics/types';
 import useInitiatives from 'api/initiatives/useInitiatives';
-
-const StyledExportMenu = styled(ExportMenu)`
-  margin-left: auto;
-`;
-
-const TopActionBar = styled.div`
-  display: flex;
-  margin-bottom: 20px;
-`;
-
-const MiddleColumnTop = styled.div`
-  transition: 200ms;
-  display: flex;
-  justify-content: space-between;
-  flex: 1;
-`;
-
-const ThreeColumns = styled.div`
-  display: flex;
-  margin: -10px;
-  & > * {
-    margin: 10px;
-  }
-`;
-
-const LeftColumn = styled.div`
-  width: 260px;
-  min-width: 260px;
-`;
-
-const MiddleColumn = styled.div`
-  flex: 1;
-  transition: 200ms;
-`;
-
-export const Sticky = styled.div`
-  position: -webkit-sticky;
-  position: sticky;
-  top: ${(props) => props.theme.menuHeight + 20}px;
-`;
-
-const StyledInput = styled(Input)`
-  max-width: 260px;
-  display: flex;
-  width: 100%;
-`;
 
 interface InputProps {
   // filters settings
@@ -90,7 +51,7 @@ interface Props extends InputProps {
 export type TFilterMenu = 'topics' | 'statuses';
 export type PreviewMode = 'view' | 'edit';
 
-const PostManager = ({ defaultFilterMenu, visibleFilterMenus }: Props) => {
+const ProposalsManager = ({ defaultFilterMenu, visibleFilterMenus }: Props) => {
   const [selection, setSelection] = useState<Set<string>>(new Set());
   const [activeFilterMenu, setActiveFilterMenu] =
     useState<TFilterMenu>(defaultFilterMenu);
@@ -312,7 +273,7 @@ const PostManager = ({ defaultFilterMenu, visibleFilterMenus }: Props) => {
 export default (inputProps: InputProps) => {
   return (
     <DndProvider backend={HTML5Backend}>
-      <PostManager {...inputProps} />;
+      <ProposalsManager {...inputProps} />;
     </DndProvider>
   );
 };

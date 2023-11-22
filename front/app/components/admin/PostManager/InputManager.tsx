@@ -1,5 +1,4 @@
 import React, { Suspense, lazy, useEffect, useState } from 'react';
-import styled from 'styled-components';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 import { isNilOrError } from 'utils/helperUtils';
@@ -13,13 +12,21 @@ import useProjectAllowedInputTopics from 'api/project_allowed_input_topics/usePr
 import { getTopicIds } from 'api/project_allowed_input_topics/util/getProjectTopicsIds';
 
 // components
+import {
+  LeftColumn,
+  MiddleColumn,
+  MiddleColumnTop,
+  Sticky,
+  StyledExportMenu,
+  StyledInput,
+  ThreeColumns,
+  TopActionBar,
+} from '.';
 import ActionBar from './components/ActionBar';
 import FilterSidebar from './components/FilterSidebar';
 import PostTable from './components/PostTable';
 import InfoSidebar from './components/InfoSidebar';
-import ExportMenu from './components/ExportMenu';
 import IdeasCount from './components/IdeasCount';
-import { Input } from 'semantic-ui-react';
 import FeedbackToggle from './components/TopLevelFilters/FeedbackToggle';
 const LazyPostPreview = lazy(
   () => import('components/admin/PostManager/components/PostPreview')
@@ -37,52 +44,6 @@ import { TPhases } from 'api/phases/types';
 import useIdeas from 'api/ideas/useIdeas';
 import { IQueryParameters, Sort } from 'api/ideas/types';
 import { getPageNumberFromUrl, getSortDirection } from 'utils/paginationUtils';
-
-const StyledExportMenu = styled(ExportMenu)`
-  margin-left: auto;
-`;
-
-const TopActionBar = styled.div`
-  display: flex;
-  margin-bottom: 20px;
-`;
-
-const MiddleColumnTop = styled.div`
-  transition: 200ms;
-  display: flex;
-  justify-content: space-between;
-  flex: 1;
-`;
-
-const ThreeColumns = styled.div`
-  display: flex;
-  margin: -10px;
-  & > * {
-    margin: 10px;
-  }
-`;
-
-const LeftColumn = styled.div`
-  width: 260px;
-  min-width: 260px;
-`;
-
-const MiddleColumn = styled.div`
-  flex: 1;
-  transition: 200ms;
-`;
-
-export const Sticky = styled.div`
-  position: -webkit-sticky;
-  position: sticky;
-  top: ${(props) => props.theme.menuHeight + 20}px;
-`;
-
-const StyledInput = styled(Input)`
-  max-width: 260px;
-  display: flex;
-  width: 100%;
-`;
 
 interface InputProps {
   // When the PostManager is used in admin/projects, we pass down the current project id as a prop
