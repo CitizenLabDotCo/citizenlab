@@ -2,7 +2,7 @@ import moment = require('moment');
 import { randomString, randomEmail } from '../support/commands';
 import { skipOn } from '@cypress/skip-test';
 
-describe('Existing continuous project with survey', () => {
+describe('Existing project with survey', () => {
   before(() => {
     cy.setAdminLoginCookie();
     cy.visit('/projects/charlie-crew-survey');
@@ -17,7 +17,6 @@ describe('Existing continuous project with survey', () => {
   });
 
   it('shows the survey', () => {
-    cy.get('.e2e-continuous-project-survey-container');
     cy.get('.e2e-typeform-survey');
     cy.wait(3000);
     cy.get('.e2e-typeform-survey iframe');
@@ -34,37 +33,48 @@ describe('Existing continuous project with survey', () => {
   });
 });
 
-describe('New continuous project with survey', () => {
+describe('New project with survey', () => {
   const projectTitle = randomString();
   const projectDescription = randomString();
   const projectDescriptionPreview = randomString(30);
   let projectId: string;
   let projectSlug: string;
+  const phaseTitle = randomString();
 
   before(() => {
     cy.apiCreateProject({
-      type: 'continuous',
+      type: 'timeline',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
       publicationStatus: 'published',
-      participationMethod: 'survey',
-      surveyUrl: 'https://citizenlabco.typeform.com/to/Yv6B7V',
-      surveyService: 'typeform',
-    }).then((project) => {
-      projectId = project.body.data.id;
-      projectSlug = project.body.data.attributes.slug;
-
-      cy.apiCreateEvent({
-        projectId,
-        title: 'Event title',
-        location: 'Event location',
-        includeLocation: true,
-        description: 'Event description',
-        startDate: moment().subtract(1, 'day').toDate(),
-        endDate: moment().add(1, 'day').toDate(),
+    })
+      .then((project) => {
+        projectId = project.body.data.id;
+        projectSlug = project.body.data.attributes.slug;
+        return cy.apiCreatePhase({
+          projectId,
+          title: phaseTitle,
+          startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
+          participationMethod: 'survey',
+          surveyUrl: 'https://citizenlabco.typeform.com/to/Yv6B7V',
+          surveyService: 'typeform',
+          canPost: true,
+          canComment: true,
+          canReact: true,
+        });
+      })
+      .then(() => {
+        cy.apiCreateEvent({
+          projectId,
+          title: 'Event title',
+          location: 'Event location',
+          includeLocation: true,
+          description: 'Event description',
+          startDate: moment().subtract(1, 'day').toDate(),
+          endDate: moment().add(1, 'day').toDate(),
+        });
       });
-    });
   });
 
   beforeEach(() => {
@@ -85,7 +95,6 @@ describe('New continuous project with survey', () => {
   });
 
   it('shows the survey', () => {
-    cy.get('.e2e-continuous-project-survey-container');
     cy.get('.e2e-typeform-survey');
     cy.wait(3000);
     cy.get('.e2e-typeform-survey iframe');
@@ -212,7 +221,7 @@ describe('Timeline project with survey phase but not active', () => {
   });
 });
 
-describe('Archived continuous project with survey', () => {
+describe('Archived single phase project with survey', () => {
   const projectTitle = randomString();
   const projectDescription = randomString();
   const projectDescriptionPreview = randomString(30);
@@ -221,17 +230,25 @@ describe('Archived continuous project with survey', () => {
 
   before(() => {
     cy.apiCreateProject({
-      type: 'continuous',
+      type: 'timeline',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
       publicationStatus: 'archived',
-      participationMethod: 'survey',
-      surveyUrl: 'https://citizenlabco.typeform.com/to/Yv6B7V',
-      surveyService: 'typeform',
     }).then((project) => {
       projectId = project.body.data.id;
       projectSlug = project.body.data.attributes.slug;
+      return cy.apiCreatePhase({
+        projectId,
+        title: 'phaseTitle',
+        startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
+        participationMethod: 'survey',
+        surveyUrl: 'https://citizenlabco.typeform.com/to/Yv6B7V',
+        surveyService: 'typeform',
+        canPost: true,
+        canComment: true,
+        canReact: true,
+      });
     });
   });
 
@@ -260,17 +277,25 @@ describe('Embedded survey CTA', () => {
   before(() => {
     cy.setAdminLoginCookie();
     cy.apiCreateProject({
-      type: 'continuous',
+      type: 'timeline',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
       publicationStatus: 'published',
-      participationMethod: 'survey',
-      surveyUrl: 'https://citizenlabco.typeform.com/to/Yv6B7V',
-      surveyService: 'typeform',
     }).then((project) => {
       projectId = project.body.data.id;
       projectSlug = project.body.data.attributes.slug;
+      return cy.apiCreatePhase({
+        projectId,
+        title: 'phaseTitle',
+        startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
+        participationMethod: 'survey',
+        surveyUrl: 'https://citizenlabco.typeform.com/to/Yv6B7V',
+        surveyService: 'typeform',
+        canPost: true,
+        canComment: true,
+        canReact: true,
+      });
     });
   });
 
