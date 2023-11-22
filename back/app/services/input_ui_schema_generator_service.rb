@@ -110,10 +110,10 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
     }
   end
 
-  # TODO: JS - no input term on the project any more if form is from the project
   def generate_pages_for_current_locale(fields)
     participation_context = fields.first.resource.participation_context
-    input_term = participation_context.input_term || Phase::DEFAULT_INPUT_TERM
+    phase = participation_context.instance_of?(Project) ? TimelineService.new.current_or_last_can_contain_ideas_phase(participation_context) : participation_context
+    input_term = phase.input_term || Phase::DEFAULT_INPUT_TERM
     categorization_schema_with(input_term, schema_elements_for(fields))
   end
 
