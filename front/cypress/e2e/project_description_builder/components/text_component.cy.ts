@@ -49,8 +49,8 @@ describe('Project description builder Text component', () => {
     });
 
     cy.get('#e2e-text-box').click();
-    cy.get('#quill-editor-en').click();
-    cy.get('#quill-editor-en').type('Edited text.', { force: true });
+    cy.get('.ql-editor').click();
+    cy.get('.ql-editor').type('Edited text.', { force: true });
 
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveProjectDescriptionBuilder');

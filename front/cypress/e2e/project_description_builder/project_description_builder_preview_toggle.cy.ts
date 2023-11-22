@@ -58,8 +58,8 @@ describe('Project description builder preview', () => {
     });
 
     cy.get('#e2e-text-box').click();
-    cy.get('#quill-editor-en').click();
-    cy.get('#quill-editor-en').type('Edited text.', { force: true });
+    cy.get('.ql-editor').click();
+    cy.get('.ql-editor').type('Edited text.', { force: true });
 
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.get('#e2e-preview-toggle').click({ force: true });
@@ -74,8 +74,8 @@ describe('Project description builder preview', () => {
     cy.wait(10000);
     cy.get('#e2e-text-box').should('exist');
     cy.get('#e2e-text-box').click();
-    cy.get('#quill-editor-en').click();
-    cy.get('#quill-editor-en').type('Another edited text.', { force: true });
+    cy.get('.ql-editor').click();
+    cy.get('.ql-editor').type('Another edited text.', { force: true });
 
     cy.get('#e2e-preview-toggle').click({ force: true });
 
@@ -93,8 +93,8 @@ describe('Project description builder preview', () => {
     });
     cy.wait(5000);
     cy.get('#e2e-text-box').click();
-    cy.get('#quill-editor-en').click();
-    cy.get('#quill-editor-en').type('Sample text.', { force: true });
+    cy.get('.ql-editor').click();
+    cy.get('.ql-editor').type('Sample text.', { force: true });
 
     cy.get('#e2e-preview-toggle').click({ force: true });
 
