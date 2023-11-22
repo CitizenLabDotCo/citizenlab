@@ -59,19 +59,6 @@ export type Sort =
   | 'budget'
   | '-budget';
 
-export type SortAttribute =
-  | 'new'
-  | 'trending'
-  | 'popular'
-  | 'author_name'
-  | 'likes_count'
-  | 'dislikes_count'
-  | 'baskets_count'
-  | 'status'
-  | 'votes_count'
-  | 'comments_count'
-  | 'budget';
-
 type ReactingIdeaActionDescriptor =
   | { enabled: true; disabled_reason: null; cancelling_enabled: boolean }
   | {
