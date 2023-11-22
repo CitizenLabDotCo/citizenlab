@@ -19,6 +19,12 @@ class MultiTenancy::Rake::ContinuousProjectMigrationService
     projects.each do |project|
       Rails.logger.info "MIGRATING PROJECT: #{project.slug}."
 
+      # Catch validation error on some platforms
+      if !project.admin_publication
+        error_handler("#{project.slug} admin publication is blank.")
+        next
+      end
+
       # 1. Change the project process_type
       unless project.update(process_type: 'timeline')
         error_handler("#{project.slug} #{project.errors.details}")

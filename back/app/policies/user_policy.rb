@@ -103,20 +103,14 @@ class UserPolicy < ApplicationPolicy
     !!((user && (instance&.id == user.id || user.admin?)) || instance&.invite_pending?)
   end
 
-  def permitted_attributes_for_create
+  def permitted_attributes
     [:email] + shared_permitted_attributes
-  end
-
-  def permitted_attributes_for_update
-    shared_permitted_attributes.tap do |attrs|
-      attrs.push :email if !AppConfiguration.instance.feature_activated?('user_confirmation')
-    end
   end
 
   private
 
   def shared_permitted_attributes
-    shared = [:first_name, :last_name, :password, :avatar, :locale, { onboarding: [:topics_and_areas], custom_field_values: allowed_custom_field_keys, bio_multiloc: CL2_SUPPORTED_LOCALES }]
+    shared = [:email, :first_name, :last_name, :password, :avatar, :locale, { onboarding: [:topics_and_areas], custom_field_values: allowed_custom_field_keys, bio_multiloc: CL2_SUPPORTED_LOCALES }]
     admin? ? shared + [roles: %i[type project_id project_folder_id]] : shared
   end
 
