@@ -182,24 +182,33 @@ const InputManager = ({
   // End Modal Preview
 
   const onChangeTopics = (topics: string[]) => {
-    setQueryParameters({ ...queryParameters, topics });
+    setQueryParameters({ ...queryParameters, 'page[number]': 1, topics });
   };
 
   const onChangeStatus = (ideaStatus: string | null) => {
-    setQueryParameters({ ...queryParameters, idea_status: ideaStatus });
+    setQueryParameters({
+      ...queryParameters,
+      'page[number]': 1,
+      idea_status: ideaStatus,
+    });
   };
 
   const onChangeAssignee = (assignee: string | undefined) => {
-    setQueryParameters({ ...queryParameters, assignee });
+    setQueryParameters({ ...queryParameters, 'page[number]': 1, assignee });
   };
 
   const onChangeFeedbackFilter = (feedbackNeeded: boolean) => {
-    setQueryParameters({ ...queryParameters, feedback_needed: feedbackNeeded });
+    setQueryParameters({
+      ...queryParameters,
+      'page[number]': 1,
+      feedback_needed: feedbackNeeded,
+    });
   };
 
   const onChangePhase = (phase: string) => {
     setQueryParameters({
       ...queryParameters,
+      'page[number]': 1,
       phase,
     });
   };
@@ -207,6 +216,7 @@ const InputManager = ({
   const onChangeProjects = (projects: string[]) => {
     setQueryParameters({
       ...queryParameters,
+      'page[number]': 1,
       projects,
     });
   };
@@ -220,11 +230,15 @@ const InputManager = ({
   };
 
   const onChangeSearchTerm = (event: ChangeEvent<HTMLInputElement>) => {
-    setQueryParameters({ ...queryParameters, search: event.target.value });
+    setQueryParameters({
+      ...queryParameters,
+      'page[number]': 1,
+      search: event.target.value,
+    });
   };
 
   const onChangeSorting = (sort: Sort) => {
-    setQueryParameters({ ...queryParameters, sort });
+    setQueryParameters({ ...queryParameters, 'page[number]': 1, sort });
   };
 
   const currentPage = getPageNumberFromUrl(ideas.links.self);

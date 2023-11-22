@@ -104,22 +104,27 @@ const ProposalsManager = ({ defaultFilterMenu, visibleFilterMenus }: Props) => {
   };
 
   const onChangeTopics = (topics: string[]) => {
-    setQueryParameters({ ...queryParameters, topics });
+    setQueryParameters({ ...queryParameters, pageNumber: 1, topics });
   };
 
   const onChangeStatus = (initiativeStatus: string | null) => {
     setQueryParameters({
       ...queryParameters,
+      pageNumber: 1,
       initiative_status: initiativeStatus,
     });
   };
 
   const onChangeAssignee = (assignee: string | undefined) => {
-    setQueryParameters({ ...queryParameters, assignee });
+    setQueryParameters({ ...queryParameters, pageNumber: 1, assignee });
   };
 
   const onChangeFeedbackFilter = (feedbackNeeded: boolean) => {
-    setQueryParameters({ ...queryParameters, feedback_needed: feedbackNeeded });
+    setQueryParameters({
+      ...queryParameters,
+      pageNumber: 1,
+      feedback_needed: feedbackNeeded,
+    });
   };
 
   const onResetParams = () => {
@@ -131,11 +136,15 @@ const ProposalsManager = ({ defaultFilterMenu, visibleFilterMenus }: Props) => {
   };
 
   const onChangeSearchTerm = (event: ChangeEvent<HTMLInputElement>) => {
-    setQueryParameters({ ...queryParameters, search: event.target.value });
+    setQueryParameters({
+      ...queryParameters,
+      pageNumber: 1,
+      search: event.target.value,
+    });
   };
 
   const onChangeSorting = (sort: Sort) => {
-    setQueryParameters({ ...queryParameters, sort });
+    setQueryParameters({ ...queryParameters, pageNumber: 1, sort });
   };
 
   const currentPage = getPageNumberFromUrl(initiatives.links.self);
