@@ -5,7 +5,6 @@ class ReportBuilder::ReportPublisher
     @report = report
   end
 
-  # TODO: move all CraftJS related logic in one class
   def publish
     return if @report.global?
 
@@ -20,7 +19,6 @@ class ReportBuilder::ReportPublisher
 
     nodes.each do |node_id, node_obj|
       type = node_obj['type']
-      # TODO: is_a? is ugly! fix it
       resolved_name = type.is_a?(Hash) ? type['resolvedName'] : next
 
       data = ReportBuilder::QueryRepository.new.data_by_graph(resolved_name, node_obj['props'])
