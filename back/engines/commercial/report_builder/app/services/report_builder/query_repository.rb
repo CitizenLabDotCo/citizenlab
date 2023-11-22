@@ -1,15 +1,14 @@
 # frozen_string_literal: true
 
 module ReportBuilder
-  # TODO: rename to sth else
   class QueryRepository
-    GRAPH_RESOLVED_NAMES_METHODS = {
+    GRAPH_RESOLVED_NAMES_CLASSES = {
       'GenderWidget' => Queries::UsersByGender,
       'ReactionsByTimeWidget' => Queries::ReactionsByTime
     }.freeze
 
     def data_by_graph(graph_resolved_name, props)
-      klass = GRAPH_RESOLVED_NAMES_METHODS[graph_resolved_name]
+      klass = GRAPH_RESOLVED_NAMES_CLASSES[graph_resolved_name]
       return unless klass
 
       run_query(klass.new.query(**props.to_h.symbolize_keys))

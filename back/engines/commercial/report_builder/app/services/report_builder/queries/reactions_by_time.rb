@@ -2,9 +2,6 @@
 module ReportBuilder
   class Queries::ReactionsByTime < Queries::Base
     def query(startAt: nil, endAt: nil, projectId: nil, **_other_props)
-      # TODO: do we need these ||=?
-      # startAt ||= Date.parse('2017-01-01')
-      # endAt ||= Time.zone.today
       resolution = RESOLUTION_TO_INTERVAL.fetch('month')
 
       time_series_query = {
