@@ -99,7 +99,7 @@ describe('ProjectDescriptionBuilderTopBar', () => {
       <Editor>
         <ProjectDescriptionBuilderTopBar
           selectedLocale="en"
-          localesWithError={[]}
+          hasError
           onSelectLocale={() => {}}
           previewEnabled={false}
           setPreviewEnabled={() => {}}
@@ -113,7 +113,7 @@ describe('ProjectDescriptionBuilderTopBar', () => {
       <Editor>
         <ProjectDescriptionBuilderTopBar
           selectedLocale="en"
-          localesWithError={[]}
+          hasError
           onSelectLocale={() => {}}
           previewEnabled={false}
           setPreviewEnabled={() => {}}
@@ -128,7 +128,7 @@ describe('ProjectDescriptionBuilderTopBar', () => {
       <Editor>
         <ProjectDescriptionBuilderTopBar
           selectedLocale="en"
-          localesWithError={[]}
+          hasError
           onSelectLocale={() => {}}
           previewEnabled={false}
           setPreviewEnabled={() => {}}
@@ -150,7 +150,7 @@ describe('ProjectDescriptionBuilderTopBar', () => {
       <Editor>
         <ProjectDescriptionBuilderTopBar
           selectedLocale="en"
-          localesWithError={['en']}
+          hasError={true}
           onSelectLocale={() => {}}
           previewEnabled={false}
           setPreviewEnabled={() => {}}
@@ -167,7 +167,7 @@ describe('ProjectDescriptionBuilderTopBar', () => {
       <Editor>
         <ProjectDescriptionBuilderTopBar
           selectedLocale="en"
-          localesWithError={[]}
+          hasError={false}
           onSelectLocale={() => {}}
           previewEnabled={false}
           setPreviewEnabled={() => {}}
@@ -184,7 +184,7 @@ describe('ProjectDescriptionBuilderTopBar', () => {
       <Editor>
         <ProjectDescriptionBuilderTopBar
           selectedLocale="en"
-          localesWithError={[]}
+          hasError={false}
           onSelectLocale={() => {}}
           previewEnabled={false}
           setPreviewEnabled={setPreviewEnabled}
@@ -204,7 +204,7 @@ describe('ProjectDescriptionBuilderTopBar', () => {
       <Editor>
         <ProjectDescriptionBuilderTopBar
           selectedLocale="en"
-          localesWithError={[]}
+          hasError={false}
           onSelectLocale={() => {}}
           previewEnabled={true}
           setPreviewEnabled={setPreviewEnabled}
@@ -223,7 +223,7 @@ describe('ProjectDescriptionBuilderTopBar', () => {
       <Editor>
         <ProjectDescriptionBuilderTopBar
           selectedLocale="en"
-          localesWithError={[]}
+          hasError={false}
           onSelectLocale={() => {}}
           previewEnabled={false}
           setPreviewEnabled={() => {}}
@@ -239,7 +239,7 @@ describe('ProjectDescriptionBuilderTopBar', () => {
       <Editor>
         <ProjectDescriptionBuilderTopBar
           selectedLocale="en"
-          localesWithError={[]}
+          hasError={false}
           onSelectLocale={() => {}}
           previewEnabled={false}
           setPreviewEnabled={() => {}}
@@ -255,7 +255,7 @@ describe('ProjectDescriptionBuilderTopBar', () => {
       <Editor>
         <ProjectDescriptionBuilderTopBar
           selectedLocale="en"
-          localesWithError={[]}
+          hasError={false}
           onSelectLocale={onSelectLocale}
           previewEnabled={false}
           setPreviewEnabled={() => {}}
@@ -275,7 +275,7 @@ describe('ProjectDescriptionBuilderTopBar', () => {
       <Editor>
         <ProjectDescriptionBuilderTopBar
           selectedLocale="en"
-          localesWithError={['en']}
+          hasError={true}
           onSelectLocale={onSelectLocale}
           previewEnabled={false}
           setPreviewEnabled={() => {}}
@@ -292,7 +292,7 @@ describe('ProjectDescriptionBuilderTopBar', () => {
         <ProjectDescriptionBuilderTopBar
           hasPendingState={true}
           selectedLocale="en"
-          localesWithError={['en']}
+          hasError={false}
           onSelectLocale={onSelectLocale}
           previewEnabled={false}
           setPreviewEnabled={() => {}}
