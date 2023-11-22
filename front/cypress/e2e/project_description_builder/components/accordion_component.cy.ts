@@ -51,6 +51,9 @@ describe('Project description builder Accordion component', () => {
       }
     );
 
+    cy.get('#accordionTitleId').type('Accordion title', { force: true });
+    cy.get('#quill-editor-en').type('Accordion content.', { force: true });
+
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveProjectDescriptionBuilder');
 
@@ -68,8 +71,8 @@ describe('Project description builder Accordion component', () => {
 
     cy.get('#e2e-accordion').click({ force: true });
     cy.get('#default-open-toggle').click({ force: true });
-    cy.get('#quill-editor').click();
-    cy.get('#quill-editor').type('Edited text.', { force: true });
+    cy.get('#quill-editor-en').click();
+    cy.get('#quill-editor-en').type('Edited text.', { force: true });
 
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveProjectDescriptionBuilder');
