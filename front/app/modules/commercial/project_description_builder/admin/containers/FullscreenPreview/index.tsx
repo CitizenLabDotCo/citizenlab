@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import useProjectDescriptionBuilderLayout from 'modules/commercial/project_description_builder/api/useProjectDescriptionBuilderLayout';
 import useLocale from 'hooks/useLocale';
 import useProjectById from 'api/projects/useProjectById';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 
 // components
 import FullScreenWrapper from 'components/admin/ContentBuilder/FullscreenPreview/Wrapper';
@@ -15,14 +15,20 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // types
 import { SerializedNodes } from '@craftjs/core';
+import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
+import useLocalize from 'hooks/useLocalize';
+import { Locale } from 'typings';
 
 export const FullScreenPreview = () => {
+  const [search] = useSearchParams();
+  const selectedLocale = (search.get('selected_locale') as Locale) || undefined;
+  const localize = useLocalize();
+
   const [draftData, setDraftData] = useState<SerializedNodes | undefined>();
-  const [selectedLocale, setSelectedLocale] = useState<string | undefined>();
   const { projectId } = useParams() as { projectId: string };
   const platformLocale = useLocale();
-  const { data: project } = useProjectById(projectId);
 
+  const { data: project } = useProjectById(projectId);
   const { data: projectDescriptionBuilderLayout } =
     useProjectDescriptionBuilderLayout(projectId);
 
@@ -30,7 +36,6 @@ export const FullScreenPreview = () => {
     return null;
   }
 
-  const locale = selectedLocale || platformLocale;
   const isLoadingProjectDescriptionBuilderLayout =
     projectDescriptionBuilderLayout === undefined;
 
@@ -42,23 +47,24 @@ export const FullScreenPreview = () => {
   const editorData = draftData || savedEditorData;
 
   return (
-    <FullScreenWrapper
-      onUpdateDraftData={setDraftData}
-      onUpdateLocale={setSelectedLocale}
-      padding="0px"
+    <LanguageProvider
+      platformLocale={platformLocale}
+      contentBuilderLocale={selectedLocale}
     >
-      <Title color="tenantText" variant="h1" px="20px">
-        {project.data.attributes.title_multiloc[locale]}
-      </Title>
-      {isLoadingProjectDescriptionBuilderLayout && <Spinner />}
-      {!isLoadingProjectDescriptionBuilderLayout && editorData && (
-        <Box>
-          <Editor isPreview={true}>
-            <ContentBuilderFrame editorData={editorData} />
-          </Editor>
-        </Box>
-      )}
-    </FullScreenWrapper>
+      <FullScreenWrapper onUpdateDraftData={setDraftData} padding="0px">
+        <Title color="tenantText" variant="h1" px="20px">
+          {localize(project.data.attributes.title_multiloc)}
+        </Title>
+        {isLoadingProjectDescriptionBuilderLayout && <Spinner />}
+        {!isLoadingProjectDescriptionBuilderLayout && editorData && (
+          <Box>
+            <Editor isPreview={true}>
+              <ContentBuilderFrame editorData={editorData} />
+            </Editor>
+          </Box>
+        )}
+      </FullScreenWrapper>
+    </LanguageProvider>
   );
 };
 
