@@ -159,7 +159,7 @@ module Analytics
     def pagination_query_params(number)
       return if number.nil?
 
-      json_query = @json_query.dup
+      json_query = @json_query.deep_dup
       if @json_query.key?(:page)
         json_query[:page][:number] = number
       else
