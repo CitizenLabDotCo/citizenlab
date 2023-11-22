@@ -25,6 +25,8 @@ type TwoColumnProps = {
 
 const StyledBox = styled(TwoColumnWrapper)`
   grid-gap: 8px;
+  padding-right: 0px;
+  padding-left: 0px;
 `;
 
 export const TwoColumn = ({ columnLayout, children }: TwoColumnProps) => {
