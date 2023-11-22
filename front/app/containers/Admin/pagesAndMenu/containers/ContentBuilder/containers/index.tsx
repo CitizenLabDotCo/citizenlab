@@ -32,11 +32,13 @@ import { isEmpty } from 'lodash-es';
 import ContentBuilderLanguageProvider from './ContentBuilderLanguageProvider';
 import HomepageBanner from '../components/CraftComponents/HomepageBanner';
 import Projects from '../components/CraftComponents/Projects';
+import { useTheme } from 'styled-components';
 
 const HomepageBuilderPage = () => {
   const [previewEnabled, setPreviewEnabled] = useState(false);
   const [selectedLocale, setSelectedLocale] = useState<Locale | undefined>();
 
+  const theme = useTheme();
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
 
   const locale = useLocale();
@@ -141,8 +143,12 @@ const HomepageBuilderPage = () => {
                       banner_cta_signed_in_url: null,
                       banner_signed_out_header_multiloc: {},
                       banner_signed_out_subheader_multiloc: {},
-                      banner_signed_out_header_overlay_color: '#0A5159',
+                      banner_signed_out_header_overlay_color:
+                        theme.colors.tenantPrimary,
                       banner_signed_out_header_overlay_opacity: 90,
+                      banner_signed_in_header_overlay_color:
+                        theme.colors.tenantPrimary,
+                      banner_signed_in_header_overlay_opacity: 90,
                       banner_cta_signed_out_text_multiloc: {},
                       banner_cta_signed_out_type: 'sign_up_button',
                       banner_cta_signed_out_url: null,

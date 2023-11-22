@@ -7,8 +7,8 @@ import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { UserComponent, Element, useNode } from '@craftjs/core';
 
 // widgets
-import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
-import Container from 'components/admin/ContentBuilder/Widgets/Container';
+import TwoColumn from '../TwoColumn';
+import Container from '../Container';
 import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
 import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
