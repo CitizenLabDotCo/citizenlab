@@ -70,10 +70,9 @@ const ProjectDescriptionBuilderPage = () => {
     return null;
   }
 
-  const localesWithError = Object.values(contentBuilderErrors)
-    .filter((node) => node.hasError)
-    .filter((node) => node.selectedLocale)
-    .map((node) => node.selectedLocale as Locale);
+  const hasError =
+    Object.values(contentBuilderErrors).filter((node) => node.hasError).length >
+    0;
 
   const handleErrors = (newErrors: ContentBuilderErrors) => {
     setContentBuilderErrors((contentBuilderErrors) => ({
@@ -139,7 +138,7 @@ const ProjectDescriptionBuilderPage = () => {
     >
       <Editor isPreview={false} onNodesChange={handleEditorChange}>
         <ProjectDescriptionBuilderTopBar
-          localesWithError={localesWithError}
+          hasError={hasError}
           hasPendingState={imageUploading}
           previewEnabled={previewEnabled}
           setPreviewEnabled={setPreviewEnabled}

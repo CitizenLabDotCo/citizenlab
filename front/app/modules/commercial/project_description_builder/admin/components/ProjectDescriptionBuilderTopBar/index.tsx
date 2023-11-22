@@ -28,7 +28,7 @@ import { Locale } from 'typings';
 
 type ProjectDescriptionBuilderTopBarProps = {
   hasPendingState?: boolean;
-  localesWithError: Locale[];
+  hasError?: boolean;
   previewEnabled: boolean;
   setPreviewEnabled: React.Dispatch<React.SetStateAction<boolean>>;
   selectedLocale: Locale | undefined;
@@ -43,7 +43,7 @@ const ProjectDescriptionBuilderTopBar = ({
   setPreviewEnabled,
   selectedLocale,
   onSelectLocale,
-  localesWithError,
+  hasError,
   hasPendingState,
 }: ProjectDescriptionBuilderTopBarProps) => {
   const { projectId } = useParams() as { projectId: string };
@@ -54,7 +54,7 @@ const ProjectDescriptionBuilderTopBar = ({
   const { mutateAsync: addProjectDescriptionBuilderLayout } =
     useAddProjectDescriptionBuilderLayout();
 
-  const disableSave = localesWithError.length > 0;
+  const disableSave = !!hasError || !!hasPendingState;
 
   const goBack = () => {
     clHistory.push(`/admin/projects/${projectId}/description`);
@@ -123,7 +123,7 @@ const ProjectDescriptionBuilderTopBar = ({
           <FormattedMessage {...messages.viewProject} />
         </Button>
         <SaveButton
-          disabled={!!(disableSave || hasPendingState)}
+          disabled={disableSave}
           processing={loading}
           onClick={handleSave}
         />
