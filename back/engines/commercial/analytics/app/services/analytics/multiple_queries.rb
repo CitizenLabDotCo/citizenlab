@@ -2,9 +2,8 @@
 
 module Analytics
   class MultipleQueries
-    def initialize(request = nil)
-      # TODO: move pagination controller?
-      @request = request
+    def initialize(original_url: nil)
+      @original_url = original_url
     end
 
     def run(json_query_input)
@@ -47,13 +46,13 @@ module Analytics
     end
 
     def add_pagination_url(paginations)
-      return paginations if @request.nil?
+      return paginations if @original_url.nil?
 
       paginations.map do |pagination|
         pagination.transform_values do |params|
           next unless params
 
-          parsed_url = URI.parse(@request.original_url)
+          parsed_url = URI.parse(@original_url)
           parsed_url.query = params
           parsed_url
         end
