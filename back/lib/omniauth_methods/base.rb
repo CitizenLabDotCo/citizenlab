@@ -46,7 +46,7 @@ module OmniauthMethods
       raise NotImplementedError
     end
 
-    def email_confirmed?(_user)
+    def email_confirmed?(_auth)
       true
     end
   end

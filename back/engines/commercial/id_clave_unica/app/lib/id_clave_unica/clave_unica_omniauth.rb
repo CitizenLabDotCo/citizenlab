@@ -83,8 +83,8 @@ module IdClaveUnica
       true
     end
 
-    def email_confirmed?(user)
-      !user.confirmation_required?
+    def email_confirmed?(_auth)
+      false
     end
 
     private
