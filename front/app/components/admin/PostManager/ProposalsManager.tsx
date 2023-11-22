@@ -2,16 +2,15 @@ import React, { Suspense, lazy, useEffect, useState } from 'react';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 import { IQueryParameters, Sort } from 'api/initiatives/types';
-// api
 import useInitiativeStatuses from 'api/initiative_statuses/useInitiativeStatuses';
 import useTopics from 'api/topics/useTopics';
 import { getPageNumberFromUrl, getSortDirection } from 'utils/paginationUtils';
-
-// components
+import useInitiatives from 'api/initiatives/useInitiatives';
 import {
   LeftColumn,
   MiddleColumn,
   MiddleColumnTop,
+  PreviewMode,
   Sticky,
   StyledExportMenu,
   StyledInput,
@@ -27,29 +26,15 @@ import FeedbackToggle from './components/TopLevelFilters/FeedbackToggle';
 const LazyPostPreview = lazy(
   () => import('components/admin/PostManager/components/PostPreview')
 );
-
 import LazyStatusChangeModal from './components/StatusChangeModal/LazyStatusChangeModal';
 import Outlet from 'components/Outlet';
 
-// typings
-import { IInitiativeStatuses } from 'api/initiative_statuses/types';
-import { ITopics } from 'api/topics/types';
-import useInitiatives from 'api/initiatives/useInitiatives';
+type TFilterMenu = 'topics' | 'statuses';
 
-interface InputProps {
-  // filters settings
-  // the filters needed for this view, in the order they'll be shown, first one active by default
+interface Props {
   visibleFilterMenus: TFilterMenu[]; // cannot be empty.
   defaultFilterMenu: TFilterMenu;
 }
-
-interface Props extends InputProps {
-  postStatuses?: IInitiativeStatuses;
-  topicsData?: ITopics['data'];
-}
-
-export type TFilterMenu = 'topics' | 'statuses';
-export type PreviewMode = 'view' | 'edit';
 
 const ProposalsManager = ({ defaultFilterMenu, visibleFilterMenus }: Props) => {
   const [selection, setSelection] = useState<Set<string>>(new Set());
@@ -266,7 +251,7 @@ const ProposalsManager = ({ defaultFilterMenu, visibleFilterMenus }: Props) => {
   return null;
 };
 
-export default (inputProps: InputProps) => {
+export default (inputProps: Props) => {
   return (
     <DndProvider backend={HTML5Backend}>
       <ProposalsManager {...inputProps} />;

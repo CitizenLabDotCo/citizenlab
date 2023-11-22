@@ -2,20 +2,15 @@ import React, { Suspense, lazy, useEffect, useState } from 'react';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 import { isNilOrError } from 'utils/helperUtils';
-
-// api
 import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
 import useTopics from 'api/topics/useTopics';
 import useProjectAllowedInputTopics from 'api/project_allowed_input_topics/useProjectAllowedInputTopics';
-
-// resources
 import { getTopicIds } from 'api/project_allowed_input_topics/util/getProjectTopicsIds';
-
-// components
 import {
   LeftColumn,
   MiddleColumn,
   MiddleColumnTop,
+  PreviewMode,
   Sticky,
   StyledExportMenu,
   StyledInput,
@@ -31,40 +26,27 @@ import FeedbackToggle from './components/TopLevelFilters/FeedbackToggle';
 const LazyPostPreview = lazy(
   () => import('components/admin/PostManager/components/PostPreview')
 );
-
 import Outlet from 'components/Outlet';
 import { useSearchParams } from 'react-router-dom';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
-
-// typings
-import { IIdeaStatuses } from 'api/idea_statuses/types';
 import { IProjectData } from 'api/projects/types';
-import { ITopics } from 'api/topics/types';
 import { TPhases } from 'api/phases/types';
 import useIdeas from 'api/ideas/useIdeas';
 import { IQueryParameters, Sort } from 'api/ideas/types';
 import { getPageNumberFromUrl, getSortDirection } from 'utils/paginationUtils';
 
-interface InputProps {
-  // When the PostManager is used in admin/projects, we pass down the current project id as a prop
+interface Props {
+  // When the PostManager is used in /admin/projects, we pass down the current project id as a prop
   projectId?: string | null;
-  // filters settings
-  // the filters needed for this view, in the order they'll be shown, first one active by default
   visibleFilterMenus: TFilterMenu[]; // cannot be empty.
   defaultFilterMenu: TFilterMenu;
   phases?: TPhases;
-  // When the PostManager is used in admin/posts, the parent component passes
+  // When the PostManager is used in /admin/ideas, the parent component passes
   // down the array of projects the current user can moderate.
   projects?: IProjectData[] | null;
 }
 
-interface Props extends InputProps {
-  postStatuses?: IIdeaStatuses;
-  topicsData?: ITopics['data'];
-}
-
 export type TFilterMenu = 'topics' | 'phases' | 'projects' | 'statuses';
-export type PreviewMode = 'view' | 'edit';
 
 const PostManager = ({
   defaultFilterMenu,
@@ -366,7 +348,7 @@ const PostManager = ({
   return null;
 };
 
-export default (inputProps: InputProps) => {
+export default (inputProps: Props) => {
   return (
     <DndProvider backend={HTML5Backend}>
       <PostManager {...inputProps} />
