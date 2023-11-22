@@ -117,7 +117,7 @@ const InputManager = ({
     });
   }, [visibleFilterMenus]);
 
-  if (!ideas) return null;
+  if (!ideas || !topicsData) return null;
 
   // Filtering handlers
   const getSelectedProject = () => {
@@ -250,127 +250,121 @@ const InputManager = ({
   const selectedPhaseId = queryParameters.phase;
   const selectedStatus = queryParameters.idea_status;
 
-  if (ideas && topicsData) {
-    return (
-      <>
-        <TopActionBar>
-          <Outlet
-            id="app.components.admin.PostManager.topActionBar"
-            assignee={selectedAssignee}
-            projectId={type === 'ProjectIdeas' ? projectId : null}
-            handleAssigneeFilterChange={onChangeAssignee}
-            type={type}
-          />
-          <FeedbackToggle
-            type={type}
-            value={feedbackNeeded}
-            onChange={onChangeFeedbackFilter}
-            project={selectedProjectId}
-            phase={selectedPhaseId}
-            topics={selectedTopics}
-            status={selectedStatus}
-            assignee={selectedAssignee}
-            searchTerm={queryParameters.search}
-          />
-          <StyledExportMenu
+  return (
+    <>
+      <TopActionBar>
+        <Outlet
+          id="app.components.admin.PostManager.topActionBar"
+          assignee={selectedAssignee}
+          projectId={type === 'ProjectIdeas' ? projectId : null}
+          handleAssigneeFilterChange={onChangeAssignee}
+          type={type}
+        />
+        <FeedbackToggle
+          type={type}
+          value={feedbackNeeded}
+          onChange={onChangeFeedbackFilter}
+          project={selectedProjectId}
+          phase={selectedPhaseId}
+          topics={selectedTopics}
+          status={selectedStatus}
+          assignee={selectedAssignee}
+          searchTerm={queryParameters.search}
+        />
+        <StyledExportMenu
+          type={type}
+          selection={selection}
+          selectedProject={selectedProjectId}
+        />
+      </TopActionBar>
+
+      <ThreeColumns>
+        <LeftColumn>
+          <ActionBar
             type={type}
             selection={selection}
-            selectedProject={selectedProjectId}
+            resetSelection={resetSelection}
+            handleClickEdit={openPreviewEdit}
           />
-        </TopActionBar>
-
-        <ThreeColumns>
-          <LeftColumn>
-            <ActionBar
-              type={type}
-              selection={selection}
-              resetSelection={resetSelection}
-              handleClickEdit={openPreviewEdit}
-            />
-          </LeftColumn>
-          <MiddleColumnTop>
-            <IdeasCount
-              feedbackNeeded={
-                feedbackNeeded === true ? feedbackNeeded : undefined
-              }
-              project={selectedProjectId}
-              phase={selectedPhaseId ?? undefined}
-              topics={selectedTopics ?? undefined}
-              ideaStatusId={selectedStatus ?? undefined}
-              search={queryParameters.search}
-              assignee={selectedAssignee ?? undefined}
-            />
-            <StyledInput icon="search" onChange={onChangeSearchTerm} />
-          </MiddleColumnTop>
-        </ThreeColumns>
-        <ThreeColumns>
-          <LeftColumn>
-            <Sticky>
-              <FilterSidebar
-                type={type}
-                activeFilterMenu={activeFilterMenu}
-                visibleFilterMenus={visibleFilterMenus}
-                onChangeActiveFilterMenu={handleChangeActiveFilterMenu}
-                phases={!isNilOrError(phases) ? phases : undefined}
-                projects={!isNilOrError(projects) ? projects : undefined}
-                statuses={ideaStatuses?.data ?? []}
-                topics={topicsData}
-                selectedPhase={selectedPhaseId}
-                selectedTopics={selectedTopics}
-                selectedStatus={selectedStatus}
-                selectedProject={selectedProjectId}
-                onChangePhaseFilter={onChangePhase}
-                onChangeTopicsFilter={onChangeTopics}
-                onChangeStatusFilter={onChangeStatus}
-                onChangeProjectFilter={handleOnChangeProjects}
-              />
-            </Sticky>
-          </LeftColumn>
-          <MiddleColumn>
-            <PostTable
+        </LeftColumn>
+        <MiddleColumnTop>
+          <IdeasCount
+            feedbackNeeded={
+              feedbackNeeded === true ? feedbackNeeded : undefined
+            }
+            project={selectedProjectId}
+            phase={selectedPhaseId ?? undefined}
+            topics={selectedTopics ?? undefined}
+            ideaStatusId={selectedStatus ?? undefined}
+            search={queryParameters.search}
+            assignee={selectedAssignee ?? undefined}
+          />
+          <StyledInput icon="search" onChange={onChangeSearchTerm} />
+        </MiddleColumnTop>
+      </ThreeColumns>
+      <ThreeColumns>
+        <LeftColumn>
+          <Sticky>
+            <FilterSidebar
               type={type}
               activeFilterMenu={activeFilterMenu}
-              sortAttribute={queryParameters.sort}
-              sortDirection={
-                queryParameters.sort
-                  ? getSortDirection(queryParameters.sort)
-                  : 'ascending'
-              }
-              onChangeSort={onChangeSorting}
-              posts={ideas.data}
+              visibleFilterMenus={visibleFilterMenus}
+              onChangeActiveFilterMenu={handleChangeActiveFilterMenu}
               phases={!isNilOrError(phases) ? phases : undefined}
+              projects={!isNilOrError(projects) ? projects : undefined}
               statuses={ideaStatuses?.data ?? []}
-              selection={selection}
-              selectedPhaseId={selectedPhaseId}
-              selectedProjectId={selectedProjectId}
-              onChangeSelection={setSelection}
-              currentPageNumber={
-                typeof currentPage === 'number' ? currentPage : undefined
-              }
-              lastPageNumber={
-                typeof lastPage === 'number' ? lastPage : undefined
-              }
-              onChangePage={onChangePage}
-              handleSeeAll={onResetParams}
-              openPreview={openPreview}
+              topics={topicsData}
+              selectedPhase={selectedPhaseId}
+              selectedTopics={selectedTopics}
+              selectedStatus={selectedStatus}
+              selectedProject={selectedProjectId}
+              onChangePhaseFilter={onChangePhase}
+              onChangeTopicsFilter={onChangeTopics}
+              onChangeStatusFilter={onChangeStatus}
+              onChangeProjectFilter={handleOnChangeProjects}
             />
-          </MiddleColumn>
-          <InfoSidebar postIds={[...selection]} openPreview={openPreview} />
-        </ThreeColumns>
-        <Suspense fallback={null}>
-          <LazyPostPreview
+          </Sticky>
+        </LeftColumn>
+        <MiddleColumn>
+          <PostTable
             type={type}
-            postId={previewPostId}
-            mode={previewMode}
-            onClose={closePreview}
-            onSwitchPreviewMode={switchPreviewMode}
+            activeFilterMenu={activeFilterMenu}
+            sortAttribute={queryParameters.sort}
+            sortDirection={
+              queryParameters.sort
+                ? getSortDirection(queryParameters.sort)
+                : 'ascending'
+            }
+            onChangeSort={onChangeSorting}
+            posts={ideas.data}
+            phases={!isNilOrError(phases) ? phases : undefined}
+            statuses={ideaStatuses?.data ?? []}
+            selection={selection}
+            selectedPhaseId={selectedPhaseId}
+            selectedProjectId={selectedProjectId}
+            onChangeSelection={setSelection}
+            currentPageNumber={
+              typeof currentPage === 'number' ? currentPage : undefined
+            }
+            lastPageNumber={typeof lastPage === 'number' ? lastPage : undefined}
+            onChangePage={onChangePage}
+            handleSeeAll={onResetParams}
+            openPreview={openPreview}
           />
-        </Suspense>
-      </>
-    );
-  }
-
-  return null;
+        </MiddleColumn>
+        <InfoSidebar postIds={[...selection]} openPreview={openPreview} />
+      </ThreeColumns>
+      <Suspense fallback={null}>
+        <LazyPostPreview
+          type={type}
+          postId={previewPostId}
+          mode={previewMode}
+          onClose={closePreview}
+          onSwitchPreviewMode={switchPreviewMode}
+        />
+      </Suspense>
+    </>
+  );
 };
 
 export default (inputProps: Props) => {
