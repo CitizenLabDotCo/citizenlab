@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useEffect, useState } from 'react';
+import React, { ChangeEvent, Suspense, lazy, useEffect, useState } from 'react';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 import { IQueryParameters, Sort } from 'api/initiatives/types';
@@ -44,12 +44,11 @@ const ProposalsManager = ({ defaultFilterMenu, visibleFilterMenus }: Props) => {
   const [previewMode, setPreviewMode] = useState<PreviewMode>('view');
   const { data: initiativeStatuses } = useInitiativeStatuses();
   const { data: initiativeTopics } = useTopics({ excludeCode: 'custom' });
-  const [queryParameters, setQueryParameters] = useState<IQueryParameters>({});
-  const { data: initiatives } = useInitiatives({
+  const [queryParameters, setQueryParameters] = useState<IQueryParameters>({
     pageSize: 10,
     sort: 'new',
-    search: queryParameters.search,
   });
+  const { data: initiatives } = useInitiatives(queryParameters);
 
   useEffect(() => {
     setActiveFilterMenu((activeFilterMenu) => {
@@ -103,17 +102,18 @@ const ProposalsManager = ({ defaultFilterMenu, visibleFilterMenus }: Props) => {
     setPreviewPostId(null);
     setPreviewMode('view');
   };
-  // End Modal Preview
 
   const onChangeTopics = (topics: string[]) => {
     setQueryParameters({ ...queryParameters, topics });
   };
+
   const onChangeStatus = (initiativeStatus: string | null) => {
     setQueryParameters({
       ...queryParameters,
       initiative_status: initiativeStatus,
     });
   };
+
   const onChangeAssignee = (assignee: string | undefined) => {
     setQueryParameters({ ...queryParameters, assignee });
   };
@@ -130,8 +130,8 @@ const ProposalsManager = ({ defaultFilterMenu, visibleFilterMenus }: Props) => {
     setQueryParameters({ ...queryParameters, pageNumber });
   };
 
-  const onChangeSearchTerm = (search: string) => {
-    setQueryParameters({ ...queryParameters, search });
+  const onChangeSearchTerm = (event: ChangeEvent<HTMLInputElement>) => {
+    setQueryParameters({ ...queryParameters, search: event.target.value });
   };
 
   const onChangeSorting = (sort: Sort) => {
@@ -254,7 +254,7 @@ const ProposalsManager = ({ defaultFilterMenu, visibleFilterMenus }: Props) => {
 export default (inputProps: Props) => {
   return (
     <DndProvider backend={HTML5Backend}>
-      <ProposalsManager {...inputProps} />;
+      <ProposalsManager {...inputProps} />
     </DndProvider>
   );
 };

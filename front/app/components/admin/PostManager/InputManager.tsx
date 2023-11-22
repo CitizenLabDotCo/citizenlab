@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useEffect, useState } from 'react';
+import React, { ChangeEvent, Suspense, lazy, useEffect, useState } from 'react';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 import { isNilOrError } from 'utils/helperUtils';
@@ -177,15 +177,19 @@ const PostManager = ({
   const onChangeTopics = (topics: string[]) => {
     setQueryParameters({ ...queryParameters, topics });
   };
+
   const onChangeStatus = (ideaStatus: string | null) => {
     setQueryParameters({ ...queryParameters, idea_status: ideaStatus });
   };
+
   const onChangeAssignee = (assignee: string | undefined) => {
     setQueryParameters({ ...queryParameters, assignee });
   };
+
   const onChangeFeedbackFilter = (feedbackNeeded: boolean) => {
     setQueryParameters({ ...queryParameters, feedback_needed: feedbackNeeded });
   };
+
   const onChangePhase = (phase: string) => {
     setQueryParameters({
       ...queryParameters,
@@ -208,8 +212,8 @@ const PostManager = ({
     setQueryParameters({ ...queryParameters, 'page[number]': pageNumber });
   };
 
-  const onChangeSearchTerm = (search: string) => {
-    setQueryParameters({ ...queryParameters, search });
+  const onChangeSearchTerm = (event: ChangeEvent<HTMLInputElement>) => {
+    setQueryParameters({ ...queryParameters, search: event.target.value });
   };
 
   const onChangeSorting = (sort: Sort) => {
