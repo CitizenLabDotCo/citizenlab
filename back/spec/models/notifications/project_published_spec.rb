@@ -30,7 +30,7 @@ RSpec.describe Notifications::ProjectPublished do
       expect(notifications).to eq []
     end
 
-    it "doesn't notificaty followers who don'o't have access the project" do
+    it "doesn't notify followers who don't have access the project" do
       area = create(:area)
       project = create(:project, areas: [area], visible_to: 'groups', groups: [create(:group)])
       _follower = create(:follower, followable: area)
