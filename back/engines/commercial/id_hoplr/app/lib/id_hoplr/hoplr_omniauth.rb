@@ -54,5 +54,9 @@ module IdHoplr
     def updateable_user_attrs
       %i[first_name last_name]
     end
+
+    def email_confirmed?(auth)
+      auth.info.email_verified
+    end
   end
 end

@@ -62,7 +62,10 @@ class OmniauthCallbackController < ApplicationController
     @identity = Identity.find_or_build_with_omniauth(auth, authver_method)
 
     @user = @identity.user
-    @user = User.find_by_cimail(user_attrs.fetch(:email)) if @user.nil? && user_attrs.key?(:email) # some providers (ClaveUnica) don't return email
+    if @user.nil? && user_attrs.key?(:email) # some providers (ClaveUnica) don't return email
+      @user = User.find_by_cimail(user_attrs.fetch(:email))
+      @user.set_confirmation_required unless authver_method.email_confirmed?(auth)
+    end
 
     @user = authentication_service.prevent_user_account_hijacking @user
 
@@ -190,7 +193,8 @@ class OmniauthCallbackController < ApplicationController
     attrs = authver_method.updateable_user_attrs
     update_hash = authver_method.profile_to_user_attrs(auth).slice(*attrs).compact
     update_hash.delete(:remote_avatar_url) if user.avatar.present? # don't overwrite avatar if already present
-    user.confirm! # confirm user email if not already confirmed
+    # confirm user email if not already confirmed
+    user.confirm! if authver_method.email_confirmed?(auth)
 
     if authver_method.overwrite_user_attrs?
       user.update_merging_custom_fields!(update_hash)
