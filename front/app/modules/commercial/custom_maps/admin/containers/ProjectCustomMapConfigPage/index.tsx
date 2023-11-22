@@ -140,7 +140,7 @@ const ProjectCustomMapConfigPage = memo<Props>(({ className }) => {
 
   useEffect(() => {
     // Since we return {data: null}, that is not sent back here so the useEffect on the mapConfig will not
-    // be triggered. The isFetching will help us counter that but we probably need fix this in the api
+    // be triggered. The isFetching will help us counter that but we probably need to fix this in the api or fetcher
     if (
       projectId &&
       appConfig &&
