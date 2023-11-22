@@ -63,7 +63,7 @@ const ProposalsManager = ({ defaultFilterMenu, visibleFilterMenus }: Props) => {
     });
   }, [visibleFilterMenus]);
 
-  if (!initiatives) return null;
+  if (!initiatives || !initiativeTopics) return null;
 
   const resetSelection = () => {
     setSelection(new Set());
@@ -154,110 +154,104 @@ const ProposalsManager = ({ defaultFilterMenu, visibleFilterMenus }: Props) => {
   const feedbackNeeded = queryParameters.feedback_needed || false;
   const selectedStatus = queryParameters.initiative_status;
 
-  if (initiativeTopics) {
-    return (
-      <>
-        <TopActionBar>
-          <Outlet
-            id="app.components.admin.PostManager.topActionBar"
-            assignee={selectedAssignee}
-            handleAssigneeFilterChange={onChangeAssignee}
-            type={'Initiatives'}
-          />
-          <FeedbackToggle
-            type={'Initiatives'}
-            value={feedbackNeeded}
-            onChange={onChangeFeedbackFilter}
-            topics={selectedTopics}
-            status={selectedStatus}
-            assignee={selectedAssignee}
-            searchTerm={queryParameters.search}
-          />
-          <StyledExportMenu type={'Initiatives'} selection={selection} />
-        </TopActionBar>
+  return (
+    <>
+      <TopActionBar>
+        <Outlet
+          id="app.components.admin.PostManager.topActionBar"
+          assignee={selectedAssignee}
+          handleAssigneeFilterChange={onChangeAssignee}
+          type={'Initiatives'}
+        />
+        <FeedbackToggle
+          type={'Initiatives'}
+          value={feedbackNeeded}
+          onChange={onChangeFeedbackFilter}
+          topics={selectedTopics}
+          status={selectedStatus}
+          assignee={selectedAssignee}
+          searchTerm={queryParameters.search}
+        />
+        <StyledExportMenu type={'Initiatives'} selection={selection} />
+      </TopActionBar>
 
-        <ThreeColumns>
-          <LeftColumn>
-            <ActionBar
-              type={'Initiatives'}
-              selection={selection}
-              resetSelection={resetSelection}
-              handleClickEdit={openPreviewEdit}
-            />
-          </LeftColumn>
-          <MiddleColumnTop>
-            <InitiativesCount
-              feedbackNeeded={feedbackNeeded}
-              topics={selectedTopics}
-              initiativeStatus={selectedStatus}
-              searchTerm={queryParameters.search}
-              assignee={selectedAssignee}
-            />
-            <StyledInput icon="search" onChange={onChangeSearchTerm} />
-          </MiddleColumnTop>
-        </ThreeColumns>
-        <ThreeColumns>
-          <LeftColumn>
-            <Sticky>
-              <FilterSidebar
-                type="Initiatives"
-                activeFilterMenu={activeFilterMenu}
-                visibleFilterMenus={visibleFilterMenus}
-                onChangeActiveFilterMenu={handleChangeActiveFilterMenu}
-                statuses={initiativeStatuses?.data ?? []}
-                topics={initiativeTopics.data}
-                selectedTopics={selectedTopics}
-                selectedStatus={selectedStatus}
-                onChangeTopicsFilter={onChangeTopics}
-                onChangeStatusFilter={onChangeStatus}
-              />
-            </Sticky>
-          </LeftColumn>
-          <MiddleColumn>
-            <PostTable
+      <ThreeColumns>
+        <LeftColumn>
+          <ActionBar
+            type={'Initiatives'}
+            selection={selection}
+            resetSelection={resetSelection}
+            handleClickEdit={openPreviewEdit}
+          />
+        </LeftColumn>
+        <MiddleColumnTop>
+          <InitiativesCount
+            feedbackNeeded={feedbackNeeded}
+            topics={selectedTopics}
+            initiativeStatus={selectedStatus}
+            searchTerm={queryParameters.search}
+            assignee={selectedAssignee}
+          />
+          <StyledInput icon="search" onChange={onChangeSearchTerm} />
+        </MiddleColumnTop>
+      </ThreeColumns>
+      <ThreeColumns>
+        <LeftColumn>
+          <Sticky>
+            <FilterSidebar
               type="Initiatives"
               activeFilterMenu={activeFilterMenu}
-              sortAttribute={queryParameters.sort}
-              sortDirection={
-                queryParameters.sort
-                  ? getSortDirection(queryParameters.sort)
-                  : 'ascending'
-              }
-              onChangeSort={onChangeSorting}
-              posts={initiatives.data}
+              visibleFilterMenus={visibleFilterMenus}
+              onChangeActiveFilterMenu={handleChangeActiveFilterMenu}
               statuses={initiativeStatuses?.data ?? []}
-              selection={selection}
-              onChangeSelection={setSelection}
-              currentPageNumber={
-                typeof currentPage === 'number' ? currentPage : undefined
-              }
-              lastPageNumber={
-                typeof lastPage === 'number' ? lastPage : undefined
-              }
-              onChangePage={onChangePage}
-              handleSeeAll={onResetParams}
-              openPreview={openPreview}
+              topics={initiativeTopics.data}
+              selectedTopics={selectedTopics}
+              selectedStatus={selectedStatus}
+              onChangeTopicsFilter={onChangeTopics}
+              onChangeStatusFilter={onChangeStatus}
             />
-          </MiddleColumn>
-          <InfoSidebar postIds={[...selection]} openPreview={openPreview} />
-        </ThreeColumns>
-        <Suspense fallback={null}>
-          <LazyPostPreview
+          </Sticky>
+        </LeftColumn>
+        <MiddleColumn>
+          <PostTable
             type="Initiatives"
-            postId={previewPostId}
-            mode={previewMode}
-            onClose={closePreview}
-            onSwitchPreviewMode={switchPreviewMode}
+            activeFilterMenu={activeFilterMenu}
+            sortAttribute={queryParameters.sort}
+            sortDirection={
+              queryParameters.sort
+                ? getSortDirection(queryParameters.sort)
+                : 'ascending'
+            }
+            onChangeSort={onChangeSorting}
+            posts={initiatives.data}
+            statuses={initiativeStatuses?.data ?? []}
+            selection={selection}
+            onChangeSelection={setSelection}
+            currentPageNumber={
+              typeof currentPage === 'number' ? currentPage : undefined
+            }
+            lastPageNumber={typeof lastPage === 'number' ? lastPage : undefined}
+            onChangePage={onChangePage}
+            handleSeeAll={onResetParams}
+            openPreview={openPreview}
           />
-        </Suspense>
-        <Suspense fallback={null}>
-          <LazyStatusChangeModal />
-        </Suspense>
-      </>
-    );
-  }
-
-  return null;
+        </MiddleColumn>
+        <InfoSidebar postIds={[...selection]} openPreview={openPreview} />
+      </ThreeColumns>
+      <Suspense fallback={null}>
+        <LazyPostPreview
+          type="Initiatives"
+          postId={previewPostId}
+          mode={previewMode}
+          onClose={closePreview}
+          onSwitchPreviewMode={switchPreviewMode}
+        />
+      </Suspense>
+      <Suspense fallback={null}>
+        <LazyStatusChangeModal />
+      </Suspense>
+    </>
+  );
 };
 
 export default (inputProps: Props) => {
