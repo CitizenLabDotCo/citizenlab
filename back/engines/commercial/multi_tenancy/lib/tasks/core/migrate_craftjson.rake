@@ -28,15 +28,15 @@ namespace :migrate_craftjson do
           tree_structure elts
         end
         if structures.uniq.size > 1
-          puts d['Content Buildable ID']
+          Rails.logger.info d['Content Buildable ID']
           bad += 1
         else
           good += 1
         end
       end
     end
-    puts "Good: #{good}"
-    puts "Baad: #{bad}"
+    Rails.logger.info "Good: #{good}"
+    Rails.logger.info "Baad: #{bad}"
   end
 
   desc 'Verify project'
@@ -50,9 +50,9 @@ namespace :migrate_craftjson do
       end
 
       if structures.uniq.size > 1
-        puts 'Incompatible structures :('
+        Rails.logger.info 'Incompatible structures :('
       else
-        puts 'Compatible structures :)'
+        Rails.logger.info 'Compatible structures :)'
       end
     end
   end
@@ -61,7 +61,7 @@ namespace :migrate_craftjson do
   task :fix_layouts, %i[content_buildable_type] => [:environment] do |_t, args|
     errors = {}
     Tenant.prioritize(Tenant.creation_finalized).each do |tenant|
-      puts tenant.host
+      Rails.logger.info tenant.host
       Apartment::Tenant.switch(tenant.schema_name) do
         locales = AppConfiguration.instance.settings.dig('core', 'locales')
         layouts = if args[:content_buildable_type]
@@ -70,7 +70,7 @@ namespace :migrate_craftjson do
           ContentBuilder::Layout.all
         end
         layouts.each do |layout|
-          puts layout.id
+          Rails.logger.info layout.id
           primary_locale = layout.craftjs_jsonmultiloc[locales.first].present? ? locales.first : layout.craftjs_jsonmultiloc.keys.first
           other_locales = locales - [primary_locale]
           layout.craftjs_json = migrate_monolingual(layout.craftjs_jsonmultiloc, primary_locale, other_locales)
@@ -94,10 +94,10 @@ namespace :migrate_craftjson do
     end
 
     if errors.present?
-      puts 'Some errors occurred!'
+      Rails.logger.info 'Some errors occurred!'
       pp errors
     else
-      puts 'Success!'
+      Rails.logger.info 'Success!'
     end
   end
 end
