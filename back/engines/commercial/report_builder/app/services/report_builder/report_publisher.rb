@@ -7,6 +7,8 @@ class ReportBuilder::ReportPublisher
 
   # TODO: move all CraftJS related logic in one class
   def publish
+    return if @report.global?
+
     ReportBuilder::PublishedGraphDataUnit.where(report_id: @report.id).destroy_all
 
     # TODO: change when we use multiple locales
