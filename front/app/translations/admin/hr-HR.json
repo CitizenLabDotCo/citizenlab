@@ -2226,7 +2226,7 @@
   "app.containers.ContentBuilder.Save": "Spremi",
   "app.containers.ContentBuilder.homepage.PageTitle": "Početna stranica",
   "app.containers.ContentBuilder.homepage.TwoColumnLayout": "Dva stupca",
-  "app.containers.ContentBuilder.homepage.ViewHomepage": "Pogledaj početnu stranicu",
+  "app.containers.ContentBuilder.homepage.View": "Pogled",
   "app.containers.ContentBuilder.homepage.bannerImage": "Slika natpisa",
   "app.containers.ContentBuilder.homepage.bannerSubtext": "Podtekst bannera",
   "app.containers.ContentBuilder.homepage.bannerText": "Tekst natpisa",
