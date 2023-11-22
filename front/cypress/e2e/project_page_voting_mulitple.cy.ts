@@ -117,11 +117,14 @@ describe('Multiple voting project', () => {
   });
 
   it('can submit the votes', () => {
+    cy.intercept(`**/baskets/**`).as('basketRequest');
+    cy.visit(`/en/projects/${projectSlug}`);
+    cy.wait('@basketRequest');
     cy.get('#e2e-voting-submit-button')
       .should('exist')
       .should('not.have.class', 'disabled');
-    cy.get('#e2e-voting-submit-button').find('button').click();
     cy.wait(1000);
+    cy.get('#e2e-voting-submit-button').find('button').click({ force: true });
 
     cy.contains('Vote submitted');
     cy.contains('Congratulations, your vote has been submitted');
