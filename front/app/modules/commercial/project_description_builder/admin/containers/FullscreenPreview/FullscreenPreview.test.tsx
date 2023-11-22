@@ -4,7 +4,11 @@ import FullScreenPreview from '.';
 
 let mockLocale = 'en';
 
-jest.mock('hooks/useLocale', () => jest.fn(() => mockLocale));
+jest.mock('hooks/useLocale');
+jest.mock(
+  'hooks/useLocalize',
+  () => () => jest.fn((multiloc) => multiloc[mockLocale])
+);
 
 const DEFAULT_PROJECT_DESCRIPTION_BUILDER_LAYOUT_DATA = {
   data: {
@@ -36,6 +40,11 @@ jest.mock('react-router-dom', () => {
     useParams: () => ({
       projectId: 'id',
     }),
+    useSearchParams: () => [
+      {
+        get: () => mockLocale,
+      },
+    ],
   };
 });
 
