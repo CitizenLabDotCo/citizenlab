@@ -12,7 +12,7 @@ module ReportBuilder
       klass = GRAPH_RESOLVED_NAMES_METHODS[graph_resolved_name]
       return unless klass
 
-      run_query(klass.new.query(**props))
+      run_query(klass.new.query(**props.to_h.symbolize_keys))
     end
 
     protected
@@ -21,7 +21,6 @@ module ReportBuilder
       # TODO: investigate why we need parameters and not HashWithIndifferentAccess
       json_query_params = ActionController::Parameters.new({ query: json_query }).permit![:query]
       results, errors, _paginations = Analytics::MultipleQueries.new.run(json_query_params)
-      # TODO: it's weird to validate and do not check the result. Fix this.
       if errors.present?
         raise "Error processing Analytics query: #{errors.to_json}"
       end
