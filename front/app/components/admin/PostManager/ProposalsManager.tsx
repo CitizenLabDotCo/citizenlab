@@ -59,11 +59,11 @@ const ProposalsManager = ({ defaultFilterMenu, visibleFilterMenus }: Props) => {
   const [previewMode, setPreviewMode] = useState<PreviewMode>('view');
   const { data: initiativeStatuses } = useInitiativeStatuses();
   const { data: initiativeTopics } = useTopics({ excludeCode: 'custom' });
-  const [filter, setFilters] = useState<IQueryParameters>({});
+  const [queryParameters, setQueryParameters] = useState<IQueryParameters>({});
   const { data: initiatives } = useInitiatives({
     pageSize: 10,
     sort: 'new',
-    search: filter.search,
+    search: queryParameters.search,
   });
 
   useEffect(() => {
@@ -121,41 +121,44 @@ const ProposalsManager = ({ defaultFilterMenu, visibleFilterMenus }: Props) => {
   // End Modal Preview
 
   const onChangeTopics = (topics: string[]) => {
-    setFilters({ ...filter, topics });
+    setQueryParameters({ ...queryParameters, topics });
   };
   const onChangeStatus = (initiativeStatus: string | null) => {
-    setFilters({ ...filter, initiative_status: initiativeStatus });
+    setQueryParameters({
+      ...queryParameters,
+      initiative_status: initiativeStatus,
+    });
   };
   const onChangeAssignee = (assignee: string | undefined) => {
-    setFilters({ ...filter, assignee });
+    setQueryParameters({ ...queryParameters, assignee });
   };
 
   const onChangeFeedbackFilter = (feedbackNeeded: boolean) => {
-    setFilters({ ...filter, feedback_needed: feedbackNeeded });
+    setQueryParameters({ ...queryParameters, feedback_needed: feedbackNeeded });
   };
 
   const onResetParams = () => {
-    setFilters({});
+    setQueryParameters({});
   };
 
   const onChangePage = (pageNumber: number) => {
-    setFilters({ ...filter, pageNumber });
+    setQueryParameters({ ...queryParameters, pageNumber });
   };
 
   const onChangeSearchTerm = (search: string) => {
-    setFilters({ ...filter, search });
+    setQueryParameters({ ...queryParameters, search });
   };
 
   const onChangeSorting = (sort: Sort) => {
-    setFilters({ ...filter, sort });
+    setQueryParameters({ ...queryParameters, sort });
   };
 
   const currentPage = getPageNumberFromUrl(initiatives.links.self);
   const lastPage = getPageNumberFromUrl(initiatives.links.last);
-  const selectedTopics = filter.topics;
-  const selectedAssignee = filter.assignee;
-  const feedbackNeeded = filter.feedback_needed || false;
-  const selectedStatus = filter.initiative_status;
+  const selectedTopics = queryParameters.topics;
+  const selectedAssignee = queryParameters.assignee;
+  const feedbackNeeded = queryParameters.feedback_needed || false;
+  const selectedStatus = queryParameters.initiative_status;
 
   if (initiativeTopics) {
     return (
@@ -174,7 +177,7 @@ const ProposalsManager = ({ defaultFilterMenu, visibleFilterMenus }: Props) => {
             topics={selectedTopics}
             status={selectedStatus}
             assignee={selectedAssignee}
-            searchTerm={filter.search}
+            searchTerm={queryParameters.search}
           />
           <StyledExportMenu type={'Initiatives'} selection={selection} />
         </TopActionBar>
@@ -193,7 +196,7 @@ const ProposalsManager = ({ defaultFilterMenu, visibleFilterMenus }: Props) => {
               feedbackNeeded={feedbackNeeded}
               topics={selectedTopics}
               initiativeStatus={selectedStatus}
-              searchTerm={filter.search}
+              searchTerm={queryParameters.search}
               assignee={selectedAssignee}
             />
             <StyledInput icon="search" onChange={onChangeSearchTerm} />
@@ -220,9 +223,11 @@ const ProposalsManager = ({ defaultFilterMenu, visibleFilterMenus }: Props) => {
             <PostTable
               type="Initiatives"
               activeFilterMenu={activeFilterMenu}
-              sortAttribute={filter.sort}
+              sortAttribute={queryParameters.sort}
               sortDirection={
-                filter.sort ? getSortDirection(filter.sort) : 'ascending'
+                queryParameters.sort
+                  ? getSortDirection(queryParameters.sort)
+                  : 'ascending'
               }
               onChangeSort={onChangeSorting}
               posts={initiatives.data}
