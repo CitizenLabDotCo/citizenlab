@@ -48,7 +48,7 @@ interface Props {
 
 export type TFilterMenu = 'topics' | 'phases' | 'projects' | 'statuses';
 
-const PostManager = ({
+const InputManager = ({
   defaultFilterMenu,
   visibleFilterMenus,
   projects,
@@ -361,7 +361,7 @@ const PostManager = ({
 export default (inputProps: Props) => {
   return (
     <DndProvider backend={HTML5Backend}>
-      <PostManager {...inputProps} />
+      <InputManager {...inputProps} />
     </DndProvider>
   );
 };
