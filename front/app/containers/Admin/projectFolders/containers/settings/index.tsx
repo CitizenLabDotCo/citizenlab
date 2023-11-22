@@ -9,6 +9,7 @@ import clHistory from 'utils/cl-router/history';
 import GoBackButton from 'components/UI/GoBackButton';
 import ProjectFolderForm from './ProjectFolderForm';
 import useProjectFolderById from 'api/project_folders/useProjectFolderById';
+import { Box } from '@citizenlab/cl2-component-library';
 
 const Container = styled.div<{ mode: 'edit' | 'new' }>`
   display: flex;
@@ -57,7 +58,7 @@ const FolderSettings = ({ params }: WithRouterProps) => {
   }
 
   return (
-    <>
+    <Box p="40px">
       {mode === 'new' && <StyledGoBackButton onClick={goBack} />}
       <Container mode={mode}>
         {mode === 'edit' ? (
@@ -81,7 +82,7 @@ const FolderSettings = ({ params }: WithRouterProps) => {
         )}
         <ProjectFolderForm mode={mode} projectFolderId={projectFolderId} />
       </Container>
-    </>
+    </Box>
   );
 };
 
