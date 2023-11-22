@@ -62,7 +62,7 @@ describe ReportBuilder::WebApi::V1::GraphDataUnitsController do
       headers: admin_headers
     expect(json_parse(response.body).dig(:data, :attributes)).to eq(expected_attrs)
 
-    put "/web_api/v1/reports/#{report.id}/publish", headers: admin_headers
+    ReportBuilder::SideFxReportService.new.after_update(report, create(:admin))
     expect(ReportBuilder::PublishedGraphDataUnit.count).to eq(1)
     data_unit = ReportBuilder::PublishedGraphDataUnit.first
     expect(data_unit).to have_attributes(
