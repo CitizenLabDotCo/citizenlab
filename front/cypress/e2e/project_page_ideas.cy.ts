@@ -388,6 +388,8 @@ describe('Ideation CTA bar', () => {
   const lastName = randomString();
   const email = randomEmail();
   const password = randomString();
+  const phaseTitle = randomString();
+  let firstPhaseId: string;
 
   before(() => {
     cy.apiSignup(firstName, lastName, email, password)
@@ -396,43 +398,69 @@ describe('Ideation CTA bar', () => {
       })
       .then(() => {
         cy.apiCreateProject({
-          type: 'continuous',
+          type: 'timeline',
           title: projectTitle,
           descriptionPreview: description,
           description,
           publicationStatus: 'published',
-          participationMethod: 'ideation',
-          votingMaxTotal: 100,
         })
           .then((project) => {
             projectId = project.body.data.id;
             projectSlug = project.body.data.attributes.slug;
+            return cy.apiCreatePhase({
+              projectId,
+              title: phaseTitle,
+              startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
+              participationMethod: 'ideation',
+              canPost: true,
+              canComment: true,
+              canReact: true,
+              votingMaxTotal: 100,
+            });
           })
-          .then(() => {
-            return cy.apiCreateIdea({ projectId, ideaTitle, ideaContent });
+          .then((phase) => {
+            firstPhaseId = phase.body.data.id;
+            return cy.apiCreateIdea({
+              projectId,
+              ideaTitle,
+              ideaContent,
+              phaseIds: [firstPhaseId],
+            });
           })
           .then((idea) => {
             ideaIdOne = idea.body.data.id;
           })
           .then(() => {
             return cy.apiCreateProject({
-              type: 'continuous',
+              type: 'timeline',
               title: projectTitle,
               descriptionPreview: description,
               description,
               publicationStatus: 'published',
-              participationMethod: 'ideation',
-              votingMaxTotal: 100,
-              postingEnabled: false,
             });
           })
           .then((restrictedProject) => {
             postingRestrictedProjectId = restrictedProject.body.data.id;
             postingRestrictedProjectSlug =
               restrictedProject.body.data.attributes.slug;
+            return cy.apiCreatePhase({
+              projectId: postingRestrictedProjectId,
+              title: phaseTitle,
+              startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
+              participationMethod: 'ideation',
+              canPost: false,
+              canComment: true,
+              canReact: true,
+              votingMaxTotal: 100,
+            });
           })
-          .then(() => {
-            return cy.apiCreateIdea({ projectId, ideaTitle, ideaContent });
+          .then((anotherPhase) => {
+            return cy.apiCreateIdea({
+              projectId,
+              ideaTitle,
+              ideaContent,
+              phaseIds: [firstPhaseId],
+            });
           })
           .then((idea) => {
             ideaIdTwo = idea.body.data.id;
