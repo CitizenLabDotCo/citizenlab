@@ -137,11 +137,7 @@ const ProjectDescriptionBuilderPage = () => {
       onDeleteElement={handleDeleteElement}
       onUploadImage={setImageUploading}
     >
-      <Editor
-        isPreview={false}
-        onNodesChange={handleEditorChange}
-        key={selectedLocale}
-      >
+      <Editor isPreview={false} onNodesChange={handleEditorChange}>
         <ProjectDescriptionBuilderTopBar
           localesWithError={localesWithError}
           hasPendingState={imageUploading}

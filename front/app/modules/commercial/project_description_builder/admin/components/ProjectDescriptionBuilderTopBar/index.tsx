@@ -104,7 +104,6 @@ const ProjectDescriptionBuilderTopBar = ({
         </Box>
         <LocaleSwitcher
           selectedLocale={selectedLocale}
-          localesWithError={localesWithError}
           onSelectLocale={handleSelectLocale}
         />
         <Box ml="24px" />
