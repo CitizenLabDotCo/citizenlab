@@ -56,7 +56,7 @@ const InputManager = ({
   phases,
 }: Props) => {
   const type = projectId ? 'ProjectIdeas' : 'AllIdeas';
-  const { data: ideas } = useIdeas({
+  const [queryParameters, setQueryParameters] = useState<IQueryParameters>({
     'page[size]': 10,
     sort: 'new',
     projects: projectId ? [projectId] : undefined,
@@ -64,6 +64,7 @@ const InputManager = ({
     // without a project, we need this filter?
     filter_can_moderate: projectId ? undefined : true,
   });
+  const { data: ideas } = useIdeas(queryParameters);
   const { data: ideaStatuses } = useIdeaStatuses();
   const { data: ideaTopics } = useTopics();
   const { data: projectAllowedInputTopics } = useProjectAllowedInputTopics({
@@ -89,7 +90,7 @@ const InputManager = ({
   const topicsData = getTopicsData();
   const [search] = useSearchParams();
   const [selection, setSelection] = useState<Set<string>>(new Set());
-  const [queryParameters, setQueryParameters] = useState<IQueryParameters>({});
+
   const [activeFilterMenu, setActiveFilterMenu] =
     useState<TFilterMenu>(defaultFilterMenu);
   const [previewPostId, setPreviewPostId] = useState<string | null>(null);
