@@ -44,7 +44,7 @@ export const handleOnSSOClick = (
 ) => {
   if (metaData?.successAction) {
     localStorage.setItem(
-      'sso_success_action',
+      'auth_success_action',
       JSON.stringify(metaData.successAction)
     );
   }
