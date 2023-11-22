@@ -11,10 +11,10 @@ describe ReportBuilder::WebApi::V1::GraphDataUnitsController do
           'type' => { 'resolvedName' => 'GenderWidget' },
           'nodes' => [],
           'props' => {
-            'endAt' => '2023-11-13T18:41:15.1515',
+            'endAt' => (participation_date + 1.year).to_time.iso8601,
             'title' => 'Users by gender',
-            'startAt' => '2023-11-12T00:00:00.000',
-            'projectId' => 'ef411c75-69c4-47cc-8043-39329e10ad16'
+            'startAt' => (participation_date - 1.year).to_time.iso8601,
+            'projectId' => project.id
           },
           'custom' => {
             'title' => { 'id' => 'app.containers.admin.ReportBuilder.charts.usersByGender', 'defaultMessage' => 'Users by gender' },
@@ -34,16 +34,17 @@ describe ReportBuilder::WebApi::V1::GraphDataUnitsController do
   let(:report) do
     create(:report, layout: build(:layout, craftjs_jsonmultiloc: craftjs_jsonmultiloc), phase_id: create(:phase).id)
   end
+  let(:project) { create(:project) }
+  let(:participation_date) { Date.new(2022, 9, 1) }
 
   let(:gender) { 'female' }
 
   # see back/engines/commercial/analytics/spec/acceptance/analytics_participations_spec.rb
   def build_analytics_data
-    date = Date.new(2022, 9, 1)
-    create(:dimension_date, date: date)
+    create(:dimension_date, date: participation_date)
     create(:dimension_type, name: 'idea', parent: 'post')
     create(:custom_field, key: :gender, resource_type: 'User')
-    create(:idea, created_at: date, author: create(:user, gender: gender))
+    create(:idea, project: project, created_at: participation_date, author: create(:user, gender: gender))
   end
 
   before do

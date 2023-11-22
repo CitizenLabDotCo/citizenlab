@@ -9,7 +9,7 @@ module ReportBuilder
           'dimension_user.role': ['citizen', 'admin', nil],
           'dimension_user_custom_field_values.key': 'gender',
           **date_filter('dimension_date_created', startAt, endAt),
-          **project_filter('dimension_projects.id', projectId)
+          **project_filter('dimension_project_id', projectId)
         },
         aggregations: {
           'dimension_user_custom_field_values.dimension_user_id': 'count'
