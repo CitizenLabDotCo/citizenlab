@@ -1,15 +1,14 @@
-# rubocop:disable Naming/VariableName
 module ReportBuilder
   class Queries::UsersByGender < Queries::Base
-    def query(startAt: nil, endAt: nil, projectId: nil, **_other_props)
+    def query(start_at: nil, end_at: nil, project_id: nil, **_other_props)
       {
         fact: 'participation',
         groups: 'dimension_user_custom_field_values.value',
         filters: {
           'dimension_user.role': ['citizen', 'admin', nil],
           'dimension_user_custom_field_values.key': 'gender',
-          **date_filter('dimension_date_created', startAt, endAt),
-          **project_filter('dimension_project_id', projectId)
+          **date_filter('dimension_date_created', start_at, end_at),
+          **project_filter('dimension_project_id', project_id)
         },
         aggregations: {
           'dimension_user_custom_field_values.dimension_user_id': 'count'
@@ -18,4 +17,3 @@ module ReportBuilder
     end
   end
 end
-# rubocop:enable Naming/VariableName

@@ -11,7 +11,8 @@ module ReportBuilder
       klass = GRAPH_RESOLVED_NAMES_CLASSES[graph_resolved_name]
       return unless klass
 
-      run_query(klass.new.query(**props.to_h.symbolize_keys))
+      kargs = props.to_h.transform_keys(&:snakecase).symbolize_keys
+      run_query(klass.new.query(**kargs))
     end
 
     protected

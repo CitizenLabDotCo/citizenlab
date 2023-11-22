@@ -14,10 +14,10 @@ const fetchGraphDataUnitsLive = <Response extends BaseResponseData>({
     queryParams: {
       resolved_name: resolvedName,
       props: {
-        projectId: props.projectId,
+        project_id: props.projectId,
         resolution: props.resolution,
-        startAt: props.startAtMoment?.format('yyyy-MM-DD'),
-        endAt: props.endAtMoment?.format('yyyy-MM-DD'),
+        start_at: props.startAtMoment?.format('yyyy-MM-DD'),
+        end_at: props.endAtMoment?.format('yyyy-MM-DD'),
       },
     },
   });
