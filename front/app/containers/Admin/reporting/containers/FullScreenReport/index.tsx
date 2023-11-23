@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
 
-// services
-import { LocaleSubject } from 'utils/locale';
+// context
+import { ReportContext } from '../../context/ReportContext';
 
 // hooks
 import useReportLayout from 'api/report_layout/useReportLayout';
@@ -14,30 +13,18 @@ import ReportLanguageProvider from '../ReportLanguageProvider';
 
 // components
 import FullScreenWrapper from 'components/admin/ContentBuilder/FullscreenPreview/Wrapper';
-import { Spinner } from '@citizenlab/cl2-component-library';
+import { Box, Spinner } from '@citizenlab/cl2-component-library';
+import Editor from '../../components/ReportBuilder/Editor';
+import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
+
+// utils
 import { isNilOrError } from 'utils/helperUtils';
-import Content from './Content';
 
 // types
 import { SerializedNodes } from '@craftjs/core';
+import { LocaleSubject } from 'utils/locale';
 
-const Centerer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  @media print {
-    margin-top: -20px;
-    display: block;
-    position: absolute;
-    @page {
-      size: auto;
-      margin: 30px 0;
-    }
-  }
-`;
-
-interface Props {
+export interface Props {
   reportId: string;
 }
 
@@ -70,14 +57,22 @@ export const FullScreenReport = ({ reportId }: Props) => {
       reportLocale={reportLocale}
       platformLocale={platformLocale}
     >
-      <FullScreenWrapper onUpdateDraftData={setDraftData}>
-        {isLoadingLayout && <Spinner />}
-        {!isLoadingLayout && (
-          <Centerer>
-            <Content editorData={editorData} />
-          </Centerer>
-        )}
-      </FullScreenWrapper>
+      <ReportContext.Provider value="phase">
+        <FullScreenWrapper onUpdateDraftData={setDraftData} padding="0">
+          {isLoadingLayout && <Spinner />}
+          {!isLoadingLayout && (
+            <Box w="100%" display="flex" justifyContent="center">
+              <Box maxWidth="800px">
+                <Editor isPreview={true}>
+                  {editorData && (
+                    <ContentBuilderFrame editorData={editorData} />
+                  )}
+                </Editor>
+              </Box>
+            </Box>
+          )}
+        </FullScreenWrapper>
+      </ReportContext.Provider>
     </ReportLanguageProvider>
   );
 };

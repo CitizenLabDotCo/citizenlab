@@ -7,7 +7,7 @@ jest.mock(
   'components/admin/GraphCards/VisitorsTrafficSourcesCard/useVisitorReferrerTypes',
   () => jest.fn(() => mockVisitorReferrerTypes)
 );
-jest.mock('containers/Admin/reporting/hooks/useNarrow', () => () => true);
+jest.mock('containers/Admin/reporting/hooks/useLayout', () => () => 'narrow');
 
 describe.skip('<VisitorsTrafficSourcesWidget />', () => {
   const startAt = undefined;

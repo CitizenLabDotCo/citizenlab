@@ -6,15 +6,12 @@ import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-import { reportsData } from './__mocks__/useReports';
+import endpoints, {
+  reportsData,
+  apiPathReports,
+} from './__mocks__/_mockServer';
 
-const apiPath = '*reports';
-
-const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: reportsData }));
-  })
-);
+const server = setupServer(endpoints['GET reports']);
 
 describe('useReports', () => {
   beforeAll(() => server.listen());
@@ -35,7 +32,7 @@ describe('useReports', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
+      rest.get(apiPathReports, (_req, res, ctx) => {
         return res(ctx.status(500));
       })
     );
