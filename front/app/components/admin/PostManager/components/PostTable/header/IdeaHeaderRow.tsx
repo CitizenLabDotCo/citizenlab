@@ -20,47 +20,9 @@ import { SortDirection } from 'utils/paginationUtils';
 
 // hooks
 import usePostManagerColumnFilter from 'hooks/usePostManagerColumnFilter';
+import SortableHeaderCell from './SortableHeaderCell';
 
-interface SortableHeaderCellProps {
-  sortAttribute?: IdeasSort;
-  sortAttributeName: IdeasSort;
-  sortDirection?: 'ascending' | 'descending' | null;
-  infoTooltip?: React.ReactChild;
-  width: string;
-  onChange: () => void;
-  children: React.ReactNode;
-}
-
-export const SortableHeaderCell = ({
-  sortAttribute,
-  sortDirection,
-  sortAttributeName,
-  width,
-  infoTooltip,
-  onChange,
-  children,
-}: SortableHeaderCellProps) => {
-  return (
-    <Th
-      clickable
-      width={width}
-      sortDirection={
-        sortAttribute === sortAttributeName && sortDirection
-          ? sortDirection
-          : undefined
-      }
-      background={
-        sortAttribute === sortAttributeName ? colors.grey200 : undefined
-      }
-      infoTooltip={infoTooltip}
-      onClick={onChange}
-    >
-      {children}
-    </Th>
-  );
-};
-
-export type IdeaHeaderCellComponentProps = {
+type IdeaHeaderCellComponentProps = {
   sortAttribute?: IdeasSort;
   sortDirection?: 'ascending' | 'descending' | null;
   allSelected?: boolean;
