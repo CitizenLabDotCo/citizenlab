@@ -388,8 +388,10 @@ const AdminPhaseEdit = () => {
         // If there is no previous end date, then the previous phase is open ended
         // Set the default start date to the previous start date + 2 days to account for single day phases
         startDate = previousPhaseStartDate.add(2, 'day');
+      } else if (!startDate) {
+        // If there is no start date at this point, then set the default start date to today
+        startDate = moment();
       }
-      // Otherwise, there is no date yet and it should remain 'null'
 
       // else there is already a phase (which means we're in the edit form)
       // and we take it from the attrs
