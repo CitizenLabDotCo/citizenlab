@@ -68,7 +68,7 @@ const IdeaMoreActions = memo(({ idea, className, projectId }: Props) => {
   };
 
   const onEditIdea = () => {
-    clHistory.push(`/ideas/edit/${idea.id}`, true);
+    clHistory.push(`/ideas/edit/${idea.id}`, { scrollToTop: true });
   };
 
   if (!idea) return null;

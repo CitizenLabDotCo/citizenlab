@@ -202,7 +202,7 @@ const EventInformation = ({ event, titleFontSize }: Props) => {
           width={'100%'}
           bgColor={theme.colors.tenantPrimary}
           onClick={() => {
-            clHistory.push(`/events/${event.id}`, true);
+            clHistory.push(`/events/${event.id}`, { scrollToTop: true });
           }}
         >
           {formatMessage(messages.readMore)}

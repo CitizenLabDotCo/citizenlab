@@ -93,7 +93,7 @@ const InitiativeCard = ({
     <Card
       className={cardClassNames}
       to={`/initiatives/${initiative.data.attributes.slug}?go_back=true`}
-      scrollToTop={true}
+      scrollToTop
       imageUrl={initiativeImageUrl}
       title={initiativeTitle}
       body={

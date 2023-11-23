@@ -34,7 +34,7 @@ const GoBackToIdeaPage = ({ idea }: Props) => {
       <Button
         icon="arrow-left-circle"
         linkTo={`/ideas/${idea.attributes.slug}`}
-        scrollToTop={true}
+        scrollToTop
         buttonStyle="text"
         iconSize="24px"
         padding="0"

@@ -173,7 +173,7 @@ const UserHeader = ({ userSlug }: Props) => {
             icon="edit"
             className="e2e-edit-profile"
             bgHoverColor={colors.background}
-            scrollToTop={true}
+            scrollToTop
           >
             {formatMessage(messages.editProfile)}
           </Button>

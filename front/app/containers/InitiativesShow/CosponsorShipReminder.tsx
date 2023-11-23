@@ -24,7 +24,7 @@ const CosponsorShipReminder = ({ initiativeId }: Props) => {
         values={{
           requiredNumberOfCosponsors,
           manageInvitationsLink: (
-            <Link to={`/initiatives/edit/${initiativeId}`} scrollToTop={true}>
+            <Link to={`/initiatives/edit/${initiativeId}`} scrollToTop>
               {formatMessage(messages.manageInvitationsLinkText)}
             </Link>
           ),

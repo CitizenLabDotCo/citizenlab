@@ -151,7 +151,7 @@ const MobileNavigation = ({
             onClick={() => {
               handleOnNavItemClick('home');
             }}
-            scrollToTop={true}
+            scrollToTop
           />
           <MobileNavbarItem
             linkTo="/projects"
@@ -161,7 +161,7 @@ const MobileNavigation = ({
             onClick={() => {
               handleOnNavItemClick('projects');
             }}
-            scrollToTop={true}
+            scrollToTop
           />
           <ShowFullMenuButton
             isFullMenuOpened={isFullMenuOpened}

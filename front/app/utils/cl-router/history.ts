@@ -6,11 +6,15 @@ import { scrollToTop as scrollTop } from 'utils/scroll';
 
 import history from 'utils/browserHistory';
 
+type Options = {
+  scrollToTop?: boolean;
+};
+
 // overrides push and replace methods so they update the location with the current locale from the locale stream
 function historyMethod(
   method: 'push' | 'replace',
   location: Partial<Location> | string,
-  scrollToTop?: boolean
+  options?: Options
 ): void {
   // 'gets' current locale
   localeStream()
@@ -19,7 +23,7 @@ function historyMethod(
       // calls the vanilla react-router method with updated location
       history[method](updateLocationDescriptor(location, locale));
 
-      if (scrollToTop) {
+      if (options?.scrollToTop) {
         scrollTop();
       }
     });
@@ -27,11 +31,9 @@ function historyMethod(
 
 export default {
   ...history,
-  push: (location: Partial<Location> | string, scrollToTop?: boolean): void =>
-    historyMethod('push', location, scrollToTop),
-  replace: (
-    location: Partial<Location> | string,
-    scrollToTop?: boolean
-  ): void => historyMethod('replace', location, scrollToTop),
+  push: (location: Partial<Location> | string, options?: Options): void =>
+    historyMethod('push', location, { scrollToTop: options?.scrollToTop }),
+  replace: (location: Partial<Location> | string, options?: Options): void =>
+    historyMethod('replace', location, { scrollToTop: options?.scrollToTop }),
   goBack: () => history.back(),
 };

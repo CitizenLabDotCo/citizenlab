@@ -142,7 +142,7 @@ const Avatar = memo(
 
     if (isLinkToProfile && hasValidProfileLink) {
       return (
-        <Link to={profileLink} scrollToTop={true}>
+        <Link to={profileLink} scrollToTop>
           <AvatarInner
             userId={userId}
             isLinkToProfile={isLinkToProfile}

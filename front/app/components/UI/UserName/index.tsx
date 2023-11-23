@@ -167,7 +167,7 @@ const UserName = ({
         <Link
           to={profileLink}
           className={`e2e-author-link ${className || ''}`}
-          scrollToTop={true}
+          scrollToTop
         >
           <Name {...sharedNameProps} className={classNames}>
             {name}

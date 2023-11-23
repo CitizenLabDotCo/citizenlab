@@ -669,7 +669,7 @@ const ProjectCard = memo<InputProps>(
             .filter((item) => item)
             .join(' ')}
           to={projectUrl}
-          scrollToTop={true}
+          scrollToTop
           onClick={() => {
             handleProjectCardOnClick(project.data.id);
           }}

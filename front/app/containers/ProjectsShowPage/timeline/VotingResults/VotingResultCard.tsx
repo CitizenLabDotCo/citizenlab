@@ -184,7 +184,9 @@ const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
     e.preventDefault();
     updateSearchParams({ scroll_to_card: idea.id });
 
-    clHistory.push(`/ideas/${slug}${params}?go_back=true`, true);
+    clHistory.push(`/ideas/${slug}${params}?go_back=true`, {
+      scrollToTop: true,
+    });
   };
 
   const image = ideaImage?.data.attributes.versions.medium;
