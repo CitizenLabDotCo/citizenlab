@@ -15,7 +15,10 @@ class ReportBuilder::Queries::Base
     return {} if start_at.blank? && end_at.blank?
 
     {
-      "#{dimension}.date" => { from: start_at&.to_s, to: end_at&.to_s }.compact.presence
+      "#{dimension}.date" => {
+        from: start_at&.to_s.presence,
+        to: end_at&.to_s.presence
+      }.compact.presence
     }.compact
   end
 
