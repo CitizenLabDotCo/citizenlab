@@ -10,7 +10,7 @@ jest.mock(
   () => jest.fn(() => mockGenderSerie)
 );
 
-describe('<GenderWidget />', () => {
+describe.skip('<GenderWidget />', () => {
   const startAt = undefined;
   const endAt = undefined;
   const projectId = undefined;

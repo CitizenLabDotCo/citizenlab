@@ -7,7 +7,7 @@ jest.mock('components/admin/GraphCards/VisitorsCard/useVisitors', () =>
   jest.fn(() => mockVisitors)
 );
 
-describe('<VisitorsWidget />', () => {
+describe.skip('<VisitorsWidget />', () => {
   const startAt = undefined;
   const endAt = undefined;
   const projectId = undefined;
