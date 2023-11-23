@@ -26,7 +26,6 @@ describe 'db/seeds.rb' do
       expect(Topic.count).to be > 0
       expect(Area.count).to be > 0
       expect(Project.count).to be > 0
-      expect(Project.where(process_type: 'continuous').count).to be 0
       expect(Phase.count).to be > 0
       expect(Event.count).to be >= 4
       expect(Idea.count).to be > 0

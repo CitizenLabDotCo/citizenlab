@@ -100,7 +100,7 @@ describe Surveys::TypeformWebhookManager do
   describe 'delete_all_webhooks' do
     it 'deletes all typeform survey webhooks' do
       create(:project_with_phases)
-      create_list(:continuous_survey_project, 2)
+      create_list(:single_phase_typeform_survey_project, 2)
       create(:phase, participation_method: 'survey', survey_service: 'typeform', survey_embed_url: 'https://citizenlabco.typeform.com/to/Lr57Iz')
       expect(tf_api).to receive(:delete_webhook).exactly(3).times
       service.delete_all_webhooks

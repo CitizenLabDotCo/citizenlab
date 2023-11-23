@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Surveys::SurveyParticipationContext
+module Surveys::SurveyPhase
   extend ActiveSupport::Concern
 
   SURVEY_SERVICES = %w[
@@ -11,7 +11,7 @@ module Surveys::SurveyParticipationContext
   included do
     has_many :survey_responses, class_name: 'Surveys::Response', as: :participation_context, dependent: :destroy
 
-    with_options if: :survey?, unless: :timeline_project? do
+    with_options if: :survey? do
       validates :survey_embed_url, presence: true
       validates :survey_service, presence: true, inclusion: { in: SURVEY_SERVICES }
       validates :survey_embed_url, if: %i[survey? typeform?], format: {

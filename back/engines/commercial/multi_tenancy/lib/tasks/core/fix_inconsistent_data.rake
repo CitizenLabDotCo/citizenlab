@@ -68,9 +68,6 @@ namespace :inconsistent_data do
 
     Tenant.all.each do |tenant|
       Apartment::Tenant.switch(tenant.schema_name) do
-        to_fix = Project.where(process_type: 'continuous').all.select do |project|
-          !project.can_contain_ideas? && project.ideas.present?
-        end
         to_fix += Phase.all.select do |phase|
           !phase.can_contain_ideas? && phase.ideas.present?
         end

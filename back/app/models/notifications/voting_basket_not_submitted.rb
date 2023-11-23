@@ -80,7 +80,7 @@ module Notifications
           recipient_id: recipient_id,
           basket: basket,
           project: basket.participation_context.project,
-          phase: basket.participation_context.phase? ? basket.participation_context : nil
+          phase: basket.participation_context
         )]
       else
         []

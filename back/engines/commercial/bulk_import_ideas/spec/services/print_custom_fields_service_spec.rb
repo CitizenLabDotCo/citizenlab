@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe BulkImportIdeas::PrintCustomFieldsService do
-  let(:project) { create(:continuous_project) }
+  let(:project) { create(:single_phase_ideation_project) }
   let(:custom_form) { create(:custom_form, participation_context: project) }
   let(:service) { described_class.new project, custom_form.custom_fields, 'en', false }
 

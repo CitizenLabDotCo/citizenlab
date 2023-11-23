@@ -1,18 +1,15 @@
 # frozen_string_literal: true
 
-module Polls::PollParticipationContext
+module Polls::PollPhase
   extend ActiveSupport::Concern
 
   included do
     has_many :poll_questions, class_name: 'Polls::Question', as: :participation_context, dependent: :destroy
     has_many :poll_responses, class_name: 'Polls::Response', as: :participation_context, dependent: :destroy
 
-    # for timeline projects, the phases are the participation contexts, so nothing applies
-    with_options unless: :timeline_project? do
-      validates :poll_anonymous, inclusion: { in: [true, false] }, if: :poll?
-      validate :poll_questions_allowed_in_participation_method
-      validate :anonymous_immutable_after_responses, on: :update
-    end
+    validates :poll_anonymous, inclusion: { in: [true, false] }, if: :poll?
+    validate :poll_questions_allowed_in_participation_method
+    validate :anonymous_immutable_after_responses, on: :update
   end
 
   def poll?

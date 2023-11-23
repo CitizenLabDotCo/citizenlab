@@ -22,7 +22,6 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class Basket < ApplicationRecord
-  # TODO: JS participation_context
   alias_attribute :phase, :participation_context
   belongs_to :participation_context, polymorphic: true
 

@@ -9,7 +9,7 @@ resource BasketsIdea do
   before { header 'Content-Type', 'application/json' }
 
   let(:user) { create(:user) }
-  let(:project) { create(:continuous_multiple_voting_project) }
+  let(:project) { create(:single_phase_multiple_voting_project) }
   let(:basket) { create(:basket, participation_context: project.phases.first, user: user) }
 
   context 'when resident' do
@@ -66,7 +66,7 @@ resource BasketsIdea do
       end
 
       context 'when budgeting' do
-        let(:project) { create(:continuous_budgeting_project) }
+        let(:project) { create(:single_phase_budgeting_project) }
         let(:idea_id) { create(:idea, project: project, budget: 10, phases: project.phases).id }
 
         example 'Add an idea to a basket', document: false do
@@ -96,7 +96,7 @@ resource BasketsIdea do
       end
 
       context 'when budgeting' do
-        let(:project) { create(:continuous_budgeting_project) }
+        let(:project) { create(:single_phase_budgeting_project) }
 
         let(:ideas) do
           [3, 2].map do |budget|

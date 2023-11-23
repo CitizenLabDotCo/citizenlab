@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class WebApi::V1::ProjectSerializer < WebApi::V1::ParticipationContextSerializer
+class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
   attributes(
     :description_preview_multiloc,
     :title_multiloc,
@@ -123,7 +123,6 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::ParticipationContextSerializer
   has_many :avatars, serializer: WebApi::V1::AvatarSerializer do |object, params|
     avatars_for_project(object, params)[:users]
   end
-  has_many :permissions
 
   has_one :user_basket, record_type: :basket, if: proc { |object, params|
     signed_in? object, params
@@ -137,9 +136,7 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::ParticipationContextSerializer
     user_follower object, params
   end
 
-  has_one :current_phase, serializer: WebApi::V1::PhaseSerializer, record_type: :phase, if: proc { |object, _params|
-    !object.participation_context?
-  } do |object|
+  has_one :current_phase, serializer: WebApi::V1::PhaseSerializer, record_type: :phase do |object|
     TimelineService.new.current_phase(object)
   end
 

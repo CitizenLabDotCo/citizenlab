@@ -14,6 +14,6 @@ class PublicApi::V2::BasketSerializer < PublicApi::V2::BaseSerializer
   end
 
   def phase_id
-    object.participation_context_id if object.participation_context_type == 'Phase'
+    object.participation_context_id
   end
 end

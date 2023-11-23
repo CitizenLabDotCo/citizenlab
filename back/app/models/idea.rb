@@ -163,7 +163,6 @@ class Idea < ApplicationRecord
   end
 
   def custom_form
-    # TODO: JS participation_context
     participation_context = creation_phase || project
     participation_context.custom_form || CustomForm.new(participation_context: participation_context)
   end
@@ -176,7 +175,7 @@ class Idea < ApplicationRecord
 
     case phases.size
     when 0
-      ParticipationContext::DEFAULT_INPUT_TERM
+      Phase::DEFAULT_INPUT_TERM
     when 1
       phases[0].input_term
     else
@@ -192,8 +191,6 @@ class Idea < ApplicationRecord
   end
 
   def participation_method_on_creation
-    # TODO: JS This will cause issue if project does not have a participation method any more
-    # Need to wrap this up in the custom form changes - should it use current phase instead?
     Factory.instance.participation_method_for creation_phase || project
   end
 

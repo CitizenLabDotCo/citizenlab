@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Surveys::SurveyParticipationContext do
+describe Surveys::SurveyPhase do
   describe 'validate survey_embed_url for typeform' do
     it 'validates a survey_embed_url' do
       pc = build(:typeform_survey_phase, survey_embed_url: 'https://citizenlabco.typeform.com/to/HKGaPV?source=xxxxx')

@@ -15,11 +15,10 @@ resource 'Phase level Custom Fields' do
 
     context 'in an ideation phase with form fields' do
       let(:project) { create(:project_with_active_ideation_phase) }
-      let(:phase) { project.phases.first }
       let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
       let!(:custom_field) { create(:custom_field_extra_custom_form, resource: custom_form) }
 
-      let(:phase_id) { phase.id }
+      let(:phase_id) { project.phases.first.id }
 
       example 'Get a pdf version of the idea form', document: false do
         do_request

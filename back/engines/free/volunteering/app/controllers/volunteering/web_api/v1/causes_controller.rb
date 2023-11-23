@@ -10,7 +10,7 @@ module Volunteering
 
         def index
           @causes = policy_scope(Cause)
-            .where(participation_context: @participation_context)
+            .where(participation_context: @phase)
             .order(:ordering)
           @causes = paginate @causes
 
@@ -92,10 +92,8 @@ module Volunteering
         private
 
         def set_participation_context
-          if params[:project_id]
-            @participation_context = Project.find(params[:project_id])
-          elsif params[:phase_id]
-            @participation_context = Phase.find(params[:phase_id])
+          if params[:phase_id]
+            @phase = Phase.find(params[:phase_id])
           else
             head :not_found
           end

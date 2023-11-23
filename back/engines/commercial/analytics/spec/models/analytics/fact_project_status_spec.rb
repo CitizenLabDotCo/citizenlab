@@ -33,7 +33,7 @@ RSpec.describe Analytics::FactProjectStatus do
     end
   end
 
-  context 'when the project has a timeline' do
+  context 'when the project has phases' do
     let!(:project) { phase.project }
     let(:phase) { create(:phase, start_at: Time.zone.today - 10, end_at: end_date) }
     let(:end_date) { Time.zone.today + 10 }

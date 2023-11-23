@@ -355,7 +355,7 @@ Rails/I18nLocaleTexts:
     - 'engines/commercial/custom_maps/app/models/custom_maps/layer.rb'
     - 'engines/commercial/insights/app/models/insights/category_assignment.rb'
     - 'engines/commercial/insights/app/models/insights/processed_flag.rb'
-    - 'engines/free/surveys/app/models/surveys/survey_participation_context.rb'
+    - 'engines/free/surveys/app/models/surveys/survey_phase.rb'
 
 # Offense count: 32
 # Configuration parameters: IgnoreScopes, Include.
