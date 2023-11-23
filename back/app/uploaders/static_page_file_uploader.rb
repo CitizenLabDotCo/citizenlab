@@ -2,7 +2,8 @@
 
 class StaticPageFileUploader < BaseFileUploader
   def extension_allowlist
-    %w[avi csv doc docx key mkv mp3 mp4 numbers odp ods odt pages pdf ppt pptx txt xls xlsx]
+    %w[avi csv doc docx key mkv mp3 mp4 numbers odp ods odt pages pdf ppt pptx txt xls xlsx] +
+      BaseImageUploader::ALLOWED_TYPES
   end
 
   def size_range
