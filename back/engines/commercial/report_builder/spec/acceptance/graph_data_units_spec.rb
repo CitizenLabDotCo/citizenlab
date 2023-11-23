@@ -48,14 +48,14 @@ resource 'Graph data units' do
     create(:dimension_type, name: 'idea', parent: 'post')
     create(:custom_field, key: :gender, resource_type: 'User')
     create(:idea, project: project, created_at: participation_date, author: create(:user, gender: @gender))
-    create(:idea, project: create(:project), created_at: participation_date, author: create(:user, gender: @gender))
+    _not_returned_idea = create(:idea, project: create(:project), created_at: participation_date, author: create(:user, gender: @gender))
   end
 
   get '/web_api/v1/reports/graph_data_units/live' do
     parameter :resolved_name, 'Name of graph component on FE'
     parameter :props, 'Props of graph component on FE that are stored in Craftjs JSON and used to query data'
 
-    describe 'when authorized' do
+    describe 'when user authorized' do
       before { admin_header_token }
 
       let(:resolved_name) { 'GenderWidget' }
@@ -86,7 +86,7 @@ resource 'Graph data units' do
       ReportBuilder::ReportPublisher.new(@report).publish
     end
 
-    describe 'when has access to phase' do
+    describe 'when user has access to phase' do
       before do
         user = create(:user)
         group = create(:group)
@@ -105,7 +105,7 @@ resource 'Graph data units' do
       end
     end
 
-    describe "when doesn't have access to phase" do
+    describe "when user doesn't have access to phase" do
       before do
         user = create(:user)
         project.update!(visible_to: 'groups', groups: [])
