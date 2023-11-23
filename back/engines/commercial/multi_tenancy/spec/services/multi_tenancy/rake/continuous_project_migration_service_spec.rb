@@ -151,6 +151,7 @@ RSpec.describe MultiTenancy::Rake::ContinuousProjectMigrationService do
         let_it_be(:ideas) { create_list(:idea, 3, project: project) }
         let_it_be(:permission) { create(:permission, :by_users, action: 'commenting_idea', permission_scope: project) }
         let_it_be(:analysis) { create(:analysis, project: project) }
+        let_it_be(:custom_form) { create(:custom_form, participation_context: project) }
 
         include_examples 'project_settings'
         include_examples 'ideas'
@@ -163,6 +164,11 @@ RSpec.describe MultiTenancy::Rake::ContinuousProjectMigrationService do
         it 'does not move any analyses from the phase to the project' do
           expect(analysis.reload.project).to eq project
           expect(analysis.reload.phase).to be_nil
+        end
+
+        it 'does not move custom forms to the phase' do
+          expect(custom_form.reload.participation_context_id).to eq project.id
+          expect(custom_form.reload.participation_context_type).to eq 'Project'
         end
       end
 
@@ -245,6 +251,7 @@ RSpec.describe MultiTenancy::Rake::ContinuousProjectMigrationService do
         let_it_be(:ideas) { create_list(:native_survey_response, 2, project: project) }
         let_it_be(:permission) { create(:permission, :by_everyone, action: 'posting_idea', permission_scope: project) }
         let_it_be(:analysis) { create(:analysis, project: project) }
+        let_it_be(:custom_form) { create(:custom_form, participation_context: project) }
 
         include_examples 'project_settings'
         include_examples 'ideas'
@@ -264,6 +271,11 @@ RSpec.describe MultiTenancy::Rake::ContinuousProjectMigrationService do
         it 'moves any analyses from the phase to the project' do
           expect(analysis.reload.project).to be_nil
           expect(analysis.reload.phase).to eq project.phases.first
+        end
+
+        it 'moves custom forms to the phase' do
+          expect(custom_form.reload.participation_context_id).to eq project.phases.first.id
+          expect(custom_form.reload.participation_context_type).to eq 'Phase'
         end
       end
 
@@ -329,6 +341,24 @@ RSpec.describe MultiTenancy::Rake::ContinuousProjectMigrationService do
           expect(project.phases.first.title_multiloc).to eq({ 'en' => 'Information', 'fr-FR' => 'Information - FR', 'nl-NL' => 'Information - NL' })
         end
       end
+    end
+  end
+
+  describe '#fix_survey_custom_forms' do
+    let(:ideation_project) { create(:project_with_active_ideation_phase) }
+    let(:survey_project) { create(:project_with_active_native_survey_phase) }
+    let!(:ideation_custom_form) { create(:custom_form, participation_context: ideation_project) }
+    let!(:survey_custom_form) { create(:custom_form, participation_context: survey_project) }
+
+    before do
+      service.fix_survey_custom_forms
+    end
+
+    it 'updates native survey forms and does not update ideation forms' do
+      expect(ideation_custom_form.reload.participation_context_id).to eq ideation_project.id
+      expect(ideation_custom_form.reload.participation_context_type).to eq 'Project'
+      expect(survey_custom_form.reload.participation_context_id).to eq survey_project.phases.first.id
+      expect(survey_custom_form.reload.participation_context_type).to eq 'Phase'
     end
   end
 end
