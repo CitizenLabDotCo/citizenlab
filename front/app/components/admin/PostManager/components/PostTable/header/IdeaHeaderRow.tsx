@@ -3,7 +3,6 @@ import React, { ChangeEvent, useState } from 'react';
 // components
 import { Thead, Tr, Th, Checkbox } from '@citizenlab/cl2-component-library';
 import FeatureFlag from 'components/FeatureFlag';
-import Outlet from 'components/Outlet';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -13,15 +12,10 @@ import messages from '../../../messages';
 import { colors } from 'utils/styleUtils';
 
 // utils
-import { insertConfiguration } from 'utils/moduleUtils';
 import { roundPercentage } from 'utils/math';
 
 // typings
-import {
-  CellConfiguration,
-  InsertConfigurationOptions,
-  Override,
-} from 'typings';
+import { CellConfiguration, Override } from 'typings';
 import { Sort as IdeasSort } from 'api/ideas/types';
 import { SortDirection } from 'utils/paginationUtils';
 
@@ -95,7 +89,7 @@ const IdeaHeaderRow = ({
   toggleSelectAll,
   handleSortClick,
 }: Props) => {
-  const [cells, setCells] = useState<
+  const [cells, _setCells] = useState<
     CellConfiguration<IdeaHeaderCellComponentProps>[]
   >([
     {
@@ -123,6 +117,17 @@ const IdeaHeaderRow = ({
         return (
           <Th>
             <FormattedMessage {...messages.title} />
+          </Th>
+        );
+      },
+    },
+    {
+      name: 'assignee',
+      cellProps: { width: 2 },
+      Component: ({ width }) => {
+        return (
+          <Th width={width}>
+            <FormattedMessage {...messages.assignee} />
           </Th>
         );
       },
@@ -292,26 +297,12 @@ const IdeaHeaderRow = ({
     );
   };
 
-  const handleData = (
-    insertCellOptions: InsertConfigurationOptions<
-      CellConfiguration<IdeaHeaderCellComponentProps>
-    >
-  ) => {
-    setCells((cells) => insertConfiguration(insertCellOptions)(cells));
-  };
-
   return (
-    <>
-      <Outlet
-        id="app.components.admin.PostManager.components.PostTable.IdeaHeaderRow.cells"
-        onData={handleData}
-      />
-      <Thead>
-        <Tr background={colors.grey50}>
-          {cells.map((cellConfiguration) => renderCell(cellConfiguration))}
-        </Tr>
-      </Thead>
-    </>
+    <Thead>
+      <Tr background={colors.grey50}>
+        {cells.map((cellConfiguration) => renderCell(cellConfiguration))}
+      </Tr>
+    </Thead>
   );
 };
 

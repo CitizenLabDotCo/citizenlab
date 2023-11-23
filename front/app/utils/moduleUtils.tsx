@@ -159,13 +159,6 @@ export interface OutletsPropertyMap {
       >
     ) => void;
   };
-  'app.components.admin.PostManager.components.PostTable.IdeaHeaderRow.cells': {
-    onData: (
-      data: InsertConfigurationOptions<
-        CellConfiguration<IdeaHeaderCellComponentProps>
-      >
-    ) => void;
-  };
   'app.components.Map.leafletConfig': {
     onLeafletConfigChange: (newLeafletConfig: ILeafletMapConfig) => void;
     projectId?: string;
