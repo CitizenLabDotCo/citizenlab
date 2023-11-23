@@ -48,7 +48,7 @@ export type GetInitiativesChildProps = {
   onChangePublicationStatus: (publicationStatus: PublicationStatus) => void;
   onChangeAssignee: (assignee: string | undefined) => void;
   onChangeFeedbackFilter: (feedbackNeeded: boolean) => void;
-  list: IInitiativeData[] | undefined | null;
+  list: IInitiativeData[] | undefined;
   onResetParams: (paramsToOmit?: (keyof IQueryParameters)[]) => void;
   queryParameters: IQueryParameters;
   sortAttribute: SortAttribute;
