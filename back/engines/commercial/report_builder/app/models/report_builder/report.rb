@@ -41,8 +41,8 @@ module ReportBuilder
 
     validates :name, uniqueness: true, allow_nil: true
 
-    def global?
-      phase_id.nil?
+    def phase?
+      !phase_id.nil?
     end
   end
 end

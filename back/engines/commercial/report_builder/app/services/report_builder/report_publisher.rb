@@ -6,7 +6,7 @@ class ReportBuilder::ReportPublisher
   end
 
   def publish
-    return if @report.global?
+    return unless @report.phase?
 
     ReportBuilder::PublishedGraphDataUnit.where(report_id: @report.id).destroy_all
 
