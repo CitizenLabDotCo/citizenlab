@@ -1307,6 +1307,7 @@
   "app.containers.Projects.basketSubmitted": "Vaši prijedlozi su poslani!",
   "app.containers.Projects.budget": "{amount} proračun",
   "app.containers.Projects.contributions": "Doprinosi",
+  "app.containers.Projects.createANewPhase": "Stvorite novu fazu",
   "app.containers.Projects.currentPhase": "Trenutačna faza",
   "app.containers.Projects.document": "Dokument",
   "app.containers.Projects.editProject": "Uredi projekt",
