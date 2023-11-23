@@ -60,6 +60,7 @@ describe('Project description builder toggle', () => {
     // Check that original project description is visible
     cy.contains('Original project description.').should('be.visible');
     // Check that attachment is present
+    cy.wait(1000);
     cy.contains('example.pdf').should('exist');
   });
 
@@ -109,8 +110,8 @@ describe('Project description builder toggle', () => {
     });
 
     cy.get('#e2e-text-box').click('center');
-    cy.get('#quill-editor').click();
-    cy.get('#quill-editor').type('Edited text.', { force: true });
+    cy.get('.ql-editor').click();
+    cy.get('.ql-editor').type('Edited text.', { force: true });
 
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveProjectDescriptionBuilder');
@@ -119,6 +120,7 @@ describe('Project description builder toggle', () => {
     cy.contains('Edited text.').should('be.visible');
 
     // Check that attachment is present
+    cy.wait(1000);
     cy.contains('example.pdf').should('exist');
   });
 });
