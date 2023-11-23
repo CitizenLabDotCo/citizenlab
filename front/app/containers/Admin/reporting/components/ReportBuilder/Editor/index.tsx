@@ -9,10 +9,10 @@ import RenderNode from './RenderNode';
 import Container from 'components/admin/ContentBuilder/Widgets/Container';
 
 // default widgets
-import Title from '../../../components/ReportBuilder/Widgets/Title';
-import Text from '../../../components/ReportBuilder/Widgets/Text';
-import TwoColumn from '../../../components/ReportBuilder/Widgets/TwoColumn';
-import Image from '../../../components/ReportBuilder/Widgets/Image';
+import Title from '../Widgets/Title';
+import Text from '../Widgets/Text';
+import TwoColumn from '../Widgets/TwoColumn';
+import Image from '../Widgets/Image';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 
 // report builder widgets
