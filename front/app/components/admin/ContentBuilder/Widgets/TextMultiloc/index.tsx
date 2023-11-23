@@ -23,10 +23,7 @@ interface Props {
 }
 
 const TextMultiloc = ({ text }: Props) => {
-  const { parent } = useNode((node) => ({
-    parent: node.data.parent,
-  }));
-  const componentDefaultPadding = useCraftComponentDefaultPadding(parent);
+  const componentDefaultPadding = useCraftComponentDefaultPadding();
   const theme = useTheme();
   const localize = useLocalize();
 
@@ -36,7 +33,7 @@ const TextMultiloc = ({ text }: Props) => {
     <PageBreakBox
       id="e2e-text-box"
       minHeight="26px"
-      maxWidth="1150px"
+      maxWidth="1200px"
       margin="0 auto"
       px={componentDefaultPadding}
     >

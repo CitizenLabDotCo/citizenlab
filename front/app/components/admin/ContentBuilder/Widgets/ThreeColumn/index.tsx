@@ -8,7 +8,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 
 // craft
-import { Element, useNode } from '@craftjs/core';
+import { Element } from '@craftjs/core';
 import Container from '../Container';
 
 // i18n
@@ -38,14 +38,10 @@ export const ThreeColumnWrapper = ({
 };
 
 const ThreeColumn = () => {
-  const { parent } = useNode((node) => ({
-    parent: node.data.parent,
-  }));
-
-  const componentDefaultPadding = useCraftComponentDefaultPadding(parent);
+  const componentDefaultPadding = useCraftComponentDefaultPadding();
   return (
     <ThreeColumnWrapper
-      maxWidth="1150px"
+      maxWidth="1200px"
       margin="0 auto"
       px={componentDefaultPadding}
     >

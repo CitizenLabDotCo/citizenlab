@@ -31,10 +31,7 @@ type ButtonProps = {
 };
 
 const Button = ({ text, url, type, alignment }: ButtonProps) => {
-  const { parent } = useNode((node) => ({
-    parent: node.data.parent,
-  }));
-  const componentDefaultPadding = useCraftComponentDefaultPadding(parent);
+  const componentDefaultPadding = useCraftComponentDefaultPadding();
   const localize = useLocalize();
   const { enabled } = useEditor((state) => {
     return {
@@ -63,7 +60,7 @@ const Button = ({ text, url, type, alignment }: ButtonProps) => {
           ? 'flex-start'
           : 'flex-end'
       }
-      maxWidth="1150px"
+      maxWidth="1200px"
       margin="0 auto"
       px={componentDefaultPadding}
     >

@@ -6,7 +6,6 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 // i18n
 import messages from './messages';
-import { useNode } from '@craftjs/core';
 import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
 import { useParams } from 'react-router-dom';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
@@ -18,14 +17,11 @@ const AboutBox = () => {
   };
   const { data: project } = useProjectBySlug(slug);
   const projectID = projectId || project?.data.id;
-  const { parent } = useNode((node) => ({
-    parent: node.data.parent,
-  }));
-  const componentDefaultPadding = useCraftComponentDefaultPadding(parent);
+  const componentDefaultPadding = useCraftComponentDefaultPadding();
   return (
     <Box
       id="e2e-about-box"
-      maxWidth="1150px"
+      maxWidth="1200px"
       margin="0 auto"
       px={componentDefaultPadding}
     >

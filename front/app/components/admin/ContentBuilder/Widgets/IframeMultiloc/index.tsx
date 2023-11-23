@@ -41,16 +41,14 @@ interface Props {
 
 const Iframe = ({ url, height, hasError, title }: Props) => {
   const localize = useLocalize();
-  const { parent } = useNode((node) => ({
-    parent: node.data.parent,
-  }));
-  const componentDefaultPadding = useCraftComponentDefaultPadding(parent);
+
+  const componentDefaultPadding = useCraftComponentDefaultPadding();
 
   return (
     <Box
       id="e2e-content-builder-iframe-component"
       minHeight="26px"
-      maxWidth="1150px"
+      maxWidth="1200px"
       margin="0 auto"
       px={componentDefaultPadding}
     >

@@ -31,14 +31,11 @@ interface AccordionProps {
 const Accordion = ({ text, title, openByDefault = false }: AccordionProps) => {
   const theme = useTheme();
   const localize = useLocalize();
-  const { parent } = useNode((node) => ({
-    parent: node.data.parent,
-  }));
-  const componentDefaultPadding = useCraftComponentDefaultPadding(parent);
+  const componentDefaultPadding = useCraftComponentDefaultPadding();
 
   return (
     <AccordionComponent
-      maxWidth="1150px"
+      maxWidth="1200px"
       margin="0 auto"
       px={componentDefaultPadding}
       isOpenByDefault={openByDefault}

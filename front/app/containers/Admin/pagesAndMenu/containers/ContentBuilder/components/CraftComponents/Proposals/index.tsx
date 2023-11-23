@@ -27,7 +27,7 @@ const Proposals = () => {
   return (
     <Box bg={colors.background}>
       <Box
-        maxWidth="1150px"
+        maxWidth="1200px"
         margin="0 auto"
         pt={isSmallerThanTablet ? DEFAULT_PADDING : '40px'}
         pb={isSmallerThanTablet ? DEFAULT_PADDING : '40px'}
