@@ -159,7 +159,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
         if (!phases || !project) return;
 
         if (currentPhase && shouldSelectCurrentPhase) {
-          setPhaseUrl(currentPhase.id, phases.data, project.data);
+          setPhaseUrl(currentPhase, phases.data, project.data);
         }
 
         setTimeout(() => {
