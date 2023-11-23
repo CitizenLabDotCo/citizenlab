@@ -1,8 +1,11 @@
 import { useBreakpoint } from '@citizenlab/cl2-component-library';
 import { DEFAULT_PADDING } from './constants';
-import { ROOT_NODE, useEditor } from '@craftjs/core';
+import { ROOT_NODE, useEditor, useNode } from '@craftjs/core';
 
-const useCraftComponentDefaultPadding = (parent: string) => {
+const useCraftComponentDefaultPadding = () => {
+  const { parent } = useNode((node) => ({
+    parent: node.data.parent,
+  }));
   const isSmallerThanTablet = useBreakpoint('tablet');
   const { query } = useEditor();
   const parentNode = query.node(parent);

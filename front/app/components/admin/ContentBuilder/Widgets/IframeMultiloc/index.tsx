@@ -41,10 +41,8 @@ interface Props {
 
 const Iframe = ({ url, height, hasError, title }: Props) => {
   const localize = useLocalize();
-  const { parent } = useNode((node) => ({
-    parent: node.data.parent,
-  }));
-  const componentDefaultPadding = useCraftComponentDefaultPadding(parent);
+
+  const componentDefaultPadding = useCraftComponentDefaultPadding();
 
   return (
     <Box

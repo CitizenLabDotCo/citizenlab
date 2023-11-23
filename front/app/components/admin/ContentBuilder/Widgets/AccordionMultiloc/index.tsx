@@ -31,10 +31,7 @@ interface AccordionProps {
 const Accordion = ({ text, title, openByDefault = false }: AccordionProps) => {
   const theme = useTheme();
   const localize = useLocalize();
-  const { parent } = useNode((node) => ({
-    parent: node.data.parent,
-  }));
-  const componentDefaultPadding = useCraftComponentDefaultPadding(parent);
+  const componentDefaultPadding = useCraftComponentDefaultPadding();
 
   return (
     <AccordionComponent

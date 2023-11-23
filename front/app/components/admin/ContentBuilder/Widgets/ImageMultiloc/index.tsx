@@ -45,10 +45,7 @@ interface Props {
 }
 
 const Image = ({ alt = {}, image }: Props) => {
-  const { parent } = useNode((node) => ({
-    parent: node.data.parent,
-  }));
-  const componentDefaultPadding = useCraftComponentDefaultPadding(parent);
+  const componentDefaultPadding = useCraftComponentDefaultPadding();
 
   const localize = useLocalize();
   const { enabled } = useEditor((state) => {

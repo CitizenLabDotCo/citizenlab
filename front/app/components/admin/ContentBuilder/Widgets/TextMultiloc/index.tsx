@@ -23,10 +23,7 @@ interface Props {
 }
 
 const TextMultiloc = ({ text }: Props) => {
-  const { parent } = useNode((node) => ({
-    parent: node.data.parent,
-  }));
-  const componentDefaultPadding = useCraftComponentDefaultPadding(parent);
+  const componentDefaultPadding = useCraftComponentDefaultPadding();
   const theme = useTheme();
   const localize = useLocalize();
 

@@ -4,7 +4,7 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 
 // craft
-import { UserComponent, Element, useNode } from '@craftjs/core';
+import { UserComponent, Element } from '@craftjs/core';
 
 // widgets
 import TwoColumn from '../TwoColumn';
@@ -15,10 +15,7 @@ import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
 
 const ImageTextCards: UserComponent = () => {
-  const { parent } = useNode((node) => ({
-    parent: node.data.parent,
-  }));
-  const componentDefaultPadding = useCraftComponentDefaultPadding(parent);
+  const componentDefaultPadding = useCraftComponentDefaultPadding();
 
   return (
     <Element
