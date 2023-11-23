@@ -31,6 +31,7 @@ import { getIntialTabs } from './tabs';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
+import { getTimelineTab } from './timeline/utils';
 
 interface DataProps {
   phases: IPhaseData[];
@@ -199,7 +200,10 @@ export default () => {
     if (phases.data.length === 0 && !isLoadingPhases && !isFetchingPhases) {
       clHistory.replace(`/admin/projects/${projectId}/phases/new`);
     } else if (phaseShown && pathname.endsWith('/setup')) {
-      clHistory.replace(`/admin/projects/${projectId}/setup/${phaseShown.id}`);
+      const redirectTab = getTimelineTab(phaseShown);
+      clHistory.replace(
+        `/admin/projects/${projectId}/${redirectTab}/${phaseShown.id}`
+      );
     }
 
     setSelectedPhase(phaseShown);
