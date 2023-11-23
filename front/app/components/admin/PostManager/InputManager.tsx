@@ -119,7 +119,6 @@ const InputManager = ({
 
   if (!ideas || !topicsData) return null;
 
-  // Filtering handlers
   const getSelectedProject = () => {
     return Array.isArray(queryParameters.projects) &&
       queryParameters.projects.length === 1
@@ -140,20 +139,15 @@ const InputManager = ({
       onChangeProjects(projectIds);
     }
   };
-  // End filtering hanlders
 
   const resetSelection = () => {
     setSelection(new Set());
   };
-  // End selection management
 
-  // Filter menu
   const handleChangeActiveFilterMenu = (activeFilterMenu: TFilterMenu) => {
     setActiveFilterMenu(activeFilterMenu);
   };
-  // End Filter menu
 
-  // Modal Preview
   const openPreview = (postId: string) => {
     setPreviewPostId(postId);
     setPreviewMode('view');
@@ -179,7 +173,6 @@ const InputManager = ({
     setPreviewPostId(null);
     setPreviewMode('view');
   };
-  // End Modal Preview
 
   const onChangeTopics = (topics: string[]) => {
     setQueryParameters({ ...queryParameters, 'page[number]': 1, topics });
