@@ -2,7 +2,6 @@ import React, { ChangeEvent, useState } from 'react';
 
 // components
 import { Thead, Tr, Th, Checkbox } from '@citizenlab/cl2-component-library';
-import FeatureFlag from 'components/FeatureFlag';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -67,7 +66,6 @@ export type IdeaHeaderCellComponentProps = {
   allSelected?: boolean;
   width: string;
   onChange?: (event: unknown) => void;
-  onClick?: (event: unknown) => void;
 };
 
 interface Props {
@@ -264,12 +262,9 @@ const IdeaHeaderRow = ({
     name,
     Component,
     onChange,
-    onClick,
-    featureFlag,
   }: CellConfiguration<IdeaHeaderCellComponentProps>) => {
     const handlers = {
       ...(onChange ? { onChange } : {}),
-      ...(onClick ? { onClick } : {}),
     };
 
     const width = `${roundPercentage(
@@ -277,23 +272,15 @@ const IdeaHeaderRow = ({
       totalWidth
     )}%`;
 
-    const Content =
-      displayColumns && !displayColumns.has(name) ? null : (
-        <Component
-          sortAttribute={sortAttribute}
-          sortDirection={sortDirection}
-          allSelected={allSelected}
-          width={width}
-          {...handlers}
-          key={name}
-        />
-      );
-
-    if (!featureFlag) return Content;
-    return (
-      <FeatureFlag name={featureFlag} key={name}>
-        {Content}
-      </FeatureFlag>
+    return displayColumns && !displayColumns.has(name) ? null : (
+      <Component
+        sortAttribute={sortAttribute}
+        sortDirection={sortDirection}
+        allSelected={allSelected}
+        width={width}
+        {...handlers}
+        key={name}
+      />
     );
   };
 
