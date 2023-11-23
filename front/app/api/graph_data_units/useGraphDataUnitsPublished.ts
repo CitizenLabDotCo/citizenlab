@@ -28,6 +28,4 @@ const useGraphDataUnitsPublished = <Response extends BaseResponseData>(
   });
 };
 
-// hack to stop dead code script from complaining
-const noop = (_x: any) => {};
-noop(useGraphDataUnitsPublished);
+export default useGraphDataUnitsPublished;
