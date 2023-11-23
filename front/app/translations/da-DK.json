@@ -1566,8 +1566,6 @@
   "app.containers.UsersShowPage.eventsWithCount": "Begivenheder ({eventsCount})",
   "app.containers.UsersShowPage.followingWithCount": "Følger ({followingCount})",
   "app.containers.UsersShowPage.goBackToPreviousPage": "Gå tilbage til den foregående side",
-  "app.containers.UsersShowPage.ideas": "Idéer",
-  "app.containers.UsersShowPage.initiatives": "Forslag",
   "app.containers.UsersShowPage.invisibleTitlePostsList": "Alle indlæg indsendt af denne deltager",
   "app.containers.UsersShowPage.invisibleTitleUserComments": "Alle kommentarer slået op af denne bruger\n \n",
   "app.containers.UsersShowPage.loadMore": "Indlæs flere",

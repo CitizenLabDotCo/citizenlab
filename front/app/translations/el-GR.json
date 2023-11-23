@@ -1566,8 +1566,6 @@
   "app.containers.UsersShowPage.eventsWithCount": "Εκδηλώσεις ({eventsCount})",
   "app.containers.UsersShowPage.followingWithCount": "Ακολουθώντας ({followingCount})",
   "app.containers.UsersShowPage.goBackToPreviousPage": "Επιστροφή στην προηγούμενη σελίδα",
-  "app.containers.UsersShowPage.ideas": "Ιδέες",
-  "app.containers.UsersShowPage.initiatives": "Πρωτοβουλίες",
   "app.containers.UsersShowPage.invisibleTitlePostsList": "Όλες οι εισηγήσεις που υποβλήθηκαν από αυτόν τον συμμετέχοντα",
   "app.containers.UsersShowPage.invisibleTitleUserComments": "Όλα τα σχόλια που δημοσιεύτηκαν από αυτόν τον συμμετέχοντα",
   "app.containers.UsersShowPage.loadMore": "Φορτώστε περισσότερα",

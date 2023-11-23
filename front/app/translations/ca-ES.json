@@ -1566,8 +1566,6 @@
   "app.containers.UsersShowPage.eventsWithCount": "Esdeveniments ({eventsCount})",
   "app.containers.UsersShowPage.followingWithCount": "Seguint ({followingCount})",
   "app.containers.UsersShowPage.goBackToPreviousPage": "Tornar a la pàgina anterior",
-  "app.containers.UsersShowPage.ideas": "Idees",
-  "app.containers.UsersShowPage.initiatives": "Iniciatives",
   "app.containers.UsersShowPage.invisibleTitlePostsList": "Totes les aportacions enviades per aquest participant",
   "app.containers.UsersShowPage.invisibleTitleUserComments": "Tots els comentaris publicats per aquest participant",
   "app.containers.UsersShowPage.loadMore": "Carrega més",

@@ -1566,8 +1566,6 @@
   "app.containers.UsersShowPage.eventsWithCount": "Veranstaltungen ({eventsCount})",
   "app.containers.UsersShowPage.followingWithCount": "Folge ich ({followingCount})",
   "app.containers.UsersShowPage.goBackToPreviousPage": "Zurück zur letzten Seite",
-  "app.containers.UsersShowPage.ideas": "Beiträge",
-  "app.containers.UsersShowPage.initiatives": "Vorschläge",
   "app.containers.UsersShowPage.invisibleTitlePostsList": "Alle von diesem Teilnehmenden eingereichten Beiträge",
   "app.containers.UsersShowPage.invisibleTitleUserComments": "Alle Kommentare, die von diesem Nutzer / dieser Nutzerin gepostet wurden",
   "app.containers.UsersShowPage.loadMore": "Mehr laden",

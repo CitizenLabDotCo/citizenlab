@@ -1566,8 +1566,6 @@
   "app.containers.UsersShowPage.eventsWithCount": "Händelser ({eventsCount})",
   "app.containers.UsersShowPage.followingWithCount": "Följande ({followingCount})",
   "app.containers.UsersShowPage.goBackToPreviousPage": "Gå tillbaka till föregående sida",
-  "app.containers.UsersShowPage.ideas": "Idéer",
-  "app.containers.UsersShowPage.initiatives": "Initiativ",
   "app.containers.UsersShowPage.invisibleTitlePostsList": "Alla indata som har skickats av den här deltagaren",
   "app.containers.UsersShowPage.invisibleTitleUserComments": "Alla kommentarer som publicerats av den här deltagaren",
   "app.containers.UsersShowPage.loadMore": "Ladda mer",

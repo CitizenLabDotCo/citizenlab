@@ -2401,7 +2401,6 @@
   "app.containers.admin.inviteUsersWithSeatsModal.confirmSeatUsageChange": "Bekräfta inverkan på användningen av säten",
   "app.containers.admin.inviteUsersWithSeatsModal.infoMessage2": "Du har nått gränsen för antalet tillgängliga platser i din plan.",
   "app.containers.admin.project.permissions.permissionEveryoneEmailWarning": "Förutom registrerade användare kan även oregistrerade användare som anger en e-postadress och bekräftar den utföra åtgärden. Välj det här alternativet för att sänka kravet för deltagande.",
-  "app.containers.admin.project.permissions.permissionsAdministrators": "Administratörer",
   "app.containers.admin.project.permissions.permissionsAdminsAndCollaborators": "Endast administratörer och medarbetare",
   "app.containers.admin.project.permissions.permissionsAdminsAndCollaboratorsTooltip": "Endast plattformsadministratörer, mapphanterare och projektledare kan vidta åtgärden.",
   "app.containers.admin.project.permissions.permissionsAnyoneLabel": "Vem som helst",

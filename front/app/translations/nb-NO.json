@@ -1566,8 +1566,6 @@
   "app.containers.UsersShowPage.eventsWithCount": "Hendelser ({eventsCount})",
   "app.containers.UsersShowPage.followingWithCount": "Følger ({followingCount})",
   "app.containers.UsersShowPage.goBackToPreviousPage": "Gå tilbake til forrige side",
-  "app.containers.UsersShowPage.ideas": "Ideer",
-  "app.containers.UsersShowPage.initiatives": "Initiativer",
   "app.containers.UsersShowPage.invisibleTitlePostsList": "Alle innlegg publisert av denne deltakeren",
   "app.containers.UsersShowPage.invisibleTitleUserComments": "Alle kommentarer postet av denne brukeren",
   "app.containers.UsersShowPage.loadMore": "Last mer",
