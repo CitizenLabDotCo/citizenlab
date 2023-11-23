@@ -1601,6 +1601,7 @@
   "app.containers.app.navbar.logoImgAltText": "{orgName} Home",
   "app.containers.app.navbar.myProfile": "My activity",
   "app.containers.app.navbar.search": "Search",
+  "app.containers.app.navbar.showFullMenu": "Show full menu",
   "app.containers.app.navbar.showMore": "More",
   "app.containers.app.navbar.signOut": "Sign out",
   "app.containers.app.navbar.signUp": "Sign up",
