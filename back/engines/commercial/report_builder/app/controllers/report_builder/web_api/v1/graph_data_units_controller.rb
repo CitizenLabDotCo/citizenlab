@@ -4,6 +4,8 @@ module ReportBuilder
   module WebApi
     module V1
       class GraphDataUnitsController < ApplicationController
+        skip_before_action :authenticate_user, only: :published
+
         def live
           props = params[:props]&.permit! || {}
           authorize props, policy_class: LiveGraphDataUnitPolicy

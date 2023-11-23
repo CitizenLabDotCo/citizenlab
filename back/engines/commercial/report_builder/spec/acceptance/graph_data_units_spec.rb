@@ -51,6 +51,13 @@ resource 'Graph data units' do
     _not_returned_idea = create(:idea, project: create(:project), created_at: participation_date, author: create(:user, gender: @gender))
   end
 
+  def expected_attributes
+    [{
+      count_dimension_user_custom_field_values_dimension_user_id: 1,
+      'dimension_user_custom_field_values.value': @gender
+    }]
+  end
+
   get '/web_api/v1/reports/graph_data_units/live' do
     parameter :resolved_name, 'Name of graph component on FE'
     parameter :props, 'Props of graph component on FE that are stored in Craftjs JSON and used to query data'
@@ -63,11 +70,7 @@ resource 'Graph data units' do
 
       example_request 'Get live data for graph only for relevant project' do
         assert_status 200
-        expected_attrs = [{
-          count_dimension_user_custom_field_values_dimension_user_id: 1,
-          'dimension_user_custom_field_values.value': @gender
-        }]
-        expect(json_response_body.dig(:data, :attributes)).to eq(expected_attrs)
+        expect(json_response_body.dig(:data, :attributes)).to eq(expected_attributes)
       end
     end
 
@@ -86,7 +89,7 @@ resource 'Graph data units' do
       ReportBuilder::ReportPublisher.new(@report).publish
     end
 
-    describe 'when user has access to phase' do
+    context 'when user has access to phase' do
       before do
         user = create(:user)
         group = create(:group)
@@ -97,15 +100,11 @@ resource 'Graph data units' do
 
       example_request 'Get published data for graph' do
         assert_status 200
-        expected_attrs = [{
-          count_dimension_user_custom_field_values_dimension_user_id: 1,
-          'dimension_user_custom_field_values.value': @gender
-        }]
-        expect(json_response_body.dig(:data, :attributes)).to eq(expected_attrs)
+        expect(json_response_body.dig(:data, :attributes)).to eq(expected_attributes)
       end
     end
 
-    describe "when user doesn't have access to phase" do
+    context "when user doesn't have access to phase" do
       before do
         user = create(:user)
         project.update!(visible_to: 'groups', groups: [])
@@ -114,6 +113,13 @@ resource 'Graph data units' do
 
       example_request 'returns 401 (Unauthorized)' do
         assert_status 401
+      end
+    end
+
+    context 'when user is not logged in' do
+      example_request 'Get published data for graph' do
+        assert_status 200
+        expect(json_response_body.dig(:data, :attributes)).to eq(expected_attributes)
       end
     end
   end
