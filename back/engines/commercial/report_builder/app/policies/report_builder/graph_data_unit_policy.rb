@@ -3,12 +3,15 @@
 module ReportBuilder
   class GraphDataUnitPolicy < ::ApplicationPolicy
     def live?
-      admin? && active?
+      if props[:project_id].present?
+        UserRoleService.new.can_moderate?(Project.find(props[:project_id]), user)
+      else
+        admin? && active?
+      end
     end
 
     def published?
-      record.report.phase.start_at <= Time.zone.now &&
-        PhasePolicy::Scope.new(user, Phase).resolve.exists?(id: record.report.phase_id)
+      record.report.phase.started? && PhasePolicy.new(user, record.report.phase).show?
     end
   end
 end

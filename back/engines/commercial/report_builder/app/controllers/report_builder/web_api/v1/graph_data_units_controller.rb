@@ -6,7 +6,7 @@ module ReportBuilder
       class GraphDataUnitsController < ApplicationController
         def live
           authorize :live?, policy_class: GraphDataUnitPolicy
-          results = ReportBuilder::QueryRepository.new.data_by_graph(params[:resolved_name], params.permit![:props] || {})
+          results = ReportBuilder::QueryRepository.new.data_by_graph(params[:resolved_name], params[:props]&.permit! || {})
           render_results(results)
         end
 

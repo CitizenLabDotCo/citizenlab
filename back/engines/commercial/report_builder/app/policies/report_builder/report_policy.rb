@@ -17,15 +17,20 @@ module ReportBuilder
       end
     end
 
-    def allowed?
-      admin? && active?
+    def write?
+      record.phase? ? PhasePolicy.new(user, record.phase).update? : (admin? && active?)
     end
 
-    alias show? allowed?
-    alias create? allowed?
-    alias update? allowed?
-    alias publish? allowed?
-    alias destroy? allowed?
-    alias layout? allowed?
+    def read?
+      record.phase? ? PhasePolicy.new(user, record.phase).show? : (admin? && active?)
+    end
+
+    alias show? read?
+    alias layout? read?
+
+    alias create? write?
+    alias update? write?
+    alias publish? write?
+    alias destroy? write?
   end
 end
