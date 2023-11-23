@@ -7,7 +7,7 @@ import { rest } from 'msw';
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { IFormSubmissionCount } from 'api/submission_count/types';
 
-let apiPath = '*projects/:projectId/submission_count';
+let apiPath = '*phases/:phaseId/submission_count';
 
 const statData: IFormSubmissionCount = {
   data: {
