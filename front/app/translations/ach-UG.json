@@ -1307,6 +1307,7 @@
   "app.containers.Projects.basketSubmitted": "crwdns1328798:0crwdne1328798:0",
   "app.containers.Projects.budget": "crwdns1328800:0{amount}crwdne1328800:0",
   "app.containers.Projects.contributions": "crwdns1328802:0crwdne1328802:0",
+  "app.containers.Projects.createANewPhase": "crwdns1357850:0crwdne1357850:0",
   "app.containers.Projects.currentPhase": "crwdns1328804:0crwdne1328804:0",
   "app.containers.Projects.document": "crwdns1328806:0crwdne1328806:0",
   "app.containers.Projects.editProject": "crwdns1328808:0crwdne1328808:0",
