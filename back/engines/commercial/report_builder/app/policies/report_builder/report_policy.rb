@@ -30,7 +30,6 @@ module ReportBuilder
 
     alias create? write?
     alias update? write?
-    alias publish? write?
     alias destroy? write?
   end
 end
