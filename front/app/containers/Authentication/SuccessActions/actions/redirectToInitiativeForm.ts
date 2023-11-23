@@ -19,6 +19,6 @@ export const redirectToInitiativeForm =
             ? stringify({ lat, lng }, { addQueryPrefix: true })
             : undefined,
       },
-      true
+      { scrollToTop: true }
     );
   };

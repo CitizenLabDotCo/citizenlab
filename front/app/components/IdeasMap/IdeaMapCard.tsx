@@ -176,10 +176,9 @@ const IdeaMapCard = memo<Props>(
       updateSearchParams({ idea_map_id: ideaMarker.id });
 
       if (tablet) {
-        clHistory.push(
-          `/ideas/${ideaMarker.attributes.slug}?go_back=true`,
-          true
-        );
+        clHistory.push(`/ideas/${ideaMarker.attributes.slug}?go_back=true`, {
+          scrollToTop: true,
+        });
       } else {
         setLeafletMapSelectedMarker(ideaMarker.id);
       }

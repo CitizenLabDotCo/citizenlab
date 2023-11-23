@@ -165,7 +165,7 @@ const IdeasEditForm = ({ params: { ideaId } }: WithRouterProps) => {
       {
         pathname: `/ideas/${idea.data.attributes.slug}`,
       },
-      true
+      { scrollToTop: true }
     );
   };
 

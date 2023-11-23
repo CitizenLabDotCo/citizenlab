@@ -175,7 +175,7 @@ const IdeaButton = memo<Props>(
               { addQueryPrefix: true }
             ),
           },
-          true
+          { scrollToTop: true }
         );
       }
     };

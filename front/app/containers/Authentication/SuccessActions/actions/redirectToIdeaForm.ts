@@ -56,7 +56,7 @@ export const redirectToIdeaForm =
             { addQueryPrefix: true }
           ),
         },
-        true
+        { scrollToTop: true }
       );
     }
   };

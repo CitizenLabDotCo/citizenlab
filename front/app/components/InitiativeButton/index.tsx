@@ -35,7 +35,7 @@ const InitiativeButton = ({ lat, lng, location, buttonStyle }: Props) => {
             ? stringify({ lat, lng }, { addQueryPrefix: true })
             : undefined,
       },
-      true
+      { scrollToTop: true }
     );
   };
 
