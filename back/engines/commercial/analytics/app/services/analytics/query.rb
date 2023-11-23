@@ -17,7 +17,15 @@ module Analytics
     end
 
     def initialize(query)
-      @json_query = query
+      @json_query =
+        case query
+        when ActionController::Parameters
+          query.to_unsafe_h
+        when Hash
+          query.with_indifferent_access
+        else
+          raise ArgumentError, "Invalid query type: #{query.class}"
+        end
     end
 
     attr_reader :valid, :error_messages, :results, :pagination, :json_query, :failed

@@ -16,6 +16,6 @@ export type PropsLive = ProjectId & Dates & Resolution;
 
 // published
 export interface ParametersPublished {
-  reportId: string;
+  reportId?: string;
   graphId: string;
 }

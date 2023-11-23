@@ -45,8 +45,7 @@ module Analytics
     end
 
     def validate_json
-      unsafe_hash = @json_query.try(:to_unsafe_hash) || @json_query
-      json_errors = JSON::Validator.fully_validate(self.class.schema, unsafe_hash)
+      json_errors = JSON::Validator.fully_validate(self.class.schema, @json_query)
       return true if json_errors.empty?
 
       add_error(json_errors)
@@ -67,7 +66,7 @@ module Analytics
         values = Array.wrap(values)
         field, subfield = field.include?('.') ? field.split('.') : [field, nil]
         values.each do |value|
-          if value.is_a?(ActionController::Parameters)
+          if value.is_a?(Hash)
             if subfield == 'date'
               dates_attrs.each do |date|
                 Date.parse(value[date]) if value.key?(date)

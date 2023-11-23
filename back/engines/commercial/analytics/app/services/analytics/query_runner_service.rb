@@ -43,7 +43,7 @@ module Analytics
       @json_query[:filters].each do |field, value|
         field, subfield = field.include?('.') ? field.split('.') : [field, nil]
 
-        if value.is_a?(ActionController::Parameters) && subfield == 'date'
+        if value.is_a?(Hash) && subfield == 'date'
           from, to = value.values_at(:from, :to)
           results = results.where(field => { subfield => from..to })
         else
@@ -159,8 +159,7 @@ module Analytics
     def pagination_query_params(number)
       return if number.nil?
 
-      # TODO: remove `try` if we continue to use ActionController::Parameters in QueryRepository
-      json_query = @json_query.try(:to_unsafe_hash) || @json_query
+      json_query = @json_query.deep_dup
       if @json_query.key?(:page)
         json_query[:page][:number] = number
       else
