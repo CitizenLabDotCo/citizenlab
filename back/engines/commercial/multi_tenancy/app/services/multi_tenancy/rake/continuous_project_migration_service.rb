@@ -68,7 +68,7 @@ class MultiTenancy::Rake::ContinuousProjectMigrationService
     end
   end
 
-  # Fix for an issue we had on staging
+  # Fix for staging - when the task was run with no logic
   def fix_survey_custom_forms
     CustomForm.where(participation_context_type: 'Project').each do |form|
       project = Project.find(form.participation_context_id)
