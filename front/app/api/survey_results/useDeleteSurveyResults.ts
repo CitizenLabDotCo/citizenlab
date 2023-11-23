@@ -4,9 +4,8 @@ import surveyResultsKeys from './keys';
 import submissionsCountKeys from 'api/submission_count/keys';
 
 const deleteSurveyResults = ({
-  phaseId,
+  phaseId
 }: {
-  projectId: string;
   phaseId?: string;
 }) => {
   const deleteApiEndpoint = `phases/${phaseId}/inputs`;

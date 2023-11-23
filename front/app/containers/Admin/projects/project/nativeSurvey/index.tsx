@@ -134,7 +134,7 @@ const Forms = () => {
 
   const deleteResults = () => {
     deleteFormResults(
-      { projectId, phaseId },
+      { phaseId },
       {
         onSuccess: () => {
           closeDeleteModal();
