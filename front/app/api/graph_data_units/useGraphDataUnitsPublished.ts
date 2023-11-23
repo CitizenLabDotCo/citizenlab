@@ -18,11 +18,13 @@ const fetchGraphDataUnitsPublished = <Response extends BaseResponseData>({
   });
 
 const useGraphDataUnitsPublished = <Response extends BaseResponseData>(
-  parameters: ParametersPublished
+  parameters: ParametersPublished,
+  { enabled = true }: { enabled?: boolean } = {}
 ) => {
   return useQuery<Response, CLErrors, Response, any>({
     queryKey: graphDataUnitKeys.item(parameters),
     queryFn: () => fetchGraphDataUnitsPublished<Response>(parameters),
+    enabled: enabled && !!parameters.reportId,
   });
 };
 
