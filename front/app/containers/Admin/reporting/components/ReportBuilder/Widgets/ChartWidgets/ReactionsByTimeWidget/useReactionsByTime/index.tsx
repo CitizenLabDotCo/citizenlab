@@ -1,43 +1,70 @@
 import { useMemo, useState } from 'react';
 
 // hooks
-import useLiveReactionsByTime from './useLiveReactionsByTime';
+import { useNode } from '@craftjs/core';
+import useLiveReactionsByTime from 'components/admin/GraphCards/ReactionsByTimeCard/useReactionsByTime/useLiveReactionsByTime';
+import useGraphDataUnitsPublished from 'api/graph_data_units/useGraphDataUnitsPublished';
+
+// routing
+import { useLocation } from 'react-router-dom';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
-import { getTranslations } from './translations';
+import { getTranslations } from 'components/admin/GraphCards/ReactionsByTimeCard/useReactionsByTime/translations';
 
 // parse
-import { parseTimeSeries, parseExcelData } from './parse';
+import {
+  parseTimeSeries,
+  parseExcelData,
+} from 'components/admin/GraphCards/ReactionsByTimeCard/useReactionsByTime/parse';
 
 // utils
 import { getFormattedNumbers } from 'components/admin/GraphCards/_utils/parse';
+import { isPage } from 'utils/helperUtils';
 
 // typings
-import { QueryParameters } from './typings';
+import {
+  QueryParameters,
+  Response,
+} from 'components/admin/GraphCards/ReactionsByTimeCard/useReactionsByTime/typings';
+
+type Parameters = QueryParameters & {
+  reportId?: string;
+};
 
 export default function useReactionsByTime({
   projectId,
   startAtMoment,
   endAtMoment,
   resolution,
-}: QueryParameters) {
+  reportId,
+}: Parameters) {
   const { formatMessage } = useIntl();
-  const [currentResolution, setCurrentResolution] = useState(resolution);
+  const [currentResolution] = useState(resolution);
 
-  const { data: analytics } = useLiveReactionsByTime(
+  const { pathname } = useLocation();
+  const { id: graphId } = useNode();
+  const isAdminPage = isPage('admin', pathname);
+
+  const { data: analyticsLive } = useLiveReactionsByTime(
     {
       projectId,
       startAtMoment,
       endAtMoment,
       resolution,
     },
-    {
-      onSuccess: () => {
-        setCurrentResolution(resolution);
-      },
-    }
+    { enabled: isAdminPage }
   );
+
+  const { data: analyticsPublished } = useGraphDataUnitsPublished<Response>(
+    {
+      reportId,
+      graphId,
+    },
+    { enabled: !isAdminPage }
+  );
+
+  const analytics = analyticsLive ?? analyticsPublished;
 
   const timeSeries = useMemo(
     () =>

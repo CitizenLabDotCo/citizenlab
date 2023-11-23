@@ -9,6 +9,7 @@ module ReportBuilder
     def after_create(report, user)
       super(report, user)
       layout_side_fx_service.after_create(report.layout, user)
+      ReportPublisher.new(report).publish
     end
 
     def before_update(report, user)
@@ -17,7 +18,10 @@ module ReportBuilder
 
     def after_update(report, user)
       super(report, user)
-      layout_side_fx_service.after_update(report.layout, user) if report.layout.previous_changes.present?
+      if report.layout.previous_changes.present?
+        layout_side_fx_service.after_update(report.layout, user)
+        ReportPublisher.new(report).publish
+      end
     end
 
     def before_destroy(report, user)

@@ -41,7 +41,7 @@ fetch(window.location.origin + "/web_api/v1/analytics", {
         "dimension_user_custom_field_values.key": "gender"
       },
       "aggregations": {
-        "all": "count"
+        "dimension_user_custom_field_values.dimension_user_id": "count"
       }
     }
   }`,

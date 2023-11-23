@@ -14,6 +14,7 @@ ALTER TABLE IF EXISTS ONLY public.ideas_topics DROP CONSTRAINT IF EXISTS fk_rail
 ALTER TABLE IF EXISTS ONLY public.events_attendances DROP CONSTRAINT IF EXISTS fk_rails_fba307ba3b;
 ALTER TABLE IF EXISTS ONLY public.comments DROP CONSTRAINT IF EXISTS fk_rails_f44b1e3c8a;
 ALTER TABLE IF EXISTS ONLY public.insights_text_networks DROP CONSTRAINT IF EXISTS fk_rails_f3e4924881;
+ALTER TABLE IF EXISTS ONLY public.report_builder_published_graph_data_units DROP CONSTRAINT IF EXISTS fk_rails_f21a19c203;
 ALTER TABLE IF EXISTS ONLY public.idea_files DROP CONSTRAINT IF EXISTS fk_rails_efb12f53ad;
 ALTER TABLE IF EXISTS ONLY public.insights_zeroshot_classification_tasks_inputs DROP CONSTRAINT IF EXISTS fk_rails_ee8a3a2c3d;
 ALTER TABLE IF EXISTS ONLY public.static_pages_topics DROP CONSTRAINT IF EXISTS fk_rails_edc8786515;
@@ -141,6 +142,7 @@ DROP TRIGGER IF EXISTS que_state_notify ON public.que_jobs;
 DROP TRIGGER IF EXISTS que_job_notify ON public.que_jobs;
 DROP INDEX IF EXISTS public.users_unique_lower_email_idx;
 DROP INDEX IF EXISTS public.spam_reportable_index;
+DROP INDEX IF EXISTS public.report_builder_published_data_units_report_id_idx;
 DROP INDEX IF EXISTS public.que_poll_idx_with_job_schema_version;
 DROP INDEX IF EXISTS public.que_poll_idx;
 DROP INDEX IF EXISTS public.que_jobs_data_gin_idx;
@@ -431,6 +433,7 @@ ALTER TABLE IF EXISTS ONLY public.static_pages_topics DROP CONSTRAINT IF EXISTS 
 ALTER TABLE IF EXISTS ONLY public.spam_reports DROP CONSTRAINT IF EXISTS spam_reports_pkey;
 ALTER TABLE IF EXISTS ONLY public.schema_migrations DROP CONSTRAINT IF EXISTS schema_migrations_pkey;
 ALTER TABLE IF EXISTS ONLY public.report_builder_reports DROP CONSTRAINT IF EXISTS report_builder_reports_pkey;
+ALTER TABLE IF EXISTS ONLY public.report_builder_published_graph_data_units DROP CONSTRAINT IF EXISTS report_builder_published_graph_data_units_pkey;
 ALTER TABLE IF EXISTS ONLY public.que_values DROP CONSTRAINT IF EXISTS que_values_pkey;
 ALTER TABLE IF EXISTS ONLY public.que_lockers DROP CONSTRAINT IF EXISTS que_lockers_pkey;
 ALTER TABLE IF EXISTS ONLY public.que_jobs DROP CONSTRAINT IF EXISTS que_jobs_pkey;
@@ -560,6 +563,7 @@ DROP TABLE IF EXISTS public.static_page_files;
 DROP TABLE IF EXISTS public.spam_reports;
 DROP TABLE IF EXISTS public.schema_migrations;
 DROP TABLE IF EXISTS public.report_builder_reports;
+DROP TABLE IF EXISTS public.report_builder_published_graph_data_units;
 DROP TABLE IF EXISTS public.que_values;
 DROP TABLE IF EXISTS public.que_lockers;
 DROP SEQUENCE IF EXISTS public.que_jobs_id_seq;
@@ -3334,6 +3338,20 @@ WITH (fillfactor='90');
 
 
 --
+-- Name: report_builder_published_graph_data_units; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.report_builder_published_graph_data_units (
+    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
+    report_id uuid NOT NULL,
+    graph_id character varying NOT NULL,
+    data jsonb NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: report_builder_reports; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -4504,6 +4522,14 @@ ALTER TABLE ONLY public.que_lockers
 
 ALTER TABLE ONLY public.que_values
     ADD CONSTRAINT que_values_pkey PRIMARY KEY (key);
+
+
+--
+-- Name: report_builder_published_graph_data_units report_builder_published_graph_data_units_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.report_builder_published_graph_data_units
+    ADD CONSTRAINT report_builder_published_graph_data_units_pkey PRIMARY KEY (id);
 
 
 --
@@ -6553,6 +6579,13 @@ CREATE INDEX que_poll_idx_with_job_schema_version ON public.que_jobs USING btree
 
 
 --
+-- Name: report_builder_published_data_units_report_id_idx; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX report_builder_published_data_units_report_id_idx ON public.report_builder_published_graph_data_units USING btree (report_id);
+
+
+--
 -- Name: spam_reportable_index; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -7565,6 +7598,14 @@ ALTER TABLE ONLY public.idea_files
 
 
 --
+-- Name: report_builder_published_graph_data_units fk_rails_f21a19c203; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.report_builder_published_graph_data_units
+    ADD CONSTRAINT fk_rails_f21a19c203 FOREIGN KEY (report_id) REFERENCES public.report_builder_reports(id);
+
+
+--
 -- Name: insights_text_networks fk_rails_f3e4924881; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7999,6 +8040,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20231018083110'),
 ('20231024082513'),
 ('20231031175023'),
+('20231103094549'),
 ('20231109101517'),
 ('20231110112415');
 

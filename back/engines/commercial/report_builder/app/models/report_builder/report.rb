@@ -33,10 +33,16 @@ module ReportBuilder
       dependent: :destroy
     )
 
+    has_many :published_graph_data_units, dependent: :destroy
+
     accepts_nested_attributes_for :layout
 
     scope :global, -> { where(phase_id: nil) }
 
-    validates :name, uniqueness: true, if: :present?
+    validates :name, uniqueness: true, allow_nil: true
+
+    def phase?
+      !phase_id.nil?
+    end
   end
 end
