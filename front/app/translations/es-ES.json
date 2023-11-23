@@ -1307,6 +1307,7 @@
   "app.containers.Projects.basketSubmitted": "Su selección se ha presentado",
   "app.containers.Projects.budget": "{amount} presupuesto",
   "app.containers.Projects.contributions": "Propuestas",
+  "app.containers.Projects.createANewPhase": "Crear una nueva fase",
   "app.containers.Projects.currentPhase": "Fase actual",
   "app.containers.Projects.document": "Documento",
   "app.containers.Projects.editProject": "Editar este proyecto",
