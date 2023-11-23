@@ -83,6 +83,12 @@ describe XlsxService do
       title_row = worksheet[0].cells.map(&:value)
       expect(title_row).to include('gender (1)', 'gender (2)')
       expect(title_row).not_to include('gender')
+
+      column1 = title_row.find_index 'gender (1)'
+      column2 = title_row.find_index 'gender (2)'
+      user_rows = worksheet.map { |row| row.cells.map(&:value) }
+      user_row = user_rows.find { |values| values.include? users.first.id }
+      expect([user_row[column1], user_row[column2]]).to eq ['Option 1', 'Option 2']
     end
 
     describe do
