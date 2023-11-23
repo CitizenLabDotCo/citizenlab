@@ -46,4 +46,8 @@ export default defineMessages({
     id: 'app.containers.app.navbar.compactMobileMenu',
     defaultMessage: 'Compact mobile',
   },
+  showFullMenu: {
+    id: 'app.containers.app.navbar.showFullMenu',
+    defaultMessage: 'Show full menu',
+  },
 });

@@ -152,7 +152,6 @@ const MobileNavbarContent = () => {
             )}
             <NavItem>
               <ShowFullMenuButton
-                isFullMenuOpened={isFullMenuOpened}
                 onClick={() => {
                   onShowMore(isFullMenuOpened);
                 }}
