@@ -1307,6 +1307,7 @@
   "app.containers.Projects.basketSubmitted": "S'ha enviat la vostra cistella!",
   "app.containers.Projects.budget": "{amount} pressupost",
   "app.containers.Projects.contributions": "Aportacions",
+  "app.containers.Projects.createANewPhase": "Crea una nova fase",
   "app.containers.Projects.currentPhase": "Fase actual",
   "app.containers.Projects.document": "Document",
   "app.containers.Projects.editProject": "Editar el projecte",
