@@ -1307,6 +1307,7 @@
   "app.containers.Projects.basketSubmitted": "Το καλάθι σας έχει υποβληθεί!",
   "app.containers.Projects.budget": "{amount} προϋπολογισμός",
   "app.containers.Projects.contributions": "Συνεισφορές",
+  "app.containers.Projects.createANewPhase": "Δημιουργήστε μια νέα φάση",
   "app.containers.Projects.currentPhase": "Τρέχουσα φάση",
   "app.containers.Projects.document": "Έγγραφο",
   "app.containers.Projects.editProject": "Επεξεργασία έργου",
