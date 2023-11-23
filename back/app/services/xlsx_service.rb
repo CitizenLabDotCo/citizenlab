@@ -297,20 +297,13 @@ class XlsxService
   end
 
   def map_user_custom_fields_to_columns(user_custom_fields)
-    titles_to_fields = {}
-
-    user_custom_fields.each do |field|
-      title = multiloc_service.t(field.title_multiloc)
-      titles_to_fields.key?(title) ? titles_to_fields[title] << field.id : titles_to_fields[title] = [field.id]
-    end
-
     fields_to_columns = {}
 
-    titles_to_fields.each do |title, field_ids|
-      if field_ids.size == 1
-        fields_to_columns[field_ids.first] = title
+    user_custom_fields.group_by { |field| multiloc_service.t(field.title_multiloc) }.each do |title, fields|
+      if fields.size == 1
+        fields_to_columns[fields.first.id] = title
       else # add suffix to titles to distinguish between fields with same title
-        field_ids.each_with_index { |field_id, i| fields_to_columns[field_id] = "#{title} (#{i + 1})" }
+        fields.each_with_index { |field, i| fields_to_columns[field.id] = "#{title} (#{i + 1})" }
       end
     end
 
