@@ -15,7 +15,7 @@ import { colors } from 'utils/styleUtils';
 import { roundPercentage } from 'utils/math';
 
 // typings
-import { SortAttribute as InitiativesSortAttribute } from 'resources/GetInitiatives';
+import { Sort as InitiativesSortAttribute } from 'api/initiatives/types';
 import { SortDirection } from 'utils/paginationUtils';
 import useInitiativeCosponsorsRequired from 'containers/InitiativesShow/hooks/useInitiativeCosponsorsRequired';
 

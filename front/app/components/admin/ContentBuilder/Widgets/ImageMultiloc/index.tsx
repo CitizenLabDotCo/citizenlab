@@ -18,7 +18,7 @@ import { Multiloc, UploadFile } from 'typings';
 
 // craft
 import { useEditor, useNode } from '@craftjs/core';
-import usePx from '../usePx';
+import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
 
 // i18n
 import messages from './messages';
@@ -45,7 +45,7 @@ interface Props {
 }
 
 const Image = ({ alt = {}, image }: Props) => {
-  const px = usePx();
+  const craftComponentDefaultPadding = useCraftComponentDefaultPadding();
   const localize = useLocalize();
   const { enabled } = useEditor((state) => {
     return {
@@ -67,7 +67,7 @@ const Image = ({ alt = {}, image }: Props) => {
       minHeight="26px"
       maxWidth="1150px"
       margin="0 auto"
-      px={px}
+      px={craftComponentDefaultPadding}
     >
       {image?.imageUrl && (
         <ImageComponent

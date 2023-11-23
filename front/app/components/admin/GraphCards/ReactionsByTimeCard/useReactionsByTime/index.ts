@@ -1,10 +1,7 @@
 import { useMemo, useState } from 'react';
 
 // hooks
-// import { useNode } from '@craftjs/core';
-// import { useParams } from 'react-router-dom';
 import useLiveReactionsByTime from './useLiveReactionsByTime';
-// import useGraphDataUnitsPublished from 'api/graph_data_units/useGraphDataUnitsPublished';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -17,7 +14,6 @@ import { parseTimeSeries, parseExcelData } from './parse';
 import { getFormattedNumbers } from 'components/admin/GraphCards/_utils/parse';
 
 // typings
-// import { QueryParameters, Response } from './typings';
 import { QueryParameters } from './typings';
 
 export default function useReactionsByTime({
@@ -27,22 +23,21 @@ export default function useReactionsByTime({
   resolution,
 }: QueryParameters) {
   const { formatMessage } = useIntl();
-  const [currentResolution, _setCurrentResolution] = useState(resolution);
+  const [currentResolution, setCurrentResolution] = useState(resolution);
 
-  // const { id: graphId } = useNode();
-  // const { reportId } = useParams() as { reportId: string };
-
-  const { data: analytics } = useLiveReactionsByTime({
-    projectId,
-    startAtMoment,
-    endAtMoment,
-    resolution,
-  });
-
-  // const { data: analytics } = useGraphDataUnitsPublished<Response>({
-  //   reportId,
-  //   graphId,
-  // });
+  const { data: analytics } = useLiveReactionsByTime(
+    {
+      projectId,
+      startAtMoment,
+      endAtMoment,
+      resolution,
+    },
+    {
+      onSuccess: () => {
+        setCurrentResolution(resolution);
+      },
+    }
+  );
 
   const timeSeries = useMemo(
     () =>

@@ -3,16 +3,14 @@ import { useLocation } from 'react-router-dom';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
-import PostManager, { TFilterMenu } from 'components/admin/PostManager';
 import Button from 'components/UI/Button';
 import { Box, Text, Title } from '@citizenlab/cl2-component-library';
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 import { colors } from 'utils/styleUtils';
+import ProposalsManager from 'components/admin/PostManager/ProposalsManager';
 
 const InitiativesManagePage = () => {
-  const defaultFilterMenu = 'statuses';
-  const visibleFilterMenus: TFilterMenu[] = [defaultFilterMenu, 'topics'];
   const { pathname } = useLocation();
 
   const onNewProposal = (pathname: string) => (_event) => {
@@ -51,10 +49,9 @@ const InitiativesManagePage = () => {
         </Box>
       </Box>
       <Box mb="30px" background={colors.white} p="40px">
-        <PostManager
-          type="Initiatives"
-          visibleFilterMenus={visibleFilterMenus}
-          defaultFilterMenu={defaultFilterMenu}
+        <ProposalsManager
+          visibleFilterMenus={['statuses', 'topics']}
+          defaultFilterMenu="statuses"
         />
       </Box>
     </Box>

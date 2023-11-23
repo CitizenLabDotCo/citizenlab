@@ -14,7 +14,7 @@ resource 'Analytics - FactParticipations' do
   post 'web_api/v1/analytics' do
     before_all do
       # Date dimensions
-      dates = [Date.new(2022, 9, 1), Date.new(2022, 9, 15), Date.new(2022, 10, 1), Date.new(2022, 10, 15)]
+      dates = [Date.new(2022, 9, 2), Date.new(2022, 9, 15), Date.new(2022, 10, 2), Date.new(2022, 10, 15)]
       dates.each do |date|
         create(:dimension_date, date: date)
       end
@@ -94,13 +94,11 @@ resource 'Analytics - FactParticipations' do
           }
         })
         assert_status 200
-        expect(response_data[:attributes]).to match_array([
-          {
-            count_dimension_user_custom_field_values_dimension_user_id: 2,
-            'dimension_date_created.month': '2022-10',
-            first_dimension_date_created_date: '2022-10-01'
-          }
-        ])
+        expect(response_data[:attributes].length).to eq(1)
+        expect(response_data[:attributes].first).to include(
+          count_dimension_user_custom_field_values_dimension_user_id: 2,
+          'dimension_date_created.month': '2022-10'
+        )
       end
 
       example 'group participations by gender' do

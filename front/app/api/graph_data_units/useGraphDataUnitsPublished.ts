@@ -18,14 +18,14 @@ const fetchGraphDataUnitsPublished = <Response extends BaseResponseData>({
   });
 
 const useGraphDataUnitsPublished = <Response extends BaseResponseData>(
-  parameters: ParametersPublished
+  parameters: ParametersPublished,
+  { enabled = true }: { enabled?: boolean } = {}
 ) => {
   return useQuery<Response, CLErrors, Response, any>({
     queryKey: graphDataUnitKeys.item(parameters),
     queryFn: () => fetchGraphDataUnitsPublished<Response>(parameters),
+    enabled: enabled && !!parameters.reportId,
   });
 };
 
-// hack to stop dead code script from complaining
-const noop = (_x: any) => {};
-noop(useGraphDataUnitsPublished);
+export default useGraphDataUnitsPublished;

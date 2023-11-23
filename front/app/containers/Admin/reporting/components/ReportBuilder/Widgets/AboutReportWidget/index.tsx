@@ -17,7 +17,7 @@ import useReport from 'api/reports/useReport';
 import useUserById from 'api/users/useUserById';
 import useProjectById from 'api/projects/useProjectById';
 import useLocalize from 'hooks/useLocalize';
-import usePxReport from 'containers/Admin/reporting/hooks/usePxReports';
+import useReportDefaultPadding from 'containers/Admin/reporting/hooks/useReportDefaultPadding';
 
 // utils
 import { useIntl } from 'utils/cl-intl';
@@ -61,7 +61,7 @@ const getPeriod = ({
 const AboutReportWidget = ({ reportId, projectId, startAt, endAt }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
-  const px = usePxReport();
+  const px = useReportDefaultPadding();
 
   // Title
   const { data: report } = useReport(reportId);

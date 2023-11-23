@@ -1,17 +1,11 @@
-# rubocop:disable Naming/VariableName
 module ReportBuilder
   class Queries::ReactionsByTime < Queries::Base
-    def query(startAt: nil, endAt: nil, projectId: nil, **_other_props)
-      # TODO: do we need these ||=?
-      # startAt ||= Date.parse('2017-01-01')
-      # endAt ||= Time.zone.today
-      resolution = RESOLUTION_TO_INTERVAL.fetch('month')
-
+    def query(start_at: nil, end_at: nil, project_id: nil, resolution: nil, **_other_props)
       time_series_query = {
         fact: 'participation',
         filters: {
-          **date_filter('dimension_date_created', startAt, endAt),
-          **project_filter('dimension_project', projectId),
+          **date_filter('dimension_date_created', start_at, end_at),
+          **project_filter('dimension_project_id', project_id),
           'dimension_type.name': 'reaction',
           'dimension_type.parent': 'idea'
         },
@@ -26,8 +20,8 @@ module ReportBuilder
       posts_by_time_total = {
         fact: 'participation',
         filters: {
-          **date_filter('dimension_date_created', startAt, endAt),
-          **project_filter('dimension_project', projectId),
+          **date_filter('dimension_date_created', start_at, end_at),
+          **project_filter('dimension_project_id', project_id),
           'dimension_type.name': 'reaction',
           'dimension_type.parent': 'idea'
         },
@@ -40,4 +34,3 @@ module ReportBuilder
     end
   end
 end
-# rubocop:enable Naming/VariableName

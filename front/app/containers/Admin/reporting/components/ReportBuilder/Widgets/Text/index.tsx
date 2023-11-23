@@ -14,7 +14,7 @@ import messages from 'components/admin/ContentBuilder/Widgets/Text/messages';
 
 // hooks
 import { useTheme } from 'styled-components';
-import usePxReport from 'containers/Admin/reporting/hooks/usePxReports';
+import useReportDefaultPadding from 'containers/Admin/reporting/hooks/useReportDefaultPadding';
 
 interface Props {
   text: string;
@@ -22,7 +22,7 @@ interface Props {
 
 const Text = ({ text }: Props) => {
   const theme = useTheme();
-  const px = usePxReport();
+  const px = useReportDefaultPadding();
 
   return (
     <PageBreakBox id="e2e-text-box" minHeight="26px" px={px}>

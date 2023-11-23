@@ -7,7 +7,7 @@ import {
   TwoColumnWrapper,
   twoColumnCraftConfig,
 } from 'components/admin/ContentBuilder/Widgets/TwoColumn';
-import usePx from 'components/admin/ContentBuilder/Widgets/usePx';
+import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/useCraftComponentDefaultPadding';
 
 // typings
 import { ColumnLayout } from 'components/admin/ContentBuilder/typings';
@@ -18,7 +18,7 @@ type TwoColumnProps = {
 };
 
 export const TwoColumn = ({ columnLayout, children }: TwoColumnProps) => {
-  const px = usePx();
+  const craftComponentDefaultPadding = useCraftComponentDefaultPadding();
 
   return (
     <TwoColumnWrapper
@@ -26,7 +26,7 @@ export const TwoColumn = ({ columnLayout, children }: TwoColumnProps) => {
       columnLayout={columnLayout}
       maxWidth="1150px"
       margin="0 auto"
-      px={px}
+      px={craftComponentDefaultPadding}
     >
       {children || (
         <>

@@ -1,4 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
+import { useEffect } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import fetcher, { BaseResponseData } from 'utils/cl-react-query/fetcher';
 import graphDataUnitKeys from './keys';
 import { ParametersLive } from './types';
@@ -14,20 +15,41 @@ const fetchGraphDataUnitsLive = <Response extends BaseResponseData>({
     queryParams: {
       resolved_name: resolvedName,
       props: {
-        projectId: props.projectId,
+        project_id: props.projectId,
         resolution: props.resolution,
-        startAt: props.startAtMoment?.format('yyyy-MM-DD'),
-        endAt: props.endAtMoment?.format('yyyy-MM-DD'),
+        start_at: props.startAtMoment?.format('yyyy-MM-DD'),
+        end_at: props.endAtMoment?.format('yyyy-MM-DD'),
       },
     },
   });
 
 const useGraphDataUnitsLive = <Response extends BaseResponseData>(
-  parameters: ParametersLive
+  parameters: ParametersLive,
+  {
+    enabled = true,
+    onSuccess,
+  }: {
+    enabled?: boolean;
+    onSuccess?: () => void;
+  } = {}
 ) => {
+  const queryClient = useQueryClient();
+  const stringifiedQuery = JSON.stringify(parameters);
+
+  // Call onSuccess if the query is already in the cache
+  useEffect(() => {
+    const parsedQuery = JSON.parse(stringifiedQuery);
+    const queryKey = graphDataUnitKeys.item(parsedQuery);
+    if (queryClient.getQueryData(queryKey)) {
+      onSuccess && onSuccess();
+    }
+  }, [stringifiedQuery, queryClient, onSuccess]);
+
   return useQuery<Response, CLErrors, Response, any>({
     queryKey: graphDataUnitKeys.item(parameters),
     queryFn: () => fetchGraphDataUnitsLive<Response>(parameters),
+    enabled,
+    onSuccess,
   });
 };
 

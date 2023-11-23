@@ -12,20 +12,21 @@ class ReportBuilder::Queries::Base
   private
 
   def date_filter(dimension, start_at, end_at)
-    # TODO: try to move `compact.presence` to Analytics::Query
     return {} if start_at.blank? && end_at.blank?
 
     {
-      "#{dimension}.date" => { from: start_at&.to_s, to: end_at&.to_s }.compact.presence
+      "#{dimension}.date" => {
+        from: start_at&.to_s.presence,
+        to: end_at&.to_s.presence
+      }.compact.presence
     }.compact
   end
 
-  def project_filter(dimension, project_id)
-    # TODO: use dimension_project_id
-    { "#{dimension}.id" => project_id }.compact
+  def project_filter(project_id_column, project_id)
+    { project_id_column => project_id.presence }.compact
   end
 
   def interval(resolution)
-    RESOLUTION_TO_INTERVAL[resolution]
+    RESOLUTION_TO_INTERVAL.fetch(resolution || 'month')
   end
 end
