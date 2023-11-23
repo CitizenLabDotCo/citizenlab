@@ -67,6 +67,23 @@ describe XlsxService do
       expect(field_idx).to be_present
     end
 
+    it 'handles duplicate user custom field titles' do
+      select1 = create(:custom_field_select, title_multiloc: { 'en' => 'gender' })
+      select2 = create(:custom_field_select, title_multiloc: { 'en' => 'gender' })
+      option1 = create(:custom_field_option, custom_field: select1, title_multiloc: { 'en' => 'Option 1' })
+      option2 = create(:custom_field_option, custom_field: select2, title_multiloc: { 'en' => 'Option 2' })
+
+      users.first.update!(
+        custom_field_values: {
+          select1.key => option1.key,
+          select2.key => option2.key
+        }
+      )
+
+      title_row = worksheet[0].cells.map(&:value)
+      expect(title_row).to include('gender (1)', 'gender (2)')
+    end
+
     describe do
       let(:xlsx) { service.generate_users_xlsx(users, view_private_attributes: false) }
 
