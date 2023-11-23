@@ -263,22 +263,16 @@ const IdeaHeaderRow = ({
     Component,
     onChange,
   }: CellConfiguration<IdeaHeaderCellComponentProps>) => {
-    const handlers = {
-      ...(onChange ? { onChange } : {}),
-    };
-
-    const width = `${roundPercentage(
-      typeof cellProps.width === 'number' ? cellProps.width : 1,
-      totalWidth
-    )}%`;
-
     return displayColumns && !displayColumns.has(name) ? null : (
       <Component
         sortAttribute={sortAttribute}
         sortDirection={sortDirection}
         allSelected={allSelected}
-        width={width}
-        {...handlers}
+        width={`${roundPercentage(
+          typeof cellProps.width === 'number' ? cellProps.width : 1,
+          totalWidth
+        )}%`}
+        onChange={onChange}
         key={name}
       />
     );
