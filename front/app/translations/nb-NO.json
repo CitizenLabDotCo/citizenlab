@@ -1307,6 +1307,7 @@
   "app.containers.Projects.basketSubmitted": "Handlekurven er sendt!",
   "app.containers.Projects.budget": "{amount} budsjett",
   "app.containers.Projects.contributions": "Bidrag",
+  "app.containers.Projects.createANewPhase": "Opprett en ny fase",
   "app.containers.Projects.currentPhase": "Nåværende fase",
   "app.containers.Projects.document": "Dokument",
   "app.containers.Projects.editProject": "Rediger prosjekt",
