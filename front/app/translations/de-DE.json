@@ -1307,6 +1307,7 @@
   "app.containers.Projects.basketSubmitted": "Ihr Warenkorb wurde eingereicht!",
   "app.containers.Projects.budget": "{amount} Budget",
   "app.containers.Projects.contributions": "Beiträge",
+  "app.containers.Projects.createANewPhase": "Neue Phase erstellen",
   "app.containers.Projects.currentPhase": "Aktuelle Phase",
   "app.containers.Projects.document": "Dokument",
   "app.containers.Projects.editProject": "Projekt bearbeiten",
