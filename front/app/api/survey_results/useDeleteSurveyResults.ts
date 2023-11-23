@@ -4,15 +4,12 @@ import surveyResultsKeys from './keys';
 import submissionsCountKeys from 'api/submission_count/keys';
 
 const deleteSurveyResults = ({
-  projectId,
   phaseId,
 }: {
   projectId: string;
   phaseId?: string;
 }) => {
-  const deleteApiEndpoint = phaseId
-    ? `phases/${phaseId}/inputs`
-    : `projects/${projectId}/inputs`;
+  const deleteApiEndpoint = `phases/${phaseId}/inputs`;
   return fetcher({
     path: `/${deleteApiEndpoint}`,
     action: 'delete',
@@ -24,9 +21,9 @@ const useDeleteSurveyResults = () => {
 
   return useMutation({
     mutationFn: deleteSurveyResults,
-    onSuccess: (_data, { projectId, phaseId }) => {
+    onSuccess: (_data, { phaseId }) => {
       queryClient.invalidateQueries(
-        submissionsCountKeys.item({ projectId, phaseId })
+        submissionsCountKeys.item({ phaseId })
       );
       queryClient.invalidateQueries({
         queryKey: surveyResultsKeys.items(),

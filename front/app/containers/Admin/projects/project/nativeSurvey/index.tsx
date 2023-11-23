@@ -65,7 +65,6 @@ const Forms = () => {
   const locale = useLocale();
   const { mutate: updatePhase } = useUpdatePhase();
   const { data: submissionCount } = useFormSubmissionCount({
-    projectId,
     phaseId,
   });
   const { uiSchema } = useInputSchema({ projectId, phaseId });
