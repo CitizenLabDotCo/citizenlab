@@ -24,6 +24,6 @@ class ReportBuilder::Queries::Base
   end
 
   def interval(resolution)
-    RESOLUTION_TO_INTERVAL[resolution]
+    RESOLUTION_TO_INTERVAL.fetch(resolution || 'month')
   end
 end
