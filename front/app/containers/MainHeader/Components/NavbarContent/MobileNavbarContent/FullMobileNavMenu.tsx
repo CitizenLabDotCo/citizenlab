@@ -148,7 +148,7 @@ const FullMobileNavMenu = ({
             // Needed because there's also a different nav (see MobileNavbarContent/index)
             aria-label={formatMessage(messages.fullMobileNavigation)}
           >
-            <Box m="40px">
+            <Box mb="16px">
               <StyledTenantLogo flex="0" />
             </Box>
             <MenuItems>
