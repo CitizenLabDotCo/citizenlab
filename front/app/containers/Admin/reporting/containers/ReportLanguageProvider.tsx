@@ -38,7 +38,7 @@ const ReportLanguageProvider = ({
     };
   }, [reportLocale, platformLocale]);
 
-  if (isNilOrError(reportLocale)) {
+  if (isNilOrError(reportLocale) || !messages) {
     return null;
   }
 
