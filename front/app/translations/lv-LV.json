@@ -1307,6 +1307,7 @@
   "app.containers.Projects.basketSubmitted": "Jūsu grozs ir iesniegts!",
   "app.containers.Projects.budget": "{amount} budžets",
   "app.containers.Projects.contributions": "Ieguldījumi",
+  "app.containers.Projects.createANewPhase": "Izveidot jaunu posmu",
   "app.containers.Projects.currentPhase": "Pašreizējais posms",
   "app.containers.Projects.document": "Dokuments",
   "app.containers.Projects.editProject": "Rediģēt projektu",
