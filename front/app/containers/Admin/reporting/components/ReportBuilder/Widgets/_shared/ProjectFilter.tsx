@@ -2,6 +2,7 @@ import React, { useMemo, useCallback } from 'react';
 
 // hooks
 import useProjects from 'api/projects/useProjects';
+import usePhaseFromReportIdParam from './usePhaseFromReportIdParam';
 
 // styling
 import styled from 'styled-components';
@@ -43,7 +44,8 @@ const generateProjectOptions = (
   projects: IProjectData[],
   localize: Localize,
   formatMessage: FormatMessage,
-  emptyValueMessage?: MessageDescriptor
+  emptyValueMessage: MessageDescriptor | undefined,
+  excludeAllProjectsOption: boolean
 ): IOption[] => {
   const projectOptions = projects.map((project) => ({
     value: project.id,
@@ -51,12 +53,16 @@ const generateProjectOptions = (
   }));
 
   return [
-    {
-      value: '',
-      label: formatMessage(
-        emptyValueMessage ?? dashboardFilterMessages.allProjects
-      ),
-    },
+    ...(excludeAllProjectsOption
+      ? []
+      : [
+          {
+            value: '',
+            label: formatMessage(
+              emptyValueMessage ?? dashboardFilterMessages.allProjects
+            ),
+          },
+        ]),
     ...projectOptions,
   ];
 };
@@ -80,6 +86,9 @@ const ProjectFilter = ({
     canModerate: true,
   });
 
+  const phase = usePhaseFromReportIdParam();
+  const isPhaseReport = !!phase;
+
   const projectFilterOptions = useMemo(() => {
     if (isNilOrError(projects)) return null;
 
@@ -87,9 +96,17 @@ const ProjectFilter = ({
       projects.data.filter(filter),
       localize,
       formatMessage,
-      emptyValueMessage
+      emptyValueMessage,
+      isPhaseReport
     );
-  }, [projects, filter, localize, formatMessage, emptyValueMessage]);
+  }, [
+    projects,
+    filter,
+    localize,
+    formatMessage,
+    emptyValueMessage,
+    isPhaseReport,
+  ]);
 
   const handleProjectFilter = useCallback(
     (option: Option) => {

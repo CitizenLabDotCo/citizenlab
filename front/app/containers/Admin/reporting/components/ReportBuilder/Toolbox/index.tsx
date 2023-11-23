@@ -33,6 +33,8 @@ import moment from 'moment';
 import contentBuilderMessages from 'components/admin/ContentBuilder/messages';
 import reportBuilderMessages from '../../../messages';
 import textMessages from 'components/admin/ContentBuilder/Widgets/Text/messages';
+import usePhaseFromReportIdParam from '../Widgets/_shared/usePhaseFromReportIdParam';
+import useProjectById from 'api/projects/useProjectById';
 
 type ReportBuilderToolboxProps = {
   reportId: string;
@@ -54,6 +56,12 @@ const SectionTitle = ({ children }) => (
 
 const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
   const { formatMessage } = useIntl();
+
+  const phase = usePhaseFromReportIdParam();
+
+  const { data: reportProject } = useProjectById(
+    phase?.data.relationships.project.data.id
+  );
 
   // Default end date for charts (today)
   const chartEndDate = moment().format('YYYY-MM-DD');
@@ -267,7 +275,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
             component={
               <ReactionsByTimeWidget
                 title={formatMessage(ReactionsByTimeWidget.craft.custom.title)}
-                projectId={undefined}
+                projectId={reportProject?.data.id}
                 startAt={undefined}
                 endAt={chartEndDate}
               />
