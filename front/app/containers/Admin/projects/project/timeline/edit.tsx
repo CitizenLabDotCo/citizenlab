@@ -279,7 +279,27 @@ const AdminPhaseEdit = () => {
         setAttributeDiff({});
 
         if (redirectAfterSave) {
-          clHistory.push(`/admin/projects/${projectId}/setup/${phaseId}`);
+          const participationMethod =
+            phaseResponse.attributes.participation_method;
+          let redirectTab = 'setup';
+          if (
+            participationMethod === 'ideation' ||
+            participationMethod === 'voting'
+          ) {
+            redirectTab = 'ideas';
+          } else if (participationMethod === 'native_survey') {
+            redirectTab = 'native-survey';
+          } else if (participationMethod === 'poll') {
+            redirectTab = 'polls';
+          } else if (participationMethod === 'survey') {
+            redirectTab = 'survey-results';
+          } else if (participationMethod === 'volunteering') {
+            redirectTab = 'volunteering';
+          }
+          window.scrollTo(0, 0);
+          clHistory.push(
+            `/admin/projects/${projectId}/${redirectTab}/${phaseId}`
+          );
         }
       }
     );
