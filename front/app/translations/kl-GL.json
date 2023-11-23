@@ -1307,6 +1307,7 @@
   "app.containers.Projects.basketSubmitted": "Koorinniittut nassiunneqarput!",
   "app.containers.Projects.budget": "{amount} budget",
   "app.containers.Projects.contributions": "Ilanngussat",
+  "app.containers.Projects.createANewPhase": "Create a new phase",
   "app.containers.Projects.currentPhase": "Igangværende fase",
   "app.containers.Projects.document": "Document",
   "app.containers.Projects.editProject": "Rediger dette projekt",
