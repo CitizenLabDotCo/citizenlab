@@ -164,7 +164,6 @@ DROP INDEX IF EXISTS public.index_tenants_on_host;
 DROP INDEX IF EXISTS public.index_tenants_on_deleted_at;
 DROP INDEX IF EXISTS public.index_tenants_on_creation_finalized_at;
 DROP INDEX IF EXISTS public.index_surveys_responses_on_user_id;
-DROP INDEX IF EXISTS public.index_surveys_responses_on_participation_context;
 DROP INDEX IF EXISTS public.index_static_pages_topics_on_topic_id;
 DROP INDEX IF EXISTS public.index_static_pages_topics_on_static_page_id;
 DROP INDEX IF EXISTS public.index_static_pages_on_slug;
@@ -3422,8 +3421,7 @@ CREATE TABLE public.static_pages_topics (
 
 CREATE TABLE public.surveys_responses (
     id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    participation_context_id uuid NOT NULL,
-    participation_context_type character varying NOT NULL,
+    phase_id uuid NOT NULL,
     survey_service character varying NOT NULL,
     external_survey_id character varying NOT NULL,
     external_response_id character varying NOT NULL,
@@ -6368,13 +6366,6 @@ CREATE INDEX index_static_pages_topics_on_topic_id ON public.static_pages_topics
 
 
 --
--- Name: index_surveys_responses_on_participation_context; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_surveys_responses_on_participation_context ON public.surveys_responses USING btree (participation_context_type, participation_context_id);
-
-
---
 -- Name: index_surveys_responses_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -7983,6 +7974,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20231024082513'),
 ('20231109101517'),
 ('20231110112415'),
-('20231120090516');
+('20231120090516'),
+('20231123141534');
 
 

@@ -9,7 +9,7 @@ module Surveys::SurveyPhase
   ].freeze
 
   included do
-    has_many :survey_responses, class_name: 'Surveys::Response', as: :participation_context, dependent: :destroy
+    has_many :survey_responses, class_name: 'Surveys::Response', as: :phase, dependent: :destroy
 
     with_options if: :survey? do
       validates :survey_embed_url, presence: true
