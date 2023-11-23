@@ -18,7 +18,6 @@ import {
 import { IProjectData } from 'api/projects/types';
 
 import { ManagerType } from 'components/admin/PostManager';
-import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/header/IdeaHeaderRow';
 import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/Row/IdeaRow';
 import { IResolution } from 'components/admin/ResolutionControl';
 import { AuthProvider } from 'containers/Authentication/steps/AuthProviders';
