@@ -82,6 +82,7 @@ describe XlsxService do
 
       title_row = worksheet[0].cells.map(&:value)
       expect(title_row).to include('gender (1)', 'gender (2)')
+      expect(title_row).not_to include('gender')
     end
 
     describe do

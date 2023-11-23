@@ -309,7 +309,7 @@ class XlsxService
     titles_to_fields.each do |title, field_ids|
       if field_ids.size == 1
         fields_to_columns[field_ids.first] = title
-      else
+      else # add suffix to titles to distinguish between fields with same title
         field_ids.each_with_index { |field_id, i| fields_to_columns[field_id] = "#{title} (#{i + 1})" }
       end
     end
