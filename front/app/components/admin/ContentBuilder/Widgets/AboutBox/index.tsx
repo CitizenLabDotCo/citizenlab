@@ -17,7 +17,7 @@ const AboutBox = () => {
   };
   const { data: project } = useProjectBySlug(slug);
   const projectID = projectId || project?.data.id;
-  const componentDefaultPadding = useCraftComponentDefaultPadding(parent);
+  const componentDefaultPadding = useCraftComponentDefaultPadding();
   return (
     <Box
       id="e2e-about-box"
