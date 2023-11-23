@@ -3,11 +3,11 @@
 module ReportBuilder
   class GraphDataUnitPolicy < ::ApplicationPolicy
     def live?
-      if props[:project_id].present?
-        UserRoleService.new.can_moderate?(Project.find(props[:project_id]), user)
-      else
+      # if props[:project_id].present?
+      #   UserRoleService.new.can_moderate?(Project.find(props[:project_id]), user)
+      # else
         admin? && active?
-      end
+      # end
     end
 
     def published?

@@ -8,11 +8,12 @@ resource 'Graph data units' do
 
   header 'Content-Type', 'application/json'
 
+  let(:project) { create(:project) }
+
   before do
     @gender = 'female'
 
     participation_date = Date.new(2022, 9, 1)
-    @project = create(:project)
     craftjs_jsonmultiloc = {
       'en' => {
         'ROOT' => { 'type' => 'div', 'nodes' => ['gJxirq8X7m'], 'props' => { 'id' => 'e2e-content-builder-frame' }, 'custom' => {}, 'hidden' => false, 'isCanvas' => true, 'displayName' => 'div', 'linkedNodes' => {} },
@@ -23,7 +24,7 @@ resource 'Graph data units' do
             'endAt' => (participation_date + 1.year).to_time.iso8601,
             'title' => 'Users by gender',
             'startAt' => (participation_date - 1.year).to_time.iso8601,
-            'projectId' => @project.id
+            'projectId' => project.id
           },
           'custom' => {
             'title' => { 'id' => 'app.containers.admin.ReportBuilder.charts.usersByGender', 'defaultMessage' => 'Users by gender' },
@@ -37,13 +38,16 @@ resource 'Graph data units' do
         }
       }
     }
-    phase = create(:phase, start_at: Time.zone.today - 2.days, end_at: Time.zone.today + 2.days)
+    phase = create(:phase,
+      start_at: Time.zone.today - 2.days,
+      end_at: Time.zone.today + 2.days,
+      project: project)
     @report = create(:report, layout: build(:layout, craftjs_jsonmultiloc: craftjs_jsonmultiloc), phase: phase)
 
     create(:dimension_date, date: participation_date)
     create(:dimension_type, name: 'idea', parent: 'post')
     create(:custom_field, key: :gender, resource_type: 'User')
-    create(:idea, project: @project, created_at: participation_date, author: create(:user, gender: @gender))
+    create(:idea, project: project, created_at: participation_date, author: create(:user, gender: @gender))
     create(:idea, project: create(:project), created_at: participation_date, author: create(:user, gender: @gender))
   end
 
@@ -55,7 +59,7 @@ resource 'Graph data units' do
       before { admin_header_token }
 
       let(:resolved_name) { 'GenderWidget' }
-      let(:props) { { project_id: @project.id } }
+      let(:props) { { project_id: project.id } }
 
       example_request 'Get live data for graph only for relevant project' do
         assert_status 200
@@ -82,8 +86,14 @@ resource 'Graph data units' do
       ReportBuilder::ReportPublisher.new(@report).publish
     end
 
-    describe 'when authorized' do
-      before { admin_header_token }
+    describe 'when has access to phase' do
+      before do
+        user = create(:user)
+        group = create(:group)
+        create(:membership, user: user, group: group)
+        project.update!(visible_to: 'groups', groups: [group])
+        header_token_for user
+      end
 
       example_request 'Get published data for graph' do
         assert_status 200
@@ -92,6 +102,18 @@ resource 'Graph data units' do
           'dimension_user_custom_field_values.value': @gender
         }]
         expect(json_response_body.dig(:data, :attributes)).to eq(expected_attrs)
+      end
+    end
+
+    describe "when doesn't have access to phase" do
+      before do
+        user = create(:user)
+        project.update!(visible_to: 'groups', groups: [])
+        header_token_for user
+      end
+
+      example_request 'returns 401 (Unauthorized)' do
+        assert_status 401
       end
     end
   end

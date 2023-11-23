@@ -4,7 +4,7 @@ require 'rails_helper'
 require 'uri'
 
 describe Analytics::QueryRunnerService do
-  describe 'run' do
+  describe '#run' do
     before_all do
       create(:dimension_type)
       create(:dimension_type, name: 'initiative')
