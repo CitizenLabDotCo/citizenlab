@@ -5,7 +5,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 // styles
 import styled from 'styled-components';
-import usePxReport from 'containers/Admin/reporting/hooks/usePxReports';
+import useReportDefaultPadding from 'containers/Admin/reporting/hooks/useReportDefaultPadding';
 import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
 
 // craft
@@ -60,7 +60,7 @@ const StyledBox = styled(Box)<{
 
 export const TwoColumn = ({ columnLayout, children }: TwoColumnProps) => {
   const layout = useLayout();
-  const px = usePxReport();
+  const px = useReportDefaultPadding();
 
   return (
     <StyledBox

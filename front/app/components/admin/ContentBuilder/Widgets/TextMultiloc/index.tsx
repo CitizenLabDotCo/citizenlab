@@ -8,7 +8,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 // craft
 import { useNode } from '@craftjs/core';
-import usePx from '../usePx';
+import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
 
 // i18n
 import messages from './messages';
@@ -23,7 +23,7 @@ interface Props {
 }
 
 const TextMultiloc = ({ text }: Props) => {
-  const px = usePx();
+  const craftComponentDefaultPadding = useCraftComponentDefaultPadding();
   const theme = useTheme();
   const localize = useLocalize();
 
@@ -35,7 +35,7 @@ const TextMultiloc = ({ text }: Props) => {
       minHeight="26px"
       maxWidth="1150px"
       margin="0 auto"
-      px={px}
+      px={craftComponentDefaultPadding}
     >
       <QuillEditedContent textColor={theme.colors.tenantText}>
         <div dangerouslySetInnerHTML={{ __html: value }} />

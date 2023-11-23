@@ -4,10 +4,11 @@ import { useBreakpoint } from '@citizenlab/cl2-component-library';
 import { ROOT_NODE, useNode, useEditor } from '@craftjs/core';
 import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
 
-// Based on usePx hook in components/admin/ContentBuilder/Widgets/usePx
+// Based on useCraftComponentDefaultPadding hook in
+// app/components/admin/ContentBuilder/useCraftComponentDefaultPadding.ts
 // This one also needs to handle pdf reports and report templates
 // so it's a bit more complex. Maybe eventually we can combine them.
-const usePxReports = () => {
+const useReportDefaultPadding = () => {
   const isSmallerThanTablet = useBreakpoint('tablet');
   const {
     query: { node },
@@ -37,4 +38,4 @@ const usePxReports = () => {
   return isSmallerThanTablet && inRoot ? DEFAULT_PADDING : '0px';
 };
 
-export default usePxReports;
+export default useReportDefaultPadding;

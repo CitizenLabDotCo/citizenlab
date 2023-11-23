@@ -13,13 +13,17 @@ import {
   ThreeColumnWrapper,
   threeColumnCraftConfig,
 } from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
-import usePx from 'components/admin/ContentBuilder/Widgets/usePx';
+import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/useCraftComponentDefaultPadding';
 
 const ThreeColumn = () => {
-  const px = usePx();
+  const craftComponentDefaultPadding = useCraftComponentDefaultPadding();
 
   return (
-    <ThreeColumnWrapper maxWidth="1150px" margin="0 auto" px={px}>
+    <ThreeColumnWrapper
+      maxWidth="1150px"
+      margin="0 auto"
+      px={craftComponentDefaultPadding}
+    >
       <Box flex="1">
         <Element id="column1" is={Container} canvas />
       </Box>

@@ -5,7 +5,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 // craft
 import { UserComponent, Element } from '@craftjs/core';
-import usePx from 'components/admin/ContentBuilder/Widgets/usePx';
+import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/useCraftComponentDefaultPadding';
 
 // widgets
 import TwoColumn from '../TwoColumn';
@@ -15,7 +15,7 @@ import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 
 const ImageTextCards: UserComponent = () => {
-  const px = usePx();
+  const craftComponentDefaultPadding = useCraftComponentDefaultPadding();
 
   return (
     <Element
@@ -25,7 +25,7 @@ const ImageTextCards: UserComponent = () => {
       style={{
         maxWidth: '1150px',
         margin: '0 auto',
-        padding: `0px ${px}`,
+        padding: `0px ${craftComponentDefaultPadding}`,
       }}
     >
       <TwoColumn columnLayout="1-2">

@@ -31,7 +31,7 @@ import {
 
 // hooks
 import useAddContentBuilderImage from 'api/content_builder_images/useAddContentBuilderImage';
-import usePxReport from 'containers/Admin/reporting/hooks/usePxReports';
+import useReportDefaultPadding from 'containers/Admin/reporting/hooks/useReportDefaultPadding';
 
 interface Props {
   imageUrl?: string;
@@ -40,7 +40,7 @@ interface Props {
 }
 
 const Image = ({ imageUrl, alt = '', dataCode }: Props) => {
-  const px = usePxReport();
+  const px = useReportDefaultPadding();
 
   const { enabled } = useEditor((state) => {
     return {

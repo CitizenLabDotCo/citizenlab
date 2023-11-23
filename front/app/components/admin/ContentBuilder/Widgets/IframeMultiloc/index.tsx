@@ -17,7 +17,7 @@ import { injectIntl } from 'utils/cl-intl';
 
 // craft
 import { useNode } from '@craftjs/core';
-import usePx from '../usePx';
+import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
 
 // events
 import eventEmitter from 'utils/eventEmitter';
@@ -41,14 +41,14 @@ interface Props {
 
 const Iframe = ({ url, height, hasError, title }: Props) => {
   const localize = useLocalize();
-  const px = usePx();
+  const componentDefaultPadding = useCraftComponentDefaultPadding();
   return (
     <Box
       id="e2e-content-builder-iframe-component"
       minHeight="26px"
       maxWidth="1150px"
       margin="0 auto"
-      px={px}
+      px={componentDefaultPadding}
     >
       {!hasError && url && (
         <iframe

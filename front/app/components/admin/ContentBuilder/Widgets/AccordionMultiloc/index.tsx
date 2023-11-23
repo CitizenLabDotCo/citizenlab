@@ -18,7 +18,7 @@ import QuillMutilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMulti
 
 // hooks
 import { useTheme } from 'styled-components';
-import usePx from '../usePx';
+import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
 
 // i18n
 import messages from './messages';
@@ -35,13 +35,13 @@ interface AccordionProps {
 const Accordion = ({ text, title, openByDefault = false }: AccordionProps) => {
   const theme = useTheme();
   const localize = useLocalize();
-  const px = usePx();
+  const componentDefaultPadding = useCraftComponentDefaultPadding();
 
   return (
     <AccordionComponent
       maxWidth="1150px"
       margin="0 auto"
-      px={px}
+      px={componentDefaultPadding}
       isOpenByDefault={openByDefault}
       title={
         <Box id="e2e-accordion" display="flex">

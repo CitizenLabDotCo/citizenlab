@@ -14,7 +14,7 @@ import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 // i18n
 import messages from 'components/admin/ContentBuilder/Widgets/Title/messages';
 import { useIntl } from 'utils/cl-intl';
-import usePxReport from 'containers/Admin/reporting/hooks/usePxReports';
+import useReportDefaultPadding from 'containers/Admin/reporting/hooks/useReportDefaultPadding';
 
 const H3 = styled.h3<{ color: string }>`
   color: ${({ color }) => color};
@@ -26,7 +26,7 @@ interface Props {
 }
 
 const Title = ({ text }: Props) => {
-  const px = usePxReport();
+  const px = useReportDefaultPadding();
 
   return (
     <PageBreakBox
