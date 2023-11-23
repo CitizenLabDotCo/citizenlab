@@ -56,7 +56,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
   const { formatMessage } = useIntl();
 
   // Default end date for charts (today)
-  const chartEndDate = moment().format('YYYY-MM-DDTHH:mm:ss.sss');
+  const chartEndDate = moment().format('YYYY-MM-DD');
 
   return (
     <Container>

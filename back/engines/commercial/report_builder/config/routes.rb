@@ -5,6 +5,15 @@ ReportBuilder::Engine.routes.draw do
     namespace :v1 do
       resources :reports, only: %i[index show create destroy update] do
         get :layout, on: :member
+
+        collection do
+          resources :graph_data_units, only: %i[] do
+            collection do
+              get :live
+              get :published
+            end
+          end
+        end
       end
     end
   end

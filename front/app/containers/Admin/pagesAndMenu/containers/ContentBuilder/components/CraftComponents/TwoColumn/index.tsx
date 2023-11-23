@@ -1,19 +1,16 @@
 import React from 'react';
 
-// components
-import { useBreakpoint } from '@citizenlab/cl2-component-library';
-
 // craft
-import { useNode, Element, ROOT_NODE } from '@craftjs/core';
+import { Element } from '@craftjs/core';
 import Container from '../Container';
 import {
   TwoColumnWrapper,
   twoColumnCraftConfig,
 } from 'components/admin/ContentBuilder/Widgets/TwoColumn';
+import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/useCraftComponentDefaultPadding';
 
 // typings
 import { ColumnLayout } from 'components/admin/ContentBuilder/typings';
-import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
 
 type TwoColumnProps = {
   columnLayout: ColumnLayout;
@@ -21,10 +18,7 @@ type TwoColumnProps = {
 };
 
 export const TwoColumn = ({ columnLayout, children }: TwoColumnProps) => {
-  const isSmallerThanTablet = useBreakpoint('tablet');
-  const { parent } = useNode((node) => ({
-    parent: node.data.parent,
-  }));
+  const craftComponentDefaultPadding = useCraftComponentDefaultPadding();
 
   return (
     <TwoColumnWrapper
@@ -32,7 +26,7 @@ export const TwoColumn = ({ columnLayout, children }: TwoColumnProps) => {
       columnLayout={columnLayout}
       maxWidth="1150px"
       margin="0 auto"
-      px={isSmallerThanTablet && parent === ROOT_NODE ? DEFAULT_PADDING : '0px'}
+      px={craftComponentDefaultPadding}
     >
       {children || (
         <>

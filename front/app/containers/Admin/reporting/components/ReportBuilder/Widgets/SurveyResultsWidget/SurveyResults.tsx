@@ -70,7 +70,7 @@ const SurveyResults = ({ projectId, phaseId, shownQuestions }: Props) => {
 
   return (
     <>
-      <Box px="20px" width="100%" mb="24px">
+      <Box width="100%" mb="24px">
         <Text variant="bodyM" color="primary" mt="0px" mb="0px">
           {'| '}
           {localize(project.data.attributes.title_multiloc)}
@@ -99,7 +99,9 @@ const SurveyResults = ({ projectId, phaseId, shownQuestions }: Props) => {
         >
           {row.map((result, index) => (
             <Box
-              px="20px"
+              // px={DEFAULT_PADDING}
+              pr={index === 0 ? '10px' : undefined}
+              pl={index === 1 ? '10px' : undefined}
               width="50%"
               key={`${rowIndex}-${index}`}
               borderTop={BORDER}

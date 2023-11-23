@@ -29,14 +29,14 @@ export const getDateFilter = (
   const startAt = startAtMoment?.toISOString();
   const endAt = endAtMoment?.toISOString();
 
-  return startAt && endAt
-    ? {
-        [`${filter}.date`]: {
-          from: formatDate(startAt),
-          to: formatDate(endAt),
-        },
-      }
-    : {};
+  if (!startAt && !endAt) return {};
+
+  return {
+    [`${filter}.date`]: {
+      ...(startAt ? { from: formatDate(startAt) } : {}),
+      ...(endAt ? { to: formatDate(endAt) } : {}),
+    },
+  };
 };
 
 type Interval = 'month' | 'week' | 'date';
