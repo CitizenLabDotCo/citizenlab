@@ -284,7 +284,7 @@ const PostManager = ({
   const { onChangePhase, selectedPhaseId, selectedStatus } =
     getNonSharedParams();
 
-  if (topicsData) {
+  if (list && topicsData) {
     return (
       <>
         <TopActionBar>
@@ -377,7 +377,7 @@ const PostManager = ({
               sortAttribute={posts.sortAttribute}
               sortDirection={posts.sortDirection}
               onChangeSort={posts.onChangeSorting}
-              posts={list || undefined}
+              posts={list}
               phases={!isNilOrError(phases) ? phases : undefined}
               statuses={postStatuses?.data ?? []}
               selection={selection}
@@ -492,14 +492,16 @@ export default (inputProps: InputProps) => {
   return (
     <DndProvider backend={HTML5Backend}>
       <Data {...inputProps}>
-        {(dataProps) => (
-          <PostManager
-            {...inputProps}
-            {...dataProps}
-            postStatuses={postStatuses}
-            topicsData={topicsData}
-          />
-        )}
+        {(dataProps) => {
+          return (
+            <PostManager
+              {...inputProps}
+              {...dataProps}
+              postStatuses={postStatuses}
+              topicsData={topicsData}
+            />
+          );
+        }}
       </Data>
     </DndProvider>
   );

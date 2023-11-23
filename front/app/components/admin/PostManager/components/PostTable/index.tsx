@@ -83,7 +83,7 @@ interface Props {
   type: ManagerType;
   sortAttribute?: IdeasSortAttribute | InitiativesSortAttribute;
   sortDirection?: SortDirection;
-  posts?: IIdeaData[] | IInitiativeData[];
+  posts: IIdeaData[] | IInitiativeData[];
   phases?: IPhaseData[];
   statuses?: IIdeaStatusData[] | IInitiativeStatusData[];
   selectedPhaseId?: string | null;
