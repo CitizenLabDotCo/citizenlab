@@ -191,12 +191,9 @@ DROP INDEX IF EXISTS public.index_project_folders_files_on_project_folder_id;
 DROP INDEX IF EXISTS public.index_project_files_on_project_id;
 DROP INDEX IF EXISTS public.index_processed_flags_on_input;
 DROP INDEX IF EXISTS public.index_polls_responses_on_user_id;
-DROP INDEX IF EXISTS public.index_polls_responses_on_participation_context_and_user_id;
 DROP INDEX IF EXISTS public.index_polls_response_options_on_response_id;
 DROP INDEX IF EXISTS public.index_polls_response_options_on_option_id;
 DROP INDEX IF EXISTS public.index_polls_options_on_question_id;
-DROP INDEX IF EXISTS public.index_poll_responses_on_participation_context;
-DROP INDEX IF EXISTS public.index_poll_questions_on_participation_context;
 DROP INDEX IF EXISTS public.index_pins_on_page_id_and_admin_publication_id;
 DROP INDEX IF EXISTS public.index_pins_on_admin_publication_id;
 DROP INDEX IF EXISTS public.index_phases_on_project_id;
@@ -1635,8 +1632,7 @@ CREATE TABLE public.phases (
 
 CREATE TABLE public.polls_responses (
     id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    participation_context_id uuid NOT NULL,
-    participation_context_type character varying NOT NULL,
+    phase_id uuid NOT NULL,
     user_id uuid,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
@@ -1756,14 +1752,14 @@ UNION ALL
 UNION ALL
  SELECT pr.id,
     pr.user_id AS dimension_user_id,
-    COALESCE(p.project_id, pr.participation_context_id) AS dimension_project_id,
+    COALESCE(p.project_id, pr.phase_id) AS dimension_project_id,
     adt.id AS dimension_type_id,
     (pr.created_at)::date AS dimension_date_created_id,
     0 AS reactions_count,
     0 AS likes_count,
     0 AS dislikes_count
    FROM ((public.polls_responses pr
-     LEFT JOIN public.phases p ON ((p.id = pr.participation_context_id)))
+     LEFT JOIN public.phases p ON ((p.id = pr.phase_id)))
      JOIN public.analytics_dimension_types adt ON (((adt.name)::text = 'poll'::text)))
 UNION ALL
  SELECT vv.id,
@@ -3125,8 +3121,7 @@ CREATE TABLE public.polls_options (
 
 CREATE TABLE public.polls_questions (
     id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    participation_context_id uuid NOT NULL,
-    participation_context_type character varying NOT NULL,
+    phase_id uuid NOT NULL,
     title_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
     ordering integer,
     created_at timestamp without time zone NOT NULL,
@@ -6135,20 +6130,6 @@ CREATE UNIQUE INDEX index_pins_on_page_id_and_admin_publication_id ON public.pin
 
 
 --
--- Name: index_poll_questions_on_participation_context; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_poll_questions_on_participation_context ON public.polls_questions USING btree (participation_context_type, participation_context_id);
-
-
---
--- Name: index_poll_responses_on_participation_context; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_poll_responses_on_participation_context ON public.polls_responses USING btree (participation_context_type, participation_context_id);
-
-
---
 -- Name: index_polls_options_on_question_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6167,13 +6148,6 @@ CREATE INDEX index_polls_response_options_on_option_id ON public.polls_response_
 --
 
 CREATE INDEX index_polls_response_options_on_response_id ON public.polls_response_options USING btree (response_id);
-
-
---
--- Name: index_polls_responses_on_participation_context_and_user_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_polls_responses_on_participation_context_and_user_id ON public.polls_responses USING btree (participation_context_id, participation_context_type, user_id);
 
 
 --
@@ -7975,6 +7949,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20231109101517'),
 ('20231110112415'),
 ('20231120090516'),
-('20231123141534');
+('20231123141534'),
+('20231123161330');
 
 
