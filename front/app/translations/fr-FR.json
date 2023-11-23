@@ -1283,7 +1283,7 @@
   "app.containers.Projects.PollForm.pollDisabledNotActivePhase1": "Ce sondage ne peut être complété que lorsque cette phase est active.",
   "app.containers.Projects.PollForm.pollDisabledNotPermitted": "{tenantName, select, vitrysurseine {Cette enquête n'est pas activée actuellement.} other {Ce sondage n'est pas activé actuellement .}}",
   "app.containers.Projects.PollForm.pollDisabledNotPossible": "{tenantName, select, vitrysurseine {Il est actuellement impossible de participer à cette enquête} other {Il est actuellement impossible de participer à ce sondage.}}",
-  "app.containers.Projects.PollForm.pollDisabledProjectInactive": "Le sondage n’est plus disponible, puisque ce projet n’est plus active.",
+  "app.containers.Projects.PollForm.pollDisabledProjectInactive": "Le sondage n’est plus disponible, puisque ce projet n’est plus actif.",
   "app.containers.Projects.PollForm.sendAnswer": "Envoyer",
   "app.containers.Projects.a11y_phase": "Phase {phaseNumber}: {phaseTitle}",
   "app.containers.Projects.a11y_phasesOverview": "Vue d'ensemble des phases",
