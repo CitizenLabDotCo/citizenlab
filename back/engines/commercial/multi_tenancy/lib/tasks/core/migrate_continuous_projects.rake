@@ -33,7 +33,7 @@ namespace :fix_existing_tenants do
 end
 
 namespace :fix_existing_tenants do
-  desc 'Migrate all continuous projects to timeline projects with a single phase'
+  desc 'Fix survey forms on staging'
   task :migrate_continuous_forms_fix, %i[specify_host] => [:environment] do |_t, args|
     specify_host = args[:specify_host]
     Tenant.prioritize(Tenant.creation_finalized).each do |tenant|
