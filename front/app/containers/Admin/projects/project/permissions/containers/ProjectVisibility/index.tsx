@@ -96,7 +96,9 @@ const ProjectVisibility = ({
             onChange={handlePermissionTypeChange}
             currentValue={projectVisibility}
             name="permissionsType"
-            label={formatMessage(permissionsMessages.permissionsAdministrators)}
+            label={formatMessage(
+              permissionsMessages.permissionsAdministratorsAndManagers
+            )}
             value="admins"
             id="permissions-administrators"
           />
