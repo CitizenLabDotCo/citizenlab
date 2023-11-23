@@ -1307,6 +1307,7 @@
   "app.containers.Projects.basketSubmitted": "Din varukorg har skickats!",
   "app.containers.Projects.budget": "{amount} budget",
   "app.containers.Projects.contributions": "Bidrag",
+  "app.containers.Projects.createANewPhase": "Skapa en ny fas",
   "app.containers.Projects.currentPhase": "Aktuell fas",
   "app.containers.Projects.document": "Dokument",
   "app.containers.Projects.editProject": "Redigera projekt",
