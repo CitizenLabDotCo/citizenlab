@@ -1307,6 +1307,7 @@
   "app.containers.Projects.basketSubmitted": "Sepetiniz gönderildi.",
   "app.containers.Projects.budget": "{amount} bütçe",
   "app.containers.Projects.contributions": "Katkılar",
+  "app.containers.Projects.createANewPhase": "Yeni bir aşama oluşturun",
   "app.containers.Projects.currentPhase": "Şu andaki aşama",
   "app.containers.Projects.document": "Belge",
   "app.containers.Projects.editProject": "Projeyi düzenleyin",
