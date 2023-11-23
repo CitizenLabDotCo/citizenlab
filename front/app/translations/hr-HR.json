@@ -1566,8 +1566,6 @@
   "app.containers.UsersShowPage.eventsWithCount": "Događaji ({eventsCount})",
   "app.containers.UsersShowPage.followingWithCount": "Slijedi ({followingCount})",
   "app.containers.UsersShowPage.goBackToPreviousPage": "Vrati se na prethodnu stranicu",
-  "app.containers.UsersShowPage.ideas": "Ideje",
-  "app.containers.UsersShowPage.initiatives": "Inicijative",
   "app.containers.UsersShowPage.invisibleTitlePostsList": "Svi unosi ovog sudionika",
   "app.containers.UsersShowPage.invisibleTitleUserComments": "Svi komentari koje je objavio ovaj sudionik",
   "app.containers.UsersShowPage.loadMore": "Učitaj više",

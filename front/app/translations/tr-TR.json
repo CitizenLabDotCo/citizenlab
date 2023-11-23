@@ -1566,8 +1566,6 @@
   "app.containers.UsersShowPage.eventsWithCount": "Etkinlikler ({eventsCount})",
   "app.containers.UsersShowPage.followingWithCount": "Takip ({followingCount})",
   "app.containers.UsersShowPage.goBackToPreviousPage": "Önceki sayfaya dönün",
-  "app.containers.UsersShowPage.ideas": "Fikirler",
-  "app.containers.UsersShowPage.initiatives": "Girişimler",
   "app.containers.UsersShowPage.invisibleTitlePostsList": "Bu katılımcı tarafından gönderilen tüm girdiler",
   "app.containers.UsersShowPage.invisibleTitleUserComments": "Bu katılımcı tarafından yayınlanan tüm yorumlar",
   "app.containers.UsersShowPage.loadMore": "Daha fazla yükle",

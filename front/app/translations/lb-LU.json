@@ -1566,8 +1566,6 @@
   "app.containers.UsersShowPage.eventsWithCount": "Evenementer ({eventsCount})",
   "app.containers.UsersShowPage.followingWithCount": "Folgend ({followingCount})",
   "app.containers.UsersShowPage.goBackToPreviousPage": "Zeréck op déi viregt Säit goen",
-  "app.containers.UsersShowPage.ideas": "Iddien",
-  "app.containers.UsersShowPage.initiatives": "Initiativen",
   "app.containers.UsersShowPage.invisibleTitlePostsList": "All Bäiträg, déi vun dësem Benotzer agereecht goufen",
   "app.containers.UsersShowPage.invisibleTitleUserComments": "All Kommentaren, déi vun dësem Benotzer gepost goufen",
   "app.containers.UsersShowPage.loadMore": "Méi lueden",

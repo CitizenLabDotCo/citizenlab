@@ -1566,8 +1566,6 @@
   "app.containers.UsersShowPage.eventsWithCount": "Eventi ({eventsCount})",
   "app.containers.UsersShowPage.followingWithCount": "Seguendo ({followingCount})",
   "app.containers.UsersShowPage.goBackToPreviousPage": "Torna alla pagina precedente",
-  "app.containers.UsersShowPage.ideas": "Idee",
-  "app.containers.UsersShowPage.initiatives": "Iniziative",
   "app.containers.UsersShowPage.invisibleTitlePostsList": "Tutti gli input presentati da questo partecipante",
   "app.containers.UsersShowPage.invisibleTitleUserComments": "Tutti i commenti pubblicati da questo partecipante",
   "app.containers.UsersShowPage.loadMore": "Carica di più",

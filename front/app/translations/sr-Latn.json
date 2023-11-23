@@ -1566,8 +1566,6 @@
   "app.containers.UsersShowPage.eventsWithCount": "Events ({eventsCount})",
   "app.containers.UsersShowPage.followingWithCount": "Following ({followingCount})",
   "app.containers.UsersShowPage.goBackToPreviousPage": "Vratite se na prethodnu stranicu",
-  "app.containers.UsersShowPage.ideas": "Ideas",
-  "app.containers.UsersShowPage.initiatives": "Initiatives",
   "app.containers.UsersShowPage.invisibleTitlePostsList": "Svi postovi ovog učesnika",
   "app.containers.UsersShowPage.invisibleTitleUserComments": "Svi komentari ovog učesnika",
   "app.containers.UsersShowPage.loadMore": "Load more",
