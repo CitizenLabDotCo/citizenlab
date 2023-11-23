@@ -150,7 +150,6 @@ DROP INDEX IF EXISTS public.machine_translations_translatable;
 DROP INDEX IF EXISTS public.machine_translations_lookup;
 DROP INDEX IF EXISTS public.index_volunteering_volunteers_on_user_id;
 DROP INDEX IF EXISTS public.index_volunteering_volunteers_on_cause_id_and_user_id;
-DROP INDEX IF EXISTS public.index_volunteering_causes_on_participation_context;
 DROP INDEX IF EXISTS public.index_volunteering_causes_on_ordering;
 DROP INDEX IF EXISTS public.index_verification_verifications_on_user_id;
 DROP INDEX IF EXISTS public.index_verification_verifications_on_hashed_uid;
@@ -1660,8 +1659,7 @@ CREATE TABLE public.reactions (
 
 CREATE TABLE public.volunteering_causes (
     id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    participation_context_id uuid NOT NULL,
-    participation_context_type character varying NOT NULL,
+    phase_id uuid NOT NULL,
     title_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
     description_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
     volunteers_count integer DEFAULT 0 NOT NULL,
@@ -1764,7 +1762,7 @@ UNION ALL
 UNION ALL
  SELECT vv.id,
     vv.user_id AS dimension_user_id,
-    COALESCE(p.project_id, vc.participation_context_id) AS dimension_project_id,
+    COALESCE(p.project_id, vc.phase_id) AS dimension_project_id,
     adt.id AS dimension_type_id,
     (vv.created_at)::date AS dimension_date_created_id,
     0 AS reactions_count,
@@ -1772,7 +1770,7 @@ UNION ALL
     0 AS dislikes_count
    FROM (((public.volunteering_volunteers vv
      LEFT JOIN public.volunteering_causes vc ON ((vc.id = vv.cause_id)))
-     LEFT JOIN public.phases p ON ((p.id = vc.participation_context_id)))
+     LEFT JOIN public.phases p ON ((p.id = vc.phase_id)))
      JOIN public.analytics_dimension_types adt ON (((adt.name)::text = 'volunteer'::text)));
 
 
@@ -6431,13 +6429,6 @@ CREATE INDEX index_volunteering_causes_on_ordering ON public.volunteering_causes
 
 
 --
--- Name: index_volunteering_causes_on_participation_context; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_volunteering_causes_on_participation_context ON public.volunteering_causes USING btree (participation_context_type, participation_context_id);
-
-
---
 -- Name: index_volunteering_volunteers_on_cause_id_and_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -7950,6 +7941,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20231110112415'),
 ('20231120090516'),
 ('20231123141534'),
-('20231123161330');
+('20231123161330'),
+('20231123173159');
 
 

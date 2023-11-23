@@ -4,7 +4,7 @@ module Volunteering
   class WebApi::V1::CauseSerializer < ::WebApi::V1::BaseSerializer
     attributes :title_multiloc, :description_multiloc, :volunteers_count, :ordering, :created_at, :updated_at
 
-    belongs_to :participation_context, serializer: ::WebApi::V1::PhaseSerializer
+    belongs_to :phase, serializer: ::WebApi::V1::PhaseSerializer
 
     has_one :user_volunteer, if: proc { |object, params|
       signed_in? object, params

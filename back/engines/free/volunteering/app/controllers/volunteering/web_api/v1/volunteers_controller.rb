@@ -26,7 +26,7 @@ module Volunteering
 
           @volunteers = policy_scope(Volunteer)
             .joins(:cause)
-            .where(volunteering_causes: { participation_context_id: @phase })
+            .where(volunteering_causes: { phase_id: @phase })
             .includes(:user, :cause)
 
           I18n.with_locale(current_user&.locale) do
