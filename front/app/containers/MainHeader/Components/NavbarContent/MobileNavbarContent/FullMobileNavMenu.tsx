@@ -25,6 +25,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import CloseIconButton from 'components/UI/CloseIconButton';
 import getNavbarItemPropsArray from '../../DesktopNavItems/getNavbarItemPropsArray';
 import { useIntl } from 'utils/cl-intl';
+import { Box } from '@citizenlab/cl2-component-library';
 
 const Container = styled.div`
   height: 100%;
@@ -147,7 +148,9 @@ const FullMobileNavMenu = ({
             // Needed because there's also a different nav (see MobileNavbarContent/index)
             aria-label={formatMessage(messages.fullMobileNavigation)}
           >
-            <StyledTenantLogo />
+            <Box m="40px">
+              <StyledTenantLogo flex="0" />
+            </Box>
             <MenuItems>
               {navbarItemPropsArray.map((navbarItemProps) => {
                 const { linkTo, onlyActiveOnIndex, navigationItemTitle } =

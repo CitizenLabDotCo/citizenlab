@@ -4,18 +4,16 @@ import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { useIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 
 // hooks
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 // components
-import { Image } from '@citizenlab/cl2-component-library';
+import { BoxProps, Image } from '@citizenlab/cl2-component-library';
 
 const LogoLink = styled(Link)`
-  flex: 1 1 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -30,15 +28,20 @@ const Logo = styled(Image)`
   cursor: pointer;
 `;
 
-const TenantLogo = ({ intl: { formatMessage } }: WrappedComponentProps) => {
+const TenantLogo = ({ ...props }: BoxProps) => {
   const { data: appConfiguration } = useAppConfiguration();
+  const { formatMessage } = useIntl();
 
   if (!isNilOrError(appConfiguration)) {
     const tenantLogo = appConfiguration.data.attributes.logo?.medium;
 
     if (tenantLogo) {
       return (
-        <LogoLink to="/" onlyActiveOnIndex={true}>
+        <LogoLink
+          to="/"
+          onlyActiveOnIndex={true}
+          style={{ flex: props.flex || '1 1 auto' }}
+        >
           <Logo src={tenantLogo} alt={formatMessage(messages.logoAltText)} />
         </LogoLink>
       );
@@ -48,4 +51,4 @@ const TenantLogo = ({ intl: { formatMessage } }: WrappedComponentProps) => {
   return null;
 };
 
-export default injectIntl(TenantLogo);
+export default TenantLogo;

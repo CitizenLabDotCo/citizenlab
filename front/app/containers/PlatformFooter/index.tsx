@@ -32,7 +32,6 @@ const Container = styled.footer`
   position: relative;
   ${media.tablet`
     margin-top: 0px;
-    padding-bottom: ${({ theme: { mobileMenuHeight } }) => mobileMenuHeight}px;
   `}
 `;
 
