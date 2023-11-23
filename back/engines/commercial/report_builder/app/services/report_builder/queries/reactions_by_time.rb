@@ -1,8 +1,6 @@
 module ReportBuilder
   class Queries::ReactionsByTime < Queries::Base
-    def query(start_at: nil, end_at: nil, project_id: nil, **_other_props)
-      resolution = RESOLUTION_TO_INTERVAL.fetch('month')
-
+    def query(start_at: nil, end_at: nil, project_id: nil, resolution: nil, **_other_props)
       time_series_query = {
         fact: 'participation',
         filters: {
