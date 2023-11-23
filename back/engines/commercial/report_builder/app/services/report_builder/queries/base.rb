@@ -20,7 +20,7 @@ class ReportBuilder::Queries::Base
   end
 
   def project_filter(project_id_column, project_id)
-    { project_id_column => project_id }.compact
+    { project_id_column => project_id.presence }.compact
   end
 
   def interval(resolution)
