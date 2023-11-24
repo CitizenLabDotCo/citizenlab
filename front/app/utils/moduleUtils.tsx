@@ -1,7 +1,6 @@
 import { ILeafletMapConfig } from 'components/UI/LeafletMap/useLeaflet';
 import { Moment } from 'moment';
 import React, { FunctionComponent, ReactElement } from 'react';
-
 import PageLoading from 'components/UI/PageLoading';
 import { OutletRenderProps } from 'components/Outlet';
 import { ITabItem } from 'components/UI/Tabs';
@@ -16,9 +15,7 @@ import {
   cloneDeep,
 } from 'lodash-es';
 import { IProjectData } from 'api/projects/types';
-
 import { ManagerType } from 'components/admin/PostManager';
-import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/Row/IdeaRow';
 import { IResolution } from 'components/admin/ResolutionControl';
 import { AuthProvider } from 'containers/Authentication/steps/AuthProviders';
 import { Point } from 'components/UI/LeafletMap/typings';
@@ -32,13 +29,7 @@ import { TNotificationData } from 'api/notifications/types';
 import { IPhaseData } from 'api/phases/types';
 import { TVerificationMethod } from 'api/verification_methods/types';
 import { SignUpInFlow } from 'containers/Authentication/typings';
-import {
-  CellConfiguration,
-  InsertConfigurationOptions,
-  ITab,
-  Locale,
-  Multiloc,
-} from 'typings';
+import { InsertConfigurationOptions, ITab, Locale, Multiloc } from 'typings';
 import { IntlFormatters } from 'react-intl';
 import { IInitiativeData } from 'api/initiatives/types';
 import {
