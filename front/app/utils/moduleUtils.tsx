@@ -151,13 +151,6 @@ export interface OutletsPropertyMap {
     handleAssigneeFilterChange: (value: string | undefined) => void;
     type: ManagerType;
   };
-  'app.components.admin.PostManager.components.PostTable.IdeaRow.cells': {
-    onData: (
-      data: InsertConfigurationOptions<
-        CellConfiguration<IdeaCellComponentProps>
-      >
-    ) => void;
-  };
   'app.components.Map.leafletConfig': {
     onLeafletConfigChange: (newLeafletConfig: ILeafletMapConfig) => void;
     projectId?: string;
