@@ -32,7 +32,7 @@ resource 'Ideas' do
       response_field :base, "Array containing objects with signature { error: #{ParticipationContextService::POSTING_DISABLED_REASONS.values.join(' | ')} }", scope: :errors
 
       let(:idea) { build(:idea) }
-      let(:project) { create(:continuous_project) }
+      let(:project) { create(:single_phase_ideation_project) }
       let(:project_id) { project.id }
       let(:publication_status) { 'published' }
       let(:title_multiloc) { idea.title_multiloc }
@@ -51,7 +51,7 @@ resource 'Ideas' do
         before { IdeaStatus.create_defaults }
 
         let(:project) do
-          create(:continuous_native_survey_project, phase_attrs: { with_permissions: true }).tap do |project|
+          create(:single_phase_native_survey_project, phase_attrs: { with_permissions: true }).tap do |project|
             project.phases.first.permissions.find_by(action: 'posting_idea').update! permitted_by: 'everyone'
           end
         end
@@ -106,7 +106,7 @@ resource 'Ideas' do
           @ideas = %w[published published draft published published published].map do |ps|
             create(:idea, publication_status: ps)
           end
-          survey_project = create(:continuous_native_survey_project)
+          survey_project = create(:single_phase_native_survey_project)
           create(:idea, project: survey_project, creation_phase: survey_project.phases.first)
         end
 
@@ -174,7 +174,7 @@ resource 'Ideas' do
         end
 
         example 'List all ideas in a project' do
-          l = create(:continuous_project)
+          l = create(:single_phase_ideation_project)
           i = create(:idea, project: l)
 
           do_request projects: [l.id]
@@ -423,7 +423,7 @@ resource 'Ideas' do
 
         describe do
           before do
-            @project = create(:continuous_project)
+            @project = create(:single_phase_ideation_project)
             @selected_ideas = @ideas.select(&:published?).shuffle.take 3
             @selected_ideas.each do |idea|
               idea.update! project: @project
@@ -522,7 +522,7 @@ resource 'Ideas' do
         before do
           @t1 = create(:topic)
           @t2 = create(:topic)
-          @project = create(:continuous_project, allowed_input_topics: [@t1, @t2])
+          @project = create(:single_phase_ideation_project, allowed_input_topics: [@t1, @t2])
 
           @s1 = create(:idea_status)
           @s2 = create(:idea_status)
@@ -579,7 +579,7 @@ resource 'Ideas' do
     end
 
     get 'web_api/v1/ideas/:id' do
-      let(:project) { create(:continuous_budgeting_project) }
+      let(:project) { create(:single_phase_budgeting_project) }
       let(:idea) { create(:idea, project: project, phases: project.phases) }
       let!(:baskets) { create_list(:basket, 2, ideas: [idea], participation_context: project.phases.first) }
       let!(:topic) { create(:topic, ideas: [idea], projects: [idea.project]) }
@@ -711,7 +711,7 @@ resource 'Ideas' do
 
       let(:idea) { build(:idea) }
       let(:with_permissions) { false }
-      let(:project) { create(:continuous_project, phase_attrs: { with_permissions: with_permissions }) }
+      let(:project) { create(:single_phase_ideation_project, phase_attrs: { with_permissions: with_permissions }) }
       let(:project_id) { project.id }
       let(:publication_status) { 'published' }
       let(:title_multiloc) { idea.title_multiloc }
@@ -757,7 +757,7 @@ resource 'Ideas' do
       end
 
       describe 'when creating an idea that is a survey response' do
-        let(:project) { create(:continuous_native_survey_project, default_assignee_id: create(:admin).id) }
+        let(:project) { create(:single_phase_native_survey_project, default_assignee_id: create(:admin).id) }
         let(:idea) { build(:native_survey_response, project: project) }
 
         example 'does not assign anyone to the created idea', document: false do
@@ -826,7 +826,7 @@ resource 'Ideas' do
       end
 
       describe 'Creating a native survey response when posting anonymously is enabled' do
-        let(:project) { create(:continuous_native_survey_project, phase_attrs: { allow_anonymous_participation: true }) }
+        let(:project) { create(:single_phase_native_survey_project, phase_attrs: { allow_anonymous_participation: true }) }
 
         example_request 'Posting a survey automatically sets anonymous to true' do
           assert_status 201
@@ -837,7 +837,7 @@ resource 'Ideas' do
       end
 
       describe 'Creating a native survey response when posting anonymously is not enabled' do
-        let(:project) { create(:continuous_native_survey_project, allow_anonymous_participation: false) }
+        let(:project) { create(:single_phase_native_survey_project, allow_anonymous_participation: false) }
 
         example_request 'Posting a survey does not set the survey to anonymous' do
           assert_status 201
@@ -848,7 +848,7 @@ resource 'Ideas' do
       end
 
       describe 'For projects without ideas_order' do
-        let(:project) { create(:continuous_project) }
+        let(:project) { create(:single_phase_ideation_project) }
 
         before do
           project.update_attribute(:ideas_order, nil)
@@ -1070,7 +1070,7 @@ resource 'Ideas' do
 
       describe do
         before do
-          @project = create(:continuous_project)
+          @project = create(:single_phase_ideation_project)
           @idea = create(:idea, author: @user, project: @project, phases: @project.phases)
         end
 
@@ -1112,7 +1112,7 @@ resource 'Ideas' do
           end
 
           example '[error] Normal resident cannot update an idea in a voting context', document: false do
-            @idea.update!(project: create(:continuous_budgeting_project))
+            @idea.update!(project: create(:single_phase_budgeting_project))
 
             do_request
 
@@ -1233,7 +1233,7 @@ resource 'Ideas' do
             end
 
             context 'Publishing an imported native survey response' do
-              let(:project) { create(:continuous_native_survey_project) }
+              let(:project) { create(:single_phase_native_survey_project) }
               let(:idea) { create(:native_survey_response, project: project, publication_status: 'draft') }
 
               let(:id) { idea.id }
@@ -1320,7 +1320,7 @@ resource 'Ideas' do
               end
 
               context 'Moving to a different project' do
-                let(:new_project) { create(:continuous_project) }
+                let(:new_project) { create(:single_phase_ideation_project) }
                 let(:project_id) { new_project.id }
 
                 example 'Move the idea to another (non-voting) project', document: false do
@@ -1364,7 +1364,7 @@ resource 'Ideas' do
             end
 
             example 'Admin can update an idea in a voting context', document: false do
-              @idea.update!(project: create(:continuous_budgeting_project))
+              @idea.update!(project: create(:single_phase_budgeting_project))
 
               do_request
 
@@ -1493,7 +1493,7 @@ resource 'Ideas' do
 
       describe do
         before do
-          @project = create(:continuous_project)
+          @project = create(:single_phase_ideation_project)
           @idea = create(:idea, author: @user, publication_status: 'draft', project: @project)
         end
 
@@ -1511,7 +1511,7 @@ resource 'Ideas' do
     delete 'web_api/v1/ideas/:id' do
       context 'when the idea belongs to a continuous project' do
         before do
-          @project = create(:continuous_project)
+          @project = create(:single_phase_ideation_project)
           @idea = create(:idea_with_topics, author: @user, publication_status: 'published', project: @project)
         end
 
@@ -1547,7 +1547,7 @@ resource 'Ideas' do
       end
 
       context 'when a voting context' do
-        let(:idea) { create(:idea, project: create(:continuous_budgeting_project)) }
+        let(:idea) { create(:idea, project: create(:single_phase_budgeting_project)) }
         let(:id) { idea.id }
 
         example_request '[error] Normal resident cannot delete an idea in a voting context', document: false do

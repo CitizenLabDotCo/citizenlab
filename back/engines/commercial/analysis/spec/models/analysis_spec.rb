@@ -28,13 +28,13 @@ RSpec.describe Analysis::Analysis do
 
   describe 'validates project_or_phase_form_context' do
     it 'is valid for an open ended ideation project' do
-      project = build(:continuous_project)
+      project = build(:single_phase_ideation_project)
       analysis = build(:analysis, project: project)
       expect(analysis).to be_valid
     end
 
     it 'is valid for an open ended survey project' do
-      project = build(:continuous_native_survey_project)
+      project = build(:single_phase_native_survey_project)
       analysis = build(:analysis, project: project, phase: nil)
       expect(analysis).to be_valid
     end

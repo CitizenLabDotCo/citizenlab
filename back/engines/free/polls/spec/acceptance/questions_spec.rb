@@ -107,7 +107,7 @@ resource 'Poll Questions' do
       end
 
       before do
-        @phase = create(:continuous_poll_project).phases.first
+        @phase = create(:single_phase_poll_project).phases.first
         @questions = create_list(:poll_question, 3, participation_context: @phase)
       end
 

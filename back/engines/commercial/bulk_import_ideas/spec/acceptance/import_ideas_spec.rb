@@ -11,7 +11,7 @@ resource 'BulkImportIdeasImportIdeas' do
     header 'Content-Type', 'application/json'
   end
 
-  let!(:project) { create(:continuous_project, title_multiloc: { en: 'Project 1' }) }
+  let!(:project) { create(:single_phase_ideation_project, title_multiloc: { en: 'Project 1' }) }
 
   context 'when not authorized' do
     get 'web_api/v1/import_ideas/example_xlsx' do
@@ -251,7 +251,7 @@ resource 'BulkImportIdeasImportIdeas' do
 
       get 'web_api/v1/idea_import_files/:id' do
         let(:id) do
-          project = create(:continuous_project)
+          project = create(:single_phase_ideation_project)
           create(:idea_import_file, project: project).id
         end
 

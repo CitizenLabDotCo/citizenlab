@@ -9,7 +9,7 @@ RSpec.describe InputJsonSchemaGeneratorService do
 
   describe '#generate_for' do
     let(:metaschema) { JSON::Validator.validator_for_name('draft4').metaschema }
-    let(:project) { create(:continuous_project) }
+    let(:project) { create(:single_phase_ideation_project) }
     let(:custom_form) { create(:custom_form, participation_context: project) }
     let(:ui_schema) { generator.generate_for IdeaCustomFieldsService.new(custom_form).enabled_fields }
 

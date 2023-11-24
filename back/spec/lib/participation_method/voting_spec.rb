@@ -5,11 +5,11 @@ require 'rails_helper'
 RSpec.describe ParticipationMethod::Voting do
   subject(:participation_method) { described_class.new context }
 
-  let(:context) { create(:continuous_budgeting_project).phases.first }
+  let(:context) { create(:single_phase_budgeting_project).phases.first }
 
   describe '#assign_defaults_for_participation_context' do
     context 'budgeting' do
-      let(:context) { create(:continuous_budgeting_project).phases.first }
+      let(:context) { create(:single_phase_budgeting_project).phases.first }
 
       it 'sets the posting method to unlimited and ideas order to random' do
         participation_method.assign_defaults_for_participation_context
@@ -76,7 +76,7 @@ RSpec.describe ParticipationMethod::Voting do
   end
 
   describe '#budget_in_form?' do
-    let(:context) { create(:continuous_budgeting_project).phases.first }
+    let(:context) { create(:single_phase_budgeting_project).phases.first }
 
     it 'returns false for a resident and a continuous budgeting project' do
       expect(participation_method.budget_in_form?(create(:user))).to be false
@@ -147,7 +147,7 @@ RSpec.describe ParticipationMethod::Voting do
 
   describe '#additional_export_columns' do
     context 'voting method is budgeting' do
-      let(:context) { create(:continuous_budgeting_project).phases.first }
+      let(:context) { create(:single_phase_budgeting_project).phases.first }
 
       it 'returns [picks, budget]' do
         expect(participation_method.additional_export_columns).to eq %w[picks budget]
@@ -155,7 +155,7 @@ RSpec.describe ParticipationMethod::Voting do
     end
 
     context 'voting method is multiple_voting' do
-      let(:context) { create(:continuous_multiple_voting_project).phases.first }
+      let(:context) { create(:single_phase_multiple_voting_project).phases.first }
 
       it 'returns [participants, votes]' do
         expect(participation_method.additional_export_columns).to eq %w[participants votes]
@@ -163,7 +163,7 @@ RSpec.describe ParticipationMethod::Voting do
     end
 
     context 'voting method is single_voting' do
-      let(:context) { create(:continuous_single_voting_project).phases.first }
+      let(:context) { create(:single_phase_single_voting_project).phases.first }
 
       it 'returns [votes] if voting method is single_voting' do
         expect(participation_method.additional_export_columns).to eq %w[votes]

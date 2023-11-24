@@ -15,7 +15,7 @@ resource 'Poll Responses' do
   get 'web_api/v1/phases/:phase_id/poll_responses/as_xlsx' do
     context 'non-anonymous poll' do
       before do
-        @phase = create(:continuous_poll_project).phases.first
+        @phase = create(:single_phase_poll_project).phases.first
         @q1 = create(:poll_question, :with_options, participation_context: @phase)
         @q2 = create(:poll_question, :with_options, participation_context: @phase)
         r1 = create(:poll_response, participation_context: @phase)
@@ -42,7 +42,7 @@ resource 'Poll Responses' do
 
     context 'anonymous poll' do
       before do
-        @phase = create(:continuous_poll_project, phase_attrs: { poll_anonymous: true }).phases.first
+        @phase = create(:single_phase_poll_project, phase_attrs: { poll_anonymous: true }).phases.first
         @q1 = create(:poll_question, :with_options, participation_context: @phase)
         @u1 = create(:user)
         @r1 = create(:poll_response,
@@ -79,7 +79,7 @@ resource 'Poll Responses' do
   get 'web_api/v1/phases/:phase_id/poll_responses/responses_count' do
     context 'non-anonymous poll' do
       before do
-        @phase = create(:continuous_poll_project).phases.first
+        @phase = create(:single_phase_poll_project).phases.first
         @q1 = create(:poll_question, :with_options, participation_context: @phase)
         @q2 = create(:poll_question, :with_options, participation_context: @phase)
         @r1 = create(:poll_response, participation_context: @phase)

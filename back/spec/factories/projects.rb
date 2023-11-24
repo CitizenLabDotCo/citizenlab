@@ -430,7 +430,7 @@ FactoryBot.define do
         end
       end
 
-      factory :private_groups_continuous_project do
+      factory :private_groups_single_phase_project do
         transient do
           phase_attrs { {} }
         end
@@ -446,7 +446,7 @@ FactoryBot.define do
         end
       end
 
-      factory :private_groups_continuous_budgeting_project do
+      factory :private_groups_single_phase_budgeting_project do
         after(:create) do |project, _evaluator|
           project.phases << create(
             :phase,
@@ -461,13 +461,13 @@ FactoryBot.define do
       end
     end
 
-    # Old continuous projects
-    factory :open_ended_base_project do
+    # Old continuous projects - now projects with single open ended phase
+    factory :single_phase_base_project do
       transient do
         phase_attrs { {} }
       end
 
-      factory :continuous_project do
+      factory :single_phase_ideation_project do
         after(:create) do |project, evaluator|
           project.phases << create(
             :phase,
@@ -480,7 +480,7 @@ FactoryBot.define do
         end
       end
 
-      factory :continuous_native_survey_project do
+      factory :single_phase_native_survey_project do
         after(:create) do |project, evaluator|
           project.phases << create(
             :native_survey_phase,
@@ -492,7 +492,7 @@ FactoryBot.define do
         end
       end
 
-      factory :continuous_survey_project do
+      factory :single_phase_typeform_survey_project do
         after(:create) do |project, evaluator|
           project.phases << create(
             :typeform_survey_phase,
@@ -504,7 +504,7 @@ FactoryBot.define do
         end
       end
 
-      factory :continuous_google_survey_project do
+      factory :single_phase_google_survey_project do
         after(:create) do |project, evaluator|
           project.phases << create(
             :typeform_survey_phase,
@@ -518,7 +518,7 @@ FactoryBot.define do
         end
       end
 
-      factory :continuous_document_annotation_project do
+      factory :single_phase_document_annotation_project do
         after(:create) do |project, evaluator|
           project.phases << create(
             :document_annotation_phase,
@@ -530,7 +530,7 @@ FactoryBot.define do
         end
       end
 
-      factory :continuous_budgeting_project do
+      factory :single_phase_budgeting_project do
         after(:create) do |project, evaluator|
           project.phases << create(
             :budgeting_phase,
@@ -542,7 +542,7 @@ FactoryBot.define do
         end
       end
 
-      factory :continuous_multiple_voting_project do
+      factory :single_phase_multiple_voting_project do
         after(:create) do |project, evaluator|
           project.phases << create(
             :multiple_voting_phase,
@@ -555,7 +555,7 @@ FactoryBot.define do
         end
       end
 
-      factory :continuous_single_voting_project do
+      factory :single_phase_single_voting_project do
         after(:create) do |project, evaluator|
           project.phases << create(
             :single_voting_phase,
@@ -567,7 +567,7 @@ FactoryBot.define do
         end
       end
 
-      factory :continuous_poll_project do
+      factory :single_phase_poll_project do
         after(:create) do |project, evaluator|
           project.phases << create(
             :poll_phase,
@@ -579,7 +579,7 @@ FactoryBot.define do
         end
       end
 
-      factory :continuous_volunteering_project do
+      factory :single_phase_volunteering_project do
         after(:create) do |project, evaluator|
           project.phases << create(
             :volunteering_phase,
@@ -591,7 +591,7 @@ FactoryBot.define do
         end
       end
 
-      factory :continuous_information_project do
+      factory :single_phase_information_project do
         after(:create) do |project, evaluator|
           project.phases << create(
             :information_phase,

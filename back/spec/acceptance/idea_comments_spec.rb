@@ -8,7 +8,7 @@ resource 'Comments' do
 
   before do
     header 'Content-Type', 'application/json'
-    @project = create(:continuous_project)
+    @project = create(:single_phase_ideation_project)
     @idea = create(:idea, project: @project, phases: @project.phases)
   end
 
@@ -351,7 +351,7 @@ resource 'Comments' do
 
       describe 'commenting enabled on voting projects' do
         before do
-          project = create(:continuous_budgeting_project)
+          project = create(:single_phase_budgeting_project)
           @idea.update!(project: project, phases: project.phases)
         end
 

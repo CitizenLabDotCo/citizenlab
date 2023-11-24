@@ -111,7 +111,7 @@ resource 'Ideas' do
 
       let(:idea) { build(:idea) }
       let(:default_assignee) { create(:admin) }
-      let(:project) { create(:continuous_project, default_assignee: default_assignee) }
+      let(:project) { create(:single_phase_ideation_project, default_assignee: default_assignee) }
       let(:project_id) { project.id }
       let(:publication_status) { 'published' }
       let(:title_multiloc) { idea.title_multiloc }
@@ -144,7 +144,7 @@ resource 'Ideas' do
     response_field :base, "Array containing objects with signature { error: #{ParticipationContextService::POSTING_DISABLED_REASONS.values.join(' | ')} }", scope: :errors
 
     before do
-      @project = create(:continuous_project)
+      @project = create(:single_phase_ideation_project)
       @idea =  create(:idea, project: @project)
     end
 

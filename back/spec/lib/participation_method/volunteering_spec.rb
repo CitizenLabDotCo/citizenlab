@@ -6,10 +6,10 @@ RSpec.describe ParticipationMethod::Volunteering do
   subject(:participation_method) { described_class.new project }
 
   let(:input) { create(:idea) }
-  let(:project) { create(:continuous_project) }
+  let(:project) { create(:single_phase_ideation_project) }
 
   describe '#assign_defaults_for_participation_context' do
-    let(:project) { build(:continuous_project) }
+    let(:project) { build(:single_phase_ideation_project) }
 
     it 'does not change the posting_method' do
       expect do
