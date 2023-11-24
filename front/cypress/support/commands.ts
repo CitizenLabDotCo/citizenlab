@@ -859,7 +859,7 @@ export function apiCreateProject({
       url: 'web_api/v1/projects',
       body: {
         project: {
-          process_type: type,
+          process_type: 'timeline',
           admin_publication_attributes: {
             publication_status: publicationStatus,
           },
@@ -877,18 +877,7 @@ export function apiCreateProject({
             en: description,
             'nl-BE': description,
           },
-          default_assignee_id: assigneeId,
-          participation_method:
-            type === 'continuous' && !participationMethod
-              ? 'ideation'
-              : participationMethod,
-          voting_method: votingMethod,
-          survey_embed_url: surveyUrl,
-          survey_service: surveyService,
-          voting_max_total: votingMaxTotal,
-          voting_max_votes_per_idea: votingMaxVotesPerIdea,
-          posting_enabled: postingEnabled,
-          allow_anonymous_participation: allow_anonymous_participation,
+          default_assignee_id: assigneeId
         },
       },
     });
