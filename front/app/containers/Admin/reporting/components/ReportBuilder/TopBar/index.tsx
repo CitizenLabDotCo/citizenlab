@@ -91,8 +91,9 @@ const ContentBuilderTopBar = ({
     }
   };
   const doGoBack = () => {
-    clHistory.push('/admin/reporting/report-builder');
+    clHistory.back();
   };
+
   const handleSave = () => {
     if (selectedLocale) {
       setHasChange(false);
