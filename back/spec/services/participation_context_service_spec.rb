@@ -5,7 +5,7 @@ require 'rails_helper'
 describe ParticipationContextService do
   let(:service) { described_class.new }
 
-  describe 'get_participation_context' do
+  describe 'get_current_phase' do
     it 'returns the active phase for a timeline project' do
       random_title = SecureRandom.uuid
       project = create(
@@ -668,7 +668,7 @@ describe ParticipationContextService do
 
     it 'returns `already_responded` when the user already responded to the poll before' do
       project = create(:single_phase_poll_project)
-      poll_response = create(:poll_response, participation_context: project.phases.first)
+      poll_response = create(:poll_response, phase: project.phases.first)
       user = poll_response.user
       expect(service.taking_poll_disabled_reason_for_project(project, user)).to eq 'already_responded'
     end

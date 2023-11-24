@@ -133,17 +133,17 @@ describe ParticipantsService do
 
     it 'returns participants of a poll' do
       poll = create(:single_phase_poll_project)
-      responses = create_list(:poll_response, 2, participation_context: poll.phases.first)
+      responses = create_list(:poll_response, 2, phase: poll.phases.first)
       participants = responses.map(&:user)
       create_list(:user, 2)
-      create(:poll_response, participation_context: create(:poll_phase))
+      create(:poll_response, phase: create(:poll_phase))
 
       expect(service.projects_participants([poll]).map(&:id)).to match_array participants.map(&:id)
     end
 
     it 'returns volunteering participants' do
       project = create(:single_phase_volunteering_project)
-      cause = create(:cause, participation_context: project.phases.first)
+      cause = create(:cause, phase: project.phases.first)
       volunteers = create_list(:volunteer, 2, cause: cause)
       participants = volunteers.map(&:user)
       create(:volunteer)

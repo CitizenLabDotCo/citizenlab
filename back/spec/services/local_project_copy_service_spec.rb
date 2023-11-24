@@ -143,14 +143,14 @@ describe LocalProjectCopyService do
     end
 
     it 'copies associated volunteering_causes' do
-      create_list(:cause, 2, participation_context: open_ended_project.phases.first)
+      create_list(:cause, 2, phase: open_ended_project.phases.first)
       copied_project = service.copy(open_ended_project.reload)
 
       expect(copied_project.phases.first.causes.map do |record|
-        record.as_json(except: %i[id participation_context_id image updated_at created_at])
+        record.as_json(except: %i[id phase_id image updated_at created_at])
       end)
         .to match_array(open_ended_project.phases.first.causes.map do |record|
-          record.as_json(except: %i[id participation_context_id image updated_at created_at])
+          record.as_json(except: %i[id phase_id image updated_at created_at])
         end)
     end
 
@@ -188,8 +188,7 @@ describe LocalProjectCopyService do
         :poll_question,
         2,
         :with_options,
-        participation_context_id: source_project.phases.first.id,
-        participation_context_type: 'Phase'
+        phase: source_project.phases.first
       )
       source_phase = source_project.phases.first
 
@@ -198,10 +197,10 @@ describe LocalProjectCopyService do
 
       expect(copied_phase.poll_questions.count).to eq 2
       expect(copied_phase.poll_questions.map do |record|
-        record.as_json(except: %i[id participation_context_id updated_at created_at])
+        record.as_json(except: %i[id phase_id updated_at created_at])
       end)
         .to match_array(source_phase.poll_questions.map do |record|
-          record.as_json(except: %i[id participation_context_id updated_at created_at])
+          record.as_json(except: %i[id phase_id updated_at created_at])
         end)
 
       source_question = source_phase.poll_questions.last
