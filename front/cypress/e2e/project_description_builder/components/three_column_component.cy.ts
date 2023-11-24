@@ -59,7 +59,7 @@ describe('Project description builder Three Column component', () => {
       position: 'inside',
     });
 
-    cy.get('div#e2e-text-box').should('have.length', 3);
+    cy.get('div.e2e-text-box').should('have.length', 3);
     cy.get('div#e2e-about-box').should('have.length', 3);
 
     cy.get('#e2e-content-builder-topbar-save').click();
@@ -68,7 +68,7 @@ describe('Project description builder Three Column component', () => {
     // Check column and elements exist on page
     cy.visit(`/projects/${projectSlug}`);
     cy.get('#e2e-three-column').should('exist');
-    cy.get('div#e2e-text-box').should('have.length', 3);
+    cy.get('div.e2e-text-box').should('have.length', 3);
     cy.get('div#e2e-about-box').should('have.length', 3);
   });
 
