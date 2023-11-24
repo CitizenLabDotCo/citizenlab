@@ -477,11 +477,11 @@ class ProjectCopyService < TemplateService
 
   def yml_baskets(shift_timestamps: 0)
     phase_ids = @project.phases.ids
-    Basket.where(participation_context_id: phase_ids).map do |b|
+    Basket.where(phase_id: phase_ids).map do |b|
       yml_basket = {
         'submitted_at' => shift_timestamp(b.submitted_at, shift_timestamps)&.iso8601,
         'user_ref' => lookup_ref(b.user_id, :user),
-        'participation_context_ref' => lookup_ref(b.participation_context_id, %i[phase]),
+        'phase_ref' => lookup_ref(b.phase_id, %i[phase]),
         'created_at' => shift_timestamp(b.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(b.updated_at, shift_timestamps)&.iso8601
       }
