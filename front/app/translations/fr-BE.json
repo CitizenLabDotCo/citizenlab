@@ -1566,7 +1566,7 @@
   "app.containers.UsersShowPage.eventsWithCount": "Événements ({eventsCount})",
   "app.containers.UsersShowPage.followingWithCount": "Suivis ({followingCount})",
   "app.containers.UsersShowPage.goBackToPreviousPage": "Retour à la page précédente",
-  "app.containers.UsersShowPage.inputs": "Entrées",
+  "app.containers.UsersShowPage.inputs": "Contributions",
   "app.containers.UsersShowPage.invisibleTitlePostsList": "Tous les articles soumis par ce participant",
   "app.containers.UsersShowPage.invisibleTitleUserComments": "Tous les commentaires postés par cet utilisateur",
   "app.containers.UsersShowPage.loadMore": "Charger la suite",
