@@ -199,8 +199,7 @@ describe MultiTenancy::Templates::TenantSerializer do
       create_list(
         :cause,
         5,
-        participation_context_id: phase.id,
-        participation_context_type: 'Phase',
+        phase: phase,
         ordering: rand(10) # Introduce some randomness, with the acts_as_list gem handling collisions & sequencing
       )
 

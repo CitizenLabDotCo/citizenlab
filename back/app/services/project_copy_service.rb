@@ -435,7 +435,7 @@ class ProjectCopyService < TemplateService
     user_ids += Basket.where(participation_context: Phase.where(project: @project)).pluck(:user_id)
     user_ids += OfficialFeedback.where(post_id: idea_ids, post_type: 'Idea').pluck(:user_id)
     user_ids += Follower.where(followable_id: ([@project.id] + idea_ids)).pluck(:user_id)
-    user_ids += Volunteering::Volunteer.where(cause: Volunteering::Cause.where(participation_context: Phase.where(project: @project))).pluck :user_id
+    user_ids += Volunteering::Volunteer.where(cause: Volunteering::Cause.where(phase: Phase.where(project: @project))).pluck :user_id
     user_ids += Events::Attendance.where(event: @project.events).pluck :attendee_id
 
     User.where(id: user_ids.uniq).map do |user|
@@ -713,7 +713,7 @@ class ProjectCopyService < TemplateService
   end
 
   def yml_volunteers(shift_timestamps: 0)
-    Volunteering::Volunteer.where(cause: Volunteering::Cause.where(participation_context: Phase.where(project: @project))).map do |volunteer|
+    Volunteering::Volunteer.where(cause: Volunteering::Cause.where(phase: Phase.where(project: @project))).map do |volunteer|
       {
         'cause_ref' => lookup_ref(volunteer.cause_id, :volunteering_cause),
         'user_ref' => lookup_ref(volunteer.user_id, :user),
