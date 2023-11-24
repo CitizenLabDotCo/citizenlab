@@ -7,7 +7,7 @@ module IdAuth0
     isolate_namespace IdAuth0
 
     config.to_prepare do
-      Verification::VerificationService.add_method(
+      Verification.add_method(
         Auth0Omniauth.new
       )
     end

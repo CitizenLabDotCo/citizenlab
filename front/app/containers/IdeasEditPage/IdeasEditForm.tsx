@@ -161,9 +161,12 @@ const IdeasEditForm = ({ params: { ideaId } }: WithRouterProps) => {
         : omit(payload, ['idea_images_attributes', 'idea_files_attributes']),
     });
 
-    clHistory.push({
-      pathname: `/ideas/${idea.data.attributes.slug}`,
-    });
+    clHistory.push(
+      {
+        pathname: `/ideas/${idea.data.attributes.slug}`,
+      },
+      { scrollToTop: true }
+    );
   };
 
   const getApiErrorMessage: ApiErrorGetter = useCallback(

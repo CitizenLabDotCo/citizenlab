@@ -31,6 +31,7 @@ const LoginCredentials = ({ user }: PasswordChangeProps) => {
       <Box display="flex" flexWrap="wrap" gap="16px">
         <Button
           linkTo="/profile/change-email"
+          scrollToTop
           width="auto"
           justifyWrapper="left"
           buttonStyle="secondary"
@@ -40,6 +41,7 @@ const LoginCredentials = ({ user }: PasswordChangeProps) => {
         </Button>
         <Button
           linkTo="/profile/change-password"
+          scrollToTop
           width="auto"
           justifyWrapper="left"
           buttonStyle="secondary"
