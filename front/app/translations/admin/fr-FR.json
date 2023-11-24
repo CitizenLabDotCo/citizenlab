@@ -2412,7 +2412,7 @@
   "app.containers.admin.inviteUsersWithSeatsModal.confirmSeatUsageChange": "Confirmer l'impact sur l'utilisation des sièges",
   "app.containers.admin.inviteUsersWithSeatsModal.infoMessage2": "Vous avez atteint la limite des sièges inclus dans votre plan.",
   "app.containers.admin.project.permissions.permissionEveryoneEmailWarning": "En plus des utilisateurs enregistrés, les utilisateurs non enregistrés qui fournissent une adresse e-mail et la confirment pourront effectuer l'action. Sélectionnez cette option pour réduire les freins à la participation.",
-  "app.containers.admin.project.permissions.permissionsAdministratorsAndManagers": "Les administrateurs et les responsables de ce projet",
+  "app.containers.admin.project.permissions.permissionsAdministratorsAndManagers": "Les administrateurs et les gestionnaires de ce projet",
   "app.containers.admin.project.permissions.permissionsAdminsAndCollaborators": "Administrateurs et gestionnaires uniquement",
   "app.containers.admin.project.permissions.permissionsAdminsAndCollaboratorsTooltip": "Seuls les administrateurs de la plateforme et les gestionnaires de projets ou de dossiers peuvent effectuer l'action",
   "app.containers.admin.project.permissions.permissionsAnyoneLabel": "Tout le monde",
