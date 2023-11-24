@@ -8028,22 +8028,22 @@ models:
     updated_at: '2018-03-28 13:35:07'
   polls/question:
     - &question-kicker
-      participation_context_ref: *polling_phase
+      phase_ref: *polling_phase
       title_multiloc:
         en: 'Should we get a new kicker?'
       ordering: 1
     - &question-kicker-past
-      participation_context_ref: *pastPolling
+      phase_ref: *pastPolling
       title_multiloc:
         en: 'Should we get a new kicker?'
       ordering: 1
     - &question-kicker-verified
-      participation_context_ref: *verifiedPoll_phase
+      phase_ref: *verifiedPoll_phase
       title_multiloc:
         en: 'Should we get a new kicker?'
       ordering: 1
     - &question-kicker-charlie
-      participation_context_ref: *charliesPoll_phase
+      phase_ref: *charliesPoll_phase
       title_multiloc:
         en: 'Should we get a new kicker?'
       ordering: 1
@@ -8090,7 +8090,7 @@ models:
       ordering: 1
   polls/response:
     - &jordan-response
-      participation_context_ref: *polling_phase
+      phase_ref: *polling_phase
       user_ref: *77
   polls/response_option:
     - response_ref: *jordan-response
