@@ -36,12 +36,13 @@ const StyledBox = styled(Box)<{
   min-height: 40px;
   width: 100%;
 
+  display: grid;
+  grid-gap: ${DEFAULT_PADDING};
+
   ${({ layout, columnLayout }) =>
     layout === 'narrow'
       ? ''
       : `
-    display: grid;
-    grid-gap: ${DEFAULT_PADDING};
     grid-template-columns: ${COLUMN_LAYOUTS[columnLayout]};
   `}
 

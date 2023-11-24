@@ -48,7 +48,7 @@ const PhaseReport = ({ reportId }: Props) => {
         p={smallerThanTablet ? '0px' : '30px'}
       >
         <ReportContext.Provider value="phase">
-          <Box maxWidth="800px">
+          <Box maxWidth="800px" w="100%">
             <Editor isPreview={true}>
               {editorData && <ContentBuilderFrame editorData={editorData} />}
             </Editor>

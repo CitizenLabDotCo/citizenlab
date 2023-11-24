@@ -25,7 +25,7 @@ const Text = ({ text }: Props) => {
   const px = useReportDefaultPadding();
 
   return (
-    <PageBreakBox id="e2e-text-box" minHeight="26px" px={px}>
+    <PageBreakBox className="e2e-text-box" minHeight="26px" px={px}>
       <QuillEditedContent textColor={theme.colors.tenantText}>
         <div dangerouslySetInnerHTML={{ __html: text }} />
       </QuillEditedContent>

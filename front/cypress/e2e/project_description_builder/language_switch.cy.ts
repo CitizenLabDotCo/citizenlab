@@ -57,7 +57,7 @@ describe('Project description builder language switch', () => {
     cy.get('#e2e-draggable-text').dragAndDrop('#e2e-content-builder-frame', {
       position: 'inside',
     });
-    cy.get('#e2e-text-box').click('center');
+    cy.get('.e2e-text-box').click('center');
     cy.get('#quill-editor').click();
     cy.get('#quill-editor').type('Language 1 text.', { force: true });
     cy.get('#e2e-content-builder-topbar-save').click();
@@ -68,7 +68,7 @@ describe('Project description builder language switch', () => {
     cy.get('#e2e-draggable-text').dragAndDrop('#e2e-content-builder-frame', {
       position: 'inside',
     });
-    cy.get('#e2e-text-box').click('center');
+    cy.get('.e2e-text-box').click('center');
     cy.get('#quill-editor').click();
     cy.get('#quill-editor').type('Language 2 text.', { force: true });
     cy.get('#e2e-content-builder-topbar-save').click();
@@ -94,13 +94,13 @@ describe('Project description builder language switch', () => {
     // Delete content from languages
     // EN
     cy.get('.en').click();
-    cy.get('#e2e-text-box').click({ force: true });
+    cy.get('.e2e-text-box').click({ force: true });
     cy.get('#e2e-delete-button').click({ force: true });
 
     // NL-BE
-    cy.reload(); // without it, #e2e-text-box cannot be found. Cannot be reproduced manually.
+    cy.reload(); // without it, .e2e-text-box cannot be found. Cannot be reproduced manually.
     cy.get('.nl-BE').click();
-    cy.get('#e2e-text-box').click({ force: true });
+    cy.get('.e2e-text-box').click({ force: true });
     cy.get('#e2e-delete-button').click({ force: true });
     cy.get('#e2e-content-builder-topbar-save').click({ force: true });
     cy.wait('@saveProjectDescriptionBuilder');
