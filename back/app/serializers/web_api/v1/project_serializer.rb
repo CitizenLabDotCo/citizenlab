@@ -9,7 +9,6 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
     :followers_count,
     :include_all_areas,
     :internal_role,
-    :process_type,
     :slug,
     :visible_to,
     :created_at,

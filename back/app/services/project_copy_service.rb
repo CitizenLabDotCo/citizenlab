@@ -214,7 +214,6 @@ class ProjectCopyService < TemplateService
       'remote_header_bg_url' => @project.header_bg_url,
       'visible_to' => @project.visible_to,
       'description_preview_multiloc' => @project.description_preview_multiloc,
-      'process_type' => @project.process_type,
       'admin_publication_attributes' => { 'publication_status' => new_publication_status || @project.admin_publication.publication_status },
       'text_images_attributes' => @project.text_images.map do |ti|
         {

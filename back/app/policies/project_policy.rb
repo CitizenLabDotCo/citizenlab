@@ -153,7 +153,6 @@ class ProjectPolicy < ApplicationPolicy
 
   def permitted_attributes_for_create
     attrs = shared_permitted_attributes
-    attrs.unshift(:process_type)
   end
 
   def permitted_attributes_for_update

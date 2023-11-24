@@ -63,7 +63,6 @@ class Project < ApplicationRecord
   before_validation :generate_slug, on: :create
   before_validation :sanitize_description_multiloc, if: :description_multiloc
   before_validation :set_admin_publication, unless: proc { Current.loading_tenant_template }
-  before_validation :set_process_type, on: :create
   before_validation :set_visible_to, on: :create
   before_validation :strip_title
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
@@ -79,14 +78,12 @@ class Project < ApplicationRecord
   after_save :reassign_moderators, if: :folder_changed?
   after_commit :clear_folder_changes, if: :folder_changed?
 
-  PROCESS_TYPES = %w[timeline].freeze
   INTERNAL_ROLES = %w[open_idea_box].freeze
 
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :description_multiloc, multiloc: { presence: false, html: true }
   validates :description_preview_multiloc, multiloc: { presence: false }
   validates :slug, presence: true, uniqueness: true
-  validates :process_type, presence: true, inclusion: { in: PROCESS_TYPES }
   validates :visible_to, presence: true, inclusion: { in: VISIBLE_TOS }
   validates :internal_role, inclusion: { in: INTERNAL_ROLES, allow_nil: true }
   validate :admin_publication_must_exist, unless: proc { Current.loading_tenant_template }
@@ -224,10 +221,6 @@ class Project < ApplicationRecord
     )
     self.description_multiloc = service.remove_multiloc_empty_trailing_tags(description_multiloc)
     self.description_multiloc = service.linkify_multiloc(description_multiloc)
-  end
-
-  def set_process_type
-    self.process_type ||= 'timeline'
   end
 
   def set_visible_to

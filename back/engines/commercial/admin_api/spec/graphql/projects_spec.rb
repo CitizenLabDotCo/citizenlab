@@ -36,8 +36,7 @@ RSpec.describe AdminApi::Schema do
         'id' => project.id,
         'slug' => project.slug,
         'publicationStatus' => project.admin_publication.publication_status,
-        'visibleTo' => project.visible_to,
-        'processType' => project.process_type
+        'visibleTo' => project.visible_to
       })
     end
   end
