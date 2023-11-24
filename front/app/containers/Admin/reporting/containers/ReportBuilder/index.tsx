@@ -3,6 +3,7 @@ import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useReport from 'api/reports/useReport';
 import useReportLayout from 'api/report_layout/useReportLayout';
 import useReportLocale from '../../hooks/useReportLocale';
 
@@ -42,12 +43,14 @@ import { SerializedNodes } from '@craftjs/core';
 import { Locale } from 'typings';
 import ReportLanguageProvider from '../ReportLanguageProvider';
 import useLocale from '../../../../../hooks/useLocale';
+import { ReportType } from '../../types';
 
 interface Props {
   reportId: string;
+  reportType: ReportType;
 }
 
-const ReportBuilder = ({ reportId }: Props) => {
+const ReportBuilder = ({ reportId, reportType }: Props) => {
   const [previewEnabled, setPreviewEnabled] = useState(false);
   const [contentBuilderErrors, setContentBuilderErrors] =
     useState<ContentBuilderErrors>({});
@@ -127,7 +130,7 @@ const ReportBuilder = ({ reportId }: Props) => {
   if (!selectedLocale) return null;
 
   return (
-    <ReportContext.Provider value="pdf">
+    <ReportContext.Provider value={reportType}>
       <FullscreenContentBuilder
         onErrors={handleErrors}
         onDeleteElement={handleDeleteElement}
@@ -215,15 +218,23 @@ const ReportBuilderWrapper = () => {
   const reportBuilderEnabled = useFeatureFlag({ name: 'report_builder' });
   const { pathname } = useLocation();
   const { reportId } = useParams();
+  const { data: report } = useReport(reportId);
 
   const renderReportBuilder =
     reportBuilderEnabled &&
     pathname.includes('admin/reporting/report-builder') &&
-    reportId !== undefined;
+    report !== undefined;
 
   if (!renderReportBuilder) return null;
 
-  return <ReportBuilder reportId={reportId} />;
+  const phaseId = report.data.relationships.phase?.data?.id;
+
+  return (
+    <ReportBuilder
+      reportId={report.data.id}
+      reportType={phaseId ? 'phase' : 'pdf'}
+    />
+  );
 };
 
 export default ReportBuilderWrapper;
