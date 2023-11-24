@@ -10,11 +10,11 @@ resource 'Baskets' do
     header 'Content-Type', 'application/json'
     @user = create(:user)
     @project = create(:single_phase_multiple_voting_project)
-    create_list(:basket, 2, participation_context: create(:single_phase_budgeting_project).phases.first)
+    create_list(:basket, 2, phase: create(:single_phase_budgeting_project).phases.first)
     @basket = create(
       :basket,
       user: @user,
-      participation_context: @project.phases.first
+      phase: @project.phases.first
     )
     @ideas = [1, 2, 2].map do |votes|
       create(:idea, project: @project, budget: 2).tap do |idea|
@@ -37,8 +37,8 @@ resource 'Baskets' do
         expect(json_response.dig(:data, :type)).to eq 'basket'
         expect(json_response.dig(:data, :attributes, :total_votes)).to eq 5
         expect(json_response.dig(:data, :relationships)).to include(
-          participation_context: {
-            data: { id: @basket.participation_context_id, type: 'phase' }
+          phase: {
+            data: { id: @basket.phase_id, type: 'phase' }
           },
           user: {
             data: { id: @basket.user_id, type: 'user' }
@@ -56,8 +56,7 @@ resource 'Baskets' do
   post 'web_api/v1/baskets' do
     with_options scope: :basket do
       parameter :submitted, 'Boolean value to mark the basket as submitted or unsubmitted. Defaults to false.', required: false
-      parameter :participation_context_id, 'The id of the phase/project to whom the basket belongs', required: true
-      parameter :participation_context_type, 'The type of the participation context (e.g. Project, Phase)', required: true
+      parameter :phase_id, 'The id of the phase/project to whom the basket belongs', required: true
     end
     ValidationErrorHelper.new.error_fields(self, Basket)
 
@@ -65,22 +64,20 @@ resource 'Baskets' do
       before { header_token_for @user }
 
       let(:submitted) { false }
-      let(:participation_context_id) { @project.id }
-      let(:participation_context_type) { 'Project' }
+      let(:phase_id) { @project.phases.first.id }
 
       example_request 'Create a basket' do
         assert_status 201
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :attributes, :submitted_at)).to be_nil
         expect(json_response.dig(:data, :relationships, :user, :data, :id)).to eq @user.id
-        expect(json_response.dig(:data, :relationships, :participation_context, :data, :id)).to eq participation_context_id
+        expect(json_response.dig(:data, :relationships, :phase, :data, :id)).to eq phase_id
       end
 
       example '[error] Create a basket in a survey', document: false do
         do_request(
           basket: {
-            participation_context_id: create(:single_phase_typeform_survey_project).id,
-            participation_context_type: 'Project'
+            phase_id: create(:single_phase_typeform_survey_project).phases.first.id
           }
         )
 
@@ -111,7 +108,7 @@ resource 'Baskets' do
         context 'when budgeting' do
           before do
             @project = create(:single_phase_budgeting_project)
-            @basket.update!(participation_context: @project.phases.first)
+            @basket.update!(phase: @project.phases.first)
           end
 
           example 'Submitting a basket when the budget of an idea changed uses the new budget', document: false do

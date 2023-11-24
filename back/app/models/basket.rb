@@ -4,13 +4,12 @@
 #
 # Table name: baskets
 #
-#  id                         :uuid             not null, primary key
-#  submitted_at               :datetime
-#  user_id                    :uuid
-#  participation_context_id   :uuid
-#  participation_context_type :string
-#  created_at                 :datetime         not null
-#  updated_at                 :datetime         not null
+#  id           :uuid             not null, primary key
+#  submitted_at :datetime
+#  user_id      :uuid
+#  phase_id     :uuid
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
 #
 # Indexes
 #
@@ -22,8 +21,7 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class Basket < ApplicationRecord
-  alias_attribute :phase, :participation_context
-  belongs_to :participation_context, polymorphic: true
+  belongs_to :phase
 
   belongs_to :user, optional: true
 
@@ -96,7 +94,7 @@ class Basket < ApplicationRecord
         FROM ideas i
         LEFT OUTER JOIN baskets_ideas bi ON i.id = bi.idea_id
         LEFT OUTER JOIN baskets b ON bi.basket_id = b.id AND b.submitted_at IS NOT NULL"
-      query += " AND b.participation_context_id = '#{phase_id}'" if phase_id
+      query += " AND b.phase_id = '#{phase_id}'" if phase_id
       query += "
         WHERE i.project_id = '#{project_id}'
         GROUP BY i.id
@@ -107,8 +105,8 @@ class Basket < ApplicationRecord
       ActiveRecord::Base.connection.execute(query)
     end
 
-    def update_basket_and_vote_counts(count_contexts, update_context)
-      baskets = Basket.where(participation_context: count_contexts).submitted
+    def update_basket_and_vote_counts(count_phases, update_context)
+      baskets = Basket.where(phase: count_phases).submitted
       baskets_count = baskets.count
       votes_count = BasketsIdea.where(basket: baskets).sum(:votes)
       update_context.update!(baskets_count: baskets_count, votes_count: votes_count)

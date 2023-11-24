@@ -2055,8 +2055,7 @@ CREATE TABLE public.baskets (
     id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
     submitted_at timestamp without time zone,
     user_id uuid,
-    participation_context_id uuid,
-    participation_context_type character varying,
+    phase_id uuid,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -7942,6 +7941,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20231120090516'),
 ('20231123141534'),
 ('20231123161330'),
-('20231123173159');
+('20231123173159'),
+('20231124090234');
 
 

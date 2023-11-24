@@ -71,7 +71,7 @@ class Phase < ApplicationRecord
   # TODO: JS - Should be in the engine as a patch
   has_one :report, class_name: 'ReportBuilder::Report', dependent: :destroy
 
-  has_many :baskets, as: :participation_context, dependent: :destroy
+  has_many :baskets, dependent: :destroy
   has_many :permissions, as: :permission_scope, dependent: :destroy
   has_many :ideas_phases, dependent: :destroy
   has_many :ideas, through: :ideas_phases

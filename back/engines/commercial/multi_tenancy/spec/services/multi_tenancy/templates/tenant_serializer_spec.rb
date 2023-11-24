@@ -220,8 +220,8 @@ describe MultiTenancy::Templates::TenantSerializer do
       project = create(:single_phase_multiple_voting_project)
       idea = create(:idea, project: project)
       user = create(:user)
-      basket1 = create(:basket, participation_context: project.phases.first, user: user)
-      basket2 = create(:basket, participation_context: project.phases.first, user: nil)
+      basket1 = create(:basket, phase: project.phases.first, user: user)
+      basket2 = create(:basket, phase: project.phases.first, user: nil)
       create(:baskets_idea, idea: idea, basket: basket1, votes: 1)
       create(:baskets_idea, idea: idea, basket: basket2, votes: 2)
 

@@ -147,7 +147,7 @@ class ParticipantsService
     # voting
     if actions.include? :voting
       baskets = Basket.submitted
-      baskets = baskets.where(participation_context: Phase.where(project: projects))
+      baskets = baskets.where(phase: Phase.where(project: projects))
       baskets = baskets.where('created_at::date >= (?)::date', since) if since
       participants = participants.or(User.where(id: baskets.select(:user_id)))
     end
