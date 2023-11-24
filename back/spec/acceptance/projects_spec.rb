@@ -158,8 +158,7 @@ resource 'Projects' do
           }
         )
         expect(json_response.dig(:data, :relationships)).to include(
-          areas: { data: [] },
-          user_basket: { data: nil }
+          areas: { data: [] }
         )
         expect(json_response[:included].pluck(:type)).to include 'admin_publication'
       end

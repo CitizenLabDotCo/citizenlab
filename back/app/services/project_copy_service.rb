@@ -432,7 +432,7 @@ class ProjectCopyService < TemplateService
     user_ids += Comment.where(id: comment_ids).pluck(:author_id)
     reaction_ids = Reaction.where(reactable_id: [idea_ids + comment_ids]).ids
     user_ids += Reaction.where(id: reaction_ids).pluck(:user_id)
-    user_ids += Basket.where(participation_context: Phase.where(project: @project)).pluck(:user_id)
+    user_ids += Basket.where(phase: Phase.where(project: @project)).pluck(:user_id)
     user_ids += OfficialFeedback.where(post_id: idea_ids, post_type: 'Idea').pluck(:user_id)
     user_ids += Follower.where(followable_id: ([@project.id] + idea_ids)).pluck(:user_id)
     user_ids += Volunteering::Volunteer.where(cause: Volunteering::Cause.where(phase: Phase.where(project: @project))).pluck :user_id
