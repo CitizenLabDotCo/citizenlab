@@ -14,7 +14,6 @@
 #  ideas_count                  :integer          default(0), not null
 #  visible_to                   :string           default("public"), not null
 #  description_preview_multiloc :jsonb
-#  process_type                 :string           default("timeline"), not null
 #  internal_role                :string
 #  comments_count               :integer          default(0), not null
 #  default_assignee_id          :uuid

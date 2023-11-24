@@ -2,7 +2,8 @@
 
 class ProjectRemoveContinuousAttributes < ActiveRecord::Migration[6.1]
   def change
-    remove_column :projects, :participation_method, :string, default: 'timeline'
+    remove_column :projects, :process_type, :string, default: 'timeline'
+    remove_column :projects, :participation_method, :string, default: 'ideation'
     remove_column :projects, :presentation_mode, :string, default: 'card'
     remove_column :projects, :ideas_order, :string
     remove_column :projects, :input_term, :string, default: 'idea'

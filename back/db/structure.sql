@@ -1222,7 +1222,6 @@ CREATE TABLE public.projects (
     ideas_count integer DEFAULT 0 NOT NULL,
     visible_to character varying DEFAULT 'public'::character varying NOT NULL,
     description_preview_multiloc jsonb DEFAULT '{}'::jsonb,
-    process_type character varying DEFAULT 'timeline'::character varying NOT NULL,
     internal_role character varying,
     comments_count integer DEFAULT 0 NOT NULL,
     default_assignee_id uuid,
