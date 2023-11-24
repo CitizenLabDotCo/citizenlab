@@ -225,7 +225,7 @@ const IdeaHeaderRow = ({
     Component,
     onChange,
   }: CellConfiguration<IdeaHeaderCellComponentProps>) => {
-    return displayColumns && !displayColumns.has(name) ? null : (
+    return displayColumns.has(name) ? (
       <Component
         sortAttribute={sortAttribute}
         sortDirection={sortDirection}
@@ -237,7 +237,7 @@ const IdeaHeaderRow = ({
         onChange={onChange}
         key={name}
       />
-    );
+    ) : null;
   };
 
   return (
