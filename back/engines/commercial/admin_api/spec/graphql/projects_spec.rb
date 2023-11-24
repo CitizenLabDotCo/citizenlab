@@ -21,7 +21,6 @@ RSpec.describe AdminApi::Schema do
             slug
             publicationStatus
             visibleTo
-            processType
           }
         }
       |
