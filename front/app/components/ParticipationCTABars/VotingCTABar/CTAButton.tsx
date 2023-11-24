@@ -11,7 +11,7 @@ import { Box, Button } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
 
 // styling
-import { useTheme } from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -29,13 +29,35 @@ import { IPhaseData } from 'api/phases/types';
 
 const confetti = new JSConfetti();
 
+const StyledButton = styled(Button)`
+  &.pulse {
+    animation-name: pulse;
+    animation-duration: 1.3s;
+    animation-timing-function: ease;
+    animation-delay: 0.3s;
+    animation-iteration-count: infinite;
+  }
+
+  /* border-radius */
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(255, 255, 255, 1);
+    }
+    100% {
+      box-shadow: 0 0 0 6px rgba(255, 255, 255, 0);
+    }
+  }
+`;
 interface Props {
   participationContext: IProjectData | IPhaseData;
 }
 
 const CTAButton = ({ participationContext }: Props) => {
   const [processing, setProcessing] = useState(false);
-
   const basketId = participationContext.relationships.user_basket?.data?.id;
 
   const { data: basket } = useBasket(basketId);
@@ -101,7 +123,7 @@ const CTAButton = ({ participationContext }: Props) => {
       content={disabledExplanation}
     >
       <Box width="100%">
-        <Button
+        <StyledButton
           icon="vote-ballot"
           buttonStyle="secondary"
           iconColor={theme.colors.tenantText}
@@ -115,9 +137,10 @@ const CTAButton = ({ participationContext }: Props) => {
           fontSize="14px"
           disabled={!!disabledExplanation}
           processing={processing}
+          className={disabledExplanation ? '' : 'pulse'}
         >
           <FormattedMessage {...messages.submit} />
-        </Button>
+        </StyledButton>
       </Box>
     </Tippy>
   );

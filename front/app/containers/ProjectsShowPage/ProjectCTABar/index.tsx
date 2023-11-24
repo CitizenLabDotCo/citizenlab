@@ -70,12 +70,13 @@ export const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
     phases: phases?.data,
   });
 
-  if (portalElement && isVisible) {
+  if (portalElement && (isVisible || isSmallerThanPhone)) {
     return createPortal(
       <Box
         width="100vw"
         position="fixed"
-        top="0px"
+        top={!isSmallerThanPhone ? '0px' : undefined}
+        bottom={isSmallerThanPhone ? '0px' : undefined}
         zIndex="1000"
         background="#fff"
       >
