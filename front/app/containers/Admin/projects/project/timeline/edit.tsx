@@ -279,7 +279,27 @@ const AdminPhaseEdit = () => {
         setAttributeDiff({});
 
         if (redirectAfterSave) {
-          clHistory.push(`/admin/projects/${projectId}/setup/${phaseId}`);
+          const participationMethod =
+            phaseResponse.attributes.participation_method;
+          let redirectTab = 'setup';
+          if (
+            participationMethod === 'ideation' ||
+            participationMethod === 'voting'
+          ) {
+            redirectTab = 'ideas';
+          } else if (participationMethod === 'native_survey') {
+            redirectTab = 'native-survey';
+          } else if (participationMethod === 'poll') {
+            redirectTab = 'polls';
+          } else if (participationMethod === 'survey') {
+            redirectTab = 'survey-results';
+          } else if (participationMethod === 'volunteering') {
+            redirectTab = 'volunteering';
+          }
+          window.scrollTo(0, 0);
+          clHistory.push(
+            `/admin/projects/${projectId}/${redirectTab}/${phaseId}`
+          );
         }
       }
     );
@@ -368,8 +388,10 @@ const AdminPhaseEdit = () => {
         // If there is no previous end date, then the previous phase is open ended
         // Set the default start date to the previous start date + 2 days to account for single day phases
         startDate = previousPhaseStartDate.add(2, 'day');
+      } else if (!startDate) {
+        // If there is no start date at this point, then set the default start date to today
+        startDate = moment();
       }
-      // Otherwise, there is no date yet and it should remain 'null'
 
       // else there is already a phase (which means we're in the edit form)
       // and we take it from the attrs

@@ -1,5 +1,13 @@
-import React, { useCallback, FormEvent, KeyboardEvent, useRef } from 'react';
+import React, {
+  useCallback,
+  FormEvent,
+  KeyboardEvent,
+  useRef,
+  useState,
+  useEffect,
+} from 'react';
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
+import Tippy from '@tippyjs/react';
 
 // tracking
 import tracks from './tracks';
@@ -243,6 +251,18 @@ const Timeline = ({
   const { data: project } = useProjectById(projectId);
   const localize = useLocalize();
   const tabsRef = useRef<HTMLButtonElement[]>([]);
+  const [tooltipVisible, setTooltipVisible] = useState(false);
+
+  useEffect(() => {
+    const showTooltip = phases?.data?.length === 1;
+    setTooltipVisible(showTooltip);
+
+    const timeout = setTimeout(() => {
+      setTooltipVisible(false);
+    }, 5000);
+
+    return () => clearTimeout(timeout);
+  }, [phases]);
 
   const handleOnPhaseSelection = useCallback(
     (phase: IPhaseData | undefined) => (event: FormEvent) => {
@@ -376,28 +396,42 @@ const Timeline = ({
                     breakpoint={phasesBreakpoint}
                     last
                   >
-                    <PhaseBar
-                      onMouseDown={removeFocusAfterMouseClick}
-                      onKeyDown={handleTabListOnKeyDown}
-                      onClick={() => {
-                        clHistory.push(
-                          `/admin/projects/${projectId}/phases/new`
-                        );
+                    <Tippy
+                      interactive={true}
+                      visible={tooltipVisible}
+                      placement="bottom-start"
+                      content={
+                        <Box p="8px 12px">
+                          <FormattedMessage {...messages.createANewPhase} />
+                        </Box>
+                      }
+                      popperOptions={{
+                        strategy: 'fixed',
                       }}
-                      role="tab"
-                      id="new-phase"
                     >
-                      <span aria-hidden>
-                        <Icon
-                          name="plus"
-                          fill={colors.coolGrey700}
-                          height="16px"
-                        />
-                      </span>
-                      <ScreenReaderOnly>
-                        <FormattedMessage {...messages.newPhase} />
-                      </ScreenReaderOnly>
-                    </PhaseBar>
+                      <PhaseBar
+                        onMouseDown={removeFocusAfterMouseClick}
+                        onKeyDown={handleTabListOnKeyDown}
+                        onClick={() => {
+                          clHistory.push(
+                            `/admin/projects/${projectId}/phases/new`
+                          );
+                        }}
+                        role="tab"
+                        id="new-phase"
+                      >
+                        <span aria-hidden>
+                          <Icon
+                            name="plus"
+                            fill={colors.coolGrey700}
+                            height="16px"
+                          />
+                        </span>
+                        <ScreenReaderOnly>
+                          <FormattedMessage {...messages.newPhase} />
+                        </ScreenReaderOnly>
+                      </PhaseBar>
+                    </Tippy>
                   </PhaseContainer>
                 </Box>
               )}

@@ -1307,6 +1307,7 @@
   "app.containers.Projects.basketSubmitted": "The basket has been submitted!",
   "app.containers.Projects.budget": "{amount} budget",
   "app.containers.Projects.contributions": "Contributions",
+  "app.containers.Projects.createANewPhase": "Create a new phase",
   "app.containers.Projects.currentPhase": "Current phase",
   "app.containers.Projects.document": "Document",
   "app.containers.Projects.editProject": "Edit project",

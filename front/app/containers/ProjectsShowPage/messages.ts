@@ -33,6 +33,10 @@ export default defineMessages({
     id: 'app.containers.Projects.invisibleTitlePoll',
     defaultMessage: 'Take the poll',
   },
+  createANewPhase: {
+    id: 'app.containers.Projects.createANewPhase',
+    defaultMessage: 'Create a new phase',
+  },
   invisibleTitlePhaseAbout: {
     id: 'app.containers.Projects.invisibleTitlePhaseAbout',
     defaultMessage: 'About this phase',
