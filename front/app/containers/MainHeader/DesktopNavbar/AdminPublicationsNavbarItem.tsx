@@ -209,6 +209,7 @@ const AdminPublicationsNavbarItem = ({
                   {item.relationships.publication.data.type === 'project' && (
                     <ProjectsListItem
                       to={`${linkTo}/${item.attributes.publication_slug}`}
+                      scrollToTop
                     >
                       {localize(item.attributes.publication_title_multiloc)}
                     </ProjectsListItem>
@@ -217,6 +218,7 @@ const AdminPublicationsNavbarItem = ({
                     item.relationships.publication.data.type === 'folder' && (
                       <ProjectsListItem
                         to={`/folders/${item.attributes.publication_slug}`}
+                        scrollToTop
                       >
                         {localize(item.attributes.publication_title_multiloc)}
                       </ProjectsListItem>
@@ -228,7 +230,11 @@ const AdminPublicationsNavbarItem = ({
           footer={
             <>
               {totalProjectsListLength > 9 && (
-                <ProjectsListFooter to={linkTo} id="e2e-all-projects-link">
+                <ProjectsListFooter
+                  to={linkTo}
+                  id="e2e-all-projects-link"
+                  scrollToTop
+                >
                   <FormattedMessage {...messages.allProjects} />
                 </ProjectsListFooter>
               )}
