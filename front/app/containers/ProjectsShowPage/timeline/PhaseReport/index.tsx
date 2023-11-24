@@ -19,7 +19,7 @@ const PhaseReport = ({ reportId }: Props) => {
 
   return (
     <Box w="100%" display="flex" justifyContent="center">
-      <Box maxWidth="800px">
+      <Box maxWidth="800px" w="100%">
         <Editor isPreview={true}>
           {editorData && <ContentBuilderFrame editorData={editorData} />}
         </Editor>

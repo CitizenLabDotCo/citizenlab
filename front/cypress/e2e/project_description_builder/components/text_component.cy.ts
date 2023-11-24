@@ -48,7 +48,7 @@ describe('Project description builder Text component', () => {
       position: 'inside',
     });
 
-    cy.get('#e2e-text-box').click();
+    cy.get('.e2e-text-box').click();
     cy.get('#quill-editor').click();
     cy.get('#quill-editor').type('Edited text.', { force: true });
 
@@ -67,7 +67,7 @@ describe('Project description builder Text component', () => {
       `/admin/project-description-builder/projects/${projectId}/description`
     );
 
-    cy.get('#e2e-text-box').click();
+    cy.get('.e2e-text-box').click();
     cy.get('#e2e-delete-button').click();
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveProjectDescriptionBuilder');
