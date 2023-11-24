@@ -124,12 +124,6 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
     avatars_for_project(object, params)[:users]
   end
 
-  has_one :user_basket, record_type: :basket, if: proc { |object, params|
-    signed_in? object, params
-  } do |object, params|
-    user_basket object, params
-  end
-
   has_one :user_follower, record_type: :follower, if: proc { |object, params|
     signed_in? object, params
   } do |object, params|
@@ -144,16 +138,6 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
     # TODO: call only once (not a second time for counts)
     @participants_service ||= ParticipantsService.new
     AvatarsService.new(@participants_service).avatars_for_project(object, limit: 3)
-  end
-
-  def self.user_basket(object, params)
-    if params[:user_baskets]
-      params.dig(:user_baskets, [object.id, 'Project'])&.first
-    else
-      current_user(params)&.baskets&.find do |basket|
-        basket.participation_context_id == object.id && basket.participation_context_type == 'Project'
-      end
-    end
   end
 
   def self.user_follower(object, params)
