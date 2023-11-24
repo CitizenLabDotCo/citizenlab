@@ -281,7 +281,7 @@ const AssignMultipleVotesInput = ({
           width="100%"
           onClick={onAdd}
         >
-          {formatMessage(messages.vote)}
+          {formatMessage(messages.select)}
         </Button>
       </div>
     </Tippy>
