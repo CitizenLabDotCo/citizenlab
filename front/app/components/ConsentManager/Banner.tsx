@@ -28,9 +28,8 @@ const Container = styled.div`
   justify-content: center;
   padding-top: 20px;
   padding-bottom: 20px;
-  ${(props) =>
-    media.tablet`
-      bottom: ${props.theme.mobileMenuHeight}px;
+  ${media.tablet`
+      bottom: 0px;
       padding-right: 40px;
     `}
 `;
