@@ -51,10 +51,10 @@ describe('Project description builder Two Column component', () => {
     );
 
     // Components added to all columns
-    cy.get('#e2e-draggable-text').dragAndDrop('div#e2e-single-column', {
+    cy.get('#e2e-draggable-text').dragAndDrop('div.e2e-single-column', {
       position: 'inside',
     });
-    cy.get('#e2e-draggable-about-box').dragAndDrop('div#e2e-single-column', {
+    cy.get('#e2e-draggable-about-box').dragAndDrop('div.e2e-single-column', {
       position: 'inside',
     });
 

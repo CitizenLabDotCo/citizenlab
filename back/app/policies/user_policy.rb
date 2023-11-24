@@ -103,8 +103,14 @@ class UserPolicy < ApplicationPolicy
     !!((user && (instance&.id == user.id || user.admin?)) || instance&.invite_pending?)
   end
 
-  def permitted_attributes
+  def permitted_attributes_for_create
     [:email] + shared_permitted_attributes
+  end
+
+  def permitted_attributes_for_update
+    shared_permitted_attributes.tap do |attrs|
+      attrs.push :email if !AppConfiguration.instance.feature_activated?('user_confirmation')
+    end
   end
 
   private

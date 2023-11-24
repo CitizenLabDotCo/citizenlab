@@ -31,7 +31,7 @@ export default () => (
     <Title style={{ paddingTop: '26px' }}>
       <FormattedMessage {...messages.passwordChangeSuccessMessage} />
     </Title>
-    <Button linkTo={'/'}>
+    <Button linkTo={'/'} scrollToTop>
       <FormattedMessage {...messages.goHome} />
     </Button>
   </Box>

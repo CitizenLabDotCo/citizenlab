@@ -18,7 +18,7 @@ interface Props {
   padding?: string;
 }
 
-export const StyledPreviewBox = styled(Box)`
+export const StyledPreviewBox = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;

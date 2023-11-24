@@ -1,10 +1,11 @@
 import React from 'react';
 
 // components
-import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 
 // craft
-import { UserComponent, Element, useNode } from '@craftjs/core';
+import { UserComponent, Element } from '@craftjs/core';
+import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/useCraftComponentDefaultPadding';
 
 // widgets
 import TwoColumn from '../TwoColumn';
@@ -12,13 +13,9 @@ import Container from '../Container';
 import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
 import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
-import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
 
 const ImageTextCards: UserComponent = () => {
-  const isSmallerThanTablet = useBreakpoint('tablet');
-  const { parent } = useNode((node) => ({
-    parent: node.data.parent,
-  }));
+  const craftComponentDefaultPadding = useCraftComponentDefaultPadding();
 
   return (
     <Element
@@ -28,10 +25,7 @@ const ImageTextCards: UserComponent = () => {
       style={{
         maxWidth: '1150px',
         margin: '0 auto',
-        padding:
-          isSmallerThanTablet && parent === 'ROOT'
-            ? `0px ${DEFAULT_PADDING}`
-            : '0px',
+        padding: `0px ${craftComponentDefaultPadding}`,
       }}
     >
       <TwoColumn columnLayout="1-2">

@@ -162,6 +162,7 @@ const FullMobileNavMenu = ({
                     onlyActiveOnIndex={onlyActiveOnIndex}
                     navigationItemTitle={localize(navigationItemTitle)}
                     onClick={handleOnMenuItemClick(linkTo)}
+                    scrollToTop
                   />
                 );
               })}
@@ -170,6 +171,7 @@ const FullMobileNavMenu = ({
                 navigationItemTitle={formatMessage(messages.search)}
                 onClick={handleOnMenuItemClick('/projects?focusSearch=true')}
                 iconName="search"
+                scrollToTop
               />
             </MenuItems>
             <StyledCloseIconButton

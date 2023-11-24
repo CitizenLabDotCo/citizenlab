@@ -5,7 +5,7 @@ import messages from './messages';
 
 // components
 import Container from 'components/admin/ContentBuilder/Widgets/Container';
-import Text from 'components/admin/ContentBuilder/Widgets/Text';
+import Text from '../Text';
 import { NoWidgetSettings } from 'components/admin/ContentBuilder/Widgets/NoWidgetSettings';
 import { Element } from '@craftjs/core';
 import { Box } from '@citizenlab/cl2-component-library';
@@ -17,6 +17,7 @@ import useReport from 'api/reports/useReport';
 import useUserById from 'api/users/useUserById';
 import useProjectById from 'api/projects/useProjectById';
 import useLocalize from 'hooks/useLocalize';
+import useReportDefaultPadding from 'containers/Admin/reporting/hooks/useReportDefaultPadding';
 
 // utils
 import { useIntl } from 'utils/cl-intl';
@@ -42,6 +43,7 @@ const toPeriodString = ({
 const AboutReportWidget = ({ reportId, projectId, startAt, endAt }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
+  const px = useReportDefaultPadding();
 
   // Title
   const { data: report } = useReport(reportId);
@@ -64,7 +66,7 @@ const AboutReportWidget = ({ reportId, projectId, startAt, endAt }: Props) => {
     startAt && endAt ? toPeriodString({ startAt, endAt }) : '';
 
   return (
-    <PageBreakBox>
+    <PageBreakBox px={px}>
       <Box
         width="100%"
         display="flex"
