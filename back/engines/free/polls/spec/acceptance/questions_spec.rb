@@ -10,7 +10,7 @@ resource 'Poll Questions' do
     header 'Content-Type', 'application/json'
   end
 
-  get 'web_api/v1/phases/:participation_context_id/poll_questions' do
+  get 'web_api/v1/phases/:phase_id/poll_questions' do
     with_options scope: :page do
       parameter :number, 'Page number'
       parameter :size, 'Number of questions per page'
@@ -22,7 +22,7 @@ resource 'Poll Questions' do
       create(:poll_question)
     end
 
-    let(:participation_context_id) { @phase.id }
+    let(:phase_id) { @phase.id }
     example_request 'List all questions in a poll phase' do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
@@ -107,8 +107,8 @@ resource 'Poll Questions' do
       end
 
       before do
-        @project = create(:continuous_poll_project)
-        @questions = create_list(:poll_question, 3, participation_context: @project)
+        @phase = create(:continuous_poll_project).phases.first
+        @questions = create_list(:poll_question, 3, participation_context: @phase)
       end
 
       let(:id) { @questions.last.id }

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module DocumentAnnotation::WebApi::V1::DocumentAnnotationParticipationContextSerializer
+module DocumentAnnotation::WebApi::V1::DocumentAnnotationPhaseSerializer
   extend ActiveSupport::Concern
 
   included do

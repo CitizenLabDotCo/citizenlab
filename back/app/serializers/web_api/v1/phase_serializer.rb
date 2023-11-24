@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 class WebApi::V1::PhaseSerializer < WebApi::V1::ParticipationContextSerializer
+  include Polls::WebApi::V1::PollPhaseSerializer
+  include Surveys::WebApi::V1::SurveyPhaseSerializer
+  include DocumentAnnotation::WebApi::V1::DocumentAnnotationPhaseSerializer
+
   attributes :title_multiloc, :start_at, :end_at, :created_at, :updated_at, :ideas_count, :campaigns_settings
 
   attribute :description_multiloc do |object|

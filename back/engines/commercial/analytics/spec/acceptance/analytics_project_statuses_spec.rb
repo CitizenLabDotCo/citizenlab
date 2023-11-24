@@ -51,7 +51,7 @@ resource 'Analytics - ProjectStatus' do
 
       assert_status 200
       expect(response_data[:attributes]).to eq([
-        { count: 1 }
+        { count: 2 }
       ])
     end
 

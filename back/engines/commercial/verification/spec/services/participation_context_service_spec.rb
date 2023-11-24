@@ -108,7 +108,7 @@ describe ParticipationContextService do
     it "returns 'not_verified' if it's in the current phase and reacting is not permitted and a permitted group requires verification" do
       project = create(:project_with_current_phase,
         current_phase_attrs: { permissions_config: { reacting_idea: false } })
-      permission = TimelineService.new.current_phase(project).permissions.find_by(action: 'reacting_idea')
+      permission = service.get_participation_context(project).permissions.find_by(action: 'reacting_idea')
       verified_members = create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])
       permission.update!(permitted_by: 'groups', groups: [create(:group), verified_members])
       idea = create(:idea, project: project, phases: [project.phases[2]])

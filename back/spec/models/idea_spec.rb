@@ -339,7 +339,7 @@ RSpec.describe Idea do
     end
 
     it 'should generate a slug when there is no current phase' do
-      project = create(:project, process_type: 'timeline')
+      project = create(:project)
       create(:phase, project: project, start_at: (Time.zone.today - 10), end_at: (Time.zone.today - 5))
       create(:phase, project: project, start_at: (Time.zone.today + 5), end_at: (Time.zone.today + 10))
       idea = create(:idea, slug: nil, project: project.reload)
@@ -347,7 +347,7 @@ RSpec.describe Idea do
     end
 
     it 'should generate a slug for a timeline project with no phases' do
-      project = create(:project, process_type: 'timeline')
+      project = create(:project)
       idea = create(:idea, slug: nil, project: project)
       expect(idea.slug).to be_present
     end

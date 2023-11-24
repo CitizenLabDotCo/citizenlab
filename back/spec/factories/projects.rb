@@ -431,13 +431,17 @@ FactoryBot.define do
       end
 
       factory :private_groups_continuous_project do
-        after(:create) do |project, _evaluator|
+        transient do
+          phase_attrs { {} }
+        end
+        after(:create) do |project, evaluator|
           project.phases << create(
             :phase,
             project: project,
             participation_method: 'ideation',
             start_at: Faker::Date.between(from: 6.months.ago, to: Time.zone.now),
-            end_at: nil
+            end_at: nil,
+            **evaluator.phase_attrs
           )
         end
       end

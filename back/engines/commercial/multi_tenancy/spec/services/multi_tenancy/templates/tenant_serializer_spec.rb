@@ -138,7 +138,7 @@ describe MultiTenancy::Templates::TenantSerializer do
         expect(Project.count).to eq 1
         expect(Idea.count).to eq 2
 
-        new_timeline_project = Project.where(process_type: 'timeline').first
+        new_timeline_project = Project.first
         new_survey_phase = new_timeline_project.phases.order(:start_at).last
         expect(new_timeline_project.ideas.map(&:creation_phase_id)).to match_array [nil, new_survey_phase.id]
         expect(new_survey_phase.custom_form.custom_fields.pluck(:input_type)).to eq ['text']
@@ -194,24 +194,25 @@ describe MultiTenancy::Templates::TenantSerializer do
     end
 
     it 'copies exact :ordering values of records for models that use acts_as_list gem' do
-      project = create(:project, title_multiloc: { en: 'source project' })
+      project = create(:continuous_volunteering_project, title_multiloc: { en: 'source project' })
+      phase = project.phases.first
       create_list(
         :cause,
         5,
-        participation_context_id: project.id,
-        participation_context_type: 'Project',
+        participation_context_id: phase.id,
+        participation_context_type: 'Phase',
         ordering: rand(10) # Introduce some randomness, with the acts_as_list gem handling collisions & sequencing
       )
 
-      ordering_of_source_causes = project.causes.order(:title_multiloc['en']).pluck(:ordering)
+      ordering_of_source_causes = phase.causes.order(:title_multiloc['en']).pluck(:ordering)
       template = tenant_serializer.run(deserializer_format: true)
       tenant = create(:tenant, locales: AppConfiguration.instance.settings('core', 'locales'))
 
       Apartment::Tenant.switch(tenant.schema_name) do
         MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
 
-        copied_project = Project.find_by(title_multiloc: project.title_multiloc)
-        expect(copied_project.causes.order(:title_multiloc['en']).pluck(:ordering))
+        copied_phase = Project.find_by(title_multiloc: project.title_multiloc).phases.first
+        expect(copied_phase.causes.order(:title_multiloc['en']).pluck(:ordering))
           .to eq(ordering_of_source_causes)
       end
     end
@@ -220,8 +221,8 @@ describe MultiTenancy::Templates::TenantSerializer do
       project = create(:continuous_multiple_voting_project)
       idea = create(:idea, project: project)
       user = create(:user)
-      basket1 = create(:basket, participation_context: project, user: user)
-      basket2 = create(:basket, participation_context: project, user: nil)
+      basket1 = create(:basket, participation_context: project.phases.first, user: user)
+      basket2 = create(:basket, participation_context: project.phases.first, user: nil)
       create(:baskets_idea, idea: idea, basket: basket1, votes: 1)
       create(:baskets_idea, idea: idea, basket: basket2, votes: 2)
 
