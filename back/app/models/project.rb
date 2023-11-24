@@ -4,49 +4,24 @@
 #
 # Table name: projects
 #
-#  id                            :uuid             not null, primary key
-#  title_multiloc                :jsonb
-#  description_multiloc          :jsonb
-#  slug                          :string
-#  created_at                    :datetime         not null
-#  updated_at                    :datetime         not null
-#  header_bg                     :string
-#  ideas_count                   :integer          default(0), not null
-#  visible_to                    :string           default("public"), not null
-#  description_preview_multiloc  :jsonb
-#  presentation_mode             :string           default("card")
-#  participation_method          :string           default("ideation")
-#  posting_enabled               :boolean          default(TRUE)
-#  commenting_enabled            :boolean          default(TRUE)
-#  reacting_enabled              :boolean          default(TRUE), not null
-#  reacting_like_method          :string           default("unlimited"), not null
-#  reacting_like_limited_max     :integer          default(10)
-#  process_type                  :string           default("timeline"), not null
-#  internal_role                 :string
-#  survey_embed_url              :string
-#  survey_service                :string
-#  voting_max_total              :integer
-#  comments_count                :integer          default(0), not null
-#  default_assignee_id           :uuid
-#  poll_anonymous                :boolean          default(FALSE), not null
-#  reacting_dislike_enabled      :boolean          default(TRUE), not null
-#  ideas_order                   :string
-#  input_term                    :string           default("idea")
-#  voting_min_total              :integer          default(0)
-#  reacting_dislike_method       :string           default("unlimited"), not null
-#  reacting_dislike_limited_max  :integer          default(10)
-#  include_all_areas             :boolean          default(FALSE), not null
-#  posting_method                :string           default("unlimited"), not null
-#  posting_limited_max           :integer          default(1)
-#  document_annotation_embed_url :string
-#  allow_anonymous_participation :boolean          default(FALSE), not null
-#  followers_count               :integer          default(0), not null
-#  voting_method                 :string
-#  voting_max_votes_per_idea     :integer
-#  voting_term_singular_multiloc :jsonb
-#  voting_term_plural_multiloc   :jsonb
-#  baskets_count                 :integer          default(0), not null
-#  votes_count                   :integer          default(0), not null
+#  id                           :uuid             not null, primary key
+#  title_multiloc               :jsonb
+#  description_multiloc         :jsonb
+#  slug                         :string
+#  created_at                   :datetime         not null
+#  updated_at                   :datetime         not null
+#  header_bg                    :string
+#  ideas_count                  :integer          default(0), not null
+#  visible_to                   :string           default("public"), not null
+#  description_preview_multiloc :jsonb
+#  process_type                 :string           default("timeline"), not null
+#  internal_role                :string
+#  comments_count               :integer          default(0), not null
+#  default_assignee_id          :uuid
+#  include_all_areas            :boolean          default(FALSE), not null
+#  baskets_count                :integer          default(0), not null
+#  votes_count                  :integer          default(0), not null
+#  followers_count              :integer          default(0), not null
 #
 # Indexes
 #
@@ -316,208 +291,6 @@ class Project < ApplicationRecord
     return ::User.none unless folder_was.is_a?(ProjectFolders::Folder)
 
     ::User.project_folder_moderator(folder_was.id)
-  end
-
-  # TEMP: Make no longer needed attributes private
-
-  def presentation_mode
-    self[:presentation_mode]
-  end
-
-  def presentation_mode=(val)
-    write_attribute :presentation_mode, val
-  end
-
-  def participation_method
-    self[:participation_method]
-  end
-
-  def participation_method=(val)
-    write_attribute :participation_method, val
-  end
-
-  def posting_enabled
-    self[:posting_enabled]
-  end
-
-  def posting_enabled=(val)
-    write_attribute :posting_enabled, val
-  end
-
-  def commenting_enabled
-    self[:commenting_enabled]
-  end
-
-  def commenting_enabled=(val)
-    write_attribute :commenting_enabled, val
-  end
-
-  def reacting_enabled
-    self[:reacting_enabled]
-  end
-
-  def reacting_enabled=(val)
-    write_attribute :reacting_enabled, val
-  end
-
-  def reacting_like_method
-    self[:reacting_like_method]
-  end
-
-  def reacting_like_method=(val)
-    write_attribute :reacting_like_method, val
-  end
-
-  def reacting_like_limited_max
-    self[:reacting_like_method]
-  end
-
-  def reacting_like_limited_max=(val)
-    self[:reacting_like_method] = val
-  end
-
-  def survey_embed_url
-    self[:survey_embed_url]
-  end
-
-  def survey_embed_url=(val)
-    write_attribute :survey_embed_url, val
-  end
-
-  def survey_service
-    self[:survey_service]
-  end
-
-  def survey_service=(val)
-    write_attribute :survey_service, val
-  end
-
-  def voting_max_total
-    self[:voting_max_total]
-  end
-
-  def voting_max_total=(val)
-    write_attribute :voting_max_total, val
-  end
-
-  def poll_anonymous
-    self[:poll_anonymous]
-  end
-
-  def poll_anonymous=(val)
-    write_attribute :poll_anonymous, val
-  end
-
-  def reacting_dislike_enabled
-    self[:reacting_dislike_enabled]
-  end
-
-  def reacting_dislike_enabled=(val)
-    write_attribute :reacting_dislike_enabled, val
-  end
-
-  def ideas_order
-    self[:ideas_order]
-  end
-
-  def ideas_order=(val)
-    write_attribute :ideas_order, val
-  end
-
-  def input_term
-    self[:input_term]
-  end
-
-  def input_term=(val)
-    write_attribute :input_term, val
-  end
-
-  def voting_min_total
-    self[:voting_min_total]
-  end
-
-  def voting_min_total=(val)
-    write_attribute :voting_min_total, val
-  end
-
-  def reacting_dislike_method
-    self[:reacting_dislike_method]
-  end
-
-  def reacting_dislike_method=(val)
-    write_attribute :reacting_dislike_method, val
-  end
-
-  def reacting_dislike_limited_max
-    self[:reacting_dislike_limited_max]
-  end
-
-  def reacting_dislike_limited_max=(val)
-    write_attribute :reacting_dislike_limited_max, val
-  end
-
-  def posting_method
-    self[:posting_method]
-  end
-
-  def posting_method=(val)
-    write_attribute :posting_method, val
-  end
-
-  def posting_limited_max
-    self[:posting_limited_max]
-  end
-
-  def posting_limited_max=(val)
-    write_attribute :posting_limited_max, val
-  end
-
-  def document_annotation_embed_url
-    self[:document_annotation_embed_url]
-  end
-
-  def document_annotation_embed_url=(val)
-    write_attribute :document_annotation_embed_url, val
-  end
-
-  def allow_anonymous_participation
-    self[:allow_anonymous_participation]
-  end
-
-  def allow_anonymous_participation=(val)
-    write_attribute :allow_anonymous_participation, val
-  end
-
-  def voting_method
-    self[:voting_method]
-  end
-
-  def voting_method=(val)
-    write_attribute :voting_method, val
-  end
-
-  def voting_max_votes_per_idea
-    self[:voting_max_votes_per_idea]
-  end
-
-  def voting_max_votes_per_idea=(val)
-    write_attribute :voting_max_votes_per_idea, val
-  end
-
-  def voting_term_singular_multiloc
-    self[:voting_term_singular_multiloc]
-  end
-
-  def voting_term_singular_multiloc=(val)
-    write_attribute :voting_term_singular_multiloc, val
-  end
-
-  def voting_term_plural_multiloc
-    self[:voting_term_plural_multiloc]
-  end
-
-  def voting_term_plural_multiloc=(val)
-    write_attribute :voting_term_plural_multiloc, val
   end
 end
 

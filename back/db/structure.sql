@@ -1222,36 +1222,11 @@ CREATE TABLE public.projects (
     ideas_count integer DEFAULT 0 NOT NULL,
     visible_to character varying DEFAULT 'public'::character varying NOT NULL,
     description_preview_multiloc jsonb DEFAULT '{}'::jsonb,
-    presentation_mode character varying DEFAULT 'card'::character varying,
-    participation_method character varying DEFAULT 'ideation'::character varying,
-    posting_enabled boolean DEFAULT true,
-    commenting_enabled boolean DEFAULT true,
-    reacting_enabled boolean DEFAULT true NOT NULL,
-    reacting_like_method character varying DEFAULT 'unlimited'::character varying NOT NULL,
-    reacting_like_limited_max integer DEFAULT 10,
     process_type character varying DEFAULT 'timeline'::character varying NOT NULL,
     internal_role character varying,
-    survey_embed_url character varying,
-    survey_service character varying,
-    voting_max_total integer,
     comments_count integer DEFAULT 0 NOT NULL,
     default_assignee_id uuid,
-    poll_anonymous boolean DEFAULT false NOT NULL,
-    reacting_dislike_enabled boolean DEFAULT true NOT NULL,
-    ideas_order character varying,
-    input_term character varying DEFAULT 'idea'::character varying,
-    voting_min_total integer DEFAULT 0,
-    reacting_dislike_method character varying DEFAULT 'unlimited'::character varying NOT NULL,
-    reacting_dislike_limited_max integer DEFAULT 10,
     include_all_areas boolean DEFAULT false NOT NULL,
-    posting_method character varying DEFAULT 'unlimited'::character varying NOT NULL,
-    posting_limited_max integer DEFAULT 1,
-    allow_anonymous_participation boolean DEFAULT false NOT NULL,
-    document_annotation_embed_url character varying,
-    voting_method character varying,
-    voting_max_votes_per_idea integer,
-    voting_term_singular_multiloc jsonb DEFAULT '{}'::jsonb,
-    voting_term_plural_multiloc jsonb DEFAULT '{}'::jsonb,
     baskets_count integer DEFAULT 0 NOT NULL,
     votes_count integer DEFAULT 0 NOT NULL,
     followers_count integer DEFAULT 0 NOT NULL
@@ -1692,7 +1667,7 @@ CREATE VIEW public.analytics_fact_participations AS
     i.author_id AS dimension_user_id,
     i.project_id AS dimension_project_id,
         CASE
-            WHEN (((pr.participation_method)::text = 'native_survey'::text) OR ((ph.participation_method)::text = 'native_survey'::text)) THEN survey.id
+            WHEN ((ph.participation_method)::text = 'native_survey'::text) THEN survey.id
             ELSE idea.id
         END AS dimension_type_id,
     (i.created_at)::date AS dimension_date_created_id,
@@ -1833,7 +1808,7 @@ CREATE VIEW public.analytics_fact_posts AS
      LEFT JOIN public.ideas_phases iph ON ((iph.idea_id = i.id)))
      LEFT JOIN public.phases ph ON ((ph.id = iph.phase_id)))
      LEFT JOIN public.projects pr ON ((pr.id = i.project_id)))
-  WHERE (((ph.id IS NULL) OR ((ph.participation_method)::text <> 'native_survey'::text)) AND ((pr.participation_method)::text <> 'native_survey'::text))
+  WHERE ((ph.id IS NULL) OR ((ph.participation_method)::text <> 'native_survey'::text))
 UNION ALL
  SELECT i.id,
     i.author_id AS user_id,
@@ -7942,6 +7917,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20231123141534'),
 ('20231123161330'),
 ('20231123173159'),
-('20231124090234');
+('20231124090234'),
+('20231124112723'),
+('20231124114112');
 
 
