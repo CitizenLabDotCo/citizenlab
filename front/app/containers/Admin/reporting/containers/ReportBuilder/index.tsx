@@ -6,6 +6,9 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import useReportLayout from 'api/report_layout/useReportLayout';
 import useReportLocale from '../../hooks/useReportLocale';
 
+// context
+import { ReportContext } from '../../context/ReportContext';
+
 // components
 import { Box } from '@citizenlab/cl2-component-library';
 
@@ -124,85 +127,87 @@ const ReportBuilder = ({ reportId }: Props) => {
   if (!selectedLocale) return null;
 
   return (
-    <FullscreenContentBuilder
-      onErrors={handleErrors}
-      onDeleteElement={handleDeleteElement}
-      onUploadImage={setImageUploading}
-    >
-      <Editor
-        isPreview={false}
-        onNodesChange={handleEditorChange}
-        key={selectedLocale}
+    <ReportContext.Provider value="pdf">
+      <FullscreenContentBuilder
+        onErrors={handleErrors}
+        onDeleteElement={handleDeleteElement}
+        onUploadImage={setImageUploading}
       >
-        <TopBar
-          localesWithError={localesWithError}
-          hasPendingState={imageUploading}
-          previewEnabled={previewEnabled}
-          setPreviewEnabled={setPreviewEnabled}
-          selectedLocale={selectedLocale}
-          draftEditorData={draftData}
-          initialData={initialData}
-          reportId={reportId}
-          projectId={projectId ?? undefined}
-        />
-        <Box
-          mt={`${stylingConsts.menuHeight}px`}
-          display={previewEnabled ? 'none' : 'flex'}
+        <Editor
+          isPreview={false}
+          onNodesChange={handleEditorChange}
+          key={selectedLocale}
         >
-          {selectedLocale && <Toolbox reportId={reportId} />}
-          <StyledRightColumn>
-            <Box width={A4_WIDTH}>
-              <ErrorMessage localesWithError={localesWithError} />
-              <Box
-                background="white"
-                px="30px"
-                py="30px"
-                width="100%"
-                height="100%"
-              >
-                <LanguageProvider
-                  contentBuilderLocale={reportLocale}
-                  platformLocale={platformLocale}
+          <TopBar
+            localesWithError={localesWithError}
+            hasPendingState={imageUploading}
+            previewEnabled={previewEnabled}
+            setPreviewEnabled={setPreviewEnabled}
+            selectedLocale={selectedLocale}
+            draftEditorData={draftData}
+            initialData={initialData}
+            reportId={reportId}
+            projectId={projectId ?? undefined}
+          />
+          <Box
+            mt={`${stylingConsts.menuHeight}px`}
+            display={previewEnabled ? 'none' : 'flex'}
+          >
+            {selectedLocale && <Toolbox reportId={reportId} />}
+            <StyledRightColumn>
+              <Box width={A4_WIDTH}>
+                <ErrorMessage localesWithError={localesWithError} />
+                <Box
+                  background="white"
+                  px="30px"
+                  py="30px"
+                  width="100%"
+                  height="100%"
                 >
-                  <Frame editorData={initialData}>
-                    {projectId && (
-                      <ProjectTemplate
-                        reportId={reportId}
-                        projectId={projectId}
-                      />
-                    )}
-                  </Frame>
-                </LanguageProvider>
+                  <LanguageProvider
+                    contentBuilderLocale={reportLocale}
+                    platformLocale={platformLocale}
+                  >
+                    <Frame editorData={initialData}>
+                      {projectId && (
+                        <ProjectTemplate
+                          reportId={reportId}
+                          projectId={projectId}
+                        />
+                      )}
+                    </Frame>
+                  </LanguageProvider>
+                </Box>
               </Box>
-            </Box>
-          </StyledRightColumn>
-          <Settings />
-        </Box>
-      </Editor>
-      {previewEnabled && (
-        <Box
-          width="100%"
-          height="100%"
-          display="flex"
-          justifyContent="center"
-          mt={`${stylingConsts.menuHeight}px`}
-          pb="100px"
-        >
-          <StyledRightColumn>
-            <Box width={A4_WIDTH} background="white" px={'15mm'} py={'15mm'}>
-              <Editor isPreview={true}>
-                <LanguageProvider
-                  contentBuilderLocale={reportLocale}
-                  platformLocale={platformLocale}
-                >
-                  <Frame editorData={previewData} />
-                </LanguageProvider>
-              </Editor>
-            </Box>
-          </StyledRightColumn>
-        </Box>
-      )}
-    </FullscreenContentBuilder>
+            </StyledRightColumn>
+            <Settings />
+          </Box>
+        </Editor>
+        {previewEnabled && (
+          <Box
+            width="100%"
+            height="100%"
+            display="flex"
+            justifyContent="center"
+            mt={`${stylingConsts.menuHeight}px`}
+            pb="100px"
+          >
+            <StyledRightColumn>
+              <Box width={A4_WIDTH} background="white" px={'15mm'} py={'15mm'}>
+                <Editor isPreview={true}>
+                  <LanguageProvider
+                    contentBuilderLocale={reportLocale}
+                    platformLocale={platformLocale}
+                  >
+                    <Frame editorData={previewData} />
+                  </LanguageProvider>
+                </Editor>
+              </Box>
+            </StyledRightColumn>
+          </Box>
+        )}
+      </FullscreenContentBuilder>
+    </ReportContext.Provider>
   );
 };
 

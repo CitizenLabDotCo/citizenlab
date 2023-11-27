@@ -29,7 +29,7 @@ export interface Props {
   type: ManagerType;
   /** A set of ids of ideas/initiatives that are currently selected */
   selection: Set<string>;
-  selectedProject: string | undefined;
+  selectedProject?: string | undefined;
   className?: string;
 }
 

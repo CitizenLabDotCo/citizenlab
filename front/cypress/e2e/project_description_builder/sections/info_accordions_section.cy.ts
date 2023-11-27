@@ -51,7 +51,7 @@ describe('Project description builder Info & Accordions section', () => {
     );
 
     // Edit text component
-    cy.get('#e2e-text-box').click();
+    cy.get('.e2e-text-box').click();
     cy.get('#quill-editor').click();
     cy.get('#quill-editor').type('Edited text.', { force: true });
 

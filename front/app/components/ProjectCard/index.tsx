@@ -47,9 +47,11 @@ import {
   defaultCardHoverStyle,
   isRtl,
 } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/a11y';
 import { rgba, darken } from 'polished';
+
+// utils
 import { getInputTermMessage } from 'utils/i18n';
+import { ScreenReaderOnly } from 'utils/a11y';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 
 const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
@@ -443,15 +445,15 @@ const ProjectCard = memo<InputProps>(
 
     const [visible, setVisible] = useState(false);
 
-    const handleProjectCardOnClick = (projectId: string) => () => {
+    const handleProjectCardOnClick = (projectId: string) => {
       trackEventByName(tracks.clickOnProjectCard, { extra: { projectId } });
     };
 
-    const handleCTAOnClick = (projectId: string) => () => {
+    const handleCTAOnClick = (projectId: string) => {
       trackEventByName(tracks.clickOnProjectCardCTA, { extra: { projectId } });
     };
 
-    const handleProjectTitleOnClick = (projectId: string) => () => {
+    const handleProjectTitleOnClick = (projectId: string) => {
       trackEventByName(tracks.clickOnProjectTitle, { extra: { projectId } });
     };
 
@@ -626,7 +628,9 @@ const ProjectCard = memo<InputProps>(
               className={`${size} ${countdown ? 'hasProgressBar' : ''}`}
             >
               <ProjectLabel
-                onClick={handleCTAOnClick(project.data.id)}
+                onClick={() => {
+                  handleCTAOnClick(project.data.id);
+                }}
                 className="e2e-project-card-cta"
               >
                 {ctaMessage}
@@ -665,7 +669,10 @@ const ProjectCard = memo<InputProps>(
             .filter((item) => item)
             .join(' ')}
           to={projectUrl}
-          onClick={handleProjectCardOnClick(project.data.id)}
+          scrollToTop
+          onClick={() => {
+            handleProjectCardOnClick(project.data.id);
+          }}
         >
           {screenReaderContent}
           {size !== 'large' && contentHeader}
@@ -697,7 +704,9 @@ const ProjectCard = memo<InputProps>(
             <ContentBody className={size} aria-hidden>
               <ProjectTitle
                 className="e2e-project-card-project-title"
-                onClick={handleProjectTitleOnClick(project.data.id)}
+                onClick={() => {
+                  handleProjectTitleOnClick(project.data.id);
+                }}
               >
                 <T value={project.data.attributes.title_multiloc} />
               </ProjectTitle>

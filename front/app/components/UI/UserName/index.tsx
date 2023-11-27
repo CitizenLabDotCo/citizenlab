@@ -164,7 +164,11 @@ const UserName = ({
 
     if (isLinkToProfile) {
       return (
-        <Link to={profileLink} className={`e2e-author-link ${className || ''}`}>
+        <Link
+          to={profileLink}
+          className={`e2e-author-link ${className || ''}`}
+          scrollToTop
+        >
           <Name {...sharedNameProps} className={classNames}>
             {name}
           </Name>

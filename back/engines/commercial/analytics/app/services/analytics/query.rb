@@ -17,7 +17,15 @@ module Analytics
     end
 
     def initialize(query)
-      @json_query = query
+      @json_query =
+        case query
+        when ActionController::Parameters
+          query.to_unsafe_h
+        when Hash
+          query.with_indifferent_access
+        else
+          raise ArgumentError, "Invalid query type: #{query.class}"
+        end
     end
 
     attr_reader :valid, :error_messages, :results, :pagination, :json_query, :failed
@@ -149,14 +157,15 @@ module Analytics
 
     def calculate_fact_attributes
       model_attributes = model.columns_hash.transform_values(&:type)
-
-      associations_attributes = model.reflect_on_all_associations.map do |assoc|
-        assoc.klass.columns_hash.to_h do |column_name, column|
-          ["#{assoc.name}.#{column_name}", column.type]
-        end
-      end.reduce(:merge)
-
       associations_attributes.merge(model_attributes)
+    end
+
+    def associations_attributes
+      model.reflect_on_all_associations.each_with_object({}) do |assoc, result|
+        assoc.klass.columns_hash.each do |column_name, column|
+          result["#{assoc.name}.#{column_name}"] = column.type
+        end
+      end
     end
   end
 end

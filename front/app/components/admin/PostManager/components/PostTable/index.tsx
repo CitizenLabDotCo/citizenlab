@@ -23,12 +23,7 @@ import { colors, stylingConsts } from 'utils/styleUtils';
 import { ManagerType, TFilterMenu } from '../..';
 
 // typings
-import {
-  SortAttribute as IdeasSortAttribute,
-  Sort as IdeasSort,
-  IIdeaData,
-} from 'api/ideas/types';
-import { SortAttribute as InitiativesSortAttribute } from 'resources/GetInitiatives';
+import { Sort as IdeasSort, IIdeaData } from 'api/ideas/types';
 import {
   IInitiativeData,
   Sort as InitiativesSort,
@@ -81,9 +76,9 @@ const Container = styled.div`
 
 interface Props {
   type: ManagerType;
-  sortAttribute?: IdeasSortAttribute | InitiativesSortAttribute;
+  sortAttribute?: IdeasSort | InitiativesSort;
   sortDirection?: SortDirection;
-  posts?: IIdeaData[] | IInitiativeData[];
+  posts: IIdeaData[] | IInitiativeData[];
   phases?: IPhaseData[];
   statuses?: IIdeaStatusData[] | IInitiativeStatusData[];
   selectedPhaseId?: string | null;
@@ -120,7 +115,7 @@ const PostTable = ({
   lastPageNumber,
 }: Props) => {
   const handleSortClick =
-    (newSortAttribute: IdeasSortAttribute | InitiativesSortAttribute) => () => {
+    (newSortAttribute: IdeasSort | InitiativesSort) => () => {
       if (isFunction(onChangeSort)) {
         let newSortSign = '-';
         if (newSortAttribute === sortAttribute) {
@@ -182,7 +177,7 @@ const PostTable = ({
       >
         {type === 'Initiatives' ? (
           <InitiativesHeaderRow
-            sortAttribute={sortAttribute as InitiativesSortAttribute}
+            sortAttribute={sortAttribute as InitiativesSort}
             sortDirection={sortDirection}
             allSelected={allSelected(selection)}
             toggleSelectAll={toggleSelectAll}

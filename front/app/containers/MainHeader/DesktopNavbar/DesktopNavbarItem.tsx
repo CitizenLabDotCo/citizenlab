@@ -81,7 +81,7 @@ const DesktopNavbarItem = ({
   onlyActiveOnIndex,
 }: Props) => (
   <NavigationItem data-testid="desktop-navbar-item">
-    <StyledLink to={linkTo} onlyActiveOnIndex={onlyActiveOnIndex}>
+    <StyledLink to={linkTo} onlyActiveOnIndex={onlyActiveOnIndex} scrollToTop>
       <NavigationItemBorder />
       <T value={navigationItemTitle} />
     </StyledLink>

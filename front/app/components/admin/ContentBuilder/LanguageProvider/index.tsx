@@ -38,7 +38,7 @@ const ContentBuilderLanguageProvider = ({
     };
   }, [contentBuilderLocale, platformLocale]);
 
-  if (isNilOrError(contentBuilderLocale)) {
+  if (isNilOrError(contentBuilderLocale) || !messages) {
     return null;
   }
 

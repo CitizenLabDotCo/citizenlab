@@ -34,8 +34,7 @@ const useDeleteSelf = () => {
       } else {
         invalidateQueryCache();
       }
-      clHistory.push('/');
-
+      clHistory.push('/', { scrollToTop: true });
       queryClient.invalidateQueries({
         queryKey: userCountKeys.items(),
       });

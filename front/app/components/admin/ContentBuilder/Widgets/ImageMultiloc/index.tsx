@@ -18,6 +18,7 @@ import { Multiloc, UploadFile } from 'typings';
 
 // craft
 import { useEditor, useNode } from '@craftjs/core';
+import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
 
 // i18n
 import messages from './messages';
@@ -34,7 +35,6 @@ import {
 import useAddContentBuilderImage from 'api/content_builder_images/useAddContentBuilderImage';
 import useLocalize from 'hooks/useLocalize';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
 
 interface Props {
   image?: {

@@ -4,6 +4,7 @@ import React, {
   useRef,
   KeyboardEvent,
   useEffect,
+  useState,
 } from 'react';
 import { trackEventByName } from 'utils/analytics';
 import { isNilOrError } from 'utils/helperUtils';
@@ -81,16 +82,20 @@ const ViewButtons = memo<Props>(({ className, selectedView, onClick }) => {
   const isMapViewSelected = selectedView === 'map';
   const listButtonRef = useRef<HTMLButtonElement | null>(null);
   const mapButtonRef = useRef<HTMLButtonElement | null>(null);
+  const [viewChanged, setViewChanged] = useState<boolean | null>(null);
   const locale = useLocale();
 
   useEffect(() => {
-    selectedView === 'map'
-      ? mapButtonRef.current?.focus()
-      : listButtonRef.current?.focus();
-  }, [selectedView]);
+    if (viewChanged) {
+      selectedView === 'map'
+        ? mapButtonRef.current?.focus()
+        : listButtonRef.current?.focus();
+    }
+  }, [selectedView, viewChanged]);
 
   const handleOnClick =
     (selectedView: 'card' | 'map') => (event: FormEvent) => {
+      setViewChanged(true);
       event.preventDefault();
       onClick(selectedView);
       trackEventByName(tracks.toggleDisplay, {
@@ -104,6 +109,7 @@ const ViewButtons = memo<Props>(({ className, selectedView, onClick }) => {
     const arrowRightPressed = e.key === 'ArrowRight';
 
     if (arrowLeftPressed || arrowRightPressed) {
+      setViewChanged(true);
       onClick(selectedView === 'card' ? 'map' : 'card');
     }
   };

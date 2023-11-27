@@ -1,14 +1,13 @@
 // utils
 import {
+  getProjectFilter,
   getDateFilter,
   getInterval,
-  getProjectFilter,
 } from 'components/admin/GraphCards/_utils/query';
 
 // typings
 import { Query, QuerySchema } from 'api/analytics/types';
 import { QueryParameters } from './typings';
-import moment from 'moment';
 
 export const query = ({
   projectId,
@@ -16,39 +15,33 @@ export const query = ({
   endAtMoment,
   resolution,
 }: QueryParameters): Query => {
-  const startAt = startAtMoment || moment('2017-01-01');
-  const endAt = endAtMoment || moment();
-
   const timeSeriesQuery: QuerySchema = {
     fact: 'participation',
     filters: {
-      ...getDateFilter('dimension_date_created', startAt, endAt),
+      'dimension_user.role': ['citizen', null],
       ...getProjectFilter('dimension_project', projectId),
-      'dimension_type.name': 'reaction',
-      'dimension_type.parent': 'idea',
+      ...getDateFilter('dimension_date_created', startAtMoment, endAtMoment),
     },
     groups: `dimension_date_created.${getInterval(resolution)}`,
     aggregations: {
+      dimension_user_id: 'count',
       'dimension_date_created.date': 'first',
-      likes_count: 'sum',
-      dislikes_count: 'sum',
     },
   };
 
-  const postsByTimeTotal: QuerySchema = {
+  const activeUsersWholePeriodQuery: QuerySchema = {
     fact: 'participation',
     filters: {
-      ...getDateFilter('dimension_date_created', null, endAt),
+      'dimension_user.role': ['citizen', null],
       ...getProjectFilter('dimension_project', projectId),
-      'dimension_type.name': 'reaction',
-      'dimension_type.parent': 'idea',
+      ...getDateFilter('dimension_date_created', startAtMoment, endAtMoment),
     },
     aggregations: {
-      reactions_count: 'sum',
+      dimension_user_id: 'count',
     },
   };
 
   return {
-    query: [timeSeriesQuery, postsByTimeTotal],
+    query: [timeSeriesQuery, activeUsersWholePeriodQuery],
   };
 };

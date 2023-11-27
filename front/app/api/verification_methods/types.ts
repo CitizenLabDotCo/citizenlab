@@ -3,6 +3,15 @@ import verificationMethodsKeys from './keys';
 
 export type VerificationMethodsKeys = Keys<typeof verificationMethodsKeys>;
 
+export const verificationTypesLeavingPlatform = [
+  'auth0',
+  'criipto',
+  'bosa_fas',
+  'clave_unica',
+  'franceconnect',
+  'nemlog_in',
+];
+
 export interface IVerificationMethodNamesMap {}
 
 export type TVerificationMethodName =

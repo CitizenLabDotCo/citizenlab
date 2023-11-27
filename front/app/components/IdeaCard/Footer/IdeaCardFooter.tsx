@@ -10,6 +10,9 @@ import { IIdeaData } from 'api/ideas/types';
 // styles
 import ReadMoreButton from './ReadMoreButton';
 
+// utils
+import clHistory from 'utils/cl-router/history';
+
 interface Props {
   idea: IIdeaData;
   showCommentCount: boolean;
@@ -18,7 +21,13 @@ interface Props {
 const IdeaCardFooter = ({ idea, showCommentCount }: Props) => {
   return (
     <Box as="footer" w="100%" display="flex" mt="16px" justifyContent="center">
-      <ReadMoreButton slug={idea.attributes.slug} />
+      <ReadMoreButton
+        onClick={() => {
+          clHistory.push(`/ideas/${idea?.attributes.slug}?go_back=true`, {
+            scrollToTop: true,
+          });
+        }}
+      />
       {showCommentCount && (
         <CommentCount commentCount={idea.attributes.comments_count} />
       )}

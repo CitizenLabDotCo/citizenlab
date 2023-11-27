@@ -1,7 +1,8 @@
 import React, { useRef } from 'react';
 
 // hooks
-import useVisitors from 'components/admin/GraphCards/VisitorsCard/useVisitors';
+import useVisitors from './useVisitors';
+import useLayout from 'containers/Admin/reporting/hooks/useLayout';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -43,20 +44,37 @@ const VisitorsCard = ({
     resolution,
   });
 
+  const layout = useLayout();
+
   if (isNilOrError(stats) || stats.visits.value === '0') {
     return <NoData message={messages.noData} />;
   }
 
   return (
-    <Box width="100%" height="260px" mt="20px" pb="8px" px="16px">
-      <Box height="100%" display="flex" flexDirection="row" ml="4px">
+    <Box width="100%" height="260px" mt="20px" pb="8px">
+      <Box
+        height="100%"
+        display="flex"
+        flexDirection={layout === 'wide' ? 'row' : 'column'}
+      >
         <Box display="flex" flexDirection="row">
-          <Box>
+          <Box
+            {...(layout === 'wide'
+              ? {}
+              : {
+                  display: 'flex',
+                  flexDirection: 'row',
+                  mb: '8px',
+                })}
+          >
             <Statistic
               name={formatMessage(visitorsCardMessages.visitors)}
               value={stats.visitors.value}
             />
-            <Box mt="32px">
+            <Box
+              mt={layout === 'wide' ? '32px' : '0px'}
+              ml={layout === 'wide' ? '0px' : '32px'}
+            >
               <Statistic
                 name={formatMessage(visitorsCardMessages.visits)}
                 value={stats.visits.value}
@@ -66,13 +84,18 @@ const VisitorsCard = ({
         </Box>
 
         <Box flexGrow={1} display="flex" justifyContent="flex-end">
-          <Box pt="8px" width="95%" maxWidth="800px">
+          <Box
+            pt="8px"
+            width={layout === 'wide' ? '95%' : '100%'}
+            maxWidth="800px"
+          >
             <Chart
               timeSeries={timeSeries}
               startAtMoment={startAtMoment}
               endAtMoment={endAtMoment}
               resolution={currentResolution}
               innerRef={graphRef}
+              layout={layout}
             />
           </Box>
         </Box>

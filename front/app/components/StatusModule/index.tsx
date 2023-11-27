@@ -25,7 +25,7 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 // utils
 import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
-import {getLocalisedDateString, pastPresentOrFuture} from 'utils/dateUtils';
+import { getLocalisedDateString, pastPresentOrFuture } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
 // styling

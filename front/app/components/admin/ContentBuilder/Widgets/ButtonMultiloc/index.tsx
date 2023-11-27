@@ -13,6 +13,7 @@ import { darken } from 'polished';
 
 // hooks
 import { useTheme } from 'styled-components';
+import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
 
 // intl
 import messages from './messages';
@@ -21,7 +22,6 @@ import { injectIntl } from 'utils/cl-intl';
 import { Multiloc } from 'typings';
 import useLocalize from 'hooks/useLocalize';
 import InputMultilocWithLocaleSwitcherWrapper from 'components/UI/InputMultilocWithLocaleSwitcher';
-import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
 
 type ButtonProps = {
   text: Multiloc;

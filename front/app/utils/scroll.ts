@@ -1,3 +1,5 @@
+import { viewportWidths } from '@citizenlab/cl2-component-library';
+
 interface IScrollToElementParams {
   id: string;
   behavior?: 'smooth' | 'auto';
@@ -25,3 +27,24 @@ export function scrollToElement({
     element.focus();
   }
 }
+
+export const scrollToTop = (context?: 'link' | 'clHistory') => {
+  const isMobileOrSmaller = window.innerWidth <= viewportWidths.tablet;
+
+  let scrollWithTimeout: NodeJS.Timeout;
+
+  // In some cases & on some mobile browsers, we need a timeout for this to work correctly
+  if (isMobileOrSmaller) {
+    scrollWithTimeout = setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 100);
+  } else {
+    context && context === 'link' // For links, we want to scroll up after the page redirect, so we use a timeout
+      ? (scrollWithTimeout = setTimeout(() => {
+          window.scrollTo(0, 0);
+        }, 5))
+      : window.scrollTo(0, 0);
+  }
+
+  return () => scrollWithTimeout && clearTimeout(scrollWithTimeout);
+};
