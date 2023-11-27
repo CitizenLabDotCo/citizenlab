@@ -33,9 +33,11 @@ namespace :data_migrate do
         title = d['Titel'].strip
         body = d['Beschrijving'].strip
         ideas = Idea.select { _1.title_multiloc.value?(title) && _1.body_multiloc.value?(body) }
+        # Useful for testing:
+        # ideas = [Idea.new(title_multiloc: { default_locale => title }, body_multiloc: { default_locale => body }, project: Project.order(created_at: :asc).last, publication_status: 'published')]
 
         if ideas.size != 1
-          puts "ERROR: Found #{ideas.size} ideas with title \"#{title}\" and body \"#{body.first(10)}..\". Skipping update."
+          puts "ERROR: Found #{ideas.size} ideas with title '#{title}' and body '#{body.first(10)}..'. Skipping update."
           next
         end
 
@@ -46,7 +48,7 @@ namespace :data_migrate do
         idea.idea_status = statuses_mapping[d['nieuwe status'].strip]
         idea.save!
 
-        puts "Updated idea #{idea.id} with status #{idea.idea_status.code} and phase #{target_phase.id}. Previous status: #{idea.idea_status_id_previously_was}, phase included: #{phase_included}."
+        puts "Updated idea '#{idea.id}' with status '#{idea.idea_status.code}, #{idea.idea_status.id}' and phase '#{target_phase.id}'. Previous status: '#{idea.idea_status_id_previously_was}', phase included: '#{phase_included}'."
       end
     end
   end
