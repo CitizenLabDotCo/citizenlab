@@ -17,7 +17,7 @@ import messages from './messages';
 
 const Container = styled.div`
   position: fixed;
-  bottom: 0;
+  bottom: 0px;
   color: white;
   background: ${colors.primary};
   font-size: ${fontSizes.base}px;
@@ -28,10 +28,6 @@ const Container = styled.div`
   justify-content: center;
   padding-top: 20px;
   padding-bottom: 20px;
-  ${media.tablet`
-      bottom: 0px;
-      padding-right: 40px;
-    `}
 `;
 
 const ContentContainerInner = styled.div`
