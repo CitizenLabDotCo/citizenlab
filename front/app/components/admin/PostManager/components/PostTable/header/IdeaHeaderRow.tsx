@@ -2,7 +2,6 @@ import React, { ChangeEvent, useState } from 'react';
 
 // components
 import { Thead, Tr, Th, Checkbox } from '@citizenlab/cl2-component-library';
-import FeatureFlag from 'components/FeatureFlag';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -21,53 +20,14 @@ import { SortDirection } from 'utils/paginationUtils';
 
 // hooks
 import usePostManagerColumnFilter from 'hooks/usePostManagerColumnFilter';
+import SortableHeaderCell from './SortableHeaderCell';
 
-interface SortableHeaderCellProps {
-  sortAttribute?: IdeasSort;
-  sortAttributeName: IdeasSort;
-  sortDirection?: 'ascending' | 'descending' | null;
-  infoTooltip?: React.ReactChild;
-  width: string;
-  onChange: () => void;
-  children: React.ReactNode;
-}
-
-export const SortableHeaderCell = ({
-  sortAttribute,
-  sortDirection,
-  sortAttributeName,
-  width,
-  infoTooltip,
-  onChange,
-  children,
-}: SortableHeaderCellProps) => {
-  return (
-    <Th
-      clickable
-      width={width}
-      sortDirection={
-        sortAttribute === sortAttributeName && sortDirection
-          ? sortDirection
-          : undefined
-      }
-      background={
-        sortAttribute === sortAttributeName ? colors.grey200 : undefined
-      }
-      infoTooltip={infoTooltip}
-      onClick={onChange}
-    >
-      {children}
-    </Th>
-  );
-};
-
-export type IdeaHeaderCellComponentProps = {
+type IdeaHeaderCellComponentProps = {
   sortAttribute?: IdeasSort;
   sortDirection?: 'ascending' | 'descending' | null;
   allSelected?: boolean;
   width: string;
   onChange?: (event: unknown) => void;
-  onClick?: (event: unknown) => void;
 };
 
 interface Props {
@@ -264,37 +224,20 @@ const IdeaHeaderRow = ({
     name,
     Component,
     onChange,
-    onClick,
-    featureFlag,
   }: CellConfiguration<IdeaHeaderCellComponentProps>) => {
-    const handlers = {
-      ...(onChange ? { onChange } : {}),
-      ...(onClick ? { onClick } : {}),
-    };
-
-    const width = `${roundPercentage(
-      typeof cellProps.width === 'number' ? cellProps.width : 1,
-      totalWidth
-    )}%`;
-
-    const Content =
-      displayColumns && !displayColumns.has(name) ? null : (
-        <Component
-          sortAttribute={sortAttribute}
-          sortDirection={sortDirection}
-          allSelected={allSelected}
-          width={width}
-          {...handlers}
-          key={name}
-        />
-      );
-
-    if (!featureFlag) return Content;
-    return (
-      <FeatureFlag name={featureFlag} key={name}>
-        {Content}
-      </FeatureFlag>
-    );
+    return displayColumns.has(name) ? (
+      <Component
+        sortAttribute={sortAttribute}
+        sortDirection={sortDirection}
+        allSelected={allSelected}
+        width={`${roundPercentage(
+          typeof cellProps.width === 'number' ? cellProps.width : 1,
+          totalWidth
+        )}%`}
+        onChange={onChange}
+        key={name}
+      />
+    ) : null;
   };
 
   return (
