@@ -45,7 +45,8 @@ interface Props {
 }
 
 const Image = ({ alt = {}, image }: Props) => {
-  const craftComponentDefaultPadding = useCraftComponentDefaultPadding();
+  const componentDefaultPadding = useCraftComponentDefaultPadding();
+
   const localize = useLocalize();
   const { enabled } = useEditor((state) => {
     return {
@@ -65,9 +66,9 @@ const Image = ({ alt = {}, image }: Props) => {
       id="e2e-image"
       style={{ pointerEvents: 'none' }}
       minHeight="26px"
-      maxWidth="1150px"
+      maxWidth="1200px"
       margin="0 auto"
-      px={craftComponentDefaultPadding}
+      px={componentDefaultPadding}
     >
       {image?.imageUrl && (
         <ImageComponent

@@ -11,7 +11,7 @@ const DEFAULT_PROJECT_DESCRIPTION_BUILDER_LAYOUT_DATA = {
   data: {
     attributes: {
       enabled: true,
-      craftjs_jsonmultiloc: { en: {} },
+      craftjs_json: {},
     },
   },
 };

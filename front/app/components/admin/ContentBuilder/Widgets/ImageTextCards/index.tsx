@@ -23,7 +23,7 @@ const ImageTextCards: UserComponent = () => {
       is={Box}
       canvas
       style={{
-        maxWidth: '1150px',
+        maxWidth: '1200px',
         margin: '0 auto',
         padding: `0px ${craftComponentDefaultPadding}`,
       }}
