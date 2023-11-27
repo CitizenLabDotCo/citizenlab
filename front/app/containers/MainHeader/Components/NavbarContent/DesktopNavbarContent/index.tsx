@@ -1,26 +1,36 @@
-import { media, fontSizes, isRtl } from 'utils/styleUtils';
 import React from 'react';
-import styled, { useTheme } from 'styled-components';
-import LanguageSelector from '../../LanguageSelector';
-import { isDesktop, isNilOrError, isPage } from 'utils/helperUtils';
-import bowser from 'bowser';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from '../../../messages';
-import { darken } from 'polished';
-import useAuthUser from 'api/me/useAuthUser';
-import { triggerAuthenticationFlow } from 'containers/Authentication/events';
-import { trackEventByName } from 'utils/analytics';
-import tracks from '../../../tracks';
-import UserMenu from '../../UserMenu';
+
+// hooks
 import useLocale from 'hooks/useLocale';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAuthUser from 'api/me/useAuthUser';
+
+// components
 import {
   IconButton,
   colors,
   useWindowSize,
 } from '@citizenlab/cl2-component-library';
-import clHistory from 'utils/cl-router/history';
 import NotificationMenu from '../../NotificationMenu';
+import LanguageSelector from '../../LanguageSelector';
+import UserMenu from '../../UserMenu';
+
+// utils
+import clHistory from 'utils/cl-router/history';
+import tracks from '../../../tracks';
+import { trackEventByName } from 'utils/analytics';
+import { triggerAuthenticationFlow } from 'containers/Authentication/events';
+import bowser from 'bowser';
+import { isDesktop, isNilOrError, isPage } from 'utils/helperUtils';
+
+// style
+import styled, { useTheme } from 'styled-components';
+import { darken } from 'polished';
+import { media, fontSizes, isRtl } from 'utils/styleUtils';
+
+// intl
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import messages from '../../../messages';
 
 const Right = styled.div`
   display: flex;
