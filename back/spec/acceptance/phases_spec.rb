@@ -110,7 +110,7 @@ resource 'Phases' do
         parameter :allow_anonymous_participation, 'Only for ideation and budgeting phases. Allow users to post inputs and comments anonymously. Defaults to false', required: false
         parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{ParticipationContext::PRESENTATION_MODES.join(',')}.", required: false
         parameter :survey_embed_url, 'The identifier for the survey from the external API, if participation_method is set to survey', required: false
-        parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(',')}", required: false
+        parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyPhase::SURVEY_SERVICES.join(',')}", required: false
         parameter :voting_method, "Either #{ParticipationContext::VOTING_METHODS.join(',')}. Required when the participation method is voting.", required: false
         parameter :voting_min_total, 'The minimum value a basket can have.', required: false
         parameter :voting_max_total, 'The maximal value a basket can have during voting. Required when the voting method is budgeting.', required: false
@@ -394,7 +394,7 @@ resource 'Phases' do
         parameter :allow_anonymous_participation, 'Only for ideation and budgeting phases. Allow users to post inputs and comments anonymously.', required: false
         parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{ParticipationContext::PRESENTATION_MODES.join(',')}.", required: false
         parameter :survey_embed_url, 'The identifier for the survey from the external API, if participation_method is set to survey', required: false
-        parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(',')}", required: false
+        parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyPhase::SURVEY_SERVICES.join(',')}", required: false
         parameter :voting_method, "Either #{ParticipationContext::VOTING_METHODS.join(',')}", required: false
         parameter :voting_min_total, 'The minimum value a basket can have.', required: false
         parameter :voting_max_total, 'The maximal value a basket can have during voting', required: false

@@ -41,7 +41,7 @@ const EventCard = memo<Props>((props) => {
 
   if (!isNilOrError(event)) {
     const navigateToEventPage = () => {
-      clHistory.push(`/events/${event.id}`);
+      clHistory.push(`/events/${event.id}`, { scrollToTop: true });
     };
 
     return (

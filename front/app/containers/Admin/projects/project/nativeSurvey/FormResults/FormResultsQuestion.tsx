@@ -60,11 +60,11 @@ const FormResultsQuestion = ({
 
   return (
     <Box data-cy={`e2e-${snakeCase(question[locale])}`} mb="56px">
-      <Title variant="h3" mb="0">
+      <Title variant="h3" mt="12px" mb="12px">
         <T value={question} />
       </Title>
       {inputTypeText && (
-        <Text variant="bodyS" color="textSecondary" mb="0">
+        <Text variant="bodyS" color="textSecondary" mt="12px" mb="12px">
           {inputTypeLabel}
         </Text>
       )}

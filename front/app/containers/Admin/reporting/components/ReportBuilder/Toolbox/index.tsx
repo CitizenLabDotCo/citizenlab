@@ -5,11 +5,11 @@ import Container from 'components/admin/ContentBuilder/Toolbox/Container';
 import { Box, Title, Accordion } from '@citizenlab/cl2-component-library';
 
 // widgets
-import TwoColumn from '../../../components/ReportBuilder/Widgets/TwoColumn';
+import TwoColumn from '../Widgets/TwoColumn';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
-import TitleWidget from 'components/admin/ContentBuilder/Widgets/Title';
-import Text from 'components/admin/ContentBuilder/Widgets/Text';
-import Image from 'components/admin/ContentBuilder/Widgets/Image';
+import TitleWidget from '../Widgets/Title';
+import Text from '../Widgets/Text';
+import Image from '../Widgets/Image';
 import AboutReportWidget from '../Widgets/AboutReportWidget';
 import SurveyResultsWidget from '../Widgets/SurveyResultsWidget';
 import VisitorsWidget from '../Widgets/ChartWidgets/VisitorsWidget';
@@ -56,7 +56,7 @@ const ReportBuilderToolbox = ({ reportId }: ReportBuilderToolboxProps) => {
   const { formatMessage } = useIntl();
 
   // Default end date for charts (today)
-  const chartEndDate = moment().format('YYYY-MM-DDTHH:mm:ss.sss');
+  const chartEndDate = moment().format('YYYY-MM-DD');
 
   return (
     <Container>

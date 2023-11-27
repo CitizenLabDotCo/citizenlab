@@ -53,7 +53,7 @@ const Buttons = ({ reportId, isLoading, onDelete, onEdit, onView }: Props) => {
       >
         {formatMessage(messages.view)}
       </Button>
-      <ShareReportButton reportId={reportId} buttonStyle="primary" />
+      <ShareReportButton reportId={reportId} />
     </Box>
   );
 };

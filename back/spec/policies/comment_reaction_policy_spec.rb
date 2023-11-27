@@ -6,7 +6,7 @@ describe CommentReactionPolicy do
   subject(:policy) { described_class.new(user, reaction) }
 
   let(:scope) { CommentReactionPolicy::Scope.new(user, Reaction) }
-  let(:project) { create(:continuous_project) }
+  let(:project) { create(:single_phase_ideation_project) }
   let(:idea) { create(:idea, project: project, phases: project.phases) }
   let(:comment) { create(:comment, post: idea) }
 
@@ -95,7 +95,7 @@ describe CommentReactionPolicy do
   # end
 
   context 'for a mortal user who owns the reaction on a project where commenting is disabled' do
-    let(:project) { create(:continuous_project, phase_attrs: { commenting_enabled: false }) }
+    let(:project) { create(:single_phase_ideation_project, phase_attrs: { commenting_enabled: false }) }
     let!(:reaction) { create(:reaction, reactable: comment) }
     let(:user) { reaction.user }
 
@@ -111,7 +111,7 @@ describe CommentReactionPolicy do
   end
 
   context 'for a mortal user who owns the reaction on a project where commenting is only allowed by admins' do
-    let(:project) { create(:continuous_project, phase_attrs: { with_permissions: true }) }
+    let(:project) { create(:single_phase_ideation_project, phase_attrs: { with_permissions: true }) }
     let!(:reaction) { create(:reaction, reactable: comment) }
     let(:user) { reaction.user }
 

@@ -52,6 +52,10 @@
 #
 class Phase < ApplicationRecord
   include ParticipationContext
+  include Polls::PollPhase
+  include Surveys::SurveyPhase
+  include Volunteering::VolunteeringPhase
+  include DocumentAnnotation::DocumentAnnotationPhase
 
   CAMPAIGNS = [:project_phase_started].freeze
 
@@ -125,6 +129,10 @@ class Phase < ApplicationRecord
 
   def previous_phase_end_at_updated?
     @previous_phase_end_at_updated || false
+  end
+
+  def started?
+    start_at <= Time.zone.now
   end
 
   private

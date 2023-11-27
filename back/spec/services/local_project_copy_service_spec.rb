@@ -18,7 +18,7 @@ describe LocalProjectCopyService do
     let(:with_permissions) { false }
     let!(:open_ended_project) do
       create(
-        :continuous_project,
+        :single_phase_ideation_project,
         phase_attrs: { with_permissions: with_permissions },
         admin_publication_attributes: { publication_status: 'published' },
         title_multiloc: { en: 'Copy me' },
@@ -42,7 +42,6 @@ describe LocalProjectCopyService do
         ideas_count: 0,
         include_all_areas: false,
         internal_role: nil,
-        process_type: 'timeline',
         visible_to: 'public',
         folder_id: nil
       )
@@ -140,13 +139,13 @@ describe LocalProjectCopyService do
     end
 
     it 'copies associated volunteering_causes' do
-      create_list(:cause, 2, participation_context_id: open_ended_project.phases.first.id, participation_context_type: 'Phase')
+      create_list(:cause, 2, participation_context: open_ended_project.phases.first)
       copied_project = service.copy(open_ended_project.reload)
 
-      expect(copied_project.causes.map do |record|
+      expect(copied_project.phases.first.causes.map do |record|
         record.as_json(except: %i[id participation_context_id image updated_at created_at])
       end)
-        .to match_array(open_ended_project.causes.map do |record|
+        .to match_array(open_ended_project.phases.first.causes.map do |record|
           record.as_json(except: %i[id participation_context_id image updated_at created_at])
         end)
     end
@@ -180,7 +179,7 @@ describe LocalProjectCopyService do
     end
 
     it 'copies associated poll questions & options' do
-      source_project = create(:continuous_poll_project)
+      source_project = create(:single_phase_poll_project)
       create_list(
         :poll_question,
         2,

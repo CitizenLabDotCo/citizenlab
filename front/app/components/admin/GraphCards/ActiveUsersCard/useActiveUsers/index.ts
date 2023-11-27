@@ -1,5 +1,3 @@
-// services
-
 // i18n
 import { useIntl } from 'utils/cl-intl';
 import { getTranslations } from './translations';
@@ -9,8 +7,6 @@ import { query } from './query';
 
 // parse
 import { parseTimeSeries, parseStats, parseExcelData } from './parse';
-
-// utils
 
 // typings
 import { QueryParameters, Response } from './typings';

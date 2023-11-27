@@ -9,7 +9,7 @@ describe ProjectPolicy do
   let(:inverse_scope) { ProjectPolicy::InverseScope.new(project, User) }
 
   context 'on a public timeline project' do
-    let!(:project) { create(:continuous_project) }
+    let!(:project) { create(:single_phase_ideation_project) }
 
     context 'for a visitor' do
       let(:user) { nil }
@@ -309,13 +309,13 @@ describe ProjectPolicy do
     let(:user) { build(:project_folder_moderator, project_folders: [project_folder]) }
 
     context 'for a timeline project contained within a folder the user moderates' do
-      let!(:project) { create(:continuous_project, admin_publication_attributes: { parent_id: project_folder.admin_publication.id }) }
+      let!(:project) { create(:single_phase_ideation_project, admin_publication_attributes: { parent_id: project_folder.admin_publication.id }) }
 
       it { is_expected.to permit(:create) }
     end
 
     context 'for a timeline project not contained within a folder the user moderates' do
-      let!(:project) { create(:continuous_project) }
+      let!(:project) { create(:single_phase_ideation_project) }
 
       it { is_expected.not_to permit(:create) }
     end

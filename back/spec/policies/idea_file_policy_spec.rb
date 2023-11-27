@@ -8,7 +8,7 @@ describe IdeaFilePolicy do
   let(:scope) { IdeaFilePolicy::Scope.new(user, idea.idea_files) }
 
   context 'on a file of an idea in a public project' do
-    let(:project) { create(:continuous_project) }
+    let(:project) { create(:single_phase_ideation_project) }
     let(:idea) { create(:idea, project: project) }
     let!(:file) { create(:idea_file, idea: idea) }
 

@@ -44,16 +44,12 @@ module Analysis
         scope.where(creation_phase_id: phase_id)
       elsif project.timeline?
         scope.where(project_id: project_id, creation_phase: nil)
-      elsif project.continuous?
-        scope.where(project_id: project_id)
       end
     end
 
     def participation_method
       if phase
         phase.participation_method
-      elsif project&.continuous?
-        project.participation_method
       elsif project&.timeline?
         'ideation'
       end

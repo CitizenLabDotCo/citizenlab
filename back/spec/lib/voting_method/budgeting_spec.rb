@@ -67,7 +67,7 @@ RSpec.describe VotingMethod::Budgeting do
 
   describe '#assign_baskets_idea' do
     it 'overwrites the votes with the budget' do
-      project = create(:continuous_budgeting_project)
+      project = create(:single_phase_budgeting_project)
       idea = create(:idea, budget: 3, project: project, phases: project.phases)
       baskets_idea = create(:baskets_idea, basket: create(:basket, participation_context: project.phases.first), idea: idea, votes: 10)
 
