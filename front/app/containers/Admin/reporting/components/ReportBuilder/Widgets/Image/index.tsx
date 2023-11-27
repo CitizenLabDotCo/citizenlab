@@ -19,7 +19,7 @@ import { UploadFile } from 'typings';
 import { useEditor, useNode } from '@craftjs/core';
 
 // i18n
-import messages from 'components/admin/ContentBuilder/Widgets/Image/messages';
+import messages from './messages';
 import { injectIntl } from 'utils/cl-intl';
 
 // events
