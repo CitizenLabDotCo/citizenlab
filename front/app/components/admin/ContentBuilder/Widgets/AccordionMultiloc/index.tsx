@@ -37,9 +37,11 @@ const Accordion = ({ text, title, openByDefault = false }: AccordionProps) => {
 
   return (
     <AccordionComponent
+      w="auto"
       maxWidth="1200px"
-      margin="0 auto"
-      px={componentDefaultPadding}
+      margin={`0 ${
+        componentDefaultPadding === '0px' ? 'auto' : componentDefaultPadding
+      }`}
       isOpenByDefault={openByDefault}
       title={
         <Box id="e2e-accordion" display="flex">
