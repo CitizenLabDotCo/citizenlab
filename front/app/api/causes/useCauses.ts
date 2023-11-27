@@ -5,25 +5,22 @@ import causesKeys from './keys';
 import { ICauses, CausesKeys, ICauseParameters } from './types';
 
 const fetchCauses = ({
-  participationContextType,
-  participationContextId,
+  phaseId,
 }: ICauseParameters) =>
   fetcher<ICauses>({
-    path: `/${participationContextType}s/${participationContextId}/causes`,
+    path: `/phases/${phaseId}/causes`,
     action: 'get',
   });
 
 const useCauses = ({
-  participationContextType,
-  participationContextId,
+  phaseId,
 }: ICauseParameters) => {
   return useQuery<ICauses, CLErrors, ICauses, CausesKeys>({
     queryKey: causesKeys.list({
-      participationContextType,
-      participationContextId,
+      phaseId,
     }),
     queryFn: () =>
-      fetchCauses({ participationContextId, participationContextType }),
+      fetchCauses({ phaseId }),
   });
 };
 
