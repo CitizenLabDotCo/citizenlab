@@ -9,7 +9,7 @@ namespace :data_migrate do
     Apartment::Tenant.switch(args[:host].tr('.', '_')) do
       default_locale = args[:locale]
       statuses = IdeaStatus.all.to_a
-      find_status_by_title = ->(title) { statuses.find { _1.title_multiloc >= { default_locale => title } } || raise("Idea status not found: '#{title}'.") }
+      find_status_by_title = ->(title) { statuses.find { _1.title_multiloc[default_locale] == title } || raise("Idea status not found: '#{title}'.") }
       create_status_by_title = lambda do |title, color|
         IdeaStatus.find_or_create_by!(
           title_multiloc: { default_locale => title },
