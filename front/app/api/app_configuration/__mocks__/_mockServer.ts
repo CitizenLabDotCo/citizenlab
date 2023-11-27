@@ -64,9 +64,9 @@ export const getAppConfigurationData = (
       },
     },
     logo: {
-      small: 'http://zah.cy/wof.jpg',
-      medium: 'http://fepe.et/fivacsok.jpg',
-      large: 'http://jostoska.gt/timihosin.jpg',
+      small: 'http://localhost:6006/images/logo.png',
+      medium: 'http://localhost:6006/images/logo.png',
+      large: 'http://localhost:6006/images/logo.png',
     },
     ...attributes,
   },

@@ -27,13 +27,16 @@ const InitiativeButton = ({ lat, lng, location, buttonStyle }: Props) => {
 
   const redirectToInitiativeForm = () => {
     trackEventByName('redirected to initiatives form');
-    clHistory.push({
-      pathname: `/initiatives/new`,
-      search:
-        lat && lng
-          ? stringify({ lat, lng }, { addQueryPrefix: true })
-          : undefined,
-    });
+    clHistory.push(
+      {
+        pathname: `/initiatives/new`,
+        search:
+          lat && lng
+            ? stringify({ lat, lng }, { addQueryPrefix: true })
+            : undefined,
+      },
+      { scrollToTop: true }
+    );
   };
 
   const onNewInitiativeButtonClick = (event?: React.FormEvent) => {

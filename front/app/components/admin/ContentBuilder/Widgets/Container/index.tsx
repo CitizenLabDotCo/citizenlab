@@ -11,7 +11,7 @@ import Projects from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/co
 
 const Container: UserComponent = ({ children }) => {
   return (
-    <Box id="e2e-single-column" minHeight="40px" w="100%">
+    <Box className="e2e-single-column" minHeight="40px" w="100%">
       {children}
     </Box>
   );

@@ -58,10 +58,24 @@ class MultiTenancy::Rake::ContinuousProjectMigrationService
       # 9. Move any native survey analysis from project to phase
       update_native_survey_analyses(project, phase)
 
-      # 10. Add a creation activity for each phase - don't think there are any other activities that need updating
+      # 10. Update the custom_form context for native surveys
+      update_survey_form_context(project, phase)
+
+      # 11. Add a creation activity for each phase - don't think there are any other activities that need updating
       add_phase_creation_activity(phase)
 
       @stats[:success] = @stats[:success] + 1
+    end
+  end
+
+  # Fix for staging - when the task was run with no logic
+  def fix_survey_custom_forms
+    CustomForm.where(participation_context_type: 'Project').each do |form|
+      project = Project.find(form.participation_context_id)
+      if project.phases.count == 1 && project.phases.first.participation_method == 'native_survey'
+        form.update!(participation_context: project.phases.first)
+        Rails.logger.info "FIXED: form for project: #{project.slug}"
+      end
     end
   end
 
@@ -191,6 +205,12 @@ class MultiTenancy::Rake::ContinuousProjectMigrationService
 
   def add_phase_creation_activity(phase)
     LogActivityJob.perform_later(phase, 'created', nil, phase.created_at.to_i, { payload: { migrated_from_continuous: true } })
+  end
+
+  def update_survey_form_context(project, phase)
+    if phase.participation_method == 'native_survey'
+      @stats[:records_updated] += CustomForm.where(participation_context: project).update!(participation_context: phase).count
+    end
   end
 
   def error_handler(error)

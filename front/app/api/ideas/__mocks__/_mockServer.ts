@@ -1,4 +1,5 @@
 import { rest } from 'msw';
+import { API_PATH } from 'containers/App/constants';
 import { IIdeaData } from '../types';
 
 export const ideaData: IIdeaData[] = [
@@ -217,6 +218,19 @@ export const ideaData: IIdeaData[] = [
   },
 ];
 
+export const links = {
+  last: 'http://localhost:3000/web_api/v1/ideas?page%5Bnumber%5D=9&page%5Bsize%5D=12&sort=random',
+  next: 'http://localhost:3000/web_api/v1/ideas?page%5Bnumber%5D=2&page%5Bsize%5D=12&sort=random',
+  self: 'http://localhost:3000/web_api/v1/ideas?page%5Bnumber%5D=1&page%5Bsize%5D=12&sort=random',
+  first:
+    'http://localhost:3000/web_api/v1/ideas?page%5Bnumber%5D=1&page%5Bsize%5D=12&sort=random',
+  prev: null,
+};
+
+export const apiPathIdeas = `${API_PATH}/ideas`;
+export const apiPathById = `${API_PATH}/ideas/:ideaId`;
+export const apiPathBySlug = `${API_PATH}/ideas/by_slug/:slug`;
+
 const votingIdea = {
   data: {
     id: 'aadd62ad-646c-4351-bafd-3e0f72e68499',
@@ -334,10 +348,10 @@ const votingIdea = {
   },
 };
 
-export const apiPathById = '/web_api/v1/ideas/:ideaId';
-export const apiPathBySlug = '/web_api/v1/ideas/by_slug/:slug';
-
 const endpoints = {
+  'GET ideas': rest.get(apiPathIdeas, (_req, res, ctx) => {
+    return res(ctx.status(200), ctx.json({ data: ideaData }));
+  }),
   'GET ideas/:id': rest.get(apiPathById, (_req, res, ctx) => {
     return res(ctx.status(200), ctx.json({ data: ideaData[0] }));
   }),

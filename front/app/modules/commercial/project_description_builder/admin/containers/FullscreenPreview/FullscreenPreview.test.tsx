@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from 'utils/testUtils/rtl';
+import { render, screen, waitFor } from 'utils/testUtils/rtl';
 import FullScreenPreview from '.';
 
 let mockLocale = 'en';
@@ -75,25 +75,31 @@ document.getElementById = (id, ...args) => {
 };
 
 describe('Preview Content', () => {
-  it('should render', () => {
+  it('should render', async () => {
     render(<FullScreenPreview />);
-    expect(
-      screen.getByTestId('contentBuilderEditModePreviewContent')
-    ).toBeInTheDocument();
-    expect(screen.getByText('Test Project')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(
+        screen.getByTestId('contentBuilderEditModePreviewContent')
+      ).toBeInTheDocument();
+      expect(screen.getByText('Test Project')).toBeInTheDocument();
+    });
   });
 
-  it('should show correct title with a different locale', () => {
+  it('should show correct title with a different locale', async () => {
     mockLocale = 'fr-FR';
     render(<FullScreenPreview />);
 
-    expect(screen.getByText('Test Projet')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText('Test Projet')).toBeInTheDocument();
+    });
   });
 
-  it('shows loading state correctly', () => {
+  it('shows loading state correctly', async () => {
     mockProjectDescriptionBuilderLayoutData = undefined;
     render(<FullScreenPreview />);
 
-    expect(screen.getByTestId('spinner')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByTestId('spinner')).toBeInTheDocument();
+    });
   });
 });

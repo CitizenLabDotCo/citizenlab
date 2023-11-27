@@ -100,6 +100,7 @@ interface Props {
   footer?: JSX.Element | string;
   onClick?: (event: MouseEvent<HTMLAnchorElement>) => void;
   className?: string;
+  scrollToTop?: boolean;
 }
 
 export const Card = ({
@@ -111,6 +112,7 @@ export const Card = ({
   body,
   footer,
   className,
+  scrollToTop,
 }: Props) => {
   const smallerThanTablet = useBreakpoint('tablet');
 
@@ -118,6 +120,7 @@ export const Card = ({
     <Container
       onClick={onClick}
       to={to}
+      scrollToTop={scrollToTop}
       className={`e2e-card ${className} ${
         !smallerThanTablet ? 'desktop' : 'mobile'
       }`}

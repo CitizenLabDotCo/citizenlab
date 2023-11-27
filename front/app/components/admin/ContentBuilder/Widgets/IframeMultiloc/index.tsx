@@ -17,6 +17,7 @@ import { injectIntl } from 'utils/cl-intl';
 
 // craft
 import { useNode } from '@craftjs/core';
+import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
 
 // events
 import eventEmitter from 'utils/eventEmitter';
@@ -28,7 +29,6 @@ import { Locale, Multiloc } from 'typings';
 import { isValidUrl } from 'utils/validate';
 import useLocalize from 'hooks/useLocalize';
 import InputMultilocWithLocaleSwitcherWrapper from 'components/UI/InputMultilocWithLocaleSwitcher';
-import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
 
 interface Props {
   url: string;

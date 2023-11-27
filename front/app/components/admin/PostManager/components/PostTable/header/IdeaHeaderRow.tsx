@@ -22,15 +22,15 @@ import {
   InsertConfigurationOptions,
   Override,
 } from 'typings';
-import { SortAttribute as IdeasSortAttribute } from 'api/ideas/types';
+import { Sort as IdeasSort } from 'api/ideas/types';
 import { SortDirection } from 'utils/paginationUtils';
 
 // hooks
 import usePostManagerColumnFilter from 'hooks/usePostManagerColumnFilter';
 
 interface SortableHeaderCellProps {
-  sortAttribute?: IdeasSortAttribute;
-  sortAttributeName: IdeasSortAttribute;
+  sortAttribute?: IdeasSort;
+  sortAttributeName: IdeasSort;
   sortDirection?: 'ascending' | 'descending' | null;
   infoTooltip?: React.ReactChild;
   width: string;
@@ -68,7 +68,7 @@ export const SortableHeaderCell = ({
 };
 
 export type IdeaHeaderCellComponentProps = {
-  sortAttribute?: IdeasSortAttribute;
+  sortAttribute?: IdeasSort;
   sortDirection?: 'ascending' | 'descending' | null;
   allSelected?: boolean;
   width: string;
@@ -79,7 +79,7 @@ export type IdeaHeaderCellComponentProps = {
 interface Props {
   selectedProjectId?: string | null;
   selectedPhaseId?: string | null;
-  sortAttribute?: IdeasSortAttribute;
+  sortAttribute?: IdeasSort;
   sortDirection?: SortDirection;
   allSelected: boolean;
   toggleSelectAll: () => void;

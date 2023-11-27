@@ -8,6 +8,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 // craft
 import { useNode } from '@craftjs/core';
+import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
 
 // i18n
 import messages from './messages';
@@ -16,14 +17,13 @@ import messages from './messages';
 import { useTheme } from 'styled-components';
 import { Multiloc } from 'typings';
 import useLocalize from 'hooks/useLocalize';
-import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
 
 interface Props {
   text?: Multiloc;
 }
 
 const TextMultiloc = ({ text }: Props) => {
-  const componentDefaultPadding = useCraftComponentDefaultPadding();
+  const craftComponentDefaultPadding = useCraftComponentDefaultPadding();
   const theme = useTheme();
   const localize = useLocalize();
 
@@ -31,11 +31,11 @@ const TextMultiloc = ({ text }: Props) => {
 
   return (
     <PageBreakBox
-      id="e2e-text-box"
+      className="e2e-text-box"
       minHeight="26px"
       maxWidth="1200px"
       margin="0 auto"
-      px={componentDefaultPadding}
+      px={craftComponentDefaultPadding}
     >
       <QuillEditedContent textColor={theme.colors.tenantText}>
         <div dangerouslySetInnerHTML={{ __html: value }} />

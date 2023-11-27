@@ -8,7 +8,7 @@ import {
   colors,
   Icon,
 } from '@citizenlab/cl2-component-library';
-import PageBreakBox from '../PageBreakBox';
+import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 
 // image upload
 import ImagesDropzone from 'components/UI/ImagesDropzone';
@@ -31,6 +31,7 @@ import {
 
 // hooks
 import useAddContentBuilderImage from 'api/content_builder_images/useAddContentBuilderImage';
+import useReportDefaultPadding from 'containers/Admin/reporting/hooks/useReportDefaultPadding';
 
 interface Props {
   imageUrl?: string;
@@ -39,6 +40,8 @@ interface Props {
 }
 
 const Image = ({ imageUrl, alt = '', dataCode }: Props) => {
+  const px = useReportDefaultPadding();
+
   const { enabled } = useEditor((state) => {
     return {
       enabled: state.options.enabled,
@@ -57,6 +60,7 @@ const Image = ({ imageUrl, alt = '', dataCode }: Props) => {
       id="e2e-image"
       style={{ pointerEvents: 'none' }}
       minHeight="26px"
+      px={px}
     >
       {imageUrl && (
         <ImageComponent
