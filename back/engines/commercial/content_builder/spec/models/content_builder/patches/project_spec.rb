@@ -47,7 +47,8 @@ RSpec.describe ContentBuilder::Patches::Project do
   end
 
   describe '.search_ids_by_all_including_patches' do
-    def oldcraftjs(props) # TODO: clean up after fully migrated
+    def oldcraftjs(props)
+      # TODO: clean up after fully migrated
       {
         en: {
           ROOT: {
