@@ -11,7 +11,7 @@ import { ReportContext } from '../../context/ReportContext';
 import useReportLayout from 'api/report_layout/useReportLayout';
 import useLocale from 'hooks/useLocale';
 import useReportLocale from '../../hooks/useReportLocale';
-import ReportLanguageProvider from '../ReportLanguageProvider';
+import ContentBuilderLanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
 
 // components
 import FullScreenWrapper from 'components/admin/ContentBuilder/FullscreenPreview/Wrapper';
@@ -73,8 +73,8 @@ export const Report = ({ reportId }: Props) => {
   const editorData = draftData || savedEditorData;
 
   return (
-    <ReportLanguageProvider
-      reportLocale={reportLocale}
+    <ContentBuilderLanguageProvider
+      contentBuilderLocale={reportLocale}
       platformLocale={platformLocale}
     >
       <ReportContext.Provider value="pdf">
@@ -101,7 +101,7 @@ export const Report = ({ reportId }: Props) => {
           )}
         </FullScreenWrapper>
       </ReportContext.Provider>
-    </ReportLanguageProvider>
+    </ContentBuilderLanguageProvider>
   );
 };
 

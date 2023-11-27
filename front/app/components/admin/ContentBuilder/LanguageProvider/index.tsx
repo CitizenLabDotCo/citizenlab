@@ -9,25 +9,25 @@ import moment from 'moment';
 import { Locale } from 'typings';
 
 type Props = {
-  reportLocale: Locale | NilOrError;
+  contentBuilderLocale: Locale | NilOrError;
   platformLocale: Locale | NilOrError;
   children: React.ReactNode;
 };
 
-// Loads correct messages for the report locale & change moment locale
-const ReportLanguageProvider = ({
-  reportLocale,
+// Loads correct messages for the contentBuilder locale & change moment locale
+const ContentBuilderLanguageProvider = ({
+  contentBuilderLocale,
   platformLocale,
   children,
 }: Props) => {
   const [messages, setMessages] = useState();
 
   useEffect(() => {
-    if (!isNilOrError(reportLocale)) {
-      import(`i18n/${reportLocale}`).then((translationMessages) => {
+    if (!isNilOrError(contentBuilderLocale)) {
+      import(`i18n/${contentBuilderLocale}`).then((translationMessages) => {
         setMessages(translationMessages.default);
       });
-      moment.locale(reportLocale);
+      moment.locale(contentBuilderLocale);
     }
 
     return () => {
@@ -36,17 +36,17 @@ const ReportLanguageProvider = ({
         moment.locale(platformLocale);
       }
     };
-  }, [reportLocale, platformLocale]);
+  }, [contentBuilderLocale, platformLocale]);
 
-  if (isNilOrError(reportLocale) || !messages) {
+  if (isNilOrError(contentBuilderLocale) || !messages) {
     return null;
   }
 
   return (
-    <IntlProvider locale={reportLocale} key={reportLocale} messages={messages}>
+    <IntlProvider locale={contentBuilderLocale} messages={messages}>
       {children}
     </IntlProvider>
   );
 };
 
-export default ReportLanguageProvider;
+export default ContentBuilderLanguageProvider;

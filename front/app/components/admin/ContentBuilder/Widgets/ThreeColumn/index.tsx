@@ -13,6 +13,7 @@ import Container from '../Container';
 
 // i18n
 import messages from './messages';
+import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
 
 export const ThreeColumnWrapper = ({
   children,
@@ -37,8 +38,13 @@ export const ThreeColumnWrapper = ({
 };
 
 const ThreeColumn = () => {
+  const componentDefaultPadding = useCraftComponentDefaultPadding();
   return (
-    <ThreeColumnWrapper>
+    <ThreeColumnWrapper
+      maxWidth="1200px"
+      margin="0 auto"
+      px={componentDefaultPadding}
+    >
       <Box flex="1">
         <Element id="column1" is={Container} canvas />
       </Box>

@@ -9,7 +9,7 @@ import { useParams } from 'react-router-dom';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 import useReportLocale from '../../hooks/useReportLocale';
-import ReportLanguageProvider from '../ReportLanguageProvider';
+import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
 
 // components
 import FullScreenWrapper from 'components/admin/ContentBuilder/FullscreenPreview/Wrapper';
@@ -53,8 +53,8 @@ export const FullScreenReport = ({ reportId }: Props) => {
   const editorData = draftData || savedEditorData;
 
   return (
-    <ReportLanguageProvider
-      reportLocale={reportLocale}
+    <LanguageProvider
+      contentBuilderLocale={reportLocale}
       platformLocale={platformLocale}
     >
       <ReportContext.Provider value="phase">
@@ -73,7 +73,7 @@ export const FullScreenReport = ({ reportId }: Props) => {
           )}
         </FullScreenWrapper>
       </ReportContext.Provider>
-    </ReportLanguageProvider>
+    </LanguageProvider>
   );
 };
 
