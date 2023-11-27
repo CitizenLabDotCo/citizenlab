@@ -10,8 +10,8 @@ namespace :data_migrate do
     find_status_by_title = ->(title) { statuses.find { _1.title_multiloc >= { default_locale => title } } }
     create_status_by_title = lambda do |title, color|
       IdeaStatus.find_or_create_by!(
-        title_multiloc: { default_locale => 'Uitvoering in 2023' },
-        description_multiloc: { default_locale => 'Uitvoering in 2023' },
+        title_multiloc: { default_locale => title },
+        description_multiloc: { default_locale => title },
         color: color,
         code: 'custom'
       )
