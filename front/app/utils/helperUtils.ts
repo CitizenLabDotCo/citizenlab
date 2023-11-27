@@ -196,10 +196,6 @@ export function removeFocusAfterMouseClick(event: React.MouseEvent) {
   event.preventDefault();
 }
 
-export function isDesktop(windowWidth: number) {
-  return windowWidth > viewportWidths.tablet;
-}
-
 export const keys = <T extends object>(obj: T) =>
   obj && (Object.keys(obj) as Array<keyof T>);
 

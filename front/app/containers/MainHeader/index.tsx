@@ -8,10 +8,7 @@ import DesktopNavItems from './Components/DesktopNavItems';
 import MobileNavbarContent from './Components/NavbarContent/MobileNavbarContent';
 import DesktopNavbarContent from './Components/NavbarContent/DesktopNavbarContent';
 import Fragment from 'components/Fragment';
-import {
-  useBreakpoint,
-  useWindowSize,
-} from '@citizenlab/cl2-component-library';
+import { useBreakpoint } from '@citizenlab/cl2-component-library';
 import useLocale from 'hooks/useLocale';
 
 // utils
