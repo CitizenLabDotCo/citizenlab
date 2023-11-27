@@ -20,7 +20,7 @@ namespace :data_migrate do
       end
 
       statuses_mapping = {
-        'verder onderzocht' => find_status_by_title.call('Wordt onderzocht'),
+        'verder onderzocht' => find_status_by_title.call('Wordt Onderzocht'),
         'uitgevoerd' => find_status_by_title.call('uitgevoerd'),
         'afgesloten/wordt niet verder onderzocht' => find_status_by_title.call('Afgesloten'),
         'ingepland' => find_status_by_title.call('Ingepland'),
@@ -46,7 +46,7 @@ namespace :data_migrate do
         target_phase = idea.project.phases.last
         phase_included = idea.phases.include?(target_phase)
         idea.phases << target_phase unless phase_included
-        idea.idea_status = statuses_mapping[d['nieuwe status'].strip]
+        idea.idea_status = statuses_mapping.fetch(d['nieuwe status'].strip)
         idea.save!
 
         puts "Updated idea '#{idea.id}' with status '#{idea.idea_status.code}, #{idea.idea_status.id}' and phase '#{target_phase.id}'. Previous status: '#{idea.idea_status_id_previously_was}', phase included: '#{phase_included}'."
