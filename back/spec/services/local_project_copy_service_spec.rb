@@ -332,32 +332,93 @@ describe LocalProjectCopyService do
       end
 
       it 'copies associated layout images as new images, associated with copied layout' do
-        images = create_list(:layout_image, 2)
+        original_images = create_list(:layout_image, 2)
+        layout.update!(craftjs_json: {
+          'ROOT' => {
+            'type' => 'div',
+            'isCanvas' => true,
+            'props' => { 'id' => 'e2e-content-builder-frame' },
+            'displayName' => 'div',
+            'custom' => {},
+            'hidden' => false,
+            'nodes' => %w[B8vvp7in1B nt24xY6COf],
+            'linkedNodes' => {}
+          },
+          'B8vvp7in1B' => {
+            'type' => { 'resolvedName' => 'HomepageBanner' },
+            'isCanvas' => false,
+            'props' => {
+              'homepageSettings' => { 'banner_layout' => 'full_width_banner_layout' },
+              'image' => { 'dataCode' => original_images.first.code }
+            },
+            'displayName' => 'HomepageBanner',
+            'parent' => 'ROOT',
+            'hidden' => false,
+            'nodes' => [],
+            'linkedNodes' => {}
+          },
+          'nt24xY6COf' => {
+            'type' => { 'resolvedName' => 'ImageMultiloc' },
+            'isCanvas' => false,
+            'props' => {
+              'image' => {
+                'id' => 'image',
+                'alt' => '',
+                'dataCode' => original_images.last.code
+              }
+            },
+            'displayName' => 'Image',
+            'parent' => 'ROOT',
+            'hidden' => false,
+            'nodes' => [],
+            'linkedNodes' => {}
+          }
+        })
 
-        craftjs_str = ERB.new(File.read('spec/fixtures/craftjs_layout_with_2_images.json.erb'))
-          .result_with_hash(code1: images[0].code, code2: images[1].code)
-
-        layout.update!(craftjs_json: JSON.parse(craftjs_str))
         copied_project = service.copy(layout.content_buildable)
 
-        new_image_codes = images.map(&:code)
-
-        expect(copied_project.content_builder_layouts.first
-          .as_json(only: %i[content_buildable_type code enabled]))
-          .to eq(layout.as_json(only: %i[content_buildable_type code enabled]))
-
-        # Expect the copied layout's craftjs_json to equal the source value, excluding the image codes (UUIDs)
-        expect(
-          copied_project.content_builder_layouts.first.craftjs_json.to_json
-          .gsub!(new_image_codes[0], '').gsub!(new_image_codes[1], '')
-        ).to eq(
-          layout.content_buildable.content_builder_layouts.first.craftjs_json.to_json
-          .gsub!(images[0].code, '').gsub!(images[1].code, '')
-        )
-
-        expect(new_image_codes.count).to eq 2
-        expect(ContentBuilder::LayoutImage.find_by(code: new_image_codes[0])).to be_truthy
-        expect(ContentBuilder::LayoutImage.find_by(code: new_image_codes[1])).to be_truthy
+        new_images = ContentBuilder::LayoutImage.where.not(id: original_images)
+        expect(copied_project.content_builder_layouts.first.craftjs_json).to match({
+          'ROOT' => {
+            'type' => 'div',
+            'isCanvas' => true,
+            'props' => { 'id' => 'e2e-content-builder-frame' },
+            'displayName' => 'div',
+            'custom' => {},
+            'hidden' => false,
+            'nodes' => %w[B8vvp7in1B nt24xY6COf],
+            'linkedNodes' => {}
+          },
+          'B8vvp7in1B' => {
+            'type' => { 'resolvedName' => 'HomepageBanner' },
+            'isCanvas' => false,
+            'props' => {
+              'homepageSettings' => { 'banner_layout' => 'full_width_banner_layout' },
+              'image' => { 'dataCode' => (eq(new_images.first.code) | eq(new_images.last.code)) }
+            },
+            'displayName' => 'HomepageBanner',
+            'parent' => 'ROOT',
+            'hidden' => false,
+            'nodes' => [],
+            'linkedNodes' => {}
+          },
+          'nt24xY6COf' => {
+            'type' => { 'resolvedName' => 'ImageMultiloc' },
+            'isCanvas' => false,
+            'props' => {
+              'image' => {
+                'id' => 'image',
+                'alt' => '',
+                'dataCode' => (eq(new_images.first.code) | eq(new_images.last.code))
+              }
+            },
+            'displayName' => 'Image',
+            'parent' => 'ROOT',
+            'hidden' => false,
+            'nodes' => [],
+            'linkedNodes' => {}
+          }
+        })
       end
     end
   end
