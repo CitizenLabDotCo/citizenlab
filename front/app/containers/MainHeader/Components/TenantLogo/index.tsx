@@ -11,13 +11,14 @@ import messages from '../../messages';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 // components
-import { BoxProps, Image } from '@citizenlab/cl2-component-library';
+import { Image } from '@citizenlab/cl2-component-library';
 
 const LogoLink = styled(Link)`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  flex: '1 1 auto';
 `;
 
 const Logo = styled(Image)`
@@ -28,7 +29,7 @@ const Logo = styled(Image)`
   cursor: pointer;
 `;
 
-const TenantLogo = ({ ...props }: BoxProps) => {
+const TenantLogo = () => {
   const { data: appConfiguration } = useAppConfiguration();
   const { formatMessage } = useIntl();
 
@@ -37,11 +38,7 @@ const TenantLogo = ({ ...props }: BoxProps) => {
 
     if (tenantLogo) {
       return (
-        <LogoLink
-          to="/"
-          onlyActiveOnIndex={true}
-          style={{ flex: props.flex || '1 1 auto' }}
-        >
+        <LogoLink to="/" onlyActiveOnIndex={true}>
           <Logo src={tenantLogo} alt={formatMessage(messages.logoAltText)} />
         </LogoLink>
       );

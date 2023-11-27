@@ -109,8 +109,8 @@ const MainHeader = () => {
     urlSegments[1] === 'projects'
   );
 
-  const isSmallerThanDesktop = useBreakpoint('smallDesktop');
-  const isDesktopUser = !isSmallerThanDesktop;
+  const isSmallerThanTablet = useBreakpoint('tablet');
+  const isDesktopUser = !isSmallerThanTablet;
 
   return (
     <Container
