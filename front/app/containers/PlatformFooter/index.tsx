@@ -302,8 +302,8 @@ const PlatformFooter = ({ className }: Props) => {
           </PagesNavList>
         </PagesNav>
 
-        <Right>
-          {!removeVendorBranding && (
+        {!removeVendorBranding && (
+          <Right>
             <PoweredBy>
               <PoweredByText>
                 <FormattedMessage {...messages.poweredBy} />
@@ -312,8 +312,8 @@ const PlatformFooter = ({ className }: Props) => {
                 <CitizenLabLogo name="cl-logo" title="CitizenLab" />
               </CitizenlabLink>
             </PoweredBy>
-          )}
-        </Right>
+          </Right>
+        )}
       </FooterContainer>
     </Container>
   );

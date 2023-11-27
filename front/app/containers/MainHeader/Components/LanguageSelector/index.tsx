@@ -140,7 +140,7 @@ const LanguageSelector = ({ className }: Props) => {
         >
           <DropdownButtonText>{selectedLocale}</DropdownButtonText>
           <DropdownButtonIcon
-            fill={(theme && theme.navbarTextColor) || theme.colors.tenantText}
+            fill={theme.navbarTextColor || theme.colors.tenantText}
             name="chevron-down"
           />
         </DropdownButton>

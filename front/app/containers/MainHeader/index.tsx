@@ -8,11 +8,11 @@ import DesktopNavItems from './Components/DesktopNavItems';
 import MobileNavbarContent from './Components/NavbarContent/MobileNavbarContent';
 import DesktopNavbarContent from './Components/NavbarContent/DesktopNavbarContent';
 import Fragment from 'components/Fragment';
-import { useWindowSize } from '@citizenlab/cl2-component-library';
+import { useBreakpoint } from '@citizenlab/cl2-component-library';
 import useLocale from 'hooks/useLocale';
 
 // utils
-import { isPage, isDesktop } from 'utils/helperUtils';
+import { isPage } from 'utils/helperUtils';
 
 // style
 import styled from 'styled-components';
@@ -84,7 +84,6 @@ const StyledRightFragment = styled(Fragment)`
 const MainHeader = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const locale = useLocale();
-  const windowSize = useWindowSize();
 
   // url segments
   const urlSegments = location.pathname.replace(/^\/+/g, '').split('/');
@@ -110,7 +109,8 @@ const MainHeader = () => {
     urlSegments[1] === 'projects'
   );
 
-  const isDesktopUser = isDesktop(windowSize.windowWidth);
+  const isSmallerThanDesktop = useBreakpoint('smallDesktop');
+  const isDesktopUser = !isSmallerThanDesktop;
 
   return (
     <Container

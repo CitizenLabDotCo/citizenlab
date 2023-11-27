@@ -9,7 +9,7 @@ import useAuthUser from 'api/me/useAuthUser';
 import {
   IconButton,
   colors,
-  useWindowSize,
+  useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 import NotificationMenu from '../../NotificationMenu';
 import LanguageSelector from '../../LanguageSelector';
@@ -21,7 +21,7 @@ import tracks from '../../../tracks';
 import { trackEventByName } from 'utils/analytics';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import bowser from 'bowser';
-import { isDesktop, isNilOrError, isPage } from 'utils/helperUtils';
+import { isNilOrError, isPage } from 'utils/helperUtils';
 
 // style
 import styled, { useTheme } from 'styled-components';
@@ -181,13 +181,14 @@ const DesktopNavbarContent = () => {
   const { data: authUser } = useAuthUser();
   const locale = useLocale();
   const theme = useTheme();
-  const windowSize = useWindowSize();
   const { formatMessage } = useIntl();
   const tenantLocales = !isNilOrError(appConfiguration)
     ? appConfiguration.data.attributes.settings.core.locales
     : [];
   const isEmailSettingsPage = isPage('email-settings', location.pathname);
-  const isDesktopUser = isDesktop(windowSize.windowWidth);
+
+  const isSmallerThanDesktop = useBreakpoint('smallDesktop');
+  const isDesktopUser = !isSmallerThanDesktop;
 
   const trackSignUpLinkClick = () => {
     trackEventByName(tracks.clickSignUpLink.name);
