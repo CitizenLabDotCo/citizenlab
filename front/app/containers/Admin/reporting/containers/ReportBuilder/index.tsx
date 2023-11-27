@@ -60,7 +60,7 @@ const ReportBuilder = ({ reportId }: Props) => {
   const [initialized, setInitialized] = useState(false);
   const [initialData, setInitialData] = useState<SerializedNodes | undefined>();
   const [search] = useSearchParams();
-  const projectId = search.get('projectId');
+  const templateProjectId = search.get('templateProjectId');
 
   // Note: selectedLocale is kept to keep compatibility with content builder
   // although there is currently only one locale allowed per report
@@ -147,7 +147,7 @@ const ReportBuilder = ({ reportId }: Props) => {
             draftEditorData={draftData}
             initialData={initialData}
             reportId={reportId}
-            projectId={projectId ?? undefined}
+            templateProjectId={templateProjectId ?? undefined}
           />
           <Box
             mt={`${stylingConsts.menuHeight}px`}
@@ -169,10 +169,10 @@ const ReportBuilder = ({ reportId }: Props) => {
                     platformLocale={platformLocale}
                   >
                     <Frame editorData={initialData}>
-                      {projectId && (
+                      {templateProjectId && (
                         <ProjectTemplate
                           reportId={reportId}
-                          projectId={projectId}
+                          projectId={templateProjectId}
                         />
                       )}
                     </Frame>
