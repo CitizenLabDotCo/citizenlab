@@ -33,7 +33,7 @@ namespace :data_migrate do
       data.each do |d|
         title = d['Titel'].strip
         body = d['Beschrijving'].strip
-        ideas = Idea.select { _1.title_multiloc.value?(title) && _1.body_multiloc.value?(body) }
+        ideas = ideas.select { _1.title_multiloc.value?(title) && body.starts_with?(_1.body_multiloc[default_locale].split("\n").first) }
         # Useful for testing:
         # ideas = [Idea.new(title_multiloc: { default_locale => title }, body_multiloc: { default_locale => body }, project: Project.order(created_at: :asc).last, publication_status: 'published')]
 
