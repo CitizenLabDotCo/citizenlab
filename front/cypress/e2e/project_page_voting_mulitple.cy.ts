@@ -18,7 +18,6 @@ describe('Multiple voting project', () => {
 
   before(() => {
     cy.apiCreateProject({
-      type: 'timeline',
       title: projectTitle,
       descriptionPreview: '',
       description: '',

@@ -38,7 +38,6 @@ describe('Timeline project with poll phase', () => {
     cy.apiSignup(firstName, lastName, email, password);
 
     cy.apiCreateProject({
-      type: 'timeline',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
@@ -63,7 +62,6 @@ describe('Timeline project with poll phase', () => {
       .then((phase) => {
         phaseId = phase.body.data.id;
         cy.apiAddPoll(
-          'Phase',
           phaseId,
           [
             {

@@ -27,8 +27,7 @@ describe('useDeletePollQuestion', () => {
     act(() => {
       result.current.mutate({
         questionId: 'questionId',
-        participationContextId: '1',
-        participationContextType: 'project',
+        phaseId: '1',
       });
     });
 
@@ -49,8 +48,7 @@ describe('useDeletePollQuestion', () => {
     act(() => {
       result.current.mutate({
         questionId: 'questionId',
-        participationContextId: '1',
-        participationContextType: 'project',
+        phaseId: '1',
       });
     });
 

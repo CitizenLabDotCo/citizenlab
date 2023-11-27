@@ -120,7 +120,6 @@ describe('New timeline project with active ideation phase', () => {
       })
       .then(() => {
         return cy.apiCreateProject({
-          type: 'timeline',
           title: projectTitle,
           descriptionPreview: projectDescriptionPreview,
           description: randomString(),
@@ -241,7 +240,6 @@ describe('Archived timeline project with ideation phase', () => {
       })
       .then(() => {
         return cy.apiCreateProject({
-          type: 'timeline',
           title: projectTitle,
           descriptionPreview: projectDescriptionPreview,
           description: randomString(),
@@ -323,7 +321,6 @@ describe('timeline project with no active ideation phase', () => {
   before(() => {
     return cy
       .apiCreateProject({
-        type: 'timeline',
         title: projectTitle,
         descriptionPreview: projectDescriptionPreview,
         description: randomString(),
@@ -398,7 +395,6 @@ describe('Ideation CTA bar', () => {
       })
       .then(() => {
         cy.apiCreateProject({
-          type: 'timeline',
           title: projectTitle,
           descriptionPreview: description,
           description,
@@ -432,7 +428,6 @@ describe('Ideation CTA bar', () => {
           })
           .then(() => {
             return cy.apiCreateProject({
-              type: 'timeline',
               title: projectTitle,
               descriptionPreview: description,
               description,

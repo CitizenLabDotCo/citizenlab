@@ -8,7 +8,7 @@ import { rest } from 'msw';
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
 const apiPath =
-  '*/:participationContextType/:participationContextId/poll_responses';
+  '*/phases/:phaseId/poll_responses';
 
 const server = setupServer(
   rest.post(apiPath, (_req, res, ctx) => {
@@ -27,8 +27,7 @@ describe('useAddPollResponse', () => {
 
     act(() => {
       result.current.mutate({
-        participationContextId: 'id',
-        participationContextType: 'project',
+        phaseId: 'id',
         optionIds: ['optionId'],
       });
     });
@@ -48,8 +47,7 @@ describe('useAddPollResponse', () => {
     });
     act(() => {
       result.current.mutate({
-        participationContextId: 'id',
-        participationContextType: 'project',
+        phaseId: 'id',
         optionIds: ['optionId'],
       });
     });

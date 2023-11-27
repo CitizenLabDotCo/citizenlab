@@ -43,7 +43,6 @@ describe('New project with survey', () => {
 
   before(() => {
     cy.apiCreateProject({
-      type: 'timeline',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
@@ -122,7 +121,6 @@ describe('Timeline project with survey phase', () => {
 
   before(() => {
     cy.apiCreateProject({
-      type: 'timeline',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
@@ -181,7 +179,6 @@ describe('Timeline project with survey phase but not active', () => {
 
   before(() => {
     cy.apiCreateProject({
-      type: 'timeline',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
@@ -230,7 +227,6 @@ describe('Archived single phase project with survey', () => {
 
   before(() => {
     cy.apiCreateProject({
-      type: 'timeline',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
@@ -277,7 +273,6 @@ describe('Embedded survey CTA', () => {
   before(() => {
     cy.setAdminLoginCookie();
     cy.apiCreateProject({
-      type: 'timeline',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,

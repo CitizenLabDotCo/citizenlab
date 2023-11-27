@@ -21,9 +21,7 @@ describe('Event show page', () => {
       })
       .then(() => {
         return cy.apiCreateProject({
-          type: 'continuous',
           title: projectTitle,
-          participationMethod: 'ideation',
           descriptionPreview: projectDescriptionPreview,
           description: randomString(),
           publicationStatus: 'draft',

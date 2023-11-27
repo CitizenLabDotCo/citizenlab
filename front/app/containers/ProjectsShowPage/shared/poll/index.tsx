@@ -114,12 +114,9 @@ export const Poll = ({ pollQuestions, projectId, phaseId, type }: Props) => {
 };
 
 const Data = adopt<DataProps, InputProps>({
-  pollQuestions: ({ projectId, phaseId, type, render }) => (
+  pollQuestions: ({ phaseId, render }) => (
     <GetPollQuestions
-      participationContextId={
-        type === 'project' ? projectId : (phaseId as string)
-      }
-      participationContextType={type}
+      phaseId={phaseId as string}
     >
       {render}
     </GetPollQuestions>

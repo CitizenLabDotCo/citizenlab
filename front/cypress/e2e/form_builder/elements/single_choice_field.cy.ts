@@ -15,12 +15,10 @@ describe('Form builder single choice field', () => {
     }
 
     cy.apiCreateProject({
-      type: 'timeline',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
       publicationStatus: 'published',
-      participationMethod: 'native_survey',
     })
       .then((project) => {
         projectId = project.body.data.id;

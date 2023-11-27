@@ -15,7 +15,6 @@ describe('Timeline ideation with anonymous participation allowed', () => {
     });
     cy.getAuthUser().then(() => {
       cy.apiCreateProject({
-        type: 'timeline',
         title: projectTitle,
         descriptionPreview: '',
         description: '',

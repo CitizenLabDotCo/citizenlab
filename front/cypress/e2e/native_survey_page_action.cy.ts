@@ -35,7 +35,6 @@ describe('Native survey project page actions', () => {
 
       // Create active project with one open ended phase
       cy.apiCreateProject({
-        type: 'timeline',
         title: projectTitle,
         descriptionPreview: projectDescriptionPreview,
         description: projectDescription,
@@ -131,7 +130,6 @@ describe('Native survey project page actions', () => {
 
       // Create archived project
       cy.apiCreateProject({
-        type: 'timeline',
         title: projectTitle,
         descriptionPreview: projectDescriptionPreview,
         description: projectDescription,
@@ -183,7 +181,6 @@ describe('Native survey project page actions', () => {
 
       // Create timeline project with no active phase
       cy.apiCreateProject({
-        type: 'timeline',
         title: projectTitle,
         descriptionPreview: projectDescriptionPreview,
         description: randomString(),
@@ -236,7 +233,6 @@ describe('Native survey project page actions', () => {
 
       // Create active timeline project with present native survey phase and posting disabled
       cy.apiCreateProject({
-        type: 'timeline',
         title: projectTitle,
         descriptionPreview: projectDescriptionPreview,
         description: projectDescription,

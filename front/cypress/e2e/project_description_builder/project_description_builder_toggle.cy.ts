@@ -25,7 +25,6 @@ describe('Project description builder toggle', () => {
 
     cy.setAdminLoginCookie();
     cy.apiCreateProject({
-      type: 'timeline',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,

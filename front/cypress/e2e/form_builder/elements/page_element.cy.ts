@@ -15,7 +15,6 @@ describe('Form builder page element', () => {
     }
 
     cy.apiCreateProject({
-      type: 'timeline',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,

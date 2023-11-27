@@ -1,6 +1,6 @@
 import { Keys } from 'utils/cl-react-query/types';
 import pollQuestionsKeys from './keys';
-import { IParticipationContextType, Multiloc } from 'typings';
+import { Multiloc } from 'typings';
 
 export type PollQuestionsKeys = Keys<typeof pollQuestionsKeys>;
 
@@ -22,10 +22,9 @@ export interface IPollQuestionData {
         type: 'option';
       }[];
     };
-    participation_context: {
+    phase: {
       data: {
         id: string;
-        type: IParticipationContextType;
       };
     };
   };
@@ -40,6 +39,5 @@ export type IPollQuestions = {
 };
 
 export type IPollQuestionParameters = {
-  participationContextId: string;
-  participationContextType: IParticipationContextType;
+  phaseId: string;
 };

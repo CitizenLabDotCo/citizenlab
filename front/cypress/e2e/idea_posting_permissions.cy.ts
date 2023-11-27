@@ -103,7 +103,6 @@ describe('idea posting that requires smart group', () => {
     cy.getAuthUser()
       .then((user) => {
         return cy.apiCreateProject({
-          type: 'timeline',
           title: projectTitle,
           descriptionPreview: '',
           description: randomString(),

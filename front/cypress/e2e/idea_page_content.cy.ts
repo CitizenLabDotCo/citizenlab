@@ -57,7 +57,6 @@ describe('Idea Page', () => {
 
     before(() => {
       cy.apiCreateProject({
-        type: 'timeline',
         title: projectTitle,
         descriptionPreview: projectDescriptionPreview,
         description: projectDescription,
@@ -114,7 +113,6 @@ describe('Idea Page', () => {
 
     before(() => {
       cy.apiCreateProject({
-        type: 'timeline',
         title: projectTitle,
         descriptionPreview: projectDescriptionPreview,
         description: projectDescription,
@@ -178,7 +176,6 @@ describe('Idea Page', () => {
       const projectDescription = randomString();
 
       cy.apiCreateProject({
-        type: 'timeline',
         title: projectTitle,
         descriptionPreview: projectDescriptionPreview,
         description: projectDescription,
@@ -245,7 +242,6 @@ describe('Idea location', () => {
 
   before(() => {
     cy.apiCreateProject({
-      type: 'timeline',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,

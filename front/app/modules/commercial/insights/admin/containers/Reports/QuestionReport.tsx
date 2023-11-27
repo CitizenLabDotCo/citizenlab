@@ -11,22 +11,19 @@ import ResponseGraph from './Charts/ResponseGraph';
 
 interface Props {
   question: IPollQuestionData;
-  participationContextId: string;
-  participationContextType: 'phase' | 'project';
+  phaseId: string;
 }
 
 const QuestionReport = memo(
   ({
     question,
-    participationContextId,
-    participationContextType,
+    phaseId,
   }: Props & WrappedComponentProps) => {
     const localize = useLocalize();
 
     const { data: pollOptions } = usePollOptions(question.id);
     const { data: pollResponses } = usePollResponses({
-      participationContextId,
-      participationContextType,
+      phaseId,
     });
 
     const getPollResponsesSerie = (question: IPollQuestionData) => {

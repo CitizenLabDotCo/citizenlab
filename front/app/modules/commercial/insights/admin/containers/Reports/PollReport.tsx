@@ -13,26 +13,22 @@ import messages from './messages';
 import usePollQuestions from 'api/poll_questions/usePollQuestions';
 
 interface Props {
-  participationContextId: string;
-  participationContextType: 'phase' | 'project';
-  participationContextTitle: string;
+  phaseId: string;
+  phaseTitle: string;
 }
 
 const PollReport = ({
-  participationContextId,
-  participationContextType,
-  participationContextTitle,
+  phaseId,
+  phaseTitle,
 }: Props) => {
   const { data: pollQuestions } = usePollQuestions({
-    participationContextId,
-    participationContextType,
+    phaseId,
   });
 
   return (
     <div>
-      {!isNilOrError(participationContextTitle) &&
-        participationContextType === 'phase' && (
-          <SubSectionTitle>{participationContextTitle}</SubSectionTitle>
+      {!isNilOrError(phaseTitle) && (
+          <SubSectionTitle>{phaseTitle}</SubSectionTitle>
         )}
       <GraphsContainer>
         {!isNilOrError(pollQuestions) && pollQuestions.data.length > 0 ? (
@@ -46,8 +42,7 @@ const PollReport = ({
               <GraphCardInner>
                 <QuestionReport
                   question={question}
-                  participationContextId={participationContextId}
-                  participationContextType={participationContextType}
+                  phaseId={phaseId}
                 />
               </GraphCardInner>
             </GraphCard>

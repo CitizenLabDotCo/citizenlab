@@ -9,25 +9,20 @@ describe('Project selection page', () => {
 
   before(() => {
     cy.apiCreateProject({
-      type: 'continuous',
       title: randomString(),
       descriptionPreview: randomString(),
       description: randomString(),
       publicationStatus: 'published',
-      participationMethod: 'poll',
     }).then((projectOne) => {
       projectOneId = projectOne.body.data.id;
       cy.apiCreateProject({
-        type: 'continuous',
         title: randomString(),
         descriptionPreview: randomString(),
         description: randomString(),
         publicationStatus: 'published',
-        participationMethod: 'poll',
       }).then((projectTwo) => {
         projectTwoId = projectTwo.body.data.id;
         cy.apiCreateFolder({
-          type: 'continuous',
           title: folderTitle,
           descriptionPreview: folderShortDescription,
           description: randomString(),

@@ -29,8 +29,7 @@ describe('useReorderPollQuestion', () => {
       result.current.mutate({
         questionId: 'questionId',
         ordering: 1,
-        participationContextId: '1',
-        participationContextType: 'project',
+        phaseId: '1',
       });
     });
 
@@ -53,8 +52,7 @@ describe('useReorderPollQuestion', () => {
       result.current.mutate({
         questionId: 'questionId',
         ordering: 1,
-        participationContextId: '1',
-        participationContextType: 'project',
+        phaseId: '1',
       });
     });
 

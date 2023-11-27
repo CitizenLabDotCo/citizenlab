@@ -13,7 +13,6 @@ describe('Project topics', () => {
   beforeEach(() => {
     // create new project
     cy.apiCreateProject({
-      type: 'timeline',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,

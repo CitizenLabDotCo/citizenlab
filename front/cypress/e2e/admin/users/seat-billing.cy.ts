@@ -261,7 +261,6 @@ describe('Seat based billing', () => {
 
     before(() => {
       cy.apiCreateProject({
-        type: 'timeline',
         title: projectTitle,
         descriptionPreview: projectDescriptionPreview,
         description: projectDescription,

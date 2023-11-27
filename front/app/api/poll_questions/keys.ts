@@ -1,4 +1,3 @@
-import { IParticipationContextType } from 'typings';
 import { QueryKeys } from 'utils/cl-react-query/types';
 
 const baseKey = { type: 'question' };
@@ -7,16 +6,14 @@ const pollQuestionsKeys = {
   all: () => [baseKey],
   lists: () => [{ ...baseKey, operation: 'list' }],
   list: ({
-    participationContextId,
-    participationContextType,
+    phaseId,
   }: {
-    participationContextId: string;
-    participationContextType: IParticipationContextType;
+    phaseId: string;
   }) => [
     {
       ...baseKey,
       operation: 'list',
-      parameters: { participationContextId, participationContextType },
+      parameters: { phaseId },
     },
   ],
 } satisfies QueryKeys;

@@ -25,12 +25,10 @@ describe('Project description builder preview', () => {
       const userId = user.body.data.id;
 
       cy.apiCreateProject({
-        type: 'timeline',
         title: projectTitle,
         descriptionPreview: projectDescriptionPreview,
         description: projectDescription,
         publicationStatus: 'published',
-        participationMethod: 'ideation',
         assigneeId: userId,
       })
         .then((project) => {

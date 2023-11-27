@@ -817,35 +817,17 @@ export function apiRemoveComment(commentId: string) {
 }
 
 export function apiCreateProject({
-  type,
   title,
   descriptionPreview,
   description,
   publicationStatus = 'published',
-  participationMethod,
-  votingMethod,
-  assigneeId,
-  surveyUrl,
-  surveyService,
-  votingMaxTotal,
-  votingMaxVotesPerIdea,
-  postingEnabled,
-  allow_anonymous_participation,
+  assigneeId
 }: {
-  type: 'timeline' | 'continuous';
   title: string;
   descriptionPreview: string;
   description: string;
   publicationStatus?: 'draft' | 'published' | 'archived';
-  participationMethod?: ParticipationMethod;
-  votingMethod?: VotingMethod;
   assigneeId?: string;
-  surveyUrl?: string;
-  votingMaxTotal?: number;
-  votingMaxVotesPerIdea?: number;
-  surveyService?: 'typeform' | 'survey_monkey' | 'google_forms';
-  postingEnabled?: boolean;
-  allow_anonymous_participation?: boolean;
 }) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -953,13 +935,11 @@ export function apiEditProject({
 }
 
 export function apiCreateFolder({
-  type,
   title,
   descriptionPreview,
   description,
   publicationStatus = 'published',
 }: {
-  type: 'timeline' | 'continuous';
   title: string;
   descriptionPreview: string;
   description: string;
@@ -978,7 +958,6 @@ export function apiCreateFolder({
       url: 'web_api/v1/project_folders',
       body: {
         project_folder: {
-          process_type: type,
           admin_publication_attributes: {
             publication_status: publicationStatus,
           },
@@ -1089,8 +1068,7 @@ export function apiRemoveCustomPage(customPageId: string) {
 }
 
 export function apiAddPoll(
-  type: 'Project' | 'Phase',
-  id: string,
+  phaseId: string,
   questions: { title: string; type: 'single_option' | 'multiple_options' }[],
   options: string[][]
 ) {
@@ -1106,8 +1084,7 @@ export function apiAddPoll(
         method: 'POST',
         url: 'web_api/v1/poll_questions',
         body: {
-          participation_context_id: id,
-          participation_context_type: type,
+          phase_id: phaseId,
           title_multiloc: { en: question.title },
           question_type: question.type,
           max_options: question.type === 'single_option' ? null : '2',

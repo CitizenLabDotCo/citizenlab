@@ -12,12 +12,10 @@ describe('Admin: edit project', () => {
     }
 
     cy.apiCreateProject({
-      type: 'continuous',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
-      publicationStatus: 'published',
-      participationMethod: 'ideation',
+      publicationStatus: 'published'
     }).then((project) => {
       projectId = project.body.data.id;
     });
