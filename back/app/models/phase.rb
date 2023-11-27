@@ -69,6 +69,8 @@ class Phase < ApplicationRecord
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, dependent: :nullify
 
+  has_one :report, class_name: 'ReportBuilder::Report', dependent: :destroy
+
   validates :project, presence: true
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :description_multiloc, multiloc: { presence: false, html: true }
@@ -123,6 +125,10 @@ class Phase < ApplicationRecord
 
   def previous_phase_end_at_updated?
     @previous_phase_end_at_updated || false
+  end
+
+  def started?
+    start_at <= Time.zone.now
   end
 
   private

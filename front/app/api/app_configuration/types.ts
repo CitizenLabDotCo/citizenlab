@@ -132,6 +132,7 @@ export interface IAppConfigurationSettings {
   admin_project_templates?: AppConfigurationFeature;
   pages?: AppConfigurationFeature;
   project_reports?: AppConfigurationFeature;
+  phase_reports?: AppConfigurationFeature;
   private_projects?: AppConfigurationFeature;
   maps?: AppConfigurationMapSettings;
   initiatives: ProposalsSettings;
@@ -239,6 +240,7 @@ export interface IAppConfigurationSettings {
   power_bi?: AppConfigurationFeature;
   analysis?: AppConfigurationFeature;
   import_printed_forms?: AppConfigurationFeature;
+  homepage_builder?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

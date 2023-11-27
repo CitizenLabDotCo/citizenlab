@@ -29,14 +29,16 @@ import { SerializedNodes } from '@craftjs/core';
 import { Locale } from 'typings';
 import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
 import { isEmpty } from 'lodash-es';
-import ContentBuilderLanguageProvider from './ContentBuilderLanguageProvider';
-import HomepageBanner from '../components/CraftSections/HomepageBanner';
-import Projects from '../components/CraftSections/Projects';
+import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
+import HomepageBanner from '../components/CraftComponents/HomepageBanner';
+import Projects from '../components/CraftComponents/Projects';
+import { useTheme } from 'styled-components';
 
 const HomepageBuilderPage = () => {
   const [previewEnabled, setPreviewEnabled] = useState(false);
   const [selectedLocale, setSelectedLocale] = useState<Locale | undefined>();
 
+  const theme = useTheme();
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
 
   const locale = useLocale();
@@ -125,7 +127,7 @@ const HomepageBuilderPage = () => {
             <HomepageBuilderToolbox selectedLocale={selectedLocale} />
           )}
           <StyledRightColumn>
-            <ContentBuilderLanguageProvider
+            <LanguageProvider
               contentBuilderLocale={selectedLocale}
               platformLocale={locale}
             >
@@ -141,25 +143,21 @@ const HomepageBuilderPage = () => {
                       banner_cta_signed_in_url: null,
                       banner_signed_out_header_multiloc: {},
                       banner_signed_out_subheader_multiloc: {},
-                      banner_signed_out_header_overlay_color: '#0A5159',
+                      banner_signed_out_header_overlay_color:
+                        theme.colors.tenantPrimary,
                       banner_signed_out_header_overlay_opacity: 90,
+                      banner_signed_in_header_overlay_color:
+                        theme.colors.tenantPrimary,
+                      banner_signed_in_header_overlay_opacity: 90,
                       banner_cta_signed_out_text_multiloc: {},
                       banner_cta_signed_out_type: 'sign_up_button',
                       banner_cta_signed_out_url: null,
-                      header_bg: {
-                        large:
-                          'http://localhost:4000/uploads/c72c5211-8e03-470b-9564-04ec0a8c322b/home_page/header_bg/5bda79bf-dc89-4a27-95c5-6d1982b15693/large_c20073fe-056e-432c-a614-6b92892caf86.jpg',
-                        medium:
-                          'http://localhost:4000/uploads/c72c5211-8e03-470b-9564-04ec0a8c322b/home_page/header_bg/5bda79bf-dc89-4a27-95c5-6d1982b15693/medium_c20073fe-056e-432c-a614-6b92892caf86.jpg',
-                        small:
-                          'http://localhost:4000/uploads/c72c5211-8e03-470b-9564-04ec0a8c322b/home_page/header_bg/5bda79bf-dc89-4a27-95c5-6d1982b15693/small_c20073fe-056e-432c-a614-6b92892caf86.jpg',
-                      },
                     }}
                   />
                   <Projects />
                 </ContentBuilderFrame>
               </Box>
-            </ContentBuilderLanguageProvider>
+            </LanguageProvider>
           </StyledRightColumn>
           <ContentBuilderSettings />
         </Box>

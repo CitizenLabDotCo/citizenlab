@@ -5,7 +5,6 @@ import useProjectById from 'api/projects/useProjectById';
 
 // components
 import Container from './components/Container';
-import IdeaSharingButton from './components/Buttons/IdeaSharingButton';
 import IdeaMeta from './components/IdeaMeta';
 import DesktopTopBar from './components/DesktopTopBar';
 import IdeaTitle from './components/IdeaTitle';
@@ -20,7 +19,6 @@ const LazyCommentsSection = lazy(
 );
 import LoadingComments from 'components/PostShowComponents/Comments/LoadingComments';
 import MetaInformation from './components/MetaInformation';
-import MobileSharingButtonComponent from './components/Buttons/MobileSharingButtonComponent';
 import RightColumnDesktop from './components/RightColumnDesktop';
 import ErrorToast from 'components/ErrorToast';
 import FollowUnfollow from 'components/FollowUnfollow';
@@ -52,12 +50,9 @@ import { IProjectData } from 'api/projects/types';
 import { IIdeaImages } from 'api/idea_images/types';
 
 // utils
-import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
-import {
-  getCurrentParticipationContext,
-  isIdeaInParticipationContext,
-} from 'api/phases/utils';
+import { getCurrentParticipationContext } from 'api/phases/utils';
 import { getInputTerm } from 'utils/participationContexts';
+import ProjectLink from 'containers/EventsShowPage/components/ProjectLink';
 
 const StyledRightColumnDesktop = styled(RightColumnDesktop)`
   margin-left: ${columnsGapDesktop}px;
@@ -148,14 +143,6 @@ const Content = ({
     phases?.data
   );
 
-  const votingMethodConfig = getVotingMethodConfig(
-    participationContext?.attributes.voting_method
-  );
-
-  const ideaIsInParticipationContext = participationContext
-    ? isIdeaInParticipationContext(idea, participationContext)
-    : undefined;
-
   const inputTerm = getInputTerm(
     project.attributes.process_type,
     project,
@@ -200,6 +187,7 @@ const Content = ({
             translateButtonClicked={translateButtonIsClicked}
             showActions={compact}
           />
+          <ProjectLink project={project} />
 
           {ideaImageLarge && (
             <Image src={ideaImageLarge} alt="" id="e2e-idea-image" />
@@ -213,7 +201,7 @@ const Content = ({
 
           <ProposedBudget ideaId={ideaId} projectId={project.id} />
 
-          <Box mb="40px">
+          <Box mb={compact ? '12px' : '40px'}>
             <Body
               postType="idea"
               postId={ideaId}
@@ -221,20 +209,11 @@ const Content = ({
               translateButtonClicked={translateButtonIsClicked}
             />
           </Box>
-          {compact && participationContext && ideaIsInParticipationContext && (
-            <Box mb="16px">
-              {votingMethodConfig?.getIdeaPageVoteInput({
-                ideaId,
-                compact: true,
-                participationContext,
-              })}
-            </Box>
-          )}
           {compact &&
             participationContext?.attributes.participation_method !==
-              'voting' &&
+              'voting' && // To reduce bias we want to hide the author data during voting methods
             statusId && (
-              <Box mb="30px">
+              <Box my="24px">
                 {' '}
                 <MetaInformation
                   ideaId={ideaId}
@@ -245,31 +224,14 @@ const Content = ({
                 />
               </Box>
             )}
-          {compact && (
-            <IdeaSharingButton
-              ideaId={ideaId}
-              buttonComponent={<MobileSharingButtonComponent />}
-            />
-          )}
-          {compact && (
-            <Box mt="24px">
-              <FollowUnfollow
-                followableType="ideas"
-                followableId={ideaId}
-                followersCount={idea.data.attributes.followers_count}
-                followerId={idea.data.relationships.user_follower?.data?.id}
-                width="100%"
-              />
-            </Box>
-          )}
-          <Box my="80px">
+          <Box my={compact ? '24px' : '80px'}>
             <OfficialFeedback
               postId={ideaId}
               postType="idea"
               permissionToPost={postOfficialFeedbackPermission}
             />
           </Box>
-          <Box mb="100px">
+          <Box mb={compact ? '32px' : '100px'}>
             <Suspense fallback={<LoadingComments />}>
               <LazyCommentsSection
                 allowAnonymousParticipation={
@@ -280,6 +242,17 @@ const Content = ({
               />
             </Suspense>
           </Box>
+          {compact && (
+            <Box my="24px">
+              <FollowUnfollow
+                followableType="ideas"
+                followableId={ideaId}
+                followersCount={idea.data.attributes.followers_count}
+                followerId={idea.data.relationships.user_follower?.data?.id}
+                width="100%"
+              />
+            </Box>
+          )}
         </Box>
 
         {!compact && statusId && (

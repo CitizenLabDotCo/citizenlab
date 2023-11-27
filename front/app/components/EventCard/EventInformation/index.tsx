@@ -170,7 +170,7 @@ const EventInformation = ({ event, titleFontSize }: Props) => {
               </Text>
             </Box>
           )}
-          {!isPastEvent && event.attributes.attendees_count > 0 && (
+          {event.attributes.attendees_count > 0 && (
             <Box
               display="flex"
               mb="12px"
@@ -188,7 +188,9 @@ const EventInformation = ({ event, titleFontSize }: Props) => {
               </Box>
               <Text m="0px" pt="2px" color={'coolGrey700'} fontSize="s">
                 {event.attributes.attendees_count}{' '}
-                {formatMessage(messages.attending)}
+                {formatMessage(
+                  isPastEvent ? messages.attended : messages.attending
+                )}
               </Text>
             </Box>
           )}
@@ -200,7 +202,7 @@ const EventInformation = ({ event, titleFontSize }: Props) => {
           width={'100%'}
           bgColor={theme.colors.tenantPrimary}
           onClick={() => {
-            clHistory.push(`/events/${event.id}`);
+            clHistory.push(`/events/${event.id}`, { scrollToTop: true });
           }}
         >
           {formatMessage(messages.readMore)}

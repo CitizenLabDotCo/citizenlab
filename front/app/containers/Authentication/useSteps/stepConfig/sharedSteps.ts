@@ -113,7 +113,10 @@ export const sharedSteps = (
             return;
           }
 
-          setCurrentStep('success');
+          const { successAction } = getAuthenticationData();
+          if (successAction) {
+            triggerSuccessAction(successAction);
+          }
         }
       },
 

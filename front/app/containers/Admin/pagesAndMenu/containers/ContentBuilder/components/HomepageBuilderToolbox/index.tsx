@@ -1,7 +1,5 @@
 import React from 'react';
 
-// Router
-
 // i18n
 import contentBuilderMessages from 'components/admin/ContentBuilder/messages';
 import messages from '../../messages';
@@ -13,7 +11,6 @@ import SectionTitle from 'components/admin/ContentBuilder/Toolbox/SectionTitle';
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
 
 // widgets
-import Text from 'components/admin/ContentBuilder/Widgets/Text';
 import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
 import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
@@ -21,13 +18,15 @@ import IframeMultiloc from 'components/admin/ContentBuilder/Widgets/IframeMultil
 import AccordionMultiloc from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import ButtonMultiloc from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
-import ImageTextCards from '../CraftSections/ImageTextCards';
+import ImageTextCards from 'components/admin/ContentBuilder/Widgets/ImageTextCards';
 import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
-import Proposals from '../CraftSections/Proposals';
+import Proposals from '../CraftComponents/Proposals';
 
 // types
 import { Locale } from 'typings';
-import Events from '../CraftSections/Events';
+import Events from '../CraftComponents/Events';
+import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 type HomepageBuilderToolboxProps = {
   selectedLocale: Locale;
@@ -38,17 +37,29 @@ const HomepageBuilderToolbox = ({
 }: HomepageBuilderToolboxProps) => {
   const { formatMessage } = useIntl();
 
+  const postingPermission = useInitiativesPermissions('posting_initiative');
+  const postingProposalsEnabled = !!postingPermission?.enabled;
+  const hasProposalsEnabled = useFeatureFlag({
+    name: 'initiatives',
+  });
+  const proposalsEnabled = postingProposalsEnabled && hasProposalsEnabled;
+
   return (
     <Container>
       <SectionTitle>
         <FormattedMessage {...messages.sections} />
       </SectionTitle>
-
       <DraggableElement
         id="e2e-draggable-proposals"
         component={<Proposals />}
         icon="proposals"
         label={formatMessage(messages.proposalsTitle)}
+        disabled={!proposalsEnabled}
+        tooltipContent={
+          proposalsEnabled
+            ? formatMessage(messages.proposalsDisabledTooltip)
+            : undefined
+        }
       />
       <DraggableElement
         id="e2e-draggable-events"
@@ -91,7 +102,7 @@ const HomepageBuilderToolbox = ({
         id="e2e-draggable-text-multiloc"
         component={<TextMultiloc text={{}} />}
         icon="text"
-        label={formatMessage(Text.craft.custom.title)}
+        label={formatMessage(TextMultiloc.craft.custom.title)}
       />
       <DraggableElement
         id="e2e-draggable-button"

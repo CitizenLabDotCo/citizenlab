@@ -7,7 +7,7 @@ import useVoting from 'api/baskets_ideas/useVoting';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 // components
-import { Box, Text, Icon, Button } from '@citizenlab/cl2-component-library';
+import { Box, Button } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
 
 // styling
@@ -93,20 +93,6 @@ const CTAButton = ({ participationContext }: Props) => {
     }
   };
 
-  const submittedAt = basket?.data.attributes.submitted_at || null;
-  const hasUserParticipated = !!submittedAt;
-
-  if (hasUserParticipated) {
-    return (
-      <Box display="flex">
-        <Icon my="auto" mr="8px" name="check" fill="white" />
-        <Text m="0px" color="white">
-          <FormattedMessage {...messages.submitted} />
-        </Text>
-      </Box>
-    );
-  }
-
   return (
     <Tippy
       disabled={!disabledExplanation}
@@ -114,7 +100,7 @@ const CTAButton = ({ participationContext }: Props) => {
       placement="bottom"
       content={disabledExplanation}
     >
-      <div>
+      <Box width="100%">
         <Button
           icon="vote-ballot"
           buttonStyle="secondary"
@@ -132,7 +118,7 @@ const CTAButton = ({ participationContext }: Props) => {
         >
           <FormattedMessage {...messages.submit} />
         </Button>
-      </div>
+      </Box>
     </Tippy>
   );
 };

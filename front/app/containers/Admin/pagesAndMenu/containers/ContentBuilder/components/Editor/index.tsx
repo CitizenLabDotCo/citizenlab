@@ -15,13 +15,13 @@ import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc
 import IframeMultiloc from 'components/admin/ContentBuilder/Widgets/IframeMultiloc';
 import AccordionMultiloc from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
-import ImageTextCards from '../CraftSections/ImageTextCards';
+import ImageTextCards from 'components/admin/ContentBuilder/Widgets/ImageTextCards';
 import ButtonMultiloc from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
 import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
-import HomepageBanner from '../CraftSections/HomepageBanner';
-import Projects from '../CraftSections/Projects';
-import Proposals from '../CraftSections/Proposals';
-import Events from '../CraftSections/Events';
+import HomepageBanner from '../CraftComponents/HomepageBanner';
+import Projects from '../CraftComponents/Projects';
+import Proposals from '../CraftComponents/Proposals';
+import Events from '../CraftComponents/Events';
 
 type EditorProps = {
   children?: React.ReactNode;

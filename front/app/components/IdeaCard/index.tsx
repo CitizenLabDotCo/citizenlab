@@ -48,7 +48,6 @@ export interface Props {
   hideImage?: boolean;
   hideImagePlaceholder?: boolean;
   hideIdeaStatus?: boolean;
-  goBackMode?: 'browserGoBackButton' | 'goToProject';
   showFollowButton?: boolean;
 }
 
@@ -87,7 +86,6 @@ const IdeaCard = ({
   hideImage = false,
   hideImagePlaceholder = false,
   hideIdeaStatus = false,
-  goBackMode = 'browserGoBackButton',
   showFollowButton,
 }: IdeaCardProps) => {
   const { data: ideaImage } = useIdeaImage(
@@ -136,12 +134,11 @@ const IdeaCard = ({
   }, [scrollToCardParam, idea, smallerThanPhone]);
 
   const { slug } = idea.data.attributes;
-  const params = goBackMode === 'browserGoBackButton' ? '?go_back=true' : '';
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
     updateSearchParams({ scroll_to_card: idea.data.id });
-    clHistory.push(`/ideas/${slug}${params}`);
+    clHistory.push(`/ideas/${slug}?go_back=true`, { scrollToTop: true });
   };
 
   const innerHeight = showFollowButton ? '192px' : '162px';
@@ -150,7 +147,7 @@ const IdeaCard = ({
     <Container
       className={`e2e-card e2e-idea-card ${className ?? ''}`.trim()}
       id={idea.data.id}
-      to={`/ideas/${slug}${params}`}
+      to={`/ideas/${slug}?go_back=true`}
       onClick={handleClick}
     >
       <CardImage

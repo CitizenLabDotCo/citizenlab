@@ -23,7 +23,7 @@ const Text = ({ text }: Props) => {
   const theme = useTheme();
 
   return (
-    <PageBreakBox id="e2e-text-box" minHeight="26px">
+    <PageBreakBox className="e2e-text-box" minHeight="26px">
       <QuillEditedContent textColor={theme.colors.tenantText}>
         <div dangerouslySetInnerHTML={{ __html: text }} />
       </QuillEditedContent>

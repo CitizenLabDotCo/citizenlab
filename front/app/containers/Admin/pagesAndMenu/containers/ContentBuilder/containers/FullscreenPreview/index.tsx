@@ -14,8 +14,8 @@ import { isNilOrError } from 'utils/helperUtils';
 import { SerializedNodes } from '@craftjs/core';
 import useHomepageSettings from 'api/home_page/useHomepageSettings';
 import { useSearchParams } from 'react-router-dom';
-import ContentBuilderLanguageProvider from '../ContentBuilderLanguageProvider';
 import { Locale } from 'typings';
+import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
 
 export const FullScreenPreview = () => {
   const [search] = useSearchParams();
@@ -35,11 +35,11 @@ export const FullScreenPreview = () => {
   const editorData = draftData || savedEditorData;
 
   return (
-    <ContentBuilderLanguageProvider
+    <LanguageProvider
       platformLocale={platformLocale}
       contentBuilderLocale={selectedLocale}
     >
-      <FullScreenWrapper onUpdateDraftData={setDraftData}>
+      <FullScreenWrapper onUpdateDraftData={setDraftData} padding="0px">
         {isLoading && <Spinner />}
         {!isLoading && editorData && (
           <Box>
@@ -49,7 +49,7 @@ export const FullScreenPreview = () => {
           </Box>
         )}
       </FullScreenWrapper>
-    </ContentBuilderLanguageProvider>
+    </LanguageProvider>
   );
 };
 

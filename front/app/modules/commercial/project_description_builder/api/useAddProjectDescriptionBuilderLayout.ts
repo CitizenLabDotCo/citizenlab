@@ -10,13 +10,13 @@ import {
 
 const addProjectDescriptionBuilderLayout = async ({
   projectId,
-  craftjs_jsonmultiloc,
+  craftjs_json,
   enabled,
 }: IAddProjectDescriptionBuilderLayout) =>
   fetcher<IProjectDescriptionBuilderLayout>({
     path: `/projects/${projectId}/content_builder_layouts/project_description/upsert`,
     action: 'post',
-    body: { content_builder_layout: { craftjs_jsonmultiloc, enabled } },
+    body: { content_builder_layout: { craftjs_json, enabled } },
   });
 
 const useAddProjectDescriptionBuilderLayout = () => {

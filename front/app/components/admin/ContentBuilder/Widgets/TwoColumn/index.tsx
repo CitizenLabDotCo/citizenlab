@@ -19,13 +19,14 @@ import messages from './messages';
 
 // typings
 import { ColumnLayout } from '../../typings';
+import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
 
 type TwoColumnProps = {
   columnLayout: ColumnLayout;
   children?: React.ReactNode;
 };
 
-const StyledBox = styled(Box)`
+export const TwoColumnWrapper = styled(Box)`
   min-height: 40px;
   width: 100%;
   gap: 24px;
@@ -44,15 +45,21 @@ const StyledBox = styled(Box)`
 `;
 
 export const TwoColumn = ({ columnLayout, children }: TwoColumnProps) => {
+  const componentDefaultPadding = useCraftComponentDefaultPadding();
+
   return (
-    <StyledBox id="e2e-two-column" columnLayout={columnLayout}>
+    <TwoColumnWrapper
+      id="e2e-two-column"
+      columnLayout={columnLayout}
+      px={componentDefaultPadding}
+    >
       {children || (
         <>
           <Element id={'left'} is={Container} canvas />
           <Element id={'right'} is={Container} canvas />
         </>
       )}
-    </StyledBox>
+    </TwoColumnWrapper>
   );
 };
 
@@ -133,7 +140,7 @@ export const TwoColumnSettings = () => {
   );
 };
 
-TwoColumn.craft = {
+export const twoColumnCraftConfig = {
   props: {
     columnLayout: '',
   },
@@ -145,5 +152,7 @@ TwoColumn.craft = {
     hasChildren: true,
   },
 };
+
+TwoColumn.craft = twoColumnCraftConfig;
 
 export default TwoColumn;

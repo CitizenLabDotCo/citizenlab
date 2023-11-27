@@ -13,6 +13,7 @@ import { darken } from 'polished';
 
 // hooks
 import { useTheme } from 'styled-components';
+import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
 
 // intl
 import messages from './messages';
@@ -30,6 +31,7 @@ type ButtonProps = {
 };
 
 const Button = ({ text, url, type, alignment }: ButtonProps) => {
+  const componentDefaultPadding = useCraftComponentDefaultPadding();
   const localize = useLocalize();
   const { enabled } = useEditor((state) => {
     return {
@@ -58,6 +60,9 @@ const Button = ({ text, url, type, alignment }: ButtonProps) => {
           ? 'flex-start'
           : 'flex-end'
       }
+      maxWidth="1200px"
+      margin="0 auto"
+      px={componentDefaultPadding}
     >
       {/* In edit view, show the button regardless if URL is set. The button should
           not be shown though in the live view if the URL is not set. */}

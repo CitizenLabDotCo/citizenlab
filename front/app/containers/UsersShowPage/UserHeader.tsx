@@ -33,6 +33,8 @@ import { colors } from 'utils/styleUtils';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useAuthUser from 'api/me/useAuthUser';
 import useUserBySlug from 'api/users/useUserBySlug';
+
+// utils
 import { getFullName } from 'utils/textUtils';
 
 const BlockUser = React.lazy(
@@ -171,6 +173,7 @@ const UserHeader = ({ userSlug }: Props) => {
             icon="edit"
             className="e2e-edit-profile"
             bgHoverColor={colors.background}
+            scrollToTop
           >
             {formatMessage(messages.editProfile)}
           </Button>

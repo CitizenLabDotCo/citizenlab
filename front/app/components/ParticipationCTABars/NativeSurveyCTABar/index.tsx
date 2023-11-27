@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 
 // Components
 import IdeaButton from 'components/IdeaButton';
-import { ParticipationCTAContent } from 'components/ParticipationCTABars/ParticipationCTAContent';
-import { useBreakpoint } from '@citizenlab/cl2-component-library';
+import ParticipationCTAContent from 'components/ParticipationCTABars/ParticipationCTAContent';
+import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // hooks
 import { useTheme } from 'styled-components';
@@ -21,7 +21,7 @@ import {
 } from 'components/ParticipationCTABars/utils';
 import usePhases from 'api/phases/usePhases';
 
-export const NativeSurveyCTABar = ({ project }: CTABarProps) => {
+const NativeSurveyCTABar = ({ project }: CTABarProps) => {
   const theme = useTheme();
   const { data: authUser } = useAuthUser();
   const { data: phases } = usePhases(project.id);
@@ -47,34 +47,39 @@ export const NativeSurveyCTABar = ({ project }: CTABarProps) => {
     return null;
   }
 
-  const CTAButton = hasUserParticipated ? null : (
-    <IdeaButton
-      id="project-survey-button"
-      data-testid="e2e-project-survey-button"
-      projectId={project.id}
-      participationContextType={isPhaseNativeSurvey ? 'phase' : 'project'}
-      fontWeight="500"
-      bgColor={theme.colors.white}
-      textColor={theme.colors.tenantText}
-      iconPos="right"
-      icon={!isSmallerThanPhone ? 'arrow-right' : undefined}
-      iconColor={theme.colors.tenantText}
-      textHoverColor={theme.colors.black}
-      iconHoverColor={theme.colors.black}
-      phase={currentPhase}
-      iconSize="20px"
-      padding="6px 12px"
-      fontSize="14px"
-      participationMethod="native_survey"
-    />
-  );
-
   return (
     <ParticipationCTAContent
       currentPhase={currentPhase}
-      project={project}
-      CTAButton={CTAButton}
+      CTAButton={
+        hasUserParticipated ? null : (
+          <Box w="100%">
+            <IdeaButton
+              id="project-survey-button"
+              data-testid="e2e-project-survey-button"
+              projectId={project.id}
+              participationContextType={
+                isPhaseNativeSurvey ? 'phase' : 'project'
+              }
+              fontWeight="500"
+              bgColor={theme.colors.white}
+              textColor={theme.colors.tenantText}
+              iconPos="right"
+              icon={!isSmallerThanPhone ? 'arrow-right' : undefined}
+              iconColor={theme.colors.tenantText}
+              textHoverColor={theme.colors.black}
+              iconHoverColor={theme.colors.black}
+              phase={currentPhase}
+              iconSize="20px"
+              padding="6px 12px"
+              fontSize="14px"
+              participationMethod="native_survey"
+            />
+          </Box>
+        )
+      }
       hasUserParticipated={hasUserParticipated}
     />
   );
 };
+
+export default NativeSurveyCTABar;

@@ -282,6 +282,7 @@ PATH
   remote: engines/commercial/report_builder
   specs:
     report_builder (0.1.0)
+      analytics
       content_builder
       rails (~> 7.0)
 

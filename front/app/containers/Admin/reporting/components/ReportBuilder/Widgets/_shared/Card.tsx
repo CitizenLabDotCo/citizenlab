@@ -1,30 +1,28 @@
 import React from 'react';
 
-// styling
-import { BORDER } from '../constants';
-
 // components
 import { Box, Title } from '@citizenlab/cl2-component-library';
 import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 
-interface ContainerProps {
+// hooks
+import useReportDefaultPadding from 'containers/Admin/reporting/hooks/useReportDefaultPadding';
+
+interface SharedProps {
   pagebreak?: boolean;
   'data-testid'?: string;
   children: React.ReactNode;
 }
 
-interface Props extends ContainerProps {
+interface ContainerProps extends SharedProps {
+  className?: string;
+  px?: string;
+}
+
+interface Props extends SharedProps {
   title?: string;
 }
 
-const Container = ({ pagebreak, children, ...rest }: ContainerProps) => {
-  const props = {
-    border: BORDER,
-    mt: '4px',
-    mb: '4px',
-    ...rest,
-  };
-
+const Container = ({ pagebreak, children, ...props }: ContainerProps) => {
   return pagebreak ? (
     <PageBreakBox {...props}>{children}</PageBreakBox>
   ) : (
@@ -32,15 +30,17 @@ const Container = ({ pagebreak, children, ...rest }: ContainerProps) => {
   );
 };
 
-const Card = ({ title, children, ...rest }: Props) => (
-  <Container {...rest}>
-    <Box>
-      <Title variant="h3" color="primary" m="16px" mb="8px">
+const Card = ({ title, children, ...rest }: Props) => {
+  const px = useReportDefaultPadding();
+
+  return (
+    <Container className="report-widget-card" px={px} {...rest}>
+      <Title variant="h3" color="primary" mb="8px">
         {title}
       </Title>
-    </Box>
-    {children}
-  </Container>
-);
+      <Box>{children}</Box>
+    </Container>
+  );
+};
 
 export default Card;

@@ -1,10 +1,10 @@
 import React from 'react';
 
-// components
-import QuillEditedContent from 'components/UI/QuillEditedContent';
-
 // craft
 import { useNode } from '@craftjs/core';
+
+// components
+import QuillEditedContent from 'components/UI/QuillEditedContent';
 import {
   Box,
   Accordion as AccordionComponent,
@@ -12,14 +12,17 @@ import {
   Toggle,
 } from '@citizenlab/cl2-component-library';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
+import QuillMutilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 
 // hooks
 import { useTheme } from 'styled-components';
+import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
+
+// i18n
 import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 import { Multiloc } from 'typings';
 import useLocalize from 'hooks/useLocalize';
-import QuillMutilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 
 interface AccordionProps {
   text: Multiloc;
@@ -30,9 +33,15 @@ interface AccordionProps {
 const Accordion = ({ text, title, openByDefault = false }: AccordionProps) => {
   const theme = useTheme();
   const localize = useLocalize();
+  const componentDefaultPadding = useCraftComponentDefaultPadding();
 
   return (
     <AccordionComponent
+      w="auto"
+      maxWidth="1200px"
+      margin={`0 ${
+        componentDefaultPadding === '0px' ? 'auto' : componentDefaultPadding
+      }`}
       isOpenByDefault={openByDefault}
       title={
         <Box id="e2e-accordion" display="flex">
