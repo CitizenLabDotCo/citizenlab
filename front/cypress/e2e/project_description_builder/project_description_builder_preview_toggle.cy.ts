@@ -105,7 +105,7 @@ describe('Project description builder preview', () => {
     cy.get('#e2e-draggable-text').dragAndDrop('#e2e-content-builder-frame', {
       position: 'inside',
     });
-    cy.wait(5000);
+    cy.wait(1000);
     cy.get('div.e2e-text-box').click();
     cy.get('.ql-editor').click();
     cy.get('.ql-editor').type('Sample text.', { force: true });
