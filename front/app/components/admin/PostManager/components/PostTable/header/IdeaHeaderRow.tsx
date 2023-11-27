@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent } from 'react';
 
 // components
 import { Thead, Tr, Th, Checkbox } from '@citizenlab/cl2-component-library';
@@ -49,12 +49,10 @@ const IdeaHeaderRow = ({
   toggleSelectAll,
   handleSortClick,
 }: Props) => {
-  const [cells, _setCells] = useState<
-    CellConfiguration<IdeaHeaderCellComponentProps>[]
-  >([
+  const cells = [
     {
       name: 'selection',
-      cellProps: { width: 1 },
+      width: 1,
       onChange: toggleSelectAll,
       Component: ({
         allSelected,
@@ -72,7 +70,7 @@ const IdeaHeaderRow = ({
     },
     {
       name: 'title',
-      cellProps: { width: 4 },
+      width: 4,
       Component: () => {
         return (
           <Th>
@@ -83,7 +81,7 @@ const IdeaHeaderRow = ({
     },
     {
       name: 'assignee',
-      cellProps: { width: 2 },
+      width: 2,
       Component: ({ width }) => {
         return (
           <Th width={width}>
@@ -94,7 +92,7 @@ const IdeaHeaderRow = ({
     },
     {
       name: 'votes',
-      cellProps: { width: 1 },
+      width: 1,
       onChange: handleSortClick('votes_count'),
       Component: (
         props: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>
@@ -108,7 +106,7 @@ const IdeaHeaderRow = ({
     },
     {
       name: 'picks',
-      cellProps: { width: 1 },
+      width: 1,
       onChange: handleSortClick('baskets_count'),
       Component: (
         props: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>
@@ -122,7 +120,7 @@ const IdeaHeaderRow = ({
     },
     {
       name: 'participants',
-      cellProps: { width: 1 },
+      width: 1,
       onChange: handleSortClick('baskets_count'),
       Component: (
         props: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>
@@ -136,7 +134,7 @@ const IdeaHeaderRow = ({
     },
     {
       name: 'budget',
-      cellProps: { width: 1 },
+      width: 1,
       onChange: handleSortClick('budget'),
       Component: (
         props: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>
@@ -150,7 +148,7 @@ const IdeaHeaderRow = ({
     },
     {
       name: 'comments',
-      cellProps: { width: 1 },
+      width: 1,
       onChange: handleSortClick('comments_count'),
       Component: (
         props: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>
@@ -164,7 +162,7 @@ const IdeaHeaderRow = ({
     },
     {
       name: 'up',
-      cellProps: { width: 1 },
+      width: 1,
       onChange: handleSortClick('likes_count'),
       Component: (
         props: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>
@@ -178,7 +176,7 @@ const IdeaHeaderRow = ({
     },
     {
       name: 'down',
-      cellProps: { width: 1 },
+      width: 1,
       onChange: handleSortClick('dislikes_count'),
       Component: (
         props: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>
@@ -192,7 +190,7 @@ const IdeaHeaderRow = ({
     },
     {
       name: 'published_on',
-      cellProps: { width: 2 },
+      width: 2,
       onChange: handleSortClick('new'),
       Component: (
         props: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>
@@ -204,7 +202,7 @@ const IdeaHeaderRow = ({
         );
       },
     },
-  ]);
+  ];
 
   const displayColumns = usePostManagerColumnFilter(
     selectedProjectId,
@@ -212,15 +210,11 @@ const IdeaHeaderRow = ({
   );
 
   const totalWidth = cells.reduce((acc, cell) => {
-    if (typeof cell.cellProps?.width === 'number') {
-      return cell.cellProps.width + acc;
-    }
-
-    return acc;
+    return cell.width + acc;
   }, 0);
 
   const renderCell = ({
-    cellProps = {},
+    width,
     name,
     Component,
     onChange,
@@ -231,7 +225,7 @@ const IdeaHeaderRow = ({
         sortDirection={sortDirection}
         allSelected={allSelected}
         width={`${roundPercentage(
-          typeof cellProps.width === 'number' ? cellProps.width : 1,
+          typeof width === 'number' ? width : 1,
           totalWidth
         )}%`}
         onChange={onChange}

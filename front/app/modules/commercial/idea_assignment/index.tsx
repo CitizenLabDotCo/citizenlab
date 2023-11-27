@@ -6,7 +6,6 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 const AssigneeFilter = React.lazy(
   () => import('./admin/components/AssigneeFilter')
 );
-const IdeaRowCell = React.lazy(() => import('./admin/components/IdeaRowCell'));
 const Tab = React.lazy(() => import('./admin/components/Tab'));
 const InputAssignment = React.lazy(() => import('./admin/containers/'));
 
@@ -37,8 +36,6 @@ const configuration: ModuleConfiguration = {
     'app.components.admin.PostManager.topActionBar': (props) => (
       <StyledAssigneeFilter {...props} />
     ),
-    'app.components.admin.PostManager.components.PostTable.IdeaRow.cells':
-      IdeaRowCell,
     'app.containers.Admin.project.edit.permissions.moderatorRights': (
       props
     ) => (
