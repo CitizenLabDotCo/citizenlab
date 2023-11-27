@@ -1,4 +1,4 @@
-import { randomString, randomEmail } from '../support/commands';
+import { randomString, randomEmail } from '../../support/commands';
 
 describe('Verification modal', () => {
   describe('shows the additional rules', () => {
