@@ -105,9 +105,8 @@ const IdeaCard = ({
   );
   const { data: phase } = usePhase(phaseId);
 
-  const participationContext = phase?.data || project?.data;
-  const participationMethod =
-    participationContext?.attributes.participation_method;
+  const phaseData = phase?.data;
+  const participationMethod = phaseData?.attributes.participation_method;
   const config = participationMethod && getMethodConfig(participationMethod);
   const hideBody = config?.hideAuthorOnIdeas;
 
@@ -143,6 +142,8 @@ const IdeaCard = ({
 
   const innerHeight = showFollowButton ? '192px' : '162px';
 
+  if (!phaseData) return null;
+
   return (
     <Container
       className={`e2e-card e2e-idea-card ${className ?? ''}`.trim()}
@@ -151,7 +152,7 @@ const IdeaCard = ({
       onClick={handleClick}
     >
       <CardImage
-        participationContext={participationContext}
+        phase={phaseData}
         image={image}
         hideImagePlaceholder={hideImagePlaceholder}
         innerHeight={innerHeight}
@@ -186,7 +187,7 @@ const IdeaCard = ({
         <Box>
           <Interactions
             idea={idea}
-            participationContext={participationContext}
+            phase={phaseData}
           />
           <Footer
             project={project}

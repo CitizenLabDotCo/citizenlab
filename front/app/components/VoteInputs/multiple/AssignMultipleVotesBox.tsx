@@ -21,16 +21,15 @@ import { colors } from 'utils/styleUtils';
 import { isNil } from 'utils/helperUtils';
 
 // typings
-import { IProjectData } from 'api/projects/types';
 import { IPhaseData } from 'api/phases/types';
 
 interface Props {
   ideaId: string;
-  participationContext: IProjectData | IPhaseData;
+  phase: IPhaseData;
 }
 
 const AssignMultipleVotesBox = memo(
-  ({ ideaId, participationContext }: Props) => {
+  ({ ideaId, phase }: Props) => {
     const { data: idea } = useIdeaById(ideaId);
     const { numberOfVotesCast } = useVoting();
     const localize = useLocalize();
@@ -41,7 +40,7 @@ const AssignMultipleVotesBox = memo(
       voting_max_total,
       voting_term_singular_multiloc,
       voting_term_plural_multiloc,
-    } = participationContext.attributes;
+    } = phase.attributes;
 
     if (!actionDescriptor || isNil(voting_max_total)) {
       return null;
@@ -59,7 +58,7 @@ const AssignMultipleVotesBox = memo(
       <WhiteBox>
         <AssignMultipleVotesControl
           ideaId={ideaId}
-          participationContext={participationContext}
+          phase={phase}
           onIdeaPage
         />
         <Box

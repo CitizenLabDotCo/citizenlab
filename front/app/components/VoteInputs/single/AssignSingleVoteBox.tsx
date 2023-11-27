@@ -19,24 +19,23 @@ import ownMessages from './messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 // typings
-import { IProjectData } from 'api/projects/types';
 import { IPhaseData } from 'api/phases/types';
 
 interface Props {
   ideaId: string;
-  participationContext: IProjectData | IPhaseData;
+  phase: IPhaseData;
 }
 
-const AssignSingleVoteBox = memo(({ ideaId, participationContext }: Props) => {
+const AssignSingleVoteBox = memo(({ ideaId, phase }: Props) => {
   const { formatMessage } = useIntl();
   const { data: idea } = useIdeaById(ideaId);
   const { numberOfVotesCast } = useVoting();
 
   const { data: basket } = useBasket(
-    participationContext.relationships?.user_basket?.data?.id
+    phase.relationships?.user_basket?.data?.id
   );
   const actionDescriptor = idea?.data.attributes.action_descriptor.voting;
-  const { voting_max_total } = participationContext.attributes;
+  const { voting_max_total } = phase.attributes;
 
   if (!actionDescriptor) return null;
 
@@ -49,7 +48,7 @@ const AssignSingleVoteBox = memo(({ ideaId, participationContext }: Props) => {
     <WhiteBox>
       <AssignSingleVoteButton
         ideaId={ideaId}
-        participationContext={participationContext}
+        phase={phase}
         buttonStyle="primary"
       />
       {voting_max_total && (
