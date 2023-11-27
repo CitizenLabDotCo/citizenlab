@@ -1,4 +1,8 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import {
+  QueryClient,
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query';
 import { CLErrorsWrapper } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 import { IUser, IUserUpdate } from './types';
@@ -16,6 +20,16 @@ export const updateUser = async ({ userId, ...requestBody }: IUserUpdate) =>
     body: { user: { ...requestBody } },
   });
 
+export const invalidateCache = (queryClient: QueryClient) => {
+  queryClient.invalidateQueries({ queryKey: usersKeys.lists() });
+  queryClient.invalidateQueries({ queryKey: groupsKeys.all() });
+  queryClient.invalidateQueries({ queryKey: requirementsKeys.all() });
+  queryClient.invalidateQueries({
+    queryKey: userCountKeys.items(),
+  });
+  queryClient.invalidateQueries({ queryKey: meKeys.all() });
+};
+
 const useUpdateUser = () => {
   const queryClient = useQueryClient();
   return useMutation<IUser, CLErrorsWrapper, IUserUpdate>({
@@ -26,13 +40,7 @@ const useUpdateUser = () => {
         invalidateSeatsCache();
       }
 
-      queryClient.invalidateQueries({ queryKey: usersKeys.lists() });
-      queryClient.invalidateQueries({ queryKey: groupsKeys.all() });
-      queryClient.invalidateQueries({ queryKey: requirementsKeys.all() });
-      queryClient.invalidateQueries({
-        queryKey: userCountKeys.items(),
-      });
-      queryClient.invalidateQueries({ queryKey: meKeys.all() });
+      invalidateCache(queryClient);
     },
   });
 };
