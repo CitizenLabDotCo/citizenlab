@@ -3,10 +3,7 @@ import confirmEmail from 'api/authentication/confirm_email/confirmEmail';
 import resendEmailConfirmationCode from 'api/authentication/confirm_email/resendEmailConfirmationCode';
 import getAuthUser from 'api/authentication/auth_user/getAuthUser';
 import signOut from 'api/authentication/sign_in_out/signOut';
-
-import { UseMutateFunction } from '@tanstack/react-query';
-import { IUser, IUserUpdate } from 'api/users/types';
-import { CLErrorsWrapper } from 'typings';
+import { updateUser } from 'api/users/useUpdateUser';
 
 // utils
 import {
@@ -22,8 +19,7 @@ import { OnboardingType } from 'api/authentication/authentication_requirements/t
 
 export const missingDataFlow = (
   getRequirements: GetRequirements,
-  setCurrentStep: (step: Step) => void,
-  updateUser: UseMutateFunction<IUser, CLErrorsWrapper, IUserUpdate>
+  setCurrentStep: (step: Step) => void
 ) => {
   return {
     'missing-data:email-confirmation': {

@@ -6,7 +6,7 @@ import createAccountWithPassword, {
 import confirmEmail from 'api/authentication/confirm_email/confirmEmail';
 import resendEmailConfirmationCode from 'api/authentication/confirm_email/resendEmailConfirmationCode';
 import getUserDataFromToken from 'api/authentication/getUserDataFromToken';
-import { OnboardingType } from 'api/authentication/authentication_requirements/types';
+import { updateUser } from 'api/users/useUpdateUser';
 
 // tracks
 import tracks from '../../tracks';
@@ -23,17 +23,14 @@ import {
   UpdateState,
 } from '../../typings';
 import { Step } from './typings';
-import { UseMutateFunction } from '@tanstack/react-query';
-import { IUser, IUserUpdate } from 'api/users/types';
-import { CLErrorsWrapper } from 'typings';
+import { OnboardingType } from 'api/authentication/authentication_requirements/types';
 
 export const signUpFlow = (
   getAuthenticationData: () => AuthenticationData,
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
   updateState: UpdateState,
-  anySSOProviderEnabled: boolean,
-  updateUser: UseMutateFunction<IUser, CLErrorsWrapper, IUserUpdate>
+  anySSOProviderEnabled: boolean
 ) => {
   return {
     // old sign up flow

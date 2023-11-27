@@ -1,16 +1,13 @@
-import { Step } from './typings';
 import confirmEmail from 'api/authentication/confirm_email/confirmEmail';
-import { GetRequirements } from 'containers/Authentication/typings';
 import { askCustomFields, showOnboarding } from './utils';
 import resendEmailConfirmationCode from 'api/authentication/confirm_email/resendEmailConfirmationCode';
-import { UseMutateFunction } from '@tanstack/react-query';
-import { IUser, IUserUpdate } from 'api/users/types';
-import { CLErrorsWrapper } from 'typings';
+import { updateUser } from 'api/users/useUpdateUser';
+import { GetRequirements } from 'containers/Authentication/typings';
+import { Step } from './typings';
 
 export const claveUnicaFlow = (
   getRequirements: GetRequirements,
-  setCurrentStep: (step: Step) => void,
-  updateUser: UseMutateFunction<IUser, CLErrorsWrapper, IUserUpdate>
+  setCurrentStep: (step: Step) => void
 ) => {
   return {
     'clave-unica:email': {
