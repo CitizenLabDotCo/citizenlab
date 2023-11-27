@@ -11,7 +11,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 // components
 import { Box, Title, Text } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
-import PostManager, { TFilterMenu } from 'components/admin/PostManager';
 import AnalysisBanner from './AnalysisBanner';
 
 // hooks
@@ -21,6 +20,9 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // styling
 import { colors } from 'utils/styleUtils';
+import InputManager, {
+  TFilterMenu,
+} from 'components/admin/PostManager/InputManager';
 
 const defaultTimelineProjectVisibleFilterMenu = 'phases';
 const defaultContinuousProjectVisibleFilterMenu = 'statuses';
@@ -68,8 +70,7 @@ const AdminProjectIdeas = () => {
       <AnalysisBanner />
 
       {project && (
-        <PostManager
-          type="ProjectIdeas"
+        <InputManager
           projectId={project.data.id}
           phases={phases?.data}
           visibleFilterMenus={

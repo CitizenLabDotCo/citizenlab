@@ -13,10 +13,7 @@ import FullscreenContentBuilder from 'components/admin/ContentBuilder/Fullscreen
 import Editor from '../components/Editor';
 import ProjectDescriptionBuilderToolbox from '../components/ProjectDescriptionBuilderToolbox';
 import ProjectDescriptionBuilderTopBar from '../components/ProjectDescriptionBuilderTopBar';
-import {
-  StyledRightColumn,
-  ErrorMessage,
-} from 'components/admin/ContentBuilder/Frame/FrameWrapper';
+import { StyledRightColumn } from 'components/admin/ContentBuilder/Frame/FrameWrapper';
 import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
 import ContentBuilderSettings from 'components/admin/ContentBuilder/Settings';
 
@@ -34,6 +31,8 @@ import { isNilOrError } from 'utils/helperUtils';
 import { SerializedNodes } from '@craftjs/core';
 import { Locale } from 'typings';
 import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
+import { isEmpty } from 'lodash-es';
+import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
 
 const ProjectDescriptionBuilderPage = () => {
   const [previewEnabled, setPreviewEnabled] = useState(false);
@@ -71,10 +70,9 @@ const ProjectDescriptionBuilderPage = () => {
     return null;
   }
 
-  const localesWithError = Object.values(contentBuilderErrors)
-    .filter((node) => node.hasError)
-    .filter((node) => node.selectedLocale)
-    .map((node) => node.selectedLocale as Locale);
+  const hasError =
+    Object.values(contentBuilderErrors).filter((node) => node.hasError).length >
+    0;
 
   const handleErrors = (newErrors: ContentBuilderErrors) => {
     setContentBuilderErrors((contentBuilderErrors) => ({
@@ -91,13 +89,14 @@ const ProjectDescriptionBuilderPage = () => {
   };
 
   const getEditorData = () => {
-    if (projectDescriptionBuilderLayout && selectedLocale) {
-      if (draftData && draftData[selectedLocale]) {
-        return draftData[selectedLocale];
-      }
-      return projectDescriptionBuilderLayout.data.attributes
-        .craftjs_jsonmultiloc[selectedLocale];
-    } else return undefined;
+    if (
+      projectDescriptionBuilderLayout &&
+      !isEmpty(projectDescriptionBuilderLayout.data.attributes.craftjs_json)
+    ) {
+      return projectDescriptionBuilderLayout.data.attributes.craftjs_json;
+    } else {
+      return undefined;
+    }
   };
 
   const handleEditorChange = (nodes: SerializedNodes) => {
@@ -137,19 +136,14 @@ const ProjectDescriptionBuilderPage = () => {
       onDeleteElement={handleDeleteElement}
       onUploadImage={setImageUploading}
     >
-      <Editor
-        isPreview={false}
-        onNodesChange={handleEditorChange}
-        key={selectedLocale}
-      >
+      <Editor isPreview={false} onNodesChange={handleEditorChange}>
         <ProjectDescriptionBuilderTopBar
-          localesWithError={localesWithError}
+          hasError={hasError}
           hasPendingState={imageUploading}
           previewEnabled={previewEnabled}
           setPreviewEnabled={setPreviewEnabled}
           selectedLocale={selectedLocale}
           onSelectLocale={handleSelectedLocaleChange}
-          draftEditorData={draftData}
         />
         <Box
           mt={`${stylingConsts.menuHeight}px`}
@@ -158,12 +152,16 @@ const ProjectDescriptionBuilderPage = () => {
           {selectedLocale && (
             <ProjectDescriptionBuilderToolbox selectedLocale={selectedLocale} />
           )}
-          <StyledRightColumn>
-            <Box width="1000px">
-              <ErrorMessage localesWithError={localesWithError} />
-              <ContentBuilderFrame editorData={getEditorData()} />
-            </Box>
-          </StyledRightColumn>
+          <LanguageProvider
+            contentBuilderLocale={selectedLocale}
+            platformLocale={locale}
+          >
+            <StyledRightColumn>
+              <Box width="1000px">
+                <ContentBuilderFrame editorData={getEditorData()} />
+              </Box>
+            </StyledRightColumn>
+          </LanguageProvider>
           <ContentBuilderSettings />
         </Box>
       </Editor>
@@ -171,6 +169,7 @@ const ProjectDescriptionBuilderPage = () => {
         <ProjectDescriptionBuilderEditModePreview
           projectId={projectId}
           ref={iframeRef}
+          selectedLocale={selectedLocale}
         />
       </Box>
     </FullscreenContentBuilder>

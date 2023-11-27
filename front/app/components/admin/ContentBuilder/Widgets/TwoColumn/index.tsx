@@ -19,6 +19,7 @@ import messages from './messages';
 
 // typings
 import { ColumnLayout } from '../../typings';
+import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
 
 type TwoColumnProps = {
   columnLayout: ColumnLayout;
@@ -44,8 +45,14 @@ export const TwoColumnWrapper = styled(Box)`
 `;
 
 export const TwoColumn = ({ columnLayout, children }: TwoColumnProps) => {
+  const componentDefaultPadding = useCraftComponentDefaultPadding();
+
   return (
-    <TwoColumnWrapper id="e2e-two-column" columnLayout={columnLayout}>
+    <TwoColumnWrapper
+      id="e2e-two-column"
+      columnLayout={columnLayout}
+      px={componentDefaultPadding}
+    >
       {children || (
         <>
           <Element id={'left'} is={Container} canvas />

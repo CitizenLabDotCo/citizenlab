@@ -29,8 +29,8 @@ FactoryBot.define do
       with_permissions { false }
     end
 
-    after(:create) do |phase, evaluator|
-      PermissionsService.new.update_permissions_for_scope(phase) if evaluator.with_permissions
+    after(:create) do |project, evaluator|
+      PermissionsService.new.update_permissions_for_scope(project) if evaluator.with_permissions
     end
 
     trait :that_can_have_children do

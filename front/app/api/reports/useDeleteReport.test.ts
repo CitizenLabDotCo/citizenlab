@@ -4,12 +4,12 @@ import useDeleteReport from './useDeleteReport';
 
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import { apiPathReport } from './__mocks__/_mockServer';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
-const apiPath = '*reports/:id';
 
 const server = setupServer(
-  rest.delete(apiPath, (_req, res, ctx) => {
+  rest.delete(apiPathReport, (_req, res, ctx) => {
     return res(ctx.status(200));
   })
 );
@@ -32,7 +32,7 @@ describe('useDeleteReport', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.delete(apiPath, (_req, res, ctx) => {
+      rest.delete(apiPathReport, (_req, res, ctx) => {
         return res(ctx.status(500));
       })
     );

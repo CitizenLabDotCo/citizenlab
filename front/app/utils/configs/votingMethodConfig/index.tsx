@@ -15,7 +15,7 @@ import { MessageDescriptor } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
-import {getLocalisedDateString} from 'utils/dateUtils';
+import { getLocalisedDateString } from 'utils/dateUtils';
 
 // types
 import { IPhaseData } from 'api/phases/types';
