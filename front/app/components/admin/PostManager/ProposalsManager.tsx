@@ -20,7 +20,6 @@ import {
 import ActionBar from './components/ActionBar';
 import FilterSidebar from './components/FilterSidebar';
 import PostTable from './components/PostTable';
-import InfoSidebar from './components/InfoSidebar';
 import InitiativesCount from './components/InitiativesCount';
 import FeedbackToggle from './components/TopLevelFilters/FeedbackToggle';
 const LazyPostPreview = lazy(
@@ -236,7 +235,6 @@ const ProposalsManager = ({ defaultFilterMenu, visibleFilterMenus }: Props) => {
             openPreview={openPreview}
           />
         </MiddleColumn>
-        <InfoSidebar postIds={[...selection]} openPreview={openPreview} />
       </ThreeColumns>
       <Suspense fallback={null}>
         <LazyPostPreview
