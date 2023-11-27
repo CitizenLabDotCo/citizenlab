@@ -132,7 +132,6 @@ const fileAccept = [
   '.mkv',
   'video/x-matroska',
 
-  // jpg jpeg gif png webp svg
   '.jpg',
   'image/jpg',
   '.jpeg',
