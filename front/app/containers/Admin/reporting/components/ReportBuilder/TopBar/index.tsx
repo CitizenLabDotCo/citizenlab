@@ -95,8 +95,14 @@ const ContentBuilderTopBar = ({
     }
   };
   const doGoBack = () => {
-    // TODO
-    clHistory.back();
+    const { projectId, phaseId } = reportContext;
+
+    const goBackUrl =
+      projectId && phaseId
+        ? `/admin/projects/${projectId}/timeline/${phaseId}`
+        : '/admin/reporting/report-builder';
+
+    clHistory.push(goBackUrl);
   };
 
   const handleSave = () => {
