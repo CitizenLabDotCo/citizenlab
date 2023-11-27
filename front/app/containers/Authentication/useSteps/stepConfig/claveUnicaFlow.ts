@@ -1,7 +1,11 @@
 import confirmEmail from 'api/authentication/confirm_email/confirmEmail';
 import { askCustomFields, showOnboarding } from './utils';
 import resendEmailConfirmationCode from 'api/authentication/confirm_email/resendEmailConfirmationCode';
-import { updateUser } from 'api/users/useUpdateUser';
+import {
+  updateUser,
+  invalidateCacheAfterUpdateUser,
+} from 'api/users/useUpdateUser';
+import { queryClient } from 'utils/cl-react-query/queryClient';
 import { GetRequirements } from 'containers/Authentication/typings';
 import { Step } from './typings';
 
@@ -24,6 +28,7 @@ export const claveUnicaFlow = (
           setCurrentStep('clave-unica:email-confirmation');
         } else {
           await updateUser({ userId, email });
+          invalidateCacheAfterUpdateUser(queryClient);
           setCurrentStep('success');
         }
       },

@@ -6,7 +6,10 @@ import createAccountWithPassword, {
 import confirmEmail from 'api/authentication/confirm_email/confirmEmail';
 import resendEmailConfirmationCode from 'api/authentication/confirm_email/resendEmailConfirmationCode';
 import getUserDataFromToken from 'api/authentication/getUserDataFromToken';
-import { updateUser, invalidateCache } from 'api/users/useUpdateUser';
+import {
+  updateUser,
+  invalidateCacheAfterUpdateUser,
+} from 'api/users/useUpdateUser';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 
 // tracks
@@ -192,7 +195,7 @@ export const signUpFlow = (
       SUBMIT: async (userId: string, formData: FormData) => {
         try {
           await updateUser({ userId, custom_field_values: formData });
-          invalidateCache(queryClient);
+          invalidateCacheAfterUpdateUser(queryClient);
 
           const { requirements } = await getRequirements();
 
@@ -239,6 +242,8 @@ export const signUpFlow = (
       SUBMIT: async (userId: string, onboarding: OnboardingType) => {
         try {
           await updateUser({ userId, onboarding });
+          invalidateCacheAfterUpdateUser(queryClient);
+
           const { requirements } = await getRequirements();
 
           if (requirements.special.group_membership === 'require') {

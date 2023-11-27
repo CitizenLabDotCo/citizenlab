@@ -3,7 +3,11 @@ import confirmEmail from 'api/authentication/confirm_email/confirmEmail';
 import resendEmailConfirmationCode from 'api/authentication/confirm_email/resendEmailConfirmationCode';
 import getAuthUser from 'api/authentication/auth_user/getAuthUser';
 import signOut from 'api/authentication/sign_in_out/signOut';
-import { updateUser } from 'api/users/useUpdateUser';
+import {
+  updateUser,
+  invalidateCacheAfterUpdateUser,
+} from 'api/users/useUpdateUser';
+import { queryClient } from 'utils/cl-react-query/queryClient';
 
 // utils
 import {
@@ -85,6 +89,7 @@ export const missingDataFlow = (
         builtInFieldUpdate: BuiltInFieldsUpdate
       ) => {
         await updateUser({ userId, ...builtInFieldUpdate });
+        invalidateCacheAfterUpdateUser(queryClient);
 
         const { requirements } = await getRequirements();
 
@@ -138,6 +143,7 @@ export const missingDataFlow = (
       CLOSE: () => setCurrentStep('closed'),
       SUBMIT: async (userId: string, formData: FormData) => {
         await updateUser({ userId, custom_field_values: formData });
+        invalidateCacheAfterUpdateUser(queryClient);
 
         const { requirements } = await getRequirements();
 
@@ -169,6 +175,7 @@ export const missingDataFlow = (
       CLOSE: () => setCurrentStep('closed'),
       SUBMIT: async (userId: string, onboarding: OnboardingType) => {
         await updateUser({ userId, onboarding });
+        invalidateCacheAfterUpdateUser(queryClient);
 
         const { requirements } = await getRequirements();
 

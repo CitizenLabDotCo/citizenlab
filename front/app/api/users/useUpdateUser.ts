@@ -20,7 +20,7 @@ export const updateUser = async ({ userId, ...requestBody }: IUserUpdate) =>
     body: { user: { ...requestBody } },
   });
 
-export const invalidateCache = (queryClient: QueryClient) => {
+export const invalidateCacheAfterUpdateUser = (queryClient: QueryClient) => {
   queryClient.invalidateQueries({ queryKey: usersKeys.lists() });
   queryClient.invalidateQueries({ queryKey: groupsKeys.all() });
   queryClient.invalidateQueries({ queryKey: requirementsKeys.all() });
@@ -40,7 +40,7 @@ const useUpdateUser = () => {
         invalidateSeatsCache();
       }
 
-      invalidateCache(queryClient);
+      invalidateCacheAfterUpdateUser(queryClient);
     },
   });
 };
