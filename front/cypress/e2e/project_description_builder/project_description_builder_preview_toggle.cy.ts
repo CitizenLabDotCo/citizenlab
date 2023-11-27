@@ -60,8 +60,6 @@ describe('Project description builder preview', () => {
       position: 'inside',
     });
     cy.get('div.e2e-text-box').click();
-
-    cy.get('#e2e-text-box').click();
     cy.get('.ql-editor').click();
     cy.get('.ql-editor').type('Edited text.', { force: true });
 
@@ -83,8 +81,8 @@ describe('Project description builder preview', () => {
     );
     cy.get('div#ROOT');
     cy.wait(1000);
-    cy.get('#e2e-text-box').should('exist');
-    cy.get('#e2e-text-box').click();
+    cy.get('div.e2e-text-box').should('exist');
+    cy.get('div.e2e-text-box').click();
     cy.get('.ql-editor').click();
     cy.get('.ql-editor').type('Another edited text.', { force: true });
 
@@ -92,9 +90,9 @@ describe('Project description builder preview', () => {
     cy.get('div.e2e-text-box').contains('Edited text.Another edited text.');
 
     // Preview
+    cy.wait(1000);
     cy.get('#e2e-preview-toggle').click({ force: true });
     cy.wait(1000);
-
     getIframeBody()
       .contains('Edited text.Another edited text.')
       .should('be.visible');
@@ -108,7 +106,7 @@ describe('Project description builder preview', () => {
       position: 'inside',
     });
     cy.wait(5000);
-    cy.get('#e2e-text-box').click();
+    cy.get('div.e2e-text-box').click();
     cy.get('.ql-editor').click();
     cy.get('.ql-editor').type('Sample text.', { force: true });
 

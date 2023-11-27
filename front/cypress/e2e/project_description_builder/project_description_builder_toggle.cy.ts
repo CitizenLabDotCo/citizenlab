@@ -109,7 +109,7 @@ describe('Project description builder toggle', () => {
       position: 'inside',
     });
 
-    cy.get('#e2e-text-box').click('center');
+    cy.get('div.e2e-text-box').click('center');
     cy.get('.ql-editor').click();
     cy.get('.ql-editor').type('Edited text.', { force: true });
 

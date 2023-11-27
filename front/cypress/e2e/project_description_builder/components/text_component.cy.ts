@@ -48,7 +48,7 @@ describe('Project description builder Text component', () => {
       position: 'inside',
     });
 
-    cy.get('#e2e-text-box').click();
+    cy.get('div.e2e-text-box').click();
     cy.get('.ql-editor').click();
     cy.get('.ql-editor').type('Edited text.', { force: true });
 
