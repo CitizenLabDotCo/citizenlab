@@ -133,7 +133,7 @@ const FullMobileNavMenu = ({
     });
   };
 
-  if (modalPortalElement && isFullMenuOpened) {
+  if (modalPortalElement) {
     return (
       <StyledFullscreenModal
         opened={isFullMenuOpened}
