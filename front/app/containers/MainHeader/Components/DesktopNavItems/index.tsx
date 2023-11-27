@@ -17,9 +17,8 @@ import { isNilOrError } from 'utils/helperUtils';
 import getNavbarItemPropsArray from './getNavbarItemPropsArray';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
 import messages from '../../messages';
-import { WrappedComponentProps } from 'react-intl';
+import { useIntl } from 'utils/cl-intl';
 
 const Container = styled.nav`
   height: 100%;
@@ -45,11 +44,10 @@ const NavbarItems = styled.ul`
   `};
 `;
 
-const DesktopNavItems = ({
-  intl: { formatMessage },
-}: WrappedComponentProps) => {
+const DesktopNavItems = () => {
   const { data: navbarItems } = useNavbarItems();
   const pageSlugById = useCustomPageSlugById();
+  const { formatMessage } = useIntl();
 
   if (isNilOrError(navbarItems) || isNilOrError(pageSlugById)) return null;
 
@@ -89,4 +87,4 @@ const DesktopNavItems = ({
   );
 };
 
-export default injectIntl(DesktopNavItems);
+export default DesktopNavItems;

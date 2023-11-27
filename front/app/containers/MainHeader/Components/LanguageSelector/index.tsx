@@ -146,7 +146,8 @@ const LanguageSelector = ({ className }: Props) => {
         </DropdownButton>
 
         <Dropdown
-          width="160px !important"
+          width="180px"
+          mobileWidth="160px"
           top="68px"
           right={!isRtl ? '0px' : undefined}
           mobileRight={!isRtl ? '5px' : undefined}
