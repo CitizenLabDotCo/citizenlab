@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 // context
-import { ReportContext } from '../../context/ReportContext';
+import { ReportContextProvider } from '../../context/ReportContext';
 
 // hooks
 import useReportLayout from 'api/report_layout/useReportLayout';
@@ -57,7 +57,7 @@ export const FullScreenReport = ({ reportId }: Props) => {
       reportLocale={reportLocale}
       platformLocale={platformLocale}
     >
-      <ReportContext.Provider value="phase">
+      <ReportContextProvider width="responsive" reportId={reportId}>
         <FullScreenWrapper onUpdateDraftData={setDraftData} padding="0">
           {isLoadingLayout && <Spinner />}
           {!isLoadingLayout && (
@@ -72,7 +72,7 @@ export const FullScreenReport = ({ reportId }: Props) => {
             </Box>
           )}
         </FullScreenWrapper>
-      </ReportContext.Provider>
+      </ReportContextProvider>
     </ReportLanguageProvider>
   );
 };

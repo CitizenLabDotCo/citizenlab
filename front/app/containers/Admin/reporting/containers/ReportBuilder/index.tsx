@@ -3,12 +3,11 @@ import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import useReport from 'api/reports/useReport';
 import useReportLayout from 'api/report_layout/useReportLayout';
 import useReportLocale from '../../hooks/useReportLocale';
 
 // context
-import { ReportContext } from '../../context/ReportContext';
+import { ReportContextProvider } from '../../context/ReportContext';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -43,14 +42,12 @@ import { SerializedNodes } from '@craftjs/core';
 import { Locale } from 'typings';
 import ReportLanguageProvider from '../ReportLanguageProvider';
 import useLocale from '../../../../../hooks/useLocale';
-import { ReportType } from '../../types';
 
 interface Props {
   reportId: string;
-  reportType: ReportType;
 }
 
-const ReportBuilder = ({ reportId, reportType }: Props) => {
+const ReportBuilder = ({ reportId }: Props) => {
   const [previewEnabled, setPreviewEnabled] = useState(false);
   const [contentBuilderErrors, setContentBuilderErrors] =
     useState<ContentBuilderErrors>({});
@@ -130,7 +127,7 @@ const ReportBuilder = ({ reportId, reportType }: Props) => {
   if (!selectedLocale) return null;
 
   return (
-    <ReportContext.Provider value={reportType}>
+    <ReportContextProvider width="pdf" reportId={reportId}>
       <FullscreenContentBuilder
         onErrors={handleErrors}
         onDeleteElement={handleDeleteElement}
@@ -210,7 +207,7 @@ const ReportBuilder = ({ reportId, reportType }: Props) => {
           </Box>
         )}
       </FullscreenContentBuilder>
-    </ReportContext.Provider>
+    </ReportContextProvider>
   );
 };
 
@@ -218,23 +215,15 @@ const ReportBuilderWrapper = () => {
   const reportBuilderEnabled = useFeatureFlag({ name: 'report_builder' });
   const { pathname } = useLocation();
   const { reportId } = useParams();
-  const { data: report } = useReport(reportId);
 
   const renderReportBuilder =
     reportBuilderEnabled &&
     pathname.includes('admin/reporting/report-builder') &&
-    report !== undefined;
+    reportId !== undefined;
 
   if (!renderReportBuilder) return null;
 
-  const phaseId = report.data.relationships.phase?.data?.id;
-
-  return (
-    <ReportBuilder
-      reportId={report.data.id}
-      reportType={phaseId ? 'phase' : 'pdf'}
-    />
-  );
+  return <ReportBuilder reportId={reportId} />;
 };
 
 export default ReportBuilderWrapper;

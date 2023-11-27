@@ -10,7 +10,7 @@ import Editor from 'containers/Admin/reporting/components/ReportBuilder/Editor';
 import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
 
 // context
-import { ReportContext } from 'containers/Admin/reporting/context/ReportContext';
+import { ReportContextProvider } from 'containers/Admin/reporting/context/ReportContext';
 
 // styling
 import { stylingConsts } from 'utils/styleUtils';
@@ -47,13 +47,13 @@ const PhaseReport = ({ reportId }: Props) => {
         boxShadow="0px 2px 4px -1px rgba(0,0,0,0.06)"
         p={smallerThanTablet ? '0px' : '30px'}
       >
-        <ReportContext.Provider value="phase">
+        <ReportContextProvider width="responsive" reportId={reportId}>
           <Box maxWidth="800px" w="100%">
             <Editor isPreview={true}>
               {editorData && <ContentBuilderFrame editorData={editorData} />}
             </Editor>
           </Box>
-        </ReportContext.Provider>
+        </ReportContextProvider>
       </Box>
     </Box>
   );
