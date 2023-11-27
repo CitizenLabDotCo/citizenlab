@@ -89,7 +89,7 @@ const IdeasShowPage = () => {
   if (idea) {
     return (
       <VotingContext projectId={project?.data.id}>
-        <Box background={colors.white}>
+        <Box background={colors.white} id="idea-page">
           {isSmallerThanTablet && (
             <StyledIdeaShowPageTopBar
               projectId={idea.data.relationships.project.data.id}

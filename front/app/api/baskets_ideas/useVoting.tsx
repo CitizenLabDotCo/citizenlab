@@ -13,6 +13,8 @@ import useVoteForIdea from './useVoteForIdea';
 // utils
 import { getCurrentParticipationContext } from 'api/phases/utils';
 import { isNil } from 'utils/helperUtils';
+import Modal from 'components/UI/Modal';
+import { Text } from '@citizenlab/cl2-component-library';
 
 interface Props {
   projectId?: string;
@@ -32,9 +34,36 @@ const VotingInterfaceContext = createContext<VotingInterface | null>(null);
 export const VotingContext = ({ projectId, children }: Props) => {
   const votingInterface = useVotingInterface(projectId);
 
+  const [showDataUnsavedModal, setShowDataUnsavedModal] = useState(false);
+
+  const beforeUnloadHandler = (event) => {
+    // Recommended
+    event.preventDefault();
+    // Included for legacy support, e.g. Chrome/Edge < 119
+    event.returnValue = true;
+
+    setTimeout(() => {
+      setShowDataUnsavedModal(true);
+    }, 1000);
+  };
+
+  window.addEventListener('beforeunload', beforeUnloadHandler);
+
   return (
     <VotingInterfaceContext.Provider value={votingInterface}>
       {children}
+      <Modal
+        opened={showDataUnsavedModal}
+        close={() => {
+          setShowDataUnsavedModal(false);
+        }}
+        header={'You have not submitted your votes'}
+      >
+        <Text>
+          We could add a custom message here - like: You have not submitted your
+          votes. If you leave this page, your votes will not be saved. ?
+        </Text>
+      </Modal>
     </VotingInterfaceContext.Provider>
   );
 };
