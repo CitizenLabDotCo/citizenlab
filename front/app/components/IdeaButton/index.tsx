@@ -28,13 +28,14 @@ import styled from 'styled-components';
 
 // typings
 import { LatLng } from 'leaflet';
-import { getButtonMessage } from './utils';
 import { IPhaseData } from 'api/phases/types';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
 import useAuthUser from 'api/me/useAuthUser';
 import TippyContent from './TippyContent';
+import { getInputTermMessage } from 'utils/i18n';
+import messages from './messages';
 
 const Container = styled.div``;
 
@@ -198,14 +199,23 @@ const IdeaButton = memo<Props>(
               id="e2e-idea-button"
             >
               <FormattedMessage
-                {...getButtonMessage(
-                  participationMethod,
-                  getInputTerm(
-                    project.data.attributes.process_type,
-                    project.data,
-                    phases?.data
-                  )
-                )}
+                {...(participationMethod === 'native_survey'
+                  ? messages.takeTheSurvey
+                  : getInputTermMessage(
+                      getInputTerm(
+                        project.data.attributes.process_type,
+                        project.data,
+                        phases?.data
+                      ),
+                      {
+                        idea: messages.submitYourIdea,
+                        option: messages.addAnOption,
+                        project: messages.addAProject,
+                        question: messages.addAQuestion,
+                        issue: messages.submitAnIssue,
+                        contribution: messages.addAContribution,
+                      }
+                    ))}
               />
             </Button>
           </ButtonWrapper>
