@@ -519,39 +519,29 @@ const AdminProjectsProjectGeneral = () => {
         )}
 
         <StyledSectionField>
-          {!project ? (
-            <ProjectTypePicker projectType={projectType} />
-          ) : (
-            <>
-              <SubSectionTitle>
-                <FormattedMessage {...messages.projectTypeTitle} />
-              </SubSectionTitle>
-              <ProjectType>
-                {<FormattedMessage {...messages[projectType]} />}
-              </ProjectType>
-            </>
-          )}
-
           {!project && (
-            <CSSTransition
-              classNames="participationcontext"
-              in={projectType === 'continuous'}
-              timeout={TIMEOUT}
-              mountOnEnter={true}
-              unmountOnExit={true}
-              enter={true}
-              exit={false}
-            >
-              <ParticipationContextWrapper>
-                <ParticipationContext
-                  project={project}
-                  onSubmit={handleParticipationContextOnSubmit}
-                  onChange={handleParticipationContextOnChange}
-                  apiErrors={apiErrors}
-                  appConfig={appConfig}
-                />
-              </ParticipationContextWrapper>
-            </CSSTransition>
+            <>
+              <ProjectTypePicker projectType={projectType} />
+              <CSSTransition
+                classNames="participationcontext"
+                in={projectType === 'continuous'}
+                timeout={TIMEOUT}
+                mountOnEnter={true}
+                unmountOnExit={true}
+                enter={true}
+                exit={false}
+              >
+                <ParticipationContextWrapper>
+                  <ParticipationContext
+                    project={project}
+                    onSubmit={handleParticipationContextOnSubmit}
+                    onChange={handleParticipationContextOnChange}
+                    apiErrors={apiErrors}
+                    appConfig={appConfig}
+                  />
+                </ParticipationContextWrapper>
+              </CSSTransition>
+            </>
           )}
         </StyledSectionField>
 
