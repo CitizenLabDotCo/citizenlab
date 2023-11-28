@@ -27,7 +27,6 @@ import ParticipationContext, {
 } from '../participationContext';
 import {
   StyledForm,
-  ProjectType,
   StyledSectionField,
   ParticipationContextWrapper,
   TIMEOUT,
