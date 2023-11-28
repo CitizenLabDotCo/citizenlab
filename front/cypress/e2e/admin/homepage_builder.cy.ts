@@ -140,7 +140,6 @@ describe('Homepage builder', () => {
     });
 
     // cy.get('[data-cy="e2e-full-width-banner-layout-option"]').click();
-    // cy.get('[data-cy="e2e-two-row-layout-option"]').click();
     cy.get('[data-cy="e2e-fixed-ratio-layout-option"]').click();
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveHomePage');
@@ -151,12 +150,21 @@ describe('Homepage builder', () => {
     cy.logout();
     cy.visit('/');
     cy.get('[data-cy="e2e-homepage-banner"]').should('exist');
-    cy.get('[data-cy="e2e-full-width-banner-layout-container"]').should(
-      'not.exist'
-    );
-    cy.get('[data-cy="e2e-two-row-banner-layout-container"]').should(
-      'not.exist'
-    );
     cy.get('[data-cy="e2e-fixed-ratio-layout-container"]').should('exist');
+
+    // Two row layout
+    cy.setAdminLoginCookie();
+    cy.visit('/admin/pages-menu/homepage-builder');
+    cy.get('[data-cy="e2e-homepage-banner"]').click({
+      force: true,
+    });
+    cy.get('[data-cy="e2e-two-row-layout-option"]').click();
+    cy.get('#e2e-content-builder-topbar-save').click();
+    cy.wait('@saveHomePage');
+
+    cy.logout();
+    cy.visit('/');
+    cy.get('[data-cy="e2e-homepage-banner"]').should('exist');
+    cy.get('[data-cy="e2e-two-row-layout-container"]').should('exist');
   });
 });
