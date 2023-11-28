@@ -33,19 +33,19 @@ namespace :data_migrate do
       data.each do |d|
         title = d['Titel'].strip
         body = d['Beschrijving'].strip
-        target_first_p = body.split("\n").first
+        body_first_word = body.split.first
         ideas = all_ideas.select do |idea|
           idea.title_multiloc.value?(title) &&
             idea.body_multiloc.values.any? do |body_value|
-              sanitized = ActionView::Base.full_sanitizer.sanitize(body_value)
-              sanitized.starts_with?(target_first_p) || sanitized.gsub(/\s+/, ' ').starts_with?(target_first_p)
+              sanitized = ActionView::Base.full_sanitizer.sanitize(body_value).strip
+              sanitized.starts_with?(body_first_word)
             end
         end
         # Useful for testing:
         # ideas = [Idea.new(title_multiloc: { default_locale => title }, body_multiloc: { default_locale => body }, project: Project.order(created_at: :asc).last, publication_status: 'published')]
 
         if ideas.size != 1
-          puts "ERROR: Found #{ideas.size} ideas with title '#{title}' and body '#{body.split("\n").first.first(10)}..'. Skipping update."
+          puts "ERROR: Found #{ideas.size} ideas with title '#{title}' and body first word '#{body_first_word}'. Skipping update."
           next
         end
 
