@@ -62,7 +62,7 @@ const createAdminProjectsRoutes = () => {
       ...moduleConfiguration.routes['admin.project_templates'],
       ...moduleConfiguration.routes['admin.projects'],
       {
-        path: ':projectId/ideas/:phaseId/:ideaId',
+        path: ':projectId/phases/:phaseId/ideas/:ideaId',
         element: (
           <PageLoading>
             <AdminProjectIdeaPreviewIndex />
@@ -142,10 +142,10 @@ const createAdminProjectsRoutes = () => {
         children: [
           {
             path: '',
-            element: <Navigate to="setup" replace />,
+            element: <Navigate to="phases/setup" replace />,
           },
           {
-            path: 'setup',
+            path: 'phases/setup',
             element: (
               <PageLoading>
                 <AdminPhaseNewAndEdit />
@@ -153,7 +153,7 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           {
-            path: 'setup/:phaseId',
+            path: 'phases/:phaseId/setup',
             element: (
               <PageLoading>
                 <AdminPhaseNewAndEdit />
@@ -186,7 +186,7 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           {
-            path: 'survey-results/:phaseId',
+            path: 'phases/:phaseId/survey-results',
             element: (
               <PageLoading>
                 <AdminProjectSurveyResults />
@@ -194,7 +194,7 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           {
-            path: 'poll/:phaseId',
+            path: 'phases/:phaseId/polls',
             element: (
               <PageLoading>
                 <AdminProjectPoll />
@@ -202,7 +202,7 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           {
-            path: 'ideas/:phaseId',
+            path: 'phases/:phaseId/ideas',
             element: (
               <PageLoading>
                 <AdminProjectIdeas />
@@ -210,7 +210,7 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           {
-            path: 'ideaform/:phaseId',
+            path: 'phases/:phaseId/ideaform',
             element: (
               <PageLoading>
                 <AdminProjectIdeaForm />
@@ -218,7 +218,7 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           {
-            path: 'volunteering/:phaseId',
+            path: 'phases/:phaseId/volunteering',
             element: (
               <PageLoading>
                 <AdminProjectVolunteering />
@@ -226,7 +226,7 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           {
-            path: 'volunteering/:phaseId/causes/new',
+            path: 'phases/:phaseId/volunteering/causes/new',
             element: (
               <PageLoading>
                 <AdminProjectVolunteeringNew />
@@ -234,11 +234,11 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           {
-            path: 'native-survey/:phaseId',
+            path: 'phases/:phaseId/native-survey',
             element: <AdminProjectsSurvey />,
           },
           {
-            path: 'volunteering/:phaseId/causes/new',
+            path: 'phases/:phaseId/volunteering/causes/new',
             element: (
               <PageLoading>
                 <AdminProjectVolunteeringNew />
@@ -262,7 +262,7 @@ const createAdminProjectsRoutes = () => {
             element: <SurveyFormBuilder />,
           },
           {
-            path: 'volunteering/:phaseId/causes/:causeId',
+            path: 'phases/:phaseId/volunteering/causes/:causeId',
             element: (
               <PageLoading>
                 <AdminProjectVolunteeringEdit />
@@ -278,14 +278,6 @@ const createAdminProjectsRoutes = () => {
             element: (
               <PageLoading>
                 <AdminProjectAnalysis />
-              </PageLoading>
-            ),
-          },
-          {
-            path: 'offline-inputs/:phaseId',
-            element: (
-              <PageLoading>
-                <OfflineInputImporter />
               </PageLoading>
             ),
           },

@@ -282,7 +282,7 @@ const AdminPhaseEdit = () => {
           const redirectTab = getTimelineTab(phaseResponse);
           window.scrollTo(0, 0);
           clHistory.push(
-            `/admin/projects/${projectId}/${redirectTab}/${phaseId}`
+            `/admin/projects/${projectId}/phases/${phaseId}/${redirectTab}`
           );
         }
       }

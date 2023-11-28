@@ -22,7 +22,7 @@ export default function setPhaseURL(
   if (isBackoffice) {
     const backOfficeProjectURL = `/admin/projects/${project.id}`;
     clHistory.push({
-      pathname: `${backOfficeProjectURL}/${redirectTab}/${selectedPhaseId}`,
+      pathname: `${backOfficeProjectURL}/phases/${selectedPhaseId}/${redirectTab}`,
       search,
     });
   } else {

@@ -91,7 +91,7 @@ export const PhaseHeader = ({ phase, tabs }: Props) => {
       {
         onSuccess: () => {
           closeModal();
-          clHistory.push(`/admin/projects/${projectId}/setup`);
+          clHistory.push(`/admin/projects/${projectId}/phases/setup`);
         },
       }
     );

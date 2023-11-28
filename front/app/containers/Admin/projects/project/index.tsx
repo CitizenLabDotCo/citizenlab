@@ -118,7 +118,7 @@ export const AdminProjectsProjectIndex = ({
       url:
         tab.url === ''
           ? `${baseTabsUrl}`
-          : `${baseTabsUrl}/${tab.url}/${selectedPhase.id}`,
+          : `${baseTabsUrl}/phases/${selectedPhase.id}/${tab.url}`,
     }));
   };
 
@@ -199,10 +199,10 @@ export default () => {
 
     if (phases.data.length === 0 && !isLoadingPhases && !isFetchingPhases) {
       clHistory.replace(`/admin/projects/${projectId}/phases/new`);
-    } else if (phaseShown && pathname.endsWith('/setup')) {
+    } else if (phaseShown && pathname.endsWith('phases/setup')) {
       const redirectTab = getTimelineTab(phaseShown);
       clHistory.replace(
-        `/admin/projects/${projectId}/${redirectTab}/${phaseShown.id}`
+        `/admin/projects/${projectId}/phases/${phaseShown.id}/${redirectTab}`
       );
     }
 

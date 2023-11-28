@@ -40,7 +40,7 @@ const EditCause = () => {
         {
           onSuccess: () => {
             clHistory.push(
-              `/admin/projects/${projectId}/volunteering/${phaseId}`
+              `/admin/projects/${projectId}/phases/${phaseId}/volunteering`
             );
           },
         }

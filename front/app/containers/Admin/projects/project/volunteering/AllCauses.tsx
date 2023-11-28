@@ -105,7 +105,7 @@ const AllCauses = ({
 
   const newCauseLink =
     participationContextType === 'phase'
-      ? `/admin/projects/${projectId}/volunteering/${participationContextId}/causes/new`
+      ? `/admin/projects/${projectId}/phases/${participationContextId}/volunteering/causes/new`
       : `/admin/projects/${projectId}/volunteering/causes/new`;
 
   if (isNilOrError(causes)) return null;
@@ -146,7 +146,7 @@ const AllCauses = ({
                   <FormattedMessage {...messages.deleteButtonLabel} />
                 </Button>
                 <Button
-                  linkTo={`/admin/projects/${projectId}/volunteering/${phaseId}/causes/${cause.id}`}
+                  linkTo={`/admin/projects/${projectId}/phases/${phaseId}/volunteering/causes/${cause.id}`}
                   icon="edit"
                   buttonStyle="secondary"
                 >
