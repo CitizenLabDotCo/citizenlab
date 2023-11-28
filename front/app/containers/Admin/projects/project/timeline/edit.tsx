@@ -63,7 +63,6 @@ import { stringifyCampaignFields } from 'containers/Admin/messaging/AutomatedEma
 import { CampaignData } from 'containers/Admin/messaging/AutomatedEmails/types';
 import { CampaignName } from 'api/campaigns/types';
 import { getExcludedDates, getMaxEndDate, getTimelineTab } from './utils';
-import { stylingConsts } from 'utils/styleUtils';
 
 type SubmitStateType = 'disabled' | 'enabled' | 'error' | 'success';
 
