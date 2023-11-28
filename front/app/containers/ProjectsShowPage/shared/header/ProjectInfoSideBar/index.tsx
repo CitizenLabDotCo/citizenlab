@@ -179,14 +179,9 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
   if (project) {
     const isProjectArchived =
       project.data.attributes.publication_status === 'archived';
-    const postingIsEnabled =
-      project.data.attributes.posting_enabled ||
-      currentPhase?.attributes.posting_enabled;
+    const postingIsEnabled = currentPhase?.attributes.posting_enabled;
     const projectParticipantsCount = project.data.attributes.participants_count;
-    const maxBudget =
-      currentPhase?.attributes?.voting_max_total ||
-      project.data.attributes?.voting_max_total ||
-      null;
+    const maxBudget = currentPhase?.attributes?.voting_max_total || null;
     const hasProjectEnded = currentPhase
       ? pastPresentOrFuture([
           currentPhase.attributes.start_at,
@@ -235,7 +230,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                     {...messages.xParticipants}
                     values={{ participantsCount: projectParticipantsCount }}
                   />
-                  {hasNativeSurvey(project.data, phases?.data) &&
+                  {hasNativeSurvey(phases?.data) &&
                     isAdminUser && (
                       <Box mb="4px" ml="4px">
                         <IconTooltip
@@ -342,7 +337,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                     <Box ml="4px">
                       <FormattedMessage {...messages.surveySubmissions} />
                     </Box>
-                    {hasEmbeddedSurvey(project.data, phases?.data) && (
+                    {hasEmbeddedSurvey(phases?.data) && (
                       <Box mb="4px" ml="4px">
                         <IconTooltip
                           placement="top-start"

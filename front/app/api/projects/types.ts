@@ -11,8 +11,7 @@ import {
   TSurveyService,
   ParticipationMethod,
   IdeaDefaultSortMethod,
-  InputTerm,
-  ParticipationContext,
+  InputTerm
 } from 'utils/participationContexts';
 import { Keys } from 'utils/cl-react-query/types';
 
@@ -58,13 +57,20 @@ export interface IProject {
   data: IProjectData;
 }
 
-export interface IProjectAttributes extends ParticipationContext {
+export interface IProjectAttributes {
+  title_multiloc: Multiloc;
+  description_multiloc: Multiloc;
   description_preview_multiloc: Multiloc;
   slug: string;
+  created_at: string;
+  updated_at: string;
   header_bg: ProjectHeaderBgImageSizes;
   comments_count: number;
   avatars_count: number;
   followers_count: number;
+  ideas_count: number;
+  baskets_count?: number | null;
+  votes_count?: number | null;
   visible_to: Visibility;
   timeline_active?: 'past' | 'present' | 'future' | null;
   participants_count: number;

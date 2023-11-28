@@ -192,9 +192,7 @@ const AdminIdeaContent = ({ handleClickEdit, closePreview, ideaId }: Props) => {
   // AuthorId can be null if user has been deleted
   const authorId = idea.data.relationships.author?.data?.id || null;
   const proposedBudget = idea.data.attributes.proposed_budget;
-  const allowAnonymousParticipation =
-    project.data.attributes.allow_anonymous_participation ||
-    currentPhase?.attributes.allow_anonymous_participation;
+  const allowAnonymousParticipation = currentPhase?.attributes.allow_anonymous_participation;
 
   return (
     <Container>

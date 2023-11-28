@@ -76,7 +76,6 @@ const IdeaRow = ({
   phases,
   statuses,
   selectedPhaseId,
-  selectedProjectId,
   idea,
   selection,
   locale,
@@ -323,7 +322,6 @@ const IdeaRow = ({
   const projectId = idea.relationships.project.data.id;
   const selectedStatus = idea.relationships.idea_status.data?.id;
   const displayColumns = usePostManagerColumnFilter(
-    selectedProjectId,
     selectedPhaseId
   );
 
