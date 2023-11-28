@@ -28,6 +28,11 @@ describe('Homepage builder', () => {
       }
     );
 
+    // Events widget
+    cy.get('#e2e-draggable-events').dragAndDrop('.e2e-signed-out-header', {
+      position: 'below',
+    });
+
     cy.get('div.e2e-text-box').should('have.length', 2);
     cy.get('div.e2e-text-box').first().click();
     cy.get('.ql-editor').type('first text');
@@ -41,6 +46,7 @@ describe('Homepage builder', () => {
     cy.get('div.e2e-text-box').should('have.length', 2);
     cy.get('div.e2e-text-box').first().should('contain', 'first text');
     cy.get('div.e2e-text-box').last().should('contain', 'last text');
+    cy.get('#e2e-events').should('exist');
   });
   it('deletes homepage builder content correctly', () => {
     cy.intercept('PATCH', '**/home_page').as('saveHomePage');
@@ -56,14 +62,22 @@ describe('Homepage builder', () => {
     // go to page with homepage builder
     cy.get('[data-cy="e2e-navbar-item-edit-button"]').first().click();
 
-    cy.get('#e2e-two-column').should('be.visible');
+    cy.get('#e2e-two-column').should('exist');
+    cy.get('#e2e-events').should('exist');
 
-    cy.get('#e2e-two-column').click('top');
+    cy.get('#e2e-two-column').click();
     cy.get('#e2e-delete-button').click();
+
+    cy.get('#e2e-events').click({
+      force: true,
+    });
+    cy.get('#e2e-delete-button').click();
+
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveHomePage');
     cy.visit(`/`);
     cy.get('#e2e-two-column').should('not.exist');
     cy.get('div.e2e-text-box').should('not.exist');
+    cy.get('#e2e-events').should('not.exist');
   });
 });
