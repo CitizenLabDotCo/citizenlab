@@ -21,6 +21,7 @@ import { IMAGES_LOADED_EVENT } from 'components/admin/ContentBuilder/constants';
 
 // typings
 import { Multiloc } from 'typings';
+import { isEmpty } from 'lodash-es';
 
 type PreviewProps = {
   projectId: string;
@@ -41,7 +42,7 @@ const Preview = ({ projectId, projectTitle }: PreviewProps) => {
   const projectDescriptionBuilderContent =
     projectDescriptionBuilderLayout &&
     projectDescriptionBuilderLayout.data.attributes.enabled &&
-    projectDescriptionBuilderLayout.data.attributes.craftjs_json;
+    !isEmpty(projectDescriptionBuilderLayout.data.attributes.craftjs_json);
 
   const editorData = !isNilOrError(projectDescriptionBuilderLayout)
     ? projectDescriptionBuilderLayout.data.attributes.craftjs_json
