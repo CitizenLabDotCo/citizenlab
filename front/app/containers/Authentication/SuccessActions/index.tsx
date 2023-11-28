@@ -30,12 +30,12 @@ const getAuthUser = () => {
 };
 
 const SuccessActions = () => {
-  const [showFullPageSpinner, setShowFullPageSpiner] = useState(false);
+  const [showFullPageSpinner, setShowFullPageSpinner] = useState(false);
 
   useEffect(() => {
     const subscription = successAction$.subscribe((successAction) => {
       if (successAction === null) return;
-      setShowFullPageSpiner(true);
+      setShowFullPageSpinner(true);
 
       const action = getAction(successAction);
       successAction$.next(null);
@@ -45,13 +45,12 @@ const SuccessActions = () => {
       promise
         .then(async (authUser) => {
           await action(authUser);
-          setShowFullPageSpiner(false);
         })
         .catch(() => {
           console.error('Failed to fetch authUser');
-          setShowFullPageSpiner(false);
         })
         .finally(() => {
+          setShowFullPageSpinner(false);
           streamSubscription.unsubscribe();
         });
     });
