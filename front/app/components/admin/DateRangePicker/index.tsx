@@ -120,6 +120,7 @@ const DateRangePicker = ({
         // This makes sure we adjust date based on the passed locale.
         dateFormat="P"
         popperClassName="e2e-start-date-popper"
+        autoComplete="off"
       />
       <Box mx="8px">
         <Icon name="arrow-right" fill={colors.grey700} />
@@ -139,6 +140,7 @@ const DateRangePicker = ({
         dateFormat="P"
         placeholderText={endDatePlaceholderText}
         popperClassName="e2e-end-date-popper"
+        autoComplete="off"
       />
     </StylingWrapper>
   );
