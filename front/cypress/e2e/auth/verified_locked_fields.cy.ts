@@ -1,4 +1,4 @@
-import { randomString, randomEmail } from '../support/commands';
+import { randomString, randomEmail } from '../../support/commands';
 
 describe('Verified Locked fields', () => {
   const verifiedFirstName = randomString();
