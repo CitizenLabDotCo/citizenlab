@@ -54,19 +54,6 @@ export interface Props extends Omit<ButtonProps, 'onClick'> {
   >;
 }
 
-const disabledMessages: {
-  [key in IIdeaPostingDisabledReason]: MessageDescriptor;
-} = {
-  notPermitted: messages.postingNoPermission,
-  postingDisabled: messages.postingDisabled,
-  postingLimitedMaxReached: messages.postingLimitedMaxReached,
-  projectInactive: messages.postingInactive,
-  futureEnabled: messages.postingNotYetPossible,
-  notActivePhase: messages.postingInNonActivePhases,
-  maybeNotPermitted: messages.postingMayNotBePermitted,
-  notInGroup: globalMessages.notInGroup,
-};
-
 const IdeaButton = memo<Props>(
   ({
     id,
@@ -82,7 +69,6 @@ const IdeaButton = memo<Props>(
     const { data: project } = useProjectById(projectId);
     const { data: phases } = usePhases(projectId);
     const { data: authUser } = useAuthUser();
-
 
     if (!project) return null;
 
