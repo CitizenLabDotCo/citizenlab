@@ -66,6 +66,7 @@ export type CellConfiguration<ComponentProps> = {
   onClick?: (event: MouseEvent) => void;
   featureFlag?: TAppConfigurationSetting;
   cellProps?: TableCellProps;
+  width?: number;
   Component: FC<ComponentProps>;
 };
 
