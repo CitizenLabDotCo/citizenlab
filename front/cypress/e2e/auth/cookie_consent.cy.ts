@@ -1,4 +1,4 @@
-import { randomString, randomEmail } from '../support/commands';
+import { randomString, randomEmail } from '../../support/commands';
 
 describe('Cookie consent form for not-signed-in users', () => {
   it('Shows the correct options when not signed in', () => {
