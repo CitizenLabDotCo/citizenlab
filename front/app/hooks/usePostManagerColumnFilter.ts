@@ -44,7 +44,7 @@ export default function usePostManagerColumnFilter(
       'down',
       'published_on',
     ]);
-  }, [selectedPhaseId, phase]);
+  }, [phase]);
 
   return displayColumns;
 }
