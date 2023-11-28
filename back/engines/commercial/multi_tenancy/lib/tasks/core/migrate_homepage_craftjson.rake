@@ -31,7 +31,7 @@ namespace :migrate_craftjson do
             'custom' => {},
             'hidden' => false,
             'nodes' => [],
-            'linkedNodes' => {},
+            'linkedNodes' => {}
           }
         }
 
@@ -89,24 +89,24 @@ def migrate_homepagebanner
         'banner_signed_in_header_overlay_color' => '#0A5159', # Primary color?
         'banner_signed_out_header_overlay_color' => (homepage.banner_signed_out_header_overlay_color || '#0A5159'), # Fallback to primary color?
         'banner_signed_in_header_overlay_opacity' => 90, # Correct?
-        'banner_signed_out_header_overlay_opacity' => (homepage.banner_signed_out_header_overlay_opacity || 90), # Correct?
+        'banner_signed_out_header_overlay_opacity' => (homepage.banner_signed_out_header_overlay_opacity || 90) # Correct?
       },
       'errors' => [],
-      'hasError' => false,
+      'hasError' => false
     },
     'displayName' => 'HomepageBanner',
     'custom' => {
       'title' => {
         'id' => 'app.containers.admin.ContentBuilder.homepage.homepageBanner',
-        'defaultMessage' => 'Homepage banner',
+        'defaultMessage' => 'Homepage banner'
       },
       'noPointerEvents' => true,
-      'noDelete' => true,
+      'noDelete' => true
     },
     'parent' => 'ROOT',
     'hidden' => false,
     'nodes' => [],
-    'linkedNodes' => {},
+    'linkedNodes' => {}
   }
 
   if homepage.header_bg.url
@@ -136,21 +136,21 @@ def migrate_projects
     'type' => { 'resolvedName' => 'Projects' },
     'isCanvas' => false,
     'props' => {
-      'currentlyWorkingOnText' => homepage.projects_header_multiloc,
+      'currentlyWorkingOnText' => homepage.projects_header_multiloc
     },
     'displayName' => 'Projects',
     'custom' => {
       'title' => {
         'id' => 'app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.Projects.projectsTitle',
-        'defaultMessage' => 'Projects',
+        'defaultMessage' => 'Projects'
       },
       'noPointerEvents' => true,
-      'noDelete' => true,
+      'noDelete' => true
     },
     'parent' => 'ROOT',
     'hidden' => false,
     'nodes' => [],
-    'linkedNodes' => {},
+    'linkedNodes' => {}
   }]
 end
 
@@ -166,14 +166,14 @@ def migrate_events
     'custom' => {
       'title' => {
         'id' => 'app.containers.admin.ContentBuilder.homepage.eventsTitle',
-        'defaultMessage' => 'Events',
+        'defaultMessage' => 'Events'
       },
-      'noPointerEvents' => true,
+      'noPointerEvents' => true
     },
     'parent' => 'ROOT',
     'hidden' => false,
     'nodes' => [],
-    'linkedNodes' => {},
+    'linkedNodes' => {}
   }]
 end
 
@@ -188,14 +188,14 @@ def migrate_proposals
     'custom' => {
       'title' => {
         'id' => 'app.containers.admin.ContentBuilder.homepage.proposalsTitle',
-        'defaultMessage' => 'Proposals',
+        'defaultMessage' => 'Proposals'
       },
-      'noPointerEvents' => true,
+      'noPointerEvents' => true
     },
     'parent' => 'ROOT',
     'hidden' => false,
     'nodes' => [],
-    'linkedNodes' => {},
+    'linkedNodes' => {}
   }]
 end
 
@@ -219,13 +219,13 @@ def whitespace
     'custom' => {
       'title' => {
         'id' => 'app.containers.AdminPage.ProjectDescription.whiteSpace',
-        'defaultMessage' => 'White space',
-      },
+        'defaultMessage' => 'White space'
+      }
     },
     'parent' => 'ROOT',
     'hidden' => false,
     'nodes' => [],
-    'linkedNodes' => {},
+    'linkedNodes' => {}
   }
 end
 
@@ -238,12 +238,12 @@ def infosection(text_html_multiloc)
     'custom' => {
       'title' => {
         'id' => 'app.containers.admin.ContentBuilder.textMultiloc',
-        'defaultMessage' => 'Text',
-      },
+        'defaultMessage' => 'Text'
+      }
     },
     'parent' => 'ROOT',
     'hidden' => false,
     'nodes' => [],
-    'linkedNodes' => {},
+    'linkedNodes' => {}
   }]
 end

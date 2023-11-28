@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'rake migrate_craftjson' do # rubocop:disable RSpec/DescribeClass
+describe 'rake migrate_craftjson' do
   before { load_rake_tasks_if_not_loaded }
 
   describe ':homepage' do
@@ -20,7 +20,7 @@ describe 'rake migrate_craftjson' do # rubocop:disable RSpec/DescribeClass
         'custom' => {},
         'hidden' => false,
         'nodes' => kind_of(Array),
-        'linkedNodes' => {},
+        'linkedNodes' => {}
       })
     end
   end
