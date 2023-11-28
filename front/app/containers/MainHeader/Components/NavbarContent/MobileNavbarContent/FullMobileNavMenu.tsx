@@ -149,7 +149,7 @@ const FullMobileNavMenu = ({
             aria-label={formatMessage(messages.fullMobileNavigation)}
           >
             <Box mb="16px">
-              <StyledTenantLogo flex="0" />
+              <StyledTenantLogo />
             </Box>
             <MenuItems>
               {navbarItemPropsArray.map((navbarItemProps) => {

@@ -187,8 +187,8 @@ const DesktopNavbarContent = () => {
     : [];
   const isEmailSettingsPage = isPage('email-settings', location.pathname);
 
-  const isSmallerThanDesktop = useBreakpoint('smallDesktop');
-  const isDesktopUser = !isSmallerThanDesktop;
+  const isSmallerThanTablet = useBreakpoint('tablet');
+  const isDesktopUser = !isSmallerThanTablet;
 
   const trackSignUpLinkClick = () => {
     trackEventByName(tracks.clickSignUpLink.name);
