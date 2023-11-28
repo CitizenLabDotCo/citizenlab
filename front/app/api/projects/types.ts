@@ -125,7 +125,6 @@ export interface IProjectData {
 }
 
 type Visibility = 'public' | 'groups' | 'admins';
-export type ProcessType = 'continuous' | 'timeline';
 type PresentationMode = 'map' | 'card';
 
 export type CommentingDisabledReason =

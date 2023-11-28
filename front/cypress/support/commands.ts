@@ -867,7 +867,6 @@ export function apiCreateProject({
 
 export function apiEditProject({
   projectId,
-  type,
   title,
   descriptionPreview,
   description,
@@ -878,7 +877,6 @@ export function apiEditProject({
   votingMaxTotal,
 }: {
   projectId: string;
-  type?: 'timeline' | 'continuous';
   title?: string;
   descriptionPreview?: string;
   description?: string;
@@ -900,7 +898,6 @@ export function apiEditProject({
       url: `web_api/v1/projects/${projectId}`,
       body: {
         project: {
-          ...(type && { process_type: type }),
           ...(publicationStatus && {
             admin_publication_attributes: {
               publication_status: publicationStatus,
