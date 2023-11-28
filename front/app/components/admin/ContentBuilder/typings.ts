@@ -6,8 +6,10 @@ export type ContentBuilderErrors = Record<
   { hasError: boolean; selectedLocale?: Locale }
 >;
 
+export type CraftJson = Record<string, SerializedNode>;
+
 export type JsonMultiloc = {
-  [key in Locale]?: Record<string, SerializedNode>;
+  [key in Locale]?: CraftJson;
 };
 
 export type ColumnLayout = '1-1' | '2-1' | '1-2';

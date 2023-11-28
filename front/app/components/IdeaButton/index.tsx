@@ -92,16 +92,19 @@ const IdeaButton = memo<Props>(
 
       const positionParams = latLng ? { lat: latLng.lat, lng: latLng.lng } : {};
 
-      clHistory.push({
-        pathname: `/projects/${project.data.attributes.slug}/ideas/new`,
-        search: stringify(
-          {
-            ...positionParams,
-            phase_id: phase?.id,
-          },
-          { addQueryPrefix: true }
-        ),
-      });
+      clHistory.push(
+        {
+          pathname: `/projects/${project.data.attributes.slug}/ideas/new`,
+          search: stringify(
+            {
+              ...positionParams,
+              phase_id: phase?.id,
+            },
+            { addQueryPrefix: true }
+          ),
+        },
+        { scrollToTop: true }
+      );
     };
 
     const onClick = (event: React.MouseEvent) => {

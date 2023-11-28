@@ -18,7 +18,7 @@ const HomapageBuilderEditModePreview = React.forwardRef<
 
   return (
     <EditModePreview
-      iframeSrc={`/${platformLocale}/admin/pages-menu/homepage/content-builder/preview?selected_locale=${locale}`}
+      iframeSrc={`/${platformLocale}/admin/pages-menu/homepage-builder/preview?selected_locale=${locale}`}
       ref={ref}
     />
   );

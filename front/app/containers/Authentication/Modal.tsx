@@ -416,6 +416,7 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
           <Verification
             setError={setError}
             onCompleted={transition(currentStep, 'CONTINUE')}
+            authenticationData={authenticationData}
           />
         )}
 
