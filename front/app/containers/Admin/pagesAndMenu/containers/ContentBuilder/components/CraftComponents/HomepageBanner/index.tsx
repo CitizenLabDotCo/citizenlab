@@ -103,31 +103,35 @@ const HomepageBanner = ({ homepageSettings, image }: Props) => {
   const showSignedInHeader =
     (isEditorInPreviewMode && authUser?.data !== undefined) ||
     search.get('variant') === 'signedIn';
-  return showSignedInHeader ? (
-    <SignedInHeader
-      homepageSettings={{
-        ...homepageSettings,
-        header_bg: {
-          large: image?.imageUrl || null,
-          medium: image?.imageUrl || null,
-          small: image?.imageUrl || null,
-        },
-      }}
-      isContentBuilderPreview
-    />
-  ) : (
-    <Fragment name="signed-out-header">
-      <SignedOutHeader
-        homepageSettings={{
-          ...homepageSettings,
-          header_bg: {
-            large: image?.imageUrl || null,
-            medium: image?.imageUrl || null,
-            small: image?.imageUrl || null,
-          },
-        }}
-      />
-    </Fragment>
+  return (
+    <div data-cy="e2e-homepage-banner">
+      {showSignedInHeader ? (
+        <SignedInHeader
+          homepageSettings={{
+            ...homepageSettings,
+            header_bg: {
+              large: image?.imageUrl || null,
+              medium: image?.imageUrl || null,
+              small: image?.imageUrl || null,
+            },
+          }}
+          isContentBuilderPreview
+        />
+      ) : (
+        <Fragment name="signed-out-header">
+          <SignedOutHeader
+            homepageSettings={{
+              ...homepageSettings,
+              header_bg: {
+                large: image?.imageUrl || null,
+                medium: image?.imageUrl || null,
+                small: image?.imageUrl || null,
+              },
+            }}
+          />
+        </Fragment>
+      )}
+    </div>
   );
 };
 

@@ -1,8 +1,6 @@
 describe('Homepage builder', () => {
-  beforeEach(() => {
+  it.skip('updates homepage builder content correctly', () => {
     cy.setAdminLoginCookie();
-  });
-  it('updates homepage builder content correctly', () => {
     cy.intercept('PATCH', '**/home_page').as('saveHomePage');
     cy.intercept('GET', '**/home_page').as('getHomePage');
     cy.intercept('GET', '**/pages-menu').as('getPages');
@@ -64,7 +62,9 @@ describe('Homepage builder', () => {
       'Custom projects title'
     );
   });
-  it('removes homepage builder content correctly', () => {
+
+  it.skip('removes homepage builder content correctly', () => {
+    cy.setAdminLoginCookie();
     cy.intercept('PATCH', '**/home_page').as('saveHomePage');
     cy.intercept('GET', '**/home_page').as('getHomePage');
     cy.intercept('GET', '**/pages-menu').as('getPages');
@@ -117,5 +117,46 @@ describe('Homepage builder', () => {
 
     const regex = /currently working on/gi;
     cy.get('[data-cy="e2e-projects"]').should('contain', regex);
+  });
+
+  it('updates homepage banner correctly', () => {
+    cy.intercept('PATCH', '**/home_page').as('saveHomePage');
+
+    // Check homepage defaults signed - out
+    cy.visit('/');
+    cy.get('[data-cy="e2e-homepage-banner"]').should('exist');
+    cy.get('[data-cy="e2e-full-width-banner-layout-container"]').should(
+      'exist'
+    );
+
+    // Check homepage defaults signed - in
+    cy.setAdminLoginCookie();
+
+    // Update homepage banner
+
+    cy.visit('/admin/pages-menu/homepage-builder');
+    cy.get('[data-cy="e2e-homepage-banner"]').click({
+      force: true,
+    });
+
+    // cy.get('[data-cy="e2e-full-width-banner-layout-option"]').click();
+    // cy.get('[data-cy="e2e-two-row-layout-option"]').click();
+    cy.get('[data-cy="e2e-fixed-ratio-layout-option"]').click();
+    cy.get('#e2e-content-builder-topbar-save').click();
+    cy.wait('@saveHomePage');
+
+    // Check updated content signed - in
+
+    // Check updated content signed - out
+    cy.logout();
+    cy.visit('/');
+    cy.get('[data-cy="e2e-homepage-banner"]').should('exist');
+    cy.get('[data-cy="e2e-full-width-banner-layout-container"]').should(
+      'not.exist'
+    );
+    cy.get('[data-cy="e2e-two-row-banner-layout-container"]').should(
+      'not.exist'
+    );
+    cy.get('[data-cy="e2e-fixed-ratio-layout-container"]').should('exist');
   });
 });

@@ -24,6 +24,7 @@ const FullWidthBannerLayout = ({ className, homepageSettings }: Props) => {
   return (
     <Container
       data-testid="full-width-banner-layout"
+      data-cy="e2e-full-width-banner-layout-container"
       className={`e2e-signed-out-header ${className}`}
     >
       <Header id="hook-header">

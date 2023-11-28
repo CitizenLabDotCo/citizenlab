@@ -29,8 +29,6 @@ type TwoColumnProps = {
 export const TwoColumnWrapper = styled(Box)`
   min-height: 40px;
   width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
   gap: 24px;
   display: grid;
 
@@ -54,6 +52,8 @@ export const TwoColumn = ({ columnLayout, children }: TwoColumnProps) => {
       id="e2e-two-column"
       columnLayout={columnLayout}
       px={componentDefaultPadding}
+      maxWidth="1200px"
+      margin="0 auto"
     >
       {children || (
         <>
