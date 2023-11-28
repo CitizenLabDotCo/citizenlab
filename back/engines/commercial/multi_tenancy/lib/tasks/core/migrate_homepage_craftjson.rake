@@ -109,7 +109,7 @@ def migrate_homepagebanner
     'linkedNodes' => {},
   }
 
-  if homepage.header_bg
+  if homepage.header_bg.url
     layout_image = ContentBuilder::LayoutImage.create!(remote_image_url: homepage.header_bg.url)
     homepagebannerelt['props']['image'] = { 'dataCode' => layout_image.code }
   end
@@ -129,15 +129,74 @@ def migrate_topinfosection
 end
 
 def migrate_projects
-  []
+  homepage = HomePage.first
+  return [] if !homepage.projects_enabled
+
+  [{
+    'type' => { 'resolvedName' => 'Projects' },
+    'isCanvas' => false,
+    'props' => {
+      'currentlyWorkingOnText' => homepage.projects_header_multiloc,
+    },
+    'displayName' => 'Projects',
+    'custom' => {
+      'title' => {
+        'id' => 'app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.Projects.projectsTitle',
+        'defaultMessage' => 'Projects',
+      },
+      'noPointerEvents' => true,
+      'noDelete' => true,
+    },
+    'parent' => 'ROOT',
+    'hidden' => false,
+    'nodes' => [],
+    'linkedNodes' => {},
+  }]
 end
 
 def migrate_events
-  []
+  homepage = HomePage.first
+  return [] if !homepage.events_widget_enabled
+
+  [{
+    'type' => { 'resolvedName' => 'Events' },
+    'isCanvas' => false,
+    'props' => {},
+    'displayName' => 'Events',
+    'custom' => {
+      'title' => {
+        'id' => 'app.containers.admin.ContentBuilder.homepage.eventsTitle',
+        'defaultMessage' => 'Events',
+      },
+      'noPointerEvents' => true,
+    },
+    'parent' => 'ROOT',
+    'hidden' => false,
+    'nodes' => [],
+    'linkedNodes' => {},
+  }]
 end
 
 def migrate_proposals
-  []
+  return [] if !AppConfiguration.instance.feature_activated?('initiatives')
+
+  [{
+    'type' => { 'resolvedName' => 'Proposals' },
+    'isCanvas' => false,
+    'props' => {},
+    'displayName' => 'Proposals',
+    'custom' => {
+      'title' => {
+        'id' => 'app.containers.admin.ContentBuilder.homepage.proposalsTitle',
+        'defaultMessage' => 'Proposals',
+      },
+      'noPointerEvents' => true,
+    },
+    'parent' => 'ROOT',
+    'hidden' => false,
+    'nodes' => [],
+    'linkedNodes' => {},
+  }]
 end
 
 def migrate_bottominfosection
