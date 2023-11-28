@@ -66,7 +66,6 @@ export interface IProjectAttributes extends ParticipationContext {
   avatars_count: number;
   followers_count: number;
   visible_to: Visibility;
-  process_type: ProcessType;
   timeline_active?: 'past' | 'present' | 'future' | null;
   participants_count: number;
   internal_role: 'open_idea_box' | null;
@@ -190,7 +189,6 @@ export interface IUpdatedProjectProperties {
   description_preview_multiloc?: Multiloc;
   area_ids?: string[];
   visible_to?: Visibility;
-  process_type?: ProcessType;
   participation_method?: ParticipationMethod | null;
   posting_enabled?: boolean | null;
   commenting_enabled?: boolean | null;
