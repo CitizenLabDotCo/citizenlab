@@ -29,6 +29,8 @@ type TwoColumnProps = {
 export const TwoColumnWrapper = styled(Box)`
   min-height: 40px;
   width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
   gap: 24px;
   display: grid;
 
