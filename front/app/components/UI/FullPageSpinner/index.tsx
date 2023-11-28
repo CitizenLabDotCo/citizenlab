@@ -36,7 +36,7 @@ const FullPageContainer = styled.div<{
     min-height: calc(100vh - ${props.theme.mobileMenuHeight}px - ${props.theme.mobileTopBarHeight}px);
   `}
 
-  ${({ zIndex }) => (zIndex ? `z-index: ${zIndex};` : '')}
+  ${({ zIndex }) => (typeof zIndex === 'number' ? `z-index: ${zIndex};` : '')}
   ${({ background }) =>
     background ? `background: rgba(255,255,255,0.5);` : ''}
 `;
