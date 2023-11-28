@@ -44,6 +44,12 @@ describe('Homepage builder', () => {
       position: 'below',
     });
 
+    // Customize projects title
+    cy.get('[data-cy="e2e-projects"]').click({
+      force: true,
+    });
+    cy.get('#project_title').type('Custom projects title');
+
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveHomePage');
     cy.visit(`/`);
@@ -53,8 +59,12 @@ describe('Homepage builder', () => {
     cy.get('div.e2e-text-box').last().should('contain', 'last text');
     cy.get('[data-cy="e2e-events"]').should('exist');
     cy.get('[data-cy="e2e-proposals"]').should('exist');
+    cy.get('[data-cy="e2e-projects"]').should(
+      'contain',
+      'Custom projects title'
+    );
   });
-  it('deletes homepage builder content correctly', () => {
+  it('removes homepage builder content correctly', () => {
     cy.intercept('PATCH', '**/home_page').as('saveHomePage');
     cy.intercept('GET', '**/home_page').as('getHomePage');
     cy.intercept('GET', '**/pages-menu').as('getPages');
@@ -69,20 +79,33 @@ describe('Homepage builder', () => {
     cy.get('[data-cy="e2e-navbar-item-edit-button"]').first().click();
 
     cy.get('#e2e-two-column').should('exist');
-    cy.get('[data-cy="e2e-events"]').should('exist');
 
+    // Delete two column
     cy.get('#e2e-two-column').click();
     cy.get('#e2e-delete-button').click();
 
+    // Delete events
+    cy.get('[data-cy="e2e-events"]').should('exist');
     cy.get('[data-cy="e2e-events"]').click({
       force: true,
     });
     cy.get('#e2e-delete-button').click();
 
+    // Delete proposals
+    cy.get('[data-cy="e2e-proposals"]').should('exist');
     cy.get('[data-cy="e2e-proposals"]').click({
       force: true,
     });
     cy.get('#e2e-delete-button').click();
+
+    // Clear projects title
+    cy.get('[data-cy="e2e-projects"]').click({
+      force: true,
+    });
+
+    // Projects are not deletable
+    cy.get('#e2e-delete-button').should('not.exist');
+    cy.get('#project_title').clear();
 
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveHomePage');
@@ -91,5 +114,8 @@ describe('Homepage builder', () => {
     cy.get('div.e2e-text-box').should('not.exist');
     cy.get('[data-cy="e2e-events"]').should('not.exist');
     cy.get('[data-cy="e2e-proposals"]').should('not.exist');
+
+    const regex = /currently working on/gi;
+    cy.get('[data-cy="e2e-projects"]').should('contain', regex);
   });
 });
