@@ -28,17 +28,20 @@ namespace :data_migrate do
         'uitvoering in 2023' => create_status_by_title.call('Uitvoering in 2024', '#b721a7')
       }
 
-      ideas = Idea.all.to_a
+      all_ideas = Idea.all.to_a
 
       data.each do |d|
         title = d['Titel'].strip
         body = d['Beschrijving'].strip
-        ideas = ideas.select { _1.title_multiloc.value?(title) && body.starts_with?(_1.body_multiloc[default_locale].split("\n").first) }
+        ideas = all_ideas.select do |idea|
+          idea.title_multiloc.value?(title) &&
+            ActionView::Base.full_sanitizer.sanitize(idea.body_multiloc[default_locale]).starts_with?(body.split("\n").first)
+        end
         # Useful for testing:
         # ideas = [Idea.new(title_multiloc: { default_locale => title }, body_multiloc: { default_locale => body }, project: Project.order(created_at: :asc).last, publication_status: 'published')]
 
         if ideas.size != 1
-          puts "ERROR: Found #{ideas.size} ideas with title '#{title}' and body '#{body.first(10)}..'. Skipping update."
+          puts "ERROR: Found #{ideas.size} ideas with title '#{title}' and body '#{body.split("\n").first.first(10)}..'. Skipping update."
           next
         end
 
