@@ -119,13 +119,13 @@ describe('Idea form settings', () => {
     it('is shown for projects with ideation or participatory budgeting', () => {
       // Timeline project with ideation phase
       cy.visit(
-        `admin/projects/${timelineWithIdeationProjectId}/ideaform/${ideationPhaseIdInTimelineProject}`
+        `admin/projects/${timelineWithIdeationProjectId}/phases/${ideationPhaseIdInTimelineProject}/ideaform`
       );
       cy.get('[data-cy="e2e-edit-input-form"]').should('exist');
 
       // // Timeline project with budget phase
       cy.visit(
-        `admin/projects/${timelineWithBudgetProjectId}/ideaform/${budgetPhaseInTimelineproject}`
+        `admin/projects/${timelineWithBudgetProjectId}/phases/${budgetPhaseInTimelineproject}/ideaform`
       );
       cy.get('[data-cy="e2e-edit-input-form"]').should('exist');
     });
