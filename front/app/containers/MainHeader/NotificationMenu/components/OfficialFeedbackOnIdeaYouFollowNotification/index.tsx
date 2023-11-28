@@ -31,11 +31,7 @@ const OfficialFeedbackOnIdeaYouFollowNotification = memo<Props>((props) => {
   const { data: phases } = usePhases(projectId);
 
   if (project) {
-    const inputTerm = getInputTerm(
-      project.data.attributes.process_type,
-      project.data,
-      phases?.data
-    );
+    const inputTerm = getInputTerm(phases?.data);
 
     return (
       <NotificationWrapper

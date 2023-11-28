@@ -276,11 +276,7 @@ const IdeaButton = memo<Props>(
         );
       }
 
-      const inputTerm = getInputTerm(
-        project.data.attributes.process_type,
-        project.data,
-        phases?.data
-      );
+      const inputTerm = getInputTerm(phases?.data);
 
       const buttonMessage = getButtonMessage(participationMethod, inputTerm);
 

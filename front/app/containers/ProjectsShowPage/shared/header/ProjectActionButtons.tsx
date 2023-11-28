@@ -155,15 +155,10 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
     }
   };
 
-  const { process_type, publication_status } = project.data.attributes;
+  const { publication_status } = project.data.attributes;
 
-  const isProcessTypeContinuous = process_type === 'continuous';
-  const participationMethod = isProcessTypeContinuous
-    ? project.data.attributes.participation_method
-    : currentPhase?.attributes.participation_method;
-  const ideas_count = isProcessTypeContinuous
-    ? project.data.attributes.ideas_count
-    : currentPhase?.attributes.ideas_count;
+  const participationMethod = currentPhase?.attributes.participation_method;
+  const ideas_count = currentPhase?.attributes.ideas_count;
   // For a continuous project, hasCurrentPhaseEnded will always return false.
   const hasCurrentPhaseEnded = currentPhase
     ? pastPresentOrFuture([
@@ -171,7 +166,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
         currentPhase.attributes.end_at,
       ]) === 'past'
     : false;
-  const inputTerm = getInputTerm(process_type, project.data, phases?.data);
+  const inputTerm = getInputTerm(phases?.data);
 
   // Show button conditions
   const generalShowCTAButtonCondition =

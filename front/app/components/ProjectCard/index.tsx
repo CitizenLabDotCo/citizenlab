@@ -456,6 +456,7 @@ const ProjectCard = memo<InputProps>(
     };
 
     if (project) {
+      // TODO: JS - This seems wrong - should it not look at current phase for timelines as well?
       const methodConfig = getMethodConfig(
         project.data.attributes.participation_method
       );
@@ -491,11 +492,7 @@ const ProjectCard = memo<InputProps>(
         project.data.relationships.avatars &&
         project.data.relationships.avatars.data &&
         project.data.relationships.avatars.data.length > 0;
-      const showIdeasCount =
-        !(
-          project.data.attributes.process_type === 'continuous' &&
-          !methodConfig.showInputCount
-        ) && ideasCount > 0;
+      const showIdeasCount = methodConfig.showInputCount && ideasCount > 0;
       const showCommentsCount = commentsCount > 0;
       const showFooter = hasAvatars || showIdeasCount || showCommentsCount;
       const avatarIds =
@@ -510,8 +507,7 @@ const ProjectCard = memo<InputProps>(
         : null;
       let countdown: JSX.Element | null = null;
       let ctaMessage: JSX.Element | null = null;
-      const processType = project.data.attributes.process_type;
-      const inputTerm = getInputTerm(processType, project.data, phases?.data);
+      const inputTerm = getInputTerm(phases?.data);
 
       if (isArchived) {
         countdown = (

@@ -22,14 +22,9 @@ import usePhase from 'api/phases/usePhase';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const defaultTimelineProjectVisibleFilterMenu = 'phases';
-const defaultContinuousProjectVisibleFilterMenu = 'statuses';
 const timelineProjectVisibleFilterMenus: TFilterMenu[] = [
   defaultTimelineProjectVisibleFilterMenu,
   'statuses',
-  'topics',
-];
-const continuousProjectVisibleFilterMenus: TFilterMenu[] = [
-  defaultContinuousProjectVisibleFilterMenu,
   'topics',
 ];
 
@@ -90,16 +85,8 @@ const AdminProjectIdeas = () => {
           projectId={project.data.id}
           phases={phases?.data}
           phaseId={phaseId}
-          visibleFilterMenus={
-            project.data.attributes.process_type === 'timeline'
-              ? timelineProjectVisibleFilterMenus
-              : continuousProjectVisibleFilterMenus
-          }
-          defaultFilterMenu={
-            project.data.attributes.process_type === 'timeline'
-              ? defaultTimelineProjectVisibleFilterMenu
-              : defaultContinuousProjectVisibleFilterMenu
-          }
+          visibleFilterMenus={timelineProjectVisibleFilterMenus}
+          defaultFilterMenu={defaultTimelineProjectVisibleFilterMenu}
         />
       )}
     </>

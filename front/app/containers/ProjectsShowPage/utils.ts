@@ -7,9 +7,6 @@ export const isReady = (
   phases: IPhases | NilOrError
 ): project is IProjectData => {
   return (
-    !isNilOrError(project) &&
-    (project.attributes.process_type === 'continuous'
-      ? true
-      : !isNilOrError(phases))
+    !isNilOrError(project) && !isNilOrError(phases)
   );
 };

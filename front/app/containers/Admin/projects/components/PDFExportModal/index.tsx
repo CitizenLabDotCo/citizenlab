@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 
 // router
-import { useParams } from 'react-router-dom';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import useProjectById from 'api/projects/useProjectById';
 
 // components
 import Modal from 'components/UI/Modal';
@@ -53,21 +51,16 @@ const IT_IS_POSSIBLE_MESSAGES = {
 
 const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
   const { formatMessage } = useIntl();
-  const { projectId } = useParams() as { projectId: string };
-  const { data: project } = useProjectById(projectId);
 
   const importPrintedFormsEnabled = useFeatureFlag({
     name: 'import_printed_forms',
   });
   const [loading, setLoading] = useState(false);
 
-  const isTimelineProject =
-    project?.data.attributes.process_type === 'timeline';
-
   const schema = object({
     personal_data: boolean(),
     phase_id:
-      isTimelineProject && formType === 'idea_form'
+      formType === 'idea_form'
         ? string().required(formatMessage(messages.selectIdeationPhase))
         : string(),
   });
@@ -135,7 +128,7 @@ const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
                 </>
               </>
             )}
-            {isTimelineProject && formType === 'idea_form' && (
+            {formType === 'idea_form' && (
               <Box mb="24px">
                 <PhaseSelector
                   label={<FormattedMessage {...messages.phase} />}

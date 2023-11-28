@@ -143,11 +143,7 @@ const Content = ({
     phases?.data
   );
 
-  const inputTerm = getInputTerm(
-    project.attributes.process_type,
-    project,
-    phases?.data
-  );
+  const inputTerm = getInputTerm(phases?.data);
 
   const wasImported = !!idea.data.relationships.idea_import?.data;
 
