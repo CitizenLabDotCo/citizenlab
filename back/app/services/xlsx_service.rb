@@ -249,8 +249,10 @@ class XlsxService
     options = CustomFieldOption.all.index_by { |option| namespace(option.custom_field_id, option.key) }
     user_custom_fields = CustomField.with_resource_type('User').order(:ordering)
 
+    fields_to_columns = map_user_custom_fields_to_columns(user_custom_fields)
+
     user_custom_fields&.map do |field|
-      column_name = multiloc_service.t(field.title_multiloc)
+      column_name = fields_to_columns[field.id]
       { header: column_name, f: value_getter_for_user_custom_field_columns(field, record_to_user, options) }
     end
   end
@@ -292,6 +294,20 @@ class XlsxService
         user && user.custom_field_values[field.key]
       end
     end
+  end
+
+  def map_user_custom_fields_to_columns(user_custom_fields)
+    fields_to_columns = {}
+
+    user_custom_fields.group_by { |field| multiloc_service.t(field.title_multiloc) }.each do |title, fields|
+      if fields.size == 1
+        fields_to_columns[fields.first.id] = title
+      else # add suffix to titles to distinguish between fields with same title
+        fields.each_with_index { |field, i| fields_to_columns[field.id] = "#{title} (#{i + 1})" }
+      end
+    end
+
+    fields_to_columns
   end
 
   def header_style(style)

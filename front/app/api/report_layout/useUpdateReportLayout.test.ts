@@ -1,17 +1,16 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 
 import useUpdateReportLayout from './useUpdateReportLayout';
-import { reportLayoutData } from './__mocks__/useReportLayout';
+import { reportLayout, apiPathUpdate } from './__mocks__/_mockServer';
 
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
-const apiPath = '*reports/:id';
 const server = setupServer(
-  rest.patch(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: reportLayoutData }));
+  rest.patch(apiPathUpdate, (_req, res, ctx) => {
+    return res(ctx.status(200), ctx.json(reportLayout));
   })
 );
 
@@ -32,12 +31,12 @@ describe('useUpdateReportLayout', () => {
     });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
-    expect(result.current.data?.data).toEqual(reportLayoutData);
+    expect(result.current.data?.data).toEqual(reportLayout.data);
   });
 
   it('returns error correctly', async () => {
     server.use(
-      rest.patch(apiPath, (_req, res, ctx) => {
+      rest.patch(apiPathUpdate, (_req, res, ctx) => {
         return res(ctx.status(500));
       })
     );

@@ -11,11 +11,14 @@ export const redirectToInitiativeForm =
   ({ lat, lng }: RedirectToInitiativeFormParams) =>
   async () => {
     trackEventByName('redirected to initiatives form');
-    clHistory.push({
-      pathname: `/initiatives/new`,
-      search:
-        lat && lng
-          ? stringify({ lat, lng }, { addQueryPrefix: true })
-          : undefined,
-    });
+    clHistory.push(
+      {
+        pathname: `/initiatives/new`,
+        search:
+          lat && lng
+            ? stringify({ lat, lng }, { addQueryPrefix: true })
+            : undefined,
+      },
+      { scrollToTop: true }
+    );
   };

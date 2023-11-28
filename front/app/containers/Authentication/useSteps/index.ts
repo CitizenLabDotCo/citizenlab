@@ -255,7 +255,10 @@ export default function useSteps() {
     // detect whether we're entering from a redirect of a 3rd party
     // authentication method through an URL param, and launch the corresponding
     // flow
-    if (urlSearchParams.sso_response === 'true') {
+    if (
+      urlSearchParams.sso_response === 'true' ||
+      urlSearchParams.verification_success === 'true'
+    ) {
       const {
         sso_flow,
         sso_pathname,
@@ -263,20 +266,32 @@ export default function useSteps() {
         sso_verification_id,
         sso_verification_type,
         error_code,
+        verification_success,
       } = urlSearchParams as SSOParams;
 
-      const actionFromLocalStorage = localStorage.getItem('sso_success_action');
-      localStorage.removeItem('sso_success_action');
+      // Check if there is a success action in local storage (from SSO or verification)
+      const actionFromLocalStorage = localStorage.getItem(
+        'auth_success_action'
+      );
+      localStorage.removeItem('auth_success_action');
+
+      // Check if there is a context in local storage (from verification)
+      const contextFromLocalStorage = localStorage.getItem('auth_context');
+      localStorage.removeItem('auth_context');
+
+      const context = contextFromLocalStorage
+        ? JSON.parse(contextFromLocalStorage)
+        : {
+            type: sso_verification_type,
+            action: sso_verification_action,
+            id: sso_verification_id,
+          };
 
       authenticationDataRef.current = {
-        flow: sso_flow,
+        flow: sso_flow || 'signin',
         successAction:
           actionFromLocalStorage && JSON.parse(actionFromLocalStorage),
-        context: {
-          type: sso_verification_type,
-          action: sso_verification_action,
-          id: sso_verification_id,
-        } as AuthenticationContext,
+        context: context as AuthenticationContext,
       };
 
       if (pathname.endsWith('authentication-error')) {
@@ -289,7 +304,7 @@ export default function useSteps() {
 
       if (sso_pathname) {
         clHistory.replace(sso_pathname);
-      } else {
+      } else if (!verification_success) {
         // Remove all parameters from URL as they've already been captured
         window.history.replaceState(null, '', '/');
       }

@@ -1,7 +1,7 @@
 import React, { memo, useEffect, useState } from 'react';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isEqual } from 'lodash-es';
 import { combineLatest } from 'rxjs';
+import { useParams } from 'react-router-dom';
 
 // components
 import Map from 'components/Map';
@@ -30,8 +30,7 @@ import {
 import { getCenter, getZoomLevel } from '../../../utils/map';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
-import { WrappedComponentProps } from 'react-intl';
+import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // styling
@@ -74,13 +73,15 @@ interface Props {
   className?: string;
 }
 
-const ProjectCustomMapConfigPage = memo<
-  Props & WithRouterProps & WrappedComponentProps
->(({ params: { projectId }, className, intl: { formatMessage } }) => {
+const ProjectCustomMapConfigPage = memo<Props>(({ className }) => {
+  const { projectId } = useParams() as {
+    projectId: string;
+  };
+  const { formatMessage } = useIntl();
   const { data: appConfig } = useAppConfiguration();
   const { mutate: createProjectMapConfig } = useAddMapConfig();
   const { mutate: updateProjectMapConfig } = useUpdateMapConfig();
-  const { data: mapConfig } = useMapConfig(projectId);
+  const { data: mapConfig, isFetching } = useMapConfig(projectId);
 
   const defaultLatLng = getCenter(undefined, appConfig?.data, mapConfig?.data);
   const defaultLat = defaultLatLng[0];
@@ -138,7 +139,14 @@ const ProjectCustomMapConfigPage = memo<
   };
 
   useEffect(() => {
-    if (projectId && appConfig && mapConfig?.data === null) {
+    // Since we return {data: null}, that is not sent back here so the useEffect on the mapConfig will not
+    // be triggered. The isFetching will help us counter that but we probably need to fix this in the api or fetcher
+    if (
+      projectId &&
+      appConfig &&
+      !isFetching &&
+      (mapConfig?.data === null || !mapConfig)
+    ) {
       createProjectMapConfig({
         projectId,
         center_geojson: {
@@ -156,6 +164,7 @@ const ProjectCustomMapConfigPage = memo<
     defaultLng,
     defaultZoom,
     createProjectMapConfig,
+    isFetching,
   ]);
 
   if (projectId && mapConfig?.data?.id) {
@@ -216,4 +225,4 @@ const ProjectCustomMapConfigPage = memo<
   );
 });
 
-export default withRouter(injectIntl(ProjectCustomMapConfigPage));
+export default ProjectCustomMapConfigPage;

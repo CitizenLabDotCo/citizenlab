@@ -6,16 +6,16 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 // craft
 import BaseEditor from 'components/admin/ContentBuilder/Editor';
-import Container from '../CraftComponents/Container';
+import Container from 'components/admin/ContentBuilder/Widgets/Container';
 
 // widgets
-import TwoColumn from '../CraftComponents/TwoColumn';
-import ThreeColumn from '../CraftComponents/ThreeColumn';
+import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
+import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
 import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
 import IframeMultiloc from 'components/admin/ContentBuilder/Widgets/IframeMultiloc';
 import AccordionMultiloc from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
-import ImageTextCards from '../CraftComponents/ImageTextCards';
+import ImageTextCards from 'components/admin/ContentBuilder/Widgets/ImageTextCards';
 import ButtonMultiloc from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
 import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
 import HomepageBanner from '../CraftComponents/HomepageBanner';

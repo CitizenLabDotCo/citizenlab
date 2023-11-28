@@ -58,7 +58,7 @@ const InitiativeMoreActions = ({ initiative, className, color, id }: Props) => {
   };
 
   const onEditInitiative = () => {
-    clHistory.push(`/initiatives/edit/${initiative.id}`);
+    clHistory.push(`/initiatives/edit/${initiative.id}`, { scrollToTop: true });
   };
 
   if (!initiative) {
