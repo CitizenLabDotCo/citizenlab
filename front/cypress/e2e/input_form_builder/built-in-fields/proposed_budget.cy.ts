@@ -50,7 +50,7 @@ describe('Input form builder', () => {
 
     cy.get('#propertiesproposed_budget').should('not.exist');
 
-    cy.visit(`admin/projects/${projectId}/ideaform/${phaseId}`);
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/ideaform`);
     cy.get('[data-cy="e2e-edit-input-form"]').click();
 
     cy.get('[data-cy="e2e-proposed-budget-item"]').as(

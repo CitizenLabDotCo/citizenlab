@@ -50,7 +50,7 @@ describe('Input form builder', () => {
 
     cy.get('.e2e-topics-picker').should('exist');
 
-    cy.visit(`admin/projects/${projectId}/ideaform/${phaseId}`);
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/ideaform`);
     cy.get('[data-cy="e2e-edit-input-form"]').click();
 
     // The tags tool box item should be disabled as it is already on the canvas
