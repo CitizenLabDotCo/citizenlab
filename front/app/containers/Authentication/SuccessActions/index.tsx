@@ -45,13 +45,12 @@ const SuccessActions = () => {
       promise
         .then(async (authUser) => {
           await action(authUser);
-          setShowFullPageSpiner(false);
         })
         .catch(() => {
           console.error('Failed to fetch authUser');
-          setShowFullPageSpiner(false);
         })
         .finally(() => {
+          setShowFullPageSpiner(false);
           streamSubscription.unsubscribe();
         });
     });
