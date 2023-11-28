@@ -37,6 +37,7 @@ import {
   Box,
   Title,
   IconTooltip,
+  colors,
 } from '@citizenlab/cl2-component-library';
 import Warning from 'components/UI/Warning';
 import ReportSection from '../information/ReportSection';
@@ -62,6 +63,7 @@ import { stringifyCampaignFields } from 'containers/Admin/messaging/AutomatedEma
 import { CampaignData } from 'containers/Admin/messaging/AutomatedEmails/types';
 import { CampaignName } from 'api/campaigns/types';
 import { getExcludedDates, getMaxEndDate, getTimelineTab } from './utils';
+import { stylingConsts } from 'utils/styleUtils';
 
 type SubmitStateType = 'disabled' | 'enabled' | 'error' | 'success';
 
@@ -120,6 +122,7 @@ const AdminPhaseEdit = () => {
   useEffect(() => {
     setHasEndDate(phase?.data.attributes.end_at ? true : false);
     setAttributeDiff({});
+    setSubmitState(phase ? 'enabled' : 'disabled');
   }, [phase]);
 
   useEffect(() => {
@@ -581,16 +584,30 @@ const AdminPhaseEdit = () => {
           )}
         </Section>
 
-        <SubmitWrapper
-          loading={processing}
-          status={submitState}
-          messages={{
-            buttonSave: messages.saveLabel,
-            buttonSuccess: messages.saveSuccessLabel,
-            messageError: messages.saveErrorMessage,
-            messageSuccess: messages.saveSuccessMessage,
-          }}
-        />
+        <Box
+          position="fixed"
+          bottom="0px"
+          mt="400px"
+          w="100%"
+          right="0px"
+          background={colors.white}
+          display="flex"
+          justifyContent="center"
+          key={phase?.data.id}
+        >
+          <Box py="8px">
+            <SubmitWrapper
+              loading={processing}
+              status={submitState}
+              messages={{
+                buttonSave: messages.saveLabel,
+                buttonSuccess: messages.saveSuccessLabel,
+                messageError: messages.saveErrorMessage,
+                messageSuccess: messages.saveSuccessMessage,
+              }}
+            />
+          </Box>
+        </Box>
       </form>
     </>
   );
