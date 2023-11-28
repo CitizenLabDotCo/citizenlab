@@ -11,7 +11,7 @@ sr-Latn:
       idea_author: '%{authorName} je objavio/la novi unos:'
       initiative_author: '%{authorName} je objavio/la novi predlog:'
       automatically_flagged: >
-        This post was automatically detected as potentially containing inappropriate content. We’re sending you this notification so that you can review the post in accordance with your own moderation guidelines.
+        Овај пост је аутоматски откривен као потенцијално неприкладан садржај. Шаљемо вам ово обавештење да бисте могли да прегледате објаву у складу са својим смерницама за модерирање.
       how_to_review: >
-        If the post does not contain inappropriate content, you can remove the warning via your platform in the Activity tab in the admin panel.
+        Ако објава не садржи неприкладан садржај, можете уклонити упозорење преко своје платформе на картици Активности на административној табли.
       cta_review_post: 'Pregledajte objavu'
