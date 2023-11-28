@@ -74,7 +74,7 @@ const IdeaButton = memo<Props>(
 
     const { enabled, show, disabledReason, authenticationRequirements } =
       getIdeaPostingRules({
-        project: project?.data,
+        project: project.data,
         phase,
         authUser: authUser?.data,
       });
@@ -117,7 +117,7 @@ const IdeaButton = memo<Props>(
         return;
       }
 
-      // if logegd in and posting allowed
+      // if logged in and posting allowed
       if (enabled === true) {
         redirectToIdeaForm();
       }
