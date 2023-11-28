@@ -769,7 +769,7 @@ resource 'Users' do
 
         describe do
           let(:custom_field_values) { { birthyear: 1984 } }
-          let(:project) { create(:single_phase_ideation_project, with_permissions: true) }
+          let(:project) { create(:single_phase_ideation_project, phase_attrs: { with_permissions: true }) }
 
           before do
             old_timers = create(:smart_group, rules: [
@@ -781,7 +781,7 @@ resource 'Users' do
               }
             ])
 
-            project.permissions.find_by(action: 'posting_idea')
+            project.phases.first.permissions.find_by(action: 'posting_idea')
               .update!(permitted_by: 'groups', groups: [old_timers])
           end
 

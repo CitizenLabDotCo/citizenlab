@@ -26,12 +26,12 @@ module Polls
     validates :user, :participation_context, presence: true
     validates :user, uniqueness: { scope: [:participation_context] }
 
-    validate :validate_participation_context_poll, on: :response_submission
+    validate :validate_phase_poll, on: :response_submission
     validate :validate_option_count, on: :response_submission
 
     accepts_nested_attributes_for :response_options
 
-    def validate_participation_context_poll
+    def validate_phase_poll
       return unless participation_context && !participation_context.poll?
 
       errors.add(

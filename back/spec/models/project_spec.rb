@@ -78,38 +78,6 @@ RSpec.describe Project do
     end
   end
 
-  describe 'participation_method' do
-    it 'can be null for timeline projects' do
-      p = create(:project_with_current_phase)
-      p.presentation_mode = nil
-      expect(p.save).to be true
-    end
-  end
-
-  describe '#can_contain_input?' do
-    expected_results = {
-      'information' => false,
-      'ideation' => true,
-      'survey' => false,
-      'voting' => true,
-      'poll' => false,
-      'volunteering' => false,
-      'native_survey' => true,
-      'document_annotation' => false
-    }
-    # Written this way so that additional participation methods will make this spec fail.
-    ParticipationContext::PARTICIPATION_METHODS.each do |participation_method|
-      expected_result = expected_results[participation_method]
-      context "for #{participation_method}" do
-        let(:project) { build(:project, participation_method: participation_method) }
-
-        it "returns #{expected_result}" do
-          expect(project.can_contain_input?).to be expected_result
-        end
-      end
-    end
-  end
-
   describe 'allowed_input_topics' do
     it 'cannot have duplicate topics' do
       project = create(:project_with_allowed_input_topics)

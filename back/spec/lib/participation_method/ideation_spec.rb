@@ -7,11 +7,11 @@ RSpec.describe ParticipationMethod::Ideation do
 
   let(:phase) { create(:phase) }
 
-  describe '#assign_defaults_for_participation_context' do
+  describe '#assign_defaults_for_phase' do
     let(:phase) { build(:phase) }
 
     it 'sets the posting method to unlimited' do
-      participation_method.assign_defaults_for_participation_context
+      participation_method.assign_defaults_for_phase
       expect(phase.posting_method).to eq 'unlimited'
       expect(phase.ideas_order).to eq 'trending'
     end
