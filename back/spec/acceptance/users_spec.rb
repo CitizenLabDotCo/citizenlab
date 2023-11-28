@@ -1042,6 +1042,19 @@ resource 'Users' do
             expect(@user.reload.custom_field_values).to eq({})
           end
 
+          example "Update user's existing custom field values" do
+            cf = create(:custom_field)
+            cf2 = create(:custom_field)
+            @user.update!(custom_field_values: { cf.key => 'somevalue' })
+
+            do_request(user: { custom_field_values: { cf2.key => 'anothervalue' } })
+            expect(response_status).to eq 200
+            expect(@user.reload.custom_field_values).to eq({
+              cf.key => 'somevalue',
+              cf2.key => 'anothervalue'
+            })
+          end
+
           example 'Cannot modify values of hidden custom fields' do
             cf = create(:custom_field, hidden: true, enabled: true)
             some_value = 'some_value'
