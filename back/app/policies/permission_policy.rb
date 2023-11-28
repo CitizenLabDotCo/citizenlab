@@ -15,8 +15,8 @@ class PermissionPolicy < ApplicationPolicy
       if user.admin?
         scope.all
       else
-        moderating_phase_ids = Phase.where(project_id: user.moderatable_project_ids).pluck(:id)
-        scope.where(permission_scope_id: moderating_phase_ids)
+        moderating_phases = Phase.where(project_id: user.moderatable_project_ids)
+        scope.where(permission_scope: moderating_phases)
       end
     end
   end

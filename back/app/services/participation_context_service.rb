@@ -52,7 +52,7 @@ class ParticipationContextService
   end
 
   def get_current_phase(project)
-    if !project || project.admin_publication.archived?
+    if project.admin_publication.archived?
       nil
     else
       @timeline_service.current_phase project
