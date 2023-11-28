@@ -332,10 +332,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                   )}
                 </ListItem>
               )}
-            {((projectType === 'continuous' &&
-              projectParticipationMethod === 'native_survey') ||
-              currentPhase?.attributes.participation_method ===
-                'native_survey') &&
+            {(currentPhaseParticipationMethod === 'native_survey') &&
               surveySubmissionCount && (
                 <Box>
                   <ListItem>
