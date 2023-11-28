@@ -56,7 +56,7 @@ const TooltipContentText = styled.div`
     cursor: pointer;
     transition: all 100ms ease-out;
     &:hover {
-      color: ${darken(0.15, colors.teal)};
+      color: ${colors.teal700};
       text-decoration: underline;
     }
   }
