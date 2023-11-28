@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-require 'query'
 
 RSpec.describe Analytics::MatomoDataImporter do
   self.file_fixture_path = Analytics::Engine.root.join('spec', 'fixtures', 'files')

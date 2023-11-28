@@ -10,7 +10,7 @@ module Surveys
 
         def index_xlsx
           if @phase
-            authorize Project.find(@phase.project.id), :index_xlsx?
+            authorize @phase.project, :index_xlsx?
           else
             authorize %i[surveys response], :index_xlsx?
           end

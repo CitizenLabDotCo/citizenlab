@@ -17,5 +17,6 @@ Gem::Specification.new do |spec|
   spec.files = Dir['{app,config,db,lib}/**/*', 'Rakefile']
 
   spec.add_dependency 'content_builder'
+  spec.add_dependency 'analytics'
   spec.add_dependency 'rails', '~> 7.0'
 end

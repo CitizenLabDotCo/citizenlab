@@ -10,7 +10,11 @@ module ApiAuthenticationHelper
   end
 
   def header_token_for(user)
+    header 'Authorization', authorization_header(user)
+  end
+
+  def authorization_header(user)
     token = AuthToken::AuthToken.new(payload: user.to_token_payload).token
-    header 'Authorization', "Bearer #{token}"
+    "Bearer #{token}"
   end
 end

@@ -10,7 +10,7 @@ resource 'Baskets' do
     header 'Content-Type', 'application/json'
     @user = create(:user)
     @project = create(:single_phase_multiple_voting_project)
-    create_list(:basket, 2, phase: create(:single_phase_budgeting_project).phases.first)
+    create_list(:basket, 2, phase: create(:budgeting_phase))
     @basket = create(
       :basket,
       user: @user,

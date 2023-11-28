@@ -10,7 +10,7 @@ import messages from 'containers/ProjectsShowPage/messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 // utils
-import {getLocalisedDateString, pastPresentOrFuture} from 'utils/dateUtils';
+import { getLocalisedDateString, pastPresentOrFuture } from 'utils/dateUtils';
 
 // style
 import styled from 'styled-components';

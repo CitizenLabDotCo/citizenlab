@@ -38,7 +38,6 @@ const ActionBarMulti = ({ selection, resetSelection, type }: Props) => {
   const handleDelete = async () => {
     if (type === 'Initiatives') {
       setIsLoadingDeleteInitiative(true);
-      resetSelection();
 
       // Yes, terribly inefficient, but if you try to do this in
       // parallel the database crashes. To do this properly
@@ -47,11 +46,11 @@ const ActionBarMulti = ({ selection, resetSelection, type }: Props) => {
         await deleteInitiative({ initiativeId });
       }
 
+      resetSelection();
       setIsLoadingDeleteInitiative(false);
       closeWarningModal();
     } else {
       setIsLoadingDeleteIdea(true);
-      resetSelection();
 
       // Yes, terribly inefficient, but if you try to do this in
       // parallel the database crashes. To do this properly
@@ -60,6 +59,7 @@ const ActionBarMulti = ({ selection, resetSelection, type }: Props) => {
         await deleteIdea(ideaId);
       }
 
+      resetSelection();
       setIsLoadingDeleteIdea(false);
       closeWarningModal();
     }

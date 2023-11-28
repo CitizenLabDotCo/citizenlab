@@ -8,15 +8,16 @@ import renderTooltip from './renderTooltip';
 import { PieRow } from './useVisitorReferrerTypes/typings';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 import { Pie } from 'components/admin/Graphs/PieChart/typings';
+import { Layout } from '../typings';
 
 interface Props {
   pieData: PieRow[];
   pieConfig?: Pie;
   innerRef?: React.RefObject<any>;
-  narrow?: boolean;
+  layout?: Layout;
 }
 
-const Chart = ({ pieData, pieConfig, innerRef, narrow = false }: Props) => {
+const Chart = ({ pieData, pieConfig, innerRef, layout = 'wide' }: Props) => {
   const [hoverIndex, setHoverIndex] = useState<number | undefined>();
 
   const onMouseOver = ({ rowIndex }) => {
@@ -52,7 +53,7 @@ const Chart = ({ pieData, pieConfig, innerRef, narrow = false }: Props) => {
       tooltip={renderTooltip()}
       legend={{
         items: legend,
-        marginLeft: narrow ? 10 : 50,
+        marginLeft: layout === 'narrow' ? 10 : 50,
         maintainGraphSize: true,
         position: 'right-center',
       }}

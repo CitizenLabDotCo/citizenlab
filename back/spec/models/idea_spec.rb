@@ -235,12 +235,12 @@ RSpec.describe Idea do
           let(:project) { create(:project_with_past_ideation_and_current_information_phase) }
           let(:ideation_phase) { project.phases.first }
           let(:information_phase) { project.phases.last }
-          let(:idea) { build(:idea, project: project, phases: [ideation_phase]) }
+          let(:idea) { create(:idea, project: project, phases: [ideation_phase]) }
 
           it 'returns the input_term of the ideation phase' do
             information_phase.update!(input_term: 'issue')
             ideation_phase.update!(input_term: 'question')
-            expect(idea.input_term).to eq 'question'
+            expect(idea.reload.input_term).to eq 'question'
           end
         end
       end

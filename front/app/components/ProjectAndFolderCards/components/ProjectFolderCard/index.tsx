@@ -475,9 +475,12 @@ const ProjectFolderCard = memo<Props>(
           !(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'
         } e2e-folder-card e2e-admin-publication-card`}
         to={folderUrl}
-        onClick={handleProjectCardOnClick(
-          publication.data.relationships.publication.data.id
-        )}
+        scrollToTop
+        onClick={() => {
+          handleProjectCardOnClick(
+            publication.data.relationships.publication.data.id
+          );
+        }}
       >
         {screenReaderContent}
         {size !== 'large' && contentHeader}

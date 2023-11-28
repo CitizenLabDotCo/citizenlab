@@ -256,6 +256,10 @@ class Phase < ApplicationRecord
     )
   end
 
+  def started?
+    start_at <= Time.zone.now
+  end
+
   private
 
   def sanitize_description_multiloc

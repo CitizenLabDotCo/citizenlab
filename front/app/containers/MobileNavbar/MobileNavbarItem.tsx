@@ -101,6 +101,7 @@ interface Props {
   iconName: IconNames;
   isFullMenuOpened: boolean;
   onClick: () => void;
+  scrollToTop?: boolean;
 }
 
 const MobileNavbarItem = ({
@@ -110,6 +111,7 @@ const MobileNavbarItem = ({
   iconName,
   isFullMenuOpened,
   onClick,
+  scrollToTop,
 }: Props) => {
   return (
     <NavigationItem>
@@ -118,6 +120,7 @@ const MobileNavbarItem = ({
         className={isFullMenuOpened ? 'active' : undefined}
         onlyActiveOnIndex={onlyActiveOnIndex}
         onClick={onClick}
+        scrollToTop={scrollToTop}
       >
         <NavigationIconWrapper>
           <NavigationIcon name={iconName} />

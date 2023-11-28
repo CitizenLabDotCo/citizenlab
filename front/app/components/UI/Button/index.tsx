@@ -12,6 +12,7 @@ import Link from 'utils/cl-router/Link';
 interface Props extends ButtonProps {
   linkTo?: string | null;
   openLinkInNewTab?: boolean;
+  scrollToTop?: boolean;
 }
 
 interface ButtonContainerProps extends ComponentLibraryButtonContainerProps {
@@ -23,6 +24,7 @@ const ButtonWrapper = ({
   linkTo,
   openLinkInNewTab,
   disabled,
+  scrollToTop,
   ...rest
 }: Props) => {
   const locale = useLocale();
@@ -54,6 +56,7 @@ const ButtonWrapper = ({
               to={linkTo}
               target={openLinkInNewTab ? '_blank' : undefined}
               rel="noreferrer"
+              scrollToTop={scrollToTop}
               {...rest}
             >
               {children}
