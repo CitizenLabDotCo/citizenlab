@@ -16,6 +16,7 @@ interface IFollowContext {
   action: IFollowingAction;
 }
 
+// TODO: JS - is this needed at a project level any more? Should it be PhaseContext?
 export interface ProjectContext {
   type: 'project' | 'phase';
   action: IParticipationContextPermissionAction;

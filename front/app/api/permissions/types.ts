@@ -29,7 +29,7 @@ export interface IGlobalPermissionData {
     };
   };
 }
-
+// TODO: JS - change name - PermissionContextAction?
 export type IParticipationContextPermissionAction =
   | 'posting_idea'
   | 'reacting_idea'

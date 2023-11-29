@@ -81,7 +81,7 @@ const NewIdeaPage = () => {
         context: {
           type: 'phase',
           action: 'posting_idea',
-          id: phase_id || getCurrentPhase(phases?.data)?.id || project?.data.id, // TODO: JS - remove project
+          id: phase_id || getCurrentPhase(phases?.data)?.id || ''
         },
       });
     };

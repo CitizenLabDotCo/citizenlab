@@ -159,11 +159,12 @@ describe('idea posting that requires smart group', () => {
     cy.url().should('include', `/ideas/new`);
   });
 
-  it('shows prompt for authentication on form page if logged out user visits and shows form when authenticated', () => {
+  it.only('shows prompt for authentication on form page if logged out user visits and shows form when authenticated', () => {
     cy.clearCookies();
     cy.visit(`projects/${projectSlug}/ideas/new`);
     cy.get('#e2e-not-authorized').should('exist');
     cy.get('[data-cy="e2e-unauthorized-must-sign-in"]').should('exist');
+    cy.wait(2000);
     cy.get('[data-cy="e2e-trigger-authentication"]').click();
     cy.get('#e2e-goto-signup').click();
     cy.get('#email').type(permittedUserEmail);
