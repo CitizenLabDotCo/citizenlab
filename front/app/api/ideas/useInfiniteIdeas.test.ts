@@ -5,12 +5,12 @@ import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import useInfiniteIdeas from './useInfiniteIdeas';
-import { data, links } from './useIdeas.test';
+import { ideaData, links } from './__mocks__/_mockServer';
 
 const apiPath = '*ideas';
 const server = setupServer(
   rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data, links }));
+    return res(ctx.status(200), ctx.json({ data: ideaData, links }));
   })
 );
 
@@ -35,7 +35,7 @@ describe('useInfiniteIdeas', () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
     expect(result.current.isLoading).toBe(false);
-    expect(result.current.data?.pages[0].data).toEqual(data);
+    expect(result.current.data?.pages[0].data).toEqual(ideaData);
     expect(result.current.hasNextPage).toBe(true);
   });
 
@@ -43,7 +43,10 @@ describe('useInfiniteIdeas', () => {
     const newLinks = { ...links, next: null };
     server.use(
       rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(200), ctx.json({ data, links: newLinks }));
+        return res(
+          ctx.status(200),
+          ctx.json({ data: ideaData, links: newLinks })
+        );
       })
     );
     const { result, waitFor } = renderHook(
@@ -62,7 +65,7 @@ describe('useInfiniteIdeas', () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
     expect(result.current.isLoading).toBe(false);
-    expect(result.current.data?.pages[0].data).toEqual(data);
+    expect(result.current.data?.pages[0].data).toEqual(ideaData);
     expect(result.current.hasNextPage).toBe(false);
   });
 

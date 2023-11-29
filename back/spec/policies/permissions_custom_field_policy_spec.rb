@@ -5,7 +5,7 @@ require 'rails_helper'
 describe PermissionsCustomFieldPolicy do
   subject { described_class.new(user, permissions_custom_field) }
 
-  let(:project) { create(:continuous_project) }
+  let(:project) { create(:single_phase_ideation_project) }
   let(:permission) { create(:permission, permission_scope: project.phases.first) }
   let(:permissions_custom_field) { create(:permissions_custom_field, permission: permission) }
 

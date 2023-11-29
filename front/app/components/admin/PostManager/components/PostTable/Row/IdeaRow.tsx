@@ -13,10 +13,10 @@ import StyledRow from './StyledRow';
 import SubRow from './SubRow';
 import { Icon } from 'semantic-ui-react';
 import T from 'components/T';
-import Outlet from 'components/Outlet';
 import Checkbox from 'components/UI/Checkbox';
 import FeatureFlag from 'components/FeatureFlag';
 import PhaseDeselectModal from './PhaseDeselectModal';
+import AssigneeSelect from 'components/admin/PostManager/components/PostTable/AssigneeSelect';
 
 // utils
 import { timeAgo } from 'utils/dateUtils';
@@ -31,13 +31,7 @@ import messages from '../../../messages';
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../../../tracks';
 import { TFilterMenu, ManagerType } from '../../..';
-import {
-  CellConfiguration,
-  InsertConfigurationOptions,
-  Locale,
-  Override,
-} from 'typings';
-import { insertConfiguration } from 'utils/moduleUtils';
+import { CellConfiguration, Locale, Override } from 'typings';
 
 // hooks
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
@@ -98,9 +92,7 @@ const IdeaRow = ({
     closePhaseDeselectModal();
   };
 
-  const [cells, setCells] = useState<
-    CellConfiguration<IdeaCellComponentProps>[]
-  >([
+  const cells = [
     {
       name: 'selection',
       cellProps: { collapsing: true },
@@ -127,7 +119,7 @@ const IdeaRow = ({
     {
       name: 'title',
       onClick: onClickTitle,
-      Component: ({ idea, onClick }) => {
+      Component: ({ idea, onClick }: IdeaCellComponentProps) => {
         const wasImported = !!idea.relationships.idea_import?.data;
 
         return (
@@ -144,6 +136,47 @@ const IdeaRow = ({
               </Badge>
             )}
           </>
+        );
+      },
+    },
+    {
+      name: 'assignee',
+      cellProps: {
+        onClick: (event: Event) => {
+          event.preventDefault();
+          event.stopPropagation();
+        },
+        singleLine: true,
+      },
+      onChange: (idea: IIdeaData) => (assigneeId: string | undefined) => {
+        const ideaId = idea.id;
+
+        updateIdea({
+          id: ideaId,
+          requestBody: { assignee_id: assigneeId || null },
+        });
+
+        trackEventByName(tracks.changeIdeaAssignment, {
+          location: 'Idea Manager',
+          method: 'Changed through the dropdown n the table overview',
+          idea: ideaId,
+        });
+      },
+      Component: ({
+        idea,
+        onChange,
+      }: Override<
+        IdeaCellComponentProps,
+        {
+          onChange: (idea: IIdeaData) => (assigneeId?: string) => void;
+        }
+      >) => {
+        return (
+          <AssigneeSelect
+            onAssigneeChange={onChange(idea)}
+            projectId={idea.relationships.project.data.id}
+            assigneeId={idea.relationships.assignee?.data?.id}
+          />
         );
       },
     },
@@ -208,7 +241,7 @@ const IdeaRow = ({
         return null;
       },
     },
-  ]);
+  ];
 
   const currentPhases = idea.relationships.phases.data.map((d) => d.id);
 
@@ -308,14 +341,6 @@ const IdeaRow = ({
     },
   });
 
-  const handleData = (
-    insertCellOptions: InsertConfigurationOptions<
-      CellConfiguration<IdeaCellComponentProps>
-    >
-  ) => {
-    setCells((cells) => insertConfiguration(insertCellOptions)(cells));
-  };
-
   const selectedPhases = idea.relationships.phases.data.map((p) => p.id);
   const selectedTopics = idea.relationships.topics?.data.map((p) => p.id);
   const active = selection.has(idea.id);
@@ -389,10 +414,6 @@ const IdeaRow = ({
 
   return (
     <>
-      <Outlet
-        id="app.components.admin.PostManager.components.PostTable.IdeaRow.cells"
-        onData={handleData}
-      />
       <StyledRow
         className={`${className} e2e-idea-manager-idea-row`}
         undraggable={false}

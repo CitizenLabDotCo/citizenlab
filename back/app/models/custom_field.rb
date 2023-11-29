@@ -43,7 +43,6 @@ class CustomField < ApplicationRecord
   has_many :text_images, as: :imageable, dependent: :destroy
   accepts_nested_attributes_for :text_images
 
-  # TODO: JS participation_context
   belongs_to :resource, polymorphic: true, optional: true
   has_many :permissions_custom_fields, dependent: :destroy
   has_many :permissions, through: :permissions_custom_fields
@@ -203,7 +202,7 @@ class CustomField < ApplicationRecord
     if code == 'ideation_section1'
       project = resource.participation_context
       phase = TimelineService.new.current_or_last_can_contain_ideas_phase project
-      input_term = phase.input_term || ParticipationContext::DEFAULT_INPUT_TERM
+      input_term = phase.input_term || Phase::DEFAULT_INPUT_TERM
 
       key = "custom_forms.categories.main_content.#{input_term}.title"
       MultilocService.new.i18n_to_multiloc key

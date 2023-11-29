@@ -104,7 +104,7 @@ const MobileNavigation = ({
 
   if (!homeItem || !projectsItem) return null;
 
-  const handleOnShowMoreClick = (isFullMenuOpened: boolean) => () => {
+  const handleOnShowMoreClick = (isFullMenuOpened: boolean) => {
     onShowMore();
     trackEventByName(
       isFullMenuOpened
@@ -113,7 +113,7 @@ const MobileNavigation = ({
     );
   };
 
-  const handleOnNavItemClick = (navItem: 'home' | 'projects') => () => {
+  const handleOnNavItemClick = (navItem: 'home' | 'projects') => {
     onCloseFullMenu();
     trackEventByName(
       {
@@ -148,18 +148,26 @@ const MobileNavigation = ({
             navigationItemTitle={homeItem.attributes.title_multiloc}
             onlyActiveOnIndex
             isFullMenuOpened={isFullMenuOpened}
-            onClick={handleOnNavItemClick('home')}
+            onClick={() => {
+              handleOnNavItemClick('home');
+            }}
+            scrollToTop
           />
           <MobileNavbarItem
             linkTo="/projects"
             iconName="folder-solid"
             navigationItemTitle={projectsItem.attributes.title_multiloc}
             isFullMenuOpened={isFullMenuOpened}
-            onClick={handleOnNavItemClick('projects')}
+            onClick={() => {
+              handleOnNavItemClick('projects');
+            }}
+            scrollToTop
           />
           <ShowFullMenuButton
             isFullMenuOpened={isFullMenuOpened}
-            onClick={handleOnShowMoreClick(isFullMenuOpened)}
+            onClick={() => {
+              handleOnShowMoreClick(isFullMenuOpened);
+            }}
           />
         </NavigationItems>
       </Container>

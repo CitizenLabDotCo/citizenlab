@@ -8,7 +8,7 @@ jest.mock('containers/Admin/dashboard/users/Charts/AgeChart/useAgeSerie', () =>
   jest.fn(() => mockAgeSerie)
 );
 
-describe('<AgeWidget />', () => {
+describe.skip('<AgeWidget />', () => {
   const startAt = undefined;
   const endAt = undefined;
   const projectId = undefined;

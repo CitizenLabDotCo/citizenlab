@@ -34,21 +34,19 @@ const AgeCard = ({ startAt, endAt, projectId }: Props) => {
 
   return (
     <Box width="100%" height="220px" mt="20px" pb="10px">
-      <Box height="200px">
-        <BarChart
-          data={ageSerie}
-          margin={{
-            left: -20,
-            right: 20,
-          }}
-          mapping={{
-            category: 'name',
-            length: 'value',
-          }}
-          labels
-          tooltip
-        />
-      </Box>
+      <BarChart
+        data={ageSerie}
+        margin={{
+          left: -20,
+          right: 20,
+        }}
+        mapping={{
+          category: 'name',
+          length: 'value',
+        }}
+        labels
+        tooltip
+      />
     </Box>
   );
 };

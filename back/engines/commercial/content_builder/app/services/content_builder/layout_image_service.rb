@@ -4,20 +4,20 @@ module ContentBuilder
   class LayoutImageService < ::ContentImageService
     IMAGE_ELEMENT_TYPES = %w[ImageMultiloc HomepageBanner]
 
-    protected
-
     def image_elements(content)
       LayoutService.new.select_craftjs_elements_for_types(content, IMAGE_ELEMENT_TYPES).filter_map do |elt|
         elt.dig('props', 'image')
       end
     end
 
+    protected
+
     def content_image_class
       LayoutImage
     end
 
     def image_attributes(img_elt, _imageable, _field)
-      { remote_image_url: img_elt['imageUrl'] }
+      img_elt['imageUrl'].present? && { remote_image_url: img_elt['imageUrl'] }
     end
 
     def image_attributes_for_element

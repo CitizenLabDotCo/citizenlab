@@ -21,7 +21,7 @@ resource 'PermissionsCustomField' do
       parameter :size, 'Number of permissions custom fields per page'
     end
 
-    let(:project) { create(:continuous_project) }
+    let(:project) { create(:single_phase_ideation_project) }
     let(:permission_scope) { project.phases.first }
     let(:action) { 'commenting_idea' }
     let(:idea_id) { create(:idea, project: project).id }

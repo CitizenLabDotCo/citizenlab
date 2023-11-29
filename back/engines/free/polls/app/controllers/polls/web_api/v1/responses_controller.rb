@@ -4,21 +4,21 @@ module Polls
   module WebApi
     module V1
       class ResponsesController < PollsController
-        before_action :set_participation_context
+        before_action :set_phase
         skip_before_action :authenticate_user
 
         def index_xlsx
-          if @participation_context
-            authorize Project.find(@participation_context.project.id), :index_xlsx?
+          if @phase
+            authorize Project.find(@phase.project.id), :index_xlsx?
           else
             authorize Response, :index_xlsx?
           end
           @responses = policy_scope(Response)
-            .where(participation_context: @participation_context)
+            .where(participation_context: @phase)
             .includes(:user, response_options: [:option])
             .order(:created_at)
           I18n.with_locale(current_user&.locale) do
-            xlsx = XlsxService.new.generate_poll_results_xlsx @participation_context, @responses, current_user
+            xlsx = XlsxService.new.generate_poll_results_xlsx @phase, @responses, current_user
             send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'polling_results.xlsx'
           end
         end
@@ -26,7 +26,7 @@ module Polls
         def create
           @response = Response.new(response_params)
           @response.user = current_user
-          @response.participation_context = @participation_context
+          @response.participation_context = @phase
           authorize @response
 
           if @response.save(context: :response_submission)
@@ -38,15 +38,15 @@ module Polls
         end
 
         def responses_count
-          if @participation_context
-            authorize Project.find(@participation_context.project.id), :responses_count?
+          if @phase
+            authorize Project.find(@phase.project.id), :responses_count?
           else
             authorize Response, :responses_count?
           end
 
           @counts = policy_scope(Response)
             .joins(:response_options)
-            .where(participation_context: @participation_context)
+            .where(participation_context: @phase)
             .group('polls_response_options.option_id')
             .order('polls_response_options.option_id')
             .count
@@ -56,11 +56,9 @@ module Polls
 
         private
 
-        def set_participation_context
-          if params[:project_id]
-            @participation_context = Project.find(params[:project_id])
-          elsif params[:phase_id]
-            @participation_context = Phase.find(params[:phase_id])
+        def set_phase
+          if params[:phase_id]
+            @phase = Phase.find(params[:phase_id])
           else
             head :not_found
           end

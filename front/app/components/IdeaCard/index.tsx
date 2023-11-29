@@ -137,7 +137,7 @@ const IdeaCard = ({
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
     updateSearchParams({ scroll_to_card: idea.data.id });
-    clHistory.push(`/ideas/${slug}?go_back=true`);
+    clHistory.push(`/ideas/${slug}?go_back=true`, { scrollToTop: true });
   };
 
   const innerHeight = showFollowButton ? '192px' : '162px';

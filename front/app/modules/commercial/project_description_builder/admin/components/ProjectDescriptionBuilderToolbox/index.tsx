@@ -1,13 +1,10 @@
 import React from 'react';
 
 // Router
-import { useParams } from 'react-router-dom';
 
 // i18n
 import contentBuilderMessages from 'components/admin/ContentBuilder/messages';
 import messages from '../../messages';
-import accordionMessages from 'components/admin/ContentBuilder/Widgets/Accordion/messages';
-import textMessages from 'components/admin/ContentBuilder/Widgets/Text/messages';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 // components
@@ -16,17 +13,17 @@ import SectionTitle from 'components/admin/ContentBuilder/Toolbox/SectionTitle';
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
 
 // widgets
-import Text from 'components/admin/ContentBuilder/Widgets/Text';
+import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
 import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
-import Image from 'components/admin/ContentBuilder/Widgets/Image';
-import Iframe from 'components/admin/ContentBuilder/Widgets/Iframe';
+import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
+import IframeMultiloc from 'components/admin/ContentBuilder/Widgets/IframeMultiloc';
 import AboutBox from 'components/admin/ContentBuilder/Widgets/AboutBox';
-import Accordion from 'components/admin/ContentBuilder/Widgets/Accordion';
+import AccordionMultiloc from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
-import Button from 'components/admin/ContentBuilder/Widgets/Button';
+import ButtonMultiloc from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
 import InfoWithAccordions from '../CraftSections/InfoWithAccordions';
-import ImageTextCards from '../CraftSections/ImageTextCards';
+import ImageTextCards from 'components/admin/ContentBuilder/Widgets/ImageTextCards';
 
 // types
 import { Locale } from 'typings';
@@ -39,7 +36,6 @@ const ProjectDescriptionBuilderToolbox = ({
   selectedLocale,
 }: ProjectDescriptionBuilderToolboxProps) => {
   const { formatMessage } = useIntl();
-  const { projectId } = useParams() as { projectId: string };
 
   return (
     <Container>
@@ -54,7 +50,7 @@ const ProjectDescriptionBuilderToolbox = ({
       />
       <DraggableElement
         id="e2e-draggable-info-accordions"
-        component={<InfoWithAccordions projectId={projectId} />}
+        component={<InfoWithAccordions />}
         icon="section-info-accordion"
         label={formatMessage(messages.infoWithAccordions)}
       />
@@ -84,33 +80,33 @@ const ProjectDescriptionBuilderToolbox = ({
       </SectionTitle>
       <DraggableElement
         id="e2e-draggable-text"
-        component={<Text text={formatMessage(textMessages.textValue)} />}
+        component={<TextMultiloc />}
         icon="text"
-        label={formatMessage(Text.craft.custom.title)}
+        label={formatMessage(TextMultiloc.craft.custom.title)}
       />
       <DraggableElement
         id="e2e-draggable-button"
         component={
-          <Button
-            text={formatMessage(Button.craft.custom.title)}
+          <ButtonMultiloc
+            text={{}}
             url={''}
             type={'primary'}
             alignment={'left'}
           />
         }
         icon="button"
-        label={formatMessage(Button.craft.custom.title)}
+        label={formatMessage(ButtonMultiloc.craft.custom.title)}
       />
       <DraggableElement
         id="e2e-draggable-image"
-        component={<Image alt="" />}
+        component={<ImageMultiloc />}
         icon="image"
-        label={formatMessage(Image.craft.custom.title)}
+        label={formatMessage(ImageMultiloc.craft.custom.title)}
       />
       <DraggableElement
         id="e2e-draggable-iframe"
         component={
-          <Iframe
+          <IframeMultiloc
             url=""
             height={500}
             hasError={false}
@@ -118,24 +114,19 @@ const ProjectDescriptionBuilderToolbox = ({
           />
         }
         icon="code"
-        label={formatMessage(Iframe.craft.custom.title)}
+        label={formatMessage(IframeMultiloc.craft.custom.title)}
       />
       <DraggableElement
         id="e2e-draggable-about-box"
-        component={<AboutBox projectId={projectId} />}
+        component={<AboutBox />}
         icon="info-solid"
         label={formatMessage(AboutBox.craft.custom.title)}
       />
       <DraggableElement
         id="e2e-draggable-accordion"
-        component={
-          <Accordion
-            title={formatMessage(accordionMessages.accordionTitleValue)}
-            text={formatMessage(accordionMessages.accordionTextValue)}
-          />
-        }
+        component={<AccordionMultiloc title={{}} text={{}} />}
         icon="accordion"
-        label={formatMessage(Accordion.craft.custom.title)}
+        label={formatMessage(AccordionMultiloc.craft.custom.title)}
       />
     </Container>
   );

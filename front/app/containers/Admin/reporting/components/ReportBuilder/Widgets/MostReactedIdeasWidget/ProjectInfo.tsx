@@ -32,7 +32,7 @@ const ProjectInfo = ({ projectId, phaseId }: Props) => {
     : project.data.attributes.ideas_count;
 
   return (
-    <Box ml="16px">
+    <Box>
       <Text mt="4px" mb="4px" color="primary">
         {'| '}
         {projectTitle}
