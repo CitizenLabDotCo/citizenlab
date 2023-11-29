@@ -15,6 +15,7 @@ RSpec.describe FlagInappropriateContent::EmailCampaigns::InappropriateContentFla
         recipient: recipient,
         event_payload: {
           flaggable_type: flaggable.class.name,
+          flag_automatically_detected: false,
           flaggable_author_name: UserDisplayNameService.new(AppConfiguration.instance, recipient).display_name!(flaggable.author),
           flaggable_url: Frontend::UrlService.new.model_to_url(flaggable, locale: recipient.locale),
           flaggable_title_multiloc: flaggable.title_multiloc,
@@ -46,6 +47,20 @@ RSpec.describe FlagInappropriateContent::EmailCampaigns::InappropriateContentFla
     it 'assigns review post CTA' do
       flaggable_url = command.dig(:event_payload, :flaggable_url)
       expect(mail.body.encoded).to match(flaggable_url)
+    end
+
+    it 'does not include the explanation note about automatic flagging' do
+      expect(mail.body.encoded).not_to include('This post was automatically detected')
+    end
+
+    context 'when the flag was automatically detected' do
+      before do
+        command[:event_payload][:flag_automatically_detected] = true
+      end
+
+      it 'includes the explanation note about automatic flagging' do
+        expect(mail.body.encoded).to include('This post was automatically detected')
+      end
     end
   end
 end
