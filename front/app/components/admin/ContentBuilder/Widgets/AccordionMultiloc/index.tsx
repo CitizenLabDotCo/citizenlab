@@ -5,8 +5,6 @@ import { useNode } from '@craftjs/core';
 
 // components
 import QuillEditedContent from 'components/UI/QuillEditedContent';
-
-// craft
 import {
   Box,
   Accordion as AccordionComponent,
@@ -39,9 +37,11 @@ const Accordion = ({ text, title, openByDefault = false }: AccordionProps) => {
 
   return (
     <AccordionComponent
-      maxWidth="1150px"
-      margin="0 auto"
-      px={componentDefaultPadding}
+      w="auto"
+      maxWidth="1200px"
+      margin={`0 ${
+        componentDefaultPadding === '0px' ? 'auto' : componentDefaultPadding
+      }`}
       isOpenByDefault={openByDefault}
       title={
         <Box id="e2e-accordion" display="flex">

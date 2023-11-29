@@ -5,7 +5,7 @@ module IdCriipto
     isolate_namespace IdCriipto
 
     config.to_prepare do
-      Verification::VerificationService.add_method(
+      Verification.add_method(
         CriiptoOmniauth.new
       )
     end

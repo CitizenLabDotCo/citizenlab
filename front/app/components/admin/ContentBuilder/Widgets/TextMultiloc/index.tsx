@@ -31,9 +31,9 @@ const TextMultiloc = ({ text }: Props) => {
 
   return (
     <PageBreakBox
-      id="e2e-text-box"
+      className="e2e-text-box"
       minHeight="26px"
-      maxWidth="1150px"
+      maxWidth="1200px"
       margin="0 auto"
       px={craftComponentDefaultPadding}
     >
