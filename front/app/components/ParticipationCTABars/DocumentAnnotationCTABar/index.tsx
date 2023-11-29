@@ -64,9 +64,9 @@ const DocumentAnnotationCTABar = ({ phases, project }: CTABarProps) => {
       triggerAuthenticationFlow({
         flow: 'signup',
         context: {
-          type: currentPhase ? 'phase' : 'project',
+          type: 'phase',
           action: 'annotating_document',
-          id: currentPhase ? currentPhase.id : project.id,
+          id: currentPhase?.id || '',
         },
         successAction,
       });

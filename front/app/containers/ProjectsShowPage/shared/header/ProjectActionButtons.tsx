@@ -113,8 +113,8 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
       triggerAuthenticationFlow({
         flow: 'signup',
         context: {
-          type: currentPhase ? 'phase' : 'project',
-          id: currentPhase?.id ?? project.data.id,
+          type: 'phase',
+          id: currentPhase?.id || '',
           action: 'taking_survey',
         },
         successAction,
@@ -146,8 +146,8 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
       triggerAuthenticationFlow({
         flow: 'signup',
         context: {
-          type: currentPhase ? 'phase' : 'project',
-          id: currentPhase?.id ?? project.data.id,
+          type: 'phase',
+          id: currentPhase?.id || '',
           action: 'annotating_document',
         },
         successAction,
