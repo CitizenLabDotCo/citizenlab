@@ -1512,6 +1512,7 @@
   "app.containers.AdminPage.ProjectEdit.participationRequirementsSubtitle": "You can specify who can take each action, and ask additional questions to participants to collect more information.",
   "app.containers.AdminPage.ProjectEdit.participationRequirementsTitle": "Participant requirements & questions",
   "app.containers.AdminPage.ProjectEdit.permissionsTab": "Access rights",
+  "app.containers.AdminPage.ProjectEdit.phaseAccessRights": "Access rights",
   "app.containers.AdminPage.ProjectEdit.phaseMethodChangeWarning": "Some participation methods aren’t available for existing phases. A new phase will have to be created in these cases.",
   "app.containers.AdminPage.ProjectEdit.pollTab": "Poll",
   "app.containers.AdminPage.ProjectEdit.popularSortingMethod2": "Most reactions",
