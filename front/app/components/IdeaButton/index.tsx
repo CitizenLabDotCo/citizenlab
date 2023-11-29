@@ -154,7 +154,6 @@ const IdeaButton = memo<Props>(
           inMap={inMap}
           disabledReason={disabledReason}
           phase={phase}
-          participationContextType='phase'
         />
       );
     }
@@ -172,7 +171,6 @@ const IdeaButton = memo<Props>(
                 inMap={inMap}
                 disabledReason={disabledReason}
                 phase={phase}
-                participationContextType='phase'
               />
             ) : null
           }
