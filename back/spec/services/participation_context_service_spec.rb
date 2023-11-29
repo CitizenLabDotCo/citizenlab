@@ -12,17 +12,17 @@ describe ParticipationContextService do
         :project_with_current_phase,
         current_phase_attrs: { title_multiloc: { 'en' => random_title } }
       )
-      expect(service.get_participation_context(project).title_multiloc['en']).to eq random_title
+      expect(service.get_current_phase(project).title_multiloc['en']).to eq random_title
     end
 
     it 'returns nil for a timeline project without an active phase' do
       project = create(:project_with_past_phases)
-      expect(service.get_participation_context(project)).to be_nil
+      expect(service.get_current_phase(project)).to be_nil
     end
 
     it "returns nil for a timeline project that's archived" do
       project = create(:project_with_current_phase, admin_publication_attributes: { publication_status: 'archived' })
-      expect(service.get_participation_context(project)).to be_nil
+      expect(service.get_current_phase(project)).to be_nil
     end
   end
 
@@ -95,7 +95,7 @@ describe ParticipationContextService do
       let(:project) { create(:project_with_current_phase, current_phase_attrs: { with_permissions: true }) }
       let(:permission) do
         service
-          .get_participation_context(project).permissions
+          .get_current_phase(project).permissions
           .find_by(action: 'posting_idea')
       end
 
@@ -186,7 +186,7 @@ describe ParticipationContextService do
       let(:project) { create(:project_with_current_phase, current_phase_attrs: { with_permissions: true }) }
       let(:permission) do
         service
-          .get_participation_context(project).permissions
+          .get_current_phase(project).permissions
           .find_by(action: 'commenting_idea')
       end
 
@@ -476,7 +476,7 @@ describe ParticipationContextService do
       let(:project) { create(:project_with_current_phase, current_phase_attrs: { with_permissions: true }) }
       let(:idea) { create(:idea, project: project, phases: [project.phases[2]]) }
       let(:permission) do
-        service.get_participation_context(project).permissions
+        service.get_current_phase(project).permissions
           .find_by(action: 'reacting_idea')
       end
 
@@ -548,7 +548,7 @@ describe ParticipationContextService do
       let(:idea) { create(:idea, project: project, phases: [project.phases[2]]) }
 
       it "returns `not_signed_in` if it's in the current phase and user needs to be signed in" do
-        service.get_participation_context(project).permissions.find_by(action: 'reacting_idea')
+        service.get_current_phase(project).permissions.find_by(action: 'reacting_idea')
           .update!(permitted_by: 'users')
         expect(service.cancelling_reacting_disabled_reason_for_idea(idea, nil)).to eq 'not_signed_in'
       end
@@ -588,7 +588,7 @@ describe ParticipationContextService do
 
     it 'returns nil when taking the survey is allowed' do
       project = create(:single_phase_typeform_survey_project, phase_attrs: { with_permissions: true })
-      permission = service.get_participation_context(project).permissions.find_by(action: 'taking_survey')
+      permission = service.get_current_phase(project).permissions.find_by(action: 'taking_survey')
       groups = create_list(:group, 2, projects: [project])
       permission.update!(permitted_by: 'groups', group_ids: groups.map(&:id))
       user = create(:user)
@@ -600,14 +600,14 @@ describe ParticipationContextService do
 
     it 'returns `not_signed_in` when user needs to be signed in' do
       project = create(:single_phase_typeform_survey_project, phase_attrs: { with_permissions: true })
-      permission = service.get_participation_context(project).permissions.find_by(action: 'taking_survey')
+      permission = service.get_current_phase(project).permissions.find_by(action: 'taking_survey')
       permission.update!(permitted_by: 'users')
       expect(service.taking_survey_disabled_reason_for_project(project, nil)).to eq 'not_signed_in'
     end
 
     it 'returns `not_in_group` when taking the survey is not permitted' do
       project = create(:single_phase_typeform_survey_project, phase_attrs: { with_permissions: true })
-      permission = service.get_participation_context(project).permissions.find_by(action: 'taking_survey')
+      permission = service.get_current_phase(project).permissions.find_by(action: 'taking_survey')
       permission.update!(
         permitted_by: 'groups',
         group_ids: create_list(:group, 2).map(&:id)
@@ -635,7 +635,7 @@ describe ParticipationContextService do
 
     it 'returns nil when annotating the document is allowed' do
       project = create(:single_phase_document_annotation_project, phase_attrs: { with_permissions: true })
-      permission = service.get_participation_context(project).permissions.find_by(action: 'annotating_document')
+      permission = service.get_current_phase(project).permissions.find_by(action: 'annotating_document')
       groups = create_list(:group, 2, projects: [project])
       permission.update!(permitted_by: 'groups', group_ids: groups.map(&:id))
       user = create(:user)
@@ -647,14 +647,14 @@ describe ParticipationContextService do
 
     it 'returns `not_signed_in` when user needs to be signed in' do
       project = create(:single_phase_document_annotation_project, phase_attrs: { with_permissions: true })
-      permission = service.get_participation_context(project).permissions.find_by(action: 'annotating_document')
+      permission = service.get_current_phase(project).permissions.find_by(action: 'annotating_document')
       permission.update!(permitted_by: 'users')
       expect(service.annotating_document_disabled_reason_for_project(project, nil)).to eq 'not_signed_in'
     end
 
     it 'returns `not_permitted` when annotating the document is not permitted' do
       project = create(:single_phase_document_annotation_project, phase_attrs: { with_permissions: true })
-      permission = service.get_participation_context(project).permissions.find_by(action: 'annotating_document')
+      permission = service.get_current_phase(project).permissions.find_by(action: 'annotating_document')
       permission.update!(permitted_by: 'admins_moderators')
       expect(service.annotating_document_disabled_reason_for_project(project, create(:user))).to eq 'not_permitted'
     end
@@ -696,14 +696,14 @@ describe ParticipationContextService do
 
     it 'returns `not_signed_in` when user needs to be signed in' do
       project = create(:single_phase_poll_project, phase_attrs: { with_permissions: true })
-      permission = service.get_participation_context(project).permissions.find_by(action: 'taking_poll')
+      permission = service.get_current_phase(project).permissions.find_by(action: 'taking_poll')
       permission.update!(permitted_by: 'users')
       expect(service.taking_poll_disabled_reason_for_project(project, nil)).to eq 'not_signed_in'
     end
 
     it 'return `not_permitted` when taking the poll is not permitted' do
       project = create(:single_phase_poll_project, phase_attrs: { with_permissions: true })
-      permission = service.get_participation_context(project).permissions.find_by(action: 'taking_poll')
+      permission = service.get_current_phase(project).permissions.find_by(action: 'taking_poll')
       permission.update!(permitted_by: 'admins_moderators')
       expect(service.taking_poll_disabled_reason_for_project(project, create(:user))).to eq 'not_permitted'
     end
@@ -747,7 +747,7 @@ describe ParticipationContextService do
         current_phase_attrs: { with_permissions: true, participation_method: 'voting', voting_method: 'budgeting', voting_max_total: 10_000 }
       )
       idea = create(:idea, project: project, phases: [project.phases[2]])
-      permission = service.get_participation_context(project).permissions.find_by(action: 'voting')
+      permission = service.get_current_phase(project).permissions.find_by(action: 'voting')
       permission.update!(permitted_by: 'users')
       expect(service.voting_disabled_reason_for_project(project, nil)).to eq 'not_signed_in'
       expect(service.voting_disabled_reason_for_idea(idea, nil)).to eq 'not_signed_in'
@@ -759,7 +759,7 @@ describe ParticipationContextService do
         current_phase_attrs: { with_permissions: true, participation_method: 'voting', voting_method: 'budgeting', voting_max_total: 10_000 }
       )
       idea = create(:idea, project: project, phases: [project.phases[2]])
-      permission = service.get_participation_context(project).permissions.find_by(action: 'voting')
+      permission = service.get_current_phase(project).permissions.find_by(action: 'voting')
       permission.update!(
         permitted_by: 'groups',
         group_ids: create_list(:group, 2).map(&:id)

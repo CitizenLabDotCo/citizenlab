@@ -92,7 +92,7 @@ describe IdeaReactionPolicy do
 
   context 'for a mortal user who owns the reaction on an idea in a project where reacting is disabled' do
     let!(:user) { create(:user) }
-    let!(:project) { create(:single_phase_ideation_project, reacting_enabled: false) }
+    let!(:project) { create(:single_phase_ideation_project, phase_attrs: { reacting_enabled: false }) }
     let!(:idea) { create(:idea, project: project) }
     let!(:reaction) { create(:reaction, reactable: idea, user: user) }
 

@@ -837,7 +837,7 @@ resource 'Ideas' do
       end
 
       describe 'Creating a native survey response when posting anonymously is not enabled' do
-        let(:project) { create(:single_phase_native_survey_project, allow_anonymous_participation: false) }
+        let(:project) { create(:single_phase_native_survey_project, phase_attrs: { allow_anonymous_participation: false }) }
 
         example_request 'Posting a survey does not set the survey to anonymous' do
           assert_status 201
@@ -848,11 +848,7 @@ resource 'Ideas' do
       end
 
       describe 'For projects without ideas_order' do
-        let(:project) { create(:single_phase_ideation_project) }
-
-        before do
-          project.update_attribute(:ideas_order, nil)
-        end
+        let(:project) { create(:single_phase_ideation_project, phase_attrs: { ideas_order: nil }) }
 
         example 'Creates an idea', document: false do
           do_request
@@ -922,7 +918,7 @@ resource 'Ideas' do
 
         example '[error] Create an idea when there is a posting disabled reason' do
           expect_any_instance_of(ParticipationContextService)
-            .to receive(:posting_idea_disabled_reason_for_context).with(project.phases.first, @user).and_return('i_dont_like_you')
+            .to receive(:posting_idea_disabled_reason_for_phase).with(project.phases.first, @user).and_return('i_dont_like_you')
 
           do_request
 
@@ -1103,7 +1099,7 @@ resource 'Ideas' do
 
           example '[error] Update an idea when there is a posting disabled reason' do
             expect_any_instance_of(ParticipationContextService)
-              .to receive(:posting_idea_disabled_reason_for_context).with(@project.phases.first, @user).and_return('i_dont_like_you')
+              .to receive(:posting_idea_disabled_reason_for_phase).with(@project.phases.first, @user).and_return('i_dont_like_you')
 
             do_request
 
@@ -1509,22 +1505,7 @@ resource 'Ideas' do
     end
 
     delete 'web_api/v1/ideas/:id' do
-      context 'when the idea belongs to a continuous project' do
-        before do
-          @project = create(:single_phase_ideation_project)
-          @idea = create(:idea_with_topics, author: @user, publication_status: 'published', project: @project)
-        end
-
-        let(:id) { @idea.id }
-
-        example_request 'Delete an idea' do
-          expect(response_status).to eq 200
-          expect { Idea.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
-          expect(@idea.project.reload.ideas_count).to eq 0
-        end
-      end
-
-      context 'when the idea belongs to a timeline project' do
+      context 'when the idea belongs to a phase' do
         let!(:idea) { create(:idea, author: user, project: project, publication_status: 'published') }
         let(:project) { create(:project_with_phases) }
         let(:phase) { project.phases.first }
@@ -1542,12 +1523,14 @@ resource 'Ideas' do
         example_request 'Delete an idea' do
           expect(response_status).to eq 200
           expect { Idea.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+          expect(project.reload.ideas_count).to eq 0
           expect(phase.reload.ideas_count).to eq 0
         end
       end
 
       context 'when a voting context' do
-        let(:idea) { create(:idea, project: create(:single_phase_budgeting_project)) }
+        let(:project) { create(:single_phase_budgeting_project) }
+        let(:idea) { create(:idea, project: project, phases: project.phases) }
         let(:id) { idea.id }
 
         example_request '[error] Normal resident cannot delete an idea in a voting context', document: false do

@@ -2,8 +2,6 @@
 
 FactoryBot.define do
   factory :project do
-    ideas_order { nil }
-    input_term { nil }
     admin_publication_attributes { {} }
     title_multiloc do
       {
@@ -404,16 +402,6 @@ FactoryBot.define do
 
     factory :private_admins_project do
       visible_to { :admins }
-      # TODO: JS this needed?
-      # after(:create) do |project, _evaluator|
-      #   project.phases << create(
-      #     :phase,
-      #     project: project,
-      #     participation_method: 'ideation',
-      #     start_at: Faker::Date.between(from: 6.months.ago, to: Time.zone.now),
-      #     end_at: nil
-      #   )
-      # end
     end
 
     factory :private_groups_project do

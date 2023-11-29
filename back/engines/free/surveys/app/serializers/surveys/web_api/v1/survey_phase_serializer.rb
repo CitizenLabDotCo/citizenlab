@@ -4,11 +4,7 @@ module Surveys::WebApi::V1::SurveyPhaseSerializer
   extend ActiveSupport::Concern
 
   included do
-    with_options if: proc { |object|
-      object.participation_context?
-    } do
-      attribute :survey_embed_url
-      attribute :survey_service
-    end
+    attribute :survey_embed_url
+    attribute :survey_service
   end
 end
