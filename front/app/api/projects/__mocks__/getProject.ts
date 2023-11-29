@@ -1,4 +1,4 @@
-import { ProcessType, IProjectData } from '../types';
+import { IProjectData } from '../types';
 import {
   ParticipationMethod,
   TSurveyService,
@@ -6,7 +6,6 @@ import {
 
 export function getProject(
   id: string,
-  processType: ProcessType,
   participationMethod?: ParticipationMethod,
   surveyService?: TSurveyService
 ) {
@@ -28,7 +27,6 @@ export function getProject(
       created_at: 'yesterday',
       updated_at: 'yesterday but later', // should be a real time string
       visible_to: 'public', // 'public' | 'groups' | 'admins' cf real project.ts
-      process_type: processType,
       timeline_active: 'present',
       participants_count: 13,
       participation_method: participationMethod || null,

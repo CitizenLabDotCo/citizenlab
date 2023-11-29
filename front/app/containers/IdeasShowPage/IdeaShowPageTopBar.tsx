@@ -107,18 +107,13 @@ const IdeaShowPageTopBar = ({
       project &&
       isFixableByAuthentication(disabled_reason)
     ) {
-      const pcType =
-        project.data.attributes.process_type === 'continuous'
-          ? 'project'
-          : 'phase';
-      const pcId =
-        project.data.relationships?.current_phase?.data?.id || project.data.id;
-      if (pcId && pcType) {
+      const phaseId = project.data.relationships?.current_phase?.data?.id;
+      if (phaseId) {
         triggerAuthenticationFlow({
           context: {
             action: 'reacting_idea',
-            id: pcId,
-            type: pcType,
+            id: phaseId,
+            type: 'phase',
           },
         });
       }

@@ -45,11 +45,7 @@ const IdeasNewMeta = React.memo<Props>(
 
     if (!isNilOrError(project)) {
       const projectName = localize(project.attributes.title_multiloc);
-      const inputTerm = getInputTerm(
-        project.attributes.process_type,
-        project,
-        phases
-      );
+      const inputTerm = getInputTerm(phases);
       const ideasIndexTitle = formatMessage(
         getInputTermMessage(inputTerm, {
           idea: messages.ideaNewMetaTitle,

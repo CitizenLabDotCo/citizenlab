@@ -84,7 +84,6 @@ const IdeaMoreActions = memo(({ idea, className, projectId }: Props) => {
   };
 
   if (!isNilOrError(authUser) && !isNilOrError(project)) {
-    const processType = project.data.attributes.process_type;
     const currentPhase = getCurrentPhase(phases?.data);
     const isIdeationPhase =
       currentPhase?.attributes.participation_method === 'ideation';
@@ -94,7 +93,7 @@ const IdeaMoreActions = memo(({ idea, className, projectId }: Props) => {
         label: <FormattedMessage {...messages.reportAsSpam} />,
         handler: openSpamModal,
       },
-      ...(processType === 'timeline' && !isIdeationPhase
+      ...(!isIdeationPhase
         ? []
         : [
             {

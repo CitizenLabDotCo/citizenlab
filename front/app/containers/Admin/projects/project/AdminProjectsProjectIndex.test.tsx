@@ -39,7 +39,6 @@ describe('<AdminProjectEdition />', () => {
     const phases = [];
     const project = getProject(
       'continuousInformation',
-      'continuous',
       'information'
     );
 

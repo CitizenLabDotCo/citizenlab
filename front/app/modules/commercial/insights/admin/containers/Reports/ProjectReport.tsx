@@ -114,29 +114,16 @@ const ProjectReport = () => {
   const [startAt, setStartAt] = useState<string | null | undefined>(null);
   const [endAt, setEndAt] = useState<string | null>(null);
 
-  const isTimelineProject = isNilOrError(project)
-    ? null
-    : project.data.attributes.process_type === 'timeline';
-
   useEffect(() => {
     if (isNilOrError(project)) return;
 
-    if (isTimelineProject) {
-      if (!isNilOrError(phases) && phases.data.length > 0) {
-        const startAt = phases.data[0].attributes.start_at;
-        const endAt = phases.data[phases.data.length - 1].attributes.end_at;
-        setStartAt(startAt);
-        setEndAt(endAt);
-
-        const resolution = getResolution(moment(startAt), moment(endAt));
-        setResolution(resolution);
-      }
-    } else {
-      const startAt = project.data.attributes.created_at;
+    if (!isNilOrError(phases) && phases.data.length > 0) {
+      const startAt = phases.data[0].attributes.start_at;
+      const endAt = phases.data[phases.data.length - 1].attributes.end_at;
       setStartAt(startAt);
-      setEndAt(moment().toISOString());
+      setEndAt(endAt);
 
-      const resolution = getResolution(moment(startAt), moment());
+      const resolution = getResolution(moment(startAt), moment(endAt));
       setResolution(resolution);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -161,11 +148,9 @@ const ProjectReport = () => {
 
   // deduplicated non-null participations methods in this project
   const participationMethods = (
-    isTimelineProject
-      ? isNilOrError(phases)
-        ? []
-        : phases.data.map((phase) => phase.attributes.participation_method)
-      : [project.data.attributes.participation_method]
+    isNilOrError(phases)
+      ? []
+      : phases.data.map((phase) => phase.attributes.participation_method)
   ).filter((el, i, arr) => el && arr.indexOf(el) === i);
 
   const projectTitle = localize(project.data.attributes.title_multiloc);
@@ -180,8 +165,7 @@ const ProjectReport = () => {
         </PageTitle>
         <ResolutionControl value={resolution} onChange={setResolution} />
       </RowSection>
-      {isTimelineProject && (
-        <Section>
+      <Section>
           <TimelineSection>
             {!isNilOrError(phases) && phases.data.length > 0 ? (
               phases.data.map((phase, index) => {
@@ -227,7 +211,6 @@ const ProjectReport = () => {
             )}
           </TimelineSection>
         </Section>
-      )}
 
       {!isEqual(participationMethods, ['information']) && timeBoundariesSet && (
         <Section>

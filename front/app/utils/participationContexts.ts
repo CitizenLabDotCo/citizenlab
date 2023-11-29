@@ -1,6 +1,4 @@
 import { isNilOrError } from 'utils/helperUtils';
-import { getProjectInputTerm } from 'api/projects/utils';
-import { IProjectData, ProcessType } from 'api/projects/types';
 import { getPhaseInputTerm } from 'api/phases/utils';
 import { IPhaseData } from 'api/phases/types';
 import { Multiloc } from 'typings';
@@ -88,25 +86,16 @@ export interface ParticipationContext {
 }
 
 export function getInputTerm(
-  processType: ProcessType,
-  project: IProjectData | undefined | null | Error,
   phases: IPhaseData[] | undefined,
   phase?: IPhaseData | undefined | null | Error
 ) {
-  if (processType === 'continuous') {
-    // To make sure copy depending on an input_term doesn't break,
-    // we have a fallback to idea here.
-    return !isNilOrError(project) ? getProjectInputTerm(project) : 'idea';
-  }
-  if (processType === 'timeline') {
-    // (2020/12/9): When a new timeline project is created, phases will initially
-    // be []. To make sure we don't break copy that depends on an input_term,
-    // we have the fallback to idea here in that case.
-    if (!isNilOrError(phase)) {
-      return getPhaseInputTerm([phase]);
-    } else if (phases && phases.length > 0) {
-      return getPhaseInputTerm(phases);
-    }
+  // (2020/12/9): When a new timeline project is created, phases will initially
+  // be []. To make sure we don't break copy that depends on an input_term,
+  // we have the fallback to idea here in that case.
+  if (!isNilOrError(phase)) {
+    return getPhaseInputTerm([phase]);
+  } else if (phases && phases.length > 0) {
+    return getPhaseInputTerm(phases);
   }
   return 'idea';
 }

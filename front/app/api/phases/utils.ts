@@ -111,13 +111,13 @@ export function getPhaseInputTerm(phases: IPhaseData[]) {
   return getLatestRelevantPhase(phases)?.attributes.input_term || 'idea';
 }
 
+// TODO: JS - Remove and replace everywhere with getCurrentPhase
 export const getCurrentParticipationContext = (
   project?: IProjectData,
   phases?: IPhaseData[]
 ) => {
   if (!project) return;
 
-  if (project.attributes.process_type === 'continuous') return project;
   return getCurrentPhase(phases);
 };
 
