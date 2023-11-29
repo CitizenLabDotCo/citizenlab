@@ -434,34 +434,38 @@ const HomepageBannerSettings = () => {
               }}
             />
           )}
-          <InputMultilocWithLocaleSwitcher
-            label={formatMessage(messages.bannerText)}
-            placeholder={formatMessage(homepageMessages.titleCity)}
-            type="text"
-            valueMultiloc={homepageSettings.banner_signed_out_header_multiloc}
-            onChange={(value) => {
-              setProp(
-                (props: Props) =>
-                  (props.homepageSettings.banner_signed_out_header_multiloc =
-                    value)
-              );
-            }}
-          />
-          <InputMultilocWithLocaleSwitcher
-            label={formatMessage(messages.bannerSubtext)}
-            placeholder={formatMessage(homepageMessages.subtitleCity)}
-            type="text"
-            valueMultiloc={
-              homepageSettings.banner_signed_out_subheader_multiloc
-            }
-            onChange={(value) => {
-              setProp(
-                (props: Props) =>
-                  (props.homepageSettings.banner_signed_out_subheader_multiloc =
-                    value)
-              );
-            }}
-          />
+          <div data-cy="e2e-signed-out-header-section">
+            <InputMultilocWithLocaleSwitcher
+              label={formatMessage(messages.bannerText)}
+              placeholder={formatMessage(homepageMessages.titleCity)}
+              type="text"
+              valueMultiloc={homepageSettings.banner_signed_out_header_multiloc}
+              onChange={(value) => {
+                setProp(
+                  (props: Props) =>
+                    (props.homepageSettings.banner_signed_out_header_multiloc =
+                      value)
+                );
+              }}
+            />
+          </div>
+          <div data-cy="e2e-signed-out-subheader-section">
+            <InputMultilocWithLocaleSwitcher
+              label={formatMessage(messages.bannerSubtext)}
+              placeholder={formatMessage(homepageMessages.subtitleCity)}
+              type="text"
+              valueMultiloc={
+                homepageSettings.banner_signed_out_subheader_multiloc
+              }
+              onChange={(value) => {
+                setProp(
+                  (props: Props) =>
+                    (props.homepageSettings.banner_signed_out_subheader_multiloc =
+                      value)
+                );
+              }}
+            />
+          </div>
           <Label>{formatMessage(messages.button)}</Label>
           {CTA_SIGNED_OUT_TYPES.map((option: CTASignedOutType) => {
             const labelMessage = labelMessages[option];

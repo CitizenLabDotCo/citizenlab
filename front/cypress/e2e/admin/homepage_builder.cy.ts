@@ -218,6 +218,15 @@ describe('Homepage builder', () => {
     // Update avatar bubbles
     cy.get('[data-cy="e2e-banner-avatar-toggle"]').find('i').click();
 
+    // Update header and subheader
+    cy.get('[data-cy="e2e-signed-out-header-section"]')
+      .find('input')
+      .clear()
+      .type('New header');
+    cy.get('[data-cy="e2e-signed-out-subheader-section"]')
+      .find('input')
+      .clear()
+      .type('New subheader');
     // Save homepage
 
     cy.get('#e2e-content-builder-topbar-save').click({
@@ -246,6 +255,8 @@ describe('Homepage builder', () => {
       .find('[data-testid=avatarBubblesContainer]')
       .should('not.exist');
 
+    cy.get('#hook-header-content').should('contain', 'New header');
+    cy.get('#hook-header-content').should('contain', 'New subheader');
     // Layout checks
     // cy.get('[data-cy="e2e-fixed-ratio-layout-option"]').click();
 
