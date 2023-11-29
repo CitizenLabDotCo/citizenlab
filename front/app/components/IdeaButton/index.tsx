@@ -200,11 +200,7 @@ const IdeaButton = memo<Props>(
               <FormattedMessage
                 {...getButtonMessage(
                   participationMethod,
-                  getInputTerm(
-                    project.data.attributes.process_type,
-                    project.data,
-                    phases?.data
-                  )
+                  getInputTerm(phases?.data)
                 )}
               />
             </Button>
