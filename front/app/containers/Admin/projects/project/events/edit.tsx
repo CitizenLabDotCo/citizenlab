@@ -1,4 +1,4 @@
-import React, { useState, useEffect, FormEvent } from 'react';
+import React, { useState, useEffect, FormEvent, useCallback } from 'react';
 import moment from 'moment';
 import { isEmpty, get, isError } from 'lodash-es';
 
@@ -55,6 +55,7 @@ import { useParams } from 'react-router-dom';
 import { geocode } from 'utils/locationTools';
 import { useTheme } from 'styled-components';
 import useLocale from 'hooks/useLocale';
+import { defaultAdminCardPadding, colors } from 'utils/styleUtils';
 
 type SubmitState = 'disabled' | 'enabled' | 'error' | 'success';
 type ErrorType =
@@ -75,6 +76,7 @@ const AdminProjectEventEdit = () => {
     id: string;
     projectId: string;
   };
+  const [width, setWidth] = useState<number>(0);
   const { formatMessage } = useIntl();
   const theme = useTheme();
   const locale = useLocale();
@@ -198,6 +200,12 @@ const AdminProjectEventEdit = () => {
       })();
     }
   }, [remoteEventFiles]);
+
+  const containerRef = useCallback((node) => {
+    if (node !== null) {
+      setWidth(node.getBoundingClientRect().width);
+    }
+  }, []);
 
   const handleTitleMultilocOnChange = (titleMultiloc: Multiloc) => {
     setSubmitState('enabled');
@@ -479,7 +487,7 @@ const AdminProjectEventEdit = () => {
   }
 
   return (
-    <>
+    <Box ref={containerRef}>
       <SectionTitle>
         {event && <FormattedMessage {...messages.editEventTitle} />}
         {!event && <FormattedMessage {...messages.newEventTitle} />}
@@ -760,16 +768,29 @@ const AdminProjectEventEdit = () => {
           </SectionField>
         </Section>
 
-        <SubmitWrapper
-          loading={saving}
-          status={submitState}
-          messages={{
-            buttonSave: messages.saveButtonLabel,
-            buttonSuccess: messages.saveSuccessLabel,
-            messageError: messages.saveErrorMessage,
-            messageSuccess: messages.saveSuccessMessage,
-          }}
-        />
+        <Box
+          position="fixed"
+          borderTop={`1px solid ${colors.divider}`}
+          bottom="0"
+          w={`calc(${width}px + ${defaultAdminCardPadding * 2}px)`}
+          ml={`-${defaultAdminCardPadding}px`}
+          background={colors.white}
+          display="flex"
+          justifyContent="flex-start"
+        >
+          <Box py="8px" px={`${defaultAdminCardPadding}px`}>
+            <SubmitWrapper
+              loading={saving}
+              status={submitState}
+              messages={{
+                buttonSave: messages.saveButtonLabel,
+                buttonSuccess: messages.saveSuccessLabel,
+                messageError: messages.saveErrorMessage,
+                messageSuccess: messages.saveSuccessMessage,
+              }}
+            />
+          </Box>
+        </Box>
       </form>
       <Modal
         opened={mapModalVisible}
@@ -794,7 +815,7 @@ const AdminProjectEventEdit = () => {
           )}
         </Box>
       </Modal>
-    </>
+    </Box>
   );
 };
 
