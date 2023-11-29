@@ -1163,7 +1163,6 @@
   "app.containers.InitiativesShow.youWereInvitedToConsponsorBy": "{authorName} uppmanade dig att stödja detta förslag.",
   "app.containers.Navbar.completeOnboarding": "Fullständig introduktion",
   "app.containers.Navbar.completeProfile": "Fullständig profil",
-  "app.containers.Navbar.confirmEmail": "Bekräfta e-postadress",
   "app.containers.Navbar.unverified": "Ej verifierad",
   "app.containers.Navbar.verified": "Verifierad",
   "app.containers.NewAuthModal.beforeYouFollow": "Innan du följer",

@@ -1163,7 +1163,6 @@
   "app.containers.InitiativesShow.youWereInvitedToConsponsorBy": "{authorName} hat Sie eingeladen, diesen Vorschlag zu unterstützen.",
   "app.containers.Navbar.completeOnboarding": "Vollständiges Onboarding",
   "app.containers.Navbar.completeProfile": "Profil vervollständigen",
-  "app.containers.Navbar.confirmEmail": "E-Mail-Adresse bestätigen",
   "app.containers.Navbar.unverified": "Nicht verifiziert",
   "app.containers.Navbar.verified": "Verifiziert",
   "app.containers.NewAuthModal.beforeYouFollow": "Bevor Sie folgen",
