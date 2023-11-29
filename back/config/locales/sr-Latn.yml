@@ -15,10 +15,10 @@ sr-Latn:
     rejected: odbijeno
     rejected_description: Ova ideja je odbijena
   initiative_statuses:
-    review_pending: преглед на чекању
-    review_pending_description: преглед на чекању
-    changes_requested: тражене промене
-    changes_requested_description: тражене промене
+    review_pending: review pending
+    review_pending_description: review pending
+    changes_requested: changes requested
+    changes_requested_description: changes requested
     proposed: predloženo
     proposed_description: predloženo
     expired: isteklo
@@ -207,15 +207,15 @@ sr-Latn:
       comments_count: 'Komentari'
       likes_count: 'Свиђа'
       dislikes_count: 'Не свиђа ми се'
-      picks: 'Пицкс'
-      participants: 'Учесници'
-      votes_count: 'Гласови'
+      picks: 'Picks'
+      participants: 'Participants'
+      votes_count: 'Votes'
       input_url: 'URL'
       project: 'Projekat'
       status: 'Status'
       assignee_fullname: 'Dodeljeni korisnik'
       assignee_email: 'E-pošta dodeljenog korisnika'
-      image_url: 'УРЛ слике'
+      image_url: 'Image URL'
     anonymous: 'Анонимоус'
   form_builder:
     default_select_field:
@@ -226,22 +226,22 @@ sr-Latn:
       title: 'Kraj ankete'
       description: "Prosledite svoje odgovore tako što ćete ispod izabrati „Prosledi anketu”."
     pdf_export:
-      personal_data: 'Лични подаци'
-      personal_data_explanation_ideation: "Ваш допринос ћемо послати на платформу за онлајн учешће %{organizationName}. Ако желите да ваше име буде приказано као аутор овог уноса и да примате ажурирања релевантна за ваш унос путем е-поште, попуните следећа поља на овој страници и ми ћемо креирати налог за вас. Ваша е-пошта неће бити јавна и користиће је само %{organizationName}. Ако желите да останете анонимни, или не пристајете да користимо ваше личне податке на овај начин, можете их оставити празне."
-      personal_data_explanation_native_survey: "Ваш допринос ћемо послати на платформу за онлајн учешће %{organizationName}. Ако желите да примате ажурирања релевантна за ваш унос путем е-поште, попуните следећа поља на овој страници и ми ћемо вам отворити налог. Ваши подаци неће бити јавни и користиће их само %{organizationName}. Ако се не слажете да ваше личне податке користимо на овај начин, можете их оставити празне."
-      first_name: 'име(а)'
-      last_name: 'Презиме'
-      email_address: 'Адреса Е-поште'
-      by_checking_this_box: "Означавањем овог поља сагласан сам да се моји подаци користе за креирање налога на платформи за учешће %{organizationName}."
-      optional: 'опционо'
-      permission: 'Дозвола'
-      choose_as_many: 'Изаберите колико желите'
-      this_answer: 'Овај одговор ће бити подељен само модераторима, а не јавности.'
-      page: 'Страна'
-      date_published: 'Датум објављивања (дд-мм-гггг)'
-      instructions: 'Упутства'
-      write_as_clearly: 'Напишите што јасније <b></b> — ови обрасци могу бити скенирани'
-      write_in_language: 'Напишите своје одговоре на истом језику као и овај образац'
+      personal_data: 'Personal data'
+      personal_data_explanation_ideation: "We will submit your input to %{organizationName}'s online participation platform. If you want your name to be displayed as author of this input and receive updates relevant to your input by email, please fill out the following fields on this page and we will create an account for you. Your email will not be public and will only be used by %{organizationName}. If you want to remain anonymous, or do not agree for us to use your personal data in this way, you can leave them empty."
+      personal_data_explanation_native_survey: "We will submit your input to %{organizationName}'s online participation platform. If you want to receive updates relevant to your input by email, please fill out the following fields on this page and we will create an account for you. Your data will not be public and will only be used by %{organizationName}. If you do not agree for us to use your personal data in this way, you can leave them empty."
+      first_name: 'First name(s)'
+      last_name: 'Last name'
+      email_address: 'Email address'
+      by_checking_this_box: "By checking this box I consent to my data being used to create an account on %{organizationName}'s participation platform."
+      optional: 'optional'
+      permission: 'Permission'
+      choose_as_many: 'Choose as many as you like'
+      this_answer: 'This answer will only be shared with moderators, and not to the public.'
+      page: 'Page'
+      date_published: 'Date Published (dd-mm-yyyy)'
+      instructions: 'Instructions'
+      write_as_clearly: 'Write as <b>clearly</b> as you can— these forms might be scanned'
+      write_in_language: 'Write your answers in the same language as this form'
   project_copy:
     title_suffix: 'Kopiraj'
   confirmations_mailer:
@@ -274,5 +274,5 @@ sr-Latn:
       hour_of_day: "%H:%M"
     pm: после подне
   voting_method:
-    default_voting_term_singular: "воте"
-    default_voting_term_plural: "гласови"
+    default_voting_term_singular: "vote"
+    default_voting_term_plural: "votes"
