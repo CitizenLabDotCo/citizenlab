@@ -13,14 +13,6 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 // components
 import { Image } from '@citizenlab/cl2-component-library';
 
-const LogoLink = styled(Link)`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  flex: '1 1 auto';
-`;
-
 const Logo = styled(Image)`
   max-width: 100%;
   max-height: 44px;
@@ -38,9 +30,9 @@ const TenantLogo = () => {
 
     if (tenantLogo) {
       return (
-        <LogoLink to="/" onlyActiveOnIndex={true}>
+        <Link to="/" onlyActiveOnIndex={true}>
           <Logo src={tenantLogo} alt={formatMessage(messages.logoAltText)} />
-        </LogoLink>
+        </Link>
       );
     }
   }
