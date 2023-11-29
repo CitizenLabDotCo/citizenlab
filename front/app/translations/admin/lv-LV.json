@@ -2380,7 +2380,7 @@
   "app.containers.admin.inviteUsersWithSeatsModal.confirmSeatUsageChange": "Apstipriniet ietekmi uz sēdekļu izmantošanu",
   "app.containers.admin.inviteUsersWithSeatsModal.infoMessage2": "Jūsu plānā ir sasniegts pieejamo vietu limits.",
   "app.containers.admin.project.permissions.permissionEveryoneEmailWarning": "Papildus reģistrētiem lietotājiem darbību varēs veikt arī nereģistrēti lietotāji, kuri norādīs e-pasta adresi un apstiprinās to. Izvēlieties šo iespēju, lai samazinātu šķēršļus dalībai.",
-  "app.containers.admin.project.permissions.permissionsAdministrators": "Administratori",
+  "app.containers.admin.project.permissions.permissionsAdministratorsAndManagers": "Šī projekta administratori un vadītāji",
   "app.containers.admin.project.permissions.permissionsAdminsAndCollaborators": "Tikai administratori un sadarbības partneri",
   "app.containers.admin.project.permissions.permissionsAdminsAndCollaboratorsTooltip": "Šo darbību var veikt tikai platformas administratori, mapju pārvaldnieki un projektu vadītāji.",
   "app.containers.admin.project.permissions.permissionsAnyoneLabel": "Jebkurš",
