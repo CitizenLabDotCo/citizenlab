@@ -41,5 +41,10 @@ export const getIntialTabs = (formatMessage: FormatMessage): ITab[] => {
       feature: 'volunteering',
       name: 'volunteering',
     },
+    {
+      label: formatMessage(messages.phaseAccessRights),
+      url: 'access-rights',
+      name: 'access-rights',
+    },
   ];
 };
