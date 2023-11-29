@@ -47,7 +47,7 @@ const VisitorsOverview = ({ uniqueVisitorDataDate }: Props) => {
   };
 
   if (!uniqueVisitorDataDate) {
-    return null;
+    return <Text>{formatMessage(messages.noData)}</Text>;
   }
 
   return (
