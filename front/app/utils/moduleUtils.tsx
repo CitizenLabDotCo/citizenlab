@@ -118,6 +118,11 @@ export interface OutletsPropertyMap {
     projectId: string;
     children: OutletRenderProps;
   };
+  'app.containers.Admin.project.phase.permissions.participationRights': {
+    project: IProjectData;
+    phase: IPhaseData;
+    children: OutletRenderProps;
+  };
   'app.containers.Admin.project.edit.permissions.moderatorRights': {
     projectId: string;
     children: OutletRenderProps;
