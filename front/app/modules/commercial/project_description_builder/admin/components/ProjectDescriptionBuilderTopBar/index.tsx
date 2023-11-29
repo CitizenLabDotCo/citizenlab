@@ -28,11 +28,10 @@ import { Locale } from 'typings';
 
 type ProjectDescriptionBuilderTopBarProps = {
   hasPendingState?: boolean;
-  localesWithError: Locale[];
+  hasError?: boolean;
   previewEnabled: boolean;
   setPreviewEnabled: React.Dispatch<React.SetStateAction<boolean>>;
   selectedLocale: Locale | undefined;
-  draftEditorData?: Record<string, SerializedNodes>;
   onSelectLocale: (args: {
     locale: Locale;
     editorData: SerializedNodes;
@@ -44,8 +43,7 @@ const ProjectDescriptionBuilderTopBar = ({
   setPreviewEnabled,
   selectedLocale,
   onSelectLocale,
-  draftEditorData,
-  localesWithError,
+  hasError,
   hasPendingState,
 }: ProjectDescriptionBuilderTopBarProps) => {
   const { projectId } = useParams() as { projectId: string };
@@ -56,7 +54,7 @@ const ProjectDescriptionBuilderTopBar = ({
   const { mutateAsync: addProjectDescriptionBuilderLayout } =
     useAddProjectDescriptionBuilderLayout();
 
-  const disableSave = localesWithError.length > 0;
+  const disableSave = !!hasError || !!hasPendingState;
 
   const goBack = () => {
     clHistory.push(`/admin/projects/${projectId}/settings/description`);
@@ -68,10 +66,7 @@ const ProjectDescriptionBuilderTopBar = ({
         setLoading(true);
         await addProjectDescriptionBuilderLayout({
           projectId,
-          craftjs_jsonmultiloc: {
-            ...draftEditorData,
-            [selectedLocale]: query.getSerializedNodes(),
-          },
+          craftjs_json: query.getSerializedNodes(),
         });
       } catch {
         // Do nothing
@@ -109,7 +104,6 @@ const ProjectDescriptionBuilderTopBar = ({
         </Box>
         <LocaleSwitcher
           selectedLocale={selectedLocale}
-          localesWithError={localesWithError}
           onSelectLocale={handleSelectLocale}
         />
         <Box ml="24px" />
@@ -129,7 +123,7 @@ const ProjectDescriptionBuilderTopBar = ({
           <FormattedMessage {...messages.viewProject} />
         </Button>
         <SaveButton
-          disabled={!!(disableSave || hasPendingState)}
+          disabled={disableSave}
           processing={loading}
           onClick={handleSave}
         />

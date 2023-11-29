@@ -2,23 +2,12 @@
 
 module Verification
   class VerificationService
-    @all_methods = []
-
-    class << self
-      attr_reader :all_methods
-
-      def add_method(verification_method)
-        @all_methods.reject! { |m| m.id == verification_method.id }
-        @all_methods << verification_method
-      end
-    end
-
     def initialize(sfxv_service = SideFxVerificationService.new)
       @sfxv_service = sfxv_service
     end
 
     def all_methods
-      self.class.all_methods
+      ::Verification.all_methods
     end
 
     def method_by_name(name)

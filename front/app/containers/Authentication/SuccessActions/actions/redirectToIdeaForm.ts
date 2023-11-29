@@ -45,15 +45,18 @@ export const redirectToIdeaForm =
     if (disabledReason !== 'postingLimitedMaxReached') {
       trackEventByName(tracks.redirectedToIdeaFrom);
       const positionParams = latLng ? { lat: latLng.lat, lng: latLng.lng } : {};
-      clHistory.push({
-        pathname: `/projects/${projectSlug}/ideas/new`,
-        search: stringify(
-          {
-            ...positionParams,
-            phase_id: phaseId,
-          },
-          { addQueryPrefix: true }
-        ),
-      });
+      clHistory.push(
+        {
+          pathname: `/projects/${projectSlug}/ideas/new`,
+          search: stringify(
+            {
+              ...positionParams,
+              phase_id: phaseId,
+            },
+            { addQueryPrefix: true }
+          ),
+        },
+        { scrollToTop: true }
+      );
     }
   };

@@ -6,7 +6,7 @@ describe CommentReactionPolicy do
   subject(:policy) { described_class.new(user, reaction) }
 
   let(:scope) { CommentReactionPolicy::Scope.new(user, Reaction) }
-  let(:project) { create(:continuous_project) }
+  let(:project) { create(:single_phase_ideation_project) }
   let(:idea) { create(:idea, project: project, phases: project.phases) }
   let(:comment) { create(:comment, post: idea) }
 
@@ -77,25 +77,25 @@ describe CommentReactionPolicy do
     end
   end
 
-  # TODO: JS Bug - previously worked because it was a timeline project with no phase so returned 'project_inactive' as it had no current context
-  # context 'for a mortal user who owns the reaction on a private project' do
-  #   let(:project) { create(:private_admins_project) }
-  #   let!(:reaction) { create(:reaction, reactable: comment) }
-  #   let(:user) { reaction.user }
-  #
-  #   it { is_expected.to permit(:show) }
-  #   it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
-  #   it { expect { policy.up? }.to raise_error(Pundit::NotAuthorizedError) }
-  #   it { is_expected.not_to permit(:down) }
-  #   it { expect { policy.destroy? }.to raise_error(Pundit::NotAuthorizedError) }
-  #
-  #   it 'does not index the reaction' do
-  #     expect(scope.resolve.size).to eq 1
-  #   end
-  # end
+  # TODO: JS Bug - private admins project has no phases which is why this is passing - should be because only visible to admins
+  context 'for a mortal user who owns the reaction on a private project' do
+    let(:project) { create(:private_admins_project) }
+    let!(:reaction) { create(:reaction, reactable: comment) }
+    let(:user) { reaction.user }
+
+    it { is_expected.to permit(:show) }
+    it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
+    it { expect { policy.up? }.to raise_error(Pundit::NotAuthorizedError) }
+    it { is_expected.not_to permit(:down) }
+    it { expect { policy.destroy? }.to raise_error(Pundit::NotAuthorizedError) }
+
+    it 'does not index the reaction' do
+      expect(scope.resolve.size).to eq 1
+    end
+  end
 
   context 'for a mortal user who owns the reaction on a project where commenting is disabled' do
-    let(:project) { create(:continuous_project, phase_attrs: { commenting_enabled: false }) }
+    let(:project) { create(:single_phase_ideation_project, phase_attrs: { commenting_enabled: false }) }
     let!(:reaction) { create(:reaction, reactable: comment) }
     let(:user) { reaction.user }
 
@@ -111,7 +111,7 @@ describe CommentReactionPolicy do
   end
 
   context 'for a mortal user who owns the reaction on a project where commenting is only allowed by admins' do
-    let(:project) { create(:continuous_project, phase_attrs: { with_permissions: true }) }
+    let(:project) { create(:single_phase_ideation_project, phase_attrs: { with_permissions: true }) }
     let!(:reaction) { create(:reaction, reactable: comment) }
     let(:user) { reaction.user }
 

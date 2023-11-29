@@ -19,7 +19,7 @@ const ProjectSection = styled.div`
   padding-top: 40px;
   padding-bottom: 40px;
 
-  ${media.phone`
+  ${media.tablet`
     padding-bottom: 40px;
     padding-left: ${DEFAULT_PADDING};
     padding-right: ${DEFAULT_PADDING};
@@ -33,7 +33,7 @@ const Projects = ({
 }) => {
   return (
     <Box bg={colors.background}>
-      <Box maxWidth="1150px" margin="0 auto">
+      <Box maxWidth="1200px" margin="0 auto">
         <ProjectSection>
           <ProjectAndFolderCards
             publicationStatusFilter={['published', 'archived']}

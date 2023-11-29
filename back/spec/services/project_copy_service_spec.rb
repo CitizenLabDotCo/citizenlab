@@ -33,7 +33,7 @@ describe ProjectCopyService do
     it 'successfully copies over native surveys and responses' do
       IdeaStatus.create_defaults
 
-      open_ended_project = create(:continuous_native_survey_project, title_multiloc: { en: 'open ended' })
+      open_ended_project = create(:single_phase_native_survey_project, title_multiloc: { en: 'open ended' })
       form1 = create(:custom_form, participation_context: open_ended_project.phases.first)
       field1 = create(:custom_field_linear_scale, :for_custom_form, resource: form1)
       create(:idea, project: open_ended_project, custom_field_values: { field1.key => 1 }, phases: open_ended_project.phases, creation_phase: open_ended_project.phases.first)
@@ -103,7 +103,7 @@ describe ProjectCopyService do
     end
 
     it 'skips custom field values with ID references' do
-      project = create(:continuous_native_survey_project)
+      project = create(:single_phase_native_survey_project)
       custom_form = create(:custom_form, participation_context: project)
       supported_fields = %i[custom_field_number custom_field_linear_scale custom_field_checkbox].map do |factory|
         create(factory, :for_custom_form, resource: custom_form)
@@ -198,7 +198,7 @@ describe ProjectCopyService do
 
     describe 'when copying records for models that use acts_as_list gem' do
       it 'copies exact :ordering values' do
-        project = create(:continuous_project)
+        project = create(:single_phase_ideation_project)
         custom_form = create(
           :custom_form,
           participation_context_id: project.id,

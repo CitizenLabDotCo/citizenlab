@@ -25,7 +25,7 @@ RSpec.describe EmailCampaigns::Campaigns::IdeaPublished do
       before { IdeaStatus.create_defaults }
 
       let(:idea) do
-        project = create(:continuous_native_survey_project)
+        project = create(:single_phase_native_survey_project)
         create(:idea, author: user, project: project, creation_phase: project.phases.first)
       end
 

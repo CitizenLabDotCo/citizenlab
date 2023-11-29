@@ -3,14 +3,12 @@
 require 'rails_helper'
 
 describe SideFxPhaseService do
-  let(:sfx_pc) { instance_double(SideFxParticipationContextService) }
-  let(:service) { described_class.new(sfx_pc) }
+  let(:service) { described_class.new }
   let(:user) { create(:user) }
   let(:phase) { create(:phase) }
 
   describe 'after_create' do
     it "logs a 'created' action when a phase is created" do
-      expect(sfx_pc).to receive(:after_create).with(phase, user)
       expect { service.after_create(phase, user) }
         .to have_enqueued_job(LogActivityJob)
         .with(phase, 'created', user, phase.created_at.to_i, project_id: phase.project_id)
@@ -18,14 +16,39 @@ describe SideFxPhaseService do
 
     it 'runs the description through the necessary steps' do
       expect_any_instance_of(TextImageService).to receive(:swap_data_images_multiloc).with(phase.description_multiloc, field: :description_multiloc, imageable: phase).and_return(phase.description_multiloc)
-      expect(sfx_pc).to receive(:after_create).with(phase, user)
       service.after_create(phase, user)
+    end
+
+    it { expect { service.after_create(phase, user) }.to have_enqueued_job(Surveys::WebhookManagerJob) }
+
+    {
+      description_multiloc: { 'en' => 'changed' },
+      voting_method: 'multiple_voting',
+      voting_max_votes_per_idea: 9,
+      voting_max_total: 11,
+      voting_min_total: 2,
+      posting_enabled: false,
+      posting_method: 'limited',
+      posting_limited_max: 3,
+      commenting_enabled: false,
+      reacting_enabled: false,
+      reacting_like_method: 'limited',
+      reacting_like_limited_max: 9,
+      reacting_dislike_enabled: false,
+      presentation_mode: 'map'
+    }.each do |attribute, new_value|
+      it "logs a '#{attribute}_changed' action job when the project has changed" do
+        old_value = phase[attribute]
+        phase.update!(attribute => new_value)
+        expect { service.after_update(phase, user) }
+          .to have_enqueued_job(LogActivityJob)
+          .with(phase, "changed_#{attribute}", user, phase.updated_at.to_i, project_id: phase.project.id, payload: { change: [old_value, new_value] })
+      end
     end
   end
 
   describe 'before_update' do
     it 'runs the description through the text image service' do
-      expect(sfx_pc).to receive(:before_update).with(phase, user)
       expect_any_instance_of(TextImageService).to receive(:swap_data_images_multiloc).with(phase.description_multiloc, field: :description_multiloc, imageable: phase).and_return(phase.description_multiloc)
       service.before_update(phase, user)
     end
@@ -34,25 +57,22 @@ describe SideFxPhaseService do
   describe 'after_update' do
     it "logs a 'changed' action job when the phase has changed" do
       phase.update(title_multiloc: { en: 'changed' })
-      expect(sfx_pc).to receive(:after_update).with(phase, user)
       expect { service.after_update(phase, user) }
         .to have_enqueued_job(LogActivityJob)
         .with(phase, 'changed', user, phase.updated_at.to_i, project_id: phase.project_id)
     end
+
+    it { expect { service.after_update(phase, user) }.to have_enqueued_job(Surveys::WebhookManagerJob) }
   end
 
   describe 'before_destroy' do
-    it 'calls before_destroy on SideFxParticipationContextService' do
-      expect(sfx_pc).to receive(:before_destroy).with(phase, user)
-      service.before_destroy(phase, user)
-    end
+    it { expect { service.before_destroy(phase, user) }.to have_enqueued_job(Surveys::WebhookManagerJob) }
   end
 
   describe 'after_destroy' do
     it "logs a 'deleted' action job when the phase is destroyed" do
       freeze_time do
         frozen_phase = phase.destroy
-        expect(sfx_pc).to receive(:after_destroy).with(frozen_phase, user)
         expect { service.after_destroy(frozen_phase, user) }
           .to have_enqueued_job(LogActivityJob)
       end
@@ -68,6 +88,28 @@ describe SideFxPhaseService do
         anything
       )
       service.after_delete_inputs phase, user
+    end
+  end
+
+  context 'with phase permissions' do
+    subject(:service) do
+      described_class.new.tap { |s| s.permissions_service = permissions_service }
+    end
+
+    let(:permissions_service) { instance_double(PermissionsService) }
+
+    describe 'after_create' do
+      specify do
+        expect(permissions_service).to receive(:update_permissions_for_scope).with(phase)
+        service.after_create(phase, user)
+      end
+    end
+
+    describe 'after_update' do
+      specify do
+        expect(permissions_service).to receive(:update_permissions_for_scope).with(phase)
+        service.after_update(phase, user)
+      end
     end
   end
 end

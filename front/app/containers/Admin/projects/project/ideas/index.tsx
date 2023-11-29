@@ -11,7 +11,9 @@ import { FormattedMessage } from 'utils/cl-intl';
 // components
 import { Box, Title, Text } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
-import PostManager, { TFilterMenu } from 'components/admin/PostManager';
+import InputManager, {
+  TFilterMenu,
+} from 'components/admin/PostManager/InputManager';
 import AnalysisBanner from './AnalysisBanner';
 import NewIdeaButton from './NewIdeaButton';
 
@@ -85,8 +87,7 @@ const AdminProjectIdeas = () => {
       </Box>
 
       {project && (
-        <PostManager
-          type="ProjectIdeas"
+        <InputManager
           projectId={project.data.id}
           phases={phases?.data}
           phaseId={phaseId}

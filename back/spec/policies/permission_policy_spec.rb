@@ -69,7 +69,7 @@ describe PermissionPolicy do
   end
 
   context 'when user is moderator of the corresponding project' do
-    let(:project) { create(:continuous_project, phase_attrs: { with_permissions: true }) }
+    let(:project) { create(:single_phase_ideation_project, phase_attrs: { with_permissions: true }) }
     let(:user) { create(:project_moderator, projects: [project]) }
     let(:permission) { project.phases.first.permissions.first }
 

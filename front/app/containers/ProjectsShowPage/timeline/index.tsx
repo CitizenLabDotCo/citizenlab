@@ -95,7 +95,7 @@ const ProjectTimelineContainer = ({ projectId, className }: Props) => {
 
   const selectPhase = (phase: IPhaseData) => {
     if (!phases) return;
-    setPhaseURL(phase.id, phases.data, project.data);
+    setPhaseURL(phase, phases.data, project.data);
   };
 
   if (selectedPhase) {

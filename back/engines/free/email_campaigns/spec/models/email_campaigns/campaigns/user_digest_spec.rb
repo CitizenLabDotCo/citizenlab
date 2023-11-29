@@ -58,7 +58,7 @@ RSpec.describe EmailCampaigns::Campaigns::UserDigest do
 
     it 'does not include native survey responses' do
       IdeaStatus.create_defaults
-      project = create(:continuous_native_survey_project)
+      project = create(:single_phase_native_survey_project)
       response = create(:idea, project: project, creation_phase: project.phases.first)
 
       command = campaign.generate_commands(recipient: user).first

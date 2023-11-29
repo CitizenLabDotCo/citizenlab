@@ -170,6 +170,7 @@ const InitiativePreview = ({
       <ViewInitiativeButton
         fullWidth={true}
         linkTo={`/initiatives/${initiative.data.attributes.slug}?go_back=true`}
+        scrollToTop
       >
         <FormattedMessage {...messages.seeInitiative} />
       </ViewInitiativeButton>

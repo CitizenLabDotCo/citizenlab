@@ -2,8 +2,6 @@
 
 FactoryBot.define do
   factory :project do
-    ideas_order { nil }
-    input_term { nil }
     admin_publication_attributes { {} }
     title_multiloc do
       {
@@ -29,8 +27,8 @@ FactoryBot.define do
       with_permissions { false }
     end
 
-    after(:create) do |phase, evaluator|
-      PermissionsService.new.update_permissions_for_scope(phase) if evaluator.with_permissions
+    after(:create) do |project, evaluator|
+      PermissionsService.new.update_permissions_for_scope(project) if evaluator.with_permissions
     end
 
     trait :that_can_have_children do
@@ -404,16 +402,6 @@ FactoryBot.define do
 
     factory :private_admins_project do
       visible_to { :admins }
-      # TODO: JS this needed?
-      # after(:create) do |project, _evaluator|
-      #   project.phases << create(
-      #     :phase,
-      #     project: project,
-      #     participation_method: 'ideation',
-      #     start_at: Faker::Date.between(from: 6.months.ago, to: Time.zone.now),
-      #     end_at: nil
-      #   )
-      # end
     end
 
     factory :private_groups_project do
@@ -430,19 +418,23 @@ FactoryBot.define do
         end
       end
 
-      factory :private_groups_continuous_project do
-        after(:create) do |project, _evaluator|
+      factory :private_groups_single_phase_project do
+        transient do
+          phase_attrs { {} }
+        end
+        after(:create) do |project, evaluator|
           project.phases << create(
             :phase,
             project: project,
             participation_method: 'ideation',
             start_at: Faker::Date.between(from: 6.months.ago, to: Time.zone.now),
-            end_at: nil
+            end_at: nil,
+            **evaluator.phase_attrs
           )
         end
       end
 
-      factory :private_groups_continuous_budgeting_project do
+      factory :private_groups_single_phase_budgeting_project do
         after(:create) do |project, _evaluator|
           project.phases << create(
             :phase,
@@ -457,13 +449,13 @@ FactoryBot.define do
       end
     end
 
-    # Old continuous projects
-    factory :open_ended_base_project do
+    # Old continuous projects - now projects with single open ended phase
+    factory :single_phase_base_project do
       transient do
         phase_attrs { {} }
       end
 
-      factory :continuous_project do
+      factory :single_phase_ideation_project do
         after(:create) do |project, evaluator|
           project.phases << create(
             :phase,
@@ -476,7 +468,7 @@ FactoryBot.define do
         end
       end
 
-      factory :continuous_native_survey_project do
+      factory :single_phase_native_survey_project do
         after(:create) do |project, evaluator|
           project.phases << create(
             :native_survey_phase,
@@ -488,7 +480,7 @@ FactoryBot.define do
         end
       end
 
-      factory :continuous_survey_project do
+      factory :single_phase_typeform_survey_project do
         after(:create) do |project, evaluator|
           project.phases << create(
             :typeform_survey_phase,
@@ -500,7 +492,7 @@ FactoryBot.define do
         end
       end
 
-      factory :continuous_google_survey_project do
+      factory :single_phase_google_survey_project do
         after(:create) do |project, evaluator|
           project.phases << create(
             :typeform_survey_phase,
@@ -514,7 +506,7 @@ FactoryBot.define do
         end
       end
 
-      factory :continuous_document_annotation_project do
+      factory :single_phase_document_annotation_project do
         after(:create) do |project, evaluator|
           project.phases << create(
             :document_annotation_phase,
@@ -526,7 +518,7 @@ FactoryBot.define do
         end
       end
 
-      factory :continuous_budgeting_project do
+      factory :single_phase_budgeting_project do
         after(:create) do |project, evaluator|
           project.phases << create(
             :budgeting_phase,
@@ -538,7 +530,7 @@ FactoryBot.define do
         end
       end
 
-      factory :continuous_multiple_voting_project do
+      factory :single_phase_multiple_voting_project do
         after(:create) do |project, evaluator|
           project.phases << create(
             :multiple_voting_phase,
@@ -551,7 +543,7 @@ FactoryBot.define do
         end
       end
 
-      factory :continuous_single_voting_project do
+      factory :single_phase_single_voting_project do
         after(:create) do |project, evaluator|
           project.phases << create(
             :single_voting_phase,
@@ -563,7 +555,7 @@ FactoryBot.define do
         end
       end
 
-      factory :continuous_poll_project do
+      factory :single_phase_poll_project do
         after(:create) do |project, evaluator|
           project.phases << create(
             :poll_phase,
@@ -575,7 +567,7 @@ FactoryBot.define do
         end
       end
 
-      factory :continuous_volunteering_project do
+      factory :single_phase_volunteering_project do
         after(:create) do |project, evaluator|
           project.phases << create(
             :volunteering_phase,
@@ -587,7 +579,7 @@ FactoryBot.define do
         end
       end
 
-      factory :continuous_information_project do
+      factory :single_phase_information_project do
         after(:create) do |project, evaluator|
           project.phases << create(
             :information_phase,

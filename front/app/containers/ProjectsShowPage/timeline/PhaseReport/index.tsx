@@ -1,8 +1,9 @@
 import React from 'react';
 import useReportLayout from 'api/report_layout/useReportLayout';
 import useReportLocale from 'containers/Admin/reporting/hooks/useReportLocale';
-import Content from 'containers/Admin/reporting/containers/FullScreenReport/Content';
 import { Box } from '@citizenlab/cl2-component-library';
+import Editor from 'containers/Admin/reporting/components/ReportBuilder/Editor';
+import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
 
 interface Props {
   reportId: string;
@@ -18,7 +19,11 @@ const PhaseReport = ({ reportId }: Props) => {
 
   return (
     <Box w="100%" display="flex" justifyContent="center">
-      <Content editorData={editorData} />
+      <Box maxWidth="800px" w="100%">
+        <Editor isPreview={true}>
+          {editorData && <ContentBuilderFrame editorData={editorData} />}
+        </Editor>
+      </Box>
     </Box>
   );
 };

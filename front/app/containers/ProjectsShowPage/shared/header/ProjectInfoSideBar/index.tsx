@@ -139,7 +139,6 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
   const { formatMessage } = useIntl();
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
   const [shareModalOpened, setShareModalOpened] = useState(false);
-  const { data: surveySubmissionCount } = useFormSubmissionCount({ projectId });
   const isAdminUser = !isNilOrError(authUser)
     ? isAdmin({ data: authUser.data })
     : false;
@@ -150,6 +149,9 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
     );
   }, [phases]);
 
+  const phaseId = currentPhase?.id;
+  const { data: surveySubmissionCount } = useFormSubmissionCount({ phaseId });
+
   const scrollTo = useCallback(
     (id: string, shouldSelectCurrentPhase = true) =>
       (event: FormEvent) => {
@@ -157,7 +159,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
         if (!phases || !project) return;
 
         if (currentPhase && shouldSelectCurrentPhase) {
-          setPhaseUrl(currentPhase.id, phases.data, project.data);
+          setPhaseUrl(currentPhase, phases.data, project.data);
         }
 
         setTimeout(() => {
@@ -366,9 +368,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                   )}
                 </ListItem>
               )}
-            {((projectType === 'continuous' &&
-              projectParticipationMethod === 'native_survey') ||
-              currentPhase?.attributes.participation_method ===
+            {(currentPhase?.attributes.participation_method ===
                 'native_survey') &&
               surveySubmissionCount && (
                 <Box>

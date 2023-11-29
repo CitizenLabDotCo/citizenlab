@@ -7,7 +7,7 @@ describe IdeaCommentPolicy do
 
   let(:scope) { IdeaCommentPolicy::Scope.new(user, idea.comments) }
 
-  let!(:project) { create(:continuous_project) }
+  let!(:project) { create(:single_phase_ideation_project) }
   let!(:idea) { create(:idea, project: project, phases: project.phases) }
   let!(:comment) { create(:comment, post: idea) }
   let!(:user) { create(:user) }
@@ -86,7 +86,7 @@ describe IdeaCommentPolicy do
 
   context 'for a visitor on a comment on an idea in a private groups project' do
     let!(:user) { nil }
-    let!(:project) { create(:private_groups_continuous_project) }
+    let!(:project) { create(:private_groups_single_phase_project) }
 
     it { is_expected.not_to permit(:show)    }
     it { is_expected.not_to permit(:create)  }
@@ -99,7 +99,7 @@ describe IdeaCommentPolicy do
   end
 
   context "for a user on a comment on an idea in a private groups project where she's not member of a manual group with access" do
-    let!(:project) { create(:private_groups_continuous_project) }
+    let!(:project) { create(:private_groups_single_phase_project) }
     let!(:comment) { create(:comment, post: idea, author: user) }
 
     it { is_expected.not_to permit(:show)    }
@@ -113,7 +113,7 @@ describe IdeaCommentPolicy do
   end
 
   context "for a user on a comment on an idea in a private groups project where she's a member of a manual group with access" do
-    let!(:project) { create(:private_groups_continuous_project, user: user) }
+    let!(:project) { create(:private_groups_single_phase_project, user: user) }
     let!(:comment) { create(:comment, post: idea, author: user) }
 
     it { is_expected.to     permit(:show)    }
@@ -129,7 +129,7 @@ describe IdeaCommentPolicy do
   context 'for a mortal user who owns the comment in a project where commenting is not permitted' do
     let!(:comment) { create(:comment, post: idea, author: user) }
     let!(:project) do
-      create(:continuous_budgeting_project, phase_attrs: { with_permissions: true }).tap do |project|
+      create(:single_phase_budgeting_project, phase_attrs: { with_permissions: true }).tap do |project|
         project.phases.first.permissions.find_by(action: 'commenting_idea')
           .update!(permitted_by: 'admins_moderators')
       end

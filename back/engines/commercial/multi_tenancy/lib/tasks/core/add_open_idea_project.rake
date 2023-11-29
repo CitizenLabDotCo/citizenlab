@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# TODO: JS - Is this rake task needed any more?
 namespace :fix_existing_tenants do
   desc 'Add the open idea project to all existing tenants and assign all ideas that do not have project to the open idea project.'
   task add_open_idea_project: [:environment] do |_t, _args|
@@ -21,7 +22,6 @@ namespace :fix_existing_tenants do
                                 end,
           internal_role: 'open_idea_box',
           presentation_mode: 'card',
-          process_type: 'continuous',
           participation_method: 'ideation',
           remote_header_bg_url: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_with_speech_bubbles.jpeg',
           posting_enabled: true,

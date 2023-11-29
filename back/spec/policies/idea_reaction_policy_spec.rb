@@ -6,7 +6,7 @@ describe IdeaReactionPolicy do
   subject(:policy) { described_class.new(user, reaction) }
 
   let(:scope) { IdeaReactionPolicy::Scope.new(user, Reaction) }
-  let(:project) { create(:continuous_project) }
+  let(:project) { create(:single_phase_ideation_project) }
   let(:reactable) { create(:idea, project: project, phases: project.phases) }
   let!(:reaction) { create(:reaction, reactable: reactable) }
 
@@ -92,7 +92,7 @@ describe IdeaReactionPolicy do
 
   context 'for a mortal user who owns the reaction on an idea in a project where reacting is disabled' do
     let!(:user) { create(:user) }
-    let!(:project) { create(:continuous_project, reacting_enabled: false) }
+    let!(:project) { create(:single_phase_ideation_project, phase_attrs: { reacting_enabled: false }) }
     let!(:idea) { create(:idea, project: project) }
     let!(:reaction) { create(:reaction, reactable: idea, user: user) }
 
@@ -112,7 +112,7 @@ describe IdeaReactionPolicy do
     let!(:idea) { create(:idea, project: project) }
     let!(:reaction) { create(:reaction, reactable: idea, user: user) }
     let!(:project) do
-      create(:continuous_project, phase_attrs: { with_permissions: true }).tap do |project|
+      create(:single_phase_ideation_project, phase_attrs: { with_permissions: true }).tap do |project|
         project.phases.first.permissions.find_by(action: 'reacting_idea')
           .update!(permitted_by: 'admins_moderators')
       end

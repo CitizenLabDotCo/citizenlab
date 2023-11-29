@@ -19,9 +19,7 @@ module MultiTenancy
             'fr-BE' => 'Chaque petit geste compte'
           },
           header_bg: rand(25) == 0 ? nil : Rails.root.join("spec/fixtures/image#{rand(20)}.png").open,
-          process_type: 'timeline',
           areas: Array.new(rand(3)) { rand(Area.count) }.uniq.map { |offset| Area.offset(offset).first },
-          participation_method: 'volunteering',
           admin_publication_attributes: {
             publication_status: 'published'
           }

@@ -29,7 +29,7 @@ resource 'Ideas' do
     end
 
     let(:idea) { build(:idea) }
-    let(:project) { create(:continuous_project) }
+    let(:project) { create(:single_phase_ideation_project) }
     let(:project_id) { project.id }
     let(:publication_status) { 'published' }
     let(:title_multiloc) { idea.title_multiloc }
@@ -125,7 +125,7 @@ resource 'Ideas' do
   end
 
   describe 'Update' do
-    let(:project) { create(:continuous_project) }
+    let(:project) { create(:single_phase_ideation_project) }
     let(:form) { create(:custom_form, :with_default_fields, participation_context: project) }
     let(:idea) { create(:idea, author: user, project: project, custom_field_values: { extra_field_name1 => 'test value' }) }
     let(:id) { idea.id }

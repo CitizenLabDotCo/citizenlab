@@ -8,7 +8,7 @@ resource 'Comments' do
 
   before do
     header 'Content-Type', 'application/json'
-    @project = create(:continuous_project)
+    @project = create(:single_phase_ideation_project)
     @idea = create(:idea, project: @project)
   end
 

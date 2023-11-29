@@ -8,7 +8,7 @@ const EMPTY_OBJ = {};
 
 const Portals = () => (
   <>
-    <div id="modal-portal" />
+    <div id="modal-portal" style={{ position: 'absolute', top: 0, left: 0, width: '100%' }} />
     <div id="topbar-portal" />
     <div id="mobile-nav-portal" />
   </>
@@ -34,6 +34,6 @@ export default (Story) => {
           </ThemeContext>
         </ResetCacheContext>
       </OutletsContext.Provider>
-    </QueryClientProvider>
+    </QueryClientProvider >
   );
 };

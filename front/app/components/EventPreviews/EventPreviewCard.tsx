@@ -84,7 +84,7 @@ const EventPreviewCard = ({ event }: EventPreviewCardProps) => {
       role="button"
       h="58px"
       onClick={() => {
-        clHistory.push(`/events/${event.id}`);
+        clHistory.push(`/events/${event.id}`, { scrollToTop: true });
       }}
       py="4px"
       flexShrink={0}

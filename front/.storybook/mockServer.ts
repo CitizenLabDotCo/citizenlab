@@ -27,6 +27,21 @@ import basketsEndpoints from '../app/api/baskets/__mocks__/_mockServer';
 // avatars mock data
 import avatarsEndpoints from '../app/api/avatars/__mocks__/_mockServer';
 
+// reports mock data
+import reportsEndpoints from '../app/api/reports/__mocks__/_mockServer';
+import reportLayoutEndpoints from '../app/api/report_layout/__mocks__/_mockServer';
+
+// analytics mock data
+import analyticsEndpoints from '../app/api/analytics/__mocks__/_mockServer';
+import usersByGenderEndpoints from '../app/api/users_by_gender/__mocks__/_mockServer';
+import usersByBirthyearEndpoints from '../app/api/users_by_birthyear/__mocks__/_mockServer';
+
+// survey results mock data
+import surveyResultsEndpoints from '../app/api/survey_results/__mocks__/_mockServer';
+
+// graph data units mock data
+import graphDataUnitsEndpoints from '../app/api/graph_data_units/__mocks__/_mockServer';
+
 const endpoints = {
   ...appConfigurationEndpoints,
   ...usersMeEndpoints,
@@ -48,7 +63,18 @@ const endpoints = {
   
   ...basketsEndpoints,
 
-  ...avatarsEndpoints
+  ...avatarsEndpoints,
+
+  ...reportsEndpoints,
+  ...reportLayoutEndpoints,
+
+  ...analyticsEndpoints,
+  ...usersByGenderEndpoints,
+  ...usersByBirthyearEndpoints,
+
+  ...surveyResultsEndpoints,
+
+  ...graphDataUnitsEndpoints
 }
 
 export default endpoints;

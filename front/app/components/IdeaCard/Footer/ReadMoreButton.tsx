@@ -6,21 +6,21 @@ import messages from '../messages';
 import { useIntl } from 'utils/cl-intl';
 
 interface Props {
-  slug: string;
+  onClick?: () => void;
 }
 
-const ReadMoreButton = ({ slug }: Props) => {
+const ReadMoreButton = ({ onClick }: Props) => {
   const { formatMessage } = useIntl();
 
   return (
     <Button
-      linkTo={`/ideas/${slug}?go_back=true`}
       size="s"
       textColor={colors.coolGrey700}
       mr="8px"
       m="0px"
       p="0px"
       buttonStyle="text"
+      onClick={onClick}
     >
       <u>{formatMessage(messages.readMore)}</u>
     </Button>
