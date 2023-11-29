@@ -45,7 +45,7 @@ export const HeaderImageBackground = styled.div<{ src: string | null }>`
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
-  background-image: url(${({ src }) => src});
+  ${({ src }) => src && `background-image: url(${src});`}
 `;
 
 export const HeaderImageOverlay = styled.div<{

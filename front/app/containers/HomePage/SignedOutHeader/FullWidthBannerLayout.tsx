@@ -31,6 +31,7 @@ const FullWidthBannerLayout = ({ className, homepageSettings }: Props) => {
         <HeaderImage id="hook-header-image">
           <HeaderImageBackground
             data-testid="full-width-banner-layout-header-image"
+            data-cy="e2e-full-width-banner-layout-header-image"
             src={headerImage || null}
           />
           {homepageSettingColor &&

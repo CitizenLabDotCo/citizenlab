@@ -223,7 +223,7 @@ const HomepageBannerSettings = () => {
     setProp((props: Props) => {
       props.image = {
         dataCode: undefined,
-        imageUrl: '',
+        imageUrl: undefined,
       };
     });
     setImageFiles([]);

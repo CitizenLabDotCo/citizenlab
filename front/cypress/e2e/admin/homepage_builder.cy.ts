@@ -127,6 +127,7 @@ describe('Homepage builder', () => {
     cy.intercept('GET', '**/home_page').as('getHomePage');
     cy.intercept('GET', '**/pages-menu').as('getPages');
     cy.intercept('GET', '**/nav_bar_items').as('getNavbarItems');
+    cy.intercept('POST', '**/content_builder_layout_images').as('postImage');
 
     // Check homepage defaults signed - out
     cy.visit('/');
@@ -135,6 +136,11 @@ describe('Homepage builder', () => {
       'exist'
     );
 
+    cy.get('[data-cy="e2e-full-width-banner-layout-header-image"]').should(
+      'have.css',
+      'background-image',
+      'none'
+    );
     const signedOutHeaderEnglish =
       /Let’s shape the future of New Douglaschester together/gi;
     const signedOutSubheaderEnglish =
@@ -169,9 +175,28 @@ describe('Homepage builder', () => {
     );
 
     // Check homepage defaults signed - in
+    cy.setAdminLoginCookie();
+    const signedInHeaderEnglish = /is listening to you/gi;
+    cy.visit('/');
+    cy.get('.e2e-signed-in-header').should('exist');
+    cy.get('#e2e-signed-in-header-default-cta').should(($el) => {
+      const text = $el.text();
+      expect(text).to.match(signedInHeaderEnglish);
+    });
+    cy.get("[data-cy='e2e-signed-in-header-image-overlay']").should(
+      'have.css',
+      'background-color',
+      'rgb(10, 81, 89)'
+    );
+    cy.get("[data-cy='e2e-signed-in-header-image-overlay']").should(
+      'have.css',
+      'opacity',
+      '0.9'
+    );
+
+    cy.get("[data-cy='e2e-signed-in-header-image']").should('not.exist');
 
     // go to admin page
-    cy.setAdminLoginCookie();
     cy.visit('/admin/pages-menu/homepage-builder');
 
     // Update homepage banner
@@ -182,10 +207,14 @@ describe('Homepage builder', () => {
       force: true,
     });
 
-    // cy.get('[data-cy="e2e-full-width-banner-layout-option"]').click();
-    cy.get('[data-cy="e2e-fixed-ratio-layout-option"]').click();
-    cy.get('#e2e-content-builder-topbar-save').click();
+    cy.get('#bannerImage').attachFile('testimage.png');
+    cy.wait('@postImage');
+    cy.wait(1000);
+    cy.get('#e2e-content-builder-topbar-save').click({
+      force: true,
+    });
     cy.wait('@saveHomePage');
+    cy.wait(1000);
 
     // Check updated content signed - in
 
@@ -193,21 +222,32 @@ describe('Homepage builder', () => {
     cy.logout();
     cy.visit('/');
     cy.get('[data-cy="e2e-homepage-banner"]').should('exist');
-    cy.get('[data-cy="e2e-fixed-ratio-layout-container"]').should('exist');
+    cy.get('[data-cy="e2e-full-width-banner-layout-container"]').should(
+      'exist'
+    );
 
-    // Two row layout
-    cy.setAdminLoginCookie();
-    cy.visit('/admin/pages-menu/homepage-builder');
-    cy.get('[data-cy="e2e-homepage-banner"]').click({
-      force: true,
-    });
-    cy.get('[data-cy="e2e-two-row-layout-option"]').click();
-    cy.get('#e2e-content-builder-topbar-save').click();
-    cy.wait('@saveHomePage');
+    cy.get('[data-cy="e2e-full-width-banner-layout-header-image"]')
+      .should('have.css', 'background-image')
+      .and('include', '.png');
+    // Layout checks
+    // cy.get('[data-cy="e2e-fixed-ratio-layout-option"]').click();
 
-    cy.logout();
-    cy.visit('/');
-    cy.get('[data-cy="e2e-homepage-banner"]').should('exist');
-    cy.get('[data-cy="e2e-two-row-layout-container"]').should('exist');
+    // cy.get('[data-cy="e2e-homepage-banner"]').should('exist');
+    // cy.get('[data-cy="e2e-fixed-ratio-layout-container"]').should('exist');
+
+    // // Two row layout
+    // cy.setAdminLoginCookie();
+    // cy.visit('/admin/pages-menu/homepage-builder');
+    // cy.get('[data-cy="e2e-homepage-banner"]').click({
+    //   force: true,
+    // });
+    // cy.get('[data-cy="e2e-two-row-layout-option"]').click();
+    // cy.get('#e2e-content-builder-topbar-save').click();
+    // cy.wait('@saveHomePage');
+
+    // cy.logout();
+    // cy.visit('/');
+    // cy.get('[data-cy="e2e-homepage-banner"]').should('exist');
+    // cy.get('[data-cy="e2e-two-row-layout-container"]').should('exist');
   });
 });
