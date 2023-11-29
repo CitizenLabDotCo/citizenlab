@@ -10,6 +10,8 @@ da:
       comment_author: '%{authorName} kommenterede:'
       idea_author: '%{authorName} har indsendt et indlæg:'
       initiative_author: '%{authorName} har indsendt et forslag:'
-      this_post_was_flagged: >
-        <p>Dette indlæg blev automatisk opdaget som værende potentielt indeholdende upassende indhold. Vi sender dig denne meddelelse, så du kan gennemgå indlægget i overensstemmelse med dine egne retningslinjer for moderation.</p><p>Hvis indlægget ikke indeholder upassende indhold, kan du fjerne advarslen via din platform i fanen Aktivitet i administrationspanelet.</p>
+      automatically_flagged: >
+        Dette indlæg blev automatisk registreret som potentielt indeholdende upassende indhold. Vi sender dig denne meddelelse, så du kan gennemgå indlægget i overensstemmelse med jeres egne retningslinjer for moderering.
+      how_to_review: >
+        Hvis opslaget ikke indeholder upassende indhold, kan du fjerne advarslen via din platform under fanen Aktivitet i administratorpanelet.
       cta_review_post: 'Gennemgå indlæg'
