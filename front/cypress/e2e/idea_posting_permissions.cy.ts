@@ -178,6 +178,7 @@ describe('idea posting that requires smart group', () => {
     cy.visit(`projects/${projectSlug}/ideas/new`);
     cy.get('#e2e-not-authorized').should('exist');
     cy.get('[data-cy="e2e-unauthorized-must-sign-in"]').should('exist');
+    cy.wait(2000);
     cy.get('[data-cy="e2e-trigger-authentication"]').click();
     cy.get('#e2e-goto-signup').click();
     cy.get('#email').type(nonPermittedUserEmail);
