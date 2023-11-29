@@ -146,12 +146,6 @@ export const getIdeaPostingRules = ({
     const { disabled_reason, future_enabled, enabled } =
       project.attributes.action_descriptor.posting_idea;
 
-    console.log('project action descriptor: posting_idea', {
-      disabled_reason,
-      future_enabled,
-      enabled,
-    });
-
     if (
       signedIn &&
       (isAdmin({ data: authUser }) ||
