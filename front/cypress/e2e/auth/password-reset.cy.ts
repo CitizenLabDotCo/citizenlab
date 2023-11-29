@@ -1,4 +1,4 @@
-import { randomEmail } from '../support/commands';
+import { randomEmail } from '../../support/commands';
 
 const someEmail = randomEmail();
 

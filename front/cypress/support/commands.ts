@@ -58,6 +58,7 @@ declare global {
       apiAddProjectsToFolder: typeof apiAddProjectsToFolder;
       apiCreatePhase: typeof apiCreatePhase;
       apiCreateCustomField: typeof apiCreateCustomField;
+      apiCreateCustomFieldOption: typeof apiCreateCustomFieldOption;
       apiRemoveCustomField: typeof apiRemoveCustomField;
       apiAddPoll: typeof apiAddPoll;
       apiVerifyBogus: typeof apiVerifyBogus;
@@ -72,6 +73,9 @@ declare global {
       apiUpdateHomepageSettings: typeof apiUpdateHomepageSettings;
       apiUpdateAppConfiguration: typeof apiUpdateAppConfiguration;
       clickLocaleSwitcherAndType: typeof clickLocaleSwitcherAndType;
+      apiCreateSmartGroupCustomField: typeof apiCreateSmartGroupCustomField;
+      apiRemoveSmartGroup: typeof apiRemoveSmartGroup;
+      apiSetPermissionCustomField: typeof apiSetPermissionCustomField;
     }
   }
 }
@@ -1198,7 +1202,8 @@ export function apiCreatePhase({
 export function apiCreateCustomField(
   fieldName: string,
   enabled: boolean,
-  required: boolean
+  required: boolean,
+  input_type = 'text'
 ) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -1214,11 +1219,35 @@ export function apiCreateCustomField(
         custom_field: {
           enabled,
           required,
-          input_type: 'text',
+          input_type,
           title_multiloc: {
             en: fieldName,
             'nl-BE': fieldName,
           },
+        },
+      },
+    });
+  });
+}
+
+export function apiCreateCustomFieldOption(
+  optionName: string,
+  customFieldId: string
+) {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'POST',
+      url: `web_api/v1/users/custom_fields/${customFieldId}/custom_field_options`,
+      body: {
+        title_multiloc: {
+          en: optionName,
+          'nl-BE': optionName,
         },
       },
     });
@@ -1450,6 +1479,29 @@ export function apiGetProjectPermission({
   });
 }
 
+export function apiSetPermissionCustomField(
+  phaseId: string,
+  action: IParticipationContextPermissionAction,
+  custom_field_id: string
+) {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'POST',
+      url: `web_api/v1/phases/${phaseId}/permissions/${action}/permissions_custom_fields`,
+      body: {
+        custom_field_id,
+        required: true,
+      },
+    });
+  });
+}
+
 export function apiUpdateAppConfiguration(
   updatedAttributes: IUpdatedAppConfigurationProperties
 ) {
@@ -1536,6 +1588,58 @@ export function apiUpdateHomepageSettings({
           header_bg,
         },
       },
+    });
+  });
+}
+
+export function apiCreateSmartGroupCustomField(
+  groupName: string,
+  customFieldId: string,
+  customFieldOptionId: string
+) {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'POST',
+      url: 'web_api/v1/groups',
+      body: {
+        group: {
+          membership_type: 'rules',
+          membership_counts: 0,
+          title_multiloc: {
+            en: groupName,
+            'nl-BE': groupName,
+          },
+          rules: [
+            {
+              customFieldId,
+              predicate: 'has_value',
+              ruleType: 'custom_field_select',
+              value: customFieldOptionId,
+            },
+          ],
+        },
+      },
+    });
+  });
+}
+
+export function apiRemoveSmartGroup(smartGroupId: string) {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'DELETE',
+      url: `web_api/v1/groups/${smartGroupId}`,
     });
   });
 }
@@ -1632,6 +1736,7 @@ Cypress.Commands.add('apiRemoveProject', apiRemoveProject);
 Cypress.Commands.add('apiAddProjectsToFolder', apiAddProjectsToFolder);
 Cypress.Commands.add('apiCreatePhase', apiCreatePhase);
 Cypress.Commands.add('apiCreateCustomField', apiCreateCustomField);
+Cypress.Commands.add('apiCreateCustomFieldOption', apiCreateCustomFieldOption);
 Cypress.Commands.add('apiRemoveCustomField', apiRemoveCustomField);
 Cypress.Commands.add('apiAddPoll', apiAddPoll);
 Cypress.Commands.add('setAdminLoginCookie', setAdminLoginCookie);
@@ -1664,3 +1769,12 @@ Cypress.Commands.add('apiRemoveCustomPage', apiRemoveCustomPage);
 Cypress.Commands.add('apiCreateCustomPage', apiCreateCustomPage);
 Cypress.Commands.add('clickLocaleSwitcherAndType', clickLocaleSwitcherAndType);
 Cypress.Commands.add('apiLikeInitiative', apiLikeInitiative);
+Cypress.Commands.add(
+  'apiCreateSmartGroupCustomField',
+  apiCreateSmartGroupCustomField
+);
+Cypress.Commands.add('apiRemoveSmartGroup', apiRemoveSmartGroup);
+Cypress.Commands.add(
+  'apiSetPermissionCustomField',
+  apiSetPermissionCustomField
+);

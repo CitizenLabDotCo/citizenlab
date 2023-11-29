@@ -29,6 +29,12 @@ module FlagInappropriateContent
       !!deleted_at
     end
 
+    # We use `toxicity_label` as a proxy to determine whether the flag was automatically
+    # detected as it's currently only set when using NLP detection.
+    def automatically_detected?
+      toxicity_label.present?
+    end
+
     def reason_code
       return 'inappropriate' if toxicity_label
 
