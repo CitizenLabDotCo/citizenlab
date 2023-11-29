@@ -206,10 +206,16 @@ describe('Homepage builder', () => {
     cy.get('[data-cy="e2e-homepage-banner"]').click({
       force: true,
     });
-
+    // Update image
     cy.get('#bannerImage').attachFile('testimage.png');
     cy.wait('@postImage');
     cy.wait(1000);
+
+    // Update avatar bubbles
+    cy.get('[data-cy="e2e-banner-avatar-toggle"]').find('i').click();
+
+    // Save homepage
+
     cy.get('#e2e-content-builder-topbar-save').click({
       force: true,
     });
@@ -217,6 +223,8 @@ describe('Homepage builder', () => {
     cy.wait(1000);
 
     // Check updated content signed - in
+    cy.visit('/');
+    cy.get("[data-cy='e2e-signed-in-header-image']").should('exist');
 
     // Check updated content signed - out
     cy.logout();
@@ -229,6 +237,11 @@ describe('Homepage builder', () => {
     cy.get('[data-cy="e2e-full-width-banner-layout-header-image"]')
       .should('have.css', 'background-image')
       .and('include', '.png');
+
+    cy.get('#hook-header-content')
+      .find('[data-testid=avatarBubblesContainer]')
+      .should('not.exist');
+
     // Layout checks
     // cy.get('[data-cy="e2e-fixed-ratio-layout-option"]').click();
 

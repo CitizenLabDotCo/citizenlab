@@ -325,27 +325,28 @@ const HomepageBannerSettings = () => {
           );
         }}
       />
-
-      <Toggle
-        label={
-          <Box>
-            <Text m={'0px'} color="primary">
-              {formatMessage(messages.showAvatars)}
-            </Text>
-            <Text m={'0px'} color="textSecondary" fontSize="s">
-              {formatMessage(messages.showAvatarsDescription)}
-            </Text>
-          </Box>
-        }
-        checked={homepageSettings.banner_avatars_enabled}
-        onChange={() => {
-          setProp(
-            (props: Props) =>
-              (props.homepageSettings.banner_avatars_enabled =
-                !homepageSettings.banner_avatars_enabled)
-          );
-        }}
-      />
+      <div data-cy="e2e-banner-avatar-toggle">
+        <Toggle
+          label={
+            <Box>
+              <Text m={'0px'} color="primary">
+                {formatMessage(messages.showAvatars)}
+              </Text>
+              <Text m={'0px'} color="textSecondary" fontSize="s">
+                {formatMessage(messages.showAvatarsDescription)}
+              </Text>
+            </Box>
+          }
+          checked={homepageSettings.banner_avatars_enabled}
+          onChange={() => {
+            setProp(
+              (props: Props) =>
+                (props.homepageSettings.banner_avatars_enabled =
+                  !homepageSettings.banner_avatars_enabled)
+            );
+          }}
+        />
+      </div>
 
       <Label htmlFor="bannerImage">{formatMessage(messages.bannerImage)}</Label>
       {homepageSettings.banner_layout === 'fixed_ratio_layout' &&
