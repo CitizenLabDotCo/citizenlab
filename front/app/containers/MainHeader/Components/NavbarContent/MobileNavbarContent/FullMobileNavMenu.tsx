@@ -77,11 +77,6 @@ const MenuItems = styled.ul`
   text-align: center;
 `;
 
-const StyledTenantLogo = styled(TenantLogo)`
-  margin-bottom: 0px;
-  padding: 0px;
-`;
-
 const StyledFullscreenModal = styled(FullscreenModal)`
   // Hides the double navbar you see on desktop when on
   // a screen size that shows the mobile nav bar. The
@@ -149,7 +144,7 @@ const FullMobileNavMenu = ({
             aria-label={formatMessage(messages.fullMobileNavigation)}
           >
             <Box mb="16px">
-              <StyledTenantLogo />
+              <TenantLogo />
             </Box>
             <MenuItems>
               {navbarItemPropsArray.map((navbarItemProps) => {
