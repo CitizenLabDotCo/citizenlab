@@ -46,7 +46,7 @@ const VisitorsOverview = ({ uniqueVisitorDataDate }: Props) => {
     setProjectId(value);
   };
 
-  if (!uniqueVisitorDataDate) {
+  if (!uniqueVisitorDataDate.isValid()) {
     return null;
   }
 
