@@ -99,9 +99,9 @@ const ideaPostingDisabledReason = (
         disabledReason: 'postingDisabled',
         authenticationRequirements: null,
       };
-    // Only applicable to taking surveys at the moment.
-    // Not configurable via admin UI, determined in BE
     case 'posting_limited_max_reached':
+      // Only applicable to taking surveys at the moment.
+      // Not configurable via admin UI, determined in BE
       return {
         disabledReason: 'postingLimitedMaxReached',
         authenticationRequirements: null,
@@ -145,6 +145,12 @@ export const getIdeaPostingRules = ({
   if (project) {
     const { disabled_reason, future_enabled, enabled } =
       project.attributes.action_descriptor.posting_idea;
+
+    console.log('project action descriptor: posting_idea', {
+      disabled_reason,
+      future_enabled,
+      enabled,
+    });
 
     if (
       signedIn &&

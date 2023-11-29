@@ -123,6 +123,7 @@ class PermissionsService
         return if UserRoleService.new.can_moderate? permission.permission_scope, user
         return DENIED_REASONS[:not_permitted] if permission.permitted_by == 'admins_moderators'
 
+        return DENIED_REASONS[:missing_data] if any_custom_field_required?(requirements(permission, user))
         if permission.permitted_by == 'groups'
           reason = denied_when_permitted_by_groups?(permission, user)
           return DENIED_REASONS[reason] if reason.present?
@@ -131,7 +132,14 @@ class PermissionsService
     end
     return if requirements(permission, user)[:permitted]
 
+    # Do we need to keep this?
     DENIED_REASONS[:missing_data]
+  end
+
+  def any_custom_field_required?(requirements)
+    requirements[:requirements][:custom_fields].any? do |_custom_field_name, requirement_status| 
+      requirement_status == 'require'
+    end
   end
 
   def denied_when_permitted_by_groups?(permission, user)
