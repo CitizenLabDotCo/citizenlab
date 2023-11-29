@@ -2,8 +2,8 @@
 
 module ParticipationMethod
   class Ideation < Base
-    def assign_defaults_for_participation_context
-      participation_context.ideas_order ||= 'trending'
+    def assign_defaults_for_phase
+      phase.ideas_order ||= 'trending'
     end
 
     # This method is invoked after creation of the input,
@@ -274,14 +274,14 @@ module ParticipationMethod
     end
 
     def create_default_form!
-      form = CustomForm.create(participation_context: participation_context)
+      form = CustomForm.create(participation_context: phase)
 
       default_fields(form).reverse_each do |field|
         field.save!
         field.move_to_top
       end
 
-      participation_context.reload
+      phase.reload
 
       form
     end
@@ -293,13 +293,11 @@ module ParticipationMethod
     def author_in_form?(user)
       AppConfiguration.instance.feature_activated?('idea_author_change') \
       && !!user \
-      && UserRoleService.new.can_moderate_project?(participation_context.project, user)
+      && UserRoleService.new.can_moderate_project?(phase.project, user)
     end
 
     def budget_in_form?(user)
-      return false if participation_context.project.continuous?
-
-      participation_context.project.phases.any? do |phase|
+      phase.project.phases.any? do |phase|
         phase.voting? && Factory.instance.voting_method_for(phase).budget_in_form?(user)
       end
     end

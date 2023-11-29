@@ -42,7 +42,7 @@ module Polls
 
     def check_responding_allowed(response, user)
       pcs = ParticipationContextService.new
-      !pcs.taking_poll_disabled_reason_for_context response.participation_context, user
+      !pcs.taking_poll_disabled_reason_for_phase response.participation_context, user
     end
   end
 end

@@ -105,7 +105,7 @@ class Project < ApplicationRecord
   after_save :reassign_moderators, if: :folder_changed?
   after_commit :clear_folder_changes, if: :folder_changed?
 
-  PROCESS_TYPES = %w[timeline continuous].freeze
+  PROCESS_TYPES = %w[timeline].freeze
   INTERNAL_ROLES = %w[open_idea_box].freeze
 
   validates :title_multiloc, presence: true, multiloc: { presence: true }
@@ -131,14 +131,6 @@ class Project < ApplicationRecord
   scope :with_some_topics, (proc do |topic_ids|
     joins(:projects_topics).where(projects_topics: { topic_id: topic_ids })
   end)
-
-  scope :is_participation_context, lambda {
-    where.not(process_type: 'timeline')
-  }
-
-  scope :is_timeline, lambda {
-    where(process_type: 'timeline')
-  }
 
   scope :ordered, lambda {
     includes(:admin_publication).order('admin_publications.ordering')
@@ -167,24 +159,15 @@ class Project < ApplicationRecord
     end
   end
 
-  def continuous?
-    process_type == 'continuous'
-  end
-
-  def timeline?
-    process_type == 'timeline'
-  end
-
   def project
     self
   end
 
   def permission_scope
-    return TimelineService.new.current_phase(self) if timeline?
-
-    self
+    TimelineService.new.current_phase(self)
   end
 
+  # TODO: JS - is this needed - seems to be on the ParticipationContextService also
   def allocated_budget
     Idea.from(ideas.select('budget * baskets_count as allocated_budget')).sum(:allocated_budget)
   end
@@ -235,6 +218,13 @@ class Project < ApplicationRecord
 
   def clear_folder_changes
     self.folder_changed = false
+  end
+
+  def uses_input_form?
+    phases.each do |phase|
+      return true if phase.can_contain_ideas?
+    end
+    false
   end
 
   private
@@ -326,6 +316,208 @@ class Project < ApplicationRecord
     return ::User.none unless folder_was.is_a?(ProjectFolders::Folder)
 
     ::User.project_folder_moderator(folder_was.id)
+  end
+
+  # TEMP: Make no longer needed attributes private
+
+  def presentation_mode
+    self[:presentation_mode]
+  end
+
+  def presentation_mode=(val)
+    write_attribute :presentation_mode, val
+  end
+
+  def participation_method
+    self[:participation_method]
+  end
+
+  def participation_method=(val)
+    write_attribute :participation_method, val
+  end
+
+  def posting_enabled
+    self[:posting_enabled]
+  end
+
+  def posting_enabled=(val)
+    write_attribute :posting_enabled, val
+  end
+
+  def commenting_enabled
+    self[:commenting_enabled]
+  end
+
+  def commenting_enabled=(val)
+    write_attribute :commenting_enabled, val
+  end
+
+  def reacting_enabled
+    self[:reacting_enabled]
+  end
+
+  def reacting_enabled=(val)
+    write_attribute :reacting_enabled, val
+  end
+
+  def reacting_like_method
+    self[:reacting_like_method]
+  end
+
+  def reacting_like_method=(val)
+    write_attribute :reacting_like_method, val
+  end
+
+  def reacting_like_limited_max
+    self[:reacting_like_method]
+  end
+
+  def reacting_like_limited_max=(val)
+    self[:reacting_like_method] = val
+  end
+
+  def survey_embed_url
+    self[:survey_embed_url]
+  end
+
+  def survey_embed_url=(val)
+    write_attribute :survey_embed_url, val
+  end
+
+  def survey_service
+    self[:survey_service]
+  end
+
+  def survey_service=(val)
+    write_attribute :survey_service, val
+  end
+
+  def voting_max_total
+    self[:voting_max_total]
+  end
+
+  def voting_max_total=(val)
+    write_attribute :voting_max_total, val
+  end
+
+  def poll_anonymous
+    self[:poll_anonymous]
+  end
+
+  def poll_anonymous=(val)
+    write_attribute :poll_anonymous, val
+  end
+
+  def reacting_dislike_enabled
+    self[:reacting_dislike_enabled]
+  end
+
+  def reacting_dislike_enabled=(val)
+    write_attribute :reacting_dislike_enabled, val
+  end
+
+  def ideas_order
+    self[:ideas_order]
+  end
+
+  def ideas_order=(val)
+    write_attribute :ideas_order, val
+  end
+
+  def input_term
+    self[:input_term]
+  end
+
+  def input_term=(val)
+    write_attribute :input_term, val
+  end
+
+  def voting_min_total
+    self[:voting_min_total]
+  end
+
+  def voting_min_total=(val)
+    write_attribute :voting_min_total, val
+  end
+
+  def reacting_dislike_method
+    self[:reacting_dislike_method]
+  end
+
+  def reacting_dislike_method=(val)
+    write_attribute :reacting_dislike_method, val
+  end
+
+  def reacting_dislike_limited_max
+    self[:reacting_dislike_limited_max]
+  end
+
+  def reacting_dislike_limited_max=(val)
+    write_attribute :reacting_dislike_limited_max, val
+  end
+
+  def posting_method
+    self[:posting_method]
+  end
+
+  def posting_method=(val)
+    write_attribute :posting_method, val
+  end
+
+  def posting_limited_max
+    self[:posting_limited_max]
+  end
+
+  def posting_limited_max=(val)
+    write_attribute :posting_limited_max, val
+  end
+
+  def document_annotation_embed_url
+    self[:document_annotation_embed_url]
+  end
+
+  def document_annotation_embed_url=(val)
+    write_attribute :document_annotation_embed_url, val
+  end
+
+  def allow_anonymous_participation
+    self[:allow_anonymous_participation]
+  end
+
+  def allow_anonymous_participation=(val)
+    write_attribute :allow_anonymous_participation, val
+  end
+
+  def voting_method
+    self[:voting_method]
+  end
+
+  def voting_method=(val)
+    write_attribute :voting_method, val
+  end
+
+  def voting_max_votes_per_idea
+    self[:voting_max_votes_per_idea]
+  end
+
+  def voting_max_votes_per_idea=(val)
+    write_attribute :voting_max_votes_per_idea, val
+  end
+
+  def voting_term_singular_multiloc
+    self[:voting_term_singular_multiloc]
+  end
+
+  def voting_term_singular_multiloc=(val)
+    write_attribute :voting_term_singular_multiloc, val
+  end
+
+  def voting_term_plural_multiloc
+    self[:voting_term_plural_multiloc]
+  end
+
+  def voting_term_plural_multiloc=(val)
+    write_attribute :voting_term_plural_multiloc, val
   end
 end
 

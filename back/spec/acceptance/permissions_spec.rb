@@ -9,7 +9,7 @@ resource 'Permissions' do
   before do
     header 'Content-Type', 'application/json'
     @project = create(:single_phase_ideation_project)
-    @phase = ParticipationContextService.new.get_participation_context(@project)
+    @phase = ParticipationContextService.new.get_current_phase(@project)
     PermissionsService.new.update_all_permissions
   end
 
@@ -172,7 +172,7 @@ resource 'Permissions' do
 
         let(:action) { @permission.action }
 
-        example_request 'Get the participation requirements of a user in a continuous project' do
+        example_request 'Get the participation requirements of a user in a phase' do
           assert_status 200
           json_response = json_parse response_body
           expect(json_response.dig(:data, :attributes, :requirements)).to eq({
@@ -217,7 +217,7 @@ resource 'Permissions' do
         let(:action) { @permission.action }
 
         # NOTE: Custom fields requirements will be {} as they are set globally - which are not allowed for everyone_confirmed_email
-        example_request 'Get the participation requirements of a passwordless user requiring confirmation in a timeline phase' do
+        example_request 'Get the participation requirements of a passwordless user requiring confirmation in a phase' do
           assert_status 200
           json_response = json_parse(response_body)
           expect(json_response.dig(:data, :attributes, :requirements)).to eq({
@@ -324,7 +324,7 @@ resource 'Permissions' do
 
     get 'web_api/v1/ideas/:idea_id/permissions/:action/requirements' do
       before do
-        @permission = @project.permissions.first
+        @permission = @phase.permissions.first
         @permission.update!(permitted_by: 'users')
 
         create(:topic, include_in_onboarding: true)

@@ -59,7 +59,7 @@ describe ParticipationContextService do
 
     it 'returns `not_verified` when not permitted and a permitted group requires verification' do
       project = create(:project_with_current_phase, current_phase_attrs: { with_permissions: true })
-      permission = service.get_participation_context(project).permissions.find_by(action: 'commenting_idea')
+      permission = service.get_current_phase(project).permissions.find_by(action: 'commenting_idea')
       verified_members = create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])
       permission.update!(permitted_by: 'groups', group_ids: [create(:group).id, verified_members.id])
       expect(service.commenting_idea_disabled_reason_for_project(project, user)).to eq 'not_verified'
@@ -75,7 +75,7 @@ describe ParticipationContextService do
       it "returns 'not_verified' if it's in the current phase and reacting is not permitted and a permitted group requires verification" do
         project = create(:project_with_current_phase, current_phase_attrs: { with_permissions: true })
         idea = create(:idea, project: project, phases: [project.phases[2]])
-        permission = service.get_participation_context(project).permissions.find_by(action: 'reacting_idea')
+        permission = service.get_current_phase(project).permissions.find_by(action: 'reacting_idea')
         verified_members = create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])
         permission.update!(permitted_by: 'groups', groups: [create(:group), verified_members])
         expect(service.idea_reacting_disabled_reason_for(project, user, mode: 'up')).to eq 'not_verified'
@@ -108,7 +108,7 @@ describe ParticipationContextService do
     it "returns 'not_verified' if it's in the current phase and reacting is not permitted and a permitted group requires verification" do
       project = create(:project_with_current_phase,
         current_phase_attrs: { permissions_config: { reacting_idea: false } })
-      permission = service.get_participation_context(project).permissions.find_by(action: 'reacting_idea')
+      permission = service.get_current_phase(project).permissions.find_by(action: 'reacting_idea')
       verified_members = create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])
       permission.update!(permitted_by: 'groups', groups: [create(:group), verified_members])
       idea = create(:idea, project: project, phases: [project.phases[2]])
@@ -119,7 +119,7 @@ describe ParticipationContextService do
   describe 'annotating_document_disabled_reason' do
     it 'returns `not_verified` when annotating the document not permitted and permitted group requires verification' do
       project = create(:single_phase_document_annotation_project, phase_attrs: { with_permissions: true })
-      permission = service.get_participation_context(project).permissions.find_by(action: 'annotating_document')
+      permission = service.get_current_phase(project).permissions.find_by(action: 'annotating_document')
       verified_members = create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])
       permission.update!(permitted_by: 'groups', groups: [create(:group), verified_members])
       expect(service.annotating_document_disabled_reason_for_project(project, create(:user))).to eq 'not_verified'
@@ -129,7 +129,7 @@ describe ParticipationContextService do
   describe 'taking_survey_disabled_reason' do
     it 'returns `not_verified` when taking the survey is not permitted and a permitted group requires verification' do
       project = create(:single_phase_typeform_survey_project, phase_attrs: { with_permissions: true })
-      permission = service.get_participation_context(project).permissions.find_by(action: 'taking_survey')
+      permission = service.get_current_phase(project).permissions.find_by(action: 'taking_survey')
       verified_members = create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])
       permission.update!(permitted_by: 'groups', groups: [create(:group), verified_members])
       expect(service.taking_survey_disabled_reason_for_project(project, create(:user))).to eq 'not_verified'
@@ -139,7 +139,7 @@ describe ParticipationContextService do
   describe 'taking_poll_disabled_reason' do
     it 'return `not_verified` when taking the poll is not permitted and a permitted group requires verification' do
       project = create(:single_phase_poll_project, phase_attrs: { with_permissions: true })
-      permission = service.get_participation_context(project).permissions.find_by(action: 'taking_poll')
+      permission = service.get_current_phase(project).permissions.find_by(action: 'taking_poll')
       verified_members = create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])
       permission.update!(permitted_by: 'groups', groups: [create(:group), verified_members])
       expect(service.taking_poll_disabled_reason_for_project(project, create(:user))).to eq 'not_verified'
@@ -151,7 +151,7 @@ describe ParticipationContextService do
       project = create(:project_with_current_phase,
         current_phase_attrs: { with_permissions: true, participation_method: 'voting', voting_method: 'budgeting', voting_max_total: 10_000 })
       idea = create(:idea, project: project, phases: [project.phases[2]])
-      permission = service.get_participation_context(project).permissions.find_by(action: 'voting')
+      permission = service.get_current_phase(project).permissions.find_by(action: 'voting')
       verified_members = create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])
       permission.update!(permitted_by: 'groups', groups: [create(:group), verified_members])
       expect(service.voting_disabled_reason_for_idea(idea, create(:user))).to eq 'not_verified'
