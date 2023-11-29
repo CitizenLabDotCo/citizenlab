@@ -1,4 +1,4 @@
-import { randomString, randomEmail } from '../support/commands';
+import { randomString, randomEmail } from '../../support/commands';
 
 function signUp() {
   const firstName = randomString();

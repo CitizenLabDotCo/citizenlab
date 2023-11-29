@@ -1,26 +1,6 @@
-import { randomString, randomEmail, logout } from '../support/commands';
+import { randomString, randomEmail, logout } from '../../support/commands';
 
 describe('Sign up - custom fields step', () => {
-  describe.skip('No custom fields', () => {
-    before(() => {
-      const firstName = randomString();
-      const lastName = randomString();
-      const email = randomEmail();
-      const password = randomString();
-      cy.apiSignup(firstName, lastName, email, password);
-      cy.setLoginCookie(email, password);
-      cy.goToLandingPage();
-    });
-
-    after(() => {
-      logout();
-    });
-
-    it('does not show it when no custom fields are enabled', () => {
-      cy.get('#e2e-sign-up-in-modal').should('not.exist');
-    });
-  });
-
   describe('Optional custom field', () => {
     const randomFieldName = randomString();
     let customFieldId: string;

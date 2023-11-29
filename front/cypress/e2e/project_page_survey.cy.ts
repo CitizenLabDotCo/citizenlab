@@ -1,5 +1,5 @@
 import moment = require('moment');
-import { randomString, randomEmail } from '../support/commands';
+import { randomString } from '../support/commands';
 import { skipOn } from '@cypress/skip-test';
 
 describe('Existing continuous project with survey', () => {
