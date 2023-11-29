@@ -20,7 +20,7 @@ import { IOption } from 'typings';
 import messages from './messages';
 
 interface Props {
-  uniqueVisitorDataDate: Moment;
+  uniqueVisitorDataDate: Moment | undefined;
 }
 
 const VisitorsOverview = ({ uniqueVisitorDataDate }: Props) => {
@@ -46,7 +46,7 @@ const VisitorsOverview = ({ uniqueVisitorDataDate }: Props) => {
     setProjectId(value);
   };
 
-  if (!uniqueVisitorDataDate.isValid()) {
+  if (!uniqueVisitorDataDate) {
     return null;
   }
 
