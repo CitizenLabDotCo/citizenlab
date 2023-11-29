@@ -2,7 +2,11 @@ import React, { useState } from 'react';
 import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 // components
-import { Icon, Dropdown } from '@citizenlab/cl2-component-library';
+import {
+  Icon,
+  Dropdown,
+  useBreakpoint,
+} from '@citizenlab/cl2-component-library';
 
 // services
 import { updateLocale } from 'utils/locale';
@@ -106,6 +110,7 @@ interface Props {
 
 const LanguageSelector = ({ className }: Props) => {
   const [dropdownOpened, setDropdownOpened] = useState(false);
+  const isPhoneOrSmaller = useBreakpoint('phone');
   const { data: appConfig } = useAppConfiguration();
   const locale = useLocale();
   const theme = useTheme();
@@ -133,6 +138,7 @@ const LanguageSelector = ({ className }: Props) => {
         className={className}
         onMouseDown={removeFocusAfterMouseClick}
         onClick={toggleDropdown}
+        style={{ marginLeft: isPhoneOrSmaller || isRtl ? '16px' : undefined }}
       >
         <DropdownButton
           className="e2e-language-dropdown-toggle"
