@@ -58,7 +58,7 @@ export interface Props {
   hidePublicationStatusLabel?: boolean;
   className?: string;
   hideMoreActions?: boolean;
-  folderId?: string;
+  folderId?: string | null;
 }
 
 const ProjectRow = ({
