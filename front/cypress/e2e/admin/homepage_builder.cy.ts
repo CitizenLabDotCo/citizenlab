@@ -116,11 +116,17 @@ describe('Homepage builder', () => {
     cy.get('[data-cy="e2e-proposals"]').should('not.exist');
 
     const regex = /currently working on/gi;
-    cy.get('[data-cy="e2e-projects"]').should('contain', regex);
+    cy.get('[data-cy="e2e-projects"]').should(($el) => {
+      const text = $el.text();
+      expect(text).to.match(regex);
+    });
   });
 
   it('updates homepage banner correctly', () => {
     cy.intercept('PATCH', '**/home_page').as('saveHomePage');
+    cy.intercept('GET', '**/home_page').as('getHomePage');
+    cy.intercept('GET', '**/pages-menu').as('getPages');
+    cy.intercept('GET', '**/nav_bar_items').as('getNavbarItems');
 
     // Check homepage defaults signed - out
     cy.visit('/');
@@ -129,12 +135,49 @@ describe('Homepage builder', () => {
       'exist'
     );
 
+    const signedOutHeaderEnglish =
+      /Let’s shape the future of New Douglaschester together/gi;
+    const signedOutSubheaderEnglish =
+      /Welcome to the participation platform of/gi;
+
+    cy.get('#hook-header-content').should(($el) => {
+      const text = $el.text();
+      expect(text).to.match(signedOutHeaderEnglish);
+    });
+
+    cy.get('#hook-header-content').should(($el) => {
+      const text = $el.text();
+      expect(text).to.match(signedOutSubheaderEnglish);
+    });
+
+    cy.get('#hook-header-content')
+      .find('[data-testid=avatarBubblesContainer]')
+      .should('exist');
+
+    cy.get('[data-cy=e2e-full-width-layout-header-image-overlay]').should(
+      'exist'
+    );
+    cy.get('[data-cy=e2e-full-width-layout-header-image-overlay]').should(
+      'have.css',
+      'background-color',
+      'rgb(10, 81, 89)'
+    );
+    cy.get('[data-cy=e2e-full-width-layout-header-image-overlay]').should(
+      'have.css',
+      'opacity',
+      '0.9'
+    );
+
     // Check homepage defaults signed - in
+
+    // go to admin page
     cy.setAdminLoginCookie();
+    cy.visit('/admin/pages-menu/homepage-builder');
 
     // Update homepage banner
 
     cy.visit('/admin/pages-menu/homepage-builder');
+    cy.wait('@getHomePage');
     cy.get('[data-cy="e2e-homepage-banner"]').click({
       force: true,
     });
