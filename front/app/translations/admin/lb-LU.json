@@ -2413,7 +2413,7 @@
   "app.containers.admin.inviteUsersWithSeatsModal.confirmSeatUsageChange": "Confirm impact on seat usage",
   "app.containers.admin.inviteUsersWithSeatsModal.infoMessage2": "Dir hutt d'Limite vu verfügbare Plazen an Ärem Plang erreecht.",
   "app.containers.admin.project.permissions.permissionEveryoneEmailWarning": "Niewent registréierte Benotzer kënnen net registréiert Benotzer, déi eng E-Mail uginn a bestätegen, d’Moossnam ergräifen. Wielt dës Méiglechkeet, fir d’Barriär fir d’Participatioun erofzesetzen.",
-  "app.containers.admin.project.permissions.permissionsAdministrators": "Administrators",
+  "app.containers.admin.project.permissions.permissionsAdministrators": "Administrateuren",
   "app.containers.admin.project.permissions.permissionsAdminsAndCollaborators": "Nëmmen Administrateuren a Kollaborateuren",
   "app.containers.admin.project.permissions.permissionsAdminsAndCollaboratorsTooltip": "Nëmmen Plattform Admins, Dossiermanager a Projektmanager kënnen d'Aktioun huelen",
   "app.containers.admin.project.permissions.permissionsAnyoneLabel": "Anyone",
