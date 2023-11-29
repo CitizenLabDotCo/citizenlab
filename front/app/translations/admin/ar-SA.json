@@ -1654,7 +1654,6 @@
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningBullet2": "بمجرد إضافة مرحلة بعد هذه المرحلة، سيتم إضافة تاريخ انتهاء لهذه المرحلة.",
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningTitle": "عدم تحديد تاريخ انتهاء لذلك يعني ما يلي:",
   "app.containers.AdminPage.ProjectTimeline.saveErrorMessage": "حدث خطأ أثناء إرسال النموذج، يُرجى المحاولة مجددًا.",
-  "app.containers.AdminPage.ProjectTimeline.saveLabel": "حفظ",
   "app.containers.AdminPage.ProjectTimeline.saveSuccessLabel": "تم الحفظ!",
   "app.containers.AdminPage.ProjectTimeline.saveSuccessMessage": "تم حفظ تغييراتك بنجاح.",
   "app.containers.AdminPage.ProjectTimeline.startDate": "تاريخ البدء",

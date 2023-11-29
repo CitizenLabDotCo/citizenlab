@@ -1654,7 +1654,6 @@
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningBullet2": "Чим додате фазу након ове, она ће овој фази додати и датум завршетка.",
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningTitle": "Ако не изаберете крајњи датум за ово, то значи да:",
   "app.containers.AdminPage.ProjectTimeline.saveErrorMessage": "Дошло је до грешке при слању обрасца, покушајте поново.",
-  "app.containers.AdminPage.ProjectTimeline.saveLabel": "сачувати",
   "app.containers.AdminPage.ProjectTimeline.saveSuccessLabel": "Сачувано!",
   "app.containers.AdminPage.ProjectTimeline.saveSuccessMessage": "Промене су сачуване.",
   "app.containers.AdminPage.ProjectTimeline.startDate": "Датум почетка",

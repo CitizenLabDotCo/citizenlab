@@ -1654,7 +1654,6 @@
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningBullet2": "Bundan sonra bir aşama eklediğinizde, bu aşamaya bir bitiş tarihi ekleyecektir.",
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningTitle": "Bunun için bir bitiş tarihi seçilmemesi şu anlama gelir:",
   "app.containers.AdminPage.ProjectTimeline.saveErrorMessage": "Form gönderilirken bir hata oluştu, lütfen tekrar deneyin.",
-  "app.containers.AdminPage.ProjectTimeline.saveLabel": "Kaydet",
   "app.containers.AdminPage.ProjectTimeline.saveSuccessLabel": "Kaydedildi!",
   "app.containers.AdminPage.ProjectTimeline.saveSuccessMessage": "Yaptığınız değişiklikler kaydedildi.",
   "app.containers.AdminPage.ProjectTimeline.startDate": "Başlangıç tarihi",

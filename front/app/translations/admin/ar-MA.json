@@ -1141,7 +1141,6 @@
   "app.containers.AdminPage.ProjectTimeline.endDatePlaceholder": "تاريخ الانتهاء",
   "app.containers.AdminPage.ProjectTimeline.fileUploadLabel": "المُرفقات (بحجم أقصى 50 ميغابايت)",
   "app.containers.AdminPage.ProjectTimeline.saveErrorMessage": "حدث خطأ أثناء إرسال النموذج، يُرجى المحاولة مجددًا.",
-  "app.containers.AdminPage.ProjectTimeline.saveLabel": "حفظ",
   "app.containers.AdminPage.ProjectTimeline.saveSuccessLabel": "تم الحفظ!",
   "app.containers.AdminPage.ProjectTimeline.saveSuccessMessage": "تم حفظ تغييراتك بنجاح.",
   "app.containers.AdminPage.ProjectTimeline.startDatePlaceholder": "تاريخ البدء",

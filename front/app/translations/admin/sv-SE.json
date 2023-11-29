@@ -1654,7 +1654,6 @@
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningBullet2": "Så snart du lägger till en fas efter denna, kommer den att lägga till ett slutdatum för denna fas.",
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningTitle": "Att inte välja ett slutdatum för detta innebär att:",
   "app.containers.AdminPage.ProjectTimeline.saveErrorMessage": "Det uppstod ett fel när formuläret skickades, försök igen.",
-  "app.containers.AdminPage.ProjectTimeline.saveLabel": "Spara",
   "app.containers.AdminPage.ProjectTimeline.saveSuccessLabel": "Sparad!",
   "app.containers.AdminPage.ProjectTimeline.saveSuccessMessage": "Dina ändringar har sparats.",
   "app.containers.AdminPage.ProjectTimeline.startDate": "Startdatum",

@@ -1654,7 +1654,6 @@
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningBullet2": "Sobald Sie eine Phase nach dieser hinzufügen, wird dieser Phase ein Enddatum hinzugefügt.",
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningTitle": "Wenn Sie kein Enddatum wählen, bedeutet dies, dass:",
   "app.containers.AdminPage.ProjectTimeline.saveErrorMessage": "Beim Absenden des Formulars trat ein Fehler auf, bitte versuche es erneut.",
-  "app.containers.AdminPage.ProjectTimeline.saveLabel": "Speichern",
   "app.containers.AdminPage.ProjectTimeline.saveSuccessLabel": "Gespeichert!",
   "app.containers.AdminPage.ProjectTimeline.saveSuccessMessage": "Ihre Änderungen wurden gespeichert.",
   "app.containers.AdminPage.ProjectTimeline.startDate": "Startdatum",
