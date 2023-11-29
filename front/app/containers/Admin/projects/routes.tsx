@@ -202,6 +202,14 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           {
+            path: 'phases/:phaseId/access-rights',
+            element: (
+              <PageLoading>
+                <AdminProjectPermissions />
+              </PageLoading>
+            ),
+          },
+          {
             path: 'phases/:phaseId/ideas',
             element: (
               <PageLoading>
