@@ -26,8 +26,8 @@ namespace :data_migrate do
         'uitgevoerd' => find_status_by_title.call('uitgevoerd'),
         'afgesloten/wordt niet verder onderzocht' => find_status_by_title.call('Afgesloten'),
         'ingepland' => find_status_by_title.call('Ingepland'),
-        'uitvoering in 2024' => create_status_by_title.call('Uitvoering in 2023', '#216db7'),
-        'uitvoering in 2023' => create_status_by_title.call('Uitvoering in 2024', '#b721a7')
+        'uitvoering in 2023' => create_status_by_title.call('Uitvoering in 2023', '#216db7'),
+        'uitvoering in 2024' => create_status_by_title.call('Uitvoering in 2024', '#b721a7')
       }
 
       all_ideas = Idea.all.to_a
