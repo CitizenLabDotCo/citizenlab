@@ -67,7 +67,7 @@ const FormBuilderTopBar = ({
     return null;
   }
 
-  const isPostingEnabled = getIsPostingEnabled(project.data, phase?.data);
+  const isPostingEnabled = getIsPostingEnabled(phase?.data);
   let viewFormLink = phaseId
     ? `/projects/${project.data.attributes.slug}/ideas/new?phase_id=${phaseId}`
     : `/projects/${project.data.attributes.slug}/ideas/new`;

@@ -142,8 +142,6 @@ const IdeaCard = ({
 
   const innerHeight = showFollowButton ? '192px' : '162px';
 
-  if (!phaseData) return null;
-
   return (
     <Container
       className={`e2e-card e2e-idea-card ${className ?? ''}`.trim()}
@@ -187,7 +185,7 @@ const IdeaCard = ({
         <Box>
           <Interactions
             idea={idea}
-            phase={phaseData}
+            phase={phaseData || null}
           />
           <Footer
             project={project}

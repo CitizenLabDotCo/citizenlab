@@ -281,7 +281,6 @@ const IdeasWithoutFiltersSidebar = ({
                 <SelectSort
                   value={defaultSortingMethod ?? ideaDefaultSortMethodFallback}
                   phase={phase?.data}
-                  project={project?.data}
                   onChange={handleSortOnChange}
                   alignment={!smallerThanTablet ? 'right' : 'left'}
                 />

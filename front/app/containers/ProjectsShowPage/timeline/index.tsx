@@ -140,10 +140,7 @@ const ProjectTimelineContainer = ({ projectId, className }: Props) => {
             <StatusModule
               phase={selectedPhase}
               project={project.data}
-              votingMethod={
-                selectedPhase?.attributes.voting_method ||
-                project?.data.attributes.voting_method
-              }
+              votingMethod={selectedPhase?.attributes.voting_method}
             />
           )}
           <PhaseSurvey project={project.data} phaseId={selectedPhaseId} />

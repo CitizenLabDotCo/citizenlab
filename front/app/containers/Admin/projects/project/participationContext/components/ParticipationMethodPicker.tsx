@@ -80,10 +80,7 @@ const ParticipationMethodPicker = ({
     if (!isNilOrError(phase) && phase.data) {
       return phase.data.attributes.participation_method;
     }
-    if (!isNilOrError(project)) {
-      return project.attributes.participation_method;
-    }
-    // Before a new project or phase is saved, use ideation as a default
+    // Before a new phase is saved, use ideation as a default
     // fallback config to control the radio behaviour.
     return 'ideation';
   };

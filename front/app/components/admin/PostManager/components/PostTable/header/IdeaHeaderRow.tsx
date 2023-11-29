@@ -41,7 +41,6 @@ interface Props {
 }
 
 const IdeaHeaderRow = ({
-  selectedProjectId,
   selectedPhaseId,
   sortAttribute,
   sortDirection,
@@ -205,7 +204,6 @@ const IdeaHeaderRow = ({
   ];
 
   const displayColumns = usePostManagerColumnFilter(
-    selectedProjectId,
     selectedPhaseId
   );
 

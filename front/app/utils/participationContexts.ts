@@ -1,7 +1,6 @@
 import { isNilOrError } from 'utils/helperUtils';
 import { getPhaseInputTerm } from 'api/phases/utils';
 import { IPhaseData } from 'api/phases/types';
-import { Multiloc } from 'typings';
 
 export type TSurveyService =
   | 'typeform'
@@ -51,39 +50,6 @@ export type InputTerm =
   | 'contribution';
 
 export type PresentationMode = 'card' | 'map';
-
-export interface ParticipationContext {
-  title_multiloc: Multiloc;
-  description_multiloc: Multiloc;
-  input_term: InputTerm;
-  created_at: string;
-  updated_at: string;
-  participation_method: ParticipationMethod;
-  posting_enabled: boolean;
-  commenting_enabled: boolean;
-  reacting_enabled: boolean;
-  reacting_like_method: 'limited' | 'unlimited';
-  reacting_like_limited_max: number;
-  reacting_dislike_method: 'limited' | 'unlimited';
-  allow_anonymous_participation: boolean;
-  reacting_dislike_enabled: boolean;
-  reacting_dislike_limited_max: number;
-  presentation_mode: PresentationMode;
-  survey_service?: TSurveyService | null;
-  survey_embed_url?: string | null;
-  poll_anonymous?: boolean;
-  ideas_count: number;
-  ideas_order?: IdeaDefaultSortMethod;
-  document_annotation_embed_url?: string | null;
-  voting_method?: VotingMethod | null;
-  voting_term_singular_multiloc?: Multiloc | null;
-  voting_term_plural_multiloc?: Multiloc | null;
-  voting_min_total?: number | null;
-  voting_max_total?: number | null;
-  voting_max_votes_per_idea?: number | null;
-  baskets_count?: number | null;
-  votes_count?: number | null;
-}
 
 export function getInputTerm(
   phases: IPhaseData[] | undefined,
