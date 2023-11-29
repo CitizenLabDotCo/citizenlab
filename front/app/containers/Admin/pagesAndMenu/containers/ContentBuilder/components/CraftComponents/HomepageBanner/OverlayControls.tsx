@@ -56,7 +56,6 @@ const OverlayControls = ({
   variant,
   noOpacitySlider,
 }: Props) => {
-  console.log(bannerOverlayColor);
   const [overlayEnabled, setOverlayEnabled] = useState(
     typeof bannerOverlayOpacity === 'number' && bannerOverlayOpacity !== 0
   );
@@ -124,37 +123,39 @@ const OverlayControls = ({
         />
       </Box>
       {/* We check for typeof of opacity because 0 would coerce to false. */}
-      {overlayEnabled && bannerOverlayColor && (
-        <StyledBox
-          p="40px"
-          border={`1px solid ${colors.grey300}`}
-          borderRadius={theme.borderRadius}
-        >
-          <Box mb="36px">
-            <ColorPickerInput
-              id="image-overlay-color"
-              label={formatMessage(messages.imageOverlayColor)}
-              type="text"
-              value={bannerOverlayColor}
-              onChange={handleOverlayColorOnChange}
-            />
-          </Box>
-          {!noOpacitySlider && (
-            <>
-              <Label>
-                <FormattedMessage {...messages.imageOverlayOpacity} />
-              </Label>
-              <RangeInput
-                step={1}
-                min={0}
-                max={100}
-                value={bannerOverlayOpacity || 0}
-                onChange={debouncedHandleOverlayOpacityOnChange}
+      {overlayEnabled &&
+        typeof bannerOverlayOpacity === 'number' &&
+        bannerOverlayColor && (
+          <StyledBox
+            p="40px"
+            border={`1px solid ${colors.grey300}`}
+            borderRadius={theme.borderRadius}
+          >
+            <Box mb="36px">
+              <ColorPickerInput
+                id="image-overlay-color"
+                label={formatMessage(messages.imageOverlayColor)}
+                type="text"
+                value={bannerOverlayColor}
+                onChange={handleOverlayColorOnChange}
               />
-            </>
-          )}
-        </StyledBox>
-      )}
+            </Box>
+            {!noOpacitySlider && (
+              <>
+                <Label>
+                  <FormattedMessage {...messages.imageOverlayOpacity} />
+                </Label>
+                <RangeInput
+                  step={1}
+                  min={0}
+                  max={100}
+                  value={bannerOverlayOpacity || 0}
+                  onChange={debouncedHandleOverlayOpacityOnChange}
+                />
+              </>
+            )}
+          </StyledBox>
+        )}
     </>
   );
 };
