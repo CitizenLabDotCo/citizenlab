@@ -2380,6 +2380,7 @@
   "app.containers.admin.inviteUsersWithSeatsModal.confirmSeatUsageChange": "Bekreft innvirkning på setebruken",
   "app.containers.admin.inviteUsersWithSeatsModal.infoMessage2": "Du har nådd grensen for tilgjengelige seter innenfor planen din.",
   "app.containers.admin.project.permissions.permissionEveryoneEmailWarning": "I tillegg til registrerte brukere, kan uregistrerte brukere som oppgir en e-postadresse og bekrefter den utføre handlingen. Velg dette alternativet for å senke terskelen for deltakelse.",
+  "app.containers.admin.project.permissions.permissionsAdministratorsAndManagers": "Administratorer og ledere for dette prosjektet",
   "app.containers.admin.project.permissions.permissionsAdminsAndCollaborators": "Kun administratorer og samarbeidspartnere",
   "app.containers.admin.project.permissions.permissionsAdminsAndCollaboratorsTooltip": "Bare plattformadministratorer, mappeansvarlige og prosjektledere kan utføre handlingen",
   "app.containers.admin.project.permissions.permissionsAnyoneLabel": "Hvem som helst",
