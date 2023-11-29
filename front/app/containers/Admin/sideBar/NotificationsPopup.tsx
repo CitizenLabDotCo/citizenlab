@@ -9,7 +9,7 @@ import {
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 import { Popup } from 'semantic-ui-react';
-import Notifications from 'containers/MainHeader/NotificationMenu/components/Notifications';
+import Notifications from 'containers/MainHeader/Components/NotificationMenu/components/Notifications';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -27,7 +27,7 @@ import useMarkAllAsRead from 'api/notifications/useMarkAllAsRead';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
-import tracks from 'containers/MainHeader/NotificationMenu/tracks';
+import tracks from 'containers/MainHeader/Components/NotificationMenu/tracks';
 
 export const NotificationsPopup = () => {
   const { formatMessage } = useIntl();

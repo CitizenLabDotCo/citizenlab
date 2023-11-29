@@ -2380,7 +2380,6 @@
   "app.containers.admin.inviteUsersWithSeatsModal.confirmSeatUsageChange": "Confirmar el impacto en el uso de las plazas",
   "app.containers.admin.inviteUsersWithSeatsModal.infoMessage2": "Ha alcanzado el límite de plazas disponibles en su plan.",
   "app.containers.admin.project.permissions.permissionEveryoneEmailWarning": "Además de los usuarios registrados, los usuarios no registrados que faciliten un correo electrónico y lo confirmen podrán realizar la acción. Seleccione esta opción para reducir la barrera de participación.",
-  "app.containers.admin.project.permissions.permissionsAdministrators": "Administradores y moderadores",
   "app.containers.admin.project.permissions.permissionsAdminsAndCollaborators": "Sólo administradores y colaboradores",
   "app.containers.admin.project.permissions.permissionsAdminsAndCollaboratorsTooltip": "Sólo los administradores de la plataforma, los gestores de carpetas y los gestores de proyectos pueden llevar a cabo la acción",
   "app.containers.admin.project.permissions.permissionsAnyoneLabel": "Cualquiera",

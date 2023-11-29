@@ -18,9 +18,9 @@ export default defineMessages({
     defaultMessage:
       'Anyone can participate after submitting and confirming their email address.',
   },
-  permissionsAdministrators: {
-    id: 'app.containers.admin.project.permissions.permissionsAdministrators',
-    defaultMessage: 'Administrators',
+  permissionsAdministratorsAndManagers: {
+    id: 'app.containers.admin.project.permissions.permissionsAdministratorsAndManagers',
+    defaultMessage: 'Administrators and the managers of this project',
   },
   permissionsAdminsAndCollaborators: {
     id: 'app.containers.admin.project.permissions.permissionsAdminsAndCollaborators',

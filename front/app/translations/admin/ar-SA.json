@@ -2380,7 +2380,6 @@
   "app.containers.admin.inviteUsersWithSeatsModal.confirmSeatUsageChange": "تأكد من التأثير على استخدام المقعد",
   "app.containers.admin.inviteUsersWithSeatsModal.infoMessage2": "لقد وصلت إلى الحد الأقصى من المقاعد المتاحة ضمن خطتك.",
   "app.containers.admin.project.permissions.permissionEveryoneEmailWarning": "إضافة إلى المستخدمين المسجَّلين، ستتوفر أيضًا إمكانية اتخاذ إجراء من قِبل المستخدمين غير المسجَّلين الذين أدخلوا عنوان بريد إلكتروني وأكَّدوه. حدد هذا الخيار للحد من عوائق المشاركة.",
-  "app.containers.admin.project.permissions.permissionsAdministrators": "المسؤولون ومديرو المشاريع",
   "app.containers.admin.project.permissions.permissionsAdminsAndCollaborators": "المسؤولون والمتعاونون فقط",
   "app.containers.admin.project.permissions.permissionsAdminsAndCollaboratorsTooltip": "يمكن فقط لمسؤولي النظام الأساسي ومديري المجلدات ومديري المشاريع اتخاذ الإجراء",
   "app.containers.admin.project.permissions.permissionsAnyoneLabel": "أي شخص",

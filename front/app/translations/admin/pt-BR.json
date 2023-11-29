@@ -2380,7 +2380,6 @@
   "app.containers.admin.inviteUsersWithSeatsModal.confirmSeatUsageChange": "Confirme o impacto no uso da licença",
   "app.containers.admin.inviteUsersWithSeatsModal.infoMessage2": "Você atingiu o limite de licenças disponíveis em seu plano.",
   "app.containers.admin.project.permissions.permissionEveryoneEmailWarning": "Para além dos utilizadores registados, os utilizadores não registados que forneçam um e-mail e o confirmem, poderão tomar a acção. Seleccione esta opção para baixar a barreira à participação.",
-  "app.containers.admin.project.permissions.permissionsAdministrators": "Admininistradores e moderadores",
   "app.containers.admin.project.permissions.permissionsAdminsAndCollaborators": "Apenas administradores e colaboradores",
   "app.containers.admin.project.permissions.permissionsAdminsAndCollaboratorsTooltip": "Apenas os administradores da plataforma, os gestores de pastas e os gestores de projectos podem realizar a acção",
   "app.containers.admin.project.permissions.permissionsAnyoneLabel": "Qualquer pessoa",

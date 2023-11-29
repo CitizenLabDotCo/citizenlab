@@ -2380,7 +2380,6 @@
   "app.containers.admin.inviteUsersWithSeatsModal.confirmSeatUsageChange": "Potwierdzić wpływ na wykorzystanie fotelików",
   "app.containers.admin.inviteUsersWithSeatsModal.infoMessage2": "Osiągnąłeś limit dostępnych miejsc w ramach swojego planu.",
   "app.containers.admin.project.permissions.permissionEveryoneEmailWarning": "Oprócz zarejestrowanych użytkowników, niezarejestrowani użytkownicy, którzy podadzą e-mail i potwierdzą go, będą mogli podjąć akcję. Wybierz tę opcję, aby obniżyć barierę uczestnictwa.",
-  "app.containers.admin.project.permissions.permissionsAdministrators": "Administratorzy i menadżerowie projektu",
   "app.containers.admin.project.permissions.permissionsAdminsAndCollaborators": "Tylko administratorzy i współpracownicy",
   "app.containers.admin.project.permissions.permissionsAdminsAndCollaboratorsTooltip": "Tylko administratorzy platformy, kierownicy folderów i kierownicy projektów mogą podjąć akcję",
   "app.containers.admin.project.permissions.permissionsAnyoneLabel": "Każdy",
