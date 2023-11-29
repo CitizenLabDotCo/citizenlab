@@ -149,7 +149,7 @@ const OverlayControls = ({
                   step={1}
                   min={0}
                   max={100}
-                  value={bannerOverlayOpacity || 0}
+                  value={bannerOverlayOpacity}
                   onChange={debouncedHandleOverlayOpacityOnChange}
                 />
               </>
