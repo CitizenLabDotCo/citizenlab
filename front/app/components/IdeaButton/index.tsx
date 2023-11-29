@@ -75,7 +75,7 @@ const IdeaButton = memo<Props>(
 
     const { enabled, show, disabledReason, authenticationRequirements } =
       getIdeaPostingRules({
-        project: project?.data,
+        project: project.data,
         phase,
         authUser: authUser?.data,
       });
