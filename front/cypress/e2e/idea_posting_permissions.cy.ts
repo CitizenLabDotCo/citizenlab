@@ -159,7 +159,7 @@ describe('idea posting that requires smart group', () => {
     cy.url().should('include', `/ideas/new`);
   });
 
-  it.only('shows prompt for authentication on form page if logged out user visits and shows form when authenticated', () => {
+  it('shows prompt for authentication on form page if logged out user visits and shows form when authenticated', () => {
     cy.clearCookies();
     cy.visit(`projects/${projectSlug}/ideas/new`);
     cy.get('#e2e-not-authorized').should('exist');
