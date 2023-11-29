@@ -309,32 +309,20 @@ const ProjectReport = () => {
             </Column>
           </GraphsContainer>
         )}
-        {participationMethods.includes('poll') ? (
-          isTimelineProject ? (
-            !isNilOrError(phases) &&
-            phases.data.map(
-              (phase) =>
-                phase.attributes.participation_method === 'poll' && (
-                  <PollReport
-                    key={phase.id}
-                    participationContextType="phase"
-                    participationContextId={phase.id}
-                    participationContextTitle={localize(
-                      phase.attributes.title_multiloc
-                    )}
-                  />
-                )
-            )
-          ) : (
-            <PollReport
-              participationContextType="project"
-              participationContextId={projectId}
-              participationContextTitle={localize(
-                project.data.attributes.title_multiloc
-              )}
-            />
+        {participationMethods.includes('poll') && !isNilOrError(phases) && (
+          phases.data.map(
+            (phase) =>
+              phase.attributes.participation_method === 'poll' && (
+                <PollReport
+                  key={phase.id}
+                  phaseId={phase.id}
+                  phaseTitle={localize(
+                    phase.attributes.title_multiloc
+                  )}
+                />
+              )
           )
-        ) : null}
+        )}
       </Section>
     </>
   );

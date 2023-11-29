@@ -24,19 +24,18 @@ import { scrollToElement } from 'utils/scroll';
 import { getDisabledExplanation } from './utils';
 
 // typings
-import { IProjectData } from 'api/projects/types';
 import { IPhaseData } from 'api/phases/types';
 
 const confetti = new JSConfetti();
 
 interface Props {
-  participationContext: IProjectData | IPhaseData;
+  phase: IPhaseData;
 }
 
-const CTAButton = ({ participationContext }: Props) => {
+const CTAButton = ({ phase }: Props) => {
   const [processing, setProcessing] = useState(false);
 
-  const basketId = participationContext.relationships.user_basket?.data?.id;
+  const basketId = phase.relationships.user_basket?.data?.id;
 
   const { data: basket } = useBasket(basketId);
   const { mutate: updateBasket } = useUpdateBasket();
@@ -46,7 +45,7 @@ const CTAButton = ({ participationContext }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
 
-  const votingMethod = participationContext.attributes.voting_method;
+  const votingMethod = phase.attributes.voting_method;
   if (!votingMethod || numberOfVotesCast === undefined) return null;
 
   const currency = appConfig?.data.attributes.settings.core.currency;
@@ -54,7 +53,7 @@ const CTAButton = ({ participationContext }: Props) => {
   const disabledExplanation = getDisabledExplanation(
     formatMessage,
     localize,
-    participationContext,
+    phase,
     numberOfVotesCast,
     currency
   );
@@ -66,8 +65,6 @@ const CTAButton = ({ participationContext }: Props) => {
           {
             id: basket.data.id,
             submitted: true,
-            participation_context_type:
-              participationContext.type === 'phase' ? 'Phase' : 'Project',
           },
           {
             onSuccess: () => {

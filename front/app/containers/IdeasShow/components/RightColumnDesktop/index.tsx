@@ -1,7 +1,6 @@
 import React from 'react';
 
 // api
-import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
 import useIdeaById from 'api/ideas/useIdeaById';
 
@@ -20,8 +19,7 @@ import { colors } from 'utils/styleUtils';
 
 // utils
 import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
-import {
-  getCurrentParticipationContext,
+import { getCurrentPhase,
   isIdeaInParticipationContext,
 } from 'api/phases/utils';
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
@@ -41,23 +39,19 @@ const RightColumnDesktop = ({
   authorId,
   className,
 }: Props) => {
-  const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
   const { data: idea } = useIdeaById(ideaId);
 
   if (!idea) return null;
 
-  const participationContext = getCurrentParticipationContext(
-    project?.data,
-    phases?.data
-  );
+  const phase = getCurrentPhase(phases?.data);
   const votingConfig = getVotingMethodConfig(
-    participationContext?.attributes.voting_method
+    phase?.attributes.voting_method
   );
 
   const ideaIsInParticipationContext =
-    participationContext && idea
-      ? isIdeaInParticipationContext(idea, participationContext)
+    phase && idea
+      ? isIdeaInParticipationContext(idea, phase)
       : undefined;
 
   const commentingEnabled =
@@ -74,7 +68,7 @@ const RightColumnDesktop = ({
   const likesCount = idea.data.attributes.likes_count;
   const dislikesCount = idea.data.attributes.dislikes_count;
   const showReactionControl =
-    participationContext?.attributes.participation_method !== 'voting' &&
+    phase?.attributes.participation_method !== 'voting' &&
     (reactingActionDescriptor.enabled ||
       isFixableByAuthentication(reactingActionDescriptor.disabled_reason) ||
       cancellingEnabled ||
@@ -110,11 +104,11 @@ const RightColumnDesktop = ({
                 </Box>
               )}
               <Box pb="23px" mb="23px" borderBottom="solid 1px #ccc">
-                {participationContext &&
+                {phase &&
                   ideaIsInParticipationContext &&
                   votingConfig?.getIdeaPageVoteInput({
                     ideaId,
-                    participationContext,
+                    phase,
                     compact: false,
                   })}
               </Box>

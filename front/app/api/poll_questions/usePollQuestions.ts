@@ -9,25 +9,22 @@ import {
 } from './types';
 
 const fetchQuestions = ({
-  participationContextId,
-  participationContextType,
+  phaseId,
 }: IPollQuestionParameters) =>
   fetcher<IPollQuestions>({
-    path: `/${participationContextType}s/${participationContextId}/poll_questions`,
+    path: `/phases/${phaseId}/poll_questions`,
     action: 'get',
   });
 
 const usePollQuestions = ({
-  participationContextId,
-  participationContextType,
+  phaseId,
 }: IPollQuestionParameters) => {
   return useQuery<IPollQuestions, CLErrors, IPollQuestions, PollQuestionsKeys>({
     queryKey: pollOptionsKeys.list({
-      participationContextId,
-      participationContextType,
+      phaseId,
     }),
     queryFn: () =>
-      fetchQuestions({ participationContextId, participationContextType }),
+      fetchQuestions({ phaseId }),
   });
 };
 

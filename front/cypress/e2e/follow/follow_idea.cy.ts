@@ -23,7 +23,6 @@ describe('Follow idea', () => {
 
   before(() => {
     cy.apiCreateProject({
-      type: 'timeline',
       title: projectTitle,
       descriptionPreview: '',
       description: '',

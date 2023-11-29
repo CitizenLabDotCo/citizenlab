@@ -15,7 +15,6 @@ describe('Form builder multiple choice choose multiple component', () => {
     }
 
     cy.apiCreateProject({
-      type: 'timeline',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,

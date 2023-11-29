@@ -13,7 +13,6 @@ describe('Idea form settings', () => {
   beforeEach(() => {
     // create new project
     cy.apiCreateProject({
-      type: 'timeline',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
@@ -53,7 +52,6 @@ describe('Idea form settings', () => {
     before(() => {
       // Timeline project with ideation phase
       cy.apiCreateProject({
-        type: 'timeline',
         title: projectTitle,
         descriptionPreview: description,
         description,
@@ -77,7 +75,6 @@ describe('Idea form settings', () => {
         });
       // Timeline project with budget phase
       cy.apiCreateProject({
-        type: 'timeline',
         title: projectTitle,
         descriptionPreview: projectDescriptionPreview,
         description,

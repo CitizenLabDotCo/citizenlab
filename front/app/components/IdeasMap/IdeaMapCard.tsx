@@ -143,17 +143,16 @@ const IdeaMapCard = memo<Props>(
     const { data: project } = useProjectById(projectId);
     const { windowWidth } = useWindowSize();
     const tablet = windowWidth <= viewportWidths.tablet;
-
-    const participationContext = phase?.data || project?.data;
-
     const [hovered, setHovered] = useState(false);
 
+    const phaseData = phase?.data;
+
     const votingMethodConfig = getVotingMethodConfig(
-      participationContext?.attributes.voting_method
+      phaseData?.attributes.voting_method
     );
-    const isVotingContext = !!votingMethodConfig;
-    const isParticipatoryBudgetContext =
-      participationContext?.attributes.voting_method === 'budgeting';
+    const isVotingPhase = !!votingMethodConfig;
+    const isParticipatoryBudgetPhase =
+      phaseData?.attributes.voting_method === 'budgeting';
 
     useEffect(() => {
       const subscriptions = [
@@ -220,13 +219,13 @@ const IdeaMapCard = memo<Props>(
       const projectHasComments = project.data.attributes.comments_count > 0;
       const showCommentCount = commentingEnabled || projectHasComments;
       const phaseButNotCurrentPhase =
-        participationContext?.type === 'phase' &&
+        phaseData &&
         pastPresentOrFuture([
-          participationContext.attributes.start_at,
-          participationContext.attributes.end_at,
+          phaseData.attributes.start_at,
+          phaseData.attributes.end_at,
         ]) !== 'present';
       const showVoteInput =
-        votingMethodConfig && participationContext && !phaseButNotCurrentPhase;
+        votingMethodConfig && phase?.data && !phaseButNotCurrentPhase;
 
       return (
         <Container
@@ -252,16 +251,16 @@ const IdeaMapCard = memo<Props>(
           <Title height={showVoteInput ? '28px' : '44px'}>
             <T value={ideaMarker.attributes.title_multiloc} />
           </Title>
-          {showVoteInput && (
+          {showVoteInput && phaseData && (
             <Box mb="20px">
               {votingMethodConfig.getIdeaCardVoteInput({
                 ideaId: ideaMarker.id,
-                participationContext,
+                phase: phaseData,
               })}
             </Box>
           )}
           <Box display="flex" alignItems="center">
-            {isParticipatoryBudgetContext &&
+            {isParticipatoryBudgetPhase &&
               tenantCurrency &&
               ideaBudget &&
               !showVoteInput && (
@@ -272,8 +271,8 @@ const IdeaMapCard = memo<Props>(
                   </FooterValue>
                 </FooterItem>
               )}
-            {!isParticipatoryBudgetContext &&
-              !isVotingContext &&
+            {!isParticipatoryBudgetPhase &&
+              !isVotingPhase &&
               reactingActionDescriptor.enabled && (
                 <>
                   <FooterItem>

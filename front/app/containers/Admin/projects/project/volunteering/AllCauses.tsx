@@ -1,5 +1,4 @@
 import React, { useCallback, useState, MouseEvent, useMemo } from 'react';
-import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { clone } from 'lodash-es';
 import { DndProvider } from 'react-dnd';
@@ -27,26 +26,24 @@ const Buttons = styled.div`
 `;
 
 interface Props {
-  participationContextType: 'project' | 'phase';
-  participationContextId: string;
+  phaseId: string;
   projectId: string;
 }
 
 const AllCauses = ({
-  participationContextType,
-  participationContextId,
+  phaseId,
   projectId,
 }: Props) => {
   const { mutate: deleteCause } = useDeleteCause();
   const { mutate: reorderCause } = useReorderCause();
   const { formatMessage } = useIntl();
-  const { phaseId } = useParams() as {
-    phaseId: string;
-  };
+  // TODO: JS - Is this needed?
+  // const { phaseId } = useParams() as {
+  //   phaseId: string;
+  // };
 
   const { data: causes } = useCauses({
-    participationContextType,
-    participationContextId,
+    phaseId,
   });
   const [itemsWhileDragging, setItemsWhileDragging] = useState<
     ICauseData[] | null
@@ -103,10 +100,7 @@ const AllCauses = ({
     }
   };
 
-  const newCauseLink =
-    participationContextType === 'phase'
-      ? `/admin/projects/${projectId}/volunteering/${participationContextId}/causes/new`
-      : `/admin/projects/${projectId}/volunteering/causes/new`;
+  const newCauseLink = `/admin/projects/${projectId}/volunteering/${phaseId}/causes/new`
 
   if (isNilOrError(causes)) return null;
 

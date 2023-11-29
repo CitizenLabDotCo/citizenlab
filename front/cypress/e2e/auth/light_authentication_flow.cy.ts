@@ -10,12 +10,10 @@ describe('Light authentication flow', () => {
 
   before(() => {
     cy.apiCreateProject({
-      type: 'timeline',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
       publicationStatus: 'published',
-      participationMethod: 'ideation',
     })
       .then((project) => {
         projectId = project.body.data.id;

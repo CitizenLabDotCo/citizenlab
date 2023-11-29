@@ -29,7 +29,6 @@ describe('Idea manager', () => {
 
         // create project with signed-in admin/user as default assignee
         cy.apiCreateProject({
-          type: 'timeline',
           title: projectTitle,
           descriptionPreview: projectDescriptionPreview,
           description: projectDescription,
@@ -84,7 +83,6 @@ describe('Idea manager', () => {
 
         // create project with signed-in admin/user as default assignee
         cy.apiCreateProject({
-          type: 'timeline',
           title: projectTitle,
           descriptionPreview: projectDescriptionPreview,
           description: projectDescription,

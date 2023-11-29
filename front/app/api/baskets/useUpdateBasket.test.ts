@@ -27,7 +27,6 @@ describe('useUpdateBasket', () => {
     act(() => {
       result.current.mutate({
         id: 'id',
-        participation_context_type: 'Phase',
       });
     });
 
@@ -48,7 +47,6 @@ describe('useUpdateBasket', () => {
     act(() => {
       result.current.mutate({
         id: 'id',
-        participation_context_type: 'Phase',
       });
     });
     await waitFor(() => expect(result.current.isError).toBe(true));

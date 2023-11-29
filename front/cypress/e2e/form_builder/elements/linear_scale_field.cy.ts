@@ -16,7 +16,6 @@ describe('Form builder linear scale', () => {
     }
 
     cy.apiCreateProject({
-      type: 'timeline',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,

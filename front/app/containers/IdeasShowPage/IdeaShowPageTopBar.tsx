@@ -31,7 +31,6 @@ import { isIdeaInParticipationContext } from 'api/phases/utils';
 
 // typings
 import { IdeaReactingDisabledReason } from 'api/ideas/types';
-import { IProjectData } from 'api/projects/types';
 import { IPhaseData } from 'api/phases/types';
 
 const Container = styled.div`
@@ -69,7 +68,7 @@ interface Props {
   projectId: string;
   deselectIdeaOnMap?: () => void;
   className?: string;
-  participationContext?: IProjectData | IPhaseData;
+  phase?: IPhaseData;
 }
 
 const IdeaShowPageTopBar = ({
@@ -77,7 +76,7 @@ const IdeaShowPageTopBar = ({
   projectId,
   className,
   deselectIdeaOnMap,
-  participationContext,
+  phase,
 }: Props) => {
   const { data: authUser } = useAuthUser();
   const { data: project } = useProjectById(projectId);
@@ -88,12 +87,12 @@ const IdeaShowPageTopBar = ({
   const [goBack] = useState(searchParams.get('go_back'));
 
   const votingConfig = getVotingMethodConfig(
-    participationContext?.attributes.voting_method
+    phase?.attributes.voting_method
   );
 
   const ideaIsInParticipationContext =
-    participationContext && idea
-      ? isIdeaInParticipationContext(idea, participationContext)
+    phase && idea
+      ? isIdeaInParticipationContext(idea, phase)
       : undefined;
 
   useEffect(() => {
@@ -149,7 +148,7 @@ const IdeaShowPageTopBar = ({
         </Left>
         <Right>
           {/* Only visible if not voting */}
-          {participationContext?.attributes.participation_method !==
+          {phase?.attributes.participation_method !==
             'voting' && ( // To reduce bias we want to hide the reactions during voting methods
             <ReactionControl
               size="1"
@@ -159,11 +158,11 @@ const IdeaShowPageTopBar = ({
             />
           )}
           {/* Only visible if voting */}
-          {ideaId && participationContext && ideaIsInParticipationContext && (
+          {ideaId && phase && ideaIsInParticipationContext && (
             <Box mr="8px">
               {votingConfig?.getIdeaPageVoteInput({
                 ideaId,
-                participationContext,
+                phase,
                 compact: true,
               })}
             </Box>

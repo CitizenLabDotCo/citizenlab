@@ -10,8 +10,7 @@ describe('<PollAdminForm/>', () => {
   it('Shows the right number of question rows', () => {
     render(
       <PollAdminForm
-        participationContextId="projectId"
-        participationContextType="project"
+        phaseId="phaseId"
         pollQuestions={pollQuestionsData}
       />
     );
@@ -24,8 +23,7 @@ describe('<PollAdminForm/>', () => {
     it("Shows when we don't have questions (rows) (yet)", () => {
       render(
         <PollAdminForm
-          participationContextId="projectId"
-          participationContextType="project"
+          phaseId="phaseId"
           pollQuestions={null}
         />
       );
@@ -39,8 +37,7 @@ describe('<PollAdminForm/>', () => {
     it('Shows when we do have questions (rows)', () => {
       render(
         <PollAdminForm
-          participationContextId="projectId"
-          participationContextType="project"
+          phaseId="phaseId"
           pollQuestions={pollQuestionsData}
         />
       );
@@ -55,8 +52,7 @@ describe('<PollAdminForm/>', () => {
       const user = userEvent.setup();
       render(
         <PollAdminForm
-          participationContextId="projectId"
-          participationContextType="project"
+          phaseId="phaseId"
           pollQuestions={pollQuestionsData}
         />
       );
@@ -75,8 +71,7 @@ describe('<PollAdminForm/>', () => {
       const user = userEvent.setup();
       render(
         <PollAdminForm
-          participationContextId="projectId"
-          participationContextType="project"
+          phaseId="phaseId"
           pollQuestions={pollQuestionsData}
         />
       );
@@ -92,8 +87,7 @@ describe('<PollAdminForm/>', () => {
       const user = userEvent.setup();
       render(
         <PollAdminForm
-          participationContextId="projectId"
-          participationContextType="project"
+          phaseId="phaseId"
           pollQuestions={pollQuestionsData}
         />
       );
@@ -113,8 +107,7 @@ describe('<PollAdminForm/>', () => {
   it('drags and drops rows (questions) correctly', () => {
     render(
       <PollAdminForm
-        participationContextId="projectId"
-        participationContextType="project"
+        phaseId="phaseId"
         pollQuestions={pollQuestionsData}
       />
     );

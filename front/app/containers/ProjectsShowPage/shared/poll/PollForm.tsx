@@ -85,7 +85,6 @@ interface Answers {
 const PollForm = ({
   questions,
   id,
-  type,
   disabled,
   projectId,
   phaseId,
@@ -112,22 +111,19 @@ const PollForm = ({
   const sendAnswer = () => {
     if (id) {
       if (!authUser || (disabled && !actionDisabledAndNotFixable)) {
-        const pcType = phaseId ? 'phase' : 'project';
-        const pcId = phaseId ? phaseId : projectId;
-        if (!pcId || !pcType) return;
+        if (!phaseId) return;
 
         triggerAuthenticationFlow({
           flow: 'signup',
           context: {
             action: 'taking_poll',
-            id: pcId,
-            type: pcType,
+            id: phaseId,
+            type: 'phase', // TODO: JS Can we remove this?
           },
           successAction: {
             name: 'submit_poll',
             params: {
-              id,
-              type,
+              phaseId,
               answers: Object.values(answers).flat(),
               projectId,
               setIsSubmitting,
@@ -136,8 +132,7 @@ const PollForm = ({
         });
       } else {
         addPollResponse({
-          participationContextId: id,
-          participationContextType: type,
+          phaseId: id,
           optionIds: Object.values(answers).flat(),
           projectId,
         });

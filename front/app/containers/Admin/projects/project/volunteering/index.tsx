@@ -6,7 +6,7 @@ import useProjectById from 'api/projects/useProjectById';
 // Components
 import ExportVolunteersButton from './ExportVolunteersButton';
 import AllCauses from './AllCauses';
-import { SectionTitle, SectionDescription } from 'components/admin/Section';
+import { SectionDescription } from 'components/admin/Section';
 import { Box, Title } from '@citizenlab/cl2-component-library';
 
 // i18n
@@ -23,19 +23,6 @@ const PhaseContainer = styled.div`
   }
 `;
 
-const HeaderContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding: 0;
-  margin: 0;
-  margin-bottom: 30px;
-`;
-
-const Left = styled.div`
-  margin-right: 80px;
-`;
-
 const AdminProjectVolunteering = () => {
   const { projectId, phaseId } = useParams() as {
     projectId: string;
@@ -45,35 +32,6 @@ const AdminProjectVolunteering = () => {
   const { data: phase } = usePhase(phaseId);
 
   if (!project) return null;
-
-  if (
-    project.data.attributes.process_type === 'continuous' &&
-    project.data.attributes.participation_method === 'volunteering'
-  ) {
-    return (
-      <Box display="flex" flexDirection="column">
-        <HeaderContainer>
-          <Left>
-            <SectionTitle>
-              <FormattedMessage {...messages.titleVolunteeringTab} />
-            </SectionTitle>
-            <SectionDescription>
-              <FormattedMessage {...messages.subtitleVolunteeringTab} />
-            </SectionDescription>
-          </Left>
-          <ExportVolunteersButton
-            participationContextType="project"
-            participationContextId={project.data.id}
-          />
-        </HeaderContainer>
-        <AllCauses
-          projectId={project.data.id}
-          participationContextType="project"
-          participationContextId={project.data.id}
-        />
-      </Box>
-    );
-  }
 
   if (!phase || phase.data.attributes.participation_method !== 'volunteering') {
     return null;
@@ -86,8 +44,7 @@ const AdminProjectVolunteering = () => {
           <FormattedMessage {...messages.titleVolunteeringTab} />
         </Title>
         <ExportVolunteersButton
-          participationContextId={phaseId}
-          participationContextType="phase"
+          phaseId={phaseId}
         />
       </Box>
 
@@ -97,8 +54,7 @@ const AdminProjectVolunteering = () => {
       <PhaseContainer key={phase.data.id}>
         <AllCauses
           projectId={project.data.id}
-          participationContextType="phase"
-          participationContextId={phaseId}
+          phaseId={phaseId}
         />
       </PhaseContainer>
     </Box>

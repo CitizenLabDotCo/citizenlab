@@ -10,12 +10,10 @@ describe('Idea show page actions', () => {
 
   before(() => {
     cy.apiCreateProject({
-      type: 'timeline',
       title: randomString(20),
       descriptionPreview: randomString(),
       description: randomString(),
       publicationStatus: 'published',
-      participationMethod: 'ideation',
     })
       .then((project) => {
         projectId = project.body.data.id;

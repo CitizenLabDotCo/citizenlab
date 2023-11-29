@@ -8,8 +8,6 @@ import ProjectHeader from './shared/header/ProjectHeader';
 import ContinuousIdeas from './continuous/Ideas';
 import ContinuousSurvey from './continuous/Survey';
 import ContinuousDocumentAnnotation from './continuous/DocumentAnnotation';
-import ContinuousPoll from './continuous/Poll';
-import ContinuousVolunteering from './continuous/Volunteering';
 import TimelineContainer from './timeline';
 import { Box, Spinner, useBreakpoint } from '@citizenlab/cl2-component-library';
 import Navigate from 'utils/cl-router/Navigate';
@@ -146,8 +144,6 @@ const ProjectsShowPage = ({ project }: Props) => {
                 'document_annotation' && (
                 <ContinuousDocumentAnnotation project={project} />
               )}
-              <ContinuousPoll projectId={projectId} />
-              <ContinuousVolunteering projectId={projectId} />
             </>
           ) : (
             <TimelineContainer projectId={projectId} />

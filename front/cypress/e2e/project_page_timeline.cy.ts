@@ -70,7 +70,6 @@ describe('New timeline project', () => {
   before(() => {
     // create new project
     cy.apiCreateProject({
-      type: 'timeline',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,

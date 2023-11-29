@@ -12,8 +12,7 @@ import { ICauseParameters } from './types';
 const apiPath = '*/:type/:id/causes';
 
 const params: ICauseParameters = {
-  participationContextType: 'project',
-  participationContextId: '1',
+  phaseId: '1',
 };
 
 const server = setupServer(

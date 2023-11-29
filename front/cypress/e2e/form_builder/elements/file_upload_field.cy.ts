@@ -16,11 +16,9 @@ describe('Form builder file upload field', () => {
     }
 
     cy.apiCreateProject({
-      type: 'timeline',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
-      publicationStatus: 'published',
     })
       .then((project) => {
         projectId = project.body.data.id;

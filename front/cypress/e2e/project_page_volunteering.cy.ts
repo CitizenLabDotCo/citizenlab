@@ -20,7 +20,6 @@ describe('Volunteering survey CTA', () => {
       })
       .then(() => {
         cy.apiCreateProject({
-          type: 'timeline',
           title: projectTitle,
           descriptionPreview: projectDescriptionPreview,
           description: projectDescription,
