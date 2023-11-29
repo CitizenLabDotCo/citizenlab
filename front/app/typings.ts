@@ -49,7 +49,7 @@ export type ILocationInfo =
       };
     };
 
-export type IParticipationContextType = 'project' | 'phase';
+export type IParticipationContextType = 'phase';
 
 export interface ITab {
   name: string;

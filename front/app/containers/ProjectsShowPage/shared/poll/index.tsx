@@ -1,7 +1,6 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
-import { IParticipationContextType } from 'typings';
 
 // hooks
 import useProjectById from 'api/projects/useProjectById';
@@ -46,7 +45,6 @@ const Container = styled.div`
 // };
 
 interface InputProps {
-  type: IParticipationContextType;
   phaseId: string | null;
   projectId: string;
 }
@@ -69,14 +67,14 @@ const disabledMessages: { [key in PollDisabledReason] } = {
   not_permitted: messages.pollDisabledNotPermitted,
 };
 
-export const Poll = ({ pollQuestions, projectId, phaseId, type }: Props) => {
+export const Poll = ({ pollQuestions, projectId, phaseId }: Props) => {
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
 
   if (
     isNilOrError(pollQuestions) ||
     !project ||
-    !(type === 'phase' ? phase : true)
+    !phase
   ) {
     return null;
   }
@@ -101,8 +99,7 @@ export const Poll = ({ pollQuestions, projectId, phaseId, type }: Props) => {
             projectId={projectId}
             phaseId={phaseId}
             questions={pollQuestions}
-            id={type === 'project' ? projectId : phaseId}
-            type={type}
+            id={phaseId}
             disabled={!enabled}
             disabledMessage={message}
             actionDisabledAndNotFixable={actionDisabledAndNotFixable}

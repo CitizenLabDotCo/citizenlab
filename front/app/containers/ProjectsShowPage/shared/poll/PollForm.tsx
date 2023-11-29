@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 // types
-import { IParticipationContextType } from 'typings';
 import { IPollQuestionData } from 'api/poll_questions/types';
 
 // components
@@ -72,7 +71,6 @@ interface Props {
   projectId: string;
   phaseId?: string | null;
   id: string | null;
-  type: IParticipationContextType;
   disabled: boolean;
   disabledMessage?: MessageDescriptor | null;
   actionDisabledAndNotFixable: boolean;
@@ -118,7 +116,7 @@ const PollForm = ({
           context: {
             action: 'taking_poll',
             id: phaseId,
-            type: 'phase', // TODO: JS Can we remove this?
+            type: 'phase',
           },
           successAction: {
             name: 'submit_poll',

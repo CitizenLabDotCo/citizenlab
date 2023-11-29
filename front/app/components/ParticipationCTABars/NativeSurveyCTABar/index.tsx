@@ -43,7 +43,7 @@ const NativeSurveyCTABar = ({ project }: CTABarProps) => {
   });
   const hasUserParticipated = disabledReason === 'postingLimitedMaxReached';
 
-  if (hasProjectEndedOrIsArchived(project, currentPhase)) {
+  if (hasProjectEndedOrIsArchived(project, currentPhase) || !isPhaseNativeSurvey) {
     return null;
   }
 
@@ -57,9 +57,6 @@ const NativeSurveyCTABar = ({ project }: CTABarProps) => {
               id="project-survey-button"
               data-testid="e2e-project-survey-button"
               projectId={project.id}
-              participationContextType={
-                isPhaseNativeSurvey ? 'phase' : 'project'
-              }
               fontWeight="500"
               bgColor={theme.colors.white}
               textColor={theme.colors.tenantText}
