@@ -1049,7 +1049,7 @@ resource 'Users' do
             })
           end
 
-          example "Update user's existing custom field values" do
+          example "Add to user's existing custom field values" do
             cf = create(:custom_field)
             cf2 = create(:custom_field)
             @user.update!(custom_field_values: { cf.key => 'somevalue' })
@@ -1058,6 +1058,23 @@ resource 'Users' do
             expect(response_status).to eq 200
             expect(@user.reload.custom_field_values).to eq({
               cf.key => 'somevalue',
+              cf2.key => 'another_value'
+            })
+          end
+
+          example "Replace a user's existing custom field value" do
+            cf = create(:custom_field)
+            cf2 = create(:custom_field)
+            @user.update!(custom_field_values: { cf.key => 'somevalue' })
+
+            do_request(user: { custom_field_values: {
+              cf.key => 'new_value',
+              cf2.key => 'another_value'
+            } })
+
+            expect(response_status).to eq 200
+            expect(@user.reload.custom_field_values).to eq({
+              cf.key => 'new_value',
               cf2.key => 'another_value'
             })
           end
