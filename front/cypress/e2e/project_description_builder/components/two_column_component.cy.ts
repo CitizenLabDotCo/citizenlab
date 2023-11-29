@@ -49,14 +49,14 @@ describe('Project description builder Two Column component', () => {
     );
 
     // Components added to all columns
-    cy.get('#e2e-draggable-text').dragAndDrop('div#e2e-single-column', {
+    cy.get('#e2e-draggable-text').dragAndDrop('div.e2e-single-column', {
       position: 'inside',
     });
-    cy.get('#e2e-draggable-about-box').dragAndDrop('div#e2e-single-column', {
+    cy.get('#e2e-draggable-about-box').dragAndDrop('div.e2e-single-column', {
       position: 'inside',
     });
 
-    cy.get('div#e2e-text-box').should('have.length', 2);
+    cy.get('div.e2e-text-box').should('have.length', 2);
     cy.get('div#e2e-about-box').should('have.length', 2);
 
     cy.get('#e2e-content-builder-topbar-save').click();
@@ -64,7 +64,7 @@ describe('Project description builder Two Column component', () => {
 
     cy.visit(`/projects/${projectSlug}`);
     cy.get('#e2e-two-column').should('exist');
-    cy.get('div#e2e-text-box').should('have.length', 2);
+    cy.get('div.e2e-text-box').should('have.length', 2);
     cy.get('div#e2e-about-box').should('have.length', 2);
   });
 

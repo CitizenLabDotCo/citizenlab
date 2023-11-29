@@ -10,7 +10,7 @@ describe FollowerPolicy do
   let(:scope) { FollowerPolicy::Scope.new(user, followable.followers) }
 
   context 'in a public project' do
-    let(:followable) { create(:continuous_project) }
+    let(:followable) { create(:single_phase_ideation_project) }
 
     context 'for a visitor' do
       let(:user) { nil }

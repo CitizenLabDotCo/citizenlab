@@ -270,7 +270,7 @@ const Timeline = ({
       event.preventDefault();
 
       if (phase && phases && project) {
-        setPhaseURL(phase.id, phases.data, project.data, isBackoffice);
+        setPhaseURL(phase, phases.data, project.data, isBackoffice);
       }
     },
     [isBackoffice, phases, project]

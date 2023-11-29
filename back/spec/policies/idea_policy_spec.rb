@@ -8,7 +8,7 @@ describe IdeaPolicy do
   let(:scope) { IdeaPolicy::Scope.new(user, project.ideas) }
 
   context 'on an idea in a public project' do
-    let(:project) { create(:continuous_project) }
+    let(:project) { create(:single_phase_ideation_project) }
     let!(:idea) { create(:idea, project: project, phases: project.phases) }
 
     context 'for a visitor' do
@@ -344,7 +344,7 @@ describe IdeaPolicy do
   end
 
   context 'on idea for a budgeting project' do
-    let(:project) { create(:continuous_budgeting_project) }
+    let(:project) { create(:single_phase_budgeting_project) }
     let(:author) { create(:user) }
     let!(:idea) { create(:idea, project: project, author: author) }
 
@@ -445,7 +445,7 @@ describe IdeaPolicy do
 
   context 'for blocked author' do
     let(:user) { create(:user, block_end_at: 5.days.from_now) }
-    let(:idea) { create(:idea, author: user, project: create(:continuous_project)) }
+    let(:idea) { create(:idea, author: user, project: create(:single_phase_ideation_project)) }
 
     it_behaves_like 'policy for blocked user'
   end
@@ -453,7 +453,7 @@ describe IdeaPolicy do
   # It appears we actually create an idea when a user submits a native survey
   context 'for blocked user submitting a survey' do
     let(:user) { create(:user, block_end_at: 5.days.from_now) }
-    let(:idea) { create(:idea, author: user, project: create(:continuous_survey_project)) }
+    let(:idea) { create(:idea, author: user, project: create(:single_phase_typeform_survey_project)) }
 
     it_behaves_like 'policy for blocked user'
   end
@@ -464,7 +464,7 @@ describe IdeaPolicy do
     let(:participation_method) { 'ideation' }
     let(:posting_enabled) { true }
     let(:project) do
-      create(:continuous_project, phase_attrs: { with_permissions: true, posting_enabled: posting_enabled, participation_method: participation_method }).tap do |project|
+      create(:single_phase_ideation_project, phase_attrs: { with_permissions: true, posting_enabled: posting_enabled, participation_method: participation_method }).tap do |project|
         project.phases.first.permissions.find_by(action: 'posting_idea').update!(permitted_by: permitted_by)
       end
     end

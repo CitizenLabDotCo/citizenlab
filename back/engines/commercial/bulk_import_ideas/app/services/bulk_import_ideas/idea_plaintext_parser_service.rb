@@ -9,11 +9,11 @@ module BulkImportIdeas
     EMPTY_SELECT_CIRCLES = ['O', '○']
     EMPTY_MULTISELECT_SQUARES = ['☐']
 
-    def initialize(participation_context, custom_fields, locale, pdf_form_page_count)
+    def initialize(phase, custom_fields, locale, pdf_form_page_count)
       @custom_fields = custom_fields
       @locale = locale
 
-      @form_title = get_form_title participation_context
+      @form_title = get_form_title phase
       @pdf_form_page_count = pdf_form_page_count
 
       @optional_copy = I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.optional') }
@@ -128,14 +128,11 @@ module BulkImportIdeas
       end
     end
 
-    def get_form_title(participation_context)
-      pc_title = participation_context.title_multiloc[@locale]
-      return pc_title if participation_context.instance_of? Project
+    def get_form_title(phase)
+      phase_title = phase.title_multiloc[@locale]
+      project_title = phase.project.title_multiloc[@locale]
 
-      project = participation_context.project
-      project_title = project.title_multiloc[@locale]
-
-      "#{project_title} - #{pc_title}"
+      "#{project_title} - #{phase_title}"
     end
 
     def new_form

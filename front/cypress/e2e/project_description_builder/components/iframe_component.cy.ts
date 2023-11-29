@@ -72,7 +72,7 @@ describe('Project description builder Iframe component', () => {
     cy.get('#e2e-content-builder-iframe-url-input')
       .clear()
       .type('https://citizen');
-    cy.contains('Must provide a valid URL.').should('be.visible');
+    cy.get('.e2e-error-message').should('be.visible');
     // Check that save is disabled
     cy.contains('Save').should('be.disabled');
     // Check that red border is present

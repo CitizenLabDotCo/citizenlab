@@ -27,7 +27,7 @@ class ContentImageService
     image_elements(content).each do |img_elt|
       next if image_attributes_for_element.none? { |elt_atr| attribute? img_elt, elt_atr }
 
-      if !attribute? img_elt, code_attribute_for_element
+      if !attribute?(img_elt, code_attribute_for_element) && image_attributes(img_elt, imageable, field).present?
         content_image = content_image_class.create! image_attributes(img_elt, imageable, field)
         set_attribute! img_elt, code_attribute_for_element, content_image[code_attribute_for_model]
       end

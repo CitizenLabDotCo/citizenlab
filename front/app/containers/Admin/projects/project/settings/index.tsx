@@ -61,9 +61,6 @@ const Settings = () => {
       url: `/admin/projects/${projectId}/settings/events`,
     },
   ]);
-  const goBack = () => {
-    clHistory.push(`/admin/projects/${projectId}`);
-  };
 
   const handleData = (insertTabOptions: InsertConfigurationOptions<ITab>) => {
     setTabs(insertConfiguration(insertTabOptions)(tabs));
@@ -84,7 +81,7 @@ const Settings = () => {
             pr="24px"
           >
             <Box display="flex">
-              <GoBackButton onClick={goBack} showGoBackText={false} />
+              <GoBackButton onClick={clHistory.goBack} showGoBackText={false} />
               <Title color="primary" variant="h4" my="0px" ml="8px">
                 {formatMessage(messages.back)}
               </Title>

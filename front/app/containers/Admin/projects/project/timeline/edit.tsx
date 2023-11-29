@@ -61,7 +61,7 @@ import useLocalize from 'hooks/useLocalize';
 import { stringifyCampaignFields } from 'containers/Admin/messaging/AutomatedEmails/utils';
 import { CampaignData } from 'containers/Admin/messaging/AutomatedEmails/types';
 import { CampaignName } from 'api/campaigns/types';
-import { getExcludedDates, getMaxEndDate } from './utils';
+import { getExcludedDates, getMaxEndDate, getTimelineTab } from './utils';
 
 type SubmitStateType = 'disabled' | 'enabled' | 'error' | 'success';
 
@@ -279,23 +279,7 @@ const AdminPhaseEdit = () => {
         setAttributeDiff({});
 
         if (redirectAfterSave) {
-          const participationMethod =
-            phaseResponse.attributes.participation_method;
-          let redirectTab = 'setup';
-          if (
-            participationMethod === 'ideation' ||
-            participationMethod === 'voting'
-          ) {
-            redirectTab = 'ideas';
-          } else if (participationMethod === 'native_survey') {
-            redirectTab = 'native-survey';
-          } else if (participationMethod === 'poll') {
-            redirectTab = 'polls';
-          } else if (participationMethod === 'survey') {
-            redirectTab = 'survey-results';
-          } else if (participationMethod === 'volunteering') {
-            redirectTab = 'volunteering';
-          }
+          const redirectTab = getTimelineTab(phaseResponse);
           window.scrollTo(0, 0);
           clHistory.push(
             `/admin/projects/${projectId}/${redirectTab}/${phaseId}`

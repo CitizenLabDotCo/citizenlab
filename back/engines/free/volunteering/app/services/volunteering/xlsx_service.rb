@@ -5,7 +5,7 @@ module Volunteering
     @@multiloc_service = MultilocService.new
 
     def generate_xlsx(
-      participation_context,
+      phase,
       volunteers,
       view_private_attributes: false
     )
@@ -26,12 +26,12 @@ module Volunteering
       pa = Axlsx::Package.new
       utils = XlsxExport::Utils.new
 
-      sheetnames = participation_context.causes.to_h do |cause|
+      sheetnames = phase.causes.to_h do |cause|
         [cause.id, utils.sanitize_sheetname(@@multiloc_service.t(cause.title_multiloc))]
       end
 
       duplicate_names = (sheetnames.values.uniq.size != sheetnames.size)
-      participation_context.causes.order(:ordering).each_with_index do |cause, i|
+      phase.causes.order(:ordering).each_with_index do |cause, i|
         sheetname = duplicate_names ? "#{i + 1} - " + sheetnames[cause.id] : sheetnames[cause.id]
         xlsx_service.generate_sheet pa.workbook, sheetname, columns, volunteers.where(cause: cause)
       end

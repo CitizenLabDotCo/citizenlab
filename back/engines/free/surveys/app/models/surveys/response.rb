@@ -28,7 +28,7 @@ module Surveys
     belongs_to :participation_context, polymorphic: true
 
     validates :submitted_at, presence: true
-    validates :survey_service, presence: true, inclusion: { in: SurveyParticipationContext::SURVEY_SERVICES }
+    validates :survey_service, presence: true, inclusion: { in: SurveyPhase::SURVEY_SERVICES }
     validates :external_survey_id, presence: true
 
     ANSWERS_JSON_SCHEMA_STR = Rails.root.join('engines', 'free', 'surveys', 'config', 'schemas', 'response_answers.json_schema').read

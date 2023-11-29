@@ -21,9 +21,6 @@ const useDeleteInitiative = () => {
         queryKey: initiativesKeys.lists(),
       });
       queryClient.invalidateQueries({
-        queryKey: initiativesKeys.lists(),
-      });
-      queryClient.invalidateQueries({
         queryKey: initiativesCountKeys.items(),
       });
       queryClient.invalidateQueries({

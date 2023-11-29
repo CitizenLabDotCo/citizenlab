@@ -25,7 +25,7 @@ class WebApi::V1::IdeasController < ApplicationController
       includes: [
         :idea_images, :idea_trending_info,
         {
-          project: [:phases, :permissions, { custom_form: [:custom_fields] }],
+          project: [:phases, { custom_form: [:custom_fields] }],
           phases: [:permissions],
           author: [:unread_notifications]
         }
@@ -127,31 +127,31 @@ class WebApi::V1::IdeasController < ApplicationController
       send_error and return if phase_ids.size != 1
     end
 
-    participation_context = if is_moderator && phase_ids.any?
+    phase = if is_moderator && phase_ids.any?
       Phase.find(phase_ids.first)
     else
-      ParticipationContextService.new.get_participation_context(project)
+      ParticipationContextService.new.get_current_phase(project)
     end
-    send_error and return unless participation_context
+    send_error and return unless phase
 
-    participation_method = Factory.instance.participation_method_for(participation_context)
+    participation_method = Factory.instance.participation_method_for(phase)
 
     extract_custom_field_values_from_params! participation_method.custom_form
     params_for_create = idea_params participation_method.custom_form, is_moderator
     params_for_file_upload_fields = extract_params_for_file_upload_fields participation_method.custom_form, params_for_create
     input = Idea.new params_for_create
-    input.creation_phase = (participation_context if participation_method.creation_phase?)
-    input.phase_ids = [participation_context.id] if phase_ids.empty?
+    input.creation_phase = (phase if participation_method.creation_phase?)
+    input.phase_ids = [phase.id] if phase_ids.empty?
 
     # NOTE: Needs refactor allow_anonymous_participation? so anonymous_participation can be allow or force
-    if participation_context.native_survey? && participation_context.allow_anonymous_participation?
+    if phase.native_survey? && phase.allow_anonymous_participation?
       input.anonymous = true
     end
     input.author ||= current_user
     service.before_create(input, current_user)
 
     authorize input
-    if anonymous_not_allowed?(participation_context)
+    if anonymous_not_allowed?(phase)
       render json: { errors: { base: [{ error: :anonymous_participation_not_allowed }] } }, status: :unprocessable_entity
       return
     end
@@ -194,7 +194,7 @@ class WebApi::V1::IdeasController < ApplicationController
   def update
     input = Idea.find params[:id]
     project = input.project
-    participation_context = ParticipationContextService.new.get_participation_context project
+    phase = ParticipationContextService.new.get_current_phase project
     authorize input
 
     if invalid_blank_author_for_update? input, params
@@ -213,7 +213,7 @@ class WebApi::V1::IdeasController < ApplicationController
     CustomFieldService.new.cleanup_custom_field_values! update_params[:custom_field_values]
     input.assign_attributes update_params
     authorize input
-    if anonymous_not_allowed?(participation_context)
+    if anonymous_not_allowed?(phase)
       render json: { errors: { base: [{ error: :anonymous_participation_not_allowed }] } }, status: :unprocessable_entity
       return
     end
@@ -336,8 +336,8 @@ class WebApi::V1::IdeasController < ApplicationController
     end
   end
 
-  def anonymous_not_allowed?(participation_context)
-    params.dig('idea', 'anonymous') && !participation_context.allow_anonymous_participation
+  def anonymous_not_allowed?(phase)
+    params.dig('idea', 'anonymous') && !phase.allow_anonymous_participation
   end
 
   def serialization_options_for(ideas)

@@ -28,7 +28,7 @@ RSpec.describe Basket do
 
   context 'when a basket has more than the maximum votes' do
     before do
-      project = create(:continuous_budgeting_project, phase_attrs: { voting_max_total: 1000 })
+      project = create(:single_phase_budgeting_project, phase_attrs: { voting_max_total: 1000 })
       ideas = create_list(:idea, 11, budget: 100, project: project)
       @basket = create(:basket, ideas: ideas, participation_context: project.phases.first)
       @basket.baskets_ideas.update_all(votes: 100)
@@ -48,7 +48,7 @@ RSpec.describe Basket do
   end
 
   context 'when a basket has less than the minimum votes' do
-    let(:project) { create(:continuous_budgeting_project, phase_attrs: { voting_min_total: 5 }) }
+    let(:project) { create(:single_phase_budgeting_project, phase_attrs: { voting_min_total: 5 }) }
     let(:basket) { create(:basket, ideas: [idea], participation_context: project.phases.first, submitted_at: Time.now) }
     let(:idea) { create(:idea, budget: 1, project: project) }
 
@@ -85,7 +85,7 @@ RSpec.describe Basket do
   end
 
   context "when the basket's project is updated to non-budgeting participation method" do
-    let(:project) { create(:continuous_budgeting_project, phase_attrs: { voting_min_total: 200 }) }
+    let(:project) { create(:single_phase_budgeting_project, phase_attrs: { voting_min_total: 200 }) }
     let!(:basket) { create(:basket, ideas: [idea], participation_context: project.phases.first, submitted_at: Time.now) }
     let(:idea) { create(:idea, budget: 100, project: project, phases: project.phases) }
 
@@ -99,7 +99,7 @@ RSpec.describe Basket do
   end
 
   context 'budgeting' do
-    let(:project) { create(:continuous_budgeting_project) }
+    let(:project) { create(:single_phase_budgeting_project) }
     let(:idea) { create(:idea, project: project, budget: 5) }
     let(:basket) { create(:basket, participation_context: project.phases.first, ideas: (create_list(:idea, 2, project: project, budget: 10) + [idea])) }
 
@@ -231,7 +231,7 @@ RSpec.describe Basket do
     end
 
     context 'new basket on open ended project' do
-      let(:project) { create(:continuous_budgeting_project) }
+      let(:project) { create(:single_phase_budgeting_project) }
       let(:ideas) { create_list(:idea, 2, project: project, phases: project.phases) }
       let(:current_phase) { TimelineService.new.current_phase(project) }
 

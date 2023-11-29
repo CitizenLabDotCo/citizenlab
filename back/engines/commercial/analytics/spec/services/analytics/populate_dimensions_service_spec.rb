@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-require 'query'
 
 describe Analytics::PopulateDimensionsService do
   describe 'run with no ideas or initiatives' do

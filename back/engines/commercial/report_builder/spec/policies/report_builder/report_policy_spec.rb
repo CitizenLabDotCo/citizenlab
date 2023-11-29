@@ -14,6 +14,7 @@ RSpec.describe ReportBuilder::ReportPolicy do
     let_it_be(:user) { build(:admin) }
 
     it { is_expected.to permit(:show) }
+    it { is_expected.to permit(:layout) }
     it { is_expected.to permit(:create) }
     it { is_expected.to permit(:destroy) }
     it { is_expected.to permit(:update) }
@@ -24,6 +25,7 @@ RSpec.describe ReportBuilder::ReportPolicy do
     let_it_be(:user) { nil }
 
     it { is_expected.not_to permit(:show) }
+    it { is_expected.not_to permit(:layout) }
     it { is_expected.not_to permit(:create) }
     it { is_expected.not_to permit(:destroy) }
     it { is_expected.not_to permit(:update) }
@@ -34,9 +36,47 @@ RSpec.describe ReportBuilder::ReportPolicy do
     let_it_be(:user) { build(:user) }
 
     it { is_expected.not_to permit(:show) }
+    it { is_expected.not_to permit(:layout) }
     it { is_expected.not_to permit(:create) }
     it { is_expected.not_to permit(:destroy) }
     it { is_expected.not_to permit(:update) }
     it { expect { scope.resolve.count }.to raise_error(Pundit::NotAuthorizedError) }
+
+    context 'when report belongs to phase' do
+      before do
+        allow(report).to receive(:phase?).and_return(true)
+        allow(PhasePolicy).to receive(:new).and_return(phase_policy)
+      end
+
+      context 'when phase can be updated' do
+        let(:phase_policy) { instance_double(PhasePolicy, update?: true) }
+
+        it { is_expected.to permit(:create) }
+        it { is_expected.to permit(:update) }
+        it { is_expected.to permit(:destroy) }
+      end
+
+      context 'when phase cannot be updated' do
+        let(:phase_policy) { instance_double(PhasePolicy, update?: false) }
+
+        it { is_expected.not_to permit(:create) }
+        it { is_expected.not_to permit(:update) }
+        it { is_expected.not_to permit(:destroy) }
+      end
+
+      context 'when phase can be shown' do
+        let(:phase_policy) { instance_double(PhasePolicy, show?: true) }
+
+        it { is_expected.to permit(:show) }
+        it { is_expected.to permit(:layout) }
+      end
+
+      context 'when phase cannot be shown' do
+        let(:phase_policy) { instance_double(PhasePolicy, show?: false) }
+
+        it { is_expected.not_to permit(:show) }
+        it { is_expected.not_to permit(:layout) }
+      end
+    end
   end
 end

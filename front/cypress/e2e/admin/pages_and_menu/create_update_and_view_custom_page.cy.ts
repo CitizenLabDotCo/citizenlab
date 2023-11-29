@@ -259,6 +259,7 @@ describe('Admin: can', () => {
       cy.get('[data-testid="feedbackSuccessMessage"');
 
       cy.visit(`/en/pages/${page4}`);
+      cy.wait(1000);
       cy.contains('example.pdf');
     });
   });

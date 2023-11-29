@@ -9,12 +9,12 @@ resource 'Baskets' do
   before do
     header 'Content-Type', 'application/json'
     @user = create(:user)
-    @project = create(:continuous_multiple_voting_project)
-    create_list(:basket, 2, participation_context: create(:continuous_budgeting_project))
+    @project = create(:single_phase_multiple_voting_project)
+    create_list(:basket, 2, participation_context: create(:budgeting_phase))
     @basket = create(
       :basket,
       user: @user,
-      participation_context: @project
+      participation_context: @project.phases.first
     )
     @ideas = [1, 2, 2].map do |votes|
       create(:idea, project: @project, budget: 2).tap do |idea|
@@ -38,7 +38,7 @@ resource 'Baskets' do
         expect(json_response.dig(:data, :attributes, :total_votes)).to eq 5
         expect(json_response.dig(:data, :relationships)).to include(
           participation_context: {
-            data: { id: @basket.participation_context_id, type: 'project' }
+            data: { id: @basket.participation_context_id, type: 'phase' }
           },
           user: {
             data: { id: @basket.user_id, type: 'user' }
@@ -79,7 +79,7 @@ resource 'Baskets' do
       example '[error] Create a basket in a survey', document: false do
         do_request(
           basket: {
-            participation_context_id: create(:continuous_survey_project).id,
+            participation_context_id: create(:single_phase_typeform_survey_project).id,
             participation_context_type: 'Project'
           }
         )
@@ -110,7 +110,7 @@ resource 'Baskets' do
 
         context 'when budgeting' do
           before do
-            @project = create(:continuous_budgeting_project)
+            @project = create(:single_phase_budgeting_project)
             @basket.update!(participation_context: @project.phases.first)
           end
 

@@ -7,25 +7,25 @@ RSpec.describe VotingMethod::SingleVoting do
 
   let(:phase) { create(:single_voting_phase) }
 
-  describe '#assign_defaults_for_participation_context' do
+  describe '#assign_defaults_for_phase' do
     let(:phase) { build(:single_voting_phase) }
 
     it 'sets voting_max_votes_per_idea to 1' do
       phase.voting_max_votes_per_idea = 3
-      voting_method.assign_defaults_for_participation_context
+      voting_method.assign_defaults_for_phase
       expect(phase.voting_max_votes_per_idea).to eq 1
     end
   end
 
-  describe '#validate_participation_context' do
+  describe '#validate_phase' do
     it 'sets no errors when initialised' do
-      voting_method.validate_participation_context
+      voting_method.validate_phase
       expect(phase.errors.details).to be_blank
     end
 
     it 'sets an error when voting_max_votes_per_idea is not 1' do
       phase.voting_max_votes_per_idea = 2
-      voting_method.validate_participation_context
+      voting_method.validate_phase
       expect(phase.errors.details).to eq(
         voting_max_votes_per_idea: [error: :invalid]
       )

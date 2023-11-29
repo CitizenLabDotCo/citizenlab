@@ -12,17 +12,17 @@ describe ParticipationContextService do
         :project_with_current_phase,
         current_phase_attrs: { title_multiloc: { 'en' => random_title } }
       )
-      expect(service.get_participation_context(project).title_multiloc['en']).to eq random_title
+      expect(service.get_current_phase(project).title_multiloc['en']).to eq random_title
     end
 
     it 'returns nil for a timeline project without an active phase' do
       project = create(:project_with_past_phases)
-      expect(service.get_participation_context(project)).to be_nil
+      expect(service.get_current_phase(project)).to be_nil
     end
 
     it "returns nil for a timeline project that's archived" do
       project = create(:project_with_current_phase, admin_publication_attributes: { publication_status: 'archived' })
-      expect(service.get_participation_context(project)).to be_nil
+      expect(service.get_current_phase(project)).to be_nil
     end
   end
 
@@ -61,13 +61,13 @@ describe ParticipationContextService do
     end
 
     it "returns 'project_inactive' when the project is archived" do
-      project = create(:continuous_project, admin_publication_attributes: { publication_status: 'archived' })
+      project = create(:single_phase_ideation_project, admin_publication_attributes: { publication_status: 'archived' })
       expect(service.posting_idea_disabled_reason_for_project(project, create(:user))).to eq 'project_inactive'
     end
 
     it 'returns `posting_limited_max_reached` if the posting limit was reached' do
       user = create(:user)
-      project = create(:continuous_project, phase_attrs: { posting_enabled: true, posting_method: 'limited', posting_limited_max: 1 })
+      project = create(:single_phase_ideation_project, phase_attrs: { posting_enabled: true, posting_method: 'limited', posting_limited_max: 1 })
       create(:idea, project: project, author: user, phases: project.phases)
 
       expect(service.posting_idea_disabled_reason_for_project(project, user)).to eq 'posting_limited_max_reached'
@@ -75,7 +75,7 @@ describe ParticipationContextService do
 
     it 'returns `posting_limited_max_reached` if the author posted a survey anonymously and the limit was reached' do
       user = create(:user)
-      project = create(:continuous_native_survey_project, phase_attrs: {
+      project = create(:single_phase_native_survey_project, phase_attrs: {
         posting_enabled: true, posting_method: 'limited', posting_limited_max: 1, allow_anonymous_participation: true
       })
       create(:native_survey_response, project: project, author: user, anonymous: true, phases: project.phases, creation_phase: project.phases.first)
@@ -85,7 +85,7 @@ describe ParticipationContextService do
 
     it 'returns nil if the posting limit was not reached' do
       user = create(:user)
-      project = create(:continuous_project, phase_attrs: { posting_enabled: true, posting_method: 'limited', posting_limited_max: 1 })
+      project = create(:single_phase_ideation_project, phase_attrs: { posting_enabled: true, posting_method: 'limited', posting_limited_max: 1 })
       create(:idea, project: project)
 
       expect(service.posting_idea_disabled_reason_for_project(project, user)).to be_nil
@@ -95,7 +95,7 @@ describe ParticipationContextService do
       let(:project) { create(:project_with_current_phase, current_phase_attrs: { with_permissions: true }) }
       let(:permission) do
         service
-          .get_participation_context(project).permissions
+          .get_current_phase(project).permissions
           .find_by(action: 'posting_idea')
       end
 
@@ -186,7 +186,7 @@ describe ParticipationContextService do
       let(:project) { create(:project_with_current_phase, current_phase_attrs: { with_permissions: true }) }
       let(:permission) do
         service
-          .get_participation_context(project).permissions
+          .get_current_phase(project).permissions
           .find_by(action: 'commenting_idea')
       end
 
@@ -249,7 +249,7 @@ describe ParticipationContextService do
       end
 
       it 'returns `reacting_disabled` if reacting is disabled' do
-        project = create(:continuous_project, phase_attrs: { reacting_enabled: false })
+        project = create(:single_phase_ideation_project, phase_attrs: { reacting_enabled: false })
         idea = create(:idea, project: project, phases: project.phases)
         reaction = build(:reaction, user: user, reactable: idea)
 
@@ -257,7 +257,7 @@ describe ParticipationContextService do
       end
 
       it 'returns `reacting_dislike_disabled` for a dislike if disliking is disabled' do
-        project = create(:continuous_project, phase_attrs: { reacting_enabled: true, reacting_dislike_enabled: false })
+        project = create(:single_phase_ideation_project, phase_attrs: { reacting_enabled: true, reacting_dislike_enabled: false })
         idea = create(:idea, project: project, phases: project.phases)
         reaction = build(:reaction, mode: 'down', user: user, reactable: idea)
 
@@ -265,7 +265,7 @@ describe ParticipationContextService do
       end
 
       it 'returns nil for a like if disliking is disabled' do
-        project = create(:continuous_project, phase_attrs: { reacting_enabled: true, reacting_dislike_enabled: false })
+        project = create(:single_phase_ideation_project, phase_attrs: { reacting_enabled: true, reacting_dislike_enabled: false })
         idea = create(:idea, project: project, phases: project.phases)
         reaction = build(:reaction, mode: 'up', user: user, reactable: idea)
 
@@ -273,7 +273,7 @@ describe ParticipationContextService do
       end
 
       it "returns nil for a dislike, but while the mode is explicitly specified as 'up', even though disliking is disabled" do
-        project = create(:continuous_project, phase_attrs: { reacting_enabled: true, reacting_dislike_enabled: false })
+        project = create(:single_phase_ideation_project, phase_attrs: { reacting_enabled: true, reacting_dislike_enabled: false })
         idea = create(:idea, project: project, phases: project.phases)
         reaction = build(:reaction, mode: 'down', user: user, reactable: idea)
 
@@ -281,7 +281,7 @@ describe ParticipationContextService do
       end
 
       it 'returns `reacting_like_limited_max_reached` if the like limit was reached' do
-        project = create(:continuous_project, phase_attrs: { reacting_enabled: true, reacting_like_method: 'limited', reacting_like_limited_max: 1 })
+        project = create(:single_phase_ideation_project, phase_attrs: { reacting_enabled: true, reacting_like_method: 'limited', reacting_like_limited_max: 1 })
         idea = create(:idea, project: project, phases: project.phases)
         create(:reaction, mode: 'up', user: user, reactable: idea)
         reaction = build(:reaction, mode: 'up', user: user, reactable: idea)
@@ -290,7 +290,7 @@ describe ParticipationContextService do
       end
 
       it 'returns nil if the like limit was not reached' do
-        project = create(:continuous_project, phase_attrs: { reacting_enabled: true, reacting_like_method: 'limited', reacting_like_limited_max: 1 })
+        project = create(:single_phase_ideation_project, phase_attrs: { reacting_enabled: true, reacting_like_method: 'limited', reacting_like_limited_max: 1 })
         idea = create(:idea, project: project, phases: project.phases)
         create(:reaction, mode: 'down', user: user, reactable: idea)
         reaction = build(:reaction, mode: 'up', user: user, reactable: idea)
@@ -299,7 +299,7 @@ describe ParticipationContextService do
       end
 
       it 'returns `reacting_dislike_limited_max_reached` if the disliking limit was reached' do
-        project = create(:continuous_project, phase_attrs: {
+        project = create(:single_phase_ideation_project, phase_attrs: {
           reacting_enabled: true, reacting_dislike_enabled: true,
           reacting_dislike_method: 'limited', reacting_dislike_limited_max: 1
         })
@@ -311,7 +311,7 @@ describe ParticipationContextService do
       end
 
       it 'returns nil if the disliking limit was not reached' do
-        project = create(:continuous_project, phase_attrs: {
+        project = create(:single_phase_ideation_project, phase_attrs: {
           reacting_enabled: true, reacting_dislike_enabled: true,
           reacting_dislike_method: 'limited', reacting_dislike_limited_max: 1
         })
@@ -325,7 +325,7 @@ describe ParticipationContextService do
 
     context 'an idea' do
       it 'returns nil when reacting is enabled' do
-        project = create(:continuous_project, phase_attrs: { reacting_enabled: true })
+        project = create(:single_phase_ideation_project, phase_attrs: { reacting_enabled: true })
         idea = create(:idea, project: project, phases: project.phases)
 
         expect(service.idea_reacting_disabled_reason_for(idea, user, mode: 'up')).to be_nil
@@ -341,7 +341,7 @@ describe ParticipationContextService do
       end
 
       it "returns `not_ideation` when we're in a participatory budgeting phase" do
-        project = create(:continuous_budgeting_project)
+        project = create(:single_phase_budgeting_project)
         idea = create(:idea, project: project)
 
         expect(service.idea_reacting_disabled_reason_for(idea, user, mode: 'up')).to eq 'not_ideation'
@@ -362,7 +362,7 @@ describe ParticipationContextService do
       end
 
       it 'returns `reacting_dislike_limited_max_reached` if the dislike limit was reached' do
-        project = create(:continuous_project, phase_attrs: {
+        project = create(:single_phase_ideation_project, phase_attrs: {
           reacting_enabled: true, reacting_dislike_enabled: true,
           reacting_dislike_method: 'limited', reacting_dislike_limited_max: 1
         })
@@ -476,7 +476,7 @@ describe ParticipationContextService do
       let(:project) { create(:project_with_current_phase, current_phase_attrs: { with_permissions: true }) }
       let(:idea) { create(:idea, project: project, phases: [project.phases[2]]) }
       let(:permission) do
-        service.get_participation_context(project).permissions
+        service.get_current_phase(project).permissions
           .find_by(action: 'reacting_idea')
       end
 
@@ -536,7 +536,7 @@ describe ParticipationContextService do
     end
 
     it "returns 'project_inactive' when the project is archived" do
-      project = create(:continuous_project, admin_publication_attributes: { publication_status: 'archived' })
+      project = create(:single_phase_ideation_project, admin_publication_attributes: { publication_status: 'archived' })
       idea = create(:idea, project: project, phases: project.phases)
       expect(service.cancelling_reacting_disabled_reason_for_idea(idea, idea.author)).to eq reasons[:project_inactive]
     end
@@ -548,7 +548,7 @@ describe ParticipationContextService do
       let(:idea) { create(:idea, project: project, phases: [project.phases[2]]) }
 
       it "returns `not_signed_in` if it's in the current phase and user needs to be signed in" do
-        service.get_participation_context(project).permissions.find_by(action: 'reacting_idea')
+        service.get_current_phase(project).permissions.find_by(action: 'reacting_idea')
           .update!(permitted_by: 'users')
         expect(service.cancelling_reacting_disabled_reason_for_idea(idea, nil)).to eq 'not_signed_in'
       end
@@ -558,7 +558,7 @@ describe ParticipationContextService do
       end
 
       it "returns 'not_in_group' if reacting is not permitted" do
-        project = create(:continuous_project, phase_attrs: { with_permissions: true })
+        project = create(:single_phase_ideation_project, phase_attrs: { with_permissions: true })
         idea = create(:idea, project: project, phases: project.phases)
         permission = project.phases.first.permissions.find_by(action: 'reacting_idea')
         permission.update!(
@@ -582,13 +582,13 @@ describe ParticipationContextService do
     end
 
     it 'returns `project_inactive` when the project is archived' do
-      project = create(:continuous_project, admin_publication_attributes: { publication_status: 'archived' })
+      project = create(:single_phase_ideation_project, admin_publication_attributes: { publication_status: 'archived' })
       expect(service.taking_survey_disabled_reason_for_project(project, create(:user))).to eq 'project_inactive'
     end
 
     it 'returns nil when taking the survey is allowed' do
-      project = create(:continuous_survey_project, phase_attrs: { with_permissions: true })
-      permission = service.get_participation_context(project).permissions.find_by(action: 'taking_survey')
+      project = create(:single_phase_typeform_survey_project, phase_attrs: { with_permissions: true })
+      permission = service.get_current_phase(project).permissions.find_by(action: 'taking_survey')
       groups = create_list(:group, 2, projects: [project])
       permission.update!(permitted_by: 'groups', group_ids: groups.map(&:id))
       user = create(:user)
@@ -599,15 +599,15 @@ describe ParticipationContextService do
     end
 
     it 'returns `not_signed_in` when user needs to be signed in' do
-      project = create(:continuous_survey_project, phase_attrs: { with_permissions: true })
-      permission = service.get_participation_context(project).permissions.find_by(action: 'taking_survey')
+      project = create(:single_phase_typeform_survey_project, phase_attrs: { with_permissions: true })
+      permission = service.get_current_phase(project).permissions.find_by(action: 'taking_survey')
       permission.update!(permitted_by: 'users')
       expect(service.taking_survey_disabled_reason_for_project(project, nil)).to eq 'not_signed_in'
     end
 
     it 'returns `not_in_group` when taking the survey is not permitted' do
-      project = create(:continuous_survey_project, phase_attrs: { with_permissions: true })
-      permission = service.get_participation_context(project).permissions.find_by(action: 'taking_survey')
+      project = create(:single_phase_typeform_survey_project, phase_attrs: { with_permissions: true })
+      permission = service.get_current_phase(project).permissions.find_by(action: 'taking_survey')
       permission.update!(
         permitted_by: 'groups',
         group_ids: create_list(:group, 2).map(&:id)
@@ -629,13 +629,13 @@ describe ParticipationContextService do
     end
 
     it 'returns `project_inactive` when the project is archived' do
-      project = create(:continuous_project, admin_publication_attributes: { publication_status: 'archived' })
+      project = create(:single_phase_ideation_project, admin_publication_attributes: { publication_status: 'archived' })
       expect(service.annotating_document_disabled_reason_for_project(project, create(:user))).to eq 'project_inactive'
     end
 
     it 'returns nil when annotating the document is allowed' do
-      project = create(:continuous_document_annotation_project, phase_attrs: { with_permissions: true })
-      permission = service.get_participation_context(project).permissions.find_by(action: 'annotating_document')
+      project = create(:single_phase_document_annotation_project, phase_attrs: { with_permissions: true })
+      permission = service.get_current_phase(project).permissions.find_by(action: 'annotating_document')
       groups = create_list(:group, 2, projects: [project])
       permission.update!(permitted_by: 'groups', group_ids: groups.map(&:id))
       user = create(:user)
@@ -646,15 +646,15 @@ describe ParticipationContextService do
     end
 
     it 'returns `not_signed_in` when user needs to be signed in' do
-      project = create(:continuous_document_annotation_project, phase_attrs: { with_permissions: true })
-      permission = service.get_participation_context(project).permissions.find_by(action: 'annotating_document')
+      project = create(:single_phase_document_annotation_project, phase_attrs: { with_permissions: true })
+      permission = service.get_current_phase(project).permissions.find_by(action: 'annotating_document')
       permission.update!(permitted_by: 'users')
       expect(service.annotating_document_disabled_reason_for_project(project, nil)).to eq 'not_signed_in'
     end
 
     it 'returns `not_permitted` when annotating the document is not permitted' do
-      project = create(:continuous_document_annotation_project, phase_attrs: { with_permissions: true })
-      permission = service.get_participation_context(project).permissions.find_by(action: 'annotating_document')
+      project = create(:single_phase_document_annotation_project, phase_attrs: { with_permissions: true })
+      permission = service.get_current_phase(project).permissions.find_by(action: 'annotating_document')
       permission.update!(permitted_by: 'admins_moderators')
       expect(service.annotating_document_disabled_reason_for_project(project, create(:user))).to eq 'not_permitted'
     end
@@ -667,7 +667,7 @@ describe ParticipationContextService do
     end
 
     it 'returns `already_responded` when the user already responded to the poll before' do
-      project = create(:continuous_poll_project)
+      project = create(:single_phase_poll_project)
       poll_response = create(:poll_response, participation_context: project.phases.first)
       user = poll_response.user
       expect(service.taking_poll_disabled_reason_for_project(project, user)).to eq 'already_responded'
@@ -679,12 +679,12 @@ describe ParticipationContextService do
     end
 
     it 'returns `project_inactive` when the project is archived' do
-      project = create(:continuous_project, admin_publication_attributes: { publication_status: 'archived' })
+      project = create(:single_phase_ideation_project, admin_publication_attributes: { publication_status: 'archived' })
       expect(service.taking_poll_disabled_reason_for_project(project, create(:user))).to eq 'project_inactive'
     end
 
     it 'returns nil when taking the poll is allowed' do
-      project = create(:continuous_poll_project, phase_attrs: { with_permissions: true })
+      project = create(:single_phase_poll_project, phase_attrs: { with_permissions: true })
       permission = Permission.find_by(action: 'taking_poll', permission_scope: project.phases.first)
       group = create(:group, projects: [project])
       permission.update!(permitted_by: 'groups', groups: [group])
@@ -695,15 +695,15 @@ describe ParticipationContextService do
     end
 
     it 'returns `not_signed_in` when user needs to be signed in' do
-      project = create(:continuous_poll_project, phase_attrs: { with_permissions: true })
-      permission = service.get_participation_context(project).permissions.find_by(action: 'taking_poll')
+      project = create(:single_phase_poll_project, phase_attrs: { with_permissions: true })
+      permission = service.get_current_phase(project).permissions.find_by(action: 'taking_poll')
       permission.update!(permitted_by: 'users')
       expect(service.taking_poll_disabled_reason_for_project(project, nil)).to eq 'not_signed_in'
     end
 
     it 'return `not_permitted` when taking the poll is not permitted' do
-      project = create(:continuous_poll_project, phase_attrs: { with_permissions: true })
-      permission = service.get_participation_context(project).permissions.find_by(action: 'taking_poll')
+      project = create(:single_phase_poll_project, phase_attrs: { with_permissions: true })
+      permission = service.get_current_phase(project).permissions.find_by(action: 'taking_poll')
       permission.update!(permitted_by: 'admins_moderators')
       expect(service.taking_poll_disabled_reason_for_project(project, create(:user))).to eq 'not_permitted'
     end
@@ -747,7 +747,7 @@ describe ParticipationContextService do
         current_phase_attrs: { with_permissions: true, participation_method: 'voting', voting_method: 'budgeting', voting_max_total: 10_000 }
       )
       idea = create(:idea, project: project, phases: [project.phases[2]])
-      permission = service.get_participation_context(project).permissions.find_by(action: 'voting')
+      permission = service.get_current_phase(project).permissions.find_by(action: 'voting')
       permission.update!(permitted_by: 'users')
       expect(service.voting_disabled_reason_for_project(project, nil)).to eq 'not_signed_in'
       expect(service.voting_disabled_reason_for_idea(idea, nil)).to eq 'not_signed_in'
@@ -759,7 +759,7 @@ describe ParticipationContextService do
         current_phase_attrs: { with_permissions: true, participation_method: 'voting', voting_method: 'budgeting', voting_max_total: 10_000 }
       )
       idea = create(:idea, project: project, phases: [project.phases[2]])
-      permission = service.get_participation_context(project).permissions.find_by(action: 'voting')
+      permission = service.get_current_phase(project).permissions.find_by(action: 'voting')
       permission.update!(
         permitted_by: 'groups',
         group_ids: create_list(:group, 2).map(&:id)
@@ -776,7 +776,7 @@ describe ParticipationContextService do
     end
 
     it "returns 'project_inactive' when the project is archived" do
-      project = create(:continuous_budgeting_project, admin_publication_attributes: { publication_status: 'archived' })
+      project = create(:single_phase_budgeting_project, admin_publication_attributes: { publication_status: 'archived' })
       idea = create(:idea, project: project)
       expect(service.voting_disabled_reason_for_project(project, create(:user))).to eq 'project_inactive'
       expect(service.voting_disabled_reason_for_idea(idea, create(:user))).to eq 'project_inactive'
