@@ -1,4 +1,4 @@
-import { randomString, randomEmail } from '../support/commands';
+import { randomString, randomEmail } from '../../support/commands';
 
 function getInvites() {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {

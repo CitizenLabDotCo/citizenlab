@@ -52,18 +52,26 @@ describe('Project description builder preview', () => {
     cy.visit(
       `/admin/project-description-builder/projects/${projectId}/description`
     );
-    cy.wait(10000);
+    cy.get('div#ROOT');
+    cy.wait(1000);
+
+    // Drag in text widget and open it
     cy.get('#e2e-draggable-text').dragAndDrop('#e2e-content-builder-frame', {
       position: 'inside',
     });
+    cy.get('div.e2e-text-box').click();
+    cy.get('.ql-editor').click();
+    cy.get('.ql-editor').type('Edited text.', { force: true });
 
-    cy.get('#e2e-text-box').click();
-    cy.get('#quill-editor').click();
-    cy.get('#quill-editor').type('Edited text.', { force: true });
+    // Make sure we see updated text on screen (seems to be some sort of delay)
+    cy.get('div.e2e-text-box').contains('Edited text.');
 
+    // Save
     cy.get('#e2e-content-builder-topbar-save').click();
-    cy.get('#e2e-preview-toggle').click({ force: true });
+    cy.wait(1000);
 
+    // Preview
+    cy.get('#e2e-preview-toggle').click({ force: true });
     getIframeBody().contains('Edited text.').should('be.visible');
   });
 
@@ -71,14 +79,20 @@ describe('Project description builder preview', () => {
     cy.visit(
       `/admin/project-description-builder/projects/${projectId}/description`
     );
-    cy.wait(10000);
-    cy.get('#e2e-text-box').should('exist');
-    cy.get('#e2e-text-box').click();
-    cy.get('#quill-editor').click();
-    cy.get('#quill-editor').type('Another edited text.', { force: true });
+    cy.get('div#ROOT');
+    cy.wait(1000);
+    cy.get('div.e2e-text-box').should('exist');
+    cy.get('div.e2e-text-box').click();
+    cy.get('.ql-editor').click();
+    cy.get('.ql-editor').type('Another edited text.', { force: true });
 
+    // Make sure we see updated text on screen (seems to be some sort of delay)
+    cy.get('div.e2e-text-box').contains('Edited text.Another edited text.');
+
+    // Preview
+    cy.wait(1000);
     cy.get('#e2e-preview-toggle').click({ force: true });
-
+    cy.wait(1000);
     getIframeBody()
       .contains('Edited text.Another edited text.')
       .should('be.visible');
@@ -91,16 +105,22 @@ describe('Project description builder preview', () => {
     cy.get('#e2e-draggable-text').dragAndDrop('#e2e-content-builder-frame', {
       position: 'inside',
     });
-    cy.wait(5000);
-    cy.get('#e2e-text-box').click();
-    cy.get('#quill-editor').click();
-    cy.get('#quill-editor').type('Sample text.', { force: true });
+    cy.wait(1000);
+    cy.get('div.e2e-text-box').click();
+    cy.get('.ql-editor').click();
+    cy.get('.ql-editor').type('Sample text.', { force: true });
 
+    // Make sure we see updated text on screen (seems to be some sort of delay)
+    cy.get('div.e2e-text-box').contains('Edited text.Sample text.');
+
+    // Preview on desktop
     cy.get('#e2e-preview-toggle').click({ force: true });
+    cy.wait(1000);
 
     getIframeBody().contains('Sample text.').should('be.visible');
-    cy.get('[data-cy="mobile-preview-iframe"]').should('exist');
 
+    // Preview on mobile
+    cy.get('[data-cy="mobile-preview-iframe"]').should('exist');
     cy.get('#e2e-desktop-preview').click({ force: true });
 
     getIframeBody().contains('Sample text.').should('be.visible');

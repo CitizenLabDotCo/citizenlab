@@ -30,7 +30,7 @@ const Title = ({ text }: Props) => {
 
   return (
     <PageBreakBox
-      id="e2e-text-box"
+      className="e2e-text-box"
       minHeight="26px"
       mb="12px"
       mt="12px"

@@ -11,7 +11,20 @@ const DEFAULT_PROJECT_DESCRIPTION_BUILDER_LAYOUT_DATA = {
   data: {
     attributes: {
       enabled: true,
-      craftjs_jsonmultiloc: { en: {} },
+      craftjs_json: {
+        ROOT: {
+          type: 'div',
+          isCanvas: true,
+          props: {
+            id: 'e2e-content-builder-frame',
+          },
+          displayName: 'div',
+          custom: {},
+          hidden: false,
+          nodes: [],
+          linkedNodes: {},
+        },
+      },
     },
   },
 };
@@ -31,7 +44,7 @@ jest.mock(
 );
 
 describe('Preview', () => {
-  it('should shows project description builder content when project description builder is not enabled', () => {
+  it('should shows project description builder content when project description builder is enabled', () => {
     render(<Preview projectId={projectId} projectTitle={projectTitle} />);
     expect(
       screen.getByTestId('projectDescriptionBuilderPreviewContent')

@@ -110,12 +110,10 @@ const IdeasContainer = memo<InnerProps>(({ project, className }) => {
         <StyledContentContainer id="project-ideas" maxWidth={maxPageWidth}>
           <SectionContainer>
             {isVotingProject && (
-              <>
-                <StatusModule
-                  votingMethod={project?.attributes.voting_method}
-                  project={project}
-                />
-              </>
+              <StatusModule
+                votingMethod={project?.attributes.voting_method}
+                project={project}
+              />
             )}
             {!isVotingProject && (
               <StyledProjectPageSectionTitle>

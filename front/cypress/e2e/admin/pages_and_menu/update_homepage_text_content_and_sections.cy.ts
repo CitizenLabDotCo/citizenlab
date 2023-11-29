@@ -22,6 +22,7 @@ describe('Admin: update text content and sections', () => {
     cy.intercept('PATCH', '**/home_page').as('saveHomePage');
     cy.intercept('GET', '**/home_page').as('getHomePage');
     cy.intercept('GET', '**/pages-menu').as('getPages');
+    cy.intercept('GET', '**/nav_bar_items').as('getNavbarItems');
 
     const topInfoContent = randomString();
     const bottomInfoContent = randomString();
@@ -31,6 +32,7 @@ describe('Admin: update text content and sections', () => {
 
     cy.wait('@getPages');
     cy.wait('@getHomePage');
+    cy.wait('@getNavbarItems');
     // go to page with homepage settings toggles
     cy.get('[data-cy="e2e-navbar-item-edit-button"]').first().click();
 

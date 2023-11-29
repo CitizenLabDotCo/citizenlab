@@ -19,8 +19,7 @@ import { isNilOrError } from 'utils/helperUtils';
 type ProjectCTABarProps = {
   projectId: string;
 };
-
-export const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
+const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
   const isSmallerThanTablet = useBreakpoint('tablet');
   const isSmallerThanPhone = useBreakpoint('phone');
   const [isVisible, setIsVisible] = useState(false);
@@ -93,3 +92,5 @@ export const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
 
   return <>{BarContents}</>;
 };
+
+export default ProjectCTABar;

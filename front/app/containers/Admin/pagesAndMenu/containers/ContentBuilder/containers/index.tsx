@@ -29,7 +29,7 @@ import { SerializedNodes } from '@craftjs/core';
 import { Locale } from 'typings';
 import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
 import { isEmpty } from 'lodash-es';
-import ContentBuilderLanguageProvider from './ContentBuilderLanguageProvider';
+import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
 import HomepageBanner from '../components/CraftComponents/HomepageBanner';
 import Projects from '../components/CraftComponents/Projects';
 import { useTheme } from 'styled-components';
@@ -127,7 +127,7 @@ const HomepageBuilderPage = () => {
             <HomepageBuilderToolbox selectedLocale={selectedLocale} />
           )}
           <StyledRightColumn>
-            <ContentBuilderLanguageProvider
+            <LanguageProvider
               contentBuilderLocale={selectedLocale}
               platformLocale={locale}
             >
@@ -157,7 +157,7 @@ const HomepageBuilderPage = () => {
                   <Projects />
                 </ContentBuilderFrame>
               </Box>
-            </ContentBuilderLanguageProvider>
+            </LanguageProvider>
           </StyledRightColumn>
           <ContentBuilderSettings />
         </Box>
