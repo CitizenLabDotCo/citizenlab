@@ -601,7 +601,7 @@ const AdminPhaseEdit = () => {
           display="flex"
           justifyContent="flex-start"
         >
-          <Box py="8px" px="40px">
+          <Box py="8px" px={`${defaultAdminCardPadding}px`}>
             <SubmitWrapper
               loading={processing}
               status={submitState}
