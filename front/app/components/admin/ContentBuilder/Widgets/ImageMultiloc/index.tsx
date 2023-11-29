@@ -139,7 +139,7 @@ const ImageSettings = injectIntl(({ intl: { formatMessage } }) => {
     setProp((props: Props) => {
       props.image = {
         dataCode: undefined,
-        imageUrl: '',
+        imageUrl: undefined,
       };
       props.alt = {};
     });
