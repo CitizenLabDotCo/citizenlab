@@ -206,6 +206,10 @@ describe('Homepage builder', () => {
     cy.get('[data-cy="e2e-homepage-banner"]').click({
       force: true,
     });
+
+    // Homepage bannner is not deletable
+    cy.get('#e2e-delete-button').should('not.exist');
+
     // Update image
     cy.get('#bannerImage').attachFile('testimage.png');
     cy.wait('@postImage');
