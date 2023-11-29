@@ -50,7 +50,7 @@ const ProjectAndFolderCards = ({
   // On initial load, the params for counts and statusCountsWithoutFilters
   // are functionally the same, but without omitting the nil parameters
   // the caching keys were not matching. As a result, we were making two
-  // identical requests for now reason. With this nil omission logic, we
+  // identical requests for no reason. With this nil omission logic, we
   // only make one request.
   const { data: counts } = useAdminPublicationsStatusCounts(
     omitBy(
