@@ -203,7 +203,7 @@ class ApplicationMailer < ActionMailer::Base
 
   def to_deep_struct(obj)
     case obj
-    when Hash  then WhinyOpenStruct.new(obj.transform_values { |nested_object| to_deep_struct(nested_object) })
+    when Hash  then WhinyOpenStruct.new(obj.transform_values { |nested_object| to_deep_struct(nested_object) }, raise_exception: false)
     when Array then obj.map { |nested_object| to_deep_struct(nested_object) }
     else            obj
     end
