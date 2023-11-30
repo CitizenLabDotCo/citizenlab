@@ -216,7 +216,7 @@ describe('Admin: can', () => {
       cy.contains(topInfoContent);
     });
 
-    it.only('custom page attachments and view them', () => {
+    it('custom page attachments and view them', () => {
       cy.intercept('PATCH', '**/static_pages/**').as('updateCustomPage');
       cy.intercept('POST', `**/static_pages/${customPageId4}/files`).as(
         'addFiles'
