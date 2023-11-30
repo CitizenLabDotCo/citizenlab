@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { isEmpty } from 'lodash-es';
 
@@ -7,7 +7,7 @@ import Link from 'utils/cl-router/Link';
 import eventEmitter from 'utils/eventEmitter';
 
 // components
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Icon, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -223,14 +223,28 @@ const MESSAGES_MAP: { [key in TFooterPage]: MessageDescriptor } = {
 
 const PlatformFooter = ({ className }: Props) => {
   const { formatMessage } = useIntl();
+  const isMobileOrSmaller = useBreakpoint('tablet');
   const { data: appConfiguration } = useAppConfiguration();
   const customizedA11yHrefEnabled = useFeatureFlag({
     name: 'custom_accessibility_statement_link',
   });
+  const [paddingBottom, setPaddingBottom] = useState<string | undefined>(
+    undefined
+  );
 
   const openConsentManager = () => {
     eventEmitter.emit('openConsentManager');
   };
+
+  const participationBar = document.getElementById('project-cta-bar');
+
+  useEffect(() => {
+    setPaddingBottom(
+      participationBar && isMobileOrSmaller
+        ? `${participationBar.offsetHeight}px`
+        : undefined
+    );
+  }, [participationBar, isMobileOrSmaller, participationBar?.offsetHeight]);
 
   const getHasCustomizedA11yFooterLink = () => {
     return (
@@ -260,7 +274,7 @@ const PlatformFooter = ({ className }: Props) => {
 
   return (
     <Container id="hook-footer" className={className}>
-      <FooterContainer>
+      <FooterContainer style={{ paddingBottom }}>
         <PagesNav aria-label={formatMessage(messages.ariaLabel)}>
           <PagesNavList>
             {FOOTER_PAGES.map((slug: TFooterPage, index) => {

@@ -78,6 +78,7 @@ const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
         bottom={isSmallerThanPhone ? '0px' : undefined}
         zIndex="1000"
         background="#fff"
+        id="project-cta-bar"
       >
         {!isSmallerThanPhone && (
           <Box height="78px">

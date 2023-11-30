@@ -5,16 +5,23 @@ import React, {
   useMemo,
   useCallback,
 } from 'react';
+
+// hooks
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
 import useBasketsIdeas from './useBasketsIdeas';
 import useVoteForIdea from './useVoteForIdea';
+import useBasket from 'api/baskets/useBasket';
+
+// components
+import VotesNotSubmittedModal from 'components/VotesNotSubmittedModal';
 
 // utils
-import { getCurrentParticipationContext } from 'api/phases/utils';
-import { isNil } from 'utils/helperUtils';
-import Modal from 'components/UI/Modal';
-import { Text } from '@citizenlab/cl2-component-library';
+import {
+  getCurrentParticipationContext,
+  getCurrentPhase,
+} from 'api/phases/utils';
+import { isNil, isNilOrError } from 'utils/helperUtils';
 
 interface Props {
   projectId?: string;
@@ -33,37 +40,20 @@ const VotingInterfaceContext = createContext<VotingInterface | null>(null);
 
 export const VotingContext = ({ projectId, children }: Props) => {
   const votingInterface = useVotingInterface(projectId);
-
-  const [showDataUnsavedModal, setShowDataUnsavedModal] = useState(false);
-
-  const beforeUnloadHandler = (event) => {
-    // Recommended
-    event.preventDefault();
-    // Included for legacy support, e.g. Chrome/Edge < 119
-    event.returnValue = true;
-
-    setTimeout(() => {
-      setShowDataUnsavedModal(true);
-    }, 1000);
-  };
-
-  window.addEventListener('beforeunload', beforeUnloadHandler);
+  const { data: phases } = usePhases(projectId);
+  const currentPhase = getCurrentPhase(phases?.data);
+  const basketId = currentPhase?.relationships?.user_basket?.data?.id;
+  const { data: basket } = useBasket(basketId);
+  const basketSubmitted = !isNilOrError(basket?.data.attributes.submitted_at);
 
   return (
     <VotingInterfaceContext.Provider value={votingInterface}>
       {children}
-      <Modal
-        opened={showDataUnsavedModal}
-        close={() => {
-          setShowDataUnsavedModal(false);
-        }}
-        header={'You have not submitted your votes'}
-      >
-        <Text>
-          We could add a custom message here - like: You have not submitted your
-          votes. If you leave this page, your votes will not be saved. ?
-        </Text>
-      </Modal>
+      <VotesNotSubmittedModal
+        projectId={projectId}
+        basket={basket}
+        basketSubmitted={basketSubmitted}
+      />
     </VotingInterfaceContext.Provider>
   );
 };

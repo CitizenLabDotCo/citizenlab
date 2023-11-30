@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 
-// api
+// hooks
 import useBasket from 'api/baskets/useBasket';
 import useUpdateBasket from 'api/baskets/useUpdateBasket';
 import useVoting from 'api/baskets_ideas/useVoting';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useProjectById from 'api/projects/useProjectById';
 
 // components
 import { Box, Button } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
+import VotesLeftModal from './VotesLeftModal';
 
 // styling
 import styled, { useTheme } from 'styled-components';
@@ -22,6 +24,7 @@ import useLocalize from 'hooks/useLocalize';
 import JSConfetti from 'js-confetti';
 import { scrollToElement } from 'utils/scroll';
 import { getDisabledExplanation } from './utils';
+import clHistory from 'utils/cl-router/history';
 
 // typings
 import { IProjectData } from 'api/projects/types';
@@ -54,15 +57,21 @@ const StyledButton = styled(Button)`
 `;
 interface Props {
   participationContext: IProjectData | IPhaseData;
+  projectId?: string;
 }
 
-const CTAButton = ({ participationContext }: Props) => {
+const CTAButton = ({ participationContext, projectId }: Props) => {
   const [processing, setProcessing] = useState(false);
   const basketId = participationContext.relationships.user_basket?.data?.id;
-
+  const { data: project } = useProjectById(projectId);
   const { data: basket } = useBasket(basketId);
   const { mutate: updateBasket } = useUpdateBasket();
-  const { numberOfVotesCast, processing: votingProcessing } = useVoting();
+  const {
+    numberOfVotesCast,
+    userHasVotesLeft,
+    processing: votingProcessing,
+  } = useVoting();
+  const [showModal, setShowModal] = useState(false);
   const { data: appConfig } = useAppConfiguration();
   const theme = useTheme();
   const { formatMessage } = useIntl();
@@ -82,6 +91,11 @@ const CTAButton = ({ participationContext }: Props) => {
   );
 
   const handleSubmitOnClick = () => {
+    if (userHasVotesLeft) {
+      setShowModal(true);
+      return;
+    }
+
     if (basket) {
       const update = () => {
         updateBasket(
@@ -94,10 +108,23 @@ const CTAButton = ({ participationContext }: Props) => {
           {
             onSuccess: () => {
               setProcessing(false);
-              confetti.addConfetti();
-              scrollToElement({
-                id: 'voting-status-module',
-              });
+
+              // If on the project page, scroll down to the status module
+              if (location.pathname.includes('/projects/')) {
+                setTimeout(() => {
+                  scrollToElement({
+                    id: 'voting-status-module',
+                  });
+                  confetti.addConfetti();
+                }, 200);
+              }
+
+              // If on the idea page, redirect to project page and scroll to status module
+              if (location.pathname.includes('/ideas/')) {
+                clHistory.push(
+                  `/projects/${project?.data.attributes.slug}?scrollToStatusModule=true`
+                );
+              }
             },
           }
         );
@@ -116,33 +143,40 @@ const CTAButton = ({ participationContext }: Props) => {
   };
 
   return (
-    <Tippy
-      disabled={!disabledExplanation}
-      interactive={true}
-      placement="bottom"
-      content={disabledExplanation}
-    >
-      <Box width="100%">
-        <StyledButton
-          icon="vote-ballot"
-          buttonStyle="secondary"
-          iconColor={theme.colors.tenantText}
-          onClick={handleSubmitOnClick}
-          fontWeight="500"
-          bgColor={theme.colors.white}
-          textColor={theme.colors.tenantText}
-          id="e2e-voting-submit-button"
-          textHoverColor={theme.colors.black}
-          padding="6px 12px"
-          fontSize="14px"
-          disabled={!!disabledExplanation}
-          processing={processing}
-          className={disabledExplanation ? '' : 'pulse'}
-        >
-          <FormattedMessage {...messages.submit} />
-        </StyledButton>
-      </Box>
-    </Tippy>
+    <>
+      <Tippy
+        disabled={!disabledExplanation}
+        interactive={true}
+        placement="bottom"
+        content={disabledExplanation}
+      >
+        <Box width="100%">
+          <StyledButton
+            icon="vote-ballot"
+            buttonStyle="secondary"
+            iconColor={theme.colors.tenantText}
+            onClick={handleSubmitOnClick}
+            fontWeight="500"
+            bgColor={theme.colors.white}
+            textColor={theme.colors.tenantText}
+            id="e2e-voting-submit-button"
+            textHoverColor={theme.colors.black}
+            padding="6px 12px"
+            fontSize="14px"
+            disabled={!!disabledExplanation}
+            processing={processing}
+            className={disabledExplanation ? '' : 'pulse'}
+          >
+            <FormattedMessage {...messages.submit} />
+          </StyledButton>
+        </Box>
+      </Tippy>
+      <VotesLeftModal
+        showModal={showModal}
+        setShowModal={setShowModal}
+        projectId={projectId}
+      />
+    </>
   );
 };
 

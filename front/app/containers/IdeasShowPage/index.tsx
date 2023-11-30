@@ -2,7 +2,12 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 
 // components
-import { Box, useBreakpoint, Spinner } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  useBreakpoint,
+  Spinner,
+  stylingConsts,
+} from '@citizenlab/cl2-component-library';
 import IdeasShow from 'containers/IdeasShow';
 import IdeaShowPageTopBar from './IdeaShowPageTopBar';
 import PageNotFound from 'components/PageNotFound';
@@ -24,6 +29,7 @@ import { media, colors } from 'utils/styleUtils';
 import { isUnauthorizedRQ } from 'utils/errorUtils';
 import usePhases from 'api/phases/usePhases';
 import { getCurrentParticipationContext } from 'api/phases/utils';
+import ProjectCTABar from 'containers/ProjectsShowPage/ProjectCTABar';
 
 const StyledIdeaShowPageTopBar = styled(IdeaShowPageTopBar)`
   position: fixed;
@@ -64,7 +70,6 @@ const IdeasShowPage = () => {
     idea?.data.relationships.project.data.id
   );
   const { data: phases } = usePhases(project?.data.id);
-
   const participationContext = getCurrentParticipationContext(
     project?.data,
     phases?.data
@@ -89,7 +94,15 @@ const IdeasShowPage = () => {
   if (idea) {
     return (
       <VotingContext projectId={project?.data.id}>
-        <Box background={colors.white} id="idea-page">
+        <Box
+          background={colors.white}
+          id="idea-page"
+          mt={
+            isSmallerThanTablet
+              ? undefined
+              : stylingConsts.menuHeight.toString()
+          }
+        >
           {isSmallerThanTablet && (
             <StyledIdeaShowPageTopBar
               projectId={idea.data.relationships.project.data.id}
@@ -102,6 +115,20 @@ const IdeasShowPage = () => {
             projectId={idea.data.relationships.project.data.id}
             compact={isSmallerThanTablet}
           />
+        </Box>
+        <Box
+          position="fixed"
+          top={
+            isSmallerThanTablet
+              ? undefined
+              : stylingConsts.menuHeight.toString()
+          }
+          bottom={isSmallerThanTablet ? '0px' : undefined}
+          width="100vw"
+        >
+          {project?.data.id && // Show the CTA bar only when voting is active
+            participationContext?.attributes.participation_method ===
+              'voting' && <ProjectCTABar projectId={project.data.id} />}
         </Box>
       </VotingContext>
     );
