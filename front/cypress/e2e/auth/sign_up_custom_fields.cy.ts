@@ -1,7 +1,7 @@
 import { randomString, randomEmail, logout } from '../../support/commands';
 
 describe('Sign up - custom fields step', () => {
-  describe('No custom fields', () => {
+  describe.only('No custom fields', () => {
     before(() => {
       const firstName = randomString();
       const lastName = randomString();
@@ -9,7 +9,6 @@ describe('Sign up - custom fields step', () => {
       const password = randomString();
       cy.apiSignup(firstName, lastName, email, password);
       cy.setLoginCookie(email, password);
-      cy.goToLandingPage();
     });
 
     after(() => {
@@ -17,6 +16,7 @@ describe('Sign up - custom fields step', () => {
     });
 
     it('does not show it when no custom fields are enabled', () => {
+      cy.goToLandingPage();
       cy.get('#e2e-sign-up-in-modal').should('not.exist');
     });
   });
