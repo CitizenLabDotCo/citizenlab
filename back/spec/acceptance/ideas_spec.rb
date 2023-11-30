@@ -318,8 +318,8 @@ resource 'Ideas' do
           pr = create(:project_with_active_budgeting_phase)
           phase = pr.phases.first
           ideas = create_list(:idea, 2, phases: [phase], project: pr)
-          basket = create(:basket, participation_context: phase, submitted_at: nil)
-          basket2 = create(:basket, participation_context: phase, submitted_at: nil)
+          basket = create(:basket, phase: phase, submitted_at: nil)
+          basket2 = create(:basket, phase: phase, submitted_at: nil)
           basket.update!(ideas: ideas, submitted_at: Time.zone.now)
           basket2.update!(ideas: ideas, submitted_at: Time.zone.now)
           SideFxBasketService.new.after_update basket, user
@@ -327,7 +327,7 @@ resource 'Ideas' do
 
           # Different phase (should be ignored in the counts)
           phase2 = create(:single_voting_phase, project: pr)
-          basket3 = create(:basket, participation_context: phase2, submitted_at: nil)
+          basket3 = create(:basket, phase: phase2, submitted_at: nil)
           basket3.update!(ideas: ideas, submitted_at: Time.zone.now)
           SideFxBasketService.new.after_update basket3, user
 
@@ -581,7 +581,7 @@ resource 'Ideas' do
     get 'web_api/v1/ideas/:id' do
       let(:project) { create(:single_phase_budgeting_project) }
       let(:idea) { create(:idea, project: project, phases: project.phases) }
-      let!(:baskets) { create_list(:basket, 2, ideas: [idea], participation_context: project.phases.first) }
+      let!(:baskets) { create_list(:basket, 2, ideas: [idea], phase: project.phases.first) }
       let!(:topic) { create(:topic, ideas: [idea], projects: [idea.project]) }
       let!(:user_reaction) { create(:reaction, user: @user, reactable: idea) }
       let(:id) { idea.id }
@@ -1279,7 +1279,7 @@ resource 'Ideas' do
 
               # TODO: Baskets_ideas
               before do
-                basket = create(:basket, participation_context: project.phases.last)
+                basket = create(:basket, phase: project.phases.last)
                 basket.update!(ideas: [idea], submitted_at: Time.zone.now)
                 basket.baskets_ideas.update_all(votes: 1)
                 basket.update_counts!

@@ -7,7 +7,7 @@ describe Polls::ResponsePolicy do
 
   let(:scope) { Polls::ResponsePolicy::Scope.new(user, Polls::Response) }
   let(:phase) { create(:poll_phase) }
-  let!(:response) { build(:poll_response, participation_context: phase) }
+  let!(:response) { build(:poll_response, phase: phase) }
 
   context 'for a visitor' do
     let(:user) { nil }
@@ -56,7 +56,7 @@ describe Polls::ResponsePolicy do
   context "for a resident who owns the response in a private groups project where she's not member of a manual group with access" do
     let!(:user) { create(:user) }
     let!(:project) { create(:private_groups_single_phase_project, phase_attrs: { participation_method: 'poll' }) }
-    let!(:response) { create(:poll_response, participation_context: project.phases.first, user: user) }
+    let!(:response) { create(:poll_response, phase: project.phases.first, user: user) }
 
     it { is_expected.not_to permit(:create) }
 
@@ -79,7 +79,7 @@ describe Polls::ResponsePolicy do
 
   context 'for a moderator of another project that owns the response' do
     let(:user) { create(:project_moderator) }
-    let!(:response) { build(:poll_response, user: user, participation_context: phase) }
+    let!(:response) { build(:poll_response, user: user, phase: phase) }
 
     it { is_expected.to permit(:create) }
 
@@ -97,7 +97,7 @@ describe Polls::ResponsePolicy do
 
   context 'for a resident who owns the response in a project where taking a poll is not permitted' do
     let!(:user) { create(:user) }
-    let!(:response) { create(:poll_response, participation_context: phase, user: user) }
+    let!(:response) { create(:poll_response, phase: phase, user: user) }
     let!(:phase) do
       create(:poll_phase, with_permissions: true).tap do |phase|
         phase.permissions.find_by(action: 'taking_poll').update!(permitted_by: 'admins_moderators')

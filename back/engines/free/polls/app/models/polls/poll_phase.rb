@@ -4,8 +4,8 @@ module Polls::PollPhase
   extend ActiveSupport::Concern
 
   included do
-    has_many :poll_questions, class_name: 'Polls::Question', as: :participation_context, dependent: :destroy
-    has_many :poll_responses, class_name: 'Polls::Response', as: :participation_context, dependent: :destroy
+    has_many :poll_questions, class_name: 'Polls::Question', dependent: :destroy
+    has_many :poll_responses, class_name: 'Polls::Response', dependent: :destroy
 
     validates :poll_anonymous, inclusion: { in: [true, false] }, if: :poll?
     validate :poll_questions_allowed_in_participation_method
@@ -25,7 +25,7 @@ module Polls::PollPhase
   def poll_questions_allowed_in_participation_method
     return unless !poll? && poll_questions.present?
 
-    errors.add(:base, :cannot_contain_poll_questions, questions_count: poll_questions.size, message: 'cannot contain poll questions in the current non-poll participation context')
+    errors.add(:base, :cannot_contain_poll_questions, questions_count: poll_questions.size, message: 'cannot contain poll questions in the current non-poll phase')
   end
 
   def anonymous_immutable_after_responses

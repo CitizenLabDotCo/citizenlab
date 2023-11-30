@@ -2,9 +2,9 @@
 
 require 'rails_helper'
 
-def call_pcc(pc, service, from, to)
+def call_pcc(phase, service, from, to)
   service.participation_context_changed(
-    pc,
+    phase,
     from.participation_method,
     to.participation_method,
     from.survey_service,
@@ -23,13 +23,13 @@ describe Surveys::TypeformWebhookManager do
     let(:from) { build(:typeform_survey_phase) }
     let(:to) { build(:typeform_survey_phase) }
 
-    it "doesn't call tf api when no pc is survey related" do
+    it "doesn't call tf api when no phase is survey related" do
       from = build(:phase)
       to = build(:phase)
       call_pcc(to, service, from, to)
     end
 
-    it "doesn't call tf api when no pc is typeform related" do
+    it "doesn't call tf api when no phase is typeform related" do
       from = build(:google_survey_phase)
       to = build(:google_survey_phase, survey_embed_url: 'https://docs.google.com/forms/d/e/changedfake/viewform?embedded=true')
       call_pcc(to, service, from, to)
@@ -73,27 +73,27 @@ describe Surveys::TypeformWebhookManager do
 
   describe 'participation_context_created' do
     it "doesn't create a webhook when it's not typeform" do
-      pc = create(:google_survey_phase)
-      service.participation_context_created(pc, pc.participation_method, pc.survey_service, pc.survey_embed_url)
+      phase = create(:google_survey_phase)
+      service.participation_context_created(phase, phase.participation_method, phase.survey_service, phase.survey_embed_url)
     end
 
     it "creates a webhook when it's typeform" do
-      pc = create(:typeform_survey_phase)
+      phase = create(:typeform_survey_phase)
       expect(tf_api).to receive(:create_or_update_webhook)
-      service.participation_context_created(pc, pc.participation_method, pc.survey_service, pc.survey_embed_url)
+      service.participation_context_created(phase, phase.participation_method, phase.survey_service, phase.survey_embed_url)
     end
   end
 
   describe 'participation_context_to_be_deleted' do
     it "doesn't delete a webhook when it's not typeform" do
-      pc = create(:google_survey_phase)
-      service.participation_context_to_be_deleted(pc.id, pc.participation_method, pc.survey_service, pc.survey_embed_url)
+      phase = create(:google_survey_phase)
+      service.participation_context_to_be_deleted(phase.id, phase.participation_method, phase.survey_service, phase.survey_embed_url)
     end
 
     it "deletes a webhook when it's typeform" do
-      pc = create(:typeform_survey_phase)
+      phase = create(:typeform_survey_phase)
       expect(tf_api).to receive(:delete_webhook)
-      service.participation_context_to_be_deleted(pc.id, pc.participation_method, pc.survey_service, pc.survey_embed_url)
+      service.participation_context_to_be_deleted(phase.id, phase.participation_method, phase.survey_service, phase.survey_embed_url)
     end
   end
 

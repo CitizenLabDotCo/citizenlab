@@ -12,8 +12,8 @@ RSpec.describe Notifications::VotingBasketSubmitted do
       expect(notifications.first).to have_attributes(
         recipient_id: basket.user_id,
         basket: basket,
-        project: basket.participation_context.project,
-        phase: basket.participation_context
+        project: basket.phase.project,
+        phase: basket.phase
       )
     end
   end

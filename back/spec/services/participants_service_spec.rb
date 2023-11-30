@@ -85,7 +85,7 @@ describe ParticipantsService do
         create(:reaction, reactable: idea, mode: 'up', user: pp3)
         create(:comment, post: idea, author: pp2)
         create(:comment, post: other_idea, author: others.last)
-        create(:basket, ideas: [idea], participation_context: project.phases.first, user: pp5)
+        create(:basket, ideas: [idea], phase: project.phases.first, user: pp5)
       end
       create(:comment, post: idea, author: pp4)
 
@@ -133,17 +133,17 @@ describe ParticipantsService do
 
     it 'returns participants of a poll' do
       poll = create(:single_phase_poll_project)
-      responses = create_list(:poll_response, 2, participation_context: poll.phases.first)
+      responses = create_list(:poll_response, 2, phase: poll.phases.first)
       participants = responses.map(&:user)
       create_list(:user, 2)
-      create(:poll_response, participation_context: create(:poll_phase))
+      create(:poll_response, phase: create(:poll_phase))
 
       expect(service.projects_participants([poll]).map(&:id)).to match_array participants.map(&:id)
     end
 
     it 'returns volunteering participants' do
       project = create(:single_phase_volunteering_project)
-      cause = create(:cause, participation_context: project.phases.first)
+      cause = create(:cause, phase: project.phases.first)
       volunteers = create_list(:volunteer, 2, cause: cause)
       participants = volunteers.map(&:user)
       create(:volunteer)
@@ -185,7 +185,7 @@ describe ParticipantsService do
       i = create(:idea, project: project, author: pp1)
       create(:comment, post: i, author: pp2)
       create(:reaction, reactable: i, user: pp3)
-      create(:basket, ideas: [i], participation_context: project.phases.first, user: pp4)
+      create(:basket, ideas: [i], phase: project.phases.first, user: pp4)
       create(:idea, author: other)
 
       expect(service.projects_participants([project], actions: %i[posting voting]).map(&:id)).to match_array [pp1.id, pp4.id]
@@ -249,7 +249,7 @@ describe ParticipantsService do
       i = create(:idea, project: project, author: pp1, phases: project.phases)
       create(:comment, post: i, author: pp2)
       create(:reaction, reactable: i, user: pp3)
-      create(:basket, ideas: [i], participation_context: project.phases.first, user: pp4)
+      create(:basket, ideas: [i], phase: project.phases.first, user: pp4)
       create(:idea, author: other)
 
       expect(service.projects_participants([project], actions: [:commenting]).map(&:id)).to match_array [pp2.id]

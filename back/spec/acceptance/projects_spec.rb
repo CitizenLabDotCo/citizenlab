@@ -158,8 +158,7 @@ resource 'Projects' do
           }
         )
         expect(json_response.dig(:data, :relationships)).to include(
-          areas: { data: [] },
-          user_basket: { data: nil }
+          areas: { data: [] }
         )
         expect(json_response[:included].pluck(:type)).to include 'admin_publication'
       end
@@ -214,7 +213,6 @@ resource 'Projects' do
 
     post 'web_api/v1/projects' do
       with_options scope: :project do
-        parameter :process_type, 'Deprecated. The type of process used in this project. Always timeline'
         parameter :title_multiloc, 'The title of the project, as a multiloc string', required: true
         parameter :description_multiloc, 'The description of the project, as a multiloc HTML string', required: true
         parameter :description_preview_multiloc, 'The description preview of the project, as a multiloc string'
@@ -253,7 +251,6 @@ resource 'Projects' do
 
         example_request 'Create a timeline project' do
           assert_status 201
-          expect(json_response.dig(:data, :attributes, :process_type)).to eq 'timeline'
           expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
           expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
           expect(json_response.dig(:data, :attributes, :description_preview_multiloc).stringify_keys).to match description_preview_multiloc
@@ -859,7 +856,6 @@ resource 'Projects' do
 
     post 'web_api/v1/projects' do
       with_options scope: :project do
-        parameter :process_type, "The type of process used in this project. Can't be changed after. One of #{Project::PROCESS_TYPES.join(',')}. Defaults to timeline"
         parameter :title_multiloc, 'The title of the project, as a multiloc string', required: true
         parameter :description_multiloc, 'The description of the project, as a multiloc HTML string', required: true
         parameter :description_preview_multiloc, 'The description preview of the project, as a multiloc string'

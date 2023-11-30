@@ -11,7 +11,7 @@ module Surveys
     def create
       @phase = Phase.find params[:pc_id]
       @response = TypeformWebhookParser.new.body_to_response(params)
-      @response.participation_context = @phase
+      @response.phase = @phase
       if @response.save
         SideFxResponseService.new.after_create @response, @response.user
         head :ok

@@ -18,7 +18,7 @@ resource 'Volunteering Causes' do
 
     before do
       @phase = create(:volunteering_phase)
-      @causes = create_list(:cause, 3, participation_context: @phase)
+      @causes = create_list(:cause, 3, phase: @phase)
       create(:cause)
     end
 
@@ -51,8 +51,7 @@ resource 'Volunteering Causes' do
 
     post 'web_api/v1/causes' do
       with_options scope: :cause do
-        parameter :participation_context_id, 'The id of the phase the cause belongs to', required: true
-        parameter :participation_context_type, 'The type of the participation context (Phase only)', required: true
+        parameter :phase_id, 'The id of the phase the cause belongs to', required: true
         parameter :title_multiloc, 'The cause title, as a multiloc string', required: true
         parameter :description_multiloc, 'The cause description, as a multiloc string. Supports html.', required: false
         parameter :image, 'Base64 encoded image', required: false
@@ -62,8 +61,7 @@ resource 'Volunteering Causes' do
       let(:cause) { build(:cause) }
       let(:title_multiloc) { cause.title_multiloc }
       let(:description_multiloc) { { 'en' => '<b>This is a fine description</b>' } }
-      let(:participation_context_type) { cause.participation_context_type }
-      let(:participation_context_id) { cause.participation_context_id }
+      let(:phase_id) { cause.phase_id }
 
       example_request 'Create a cause' do
         expect(response_status).to eq 201
@@ -71,8 +69,8 @@ resource 'Volunteering Causes' do
         expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
         expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
         expect(json_response.dig(:data, :attributes, :ordering)).to eq 0
-        expect(json_response.dig(:data, :relationships, :participation_context, :data, :type)).to eq 'phase'
-        expect(json_response.dig(:data, :relationships, :participation_context, :data, :id)).to eq participation_context_id
+        expect(json_response.dig(:data, :relationships, :phase, :data, :type)).to eq 'phase'
+        expect(json_response.dig(:data, :relationships, :phase, :data, :id)).to eq phase_id
       end
     end
 
@@ -115,7 +113,7 @@ resource 'Volunteering Causes' do
 
       before do
         @project = create(:single_phase_volunteering_project)
-        @causes = create_list(:cause, 3, participation_context: @project.phases.first)
+        @causes = create_list(:cause, 3, phase: @project.phases.first)
       end
 
       let(:id) { @causes.last.id }

@@ -18,7 +18,7 @@ resource 'Poll Questions' do
 
     before do
       @phase = create(:poll_phase)
-      @questions = create_list(:poll_question, 3, :with_options, participation_context: @phase)
+      @questions = create_list(:poll_question, 3, :with_options, phase: @phase)
       create(:poll_question)
     end
 
@@ -52,8 +52,7 @@ resource 'Poll Questions' do
 
     post 'web_api/v1/poll_questions' do
       with_options scope: :question do
-        parameter :participation_context_id, 'The id of the phase/project the question belongs to', required: true
-        parameter :participation_context_type, 'The type of the participation context (Project or Phase)', required: true
+        parameter :phase_id, 'The id of the phase the question belongs to', required: true
         parameter :title_multiloc, 'The question, as a multiloc string', required: true
         parameter :question_type, "Either #{Polls::Question::QUESTION_TYPES.join(', ')}. Defaults to 'single_option'", required: false
         parameter :max_options, "The maximum count of options a valid response can contain. Only applicable for question_type 'multiple_options'. Defaults to nil, meaning no limit.", required: false
@@ -62,8 +61,7 @@ resource 'Poll Questions' do
 
       let(:question) { build(:poll_question) }
       let(:title_multiloc) { question.title_multiloc }
-      let(:participation_context_type) { question.participation_context_type }
-      let(:participation_context_id) { question.participation_context_id }
+      let(:phase_id) { question.phase_id }
       let(:question_type) { question.question_type }
 
       example_request 'Create a question' do
@@ -73,8 +71,7 @@ resource 'Poll Questions' do
         expect(json_response.dig(:data, :attributes, :ordering)).to eq 0
         expect(json_response.dig(:data, :attributes, :question_type)).to eq question_type
         expect(json_response.dig(:data, :attributes, :max_options)).to be_nil
-        expect(json_response.dig(:data, :relationships, :participation_context, :data, :type)).to eq 'phase'
-        expect(json_response.dig(:data, :relationships, :participation_context, :data, :id)).to eq participation_context_id
+        expect(json_response.dig(:data, :relationships, :phase, :data, :id)).to eq phase_id
       end
     end
 
@@ -108,7 +105,7 @@ resource 'Poll Questions' do
 
       before do
         @phase = create(:single_phase_poll_project).phases.first
-        @questions = create_list(:poll_question, 3, participation_context: @phase)
+        @questions = create_list(:poll_question, 3, phase: @phase)
       end
 
       let(:id) { @questions.last.id }

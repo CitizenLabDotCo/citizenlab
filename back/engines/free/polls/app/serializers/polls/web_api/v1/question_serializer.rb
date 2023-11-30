@@ -4,7 +4,7 @@ module Polls
   class WebApi::V1::QuestionSerializer < ::WebApi::V1::BaseSerializer
     attributes :question_type, :title_multiloc, :max_options, :ordering
 
-    belongs_to :participation_context, serializer: ::WebApi::V1::PhaseSerializer
+    belongs_to :phase, serializer: ::WebApi::V1::PhaseSerializer
 
     has_many :options
   end
