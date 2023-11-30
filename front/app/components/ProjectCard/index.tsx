@@ -458,7 +458,6 @@ const ProjectCard = memo<InputProps>(
     };
 
     if (project) {
-      // TODO: JS - Is this right? was always looking at the project before? probably incorrectly
       const methodConfig = phase ? getMethodConfig(
         phase.data.attributes.participation_method
       ) : null;
