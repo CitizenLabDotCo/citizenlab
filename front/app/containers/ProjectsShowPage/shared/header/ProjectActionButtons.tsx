@@ -74,7 +74,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
     }
   }, [divId]);
 
-  if (isNilOrError(project)) {
+  if (isNilOrError(project) || !currentPhase) {
     return null;
   }
 
@@ -114,7 +114,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
         flow: 'signup',
         context: {
           type: 'phase',
-          id: currentPhase?.id || '',
+          id: currentPhase.id,
           action: 'taking_survey',
         },
         successAction,
@@ -147,7 +147,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
         flow: 'signup',
         context: {
           type: 'phase',
-          id: currentPhase?.id || '',
+          id: currentPhase.id,
           action: 'annotating_document',
         },
         successAction,

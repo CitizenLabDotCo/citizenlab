@@ -67,7 +67,7 @@ const IdeaButton = memo<Props>(
     const { data: phases } = usePhases(projectId);
     const { data: authUser } = useAuthUser();
 
-    if (!project) return null;
+    if (!project || !phase) return null;
 
     const { enabled, show, disabledReason, authenticationRequirements } =
       getIdeaPostingRules({
@@ -80,7 +80,7 @@ const IdeaButton = memo<Props>(
 
     const context = {
       action: 'posting_idea',
-      id: phase?.id || '',
+      id: phase.id,
       type: 'phase',
     } as const;
 

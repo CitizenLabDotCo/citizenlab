@@ -35,10 +35,7 @@ const IdeationCTABar = ({ phases, project }: CTABarProps) => {
     setCurrentPhase(getCurrentPhase(phases) || getLastPhase(phases));
   }, [phases]);
 
-  const isPhaseIdeation =
-    currentPhase?.attributes.participation_method === 'ideation';
-
-  if (hasProjectEndedOrIsArchived(project, currentPhase) || isPhaseIdeation) {
+  if (hasProjectEndedOrIsArchived(project, currentPhase)) {
     return null;
   }
 

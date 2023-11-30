@@ -39,6 +39,7 @@ describe('Admin project participation method', () => {
 
     cy.setAdminLoginCookie();
     cy.visit(phaseSetupPath);
+    cy.acceptCookies();
 
     // Check that participation method warning is present
     cy.get('#e2e-participation-method-warning').should('exist');

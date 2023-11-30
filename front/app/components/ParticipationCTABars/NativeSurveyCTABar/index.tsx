@@ -34,8 +34,6 @@ const NativeSurveyCTABar = ({ project }: CTABarProps) => {
     );
   }, [phases, project]);
 
-  const isPhaseNativeSurvey =
-    currentPhase?.attributes.participation_method === 'native_survey';
   const { disabledReason } = getIdeaPostingRules({
     project,
     phase: currentPhase,
@@ -43,7 +41,7 @@ const NativeSurveyCTABar = ({ project }: CTABarProps) => {
   });
   const hasUserParticipated = disabledReason === 'postingLimitedMaxReached';
 
-  if (hasProjectEndedOrIsArchived(project, currentPhase) || !isPhaseNativeSurvey) {
+  if (hasProjectEndedOrIsArchived(project, currentPhase)) {
     return null;
   }
 
