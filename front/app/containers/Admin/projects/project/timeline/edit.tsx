@@ -90,7 +90,7 @@ const AdminProjectTimelineEdit = () => {
   const { mutateAsync: deletePhaseFile } = useDeletePhaseFile();
   const { projectId, id: phaseId } = useParams() as {
     projectId: string;
-    id: string;
+    id: string | null;
   };
   const { data: phaseFiles } = usePhaseFiles(phaseId);
   const { data: phase } = usePhase(phaseId || null);
