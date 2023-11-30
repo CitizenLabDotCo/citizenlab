@@ -94,6 +94,7 @@ describe('Initiative form page', () => {
     // // verify redirect to the initiative page
     cy.location('pathname').should('eq', `/en/initiatives/${initiativeTitle}`);
     // Verify banner image exists
+    cy.wait(2000);
     cy.get('[data-cy="e2e-initiative-banner-image"]').should('exist');
 
     // Back to edit form
@@ -109,6 +110,7 @@ describe('Initiative form page', () => {
     cy.wait('@initiativePatchRequest2');
 
     // Verify banner image does not exist
+    cy.wait(2000);
     cy.get('[data-cy="e2e-initiative-banner-image"]').should('not.exist');
   });
 
