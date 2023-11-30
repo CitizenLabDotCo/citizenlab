@@ -149,7 +149,7 @@ resource BasketsIdea do
         end
 
         context 'permission custom fields are required for voting' do
-          let(:user) { create(:user) } # Maybe try changing elements of this user
+          let(:user) { create(:user) }
           let(:project) { create(:project) }
           let(:votes) { 1 }
           let(:idea) { create(:idea, project: project) }
