@@ -14,6 +14,7 @@ const usePhaseFiles = (phaseId: string | null) => {
   return useQuery<IPhaseFiles, CLErrors, IPhaseFiles, PhaseFilesKeys>({
     queryKey: phaseFilesKeys.list({ phaseId }),
     queryFn: () => fetchPhaseFiles({ phaseId }),
+    enabled: !!phaseId,
   });
 };
 
