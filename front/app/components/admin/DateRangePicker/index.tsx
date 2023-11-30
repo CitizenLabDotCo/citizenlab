@@ -65,6 +65,7 @@ const DateRangePicker = ({
   const locale = useLocale();
 
   if (isNilOrError(locale)) return null;
+  const localeUsed = locale === 'en' ? 'en-GB' : locale;
 
   const handleOnChangeStartDate = (newStartDate: Date | null) => {
     // with this check, we don't allow removing a date
@@ -114,7 +115,7 @@ const DateRangePicker = ({
         startDate={convertedStartDate}
         endDate={convertedEndDate}
         minDate={convertedMinDate}
-        locale={locale}
+        locale={localeUsed}
         excludeDates={convertedExcludeDates}
         placeholderText={startDatePlaceholderText}
         // This makes sure we adjust date based on the passed locale.
@@ -135,7 +136,7 @@ const DateRangePicker = ({
         minDate={convertedStartDate}
         maxDate={convertedMaxDate}
         excludeDates={convertedExcludeDates}
-        locale={locale}
+        locale={localeUsed}
         // This makes sure we adjust date based on the passed locale.
         dateFormat="P"
         placeholderText={endDatePlaceholderText}
