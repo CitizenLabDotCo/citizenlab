@@ -281,7 +281,15 @@ const AdminProjectTimelineEdit = () => {
         }
       })
       .catch(({ errors }) => {
-        setErrors({ ...errors });
+        // For some reason, the BE adds a 'blank' error
+        // to the file errors array when the real error is
+        // extension_whitelist_error. So if we get that error,
+        // we filter out the blank error and only show the
+        // extension_whitelist_error.
+        errors.file[0].error === 'extension_whitelist_error'
+          ? setErrors({ file: [errors.file[0]] })
+          : setErrors({ ...errors });
+
         setProcessing(false);
         setSubmitState('error');
       });
