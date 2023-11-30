@@ -70,26 +70,27 @@ end
 
 def migrate_homepagebanner
   homepage = HomePage.first
+  config = AppConfiguration.instance
   homepagebannerelt = {
     'type' => { 'resolvedName' => 'HomepageBanner' },
     'isCanvas' => false,
     'props' => {
       'homepageSettings' => {
-        'banner_layout' => 'full_width_banner_layout',
+        'banner_layout' => homepage.banner_layout || 'full_width_banner_layout',
         'banner_avatars_enabled' => homepage.banner_avatars_enabled,
-        'banner_cta_signed_in_url' => (homepage.banner_cta_signed_in_url || ''),
+        'banner_cta_signed_in_url' => homepage.banner_cta_signed_in_url,
+        'banner_cta_signed_out_url' => homepage.banner_cta_signed_out_url, # TODO: test with cases where this is not set (custom type?)
         'banner_cta_signed_in_type' => homepage.banner_cta_signed_in_type,
-        'banner_cta_signed_out_url' => (homepage.banner_cta_signed_out_url || 'https://www.citizenlab.co/'),
         'banner_cta_signed_out_type' => homepage.banner_cta_signed_out_type,
         'banner_signed_in_header_multiloc' => homepage.banner_signed_in_header_multiloc,
         'banner_signed_out_header_multiloc' => homepage.banner_signed_out_header_multiloc,
         'banner_cta_signed_in_text_multiloc' => homepage.banner_cta_signed_in_text_multiloc,
         'banner_cta_signed_out_text_multiloc' => homepage.banner_cta_signed_out_text_multiloc,
-        'banner_signed_out_subheader_multiloc' => homepage.banner_signed_out_subheader_multiloc,
-        'banner_signed_in_header_overlay_color' => '#0A5159', # Primary color?
-        'banner_signed_out_header_overlay_color' => (homepage.banner_signed_out_header_overlay_color || '#0A5159'), # Fallback to primary color?
-        'banner_signed_in_header_overlay_opacity' => 90, # Correct?
-        'banner_signed_out_header_overlay_opacity' => (homepage.banner_signed_out_header_overlay_opacity || 90) # Correct?
+        'banner_signed_in_header_overlay_color' => (config.style.dig('signedInHeaderOverlayColor') || config.settings.dig('core', 'color_main')),
+        'banner_signed_out_header_overlay_color' => homepage.banner_signed_out_header_overlay_color,
+        'banner_signed_in_header_overlay_opacity' => (homepage.banner_layout == 'fixed_ratio_layout' ? 100 : config.style.dig('signedInHeaderOverlayOpacity')),
+        'banner_signed_out_header_overlay_opacity' => homepage.banner_signed_out_header_overlay_opacity,
+        'banner_signed_out_subheader_multiloc' => homepage.banner_signed_out_subheader_multiloc
       },
       'errors' => [],
       'hasError' => false
@@ -109,7 +110,7 @@ def migrate_homepagebanner
     'linkedNodes' => {}
   }
 
-  if homepage.header_bg.url
+  if homepage.header_bg.url # TODO: Test when no bg image
     layout_image = ContentBuilder::LayoutImage.create!(remote_image_url: homepage.header_bg.url)
     homepagebannerelt['props']['image'] = { 'dataCode' => layout_image.code }
   end
@@ -129,14 +130,12 @@ def migrate_topinfosection
 end
 
 def migrate_projects
-  homepage = HomePage.first
-  return [] if !homepage.projects_enabled
-
+  config = AppConfiguration.instance
   [{
     'type' => { 'resolvedName' => 'Projects' },
     'isCanvas' => false,
     'props' => {
-      'currentlyWorkingOnText' => homepage.projects_header_multiloc
+      'currentlyWorkingOnText' => config.settings.dig('core', 'currently_working_on_text')
     },
     'displayName' => 'Projects',
     'custom' => {
@@ -230,6 +229,8 @@ def whitespace
 end
 
 def infosection(text_html_multiloc)
+  # TODO: Deal with img, iframe and buttons
+  # TODO: skip infosections that cannot be automatically migrated
   [{
     'type' => { 'resolvedName' => 'TextMultiloc' },
     'isCanvas' => false,
