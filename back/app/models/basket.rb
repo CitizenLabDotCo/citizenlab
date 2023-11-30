@@ -13,11 +13,13 @@
 #
 # Indexes
 #
+#  index_baskets_on_phase_id      (phase_id)
 #  index_baskets_on_submitted_at  (submitted_at)
 #  index_baskets_on_user_id       (user_id)
 #
 # Foreign Keys
 #
+#  fk_rails_...  (phase_id => phases.id) ON DELETE => nullify
 #  fk_rails_...  (user_id => users.id)
 #
 class Basket < ApplicationRecord

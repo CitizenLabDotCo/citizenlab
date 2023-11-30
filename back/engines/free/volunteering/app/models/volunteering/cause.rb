@@ -17,6 +17,11 @@
 # Indexes
 #
 #  index_volunteering_causes_on_ordering  (ordering)
+#  index_volunteering_causes_on_phase_id  (phase_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (phase_id => phases.id) ON DELETE => nullify
 #
 module Volunteering
   class Cause < ApplicationRecord

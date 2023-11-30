@@ -18,7 +18,12 @@
 #
 # Indexes
 #
-#  index_surveys_responses_on_user_id  (user_id)
+#  index_surveys_responses_on_phase_id  (phase_id)
+#  index_surveys_responses_on_user_id   (user_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (phase_id => phases.id) ON DELETE => nullify
 #
 module Surveys
   class Response < ApplicationRecord

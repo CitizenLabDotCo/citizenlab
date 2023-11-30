@@ -112,7 +112,6 @@ module Volunteering
 
         def cause_params
           params.require(:cause).permit(
-            :phase_type,
             :phase_id,
             :image,
             title_multiloc: CL2_SUPPORTED_LOCALES,
