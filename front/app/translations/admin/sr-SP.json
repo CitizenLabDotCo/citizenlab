@@ -1172,7 +1172,7 @@
   "app.containers.AdminPage.HeroBannerForm.saveHeroBanner": "Сачувај херој банер",
   "app.containers.AdminPage.PagesEdition.policiesSubtitle": "Уредите услове и одредбе своје платформе и политику приватности. Друге странице, укључујући странице О и Честа питања, могу се уређивати на картици {navigationLink}.",
   "app.containers.AdminPage.PagesEdition.policiesTitle": "Политике платформе",
-  "app.containers.AdminPage.PagesEdition.privacy-policy": "Правила о приватности",
+  "app.containers.AdminPage.PagesEdition.privacy-policy": "Правила приватности",
   "app.containers.AdminPage.PagesEdition.terms-and-conditions": "Услови",
   "app.containers.AdminPage.ProjectDashboard.helmetDescription": "Списак пројеката на платформи",
   "app.containers.AdminPage.ProjectDashboard.helmetTitle": "Контролна табла за пројекте",
