@@ -34,8 +34,6 @@ const NativeSurveyCTABar = ({ project }: CTABarProps) => {
     );
   }, [phases, project]);
 
-  const isPhaseNativeSurvey =
-    currentPhase?.attributes.participation_method === 'native_survey';
   const { disabledReason } = getIdeaPostingRules({
     project,
     phase: currentPhase,
@@ -57,9 +55,6 @@ const NativeSurveyCTABar = ({ project }: CTABarProps) => {
               id="project-survey-button"
               data-testid="e2e-project-survey-button"
               projectId={project.id}
-              participationContextType={
-                isPhaseNativeSurvey ? 'phase' : 'project'
-              }
               fontWeight="500"
               bgColor={theme.colors.white}
               textColor={theme.colors.tenantText}

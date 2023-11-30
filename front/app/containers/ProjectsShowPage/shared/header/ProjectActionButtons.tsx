@@ -74,7 +74,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
     }
   }, [divId]);
 
-  if (isNilOrError(project)) {
+  if (isNilOrError(project) || !currentPhase) {
     return null;
   }
 
@@ -113,8 +113,8 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
       triggerAuthenticationFlow({
         flow: 'signup',
         context: {
-          type: currentPhase ? 'phase' : 'project',
-          id: currentPhase?.id ?? project.data.id,
+          type: 'phase',
+          id: currentPhase.id,
           action: 'taking_survey',
         },
         successAction,
@@ -146,8 +146,8 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
       triggerAuthenticationFlow({
         flow: 'signup',
         context: {
-          type: currentPhase ? 'phase' : 'project',
-          id: currentPhase?.id ?? project.data.id,
+          type: 'phase',
+          id: currentPhase.id,
           action: 'annotating_document',
         },
         successAction,
@@ -232,11 +232,6 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
         <IdeaButton
           id="project-ideabutton"
           projectId={project.data.id}
-          participationContextType={
-            currentPhase?.attributes.participation_method === 'ideation'
-              ? 'phase'
-              : 'project'
-          }
           fontWeight="500"
           phase={currentPhase}
           participationMethod="ideation"
@@ -247,11 +242,6 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
           id="project-survey-button"
           data-testid="e2e-project-survey-button"
           projectId={project.data.id}
-          participationContextType={
-            currentPhase?.attributes.participation_method === 'native_survey'
-              ? 'phase'
-              : 'project'
-          }
           fontWeight="500"
           phase={currentPhase}
           participationMethod="native_survey"

@@ -4,6 +4,7 @@ describe('Admin: add project', () => {
   beforeEach(() => {
     cy.setAdminLoginCookie();
     cy.visit('/admin/projects/');
+    cy.acceptCookies();
     cy.get('.e2e-create-project-expand-collapse-button').click();
     cy.wait(1000);
     cy.get('.e2e-create-project-tabs .last').click();

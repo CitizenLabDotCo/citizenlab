@@ -44,10 +44,7 @@ export const IdeaForm = () => {
   const { data: phases } = usePhases(projectId);
 
   const phaseToUse = phases ? getCurrentOrLastIdeationPhase(phases.data) : null;
-
-  const ideaFormLink = phaseToUse
-    ? `/admin/projects/${projectId}/phases/${phaseToUse.id}/ideaform/edit`
-    : `/admin/projects/${projectId}/ideaform/edit`;
+  const ideaFormLink = `/admin/projects/${projectId}/phases/${phaseToUse?.id}/ideaform/edit`;
 
   const handleDownloadPDF = () => setExportModalOpen(true);
 

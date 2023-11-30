@@ -51,6 +51,10 @@ const EmbeddedSurveyCTABar = ({ phases, project }: CTABarProps) => {
 
   const showSignIn = enabled || isFixableByAuthentication(disabled_reason);
 
+  if (!currentPhase || hasProjectEndedOrIsArchived(project, currentPhase)) {
+    return null;
+  }
+
   const handleTakeSurveyClick = () => {
     const scrollToParams = {
       elementId: 'project-survey',
@@ -73,18 +77,14 @@ const EmbeddedSurveyCTABar = ({ phases, project }: CTABarProps) => {
       triggerAuthenticationFlow({
         flow: 'signup',
         context: {
-          type: currentPhase ? 'phase' : 'project',
+          type: 'phase',
           action: 'taking_survey',
-          id: currentPhase ? currentPhase.id : project.id,
+          id: currentPhase.id,
         },
         successAction,
       });
     }
   };
-
-  if (hasProjectEndedOrIsArchived(project, currentPhase)) {
-    return null;
-  }
 
   return (
     <ParticipationCTAContent

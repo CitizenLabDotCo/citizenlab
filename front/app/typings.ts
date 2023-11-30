@@ -49,8 +49,6 @@ export type ILocationInfo =
       };
     };
 
-export type IParticipationContextType = 'project' | 'phase';
-
 export interface ITab {
   name: string;
   label: string;
