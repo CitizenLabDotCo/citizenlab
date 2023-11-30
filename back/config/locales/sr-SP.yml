@@ -120,7 +120,7 @@ sr-Cyrl:
       author_id:
         title: Аутор
       topic_ids:
-        title: Ознаке
+        title: Тема
         description:
       location:
         title: Локација
@@ -148,7 +148,7 @@ sr-Cyrl:
     categories:
       main_content:
         idea:
-          title: Шта је твоја идеја?
+          title: Шта је ваша идеја?
         question:
           title: Шта је ваше питање?
         contribution:
