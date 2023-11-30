@@ -1,7 +1,7 @@
 import { randomString, randomEmail, logout } from '../../support/commands';
 
 describe('Sign up - custom fields step', () => {
-  describe.only('No custom fields', () => {
+  describe('No custom fields', () => {
     before(() => {
       const firstName = randomString();
       const lastName = randomString();
