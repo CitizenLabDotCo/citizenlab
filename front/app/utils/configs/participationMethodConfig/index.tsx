@@ -6,7 +6,7 @@ import messages from '../../messages';
 
 // services
 import { ParticipationMethod, getInputTerm } from 'utils/participationContexts';
-import { getCurrentParticipationContext } from 'api/phases/utils';
+import { getCurrentPhase} from 'api/phases/utils';
 import { IProjectData } from 'api/projects/types';
 import { IPhaseData } from 'api/phases/types';
 
@@ -381,7 +381,7 @@ export const getParticipationMethod = (
 
   const phaseFromId = phases?.find((phase) => phase.id === phaseId);
   const participationContext =
-    phaseFromId ?? getCurrentParticipationContext(project, phases);
+    phaseFromId ?? getCurrentPhase(phases);
   return participationContext?.attributes.participation_method;
 };
 
