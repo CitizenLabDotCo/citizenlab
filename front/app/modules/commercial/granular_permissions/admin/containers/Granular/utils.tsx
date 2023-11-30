@@ -1,7 +1,7 @@
 import {
   IGlobalPermissionAction,
   IPermissionData,
-  IParticipationContextPermissionAction,
+  IPhasePermissionAction,
 } from 'api/permissions/types';
 import messages from './messages';
 import { FieldType } from 'containers/Admin/settings/registration/CustomFieldRoutes/RegistrationCustomFieldForm';
@@ -9,7 +9,7 @@ import { MessageDescriptor } from 'react-intl';
 
 type GetPermissionActionMessageProps = {
   permissionAction:
-    | IParticipationContextPermissionAction
+    | IPhasePermissionAction
     | IGlobalPermissionAction;
   postType: 'defaultInput' | 'nativeSurvey' | 'initiative';
 };
@@ -28,7 +28,7 @@ export const getPermissionActionSectionSubtitle = ({
 }: GetPermissionActionMessageProps) => {
   if (postType !== 'initiative') {
     const participationContextPermissionActionMessages: {
-      [key in IParticipationContextPermissionAction]: MessageDescriptor;
+      [key in IPhasePermissionAction]: MessageDescriptor;
     } = {
       posting_idea:
         postType === 'nativeSurvey'

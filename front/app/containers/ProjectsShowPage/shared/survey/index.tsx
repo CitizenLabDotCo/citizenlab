@@ -75,7 +75,6 @@ const Survey = ({
   return (
     <ParticipationPermission
       id="project-survey"
-      projectId={project.id}
       action="taking_survey"
       enabled={enabled}
       phaseId={phaseId}
