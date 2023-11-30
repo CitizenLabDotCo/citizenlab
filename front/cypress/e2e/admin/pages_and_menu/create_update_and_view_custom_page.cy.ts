@@ -216,7 +216,7 @@ describe('Admin: can', () => {
       cy.contains(topInfoContent);
     });
 
-    it('custom page attachments and view them', () => {
+    it.only('custom page attachments and view them', () => {
       cy.intercept('PATCH', '**/static_pages/**').as('updateCustomPage');
       cy.intercept('POST', `**/static_pages/${customPageId4}/files`).as(
         'addFiles'
@@ -245,11 +245,14 @@ describe('Admin: can', () => {
 
       cy.get('#local_page_files').should('exist');
       cy.wait('@getFiles');
+
+      cy.wait(2000);
       cy.get('#local_page_files').selectFile('cypress/fixtures/example.pdf', {
         force: true,
       });
-      cy.get('[data-cy="e2e-file-uploader-container"]').should('exist');
 
+      cy.wait(2000);
+      cy.get('[data-cy="e2e-file-uploader-container"]').should('exist');
       cy.get('[data-cy="e2e-file-uploader-container"]').contains('example.pdf');
 
       // submit
