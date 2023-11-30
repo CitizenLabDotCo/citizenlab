@@ -58,13 +58,13 @@ const HomePage = () => {
     !isEmpty(homepageSettings?.data.attributes.craftjs_json)
   ) {
     return (
-      <>
+      <div id="e2e-landing-page">
         <Viewer />
         <Fragment name="pages/homepage_info/content">
           <div />
         </Fragment>
         <CityLogoSection />
-      </>
+      </div>
     );
   }
 
