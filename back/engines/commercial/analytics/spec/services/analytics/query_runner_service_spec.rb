@@ -85,6 +85,21 @@ describe Analytics::QueryRunnerService do
       expect(results).to eq(posts)
     end
 
+    it 'returns 0 when no data' do
+      query_param = {
+        aggregations: {
+          all: 'count',
+          'dimension_date_first_action.date': 'first'
+        },
+        fact: 'visit'
+      }
+
+      query = Analytics::Query.new(query_param)
+
+      results, * = described_class.new.run(query)
+      expect(results).to eq([{ 'count' => 0, 'first_dimension_date_first_action_date' => nil }])
+    end
+
     context 'result limiting and paging' do
       before_all do
         create_list(:idea, 10)

@@ -34,17 +34,17 @@ export default defineMessages({
     id: 'app.containers.UsersShowPage.followingWithCount',
     defaultMessage: 'Following ({followingCount})',
   },
-  ideas: {
-    id: 'app.containers.UsersShowPage.ideas',
-    defaultMessage: 'Ideas',
+  inputs: {
+    id: 'app.containers.UsersShowPage.inputs',
+    defaultMessage: 'Inputs',
   },
   projects: {
     id: 'app.containers.UsersShowPage.projects',
     defaultMessage: 'Projects',
   },
-  initiatives: {
-    id: 'app.containers.UsersShowPage.initiatives',
-    defaultMessage: 'Initiatives',
+  proposals: {
+    id: 'app.containers.UsersShowPage.proposals',
+    defaultMessage: 'Proposals',
   },
   topics: {
     id: 'app.containers.UsersShowPage.topics',

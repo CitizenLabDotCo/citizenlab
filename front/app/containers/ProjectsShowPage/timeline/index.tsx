@@ -13,7 +13,7 @@ import {
   maxPageWidth,
 } from 'containers/ProjectsShowPage/styles';
 import SectionContainer from 'components/SectionContainer';
-import PhaseDocumentAnnotation from './document_annotation';
+import PhaseDocumentAnnotation from './PhaseDocumentAnnotation';
 import StatusModule from 'components/StatusModule';
 import VotingResults from './VotingResults';
 import PhaseReport from './PhaseReport';

@@ -29,7 +29,7 @@ const DropdownButton = styled.button`
 const UserMenu = () => {
   const [opened, setOpened] = useState(false);
   const { data: authUser } = useAuthUser();
-  const isMobileOrSmaller = useBreakpoint('phone');
+  const isTabletOrSmaller = useBreakpoint('tablet');
 
   const toggleDropdown = () => {
     setOpened((opened) => !opened);
@@ -60,7 +60,7 @@ const UserMenu = () => {
         >
           <User
             userId={userId}
-            showVerificationBadge={isMobileOrSmaller ? false : true}
+            showVerificationBadge={isTabletOrSmaller ? false : true}
           />
         </DropdownButton>
 

@@ -2380,7 +2380,7 @@
   "app.containers.admin.inviteUsersWithSeatsModal.confirmSeatUsageChange": "Potvrdite utjecaj na korištenje sjedala",
   "app.containers.admin.inviteUsersWithSeatsModal.infoMessage2": "Dosegli ste ograničenje dostupnih mjesta unutar vašeg plana.",
   "app.containers.admin.project.permissions.permissionEveryoneEmailWarning": "Osim registriranih korisnika, radnju će moći poduzeti i neregistrirani korisnici koji navedu e-poštu i potvrde je. Odaberite ovu opciju kako biste ublažili uvjete za sudjelovanje.",
-  "app.containers.admin.project.permissions.permissionsAdministrators": "Administratori",
+  "app.containers.admin.project.permissions.permissionsAdministratorsAndManagers": "Administratori i voditelji ovog projekta",
   "app.containers.admin.project.permissions.permissionsAdminsAndCollaborators": "Samo administratori i suradnici",
   "app.containers.admin.project.permissions.permissionsAdminsAndCollaboratorsTooltip": "Samo administratori platforme, upravitelji mapa i voditelji projekata mogu poduzeti radnju",
   "app.containers.admin.project.permissions.permissionsAnyoneLabel": "Bilo tko",

@@ -17,7 +17,7 @@ module ContentBuilder
     end
 
     def image_attributes(img_elt, _imageable, _field)
-      { remote_image_url: img_elt['imageUrl'] }
+      img_elt['imageUrl'].present? && { remote_image_url: img_elt['imageUrl'] }
     end
 
     def image_attributes_for_element

@@ -2380,7 +2380,7 @@
   "app.containers.admin.inviteUsersWithSeatsModal.confirmSeatUsageChange": "crwdns444089:0crwdne444089:0",
   "app.containers.admin.inviteUsersWithSeatsModal.infoMessage2": "crwdns470111:0crwdne470111:0",
   "app.containers.admin.project.permissions.permissionEveryoneEmailWarning": "crwdns327748:0crwdne327748:0",
-  "app.containers.admin.project.permissions.permissionsAdministrators": "crwdns212564:0crwdne212564:0",
+  "app.containers.admin.project.permissions.permissionsAdministratorsAndManagers": "crwdns1368384:0crwdne1368384:0",
   "app.containers.admin.project.permissions.permissionsAdminsAndCollaborators": "crwdns523211:0crwdne523211:0",
   "app.containers.admin.project.permissions.permissionsAdminsAndCollaboratorsTooltip": "crwdns523213:0crwdne523213:0",
   "app.containers.admin.project.permissions.permissionsAnyoneLabel": "crwdns212566:0crwdne212566:0",

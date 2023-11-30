@@ -10,6 +10,8 @@
       comment_author: '%{authorName} kommenterte:'
       idea_author: '%{authorName} sendte inn et innlegg:'
       initiative_author: '%{authorName} sendte inn et forslag:'
-      this_post_was_flagged: >
-        <p>Dette innlegget er automatisk registrert som potensielt inneholdende upassende innhold. Vi sender deg dette varselet slik at du kan gå gjennom innlegget i henhold til dine egne retningslinjer for moderering.</p><p>Hvis innlegget ikke inneholder upassende innhold kan du fjerne advarselen gjennom plattformen på Aktivitet-fanen i administratorpanelet.</p>
+      automatically_flagged: >
+        Dette innlegget ble automatisk oppdaget som potensielt upassende innhold. Vi sender deg dette varselet slik at du kan se gjennom innlegget i samsvar med dine egne retningslinjer for moderering.
+      how_to_review: >
+        Hvis innlegget ikke inneholder upassende innhold, kan du fjerne advarselen via plattformen din i fanen Aktivitet i administrasjonspanelet.
       cta_review_post: 'Gjennomgå innlegg'

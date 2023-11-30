@@ -72,7 +72,7 @@ const OverlayControls = ({
             ? theme.signedOutHeaderOverlayOpacity
             : theme.signedInHeaderOverlayOpacity),
         bannerOverlayColor ||
-          (variant === 'signedOut'
+          (variant === 'signedIn'
             ? theme.colors.tenantPrimary
             : theme.signedInHeaderOverlayColor) ||
           null

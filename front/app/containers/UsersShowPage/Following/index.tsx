@@ -33,10 +33,10 @@ const Following = () => {
       label: messages.projects,
     },
     Initiative: {
-      label: messages.initiatives,
+      label: messages.proposals,
     },
     Idea: {
-      label: messages.ideas,
+      label: messages.inputs,
     },
     'ProjectFolders::Folder': {
       label: messages.projectFolders,
