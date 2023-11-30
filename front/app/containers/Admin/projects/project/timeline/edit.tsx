@@ -90,7 +90,7 @@ const AdminProjectTimelineEdit = () => {
   const { mutateAsync: deletePhaseFile } = useDeletePhaseFile();
   const { projectId, id: phaseId } = useParams() as {
     projectId: string;
-    id: string;
+    id: string | null;
   };
   const { data: phaseFiles } = usePhaseFiles(phaseId);
   const { data: phase } = usePhase(phaseId || null);
@@ -267,8 +267,8 @@ const AdminProjectTimelineEdit = () => {
       .filter((file) => file.remote)
       .map((file) => deletePhaseFile({ phaseId, fileId: file.id as string }));
 
-    await Promise.all([...filesToAddPromises, ...filesToRemovePromises]).then(
-      () => {
+    await Promise.all([...filesToAddPromises, ...filesToRemovePromises])
+      .then(() => {
         setPhaseFilesToRemove([]);
         setProcessing(false);
         setErrors(null);
@@ -279,8 +279,20 @@ const AdminProjectTimelineEdit = () => {
         if (redirectAfterSave) {
           clHistory.push(`/admin/projects/${projectId}/timeline/`);
         }
-      }
-    );
+      })
+      .catch(({ errors }) => {
+        // For some reason, the BE adds a 'blank' error
+        // to the file errors array when the real error is
+        // extension_whitelist_error. So if we get that error,
+        // we filter out the blank error and only show the
+        // extension_whitelist_error.
+        errors.file[0].error === 'extension_whitelist_error'
+          ? setErrors({ file: [errors.file[0]] })
+          : setErrors({ ...errors });
+
+        setProcessing(false);
+        setSubmitState('error');
+      });
   };
 
   const save = async (

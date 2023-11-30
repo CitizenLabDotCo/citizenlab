@@ -2380,6 +2380,7 @@
   "app.containers.admin.inviteUsersWithSeatsModal.confirmSeatUsageChange": "Koltuk kullanımı üzerindeki etkiyi teyit edin",
   "app.containers.admin.inviteUsersWithSeatsModal.infoMessage2": "Planınızdaki mevcut koltuk sınırına ulaştınız.",
   "app.containers.admin.project.permissions.permissionEveryoneEmailWarning": "Kayıtlı kullanıcılara ek olarak, bir e-posta sağlayan ve onaylayan kayıtsız kullanıcılar da eylemi gerçekleştirebilecektir. Katılım engelini azaltmak için bu seçeneği seçin.",
+  "app.containers.admin.project.permissions.permissionsAdministratorsAndManagers": "Bu projenin yöneticileri ve idarecileri",
   "app.containers.admin.project.permissions.permissionsAdminsAndCollaborators": "Yalnızca yöneticiler ve ortak çalışanlar",
   "app.containers.admin.project.permissions.permissionsAdminsAndCollaboratorsTooltip": "Yalnızca platform yöneticileri, klasör yöneticileri ve proje yöneticileri işlem yapabilir",
   "app.containers.admin.project.permissions.permissionsAnyoneLabel": "Herkes",
