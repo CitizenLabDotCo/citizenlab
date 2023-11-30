@@ -1484,7 +1484,7 @@
   "app.containers.AdminPage.ProjectEdit.phaseMethodChangeWarning": "Неке методе учешћа нису доступне за постојеће фазе. У овим случајевима мораће се створити нова фаза.",
   "app.containers.AdminPage.ProjectEdit.phasesTab": "Временска линија",
   "app.containers.AdminPage.ProjectEdit.pollTab": "Анкета",
-  "app.containers.AdminPage.ProjectEdit.popularSortingMethod2": "Већина реакција",
+  "app.containers.AdminPage.ProjectEdit.popularSortingMethod2": "Највише реакција",
   "app.containers.AdminPage.ProjectEdit.projectCardImageLabelText": "Слика картице пројекта",
   "app.containers.AdminPage.ProjectEdit.projectCardImageTooltip": "Ова слика је део картице пројекта; картица која резимира пројекат и приказана је на почетној страници на пример.\n\n    За више информација о препорученим резолуцијама слика, {supportPageLink}.",
   "app.containers.AdminPage.ProjectEdit.projectFolderSelectTitle": "Додати пројекат у фасциклу?",
