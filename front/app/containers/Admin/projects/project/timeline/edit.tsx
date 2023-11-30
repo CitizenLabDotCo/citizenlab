@@ -267,8 +267,8 @@ const AdminProjectTimelineEdit = () => {
       .filter((file) => file.remote)
       .map((file) => deletePhaseFile({ phaseId, fileId: file.id as string }));
 
-    await Promise.all([...filesToAddPromises, ...filesToRemovePromises]).then(
-      () => {
+    await Promise.all([...filesToAddPromises, ...filesToRemovePromises])
+      .then(() => {
         setPhaseFilesToRemove([]);
         setProcessing(false);
         setErrors(null);
@@ -279,8 +279,12 @@ const AdminProjectTimelineEdit = () => {
         if (redirectAfterSave) {
           clHistory.push(`/admin/projects/${projectId}/timeline/`);
         }
-      }
-    );
+      })
+      .catch(({ errors }) => {
+        setErrors({ ...errors });
+        setProcessing(false);
+        setSubmitState('error');
+      });
   };
 
   const save = async (
