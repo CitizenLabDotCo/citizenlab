@@ -25,6 +25,10 @@ import { Tab } from 'components/admin/NavigationTabs';
 import Modal from 'components/UI/Modal';
 import clHistory from 'utils/cl-router/history';
 import { ParticipationMethod } from 'utils/participationContexts';
+import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
+import Tippy from '@tippyjs/react';
+import { getParticipantMessage } from './utils';
+import PermissionTooltipMessage from './PermissionTooltipMessage';
 
 const Container = styled(Box)`
   ${defaultCardStyle};
@@ -59,6 +63,11 @@ export const PhaseHeader = ({ phase, tabs }: Props) => {
   const { projectId } = useParams() as {
     projectId: string;
   };
+  const { data: permissions } = usePhasePermissions({ phaseId: phase.id });
+  const participationRequirementsMessage = getParticipantMessage(
+    permissions?.data,
+    formatMessage
+  );
 
   if (!phase) {
     return null;
@@ -155,6 +164,20 @@ export const PhaseHeader = ({ phase, tabs }: Props) => {
             <Text color="coolGrey600" my="0px" variant="bodyS">
               {startAt} → {endAt}
             </Text>
+            {participationRequirementsMessage && (
+              <Text color="coolGrey600" my="0px" variant="bodyS" ml="4px">
+                <Tippy
+                  disabled={false}
+                  interactive={true}
+                  placement="bottom"
+                  content={
+                    <PermissionTooltipMessage permissions={permissions?.data} />
+                  }
+                >
+                  <div>{`· ${participationRequirementsMessage}`}</div>
+                </Tippy>
+              </Text>
+            )}
           </Box>
         </Box>
         <Box
