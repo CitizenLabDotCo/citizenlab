@@ -77,7 +77,6 @@ describe CommentReactionPolicy do
     end
   end
 
-  # TODO: JS Bug - private admins project has no phases which is why this is passing - should be because only visible to admins
   context 'for a mortal user who owns the reaction on a private project' do
     let(:project) { create(:private_admins_project) }
     let!(:reaction) { create(:reaction, reactable: comment) }

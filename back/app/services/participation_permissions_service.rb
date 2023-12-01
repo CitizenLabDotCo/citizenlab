@@ -3,6 +3,8 @@
 class ParticipationPermissionsService < PermissionsService
   POSTING_DISABLED_REASONS = {
     project_inactive: 'project_inactive',
+    project_only_visible_to_admins: 'project_only_visible_to_admins',
+    project_only_visible_to_groups: 'project_only_visible_to_groups',
     not_ideation: 'not_ideation',
     posting_disabled: 'posting_disabled',
     posting_limited_max_reached: 'posting_limited_max_reached'
@@ -61,8 +63,13 @@ class ParticipationPermissionsService < PermissionsService
   end
 
   def posting_idea_disabled_reason_for_project(project, user)
-    phase = get_current_phase(project)
-    posting_idea_disabled_reason_for_phase phase, user
+    project_visible_reason = project_visible_disabled_reason(project, user)
+    if project_visible_reason
+      project_visible_reason
+    else
+      phase = get_current_phase project
+      posting_idea_disabled_reason_for_phase(phase, user)
+    end
   end
 
   def posting_idea_disabled_reason_for_phase(phase, user)
@@ -91,8 +98,13 @@ class ParticipationPermissionsService < PermissionsService
   end
 
   def commenting_idea_disabled_reason_for_project(project, user)
-    phase = get_current_phase project
-    commenting_idea_disabled_reason_for_phase phase, user
+    project_visible_reason = project_visible_disabled_reason(project, user)
+    if project_visible_reason
+      project_visible_reason
+    else
+      phase = get_current_phase project
+      commenting_idea_disabled_reason_for_phase phase, user
+    end
   end
 
   def commenting_idea_disabled_reason_for_phase(phase, user)
@@ -167,8 +179,13 @@ class ParticipationPermissionsService < PermissionsService
   end
 
   def taking_survey_disabled_reason_for_project(project, user)
-    phase = get_current_phase project
-    taking_survey_disabled_reason_for_phase phase, user
+    project_visible_reason = project_visible_disabled_reason(project, user)
+    if project_visible_reason
+      project_visible_reason
+    else
+      phase = get_current_phase project
+      taking_survey_disabled_reason_for_phase phase, user
+    end
   end
 
   def taking_survey_disabled_reason_for_phase(phase, user)
@@ -182,8 +199,13 @@ class ParticipationPermissionsService < PermissionsService
   end
 
   def annotating_document_disabled_reason_for_project(project, user)
-    phase = get_current_phase project
-    annotating_document_disabled_reason_for_phase phase, user
+    project_visible_reason = project_visible_disabled_reason(project, user)
+    if project_visible_reason
+      project_visible_reason
+    else
+      phase = get_current_phase project
+      annotating_document_disabled_reason_for_phase phase, user
+    end
   end
 
   def annotating_document_disabled_reason_for_phase(phase, user)
@@ -314,5 +336,13 @@ class ParticipationPermissionsService < PermissionsService
 
   def disliking_limit_reached?(phase, user)
     phase.reacting_dislike_limited? && user.reactions.down.where(reactable: phase.ideas).size >= phase.reacting_dislike_limited_max
+  end
+
+  def project_visible_disabled_reason(project, user)
+    if project.visible_to == 'admins' && !user.admin?
+      POSTING_DISABLED_REASONS[:project_only_visible_to_admins]
+    elsif project.visible_to == 'groups' && !user.in_any_groups?(project.groups)
+      POSTING_DISABLED_REASONS[:project_only_visible_to_groups]
+    end
   end
 end
