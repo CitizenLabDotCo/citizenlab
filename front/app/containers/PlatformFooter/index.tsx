@@ -32,7 +32,6 @@ const Container = styled.footer`
   position: relative;
   ${media.tablet`
     margin-top: 0px;
-    padding-bottom: ${({ theme: { mobileMenuHeight } }) => mobileMenuHeight}px;
   `}
 `;
 
@@ -303,8 +302,8 @@ const PlatformFooter = ({ className }: Props) => {
           </PagesNavList>
         </PagesNav>
 
-        <Right>
-          {!removeVendorBranding && (
+        {!removeVendorBranding && (
+          <Right>
             <PoweredBy>
               <PoweredByText>
                 <FormattedMessage {...messages.poweredBy} />
@@ -313,8 +312,8 @@ const PlatformFooter = ({ className }: Props) => {
                 <CitizenLabLogo name="cl-logo" title="CitizenLab" />
               </CitizenlabLink>
             </PoweredBy>
-          )}
-        </Right>
+          </Right>
+        )}
       </FooterContainer>
     </Container>
   );

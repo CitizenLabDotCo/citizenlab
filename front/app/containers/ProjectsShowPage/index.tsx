@@ -9,7 +9,7 @@ import TimelineContainer from './timeline';
 import { Box, Spinner, useBreakpoint } from '@citizenlab/cl2-component-library';
 import Navigate from 'utils/cl-router/Navigate';
 import SuccessModal from './SucessModal';
-import { ProjectCTABar } from './ProjectCTABar';
+import ProjectCTABar from './ProjectCTABar';
 import EventsViewer from 'containers/EventsPage/EventsViewer';
 import Centerer from 'components/UI/Centerer';
 import ErrorBoundary from 'components/ErrorBoundary';

@@ -4,7 +4,7 @@ module Volunteering::VolunteeringPhase
   extend ActiveSupport::Concern
 
   included do
-    has_many :causes, class_name: 'Volunteering::Cause', as: :participation_context, dependent: :destroy
+    has_many :causes, class_name: 'Volunteering::Cause', dependent: :destroy
 
     validate :causes_allowed_in_participation_method
   end

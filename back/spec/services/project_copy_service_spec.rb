@@ -134,7 +134,7 @@ describe ProjectCopyService do
       volunteer = create(:user)
       cause.volunteers.create!(user: volunteer)
 
-      template = service.export cause.participation_context.project, anonymize_users: false, include_ideas: true
+      template = service.export cause.phase.project, anonymize_users: false, include_ideas: true
 
       expect(template['models']['volunteering/volunteer'].size).to eq 1
       expect(template['models']['volunteering/volunteer'].first).to match({

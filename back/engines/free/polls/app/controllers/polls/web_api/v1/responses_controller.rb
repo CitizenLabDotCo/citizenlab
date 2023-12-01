@@ -8,13 +8,9 @@ module Polls
         skip_before_action :authenticate_user
 
         def index_xlsx
-          if @phase
-            authorize Project.find(@phase.project.id), :index_xlsx?
-          else
-            authorize Response, :index_xlsx?
-          end
+          authorize Project.find(@phase.project.id), :index_xlsx?
           @responses = policy_scope(Response)
-            .where(participation_context: @phase)
+            .where(phase: @phase)
             .includes(:user, response_options: [:option])
             .order(:created_at)
           I18n.with_locale(current_user&.locale) do
@@ -26,7 +22,7 @@ module Polls
         def create
           @response = Response.new(response_params)
           @response.user = current_user
-          @response.participation_context = @phase
+          @response.phase = @phase
           authorize @response
 
           if @response.save(context: :response_submission)
@@ -38,15 +34,11 @@ module Polls
         end
 
         def responses_count
-          if @phase
-            authorize Project.find(@phase.project.id), :responses_count?
-          else
-            authorize Response, :responses_count?
-          end
+          authorize Project.find(@phase.project.id), :responses_count?
 
           @counts = policy_scope(Response)
             .joins(:response_options)
-            .where(participation_context: @phase)
+            .where(phase: @phase)
             .group('polls_response_options.option_id')
             .order('polls_response_options.option_id')
             .count

@@ -23,13 +23,6 @@ class WebApi::V1::ProjectsController < ApplicationController
       .includes(:project_images, :phases, :areas, admin_publication: [:children])
     @projects = paginate @projects
 
-    user_baskets = current_user&.baskets
-      &.where(participation_context_type: 'Project')
-      &.group_by do |basket|
-        [basket.participation_context_id, basket.participation_context_type]
-      end
-    user_baskets ||= {}
-
     user_followers = current_user&.follows
       &.where(followable_type: 'Project')
       &.group_by do |follower|
@@ -38,7 +31,6 @@ class WebApi::V1::ProjectsController < ApplicationController
     user_followers ||= {}
 
     instance_options = {
-      user_baskets: user_baskets,
       user_followers: user_followers,
       allocated_budgets: ParticipationContextService.new.allocated_budgets(@projects),
       timeline_active: TimelineService.new.timeline_active_on_collection(@projects),

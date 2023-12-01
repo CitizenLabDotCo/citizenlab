@@ -561,13 +561,6 @@ open_idea_project = Project.create!({
   description_multiloc: MultilocService.new.i18n_to_multiloc('projects.open_idea_project_description', locales: CL2_SUPPORTED_LOCALES),
   description_preview_multiloc: MultilocService.new.i18n_to_multiloc('projects.open_idea_project_description_preview', locales: CL2_SUPPORTED_LOCALES),
   internal_role: 'open_idea_box',
-  presentation_mode: 'card',
-  process_type: 'continuous',
-  participation_method: 'ideation',
-  posting_enabled: true,
-  commenting_enabled: true,
-  reacting_enabled: true,
-  upvoting_method: 'unlimited',
   remote_header_bg_url: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_with_speech_bubbles.jpeg'
 })
 
