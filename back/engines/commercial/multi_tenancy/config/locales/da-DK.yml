@@ -1,0 +1,11 @@
+#Translations for continuous to timeline migration
+da:
+  phase_title_default:
+    ideation: Indsaml input
+    voting: Afstemning
+    poll: Afstemning
+    native_survey: Undersøgelse
+    survey: Undersøgelse
+    document_annotation: Feedback til dokumenter
+    volunteering: Find frivillige
+    information: information
