@@ -50,6 +50,7 @@ import { CLErrors, Multiloc } from 'typings';
 import { IAppConfiguration } from 'api/app_configuration/types';
 import {getDefaultSortMethodFallback} from "../../../../../api/phases/utils";
 
+// TODO: Edwin rename this to IPhaseConfig and move everything in this folder to ../phase
 export interface IParticipationContextConfig {
   participation_method: ParticipationMethod;
   posting_enabled?: boolean | null;
