@@ -46,6 +46,8 @@ const FooterContainer = styled.div`
   background: #fff;
   border-top: solid 1px #ccc;
   overflow: hidden;
+  z-index: 100;
+
   ${media.tablet`
     display: flex;
     flex-direction: column;

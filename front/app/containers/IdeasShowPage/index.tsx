@@ -49,9 +49,8 @@ const StyledIdeasShow = styled(IdeasShow)`
   padding-right: 60px;
 
   ${media.tablet`
-    min-height: calc(100vh - ${({
-      theme: { mobileMenuHeight, mobileTopBarHeight },
-    }) => mobileMenuHeight + mobileTopBarHeight}px);
+    min-height: calc(100vh - ${({ theme: { mobileTopBarHeight } }) =>
+      mobileTopBarHeight}px);
     padding-top: 35px;
   `}
 
@@ -98,9 +97,10 @@ const IdeasShowPage = () => {
           background={colors.white}
           id="idea-page"
           mt={
-            isSmallerThanTablet
+            isSmallerThanTablet ||
+            participationContext?.attributes.participation_method !== 'voting'
               ? undefined
-              : stylingConsts.menuHeight.toString()
+              : `${stylingConsts.menuHeight.toString()}px`
           }
         >
           {isSmallerThanTablet && (
@@ -125,6 +125,7 @@ const IdeasShowPage = () => {
           }
           bottom={isSmallerThanTablet ? '0px' : undefined}
           width="100vw"
+          zIndex="1000"
         >
           {project?.data.id && // Show the CTA bar only when voting is active
             participationContext?.attributes.participation_method ===
