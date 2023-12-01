@@ -11,7 +11,7 @@ import {
   TSurveyService,
   ParticipationMethod,
   IdeaDefaultSortMethod,
-  InputTerm
+  InputTerm,
 } from 'utils/participationContexts';
 import { Keys } from 'utils/cl-react-query/types';
 

@@ -5,11 +5,7 @@ const baseKey = { type: 'question' };
 const pollQuestionsKeys = {
   all: () => [baseKey],
   lists: () => [{ ...baseKey, operation: 'list' }],
-  list: ({
-    phaseId,
-  }: {
-    phaseId: string;
-  }) => [
+  list: ({ phaseId }: { phaseId: string }) => [
     {
       ...baseKey,
       operation: 'list',

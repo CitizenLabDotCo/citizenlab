@@ -17,10 +17,7 @@ interface Props {
   phaseTitle: string;
 }
 
-const PollReport = ({
-  phaseId,
-  phaseTitle,
-}: Props) => {
+const PollReport = ({ phaseId, phaseTitle }: Props) => {
   const { data: pollQuestions } = usePollQuestions({
     phaseId,
   });
@@ -28,8 +25,8 @@ const PollReport = ({
   return (
     <div>
       {!isNilOrError(phaseTitle) && (
-          <SubSectionTitle>{phaseTitle}</SubSectionTitle>
-        )}
+        <SubSectionTitle>{phaseTitle}</SubSectionTitle>
+      )}
       <GraphsContainer>
         {!isNilOrError(pollQuestions) && pollQuestions.data.length > 0 ? (
           pollQuestions.data.map((question) => (
@@ -40,10 +37,7 @@ const PollReport = ({
               key={question.id}
             >
               <GraphCardInner>
-                <QuestionReport
-                  question={question}
-                  phaseId={phaseId}
-                />
+                <QuestionReport question={question} phaseId={phaseId} />
               </GraphCardInner>
             </GraphCard>
           ))

@@ -37,10 +37,7 @@ jest.mock('components/Outlet', () => 'outlet');
 describe('<AdminProjectEdition />', () => {
   it('renders the correct set of tabs for a continuous information project', async () => {
     const phases = [];
-    const project = getProject(
-      'continuousInformation',
-      'information'
-    );
+    const project = getProject('continuousInformation', 'information');
 
     render(
       <AdminProjectsProjectIndex

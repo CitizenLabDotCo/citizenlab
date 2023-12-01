@@ -86,14 +86,10 @@ const IdeaShowPageTopBar = ({
   const [searchParams] = useSearchParams();
   const [goBack] = useState(searchParams.get('go_back'));
 
-  const votingConfig = getVotingMethodConfig(
-    phase?.attributes.voting_method
-  );
+  const votingConfig = getVotingMethodConfig(phase?.attributes.voting_method);
 
   const ideaIsInParticipationContext =
-    phase && idea
-      ? isIdeaInParticipationContext(idea, phase)
-      : undefined;
+    phase && idea ? isIdeaInParticipationContext(idea, phase) : undefined;
 
   useEffect(() => {
     removeSearchParams(['go_back']);
@@ -143,8 +139,7 @@ const IdeaShowPageTopBar = ({
         </Left>
         <Right>
           {/* Only visible if not voting */}
-          {phase?.attributes.participation_method !==
-            'voting' && ( // To reduce bias we want to hide the reactions during voting methods
+          {phase?.attributes.participation_method !== 'voting' && ( // To reduce bias we want to hide the reactions during voting methods
             <ReactionControl
               size="1"
               styleType="border"

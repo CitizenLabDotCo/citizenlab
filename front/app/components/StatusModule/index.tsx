@@ -43,7 +43,7 @@ type StatusModuleProps = {
 
 const unsubmitBasket = async (
   basketId: string,
-  updateBasket: ReturnType<typeof useUpdateBasket>['mutate'],
+  updateBasket: ReturnType<typeof useUpdateBasket>['mutate']
 ) => {
   updateBasket({
     id: basketId,
@@ -73,7 +73,9 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
     : false;
 
   // basket
-  const { data: basket } = useBasket(phase?.relationships?.user_basket?.data?.id);
+  const { data: basket } = useBasket(
+    phase?.relationships?.user_basket?.data?.id
+  );
   const { mutate: updateBasket } = useUpdateBasket();
   const basketStatus = phaseHasEnded
     ? 'submissionEnded'
@@ -157,10 +159,7 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
               mt="16px"
               id="e2e-modify-votes"
               onClick={() => {
-                unsubmitBasket(
-                  basket?.data.id,
-                  updateBasket
-                );
+                unsubmitBasket(basket?.data.id, updateBasket);
               }}
             >
               {config &&

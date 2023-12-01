@@ -1,9 +1,7 @@
 import { TPhases } from 'api/phases/types';
 import { isNilOrError } from 'utils/helperUtils';
 
-export const hasEmbeddedSurvey = (
-  phases: TPhases | null
-) => {
+export const hasEmbeddedSurvey = (phases: TPhases | null) => {
   let hasSurveyPhase = false;
   if (!isNilOrError(phases)) {
     phases.forEach((phase) => {
@@ -15,9 +13,7 @@ export const hasEmbeddedSurvey = (
   return hasSurveyPhase;
 };
 
-export const hasNativeSurvey = (
-  phases: TPhases | null
-) => {
+export const hasNativeSurvey = (phases: TPhases | null) => {
   let hasSurveyPhase = false;
   if (!isNilOrError(phases)) {
     phases.forEach((phase) => {

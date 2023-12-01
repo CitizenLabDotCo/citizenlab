@@ -7,8 +7,7 @@ import { rest } from 'msw';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
-const apiPath =
-  '*/phases/:phaseId/poll_responses';
+const apiPath = '*/phases/:phaseId/poll_responses';
 
 const server = setupServer(
   rest.post(apiPath, (_req, res, ctx) => {

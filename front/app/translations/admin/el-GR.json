@@ -1492,7 +1492,6 @@
   "app.containers.AdminPage.ProjectTimeline.endDatePlaceholder": "End Date",
   "app.containers.AdminPage.ProjectTimeline.fileUploadLabel": "Attachments (max 50MB)",
   "app.containers.AdminPage.ProjectTimeline.saveErrorMessage": "There was an error submitting the form, please try again.",
-  "app.containers.AdminPage.ProjectTimeline.saveLabel": "Save",
   "app.containers.AdminPage.ProjectTimeline.saveSuccessLabel": "Saved!",
   "app.containers.AdminPage.ProjectTimeline.saveSuccessMessage": "Your changes have been saved.",
   "app.containers.AdminPage.ProjectTimeline.startDatePlaceholder": "Ημερομηνία έναρξης",

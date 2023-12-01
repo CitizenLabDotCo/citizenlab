@@ -5,9 +5,7 @@ interface TemplateData {
   phaseId?: string;
 }
 
-export const getTemplateData = (
-  phases: IPhaseData[]
-): TemplateData => {
+export const getTemplateData = (phases: IPhaseData[]): TemplateData => {
   for (const phase of phases) {
     const participationMethod = phase.attributes.participation_method;
 

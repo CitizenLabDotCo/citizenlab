@@ -346,9 +346,7 @@ const IdeaRow = ({
   const active = selection.has(idea.id);
   const projectId = idea.relationships.project.data.id;
   const selectedStatus = idea.relationships.idea_status.data?.id;
-  const displayColumns = usePostManagerColumnFilter(
-    selectedPhaseId
-  );
+  const displayColumns = usePostManagerColumnFilter(selectedPhaseId);
 
   const renderCell = (
     { idea, selection }: IdeaCellComponentProps,

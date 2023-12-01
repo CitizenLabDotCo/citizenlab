@@ -10,10 +10,7 @@ interface Props {
 
 export type GetPollQuestionsChildProps = IPollQuestionData[] | undefined;
 
-const GetPollQuestions = ({
-  phaseId,
-  children,
-}: Props) => {
+const GetPollQuestions = ({ phaseId, children }: Props) => {
   const { data: pollQuestions } = usePollQuestions({
     phaseId,
   });

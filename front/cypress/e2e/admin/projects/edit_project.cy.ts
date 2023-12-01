@@ -15,7 +15,7 @@ describe('Admin: edit project', () => {
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
-      publicationStatus: 'published'
+      publicationStatus: 'published',
     }).then((project) => {
       projectId = project.body.data.id;
     });

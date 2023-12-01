@@ -19,7 +19,8 @@ import { colors } from 'utils/styleUtils';
 
 // utils
 import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
-import { getCurrentPhase,
+import {
+  getCurrentPhase,
   isIdeaInParticipationContext,
 } from 'api/phases/utils';
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
@@ -45,14 +46,10 @@ const RightColumnDesktop = ({
   if (!idea) return null;
 
   const phase = getCurrentPhase(phases?.data);
-  const votingConfig = getVotingMethodConfig(
-    phase?.attributes.voting_method
-  );
+  const votingConfig = getVotingMethodConfig(phase?.attributes.voting_method);
 
   const ideaIsInParticipationContext =
-    phase && idea
-      ? isIdeaInParticipationContext(idea, phase)
-      : undefined;
+    phase && idea ? isIdeaInParticipationContext(idea, phase) : undefined;
 
   const commentingEnabled =
     !!idea?.data.attributes.action_descriptor.commenting_idea.enabled;

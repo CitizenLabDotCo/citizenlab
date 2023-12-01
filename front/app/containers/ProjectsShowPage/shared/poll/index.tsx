@@ -71,11 +71,7 @@ export const Poll = ({ pollQuestions, projectId, phaseId }: Props) => {
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
 
-  if (
-    isNilOrError(pollQuestions) ||
-    !project ||
-    !phase
-  ) {
+  if (isNilOrError(pollQuestions) || !project || !phase) {
     return null;
   }
 
@@ -112,11 +108,7 @@ export const Poll = ({ pollQuestions, projectId, phaseId }: Props) => {
 
 const Data = adopt<DataProps, InputProps>({
   pollQuestions: ({ phaseId, render }) => (
-    <GetPollQuestions
-      phaseId={phaseId as string}
-    >
-      {render}
-    </GetPollQuestions>
+    <GetPollQuestions phaseId={phaseId as string}>{render}</GetPollQuestions>
   ),
 });
 

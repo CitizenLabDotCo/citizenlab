@@ -61,7 +61,7 @@ describe('Admin: ideation analysis', () => {
 
   it('creates an analysis from an ideation entry point', () => {
     cy.visit('/admin/projects/' + projectId + '/ideas');
-    cy.visit(`admin/projects/${projectId}/ideas/${phaseId}`);
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/ideas`);
     cy.get('#e2e-analysis-banner-button').click();
 
     // Consent modal

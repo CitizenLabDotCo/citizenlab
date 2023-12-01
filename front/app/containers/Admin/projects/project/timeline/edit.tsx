@@ -37,6 +37,7 @@ import {
   Box,
   Title,
   IconTooltip,
+  colors,
 } from '@citizenlab/cl2-component-library';
 import Warning from 'components/UI/Warning';
 import ReportSection from '../information/ReportSection';
@@ -62,6 +63,8 @@ import { stringifyCampaignFields } from 'containers/Admin/messaging/AutomatedEma
 import { CampaignData } from 'containers/Admin/messaging/AutomatedEmails/types';
 import { CampaignName } from 'api/campaigns/types';
 import { getExcludedDates, getMaxEndDate, getTimelineTab } from './utils';
+import { defaultAdminCardPadding } from 'utils/styleUtils';
+import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 
 type SubmitStateType = 'disabled' | 'enabled' | 'error' | 'success';
 
@@ -116,10 +119,12 @@ const AdminPhaseEdit = () => {
   const { formatMessage } = useIntl();
   const [hasEndDate, setHasEndDate] = useState<boolean>(false);
   const [disableNoEndDate, setDisableNoEndDate] = useState<boolean>(false);
+  const { width, containerRef } = useContainerWidthAndHeight();
 
   useEffect(() => {
     setHasEndDate(phase?.data.attributes.end_at ? true : false);
     setAttributeDiff({});
+    setSubmitState(phase ? 'enabled' : 'disabled');
   }, [phase]);
 
   useEffect(() => {
@@ -282,7 +287,7 @@ const AdminPhaseEdit = () => {
           const redirectTab = getTimelineTab(phaseResponse);
           window.scrollTo(0, 0);
           clHistory.push(
-            `/admin/projects/${projectId}/${redirectTab}/${phaseId}`
+            `/admin/projects/${projectId}/phases/${phaseId}/${redirectTab}`
           );
         }
       })
@@ -434,7 +439,7 @@ const AdminPhaseEdit = () => {
   const maxEndDate = getMaxEndDate(phasesWithOutCurrentPhase, startDate, phase);
 
   return (
-    <>
+    <Box ref={containerRef}>
       <Title variant="h3" color="primary">
         {phase && <FormattedMessage {...messages.editPhaseTitle} />}
         {!phase && <FormattedMessage {...messages.newPhaseTitle} />}
@@ -593,18 +598,31 @@ const AdminPhaseEdit = () => {
           )}
         </Section>
 
-        <SubmitWrapper
-          loading={processing}
-          status={submitState}
-          messages={{
-            buttonSave: messages.saveLabel,
-            buttonSuccess: messages.saveSuccessLabel,
-            messageError: messages.saveErrorMessage,
-            messageSuccess: messages.saveSuccessMessage,
-          }}
-        />
+        <Box
+          position="fixed"
+          borderTop={`1px solid ${colors.divider}`}
+          bottom="0"
+          w={`calc(${width}px + ${defaultAdminCardPadding * 2}px)`}
+          ml={`-${defaultAdminCardPadding}px`}
+          background={colors.white}
+          display="flex"
+          justifyContent="flex-start"
+        >
+          <Box py="8px" px={`${defaultAdminCardPadding}px`}>
+            <SubmitWrapper
+              loading={processing}
+              status={submitState}
+              messages={{
+                buttonSave: messages.saveChangesLabel,
+                buttonSuccess: messages.saveSuccessLabel,
+                messageError: messages.saveErrorMessage,
+                messageSuccess: messages.saveSuccessMessage,
+              }}
+            />
+          </Box>
+        </Box>
       </form>
-    </>
+    </Box>
   );
 };
 

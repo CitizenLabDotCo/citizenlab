@@ -107,7 +107,7 @@ describe('Native survey project card', () => {
         participationMethod: 'native_survey',
         canPost: true,
         canComment: true,
-        canReact: true
+        canReact: true,
       });
     });
   });

@@ -8,23 +8,18 @@ import {
   IPollResponseParameters,
 } from './types';
 
-const fetchResponses = ({
-  phaseId,
-}: IPollResponseParameters) =>
+const fetchResponses = ({ phaseId }: IPollResponseParameters) =>
   fetcher<IPollResponses>({
     path: `/phases/${phaseId}/poll_responses/responses_count`,
     action: 'get',
   });
 
-const usePollResponses = ({
-  phaseId,
-}: IPollResponseParameters) => {
+const usePollResponses = ({ phaseId }: IPollResponseParameters) => {
   return useQuery<IPollResponses, CLErrors, IPollResponses, PollResponsesKeys>({
     queryKey: pollOptionsKeys.item({
       phaseId,
     }),
-    queryFn: () =>
-      fetchResponses({ phaseId }),
+    queryFn: () => fetchResponses({ phaseId }),
   });
 };
 

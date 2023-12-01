@@ -57,9 +57,8 @@ const EventPreviews = ({ projectId }: EventPreviewsProps) => {
     currentAndFutureOnly: true,
     sort: '-start_at',
     ongoing_during: [
-      moment(
-        getCurrentPhase(phases?.data)?.attributes.start_at
-      ).toString() || null,
+      moment(getCurrentPhase(phases?.data)?.attributes.start_at).toString() ||
+        null,
       moment(getCurrentPhase(phases?.data)?.attributes.end_at)
         .add(1, 'day')
         .toString() || null,
@@ -102,7 +101,7 @@ const EventPreviews = ({ projectId }: EventPreviewsProps) => {
           variant="h5"
           style={{ fontWeight: 600 }}
         >
-          { formatMessage(messages.eventPreviewTimelineTitle) }
+          {formatMessage(messages.eventPreviewTimelineTitle)}
         </Title>
         <Box
           id="e2e-event-previews"

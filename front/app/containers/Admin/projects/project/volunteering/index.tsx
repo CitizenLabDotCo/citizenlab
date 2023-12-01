@@ -43,19 +43,14 @@ const AdminProjectVolunteering = () => {
         <Title variant="h3" color="primary">
           <FormattedMessage {...messages.titleVolunteeringTab} />
         </Title>
-        <ExportVolunteersButton
-          phaseId={phaseId}
-        />
+        <ExportVolunteersButton phaseId={phaseId} />
       </Box>
 
       <SectionDescription>
         <FormattedMessage {...messages.subtitleVolunteeringTab} />
       </SectionDescription>
       <PhaseContainer key={phase.data.id}>
-        <AllCauses
-          projectId={project.data.id}
-          phaseId={phaseId}
-        />
+        <AllCauses projectId={project.data.id} phaseId={phaseId} />
       </PhaseContainer>
     </Box>
   );

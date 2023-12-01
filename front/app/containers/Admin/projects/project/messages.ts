@@ -26,6 +26,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.volunteeringTab',
     defaultMessage: 'Volunteering',
   },
+  phaseAccessRights: {
+    id: 'app.containers.AdminPage.ProjectEdit.phaseAccessRights',
+    defaultMessage: 'Access rights',
+  },
   pollTab: {
     id: 'app.containers.AdminPage.ProjectEdit.pollTab',
     defaultMessage: 'Poll',

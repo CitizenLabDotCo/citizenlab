@@ -69,7 +69,7 @@ const useVoteForIdea = (phase?: IPhaseData) => {
         votes: votes === 0 ? null : votes,
         basket_id: basketId,
         project_id: phase.relationships.project.data.id,
-        phase_id: phase.id
+        phase_id: phase.id,
       });
       setProcessing(false);
     },

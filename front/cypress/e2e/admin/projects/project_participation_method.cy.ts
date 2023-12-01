@@ -35,7 +35,7 @@ describe('Admin project participation method', () => {
   });
 
   it('checks that participation method can be changed after creation except for native survey phases', () => {
-    const phaseSetupPath = `admin/projects/${projectId}/setup/${phaseId}`
+    const phaseSetupPath = `admin/projects/${projectId}/phases/${phaseId}/setup`;
 
     cy.setAdminLoginCookie();
     cy.visit(phaseSetupPath);

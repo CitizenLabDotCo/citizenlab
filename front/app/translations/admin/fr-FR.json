@@ -1654,7 +1654,6 @@
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningBullet2": "Si vous ajoutez une nouvelle phase après celle-ci, une date de fin sera automatiquement ajoutée à cette phase.",
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningTitle": "Le fait de ne pas sélectionner de date de fin implique que :",
   "app.containers.AdminPage.ProjectTimeline.saveErrorMessage": "Une erreur est survenue lors de la soumission du formulaire, veuillez réessayer.",
-  "app.containers.AdminPage.ProjectTimeline.saveLabel": "Enregistrer",
   "app.containers.AdminPage.ProjectTimeline.saveSuccessLabel": "Enregistré !",
   "app.containers.AdminPage.ProjectTimeline.saveSuccessMessage": "Vos modifications ont été enregistrées avec succès.",
   "app.containers.AdminPage.ProjectTimeline.startDate": "Date de début",

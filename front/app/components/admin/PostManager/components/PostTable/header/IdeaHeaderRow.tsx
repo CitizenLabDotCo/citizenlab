@@ -203,9 +203,7 @@ const IdeaHeaderRow = ({
     },
   ];
 
-  const displayColumns = usePostManagerColumnFilter(
-    selectedPhaseId
-  );
+  const displayColumns = usePostManagerColumnFilter(selectedPhaseId);
 
   const totalWidth = cells.reduce((acc, cell) => {
     return cell.width + acc;

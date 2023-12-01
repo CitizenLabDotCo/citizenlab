@@ -5,11 +5,7 @@ const baseKey = { type: 'responses_count' };
 const pollReponsesKeys = {
   all: () => [baseKey],
   items: () => [{ ...baseKey, operation: 'item' }],
-  item: ({
-    phaseId,
-  }: {
-    phaseId: string;
-  }) => [
+  item: ({ phaseId }: { phaseId: string }) => [
     {
       ...baseKey,
       operation: 'item',

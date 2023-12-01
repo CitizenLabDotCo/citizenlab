@@ -1654,7 +1654,6 @@
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningBullet2": "Zodra je een fase na deze fase toevoegt, wordt er een einddatum aan deze laatste fase toegevoegd.",
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningTitle": "Als je geen einddatum selecteert, betekent dit dat:",
   "app.containers.AdminPage.ProjectTimeline.saveErrorMessage": "Er is een fout opgetreden bij het verzenden, probeer het a.j.b. opnieuw.",
-  "app.containers.AdminPage.ProjectTimeline.saveLabel": "Opslaan",
   "app.containers.AdminPage.ProjectTimeline.saveSuccessLabel": "Opgeslagen!",
   "app.containers.AdminPage.ProjectTimeline.saveSuccessMessage": "Je wijzigingen zijn met succes opgeslagen.",
   "app.containers.AdminPage.ProjectTimeline.startDate": "Startdatum",

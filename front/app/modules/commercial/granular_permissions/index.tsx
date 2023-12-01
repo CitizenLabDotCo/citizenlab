@@ -7,6 +7,9 @@ const InitiativeSettingsTab = React.lazy(
 const ProjectSettingsTab = React.lazy(
   () => import('./admin/components/ProjectSettingsTab')
 );
+const PhasePermissions = React.lazy(
+  () => import('./admin/containers/Granular/PhasePermissions')
+);
 const Granular = React.lazy(() => import('./admin/containers/Granular'));
 const FeatureFlag = React.lazy(() => import('components/FeatureFlag'));
 
@@ -26,6 +29,7 @@ const RenderOnTabHideCondition = ({
   const isGranularPermissionsEnabled = useFeatureFlag({
     name: 'granular_permissions',
   });
+
   if (isGranularPermissionsEnabled) {
     return <>{children}</>;
   }
@@ -47,6 +51,13 @@ const configuration: ModuleConfiguration = {
     ) => (
       <FeatureFlag name="granular_permissions">
         <Granular {...props} />
+      </FeatureFlag>
+    ),
+    'app.containers.Admin.project.phase.permissions.participationRights': (
+      props
+    ) => (
+      <FeatureFlag name="granular_permissions">
+        <PhasePermissions {...props} />
       </FeatureFlag>
     ),
     'app.containers.Admin.initiatives.tabs': (props) => (

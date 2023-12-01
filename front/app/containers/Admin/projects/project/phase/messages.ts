@@ -58,4 +58,77 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.inPlatformSurveyPhase',
     defaultMessage: 'In platform survey phase',
   },
+  everyone: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.everyone',
+    defaultMessage: 'Everyone',
+  },
+  adminsAndManagers: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.adminsAndManagers',
+    defaultMessage: 'Admins & managers',
+  },
+  registeredUsers: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.registeredUsers',
+    defaultMessage: 'Registered users',
+  },
+  usersWithConfirmedEmail: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.usersWithConfirmedEmail',
+    defaultMessage: 'Users with confirmed emails',
+  },
+  mixedRights: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.mixedRights',
+    defaultMessage: 'Mixed rights',
+  },
+  groups: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.groups',
+    defaultMessage:
+      '{noOfGroups, plural, one {1 group} other {{noOfGroups} groups}}',
+  },
+  canParticipateTooltip: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.canParticipateTooltip',
+    defaultMessage: '{participants} can participate in this phase.',
+  },
+  whoCanParticipate: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.whoCanParticipate',
+    defaultMessage: 'Who can participate?',
+  },
+  submitIdeas: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.submitIdeas',
+    defaultMessage: '<b>Submit ideas:</b>  {participants}',
+  },
+  comment: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.comment',
+    defaultMessage: '<b>Comment:</b> {participants}',
+  },
+  react: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.react',
+    defaultMessage: '<b>React:</b>  {participants}',
+  },
+  takingSurvey: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.takingSurvey',
+    defaultMessage: '<b>Taking survey:</b>  {participants}',
+  },
+  takingPoll: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.takingPoll',
+    defaultMessage: '<b>Taking poll:</b>  {participants}',
+  },
+  voting: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.voting',
+    defaultMessage: '<b>Voting:</b>  {participants}',
+  },
+  annotatingDocument: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.annotatingDocument',
+    defaultMessage: '<b>Annotating document:</b>  {participants}',
+  },
+  and: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.and',
+    defaultMessage: 'and',
+  },
+  only: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.only',
+    defaultMessage: 'Only',
+  },
+  noGroups: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.noGroups',
+    defaultMessage: 'No groups',
+  },
 });

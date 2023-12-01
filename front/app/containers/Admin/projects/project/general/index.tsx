@@ -27,7 +27,6 @@ import ParticipationContext, {
 } from '../participationContext';
 import {
   StyledForm,
-  ProjectType,
   StyledSectionField,
   ParticipationContextWrapper,
   TIMEOUT,
@@ -46,6 +45,7 @@ import { useParams } from 'react-router-dom';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useAddProject from 'api/projects/useAddProject';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 
 import {
   IUpdatedProjectProperties,
@@ -77,6 +77,7 @@ import eventEmitter from 'utils/eventEmitter';
 import { convertUrlToUploadFile, isUploadFile } from 'utils/fileUtils';
 import useUpdateProject from 'api/projects/useUpdateProject';
 import projectsKeys from 'api/projects/keys';
+import { defaultAdminCardPadding, colors } from 'utils/styleUtils';
 
 export type TOnProjectAttributesDiffChangeFunction = (
   projectAttributesDiff: IUpdatedProjectProperties,
@@ -90,6 +91,7 @@ const AdminProjectsProjectGeneral = () => {
   const { data: project } = useProjectById(projectId);
   const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
   const appConfigLocales = useAppConfigurationLocales();
+  const { width, containerRef } = useContainerWidthAndHeight();
 
   const { data: remoteProjectImages } = useProjectImages(projectId || null);
   const { mutateAsync: addProjectImage } = useAddProjectImage();
@@ -465,157 +467,161 @@ const AdminProjectsProjectGeneral = () => {
     : false;
 
   return (
-    <StyledForm className="e2e-project-general-form" onSubmit={onSubmit}>
-      <Section>
-        {projectId && (
-          <>
-            <SectionTitle>
-              <FormattedMessage {...messages.titleGeneral} />
-            </SectionTitle>
-            <SectionDescription>
-              <FormattedMessage {...messages.subtitleGeneral} />
-            </SectionDescription>
-          </>
-        )}
-
-        <ProjectStatusPicker
-          publicationStatus={publicationStatus}
-          handleStatusChange={handleStatusChange}
-        />
-
-        <ProjectNameInput
-          titleMultiloc={projectAttrs.title_multiloc}
-          titleError={titleError}
-          apiErrors={apiErrors}
-          handleTitleMultilocOnChange={handleTitleMultilocOnChange}
-        />
-
-        {/* Only show this field when slug is already saved to project (i.e. not when creating a new project, which uses this form as well) */}
-        {!isNilOrError(project) && slug && (
-          <StyledSectionField>
-            <SubSectionTitle>
-              <FormattedMessage {...messages.url} />
-            </SubSectionTitle>
-            <SlugInput
-              slug={slug}
-              pathnameWithoutSlug={'projects'}
-              apiErrors={apiErrors}
-              showSlugErrorMessage={showSlugErrorMessage}
-              onSlugChange={handleSlugOnChange}
-              showSlugChangedWarning={slug !== project.data.attributes.slug}
-            />
-          </StyledSectionField>
-        )}
-
-        <StyledSectionField>
-          {!project ? (
-            <ProjectTypePicker projectType='timeline' />
-          ) : (
+    <Box ref={containerRef}>
+      <StyledForm className="e2e-project-general-form" onSubmit={onSubmit}>
+        <Section>
+          {projectId && (
             <>
-              <SubSectionTitle>
-                <FormattedMessage {...messages.projectTypeTitle} />
-              </SubSectionTitle>
-              <ProjectType>
-                {<FormattedMessage {...messages['timeline']} />}
-              </ProjectType>
+              <SectionTitle>
+                <FormattedMessage {...messages.titleGeneral} />
+              </SectionTitle>
+              <SectionDescription>
+                <FormattedMessage {...messages.subtitleGeneral} />
+              </SectionDescription>
             </>
           )}
 
-          {!project && (
-            <CSSTransition
-              classNames="participationcontext"
-              in={false}
-              timeout={TIMEOUT}
-              mountOnEnter={true}
-              unmountOnExit={true}
-              enter={true}
-              exit={false}
-            >
-              <ParticipationContextWrapper>
-                <ParticipationContext
-                  project={project}
-                  onSubmit={handleParticipationContextOnSubmit}
-                  onChange={handleParticipationContextOnChange}
-                  apiErrors={apiErrors}
-                  appConfig={appConfig}
-                />
-              </ParticipationContextWrapper>
-            </CSSTransition>
-          )}
-        </StyledSectionField>
-
-        <TopicInputs
-          selectedTopicIds={selectedTopicIds}
-          onChange={handleTopicsChange}
-        />
-
-        <GeographicAreaInputs
-          areaIds={projectAttrs.area_ids}
-          onProjectAttributesDiffChange={handleProjectAttributeDiffOnChange}
-        />
-
-        {isProjectFoldersEnabled && (
-          <ProjectFolderSelect
-            projectAttrs={projectAttrs}
-            onProjectAttributesDiffChange={handleProjectAttributeDiffOnChange}
-            isNewProject={!projectId}
+          <ProjectStatusPicker
+            publicationStatus={publicationStatus}
+            handleStatusChange={handleStatusChange}
           />
-        )}
 
-        <SectionField>
-          <SubSectionTitle>
-            <FormattedMessage {...messages.headerImageInputLabel} />
-            <ProjectHeaderImageTooltip />
-          </SubSectionTitle>
-          <HeaderBgUploader
-            imageUrl={project?.data.attributes.header_bg.large}
-            onImageChange={handleHeaderBgChange}
+          <ProjectNameInput
+            titleMultiloc={projectAttrs.title_multiloc}
+            titleError={titleError}
+            apiErrors={apiErrors}
+            handleTitleMultilocOnChange={handleTitleMultilocOnChange}
           />
-        </SectionField>
 
-        <StyledSectionField>
-          <SubSectionTitle>
-            <FormattedMessage {...messages.projectCardImageLabelText} />
-            <ProjectCardImageTooltip />
-          </SubSectionTitle>
-          {projectCardImageShouldBeSaved ? (
-            <Box display="flex" flexDirection="column" gap="8px">
-              <ImageCropperContainer
-                image={projectCardImage}
-                onComplete={handleProjectCardImageOnCompleteCropping}
-                aspectRatioWidth={CARD_IMAGE_ASPECT_RATIO_WIDTH}
-                aspectRatioHeight={CARD_IMAGE_ASPECT_RATIO_HEIGHT}
-                onRemove={handleCroppedProjectCardImageOnRemove}
+          {/* Only show this field when slug is already saved to project (i.e. not when creating a new project, which uses this form as well) */}
+          {!isNilOrError(project) && slug && (
+            <StyledSectionField>
+              <SubSectionTitle>
+                <FormattedMessage {...messages.url} />
+              </SubSectionTitle>
+              <SlugInput
+                slug={slug}
+                pathnameWithoutSlug={'projects'}
+                apiErrors={apiErrors}
+                showSlugErrorMessage={showSlugErrorMessage}
+                onSlugChange={handleSlugOnChange}
+                showSlugChangedWarning={slug !== project.data.attributes.slug}
               />
-            </Box>
-          ) : (
-            <ProjectCardImageDropzone
-              images={projectCardImage && [projectCardImage]}
-              onAddImages={handleProjectCardImageOnAdd}
-              onRemoveImage={handleProjectCardImageOnRemove}
+            </StyledSectionField>
+          )}
+
+          <StyledSectionField>
+            {!project && (
+              <>
+                <ProjectTypePicker projectType="timeline" />
+                <CSSTransition
+                  classNames="participationcontext"
+                  in={false}
+                  timeout={TIMEOUT}
+                  mountOnEnter={true}
+                  unmountOnExit={true}
+                  enter={true}
+                  exit={false}
+                >
+                  <ParticipationContextWrapper>
+                    <ParticipationContext
+                      project={project}
+                      onSubmit={handleParticipationContextOnSubmit}
+                      onChange={handleParticipationContextOnChange}
+                      apiErrors={apiErrors}
+                      appConfig={appConfig}
+                    />
+                  </ParticipationContextWrapper>
+                </CSSTransition>
+              </>
+            )}
+          </StyledSectionField>
+
+          <TopicInputs
+            selectedTopicIds={selectedTopicIds}
+            onChange={handleTopicsChange}
+          />
+
+          <GeographicAreaInputs
+            areaIds={projectAttrs.area_ids}
+            onProjectAttributesDiffChange={handleProjectAttributeDiffOnChange}
+          />
+
+          {isProjectFoldersEnabled && (
+            <ProjectFolderSelect
+              projectAttrs={projectAttrs}
+              onProjectAttributesDiffChange={handleProjectAttributeDiffOnChange}
+              isNewProject={!projectId}
             />
           )}
-        </StyledSectionField>
 
-        <AttachmentsDropzone
-          projectFiles={projectFiles}
-          apiErrors={apiErrors}
-          handleProjectFileOnAdd={handleProjectFileOnAdd}
-          handleProjectFileOnRemove={handleProjectFileOnRemove}
-        />
+          <SectionField>
+            <SubSectionTitle>
+              <FormattedMessage {...messages.headerImageInputLabel} />
+              <ProjectHeaderImageTooltip />
+            </SubSectionTitle>
+            <HeaderBgUploader
+              imageUrl={project?.data.attributes.header_bg.large}
+              onImageChange={handleHeaderBgChange}
+            />
+          </SectionField>
 
-        <SubmitWrapper
-          loading={processing}
-          status={submitState}
-          messages={{
-            buttonSave: messages.saveProject,
-            buttonSuccess: messages.saveSuccess,
-            messageError: messages.saveErrorMessage,
-            messageSuccess: messages.saveSuccessMessage,
-          }}
-        />
-      </Section>
-    </StyledForm>
+          <StyledSectionField>
+            <SubSectionTitle>
+              <FormattedMessage {...messages.projectCardImageLabelText} />
+              <ProjectCardImageTooltip />
+            </SubSectionTitle>
+            {projectCardImageShouldBeSaved ? (
+              <Box display="flex" flexDirection="column" gap="8px">
+                <ImageCropperContainer
+                  image={projectCardImage}
+                  onComplete={handleProjectCardImageOnCompleteCropping}
+                  aspectRatioWidth={CARD_IMAGE_ASPECT_RATIO_WIDTH}
+                  aspectRatioHeight={CARD_IMAGE_ASPECT_RATIO_HEIGHT}
+                  onRemove={handleCroppedProjectCardImageOnRemove}
+                />
+              </Box>
+            ) : (
+              <ProjectCardImageDropzone
+                images={projectCardImage && [projectCardImage]}
+                onAddImages={handleProjectCardImageOnAdd}
+                onRemoveImage={handleProjectCardImageOnRemove}
+              />
+            )}
+          </StyledSectionField>
+
+          <AttachmentsDropzone
+            projectFiles={projectFiles}
+            apiErrors={apiErrors}
+            handleProjectFileOnAdd={handleProjectFileOnAdd}
+            handleProjectFileOnRemove={handleProjectFileOnRemove}
+          />
+          <Box
+            position="fixed"
+            borderTop={`1px solid ${colors.divider}`}
+            bottom="0"
+            w={`calc(${width}px + ${defaultAdminCardPadding * 2}px)`}
+            ml={`-${defaultAdminCardPadding}px`}
+            background={colors.white}
+            display="flex"
+            justifyContent="flex-start"
+          >
+            <Box py="8px" px={`${defaultAdminCardPadding}px`}>
+              <SubmitWrapper
+                loading={processing}
+                status={submitState}
+                messages={{
+                  buttonSave: messages.saveProject,
+                  buttonSuccess: messages.saveSuccess,
+                  messageError: messages.saveErrorMessage,
+                  messageSuccess: messages.saveSuccessMessage,
+                }}
+              />
+            </Box>
+          </Box>
+        </Section>
+      </StyledForm>
+    </Box>
   );
 };
 

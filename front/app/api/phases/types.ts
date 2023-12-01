@@ -3,7 +3,9 @@ import {
   ParticipationMethod,
   TSurveyService,
   IdeaDefaultSortMethod,
-  InputTerm, PresentationMode, VotingMethod,
+  InputTerm,
+  PresentationMode,
+  VotingMethod,
 } from 'utils/participationContexts';
 import { Keys } from 'utils/cl-react-query/types';
 import phasesKeys from './keys';

@@ -19,11 +19,7 @@ export const updateBasket = ({ id, submitted }: UpdateBasket) =>
 
 const useUpdateBasket = () => {
   const queryClient = useQueryClient();
-  return useMutation<
-    IBasket,
-    CLErrors,
-    UpdateBasket
-  >({
+  return useMutation<IBasket, CLErrors, UpdateBasket>({
     mutationFn: updateBasket,
     onSuccess: (data, variables) => {
       queryClient.invalidateQueries({ queryKey: basketKeys.items() });

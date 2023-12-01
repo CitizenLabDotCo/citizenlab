@@ -138,9 +138,7 @@ const ideationConfig: ParticipationMethodConfig = {
           question: messages.questionFormTitle,
           issue: messages.issueFormTitle,
           contribution: messages.contributionFormTitle,
-        }[
-          getInputTerm(props.phases, props.phaseFromUrl)
-        ]}
+        }[getInputTerm(props.phases, props.phaseFromUrl)]}
       />
     );
   },
@@ -288,9 +286,7 @@ const votingConfig: ParticipationMethodConfig = {
           question: messages.questionFormTitle,
           issue: messages.issueFormTitle,
           contribution: messages.contributionFormTitle,
-        }[
-          getInputTerm(props.phases, props.phaseFromUrl)
-        ]}
+        }[getInputTerm(props.phases, props.phaseFromUrl)]}
       />
     );
   },

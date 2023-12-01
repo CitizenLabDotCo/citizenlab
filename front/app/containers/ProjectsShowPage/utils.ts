@@ -6,7 +6,5 @@ export const isReady = (
   project: IProjectData | NilOrError,
   phases: IPhases | NilOrError
 ): project is IProjectData => {
-  return (
-    !isNilOrError(project) && !isNilOrError(phases)
-  );
+  return !isNilOrError(project) && !isNilOrError(phases);
 };

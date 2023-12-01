@@ -166,51 +166,51 @@ const ProjectReport = () => {
         <ResolutionControl value={resolution} onChange={setResolution} />
       </RowSection>
       <Section>
-          <TimelineSection>
-            {!isNilOrError(phases) && phases.data.length > 0 ? (
-              phases.data.map((phase, index) => {
-                return (
-                  <Phase
-                    key={index}
-                    isCurrentPhase={
-                      phase.id ===
-                      project?.data.relationships?.current_phase?.data?.id
-                    }
-                  >
-                    {phase.attributes.end_at ? (
-                      <p>
-                        <FormattedMessage
-                          {...messages.fromTo}
-                          values={{
-                            from: formatDateLabel(phase.attributes.start_at),
-                            to: formatDateLabel(phase.attributes.end_at),
-                          }}
-                        />
-                      </p>
-                    ) : (
-                      <p>
-                        <FormattedMessage
-                          {...messages.fromOnwards}
-                          values={{
-                            from: formatDateLabel(phase.attributes.start_at),
-                          }}
-                        />
-                      </p>
-                    )}
-                    <FormattedMessage
-                      {...PARTICIPATION_METHOD_MESSAGES[
-                        phase.attributes.participation_method
-                      ]}
-                    />
-                    <div>{localize(phase.attributes.title_multiloc)}</div>
-                  </Phase>
-                );
-              })
-            ) : (
-              <FormattedMessage {...messages.noPhase} />
-            )}
-          </TimelineSection>
-        </Section>
+        <TimelineSection>
+          {!isNilOrError(phases) && phases.data.length > 0 ? (
+            phases.data.map((phase, index) => {
+              return (
+                <Phase
+                  key={index}
+                  isCurrentPhase={
+                    phase.id ===
+                    project?.data.relationships?.current_phase?.data?.id
+                  }
+                >
+                  {phase.attributes.end_at ? (
+                    <p>
+                      <FormattedMessage
+                        {...messages.fromTo}
+                        values={{
+                          from: formatDateLabel(phase.attributes.start_at),
+                          to: formatDateLabel(phase.attributes.end_at),
+                        }}
+                      />
+                    </p>
+                  ) : (
+                    <p>
+                      <FormattedMessage
+                        {...messages.fromOnwards}
+                        values={{
+                          from: formatDateLabel(phase.attributes.start_at),
+                        }}
+                      />
+                    </p>
+                  )}
+                  <FormattedMessage
+                    {...PARTICIPATION_METHOD_MESSAGES[
+                      phase.attributes.participation_method
+                    ]}
+                  />
+                  <div>{localize(phase.attributes.title_multiloc)}</div>
+                </Phase>
+              );
+            })
+          ) : (
+            <FormattedMessage {...messages.noPhase} />
+          )}
+        </TimelineSection>
+      </Section>
 
       {!isEqual(participationMethods, ['information']) && timeBoundariesSet && (
         <Section>
@@ -292,20 +292,18 @@ const ProjectReport = () => {
             </Column>
           </GraphsContainer>
         )}
-        {participationMethods.includes('poll') && !isNilOrError(phases) && (
+        {participationMethods.includes('poll') &&
+          !isNilOrError(phases) &&
           phases.data.map(
             (phase) =>
               phase.attributes.participation_method === 'poll' && (
                 <PollReport
                   key={phase.id}
                   phaseId={phase.id}
-                  phaseTitle={localize(
-                    phase.attributes.title_multiloc
-                  )}
+                  phaseTitle={localize(phase.attributes.title_multiloc)}
                 />
               )
-          )
-        )}
+          )}
       </Section>
     </>
   );

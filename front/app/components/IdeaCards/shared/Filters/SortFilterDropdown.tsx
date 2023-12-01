@@ -20,12 +20,7 @@ type Props = {
   phase?: IPhaseData;
 };
 
-const SortFilterDropdown = ({
-  alignment,
-  value,
-  onChange,
-  phase,
-}: Props) => {
+const SortFilterDropdown = ({ alignment, value, onChange, phase }: Props) => {
   const handleOnChange = (selectedValue: string[]) => {
     onChange(selectedValue[0]);
   };

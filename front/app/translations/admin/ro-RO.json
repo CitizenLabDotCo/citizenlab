@@ -1141,7 +1141,6 @@
   "app.containers.AdminPage.ProjectTimeline.endDatePlaceholder": "End Date",
   "app.containers.AdminPage.ProjectTimeline.fileUploadLabel": "Documente atașate (max. 50MB)",
   "app.containers.AdminPage.ProjectTimeline.saveErrorMessage": "A apărut o eroare la trimiterea formularului, vă rugăm să încercați din nou.",
-  "app.containers.AdminPage.ProjectTimeline.saveLabel": "Salvați",
   "app.containers.AdminPage.ProjectTimeline.saveSuccessLabel": "Saved!",
   "app.containers.AdminPage.ProjectTimeline.saveSuccessMessage": "Your changes have been saved.",
   "app.containers.AdminPage.ProjectTimeline.startDatePlaceholder": "Data de începere",

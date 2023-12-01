@@ -22,7 +22,7 @@ describe('Information with events CTA', () => {
         cy.apiCreateProject({
           title: projectTitle,
           descriptionPreview: projectDescriptionPreview,
-          description: projectDescription
+          description: projectDescription,
         }).then((project) => {
           projectId = project.body.data.id;
           projectSlug = project.body.data.attributes.slug;
@@ -34,7 +34,7 @@ describe('Information with events CTA', () => {
             participationMethod: 'information',
             canPost: true,
             canComment: true,
-            canReact: true
+            canReact: true,
           });
         });
       });

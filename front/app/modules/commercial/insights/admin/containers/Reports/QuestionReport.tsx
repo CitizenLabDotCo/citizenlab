@@ -15,10 +15,7 @@ interface Props {
 }
 
 const QuestionReport = memo(
-  ({
-    question,
-    phaseId,
-  }: Props & WrappedComponentProps) => {
+  ({ question, phaseId }: Props & WrappedComponentProps) => {
     const localize = useLocalize();
 
     const { data: pollOptions } = usePollOptions(question.id);

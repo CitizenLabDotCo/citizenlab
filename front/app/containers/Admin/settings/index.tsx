@@ -18,7 +18,7 @@ import { useIntl } from 'utils/cl-intl';
 import { InsertConfigurationOptions, ITab } from 'typings';
 import { insertConfiguration } from 'utils/moduleUtils';
 import Outlet from 'components/Outlet';
-import { colors } from 'utils/styleUtils';
+import { colors, defaultAdminCardPadding } from 'utils/styleUtils';
 import { isTopBarNavActive } from 'utils/helperUtils';
 
 const SettingsPage = () => {
@@ -86,7 +86,11 @@ const SettingsPage = () => {
           title={messages.helmetTitle}
           description={messages.helmetDescription}
         />
-        <Box id="e2e-settings-container" background={colors.white} p="40px">
+        <Box
+          id="e2e-settings-container"
+          background={colors.white}
+          p={`${defaultAdminCardPadding}px`}
+        >
           <RouterOutlet />
         </Box>
       </TabsPageLayout>

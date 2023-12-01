@@ -18,7 +18,6 @@ const NewCause = () => {
   const handleOnSubmit = async (formValues: SubmitValues) => {
     const { title_multiloc, description_multiloc, image } = formValues;
     if (title_multiloc && description_multiloc && phaseId) {
-
       await addCause(
         {
           description_multiloc,
@@ -29,7 +28,7 @@ const NewCause = () => {
         {
           onSuccess: () => {
             clHistory.push(
-              `/admin/projects/${projectId}/volunteering/${phaseId}`
+              `/admin/projects/${projectId}/phases/${phaseId}/volunteering/`
             );
           },
         }

@@ -12,7 +12,7 @@ export const basketData: IBasketData = {
     phase: {
       data: {
         id: '1',
-        type: 'phase'
+        type: 'phase',
       },
     },
     user: {
