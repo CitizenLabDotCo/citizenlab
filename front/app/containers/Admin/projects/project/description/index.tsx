@@ -6,6 +6,7 @@ import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 // Hooks
 import useProjectById from 'api/projects/useProjectById';
 import useUpdateProject from 'api/projects/useUpdateProject';
+import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 
 // Components
 import {
@@ -51,7 +52,7 @@ const ProjectDescription = memo<
   const { mutate: updateProject, isLoading, error } = useUpdateProject();
   const [moduleActive, setModuleActive] = useState(false);
   const [touched, setTouched] = useState(false);
-  const [width, setWidth] = useState<number>(0);
+  const { width, containerRef } = useContainerWidthAndHeight();
 
   const [success, setSuccess] = useState(false);
   const [formValues, setFormValues] = useState<IFormValues>({
@@ -71,12 +72,6 @@ const ProjectDescription = memo<
       });
     }
   }, [project]);
-
-  const containerRef = useCallback((node) => {
-    if (node !== null) {
-      setWidth(node.getBoundingClientRect().width);
-    }
-  }, []);
 
   const handleDescriptionPreviewOnChange = useCallback(
     (description_preview_multiloc: Multiloc, _locale: Locale) => {

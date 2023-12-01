@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect } from 'react';
 
 // typings
 import { Multiloc, UploadFile } from 'typings';
@@ -25,6 +25,9 @@ import messages from './messages';
 import { useIntl } from 'utils/cl-intl';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 
+// hooks
+import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
+
 export interface FormValues {
   title_multiloc: Multiloc;
   description_multiloc: Multiloc;
@@ -45,7 +48,7 @@ type PageFormProps = {
 
 const CauseForm = ({ onSubmit, defaultValues, imageUrl }: PageFormProps) => {
   const { formatMessage } = useIntl();
-  const [width, setWidth] = useState<number>(0);
+  const { width, containerRef } = useContainerWidthAndHeight();
   const schema = object({
     title_multiloc: validateAtLeastOneLocale(
       formatMessage(messages.emptyTitleErrorMessage)
@@ -84,12 +87,6 @@ const CauseForm = ({ onSubmit, defaultValues, imageUrl }: PageFormProps) => {
       handleHookFormSubmissionError(error, methods.setError);
     }
   };
-
-  const containerRef = useCallback((node) => {
-    if (node !== null) {
-      setWidth(node.getBoundingClientRect().width);
-    }
-  }, []);
 
   return (
     <Box ref={containerRef}>

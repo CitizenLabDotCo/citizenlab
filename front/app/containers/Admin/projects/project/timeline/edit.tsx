@@ -1,5 +1,5 @@
 // Libraries
-import React, { FormEvent, useEffect, useState, useCallback } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 import moment, { Moment } from 'moment';
 import { isEmpty } from 'lodash-es';
 import clHistory from 'utils/cl-router/history';
@@ -64,6 +64,7 @@ import { CampaignData } from 'containers/Admin/messaging/AutomatedEmails/types';
 import { CampaignName } from 'api/campaigns/types';
 import { getExcludedDates, getMaxEndDate, getTimelineTab } from './utils';
 import { defaultAdminCardPadding } from 'utils/styleUtils';
+import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 
 type SubmitStateType = 'disabled' | 'enabled' | 'error' | 'success';
 
@@ -118,7 +119,7 @@ const AdminPhaseEdit = () => {
   const { formatMessage } = useIntl();
   const [hasEndDate, setHasEndDate] = useState<boolean>(false);
   const [disableNoEndDate, setDisableNoEndDate] = useState<boolean>(false);
-  const [width, setWidth] = useState<number>(0);
+  const { width, containerRef } = useContainerWidthAndHeight();
 
   useEffect(() => {
     setHasEndDate(phase?.data.attributes.end_at ? true : false);
@@ -131,12 +132,6 @@ const AdminPhaseEdit = () => {
       setInStatePhaseFiles(convertToFileType(phaseFiles));
     }
   }, [phaseFiles]);
-
-  const containerRef = useCallback((node) => {
-    if (node !== null) {
-      setWidth(node.getBoundingClientRect().width);
-    }
-  }, []);
 
   if (!campaigns) {
     return null;

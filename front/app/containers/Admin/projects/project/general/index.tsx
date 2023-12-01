@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Multiloc, UploadFile, CLErrors } from 'typings';
 import { isEmpty, isString } from 'lodash-es';
 import CSSTransition from 'react-transition-group/CSSTransition';
@@ -45,6 +45,7 @@ import { useParams } from 'react-router-dom';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useAddProject from 'api/projects/useAddProject';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 
 import {
   IUpdatedProjectProperties,
@@ -90,7 +91,7 @@ const AdminProjectsProjectGeneral = () => {
   const { data: project } = useProjectById(projectId);
   const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
   const appConfigLocales = useAppConfigurationLocales();
-  const [width, setWidth] = useState<number>(0);
+  const { width, containerRef } = useContainerWidthAndHeight();
 
   const { data: remoteProjectImages } = useProjectImages(projectId || null);
   const { mutateAsync: addProjectImage } = useAddProjectImage();
@@ -140,12 +141,6 @@ const AdminProjectsProjectGeneral = () => {
       }
     })();
   }, [project]);
-
-  const containerRef = useCallback((node) => {
-    if (node !== null) {
-      setWidth(node.getBoundingClientRect().width);
-    }
-  }, []);
 
   useEffect(() => {
     (async () => {

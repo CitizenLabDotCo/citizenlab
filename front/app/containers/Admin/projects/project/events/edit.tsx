@@ -1,4 +1,4 @@
-import React, { useState, useEffect, FormEvent, useCallback } from 'react';
+import React, { useState, useEffect, FormEvent } from 'react';
 import moment from 'moment';
 import { isEmpty, get, isError } from 'lodash-es';
 
@@ -57,6 +57,8 @@ import { useTheme } from 'styled-components';
 import useLocale from 'hooks/useLocale';
 import { defaultAdminCardPadding, colors } from 'utils/styleUtils';
 
+import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
+
 type SubmitState = 'disabled' | 'enabled' | 'error' | 'success';
 type ErrorType =
   | Error
@@ -76,7 +78,7 @@ const AdminProjectEventEdit = () => {
     id: string;
     projectId: string;
   };
-  const [width, setWidth] = useState<number>(0);
+  const { width, containerRef } = useContainerWidthAndHeight();
   const { formatMessage } = useIntl();
   const theme = useTheme();
   const locale = useLocale();
@@ -200,12 +202,6 @@ const AdminProjectEventEdit = () => {
       })();
     }
   }, [remoteEventFiles]);
-
-  const containerRef = useCallback((node) => {
-    if (node !== null) {
-      setWidth(node.getBoundingClientRect().width);
-    }
-  }, []);
 
   const handleTitleMultilocOnChange = (titleMultiloc: Multiloc) => {
     setSubmitState('enabled');
