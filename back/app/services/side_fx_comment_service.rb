@@ -54,7 +54,7 @@ class SideFxCommentService
   private
 
   def check_participation_context(comment, user)
-    pcs = ParticipationContextService.new
+    pcs = ParticipationPermissionsService.new
     idea = comment.post if comment.post_type == 'Idea'
     return unless idea
 

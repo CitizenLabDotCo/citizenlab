@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class ParticipationContextService
+class ParticipationPermissionsService < PermissionsService
   POSTING_DISABLED_REASONS = {
     project_inactive: 'project_inactive',
     not_ideation: 'not_ideation',
@@ -74,7 +74,7 @@ class ParticipationContextService
     elsif user && posting_limit_reached?(phase, user)
       POSTING_DISABLED_REASONS[:posting_limited_max_reached]
     else
-      permission_denied_reason(user, 'posting_idea', phase)
+      denied_reason_for_resource(user, 'posting_idea', phase)
     end
   end
 
@@ -102,7 +102,7 @@ class ParticipationContextService
     elsif !phase.commenting_enabled
       COMMENTING_DISABLED_REASONS[:commenting_disabled]
     else
-      permission_denied_reason(user, 'commenting_idea', phase)
+      denied_reason_for_resource(user, 'commenting_idea', phase)
     end
   end
 
@@ -147,7 +147,7 @@ class ParticipationContextService
       return reason if reason
     end
 
-    permission_denied_reason user, 'reacting_idea', phase
+    denied_reason_for_resource user, 'reacting_idea', phase
   end
 
   def cancelling_reacting_disabled_reason_for_idea(idea, user)
@@ -161,7 +161,7 @@ class ParticipationContextService
     elsif !phase.reacting_enabled
       REACTING_DISABLED_REASONS[:reacting_disabled]
     else
-      permission_denied_reason user, 'reacting_idea', get_current_phase(idea.project)
+      denied_reason_for_resource user, 'reacting_idea', get_current_phase(idea.project)
     end
   end
 
@@ -176,7 +176,7 @@ class ParticipationContextService
     elsif !phase.survey?
       TAKING_SURVEY_DISABLED_REASONS[:not_survey]
     else
-      permission_denied_reason(user, 'taking_survey', phase)
+      denied_reason_for_resource(user, 'taking_survey', phase)
     end
   end
 
@@ -191,7 +191,7 @@ class ParticipationContextService
     elsif !phase.document_annotation?
       ANNOTATING_DOCUMENT_DISABLED_REASONS[:not_document_annotation]
     else
-      permission_denied_reason(user, 'annotating_document', phase)
+      denied_reason_for_resource(user, 'annotating_document', phase)
     end
   end
 
@@ -208,7 +208,7 @@ class ParticipationContextService
     elsif user && phase.poll_responses.exists?(user: user)
       TAKING_POLL_DISABLED_REASONS[:already_responded]
     else
-      permission_denied_reason(user, 'taking_poll', phase)
+      denied_reason_for_resource(user, 'taking_poll', phase)
     end
   end
 
@@ -232,25 +232,25 @@ class ParticipationContextService
     elsif !phase.voting?
       VOTING_DISABLED_REASONS[:not_voting]
     else
-      permission_denied_reason(user, 'voting', phase)
+      denied_reason_for_resource(user, 'voting', phase)
     end
   end
 
   # Future enabled phases
   def future_posting_idea_enabled_phase(project, user, time = Time.zone.now)
-    future_phases(project, time).find { |phase| !posting_idea_disabled_reason_for_phase(phase, user) }
+    @timeline_service.future_phases(project, time).find { |phase| !posting_idea_disabled_reason_for_phase(phase, user) }
   end
 
   def future_commenting_idea_enabled_phase(project, user, time = Time.zone.now)
-    future_phases(project, time).find { |phase| !commenting_idea_disabled_reason_for_phase(phase, user) }
+    @timeline_service.future_phases(project, time).find { |phase| !commenting_idea_disabled_reason_for_phase(phase, user) }
   end
 
   def future_liking_idea_enabled_phase(project, user, time = Time.zone.now)
-    future_phases(project, time).find { |phase| !idea_reacting_disabled_reason_for(phase, user, mode: 'up') }
+    @timeline_service.future_phases(project, time).find { |phase| !idea_reacting_disabled_reason_for(phase, user, mode: 'up') }
   end
 
   def future_disliking_idea_enabled_phase(project, user, time = Time.zone.now)
-    future_phases(project, time).find { |phase| !idea_reacting_disabled_reason_for(phase, user, mode: 'down') }
+    @timeline_service.future_phases(project, time).find { |phase| !idea_reacting_disabled_reason_for(phase, user, mode: 'down') }
   end
 
   def future_comment_reacting_idea_enabled_phase(project, user, time = Time.zone.now)
@@ -258,11 +258,10 @@ class ParticipationContextService
   end
 
   def future_voting_enabled_phase(project, user, time = Time.zone.now)
-    future_phases(project, time).find { |phase| !voting_disabled_reason_for_phase(phase, user) }
+    @timeline_service.future_phases(project, time).find { |phase| !voting_disabled_reason_for_phase(phase, user) }
   end
 
   # Project allocated budgets
-  # TODO: JS - This doesn't feel like it's in the right place
   def allocated_budget(project)
     Idea.from(project.ideas.select('budget * baskets_count as allocated_budget')).sum(:allocated_budget)
   end
@@ -277,10 +276,6 @@ class ParticipationContextService
     project = idea.project
     current_phase ||= get_current_phase project
     idea.ideas_phases.find { |ip| ip.phase_id == current_phase.id }
-  end
-
-  def future_phases(project, time)
-    @timeline_service.future_phases(project, time)
   end
 
   # Common reason regardless of the reaction type.
@@ -327,13 +322,5 @@ class ParticipationContextService
 
   def disliking_limit_reached?(phase, user)
     phase.reacting_dislike_limited? && user.reactions.down.where(reactable: phase.ideas).size >= phase.reacting_dislike_limited_max
-  end
-
-  def permission_denied_reason(user, action, phase)
-    permissions_service.denied_reason_for_resource user, action, phase
-  end
-
-  def permissions_service
-    @permissions_service ||= ::PermissionsService.new
   end
 end

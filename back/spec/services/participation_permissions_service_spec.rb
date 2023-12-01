@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe ParticipationContextService do
+describe ParticipationPermissionsService do
   let(:service) { described_class.new }
 
   describe 'get_current_phase' do
@@ -471,7 +471,7 @@ describe ParticipationContextService do
     end
 
     describe 'with phase permissions' do
-      let(:reasons) { ParticipationContextService::REACTING_DISABLED_REASONS }
+      let(:reasons) { ParticipationPermissionsService::REACTING_DISABLED_REASONS }
 
       let(:project) { create(:project_with_current_phase, current_phase_attrs: { with_permissions: true }) }
       let(:idea) { create(:idea, project: project, phases: [project.phases[2]]) }
@@ -500,7 +500,7 @@ describe ParticipationContextService do
 
   describe 'cancelling_reactions_disabled_reasons' do
     let(:user) { create(:user) }
-    let(:reasons) { ParticipationContextService::REACTING_DISABLED_REASONS }
+    let(:reasons) { ParticipationPermissionsService::REACTING_DISABLED_REASONS }
 
     it 'returns nil when reacting is enabled in the current phase' do
       project = create(:project_with_current_phase)

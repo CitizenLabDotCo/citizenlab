@@ -47,7 +47,7 @@ class WebApi::V1::IdeasController < ApplicationController
     ).find_records
     ideas = paginate SortByParamsService.new.sort_ideas(ideas, params, current_user)
 
-    render json: linked_json(ideas, WebApi::V1::IdeaMiniSerializer, params: jsonapi_serializer_params(pcs: ParticipationContextService.new))
+    render json: linked_json(ideas, WebApi::V1::IdeaMiniSerializer, params: jsonapi_serializer_params(pcs: ParticipationPermissionsService.new))
   end
 
   def index_idea_markers
@@ -130,7 +130,7 @@ class WebApi::V1::IdeasController < ApplicationController
     phase = if is_moderator && phase_ids.any?
       Phase.find(phase_ids.first)
     else
-      ParticipationContextService.new.get_current_phase(project)
+      ParticipationPermissionsService.new.get_current_phase(project)
     end
     send_error and return unless phase
 
@@ -194,7 +194,7 @@ class WebApi::V1::IdeasController < ApplicationController
   def update
     input = Idea.find params[:id]
     project = input.project
-    phase = ParticipationContextService.new.get_current_phase project
+    phase = ParticipationPermissionsService.new.get_current_phase project
     authorize input
 
     if invalid_blank_author_for_update? input, params
@@ -354,12 +354,12 @@ class WebApi::V1::IdeasController < ApplicationController
         end
       user_followers ||= {}
       {
-        params: jsonapi_serializer_params(vbii: reactions.index_by(&:reactable_id), user_followers: user_followers, pcs: ParticipationContextService.new),
+        params: jsonapi_serializer_params(vbii: reactions.index_by(&:reactable_id), user_followers: user_followers, pcs: ParticipationPermissionsService.new),
         include: include
       }
     else
       {
-        params: jsonapi_serializer_params(pcs: ParticipationContextService.new),
+        params: jsonapi_serializer_params(pcs: ParticipationPermissionsService.new),
         include: include
       }
     end

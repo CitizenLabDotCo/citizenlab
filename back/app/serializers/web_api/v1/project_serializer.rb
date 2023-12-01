@@ -32,7 +32,7 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
   end
 
   attribute :action_descriptor do |object, params|
-    @participation_context_service ||= ParticipationContextService.new
+    @participation_context_service ||= ParticipationPermissionsService.new
     user = current_user(params)
     posting_disabled_reason = @participation_context_service.posting_idea_disabled_reason_for_project object, user
     commenting_disabled_reason = @participation_context_service.commenting_idea_disabled_reason_for_project object, user
@@ -102,7 +102,7 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
     if params[:allocated_budgets]
       params.dig(:allocated_budgets, object.id)
     else
-      ParticipationContextService.new.allocated_budget object
+      ParticipationPermissionsService.new.allocated_budget object
     end
   end
 

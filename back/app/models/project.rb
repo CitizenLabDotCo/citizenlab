@@ -138,11 +138,6 @@ class Project < ApplicationRecord
     TimelineService.new.current_phase(self)
   end
 
-  # TODO: JS - is this needed - seems to be on the ParticipationContextService also
-  def allocated_budget
-    Idea.from(ideas.select('budget * baskets_count as allocated_budget')).sum(:allocated_budget)
-  end
-
   def set_default_topics!
     self.allowed_input_topics = Topic.defaults.order(:ordering).reverse
     save!
