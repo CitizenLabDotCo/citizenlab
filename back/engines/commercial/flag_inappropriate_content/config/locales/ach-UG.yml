@@ -10,6 +10,8 @@ ach:
       comment_author: 'crwdns1336686:0%{authorName}crwdne1336686:0'
       idea_author: 'crwdns1336688:0%{authorName}crwdne1336688:0'
       initiative_author: 'crwdns1336690:0%{authorName}crwdne1336690:0'
-      this_post_was_flagged: >
-        crwdns1336692:0crwdne1336692:0
+      automatically_flagged: >
+        crwdns1379032:0crwdne1379032:0
+      how_to_review: >
+        crwdns1379034:0crwdne1379034:0
       cta_review_post: 'crwdns1336694:0crwdne1336694:0'
