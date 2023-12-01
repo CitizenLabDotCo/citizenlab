@@ -51,7 +51,6 @@
 #  fk_rails_...  (project_id => projects.id)
 #
 class Phase < ApplicationRecord
-  include ParticipationContext
   include Polls::PollPhase
   include Surveys::SurveyPhase
   include Volunteering::VolunteeringPhase
@@ -70,6 +69,7 @@ class Phase < ApplicationRecord
 
   # TODO: JS - Should be in the engine as a patch
   has_one :report, class_name: 'ReportBuilder::Report', dependent: :destroy
+  has_one :custom_form, as: :participation_context, dependent: :destroy # native_survey only
 
   has_many :baskets, dependent: :destroy
   has_many :permissions, as: :permission_scope, dependent: :destroy
