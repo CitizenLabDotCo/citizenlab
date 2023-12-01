@@ -150,7 +150,6 @@ class WebApi::V1::UsersController < ApplicationController
   end
 
   def update
-    mark_custom_field_values_to_clear!
     user_params = permitted_attributes @user
     user_params[:custom_field_values] = @user.custom_field_values.merge(user_params[:custom_field_values] || {})
     user_params[:onboarding] = @user.onboarding.merge(user_params[:onboarding] || {})
@@ -283,19 +282,6 @@ class WebApi::V1::UsersController < ApplicationController
     return false unless @user.save
 
     true
-  end
-
-  def mark_custom_field_values_to_clear!
-    # We need to explicitly mark which custom field values
-    # should be cleared so we can distinguish those from
-    # the custom field value updates cleared out by the
-    # policy (which should stay like before instead of
-    # being cleared out).
-    return unless current_user&.custom_field_values && params[:user][:custom_field_values]
-
-    (current_user.custom_field_values.keys - (params[:user][:custom_field_values].keys || [])).each do |clear_key|
-      params[:user][:custom_field_values][clear_key] = nil
-    end
   end
 
   def view_private_attributes?

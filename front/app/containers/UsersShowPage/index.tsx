@@ -65,6 +65,7 @@ const StyledContentContainer = styled(ContentContainer)`
   padding-bottom: 100px;
   background: ${colors.background};
   align-items: center;
+  min-height: 100vh;
 
   ${media.phone`
     padding-top: 50px;
