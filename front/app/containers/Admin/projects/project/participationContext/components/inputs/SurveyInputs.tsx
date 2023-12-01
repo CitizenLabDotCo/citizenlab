@@ -12,7 +12,7 @@ import messages from '../../../messages';
 
 // typings
 import { ApiErrors } from '../..';
-import {TSurveyService} from "../../../../../../../api/phases/types";
+import {TSurveyService} from "api/phases/types";
 
 interface Props {
   survey_service: TSurveyService | null | undefined;

@@ -33,7 +33,7 @@ import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
 import useAuthUser from 'api/me/useAuthUser';
 import TippyContent from './TippyContent';
-import {getInputTerm} from "../../api/phases/utils";
+import {getInputTerm} from "api/phases/utils";
 
 const Container = styled.div``;
 

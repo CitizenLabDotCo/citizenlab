@@ -33,7 +33,7 @@ import { Multiloc } from 'typings';
 
 // hooks
 import { useLocation } from 'react-router-dom';
-import {VotingMethod} from "../../../../../../../../api/phases/types";
+import {VotingMethod} from "api/phases/types";
 
 export interface VotingInputsProps {
   voting_method: VotingMethod | null | undefined;

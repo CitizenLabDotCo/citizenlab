@@ -13,8 +13,8 @@ import messages from '../../../messages';
 // typings
 import { FormatMessage, IOption } from 'typings';
 import { MessageDescriptor } from 'react-intl';
-import {InputTerm} from "../../../../../../../api/phases/types";
-import {INPUT_TERMS} from "../../../../../../../api/phases/utils";
+import {InputTerm} from "api/phases/types";
+import {INPUT_TERMS} from "api/phases/utils";
 
 const LABEL_MESSAGES: {
   [key in InputTerm]: MessageDescriptor;

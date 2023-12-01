@@ -11,7 +11,7 @@ import messages from '../../../../messages';
 
 // typings
 import { ApiErrors } from '../../..';
-import {IdeaDefaultSortMethod} from "../../../../../../../../api/phases/types";
+import {IdeaDefaultSortMethod} from "api/phases/types";
 
 interface Props {
   options: { key: string; value: string }[];

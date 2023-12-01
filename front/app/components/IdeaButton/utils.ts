@@ -1,7 +1,7 @@
 import { Props } from '.';
 import { getInputTermMessage } from 'utils/i18n';
 import messages from './messages';
-import {InputTerm} from "../../api/phases/types";
+import {InputTerm} from "api/phases/types";
 
 export const getButtonMessage = (
   participationMethod: Props['participationMethod'],
