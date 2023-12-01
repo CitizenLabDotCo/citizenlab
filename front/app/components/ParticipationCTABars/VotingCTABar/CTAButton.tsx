@@ -174,7 +174,7 @@ const CTAButton = ({ participationContext, projectId }: Props) => {
       <VotesLeftModal
         showModal={showModal}
         setShowModal={setShowModal}
-        projectId={projectId}
+        project={project}
       />
     </>
   );

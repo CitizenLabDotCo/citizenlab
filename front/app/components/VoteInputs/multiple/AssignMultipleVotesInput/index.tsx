@@ -244,7 +244,7 @@ const AssignMultipleVotesInput = ({
         <Tippy
           disabled={!plusButtonDisabledExplanation}
           interactive={true}
-          placement="bottom"
+          placement="bottom-end"
           content={plusButtonDisabledExplanation}
         >
           <div style={{ display: 'flex', alignItems: 'center' }}>

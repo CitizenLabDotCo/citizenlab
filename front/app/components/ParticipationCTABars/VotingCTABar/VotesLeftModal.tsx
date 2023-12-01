@@ -14,7 +14,6 @@ import SubmitButton from 'components/VotesNotSubmittedModal/SubmitButton';
 
 // hooks
 import usePhases from 'api/phases/usePhases';
-import useProjectById from 'api/projects/useProjectById';
 
 // style
 import { useTheme } from 'styled-components';
@@ -29,22 +28,23 @@ import { getCurrentPhase } from 'api/phases/utils';
 import useVoting from 'api/baskets_ideas/useVoting';
 import { scrollToElement } from 'utils/scroll';
 import clHistory from 'utils/cl-router/history';
+import { IProject } from 'api/projects/types';
 
 type Props = {
   showModal?: boolean;
-  projectId?: string;
+  project?: IProject;
   setShowModal: (showModal: boolean) => void;
 };
 
-const VotesLeftModal = ({ projectId, showModal, setShowModal }: Props) => {
+const VotesLeftModal = ({ project, showModal, setShowModal }: Props) => {
   const theme = useTheme();
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const isPhoneOrSmaller = useBreakpoint('phone');
-  const { data: project } = useProjectById(projectId);
-  const { data: phases } = usePhases(projectId);
+  const { data: phases } = usePhases(project?.data.id);
   const currentPhase = getCurrentPhase(phases?.data);
   const votingInterface = useVoting();
+
   const votesCast = votingInterface.numberOfVotesCast;
   const votingMaxTotal = currentPhase?.attributes?.voting_max_total;
   const tokenNamePlural = localize(
@@ -53,8 +53,12 @@ const VotesLeftModal = ({ projectId, showModal, setShowModal }: Props) => {
   const tokenNameSingular = localize(
     currentPhase?.attributes.voting_term_singular_multiloc
   );
-  const votesLeft =
-    votingMaxTotal && votesCast ? votingMaxTotal - votesCast : votingMaxTotal;
+
+  if (!votingMaxTotal) {
+    return null;
+  }
+
+  const votesLeft = votesCast ? votingMaxTotal - votesCast : votingMaxTotal;
 
   return (
     <Modal
