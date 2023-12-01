@@ -3,7 +3,7 @@ import { MessageDescriptor } from 'utils/cl-intl';
 import messages from './messages';
 import { FormatMessage } from 'typings';
 import { IPCPermissionData, permittedBy } from 'api/phase_permissions/types';
-import { IParticipationContextPermissionAction } from 'api/permissions/types';
+import { IPhasePermissionAction } from 'api/permissions/types';
 import { IGroupData } from 'api/groups/types';
 
 export const getPartipationRequirementMessage = (
@@ -56,7 +56,7 @@ export const getParticipantMessage = (
 };
 
 export const getParticipationActionLabel = (
-  action: IParticipationContextPermissionAction
+  action: IPhasePermissionAction
 ) => {
   switch (action) {
     case 'posting_idea':
