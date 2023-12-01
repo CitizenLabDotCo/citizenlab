@@ -50,8 +50,7 @@ import { IProjectData } from 'api/projects/types';
 import { IIdeaImages } from 'api/idea_images/types';
 
 // utils
-import {getCurrentPhase} from 'api/phases/utils';
-import { getInputTerm } from 'utils/participationContexts';
+import {getCurrentPhase, getInputTerm} from 'api/phases/utils';
 import ProjectLink from 'containers/EventsShowPage/components/ProjectLink';
 
 const StyledRightColumnDesktop = styled(RightColumnDesktop)`

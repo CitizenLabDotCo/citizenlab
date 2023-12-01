@@ -23,8 +23,8 @@ import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // services
-import { getInputTerm } from 'utils/participationContexts';
 import useLocalize from 'hooks/useLocalize';
+import {getInputTerm} from "../../api/phases/utils";
 
 interface InputProps {}
 

@@ -6,7 +6,6 @@ import { stringify } from 'qs';
 
 // services
 import { getIdeaPostingRules } from 'utils/actionTakingRules';
-import { getInputTerm, ParticipationMethod } from 'utils/participationContexts';
 
 // components
 import Button, { Props as ButtonProps } from 'components/UI/Button';
@@ -28,12 +27,13 @@ import styled from 'styled-components';
 // typings
 import { LatLng } from 'leaflet';
 import { getButtonMessage } from './utils';
-import { IPhaseData } from 'api/phases/types';
+import {IPhaseData, ParticipationMethod} from 'api/phases/types';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
 import useAuthUser from 'api/me/useAuthUser';
 import TippyContent from './TippyContent';
+import {getInputTerm} from "../../api/phases/utils";
 
 const Container = styled.div``;
 

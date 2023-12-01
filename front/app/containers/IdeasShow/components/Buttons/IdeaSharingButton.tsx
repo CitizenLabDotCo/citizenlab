@@ -1,6 +1,5 @@
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { getInputTerm } from 'utils/participationContexts';
 
 // i18n
 import { useIntl } from 'utils/cl-intl';
@@ -14,6 +13,7 @@ import useAuthUser from 'api/me/useAuthUser';
 import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
 import SharingButtons from 'components/Sharing/SharingButtons';
+import {getInputTerm} from "../../../../api/phases/utils";
 
 interface Props {
   className?: string;

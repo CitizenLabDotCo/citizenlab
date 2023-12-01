@@ -17,7 +17,6 @@ import { colors } from 'utils/styleUtils';
 import { MessageDescriptor } from 'react-intl';
 
 // services
-import { ParticipationMethod } from 'utils/participationContexts';
 
 // components
 import { SectionTitle, PageTitle } from 'components/admin/Section';
@@ -38,6 +37,7 @@ import usePhases from 'api/phases/usePhases';
 import { useParams } from 'react-router-dom';
 import useProjectById from 'api/projects/useProjectById';
 import useIdeas from 'api/ideas/useIdeas';
+import {ParticipationMethod} from "../../../../../../api/phases/types";
 
 const Section = styled.div`
   margin-bottom: 20px;

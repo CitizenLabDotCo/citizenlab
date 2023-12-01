@@ -22,15 +22,14 @@ import Error from 'components/UI/Error';
 
 // services
 import { IProject } from 'api/projects/types';
-import { IPhase } from 'api/phases/types';
 import {
-  ParticipationMethod,
-  TSurveyService,
-  IdeaDefaultSortMethod,
-  getDefaultSortMethodFallback,
-  InputTerm,
-  VotingMethod,
-} from 'utils/participationContexts';
+    IdeaDefaultSortMethod,
+    InputTerm,
+    IPhase,
+    ParticipationMethod,
+    TSurveyService,
+    VotingMethod
+} from 'api/phases/types';
 import eventEmitter from 'utils/eventEmitter';
 
 // hooks
@@ -49,6 +48,7 @@ import { anyIsDefined } from 'utils/helperUtils';
 // typings
 import { CLErrors, Multiloc } from 'typings';
 import { IAppConfiguration } from 'api/app_configuration/types';
+import {getDefaultSortMethodFallback} from "../../../../../api/phases/utils";
 
 export interface IParticipationContextConfig {
   participation_method: ParticipationMethod;

@@ -1,13 +1,10 @@
 import 'cypress-file-upload';
 import './dnd';
-import {
-  ParticipationMethod,
-  VotingMethod,
-} from '../../app/utils/participationContexts';
 import { IUserUpdate } from '../../app/api/users/types';
 import { IUpdatedAppConfigurationProperties } from '../../app/api/app_configuration/types';
 
 import jwtDecode from 'jwt-decode';
+import {ParticipationMethod, VotingMethod} from "../../app/api/phases/types";
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {

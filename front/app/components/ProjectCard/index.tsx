@@ -16,7 +16,6 @@ import FollowUnfollow from 'components/FollowUnfollow';
 
 // services
 import { getProjectUrl } from 'api/projects/utils';
-import { getInputTerm } from 'utils/participationContexts';
 import { getIdeaPostingRules } from 'utils/actionTakingRules';
 
 // resources
@@ -53,6 +52,7 @@ import { rgba, darken } from 'polished';
 import { getInputTermMessage } from 'utils/i18n';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
+import {getInputTerm} from "../../api/phases/utils";
 
 const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
   width: calc(33% - 12px);

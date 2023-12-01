@@ -5,10 +5,9 @@ import { FormattedMessage } from '../../cl-intl';
 import messages from '../../messages';
 
 // services
-import { ParticipationMethod, getInputTerm } from 'utils/participationContexts';
-import { getCurrentPhase} from 'api/phases/utils';
+import {getCurrentPhase, getInputTerm} from 'api/phases/utils';
 import { IProjectData } from 'api/projects/types';
-import { IPhaseData } from 'api/phases/types';
+import {IPhaseData, ParticipationMethod} from 'api/phases/types';
 
 // components
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';

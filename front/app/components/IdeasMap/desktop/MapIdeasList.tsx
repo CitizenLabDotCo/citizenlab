@@ -21,7 +21,6 @@ import { useSearchParams } from 'react-router-dom';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 // services
-import { ideaDefaultSortMethodFallback } from 'utils/participationContexts';
 
 // i18n
 import messages from '../messages';
@@ -35,6 +34,7 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import { isFieldEnabled } from 'utils/projectUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
+import {ideaDefaultSortMethodFallback} from "../../../api/phases/utils";
 
 const Container = styled.div`
   width: 100%;

@@ -14,10 +14,9 @@ import ConfettiSvg from './ConfettiSvg';
 import Warning from 'components/UI/Warning';
 
 // api
-import { VotingMethod } from 'utils/participationContexts';
 import { useTheme } from 'styled-components';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { IPhaseData } from 'api/phases/types';
+import {IPhaseData, VotingMethod} from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 import useBasket from 'api/baskets/useBasket';
 import useUpdateBasket from 'api/baskets/useUpdateBasket';

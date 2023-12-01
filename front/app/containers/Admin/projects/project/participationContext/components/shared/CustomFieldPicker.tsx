@@ -9,11 +9,12 @@ import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from '../../../messages';
 
 // constants
-import { INPUT_TERMS, InputTerm } from 'utils/participationContexts';
 
 // typings
 import { FormatMessage, IOption } from 'typings';
 import { MessageDescriptor } from 'react-intl';
+import {InputTerm} from "../../../../../../../api/phases/types";
+import {INPUT_TERMS} from "../../../../../../../api/phases/utils";
 
 const LABEL_MESSAGES: {
   [key in InputTerm]: MessageDescriptor;
