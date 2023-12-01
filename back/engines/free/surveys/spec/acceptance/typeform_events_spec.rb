@@ -260,7 +260,7 @@ resource 'Typeform Events' do
       expect(response_status).to eq 200
       expect(Surveys::Response.count).to eq 1
       expect(Surveys::Response.first).to have_attributes({
-        participation_context: @phase
+        phase: @phase
       })
     end
   end

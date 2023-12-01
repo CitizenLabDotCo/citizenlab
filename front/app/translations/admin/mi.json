@@ -1102,7 +1102,6 @@
   "app.containers.admin.ideas.all.inputManagerMetaDescription": "Manage input and their statuses.",
   "app.containers.admin.ideas.all.inputManagerMetaTitle": "Input manager | Participation platform of {orgName}",
   "app.containers.admin.ideas.all.inputManagerPageSubtitle": "Give feedback, add tags and move input from one project to another",
-  "app.containers.admin.project.permissions.permissionsAdministrators": "Administrators",
   "app.containers.admin.project.permissions.permissionsSelectionLabel": "Selection",
   "app.containers.admin.project.permissions.permissionsUsersLabel": "Registered users",
   "app.containers.admin.project.permissions.viewingRightsTitle": "Who can see this project?",

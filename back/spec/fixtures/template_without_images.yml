@@ -1073,7 +1073,6 @@ models:
         het dan hier, verzamel steun en krijg het op de politieke agenda!
       nl-NL: Misschien past je idee niet bij een van de bestaande projecten? Plaats
         het dan hier, verzamel steun en krijg het op de politieke agenda!
-    process_type: continuous
     internal_role: open_idea_box
     publication_status: published
     ordering: 5
@@ -1103,7 +1102,6 @@ models:
     description_preview_multiloc:
       en: Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
-    process_type: timeline
     internal_role:
     publication_status: published
     ordering: 3
@@ -1133,7 +1131,6 @@ models:
     description_preview_multiloc:
       en: Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
-    process_type: timeline
     internal_role:
     publication_status: published
     ordering: 2
@@ -1163,7 +1160,6 @@ models:
     description_preview_multiloc:
       en: Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
-    process_type: continuous
     internal_role:
     publication_status: draft
     ordering: 1
@@ -1193,7 +1189,6 @@ models:
     description_preview_multiloc:
       en: Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
-    process_type: timeline
     internal_role:
     publication_status: published
     ordering: 4
@@ -1223,7 +1218,6 @@ models:
     description_preview_multiloc:
       en: Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
-    process_type: timeline
     internal_role:
     publication_status: archived
     ordering: 0

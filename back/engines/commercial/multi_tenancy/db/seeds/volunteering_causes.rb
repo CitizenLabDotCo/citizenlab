@@ -41,7 +41,7 @@ module MultiTenancy
 
         Volunteering::Cause.create!([
           {
-            participation_context: volunteering_phase,
+            phase: volunteering_phase,
             title_multiloc: { en: 'Video calls' },
             description_multiloc: {
               'en' => Faker::Lorem.paragraphs.map { |p| "<p>#{p}</p>" }.join,
@@ -50,7 +50,7 @@ module MultiTenancy
             image: rand(5) == 0 ? nil : Rails.root.join("spec/fixtures/image#{rand(20)}.png").open
           },
           {
-            participation_context: volunteering_phase,
+            phase: volunteering_phase,
             title_multiloc: { en: 'Doing groceries' },
             description_multiloc: {
               'en' => Faker::Lorem.paragraphs.map { |p| "<p>#{p}</p>" }.join,
@@ -59,7 +59,7 @@ module MultiTenancy
             image: rand(5) == 0 ? nil : Rails.root.join("spec/fixtures/image#{rand(20)}.png").open
           },
           {
-            participation_context: volunteering_phase,
+            phase: volunteering_phase,
             title_multiloc: { en: 'Going to the post office' },
             description_multiloc: { en: <<~DESC
               <p>Many people should stay inside. They are at home and cannot go to the post office to post a letter or to pick up a parcel. Can you help them?</p>
@@ -81,7 +81,7 @@ module MultiTenancy
             image: rand(5) == 0 ? nil : Rails.root.join("spec/fixtures/image#{rand(20)}.png").open
           },
           {
-            participation_context: volunteering_phase,
+            phase: volunteering_phase,
             title_multiloc: { en: 'Walking the dog' },
             description_multiloc: {
               'en' => Faker::Lorem.paragraphs.map { |p| "<p>#{p}</p>" }.join,
@@ -90,7 +90,7 @@ module MultiTenancy
             image: rand(5) == 0 ? nil : Rails.root.join("spec/fixtures/image#{rand(20)}.png").open
           },
           {
-            participation_context: volunteering_phase,
+            phase: volunteering_phase,
             title_multiloc: { en: 'Writing letters' },
             description_multiloc: {
               'en' => Faker::Lorem.paragraphs.map { |p| "<p>#{p}</p>" }.join,

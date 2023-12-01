@@ -1,11 +1,6 @@
-import {
-  Locale,
-  Multiloc,
-  GraphqlLocale,
-} from 'typings';
+import { Locale, Multiloc, GraphqlLocale } from 'typings';
 import { trim, isUndefined } from 'lodash-es';
 import { removeUrlLocale } from 'utils/locale';
-import { viewportWidths } from 'utils/styleUtils';
 
 type Nil = undefined | null;
 export type NilOrError = Nil | Error;
@@ -183,10 +178,6 @@ export const anyIsDefined = (...args) => args.some((arg) => !isUndefined(arg));
 
 export function removeFocusAfterMouseClick(event: React.MouseEvent) {
   event.preventDefault();
-}
-
-export function isDesktop(windowWidth: number) {
-  return windowWidth > viewportWidths.tablet;
 }
 
 export const keys = <T extends object>(obj: T) =>

@@ -51,7 +51,7 @@ RSpec.describe VotingMethod::MultipleVoting do
     it 'does not overwrite the votes' do
       project = create(:single_phase_multiple_voting_project)
       idea = create(:idea, budget: 3, project: project, phases: project.phases)
-      baskets_idea = create(:baskets_idea, basket: create(:basket, participation_context: project.phases.first), idea: idea, votes: 10)
+      baskets_idea = create(:baskets_idea, basket: create(:basket, phase: project.phases.first), idea: idea, votes: 10)
 
       voting_method.assign_baskets_idea(baskets_idea.reload)
       baskets_idea.save!

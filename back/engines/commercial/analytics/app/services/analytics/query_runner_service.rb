@@ -134,7 +134,7 @@ module Analytics
         substring = 'first_'
         first_aggregations = response_fields.select { |agg| agg[0, substring.length] == substring }
         first_aggregations.each do |first_agg|
-          response_row[first_agg] = response_row[first_agg][0]
+          response_row[first_agg] = response_row[first_agg][0] if response_row[first_agg]
         end
 
         response_row

@@ -1026,20 +1026,57 @@ resource 'Users' do
         end
 
         describe do
-          example "Update a user's custom field values" do
+          example "Set a user's custom field values" do
             cf = create(:custom_field)
             do_request(user: { custom_field_values: { cf.key => 'somevalue' } })
             json_response = json_parse(response_body)
             expect(json_response.dig(:data, :attributes, :custom_field_values, cf.key.to_sym)).to eq 'somevalue'
           end
 
-          example "Clear out a user's custom field value" do
+          example "Clear out a user's custom field value if set to nil" do
             cf = create(:custom_field)
+            cf2 = create(:custom_field)
             @user.update!(custom_field_values: { cf.key => 'somevalue' })
 
-            do_request(user: { custom_field_values: {} })
+            do_request(user: { custom_field_values: {
+              cf.key => nil,
+              cf2.key => 'another_value'
+            } })
+
             expect(response_status).to eq 200
-            expect(@user.reload.custom_field_values).to eq({})
+            expect(@user.reload.custom_field_values).to eq({
+              cf2.key => 'another_value'
+            })
+          end
+
+          example "Add to user's existing custom field values" do
+            cf = create(:custom_field)
+            cf2 = create(:custom_field)
+            @user.update!(custom_field_values: { cf.key => 'somevalue' })
+
+            do_request(user: { custom_field_values: { cf2.key => 'another_value' } })
+            expect(response_status).to eq 200
+            expect(@user.reload.custom_field_values).to eq({
+              cf.key => 'somevalue',
+              cf2.key => 'another_value'
+            })
+          end
+
+          example "Replace a user's existing custom field value" do
+            cf = create(:custom_field)
+            cf2 = create(:custom_field)
+            @user.update!(custom_field_values: { cf.key => 'somevalue' })
+
+            do_request(user: { custom_field_values: {
+              cf.key => 'new_value',
+              cf2.key => 'another_value'
+            } })
+
+            expect(response_status).to eq 200
+            expect(@user.reload.custom_field_values).to eq({
+              cf.key => 'new_value',
+              cf2.key => 'another_value'
+            })
           end
 
           example 'Cannot modify values of hidden custom fields' do

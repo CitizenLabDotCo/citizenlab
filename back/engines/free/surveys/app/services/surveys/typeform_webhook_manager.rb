@@ -2,6 +2,7 @@
 
 require 'uri'
 
+# TODO: JS - Can we change the names in the typeform webhooks?
 module Surveys
   class TypeformWebhookManager
     # @param [Typeform::Api] tf_api
@@ -52,19 +53,18 @@ module Surveys
     private
 
     # Creates or updates a Typeform webhook
-    def save_webhook(form_url, participation_context)
+    def save_webhook(form_url, phase)
       response = @tf_api.create_or_update_webhook(
         form_id: embed_url_to_form_id(form_url),
-        tag: participation_context.id,
-        url: webhook_url(participation_context),
+        tag: phase.id,
+        url: webhook_url(phase),
         secret: @secret
       )
       unless response.success?
         Rails.logger.error(
           'Failed to save typeform webhook',
           form_url: form_url,
-          participation_context_id: participation_context.id,
-          participation_context_class: participation_context.class.name,
+          phase_id: phase.id,
           response: response.parsed_response
         )
       end
