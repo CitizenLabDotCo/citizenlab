@@ -32,7 +32,6 @@ class WebApi::V1::ProjectsController < ApplicationController
 
     instance_options = {
       user_followers: user_followers,
-      allocated_budgets: ParticipationPermissionsService.new.allocated_budgets(@projects),
       timeline_active: TimelineService.new.timeline_active_on_collection(@projects),
       visible_children_count_by_parent_id: {} # projects don't have children
     }

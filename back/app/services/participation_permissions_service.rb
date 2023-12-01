@@ -261,15 +261,6 @@ class ParticipationPermissionsService < PermissionsService
     @timeline_service.future_phases(project, time).find { |phase| !voting_disabled_reason_for_phase(phase, user) }
   end
 
-  # Project allocated budgets
-  def allocated_budget(project)
-    Idea.from(project.ideas.select('budget * baskets_count as allocated_budget')).sum(:allocated_budget)
-  end
-
-  def allocated_budgets(projects)
-    Idea.from(Idea.where(project: projects).select('project_id, budget * baskets_count as allocated_budget')).group(:project_id).sum(:allocated_budget)
-  end
-
   private
 
   def idea_in_current_phase?(idea, current_phase = nil)

@@ -98,14 +98,6 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
     @participants_service.project_participants_count(object)
   end
 
-  attribute :allocated_budget do |object, params|
-    if params[:allocated_budgets]
-      params.dig(:allocated_budgets, object.id)
-    else
-      ParticipationPermissionsService.new.allocated_budget object
-    end
-  end
-
   attribute :timeline_active do |object, params|
     if params[:timeline_active]
       params.dig(:timeline_active, object.id)
