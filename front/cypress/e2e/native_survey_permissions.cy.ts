@@ -60,7 +60,7 @@ describe('Native survey permissions', () => {
                         phaseId = phase.body.data.id;
 
                         // Set permission to smart group
-                        cy.apiSetProjectPermission({
+                        cy.apiSetPhasePermission({
                           projectId,
                           phaseId,
                           action: 'posting_idea',

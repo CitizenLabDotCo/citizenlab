@@ -63,8 +63,8 @@ declare global {
       apiEnableProjectDescriptionBuilder: typeof apiEnableProjectDescriptionBuilder;
       apiCreateReportBuilder: typeof apiCreateReportBuilder;
       apiRemoveReportBuilder: typeof apiRemoveReportBuilder;
-      apiSetProjectPermission: typeof apiSetProjectPermission;
-      apiGetProjectPermission: typeof apiGetProjectPermission;
+      apiSetPhasePermission: typeof apiSetPhasePermission;
+      apiGetPhasePermission: typeof apiGetPhasePermission;
       intersectsViewport: typeof intersectsViewport;
       notIntersectsViewport: typeof notIntersectsViewport;
       apiUpdateHomepageSettings: typeof apiUpdateHomepageSettings;
@@ -923,9 +923,6 @@ export function apiEditProject({
             },
           }),
           ...(assigneeId && { default_assignee_id: assigneeId }),
-          ...(surveyUrl && { survey_embed_url: surveyUrl }),
-          ...(surveyService && { survey_service: surveyService }),
-          ...(votingMaxTotal && { voting_max_total: votingMaxTotal }),
         },
       },
     });
@@ -1377,7 +1374,7 @@ export function apiRemoveReportBuilder(reportId: string) {
   });
 }
 
-export type IParticipationContextPermissionAction =
+export type IPhasePermissionAction =
   | 'posting_idea'
   | 'reacting_idea'
   | 'commenting_idea'
@@ -1387,13 +1384,11 @@ export type IParticipationContextPermissionAction =
   | 'annotating_document';
 
 type ApiSetPermissionTypeProps = {
-  projectId: string;
-  phaseId?: string;
+  phaseId: string;
   permissionBody?: any;
-  action: IParticipationContextPermissionAction;
+  action: IPhasePermissionAction;
 };
-export function apiSetProjectPermission({
-  projectId,
+export function apiSetPhasePermission({
   phaseId,
   permissionBody,
   action,
@@ -1401,63 +1396,39 @@ export function apiSetProjectPermission({
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    if (phaseId) {
-      return cy.request({
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${adminJwt}`,
-        },
-        method: 'PATCH',
-        url: `web_api/v1/phases/${phaseId}/permissions/${action}`,
-        body: permissionBody,
-      });
-    } else {
-      return cy.request({
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${adminJwt}`,
-        },
-        method: 'PATCH',
-        url: `web_api/v1/projects/${projectId}/permissions/${action}`,
-        body: permissionBody,
-      });
-    }
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'PATCH',
+      url: `web_api/v1/phases/${phaseId}/permissions/${action}`,
+      body: permissionBody,
+    });
   });
 }
 
-export function apiGetProjectPermission({
-  projectId,
+export function apiGetPhasePermission({
   phaseId,
   action,
 }: ApiSetPermissionTypeProps) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    if (phaseId) {
-      return cy.request({
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${adminJwt}`,
-        },
-        method: 'GET',
-        url: `web_api/v1/phases/${phaseId}/permissions/${action}`,
-      });
-    } else {
-      return cy.request({
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${adminJwt}`,
-        },
-        method: 'GET',
-        url: `web_api/v1/projects/${projectId}/permissions/${action}`,
-      });
-    }
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'GET',
+      url: `web_api/v1/phases/${phaseId}/permissions/${action}`,
+    });
   });
 }
 
 export function apiSetPermissionCustomField(
   phaseId: string,
-  action: IParticipationContextPermissionAction,
+  action: IPhasePermissionAction,
   custom_field_id: string
 ) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
@@ -1681,8 +1652,8 @@ Cypress.Commands.add('apiGetUsersCount', apiGetUsersCount);
 Cypress.Commands.add('apiGetSeats', apiGetSeats);
 Cypress.Commands.add('apiGetAppConfiguration', apiGetAppConfiguration);
 Cypress.Commands.add('apiUpdateAppConfiguration', apiUpdateAppConfiguration);
-Cypress.Commands.add('apiGetProjectPermission', apiGetProjectPermission);
-Cypress.Commands.add('apiSetProjectPermission', apiSetProjectPermission);
+Cypress.Commands.add('apiGetPhasePermission', apiGetPhasePermission);
+Cypress.Commands.add('apiSetPhasePermission', apiSetPhasePermission);
 Cypress.Commands.add('logout', logout);
 Cypress.Commands.add('acceptCookies', acceptCookies);
 Cypress.Commands.add('getIdeaById', getIdeaById);
