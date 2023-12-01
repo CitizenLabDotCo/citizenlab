@@ -174,7 +174,17 @@ export const PhaseHeader = ({ phase, tabs }: Props) => {
                     <PermissionTooltipMessage permissions={permissions?.data} />
                   }
                 >
-                  <div>{`· ${participationRequirementsMessage}`}</div>
+                  <Box display="flex" alignItems="center">
+                    {' '}
+                    ·
+                    <Icon
+                      name="key"
+                      width="16px"
+                      mx="2px"
+                      fill={colors.coolGrey600}
+                    />
+                    {participationRequirementsMessage}
+                  </Box>
                 </Tippy>
               </Text>
             )}
