@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 // components
 import Modal from 'components/UI/Modal';
@@ -13,7 +13,6 @@ import {
 import SubmitButton from './SubmitButton';
 
 // hooks
-import useVoting from 'api/baskets_ideas/useVoting';
 import usePhases from 'api/phases/usePhases';
 import useProjectById from 'api/projects/useProjectById';
 
@@ -45,7 +44,6 @@ const VotesNotSubmittedModal = ({
   const { formatMessage } = useIntl();
   const theme = useTheme();
   const isPhoneOrSmaller = useBreakpoint('phone');
-  const votingInterface = useVoting();
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
   const currentPhase = getCurrentPhase(phases?.data);
@@ -54,19 +52,9 @@ const VotesNotSubmittedModal = ({
     showModal || false
   );
 
-  const votesCastRef = useRef(votingInterface?.numberOfVotesCast);
-
-  useEffect(() => {
-    votesCastRef.current = votingInterface?.numberOfVotesCast;
-  }, [votingInterface?.numberOfVotesCast]);
-
   useEffect(() => {
     function beforeUnloadHandler(event) {
-      if (
-        votesCastRef.current === undefined ||
-        votesCastRef.current === 0 ||
-        basket?.data.attributes.total_votes === 0
-      ) {
+      if (basket?.data.attributes.total_votes === 0) {
         return null; // Don't show the popup if there are no votes selected
       } else {
         // If the user cancels the browser popup, show a modal with more information
@@ -142,7 +130,7 @@ const VotesNotSubmittedModal = ({
             >
               <SubmitButton
                 participationContext={currentPhase}
-                setShowDataUnsubmittedModal={setShowDataUnsubmittedModal}
+                setShowModal={setShowDataUnsubmittedModal}
                 projectSlug={project?.data.attributes.slug}
               />
             </Box>

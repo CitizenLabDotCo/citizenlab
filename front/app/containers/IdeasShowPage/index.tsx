@@ -95,7 +95,6 @@ const IdeasShowPage = () => {
       <VotingContext projectId={project?.data.id}>
         <Box
           background={colors.white}
-          id="idea-page"
           mt={
             isSmallerThanTablet ||
             participationContext?.attributes.participation_method !== 'voting'
@@ -121,9 +120,9 @@ const IdeasShowPage = () => {
           top={
             isSmallerThanTablet
               ? undefined
-              : stylingConsts.menuHeight.toString()
+              : stylingConsts.menuHeight.toString() // Show CTA at top of screen on desktop
           }
-          bottom={isSmallerThanTablet ? '0px' : undefined}
+          bottom={isSmallerThanTablet ? '0px' : undefined} // Show CTA at bottom of screen on mobile
           width="100vw"
           zIndex="1000"
         >

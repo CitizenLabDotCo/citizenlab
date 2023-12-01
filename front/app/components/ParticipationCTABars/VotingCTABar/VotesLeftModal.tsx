@@ -28,6 +28,8 @@ import { getCurrentPhase } from 'api/phases/utils';
 import useVoting from 'api/baskets_ideas/useVoting';
 import { scrollToElement } from 'utils/scroll';
 import clHistory from 'utils/cl-router/history';
+
+// types
 import { IProject } from 'api/projects/types';
 
 type Props = {
@@ -43,9 +45,8 @@ const VotesLeftModal = ({ project, showModal, setShowModal }: Props) => {
   const isPhoneOrSmaller = useBreakpoint('phone');
   const { data: phases } = usePhases(project?.data.id);
   const currentPhase = getCurrentPhase(phases?.data);
-  const votingInterface = useVoting();
 
-  const votesCast = votingInterface.numberOfVotesCast;
+  const { numberOfVotesCast: votesCast } = useVoting();
   const votingMaxTotal = currentPhase?.attributes?.voting_max_total;
   const tokenNamePlural = localize(
     currentPhase?.attributes.voting_term_plural_multiloc
@@ -54,11 +55,11 @@ const VotesLeftModal = ({ project, showModal, setShowModal }: Props) => {
     currentPhase?.attributes.voting_term_singular_multiloc
   );
 
-  if (!votingMaxTotal) {
+  if (!votingMaxTotal || !votesCast) {
     return null;
   }
 
-  const votesLeft = votesCast ? votingMaxTotal - votesCast : votingMaxTotal;
+  const votesLeft = votingMaxTotal - votesCast;
 
   return (
     <Modal
@@ -88,9 +89,8 @@ const VotesLeftModal = ({ project, showModal, setShowModal }: Props) => {
         </Box>
         <Title m="0px" variant="h3">
           {formatMessage(messages.stillHaveVotesLeft, {
-            votesLeft: votesLeft?.toString() || '',
-            votesTerm:
-              votesLeft && votesLeft > 1 ? tokenNamePlural : tokenNameSingular,
+            votesLeft: votesLeft.toString(),
+            votesTerm: votesCast > 1 ? tokenNamePlural : tokenNameSingular,
           })}
         </Title>
         <Text>
@@ -106,7 +106,7 @@ const VotesLeftModal = ({ project, showModal, setShowModal }: Props) => {
             mx="auto"
             text={formatMessage(messages.seeOtherOptions)}
             onClick={() => {
-              // If on the project page, scroll down to the status module
+              // If on the project page, scroll down to the options
               if (location.pathname.includes('/projects/')) {
                 setTimeout(() => {
                   scrollToElement({
@@ -116,7 +116,7 @@ const VotesLeftModal = ({ project, showModal, setShowModal }: Props) => {
                   setShowModal(false);
                 }, 300);
               }
-              // If on the idea page, redirect to project page and scroll to status module
+              // If on the idea page, redirect to project page and scroll to options
               if (location.pathname.includes('/ideas/')) {
                 clHistory.push(
                   `/projects/${project?.data.attributes.slug}?scrollToIdeas=true`
@@ -132,7 +132,7 @@ const VotesLeftModal = ({ project, showModal, setShowModal }: Props) => {
             >
               <SubmitButton
                 participationContext={currentPhase}
-                setShowDataUnsubmittedModal={setShowModal}
+                setShowModal={setShowModal}
                 projectSlug={project?.data.attributes.slug}
               />
             </Box>

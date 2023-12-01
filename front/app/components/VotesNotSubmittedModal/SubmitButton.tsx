@@ -26,13 +26,13 @@ const confetti = new JSConfetti();
 
 interface Props {
   participationContext: IProjectData | IPhaseData;
-  setShowDataUnsubmittedModal: (show: boolean) => void;
+  setShowModal: (show: boolean) => void;
   projectSlug?: string;
 }
 
 const SubmitButton = ({
   participationContext,
-  setShowDataUnsubmittedModal,
+  setShowModal,
   projectSlug,
 }: Props) => {
   const [processing, setProcessing] = useState(false);
@@ -57,7 +57,7 @@ const SubmitButton = ({
           {
             onSuccess: () => {
               setProcessing(false);
-              setShowDataUnsubmittedModal(false);
+              setShowModal(false);
               // If on the project page, scroll down to the status module
               if (location.pathname.includes('/projects/')) {
                 setTimeout(() => {

@@ -56,7 +56,7 @@ export default defineMessages({
       'You can still distribute more {votesTerm} amongst different options, are you sure you want to submit?',
   },
   seeOtherOptions: {
-    id: 'app.components.ParticipationCTABars.VotingCTABar.seeOtherOptions',
-    defaultMessage: 'See other options',
+    id: 'app.components.ParticipationCTABars.VotingCTABar.seeOtherOptions2',
+    defaultMessage: 'See options',
   },
 });
