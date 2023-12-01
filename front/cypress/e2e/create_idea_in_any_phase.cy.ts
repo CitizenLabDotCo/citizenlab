@@ -54,7 +54,7 @@ describe('Idea creation', () => {
   it('allows the admin to add an idea to an old phase', () => {
     const newIdeaTitle = randomString(40);
 
-    cy.visit(`/admin/projects/${projectId}/ideas/${phaseId}`);
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/ideas`);
     cy.get('#e2e-new-idea').click();
 
     cy.get('#e2e-idea-new-page');

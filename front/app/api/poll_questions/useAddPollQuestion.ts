@@ -8,10 +8,7 @@ type AddPollQuestion = {
   title_multiloc: Multiloc;
 } & IPollQuestionParameters;
 
-const addPollQuestion = async ({
-  phaseId,
-  title_multiloc,
-}: AddPollQuestion) =>
+const addPollQuestion = async ({ phaseId, title_multiloc }: AddPollQuestion) =>
   fetcher<IPollQuestion>({
     path: `/poll_questions`,
     action: 'post',

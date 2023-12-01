@@ -1654,7 +1654,6 @@
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningBullet2": "Så snart du tilføjer en fase efter denne, vil den tilføje en slutdato til denne fase.",
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningTitle": "Ikke at vælge en slutdato for dette indebærer, at:",
   "app.containers.AdminPage.ProjectTimeline.saveErrorMessage": "Der opstod en fejl ved indsendelse af formularen, prøv venligst igen.",
-  "app.containers.AdminPage.ProjectTimeline.saveLabel": "Gem",
   "app.containers.AdminPage.ProjectTimeline.saveSuccessLabel": "Gemt!",
   "app.containers.AdminPage.ProjectTimeline.saveSuccessMessage": "Dine ændringer er blevet gemt.",
   "app.containers.AdminPage.ProjectTimeline.startDate": "Startdato",

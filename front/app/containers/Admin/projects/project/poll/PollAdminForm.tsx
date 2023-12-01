@@ -37,10 +37,7 @@ interface Props {
   pollQuestions: IPollQuestionData[] | null | undefined;
 }
 
-const PollAdminForm = ({
-  phaseId,
-  pollQuestions,
-}: Props) => {
+const PollAdminForm = ({ phaseId, pollQuestions }: Props) => {
   const { mutate: addPollQuestion } = useAddPollQuestion();
   const { mutate: deletePollQuestion } = useDeletePollQuestion();
   const { mutate: updatePollQuestion } = useUpdatePollQuestion();
@@ -104,10 +101,7 @@ const PollAdminForm = ({
   };
 
   const saveNewQuestion = () => {
-    if (
-      phaseId &&
-      newQuestionTitle
-    ) {
+    if (phaseId && newQuestionTitle) {
       addPollQuestion(
         {
           phaseId,

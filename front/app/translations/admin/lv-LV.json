@@ -1654,7 +1654,6 @@
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningBullet2": "Tiklīdz pievienosiet posmu pēc šī posma, tam tiks pievienots beigu datums.",
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningTitle": "Ja nav izvēlēts beigu datums, tas nozīmē, ka:",
   "app.containers.AdminPage.ProjectTimeline.saveErrorMessage": "Veidlapas iesniegšanas brīdī radās kļūda, lūdzu, mēģiniet vēlreiz.",
-  "app.containers.AdminPage.ProjectTimeline.saveLabel": "Saglabāt",
   "app.containers.AdminPage.ProjectTimeline.saveSuccessLabel": "Saglabāts!",
   "app.containers.AdminPage.ProjectTimeline.saveSuccessMessage": "Jūsu veiktās izmaiņas ir saglabātas.",
   "app.containers.AdminPage.ProjectTimeline.startDate": "Sākuma datums",

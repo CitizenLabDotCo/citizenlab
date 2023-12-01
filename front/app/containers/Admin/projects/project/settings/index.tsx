@@ -68,6 +68,10 @@ const Settings = () => {
 
   if (!project || !phases) return null;
 
+  const goBack = () => {
+    clHistory.push(`/admin/projects/${projectId}`);
+  };
+
   return (
     <>
       <Box display="flex" flexDirection="column">
@@ -81,7 +85,7 @@ const Settings = () => {
             pr="24px"
           >
             <Box display="flex">
-              <GoBackButton onClick={clHistory.goBack} showGoBackText={false} />
+              <GoBackButton onClick={goBack} showGoBackText={false} />
               <Title color="primary" variant="h4" my="0px" ml="8px">
                 {formatMessage(messages.back)}
               </Title>

@@ -11,7 +11,7 @@ import useBasketsIdeas from './useBasketsIdeas';
 import useVoteForIdea from './useVoteForIdea';
 
 // utils
-import {getCurrentPhase} from 'api/phases/utils';
+import { getCurrentPhase } from 'api/phases/utils';
 import { isNil } from 'utils/helperUtils';
 
 interface Props {
@@ -43,7 +43,7 @@ const useVotingInterface = (projectId?: string) => {
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
 
-  const phase = getCurrentPhase(phases?.data)
+  const phase = getCurrentPhase(phases?.data);
 
   const [votesPerIdea, setVotesPerIdea] = useState<Record<string, number>>({});
 
@@ -80,8 +80,7 @@ const useVotingInterface = (projectId?: string) => {
     (ideaId: string) => {
       if (ideaId in votesPerIdea) return votesPerIdea[ideaId];
 
-      const loading =
-        !phase || !!(basketId && !remoteVotesPerIdea);
+      const loading = !phase || !!(basketId && !remoteVotesPerIdea);
 
       if (loading) return null;
 
@@ -104,8 +103,7 @@ const useVotingInterface = (projectId?: string) => {
     [voteForIdea, basketId]
   );
 
-  const numberOfVotesUserHas =
-    phase?.attributes.voting_max_total;
+  const numberOfVotesUserHas = phase?.attributes.voting_max_total;
 
   const numberOfVotesCast = useMemo(() => {
     if (remoteVotesPerIdea === undefined) return undefined;

@@ -79,12 +79,7 @@ const disabledMessages: {
   notInGroup: globalMessages.notInGroup,
 };
 
-const TippyContent = ({
-  projectId,
-  inMap,
-  disabledReason,
-  phase,
-}: Props) => {
+const TippyContent = ({ projectId, inMap, disabledReason, phase }: Props) => {
   const { formatMessage } = useIntl();
   const { data: project } = useProjectById(projectId);
   if (!project) return null;

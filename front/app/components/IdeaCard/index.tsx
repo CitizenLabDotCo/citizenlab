@@ -183,10 +183,7 @@ const IdeaCard = ({
           {!hideBody && <Body idea={idea} />}
         </Box>
         <Box>
-          <Interactions
-            idea={idea}
-            phase={phaseData || null}
-          />
+          <Interactions idea={idea} phase={phaseData || null} />
           <Footer
             project={project}
             idea={idea.data}

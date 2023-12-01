@@ -1,5 +1,4 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 import { useParams } from 'react-router-dom';
 
 // i18n
@@ -15,6 +14,7 @@ import { Title, Text, StatusLabel } from '@citizenlab/cl2-component-library';
 // hooks
 import useProjectById from 'api/projects/useProjectById';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import usePhase from 'api/phases/usePhase';
 
 // style
 import styled from 'styled-components';
@@ -35,7 +35,12 @@ export const StyledSectionTitle = styled(SectionTitle)`
 `;
 
 const ProjectPermissions = () => {
-  const { projectId } = useParams() as { projectId: string };
+  const { projectId, phaseId } = useParams() as {
+    projectId: string;
+    phaseId?: string;
+  };
+
+  const { data: phase } = usePhase(phaseId || null);
   const { data: project } = useProjectById(projectId);
   const { formatMessage } = useIntl();
 
@@ -47,7 +52,40 @@ const ProjectPermissions = () => {
     name: 'project_management',
   });
 
-  if (!isNilOrError(project)) {
+  if (phase && project) {
+    return (
+      <Outlet
+        id="app.containers.Admin.project.phase.permissions.participationRights"
+        phase={phase.data}
+        project={project.data}
+      >
+        {(outletComponents) =>
+          outletComponents.length > 0 || isProjectVisibilityEnabled ? (
+            <StyledSection>
+              <Title variant="h2" color="primary">
+                <FormattedMessage
+                  {...messages.participationRequirementsTitle}
+                />
+                <BetaLabel
+                  text={formatMessage(messages.betaLabel)}
+                  backgroundColor={colors.background}
+                  variant="outlined"
+                />
+              </Title>
+              <Text color="coolGrey600" pb="8px">
+                <FormattedMessage
+                  {...messages.participationRequirementsSubtitle}
+                />
+              </Text>
+              {outletComponents}
+            </StyledSection>
+          ) : null
+        }
+      </Outlet>
+    );
+  }
+
+  if (project) {
     return (
       <>
         {isProjectVisibilityEnabled && (

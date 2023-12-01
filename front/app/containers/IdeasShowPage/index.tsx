@@ -23,7 +23,7 @@ import { media, colors } from 'utils/styleUtils';
 // utils
 import { isUnauthorizedRQ } from 'utils/errorUtils';
 import usePhases from 'api/phases/usePhases';
-import { getCurrentPhase} from 'api/phases/utils';
+import { getCurrentPhase } from 'api/phases/utils';
 
 const StyledIdeaShowPageTopBar = styled(IdeaShowPageTopBar)`
   position: fixed;

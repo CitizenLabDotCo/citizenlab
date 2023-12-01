@@ -1654,7 +1654,6 @@
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningBullet2": "Så snart du legger til en fase etter denne, vil den legge til en sluttdato for denne fasen.",
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningTitle": "Å ikke velge en sluttdato for dette innebærer at:",
   "app.containers.AdminPage.ProjectTimeline.saveErrorMessage": "Det oppsto en feil ved innsending av skjemaet, vennligst prøv igjen.",
-  "app.containers.AdminPage.ProjectTimeline.saveLabel": "Lagre",
   "app.containers.AdminPage.ProjectTimeline.saveSuccessLabel": "Lagret!",
   "app.containers.AdminPage.ProjectTimeline.saveSuccessMessage": "Endringene dine har blitt lagret.",
   "app.containers.AdminPage.ProjectTimeline.startDate": "Startdato",

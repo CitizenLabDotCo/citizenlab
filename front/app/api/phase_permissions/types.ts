@@ -19,6 +19,12 @@ export interface IPCPermissions {
 export interface IPCPermission {
   data: IPCPermissionData;
 }
+export type permittedBy =
+  | 'everyone'
+  | 'users'
+  | 'groups'
+  | 'admins_moderators'
+  | 'everyone_confirmed_email';
 
 export interface IPermissionUpdate {
   group_ids: string[];
@@ -30,12 +36,7 @@ export interface IPCPermissionData {
   type: string;
   attributes: {
     action: IPhasePermissionAction;
-    permitted_by:
-      | 'everyone'
-      | 'users'
-      | 'groups'
-      | 'admins_moderators'
-      | 'everyone_confirmed_email';
+    permitted_by: permittedBy;
     created_at: string;
     updated_at: string;
     global_custom_fields: boolean;

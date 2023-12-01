@@ -112,7 +112,7 @@ const budgetingConfig: VotingMethodConfig = {
     const currency =
       appConfig?.data.attributes.settings.core.currency.toString();
 
-    if(!phase) return null
+    if (!phase) return null;
 
     if (submissionState === 'hasNotSubmitted') {
       const minBudget = phase.attributes.voting_min_total;
@@ -126,8 +126,7 @@ const budgetingConfig: VotingMethodConfig = {
               ),
               currency,
               optionCount: phase.attributes.ideas_count,
-              maxBudget:
-                phase.attributes.voting_max_total?.toLocaleString(),
+              maxBudget: phase.attributes.voting_max_total?.toLocaleString(),
             }}
             {...messages.budgetingSubmissionInstructionsTotalBudget}
           />
@@ -234,12 +233,7 @@ const budgetingConfig: VotingMethodConfig = {
   ),
   getIdeaPageVoteInput: ({ ideaId, phase, compact }) => {
     if (!compact) {
-      return (
-        <AddToBasketBox
-          ideaId={ideaId}
-          phase={phase}
-        />
-      );
+      return <AddToBasketBox ideaId={ideaId} phase={phase} />;
     } else {
       return (
         <AddToBasketButton
@@ -296,8 +290,7 @@ const multipleVotingConfig: VotingMethodConfig = {
               ),
               voteTerm,
               optionCount: phase.attributes.ideas_count,
-              totalVotes:
-                phase.attributes.voting_max_total?.toLocaleString(),
+              totalVotes: phase.attributes.voting_max_total?.toLocaleString(),
             }}
             {...messages.cumulativeVotingInstructionsTotalVotes}
           />
@@ -311,8 +304,7 @@ const multipleVotingConfig: VotingMethodConfig = {
               <FormattedMessage
                 {...messages.cumulativeVotingInstructionsMaxVotesPerIdea}
                 values={{
-                  maxVotes:
-                    phase.attributes.voting_max_votes_per_idea,
+                  maxVotes: phase.attributes.voting_max_votes_per_idea,
                 }}
               />
             </li>
@@ -398,19 +390,11 @@ const multipleVotingConfig: VotingMethodConfig = {
     return messages.votingPreSubmissionWarning;
   },
   getIdeaCardVoteInput: ({ ideaId, phase }) => (
-    <AssignMultipleVotesInput
-      ideaId={ideaId}
-      phase={phase}
-    />
+    <AssignMultipleVotesInput ideaId={ideaId} phase={phase} />
   ),
   getIdeaPageVoteInput: ({ ideaId, phase, compact }) => {
     if (!compact) {
-      return (
-        <AssignMultipleVotesBox
-          ideaId={ideaId}
-          phase={phase}
-        />
-      );
+      return <AssignMultipleVotesBox ideaId={ideaId} phase={phase} />;
     }
     return (
       <AssignMultipleVotesInput
@@ -596,12 +580,7 @@ const singleVotingConfig: VotingMethodConfig = {
   ),
   getIdeaPageVoteInput: ({ ideaId, phase, compact }) => {
     if (!compact) {
-      return (
-        <AssignSingleVoteBox
-          ideaId={ideaId}
-          phase={phase}
-        />
-      );
+      return <AssignSingleVoteBox ideaId={ideaId} phase={phase} />;
     }
 
     return (

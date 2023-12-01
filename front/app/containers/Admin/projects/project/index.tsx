@@ -23,6 +23,7 @@ import { IProjectData } from 'api/projects/types';
 import { insertConfiguration } from 'utils/moduleUtils';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import Timeline from 'containers/ProjectsShowPage/timeline/Timeline';
+import { defaultAdminCardPadding } from 'utils/styleUtils';
 
 // hooks
 import { IPhaseData } from 'api/phases/types';
@@ -118,7 +119,7 @@ export const AdminProjectsProjectIndex = ({
       url:
         tab.url === ''
           ? `${baseTabsUrl}`
-          : `${baseTabsUrl}/${tab.url}/${selectedPhase.id}`,
+          : `${baseTabsUrl}/phases/${selectedPhase.id}/${tab.url}`,
     }));
   };
 
@@ -156,7 +157,7 @@ export const AdminProjectsProjectIndex = ({
           <PhaseHeader phase={selectedPhase} tabs={getTabs(project.id)} />
         )}
 
-        <Box p="40px" background={colors.white}>
+        <Box p={`${defaultAdminCardPadding}px`} background={colors.white}>
           <RouterOutlet />
         </Box>
       </Box>
@@ -199,10 +200,10 @@ export default () => {
 
     if (phases.data.length === 0 && !isLoadingPhases && !isFetchingPhases) {
       clHistory.replace(`/admin/projects/${projectId}/phases/new`);
-    } else if (phaseShown && pathname.endsWith('/setup')) {
+    } else if (phaseShown && pathname.endsWith('phases/setup')) {
       const redirectTab = getTimelineTab(phaseShown);
       clHistory.replace(
-        `/admin/projects/${projectId}/${redirectTab}/${phaseShown.id}`
+        `/admin/projects/${projectId}/phases/${phaseShown.id}/${redirectTab}`
       );
     }
 

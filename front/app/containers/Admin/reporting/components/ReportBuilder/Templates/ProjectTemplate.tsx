@@ -43,9 +43,7 @@ const ProjectTemplate = ({ reportId, projectId }: Props) => {
 
   if (!project || !phases) return null;
 
-  const { participationMethod, phaseId } = getTemplateData(
-    phases.data
-  );
+  const { participationMethod, phaseId } = getTemplateData(phases.data);
 
   const hasPhases = phases.data.length > 0;
 

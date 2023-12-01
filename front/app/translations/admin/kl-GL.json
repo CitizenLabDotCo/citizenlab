@@ -1214,7 +1214,6 @@
   "app.containers.AdminPage.ProjectTimeline.endDatePlaceholder": "End Date",
   "app.containers.AdminPage.ProjectTimeline.fileUploadLabel": "Kakkiussinerit (annerpaamik 50MB)",
   "app.containers.AdminPage.ProjectTimeline.saveErrorMessage": "Immersukkap nassiunnerani kukkuneqarpoq, misileeqqilaarit.",
-  "app.containers.AdminPage.ProjectTimeline.saveLabel": "Toqqoruk",
   "app.containers.AdminPage.ProjectTimeline.saveSuccessLabel": "Saved!",
   "app.containers.AdminPage.ProjectTimeline.saveSuccessMessage": "Your changes have been saved.",
   "app.containers.AdminPage.ProjectTimeline.startDatePlaceholder": "Ulloq aallartiffik",

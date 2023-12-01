@@ -1654,7 +1654,6 @@
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningBullet2": "As soon as you add a phase after this one, it will add an end date to this phase.",
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningTitle": "Not selecting an end date for this implies that:",
   "app.containers.AdminPage.ProjectTimeline.saveErrorMessage": "Došlo je do greške prilikom slanja forme, molimo vas pokušajte ponovo.",
-  "app.containers.AdminPage.ProjectTimeline.saveLabel": "Sačuvajte",
   "app.containers.AdminPage.ProjectTimeline.saveSuccessLabel": "Sačuvano!",
   "app.containers.AdminPage.ProjectTimeline.saveSuccessMessage": "Vaše izmene su uspešno sačuvane.",
   "app.containers.AdminPage.ProjectTimeline.startDate": "Start date",

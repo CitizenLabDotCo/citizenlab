@@ -1,103 +1,37 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 // i18n
-import T from 'components/T';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-// styling
-import styled from 'styled-components';
-import {
-  Accordion,
-  Box,
-  colors,
-  Title,
-} from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import usePhases from 'api/phases/usePhases';
-import { PhaseActionForm } from '../../components/PhaseActionForm';
-import useUpdatePhasePermission from 'api/phase_permissions/useUpdatePhasePermission';
-import { HandlePermissionChangeProps } from './utils';
+import useProjectById from 'api/projects/useProjectById';
+import PhasePermissions from './PhasePermissions';
 
-const Container = styled.div`
-  margin-bottom: 20px;
-`;
-
-interface InputProps {
+interface Props {
   projectId: string;
 }
 
-const Timeline = ({ projectId }: InputProps) => {
-  const [openedPhaseId, setOpenedPhaseId] = useState<string | null>(null);
-  const { mutate: updatePhasePermission } =
-    useUpdatePhasePermission(openedPhaseId);
+const Timeline = ({ projectId }: Props) => {
   const { data: phases } = usePhases(projectId);
+  const { data: project } = useProjectById(projectId);
 
-  const handlePermissionChange = ({
-    phaseId,
-    permission,
-    permittedBy,
-    groupIds,
-    globalCustomFields,
-  }: HandlePermissionChangeProps) => {
-    if (phaseId) {
-      updatePhasePermission({
-        permissionId: permission.id,
-        phaseId,
-        action: permission.attributes.action,
-        permission: {
-          permitted_by: permittedBy,
-          group_ids: groupIds,
-          global_custom_fields: globalCustomFields,
-        },
-      });
-    }
-  };
-
-  if (!phases) {
+  if (!phases || !project) {
     return null;
   }
 
   return (
-    <Container>
+    <Box mb="20px">
       {phases.data &&
         phases.data.length > 0 &&
         phases.data.map((phase, i) => (
-          <Accordion
-            timeoutMilliseconds={1000}
-            transitionHeightPx={1700}
-            isOpenByDefault={false}
-            title={
-              <Title
-                id="e2e-granular-permissions-phase-accordion"
-                variant="h3"
-                color="primary"
-                my="20px"
-                style={{ fontWeight: 500 }}
-              >
-                <FormattedMessage {...messages.phase} />
-                {` ${i + 1}: `}
-                <T value={phase.attributes.title_multiloc} />
-              </Title>
-            }
+          <PhasePermissions
+            project={project.data}
+            phase={phase}
             key={phase.id}
-            onChange={() => {
-              setOpenedPhaseId(openedPhaseId === phase.id ? null : phase.id);
-            }}
-          >
-            <Box
-              display="flex"
-              flex={'1'}
-              flexDirection="column"
-              background={colors.white}
-              minHeight="100px"
-            >
-              <PhaseActionForm
-                phase={phase}
-                onChange={handlePermissionChange}
-                projectId={projectId}
-              />
-            </Box>
-          </Accordion>
+            phaseNumber={i + 1}
+          />
         ))}
       {!phases.data ||
         (phases.data.length < 1 && (
@@ -105,9 +39,8 @@ const Timeline = ({ projectId }: InputProps) => {
             <FormattedMessage {...messages.noActionsCanBeTakenInThisProject} />
           </p>
         ))}
-    </Container>
+    </Box>
   );
-  return null;
 };
 
-export default (inputProps: InputProps) => <Timeline {...inputProps} />;
+export default Timeline;

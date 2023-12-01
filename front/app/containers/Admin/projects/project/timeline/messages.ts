@@ -21,9 +21,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectTimeline.datesLabel',
     defaultMessage: 'Dates',
   },
-  saveLabel: {
-    id: 'app.containers.AdminPage.ProjectTimeline.saveLabel',
-    defaultMessage: 'Save',
+  saveChangesLabel: {
+    id: 'app.containers.AdminPage.ProjectTimeline.saveChangesLabel',
+    defaultMessage: 'Save changes',
   },
   saveSuccessLabel: {
     id: 'app.containers.AdminPage.ProjectTimeline.saveSuccessLabel',

@@ -171,7 +171,8 @@ const AdminIdeaContent = ({ handleClickEdit, closePreview, ideaId }: Props) => {
   if (!idea || !project) return null;
 
   const handleClickDelete = () => () => {
-    const deleteConfirmationMessage = messages.deleteInputInTimelineConfirmation;
+    const deleteConfirmationMessage =
+      messages.deleteInputInTimelineConfirmation;
 
     if (window.confirm(formatMessage(deleteConfirmationMessage))) {
       deleteIdea(idea.data.id, { onSuccess: closePreview });
@@ -192,7 +193,8 @@ const AdminIdeaContent = ({ handleClickEdit, closePreview, ideaId }: Props) => {
   // AuthorId can be null if user has been deleted
   const authorId = idea.data.relationships.author?.data?.id || null;
   const proposedBudget = idea.data.attributes.proposed_budget;
-  const allowAnonymousParticipation = currentPhase?.attributes.allow_anonymous_participation;
+  const allowAnonymousParticipation =
+    currentPhase?.attributes.allow_anonymous_participation;
 
   return (
     <Container>

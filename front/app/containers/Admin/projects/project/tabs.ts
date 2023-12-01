@@ -20,7 +20,7 @@ export const getIntialTabs = (formatMessage: FormatMessage): ITab[] => {
     },
     {
       label: formatMessage(messages.pollTab),
-      url: 'poll',
+      url: 'polls',
       feature: 'polls',
       name: 'poll',
     },
@@ -40,6 +40,11 @@ export const getIntialTabs = (formatMessage: FormatMessage): ITab[] => {
       url: 'volunteering',
       feature: 'volunteering',
       name: 'volunteering',
+    },
+    {
+      label: formatMessage(messages.phaseAccessRights),
+      url: 'access-rights',
+      name: 'access-rights',
     },
   ];
 };

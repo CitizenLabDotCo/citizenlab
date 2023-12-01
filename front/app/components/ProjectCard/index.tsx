@@ -458,9 +458,9 @@ const ProjectCard = memo<InputProps>(
     };
 
     if (project) {
-      const methodConfig = phase ? getMethodConfig(
-        phase.data.attributes.participation_method
-      ) : null;
+      const methodConfig = phase
+        ? getMethodConfig(phase.data.attributes.participation_method)
+        : null;
       const postingPermission = getIdeaPostingRules({
         project: project?.data,
         phase: phase?.data,
@@ -489,7 +489,8 @@ const ProjectCard = memo<InputProps>(
         project.data.relationships.avatars &&
         project.data.relationships.avatars.data &&
         project.data.relationships.avatars.data.length > 0;
-      const showIdeasCount = (!methodConfig || methodConfig.showInputCount) && ideasCount > 0;
+      const showIdeasCount =
+        (!methodConfig || methodConfig.showInputCount) && ideasCount > 0;
       const showCommentsCount = commentsCount > 0;
       const showFooter = hasAvatars || showIdeasCount || showCommentsCount;
       const avatarIds =

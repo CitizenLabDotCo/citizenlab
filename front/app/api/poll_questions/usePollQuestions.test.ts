@@ -8,8 +8,7 @@ import { rest } from 'msw';
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { pollQuestionsData } from './__mocks__/usePollQuestions';
 
-const apiPath =
-  '*/phases/:phaseId/poll_questions';
+const apiPath = '*/phases/:phaseId/poll_questions';
 
 const server = setupServer(
   rest.get(apiPath, (_req, res, ctx) => {

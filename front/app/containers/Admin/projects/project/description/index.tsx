@@ -6,6 +6,7 @@ import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 // Hooks
 import useProjectById from 'api/projects/useProjectById';
 import useUpdateProject from 'api/projects/useUpdateProject';
+import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 
 // Components
 import {
@@ -18,7 +19,7 @@ import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWi
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
-import { Success } from '@citizenlab/cl2-component-library';
+import { Success, Box } from '@citizenlab/cl2-component-library';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -26,17 +27,11 @@ import messages from './messages';
 import { WrappedComponentProps } from 'react-intl';
 
 // Styling
-import styled from 'styled-components';
+import { defaultAdminCardPadding, colors } from 'utils/styleUtils';
 
 // Typing
 import { Multiloc, Locale } from 'typings';
 import Outlet from 'components/Outlet';
-
-const Container = styled.div``;
-
-const ButtonContainer = styled.div`
-  display: flex;
-`;
 
 interface Props {
   className?: string;
@@ -57,6 +52,7 @@ const ProjectDescription = memo<
   const { mutate: updateProject, isLoading, error } = useUpdateProject();
   const [moduleActive, setModuleActive] = useState(false);
   const [touched, setTouched] = useState(false);
+  const { width, containerRef } = useContainerWidthAndHeight();
 
   const [success, setSuccess] = useState(false);
   const [formValues, setFormValues] = useState<IFormValues>({
@@ -130,7 +126,7 @@ const ProjectDescription = memo<
 
   if (!isNilOrError(project)) {
     return (
-      <Container>
+      <Box ref={containerRef}>
         <SectionTitle>
           <FormattedMessage {...messages.titleDescription} />
         </SectionTitle>
@@ -157,63 +153,76 @@ const ProjectDescription = memo<
             />
           </SectionField>
 
-          <SectionField>
-            {!moduleActive && (
-              <QuillMultilocWithLocaleSwitcher
-                id="project-description"
+          <Box mb="40px">
+            <SectionField>
+              {!moduleActive && (
+                <QuillMultilocWithLocaleSwitcher
+                  id="project-description"
+                  valueMultiloc={formValues.description_multiloc}
+                  onChange={handleDescriptionOnChange}
+                  label={formatMessage(messages.descriptionLabel)}
+                  labelTooltipText={formatMessage(messages.descriptionTooltip)}
+                  withCTAButton
+                />
+              )}
+              <Outlet
+                id="app.containers.Admin.projects.edit.description.projectDescriptionBuilder"
+                onMount={setModuleToActive}
                 valueMultiloc={formValues.description_multiloc}
                 onChange={handleDescriptionOnChange}
                 label={formatMessage(messages.descriptionLabel)}
                 labelTooltipText={formatMessage(messages.descriptionTooltip)}
-                withCTAButton
               />
-            )}
-            <Outlet
-              id="app.containers.Admin.projects.edit.description.projectDescriptionBuilder"
-              onMount={setModuleToActive}
-              valueMultiloc={formValues.description_multiloc}
-              onChange={handleDescriptionOnChange}
-              label={formatMessage(messages.descriptionLabel)}
-              labelTooltipText={formatMessage(messages.descriptionTooltip)}
-            />
-            <Error
-              fieldName="description_multiloc"
-              apiErrors={apiError?.description_multiloc}
-            />
-          </SectionField>
+              <Error
+                fieldName="description_multiloc"
+                apiErrors={apiError?.description_multiloc}
+              />
+            </SectionField>
+          </Box>
         </Section>
 
-        <ButtonContainer>
-          <Button
-            buttonStyle="admin-dark"
-            onClick={handleOnSubmit}
-            processing={isLoading}
-            disabled={!touched}
-          >
-            {success ? (
-              <FormattedMessage {...messages.saved} />
-            ) : (
-              <FormattedMessage {...messages.save} />
+        <Box
+          position="fixed"
+          borderTop={`1px solid ${colors.divider}`}
+          bottom="0"
+          w={`calc(${width}px + ${defaultAdminCardPadding * 2}px)`}
+          ml={`-${defaultAdminCardPadding}px`}
+          background={colors.white}
+          display="flex"
+          justifyContent="flex-start"
+        >
+          <Box py="8px" px={`${defaultAdminCardPadding}px`} display="flex">
+            <Button
+              buttonStyle="admin-dark"
+              onClick={handleOnSubmit}
+              processing={isLoading}
+              disabled={!touched}
+            >
+              {success ? (
+                <FormattedMessage {...messages.saved} />
+              ) : (
+                <FormattedMessage {...messages.save} />
+              )}
+            </Button>
+
+            {success && (
+              <Success
+                text={formatMessage(messages.saveSuccessMessage)}
+                showBackground={false}
+                showIcon={false}
+              />
             )}
-          </Button>
 
-          {success && (
-            <Success
-              text={formatMessage(messages.saveSuccessMessage)}
-              showBackground={false}
-              showIcon={false}
-            />
-          )}
-
-          {!isEmpty(apiError) && (
-            <Error
-              text={formatMessage(messages.errorMessage)}
-              showBackground={false}
-              showIcon={false}
-            />
-          )}
-        </ButtonContainer>
-      </Container>
+            {!isEmpty(apiError) && (
+              <Error
+                text={formatMessage(messages.errorMessage)}
+                showBackground={false}
+                showIcon={false}
+              />
+            )}
+          </Box>
+        </Box>
+      </Box>
     );
   }
 

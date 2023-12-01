@@ -822,7 +822,7 @@ export function apiCreateProject({
   descriptionPreview,
   description,
   publicationStatus = 'published',
-  assigneeId
+  assigneeId,
 }: {
   title: string;
   descriptionPreview: string;

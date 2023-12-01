@@ -20,11 +20,7 @@ export interface VoteParams {
 }
 
 export const vote =
-  ({
-    ideaId,
-    phaseId,
-    votes,
-  }: VoteParams) =>
+  ({ ideaId, phaseId, votes }: VoteParams) =>
   async () => {
     updateSearchParams({ processing_vote: ideaId });
 

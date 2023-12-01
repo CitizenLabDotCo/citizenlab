@@ -30,10 +30,7 @@ interface Props {
   projectId: string;
 }
 
-const AllCauses = ({
-  phaseId,
-  projectId,
-}: Props) => {
+const AllCauses = ({ phaseId, projectId }: Props) => {
   const { mutate: deleteCause } = useDeleteCause();
   const { mutate: reorderCause } = useReorderCause();
   const { formatMessage } = useIntl();
@@ -96,7 +93,7 @@ const AllCauses = ({
     }
   };
 
-  const newCauseLink = `/admin/projects/${projectId}/volunteering/${phaseId}/causes/new`
+  const newCauseLink = `/admin/projects/${projectId}/phases/${phaseId}/volunteering/causes/new`;
 
   if (isNilOrError(causes)) return null;
 
@@ -136,7 +133,7 @@ const AllCauses = ({
                   <FormattedMessage {...messages.deleteButtonLabel} />
                 </Button>
                 <Button
-                  linkTo={`/admin/projects/${projectId}/volunteering/${phaseId}/causes/${cause.id}`}
+                  linkTo={`/admin/projects/${projectId}/phases/${phaseId}/volunteering/causes/${cause.id}`}
                   icon="edit"
                   buttonStyle="secondary"
                 >

@@ -25,7 +25,9 @@ const EventsCTABar = ({ phases, project }: CTABarProps) => {
     sort: 'start_at',
     ongoing_during: [
       moment(getCurrentPhase(phases)?.attributes.start_at).toString() || null,
-      moment(getCurrentPhase(phases)?.attributes.end_at).add(1, 'day').toString() || null,
+      moment(getCurrentPhase(phases)?.attributes.end_at)
+        .add(1, 'day')
+        .toString() || null,
     ],
   });
   const theme = useTheme();

@@ -22,7 +22,7 @@ import useLocalize from 'hooks/useLocalize';
 
 // hooks
 import usePhase from 'api/phases/usePhase';
-import useFeatureFlag from "hooks/useFeatureFlag";
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const PhaseContainer = styled.div`
   &:not(:last-child) {
@@ -38,7 +38,11 @@ const AdminProjectPoll = () => {
   const isEnabled = useFeatureFlag({ name: 'polls' });
   const localize = useLocalize();
 
-  if (!phase || phase.data.attributes.participation_method !== 'poll' || !isEnabled) {
+  if (
+    !phase ||
+    phase.data.attributes.participation_method !== 'poll' ||
+    !isEnabled
+  ) {
     return null;
   }
 
@@ -50,18 +54,14 @@ const AdminProjectPoll = () => {
         </Title>
         <ExportPollButton
           phaseId={phase.data.id}
-          phaseName={localize(
-            phase.data.attributes.title_multiloc
-          )}
+          phaseName={localize(phase.data.attributes.title_multiloc)}
         />
       </Box>
       <SectionDescription>
         <FormattedMessage {...messages.pollTabSubtitle} />
       </SectionDescription>
       <PhaseContainer>
-        <GetPollQuestions
-          phaseId={phase.data.id}
-        >
+        <GetPollQuestions phaseId={phase.data.id}>
           {(pollQuestions: GetPollQuestionsChildProps) => (
             <PollAdminForm
               phaseId={phase.data.id}

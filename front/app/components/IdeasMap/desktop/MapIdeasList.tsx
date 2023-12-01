@@ -160,8 +160,7 @@ const MapIdeasList = memo<Props>(({ projectId, phaseId, className }) => {
   if (isNilOrError(ideaCustomFieldsSchema)) return null;
 
   const methodConfig =
-    phase &&
-    getMethodConfig(phase.data.attributes?.participation_method);
+    phase && getMethodConfig(phase.data.attributes?.participation_method);
 
   const topicsEnabled = isFieldEnabled(
     'topic_ids',

@@ -39,7 +39,7 @@ const configuration: ModuleConfiguration = {
   routes: {
     'admin.projects.project': [
       {
-        path: 'map/:phaseId',
+        path: 'phases/:phaseId/map',
         element: <CustomMapConfigComponent />,
       },
     ],

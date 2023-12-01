@@ -208,7 +208,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
             <FormattedMessage {...messages.about} />
           </Title>
           <List>
-            { currentPhase &&
+            {currentPhase &&
               hasProjectEnded &&
               pastPresentOrFuture([
                 currentPhase.attributes.start_at,
@@ -232,32 +232,31 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                     {...messages.xParticipants}
                     values={{ participantsCount: projectParticipantsCount }}
                   />
-                  {hasNativeSurvey(phases?.data) &&
-                    isAdminUser && (
-                      <Box mb="4px" ml="4px">
-                        <IconTooltip
-                          placement="top-start"
-                          maxTooltipWidth={200}
-                          iconColor={colors.coolGrey300}
-                          content={
-                            <FormattedMessage
-                              {...messages.participantsTooltip}
-                              values={{
-                                accessRightsLink: (
-                                  <Link
-                                    to={`/admin/projects/${projectId}/permissions`}
-                                  >
-                                    <FormattedMessage
-                                      {...messages.accessRights}
-                                    />
-                                  </Link>
-                                ),
-                              }}
-                            />
-                          }
-                        />
-                      </Box>
-                    )}
+                  {hasNativeSurvey(phases?.data) && isAdminUser && (
+                    <Box mb="4px" ml="4px">
+                      <IconTooltip
+                        placement="top-start"
+                        maxTooltipWidth={200}
+                        iconColor={colors.coolGrey300}
+                        content={
+                          <FormattedMessage
+                            {...messages.participantsTooltip}
+                            values={{
+                              accessRightsLink: (
+                                <Link
+                                  to={`/admin/projects/${projectId}/permissions`}
+                                >
+                                  <FormattedMessage
+                                    {...messages.accessRights}
+                                  />
+                                </Link>
+                              ),
+                            }}
+                          />
+                        }
+                      />
+                    </Box>
+                  )}
                 </ListItem>
               )}
             {phases && phases.data.length > 1 && (
@@ -329,7 +328,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                   )}
                 </ListItem>
               )}
-            {(currentPhaseParticipationMethod === 'native_survey') &&
+            {currentPhaseParticipationMethod === 'native_survey' &&
               surveySubmissionCount && (
                 <Box>
                   <ListItem>
@@ -359,7 +358,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                 <FormattedBudget value={maxBudget} />
               </ListItem>
             )}
-            {(currentPhaseParticipationMethod === 'survey') &&
+            {currentPhaseParticipationMethod === 'survey' &&
               !isProjectArchived &&
               !hasProjectEnded && (
                 <ListItem id="e2e-project-sidebar-surveys-count">
@@ -367,7 +366,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                   <FormattedMessage {...surveyMessage} />
                 </ListItem>
               )}
-            {(currentPhaseParticipationMethod === 'document_annotation') &&
+            {currentPhaseParticipationMethod === 'document_annotation' &&
               !isProjectArchived &&
               !hasProjectEnded && (
                 <ListItem>
@@ -375,7 +374,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                   <FormattedMessage {...docAnnotationMessage} />
                 </ListItem>
               )}
-            {(currentPhaseParticipationMethod === 'native_survey') &&
+            {currentPhaseParticipationMethod === 'native_survey' &&
               postingIsEnabled &&
               !isProjectArchived &&
               !hasProjectEnded && (
@@ -384,12 +383,10 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
                   <FormattedMessage {...surveyMessage} />
                 </ListItem>
               )}
-            {(currentPhaseParticipationMethod === 'poll') && (
+            {currentPhaseParticipationMethod === 'poll' && (
               <ListItem id="e2e-project-sidebar-polls-count">
                 <ListItemIcon ariaHidden name="survey" />
-                <FormattedMessage
-                  {...messages.pollInCurrentPhase}
-                />
+                <FormattedMessage {...messages.pollInCurrentPhase} />
               </ListItem>
             )}
             {!isNilOrError(events) && events.data.length > 0 && (

@@ -1654,7 +1654,6 @@
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningBullet2": "Čim dodate fazu nakon ove, to će dodati datum završetka ovoj fazi.",
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningTitle": "Neodabir datuma završetka za ovo podrazumijeva sljedeće:",
   "app.containers.AdminPage.ProjectTimeline.saveErrorMessage": "Došlo je do pogreške prilikom slanja obrasca, pokušajte ponovo.",
-  "app.containers.AdminPage.ProjectTimeline.saveLabel": "Spremi",
   "app.containers.AdminPage.ProjectTimeline.saveSuccessLabel": "Spremljeno!",
   "app.containers.AdminPage.ProjectTimeline.saveSuccessMessage": "Vaše promjene su spremljene.",
   "app.containers.AdminPage.ProjectTimeline.startDate": "Početni datum",

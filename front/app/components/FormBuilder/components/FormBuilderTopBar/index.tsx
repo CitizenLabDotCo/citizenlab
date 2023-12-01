@@ -68,7 +68,9 @@ const FormBuilderTopBar = ({
   }
 
   const isPostingEnabled = getIsPostingEnabled(phase?.data);
-  const viewFormLink = builderConfig.viewFormLink || `/projects/${project.data.attributes.slug}/ideas/new?phase_id=${phaseId}`;
+  const viewFormLink =
+    builderConfig.viewFormLink ||
+    `/projects/${project.data.attributes.slug}/ideas/new?phase_id=${phaseId}`;
 
   const goBack = () => {
     clHistory.push(builderConfig.goBackUrl || `/admin/projects/${projectId}`);

@@ -236,7 +236,7 @@ describe('Project topics', () => {
       cy.wait(1000);
 
       // Go to idea manager for our project
-      cy.visit(`admin/projects/${projectId}/ideas/${phaseId}`);
+      cy.visit(`admin/projects/${projectId}/phases/${phaseId}/ideas`);
 
       // Open topics tab
       cy.get('#topics').click();
@@ -266,7 +266,7 @@ describe('Project topics', () => {
       cy.wait(1000);
 
       // Go to idea manager for our project
-      cy.visit(`admin/projects/${projectId}/ideas/${phaseId}`);
+      cy.visit(`admin/projects/${projectId}/phases/${phaseId}/ideas`);
 
       // Open topics tab
       cy.get('#topics').click();
@@ -289,7 +289,7 @@ describe('Project topics', () => {
       cy.wait(1000);
 
       // Go to idea manager for our project
-      cy.visit(`admin/projects/${projectId}/ideas/${phaseId}`);
+      cy.visit(`admin/projects/${projectId}/phases/${phaseId}/ideas`);
 
       // Open topics tab
       cy.get('#topics').click();

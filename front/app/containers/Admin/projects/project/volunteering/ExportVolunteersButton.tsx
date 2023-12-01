@@ -16,10 +16,7 @@ interface Props {
   className?: string;
 }
 
-const ExportVolunteersButton = ({
-  phaseId,
-  className,
-}: Props) => {
+const ExportVolunteersButton = ({ phaseId, className }: Props) => {
   const { data: causes } = useCauses({
     phaseId,
   });
