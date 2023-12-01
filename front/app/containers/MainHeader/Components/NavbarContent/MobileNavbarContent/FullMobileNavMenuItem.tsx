@@ -37,6 +37,7 @@ interface Props {
   onlyActiveOnIndex?: boolean;
   onClick: () => void;
   iconName?: IconNames;
+  scrollToTop?: boolean;
 }
 
 const FullMobileNavMenuItem = ({
@@ -45,6 +46,7 @@ const FullMobileNavMenuItem = ({
   onClick,
   onlyActiveOnIndex,
   iconName,
+  scrollToTop,
 }: Props) => (
   <MenuItem>
     {/* Without specifying height, the icon height increases too much.
@@ -54,6 +56,7 @@ const FullMobileNavMenuItem = ({
       onClick={onClick}
       to={linkTo}
       onlyActiveOnIndex={onlyActiveOnIndex}
+      scrollToTop={scrollToTop}
     >
       {navigationItemTitle}
     </StyledLink>

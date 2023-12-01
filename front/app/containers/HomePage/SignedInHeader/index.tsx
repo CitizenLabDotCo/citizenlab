@@ -77,6 +77,7 @@ export const HeaderContent = styled.div`
     align-items: stretch;
     justify-content: center;
     padding-left: 15px;
+    padding-right: 15px;
   `}
 `;
 

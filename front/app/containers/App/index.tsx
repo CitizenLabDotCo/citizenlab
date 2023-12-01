@@ -28,7 +28,6 @@ import ErrorBoundary from 'components/ErrorBoundary';
 import Navigate from 'utils/cl-router/Navigate';
 import Authentication from 'containers/Authentication';
 import MainHeader from 'containers/MainHeader';
-import MobileNavbar from 'containers/MobileNavbar';
 import Meta from './Meta';
 const UserDeletedModal = lazy(() => import('./UserDeletedModal'));
 const PlatformFooter = lazy(() => import('containers/PlatformFooter'));
@@ -268,13 +267,6 @@ const App = ({ children }: Props) => {
     !isInitiativeFormPage &&
     !isIdeaEditPage &&
     !isInitiativeEditPage;
-  const showMobileNav =
-    isSmallerThanTablet &&
-    !isAdminPage &&
-    !isIdeaFormPage &&
-    !isInitiativeFormPage &&
-    !isIdeaEditPage &&
-    !isInitiativeEditPage;
   const { pathname } = removeLocale(location.pathname);
   const showFrontOfficeNavbar =
     (isEventPage && !isSmallerThanTablet) || // Don't show the navbar on (mobile) event page
@@ -380,7 +372,6 @@ const App = ({ children }: Props) => {
                   <PlatformFooter />
                 </Suspense>
               )}
-              {showMobileNav && <MobileNavbar />}
               <ErrorBoundary>
                 <div id="mobile-nav-portal" />
               </ErrorBoundary>
