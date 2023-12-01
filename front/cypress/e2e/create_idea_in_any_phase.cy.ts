@@ -11,7 +11,6 @@ describe('Idea creation', () => {
 
   before(() => {
     cy.apiCreateProject({
-      type: 'timeline',
       title: projectTitle,
       descriptionPreview: description,
       description,

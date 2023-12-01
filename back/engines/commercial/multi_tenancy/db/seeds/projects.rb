@@ -86,7 +86,7 @@ module MultiTenancy
           questions = Array.new(rand(1..5)) do
             question = Polls::Question.create!(
               title_multiloc: runner.create_for_some_locales { Faker::Lorem.question },
-              participation_context: phase
+              phase: phase
             )
             rand(1..5).times do
               Polls::Option.create!(
@@ -97,7 +97,7 @@ module MultiTenancy
             question
           end
           User.order('RANDOM()').take(rand(1..5)).each do |some_user|
-            response = Polls::Response.create!(user: some_user, participation_context: phase)
+            response = Polls::Response.create!(user: some_user, phase: phase)
             questions.each do |q|
               response.response_options.create!(option: runner.rand_instance(q.options))
             end

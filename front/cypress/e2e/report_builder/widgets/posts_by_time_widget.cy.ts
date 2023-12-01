@@ -15,7 +15,6 @@ describe('Report builder Posts By Time widget', () => {
     const ideaContent = randomString();
 
     cy.apiCreateProject({
-      type: 'timeline',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,

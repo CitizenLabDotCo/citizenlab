@@ -5,9 +5,6 @@ import React from 'react';
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
-// typings
-import { IParticipationContextType } from 'typings';
-
 // components
 import Button from 'components/UI/Button';
 import exportPollResponses from 'api/poll_responses/exportPollResponses';
@@ -19,9 +16,8 @@ import { WrappedComponentProps } from 'react-intl';
 import { snakeCase } from 'lodash-es';
 
 interface Props {
-  participationContextType: IParticipationContextType;
-  participationContextId: string;
-  participationContextName: string;
+  phaseId: string;
+  phaseName: string;
   className?: string;
 }
 
@@ -47,18 +43,16 @@ class ExportPollButton extends React.PureComponent<
   handleExportPollResults = async () => {
     const {
       intl: { formatMessage, formatDate },
-      participationContextName,
-      participationContextId,
-      participationContextType,
+      phaseName,
+      phaseId,
     } = this.props;
     this.trackExportPoll();
 
     this.setState({ exporting: true });
     await exportPollResponses(
-      participationContextId,
-      participationContextType,
+      phaseId,
       `${formatMessage(messages.pollExportFileName)}_${snakeCase(
-        participationContextName
+        phaseName
       )}_${formatDate(Date.now())}.xlsx`
     );
     this.setState({ exporting: false });

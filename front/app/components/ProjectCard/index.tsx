@@ -458,20 +458,17 @@ const ProjectCard = memo<InputProps>(
     };
 
     if (project) {
-      const methodConfig = getMethodConfig(
-        project.data.attributes.participation_method
-      );
+      // TODO: JS - Is this right? was always looking at the project before? probably incorrectly
+      const methodConfig = phase
+        ? getMethodConfig(phase.data.attributes.participation_method)
+        : null;
       const postingPermission = getIdeaPostingRules({
         project: project?.data,
         phase: phase?.data,
         authUser: authUser?.data,
       });
-      const participationMethod = phase
-        ? phase.data.attributes.participation_method
-        : project.data.attributes.participation_method;
-      const votingMethod = phase
-        ? phase.data.attributes.voting_method
-        : project.data.attributes.voting_method;
+      const participationMethod = phase?.data.attributes.participation_method;
+      const votingMethod = phase?.data.attributes.voting_method;
 
       const canPost = !!postingPermission.enabled;
       const canReact =
@@ -494,10 +491,7 @@ const ProjectCard = memo<InputProps>(
         project.data.relationships.avatars.data &&
         project.data.relationships.avatars.data.length > 0;
       const showIdeasCount =
-        !(
-          project.data.attributes.process_type === 'continuous' &&
-          !methodConfig.showInputCount
-        ) && ideasCount > 0;
+        (!methodConfig || methodConfig.showInputCount) && ideasCount > 0;
       const showCommentsCount = commentsCount > 0;
       const showFooter = hasAvatars || showIdeasCount || showCommentsCount;
       const avatarIds =
@@ -512,8 +506,7 @@ const ProjectCard = memo<InputProps>(
         : null;
       let countdown: JSX.Element | null = null;
       let ctaMessage: JSX.Element | null = null;
-      const processType = project.data.attributes.process_type;
-      const inputTerm = getInputTerm(processType, project.data, phases?.data);
+      const inputTerm = getInputTerm(phases?.data);
 
       if (isArchived) {
         countdown = (

@@ -27,8 +27,7 @@ describe('useAddPollQuestion', () => {
 
     act(() => {
       result.current.mutate({
-        participationContextId: '1',
-        participationContextType: 'project',
+        phaseId: '1',
         title_multiloc: { en: 'mock title' },
       });
     });
@@ -50,8 +49,7 @@ describe('useAddPollQuestion', () => {
 
     act(() => {
       result.current.mutate({
-        participationContextId: '1',
-        participationContextType: 'project',
+        phaseId: '1',
         title_multiloc: { en: 'mock title' },
       });
     });

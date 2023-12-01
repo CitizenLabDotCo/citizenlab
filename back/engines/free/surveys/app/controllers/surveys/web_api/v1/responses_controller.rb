@@ -17,7 +17,7 @@ module Surveys
 
           # If the real-time API request ever gets problematic, this uses the saved webhook responses instead
           # @responses = policy_scope(Response)
-          #   .where(participation_context: @phase)
+          #   .where(phase: @phase)
           #   .order(:created_at)
 
           @responses = TypeformApiParser.new.get_responses(@phase.typeform_form_id)

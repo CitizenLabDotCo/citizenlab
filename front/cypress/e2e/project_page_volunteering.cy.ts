@@ -20,11 +20,10 @@ describe('Volunteering survey CTA', () => {
       })
       .then(() => {
         cy.apiCreateProject({
-          type: 'timeline',
           title: projectTitle,
           descriptionPreview: projectDescriptionPreview,
           description: projectDescription,
-          publicationStatus: 'published'
+          publicationStatus: 'published',
         }).then((project) => {
           projectId = project.body.data.id;
           projectSlug = project.body.data.attributes.slug;
@@ -35,7 +34,7 @@ describe('Volunteering survey CTA', () => {
             participationMethod: 'volunteering',
             canPost: true,
             canComment: true,
-            canReact: true
+            canReact: true,
           });
           cy.apiCreateEvent({
             projectId,

@@ -31,7 +31,7 @@ class SideFxBasketService
   private
 
   def create_followers(basket, user)
-    project = basket.participation_context.project
+    project = basket.phase.project
     Follower.find_or_create_by(followable: project, user: user)
     return if !project.in_folder?
 

@@ -22,7 +22,7 @@ import { rgba } from 'polished';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { getSelectedLocale } from 'containers/MainHeader/LanguageSelector/utils';
+import { getSelectedLocale } from 'containers/MainHeader/Components/LanguageSelector/utils';
 
 interface Props {
   setIsOpen: (open: boolean) => void;

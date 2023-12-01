@@ -74,7 +74,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
     }
   }, [divId]);
 
-  if (isNilOrError(project)) {
+  if (isNilOrError(project) || !currentPhase) {
     return null;
   }
 
@@ -113,8 +113,8 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
       triggerAuthenticationFlow({
         flow: 'signup',
         context: {
-          type: currentPhase ? 'phase' : 'project',
-          id: currentPhase?.id ?? project.data.id,
+          type: 'phase',
+          id: currentPhase.id,
           action: 'taking_survey',
         },
         successAction,
@@ -146,8 +146,8 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
       triggerAuthenticationFlow({
         flow: 'signup',
         context: {
-          type: currentPhase ? 'phase' : 'project',
-          id: currentPhase?.id ?? project.data.id,
+          type: 'phase',
+          id: currentPhase.id,
           action: 'annotating_document',
         },
         successAction,
@@ -155,15 +155,10 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
     }
   };
 
-  const { process_type, publication_status } = project.data.attributes;
+  const { publication_status } = project.data.attributes;
 
-  const isProcessTypeContinuous = process_type === 'continuous';
-  const participationMethod = isProcessTypeContinuous
-    ? project.data.attributes.participation_method
-    : currentPhase?.attributes.participation_method;
-  const ideas_count = isProcessTypeContinuous
-    ? project.data.attributes.ideas_count
-    : currentPhase?.attributes.ideas_count;
+  const participationMethod = currentPhase?.attributes.participation_method;
+  const ideas_count = currentPhase?.attributes.ideas_count;
   // For a continuous project, hasCurrentPhaseEnded will always return false.
   const hasCurrentPhaseEnded = currentPhase
     ? pastPresentOrFuture([
@@ -171,7 +166,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
         currentPhase.attributes.end_at,
       ]) === 'past'
     : false;
-  const inputTerm = getInputTerm(process_type, project.data, phases?.data);
+  const inputTerm = getInputTerm(phases?.data);
 
   // Show button conditions
   const generalShowCTAButtonCondition =
@@ -237,11 +232,6 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
         <IdeaButton
           id="project-ideabutton"
           projectId={project.data.id}
-          participationContextType={
-            currentPhase?.attributes.participation_method === 'ideation'
-              ? 'phase'
-              : 'project'
-          }
           fontWeight="500"
           phase={currentPhase}
           participationMethod="ideation"
@@ -252,11 +242,6 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
           id="project-survey-button"
           data-testid="e2e-project-survey-button"
           projectId={project.data.id}
-          participationContextType={
-            currentPhase?.attributes.participation_method === 'native_survey'
-              ? 'phase'
-              : 'project'
-          }
           fontWeight="500"
           phase={currentPhase}
           participationMethod="native_survey"

@@ -16,15 +16,15 @@ resource 'Poll Responses' do
     context 'non-anonymous poll' do
       before do
         @phase = create(:single_phase_poll_project).phases.first
-        @q1 = create(:poll_question, :with_options, participation_context: @phase)
-        @q2 = create(:poll_question, :with_options, participation_context: @phase)
-        r1 = create(:poll_response, participation_context: @phase)
+        @q1 = create(:poll_question, :with_options, phase: @phase)
+        @q2 = create(:poll_question, :with_options, phase: @phase)
+        r1 = create(:poll_response, phase: @phase)
         r1.update!(response_options: [@q1, @q2].map { |q| create(:poll_response_option, response: r1, option: q.options.first) })
-        r2 = create(:poll_response, participation_context: @phase)
+        r2 = create(:poll_response, phase: @phase)
         r2.update!(response_options: [@q1, @q2].map { |q| create(:poll_response_option, response: r2, option: q.options.last) })
         @q1.options.first.destroy!
         @q2.destroy!
-        @q3 = create(:poll_question, :with_options, participation_context: @phase)
+        @q3 = create(:poll_question, :with_options, phase: @phase)
       end
 
       let(:phase_id) { @phase.id }
@@ -43,11 +43,11 @@ resource 'Poll Responses' do
     context 'anonymous poll' do
       before do
         @phase = create(:single_phase_poll_project, phase_attrs: { poll_anonymous: true }).phases.first
-        @q1 = create(:poll_question, :with_options, participation_context: @phase)
+        @q1 = create(:poll_question, :with_options, phase: @phase)
         @u1 = create(:user)
         @r1 = create(:poll_response,
           user: @u1,
-          participation_context: @phase,
+          phase: @phase,
           response_options: [create(:poll_response_option, option: @q1.options.first)])
       end
 
@@ -80,11 +80,11 @@ resource 'Poll Responses' do
     context 'non-anonymous poll' do
       before do
         @phase = create(:single_phase_poll_project).phases.first
-        @q1 = create(:poll_question, :with_options, participation_context: @phase)
-        @q2 = create(:poll_question, :with_options, participation_context: @phase)
-        @r1 = create(:poll_response, participation_context: @phase)
+        @q1 = create(:poll_question, :with_options, phase: @phase)
+        @q2 = create(:poll_question, :with_options, phase: @phase)
+        @r1 = create(:poll_response, phase: @phase)
         @r1.update!(response_options: [@q1, @q2].map { |q| create(:poll_response_option, response: @r1, option: q.options.first) })
-        @r2 = create(:poll_response, participation_context: @phase)
+        @r2 = create(:poll_response, phase: @phase)
         @r2.update!(response_options: [@q1, @q2].map { |q| create(:poll_response_option, response: @r2, option: q.options.last) })
       end
 
@@ -109,8 +109,8 @@ resource 'Poll Responses' do
     let(:project) { create(:project_with_current_phase, current_phase_attrs: { participation_method: 'poll' }) }
     let(:phase) { project.phases[2] }
     let(:phase_id) { phase.id }
-    let(:q1) { create(:poll_question, :with_options, participation_context: phase) }
-    let(:q2) { create(:poll_question, :with_options, participation_context: phase) }
+    let(:q1) { create(:poll_question, :with_options, phase: phase) }
+    let(:q2) { create(:poll_question, :with_options, phase: phase) }
     let(:response_options_attributes) do
       [
         { option_id: q1.options.first.id },

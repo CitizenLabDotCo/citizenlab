@@ -8,8 +8,7 @@ import { rest } from 'msw';
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { pollQuestionsData } from './__mocks__/usePollQuestions';
 
-const apiPath =
-  '*/:participationContextType/:participationContextId/poll_questions';
+const apiPath = '*/phases/:phaseId/poll_questions';
 
 const server = setupServer(
   rest.get(apiPath, (_req, res, ctx) => {
@@ -25,8 +24,7 @@ describe('usePollQuestions', () => {
     const { result, waitFor } = renderHook(
       () =>
         usePollQuestions({
-          participationContextId: '1',
-          participationContextType: 'project',
+          phaseId: '1',
         }),
       {
         wrapper: createQueryClientWrapper(),
@@ -51,8 +49,7 @@ describe('usePollQuestions', () => {
     const { result, waitFor } = renderHook(
       () =>
         usePollQuestions({
-          participationContextId: '1',
-          participationContextType: 'project',
+          phaseId: '1',
         }),
       {
         wrapper: createQueryClientWrapper(),

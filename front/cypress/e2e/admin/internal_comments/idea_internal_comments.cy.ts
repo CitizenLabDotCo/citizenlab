@@ -36,7 +36,6 @@ describe('Idea internal comments', () => {
     });
 
     cy.apiCreateProject({
-      type: 'timeline',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,

@@ -4,7 +4,6 @@ import styled from 'styled-components';
 
 // components
 import Timeline from './Timeline';
-import Continuous from './Continuous';
 import { Section } from 'components/admin/Section';
 
 const StyledSection = styled(Section)`
@@ -20,12 +19,7 @@ const Granular = ({ project }: Props) => {
 
   return (
     <StyledSection id="e2e-granular-permissions">
-      {project.attributes.process_type === 'timeline' && (
-        <Timeline projectId={projectId} />
-      )}
-      {project.attributes.process_type === 'continuous' && (
-        <Continuous projectId={projectId} />
-      )}
+      <Timeline projectId={projectId} />
     </StyledSection>
   );
 };

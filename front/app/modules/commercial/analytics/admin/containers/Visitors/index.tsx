@@ -39,9 +39,10 @@ const Visitors = () => {
   const [countData] = analytics.data.attributes;
   if (!countData) return null;
 
-  const uniqueVisitorDataDate = moment(
-    countData.first_dimension_date_first_action_date
-  );
+  const firstDate = countData.first_dimension_date_first_action_date;
+
+  const uniqueVisitorDataDate =
+    typeof firstDate === 'string' ? moment(firstDate) : undefined;
 
   return <VisitorsOverview uniqueVisitorDataDate={uniqueVisitorDataDate} />;
 };

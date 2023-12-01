@@ -22,7 +22,6 @@ describe('Input form builder', () => {
     questionTitle = randomString();
 
     cy.apiCreateProject({
-      type: 'timeline',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,

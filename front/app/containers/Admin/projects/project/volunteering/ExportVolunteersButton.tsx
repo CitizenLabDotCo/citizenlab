@@ -1,9 +1,6 @@
 // Libraries
 import React, { useState } from 'react';
 
-// typings
-import { IParticipationContextType } from 'typings';
-
 // components
 import Button from 'components/UI/Button';
 
@@ -15,19 +12,13 @@ import { exportVolunteers } from 'api/causes/util';
 import useCauses from 'api/causes/useCauses';
 
 interface Props {
-  participationContextType: IParticipationContextType;
-  participationContextId: string;
+  phaseId: string;
   className?: string;
 }
 
-const ExportVolunteersButton = ({
-  participationContextType,
-  participationContextId,
-  className,
-}: Props) => {
+const ExportVolunteersButton = ({ phaseId, className }: Props) => {
   const { data: causes } = useCauses({
-    participationContextType,
-    participationContextId,
+    phaseId,
   });
   const [exporting, setExporting] = useState(false);
 
@@ -35,7 +26,7 @@ const ExportVolunteersButton = ({
 
   const handleExportVolunteers = async () => {
     setExporting(true);
-    await exportVolunteers(participationContextId, participationContextType);
+    await exportVolunteers(phaseId);
     setExporting(false);
   };
 

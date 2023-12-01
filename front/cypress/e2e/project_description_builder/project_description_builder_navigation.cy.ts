@@ -12,12 +12,10 @@ describe('Project description builder navigation', () => {
       const userId = user.body.data.id;
 
       cy.apiCreateProject({
-        type: 'continuous',
         title: projectTitle,
         descriptionPreview: projectDescriptionPreview,
         description: projectDescription,
         publicationStatus: 'published',
-        participationMethod: 'ideation',
         assigneeId: userId,
       }).then((project) => {
         projectId = project.body.data.id;

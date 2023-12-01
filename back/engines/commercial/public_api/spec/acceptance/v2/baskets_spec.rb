@@ -52,8 +52,8 @@ resource 'Voting' do
     example_request 'Returns the basket' do
       assert_status 200
       expect(json_response_body[:basket]).to include({ id: id })
-      expect(json_response_body[:basket]).to include({ phase_id: baskets.first.participation_context.id })
-      expect(json_response_body[:basket]).to include({ project_id: baskets.first.participation_context.project.id })
+      expect(json_response_body[:basket]).to include({ phase_id: baskets.first.phase.id })
+      expect(json_response_body[:basket]).to include({ project_id: baskets.first.phase.project.id })
     end
   end
 

@@ -6,7 +6,7 @@ module Polls
       multiloc_service = MultilocService.new
       is_anonymous = phase.poll_anonymous?
       questions = Polls::Question
-        .where(participation_context: phase)
+        .where(phase: phase)
         .order(:ordering)
 
       columns = questions.map do |q|

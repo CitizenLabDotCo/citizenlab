@@ -119,11 +119,7 @@ const Container = ({
 
   if (!project) return null;
 
-  const inputTerm = getInputTerm(
-    project.data.attributes.process_type,
-    project.data,
-    phases?.data
-  );
+  const inputTerm = getInputTerm(phases?.data);
 
   return (
     <>

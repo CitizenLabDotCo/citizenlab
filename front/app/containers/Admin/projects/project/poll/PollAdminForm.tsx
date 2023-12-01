@@ -21,7 +21,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // Typings
-import { Multiloc, IParticipationContextType } from 'typings';
+import { Multiloc } from 'typings';
 import useAddPollQuestion from 'api/poll_questions/useAddPollQuestion';
 import useDeletePollQuestion from 'api/poll_questions/useDeletePollQuestion';
 import { IPollQuestionData } from 'api/poll_questions/types';
@@ -33,16 +33,11 @@ const StyledList = styled(List)`
 `;
 
 interface Props {
-  participationContextId: string;
-  participationContextType: IParticipationContextType;
+  phaseId: string;
   pollQuestions: IPollQuestionData[] | null | undefined;
 }
 
-const PollAdminForm = ({
-  participationContextId,
-  participationContextType,
-  pollQuestions,
-}: Props) => {
+const PollAdminForm = ({ phaseId, pollQuestions }: Props) => {
   const { mutate: addPollQuestion } = useAddPollQuestion();
   const { mutate: deletePollQuestion } = useDeletePollQuestion();
   const { mutate: updatePollQuestion } = useUpdatePollQuestion();
@@ -84,8 +79,7 @@ const PollAdminForm = ({
       reorderPollQuestion({
         questionId: fieldId,
         ordering: toIndex,
-        participationContextId,
-        participationContextType,
+        phaseId,
       });
     } else {
       setItemsWhileDragging(null);
@@ -107,15 +101,10 @@ const PollAdminForm = ({
   };
 
   const saveNewQuestion = () => {
-    if (
-      participationContextType &&
-      participationContextId &&
-      newQuestionTitle
-    ) {
+    if (phaseId && newQuestionTitle) {
       addPollQuestion(
         {
-          participationContextId,
-          participationContextType,
+          phaseId,
           title_multiloc: newQuestionTitle,
         },
         {
@@ -148,8 +137,7 @@ const PollAdminForm = ({
         {
           questionId: editingQuestionId,
           title_multiloc: editingQuestionTitle,
-          participationContextId,
-          participationContextType,
+          phaseId,
         },
         {
           onSuccess: () => {
@@ -170,8 +158,7 @@ const PollAdminForm = ({
   const deleteQuestion = (questionId: string) => () => {
     deletePollQuestion({
       questionId,
-      participationContextId,
-      participationContextType,
+      phaseId,
     });
   };
 

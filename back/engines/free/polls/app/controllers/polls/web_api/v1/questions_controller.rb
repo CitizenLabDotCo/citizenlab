@@ -10,7 +10,7 @@ module Polls
 
         def index
           @questions = policy_scope(Question)
-            .where(participation_context: @phase)
+            .where(phase: @phase)
             .includes(:options)
             .order(:ordering)
           @questions = paginate @questions
@@ -111,8 +111,7 @@ module Polls
 
         def question_params
           params.require(:question).permit(
-            :participation_context_type,
-            :participation_context_id,
+            :phase_id,
             :question_type,
             :max_options,
             title_multiloc: CL2_SUPPORTED_LOCALES

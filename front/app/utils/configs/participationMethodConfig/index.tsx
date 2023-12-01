@@ -138,14 +138,7 @@ const ideationConfig: ParticipationMethodConfig = {
           question: messages.questionFormTitle,
           issue: messages.issueFormTitle,
           contribution: messages.contributionFormTitle,
-        }[
-          getInputTerm(
-            props.project?.attributes.process_type,
-            props.project,
-            props.phases,
-            props.phaseFromUrl
-          )
-        ]}
+        }[getInputTerm(props.phases, props.phaseFromUrl)]}
       />
     );
   },
@@ -293,14 +286,7 @@ const votingConfig: ParticipationMethodConfig = {
           question: messages.questionFormTitle,
           issue: messages.issueFormTitle,
           contribution: messages.contributionFormTitle,
-        }[
-          getInputTerm(
-            props.project?.attributes.process_type,
-            props.project,
-            props.phases,
-            props.phaseFromUrl
-          )
-        ]}
+        }[getInputTerm(props.phases, props.phaseFromUrl)]}
       />
     );
   },
@@ -407,24 +393,17 @@ export function getPhase(
  *  should be shown in the back office.
  */
 export function showInputManager(
-  project: IProjectData,
   phases?: Error | IPhaseData[] | null | undefined
 ): boolean {
-  if (project.attributes.process_type === 'continuous') {
-    return getMethodConfig(project.attributes.participation_method)
-      .showInputManager;
-  }
-  if (project.attributes.process_type === 'timeline') {
-    if (!isNilOrError(phases)) {
-      if (
-        phases.some(
-          (phase) =>
-            getMethodConfig(phase.attributes.participation_method)
-              .showInputManager
-        )
-      ) {
-        return true;
-      }
+  if (!isNilOrError(phases)) {
+    if (
+      phases.some(
+        (phase) =>
+          getMethodConfig(phase.attributes.participation_method)
+            .showInputManager
+      )
+    ) {
+      return true;
     }
   }
   return false;

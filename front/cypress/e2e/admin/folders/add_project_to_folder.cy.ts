@@ -10,21 +10,17 @@ describe.skip('Admin: add projects to folder', async () => {
     let projectTitle2 = randomString();
 
     cy.apiCreateProject({
-      type: 'continuous',
       title: projectTitle1,
       descriptionPreview: projectDescription,
       description: projectDescription,
       publicationStatus: 'published',
-      participationMethod: 'native_survey',
     }).then((projectOneResponse) => {
       projectId1 = projectOneResponse.body.data.id;
       cy.apiCreateProject({
-        type: 'continuous',
         title: projectTitle2,
         descriptionPreview: projectDescription,
         description: projectDescription,
         publicationStatus: 'published',
-        participationMethod: 'native_survey',
       }).then((projectTwoResponse) => {
         projectId2 = projectTwoResponse.body.data.id;
 

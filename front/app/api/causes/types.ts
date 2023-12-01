@@ -8,10 +8,8 @@ interface CauseImageSizes {
   medium: string | null;
 }
 
-type ParticipationContextType = 'project' | 'phase';
 export interface ICauseParameters {
-  participationContextType: ParticipationContextType;
-  participationContextId: string | null;
+  phaseId: string | null;
 }
 
 export interface ICauseData {
@@ -25,9 +23,8 @@ export interface ICauseData {
     ordering: number;
   };
   relationships: {
-    participation_context: {
+    phase: {
       data: {
-        type: ParticipationContextType;
         id: string;
       };
     };
@@ -60,8 +57,7 @@ export interface ICauseAdd {
   title_multiloc: Multiloc;
   description_multiloc: Multiloc;
   image?: string | null;
-  participation_context_type: 'Project' | 'Phase';
-  participation_context_id: string;
+  phase_id: string;
 }
 
 export interface IVolunteer {

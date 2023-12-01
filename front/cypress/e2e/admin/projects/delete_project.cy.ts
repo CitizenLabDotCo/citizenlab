@@ -11,7 +11,6 @@ describe('Admin: delete project', () => {
     const projectDescriptionPreview = randomString();
     const projectDescription = randomString();
     cy.apiCreateProject({
-      type: 'continuous',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,

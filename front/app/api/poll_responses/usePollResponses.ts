@@ -8,26 +8,18 @@ import {
   IPollResponseParameters,
 } from './types';
 
-const fetchResponses = ({
-  participationContextId,
-  participationContextType,
-}: IPollResponseParameters) =>
+const fetchResponses = ({ phaseId }: IPollResponseParameters) =>
   fetcher<IPollResponses>({
-    path: `/${participationContextType}s/${participationContextId}/poll_responses/responses_count`,
+    path: `/phases/${phaseId}/poll_responses/responses_count`,
     action: 'get',
   });
 
-const usePollResponses = ({
-  participationContextId,
-  participationContextType,
-}: IPollResponseParameters) => {
+const usePollResponses = ({ phaseId }: IPollResponseParameters) => {
   return useQuery<IPollResponses, CLErrors, IPollResponses, PollResponsesKeys>({
     queryKey: pollOptionsKeys.item({
-      participationContextId,
-      participationContextType,
+      phaseId,
     }),
-    queryFn: () =>
-      fetchResponses({ participationContextId, participationContextType }),
+    queryFn: () => fetchResponses({ phaseId }),
   });
 };
 

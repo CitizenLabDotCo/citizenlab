@@ -11,12 +11,10 @@ describe('Admin project participation method', () => {
   before(() => {
     // Create active continuous project
     cy.apiCreateProject({
-      type: 'timeline',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
       publicationStatus: 'published',
-      participationMethod: 'ideation',
     })
       .then((project) => {
         projectId = project.body.data.id;
@@ -36,9 +34,11 @@ describe('Admin project participation method', () => {
       });
   });
 
-  it('checks that participation method can be changed after creation except for native survey projects/phases', () => {
+  it('checks that participation method can be changed after creation except for native survey phases', () => {
+    const phaseSetupPath = `admin/projects/${projectId}/phases/${phaseId}/setup`;
+
     cy.setAdminLoginCookie();
-    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/setup`);
+    cy.visit(phaseSetupPath);
     cy.acceptCookies();
 
     // Check that participation method warning is present
@@ -53,37 +53,37 @@ describe('Admin project participation method', () => {
     // Information
     cy.get('#participationmethod-information').click({ force: true });
     cy.get('.e2e-submit-wrapper-button button').click();
-    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/setup`);
+    cy.visit(phaseSetupPath);
     cy.get('#participationmethod-information').should('be.checked');
 
     // Ideation
     cy.get('#participationmethod-ideation').click({ force: true });
     cy.get('.e2e-submit-wrapper-button button').click();
-    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/setup`);
+    cy.visit(phaseSetupPath);
     cy.get('#participationmethod-ideation').should('be.checked');
 
     // Poll
     cy.get('#participationmethod-poll').click({ force: true });
     cy.get('.e2e-submit-wrapper-button button').click();
-    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/setup`);
+    cy.visit(phaseSetupPath);
     cy.get('#participationmethod-poll').should('be.checked');
 
     // Budgeting
     cy.get('#participationmethod-voting').click({ force: true });
     cy.get('.e2e-submit-wrapper-button button').click();
-    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/setup`);
+    cy.visit(phaseSetupPath);
     cy.get('#participationmethod-voting').should('be.checked');
 
     // Volunteering
     cy.get('#participationmethod-volunteering').click({ force: true });
     cy.get('.e2e-submit-wrapper-button button').click();
-    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/setup`);
+    cy.visit(phaseSetupPath);
     cy.get('#participationmethod-volunteering').should('be.checked');
 
     // Native survey
     cy.get('#participationmethod-native_survey').click({ force: true });
     cy.get('.e2e-submit-wrapper-button button').click();
-    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/setup`);
+    cy.visit(phaseSetupPath);
     cy.get('#participationmethod-native_survey').should('not.exist');
   });
 

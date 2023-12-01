@@ -12,7 +12,6 @@ describe('Project and folder cards on front page', () => {
 
   before(() => {
     cy.apiCreateProject({
-      type: 'continuous',
       title: publishedProjectTitle,
       descriptionPreview: publishedProjectDescriptionPreview,
       description: randomString(),
@@ -21,7 +20,6 @@ describe('Project and folder cards on front page', () => {
       publishedProjectId = project.body.data.id;
 
       cy.apiCreateProject({
-        type: 'continuous',
         title: archivedProjectTitle,
         descriptionPreview: archivedProjectDescriptionPreview,
         description: randomString(),
@@ -93,12 +91,10 @@ describe('Native survey project card', () => {
 
   before(() => {
     cy.apiCreateProject({
-      type: 'continuous',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
       publicationStatus: 'published',
-
     }).then((project) => {
       projectId = project.body.data.id;
       projectSlug = project.body.data.attributes.slug;
@@ -111,7 +107,7 @@ describe('Native survey project card', () => {
         participationMethod: 'native_survey',
         canPost: true,
         canComment: true,
-        canReact: true
+        canReact: true,
       });
     });
   });

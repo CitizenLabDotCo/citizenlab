@@ -12,12 +12,10 @@ describe('New project with native survey', () => {
 
   before(() => {
     cy.apiCreateProject({
-      type: 'timeline',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
       publicationStatus: 'published',
-      participationMethod: 'native_survey',
     })
       .then((project) => {
         projectId = project.body.data.id;
@@ -80,7 +78,6 @@ describe('Project with native survey phase but not active', () => {
 
   before(() => {
     cy.apiCreateProject({
-      type: 'timeline',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
@@ -127,7 +124,6 @@ describe('Modal shown after survey submission', () => {
 
   before(() => {
     cy.apiCreateProject({
-      type: 'timeline',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
@@ -180,7 +176,6 @@ describe('Native survey CTA bar', () => {
       })
       .then(() => {
         cy.apiCreateProject({
-          type: 'timeline',
           title: projectTitle,
           descriptionPreview: projectDescriptionPreview,
           description: projectDescription,

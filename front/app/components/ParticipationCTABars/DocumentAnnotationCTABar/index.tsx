@@ -42,6 +42,10 @@ const DocumentAnnotationCTABar = ({ phases, project }: CTABarProps) => {
     setCurrentPhase(getCurrentPhase(phases) || getLastPhase(phases));
   }, [phases]);
 
+  if (!currentPhase || hasProjectEndedOrIsArchived(project, currentPhase)) {
+    return null;
+  }
+
   const handleClick = () => {
     const scrollParams = {
       elementId: 'document-annotation',
@@ -64,18 +68,14 @@ const DocumentAnnotationCTABar = ({ phases, project }: CTABarProps) => {
       triggerAuthenticationFlow({
         flow: 'signup',
         context: {
-          type: currentPhase ? 'phase' : 'project',
+          type: 'phase',
           action: 'annotating_document',
-          id: currentPhase ? currentPhase.id : project.id,
+          id: currentPhase.id,
         },
         successAction,
       });
     }
   };
-
-  if (hasProjectEndedOrIsArchived(project, currentPhase)) {
-    return null;
-  }
 
   return (
     <ParticipationCTAContent

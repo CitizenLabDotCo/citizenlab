@@ -31,7 +31,6 @@ import { isIdeaInParticipationContext } from 'api/phases/utils';
 
 // typings
 import { IdeaReactingDisabledReason } from 'api/ideas/types';
-import { IProjectData } from 'api/projects/types';
 import { IPhaseData } from 'api/phases/types';
 
 const Container = styled.div`
@@ -69,7 +68,7 @@ interface Props {
   projectId: string;
   deselectIdeaOnMap?: () => void;
   className?: string;
-  participationContext?: IProjectData | IPhaseData;
+  phase?: IPhaseData;
 }
 
 const IdeaShowPageTopBar = ({
@@ -77,7 +76,7 @@ const IdeaShowPageTopBar = ({
   projectId,
   className,
   deselectIdeaOnMap,
-  participationContext,
+  phase,
 }: Props) => {
   const { data: authUser } = useAuthUser();
   const { data: project } = useProjectById(projectId);
@@ -87,14 +86,10 @@ const IdeaShowPageTopBar = ({
   const [searchParams] = useSearchParams();
   const [goBack] = useState(searchParams.get('go_back'));
 
-  const votingConfig = getVotingMethodConfig(
-    participationContext?.attributes.voting_method
-  );
+  const votingConfig = getVotingMethodConfig(phase?.attributes.voting_method);
 
   const ideaIsInParticipationContext =
-    participationContext && idea
-      ? isIdeaInParticipationContext(idea, participationContext)
-      : undefined;
+    phase && idea ? isIdeaInParticipationContext(idea, phase) : undefined;
 
   useEffect(() => {
     removeSearchParams(['go_back']);
@@ -108,18 +103,13 @@ const IdeaShowPageTopBar = ({
       project &&
       isFixableByAuthentication(disabled_reason)
     ) {
-      const pcType =
-        project.data.attributes.process_type === 'continuous'
-          ? 'project'
-          : 'phase';
-      const pcId =
-        project.data.relationships?.current_phase?.data?.id || project.data.id;
-      if (pcId && pcType) {
+      const phaseId = project.data.relationships?.current_phase?.data?.id;
+      if (phaseId) {
         triggerAuthenticationFlow({
           context: {
             action: 'reacting_idea',
-            id: pcId,
-            type: pcType,
+            id: phaseId,
+            type: 'phase',
           },
         });
       }
@@ -149,8 +139,7 @@ const IdeaShowPageTopBar = ({
         </Left>
         <Right>
           {/* Only visible if not voting */}
-          {participationContext?.attributes.participation_method !==
-            'voting' && ( // To reduce bias we want to hide the reactions during voting methods
+          {phase?.attributes.participation_method !== 'voting' && ( // To reduce bias we want to hide the reactions during voting methods
             <ReactionControl
               size="1"
               styleType="border"
@@ -159,11 +148,11 @@ const IdeaShowPageTopBar = ({
             />
           )}
           {/* Only visible if voting */}
-          {ideaId && participationContext && ideaIsInParticipationContext && (
+          {ideaId && phase && ideaIsInParticipationContext && (
             <Box mr="8px">
               {votingConfig?.getIdeaPageVoteInput({
                 ideaId,
-                participationContext,
+                phase,
                 compact: true,
               })}
             </Box>

@@ -5,16 +5,11 @@ import ProjectHelmet from './shared/header/ProjectHelmet';
 import Unauthorized from 'components/Unauthorized';
 import PageNotFound from 'components/PageNotFound';
 import ProjectHeader from './shared/header/ProjectHeader';
-import ContinuousIdeas from './continuous/Ideas';
-import ContinuousSurvey from './continuous/Survey';
-import ContinuousDocumentAnnotation from './continuous/DocumentAnnotation';
-import ContinuousPoll from './continuous/Poll';
-import ContinuousVolunteering from './continuous/Volunteering';
 import TimelineContainer from './timeline';
 import { Box, Spinner, useBreakpoint } from '@citizenlab/cl2-component-library';
 import Navigate from 'utils/cl-router/Navigate';
 import SuccessModal from './SucessModal';
-import { ProjectCTABar } from './ProjectCTABar';
+import ProjectCTABar from './ProjectCTABar';
 import EventsViewer from 'containers/EventsPage/EventsViewer';
 import Centerer from 'components/UI/Centerer';
 import ErrorBoundary from 'components/ErrorBoundary';
@@ -85,7 +80,6 @@ interface Props {
 
 const ProjectsShowPage = ({ project }: Props) => {
   const projectId = project.id;
-  const processType = project.attributes.process_type;
 
   const isSmallerThanTablet = useBreakpoint('tablet');
   const { formatMessage } = useIntl();
@@ -136,22 +130,7 @@ const ProjectsShowPage = ({ project }: Props) => {
         <ProjectCTABar projectId={projectId} />
 
         <div id="participation-detail">
-          {processType === 'continuous' ? (
-            <>
-              <ContinuousIdeas projectId={projectId} />
-              {project.attributes.participation_method === 'survey' && (
-                <ContinuousSurvey project={project} />
-              )}
-              {project.attributes.participation_method ===
-                'document_annotation' && (
-                <ContinuousDocumentAnnotation project={project} />
-              )}
-              <ContinuousPoll projectId={projectId} />
-              <ContinuousVolunteering projectId={projectId} />
-            </>
-          ) : (
-            <TimelineContainer projectId={projectId} />
-          )}
+          <TimelineContainer projectId={projectId} />
         </div>
         {!!events?.data.length && (
           <Box
@@ -217,7 +196,6 @@ const ProjectsShowPageWrapper = () => {
     project?.data.id
   );
   const { data: user, isLoading: isUserLoading } = useAuthUser();
-  const processType = project?.data.attributes?.process_type;
   const urlSegments = pathname
     .replace(/^\/|\/$/g, '')
     .split('/')
@@ -264,7 +242,6 @@ const ProjectsShowPageWrapper = () => {
   }
 
   const isTimelineProjectAndHasValidPhaseParam =
-    processType === 'timeline' &&
     phases &&
     urlSegments.length === 4 &&
     isValidPhase(phaseNumber, phases.data);

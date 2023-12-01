@@ -108,11 +108,8 @@ const AdminProjectsProjectGeneral = () => {
   const [projectAttributesDiff, setProjectAttributesDiff] =
     useState<IUpdatedProjectProperties>({});
   const [titleError, setTitleError] = useState<Multiloc | null>(null);
-  // We should probably not have projectType, slug, publicationStatus, etc.
+  // We should probably not have slug, publicationStatus, etc.
   // both in projectAttributesDiff and as separate state.
-  const [projectType, setProjectType] = useState<'continuous' | 'timeline'>(
-    'timeline'
-  );
   const [projectFiles, setProjectFiles] = useState<UploadFile[]>([]);
   const [projectFilesToRemove, setProjectFilesToRemove] = useState<
     UploadFile[]
@@ -139,7 +136,6 @@ const AdminProjectsProjectGeneral = () => {
     (async () => {
       if (project) {
         setPublicationStatus(project.data.attributes.publication_status);
-        setProjectType(project.data.attributes.process_type);
         setSlug(project.data.attributes.slug);
       }
     })();
@@ -395,14 +391,7 @@ const AdminProjectsProjectGeneral = () => {
 
   const onSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-
-    // Simplify or document.
-    // Not clear what this means.
-    if (projectType === 'continuous') {
-      eventEmitter.emit('getParticipationContext');
-    } else {
-      saveForm();
-    }
+    saveForm();
   };
 
   const handleParticipationContextOnSubmit = (
@@ -529,10 +518,10 @@ const AdminProjectsProjectGeneral = () => {
           <StyledSectionField>
             {!project && (
               <>
-                <ProjectTypePicker projectType={projectType} />
+                <ProjectTypePicker projectType="timeline" />
                 <CSSTransition
                   classNames="participationcontext"
-                  in={projectType === 'continuous'}
+                  in={false}
                   timeout={TIMEOUT}
                   mountOnEnter={true}
                   unmountOnExit={true}
@@ -552,16 +541,6 @@ const AdminProjectsProjectGeneral = () => {
               </>
             )}
           </StyledSectionField>
-
-          {!isNilOrError(project) && projectType === 'continuous' && (
-            <ParticipationContext
-              project={project}
-              onSubmit={handleParticipationContextOnSubmit}
-              onChange={handleParticipationContextOnChange}
-              apiErrors={apiErrors}
-              appConfig={appConfig}
-            />
-          )}
 
           <TopicInputs
             selectedTopicIds={selectedTopicIds}

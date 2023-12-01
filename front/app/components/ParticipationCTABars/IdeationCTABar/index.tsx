@@ -35,9 +35,6 @@ const IdeationCTABar = ({ phases, project }: CTABarProps) => {
     setCurrentPhase(getCurrentPhase(phases) || getLastPhase(phases));
   }, [phases]);
 
-  const isPhaseIdeation =
-    currentPhase?.attributes.participation_method === 'ideation';
-
   if (hasProjectEndedOrIsArchived(project, currentPhase)) {
     return null;
   }
@@ -63,7 +60,6 @@ const IdeationCTABar = ({ phases, project }: CTABarProps) => {
             <IdeaButton
               id="e2e-ideation-cta-button"
               projectId={project.id}
-              participationContextType={isPhaseIdeation ? 'phase' : 'project'}
               fontWeight="500"
               bgColor={theme.colors.white}
               textColor={theme.colors.tenantText}

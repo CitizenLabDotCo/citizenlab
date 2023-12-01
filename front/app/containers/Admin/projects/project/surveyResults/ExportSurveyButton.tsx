@@ -2,7 +2,6 @@
 import React from 'react';
 
 // typings
-import { IParticipationContextType } from 'typings';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
@@ -17,8 +16,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 interface Props {
-  type: IParticipationContextType;
-  id: string;
+  phaseId: string;
 }
 
 interface State {

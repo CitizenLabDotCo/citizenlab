@@ -18,7 +18,6 @@ describe('Project with single voting phase', () => {
 
   before(() => {
     cy.apiCreateProject({
-      type: 'timeline',
       title: projectTitle,
       descriptionPreview: '',
       description: '',

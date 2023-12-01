@@ -12,7 +12,6 @@ describe('Admin: ideation analysis', () => {
     const projectDescriptionPreview = randomString();
     const projectDescription = randomString();
     cy.apiCreateProject({
-      type: 'timeline',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,

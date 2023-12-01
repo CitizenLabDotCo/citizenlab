@@ -21,7 +21,6 @@ describe('Idea with anonymous commenting allowed', () => {
     cy.setAdminLoginCookie();
     cy.getAuthUser().then(() => {
       cy.apiCreateProject({
-        type: 'timeline',
         title: projectTitle,
         descriptionPreview: '',
         description: '',

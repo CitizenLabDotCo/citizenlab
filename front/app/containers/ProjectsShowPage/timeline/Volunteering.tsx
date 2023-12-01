@@ -25,7 +25,7 @@ const VolunteeringContainer = ({ projectId, className, phaseId }: Props) => {
           className || ''
         }`}
       >
-        <Volunteering phaseId={phaseId} projectId={projectId} type="phase" />
+        <Volunteering phaseId={phaseId} projectId={projectId} />
       </Container>
     );
   }

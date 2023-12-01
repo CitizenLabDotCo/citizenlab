@@ -9,7 +9,6 @@ describe('Report builder Reactions By Time widget', () => {
     cy.setAdminLoginCookie();
 
     cy.apiCreateProject({
-      type: 'timeline',
       title: randomString(),
       descriptionPreview: randomString(),
       description: randomString(),

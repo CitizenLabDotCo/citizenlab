@@ -30,7 +30,7 @@ const IdeaFormBuilder = () => {
   });
   const locale = useLocale();
 
-  const goBackUrl = `/admin/projects/${projectId}/ideaform/${phaseId}`;
+  const goBackUrl = `/admin/projects/${projectId}/phases/${phaseId}/ideaform`;
 
   const handleDownloadPDF = () => setExportModalOpen(true);
 

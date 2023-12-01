@@ -257,8 +257,8 @@ describe Surveys::TypeformApiParser do
   end
 
   describe 'get_responses' do
-    it "generates valid Surveys::Response's, participation_context excluded" do
-      pc = create(:project)
+    it "generates valid Surveys::Response's, phase excluded" do
+      phase = create(:single_phase_typeform_survey_project).phases.first
 
       expect(tf_api)
         .to receive(:form)
@@ -273,7 +273,7 @@ describe Surveys::TypeformApiParser do
       responses = service.get_responses(form_id)
       expect(responses).to all(be_a(Surveys::Response))
 
-      responses.each { |r| r.participation_context = pc }
+      responses.each { |r| r.phase = phase }
       expect(responses).to all(be_valid)
     end
   end

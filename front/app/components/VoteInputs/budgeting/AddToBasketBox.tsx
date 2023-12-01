@@ -23,7 +23,6 @@ import { fontSizes, colors, defaultCardStyle, media } from 'utils/styleUtils';
 import { isNil } from 'utils/helperUtils';
 
 // typings
-import { IProjectData } from 'api/projects/types';
 import { IPhaseData } from 'api/phases/types';
 
 const IdeaPageContainer = styled.div`
@@ -60,17 +59,17 @@ const Budget = styled.div`
 
 interface Props {
   ideaId: string;
-  participationContext: IProjectData | IPhaseData;
+  phase: IPhaseData;
 }
 
-const AddToBasketBox = memo(({ ideaId, participationContext }: Props) => {
+const AddToBasketBox = memo(({ ideaId, phase }: Props) => {
   const { data: idea } = useIdeaById(ideaId);
   const { data: appConfig } = useAppConfiguration();
   const { numberOfVotesCast } = useVoting();
 
   const ideaBudget = idea?.data.attributes.budget;
   const actionDescriptor = idea?.data.attributes.action_descriptor.voting;
-  const { voting_max_total } = participationContext.attributes;
+  const { voting_max_total } = phase.attributes;
 
   if (!actionDescriptor || !ideaBudget || isNil(voting_max_total)) {
     return null;
@@ -105,7 +104,7 @@ const AddToBasketBox = memo(({ ideaId, participationContext }: Props) => {
         <AddToBasketButton
           ideaId={ideaId}
           buttonStyle="primary"
-          participationContext={participationContext}
+          phase={phase}
           onIdeaPage
         />
       </BudgetWithButtonWrapper>

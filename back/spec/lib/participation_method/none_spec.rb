@@ -8,18 +8,18 @@ RSpec.describe ParticipationMethod::None do
   let(:input) { create(:idea) }
 
   describe '#assign_defaults_for_phase' do
-    let(:project) { build(:single_phase_ideation_project) }
+    let(:phase) { build(:phase) }
 
     it 'does not change the posting_method' do
       expect do
         participation_method.assign_defaults_for_phase
-      end.not_to change(project, :posting_method)
+      end.not_to change(phase, :posting_method)
     end
 
     it 'does not change the ideas_order' do
       expect do
         participation_method.assign_defaults_for_phase
-      end.not_to change(project, :ideas_order)
+      end.not_to change(phase, :ideas_order)
     end
   end
 

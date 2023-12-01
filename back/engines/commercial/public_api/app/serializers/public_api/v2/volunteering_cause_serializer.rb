@@ -16,10 +16,6 @@ class PublicApi::V2::VolunteeringCauseSerializer < PublicApi::V2::BaseSerializer
   )
 
   def project_id
-    object.participation_context.project_id
-  end
-
-  def phase_id
-    object.participation_context_id
+    object.phase.project_id
   end
 end

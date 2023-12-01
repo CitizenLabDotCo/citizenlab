@@ -9,11 +9,7 @@ import dragAndDrop from 'utils/testUtils/dragAndDrop';
 describe('<PollAdminForm/>', () => {
   it('Shows the right number of question rows', () => {
     render(
-      <PollAdminForm
-        participationContextId="projectId"
-        participationContextType="project"
-        pollQuestions={pollQuestionsData}
-      />
+      <PollAdminForm phaseId="phaseId" pollQuestions={pollQuestionsData} />
     );
 
     const questionRows = screen.getAllByTestId('question-row');
@@ -22,13 +18,7 @@ describe('<PollAdminForm/>', () => {
 
   describe('Add a question button', () => {
     it("Shows when we don't have questions (rows) (yet)", () => {
-      render(
-        <PollAdminForm
-          participationContextId="projectId"
-          participationContextType="project"
-          pollQuestions={null}
-        />
-      );
+      render(<PollAdminForm phaseId="phaseId" pollQuestions={null} />);
 
       const addQuestionButton = screen.getByRole('button', {
         name: /add a poll question/i,
@@ -38,11 +28,7 @@ describe('<PollAdminForm/>', () => {
 
     it('Shows when we do have questions (rows)', () => {
       render(
-        <PollAdminForm
-          participationContextId="projectId"
-          participationContextType="project"
-          pollQuestions={pollQuestionsData}
-        />
+        <PollAdminForm phaseId="phaseId" pollQuestions={pollQuestionsData} />
       );
 
       const addQuestionButton = screen.getByRole('button', {
@@ -54,11 +40,7 @@ describe('<PollAdminForm/>', () => {
     it("Does not show when we are editing a question's answer options", async () => {
       const user = userEvent.setup();
       render(
-        <PollAdminForm
-          participationContextId="projectId"
-          participationContextType="project"
-          pollQuestions={pollQuestionsData}
-        />
+        <PollAdminForm phaseId="phaseId" pollQuestions={pollQuestionsData} />
       );
 
       const firstRowEditAnswerOptionsButton = screen.getAllByRole('button', {
@@ -74,11 +56,7 @@ describe('<PollAdminForm/>', () => {
     it('Does not show after we clicked it', async () => {
       const user = userEvent.setup();
       render(
-        <PollAdminForm
-          participationContextId="projectId"
-          participationContextType="project"
-          pollQuestions={pollQuestionsData}
-        />
+        <PollAdminForm phaseId="phaseId" pollQuestions={pollQuestionsData} />
       );
 
       const addQuestionButton = screen.getByRole('button', {
@@ -91,11 +69,7 @@ describe('<PollAdminForm/>', () => {
     it('opens the new question form', async () => {
       const user = userEvent.setup();
       render(
-        <PollAdminForm
-          participationContextId="projectId"
-          participationContextType="project"
-          pollQuestions={pollQuestionsData}
-        />
+        <PollAdminForm phaseId="phaseId" pollQuestions={pollQuestionsData} />
       );
 
       const addQuestionButton = screen.getByRole('button', {
@@ -112,11 +86,7 @@ describe('<PollAdminForm/>', () => {
 
   it('drags and drops rows (questions) correctly', () => {
     render(
-      <PollAdminForm
-        participationContextId="projectId"
-        participationContextType="project"
-        pollQuestions={pollQuestionsData}
-      />
+      <PollAdminForm phaseId="phaseId" pollQuestions={pollQuestionsData} />
     );
 
     const questionRows = screen.getAllByTestId('question-row');
