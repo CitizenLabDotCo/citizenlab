@@ -97,7 +97,7 @@ const Forms = () => {
   const handleDownloadResults = async () => {
     try {
       setIsDownloading(true);
-      await downloadSurveyResults(project.data, locale, phase?.data);
+      await downloadSurveyResults(locale, phase?.data);
     } catch (error) {
       // Not handling errors for now
     } finally {

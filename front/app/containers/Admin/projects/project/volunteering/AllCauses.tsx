@@ -34,10 +34,6 @@ const AllCauses = ({ phaseId, projectId }: Props) => {
   const { mutate: deleteCause } = useDeleteCause();
   const { mutate: reorderCause } = useReorderCause();
   const { formatMessage } = useIntl();
-  // TODO: JS - Is this needed?
-  // const { phaseId } = useParams() as {
-  //   phaseId: string;
-  // };
 
   const { data: causes } = useCauses({
     phaseId,

@@ -50,8 +50,7 @@ import { IProjectData } from 'api/projects/types';
 import { IIdeaImages } from 'api/idea_images/types';
 
 // utils
-import { getCurrentParticipationContext } from 'api/phases/utils';
-import { getInputTerm } from 'utils/participationContexts';
+import {getCurrentPhase, getInputTerm} from 'api/phases/utils';
 import ProjectLink from 'containers/EventsShowPage/components/ProjectLink';
 
 const StyledRightColumnDesktop = styled(RightColumnDesktop)`
@@ -138,8 +137,7 @@ const Content = ({
   const ideaId = idea.data.id;
   const ideaBody = localize(idea.data.attributes?.body_multiloc);
 
-  const participationContext = getCurrentParticipationContext(
-    project,
+  const participationContext = getCurrentPhase(
     phases?.data
   );
 

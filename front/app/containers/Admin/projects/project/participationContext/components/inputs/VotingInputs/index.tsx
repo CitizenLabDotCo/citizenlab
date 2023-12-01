@@ -28,12 +28,12 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../../../../messages';
 
 // typings
-import { VotingMethod } from 'utils/participationContexts';
 import { ApiErrors } from '../../../';
 import { Multiloc } from 'typings';
 
 // hooks
 import { useLocation } from 'react-router-dom';
+import {VotingMethod} from "api/phases/types";
 
 export interface VotingInputsProps {
   voting_method: VotingMethod | null | undefined;

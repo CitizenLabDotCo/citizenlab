@@ -31,7 +31,6 @@ const ReportTab = memo(() => {
     canModerate: true,
   });
 
-  // TODO: JS - this logic can probably go completely
   const participableProjects = !isNilOrError(projects) ? projects.data : [];
 
   return (

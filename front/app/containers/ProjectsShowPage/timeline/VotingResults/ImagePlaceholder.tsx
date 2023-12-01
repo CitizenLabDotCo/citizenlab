@@ -9,7 +9,7 @@ import { transparentize } from 'polished';
 import { colors } from 'utils/styleUtils';
 
 // typings
-import { ParticipationMethod, VotingMethod } from 'utils/participationContexts';
+import {ParticipationMethod, VotingMethod} from "api/phases/types";
 
 const ImagePlaceholderContainer = styled.div`
   position: absolute;

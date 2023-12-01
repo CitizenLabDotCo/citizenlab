@@ -20,7 +20,7 @@ import {
   getMethodConfig,
   getPhase,
 } from 'utils/configs/participationMethodConfig';
-import { getCurrentParticipationContext } from 'api/phases/utils';
+import { getCurrentPhase} from 'api/phases/utils';
 import { isReady } from './utils';
 
 interface Props {
@@ -53,8 +53,7 @@ const SuccessModal = ({ projectId }: Props) => {
 
   const phaseInUrl =
     phaseIdParam && phases ? getPhase(phaseIdParam, phases.data) : undefined;
-  const participationContext =
-    phaseInUrl ?? getCurrentParticipationContext(project?.data, phases?.data);
+  const participationContext = phaseInUrl ?? getCurrentPhase(phases?.data);
   const participationMethod =
     participationContext?.attributes.participation_method;
 

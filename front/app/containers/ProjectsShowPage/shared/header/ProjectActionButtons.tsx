@@ -12,9 +12,8 @@ import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 
 // services
-import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
+import {getCurrentPhase, getInputTerm, getLastPhase} from 'api/phases/utils';
 import { IPhaseData } from 'api/phases/types';
-import { getInputTerm } from 'utils/participationContexts';
 
 // components
 import Button from 'components/UI/Button';

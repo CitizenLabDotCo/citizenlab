@@ -10,8 +10,8 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../../../messages';
 
 // typings
-import { IdeaDefaultSortMethod } from 'utils/participationContexts';
 import { ApiErrors } from '../../..';
+import {IdeaDefaultSortMethod} from "api/phases/types";
 
 interface Props {
   options: { key: string; value: string }[];

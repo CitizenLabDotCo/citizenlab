@@ -34,8 +34,8 @@ import {
 } from '../styleConstants';
 
 // utils
-import { getInputTerm } from 'utils/participationContexts';
 import { isString } from 'utils/helperUtils';
+import {getInputTerm} from "api/phases/utils";
 
 const Main = styled.main`
   width: 100%;

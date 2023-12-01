@@ -25,8 +25,8 @@ import messages from '../../../../messages';
 
 // typings
 import { ApiErrors } from '../../..';
-import { IdeaDefaultSortMethod, InputTerm } from 'utils/participationContexts';
 import AnonymousPostingToggle from 'components/admin/AnonymousPostingToggle/AnonymousPostingToggle';
+import {IdeaDefaultSortMethod, InputTerm} from "api/phases/types";
 
 interface Props {
   isCustomInputTermEnabled: boolean;

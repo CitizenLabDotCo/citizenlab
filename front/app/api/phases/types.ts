@@ -1,13 +1,5 @@
-import { IRelationship, Multiloc } from 'typings';
-import {
-  ParticipationMethod,
-  TSurveyService,
-  IdeaDefaultSortMethod,
-  InputTerm,
-  PresentationMode,
-  VotingMethod,
-} from 'utils/participationContexts';
-import { Keys } from 'utils/cl-react-query/types';
+import {IRelationship, Multiloc} from 'typings';
+import {Keys} from 'utils/cl-react-query/types';
 import phasesKeys from './keys';
 import { CampaignName } from 'api/campaigns/types';
 
@@ -112,3 +104,44 @@ export interface AddPhaseObject extends IUpdatedPhaseProperties {
 export interface UpdatePhaseObject extends IUpdatedPhaseProperties {
   phaseId: string;
 }
+
+export type TSurveyService =
+  | 'typeform'
+  | 'survey_xact'
+  | 'survey_monkey'
+  | 'google_forms'
+  | 'enalyzer'
+  | 'qualtrics'
+  | 'smart_survey'
+  | 'microsoft_forms'
+  | 'snap_survey';
+
+export type ParticipationMethod =
+  | 'ideation'
+  | 'information'
+  | 'native_survey'
+  | 'survey'
+  | 'voting'
+  | 'poll'
+  | 'volunteering'
+  | 'document_annotation';
+
+export type VotingMethod = 'budgeting' | 'multiple_voting' | 'single_voting';
+
+export type IdeaDefaultSortMethod =
+  | 'trending'
+  | 'random'
+  | 'popular'
+  | 'new'
+  | '-new'
+  | null;
+
+export type InputTerm =
+  | 'idea'
+  | 'option'
+  | 'project'
+  | 'question'
+  | 'issue'
+  | 'contribution';
+
+export type PresentationMode = 'card' | 'map';

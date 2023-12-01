@@ -7,13 +7,8 @@ import {
   ActionDescriptorFutureEnabled,
 } from 'utils/actionDescriptors';
 import { ILinks, IRelationship, Multiloc } from 'typings';
-import {
-  TSurveyService,
-  ParticipationMethod,
-  IdeaDefaultSortMethod,
-  InputTerm,
-} from 'utils/participationContexts';
 import { Keys } from 'utils/cl-react-query/types';
+import {IdeaDefaultSortMethod, InputTerm, ParticipationMethod, TSurveyService} from "../phases/types";
 
 // Keys
 export type ProjectsKeys = Keys<typeof projectsKeys>;

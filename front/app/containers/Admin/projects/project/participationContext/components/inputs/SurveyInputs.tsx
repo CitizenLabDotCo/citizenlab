@@ -11,8 +11,8 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../../../messages';
 
 // typings
-import { TSurveyService } from 'utils/participationContexts';
 import { ApiErrors } from '../..';
+import {TSurveyService} from "api/phases/types";
 
 interface Props {
   survey_service: TSurveyService | null | undefined;

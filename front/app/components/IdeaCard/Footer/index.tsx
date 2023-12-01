@@ -7,7 +7,7 @@ import FooterWithReactionControl from './FooterWithReactionControl';
 // typings
 import { IProject } from 'api/projects/types';
 import { IIdeaData } from 'api/ideas/types';
-import { ParticipationMethod } from 'utils/participationContexts';
+import {ParticipationMethod} from "api/phases/types";
 
 interface Props {
   project?: IProject;

@@ -54,7 +54,6 @@ const DocumentAnnotation = ({ project, phaseId, documentUrl }: Props) => {
     return (
       <ParticipationPermission
         id="document-annotation"
-        projectId={project.id}
         action="annotating_document"
         enabled={isEnabled(disabled_reason)}
         phaseId={phaseId}

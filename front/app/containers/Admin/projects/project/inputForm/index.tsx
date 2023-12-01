@@ -24,8 +24,7 @@ import { saveIdeaFormAsPDF } from './saveIdeaFormAsPDF';
 import { isNilOrError } from 'utils/helperUtils';
 
 // typings
-import { IPhaseData } from 'api/phases/types';
-import { ParticipationMethod } from 'utils/participationContexts';
+import {IPhaseData, ParticipationMethod} from 'api/phases/types';
 import { requestBlob } from 'utils/requestBlob';
 import { API_PATH } from 'containers/App/constants';
 import { saveAs } from 'file-saver';

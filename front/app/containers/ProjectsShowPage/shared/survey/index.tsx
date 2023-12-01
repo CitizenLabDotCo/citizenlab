@@ -1,6 +1,5 @@
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { TSurveyService } from 'utils/participationContexts';
 
 // components
 import TypeformSurvey from './TypeformSurvey';
@@ -28,6 +27,7 @@ import SurveyXact from './SurveyXact';
 // utils
 import { IProjectData, SurveyDisabledReason } from 'api/projects/types';
 import ParticipationPermission from '../ParticipationPermission';
+import {TSurveyService} from "api/phases/types";
 
 const Container = styled.div`
   position: relative;
@@ -75,7 +75,6 @@ const Survey = ({
   return (
     <ParticipationPermission
       id="project-survey"
-      projectId={project.id}
       action="taking_survey"
       enabled={enabled}
       phaseId={phaseId}
