@@ -591,7 +591,7 @@
   "app.components.anonymousParticipationModal.participateAnonymouslyModalTextSection2": "Учинити нашу платформу безбедном за сваког корисника је за нас главни приоритет. Речи су важне, зато будите љубазни једни према другима.",
   "app.components.followUnfollow.follow": "Pratite",
   "app.components.followUnfollow.followADiscussion": "Pratite",
-  "app.components.followUnfollow.unFollow": "Unfollow",
+  "app.components.followUnfollow.unFollow": "Prestani pratiti",
   "app.components.form.ErrorDisplay.guidelinesLinkText": "naše smernice",
   "app.components.form.ErrorDisplay.next": "Sledeće",
   "app.components.form.ErrorDisplay.previous": "Prethodno",
