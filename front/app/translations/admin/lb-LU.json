@@ -262,7 +262,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.pollPhase": "Pollphase",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.react": "<b>  {participants}:</b>",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.registeredUsers": "Registréiert Benotzer",
-  "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.submitIdeas": "<b>Iddien ofginn:</b>  {participants}",
+  "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.submitInputs": "<b>Input ofginn:</b>  {participants}",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.takingPoll": "<b>  {participants}:</b>",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.takingSurvey": "<b>Ëmfro huelen:</b>  {participants}",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.usersWithConfirmedEmail": "Benotzer mat bestätegt Mailen",
