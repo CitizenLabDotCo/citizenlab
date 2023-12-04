@@ -1163,6 +1163,7 @@
   "app.containers.InitiativesShow.youWereInvitedToConsponsorBy": "{authorName} invitéiert Iech fir dës Propositioun ze cosponséieren.",
   "app.containers.Navbar.completeOnboarding": "Komplett Onboarding",
   "app.containers.Navbar.completeProfile": "Komplett Profil",
+  "app.containers.Navbar.confirmEmail2": "Confirméieren Email",
   "app.containers.Navbar.unverified": "Net iwwerpréift",
   "app.containers.Navbar.verified": "Iwwerpréift",
   "app.containers.NewAuthModal.beforeYouFollow": "Ier Dir verfollegt",
