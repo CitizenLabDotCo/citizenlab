@@ -22,9 +22,9 @@ import {
   SubSectionTitle,
   SectionField,
 } from 'components/admin/Section';
-import ParticipationContext, {
-  IParticipationContextConfig,
-} from '../participationContext';
+import PhaseParticipationConfig, {
+  IPhaseParticipationConfig,
+} from '../phase/phaseParticipationConfig';
 import {
   StyledForm,
   StyledSectionField,
@@ -201,8 +201,8 @@ const AdminProjectsProjectGeneral = () => {
     setTitleError(null);
   };
 
-  const handleParticipationContextOnChange = (
-    participationContextConfig: IParticipationContextConfig
+  const handlePhaseParticipationConfigChange = (
+    participationContextConfig: IPhaseParticipationConfig
   ) => {
     setSubmitState('enabled');
     setProjectAttributesDiff((projectAttributesDiff) => ({
@@ -275,7 +275,7 @@ const AdminProjectsProjectGeneral = () => {
   };
 
   async function saveForm(
-    participationContextConfig: IParticipationContextConfig | null = null
+    participationContextConfig: IPhaseParticipationConfig | null = null
   ) {
     // Should be split. Same func for existing/new project
     // Makes things unnecessarily complicated (e.g. projectId below).
@@ -389,8 +389,8 @@ const AdminProjectsProjectGeneral = () => {
     saveForm();
   };
 
-  const handleParticipationContextOnSubmit = (
-    participationContextConfig: IParticipationContextConfig
+  const handlePhaseParticipationConfigSubmit = (
+    participationContextConfig: IPhaseParticipationConfig
   ) => {
     saveForm(participationContextConfig);
   };
@@ -524,10 +524,10 @@ const AdminProjectsProjectGeneral = () => {
                   exit={false}
                 >
                   <ParticipationContextWrapper>
-                    <ParticipationContext
+                    <PhaseParticipationConfig
                       project={project}
-                      onSubmit={handleParticipationContextOnSubmit}
-                      onChange={handleParticipationContextOnChange}
+                      onSubmit={handlePhaseParticipationConfigSubmit}
+                      onChange={handlePhaseParticipationConfigChange}
                       apiErrors={apiErrors}
                       appConfig={appConfig}
                     />

@@ -23,12 +23,12 @@ import Error from 'components/UI/Error';
 // services
 import { IProject } from 'api/projects/types';
 import {
-    IdeaDefaultSortMethod,
-    InputTerm,
-    IPhase,
-    ParticipationMethod,
-    TSurveyService,
-    VotingMethod
+  IdeaDefaultSortMethod,
+  InputTerm,
+  IPhase,
+  ParticipationMethod,
+  TSurveyService,
+  VotingMethod,
 } from 'api/phases/types';
 import eventEmitter from 'utils/eventEmitter';
 
@@ -38,7 +38,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
-import messages from '../messages';
+import messages from '../../messages';
 
 // utils
 import getOutput from './utils/getOutput';
@@ -48,10 +48,9 @@ import { anyIsDefined } from 'utils/helperUtils';
 // typings
 import { CLErrors, Multiloc } from 'typings';
 import { IAppConfiguration } from 'api/app_configuration/types';
-import {getDefaultSortMethodFallback} from "api/phases/utils";
+import { getDefaultSortMethodFallback } from 'api/phases/utils';
 
-// TODO: Edwin rename this to IPhaseConfig and move everything in this folder to ../phase
-export interface IParticipationContextConfig {
+export interface IPhaseParticipationConfig {
   participation_method: ParticipationMethod;
   posting_enabled?: boolean | null;
   commenting_enabled?: boolean | null;
@@ -95,8 +94,8 @@ export type ApiErrors = CLErrors | null | undefined;
 
 interface InputProps {
   className?: string;
-  onChange: (arg: IParticipationContextConfig) => void;
-  onSubmit: (arg: IParticipationContextConfig) => void;
+  onChange: (arg: IPhaseParticipationConfig) => void;
+  onSubmit: (arg: IPhaseParticipationConfig) => void;
   phase?: IPhase | undefined | null;
   project?: IProject | undefined | null;
   apiErrors: ApiErrors;
@@ -105,7 +104,7 @@ interface InputProps {
 
 interface Props extends DataProps, InputProps {}
 
-export interface State extends IParticipationContextConfig {
+export interface State extends IPhaseParticipationConfig {
   noLikingLimitError: JSX.Element | null;
   noDislikingLimitError: JSX.Element | null;
   minTotalVotesError: string | null;
@@ -122,7 +121,7 @@ const MAX_VOTES_PER_VOTING_METHOD: Record<VotingMethod, number> = {
   budgeting: 100,
 };
 
-class ParticipationContext extends PureComponent<
+class PhaseParticipationConfig extends PureComponent<
   Props & WrappedComponentProps,
   State
 > {
@@ -208,7 +207,7 @@ class ParticipationContext extends PureComponent<
 
     this.subscriptions = [
       eventEmitter
-        .observeEvent('getParticipationContext')
+        .observeEvent('getPhaseParticipationConfig')
         .pipe(filter(() => this.validate()))
         .subscribe(() => {
           const output = getOutput(this.state);
@@ -710,5 +709,7 @@ export default (inputProps: InputProps) => {
 
   const intl = useIntl();
 
-  return <ParticipationContext {...inputProps} {...featureFlags} intl={intl} />;
+  return (
+    <PhaseParticipationConfig {...inputProps} {...featureFlags} intl={intl} />
+  );
 };

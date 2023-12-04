@@ -20,7 +20,7 @@ import Tippy from '@tippyjs/react';
 
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from '../../messages';
+import messages from '../../../messages';
 import messages2 from './messages';
 
 // styling
@@ -32,7 +32,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // typings
 import { ApiErrors } from '..';
-import {IPhase, ParticipationMethod} from 'api/phases/types';
+import { IPhase, ParticipationMethod } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 
 interface Props {

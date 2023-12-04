@@ -25,15 +25,15 @@ import SingleVotingInputs from './votingMethodInputs/SingleVotingInputs';
 
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from '../../../../messages';
+import messages from '../../../../../messages';
 
 // typings
-import { ApiErrors } from '../../../';
+import { ApiErrors } from '../../..';
 import { Multiloc } from 'typings';
 
 // hooks
 import { useLocation } from 'react-router-dom';
-import {VotingMethod} from "api/phases/types";
+import { VotingMethod } from 'api/phases/types';
 
 export interface VotingInputsProps {
   voting_method: VotingMethod | null | undefined;

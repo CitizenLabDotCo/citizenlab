@@ -27,9 +27,9 @@ import {
   SectionField,
   SubSectionTitle,
 } from 'components/admin/Section';
-import ParticipationContext, {
-  IParticipationContextConfig,
-} from '../participationContext';
+import PhaseParticipationConfig, {
+  IPhaseParticipationConfig,
+} from '../phase/phaseParticipationConfig';
 import FileUploader from 'components/UI/FileUploader';
 import {
   Text,
@@ -227,11 +227,11 @@ const AdminPhaseEdit = () => {
 
   const handleOnSubmit = async (event: FormEvent<any>) => {
     event.preventDefault();
-    eventEmitter.emit('getParticipationContext');
+    eventEmitter.emit('getPhaseParticipationConfig');
   };
 
   const getAttributeDiff = (
-    participationContextConfig: IParticipationContextConfig
+    participationContextConfig: IPhaseParticipationConfig
   ) => {
     return {
       ...attributeDiff,
@@ -239,15 +239,15 @@ const AdminPhaseEdit = () => {
     };
   };
 
-  const handleParticipationContextOnChange = (
-    participationContextConfig: IParticipationContextConfig
+  const handlePhaseParticipationConfigChange = (
+    participationContextConfig: IPhaseParticipationConfig
   ) => {
     setSubmitState('enabled');
     setAttributeDiff(getAttributeDiff(participationContextConfig));
   };
 
-  const handleParticipationContextOnSubmit = (
-    participationContextConfig: IParticipationContextConfig
+  const handlePhaseParticipationConfigSubmit = (
+    participationContextConfig: IPhaseParticipationConfig
   ) => {
     const attributeDiff = getAttributeDiff(participationContextConfig);
     save(projectId, phase?.data, attributeDiff);
@@ -502,23 +502,23 @@ const AdminPhaseEdit = () => {
             )}
           </SectionField>
 
-          {/* TODO: After ParticipationContext refactor, it doesn't refetch phase service anymore
+          {/* TODO: After PhaseParticipationConfig refactor, it doesn't refetch phase service anymore
             This caused a bug where phase data was not being used after fetching. This is a temporary fix.
-            ParticipationContext needs to be refactored to functional component. */}
+            PhaseParticipationConfig needs to be refactored to functional component. */}
           {phase && (
-            <ParticipationContext
+            <PhaseParticipationConfig
               phase={phase}
-              onSubmit={handleParticipationContextOnSubmit}
-              onChange={handleParticipationContextOnChange}
+              onSubmit={handlePhaseParticipationConfigSubmit}
+              onChange={handlePhaseParticipationConfigChange}
               apiErrors={errors}
               appConfig={appConfig}
             />
           )}
           {!phase && (
-            <ParticipationContext
+            <PhaseParticipationConfig
               phase={undefined}
-              onSubmit={handleParticipationContextOnSubmit}
-              onChange={handleParticipationContextOnChange}
+              onSubmit={handlePhaseParticipationConfigSubmit}
+              onChange={handlePhaseParticipationConfigChange}
               apiErrors={errors}
               appConfig={appConfig}
             />

@@ -21,12 +21,12 @@ import {
 
 // i18n
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from '../../../../messages';
+import messages from '../../../../../messages';
 
 // typings
 import { ApiErrors } from '../../..';
 import AnonymousPostingToggle from 'components/admin/AnonymousPostingToggle/AnonymousPostingToggle';
-import {IdeaDefaultSortMethod, InputTerm} from "api/phases/types";
+import { IdeaDefaultSortMethod, InputTerm } from 'api/phases/types';
 
 interface Props {
   isCustomInputTermEnabled: boolean;

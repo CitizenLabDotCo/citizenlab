@@ -1,5 +1,5 @@
 import { omitBy, isNil } from 'lodash-es';
-import { State, IParticipationContextConfig } from '..';
+import { State, IPhaseParticipationConfig } from '..';
 
 export default ({
   participation_method,
@@ -26,7 +26,7 @@ export default ({
   input_term,
   document_annotation_embed_url,
 }: State) => {
-  let output: IParticipationContextConfig = {} as any;
+  let output: IPhaseParticipationConfig = {} as any;
 
   if (participation_method === 'information') {
     output = {
@@ -53,7 +53,7 @@ export default ({
         input_term,
       },
       isNil
-    ) as IParticipationContextConfig;
+    ) as IPhaseParticipationConfig;
   } else if (participation_method === 'survey') {
     output = {
       participation_method,
@@ -89,7 +89,7 @@ export default ({
         voting_method,
       },
       isNil
-    ) as IParticipationContextConfig;
+    ) as IPhaseParticipationConfig;
     output.voting_max_total = voting_max_total;
   }
 
