@@ -161,10 +161,6 @@ module Frontend
       end
     end
 
-    def admin_events_url(project_id, configuration = app_config_instance)
-      "#{configuration.base_frontend_uri}/admin/projects/#{project_id}/settings/events"
-    end
-
     def admin_initiatives_url(configuration = app_config_instance)
       "#{configuration.base_frontend_uri}/admin/initiatives"
     end
