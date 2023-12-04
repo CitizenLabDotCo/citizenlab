@@ -18,8 +18,4 @@ export default defineMessages({
     id: 'app.components.VotingDataUnsavedModal.submitMyVote',
     defaultMessage: 'Submit my vote',
   },
-  leavePage: {
-    id: 'app.components.VotingDataUnsavedModal.leavePage',
-    defaultMessage: 'No, leave page',
-  },
 });

@@ -93,18 +93,19 @@ const CTAButton = ({ participationContext, projectId }: Props) => {
     votesLeft = votingMaxTotal - numberOfVotesCast;
   }
 
+  // In case of budgeting, we need to check if there are still ideas that the user has enough budget for
   const ideasUserCanVoteFor = ideas?.data.filter(
     (idea) =>
-      votesLeft &&
       votesLeft > 0 &&
       idea.attributes.budget &&
-      idea.attributes.budget <= votesLeft &&
+      idea.attributes.budget <= votesLeft && // Remaining budget is enough to vote for this idea
       !basket?.data.relationships.ideas.data.find(
+        // Check that idea is not already included in the basket
         (basketIdea) => idea.id === basketIdea.id
       )
   );
 
-  if (ideasUserCanVoteFor?.length && ideasUserCanVoteFor.length >= 1) {
+  if (ideasUserCanVoteFor?.length && ideasUserCanVoteFor.length > 0) {
     usedUpBudget = false;
   }
 
@@ -140,12 +141,10 @@ const CTAButton = ({ participationContext, projectId }: Props) => {
 
               // If on the project page, scroll down to the status module
               if (location.pathname.includes('/projects/')) {
-                setTimeout(() => {
-                  scrollToElement({
-                    id: 'voting-status-module',
-                  });
-                  confetti.addConfetti();
-                }, 200);
+                confetti.addConfetti();
+                scrollToElement({
+                  id: 'voting-status-module',
+                });
               }
 
               // If on the idea page, redirect to project page and scroll to status module

@@ -21,7 +21,7 @@ import {
   getCurrentParticipationContext,
   getCurrentPhase,
 } from 'api/phases/utils';
-import { isNil, isNilOrError } from 'utils/helperUtils';
+import { isNil } from 'utils/helperUtils';
 
 interface Props {
   projectId?: string;

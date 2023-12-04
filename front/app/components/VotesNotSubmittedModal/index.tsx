@@ -31,11 +31,10 @@ import { getCurrentPhase } from 'api/phases/utils';
 import { isNilOrError } from 'utils/helperUtils';
 
 type Props = {
-  showModal?: boolean;
   projectId?: string;
   basket?: IBasket;
 };
-const VotesNotSubmittedModal = ({ projectId, showModal, basket }: Props) => {
+const VotesNotSubmittedModal = ({ projectId, basket }: Props) => {
   const { formatMessage } = useIntl();
   const theme = useTheme();
   const isPhoneOrSmaller = useBreakpoint('phone');
@@ -44,9 +43,8 @@ const VotesNotSubmittedModal = ({ projectId, showModal, basket }: Props) => {
   const currentPhase = getCurrentPhase(phases?.data);
   const basketSubmitted = !isNilOrError(basket?.data.attributes.submitted_at);
 
-  const [showDataUnsubmittedModal, setShowDataUnsubmittedModal] = useState(
-    showModal || false
-  );
+  const [showDataUnsubmittedModal, setShowDataUnsubmittedModal] =
+    useState(false);
 
   useEffect(() => {
     function beforeUnloadHandler(event) {

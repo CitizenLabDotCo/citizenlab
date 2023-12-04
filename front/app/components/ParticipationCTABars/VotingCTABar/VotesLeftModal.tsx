@@ -50,7 +50,7 @@ const VotesLeftModal = ({ project, showModal, setShowModal }: Props) => {
   const currency = appConfig?.data.attributes.settings.core.currency;
   const votingMethod = currentPhase?.attributes?.voting_method;
 
-  const { numberOfVotesCast: votesCast } = useVoting();
+  const { numberOfVotesCast } = useVoting();
   const votingMaxTotal = currentPhase?.attributes?.voting_max_total;
 
   const tokenNamePlural =
@@ -62,11 +62,16 @@ const VotesLeftModal = ({ project, showModal, setShowModal }: Props) => {
       ? currency
       : localize(currentPhase?.attributes.voting_term_singular_multiloc);
 
-  if (!votingMaxTotal || !votesCast || !tokenNamePlural || !tokenNameSingular) {
+  if (
+    !votingMaxTotal ||
+    !numberOfVotesCast ||
+    !tokenNamePlural ||
+    !tokenNameSingular
+  ) {
     return null;
   }
 
-  const votesLeft = votingMaxTotal - votesCast;
+  const votesLeft = votingMaxTotal - numberOfVotesCast;
 
   return (
     <Modal
@@ -97,7 +102,7 @@ const VotesLeftModal = ({ project, showModal, setShowModal }: Props) => {
         <Title m="0px" variant="h3">
           {formatMessage(messages.stillHaveVotesLeft, {
             votesLeft: votesLeft.toString(),
-            votesTerm: votesCast > 1 ? tokenNamePlural : tokenNameSingular,
+            votesTerm: votesLeft > 1 ? tokenNamePlural : tokenNameSingular,
           })}
         </Title>
         <Text>

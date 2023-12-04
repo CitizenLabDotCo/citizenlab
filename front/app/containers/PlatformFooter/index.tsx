@@ -46,7 +46,6 @@ const FooterContainer = styled.div`
   background: #fff;
   border-top: solid 1px #ccc;
   overflow: hidden;
-  z-index: 100;
 
   ${media.tablet`
     display: flex;
@@ -246,7 +245,7 @@ const PlatformFooter = ({ className }: Props) => {
         ? `${participationBar.offsetHeight}px`
         : undefined
     );
-  }, [participationBar, isMobileOrSmaller, participationBar?.offsetHeight]);
+  }, [participationBar, isMobileOrSmaller]);
 
   const getHasCustomizedA11yFooterLink = () => {
     return (
