@@ -29,7 +29,7 @@ import {
 } from 'components/admin/Section';
 import PhaseParticipationConfig, {
   IPhaseParticipationConfig,
-} from '../phase/participationContext';
+} from '../phase/phaseParticipationConfig';
 import FileUploader from 'components/UI/FileUploader';
 import {
   Text,

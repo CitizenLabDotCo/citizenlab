@@ -24,7 +24,7 @@ import {
 } from 'components/admin/Section';
 import PhaseParticipationConfig, {
   IPhaseParticipationConfig,
-} from '../phase/participationContext';
+} from '../phase/phaseParticipationConfig';
 import {
   StyledForm,
   StyledSectionField,
