@@ -58,7 +58,7 @@
   "app.components.Comments.invisibleTitleComments": "Reacties",
   "app.components.Comments.leastRecent": "Minst recent",
   "app.components.Comments.likeComment": "'Like' deze reactie",
-  "app.components.Comments.mostLiked": "De meeste reacties",
+  "app.components.Comments.mostLiked": "De meeste likes/dislikes",
   "app.components.Comments.mostRecent": "Meest recente",
   "app.components.Comments.official": "Officieel",
   "app.components.Comments.postAnonymously": "Anoniem plaatsen",
