@@ -262,7 +262,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.pollPhase": "crwdns1330540:0crwdne1330540:0",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.react": "crwdns1379510:0{participants}crwdne1379510:0",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.registeredUsers": "crwdns1379512:0crwdne1379512:0",
-  "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.submitIdeas": "crwdns1379514:0{participants}crwdne1379514:0",
+  "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.submitInputs": "crwdns1379662:0{participants}crwdne1379662:0",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.takingPoll": "crwdns1379516:0{participants}crwdne1379516:0",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.takingSurvey": "crwdns1379518:0{participants}crwdne1379518:0",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.usersWithConfirmedEmail": "crwdns1379520:0crwdne1379520:0",
