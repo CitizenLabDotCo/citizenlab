@@ -68,13 +68,17 @@ const VotesNotSubmittedModal = ({ projectId, basket }: Props) => {
     }
 
     if (!basketSubmitted) {
-      window.onbeforeunload = beforeUnloadHandler;
+      isPhoneOrSmaller
+        ? (document.onvisibilitychange = beforeUnloadHandler)
+        : (window.onbeforeunload = beforeUnloadHandler);
     }
 
     if (basketSubmitted) {
-      window.onbeforeunload = null;
+      isPhoneOrSmaller
+        ? (document.onvisibilitychange = null)
+        : (window.onbeforeunload = null);
     }
-  }, [basket?.data.attributes.total_votes, basketSubmitted]);
+  }, [basket?.data.attributes.total_votes, basketSubmitted, isPhoneOrSmaller]);
 
   return (
     <Modal
