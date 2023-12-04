@@ -23,6 +23,7 @@ import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
 
 import { saveTemplateFile } from './saveTemplateFile';
+import { API_HOST, API_PORT } from "containers/App/constants";
 
 const PowerBITemplates = () => {
   const isPowerBIEnabled = useFeatureFlag({ name: 'power_bi' });
@@ -40,6 +41,11 @@ const PowerBITemplates = () => {
   const downloadDataFlowTemplate = () => {
     handleDownloadTemplate('dataflow', 'json');
   };
+
+  const hostName = API_HOST
+  const baseUrl = hostName === 'localhost' ?
+    `http://localhost:${API_PORT}/api/v2/` :
+    `https://${hostName}/api/v2/`;
 
   if (!isPowerBIEnabled) return null;
 
@@ -70,7 +76,12 @@ const PowerBITemplates = () => {
         </Title>
         <Box display="flex">
           <Text mr="20px">
-            {formatMessage(messages.reportTemplateDescription)}
+            <FormattedMessage
+              {...messages.reportTemplateDescription}
+              values={{
+                baseUrl: <strong>{baseUrl}</strong>
+              }}
+            />
           </Text>
           <Button
             icon="download"
@@ -98,6 +109,24 @@ const PowerBITemplates = () => {
           </Button>
         </Box>
       </Box>
+
+      <Text>
+        <FormattedMessage
+          {...messages.supportLinkDescription}
+          values={{
+            link: (
+              <a
+                href={formatMessage(messages.supportLinkUrl)}
+                target="_blank"
+                rel="noreferrer"
+              >
+                {formatMessage(messages.supportLinkText)}
+              </a>
+            ),
+          }}
+        />
+      </Text>
+
     </>
   );
 };
