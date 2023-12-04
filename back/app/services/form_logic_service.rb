@@ -27,6 +27,8 @@ class FormLogicService
     fields.inject(true) do |all_valid, field|
       next all_valid unless field.logic?
 
+      remove_non_existing_options_from_logic(field)
+
       field_valid = if field.page?
         valid_page_logic_structure?(field) && valid_next_page?(field)
       elsif field.section?
@@ -36,6 +38,18 @@ class FormLogicService
       end
       all_valid && field_valid
     end
+  end
+
+  def remove_non_existing_options_from_logic(field)
+    logic = field.logic
+    rules = field.logic.fetch('rules', [])
+    rules.each do |rule|
+      value = rule['if']
+      if option_index[value].nil?
+        rules.delete(rule)
+      end
+    end
+    field.update! logic: logic
   end
 
   def remove_select_logic_option_from_custom_fields(frozen_custom_field_option)
@@ -320,6 +334,11 @@ class FormLogicService
       target_id = rule['goto_page_id']
       if page_temp_ids_to_ids_mapping.include?(target_id)
         rule['goto_page_id'] = page_temp_ids_to_ids_mapping[target_id]
+      end
+
+      # Remove any options that do not exist
+      if field.input_type == 'select' && field.options.pluck(:id).exclude?(value)
+        rules.delete(rule)
       end
     end
     field.update! logic: logic
