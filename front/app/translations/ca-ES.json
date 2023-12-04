@@ -1173,7 +1173,7 @@
   "app.containers.InitiativesShow.youWereInvitedToConsponsorBy": "{authorName} us va convidar a copatrocinar aquesta proposta.",
   "app.containers.Navbar.completeOnboarding": "Incorporació completa",
   "app.containers.Navbar.completeProfile": "Perfil complet",
-  "app.containers.Navbar.confirmEmail": "Confirmi l'adreça electrònica",
+  "app.containers.Navbar.confirmEmail2": "Confirma el correu electrònic",
   "app.containers.Navbar.unverified": "Sense verificar",
   "app.containers.Navbar.verified": "Verificat",
   "app.containers.NewAuthModal.beforeYouFollow": "Abans de seguir",
