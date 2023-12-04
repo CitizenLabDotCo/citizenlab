@@ -66,7 +66,7 @@ class WebApi::V1::ImagesController < ApplicationController
       if @image.errors.details[:image].include?({ error: 'processing_error' })
         ErrorReporter.report_msg(@image.errors.details.to_s)
       end
-      render json: { errors: transform_errors_details!(@image.errors.details) }, status: :unprocessable_entity
+      render json: { errors: generate_error_details(@image.errors) }, status: :unprocessable_entity
     end
   end
 
@@ -77,7 +77,7 @@ class WebApi::V1::ImagesController < ApplicationController
         params: jsonapi_serializer_params
       ).serializable_hash, status: :ok
     else
-      render json: { errors: transform_errors_details!(@image.errors.details) }, status: :unprocessable_entity
+      render json: { errors: generate_error_details(@image.errors) }, status: :unprocessable_entity
     end
   end
 
@@ -109,7 +109,11 @@ class WebApi::V1::ImagesController < ApplicationController
     @container = secure_constantize(:container_class).find(container_id)
   end
 
-  def transform_errors_details!(error_details)
+  def generate_error_details(errors)
+    # See FilesController#generate_error_details for some explanation.
+    error_details = errors.each_with_object(Hash.new { [] }) do |error, obj|
+      obj[error.attribute] += [{ error: error.options[:message] || error.type }]
+    end
     # carrierwave does not return the error code symbols by default
     error_details = error_details.dup
     error_details[:image] = error_details[:image]&.uniq { |e| e[:error] }
