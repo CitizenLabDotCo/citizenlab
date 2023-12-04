@@ -91,9 +91,9 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.whoCanParticipate',
     defaultMessage: 'Who can participate?',
   },
-  submitIdeas: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.submitIdeas',
-    defaultMessage: '<b>Submit ideas:</b>  {participants}',
+  submitInputs: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.submitInputs',
+    defaultMessage: '<b>Submit inputs:</b>  {participants}',
   },
   comment: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.comment',

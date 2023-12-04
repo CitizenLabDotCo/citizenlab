@@ -55,12 +55,10 @@ export const getParticipantMessage = (
   return formatMessage(messages.mixedRights);
 };
 
-export const getParticipationActionLabel = (
-  action: IPhasePermissionAction
-) => {
+export const getParticipationActionLabel = (action: IPhasePermissionAction) => {
   switch (action) {
     case 'posting_idea':
-      return messages.submitIdeas;
+      return messages.submitInputs;
     case 'reacting_idea':
       return messages.react;
     case 'commenting_idea':
