@@ -1173,7 +1173,7 @@
   "app.containers.InitiativesShow.youWereInvitedToConsponsorBy": "{authorName} вас је позвао да будете коспонзор овог предлога.",
   "app.containers.Navbar.completeOnboarding": "Комплетно укључивање",
   "app.containers.Navbar.completeProfile": "Комплетан профил",
-  "app.containers.Navbar.confirmEmail": "Потврди и-мејл адресу",
+  "app.containers.Navbar.confirmEmail2": "Confirm email",
   "app.containers.Navbar.unverified": "Неверификовано",
   "app.containers.Navbar.verified": "Проверено",
   "app.containers.NewAuthModal.beforeYouFollow": "Пре него што следите",
