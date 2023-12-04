@@ -44,16 +44,11 @@ export const VotingContext = ({ projectId, children }: Props) => {
   const currentPhase = getCurrentPhase(phases?.data);
   const basketId = currentPhase?.relationships?.user_basket?.data?.id;
   const { data: basket } = useBasket(basketId);
-  const basketSubmitted = !isNilOrError(basket?.data.attributes.submitted_at);
 
   return (
     <VotingInterfaceContext.Provider value={votingInterface}>
       {children}
-      <VotesNotSubmittedModal
-        projectId={projectId}
-        basket={basket}
-        basketSubmitted={basketSubmitted}
-      />
+      <VotesNotSubmittedModal projectId={projectId} basket={basket} />
     </VotingInterfaceContext.Provider>
   );
 };
