@@ -18,7 +18,8 @@ module CarrierwaveErrorDetailsTransformation
     error_details = errors.group_by_attribute.transform_values do |attribute_errors|
       attribute_errors.map do |error|
         details = error.details
-        details[:error] = error.options[:message] || error.type
+        # Here's how these Carrierwave messages are generated https://github.com/carrierwaveuploader/carrierwave/blob/f5b09b844d99245a3b4d0ba01efd4972be4ee5be/lib/carrierwave/uploader/file_size.rb#L36
+        details[:error] = error.options[:message] || details[:error] if error.attribute == attribute_name
         details
       end
     end
