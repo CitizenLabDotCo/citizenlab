@@ -129,7 +129,8 @@ describe('Homepage builder', () => {
     cy.intercept('GET', '**/nav_bar_items').as('getNavbarItems');
     cy.intercept('POST', '**/content_builder_layout_images').as('postImage');
 
-    // Check homepage defaults signed - out
+    // Check homepage banner defaults signed - out
+
     cy.visit('/');
     cy.get('[data-cy="e2e-homepage-banner"]').should('exist');
     cy.get('[data-cy="e2e-full-width-banner-layout-container"]').should(
@@ -174,7 +175,8 @@ describe('Homepage builder', () => {
       '0.9'
     );
 
-    // Check homepage defaults signed - in
+    // Check homepage banner defaults signed - in
+
     cy.setAdminLoginCookie();
     const signedInHeaderEnglish = /is listening to you/gi;
     cy.visit('/');
@@ -196,7 +198,8 @@ describe('Homepage builder', () => {
 
     cy.get("[data-cy='e2e-signed-in-header-image']").should('not.exist');
 
-    // go to admin page
+    // Go to admin page
+
     cy.visit('/admin/pages-menu/homepage-builder');
 
     // Update homepage banner
@@ -227,8 +230,14 @@ describe('Homepage builder', () => {
       .find('input')
       .clear()
       .type('New subheader');
-    // Save homepage
 
+    // Update custom button
+
+    cy.get('#cta-type-customized_button').click();
+    cy.get('#customizedButtonText').clear().type('Custom button');
+    cy.get('#customizedButtonUrl').clear().type('https://www.google.com');
+
+    // Save homepage
     cy.get('#e2e-content-builder-topbar-save').click({
       force: true,
     });
@@ -236,10 +245,12 @@ describe('Homepage builder', () => {
     cy.wait(1000);
 
     // Check updated content signed - in
+
     cy.visit('/');
     cy.get("[data-cy='e2e-signed-in-header-image']").should('exist');
 
     // Check updated content signed - out
+
     cy.logout();
     cy.visit('/');
     cy.get('[data-cy="e2e-homepage-banner"]').should('exist');
@@ -257,6 +268,7 @@ describe('Homepage builder', () => {
 
     cy.get('#hook-header-content').should('contain', 'New header');
     cy.get('#hook-header-content').should('contain', 'New subheader');
+
     // Layout checks
     // cy.get('[data-cy="e2e-fixed-ratio-layout-option"]').click();
 

@@ -101,8 +101,11 @@ const HomepageBanner = ({ homepageSettings, image }: Props) => {
   const isEditorInPreviewMode =
     (editor.store.getState() as any)?.options.enabled === false;
   const showSignedInHeader =
-    (isEditorInPreviewMode && authUser?.data !== undefined) ||
+    (isEditorInPreviewMode &&
+      authUser?.data !== undefined &&
+      search.get('variant') === null) ||
     search.get('variant') === 'signedIn';
+
   return (
     <div data-cy="e2e-homepage-banner">
       {showSignedInHeader ? (
@@ -488,7 +491,7 @@ const HomepageBannerSettings = () => {
                     <Box ml="28px">
                       <Box mb="20px">
                         <InputMultilocWithLocaleSwitcher
-                          data-testid="inputMultilocLocaleSwitcher"
+                          id="customizedButtonText"
                           type="text"
                           valueMultiloc={
                             homepageSettings.banner_cta_signed_out_text_multiloc
@@ -513,7 +516,7 @@ const HomepageBannerSettings = () => {
                         />
                       </Label>
                       <Input
-                        id="buttonConfigInput"
+                        id="customizedButtonUrl"
                         type="text"
                         placeholder="https://..."
                         onChange={(value) =>
