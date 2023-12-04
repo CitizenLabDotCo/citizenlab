@@ -262,7 +262,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.pollPhase": "Afstemningsfase",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.react": "<b>React:</b>  {participants}",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.registeredUsers": "Registrerede brugere",
-  "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.submitIdeas": "<b>Indsend idéer:</b>  {participants}",
+  "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.submitInputs": "<b>Indsend input:</b>  {participants}",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.takingPoll": "<b>Afstemning:</b>  {participants}",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.takingSurvey": "<b>Jeg laver en undersøgelse:</b>  {participants}",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.usersWithConfirmedEmail": "Brugere med bekræftet e-mail",
