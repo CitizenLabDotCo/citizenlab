@@ -979,7 +979,6 @@
   "app.containers.Admin.tools.powerBITemplates.dataflowTemplateTitle": "Plantilla de flujo de datos",
   "app.containers.Admin.tools.powerBITemplates.intro": "Nota: Para utilizar cualquiera de estas plantillas de Power BI, primero debes {link}.",
   "app.containers.Admin.tools.powerBITemplates.publicApiLinkText": "crear un conjunto de credenciales para nuestra API pública",
-  "app.containers.Admin.tools.powerBITemplates.reportTemplateDescription2": "Esta plantilla creará un informe Power BI basado en tus datos de CitizenLab. Configurará todas las conexiones de datos a tu plataforma CitizenLab, creará el modelo de datos y algunos cuadros de mando predeterminados. Cuando abras la plantilla en Power BI, se te pedirá que introduzcas tus credenciales de la API pública.",
   "app.containers.Admin.tools.powerBITemplates.reportTemplateDownload": "Descargar plantilla de informe",
   "app.containers.Admin.tools.powerBITemplates.reportTemplateTitle": "Plantilla de informe",
   "app.containers.Admin.tools.powerBITemplates.title": "Plantillas Power BI",

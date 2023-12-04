@@ -979,7 +979,6 @@
   "app.containers.Admin.tools.powerBITemplates.dataflowTemplateTitle": "Dataflödesmall",
   "app.containers.Admin.tools.powerBITemplates.intro": "Observera: För att kunna använda någon av dessa Power BI-mallar måste du först {link}",
   "app.containers.Admin.tools.powerBITemplates.publicApiLinkText": "skapa en uppsättning autentiseringsuppgifter för vårt offentliga API",
-  "app.containers.Admin.tools.powerBITemplates.reportTemplateDescription2": "Den här mallen skapar en Power BI-rapport baserad på dina CitizenLab-data. Den konfigurerar alla dataanslutningar till din CitizenLab-plattform, skapar datamodellen och några standardinstrumentpaneler. När du öppnar mallen i Power BI kommer du att uppmanas att ange dina offentliga API-autentiseringsuppgifter.",
   "app.containers.Admin.tools.powerBITemplates.reportTemplateDownload": "Ladda ner rapporteringsmall",
   "app.containers.Admin.tools.powerBITemplates.reportTemplateTitle": "Mall för rapport",
   "app.containers.Admin.tools.powerBITemplates.title": "Power BI-mallar",

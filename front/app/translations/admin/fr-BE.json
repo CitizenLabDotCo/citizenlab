@@ -979,7 +979,6 @@
   "app.containers.Admin.tools.powerBITemplates.dataflowTemplateTitle": "Modèle de flux de données",
   "app.containers.Admin.tools.powerBITemplates.intro": "Remarque : Pour utiliser l'un de ces modèles Power BI, vous devez d'abord {link}",
   "app.containers.Admin.tools.powerBITemplates.publicApiLinkText": "créer des identifiants pour notre API publique",
-  "app.containers.Admin.tools.powerBITemplates.reportTemplateDescription2": "Ce modèle générera un rapport Power BI à partir de vos données CitizenLab. Il établira toutes les connexions aux données de votre plateforme CitizenLab, créera le modèle de données et quelques tableaux de bord par défaut. Lorsque vous ouvrirez le modèle dans Power BI, vous serez invité(e) à saisir vos identifiants pour l'API publique de CitizenLab.",
   "app.containers.Admin.tools.powerBITemplates.reportTemplateDownload": "Téléchargez le modèle de rapport",
   "app.containers.Admin.tools.powerBITemplates.reportTemplateTitle": "Modèle de rapport",
   "app.containers.Admin.tools.powerBITemplates.title": "Modèles Power BI",

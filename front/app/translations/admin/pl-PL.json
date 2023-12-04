@@ -979,7 +979,6 @@
   "app.containers.Admin.tools.powerBITemplates.dataflowTemplateTitle": "Szablon przepływu danych",
   "app.containers.Admin.tools.powerBITemplates.intro": "Uwaga: Aby użyć któregokolwiek z tych szablonów Power BI, musisz najpierw {link}",
   "app.containers.Admin.tools.powerBITemplates.publicApiLinkText": "utwórz zestaw poświadczeń dla naszego publicznego API",
-  "app.containers.Admin.tools.powerBITemplates.reportTemplateDescription2": "Ten szablon utworzy raport Power BI na podstawie twoich danych CitizenLab. Skonfiguruje wszystkie połączenia danych z twoją platformą CitizenLab, utworzy model danych i niektóre domyślne pulpity nawigacyjne. Po otwarciu szablonu w Power BI zostaniesz poproszony o wprowadzenie poświadczeń publicznego API.",
   "app.containers.Admin.tools.powerBITemplates.reportTemplateDownload": "Pobierz szablon raportu",
   "app.containers.Admin.tools.powerBITemplates.reportTemplateTitle": "Szablon raportu",
   "app.containers.Admin.tools.powerBITemplates.title": "Szablony Power BI",
