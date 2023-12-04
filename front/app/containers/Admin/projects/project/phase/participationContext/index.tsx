@@ -121,7 +121,7 @@ const MAX_VOTES_PER_VOTING_METHOD: Record<VotingMethod, number> = {
   budgeting: 100,
 };
 
-class ParticipationContext extends PureComponent<
+class PhaseParticipationConfig extends PureComponent<
   Props & WrappedComponentProps,
   State
 > {
@@ -709,5 +709,7 @@ export default (inputProps: InputProps) => {
 
   const intl = useIntl();
 
-  return <ParticipationContext {...inputProps} {...featureFlags} intl={intl} />;
+  return (
+    <PhaseParticipationConfig {...inputProps} {...featureFlags} intl={intl} />
+  );
 };

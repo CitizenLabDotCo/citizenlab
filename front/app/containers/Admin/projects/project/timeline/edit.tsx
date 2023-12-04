@@ -27,7 +27,7 @@ import {
   SectionField,
   SubSectionTitle,
 } from 'components/admin/Section';
-import ParticipationContext, {
+import PhaseParticipationConfig, {
   IPhaseParticipationConfig,
 } from '../phase/participationContext';
 import FileUploader from 'components/UI/FileUploader';
@@ -502,11 +502,11 @@ const AdminPhaseEdit = () => {
             )}
           </SectionField>
 
-          {/* TODO: After ParticipationContext refactor, it doesn't refetch phase service anymore
+          {/* TODO: After PhaseParticipationConfig refactor, it doesn't refetch phase service anymore
             This caused a bug where phase data was not being used after fetching. This is a temporary fix.
-            ParticipationContext needs to be refactored to functional component. */}
+            PhaseParticipationConfig needs to be refactored to functional component. */}
           {phase && (
-            <ParticipationContext
+            <PhaseParticipationConfig
               phase={phase}
               onSubmit={handleParticipationContextOnSubmit}
               onChange={handleParticipationContextOnChange}
@@ -515,7 +515,7 @@ const AdminPhaseEdit = () => {
             />
           )}
           {!phase && (
-            <ParticipationContext
+            <PhaseParticipationConfig
               phase={undefined}
               onSubmit={handleParticipationContextOnSubmit}
               onChange={handleParticipationContextOnChange}

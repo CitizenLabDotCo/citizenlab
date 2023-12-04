@@ -22,7 +22,7 @@ import {
   SubSectionTitle,
   SectionField,
 } from 'components/admin/Section';
-import ParticipationContext, {
+import PhaseParticipationConfig, {
   IPhaseParticipationConfig,
 } from '../phase/participationContext';
 import {
@@ -524,7 +524,7 @@ const AdminProjectsProjectGeneral = () => {
                   exit={false}
                 >
                   <ParticipationContextWrapper>
-                    <ParticipationContext
+                    <PhaseParticipationConfig
                       project={project}
                       onSubmit={handleParticipationContextOnSubmit}
                       onChange={handleParticipationContextOnChange}
