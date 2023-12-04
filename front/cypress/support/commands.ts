@@ -534,7 +534,8 @@ export function apiCreateIdea(
   locationDescription?: string,
   jwt?: string,
   budget?: number,
-  anonymous?: boolean
+  anonymous?: boolean,
+  phaseId?: string
 ) {
   let headers: { 'Content-Type': string; Authorization: string } | null = null;
 
@@ -571,6 +572,7 @@ export function apiCreateIdea(
           location_description: locationDescription,
           budget,
           anonymous,
+          phase_ids: [phaseId],
         },
       },
     });
@@ -1148,21 +1150,25 @@ export function apiCreatePhase({
   votingMaxTotal,
   allow_anonymous_participation,
   votingMethod,
+  votingMaxVotesPerIdea,
+  votingMinTotal,
 }: {
   projectId: string;
   title: string;
   startAt: string;
   endAt: string;
   participationMethod: ParticipationMethod;
-  canPost: boolean;
-  canReact: boolean;
-  canComment: boolean;
+  canPost?: boolean;
+  canReact?: boolean;
+  canComment?: boolean;
   description?: string;
   surveyUrl?: string;
   surveyService?: 'typeform' | 'survey_monkey' | 'google_forms';
   votingMaxTotal?: number;
   allow_anonymous_participation?: boolean;
   votingMethod?: VotingMethod;
+  votingMaxVotesPerIdea?: number;
+  votingMinTotal?: number;
 }) {
   return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -1193,6 +1199,8 @@ export function apiCreatePhase({
           voting_max_total: votingMaxTotal,
           allow_anonymous_participation: allow_anonymous_participation,
           campaigns_settings: { project_phase_started: true },
+          voting_max_votes_per_idea: votingMaxVotesPerIdea,
+          voting_min_total: votingMinTotal,
         },
       },
     });

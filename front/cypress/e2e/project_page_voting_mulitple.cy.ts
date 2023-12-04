@@ -1,3 +1,4 @@
+import moment = require('moment');
 import { randomEmail, randomString } from '../support/commands';
 
 describe('Continuous multiple voting project', () => {
@@ -16,40 +17,51 @@ describe('Continuous multiple voting project', () => {
 
   before(() => {
     cy.apiCreateProject({
-      type: 'continuous',
+      type: 'timeline',
       title: projectTitle,
       descriptionPreview: '',
       description: '',
       publicationStatus: 'published',
-      participationMethod: 'voting',
-      votingMethod: 'multiple_voting',
-      votingMaxVotesPerIdea: 2,
-      votingMaxTotal: 5,
     }).then((project) => {
-      projectId = project.body.data.id;
-      projectSlug = project.body.data.attributes.slug;
-      return cy
-        .apiCreateIdea(
-          projectId,
-          ideaTitle,
-          ideaContent,
-          undefined,
-          undefined,
-          undefined
-        )
-        .then((idea) => {
-          ideaId = idea.body.data.id;
-          ideaSlug = idea.body.data.attributes.slug;
-          cy.apiSignup(firstName, lastName, email, password).then(
-            (response) => {
-              userId = (response as any).body.data.id;
-            }
-          );
-          cy.setLoginCookie(email, password);
-          cy.visit(`/en/projects/${projectSlug}`);
-          cy.acceptCookies();
-          cy.wait(1000);
-        });
+      cy.apiCreatePhase({
+        projectId: project?.body.data.id,
+        title: 'phaseTitle',
+        startAt: moment().subtract(2, 'month').format('DD/MM/YYYY'),
+        endAt: moment().add(2, 'days').format('DD/MM/YYYY'),
+        participationMethod: 'voting',
+        votingMethod: 'multiple_voting',
+        votingMaxVotesPerIdea: 2,
+        votingMaxTotal: 5,
+        votingMinTotal: 1,
+      }).then((phase) => {
+        projectId = project.body.data.id;
+        projectSlug = project.body.data.attributes.slug;
+        return cy
+          .apiCreateIdea(
+            projectId,
+            ideaTitle,
+            ideaContent,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            phase?.body.data.id
+          )
+          .then((idea) => {
+            ideaId = idea.body.data.id;
+            ideaSlug = idea.body.data.attributes.slug;
+            cy.apiSignup(firstName, lastName, email, password).then(
+              (response) => {
+                userId = (response as any).body.data.id;
+              }
+            );
+            cy.setLoginCookie(email, password);
+            cy.visit(`/en/projects/${projectSlug}`);
+            cy.acceptCookies();
+            cy.wait(1000);
+          });
+      });
     });
   });
 
@@ -64,7 +76,7 @@ describe('Continuous multiple voting project', () => {
   });
 
   it('shows the idea cards', () => {
-    cy.get('#e2e-continuous-project-idea-cards');
+    cy.get('#e2e-ideas-container');
   });
 
   it('hides the idea sorting options', () => {
@@ -106,6 +118,8 @@ describe('Continuous multiple voting project', () => {
 
   it('can submit the votes', () => {
     cy.get('#e2e-voting-submit-button').find('button').click();
+    cy.get('#e2e-votes-left-modal').click();
+    cy.get('#e2e-submit-vote-from-modal-button').click();
     cy.wait(1000);
 
     cy.contains('Vote submitted');

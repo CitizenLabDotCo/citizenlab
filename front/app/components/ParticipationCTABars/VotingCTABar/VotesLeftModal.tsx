@@ -81,7 +81,12 @@ const VotesLeftModal = ({ project, showModal, setShowModal }: Props) => {
       }}
       width="540px"
     >
-      <Box display="flex" justifyContent="center" flexDirection="column">
+      <Box
+        display="flex"
+        justifyContent="center"
+        flexDirection="column"
+        id="e2e-votes-left-modal"
+      >
         <Box
           display="flex"
           height="52px"
@@ -141,6 +146,7 @@ const VotesLeftModal = ({ project, showModal, setShowModal }: Props) => {
               width={isPhoneOrSmaller ? '100%' : 'undefined'}
               minWidth="260px"
               mx="auto"
+              id="e2e-submit-vote-from-modal-button"
             >
               <SubmitButton
                 participationContext={currentPhase}
