@@ -1,0 +1,11 @@
+#Translations for continuous to timeline migration
+ca:
+  phase_title_default:
+    ideation: Recull les entrades
+    voting: Votació
+    poll: Enquesta
+    native_survey: Enquesta
+    survey: Enquesta
+    document_annotation: Feedback del document
+    volunteering: Busca voluntaris
+    information: Informació
