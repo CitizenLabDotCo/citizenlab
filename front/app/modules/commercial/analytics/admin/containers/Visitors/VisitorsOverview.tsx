@@ -20,7 +20,7 @@ import { IOption } from 'typings';
 import messages from './messages';
 
 interface Props {
-  uniqueVisitorDataDate: Moment;
+  uniqueVisitorDataDate: Moment | undefined;
 }
 
 const VisitorsOverview = ({ uniqueVisitorDataDate }: Props) => {
@@ -47,7 +47,7 @@ const VisitorsOverview = ({ uniqueVisitorDataDate }: Props) => {
   };
 
   if (!uniqueVisitorDataDate) {
-    return null;
+    return <Text>{formatMessage(messages.noData)}</Text>;
   }
 
   return (

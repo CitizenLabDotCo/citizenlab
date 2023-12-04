@@ -83,7 +83,7 @@ class MultiTenancy::Rake::ContinuousProjectMigrationService
 
   def create_phase(project)
     phase = Phase.new(
-      title_multiloc: MultilocService.new.i18n_to_multiloc("default_phase_title.#{project.participation_method}"),
+      title_multiloc: MultilocService.new.i18n_to_multiloc("phase_title_default.#{project.participation_method}"),
       project: project,
       created_at: project.created_at,
       start_at: project.created_at,

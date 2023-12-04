@@ -66,6 +66,11 @@ const SortableFolderRow = ({
     folderChildAdminPublications.length > 0;
   const showBottomBorder = isLastItem && !folderOpen;
 
+  const publicationRelation = publication.relationships.publication.data;
+
+  const folderId =
+    publicationRelation.type === 'folder' ? publicationRelation.id : undefined;
+
   return (
     <>
       <StyledSortableRow
@@ -85,6 +90,7 @@ const SortableFolderRow = ({
       {hasProjects && folderOpen && (
         <FolderChildProjects
           folderChildAdminPublications={folderChildAdminPublications}
+          folderId={folderId}
         />
       )}
     </>

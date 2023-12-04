@@ -1084,7 +1084,6 @@
   "app.containers.InitiativesShow.whatsAppMessage": "{initiativeTitle} | from the participation platform of {orgName}",
   "app.containers.InitiativesShow.youWereInvitedToConsponsorBy": "{authorName} invited you to cosponsor this proposal.",
   "app.containers.Navbar.completeProfile": "Profilit naammassiuk",
-  "app.containers.Navbar.confirmEmail": "Confirm email address",
   "app.containers.Navbar.unverified": "Uppernarsineqanngilaq",
   "app.containers.Navbar.verified": "Uppernarseriigaq",
   "app.containers.NewAuthModal.beforeYouFollow": "Before you follow",
