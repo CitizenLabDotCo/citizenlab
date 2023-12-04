@@ -6,6 +6,7 @@ import useUpdateBasket from 'api/baskets/useUpdateBasket';
 import useVoting from 'api/baskets_ideas/useVoting';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useProjectById from 'api/projects/useProjectById';
+import useIdeas from 'api/ideas/useIdeas';
 
 // components
 import { Box, Button } from '@citizenlab/cl2-component-library';
@@ -25,6 +26,7 @@ import JSConfetti from 'js-confetti';
 import { scrollToElement } from 'utils/scroll';
 import { getDisabledExplanation } from './utils';
 import clHistory from 'utils/cl-router/history';
+import { isNilOrError } from 'utils/helperUtils';
 
 // typings
 import { IProjectData } from 'api/projects/types';
@@ -61,9 +63,14 @@ interface Props {
 }
 
 const CTAButton = ({ participationContext, projectId }: Props) => {
-  const [processing, setProcessing] = useState(false);
-  const basketId = participationContext.relationships.user_basket?.data?.id;
+  const theme = useTheme();
+  const { formatMessage } = useIntl();
+  const localize = useLocalize();
+  const { data: appConfig } = useAppConfiguration();
   const { data: project } = useProjectById(projectId);
+  const { data: ideas } = useIdeas({ phase: participationContext.id });
+
+  const basketId = participationContext.relationships.user_basket?.data?.id;
   const { data: basket } = useBasket(basketId);
   const { mutate: updateBasket } = useUpdateBasket();
   const {
@@ -71,13 +78,35 @@ const CTAButton = ({ participationContext, projectId }: Props) => {
     userHasVotesLeft,
     processing: votingProcessing,
   } = useVoting();
-  const [showModal, setShowModal] = useState(false);
-  const { data: appConfig } = useAppConfiguration();
-  const theme = useTheme();
-  const { formatMessage } = useIntl();
-  const localize = useLocalize();
 
+  const [processing, setProcessing] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+
+  const votingMethod = participationContext.attributes.voting_method;
+  const votingMaxTotal = participationContext?.attributes.voting_max_total;
   const currency = appConfig?.data.attributes.settings.core.currency;
+
+  let votesLeft = 0;
+  let usedUpBudget = true;
+
+  if (!isNilOrError(votingMaxTotal) && !isNilOrError(numberOfVotesCast)) {
+    votesLeft = votingMaxTotal - numberOfVotesCast;
+  }
+
+  const ideasUserCanVoteFor = ideas?.data.filter(
+    (idea) =>
+      votesLeft &&
+      votesLeft > 0 &&
+      idea.attributes.budget &&
+      idea.attributes.budget <= votesLeft &&
+      !basket?.data.relationships.ideas.data.find(
+        (basketIdea) => idea.id === basketIdea.id
+      )
+  );
+
+  if (ideasUserCanVoteFor?.length && ideasUserCanVoteFor.length >= 1) {
+    usedUpBudget = false;
+  }
 
   const disabledExplanation = getDisabledExplanation(
     formatMessage,
@@ -88,8 +117,11 @@ const CTAButton = ({ participationContext, projectId }: Props) => {
   );
 
   const handleSubmitOnClick = () => {
-    if (userHasVotesLeft) {
+    if (!(votingMethod === 'budgeting') && userHasVotesLeft) {
       setShowModal(true);
+      return;
+    } else if (votingMethod === 'budgeting' && !usedUpBudget) {
+      setShowModal(true); // There are still options where the cost is within the user's remaining budget
       return;
     }
 

@@ -129,7 +129,7 @@ const ProjectsShowPage = ({ project }: Props) => {
       setTimeout(() => {
         scrollToElement({ id: 'e2e-ideas-container' });
         removeSearchParams(['scrollToIdeas']);
-      }, 2000);
+      }, 1500);
     }
   }, [mounted, loading, scrollToStatusModule, scrollToIdeas]);
 

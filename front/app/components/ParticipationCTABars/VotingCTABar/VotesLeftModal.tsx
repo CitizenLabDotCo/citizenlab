@@ -31,6 +31,7 @@ import clHistory from 'utils/cl-router/history';
 
 // types
 import { IProject } from 'api/projects/types';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 type Props = {
   showModal?: boolean;
@@ -40,22 +41,28 @@ type Props = {
 
 const VotesLeftModal = ({ project, showModal, setShowModal }: Props) => {
   const theme = useTheme();
+  const { data: appConfig } = useAppConfiguration();
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const isPhoneOrSmaller = useBreakpoint('phone');
   const { data: phases } = usePhases(project?.data.id);
   const currentPhase = getCurrentPhase(phases?.data);
+  const currency = appConfig?.data.attributes.settings.core.currency;
+  const votingMethod = currentPhase?.attributes?.voting_method;
 
   const { numberOfVotesCast: votesCast } = useVoting();
   const votingMaxTotal = currentPhase?.attributes?.voting_max_total;
-  const tokenNamePlural = localize(
-    currentPhase?.attributes.voting_term_plural_multiloc
-  );
-  const tokenNameSingular = localize(
-    currentPhase?.attributes.voting_term_singular_multiloc
-  );
 
-  if (!votingMaxTotal || !votesCast) {
+  const tokenNamePlural =
+    votingMethod === 'budgeting'
+      ? currency
+      : localize(currentPhase?.attributes.voting_term_plural_multiloc);
+  const tokenNameSingular =
+    votingMethod === 'budgeting'
+      ? currency
+      : localize(currentPhase?.attributes.voting_term_singular_multiloc);
+
+  if (!votingMaxTotal || !votesCast || !tokenNamePlural || !tokenNameSingular) {
     return null;
   }
 
