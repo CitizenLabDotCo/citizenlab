@@ -56,8 +56,8 @@ sr-Latn:
       "voting_results": Voting results
       "your_proposed_initiatives_digest": Nedeljni pregled vaših predloga
     general:
-      by_author: 'by %{authorName}'
-      author_wrote: '%{authorName} wrote:'
+      by_author: 'od %{authorName}'
+      author_wrote: '%{authorName} piše:'
       cta_goto_idea: 'Go to this idea'
       cta_goto_proposal: 'Go to this proposal'
       cta_goto_project: 'Go to this project'
@@ -73,7 +73,7 @@ sr-Latn:
     footer:
       "link_privacy_policy": "Politika privatnosti"
       "link_terms_conditions": "Uslovi korišćenja"
-      "link_unsubscribe": "Odjavi se"
+      "link_unsubscribe": "Odjavite se"
       "powered_by": "Powered by"
       "statement": "Ovaj email vam je poslat od strane internet stranice %{organizationName}, jer ste registrovani korisnik platforme %{organizationLink}. Možete da kliknete na %{unsubscribeLink} ako ubuduće ne želite da primate ove e-poruke."
       "unsubscribe_text": "odjavitе se"
@@ -186,7 +186,7 @@ sr-Latn:
       subject: 'You have been invited to co-sponsor a proposal'
       preheader_initiative: 'You have been invited to co-sponsor the proposal of %{authorName}'
     initiative_resubmitted_for_review:
-      by_author: 'by %{authorName}'
+      by_author: 'od %{authorName}'
       cta_reply_to: 'Give feedback to %{authorName}'
       event_description_initiative: 'A proposal has been resubmitted for review. Give feedback by writing an official update or by changing its status.'
       main_header: '%{firstName}, you have a proposal to review'

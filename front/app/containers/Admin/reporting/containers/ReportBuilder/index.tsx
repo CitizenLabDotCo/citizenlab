@@ -40,7 +40,7 @@ import { A4_WIDTH } from '../../constants';
 import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
 import { SerializedNodes } from '@craftjs/core';
 import { Locale } from 'typings';
-import ReportLanguageProvider from '../ReportLanguageProvider';
+import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
 import useLocale from '../../../../../hooks/useLocale';
 
 interface Props {
@@ -164,8 +164,8 @@ const ReportBuilder = ({ reportId }: Props) => {
                   width="100%"
                   height="100%"
                 >
-                  <ReportLanguageProvider
-                    reportLocale={reportLocale}
+                  <LanguageProvider
+                    contentBuilderLocale={reportLocale}
                     platformLocale={platformLocale}
                   >
                     <Frame editorData={initialData}>
@@ -176,7 +176,7 @@ const ReportBuilder = ({ reportId }: Props) => {
                         />
                       )}
                     </Frame>
-                  </ReportLanguageProvider>
+                  </LanguageProvider>
                 </Box>
               </Box>
             </StyledRightColumn>
@@ -195,12 +195,12 @@ const ReportBuilder = ({ reportId }: Props) => {
             <StyledRightColumn>
               <Box width={A4_WIDTH} background="white" px={'15mm'} py={'15mm'}>
                 <Editor isPreview={true}>
-                  <ReportLanguageProvider
-                    reportLocale={reportLocale}
+                  <LanguageProvider
+                    contentBuilderLocale={reportLocale}
                     platformLocale={platformLocale}
                   >
                     <Frame editorData={previewData} />
-                  </ReportLanguageProvider>
+                  </LanguageProvider>
                 </Editor>
               </Box>
             </StyledRightColumn>

@@ -51,9 +51,9 @@ describe('Project description builder Image Text Cards section', () => {
     );
 
     // Edit a text component
-    cy.get('.e2e-text-box').first().click();
-    cy.get('#quill-editor').click();
-    cy.get('#quill-editor').type('Edited text.', { force: true });
+    cy.get('div.e2e-text-box').first().click();
+    cy.get('.ql-editor').click();
+    cy.get('.ql-editor').type('Edited text.', { force: true });
 
     // Edit image components
     cy.get('div#e2e-image').eq(0).parent().click();

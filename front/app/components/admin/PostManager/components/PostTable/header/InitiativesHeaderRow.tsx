@@ -2,7 +2,6 @@ import React from 'react';
 
 // components
 import { Thead, Tr, Th, Checkbox } from '@citizenlab/cl2-component-library';
-import { SortableHeaderCell } from './IdeaHeaderRow';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -18,6 +17,7 @@ import { roundPercentage } from 'utils/math';
 import { Sort as InitiativesSortAttribute } from 'api/initiatives/types';
 import { SortDirection } from 'utils/paginationUtils';
 import useInitiativeCosponsorsRequired from 'containers/InitiativesShow/hooks/useInitiativeCosponsorsRequired';
+import SortableHeaderCell from './SortableHeaderCell';
 
 interface Props {
   sortAttribute?: InitiativesSortAttribute;

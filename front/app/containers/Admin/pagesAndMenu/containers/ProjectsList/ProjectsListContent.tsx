@@ -2,8 +2,8 @@ import React from 'react';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
-import { List, Row } from 'components/admin/ResourceList';
-import ProjectRow from 'containers/Admin/projects/components/ProjectRow';
+import { List } from 'components/admin/ResourceList';
+import Project from './Project';
 import Link from 'utils/cl-router/Link';
 import Warning from 'components/UI/Warning';
 
@@ -81,17 +81,11 @@ const ProjectsListContent = ({ customPage }: Props) => {
       <List>
         <>
           {adminPublicationsList.map((adminPublication, index: number) => (
-            <Row
-              id={adminPublication.id}
+            <Project
+              adminPublication={adminPublication}
               isLastItem={index === adminPublicationsList.length - 1}
               key={adminPublication.id}
-            >
-              <ProjectRow
-                publication={adminPublication}
-                actions={['manage']}
-                hideMoreActions
-              />
-            </Row>
+            />
           ))}
         </>
       </List>

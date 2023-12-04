@@ -4,6 +4,7 @@ module Analysis
   module WebApi
     module V1
       class QuestionsController < ApplicationController
+        include FilterParamsExtraction
         skip_after_action :verify_policy_scoped # The analysis is authorized instead.
         before_action :set_analysis
         before_action :set_question, only: [:show]
@@ -17,10 +18,10 @@ module Analysis
         def pre_check
           @question = Question.new(
             background_task: QAndATask.new(analysis: @analysis),
-            **question_params.except(:filters),
+            **question_params,
             insight_attributes: {
               analysis: @analysis,
-              **question_params.slice(:filters)
+              filters: filters(params[:question][:filters])
             }
           )
           plan = QAndAMethod::Base.plan(@question)
@@ -33,10 +34,10 @@ module Analysis
         def create
           @question = Question.new(
             background_task: QAndATask.new(analysis: @analysis),
-            **question_params.except(:filters),
+            **question_params,
             insight_attributes: {
               analysis: @analysis,
-              **question_params.slice(:filters)
+              filters: filters(params[:question][:filters])
             }
           )
           plan = QAndAMethod::Base.plan(@question)
@@ -71,33 +72,7 @@ module Analysis
         end
 
         def question_params
-          permitted_dynamic_filter_keys = []
-          permitted_dynamic_filter_array_keys = { tag_ids: [] }
-
-          params[:question][:filters].each_key do |key|
-            if key.match?(/^author_custom_([a-f0-9-]+)_(from|to)$/)
-              permitted_dynamic_filter_keys << key
-            elsif key.match?(/^author_custom_([a-f0-9-]+)$/)
-              permitted_dynamic_filter_array_keys[key] = []
-            end
-          end
-
-          params.require(:question).permit(
-            :question,
-            filters: [
-              :search,
-              :published_at_from,
-              :published_at_to,
-              :reactions_from,
-              :reactions_to,
-              :votes_from,
-              :votes_to,
-              :comments_from,
-              :comments_to,
-              *permitted_dynamic_filter_keys,
-              **permitted_dynamic_filter_array_keys
-            ]
-          )
+          params.require(:question).permit(:question)
         end
 
         def side_fx_service

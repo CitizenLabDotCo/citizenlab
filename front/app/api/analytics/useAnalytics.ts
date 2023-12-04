@@ -14,7 +14,8 @@ const fetchAnalytics = <Response extends BaseResponseData>(query: Query) =>
 
 const useAnalytics = <Response extends BaseResponseData>(
   query: Query,
-  onSuccess?: () => void
+  onSuccess?: () => void,
+  enabled = true
 ) => {
   const queryClient = useQueryClient();
   const stringifiedQuery = JSON.stringify(query);
@@ -32,6 +33,7 @@ const useAnalytics = <Response extends BaseResponseData>(
     queryKey: analyticsKeys.item(query),
     queryFn: () => fetchAnalytics(query),
     onSuccess,
+    enabled,
   });
 };
 

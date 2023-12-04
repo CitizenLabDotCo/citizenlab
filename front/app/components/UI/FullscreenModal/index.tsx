@@ -55,7 +55,7 @@ const Container = styled.div<{ windowHeight: number; zIndex?: number }>`
   }
 
   ${(props) => media.tablet`
-    height: calc(${props.windowHeight}px - ${props.theme.mobileMenuHeight}px);
+    height: 100vh;
     top: 0;
     bottom: ${props.theme.mobileMenuHeight}px;
     z-index: 1005; /* there is no top navbar at this screen size, so okay that it is higher than the z-index of NavBar here */

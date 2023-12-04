@@ -2,11 +2,11 @@
 
 module ContentBuilder
   class OldLayoutImageService < ::ContentImageService
-    protected
-
     def image_elements(content)
       LayoutService.new.select_craftjs_elements_for_types(content, ['Image']).pluck('props')
     end
+
+    protected
 
     def content_image_class
       LayoutImage

@@ -2,7 +2,6 @@ import React from 'react';
 
 // hooks
 import useProjectDescriptionBuilderLayout from 'modules/commercial/project_description_builder/api/useProjectDescriptionBuilderLayout';
-import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 import useProjectFiles from 'api/project_files/useProjectFiles';
 
@@ -22,6 +21,7 @@ import { IMAGES_LOADED_EVENT } from 'components/admin/ContentBuilder/constants';
 
 // typings
 import { Multiloc } from 'typings';
+import { isEmpty } from 'lodash-es';
 
 type PreviewProps = {
   projectId: string;
@@ -33,7 +33,6 @@ const handleLoadImages = () => {
 };
 
 const Preview = ({ projectId, projectTitle }: PreviewProps) => {
-  const locale = useLocale();
   const localize = useLocalize();
   const { data: projectFiles } = useProjectFiles(projectId);
 
@@ -42,18 +41,12 @@ const Preview = ({ projectId, projectTitle }: PreviewProps) => {
 
   const projectDescriptionBuilderContent =
     projectDescriptionBuilderLayout &&
-    !isNilOrError(locale) &&
     projectDescriptionBuilderLayout.data.attributes.enabled &&
-    projectDescriptionBuilderLayout.data.attributes.craftjs_jsonmultiloc[
-      locale
-    ];
+    !isEmpty(projectDescriptionBuilderLayout.data.attributes.craftjs_json);
 
-  const editorData =
-    !isNilOrError(projectDescriptionBuilderLayout) && !isNilOrError(locale)
-      ? projectDescriptionBuilderLayout.data.attributes.craftjs_jsonmultiloc[
-          locale
-        ]
-      : undefined;
+  const editorData = !isNilOrError(projectDescriptionBuilderLayout)
+    ? projectDescriptionBuilderLayout.data.attributes.craftjs_json
+    : undefined;
 
   return (
     <Box data-testid="projectDescriptionBuilderPreview">
