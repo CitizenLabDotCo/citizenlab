@@ -6,8 +6,8 @@ export default defineMessages({
     defaultMessage: 'Select',
   },
   selected: {
-    id: 'app.components.AssignVoteControl.selected',
-    defaultMessage: 'selected',
+    id: 'app.components.AssignVoteControl.selected2',
+    defaultMessage: 'Selected',
   },
   votesSubmitted: {
     id: 'app.components.AssignVoteControl.votesSubmitted',
