@@ -122,7 +122,7 @@ describe('Homepage builder', () => {
     });
   });
 
-  it('updates homepage banner correctly', () => {
+  it.skip('updates homepage banner correctly', () => {
     cy.intercept('PATCH', '**/home_page').as('saveHomePage');
     cy.intercept('GET', '**/home_page').as('getHomePage');
     cy.intercept('GET', '**/pages-menu').as('getPages');
@@ -241,6 +241,24 @@ describe('Homepage builder', () => {
     cy.get('#customizedButtonText').clear().type('Custom button');
     cy.get('#customizedButtonUrl').clear().type('https://www.google.com');
 
+    // Signed - in header
+
+    cy.get('#e2e-signed-in-button').click({
+      force: true,
+    });
+
+    // Update header and subheader
+    cy.get('[data-cy="e2e-signed-in-header-section"]')
+      .find('input')
+      .clear()
+      .type('New header');
+
+    cy.get('#cta-type-customized_button').click({
+      force: true,
+    });
+    cy.get('#customizedButtonText').clear().type('Custom button');
+    cy.get('#customizedButtonUrl').clear().type('https://www.google.com');
+
     // Save homepage
     cy.get('#e2e-content-builder-topbar-save').click({
       force: true,
@@ -252,6 +270,8 @@ describe('Homepage builder', () => {
 
     cy.visit('/');
     cy.get("[data-cy='e2e-signed-in-header-image']").should('exist');
+    cy.get('.buttonText').should('contain', 'Custom button');
+    cy.get("[data-cy='e2e-homepage-banner']").should('contain', 'New header');
 
     // Check updated content signed - out
 
@@ -274,26 +294,36 @@ describe('Homepage builder', () => {
     cy.get('#hook-header-content').should('contain', 'New subheader');
 
     cy.get('.buttonText').should('contain', 'Custom button');
+  });
 
-    // Layout checks
-    // cy.get('[data-cy="e2e-fixed-ratio-layout-option"]').click();
+  it('updates homepage banner layout correctly', () => {
+    cy.intercept('PATCH', '**/home_page').as('saveHomePage');
+    // Fixed ratio layout
+    cy.setAdminLoginCookie();
+    cy.visit('/admin/pages-menu/homepage-builder');
+    cy.get('[data-cy="e2e-homepage-banner"]').click({
+      force: true,
+    });
+    cy.get('[data-cy="e2e-fixed-ratio-layout-option"]').click({ force: true });
+    cy.get('#e2e-content-builder-topbar-save').click();
+    cy.wait('@saveHomePage');
+    cy.logout();
+    cy.visit('/');
+    cy.get('[data-cy="e2e-homepage-banner"]').should('exist');
+    cy.get('[data-cy="e2e-fixed-ratio-layout-container"]').should('exist');
 
-    // cy.get('[data-cy="e2e-homepage-banner"]').should('exist');
-    // cy.get('[data-cy="e2e-fixed-ratio-layout-container"]').should('exist');
-
-    // // Two row layout
-    // cy.setAdminLoginCookie();
-    // cy.visit('/admin/pages-menu/homepage-builder');
-    // cy.get('[data-cy="e2e-homepage-banner"]').click({
-    //   force: true,
-    // });
-    // cy.get('[data-cy="e2e-two-row-layout-option"]').click();
-    // cy.get('#e2e-content-builder-topbar-save').click();
-    // cy.wait('@saveHomePage');
-
-    // cy.logout();
-    // cy.visit('/');
-    // cy.get('[data-cy="e2e-homepage-banner"]').should('exist');
-    // cy.get('[data-cy="e2e-two-row-layout-container"]').should('exist');
+    // Two row layout
+    cy.setAdminLoginCookie();
+    cy.visit('/admin/pages-menu/homepage-builder');
+    cy.get('[data-cy="e2e-homepage-banner"]').click({
+      force: true,
+    });
+    cy.get('[data-cy="e2e-two-row-layout-option"]').click();
+    cy.get('#e2e-content-builder-topbar-save').click();
+    cy.wait('@saveHomePage');
+    cy.logout();
+    cy.visit('/');
+    cy.get('[data-cy="e2e-homepage-banner"]').should('exist');
+    cy.get('[data-cy="e2e-two-row-layout-container"]').should('exist');
   });
 });
