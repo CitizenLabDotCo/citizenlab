@@ -1173,7 +1173,7 @@
   "app.containers.InitiativesShow.youWereInvitedToConsponsorBy": "{authorName} aicināja jūs atbalstīt šo priekšlikumu.",
   "app.containers.Navbar.completeOnboarding": "Pilnīga uzņemšana darbā",
   "app.containers.Navbar.completeProfile": "Pilns profils",
-  "app.containers.Navbar.confirmEmail": "Apstiprināt e-pasta adresi",
+  "app.containers.Navbar.confirmEmail2": "Apstiprināt e-pastu",
   "app.containers.Navbar.unverified": "Nepārbaudīts",
   "app.containers.Navbar.verified": "Pārbaudīts",
   "app.containers.NewAuthModal.beforeYouFollow": "Pirms sekojat",
