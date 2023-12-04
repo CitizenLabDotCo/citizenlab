@@ -18,4 +18,12 @@ export default defineMessages({
     id: 'app.components.VotingDataUnsavedModal.submitMyVote',
     defaultMessage: 'Submit my vote',
   },
+  submitMyBudget: {
+    id: 'app.components.VotingDataUnsavedModal.submitMyBudget',
+    defaultMessage: 'Submit my budget',
+  },
+  submitYourBudget: {
+    id: 'app.components.VotingDataUnsavedModal.submitYourBudget',
+    defaultMessage: 'Do you want to submit your budget?',
+  },
 });

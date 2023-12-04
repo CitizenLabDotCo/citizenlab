@@ -10,7 +10,7 @@ import { useLocation } from 'react-router-dom';
 import { Button } from '@citizenlab/cl2-component-library';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // typings
@@ -36,12 +36,12 @@ const SubmitButton = ({
   projectSlug,
 }: Props) => {
   const [processing, setProcessing] = useState(false);
+  const { formatMessage } = useIntl();
   const basketId = participationContext.relationships.user_basket?.data?.id;
   const location = useLocation();
   const { data: basket } = useBasket(basketId);
   const { mutate: updateBasket } = useUpdateBasket();
   const { numberOfVotesCast, processing: votingProcessing } = useVoting();
-
   const votingMethod = participationContext.attributes.voting_method;
   if (!votingMethod || numberOfVotesCast === undefined) return null;
 
@@ -92,7 +92,9 @@ const SubmitButton = ({
 
   return (
     <Button onClick={handleSubmitOnClick} processing={processing}>
-      <FormattedMessage {...messages.submitMyVote} />
+      {votingMethod === 'budgeting'
+        ? formatMessage(messages.submitMyBudget)
+        : formatMessage(messages.submitMyVote)}
     </Button>
   );
 };

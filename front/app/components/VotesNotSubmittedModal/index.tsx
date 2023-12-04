@@ -42,6 +42,7 @@ const VotesNotSubmittedModal = ({ projectId, basket }: Props) => {
   const { data: phases } = usePhases(projectId);
   const currentPhase = getCurrentPhase(phases?.data);
   const basketSubmitted = !isNilOrError(basket?.data.attributes.submitted_at);
+  const votingMethod = currentPhase?.attributes?.voting_method;
 
   const [showDataUnsubmittedModal, setShowDataUnsubmittedModal] =
     useState(false);
@@ -102,7 +103,9 @@ const VotesNotSubmittedModal = ({ projectId, basket }: Props) => {
           />
         </Box>
         <Title m="0px" variant="h3">
-          {formatMessage(messages.submitYourVote)}
+          {votingMethod === 'budgeting'
+            ? formatMessage(messages.submitYourBudget)
+            : formatMessage(messages.submitYourVote)}
         </Title>
         <Text>{formatMessage(messages.submitYourVoteDescription)}</Text>
         <Box display="flex" gap="12px" flexDirection="column">
