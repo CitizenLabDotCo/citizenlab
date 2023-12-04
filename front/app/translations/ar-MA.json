@@ -1163,7 +1163,6 @@
   "app.containers.InitiativesShow.youWereInvitedToConsponsorBy": "دعاك {authorName} للمشاركة في رعاية هذا الاقتراح.",
   "app.containers.Navbar.completeOnboarding": "استكمال الإعداد",
   "app.containers.Navbar.completeProfile": "الملف الشخصي الكامل",
-  "app.containers.Navbar.confirmEmail": "أكد عنوانك الإلكتروني",
   "app.containers.Navbar.unverified": "لم يتم التحقق منه",
   "app.containers.Navbar.verified": "تم التحقق منه",
   "app.containers.NewAuthModal.beforeYouFollow": "قبل أن تتبع",
