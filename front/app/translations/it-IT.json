@@ -1173,7 +1173,7 @@
   "app.containers.InitiativesShow.youWereInvitedToConsponsorBy": "{authorName} ti ha invitato a cosponsorizzare questa proposta.",
   "app.containers.Navbar.completeOnboarding": "Completa l'inserimento in azienda",
   "app.containers.Navbar.completeProfile": "Profilo completo",
-  "app.containers.Navbar.confirmEmail": "Confermare l'indirizzo e-mail",
+  "app.containers.Navbar.confirmEmail2": "Conferma l'e-mail",
   "app.containers.Navbar.unverified": "Non verificato",
   "app.containers.Navbar.verified": "Verificato",
   "app.containers.NewAuthModal.beforeYouFollow": "Prima di seguire",
