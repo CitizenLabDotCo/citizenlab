@@ -262,7 +262,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.pollPhase": "Fase de sondeo",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.react": "<b>Reacciona:</b>  {participants}",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.registeredUsers": "Usuarios",
-  "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.submitIdeas": "<b>Presenta ideas:</b>  {participants}",
+  "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.submitInputs": "<b>Enviar entradas:</b>  {participants}",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.takingPoll": "<b>Haciendo una encuesta:</b>  {participants}",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.takingSurvey": "<b>Hacer una encuesta:</b>  {participants}",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.usersWithConfirmedEmail": "Usuarios con correo electrónico confirmado",
