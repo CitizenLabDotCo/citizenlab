@@ -23,7 +23,7 @@ import {
   SectionField,
 } from 'components/admin/Section';
 import ParticipationContext, {
-  IParticipationContextConfig,
+  IPhaseParticipationConfig,
 } from '../phase/participationContext';
 import {
   StyledForm,
@@ -202,7 +202,7 @@ const AdminProjectsProjectGeneral = () => {
   };
 
   const handleParticipationContextOnChange = (
-    participationContextConfig: IParticipationContextConfig
+    participationContextConfig: IPhaseParticipationConfig
   ) => {
     setSubmitState('enabled');
     setProjectAttributesDiff((projectAttributesDiff) => ({
@@ -275,7 +275,7 @@ const AdminProjectsProjectGeneral = () => {
   };
 
   async function saveForm(
-    participationContextConfig: IParticipationContextConfig | null = null
+    participationContextConfig: IPhaseParticipationConfig | null = null
   ) {
     // Should be split. Same func for existing/new project
     // Makes things unnecessarily complicated (e.g. projectId below).
@@ -390,7 +390,7 @@ const AdminProjectsProjectGeneral = () => {
   };
 
   const handleParticipationContextOnSubmit = (
-    participationContextConfig: IParticipationContextConfig
+    participationContextConfig: IPhaseParticipationConfig
   ) => {
     saveForm(participationContextConfig);
   };

@@ -50,8 +50,7 @@ import { CLErrors, Multiloc } from 'typings';
 import { IAppConfiguration } from 'api/app_configuration/types';
 import { getDefaultSortMethodFallback } from 'api/phases/utils';
 
-// TODO: Edwin rename this to IPhaseConfig and move everything in this folder to ../phase
-export interface IParticipationContextConfig {
+export interface IPhaseParticipationConfig {
   participation_method: ParticipationMethod;
   posting_enabled?: boolean | null;
   commenting_enabled?: boolean | null;
@@ -95,8 +94,8 @@ export type ApiErrors = CLErrors | null | undefined;
 
 interface InputProps {
   className?: string;
-  onChange: (arg: IParticipationContextConfig) => void;
-  onSubmit: (arg: IParticipationContextConfig) => void;
+  onChange: (arg: IPhaseParticipationConfig) => void;
+  onSubmit: (arg: IPhaseParticipationConfig) => void;
   phase?: IPhase | undefined | null;
   project?: IProject | undefined | null;
   apiErrors: ApiErrors;
@@ -105,7 +104,7 @@ interface InputProps {
 
 interface Props extends DataProps, InputProps {}
 
-export interface State extends IParticipationContextConfig {
+export interface State extends IPhaseParticipationConfig {
   noLikingLimitError: JSX.Element | null;
   noDislikingLimitError: JSX.Element | null;
   minTotalVotesError: string | null;

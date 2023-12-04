@@ -28,7 +28,7 @@ import {
   SubSectionTitle,
 } from 'components/admin/Section';
 import ParticipationContext, {
-  IParticipationContextConfig,
+  IPhaseParticipationConfig,
 } from '../phase/participationContext';
 import FileUploader from 'components/UI/FileUploader';
 import {
@@ -231,7 +231,7 @@ const AdminPhaseEdit = () => {
   };
 
   const getAttributeDiff = (
-    participationContextConfig: IParticipationContextConfig
+    participationContextConfig: IPhaseParticipationConfig
   ) => {
     return {
       ...attributeDiff,
@@ -240,14 +240,14 @@ const AdminPhaseEdit = () => {
   };
 
   const handleParticipationContextOnChange = (
-    participationContextConfig: IParticipationContextConfig
+    participationContextConfig: IPhaseParticipationConfig
   ) => {
     setSubmitState('enabled');
     setAttributeDiff(getAttributeDiff(participationContextConfig));
   };
 
   const handleParticipationContextOnSubmit = (
-    participationContextConfig: IParticipationContextConfig
+    participationContextConfig: IPhaseParticipationConfig
   ) => {
     const attributeDiff = getAttributeDiff(participationContextConfig);
     save(projectId, phase?.data, attributeDiff);
