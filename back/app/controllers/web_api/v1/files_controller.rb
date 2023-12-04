@@ -78,7 +78,7 @@ class WebApi::V1::FilesController < ApplicationController
         params: jsonapi_serializer_params
       ).serializable_hash, status: :created
     else
-      render json: { errors: transform_errors_details!(@file.errors.details) }, status: :unprocessable_entity
+      render json: { errors: generate_error_details(@file.errors) }, status: :unprocessable_entity
     end
   end
 
@@ -120,9 +120,20 @@ class WebApi::V1::FilesController < ApplicationController
     @container = secure_constantize(:container_class).find container_id
   end
 
-  def transform_errors_details!(error_details)
+  def generate_error_details(errors)
+    # @file.errors.details always returns { error: ActiveModel::Error#type }
+    # But Carrierwave's ActiveModel::Error items sometimes have more specific messages (e.g., max_size_error in this case).
+    # We want to use these specific messages on the FE.
+    #
+    # > @file.errors
+    # => #<ActiveModel::Errors [
+    #  #<ActiveModel::Error attribute=file, type=carrierwave_integrity_error, options={:message=>"max_size_error"}>,
+    #  #<ActiveModel::Error attribute=file, type=blank, options={:unless=>#<Proc:0x0000558d8a77ac00 /cl2_back/app/models/project_file.rb:30>}>
+    # ]>
+    error_details = errors.each_with_object(Hash.new { [] }) do |error, obj|
+      obj[error.attribute] += [{ error: error.options[:message] || error.type }]
+    end
     # carrierwave does not return the error code symbols by default
-    error_details = error_details.dup
     error_details[:file] = error_details[:file]&.uniq { |e| e[:error] }
     error_details
   end
