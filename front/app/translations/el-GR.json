@@ -1173,7 +1173,7 @@
   "app.containers.InitiativesShow.youWereInvitedToConsponsorBy": "{authorName} σας κάλεσε να συνυπογράψετε την πρόταση αυτή.",
   "app.containers.Navbar.completeOnboarding": "Ολοκληρωμένο onboarding",
   "app.containers.Navbar.completeProfile": "Πλήρες προφίλ",
-  "app.containers.Navbar.confirmEmail": "Επιβεβαίωση διεύθυνσης email",
+  "app.containers.Navbar.confirmEmail2": "Επιβεβαίωση email",
   "app.containers.Navbar.unverified": "Μη επαληθευμένος",
   "app.containers.Navbar.verified": "Επαληθευμένος",
   "app.containers.NewAuthModal.beforeYouFollow": "Πριν ακολουθήσετε",
