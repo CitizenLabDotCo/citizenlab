@@ -1163,6 +1163,7 @@
   "app.containers.InitiativesShow.youWereInvitedToConsponsorBy": "{authorName} opfordrede dig til at støtte dette forslag.",
   "app.containers.Navbar.completeOnboarding": "Fuldfør onboarding",
   "app.containers.Navbar.completeProfile": "Færdiggør profil",
+  "app.containers.Navbar.confirmEmail2": "Bekræft e-mail",
   "app.containers.Navbar.unverified": "Ikke verificeret",
   "app.containers.Navbar.verified": "Verificeret",
   "app.containers.NewAuthModal.beforeYouFollow": "Før du følger",

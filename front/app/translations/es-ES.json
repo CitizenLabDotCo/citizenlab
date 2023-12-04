@@ -1163,6 +1163,7 @@
   "app.containers.InitiativesShow.youWereInvitedToConsponsorBy": "{authorName} te invita a copatrocinar esta propuesta.",
   "app.containers.Navbar.completeOnboarding": "Incorporación completa",
   "app.containers.Navbar.completeProfile": "Perfil completo",
+  "app.containers.Navbar.confirmEmail2": "Confirmar correo electrónico",
   "app.containers.Navbar.unverified": "No verificado",
   "app.containers.Navbar.verified": "Verificado",
   "app.containers.NewAuthModal.beforeYouFollow": "Antes de seguir",

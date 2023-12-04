@@ -1163,6 +1163,7 @@
   "app.containers.InitiativesShow.youWereInvitedToConsponsorBy": "{authorName} invited you to cosponsor this proposal.",
   "app.containers.Navbar.completeOnboarding": "Complete onboarding",
   "app.containers.Navbar.completeProfile": "Комплетан профил",
+  "app.containers.Navbar.confirmEmail2": "Confirm email",
   "app.containers.Navbar.unverified": "Neverifikovano",
   "app.containers.Navbar.verified": "Verifikovano",
   "app.containers.NewAuthModal.beforeYouFollow": "Before you follow",
