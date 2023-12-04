@@ -10,6 +10,8 @@ ca:
       comment_author: '%{authorName} commented:'
       idea_author: '%{authorName} submitted a post:'
       initiative_author: '%{authorName} submitted a proposal:'
-      this_post_was_flagged: >
-        <p>Aquesta publicació s'ha detectat automàticament com a contingut potencialment inadequat. T'enviem aquesta notificació perquè puguis revisar la publicació d'acord amb les teves pròpies directrius de moderació.</p><p>Si la publicació no conté contingut inadequat, podeu eliminar l'avís mitjançant la vostra plataforma a la pestanya Activitat del tauler d'administració.</p>
+      automatically_flagged: >
+        Aquesta publicació s'ha detectat automàticament com a contingut potencialment inadequat. T'enviem aquesta notificació perquè puguis revisar la publicació d'acord amb les teves pròpies directrius de moderació.
+      how_to_review: >
+        Si la publicació no conté contingut inadequat, podeu eliminar l'avís mitjançant la vostra plataforma a la pestanya Activitat del tauler d'administració.
       cta_review_post: 'Review post'
