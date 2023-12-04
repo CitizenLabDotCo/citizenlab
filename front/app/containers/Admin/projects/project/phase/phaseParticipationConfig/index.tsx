@@ -207,7 +207,7 @@ class PhaseParticipationConfig extends PureComponent<
 
     this.subscriptions = [
       eventEmitter
-        .observeEvent('getParticipationContext')
+        .observeEvent('getPhaseParticipationConfig')
         .pipe(filter(() => this.validate()))
         .subscribe(() => {
           const output = getOutput(this.state);

@@ -227,7 +227,7 @@ const AdminPhaseEdit = () => {
 
   const handleOnSubmit = async (event: FormEvent<any>) => {
     event.preventDefault();
-    eventEmitter.emit('getParticipationContext');
+    eventEmitter.emit('getPhaseParticipationConfig');
   };
 
   const getAttributeDiff = (
