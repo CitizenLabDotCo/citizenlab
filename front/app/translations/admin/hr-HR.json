@@ -262,7 +262,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.pollPhase": "Faza ankete",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.react": "<b>Reagiraj:</b>  {participants}",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.registeredUsers": "Registrirani korisnici",
-  "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.submitIdeas": "<b>Pošaljite ideje:</b>  {participants}",
+  "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.submitInputs": "<b>Pošalji unose:</b>  {participants}",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.takingPoll": "<b>Anketiranje:</b>  {participants}",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.takingSurvey": "<b>Ispunjavanje ankete:</b>  {participants}",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.usersWithConfirmedEmail": "Korisnici s potvrđenom e-poštom",
