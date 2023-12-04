@@ -1,0 +1,1022 @@
+ID,Host,Lifecycle Stage,Created At,Response
+9c2c6062-c4a8-4a54-97e1-4ce8dc6de8ca,participer.cmm.qc.ca,active,2022-04-06T09:42:31.278535,9c2c6062-c4a8-4a54-97e1-4ce8dc6de8ca,1. app_configuration success
+a9b75aab-fbe0-4606-9a45-a20580c0aaf3,bowenisland.citizenlab.co,active,2019-11-05T19:43:36.163208,a9b75aab-fbe0-4606-9a45-a20580c0aaf3,1. app_configuration success
+c82031fb-d375-4f8a-b04e-a211375ff43a,participation.concordia.ca,active,2021-01-28T15:37:07.039418,c82031fb-d375-4f8a-b04e-a211375ff43a,1. app_configuration success
+a5fb75cf-f055-4411-959c-8a39138f66f7,cat.citizenlab.co,churned,2022-02-07T13:26:20.479927,a5fb75cf-f055-4411-959c-8a39138f66f7,1. app_configuration success
+0a1d83d4-01b0-46d7-95be-c657ca6e3534,albertaparty.citizenlab.co,active,2022-03-29T22:47:35.009104,0a1d83d4-01b0-46d7-95be-c657ca6e3534,1. app_configuration success
+a678a659-5ac0-4ab0-8270-2da3a4081cc3,ideas.smartertogether.ca,churned,2018-01-27T18:25:47.087546,a678a659-5ac0-4ab0-8270-2da3a4081cc3,SocketError: Failed to open TCP connection to ideas.smartertogether.ca:443 (getaddrinfo: nodename nor servname provided, or not known)
+703e158a-b8d8-439f-b4ab-85f76832c911,aem-goldex.citizenlab.co,churned,2020-04-27T13:32:21.460911,703e158a-b8d8-439f-b4ab-85f76832c911,1. app_configuration success
+78330989-b1ef-4e62-b7d0-0ae0ca9dbc66,vancouver.citizenlab.co,churned,2018-04-05T21:29:17.426954,78330989-b1ef-4e62-b7d0-0ae0ca9dbc66,1. app_configuration success
+706ea23d-135b-429a-8e46-22f7585c3436,ottawa-demo.citizenlab.co,demo,2021-08-24T16:27:18.34078,706ea23d-135b-429a-8e46-22f7585c3436,1. app_configuration success
+324e98fc-7355-44b2-95b9-dd6034c6ae31,slrd-trial.citizenlab.co,demo,2022-01-31T17:39:52.183178,324e98fc-7355-44b2-95b9-dd6034c6ae31,Net::OpenTimeout: Failed to open TCP connection to slrd-trial.citizenlab.co:443 (execution expired)
+d3f9dcd7-f1f8-490a-92dd-e0885ced04f8,acosys-demo.citizenlab.co,demo,2021-09-18T14:22:47.201528,d3f9dcd7-f1f8-490a-92dd-e0885ced04f8,SocketError: Failed to open TCP connection to acosys-demo.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+d6c470a9-f087-4782-aabc-6c8683ce4949,ecpfl-demo.citizenlab.co,demo,2021-08-24T13:53:18.28817,d6c470a9-f087-4782-aabc-6c8683ce4949,SocketError: Failed to open TCP connection to ecpfl-demo.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+70872ff9-4aa5-4865-be14-d4267c000409,saanich.citizenlab.co,active,2023-10-18T20:59:44.268819,70872ff9-4aa5-4865-be14-d4267c000409,SocketError: Failed to open TCP connection to saanich.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+da989cd6-0dfb-4285-a582-13835f76ce2c,toronto-ward-18.citizenlab.co,active,2023-10-26T22:19:00.328469,da989cd6-0dfb-4285-a582-13835f76ce2c,SocketError: Failed to open TCP connection to toronto-ward-18.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+22054193-73ce-48dd-8ea7-53eca53f233a,santaanatzacuala-hidalgo.citizenlab.co,active,2022-05-30T17:20:47.498548,22054193-73ce-48dd-8ea7-53eca53f233a,SocketError: Failed to open TCP connection to santaanatzacuala-hidalgo.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+c44f7c38-7029-4078-b6e6-ad87818283cb,participaconenergia.minenergia.cl,active,2021-10-28T16:29:24.401856,c44f7c38-7029-4078-b6e6-ad87818283cb,SocketError: Failed to open TCP connection to participaconenergia.minenergia.cl:443 (getaddrinfo: nodename nor servname provided, or not known)
+9d4d68d4-3bc0-4011-a7fb-8321ad0acf30,sanisidroparticipa.citizenlab.co,churned,2020-11-30T17:07:51.357446,9d4d68d4-3bc0-4011-a7fb-8321ad0acf30,SocketError: Failed to open TCP connection to sanisidroparticipa.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+e6eb0be9-b6e7-4caf-908b-2c162969c725,participa.muniarica.cl,active,2022-12-07T01:18:38.988849,e6eb0be9-b6e7-4caf-908b-2c162969c725,SocketError: Failed to open TCP connection to participa.muniarica.cl:443 (getaddrinfo: nodename nor servname provided, or not known)
+8a0a62cb-e9d9-4a9a-89d6-e83236e10c85,vitacuraparticipa.citizenlab.co,churned,2022-09-27T08:45:12.91159,8a0a62cb-e9d9-4a9a-89d6-e83236e10c85,SocketError: Failed to open TCP connection to vitacuraparticipa.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+04db8880-25ee-4f9c-8511-171ba265432a,antucoyaparticipa.cl,active,2021-02-08T23:19:58.284055,04db8880-25ee-4f9c-8511-171ba265432a,SocketError: Failed to open TCP connection to antucoyaparticipa.cl:443 (getaddrinfo: nodename nor servname provided, or not known)
+eb770247-1bd1-4952-a101-cbcdbc5a5a46,participa.mpudahuel.cl,churned,2022-06-28T14:33:32.370954,eb770247-1bd1-4952-a101-cbcdbc5a5a46,SocketError: Failed to open TCP connection to participa.mpudahuel.cl:443 (getaddrinfo: nodename nor servname provided, or not known)
+5709cc84-3eda-4015-8715-f38b032f4af9,dialogoreformas3.citizenlab.co,active,2022-01-19T12:10:41.002262,5709cc84-3eda-4015-8715-f38b032f4af9,SocketError: Failed to open TCP connection to dialogoreformas3.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+1ce3a612-c754-4869-abcb-772ebb65e14a,redmercosurfromargentina.citizenlab.co,churned,2022-04-28T13:59:07.517239,1ce3a612-c754-4869-abcb-772ebb65e14a,SocketError: Failed to open TCP connection to redmercosurfromargentina.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+7383448d-a601-4a6e-9e4e-b9d1dcd92b50,participacion.digital.gob.cl,active,2022-08-29T13:38:25.111563,7383448d-a601-4a6e-9e4e-b9d1dcd92b50,SocketError: Failed to open TCP connection to participacion.digital.gob.cl:443 (getaddrinfo: nodename nor servname provided, or not known)
+10f724d7-e584-4268-8d01-bd03101f52c8,jaiba.citizenlab.co,active,2021-09-24T10:41:32.358935,10f724d7-e584-4268-8d01-bd03101f52c8,SocketError: Failed to open TCP connection to jaiba.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+437876ed-e61d-49bb-a60f-d1cf129476b8,demolaserena.citizenlab.co,demo,2023-02-15T11:42:25.605934,437876ed-e61d-49bb-a60f-d1cf129476b8,SocketError: Failed to open TCP connection to demolaserena.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+4fb3f5aa-33a7-41f7-8651-ff4d8c5559f8,saneamentodebasenatural.citizenlab.co,churned,2022-03-28T20:00:31.110421,4fb3f5aa-33a7-41f7-8651-ff4d8c5559f8,SocketError: Failed to open TCP connection to saneamentodebasenatural.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+8f63fb7c-086c-4d98-8fd8-5e4136243abe,participa.lareina.cl,active,2023-01-09T11:24:30.594661,8f63fb7c-086c-4d98-8fd8-5e4136243abe,SocketError: Failed to open TCP connection to participa.lareina.cl:443 (getaddrinfo: nodename nor servname provided, or not known)
+24c5cb00-390f-4679-aa79-b12b8cc79998,centinelaparticipa.cl,active,2020-10-07T15:49:39.448588,24c5cb00-390f-4679-aa79-b12b8cc79998,SocketError: Failed to open TCP connection to centinelaparticipa.cl:443 (getaddrinfo: nodename nor servname provided, or not known)
+7cd81321-fb2e-44aa-b611-1369c0281357,participa.santiago2050.cl,active,2022-07-04T17:07:48.478774,7cd81321-fb2e-44aa-b611-1369c0281357,SocketError: Failed to open TCP connection to participa.santiago2050.cl:443 (getaddrinfo: nodename nor servname provided, or not known)
+56d426ef-922c-4944-9e3d-da947269a330,lab.pnud.org.pe,active,2021-03-01T11:04:08.707899,56d426ef-922c-4944-9e3d-da947269a330,SocketError: Failed to open TCP connection to lab.pnud.org.pe:443 (getaddrinfo: nodename nor servname provided, or not known)
+6a617c19-ec47-47e6-92d1-6dac4bd9062c,novalima.citizenlab.co,active,2022-09-07T13:54:16.787839,6a617c19-ec47-47e6-92d1-6dac4bd9062c,SocketError: Failed to open TCP connection to novalima.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+eb7990e2-d3cf-48fc-9006-1ee1d3a8f7ec,publicoescazu.cepal.org,active,2022-08-08T15:51:18.204795,eb7990e2-d3cf-48fc-9006-1ee1d3a8f7ec,SocketError: Failed to open TCP connection to publicoescazu.cepal.org:443 (getaddrinfo: nodename nor servname provided, or not known)
+2331988f-5776-44b0-be7e-2a382690b96e,penalolenmascerca.cl,churned,2019-05-31T12:56:42.317393,2331988f-5776-44b0-be7e-2a382690b96e,SocketError: Failed to open TCP connection to penalolenmascerca.cl:443 (getaddrinfo: nodename nor servname provided, or not known)
+d0901bb6-ff6b-47f8-b7e1-f55361fe28b9,constitucion.citizenlab.co,churned,2019-12-11T22:13:29.995838,d0901bb6-ff6b-47f8-b7e1-f55361fe28b9,SocketError: Failed to open TCP connection to constitucion.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+789f9e9c-e6ad-41fc-bba8-a8fde4b45439,conectajusticia.minjusticia.gob.cl,churned,2019-12-17T17:20:52.417608,789f9e9c-e6ad-41fc-bba8-a8fde4b45439,SocketError: Failed to open TCP connection to conectajusticia.minjusticia.gob.cl:443 (getaddrinfo: nodename nor servname provided, or not known)
+fa39ea65-fff3-4c31-817d-edb92fce4037,mopchile.citizenlab.co,churned,2021-11-05T18:51:40.024544,fa39ea65-fff3-4c31-817d-edb92fce4037,SocketError: Failed to open TCP connection to mopchile.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+81715362-a820-4ab3-84ee-e715bdae5f38,nuestravozimporta.cl,churned,2021-03-12T03:26:03.420273,81715362-a820-4ab3-84ee-e715bdae5f38,SocketError: Failed to open TCP connection to nuestravozimporta.cl:443 (getaddrinfo: nodename nor servname provided, or not known)
+aa2b0b3c-c7c0-4987-a185-e7d233ddf76c,acerca-redes.citizenlab.co,churned,2020-06-04T19:36:46.648851,aa2b0b3c-c7c0-4987-a185-e7d233ddf76c,SocketError: Failed to open TCP connection to acerca-redes.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+aded0d52-4571-45b7-bd7a-689975b370dc,municipiosenpandemia.citizenlab.co,churned,2020-07-03T00:50:28.818498,aded0d52-4571-45b7-bd7a-689975b370dc,SocketError: Failed to open TCP connection to municipiosenpandemia.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+a4e4d34b-b6ee-40a0-a8a0-388a861048af,participanoneutrales.cl,churned,2020-10-27T21:41:20.854443,a4e4d34b-b6ee-40a0-a8a0-388a861048af,SocketError: Failed to open TCP connection to participanoneutrales.cl:443 (getaddrinfo: nodename nor servname provided, or not known)
+486973fd-52a5-467b-9f26-67e969a0578e,talca.citizenlab.co,churned,2021-09-27T14:06:08.687952,486973fd-52a5-467b-9f26-67e969a0578e,SocketError: Failed to open TCP connection to talca.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+bd1273cf-2acf-4454-b7e9-2da1eeda082a,conectados.citizenlab.co,churned,2019-04-17T14:46:23.577563,bd1273cf-2acf-4454-b7e9-2da1eeda082a,SocketError: Failed to open TCP connection to conectados.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+3e02ca0f-aeee-4e4d-8587-3e2d73086f4b,san-esteban.citizenlab.co,churned,2019-12-11T22:16:43.177199,3e02ca0f-aeee-4e4d-8587-3e2d73086f4b,SocketError: Failed to open TCP connection to san-esteban.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+4b9bd65d-869e-4dc6-aafb-ced732ae2f57,agendadigitalrd.citizenlab.co,churned,2020-12-10T14:49:54.863958,4b9bd65d-869e-4dc6-aafb-ced732ae2f57,SocketError: Failed to open TCP connection to agendadigitalrd.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+d7f2212d-cc1d-474b-879e-4d4a9714b635,san-bernardo.citizenlab.co,churned,2019-12-11T16:38:30.960578,d7f2212d-cc1d-474b-879e-4d4a9714b635,SocketError: Failed to open TCP connection to san-bernardo.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+b98faf6a-8324-48b8-a3f1-07905fd31bbe,san-vicente.citizenlab.co,churned,2019-12-11T16:49:18.376354,b98faf6a-8324-48b8-a3f1-07905fd31bbe,SocketError: Failed to open TCP connection to san-vicente.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+286b8c23-8d29-430c-a9b6-796e2f7b3999,caimanespelambres.citizenlab.co,churned,2021-02-21T16:00:55.016208,286b8c23-8d29-430c-a9b6-796e2f7b3999,SocketError: Failed to open TCP connection to caimanespelambres.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+d8f0f30c-439c-49b0-9f82-32bef8a0d6ae,digitalrd.citizenlab.co,churned,2021-02-18T22:47:51.733823,d8f0f30c-439c-49b0-9f82-32bef8a0d6ae,SocketError: Failed to open TCP connection to digitalrd.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+4294d645-2f67-46ee-ac1e-b3885d0daf1b,participacionambiental.citizenlab.co,churned,2020-05-11T18:21:30.930301,4294d645-2f67-46ee-ac1e-b3885d0daf1b,SocketError: Failed to open TCP connection to participacionambiental.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+0d44a552-6904-4c57-b42f-5d28b49bafde,vinadelmarparticipa.citizenlab.co,demo,2022-08-22T15:34:11.391395,0d44a552-6904-4c57-b42f-5d28b49bafde,SocketError: Failed to open TCP connection to vinadelmarparticipa.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+c2346bf1-7fec-4e3a-9536-6c886bfe8d1c,minvu.citizenlab.co,churned,2020-10-07T16:04:11.520639,c2346bf1-7fec-4e3a-9536-6c886bfe8d1c,SocketError: Failed to open TCP connection to minvu.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+20830e34-f7b6-4284-8a31-698712906275,statkraftparticipa.citizenlab.co,churned,2020-10-07T14:37:42.113314,20830e34-f7b6-4284-8a31-698712906275,SocketError: Failed to open TCP connection to statkraftparticipa.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+f7378e4a-695d-41da-bf3c-2e49110203c9,girlsrights.citizenlab.co,churned,2020-07-03T08:58:25.737558,f7378e4a-695d-41da-bf3c-2e49110203c9,SocketError: Failed to open TCP connection to girlsrights.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+1ec0d9e1-2672-49d4-97f2-6f8fb4ce0899,derechoshumanoslocales.cl,churned,2020-10-07T15:55:51.533092,1ec0d9e1-2672-49d4-97f2-6f8fb4ce0899,SocketError: Failed to open TCP connection to derechoshumanoslocales.cl:443 (getaddrinfo: nodename nor servname provided, or not known)
+dad59814-875e-42d3-aed6-f43594522cd6,jerico.amigo.community,churned,2020-08-11T10:08:27.963626,dad59814-875e-42d3-aed6-f43594522cd6,SocketError: Failed to open TCP connection to jerico.amigo.community:443 (getaddrinfo: nodename nor servname provided, or not known)
+0b8cee85-36b5-4033-9a25-36e0393d3914,participacion.cecrea.cl,churned,2020-09-29T16:31:18.211694,0b8cee85-36b5-4033-9a25-36e0393d3914,SocketError: Failed to open TCP connection to participacion.cecrea.cl:443 (getaddrinfo: nodename nor servname provided, or not known)
+2e70a1ad-e886-4566-95c1-59f5168e332c,tppcoronel.cl,churned,2020-09-29T16:33:45.794017,2e70a1ad-e886-4566-95c1-59f5168e332c,SocketError: Failed to open TCP connection to tppcoronel.cl:443 (getaddrinfo: nodename nor servname provided, or not known)
+c30d1842-6891-4a53-bea8-d587e86f0b12,debatenuevaconstitucion.citizenlab.co,churned,2022-07-27T11:32:48.041525,c30d1842-6891-4a53-bea8-d587e86f0b12,SocketError: Failed to open TCP connection to debatenuevaconstitucion.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+506b3503-ff32-40d0-b0d6-78c392b2bf01,dialogaciudadcndu.citizenlab.co,churned,2021-06-21T17:35:05.35568,506b3503-ff32-40d0-b0d6-78c392b2bf01,SocketError: Failed to open TCP connection to dialogaciudadcndu.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+edca4fd7-56cc-47cb-852d-ad7d5e7a27c2,corrientes2030demo.citizenlab.co,demo,2021-10-26T21:13:34.117257,edca4fd7-56cc-47cb-852d-ad7d5e7a27c2,SocketError: Failed to open TCP connection to corrientes2030demo.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+c5c74b0a-beab-4082-b9f7-d04c04efba3b,demoacciona.citizenlab.co,demo,2022-02-09T10:35:19.128994,c5c74b0a-beab-4082-b9f7-d04c04efba3b,SocketError: Failed to open TCP connection to demoacciona.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+2d6c4945-3729-4ba6-aabe-8d882075eeff,demoislademaipo.citizenlab.co,demo,2022-02-14T11:55:14.382248,2d6c4945-3729-4ba6-aabe-8d882075eeff,SocketError: Failed to open TCP connection to demoislademaipo.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+17656d04-b01f-4887-bc6f-20ebd75f8e58,goreantofagastademo.citizenlab.co,demo,2022-11-29T09:12:06.081385,17656d04-b01f-4887-bc6f-20ebd75f8e58,SocketError: Failed to open TCP connection to goreantofagastademo.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+76739b32-deac-40ff-b1fe-1c660f0b8ace,iquiqueparticipa.citizenlab.co,demo,2022-06-30T22:27:22.729708,76739b32-deac-40ff-b1fe-1c660f0b8ace,SocketError: Failed to open TCP connection to iquiqueparticipa.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+a564c71b-e677-403c-ab35-ee89dbea67bb,argentinaparticipa.citizenlab.co,demo,2021-05-02T15:17:01.326614,a564c71b-e677-403c-ab35-ee89dbea67bb,SocketError: Failed to open TCP connection to argentinaparticipa.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+5b0092b0-8845-40b0-a8f6-ee176aa12c50,prc-demo.citizenlab.co,demo,2021-05-02T15:33:11.578608,5b0092b0-8845-40b0-a8f6-ee176aa12c50,SocketError: Failed to open TCP connection to prc-demo.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+1c786182-a9e0-4327-85f8-75b4d5264400,tenemosquehablardechile.citizenlab.co,demo,2022-02-09T09:27:43.554012,1c786182-a9e0-4327-85f8-75b4d5264400,SocketError: Failed to open TCP connection to tenemosquehablardechile.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+beaee1ce-a6fa-428f-9988-15cf658daf9e,demoestacioncentral.citizenlab.co,demo,2022-02-09T10:28:55.934284,beaee1ce-a6fa-428f-9988-15cf658daf9e,SocketError: Failed to open TCP connection to demoestacioncentral.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+ecc14c04-e904-42c4-9e6d-b9c7c10fffc7,medellindemo.citizenlab.co,demo,2022-03-09T14:49:02.850652,ecc14c04-e904-42c4-9e6d-b9c7c10fffc7,SocketError: Failed to open TCP connection to medellindemo.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+a420a6cf-8824-468c-a179-8ca91a2465f9,san-ramon.citizenlab.co,demo,2020-11-04T16:47:28.079144,a420a6cf-8824-468c-a179-8ca91a2465f9,SocketError: Failed to open TCP connection to san-ramon.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+d07dfe74-05e2-46fe-a909-24102f2a75c8,demomaipuparticipa.citizenlab.co,demo,2022-10-11T11:45:46.995167,d07dfe74-05e2-46fe-a909-24102f2a75c8,SocketError: Failed to open TCP connection to demomaipuparticipa.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+c5265192-3591-459c-a317-33656b11f611,demomimunicipio.citizenlab.co,demo,2022-06-21T13:44:54.707911,c5265192-3591-459c-a317-33656b11f611,SocketError: Failed to open TCP connection to demomimunicipio.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+b99a9ac8-6d10-416b-ba71-82d1e318e51d,mexico2-demo.citizenlab.co,demo,2021-12-15T09:21:31.769653,b99a9ac8-6d10-416b-ba71-82d1e318e51d,SocketError: Failed to open TCP connection to mexico2-demo.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+3f167863-0f13-40a9-a07a-c39bbdfa9012,barilocheparticipa.citizenlab.co,demo,2022-02-02T15:45:51.86821,3f167863-0f13-40a9-a07a-c39bbdfa9012,SocketError: Failed to open TCP connection to barilocheparticipa.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+23d44b92-49de-4229-a917-1ee8fcb82e36,democolbun.citizenlab.co,demo,2022-03-09T09:15:20.48104,23d44b92-49de-4229-a917-1ee8fcb82e36,SocketError: Failed to open TCP connection to democolbun.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+9397b70f-ecbf-41ba-ab81-1ec3e6743d6b,mintransporte.citizenlab.co,demo,2022-10-17T10:05:46.985542,9397b70f-ecbf-41ba-ab81-1ec3e6743d6b,SocketError: Failed to open TCP connection to mintransporte.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+9af1bad3-db8f-4cb1-980c-3481a8bcc267,jd-pantanal.citizenlab.co,demo,2022-08-07T14:32:27.757785,9af1bad3-db8f-4cb1-980c-3481a8bcc267,SocketError: Failed to open TCP connection to jd-pantanal.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+2c6a7a96-d80a-4135-99f5-57508733d37f,fortalezacruzada.citizenlab.co,demo,2021-09-15T18:36:43.40947,2c6a7a96-d80a-4135-99f5-57508733d37f,SocketError: Failed to open TCP connection to fortalezacruzada.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+39f085d7-07f1-41e8-849b-c92c9d198600,sanpedrodecide-demo.citizenlab.co,demo,2021-12-15T08:30:44.784469,39f085d7-07f1-41e8-849b-c92c9d198600,SocketError: Failed to open TCP connection to sanpedrodecide-demo.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+c4b36ee7-265f-4fc1-8eb0-d9442ab45583,reconstruccionhonduras.citizenlab.co,demo,2021-12-30T05:06:53.722074,c4b36ee7-265f-4fc1-8eb0-d9442ab45583,SocketError: Failed to open TCP connection to reconstruccionhonduras.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+591765c5-6e9c-4e76-8265-3d60bd663536,lautaroparticipa.citizenlab.co,demo,2021-09-23T10:33:59.177046,591765c5-6e9c-4e76-8265-3d60bd663536,SocketError: Failed to open TCP connection to lautaroparticipa.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+96f73d84-7294-474f-ab04-5e5200b9ea6a,puertovaras.citizenlab.co,demo,2022-02-25T12:23:49.858344,96f73d84-7294-474f-ab04-5e5200b9ea6a,SocketError: Failed to open TCP connection to puertovaras.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+2703cf97-8c9c-48af-963b-f68f21c26275,ejealamedaprovidencia.citizenlab.co,demo,2022-12-23T10:35:26.77435,2703cf97-8c9c-48af-963b-f68f21c26275,SocketError: Failed to open TCP connection to ejealamedaprovidencia.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+035c4fe1-55ca-4ab6-a765-ffcb0c0c53ea,tumunicipio.citizenlab.co,demo,2021-02-23T19:20:13.191893,035c4fe1-55ca-4ab6-a765-ffcb0c0c53ea,SocketError: Failed to open TCP connection to tumunicipio.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+4b5a926e-f50f-4051-9014-950cd59ec356,municolinademo.citizenlab.co,demo,2022-02-28T15:36:44.064937,4b5a926e-f50f-4051-9014-950cd59ec356,SocketError: Failed to open TCP connection to municolinademo.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+4b28fa98-7744-4dc4-ab0c-8268c3761eec,demominsal.citizenlab.co,demo,2022-11-02T11:36:41.740577,4b28fa98-7744-4dc4-ab0c-8268c3761eec,SocketError: Failed to open TCP connection to demominsal.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+72bf60f0-43f4-440d-aab5-2dc2c2237321,participaconserviu.citizenlab.co,demo,2022-10-19T12:59:19.745587,72bf60f0-43f4-440d-aab5-2dc2c2237321,SocketError: Failed to open TCP connection to participaconserviu.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+80a2301f-0f8a-476c-8d47-dd6c8f942421,maipuparticipa.citizenlab.co,demo,2022-02-09T10:34:28.829309,80a2301f-0f8a-476c-8d47-dd6c8f942421,SocketError: Failed to open TCP connection to maipuparticipa.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+9597e2a1-a8dd-41cc-91d8-2c8a480769c5,santiago.demo.citizenlab.co,demo,2020-01-27T11:26:31.066465,9597e2a1-a8dd-41cc-91d8-2c8a480769c5,SocketError: Failed to open TCP connection to santiago.demo.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+84287eda-0c2f-47f8-a933-71551058d0d6,estrategiaregionaldesarrollomaule.citizenlab.co,demo,2021-09-29T16:19:55.821093,84287eda-0c2f-47f8-a933-71551058d0d6,SocketError: Failed to open TCP connection to estrategiaregionaldesarrollomaule.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+26b6357c-6636-4d41-9c77-9be3177a1af9,nunoaparticipa.citizenlab.co,demo,2022-06-24T16:02:13.013079,26b6357c-6636-4d41-9c77-9be3177a1af9,SocketError: Failed to open TCP connection to nunoaparticipa.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+82aa2078-fd4b-4529-b152-998a2e5e976a,municerronaviademo.citizenlab.co,demo,2022-03-01T10:36:10.596249,82aa2078-fd4b-4529-b152-998a2e5e976a,SocketError: Failed to open TCP connection to municerronaviademo.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+0cb174f0-f501-4fa3-8fbf-f1c7b24a5dc5,democauquenes.citizenlab.co,demo,2022-07-15T09:28:41.524269,0cb174f0-f501-4fa3-8fbf-f1c7b24a5dc5,SocketError: Failed to open TCP connection to democauquenes.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+6618ad24-5c08-417e-9171-1f9906eef23e,demominmineria.citizenlab.co,demo,2022-10-19T11:42:53.018854,6618ad24-5c08-417e-9171-1f9906eef23e,SocketError: Failed to open TCP connection to demominmineria.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+e4818d1e-0328-4b7e-a2dd-16c890dff0eb,gorebiobiodemo.citizenlab.co,demo,2022-11-21T10:15:11.807607,e4818d1e-0328-4b7e-a2dd-16c890dff0eb,SocketError: Failed to open TCP connection to gorebiobiodemo.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+9d523872-637b-4ca5-bed7-75adda25b3f2,participaconenergia.citizenlab.co,demo,2021-02-24T18:09:08.979041,9d523872-637b-4ca5-bed7-75adda25b3f2,SocketError: Failed to open TCP connection to participaconenergia.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+14b2f1a2-0497-4429-b60a-27dcc47c35b8,jaiba1-demo.citizenlab.co,demo,2022-02-02T13:17:36.283499,14b2f1a2-0497-4429-b60a-27dcc47c35b8,SocketError: Failed to open TCP connection to jaiba1-demo.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+795d61e2-f026-4d13-b2e4-81fbd4ef54c4,dialogonacional.citizenlab.co,demo,2022-02-02T15:12:41.572547,795d61e2-f026-4d13-b2e4-81fbd4ef54c4,SocketError: Failed to open TCP connection to dialogonacional.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+ba9cf243-fa37-446b-9975-836f820df650,participamop.citizenlab.co,demo,2021-04-14T21:51:12.551585,ba9cf243-fa37-446b-9975-836f820df650,SocketError: Failed to open TCP connection to participamop.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+fc8b32da-4aa0-48a6-82f5-525426d85fb8,demorenca.citizenlab.co,demo,2022-06-08T21:29:00.879689,fc8b32da-4aa0-48a6-82f5-525426d85fb8,SocketError: Failed to open TCP connection to demorenca.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+588055c2-885a-4feb-9747-05700bff1509,senama.demo.citizenlab.co,demo,2020-02-05T17:25:58.381704,588055c2-885a-4feb-9747-05700bff1509,SocketError: Failed to open TCP connection to senama.demo.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+73f1ece5-fc69-497b-8544-7ba82783f38a,democolbunmulchen.citizenlab.co,demo,2022-04-25T08:48:34.885087,73f1ece5-fc69-497b-8544-7ba82783f38a,SocketError: Failed to open TCP connection to democolbunmulchen.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+ad67c683-065f-4c12-9147-7d17b71b6630,metroparticipa.citizenlab.co,demo,2022-07-11T16:12:33.571059,ad67c683-065f-4c12-9147-7d17b71b6630,SocketError: Failed to open TCP connection to metroparticipa.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+885a4f9b-a739-4a1d-bfe6-22c6fc6a2dc7,neuquenparticipa.citizenlab.co,demo,2021-06-14T18:05:26.125605,885a4f9b-a739-4a1d-bfe6-22c6fc6a2dc7,SocketError: Failed to open TCP connection to neuquenparticipa.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+1c1d557a-59c3-4713-bec9-4dc74ce3dbcb,constitucionparticipa.citizenlab.co,demo,2022-06-30T21:27:04.566072,1c1d557a-59c3-4713-bec9-4dc74ce3dbcb,SocketError: Failed to open TCP connection to constitucionparticipa.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+3aeea9ec-47c3-4177-b538-d8a46b4f199e,mexico3-demo.citizenlab.co,demo,2021-12-15T13:23:54.149441,3aeea9ec-47c3-4177-b538-d8a46b4f199e,SocketError: Failed to open TCP connection to mexico3-demo.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+94613ee0-12b9-4884-a1ec-5a027cf2cd6b,mineriasustentable.citizenlab.co,demo,2021-07-23T18:54:44.601615,94613ee0-12b9-4884-a1ec-5a027cf2cd6b,SocketError: Failed to open TCP connection to mineriasustentable.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+302372a7-06e2-415f-a770-e744efed4dbb,gobiernodigital.citizenlab.co,demo,2022-07-18T15:30:33.552925,302372a7-06e2-415f-a770-e744efed4dbb,SocketError: Failed to open TCP connection to gobiernodigital.citizenlab.co:443 (getaddrinfo: nodename nor servname provided, or not known)
+e946f05b-4dd5-4c95-8acc-0be173b9fa7d,humana.citizenlab.co,demo,2022-02-02T01:40:33.759114,e946f05b-4dd5-4c95-8acc-0be173b9fa7d,1. app_configuration success
+880a9e02-663c-4c96-9dad-b65200ff9d5f,colegioelectoral.citizenlab.co,demo,2021-12-23T16:35:38.419727,880a9e02-663c-4c96-9dad-b65200ff9d5f,Net::OpenTimeout: Failed to open TCP connection to colegioelectoral.citizenlab.co:443 (execution expired)
+55371090-4dc4-4c68-a7f5-408448230792,calamaparticipa.citizenlab.co,demo,2022-06-30T21:16:13.815029,55371090-4dc4-4c68-a7f5-408448230792,1. app_configuration success
+b0549a1b-c77f-4022-bf55-5d23bd9d05d0,demomelipilla.citizenlab.co,demo,2022-05-04T13:24:18.357792,b0549a1b-c77f-4022-bf55-5d23bd9d05d0,1. app_configuration success
+620618c4-9781-4d27-8298-4dbfaacb9768,concepcionparticipa.citizenlab.co,demo,2021-07-23T14:31:35.61392,620618c4-9781-4d27-8298-4dbfaacb9768,1. app_configuration success
+78f4d4e7-f1e9-4782-a69d-594320ed43be,goresantiago.citizenlab.co,demo,2022-02-09T15:10:33.015333,78f4d4e7-f1e9-4782-a69d-594320ed43be,1. app_configuration success
+620a8773-a5c8-4263-815d-c49c5c379fba,valparaisoparticipa.citizenlab.co,demo,2022-02-09T12:57:46.988636,620a8773-a5c8-4263-815d-c49c5c379fba,1. app_configuration success
+e549b27f-fdc0-4e10-94c2-a8b7f8097c6d,ints-demo.citizenlab.co,demo,2022-01-21T02:58:08.535222,e549b27f-fdc0-4e10-94c2-a8b7f8097c6d,1. app_configuration success
+233f92a7-b719-466e-9111-57e7b22c0722,democorfo.citizenlab.co,demo,2022-08-16T15:58:37.723474,233f92a7-b719-466e-9111-57e7b22c0722,1. app_configuration success
+b2dad22f-7c28-4a20-a088-592ed2b294d2,municipiodeyopal.citizenlab.co,demo,2022-02-02T09:53:20.542168,b2dad22f-7c28-4a20-a088-592ed2b294d2,1. app_configuration success
+d72fa49e-4702-445b-9b57-909b2848e4ba,bogotademo.citizenlab.co,demo,2022-07-11T15:13:23.29805,d72fa49e-4702-445b-9b57-909b2848e4ba,1. app_configuration success
+b31197f8-5da1-40bc-85b8-c35e764a7c0d,demovaldivia.citizenlab.co,demo,2022-09-08T13:40:51.659269,b31197f8-5da1-40bc-85b8-c35e764a7c0d,1. app_configuration success
+a568ac5a-2e80-4a73-8fce-0a000b42f2b4,redpublica.citizenlab.co,demo,2022-02-09T09:32:43.387096,a568ac5a-2e80-4a73-8fce-0a000b42f2b4,1. app_configuration success
+f8def281-ad0b-4ef2-811c-6d1e11d8896a,lacamaraparticipa.citizenlab.co,demo,2021-01-27T19:30:26.240944,f8def281-ad0b-4ef2-811c-6d1e11d8896a,1. app_configuration success
+ed0ee39e-f293-417e-869c-a09dc37bcb5f,demo.envigado.citizenlab.co,demo,2021-08-23T14:04:44.836585,ed0ee39e-f293-417e-869c-a09dc37bcb5f,Net::OpenTimeout: Failed to open TCP connection to demo.envigado.citizenlab.co:443 (execution expired)
+dcca7433-2b79-48bc-b8b8-8b1ea12d9532,demoaguazul.citizenlab.co,demo,2022-04-20T16:11:49.011618,dcca7433-2b79-48bc-b8b8-8b1ea12d9532,1. app_configuration success
+8fe2e082-3b23-44fd-829a-1e4d0172455f,demoarica.citizenlab.co,demo,2022-02-09T10:38:30.611838,8fe2e082-3b23-44fd-829a-1e4d0172455f,1. app_configuration success
+861057ec-9234-4046-bc32-ed9ea638ba9d,escazuparticipa.citizenlab.co,demo,2022-06-08T19:05:17.542904,861057ec-9234-4046-bc32-ed9ea638ba9d,Net::OpenTimeout: Failed to open TCP connection to escazuparticipa.citizenlab.co:443 (execution expired)
+fe1285c8-84ed-4d2f-847f-2320d2fe7bab,mmademo.citizenlab.co,demo,2022-07-21T11:15:18.581289,fe1285c8-84ed-4d2f-847f-2320d2fe7bab,1. app_configuration success
+688d804d-1256-405c-912d-509e71beb402,plataformasoporte.citizenlab.co,demo,2022-02-02T10:34:33.50059,688d804d-1256-405c-912d-509e71beb402,1. app_configuration success
+c01697de-9802-4142-960c-4d40a66292bd,elnuevotrato.citizenlab.co,demo,2022-02-02T09:30:17.081979,c01697de-9802-4142-960c-4d40a66292bd,1. app_configuration success
+c9a7961d-d087-4faf-9933-caa884ee983b,somoschoapa.citizenlab.co,demo,2021-05-18T19:58:44.405569,c9a7961d-d087-4faf-9933-caa884ee983b,Net::OpenTimeout: Failed to open TCP connection to somoschoapa.citizenlab.co:443 (execution expired)
+adc89b7e-0450-466e-a46d-0fa3c40811a8,democontraloria.citizenlab.co,demo,2022-05-05T10:17:38.160124,adc89b7e-0450-466e-a46d-0fa3c40811a8,1. app_configuration success
+e1141fe0-2685-48b6-aabc-eea1b3ac7c6d,argentina-demo.citizenlab.co,demo,2021-08-10T16:14:49.57061,e1141fe0-2685-48b6-aabc-eea1b3ac7c6d,1. app_configuration success
+d7d8b08a-0f3f-4cad-8abb-2f2ea439281d,quilicuraparticipa.citizenlab.co,demo,2022-02-09T15:14:08.157499,d7d8b08a-0f3f-4cad-8abb-2f2ea439281d,1. app_configuration success
+91884ff8-92e8-429f-8488-f14866c4e49f,lareinaparticipa.citizenlab.co,demo,2022-02-09T16:18:32.352816,91884ff8-92e8-429f-8488-f14866c4e49f,1. app_configuration success
+fdfa01cf-65da-4272-ba31-8517a086a7aa,demomuninatales.citizenlab.co,demo,2022-02-09T12:33:16.444659,fdfa01cf-65da-4272-ba31-8517a086a7aa,1. app_configuration success
+63579066-b915-449a-b2b4-281c5627414d,demoreformatributaria.citizenlab.co,demo,2022-04-25T11:24:33.197202,63579066-b915-449a-b2b4-281c5627414d,1. app_configuration success
+7bb9958a-58a5-4976-8b2a-856eebf81e7e,demogeneradoras.citizenlab.co,demo,2022-02-09T12:13:29.015953,7bb9958a-58a5-4976-8b2a-856eebf81e7e,1. app_configuration success
+ddb0fb3c-76ea-4330-a0b7-65127546785a,seiaparticipativo.citizenlab.co,demo,2021-07-05T14:05:50.536738,ddb0fb3c-76ea-4330-a0b7-65127546785a,1. app_configuration success
+046cbb51-3b11-44a1-b195-808755ef06f6,muni-sanborja-demo.citizenlab.co,demo,2023-10-30T12:30:45.171235,046cbb51-3b11-44a1-b195-808755ef06f6,1. app_configuration success
+b14cf0ec-39fd-4640-911f-fc1969e0f860,participa.minmineria.gob.cl,active,2023-02-06T14:52:19.537004,b14cf0ec-39fd-4640-911f-fc1969e0f860,1. app_configuration success
+07aa4cbf-cad3-413b-a45e-1af6a4e97452,codelcoandina.citizenlab.co,active,2023-09-25T08:52:41.165557,07aa4cbf-cad3-413b-a45e-1af6a4e97452,1. app_configuration success
+4c10d010-03c1-465c-b53c-8a7d5dcd9487,vinadecide.cl,active,2023-03-20T14:47:10.85483,4c10d010-03c1-465c-b53c-8a7d5dcd9487,1. app_configuration success
+5e90e6f1-050b-458a-bb3c-b4dd66f18276,cocacolademo.citizenlab.co,demo,2023-10-18T14:22:44.01312,5e90e6f1-050b-458a-bb3c-b4dd66f18276,1. app_configuration success
+c83d189c-2f78-4be8-b206-bfeadd130bf5,prolima-demo.citizenlab.co,demo,2023-10-26T19:30:03.255467,c83d189c-2f78-4be8-b206-bfeadd130bf5,1. app_configuration success
+bb18103f-4a93-44a5-abc3-7ccedd7accb8,paraguayacclab-demo.citizenlab.co,demo,2023-11-06T13:21:58.332596,bb18103f-4a93-44a5-abc3-7ccedd7accb8,1. app_configuration success
+a4d24252-e8e7-4584-8b8a-9b8e933f3d77,demosanpedroatacama.citizenlab.co,demo,2023-02-28T15:51:47.981866,a4d24252-e8e7-4584-8b8a-9b8e933f3d77,1. app_configuration success
+dd78a7b4-4faa-49eb-8f01-a9c726900f01,participaquinta-normal.citizenlab.co,demo,2023-11-27T18:04:48.832438,dd78a7b4-4faa-49eb-8f01-a9c726900f01,1. app_configuration success
+56b4e819-62f2-473a-aa14-6d57cc23d541,sanmiguelparticipa.citizenlab.co,demo,2023-11-17T10:51:43.35874,56b4e819-62f2-473a-aa14-6d57cc23d541,1. app_configuration success
+853912ed-d9ac-400c-871c-9a04a02996ee,sernacdemo.citizenlab.co,demo,2023-11-20T13:13:23.480531,853912ed-d9ac-400c-871c-9a04a02996ee,1. app_configuration success
+76f27a21-1c37-4487-87e0-5abb9026b5f4,banco-santander-demo.citizenlab.co,demo,2023-10-26T14:09:35.230812,76f27a21-1c37-4487-87e0-5abb9026b5f4,1. app_configuration success
+3107494a-f9ba-4830-870f-92c07308545b,dguminvuparticipa.citizenlab.co,demo,2023-06-20T19:35:54.627479,3107494a-f9ba-4830-870f-92c07308545b,1. app_configuration success
+fef1a625-5b0a-4bd8-acb7-ed43a4ac9ffc,esquerre.citizenlab.co,active,2023-05-19T12:54:53.408199,fef1a625-5b0a-4bd8-acb7-ed43a4ac9ffc,1. app_configuration success
+d85590b5-f3e3-4441-ab18-cead28fe9346,ciudadaniaensalud.org,active,2023-09-20T15:28:31.214256,d85590b5-f3e3-4441-ab18-cead28fe9346,1. app_configuration success
+ac80573b-6cc6-466e-a67c-f12435c9a691,demopoliticalitio.citizenlab.co,demo,2023-04-25T12:07:15.231112,ac80573b-6cc6-466e-a67c-f12435c9a691,1. app_configuration success
+937af500-e849-411c-8378-3cdd0476fc70,constitucionparticipativa.citizenlab.co,demo,2023-02-24T13:29:40.169662,937af500-e849-411c-8378-3cdd0476fc70,1. app_configuration success
+6d3bbc37-c69b-4b5f-9b24-eda2c1caac4d,consejoconstitucional.citizenlab.co,demo,2023-02-09T19:10:31.92407,6d3bbc37-c69b-4b5f-9b24-eda2c1caac4d,1. app_configuration success
+9daa7f30-2751-4f64-a7fc-281dbba7a2e2,demohuechuraba.citizenlab.co,demo,2023-02-15T12:29:31.352591,9daa7f30-2751-4f64-a7fc-281dbba7a2e2,1. app_configuration success
+1d6009ab-ced4-4230-b052-f145c02c9667,temucoparticipademo.citizenlab.co,demo,2023-02-13T12:47:27.305266,1d6009ab-ced4-4230-b052-f145c02c9667,1. app_configuration success
+42d60073-ac1b-41a8-97f1-e850ccb12864,demosanbernardo.citizenlab.co,demo,2023-04-11T12:33:57.840306,42d60073-ac1b-41a8-97f1-e850ccb12864,1. app_configuration success
+0fc2c58d-6127-4bb7-b300-c7e1ee8ad65c,demotocopilla.citizenlab.co,demo,2023-03-14T09:19:29.515901,0fc2c58d-6127-4bb7-b300-c7e1ee8ad65c,1. app_configuration success
+adc63c5c-7b02-413a-a322-753e8a61a035,demomaculparticipa.citizenlab.co,demo,2023-05-30T12:45:56.466527,adc63c5c-7b02-413a-a322-753e8a61a035,1. app_configuration success
+64fbc938-0bde-4d12-8b77-9a44370f7713,demoancud.citizenlab.co,demo,2023-02-07T10:01:59.371224,64fbc938-0bde-4d12-8b77-9a44370f7713,1. app_configuration success
+5c75e1e1-ef66-494c-9713-1b3ac609d773,danitza.citizenlab.co,demo,2023-06-15T20:31:41.260368,5c75e1e1-ef66-494c-9713-1b3ac609d773,1. app_configuration success
+74de9d4d-e43e-431b-b69a-5d8a123c6a1e,corporacionciudadesparticipa.citizenlab.co,demo,2023-07-11T13:57:52.467129,74de9d4d-e43e-431b-b69a-5d8a123c6a1e,1. app_configuration success
+07d6c7ac-6013-42cf-9e58-a273e00886e3,demointerchile.citizenlab.co,demo,2023-07-24T10:02:54.068356,07d6c7ac-6013-42cf-9e58-a273e00886e3,1. app_configuration success
+ccd1c1c9-315a-4860-834c-0767be344801,tuorganizacion.citizenlab.co,demo,2023-08-02T01:25:34.498054,ccd1c1c9-315a-4860-834c-0767be344801,1. app_configuration success
+c3aed55f-5cb7-494a-a935-e7433fb377bc,demolobarnechea.citizenlab.co,demo,2023-05-18T12:44:31.019591,c3aed55f-5cb7-494a-a935-e7433fb377bc,1. app_configuration success
+09ec8e8c-50a3-4208-bd1c-566ad243d86f,democodelcoandina.citizenlab.co,demo,2023-08-04T08:54:41.597259,09ec8e8c-50a3-4208-bd1c-566ad243d86f,1. app_configuration success
+f601ae1e-bfca-4fc4-862e-e94da37a7836,holaamericademo.citizenlab.co,demo,2023-09-05T10:25:51.834142,f601ae1e-bfca-4fc4-862e-e94da37a7836,1. app_configuration success
+194e1fdc-a9c8-4b81-80e3-5ca8bfe08b42,demodistritonorte.citizenlab.co,demo,2023-05-23T15:32:42.965975,194e1fdc-a9c8-4b81-80e3-5ca8bfe08b42,1. app_configuration success
+1920d601-9fe4-45be-8faa-68c8c79bec79,puntarenasdemo.citizenlab.co,demo,2023-08-04T12:58:05.337094,1920d601-9fe4-45be-8faa-68c8c79bec79,1. app_configuration success
+982a0215-4e0e-411c-bff9-48ed8a2295cb,democencosud.citizenlab.co,demo,2023-09-05T10:47:24.255304,982a0215-4e0e-411c-bff9-48ed8a2295cb,1. app_configuration success
+1b66e930-5266-4249-9bb9-9f87e7eec86c,quilpueparticipa.citizenlab.co,demo,2023-07-24T10:06:45.841683,1b66e930-5266-4249-9bb9-9f87e7eec86c,1. app_configuration success
+92805e22-2739-4cdb-a11a-c3a918082d38,engage.hellamtownship.com,active,2022-12-19T12:34:02.880038,92805e22-2739-4cdb-a11a-c3a918082d38,1. app_configuration success
+6e055292-9dcd-4761-9a35-12e765e71956,connectingtocongress.citizenlab.co,active,2021-06-29T08:46:45.884173,6e055292-9dcd-4761-9a35-12e765e71956,1. app_configuration success
+26648212-f6ff-4263-872f-ea8c70ed91d1,citizenlab.seattle.gov,active,2020-03-04T10:02:41.350588,26648212-f6ff-4263-872f-ea8c70ed91d1,Error: SSL_connect returned=1 errno=0 state=error: certificate verify failed (certificate has expired)
+50885759-4a76-43b7-920d-3723946a1030,northlea.citizenlab.co,active,2022-12-15T19:05:01.159506,50885759-4a76-43b7-920d-3723946a1030,1. app_configuration success
+f1fa8ece-0c96-4554-a4df-84b03af46b76,mashpee.citizenlab.co,active,2022-03-15T16:11:12.450259,f1fa8ece-0c96-4554-a4df-84b03af46b76,1. app_configuration success
+f59db27b-f02f-4d1d-b28f-679323ce8964,my.cityofplattsburgh-ny.gov,active,2023-01-05T13:39:35.438692,f59db27b-f02f-4d1d-b28f-679323ce8964,1. app_configuration success
+a35d0232-3d85-4d42-a92e-701d085040af,rebuildtherec.org,active,2023-01-09T15:44:15.734847,a35d0232-3d85-4d42-a92e-701d085040af,1. app_configuration success
+bb184daa-6509-4a59-9e49-96ade5a105c6,answerals.citizenlab.co,active,2022-07-20T15:16:54.032656,bb184daa-6509-4a59-9e49-96ade5a105c6,1. app_configuration success
+fe576642-4937-46bb-a55c-499148158b1c,engage.cityoflancasterpa.gov,active,2020-07-23T12:33:54.878974,fe576642-4937-46bb-a55c-499148158b1c,1. app_configuration success
+d85bd17b-144e-4743-a410-6e049f446b2c,peoplestech.nyc,active,2021-08-03T13:02:15.72621,d85bd17b-144e-4743-a410-6e049f446b2c,1. app_configuration success
+0cb33cd6-4690-4842-84ac-2b6c1b21136d,engage.chillicotheoh.gov,active,2022-06-14T16:50:05.900052,0cb33cd6-4690-4842-84ac-2b6c1b21136d,1. app_configuration success
+6f9f840b-cb90-40cb-bee9-83e2cd7f6b8c,iheartmac.org,active,2022-08-10T20:12:04.47242,6f9f840b-cb90-40cb-bee9-83e2cd7f6b8c,1. app_configuration success
+7e6149ac-e3f7-44d6-b26b-695f89e327a1,gprwc.citizenlab.co,active,2022-03-04T16:47:47.302217,7e6149ac-e3f7-44d6-b26b-695f89e327a1,1. app_configuration success
+77d604df-9ab1-476b-bcf8-a7506dcf189b,drumheller.citizenlab.co,active,2022-08-22T21:28:18.757918,77d604df-9ab1-476b-bcf8-a7506dcf189b,1. app_configuration success
+464db1dc-8d0e-4b8d-b4f2-0b8011ea3e6e,futureconcordia.citizenlab.co,active,2022-09-29T16:42:21.779312,464db1dc-8d0e-4b8d-b4f2-0b8011ea3e6e,1. app_configuration success
+05efb601-034d-4428-b998-b7ca8df8a552,seattleparksrec.citizenlab.co,active,2022-11-29T19:51:57.228127,05efb601-034d-4428-b998-b7ca8df8a552,1. app_configuration success
+b06e6dba-56d9-41f4-8863-831ecd511acc,engage.communityfoodnavigator.org,active,2021-10-18T17:29:31.660114,b06e6dba-56d9-41f4-8863-831ecd511acc,1. app_configuration success
+e2274dd8-6b0a-4bc8-81ce-4d6058273967,engage.oakleyca.gov,active,2022-11-07T17:14:19.264957,e2274dd8-6b0a-4bc8-81ce-4d6058273967,1. app_configuration success
+5bb39854-9598-417f-a457-0a3a8215f8ad,engage.valleyregionaltransit.org,active,2021-05-17T13:34:04.570406,5bb39854-9598-417f-a457-0a3a8215f8ad,1. app_configuration success
+15d3da52-7739-4f0f-b9d8-dfe6c3358966,carlisle.citizenlab.co,active,2021-01-15T17:41:15.087293,15d3da52-7739-4f0f-b9d8-dfe6c3358966,1. app_configuration success
+78507c00-101b-488f-b3be-80ed6977c17d,hellohyattsville.com,active,2022-06-06T15:13:08.861591,78507c00-101b-488f-b3be-80ed6977c17d,1. app_configuration success
+fbb9f981-fc8e-46a7-b775-2528e2528517,edit-the-city-philly.citizenlab.co,active,2021-05-26T14:30:21.683064,fbb9f981-fc8e-46a7-b775-2528e2528517,1. app_configuration success
+66e46c6a-17ac-4749-8ee2-909fb07b0181,engage.durango.org,active,2022-03-17T22:44:01.643983,66e46c6a-17ac-4749-8ee2-909fb07b0181,1. app_configuration success
+2d42bf35-ea6e-4628-9112-0e387bed90f8,norristownbuzz.org,active,2021-08-02T09:37:36.513191,2d42bf35-ea6e-4628-9112-0e387bed90f8,1. app_configuration success
+f0b539a6-5e77-47cb-af2a-732bad5114c4,our.biddefordmaine.org,active,2022-04-18T19:49:45.54558,f0b539a6-5e77-47cb-af2a-732bad5114c4,1. app_configuration success
+f7375c83-8e99-4e21-9067-a90081c121e9,plan.providenceri.gov,active,2022-12-09T23:25:21.801106,f7375c83-8e99-4e21-9067-a90081c121e9,1. app_configuration success
+9557948c-9285-454b-9112-ecee718a16b0,forum.wichita.gov,churned,2021-05-17T13:20:38.643611,9557948c-9285-454b-9112-ecee718a16b0,Net::OpenTimeout: Failed to open TCP connection to forum.wichita.gov:443 (execution expired)
+c55fcf1f-e08a-4995-9531-19e17396a7bf,cincinnati.citizenlab.co,active,2022-06-27T22:18:37.034463,c55fcf1f-e08a-4995-9531-19e17396a7bf,1. app_configuration success
+281a18a7-f928-41cf-9dd6-1ddb1cbcbc27,envisionnorwich360.com,active,2022-08-25T15:48:25.924759,281a18a7-f928-41cf-9dd6-1ddb1cbcbc27,1. app_configuration success
+fb9819ac-5ea9-49a9-ae37-945889622022,discover.cityofstruthers.com,active,2021-11-10T16:43:36.317794,fb9819ac-5ea9-49a9-ae37-945889622022,1. app_configuration success
+3aed133d-0b58-4a3c-ab79-0438b7f13bb3,webuild.bethlehem-pa.gov,active,2022-03-02T00:21:00.841391,3aed133d-0b58-4a3c-ab79-0438b7f13bb3,1. app_configuration success
+4bc69aa8-d1a9-461c-9798-1d49e9743c95,engageonenorthsidepgh.org,active,2022-09-26T13:20:53.408289,4bc69aa8-d1a9-461c-9798-1d49e9743c95,1. app_configuration success
+09982b64-b6be-4e98-b448-3b488ec3d5a5,downtowngr.citizenlab.co,active,2022-12-05T21:00:51.401652,09982b64-b6be-4e98-b448-3b488ec3d5a5,1. app_configuration success
+31225ef8-b54e-4de8-96ba-eef8b962edeb,otago.citizenlab.co,active,2022-11-14T22:39:11.520771,31225ef8-b54e-4de8-96ba-eef8b962edeb,1. app_configuration success
+8141ac29-def5-472d-a2af-bafc1dca55f5,dccolab.citizenlab.co,active,2021-07-14T09:20:44.715638,8141ac29-def5-472d-a2af-bafc1dca55f5,1. app_configuration success
+99c4c263-f42d-4418-871b-9eb0591120c1,yourvoice.tepukenga.ac.nz,active,2021-02-11T11:42:36.449327,99c4c263-f42d-4418-871b-9eb0591120c1,1. app_configuration success
+3b15ebf3-b8e0-46fe-aac9-a9f113173b7f,greenumbrella.citizenlab.co,active,2022-09-27T16:02:37.914574,3b15ebf3-b8e0-46fe-aac9-a9f113173b7f,1. app_configuration success
+1843a530-d346-451c-9b7d-ee3937f9fbf3,engage.alleghenycounty.us,active,2022-08-18T17:48:40.433854,1843a530-d346-451c-9b7d-ee3937f9fbf3,1. app_configuration success
+121af0d9-7d9c-4d03-a19a-9822b37aa548,onwardchickasha.org,active,2022-11-17T19:02:17.666256,121af0d9-7d9c-4d03-a19a-9822b37aa548,1. app_configuration success
+99e2eef6-665a-43c4-82ab-b4a6f954c0d5,engage.oneseattleplan.com,active,2022-03-17T23:19:12.727263,99e2eef6-665a-43c4-82ab-b4a6f954c0d5,1. app_configuration success
+34898dc6-0c19-4a9f-b8c5-8224f319bc38,hello.monroeohio.org,active,2022-10-12T18:53:38.333569,34898dc6-0c19-4a9f-b8c5-8224f319bc38,1. app_configuration success
+0352a866-3f30-40ad-8e16-b52cff4297f0,harperwoods.citizenlab.co,active,2022-08-18T18:09:35.849808,0352a866-3f30-40ad-8e16-b52cff4297f0,1. app_configuration success
+db5f34de-443b-4304-b908-ee0f7c92ba08,torontocentreprojects.ca,active,2022-11-17T23:48:59.119049,db5f34de-443b-4304-b908-ee0f7c92ba08,1. app_configuration success
+9292f18c-0c23-4238-b348-04618d32d5dd,engage.rexburg.org,active,2022-03-02T00:31:21.20801,9292f18c-0c23-4238-b348-04618d32d5dd,1. app_configuration success
+2787ddd4-ceec-4ed0-96cb-5984302bdf81,rochester-demo.citizenlab.co,demo,2021-11-12T17:13:26.51878,2787ddd4-ceec-4ed0-96cb-5984302bdf81,1. app_configuration success
+6711cbeb-de22-49c3-a221-d1eb7f4940b3,dallas-demo.citizenlab.co,demo,2022-02-02T23:14:04.570087,6711cbeb-de22-49c3-a221-d1eb7f4940b3,Net::OpenTimeout: Failed to open TCP connection to dallas-demo.citizenlab.co:443 (execution expired)
+57610c31-dc67-4c91-afa2-1a0aefcb7723,psu-demo.citizenlab.co,demo,2021-10-12T03:09:04.790496,57610c31-dc67-4c91-afa2-1a0aefcb7723,1. app_configuration success
+7b575ae5-2875-484e-af2e-a392fcce5fdb,kalamazoo-demo.citizenlab.co,demo,2022-01-07T18:37:35.384267,7b575ae5-2875-484e-af2e-a392fcce5fdb,1. app_configuration success
+ef97b128-03aa-4239-8385-fc8a0414eec9,boralex-demo.citizenlab.co,demo,2021-10-11T00:48:19.157575,ef97b128-03aa-4239-8385-fc8a0414eec9,1. app_configuration success
+49564f66-db62-4ea2-bc47-2cacfb4035e4,weho-demo.citizenlab.co,demo,2021-08-12T06:37:03.197336,49564f66-db62-4ea2-bc47-2cacfb4035e4,Net::OpenTimeout: Failed to open TCP connection to weho-demo.citizenlab.co:443 (execution expired)
+01347544-1600-452f-86fa-2afe5780e508,northhaven-demo.citizenlab.co,demo,2021-12-15T13:53:59.434382,01347544-1600-452f-86fa-2afe5780e508,1. app_configuration success
+8ebba46b-2d47-4cf5-9bbc-ca2808141f4f,portland-trial.citizenlab.co,demo,2021-03-13T20:55:45.477817,8ebba46b-2d47-4cf5-9bbc-ca2808141f4f,1. app_configuration success
+c51e6132-a44b-432f-8415-2692b964f953,rockville-demo.citizenlab.co,demo,2021-09-23T21:11:49.969685,c51e6132-a44b-432f-8415-2692b964f953,1. app_configuration success
+a52636d4-eafd-4d24-be24-580ba94cd585,dankeanetest.citizenlab.co,demo,2022-12-12T19:20:22.270564,a52636d4-eafd-4d24-be24-580ba94cd585,Net::OpenTimeout: Failed to open TCP connection to dankeanetest.citizenlab.co:443 (execution expired)
+4be01eb0-ecff-4abb-8273-c9851c49ca44,champaign-demo.citizenlab.co,demo,2022-02-09T14:33:05.376974,4be01eb0-ecff-4abb-8273-c9851c49ca44,1. app_configuration success
+187bc9a3-de3a-48dc-837f-20f90549a9cf,amanda-demo.citizenlab.co,demo,2022-02-09T22:07:07.169018,187bc9a3-de3a-48dc-837f-20f90549a9cf,Net::OpenTimeout: Failed to open TCP connection to amanda-demo.citizenlab.co:443 (execution expired)
+7afb0e8c-3f13-48ff-8be7-58572d1a7da4,corey.citizenlab.co,demo,2022-03-17T08:38:03.549551,7afb0e8c-3f13-48ff-8be7-58572d1a7da4,1. app_configuration success
+4d9272ee-77ca-4e5c-83ce-e0c34f3c044b,demo-nina.citizenlab.co,demo,2022-12-08T16:45:04.716711,4d9272ee-77ca-4e5c-83ce-e0c34f3c044b,1. app_configuration success
+aa4f088c-560e-48be-8226-d892d98b3f63,engagesanderscounty.citizenlab.co,demo,2023-08-11T15:01:17.1126,aa4f088c-560e-48be-8226-d892d98b3f63,1. app_configuration success
+326e1cec-37b1-4589-add3-bff312ac5b35,vallejo-demo.citizenlab.co,demo,2021-09-20T22:22:43.149044,326e1cec-37b1-4589-add3-bff312ac5b35,1. app_configuration success
+28341915-ea7c-4f71-8ba9-5f26f96debf2,richmond-demo2.citizenlab.co,demo,2021-09-21T22:40:47.887287,28341915-ea7c-4f71-8ba9-5f26f96debf2,1. app_configuration success
+6a25be3f-b02a-4fd2-98b7-25d354d1fe7f,bloomington-demo.citizenlab.co,demo,2021-11-09T19:24:57.946456,6a25be3f-b02a-4fd2-98b7-25d354d1fe7f,1. app_configuration success
+dca95acb-8061-42ce-bab9-81c4398af4eb,cityofnina.citizenlab.co,demo,2023-01-06T18:40:20.6526,dca95acb-8061-42ce-bab9-81c4398af4eb,1. app_configuration success
+829972f6-858d-460c-9b81-bceae7be63e8,ps-demo.citizenlab.co,demo,2021-09-28T01:52:32.367259,829972f6-858d-460c-9b81-bceae7be63e8,1. app_configuration success
+17af47dd-4973-474e-be4a-1d848a48d9bb,concordia-demo.citizenlab.co,demo,2021-09-29T04:56:01.513603,17af47dd-4973-474e-be4a-1d848a48d9bb,1. app_configuration success
+56350412-c9f2-444d-ab04-522fca6a6f3c,boise-demo.citizenlab.co,demo,2022-01-29T03:36:22.724726,56350412-c9f2-444d-ab04-522fca6a6f3c,1. app_configuration success
+85761dce-8631-4950-a651-e655b4054b83,tofino-demo.citizenlab.co,demo,2021-10-04T16:13:57.341397,85761dce-8631-4950-a651-e655b4054b83,1. app_configuration success
+ac8a8e7e-4489-4958-9738-e85f7b9217e6,stateofutah-demo.citizenlab.co,demo,2021-11-07,ac8a8e7e-4489-4958-9738-e85f7b9217e6,1. app_configuration success
+ce2d2235-8b95-4ee0-b7b4-04f4bf64b140,stateofutah-demo1.citizenlab.co,demo,2022-02-02T14:27:36.900397,ce2d2235-8b95-4ee0-b7b4-04f4bf64b140,1. app_configuration success
+c7e5d0e2-758f-4c05-87b1-8886ff5b08f0,irenetest.citizenlab.co,demo,2022-06-02T17:10:12.420923,c7e5d0e2-758f-4c05-87b1-8886ff5b08f0,1. app_configuration success
+5eebea19-bb1d-4868-8589-4cd9aca3d802,hartford-demo.citizenlab.co,demo,2021-11-02T19:17:03.877921,5eebea19-bb1d-4868-8589-4cd9aca3d802,1. app_configuration success
+a6bec881-e4cd-4769-bcff-0a6f6ab60da0,athens2-demo.citizenlab.co,demo,2021-12-06T17:10:19.472455,a6bec881-e4cd-4769-bcff-0a6f6ab60da0,1. app_configuration success
+733adb2c-25b0-4097-a559-93004648f1f8,richmond-demo.citizenlab.co,demo,2021-09-21T20:12:55.280031,733adb2c-25b0-4097-a559-93004648f1f8,1. app_configuration success
+258734d6-d9ad-4446-90e0-14f752e1c106,azfuture-demo.citizenlab.co,demo,2021-10-26T14:53:25.086171,258734d6-d9ad-4446-90e0-14f752e1c106,1. app_configuration success
+7ef81dac-9013-4c63-9311-2bae9366ab10,bsi-pen-test.citizenlab.co,demo,2021-06-10T12:30:07.146422,7ef81dac-9013-4c63-9311-2bae9366ab10,1. app_configuration success
+fabf3291-e3b8-44c9-afa8-64185adc68d3,norristown-demo.citizenlab.co,demo,2022-01-11T21:52:14.203793,fabf3291-e3b8-44c9-afa8-64185adc68d3,1. app_configuration success
+9345e7e8-46e2-42b5-aa7d-5e07f07fa9d2,psu2-demo.citizenlab.co,demo,2021-12-27T23:49:54.078286,9345e7e8-46e2-42b5-aa7d-5e07f07fa9d2,1. app_configuration success
+dc8df4a3-0e75-437a-b62e-00376150b120,aacids.citizenlab.co,active,2023-01-20T20:04:41.763759,dc8df4a3-0e75-437a-b62e-00376150b120,1. app_configuration success
+e0d13d54-d706-4d53-af85-2f6c48c4c2fe,stlouis.citizenlab.co,active,2023-07-17T22:31:52.820559,e0d13d54-d706-4d53-af85-2f6c48c4c2fe,1. app_configuration success
+b26f2806-ff7e-4941-90fc-af65d6415824,demo-chattanooga.citizenlab.co,demo,2023-08-15T18:04:23.727818,b26f2806-ff7e-4941-90fc-af65d6415824,1. app_configuration success
+567bd83b-9510-4342-a951-4f2b7078e511,engagetab.citizenlab.co,active,2023-03-15T18:24:28.546997,567bd83b-9510-4342-a951-4f2b7078e511,1. app_configuration success
+20af1c4a-06fc-4045-acf7-a881a436cb53,engage.seattleparksandrec.com,active,2023-02-08T19:27:10.603994,20af1c4a-06fc-4045-acf7-a881a436cb53,1. app_configuration success
+23d4c63e-f1bc-41d6-a3dc-dbef82e61180,cityofmanor.citizenlab.co,active,2023-01-18T16:36:47.596543,23d4c63e-f1bc-41d6-a3dc-dbef82e61180,1. app_configuration success
+6be624b4-39bb-4083-8bf5-a737eb817ecd,cushingforward.com,active,2023-03-10T14:46:54.207139,6be624b4-39bb-4083-8bf5-a737eb817ecd,1. app_configuration success
+be903251-eed3-4bea-bf1f-ea06642561be,engagebothell.com,active,2023-02-19T23:11:22.609367,be903251-eed3-4bea-bf1f-ea06642561be,1. app_configuration success
+b3affdf2-dcb7-4b6e-adca-82c6aabab0db,usadvisor-demo.citizenlab.co,not_applicable,2023-11-07T22:05:20.880054,b3affdf2-dcb7-4b6e-adca-82c6aabab0db,1. app_configuration success
+8b20fc83-94ad-48ab-b212-66a0b00e82ac,demo-sarah.citizenlab.co,demo,2023-09-04T13:29:10.657196,8b20fc83-94ad-48ab-b212-66a0b00e82ac,1. app_configuration success
+c455221a-8040-44d3-a21e-32e8b4c63cce,yreka.citizenlab.co,active,2023-04-30T21:13:39.322717,c455221a-8040-44d3-a21e-32e8b4c63cce,1. app_configuration success
+d728b815-23b5-4e9c-a3ea-8a03a23f46cb,emily.citizenlab.co,demo,2023-07-27T15:26:06.841474,d728b815-23b5-4e9c-a3ea-8a03a23f46cb,1. app_configuration success
+718bbf8c-df56-4007-95db-56f91412692a,demo-mwcog.citizenlab.co,demo,2023-08-07T22:07:52.085115,718bbf8c-df56-4007-95db-56f91412692a,1. app_configuration success
+7cc9d35e-b582-4bf9-8593-cd4bc0dab87a,sebi-usa.citizenlab.co,not_applicable,2023-10-26T15:13:15.637302,7cc9d35e-b582-4bf9-8593-cd4bc0dab87a,1. app_configuration success
+00e7053a-1b8d-4b3f-a29a-e1bda68f59a4,losalamitos.citizenlab.co,active,2023-10-17T15:48:57.206472,00e7053a-1b8d-4b3f-a29a-e1bda68f59a4,1. app_configuration success
+cd9a2fc0-c25e-4d63-b4c5-71a8ee7a429d,andrea.citizenlab.co,demo,2023-03-21T16:39:15.021694,cd9a2fc0-c25e-4d63-b4c5-71a8ee7a429d,1. app_configuration success
+6ed3ca0b-539d-42db-aac2-ac33a12d4af1,demo-torontoward18.citizenlab.co,demo,2023-08-10T20:52:24.946946,6ed3ca0b-539d-42db-aac2-ac33a12d4af1,1. app_configuration success
+b0d9f0c2-dcf2-4442-aba2-1befc74c164f,lac.citizenlab.co,active,2023-10-05T17:32:18.107015,b0d9f0c2-dcf2-4442-aba2-1befc74c164f,1. app_configuration success
+0a403d08-947e-4979-915e-3b6781d17ac4,engage.cityofallen.org,active,2023-04-05T18:03:14.197297,0a403d08-947e-4979-915e-3b6781d17ac4,1. app_configuration success
+497e9f67-bcfc-4be7-bf46-d2f8c32c45b9,demo-cityoftoronto.citizenlab.co,demo,2023-08-07T22:10:12.189466,497e9f67-bcfc-4be7-bf46-d2f8c32c45b9,1. app_configuration success
+6b6b2485-243b-4ce6-8eb3-ad7517fe27de,districtof-saanich.citizenlab.co,active,2023-10-17T18:08:51.582055,6b6b2485-243b-4ce6-8eb3-ad7517fe27de,1. app_configuration success
+afcaa843-4de8-4608-82ca-0cd26184fc23,ratpatootie.citizenlab.co,active,2023-01-25T19:53:39.818265,afcaa843-4de8-4608-82ca-0cd26184fc23,1. app_configuration success
+0b9039ea-dd16-4c81-8484-be1aede479d1,buildharriscountyso.com,active,2023-03-10T18:35:56.547785,0b9039ea-dd16-4c81-8484-be1aede479d1,1. app_configuration success
+866298e6-121a-4674-a207-6c827ec122de,districtofsaanich-demo.citizenlab.co,demo,2023-05-31T18:56:17.154859,866298e6-121a-4674-a207-6c827ec122de,1. app_configuration success
+09390762-a086-4a43-9eac-5a0d129abdf9,demotrial-dialoguepartners.citizenlab.co,trial,2023-11-01T20:58:06.309566,09390762-a086-4a43-9eac-5a0d129abdf9,1. app_configuration success
+49623440-7fd9-41cf-b9c7-0fcf4c917bb6,nyc-demo.citizenlab.co,demo,2023-11-02T16:23:51.949831,49623440-7fd9-41cf-b9c7-0fcf4c917bb6,1. app_configuration success
+b16d023e-6d6a-492c-af8c-a1f22f6598d2,montgomery-county.citizenlab.co,active,2023-11-06T21:53:39.921282,b16d023e-6d6a-492c-af8c-a1f22f6598d2,1. app_configuration success
+53ca6076-16ca-4a54-9750-3454620f9c85,outthereartsclosed.citizenlab.co,churned,2022-12-20T13:36:15.045927,53ca6076-16ca-4a54-9750-3454620f9c85,1. app_configuration success
+1cabe784-6be3-4012-8a34-d080e0dc4662,engage.stirling.gov.uk,active,2020-10-06T16:30:19.33778,1cabe784-6be3-4012-8a34-d080e0dc4662,1. app_configuration success
+ee41e8ad-6c17-422f-a22b-7de4133bffb6,telfordtrial.citizenlab.co,active,2022-07-14T13:31:38.436383,ee41e8ad-6c17-422f-a22b-7de4133bffb6,1. app_configuration success
+e23a3bf8-a4e6-4735-b464-6f2a53050d43,klimatekonnect.citizenlab.co,active,2022-04-19T10:23:57.321085,e23a3bf8-a4e6-4735-b464-6f2a53050d43,1. app_configuration success
+b561647b-1bec-4268-be1f-e1fb3fac09a1,cambridge.citizenlab.co,active,2022-04-04T13:56:35.278464,b561647b-1bec-4268-be1f-e1fb3fac09a1,1. app_configuration success
+c2de2cab-d8a3-4bf7-811c-66f105a1e0c7,yourvoice.thanet.gov.uk,active,2022-05-30T06:22:20.825422,c2de2cab-d8a3-4bf7-811c-66f105a1e0c7,1. app_configuration success
+d87b50b5-42d3-4edd-b87b-7597d2f77c77,newhamco-create.co.uk,active,2020-06-04T07:26:47.484602,d87b50b5-42d3-4edd-b87b-7597d2f77c77,1. app_configuration success
+4e717491-1693-486f-b776-4c81076909fb,engage.restorationandrenewal.uk,churned,2021-03-15T10:39:26.099363,4e717491-1693-486f-b776-4c81076909fb,1. app_configuration success
+702b693e-2e80-419b-9d00-f8fde0426cba,innovation-hub.citizenlab.co,active,2022-02-21T10:24:45.687403,702b693e-2e80-419b-9d00-f8fde0426cba,1. app_configuration success
+270566ad-3cd1-424f-9848-db9372666acf,havant.citizenlab.co,active,2022-05-24T13:54:37.92266,270566ad-3cd1-424f-9848-db9372666acf,1. app_configuration success
+f81b1cf2-1972-49bb-8c4a-fb4afd408980,cqc.citizenlab.co,active,2018-10-27T17:46:23.701549,f81b1cf2-1972-49bb-8c4a-fb4afd408980,1. app_configuration success
+c5e6c687-4296-40be-95e9-777f05dbb20d,pclengagement-hub.co.uk,active,2021-06-22T11:48:04.184346,c5e6c687-4296-40be-95e9-777f05dbb20d,1. app_configuration success
+cc544508-3801-4363-a727-342c21994cae,peabody.citizenlab.co,churned,2021-02-03T18:33:19.332938,cc544508-3801-4363-a727-342c21994cae,not success
+c96421bc-d270-41ad-b13f-da9285c906b9,englandathletics.citizenlab.co,active,2022-10-17T12:40:27.171224,c96421bc-d270-41ad-b13f-da9285c906b9,1. app_configuration success
+4efebbb0-a2e0-41b5-b49a-8d524db30d9f,care-inspectorate.citizenlab.co,active,2021-02-09T09:51:23.640389,4efebbb0-a2e0-41b5-b49a-8d524db30d9f,1. app_configuration success
+1ba91d5f-d055-4eda-ad80-789fdd759f73,engage.wokingham.gov.uk,active,2021-07-13T16:33:08.435787,1ba91d5f-d055-4eda-ad80-789fdd759f73,1. app_configuration success
+d6a1fbea-b0e2-4521-8368-b2e0d914b906,ingenuityleeds.com,active,2021-08-23T10:02:30.847355,d6a1fbea-b0e2-4521-8368-b2e0d914b906,not success
+ba48f4fa-c326-47ec-9bc8-5766732375fb,communitystream.co.uk,churned,2020-05-11T11:47:39.191144,ba48f4fa-c326-47ec-9bc8-5766732375fb,1. app_configuration success
+331b37e0-d072-44f1-9182-d402f5a6a264,oldbank-of-england.citizenlab.co,churned,2021-05-07T09:59:14.322019,331b37e0-d072-44f1-9182-d402f5a6a264,1. app_configuration success
+03809a3f-6e80-471c-9763-f719fe7248bb,haveyoursay.brent.gov.uk,active,2021-04-06T09:18:42.836037,03809a3f-6e80-471c-9763-f719fe7248bb,1. app_configuration success
+2b1dfabb-30dc-404b-87a3-04083240f3a9,hastings.citizenlab.co,churned,2021-09-09T08:12:11.723988,2b1dfabb-30dc-404b-87a3-04083240f3a9,1. app_configuration success
+1a93641a-91b2-42bc-b3d9-e8b651807abc,qmul.citizenlab.co,churned,2020-10-26T08:46:54.839673,1a93641a-91b2-42bc-b3d9-e8b651807abc,1. app_configuration success
+b2721b0c-316b-48ad-accd-d681aa4b2e1d,strategyconsultation.sportengland.org,churned,2020-10-05T13:23:20.699379,b2721b0c-316b-48ad-accd-d681aa4b2e1d,1. app_configuration success
+a6e8fb1c-3121-4518-bf08-acb158c5a9d3,engage.westminster.gov.uk,churned,2021-07-15T14:00:36.45367,a6e8fb1c-3121-4518-bf08-acb158c5a9d3,1. app_configuration success
+9abb91ab-5681-43ce-8178-77449e9bf19b,getinvolved.dorsetcouncil.gov.uk,churned,2022-01-04T13:25:18.807074,9abb91ab-5681-43ce-8178-77449e9bf19b,1. app_configuration success
+260a1099-9be4-4c7c-b978-4dd27a476235,old-nmc.citizenlab.co,churned,2021-01-07T13:08:31.06075,260a1099-9be4-4c7c-b978-4dd27a476235,1. app_configuration success
+3fef1304-ed97-4aeb-8daf-8d8c5ba07ea2,meridianoneconsultation.co.uk,churned,2020-08-21T11:16:56.802492,3fef1304-ed97-4aeb-8daf-8d8c5ba07ea2,Error: unexpected token at '<!doctype html><html data-adblockkey="MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBANDrp2lz7AOmADaN8tA50LsWcjLFyQFcb/P2Txc58oYOeILb3vBw7J6f4pamkAQVSQuqYsKx3YzdUHCvbVZvFUsCAwEAAQ==_DpXoI9B1krFaN3m7ovENt/+dUKmTRHxT0UI3tVEiYbZ5FQksJolwzmVHCG6PODk0SEzeXR8Mxp0KtvizPhcUCg==" lang="en">...
+ad9d9176-b336-4c6f-8b15-0a85ef1c92a3,city-of-london.citizenlab.co,churned,2021-03-10T13:25:35.064097,ad9d9176-b336-4c6f-8b15-0a85ef1c92a3,1. app_configuration success
+ce722650-d561-4631-b500-d0ace366efb9,healthwatch-england.citizenlab.co,churned,2021-02-02T15:23:38.293185,ce722650-d561-4631-b500-d0ace366efb9,Error: Failed to open TCP connection to healthwatch-england.citizenlab.co:443 (Connection refused - connect(2) for "healthwatch-england.citizenlab.co" port 443)
+f077469b-0687-43d1-a874-08ef032ea668,newplanforimmigration.com,churned,2021-01-27T09:31:59.824149,f077469b-0687-43d1-a874-08ef032ea668,1. app_configuration success
+0ad86fed-7b57-4f25-af11-e5c627e5977d,cheltenhamzero.org,churned,2021-08-18T15:37:48.031023,0ad86fed-7b57-4f25-af11-e5c627e5977d,not success
+b33fe052-bd8e-4772-8952-50507ddd1a21,outthereartsdemo.citizenlab.co,demo,2022-12-13T12:55:35.95819,b33fe052-bd8e-4772-8952-50507ddd1a21,1. app_configuration success
+6aab4c14-4099-4eb0-a131-5ad83576d1ef,caddick-consultation-demo.citizenlab.co,demo,2022-02-05T09:52:25.486136,6aab4c14-4099-4eb0-a131-5ad83576d1ef,1. app_configuration success
+725563d4-744b-4178-9744-60f90c70d00a,rabi-demo.citizenlab.co,demo,2022-09-29T09:39:43.252074,725563d4-744b-4178-9744-60f90c70d00a,1. app_configuration success
+8cb9b788-ba56-4bf6-a60a-cfe50191928e,uktest2.citizenlab.co,demo,2022-02-02T17:18:16.630865,8cb9b788-ba56-4bf6-a60a-cfe50191928e,1. app_configuration success
+01f09e69-dfac-4aed-ae89-12f9851b896b,sustainability-koru-examples.citizenlab.co,demo,2022-09-23T16:09:22.172083,01f09e69-dfac-4aed-ae89-12f9851b896b,1. app_configuration success
+b283f322-5d22-42e9-bd97-643910a9a6a4,salfordtrial.citizenlab.co,demo,2022-07-18T12:15:42.045906,b283f322-5d22-42e9-bd97-643910a9a6a4,1. app_configuration success
+4b1db0e0-d224-426b-9ad1-119bf9f70213,demo-rabi.citizenlab.co,demo,2022-02-10T00:16:55.375625,4b1db0e0-d224-426b-9ad1-119bf9f70213,Net::OpenTimeout: Failed to open TCP connection to demo-rabi.citizenlab.co:443 (execution expired)
+292ec9dd-7bb5-4878-924c-ac0c604eea6d,benfsandbox.citizenlab.co,demo,2022-02-24T16:34:06.332579,292ec9dd-7bb5-4878-924c-ac0c604eea6d,1. app_configuration success
+8e1866f1-ebcd-4b60-8ba7-b4e28b34edff,grandbequest.citizenlab.co,demo,2022-08-31T08:21:28.029861,8e1866f1-ebcd-4b60-8ba7-b4e28b34edff,1. app_configuration success
+d708300c-c35b-4b69-9a00-aafab3b5b605,carmart-trial.citizenlab.co,demo,2023-11-06T13:26:14.460168,d708300c-c35b-4b69-9a00-aafab3b5b605,1. app_configuration success
+f8f1e93d-5da0-428b-a24a-376774d66a18,engage.hggt.co.uk,active,2023-06-29T10:08:31.311619,f8f1e93d-5da0-428b-a24a-376774d66a18,1. app_configuration success
+f89fc666-63ce-4f9f-9d99-7573281bc3f3,giig.citizenlab.co,churned,2023-01-20T10:22:10.160745,f89fc666-63ce-4f9f-9d99-7573281bc3f3,1. app_configuration success
+89772379-0f42-43d5-afd0-422ca0fd3d27,lbs-trial.citizenlab.co,demo,2023-11-17T13:07:25.984195,89772379-0f42-43d5-afd0-422ca0fd3d27,1. app_configuration success
+2b278af7-c575-436c-bd6d-45dce1434cab,brightonandhove-demo.citizenlab.co,demo,2023-04-17T09:00:12.961705,2b278af7-c575-436c-bd6d-45dce1434cab,1. app_configuration success
+f074be83-d37d-4f86-bf1a-2a6230c99ea7,wemakesouthampton.citizenlab.co,demo,2023-03-08T10:15:04.610471,f074be83-d37d-4f86-bf1a-2a6230c99ea7,1. app_configuration success
+f1ba3cc1-29c2-4211-8d1b-c45561a1baef,edward-demo.citizenlab.co,demo,2023-06-09T13:02:39.304602,f1ba3cc1-29c2-4211-8d1b-c45561a1baef,1. app_configuration success
+07743462-4a76-4562-89c4-797faa02a857,westofengland.citizenlab.co,active,2023-08-24T08:50:43.67466,07743462-4a76-4562-89c4-797faa02a857,1. app_configuration success
+2cdf6c49-d92d-4960-ac56-3a52af1adac0,fraser-demo.citizenlab.co,demo,2023-06-05T09:21:07.961504,2cdf6c49-d92d-4960-ac56-3a52af1adac0,1. app_configuration success
+44b1396d-7c23-4579-8dc6-ef5bddad602f,democharly-platform.citizenlab.co,demo,2023-04-11T13:17:27.126906,44b1396d-7c23-4579-8dc6-ef5bddad602f,1. app_configuration success
+8e7e4b1a-e78f-40f7-9d4a-cba3475809b3,strategiclocalplan.citizenlab.co,active,2023-11-22T10:39:54.901464,8e7e4b1a-e78f-40f7-9d4a-cba3475809b3,1. app_configuration success
+0d9dd606-342c-416b-926a-2452e47afa2f,chest-trial.citizenlab.co,demo,2023-10-04T17:44:30.271501,0d9dd606-342c-416b-926a-2452e47afa2f,1. app_configuration success
+687cb424-5a23-42c3-a575-8f46bd6c015b,ards-northdown.citizenlab.co,active,2023-07-04T10:00:40.957272,687cb424-5a23-42c3-a575-8f46bd6c015b,1. app_configuration success
+aec2b992-3045-490f-ad62-c165a38e554c,baberghandmidsuffolk.citizenlab.co,active,2023-05-04T08:25:53.693685,aec2b992-3045-490f-ad62-c165a38e554c,1. app_configuration success
+0b54e9be-3532-47b0-aa12-760d3301ca29,yourvoice.westoxon.gov.uk,active,2023-04-17T12:23:28.625036,0b54e9be-3532-47b0-aa12-760d3301ca29,1. app_configuration success
+7fbadfb3-8ce2-48d0-aa23-7505ae3e35f0,newforest.citizenlab.co,active,2023-06-12T15:15:47.186297,7fbadfb3-8ce2-48d0-aa23-7505ae3e35f0,1. app_configuration success
+c90ee494-cb4f-443c-a909-747e705f9d80,participate.wigan.gov.uk,active,2023-01-16T15:43:19.498268,c90ee494-cb4f-443c-a909-747e705f9d80,1. app_configuration success
+61332112-fb60-469b-90bf-3930dbc4b060,goc.citizenlab.co,active,2023-10-05T12:33:17.774907,61332112-fb60-469b-90bf-3930dbc4b060,1. app_configuration success
+ec693d91-2e2c-43d7-915f-84f9f3e34786,shaping.salford.gov.uk,active,2023-06-06T14:50:56.775833,ec693d91-2e2c-43d7-915f-84f9f3e34786,1. app_configuration success
+3a0fe6ab-659e-4881-a561-b6d04220c378,falkirkdemo.citizenlab.co,demo,2023-09-26T09:58:28.675625,3a0fe6ab-659e-4881-a561-b6d04220c378,1. app_configuration success
+8fdbfff3-2805-4571-a2f9-cc61a8c278e2,staffy-trial.citizenlab.co,demo,2023-09-29T13:40:45.461203,8fdbfff3-2805-4571-a2f9-cc61a8c278e2,1. app_configuration success
+6a556284-3bea-4fe7-ad85-117180a1e8d4,northnorth.citizenlab.co,demo,2023-10-04T11:08:57.628737,6a556284-3bea-4fe7-ad85-117180a1e8d4,1. app_configuration success
+632a5ab9-a41f-4d29-aab4-f9d4e053a25f,nick-demo.citizenlab.co,demo,2023-10-11T13:20:20.753861,632a5ab9-a41f-4d29-aab4-f9d4e053a25f,1. app_configuration success
+69fc7d86-ff70-42bc-a996-68bdca5e096d,lambeth-trial.citizenlab.co,demo,2023-11-01T15:19:05.951765,69fc7d86-ff70-42bc-a996-68bdca5e096d,not success
+a14be202-7bf9-4350-af58-a774bdf8f878,your.cotswold.gov.uk,active,2023-09-27T15:07:27.561024,a14be202-7bf9-4350-af58-a774bdf8f878,1. app_configuration success
+5656079f-f516-43a0-ad6f-a5ed7c87a6ef,new-lora-demo.citizenlab.co,demo,2023-11-17T13:03:35.334283,5656079f-f516-43a0-ad6f-a5ed7c87a6ef,1. app_configuration success
+3aafddfb-3bec-490e-88c6-ead1f94d0036,participateplus.falkirk.gov.uk,active,2023-06-27T13:20:05.45963,3aafddfb-3bec-490e-88c6-ead1f94d0036,1. app_configuration success
+4d0ee05c-381a-471b-b298-53a72069f23e,samen.stedebroec.nl,active,2021-04-20T14:41:37.228677,4d0ee05c-381a-471b-b298-53a72069f23e,1. app_configuration success
+9ba241fc-1e07-4dbd-8a82-950564d92c35,zottegem.citizenlab.co,active,2020-11-04T06:59:44.251239,9ba241fc-1e07-4dbd-8a82-950564d92c35,1. app_configuration success
+b69b2776-dffa-4527-89d2-0f1fd2b6b50d,jeparticipe.soumagne.be,active,2022-03-25T08:05:54.13308,b69b2776-dffa-4527-89d2-0f1fd2b6b50d,1. app_configuration success
+29b8dd83-4a06-4949-8596-9190b28d63e0,habay.citizenlab.co,active,2019-09-20T14:17:04.212447,29b8dd83-4a06-4949-8596-9190b28d63e0,1. app_configuration success
+6ad4dac3-a238-4149-be7e-27e7c0e03f4a,denkmee.sint-truiden.be,active,2021-02-25T12:30:18.308064,6ad4dac3-a238-4149-be7e-27e7c0e03f4a,1. app_configuration success
+9c51cb52-6277-4458-8504-fc38273a8dd2,gamleosloinvolverer.no,active,2020-08-28T11:59:31.724491,9c51cb52-6277-4458-8504-fc38273a8dd2,1. app_configuration success
+d96d8e1f-b405-47df-bbe3-07769f7781c1,sammenom.rudersdal.dk,active,2021-05-31T08:44:30.872021,d96d8e1f-b405-47df-bbe3-07769f7781c1,1. app_configuration success
+39fc52a0-5ce2-4881-bca4-c9072c9c1ce2,meedoen.losser.nl,active,2020-12-17T15:13:34.726094,39fc52a0-5ce2-4881-bca4-c9072c9c1ce2,1. app_configuration success
+feaecdaf-7eeb-4b0a-8232-681e56d54eb2,borgerinddragelse.halsnaes.dk,active,2022-07-26T06:24:15.267607,feaecdaf-7eeb-4b0a-8232-681e56d54eb2,1. app_configuration success
+007d418f-0d48-415c-8cc6-f53e48441a51,samen.berlaar.be,active,2021-04-09T15:35:36.52419,007d418f-0d48-415c-8cc6-f53e48441a51,1. app_configuration success
+821b382b-440d-4ba9-8522-0afc1acb8d68,denkmee.zoersel.be,churned,2021-07-02T11:05:34.251607,821b382b-440d-4ba9-8522-0afc1acb8d68,not success
+9eab385c-2678-45fc-ae65-0b971b03cd12,dialogportalen.odense.dk,active,2021-02-06T11:23:43.2649,9eab385c-2678-45fc-ae65-0b971b03cd12,1. app_configuration success
+14361095-fd05-45a3-8e5d-1003cf7038b6,geefsmaak.boom.be,active,2021-04-30T13:29:07.597495,14361095-fd05-45a3-8e5d-1003cf7038b6,1. app_configuration success
+f0e05ce4-99b0-49f8-b7a8-43e2e2083f0f,test-active.citizenlab.co,active,2020-06-09T14:48:37.431098,f0e05ce4-99b0-49f8-b7a8-43e2e2083f0f,1. app_configuration success
+642c3d5f-9b5e-4c90-b3c8-599050063ab0,albertslund.citizenlab.co,active,2022-05-02T07:40:14.167378,642c3d5f-9b5e-4c90-b3c8-599050063ab0,1. app_configuration success
+097d97ca-fbd0-44ae-b6e1-cce26c8c1df5,denkmee.dendermonde.be,active,2017-10-06T07:08:50.745,097d97ca-fbd0-44ae-b6e1-cce26c8c1df5,1. app_configuration success
+1a13dd8f-7867-4644-b7ea-c2444b7f97cd,doemee.alken.be,active,2020-02-18T08:17:04.687444,1a13dd8f-7867-4644-b7ea-c2444b7f97cd,1. app_configuration success
+460920fa-3942-4126-bf54-f1d2e4ba1693,ons.oostende.be,active,2021-06-07T15:12:27.852377,460920fa-3942-4126-bf54-f1d2e4ba1693,1. app_configuration success
+e6aaeb31-71aa-4a25-a4e8-92878a9efad5,participationcitoyenne.vitry94.fr,active,2020-11-20T12:09:14.487579,e6aaeb31-71aa-4a25-a4e8-92878a9efad5,1. app_configuration success
+c0d1b3e8-9db3-471c-8af7-b1055ef89132,wijmakenevergem.be,active,2020-10-22T14:23:48.788656,c0d1b3e8-9db3-471c-8af7-b1055ef89132,1. app_configuration success
+10ff8b7a-d2e0-43c1-9867-3c3610fdd3a2,https://naestvedchurned.citizenlab.co/,not_applicable,2020-10-27T13:07:55.130862,10ff8b7a-d2e0-43c1-9867-3c3610fdd3a2,SocketError: Failed to open TCP connection to https:443 (getaddrinfo: nodename nor servname provided, or not known)
+bf56e0f5-fe60-4b3a-8bf6-e9a11e1bab69,jeparticipe.deville-les-rouen.fr,active,2022-03-17T08:32:14.275126,bf56e0f5-fe60-4b3a-8bf6-e9a11e1bab69,1. app_configuration success
+e27ac1e0-5beb-47e5-b68b-846c5bddbe2a,denkmee.utrecht.nl,active,2020-06-09T12:20:23.671419,e27ac1e0-5beb-47e5-b68b-846c5bddbe2a,1. app_configuration success
+0802ec4a-f25e-46be-a26e-ae6f91236f95,zuurstof.be,churned,2020-08-26T10:34:35.93131,0802ec4a-f25e-46be-a26e-ae6f91236f95,SocketError: Failed to open TCP connection to zuurstof.be:443 (getaddrinfo: nodename nor servname provided, or not known)
+50ab48af-3970-47f4-806b-d05764bcf025,mobiliteitsvisie2040.vlaanderen.be,active,2020-04-21T06:49:05.01751,50ab48af-3970-47f4-806b-d05764bcf025,1. app_configuration success
+cba71d7c-45b5-4d5b-a28a-24e4a2775b04,zuurstof-testplatform.citizenlab.co,active,2021-05-06T07:54:18.805113,cba71d7c-45b5-4d5b-a28a-24e4a2775b04,1. app_configuration success
+0b626d05-ab50-475a-98ea-8149e7989bea,participation.frw.be,active,2018-01-15T23:38:34.687704,0b626d05-ab50-475a-98ea-8149e7989bea,1. app_configuration success
+c3cfe5a3-0e16-4ef5-858e-86891cc2dc53,denkmee.amstelveen.nl,active,2019-07-25T11:31:53.508611,c3cfe5a3-0e16-4ef5-858e-86891cc2dc53,1. app_configuration success
+f9a66630-515b-4dcb-9e98-1faedae1fd53,ikdenkmee.gavere.be,active,2020-11-17T12:40:38.487663,f9a66630-515b-4dcb-9e98-1faedae1fd53,1. app_configuration success
+dcce5c74-17c8-4953-933c-87def1c8b481,samen.drechterland.nl,active,2021-04-21T11:59:47.798671,dcce5c74-17c8-4953-933c-87def1c8b481,1. app_configuration success
+4402bd08-e829-4901-ab34-95eb4c78a06e,bois-guillaume.citizenlab.co,active,2021-01-15T09:58:17.592587,4402bd08-e829-4901-ab34-95eb4c78a06e,1. app_configuration success
+90463923-5d20-4c50-b968-e27edea1b271,samen.dongen.nl,active,2019-05-03T09:53:59.612943,90463923-5d20-4c50-b968-e27edea1b271,1. app_configuration success
+94d17b83-915d-4d3a-af7a-129f11821c66,aydat.citizenlab.co,active,2021-05-07T09:53:18.556023,94d17b83-915d-4d3a-af7a-129f11821c66,1. app_configuration success
+6736765e-b02e-438d-a02f-c38cb5ecbcb9,lesmureaux.citizenlab.co,active,2022-03-16T13:07:03.198425,6736765e-b02e-438d-a02f-c38cb5ecbcb9,1. app_configuration success
+59eb8be9-b4e7-4223-b500-f67ce377108f,jeparticipe.saint-flour.net,active,2022-02-03T16:22:38.042777,59eb8be9-b4e7-4223-b500-f67ce377108f,1. app_configuration success
+f684ff1a-3694-4873-9bad-1708120f528d,monprojet.villers-saint-paul.fr,active,2021-03-31T10:31:03.742063,f684ff1a-3694-4873-9bad-1708120f528d,1. app_configuration success
+97b45a88-b480-4dab-be84-747bb6796d25,jeparticipe.ville-massy.fr,active,2021-03-25T18:32:46.502364,97b45a88-b480-4dab-be84-747bb6796d25,1. app_configuration success
+3234f4b6-1086-4548-b61a-a055545b66a6,moldetaxisentral.citizenlab.co,active,2022-12-15T14:17:00.023804,3234f4b6-1086-4548-b61a-a055545b66a6,1. app_configuration success
+9e7926d2-c70a-44c8-8019-d58ae3ef9b77,foodshift-team.citizenlab.co,active,2022-11-23T15:47:40.505796,9e7926d2-c70a-44c8-8019-d58ae3ef9b77,1. app_configuration success
+fe8b7ea9-2388-4389-9cc9-16937d85da86,hellendoornchurned.citizenlab.co,churned,2022-12-07T10:06:33.806279,fe8b7ea9-2388-4389-9cc9-16937d85da86,1. app_configuration success
+55318b1e-880d-49ab-a663-9afe7f406cb7,saint-hubert.citizenlab.co,churned,2022-02-10T08:48:52.643546,55318b1e-880d-49ab-a663-9afe7f406cb7,1. app_configuration success
+db67d7a3-be56-4d03-9777-1559ea6a5a2e,denkmee.woerden.nl,active,2022-11-16T16:53:57.248024,db67d7a3-be56-4d03-9777-1559ea6a5a2e,1. app_configuration success
+0fa5c99d-8610-4468-baa5-fa23bcf425e3,borgerlab.horsholm.dk,active,2019-12-19T13:24:48.381354,0fa5c99d-8610-4468-baa5-fa23bcf425e3,1. app_configuration success
+21231d58-f478-4f20-bff5-a9fa28eca1e3,goedgezegd.deinze.be,active,2020-05-25T20:24:29.728542,21231d58-f478-4f20-bff5-a9fa28eca1e3,1. app_configuration success
+1018f28e-c013-4480-8501-edc1723642d5,doemee.vlissingen.nl,active,2020-09-29T07:07:48.523732,1018f28e-c013-4480-8501-edc1723642d5,1. app_configuration success
+5d4cd6d2-b592-4a66-92ad-511205cdb491,samen.enkhuizen.nl,active,2021-04-21T11:37:47.325371,5d4cd6d2-b592-4a66-92ad-511205cdb491,1. app_configuration success
+ad0beee4-17fd-447c-9b41-cc1d0560df42,demain.villedavray.fr,active,2020-11-05T18:13:20.156671,ad0beee4-17fd-447c-9b41-cc1d0560df42,1. app_configuration success
+a8ee52b1-0a22-4a3e-9dc8-8cf793131ef0,dktraining.citizenlab.co,active,2022-09-10T09:04:04.610223,a8ee52b1-0a22-4a3e-9dc8-8cf793131ef0,1. app_configuration success
+a8131023-5678-4646-970c-76a441906c5e,hesselager.svendborg.dk,active,2022-12-02T08:20:24.145432,a8131023-5678-4646-970c-76a441906c5e,1. app_configuration success
+df84a5d9-4e0a-42c9-84e6-6ca1edb408cb,borgerlab.vejle.dk,active,2019-06-26T14:44:04.136449,df84a5d9-4e0a-42c9-84e6-6ca1edb408cb,1. app_configuration success
+e686bbbc-6f89-4c97-88f9-1106e4ec9f58,vores.lejre.dk,active,2022-07-26T07:34:54.557103,e686bbbc-6f89-4c97-88f9-1106e4ec9f58,1. app_configuration success
+8b350c09-17ae-4e3a-a6fe-b11668549dde,jeparticipe.ville-bron.fr,active,2021-07-12T07:08:30.552712,8b350c09-17ae-4e3a-a6fe-b11668549dde,1. app_configuration success
+66e3aabf-c038-483c-b7f3-55d97aeec61b,riga.citizenlab.co,not_applicable,2022-10-05T11:25:01.886719,66e3aabf-c038-483c-b7f3-55d97aeec61b,1. app_configuration success
+3deedbf1-c42d-4670-bf2f-881f14beed50,samenwerkenaan.oldebroek.nl,active,2021-01-15T16:47:45.883327,3deedbf1-c42d-4670-bf2f-881f14beed50,1. app_configuration success
+758662ed-fe73-41ad-8616-6e601fe452f8,gemeinsam.eins.de,active,2022-11-30T11:51:36.146317,758662ed-fe73-41ad-8616-6e601fe452f8,1. app_configuration success
+56d3c7e5-93f6-4211-9d90-855b780196d1,sammenom.frederikshavn.dk,active,2020-12-20T10:14:00.30489,56d3c7e5-93f6-4211-9d90-855b780196d1,1. app_configuration success
+93e76370-60cf-4751-acb9-ab5a66ccb0eb,samen.noordwijk.nl,active,2020-04-03T14:26:48.648166,93e76370-60cf-4751-acb9-ab5a66ccb0eb,1. app_configuration success
+13e4e017-e7c4-4336-ae20-2b2d1fff2297,deeljeidee.sport.vlaanderen,active,2020-06-30T14:11:55.417263,13e4e017-e7c4-4336-ae20-2b2d1fff2297,1. app_configuration success
+4907853f-c84f-48b3-9866-a55a215995fe,brussels2030.citizenlab.co,active,2022-09-29T21:14:22.893539,4907853f-c84f-48b3-9866-a55a215995fe,1. app_configuration success
+09dd47cf-28f0-41bb-baeb-dbcc5a4bc76c,platform.culemborg.nl,active,2021-03-25T12:35:30.503037,09dd47cf-28f0-41bb-baeb-dbcc5a4bc76c,1. app_configuration success
+dd5b8b06-be5d-4038-88f7-7f5ac69d033e,croix-rouge.citizenlab.co,active,2023-01-11T08:24:15.283721,dd5b8b06-be5d-4038-88f7-7f5ac69d033e,1. app_configuration success
+c3b0d845-e108-432b-b375-427ca80a33b7,jeparticipe.malaunay.fr,active,2022-01-20T14:50:30.968064,c3b0d845-e108-432b-b375-427ca80a33b7,1. app_configuration success
+f4a652c4-0edb-46dd-98a7-1475e3383bad,doemee.valkenburg.nl,active,2021-02-24T12:19:27.341028,f4a652c4-0edb-46dd-98a7-1475e3383bad,1. app_configuration success
+3a2e5c1d-c4f8-4203-b541-b0034f9c1fa9,zemljazanas.rs,churned,2021-11-04T09:49:32.149711,3a2e5c1d-c4f8-4203-b541-b0034f9c1fa9,1. app_configuration success
+0925caec-bdea-40fa-929c-a197120ef848,stadtgestalten.duesseldorf-marketing.de,active,2022-07-04T10:32:55.302473,0925caec-bdea-40fa-929c-a197120ef848,1. app_configuration success
+8d76cc79-e508-4ad9-a0ea-1cf076371fb6,dialog.bad-duerkheim.de,active,2022-04-19T13:33:14.254502,8d76cc79-e508-4ad9-a0ea-1cf076371fb6,1. app_configuration success
+014dc795-a9f5-4876-98d0-7eeb8de75bd5,denkmee.maassluis.nl,active,2022-06-10T12:54:36.458312,014dc795-a9f5-4876-98d0-7eeb8de75bd5,1. app_configuration success
+37ab4cd4-3543-4ee0-b4bf-c68d14b279a0,demokoos.citizenlab.co,active,2022-11-09T08:09:03.515132,37ab4cd4-3543-4ee0-b4bf-c68d14b279a0,1. app_configuration success
+6f262fef-c965-41dd-94ce-c812a62928d9,oostburg.citizenlab.co,active,2022-09-12T15:11:04.768607,6f262fef-c965-41dd-94ce-c812a62928d9,1. app_configuration success
+186923d4-d9e4-4ad3-b19a-f1e725735f9b,youthawards.wwf.be,active,2020-11-19T13:59:05.551961,186923d4-d9e4-4ad3-b19a-f1e725735f9b,1. app_configuration success
+4bf7ccfa-a9a1-4d3b-ad26-27ba03d63471,doemee.oegstgeest.nl,active,2020-10-20T05:42:40.386093,4bf7ccfa-a9a1-4d3b-ad26-27ba03d63471,1. app_configuration success
+963cd6ed-7b7c-4af8-bfc0-c4e272d58e93,mijn.maldegem.be,active,2022-04-15T12:10:03.323538,963cd6ed-7b7c-4af8-bfc0-c4e272d58e93,1. app_configuration success
+203767fd-b4c9-4a9a-9bad-61cd910f3b08,doemee.oosterhout.nl,active,2021-04-28T08:43:31.307443,203767fd-b4c9-4a9a-9bad-61cd910f3b08,1. app_configuration success
+a712a455-2777-450e-9697-8edd1a64159d,vi.skaber.frederikssund.dk,active,2021-07-30T10:07:09.890961,a712a455-2777-450e-9697-8edd1a64159d,1. app_configuration success
+babc1f61-f174-4dcc-a63d-aac54ad43219,www.zesumme-vereinfachen.lu,active,2020-12-15T13:47:37.365543,babc1f61-f174-4dcc-a63d-aac54ad43219,1. app_configuration success
+8762a63e-5053-4856-acab-05955364dc6d,aandeslag.gemeentealtena.nl,active,2020-04-01T00:58:03.935569,8762a63e-5053-4856-acab-05955364dc6d,1. app_configuration success
+26b8ac8a-6c2a-45f0-9709-e9365319c549,soroechurned@citizenlab.co,not_applicable,2021-07-30T10:17:05.733199,26b8ac8a-6c2a-45f0-9709-e9365319c549,not success
+b771d320-b827-4056-8c36-6932e4983d50,mdm-bytom.citizenlab.co,churned,2022-04-19T13:56:07.45175,b771d320-b827-4056-8c36-6932e4983d50,1. app_configuration success
+b6722836-fad4-42bb-ba34-b4069bb4cea1,developpementrural.tournai.be,active,2020-12-18T09:04:40.291303,b6722836-fad4-42bb-ba34-b4069bb4cea1,1. app_configuration success
+6ab834d8-e18a-4ea2-bd8a-90d4a8a97687,yfvgvghkjgliugfucfgcv.,churned,2021-10-25T14:53:11.085595,6ab834d8-e18a-4ea2-bd8a-90d4a8a97687,SocketError: Failed to open TCP connection to yfvgvghkjgliugfucfgcv.:443 (getaddrinfo: nodename nor servname provided, or not known)
+da4a772a-e953-45f8-b6d3-12498023539f,foodshift-bari.citizenlab.co,active,2022-09-12T09:49:42.011141,da4a772a-e953-45f8-b6d3-12498023539f,1. app_configuration success
+977d918f-9bb5-4210-bf41-b10da27a8a17,kommuneqarfiga.sermersooq.gl,active,2020-02-10T09:36:46.335637,977d918f-9bb5-4210-bf41-b10da27a8a17,1. app_configuration success
+2d2fa1e0-270f-4e42-bfd0-4df4521c4713,lynetteholm.borgersamling.dk,active,2021-10-15T11:21:17.578869,2d2fa1e0-270f-4e42-bfd0-4df4521c4713,1. app_configuration success
+d72abd87-043a-42b1-b30a-e23a7333acf3,praatmee.ofw.nl,active,2020-12-01T12:43:36.511817,d72abd87-043a-42b1-b30a-e23a7333acf3,1. app_configuration success
+16f25756-bc8c-41a7-91c9-e09574094899,denkmee.t-diel.nl,active,2020-12-17T15:22:30.352192,16f25756-bc8c-41a7-91c9-e09574094899,1. app_configuration success
+1a5b48d5-1f17-4490-8a5c-dbf2baf3e8ab,ingesprek.denhelder.nl,active,2021-02-16T10:41:53.540013,1a5b48d5-1f17-4490-8a5c-dbf2baf3e8ab,1. app_configuration success
+9f3336cc-b097-4611-9f2f-f6cbc2eb7b8f,sandkasse.citizenlab.co,active,2022-01-18T07:53:31.919716,9f3336cc-b097-4611-9f2f-f6cbc2eb7b8f,1. app_configuration success
+691fe527-a8aa-4f4b-abd5-99ca926d6622,twojwasilkow.pl,active,2022-02-02T15:39:12.583748,691fe527-a8aa-4f4b-abd5-99ca926d6622,1. app_configuration success
+743d892a-9489-4765-a546-ecf0943d262d,kobenhavntaler.kk.dk,active,2022-11-29T10:44:58.993552,743d892a-9489-4765-a546-ecf0943d262d,1. app_configuration success
+729c1c4f-f09b-4942-b513-9158d91005c3,community.denkmee-verenigingsloket.be,active,2021-04-28T07:04:20.135095,729c1c4f-f09b-4942-b513-9158d91005c3,1. app_configuration success
+5f8e27c1-f934-408b-894b-6b776f968a0c,montfort-sur-meu.citizenlab.co,active,2021-05-21T12:32:30.328702,5f8e27c1-f934-408b-894b-6b776f968a0c,1. app_configuration success
+cd4484ba-c1f9-40a2-8ab8-8c6b37c6ed65,deltag.hvidovre.dk,active,2021-09-20T11:00:34.020428,cd4484ba-c1f9-40a2-8ab8-8c6b37c6ed65,1. app_configuration success
+042c3a7a-211a-4a6e-9a40-8773648b9c97,mitgestalten.wien.gv.at,active,2022-01-10T12:57:27.277776,042c3a7a-211a-4a6e-9a40-8773648b9c97,1. app_configuration success
+dfa58bb2-e183-447a-84d2-9c8ba9ed2f92,waddsup.waddinxveen.nl,active,2021-04-28T11:48:54.590945,dfa58bb2-e183-447a-84d2-9c8ba9ed2f92,1. app_configuration success
+3b8636fe-87ef-4983-b5f9-429180fcd790,www.madrastna.ma,churned,2022-04-27T14:37:57.631312,3b8636fe-87ef-4983-b5f9-429180fcd790,1. app_configuration success
+d499100e-1f7d-4256-a459-7c04f5e4517e,gestalte.taunusstein.de,active,2021-06-10T11:46:52.409055,d499100e-1f7d-4256-a459-7c04f5e4517e,1. app_configuration success
+feb2ca93-ffb0-49a5-9084-2f05546c659a,baeredygtigtforbrug.borgersamling.dk,active,2022-05-02T08:12:30.058596,feb2ca93-ffb0-49a5-9084-2f05546c659a,1. app_configuration success
+0a2ea03c-16bb-4493-8baf-4f28feaec355,onlinedorpsgesprek.ermelo.nl,active,2022-07-05T12:40:04.511316,0a2ea03c-16bb-4493-8baf-4f28feaec355,1. app_configuration success
+c05b6342-28dc-47d0-8412-7b5b27fb2359,jaime.franquevillesaintpierre.com,active,2021-10-08T08:03:17.71122,c05b6342-28dc-47d0-8412-7b5b27fb2359,1. app_configuration success
+d748e6fc-3f90-4315-aea1-bbde879972ba,augustow-wybiera.citizenlab.co,active,2022-02-02T16:11:34.55704,d748e6fc-3f90-4315-aea1-bbde879972ba,1. app_configuration success
+0cc1f200-24e6-44f0-be20-ce2fd9e4fae7,jeparticipe.ajaccio.corsica,churned,2022-09-07T17:04:15.515758,0cc1f200-24e6-44f0-be20-ce2fd9e4fae7,1. app_configuration success
+e9c5e891-f9b7-4937-8d4c-9b83984698b4,denhaag.citizenlab.co,churned,2018-01-30T15:41:51.883922,e9c5e891-f9b7-4937-8d4c-9b83984698b4,1. app_configuration success
+ccea4f5a-b8ca-4c0e-b3fc-56f6ede0191a,iedereenmee.koksijde.be,active,2019-06-18T07:40:40.431579,ccea4f5a-b8ca-4c0e-b3fc-56f6ede0191a,1. app_configuration success
+9004fea6-e97e-4a30-a972-ec163c9c4224,samen.medemblik.nl,active,2019-07-12T13:37:50.075345,9004fea6-e97e-4a30-a972-ec163c9c4224,1. app_configuration success
+04e96445-e4a4-4a2c-8f5b-fc2e586f7123,samenbergendal.nl,active,2021-03-16T08:29:01.385798,04e96445-e4a4-4a2c-8f5b-fc2e586f7123,1. app_configuration success
+5410e656-c434-434a-89e5-73e1fe7966c1,consultation.troyes-champagne-metropole.fr,active,2021-10-06T10:48:49.545359,5410e656-c434-434a-89e5-73e1fe7966c1,1. app_configuration success
+7098bab3-8464-4442-a3b6-ab2d76c003d8,sammenom.guldborgsund.dk,active,2022-03-16T10:35:04.990476,7098bab3-8464-4442-a3b6-ab2d76c003d8,1. app_configuration success
+966cdd04-6645-499c-91f9-4aeeb034a2b4,parti-cip.be,active,2020-10-09T09:23:16.399959,966cdd04-6645-499c-91f9-4aeeb034a2b4,1. app_configuration success
+a341659d-9127-47db-857e-9480373da898,borgerforum.regionh.dk,active,2022-11-08T11:45:34.02107,a341659d-9127-47db-857e-9480373da898,1. app_configuration success
+3fd4e5ac-6f8b-4f51-80e2-09d0abfe8ea6,hallo.harelbeke.be,active,2017-12-12T19:36:34.522569,3fd4e5ac-6f8b-4f51-80e2-09d0abfe8ea6,1. app_configuration success
+2c2dc347-17ac-4384-9b54-42d67638376e,denkmee.beverwijk.nl,active,2022-12-02T12:14:26.617909,2c2dc347-17ac-4384-9b54-42d67638376e,1. app_configuration success
+81c3c516-cb8e-4397-8a44-725e55510b4e,mun-pallini.citizenlab.co,active,2022-09-12T09:42:28.989952,81c3c516-cb8e-4397-8a44-725e55510b4e,1. app_configuration success
+3ab040f2-0c44-4743-85f2-2d84fbfb0f39,samen.rijswijk.nl,active,2021-07-26T13:33:32.404991,3ab040f2-0c44-4743-85f2-2d84fbfb0f39,1. app_configuration success
+f337e9b5-1888-4a78-8dd1-986e60610aa4,civicinitiatives.citizenlab.co,active,2021-08-30T10:07:14.611166,f337e9b5-1888-4a78-8dd1-986e60610aa4,1. app_configuration success
+02a67f43-b675-4563-bfa2-23451d667e44,saint-raphael.citizenlab.co,active,2022-05-04T15:32:45.228152,02a67f43-b675-4563-bfa2-23451d667e44,1. app_configuration success
+8804b052-15ee-4c03-8014-983df72f9f50,saint-quentin.citizenlab.co,active,2021-06-23T08:22:42.147242,8804b052-15ee-4c03-8014-983df72f9f50,1. app_configuration success
+056f8e85-13b7-474a-9c24-9beeb1fe276f,privjeleniagora.demo.citizenlab.co,churned,2021-03-01T08:12:04.158566,056f8e85-13b7-474a-9c24-9beeb1fe276f,1. app_configuration success
+4e51971d-0311-4288-b156-e8a023e1d1b5,viskaber.nyborg.dk,active,2022-02-23T09:24:36.144298,4e51971d-0311-4288-b156-e8a023e1d1b5,1. app_configuration success
+d703f79e-50ec-4ffb-aaf3-a78f964354d8,participatie.kruisem.be,active,2021-02-16T07:23:32.415524,d703f79e-50ec-4ffb-aaf3-a78f964354d8,1. app_configuration success
+2334a611-0eac-4923-bd9a-61dab3329c46,untoldstories.citizenlab.co,active,2021-09-24T08:32:46.725991,2334a611-0eac-4923-bd9a-61dab3329c46,1. app_configuration success
+fa0428a9-1770-4f2c-87ab-d0d16f05375e,tvojgradnovisad.rs,active,2021-10-11T12:22:31.309032,fa0428a9-1770-4f2c-87ab-d0d16f05375e,1. app_configuration success
+57f90e5f-bff1-4f16-96f1-21596d20a07e,8940spreekt.be,active,2022-01-17T18:24:02.7689,57f90e5f-bff1-4f16-96f1-21596d20a07e,1. app_configuration success
+20d2e610-a0c3-4be6-9e92-f0934a0f257b,goespraatmee.nl,active,2020-10-20T05:54:27.046073,20d2e610-a0c3-4be6-9e92-f0934a0f257b,1. app_configuration success
+14a7c37c-c925-45b7-9f42-29b97330dbe4,consultation.esterelcotedazur-agglo.fr,active,2022-05-02T15:19:36.245588,14a7c37c-c925-45b7-9f42-29b97330dbe4,1. app_configuration success
+4b6d8bd7-a4ca-450d-bab1-62da763a486f,quartierslibres.citizenlab.co,active,2020-12-18T15:08:12.309467,4b6d8bd7-a4ca-450d-bab1-62da763a486f,1. app_configuration success
+e1c2735f-93b0-4064-ad46-4c3499716324,africaspeakupofflinefornow.citizenlab.co,active,2022-01-26T16:33:05.703822,e1c2735f-93b0-4064-ad46-4c3499716324,1. app_configuration success
+71f67427-6ea4-47b1-bc55-9c214b85d198,cdabreda.citizenlab.co,churned,2022-04-21T08:00:23.216716,71f67427-6ea4-47b1-bc55-9c214b85d198,1. app_configuration success
+c21bd7f1-b911-4c53-ae76-7104babe8435,imaginons-annemasse.fr,active,2022-01-20T14:48:40.268441,c21bd7f1-b911-4c53-ae76-7104babe8435,1. app_configuration success
+f21a0c1e-631c-4727-9762-1b4228585377,denkmee.achtkarspelen.nl,active,2020-12-11T07:21:02.703236,f21a0c1e-631c-4727-9762-1b4228585377,1. app_configuration success
+2082b89c-5332-4e07-aa8e-fad887759bc9,jeparticipe.bourgoinjallieu.fr,active,2021-01-05T16:34:29.395302,2082b89c-5332-4e07-aa8e-fad887759bc9,1. app_configuration success
+4918d87d-1bad-497a-8b24-5a25900d88df,denkmee.schoten.be,active,2021-03-25T12:31:09.366529,4918d87d-1bad-497a-8b24-5a25900d88df,1. app_configuration success
+aa9cfb7e-ecfc-4976-912f-a7e5628a9d02,doemee-oirschot.nl,active,2021-02-17T07:47:37.900346,aa9cfb7e-ecfc-4976-912f-a7e5628a9d02,1. app_configuration success
+5ecd9605-979c-4e82-ae1d-13770a7e33e0,maashorstaanhetwoord.nl,active,2020-11-13T07:50:18.956153,5ecd9605-979c-4e82-ae1d-13770a7e33e0,1. app_configuration success
+1926b654-dcfe-4fa8-a022-48f78e0b9989,lafabriquecitoyenne.charenton.fr,active,2021-05-26T15:44:42.776931,1926b654-dcfe-4fa8-a022-48f78e0b9989,1. app_configuration success
+3828838c-7f3e-43e0-894e-1368554756af,samen.stekene.be,active,2022-02-23T12:29:43.76837,3828838c-7f3e-43e0-894e-1368554756af,1. app_configuration success
+75cf3c62-4f8b-454c-9620-50f068839ae9,aramon.citizenlab.co,active,2021-02-11T17:56:06.528488,75cf3c62-4f8b-454c-9620-50f068839ae9,1. app_configuration success
+c0d1db20-1580-42cd-9cd6-547e8c7438ff,denkmee.malle.be,active,2020-02-05T16:22:17.363171,c0d1db20-1580-42cd-9cd6-547e8c7438ff,1. app_configuration success
+194e5a10-4b1a-434a-ae09-47be63dc1561,augustusburg.citizenlab.co,churned,2018-02-05T16:28:24.326756,194e5a10-4b1a-434a-ae09-47be63dc1561,1. app_configuration success
+11afb30a-c266-4769-aea2-642a6f4d9222,mitmachen.coburg.de,active,2022-02-18T08:46:32.028059,11afb30a-c266-4769-aea2-642a6f4d9222,1. app_configuration success
+8f02fbf1-330f-4b16-b870-352d471f1098,vores.dn.dk,active,2020-12-12T12:10:01.792693,8f02fbf1-330f-4b16-b870-352d471f1098,1. app_configuration success
+bec5c626-f5c6-4007-9bdc-dbb7c31290aa,idee.haaltert.be,active,2021-08-24T13:14:27.720725,bec5c626-f5c6-4007-9bdc-dbb7c31290aa,1. app_configuration success
+e98fd54c-304b-46db-b87d-15d2361ef856,participer.ville-antony.fr,active,2020-12-21T10:36:19.636457,e98fd54c-304b-46db-b87d-15d2361ef856,1. app_configuration success
+46a1a2e8-0397-4a6b-a23e-96cd455c3f66,preus.meulebeke.be,active,2021-01-19T12:34:59.699003,46a1a2e8-0397-4a6b-a23e-96cd455c3f66,1. app_configuration success
+f68b64e1-eb3b-41a3-aafa-fb1ed8dde2ac,consultation.troyes.fr,active,2021-09-17T12:11:52.249253,f68b64e1-eb3b-41a3-aafa-fb1ed8dde2ac,1. app_configuration success
+d997a471-66c7-43d1-bd9e-37f88f54f5d7,slagelsechurned.citizenlab.co,not_applicable,2021-02-14T12:40:32.152644,d997a471-66c7-43d1-bd9e-37f88f54f5d7,1. app_configuration success
+1503946c-22b8-4d51-b941-122bee715da9,viskaber.roskilde.dk,active,2021-01-26T11:39:27.501187,1503946c-22b8-4d51-b941-122bee715da9,1. app_configuration success
+f143352f-c589-4548-af72-466224a8d137,denkmee.bodegraven-reeuwijk.nl,active,2021-03-05T09:28:13.52875,f143352f-c589-4548-af72-466224a8d137,1. app_configuration success
+1d2e4750-6630-48c3-8eff-4d0ab9f5e3c6,deltag.holbaek.dk,active,2021-01-11T16:11:36.722982,1d2e4750-6630-48c3-8eff-4d0ab9f5e3c6,1. app_configuration success
+f7179f47-2b46-4705-ab38-a06842fd37b7,mobilli.citizenlab.co,active,2021-10-05T14:00:24.863796,f7179f47-2b46-4705-ab38-a06842fd37b7,1. app_configuration success
+8eefee6e-9cb5-4593-bca9-fa19c929f4e9,denkmee.schouwen-duiveland.nl,active,2020-12-11T07:04:26.187218,8eefee6e-9cb5-4593-bca9-fa19c929f4e9,1. app_configuration success
+94a93a89-3fbd-4657-9546-9d204b01532e,mow-participatie.citizenlab.co,active,2021-01-29T08:22:49.224425,94a93a89-3fbd-4657-9546-9d204b01532e,1. app_configuration success
+fe2f7f42-5931-4432-993c-fb64481939f0,anciennebelgique.citizenlab.co,active,2020-11-12T08:11:49.384822,fe2f7f42-5931-4432-993c-fb64481939f0,1. app_configuration success
+f772717e-a368-4f99-b408-b2e6a4ede865,testplatformgent.citizenlab.co,active,2022-06-01T14:49:06.366244,f772717e-a368-4f99-b408-b2e6a4ede865,1. app_configuration success
+55aa69e8-fb15-4ccc-8335-9b697be821a8,doemee.leiden.nl,active,2019-11-05T14:47:30.688757,55aa69e8-fb15-4ccc-8335-9b697be821a8,1. app_configuration success
+27adae60-b6fd-441c-8741-08136b3a2df9,jeparticipe.rungis.fr,active,2021-03-02T10:40:53.815823,27adae60-b6fd-441c-8741-08136b3a2df9,1. app_configuration success
+94a50403-2df3-4b4e-a5f7-a5d2cfbee2d3,mach-mit.freiraum-fichtelgebirge.de,active,2020-03-13T10:05:00.128516,94a50403-2df3-4b4e-a5f7-a5d2cfbee2d3,1. app_configuration success
+0b6799f1-6fb3-481f-b6d3-f92a17971a5a,jskghiuehgergbekjgbejtkg.,churned,2020-09-25T07:59:50.372044,0b6799f1-6fb3-481f-b6d3-f92a17971a5a,SocketError: Failed to open TCP connection to jskghiuehgergbekjgbejtkg.:443 (getaddrinfo: nodename nor servname provided, or not known)
+4cc8bc3e-1905-465d-889d-4baefb4fb6cd,houtenpraatmee.nl,active,2021-04-21T12:04:33.283699,4cc8bc3e-1905-465d-889d-4baefb4fb6cd,1. app_configuration success
+c0c7394d-3b1c-4ae8-aff7-0d109e88f8b0,smicvalcitoyen.fr,active,2021-03-09T13:45:52.403637,c0c7394d-3b1c-4ae8-aff7-0d109e88f8b0,1. app_configuration success
+0e3aaced-ac10-49ae-9d83-772da6d28b54,denkmee.nieuwkoop.nl,active,2020-09-01T09:57:39.854709,0e3aaced-ac10-49ae-9d83-772da6d28b54,1. app_configuration success
+739df5fc-6d0e-4994-9afb-4f77c76edf07,community.citizenlab.co,active,2021-02-28T15:10:51.263461,739df5fc-6d0e-4994-9afb-4f77c76edf07,1. app_configuration success
+ca9e765c-741c-41d7-aaf7-48c960ba186c,samenwerkenaan.heerde.nl,active,2020-12-17T15:16:39.624865,ca9e765c-741c-41d7-aaf7-48c960ba186c,1. app_configuration success
+ffecd6c9-9222-499b-9528-d38b9613d78c,participatie.stad.gent,active,2020-07-06T09:40:53.991305,ffecd6c9-9222-499b-9528-d38b9613d78c,1. app_configuration success
+0dcd6f7a-f2ff-4fcc-8e90-e0b4c2791d93,participate.smartcity.brussels,churned,2018-05-02T13:16:39.81427,0dcd6f7a-f2ff-4fcc-8e90-e0b4c2791d93,1. app_configuration success
+33600c08-4aeb-47ab-a759-23d925964d34,texelspreekt.nl,active,2019-07-11T07:20:39.702754,33600c08-4aeb-47ab-a759-23d925964d34,1. app_configuration success
+6964ee76-97bb-4106-8be0-cfba7a027240,hillerod.citizenlab.co,active,2019-12-29T16:22:45.588626,6964ee76-97bb-4106-8be0-cfba7a027240,1. app_configuration success
+9546dbcf-7a88-4fec-bb26-f1e9acc222f2,sussargues.citizenlab.co,active,2020-08-21T11:33:56.308411,9546dbcf-7a88-4fec-bb26-f1e9acc222f2,1. app_configuration success
+242032bf-1a49-4685-9804-7bfe622f05fa,mijnmening.beveren.be,active,2020-06-02T07:16:27.232618,242032bf-1a49-4685-9804-7bfe622f05fa,1. app_configuration success
+6bf0f640-c56b-4af8-b4c2-6560a40a3fbd,denkeensh.herzele.be,active,2019-07-01T08:30:43.59661,6bf0f640-c56b-4af8-b4c2-6560a40a3fbd,1. app_configuration success
+56d59811-065c-4e10-98d8-7963f3e2ed18,samenhattem.nl,active,2020-12-11T07:16:45.331279,56d59811-065c-4e10-98d8-7963f3e2ed18,1. app_configuration success
+25310db4-af2f-45da-a56b-a2aa13a51193,sprimont.demo.citizenlab.co,active,2020-07-16T15:04:17.460976,25310db4-af2f-45da-a56b-a2aa13a51193,1. app_configuration success
+ae7c915a-c43e-40da-840e-31577a111f73,borgernet.odsherred.dk,active,2020-06-17T12:48:22.637265,ae7c915a-c43e-40da-840e-31577a111f73,1. app_configuration success
+5939efe9-64d9-47a1-b5c8-3a68a3d48cd2,maasmechelenmeemaken.be,active,2019-09-23T15:21:55.317649,5939efe9-64d9-47a1-b5c8-3a68a3d48cd2,1. app_configuration success
+13cfb993-a777-40ab-a7d4-8e72cf651e50,wuustwezelwenst.be,active,2019-04-29T08:28:23.658099,13cfb993-a777-40ab-a7d4-8e72cf651e50,1. app_configuration success
+693e8740-b9ad-4828-bd23-d5c3070b000e,forum.gov.bm,active,2018-07-18T19:41:25.485952,693e8740-b9ad-4828-bd23-d5c3070b000e,1. app_configuration success
+ed645dc8-1f0b-4f57-884f-4d5bb5a5e31f,creamos.injuv.cl,churned,2019-07-01T15:22:06.40634,ed645dc8-1f0b-4f57-884f-4d5bb5a5e31f,1. app_configuration success
+06e1a9b6-f6f9-45c5-b36b-52007cd0b533,doemee.middelburgers.nl,churned,2020-07-21T12:33:45.260422,06e1a9b6-f6f9-45c5-b36b-52007cd0b533,not success
+00a83eec-6638-44ee-aa81-32749aba8f35,blauwhoed.citizenlab.co,active,2020-07-02T11:07:13.855276,00a83eec-6638-44ee-aa81-32749aba8f35,1. app_configuration success
+647fea04-f66f-41aa-ade9-4db144aafecf,samen.menen.be,active,2020-05-28T08:58:24.113556,647fea04-f66f-41aa-ade9-4db144aafecf,1. app_configuration success
+9a9cb734-5ff7-448b-b8c4-e77d3daaf332,samen.schagen.nl,active,2020-08-27T09:48:59.108778,9a9cb734-5ff7-448b-b8c4-e77d3daaf332,1. app_configuration success
+d05a7769-40de-4be2-a3fc-93ed3d5955d2,denkmee.kalmthout.be,active,2019-03-06T11:11:01.473575,d05a7769-40de-4be2-a3fc-93ed3d5955d2,1. app_configuration success
+5a317d00-65e2-421f-8a28-1d03f56495de,citoyen.engis.be,active,2019-08-05T11:47:29.157634,5a317d00-65e2-421f-8a28-1d03f56495de,1. app_configuration success
+1b4b4289-cd16-4f7f-be6b-58efebf7bed5,stadsgesprekken.almere.nl,active,2020-04-07T07:46:51.088718,1b4b4289-cd16-4f7f-be6b-58efebf7bed5,1. app_configuration success
+ef51ce2d-8def-4a89-8169-ffbfe9a7c965,stemvan.wageningen.nl,active,2020-03-13T10:54:08.508143,ef51ce2d-8def-4a89-8169-ffbfe9a7c965,1. app_configuration success
+c8c26d85-84bd-4053-834a-93089981b500,mol.citizenlab.co,active,2019-01-15T12:40:07.623379,c8c26d85-84bd-4053-834a-93089981b500,1. app_configuration success
+5d6a92b7-fb1a-4201-88c9-54b7aba941c1,inspraak.wevelgem.be,active,2017-05-14T13:56:53.403,5d6a92b7-fb1a-4201-88c9-54b7aba941c1,1. app_configuration success
+7d8b210e-c578-420b-83ba-c01e8ad4ccae,inspraak.oudenaarde.be,active,2019-04-04T20:40:57.838289,7d8b210e-c578-420b-83ba-c01e8ad4ccae,1. app_configuration success
+efd85b67-f801-4861-b20b-388b1390429e,mijn.vilvoorde.be,active,2017-01-05,efd85b67-f801-4861-b20b-388b1390429e,1. app_configuration success
+3413d056-514d-49b7-84db-b826ed5f39c2,denkmee.lokeren.be,active,2017-08-03T15:22:03.886,3413d056-514d-49b7-84db-b826ed5f39c2,1. app_configuration success
+935d1bee-cebe-44be-a760-9fdcde52f1bf,arlon.citizenlab.co,active,2017-12-05T20:03:38.783,935d1bee-cebe-44be-a760-9fdcde52f1bf,1. app_configuration success
+58634032-6f73-42a2-b271-b550f319a94f,participer.grandparissud.fr,active,2018-08-09T10:13:22.674573,58634032-6f73-42a2-b271-b550f319a94f,1. app_configuration success
+79cabf98-0c0c-423b-9304-80f3fe2424c5,temsespreekt.be,active,2017-12-06T17:08:19.082054,79cabf98-0c0c-423b-9304-80f3fe2424c5,1. app_configuration success
+bc61d432-343a-400c-a6a1-cf43c5e69085,denkmee.hollandskroon.nl,active,2019-04-18T10:14:59.292657,bc61d432-343a-400c-a6a1-cf43c5e69085,1. app_configuration success
+a520d6fe-3b29-488e-9c32-a4075c0c185b,jeparticipe-cusset.com,churned,2019-01-08T14:28:31.820159,a520d6fe-3b29-488e-9c32-a4075c0c185b,1. app_configuration success
+875d5c95-a040-46d6-970f-47508536feee,hamme.citizenlab.co,churned,2017-12-08T09:23:33.664757,875d5c95-a040-46d6-970f-47508536feee,1. app_configuration success
+13ec6b0f-32f6-4a8c-ba20-34258f2f5150,ichtegeminspireert.be,active,2019-06-07T09:06:40.82943,13ec6b0f-32f6-4a8c-ba20-34258f2f5150,1. app_configuration success
+4741aa4b-de29-4aef-a932-fee464d3a2ee,maakjebuurtmee.rotselaar.be,active,2017-10-10T09:21:01.685499,4741aa4b-de29-4aef-a932-fee464d3a2ee,1. app_configuration success
+99e1e5e2-981c-4a90-b4a4-af8877a7a62e,mijn.ninove.be,active,2019-05-08T18:04:01.677745,99e1e5e2-981c-4a90-b4a4-af8877a7a62e,1. app_configuration success
+bd82e87e-0673-48eb-8683-ac88c93a0b6a,voluitsamen.kortenberg.be,active,2017-12-11T10:51:41.232334,bd82e87e-0673-48eb-8683-ac88c93a0b6a,1. app_configuration success
+86c04105-cf1f-422a-afb4-248c1e87e2b3,brumath.citizenlab.co,active,2019-05-23T12:04:06.9154,86c04105-cf1f-422a-afb4-248c1e87e2b3,1. app_configuration success
+0c84d1cc-ba6f-4bcb-8531-953df5d93393,deltag.furesoe.dk,active,2018-03-02T13:12:42.166367,0c84d1cc-ba6f-4bcb-8531-953df5d93393,1. app_configuration success
+a40b58fa-9dc5-4a7c-8678-c35bc35e7e0f,old-wezembeek-oppem.citizenlab.co,churned,2018-07-08T11:09:17.120226,a40b58fa-9dc5-4a7c-8678-c35bc35e7e0f,1. app_configuration success
+93383452-2299-4607-99b6-08b318981b0c,pakaan.herentals.be,active,2019-03-05T16:00:33.641975,93383452-2299-4607-99b6-08b318981b0c,1. app_configuration success
+59cbf3fa-8028-43cc-b5a1-fba42bdaac01,participatie.leuven.be,active,2018-10-22T20:32:28.319414,59cbf3fa-8028-43cc-b5a1-fba42bdaac01,1. app_configuration success
+dda33d70-b4fe-4d7b-8006-1a6e7b7afc80,participatie.aalsmeer.nl,active,2019-02-15T09:54:09.135048,dda33d70-b4fe-4d7b-8006-1a6e7b7afc80,1. app_configuration success
+94774368-0e9d-406c-a765-457d58242666,kortrijkspreekt.be,active,2018-12-03T12:25:40.763661,94774368-0e9d-406c-a765-457d58242666,1. app_configuration success
+07177bb6-e26a-4cfa-99e3-aad18c062d29,onlinestadsgesprek.harderwijk.nl,active,2018-01-10T07:42:00.151942,07177bb6-e26a-4cfa-99e3-aad18c062d29,1. app_configuration success
+4dd0d4df-cff8-4e12-9675-c8c04e06893b,jaimerueiljeparticipe.fr,active,2018-02-12T11:53:22.895239,4dd0d4df-cff8-4e12-9675-c8c04e06893b,1. app_configuration success
+e0b058bb-dcf6-4155-a0d6-63b111eb924f,participationcitoyenne.grigny91.fr,active,2018-08-30T11:31:22.67967,e0b058bb-dcf6-4155-a0d6-63b111eb924f,1. app_configuration success
+039daa28-2f5d-4950-8468-986cdd96742e,jaimelariche.fr,active,2018-08-30T11:36:46.344905,039daa28-2f5d-4950-8468-986cdd96742e,SocketError: Failed to open TCP connection to jaimelariche.fr:443 (getaddrinfo: nodename nor servname provided, or not known)
+3fdd0dcf-c6c1-4163-a574-d6d0046c2337,participez.mairie-orsay.fr,active,2018-09-07T08:34:49.048593,3fdd0dcf-c6c1-4163-a574-d6d0046c2337,1. app_configuration success
+1c904c18-85cd-46a3-ae51-0f3b9bddcf84,jeparticipe.mairie-ida.fr,active,2018-01-29T21:04:04.01574,1c904c18-85cd-46a3-ae51-0f3b9bddcf84,1. app_configuration success
+f1e309e8-2a90-4847-8b0d-88ab8a3d0660,ideas4planet.be,churned,2018-08-28T13:29:13.392945,f1e309e8-2a90-4847-8b0d-88ab8a3d0660,1. app_configuration success
+15727cd7-5abf-45dc-b2a3-c56fb82e9329,forum.urbansecurity.be,churned,2020-04-01T16:02:44.609151,15727cd7-5abf-45dc-b2a3-c56fb82e9329,1. app_configuration success
+0b705954-12c5-4f36-9fda-792a38ecc373,juleslesmart.citizenlab.co,churned,2018-02-01T08:12:05.069225,0b705954-12c5-4f36-9fda-792a38ecc373,1. app_configuration success
+34e5f577-2e22-4957-81c9-91a25fc406b9,participatie.laarne.be,churned,2018-10-12T07:27:50.400958,34e5f577-2e22-4957-81c9-91a25fc406b9,not success
+9181e75c-3789-48b5-b81c-93e697408830,spwinterieur.citizenlab.co,churned,2019-11-13T13:26:51.116009,9181e75c-3789-48b5-b81c-93e697408830,1. app_configuration success
+70c11064-71d0-47c3-a229-a35c68f96073,labo-newb.citizenlab.co,churned,2021-04-01T11:54:35.503838,70c11064-71d0-47c3-a229-a35c68f96073,1. app_configuration success
+f0658ced-9297-4850-bede-4ccb085f101a,amnestyoz.citizenlab.co,churned,2020-07-13T10:45:25.242018,f0658ced-9297-4850-bede-4ccb085f101a,1. app_configuration success
+fe9ab37a-ec72-49fd-925e-b6b84ad181cd,knokke-heist.citizenlab.co,churned,2017-09-14T20:19:12.51,fe9ab37a-ec72-49fd-925e-b6b84ad181cd,1. app_configuration success
+c0c5f1a8-573d-4069-bb25-445fcd39d2aa,commissioner.citizenlab.co,churned,2021-04-15T07:29:06.486869,c0c5f1a8-573d-4069-bb25-445fcd39d2aa,1. app_configuration success
+b2b40ba9-f88e-4aa7-9b4d-eb77f3dceb70,voedselbos.citizenlab.co,churned,2021-02-13T15:28:08.255685,b2b40ba9-f88e-4aa7-9b4d-eb77f3dceb70,1. app_configuration success
+59c525f3-6359-40b0-b2cc-5d0d3078f4f3,hilversum2040.nl,churned,2021-05-25T16:50:06.369763,59c525f3-6359-40b0-b2cc-5d0d3078f4f3,Error: SSL_connect returned=1 errno=0 state=error: certificate verify failed (self signed certificate)
+88a48fdf-05ba-4e0b-a7e8-8afdc8412f43,rijswijk-buiten.citizenlab.co,churned,2021-02-16T10:33:47.416332,88a48fdf-05ba-4e0b-a7e8-8afdc8412f43,1. app_configuration success
+a9ad06d3-a579-4b42-ba9c-5fc2d475ac01,fuheis.citizenlab.co,churned,2020-11-03T13:22:22.607802,a9ad06d3-a579-4b42-ba9c-5fc2d475ac01,1. app_configuration success
+84e90bf5-2d12-44f0-972a-2570c9df7d5d,armagnac.citizenlab.co,churned,2021-03-30T14:15:41.924285,84e90bf5-2d12-44f0-972a-2570c9df7d5d,1. app_configuration success
+8b573cc7-72c0-4041-b947-718ec80e3d76,denkmee.katwijk.nl,churned,2021-01-18T12:17:41.135374,8b573cc7-72c0-4041-b947-718ec80e3d76,SocketError: Failed to open TCP connection to denkmee.katwijk.nl:443 (getaddrinfo: nodename nor servname provided, or not known)
+2296ea67-e0bc-4824-8a46-e7267361d698,goodlab.be,churned,2020-01-29T16:38:28.935346,2296ea67-e0bc-4824-8a46-e7267361d698,1. app_configuration success
+d4e231a9-5a89-4f68-8c54-8830af23a1b4,team.one.brussels,churned,2021-02-26T12:16:50.83447,d4e231a9-5a89-4f68-8c54-8830af23a1b4,1. app_configuration success
+01d3c059-31c6-4ff6-a11d-f452ae75d923,involve.winsford.gov.uk,churned,2020-05-06T17:08:53.303924,01d3c059-31c6-4ff6-a11d-f452ae75d923,not success
+2c276b82-c2cf-4341-8d9b-e710699742b5,bru-proprete.citizenlab.co,churned,2020-10-07T08:48:06.237887,2c276b82-c2cf-4341-8d9b-e710699742b5,1. app_configuration success
+9c1887f4-5f2e-4ee5-a445-31dea86961c7,dhiban.citizenlab.co,churned,2020-11-03T13:25:37.520073,9c1887f4-5f2e-4ee5-a445-31dea86961c7,1. app_configuration success
+c968032f-5140-4eac-8ce9-269411d404f3,all-for-zero.be,churned,2021-06-17T12:51:39.746374,c968032f-5140-4eac-8ce9-269411d404f3,not success
+63b5bbd1-79ce-451c-9ca5-453c3237ea4c,alnainvolverer.no,active,2020-06-20T13:38:38.990633,63b5bbd1-79ce-451c-9ca5-453c3237ea4c,1. app_configuration success
+621bb6f8-e8d9-4b4f-92a7-9d2e936d549e,aci.citizenlab.co,churned,2021-11-24T11:27:56.510746,621bb6f8-e8d9-4b4f-92a7-9d2e936d549e,1. app_configuration success
+25e3f95a-681e-4f0b-91b6-d108ef4ac92a,deleraar.vlor.be,churned,2021-03-09T13:17:13.859851,25e3f95a-681e-4f0b-91b6-d108ef4ac92a,1. app_configuration success
+7413b333-a14a-4a3a-a037-da6ac4caf440,linz.citizenlab.co,active,2019-04-27T15:11:01.201809,7413b333-a14a-4a3a-a037-da6ac4caf440,1. app_configuration success
+d1015a69-b2d4-4dcf-96fa-ed8d0512a863,policylab.org.uk,churned,2020-05-27T14:23:31.571168,d1015a69-b2d4-4dcf-96fa-ed8d0512a863,not success
+f62300d6-20f9-49c4-92c4-9473d5ef86b7,momsingapore.citizenlab.co,churned,2021-01-11T17:23:28.484604,f62300d6-20f9-49c4-92c4-9473d5ef86b7,1. app_configuration success
+77a41a65-b8d7-42ef-b0ba-f0bce91d57ca,gregoire-demo.citizenlab.co,demo,2022-08-01T09:09:47.719759,77a41a65-b8d7-42ef-b0ba-f0bce91d57ca,Net::OpenTimeout: Failed to open TCP connection to gregoire-demo.citizenlab.co:443 (execution expired)
+9a9a8b75-4378-408a-a265-cb502b95caab,tier.citizenlab.co,churned,2021-06-09T14:41:57.038974,9a9a8b75-4378-408a-a265-cb502b95caab,1. app_configuration success
+e55d5ec2-d72b-42e3-9772-312f84976605,agora.citizenlab.co,churned,2021-02-25T12:42:27.00702,e55d5ec2-d72b-42e3-9772-312f84976605,1. app_configuration success
+67174604-7d17-4136-8502-4a051f48f62a,liege.citizenlab.co,churned,2018-02-12T13:41:26.499527,67174604-7d17-4136-8502-4a051f48f62a,1. app_configuration success
+0b805e05-5b53-401a-a9e0-ae8ae060d1d8,participatie.niel.be,churned,2018-10-12T07:22:41.832896,0b805e05-5b53-401a-a9e0-ae8ae060d1d8,1. app_configuration success
+ae516e08-e341-4ce6-9427-5c9b86ac6b46,wijzijn.kuurne.be,churned,2020-09-09T10:07:22.59056,ae516e08-e341-4ce6-9427-5c9b86ac6b46,1. app_configuration success
+15c53372-3c64-4e96-a9ea-1e8e8115dadf,wijzijnmalinwa.be,churned,2020-10-14T15:35:09.928912,15c53372-3c64-4e96-a9ea-1e8e8115dadf,1. app_configuration success
+6cb31f18-328d-44c2-a7e7-5443d7856159,hecht.haacht.be,churned,2019-10-10T07:27:40.366453,6cb31f18-328d-44c2-a7e7-5443d7856159,not success
+a442622d-903e-4d64-af61-43a23ccf5abe,lavoixsolidaire.fehap.fr,churned,2021-06-04T08:03:22.035617,a442622d-903e-4d64-af61-43a23ccf5abe,1. app_configuration success
+2be6454e-97fa-48ae-bc4b-43e1890dfc10,undp.citizenlab.co,churned,2020-10-21T16:45:49.747402,2be6454e-97fa-48ae-bc4b-43e1890dfc10,1. app_configuration success
+24d0065a-3181-4109-868a-7654d939c656,fietsberaad.citizenlab.co,churned,2021-01-04T10:56:11.789714,24d0065a-3181-4109-868a-7654d939c656,1. app_configuration success
+58da36e8-0bd6-49a4-9830-ef11c91f9038,projetmontpellier.fr,churned,2019-11-08T10:55:06.689977,58da36e8-0bd6-49a4-9830-ef11c91f9038,SocketError: Failed to open TCP connection to projetmontpellier.fr:443 (getaddrinfo: nodename nor servname provided, or not known)
+2f345af2-f792-45b5-9262-e3cecb291114,www.govchat.org.za,churned,2018-02-10T14:41:14.840843,2f345af2-f792-45b5-9262-e3cecb291114,SocketError: Failed to open TCP connection to www.govchat.org.za:443 (getaddrinfo: nodename nor servname provided, or not known)
+619ba787-c634-42ca-ac16-3b742484c275,oergedach.hoeselt.be,churned,2020-05-14T14:03:19.537691,619ba787-c634-42ca-ac16-3b742484c275,1. app_configuration success
+d1b2cee0-34d4-4f70-91f3-db79ab25f97a,rijswijk.citizenlab.co,churned,2020-05-25T09:19:26.236695,d1b2cee0-34d4-4f70-91f3-db79ab25f97a,Net::OpenTimeout: Failed to open TCP connection to rijswijk.citizenlab.co:443 (execution expired)
+03276e63-0d40-47e6-9949-bf79be1144ad,innoviris.citizenlab.co,churned,2020-07-06T07:30:31.299935,03276e63-0d40-47e6-9949-bf79be1144ad,1. app_configuration success
+12eecf15-0637-4d97-95ef-92f2055361d1,idee.namensnederland.nl,churned,2020-04-23T08:52:12.51507,12eecf15-0637-4d97-95ef-92f2055361d1,Error: SSL_connect returned=1 errno=0 state=error: certificate verify failed (Hostname mismatch)
+ad28b932-aeb6-484b-84bf-1e0a075fb707,visiblesensemble.citizenlab.co,churned,2020-08-10T11:53:56.203517,ad28b932-aeb6-484b-84bf-1e0a075fb707,1. app_configuration success
+12dd47ef-739f-41a0-8b55-a85182dccffa,engage.vub.be,churned,2017-12-04T13:54:35.201795,12dd47ef-739f-41a0-8b55-a85182dccffa,1. app_configuration success
+12c80fe8-2cee-4044-95bb-63ce4a70ee85,lahulpe.citizenlab.co,churned,2017-08-31T08:25:42.701,12c80fe8-2cee-4044-95bb-63ce4a70ee85,1. app_configuration success
+d5445de5-acac-416b-b7fc-00961ec07417,deltag.voresmaal.dk,churned,2019-08-02T08:32:09.57933,d5445de5-acac-416b-b7fc-00961ec07417,SocketError: Failed to open TCP connection to deltag.voresmaal.dk:443 (getaddrinfo: nodename nor servname provided, or not known)
+b1ba0a65-819e-457e-a5a4-c172c7f9e097,bornem.citizenlab.co,churned,2017-09-14T09:26:12.095,b1ba0a65-819e-457e-a5a4-c172c7f9e097,1. app_configuration success
+027d26fe-d2cc-487e-9277-f0ce2bcf013a,openwall.citizenlab.co,churned,2018-05-17T08:38:58.261227,027d26fe-d2cc-487e-9277-f0ce2bcf013a,1. app_configuration success
+f4447cbb-f488-4027-bf80-0381cf7e6aa3,www.welklimburgwiljij.be,churned,2017-10-19T12:02:08.271,f4447cbb-f488-4027-bf80-0381cf7e6aa3,not success
+9eea6c05-f1a6-4043-aee4-6021541dba4e,denkmee-hoogstraten.be,churned,2019-04-24T10:38:14.318375,9eea6c05-f1a6-4043-aee4-6021541dba4e,not success
+43473120-48db-4173-ba38-488eaf2b0c5f,speakup2019.be,churned,2018-05-08T07:09:30.297793,43473120-48db-4173-ba38-488eaf2b0c5f,SocketError: Failed to open TCP connection to speakup2019.be:443 (getaddrinfo: nodename nor servname provided, or not known)
+09fa3059-36b6-46b1-a93f-3a151c87c533,lommel.citizenlab.co,churned,2018-01-18T07:30:10.14349,09fa3059-36b6-46b1-a93f-3a151c87c533,1. app_configuration success
+4f7be8dd-356c-4450-b574-3a84b9fd746a,ideevoor.hasselt.be,churned,2016-04-19T07:20:40.042,4f7be8dd-356c-4450-b574-3a84b9fd746a,1. app_configuration success
+fde8f755-1b9b-4885-b928-beace8962403,bassenge.citizenlab.co,churned,2018-06-26T15:22:33.49156,fde8f755-1b9b-4885-b928-beace8962403,1. app_configuration success
+baa40e93-bed0-4405-aebd-e0be8ead0e70,spd-sachsen.citizenlab.co,churned,2019-04-29T08:22:50.495962,baa40e93-bed0-4405-aebd-e0be8ead0e70,1. app_configuration success
+54990280-bded-4313-856c-2b31f3c8502f,bienenroute.brussels,churned,2018-06-24T13:47:23.589599,54990280-bded-4313-856c-2b31f3c8502f,SocketError: Failed to open TCP connection to bienenroute.brussels:443 (getaddrinfo: nodename nor servname provided, or not known)
+99457387-6186-4f3c-95a5-01998d646735,inspraak.sint-niklaas.be,churned,2016-09-12T10:22:04.532,99457387-6186-4f3c-95a5-01998d646735,1. app_configuration success
+07740a6d-8184-4db0-af8f-d46e79825754,enschede.citizenlab.co,churned,2018-01-02T13:18:28.329359,07740a6d-8184-4db0-af8f-d46e79825754,1. app_configuration success
+27346129-b0a5-4e18-842c-e31b16556cf8,monquartierinnove.fr,churned,2019-01-25T16:19:29.155967,27346129-b0a5-4e18-842c-e31b16556cf8,1. app_configuration success
+da3e15c1-d011-4944-ac3d-b770ace7b25d,overpelt.citizenlab.co,churned,2018-02-21T14:10:29.625591,da3e15c1-d011-4944-ac3d-b770ace7b25d,1. app_configuration success
+8a4c4116-2f5a-49c6-9b94-17d42128709c,burgerkabinetmedia.citizenlab.co,churned,2017-12-04T14:52:29.747931,8a4c4116-2f5a-49c6-9b94-17d42128709c,1. app_configuration success
+d2e49912-4502-444f-82d4-eb687afc7a3e,wortegempetegem.citizenlab.co,churned,2018-02-26T14:48:02.170149,d2e49912-4502-444f-82d4-eb687afc7a3e,1. app_configuration success
+e0883765-753b-4b47-a17e-59a1398513bc,meppel.citizenlab.co,churned,2018-01-02T14:44:16.613341,e0883765-753b-4b47-a17e-59a1398513bc,1. app_configuration success
+c5c80faf-d2b9-47f8-8c12-8dcfbdd360e7,roeselare.citizenlab.co,churned,2018-02-21T13:46:00.621571,c5c80faf-d2b9-47f8-8c12-8dcfbdd360e7,1. app_configuration success
+2e7503e0-c386-45ff-a70a-5f5ecb187ca8,www.onscranendonck.nu,churned,2017-05-14T13:41:27.708,2e7503e0-c386-45ff-a70a-5f5ecb187ca8,SocketError: Failed to open TCP connection to www.onscranendonck.nu:443 (getaddrinfo: nodename nor servname provided, or not known)
+a768bd6f-f8a8-4555-82e0-a4a83b26ff8f,zwevegemparticipeert.be,churned,2019-02-12T08:07:39.676736,a768bd6f-f8a8-4555-82e0-a4a83b26ff8f,1. app_configuration success
+c4687e23-679d-4ec8-9e34-29e2b34e7667,heusden.citizenlab.co,churned,2018-01-02T09:47:03.275645,c4687e23-679d-4ec8-9e34-29e2b34e7667,1. app_configuration success
+c114943b-79c1-4866-9534-b8b9db3027f1,www.zukunft-pfaffenhausen.de,churned,2017-12-18T16:58:18.435036,c114943b-79c1-4866-9534-b8b9db3027f1,Error: unexpected token at '<!DOCTYPE html><html data-adblockkey="MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBALquDFETXRn0Hr05fUP7EJT77xYnPmRbpMy4vk8KYiHnkNpednjOANJcaXDXcKQJN0nXKZJL7TciJD8AoHXK158CAwEAAQ==_OR0OqC9eqKGxNHPOpAbaRd2Zy+xxF8QyLbJxns+80i7cpThiptD/8D4y2AB1rHvcpJUeq4kMm1ZqqwusQPQkBg==" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"> ...
+a28cae55-d16d-4930-ba7c-522c3352754c,staden.citizenlab.co,churned,2018-11-05T16:59:12.055536,a28cae55-d16d-4930-ba7c-522c3352754c,1. app_configuration success
+eb991220-8b07-4737-9f92-b84e3f62ac3f,flobecq.citizenlab.co,churned,2018-02-13T15:42:10.29105,eb991220-8b07-4737-9f92-b84e3f62ac3f,1. app_configuration success
+9aa69dbe-c5cc-4ea9-9809-9e26f5ba8096,mijngedacht.steenokkerzeel.be,churned,2017-05-03T10:22:04.061,9aa69dbe-c5cc-4ea9-9809-9e26f5ba8096,1. app_configuration success
+bf7d0171-89e4-488a-93b1-9729a4222fe1,mortsel.citizenlab.co,churned,2018-03-27T10:09:14.015424,bf7d0171-89e4-488a-93b1-9729a4222fe1,1. app_configuration success
+95563423-030e-427a-b876-e6404d39c443,www.reconstruisonsverviers.be,churned,2018-04-19T13:46:51.440379,95563423-030e-427a-b876-e6404d39c443,SocketError: Failed to open TCP connection to www.reconstruisonsverviers.be:443 (getaddrinfo: nodename nor servname provided, or not known)
+56351f6a-a855-4892-b4f5-ce47c59edc44,ulb-upgrade.citizenlab.co,churned,2018-03-27T15:16:32.154236,56351f6a-a855-4892-b4f5-ce47c59edc44,1. app_configuration success
+68f80727-2ffb-49cd-9b3a-241a53f84973,mons.citizenlab.co,churned,2017-11-22T09:37:33.889216,68f80727-2ffb-49cd-9b3a-241a53f84973,1. app_configuration success
+06e39028-25e0-4b3e-b9f6-27e34c196e84,marche-en-famenne.citizenlab.co,churned,2017-05-30T09:35:35.913,06e39028-25e0-4b3e-b9f6-27e34c196e84,1. app_configuration success
+aed628f6-ac8a-44a3-b0aa-66ebbf650bd4,anzegem.citizenlab.co,churned,2017-09-09T14:59:20.195,aed628f6-ac8a-44a3-b0aa-66ebbf650bd4,1. app_configuration success
+c5d7f3b6-4398-4226-a581-a9d6518b85bc,denkmeemet.waregem.be,churned,2019-04-15T08:52:20.75069,c5d7f3b6-4398-4226-a581-a9d6518b85bc,1. app_configuration success
+dca9e5c0-79d6-4a21-980e-b6e6fd3584b4,zaventem.citizenlab.co,churned,2018-07-02T10:14:31.416521,dca9e5c0-79d6-4a21-980e-b6e6fd3584b4,1. app_configuration success
+d8d4b9be-a0b5-4e1a-95c1-9b04087fab05,zwijndrecht.citizenlab.co,churned,2017-03-08T10:16:45.47,d8d4b9be-a0b5-4e1a-95c1-9b04087fab05,1. app_configuration success
+ec04cbd3-dac1-494a-9315-ef791f35f189,tdorpboechoutvremde.citizenlab.co,churned,2018-04-10T12:53:43.88717,ec04cbd3-dac1-494a-9315-ef791f35f189,1. app_configuration success
+580c4a77-6861-4d48-9f18-a93b966fb79e,inclusiondigitaleinclusie.be,churned,2018-03-15T11:34:18.347706,580c4a77-6861-4d48-9f18-a93b966fb79e,SocketError: Failed to open TCP connection to inclusiondigitaleinclusie.be:443 (getaddrinfo: nodename nor servname provided, or not known)
+3b7235f3-74c3-4553-ab21-c1a298663cbe,grezenmouvement21.citizenlab.co,churned,2018-04-20T14:53:55.760211,3b7235f3-74c3-4553-ab21-c1a298663cbe,1. app_configuration success
+fe183734-3925-4628-82bb-154c9b945ced,enghien.citizenlab.co,churned,2017-12-07T08:49:06.665,fe183734-3925-4628-82bb-154c9b945ced,1. app_configuration success
+de30884e-3b35-4f03-ab41-764279958ffa,youth4climate.be,churned,2019-01-23T19:41:08.101466,de30884e-3b35-4f03-ab41-764279958ffa,SocketError: Failed to open TCP connection to youth4climate.be:443 (getaddrinfo: nodename nor servname provided, or not known)
+43657ce7-d300-4e3a-94ea-d94a506eebd5,kinrooimeemaken.be,churned,2019-02-19T09:25:47.96704,43657ce7-d300-4e3a-94ea-d94a506eebd5,not success
+36076bf0-0721-4329-9747-aa97ca5a6549,www.demain-mont-saint-guibert.be,churned,2017-11-13T15:39:32.91698,36076bf0-0721-4329-9747-aa97ca5a6549,SocketError: Failed to open TCP connection to www.demain-mont-saint-guibert.be:443 (getaddrinfo: nodename nor servname provided, or not known)
+c862618a-c8c0-4fea-bea4-a6302c385abf,gent-old.citizenlab.co,demo,2021-05-26T14:37:55.247376,c862618a-c8c0-4fea-bea4-a6302c385abf,1. app_configuration success
+f98434e1-7f49-4321-93d2-4b6d2f8ab7d5,d-plan.demo.citizenlab.co,demo,2022-01-31T10:12:33.470932,f98434e1-7f49-4321-93d2-4b6d2f8ab7d5,1. app_configuration success
+2700e43f-090e-43c4-821a-47922edf8bbc,trialnl.citizenlab.co,demo,2021-09-29T08:35:52.540971,2700e43f-090e-43c4-821a-47922edf8bbc,1. app_configuration success
+f8e9562a-d2ac-4473-8854-78943053d187,fctrial.citizenlab.co,demo,2022-03-18T14:31:14.592793,f8e9562a-d2ac-4473-8854-78943053d187,1. app_configuration success
+61020f35-d923-4c75-b886-36075e51b3bf,sound-diplomacy.citizenlab.co,demo,2020-12-27T06:39:00.499036,61020f35-d923-4c75-b886-36075e51b3bf,1. app_configuration success
+f16b9a9a-2ee4-4c59-821a-615564c89ca5,yourneweuparliament.demo.citizenlab.co,demo,2022-01-22T13:06:12.949612,f16b9a9a-2ee4-4c59-821a-615564c89ca5,1. app_configuration success
+a95a8377-a71a-439b-b1f0-33387e58a468,serbia2-demo.citizenlab.co,demo,2022-02-03T13:42:29.034796,a95a8377-a71a-439b-b1f0-33387e58a468,1. app_configuration success
+a35eb527-d89d-4ef5-92b6-4f79c6594a17,goettingen-demo.citizenlab.co,demo,2022-11-14T14:24:57.716034,a35eb527-d89d-4ef5-92b6-4f79c6594a17,Net::OpenTimeout: Failed to open TCP connection to goettingen-demo.citizenlab.co:443 (execution expired)
+010de3e8-7e27-42ee-97d9-020bccfa7a0e,fuchstal-demo.citizenlab.co,demo,2021-09-26T11:46:09.456148,010de3e8-7e27-42ee-97d9-020bccfa7a0e,1. app_configuration success
+6c2ed4e3-b307-4082-9bfe-9f2328f681d5,launch-fr-fr.template.citizenlab.co,demo,2020-02-04T11:25:01.119319,6c2ed4e3-b307-4082-9bfe-9f2328f681d5,1. app_configuration success
+b3601fe6-e78b-469a-b320-cf2d5b6c4d77,urbansync.demo.citizenlab.co,demo,2021-12-13T10:50:57.514008,b3601fe6-e78b-469a-b320-cf2d5b6c4d77,1. app_configuration success
+7bcf09b4-f12b-46b6-9db2-0aebdacbaf81,oegstgeest.demo.citizenlab.co,demo,2021-07-24T07:01:34.585176,7bcf09b4-f12b-46b6-9db2-0aebdacbaf81,not success
+6fee158a-da71-48fe-8ae9-04a600e33599,dreamocracy-trial.citizenlab.co,demo,2021-04-14T12:52:34.278561,6fee158a-da71-48fe-8ae9-04a600e33599,Net::OpenTimeout: Failed to open TCP connection to dreamocracy-trial.citizenlab.co:443 (execution expired)
+101a31cb-1beb-4ad9-8703-7985d412493e,latvianprivacypolicy.citizenlab.co,demo,2022-12-10T00:59:31.67193,101a31cb-1beb-4ad9-8703-7985d412493e,1. app_configuration success
+b439e913-a92c-4b8b-81bd-a4a26922ce39,frbe.citizenlab.co,demo,2021-10-26T07:44:22.553861,b439e913-a92c-4b8b-81bd-a4a26922ce39,1. app_configuration success
+49c318fa-04f6-4ac6-af33-6124ff6d16ca,joostcity.citizenlab.co,demo,2022-01-31T08:15:16.174914,49c318fa-04f6-4ac6-af33-6124ff6d16ca,1. app_configuration success
+f7d08878-f070-4cf3-bcee-f2a753dd61e9,nursing-midwifery-council-trial.citizenlab.co,demo,2021-04-20T10:43:55.6915,f7d08878-f070-4cf3-bcee-f2a753dd61e9,1. app_configuration success
+efdaaa12-9c06-4aa5-8c63-64a9620976b2,poznan.demo.citizenlab.co,demo,2022-06-01T14:25:16.052213,efdaaa12-9c06-4aa5-8c63-64a9620976b2,1. app_configuration success
+77f3e4a3-4296-415f-8359-1ca370c71e9a,aberdeenshirecouncil.demo.citizenlab.co,demo,2021-03-20T12:54:51.782432,77f3e4a3-4296-415f-8359-1ca370c71e9a,1. app_configuration success
+805359b7-c9aa-48f9-b18e-5746fa13cdab,mom-sg.citizenlab.co,demo,2021-06-20T12:59:09.765149,805359b7-c9aa-48f9-b18e-5746fa13cdab,1. app_configuration success
+ef0b5606-b5e6-4381-bd77-08c9329d78d0,workshops.demo.citizenlab.co,demo,2022-01-19T08:45:13.735862,ef0b5606-b5e6-4381-bd77-08c9329d78d0,1. app_configuration success
+cd23079c-5c97-40a0-add6-47cb3ba6d901,dypall-demo.citizenlab.co,demo,2021-09-04T08:32:02.495262,cd23079c-5c97-40a0-add6-47cb3ba6d901,1. app_configuration success
+daaa5913-309d-4ca0-99b0-83d7c4aa1c6b,southstormont.citizenlab.co,demo,2021-12-18T17:03:11.973171,daaa5913-309d-4ca0-99b0-83d7c4aa1c6b,Net::OpenTimeout: Failed to open TCP connection to southstormont.citizenlab.co:443 (execution expired)
+b5dad0a8-453f-48f7-8a85-1c3f5345ac6e,dialoogplatform.citizenlab.co,demo,2021-12-18T21:41:29.300224,b5dad0a8-453f-48f7-8a85-1c3f5345ac6e,1. app_configuration success
+52563381-b628-420e-b997-02d2732683d0,ttc.demo.citizenlab.co,demo,2021-08-28T11:28:09.731203,52563381-b628-420e-b997-02d2732683d0,1. app_configuration success
+c14f8c7f-4829-4fe9-8cdc-9e7e8f70a05c,gemeentedordrecht.demo.citizenlab.co,demo,2021-12-06T10:26:58.662217,c14f8c7f-4829-4fe9-8cdc-9e7e8f70a05c,not success
+9f772efa-16d4-449c-a49a-f4bc57797a10,trial-en.template.citizenlab.co,demo,2021-03-06T18:42:11.521194,9f772efa-16d4-449c-a49a-f4bc57797a10,1. app_configuration success
+b49153a3-5868-42b6-83f6-35e0d8262755,us-template.demo.citizenlab.co,demo,2022-06-07T09:25:41.336841,b49153a3-5868-42b6-83f6-35e0d8262755,1. app_configuration success
+8328ee47-a568-4acf-a9eb-916e2fbc76c5,juliennesplayground.citizenlab.co,demo,2021-03-13T14:47:02.419445,8328ee47-a568-4acf-a9eb-916e2fbc76c5,1. app_configuration success
+51442085-83cd-40b1-800d-3a331b26b5f9,railtown-two.citizenlab.co,demo,2022-02-07T11:47:13.723615,51442085-83cd-40b1-800d-3a331b26b5f9,1. app_configuration success
+d713586b-875f-48b1-ba02-53ff271fe6e1,global.demo.citizenlab.co,demo,2020-09-07T17:33:48.34029,d713586b-875f-48b1-ba02-53ff271fe6e1,1. app_configuration success
+2335f134-5a20-4d95-adca-e4a241a57fcc,fortterre-demo.citizenlab.co,demo,2021-06-18T13:53:45.481836,2335f134-5a20-4d95-adca-e4a241a57fcc,1. app_configuration success
+fa06d2aa-459f-4800-b4c0-aeae9f50a431,dtulcea-was-template.citizenlab.co,demo,2021-09-25T12:42:06.549933,fa06d2aa-459f-4800-b4c0-aeae9f50a431,1. app_configuration success
+c7fdbbb7-d79e-4a5e-bccf-13c597577ac5,katwijk.demo.citizenlab.co,demo,2021-07-21T11:26:23.180311,c7fdbbb7-d79e-4a5e-bccf-13c597577ac5,not success
+9e0380e4-26cf-4621-8f54-9fdfca78e3cf,2030beyond.citizenlab.co,demo,2022-01-31T16:46:53.146172,9e0380e4-26cf-4621-8f54-9fdfca78e3cf,1. app_configuration success
+7769196b-a9b9-4508-bb99-ea2da840d364,serbia1-demo.citizenlab.co,demo,2021-12-30T10:43:34.803318,7769196b-a9b9-4508-bb99-ea2da840d364,1. app_configuration success
+b912f26f-ef48-40c2-a5e3-e6bfd015bbe8,voeubase.demo.citizenlab.co,demo,2022-01-31T10:22:06.590554,b912f26f-ef48-40c2-a5e3-e6bfd015bbe8,1. app_configuration success
+b319b6af-32eb-40bf-b9af-4d8315110539,internationalsinbrussels.demo.citizenlab.co,demo,2022-01-18T11:38:10.7731,b319b6af-32eb-40bf-b9af-4d8315110539,1. app_configuration success
+298bcdd3-e9f7-49a8-b558-f32e83be2c73,partnerville-demo.citizenlab.co,demo,2021-10-17T18:19:20.286881,298bcdd3-e9f7-49a8-b558-f32e83be2c73,1. app_configuration success
+6d723fbc-75a2-4d2d-87ca-b83c9e53e3b2,privgdansk.demo.citizenlab.co,demo,2021-11-03T10:16:35.325525,6d723fbc-75a2-4d2d-87ca-b83c9e53e3b2,1. app_configuration success
+fa6083d1-55ed-4a52-b7cf-3fe67c9591a9,calanoras.citizenlab.co,demo,2022-01-02T06:27:37.576429,fa6083d1-55ed-4a52-b7cf-3fe67c9591a9,1. app_configuration success
+bf6fa7e7-4682-4ff5-aa8a-a8cc6deb7afd,burgerberaad.demo.citizenlab.co,demo,2022-01-31T16:46:01.594862,bf6fa7e7-4682-4ff5-aa8a-a8cc6deb7afd,1. app_configuration success
+7ebaad2b-8fa6-41d9-a595-7b958179cfe5,amubm.citizenlab.co,demo,2022-01-31T13:18:52.527207,7ebaad2b-8fa6-41d9-a595-7b958179cfe5,1. app_configuration success
+afc98363-de61-4b64-8300-fd3dcca25506,cityofdenton-trial.citizenlab.co,demo,2021-08-19T07:28:04.951082,afc98363-de61-4b64-8300-fd3dcca25506,Net::OpenTimeout: Failed to open TCP connection to cityofdenton-trial.citizenlab.co:443 (execution expired)
+1c78d203-28c7-4477-9171-80ef133557a0,folkinitiativ-trial.citizenlab.co,demo,2021-09-11T11:43:45.672397,1c78d203-28c7-4477-9171-80ef133557a0,Net::OpenTimeout: Failed to open TCP connection to folkinitiativ-trial.citizenlab.co:443 (execution expired)
+30bc1d4f-d8f5-445f-b6e4-a19413b3b658,launch-da-dk.template.citizenlab.co,demo,2020-06-24T12:11:04.183402,30bc1d4f-d8f5-445f-b6e4-a19413b3b658,1. app_configuration success
+2c1b67da-684d-4ee1-95ed-4e3bbd038e50,magellan-society-trial.citizenlab.co,demo,2021-05-08T20:40:13.385263,2c1b67da-684d-4ee1-95ed-4e3bbd038e50,Net::OpenTimeout: Failed to open TCP connection to magellan-society-trial.citizenlab.co:443 (execution expired)
+6dcf89f1-e854-488e-b1dd-c11c2e216a91,brent-council.citizenlab.co,demo,2021-09-01T15:41:42.374393,6dcf89f1-e854-488e-b1dd-c11c2e216a91,1. app_configuration success
+dd034204-35eb-4bf1-9169-49099c1d92aa,test-romania.citizenlab.co,demo,2021-09-04T07:47:39.9714,dd034204-35eb-4bf1-9169-49099c1d92aa,1. app_configuration success
+bba5f988-3730-49fe-be3b-a8467bb0fbc8,cl-nl2.demo.citizenlab.co,demo,2018-09-20T12:05:06.235726,bba5f988-3730-49fe-be3b-a8467bb0fbc8,1. app_configuration success
+e54e4428-cae9-4938-bebd-80a9f7dc83ec,goes.demo.citizenlab.co,demo,2021-06-22T10:53:15.919177,e54e4428-cae9-4938-bebd-80a9f7dc83ec,not success
+be759a4a-fe8b-45a1-90a6-5a2afc860cc3,ngo.template.citizenlab.co,demo,2021-12-06T10:10:18.961816,be759a4a-fe8b-45a1-90a6-5a2afc860cc3,1. app_configuration success
+fc70c881-e7d7-4ee3-aa2c-d63800db9895,consulta-municipal-was-template.citizenlab.co,demo,2020-10-27T13:36:52.243371,fc70c881-e7d7-4ee3-aa2c-d63800db9895,1. app_configuration success
+59cafb64-48b0-4bec-91d4-38f592541055,metro.demo.citizenlab.co,demo,2020-04-18T13:24:12.65098,59cafb64-48b0-4bec-91d4-38f592541055,1. app_configuration success
+57ad0efd-3584-4bf6-994f-ad9f5a7fa172,sector6final.citizenlab.co,demo,2021-09-05T06:44:40.180919,57ad0efd-3584-4bf6-994f-ad9f5a7fa172,1. app_configuration success
+022a11e9-459e-4d9a-b6c0-ea81e6b28203,romania-trial.citizenlab.co,demo,2021-03-29T10:43:47.501572,022a11e9-459e-4d9a-b6c0-ea81e6b28203,1. app_configuration success
+5b5c4415-a3a4-446c-b2c5-bfa0fa785b03,usertest1.demo.citizenlab.co,demo,2019-01-29T12:31:10.207216,5b5c4415-a3a4-446c-b2c5-bfa0fa785b03,1. app_configuration success
+9457eeb7-e208-4b37-88a4-ccaff2ef311c,trial-nl.template.citizenlab.co,demo,2021-04-11T16:38:46.530386,9457eeb7-e208-4b37-88a4-ccaff2ef311c,1. app_configuration success
+02358104-10c0-48f4-a1d4-79ed5f7881c8,czechbotany-demo.citizenlab.co,demo,2021-10-25T13:44:13.096629,02358104-10c0-48f4-a1d4-79ed5f7881c8,1. app_configuration success
+edb00f37-29bb-4aea-9b73-ed6e72745658,iroljrivnvmw02909uialdjf9484201.citizenlab.co,demo,2022-02-09T08:32:15.60402,edb00f37-29bb-4aea-9b73-ed6e72745658,1. app_configuration success
+aa4bdc63-14d6-469a-9512-66594b8c2c70,saintgilles.demo.citizenlab.co,demo,2021-12-18T13:33:18.754082,aa4bdc63-14d6-469a-9512-66594b8c2c70,1. app_configuration success
+c4424049-cc7c-433d-99f2-74a81c01c4ce,nelise.demo.citizenlab.co,demo,2022-01-03T15:40:15.752874,c4424049-cc7c-433d-99f2-74a81c01c4ce,1. app_configuration success
+115f2e36-7486-41ec-b9ca-38d302877b61,notification-control.demo.citizenlab.co,demo,2019-07-31T14:48:32.325863,115f2e36-7486-41ec-b9ca-38d302877b61,1. app_configuration success
+ed6d7736-af61-4d0f-8032-8fc86e7f023d,launch-fr-be.template.citizenlab.co,demo,2020-03-11T13:15:53.175813,ed6d7736-af61-4d0f-8032-8fc86e7f023d,1. app_configuration success
+6d336232-2142-4e07-b086-7e83a214a29b,launch-nl-nl.template.citizenlab.co,demo,2020-03-25T08:03:38.82494,6d336232-2142-4e07-b086-7e83a214a29b,1. app_configuration success
+f229ae8c-4743-4a12-bc01-bbe727a24cd2,headmade-demo.citizenlab.co,demo,2021-09-06T17:31:09.128606,f229ae8c-4743-4a12-bc01-bbe727a24cd2,1. app_configuration success
+b1e8d0bc-374a-4706-957c-34ffa08b5be8,eani.demo.citizenlab.co,demo,2021-08-23T08:25:02.274712,b1e8d0bc-374a-4706-957c-34ffa08b5be8,1. app_configuration success
+18dc233c-a2dc-44fe-bcfe-c44b4be14bcc,particitiz-trial.citizenlab.co,demo,2021-04-14T12:53:23.603685,18dc233c-a2dc-44fe-bcfe-c44b4be14bcc,Net::OpenTimeout: Failed to open TCP connection to particitiz-trial.citizenlab.co:443 (execution expired)
+6fc03a1b-0cb0-4f23-8771-f41b3292aea7,sector6v2.citizenlab.co,demo,2021-09-05T06:36:21.888176,6fc03a1b-0cb0-4f23-8771-f41b3292aea7,1. app_configuration success
+76b0c48d-d510-41f2-aea6-d0effcba3567,cluj-napoca.demo.citizenlab.co,demo,2020-11-04T13:33:54.838421,76b0c48d-d510-41f2-aea6-d0effcba3567,1. app_configuration success
+282c083e-de4a-4422-a400-418d2b9f96e1,seneffe.demo.citizenlab.co,demo,2022-01-31T08:30:00.937438,282c083e-de4a-4422-a400-418d2b9f96e1,1. app_configuration success
+84f5a0ff-de09-4ac7-863d-6b4cd388a89b,norway-demo1.citizenlab.co,demo,2022-08-26T08:12:15.626056,84f5a0ff-de09-4ac7-863d-6b4cd388a89b,1. app_configuration success
+2efcdd71-5afa-4f09-8703-4d869d84a26a,test-environment.citizenlab.co,demo,2020-05-24T13:42:39.360203,2efcdd71-5afa-4f09-8703-4d869d84a26a,1. app_configuration success
+35d4a900-cfa4-4887-9f76-bf18c61673db,saint-hubert.stg.citizenlab.co,demo,2022-03-10T17:51:14.299174,35d4a900-cfa4-4887-9f76-bf18c61673db,not success
+d5358975-4583-4784-9da1-aad62ed3cf0e,huemer.demo.citizenlab.co,demo,2021-07-19T07:16:32.741833,d5358975-4583-4784-9da1-aad62ed3cf0e,1. app_configuration success
+6f9f314c-eb7c-406a-b735-34277ce4eaff,yuri.citizenlab.co,demo,2022-03-29T14:15:03.208968,6f9f314c-eb7c-406a-b735-34277ce4eaff,1. app_configuration success
+5af1569c-4c75-4a40-8f64-c481e6b7bbb0,cl-fr10.demo.citizenlab.co,demo,2021-01-06T16:22:10.677821,5af1569c-4c75-4a40-8f64-c481e6b7bbb0,1. app_configuration success
+618b6952-e1a0-45b4-9646-3e436a17d239,le-im-dialog-demo.citizenlab.co,demo,2022-11-24T15:48:44.685611,618b6952-e1a0-45b4-9646-3e436a17d239,1. app_configuration success
+38ee4773-9f34-4fd1-a070-28e0defede67,dai-demo.citizenlab.co,demo,2022-02-05T07:41:37.019913,38ee4773-9f34-4fd1-a070-28e0defede67,1. app_configuration success
+9f453f30-62d1-4660-9cad-78fca98b0dbe,studiodada.demo.citizenlab.co,demo,2022-01-02T18:12:54.065636,9f453f30-62d1-4660-9cad-78fca98b0dbe,1. app_configuration success
+8d18f4d4-b594-4b44-a4f9-1e03b5457b9d,demo-uk-lora.citizenlab.co,demo,2022-01-31T07:11:48.693845,8d18f4d4-b594-4b44-a4f9-1e03b5457b9d,1. app_configuration success
+5c091744-b203-478e-8747-f0ed114ddd0a,melissa.demo.citizenlab.co,demo,2022-12-13T09:57:31.774835,5c091744-b203-478e-8747-f0ed114ddd0a,1. app_configuration success
+1e418299-6f21-4059-b3d8-7b872e8d886d,comunidadacciona.citizenlab.co,demo,2022-11-07T14:50:06.761136,1e418299-6f21-4059-b3d8-7b872e8d886d,1. app_configuration success
+3018e801-a10f-4255-ac57-c3f216d37b70,demo-uk.citizenlab.co,demo,2021-05-08T09:43:05.368637,3018e801-a10f-4255-ac57-c3f216d37b70,1. app_configuration success
+c4d9a80a-eadc-4f84-b407-9656802da005,spl-demo.citizenlab.co,demo,2022-12-22T19:29:55.697639,c4d9a80a-eadc-4f84-b407-9656802da005,Net::OpenTimeout: Failed to open TCP connection to spl-demo.citizenlab.co:443 (execution expired)
+523fb9f0-a4d3-4b67-9d83-74a8346113d9,vlaamseverenigingen.citizenlab.co,demo,2021-11-13T14:51:43.837589,523fb9f0-a4d3-4b67-9d83-74a8346113d9,Net::OpenTimeout: Failed to open TCP connection to vlaamseverenigingen.citizenlab.co:443 (execution expired)
+84e7140d-e49a-4de7-a609-d9ba0cb96fab,cityfortterre-demo.citizenlab.co,demo,2022-01-31T20:41:40.174871,84e7140d-e49a-4de7-a609-d9ba0cb96fab,1. app_configuration success
+2c888555-8ac6-4338-94b1-374ec2ad01df,hellobuurman.citizenlab.co,demo,2022-03-09T10:28:27.912379,2c888555-8ac6-4338-94b1-374ec2ad01df,1. app_configuration success
+dede9f47-ab09-4cf8-9d0c-afb7e7b3fbe7,tiel.demo.citizenlab.co,demo,2022-02-07T08:29:54.465076,dede9f47-ab09-4cf8-9d0c-afb7e7b3fbe7,1. app_configuration success
+ac65dcf0-eee4-4245-a3cd-17e50fba8a75,greencity-two.citizenlab.co,demo,2022-02-07T11:49:32.693169,ac65dcf0-eee4-4245-a3cd-17e50fba8a75,1. app_configuration success
+24c625e4-95e5-4b7b-8177-316200f12501,demo-ieper.citizenlab.co,demo,2022-08-30T13:11:07.731064,24c625e4-95e5-4b7b-8177-316200f12501,Net::OpenTimeout: Failed to open TCP connection to demo-ieper.citizenlab.co:443 (execution expired)
+8ff56c26-c5d9-4e94-acc6-8b148f00c868,eva-demo.citizenlab.co,demo,2022-02-04T13:52:55.162897,8ff56c26-c5d9-4e94-acc6-8b148f00c868,1. app_configuration success
+266b3f3e-b0d1-4673-991c-8b6263e25ff5,alex-test.citizenlab.co,demo,2021-10-11T13:16:00.187827,266b3f3e-b0d1-4673-991c-8b6263e25ff5,1. app_configuration success
+12f66f76-a01c-4f7c-a199-a99b39b3ecd2,launch-gb.template.citizenlab.co,demo,2022-01-31T14:27:16.989078,12f66f76-a01c-4f7c-a199-a99b39b3ecd2,1. app_configuration success
+26e276d3-a40d-4260-96df-ac96118bfa73,yourplatform.demo.citizenlab.co,demo,2022-01-31T14:39:35.469387,26e276d3-a40d-4260-96df-ac96118bfa73,1. app_configuration success
+8ebfccbd-f9a2-4a2d-b33a-9421e56e0353,belgique-template.demo.citizenlab.co,demo,2022-05-22T11:19:36.75515,8ebfccbd-f9a2-4a2d-b33a-9421e56e0353,1. app_configuration success
+ddef3e30-8a7d-427b-968c-337f720e0be3,andre-demo.citizenlab.co,demo,2022-07-28T08:14:25.887206,ddef3e30-8a7d-427b-968c-337f720e0be3,Net::OpenTimeout: Failed to open TCP connection to andre-demo.citizenlab.co:443 (execution expired)
+0ea1ca7b-551d-4717-a7d5-610d947985d3,soclab.demo.citizenlab.co,demo,2023-01-05T08:21:16.622391,0ea1ca7b-551d-4717-a7d5-610d947985d3,1. app_configuration success
+a4d82332-986b-4f54-aeca-1cd744d50516,notting-hill-genesis.citizenlab.co,demo,2021-11-08T15:33:44.686521,a4d82332-986b-4f54-aeca-1cd744d50516,1. app_configuration success
+48528a62-3524-4b94-a1ca-fe80b73e452e,ontmoetingsplein.demo.citizenlab.co,demo,2021-11-16T16:27:43.687764,48528a62-3524-4b94-a1ca-fe80b73e452e,1. app_configuration success
+1df4d550-ed6b-4855-99db-190c9c6fc66a,serbia3-demo.citizenlab.co,demo,2022-02-07T14:38:02.44465,1df4d550-ed6b-4855-99db-190c9c6fc66a,1. app_configuration success
+05578c34-efd1-46dc-9f1e-9a97a1ae455f,norge.demo.citizenlab.co,demo,2022-09-23T15:19:40.267855,05578c34-efd1-46dc-9f1e-9a97a1ae455f,1. app_configuration success
+ff40ea5a-6144-414c-9fe1-965e1786591a,test-idea-custom-fields.demo.citizenlab.co,demo,2022-07-01T10:19:25.360551,ff40ea5a-6144-414c-9fe1-965e1786591a,not success
+a980cd3d-59a6-4ed5-8966-e8325c3d3a3a,trial-fr.template.citizenlab.co,demo,2021-04-12T16:18:29.023544,a980cd3d-59a6-4ed5-8966-e8325c3d3a3a,1. app_configuration success
+65e77484-e49e-46e9-8ecb-c05c3523d9c4,qa-assignment.citizenlab.co,demo,2022-01-31T17:48:59.076241,65e77484-e49e-46e9-8ecb-c05c3523d9c4,1. app_configuration success
+7b982a9a-5335-4dc9-b5bb-5e391b34130e,roeselareburgerbegroting.demo.citizenlab.co,demo,2022-01-31T15:33:03.915442,7b982a9a-5335-4dc9-b5bb-5e391b34130e,1. app_configuration success
+b60d4173-fc8b-47f1-9702-3618535f2410,fr-be-template-copy-080922.citizenlab.co,demo,2022-09-08T10:42:17.703986,b60d4173-fc8b-47f1-9702-3618535f2410,1. app_configuration success
+2a5e7e74-0eb6-490e-a443-b83c4a4d998b,trainingvideos.citizenlab.co,demo,2021-04-03T11:46:08.637664,2a5e7e74-0eb6-490e-a443-b83c4a4d998b,1. app_configuration success
+61458b5a-92fd-47e0-a881-755bb01a5a9d,spain-demo1.citizenlab.co,demo,2022-05-13T07:38:36.796268,61458b5a-92fd-47e0-a881-755bb01a5a9d,1. app_configuration success
+0fc84819-c0fe-4aff-9583-c1f67945fe8a,norgedebug.citizenlab.co,demo,2022-11-29T13:21:01.702215,0fc84819-c0fe-4aff-9583-c1f67945fe8a,1. app_configuration success
+3dae6d51-7204-4da0-a58c-14d0bbb3f814,bank-of-england-trial.citizenlab.co,demo,2021-12-04T14:40:46.253357,3dae6d51-7204-4da0-a58c-14d0bbb3f814,1. app_configuration success
+d656f486-11a6-47d2-95ec-1694e17d6231,internal-demo.citizenlab.co,demo,2022-01-31T11:31:54.274606,d656f486-11a6-47d2-95ec-1694e17d6231,1. app_configuration success
+98783c6a-b0ef-4102-aff9-1d00401e4303,privwroclaw-pl.demo.citizenlab.co,demo,2022-01-31T13:05:08.991314,98783c6a-b0ef-4102-aff9-1d00401e4303,1. app_configuration success
+99110260-5fe8-4a1e-9749-1ec623bff549,stadtwien-demo.citizenlab.co,demo,2022-02-09T09:05:35.853927,99110260-5fe8-4a1e-9749-1ec623bff549,Net::OpenTimeout: Failed to open TCP connection to stadtwien-demo.citizenlab.co:443 (execution expired)
+608da35e-71ab-4b82-aea1-aad4b955bd41,deutschland-demo.citizenlab.co,demo,2022-02-07T08:26:08.648471,608da35e-71ab-4b82-aea1-aad4b955bd41,1. app_configuration success
+697f6f7b-8490-40e0-83c2-9af88d94fa49,nyhamnen.demo.citizenlab.co,demo,2022-12-05T14:33:09.239309,697f6f7b-8490-40e0-83c2-9af88d94fa49,1. app_configuration success
+4deb854e-14e8-4fcd-8655-220a52b0925c,houten.demo.citizenlab.co,demo,2022-01-30T13:38:49.105832,4deb854e-14e8-4fcd-8655-220a52b0925c,1. app_configuration success
+61e5b832-eae3-4fab-8bd9-3b23cf4f2c90,landkreis-hof.citizenlab.co,demo,2022-03-21T16:04:58.324959,61e5b832-eae3-4fab-8bd9-3b23cf4f2c90,Net::OpenTimeout: Failed to open TCP connection to landkreis-hof.citizenlab.co:443 (execution expired)
+cf4edab3-9d37-43ab-8492-0a5d065c232e,trainthetrainer-demo.citizenlab.co,demo,2022-11-14T18:42:41.479291,cf4edab3-9d37-43ab-8492-0a5d065c232e,1. app_configuration success
+d52bbd13-b882-4baf-8b9c-8742165c0064,wb-demo.citizenlab.co,demo,2022-12-14T19:38:46.019724,d52bbd13-b882-4baf-8b9c-8742165c0064,Net::OpenTimeout: Failed to open TCP connection to wb-demo.citizenlab.co:443 (execution expired)
+1fcd3e90-9631-4625-9393-321ce13b589c,trial-de.template.citizenlab.co,demo,2021-04-19T17:06:11.032944,1fcd3e90-9631-4625-9393-321ce13b589c,1. app_configuration success
+ce210709-81bd-4231-922d-8e8541d55ce3,yaesuldemo.citizenlab.co,demo,2022-07-18T15:46:22.729781,ce210709-81bd-4231-922d-8e8541d55ce3,1. app_configuration success
+833ca0cd-76af-44c4-8c1c-824c31a69214,isobel-demo.citizenlab.co,demo,2022-07-28T07:22:29.547149,833ca0cd-76af-44c4-8c1c-824c31a69214,Net::OpenTimeout: Failed to open TCP connection to isobel-demo.citizenlab.co:443 (execution expired)
+4b727cb1-6bed-4a77-93be-0003038cc949,madeleine-demo.citizenlab.co,demo,2022-07-25T13:46:44.188729,4b727cb1-6bed-4a77-93be-0003038cc949,Net::OpenTimeout: Failed to open TCP connection to madeleine-demo.citizenlab.co:443 (execution expired)
+df07f9b9-5ebb-4370-9ade-d6a6af28fbed,jelena.demo.citizenlab.co,demo,2022-04-27T12:51:38.085242,df07f9b9-5ebb-4370-9ade-d6a6af28fbed,1. app_configuration success
+ac99fc0a-223d-41ef-9780-fc94435991d3,privstalowa-wola.demo.citizenlab.co,demo,2022-08-17T07:29:48.544945,ac99fc0a-223d-41ef-9780-fc94435991d3,1. app_configuration success
+6f35c729-6698-4551-8b85-a497507d630a,cardiff-ac.demo.citizenlab.co,demo,2022-08-09T08:36:02.935269,6f35c729-6698-4551-8b85-a497507d630a,1. app_configuration success
+bf30354c-d2e2-479d-8fb8-abd8dc863f80,foodshift-demo-test.citizenlab.co,demo,2022-10-25T13:44:15.190593,bf30354c-d2e2-479d-8fb8-abd8dc863f80,1. app_configuration success
+3620e287-99f8-4567-a43f-23947471cfd7,opensource-was-template.citizenlab.co,demo,2022-01-31T09:45:25.293053,3620e287-99f8-4567-a43f-23947471cfd7,1. app_configuration success
+695ef101-9e25-4722-b1ab-2e83e17a13b2,global-demo.template.citizenlab.co,demo,2020-09-07T17:33:48.34029,695ef101-9e25-4722-b1ab-2e83e17a13b2,1. app_configuration success
+9e67f676-a543-4822-8432-1fa67735e4c5,befr.citizenlab.co,demo,2021-09-15T09:05:05.753216,9e67f676-a543-4822-8432-1fa67735e4c5,1. app_configuration success
+e9642525-8e7a-4f9b-a4e6-7a3a390e929b,product.demo.citizenlab.co,demo,2022-02-07T13:53:12.167218,e9642525-8e7a-4f9b-a4e6-7a3a390e929b,1. app_configuration success
+23b1b793-da20-49fc-9e7c-0d71e59f5ed3,terna-demo.citizenlab.co,demo,2022-02-09T07:26:54.418801,23b1b793-da20-49fc-9e7c-0d71e59f5ed3,1. app_configuration success
+a1badb88-3ad5-46be-bc46-9501a9f5bc01,sfcg.demo.citizenlab.co,demo,2021-03-29T06:49:29.808779,a1badb88-3ad5-46be-bc46-9501a9f5bc01,1. app_configuration success
+bea0173e-c55a-4615-acad-d03fcf2d630e,lbs-trial-2.citizenlab.co,demo,2021-09-13T15:36:18.525938,bea0173e-c55a-4615-acad-d03fcf2d630e,1. app_configuration success
+9aab592f-450d-4254-92c0-f0dc4be3ccd4,railtown-one.citizenlab.co,demo,2022-02-07T11:45:31.792935,9aab592f-450d-4254-92c0-f0dc4be3ccd4,1. app_configuration success
+c5486b1b-24a8-4ba3-8b3e-1d94555c1b4f,evergem.stg.citizenlab.co,demo,2022-09-13T08:36:42.242261,c5486b1b-24a8-4ba3-8b3e-1d94555c1b4f,not success
+3f3d144d-30f7-4967-8933-d5b90d4eac46,sarah-demo.citizenlab.co,demo,2022-08-05T09:13:58.989194,3f3d144d-30f7-4967-8933-d5b90d4eac46,Net::OpenTimeout: Failed to open TCP connection to sarah-demo.citizenlab.co:443 (execution expired)
+2d8ce2af-422d-4f27-b2e0-e59dc4eb0f22,yasmina-demo.citizenlab.co,demo,2022-08-09T10:18:51.482703,2d8ce2af-422d-4f27-b2e0-e59dc4eb0f22,Net::OpenTimeout: Failed to open TCP connection to yasmina-demo.citizenlab.co:443 (execution expired)
+72507ef8-fa62-45bd-92c8-4c7d08008d04,cl-dk.demo.citizenlab.co,demo,2020-05-17T08:09:54.03582,72507ef8-fa62-45bd-92c8-4c7d08008d04,1. app_configuration success
+04079438-ce95-4249-a361-2c4b969b8c71,uk-client-event.citizenlab.co,demo,2022-01-31T09:36:34.142933,04079438-ce95-4249-a361-2c4b969b8c71,1. app_configuration success
+8eefc55c-66eb-4a18-8bb3-7d4181567bb8,luciana-demo.citizenlab.co,demo,2022-08-01T09:02:51.833928,8eefc55c-66eb-4a18-8bb3-7d4181567bb8,Net::OpenTimeout: Failed to open TCP connection to luciana-demo.citizenlab.co:443 (execution expired)
+102d7abc-fb52-4711-b922-dad07acc093c,bfk-demo.citizenlab.co,demo,2021-09-07T07:59:26.377659,102d7abc-fb52-4711-b922-dad07acc093c,1. app_configuration success
+fccd5471-9294-48a6-9df5-e6ac990de7da,lkgiessen-test.citizenlab.co,demo,2022-08-23T17:21:08.136292,fccd5471-9294-48a6-9df5-e6ac990de7da,1. app_configuration success
+5238385f-6890-4364-bda0-e4fe5e7bcbcb,launch-pt.template.citizenlab.co,demo,2022-02-09T16:48:45.455158,5238385f-6890-4364-bda0-e4fe5e7bcbcb,1. app_configuration success
+2a780753-2fbd-4ba4-a6fa-e23831200f83,etterbeek-demo.citizenlab.co,demo,2022-01-08T22:12:43.767442,2a780753-2fbd-4ba4-a6fa-e23831200f83,1. app_configuration success
+4e793b26-1e97-40ed-bc4d-983aef23c590,global-partners.demo.citizenlab.co,demo,2022-12-09T12:06:55.938754,4e793b26-1e97-40ed-bc4d-983aef23c590,1. app_configuration success
+c2757510-2112-4810-9492-dcecf893b682,wiesbaden-demo.citizenlab.co,demo,2022-03-04T13:20:53.73268,c2757510-2112-4810-9492-dcecf893b682,1. app_configuration success
+4d35d0aa-f6c0-41d8-bb1e-f39b5ce753f6,guetersloh-demo.citizenlab.co,demo,2022-04-12T07:31:51.840585,4d35d0aa-f6c0-41d8-bb1e-f39b5ce753f6,Net::OpenTimeout: Failed to open TCP connection to guetersloh-demo.citizenlab.co:443 (execution expired)
+eac0594a-7bc5-4674-b1b4-60749c819d45,sverigedemo1.citizenlab.co,demo,2022-09-12T14:03:26.918341,eac0594a-7bc5-4674-b1b4-60749c819d45,1. app_configuration success
+9ad85214-cbb5-4e1c-94d9-8546c6f9a830,sebastien.demo.citizenlab.co,demo,2022-09-09T12:33:08.335155,9ad85214-cbb5-4e1c-94d9-8546c6f9a830,1. app_configuration success
+57362cc0-cacf-406a-a1d7-dcd0b41e7f9f,demopauline.citizenlab.co,demo,2022-11-18T16:41:35.243843,57362cc0-cacf-406a-a1d7-dcd0b41e7f9f,1. app_configuration success
+da6b278b-c75d-498f-b3d0-f91c9ceaec79,usdemo21.template.citizenlab.co,demo,2022-02-07T15:48:27.511062,da6b278b-c75d-498f-b3d0-f91c9ceaec79,1. app_configuration success
+7ec1202d-375c-46ca-a234-c8471ff2a6a3,demoturkey1.citizenlab.co,demo,2022-09-08T09:20:06.066594,7ec1202d-375c-46ca-a234-c8471ff2a6a3,1. app_configuration success
+3823e49e-e890-4a2b-8d6b-83cf6b24c47c,ruimtevolk.demo.citizenlab.co,demo,2021-10-26T09:19:14.292261,3823e49e-e890-4a2b-8d6b-83cf6b24c47c,1. app_configuration success
+a6dcd68c-26cf-4ba6-850e-ec5be680096b,projecttemplates.citizenlab.co,demo,2022-01-31T11:43:47.404354,a6dcd68c-26cf-4ba6-850e-ec5be680096b,1. app_configuration success
+6f8027e1-5f99-497f-bd92-6be9a1c0c26b,remi.demo.citizenlab.co,demo,2021-08-04T16:17:44.730795,6f8027e1-5f99-497f-bd92-6be9a1c0c26b,1. app_configuration success
+b7998150-9d85-4580-884c-4e64b0f5e3bc,beteiligung-template.demo.citizenlab.co,demo,2022-06-07T06:27:18.307886,b7998150-9d85-4580-884c-4e64b0f5e3bc,1. app_configuration success
+71b4161e-b144-4683-bd3e-687e40848aab,yourcommunity-demonstration.citizenlab.co,demo,2022-02-07T09:09:04.048809,71b4161e-b144-4683-bd3e-687e40848aab,1. app_configuration success
+f16a78ed-06f8-4b3d-a56e-57a46571838c,emileeng.demo.citizenlab.co,demo,2022-03-04T09:12:52.139707,f16a78ed-06f8-4b3d-a56e-57a46571838c,1. app_configuration success
+b8847dc2-0788-421b-a07b-821c4cc06183,privpila.demo.citizenlab.co,demo,2022-05-13T12:24:55.82161,b8847dc2-0788-421b-a07b-821c4cc06183,1. app_configuration success
+9e02179f-0141-4e62-8713-14b4b22e5639,test-ns-0710.citizenlab.co,demo,2022-02-07T09:45:09.642407,9e02179f-0141-4e62-8713-14b4b22e5639,1. app_configuration success
+7c62e00e-bfee-49fd-90ad-4f5aae160404,durian.citizenlab.co,demo,2022-02-09T19:46:36.996521,7c62e00e-bfee-49fd-90ad-4f5aae160404,1. app_configuration success
+fa9e14f4-b97e-47f2-af03-355630d9e0b9,cl-en3.demo.citizenlab.co,demo,2018-10-20T12:52:31.878424,fa9e14f4-b97e-47f2-af03-355630d9e0b9,1. app_configuration success
+efaefe2d-601c-4d43-9899-73241668bd93,greencity-one.citizenlab.co,demo,2022-02-07T11:48:25.711007,efaefe2d-601c-4d43-9899-73241668bd93,1. app_configuration success
+f5e9e21c-1f85-4074-8eef-2cdfe9b3ef22,croatia2-demo.citizenlab.co,demo,2022-07-20T08:07:39.669004,f5e9e21c-1f85-4074-8eef-2cdfe9b3ef22,1. app_configuration success
+daacc6b0-8e86-46dd-b147-c7514a6ee381,mi-municipio.template.citizenlab.co,demo,2022-02-09T16:09:41.815227,daacc6b0-8e86-46dd-b147-c7514a6ee381,1. app_configuration success
+13d6ca50-578e-45f5-beb8-3ca4dc03cb6d,san-isidro-demo.citizenlab.co,demo,2020-10-12T13:00:33.325686,13d6ca50-578e-45f5-beb8-3ca4dc03cb6d,1. app_configuration success
+dad2e5a2-76fd-496c-a0e7-4d8ab3a26433,wsr.demo.citizenlab.co,demo,2021-06-30T14:13:55.675853,dad2e5a2-76fd-496c-a0e7-4d8ab3a26433,1. app_configuration success
+1057c944-3ef9-44f6-990b-9baa0b6abb7a,kevin2.demo.citizenlab.co,demo,2022-02-07T13:28:46.446661,1057c944-3ef9-44f6-990b-9baa0b6abb7a,not success
+c2fedfc4-bbe9-431b-9766-04b99c3f36ed,litterville-one.citizenlab.co,demo,2022-02-07T12:15:38.325183,c2fedfc4-bbe9-431b-9766-04b99c3f36ed,1. app_configuration success
+de1f85e7-0cee-4f3c-b726-f8197e139a20,istanbul-trial.citizenlab.co,demo,2021-12-26T16:28:20.450211,de1f85e7-0cee-4f3c-b726-f8197e139a20,Net::OpenTimeout: Failed to open TCP connection to istanbul-trial.citizenlab.co:443 (execution expired)
+70d5b822-8612-4542-be8f-7f21b9aff912,daphne-demo.citizenlab.co,demo,2022-08-01T09:28:25.969053,70d5b822-8612-4542-be8f-7f21b9aff912,Net::OpenTimeout: Failed to open TCP connection to daphne-demo.citizenlab.co:443 (execution expired)
+666e35d8-0f53-4a06-a259-f5804c529c8b,cl-nl1.demo.citizenlab.co,demo,2018-09-22T12:02:56.888778,666e35d8-0f53-4a06-a259-f5804c529c8b,1. app_configuration success
+e057a7ec-6fba-4564-8ea0-f84a13844861,jamesjunglegym.citizenlab.co,demo,2022-02-07T09:09:48.271568,e057a7ec-6fba-4564-8ea0-f84a13844861,1. app_configuration success
+c2b40df0-fa80-4a7b-9a31-6db88109a550,trial-pl.template.citizenlab.co,demo,2021-04-27T10:04:30.489008,c2b40df0-fa80-4a7b-9a31-6db88109a550,not success
+7b94836e-2774-4b7c-b0dc-50a65810169c,hcclep.demo.citizenlab.co,demo,2021-04-28T10:41:44.811666,7b94836e-2774-4b7c-b0dc-50a65810169c,1. app_configuration success
+802b4277-da99-4277-84f9-92a1049ff973,belgie-template.demo.citizenlab.co,demo,2022-05-20T11:54:53.402162,802b4277-da99-4277-84f9-92a1049ff973,1. app_configuration success
+3b4f2e94-b510-4cf0-9aa8-56da4c858293,dksuper.citizenlab.co,demo,2022-05-16T13:55:51.096804,3b4f2e94-b510-4cf0-9aa8-56da4c858293,Net::OpenTimeout: Failed to open TCP connection to dksuper.citizenlab.co:443 (execution expired)
+9504f85a-fefd-4335-b371-be42386dfb58,wortegempetegem.demo.citizenlab.co,demo,2021-11-28T13:50:46.266303,9504f85a-fefd-4335-b371-be42386dfb58,1. app_configuration success
+a55be035-21d0-44a5-92a6-eb1ec89fb8f1,james.demo.citizenlab.co,demo,2022-03-02T09:31:05.623171,a55be035-21d0-44a5-92a6-eb1ec89fb8f1,1. app_configuration success
+3b36be7e-f2d6-4316-baff-2e9a4e9d0b72,qmmunis.citizenlab.co,demo,2022-01-31T17:37:33.475668,3b36be7e-f2d6-4316-baff-2e9a4e9d0b72,Net::OpenTimeout: Failed to open TCP connection to qmmunis.citizenlab.co:443 (execution expired)
+9f0f8a78-259f-40fa-a95c-7c9a830110ea,trial-es.template.citizenlab.co,demo,2021-04-12T12:43:08.210623,9f0f8a78-259f-40fa-a95c-7c9a830110ea,1. app_configuration success
+55f89a7a-ef18-4859-8e17-b1dccee74df3,lot.citizenlab.co,demo,2022-01-31T13:08:46.190978,55f89a7a-ef18-4859-8e17-b1dccee74df3,1. app_configuration success
+3e331d6a-312f-47f3-bacc-d06219001fbb,demo-dprp.citizenlab.co,demo,2021-09-19T18:06:31.103481,3e331d6a-312f-47f3-bacc-d06219001fbb,1. app_configuration success
+9d76ceb6-8d66-425a-9b29-4521fe66df86,ourcommunity-demo.citizenlab.co,demo,2022-02-07T07:42:56.812324,9d76ceb6-8d66-425a-9b29-4521fe66df86,1. app_configuration success
+acc9502b-eeeb-4b38-9159-401e038d7dd4,croatia1-demo.citizenlab.co,demo,2022-04-27T15:41:27.703234,acc9502b-eeeb-4b38-9159-401e038d7dd4,1. app_configuration success
+2be8843e-2466-4f82-89db-2b6789ca7c59,stijn.citizenlab.co,demo,2022-02-07T09:09:43.66693,2be8843e-2466-4f82-89db-2b6789ca7c59,1. app_configuration success
+3c8c2964-9df9-4d4a-bd5b-784b34d5c010,serbia4-demo.citizenlab.co,demo,2022-02-09T12:35:33.432148,3c8c2964-9df9-4d4a-bd5b-784b34d5c010,1. app_configuration success
+e643ffd6-5017-496f-9e5b-8449c2908180,simonssandbox.citizenlab.co,demo,2022-02-07T07:45:16.07868,e643ffd6-5017-496f-9e5b-8449c2908180,1. app_configuration success
+fb4baac1-5093-46ec-83b7-610835d19ea1,augsburg-demo.citizenlab.co,demo,2022-03-09T08:49:50.809187,fb4baac1-5093-46ec-83b7-610835d19ea1,1. app_configuration success
+55d9a0e3-bcc7-4faa-8f48-6c69fdab7936,kaiserslautern-demo.citizenlab.co,demo,2022-02-07T13:31:57.369937,55d9a0e3-bcc7-4faa-8f48-6c69fdab7936,1. app_configuration success
+1921c495-d8ca-43c8-9ab4-0c966da3e3b6,launch-es-cl.template.citizenlab.co,demo,2020-05-19T09:29:43.446016,1921c495-d8ca-43c8-9ab4-0c966da3e3b6,1. app_configuration success
+293347a5-6305-415c-acdc-70c91c348085,abbotslangley-pc.demo.citizenlab.co,demo,2022-07-19T08:34:34.122726,293347a5-6305-415c-acdc-70c91c348085,1. app_configuration success
+f9f74131-a1da-4acc-95e7-8e750d309eca,vlissingen.demo.citizenlab.co,demo,2021-05-02T07:50:35.255696,f9f74131-a1da-4acc-95e7-8e750d309eca,not success
+4ae19516-11c8-4afb-af61-f75521073e49,publicio-test.citizenlab.co,demo,2022-01-31T12:22:09.597993,4ae19516-11c8-4afb-af61-f75521073e49,1. app_configuration success
+a665c4ea-2624-475e-99de-33100dba8948,niepolomice.demo.citizenlab.co,demo,2022-06-21T08:18:24.186698,a665c4ea-2624-475e-99de-33100dba8948,1. app_configuration success
+ca157e89-84b2-4a2e-9bda-7a48336fac19,annesophie-demo.citizenlab.co,demo,2022-01-31T09:54:33.291587,ca157e89-84b2-4a2e-9bda-7a48336fac19,1. app_configuration success
+1b975a80-26a9-4e91-9b67-6522dd15c5d5,demaramures.citizenlab.co,demo,2021-10-15T11:04:02.529458,1b975a80-26a9-4e91-9b67-6522dd15c5d5,1. app_configuration success
+a11017dd-70da-4979-a4a1-0871f27a6df5,tubize.demo.citizenlab.co,demo,2022-01-31T09:46:23.198532,a11017dd-70da-4979-a4a1-0871f27a6df5,1. app_configuration success
+8376f47b-3c27-4e35-9f16-41ed7710b5b5,privdg.demo.citizenlab.co,demo,2022-05-02T12:47:54.352891,8376f47b-3c27-4e35-9f16-41ed7710b5b5,1. app_configuration success
+37ba1be7-c23c-4f14-a6d3-df722bc42469,dresita.citizenlab.co,demo,2021-09-30T14:32:53.008395,37ba1be7-c23c-4f14-a6d3-df722bc42469,1. app_configuration success
+804d856b-305e-4f61-9d8a-08398c3b7508,demosector2.citizenlab.co,demo,2022-01-29T06:16:45.911462,804d856b-305e-4f61-9d8a-08398c3b7508,1. app_configuration success
+82e27894-beb8-4e71-bc41-4bd4c87125bc,cork-trial.citizenlab.co,demo,2021-10-20T14:18:57.254375,82e27894-beb8-4e71-bc41-4bd4c87125bc,1. app_configuration success
+0a67a4d9-0df8-4ddc-988f-b3a023f50482,arbeitskreis-uni-stuttgart.citizenlab.co,demo,2022-01-31T10:03:49.860448,0a67a4d9-0df8-4ddc-988f-b3a023f50482,1. app_configuration success
+3515a85f-e7d9-4bdf-8112-1b18a40981ca,test-ro.citizenlab.co,demo,2021-09-04T07:31:29.697976,3515a85f-e7d9-4bdf-8112-1b18a40981ca,1. app_configuration success
+65f5551c-5773-4cb7-a90e-0a1924fd61dd,undp-jordan-trial.citizenlab.co,demo,2021-04-27T19:17:52.875559,65f5551c-5773-4cb7-a90e-0a1924fd61dd,Net::OpenTimeout: Failed to open TCP connection to undp-jordan-trial.citizenlab.co:443 (execution expired)
+988343c9-af34-4c70-a597-d9a0b4b33574,spaarnelanden.demo.citizenlab.co,demo,2021-11-28T15:50:57.44753,988343c9-af34-4c70-a597-d9a0b4b33574,1. app_configuration success
+51d356e3-3c38-44d8-a778-1afd91d88b6d,wcc-trial.citizenlab.co,demo,2022-01-19T13:06:20.857404,51d356e3-3c38-44d8-a778-1afd91d88b6d,1. app_configuration success
+baa2b3a0-091b-488a-bbb3-febbc1944a1e,projecttemplategallery.citizenlab.co,demo,2020-08-20T13:55:27.414164,baa2b3a0-091b-488a-bbb3-febbc1944a1e,1. app_configuration success
+e76e834a-5293-4a50-bda9-06bcfd30f33b,vivrelaville.demo.citizenlab.co,demo,2022-01-31T14:25:15.2813,e76e834a-5293-4a50-bda9-06bcfd30f33b,1. app_configuration success
+a3d000db-bfce-4a4a-b3f0-710817f91577,trial-pt-was-template.citizenlab.co,demo,2021-07-27T14:22:03.193755,a3d000db-bfce-4a4a-b3f0-710817f91577,Net::OpenTimeout: Failed to open TCP connection to trial-pt-was-template.citizenlab.co:443 (execution expired)
+9ddd8ce4-d1cf-4f7d-a36a-b5aecc3a1146,timisoaraoras.citizenlab.co,demo,2021-11-07T06:22:11.45992,9ddd8ce4-d1cf-4f7d-a36a-b5aecc3a1146,1. app_configuration success
+47f1bfda-2808-41c2-921a-0cc8cb175cf0,joburg-trial.citizenlab.co,demo,2021-12-13T19:37:57.771887,47f1bfda-2808-41c2-921a-0cc8cb175cf0,Net::OpenTimeout: Failed to open TCP connection to joburg-trial.citizenlab.co:443 (execution expired)
+6f0dff9e-3f50-4a32-97fe-47d7c3f5f01d,leidenpilot.stg.citizenlab.co,demo,2022-01-03T08:39:45.680479,6f0dff9e-3f50-4a32-97fe-47d7c3f5f01d,not success
+2774b9c6-2c99-451e-bfa3-560e79b84f55,litterville-two.citizenlab.co,demo,2022-02-09T11:43:46.378984,2774b9c6-2c99-451e-bfa3-560e79b84f55,1. app_configuration success
+70839df4-871c-4b51-a122-f436c7c91922,aot.demo.citizenlab.co,demo,2022-01-31T08:30:17.738236,70839df4-871c-4b51-a122-f436c7c91922,1. app_configuration success
+05486f84-7eb9-4222-ab4e-50bd71f0b089,emile.demo.citizenlab.co,demo,2021-11-25T11:46:47.699784,05486f84-7eb9-4222-ab4e-50bd71f0b089,1. app_configuration success
+68dfc918-3435-4641-af63-8a558c620d89,gemeentemaassluis.demo.citizenlab.co,demo,2021-08-29T09:29:22.77956,68dfc918-3435-4641-af63-8a558c620d89,not success
+ebf13a76-1107-4984-84c0-74b24164f306,hala.demo.citizenlab.co,demo,2021-09-11T13:56:28.184398,ebf13a76-1107-4984-84c0-74b24164f306,1. app_configuration success
+f20c6378-18cd-4924-803a-a93683deb4a8,opensource.citizenlab.co,demo,2022-01-31T11:05:40.824398,f20c6378-18cd-4924-803a-a93683deb4a8,1. app_configuration success
+8693ead8-9573-4bd4-9b59-b93282ebe1e9,ovre-eiker.citizenlab.co,demo,2020-10-04T20:15:20.352692,8693ead8-9573-4bd4-9b59-b93282ebe1e9,1. app_configuration success
+e93ccd37-da22-4d25-8dd2-f4582a152154,villedavray.demo.citizenlab.co,demo,2021-03-17T07:34:36.532008,e93ccd37-da22-4d25-8dd2-f4582a152154,1. app_configuration success
+40ad63ec-0ffb-41d0-9e4b-6f27be4ccf34,trial-ro-was-template.citizenlab.co,demo,2021-07-26T14:23:34.65201,40ad63ec-0ffb-41d0-9e4b-6f27be4ccf34,Net::OpenTimeout: Failed to open TCP connection to trial-ro-was-template.citizenlab.co:443 (execution expired)
+f502e90f-f6de-4c53-a1ea-770ea3a51878,burgervoorstellen-vlaanderen.citizenlab.co,demo,2021-09-26T07:45:21.647992,f502e90f-f6de-4c53-a1ea-770ea3a51878,1. app_configuration success
+9fced2ab-275c-43dc-b8f6-b6caf8aa5e3b,privkrakow.demo.citizenlab.co,demo,2021-08-08T09:42:41.856907,9fced2ab-275c-43dc-b8f6-b6caf8aa5e3b,1. app_configuration success
+4aeb9f5f-3e4f-4266-a169-156d196fcac7,deilfov-was-template.citizenlab.co,demo,2021-10-05T18:09:23.148314,4aeb9f5f-3e4f-4266-a169-156d196fcac7,1. app_configuration success
+0ae62376-1265-416e-bf34-77a2d079e82c,utrecht.demo.citizenlab.co,demo,2021-10-11T09:43:40.933816,0ae62376-1265-416e-bf34-77a2d079e82c,not success
+b9fb76cd-3f6d-4742-8a9d-2dbd2ffbb683,manchester-climate-change-trial.citizenlab.co,demo,2021-10-16T10:37:51.868524,b9fb76cd-3f6d-4742-8a9d-2dbd2ffbb683,1. app_configuration success
+d22e7231-9d67-4350-bed1-6ab890f47c8e,demo-giurgiu.citizenlab.co,demo,2021-09-21T10:11:19.408312,d22e7231-9d67-4350-bed1-6ab890f47c8e,1. app_configuration success
+7b839deb-c238-46d2-b94e-50c327b9e0fa,cl-nl5.demo.citizenlab.co,demo,2021-09-28T08:43:18.067656,7b839deb-c238-46d2-b94e-50c327b9e0fa,1. app_configuration success
+c1500440-8a6f-4889-bf45-1fbf5c77b9bb,rostock-demo.citizenlab.co,demo,2021-11-01T12:30:30.619961,c1500440-8a6f-4889-bf45-1fbf5c77b9bb,1. app_configuration success
+b4e36841-d479-42a8-b769-0b40f90765ba,clairedemo.citizenlab.co,demo,2021-08-28T08:57:13.086036,b4e36841-d479-42a8-b769-0b40f90765ba,Net::OpenTimeout: Failed to open TCP connection to clairedemo.citizenlab.co:443 (execution expired)
+2a6d7df8-077d-45ff-b5f7-7e55126802b6,partnerportal-test.citizenlab.co,demo,2021-09-12T13:24:03.002363,2a6d7df8-077d-45ff-b5f7-7e55126802b6,1. app_configuration success
+cff5109c-1390-43e4-84e9-ad48ffd42627,insights.template.citizenlab.co,demo,2021-12-18T12:18:04.91538,cff5109c-1390-43e4-84e9-ad48ffd42627,1. app_configuration success
+fd9c8177-09a1-4a81-bfa4-c33c3cbe41ab,test2-romania.citizenlab.co,demo,2021-09-21T10:22:48.898029,fd9c8177-09a1-4a81-bfa4-c33c3cbe41ab,1. app_configuration success
+f61f01ef-1b9d-48ab-b54f-157da970560e,dashboard.demo.citizenlab.co,demo,2021-05-08T14:17:48.077353,f61f01ef-1b9d-48ab-b54f-157da970560e,1. app_configuration success
+b6dfc6f2-ea15-40a6-a100-d38b0435aea5,mimunicipio.template.citizenlab.co,demo,2020-06-27T17:53:57.291043,b6dfc6f2-ea15-40a6-a100-d38b0435aea5,1. app_configuration success
+cd9c29e0-23e3-4f5f-a9e1-49c47b93c6c4,dordrecht.demo.citizenlab.co,demo,2021-11-15T15:16:12.130946,cd9c29e0-23e3-4f5f-a9e1-49c47b93c6c4,not success
+4b9ec91b-e5ce-4924-8b9f-0f3066fa6eb5,ami.demo.citizenlab.co,demo,2021-06-14T08:20:17.0938,4b9ec91b-e5ce-4924-8b9f-0f3066fa6eb5,1. app_configuration success
+6584036a-4792-415b-8b06-9a98c512a053,helsingborg.demo.citizenlab.co,demo,2021-11-07T21:32:04.294406,6584036a-4792-415b-8b06-9a98c512a053,1. app_configuration success
+5114eec3-4001-4640-b76b-07ea46d7d241,launch-en.template.citizenlab.co,demo,2020-02-04T11:22:03.212478,5114eec3-4001-4640-b76b-07ea46d7d241,1. app_configuration success
+5c9323da-0b2f-4347-a9fb-9f8bf66d6c18,training.demo.citizenlab.co,demo,2021-04-06T10:32:27.257578,5c9323da-0b2f-4347-a9fb-9f8bf66d6c18,1. app_configuration success
+f2acde84-9105-40b9-b597-fca29279d047,launch-nl-be.template.citizenlab.co,demo,2020-02-04T11:08:33.999942,f2acde84-9105-40b9-b597-fca29279d047,1. app_configuration success
+86b34603-ee87-4879-a433-bccc0279a146,cl-fr1.demo.citizenlab.co,demo,2018-11-03T14:31:22.091385,86b34603-ee87-4879-a433-bccc0279a146,1. app_configuration success
+14a8645d-1894-422e-a8dd-ca1ae6bab40e,cl-nl3.demo.citizenlab.co,demo,2018-11-29T22:41:31.557641,14a8645d-1894-422e-a8dd-ca1ae6bab40e,1. app_configuration success
+b691e420-f7e9-47e9-84ec-ed747fd0de40,es-was-template.citizenlab.co,demo,2019-11-02T09:43:18.910962,b691e420-f7e9-47e9-84ec-ed747fd0de40,1. app_configuration success
+594dbe37-1cd7-4445-9e0b-d2c3b67c5c65,vlaanderen.demo.citizenlab.co,demo,2019-09-14T09:18:03.536236,594dbe37-1cd7-4445-9e0b-d2c3b67c5c65,not success
+9005a151-bac2-4ab6-b61c-53bf7e111731,usertesting.demo.citizenlab.co,demo,2020-03-03T13:44:26.398883,9005a151-bac2-4ab6-b61c-53bf7e111731,1. app_configuration success
+c6f191ae-3325-40d9-9656-3064e659e3aa,landkreisregensburg-test.citizenlab.co,demo,2023-10-23T10:43:15.297044,c6f191ae-3325-40d9-9656-3064e659e3aa,1. app_configuration success
+0e8cbc3e-f184-4a71-9d92-5862dc0f86fc,leeuwdenktmee.be,active,2023-06-29T16:58:38.990823,0e8cbc3e-f184-4a71-9d92-5862dc0f86fc,1. app_configuration success
+ce4e756f-a671-49ae-9b95-9cb0550925ba,nola.demo.citizenlab.co,demo,2023-10-17T09:20:49.75833,ce4e756f-a671-49ae-9b95-9cb0550925ba,1. app_configuration success
+c972d164-5932-428c-b6cc-2d578e706c8e,doemee.gulpen-wittem.nl,active,2023-01-16T11:48:33.285029,c972d164-5932-428c-b6cc-2d578e706c8e,1. app_configuration success
+f1265d4a-8262-4268-b5b5-96ee65b6a2b2,cayenne.citizenlab.co,active,2023-09-19T14:08:19.495859,f1265d4a-8262-4268-b5b5-96ee65b6a2b2,1. app_configuration success
+ed64f84b-b4a4-44e6-ad73-66c6e64b5531,wittenberge.citizenlab.co,active,2023-10-10T08:09:00.948393,ed64f84b-b4a4-44e6-ad73-66c6e64b5531,1. app_configuration success
+20285c63-f7eb-410e-be0c-ba251f54b374,hulst.citizenlab.co,active,2023-11-21T10:14:06.204811,20285c63-f7eb-410e-be0c-ba251f54b374,1. app_configuration success
+4c575106-890b-4ee7-90ce-5146014ecf3c,wolfurt.citizenlab.co,active,2023-09-07T12:26:04.986886,4c575106-890b-4ee7-90ce-5146014ecf3c,1. app_configuration success
+f7535d7f-7fcf-44c1-9c8b-6ece4748db02,praatmee.goeree-overflakkee.nl,active,2023-08-10T11:52:00.142087,f7535d7f-7fcf-44c1-9c8b-6ece4748db02,1. app_configuration success
+be6cc817-62a3-4ec6-80f0-ed4826c78776,mitgestalten.wetzlar.de,active,2023-02-14T09:41:46.569469,be6cc817-62a3-4ec6-80f0-ed4826c78776,1. app_configuration success
+fc3c845a-14b4-43ce-b0f0-c740cba2a4e6,umk.citizenlab.co,active,2023-10-09T09:28:03.484005,fc3c845a-14b4-43ce-b0f0-c740cba2a4e6,1. app_configuration success
+590138c9-194c-479d-94de-a5ccfa1517fa,dourdanjeparticipe.demo.citizenlab.co,expired_trial,2023-11-02T08:58:19.419309,590138c9-194c-479d-94de-a5ccfa1517fa,not success
+8147f6df-d97d-4233-84cf-936ef6708a32,project-demo.citizenlab.co,trial,2023-11-15T10:37:48.818576,8147f6df-d97d-4233-84cf-936ef6708a32,Net::OpenTimeout: Failed to open TCP connection to project-demo.citizenlab.co:443 (execution expired)
+05f2a4e8-4ea0-49a1-8224-61be4fc08c23,projectpubliek.bilzen.be,active,2023-07-05T10:49:15.091066,05f2a4e8-4ea0-49a1-8224-61be4fc08c23,1. app_configuration success
+59dc1a35-ff66-4bdf-98f2-eab20267b6d9,adminhqtest1.citizenlab.co,demo,2023-11-22T16:22:37.618176,59dc1a35-ff66-4bdf-98f2-eab20267b6d9,1. app_configuration success
+4a74f4c8-e4da-4219-9c0c-dab855a41ba5,alexandertmptestshouldwork.citizenlab.co,trial,2023-11-09T11:26:25.914421,4a74f4c8-e4da-4219-9c0c-dab855a41ba5,1. app_configuration success
+a2be5a9a-cdf7-4175-9913-d719f85f2e17,dudelange.demo.citizenlab.co,trial,2023-07-18T14:40:50.922065,a2be5a9a-cdf7-4175-9913-d719f85f2e17,1. app_configuration success
+e2bfb25e-eb56-45b7-8509-0a04e5e56d21,vgc.citizenlab.co,active,2023-10-06T07:56:45.288218,e2bfb25e-eb56-45b7-8509-0a04e5e56d21,1. app_configuration success
+c33cd9bf-04c6-492f-94d2-c458b3c9bdbe,bouwmeeaanbeernem.be,active,2023-08-18T08:36:04.673961,c33cd9bf-04c6-492f-94d2-c458b3c9bdbe,1. app_configuration success
+e7c76ef9-1c14-475c-8dc9-6f454aa36d49,noord-beveland.citizenlab.co,active,2023-09-07T06:36:29.869767,e7c76ef9-1c14-475c-8dc9-6f454aa36d49,Net::OpenTimeout: Failed to open TCP connection to noord-beveland.citizenlab.co:443 (execution expired)
+b5af7754-2173-48c3-84f4-4d3c88bcce28,borsele.citizenlab.co,active,2023-10-18T06:48:36.690121,b5af7754-2173-48c3-84f4-4d3c88bcce28,1. app_configuration success
+2ce87ce8-ea55-41cf-9f90-67baadd3bc09,emmaus.citizenlab.co,active,2023-08-18T08:25:45.739502,2ce87ce8-ea55-41cf-9f90-67baadd3bc09,1. app_configuration success
+8ddd198c-0268-490f-ada5-734f30b696ac,kickbeligum.citizenlab.co,active,2023-11-27T08:36:43.374124,8ddd198c-0268-490f-ada5-734f30b696ac,Net::OpenTimeout: Failed to open TCP connection to kickbeligum.citizenlab.co:443 (execution expired)
+889504f6-bb7a-4ec4-bf89-92c2a8bd68e7,ville-quebec.demo.citizenlab.co,trial,2023-11-10T15:00:31.844072,889504f6-bb7a-4ec4-bf89-92c2a8bd68e7,1. app_configuration success
+1c78d6f9-47a9-4d7d-a391-41a533b0982f,klimaforum.fredensborg.dk,active,2023-02-01T14:52:14.076261,1c78d6f9-47a9-4d7d-a391-41a533b0982f,1. app_configuration success
+b160f5c3-0e27-4de3-8155-9532ea90a19b,jeparticipe-stpdp.demo.citizenlab.co,expired_trial,2023-10-13T13:15:44.746626,b160f5c3-0e27-4de3-8155-9532ea90a19b,1. app_configuration success
+021b0680-afe7-4332-af65-8d9af5c1aeaf,20262031.citizenlab.co,demo,2023-10-02T11:23:35.338559,021b0680-afe7-4332-af65-8d9af5c1aeaf,1. app_configuration success
+070242cd-7862-4614-9f68-0fae4e6e6ad5,santjoan-demo.citizenlab.co,demo,2023-10-30T13:58:56.235108,070242cd-7862-4614-9f68-0fae4e6e6ad5,1. app_configuration success
+95f228c9-876b-4995-96d2-8eb0241b0b1c,adminhqtest2.citizenlab.co,demo,2023-11-22T16:27:29.560147,95f228c9-876b-4995-96d2-8eb0241b0b1c,1. app_configuration success
+55700104-a4dd-40c5-b727-90e527a5cd7f,uxusertesting.citizenlab.co,not_applicable,2023-10-13T10:07:56.899131,55700104-a4dd-40c5-b727-90e527a5cd7f,1. app_configuration success
+523cb93b-fed6-41ad-84c8-28e91fd6a366,vgc-dmo.citizenlab.co,demo,2023-05-31T09:07:00.94537,523cb93b-fed6-41ad-84c8-28e91fd6a366,1. app_configuration success
+c390b2d7-25c2-4510-8b2a-37dfff450dc7,budgetparticipatif.gembloux.be,active,2023-09-21T14:57:43.091041,c390b2d7-25c2-4510-8b2a-37dfff450dc7,1. app_configuration success
+9bfe7bf3-2bf3-4f30-ae47-46f0e8c818b1,joe-demo.citizenlab.co,trial,2023-11-15T10:46:52.829633,9bfe7bf3-2bf3-4f30-ae47-46f0e8c818b1,Net::OpenTimeout: Failed to open TCP connection to joe-demo.citizenlab.co:443 (execution expired)
+6e4efa58-6b04-48a8-94c0-4557366d052a,offenburg-test.citizenlab.co,demo,2023-10-11T17:34:21.348639,6e4efa58-6b04-48a8-94c0-4557366d052a,1. app_configuration success
+c3cb4b3b-d98b-41ef-bc3d-794ffe42b12f,krefeld-demo.citizenlab.co,demo,2023-10-20T08:37:44.467872,c3cb4b3b-d98b-41ef-bc3d-794ffe42b12f,1. app_configuration success
+f5b02efc-66d0-4f63-af0c-6dd1da49db22,bwbrabant.citizenlab.co,trial,2023-10-02T18:48:26.183828,f5b02efc-66d0-4f63-af0c-6dd1da49db22,1. app_configuration success
+0d324ba6-b544-4c53-a48b-5c8bee1c4926,denkmee.pijnacker-nootdorp.nl,active,2023-08-01T11:56:04.01257,0d324ba6-b544-4c53-a48b-5c8bee1c4926,1. app_configuration success
+cf1205b6-84e7-450d-b351-65c70c48bbb0,esneux.demo.citizenlab.co,trial,2023-08-24T13:09:23.453778,cf1205b6-84e7-450d-b351-65c70c48bbb0,1. app_configuration success
+8132c911-21ff-4a3d-86af-0ba6adfda10a,lier.citizenlab.co,active,2023-10-24T09:28:29.161787,8132c911-21ff-4a3d-86af-0ba6adfda10a,1. app_configuration success
+7230fbee-c0ec-4f4e-9c36-67c5ec6cac0f,adminhqtest3.citizenlab.co,trial,2023-11-22T16:38:34.151739,7230fbee-c0ec-4f4e-9c36-67c5ec6cac0f,Net::OpenTimeout: Failed to open TCP connection to adminhqtest3.citizenlab.co:443 (execution expired)
+80ec3028-0235-4a2d-8081-cdf825841feb,demo-willebroek.citizenlab.co,demo,2023-10-25T07:09:45.346062,80ec3028-0235-4a2d-8081-cdf825841feb,1. app_configuration success
+22fe36b5-d448-4a24-a0fa-962dde27abbe,ueberlingen.citizenlab.co,active,2023-08-07T14:30:51.439266,22fe36b5-d448-4a24-a0fa-962dde27abbe,1. app_configuration success
+099980be-4697-4696-87e6-077f608c1c57,maud-demo.citizenlab.co,demo,2023-02-09T17:30:45.610534,099980be-4697-4696-87e6-077f608c1c57,1. app_configuration success
+28d95eb5-f721-452c-98f9-04b1084ca05a,flevoland.citizenlab.co,demo,2023-06-22T07:03:32.815591,28d95eb5-f721-452c-98f9-04b1084ca05a,1. app_configuration success
+a21060a3-c84f-4c29-b7bc-11eb432b191b,demo-genk.citizenlab.co,demo,2023-05-23T11:31:54.404091,a21060a3-c84f-4c29-b7bc-11eb432b191b,1. app_configuration success
+e6b427c0-a2f0-4e17-98cd-5f8139df345a,stadt-ostfildern-test.citizenlab.co,demo,2023-02-27T17:34:12.484269,e6b427c0-a2f0-4e17-98cd-5f8139df345a,1. app_configuration success
+fd8c99c5-ba72-4c24-b24d-6725e9762307,stadtheidelberg-test.citizenlab.co,demo,2023-09-07T19:15:51.607028,fd8c99c5-ba72-4c24-b24d-6725e9762307,1. app_configuration success
+8af9d9c8-73e7-41fc-8d22-2bb06750db57,adminhqtest301.citizenlab.co,trial,2023-11-22T16:45:09.538484,8af9d9c8-73e7-41fc-8d22-2bb06750db57,1. app_configuration success
+d8efba6d-a03a-4967-94c8-d63d250310db,demo-destelbergen.citizenlab.co,demo,2023-08-23T12:17:34.908556,d8efba6d-a03a-4967-94c8-d63d250310db,1. app_configuration success
+f7221d31-b348-4f44-a21b-5707318d39ed,tu-municipio.template.citizenlab.co,demo,2023-09-14T15:17:05.297756,f7221d31-b348-4f44-a21b-5707318d39ed,1. app_configuration success
+5b5c935f-0503-470a-ba3a-5e8f2960e657,accessibility-audit.citizenlab.co,not_applicable,2022-02-24T08:11:59.895037,5b5c935f-0503-470a-ba3a-5e8f2960e657,1. app_configuration success
+ed1f00b9-ebd9-447d-82c1-f13530872508,riga-test-platform.citizenlab.co,demo,2023-08-16T12:04:37.715007,ed1f00b9-ebd9-447d-82c1-f13530872508,1. app_configuration success
+4441fa10-f4da-4a9e-b7f8-96af238d234e,wittenberge-test.citizenlab.co,demo,2023-07-07T09:55:08.981304,4441fa10-f4da-4a9e-b7f8-96af238d234e,1. app_configuration success
+45e099d5-908d-4b9d-8b49-38e93dd6d33b,demo-waalwijk.citizenlab.co,demo,2023-11-17T08:00:23.109761,45e099d5-908d-4b9d-8b49-38e93dd6d33b,1. app_configuration success
+429e6c5a-910f-451e-9d8b-a449105eddf8,demosverige.citizenlab.co,demo,2023-03-06T09:39:36.623936,429e6c5a-910f-451e-9d8b-a449105eddf8,1. app_configuration success
+b5593173-b10e-4a22-b804-233e6973b6cc,kiel-test.citizenlab.co,demo,2023-10-11T17:37:26.84353,b5593173-b10e-4a22-b804-233e6973b6cc,1. app_configuration success
+572d7398-9f59-4278-ab76-a69b9d4d43b5,gelsenkirchen-demo.citizenlab.co,demo,2023-01-26T09:17:11.457391,572d7398-9f59-4278-ab76-a69b9d4d43b5,1. app_configuration success
+d6039a0d-c1f4-4c9c-8c50-648e2bb99478,wijchen.demo.citizenlab.co,demo,2023-06-30T12:21:37.277315,d6039a0d-c1f4-4c9c-8c50-648e2bb99478,1. app_configuration success
+13f48b7c-ea7d-483b-9d1d-e1a1aa340247,braintrust.itinera.team,active,2023-06-21T16:28:44.511824,13f48b7c-ea7d-483b-9d1d-e1a1aa340247,1. app_configuration success
+132cd3a9-8d39-4918-9b43-1c8f9c58e27f,hannah.demo.citizenlab.co,demo,2023-11-22T11:17:51.477546,132cd3a9-8d39-4918-9b43-1c8f9c58e27f,1. app_configuration success
+a0be96c9-7eb6-45d2-8ccd-668cd69bb3e9,stadt-rodgau.citizenlab.co,demo,2023-04-26T11:29:54.415478,a0be96c9-7eb6-45d2-8ccd-668cd69bb3e9,1. app_configuration success
+3f401891-c0f0-4e47-9ffc-460b61283a7d,zelda-demo.citizenlab.co,demo,2023-03-10T10:14:17.509424,3f401891-c0f0-4e47-9ffc-460b61283a7d,1. app_configuration success
+b81f2a69-82c7-4abe-83cc-cad6252d6d17,hodb.citizenlab.co,active,2023-08-23T13:20:46.473594,b81f2a69-82c7-4abe-83cc-cad6252d6d17,Net::OpenTimeout: Failed to open TCP connection to hodb.citizenlab.co:443 (execution expired)
+b5c8ca87-529e-424e-b04a-1d39d75e50d3,doemee.veere.nl,active,2023-05-30T13:55:49.080953,b5c8ca87-529e-424e-b04a-1d39d75e50d3,1. app_configuration success
+04dbdba4-1cc4-43f6-af15-3b6b5df67cd4,analysis.template.citizenlab.co,not_applicable,2023-08-01T14:21:48.75514,04dbdba4-1cc4-43f6-af15-3b6b5df67cd4,1. app_configuration success
+431ac6f6-19bd-41d3-a686-64aa9f281aa1,solsiden.solrod.dk,active,2023-02-09T13:08:07.795913,431ac6f6-19bd-41d3-a686-64aa9f281aa1,1. app_configuration success
+46a5c170-ab14-474b-9222-c027e1e7bfde,vernon.demo.citizenlab.co,trial,2023-05-08T11:09:44.587298,46a5c170-ab14-474b-9222-c027e1e7bfde,1. app_configuration success
+407aa3fb-66ea-430a-82eb-76de4c6b9f81,vorarlberg.citizenlab.co,active,2023-07-12T07:27:21.725707,407aa3fb-66ea-430a-82eb-76de4c6b9f81,1. app_configuration success
+e7241aae-c620-493b-af5e-6392bbe91e02,haguenau.demo.citizenlab.co,trial,2023-05-17T14:55:21.173137,e7241aae-c620-493b-af5e-6392bbe91e02,1. app_configuration success
+63109f06-fad0-44d6-86cf-9d907586b986,dresdner-mobilitaetsplan-test.citizenlab.co,demo,2023-09-04T15:44:24.957318,63109f06-fad0-44d6-86cf-9d907586b986,1. app_configuration success
+6b5c5de3-83b1-4975-aed5-ba8362e6cd02,pd-demo-site.citizenlab.co,demo,2023-03-21T16:43:57.222207,6b5c5de3-83b1-4975-aed5-ba8362e6cd02,1. app_configuration success
+75d4dbd7-2d61-4a4d-834e-b6776a83fa16,matosinhos-demo.citizenlab.co,demo,2023-08-22T07:51:12.966785,75d4dbd7-2d61-4a4d-834e-b6776a83fa16,1. app_configuration success
+0c8e669b-a804-47b1-82b0-88ab16cb752a,anoukdemo.citizenlab.co,demo,2023-05-11T10:03:20.643016,0c8e669b-a804-47b1-82b0-88ab16cb752a,1. app_configuration success
+5bf42219-8c66-430f-aa4b-2cd69609ac5f,gaelle-demo.citizenlab.co,demo,2023-01-23T16:00:55.152222,5bf42219-8c66-430f-aa4b-2cd69609ac5f,1. app_configuration success
+ecc09adc-ea8b-48fe-bc3c-964b95cf76a7,launch-de.template.citizenlab.co,not_applicable,2022-02-15T13:46:35.035435,ecc09adc-ea8b-48fe-bc3c-964b95cf76a7,1. app_configuration success
+a0c78867-7f3c-4b0f-b95a-0ef7bc1905af,slaskie.demo.citizenlab.co,demo,2023-09-14T08:14:41.792785,a0c78867-7f3c-4b0f-b95a-0ef7bc1905af,1. app_configuration success
+6a30d918-fd27-46b2-b24d-9e7ba24eafd2,testfr.demo.citizenlab.co,demo,2023-03-13T14:19:40.76525,6a30d918-fd27-46b2-b24d-9e7ba24eafd2,1. app_configuration success
+8b3e88f1-250a-419b-8a41-61b937f495a3,cecile-demo.citizenlab.co,demo,2023-05-22T10:43:40.234534,8b3e88f1-250a-419b-8a41-61b937f495a3,1. app_configuration success
+28fab07f-98f5-4ac5-bb46-f885b53e30e9,demokratigarage.citizenlab.co,active,2023-05-17T12:30:00.809524,28fab07f-98f5-4ac5-bb46-f885b53e30e9,1. app_configuration success
+8829c36f-392c-4643-b833-33f09be418fd,yelebe-demo.citizenlab.co,demo,2023-02-17T15:26:08.520501,8829c36f-392c-4643-b833-33f09be418fd,1. app_configuration success
+10f49025-0f2c-4223-bb29-9ceb50a11b8d,koeln.demo.citizenlab.co,demo,2023-07-14T21:35:24.904921,10f49025-0f2c-4223-bb29-9ceb50a11b8d,1. app_configuration success
+028af9d4-4c40-4722-9177-0c579d23daf6,vorarlberg-demoxyz.citizenlab.co,demo,2023-04-12T15:32:26.637626,028af9d4-4c40-4722-9177-0c579d23daf6,1. app_configuration success
+20ad1009-7357-4dc5-9c36-60d7e7a9f795,thomas-demo.citizenlab.co,demo,2023-05-02T08:22:50.196891,20ad1009-7357-4dc5-9c36-60d7e7a9f795,1. app_configuration success
+0ee4f85f-e345-49fc-9387-adbb1d8f04d8,wasilkow-essential.demo.citizenlab.co,demo,2023-04-24T14:16:25.562209,0ee4f85f-e345-49fc-9387-adbb1d8f04d8,1. app_configuration success
+065bf7a4-f4d8-4073-98d4-5ac2b11cbebd,participez.grand-cubzaguais.fr,active,2023-03-01T09:10:54.265264,065bf7a4-f4d8-4073-98d4-5ac2b11cbebd,1. app_configuration success
+a700c046-aa0e-4d3e-bd59-23d0dfd19646,elburg-spreekt.nl,active,2023-03-23T12:52:10.860267,a700c046-aa0e-4d3e-bd59-23d0dfd19646,1. app_configuration success
+d8a4b407-4518-4327-9d44-48c180cad316,cristele-demo.citizenlab.co,demo,2023-03-10T08:11:17.330926,d8a4b407-4518-4327-9d44-48c180cad316,1. app_configuration success
+b3153a46-9c38-4e3d-96e6-7b4794561664,neustadt-demo.citizenlab.co,demo,2023-04-24T10:13:48.587268,b3153a46-9c38-4e3d-96e6-7b4794561664,1. app_configuration success
+dccc5080-bccf-4330-beba-76903c16bc6f,bielefeld-demo.citizenlab.co,demo,2023-07-26T12:12:52.048269,dccc5080-bccf-4330-beba-76903c16bc6f,1. app_configuration success
+5167f87d-2214-42b2-8b16-01de325922e9,umk-torun.demo.citizenlab.co,demo,2023-05-09T18:24:57.552909,5167f87d-2214-42b2-8b16-01de325922e9,1. app_configuration success
+b59320a1-e0e5-4c3e-9b7f-7a99150b3ef9,innsbruck-test.citizenlab.co,demo,2023-03-22T16:42:17.600295,b59320a1-e0e5-4c3e-9b7f-7a99150b3ef9,1. app_configuration success
+0e7e3d4f-38c1-4c9b-b008-564860fbb13b,luebeck-demo.citizenlab.co,demo,2023-02-24T12:52:21.075897,0e7e3d4f-38c1-4c9b-b008-564860fbb13b,1. app_configuration success
+2b38dd42-f3b4-4bea-a8d4-49206a899119,sudjeluj.cakovec.hr,active,2023-03-22T13:57:12.605237,2b38dd42-f3b4-4bea-a8d4-49206a899119,1. app_configuration success
+20883e26-7ade-4563-a3f8-4b849a43a4a1,cascais.demo.citizenlab.co,demo,2023-07-04T10:00:11.105692,20883e26-7ade-4563-a3f8-4b849a43a4a1,1. app_configuration success
+60e73ae0-1bae-477b-a66e-8d8dd6412b9f,augsburg-trial.citizenlab.co,demo,2023-06-02T14:41:53.852266,60e73ae0-1bae-477b-a66e-8d8dd6412b9f,1. app_configuration success
+ecc0ae39-d39e-4803-9218-a0eee6656fab,oberursel-test.citizenlab.co,demo,2023-02-02T13:22:21.913291,ecc0ae39-d39e-4803-9218-a0eee6656fab,1. app_configuration success
+333b51ef-df82-4e18-812d-8b4cca3cfdec,stuttgart-test.citizenlab.co,demo,2023-08-23T13:03:22.826568,333b51ef-df82-4e18-812d-8b4cca3cfdec,1. app_configuration success
+82e3e0e8-c055-45a9-9de0-7aac0d4bea3b,markt-peissenberg-demo.citizenlab.co,demo,2023-05-02T07:53:56.577174,82e3e0e8-c055-45a9-9de0-7aac0d4bea3b,1. app_configuration success
+91b60ea4-2716-46e2-a648-dbb7c4d18140,gembloux.demo.citizenlab.co,trial,2023-09-05T07:33:09.678801,91b60ea4-2716-46e2-a648-dbb7c4d18140,1. app_configuration success
+a9a0fe9f-9bd1-4155-b50d-7c419c84ab7c,mathias-demo.citizenlab.co,demo,2023-02-15T17:51:52.505843,a9a0fe9f-9bd1-4155-b50d-7c419c84ab7c,1. app_configuration success
+8ee74895-05ad-423d-b9fc-5f1e36f44f46,clara-demo.citizenlab.co,demo,2023-03-17T15:31:43.67181,8ee74895-05ad-423d-b9fc-5f1e36f44f46,1. app_configuration success
+c284975f-bd7a-435f-9826-4a9d32bf63db,izegem-demo.citizenlab.co,demo,2023-04-25T10:52:27.936768,c284975f-bd7a-435f-9826-4a9d32bf63db,1. app_configuration success
+fcfd9ac4-d745-44e0-b14d-668cb77448fb,otto-beteiligt.de,active,2023-05-24T15:14:35.73044,fcfd9ac4-d745-44e0-b14d-668cb77448fb,1. app_configuration success
+b3bfbca5-782b-4170-a8db-2bf7642888bb,bilzen-demo.citizenlab.co,demo,2023-04-20T06:48:55.532563,b3bfbca5-782b-4170-a8db-2bf7642888bb,1. app_configuration success
+41e562ee-9d82-4e91-a62d-b1a0c1ee0efb,testjoost.citizenlab.co,not_applicable,2023-01-03T13:14:37.820188,41e562ee-9d82-4e91-a62d-b1a0c1ee0efb,1. app_configuration success
+4d600167-3213-456a-a065-ab32722c1453,hatayplanlamamerkezi.com,active,2023-04-03T13:05:23.019942,4d600167-3213-456a-a065-ab32722c1453,1. app_configuration success
+bc30996b-197c-40a3-ac7e-247307098a0e,tervuren.citizenlab.co,active,2023-04-12T13:43:02.088392,bc30996b-197c-40a3-ac7e-247307098a0e,1. app_configuration success
+c7e64f95-fc18-40e8-a346-90f3fc8c147d,kickbelgium.demo.citizenlab.co,trial,2023-09-20T07:57:45.018645,c7e64f95-fc18-40e8-a346-90f3fc8c147d,1. app_configuration success
+f6734891-6b9c-4cd2-9e1b-d5aa09080f5f,anaelle-demo.citizenlab.co,demo,2023-03-06T13:48:21.495361,f6734891-6b9c-4cd2-9e1b-d5aa09080f5f,1. app_configuration success
+2de63236-6671-4c2c-9ded-a8dc415da714,enexisdemo.citizenlab.co,demo,2023-04-05T08:31:18.318848,2de63236-6671-4c2c-9ded-a8dc415da714,1. app_configuration success
+4028847e-c390-4c82-994f-1e74ec95b78a,caroline-demo.citizenlab.co,demo,2023-05-04T08:03:49.697947,4028847e-c390-4c82-994f-1e74ec95b78a,1. app_configuration success
+2ead6b91-44a7-4b92-9f0f-e612f642ba06,skwerfogga.demo.citizenlab.co,demo,2023-01-11T19:57:02.65757,2ead6b91-44a7-4b92-9f0f-e612f642ba06,1. app_configuration success
+7a5d42d9-3444-490f-898c-8e6a92958efd,tiphaine-demo.citizenlab.co,demo,2023-02-15T17:52:56.921068,7a5d42d9-3444-490f-898c-8e6a92958efd,1. app_configuration success
+a8b59f74-be2a-454e-ae59-83b16489eba3,mechelen.demo.citizenlab.co,demo,2023-03-06T10:23:18.695448,a8b59f74-be2a-454e-ae59-83b16489eba3,1. app_configuration success
+8b91aecd-23e7-40b0-98f2-73d06ab855a2,straatvandetoekomst.spaarnelanden.nl,active,2023-01-13T14:47:19.454252,8b91aecd-23e7-40b0-98f2-73d06ab855a2,1. app_configuration success
+5ce15a69-8a5e-4db4-8fda-f97dd37e47b4,marine-demo.citizenlab.co,demo,2023-03-06T13:49:22.765637,5ce15a69-8a5e-4db4-8fda-f97dd37e47b4,1. app_configuration success
+e0e3cc7f-1a94-48b6-b6e9-ed79094b38c7,hodb-demo.citizenlab.co,demo,2023-03-15T13:38:22.814533,e0e3cc7f-1a94-48b6-b6e9-ed79094b38c7,1. app_configuration success
+6aff05de-0d14-45fb-9a6f-9f44250426cf,nidderau-beteiligung.citizenlab.co,active,2023-03-24T14:41:50.838404,6aff05de-0d14-45fb-9a6f-9f44250426cf,1. app_configuration success
+092b0979-375f-43f9-ba5c-295c556595ac,friedberg-test.citizenlab.co,demo,2023-03-23T15:15:53.432125,092b0979-375f-43f9-ba5c-295c556595ac,1. app_configuration success
+50a3ca64-4809-49d4-b589-bc558ed1050f,dubai.demo.citizenlab.co,trial,2023-04-28T08:29:20.198311,50a3ca64-4809-49d4-b589-bc558ed1050f,1. app_configuration success
+de349201-0db5-48f4-8e24-ee874274588c,participa.acciona-energia.com,active,2023-02-14T14:54:06.932931,de349201-0db5-48f4-8e24-ee874274588c,1. app_configuration success
+5797e6fd-e69c-4587-8d81-8d40ab6b127a,tracy-demo.citizenlab.co,demo,2023-01-23T15:58:52.43088,5797e6fd-e69c-4587-8d81-8d40ab6b127a,1. app_configuration success
+9368f35a-8f19-42c8-8c27-540b420bf7c9,wahlheymat-demo.citizenlab.co,demo,2023-04-27T13:28:47.272024,9368f35a-8f19-42c8-8c27-540b420bf7c9,1. app_configuration success
+a110d360-6a41-4807-9355-431ddf578ab5,koentestfail4.citizenlab.co,not_applicable,2022-02-11T16:26:19.877937,a110d360-6a41-4807-9355-431ddf578ab5,1. app_configuration success
+b9a9eaeb-6c52-41f9-a35f-11001961ecdb,internal.citizenlab.co,active,2019-01-27T14:01:00.811451,b9a9eaeb-6c52-41f9-a35f-11001961ecdb,1. app_configuration success
+6a54d576-6056-49ea-8fa4-8995076d6f2e,opensource.demo.citizenlab.co,trial,2021-04-26T10:44:20.129608,6a54d576-6056-49ea-8fa4-8995076d6f2e,1. app_configuration success
