@@ -6,15 +6,15 @@ import { StyledSelect } from './styling';
 
 // i18n
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from '../../../messages';
+import messages from '../../../../messages';
 
 // constants
 
 // typings
 import { FormatMessage, IOption } from 'typings';
 import { MessageDescriptor } from 'react-intl';
-import {InputTerm} from "api/phases/types";
-import {INPUT_TERMS} from "api/phases/utils";
+import { InputTerm } from 'api/phases/types';
+import { INPUT_TERMS } from 'api/phases/utils';
 
 const LABEL_MESSAGES: {
   [key in InputTerm]: MessageDescriptor;

@@ -23,12 +23,12 @@ import Error from 'components/UI/Error';
 // services
 import { IProject } from 'api/projects/types';
 import {
-    IdeaDefaultSortMethod,
-    InputTerm,
-    IPhase,
-    ParticipationMethod,
-    TSurveyService,
-    VotingMethod
+  IdeaDefaultSortMethod,
+  InputTerm,
+  IPhase,
+  ParticipationMethod,
+  TSurveyService,
+  VotingMethod,
 } from 'api/phases/types';
 import eventEmitter from 'utils/eventEmitter';
 
@@ -38,7 +38,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { WrappedComponentProps } from 'react-intl';
-import messages from '../messages';
+import messages from '../../messages';
 
 // utils
 import getOutput from './utils/getOutput';
@@ -48,7 +48,7 @@ import { anyIsDefined } from 'utils/helperUtils';
 // typings
 import { CLErrors, Multiloc } from 'typings';
 import { IAppConfiguration } from 'api/app_configuration/types';
-import {getDefaultSortMethodFallback} from "api/phases/utils";
+import { getDefaultSortMethodFallback } from 'api/phases/utils';
 
 // TODO: Edwin rename this to IPhaseConfig and move everything in this folder to ../phase
 export interface IParticipationContextConfig {

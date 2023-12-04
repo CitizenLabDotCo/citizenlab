@@ -8,11 +8,11 @@ import { StyledA, StyledWarning, SurveyServiceRadio } from '../shared/styling';
 
 // i18n
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import messages from '../../../messages';
+import messages from '../../../../messages';
 
 // typings
 import { ApiErrors } from '../..';
-import {TSurveyService} from "api/phases/types";
+import { TSurveyService } from 'api/phases/types';
 
 interface Props {
   survey_service: TSurveyService | null | undefined;

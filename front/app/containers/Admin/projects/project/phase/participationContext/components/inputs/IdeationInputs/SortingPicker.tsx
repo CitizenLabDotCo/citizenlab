@@ -7,11 +7,11 @@ import { SectionField, SubSectionTitle } from 'components/admin/Section';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../../../messages';
+import messages from '../../../../../messages';
 
 // typings
 import { ApiErrors } from '../../..';
-import {IdeaDefaultSortMethod} from "api/phases/types";
+import { IdeaDefaultSortMethod } from 'api/phases/types';
 
 interface Props {
   options: { key: string; value: string }[];
