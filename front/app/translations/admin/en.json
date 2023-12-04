@@ -262,7 +262,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.pollPhase": "Poll phase",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.react": "<b>React:</b>  {participants}",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.registeredUsers": "Registered users",
-  "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.submitIdeas": "<b>Submit ideas:</b>  {participants}",
+  "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.submitInputs": "<b>Submit inputs:</b>  {participants}",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.takingPoll": "<b>Taking poll:</b>  {participants}",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.takingSurvey": "<b>Taking survey:</b>  {participants}",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.usersWithConfirmedEmail": "Users with confirmed emails",
