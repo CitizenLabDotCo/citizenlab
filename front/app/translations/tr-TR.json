@@ -1173,7 +1173,7 @@
   "app.containers.InitiativesShow.youWereInvitedToConsponsorBy": "{authorName} sizi bu teklife destek vermeye davet etti.",
   "app.containers.Navbar.completeOnboarding": "Eksiksiz işe alım",
   "app.containers.Navbar.completeProfile": "Tam profil",
-  "app.containers.Navbar.confirmEmail": "E-posta adresini onayla",
+  "app.containers.Navbar.confirmEmail2": "E-postayı onayla",
   "app.containers.Navbar.unverified": "Doğrulanmadı",
   "app.containers.Navbar.verified": "Doğrulandı",
   "app.containers.NewAuthModal.beforeYouFollow": "Takip etmeden önce",
