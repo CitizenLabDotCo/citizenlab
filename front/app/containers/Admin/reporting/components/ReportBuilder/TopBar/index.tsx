@@ -115,6 +115,7 @@ const ContentBuilderTopBar = ({
           ...draftEditorData,
           [selectedLocale]: query.getSerializedNodes(),
         },
+        projectId: reportContext.projectId,
       });
     }
   };
