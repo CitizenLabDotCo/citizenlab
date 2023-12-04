@@ -262,7 +262,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.pollPhase": "Aptaujas fāze",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.react": "<b>Reaģēt:</b>  {participants}",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.registeredUsers": "Reģistrētie lietotāji",
-  "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.submitIdeas": "<b>Iesniedziet idejas:</b>  {participants}",
+  "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.submitInputs": "<b>Iesniegt ievades datus:</b>  {participants}",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.takingPoll": "<b>Aptauja:</b>  {participants}",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.takingSurvey": "<b>Aptaujas veikšana:</b>  {participants}",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.usersWithConfirmedEmail": "Lietotāji ar apstiprinātiem e-pastiem",
