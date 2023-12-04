@@ -175,6 +175,8 @@ describe('Homepage builder', () => {
       '0.9'
     );
 
+    cy.get('.buttonText').should('contain', 'Sign up');
+
     // Check homepage banner defaults signed - in
 
     cy.setAdminLoginCookie();
@@ -233,7 +235,9 @@ describe('Homepage builder', () => {
 
     // Update custom button
 
-    cy.get('#cta-type-customized_button').click();
+    cy.get('#cta-type-customized_button').click({
+      force: true,
+    });
     cy.get('#customizedButtonText').clear().type('Custom button');
     cy.get('#customizedButtonUrl').clear().type('https://www.google.com');
 
@@ -268,6 +272,8 @@ describe('Homepage builder', () => {
 
     cy.get('#hook-header-content').should('contain', 'New header');
     cy.get('#hook-header-content').should('contain', 'New subheader');
+
+    cy.get('.buttonText').should('contain', 'Custom button');
 
     // Layout checks
     // cy.get('[data-cy="e2e-fixed-ratio-layout-option"]').click();
