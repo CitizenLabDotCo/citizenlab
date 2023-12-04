@@ -239,14 +239,14 @@ const AdminPhaseEdit = () => {
     };
   };
 
-  const handleParticipationContextOnChange = (
+  const handlePhaseParticipationConfigChange = (
     participationContextConfig: IPhaseParticipationConfig
   ) => {
     setSubmitState('enabled');
     setAttributeDiff(getAttributeDiff(participationContextConfig));
   };
 
-  const handleParticipationContextOnSubmit = (
+  const handlePhaseParticipationConfigSubmit = (
     participationContextConfig: IPhaseParticipationConfig
   ) => {
     const attributeDiff = getAttributeDiff(participationContextConfig);
@@ -508,8 +508,8 @@ const AdminPhaseEdit = () => {
           {phase && (
             <PhaseParticipationConfig
               phase={phase}
-              onSubmit={handleParticipationContextOnSubmit}
-              onChange={handleParticipationContextOnChange}
+              onSubmit={handlePhaseParticipationConfigSubmit}
+              onChange={handlePhaseParticipationConfigChange}
               apiErrors={errors}
               appConfig={appConfig}
             />
@@ -517,8 +517,8 @@ const AdminPhaseEdit = () => {
           {!phase && (
             <PhaseParticipationConfig
               phase={undefined}
-              onSubmit={handleParticipationContextOnSubmit}
-              onChange={handleParticipationContextOnChange}
+              onSubmit={handlePhaseParticipationConfigSubmit}
+              onChange={handlePhaseParticipationConfigChange}
               apiErrors={errors}
               appConfig={appConfig}
             />

@@ -201,7 +201,7 @@ const AdminProjectsProjectGeneral = () => {
     setTitleError(null);
   };
 
-  const handleParticipationContextOnChange = (
+  const handlePhaseParticipationConfigChange = (
     participationContextConfig: IPhaseParticipationConfig
   ) => {
     setSubmitState('enabled');
@@ -389,7 +389,7 @@ const AdminProjectsProjectGeneral = () => {
     saveForm();
   };
 
-  const handleParticipationContextOnSubmit = (
+  const handlePhaseParticipationConfigSubmit = (
     participationContextConfig: IPhaseParticipationConfig
   ) => {
     saveForm(participationContextConfig);
@@ -526,8 +526,8 @@ const AdminProjectsProjectGeneral = () => {
                   <ParticipationContextWrapper>
                     <PhaseParticipationConfig
                       project={project}
-                      onSubmit={handleParticipationContextOnSubmit}
-                      onChange={handleParticipationContextOnChange}
+                      onSubmit={handlePhaseParticipationConfigSubmit}
+                      onChange={handlePhaseParticipationConfigChange}
                       apiErrors={apiErrors}
                       appConfig={appConfig}
                     />
