@@ -505,7 +505,6 @@
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage": "You have already submitted your budget. To change your budget, go back to the project page and click \"Modify your budget\".",
   "app.components.VoteInputs.single.youHaveVotedForX2": "You have voted for {votes, plural, =0 {# options} one {# option} other {# options}}",
   "app.components.VotingDataUnsavedModal.doNotSubmitYet": "Don't submit yet",
-  "app.components.VotingDataUnsavedModal.leavePage": "No, leave page",
   "app.components.VotingDataUnsavedModal.submitMyVote": "Submit my vote",
   "app.components.VotingDataUnsavedModal.submitYourVote": "Do you want to submit your vote?",
   "app.components.VotingDataUnsavedModal.submitYourVoteDescription2": "You have selected options that won't be counted until you submit them.",
