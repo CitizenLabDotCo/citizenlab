@@ -15,6 +15,7 @@ import SubmitButton from './SubmitButton';
 // hooks
 import usePhases from 'api/phases/usePhases';
 import useProjectById from 'api/projects/useProjectById';
+import useAuthUser from 'api/me/useAuthUser';
 
 // style
 import { useTheme } from 'styled-components';
@@ -39,6 +40,7 @@ const VotesNotSubmittedModal = ({ projectId, basket }: Props) => {
   const theme = useTheme();
   const isPhoneOrSmaller = useBreakpoint('phone');
   const { data: project } = useProjectById(projectId);
+  const { data: authUser } = useAuthUser();
   const { data: phases } = usePhases(projectId);
   const currentPhase = getCurrentPhase(phases?.data);
   const basketSubmitted = !isNilOrError(basket?.data.attributes.submitted_at);
@@ -73,12 +75,17 @@ const VotesNotSubmittedModal = ({ projectId, basket }: Props) => {
         : (window.onbeforeunload = beforeUnloadHandler);
     }
 
-    if (basketSubmitted) {
+    if (basketSubmitted || !authUser?.data) {
       isPhoneOrSmaller
         ? (document.onvisibilitychange = null)
         : (window.onbeforeunload = null);
     }
-  }, [basket?.data.attributes.total_votes, basketSubmitted, isPhoneOrSmaller]);
+  }, [
+    basket?.data.attributes.total_votes,
+    basketSubmitted,
+    isPhoneOrSmaller,
+    authUser,
+  ]);
 
   return (
     <Modal
