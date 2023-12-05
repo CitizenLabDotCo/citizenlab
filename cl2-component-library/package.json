@@ -109,7 +109,7 @@
     "polished": "4.2.2",
     "react-color": "2.19.3",
     "react-transition-group": "4.4.5",
-    "styled-components": "5.3.9",
+    "styled-components": "6.1.1",
     "tippy.js": "6.3.7"
   }
 }
