@@ -107,8 +107,6 @@ describe('Continuous Single voting project', () => {
 
   it('can submit the votes', () => {
     cy.get('#e2e-voting-submit-button').find('button').click();
-    cy.get('#e2e-votes-left-modal').click();
-    cy.get('#e2e-submit-vote-from-modal-button').click();
     cy.wait(1000);
 
     cy.contains('Vote submitted');
