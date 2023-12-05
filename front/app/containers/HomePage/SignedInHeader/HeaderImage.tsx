@@ -69,6 +69,7 @@ const HeaderImage = ({
           {/* Image overlay */}
           <Box
             data-testid="signed-in-header-image-overlay"
+            data-cy="e2e-signed-in-header-image-overlay"
             background={
               homepageSettings.banner_signed_in_header_overlay_color ||
               theme.signedInHeaderOverlayColor ||
