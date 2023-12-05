@@ -2,7 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 
 // i18n
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // components
@@ -38,7 +38,6 @@ const ProjectPermissions = () => {
 
   const { data: phase } = usePhase(phaseId || null);
   const { data: project } = useProjectById(projectId);
-  const { formatMessage } = useIntl();
 
   const isProjectVisibilityEnabled = useFeatureFlag({
     name: 'project_visibility',
