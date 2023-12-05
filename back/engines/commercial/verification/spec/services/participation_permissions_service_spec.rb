@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe ParticipationContextService do
+describe ParticipationPermissionsService do
   let(:service) { described_class.new }
 
   describe 'posting_disabled_reason' do

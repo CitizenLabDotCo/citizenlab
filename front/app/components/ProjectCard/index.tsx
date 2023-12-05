@@ -52,7 +52,7 @@ import { rgba, darken } from 'polished';
 import { getInputTermMessage } from 'utils/i18n';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
-import {getInputTerm} from "api/phases/utils";
+import { getInputTerm } from 'api/phases/utils';
 
 const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
   width: calc(33% - 12px);
@@ -440,7 +440,19 @@ const ProjectCard = memo<InputProps>(
     const currentPhaseId =
       project?.data?.relationships?.current_phase?.data?.id ?? null;
     const { data: phase } = usePhase(currentPhaseId);
-    const { data: phases } = usePhases(projectId);
+
+    // We only need the phases for the input term, and only
+    // in case there is no current phase in a timeline project.
+    // This is quite an edge case.
+    // With this check, we only fetch the phases if the project has loaded already
+    // AND there is no current phase, instead of always fetching all the phases
+    // for every project for which we're showing a card.
+    const fetchPhases = project && !currentPhaseId;
+
+    const { data: phases } = usePhases(
+      fetchPhases ? project.data.id : undefined
+    );
+
     const theme = useTheme();
 
     const [visible, setVisible] = useState(false);

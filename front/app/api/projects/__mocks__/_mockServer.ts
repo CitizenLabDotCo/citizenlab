@@ -75,8 +75,6 @@ export const project1: IProjectData = {
     },
     avatars_count: 8,
     participants_count: 8,
-    // MISMATCH: this attribute doesn't exist on our type
-    // allocated_budget: 0
     uses_content_builder: false,
   },
   relationships: {
@@ -199,8 +197,6 @@ export const project2: IProjectData = {
     },
     avatars_count: 6,
     participants_count: 6,
-    // MISMATCH: doesn't seem to exist on our type
-    // allocated_budget: 0
     uses_content_builder: false,
   },
   relationships: {
@@ -331,8 +327,6 @@ const votingProject: IProject = {
       },
       avatars_count: 2,
       participants_count: 2,
-      // MISMATCH
-      // allocated_budget: 0,
       uses_content_builder: true,
     },
     relationships: {

@@ -99,7 +99,7 @@ describe IdeaPolicy do
 
     context 'when there is a posting idea disabled reason' do
       before do
-        allow_any_instance_of(ParticipationContextService)
+        allow_any_instance_of(ParticipationPermissionsService)
           .to receive(:posting_idea_disabled_reason_for_project).and_return(disabled_reason)
       end
 
@@ -270,7 +270,7 @@ describe IdeaPolicy do
 
     it { is_expected.to permit(:show) }
     it { is_expected.to permit(:by_slug) }
-    it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
+    it { is_expected.not_to permit(:create) }
     it { is_expected.not_to permit(:update)  }
     it { is_expected.not_to permit(:destroy) }
 

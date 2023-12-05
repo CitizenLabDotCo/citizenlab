@@ -28,7 +28,7 @@ class BasketPolicy < ApplicationPolicy
   private
 
   def check_voting_allowed(basket, user)
-    pcs = ParticipationContextService.new
+    pcs = ParticipationPermissionsService.new
     !pcs.voting_disabled_reason_for_phase pcs.get_current_phase(basket.phase.project), user
   end
 end

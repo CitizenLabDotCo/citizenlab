@@ -31,12 +31,13 @@
 #  fk_rails_...  (default_assignee_id => users.id)
 #
 class Project < ApplicationRecord
-  include ParticipationContext
   include PgSearch::Model
 
   VISIBLE_TOS = %w[public groups admins].freeze
 
   mount_base64_uploader :header_bg, ProjectHeaderBgUploader
+
+  has_one :custom_form, as: :participation_context, dependent: :destroy # ideation & voting phases only
 
   has_many :ideas, dependent: :destroy
   has_many :reactions, through: :ideas
@@ -136,11 +137,6 @@ class Project < ApplicationRecord
 
   def permission_scope
     TimelineService.new.current_phase(self)
-  end
-
-  # TODO: JS - is this needed - seems to be on the ParticipationContextService also
-  def allocated_budget
-    Idea.from(ideas.select('budget * baskets_count as allocated_budget')).sum(:allocated_budget)
   end
 
   def set_default_topics!

@@ -87,10 +87,13 @@ const Sidebar = () => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
   const { data: authUser } = useAuthUser();
-  const { data: ideasCount } = useIdeasCount({
-    feedback_needed: true,
-    assignee: authUser?.data.id,
-  });
+  const { data: ideasCount } = useIdeasCount(
+    {
+      feedback_needed: true,
+      assignee: authUser?.data.id,
+    },
+    authUser ? isAdmin(authUser) : false
+  );
   const { data: initiativesCount } = useInitiativesCount(
     {
       feedback_needed: true,

@@ -88,6 +88,6 @@
 <%= 
   render partial: 'application/cta_button', 
   locals: { 
-  href:  "#{url_service.home_url(app_configuration: @app_configuration, locale: @locale)}/admin/projects/#{event.project_id}", 
+  href:  "#{url_service.admin_project_url(event.project_id)}",
   message: format_message('cta_manage') } 
 %>

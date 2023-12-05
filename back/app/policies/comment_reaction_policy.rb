@@ -25,7 +25,7 @@ class CommentReactionPolicy < ApplicationPolicy
 
     reason = case record.reactable&.post_type
     when 'Idea'
-      ParticipationContextService.new.reacting_disabled_reason_for_idea_comment(record.reactable, user)
+      ParticipationPermissionsService.new.reacting_disabled_reason_for_idea_comment(record.reactable, user)
     when 'Initiative'
       denied_for_initiative_reason user
     else

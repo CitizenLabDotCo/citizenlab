@@ -151,8 +151,14 @@ module Frontend
       "#{configuration.base_frontend_uri}/admin/ideas"
     end
 
-    def admin_project_ideas_url(project_id, configuration = app_config_instance)
-      "#{configuration.base_frontend_uri}/admin/projects/#{project_id}/ideas"
+    def admin_project_url(project_id, configuration = app_config_instance)
+      project = Project.find(project_id)
+      last_phase_id = project ? TimelineService.new.current_or_last_can_contain_ideas_phase(project)&.id : nil
+      if last_phase_id
+        "#{configuration.base_frontend_uri}/admin/projects/#{project_id}/phases/#{last_phase_id}/ideas"
+      else
+        "#{configuration.base_frontend_uri}/admin/projects/#{project_id}/setup"
+      end
     end
 
     def admin_initiatives_url(configuration = app_config_instance)

@@ -101,33 +101,40 @@ const HomepageBanner = ({ homepageSettings, image }: Props) => {
   const isEditorInPreviewMode =
     (editor.store.getState() as any)?.options.enabled === false;
   const showSignedInHeader =
-    (isEditorInPreviewMode && authUser?.data !== undefined) ||
+    (isEditorInPreviewMode &&
+      authUser?.data !== undefined &&
+      search.get('variant') === null) ||
     search.get('variant') === 'signedIn';
-  return showSignedInHeader ? (
-    <SignedInHeader
-      homepageSettings={{
-        ...homepageSettings,
-        header_bg: {
-          large: image?.imageUrl || null,
-          medium: image?.imageUrl || null,
-          small: image?.imageUrl || null,
-        },
-      }}
-      isContentBuilderPreview
-    />
-  ) : (
-    <Fragment name="signed-out-header">
-      <SignedOutHeader
-        homepageSettings={{
-          ...homepageSettings,
-          header_bg: {
-            large: image?.imageUrl || null,
-            medium: image?.imageUrl || null,
-            small: image?.imageUrl || null,
-          },
-        }}
-      />
-    </Fragment>
+
+  return (
+    <div data-cy="e2e-homepage-banner">
+      {showSignedInHeader ? (
+        <SignedInHeader
+          homepageSettings={{
+            ...homepageSettings,
+            header_bg: {
+              large: image?.imageUrl || null,
+              medium: image?.imageUrl || null,
+              small: image?.imageUrl || null,
+            },
+          }}
+          isContentBuilderPreview
+        />
+      ) : (
+        <Fragment name="signed-out-header">
+          <SignedOutHeader
+            homepageSettings={{
+              ...homepageSettings,
+              header_bg: {
+                large: image?.imageUrl || null,
+                medium: image?.imageUrl || null,
+                small: image?.imageUrl || null,
+              },
+            }}
+          />
+        </Fragment>
+      )}
+    </div>
   );
 };
 
@@ -321,27 +328,28 @@ const HomepageBannerSettings = () => {
           );
         }}
       />
-
-      <Toggle
-        label={
-          <Box>
-            <Text m={'0px'} color="primary">
-              {formatMessage(messages.showAvatars)}
-            </Text>
-            <Text m={'0px'} color="textSecondary" fontSize="s">
-              {formatMessage(messages.showAvatarsDescription)}
-            </Text>
-          </Box>
-        }
-        checked={homepageSettings.banner_avatars_enabled}
-        onChange={() => {
-          setProp(
-            (props: Props) =>
-              (props.homepageSettings.banner_avatars_enabled =
-                !homepageSettings.banner_avatars_enabled)
-          );
-        }}
-      />
+      <div data-cy="e2e-banner-avatar-toggle">
+        <Toggle
+          label={
+            <Box>
+              <Text m={'0px'} color="primary">
+                {formatMessage(messages.showAvatars)}
+              </Text>
+              <Text m={'0px'} color="textSecondary" fontSize="s">
+                {formatMessage(messages.showAvatarsDescription)}
+              </Text>
+            </Box>
+          }
+          checked={homepageSettings.banner_avatars_enabled}
+          onChange={() => {
+            setProp(
+              (props: Props) =>
+                (props.homepageSettings.banner_avatars_enabled =
+                  !homepageSettings.banner_avatars_enabled)
+            );
+          }}
+        />
+      </div>
 
       <Label htmlFor="bannerImage">{formatMessage(messages.bannerImage)}</Label>
       {homepageSettings.banner_layout === 'fixed_ratio_layout' &&
@@ -429,34 +437,38 @@ const HomepageBannerSettings = () => {
               }}
             />
           )}
-          <InputMultilocWithLocaleSwitcher
-            label={formatMessage(messages.bannerText)}
-            placeholder={formatMessage(homepageMessages.titleCity)}
-            type="text"
-            valueMultiloc={homepageSettings.banner_signed_out_header_multiloc}
-            onChange={(value) => {
-              setProp(
-                (props: Props) =>
-                  (props.homepageSettings.banner_signed_out_header_multiloc =
-                    value)
-              );
-            }}
-          />
-          <InputMultilocWithLocaleSwitcher
-            label={formatMessage(messages.bannerSubtext)}
-            placeholder={formatMessage(homepageMessages.subtitleCity)}
-            type="text"
-            valueMultiloc={
-              homepageSettings.banner_signed_out_subheader_multiloc
-            }
-            onChange={(value) => {
-              setProp(
-                (props: Props) =>
-                  (props.homepageSettings.banner_signed_out_subheader_multiloc =
-                    value)
-              );
-            }}
-          />
+          <div data-cy="e2e-signed-out-header-section">
+            <InputMultilocWithLocaleSwitcher
+              label={formatMessage(messages.bannerText)}
+              placeholder={formatMessage(homepageMessages.titleCity)}
+              type="text"
+              valueMultiloc={homepageSettings.banner_signed_out_header_multiloc}
+              onChange={(value) => {
+                setProp(
+                  (props: Props) =>
+                    (props.homepageSettings.banner_signed_out_header_multiloc =
+                      value)
+                );
+              }}
+            />
+          </div>
+          <div data-cy="e2e-signed-out-subheader-section">
+            <InputMultilocWithLocaleSwitcher
+              label={formatMessage(messages.bannerSubtext)}
+              placeholder={formatMessage(homepageMessages.subtitleCity)}
+              type="text"
+              valueMultiloc={
+                homepageSettings.banner_signed_out_subheader_multiloc
+              }
+              onChange={(value) => {
+                setProp(
+                  (props: Props) =>
+                    (props.homepageSettings.banner_signed_out_subheader_multiloc =
+                      value)
+                );
+              }}
+            />
+          </div>
           <Label>{formatMessage(messages.button)}</Label>
           {CTA_SIGNED_OUT_TYPES.map((option: CTASignedOutType) => {
             const labelMessage = labelMessages[option];
@@ -479,7 +491,7 @@ const HomepageBannerSettings = () => {
                     <Box ml="28px">
                       <Box mb="20px">
                         <InputMultilocWithLocaleSwitcher
-                          data-testid="inputMultilocLocaleSwitcher"
+                          id="customizedButtonText"
                           type="text"
                           valueMultiloc={
                             homepageSettings.banner_cta_signed_out_text_multiloc
@@ -504,7 +516,7 @@ const HomepageBannerSettings = () => {
                         />
                       </Label>
                       <Input
-                        id="buttonConfigInput"
+                        id="customizedButtonUrl"
                         type="text"
                         placeholder="https://..."
                         onChange={(value) =>

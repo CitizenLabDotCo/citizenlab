@@ -32,7 +32,6 @@ class WebApi::V1::ProjectsController < ApplicationController
 
     instance_options = {
       user_followers: user_followers,
-      allocated_budgets: ParticipationContextService.new.allocated_budgets(@projects),
       timeline_active: TimelineService.new.timeline_active_on_collection(@projects),
       visible_children_count_by_parent_id: {} # projects don't have children
     }
@@ -49,7 +48,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     render json: WebApi::V1::ProjectSerializer.new(
       @project,
       params: jsonapi_serializer_params,
-      include: %i[admin_publication project_images current_phase]
+      include: %i[admin_publication project_images current_phase avatars]
     ).serializable_hash
   end
 
