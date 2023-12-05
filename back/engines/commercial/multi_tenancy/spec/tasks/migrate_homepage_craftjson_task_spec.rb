@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 # TODO: Move into single_run spec folder
-describe 'rake migrate_craftjson' do
+describe 'rake migrate_craftjson' do # rubocop:disable RSpec/DescribeClass
   before { load_rake_tasks_if_not_loaded }
 
   describe ':homepage' do

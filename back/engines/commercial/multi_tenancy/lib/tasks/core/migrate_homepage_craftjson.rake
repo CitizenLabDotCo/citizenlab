@@ -1,16 +1,6 @@
 # frozen_string_literal: true
 
 namespace :migrate_craftjson do
-  desc 'Analyze'
-  task :analyze_homepages, %i[file] => [:environment] do |_t, args|
-    filename = args[:file] || 'craftjsons.csv'
-    data = CSV.parse(open(filename).read, { headers: true, col_sep: ',', converters: [] })
-    data.each do |d|
-      craftjson = JSON.parse(d['Craftjs Jsonmultiloc'])
-      puts craftjson # Do stuff
-    end
-  end
-
   desc 'Fix existing homepage'
   task :homepage, %i[host] => [:environment] do |_t, args|
     manual = []
