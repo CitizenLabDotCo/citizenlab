@@ -2,30 +2,33 @@
 
 require 'rails_helper'
 
-describe 'rake migrate_craftjson' do # TODO: mMve into single_run spec folder
+# TODO: Move into single_run spec folder
+describe 'rake migrate_craftjson' do
   before { load_rake_tasks_if_not_loaded }
 
   describe ':homepage' do
-    let(:whitespace) { {
-      'type' => { 'resolvedName' => 'WhiteSpace' },
-      'isCanvas' => false,
-      'props' => { 'size' => 'medium' },
-      'displayName' => 'WhiteSpace',
-      'custom' => {
-        'title' => {
-          'id' => 'app.containers.AdminPage.ProjectDescription.whiteSpace',
-          'defaultMessage' => 'White space'
-        }
-      },
-      'parent' => 'ROOT',
-      'hidden' => false,
-      'nodes' => [],
-      'linkedNodes' => {}
-    } }
+    let(:whitespace) do
+      {
+        'type' => { 'resolvedName' => 'WhiteSpace' },
+        'isCanvas' => false,
+        'props' => { 'size' => 'medium' },
+        'displayName' => 'WhiteSpace',
+        'custom' => {
+          'title' => {
+            'id' => 'app.containers.AdminPage.ProjectDescription.whiteSpace',
+            'defaultMessage' => 'White space'
+          }
+        },
+        'parent' => 'ROOT',
+        'hidden' => false,
+        'nodes' => [],
+        'linkedNodes' => {}
+      }
+    end
     let(:top_info_section_multiloc) { { 'en' => 'top info section en', 'nl-BE' => 'top info section nl' } }
     let(:bottom_info_section_multiloc) { { 'en' => 'bottom info section en', 'nl-BE' => 'bottom info section nl' } }
     let(:currently_working_on_text) { { 'en' => 'currently working on en', 'nl-BE' => 'currently working on nl' } }
-    let!(:homepage) { 
+    let!(:homepage) do
       create(
         :home_page,
         top_info_section_enabled: true,
@@ -34,7 +37,7 @@ describe 'rake migrate_craftjson' do # TODO: mMve into single_run spec folder
         bottom_info_section_multiloc: bottom_info_section_multiloc,
         events_widget_enabled: true
       )
-    }
+    end
 
     it 'Makes the ordering field sequential for all user custom fields' do
       config = AppConfiguration.instance
