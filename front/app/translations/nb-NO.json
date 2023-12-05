@@ -1163,7 +1163,7 @@
   "app.containers.InitiativesShow.youWereInvitedToConsponsorBy": "{authorName} inviterte deg til å være medsponsor for dette forslaget.",
   "app.containers.Navbar.completeOnboarding": "Fullfør onboarding",
   "app.containers.Navbar.completeProfile": "Komplett profil",
-  "app.containers.Navbar.confirmEmail": "Bekreft e-postadresse",
+  "app.containers.Navbar.confirmEmail2": "Bekreft epost",
   "app.containers.Navbar.unverified": "Ikke bekreftet",
   "app.containers.Navbar.verified": "Bekreftet",
   "app.containers.NewAuthModal.beforeYouFollow": "Før du følger etter",

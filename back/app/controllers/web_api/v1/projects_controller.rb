@@ -48,7 +48,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     render json: WebApi::V1::ProjectSerializer.new(
       @project,
       params: jsonapi_serializer_params,
-      include: %i[admin_publication project_images current_phase]
+      include: %i[admin_publication project_images current_phase avatars]
     ).serializable_hash
   end
 
