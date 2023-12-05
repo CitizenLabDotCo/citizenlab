@@ -29,6 +29,7 @@ import Navigate from 'utils/cl-router/Navigate';
 import Authentication from 'containers/Authentication';
 import MainHeader from 'containers/MainHeader';
 import Meta from './Meta';
+import MobileScrollHeader from 'containers/MainHeader/Components/MobileScrollHeader';
 const UserDeletedModal = lazy(() => import('./UserDeletedModal'));
 const PlatformFooter = lazy(() => import('containers/PlatformFooter'));
 
@@ -59,7 +60,6 @@ import { Locale } from 'typings';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 import useAuthUser from 'api/me/useAuthUser';
 import { configureScope } from '@sentry/react';
-import OnScrollHeader from 'containers/MainHeader/Components/OnScrollHeader';
 
 interface Props {
   children: React.ReactNode;
@@ -341,7 +341,7 @@ const App = ({ children }: Props) => {
               {showFrontOfficeNavbar && (
                 <ErrorBoundary>
                   <MainHeader />
-                  <OnScrollHeader />
+                  <MobileScrollHeader />
                 </ErrorBoundary>
               )}
               <Box

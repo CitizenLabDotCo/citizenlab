@@ -4,8 +4,6 @@ import { includes } from 'lodash-es';
 import { locales } from 'containers/App/constants';
 
 // components
-
-import Fragment from 'components/Fragment';
 import useLocale from 'hooks/useLocale';
 
 // utils
@@ -13,9 +11,11 @@ import { isPage } from 'utils/helperUtils';
 
 // style
 import styled from 'styled-components';
-import { media, isRtl } from 'utils/styleUtils';
+import { media } from 'utils/styleUtils';
 import TenantLogo from '../TenantLogo';
 import MobileNavbarContent from '../NavbarContent/MobileNavbarContent';
+import { useBreakpoint } from '@citizenlab/cl2-component-library';
+import { ContainerInner, Left } from 'containers/MainHeader';
 
 const Container = styled.header<{
   position: 'fixed' | 'absolute';
@@ -23,51 +23,30 @@ const Container = styled.header<{
   background: ${({ theme }) => theme.navbarBackgroundColor || '#fff'};
   box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.1);
   z-index: 1004;
-  position: fixed; /* Make it stick/fixed */
-  top: 0px; /* Hide the navbar 50 px outside of the top view */
-  width: 100%; /* Full width */
-  display: none;
+  position: fixed;
+  top: -100px; /* Hide the navbar 50 px outside of the top view */
+  width: 100%;
+  display: block;
 
   &.scroll-up-nav {
-    display: block;
+    transition: top 0.3s;
+    top: -0px;
+  }
+
+  &.hideNavbar {
+    ${media.tablet`
+      display: none;
+    `}
+  }
+
+  @media print {
+    display: none;
   }
 `;
 
-const ContainerInner = styled.div`
-  flex-grow: 1;
-  flex-shrink: 0;
-  flex-basis: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-left: 20px;
-  position: relative;
-  ${isRtl`
-    padding-left: 0px;
-    padding-right: 20px;
-    flex-direction: row-reverse;
-    `}
-
-  ${media.phone`
-    padding-left: 15px;
-  `}
-`;
-
-const Left = styled.div`
-  display: flex;
-  align-items: center;
-  height: ${({ theme }) => theme.menuHeight}px;
-  ${isRtl`
-    flex-direction: row-reverse;
-    `}
-`;
-
-const StyledRightFragment = styled(Fragment)`
-  max-width: 200px;
-`;
-
-const OnScrollHeader = () => {
+const MobileScrollHeader = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const isPhoneOrSmaller = useBreakpoint('phone');
   const locale = useLocale();
   const showNavBar = useRef(false);
   const [scrollTop, setScrollTop] = useState(0);
@@ -77,10 +56,10 @@ const OnScrollHeader = () => {
       const currentPosition = document.documentElement.scrollTop;
 
       if (currentPosition > scrollTop) {
-        // downscroll code
+        // downscroll
         showNavBar.current = false;
       } else {
-        // upscroll code
+        // upscroll
         showNavBar.current = true;
       }
       setScrollTop(currentPosition <= 0 ? 0 : currentPosition);
@@ -89,6 +68,10 @@ const OnScrollHeader = () => {
     window.addEventListener('scroll', onScroll);
     return () => window.removeEventListener('scroll', onScroll);
   }, [scrollTop]);
+
+  if (!isPhoneOrSmaller) {
+    return null;
+  }
 
   // url segments
   const urlSegments = location.pathname.replace(/^\/+/g, '').split('/');
@@ -131,12 +114,10 @@ const OnScrollHeader = () => {
         <Left>
           <TenantLogo />
         </Left>
-        <StyledRightFragment name="navbar-right">
-          <MobileNavbarContent />
-        </StyledRightFragment>
+        <MobileNavbarContent />
       </ContainerInner>
     </Container>
   );
 };
 
-export default OnScrollHeader;
+export default MobileScrollHeader;

@@ -48,7 +48,7 @@ const Container = styled.header<{ position: 'fixed' | 'absolute' }>`
   }
 `;
 
-const ContainerInner = styled.div`
+export const ContainerInner = styled.div`
   flex-grow: 1;
   flex-shrink: 0;
   flex-basis: 100%;
@@ -68,7 +68,7 @@ const ContainerInner = styled.div`
   `}
 `;
 
-const Left = styled.div`
+export const Left = styled.div`
   display: flex;
   align-items: center;
   height: ${({ theme }) => theme.menuHeight}px;
