@@ -1633,7 +1633,7 @@
   "app.containers.footer.terms-and-conditions": "Gebruiksvoorwaarden",
   "app.containers.landing.browseInitiative": "Ontdek alle voorstellen",
   "app.containers.landing.cityProjects": "Projecten",
-  "app.containers.landing.completeProfile": "Profiel aanvullen",
+  "app.containers.landing.completeProfile": "Vul je profiel verder aan",
   "app.containers.landing.completeYourProfile": "Welkom, {firstName}. Het is tijd om je profiel aan te vullen.",
   "app.containers.landing.createAccount": "Registreren",
   "app.containers.landing.defaultSignedInMessage": "{orgName} luistert naar je. Laat je stem horen!",
