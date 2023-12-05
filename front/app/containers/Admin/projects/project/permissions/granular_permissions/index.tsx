@@ -2,19 +2,19 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import React, { ReactNode } from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 const InitiativeSettingsTab = React.lazy(
-  () => import('./admin/components/InitiativeSettingsTab')
+  () => import('./components/InitiativeSettingsTab')
 );
 const ProjectSettingsTab = React.lazy(
-  () => import('./admin/components/ProjectSettingsTab')
+  () => import('./components/ProjectSettingsTab')
 );
 const PhasePermissions = React.lazy(
-  () => import('./admin/containers/Granular/PhasePermissions')
+  () => import('./containers/Granular/PhasePermissions')
 );
-const Granular = React.lazy(() => import('./admin/containers/Granular'));
+const Granular = React.lazy(() => import('./containers/Granular'));
 const FeatureFlag = React.lazy(() => import('components/FeatureFlag'));
 
 const AdminGranularPermissionsComponent = React.lazy(
-  () => import('./admin/containers/permissions')
+  () => import('./containers/permissions')
 );
 
 type RenderOnTabHideConditionProps = {
