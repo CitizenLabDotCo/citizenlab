@@ -1,0 +1,11 @@
+#Translations for continuous to timeline migration
+tr:
+  phase_title_default:
+    ideation: Girdi toplayın
+    voting: Oylama
+    poll: Anket
+    native_survey: Anket
+    survey: Anket
+    document_annotation: Belge geri bildirimi
+    volunteering: Gönüllüler bulun
+    information: Bilgi
