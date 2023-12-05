@@ -3,6 +3,9 @@ import React from 'react';
 // components
 import Button from 'components/UI/Button';
 
+// styling
+import { colors } from 'utils/styleUtils';
+
 // i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -18,6 +21,7 @@ const SaveButton = (props: Props) => (
     {...props}
     id="e2e-content-builder-topbar-save"
     buttonStyle="primary"
+    bgColor={colors.primary}
     data-testid="contentBuilderTopBarSaveButton"
   >
     <FormattedMessage {...messages.contentBuilderSave} />

@@ -7,9 +7,6 @@ import { useParams } from 'react-router-dom';
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-// context
-import { ReportContext } from '../../context/ReportContext';
-
 // components
 import { Text, Spinner, Box } from '@citizenlab/cl2-component-library';
 import Report from './Report';
@@ -93,9 +90,7 @@ export const PrintReport = ({ reportId, _print = true }: Props) => {
           </Text>
         </PreparingBox>
       )}
-      <ReportContext.Provider value="pdf">
-        <Report reportId={reportId} />
-      </ReportContext.Provider>
+      <Report reportId={reportId} />
     </>
   );
 };
