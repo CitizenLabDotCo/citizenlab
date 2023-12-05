@@ -34,7 +34,7 @@ const Projects = ({
   return (
     <Box bg={colors.background} data-cy="e2e-projects">
       <Box maxWidth="1200px" margin="0 auto">
-        <ProjectSection>
+        <ProjectSection id="e2e-landing-page-project-section">
           <ProjectAndFolderCards
             publicationStatusFilter={['published', 'archived']}
             showTitle={true}
