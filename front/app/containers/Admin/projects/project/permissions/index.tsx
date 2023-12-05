@@ -21,6 +21,7 @@ import styled from 'styled-components';
 import Outlet from 'components/Outlet';
 import { colors } from 'utils/styleUtils';
 import Granular from './granular_permissions/containers/Granular';
+import PhasePermissions from './granular_permissions/containers/Granular/PhasePermissions';
 
 const StyledSection = styled(Section)`
   margin-bottom: 50px;
@@ -58,36 +59,22 @@ const ProjectPermissions = () => {
   });
 
   if (phase && project) {
-    return (
-      <Outlet
-        id="app.containers.Admin.project.phase.permissions.participationRights"
-        phase={phase.data}
-        project={project.data}
-      >
-        {(outletComponents) =>
-          outletComponents.length > 0 || isProjectVisibilityEnabled ? (
-            <StyledSection>
-              <Title variant="h2" color="primary">
-                <FormattedMessage
-                  {...messages.participationRequirementsTitle}
-                />
-                <BetaLabel
-                  text={formatMessage(messages.betaLabel)}
-                  backgroundColor={colors.background}
-                  variant="outlined"
-                />
-              </Title>
-              <Text color="coolGrey600" pb="8px">
-                <FormattedMessage
-                  {...messages.participationRequirementsSubtitle}
-                />
-              </Text>
-              {outletComponents}
-            </StyledSection>
-          ) : null
-        }
-      </Outlet>
-    );
+    return isGranularPermissionsEnabled && isProjectVisibilityEnabled ? (
+      <StyledSection>
+        <Title variant="h2" color="primary">
+          <FormattedMessage {...messages.participationRequirementsTitle} />
+          <BetaLabel
+            text={formatMessage(messages.betaLabel)}
+            backgroundColor={colors.background}
+            variant="outlined"
+          />
+        </Title>
+        <Text color="coolGrey600" pb="8px">
+          <FormattedMessage {...messages.participationRequirementsSubtitle} />
+        </Text>
+        <PhasePermissions project={project.data} phase={phase.data} />
+      </StyledSection>
+    ) : null;
   }
 
   if (project) {

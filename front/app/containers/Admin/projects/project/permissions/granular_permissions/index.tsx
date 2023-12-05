@@ -46,13 +46,6 @@ const configuration: ModuleConfiguration = {
     ],
   },
   outlets: {
-    'app.containers.Admin.project.phase.permissions.participationRights': (
-      props
-    ) => (
-      <FeatureFlag name="granular_permissions">
-        <PhasePermissions {...props} />
-      </FeatureFlag>
-    ),
     'app.containers.Admin.initiatives.tabs': (props) => (
       <InitiativeSettingsTab {...props} />
     ),
