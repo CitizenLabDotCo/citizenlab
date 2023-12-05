@@ -4,10 +4,11 @@ import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useReportLayout from 'api/report_layout/useReportLayout';
-import useReportLocale from '../../hooks/useReportLocale';
+import useLocale from 'hooks/useLocale';
 
 // context
 import { ReportContextProvider } from '../../context/ReportContext';
+import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -40,8 +41,6 @@ import { A4_WIDTH } from '../../constants';
 import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
 import { SerializedNodes } from '@craftjs/core';
 import { Locale } from 'typings';
-import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
-import useLocale from '../../../../../hooks/useLocale';
 
 interface Props {
   reportId: string;
@@ -52,23 +51,14 @@ const ReportBuilder = ({ reportId }: Props) => {
   const [contentBuilderErrors, setContentBuilderErrors] =
     useState<ContentBuilderErrors>({});
   const [imageUploading, setImageUploading] = useState(false);
-  const [selectedLocale, setSelectedLocale] = useState<Locale | undefined>();
+  const platformLocale = useLocale();
+  const [selectedLocale, _setSelectedLocale] = useState<Locale>(platformLocale);
   const [draftData, setDraftData] = useState<Record<string, SerializedNodes>>();
   const { data: reportLayout } = useReportLayout(reportId);
-  const reportLocale = useReportLocale(reportLayout?.data);
-  const platformLocale = useLocale();
   const [initialized, setInitialized] = useState(false);
   const [initialData, setInitialData] = useState<SerializedNodes | undefined>();
   const [search] = useSearchParams();
   const templateProjectId = search.get('templateProjectId');
-
-  // Note: selectedLocale is kept to keep compatibility with content builder
-  // although there is currently only one locale allowed per report
-  useEffect(() => {
-    if (!isNilOrError(reportLocale)) {
-      setSelectedLocale(reportLocale);
-    }
-  }, [reportLocale]);
 
   const localesWithError = useMemo(() => {
     return Object.values(contentBuilderErrors)
@@ -165,7 +155,7 @@ const ReportBuilder = ({ reportId }: Props) => {
                   height="100%"
                 >
                   <LanguageProvider
-                    contentBuilderLocale={reportLocale}
+                    contentBuilderLocale={selectedLocale}
                     platformLocale={platformLocale}
                   >
                     <Frame editorData={initialData}>
@@ -196,7 +186,7 @@ const ReportBuilder = ({ reportId }: Props) => {
               <Box width={A4_WIDTH} background="white" px={'15mm'} py={'15mm'}>
                 <Editor isPreview={true}>
                   <LanguageProvider
-                    contentBuilderLocale={reportLocale}
+                    contentBuilderLocale={selectedLocale}
                     platformLocale={platformLocale}
                   >
                     <Frame editorData={previewData} />

@@ -1,8 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-
-// services
-import { LocaleSubject } from 'utils/locale';
 
 // context
 import { ReportContextProvider } from '../../context/ReportContext';
@@ -10,8 +7,6 @@ import { ReportContextProvider } from '../../context/ReportContext';
 // hooks
 import useReportLayout from 'api/report_layout/useReportLayout';
 import useLocale from 'hooks/useLocale';
-import useReportLocale from '../../hooks/useReportLocale';
-import ContentBuilderLanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
 
 // components
 import FullScreenWrapper from 'components/admin/ContentBuilder/FullscreenPreview/Wrapper';
@@ -51,57 +46,41 @@ export interface Props {
 export const Report = ({ reportId }: Props) => {
   const [draftData, setDraftData] = useState<SerializedNodes | undefined>();
   const { data: reportLayout } = useReportLayout(reportId);
-  const reportLocale = useReportLocale(reportLayout?.data);
   const platformLocale = useLocale();
-
-  useEffect(() => {
-    if (isNilOrError(reportLocale) || isNilOrError(platformLocale)) return;
-    if (reportLocale === platformLocale) return;
-    LocaleSubject.next(reportLocale);
-  }, [reportLocale, platformLocale]);
-
-  if (isNilOrError(reportLocale)) {
-    return null;
-  }
 
   const isLoadingLayout = reportLayout === undefined;
 
   const savedEditorData = !isNilOrError(reportLayout)
-    ? reportLayout.data.attributes.craftjs_jsonmultiloc[reportLocale]
+    ? reportLayout.data.attributes.craftjs_jsonmultiloc[platformLocale]
     : undefined;
 
   const editorData = draftData || savedEditorData;
 
   return (
-    <ContentBuilderLanguageProvider
-      contentBuilderLocale={reportLocale}
-      platformLocale={platformLocale}
-    >
-      <ReportContextProvider width="pdf" reportId={reportId}>
-        <FullScreenWrapper onUpdateDraftData={setDraftData}>
-          {isLoadingLayout && <Spinner />}
-          {!isLoadingLayout && (
-            <Centerer>
-              <Box
-                width={A4_WIDTH}
-                pl="5mm"
-                pr="10mm"
-                position="absolute"
-                background="white"
-              >
-                <Box>
-                  <Editor isPreview={true}>
-                    {editorData && (
-                      <ContentBuilderFrame editorData={editorData} />
-                    )}
-                  </Editor>
-                </Box>
+    <ReportContextProvider width="pdf" reportId={reportId}>
+      <FullScreenWrapper onUpdateDraftData={setDraftData}>
+        {isLoadingLayout && <Spinner />}
+        {!isLoadingLayout && (
+          <Centerer>
+            <Box
+              width={A4_WIDTH}
+              pl="5mm"
+              pr="10mm"
+              position="absolute"
+              background="white"
+            >
+              <Box>
+                <Editor isPreview={true}>
+                  {editorData && (
+                    <ContentBuilderFrame editorData={editorData} />
+                  )}
+                </Editor>
               </Box>
-            </Centerer>
-          )}
-        </FullScreenWrapper>
-      </ReportContextProvider>
-    </ContentBuilderLanguageProvider>
+            </Box>
+          </Centerer>
+        )}
+      </FullScreenWrapper>
+    </ReportContextProvider>
   );
 };
 
