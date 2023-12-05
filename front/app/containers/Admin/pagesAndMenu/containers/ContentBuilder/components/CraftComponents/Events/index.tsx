@@ -17,7 +17,7 @@ import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
 const Events = () => {
   const isSmallerThanTablet = useBreakpoint('tablet');
   return (
-    <Box bg={colors.background}>
+    <Box bg={colors.background} data-cy="e2e-events">
       <Box
         maxWidth="1200px"
         margin="0 auto"

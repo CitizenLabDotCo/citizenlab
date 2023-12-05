@@ -19,8 +19,8 @@ export default defineMessages({
     defaultMessage: 'Sign out',
   },
   confirmEmail: {
-    id: 'app.containers.Navbar.confirmEmail',
-    defaultMessage: 'Confirm email address',
+    id: 'app.containers.Navbar.confirmEmail2',
+    defaultMessage: 'Confirm email',
   },
   completeProfile: {
     id: 'app.containers.Navbar.completeProfile',
