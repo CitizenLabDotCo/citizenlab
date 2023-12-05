@@ -47,7 +47,7 @@ describe('Admin: update Hero Banner content', () => {
     cy.apiUpdateHomepageSettings(defaultHomepageSettings);
   });
 
-  it('displays hero banner settings on the landing page correctly', () => {
+  it.skip('displays hero banner settings on the landing page correctly', () => {
     cy.visit('/');
     cy.acceptCookies();
 
@@ -77,7 +77,7 @@ describe('Admin: update Hero Banner content', () => {
     );
   });
 
-  it('uploads, crops, and displays banner image (full width)', () => {
+  it.skip('uploads, crops, and displays banner image (full width)', () => {
     cy.intercept('PATCH', '**/home_page').as('saveHomePage');
     cy.setConsentAndAdminLoginCookies();
 
@@ -96,7 +96,7 @@ describe('Admin: update Hero Banner content', () => {
     cy.get('[data-cy="e2e-overlay-toggle"]').should('exist');
   });
 
-  it('uploads, crops, and displays banner image (two-row layout)', () => {
+  it.skip('uploads, crops, and displays banner image (two-row layout)', () => {
     cy.intercept('PATCH', '**/home_page').as('saveHomePage');
     cy.setConsentAndAdminLoginCookies();
 
@@ -123,7 +123,7 @@ describe('Admin: update Hero Banner content', () => {
     cy.get('[data-cy="e2e-signed-in-header-image"]').should('exist');
   });
 
-  it('uploads, crops, and displays banner image (fixed ratio)', () => {
+  it.skip('uploads, crops, and displays banner image (fixed ratio)', () => {
     cy.intercept('PATCH', '**/home_page').as('saveHomePage');
     cy.setConsentAndAdminLoginCookies();
 

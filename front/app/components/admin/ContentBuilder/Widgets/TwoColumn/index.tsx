@@ -52,6 +52,8 @@ export const TwoColumn = ({ columnLayout, children }: TwoColumnProps) => {
       id="e2e-two-column"
       columnLayout={columnLayout}
       px={componentDefaultPadding}
+      maxWidth="1200px"
+      margin="0 auto"
     >
       {children || (
         <>
