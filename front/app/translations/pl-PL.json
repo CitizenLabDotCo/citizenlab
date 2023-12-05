@@ -1163,7 +1163,7 @@
   "app.containers.InitiativesShow.youWereInvitedToConsponsorBy": "{authorName} zaprosił Cię do współsponsorowania tej propozycji.",
   "app.containers.Navbar.completeOnboarding": "Pełne wdrożenie",
   "app.containers.Navbar.completeProfile": "Pełny profil",
-  "app.containers.Navbar.confirmEmail": "Potwierdź adres e-mail",
+  "app.containers.Navbar.confirmEmail2": "Potwierdź wiadomość e-mail",
   "app.containers.Navbar.unverified": "Niezweryfikowany",
   "app.containers.Navbar.verified": "Zweryfikowany",
   "app.containers.NewAuthModal.beforeYouFollow": "Zanim zaczniesz śledzić",
