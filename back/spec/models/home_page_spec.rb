@@ -74,7 +74,7 @@ RSpec.describe HomePage do
           },
           'image' => {
             'dataCode' => kind_of(String)
-          }, 
+          },
           'errors' => [],
           'hasError' => false
         },
