@@ -46,13 +46,6 @@ const configuration: ModuleConfiguration = {
     ],
   },
   outlets: {
-    'app.containers.Admin.project.edit.permissions.participationRights': (
-      props
-    ) => (
-      <FeatureFlag name="granular_permissions">
-        <Granular {...props} />
-      </FeatureFlag>
-    ),
     'app.containers.Admin.project.phase.permissions.participationRights': (
       props
     ) => (

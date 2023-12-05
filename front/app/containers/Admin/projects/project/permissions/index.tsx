@@ -20,6 +20,7 @@ import usePhase from 'api/phases/usePhase';
 import styled from 'styled-components';
 import Outlet from 'components/Outlet';
 import { colors } from 'utils/styleUtils';
+import Granular from './granular_permissions/containers/Granular';
 
 const StyledSection = styled(Section)`
   margin-bottom: 50px;
@@ -46,6 +47,10 @@ const ProjectPermissions = () => {
 
   const isProjectVisibilityEnabled = useFeatureFlag({
     name: 'project_visibility',
+  });
+
+  const isGranularPermissionsEnabled = useFeatureFlag({
+    name: 'granular_permissions',
   });
 
   const isProjectManagementEnabled = useFeatureFlag({
@@ -99,34 +104,24 @@ const ProjectPermissions = () => {
             <ProjectVisibility projectId={projectId} />
           </>
         )}
-        <Outlet
-          id="app.containers.Admin.project.edit.permissions.participationRights"
-          projectId={projectId}
-          project={project.data}
-        >
-          {(outletComponents) =>
-            outletComponents.length > 0 || isProjectVisibilityEnabled ? (
-              <StyledSection>
-                <Title variant="h2" color="primary">
-                  <FormattedMessage
-                    {...messages.participationRequirementsTitle}
-                  />
-                  <BetaLabel
-                    text={formatMessage(messages.betaLabel)}
-                    backgroundColor={colors.background}
-                    variant="outlined"
-                  />
-                </Title>
-                <Text color="coolGrey600" pb="8px">
-                  <FormattedMessage
-                    {...messages.participationRequirementsSubtitle}
-                  />
-                </Text>
-                {outletComponents}
-              </StyledSection>
-            ) : null
-          }
-        </Outlet>
+        {isGranularPermissionsEnabled && isProjectVisibilityEnabled && (
+          <StyledSection>
+            <Title variant="h2" color="primary">
+              <FormattedMessage {...messages.participationRequirementsTitle} />
+              <BetaLabel
+                text={formatMessage(messages.betaLabel)}
+                backgroundColor={colors.background}
+                variant="outlined"
+              />
+            </Title>
+            <Text color="coolGrey600" pb="8px">
+              <FormattedMessage
+                {...messages.participationRequirementsSubtitle}
+              />
+            </Text>
+            <Granular project={project.data} />
+          </StyledSection>
+        )}
         <Outlet
           id="app.containers.Admin.project.edit.permissions.moderatorRights"
           projectId={projectId}
