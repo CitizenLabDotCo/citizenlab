@@ -74,6 +74,13 @@ const IdeasShowPage = () => {
     phases?.data
   );
 
+  // If the idea is not in the current phase, we don't show the CTA bar
+  const ideaCurrentPhaseFilter = idea?.data.relationships.phases.data.filter(
+    (phase) => phase.id === participationContext?.id
+  );
+  const isIdeaInCurrentPhase =
+    ideaCurrentPhaseFilter && ideaCurrentPhaseFilter.length > 0;
+
   if (status === 'loading') {
     return (
       <VerticalCenterer>
@@ -97,7 +104,9 @@ const IdeasShowPage = () => {
           background={colors.white}
           mt={
             isSmallerThanTablet ||
-            participationContext?.attributes.participation_method !== 'voting'
+            participationContext?.attributes.participation_method !==
+              'voting' ||
+            !isIdeaInCurrentPhase
               ? undefined
               : `${stylingConsts.menuHeight.toString()}px`
           }
@@ -127,6 +136,7 @@ const IdeasShowPage = () => {
           zIndex="1000"
         >
           {project?.data.id && // Show the CTA bar only when voting is active
+            isIdeaInCurrentPhase &&
             participationContext?.attributes.participation_method ===
               'voting' && <ProjectCTABar projectId={project.data.id} />}
         </Box>
