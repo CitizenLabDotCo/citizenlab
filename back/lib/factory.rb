@@ -10,7 +10,7 @@ class Factory
     # NOTE: if a project is passed to this method, timeline projects used to always return 'Ideation'
     # as it was never set and defaulted to this when the participation_method was available on the project
     # The following mimics the same behaviour now that participation method is not available on the project
-    # TODO: JS - Change to find phase with ideation or voting where created date between start and end date?
+    # TODO: Maybe change to find phase with ideation or voting where created date between start and end date?
     if participation_context.instance_of?(::Project)
       ::ParticipationMethod::Ideation.new(participation_context.phases.first)
     else

@@ -402,9 +402,18 @@ FactoryBot.define do
 
     factory :private_admins_project do
       visible_to { :admins }
+      after(:create) do |project, _evaluator|
+        project.phases << create(
+          :phase,
+          project: project,
+          participation_method: 'ideation',
+          start_at: Faker::Date.between(from: 6.months.ago, to: Time.zone.now),
+          end_at: nil
+        )
+      end
     end
 
-    factory :private_groups_project do
+    factory :private_groups_base_project do
       visible_to { 'groups' }
       transient do
         groups_count { 1 }
@@ -418,7 +427,7 @@ FactoryBot.define do
         end
       end
 
-      factory :private_groups_single_phase_project do
+      factory :private_groups_project do
         transient do
           phase_attrs { {} }
         end

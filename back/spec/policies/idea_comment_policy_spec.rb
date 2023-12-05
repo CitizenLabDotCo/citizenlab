@@ -86,7 +86,7 @@ describe IdeaCommentPolicy do
 
   context 'for a visitor on a comment on an idea in a private groups project' do
     let!(:user) { nil }
-    let!(:project) { create(:private_groups_single_phase_project) }
+    let!(:project) { create(:private_groups_project) }
 
     it { is_expected.not_to permit(:show)    }
     it { is_expected.not_to permit(:create)  }
@@ -99,7 +99,7 @@ describe IdeaCommentPolicy do
   end
 
   context "for a user on a comment on an idea in a private groups project where she's not member of a manual group with access" do
-    let!(:project) { create(:private_groups_single_phase_project) }
+    let!(:project) { create(:private_groups_project) }
     let!(:comment) { create(:comment, post: idea, author: user) }
 
     it { is_expected.not_to permit(:show)    }
@@ -113,7 +113,7 @@ describe IdeaCommentPolicy do
   end
 
   context "for a user on a comment on an idea in a private groups project where she's a member of a manual group with access" do
-    let!(:project) { create(:private_groups_single_phase_project, user: user) }
+    let!(:project) { create(:private_groups_project, user: user) }
     let!(:comment) { create(:comment, post: idea, author: user) }
 
     it { is_expected.to     permit(:show)    }

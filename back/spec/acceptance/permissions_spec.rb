@@ -9,7 +9,7 @@ resource 'Permissions' do
   before do
     header 'Content-Type', 'application/json'
     @project = create(:single_phase_ideation_project)
-    @phase = ParticipationContextService.new.get_current_phase(@project)
+    @phase = ParticipationPermissionsService.new.get_current_phase(@project)
     PermissionsService.new.update_all_permissions
   end
 
