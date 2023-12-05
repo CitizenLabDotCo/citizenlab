@@ -11,16 +11,9 @@ import useProjectById from 'api/projects/useProjectById';
 import usePhases from 'api/phases/usePhases';
 import useBasketsIdeas from './useBasketsIdeas';
 import useVoteForIdea from './useVoteForIdea';
-import useBasket from 'api/baskets/useBasket';
-
-// components
-import VotesNotSubmittedModal from 'components/VotesNotSubmittedModal';
 
 // utils
-import {
-  getCurrentParticipationContext,
-  getCurrentPhase,
-} from 'api/phases/utils';
+import { getCurrentParticipationContext } from 'api/phases/utils';
 import { isNil } from 'utils/helperUtils';
 
 interface Props {
@@ -40,15 +33,10 @@ const VotingInterfaceContext = createContext<VotingInterface | null>(null);
 
 export const VotingContext = ({ projectId, children }: Props) => {
   const votingInterface = useVotingInterface(projectId);
-  const { data: phases } = usePhases(projectId);
-  const currentPhase = getCurrentPhase(phases?.data);
-  const basketId = currentPhase?.relationships?.user_basket?.data?.id;
-  const { data: basket } = useBasket(basketId);
 
   return (
     <VotingInterfaceContext.Provider value={votingInterface}>
       {children}
-      <VotesNotSubmittedModal projectId={projectId} basket={basket} />
     </VotingInterfaceContext.Provider>
   );
 };
