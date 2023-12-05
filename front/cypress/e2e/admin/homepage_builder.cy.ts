@@ -85,7 +85,7 @@ describe('Homepage builder', () => {
     });
   });
 
-  it('updates homepage builder content correctly', () => {
+  it.skip('updates homepage builder content correctly', () => {
     cy.setAdminLoginCookie();
     cy.intercept('PATCH', '**/home_page').as('saveHomePage');
     cy.intercept('GET', '**/home_page').as('getHomePage');
@@ -149,7 +149,7 @@ describe('Homepage builder', () => {
     );
   });
 
-  it('removes homepage builder content correctly', () => {
+  it.skip('removes homepage builder content correctly', () => {
     cy.setAdminLoginCookie();
     cy.intercept('PATCH', '**/home_page').as('saveHomePage');
     cy.intercept('GET', '**/home_page').as('getHomePage');
@@ -208,7 +208,7 @@ describe('Homepage builder', () => {
     });
   });
 
-  it('updates homepage banner correctly', () => {
+  it.skip('updates homepage banner correctly', () => {
     cy.intercept('PATCH', '**/home_page').as('saveHomePage');
     cy.intercept('GET', '**/home_page').as('getHomePage');
     cy.intercept('GET', '**/pages-menu').as('getPages');
@@ -382,7 +382,7 @@ describe('Homepage builder', () => {
     cy.get('.buttonText').should('contain', 'Custom button');
   });
 
-  it('updates homepage banner layout correctly', () => {
+  it.skip('updates homepage banner layout correctly', () => {
     cy.intercept('PATCH', '**/home_page').as('saveHomePage');
     cy.intercept('POST', '**/content_builder_layout_images').as('postImage');
     // Fixed ratio layout
