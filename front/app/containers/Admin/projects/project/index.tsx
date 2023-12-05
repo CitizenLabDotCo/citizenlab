@@ -59,6 +59,9 @@ export const AdminProjectsProjectIndex = ({
   const surveys_enabled = useFeatureFlag({
     name: 'surveys',
   });
+  const isGranularPermissionsEnabled = useFeatureFlag({
+    name: 'granular_permissions',
+  });
   const isNewPhaseLink = pathname.endsWith(
     `admin/projects/${project.id}/phases/new`
   );
@@ -66,12 +69,6 @@ export const AdminProjectsProjectIndex = ({
   const [tabs, setTabs] = useState<ITab[]>(initialTabs);
 
   const getTabHideConditions = (phase: IPhaseData): TabHideConditions => ({
-    general: function isGeneralTabHidden() {
-      return false;
-    },
-    description: function isDescriptionTabHidden() {
-      return false;
-    },
     ideas: function isIdeaTabHidden() {
       return !getMethodConfig(phase.attributes.participation_method)
         .showInputManager;
@@ -98,6 +95,9 @@ export const AdminProjectsProjectIndex = ({
     },
     volunteering: function isVolunteeringTabHidden() {
       return phase?.attributes.participation_method !== 'volunteering';
+    },
+    'access-rights': function isAccessRightsTabHidden() {
+      return !isGranularPermissionsEnabled;
     },
   });
 
