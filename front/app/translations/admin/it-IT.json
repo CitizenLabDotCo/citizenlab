@@ -2080,7 +2080,6 @@
   "app.modules.commercial.flag_inappropriate_content.admin.components.userFlaggedWarningText": "Segnalato come inappropriato da un utente della piattaforma.",
   "app.modules.commercial.flag_inappropriate_content.admin.components.warnings": "Avvertenze sul contenuto",
   "app.modules.commercial.report_builder.admin.components.TopBar.reportBuilder": "Report builder",
-  "app.modules.granular_permissions.admin.components.projectPermissionsTab": "Access rights",
   "app.modules.idea_assignment.admin.components.permissionsTab": "Access rights",
   "app.modules.navbar.admin.components.NavbarItemList.navigationItems": "Pagine mostrate sulla tua barra di navigazione",
   "app.modules.navbar.admin.containers.createCustomPageButton": "Create custom page",

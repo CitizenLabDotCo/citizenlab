@@ -2474,7 +2474,6 @@
   "app.modules.commercial.flag_inappropriate_content.admin.components.userFlaggedWarningText": "Reportado como inapropriado por um usuário da plataforma.",
   "app.modules.commercial.flag_inappropriate_content.admin.components.warnings": "Avisos de conteúdo",
   "app.modules.commercial.report_builder.admin.components.TopBar.reportBuilder": "Elaboração de Relatórios",
-  "app.modules.granular_permissions.admin.components.projectPermissionsTab": "Direitos de acesso",
   "app.modules.idea_assignment.admin.components.permissionsTab": "Direitos de acesso",
   "app.modules.navbar.admin.components.NavbarItemList.navigationItems": "Páginas mostradas na sua barra de navegação",
   "app.modules.navbar.admin.containers.createCustomPageButton": "Criar página personalizada",

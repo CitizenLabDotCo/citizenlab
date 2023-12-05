@@ -2080,7 +2080,6 @@
   "app.modules.commercial.flag_inappropriate_content.admin.components.userFlaggedWarningText": "Αναφέρθηκε ως ακατάλληλη από έναν χρήστη της πλατφόρμας.",
   "app.modules.commercial.flag_inappropriate_content.admin.components.warnings": "Προειδοποιήσεις περιεχομένου",
   "app.modules.commercial.report_builder.admin.components.TopBar.reportBuilder": "Report builder",
-  "app.modules.granular_permissions.admin.components.projectPermissionsTab": "Access rights",
   "app.modules.idea_assignment.admin.components.permissionsTab": "Access rights",
   "app.modules.navbar.admin.components.NavbarItemList.navigationItems": "Σελίδες που εμφανίζονται στη γραμμή πλοήγησης",
   "app.modules.navbar.admin.containers.createCustomPageButton": "Create custom page",

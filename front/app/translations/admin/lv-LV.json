@@ -2474,7 +2474,6 @@
   "app.modules.commercial.flag_inappropriate_content.admin.components.userFlaggedWarningText": "Platformas lietotājs par to ziņoja kā par nepiemērotu.",
   "app.modules.commercial.flag_inappropriate_content.admin.components.warnings": "Satura brīdinājumi",
   "app.modules.commercial.report_builder.admin.components.TopBar.reportBuilder": "Ziņojuma veidotājs",
-  "app.modules.granular_permissions.admin.components.projectPermissionsTab": "Piekļuves tiesības",
   "app.modules.idea_assignment.admin.components.permissionsTab": "Piekļuves tiesības",
   "app.modules.navbar.admin.components.NavbarItemList.navigationItems": "Navigācijas joslā redzamās lapas",
   "app.modules.navbar.admin.containers.createCustomPageButton": "Izveidot pielāgotu lapu",
