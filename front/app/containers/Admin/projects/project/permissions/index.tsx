@@ -9,7 +9,7 @@ import messages from './messages';
 import { Section, SectionTitle } from 'components/admin/Section';
 import ProjectManagement from './containers/ProjectManagement';
 import ProjectVisibility from './containers/ProjectVisibility';
-import { Title, Text, StatusLabel } from '@citizenlab/cl2-component-library';
+import { Title, Text } from '@citizenlab/cl2-component-library';
 
 // hooks
 import useProjectById from 'api/projects/useProjectById';
@@ -19,17 +19,11 @@ import usePhase from 'api/phases/usePhase';
 // style
 import styled from 'styled-components';
 import Outlet from 'components/Outlet';
-import { colors } from 'utils/styleUtils';
 import Granular from './granular_permissions/containers/Granular';
 import PhasePermissions from './granular_permissions/containers/Granular/PhasePermissions';
 
 const StyledSection = styled(Section)`
   margin-bottom: 50px;
-`;
-
-const BetaLabel = styled(StatusLabel)`
-  margin-left: 12px;
-  vertical-align: text-bottom;
 `;
 
 export const StyledSectionTitle = styled(SectionTitle)`
@@ -63,11 +57,6 @@ const ProjectPermissions = () => {
       <StyledSection>
         <Title variant="h2" color="primary">
           <FormattedMessage {...messages.participationRequirementsTitle} />
-          <BetaLabel
-            text={formatMessage(messages.betaLabel)}
-            backgroundColor={colors.background}
-            variant="outlined"
-          />
         </Title>
         <Text color="coolGrey600" pb="8px">
           <FormattedMessage {...messages.participationRequirementsSubtitle} />
@@ -95,11 +84,6 @@ const ProjectPermissions = () => {
           <StyledSection>
             <Title variant="h2" color="primary">
               <FormattedMessage {...messages.participationRequirementsTitle} />
-              <BetaLabel
-                text={formatMessage(messages.betaLabel)}
-                backgroundColor={colors.background}
-                variant="outlined"
-              />
             </Title>
             <Text color="coolGrey600" pb="8px">
               <FormattedMessage

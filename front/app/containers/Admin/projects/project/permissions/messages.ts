@@ -57,8 +57,4 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.projectVisibilitySubtitle',
     defaultMessage: 'You can set the project to be invisible to certain users.',
   },
-  betaLabel: {
-    id: 'app.containers.AdminPage.permissions.betaLabel',
-    defaultMessage: 'Beta',
-  },
 });
