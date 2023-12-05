@@ -20,6 +20,7 @@ const MODERATOR_ROUTES = [
   '/admin/processing',
   '/admin/dashboard/moderation',
   '/admin/reporting/insights',
+  '/admin/reporting/report-builder',
   '/admin/project-description-builder',
 ];
 
