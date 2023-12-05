@@ -74,11 +74,14 @@ const CTAButton = ({ participationContext, projectId }: Props) => {
   const [processing, setProcessing] = useState(false);
   const currency = appConfig?.data.attributes.settings.core.currency;
 
+  const votingMethod = participationContext.attributes.voting_method;
+  if (!votingMethod || numberOfVotesCast === undefined) return null;
+
   const disabledExplanation = getDisabledExplanation(
     formatMessage,
     localize,
     participationContext,
-    numberOfVotesCast || 0,
+    numberOfVotesCast,
     currency
   );
 

@@ -122,14 +122,14 @@ const ProjectsShowPage = ({ project }: Props) => {
         scrollToElement({ id: 'voting-status-module' });
         confetti.addConfetti();
         removeSearchParams(['scrollToStatusModule']);
-      }, 2000);
+      }, 500);
     }
 
     if (scrollToIdeas && mounted && !loading) {
       setTimeout(() => {
         scrollToElement({ id: 'e2e-ideas-container' });
         removeSearchParams(['scrollToIdeas']);
-      }, 1500);
+      }, 1000);
     }
   }, [mounted, loading, scrollToStatusModule, scrollToIdeas]);
 
