@@ -69,10 +69,13 @@ const VotesNotSubmittedModal = ({ projectId, basket }: Props) => {
       return;
     }
 
+    // If the basket has not been submitted, show a modal prompting submission
     if (!basketSubmitted) {
       isPhoneOrSmaller
-        ? (document.onvisibilitychange = beforeUnloadHandler)
-        : (window.onbeforeunload = beforeUnloadHandler);
+        ? // On mobile we need to use the onvisibilitychange. The modal is shown when a user retuns to a tab/window.
+          (document.onvisibilitychange = beforeUnloadHandler)
+        : // On desktop we can use the onbeforeunload event. The modal is shown after a browser popup which intercepts the window close.
+          (window.onbeforeunload = beforeUnloadHandler);
     }
 
     if (basketSubmitted || !authUser?.data) {
