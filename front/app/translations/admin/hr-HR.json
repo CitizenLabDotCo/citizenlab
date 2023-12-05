@@ -1975,7 +1975,6 @@
   "app.containers.AdminPage.groups.permissions.useExistingRegistrationQuestionsDescription": "Koristite ovu postavku ako vam je važno prikupljanje imena, prezimena i odgovora na demografska pitanja na razini platforme. To može povećati prepreku za sudjelovanje.",
   "app.containers.AdminPage.groups.permissions.userFieldsSelectionDescription3": "Odgovori na demografska pitanja bit će pohranjeni u korisničkim profilima. Pitanja će se postavljati samo korisnicima koji na njih ranije nisu odgovorili. Odgovori na ova pitanja također će biti dostupni putem izvoza podataka o sudjelovanju, koji je dostupan i moderatorima i administratorima.",
   "app.containers.AdminPage.groups.permissions.userQuestionTitle": "Postavljajte pitanja sudionicima",
-  "app.containers.AdminPage.permissions.betaLabel": "Beta",
   "app.containers.AdminPage.projects.all.existingProjects": "Postojeći projekti",
   "app.containers.AdminPage.projects.all.newProjectFolder": "Kreirajte mapu projekta",
   "app.containers.AdminPage.projects.all.projectsAndFolders": "Projekti i mape",
