@@ -39,7 +39,7 @@ describe 'rake migrate_craftjson' do # rubocop:disable RSpec/DescribeClass
       )
     end
 
-    it 'Makes the ordering field sequential for all user custom fields' do
+    it 'migrates the homepage craftjs with the expected properties' do
       config = AppConfiguration.instance
       config.settings['core']['currently_working_on_text'] = currently_working_on_text
       config.save!

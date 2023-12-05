@@ -82,7 +82,7 @@ def migrate_homepagebanner
         'banner_layout' => homepage.banner_layout || 'full_width_banner_layout',
         'banner_avatars_enabled' => homepage.banner_avatars_enabled,
         'banner_cta_signed_in_url' => homepage.banner_cta_signed_in_url,
-        'banner_cta_signed_out_url' => homepage.banner_cta_signed_out_url, # TODO: test with cases where this is not set (custom type?)
+        'banner_cta_signed_out_url' => homepage.banner_cta_signed_out_url,
         'banner_cta_signed_in_type' => homepage.banner_cta_signed_in_type,
         'banner_cta_signed_out_type' => homepage.banner_cta_signed_out_type,
         'banner_signed_in_header_multiloc' => homepage.banner_signed_in_header_multiloc,
