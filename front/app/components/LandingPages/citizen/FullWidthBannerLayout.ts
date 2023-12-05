@@ -1,11 +1,12 @@
 import { homepageBannerLayoutHeights } from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/HeaderImageDropzone';
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, colors } from 'utils/styleUtils';
 
 export const Container = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
+  background-color: ${colors.background};
 `;
 
 export const Header = styled.div`
