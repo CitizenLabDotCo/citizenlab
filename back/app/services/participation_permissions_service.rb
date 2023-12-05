@@ -3,8 +3,7 @@
 class ParticipationPermissionsService < PermissionsService
   POSTING_DISABLED_REASONS = {
     project_inactive: 'project_inactive',
-    project_only_visible_to_admins: 'project_only_visible_to_admins',
-    project_only_visible_to_groups: 'project_only_visible_to_groups',
+    project_not_visible: 'project_not_visible',
     not_ideation: 'not_ideation',
     posting_disabled: 'posting_disabled',
     posting_limited_max_reached: 'posting_limited_max_reached'
@@ -339,10 +338,9 @@ class ParticipationPermissionsService < PermissionsService
   end
 
   def project_visible_disabled_reason(project, user)
-    if project.visible_to == 'admins' && !user.admin?
-      POSTING_DISABLED_REASONS[:project_only_visible_to_admins]
-    elsif project.visible_to == 'groups' && !user.in_any_groups?(project.groups)
-      POSTING_DISABLED_REASONS[:project_only_visible_to_groups]
+    if (project.visible_to == 'admins' && !user.admin?) ||
+       (project.visible_to == 'groups' && !user.in_any_groups?(project.groups))
+      POSTING_DISABLED_REASONS[:project_not_visible]
     end
   end
 end
