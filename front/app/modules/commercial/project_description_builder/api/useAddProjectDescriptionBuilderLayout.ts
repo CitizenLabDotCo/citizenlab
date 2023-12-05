@@ -14,7 +14,7 @@ const addProjectDescriptionBuilderLayout = async ({
   enabled,
 }: IAddProjectDescriptionBuilderLayout) =>
   fetcher<IProjectDescriptionBuilderLayout>({
-    path: `/projects/${projectId}/content_builder_layouts/project_description/upsert`,
+    path: `/projects/${projectId}/content_builder_layouts/project_description/upserts`,
     action: 'post',
     body: { content_builder_layout: { craftjs_json, enabled } },
   });
