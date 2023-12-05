@@ -139,11 +139,34 @@ resource BasketsIdea do
       context 'basket and basket_idea do not exist' do
         let(:votes) { 1 }
 
-        example_request 'Add an idea to a basket & create the basket' do
-          assert_status 200
+        context 'voting is allowed' do
+          example_request 'Add an idea to a basket & create the basket' do
+            assert_status 200
 
-          expect(response_data.dig(:attributes, :votes)).to eq 1
-          expect(json_response_body[:included].pluck(:id)).to include idea_id
+            expect(response_data.dig(:attributes, :votes)).to eq 1
+            expect(json_response_body[:included].pluck(:id)).to include idea_id
+          end
+        end
+
+        context 'permission custom fields are required for voting' do
+          let(:user) { create(:user) }
+          let(:project) { create(:project) }
+          let(:votes) { 1 }
+          let(:idea) { create(:idea, project: project) }
+
+          before do
+            current_phase = create(:active_phase, project: project, participation_method: 'voting', voting_method: 'single_voting', with_permissions: true)
+            project.phases << current_phase
+            idea.phases << current_phase
+            postcode_field = create(:custom_field, resource_type: 'User', key: 'postcode_xyz', title_multiloc: { 'en' => 'Postcode' }, required: false)
+            permission = project.phases.first.permissions.find_by(action: 'voting')
+            permission.update!(global_custom_fields: false)
+            create(:permissions_custom_field, permission: permission, custom_field: postcode_field, required: true)
+          end
+
+          example_request '[error] Not authorized to add an idea to a basket & create the basket' do
+            assert_status 401
+          end
         end
       end
 

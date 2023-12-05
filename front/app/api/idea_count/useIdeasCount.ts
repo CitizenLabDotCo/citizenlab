@@ -11,10 +11,11 @@ const fetchIdeasCount = (queryParams: IQueryParameters) =>
     queryParams,
   });
 
-const useIdeasCount = (queryParams: IQueryParameters) => {
+const useIdeasCount = (queryParams: IQueryParameters, enabled = true) => {
   return useQuery<IIdeasCount, CLErrors, IIdeasCount, IdeasCountKeys>({
     queryKey: ideasCountKeys.item(queryParams),
     queryFn: () => fetchIdeasCount(queryParams),
+    enabled,
   });
 };
 

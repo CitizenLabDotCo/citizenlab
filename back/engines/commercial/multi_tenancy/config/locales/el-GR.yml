@@ -1,0 +1,11 @@
+#Translations for continuous to timeline migration
+el:
+  phase_title_default:
+    ideation: Συλλογή εισροών
+    voting: Ψηφοφορία
+    poll: Δημοσκόπηση
+    native_survey: Έρευνα
+    survey: Έρευνα
+    document_annotation: Ανατροφοδότηση εγγράφων
+    volunteering: Βρείτε εθελοντές
+    information: Πληροφορίες

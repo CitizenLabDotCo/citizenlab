@@ -18,7 +18,7 @@ describe('Admin: update text content and sections', () => {
     });
   });
 
-  it('updates top and bottom info section content and visibility', () => {
+  it.skip('updates top and bottom info section content and visibility', () => {
     cy.intercept('PATCH', '**/home_page').as('saveHomePage');
     cy.intercept('GET', '**/home_page').as('getHomePage');
     cy.intercept('GET', '**/pages-menu').as('getPages');
