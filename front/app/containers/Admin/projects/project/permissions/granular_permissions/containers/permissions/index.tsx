@@ -1,6 +1,6 @@
 import React from 'react';
 import { Section, SectionTitle } from 'components/admin/Section';
-import ActionsForm from '../../../admin/containers/Granular/ActionsForm';
+import ActionsForm from '../Granular/ActionsForm';
 import GetGlobalPermissions, {
   GetGlobalPermissionsChildProps,
 } from 'resources/GetGlobalPermissions';

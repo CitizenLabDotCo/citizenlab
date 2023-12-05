@@ -1,7 +1,6 @@
 import { loadModules } from 'utils/moduleUtils';
 
 import smartGroupsConfiguration from './commercial/smart_groups';
-import granularPermissionsConfiguration from './commercial/granular_permissions';
 import ideaAssignmentConfiguration from './commercial/idea_assignment';
 import moderationConfiguration from './commercial/moderation';
 import flagInappropriateContentConfiguration from './commercial/flag_inappropriate_content';
@@ -67,9 +66,6 @@ export default loadModules([
   },
   {
     configuration: segmentConfiguration,
-  },
-  {
-    configuration: granularPermissionsConfiguration,
   },
   {
     configuration: moderationConfiguration,

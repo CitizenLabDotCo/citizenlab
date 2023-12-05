@@ -8,9 +8,7 @@ import { FieldType } from 'containers/Admin/settings/registration/CustomFieldRou
 import { MessageDescriptor } from 'react-intl';
 
 type GetPermissionActionMessageProps = {
-  permissionAction:
-    | IPhasePermissionAction
-    | IGlobalPermissionAction;
+  permissionAction: IPhasePermissionAction | IGlobalPermissionAction;
   postType: 'defaultInput' | 'nativeSurvey' | 'initiative';
 };
 

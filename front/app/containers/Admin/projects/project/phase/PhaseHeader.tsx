@@ -18,7 +18,7 @@ import moment from 'moment';
 import { useLocation, useParams } from 'react-router-dom';
 import Link from 'utils/cl-router/Link';
 import { isTopBarNavActive } from 'utils/helperUtils';
-import {IPhaseData, ParticipationMethod} from 'api/phases/types';
+import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 import messages from './messages';
 import { ITab } from 'typings';
 import { Tab } from 'components/admin/NavigationTabs';
@@ -200,7 +200,11 @@ export const PhaseHeader = ({ phase, tabs }: Props) => {
               label={label}
               url={url}
               key={url}
-              active={isTopBarNavActive('/admin/ideas', pathname, url)}
+              active={isTopBarNavActive(
+                `/admin/projects/${projectId}/phases/${phase.id}`,
+                pathname,
+                url
+              )}
             >
               <Link to={url}>{label}</Link>
             </Tab>
