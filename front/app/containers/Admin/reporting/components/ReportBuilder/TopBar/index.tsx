@@ -111,10 +111,7 @@ const ContentBuilderTopBar = ({
 
       updateReportLayout({
         id: reportId,
-        craftMultiloc: {
-          ...draftEditorData,
-          [selectedLocale]: query.getSerializedNodes(),
-        },
+        craftjs_json: query.getSerializedNodes(),
         projectId: reportContext.projectId,
       });
     }
@@ -153,16 +150,14 @@ const ContentBuilderTopBar = ({
     const firstNode = nodes.ROOT?.nodes[0];
     const numberOfNodes = Object.keys(nodes).length;
 
-    if (!firstNode || !selectedLocale || numberOfNodes < 5) return;
+    if (!firstNode || numberOfNodes < 5) return;
 
     if (nodes?.[firstNode].displayName === 'ProjectTemplate') {
       setTimeout(() => {
         updateReportLayout({
           id: reportId,
-          craftMultiloc: {
-            ...draftEditorData,
-            [selectedLocale]: query.getSerializedNodes(),
-          },
+          craftjs_json: query.getSerializedNodes(),
+          projectId: reportContext.projectId,
         });
       }, 5000);
     }
@@ -174,8 +169,8 @@ const ContentBuilderTopBar = ({
     draftEditorData,
     initialized,
     reportId,
-    selectedLocale,
     updateReportLayout,
+    reportContext.projectId,
   ]);
 
   const handleTogglePreview = () => {
