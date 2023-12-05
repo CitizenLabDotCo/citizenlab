@@ -103,6 +103,7 @@ const IdeasShowPage = () => {
         <Box
           background={colors.white}
           mt={
+            // Only move the content down the page if the idea is in a current voting phase
             isSmallerThanTablet ||
             participationContext?.attributes.participation_method !==
               'voting' ||

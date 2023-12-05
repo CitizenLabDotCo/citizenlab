@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 
 // hooks
 import useBasket from 'api/baskets/useBasket';
@@ -6,12 +6,10 @@ import useUpdateBasket from 'api/baskets/useUpdateBasket';
 import useVoting from 'api/baskets_ideas/useVoting';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useProjectById from 'api/projects/useProjectById';
-import useIdeas from 'api/ideas/useIdeas';
 
 // components
 import { Box, Button } from '@citizenlab/cl2-component-library';
 import Tippy from '@tippyjs/react';
-import VotesLeftModal from './VotesLeftModal';
 
 // styling
 import styled, { useTheme } from 'styled-components';
@@ -26,7 +24,6 @@ import JSConfetti from 'js-confetti';
 import { scrollToElement } from 'utils/scroll';
 import { getDisabledExplanation } from './utils';
 import clHistory from 'utils/cl-router/history';
-import { isNilOrError } from 'utils/helperUtils';
 
 // typings
 import { IProjectData } from 'api/projects/types';
@@ -68,66 +65,27 @@ const CTAButton = ({ participationContext, projectId }: Props) => {
   const localize = useLocalize();
   const { data: appConfig } = useAppConfiguration();
   const { data: project } = useProjectById(projectId);
-  const { data: ideas } = useIdeas({ phase: participationContext.id });
 
   const basketId = participationContext.relationships.user_basket?.data?.id;
-  const { data: basket, isFetching: isFetchingBasket } = useBasket(basketId);
+  const { data: basket } = useBasket(basketId);
   const { mutate: updateBasket } = useUpdateBasket();
-  const {
-    numberOfVotesCast,
-    userHasVotesLeft,
-    processing: votingProcessing,
-  } = useVoting();
+  const { numberOfVotesCast, processing: votingProcessing } = useVoting();
 
   const [processing, setProcessing] = useState(false);
-  const [showModal, setShowModal] = useState(false);
-
-  const votingMethod = participationContext.attributes.voting_method;
-  const votingMaxTotal = participationContext?.attributes.voting_max_total;
   const currency = appConfig?.data.attributes.settings.core.currency;
 
-  const usedUpBudget = useRef(true);
-  let votesLeft = 0;
-
-  if (!isNilOrError(votingMaxTotal) && !isNilOrError(numberOfVotesCast)) {
-    votesLeft = votingMaxTotal - numberOfVotesCast;
-  }
-
-  useEffect(() => {
-    // In case of budgeting, we need to check if there are still ideas that the user has enough budget for
-    const ideasUserCanVoteFor = ideas?.data.filter(
-      (idea) =>
-        votesLeft > 0 &&
-        idea.attributes.budget &&
-        idea.attributes.budget <= votesLeft && // Remaining budget is enough to vote for this idea
-        !basket?.data.relationships.ideas.data.find(
-          // Check that idea is not already included in the basket
-          (basketIdea) => idea.id === basketIdea.id
-        )
-    );
-
-    ideasUserCanVoteFor?.length && ideasUserCanVoteFor.length > 0
-      ? (usedUpBudget.current = false)
-      : (usedUpBudget.current = true);
-  }, [usedUpBudget, ideas, votesLeft, basket]);
+  const votingMethod = participationContext.attributes.voting_method;
+  if (!votingMethod || numberOfVotesCast === undefined) return null;
 
   const disabledExplanation = getDisabledExplanation(
     formatMessage,
     localize,
     participationContext,
-    numberOfVotesCast || 0,
+    numberOfVotesCast,
     currency
   );
 
   const handleSubmitOnClick = () => {
-    if (!(votingMethod === 'budgeting') && userHasVotesLeft) {
-      setShowModal(true);
-      return;
-    } else if (votingMethod === 'budgeting' && !usedUpBudget.current) {
-      setShowModal(true); // There are still options where the cost is within the user's remaining budget
-      return;
-    }
-
     if (basket) {
       const update = () => {
         updateBasket(
@@ -194,18 +152,13 @@ const CTAButton = ({ participationContext, projectId }: Props) => {
             padding="6px 12px"
             fontSize="14px"
             disabled={!!disabledExplanation}
-            processing={processing || isFetchingBasket}
+            processing={processing}
             className={disabledExplanation ? '' : 'pulse'}
           >
             <FormattedMessage {...messages.submit} />
           </StyledButton>
         </Box>
       </Tippy>
-      <VotesLeftModal
-        showModal={showModal}
-        setShowModal={setShowModal}
-        project={project}
-      />
     </>
   );
 };
