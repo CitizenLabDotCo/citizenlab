@@ -2314,6 +2314,7 @@
   "app.containers.admin.ReportBuilder.periodLabel": "Okres: {startEndDates}",
   "app.containers.admin.ReportBuilder.phase": "Etap: {phaseName}",
   "app.containers.admin.ReportBuilder.projectLabel": "Projekt: {projectsList}",
+  "app.containers.admin.ReportBuilder.start": "Rozpocznij: {startDate}",
   "app.containers.admin.ReportBuilder.surveyChooseQuestions": "Wybierz, które pytania mają być wyświetlane:",
   "app.containers.admin.ReportBuilder.surveyNoQuestions": "Dla tego projektu lub etapu nie ma dostępnych pytań.",
   "app.containers.admin.ReportBuilder.surveyNoResults": "Brak wyników dla wybranych przez Ciebie filtrów.",
