@@ -13,6 +13,7 @@ namespace :migrate_craftjson do
 
   desc 'Fix existing homepage'
   task :homepage, %i[host] => [:environment] do |_t, args|
+    manual = []
     errors = {}
     tenants = if args[:host]
       Tenant.where(host: args[:host])
@@ -20,8 +21,11 @@ namespace :migrate_craftjson do
       Tenant.prioritize(Tenant.creation_finalized)
     end
     tenants.each do |tenant|
-      Rails.logger.info tenant.host
       Apartment::Tenant.switch(tenant.schema_name) do
+        next if AppConfiguration.instance.feature_activated?('homepage_builder')
+
+        Rails.logger.info tenant.host
+
         craftjs_json = {
           'ROOT' => {
             'type' => 'div',
@@ -36,20 +40,29 @@ namespace :migrate_craftjson do
         }
 
         add_elements craftjs_json, migrate_homepagebanner
-        add_elements craftjs_json, migrate_topinfosection
+        topinfosection_elts, topinfosection_success = migrate_topinfosection
+        add_elements craftjs_json, topinfosection_elts
         add_elements craftjs_json, migrate_projects
         add_elements craftjs_json, migrate_events
         add_elements craftjs_json, migrate_proposals
-        add_elements craftjs_json, migrate_bottominfosection
+        bottominfosection_elts, bottominfosection_success = migrate_bottominfosection
+        add_elements craftjs_json, bottominfosection_elts
 
         homepage = HomePage.first
         if !homepage.update(craftjs_json: craftjs_json)
           errors[tenant.host] ||= []
           errors[tenant.host] += ["Failed to update homepage: #{homepage.errors.details}"]
         end
+
+        if topinfosection_success && bottominfosection_success && errors[tenant.host].blank?
+          SettingsService.new.activate_feature! 'homepage_builder'
+        else
+          manual += [tenant.host]
+        end
       end
     end
 
+    Rails.logger.info "Manual migrations needed for: #{manual.join(', ')}"
     if errors.present?
       Rails.logger.info 'Some errors occurred!'
       pp errors
@@ -110,7 +123,7 @@ def migrate_homepagebanner
     'linkedNodes' => {}
   }
 
-  if homepage.header_bg.url # TODO: Test when no bg image
+  if homepage.header_bg.url
     layout_image = ContentBuilder::LayoutImage.create!(remote_image_url: homepage.header_bg.url)
     homepagebannerelt['props']['image'] = { 'dataCode' => layout_image.code }
   end
@@ -120,13 +133,11 @@ end
 
 def migrate_topinfosection
   homepage = HomePage.first
-  return [] if !homepage.top_info_section_enabled || homepage.top_info_section_multiloc.blank?
+  return [[], true] if !homepage.top_info_section_enabled || homepage.top_info_section_multiloc.blank? || homepage.top_info_section_multiloc.values.all?(&:blank?)
 
-  [
-    whitespace,
-    *infosection(homepage.top_info_section_multiloc),
-    whitespace
-  ]
+  infosections, success = infosection(homepage.top_info_section_multiloc)
+
+  [[whitespace, *infosections, whitespace], success]
 end
 
 def migrate_projects
@@ -200,13 +211,11 @@ end
 
 def migrate_bottominfosection
   homepage = HomePage.first
-  return [] if !homepage.bottom_info_section_enabled || homepage.bottom_info_section_multiloc.blank?
+  return [[], true] if !homepage.bottom_info_section_enabled || homepage.bottom_info_section_multiloc.blank? || homepage.bottom_info_section_multiloc.values.all?(&:blank?)
 
-  [
-    whitespace,
-    *infosection(homepage.bottom_info_section_multiloc),
-    whitespace
-  ]
+  infosections, success = infosection(homepage.bottom_info_section_multiloc)
+
+  [[whitespace, *infosections, whitespace], success]
 end
 
 def whitespace
@@ -229,9 +238,9 @@ def whitespace
 end
 
 def infosection(text_html_multiloc)
-  # TODO: Deal with img, iframe and buttons
-  # TODO: skip infosections that cannot be automatically migrated
-  [{
+  success = true
+  success = false if text_html_multiloc.values.any? { |text_html| text_html.match?(/<img|<iframe|custom-button/) }
+  text_elt = {
     'type' => { 'resolvedName' => 'TextMultiloc' },
     'isCanvas' => false,
     'props' => { 'text' => text_html_multiloc },
@@ -246,5 +255,6 @@ def infosection(text_html_multiloc)
     'hidden' => false,
     'nodes' => [],
     'linkedNodes' => {}
-  }]
+  }
+  [[text_elt], success]
 end
