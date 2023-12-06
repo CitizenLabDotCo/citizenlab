@@ -7,7 +7,6 @@ import { API_PATH } from 'containers/App/constants';
 import { ImageSizes, Multiloc, Locale, UploadFile } from 'typings';
 import { TCategory } from 'components/ConsentManager/destinations';
 export const currentAppConfigurationEndpoint = `${API_PATH}/app_configuration`;
-import { THomepageSettingKeyMap } from 'api/home_page/types';
 
 interface AppConfigurationFeature {
   allowed: boolean;
@@ -295,16 +294,6 @@ export interface IAppConfigurationData {
   type: string;
   attributes: IAppConfigurationAttributes;
 }
-
-// Settings that have their enabled values in homepageSettings.
-// Their allowed value is still in appConfiguration.
-export type THomepageSetting = keyof THomepageSettingKeyMap;
-
-// All appConfig setting names except those in THomepageSetting
-export type TAppConfigurationSettingWithEnabled = Exclude<
-  TAppConfigurationSetting,
-  THomepageSetting
->;
 
 export type TCurrency = TCustomCurrency | TCountryCurrency;
 type TCustomCurrency =

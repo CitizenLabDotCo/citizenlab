@@ -1,20 +1,10 @@
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import {
-  TAppConfigurationSettingWithEnabled,
-  THomepageSetting,
-} from 'api/app_configuration/types';
+import { TAppConfigurationSetting } from 'api/app_configuration/types';
 
-export type Parameters = HomepageSettingProps | AppConfigSettingProps;
-
-// For THomepageSetting, you can only use
-// this hook to check the allowed value, which still resides in appConfiguration
-type HomepageSettingProps = {
-  name: THomepageSetting;
-  onlyCheckAllowed: true;
-};
+export type Parameters = AppConfigSettingProps;
 
 type AppConfigSettingProps = {
-  name: TAppConfigurationSettingWithEnabled;
+  name: TAppConfigurationSetting;
   onlyCheckAllowed?: boolean;
 };
 
