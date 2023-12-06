@@ -2352,6 +2352,7 @@
   "app.containers.admin.ReportBuilder.periodLabel": "الفترة: {startEndDates}",
   "app.containers.admin.ReportBuilder.phase": "المرحلة: {phaseName}",
   "app.containers.admin.ReportBuilder.projectLabel": "المشروع: {projectsList}",
+  "app.containers.admin.ReportBuilder.start": "البداية: {startDate}",
   "app.containers.admin.ReportBuilder.surveyChooseQuestions": "اختر الأسئلة المطلوب عرضها:",
   "app.containers.admin.ReportBuilder.surveyNoQuestions": "لا تتوفر أي أسئلة لهذا المشروع أو هذه المرحلة.",
   "app.containers.admin.ReportBuilder.surveyNoResults": "لا تتوفر أي نتائج استبيان لعوامل التصفية التي حددتها.",
