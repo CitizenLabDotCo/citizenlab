@@ -129,9 +129,7 @@ const MainHeader = () => {
   return (
     <Container
       id="e2e-navbar"
-      className={`${
-        isAdminPage() ? 'admin' : 'citizenPage'
-      } ${'alwaysShowBorder'} ${
+      className={`${!isAdminPage() ? 'citizenPage' : ''} ${
         isIdeaPage(urlSegments) || isInitiativePage(urlSegments)
           ? 'hideNavbar'
           : ''

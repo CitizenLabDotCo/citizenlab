@@ -1,6 +1,5 @@
 import { Locale } from '@citizenlab/cl2-component-library';
 import { locales } from 'containers/App/constants';
-import { includes } from 'lodash-es';
 import { isPage } from 'utils/helperUtils';
 
 export const isIdeaPage = (urlSegments: string[]) => {
@@ -10,7 +9,7 @@ export const isIdeaPage = (urlSegments: string[]) => {
 
   return (
     urlSegments.length === 3 &&
-    includes(locales, firstUrlSegment) &&
+    locales.includes(firstUrlSegment) &&
     secondUrlSegment === 'ideas' &&
     lastUrlSegment !== 'new'
   );
@@ -23,7 +22,7 @@ export const isInitiativePage = (urlSegments: string[]) => {
 
   return (
     urlSegments.length === 3 &&
-    includes(locales, firstUrlSegment) &&
+    locales.includes(firstUrlSegment) &&
     secondUrlSegment === 'initiatives' &&
     lastUrlSegment !== 'new'
   );
