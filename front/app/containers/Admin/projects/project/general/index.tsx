@@ -8,7 +8,6 @@ import { INewProjectCreatedEvent } from 'containers/Admin/projects/all/CreatePro
 import ProjectStatusPicker from './components/ProjectStatusPicker';
 import ProjectNameInput from './components/ProjectNameInput';
 import SlugInput from 'components/admin/SlugInput';
-import ProjectTypePicker from './components/ProjectTypePicker';
 import TopicInputs from './components/TopicInputs';
 import GeographicAreaInputs from './components/GeographicAreaInputs';
 import HeaderBgUploader from 'components/admin/ProjectableHeaderBgUploader';
@@ -41,7 +40,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 import useProjectById from 'api/projects/useProjectById';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useProjectFiles from 'api/project_files/useProjectFiles';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useAddProject from 'api/projects/useAddProject';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -92,6 +91,10 @@ const AdminProjectsProjectGeneral = () => {
   const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
   const appConfigLocales = useAppConfigurationLocales();
   const { width, containerRef } = useContainerWidthAndHeight();
+  const { pathname } = useLocation();
+  const showStickySaveButton = pathname.endsWith(
+    `/admin/projects/${projectId}/settings`
+  );
 
   const { data: remoteProjectImages } = useProjectImages(projectId || null);
   const { mutateAsync: addProjectImage } = useAddProjectImage();
@@ -512,28 +515,25 @@ const AdminProjectsProjectGeneral = () => {
 
           <StyledSectionField>
             {!project && (
-              <>
-                <ProjectTypePicker projectType="timeline" />
-                <CSSTransition
-                  classNames="participationcontext"
-                  in={false}
-                  timeout={TIMEOUT}
-                  mountOnEnter={true}
-                  unmountOnExit={true}
-                  enter={true}
-                  exit={false}
-                >
-                  <ParticipationContextWrapper>
-                    <PhaseParticipationConfig
-                      project={project}
-                      onSubmit={handlePhaseParticipationConfigSubmit}
-                      onChange={handlePhaseParticipationConfigChange}
-                      apiErrors={apiErrors}
-                      appConfig={appConfig}
-                    />
-                  </ParticipationContextWrapper>
-                </CSSTransition>
-              </>
+              <CSSTransition
+                classNames="participationcontext"
+                in={false}
+                timeout={TIMEOUT}
+                mountOnEnter={true}
+                unmountOnExit={true}
+                enter={true}
+                exit={false}
+              >
+                <ParticipationContextWrapper>
+                  <PhaseParticipationConfig
+                    project={project}
+                    onSubmit={handlePhaseParticipationConfigSubmit}
+                    onChange={handlePhaseParticipationConfigChange}
+                    apiErrors={apiErrors}
+                    appConfig={appConfig}
+                  />
+                </ParticipationContextWrapper>
+              </CSSTransition>
             )}
           </StyledSectionField>
 
@@ -597,7 +597,7 @@ const AdminProjectsProjectGeneral = () => {
             handleProjectFileOnRemove={handleProjectFileOnRemove}
           />
           <Box
-            position="fixed"
+            position={showStickySaveButton ? 'fixed' : undefined}
             borderTop={`1px solid ${colors.divider}`}
             bottom="0"
             w={`calc(${width}px + ${defaultAdminCardPadding * 2}px)`}
