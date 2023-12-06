@@ -24,8 +24,6 @@ export interface IHomepageSettingsData {
   attributes: IHomepageSettingsAttributes;
 }
 
-export type THomepageEnabledSetting = keyof IHomepageEnabledSettings;
-
 export interface IHomepageSettingsAttributes extends IHomepageEnabledSettings {
   top_info_section_multiloc: Multiloc;
   bottom_info_section_multiloc: Multiloc;
