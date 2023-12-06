@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { LocaleSubject } from 'utils/locale';
 
 // context
-import { ReportContext } from '../../context/ReportContext';
+import { ReportContextProvider } from '../../context/ReportContext';
 
 // hooks
 import useReportLayout from 'api/report_layout/useReportLayout';
@@ -77,7 +77,7 @@ export const Report = ({ reportId }: Props) => {
       contentBuilderLocale={reportLocale}
       platformLocale={platformLocale}
     >
-      <ReportContext.Provider value="pdf">
+      <ReportContextProvider width="pdf" reportId={reportId}>
         <FullScreenWrapper onUpdateDraftData={setDraftData}>
           {isLoadingLayout && <Spinner />}
           {!isLoadingLayout && (
@@ -100,7 +100,7 @@ export const Report = ({ reportId }: Props) => {
             </Centerer>
           )}
         </FullScreenWrapper>
-      </ReportContext.Provider>
+      </ReportContextProvider>
     </ContentBuilderLanguageProvider>
   );
 };
