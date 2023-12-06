@@ -23,7 +23,9 @@ module MultiTenancy
         attribute(:published_at) { |idea| serialize_timestamp(idea.published_at) }
 
         attribute(:custom_field_values) do |idea, _serialization_params|
-          custom_forms = ::CustomForm.where(participation_context_id: [idea.project_id, idea.creation_phase_id].compact)
+          # TODO: JS - needs changing when custom form moved to phase
+          participation_context_id = idea.participation_method == 'ideation' ? idea.project_id : idea.creation_phase_id
+          custom_forms = ::CustomForm.where(participation_context_id: participation_context_id)
           custom_fields = ::CustomField.where(resource: custom_forms)
 
           next {} if custom_fields.blank?

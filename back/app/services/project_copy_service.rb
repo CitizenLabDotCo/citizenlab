@@ -578,7 +578,8 @@ class ProjectCopyService < TemplateService
             'updated_at' => text_image.updated_at.to_s
           }
         end,
-        'creation_phase_ref' => lookup_ref(idea.creation_phase_id, :phase)
+        'creation_phase_ref' => lookup_ref(idea.creation_phase_id, :phase),
+        'participation_method' => idea.participation_method
       }
       yml_idea['custom_field_values'] = filter_custom_field_values(idea.custom_field_values, custom_fields) if custom_fields
       store_ref yml_idea, idea.id, :idea
