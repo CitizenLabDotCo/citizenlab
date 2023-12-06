@@ -2489,8 +2489,6 @@
   "app.modules.commercial.analytics.admin.hooks.useVisitorsTypeData.newVisitors": "Нови посетиоци",
   "app.modules.commercial.analytics.admin.hooks.useVisitorsTypeData.returningVisitors": "Повратни посетиоци",
   "app.modules.commercial.analytics.admin.hooks.useVisitorsTypeData.type": "Виситор Типе",
-  "app.modules.commercial.events_widget.admin.eventsWidgetSetting": "Догађаји",
-  "app.modules.commercial.events_widget.admin.eventsWidgetSettingDescription": "Прикажите преглед предстојећих догађаја на почетној страници.",
   "app.modules.commercial.flag_inappropriate_content.admin.components.flagTooltip": "Можете уклонити ову заставицу садржаја тако што ћете изабрати ову ставку и кликнути на дугме за уклањање на врху. Затим ће се поново појавити на картицама Виђено или Невиђено",
   "app.modules.commercial.flag_inappropriate_content.admin.components.nlpFlaggedWarningText": "Неприкладан садржај је аутоматски откривен.",
   "app.modules.commercial.flag_inappropriate_content.admin.components.noWarningItems": "Нема постова пријављених за преглед од стране заједнице или означених због неприкладног садржаја од стране нашег система за обраду природног језика",

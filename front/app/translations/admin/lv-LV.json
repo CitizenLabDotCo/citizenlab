@@ -2489,8 +2489,6 @@
   "app.modules.commercial.analytics.admin.hooks.useVisitorsTypeData.newVisitors": "Jauni apmeklētāji",
   "app.modules.commercial.analytics.admin.hooks.useVisitorsTypeData.returningVisitors": "Atkārtoti apmeklētāji",
   "app.modules.commercial.analytics.admin.hooks.useVisitorsTypeData.type": "Apmeklētāja tips",
-  "app.modules.commercial.events_widget.admin.eventsWidgetSetting": "Notikumi",
-  "app.modules.commercial.events_widget.admin.eventsWidgetSettingDescription": "Rādīt gaidāmos notikumus priekšskatījumu sākumlapā.",
   "app.modules.commercial.flag_inappropriate_content.admin.components.flagTooltip": "Šo satura karodziņu varat noņemt, izvēloties šo elementu un noklikšķinot uz pogu Noņemt augšpusē. Pēc tam tas atkal parādīsies cilnēs Apskatīts vai Jauns.",
   "app.modules.commercial.flag_inappropriate_content.admin.components.nlpFlaggedWarningText": "Nepiemērota satura automātiska noteikšana.",
   "app.modules.commercial.flag_inappropriate_content.admin.components.noWarningItems": "Kopiena nav iesniegusi nevienu ierakstu pārskatīšanai vai mūsu dabiskās valodas apstrādes sistēma nav atzīmējusi to saturu kā nepiemērotu.",

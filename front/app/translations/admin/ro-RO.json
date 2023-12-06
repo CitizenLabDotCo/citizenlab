@@ -1651,8 +1651,6 @@
   "app.modules.commercial.analytics.admin.hooks.useVisitorsTypeData.newVisitors": "Vizitatori noi",
   "app.modules.commercial.analytics.admin.hooks.useVisitorsTypeData.returningVisitors": "Vizitatori care se întorc",
   "app.modules.commercial.analytics.admin.hooks.useVisitorsTypeData.type": "Tip de vizitator",
-  "app.modules.commercial.events_widget.admin.eventsWidgetSetting": "Events",
-  "app.modules.commercial.events_widget.admin.eventsWidgetSettingDescription": "Display a preview of upcoming events on the homepage.",
   "app.modules.commercial.flag_inappropriate_content.admin.components.flagTooltip": "You can remove this content flag by selecting this item and clicking the remove button at the top. It will then reappear in the Seen or Not seen tabs",
   "app.modules.commercial.flag_inappropriate_content.admin.components.nlpFlaggedWarningText": "Inappropriate content auto-detected.",
   "app.modules.commercial.flag_inappropriate_content.admin.components.noWarningItems": "There are no posts reported for review by the community or flagged for inappropriate content by our Natural Language Processing system",

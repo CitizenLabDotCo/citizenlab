@@ -2489,8 +2489,6 @@
   "app.modules.commercial.analytics.admin.hooks.useVisitorsTypeData.newVisitors": "Nye besøgende",
   "app.modules.commercial.analytics.admin.hooks.useVisitorsTypeData.returningVisitors": "Tilbagevendende besøgende",
   "app.modules.commercial.analytics.admin.hooks.useVisitorsTypeData.type": "Besøgstype",
-  "app.modules.commercial.events_widget.admin.eventsWidgetSetting": "Begivenheder",
-  "app.modules.commercial.events_widget.admin.eventsWidgetSettingDescription": "Vis en forhåndsvisning af kommende begivenheder på forsiden.",
   "app.modules.commercial.flag_inappropriate_content.admin.components.flagTooltip": "Du kan fjerne dette indholdsflag ved at udvalgt dette element og klikke på knappen Fjern toppen. Det vil derefter blive vist igen i fanerne Set eller Ikke set",
   "app.modules.commercial.flag_inappropriate_content.admin.components.nlpFlaggedWarningText": "Uhensigtsmæssigt indhold registreres automatisk.",
   "app.modules.commercial.flag_inappropriate_content.admin.components.noWarningItems": "Der er ingen indlæg, der er rapporteret til gennemgang af fællesskabet eller markeret for upassende indhold af vores system til behandling af naturligt sprog",

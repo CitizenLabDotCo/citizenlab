@@ -2489,8 +2489,6 @@
   "app.modules.commercial.analytics.admin.hooks.useVisitorsTypeData.newVisitors": "Nieuwe bezoekers",
   "app.modules.commercial.analytics.admin.hooks.useVisitorsTypeData.returningVisitors": "Terugkerende bezoekers",
   "app.modules.commercial.analytics.admin.hooks.useVisitorsTypeData.type": "Bezoekerstype",
-  "app.modules.commercial.events_widget.admin.eventsWidgetSetting": "Activiteiten",
-  "app.modules.commercial.events_widget.admin.eventsWidgetSettingDescription": "Toon een voorweergave van aankomende activiteiten op de startpagina.",
   "app.modules.commercial.flag_inappropriate_content.admin.components.flagTooltip": "Je kunt deze markering verwijderen door dit item te selecteren en bovenaan op de knop Verwijderen te klikken. Het item zal dan opnieuw verschijnen in de tabbladen Gezien of Niet gezien",
   "app.modules.commercial.flag_inappropriate_content.admin.components.nlpFlaggedWarningText": "Automatisch gedetecteerd als ongepaste inhoud.",
   "app.modules.commercial.flag_inappropriate_content.admin.components.noWarningItems": "Er zijn door andere deelnemers of door ons automatische detectie-systeem via Natural Language Processing (NLP) geen berichten gemarkeerd als ongepaste inhoud",

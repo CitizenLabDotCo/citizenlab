@@ -2489,8 +2489,6 @@
   "app.modules.commercial.analytics.admin.hooks.useVisitorsTypeData.newVisitors": "Neue Besucher*innen",
   "app.modules.commercial.analytics.admin.hooks.useVisitorsTypeData.returningVisitors": "Wiederkehrende Besucher*innen",
   "app.modules.commercial.analytics.admin.hooks.useVisitorsTypeData.type": "Arten von Besucher*innen",
-  "app.modules.commercial.events_widget.admin.eventsWidgetSetting": "Veranstaltungen",
-  "app.modules.commercial.events_widget.admin.eventsWidgetSettingDescription": "Anzeige von aktuellen und anstehenden Veranstaltungen auf der Homepage.",
   "app.modules.commercial.flag_inappropriate_content.admin.components.flagTooltip": "Sie können diese Inhaltsmarkierung entfernen, indem Sie dieses Element auswählen und oben auf den Button \"Entfernen\" klicken. Es erscheint dann wieder in den Registerkarten \"Gesehen\" oder \"Nicht gesehen\"",
   "app.modules.commercial.flag_inappropriate_content.admin.components.nlpFlaggedWarningText": "Unangemessene Inhalte werden automatisch erkannt.",
   "app.modules.commercial.flag_inappropriate_content.admin.components.noWarningItems": "Es gibt keine Beiträge, die von der Community zur Überprüfung gemeldet oder von unserem Natural Language Processing-System als unangemessener Inhalt gekennzeichnet wurden",

@@ -2489,8 +2489,6 @@
   "app.modules.commercial.analytics.admin.hooks.useVisitorsTypeData.newVisitors": "Novos visitantes",
   "app.modules.commercial.analytics.admin.hooks.useVisitorsTypeData.returningVisitors": "Visitantes que regressam",
   "app.modules.commercial.analytics.admin.hooks.useVisitorsTypeData.type": "Tipos de Visitantes",
-  "app.modules.commercial.events_widget.admin.eventsWidgetSetting": "Eventos",
-  "app.modules.commercial.events_widget.admin.eventsWidgetSettingDescription": "Mostrar uma prévia dos próximos eventos na página inicial.",
   "app.modules.commercial.flag_inappropriate_content.admin.components.flagTooltip": "Você pode remover este conteúdo selecionando este item e clicando no botão remover no topo. Ele irá então reaparecer nas abas Ver ou Não ver",
   "app.modules.commercial.flag_inappropriate_content.admin.components.nlpFlaggedWarningText": "Conteúdo inapropriado auto-detectado.",
   "app.modules.commercial.flag_inappropriate_content.admin.components.noWarningItems": "Não há posts reportados para revisão pela comunidade ou sinalizados por conteúdo impróprio pelo nosso sistema de Processamento de Linguagem Natural",
