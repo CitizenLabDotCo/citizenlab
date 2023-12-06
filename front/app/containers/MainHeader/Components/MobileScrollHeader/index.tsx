@@ -23,7 +23,7 @@ const Container = styled.header`
   box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.1);
   z-index: 1004;
   position: fixed;
-  top: -100px; /* Hide the navbar 50 px outside of the top view */
+  top: -100px; /* Hide navbar outside the top view */
   width: 100%;
   display: block;
 
@@ -71,7 +71,7 @@ const MobileScrollHeader = () => {
     return null;
   }
 
-  // url segments
+  // Get url segments
   const urlSegments = location.pathname.replace(/^\/+/g, '').split('/');
 
   return (
