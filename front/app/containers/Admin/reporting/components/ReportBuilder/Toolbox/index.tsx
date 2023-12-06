@@ -26,7 +26,7 @@ import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableE
 // messages
 import contentBuilderMessages from 'components/admin/ContentBuilder/messages';
 import reportBuilderMessages from '../../../messages';
-import textMessages from 'components/admin/ContentBuilder/Widgets/Text/messages';
+import textMessages from 'containers/Admin/reporting/components/ReportBuilder/Widgets/Text/messages';
 
 // hooks
 import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';

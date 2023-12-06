@@ -12,7 +12,7 @@ import { Box, Input } from '@citizenlab/cl2-component-library';
 import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 
 // i18n
-import messages from 'components/admin/ContentBuilder/Widgets/Title/messages';
+import messages from 'containers/Admin/reporting/components/ReportBuilder/Widgets/Title/messages';
 import { useIntl } from 'utils/cl-intl';
 import useReportDefaultPadding from 'containers/Admin/reporting/hooks/useReportDefaultPadding';
 

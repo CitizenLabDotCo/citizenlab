@@ -10,7 +10,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
 
 // i18n
-import messages from 'components/admin/ContentBuilder/Widgets/Text/messages';
+import messages from 'containers/Admin/reporting/components/ReportBuilder/Widgets/Text/messages';
 
 // hooks
 import { useTheme } from 'styled-components';
