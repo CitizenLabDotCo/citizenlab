@@ -53,9 +53,10 @@ const Container = styled.header<{ position: 'fixed' | 'absolute' }>`
   }
 
   &.scroll-up-nav {
+    ${media.tablet`
     transition: top 0.3s;
     position: fixed;
-    top: 0px;
+    top: 0px;  `}
   }
 `;
 
