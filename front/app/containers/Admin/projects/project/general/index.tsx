@@ -40,7 +40,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 import useProjectById from 'api/projects/useProjectById';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useProjectFiles from 'api/project_files/useProjectFiles';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useAddProject from 'api/projects/useAddProject';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -91,6 +91,10 @@ const AdminProjectsProjectGeneral = () => {
   const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
   const appConfigLocales = useAppConfigurationLocales();
   const { width, containerRef } = useContainerWidthAndHeight();
+  const { pathname } = useLocation();
+  const showStickySaveButton = pathname.endsWith(
+    `/admin/projects/${projectId}/settings`
+  );
 
   const { data: remoteProjectImages } = useProjectImages(projectId || null);
   const { mutateAsync: addProjectImage } = useAddProjectImage();
@@ -593,7 +597,7 @@ const AdminProjectsProjectGeneral = () => {
             handleProjectFileOnRemove={handleProjectFileOnRemove}
           />
           <Box
-            position="fixed"
+            position={showStickySaveButton ? 'fixed' : undefined}
             borderTop={`1px solid ${colors.divider}`}
             bottom="0"
             w={`calc(${width}px + ${defaultAdminCardPadding * 2}px)`}
