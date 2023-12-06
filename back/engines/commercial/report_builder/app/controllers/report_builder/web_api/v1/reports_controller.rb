@@ -64,7 +64,7 @@ module ReportBuilder
           {
             'owner' => current_user,
             'layout_attributes' => {
-              'craftjs_jsonmultiloc' => {},
+              'craftjs_json' => {},
               'enabled' => true,
               'code' => 'report'
             }
@@ -76,9 +76,6 @@ module ReportBuilder
           @update_params ||= shared_params.tap do |parameters|
             if parameters.key?(:layout_attributes)
               parameters[:layout_attributes][:id] = report.layout.id
-
-              craftjs_jsonmultiloc = parameters.dig(:layout_attributes, :craftjs_jsonmultiloc)
-              craftjs_jsonmultiloc.reverse_merge!(report.layout.craftjs_jsonmultiloc)
             end
           end
         end
@@ -89,7 +86,7 @@ module ReportBuilder
             .permit(
               :name,
               :phase_id,
-              layout: [craftjs_jsonmultiloc: CL2_SUPPORTED_LOCALES.map { |locale| { locale => {} } }]
+              layout: [craftjs_json: {}]
             )
 
           parameters[:layout_attributes] = parameters.delete(:layout) if parameters.key?(:layout)
