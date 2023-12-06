@@ -49,24 +49,24 @@ const RenderNode = ({ render }) => {
 
   const {
     isActive,
-    isDeletable,
     parentId,
+    isDeletable,
     actions: { selectNode },
     query: { node },
   } = useEditor((_, query) => {
     return {
-      isActive: id && query.getEvent('selected').contains(id),
-      parentId: id && query.node(id).ancestors()[0],
-      isDeletable: id && query.node(id).isDeletable(),
+      isActive: id ? query.getEvent('selected').contains(id) : undefined,
+      parentId: id ? query.node(id).ancestors()[0] : undefined,
+      isDeletable: id ? query.node(id).isDeletable() : undefined,
     };
   });
 
-  const parentNode = parentId && node(parentId).get();
-  const isChildOfComplexComponent =
-    parentNode === '' ? false : !!parentNode?.data.custom?.hasChildren;
+  const parentNode = parentId ? node(parentId).get() : undefined;
+  const isChildOfComplexComponent = !!parentNode?.data?.custom?.hasChildren;
 
   // Handle multi-column hover state
   useEffect(() => {
+    if (!parentId) return;
     const parentNodeElement = document.getElementById(parentId);
 
     if (isHover && isChildOfComplexComponent) {

@@ -39,6 +39,7 @@ import {
 import { SerializedNodes } from '@craftjs/core';
 import { Locale } from 'typings';
 import { ReportLayout } from 'api/report_layout/types';
+import { isEmpty } from 'lodash-es';
 
 interface Props {
   reportId: string;
@@ -80,6 +81,8 @@ const ReportBuilder = ({ reportId, reportLayout }: Props) => {
     });
   };
 
+  const previewData = isEmpty(draftData) ? undefined : draftData;
+
   const hasError =
     Object.values(contentBuilderErrors).filter((node) => node.hasError).length >
     0;
@@ -101,7 +104,7 @@ const ReportBuilder = ({ reportId, reportLayout }: Props) => {
             hasPendingState={imageUploading}
             previewEnabled={previewEnabled}
             selectedLocale={selectedLocale}
-            draftEditorData={draftData}
+            draftEditorData={previewData}
             reportId={reportId}
             templateProjectId={templateProjectId ?? undefined}
             saved={saved}
@@ -126,7 +129,7 @@ const ReportBuilder = ({ reportId, reportLayout }: Props) => {
                     contentBuilderLocale={selectedLocale}
                     platformLocale={platformLocale}
                   >
-                    <Frame editorData={draftData}>
+                    <Frame editorData={previewData}>
                       {templateProjectId && (
                         <ProjectTemplate
                           reportId={reportId}
