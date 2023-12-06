@@ -2352,6 +2352,7 @@
   "app.containers.admin.ReportBuilder.periodLabel": "Dönem: {startEndDates}",
   "app.containers.admin.ReportBuilder.phase": "Aşama: {phaseName}",
   "app.containers.admin.ReportBuilder.projectLabel": "Proje: {projectsList}",
+  "app.containers.admin.ReportBuilder.start": "Başla: {startDate}",
   "app.containers.admin.ReportBuilder.surveyChooseQuestions": "Hangi soruların görüntüleneceğini seçin:",
   "app.containers.admin.ReportBuilder.surveyNoQuestions": "Bu proje veya aşama için herhangi bir soru bulunmamaktadır.",
   "app.containers.admin.ReportBuilder.surveyNoResults": "Seçtiğiniz filtreler için herhangi bir anket sonucu bulunmamaktadır.",
