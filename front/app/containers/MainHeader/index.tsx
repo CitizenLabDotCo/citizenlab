@@ -1,23 +1,28 @@
 // libraries
 import React, { useRef } from 'react';
-import { includes } from 'lodash-es';
-import { locales } from 'containers/App/constants';
 
 // components
 import DesktopNavItems from './Components/DesktopNavItems';
 import MobileNavbarContent from './Components/NavbarContent/MobileNavbarContent';
 import DesktopNavbarContent from './Components/NavbarContent/DesktopNavbarContent';
 import Fragment from 'components/Fragment';
-import { useBreakpoint } from '@citizenlab/cl2-component-library';
+import TenantLogo from './Components/TenantLogo';
+
+// hooks
 import useLocale from 'hooks/useLocale';
 
 // utils
-import { isPage } from 'utils/helperUtils';
+import {
+  isAdminPage,
+  isIdeaPage,
+  isInitiativePage,
+  isProjectPage,
+} from './utils';
 
 // style
 import styled from 'styled-components';
 import { media, isRtl } from 'utils/styleUtils';
-import TenantLogo from './Components/TenantLogo';
+import { useBreakpoint } from '@citizenlab/cl2-component-library';
 
 const Container = styled.header<{ position: 'fixed' | 'absolute' }>`
   width: 100vw;
@@ -85,43 +90,24 @@ const MainHeader = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const locale = useLocale();
 
-  // url segments
-  const urlSegments = location.pathname.replace(/^\/+/g, '').split('/');
-  const firstUrlSegment = urlSegments[0];
-  const secondUrlSegment = urlSegments[1];
-  const lastUrlSegment = urlSegments[urlSegments.length - 1];
-
-  // Page checks
-  const isIdeaPage =
-    urlSegments.length === 3 &&
-    includes(locales, firstUrlSegment) &&
-    secondUrlSegment === 'ideas' &&
-    lastUrlSegment !== 'new';
-  const isInitiativePage =
-    urlSegments.length === 3 &&
-    includes(locales, firstUrlSegment) &&
-    secondUrlSegment === 'initiatives' &&
-    lastUrlSegment !== 'new';
-  const isAdminPage = isPage('admin', location.pathname);
-  const isProjectPage = !!(
-    urlSegments.length === 3 &&
-    urlSegments[0] === locale &&
-    urlSegments[1] === 'projects'
-  );
-
   const isSmallerThanTablet = useBreakpoint('tablet');
   const isDesktopUser = !isSmallerThanTablet;
+
+  // url segments
+  const urlSegments = location.pathname.replace(/^\/+/g, '').split('/');
 
   return (
     <Container
       id="e2e-navbar"
       className={`${
-        isAdminPage ? 'admin' : 'citizenPage'
+        isAdminPage() ? 'admin' : 'citizenPage'
       } ${'alwaysShowBorder'} ${
-        isIdeaPage || isInitiativePage ? 'hideNavbar' : ''
+        isIdeaPage(urlSegments) || isInitiativePage(urlSegments)
+          ? 'hideNavbar'
+          : ''
       }`}
       ref={containerRef}
-      position={isProjectPage ? 'absolute' : 'fixed'}
+      position={isProjectPage(urlSegments, locale) ? 'absolute' : 'fixed'}
     >
       <ContainerInner>
         <Left>

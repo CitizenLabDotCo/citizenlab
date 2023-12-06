@@ -1,25 +1,24 @@
 // libraries
 import React, { useEffect, useRef, useState } from 'react';
-import { includes } from 'lodash-es';
-import { locales } from 'containers/App/constants';
 
 // components
-import useLocale from 'hooks/useLocale';
+import { ContainerInner, Left } from 'containers/MainHeader';
+import MobileNavbarContent from '../NavbarContent/MobileNavbarContent';
+import TenantLogo from '../TenantLogo';
 
 // utils
-import { isPage } from 'utils/helperUtils';
+import {
+  isAdminPage,
+  isIdeaPage,
+  isInitiativePage,
+} from 'containers/MainHeader/utils';
 
 // style
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
-import TenantLogo from '../TenantLogo';
-import MobileNavbarContent from '../NavbarContent/MobileNavbarContent';
 import { useBreakpoint } from '@citizenlab/cl2-component-library';
-import { ContainerInner, Left } from 'containers/MainHeader';
 
-const Container = styled.header<{
-  position: 'fixed' | 'absolute';
-}>`
+const Container = styled.header`
   background: ${({ theme }) => theme.navbarBackgroundColor || '#fff'};
   box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.1);
   z-index: 1004;
@@ -45,9 +44,7 @@ const Container = styled.header<{
 `;
 
 const MobileScrollHeader = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
   const isPhoneOrSmaller = useBreakpoint('phone');
-  const locale = useLocale();
   const showNavBar = useRef(false);
   const [scrollTop, setScrollTop] = useState(0);
 
@@ -69,46 +66,26 @@ const MobileScrollHeader = () => {
     return () => window.removeEventListener('scroll', onScroll);
   }, [scrollTop]);
 
+  // Only show the scroll header on mobile
   if (!isPhoneOrSmaller) {
     return null;
   }
 
   // url segments
   const urlSegments = location.pathname.replace(/^\/+/g, '').split('/');
-  const firstUrlSegment = urlSegments[0];
-  const secondUrlSegment = urlSegments[1];
-  const lastUrlSegment = urlSegments[urlSegments.length - 1];
-
-  // Page checks
-  const isIdeaPage =
-    urlSegments.length === 3 &&
-    includes(locales, firstUrlSegment) &&
-    secondUrlSegment === 'ideas' &&
-    lastUrlSegment !== 'new';
-  const isInitiativePage =
-    urlSegments.length === 3 &&
-    includes(locales, firstUrlSegment) &&
-    secondUrlSegment === 'initiatives' &&
-    lastUrlSegment !== 'new';
-  const isAdminPage = isPage('admin', location.pathname);
-  const isProjectPage = !!(
-    urlSegments.length === 3 &&
-    urlSegments[0] === locale &&
-    urlSegments[1] === 'projects'
-  );
 
   return (
     <Container
       id="e2e-navbar"
       className={`${
-        isAdminPage ? 'admin' : 'citizenPage'
+        isAdminPage() ? 'admin' : 'citizenPage'
       } ${'alwaysShowBorder'} ${
-        isIdeaPage || isInitiativePage ? 'hideNavbar' : ''
+        isIdeaPage(urlSegments) || isInitiativePage(urlSegments)
+          ? 'hideNavbar'
+          : ''
       }
       ${showNavBar.current ? 'scroll-up-nav' : ''}
       `}
-      ref={containerRef}
-      position={isProjectPage ? 'absolute' : 'fixed'}
     >
       <ContainerInner>
         <Left>
