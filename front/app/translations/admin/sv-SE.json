@@ -2352,6 +2352,7 @@
   "app.containers.admin.ReportBuilder.periodLabel": "Period: {startEndDates}",
   "app.containers.admin.ReportBuilder.phase": "Fas: {phaseName}",
   "app.containers.admin.ReportBuilder.projectLabel": "Projekt: {projectsList}",
+  "app.containers.admin.ReportBuilder.start": "Start: {startDate}",
   "app.containers.admin.ReportBuilder.surveyChooseQuestions": "Välj vilka frågor som ska visas:",
   "app.containers.admin.ReportBuilder.surveyNoQuestions": "Det finns inga frågor tillgängliga för detta projekt eller denna fas.",
   "app.containers.admin.ReportBuilder.surveyNoResults": "Det finns inga undersökningsresultat för de filter du har valt.",
