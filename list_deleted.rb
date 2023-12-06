@@ -1,0 +1,16 @@
+require 'csv'
+
+table = CSV.parse(File.read('AWS resources to migrate to TF - remove deleted & OK.csv'), headers: true)
+
+deleted_ids = []
+
+File.open('deleted_ids_6-12-23.csv', 'w') do |f|
+  table.by_row.each do |row|
+    deleted_ids << row[0] if row[3] == 'DELETED'
+  end
+end
+
+puts deleted_ids.inspect
+
+# =>
+# ["12eecf15-0637-4d97-95ef-92f2055361d1", "59c525f3-6359-40b0-b2cc-5d0d3078f4f3", "c114943b-79c1-4866-9534-b8b9db3027f1", "3fef1304-ed97-4aeb-8daf-8d8c5ba07ea2", "6711cbeb-de22-49c3-a221-d1eb7f4940b3", "ed0ee39e-f293-417e-869c-a09dc37bcb5f", "9557948c-9285-454b-9112-ecee718a16b0", "d1b2cee0-34d4-4f70-91f3-db79ab25f97a", "cc544508-3801-4363-a727-342c21994cae", "d6a1fbea-b0e2-4521-8368-b2e0d914b906", "0ad86fed-7b57-4f25-af11-e5c627e5977d", "69fc7d86-ff70-42bc-a996-68bdca5e096d", "821b382b-440d-4ba9-8522-0afc1acb8d68", "26b8ac8a-6c2a-45f0-9709-e9365319c549", "06e1a9b6-f6f9-45c5-b36b-52007cd0b533", "34e5f577-2e22-4957-81c9-91a25fc406b9", "01d3c059-31c6-4ff6-a11d-f452ae75d923", "c968032f-5140-4eac-8ce9-269411d404f3", "d1015a69-b2d4-4dcf-96fa-ed8d0512a863", "6cb31f18-328d-44c2-a7e7-5443d7856159", "f4447cbb-f488-4027-bf80-0381cf7e6aa3", "9eea6c05-f1a6-4043-aee4-6021541dba4e", "43657ce7-d300-4e3a-94ea-d94a506eebd5", "54990280-bded-4313-856c-2b31f3c8502f", "d5445de5-acac-416b-b7fc-00961ec07417", "8b573cc7-72c0-4041-b947-718ec80e3d76", "1ec0d9e1-2672-49d4-97f2-6f8fb4ce0899", "d6c470a9-f087-4782-aabc-6c8683ce4949", "10ff8b7a-d2e0-43c1-9867-3c3610fdd3a2", "a678a659-5ac0-4ab0-8270-2da3a4081cc3", "580c4a77-6861-4d48-9f18-a93b966fb79e", "dad59814-875e-42d3-aed6-f43594522cd6", "0b6799f1-6fb3-481f-b6d3-f92a17971a5a", "a4e4d34b-b6ee-40a0-a8a0-388a861048af", "58da36e8-0bd6-49a4-9830-ef11c91f9038", "43473120-48db-4173-ba38-488eaf2b0c5f", "2e70a1ad-e886-4566-95c1-59f5168e332c", "36076bf0-0721-4329-9747-aa97ca5a6549", "2f345af2-f792-45b5-9262-e3cecb291114", "2e7503e0-c386-45ff-a70a-5f5ecb187ca8", "95563423-030e-427a-b876-e6404d39c443", "6ab834d8-e18a-4ea2-bd8a-90d4a8a97687", "de30884e-3b35-4f03-ab41-764279958ffa"]
