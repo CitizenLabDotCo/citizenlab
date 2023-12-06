@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 
 // hooks
 import { useEditor } from '@craftjs/core';
-import useReport from 'api/reports/useReport';
 import useUpdateReportLayout from 'api/report_layout/useUpdateReportLayout';
 
 // context
@@ -18,67 +17,51 @@ import Modal from 'components/UI/Modal';
 import Button from 'components/UI/Button';
 import ShareReportButton from '../../ReportBuilderPage/ReportRow/Buttons/ShareReportButton';
 
+// styling
+import { colors } from 'utils/styleUtils';
+
 // i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-// styling
-import { fontSizes, colors, stylingConsts } from 'utils/styleUtils';
-import styled from 'styled-components';
-
 // routing
 import clHistory from 'utils/cl-router/history';
-
-// utils
-import { isEqual } from 'lodash-es';
 
 // types
 import { Locale } from 'typings';
 import { CraftJson } from 'components/admin/ContentBuilder/typings';
 
-const LocaleBadge = styled(Box)`
-  display: inline-block;
-  color: ${colors.textSecondary};
-  background-color: ${colors.grey200};
-  font-weight: bold;
-  font-size: ${fontSizes.xs}px;
-  padding: 0px 6px;
-  margin-left: 15px;
-  border-radius: ${stylingConsts.borderRadius};
-`;
-
 type ContentBuilderTopBarProps = {
   hasError: boolean;
   hasPendingState: boolean;
-  previewEnabled: boolean;
-  setPreviewEnabled: React.Dispatch<React.SetStateAction<boolean>>;
-  selectedLocale: Locale | undefined;
+  selectedLocale: Locale;
   draftEditorData?: CraftJson;
-  initialData: CraftJson;
   reportId: string;
   templateProjectId?: string;
+  saved: boolean;
+  previewEnabled: boolean;
+  setSaved: React.Dispatch<React.SetStateAction<boolean>>;
+  setPreviewEnabled: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const ContentBuilderTopBar = ({
   hasError,
-  previewEnabled,
-  setPreviewEnabled,
-  selectedLocale,
   draftEditorData,
-  initialData,
   hasPendingState,
   reportId,
   templateProjectId,
+  saved,
+  previewEnabled,
+  setSaved,
+  setPreviewEnabled,
 }: ContentBuilderTopBarProps) => {
   const [initialized, setInitialized] = useState(false);
   const [showQuitModal, setShowQuitModal] = useState(false);
-  const [hasChange, setHasChange] = useState(false);
   const { query } = useEditor();
-  const { data: report } = useReport(reportId);
   const { mutate: updateReportLayout, isLoading } = useUpdateReportLayout();
   const reportContext = useReportContext();
 
-  const disableSave = !!hasError || !!hasPendingState;
+  const disableSave = !!hasError || !!hasPendingState || saved;
 
   const closeModal = () => {
     setShowQuitModal(false);
@@ -87,7 +70,7 @@ const ContentBuilderTopBar = ({
     setShowQuitModal(true);
   };
   const goBack = () => {
-    if (hasChange) {
+    if (!saved) {
       openModal();
     } else {
       doGoBack();
@@ -105,29 +88,22 @@ const ContentBuilderTopBar = ({
   };
 
   const handleSave = () => {
-    if (selectedLocale) {
-      setHasChange(false);
-
-      updateReportLayout({
+    updateReportLayout(
+      {
         id: reportId,
         craftjs_json: query.getSerializedNodes(),
         projectId: reportContext.projectId,
-      });
-    }
+      },
+      {
+        onSuccess: () => {
+          setSaved(true);
+        },
+      }
+    );
   };
 
   useEffect(() => {
-    if (!selectedLocale || !draftEditorData) return;
-    setHasChange(
-      !isEqual(
-        JSON.parse(JSON.stringify(initialData ?? {})),
-        JSON.parse(JSON.stringify(draftEditorData[selectedLocale] ?? {}))
-      )
-    );
-  }, [initialData, draftEditorData, selectedLocale]);
-
-  useEffect(() => {
-    if (hasChange) {
+    if (!saved) {
       window.onbeforeunload = () => true;
     } else {
       window.onbeforeunload = null;
@@ -135,7 +111,7 @@ const ContentBuilderTopBar = ({
     return () => {
       window.onbeforeunload = null;
     };
-  }, [hasChange]);
+  }, [saved]);
 
   useEffect(() => {
     if (initialized) return;
@@ -153,11 +129,18 @@ const ContentBuilderTopBar = ({
 
     if (nodes?.[firstNode].displayName === 'ProjectTemplate') {
       setTimeout(() => {
-        updateReportLayout({
-          id: reportId,
-          craftjs_json: query.getSerializedNodes(),
-          projectId: reportContext.projectId,
-        });
+        updateReportLayout(
+          {
+            id: reportId,
+            craftjs_json: query.getSerializedNodes(),
+            projectId: reportContext.projectId,
+          },
+          {
+            onSuccess: () => {
+              setSaved(true);
+            },
+          }
+        );
       }, 5000);
     }
 
@@ -170,6 +153,7 @@ const ContentBuilderTopBar = ({
     reportId,
     updateReportLayout,
     reportContext.projectId,
+    setSaved,
   ]);
 
   const handleTogglePreview = () => {
@@ -216,10 +200,6 @@ const ContentBuilderTopBar = ({
           <Text mb="0px" color="textSecondary">
             <FormattedMessage {...messages.reportBuilder} />
           </Text>
-          <Title variant="h4" as="h1" color="primary">
-            {!report ? <></> : report.data.attributes.name}
-            <LocaleBadge>{selectedLocale?.toUpperCase()}</LocaleBadge>
-          </Title>
         </Box>
         <Box mx="24px">
           <PreviewToggle
@@ -231,8 +211,10 @@ const ContentBuilderTopBar = ({
           <ShareReportButton reportId={reportId} />
         </Box>
         <SaveButton
-          disabled={!!(disableSave || hasPendingState)}
+          disabled={disableSave}
           processing={isLoading}
+          bgColor={saved ? colors.success : undefined}
+          icon={saved ? 'check' : undefined}
           onClick={handleSave}
         />
       </Box>

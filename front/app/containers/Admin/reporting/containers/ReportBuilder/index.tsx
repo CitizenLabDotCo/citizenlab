@@ -53,16 +53,17 @@ const ReportBuilder = ({ reportId, reportLayout }: Props) => {
   const [previewEnabled, setPreviewEnabled] = useState(false);
   const [imageUploading, setImageUploading] = useState(false);
   const [selectedLocale, _setSelectedLocale] = useState<Locale>(platformLocale);
-  const [draftData, setDraftData] = useState<CraftJson>();
-  const [initialData] = useState<CraftJson>(
+  const [draftData, setDraftData] = useState<CraftJson>(
     reportLayout.attributes.craftjs_json
   );
+  const [saved, setSaved] = useState(!templateProjectId);
   const [contentBuilderErrors, setContentBuilderErrors] =
     useState<ContentBuilderErrors>({});
 
   const handleEditorChange = useCallback((nodes: SerializedNodes) => {
     if (Object.keys(nodes).length === 1 && nodes.ROOT) return;
     setDraftData(nodes);
+    setSaved(false);
   }, []);
 
   const handleErrors = (newErrors: ContentBuilderErrors) => {
@@ -79,7 +80,6 @@ const ReportBuilder = ({ reportId, reportLayout }: Props) => {
     });
   };
 
-  const previewData = draftData ?? initialData;
   const hasError =
     Object.values(contentBuilderErrors).filter((node) => node.hasError).length >
     0;
@@ -100,12 +100,13 @@ const ReportBuilder = ({ reportId, reportLayout }: Props) => {
             hasError={hasError}
             hasPendingState={imageUploading}
             previewEnabled={previewEnabled}
-            setPreviewEnabled={setPreviewEnabled}
             selectedLocale={selectedLocale}
             draftEditorData={draftData}
-            initialData={initialData}
             reportId={reportId}
             templateProjectId={templateProjectId ?? undefined}
+            saved={saved}
+            setSaved={setSaved}
+            setPreviewEnabled={setPreviewEnabled}
           />
           <Box
             mt={`${stylingConsts.menuHeight}px`}
@@ -125,7 +126,7 @@ const ReportBuilder = ({ reportId, reportLayout }: Props) => {
                     contentBuilderLocale={selectedLocale}
                     platformLocale={platformLocale}
                   >
-                    <Frame editorData={initialData}>
+                    <Frame editorData={draftData}>
                       {templateProjectId && (
                         <ProjectTemplate
                           reportId={reportId}
@@ -156,7 +157,7 @@ const ReportBuilder = ({ reportId, reportLayout }: Props) => {
                     contentBuilderLocale={selectedLocale}
                     platformLocale={platformLocale}
                   >
-                    <Frame editorData={previewData} />
+                    <Frame editorData={draftData} />
                   </LanguageProvider>
                 </Editor>
               </Box>
