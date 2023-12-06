@@ -51,7 +51,7 @@ const MobileScrollHeader = () => {
   useEffect(() => {
     function onScroll() {
       const currentPosition = document.documentElement.scrollTop;
-      if (currentPosition === 0) {
+      if (currentPosition <= 0) {
         showNavBar.current = false; // Don't show if we're at the top already
       } else if (currentPosition > scrollTop) {
         // downscroll
