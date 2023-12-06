@@ -18,10 +18,7 @@ import FullscreenContentBuilder from 'components/admin/ContentBuilder/Fullscreen
 import Editor from '../../components/ReportBuilder/Editor';
 import TopBar from '../../components/ReportBuilder/TopBar';
 import Toolbox from '../../components/ReportBuilder/Toolbox';
-import {
-  StyledRightColumn,
-  // ErrorMessage,
-} from 'components/admin/ContentBuilder/Frame/FrameWrapper';
+import { StyledRightColumn } from 'components/admin/ContentBuilder/Frame/FrameWrapper';
 import Frame from 'components/admin/ContentBuilder/Frame';
 import Settings from 'components/admin/ContentBuilder/Settings';
 
@@ -117,7 +114,6 @@ const ReportBuilder = ({ reportId, reportLayout }: Props) => {
             <Toolbox reportId={reportId} />
             <StyledRightColumn>
               <Box width={A4_WIDTH}>
-                {/* <ErrorMessage localesWithError={localesWithError} /> */}
                 <Box
                   background="white"
                   px="30px"
