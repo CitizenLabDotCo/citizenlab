@@ -101,11 +101,12 @@ const HomepageBanner = ({ homepageSettings, image }: Props) => {
   const [search] = useSearchParams();
   const locale = useLocale();
 
-  const isHomepage = pathname === `/${locale}` || `/${locale}/`;
+  const isHomepage = pathname === `/${locale}` || pathname === `/${locale}/`;
   const showSignedInHeader =
     (isHomepage && authUser?.data !== undefined) ||
     search.get('variant') === 'signedIn';
 
+  console.log(isHomepage);
   return (
     <div data-cy="e2e-homepage-banner">
       {showSignedInHeader ? (
