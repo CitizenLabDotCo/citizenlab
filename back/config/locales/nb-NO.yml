@@ -96,6 +96,8 @@
     open_idea_project_description_preview: Har du en idé som ikke passer med noen av de eksisterende prosjektene? Del den her, samle støtte og sett den på den politiske dagsordenen!
     open_idea_project_description: >
       <p> Passer ikke ideen din innenfor en av de eksisterende prosjektene? Legg den til her!</p><p><strong>Målet?</strong> Hvordan sette din idé på den politiske dagsorden?</p><p><strong>How?</strong> Samle støtte til ideen din, minst 100 stemmer innen 3 måneder. You can do that by first making your idea 'attractive'. Write it in a clear and engaging way, add images, give strong arguments based on facts, add attachments with further details or background information, ... Dei ideen din i sosiale medier og via e-post. Inviter andre til å bli med i diskusjonen, eller overbevis dem om å støtte ideen ved å stemme.</p><p><strong>Hva kan ideen være?t?</strong> Ideen kan handle om mye forskjellig, men må være relatert til kommunen og deres ansvarsområder. Det kan være et problem, en erfaring, en løsning en visjon, eller en kombinasjon. Ideen kan være  vill og langsiktig, eller håndfast og lett å løse.</p><p><strong> Hva skjer videre? </strong>Fikk ideen 100 stemmer inn 3 måneder?? Gratulerer! Kommunen vil nå vurdere ideen din. Hvis ideen din er gjennomførbarn og ikke skalder en spesiell gruppe mennesker eller individer, du vil få sjansen til å presentere forslag på et politisk møte.  Politikerne vil gi en tilbakemelding om hva de vil gjøre med ideen og hvorfor. Forslaget blir ikke vurdert, hvis du ikke får 100 stemmer innen 3 måneder..</p><p>Vil er nysgjerrig på dine ideer</p>
+  phases:
+    open_idea_phase_title: Nåværende fase
   events:
     council_meeting_title: Politisk møte
     council_meeting_description: >
