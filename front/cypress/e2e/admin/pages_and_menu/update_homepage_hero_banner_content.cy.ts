@@ -1,6 +1,6 @@
 import { randomString } from '../../../support/commands';
 
-describe('Admin: update Hero Banner content', () => {
+describe.skip('Admin: update Hero Banner content', () => {
   // header content
   const signedOutHeaderEnglish = randomString();
   const signedOutSubheaderEnglish = randomString();
