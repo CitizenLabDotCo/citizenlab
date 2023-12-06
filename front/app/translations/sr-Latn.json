@@ -378,7 +378,7 @@
   "app.components.ProjectCard.finished": "Završeno",
   "app.components.ProjectCard.joinDiscussion": "Uključite se u diskusiju",
   "app.components.ProjectCard.learnMore": "Saznajte više",
-  "app.components.ProjectCard.reaction": "Реакција",
+  "app.components.ProjectCard.reaction": "Glasajte",
   "app.components.ProjectCard.remaining": "Preostalo je {timeRemaining} ",
   "app.components.ProjectCard.reviewDocument": "Прегледајте документ",
   "app.components.ProjectCard.submitAnIssue": "Prijavite problem",
