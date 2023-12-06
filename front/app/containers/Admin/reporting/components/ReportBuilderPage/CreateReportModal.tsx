@@ -81,7 +81,7 @@ const CreateReportModal = ({ open, onClose }: Props) => {
           const path = `${route}/${report.data.id}/editor`;
           const params =
             template === 'project' && selectedProject
-              ? `?projectId=${selectedProject}`
+              ? `?templateProjectId=${selectedProject}`
               : '';
 
           clHistory.push(path + params);

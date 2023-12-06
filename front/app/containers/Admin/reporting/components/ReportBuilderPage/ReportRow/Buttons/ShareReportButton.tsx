@@ -14,7 +14,6 @@ import ShareReportModal from './ShareReportModal';
 
 interface Props {
   reportId: string;
-  buttonStyle?: 'primary' | 'secondary';
 }
 
 const ShareReportButton = ({ reportId }: Props) => {

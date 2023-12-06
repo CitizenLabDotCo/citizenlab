@@ -2,10 +2,12 @@
 
 module CarrierwaveErrorDetailsTransformation
   # @param [ActiveModel::Errors] errors
-  # @param [Symbol] errors
+  # @param [Symbol] attribute_name
   def transform_carrierwave_error_details(errors, attribute_name)
     # @file.errors.details always returns { error: ActiveModel::Error#type }
-    # But Carrierwave's ActiveModel::Error items sometimes have more specific messages (e.g., max_size_error in this case).
+    # But Carrierwave's ActiveModel::Error items sometimes have more specific messages in
+    # ActiveModel::Error#options[:message] (e.g., max_size_error in this case).
+    #
     # We want to use these specific messages on the FE.
     #
     # > @file.errors
