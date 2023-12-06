@@ -534,8 +534,7 @@ export function apiCreateIdea(
   locationDescription?: string,
   jwt?: string,
   budget?: number,
-  anonymous?: boolean,
-  phaseId?: string
+  anonymous?: boolean
 ) {
   let headers: { 'Content-Type': string; Authorization: string } | null = null;
 
@@ -572,7 +571,6 @@ export function apiCreateIdea(
           location_description: locationDescription,
           budget,
           anonymous,
-          phase_ids: [phaseId],
         },
       },
     });
