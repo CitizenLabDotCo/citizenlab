@@ -118,7 +118,7 @@ const HomepageBanner = ({ homepageSettings, image }: Props) => {
               small: image?.imageUrl || null,
             },
           }}
-          isContentBuilderPreview
+          isContentBuilderDisplay={!isEditorInPreviewMode}
         />
       ) : (
         <Fragment name="signed-out-header">
