@@ -44,7 +44,7 @@ namespace :migrate_craftjson do
           errors[tenant.host] += ["Failed to update homepage: #{homepage.errors.details}"]
         end
 
-        if topinfosection_success && bottominfosection_success && errors[tenant.host].blank?
+        if topinfosection_success && bottominfosection_success && errors[tenant.host].blank? && tenant.host != 'kobenhavntaler.kk.dk'
           SettingsService.new.activate_feature! 'homepage_builder'
         else
           manual += [tenant.host]
