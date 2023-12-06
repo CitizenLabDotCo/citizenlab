@@ -195,7 +195,9 @@ class Idea < ApplicationRecord
   end
 
   def participation_method_on_creation
-    Factory.instance.participation_method_for creation_phase || project
+    return ParticipationMethod::NativeSurvey.new(creation_phase) if participation_method == 'native_survey'
+
+    ParticipationMethod::Ideation.new(creation_phase)
   end
 
   private
