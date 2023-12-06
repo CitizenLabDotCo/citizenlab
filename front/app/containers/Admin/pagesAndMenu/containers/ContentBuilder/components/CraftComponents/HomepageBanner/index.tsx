@@ -106,7 +106,6 @@ const HomepageBanner = ({ homepageSettings, image }: Props) => {
     (isHomepage && authUser?.data !== undefined) ||
     search.get('variant') === 'signedIn';
 
-  console.log(isHomepage);
   return (
     <div data-cy="e2e-homepage-banner">
       {showSignedInHeader ? (
