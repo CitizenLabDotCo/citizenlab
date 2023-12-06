@@ -345,5 +345,9 @@ module ParticipationMethod
     def supports_idea_form?
       true
     end
+
+    def creation_phase?
+      true
+    end
   end
 end

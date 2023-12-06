@@ -21,6 +21,10 @@ module ParticipationMethod
       input.idea_status = IdeaStatus.find_by!(code: 'proposed')
     end
 
+    def assign_input_participation_method(input)
+      input.participation_method = 'native_survey'
+    end
+
     def form_structure_element
       'page'
     end
