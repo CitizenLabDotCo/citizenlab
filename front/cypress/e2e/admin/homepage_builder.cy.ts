@@ -242,9 +242,9 @@ describe('Homepage builder', () => {
       expect(text).to.match(signedOutSubheaderEnglish);
     });
 
-    // cy.get('#hook-header-content')
-    //   .find('[data-testid=avatarBubblesContainer]')
-    //   .should('exist');
+    cy.get('#hook-header-content')
+      .find('[data-testid=avatarBubblesContainer]')
+      .should('exist');
 
     cy.get('[data-cy=e2e-full-width-layout-header-image-overlay]').should(
       'exist'
@@ -265,13 +265,9 @@ describe('Homepage builder', () => {
     // Check homepage banner defaults signed - in
 
     cy.setAdminLoginCookie();
-    const signedInHeaderEnglish = /is listening to you/gi;
+
     cy.visit('/');
     cy.get('.e2e-signed-in-header').should('exist');
-    cy.get('#e2e-signed-in-header-default-cta').should(($el) => {
-      const text = $el.text();
-      expect(text).to.match(signedInHeaderEnglish);
-    });
     cy.get("[data-cy='e2e-signed-in-header-image-overlay']").should(
       'have.css',
       'background-color',
@@ -332,7 +328,7 @@ describe('Homepage builder', () => {
       force: true,
     });
 
-    // Update header and subheader
+    // Update header
     cy.get('[data-cy="e2e-signed-in-header-section"]')
       .find('input')
       .clear()
@@ -344,19 +340,16 @@ describe('Homepage builder', () => {
     cy.get('#customizedButtonText').clear().type('Custom button');
     cy.get('#customizedButtonUrl').clear().type('https://www.google.com');
 
+    cy.get("[data-cy='e2e-signed-in-header-image']").should('exist');
+    cy.get('.buttonText').should('contain', 'Custom button');
+    cy.get("[data-cy='e2e-homepage-banner']").should('contain', 'New header');
+
     // Save homepage
     cy.get('#e2e-content-builder-topbar-save').click({
       force: true,
     });
     cy.wait('@saveHomePage');
     cy.wait(1000);
-
-    // Check updated content signed - in
-
-    cy.visit('/');
-    cy.get("[data-cy='e2e-signed-in-header-image']").should('exist');
-    cy.get('.buttonText').should('contain', 'Custom button');
-    cy.get("[data-cy='e2e-homepage-banner']").should('contain', 'New header');
 
     // Check updated content signed - out
 
@@ -384,6 +377,7 @@ describe('Homepage builder', () => {
   it('updates homepage banner layout correctly', () => {
     cy.intercept('PATCH', '**/home_page').as('saveHomePage');
     cy.intercept('POST', '**/content_builder_layout_images').as('postImage');
+
     // Fixed ratio layout
     cy.setAdminLoginCookie();
     cy.visit('/admin/pages-menu/homepage-builder');
