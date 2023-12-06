@@ -74,13 +74,6 @@ const IdeasShowPage = () => {
     phases?.data
   );
 
-  // If the idea is not in the current phase, we don't show the CTA bar
-  const ideaCurrentPhaseFilter = idea?.data.relationships.phases.data.filter(
-    (phase) => phase.id === participationContext?.id
-  );
-  const isIdeaInCurrentPhase =
-    ideaCurrentPhaseFilter && ideaCurrentPhaseFilter.length > 0;
-
   if (status === 'loading') {
     return (
       <VerticalCenterer>
@@ -97,19 +90,22 @@ const IdeasShowPage = () => {
     return <PageNotFound />;
   }
 
-  if (idea) {
+  if (idea && project) {
+    const isIdeaInCurrentPhase =
+      idea.data.relationships.phases.data.filter(
+        (phase) => phase.id === participationContext?.id
+      ).length > 0;
+    const showCTABar =
+      isIdeaInCurrentPhase &&
+      participationContext?.attributes.participation_method === 'voting';
+    const showCTABarAtTopOfPage = !isSmallerThanTablet && showCTABar;
+
     return (
-      <VotingContext projectId={project?.data.id}>
+      <VotingContext projectId={project.data.id}>
         <Box
           background={colors.white}
-          mt={
-            // Only move the content down the page if the idea is in a current voting phase
-            isSmallerThanTablet ||
-            participationContext?.attributes.participation_method !==
-              'voting' ||
-            !isIdeaInCurrentPhase
-              ? undefined
-              : `${stylingConsts.menuHeight.toString()}px`
+          pt={
+            showCTABarAtTopOfPage ? `${stylingConsts.menuHeight}px` : undefined
           }
         >
           {isSmallerThanTablet && (
@@ -125,22 +121,15 @@ const IdeasShowPage = () => {
             compact={isSmallerThanTablet}
           />
         </Box>
-        <Box
-          position="fixed"
-          top={
-            isSmallerThanTablet
-              ? undefined
-              : stylingConsts.menuHeight.toString() // Show CTA at top of screen on desktop
-          }
-          bottom={isSmallerThanTablet ? '0px' : undefined} // Show CTA at bottom of screen on mobile
-          width="100vw"
-          zIndex="1000"
-        >
-          {project?.data.id && // Show the CTA bar only when voting is active
-            isIdeaInCurrentPhase &&
-            participationContext?.attributes.participation_method ===
-              'voting' && <ProjectCTABar projectId={project.data.id} />}
-        </Box>
+        {showCTABar && (
+          <Box
+            position="fixed"
+            bottom={isSmallerThanTablet ? '0px' : undefined} // Show CTA at bottom of screen on mobile
+            width="100vw"
+          >
+            <ProjectCTABar projectId={project.data.id} />
+          </Box>
+        )}
       </VotingContext>
     );
   }

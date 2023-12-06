@@ -25,7 +25,7 @@ const Proposals = () => {
 
   if (!proposalsEnabled) return null;
   return (
-    <Box bg={colors.background}>
+    <Box bg={colors.background} data-cy="e2e-proposals">
       <Box
         maxWidth="1200px"
         margin="0 auto"

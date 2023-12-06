@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 // hooks
 import { useEditor, SerializedNodes } from '@craftjs/core';
@@ -11,7 +11,7 @@ import LocaleSwitcher from 'components/admin/ContentBuilder/TopBar/LocaleSwitche
 import PreviewToggle from 'components/admin/ContentBuilder/TopBar/PreviewToggle';
 import SaveButton from 'components/admin/ContentBuilder/TopBar/SaveButton';
 import Button from 'components/UI/Button';
-import { Box, Title } from '@citizenlab/cl2-component-library';
+import { Box, Title, Text } from '@citizenlab/cl2-component-library';
 
 // routing
 import clHistory from 'utils/cl-router/history';
@@ -41,9 +41,12 @@ const BuilderTopBar = ({
   hasError,
   hasPendingState,
 }: BuilderTopBarProps) => {
-  const [loading, setLoading] = useState(false);
   const { query } = useEditor();
-  const { mutateAsync: updateHomepage } = useUpdateHomepageSettings();
+  const {
+    mutate: updateHomepage,
+    isError,
+    isLoading,
+  } = useUpdateHomepageSettings();
   const { formatMessage } = useIntl();
   const disableSave = hasError || hasPendingState;
 
@@ -51,17 +54,11 @@ const BuilderTopBar = ({
     clHistory.push(`/admin/pages-menu`);
   };
 
-  const handleSave = async () => {
+  const handleSave = () => {
     if (selectedLocale) {
-      try {
-        setLoading(true);
-        await updateHomepage({
-          craftjs_json: query.getSerializedNodes(),
-        });
-      } catch {
-        // Do nothing
-      }
-      setLoading(false);
+      updateHomepage({
+        craftjs_json: query.getSerializedNodes(),
+      });
     }
   };
 
@@ -100,11 +97,24 @@ const BuilderTopBar = ({
         >
           {formatMessage(messages.viewHomepage)}
         </Button>
+
         <SaveButton
           disabled={!!(disableSave || hasPendingState)}
-          processing={loading}
+          processing={isLoading}
           onClick={handleSave}
         />
+        {isError && (
+          <Text
+            color="error"
+            ml="20px"
+            position="absolute"
+            right="16px"
+            bottom="-18px"
+            fontSize="s"
+          >
+            {formatMessage(messages.saveError)}
+          </Text>
+        )}
       </Box>
     </Container>
   );
