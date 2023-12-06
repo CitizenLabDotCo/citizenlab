@@ -2352,6 +2352,7 @@
   "app.containers.admin.ReportBuilder.periodLabel": "Период: {startEndDates}",
   "app.containers.admin.ReportBuilder.phase": "Фаза: {phaseName}",
   "app.containers.admin.ReportBuilder.projectLabel": "Пројекат: {projectsList}",
+  "app.containers.admin.ReportBuilder.start": "Start: {startDate}",
   "app.containers.admin.ReportBuilder.surveyChooseQuestions": "Изаберите која питања ће се приказати:",
   "app.containers.admin.ReportBuilder.surveyNoQuestions": "Нема доступних питања за овај пројекат или фазу.",
   "app.containers.admin.ReportBuilder.surveyNoResults": "Нема резултата анкете за филтере које сте изабрали.",
