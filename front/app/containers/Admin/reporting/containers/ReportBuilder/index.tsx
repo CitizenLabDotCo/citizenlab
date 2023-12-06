@@ -7,7 +7,7 @@ import useReportLayout from 'api/report_layout/useReportLayout';
 import useReportLocale from '../../hooks/useReportLocale';
 
 // context
-import { ReportContext } from '../../context/ReportContext';
+import { ReportContextProvider } from '../../context/ReportContext';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -60,7 +60,7 @@ const ReportBuilder = ({ reportId }: Props) => {
   const [initialized, setInitialized] = useState(false);
   const [initialData, setInitialData] = useState<SerializedNodes | undefined>();
   const [search] = useSearchParams();
-  const projectId = search.get('projectId');
+  const templateProjectId = search.get('templateProjectId');
 
   // Note: selectedLocale is kept to keep compatibility with content builder
   // although there is currently only one locale allowed per report
@@ -127,7 +127,7 @@ const ReportBuilder = ({ reportId }: Props) => {
   if (!selectedLocale) return null;
 
   return (
-    <ReportContext.Provider value="pdf">
+    <ReportContextProvider width="pdf" reportId={reportId}>
       <FullscreenContentBuilder
         onErrors={handleErrors}
         onDeleteElement={handleDeleteElement}
@@ -147,7 +147,7 @@ const ReportBuilder = ({ reportId }: Props) => {
             draftEditorData={draftData}
             initialData={initialData}
             reportId={reportId}
-            projectId={projectId ?? undefined}
+            templateProjectId={templateProjectId ?? undefined}
           />
           <Box
             mt={`${stylingConsts.menuHeight}px`}
@@ -169,10 +169,10 @@ const ReportBuilder = ({ reportId }: Props) => {
                     platformLocale={platformLocale}
                   >
                     <Frame editorData={initialData}>
-                      {projectId && (
+                      {templateProjectId && (
                         <ProjectTemplate
                           reportId={reportId}
-                          projectId={projectId}
+                          projectId={templateProjectId}
                         />
                       )}
                     </Frame>
@@ -207,7 +207,7 @@ const ReportBuilder = ({ reportId }: Props) => {
           </Box>
         )}
       </FullscreenContentBuilder>
-    </ReportContext.Provider>
+    </ReportContextProvider>
   );
 };
 

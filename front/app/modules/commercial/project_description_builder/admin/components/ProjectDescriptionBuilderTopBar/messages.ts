@@ -13,4 +13,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectDescription.viewProject',
     defaultMessage: 'View project',
   },
+  saveError: {
+    id: 'app.containers.AdminPage.ProjectDescription.saveError',
+    defaultMessage:
+      'Something went wrong while saving the project description.',
+  },
 });
