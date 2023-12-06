@@ -1,5 +1,5 @@
 // libraries
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 // components
 import { ContainerInner, Left } from 'containers/MainHeader';
@@ -29,10 +29,10 @@ const Container = styled.header`
 
   &.scroll-up-nav {
     transition: top 0.3s;
-    top: -0px;
+    top: 0px;
   }
 
-  &.hideNavbar {
+  &.hideNavbarOnTablet {
     ${media.tablet`
       display: none;
     `}
@@ -45,20 +45,20 @@ const Container = styled.header`
 
 const MobileScrollHeader = () => {
   const isPhoneOrSmaller = useBreakpoint('phone');
-  const showNavBar = useRef(false);
+  const [showNavBar, setShowNavBar] = useState<boolean>(false);
   const [scrollTop, setScrollTop] = useState(0);
 
   useEffect(() => {
     function onScroll() {
       const currentPosition = document.documentElement.scrollTop;
       if (currentPosition <= 0) {
-        showNavBar.current = false; // Don't show if we're at the top already
+        setShowNavBar(false); // Don't show if we're at the top already
       } else if (currentPosition > scrollTop) {
         // downscroll
-        showNavBar.current = false;
+        setShowNavBar(false);
       } else {
         // upscroll
-        showNavBar.current = true;
+        setShowNavBar(true);
       }
       setScrollTop(currentPosition <= 0 ? 0 : currentPosition);
     }
@@ -82,10 +82,10 @@ const MobileScrollHeader = () => {
         isAdminPage() ? 'admin' : 'citizenPage'
       } ${'alwaysShowBorder'} ${
         isIdeaPage(urlSegments) || isInitiativePage(urlSegments)
-          ? 'hideNavbar'
+          ? 'hideNavbarOnTablet'
           : ''
       }
-      ${showNavBar.current ? 'scroll-up-nav' : ''}
+      ${showNavBar ? 'scroll-up-nav' : ''}
       `}
     >
       <ContainerInner>
