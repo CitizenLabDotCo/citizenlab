@@ -26,6 +26,7 @@ RSpec.describe Idea do
     end
   end
 
+  # TODO: JS - Change this
   describe '#participation_method_on_creation' do
     context 'in a timeline project when a creation phase is present' do
       let(:project) { create(:project_with_future_native_survey_phase) }
@@ -45,6 +46,30 @@ RSpec.describe Idea do
       it 'returns ParticipationMethod::Ideation' do
         expect(idea.participation_method_on_creation).to be_an_instance_of ParticipationMethod::Ideation
       end
+    end
+  end
+
+  describe 'participation_method' do
+    it 'cannot be null' do
+      p = create(:idea)
+      p.participation_method = nil
+      expect(p.save).to be false
+    end
+
+    it 'can be ideation' do
+      p = create(:idea, participation_method: 'ideation')
+      expect(p.save).to be true
+    end
+
+    it 'can be native_survey' do
+      p = create(:idea, participation_method: 'native_survey')
+      expect(p.save).to be true
+    end
+
+    it 'rejects anything else' do
+      p = create(:idea)
+      p.participation_method = 'something_else'
+      expect(p.save).to be false
     end
   end
 

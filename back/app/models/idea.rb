@@ -33,6 +33,7 @@
 #  internal_comments_count  :integer          default(0), not null
 #  votes_count              :integer          default(0), not null
 #  followers_count          :integer          default(0), not null
+#  participation_method     :string           default("ideation"), not null
 #
 # Indexes
 #
@@ -56,6 +57,8 @@ class Idea < ApplicationRecord
   include Post
   include AnonymousParticipation
   extend OrderAsSpecified
+
+  PARTICIPATION_METHODS = %w[ideation native_survey].freeze
 
   belongs_to :project, touch: true
   belongs_to :creation_phase, class_name: 'Phase', optional: true
@@ -107,6 +110,7 @@ class Idea < ApplicationRecord
   end
 
   validate :validate_creation_phase
+  validates :participation_method, inclusion: { in: PARTICIPATION_METHODS }
 
   # validates :custom_field_values, json: {
   #   schema: :schema_for_validation,

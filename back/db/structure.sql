@@ -1580,7 +1580,8 @@ CREATE TABLE public.ideas (
     anonymous boolean DEFAULT false NOT NULL,
     internal_comments_count integer DEFAULT 0 NOT NULL,
     votes_count integer DEFAULT 0 NOT NULL,
-    followers_count integer DEFAULT 0 NOT NULL
+    followers_count integer DEFAULT 0 NOT NULL,
+    participation_method character varying DEFAULT 'ideation'::character varying NOT NULL
 );
 
 
@@ -8064,6 +8065,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20231124090234'),
 ('20231124112723'),
 ('20231124114112'),
-('20231130093345');
+('20231130093345'),
+('20231206123734');
 
 

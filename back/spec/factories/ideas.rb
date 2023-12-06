@@ -2,6 +2,7 @@
 
 FactoryBot.define do
   factory :idea do
+    participation_method { 'ideation' }
     title_multiloc do
       {
         'en' => 'Plant more trees',
